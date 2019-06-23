@@ -17,10 +17,10 @@ namespace Base
     ~Line(void) noexcept(false);
   
     w8   wGet(i8 i_Offset, i8 nBytes);
-    void vPut(i8 i_Offset, w8 wWord, i8 nBytes);
-  
-    void vSetAll(byte yVal);
-    void vSetAll(byte yVal, i8 nBytes);
+    void vPut(i8 i_Offset, w8 wArg, i8 nBytes);
+    void vSet(i8 i_Offset, i8 nBytes, byte yArg);
+    void vSetAll(byte yArg);
+    void vSetAll(byte yArg, i8 nBytes);
   
     w8 w8_2B(i8 i_Byte);
     w8 w8_3B(i8 i_Byte);

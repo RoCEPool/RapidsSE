@@ -69,6 +69,15 @@ void Line::vPut(i8 i_Offset, w8 wWord, i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set nBytes bytes to yVal                                                   */
+/*----------------------------------------------------------------------------*/
+void Line::vSet(i8 i_Offset, i8 nBytes, byte yVal)
+{
+  void* aAddr = aAdd<void*>(this, i_Offset);
+  MemLib::vSet(aAddr, yVal, nBytes, CN_NONE);
+}
+
+/*----------------------------------------------------------------------------*/
 /* set all bytes to yVal                                                      */
 /*----------------------------------------------------------------------------*/
 void Line::vSetAll(byte yVal)
