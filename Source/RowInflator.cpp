@@ -323,7 +323,7 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
         wWord.m_yaByte[0] = *ayDataByte++;
         wWord.m_yaByte[1] = *ayDataByte++;
         i_Tail_rel = wWord.m_iI8;
-        aTail = aGetTailRel(aHeadLine,i_Tail_rel);
+        aTail = aHeadLine->aGetTailRel(i_Tail_rel);
         nLength = aTail->w8_1B(+ C_U_1B);
         MemLib::vCopy(acString,(byte*)aTail+C_U_1B+_1B_L,nLength,CN_ROWCOMPACTOR);
         *(char**)(aiColVal++) = acString;
@@ -388,7 +388,7 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
         wWord.m_yaByte[0] = *ayDataByte++;
         wWord.m_yaByte[1] = *ayDataByte++;
         i_Tail_rel = wWord.m_iI8;
-        aTail  = aGetTailRel(aHeadLine,i_Tail_rel);
+        aTail  = aHeadLine->aGetTailRel(i_Tail_rel);
         nCompressed = aTail->w8_1B(C_OFFSET_COMPRESSED);
         nLength =
         Compress::iFromShoco(acString,                 // decompressed dest
@@ -408,7 +408,7 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
         wWord.m_yaByte[0] = *ayDataByte++;
         wWord.m_yaByte[1] = *ayDataByte++;
         i_Tail_rel = wWord.m_iI8;
-        aTail  = aGetTailRel(aHeadLine,i_Tail_rel);
+        aTail  = aHeadLine->aGetTailRel(i_Tail_rel);
         nCompressed = (i8)*(u1*)ayDataByte++;
         nBytesPartA = aHeadLine->nBytes() - (ayDataByte - (byte*)aHeadLine);
         nBytesPartB = nCompressed - nBytesPartA;
@@ -1048,7 +1048,7 @@ void RowInflator::vDecodeVchShocoSplit(DtmVal* pDtmVal, HeadLine* aHeadLine,
   byte caShoco[C_4KB];
   
   i8 i_Tail_rel = aHeadLine->wGetLogical(i_Offset,C_2B);
-  TailLine* aShocoTail = aGetTailRel(aHeadLine,i_Tail_rel);
+  TailLine* aShocoTail = aHeadLine->aGetTailRel(i_Tail_rel);
   
   i8 nCompressed = aHeadLine->wGetLogical((i_Offset+2),C_1B);
   
@@ -1082,7 +1082,7 @@ void RowInflator::vDecodeVchShocoTail(DtmVal* pDtmVal, HeadLine* aHeadLine,
                                        Column* pCol, i8 i_Offset)
 {
   i8 i_Tail_rel = aHeadLine->wGetLogical(i_Offset,C_2B);
-  TailLine* aShocoTail = aGetTailRel(aHeadLine,i_Tail_rel);
+  TailLine* aShocoTail = aHeadLine->aGetTailRel(i_Tail_rel);
   
   //MemLib::vWordDump(aShocoTail,aShocoTail->nBytes());
   
@@ -1118,7 +1118,7 @@ void RowInflator::vDecodeVchStringTail(DtmVal* pDtmVal, HeadLine* aHeadLine,
                                         Column* pCol, i8 i_Offset)
 {
   i8 i_Tail_rel = aHeadLine->wGetLogical(i_Offset,C_2B);
-  TailLine* aTail_str = aGetTailRel(aHeadLine,i_Tail_rel);
+  TailLine* aTail_str = aHeadLine->aGetTailRel(i_Tail_rel);
   
   //MemLib::vWordDump(aShocoTail,aShocoTail->nBytes());
   

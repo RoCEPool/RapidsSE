@@ -218,6 +218,16 @@ OverLine* HeadLine::aGetOver(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get tail line using relative index [FT]                                    */
+/*----------------------------------------------------------------------------*/
+TailLine* HeadLine::aGetTailRel(i8 i_Tail_rel)
+{
+  TailLine* aTail = RowNub::aGetTail(this,i_Tail_rel);
+  
+  return aTail;
+}
+
+/*----------------------------------------------------------------------------*/
 /* does this head have an overflow?                                           */
 /*----------------------------------------------------------------------------*/
 bool HeadLine::bHasOverflow(void)

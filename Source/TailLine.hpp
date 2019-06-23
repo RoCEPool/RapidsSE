@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Base
+namespace Data
 {
   class TailLine : public Line
   {

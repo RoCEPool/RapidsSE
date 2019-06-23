@@ -155,16 +155,6 @@ void RowCoder::vDteIntoEdt(Dtm wDte,
 }
 
 /*----------------------------------------------------------------------------*/
-/* get tail line using relative index [FT]                                    */
-/*----------------------------------------------------------------------------*/
-TailLine* RowCoder::aGetTailRel(HeadLine* aHeadLine, i8 i_Tail_rel)
-{
-  TailLine* aTail = RowNub::aGetTail(aHeadLine,i_Tail_rel);
-  
-  return aTail;
-}
-
-/*----------------------------------------------------------------------------*/
 /* calc size of the head line for column vector                               */
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::nHeadSize(ColumnVec* pColVec)

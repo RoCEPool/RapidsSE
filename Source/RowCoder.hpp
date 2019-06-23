@@ -33,7 +33,6 @@ namespace Data
     static void vDteFromEdt(Dtm* aDte, i8 iEra);
     static void vDteIntoEdt(Dtm wDte, Dtm& wEdt_, i8& iEra_);
 
-    static TailLine* aGetTailRel(HeadLine* aHeadLine, i8 i_Tail_rel);
     static i8   nHeadSize(ColumnVec* pColVec);
     static bool bIsFit(eMC eMetaCode);
     static i8   nMetaSize(ColumnVec* pColVec);

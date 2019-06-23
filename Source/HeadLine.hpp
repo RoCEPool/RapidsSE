@@ -6,6 +6,7 @@
 namespace Data
 {
   class OverLine;
+  class TailLine;
   
   class HeadLine : public Line
   {
@@ -31,6 +32,7 @@ namespace Data
                       i8& i_PriorColumn_, i8& i_Offset_);
     w8   wGetLogical(i8 i_Offset, i8 nDataSize);
     OverLine* aGetOver(void);
+    TailLine* aGetTailRel(i8 i_Tail_rel);
      bool bHasOverflow(void);
     void vHasOverflow(void);
     bool bIsLargeHead(void);
