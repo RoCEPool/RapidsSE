@@ -990,7 +990,7 @@ void RowInflator::vDecodeVchShocoFit(DtmVal* pDtmVal, HeadLine* aHeadLine,
   i8 nDecompressed =
   Compress::iFromShoco((char*)pDtmVal->m_sVch.aChar(),
                        pDtmVal->m_sVch.nSpace(),
-                       ayAdrLogical(aHeadLine,i_Offset + _1B_C),
+                       aHeadLine->ayAdrLogical(i_Offset + _1B_C),
                        //((byte*)aHeadLine)+i_Offset+1,
                        nCompressed);
   ASSERT(nDecompressed > 0);
@@ -1135,7 +1135,7 @@ void RowInflator::vDecodeVchSmall(DtmVal* pDtmVal, HeadLine* aHeadLine,
   i8 nLength = aHeadLine->wGetLogical(i_Offset,C_1B);
   
   MemLib::vCopy((byte*)pDtmVal->m_sVch.aChar(),
-                (byte*)ayAdrLogical(aHeadLine,i_Offset + 1),
+                (byte*)aHeadLine->ayAdrLogical(i_Offset + 1),
                 nLength,
                 CN_ROWCOMPACTOR);
   

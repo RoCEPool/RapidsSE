@@ -27,8 +27,6 @@ namespace Data
   class RowCoder
   {
   public:
-    static byte* ayAdrLogical(HeadLine* aHeadLine, i8 i_Offset);
-  
     static i8   iBaseOffset(ColumnVec* pColVec);
   
     static i8   nDataBytes(eMC eMetaCode);

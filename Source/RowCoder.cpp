@@ -10,33 +10,6 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get address of a byte from logicalRow : head[+over]                        */
-/*----------------------------------------------------------------------------*/
-byte* RowCoder::ayAdrLogical(HeadLine* aLogicalRow, i8 i_Offset)
-{
-  HeadLine* aHeadLine = aLogicalRow;
-  
-  // scenario 1: simple case (no overflow), getting address from head
-  if (! aHeadLine->bHasOverflow()) {
-    byte* ayAdr = (byte*)aHeadLine + i_Offset;
-    return ayAdr;
-  }
-  
-  // scenario 2: there is an overflow, but getting address from head
-  i8 nHeadBytes = aLogicalRow->nBytes();
-  if (i_Offset < nHeadBytes - 2) {
-    byte* ayAdr = (byte*)aHeadLine + i_Offset;
-    return ayAdr;
-  }
-  
-  // scenario 3: there is an overflow, and getting address from overflow
-  OverLine* aOverLine = aGetOver(aHeadLine);
-  i8 i_Offset_over = i_Offset - nHeadBytes;
-  byte* ayAdr = (byte*)aOverLine + i_Offset_over;
-  return ayAdr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* calc base offset for column vector                                         */
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::iBaseOffset(ColumnVec* pColVec)
@@ -337,7 +310,7 @@ byte* RowCoder::ayShoco(HeadLine* aHeadLine, i8 i_BaseOffset,
     return nullptr;
   
   // get address of <C><shoco...>
-  byte* ayAddress = ayAdrLogical(aHeadLine,i_LastOffset);
+  byte* ayAddress = aHeadLine->ayAdrLogical(i_LastOffset);
   
   return ayAddress;
 }

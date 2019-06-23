@@ -74,6 +74,31 @@ i8 HeadLine::nWords(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get address of a byte from logicalRow : head[+over]                        */
+/*----------------------------------------------------------------------------*/
+byte* HeadLine::ayAdrLogical(i8 i_Offset)
+{
+  // scenario 1: simple case (no overflow), getting address from head
+  if (! bHasOverflow()) {
+    byte* ayAdr = (byte*)this + i_Offset;
+    return ayAdr;
+  }
+  
+  // scenario 2: there is an overflow, but getting address from head
+  i8 nHeadBytes = nBytes();
+  if (i_Offset < nHeadBytes - 2) {
+    byte* ayAdr = (byte*)this + i_Offset;
+    return ayAdr;
+  }
+  
+  // scenario 3: there is an overflow, and getting address from overflow
+  OverLine* aOverLine = RowCoder::aGetOver(this);
+  i8 i_Offset_over = i_Offset - nHeadBytes;
+  byte* ayAdr = (byte*)aOverLine + i_Offset_over;
+  return ayAdr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* calculate free space of a head line                                        */
 /*----------------------------------------------------------------------------*/
 i8 HeadLine::nFreeSpace(ColumnVec* pColVec)
@@ -372,7 +397,7 @@ void HeadLine::vDumpHead(Stz* szTitle,
       eMetaCode  = (eMC)aOverLine->w8_1B(1);
       szMetaCode = aMC[eMetaCode];
       i_Offset   = nHeadBytes + 2;
-      ayAddr     = RowCoder::ayAdrLogical(aHeadLine,i_Offset);
+      ayAddr     = aHeadLine->ayAdrLogical(i_Offset);
       nBytes     = RowCoder::nDataBytes(eMetaCode);
       //vTrace("--- --------------- --- -- ------------------- "
       //       "-- ------------ -- ---------------- -----------\n"_Stz);
@@ -380,7 +405,7 @@ void HeadLine::vDumpHead(Stz* szTitle,
              "** ************ ** **************** **********************\n"_Stz);
     }
     else {
-      ayAddr = RowCoder::ayAdrLogical(aHeadLine,i_Offset);
+      ayAddr = aHeadLine->ayAdrLogical(i_Offset);
       nBytes = RowCoder::nDataBytes(eMetaCode);
     }
     if (MC_STR_FIT_1L == eMetaCode) {
