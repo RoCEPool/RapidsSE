@@ -53,30 +53,40 @@ i8 FreqDist::nBuckets(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get a bucket at index                                                      */
+/*----------------------------------------------------------------------------*/
+i8 FreqDist::iBucket(i8 i_Index)
+{
+  return m_nBucket[i_Index];
+}
+
+/*----------------------------------------------------------------------------*/
 /* get a bucket distribution value                                            */
 /*----------------------------------------------------------------------------*/
 i8 FreqDist::iDist(i8 i_Bucket)
 {
-  for (i8 i_Index = 0; i_Index < m_nBuckets; i_Index++)
-    if (m_nBucket[i_Index]  == i_Bucket)
-      return m_nDist[i_Index];
-  
-  return C_UNKNOWN;
+  return m_nDist[i_Bucket];
 }
 
 /*----------------------------------------------------------------------------*/
 /* init the frequency distribution classes                                    */
 /*----------------------------------------------------------------------------*/
-void FreqDist::vInit(i8 nBuckets, ...)
+void FreqDist::vInit(i8 i_Bucket, ...)
 {
   va_list args;
 
-  va_start(args,nBuckets);
+  i8 i_Index = 0;
+  va_start(args,i_Bucket);
   
-  m_nBuckets = nBuckets;
-  for (i8 i_Index = 0; i_Index < nBuckets; i_Index++)
-    m_nBucket[i_Index] = va_arg(args, int);
-          
+  while (i_Bucket != -1) {
+    m_nBucket[i_Index++] = i_Bucket;
+    i_Bucket = va_arg(args, int);
+  }
+  
+  // add a lst one which will accumulate the r values
+  m_nBucket[i_Index++] = INT_MAX;
+  m_nBuckets = i_Index;
+  
   va_end(args);
 }
 
