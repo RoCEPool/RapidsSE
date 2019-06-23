@@ -155,52 +155,6 @@ void RowCoder::vDteIntoEdt(Dtm wDte,
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the encoding (and offset) of a column datum                            */
-/*----------------------------------------------------------------------------*/
-eMC RowCoder::eGetEncoding(HeadLine* aHeadLine, Column* pCol,
-                           i8 i_BaseOffset,
-                           i8& i_PriorColumn_, i8& i_Offset_)
-{
-  i8 i_ForCol = pCol->iColumnNo();
-  
-  if (i_ForCol < i_PriorColumn_) {
-    i_PriorColumn_ = 0;
-    i_Offset_ = i_BaseOffset;
-  }
-  
-  for (i8 i_Col = i_PriorColumn_; i_Col < i_ForCol; i_Col++) {
-    
-    eMC eEncoding = aHeadLine->eMetaCode(i_Col);
-    
-    if (MC_OVERFLOW_2T == eEncoding) {
-      i_Offset_ = aHeadLine->nBytes() + C_U_1B;
-      eEncoding = (eMC)aHeadLine->wGetLogical(i_Offset_++,C_1B);
-      i_Offset_ += nDataBytes(eEncoding);
-    }
-    else {
-      i_Offset_ += nDataBytes(eEncoding);
-    }
-    
-    if (MC_STR_FIT_1L == eEncoding) {
-      i_Offset_ += aHeadLine->wGetLogical((i_Offset_ - 1),C_1B);
-    }
-    else if (MC_SHOCO_FIT_1C == eEncoding) {
-      i_Offset_ += aHeadLine->wGetLogical((i_Offset_ - 1),C_1B);
-    }
-  }
-  
-  eMC eEncoding = aHeadLine->eMetaCode(i_ForCol);
-  if (MC_OVERFLOW_2T == eEncoding) {
-    i_Offset_ = aHeadLine->nBytes() + C_U_1B + _1B_M;
-    OverLine* aOverLine = aGetOver(aHeadLine);
-    eEncoding = (eMC)aOverLine->w8_1B(1);
-  }
-  i_PriorColumn_ = i_ForCol;
-  
-  return eEncoding;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get overflow line using relative index [OT]                                */
 /*----------------------------------------------------------------------------*/
 OverLine* RowCoder::aGetOver(HeadLine* aHeadLine)
@@ -298,13 +252,13 @@ i8 RowCoder::nMetaSize(ColumnVec* pColVec)
 /* get address of given shoco column from head line                           */
 /*----------------------------------------------------------------------------*/
 byte* RowCoder::ayShoco(HeadLine* aHeadLine, i8 i_BaseOffset,
-                        ColumnVec* pColVec, Column* pCol)
+                        ColumnVec* pColVec, Column* pCol) //! pColVec not needed
 {
   i8 i_LastOffset = i_BaseOffset;
   i8 i_LastColumn = 0;
   
-  eMC eEncoding = eGetEncoding(aHeadLine,pCol,i_BaseOffset,
-                               i_LastColumn,i_LastOffset);
+  eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffset,
+                                          i_LastColumn,i_LastOffset);
   
   if (MC_SHOCO_FIT_1C != eEncoding)
     return nullptr;

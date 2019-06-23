@@ -598,7 +598,7 @@ void RowInflator::vDecodeBcd(DtmVal* pDtmVal, HeadLine* aHeadLine,
 
   pDtmVal->m_eDatum = DM_BCD;
 
-  eMC eEncoding = eGetEncoding(aHeadLine,pCol,i_BaseOffset,
+  eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffset,
                                i_LastColumn,i_Offset);
   switch (eEncoding) {
       
@@ -637,7 +637,7 @@ void RowInflator::vDecodeBol(DtmVal* pDtmVal, HeadLine* aHeadLine,Column* pCol)
 {
   pDtmVal->m_eDatum = DM_BOL;
   
-  //eMC eEncoding = eGetEncoding(aHeadLine,pCol,pColVec,i_LastColumn,i_Offset);
+  //eMC eEncoding = aHeadLine->eGetEncoding(pCol,pColVec,i_LastColumn,i_Offset);
   
   i8 i_Column = pCol->iColumnNo();
   eMC eEncoding = aHeadLine->eMetaCode(i_Column);
@@ -675,7 +675,7 @@ void RowInflator::vDecodeDte(DtmVal* pDtmVal, HeadLine* aHeadLine,
   i8 iEra = C_ERA_0;
   
   //!! needs more work
-  eMC eThisEncoding = eGetEncoding(aHeadLine,pCol,i_BaseOffset,
+  eMC eThisEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffset,
                                    i_LastColumn,i_Offset);
   
   if (eThisEncoding == MC_DAYS_ADD_1B || eThisEncoding == MC_DAYS_SUB_1B) {
@@ -723,7 +723,7 @@ void RowInflator::vDecodeFlt(DtmVal* pDtmVal, HeadLine* aHeadLine,
   
   pDtmVal->m_eDatum = DM_FLT;
   
-  eMC eEncoding = eGetEncoding(aHeadLine,pCol,i_BaseOffset,
+  eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffset,
                                i_LastColumn,i_Offset);
   switch (eEncoding) {
       
@@ -753,7 +753,7 @@ void RowInflator::vDecodeInt(DtmVal* pDtmVal, HeadLine* aHeadLine,
   
   pDtmVal->m_eDatum = DM_INT;
   
-  eMC eEncoding = eGetEncoding(aHeadLine,pCol,i_BaseOffset,
+  eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffset,
                                i_LastColumn,i_Offset);
   //vTrace("Decoding %lld\n"_Stz, eEncoding);
   
@@ -798,7 +798,7 @@ void RowInflator::vDecodeIvl(DtmVal* pDtmVal, HeadLine* aHeadLine,
   
   pDtmVal->m_eDatum = DM_IVL;
   
-  eMC eEncoding = eGetEncoding(aHeadLine,pCol,i_BaseOffset,
+  eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffset,
                                i_LastColumn,i_Offset);
   switch (eEncoding) {
       
@@ -828,7 +828,7 @@ void RowInflator::vDecodeTme(DtmVal* pDtmVal, HeadLine* aHeadLine,
   
   pDtmVal->m_eDatum = DM_TME;
   
-  eMC eEncoding = eGetEncoding(aHeadLine,pCol,i_BaseOffset,
+  eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffset,
                                i_LastColumn,i_Offset);
   switch (eEncoding) {
       
@@ -861,7 +861,7 @@ void RowInflator::vDecodeTsp(DtmVal* pDtmVal, HeadLine* aHeadLine,
   
   pDtmVal->m_eDatum = DM_TSP;
   
-  eMC eEncoding = eGetEncoding(aHeadLine,pCol,i_BaseOffset,
+  eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffset,
                                i_LastColumn,i_Offset);
   switch (eEncoding) {
       
@@ -896,7 +896,7 @@ void RowInflator::vDecodeVch(DtmVal* pDtmVal, HeadLine* aHeadLine,
   pDtmVal->m_eDatum = DM_VCH;
   
   //! needs more work
-  eMC eEncoding = eGetEncoding(aHeadLine,pCol,i_BaseOffset,
+  eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffset,
                                i_LastColumn,i_Offset);
   
   if (MC_NULL == eEncoding) {

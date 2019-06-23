@@ -112,8 +112,8 @@ i8 HeadLine::nFreeSpace(ColumnVec* pColVec)
   i8 i_Offset = i_BaseOffset;
   i8 i_LastColumn = 0;
   
-  eMC eLastEncoding = RowCoder::eGetEncoding(this,pLastCol,i_BaseOffset,
-                                         i_LastColumn,i_Offset);
+  eMC eLastEncoding = eGetEncoding(pLastCol,i_BaseOffset,
+                                   i_LastColumn,i_Offset);
   
   if (pLastCol->eDatumType() == DM_VCH && MC_SHOCO_SPLIT_2T1C == eLastEncoding)
     return 0;
@@ -132,6 +132,51 @@ i8 HeadLine::nFreeSpace(ColumnVec* pColVec)
     vDebugPoint();
   
   return nFreeBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the encoding (and offset) of a column datum                            */
+/*----------------------------------------------------------------------------*/
+eMC HeadLine::eGetEncoding(Column* pCol, i8 i_BaseOffset,
+                           i8& i_PriorColumn_, i8& i_Offset_)
+{
+  i8 i_ForCol = pCol->iColumnNo();
+  
+  if (i_ForCol < i_PriorColumn_) {
+    i_PriorColumn_ = 0;
+    i_Offset_ = i_BaseOffset;
+  }
+  
+  for (i8 i_Col = i_PriorColumn_; i_Col < i_ForCol; i_Col++) {
+    
+    eMC eEncoding = eMetaCode(i_Col);
+    
+    if (MC_OVERFLOW_2T == eEncoding) {
+      i_Offset_ = nBytes() + C_U_1B;
+      eEncoding = (eMC)wGetLogical(i_Offset_++,C_1B);
+      i_Offset_ += RowCoder::nDataBytes(eEncoding);
+    }
+    else {
+      i_Offset_ += RowCoder::nDataBytes(eEncoding);
+    }
+    
+    if (MC_STR_FIT_1L == eEncoding) {
+      i_Offset_ += wGetLogical((i_Offset_ - 1),C_1B);
+    }
+    else if (MC_SHOCO_FIT_1C == eEncoding) {
+      i_Offset_ += wGetLogical((i_Offset_ - 1),C_1B);
+    }
+  }
+  
+  eMC eEncoding = eMetaCode(i_ForCol);
+  if (MC_OVERFLOW_2T == eEncoding) {
+    i_Offset_ = nBytes() + C_U_1B + _1B_M;
+    OverLine* aOverLine = RowCoder::aGetOver(this);
+    eEncoding = (eMC)aOverLine->w8_1B(1);
+  }
+  i_PriorColumn_ = i_ForCol;
+  
+  return eEncoding;
 }
 
 /*----------------------------------------------------------------------------*/
