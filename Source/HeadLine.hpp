@@ -25,6 +25,7 @@ namespace Data
     i8   nUnits(void);
     i8   nWords(void);
 
+    w8   wGetLogical(i8 i_Offset, i8 nDataSize);
     bool bHasOverflow(void);
     void vHasOverflow(void);
     bool bIsLargeHead(void);

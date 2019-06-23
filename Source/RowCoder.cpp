@@ -201,7 +201,7 @@ i8 RowCoder::nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec)
     return 0;
   
   if (pLastCol->eDatumType() == DM_VCH && MC_SHOCO_FIT_1C == eEncoding) {
-    i8 nCompressed = wGetLogical(aHeadLine,i_Offset,C_1B);
+    i8 nCompressed = aHeadLine->wGetLogical(i_Offset,C_1B);
     //RASSERT(nCompressed <= 56);
     i_Offset += nCompressed;
   }
@@ -236,7 +236,7 @@ eMC RowCoder::eGetEncoding(HeadLine* aHeadLine, Column* pCol,
     
     if (MC_OVERFLOW_2T == eEncoding) {
       i_Offset_ = aHeadLine->nBytes() + C_U_1B;
-      eEncoding = (eMC)wGetLogical(aHeadLine,i_Offset_++,C_1B);
+      eEncoding = (eMC)aHeadLine->wGetLogical(i_Offset_++,C_1B);
       i_Offset_ += nDataBytes(eEncoding);
     }
     else {
@@ -244,10 +244,10 @@ eMC RowCoder::eGetEncoding(HeadLine* aHeadLine, Column* pCol,
     }
     
     if (MC_STR_FIT_1L == eEncoding) {
-      i_Offset_ += wGetLogical(aHeadLine,(i_Offset_ - 1),C_1B);
+      i_Offset_ += aHeadLine->wGetLogical((i_Offset_ - 1),C_1B);
     }
     else if (MC_SHOCO_FIT_1C == eEncoding) {
-      i_Offset_ += wGetLogical(aHeadLine,(i_Offset_ - 1),C_1B);
+      i_Offset_ += aHeadLine->wGetLogical((i_Offset_ - 1),C_1B);
     }
   }
   
@@ -260,34 +260,6 @@ eMC RowCoder::eGetEncoding(HeadLine* aHeadLine, Column* pCol,
   i_PriorColumn_ = i_ForCol;
   
   return eEncoding;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get data code from logicalRow : head[+over]                                */
-/*----------------------------------------------------------------------------*/
-w8 RowCoder::wGetLogical(HeadLine* aLogicalRow, i8 i_Offset, i8 nDataSize)
-{
-  HeadLine* aHeadLine = aLogicalRow;
-  w8 wDataCode = 0;
-  
-  // scenario 1: simple case (no overflow), getting bytes from head
-  if (! aHeadLine->bHasOverflow()) {
-    wDataCode = aHeadLine->wGet(i_Offset,nDataSize);
-    return wDataCode;
-  }
-  
-  // scenario 2: there is an overflow, but getting bytes from head
-  i8 nHeadBytes = aLogicalRow->nBytes();
-  if (i_Offset < nHeadBytes - 2) {
-    wDataCode = aHeadLine->wGet(i_Offset,nDataSize);
-    return wDataCode;
-  }
-  
-  // scenario 3: there is an overflow, and getting bytes from overflow
-  OverLine* aOverLine = aGetOver(aHeadLine);
-  i8 i_Offset_over = i_Offset - nHeadBytes;
-  wDataCode = aOverLine->wGet(i_Offset_over,nDataSize);
-  return wDataCode;
 }
 
 /*----------------------------------------------------------------------------*/

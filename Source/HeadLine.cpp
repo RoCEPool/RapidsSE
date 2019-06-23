@@ -71,6 +71,36 @@ i8 HeadLine::nWords(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get data code from logical row : head[+over]                               */
+/*----------------------------------------------------------------------------*/
+w8 HeadLine::wGetLogical(i8 i_Offset, i8 nDataSize)
+{
+  w8 wDataCode = 0;
+  
+  // scenario 1: simple case (no overflow), getting bytes from head
+  if (! bHasOverflow()) {
+    wDataCode = wGet(i_Offset,nDataSize);
+    return wDataCode;
+  }
+  
+  // scenario 2: there is an overflow, but getting bytes from head
+  i8 nHeadBytes = nBytes();
+  if (i_Offset < nHeadBytes - 2) {
+    wDataCode = wGet(i_Offset,nDataSize);
+    return wDataCode;
+  }
+  
+  // scenario 3: there is an overflow, and getting bytes from overflow
+  OverLine* aOverLine = RowCoder::aGetOver(this);
+  i8 i_Offset_over = i_Offset - nHeadBytes;
+  wDataCode = aOverLine->wGet(i_Offset_over,nDataSize);
+  return wDataCode;
+}
+
+/*----------------------------------------------------------------------------*/
 /* does this head have an overflow?                                           */
 /*----------------------------------------------------------------------------*/
 bool HeadLine::bHasOverflow(void)
@@ -132,7 +162,7 @@ void HeadLine::vOverflow2B(i8 iOver2B)
 }
 
 /*----------------------------------------------------------------------------*/
-/* put data code into logicalRow : head[+over]                                */
+/* put data code into logical row : head[+over]                               */
 /*----------------------------------------------------------------------------*/
 void HeadLine::vPutLogical(i8 i_Offset, w8 wDataCode, i8 nDataSize)
 {
@@ -320,11 +350,11 @@ void HeadLine::vDumpHead(Stz* szTitle,
     }
     if (MC_STR_FIT_1L == eMetaCode) {
       RASSERT(1 == nBytes);
-      nBytes += RowCoder::wGetLogical(aHeadLine,i_Offset,C_1B);
+      nBytes += aHeadLine->wGetLogical(i_Offset,C_1B);
     }
     if (MC_SHOCO_FIT_1C == eMetaCode) {
       RASSERT(1 == nBytes);
-      nBytes += RowCoder::wGetLogical(aHeadLine,i_Offset,C_1B);
+      nBytes += aHeadLine->wGetLogical(i_Offset,C_1B);
     }
     
     //      colNo colNm Dtm  MC   aMC   Ofset Addr   Bytes
@@ -347,7 +377,7 @@ void HeadLine::vDumpHead(Stz* szTitle,
       }
       else
         for (i8 i_Byte = 0; i_Byte < nBytes; i_Byte++)
-          vTrace("%02x"_Stz,RowCoder::wGetLogical(aHeadLine,(i_Offset+i_Byte),C_1B));
+          vTrace("%02x"_Stz,aHeadLine->wGetLogical((i_Offset+i_Byte),C_1B));
     }
     
     for (i8 i_Byte = nBytes; i_Byte < 8; i_Byte++)
@@ -363,20 +393,20 @@ void HeadLine::vDumpHead(Stz* szTitle,
     vTrace("%s"_Stz,hvRec->szRecStr());
     
     if (MC_SHOCO_SPLIT_2T1C == eMetaCode) {
-      i8 i2T = RowCoder::wGetLogical(aHeadLine,i_Offset,C_2B);
-      i8 i1C = RowCoder::wGetLogical(aHeadLine,(i_Offset+2),C_1B);
+      i8 i2T = aHeadLine->wGetLogical(i_Offset,C_2B);
+      i8 i1C = aHeadLine->wGetLogical((i_Offset+2),C_1B);
       vTrace(" [ =%lld.%lld ]"_Stz,i2T,i1C);
     }
     else if (MC_SHOCO_FIT_1C == eMetaCode) {
-      i8 i1C = RowCoder::wGetLogical(aHeadLine,i_Offset,C_1B);
+      i8 i1C = aHeadLine->wGetLogical(i_Offset,C_1B);
       vTrace(" [ =%lld ]"_Stz,i1C);
     }
     else if (MC_STR_FIT_1L == eMetaCode) {
-      i8 i1C = RowCoder::wGetLogical(aHeadLine,i_Offset,C_1B);
+      i8 i1C = aHeadLine->wGetLogical(i_Offset,C_1B);
       vTrace(" [ =%lld ]"_Stz,i1C);
     }
     else {
-      i8 iDataValue = RowCoder::wGetLogical(aHeadLine,i_Offset,nBytes);
+      i8 iDataValue = aHeadLine->wGetLogical(i_Offset,nBytes);
       if (nBytes)
         vTrace(" [ =%lld ]"_Stz,iDataValue);
       else

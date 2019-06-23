@@ -41,8 +41,7 @@ namespace Data
                               ColumnVec* pColVec,
                               i8& i_PriorColumn_, i8& i_Offset_);
 
-    static w8   wGetLogical(HeadLine* aHeadLine, i8 i_Offset, i8 nDataSize);
-    static OverLine* aGetOver(HeadLine* aHeadLine);
+     static OverLine* aGetOver(HeadLine* aHeadLine);
     static OverLine* aGetOverRel(HeadLine* aHeadLine, i8 i_Over_rel);
     static TailLine* aGetTailRel(HeadLine* aHeadLine, i8 i_Tail_rel);
     static i8   nHeadSize(ColumnVec* pColVec);

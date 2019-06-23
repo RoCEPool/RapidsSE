@@ -601,14 +601,14 @@ void RowInflator::vDecodeBcd(DtmVal* pDtmVal, HeadLine* aHeadLine,
   switch (eEncoding) {
       
     case MC_NULL: pDtmVal->m_wDtm.m_iInt = C_DATUM_NULL;               break;
-    case MC_1B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_1B); break;
-    case MC_2B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_2B); break;
-    case MC_3B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_3B); break;
-    case MC_4B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_4B); break;
-    case MC_5B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_5B); break;
-    case MC_6B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_6B); break;
-    case MC_7B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_7B); break;
-    case MC_8B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_8B); break;
+    case MC_1B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_1B); break;
+    case MC_2B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_2B); break;
+    case MC_3B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_3B); break;
+    case MC_4B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_4B); break;
+    case MC_5B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_5B); break;
+    case MC_6B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_6B); break;
+    case MC_7B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_7B); break;
+    case MC_8B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_8B); break;
       
     case MC_MINUS_ONE: pDtmVal->m_wDtm.m_iInt = (i8)-1;                break;
     case MC_ZERO:      pDtmVal->m_wDtm.m_iInt = (i8)0;                 break;
@@ -684,15 +684,15 @@ void RowInflator::vDecodeDte(DtmVal* pDtmVal, HeadLine* aHeadLine,
       pDtmVal->m_wDtm.m_iInt = C_DATUM_NULL;
       return;
     case MC_DATE_E0_2B:
-      pDtmVal->m_wDtm.m_iDte = wGetLogical(aHeadLine,i_Offset,C_2B);
+      pDtmVal->m_wDtm.m_iDte = aHeadLine->wGetLogical(i_Offset,C_2B);
       iEra = C_ERA_0;
       break;
     case MC_DATE_E1_2B:
-      pDtmVal->m_wDtm.m_iDte = wGetLogical(aHeadLine,i_Offset,C_2B);
+      pDtmVal->m_wDtm.m_iDte = aHeadLine->wGetLogical(i_Offset,C_2B);
       iEra = C_ERA_1;
       break;
     case MC_DATE_E2_2B:
-      pDtmVal->m_wDtm.m_iDte = wGetLogical(aHeadLine,i_Offset,C_2B);
+      pDtmVal->m_wDtm.m_iDte = aHeadLine->wGetLogical(i_Offset,C_2B);
       iEra = C_ERA_2;
       break;
     default:
@@ -720,14 +720,14 @@ void RowInflator::vDecodeFlt(DtmVal* pDtmVal, HeadLine* aHeadLine,
   switch (eEncoding) {
       
     case MC_NULL: pDtmVal->m_wDtm.m_iInt = C_DATUM_NULL;               break;
-    case MC_1B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_1B); break;
-    case MC_2B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_2B); break;
-    case MC_3B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_3B); break;
-    case MC_4B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_4B); break;
-    case MC_5B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_5B); break;
-    case MC_6B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_6B); break;
-    case MC_7B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_7B); break;
-    case MC_8B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_8B); break;
+    case MC_1B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_1B); break;
+    case MC_2B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_2B); break;
+    case MC_3B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_3B); break;
+    case MC_4B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_4B); break;
+    case MC_5B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_5B); break;
+    case MC_6B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_6B); break;
+    case MC_7B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_7B); break;
+    case MC_8B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_8B); break;
       
     default:
       NEVER_REACH;
@@ -749,14 +749,14 @@ void RowInflator::vDecodeInt(DtmVal* pDtmVal, HeadLine* aHeadLine,
   switch (eEncoding) {
       
     case MC_NULL: pDtmVal->m_wDtm.m_iInt = C_DATUM_NULL;               break;
-    case MC_1B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_1B); break;
-    case MC_2B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_2B); break;
-    case MC_3B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_3B); break;
-    case MC_4B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_4B); break;
-    case MC_5B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_5B); break;
-    case MC_6B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_6B); break;
-    case MC_7B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_7B); break;
-    case MC_8B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_8B); break;
+    case MC_1B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_1B); break;
+    case MC_2B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_2B); break;
+    case MC_3B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_3B); break;
+    case MC_4B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_4B); break;
+    case MC_5B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_5B); break;
+    case MC_6B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_6B); break;
+    case MC_7B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_7B); break;
+    case MC_8B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_8B); break;
       
     case MC_MINUS_ONE: pDtmVal->m_wDtm.m_iInt = (i8)-1;                break;
     case MC_ZERO:      pDtmVal->m_wDtm.m_iInt = (i8)0;                 break;
@@ -789,14 +789,14 @@ void RowInflator::vDecodeIvl(DtmVal* pDtmVal, HeadLine* aHeadLine,
   switch (eEncoding) {
       
     case MC_NULL: pDtmVal->m_wDtm.m_iInt = C_DATUM_NULL;               break;
-    case MC_1B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_1B); break;
-    case MC_2B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_2B); break;
-    case MC_3B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_3B); break;
-    case MC_4B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_4B); break;
-    case MC_5B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_5B); break;
-    case MC_6B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_6B); break;
-    case MC_7B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_7B); break;
-    case MC_8B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_8B); break;
+    case MC_1B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_1B); break;
+    case MC_2B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_2B); break;
+    case MC_3B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_3B); break;
+    case MC_4B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_4B); break;
+    case MC_5B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_5B); break;
+    case MC_6B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_6B); break;
+    case MC_7B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_7B); break;
+    case MC_8B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_8B); break;
       
     default:
       NEVER_REACH;
@@ -816,14 +816,14 @@ void RowInflator::vDecodeTme(DtmVal* pDtmVal, HeadLine* aHeadLine,
   switch (eEncoding) {
       
     case MC_NULL: pDtmVal->m_wDtm.m_iInt = C_DATUM_NULL;               break;
-    case MC_1B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_1B); break;
-    case MC_2B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_2B); break;
-    case MC_3B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_3B); break;
-    case MC_4B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_4B); break;
-    case MC_5B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_5B); break;
-    case MC_6B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_6B); break;
-    case MC_7B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_7B); break;
-    case MC_8B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_8B); break;
+    case MC_1B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_1B); break;
+    case MC_2B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_2B); break;
+    case MC_3B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_3B); break;
+    case MC_4B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_4B); break;
+    case MC_5B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_5B); break;
+    case MC_6B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_6B); break;
+    case MC_7B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_7B); break;
+    case MC_8B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_8B); break;
       
     default:
       NEVER_REACH;
@@ -846,14 +846,14 @@ void RowInflator::vDecodeTsp(DtmVal* pDtmVal, HeadLine* aHeadLine,
   switch (eEncoding) {
       
     case MC_NULL: pDtmVal->m_wDtm.m_iInt = C_DATUM_NULL;                         break;
-    case MC_1B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_1B); break;
-    case MC_2B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_2B); break;
-    case MC_3B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_3B); break;
-    case MC_4B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_4B); break;
-    case MC_5B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_5B); break;
-    case MC_6B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_6B); break;
-    case MC_7B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_7B); break;
-    case MC_8B:   pDtmVal->m_wDtm.m_iInt = wGetLogical(aHeadLine,i_Offset,C_8B); break;
+    case MC_1B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_1B); break;
+    case MC_2B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_2B); break;
+    case MC_3B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_3B); break;
+    case MC_4B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_4B); break;
+    case MC_5B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_5B); break;
+    case MC_6B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_6B); break;
+    case MC_7B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_7B); break;
+    case MC_8B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_Offset,C_8B); break;
       
     default:
       NEVER_REACH;
@@ -946,7 +946,7 @@ void RowInflator::vDecodeVchShocoDup(DtmVal* pDtmVal, HeadLine* aHeadLine,
    
    */
   
-  i8 i_Dsr = wGetLogical(aHeadLine,i_Offset,_3B_DSR);
+  i8 i_Dsr = aHeadLine->wGetLogical(i_Offset,_3B_DSR);
   
   byte* ayC_Shoco = aAdd<byte*>(aHeadLine,( + i_Dsr )); //! WARNING
   
@@ -984,7 +984,7 @@ void RowInflator::vDecodeVchShocoFit(DtmVal* pDtmVal, HeadLine* aHeadLine,
    <shoco...> being the shoco compressed bytes
    */
   
-  i8 nCompressed = wGetLogical(aHeadLine,i_Offset,_1B_C);
+  i8 nCompressed = aHeadLine->wGetLogical(i_Offset,_1B_C);
   //RASSERT(nCompressed <= 56);
   
   i8 nDecompressed =
@@ -1025,10 +1025,10 @@ void RowInflator::vDecodeVchShocoSplit(DtmVal* pDtmVal, HeadLine* aHeadLine,
   
   byte caShoco[C_4KB];
   
-  i8 i_Tail_rel = wGetLogical(aHeadLine,i_Offset,C_2B);
+  i8 i_Tail_rel = aHeadLine->wGetLogical(i_Offset,C_2B);
   TailLine* aShocoTail = aGetTailRel(aHeadLine,i_Tail_rel);
   
-  i8 nCompressed = wGetLogical(aHeadLine,(i_Offset+2),C_1B);
+  i8 nCompressed = aHeadLine->wGetLogical((i_Offset+2),C_1B);
   
   i8 nBytesPartA = aHeadLine->nBytes() - i_Offset - 3;                           //! <W>
   i8 nBytesPartB = nCompressed - nBytesPartA;
@@ -1059,7 +1059,7 @@ void RowInflator::vDecodeVchShocoSplit(DtmVal* pDtmVal, HeadLine* aHeadLine,
 void RowInflator::vDecodeVchShocoTail(DtmVal* pDtmVal, HeadLine* aHeadLine,
                                        Column* pCol, i8 i_Offset)
 {
-  i8 i_Tail_rel = wGetLogical(aHeadLine,i_Offset,C_2B);
+  i8 i_Tail_rel = aHeadLine->wGetLogical(i_Offset,C_2B);
   TailLine* aShocoTail = aGetTailRel(aHeadLine,i_Tail_rel);
   
   //MemLib::vWordDump(aShocoTail,aShocoTail->nBytes());
@@ -1095,7 +1095,7 @@ void RowInflator::vDecodeVchShocoTail(DtmVal* pDtmVal, HeadLine* aHeadLine,
 void RowInflator::vDecodeVchStringTail(DtmVal* pDtmVal, HeadLine* aHeadLine,
                                         Column* pCol, i8 i_Offset)
 {
-  i8 i_Tail_rel = wGetLogical(aHeadLine,i_Offset,C_2B);
+  i8 i_Tail_rel = aHeadLine->wGetLogical(i_Offset,C_2B);
   TailLine* aTail_str = aGetTailRel(aHeadLine,i_Tail_rel);
   
   //MemLib::vWordDump(aShocoTail,aShocoTail->nBytes());
@@ -1132,7 +1132,7 @@ void RowInflator::vDecodeVchSmall(DtmVal* pDtmVal, HeadLine* aHeadLine,
 {
   vDebugPoint();
   
-  i8 nLength = wGetLogical(aHeadLine,i_Offset,C_1B);
+  i8 nLength = aHeadLine->wGetLogical(i_Offset,C_1B);
   
   MemLib::vCopy((byte*)pDtmVal->m_sVch.aChar(),
                 (byte*)ayAdrLogical(aHeadLine,i_Offset + 1),
