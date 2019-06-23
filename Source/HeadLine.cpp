@@ -314,6 +314,27 @@ void HeadLine::vPutLogical(i8 i_Offset, w8 wDataCode, i8 nDataSize)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get address of given shoco column from head line                           */
+/*----------------------------------------------------------------------------*/
+byte* HeadLine::ayShoco(i8 i_BaseOffset,
+                        ColumnVec* pColVec, Column* pCol) //! pColVec not needed
+{
+  i8 i_LastOffset = i_BaseOffset;
+  i8 i_LastColumn = 0;
+  
+  eMC eEncoding = eGetEncoding(pCol,i_BaseOffset,
+                               i_LastColumn,i_LastOffset);
+  
+  if (MC_SHOCO_FIT_1C != eEncoding)
+    return nullptr;
+  
+  // get address of <C><shoco...>
+  byte* ayAddress = ayAdrLogical(i_LastOffset);
+  
+  return ayAddress;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the size <W> of this headline in words                                 */
 /*----------------------------------------------------------------------------*/
 i8 HeadLine::iW(void)

@@ -28,16 +28,12 @@ namespace Data
   {
   public:
     static i8   iBaseOffset(ColumnVec* pColVec);
-  
     static i8   nDataBytes(eMC eMetaCode);
     static void vDteFromEdt(Dtm* aDte, i8 iEra);
     static void vDteIntoEdt(Dtm wDte, Dtm& wEdt_, i8& iEra_);
-
     static i8   nHeadSize(ColumnVec* pColVec);
     static bool bIsFit(eMC eMetaCode);
     static i8   nMetaSize(ColumnVec* pColVec);
-    static byte* ayShoco(HeadLine* aHeadLine, i8 iBaseOffset,
-                         ColumnVec* pColVec, Column* pCol);
   };
 }
 

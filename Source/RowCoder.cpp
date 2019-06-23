@@ -217,26 +217,6 @@ i8 RowCoder::nMetaSize(ColumnVec* pColVec)
   return nMetaBytes;
 }
 
-/*----------------------------------------------------------------------------*/
-/* get address of given shoco column from head line                           */
-/*----------------------------------------------------------------------------*/
-byte* RowCoder::ayShoco(HeadLine* aHeadLine, i8 i_BaseOffset,
-                        ColumnVec* pColVec, Column* pCol) //! pColVec not needed
-{
-  i8 i_LastOffset = i_BaseOffset;
-  i8 i_LastColumn = 0;
-  
-  eMC eEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffset,
-                                          i_LastColumn,i_LastOffset);
-  
-  if (MC_SHOCO_FIT_1C != eEncoding)
-    return nullptr;
-  
-  // get address of <C><shoco...>
-  byte* ayAddress = aHeadLine->ayAdrLogical(i_LastOffset);
-  
-  return ayAddress;
-}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
