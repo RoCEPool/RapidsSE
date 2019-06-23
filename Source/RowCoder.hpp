@@ -34,10 +34,10 @@ namespace Data
     static void vDteIntoEdt(Dtm wDte, Dtm& wEdt_, i8& iEra_);
 
     static eMC  eGetEncoding(HeadLine* aHeadLine, Column* pCol,
-                              ColumnVec* pColVec,
+                              i8 i_BaseOffset,
                               i8& i_PriorColumn_, i8& i_Offset_);
 
-     static OverLine* aGetOver(HeadLine* aHeadLine);
+    static OverLine* aGetOver(HeadLine* aHeadLine);
     static OverLine* aGetOverRel(HeadLine* aHeadLine, i8 i_Over_rel);
     static TailLine* aGetTailRel(HeadLine* aHeadLine, i8 i_Tail_rel);
     static i8   nHeadSize(ColumnVec* pColVec);

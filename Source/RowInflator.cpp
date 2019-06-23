@@ -594,10 +594,12 @@ void RowInflator::vDecodeBcd(DtmVal* pDtmVal, HeadLine* aHeadLine,
                               ColumnVec* pColVec, Column* pCol,
                               i8& i_LastColumn, i8& i_Offset)
 {
-  
+  i8 i_BaseOffset = RowCoder::iBaseOffset(pColVec);
+
   pDtmVal->m_eDatum = DM_BCD;
-  
-  eMC eEncoding = eGetEncoding(aHeadLine,pCol,pColVec,i_LastColumn,i_Offset);
+
+  eMC eEncoding = eGetEncoding(aHeadLine,pCol,i_BaseOffset,
+                               i_LastColumn,i_Offset);
   switch (eEncoding) {
       
     case MC_NULL: pDtmVal->m_wDtm.m_iInt = C_DATUM_NULL;               break;
@@ -667,11 +669,14 @@ void RowInflator::vDecodeDte(DtmVal* pDtmVal, HeadLine* aHeadLine,
                               ColumnVec* pColVec, Column* pCol,
                               i8& i_LastColumn, i8& i_Offset)
 {
+  i8 i_BaseOffset = RowCoder::iBaseOffset(pColVec);
+  
   pDtmVal->m_eDatum = DM_DTE;
   i8 iEra = C_ERA_0;
   
   //!! needs more work
-  eMC eThisEncoding = eGetEncoding(aHeadLine,pCol,pColVec,i_LastColumn,i_Offset);
+  eMC eThisEncoding = eGetEncoding(aHeadLine,pCol,i_BaseOffset,
+                                   i_LastColumn,i_Offset);
   
   if (eThisEncoding == MC_DAYS_ADD_1B || eThisEncoding == MC_DAYS_SUB_1B) {
     // Not yet implemented in MarkIII
@@ -714,9 +719,12 @@ void RowInflator::vDecodeFlt(DtmVal* pDtmVal, HeadLine* aHeadLine,
                               ColumnVec* pColVec, Column* pCol,
                               i8& i_LastColumn, i8& i_Offset)
 {
+  i8 i_BaseOffset = RowCoder::iBaseOffset(pColVec);
+  
   pDtmVal->m_eDatum = DM_FLT;
   
-  eMC eEncoding = eGetEncoding(aHeadLine,pCol,pColVec,i_LastColumn,i_Offset);
+  eMC eEncoding = eGetEncoding(aHeadLine,pCol,i_BaseOffset,
+                               i_LastColumn,i_Offset);
   switch (eEncoding) {
       
     case MC_NULL: pDtmVal->m_wDtm.m_iInt = C_DATUM_NULL;               break;
@@ -741,9 +749,12 @@ void RowInflator::vDecodeInt(DtmVal* pDtmVal, HeadLine* aHeadLine,
                               ColumnVec* pColVec, Column* pCol,
                               i8& i_LastColumn, i8& i_Offset)
 {
+  i8 i_BaseOffset = RowCoder::iBaseOffset(pColVec);
+  
   pDtmVal->m_eDatum = DM_INT;
   
-  eMC eEncoding = eGetEncoding(aHeadLine,pCol,pColVec,i_LastColumn,i_Offset);
+  eMC eEncoding = eGetEncoding(aHeadLine,pCol,i_BaseOffset,
+                               i_LastColumn,i_Offset);
   //vTrace("Decoding %lld\n"_Stz, eEncoding);
   
   switch (eEncoding) {
@@ -783,9 +794,12 @@ void RowInflator::vDecodeIvl(DtmVal* pDtmVal, HeadLine* aHeadLine,
                               ColumnVec* pColVec, Column* pCol,
                               i8& i_LastColumn, i8& i_Offset)
 {
+  i8 i_BaseOffset = RowCoder::iBaseOffset(pColVec);
+  
   pDtmVal->m_eDatum = DM_IVL;
   
-  eMC eEncoding = eGetEncoding(aHeadLine,pCol,pColVec,i_LastColumn,i_Offset);
+  eMC eEncoding = eGetEncoding(aHeadLine,pCol,i_BaseOffset,
+                               i_LastColumn,i_Offset);
   switch (eEncoding) {
       
     case MC_NULL: pDtmVal->m_wDtm.m_iInt = C_DATUM_NULL;               break;
@@ -810,9 +824,12 @@ void RowInflator::vDecodeTme(DtmVal* pDtmVal, HeadLine* aHeadLine,
                               ColumnVec* pColVec, Column* pCol,
                               i8& i_LastColumn, i8& i_Offset)
 {
+  i8 i_BaseOffset = RowCoder::iBaseOffset(pColVec);
+  
   pDtmVal->m_eDatum = DM_TME;
   
-  eMC eEncoding = eGetEncoding(aHeadLine,pCol,pColVec,i_LastColumn,i_Offset);
+  eMC eEncoding = eGetEncoding(aHeadLine,pCol,i_BaseOffset,
+                               i_LastColumn,i_Offset);
   switch (eEncoding) {
       
     case MC_NULL: pDtmVal->m_wDtm.m_iInt = C_DATUM_NULL;               break;
@@ -840,9 +857,12 @@ void RowInflator::vDecodeTsp(DtmVal* pDtmVal, HeadLine* aHeadLine,
                               ColumnVec* pColVec, Column* pCol,
                               i8& i_LastColumn, i8& i_Offset)
 {
+  i8 i_BaseOffset = RowCoder::iBaseOffset(pColVec);
+  
   pDtmVal->m_eDatum = DM_TSP;
   
-  eMC eEncoding = eGetEncoding(aHeadLine,pCol,pColVec,i_LastColumn,i_Offset);
+  eMC eEncoding = eGetEncoding(aHeadLine,pCol,i_BaseOffset,
+                               i_LastColumn,i_Offset);
   switch (eEncoding) {
       
     case MC_NULL: pDtmVal->m_wDtm.m_iInt = C_DATUM_NULL;                         break;
@@ -871,11 +891,13 @@ void RowInflator::vDecodeVch(DtmVal* pDtmVal, HeadLine* aHeadLine,
                               ColumnVec* pColVec, Column* pCol,
                               i8& i_LastColumn, i8& i_Offset)
 {
-  
+  i8 i_BaseOffset = RowCoder::iBaseOffset(pColVec);
+
   pDtmVal->m_eDatum = DM_VCH;
   
   //! needs more work
-  eMC eEncoding = eGetEncoding(aHeadLine,pCol,pColVec,i_LastColumn,i_Offset);
+  eMC eEncoding = eGetEncoding(aHeadLine,pCol,i_BaseOffset,
+                               i_LastColumn,i_Offset);
   
   if (MC_NULL == eEncoding) {
     pDtmVal->m_wDtm.m_iInt = C_DATUM_NULL;

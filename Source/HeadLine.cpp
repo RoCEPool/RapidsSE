@@ -108,10 +108,11 @@ i8 HeadLine::nFreeSpace(ColumnVec* pColVec)
   Column* pLastCol = pColVec->pGet(pColVec->nItems() - 1);
   ASSERT(pLastCol->bIsLastColumn());
   
-  i8 i_Offset = RowCoder::iBaseOffset(pColVec);
+  i8 i_BaseOffset = RowCoder::iBaseOffset(pColVec);
+  i8 i_Offset = i_BaseOffset;
   i8 i_LastColumn = 0;
   
-  eMC eLastEncoding = RowCoder::eGetEncoding(this,pLastCol,pColVec,
+  eMC eLastEncoding = RowCoder::eGetEncoding(this,pLastCol,i_BaseOffset,
                                          i_LastColumn,i_Offset);
   
   if (pLastCol->eDatumType() == DM_VCH && MC_SHOCO_SPLIT_2T1C == eLastEncoding)

@@ -158,14 +158,14 @@ void RowCoder::vDteIntoEdt(Dtm wDte,
 /* get the encoding (and offset) of a column datum                            */
 /*----------------------------------------------------------------------------*/
 eMC RowCoder::eGetEncoding(HeadLine* aHeadLine, Column* pCol,
-                           ColumnVec* pColVec,
+                           i8 i_BaseOffset,
                            i8& i_PriorColumn_, i8& i_Offset_)
 {
   i8 i_ForCol = pCol->iColumnNo();
   
   if (i_ForCol < i_PriorColumn_) {
     i_PriorColumn_ = 0;
-    i_Offset_ = iBaseOffset(pColVec);
+    i_Offset_ = i_BaseOffset;
   }
   
   for (i8 i_Col = i_PriorColumn_; i_Col < i_ForCol; i_Col++) {
@@ -303,7 +303,7 @@ byte* RowCoder::ayShoco(HeadLine* aHeadLine, i8 i_BaseOffset,
   i8 i_LastOffset = i_BaseOffset;
   i8 i_LastColumn = 0;
   
-  eMC eEncoding = eGetEncoding(aHeadLine,pCol,pColVec,
+  eMC eEncoding = eGetEncoding(aHeadLine,pCol,i_BaseOffset,
                                i_LastColumn,i_LastOffset);
   
   if (MC_SHOCO_FIT_1C != eEncoding)
