@@ -39,7 +39,7 @@ namespace Data
     /*------------------------------------------------------------------------*/
     inline eMC eMetaCode(i8 i_Meta)
     {
-      eMC eCode = *(eMC*)((byte*)this + _1B_W + i_Meta);
+      eMC eCode = *(eMC*)((byte*)this + C_W_1B + i_Meta);
   
       return eCode;
     }

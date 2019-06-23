@@ -235,7 +235,7 @@ eMC RowCoder::eGetEncoding(HeadLine* aHeadLine, Column* pCol,
     eMC eEncoding = aHeadLine->eMetaCode(i_Col);
     
     if (MC_OVERFLOW_2T == eEncoding) {
-      i_Offset_ = aHeadLine->nBytes() + _1B_U;
+      i_Offset_ = aHeadLine->nBytes() + C_U_1B;
       eEncoding = (eMC)wGetLogical(aHeadLine,i_Offset_++,C_1B);
       i_Offset_ += nDataBytes(eEncoding);
     }
@@ -253,7 +253,7 @@ eMC RowCoder::eGetEncoding(HeadLine* aHeadLine, Column* pCol,
   
   eMC eEncoding = aHeadLine->eMetaCode(i_ForCol);
   if (MC_OVERFLOW_2T == eEncoding) {
-    i_Offset_ = aHeadLine->nBytes() + _1B_U + _1B_M;
+    i_Offset_ = aHeadLine->nBytes() + C_U_1B + _1B_M;
     OverLine* aOverLine = aGetOver(aHeadLine);
     eEncoding = (eMC)aOverLine->w8_1B(1);
   }

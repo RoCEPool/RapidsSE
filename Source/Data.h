@@ -12,7 +12,16 @@ namespace Data
   static const i8 C_FLAT_LEVELS_MAX   = 16;
   static const i8 C_FLAT_OFFSETS_MAX  = C_FLAT_LEVELS_MAX - 1;
   static const i8 C_FLAT_FREQ         = 2;
-  static const i8 C_MAX_INDEX_COLUMNS = 16;
+  
+  static const i8 C_U_1B  = 1;  // <U> 1B over/tail line size in units
+  static const i8 C_W_1B  = 1;  // <W> 1B head line size in words
+  
+  static const i8 C_ERA_0 =  0; // 1900
+  static const i8 C_ERA_1 = 92; // 1992
+  static const i8 C_ERA_2 = 99; // 1999
+  
+  class Record;
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -251,11 +260,6 @@ namespace Data
   /* 53 */ 0  // MC_ENUMS,
   };
   
-  static const i8 C_ERA_0 =  0; // 1900
-  static const i8 C_ERA_1 = 92; // 1992
-  static const i8 C_ERA_2 = 99; // 1999
-
-  class Record;
 }
 
 using namespace Data;

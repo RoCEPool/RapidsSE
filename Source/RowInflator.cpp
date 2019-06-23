@@ -31,7 +31,7 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
   
   i8 nCols = pRow->m_nColumns;
   
-  eMC*  aeMetaCode = aAdd<eMC*>(aHeadLine,_1B_W);
+  eMC*  aeMetaCode = aAdd<eMC*>(aHeadLine,C_W_1B);
   byte* ayDataByte = (byte*)aHeadLine + pRow->m_iBaseOffset;
   i8*   aiColVal   = & pRow->m_waColVal[0].m_iInt;
   
@@ -85,8 +85,8 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
           OverLine* aOverLine = RowNub::aGetOver(aHeadLine,i_Over_rel);
           //MemLib::vWordDump(aOverLine,32);
           
-          eMetaCode = * aAdd<eMC*>(aOverLine,_1B_U);
-          ayDataByte = aAdd<byte*>(aOverLine,_1B_U + _1B_M);
+          eMetaCode = * aAdd<eMC*>(aOverLine,C_U_1B);
+          ayDataByte = aAdd<byte*>(aOverLine,C_U_1B + _1B_M);
           goto L_SkipCodeSwitch;
           break;
         }
@@ -324,8 +324,8 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
         wWord.m_yaByte[1] = *ayDataByte++;
         i_Tail_rel = wWord.m_iI8;
         aTail = aGetTailRel(aHeadLine,i_Tail_rel);
-        nLength = aTail->w8_1B(+ _1B_U);
-        MemLib::vCopy(acString,(byte*)aTail+_1B_U+_1B_L,nLength,CN_ROWCOMPACTOR);
+        nLength = aTail->w8_1B(+ C_U_1B);
+        MemLib::vCopy(acString,(byte*)aTail+C_U_1B+_1B_L,nLength,CN_ROWCOMPACTOR);
         *(char**)(aiColVal++) = acString;
         acString += nLength;
         *acString++ = '\0';
@@ -394,7 +394,7 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
         Compress::iFromShoco(acString,                 // decompressed dest
                              sizeof(caString),          // max destination
                              ((byte*)aTail)       // compressed source
-                               + _1B_U
+                               + C_U_1B
                                + _1B_C,
                              nCompressed);             // bytes compressed
         *(char**)(aiColVal++) = acString;
@@ -466,8 +466,8 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
         OverLine* aOverLine = RowNub::aGetOver(aHeadLine,i_Over_rel);
         //MemLib::vWordDump(aOverLine,32);
 
-        eMetaCode = * aAdd<eMC*>(aOverLine,_1B_U);
-        ayDataByte = aAdd<byte*>(aOverLine,_1B_U + _1B_M);
+        eMetaCode = * aAdd<eMC*>(aOverLine,C_U_1B);
+        ayDataByte = aAdd<byte*>(aOverLine,C_U_1B + _1B_M);
         goto L_MetaCodeSwitch;
         break;
       }
@@ -1111,8 +1111,8 @@ void RowInflator::vDecodeVchStringTail(DtmVal* pDtmVal, HeadLine* aHeadLine,
    <string...> being the string
    */
   
-  i8 nLength = aTail_str->w8_1B(+ _1B_U);
-  byte* ayString = (byte*)aTail_str + _1B_U + _1B_L;
+  i8 nLength = aTail_str->w8_1B(+ C_U_1B);
+  byte* ayString = (byte*)aTail_str + C_U_1B + _1B_L;
   
   MemLib::vCopy((byte*)pDtmVal->m_sVch.aChar(),
                 (byte*)ayString,

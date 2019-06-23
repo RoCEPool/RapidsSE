@@ -5,9 +5,6 @@
 
 namespace Base
 {
-  static const i8 _1B_U  = 1;  // <U> 1B over/tail line size in units
-  static const i8 _1B_W  = 1;  // <W> 1B head line size in words
-
   class Line
   {
   public:

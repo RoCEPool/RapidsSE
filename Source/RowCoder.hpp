@@ -18,7 +18,7 @@ namespace Data
   static const i8 _3B_DSR = 3;  // [DSR] relative distance to shoco
   
   static const i8 C_OFFSET_UNITS = 0;
-  static const i8 C_OFFSET_COMPRESSED = C_OFFSET_UNITS + _1B_U;
+  static const i8 C_OFFSET_COMPRESSED = C_OFFSET_UNITS + C_U_1B;
 
   static const i8 C_HEAD_MIN_BYTES = 24;
   
