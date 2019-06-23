@@ -8,7 +8,10 @@ namespace Base
   class CacheLine : public Line
   {
   public:
-    byte m_yaByte[C_BYTES_PER_CACHE_LINE];
+    union {
+      byte m_yaByte[C_BYTES_PER_CACHE_LINE];
+      //Word m_waWord; //! this doesnt work
+    };
   
   public:
     CacheLine(void);

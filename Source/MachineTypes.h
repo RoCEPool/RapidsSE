@@ -5,6 +5,15 @@
 
 namespace Base
 {
+  typedef unsigned char      b1;   // 1 byte boolean
+  typedef unsigned short     b2;   // 2 byte boolean
+  typedef unsigned long      b4;   // 4 byte boolean
+  typedef unsigned long long b8;   // 8 byte boolean
+  
+  typedef float              d4;   // 4 byte single word float
+  typedef double             d8;   // 8 byte double word float
+  typedef long double        d10;  // 10 byte float
+  
   typedef char               i1;   // 1 byte signed integer
   typedef short              i2;   // 2 byte signed integer
   typedef int                i4;   // 4 byte signed integer
@@ -14,15 +23,6 @@ namespace Base
   typedef unsigned short     u2;   // 2 byte unsigned integer
   typedef unsigned int       u4;   // 4 byte unsigned integer
   typedef unsigned long long u8;   // 8 byte unsigned integer
-  
-  typedef float              d4;   // 4 byte single word float
-  typedef double             d8;   // 8 byte double word float
-  typedef long double        d10;  // 10 byte float
-
-  typedef unsigned char      b1;   // 1 byte boolean
-  typedef unsigned short     b2;   // 2 byte boolean
-  typedef unsigned long      b4;   // 4 byte boolean
-  typedef unsigned long long b8;   // 8 byte boolean
   
   typedef unsigned long      w4;   // 4 byte word
   typedef unsigned long long w8;   // 8 byte word
@@ -41,6 +41,9 @@ namespace Base
   const u8 C_BYTES_PER_CACHE_LINE  = 64;
   const u8 C_NIBBLES_PER_BYTE      = 2;
 
+  const u8 C_WORDS_PER_WORD        = 1;
+  const u8 C_WORDS_PER_DOUBLE_WORD = 2;
+  const u8 C_WORDS_PER_QUAD_WORD   = 4;
   const u8 C_WORDS_PER_CACHE_LINE  = 8;
   
   const i8 C_0B = 0;

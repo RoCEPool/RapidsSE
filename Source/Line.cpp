@@ -119,7 +119,7 @@ w8 Line::w8_2B(i8 i_Byte)
   
   u2* au2B = (u2*)((byte*)this + i_Byte);
   
-  xWord.m_uI8 = *au2B;
+  xWord.m_uU8 = *au2B;
 
   return xWord.m_wW8;
 }
@@ -163,7 +163,7 @@ w8 Line::w8_4B(i8 i_Byte)
   
   u4* au4B = (u4*)((byte*)this + i_Byte);
   
-  xWord.m_uI8 = *au4B;
+  xWord.m_uU8 = *au4B;
 
   return xWord.m_wW8;
 }
@@ -252,7 +252,7 @@ w8 Line::w8_8B(i8 i_Byte)
   
   u8* au8B = (u8*)((byte*)this + i_Byte);
   
-  xWord.m_uI8 = *au8B;
+  xWord.m_uU8 = *au8B;
 
   return xWord.m_wW8;
 }
