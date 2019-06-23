@@ -44,9 +44,10 @@ namespace Data
   
   private:
     void vAnalyseFree(void);
+    void vAddCode(HeadLine* aHeadLine, Column* pCol,
+                  eMC eMetaCode, Dtm wDataCode, i8 nDataSize);
     void vCompactEncoded(RowEncoding* pRowEncoding);
-    void vDtmCode(eMC eMetaCode, Dtm wDataCode, i8 nDataSize, Column* pCol);
-    
+
   private:
     Footer* aFooter(void);
   };

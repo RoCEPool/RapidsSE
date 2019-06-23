@@ -248,6 +248,58 @@ void RowCompactor::vAnalyseFree(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add encoded datum onto the end of crw                                      */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vAddCode(HeadLine* aHeadLine, Column* pCol,
+                            eMC eMetaCode, Dtm wDataCode, i8 nDataSize)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // put meta code into head
+  
+  vMetaCode(m_aCrw,pCol,eMetaCode);
+  
+  if (! nDataSize)
+    return;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append data bytes onto head
+  
+  // non-vch
+  
+  if (DM_VCH != pCol->eDatumType()) {
+    
+    vPutLogical(aHeadLine,
+                m_i_DataOffset,
+                nDataSize,
+                (w8)wDataCode.m_iInt);
+    
+    m_i_DataOffset += nDataSize;
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // vch
+  
+  // append <L>
+  aHeadLine->vPut(m_i_DataOffset,nDataSize,C_1B);
+  m_i_DataOffset++;
+  
+  // append <short>
+  byte* ayDst = (byte*)aHeadLine + m_i_DataOffset;
+  char* acSrc = (char*)wDataCode.m_szVch;
+  
+  MemLib::vCopy(ayDst,
+                acSrc,
+                nDataSize,
+                CN_ROWCOMPACTOR);
+  
+  m_i_DataOffset += nDataSize;
+}
+
+/*----------------------------------------------------------------------------*/
 /* compact the encoding                                                       */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vCompactEncoded(RowEncoding* pRowEncoding)
@@ -271,63 +323,9 @@ void RowCompactor::vCompactEncoded(RowEncoding* pRowEncoding)
     //vDumpHead("vHeadCode a"_Stz,m_aCrw,m_pColVec);
     if (8 == i_Col)
       vDebugPoint();
-    vDtmCode(eMetaCode,wDataCode,nDataSize,pCol);
+    vAddCode(m_aCrw,pCol,eMetaCode,wDataCode,nDataSize);
     //vDumpHead("vHeadCode b"_Stz,m_aCrw,m_pColVec);
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* add encoded datum onto the end of crw                                      */
-/*----------------------------------------------------------------------------*/
-
-//! this should be in crwHead
-
-void RowCompactor::vDtmCode(eMC eMetaCode, Dtm wDataCode, i8 nDataSize, Column* pCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // put meta code into head
-  
-  vMetaCode(m_aCrw,pCol,eMetaCode);
-  
-  if (! nDataSize)
-    return;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append data bytes onto head
-  
-  // non-vch
-  
-  if (DM_VCH != pCol->eDatumType()) {
-    
-    vPutLogical(m_aCrw,
-                m_i_DataOffset,
-                nDataSize,
-                (w8)wDataCode.m_iInt);
-    
-    m_i_DataOffset += nDataSize;
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // vch
-  
-  // append <L>
-  m_aCrw->vPut(m_i_DataOffset,nDataSize,C_1B);
-  m_i_DataOffset++;
-  
-  // append <short>
-  byte* ayDst = (byte*)m_aCrw + m_i_DataOffset;
-  char* acSrc = (char*)wDataCode.m_szVch;
-  
-  MemLib::vCopy(ayDst,
-                acSrc,
-                nDataSize,
-                CN_ROWCOMPACTOR);
-  
-  m_i_DataOffset += nDataSize;
 }
 
 
