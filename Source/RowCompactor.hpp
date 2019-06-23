@@ -14,12 +14,7 @@ namespace Data
     i8         m_nHeadSize;    // size of head line for this colvec/table
     i8         m_nMetaSize;    // size of meta data for this colvec/table
     i8         m_i_BaseOffset; // base offset for this colvec/table
-  
-    // - - - - - - - - - - - -
-    i8         m_i_Crw;        // index of comapct row in crw nub
-    HeadLine*  m_aCrw;         // compact row being formed
-    i8         m_i_DataOffset; // offset where next data bytes go
-    
+      
     // - - - - - - - - - - - -
     IrwBuffer* m_pRowSamples;  // the set of sample rows
     
@@ -45,7 +40,8 @@ namespace Data
   private:
     void vAnalyseFree(void);
     void vAddCode(HeadLine* aHeadLine, Column* pCol,
-                  eMC eMetaCode, Dtm wDataCode, i8 nDataSize);
+                  eMC eMetaCode, Dtm wDataCode, i8 nDataSize,
+                  i8& i_DataOffset_);
     void vCompactEncoded(RowEncoding* pRowEncoding);
 
   private:

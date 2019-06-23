@@ -55,10 +55,6 @@ RowCompactor::RowCompactor(void)
   m_nMetaSize     = C_UNKNOWN;
   m_i_BaseOffset  = C_UNKNOWN;
   
-  m_i_Crw         = C_UNKNOWN;
-  m_aCrw          = nullptr;
-  m_i_DataOffset  = C_UNKNOWN;
-  
   m_pRowSamples   = nullptr;
   
   m_nTotalBuffers = 0;
@@ -132,11 +128,6 @@ void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer)
   m_nMetaSize     = nMetaData(m_pColVec);
   m_i_BaseOffset  = iBaseOffset(m_pColVec);
   
-  m_i_Crw         = C_UNKNOWN;
-  m_aCrw          = nullptr;
-  m_i_DataOffset  = C_UNKNOWN;
-  
-  // + + +
   m_pRowSamples   = new IrwBuffer;
 }
 
@@ -152,10 +143,6 @@ void RowCompactor::vCompactEnd(void)
   m_nHeadSize     = C_UNKNOWN;
   m_nMetaSize     = C_UNKNOWN;
   m_i_BaseOffset  = C_UNKNOWN;
-  
-  m_i_Crw         = C_UNKNOWN;
-  m_aCrw          = nullptr;
-  m_i_DataOffset  = C_UNKNOWN;
   
   delete m_pRowSamples;
   m_pRowSamples   = nullptr;;
@@ -207,19 +194,10 @@ bool RowCompactor::bCompactRow(Row* pRow)
   // compact encoded row into a crw
   
   vCompactEncoded(pErwRow);
-  m_nTotalCrws++;
-  
-  //#ifdef WITH_TRACE_ENCODING
-  if (m_nTotalCrws <= 10)
-    HeadLine::vDumpHead("m_aCrw"_Stz,m_aCrw,m_pColVec);
-  //#endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // analyse free space in the into head
   
-#ifdef WITH_ANALYSE_FREE
-  vAnalyseFree();
-#endif
   
 #ifdef WITH_VERIFY_TAILS
   m_pCrwNub->vVerifyTails(C_UNKNOWN);
@@ -243,22 +221,21 @@ void RowCompactor::vAnalyseFree(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  i8 nFreeBytes = nFreeSpaceHead(m_aCrw,m_pColVec);
-  m_oFreqDist.vAdd(nFreeBytes);
 }
 
 /*----------------------------------------------------------------------------*/
 /* add encoded datum onto the end of crw                                      */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vAddCode(HeadLine* aHeadLine, Column* pCol,
-                            eMC eMetaCode, Dtm wDataCode, i8 nDataSize)
+                            eMC eMetaCode, Dtm wDataCode, i8 nDataSize,
+                            i8& i_DataOffset_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put meta code into head
   
-  vMetaCode(m_aCrw,pCol,eMetaCode);
+  vMetaCode(aHeadLine,pCol,eMetaCode);
   
   if (! nDataSize)
     return;
@@ -271,11 +248,11 @@ void RowCompactor::vAddCode(HeadLine* aHeadLine, Column* pCol,
   if (DM_VCH != pCol->eDatumType()) {
     
     vPutLogical(aHeadLine,
-                m_i_DataOffset,
+                i_DataOffset_,
                 nDataSize,
                 (w8)wDataCode.m_iInt);
     
-    m_i_DataOffset += nDataSize;
+    i_DataOffset_ += nDataSize;
     return;
   }
   
@@ -284,11 +261,11 @@ void RowCompactor::vAddCode(HeadLine* aHeadLine, Column* pCol,
   // vch
   
   // append <L>
-  aHeadLine->vPut(m_i_DataOffset,nDataSize,C_1B);
-  m_i_DataOffset++;
+  aHeadLine->vPut(i_DataOffset_,nDataSize,C_1B);
+  i_DataOffset_++;
   
   // append <short>
-  byte* ayDst = (byte*)aHeadLine + m_i_DataOffset;
+  byte* ayDst = (byte*)aHeadLine + i_DataOffset_;
   char* acSrc = (char*)wDataCode.m_szVch;
   
   MemLib::vCopy(ayDst,
@@ -296,7 +273,7 @@ void RowCompactor::vAddCode(HeadLine* aHeadLine, Column* pCol,
                 nDataSize,
                 CN_ROWCOMPACTOR);
   
-  m_i_DataOffset += nDataSize;
+  i_DataOffset_ += nDataSize;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -306,11 +283,11 @@ void RowCompactor::vCompactEncoded(RowEncoding* pRowEncoding)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  m_i_Crw = m_pCrwNub->iAllotHead(m_nHeadSize);
-  m_aCrw  = m_pCrwNub->aGetHead(m_i_Crw);
-  m_i_DataOffset = m_i_BaseOffset;
+  i8 i_Crw = m_pCrwNub->iAllotHead(m_nHeadSize);
+  HeadLine* aHeadLine = m_pCrwNub->aGetHead(i_Crw);
+  i8 i_DataOffset_ = m_i_BaseOffset;
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   i8 nCols = m_pColVec->nItems();
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
@@ -323,9 +300,24 @@ void RowCompactor::vCompactEncoded(RowEncoding* pRowEncoding)
     //vDumpHead("vHeadCode a"_Stz,m_aCrw,m_pColVec);
     if (8 == i_Col)
       vDebugPoint();
-    vAddCode(m_aCrw,pCol,eMetaCode,wDataCode,nDataSize);
+    vAddCode(aHeadLine,pCol,eMetaCode,wDataCode,nDataSize,i_DataOffset_);
     //vDumpHead("vHeadCode b"_Stz,m_aCrw,m_pColVec);
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  m_nTotalCrws++;
+  
+  //#ifdef WITH_TRACE_ENCODING
+  if (m_nTotalCrws <= 10)
+    HeadLine::vDumpHead("aHeadLine"_Stz,aHeadLine,m_pColVec);
+  //#endif
+
+#ifdef WITH_ANALYSE_FREE
+  i8 nFreeBytes = nFreeSpaceHead(aHeadLine,m_pColVec);
+  m_oFreqDist.vAdd(nFreeBytes);
+#endif
+
 }
 
 
