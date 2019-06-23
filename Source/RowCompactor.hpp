@@ -14,7 +14,7 @@ namespace Data
     i8         m_nHeadSize;    // size of head line for this colvec/table
     i8         m_nMetaSize;    // size of meta data for this colvec/table
     i8         m_i_BaseOffset; // base offset for this colvec/table
-      
+    
     // - - - - - - - - - - - -
     IrwBuffer* m_pRowSamples;  // the set of sample rows
     
@@ -42,7 +42,7 @@ namespace Data
     void vAddCode(HeadLine* aHeadLine, Column* pCol,
                   eMC eMetaCode, Dtm wDataCode, i8 nDataSize,
                   i8& i_DataOffset_);
-    void vCompactEncoded(RowEncoding* pRowEncoding);
+    void vCodeRow(RowEncoding* pRowEnc);
 
   private:
     Footer* aFooter(void);

@@ -161,25 +161,25 @@ bool RowCompactor::bCompactRow(Row* pRow)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // encode the row
   
-  RowEncoding* pErwRow = new RowEncoding(m_pColVec);
+  RowEncoding* pRowEnc = new RowEncoding(m_pColVec);
   
-  pErwRow->vEncode(pRow);
+  pRowEnc->vEncode(pRow);
   
   //hpRowEncoding hp_RowEnc;
   //vTrace("\n%s\n"_Stz,hp_RowEnc.sz(pRowEncoding));
   
-  pErwRow->vSplitOver(256,m_pColVec->nItems());
+  pRowEnc->vSplitOver(256,m_pColVec->nItems());
   
   //vTrace("\n%s\n"_Stz,hp_RowEnc.sz(pRowEncoding));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for space in target nub
   
-  i8 nSpaceNeeded = pErwRow->nBytesNeeded();
+  i8 nSpaceNeeded = pRowEnc->nBytesNeeded();
   
   if (! m_pCrwNub->bHasSpace(nSpaceNeeded)) {
     m_nTotalBuffers++;
-    delete pErwRow;
+    delete pRowEnc;
     return false;
   }
   
@@ -193,7 +193,7 @@ bool RowCompactor::bCompactRow(Row* pRow)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compact encoded row into a crw
   
-  vCompactEncoded(pErwRow);
+  vCodeRow(pRowEnc);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // analyse free space in the into head
@@ -205,7 +205,7 @@ bool RowCompactor::bCompactRow(Row* pRow)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  delete pErwRow;
+  delete pRowEnc;
   
   return true;
 }
@@ -279,7 +279,7 @@ void RowCompactor::vAddCode(HeadLine* aHeadLine, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* compact the encoding                                                       */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vCompactEncoded(RowEncoding* pRowEncoding)
+void RowCompactor::vCodeRow(RowEncoding* pRowEnc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -293,9 +293,9 @@ void RowCompactor::vCompactEncoded(RowEncoding* pRowEncoding)
     
     Column* pCol  = m_pColVec->pGet(i_Col);
     
-    eMC eMetaCode = pRowEncoding->xEncode[i_Col].m_eMetaCode;
-    Dtm wDataCode = pRowEncoding->xEncode[i_Col].m_wDataCode;
-    i8  nDataSize = pRowEncoding->xEncode[i_Col].m_nDataSize;
+    eMC eMetaCode = pRowEnc->xEncode[i_Col].m_eMetaCode;
+    Dtm wDataCode = pRowEnc->xEncode[i_Col].m_wDataCode;
+    i8  nDataSize = pRowEnc->xEncode[i_Col].m_nDataSize;
     
     //vDumpHead("vHeadCode a"_Stz,m_aCrw,m_pColVec);
     if (8 == i_Col)
