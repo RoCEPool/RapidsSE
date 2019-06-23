@@ -316,8 +316,7 @@ void HeadLine::vPutLogical(i8 i_Offset, w8 wDataCode, i8 nDataSize)
 /*----------------------------------------------------------------------------*/
 /* get address of given shoco column from head line                           */
 /*----------------------------------------------------------------------------*/
-byte* HeadLine::ayShoco(i8 i_BaseOffset,
-                        ColumnVec* pColVec, Column* pCol) //! pColVec not needed
+byte* HeadLine::ayShoco(i8 i_BaseOffset, Column* pCol) //! pColVec not needed
 {
   i8 i_LastOffset = i_BaseOffset;
   i8 i_LastColumn = 0;
