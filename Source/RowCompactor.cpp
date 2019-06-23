@@ -124,8 +124,8 @@ void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer)
   
   m_pCrwNub       = pCrwBuffer->m_oRowTray.pNub();
   m_pColVec       = m_pCrwNub->pDesc()->pColumnVec();
-  m_nHeadSize     = nHeadBytes(m_pColVec);
-  m_nMetaSize     = nMetaData(m_pColVec);
+  m_nHeadSize     = nHeadSize(m_pColVec);
+  m_nMetaSize     = nMetaSize(m_pColVec);
   m_i_BaseOffset  = iBaseOffset(m_pColVec);
   
   m_pRowSamples   = new IrwBuffer;
@@ -243,8 +243,8 @@ void RowCompactor::vAddCode(HeadLine* aHeadLine, Column* pCol,
     
     vPutLogical(aHeadLine,
                 i_DataOffset_,
-                nDataSize,
-                wDataCode.m_w8);
+                wDataCode.m_w8,
+                nDataSize);
     
     i_DataOffset_ += nDataSize;
     return;

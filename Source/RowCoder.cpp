@@ -41,7 +41,7 @@ byte* RowCoder::ayAdrLogical(HeadLine* aLogicalRow, i8 i_Offset)
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::iBaseOffset(ColumnVec* pColVec)
 {
-  i8 iOffset  = nMetaData(pColVec);
+  i8 iOffset  = nMetaSize(pColVec);
   
   //! temporary                                                          FIX
   if (iOffset < 8)
@@ -263,31 +263,31 @@ eMC RowCoder::eGetEncoding(HeadLine* aHeadLine, Column* pCol,
 }
 
 /*----------------------------------------------------------------------------*/
-/* get some bytes from logicalRow : head[+over]                               */
+/* get data code from logicalRow : head[+over]                                */
 /*----------------------------------------------------------------------------*/
-w8 RowCoder::wGetLogical(HeadLine* aLogicalRow, i8 i_Offset, i8 nBytes)
+w8 RowCoder::wGetLogical(HeadLine* aLogicalRow, i8 i_Offset, i8 nDataSize)
 {
   HeadLine* aHeadLine = aLogicalRow;
-  w8 wSomeBytes = 0;
+  w8 wDataCode = 0;
   
   // scenario 1: simple case (no overflow), getting bytes from head
   if (! aHeadLine->bHasOverflow()) {
-    wSomeBytes = aHeadLine->wGet(i_Offset,nBytes);
-    return wSomeBytes;
+    wDataCode = aHeadLine->wGet(i_Offset,nDataSize);
+    return wDataCode;
   }
   
   // scenario 2: there is an overflow, but getting bytes from head
   i8 nHeadBytes = aLogicalRow->nBytes();
   if (i_Offset < nHeadBytes - 2) {
-    wSomeBytes = aHeadLine->wGet(i_Offset,nBytes);
-    return wSomeBytes;
+    wDataCode = aHeadLine->wGet(i_Offset,nDataSize);
+    return wDataCode;
   }
   
   // scenario 3: there is an overflow, and getting bytes from overflow
   OverLine* aOverLine = aGetOver(aHeadLine);
   i8 i_Offset_over = i_Offset - nHeadBytes;
-  wSomeBytes = aOverLine->wGet(i_Offset_over,nBytes);
-  return wSomeBytes;
+  wDataCode = aOverLine->wGet(i_Offset_over,nDataSize);
+  return wDataCode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -324,7 +324,7 @@ TailLine* RowCoder::aGetTailRel(HeadLine* aHeadLine, i8 i_Tail_rel)
 /*----------------------------------------------------------------------------*/
 /* calc size of the head line for column vector                               */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::nHeadBytes(ColumnVec* pColVec)
+i8 RowCoder::nHeadSize(ColumnVec* pColVec)
 {
   // experiment 1
   //i8 nBytes = sizeof(CacheLine) + (1 * C_BYTES_PER_WORD);
@@ -372,7 +372,7 @@ bool RowCoder::bIsFit(eMC eMetaCode)
 /*----------------------------------------------------------------------------*/
 /* calc size of the meta tape needed for given column vector                  */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::nMetaData(ColumnVec* pColVec)
+i8 RowCoder::nMetaSize(ColumnVec* pColVec)
 {
   i8 nColumns = pColVec->nItems();
   
@@ -385,22 +385,22 @@ i8 RowCoder::nMetaData(ColumnVec* pColVec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* put some bytes into logicalRow : head[+over]                               */
+/* put data code into logicalRow : head[+over]                                */
 /*----------------------------------------------------------------------------*/
-void RowCoder::vPutLogical(HeadLine* aLogicalRow, i8 i_Offset, i8 nBytes, w8 wBytes)
+void RowCoder::vPutLogical(HeadLine* aLogicalRow, i8 i_Offset, w8 wDataCode, i8 nDataSize)
 {
   HeadLine* aHeadLine = aLogicalRow;
   
   // scenario 1: simple case (no overflow), putting bytes into head
   if (! aHeadLine->bHasOverflow()) {
-    aHeadLine->vPut(i_Offset,wBytes,nBytes);
+    aHeadLine->vPut(i_Offset,wDataCode,nDataSize);
     return;
   }
   
   // scenario 2: there is an overflow, but putting bytes into head
   i8 nHeadBytes = aHeadLine->nBytes();
   if (i_Offset < nHeadBytes - 2) {
-    aHeadLine->vPut(i_Offset,wBytes,nBytes);
+    aHeadLine->vPut(i_Offset,wDataCode,nDataSize);
     return;
   }
   
@@ -408,7 +408,7 @@ void RowCoder::vPutLogical(HeadLine* aLogicalRow, i8 i_Offset, i8 nBytes, w8 wBy
   
   OverLine* aOverLine = aGetOver(aHeadLine);
   i8 i_Offset_over = i_Offset - nHeadBytes;
-  aOverLine->vPut(i_Offset_over,wBytes,nBytes);
+  aOverLine->vPut(i_Offset_over,wDataCode,nDataSize);
 }
 
 /*----------------------------------------------------------------------------*/

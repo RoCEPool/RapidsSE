@@ -41,14 +41,14 @@ namespace Data
                               ColumnVec* pColVec,
                               i8& i_PriorColumn_, i8& i_Offset_);
 
-    static w8   wGetLogical(HeadLine* aHeadLine, i8 i_Offset, i8 nBytes);
+    static w8   wGetLogical(HeadLine* aHeadLine, i8 i_Offset, i8 nDataSize);
     static OverLine* aGetOver(HeadLine* aHeadLine);
     static OverLine* aGetOverRel(HeadLine* aHeadLine, i8 i_Over_rel);
     static TailLine* aGetTailRel(HeadLine* aHeadLine, i8 i_Tail_rel);
-    static i8   nHeadBytes(ColumnVec* pColVec);
+    static i8   nHeadSize(ColumnVec* pColVec);
     static bool bIsFit(eMC eMetaCode);
-    static i8   nMetaData(ColumnVec* pColVec);
-    static void vPutLogical(HeadLine* aHeadLine, i8 i_Offset, i8 nBytes, w8 wBytes);
+    static i8   nMetaSize(ColumnVec* pColVec);
+    static void vPutLogical(HeadLine* aHeadLine, i8 i_Offset, w8 wDataCode, i8 nDataSize);
     static byte* ayShoco(HeadLine* aHeadLine, i8 iBaseOffset,
                          ColumnVec* pColVec, Column* pCol);
   };
