@@ -92,7 +92,7 @@ byte* HeadLine::ayAdrLogical(i8 i_Offset)
   }
   
   // scenario 3: there is an overflow, and getting address from overflow
-  OverLine* aOverLine = RowCoder::aGetOver(this);
+  OverLine* aOverLine = aGetOver();
   i8 i_Offset_over = i_Offset - nHeadBytes;
   byte* ayAdr = (byte*)aOverLine + i_Offset_over;
   return ayAdr;
@@ -171,7 +171,7 @@ eMC HeadLine::eGetEncoding(Column* pCol, i8 i_BaseOffset,
   eMC eEncoding = eMetaCode(i_ForCol);
   if (MC_OVERFLOW_2T == eEncoding) {
     i_Offset_ = nBytes() + C_U_1B + _1B_M;
-    OverLine* aOverLine = RowCoder::aGetOver(this);
+    OverLine* aOverLine = aGetOver();
     eEncoding = (eMC)aOverLine->w8_1B(1);
   }
   i_PriorColumn_ = i_ForCol;
@@ -200,10 +200,21 @@ w8 HeadLine::wGetLogical(i8 i_Offset, i8 nDataSize)
   }
   
   // scenario 3: there is an overflow, and getting bytes from overflow
-  OverLine* aOverLine = RowCoder::aGetOver(this);
+  OverLine* aOverLine = aGetOver();
   i8 i_Offset_over = i_Offset - nHeadBytes;
   wDataCode = aOverLine->wGet(i_Offset_over,nDataSize);
   return wDataCode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get overflow line using relative index [OT]                                */
+/*----------------------------------------------------------------------------*/
+OverLine* HeadLine::aGetOver(void)
+{
+  i8 i_Over_rel = iOverflow2B();
+  OverLine* aOver = RowNub::aGetOver(this,i_Over_rel);
+  
+  return aOver;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -287,7 +298,7 @@ void HeadLine::vPutLogical(i8 i_Offset, w8 wDataCode, i8 nDataSize)
   
   // scenario 3: there is an overflow, and putting bytes into overflow
   
-  OverLine* aOverLine = RowCoder::aGetOver(this);
+  OverLine* aOverLine = aGetOver();
   i8 i_Offset_over = i_Offset - nHeadBytes;
   aOverLine->vPut(i_Offset_over,wDataCode,nDataSize);
 }
