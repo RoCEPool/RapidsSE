@@ -305,7 +305,7 @@ void RowCompactor::vCodeRow(RowEncoding* pRowEnc)
   //#endif
 
 #ifdef WITH_ANALYSE_FREE
-  i8 nFreeBytes = nFreeSpaceHead(aHeadLine,m_pColVec);
+  i8 nFreeBytes = nFreeSpace(aHeadLine,m_pColVec);
   m_oFreqDist.vAdd(nFreeBytes);
 #endif
 

@@ -35,8 +35,6 @@ namespace Data
     static void vDteFromEdt(Dtm* aDte, i8 iEra);
     static void vDteIntoEdt(Dtm wDte, Dtm& wEdt_, i8& iEra_);
 
-    static i8   nFreeSpaceHead(HeadLine* aHeadLine, ColumnVec* pColVec);
-  
     static eMC  eGetEncoding(HeadLine* aHeadLine, Column* pCol,
                               ColumnVec* pColVec,
                               i8& i_PriorColumn_, i8& i_Offset_);

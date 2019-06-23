@@ -76,7 +76,7 @@ i8 HeadLine::nWords(void)
 /*----------------------------------------------------------------------------*/
 /* calculate free space of a head line                                        */
 /*----------------------------------------------------------------------------*/
-i8 HeadLine::nFreeSpaceHead(ColumnVec* pColVec)
+i8 HeadLine::nFreeSpace(ColumnVec* pColVec)
 {
   //MemLib::vWordDump(aHeadLine,m_nHeadBytes);
   
@@ -293,7 +293,7 @@ void HeadLine::vDumpHead(Stz* szTitle,
   // get no of columns
   i8 nColumns = pColVec->nItems();
   
-  i8 nFreeBytes = RowCoder::nFreeSpaceHead(aHeadLine,pColVec);
+  i8 nFreeBytes = aHeadLine->nFreeSpace(pColVec);
   if (nFreeBytes < 0)
     nFreeBytes = 0;
   
@@ -518,7 +518,7 @@ void HeadLine::vDumpHead_IV(Stz* szTitle,
   // get no of columns
   i8 nColumns = pColVec->nItems();
   
-  i8 nFreeBytes = RowCoder::nFreeSpaceHead(aHeadLine,pColVec);
+  i8 nFreeBytes = aHeadLine->nFreeSpace(pColVec);
   if (nFreeBytes < 0)
     nFreeBytes = 0;
   
