@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* spIVL.cpp - Ivl sprint helper                                              */
+/* SP_Ivl.cpp - Ivl sprint helper                                             */
 /*============================================================================*/
 
 #include "ScanSprint.h"
@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-spIVL::spIVL(void)
+SP_Ivl::SP_Ivl(void)
 : Sprint(CN_SPIVL)
 {
   _precondition_(_MAGIC_,CN_SPIVL,_FOOTER_);
@@ -23,7 +23,7 @@ spIVL::spIVL(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-spIVL::~spIVL(void) noexcept(false)
+SP_Ivl::~SP_Ivl(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_SPIVL,_FOOTER_);
 }
@@ -35,7 +35,7 @@ spIVL::~spIVL(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* sprint Ivl and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* spIVL::sz(i8 iIvl)
+Stz* SP_Ivl::sz(i8 iIvl)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -45,7 +45,7 @@ Stz* spIVL::sz(i8 iIvl)
 /*----------------------------------------------------------------------------*/
 /* sprint Ivl and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* spIVL::sz(i8 iIvl, i8 iScale)
+Stz* SP_Ivl::sz(i8 iIvl, i8 iScale)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -64,7 +64,7 @@ Stz* spIVL::sz(i8 iIvl, i8 iScale)
 /*----------------------------------------------------------------------------*/
 /* max                                                                        */
 /*----------------------------------------------------------------------------*/
-Stz* spIVL::szMax(void)
+Stz* SP_Ivl::szMax(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -74,7 +74,7 @@ Stz* spIVL::szMax(void)
 /*----------------------------------------------------------------------------*/
 /* mid                                                                        */
 /*----------------------------------------------------------------------------*/
-Stz* spIVL::szMid(void)
+Stz* SP_Ivl::szMid(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -84,7 +84,7 @@ Stz* spIVL::szMid(void)
 /*----------------------------------------------------------------------------*/
 /* min                                                                        */
 /*----------------------------------------------------------------------------*/
-Stz* spIVL::szMin(void)
+Stz* SP_Ivl::szMin(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -99,7 +99,7 @@ Stz* spIVL::szMin(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* spIVL::aFooter(void)
+Footer* SP_Ivl::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_SPIVL);
   

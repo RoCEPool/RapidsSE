@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* spFLT.hpp - Flt sprint helper                                              */
+/* SP_Flt.hpp - Flt sprint helper                                             */
 /*============================================================================*/
 #pragma once
 
 namespace ScanSprint
 {
-  class spFLT : public Sprint
+  class SP_Flt : public Sprint
   {
   public:
   
@@ -13,8 +13,8 @@ namespace ScanSprint
     Footer m_xFooter;
     
   public:
-    spFLT(void);
-    ~spFLT(void) noexcept(false);
+    SP_Flt(void);
+    ~SP_Flt(void) noexcept(false);
   
     Stz* sz(d8 dFlt);
 

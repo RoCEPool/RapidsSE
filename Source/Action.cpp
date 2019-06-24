@@ -476,10 +476,10 @@ void Action::vWrite_Proot(File* pFile)
   vWriteRefer(pFile);
   vWriteJob(pFile);
   
-  spTSP spTsp;
+  SP_Tsp SP_Tsp;
   pFile->vPrint(".%s(%s) "_Stz,
                 aAN[m_eAction],
-                spTsp.sz(m_iArg0));
+                SP_Tsp.sz(m_iArg0));
     
   pFile->vPrint("\n"_Stz);
 }

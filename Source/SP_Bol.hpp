@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* spBOL.hpp - Bol sprint helper                                              */
+/* SP_Bol.hpp - Bol sprint helper                                             */
 /*============================================================================*/
 #pragma once
 
 namespace ScanSprint
 {
-  class spBOL : public Sprint
+  class SP_Bol : public Sprint
   {
   public:
   
@@ -13,8 +13,8 @@ namespace ScanSprint
     Footer m_xFooter;
     
   public:
-    spBOL(void);
-    ~spBOL(void) noexcept(false);
+    SP_Bol(void);
+    ~SP_Bol(void) noexcept(false);
   
     Stz* sz(i8 iBol);
 

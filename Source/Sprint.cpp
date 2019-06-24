@@ -54,56 +54,56 @@ void Sprint::vInto(Stz *szTgt, void *avSrc, Column *pCol)
   switch (eDatum) {
       
     case DM_BCD: {
-      spBCD spBcd;
-      StrLib::vCopy(az,(char*)spBcd.sz(iValue));
+      SP_Bcd SP_Bcd;
+      StrLib::vCopy(az,(char*)SP_Bcd.sz(iValue));
       break;
     }
       
     case DM_BOL: {
-      spBOL spBol;
-      StrLib::vCopy(az,(char*)spBol.sz(iValue));
+      SP_Bol SP_Bol;
+      StrLib::vCopy(az,(char*)SP_Bol.sz(iValue));
       break;
     }
       
     case DM_DTE: {
-      spDTE spDte;
-      StrLib::vCopy(az,(char*)spDte.sz(iValue));
+      SP_Dte SP_Dte;
+      StrLib::vCopy(az,(char*)SP_Dte.sz(iValue));
       break;
     }
       
     case DM_FLT: {
-      spFLT spFlt;
-      StrLib::vCopy(az,(char*)spFlt.sz(*(d8*)avSrc));
+      SP_Flt SP_Flt;
+      StrLib::vCopy(az,(char*)SP_Flt.sz(*(d8*)avSrc));
       break;
     }
       
     case DM_INT: {
-      spINT spInt;
+      SP_Int spInt;
       StrLib::vCopy(az,(char*)spInt.sz(iValue));
       break;
     }
       
     case DM_IVL: {
-      spIVL spIvl;
+      SP_Ivl spIvl;
       StrLib::vCopy(az,(char*)spIvl.sz(iValue));
       break;
     }
       
     case DM_TME: {
-      spTME spTme;
-      StrLib::vCopy(az,(char*)spTme.sz(iValue));
+      SP_Tme SP_Tme;
+      StrLib::vCopy(az,(char*)SP_Tme.sz(iValue));
       break;
     }
       
     case DM_TSP: {
-      spTSP spTsp;
-      StrLib::vCopy(az,(char*)spTsp.sz(iValue));
+      SP_Tsp SP_Tsp;
+      StrLib::vCopy(az,(char*)SP_Tsp.sz(iValue));
       break;
     }
       
     case DM_VCH: {
-      spVCH spVch;
-      StrLib::vCopy(az,(char*)spVch.sz((char*)avSrc));
+      SP_Vch SP_Vch;
+      StrLib::vCopy(az,(char*)SP_Vch.sz((char*)avSrc));
       break;
     }
       

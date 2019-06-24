@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* spINT.hpp - Int sprint helper                                              */
+/* SP_Int.hpp - Int sprint helper                                             */
 /*============================================================================*/
 #pragma once
 
 namespace ScanSprint
 {
-  class spINT : public Sprint
+  class SP_Int : public Sprint
   {
   public:
   
@@ -13,8 +13,8 @@ namespace ScanSprint
     Footer m_xFooter;
     
   public:
-    spINT(void);
-    ~spINT(void) noexcept(false);
+    SP_Int(void);
+    ~SP_Int(void) noexcept(false);
   
     Stz* sz(i8 iInt);
 

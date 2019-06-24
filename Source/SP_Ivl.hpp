@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* spIVL.hpp - Ivl sprint helper                                              */
+/* SP_Ivl.hpp - Ivl sprint helper                                             */
 /*============================================================================*/
 #pragma once
 
 namespace ScanSprint
 {
-  class spIVL : public Sprint
+  class SP_Ivl : public Sprint
   {
   public:
   
@@ -13,8 +13,8 @@ namespace ScanSprint
     Footer m_xFooter;
     
   public:
-    spIVL(void);
-    ~spIVL(void) noexcept(false);
+    SP_Ivl(void);
+    ~SP_Ivl(void) noexcept(false);
   
     Stz* sz(i8 iIvl);
     Stz* sz(i8 iIvl, i8 iScale);

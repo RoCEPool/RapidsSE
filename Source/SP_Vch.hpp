@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* spVCH.hpp - Vch sprint helper                                              */
+/* SP_Vch.hpp - Vch sprint helper                                             */
 /*============================================================================*/
 #pragma once
 
 namespace ScanSprint
 {
-  class spVCH : public Sprint
+  class SP_Vch : public Sprint
   {
   public:
   
@@ -15,8 +15,8 @@ namespace ScanSprint
     Footer m_xFooter;
     
   public:
-    spVCH(void);
-    ~spVCH(void) noexcept(false);
+    SP_Vch(void);
+    ~SP_Vch(void) noexcept(false);
   
     Stz* sz(char* azVch);
     Stz* sz(Stz*  szVch);

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* spVCH.cpp - Vch sprint helper                                              */
+/* SP_Vch.cpp - Vch sprint helper                                             */
 /*============================================================================*/
 
 #include "ScanSprint.h"
@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-spVCH::spVCH(void)
+SP_Vch::SP_Vch(void)
 : Sprint(CN_SPVCH)
 {
   _precondition_(_MAGIC_,CN_SPVCH,_FOOTER_);
@@ -29,7 +29,7 @@ spVCH::spVCH(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-spVCH::~spVCH(void) noexcept(false)
+SP_Vch::~SP_Vch(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_SPVCH,_FOOTER_);
 }
@@ -41,7 +41,7 @@ spVCH::~spVCH(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* sprint Vch and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* spVCH::sz(char* azVch)
+Stz* SP_Vch::sz(char* azVch)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -77,7 +77,7 @@ Stz* spVCH::sz(char* azVch)
 /*----------------------------------------------------------------------------*/
 /* sprint Vch and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* spVCH::sz(Stz* szVch)
+Stz* SP_Vch::sz(Stz* szVch)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
@@ -92,7 +92,7 @@ Stz* spVCH::sz(Stz* szVch)
 /*----------------------------------------------------------------------------*/
 /* max                                                                        */
 /*----------------------------------------------------------------------------*/
-Stz* spVCH::szMax(void)
+Stz* SP_Vch::szMax(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -102,7 +102,7 @@ Stz* spVCH::szMax(void)
 /*----------------------------------------------------------------------------*/
 /* mid                                                                        */
 /*----------------------------------------------------------------------------*/
-Stz* spVCH::szMid(void)
+Stz* SP_Vch::szMid(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -112,7 +112,7 @@ Stz* spVCH::szMid(void)
 /*----------------------------------------------------------------------------*/
 /* min                                                                        */
 /*----------------------------------------------------------------------------*/
-Stz* spVCH::szMin(void)
+Stz* SP_Vch::szMin(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -127,7 +127,7 @@ Stz* spVCH::szMin(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* spVCH::aFooter(void)
+Footer* SP_Vch::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_SPVCH);
   

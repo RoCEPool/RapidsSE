@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* spBCD.hpp - Bcd sprint helper                                              */
+/* SP_Bcd.hpp - Bcd sprint helper                                             */
 /*============================================================================*/
 #pragma once
 
 namespace ScanSprint
 {
-  class spBCD : public Sprint
+  class SP_Bcd : public Sprint
   {
   public:
   
@@ -13,8 +13,8 @@ namespace ScanSprint
     Footer m_xFooter;
     
   public:
-    spBCD(void);
-    ~spBCD(void) noexcept(false);
+    SP_Bcd(void);
+    ~SP_Bcd(void) noexcept(false);
   
     Stz* sz(i8 iBcd);
     Stz* sz(i8 iBcd, i8 iScale);

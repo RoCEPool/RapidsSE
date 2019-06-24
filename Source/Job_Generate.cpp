@@ -275,7 +275,7 @@ void Job_Generate::vAddBcd(Column* pColumn, i8 iState)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
   
-  spBCD sp;
+  SP_Bcd sp;
 
   switch (iState) {
     case C_GEN_MIN: m_sRecord.vConcat(sp.szMin());  break;
@@ -294,7 +294,7 @@ void Job_Generate::vAddBol(Column* pColumn, i8 iState)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
   
-  spBOL sp;
+  SP_Bol sp;
   
   switch (iState) {
     case C_GEN_MIN: m_sRecord.vConcat(sp.szMin());  break;
@@ -313,7 +313,7 @@ void Job_Generate::vAddDte(Column* pColumn, i8 iState)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
   
-  spDTE sp;
+  SP_Dte sp;
   
   switch (iState) {
     case C_GEN_MIN: m_sRecord.vConcat(sp.szMin());  break;
@@ -332,7 +332,7 @@ void Job_Generate::vAddFlt(Column* pColumn, i8 iState)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
   
-  spFLT sp;
+  SP_Flt sp;
   
   switch (iState) {
     case C_GEN_MIN: m_sRecord.vConcat(sp.szMin());  break;
@@ -351,7 +351,7 @@ void Job_Generate::vAddInt(Column* pColumn, i8 iState)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
   
-  spINT sp;
+  SP_Int sp;
   
   switch (iState) {
     case C_GEN_MIN: m_sRecord.vConcat(sp.szMin());  break;
@@ -370,7 +370,7 @@ void Job_Generate::vAddIvl(Column* pColumn, i8 iState)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
   
-  spIVL sp;
+  SP_Ivl sp;
   
   switch (iState) {
     case C_GEN_MIN: m_sRecord.vConcat(sp.szMin());  break;
@@ -389,7 +389,7 @@ void Job_Generate::vAddStr(Column* pColumn, i8 iState)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
   
-  spVCH sp;
+  SP_Vch sp;
   
   switch (iState) {
     case C_GEN_MIN: m_sRecord.vConcat(sp.szMin());  break;
@@ -408,7 +408,7 @@ void Job_Generate::vAddTme(Column* pColumn, i8 iState)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
   
-  spTME sp;
+  SP_Tme sp;
   
   switch (iState) {
     case C_GEN_MIN: m_sRecord.vConcat(sp.szMin());  break;
@@ -427,7 +427,7 @@ void Job_Generate::vAddTsp(Column* pColumn, i8 iState)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
   
-  spTSP sp;
+  SP_Tsp sp;
   
   switch (iState) {
     case C_GEN_MIN: m_sRecord.vConcat(sp.szMin());  break;

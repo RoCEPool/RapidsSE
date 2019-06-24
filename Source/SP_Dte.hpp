@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* spDTE.hpp - Dte sprint helper                                              */
+/* SP_Dte.hpp - Dte sprint helper                                             */
 /*============================================================================*/
 #pragma once
 
 namespace ScanSprint
 {
-  class spDTE : public Sprint
+  class SP_Dte : public Sprint
   {
   public:
   
@@ -13,8 +13,8 @@ namespace ScanSprint
     Footer m_xFooter;
     
   public:
-    spDTE(void);
-    ~spDTE(void) noexcept(false);
+    SP_Dte(void);
+    ~SP_Dte(void) noexcept(false);
   
     Stz* sz(i8 iDte);
   

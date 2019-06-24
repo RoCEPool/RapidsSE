@@ -581,15 +581,15 @@ i8 giClassSize[]
   /*    */ sizeof(SN_Tsp),              // CN_SNTSP
   /*    */ sizeof(SN_Vch),              // CN_SNVCH
   /*125 */ sizeof(Socket),             // CN_SOCKET
-  /*    */ sizeof(spBCD),              // CN_SPBCD
-  /*    */ sizeof(spBOL),              // CN_SPBOL
-  /*    */ sizeof(spDTE),              // CN_SPDTE
-  /*    */ sizeof(spFLT),              // CN_SPFLT
-  /*    */ sizeof(spINT),              // CN_SPINT
-  /*    */ sizeof(spIVL),              // CN_SPIVL
-  /*    */ sizeof(spTME),              // CN_SPTME
-  /*    */ sizeof(spTSP),              // CN_SPTSP
-  /*    */ sizeof(spVCH),              // CN_SPVCH
+  /*    */ sizeof(SP_Bcd),              // CN_SPBCD
+  /*    */ sizeof(SP_Bol),              // CN_SPBOL
+  /*    */ sizeof(SP_Dte),              // CN_SPDTE
+  /*    */ sizeof(SP_Flt),              // CN_SPFLT
+  /*    */ sizeof(SP_Int),              // CN_SPINT
+  /*    */ sizeof(SP_Ivl),              // CN_SPIVL
+  /*    */ sizeof(SP_Tme),              // CN_SPTME
+  /*    */ sizeof(SP_Tsp),              // CN_SPTSP
+  /*    */ sizeof(SP_Vch),              // CN_SPVCH
   /*126 */ sizeof(Stack),              // CN_STACK
   /*    */ sizeof(Statistics),         // CN_STATISTICS
   /*127 */ sizeof(StepAccum),          // CN_STEPACCUM

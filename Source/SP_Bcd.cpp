@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* spBCD.cpp - Bcd sprint helper                                              */
+/* SP_Bcd.cpp - Bcd sprint helper                                            */
 /*============================================================================*/
 
 #include "ScanSprint.h"
@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-spBCD::spBCD(void)
+SP_Bcd::SP_Bcd(void)
 : Sprint(CN_SPBCD)
 {
   _precondition_(_MAGIC_,CN_SPBCD,_FOOTER_);
@@ -23,7 +23,7 @@ spBCD::spBCD(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-spBCD::~spBCD(void) noexcept(false)
+SP_Bcd::~SP_Bcd(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_SPBCD,_FOOTER_);
 }
@@ -35,7 +35,7 @@ spBCD::~spBCD(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* sprint Bcd and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* spBCD::sz(i8 iBcd)
+Stz* SP_Bcd::sz(i8 iBcd)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -45,7 +45,7 @@ Stz* spBCD::sz(i8 iBcd)
 /*----------------------------------------------------------------------------*/
 /* sprint Bcd and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* spBCD::sz(i8 iBcd, i8 iScale)
+Stz* SP_Bcd::sz(i8 iBcd, i8 iScale)
 {
   //! refer: https://en.wikipedia.org/wiki/Fixed-point_arithmetic
   
@@ -90,7 +90,7 @@ Stz* spBCD::sz(i8 iBcd, i8 iScale)
 /*----------------------------------------------------------------------------*/
 /* max                                                                        */
 /*----------------------------------------------------------------------------*/
-Stz* spBCD::szMax(void)
+Stz* SP_Bcd::szMax(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -100,7 +100,7 @@ Stz* spBCD::szMax(void)
 /*----------------------------------------------------------------------------*/
 /* mid                                                                        */
 /*----------------------------------------------------------------------------*/
-Stz* spBCD::szMid(void)
+Stz* SP_Bcd::szMid(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -110,7 +110,7 @@ Stz* spBCD::szMid(void)
 /*----------------------------------------------------------------------------*/
 /* min                                                                        */
 /*----------------------------------------------------------------------------*/
-Stz* spBCD::szMin(void)
+Stz* SP_Bcd::szMin(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -125,7 +125,7 @@ Stz* spBCD::szMin(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* spBCD::aFooter(void)
+Footer* SP_Bcd::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_SPBCD);
   

@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* spTME.hpp - Tme sprint helper                                              */
+/* SP_Tme.hpp - Tme sprint helper                                             */
 /*============================================================================*/
 #pragma once
 
 namespace ScanSprint
 {
-  class spTME : public Sprint
+  class SP_Tme : public Sprint
   {
   public:
   
@@ -13,8 +13,8 @@ namespace ScanSprint
     Footer m_xFooter;
     
   public:
-    spTME(void);
-    ~spTME(void) noexcept(false);
+    SP_Tme(void);
+    ~SP_Tme(void) noexcept(false);
   
     Stz* sz(i8 iTme);
   

@@ -219,9 +219,9 @@ void Record::vAppendBol(Column* pCol, DtmVal* pDtmVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  spBOL spBol;
+  SP_Bol SP_Bol;
   
-  m_sRecStr.vAppend(&m_azAppendCursor,spBol.sz(pDtmVal->m_wDtm.m_iBol));
+  m_sRecStr.vAppend(&m_azAppendCursor,SP_Bol.sz(pDtmVal->m_wDtm.m_iBol));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -265,7 +265,7 @@ void Record::vAppendInt(Column* pCol, DtmVal* pDtmVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  spINT spInt;
+  SP_Int spInt;
   
   m_sRecStr.vAppend(&m_azAppendCursor,spInt.sz(pDtmVal->m_wDtm.m_iInt));
 }
@@ -277,7 +277,7 @@ void Record::vAppendIvl(Column* pCol, DtmVal* pDtmVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
  
-  spIVL spIvl;
+  SP_Ivl spIvl;
 
   m_sRecStr.vAppend(&m_azAppendCursor,spIvl.sz(pDtmVal->m_wDtm.m_iIvl));
 }
@@ -289,9 +289,9 @@ void Record::vAppendTme(Column* pCol, DtmVal* pDtmVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  spTME spTme;
+  SP_Tme SP_Tme;
 
-  m_sRecStr.vAppend(&m_azAppendCursor,spTme.sz(pDtmVal->m_wDtm.m_iTme));
+  m_sRecStr.vAppend(&m_azAppendCursor,SP_Tme.sz(pDtmVal->m_wDtm.m_iTme));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -301,9 +301,9 @@ void Record::vAppendTsp(Column* pCol, DtmVal* pDtmVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  spTSP spTsp;
+  SP_Tsp SP_Tsp;
   
-  m_sRecStr.vAppend(&m_azAppendCursor,spTsp.sz(pDtmVal->m_wDtm.m_iTsp));
+  m_sRecStr.vAppend(&m_azAppendCursor,SP_Tsp.sz(pDtmVal->m_wDtm.m_iTsp));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -313,9 +313,9 @@ void Record::vAppendVch(Column* pCol, DtmVal* pDtmVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  spVCH spVch;
+  SP_Vch SP_Vch;
   
-  m_sRecStr.vAppend(&m_azAppendCursor,spVch.sz(pDtmVal->m_sVch.aChar()));
+  m_sRecStr.vAppend(&m_azAppendCursor,SP_Vch.sz(pDtmVal->m_sVch.aChar()));
 }
 
 /*----------------------------------------------------------------------------*/
