@@ -17,10 +17,19 @@ namespace Data
   
   static const i8 _3B_DSR = 3;  // [DSR] relative distance to shoco
   
+  static const i8 C_U_1B  = 1;  // <U> 1B over/tail line size in units
+  static const i8 C_W_1B  = 1;  // <W> 1B head line size in words
+  
   static const i8 C_OFFSET_UNITS = 0;
   static const i8 C_OFFSET_COMPRESSED = C_OFFSET_UNITS + C_U_1B;
 
   static const i8 C_HEAD_MIN_BYTES = 24;
+  
+  
+  static const i8 C_ERA_0 =  0; // 1900
+  static const i8 C_ERA_1 = 92; // 1992
+  static const i8 C_ERA_2 = 99; // 1999
+
   
   /*--------------------------------------------------------------------------*/
 
