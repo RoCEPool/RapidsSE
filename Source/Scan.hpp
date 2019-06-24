@@ -9,7 +9,7 @@ namespace ScanSprint
   {
   public:
   
-    i8 m_iValue;
+    Dtm m_wDtm;
   
     // must be last
     Footer m_xFooter;
