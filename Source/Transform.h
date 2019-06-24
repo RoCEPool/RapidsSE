@@ -22,6 +22,7 @@ using namespace Transform;
 #include "Scan.hpp"
 #include "Sprint.hpp"
 
+#include "Id.hpp"
 #include "Row.hpp"
 #include "Record.hpp"
 #include "IrwBuffer.hpp"
