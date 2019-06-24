@@ -28,8 +28,8 @@ void Prefetch::vFill(i8* aWord, i8 nWords)
 void Prefetch::vTest(void)
 {
   i8 iSum = 0;
-  const i8 iSize = C_1GB * 2;
-  const i8 nWords = iSize / 8;
+  static const i8 iSize = C_1GB * 2;
+  static const i8 nWords = iSize / 8;
   
   vTrace("Prefetch Utility\n"_Stz);
   

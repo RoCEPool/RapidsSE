@@ -35,15 +35,15 @@ bool Prompt::bPrompt_tpch(SePrompt* pPrompt)
   printf("C_7_BYTES %llu\n",C_7_BYTES);
   printf("C_8_BYTES %llu\n",C_8_BYTES);
   
-  const i8 C_TPCH_CUSTOMER =  150 * C_1K;
-  const i8 C_TPCH_LINEITEM = 6000 * C_1K;
-  const i8 C_TPCH_ORDERS   = 1500 * C_1K;
-  const i8 C_TPCH_PART     =  200 * C_1K;
-  const i8 C_TPCH_PARTSUPP =  800 * C_1K;
-  const i8 C_TPCH_SUPPLIER =   10 * C_1K;
+  static const i8 C_TPCH_CUSTOMER =  150 * C_1K;
+  static const i8 C_TPCH_LINEITEM = 6000 * C_1K;
+  static const i8 C_TPCH_ORDERS   = 1500 * C_1K;
+  static const i8 C_TPCH_PART     =  200 * C_1K;
+  static const i8 C_TPCH_PARTSUPP =  800 * C_1K;
+  static const i8 C_TPCH_SUPPLIER =   10 * C_1K;
 
-  const i8 C_TPCH_NATION   = 25;
-  const i8 C_TPCH_REGION   = 5;
+  static const i8 C_TPCH_NATION   = 25;
+  static const i8 C_TPCH_REGION   = 5;
 
   s32 sMagSF;
   

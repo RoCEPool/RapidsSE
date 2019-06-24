@@ -217,7 +217,7 @@ bool Job_SubWalker::bChunk(void)
   // prefetch T0
   vTrace("-- prefetch T0 ----------------------------------------------\n"_Stz);
   
-  const i8 C_AHEAD = C_1KB;
+  static const i8 C_AHEAD = C_1KB;
   
 
   for (i8 nAhead = 1; nAhead <= C_AHEAD; nAhead *= 2) {

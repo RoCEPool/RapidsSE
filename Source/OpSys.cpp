@@ -42,7 +42,7 @@ i8 OpSys::iSchedulerPeriod_us(void)
   return xKernelClockRate.hz;
   
 #else
-  const i8 C_BUFSIZ=512;
+  static const i8 C_BUFSIZ=512;
   char caBuf[C_BUFSIZ];
   double dFreq;
   i8 iFreq = 0;

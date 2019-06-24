@@ -5,7 +5,7 @@
 
 namespace Data
 {
-  const i8 ELEMENTS = 100; //(C_SIZE_LARGE_OBJECT - C_1KB) / sizeof(i8);
+  static const i8 ELEMENTS = 100; //(C_SIZE_LARGE_OBJECT - C_1KB) / sizeof(i8);
   
   class IntBuffer : public DataBuffer
   {
