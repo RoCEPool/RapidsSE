@@ -41,7 +41,7 @@ namespace Data
     void vAddCode(HeadLine* aHeadLine, Column* pCol,
                   eMC eMetaCode, Dtm wDataCode, i8 nDataSize,
                   i8& i_DataOffset_);
-    void vCodeRow(Encoding* pRowEnc);
+    void vCodeRow(Encoding* pEncoding);
 
   private:
     Footer* aFooter(void);

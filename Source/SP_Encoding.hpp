@@ -18,10 +18,10 @@ namespace Data
     SP_Encoding(void);
     ~SP_Encoding(void) noexcept(false);
 
-    void vRowEncoding(Encoding* pRowEncoding);
+    void vEncoding(Encoding* pEncoding);
   
     Stz* sz(void);
-    Stz* sz(Encoding* pRowEncoding);
+    Stz* sz(Encoding* pEncoding);
   
     Footer* aFooter(void);
   };

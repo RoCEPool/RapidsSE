@@ -57,7 +57,7 @@ namespace Data
     Footer* aFooter(void);
   };
   
-  Encoding* _pRowEncoding(void* aAddr);
+  Encoding* _pEncoding(void* aAddr);
 }
 
 /*============================================================================*/

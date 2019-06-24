@@ -41,7 +41,7 @@ SP_Encoding::~SP_Encoding(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* return Stz* of result                                                      */
 /*----------------------------------------------------------------------------*/
-void SP_Encoding::vRowEncoding(Encoding* pEncRow)
+void SP_Encoding::vEncoding(Encoding* pEncoding)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -49,11 +49,11 @@ void SP_Encoding::vRowEncoding(Encoding* pEncRow)
   
   char caLine[256];
 
-  for (i8 i_Col = 0; i_Col < pEncRow->m_nColumns; i_Col++) {
+  for (i8 i_Col = 0; i_Col < pEncoding->m_nColumns; i_Col++) {
   
     char* szCrs = &caLine[0];
     
-    Column* pCol = pEncRow->m_pColVec->pGet(i_Col);
+    Column* pCol = pEncoding->m_pColVec->pGet(i_Col);
     eDM eDatum   = pCol->eDatumType();
     Stz* szDatum = (Stz*)aDM[eDatum];
     
@@ -62,8 +62,8 @@ void SP_Encoding::vRowEncoding(Encoding* pEncRow)
     StrLib::vAppendPad(&szCrs,caLine,2);
     StrLib::vAppendChar(&szCrs,'[');
     StrLib::vAppendDecimal(&szCrs,i_Col);
-    StrLib::vAppendChar(&szCrs,pEncRow->xEncode[i_Col].m_bSplit ? '*' : ' ');
-    StrLib::vAppendDecimal(&szCrs,pEncRow->xEncode[i_Col].m_nOffset);
+    StrLib::vAppendChar(&szCrs,pEncoding->xEncode[i_Col].m_bSplit ? '*' : ' ');
+    StrLib::vAppendDecimal(&szCrs,pEncoding->xEncode[i_Col].m_nOffset);
     StrLib::vAppendChar(&szCrs,']');
 
     StrLib::vAppendPad(&szCrs,caLine,10);
@@ -73,18 +73,18 @@ void SP_Encoding::vRowEncoding(Encoding* pEncRow)
     StrLib::vAppendString(&szCrs,(char*)szDatum);
     
     StrLib::vAppendPad(&szCrs,caLine,35);
-    StrLib::vAppendString(&szCrs,(char*)aMC[pEncRow->xEncode[i_Col].m_eMetaCode]);
+    StrLib::vAppendString(&szCrs,(char*)aMC[pEncoding->xEncode[i_Col].m_eMetaCode]);
     
     StrLib::vAppendPad(&szCrs,caLine,50);
     StrLib::vAppendString(&szCrs,(char*)"C_"_Stz);
-    StrLib::vAppendDecimal(&szCrs,pEncRow->xEncode[i_Col].m_nDataSize);
+    StrLib::vAppendDecimal(&szCrs,pEncoding->xEncode[i_Col].m_nDataSize);
     StrLib::vAppendString(&szCrs,(char*)"B"_Stz);
     
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     
     StrLib::vAppendPad(&szCrs,caLine,58);
     
-   if (C_DATUM_NULL == pEncRow->xEncode[i_Col].m_wDataCode.m_iInt) {
+   if (C_DATUM_NULL == pEncoding->xEncode[i_Col].m_wDataCode.m_iInt) {
       StrLib::vAppendString(&szCrs,(char*)"null"_Stz);
       continue;
     }
@@ -93,63 +93,63 @@ void SP_Encoding::vRowEncoding(Encoding* pEncRow)
       case DM_BCD: {
         SP_Bcd SP_Bcd;
         StrLib::vAppendString(&szCrs,
-          (char*)SP_Bcd.sz(pEncRow->xEncode[i_Col].m_wDataCode.m_iBcd));
+          (char*)SP_Bcd.sz(pEncoding->xEncode[i_Col].m_wDataCode.m_iBcd));
         break;
       }
 
       case DM_BOL: {
         SP_Bol SP_Bol;
         StrLib::vAppendString(&szCrs,
-          (char*)SP_Bol.sz(pEncRow->xEncode[i_Col].m_wDataCode.m_iBol));
+          (char*)SP_Bol.sz(pEncoding->xEncode[i_Col].m_wDataCode.m_iBol));
         break;
       }
         
       case DM_DTE: {
         SP_Dte SP_Dte;
         StrLib::vAppendString(&szCrs,
-          (char*)SP_Dte.sz(pEncRow->xEncode[i_Col].m_wDataCode.m_iDte));
+          (char*)SP_Dte.sz(pEncoding->xEncode[i_Col].m_wDataCode.m_iDte));
         break;
       }
         
       case DM_FLT: {
         SP_Flt SP_Flt;
         StrLib::vAppendString(&szCrs,
-          (char*)SP_Flt.sz(*(d8*)&pEncRow->xEncode[i_Col].m_wDataCode.m_iInt));
+          (char*)SP_Flt.sz(*(d8*)&pEncoding->xEncode[i_Col].m_wDataCode.m_iInt));
         break;
       }
         
       case DM_INT: {
         SP_Int spInt;
         StrLib::vAppendString(&szCrs,
-          (char*)spInt.sz(pEncRow->xEncode[i_Col].m_wDataCode.m_iInt));
+          (char*)spInt.sz(pEncoding->xEncode[i_Col].m_wDataCode.m_iInt));
         break;
       }
         
       case DM_IVL: {
         SP_Ivl spIvl;
         StrLib::vAppendString(&szCrs,
-          (char*)spIvl.sz(pEncRow->xEncode[i_Col].m_wDataCode.m_iIvl));
+          (char*)spIvl.sz(pEncoding->xEncode[i_Col].m_wDataCode.m_iIvl));
         break;
       }
         
       case DM_TME: {
         SP_Tme SP_Tme;
         StrLib::vAppendString(&szCrs,
-          (char*)SP_Tme.sz(pEncRow->xEncode[i_Col].m_wDataCode.m_iTme));
+          (char*)SP_Tme.sz(pEncoding->xEncode[i_Col].m_wDataCode.m_iTme));
         break;
       }
         
       case DM_TSP: {
         SP_Tsp SP_Tsp;
         StrLib::vAppendString(&szCrs,
-          (char*)SP_Tsp.sz(pEncRow->xEncode[i_Col].m_wDataCode.m_iTsp));
+          (char*)SP_Tsp.sz(pEncoding->xEncode[i_Col].m_wDataCode.m_iTsp));
         break;
       }
         
       case DM_VCH: {
         SP_Vch SP_Vch;
         StrLib::vAppendString(&szCrs,
-          (char*)SP_Vch.sz((char*)pEncRow->xEncode[i_Col].m_wDataCode.m_iInt));
+          (char*)SP_Vch.sz((char*)pEncoding->xEncode[i_Col].m_wDataCode.m_iInt));
         break;
       }
         
@@ -178,11 +178,11 @@ Stz* SP_Encoding::sz(void)
 /*----------------------------------------------------------------------------*/
 /* sprint Vch and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Encoding::sz(Encoding* pRowEncoding)
+Stz* SP_Encoding::sz(Encoding* pEncoding)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  vRowEncoding(pRowEncoding);
+  vEncoding(pEncoding);
   
   return (Stz*) &m_caRow[0];
 }

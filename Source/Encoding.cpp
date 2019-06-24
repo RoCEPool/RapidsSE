@@ -15,11 +15,11 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Encoding* Data::_pRowEncoding(void* aAddr)
+Encoding* Data::_pEncoding(void* aAddr)
 {
-  Encoding* pRow = reinterpret_cast<Encoding*>(aAddr);
+  Encoding* pEncoding = reinterpret_cast<Encoding*>(aAddr);
   
-  return pRow;
+  return pEncoding;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -45,9 +45,9 @@ void* Encoding::operator new(size_t, void* aAddress)
 /*----------------------------------------------------------------------------*/
 void Encoding::operator delete(void* aAddr)
 {
-  Encoding* pRow = reinterpret_cast<Encoding*>(aAddr);
+  Encoding* pEncoding = reinterpret_cast<Encoding*>(aAddr);
   
-  HeapMem::vFree(pRow);
+  HeapMem::vFree(pEncoding);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -158,25 +158,25 @@ bool RowCompactor::bCompactRow(Row* pRow)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // encode the row
   
-  Encoding* pRowEnc = new Encoding(m_pColVec);
+  Encoding* pEncoding = new Encoding(m_pColVec);
   
-  pRowEnc->vEncode(pRow);
+  pEncoding->vEncode(pRow);
   
   //SP_Encoding hp_RowEnc;
   //vTrace("\n%s\n"_Stz,hp_RowEnc.sz(pRowEncoding));
   
-  pRowEnc->vSplitOver(256,m_pColVec->nItems());
+  pEncoding->vSplitOver(256,m_pColVec->nItems());
   
   //vTrace("\n%s\n"_Stz,hp_RowEnc.sz(pRowEncoding));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for space in target nub
   
-  i8 nSpaceNeeded = pRowEnc->nBytesNeeded();
+  i8 nSpaceNeeded = pEncoding->nBytesNeeded();
   
   if (! m_pCrwNub->bHasSpace(nSpaceNeeded)) {
     m_nTotalBuffers++;
-    delete pRowEnc;
+    delete pEncoding;
     return false;
   }
   
@@ -190,7 +190,7 @@ bool RowCompactor::bCompactRow(Row* pRow)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compact encoded row into a crw
   
-  vCodeRow(pRowEnc);
+  vCodeRow(pEncoding);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // analyse free space in the into head
@@ -202,7 +202,7 @@ bool RowCompactor::bCompactRow(Row* pRow)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  delete pRowEnc;
+  delete pEncoding;
   
   return true;
 }
@@ -267,7 +267,7 @@ void RowCompactor::vAddCode(HeadLine* aHeadLine, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* compact the encoding                                                       */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vCodeRow(Encoding* pRowEnc)
+void RowCompactor::vCodeRow(Encoding* pEncoding)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -281,9 +281,9 @@ void RowCompactor::vCodeRow(Encoding* pRowEnc)
     
     Column* pCol  = m_pColVec->pGet(i_Col);
     
-    eMC eMetaCode = pRowEnc->xEncode[i_Col].m_eMetaCode;
-    Dtm wDataCode = pRowEnc->xEncode[i_Col].m_wDataCode;
-    i8  nDataSize = pRowEnc->xEncode[i_Col].m_nDataSize;
+    eMC eMetaCode = pEncoding->xEncode[i_Col].m_eMetaCode;
+    Dtm wDataCode = pEncoding->xEncode[i_Col].m_wDataCode;
+    i8  nDataSize = pEncoding->xEncode[i_Col].m_nDataSize;
     
     //vDumpHead("vHeadCode a"_Stz,m_aCrw,m_pColVec);
     if (8 == i_Col)
