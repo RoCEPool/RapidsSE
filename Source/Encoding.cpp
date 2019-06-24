@@ -27,7 +27,7 @@ Encoding* Data::_pRowEncoding(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Encoding::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_ROWENCODING);
+  void* pObject = HeapMem::pAllocate(CN_ENCODING);
   
   return pObject;
 }
@@ -54,9 +54,9 @@ void Encoding::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Encoding::Encoding(ColumnVec* pColVec)
-: Object(CN_ROWENCODING)
+: Object(CN_ENCODING)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
   m_pColVec  = pColVec;
   m_nColumns = m_pColVec->nItems();
@@ -73,14 +73,14 @@ Encoding::Encoding(ColumnVec* pColVec)
   }
   
 #ifdef WITH_CHECK_INITIALISED
-  m_xWsp.vZero(CN_ROWENCODING);
+  m_xWsp.vZero(CN_ENCODING);
 #else
   // m_xWsp
 #endif
   
-  _checkInitialised_(CN_ROWENCODING);
+  _checkInitialised_(CN_ENCODING);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -100,7 +100,7 @@ Encoding::~Encoding(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 i8 Encoding::nBytesNeeded(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
   return m_nBytesNeeded;
 }
@@ -110,7 +110,7 @@ i8 Encoding::nBytesNeeded(void)
 /*----------------------------------------------------------------------------*/
 void Encoding::vEncode(Row* pRow)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
   vReset();
   
@@ -214,7 +214,7 @@ void Encoding::vEncode(Row* pRow)
 /*----------------------------------------------------------------------------*/
 void Encoding::vSplitOver(i8 nHeadSize, i8 nMetaBytes)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
 
   i8 i_Col;
   for (i_Col = 0; i_Col < m_nColumns; i_Col++)
@@ -266,7 +266,7 @@ void Encoding::vSplitOver(i8 nHeadSize, i8 nMetaBytes)
 void Encoding::vEncodeBcd(Dtm wBcd,
                              eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
   wDataCode_.m_iBcd = wBcd.m_iBcd;
 
@@ -299,7 +299,7 @@ void Encoding::vEncodeBcd(Dtm wBcd,
 void Encoding::vEncodeBol(Dtm wBol,
                              eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
   wDataCode_.m_iBol = wBol.m_iBol;
 
@@ -319,7 +319,7 @@ void Encoding::vEncodeBol(Dtm wBol,
 void Encoding::vEncodeDte(Dtm wDte,
                              eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
   wDataCode_.m_iDte = wDte.m_iDte;
 
@@ -345,7 +345,7 @@ void Encoding::vEncodeDte(Dtm wDte,
 void Encoding::vEncodeFlt(Dtm wFlt,
                              eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
   wDataCode_.m_dFlt = wFlt.m_dFlt;
 
@@ -360,7 +360,7 @@ void Encoding::vEncodeFlt(Dtm wFlt,
 void Encoding::vEncodeInt(Dtm wInt,
                              eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
   wDataCode_.m_iInt = wInt.m_iInt;
   
@@ -400,7 +400,7 @@ void Encoding::vEncodeInt(Dtm wInt,
 void Encoding::vEncodeIvl(Dtm wIvl,
                              eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
   wDataCode_.m_iIvl = wIvl.m_iIvl;
 
@@ -414,7 +414,7 @@ void Encoding::vEncodeIvl(Dtm wIvl,
 void Encoding::vEncodeTme(Dtm wTme,
                              eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
   wDataCode_.m_iTme = wTme.m_iTme;
   
@@ -428,7 +428,7 @@ void Encoding::vEncodeTme(Dtm wTme,
 void Encoding::vEncodeTsp(Dtm wTsp,
                              eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
   wDataCode_.m_iTsp = wTsp.m_iTsp;
   
@@ -442,7 +442,7 @@ void Encoding::vEncodeTsp(Dtm wTsp,
 void Encoding::vEncodeVch(Dtm wVch,
                              eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null case
@@ -471,7 +471,7 @@ void Encoding::vEncodeVch(Dtm wVch,
 /*----------------------------------------------------------------------------*/
 void Encoding::vReset(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
   m_nBytesNeeded = C_UNKNOWN;
   
@@ -483,7 +483,7 @@ void Encoding::vReset(void)
   }
   
 #ifdef WITH_CHECK_INITIALISED
-  m_xWsp.vZero(CN_ROWENCODING);
+  m_xWsp.vZero(CN_ENCODING);
 #else
   m_xWsp.vInit();
 #endif
@@ -499,7 +499,7 @@ void Encoding::vReset(void)
 /*----------------------------------------------------------------------------*/
 Footer* Encoding::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING);
   
   return &m_xFooter;
 }
