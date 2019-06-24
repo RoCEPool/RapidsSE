@@ -39,7 +39,7 @@ using namespace Base;
 #include "AxiomaticConstants.h"
 #include "LimitsFormats.h"
 #include "Structs.h"
-
+#include "UsefulConstants.h"
 
 #include "Dtm.hpp"
 

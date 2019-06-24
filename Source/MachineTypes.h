@@ -45,16 +45,6 @@ namespace Base
   const u8 C_WORDS_PER_DOUBLE_WORD = 2;
   const u8 C_WORDS_PER_QUAD_WORD   = 4;
   const u8 C_WORDS_PER_CACHE_LINE  = 8;
-  
-  const i8 C_0B = 0;
-  const i8 C_1B = 1;
-  const i8 C_2B = 2;
-  const i8 C_3B = 3;
-  const i8 C_4B = 4;
-  const i8 C_5B = 5;
-  const i8 C_6B = 6;
-  const i8 C_7B = 7;
-  const i8 C_8B = 8;
 }
 
 /*============================================================================*/
