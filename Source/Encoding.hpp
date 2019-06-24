@@ -1,20 +1,19 @@
 /*============================================================================*/
-/* RowEncoding.hpp -- Row Encoding                                            */
+/* Encoding.hpp -- Row Encoding                                               */
 /*============================================================================*/
 #pragma once
 
 namespace Data
 {
-  class RowEncoding : public Object,
-                      private RowCoder
+  class Encoding : public Object,
+                   private RowCoder
   {
   public:
     ColumnVec* m_pColVec;
     i8         m_nColumns;
     i8         m_nBytesNeeded;
   
-  
-    // - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - -
   
     struct {
       eMC  m_eMetaCode;
@@ -34,8 +33,8 @@ namespace Data
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
 
-    RowEncoding(ColumnVec* pColVec);
-    ~RowEncoding(void) noexcept(false);
+    Encoding(ColumnVec* pColVec);
+    ~Encoding(void) noexcept(false);
   
     i8   nBytesNeeded(void);
     void vEncode(Row* pRow);
@@ -58,7 +57,7 @@ namespace Data
     Footer* aFooter(void);
   };
   
-  RowEncoding* _pRowEncoding(void* aAddr);
+  Encoding* _pRowEncoding(void* aAddr);
 }
 
 /*============================================================================*/

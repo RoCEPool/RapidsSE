@@ -158,11 +158,11 @@ bool RowCompactor::bCompactRow(Row* pRow)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // encode the row
   
-  RowEncoding* pRowEnc = new RowEncoding(m_pColVec);
+  Encoding* pRowEnc = new Encoding(m_pColVec);
   
   pRowEnc->vEncode(pRow);
   
-  //SP_RowEncoding hp_RowEnc;
+  //SP_Encoding hp_RowEnc;
   //vTrace("\n%s\n"_Stz,hp_RowEnc.sz(pRowEncoding));
   
   pRowEnc->vSplitOver(256,m_pColVec->nItems());
@@ -267,7 +267,7 @@ void RowCompactor::vAddCode(HeadLine* aHeadLine, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* compact the encoding                                                       */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vCodeRow(RowEncoding* pRowEnc)
+void RowCompactor::vCodeRow(Encoding* pRowEnc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   

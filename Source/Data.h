@@ -36,13 +36,13 @@ typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,Table,
 
 //------------------------------------------------------------------------------
 
+#include "Encoding.hpp"
+#include "SP_Encoding.hpp"
 
 #include "CrwBuffer.hpp"
-#include "Encoding.hpp"
 #include "RowCompactor.hpp"
 #include "RowExtractor.hpp"
 #include "RowInflator.hpp"
-#include "SP_RowEncoding.hpp"
 
 #include "BufferCursor.hpp"
 #include "IntBuffer.hpp"

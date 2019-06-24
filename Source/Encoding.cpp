@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RowEncoding.cpp -- RowEncoding Encoding                                    */
+/* Encoding.cpp -- Row Encoding                                               */
 /*============================================================================*/
 
 #include "Transform.h"
@@ -15,9 +15,9 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-RowEncoding* Data::_pRowEncoding(void* aAddr)
+Encoding* Data::_pRowEncoding(void* aAddr)
 {
-  RowEncoding* pRow = reinterpret_cast<RowEncoding*>(aAddr);
+  Encoding* pRow = reinterpret_cast<Encoding*>(aAddr);
   
   return pRow;
 }
@@ -25,7 +25,7 @@ RowEncoding* Data::_pRowEncoding(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* RowEncoding::operator new(size_t)
+void* Encoding::operator new(size_t)
 {
   void* pObject = HeapMem::pAllocate(CN_ROWENCODING);
   
@@ -35,7 +35,7 @@ void* RowEncoding::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* perform new of row buffer for given address                                */
 /*----------------------------------------------------------------------------*/
-void* RowEncoding::operator new(size_t, void* aAddress)
+void* Encoding::operator new(size_t, void* aAddress)
 {
   return aAddress;
 }
@@ -43,9 +43,9 @@ void* RowEncoding::operator new(size_t, void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::operator delete(void* aAddr)
+void Encoding::operator delete(void* aAddr)
 {
-  RowEncoding* pRow = reinterpret_cast<RowEncoding*>(aAddr);
+  Encoding* pRow = reinterpret_cast<Encoding*>(aAddr);
   
   HeapMem::vFree(pRow);
 }
@@ -53,7 +53,7 @@ void RowEncoding::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-RowEncoding::RowEncoding(ColumnVec* pColVec)
+Encoding::Encoding(ColumnVec* pColVec)
 : Object(CN_ROWENCODING)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
@@ -86,7 +86,7 @@ RowEncoding::RowEncoding(ColumnVec* pColVec)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-RowEncoding::~RowEncoding(void) noexcept(false)
+Encoding::~Encoding(void) noexcept(false)
 {
 }
 
@@ -98,7 +98,7 @@ RowEncoding::~RowEncoding(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* encode row                                                                 */
 /*----------------------------------------------------------------------------*/
-i8 RowEncoding::nBytesNeeded(void)
+i8 Encoding::nBytesNeeded(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
   
@@ -108,7 +108,7 @@ i8 RowEncoding::nBytesNeeded(void)
 /*----------------------------------------------------------------------------*/
 /* encode row                                                                 */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::vEncode(Row* pRow)
+void Encoding::vEncode(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
   
@@ -212,7 +212,7 @@ void RowEncoding::vEncode(Row* pRow)
 /*----------------------------------------------------------------------------*/
 /* split at headSize for overflow (if necessary)                              */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::vSplitOver(i8 nHeadSize, i8 nMetaBytes)
+void Encoding::vSplitOver(i8 nHeadSize, i8 nMetaBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
 
@@ -263,7 +263,7 @@ void RowEncoding::vSplitOver(i8 nHeadSize, i8 nMetaBytes)
 /*----------------------------------------------------------------------------*/
 /* encode Bcd                                                                 */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::vEncodeBcd(Dtm wBcd,
+void Encoding::vEncodeBcd(Dtm wBcd,
                              eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
@@ -296,7 +296,7 @@ void RowEncoding::vEncodeBcd(Dtm wBcd,
 /*----------------------------------------------------------------------------*/
 /* encode Bol                                                                 */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::vEncodeBol(Dtm wBol,
+void Encoding::vEncodeBol(Dtm wBol,
                              eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
@@ -316,7 +316,7 @@ void RowEncoding::vEncodeBol(Dtm wBol,
 /*----------------------------------------------------------------------------*/
 /* encode Dte                                                                 */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::vEncodeDte(Dtm wDte,
+void Encoding::vEncodeDte(Dtm wDte,
                              eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
@@ -342,7 +342,7 @@ void RowEncoding::vEncodeDte(Dtm wDte,
 /*----------------------------------------------------------------------------*/
 /* encode Flt                                                                 */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::vEncodeFlt(Dtm wFlt,
+void Encoding::vEncodeFlt(Dtm wFlt,
                              eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
@@ -357,7 +357,7 @@ void RowEncoding::vEncodeFlt(Dtm wFlt,
 /*----------------------------------------------------------------------------*/
 /* encode Int                                                                 */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::vEncodeInt(Dtm wInt,
+void Encoding::vEncodeInt(Dtm wInt,
                              eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
@@ -397,7 +397,7 @@ void RowEncoding::vEncodeInt(Dtm wInt,
 /*----------------------------------------------------------------------------*/
 /* encode Ivl                                                                 */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::vEncodeIvl(Dtm wIvl,
+void Encoding::vEncodeIvl(Dtm wIvl,
                              eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
@@ -411,7 +411,7 @@ void RowEncoding::vEncodeIvl(Dtm wIvl,
 /*----------------------------------------------------------------------------*/
 /* encode Tme                                                                 */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::vEncodeTme(Dtm wTme,
+void Encoding::vEncodeTme(Dtm wTme,
                              eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
@@ -425,7 +425,7 @@ void RowEncoding::vEncodeTme(Dtm wTme,
 /*----------------------------------------------------------------------------*/
 /* encode Tsp                                                                 */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::vEncodeTsp(Dtm wTsp,
+void Encoding::vEncodeTsp(Dtm wTsp,
                              eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
@@ -439,7 +439,7 @@ void RowEncoding::vEncodeTsp(Dtm wTsp,
 /*----------------------------------------------------------------------------*/
 /* encode Vch                                                                 */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::vEncodeVch(Dtm wVch,
+void Encoding::vEncodeVch(Dtm wVch,
                              eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
@@ -469,7 +469,7 @@ void RowEncoding::vEncodeVch(Dtm wVch,
 /*----------------------------------------------------------------------------*/
 /* reset all encodings                                                        */
 /*----------------------------------------------------------------------------*/
-void RowEncoding::vReset(void)
+void Encoding::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING,_FOOTER_);
   
@@ -497,7 +497,7 @@ void RowEncoding::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* RowEncoding::aFooter(void)
+Footer* Encoding::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWENCODING);
   
