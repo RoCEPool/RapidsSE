@@ -2,7 +2,7 @@
 /* Key.cpp -- key part of an index entry                                      */
 /*============================================================================*/
 
-#include "Indexes.h"
+#include "Transform.h"
 
 #include "StorageEngine.h"
 
@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Key* Indexes::_aKey(void* aAddr)
+Key* Transform::_aKey(void* aAddr)
 {
   Key* aKey = reinterpret_cast<Key*>(aAddr);
   
