@@ -86,7 +86,7 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
           //MemLib::vWordDump(aOverLine,32);
           
           eMetaCode = * aAdd<eMC*>(aOverLine,C_U_1B);
-          ayDataByte = aAdd<byte*>(aOverLine,C_U_1B + _1B_M);
+          ayDataByte = aAdd<byte*>(aOverLine,C_U_1B + C_M_1B);
           goto L_SkipCodeSwitch;
           break;
         }
@@ -325,7 +325,7 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
         i_Tail_rel = wWord.m_iI8;
         aTail = aHeadLine->aGetTailRel(i_Tail_rel);
         nLength = aTail->w8_1B(+ C_U_1B);
-        MemLib::vCopy(acString,(byte*)aTail+C_U_1B+_1B_L,nLength,CN_ROWCOMPACTOR);
+        MemLib::vCopy(acString,(byte*)aTail+C_U_1B+C_L_1B,nLength,CN_ROWCOMPACTOR);
         *(char**)(aiColVal++) = acString;
         acString += nLength;
         *acString++ = '\0';
@@ -389,13 +389,13 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
         wWord.m_yaByte[1] = *ayDataByte++;
         i_Tail_rel = wWord.m_iI8;
         aTail  = aHeadLine->aGetTailRel(i_Tail_rel);
-        nCompressed = aTail->w8_1B(C_OFFSET_COMPRESSED);
+        nCompressed = aTail->w8_1B(C_COMPRESSED_OFFSET);
         nLength =
         Compress::iFromShoco(acString,                 // decompressed dest
                              sizeof(caString),          // max destination
                              ((byte*)aTail)       // compressed source
                                + C_U_1B
-                               + _1B_C,
+                               + C_C_1B,
                              nCompressed);             // bytes compressed
         *(char**)(aiColVal++) = acString;
         acString += nLength;
@@ -467,7 +467,7 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
         //MemLib::vWordDump(aOverLine,32);
 
         eMetaCode = * aAdd<eMC*>(aOverLine,C_U_1B);
-        ayDataByte = aAdd<byte*>(aOverLine,C_U_1B + _1B_M);
+        ayDataByte = aAdd<byte*>(aOverLine,C_U_1B + C_M_1B);
         goto L_MetaCodeSwitch;
         break;
       }
@@ -968,7 +968,7 @@ void RowInflator::vDecodeVchShocoDup(DtmVal* pDtmVal, HeadLine* aHeadLine,
    
    */
   
-  i8 i_Dsr = aHeadLine->wGetLogical(i_Offset,_3B_DSR);
+  i8 i_Dsr = aHeadLine->wGetLogical(i_Offset,C_DSR_3B);
   
   byte* ayC_Shoco = aAdd<byte*>(aHeadLine,( + i_Dsr )); //! WARNING
   
@@ -977,7 +977,7 @@ void RowInflator::vDecodeVchShocoDup(DtmVal* pDtmVal, HeadLine* aHeadLine,
   i8 nDecompressed =
   Compress::iFromShoco((char*)pDtmVal->m_sVch.aChar(),
                        pDtmVal->m_sVch.nSpace(),
-                       ayC_Shoco + _1B_C,
+                       ayC_Shoco + C_C_1B,
                        nCompressed);
   ASSERT(nDecompressed > 0);
   pDtmVal->m_nChars = nDecompressed;
@@ -1006,13 +1006,13 @@ void RowInflator::vDecodeVchShocoFit(DtmVal* pDtmVal, HeadLine* aHeadLine,
    <shoco...> being the shoco compressed bytes
    */
   
-  i8 nCompressed = aHeadLine->wGetLogical(i_Offset,_1B_C);
+  i8 nCompressed = aHeadLine->wGetLogical(i_Offset,C_C_1B);
   //RASSERT(nCompressed <= 56);
   
   i8 nDecompressed =
   Compress::iFromShoco((char*)pDtmVal->m_sVch.aChar(),
                        pDtmVal->m_sVch.nSpace(),
-                       aHeadLine->ayAdrLogical(i_Offset + _1B_C),
+                       aHeadLine->ayAdrLogical(i_Offset + C_C_1B),
                        //((byte*)aHeadLine)+i_Offset+1,
                        nCompressed);
   ASSERT(nDecompressed > 0);
@@ -1097,15 +1097,15 @@ void RowInflator::vDecodeVchShocoTail(DtmVal* pDtmVal, HeadLine* aHeadLine,
    <shoco...> being the shoco compressed bytes
    */
   
-  i8 nCompressed = aShocoTail->w8_1B(C_OFFSET_COMPRESSED);
+  i8 nCompressed = aShocoTail->w8_1B(C_COMPRESSED_OFFSET);
   //RASSERT(nCompressed <= 4);
   
   i8 nDecompressed =
   Compress::iFromShoco(pDtmVal->m_sVch.aChar(),   // decompressed destination
                        255,                      // max destination
                        ((byte*)aShocoTail)       // from compressed source
-                       + C_OFFSET_COMPRESSED
-                       + _1B_C,
+                       + C_COMPRESSED_OFFSET
+                       + C_C_1B,
                        nCompressed);             // bytes compressed
   ASSERT(nDecompressed);
   pDtmVal->m_nChars = nDecompressed;
@@ -1134,7 +1134,7 @@ void RowInflator::vDecodeVchStringTail(DtmVal* pDtmVal, HeadLine* aHeadLine,
    */
   
   i8 nLength = aTail_str->w8_1B(+ C_U_1B);
-  byte* ayString = (byte*)aTail_str + C_U_1B + _1B_L;
+  byte* ayString = (byte*)aTail_str + C_U_1B + C_L_1B;
   
   MemLib::vCopy((byte*)pDtmVal->m_sVch.aChar(),
                 (byte*)ayString,

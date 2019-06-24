@@ -170,7 +170,7 @@ eMC HeadLine::eGetEncoding(Column* pCol, i8 i_BaseOffset,
   
   eMC eEncoding = eMetaCode(i_ForCol);
   if (MC_OVERFLOW_2T == eEncoding) {
-    i_Offset_ = nBytes() + C_U_1B + _1B_M;
+    i_Offset_ = nBytes() + C_U_1B + C_M_1B;
     OverLine* aOverLine = aGetOver();
     eEncoding = (eMC)aOverLine->w8_1B(1);
   }
