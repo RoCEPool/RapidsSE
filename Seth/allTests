@@ -4,6 +4,7 @@ seth.sh -f tests/Examples/testList
 seth.sh -f tests/Misc/testList
 seth.sh -f tests/PartitionKey/testList
 //seth.sh -f tests/Insert/testList
+seth.sh -f tests/Retrieve/testList
 seth.sh -f tests/Select/testList
 seth.sh -f tests/Table/testList
 seth.sh -f tests/Load/testList

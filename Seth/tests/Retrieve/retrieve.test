@@ -1,0 +1,146 @@
+/*----------------------------------------------------------------------------*/
+/* boolean.test -- BOOLEAN DATUM tests                                        */
+/*----------------------------------------------------------------------------*/
+
+// (1) create a table
+create table retTbl (
+dec_col1  DECIMAL(10,3) NOT NULL,
+vch_col2  VARCHAR(32) NOT NULL,
+int_col3  INTEGER     NOT NULL,
+int_col4  INTEGER     NOT NULL,
+ivl_col5  DECIMAL(10,2) NOT NULL,
+dec_col6  DECIMAL,
+tsp_col7  TIMESTAMP   NOT NULL,
+bol_col8  BOOLEAN     NOT NULL
+);
+success
+
+ld retTbl "/DATA/Retrieve/retrieve.csv" ;
+success
+
+// check no of rows
+fetch retTbl;
+rows: 10
+
+fetch retrieve retTbl dec_col1 print;
+rows:
+  (1007.008)
+  (-1008.008)
+  (1000.000)
+  (1004.003)
+  (1002.002)
+  (1003.003)
+  (1006.006)
+  (1001.000)
+  (1005.006)
+  (1009.009)
+
+fetch retrieve retTbl vch_col2 print;
+rows:
+  ('one')
+  ('five')
+  ('nine')
+  ('seven')
+  ('eight')
+  ('zero')
+  ('three')
+  ('two')
+  ('three')
+  ('six')
+
+fetch retrieve retTbl int_col3 print;
+rows:
+  (102)
+  (103)
+  (106)
+  (107)
+  (108)
+  (100)
+  (103)
+  (101)
+  (105)
+  (109)
+
+fetch retrieve retTbl int_col4 print;
+rows:
+  (1)
+  (5)
+  (9)
+  (7)
+  (8)
+  (2)
+  (3)
+  (6)
+  (0)
+  (3)
+
+fetch retrieve retTbl ivl_col5 print;
+rows:
+  (2.00)
+  (3.00)
+  (6.01)
+  (0.00)
+  (3.00)
+  (1.00)
+  (5.01)
+  (9.01)
+  (7.01)
+  (8.01)
+
+fetch retrieve retTbl dec_col6 print;
+rows:
+  (1007)
+  (9223372036854776)
+  (123456789012345679)
+  (null)
+  (1002)
+  (null)
+  (-9223372036854775806)
+  (1001)
+  (9223372036854775806)
+  (-9223372036854776)
+
+fetch retrieve retTbl tsp_col7 print;
+rows:
+  (TIMESTAMP '1907-01-01 00:00:00')
+  (TIMESTAMP '1908-01-01 00:00:00')
+  (TIMESTAMP '1902-01-01 00:00:00')
+  (TIMESTAMP '1903-01-01 00:00:00')
+  (TIMESTAMP '1906-01-01 00:00:00')
+  (TIMESTAMP '1901-01-01 00:00:00')
+  (TIMESTAMP '1905-01-01 00:00:00')
+  (TIMESTAMP '1909-01-01 00:00:00')
+  (TIMESTAMP '1900-01-01 00:00:00')
+  (TIMESTAMP '1903-01-01 00:00:00')
+
+fetch retrieve retTbl bol_col8 print;
+rows:
+  (false)
+  (true)
+  (true)
+  (false)
+  (false)
+  (false)
+  (false)
+  (true)
+  (false)
+  (true)
+
+// drop the table
+drop table retTbl;
+success
+
+// check existence of table
+lstbl;
+rows: 0
+
+CLEANUP {
+  
+  // drop the table
+  drop table retTbl;
+  mute
+  
+  bye;
+  mute
+}
+
