@@ -222,7 +222,6 @@ void Encoding::vEncodeBcd(Dtm wBcd, Column* pCol)
     return;
   }
   
-#ifdef WITH_ENCODING_BCD_DIGIT
   if (MC_1B == xCol[i_Col].m_eMetaCode) {
     
     i8 iBcd1B = wBcd.m_iBcd;
@@ -233,7 +232,6 @@ void Encoding::vEncodeBcd(Dtm wBcd, Column* pCol)
     }
     
   }
-#endif
   
   xCol[i_Col].m_nDataSize = xCol[i_Col].m_eMetaCode;
 }
@@ -320,8 +318,7 @@ void Encoding::vEncodeInt(Dtm wInt, Column* pCol)
     return;
   }
   
-#ifdef WITH_ENCODING_INT_DIGIT
-  
+  // digit
   if (-1 == wInt.m_iInt) {
     xCol[i_Col].m_eMetaCode = MC_MINUS_ONE;
     xCol[i_Col].m_nDataSize = C_0B;
@@ -338,7 +335,6 @@ void Encoding::vEncodeInt(Dtm wInt, Column* pCol)
     }
     
   }
-#endif
   
   xCol[i_Col].m_nDataSize = xCol[i_Col].m_eMetaCode;
 }

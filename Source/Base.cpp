@@ -84,15 +84,7 @@ void Base::vTraceWith(void)
 #ifdef WITH_TRACE_DECODING
   vTrace("  WITH_TRACE_DECODING\n"_Stz);
 #endif
-  
-#ifdef WITH_ENCODING_BCD_DIGIT
-  vTrace("  WITH_ENCODING_BCD_DIGIT\n"_Stz);
-#endif
-    
-#ifdef WITH_ENCODING_INT_DIGIT
-  vTrace("  WITH_ENCODING_INT_DIGIT\n"_Stz);
-#endif
-  
+        
 #ifdef WITH_ENCODING_VCH_SMALL
   vTrace("  WITH_ENCODING_VCH_SMALL\n"_Stz);
 #endif
