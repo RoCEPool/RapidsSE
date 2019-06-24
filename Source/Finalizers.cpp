@@ -55,6 +55,7 @@ pFINALIZE *gpFinalize[]
   /* 35 */ &Finalize::vUndefined,         // CN_DIR
   /*    */ &Finalize::vUndefined,         // CN_DTMVAL
 
+  /*    */ &Finalize::vUndefined,         // CN_ENCODING
   /* 36 */ &Finalize::vUndefined,         // CN_ENT
   /* 37 */ &Finalize::vUndefined,         // CN_ENTBUFFER
   /* 64 */ &Finalize::vUndefined,         // CN_ENTWRK
@@ -239,7 +240,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_ROW
   /*102 */ &Finalize::vUndefined,         // CN_ROWAGG
   /*    */ &Finalize::vUndefined,         // CN_ROWCOMPACTOR
-  /*    */ &Finalize::vUndefined,         // CN_ENCODING
   /*105 */ &Finalize::vUndefined,         // CN_ROWONCE
   /*    */ &Finalize::vUndefined,         // CN_ROWTRAY
   

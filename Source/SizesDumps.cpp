@@ -58,6 +58,7 @@ pDUMPFUN *gpDump[]
   /* 35 */ &Dump::vInvalid,         // CN_DIR
   /*    */ &Dump::vDummy,           // CN_DTMVAL
 
+  /*    */ &Dump::vUndefined,       // CN_ENCODING
   /* 36 */ &Dump::vDummy,           // CN_ENT
   /* 37 */ &Dump::vDummy,           // CN_ENTBUFFER
   /* 64 */ &Dump::vInvalid,         // CN_ENTWRK
@@ -244,7 +245,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vUndefined,       // CN_ROW
   /*102 */ &Dump::vUndefined,       // CN_ROWAGG
   /*    */ &Dump::vUndefined,       // CN_ROWCOMPACTOR
-  /*    */ &Dump::vUndefined,       // CN_ENCODING
   /*105 */ &Dump::vUndefined,       // CN_ROWONCE
   /*    */ &Dump::vUndefined,       // CN_ROWTRAY
   
@@ -366,8 +366,9 @@ i8 giClassSize[]
   /* 34 */ sizeof(DicPath),            // CN_DICPATH
   /* 34 */ sizeof(DicStack),           // CN_DICSTACK
   /* 35 */ sizeof(Dir),                // CN_DIR
-  /*    */ sizeof(DtmVal),              // CN_DTMVAL
+  /*    */ sizeof(DtmVal),             // CN_DTMVAL
 
+  /*    */ sizeof(Encoding),           // CN_ENCODING
   /* 36 */ sizeof(Ent),                // CN_ENT
   /* 37 */ sizeof(EntBuffer),          // CN_ENTBUFFER
   /* 64 */ sizeof(EntWrk),             // CN_ENTWRK
@@ -553,7 +554,6 @@ i8 giClassSize[]
   /*    */ sizeof(Row),                // CN_ROW
   /*102 */ sizeof(RowAgg),             // CN_ROWAGG
   /*    */ sizeof(RowCompactor),       // CN_ROWCOMPACTOR
-  /*    */ sizeof(Encoding),        // CN_ENCODING
   /*105 */ sizeof(RowOnce),            // CN_ROWONCE
   /*105 */ sizeof(RowTray),            // CN_ROWTRAY
   
@@ -677,6 +677,7 @@ eHT geWhichHeap[]
   /* 35 */ HT_TRANSIENT_SMALL,   // CN_DIR
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_DTMVAL
 
+  /*    */ HT_TRANSIENT_LARGE,   // CN_ENCODING
   /* 36 */ HT_INVALID,           // CN_ENT
   /* 37 */ HT_TRANSIENT_LARGE,   // CN_ENTBUFFER
   /* 64 */ HT_INVALID,           // CN_ENTWRK
@@ -862,7 +863,6 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_ROW
   /*102 */ HT_TRANSIENT_MEDIUM,  // CN_ROWAGG
   /*    */ HT_TRANSIENT_LARGE,   // CN_ROWCOMPACTOR
-  /*    */ HT_TRANSIENT_LARGE,   // CN_ENCODING
   /*105 */ HT_TRANSIENT_SMALL,   // CN_ROWONCE
   /*    */ HT_TRANSIENT_LARGE,   // CN_ROWTRAY
   

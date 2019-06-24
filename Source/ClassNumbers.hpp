@@ -59,6 +59,7 @@ enum eCN : u2 // Class Number
   /*  32 0x20      608B Heap:S */ CN_DIR,
   /*                           */ CN_DTMVAL,
 
+  /*                           */ CN_ENCODING,
   /*  33 0x21       40B Heap:I */ CN_ENT,
   /*  34 0x22  1043848B Heap:L */ CN_ENTBUFFER,
   /* 145 0x91    17448B Heap:I */ CN_ENTWRK,
@@ -241,7 +242,6 @@ enum eCN : u2 // Class Number
   /*                           */ CN_ROW,
   /* 173 0xAD      896B Heap:M */ CN_ROWAGG,
   /*                           */ CN_ROWCOMPACTOR,
-  /*                           */ CN_ENCODING,
   /* 174 0xAE      152B Heap:S */ CN_ROWONCE,
   /*                           */ CN_ROWTRAY,
   
@@ -365,6 +365,7 @@ static Stz* aCN[]
   /*  32 0x20 */ "DIR"_Stz,                 // CN_DIR
   /*          */ "DTMVAL"_Stz,              // CN_DTMVAL
 
+  /*          */ "ENCODING"_Stz,            // CN_ENCODING
   /*  33 0x21 */ "ENT"_Stz,                 // CN_ENT
   /*  34 0x22 */ "ENTBUFFER"_Stz,           // CN_ENTBUFFER
   /* 145 0x91 */ "ENTWRK"_Stz,              // CN_ENTWRK
@@ -547,7 +548,6 @@ static Stz* aCN[]
   /*          */ "ROW"_Stz,                 // CN_ROW
   /* 173 0xAD */ "ROWAGG"_Stz,              // CN_ROWAGG
   /*          */ "ROWCOMPACTOR"_Stz,        // CN_ROWCOMPACTOR
-  /*          */ "ROWENCODING"_Stz,         // CN_ENCODING
   /* 174 0xAE */ "ROWONCE"_Stz,             // CN_ROWONCE
   /*          */ "ROWTRAY"_Stz,             // CN_ROWTRAY
   
