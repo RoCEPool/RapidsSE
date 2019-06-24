@@ -16,14 +16,14 @@ namespace Data
     // - - - - - - - - - - - -
   
     struct {
-      eMC  m_eMetaCode;
-      Dtm  m_wDataCode;
-      i8   m_nDataSize;
-      i8   m_nOffset;
-      bool m_bSplit;
+      eMC  m_eMetaCode;  // meta code for the col value
+      Dtm  m_wDataCode;  // bytes of data
+      i8   m_nDataSize;  // number of bytes of data
+      i8   m_nOffset;    // byte offset in head of dataCode
+      bool m_bOverflow;  // overflow at this point
     } xCol[C_MAX_COLUMNS];
 
-    Wsp_t<C_MAX_RECORD> m_xWsp;  // sz workspace
+    Wsp_t<C_MAX_RECORD> m_xWsp;  // sz workspace (multiple vch)
   
     // must be last
     Footer m_xFooter;

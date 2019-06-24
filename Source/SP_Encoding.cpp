@@ -62,7 +62,7 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
     StrLib::vAppendPad(&szCrs,caLine,2);
     StrLib::vAppendChar(&szCrs,'[');
     StrLib::vAppendDecimal(&szCrs,i_Col);
-    StrLib::vAppendChar(&szCrs,pEncoding->xCol[i_Col].m_bSplit ? '*' : ' ');
+    StrLib::vAppendChar(&szCrs,pEncoding->xCol[i_Col].m_bOverflow ? '*' : ' ');
     StrLib::vAppendDecimal(&szCrs,pEncoding->xCol[i_Col].m_nOffset);
     StrLib::vAppendChar(&szCrs,']');
 

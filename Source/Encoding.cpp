@@ -2,11 +2,11 @@
 /* Encoding.cpp -- Row Encoding                                               */
 /*============================================================================*/
 
-#include "Transform.h"
+#include "Data.h"
 
-#include "StorageEngine.h"
+//#include "StorageEngine.h"
 
-extern AttachMap* gpAttachMap;
+//extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -69,7 +69,7 @@ Encoding::Encoding(ColumnVec* pColVec)
     xCol[i_Col].m_wDataCode  = C_UNKNOWN;
     xCol[i_Col].m_nDataSize  = C_UNKNOWN;
     xCol[i_Col].m_nOffset    = 0;
-    xCol[i_Col].m_bSplit     = false;
+    xCol[i_Col].m_bOverflow  = false;
   }
   
 #ifdef WITH_CHECK_INITIALISED
@@ -248,7 +248,7 @@ void Encoding::vSplitOver(i8 nHeadSize, i8 nMetaBytes)
     i_Col--;
   }
   
-  xCol[i_Col].m_bSplit = true;
+  xCol[i_Col].m_bOverflow = true;
   for ( ; i_Col < m_nColumns; i_Col++)
     xCol[i_Col].m_nOffset += nShiftBy;
   
@@ -480,6 +480,7 @@ void Encoding::vReset(void)
     xCol[i_Col].m_wDataCode  = C_UNKNOWN;
     xCol[i_Col].m_nDataSize  = C_UNKNOWN;
     xCol[i_Col].m_nOffset    = 0;
+    xCol[i_Col].m_bOverflow  = false;
   }
   
 #ifdef WITH_CHECK_INITIALISED
