@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Transform
+namespace ScanSprint
 {
   class spIVL : public Sprint
   {
