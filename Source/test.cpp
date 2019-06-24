@@ -1086,23 +1086,7 @@ void vTest17(void)
       pIntBuffer->vAppendValue(iRandom);
     }
   }
-//  pIntBuffer->vAppendValue(537);
-//  pIntBuffer->vAppendValue(823);
-//  pIntBuffer->vAppendValue(612);
-//  pIntBuffer->vAppendValue(280);
-//  pIntBuffer->vAppendValue(455);
-//
-//  IntBuffer* pNextBuffer = new IntBuffer();
-//  pIntBuffer->vNextBuffer(pNextBuffer);
-//  pNextBuffer->vPrevBuffer(pIntBuffer);
-//  pIntBuffer = pNextBuffer;
-//
-//  pIntBuffer->vAppendValue(290);
-//  pIntBuffer->vAppendValue(729);
-//  pIntBuffer->vAppendValue(955);
-//  pIntBuffer->vAppendValue(217);
-//  pIntBuffer->vAppendValue(579);
-//
+
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the buffer
   vTrace("\n\nSorting buffer:\n"_Stz);
@@ -1134,7 +1118,6 @@ void vTest17(void)
   
   pRootBuffer->vDump();
 
-  
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify that the data is sorted
   RASSERT(pRootBuffer->bVerifyOrder());
