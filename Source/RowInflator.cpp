@@ -1081,68 +1081,13 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
   byte* ayDataByte = (byte*)aHeadLine + pRow->m_iBaseOffset;
   i8*   aiColVal   = & pRow->m_waColVal[0].m_iInt;
   
-  bool  bGetAll    = pRow->m_bGetAll;
-  i8    iLastCol   = pRow->m_iLastCol;
-  
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
-    
-    if (! bGetAll && i_Col >  iLastCol) {
-      //exit early
-      break;
-    }
     
 #ifdef WITH_TRACE_DECODING
     Column* pCol = pRow->m_pColVec->pGet(i_Col);
 #endif
     
     eMetaCode = *aeMetaCode++;
-    
-    //! temp experiment
-    if ( ! ( bGetAll || pRow->m_abGetCol[i_Col] ) ) {
-      
-      *aiColVal++ = C_UNKNOWN;
-      
-    L_SkipCodeSwitch:
-      
-      switch(eMetaCode) {
-          
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        case MC_STR_FIT_1L:
-          nLength = *(u1*)ayDataByte++;
-          ayDataByte += nLength;
-          break;
-          
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        case MC_SHOCO_FIT_1C:
-          nCompressed = (i8)*(u1*)ayDataByte++;
-          ayDataByte += nCompressed;
-          break;
-          
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        case MC_SHOCO_SPLIT_2T1C:
-          nCompressed = (i8)*(u1*)ayDataByte++;
-          nBytesPartA = aHeadLine->nBytes() - (ayDataByte - (byte*)aHeadLine);
-          ayDataByte += nBytesPartA;
-          break;
-          
-        case MC_OVERFLOW_2T: {
-          //vDebugPoint();
-          i8 i_Over_rel = aHeadLine->iOverflow2B();
-          OverLine* aOverLine = RowNub::aGetOver(aHeadLine,i_Over_rel);
-          //MemLib::vWordDump(aOverLine,32);
-          
-          eMetaCode = * aAdd<eMC*>(aOverLine,C_U_1B);
-          ayDataByte = aAdd<byte*>(aOverLine,C_U_1B + C_M_1B);
-          goto L_SkipCodeSwitch;
-          break;
-        }
-          
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        default: ayDataByte += nDataSize(eMetaCode); break;
-      }
-      
-      continue;
-    }
     
   L_MetaCodeSwitch:
     switch (eMetaCode) {
