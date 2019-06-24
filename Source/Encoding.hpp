@@ -55,6 +55,8 @@ namespace Data
     void vEncodeTsp(_ColEnc& xCol, Dtm wTsp);
     void vEncodeVch(_ColEnc& xCol, Dtm wVch);
   
+    bool bNullEnc(_ColEnc& xCol, Dtm wDtm);
+  
     void vReset(void);
   
   private:

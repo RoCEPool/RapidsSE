@@ -211,6 +211,13 @@ void Encoding::vEncodeBcd(_ColEnc& xColEnc, Dtm wBcd)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
+  if (xColEnc.m_wDataCode.bIsNull()) {
+    xColEnc.m_eMetaCode = MC_NULL;
+    xColEnc.m_nDataSize = C_0B;
+    return;
+  }
+  
+  // - -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   xColEnc.m_wDataCode.m_iBcd = wBcd.m_iBcd;
 
   xColEnc.m_eMetaCode= (eMC)IntLib::iByteMagNull(wBcd.m_iBcd);
@@ -395,6 +402,23 @@ void Encoding::vEncodeVch(_ColEnc& xColEnc, Dtm wVch)
     xColEnc.m_eMetaCode = MC_STR_EMPTY;
   }
 }
+
+/*----------------------------------------------------------------------------*/
+/* test for null encoding                                                     */
+/*----------------------------------------------------------------------------*/
+bool Encoding::bNullEnc(_ColEnc& xColEnc, Dtm wDtm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  
+  if (! wDtm.bIsNull())
+    return false;
+  
+  xColEnc.m_eMetaCode = MC_NULL;
+  xColEnc.m_wDataCode.vSetNull();
+  xColEnc.m_nDataSize = C_0B;
+  
+  return true;
+ }
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
