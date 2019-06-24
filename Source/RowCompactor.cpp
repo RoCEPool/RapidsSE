@@ -281,9 +281,9 @@ void RowCompactor::vCodeRow(Encoding* pEncoding)
     
     Column* pCol  = m_pColVec->pGet(i_Col);
     
-    eMC eMetaCode = pEncoding->xEncode[i_Col].m_eMetaCode;
-    Dtm wDataCode = pEncoding->xEncode[i_Col].m_wDataCode;
-    i8  nDataSize = pEncoding->xEncode[i_Col].m_nDataSize;
+    eMC eMetaCode = pEncoding->xCol[i_Col].m_eMetaCode;
+    Dtm wDataCode = pEncoding->xCol[i_Col].m_wDataCode;
+    i8  nDataSize = pEncoding->xCol[i_Col].m_nDataSize;
     
     //vDumpHead("vHeadCode a"_Stz,m_aCrw,m_pColVec);
     if (8 == i_Col)

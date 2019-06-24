@@ -21,7 +21,7 @@ namespace Data
       i8   m_nDataSize;
       i8   m_nOffset;
       bool m_bSplit;
-    } xEncode[C_MAX_COLUMNS];
+    } xCol[C_MAX_COLUMNS];
 
     Wsp_t<C_MAX_RECORD> m_xWsp;  // sz workspace
   
