@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SP_Encoding.hpp - Row Encoding sprint helper                             */
+/* SP_Encoding.hpp - Row Encoding sprint helper                               */
 /*============================================================================*/
 #pragma once
 
