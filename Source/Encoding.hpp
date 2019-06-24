@@ -41,15 +41,15 @@ namespace Data
     void vSplitOver(i8 nHeadSize, i8 nMetaBytes);
 
   private:
-    void vEncodeBol(Dtm wBol, eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_);
-    void vEncodeBcd(Dtm wBcd, eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_);
-    void vEncodeDte(Dtm wDte, eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_);
-    void vEncodeFlt(Dtm wFlt, eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_);
-    void vEncodeInt(Dtm wInt, eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_);
-    void vEncodeIvl(Dtm wIvl, eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_);
-    void vEncodeTme(Dtm wTme, eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_);
-    void vEncodeTsp(Dtm wTsp, eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_);
-    void vEncodeVch(Dtm wVch, eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_);
+    void vEncodeBol(Dtm wBol, Column* pCol, eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_);
+    void vEncodeBcd(Dtm wBcd, Column* pCol, eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_);
+    void vEncodeDte(Dtm wDte, Column* pCol, eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_);
+    void vEncodeFlt(Dtm wFlt, Column* pCol, eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_);
+    void vEncodeInt(Dtm wInt, Column* pCol, eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_);
+    void vEncodeIvl(Dtm wIvl, Column* pCol, eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_);
+    void vEncodeTme(Dtm wTme, Column* pCol, eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_);
+    void vEncodeTsp(Dtm wTsp, Column* pCol, eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_);
+    void vEncodeVch(Dtm wVch, Column* pCol, eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_);
   
     void vReset(void);
   
