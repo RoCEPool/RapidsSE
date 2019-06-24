@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* snIVL.cpp - Ivl scan helper                                                */
+/* SN_Ivl.cpp - Ivl scan helper                                               */
 /*============================================================================*/
 
 #include "ScanSprint.h"
@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-snIVL::snIVL(void)
+SN_Ivl::SN_Ivl(void)
 : Scan(CN_SNIVL)
 {
   _precondition_(_MAGIC_,CN_SNIVL,_FOOTER_);
@@ -20,7 +20,7 @@ snIVL::snIVL(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-snIVL::~snIVL(void) noexcept(false)
+SN_Ivl::~SN_Ivl(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_SNIVL,_FOOTER_);
 }
@@ -32,7 +32,7 @@ snIVL::~snIVL(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* scan                                                                       */
 /*----------------------------------------------------------------------------*/
-i8 snIVL::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
+i8 SN_Ivl::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
 {
   _precondition_(_MAGIC_,CN_SNIVL);
   
@@ -55,7 +55,7 @@ i8 snIVL::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* snIVL::aFooter(void)
+Footer* SN_Ivl::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_SNIVL);
   

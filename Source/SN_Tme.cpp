@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* snTME.cpp - Tme scan helper                                                */
+/* SN_Tme.cpp - Tme scan helper                                               */
 /*============================================================================*/
 
 #include "ScanSprint.h"
@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-snTME::snTME(void)
+SN_Tme::SN_Tme(void)
 : Scan(CN_SNTME)
 {
   _precondition_(_MAGIC_,CN_SNTME,_FOOTER_);
@@ -20,7 +20,7 @@ snTME::snTME(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-snTME::~snTME(void) noexcept(false)
+SN_Tme::~SN_Tme(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_SNTME,_FOOTER_);
 }
@@ -32,7 +32,7 @@ snTME::~snTME(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* scan                                                                       */
 /*----------------------------------------------------------------------------*/
-i8 snTME::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
+i8 SN_Tme::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
 {
   _precondition_(_MAGIC_,CN_SNTME);
   
@@ -58,7 +58,7 @@ i8 snTME::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* snTME::aFooter(void)
+Footer* SN_Tme::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_SNTME);
   

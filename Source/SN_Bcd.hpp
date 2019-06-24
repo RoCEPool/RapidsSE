@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* snBCD.hpp - Bcd scan helper                                                */
+/* SN_Bcd.hpp - Bcd scan helper                                               */
 /*============================================================================*/
 #pragma once
 
 namespace ScanSprint
 {
-  class snBCD : public Scan
+  class SN_Bcd : public Scan
   {
   public:
   
@@ -15,8 +15,8 @@ namespace ScanSprint
     Footer m_xFooter;
     
   public:
-    snBCD(void);
-    ~snBCD(void) noexcept(false);
+    SN_Bcd(void);
+    ~SN_Bcd(void) noexcept(false);
   
     i8 i(char** aacCrs, Column* pCol, Formatters* pScnFmt);
   

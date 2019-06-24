@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* snVCH.cpp - Vch scan helper                                                */
+/* SN_Vch.cpp - Vch scan helper                                               */
 /*============================================================================*/
 
 #include "ScanSprint.h"
@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-snVCH::snVCH(void)
+SN_Vch::SN_Vch(void)
 : Scan(CN_SNVCH)
 {
   _precondition_(_MAGIC_,CN_SNVCH,_FOOTER_);
@@ -20,7 +20,7 @@ snVCH::snVCH(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-snVCH::~snVCH(void) noexcept(false)
+SN_Vch::~SN_Vch(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_SNVCH,_FOOTER_);
 }
@@ -32,7 +32,7 @@ snVCH::~snVCH(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* scan                                                                       */
 /*----------------------------------------------------------------------------*/
-Stz* snVCH::sz(char** aacCrs, Column* pCol, Formatters* pScnFmt,
+Stz* SN_Vch::sz(char** aacCrs, Column* pCol, Formatters* pScnFmt,
                bool bSawLeadingEnclosed,
                i8& nChars_)
 {
@@ -63,7 +63,7 @@ Stz* snVCH::sz(char** aacCrs, Column* pCol, Formatters* pScnFmt,
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* snVCH::aFooter(void)
+Footer* SN_Vch::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_SNVCH);
   

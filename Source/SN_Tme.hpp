@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* snTME.hpp - Tme scan helper                                                */
+/* SN_Tme.hpp - Tme scan helper                                               */
 /*============================================================================*/
 #pragma once
 
 namespace ScanSprint
 {
-  class snTME : public Scan
+  class SN_Tme : public Scan
   {
   public:
   
@@ -15,8 +15,8 @@ namespace ScanSprint
     Footer m_xFooter;
     
   public:
-    snTME(void);
-    ~snTME(void) noexcept(false);
+    SN_Tme(void);
+    ~SN_Tme(void) noexcept(false);
   
     i8 i(char** aacCrs, Column* pCol, Formatters* pScnFmt);
   

@@ -332,7 +332,7 @@ bool RowExtractor::bExtractBcdSupplied(DtmVal* pDtmVal, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // decimal field processing
   
-  snBCD snBcd;
+  SN_Bcd snBcd;
   try {
     pDtmVal->m_wDtm.m_iBcd = snBcd.i(aacRecCrs,pColumn,pFormatters);
   }
@@ -384,7 +384,7 @@ bool RowExtractor::bExtractBcdDefault(DtmVal* pDtmVal, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // decimal field processing
   
-  snBCD snBcd;
+  SN_Bcd snBcd;
   try {
     pDtmVal->m_wDtm.m_iBcd = snBcd.i(aacRecCrs,pColumn,pFormatters);
   }
@@ -434,7 +434,7 @@ bool RowExtractor::bExtractBolSupplied(DtmVal* pDtmVal, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // boolean field processing
   
-  snBOL snBol;
+  SN_Bol snBol;
   try {
     pDtmVal->m_wDtm.m_iBol = snBol.i(aacRecCrs,pColumn,pFormatters);
   }
@@ -486,7 +486,7 @@ bool RowExtractor::bExtractBolDefault(DtmVal* pDtmVal, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // boolean field processing
   
-  snBOL snBol;
+  SN_Bol snBol;
   try {
     pDtmVal->m_wDtm.m_iBol = snBol.i(aacRecCrs,pColumn,pFormatters);
   }
@@ -538,7 +538,7 @@ bool RowExtractor::bExtractDteSupplied(DtmVal* pDtmVal, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // date field processing
   
-  snDTE snDte;
+  SN_Dte snDte;
   try {
     pDtmVal->m_wDtm.m_iDte = snDte.i(aacRecCrs,pColumn,pFormatters);
   }
@@ -592,7 +592,7 @@ bool RowExtractor::bExtractDteDefault(DtmVal* pDtmVal, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // date field processing
   
-  snDTE snDte;
+  SN_Dte snDte;
   try {
     pDtmVal->m_wDtm.m_iDte = snDte.i(aacRecCrs,pColumn,pFormatters);
   }
@@ -642,7 +642,7 @@ bool RowExtractor::bExtractFltSupplied(DtmVal* pDtmVal, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // float field processing
   
-  snFLT snFlt;
+  SN_Flt snFlt;
   try {
     pDtmVal->m_wDtm.m_dFlt = snFlt.d(aacRecCrs,pColumn,pFormatters);
   }
@@ -694,7 +694,7 @@ bool RowExtractor::bExtractFltDefault(DtmVal* pDtmVal, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // float field processing
   
-  snFLT snFlt;
+  SN_Flt snFlt;
   try {
     pDtmVal->m_wDtm.m_dFlt = snFlt.d(aacRecCrs,pColumn,pFormatters);
   }
@@ -744,7 +744,7 @@ bool RowExtractor::bExtractIntSupplied(DtmVal* pDtmVal, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // integer field processing
   
-  snINT snInt;
+  SN_Int snInt;
   try {
     pDtmVal->m_wDtm.m_iInt = snInt.i(aacRecCrs,pColumn,pFormatters);
   }
@@ -804,7 +804,7 @@ bool RowExtractor::bExtractIntDefault(DtmVal* pDtmVal, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // integer field processing
   
-  snINT snInt;
+  SN_Int snInt;
   try {
     pDtmVal->m_wDtm.m_iInt = snInt.i(aacRecCrs,pColumn,pFormatters);
   }
@@ -862,7 +862,7 @@ bool RowExtractor::bExtractIvlSupplied(DtmVal* pDtmVal, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // interval field processing
   
-  snIVL snIvl;
+  SN_Ivl snIvl;
   try {
     pDtmVal->m_wDtm.m_iIvl = snIvl.i(aacRecCrs,pColumn,pFormatters);
   }
@@ -914,7 +914,7 @@ bool RowExtractor::bExtractIvlDefault(DtmVal* pDtmVal, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // interval field processing
   
-  snIVL snIvl;
+  SN_Ivl snIvl;
   try {
     pDtmVal->m_wDtm.m_iIvl = snIvl.i(aacRecCrs,pColumn,pFormatters);
   }
@@ -966,7 +966,7 @@ bool RowExtractor::bExtractTmeSupplied(DtmVal* pDtmVal, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // time field processing
   
-  snTSP snTsp;
+  SN_Tsp snTsp;
   try {
     pDtmVal->m_wDtm.m_iTsp = snTsp.i(aacRecCrs,pColumn,pFormatters);
   }
@@ -1020,7 +1020,7 @@ bool RowExtractor::bExtractTmeDefault(DtmVal* pDtmVal, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // time field processing
   
-  snTSP snTsp;
+  SN_Tsp snTsp;
   try {
     pDtmVal->m_wDtm.m_iTsp = snTsp.i(aacRecCrs,pColumn,pFormatters);
   }
@@ -1072,7 +1072,7 @@ bool RowExtractor::bExtractTspSupplied(DtmVal* pDtmVal, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // timestamp field processing
   
-  snTSP snTsp;
+  SN_Tsp snTsp;
   try {
     pDtmVal->m_wDtm.m_iTsp = snTsp.i(aacRecCrs,pColumn,pFormatters);
   }
@@ -1126,7 +1126,7 @@ bool RowExtractor::bExtractTspDefault(DtmVal* pDtmVal, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // timestamp field processing
   
-  snTSP snTsp;
+  SN_Tsp snTsp;
   try {
     pDtmVal->m_wDtm.m_iTsp = snTsp.i(aacRecCrs,pColumn,pFormatters);
   }
@@ -1174,7 +1174,7 @@ bool RowExtractor::bExtractVchSupplied(DtmVal* pDtmVal, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // varchar field processing
   
-  snVCH snVch;
+  SN_Vch snVch;
   try {
     pDtmVal->m_sVch = snVch.sz(aacRecCrs,pColumn,pFormatters,
                               bSawEnclosedLeading,pDtmVal->m_nChars);
@@ -1223,7 +1223,7 @@ bool RowExtractor::bExtractVchDefault(DtmVal* pDtmVal, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // varchar field processing
   
-  snVCH snVch;
+  SN_Vch snVch;
   try {
     pDtmVal->m_sVch = snVch.sz(aacRecCrs,pColumn,pFormatters,
                               false,pDtmVal->m_nChars);

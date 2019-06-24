@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* snINT.hpp - Int scan helper                                                */
+/* SN_Int.hpp - Int scan helper                                               */
 /*============================================================================*/
 #pragma once
 
 namespace ScanSprint
 {
-  class snINT : public Scan
+  class SN_Int : public Scan
   {
   public:
   
@@ -15,8 +15,8 @@ namespace ScanSprint
     Footer m_xFooter;
     
   public:
-    snINT(void);
-    ~snINT(void) noexcept(false);
+    SN_Int(void);
+    ~SN_Int(void) noexcept(false);
   
     i8 i(char** aacCrs, Column* pCol, Formatters* pScnFmt);
   

@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* snIVL.hpp - Ivl scan helper                                                */
+/* SN_Ivl.hpp - Ivl scan helper                                               */
 /*============================================================================*/
 #pragma once
 
 namespace ScanSprint
 {
-  class snIVL : public Scan
+  class SN_Ivl : public Scan
   {
   public:
   
@@ -15,8 +15,8 @@ namespace ScanSprint
     Footer m_xFooter;
     
   public:
-    snIVL(void);
-    ~snIVL(void) noexcept(false);
+    SN_Ivl(void);
+    ~SN_Ivl(void) noexcept(false);
   
     i8 i(char** aacCrs, Column* pCol, Formatters* pScnFmt);
   

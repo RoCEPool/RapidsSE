@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* snBCD.cpp - Bcd scan helper                                                */
+/* SN_Bcd.cpp - Bcd scan helper                                               */
 /*============================================================================*/
 
 #include "ScanSprint.h"
@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-snBCD::snBCD(void)
+SN_Bcd::SN_Bcd(void)
 : Scan(CN_SNBCD)
 {
   _precondition_(_MAGIC_,CN_SNBCD,_FOOTER_);
@@ -20,7 +20,7 @@ snBCD::snBCD(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-snBCD::~snBCD(void) noexcept(false)
+SN_Bcd::~SN_Bcd(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_SNBCD,_FOOTER_);
 }
@@ -32,7 +32,7 @@ snBCD::~snBCD(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* scan                                                                       */
 /*----------------------------------------------------------------------------*/
-i8 snBCD::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
+i8 SN_Bcd::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
 {
   _precondition_(_MAGIC_,CN_SNBCD);
   
@@ -50,7 +50,7 @@ i8 snBCD::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* snBCD::aFooter(void)
+Footer* SN_Bcd::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_SNBCD);
   

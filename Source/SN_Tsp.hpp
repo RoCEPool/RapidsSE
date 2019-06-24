@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* snTSP.hpp - Tme scan helper                                                */
+/* SN_Tsp.hpp - Tme scan helper                                               */
 /*============================================================================*/
 #pragma once
 
 namespace ScanSprint
 {
-  class snTSP : public Scan
+  class SN_Tsp : public Scan
   {
   public:
   
@@ -15,8 +15,8 @@ namespace ScanSprint
     Footer m_xFooter;
     
   public:
-    snTSP(void);
-    ~snTSP(void) noexcept(false);
+    SN_Tsp(void);
+    ~SN_Tsp(void) noexcept(false);
   
     i8 i(char** aacCrs, Column* pCol, Formatters* pScnFmt);
   

@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* snDTE.hpp - Dte scan helper                                                */
+/* SN_Dte.hpp - Dte scan helper                                               */
 /*============================================================================*/
 #pragma once
 
 namespace ScanSprint
 {
-  class snDTE : public Scan
+  class SN_Dte : public Scan
   {
   public:
   
@@ -15,8 +15,8 @@ namespace ScanSprint
     Footer m_xFooter;
     
   public:
-    snDTE(void);
-    ~snDTE(void) noexcept(false);
+    SN_Dte(void);
+    ~SN_Dte(void) noexcept(false);
   
     i8 i(char** aacCrs, Column* pCol, Formatters* pScnFmt);
   

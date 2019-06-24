@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* snBOL.cpp - Bol scan helper                                                */
+/* SN_Bol.cpp - Bol scan helper                                               */
 /*============================================================================*/
 
 #include "ScanSprint.h"
@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-snBOL::snBOL(void)
+SN_Bol::SN_Bol(void)
 : Scan(CN_SNBOL)
 {
   _precondition_(_MAGIC_,CN_SNBOL,_FOOTER_);
@@ -20,7 +20,7 @@ snBOL::snBOL(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-snBOL::~snBOL(void) noexcept(false)
+SN_Bol::~SN_Bol(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_SNBOL,_FOOTER_);
 }
@@ -32,7 +32,7 @@ snBOL::~snBOL(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* scan                                                                       */
 /*----------------------------------------------------------------------------*/
-i8 snBOL::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
+i8 SN_Bol::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
 {
   _precondition_(_MAGIC_,CN_SNBOL);
   
@@ -50,7 +50,7 @@ i8 snBOL::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* snBOL::aFooter(void)
+Footer* SN_Bol::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_SNBOL);
   

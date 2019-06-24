@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* snBOL.hpp - Bol scan helper                                                */
+/* SN_Bol.hpp - Bol scan helper                                               */
 /*============================================================================*/
 #pragma once
 
 namespace ScanSprint
 {
-  class snBOL : public Scan
+  class SN_Bol : public Scan
   {
   public:
   
@@ -15,8 +15,8 @@ namespace ScanSprint
     Footer m_xFooter;
     
   public:
-    snBOL(void);
-    ~snBOL(void) noexcept(false);
+    SN_Bol(void);
+    ~SN_Bol(void) noexcept(false);
   
     i8 i(char** aacCrs, Column* pCol, Formatters* pScnFmt);
   

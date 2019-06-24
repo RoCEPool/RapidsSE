@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* snFLT.hpp - Flt scan helper                                                */
+/* SN_Flt.hpp - Flt scan helper                                               */
 /*============================================================================*/
 #pragma once
 
 namespace ScanSprint
 {
-  class snFLT : public Scan
+  class SN_Flt : public Scan
   {
   public:
   
@@ -15,8 +15,8 @@ namespace ScanSprint
     Footer m_xFooter;
     
   public:
-    snFLT(void);
-    ~snFLT(void) noexcept(false);
+    SN_Flt(void);
+    ~SN_Flt(void) noexcept(false);
   
     d8 d(char** aacCrs, Column* pCol, Formatters* pScnFmt);
   
