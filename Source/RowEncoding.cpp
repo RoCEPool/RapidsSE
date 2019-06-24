@@ -457,6 +457,10 @@ void RowEncoding::vEncodeVch(Dtm wVch,
   
   eMetaCode_  = MC_STR_FIT_1L;
   nDataBytes_ = StrLib::nCopy((char*)wDataCode_.m_szVch,(char*)wVch.m_szVch);
+  
+  if (nDataBytes_ == 0) {
+    eMetaCode_     = MC_STR_EMPTY;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
