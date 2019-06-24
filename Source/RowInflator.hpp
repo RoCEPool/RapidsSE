@@ -8,8 +8,14 @@ namespace Data
   class RowInflator : private RowCoder
   {
   public:
-    static void vInflate(Row* pRow, HeadLine* aHeadLine);
-  
+    //! NOTE: KEEP ALL THREE INFLATES UP-TO-DATE
+    //! Any change in any one of the functions needs to be made in the others.
+    //! Kept separate for performance reasons
+    //! Highly performance-critical functions
+    static void vInflateRow(Row* pRow, HeadLine* aHeadLine);
+    static void vInflateColumn(Row* pRow, HeadLine* aHeadLine);
+    static void vInflateColumns(Row* pRow, HeadLine* aHeadLine);
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
     static void vDecode(DtmVal* pDtmVal, HeadLine* aHeadLine,

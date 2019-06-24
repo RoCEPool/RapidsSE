@@ -1001,7 +1001,7 @@ void vTest16(void)
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // EXPERIMENT 5: SORTING BUFFER OF INTEGERS USING A BUFFER CURSOR
   vTrace("\n\n**************************************************"_Stz);
-  vTrace("\nQUICKSORT: HOARE PARTITION SCHEME\n"_Stz);
+  vTrace("\nQUICKSORT: LOMUTO PARTITION SCHEME\n"_Stz);
   vTrace("SORTING USING CUSRORS INTO BUFFER OF INTEGER ARRAY\n"_Stz);
   vTrace("**************************************************"_Stz);
   
@@ -1061,7 +1061,7 @@ void vTest17(void)
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // EXPERIMENT 5: SORTING BUFFER OF INTEGERS USING A BUFFER CURSOR
   vTrace("\n\n**************************************************"_Stz);
-  vTrace("\nQUICKSORT: HOARE PARTITION SCHEME\n"_Stz);
+  vTrace("\nQUICKSORT: LOMUTO PARTITION SCHEME\n"_Stz);
   vTrace("SORTING USING CUSRORS INTO BUFFER OF INTEGER ARRAY\n"_Stz);
   vTrace("**************************************************"_Stz);
   

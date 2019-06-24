@@ -693,7 +693,7 @@ void HeadLine::vDumpHead_IV(Stz* szTitle,
   
   Row* pRow = new Row(pColVec);
   
-  RowInflator::vInflate(pRow,aHeadLine);
+  RowInflator::vInflateRow(pRow,aHeadLine);
   
   // for each column
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
