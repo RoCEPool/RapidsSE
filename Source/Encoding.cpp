@@ -117,70 +117,18 @@ void Encoding::vEncode(Row* pRow)
     
     switch (eDatum) {
       
-      case DM_BCD:
-        vEncodeBcd(pRow->m_waColVal[i_Col], pCol,
-                   xCol[i_Col].m_eMetaCode,
-                   xCol[i_Col].m_wDataCode,
-                   xCol[i_Col].m_nDataSize);
-        break;
-        
-      case DM_BOL:
-        vEncodeBol(pRow->m_waColVal[i_Col], pCol,
-                   xCol[i_Col].m_eMetaCode,
-                   xCol[i_Col].m_wDataCode,
-                   xCol[i_Col].m_nDataSize);
-        break;
-        
-      case DM_DTE:
-        vEncodeDte(pRow->m_waColVal[i_Col], pCol,
-                   xCol[i_Col].m_eMetaCode,
-                   xCol[i_Col].m_wDataCode,
-                   xCol[i_Col].m_nDataSize);
-        break;
-        
-      case DM_FLT:
-        vEncodeFlt(pRow->m_waColVal[i_Col], pCol,
-                   xCol[i_Col].m_eMetaCode,
-                   xCol[i_Col].m_wDataCode,
-                   xCol[i_Col].m_nDataSize);
-        break;
-        
-      case DM_INT:
-        vEncodeInt(pRow->m_waColVal[i_Col], pCol,
-                   xCol[i_Col].m_eMetaCode,
-                   xCol[i_Col].m_wDataCode,
-                   xCol[i_Col].m_nDataSize);
-        break;
-        
-      case DM_IVL:
-        vEncodeIvl(pRow->m_waColVal[i_Col], pCol,
-                   xCol[i_Col].m_eMetaCode,
-                   xCol[i_Col].m_wDataCode,
-                   xCol[i_Col].m_nDataSize);
-        break;
-        
-      case DM_TME:
-        vEncodeTme(pRow->m_waColVal[i_Col], pCol,
-                   xCol[i_Col].m_eMetaCode,
-                   xCol[i_Col].m_wDataCode,
-                   xCol[i_Col].m_nDataSize);
-        break;
-        
-      case DM_TSP:
-        vEncodeTsp(pRow->m_waColVal[i_Col], pCol,
-                   xCol[i_Col].m_eMetaCode,
-                   xCol[i_Col].m_wDataCode,
-                   xCol[i_Col].m_nDataSize);
-        break;
+      case DM_BCD: vEncodeBcd(pRow->m_waColVal[i_Col],pCol);   break;
+      case DM_BOL: vEncodeBol(pRow->m_waColVal[i_Col],pCol);   break;
+      case DM_DTE: vEncodeDte(pRow->m_waColVal[i_Col],pCol);   break;
+      case DM_FLT: vEncodeFlt(pRow->m_waColVal[i_Col],pCol);   break;
+      case DM_INT: vEncodeInt(pRow->m_waColVal[i_Col],pCol);   break;
+      case DM_IVL: vEncodeIvl(pRow->m_waColVal[i_Col],pCol);   break;
+      case DM_TME: vEncodeTme(pRow->m_waColVal[i_Col],pCol);   break;
+      case DM_TSP: vEncodeTsp(pRow->m_waColVal[i_Col],pCol);   break;
         
       case DM_VCH:
         xCol[i_Col].m_wDataCode = (i8)m_xWsp.ayLatter();
-        
-        vEncodeVch(pRow->m_waColVal[i_Col], pCol,
-                   xCol[i_Col].m_eMetaCode,
-                   xCol[i_Col].m_wDataCode,
-                   xCol[i_Col].m_nDataSize);
-        
+        vEncodeVch(pRow->m_waColVal[i_Col],pCol);
         m_xWsp.vTake(xCol[i_Col].m_nDataSize + 1);
         break;
         
@@ -259,8 +207,7 @@ void Encoding::vSplitOver(i8 nHeadSize, i8 nMetaBytes)
 /*----------------------------------------------------------------------------*/
 /* encode Bcd                                                                 */
 /*----------------------------------------------------------------------------*/
-void Encoding::vEncodeBcd(Dtm wBcd, Column* pCol,
-                             eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
+void Encoding::vEncodeBcd(Dtm wBcd, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
@@ -270,7 +217,7 @@ void Encoding::vEncodeBcd(Dtm wBcd, Column* pCol,
 
   xCol[i_Col].m_eMetaCode = (eMC)IntLib::iByteMagNull(wBcd.m_iBcd);
   
-  if (MC_NULL == eMetaCode_) {
+  if (MC_NULL == xCol[i_Col].m_eMetaCode) {
      xCol[i_Col].m_nDataSize = C_0B;
     return;
   }
@@ -294,8 +241,7 @@ void Encoding::vEncodeBcd(Dtm wBcd, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* encode Bol                                                                 */
 /*----------------------------------------------------------------------------*/
-void Encoding::vEncodeBol(Dtm wBol, Column* pCol,
-                             eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
+void Encoding::vEncodeBol(Dtm wBol, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
@@ -316,8 +262,7 @@ void Encoding::vEncodeBol(Dtm wBol, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* encode Dte                                                                 */
 /*----------------------------------------------------------------------------*/
-void Encoding::vEncodeDte(Dtm wDte, Column* pCol,
-                             eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
+void Encoding::vEncodeDte(Dtm wDte, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
@@ -332,7 +277,7 @@ void Encoding::vEncodeDte(Dtm wDte, Column* pCol,
   }
   
   i8 iEra = 0;
-  vDteIntoEdt(wDte,wDataCode_,iEra);
+  vDteIntoEdt(wDte,xCol[i_Col].m_wDataCode,iEra);
   
        if (C_ERA_0 == iEra) xCol[i_Col].m_eMetaCode = MC_DATE_E0_2B;
   else if (C_ERA_1 == iEra) xCol[i_Col].m_eMetaCode = MC_DATE_E1_2B;
@@ -344,8 +289,7 @@ void Encoding::vEncodeDte(Dtm wDte, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* encode Flt                                                                 */
 /*----------------------------------------------------------------------------*/
-void Encoding::vEncodeFlt(Dtm wFlt, Column* pCol,
-                             eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
+void Encoding::vEncodeFlt(Dtm wFlt, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
@@ -361,8 +305,7 @@ void Encoding::vEncodeFlt(Dtm wFlt, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* encode Int                                                                 */
 /*----------------------------------------------------------------------------*/
-void Encoding::vEncodeInt(Dtm wInt, Column* pCol,
-                             eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
+void Encoding::vEncodeInt(Dtm wInt, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
@@ -372,7 +315,7 @@ void Encoding::vEncodeInt(Dtm wInt, Column* pCol,
   
   xCol[i_Col].m_eMetaCode = (eMC)IntLib::iByteMagNull(wInt.m_iInt);
   
-  if (MC_NULL == eMetaCode_) {
+  if (MC_NULL == xCol[i_Col].m_eMetaCode) {
     xCol[i_Col].m_nDataSize = C_0B;
     return;
   }
@@ -385,7 +328,7 @@ void Encoding::vEncodeInt(Dtm wInt, Column* pCol,
     return;
   }
   
-  if (MC_1B == eMetaCode_) {
+  if (MC_1B == xCol[i_Col].m_eMetaCode) {
     
     i8 i1BInt = wInt.m_iInt;
     if (i1BInt >= 0 && i1BInt <= 10) {
@@ -403,8 +346,7 @@ void Encoding::vEncodeInt(Dtm wInt, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* encode Ivl                                                                 */
 /*----------------------------------------------------------------------------*/
-void Encoding::vEncodeIvl(Dtm wIvl, Column* pCol,
-                             eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
+void Encoding::vEncodeIvl(Dtm wIvl, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
@@ -419,8 +361,7 @@ void Encoding::vEncodeIvl(Dtm wIvl, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* encode Tme                                                                 */
 /*----------------------------------------------------------------------------*/
-void Encoding::vEncodeTme(Dtm wTme, Column* pCol,
-                             eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
+void Encoding::vEncodeTme(Dtm wTme, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
@@ -435,8 +376,7 @@ void Encoding::vEncodeTme(Dtm wTme, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* encode Tsp                                                                 */
 /*----------------------------------------------------------------------------*/
-void Encoding::vEncodeTsp(Dtm wTsp, Column* pCol,
-                             eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
+void Encoding::vEncodeTsp(Dtm wTsp, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
@@ -451,8 +391,7 @@ void Encoding::vEncodeTsp(Dtm wTsp, Column* pCol,
 /*----------------------------------------------------------------------------*/
 /* encode Vch                                                                 */
 /*----------------------------------------------------------------------------*/
-void Encoding::vEncodeVch(Dtm wVch, Column* pCol,
-                             eMC& eMetaCode_, Dtm& wDataCode_, i8& nDataBytes_)
+void Encoding::vEncodeVch(Dtm wVch, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
@@ -474,7 +413,7 @@ void Encoding::vEncodeVch(Dtm wVch, Column* pCol,
     StrLib::nCopy((char*)xCol[i_Col].m_wDataCode.m_szVch,
                   (char*)wVch.m_szVch);
   
-  if (nDataBytes_ == 0) {
+  if (xCol[i_Col].m_nDataSize == 0) {
     xCol[i_Col].m_eMetaCode = MC_STR_EMPTY;
   }
 }
