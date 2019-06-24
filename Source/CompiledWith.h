@@ -57,7 +57,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // testing
 
-#define WITH_ENCODING_VCH_SMALL // encode vch small
 //#define WITH_ENCODING_XCHECK    // encode cross check
 //#define WITH_STATISTICS_COUNTERS  // statistics
 //#define WITH_SHOCO_DUPLICATES   // test for duplicate shoco values
