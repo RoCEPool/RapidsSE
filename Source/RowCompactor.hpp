@@ -38,7 +38,7 @@ namespace Data
     bool bCompactRow(Row* pRow);
   
   private:
-    void vAddCode(HeadLine* aHeadLine, Column* pCol, _Enc& xColEnc,
+    void vAddCode(HeadLine* aHeadLine, Column* pCol, _ColEnc& xColEnc,
                   eMC eMetaCode, Dtm wDataCode, i8 nDataSize,
                   i8& i_DataOffset_);
     void vCodeRow(Encoding* pEncoding);
