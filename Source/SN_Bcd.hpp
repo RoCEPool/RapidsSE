@@ -9,8 +9,6 @@ namespace ScanSprint
   {
   public:
   
-    Dtm m_xBcd;
-  
     // must be last
     Footer m_xFooter;
     

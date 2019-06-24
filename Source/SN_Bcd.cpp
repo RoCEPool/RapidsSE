@@ -36,11 +36,11 @@ i8 SN_Bcd::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
 {
   _precondition_(_MAGIC_,CN_SNBCD);
   
-  if ( ! StrLib::bExtractDecimal(aacCrs,m_xBcd.m_iBcd,
+  if ( ! StrLib::bExtractDecimal(aacCrs,m_wDtm.m_iBcd,
                                  pCol->iColumnLength(),pCol->iColumnScale()) )
     throw C_UNKNOWN;
   
-  return m_xBcd.m_iBcd;
+  return m_wDtm.m_iBcd;
 }
 
 /*----------------------------------------------------------------------------*/

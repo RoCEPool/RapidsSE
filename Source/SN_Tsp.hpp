@@ -8,9 +8,7 @@ namespace ScanSprint
   class SN_Tsp : public Scan
   {
   public:
-  
-    Dtm m_xTsp;
-  
+    
     // must be last
     Footer m_xFooter;
     

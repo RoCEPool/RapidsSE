@@ -8,9 +8,7 @@ namespace ScanSprint
   class SN_Bol : public Scan
   {
   public:
-  
-    Dtm m_xBol;
-  
+    
    // must be last
     Footer m_xFooter;
     
