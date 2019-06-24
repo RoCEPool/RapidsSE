@@ -17,6 +17,8 @@ using namespace Transform;
 
 //-----------------------------------------------------------------------------
 
+#include "DtmVal.hpp"
+
 #include "Scan.hpp"
 #include "Sprint.hpp"
 

@@ -254,7 +254,6 @@ using namespace Data;
 
 //------------------------------------------------------------------------------
 
-#include "DtmVal.hpp"
 
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"

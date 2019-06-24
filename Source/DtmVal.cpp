@@ -15,7 +15,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-DtmVal* Data::_pDtmVal(void* aAddr)
+DtmVal* Transform::_pDtmVal(void* aAddr)
 {
   DtmVal* pDtmVal = reinterpret_cast<DtmVal*>(aAddr);
   

@@ -5,8 +5,6 @@
 
 namespace Data
 {
-  class DtmVal;
-  
   static const i8 C_OVER_PRE_BYTES = 1;
 
   class OverLine : public Line
