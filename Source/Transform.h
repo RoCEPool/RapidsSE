@@ -23,6 +23,7 @@ using namespace Transform;
 #include "Sprint.hpp"
 
 #include "Row.hpp"
+#include "Record.hpp"
 #include "IrwBuffer.hpp"
 
 #include "hpRow.hpp"
