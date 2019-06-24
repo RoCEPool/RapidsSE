@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Data
+namespace Transform
 {
   class DtmVal : public Object
   {

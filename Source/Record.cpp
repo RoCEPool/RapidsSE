@@ -2,7 +2,7 @@
 /* Record.cpp -- Record                                                       */
 /*============================================================================*/
 
-#include "Data.h"
+#include "Transform.h"
 
 #include "StorageEngine.h"
 
@@ -15,7 +15,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Record* Data::_pRecord(void* aAddr)
+Record* Transform::_pRecord(void* aAddr)
 {
   Record* pRecord = reinterpret_cast<Record*>(aAddr);
   

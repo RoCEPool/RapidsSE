@@ -101,7 +101,7 @@ Row::~Row(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append column value to row                                                 */
 /*----------------------------------------------------------------------------*/
-void Row::vAppendValue(Data::DtmVal* pDtmVal, Column* pCol)
+void Row::vAppendValue(DtmVal* pDtmVal, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
 

@@ -25,7 +25,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   Structures::vCheckAssumptions();
   Chunks::vCheckAssumptions();
   Measurement::vCheckAssumptions();
-  Maps::vCheckAssumptions();
+  Monitoring::vCheckAssumptions();
   Transactions::vCheckAssumptions();
   Commands::vCheckAssumptions();
   Forth::vCheckAssumptions();

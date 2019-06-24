@@ -17,10 +17,13 @@ using namespace Transform;
 
 //-----------------------------------------------------------------------------
 
+#include "DtmVal.hpp"
+
 #include "Scan.hpp"
 #include "Sprint.hpp"
 
 #include "Row.hpp"
+#include "Record.hpp"
 #include "IrwBuffer.hpp"
 
 #include "hpRow.hpp"

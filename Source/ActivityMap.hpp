@@ -5,7 +5,7 @@
 
 namespace Jobs { class Job; }
 
-namespace Maps
+namespace Monitoring
 {
   static const i8    C_ACTIVITY_MARKS  = C_1M * 10;
   static const char* C_ACTIVITY_REGION = "/SE_ActivityMap";

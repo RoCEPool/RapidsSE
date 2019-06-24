@@ -1,15 +1,25 @@
 /*============================================================================*/
-/* Maps.cpp - Maps namespace functions                                        */
+/* Monitoring.h -- Monitoring Namespace                                       */
 /*============================================================================*/
+#pragma once
 
-#include "Maps.h"
+#include "Measurement.h"
 
-/*----------------------------------------------------------------------------*/
-/* things to check at boot time                                               */
-/*----------------------------------------------------------------------------*/
-void Maps::vCheckAssumptions(void)
+namespace Monitoring
 {
+  void vCheckAssumptions(void);
 }
+
+using namespace Monitoring;
+
+//------------------------------------------------------------------------------
+
+#include "Map.hpp"
+
+#include "Action.hpp"
+#include "ActionSequence.hpp"
+#include "ActivityMark.hpp"
+#include "ActivityMap.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

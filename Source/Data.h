@@ -9,8 +9,6 @@ namespace Data
 {  
   void vCheckAssumptions(void);
 
-  class Record;
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   enum eMC : u1 // meta code
@@ -254,7 +252,6 @@ using namespace Data;
 
 //------------------------------------------------------------------------------
 
-#include "DtmVal.hpp"
 
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
@@ -279,7 +276,6 @@ typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,Table,
 #include "RowEncoding.hpp"
 #include "RowExtractor.hpp"
 #include "RowInflator.hpp"
-#include "Record.hpp"
 #include "hpRowEncoding.hpp"
 
 #include "BufferCursor.hpp"
