@@ -214,7 +214,7 @@ bool RowCompactor::bCompactRow(Row* pRow)
 /*----------------------------------------------------------------------------*/
 /* add encoded datum onto the end of crw                                      */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vAddCode(HeadLine* aHeadLine, Column* pCol,
+void RowCompactor::vAddCode(HeadLine* aHeadLine, Column* pCol, _Enc& xColEnc,
                             eMC eMetaCode, Dtm wDataCode, i8 nDataSize,
                             i8& i_DataOffset_)
 {
@@ -288,7 +288,8 @@ void RowCompactor::vCodeRow(Encoding* pEncoding)
     //vDumpHead("vHeadCode a"_Stz,m_aCrw,m_pColVec);
     if (8 == i_Col)
       vDebugPoint();
-    vAddCode(aHeadLine,pCol,eMetaCode,wDataCode,nDataSize,i_DataOffset_);
+    vAddCode(aHeadLine,pCol,pEncoding->xaCol[i_Col],
+             eMetaCode,wDataCode,nDataSize,i_DataOffset_);
     //vDumpHead("vHeadCode b"_Stz,m_aCrw,m_pColVec);
   }
   
