@@ -16,7 +16,7 @@ SP_Encoding::SP_Encoding(void)
   vFormat(F_VCH_enclose);
 
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caRow,sizeof(m_caRow),CN_ROW);
+  MemLib::vZero(m_caEncoding,sizeof(m_caEncoding),CN_ROW);
 #else
   m_caRow[0] = '\0';
 #endif
@@ -45,7 +45,7 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  m_caRow[0] = '\0';
+  m_caEncoding[0] = '\0';
   
   char caLine[256];
 
@@ -159,7 +159,7 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
 
     StrLib::vAppendString(&szCrs,(char*)"\n"_Stz);
     
-    StrLib::vConcat(m_caRow,caLine);
+    StrLib::vConcat(m_caEncoding,caLine);
     
   }
   
@@ -172,7 +172,7 @@ Stz* SP_Encoding::sz(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*) &m_caRow[0];
+  return (Stz*) &m_caEncoding[0];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -184,7 +184,7 @@ Stz* SP_Encoding::sz(Encoding* pEncoding)
 
   vEncoding(pEncoding);
   
-  return (Stz*) &m_caRow[0];
+  return (Stz*) &m_caEncoding[0];
 }
 
 

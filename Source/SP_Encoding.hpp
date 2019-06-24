@@ -9,7 +9,7 @@ namespace Data
   {
   public:
   
-    char m_caRow[C_16KB];
+    char m_caEncoding[C_16KB];
   
     // must be last
     Footer m_xFooter;
