@@ -16,9 +16,9 @@ namespace Indexes
 
 using namespace Indexes;
 
-
 #include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
+#include "IndexTree.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
