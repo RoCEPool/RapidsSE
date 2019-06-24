@@ -819,9 +819,9 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetchRows,
   
   Crw** aaCrwPtrLimit = (Crw**)pFetchBuffer->aCrwPtrLimit();
   
-  pJob_FetchRows->m_pRow->m_bGetAll = false;
-  pJob_FetchRows->m_pRow->m_abGetCol[pCol->iColumnNo()] = true;
-  pJob_FetchRows->m_pRow->m_iLastCol = pCol->iColumnNo();
+  //pJob_FetchRows->m_pRow->m_bGetAll = false;
+  //pJob_FetchRows->m_pRow->m_abGetCol[pCol->iColumnNo()] = true;
+  //pJob_FetchRows->m_pRow->m_iLastCol = pCol->iColumnNo();
   
   while (aaHeadLine < aaCrwPtrLimit) {
     
@@ -835,7 +835,7 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetchRows,
       pCrwBuffer = CrwBuffer::pToCrwBuffer(aHeadLine);
     }
     
-    RowInflator::vInflateColumn(pJob_FetchRows->m_pRow,aHeadLine);
+    RowInflator::vInflateColumn(pJob_FetchRows->m_pRow,aHeadLine,pCol->iColumnNo());
     
     if (pJob_FetchRows->m_bPrint) {
       HV_Rec hvRec(pColVec);

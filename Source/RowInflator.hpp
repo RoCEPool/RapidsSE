@@ -13,7 +13,7 @@ namespace Data
     //! Kept separate for performance reasons
     //! Highly performance-critical functions
     static void vInflateRow(Row* pRow, HeadLine* aHeadLine);
-    static void vInflateColumn(Row* pRow, HeadLine* aHeadLine);
+    static void vInflateColumn(Row* pRow, HeadLine* aHeadLine, i8 i_ColToRetrieve);
     static void vInflateColumns(Row* pRow, HeadLine* aHeadLine);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

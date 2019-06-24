@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* inflate headline into row                                                  */
 /*----------------------------------------------------------------------------*/
-void RowInflator::vInflateColumn(Row* pRow, HeadLine* aHeadLine)
+void RowInflator::vInflateColumn(Row* pRow, HeadLine* aHeadLine, i8 i_ColToRetrieve)
 {
   eMC  eMetaCode;
   Word wWord;
@@ -35,15 +35,7 @@ void RowInflator::vInflateColumn(Row* pRow, HeadLine* aHeadLine)
   byte* ayDataByte = (byte*)aHeadLine + pRow->m_iBaseOffset;
   i8*   aiColVal   = & pRow->m_waColVal[0].m_iInt;
   
-  bool  bGetAll    = pRow->m_bGetAll;
-  i8    iLastCol   = pRow->m_iLastCol;
-  
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
-    
-    if (! bGetAll && i_Col >  iLastCol) {
-      //exit early
-      break;
-    }
     
 #ifdef WITH_TRACE_DECODING
     Column* pCol = pRow->m_pColVec->pGet(i_Col);
@@ -52,7 +44,7 @@ void RowInflator::vInflateColumn(Row* pRow, HeadLine* aHeadLine)
     eMetaCode = *aeMetaCode++;
     
     //! temp experiment
-    if ( ! ( bGetAll || pRow->m_abGetCol[i_Col] ) ) {
+    if ( i_Col != i_ColToRetrieve ) {
       
       *aiColVal++ = C_UNKNOWN;
       
@@ -524,6 +516,8 @@ void RowInflator::vInflateColumn(Row* pRow, HeadLine* aHeadLine)
         RASSERT(0);
     }
 #endif
+    
+    return;
   }
 }
 
