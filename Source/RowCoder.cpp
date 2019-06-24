@@ -26,7 +26,7 @@ i8 RowCoder::iBaseOffset(ColumnVec* pColVec)
 /*----------------------------------------------------------------------------*/
 /* how many bytes does given encoding occupy in the data portion of a head?   */
 /*----------------------------------------------------------------------------*/
-i8 RowCoder::nDataBytes(eMC eMetaCode)
+i8 RowCoder::nDataSize(eMC eMetaCode)
 {
   switch (eMetaCode) {
       

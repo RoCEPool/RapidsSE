@@ -200,7 +200,7 @@ void RowEncoding::vEncode(Row* pRow)
     
     xEncode[i_Col].m_nOffset =
       xEncode[i_Col - 1].m_nOffset
-        + nDataBytes(xEncode[i_Col - 1].m_eMetaCode);
+        + nDataSize(xEncode[i_Col - 1].m_eMetaCode);
 
     if ( bIsFit(xEncode[i_Col - 1].m_eMetaCode) )
       xEncode[i_Col].m_nOffset += xEncode[i_Col - 1].m_nDataSize;

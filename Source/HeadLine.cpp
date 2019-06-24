@@ -124,7 +124,7 @@ i8 HeadLine::nFreeSpace(ColumnVec* pColVec)
     i_Offset += nCompressed;
   }
   
-  i8 nDataBytes = RowCoder::nDataBytes(eLastEncoding);
+  i8 nDataBytes = RowCoder::nDataSize(eLastEncoding);
   
   i8 nFreeBytes = nBytes() - i_Offset - nDataBytes;
   
@@ -154,10 +154,10 @@ eMC HeadLine::eGetEncoding(Column* pCol, i8 i_BaseOffset,
     if (MC_OVERFLOW_2T == eEncoding) {
       i_Offset_ = nBytes() + C_U_1B;
       eEncoding = (eMC)wGetLogical(i_Offset_++,C_1B);
-      i_Offset_ += RowCoder::nDataBytes(eEncoding);
+      i_Offset_ += RowCoder::nDataSize(eEncoding);
     }
     else {
-      i_Offset_ += RowCoder::nDataBytes(eEncoding);
+      i_Offset_ += RowCoder::nDataSize(eEncoding);
     }
     
     if (MC_STR_FIT_1L == eEncoding) {
@@ -352,6 +352,9 @@ void HeadLine::vW(i8 nWords)
 }
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* dump head line                                                             */
 /*----------------------------------------------------------------------------*/
 void HeadLine::vDumpHead(Stz* szTitle,
@@ -484,7 +487,7 @@ void HeadLine::vDumpHead(Stz* szTitle,
       szMetaCode = aMC[eMetaCode];
       i_Offset   = nHeadBytes + 2;
       ayAddr     = aHeadLine->ayAdrLogical(i_Offset);
-      nBytes     = RowCoder::nDataBytes(eMetaCode);
+      nBytes     = RowCoder::nDataSize(eMetaCode);
       //vTrace("--- --------------- --- -- ------------------- "
       //       "-- ------------ -- ---------------- -----------\n"_Stz);
       vTrace("*** *************** *** ** ******************* "
@@ -492,7 +495,7 @@ void HeadLine::vDumpHead(Stz* szTitle,
     }
     else {
       ayAddr = aHeadLine->ayAdrLogical(i_Offset);
-      nBytes = RowCoder::nDataBytes(eMetaCode);
+      nBytes = RowCoder::nDataSize(eMetaCode);
     }
     if (MC_STR_FIT_1L == eMetaCode) {
       RASSERT(1 == nBytes);

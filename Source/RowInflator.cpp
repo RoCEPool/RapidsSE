@@ -92,7 +92,7 @@ void RowInflator::vInflate(Row* pRow, HeadLine* aHeadLine)
         }
           
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        default: ayDataByte += nDataBytes(eMetaCode); break;
+        default: ayDataByte += nDataSize(eMetaCode); break;
       }
       
       continue;
