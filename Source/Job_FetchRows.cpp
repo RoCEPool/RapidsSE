@@ -835,7 +835,7 @@ void Jobs::vRetrieveColumn(Job_FetchRows* pJob_FetchRows,
       pCrwBuffer = CrwBuffer::pToCrwBuffer(aHeadLine);
     }
     
-    RowInflator::vInflateRow(pJob_FetchRows->m_pRow,aHeadLine);
+    RowInflator::vInflateColumn(pJob_FetchRows->m_pRow,aHeadLine);
     
     if (pJob_FetchRows->m_bPrint) {
       HV_Rec hvRec(pColVec);
