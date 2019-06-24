@@ -77,8 +77,8 @@ bool JobExtractRow::bExtractRow(Stz* szRecStr, bool &bBlankLine)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  //hpRow hp_Row;
-  //vTrace("%s\n"_Stz,hp_Row.sz(m_pRow));
+  //SP_Row spRow;
+  //vTrace("%s\n"_Stz,spRow.sz(m_pRow));
 
   return bResult;
 }

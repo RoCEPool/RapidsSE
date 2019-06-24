@@ -388,7 +388,7 @@ i8 giClassSize[]
   /*    */ sizeof(HashBuffer),         // CN_HASHBUFFER
   /*    */ sizeof(HashMap),            // CN_HASHMAP
   /* 50 */ sizeof(HeapBuffer),         // CN_HEAPBUFFER
-  /* 50 */ sizeof(hpRow),              // CN_HPROW
+  /* 50 */ sizeof(SP_Row),              // CN_HPROW
 
   /* 51 */ sizeof(Index),              // CN_INDEX
   /* 52 */ sizeof(IndexTree),          // CN_INDEXTREE

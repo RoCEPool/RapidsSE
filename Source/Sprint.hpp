@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Transform
+namespace ScanSprint
 {
   static const i8 C_SPRINT_SIZE = 64;
   

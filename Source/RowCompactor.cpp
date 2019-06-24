@@ -152,8 +152,8 @@ bool RowCompactor::bCompactRow(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  //hpRow hp_Row;
-  //vTrace("%s\n"_Stz,hp_Row.sz(pRow));
+  //SP_Row spRow;
+  //vTrace("%s\n"_Stz,spRow.sz(pRow));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // encode the row
