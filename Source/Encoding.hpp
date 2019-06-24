@@ -25,7 +25,7 @@ namespace Data
   
     // - - - - - - - - - - - -
   
-    _Enc xCol[C_MAX_COLUMNS];
+    _Enc xaCol[C_MAX_COLUMNS];
 
     Wsp_t<C_MAX_RECORD> m_xWsp;  // sz workspace (multiple vch)
   
@@ -45,15 +45,15 @@ namespace Data
     void vSplitOver(i8 nHeadSize, i8 nMetaBytes);
 
   private:
-    void vEncodeBol(_Enc& xCol, Dtm wBol, Column* pCol);
-    void vEncodeBcd(_Enc& xCol, Dtm wBcd, Column* pCol);
-    void vEncodeDte(_Enc& xCol, Dtm wDte, Column* pCol);
-    void vEncodeFlt(_Enc& xCol, Dtm wFlt, Column* pCol);
-    void vEncodeInt(_Enc& xCol, Dtm wInt, Column* pCol);
-    void vEncodeIvl(_Enc& xCol, Dtm wIvl, Column* pCol);
-    void vEncodeTme(_Enc& xCol, Dtm wTme, Column* pCol);
-    void vEncodeTsp(_Enc& xCol, Dtm wTsp, Column* pCol);
-    void vEncodeVch(_Enc& xCol, Dtm wVch, Column* pCol);
+    void vEncodeBol(_Enc& xCol, Dtm wBol);
+    void vEncodeBcd(_Enc& xCol, Dtm wBcd);
+    void vEncodeDte(_Enc& xCol, Dtm wDte);
+    void vEncodeFlt(_Enc& xCol, Dtm wFlt);
+    void vEncodeInt(_Enc& xCol, Dtm wInt);
+    void vEncodeIvl(_Enc& xCol, Dtm wIvl);
+    void vEncodeTme(_Enc& xCol, Dtm wTme);
+    void vEncodeTsp(_Enc& xCol, Dtm wTsp);
+    void vEncodeVch(_Enc& xCol, Dtm wVch);
   
     void vReset(void);
   
