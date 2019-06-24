@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Indexes
+namespace Transform
 {
   class Id
   {
@@ -16,7 +16,7 @@ namespace Indexes
   
   public:
     void* operator new(size_t);
-    void* operator new(size_t, Id*);
+    void* operator new(size_t, Id* aId);
     
     Id(void);
     Id(Id& xId);

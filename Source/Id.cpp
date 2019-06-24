@@ -13,17 +13,17 @@
 /*----------------------------------------------------------------------------*/
 void* Id::operator new(size_t)
 {
-  vFatal("fatal: ItemId class cannot be new'd\n"_Stz);
+  vFatal("fatal: Id class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/
-/* operator new                                                               */
+/* operator new(aId)                                                          */
 /*----------------------------------------------------------------------------*/
-void* Id::operator new(size_t, Id* pId)
+void* Id::operator new(size_t, Id* aId)
 {
-  return pId;
+  return aId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -85,10 +85,10 @@ void Id::operator =(Id& xId)
 i8 Id::iAsI8(void)
 {
   i8 iId;
-  
+
   iId  = m_uBuffer << 48;
   iId |= m_uItem;
-  
+
   return iId;
 }
 
