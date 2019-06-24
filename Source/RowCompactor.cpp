@@ -62,7 +62,7 @@ RowCompactor::RowCompactor(void)
   
   //m_oFreqDist
 #ifdef WITH_ANALYSE_FREE
-  m_oFreqDist.vInit(7,15,23,31,39,47,55,63,-1);
+  m_oFreqDist.vInit(7,15,23,31,39,47,55,63,INT_MAX);
 #endif
   
   _checkInitialised_(CN_ROWCOMPACTOR);
@@ -100,11 +100,11 @@ RowCompactor::~RowCompactor(void) noexcept(false)
   for (i8 i_Index = 0; i_Index < m_oFreqDist.nBuckets() - 1; i_Index++) {
     iBucket = m_oFreqDist.iBucket(i_Index);
     vTrace("%lld..%lldB:%lld "_Stz, iLastBucket, iBucket, m_oFreqDist.iDist(i_Index));
-    iLastBucket = iBucket;
+    iLastBucket = iBucket+1;
   }
   i8 i_Index = m_oFreqDist.nBuckets() - 1;
   iBucket = m_oFreqDist.iBucket(i_Index);
-  vTrace("%lld..%lldB:%lld "_Stz, iLastBucket, iBucket, m_oFreqDist.iDist(i_Index));
+  vTrace("%lld...B:%lld "_Stz, iLastBucket, m_oFreqDist.iDist(i_Index));
   vTrace("\n"_Stz);
 #endif
   
@@ -305,7 +305,7 @@ void RowCompactor::vCodeRow(RowEncoding* pRowEnc)
   //#endif
 
 #ifdef WITH_ANALYSE_FREE
-  i8 nFreeBytes = nFreeSpace(aHeadLine,m_pColVec);
+  i8 nFreeBytes = aHeadLine->nFreeSpace(m_pColVec);
   m_oFreqDist.vAdd(nFreeBytes);
 #endif
 
