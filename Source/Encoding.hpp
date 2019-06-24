@@ -25,13 +25,7 @@ namespace Data
   
     // - - - - - - - - - - - -
   
-    struct {
-      eMC  m_eMetaCode;  // meta code for the col value
-      Dtm  m_wDataCode;  // bytes of data
-      i8   m_nDataSize;  // number of bytes of data
-      i8   m_nOffset;    // byte offset in head of dataCode
-      bool m_bOverflow;  // overflow at this point
-    } xCol[C_MAX_COLUMNS];
+    _Enc xCol[C_MAX_COLUMNS];
 
     Wsp_t<C_MAX_RECORD> m_xWsp;  // sz workspace (multiple vch)
   
@@ -51,15 +45,15 @@ namespace Data
     void vSplitOver(i8 nHeadSize, i8 nMetaBytes);
 
   private:
-    void vEncodeBol(Dtm wBol, Column* pCol);
-    void vEncodeBcd(Dtm wBcd, Column* pCol);
-    void vEncodeDte(Dtm wDte, Column* pCol);
-    void vEncodeFlt(Dtm wFlt, Column* pCol);
-    void vEncodeInt(Dtm wInt, Column* pCol);
-    void vEncodeIvl(Dtm wIvl, Column* pCol);
-    void vEncodeTme(Dtm wTme, Column* pCol);
-    void vEncodeTsp(Dtm wTsp, Column* pCol);
-    void vEncodeVch(Dtm wVch, Column* pCol);
+    void vEncodeBol(_Enc& xCol, Dtm wBol, Column* pCol);
+    void vEncodeBcd(_Enc& xCol, Dtm wBcd, Column* pCol);
+    void vEncodeDte(_Enc& xCol, Dtm wDte, Column* pCol);
+    void vEncodeFlt(_Enc& xCol, Dtm wFlt, Column* pCol);
+    void vEncodeInt(_Enc& xCol, Dtm wInt, Column* pCol);
+    void vEncodeIvl(_Enc& xCol, Dtm wIvl, Column* pCol);
+    void vEncodeTme(_Enc& xCol, Dtm wTme, Column* pCol);
+    void vEncodeTsp(_Enc& xCol, Dtm wTsp, Column* pCol);
+    void vEncodeVch(_Enc& xCol, Dtm wVch, Column* pCol);
   
     void vReset(void);
   
