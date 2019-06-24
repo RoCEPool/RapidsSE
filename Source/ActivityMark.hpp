@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Maps
+namespace Monitoring
 {
   static const i8 C_MARK_TEXT = 128;
   

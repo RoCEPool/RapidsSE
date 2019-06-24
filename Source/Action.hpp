@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Maps
+namespace Monitoring
 {
   enum eAN // action numbers
   {

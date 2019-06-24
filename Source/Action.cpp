@@ -2,7 +2,7 @@
 /* Action.cpp - when did an action occur and what happened                    */
 /*============================================================================*/
 
-#include "Maps.h"
+#include "Monitoring.h"
 #include "StorageEngine.h"
 
 extern ActionSequence* gpActionSequence;
@@ -14,7 +14,7 @@ extern ActionSequence* gpActionSequence;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Action* Maps::_pAction(void* aAddr)
+Action* Monitoring::_pAction(void* aAddr)
 {
   Action* pAction = reinterpret_cast<Action*>(aAddr);
   
