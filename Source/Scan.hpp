@@ -3,7 +3,8 @@
 /*============================================================================*/
 #pragma once
 
-namespace Transform
+namespace ScanSprint
+
 {
   class Scan : public Object
   {

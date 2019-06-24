@@ -1,0 +1,47 @@
+/*============================================================================*/
+/* ScanSprint.h -- ScanSprint namespace                                       */
+/*============================================================================*/
+
+#pragma once
+
+#include "Transform.h"
+
+//-----------------------------------------------------------------------------
+
+namespace ScanSprint
+{
+  void vCheckAssumptions(void);
+}
+
+using namespace ScanSprint;
+
+//-----------------------------------------------------------------------------
+
+#include "Scan.hpp"
+#include "Sprint.hpp"
+
+#include "hpRow.hpp"
+
+#include "snBCD.hpp"
+#include "snBOL.hpp"
+#include "snDTE.hpp"
+#include "snFLT.hpp"
+#include "snINT.hpp"
+#include "snIVL.hpp"
+#include "snTME.hpp"
+#include "snTSP.hpp"
+#include "snVCH.hpp"
+
+#include "spBCD.hpp"
+#include "spBOL.hpp"
+#include "spDTE.hpp"
+#include "spFLT.hpp"
+#include "spINT.hpp"
+#include "spIVL.hpp"
+#include "spTME.hpp"
+#include "spTSP.hpp"
+#include "spVCH.hpp"
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
