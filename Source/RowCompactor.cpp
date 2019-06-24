@@ -95,16 +95,13 @@ RowCompactor::~RowCompactor(void) noexcept(false)
    m_oFreqDist.iDist(INT_MAX));
    */
   vTrace(": HeadFree %lldB : "_Stz, m_oFreqDist.nSum());
-  i8 iLastBucket = 0;
   i8 iBucket;
   for (i8 i_Index = 0; i_Index < m_oFreqDist.nBuckets() - 1; i_Index++) {
     iBucket = m_oFreqDist.iBucket(i_Index);
-    vTrace("%lld..%lldB:%lld "_Stz, iLastBucket, iBucket, m_oFreqDist.iDist(i_Index));
-    iLastBucket = iBucket+1;
+    vTrace("<=%lldB:%lld "_Stz, iBucket, m_oFreqDist.iDist(i_Index));
   }
   i8 i_Index = m_oFreqDist.nBuckets() - 1;
-  iBucket = m_oFreqDist.iBucket(i_Index);
-  vTrace("%lld...B:%lld "_Stz, iLastBucket, m_oFreqDist.iDist(i_Index));
+  vTrace(">%lldB:%lld "_Stz,  iBucket, m_oFreqDist.iDist(i_Index));
   vTrace("\n"_Stz);
 #endif
   
