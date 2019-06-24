@@ -162,7 +162,7 @@ bool RowCompactor::bCompactRow(Row* pRow)
   
   pRowEnc->vEncode(pRow);
   
-  //hpRowEncoding hp_RowEnc;
+  //SP_RowEncoding hp_RowEnc;
   //vTrace("\n%s\n"_Stz,hp_RowEnc.sz(pRowEncoding));
   
   pRowEnc->vSplitOver(256,m_pColVec->nItems());

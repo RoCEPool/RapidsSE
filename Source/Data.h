@@ -39,7 +39,7 @@ typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,Table,
 #include "RowEncoding.hpp"
 #include "RowExtractor.hpp"
 #include "RowInflator.hpp"
-#include "hpRowEncoding.hpp"
+#include "SP_RowEncoding.hpp"
 
 #include "BufferCursor.hpp"
 
