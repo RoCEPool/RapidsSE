@@ -1,24 +1,26 @@
 /*============================================================================*/
-/* snIVL.hpp - Ivl scan helper                                                */
+/* spFLT.hpp - Flt sprint helper                                              */
 /*============================================================================*/
 #pragma once
 
-namespace Transform
+namespace ScanSprint
 {
-  class snIVL : public Scan
+  class spFLT : public Sprint
   {
   public:
-  
-    Dtm m_xIvl;
   
     // must be last
     Footer m_xFooter;
     
   public:
-    snIVL(void);
-    ~snIVL(void) noexcept(false);
+    spFLT(void);
+    ~spFLT(void) noexcept(false);
   
-    i8 i(char** aacCrs, Column* pCol, Formatters* pScnFmt);
+    Stz* sz(d8 dFlt);
+
+    Stz* szMax(void);
+    Stz* szMid(void);
+    Stz* szMin(void);
   
     Footer* aFooter(void);
   };

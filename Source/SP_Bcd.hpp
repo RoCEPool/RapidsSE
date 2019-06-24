@@ -1,28 +1,28 @@
 /*============================================================================*/
-/* hpRow.hpp - Row sprint helper                                              */
+/* spBCD.hpp - Bcd sprint helper                                              */
 /*============================================================================*/
 #pragma once
 
-namespace Transform
+namespace ScanSprint
 {
-  class hpRow : public Sprint
+  class spBCD : public Sprint
   {
   public:
-  
-    char m_caRow[C_16KB];
   
     // must be last
     Footer m_xFooter;
     
   public:
-    hpRow(void);
-    ~hpRow(void) noexcept(false);
+    spBCD(void);
+    ~spBCD(void) noexcept(false);
+  
+    Stz* sz(i8 iBcd);
+    Stz* sz(i8 iBcd, i8 iScale);
+  
+    Stz* szMax(void);
+    Stz* szMid(void);
+    Stz* szMin(void);
 
-    void vRow(Row* pRow);
-  
-    Stz* sz(void);
-    Stz* sz(Row* pRow);
-  
     Footer* aFooter(void);
   };
 }

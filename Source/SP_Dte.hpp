@@ -1,24 +1,26 @@
 /*============================================================================*/
-/* snFLT.hpp - Flt scan helper                                                */
+/* spDTE.hpp - Dte sprint helper                                              */
 /*============================================================================*/
 #pragma once
 
-namespace Transform
+namespace ScanSprint
 {
-  class snFLT : public Scan
+  class spDTE : public Sprint
   {
   public:
-  
-    Dtm m_xFlt;
   
     // must be last
     Footer m_xFooter;
     
   public:
-    snFLT(void);
-    ~snFLT(void) noexcept(false);
+    spDTE(void);
+    ~spDTE(void) noexcept(false);
   
-    d8 d(char** aacCrs, Column* pCol, Formatters* pScnFmt);
+    Stz* sz(i8 iDte);
+  
+    Stz* szMax(void);
+    Stz* szMid(void);
+    Stz* szMin(void);
   
     Footer* aFooter(void);
   };

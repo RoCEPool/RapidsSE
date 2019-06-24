@@ -1,29 +1,28 @@
 /*============================================================================*/
-/* snVCH.hpp - Vch scan helper                                                */
+/* spIVL.hpp - Ivl sprint helper                                              */
 /*============================================================================*/
 #pragma once
 
-namespace Transform
+namespace ScanSprint
 {
-  class snVCH : public Scan
+  class spIVL : public Sprint
   {
   public:
-    
-    char m_caVch[C_MAX_VCH];
   
     // must be last
     Footer m_xFooter;
     
   public:
-    snVCH(void);
-    ~snVCH(void) noexcept(false);
-    
-    Stz* sz(char** aacCrs,
-            Column* pCol,
-            Formatters* pScnFmt,
-            bool bSawLeadingEnclosed,
-            i8& nChars_);
+    spIVL(void);
+    ~spIVL(void) noexcept(false);
   
+    Stz* sz(i8 iIvl);
+    Stz* sz(i8 iIvl, i8 iScale);
+
+    Stz* szMax(void);
+    Stz* szMid(void);
+    Stz* szMin(void);
+   
     Footer* aFooter(void);
   };
 }

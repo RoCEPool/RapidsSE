@@ -1,24 +1,26 @@
 /*============================================================================*/
-/* snBOL.hpp - Bol scan helper                                                */
+/* spTSP.hpp - Tme sprint helper                                              */
 /*============================================================================*/
 #pragma once
 
-namespace Transform
+namespace ScanSprint
 {
-  class snBOL : public Scan
+  class spTSP : public Sprint
   {
   public:
   
-    Dtm m_xBol;
-  
-   // must be last
+    // must be last
     Footer m_xFooter;
     
   public:
-    snBOL(void);
-    ~snBOL(void) noexcept(false);
+    spTSP(void);
+    ~spTSP(void) noexcept(false);
   
-    i8 i(char** aacCrs, Column* pCol, Formatters* pScnFmt);
+    Stz* sz(i8 iTme);
+  
+    Stz* szMax(void);
+    Stz* szMid(void);
+    Stz* szMin(void);
   
     Footer* aFooter(void);
   };

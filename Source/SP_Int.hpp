@@ -1,25 +1,27 @@
 /*============================================================================*/
-/* snTME.hpp - Tme scan helper                                                */
+/* spINT.hpp - Int sprint helper                                              */
 /*============================================================================*/
 #pragma once
 
-namespace Transform
+namespace ScanSprint
 {
-  class snTME : public Scan
+  class spINT : public Sprint
   {
   public:
-  
-    Dtm m_xTme;
   
     // must be last
     Footer m_xFooter;
     
   public:
-    snTME(void);
-    ~snTME(void) noexcept(false);
+    spINT(void);
+    ~spINT(void) noexcept(false);
   
-    i8 i(char** aacCrs, Column* pCol, Formatters* pScnFmt);
-  
+    Stz* sz(i8 iInt);
+
+    Stz* szMax(void);
+    Stz* szMid(void);
+    Stz* szMin(void);
+
     Footer* aFooter(void);
   };
 }

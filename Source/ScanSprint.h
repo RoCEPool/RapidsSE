@@ -32,15 +32,15 @@ using namespace ScanSprint;
 #include "SN_Tsp.hpp"
 #include "SN_Vch.hpp"
 
-#include "spBCD.hpp"
-#include "spBOL.hpp"
-#include "spDTE.hpp"
-#include "spFLT.hpp"
-#include "spINT.hpp"
-#include "spIVL.hpp"
-#include "spTME.hpp"
-#include "spTSP.hpp"
-#include "spVCH.hpp"
+#include "SP_Bcd.hpp"
+#include "SP_Bol.hpp"
+#include "SP_Dte.hpp"
+#include "SP_Flt.hpp"
+#include "SP_Int.hpp"
+#include "SP_Ivl.hpp"
+#include "SP_Tme.hpp"
+#include "SP_Tsp.hpp"
+#include "SP_Vch.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

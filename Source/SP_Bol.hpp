@@ -1,24 +1,26 @@
 /*============================================================================*/
-/* snBCD.hpp - Bcd scan helper                                                */
+/* spBOL.hpp - Bol sprint helper                                              */
 /*============================================================================*/
 #pragma once
 
-namespace Transform
+namespace ScanSprint
 {
-  class snBCD : public Scan
+  class spBOL : public Sprint
   {
   public:
-  
-    Dtm m_xBcd;
   
     // must be last
     Footer m_xFooter;
     
   public:
-    snBCD(void);
-    ~snBCD(void) noexcept(false);
+    spBOL(void);
+    ~spBOL(void) noexcept(false);
   
-    i8 i(char** aacCrs, Column* pCol, Formatters* pScnFmt);
+    Stz* sz(i8 iBol);
+
+    Stz* szMax(void);
+    Stz* szMid(void);
+    Stz* szMin(void);
   
     Footer* aFooter(void);
   };

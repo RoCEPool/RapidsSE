@@ -1,24 +1,29 @@
 /*============================================================================*/
-/* snINT.hpp - Int scan helper                                                */
+/* spVCH.hpp - Vch sprint helper                                              */
 /*============================================================================*/
 #pragma once
 
-namespace Transform
+namespace ScanSprint
 {
-  class snINT : public Scan
+  class spVCH : public Sprint
   {
   public:
   
-    Dtm m_xInt;
+    char m_caVch[C_MAX_VCH];
   
-   // must be last
+    // must be last
     Footer m_xFooter;
     
   public:
-    snINT(void);
-    ~snINT(void) noexcept(false);
+    spVCH(void);
+    ~spVCH(void) noexcept(false);
   
-    i8 i(char** aacCrs, Column* pCol, Formatters* pScnFmt);
+    Stz* sz(char* azVch);
+    Stz* sz(Stz*  szVch);
+  
+    Stz* szMax(void);
+    Stz* szMid(void);
+    Stz* szMin(void);
   
     Footer* aFooter(void);
   };
