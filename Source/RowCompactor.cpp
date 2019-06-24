@@ -162,12 +162,12 @@ bool RowCompactor::bCompactRow(Row* pRow)
   
   pEncoding->vEncode(pRow);
   
-  //SP_Encoding hp_RowEnc;
-  //vTrace("\n%s\n"_Stz,hp_RowEnc.sz(pRowEncoding));
+  SP_Encoding spEncoding;
+  vTrace("\n%s\n"_Stz,spEncoding.sz(pEncoding));
   
   pEncoding->vSplitOver(256,m_pColVec->nItems());
   
-  //vTrace("\n%s\n"_Stz,hp_RowEnc.sz(pRowEncoding));
+  vTrace("\n%s\n"_Stz,spEncoding.sz(pEncoding));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for space in target nub
