@@ -169,6 +169,14 @@ void Encoding::vEncode(Row* pRow)
   
   m_nBytesNeeded = i_Offset_next;
 
+  // - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  SP_Encoding spEncoding;
+  vTrace("\n%s\n"_Stz,spEncoding.sz(this));
+  
+  vSplitOver();
+  
+  vTrace("\n%s\n"_Stz,spEncoding.sz(this));
 }
 
 /*----------------------------------------------------------------------------*/
