@@ -16,7 +16,11 @@ namespace Data
     i8         m_i_BaseOffset; // base offset for this colvec/table
     
     // - - - - - - - - - - - -
+    
     IrwBuffer* m_pRowSamples;  // the set of sample rows
+    Encoding*  m_pEncoding;    // encoding of row
+    
+    HeadLine*  m_aHeadLine;    // head of crw
     
     // - - - - - - - - - - - -
     i8 m_nTotalBuffers;        // total number of crw buffers created
@@ -38,8 +42,7 @@ namespace Data
     bool bCompactRow(Row* pRow);
   
   private:
-    void vAddCode(HeadLine* aHeadLine, _ColEnc& xColEnc, Column* pCol, 
-                  i8& i_DataOffset_);
+    void vPackColVal(_ColEnc& xColEnc, Column* pCol,i8& i_DataOffset_);
     void vPackCrw(Encoding* pEncoding);
 
   private:
