@@ -56,7 +56,7 @@ Encoding::Encoding(ColumnVec* pColVec, i8 nHeadSize, i8 nMetaSize)
   
   m_pColVec   = pColVec;
   m_nColumns  = m_pColVec->nItems();
-  m_nHeadSize = nHeadSize;
+  m_nHeadSize = 64; //nHeadSize;
   m_nMetaSize = nMetaSize;
   
   m_nBytesNeeded = C_UNKNOWN;
@@ -192,6 +192,8 @@ void Encoding::vEncodeBcd(_ColEnc& xColEnc, Dtm wBcd)
   if (bNullEnc(xColEnc,wBcd))
     return;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   // 0..10 case
   if (wBcd.m_iBcd >= 0 && wBcd.m_iBcd <= 10) {
     xColEnc.m_eMetaCode = (eMC)(MC_ZERO + wBcd.m_iBcd);
@@ -282,6 +284,8 @@ void Encoding::vEncodeInt(_ColEnc& xColEnc, Dtm wInt)
   if (bNullEnc(xColEnc,wInt))
     return;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   // -1 case
   if (-1 == wInt.m_iInt) {
     xColEnc.m_eMetaCode = MC_MINUS_ONE;
@@ -289,6 +293,8 @@ void Encoding::vEncodeInt(_ColEnc& xColEnc, Dtm wInt)
     xColEnc.m_nDataSize = C_0B;
     return;
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // 0..10 case
   if (wInt.m_iInt >= 0 && wInt.m_iInt <= 10) {
@@ -458,7 +464,9 @@ void Encoding::vSplitOver(void)
   RASSERT(i_Col < m_nColumns);
   
   
-  
+  //i8 nShiftBy = m_nHeadSize - xaColEnc[i_Col].m_i_Till;
+
+  vSplitAt(i_Col);
   
   
   //  i8 i_Col;
@@ -503,13 +511,31 @@ void Encoding::vSplitOver(void)
 void Encoding::vSplitAt(i8 i_Col)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  
+  xaColEnc[i_Col].m_bOverflow = true;
 }
 
 /*----------------------------------------------------------------------------*/
-/* test for null encoding                                                     */
+/* test if column is within head                                              */
 /*----------------------------------------------------------------------------*/
-bool Encoding::bWithinHead(i8 i_Co)
+bool Encoding::bWithinHead(i8 i_Col)
 {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // last column
+  
+  if (i_Col == m_nColumns - 1) {
+
+    // last column fits?
+    if (xaColEnc[i_Col].m_i_Till < m_nHeadSize)
+      return true;
+
+    // last column doesnt fit
+    return false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // not-last column
+  
   return true;
 }
 
