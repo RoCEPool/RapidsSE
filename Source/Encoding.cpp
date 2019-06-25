@@ -113,26 +113,30 @@ void Encoding::vEncode(Row* pRow)
   
   vReset();
   
+  i8 i_Offset_next = C_W_1B + m_nMetaSize;
+  
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
     
     Column* pCol = m_pColVec->pGet(i_Col);
     eDM eDatum   = pCol->eDatumType();
     
+    _ColEnc& xrColEnc = xaColEnc[i_Col];
+    
     switch (eDatum) {
       
-      case DM_BCD: vEncodeBcd(xaColEnc[i_Col],pRow->m_waColVal[i_Col]);  break;
-      case DM_BOL: vEncodeBol(xaColEnc[i_Col],pRow->m_waColVal[i_Col]);  break;
-      case DM_DTE: vEncodeDte(xaColEnc[i_Col],pRow->m_waColVal[i_Col]);  break;
-      case DM_FLT: vEncodeFlt(xaColEnc[i_Col],pRow->m_waColVal[i_Col]);  break;
-      case DM_INT: vEncodeInt(xaColEnc[i_Col],pRow->m_waColVal[i_Col]);  break;
-      case DM_IVL: vEncodeIvl(xaColEnc[i_Col],pRow->m_waColVal[i_Col]);  break;
-      case DM_TME: vEncodeTme(xaColEnc[i_Col],pRow->m_waColVal[i_Col]);  break;
-      case DM_TSP: vEncodeTsp(xaColEnc[i_Col],pRow->m_waColVal[i_Col]);  break;
+      case DM_BCD: vEncodeBcd(xrColEnc,pRow->m_waColVal[i_Col]);  break;
+      case DM_BOL: vEncodeBol(xrColEnc,pRow->m_waColVal[i_Col]);  break;
+      case DM_DTE: vEncodeDte(xrColEnc,pRow->m_waColVal[i_Col]);  break;
+      case DM_FLT: vEncodeFlt(xrColEnc,pRow->m_waColVal[i_Col]);  break;
+      case DM_INT: vEncodeInt(xrColEnc,pRow->m_waColVal[i_Col]);  break;
+      case DM_IVL: vEncodeIvl(xrColEnc,pRow->m_waColVal[i_Col]);  break;
+      case DM_TME: vEncodeTme(xrColEnc,pRow->m_waColVal[i_Col]);  break;
+      case DM_TSP: vEncodeTsp(xrColEnc,pRow->m_waColVal[i_Col]);  break;
         
       case DM_VCH:
         xaColEnc[i_Col].m_wDataCode = (i8)m_xWsp.ayLatter();
-        vEncodeVch(xaColEnc[i_Col],pRow->m_waColVal[i_Col]);
-        m_xWsp.vTake(xaColEnc[i_Col].m_nDataSize + 1);
+        vEncodeVch(xrColEnc,pRow->m_waColVal[i_Col]);
+        m_xWsp.vTake(xrColEnc.m_nDataSize + 1);
         break;
         
       default:
@@ -140,18 +144,25 @@ void Encoding::vEncode(Row* pRow)
         
     } // switch eDatum
     
-    if (! i_Col)
-      continue;
+    //if (! i_Col)
+    //  continue;
     
-    // compute offset location
+    // - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // compute initial offset
     
-    xaColEnc[i_Col].m_i_Offset =
-      xaColEnc[i_Col - 1].m_i_Offset
-        + nDataSize(xaColEnc[i_Col - 1].m_eMetaCode);
+//    xaColEnc[i_Col].m_i_Offset =
+//      xaColEnc[i_Col - 1].m_i_Offset
+//        + nDataSize(xaColEnc[i_Col - 1].m_eMetaCode);
+//
+//    if ( bIsFit(xaColEnc[i_Col - 1].m_eMetaCode) )
+//      xaColEnc[i_Col].m_i_Offset += xaColEnc[i_Col - 1].m_nDataSize;
 
-    if ( bIsFit(xaColEnc[i_Col - 1].m_eMetaCode) )
-      xaColEnc[i_Col].m_i_Offset += xaColEnc[i_Col - 1].m_nDataSize;
+    xrColEnc.m_i_Offset = i_Offset_next;
     
+    i_Offset_next += nDataSize(xrColEnc.m_eMetaCode);
+    if ( bIsFit(xrColEnc.m_eMetaCode) )
+      i_Offset_next += xrColEnc.m_nDataSize - 1;
+
   } // for i_Col
 
 }
@@ -162,13 +173,8 @@ void Encoding::vEncode(Row* pRow)
 void Encoding::vSplitOver(i8 nHeadSize, i8 nMetaSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
-
+  
   i8 i_Col;
-  for (i_Col = 0; i_Col < m_nColumns; i_Col++)
-    xaColEnc[i_Col].m_i_Offset += nMetaSize;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   for (i_Col = 0; i_Col < m_nColumns; i_Col++) {
     if (xaColEnc[i_Col].m_i_Offset + xaColEnc[i_Col].m_nDataSize >= nHeadSize)
       break;
@@ -181,7 +187,8 @@ void Encoding::vSplitOver(i8 nHeadSize, i8 nMetaSize)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  // actually split
+  
   i8 nShiftBy = 0;
   
   i8 i_Offset = xaColEnc[i_Col].m_i_Offset;

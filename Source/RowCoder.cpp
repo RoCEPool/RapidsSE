@@ -14,7 +14,7 @@
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::iBaseOffset(ColumnVec* pColVec)
 {
-  i8 iOffset  = nMetaSize(pColVec);
+  i8 iOffset  = C_W_1B + nMetaSize(pColVec);
   
   //! temporary                                                          FIX
   if (iOffset < 8)
@@ -203,16 +203,16 @@ bool RowCoder::bIsFit(eMC eMetaCode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* calc size of the meta tape needed for given column vector                  */
+/* calc size of meta tape for given column vector (does not incl <W>)         */
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::nMetaSize(ColumnVec* pColVec)
 {
   i8 nColumns = pColVec->nItems();
   
-  i8 nBits = (i8)C_BITS_PER_BYTE + (nColumns * (i8)C_METABITS);
+  i8 nBits = (nColumns * (i8)C_METABITS);
   
   i8 nMetaBytes = nBits / (i8)C_BITS_PER_BYTE
-  + (nBits % (i8)C_BITS_PER_BYTE ? 1 : 0);
+                   + (nBits % (i8)C_BITS_PER_BYTE ? 1 : 0);
   
   return nMetaBytes;
 }
