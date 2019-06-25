@@ -151,10 +151,10 @@ void Encoding::vEncode(Row* pRow)
     // - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // compute initial offset
 
-    xrColEnc.m_i_Offset = i_Offset_next;
-
     i8 nDataBytes = nDataSize(xrColEnc.m_eMetaCode);
     
+    xrColEnc.m_i_Offset = i_Offset_next;
+        
     if (! nDataBytes)
       continue;
     
@@ -162,6 +162,8 @@ void Encoding::vEncode(Row* pRow)
       nDataBytes += xrColEnc.m_nDataSize - C_L_1B;
     
     i_Offset_next += nDataBytes;
+    
+    xrColEnc.m_i_Till = i_Offset_next - 1;
 
   } // for i_Col
 

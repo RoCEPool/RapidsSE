@@ -47,8 +47,9 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
   
   m_caEncoding[0] = '\0';
   StrLib::vSprint(m_caEncoding,
-                  "HeadSize %lldB MetaSize %lldB BytesNeeded %lldB\n"_Stz,
+                  "HeadSize %lldB <W=%lld> MetaSize %lldB BytesNeeded %lldB\n"_Stz,
                   pEncoding->m_nHeadSize,
+                  MemLib::nQuantaRequired(pEncoding->m_nHeadSize,C_BYTES_PER_WORD),
                   pEncoding->m_nMetaSize,
                   pEncoding->m_nBytesNeeded
                   );
@@ -67,27 +68,34 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
     StrLib::vAppendPad(&szCrs,caLine,2);
     StrLib::vAppendChar(&szCrs,'[');
     StrLib::vAppendDecimal(&szCrs,i_Col);
-    StrLib::vAppendChar(&szCrs,pEncoding->xaColEnc[i_Col].m_bOverflow ? '*' : ' ');
-    StrLib::vAppendDecimal(&szCrs,pEncoding->xaColEnc[i_Col].m_i_Offset);
+    //StrLib::vAppendDecimal(&szCrs,pEncoding->xaColEnc[i_Col].m_i_Offset);
     StrLib::vAppendChar(&szCrs,']');
+    StrLib::vAppendChar(&szCrs,pEncoding->xaColEnc[i_Col].m_bOverflow ? '*' : ' ');
 
-    StrLib::vAppendPad(&szCrs,caLine,10);
+    StrLib::vAppendPad(&szCrs,caLine,8);
     StrLib::vAppendString(&szCrs,(char*)pCol->szColNm());
     
-    StrLib::vAppendPad(&szCrs,caLine,30);
+    StrLib::vAppendPad(&szCrs,caLine,25);
     StrLib::vAppendString(&szCrs,(char*)szDatum);
     
-    StrLib::vAppendPad(&szCrs,caLine,35);
+    StrLib::vAppendPad(&szCrs,caLine,30);
     StrLib::vAppendString(&szCrs,(char*)aMC[pEncoding->xaColEnc[i_Col].m_eMetaCode]);
     
-    StrLib::vAppendPad(&szCrs,caLine,50);
+    StrLib::vAppendPad(&szCrs,caLine,45);
     StrLib::vAppendString(&szCrs,(char*)"C_"_Stz);
     StrLib::vAppendDecimal(&szCrs,pEncoding->xaColEnc[i_Col].m_nDataSize);
     StrLib::vAppendString(&szCrs,(char*)"B"_Stz);
+
+    StrLib::vAppendPad(&szCrs,caLine,52);
     
+    if (pEncoding->xaColEnc[i_Col].m_i_Till) {
+      StrLib::vAppendDecimal(&szCrs,pEncoding->xaColEnc[i_Col].m_i_Offset);
+      StrLib::vAppendString(&szCrs,(char*)".."_Stz);
+      StrLib::vAppendDecimal(&szCrs,pEncoding->xaColEnc[i_Col].m_i_Till);
+    }
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     
-    StrLib::vAppendPad(&szCrs,caLine,58);
+    StrLib::vAppendPad(&szCrs,caLine,60);
     
    if (C_DATUM_NULL == pEncoding->xaColEnc[i_Col].m_wDataCode.m_iInt) {
       StrLib::vAppendString(&szCrs,(char*)"null"_Stz);
