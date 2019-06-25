@@ -44,7 +44,7 @@ namespace Data
   
     i8   nBytesNeeded(void);
     void vEncode(Row* pRow);
-    void vSplitOver(i8 nHeadSize, i8 nMetaSize);
+    void vSplitOver(void);
 
   private:
     void vEncodeBol(_ColEnc& xCol, Dtm wBol);
@@ -60,6 +60,8 @@ namespace Data
     bool bNullEnc(_ColEnc& xCol, Dtm wDtm);
   
     void vReset(void);
+  
+    bool bWithinHead(i8 i_Col);
   
   private:
     Footer* aFooter(void);

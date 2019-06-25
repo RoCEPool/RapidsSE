@@ -166,50 +166,56 @@ void Encoding::vEncode(Row* pRow)
     xrColEnc.m_i_Till = i_Offset_next - 1;
 
   } // for i_Col
+  
+  m_nBytesNeeded = i_Offset_next;
 
 }
 
 /*----------------------------------------------------------------------------*/
 /* split at headSize for overflow (if necessary)                              */
 /*----------------------------------------------------------------------------*/
-void Encoding::vSplitOver(i8 nHeadSize, i8 nMetaSize)
+void Encoding::vSplitOver(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
-  i8 i_Col;
-  for (i_Col = 0; i_Col < m_nColumns; i_Col++) {
-    if (xaColEnc[i_Col].m_i_Offset + xaColEnc[i_Col].m_nDataSize >= nHeadSize)
-      break;
-  }
   
-  if (i_Col >= m_nColumns) {
-    m_nBytesNeeded = xaColEnc[m_nColumns - 1].m_i_Offset
-                       + xaColEnc[m_nColumns - 1].m_nDataSize;
+  if (m_nBytesNeeded <= m_nHeadSize)
     return;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // actually split
   
-  i8 nShiftBy = 0;
-  
-  i8 i_Offset = xaColEnc[i_Col].m_i_Offset;
-  
-  if (i_Col == 0 || i_Offset <= nHeadSize) {
-    nShiftBy = nHeadSize - i_Offset;
-  }
-  else {
-    i_Offset = xaColEnc[i_Col - 1].m_i_Offset;
-    nShiftBy = nHeadSize - i_Offset;
-    i_Col--;
-  }
-  
-  xaColEnc[i_Col].m_bOverflow = true;
-  for ( ; i_Col < m_nColumns; i_Col++)
-    xaColEnc[i_Col].m_i_Offset += nShiftBy;
-  
-  m_nBytesNeeded = xaColEnc[m_nColumns - 1].m_i_Offset
-                     + xaColEnc[m_nColumns - 1].m_nDataSize;
+//  i8 i_Col;
+//  for (i_Col = 0; i_Col < m_nColumns; i_Col++) {
+//    if (xaColEnc[i_Col].m_i_Offset + xaColEnc[i_Col].m_nDataSize >= nHeadSize)
+//      break;
+//  }
+//
+//  if (i_Col >= m_nColumns) {
+//    m_nBytesNeeded = xaColEnc[m_nColumns - 1].m_i_Offset
+//                       + xaColEnc[m_nColumns - 1].m_nDataSize;
+//    return;
+//  }
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // actually split
+//
+//  i8 nShiftBy = 0;
+//
+//  i8 i_Offset = xaColEnc[i_Col].m_i_Offset;
+//
+//  if (i_Col == 0 || i_Offset <= nHeadSize) {
+//    nShiftBy = nHeadSize - i_Offset;
+//  }
+//  else {
+//    i_Offset = xaColEnc[i_Col - 1].m_i_Offset;
+//    nShiftBy = nHeadSize - i_Offset;
+//    i_Col--;
+//  }
+//
+//  xaColEnc[i_Col].m_bOverflow = true;
+//  for ( ; i_Col < m_nColumns; i_Col++)
+//    xaColEnc[i_Col].m_i_Offset += nShiftBy;
+//
+//  m_nBytesNeeded = xaColEnc[m_nColumns - 1].m_i_Offset
+//                     + xaColEnc[m_nColumns - 1].m_nDataSize;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -471,6 +477,13 @@ void Encoding::vReset(void)
 #endif
 }
 
+/*----------------------------------------------------------------------------*/
+/* test for null encoding                                                     */
+/*----------------------------------------------------------------------------*/
+bool Encoding::bWithinHead(i8 i_Co)
+{
+  return true;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
