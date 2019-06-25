@@ -26,7 +26,8 @@ namespace Data
     i8         m_nHeadSize;
     i8         m_nMetaSize;
     i8         m_nBytesNeeded;
-  
+    i8         m_nShiftBy;  // how much a shift occurs
+
     _ColEnc xaColEnc[C_MAX_COLUMNS];
 
     Wsp_t<C_MAX_RECORD> m_xWsp;  // sz workspace (multiple vch)

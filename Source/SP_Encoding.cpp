@@ -47,11 +47,13 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
   
   m_caEncoding[0] = '\0';
   StrLib::vSprint(m_caEncoding,
-                  "HeadSize %lldB <W=%lld> MetaSize %lldB BytesNeeded %lldB\n"_Stz,
+                  "HeadSize %lldB <W=%lld> MetaSize %lldB "
+                  "BytesNeeded %lldB ShiftBy %lldB\n"_Stz,
                   pEncoding->m_nHeadSize,
                   MemLib::nQuantaRequired(pEncoding->m_nHeadSize,C_BYTES_PER_WORD),
                   pEncoding->m_nMetaSize,
-                  pEncoding->m_nBytesNeeded
+                  pEncoding->m_nBytesNeeded,
+                  pEncoding->m_nShiftBy
                   );
 
   char caLine[256];
@@ -173,9 +175,7 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
     StrLib::vAppendString(&szCrs,(char*)"\n"_Stz);
     
     StrLib::vConcat(m_caEncoding,caLine);
-    
   }
-  
 }
 
 /*----------------------------------------------------------------------------*/
