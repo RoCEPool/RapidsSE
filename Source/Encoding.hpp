@@ -12,7 +12,7 @@ namespace Data
     i8   m_nDataSize; // complete number of data code bytes, incl <L> etc
     i8   m_i_Offset;  // first byte offset in head+over where the data code is
     i8   m_i_Till;    // last byte offset in head+over where the data code is
-    bool m_bOverflow; // overflow occurs at this point
+    bool m_bSplit;    // overflow occurs at this point
   };
   
   //----------------------------------------------------------------------------
@@ -25,8 +25,9 @@ namespace Data
     i8         m_nColumns;
     i8         m_nHeadSize;
     i8         m_nMetaSize;
+  
     i8         m_nBytesNeeded;
-    i8         m_nShiftOver;  // how much a shift occurs
+    i8         m_nShiftOver;  // by how much a shift occurs
 
     _ColEnc xaColEnc[C_MAX_COLUMNS];
 
@@ -45,6 +46,7 @@ namespace Data
   
     i8   nBytesNeeded(void);
     void vEncode(Row* pRow);
+    bool bOverFlowed(void);
 
   private:
     void vEncodeBol(_ColEnc& xCol, Dtm wBol);

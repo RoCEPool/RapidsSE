@@ -70,9 +70,8 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
     StrLib::vAppendPad(&szCrs,caLine,2);
     StrLib::vAppendChar(&szCrs,'[');
     StrLib::vAppendDecimal(&szCrs,i_Col);
-    //StrLib::vAppendDecimal(&szCrs,pEncoding->xaColEnc[i_Col].m_i_Offset);
     StrLib::vAppendChar(&szCrs,']');
-    StrLib::vAppendChar(&szCrs,pEncoding->xaColEnc[i_Col].m_bOverflow ? '*' : ' ');
+    StrLib::vAppendChar(&szCrs,pEncoding->xaColEnc[i_Col].m_bSplit ? '*' : ' ');
 
     StrLib::vAppendPad(&szCrs,caLine,8);
     StrLib::vAppendString(&szCrs,(char*)pCol->szColNm());
