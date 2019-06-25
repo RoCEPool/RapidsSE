@@ -56,11 +56,11 @@ Encoding::Encoding(ColumnVec* pColVec, i8 nHeadSize, i8 nMetaSize)
   
   m_pColVec   = pColVec;
   m_nColumns  = m_pColVec->nItems();
-  m_nHeadSize = 64; //nHeadSize;
+  m_nHeadSize = nHeadSize;
   m_nMetaSize = nMetaSize;
   
   m_nBytesNeeded = C_UNKNOWN;
-  m_nShiftBy     = C_UNKNOWN;
+  m_nShiftOver   = C_UNKNOWN;
 
   // - - - - - - - - - - - - - - - - - -
 
@@ -426,7 +426,7 @@ void Encoding::vReset(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
   m_nBytesNeeded = C_UNKNOWN;
-  m_nShiftBy     = C_UNKNOWN;
+  m_nShiftOver   = C_UNKNOWN;
 
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
     xaColEnc[i_Col].m_eMetaCode = MC_NULL;
@@ -516,11 +516,11 @@ void Encoding::vSplitAt(i8 i_Col)
   
   xaColEnc[i_Col].m_bOverflow = true;
   
-  m_nShiftBy = m_nHeadSize - xaColEnc[i_Col].m_i_Offset;
+  m_nShiftOver = m_nHeadSize - xaColEnc[i_Col].m_i_Offset;
   
   for ( ; i_Col < m_nColumns; i_Col++) {
-    xaColEnc[i_Col].m_i_Offset += m_nShiftBy;
-    xaColEnc[i_Col].m_i_Till   += m_nShiftBy;
+    xaColEnc[i_Col].m_i_Offset += m_nShiftOver;
+    xaColEnc[i_Col].m_i_Till   += m_nShiftOver;
   }
 
 }
@@ -546,7 +546,17 @@ bool Encoding::bWithinHead(i8 i_Col)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // not-last column
   
-  return true;
+  // this and next column fit?
+  i8 i_Col_next = i_Col + 1;
+  if (xaColEnc[i_Col_next].m_i_Till < m_nHeadSize)
+    return true;
+ 
+  // this column plus overflow fit?
+  if (xaColEnc[i_Col].m_i_Till + C_OT_2B < m_nHeadSize)
+    return true;
+
+  // this column doesnt fit
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

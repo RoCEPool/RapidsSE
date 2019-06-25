@@ -26,7 +26,7 @@ namespace Data
     i8         m_nHeadSize;
     i8         m_nMetaSize;
     i8         m_nBytesNeeded;
-    i8         m_nShiftBy;  // how much a shift occurs
+    i8         m_nShiftOver;  // how much a shift occurs
 
     _ColEnc xaColEnc[C_MAX_COLUMNS];
 

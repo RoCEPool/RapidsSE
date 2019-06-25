@@ -48,12 +48,12 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
   m_caEncoding[0] = '\0';
   StrLib::vSprint(m_caEncoding,
                   "HeadSize %lldB <W=%lld> MetaSize %lldB "
-                  "BytesNeeded %lldB ShiftBy %lldB\n"_Stz,
+                  "BytesNeeded %lldB ShiftOver %lldB\n"_Stz,
                   pEncoding->m_nHeadSize,
                   MemLib::nQuantaRequired(pEncoding->m_nHeadSize,C_BYTES_PER_WORD),
                   pEncoding->m_nMetaSize,
                   pEncoding->m_nBytesNeeded,
-                  pEncoding->m_nShiftBy
+                  pEncoding->m_nShiftOver
                   );
 
   char caLine[256];
