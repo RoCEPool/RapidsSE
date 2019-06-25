@@ -10,6 +10,18 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get auxilliary length length fow this meta code                            */
+/*----------------------------------------------------------------------------*/
+i8 RowCoder::iAuxLen(eMC eMetaCode)
+{
+  if (MC_STR_FIT_1L   == eMetaCode) return 1;
+  if (MC_BSTR_FIT_2L  == eMetaCode) return 2;
+  if (MC_SHOCO_FIT_1C == eMetaCode) return 1;
+
+  return 0;
+}
+
+/*----------------------------------------------------------------------------*/
 /* calc base offset for column vector                                         */
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::iBaseOffset(ColumnVec* pColVec)
@@ -155,6 +167,20 @@ void RowCoder::vDteIntoEdt(Dtm wDte,
 }
 
 /*----------------------------------------------------------------------------*/
+/* does this meta code have an auxilliary length                              */
+/*----------------------------------------------------------------------------*/
+bool RowCoder::bHasAuxLen(eMC eMetaCode)
+{
+  if (   MC_STR_FIT_1L   == eMetaCode // <L><Short>
+      || MC_BSTR_FIT_2L  == eMetaCode // <LL><String>
+      || MC_SHOCO_FIT_1C == eMetaCode // <C><Shoco>
+      )
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* calc size of the head line for column vector                               */
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::nHeadSize(ColumnVec* pColVec)
@@ -187,19 +213,6 @@ i8 RowCoder::nHeadSize(ColumnVec* pColVec)
   RASSERT(nBytesHead >= C_HEAD_MIN_BYTES);
   
   return nBytesHead;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is meta code a MC_Xyz_FIT_ ?                                               */
-/*----------------------------------------------------------------------------*/
-bool RowCoder::bIsFit(eMC eMetaCode)
-{
-  if ( MC_STR_FIT_1L   == eMetaCode ||
-       MC_BSTR_FIT_2L  == eMetaCode ||
-       MC_SHOCO_FIT_1C == eMetaCode   )
-    return true;
-  
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/

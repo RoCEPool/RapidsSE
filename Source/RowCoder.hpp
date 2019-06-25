@@ -30,12 +30,13 @@ namespace Data
   class RowCoder
   {
   public:
+    static i8   iAuxLen(eMC eMetaCode);
     static i8   iBaseOffset(ColumnVec* pColVec);
     static i8   nDataSize(eMC eMetaCode);
     static void vDteFromEdt(Dtm* aDte, i8 iEra);
     static void vDteIntoEdt(Dtm wDte, Dtm& wEdt_, i8& iEra_);
+    static bool bHasAuxLen(eMC eMetaCode);
     static i8   nHeadSize(ColumnVec* pColVec);
-    static bool bIsFit(eMC eMetaCode);
     static i8   nMetaSize(ColumnVec* pColVec);
   };
 }

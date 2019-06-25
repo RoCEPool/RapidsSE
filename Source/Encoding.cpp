@@ -190,8 +190,8 @@ void Encoding::vInitialEncoding(Row* pRow)
     if (! nDataBytes)
       continue;
     
-    if ( bIsFit(xrColEnc.m_eMetaCode) )           //! put this into one function
-      nDataBytes += xrColEnc.m_nDataSize - C_L_1B;
+    if ( bHasAuxLen(xrColEnc.m_eMetaCode) )
+      nDataBytes += xrColEnc.m_nDataSize - iAuxLen(xrColEnc.m_eMetaCode);
     
     i_Offset_next += nDataBytes;
     
