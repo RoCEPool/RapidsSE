@@ -68,6 +68,7 @@ Encoding::Encoding(ColumnVec* pColVec, i8 nHeadSize, i8 nMetaSize)
     xaColEnc[i_Col].m_wDataCode = C_UNKNOWN;
     xaColEnc[i_Col].m_nDataSize = C_UNKNOWN;
     xaColEnc[i_Col].m_i_Offset  = 0;
+    xaColEnc[i_Col].m_i_Till    = 0;
     xaColEnc[i_Col].m_bOverflow = false;
   }
   
@@ -149,19 +150,18 @@ void Encoding::vEncode(Row* pRow)
     
     // - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // compute initial offset
-    
-//    xaColEnc[i_Col].m_i_Offset =
-//      xaColEnc[i_Col - 1].m_i_Offset
-//        + nDataSize(xaColEnc[i_Col - 1].m_eMetaCode);
-//
-//    if ( bIsFit(xaColEnc[i_Col - 1].m_eMetaCode) )
-//      xaColEnc[i_Col].m_i_Offset += xaColEnc[i_Col - 1].m_nDataSize;
 
     xrColEnc.m_i_Offset = i_Offset_next;
+
+    i8 nDataBytes = nDataSize(xrColEnc.m_eMetaCode);
     
-    i_Offset_next += nDataSize(xrColEnc.m_eMetaCode);
+    if (! nDataBytes)
+      continue;
+    
     if ( bIsFit(xrColEnc.m_eMetaCode) )
-      i_Offset_next += xrColEnc.m_nDataSize - 1;
+      nDataBytes += xrColEnc.m_nDataSize - C_L_1B;
+    
+    i_Offset_next += nDataBytes;
 
   } // for i_Col
 
@@ -458,6 +458,7 @@ void Encoding::vReset(void)
     xaColEnc[i_Col].m_wDataCode = C_UNKNOWN;
     xaColEnc[i_Col].m_nDataSize = C_UNKNOWN;
     xaColEnc[i_Col].m_i_Offset  = 0;
+    xaColEnc[i_Col].m_i_Till    = 0;
     xaColEnc[i_Col].m_bOverflow = false;
   }
   

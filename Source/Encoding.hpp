@@ -11,6 +11,7 @@ namespace Data
     Dtm  m_wDataCode; // column value data
     i8   m_nDataSize; // complete number of data code bytes, incl <L> etc
     i8   m_i_Offset;  // byte offset in head+over where the data code is
+    i8   m_i_Till;    // byte till in head+over where the data code is
     bool m_bOverflow; // overflow occurs at this point
   };
   
