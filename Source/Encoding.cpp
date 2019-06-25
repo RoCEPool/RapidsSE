@@ -115,60 +115,7 @@ void Encoding::vEncode(Row* pRow)
   
   vReset();
   
-  i8 i_Offset_next = C_W_1B + m_nMetaSize;
-  
-  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
-    
-    Column* pCol = m_pColVec->pGet(i_Col);
-    eDM eDatum   = pCol->eDatumType();
-    
-    _ColEnc& xrColEnc = xaColEnc[i_Col];
-    
-    switch (eDatum) {
-      
-      case DM_BCD: vEncodeBcd(xrColEnc,pRow->m_waColVal[i_Col]);  break;
-      case DM_BOL: vEncodeBol(xrColEnc,pRow->m_waColVal[i_Col]);  break;
-      case DM_DTE: vEncodeDte(xrColEnc,pRow->m_waColVal[i_Col]);  break;
-      case DM_FLT: vEncodeFlt(xrColEnc,pRow->m_waColVal[i_Col]);  break;
-      case DM_INT: vEncodeInt(xrColEnc,pRow->m_waColVal[i_Col]);  break;
-      case DM_IVL: vEncodeIvl(xrColEnc,pRow->m_waColVal[i_Col]);  break;
-      case DM_TME: vEncodeTme(xrColEnc,pRow->m_waColVal[i_Col]);  break;
-      case DM_TSP: vEncodeTsp(xrColEnc,pRow->m_waColVal[i_Col]);  break;
-        
-      case DM_VCH:
-        xaColEnc[i_Col].m_wDataCode = (i8)m_xWsp.ayLatter();
-        vEncodeVch(xrColEnc,pRow->m_waColVal[i_Col]);
-        m_xWsp.vTake(xrColEnc.m_nDataSize + 1);
-        break;
-        
-      default:
-        NEVER_REACH;
-        
-    } // switch eDatum
-    
-
-    // - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // compute initial offset
-
-    i8 nDataBytes = nDataSize(xrColEnc.m_eMetaCode);
-    
-    xrColEnc.m_i_Offset = i_Offset_next;
-        
-    if (! nDataBytes)
-      continue;
-    
-    if ( bIsFit(xrColEnc.m_eMetaCode) )
-      nDataBytes += xrColEnc.m_nDataSize - C_L_1B;
-    
-    i_Offset_next += nDataBytes;
-    
-    xrColEnc.m_i_Till = i_Offset_next - 1;
-
-  } // for i_Col
-  
-  m_nBytesNeeded = i_Offset_next;
-
-  // - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  vInitialEncoding(pRow);
   
   SP_Encoding spEncoding;
   vTrace("\n%s\n"_Stz,spEncoding.sz(this));
@@ -194,6 +141,64 @@ bool Encoding::bOverFlowed(void)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* encode the columns of given row and compute their initial offsets          */
+/*----------------------------------------------------------------------------*/
+void Encoding::vInitialEncoding(Row* pRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  
+  i8 i_Offset_next = C_W_1B + m_nMetaSize;
+  
+  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
+    
+    Column* pCol = m_pColVec->pGet(i_Col);
+    eDM eDatum   = pCol->eDatumType();
+    
+    _ColEnc& xrColEnc = xaColEnc[i_Col];
+    
+    switch (eDatum) {
+        
+      case DM_BCD: vEncodeBcd(xrColEnc,pRow->m_waColVal[i_Col]);  break;
+      case DM_BOL: vEncodeBol(xrColEnc,pRow->m_waColVal[i_Col]);  break;
+      case DM_DTE: vEncodeDte(xrColEnc,pRow->m_waColVal[i_Col]);  break;
+      case DM_FLT: vEncodeFlt(xrColEnc,pRow->m_waColVal[i_Col]);  break;
+      case DM_INT: vEncodeInt(xrColEnc,pRow->m_waColVal[i_Col]);  break;
+      case DM_IVL: vEncodeIvl(xrColEnc,pRow->m_waColVal[i_Col]);  break;
+      case DM_TME: vEncodeTme(xrColEnc,pRow->m_waColVal[i_Col]);  break;
+      case DM_TSP: vEncodeTsp(xrColEnc,pRow->m_waColVal[i_Col]);  break;
+        
+      case DM_VCH:
+        xaColEnc[i_Col].m_wDataCode = (i8)m_xWsp.ayLatter();
+        vEncodeVch(xrColEnc,pRow->m_waColVal[i_Col]);
+        m_xWsp.vTake(xrColEnc.m_nDataSize + 1);
+        break;
+        
+      default:
+        NEVER_REACH;
+        
+    } // switch eDatum
+    
+    // - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // compute initial offset and till for this column
+    
+    // set the offset of this column
+    xrColEnc.m_i_Offset = i_Offset_next;
+    
+    i8 nDataBytes = nDataSize(xrColEnc.m_eMetaCode);
+    if (! nDataBytes)
+      continue;
+    
+    if ( bIsFit(xrColEnc.m_eMetaCode) )           //! put this into one function
+      nDataBytes += xrColEnc.m_nDataSize - C_L_1B;
+    
+    i_Offset_next += nDataBytes;
+    
+    xrColEnc.m_i_Till = i_Offset_next - 1;
+    
+  } // for i_Col
+}
 
 /*----------------------------------------------------------------------------*/
 /* encode Bcd                                                                 */

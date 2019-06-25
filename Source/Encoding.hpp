@@ -59,6 +59,7 @@ namespace Data
     void vEncodeTsp(_ColEnc& xCol, Dtm wTsp);
     void vEncodeVch(_ColEnc& xCol, Dtm wVch);
   
+    void vInitialEncoding(Row* pRow);
     bool bNullEnc(_ColEnc& xCol, Dtm wDtm);
   
     void vReset(void);
