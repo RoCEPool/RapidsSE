@@ -214,8 +214,7 @@ bool RowCompactor::bCompactRow(Row* pRow)
 /*----------------------------------------------------------------------------*/
 /* add encoded datum onto the end of crw                                      */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vAddCode(HeadLine* aHeadLine, Column* pCol, _ColEnc& xColEnc,
-                            eMC eMetaCode, Dtm wDataCode, i8 nDataSize,
+void RowCompactor::vAddCode(HeadLine* aHeadLine, _ColEnc& xColEnc, Column* pCol,
                             i8& i_DataOffset_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
@@ -226,20 +225,22 @@ void RowCompactor::vAddCode(HeadLine* aHeadLine, Column* pCol, _ColEnc& xColEnc,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put meta code into head
   
-  aHeadLine->vMetaCode(i_Col,eMetaCode);
+  aHeadLine->vMetaCode(i_Col,xColEnc.m_eMetaCode);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append data code onto head
   
-  if (! nDataSize)
+  if (! xColEnc.m_nDataSize)
     return;
 
   // non-vch : {B}
   
   if (DM_VCH != eDatum) {
     
-    aHeadLine->vPutLogical(i_DataOffset_,wDataCode.m_w8,nDataSize);
-    i_DataOffset_ += nDataSize;
+    aHeadLine->vPutLogical(i_DataOffset_,
+                           xColEnc.m_wDataCode.m_w8,
+                           xColEnc.m_nDataSize);
+    i_DataOffset_ += xColEnc.m_nDataSize;
     
     return;
   }
@@ -248,9 +249,9 @@ void RowCompactor::vAddCode(HeadLine* aHeadLine, Column* pCol, _ColEnc& xColEnc,
   
   // vch : <L><Short>
   
-  char* azShort = (char*)wDataCode.m_szVch;
-
-  i8 nL = nDataSize - 1;
+  // calc <L>
+  i8 nL = xColEnc.m_nDataSize - 1;
+  char* azShort = (char*)xColEnc.m_wDataCode.m_szVch;
   RASSERT(nL == StrLib::iLength(azShort));
   
   // append <L>
@@ -281,15 +282,10 @@ void RowCompactor::vCodeRow(Encoding* pEncoding)
     
     Column* pCol  = m_pColVec->pGet(i_Col);
     
-    eMC eMetaCode = pEncoding->xaColEnc[i_Col].m_eMetaCode;
-    Dtm wDataCode = pEncoding->xaColEnc[i_Col].m_wDataCode;
-    i8  nDataSize = pEncoding->xaColEnc[i_Col].m_nDataSize;
-    
     //vDumpHead("vHeadCode a"_Stz,m_aCrw,m_pColVec);
     if (8 == i_Col)
       vDebugPoint();
-    vAddCode(aHeadLine,pCol,pEncoding->xaColEnc[i_Col],
-             eMetaCode,wDataCode,nDataSize,i_DataOffset_);
+    vAddCode(aHeadLine,pEncoding->xaColEnc[i_Col],pCol,i_DataOffset_);
     //vDumpHead("vHeadCode b"_Stz,m_aCrw,m_pColVec);
   }
   
