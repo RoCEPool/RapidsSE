@@ -132,7 +132,7 @@ const u8 API_TL_POOL   = C_BIT_4; // 16
 /*----------------------------------------------------------------------------*/
 #ifdef WITH_DEBUG_VERSION
 #define API_PARAM(p1) \
-  TRACE_API_PARAM("param"_Stz,(p1? "null"_Stz : p1));
+  TRACE_API_PARAM("param"_Stz,(p1? p1 : "null"_Stz));
 
 #else
 #define API_PARAM(p1)
