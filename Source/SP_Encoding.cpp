@@ -46,9 +46,11 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
   _precondition_(_MAGIC_,_FOOTER_);
   
   m_caEncoding[0] = '\0';
-  
-  char caLine[256];
+  StrLib::vSprint(m_caEncoding,"Head Size: %lldB Meta Size %lld\n"_Stz,
+                  pEncoding->m_nHeadSize,
+                  pEncoding->m_nMetaSize);
 
+  char caLine[256];
   for (i8 i_Col = 0; i_Col < pEncoding->m_nColumns; i_Col++) {
   
     char* szCrs = &caLine[0];

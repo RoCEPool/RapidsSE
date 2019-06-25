@@ -22,6 +22,8 @@ namespace Data
   public:
     ColumnVec* m_pColVec;
     i8         m_nColumns;
+    i8         m_nHeadSize;
+    i8         m_nMetaSize;
     i8         m_nBytesNeeded;
   
     _ColEnc xaColEnc[C_MAX_COLUMNS];
@@ -36,12 +38,12 @@ namespace Data
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
 
-    Encoding(ColumnVec* pColVec);
+    Encoding(ColumnVec* pColVec, i8 nHeadSize, i8 nMetaSize);
     ~Encoding(void) noexcept(false);
   
     i8   nBytesNeeded(void);
     void vEncode(Row* pRow);
-    void vSplitOver(i8 nHeadSize, i8 nMetaBytes);
+    void vSplitOver(i8 nHeadSize, i8 nMetaSize);
 
   private:
     void vEncodeBol(_ColEnc& xCol, Dtm wBol);

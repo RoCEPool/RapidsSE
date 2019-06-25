@@ -49,13 +49,16 @@ void Encoding::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Encoding::Encoding(ColumnVec* pColVec)
+Encoding::Encoding(ColumnVec* pColVec, i8 nHeadSize, i8 nMetaSize)
 : Object(CN_ENCODING)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
-  m_pColVec  = pColVec;
-  m_nColumns = m_pColVec->nItems();
+  m_pColVec   = pColVec;
+  m_nColumns  = m_pColVec->nItems();
+  m_nHeadSize = nHeadSize;
+  m_nMetaSize = nMetaSize;
+  
   m_nBytesNeeded = C_UNKNOWN;
   
   // - - - - - - - - - - - - - - - - - -

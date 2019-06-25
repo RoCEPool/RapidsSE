@@ -158,7 +158,7 @@ bool RowCompactor::bCompactRow(Row* pRow)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // encode the row
   
-  Encoding* pEncoding = new Encoding(m_pColVec);
+  Encoding* pEncoding = new Encoding(m_pColVec,m_nHeadSize,m_nMetaSize);
   
   pEncoding->vEncode(pRow);
   
