@@ -218,10 +218,12 @@ void RowCompactor::vPackColVal(_ColEnc& xColEnc, Column* pCol, i8& i_DataOffset_
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // vch : <L><Short>
-  
+
+  // get <Short>
+  char* azShort = (char*)xColEnc.m_wDataCode.m_szVch;
+
   // calc <L>
   i8 nL = xColEnc.m_nDataSize - 1;
-  char* azShort = (char*)xColEnc.m_wDataCode.m_szVch;
   RASSERT(nL == StrLib::iLength(azShort));
   
   // append <L>
@@ -229,8 +231,9 @@ void RowCompactor::vPackColVal(_ColEnc& xColEnc, Column* pCol, i8& i_DataOffset_
   i_DataOffset_ += C_1B;
   
   // append <Short> without null terminator
-  byte* ayAppend = (byte*)m_aHeadLine + i_DataOffset_;
-  MemLib::vCopy(ayAppend,azShort,nL,CN_ROWCOMPACTOR);
+  m_aHeadLine->vPutLogical(i_DataOffset_,(Stz*)azShort,nL);
+  //byte* ayAppend = (byte*)m_aHeadLine + i_DataOffset_;
+  //MemLib::vCopy(ayAppend,azShort,nL,CN_ROWCOMPACTOR);
   
   i_DataOffset_ += nL;
 }

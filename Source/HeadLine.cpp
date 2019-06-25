@@ -314,6 +314,16 @@ void HeadLine::vPutLogical(i8 i_Offset, w8 wDataCode, i8 nDataSize)
 }
 
 /*----------------------------------------------------------------------------*/
+/* put string into logical row : head[+over]                                  */
+/*----------------------------------------------------------------------------*/
+void HeadLine::vPutLogical(i8 i_Offset, Stz* szString, i8 nLength)
+{
+  byte* ayAppend = ayAdrLogical(i_Offset);
+  
+  MemLib::vCopy(ayAppend,szString,nLength,CN_ROWCOMPACTOR);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get address of given shoco column from head line                           */
 /*----------------------------------------------------------------------------*/
 byte* HeadLine::ayShoco(Column* pCol, i8 i_BaseOffset)
