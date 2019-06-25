@@ -232,8 +232,6 @@ void RowCompactor::vPackColVal(_ColEnc& xColEnc, Column* pCol, i8& i_DataOffset_
   
   // append <Short> without null terminator
   m_aHeadLine->vPutLogical(i_DataOffset_,(Stz*)azShort,nL);
-  //byte* ayAppend = (byte*)m_aHeadLine + i_DataOffset_;
-  //MemLib::vCopy(ayAppend,azShort,nL,CN_ROWCOMPACTOR);
   
   i_DataOffset_ += nL;
 }

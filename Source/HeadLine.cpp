@@ -289,7 +289,7 @@ void HeadLine::vOverflow2B(i8 iOver2B)
 }
 
 /*----------------------------------------------------------------------------*/
-/* put data code into logical row : head[+over]                               */
+/* put data code into logical compact row : head[+over]                       */
 /*----------------------------------------------------------------------------*/
 void HeadLine::vPutLogical(i8 i_Offset, w8 wDataCode, i8 nDataSize)
 {
@@ -314,7 +314,7 @@ void HeadLine::vPutLogical(i8 i_Offset, w8 wDataCode, i8 nDataSize)
 }
 
 /*----------------------------------------------------------------------------*/
-/* put string into logical row : head[+over]                                  */
+/* put string into logical compact row : head[+over]                          */
 /*----------------------------------------------------------------------------*/
 void HeadLine::vPutLogical(i8 i_Offset, Stz* szString, i8 nLength)
 {

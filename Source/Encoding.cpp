@@ -132,7 +132,7 @@ bool Encoding::bOverFlowed(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
-  if (C_UNKNOWN != m_nBytesNeeded)
+  if (m_nBytesNeeded > 0)
     return true;
   else
     return false;
@@ -198,6 +198,8 @@ void Encoding::vInitialEncoding(Row* pRow)
     xrColEnc.m_i_Till = i_Offset_next - 1;
     
   } // for i_Col
+  
+  m_nBytesNeeded = i_Offset_next;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -478,8 +480,10 @@ void Encoding::vSplitOver(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
   // test if encoding fits in head
-  if (m_nBytesNeeded <= m_nHeadSize)
+  if (m_nBytesNeeded <= m_nHeadSize) {
+    m_nShiftOver = 0;
     return;
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // split into head and oveflow
