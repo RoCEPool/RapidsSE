@@ -10,7 +10,8 @@ namespace Data
     eMC  m_eMetaCode; // meta code describing the column value
     Dtm  m_wDataCode; // column value data
     i8   m_nDataSize; // complete number of data code bytes, incl <L> etc
-    i8   m_i_Offset;  // byte offset in head+over where the data code is
+    i8   m_i_Offset;  // first byte offset in head+over where the data code is
+    i8   m_i_Till;    // last byte offset in head+over where the data code is
     bool m_bOverflow; // overflow occurs at this point
   };
   
@@ -25,7 +26,8 @@ namespace Data
     i8         m_nHeadSize;
     i8         m_nMetaSize;
     i8         m_nBytesNeeded;
-  
+    i8         m_nShiftOver;  // how much a shift occurs
+
     _ColEnc xaColEnc[C_MAX_COLUMNS];
 
     Wsp_t<C_MAX_RECORD> m_xWsp;  // sz workspace (multiple vch)
@@ -43,7 +45,6 @@ namespace Data
   
     i8   nBytesNeeded(void);
     void vEncode(Row* pRow);
-    void vSplitOver(i8 nHeadSize, i8 nMetaSize);
 
   private:
     void vEncodeBol(_ColEnc& xCol, Dtm wBol);
@@ -59,6 +60,9 @@ namespace Data
     bool bNullEnc(_ColEnc& xCol, Dtm wDtm);
   
     void vReset(void);
+    void vSplitAt(i8 i_Col);
+    void vSplitOver(void);
+    bool bWithinHead(i8 i_Col);
   
   private:
     Footer* aFooter(void);
