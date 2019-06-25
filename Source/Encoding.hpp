@@ -6,11 +6,11 @@
 namespace Data
 {
   struct _ColEnc {
-    eMC  m_eMetaCode;  // meta code for the col value
-    Dtm  m_wDataCode;  // bytes of data
-    i8   m_nDataSize;  // number of bytes of data
-    i8   m_nOffset;    // byte offset in head of dataCode
-    bool m_bOverflow;  // overflow at this point
+    eMC  m_eMetaCode; // meta code describing the column value
+    Dtm  m_wDataCode; // column value data
+    i8   m_nDataSize; // number of bytes of column value data
+    i8   m_i_Offset;  // byte offset in head+over where the data code is
+    bool m_bOverflow; // overflow occurs at this point
   };
   
   //----------------------------------------------------------------------------
