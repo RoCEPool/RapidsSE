@@ -40,6 +40,7 @@ namespace Data
     void vOverflow2B(i8 iOver2B);
     void vPutLogical(i8 i_Offset, w8 wDataCode, i8 nDataSize);
     void vPutLogical(i8 i_Offset, Stz* szString, i8 nLength);
+    void vSetOver(OverLine* aOverLine);
     byte* ayShoco(Column* pCol, i8 iBaseOffset);
 
     i8   iW(void);

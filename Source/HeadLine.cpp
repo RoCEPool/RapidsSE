@@ -324,6 +324,16 @@ void HeadLine::vPutLogical(i8 i_Offset, Stz* szString, i8 nLength)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set overflow line as relative index [OT]                                   */
+/*----------------------------------------------------------------------------*/
+void HeadLine::vSetOver(OverLine* aOverLine)
+{
+  i8 i_Over_rel = RowNub::iUnitDiff(this,(TailLine*)aOverLine);
+  
+  vOverflow2B(i_Over_rel);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get address of given shoco column from head line                           */
 /*----------------------------------------------------------------------------*/
 byte* HeadLine::ayShoco(Column* pCol, i8 i_BaseOffset)

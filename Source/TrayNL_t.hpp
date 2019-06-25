@@ -52,9 +52,9 @@ namespace Structures
     static i8    nUnits(i8 nBytes);
     static i8    iUnitDiff(HEAD* aHead, TAIL* aTail);
 
-    i8    iAllotHead(i8 nBytes);
-    i8    iAllotOver(i8 nBytes);
-    i8    iAllotTail(i8 nBytes);
+    i8    iAllotHead(i8 nBytes_unrounded);
+    i8    iAllotOver(i8 nBytes_unrounded);
+    i8    iAllotTail(i8 nBytes_unrounded);
     i8    nAllotedBytes(void);
     i8    nAreaBytes(void);
     DESC* pDesc(void);
@@ -256,13 +256,13 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iUnitDiff(HEAD* aHead, TAIL* aTail)
 /* allot head item (with <W> size computed from given number of bytes)        */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
-i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iAllotHead(i8 nBytes)
+i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iAllotHead(i8 nBytes_unrounded)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
-  i8 nBytes_revised = nBytes;
+  i8 nBytes_revised = nBytes_unrounded;
   
-  bool bLargeHead = (C_LARGEHEAD == nBytes) ? true : false;
+  bool bLargeHead = (C_LARGEHEAD == nBytes_unrounded) ? true : false;
   if (bLargeHead)
     nBytes_revised = C_LARGEHEAD_BYTES;
   
@@ -289,11 +289,11 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iAllotHead(i8 nBytes)
 /* allot overflow item (with <U> size computed from given number of bytes)    */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
-i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iAllotOver(i8 nBytes)
+i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iAllotOver(i8 nBytes_unrounded)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
-  i8 i_Over = iAllotTail(nBytes);
+  i8 i_Over = iAllotTail(nBytes_unrounded);
   
   return i_Over;
 }
@@ -302,18 +302,18 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iAllotOver(i8 nBytes)
 /* allot tail item (with <U> size computed from given number of bytes)        */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
-i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iAllotTail(i8 nBytes)
+i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iAllotTail(i8 nBytes_unrounded)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
-  RASSERT(nBytes);
+  RASSERT(nBytes_unrounded);
   
-  if (nFreeAllotableBytes() < nBytes)
+  if (nFreeAllotableBytes() < nBytes_unrounded)
     return C_UNKNOWN;
 
-  i8 nUnits = MemLib::nQuantaRequired(nBytes,C_SPACEUNIT_QUANTA);
+  i8 nUnits = MemLib::nQuantaRequired(nBytes_unrounded,C_SPACEUNIT_QUANTA);
 
-  m_nTailBytes += nBytes;
+  m_nTailBytes += nBytes_unrounded;
   m_nTailUnits += nUnits;
   m_nTailItems++;
 

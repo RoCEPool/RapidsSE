@@ -39,10 +39,11 @@ namespace Data
     
     void vCompactBegin(CrwBuffer* pCrwBuffer);
     void vCompactEnd(void);
-    bool bCompactRow(Row* pRow);
+    bool bCompactRow(Row* pInflatedRow);
   
   private:
-    void vPackColVal(_ColEnc& xColEnc, Column* pCol,i8& i_DataOffset_);
+    void vAllotOver(void);
+    void vPackColVal(_ColEnc& xColEnc, Column* pCol,i8& i_Offset_);
     void vPackCrw(Encoding* pEncoding);
 
   private:

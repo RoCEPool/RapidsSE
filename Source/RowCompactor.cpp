@@ -134,9 +134,9 @@ void RowCompactor::vCompactEnd(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy (& recode) given row into current nub                                 */
+/* compact given row into current nub                                         */
 /*----------------------------------------------------------------------------*/
-bool RowCompactor::bCompactRow(Row* pRow)
+bool RowCompactor::bCompactRow(Row* pInflatedRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -144,9 +144,9 @@ bool RowCompactor::bCompactRow(Row* pRow)
   //vTrace("%s\n"_Stz,spRow.sz(pRow));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // encode the row
+  // encode the inflated row
   
-  m_pEncoding->vEncode(pRow);
+  m_pEncoding->vEncode(pInflatedRow);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for space in target nub
@@ -166,7 +166,7 @@ bool RowCompactor::bCompactRow(Row* pRow)
   //  vTrace("No sample space\n"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pack encoding of row into a crw
+  // pack encoding into a compact row
   
   vPackCrw(m_pEncoding);
   
@@ -182,9 +182,33 @@ bool RowCompactor::bCompactRow(Row* pRow)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* potentially allot an over line                                             */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vAllotOver(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  if (! m_pEncoding->bOverFlowed())
+    return;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // calc the size of the over line
+  i8 nBytesNeed = m_pEncoding->nBytesNeeded();
+  i8 nOverSize  = m_nHeadSize - nBytesNeed;
+  
+  // allot the over line
+  i8 i_Over = m_pCrwNub->iAllotOver(nOverSize);
+  OverLine* aOverLine = m_pCrwNub->aGetOver(i_Over);
+  
+  // link over line into head line
+  m_aHeadLine->vSetOver(aOverLine);
+}
+
+/*----------------------------------------------------------------------------*/
 /* add encoded datum onto the end of crw                                      */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vPackColVal(_ColEnc& xColEnc, Column* pCol, i8& i_DataOffset_)
+void RowCompactor::vPackColVal(_ColEnc& xColEnc, Column* pCol, i8& i_Offset_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
 
@@ -192,25 +216,30 @@ void RowCompactor::vPackColVal(_ColEnc& xColEnc, Column* pCol, i8& i_DataOffset_
   eDM eDatum = pCol->eDatumType();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // put meta code into meta tape of head
+  // put meta code <M> into meta tape of head
   
+  // set <M> for this column
   m_aHeadLine->vMetaCode(i_Col,xColEnc.m_eMetaCode);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append data code onto crw
+  // append data code {D} onto crw
   
+  // no {D} case
   if (! xColEnc.m_nDataSize)
     return;
 
-  // non-vch : {B}
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // non-vch : {D}
   
   if (DM_VCH != eDatum) {
     
-    m_aHeadLine->vPutLogical(i_DataOffset_,
+    // append {B}}
+    m_aHeadLine->vPutLogical(i_Offset_,
                              xColEnc.m_wDataCode.m_w8,
                              xColEnc.m_nDataSize);
     
-    i_DataOffset_ += xColEnc.m_nDataSize;
+    i_Offset_ += xColEnc.m_nDataSize;
     
     return;
   }
@@ -227,13 +256,18 @@ void RowCompactor::vPackColVal(_ColEnc& xColEnc, Column* pCol, i8& i_DataOffset_
   RASSERT(nL == StrLib::iLength(azShort));
   
   // append <L>
-  m_aHeadLine->vPutLogical(i_DataOffset_,nL,C_1B);
-  i_DataOffset_ += C_1B;
+  m_aHeadLine->vPutLogical(i_Offset_,
+                           nL,
+                           C_1B);
+  
+  i_Offset_ += C_1B;
   
   // append <Short> without null terminator
-  m_aHeadLine->vPutLogical(i_DataOffset_,(Stz*)azShort,nL);
+  m_aHeadLine->vPutLogical(i_Offset_,
+                           (Stz*)azShort,
+                           nL);
   
-  i_DataOffset_ += nL;
+  i_Offset_ += nL;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -243,23 +277,28 @@ void RowCompactor::vPackCrw(Encoding* pEncoding)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   // allot a crw head in nub
   i8 i_Crw = m_pCrwNub->iAllotHead(m_nHeadSize);
   m_aHeadLine = m_pCrwNub->aGetHead(i_Crw);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pack all the columns
+  // potentially allot an overflow
+  vAllotOver();
   
-  i8 i_DataOffset_ = m_i_BaseOffset;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pack all the columns into logical logical compact row
+  
+  i8 i_Offset_ = m_i_BaseOffset;
   i8 nCols = m_pColVec->nItems();
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
-    Column* pCol  = m_pColVec->pGet(i_Col);
+    Column* pCol = m_pColVec->pGet(i_Col);
     
     //vDumpHead("vHeadCode a"_Stz,m_aCrw,m_pColVec);
     if (8 == i_Col)
       vDebugPoint();
-    vPackColVal(pEncoding->xaColEnc[i_Col],pCol,i_DataOffset_);
+    vPackColVal(pEncoding->xaColEnc[i_Col],pCol,i_Offset_);
     //vDumpHead("vHeadCode b"_Stz,m_aCrw,m_pColVec);
   }
   
@@ -269,7 +308,7 @@ void RowCompactor::vPackCrw(Encoding* pEncoding)
   
 //#ifdef WITH_TRACE_ENCODING
   if (m_nTotalCrws <= 10)
-    HeadLine::vDumpHead("aHeadLine"_Stz,m_aHeadLine,m_pColVec);
+    HeadLine::vDumpHead("vPackCrw"_Stz,m_aHeadLine,m_pColVec);
 //#endif
 
 #ifdef WITH_ANALYSE_FREE
