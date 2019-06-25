@@ -5,10 +5,11 @@
 
 namespace Data
 {
+  // how a column is to be encoded
   struct _ColEnc {
     eMC  m_eMetaCode; // meta code describing the column value
     Dtm  m_wDataCode; // column value data
-    i8   m_nDataSize; // number of bytes of column value data
+    i8   m_nDataSize; // complete number of data code bytes, incl <L> etc
     i8   m_i_Offset;  // byte offset in head+over where the data code is
     bool m_bOverflow; // overflow occurs at this point
   };
@@ -22,8 +23,6 @@ namespace Data
     ColumnVec* m_pColVec;
     i8         m_nColumns;
     i8         m_nBytesNeeded;
-  
-    // - - - - - - - - - - - -
   
     _ColEnc xaColEnc[C_MAX_COLUMNS];
 

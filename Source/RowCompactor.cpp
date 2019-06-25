@@ -250,7 +250,7 @@ void RowCompactor::vAddCode(HeadLine* aHeadLine, Column* pCol, _ColEnc& xColEnc,
   
   char* azShort = (char*)wDataCode.m_szVch;
 
-  i8 nL = nDataSize;
+  i8 nL = nDataSize - 1;
   RASSERT(nL == StrLib::iLength(azShort));
   
   // append <L>
