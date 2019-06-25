@@ -61,7 +61,6 @@ namespace Data
   
     void vInitialEncoding(Row* pRow);
     bool bNullEnc(_ColEnc& xCol, Dtm wDtm);
-  
     void vReset(void);
     void vSplitAt(i8 i_Col);
     void vSplitOver(void);

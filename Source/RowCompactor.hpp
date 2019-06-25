@@ -40,7 +40,7 @@ namespace Data
   private:
     void vAddCode(HeadLine* aHeadLine, _ColEnc& xColEnc, Column* pCol, 
                   i8& i_DataOffset_);
-    void vCodeRow(Encoding* pEncoding);
+    void vPackCrw(Encoding* pEncoding);
 
   private:
     Footer* aFooter(void);

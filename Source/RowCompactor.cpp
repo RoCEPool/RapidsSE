@@ -60,7 +60,6 @@ RowCompactor::RowCompactor(void)
   m_nTotalBuffers = 0;
   m_nTotalCrws    = 0;
   
-  //m_oFreqDist
 #ifdef WITH_ANALYSE_FREE
   m_oFreqDist.vInit(7,15,23,31,39,47,55,63,INT_MAX);
 #endif
@@ -75,36 +74,18 @@ RowCompactor::RowCompactor(void)
 /*----------------------------------------------------------------------------*/
 RowCompactor::~RowCompactor(void) noexcept(false)
 {
-  
 #ifdef WITH_ANALYSE_FREE
-  /*
-   vTrace(": HeadFree %lldB : "
-   "0..7B:%lld 8..15B:%lld 16..23B:%lld 24..31B:%lld "
-   "32..39B:%lld 40..47B:%lld 48..55B:%lld 56..63B:%lld 64..B:%lld\n"_Stz,
-   
-   m_oFreqDist.nSum(),
-   
-   m_oFreqDist.iDist(7),
-   m_oFreqDist.iDist(15),
-   m_oFreqDist.iDist(23),
-   m_oFreqDist.iDist(31),
-   m_oFreqDist.iDist(39),
-   m_oFreqDist.iDist(47),
-   m_oFreqDist.iDist(55),
-   m_oFreqDist.iDist(63),
-   m_oFreqDist.iDist(INT_MAX));
-   */
   vTrace(": HeadFree %lldB : "_Stz, m_oFreqDist.nSum());
-  i8 iBucket;
+  
   for (i8 i_Index = 0; i_Index < m_oFreqDist.nBuckets() - 1; i_Index++) {
-    iBucket = m_oFreqDist.iBucket(i_Index);
+    i8 iBucket = m_oFreqDist.iBucket(i_Index);
     vTrace("<=%lldB:%lld "_Stz, iBucket, m_oFreqDist.iDist(i_Index));
   }
+  
   i8 i_Index = m_oFreqDist.nBuckets() - 1;
   vTrace(">%lldB:%lld "_Stz,  iBucket, m_oFreqDist.iDist(i_Index));
   vTrace("\n"_Stz);
 #endif
-  
 }
 
 
@@ -162,33 +143,31 @@ bool RowCompactor::bCompactRow(Row* pRow)
   
   pEncoding->vEncode(pRow);
   
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for space in target nub
   
-  i8 nSpaceNeeded = pEncoding->nBytesNeeded();
+  i8 nBytesNeeded = pEncoding->nBytesNeeded();
   
-  if (! m_pCrwNub->bHasSpace(nSpaceNeeded)) {
+  if (! m_pCrwNub->bHasSpace(nBytesNeeded)) {
     m_nTotalBuffers++;
     delete pEncoding;
     return false;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Mark IV samples
+  // Mark IV samples for de-dupe
   
   //Row* pSampleRow = m_pRowSamples->aAllotRow(m_pColVec);
   //if (! pSampleRow)
   //  vTrace("No sample space\n"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compact encoded row into a crw
+  // pack encoding of row into a crw
   
-  vCodeRow(pEncoding);
+  vPackCrw(pEncoding);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // analyse free space in the into head
-  
   
 #ifdef WITH_VERIFY_TAILS
   m_pCrwNub->vVerifyTails(C_UNKNOWN);
@@ -260,9 +239,9 @@ void RowCompactor::vAddCode(HeadLine* aHeadLine, _ColEnc& xColEnc, Column* pCol,
 }
 
 /*----------------------------------------------------------------------------*/
-/* compact the encoding                                                       */
+/* pack the encoding into head [+over] {+tail}                                */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vCodeRow(Encoding* pEncoding)
+void RowCompactor::vPackCrw(Encoding* pEncoding)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -271,6 +250,7 @@ void RowCompactor::vCodeRow(Encoding* pEncoding)
   i8 i_DataOffset_ = m_i_BaseOffset;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   i8 nCols = m_pColVec->nItems();
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
@@ -296,7 +276,6 @@ void RowCompactor::vCodeRow(Encoding* pEncoding)
   i8 nFreeBytes = aHeadLine->nFreeSpace(m_pColVec);
   m_oFreqDist.vAdd(nFreeBytes);
 #endif
-
 }
 
 
