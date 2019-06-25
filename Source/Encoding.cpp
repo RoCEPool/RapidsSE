@@ -145,9 +145,7 @@ void Encoding::vEncode(Row* pRow)
         
     } // switch eDatum
     
-    //if (! i_Col)
-    //  continue;
-    
+
     // - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // compute initial offset
 
@@ -177,53 +175,6 @@ void Encoding::vEncode(Row* pRow)
   vSplitOver();
   
   vTrace("\n%s\n"_Stz,spEncoding.sz(this));
-}
-
-/*----------------------------------------------------------------------------*/
-/* split at headSize for overflow (if necessary)                              */
-/*----------------------------------------------------------------------------*/
-void Encoding::vSplitOver(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
-  
-  
-  if (m_nBytesNeeded <= m_nHeadSize)
-    return;
-  
-//  i8 i_Col;
-//  for (i_Col = 0; i_Col < m_nColumns; i_Col++) {
-//    if (xaColEnc[i_Col].m_i_Offset + xaColEnc[i_Col].m_nDataSize >= nHeadSize)
-//      break;
-//  }
-//
-//  if (i_Col >= m_nColumns) {
-//    m_nBytesNeeded = xaColEnc[m_nColumns - 1].m_i_Offset
-//                       + xaColEnc[m_nColumns - 1].m_nDataSize;
-//    return;
-//  }
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // actually split
-//
-//  i8 nShiftBy = 0;
-//
-//  i8 i_Offset = xaColEnc[i_Col].m_i_Offset;
-//
-//  if (i_Col == 0 || i_Offset <= nHeadSize) {
-//    nShiftBy = nHeadSize - i_Offset;
-//  }
-//  else {
-//    i_Offset = xaColEnc[i_Col - 1].m_i_Offset;
-//    nShiftBy = nHeadSize - i_Offset;
-//    i_Col--;
-//  }
-//
-//  xaColEnc[i_Col].m_bOverflow = true;
-//  for ( ; i_Col < m_nColumns; i_Col++)
-//    xaColEnc[i_Col].m_i_Offset += nShiftBy;
-//
-//  m_nBytesNeeded = xaColEnc[m_nColumns - 1].m_i_Offset
-//                     + xaColEnc[m_nColumns - 1].m_nDataSize;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -483,6 +434,75 @@ void Encoding::vReset(void)
 #else
   m_xWsp.vInit();
 #endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* split at headSize for overflow (if necessary)                              */
+/*----------------------------------------------------------------------------*/
+void Encoding::vSplitOver(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  
+  if (m_nBytesNeeded <= m_nHeadSize)
+    return;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // actually split
+  
+  // find first column which does not fit into the head
+  i8 i_Col;
+  for (i_Col = 0; i_Col < m_nColumns; i_Col++) {
+    if (! bWithinHead(i_Col))
+      break;
+  }
+  RASSERT(i_Col < m_nColumns);
+  
+  
+  
+  
+  
+  //  i8 i_Col;
+  //  for (i_Col = 0; i_Col < m_nColumns; i_Col++) {
+  //    if (xaColEnc[i_Col].m_i_Offset + xaColEnc[i_Col].m_nDataSize >= nHeadSize)
+  //      break;
+  //  }
+  //
+  //  if (i_Col >= m_nColumns) {
+  //    m_nBytesNeeded = xaColEnc[m_nColumns - 1].m_i_Offset
+  //                       + xaColEnc[m_nColumns - 1].m_nDataSize;
+  //    return;
+  //  }
+  //
+  //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //  // actually split
+  //
+  //  i8 nShiftBy = 0;
+  //
+  //  i8 i_Offset = xaColEnc[i_Col].m_i_Offset;
+  //
+  //  if (i_Col == 0 || i_Offset <= nHeadSize) {
+  //    nShiftBy = nHeadSize - i_Offset;
+  //  }
+  //  else {
+  //    i_Offset = xaColEnc[i_Col - 1].m_i_Offset;
+  //    nShiftBy = nHeadSize - i_Offset;
+  //    i_Col--;
+  //  }
+  //
+  //  xaColEnc[i_Col].m_bOverflow = true;
+  //  for ( ; i_Col < m_nColumns; i_Col++)
+  //    xaColEnc[i_Col].m_i_Offset += nShiftBy;
+  //
+  //  m_nBytesNeeded = xaColEnc[m_nColumns - 1].m_i_Offset
+  //                     + xaColEnc[m_nColumns - 1].m_nDataSize;
+}
+
+/*----------------------------------------------------------------------------*/
+/* split at headSize for overflow                                             */
+/*----------------------------------------------------------------------------*/
+void Encoding::vSplitAt(i8 i_Col)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
