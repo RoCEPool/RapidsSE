@@ -66,6 +66,7 @@ Encoding::Encoding(ColumnVec* pColVec, i8 nHeadSize, i8 nMetaSize)
 
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
     xaColEnc[i_Col].m_pCol      = nullptr;
+    xaColEnc[i_Col].m_eDatum    = DM_NONE;
     xaColEnc[i_Col].m_eMetaCode = MC_NULL;
     xaColEnc[i_Col].m_wDataCode = C_UNKNOWN;
     xaColEnc[i_Col].m_nDataSize = C_UNKNOWN;
@@ -74,9 +75,10 @@ Encoding::Encoding(ColumnVec* pColVec, i8 nHeadSize, i8 nMetaSize)
     xaColEnc[i_Col].m_bSplit    = false;
   }
   
-  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++)
-    xaColEnc[i_Col].m_pCol = pColVec->pGet(i_Col);
-
+  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
+    xaColEnc[i_Col].m_pCol   = pColVec->pGet(i_Col);
+    xaColEnc[i_Col].m_eDatum = xaColEnc[i_Col].m_pCol->eDatumType();
+  }
   
 #ifdef WITH_CHECK_INITIALISED
   m_xWsp.vZero(CN_ENCODING);
@@ -158,12 +160,9 @@ void Encoding::vInitialEncoding(Row* pRow)
   
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
     
-    Column* pCol = m_pColVec->pGet(i_Col);
-    eDM eDatum   = pCol->eDatumType();
-    
     _ColEnc& xrColEnc = xaColEnc[i_Col];
     
-    switch (eDatum) {
+    switch (xrColEnc.m_eDatum) {
         
       case DM_BCD: vEncodeBcd(xrColEnc,pRow->m_waColVal[i_Col]);  break;
       case DM_BOL: vEncodeBol(xrColEnc,pRow->m_waColVal[i_Col]);  break;
@@ -463,6 +462,7 @@ void Encoding::vReset(void)
 
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
     // leave m_pCol
+    // leave m_eDatum
     xaColEnc[i_Col].m_eMetaCode = MC_NULL;
     xaColEnc[i_Col].m_wDataCode = C_UNKNOWN;
     xaColEnc[i_Col].m_nDataSize = C_UNKNOWN;

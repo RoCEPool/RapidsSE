@@ -8,6 +8,7 @@ namespace Data
   // how a column is to be encoded
   struct _ColEnc {
     Column* m_pCol;   // column
+    eDM  m_eDatum;    // column datum
     eMC  m_eMetaCode; // meta code describing the column value
     Dtm  m_wDataCode; // column value data bytes
     i8   m_nDataSize; // complete number of data code bytes, incl <L> etc
