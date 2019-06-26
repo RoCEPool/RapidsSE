@@ -442,6 +442,8 @@ void RowCompactor::vPutData_Bytes(_ColEnc& xColEnc, Column* pCol, i8& i_Offset_)
   // |{D}                        [OL] |
   // +--------------------------------+
   
+  ASSERT(i_Offset_ == xColEnc.m_i_Offset);
+  
   // put {D}
   m_aHeadLine->vPutLogical(i_Offset_,
                            xColEnc.m_wDataCode.m_w8,
@@ -472,6 +474,8 @@ void RowCompactor::vPutData_SHOCO(_ColEnc& xColEnc, Column* pCol, i8& i_Offset_)
 void RowCompactor::vPutData_STR(_ColEnc& xColEnc, Column* pCol, i8& i_Offset_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  ASSERT(i_Offset_ == xColEnc.m_i_Offset);
   
   // get <Stl>
   char* azStr = (char*)xColEnc.m_wDataCode.m_szVch;
