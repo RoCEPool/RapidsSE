@@ -50,10 +50,7 @@ i8 HeadLine::nBytes(void)
 i8 HeadLine::nUnits(void)
 {
   i8 nSizeUnits = w8_1B(0);
-  
-  if (C_W_largehead == nSizeUnits)
-    return C_LARGEHEAD_UNITS;
-  
+    
   if (nSizeUnits >= 128)
     nSizeUnits -= 128;
   
@@ -254,19 +251,6 @@ void HeadLine::vHasOverflow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a large head line?                                                 */
-/*----------------------------------------------------------------------------*/
-bool HeadLine::bIsLargeHead(void)
-{
-  i8 nSizeWords = w8_1B(0);
-  
-  if (C_LARGEHEAD == nSizeWords)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get the relative distance to the overflow line [OT] which is 2B            */
 /*----------------------------------------------------------------------------*/
 i8 HeadLine::iOverflow2B(void)
@@ -409,15 +393,6 @@ void HeadLine::vDumpHead(Stz* szTitle,
     
     MemLib::vWordDump(aOverLine,nOverBytes);
   }
-  else if (aHeadLine->bIsLargeHead()) {
-    vTrace("\n%s HeadDump %p :\n"_Stz,szTitle,aHeadLine);
-    
-    w8* awLastWord  = MemLib::awFindNonZeroEnd(aHeadLine,nHeadWords);
-    i8 nWords = (awLastWord - (w8*)aHeadLine) + 1;
-    i8 nBytes_clipped = nWords * C_BYTES_PER_WORD;
-    
-    MemLib::vWordDump(aHeadLine,nBytes_clipped);
-  }
   else {
     vTrace("\n%s HeadDump %p :\n"_Stz,szTitle,aHeadLine);
     
@@ -443,11 +418,10 @@ void HeadLine::vDumpHead(Stz* szTitle,
         break;
     
     
-    vTrace("HL: 0x%012llx <W>=%lld%s {M}=%lld [OT]=%04x @ col %lld %s FreeBytes %lld\n"
+    vTrace("HL: 0x%012llx <W>=%lld {M}=%lld [OT]=%04x @ col %lld %s FreeBytes %lld\n"
            "OT: 0x%012llx <U>=%lld <M>=%ll02x %s\n"_Stz,
            aHeadLine,
            aHeadLine->nWords(),
-           aHeadLine->bIsLargeHead() ? " LARGEHEAD"_Stz : ""_Stz,
            nColumns,
            aHeadLine->iOverflow2B(),
            i_Col_over,
@@ -461,11 +435,10 @@ void HeadLine::vDumpHead(Stz* szTitle,
            );
   }
   else {
-    vTrace("HL: 0x%012llx <W>=%lld%s FreeBytes %lld; "
+    vTrace("HL: 0x%012llx <W>=%lld FreeBytes %lld; "
            "OT: none\n"_Stz,
            aHeadLine,
            aHeadLine->nWords(),
-           aHeadLine->bIsLargeHead() ? " LARGEHEAD"_Stz : ""_Stz,
            nFreeBytes);
   }
   
@@ -633,15 +606,6 @@ void HeadLine::vDumpHead_IV(Stz* szTitle,
     
     MemLib::vWordDump(aOverLine,nOverBytes);
   }
-  else if (aHeadLine->bIsLargeHead()) {
-    vTrace("\n%s HeadDump %p :\n"_Stz,szTitle,aHeadLine);
-    
-    w8* awLastWord  = MemLib::awFindNonZeroEnd(aHeadLine,nHeadWords);
-    i8 nWords = (awLastWord - (w8*)aHeadLine) + 1;
-    i8 nBytes_clipped = nWords * C_BYTES_PER_WORD;
-    
-    MemLib::vWordDump(aHeadLine,nBytes_clipped);
-  }
   else {
     vTrace("\n%s HeadDump %p :\n"_Stz,szTitle,aHeadLine);
     
@@ -667,11 +631,10 @@ void HeadLine::vDumpHead_IV(Stz* szTitle,
         break;
     
     
-    vTrace("HL: 0x%012llx <W>=%lld%s {M}=%lld [OT]=%04x @ col %lld %s FreeBytes %lld\n"
+    vTrace("HL: 0x%012llx <W>=%lld {M}=%lld [OT]=%04x @ col %lld %s FreeBytes %lld\n"
            "OT: 0x%012llx <U>=%lld <M>=%ll02x %s\n"_Stz,
            aHeadLine,
            aHeadLine->nWords(),
-           aHeadLine->bIsLargeHead() ? " LARGEHEAD"_Stz : ""_Stz,
            nColumns,
            aHeadLine->iOverflow2B(),
            i_Col_over,
@@ -685,11 +648,10 @@ void HeadLine::vDumpHead_IV(Stz* szTitle,
            );
   }
   else {
-    vTrace("HL: 0x%012llx <W>=%lld%s FreeBytes %lld; "
+    vTrace("HL: 0x%012llx <W>=%lld FreeBytes %lld; "
            "OT: none\n"_Stz,
            aHeadLine,
            aHeadLine->nWords(),
-           aHeadLine->bIsLargeHead() ? " LARGEHEAD"_Stz : ""_Stz,
            nFreeBytes);
   }
   

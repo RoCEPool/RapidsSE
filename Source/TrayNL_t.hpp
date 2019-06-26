@@ -5,18 +5,12 @@
 
 namespace Structures
 {
-  static const i8 C_LARGEHEAD       = 0;
-  static const i8 C_LARGEHEAD_UNITS = C_MAX_RECORD / sizeof(Word);
-  static const i8 C_LARGEHEAD_BYTES = C_LARGEHEAD_UNITS * sizeof(Word);
-  static const i8 C_W_largehead     = 0;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // nub (the tray interface)
-  
   static const i8 C_SPACEUNIT_QUANTA = sizeof(SpaceUnit);
   static const i8 C_TAILLINE_QUANTA  = sizeof(DoubleWord);
   static const i8 C_HEADLINE_QUANTA  = sizeof(Word);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // nub (the tray interface)
   
   template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
   class Nub_t : public Object
@@ -261,11 +255,7 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iAllotHead(i8 nBytes_unrounded)
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   i8 nBytes_revised = nBytes_unrounded;
-  
-  bool bLargeHead = (C_LARGEHEAD == nBytes_unrounded) ? true : false;
-  if (bLargeHead)
-    nBytes_revised = C_LARGEHEAD_BYTES;
-  
+    
   if (nFreeAllotableBytes() < nBytes_revised)
     return C_UNKNOWN;
   
@@ -280,7 +270,7 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iAllotHead(i8 nBytes_unrounded)
   HEAD* aHead = aGetHead(i_Head);
   
   // set <W>
-  aHead->vW((bLargeHead) ? C_W_largehead : nWords);
+  aHead->vW(nWords);
   
   return i_Head;
 }

@@ -132,7 +132,7 @@ bool Encoding::bOverFlowed(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
-  if (m_nBytesNeeded > 0)
+  if (m_nShiftOver > 0)
     return true;
   else
     return false;

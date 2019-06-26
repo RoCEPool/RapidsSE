@@ -35,7 +35,6 @@ namespace Data
     TailLine* aGetTailRel(i8 i_Tail_rel);
      bool bHasOverflow(void);
     void vHasOverflow(void);
-    bool bIsLargeHead(void);
     i8   iOverflow2B(void);
     void vOverflow2B(i8 iOver2B);
     void vPutLogical(i8 i_Offset, w8 wDataCode, i8 nDataSize);
