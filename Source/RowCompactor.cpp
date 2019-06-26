@@ -328,7 +328,7 @@ void RowCompactor::vPackColVal(_ColEnc& xColEnc)
   // +================================+   +================================+
   
   // set <M> for this column
-  vPutMetaCode(xColEnc.m_pCol,xColEnc.m_eMetaCode);
+  vPutMetaCode(xColEnc);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put data code {D} onto crw
@@ -386,7 +386,7 @@ void RowCompactor::vPackColVal_split(_ColEnc& xColEnc)
   // +================================+   +================================+
   
   // set <MC_OVERFLOW_2T> for this column
-  vPutMetaCode(xColEnc.m_pCol,MC_OVERFLOW_2T);
+  vPutMetaCode(xColEnc);
   
   // +================================+   +================================+
   // | <W><M>        <MC_OVERFLOW_2T> |---| <U><M> /////////////////////// |
@@ -498,14 +498,17 @@ void RowCompactor::vPutData_STR(_ColEnc& xColEnc)
 /*----------------------------------------------------------------------------*/
 /* put meta code for column value into logical compact row                    */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vPutMetaCode(Column* pCol, eMC eMetaCode)
+void RowCompactor::vPutMetaCode(_ColEnc& xColEnc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  i8 i_Col = pCol->iColumnNo();
+  i8 i_Col = xColEnc.m_pCol->iColumnNo();
   
   // set <M> for this column
-  m_aHeadLine->vMetaCode(i_Col,eMetaCode);
+  m_aHeadLine->vMetaCode(i_Col,
+                         xColEnc.m_bSplit
+                           ? MC_OVERFLOW_2T
+                           : xColEnc.m_eMetaCode);
 }
 
 

@@ -54,7 +54,7 @@ namespace Data
     void vPutData_SHOCO(_ColEnc& xColEnc);
     void vPutData_STR(_ColEnc& xColEnc);
 
-   void vPutMetaCode(Column* pCol, eMC eMetaCode);
+    void vPutMetaCode(_ColEnc& xColEnc);
 
   private:
     Footer* aFooter(void);
