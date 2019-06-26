@@ -256,7 +256,6 @@ void RowCompactor::vPackCrw(Encoding* pEncoding)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pack all the columns into the logical compact row
   
-  i8 i_Offset_ = m_i_BaseOffset;
   i8 nCols = m_pColVec->nItems();
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
@@ -265,7 +264,7 @@ void RowCompactor::vPackCrw(Encoding* pEncoding)
     //vDumpHead("vHeadCode a"_Stz,m_aCrw,m_pColVec);
     if (8 == i_Col)
       vDebugPoint();
-    vPackColVal(pEncoding->xaColEnc[i_Col],pCol,i_Offset_);
+    vPackColVal(pEncoding->xaColEnc[i_Col],pCol);
     //vDumpHead("vHeadCode b"_Stz,m_aCrw,m_pColVec);
   }
   
@@ -290,7 +289,7 @@ void RowCompactor::vPackCrw(Encoding* pEncoding)
 /*----------------------------------------------------------------------------*/
 /* pack column value into compact row                                         */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vPackColVal(_ColEnc& xColEnc, Column* pCol, i8& i_Offset_)
+void RowCompactor::vPackColVal(_ColEnc& xColEnc, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -347,20 +346,20 @@ void RowCompactor::vPackColVal(_ColEnc& xColEnc, Column* pCol, i8& i_Offset_)
   
   // non-vch packing as {D} (max of 1 word)
   if (DM_VCH != eDatum) {
-    vPutData_Bytes(xColEnc,pCol,i_Offset_);
+    vPutData_Bytes(xColEnc,pCol);
     return;
   }
   
   // vch packing (max of ??? words)
   ASSERT(MC_STR_FIT_1L == xColEnc.m_eMetaCode);
-  vPutData_STR(xColEnc,pCol,i_Offset_);
+  vPutData_STR(xColEnc,pCol);
   return;
 }
 
 /*----------------------------------------------------------------------------*/
 /* pack column value into compact row at split                                */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vPackColVal_split(_ColEnc& xColEnc, Column* pCol, i8& i_Offset_)
+void RowCompactor::vPackColVal_split(_ColEnc& xColEnc, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -399,12 +398,10 @@ void RowCompactor::vPackColVal_split(_ColEnc& xColEnc, Column* pCol, i8& i_Offse
   // +================================+   +================================+
 
   // put <M> into over line
-  m_aHeadLine->vPutLogical(i_Offset_,
+  m_aHeadLine->vPutLogical(m_nHeadSize + C_U_1B,
                            (i8)xColEnc.m_eMetaCode,
                            C_1B);
   
-  i_Offset_ += C_1B;
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put data code {D} onto crw
   
@@ -418,13 +415,13 @@ void RowCompactor::vPackColVal_split(_ColEnc& xColEnc, Column* pCol, i8& i_Offse
   
   // non-vch packing as {D} (max of 1 word)
   if (DM_VCH != eDatum) {
-    vPutData_Bytes(xColEnc,pCol,i_Offset_);
+    vPutData_Bytes(xColEnc,pCol);
     return;
   }
   
   // vch packing (max of ??? words)
   ASSERT(MC_STR_FIT_1L == xColEnc.m_eMetaCode);
-  vPutData_STR(xColEnc,pCol,i_Offset_);
+  vPutData_STR(xColEnc,pCol);
   return;
 }
 
@@ -434,7 +431,7 @@ void RowCompactor::vPackColVal_split(_ColEnc& xColEnc, Column* pCol, i8& i_Offse
 /*----------------------------------------------------------------------------*/
 /* put data bytes for unary MC (e.g. for MC_1B..MC_8N, MC_DATE_E1_2B, ...)    */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vPutData_Bytes(_ColEnc& xColEnc, Column* pCol, i8& i_Offset_)
+void RowCompactor::vPutData_Bytes(_ColEnc& xColEnc, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -442,20 +439,16 @@ void RowCompactor::vPutData_Bytes(_ColEnc& xColEnc, Column* pCol, i8& i_Offset_)
   // |{D}                        [OL] |
   // +--------------------------------+
   
-  ASSERT(i_Offset_ == xColEnc.m_i_Offset);
-  
   // put {D}
   m_aHeadLine->vPutLogical(xColEnc.m_i_Offset,
                            xColEnc.m_wDataCode.m_w8,
                            xColEnc.m_nDataSize);
-  
-  i_Offset_ += xColEnc.m_nDataSize;
 }
 
 /*----------------------------------------------------------------------------*/
 /* put data bytes for MC_BSTR_FIT_2L : <2L><Stl>                              */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vPutData_BSTR(_ColEnc& xColEnc, Column* pCol, i8& i_Offset_)
+void RowCompactor::vPutData_BSTR(_ColEnc& xColEnc, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
 }
@@ -463,7 +456,7 @@ void RowCompactor::vPutData_BSTR(_ColEnc& xColEnc, Column* pCol, i8& i_Offset_)
 /*----------------------------------------------------------------------------*/
 /* put data bytes for MC_SHOCO_TAIL_2T : |OT| & <C><Shoco>                    */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vPutData_SHOCO(_ColEnc& xColEnc, Column* pCol, i8& i_Offset_)
+void RowCompactor::vPutData_SHOCO(_ColEnc& xColEnc, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
 }
@@ -471,11 +464,9 @@ void RowCompactor::vPutData_SHOCO(_ColEnc& xColEnc, Column* pCol, i8& i_Offset_)
 /*----------------------------------------------------------------------------*/
 /* put data bytes for MC_STR_FIT_1L : <1L><Stl>                               */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vPutData_STR(_ColEnc& xColEnc, Column* pCol, i8& i_Offset_)
+void RowCompactor::vPutData_STR(_ColEnc& xColEnc, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  ASSERT(i_Offset_ == xColEnc.m_i_Offset);
   
   // get <Stl>
   char* azStr = (char*)xColEnc.m_wDataCode.m_szVch;
@@ -495,17 +486,15 @@ void RowCompactor::vPutData_STR(_ColEnc& xColEnc, Column* pCol, i8& i_Offset_)
   m_aHeadLine->vPutLogical(xColEnc.m_i_Offset,
                            n1L,
                            C_1B);
-  i_Offset_ += C_1B;
   
   // +--------------------------------+
   // |<L><Stl>                   [OL] |
   // +--------------------------------+
   
   // put <Stl> without null terminator
-  m_aHeadLine->vPutLogical(xColEnc.m_i_Offset + C_1B,
+  m_aHeadLine->vPutLogical(xColEnc.m_i_Offset + C_L_1B,
                            (Stz*)azStr,
                            n1L);
-  i_Offset_ += n1L;
 }
 
 /*----------------------------------------------------------------------------*/
