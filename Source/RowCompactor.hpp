@@ -42,7 +42,7 @@ namespace Data
     bool bCompactRow(Row* pInflatedRow);
   
   private:
-    void vAllotOver(void);
+    void vAllotCrw(void);
     void vPackColVal(_ColEnc& xColEnc, Column* pCol,i8& i_Offset_);
     void vPackCrw(Encoding* pEncoding);
 
