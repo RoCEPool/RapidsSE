@@ -43,11 +43,12 @@ namespace Data
   
   private:
     void vAllotCrw(void);
-    void vPackColVal(_ColEnc& xColEnc, Column* pCol,i8& i_Offset_);
-    void vPackColVal_split(_ColEnc& xColEnc, Column* pCol,i8& i_Offset_);
+    
     void vPackCrw(Encoding* pEncoding);
     
-    //void vPutMetaCode(_ColEnc& xColEnc, Column* pCol,i8& i_Offset_);
+    void vPackColVal(_ColEnc& xColEnc, Column* pCol,i8& i_Offset_);
+    void vPackColVal_split(_ColEnc& xColEnc, Column* pCol,i8& i_Offset_);
+
     void vPutMetaCode(Column* pCol, eMC eMetaCode);
     void vPutData_Bytes(_ColEnc& xColEnc, Column* pCol,i8& i_Offset_);
     void vPutData_BSTR(_ColEnc& xColEnc, Column* pCol,i8& i_Offset_);
