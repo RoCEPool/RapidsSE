@@ -46,14 +46,15 @@ namespace Data
     
     void vPackCrw(Encoding* pEncoding);
     
-    void vPackColVal(_ColEnc& xColEnc, Column* pCol);
-    void vPackColVal_split(_ColEnc& xColEnc, Column* pCol);
+    void vPackColVal(_ColEnc& xColEnc);
+    void vPackColVal_split(_ColEnc& xColEnc);
 
-    void vPutMetaCode(Column* pCol, eMC eMetaCode);
-    void vPutData_Bytes(_ColEnc& xColEnc, Column* pCol);
-    void vPutData_BSTR(_ColEnc& xColEnc, Column* pCol);
-    void vPutData_SHOCO(_ColEnc& xColEnc, Column* pCol);
-    void vPutData_STR(_ColEnc& xColEnc, Column* pCol);
+    void vPutData_Bytes(_ColEnc& xColEnc);
+    void vPutData_BSTR(_ColEnc& xColEnc);
+    void vPutData_SHOCO(_ColEnc& xColEnc);
+    void vPutData_STR(_ColEnc& xColEnc);
+
+   void vPutMetaCode(Column* pCol, eMC eMetaCode);
 
   private:
     Footer* aFooter(void);

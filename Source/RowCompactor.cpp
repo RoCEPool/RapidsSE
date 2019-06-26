@@ -259,12 +259,10 @@ void RowCompactor::vPackCrw(Encoding* pEncoding)
   i8 nCols = m_pColVec->nItems();
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
-    Column* pCol = m_pColVec->pGet(i_Col);
-    
     //vDumpHead("vHeadCode a"_Stz,m_aCrw,m_pColVec);
     if (8 == i_Col)
       vDebugPoint();
-    vPackColVal(pEncoding->xaColEnc[i_Col],pCol);
+    vPackColVal(pEncoding->xaColEnc[i_Col]);
     //vDumpHead("vHeadCode b"_Stz,m_aCrw,m_pColVec);
   }
   
@@ -289,7 +287,7 @@ void RowCompactor::vPackCrw(Encoding* pEncoding)
 /*----------------------------------------------------------------------------*/
 /* pack column value into compact row                                         */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vPackColVal(_ColEnc& xColEnc, Column* pCol)
+void RowCompactor::vPackColVal(_ColEnc& xColEnc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -298,7 +296,7 @@ void RowCompactor::vPackColVal(_ColEnc& xColEnc, Column* pCol)
   //!
   
   if (xColEnc.m_bSplit) {
-    vPackColVal_split(xColEnc,pCol);
+    vPackColVal_split(xColEnc);
     return;
   }
   
@@ -322,8 +320,6 @@ void RowCompactor::vPackColVal(_ColEnc& xColEnc, Column* pCol)
      <U>  is one byte space unit length of over line
    */
   
-  eDM eDatum = pCol->eDatumType();
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put meta code <M> into meta tape of head
   
@@ -332,7 +328,7 @@ void RowCompactor::vPackColVal(_ColEnc& xColEnc, Column* pCol)
   // +================================+   +================================+
   
   // set <M> for this column
-  vPutMetaCode(pCol,xColEnc.m_eMetaCode);
+  vPutMetaCode(xColEnc.m_pCol,xColEnc.m_eMetaCode);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put data code {D} onto crw
@@ -346,21 +342,21 @@ void RowCompactor::vPackColVal(_ColEnc& xColEnc, Column* pCol)
     return;
   
   // non-vch packing as {D} (max of 1 word)
-  if (DM_VCH != eDatum) {
-    vPutData_Bytes(xColEnc,pCol);
+  if (DM_VCH != xColEnc.m_eDatum) {
+    vPutData_Bytes(xColEnc);
     return;
   }
   
   // vch packing (max of ??? words)
   ASSERT(MC_STR_FIT_1L == xColEnc.m_eMetaCode);
-  vPutData_STR(xColEnc,pCol);
+  vPutData_STR(xColEnc);
   return;
 }
 
 /*----------------------------------------------------------------------------*/
 /* pack column value into compact row at split                                */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vPackColVal_split(_ColEnc& xColEnc, Column* pCol)
+void RowCompactor::vPackColVal_split(_ColEnc& xColEnc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -383,8 +379,6 @@ void RowCompactor::vPackColVal_split(_ColEnc& xColEnc, Column* pCol)
    */
 
   
-  eDM eDatum = pCol->eDatumType();
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // +================================+   +================================+
@@ -392,7 +386,7 @@ void RowCompactor::vPackColVal_split(_ColEnc& xColEnc, Column* pCol)
   // +================================+   +================================+
   
   // set <MC_OVERFLOW_2T> for this column
-  vPutMetaCode(pCol,MC_OVERFLOW_2T);
+  vPutMetaCode(xColEnc.m_pCol,MC_OVERFLOW_2T);
   
   // +================================+   +================================+
   // | <W><M>        <MC_OVERFLOW_2T> |---| <U><M> /////////////////////// |
@@ -415,14 +409,14 @@ void RowCompactor::vPackColVal_split(_ColEnc& xColEnc, Column* pCol)
     return;
   
   // non-vch packing as {D} (max of 1 word)
-  if (DM_VCH != eDatum) {
-    vPutData_Bytes(xColEnc,pCol);
+  if (DM_VCH != xColEnc.m_eDatum) {
+    vPutData_Bytes(xColEnc);
     return;
   }
   
   // vch packing (max of ??? words)
   ASSERT(MC_STR_FIT_1L == xColEnc.m_eMetaCode);
-  vPutData_STR(xColEnc,pCol);
+  vPutData_STR(xColEnc);
   return;
 }
 
@@ -432,7 +426,7 @@ void RowCompactor::vPackColVal_split(_ColEnc& xColEnc, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* put data bytes for unary MC (e.g. for MC_1B..MC_8N, MC_DATE_E1_2B, ...)    */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vPutData_Bytes(_ColEnc& xColEnc, Column* pCol)
+void RowCompactor::vPutData_Bytes(_ColEnc& xColEnc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -449,7 +443,7 @@ void RowCompactor::vPutData_Bytes(_ColEnc& xColEnc, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* put data bytes for MC_BSTR_FIT_2L : <2L><Stl>                              */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vPutData_BSTR(_ColEnc& xColEnc, Column* pCol)
+void RowCompactor::vPutData_BSTR(_ColEnc& xColEnc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
 }
@@ -457,7 +451,7 @@ void RowCompactor::vPutData_BSTR(_ColEnc& xColEnc, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* put data bytes for MC_SHOCO_TAIL_2T : |OT| & <C><Shoco>                    */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vPutData_SHOCO(_ColEnc& xColEnc, Column* pCol)
+void RowCompactor::vPutData_SHOCO(_ColEnc& xColEnc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
 }
@@ -465,7 +459,7 @@ void RowCompactor::vPutData_SHOCO(_ColEnc& xColEnc, Column* pCol)
 /*----------------------------------------------------------------------------*/
 /* put data bytes for MC_STR_FIT_1L : <1L><Stl>                               */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vPutData_STR(_ColEnc& xColEnc, Column* pCol)
+void RowCompactor::vPutData_STR(_ColEnc& xColEnc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
