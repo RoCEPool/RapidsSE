@@ -50,10 +50,7 @@ i8 HeadLine::nBytes(void)
 i8 HeadLine::nUnits(void)
 {
   i8 nSizeUnits = w8_1B(0);
-  
-  if (C_W_largehead == nSizeUnits)
-    return C_LARGEHEAD_UNITS;
-  
+    
   if (nSizeUnits >= 128)
     nSizeUnits -= 128;
   
