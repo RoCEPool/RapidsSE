@@ -210,8 +210,8 @@ i8 RowCoder::nHeadSize(ColumnVec* pColVec)
   
   //i8 nBytesHead = nHeadWords * (i8)C_BYTES_PER_WORD;
   i8 nBytesHead = 256;
-  RASSERT(nBytesHead >= C_HEAD_MIN_BYTES);
   
+  RASSERT(nBytesHead >= C_HEAD_MIN_BYTES);
   return nBytesHead;
 }
 

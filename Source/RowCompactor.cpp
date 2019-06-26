@@ -200,7 +200,8 @@ void RowCompactor::vAllotCrw(void)
   
   // calc the size of the over line
   i8 nBytesNeed = m_pEncoding->nBytesNeeded();
-  i8 nOverSize  = m_nHeadSize - nBytesNeed;
+  i8 nOverSize  = nBytesNeed - m_nHeadSize;
+  ASSERT(nOverSize > 0);
   
   // allot the over line
   i8 i_Over = m_pCrwNub->iAllotOver(nOverSize);

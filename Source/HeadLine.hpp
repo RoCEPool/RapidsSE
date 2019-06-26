@@ -43,7 +43,7 @@ namespace Data
     void vSetOver(OverLine* aOverLine);
     byte* ayShoco(Column* pCol, i8 iBaseOffset);
 
-    i8   iW(void);
+    i8   nW(void);
     void vW(i8 nWords);
 
     /*------------------------------------------------------------------------*/

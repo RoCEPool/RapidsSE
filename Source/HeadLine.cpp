@@ -232,7 +232,7 @@ TailLine* HeadLine::aGetTailRel(i8 i_Tail_rel)
 /*----------------------------------------------------------------------------*/
 bool HeadLine::bHasOverflow(void)
 {
-  i8 nSizeWords = iW();
+  i8 nSizeWords = nW();
   
   if (nSizeWords >= 128)
     return true;
@@ -245,7 +245,7 @@ bool HeadLine::bHasOverflow(void)
 /*----------------------------------------------------------------------------*/
 void HeadLine::vHasOverflow(void)
 {
-  i8 nSizeWords = iW();
+  i8 nSizeWords = nW();
   
   if (nSizeWords < 128) {
     nSizeWords += 128;
@@ -331,7 +331,9 @@ void HeadLine::vSetOver(OverLine* aOverLine)
   i8 i_Over_rel = RowNub::iUnitDiff(this,(TailLine*)aOverLine);
   
   vOverflow2B(i_Over_rel);
-}
+ 
+  vHasOverflow();
+ }
 
 /*----------------------------------------------------------------------------*/
 /* get address of given shoco column from head line                           */
@@ -356,7 +358,7 @@ byte* HeadLine::ayShoco(Column* pCol, i8 i_BaseOffset)
 /*----------------------------------------------------------------------------*/
 /* get the size <W> of this headline in words                                 */
 /*----------------------------------------------------------------------------*/
-i8 HeadLine::iW(void)
+i8 HeadLine::nW(void)
 {
   i8 nWords = w8_1B(0);
   
