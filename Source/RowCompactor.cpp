@@ -218,14 +218,62 @@ void RowCompactor::vPackColVal(_ColEnc& xColEnc, Column* pCol, i8& i_Offset_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
+  
+  // for the moment lets handle the split case completely separately
+//  if (xColEnc.m_bSplit) {
+//    vPackColVal_split(xColEnc,pCol,i_Offset_);
+//    return;
+//  }
+  
+  
   eDM eDatum = pCol->eDatumType();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put meta code <M> into meta tape of head
   
   // set <M> for this column
-  vPutMetaCode(xColEnc,pCol,i_Offset_);
+  vPutMetaCode(pCol,xColEnc.m_eMetaCode);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // put data code {D} onto crw
+  
+  // no data code {D} case
+  if (! xColEnc.m_nDataSize)
+    return;
+  
+  // non-vch packing as {D} (max of 1 word)
+  if (DM_VCH != eDatum) {
+    vPutData_Bytes(xColEnc,pCol,i_Offset_);
+    return;
+  }
+  
+  // vch packing (max of ??? words)
+  ASSERT(MC_STR_FIT_1L == xColEnc.m_eMetaCode);
+  vPutData_STR(xColEnc,pCol,i_Offset_);
+  return;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pack column value into compact row at split                                 */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vPackColVal_split(_ColEnc& xColEnc, Column* pCol, i8& i_Offset_)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  eDM eDatum = pCol->eDatumType();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // set <MC_OVERFLOW_2T> for this column
+  vPutMetaCode(pCol,MC_OVERFLOW_2T);
+  
+  // put {D}
+  m_aHeadLine->vPutLogical(i_Offset_,
+                           (i8)xColEnc.m_eMetaCode,
+                           C_1B);
+  
+  i_Offset_ += C_1B;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put data code {D} onto crw
   
@@ -361,14 +409,27 @@ void RowCompactor::vPutData_STR(_ColEnc& xColEnc, Column* pCol, i8& i_Offset_)
 /*----------------------------------------------------------------------------*/
 /* put meta code for column value into logical compact row                    */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vPutMetaCode(_ColEnc& xColEnc, Column* pCol, i8& i_Offset_)
+//void RowCompactor::vPutMetaCode(_ColEnc& xColEnc, Column* pCol, i8& i_Offset_)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+//
+//  i8 i_Col = pCol->iColumnNo();
+//
+//  // set <M> for this column
+//  m_aHeadLine->vMetaCode(i_Col,xColEnc.m_eMetaCode);
+//}
+
+/*----------------------------------------------------------------------------*/
+/* put meta code for column value into logical compact row                    */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vPutMetaCode(Column* pCol, eMC eMetaCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
   i8 i_Col = pCol->iColumnNo();
   
   // set <M> for this column
-  m_aHeadLine->vMetaCode(i_Col,xColEnc.m_eMetaCode);
+  m_aHeadLine->vMetaCode(i_Col,eMetaCode);
 }
 
 
