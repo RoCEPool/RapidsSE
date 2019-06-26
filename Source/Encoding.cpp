@@ -65,6 +65,7 @@ Encoding::Encoding(ColumnVec* pColVec, i8 nHeadSize, i8 nMetaSize)
   // - - - - - - - - - - - - - - - - - -
 
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
+    xaColEnc[i_Col].m_pCol      = nullptr;
     xaColEnc[i_Col].m_eMetaCode = MC_NULL;
     xaColEnc[i_Col].m_wDataCode = C_UNKNOWN;
     xaColEnc[i_Col].m_nDataSize = C_UNKNOWN;
@@ -72,6 +73,10 @@ Encoding::Encoding(ColumnVec* pColVec, i8 nHeadSize, i8 nMetaSize)
     xaColEnc[i_Col].m_i_Till    = 0;
     xaColEnc[i_Col].m_bSplit    = false;
   }
+  
+  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++)
+    xaColEnc[i_Col].m_pCol = pColVec->pGet(i_Col);
+
   
 #ifdef WITH_CHECK_INITIALISED
   m_xWsp.vZero(CN_ENCODING);
@@ -457,6 +462,7 @@ void Encoding::vReset(void)
   m_nShiftOver   = C_UNKNOWN;
 
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
+    // leave m_pCol
     xaColEnc[i_Col].m_eMetaCode = MC_NULL;
     xaColEnc[i_Col].m_wDataCode = C_UNKNOWN;
     xaColEnc[i_Col].m_nDataSize = C_UNKNOWN;
