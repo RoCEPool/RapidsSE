@@ -445,7 +445,7 @@ void RowCompactor::vPutData_Bytes(_ColEnc& xColEnc, Column* pCol, i8& i_Offset_)
   ASSERT(i_Offset_ == xColEnc.m_i_Offset);
   
   // put {D}
-  m_aHeadLine->vPutLogical(i_Offset_,
+  m_aHeadLine->vPutLogical(xColEnc.m_i_Offset,
                            xColEnc.m_wDataCode.m_w8,
                            xColEnc.m_nDataSize);
   
@@ -492,7 +492,7 @@ void RowCompactor::vPutData_STR(_ColEnc& xColEnc, Column* pCol, i8& i_Offset_)
   // +--------------------------------+
   
   // put <1L>
-  m_aHeadLine->vPutLogical(i_Offset_,
+  m_aHeadLine->vPutLogical(xColEnc.m_i_Offset,
                            n1L,
                            C_1B);
   i_Offset_ += C_1B;
@@ -502,7 +502,7 @@ void RowCompactor::vPutData_STR(_ColEnc& xColEnc, Column* pCol, i8& i_Offset_)
   // +--------------------------------+
   
   // put <Stl> without null terminator
-  m_aHeadLine->vPutLogical(i_Offset_,
+  m_aHeadLine->vPutLogical(xColEnc.m_i_Offset + C_1B,
                            (Stz*)azStr,
                            n1L);
   i_Offset_ += n1L;
