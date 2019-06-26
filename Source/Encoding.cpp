@@ -511,7 +511,7 @@ void Encoding::vSplitAt(i8 i_Col)
   xaColEnc[i_Col].m_bSplit = true;
   
   // calc the number of bytes needed to shift columns into overflow
-  m_nShiftOver = m_nHeadSize - xaColEnc[i_Col].m_i_Offset;
+  m_nShiftOver = m_nHeadSize - xaColEnc[i_Col].m_i_Offset + C_U_1B + C_M_1B;
   
   // shift columns into overflow
   for ( ; i_Col < m_nColumns; i_Col++) {

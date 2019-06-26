@@ -297,11 +297,12 @@ void RowCompactor::vPackColVal(_ColEnc& xColEnc, Column* pCol)
   //! handle the split point separately
   //!
   
-//  if (xColEnc.m_bSplit) {
-//    vPackColVal_split(xColEnc,pCol,i_Offset_);
-//    return;
-//  }
+  if (xColEnc.m_bSplit) {
+    vPackColVal_split(xColEnc,pCol);
+    return;
+  }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   /*
              -- HeadLine --                      -- OverLine --
