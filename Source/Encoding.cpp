@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Encoding.cpp -- Encoding of a row                                          */
+/* Encoding.cpp -- Row Encoding (intermediate representation of row)          */
 /*============================================================================*/
 
 #include "Rows.h"
@@ -65,8 +65,10 @@ Encoding::Encoding(ColumnVec* pColVec, i8 nHeadSize, i8 nMetaSize)
   // - - - - - - - - - - - - - - - - - -
 
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
+    
     xaColEnc[i_Col].m_pCol       = nullptr;
     xaColEnc[i_Col].m_eDatum     = DM_NONE;
+    
     xaColEnc[i_Col].m_eMetaCode  = MC_NULL;
     xaColEnc[i_Col].m_wDataCode  = C_UNKNOWN;
     xaColEnc[i_Col].m_nDataSize  = C_UNKNOWN;
@@ -74,9 +76,9 @@ Encoding::Encoding(ColumnVec* pColVec, i8 nHeadSize, i8 nMetaSize)
     xaColEnc[i_Col].m_i_Till     = 0;
     xaColEnc[i_Col].m_bSplit     = false;
     
-    xaColEnc[i_Col].m_bAllotTail = false;
-    xaColEnc[i_Col].m_bUseTail   = false;
-    xaColEnc[i_Col].m_aTailLine  = nullptr;
+    xaColEnc[i_Col].m_bIsSample  = false;
+    xaColEnc[i_Col].m_nRepeats   = 0;
+    xaColEnc[i_Col].m_i_RepeatOf = C_UNKNOWN;
   }
   
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
@@ -465,8 +467,10 @@ void Encoding::vReset(void)
   m_nShiftOver   = C_UNKNOWN;
 
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
+    
     // leave m_pCol
     // leave m_eDatum
+    
     xaColEnc[i_Col].m_eMetaCode  = MC_NULL;
     xaColEnc[i_Col].m_wDataCode  = C_UNKNOWN;
     xaColEnc[i_Col].m_nDataSize  = C_UNKNOWN;
@@ -474,9 +478,9 @@ void Encoding::vReset(void)
     xaColEnc[i_Col].m_i_Till     = 0;
     xaColEnc[i_Col].m_bSplit     = false;
     
-    xaColEnc[i_Col].m_bAllotTail = false;
-    xaColEnc[i_Col].m_bUseTail   = false;
-    xaColEnc[i_Col].m_aTailLine  = nullptr;
+    xaColEnc[i_Col].m_bIsSample  = false;
+    xaColEnc[i_Col].m_nRepeats   = 0;
+    xaColEnc[i_Col].m_i_RepeatOf = C_UNKNOWN;
   }
   
 #ifdef WITH_CHECK_INITIALISED

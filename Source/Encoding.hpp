@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Encoding.hpp -- Row Encoding                                               */
+/* Encoding.hpp -- Row Encoding (intermediate representation of row)          */
 /*============================================================================*/
 #pragma once
 
@@ -7,19 +7,20 @@ namespace Rows
 {
   // how a column is to be encoded
   struct _ColEnc {
-    Column* m_pCol;   // column
-    eDM  m_eDatum;    // column datum
-    eMC  m_eMetaCode; // meta code describing the column value
-    Dtm  m_wDataCode; // column value data bytes
-    i8   m_nDataSize; // complete number of data code bytes, incl <L> etc
-    i8   m_i_Offset;  // first byte offset in head+over where the data code is
-    i8   m_i_Till;    // last byte offset in head+over where the data code is
-    bool m_bSplit;    // overflow occurs at this point
     
-    bool m_bAllotTail;// allot a string tail
-    bool m_bUseTail;  // use string tail
+    Column* m_pCol;    // column
+    eDM  m_eDatum;     // column datum
     
-    TailLine* m_aTailLine; // the alloted string tail
+    eMC  m_eMetaCode;  // meta code describing the column value
+    Dtm  m_wDataCode;  // column value data bytes
+    i8   m_nDataSize;  // complete number of data code bytes, incl <L> etc
+    i8   m_i_Offset;   // first byte offset in head+over where the data code is
+    i8   m_i_Till;     // last byte offset in head+over where the data code is
+    bool m_bSplit;     // overflow occurs at this point
+    
+    bool m_bIsSample;  // is a sample row
+    i8   m_nRepeats;   // how many additional times this (string) value repeats
+    i8   m_i_RepeatOf; // which row this is a repeat of
   };
   
   //----------------------------------------------------------------------------
