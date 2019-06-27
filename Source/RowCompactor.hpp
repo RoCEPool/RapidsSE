@@ -44,6 +44,10 @@ namespace Rows
   private:
     void vAllotCrw(void);
     
+    void vCreateTails(void);
+    void vDeDupe(void);
+    void vFindTails(Encoding* pEncoding);
+
     void vPackCrw(Encoding* pEncoding);
     
     void vPackColVal(_ColEnc& xColEnc);

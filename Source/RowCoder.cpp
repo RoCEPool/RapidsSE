@@ -205,7 +205,7 @@ i8 RowCoder::nHeadSize(ColumnVec* pColVec)
   //nHeadWords = MemLib::nQuantaRequired(nBytes, sizeof(Word));
   
   //i8 nBytesHead = nHeadWords * (i8)C_BYTES_PER_WORD;
-  i8 nBytesHead = 32; //256;
+  i8 nBytesHead = 256;
   
   RASSERT(nBytesHead >= C_HEAD_MIN_BYTES);
   return nBytesHead;

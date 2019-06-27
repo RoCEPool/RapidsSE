@@ -120,6 +120,16 @@ void RowCompactor::vCompactEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+#ifdef WITH_STR_DUPLICATES
+  if (m_pRowSamples && m_pRowSamples->nItems()) {
+    vDeDupe();
+  }
+#endif
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   m_pCrwNub       = nullptr;
   m_pColVec       = nullptr;
   m_nHeadSize     = C_UNKNOWN;
@@ -251,6 +261,37 @@ void RowCompactor::vAllotCrw(void)
   // link over line into head line
   m_aHeadLine->vSetOver(aOverLine);
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* go thru sample inflated rows and create tails of duplicates                */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vCreateTails(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* de-duplicate                                                               */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vDeDupe(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* mark up the encoding of a row with tails                                   */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vFindTails(Encoding* pEncoding)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* pack the encoding into head[+over]        */ //! still have to do {+tail}) */
