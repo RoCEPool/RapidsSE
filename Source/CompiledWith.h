@@ -57,12 +57,13 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // testing
 
-//#define WITH_ENCODING_XCHECK    // encode cross check
-//#define WITH_STATISTICS_COUNTERS  // statistics
-//#define WITH_SHOCO_DUPLICATES   // test for duplicate shoco values
-//#define WITH_TRACE_DECODING     // code for tracing decoding compiled in
-//#define WITH_ANALYSE_FREE       // analyze free space during load
-//#define WITH_VERIFY_TAILS       // verify tails
+//#define WITH_ANALYSE_FREE        // analyze free space during load
+//#define WITH_ENCODING_XCHECK     // encode cross check
+//#define WITH_SHOCO_DUPLICATES    // test for duplicate shoco values
+//#define WITH_STATISTICS_COUNTERS // statistics
+#define WITH_STR_DUPLICATES      // test for duplicate str values
+//#define WITH_TRACE_DECODING      // code for tracing decoding compiled in
+//#define WITH_VERIFY_TAILS        // verify tails
 
 
 /*============================================================================*/

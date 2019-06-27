@@ -82,6 +82,10 @@ bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
   vTrace("  WITH_SHOCO_DUPLICATES\n"_Stz);
 #endif
 
+#ifdef WITH_STR_DUPLICATES
+  vTrace("  WITH_STR_DUPLICATES\n"_Stz);
+#endif
+  
 
   vTrace("\n"_Stz);
 
