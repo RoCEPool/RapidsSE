@@ -829,16 +829,29 @@ eEC RapidsSE_GetRow(i8 iTrace, Session* pSession, void* aJob,
   
   i8 iMaxRowNo = 0;
   
-  i8 iResponses = pJob->m_pResponseVec->nItems();
+  eCN eClass = pJob->eClass();
+  JobClass* pJobClass = JobClass::pFind(eClass);
+  pJob->m_pJobClass = pJobClass;
+  eRK eResponseKind = pJob->m_pJobClass->m_eResponse;
   Response* pResponse = nullptr;
   
-  for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-    pResponse = pJob->m_pResponseVec->pGet(i_Node);
-    iMaxRowNo = *pResponse->m_ixRowsProcessed;
-    if (iRow < iMaxRowNo)
-      break;
-    iRow -= iMaxRowNo;
+  if (eResponseKind == RK_LOCAL_ROWS) {
+    pResponse = &pJob->m_xResponse;
   }
+  else {
+    RASSERT(eResponseKind == RK_NODE_ROWS);
+  
+    i8 iResponses = pJob->m_pResponseVec->nItems();
+    
+    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+      pResponse = pJob->m_pResponseVec->pGet(i_Node);
+      iMaxRowNo = *pResponse->m_ixRowsProcessed;
+      if (iRow < iMaxRowNo)
+        break;
+      iRow -= iMaxRowNo;
+    }
+  }
+  
   API_LOC(310);
 
   // tokenize the response
@@ -895,12 +908,26 @@ eEC RapidsSE_GetRowCount(i8 iTrace, Session* pSession, void* aJob,
   API_NOTNULL(aiRowCount);
   API_BEGIN();
   
-  i8 iRowsProcessed= 0;
-  i8 iResponses = pJob->m_pResponseVec->nItems();
+  eCN eClass = pJob->eClass();
+  JobClass* pJobClass = JobClass::pFind(eClass);
+  pJob->m_pJobClass = pJobClass;
+  eRK eResponseKind = pJob->m_pJobClass->m_eResponse;
   
-  for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-    iRowsProcessed += *pJob->m_pResponseVec->pGet(i_Node)->m_ixRowsProcessed;
+  i8 iRowsProcessed= 0;
+  
+  if (eResponseKind == RK_LOCAL_ROWS) {
+    iRowsProcessed = *pJob->m_xResponse.m_ixRowsProcessed;
   }
+  else {
+    RASSERT(eResponseKind == RK_NODE_ROWS);
+    
+    i8 iResponses = pJob->m_pResponseVec->nItems();
+    
+    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+      iRowsProcessed += *pJob->m_pResponseVec->pGet(i_Node)->m_ixRowsProcessed;
+    }
+  }
+  
   API_LOC(310);
 
   *aiRowCount = iRowsProcessed;
