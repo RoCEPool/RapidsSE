@@ -164,7 +164,7 @@ bool RowCompactor::bCompactRow(Row* pInflatedRow)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // encode the inflated row
   
-  m_pEncoding->vEncode(pInflatedRow);
+  m_pEncoding->vEncode(pInflatedRow,m_pRowSamples);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for space in target nub
