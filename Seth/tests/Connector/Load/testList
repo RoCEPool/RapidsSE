@@ -1,4 +1,5 @@
 basic.test
+boolInt.test
 maxErrors.test
 enclosedBy.test
 enclosedByBraces.test

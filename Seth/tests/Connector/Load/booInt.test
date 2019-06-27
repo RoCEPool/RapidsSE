@@ -1,0 +1,57 @@
+//----------------------------------------------------------------------------//
+// create table with BOOLEAN column tests
+//----------------------------------------------------------------------------//
+
+// create a table with a boolean column
+create table rapidsse.public.G1 (
+  id      integer,
+  status  boolean
+);
+success
+
+// table should have gotten created
+select table_name from rapids.system.tables where catalog_name = 'rapidsse';
+rows:
+  ('G1')
+
+// there should be no indexes on it
+select * from rapids.system.indexes;
+rows: 0
+
+// check metadata
+select data_type, is_partition_key, is_nullable, precision, scale from rapids.system.columns where
+  table_name = 'G1' and column_name = 'STATUS';
+rows:
+  ('BOOLEAN', false, true, null, null)
+
+// check partition key is first column
+select column_name from rapids.system.columns where table_name = 'G1' and is_partition_key = true;
+mute
+//CHECK_REULT
+/*
+ rows:
+  ('ID')
+ */
+
+// insert rows in the table
+ESCAPE CONNECTOR se 'load rapidsse.public.G1' WITH file = '/DATA/Load/boolInt.csv', node = 'node1' ;
+failure contains: 'Success'
+
+// select from T1
+select * from rapidsse.public.G1;
+ rows:
+  (10,true)
+  (null,true)
+  (30,false)
+  (40,false)
+  (50,true)
+  (60,null)
+
+// drop table
+//drop table rapidsse.public.G1;
+//success
+
+CLEANUP {
+  //drop table rapidsse.public.G1;
+  //mute
+}
