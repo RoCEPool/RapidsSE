@@ -2,7 +2,7 @@
 /* RowExtractor.cpp -- RowExtractor                                                 */
 /*============================================================================*/
 
-#include "Data.h"
+#include "Rows.h"
 
 #include "StorageEngine.h"
 

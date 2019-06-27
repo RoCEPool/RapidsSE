@@ -2,7 +2,7 @@
 /* RowCompactor.cpp -- Row Compactor Mark IV                                  */
 /*============================================================================*/
 
-#include "Data.h"
+#include "Rows.h"
 
 static Numbat oNumBat("partKey"_Stz);
 
@@ -14,7 +14,7 @@ static Numbat oNumBat("partKey"_Stz);
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-RowCompactor* Data::_pRowCoder(void* aAddr)
+RowCompactor* Rows::_pRowCoder(void* aAddr)
 {
   RowCompactor* pRowCompactor = reinterpret_cast<RowCompactor*>(aAddr);
   

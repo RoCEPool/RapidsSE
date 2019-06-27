@@ -273,7 +273,7 @@ void Engine::vGetWelcome(s256& sWelcome)
 #endif
   
   sWelcome.vSprint("RapidsSE v%s (Compiled %s %s -- %s) pid %lld\n"
-                   "Copyright (c) Borrui Data 2019"_Stz,
+                   "Copyright (c) Borrui Rows 2019"_Stz,
                      RAPIDSSE_VERSION_STRING,
                      __DATE__,
                      __TIME__,

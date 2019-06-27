@@ -2,7 +2,7 @@
 /* CrwBuffer.cpp -- Compact Row Buffer                                        */
 /*============================================================================*/
 
-#include "Data.h"
+#include "Rows.h"
 
 #include "StorageEngine.h"
 
@@ -15,7 +15,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-CrwBuffer* Data::_pCrwBuffer(void* aAddress)
+CrwBuffer* Rows::_pCrwBuffer(void* aAddress)
 {
   CrwBuffer* pCrwBuffer = reinterpret_cast<CrwBuffer*>(aAddress);
   

@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Data
+namespace Rows
 {
   static const i8 C_C_1B = 1;   // <C> 1B number of compressed bytes
   static const i8 C_L_1B = 1;   // <L> 1B string length in bytes

@@ -30,7 +30,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   Commands::vCheckAssumptions();
   Forth::vCheckAssumptions();
   MetaData::vCheckAssumptions();
-  Data::vCheckAssumptions();
+  Rows::vCheckAssumptions();
   Indexes::vCheckAssumptions();
   PushDown::vCheckAssumptions();
   Plans::vCheckAssumptions();
