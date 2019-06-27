@@ -3,8 +3,9 @@
 //----------------------------------------------------------------------------//
 
 // create a table with a boolean column
-create table G1 (
+create table rapidsse.public.G1 (
   id      integer,
+  vch     varchar,
   dte     date,
   tsp     timestamp,
   status  boolean
