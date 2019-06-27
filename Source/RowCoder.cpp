@@ -28,10 +28,6 @@ i8 RowCoder::iBaseOffset(ColumnVec* pColVec)
 {
   i8 iOffset  = C_W_1B + nMetaSize(pColVec);
   
-  //! temporary                                                          FIX
-  if (iOffset < 8)
-    iOffset = 8;
-  
   return iOffset;
 }
 
@@ -220,13 +216,15 @@ i8 RowCoder::nHeadSize(ColumnVec* pColVec)
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::nMetaSize(ColumnVec* pColVec)
 {
-  i8 nColumns = pColVec->nItems();
-  
-  i8 nBits = (nColumns * (i8)C_METABITS);
-  
-  i8 nMetaBytes = nBits / (i8)C_BITS_PER_BYTE
-                   + (nBits % (i8)C_BITS_PER_BYTE ? 1 : 0);
-  
+//  i8 nColumns = pColVec->nItems();
+//
+//  i8 nBits = (nColumns * (i8)C_METABITS);
+//
+//  i8 nMetaBytes = nBits / (i8)C_BITS_PER_BYTE
+//                   + (nBits % (i8)C_BITS_PER_BYTE ? 1 : 0);
+
+  i8 nMetaBytes = pColVec->nItems();
+
   return nMetaBytes;
 }
 
