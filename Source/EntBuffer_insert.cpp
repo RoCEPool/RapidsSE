@@ -2,7 +2,7 @@
 /* EntBuffer_insert.cpp -- insert related functions for Entry Buffer        */
 /*============================================================================*/
 
-#include "Data.h"
+#include "Rows.h"
 
 #include "StorageEngine.h"
 

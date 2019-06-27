@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Data
+namespace Rows
 {
   class SP_Encoding : public Sprint
   {

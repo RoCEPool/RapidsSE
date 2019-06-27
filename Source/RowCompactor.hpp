@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Data
+namespace Rows
 {
   class RowCompactor : public Object,
                        private RowCoder

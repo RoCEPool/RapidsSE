@@ -1,16 +1,16 @@
 /*============================================================================*/
-/* Data.h -- Data namespace                                                   */
+/* Rows.h -- Rows namespace                                                   */
 /*============================================================================*/
 #pragma once
 
 #include "ScanSprint.h"
 
-namespace Data
+namespace Rows
 {  
   void vCheckAssumptions(void);
 }
 
-using namespace Data;
+using namespace Rows;
 
 //------------------------------------------------------------------------------
 

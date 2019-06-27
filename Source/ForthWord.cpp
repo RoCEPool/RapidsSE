@@ -307,7 +307,7 @@ void ForthWord::vContentDump(void)
   ForthWord* pStepWord = gpAttachMap->m_oRootDic.pFindStep(m_fpEntryStep);
   
   vTrace("ForthWord %p: %s %s Kind %s Immediate %d DataBytes %lld "_Stz
-         "Step %p %s ..Data.. %p\n"_Stz,
+         "Step %p %s ..Rows.. %p\n"_Stz,
          this,
          m_sName.aChar(),
          aWT[m_eWordType]->aChar(),
@@ -577,7 +577,7 @@ void ForthWord::vObjectDump(Stz* aTab)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   vTrace("epoch %lld %s (%s) %s %s DataBytes %lld "_Stz
-         "Step %p ..Data.. %p\n"_Stz,
+         "Step %p ..Rows.. %p\n"_Stz,
          m_iEpoch,
          m_sName.aChar(),
          m_pDic ? m_pDic->sName().aChar() : "<none>",

@@ -2,7 +2,7 @@
 /* BufferCursor.cpp -- Buffer Cursor                                          */
 /*============================================================================*/
 
-#include "Data.h"
+#include "Rows.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-BufferCursor* Data::_pBufferCursor(void* aAddr)
+BufferCursor* Rows::_pBufferCursor(void* aAddr)
 {
   BufferCursor* pBufferCursor = reinterpret_cast<BufferCursor*>(aAddr);
   

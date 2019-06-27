@@ -2,7 +2,7 @@
 /* HeadLine.hpp -- a head line                                                */
 /*============================================================================*/
 
-#include "Data.h"
+#include "Rows.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -450,7 +450,7 @@ void HeadLine::vDumpHead(Stz* szTitle,
   i8 i_Offset = RowCoder::iBaseOffset(pColVec);
   
   vTrace("Col ColNm         DtmVal MetaCode"
-         "           Offset Address      DataBytes           ForthValue\n"_Stz);
+         "           Offset Address      DataBytes           ColVal\n"_Stz);
   
   
   eDM   eDatum;
@@ -663,7 +663,7 @@ void HeadLine::vDumpHead_IV(Stz* szTitle,
   i8 i_Offset = RowCoder::iBaseOffset(pColVec);
   
   vTrace("Col ColNm         DtmVal MetaCode"
-         "           Offset Address      DataBytes           ForthValue\n"_Stz);
+         "           Offset Address      DataBytes           ColVal\n"_Stz);
   
   
   eDM   eDatum;

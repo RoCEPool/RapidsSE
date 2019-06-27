@@ -6618,7 +6618,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "\""
     "\\\"munged job_Generate.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
-    "/* job_Generate.sen -- Generate Data Job                                      */\n"
+    "/* job_Generate.sen -- Generate Rows Job                                      */\n"
     "/*============================================================================*/\n"
     "\n"
     "\\\" job_Generate.sen\\\" .verbose\n"

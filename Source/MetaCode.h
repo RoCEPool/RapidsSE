@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Data
+namespace Rows
 {
   enum eMC : u1 // meta code
   {

@@ -2,7 +2,7 @@
 /* SkipRoots.cpp -- roots of the skips list in an entry buffer                */
 /*============================================================================*/
 
-#include "Data.h"
+#include "Rows.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

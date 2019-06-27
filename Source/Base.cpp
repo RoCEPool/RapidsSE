@@ -93,6 +93,10 @@ void Base::vTraceWith(void)
   vTrace("  WITH_SHOCO_DUPLICATES\n"_Stz);
 #endif
   
+#ifdef WITH_STR_DUPLICATES
+  vTrace("  WITH_STR_DUPLICATES\n"_Stz);
+#endif
+  
 #ifdef WITH_ANALYSE_FREE
   vTrace("  WITH_ANALYSE_FREE\n"_Stz);
 #endif

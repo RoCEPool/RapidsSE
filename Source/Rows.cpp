@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* Data.cpp - Data namespace functions                                        */
+/* Rows.cpp - Rows namespace functions                                        */
 /*============================================================================*/
 
-#include "Data.h"
+#include "Rows.h"
 
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
-void Data::vCheckAssumptions(void)
+void Rows::vCheckAssumptions(void)
 {
   RASSERT(sizeof(HeadLine) == sizeof(Word));
   RASSERT(sizeof(TailLine) == sizeof(SpaceUnit));

@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Data
+namespace Rows
 {
   // how a column is to be encoded
   struct _ColEnc {
@@ -15,6 +15,11 @@ namespace Data
     i8   m_i_Offset;  // first byte offset in head+over where the data code is
     i8   m_i_Till;    // last byte offset in head+over where the data code is
     bool m_bSplit;    // overflow occurs at this point
+    
+    bool m_bAllotTail;// allot a string tail
+    bool m_bUseTail;  // use string tail
+    
+    TailLine* m_aTailLine; // the alloted string tail
   };
   
   //----------------------------------------------------------------------------
@@ -47,7 +52,7 @@ namespace Data
     ~Encoding(void) noexcept(false);
   
     i8   nBytesNeeded(void);
-    void vEncode(Row* pRow);
+    void vEncode(Row* pRow, IrwBuffer* pRowSamples);
     bool bOverFlowed(void);
 
   private:

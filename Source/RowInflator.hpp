@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Data
+namespace Rows
 {
   class RowInflator : private RowCoder
   {

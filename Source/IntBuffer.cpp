@@ -2,7 +2,7 @@
 /* IntBuffer.cpp -- Integer Buffer                                            */
 /*============================================================================*/
 
-#include "Data.h"
+#include "Rows.h"
 
 #include "StorageEngine.h"
 
@@ -15,7 +15,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-IntBuffer* Data::_pIntBuffer(void* aAddress)
+IntBuffer* Rows::_pIntBuffer(void* aAddress)
 {
   IntBuffer* pIntBuffer = reinterpret_cast<IntBuffer*>(aAddress);
   
