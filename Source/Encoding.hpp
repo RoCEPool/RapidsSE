@@ -7,8 +7,10 @@ namespace Data
 {
   // how a column is to be encoded
   struct _ColEnc {
+    Column* m_pCol;   // column
+    eDM  m_eDatum;    // column datum
     eMC  m_eMetaCode; // meta code describing the column value
-    Dtm  m_wDataCode; // column value data
+    Dtm  m_wDataCode; // column value data bytes
     i8   m_nDataSize; // complete number of data code bytes, incl <L> etc
     i8   m_i_Offset;  // first byte offset in head+over where the data code is
     i8   m_i_Till;    // last byte offset in head+over where the data code is
