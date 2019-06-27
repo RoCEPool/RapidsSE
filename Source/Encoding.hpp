@@ -15,6 +15,11 @@ namespace Rows
     i8   m_i_Offset;  // first byte offset in head+over where the data code is
     i8   m_i_Till;    // last byte offset in head+over where the data code is
     bool m_bSplit;    // overflow occurs at this point
+    
+    bool m_bAllotTail;// allot a string tail
+    bool m_bUseTail;  // use string tail
+    
+    TailLine* m_aTailLine; // the alloted string tail
   };
   
   //----------------------------------------------------------------------------

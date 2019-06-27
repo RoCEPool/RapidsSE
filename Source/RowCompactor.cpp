@@ -127,7 +127,7 @@ void RowCompactor::vCompactEnd(void)
   m_i_BaseOffset  = C_UNKNOWN;
   
   delete m_pRowSamples;
-  m_pRowSamples   = nullptr;;
+  m_pRowSamples   = nullptr;
   delete m_pEncoding;
   m_pEncoding     = nullptr;
   m_aHeadLine     = nullptr;
@@ -140,8 +140,26 @@ bool RowCompactor::bCompactRow(Row* pInflatedRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  //SP_Row spRow;
-  //vTrace("%s\n"_Stz,spRow.sz(pRow));
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // samples for identifying str duplicates
+  
+#ifdef WITH_STR_DUPLICATES
+  if (m_pRowSamples->nItems() < 1) {
+    
+    if (Row* pSampleRow = m_pRowSamples->aAllotRow(m_pColVec))
+      MemLib::vCopy(pSampleRow,pInflatedRow,sizeof(Row),CN_ROWCOMPACTOR);
+    else {
+      vTrace("No sample space\n"_Stz);
+    }
+
+    SP_Row spRow;
+    Row* pSampleRow = m_pRowSamples->aFirstRow();
+    while (pSampleRow) {
+      vTrace("Sample: %s\n"_Stz,spRow.sz(pSampleRow));
+      pSampleRow = m_pRowSamples->aNextRow(pSampleRow);
+    }
+  }
+#endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // encode the inflated row
@@ -157,13 +175,6 @@ bool RowCompactor::bCompactRow(Row* pInflatedRow)
     m_nTotalBuffers++;
     return false;
   }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Mark IV samples for de-dupe
-  
-  //Row* pSampleRow = m_pRowSamples->aAllotRow(m_pColVec);
-  //if (! pSampleRow)
-  //  vTrace("No sample space\n"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pack encoding into a compact row
