@@ -1,10 +1,12 @@
 //----------------------------------------------------------------------------//
-// create table with BOOLEAN column tests
+// create table with basic datatype colums
 //----------------------------------------------------------------------------//
 
 // create a table with a boolean column
-create table rapidsse.public.G1 (
+create table G1 (
   id      integer,
+  dte     date,
+  tsp     timestamp,
   status  boolean
 );
 success
@@ -34,7 +36,7 @@ mute
  */
 
 // insert rows in the table
-ESCAPE CONNECTOR se 'load rapidsse.public.G1' WITH file = '/DATA/Load/boolInt.csv', node = 'node1' ;
+ESCAPE CONNECTOR se 'load rapidsse.public.G1' WITH file = '/DATA/Load/dataTypes.csv', node = 'node1' ;
 failure contains: 'Success'
 
 // select from T1

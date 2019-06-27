@@ -1,5 +1,5 @@
 basic.test
-boolInt.test
+dataTypes.test
 maxErrors.test
 enclosedBy.test
 enclosedByBraces.test
