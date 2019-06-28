@@ -5,12 +5,10 @@
 
 namespace Rows
 {
-  static const i8 C_OVER_PRE_BYTES = 1;
-
   class OverLine : public Line
   {
   public:
-    byte m_yaByte[sizeof(Word)];
+    byte m_yaByte[sizeof(Word)];      //! i think overflow is in multiples of 2W
 
   public:
     OverLine(void);

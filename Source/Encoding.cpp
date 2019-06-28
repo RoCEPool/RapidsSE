@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Encoding.cpp -- Row Encoding (intermediate representation of row)          */
+/* Encoding.cpp -- Row Encoding (intermediate representation of compact row)  */
 /*============================================================================*/
 
 #include "Rows.h"

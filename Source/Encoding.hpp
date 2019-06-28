@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Encoding.hpp -- Row Encoding (intermediate representation of row)          */
+/* Encoding.hpp -- Row Encoding (intermediate representation of compact row)  */
 /*============================================================================*/
 #pragma once
 
 namespace Rows
 {
-  // how a column is to be encoded
+  // how a column is to be compacted
   struct _ColEnc {
     
     Column* m_pCol;    // column
