@@ -197,8 +197,10 @@ void Encoding::vInitialEncoding(Row* pRow)
     xrColEnc.m_i_Offset = i_Offset_next;
     
     i8 nDataBytes = nDataSize(xrColEnc.m_eMetaCode);
-    if (! nDataBytes)
+    if (! nDataBytes) {
+      xrColEnc.m_i_Till = i_Offset_next;
       continue;
+    }
     
     if ( bHasAuxLen(xrColEnc.m_eMetaCode) )
       nDataBytes += xrColEnc.m_nDataSize - iAuxLen(xrColEnc.m_eMetaCode);
@@ -512,6 +514,7 @@ void Encoding::vSplitOver(void)
     if (! bWithinHead(i_Col))
       break;
   }
+  
   RASSERT(i_Col < m_nColumns);
   
   // split at that column
