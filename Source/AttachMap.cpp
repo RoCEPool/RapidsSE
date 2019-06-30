@@ -107,7 +107,7 @@ void AttachMap::vPrintAttachMap(void)
 {
   vInfo("\n****ATTACH MAP****\n\n"_Stz);
   vInfo("Pid: %lld; \n"_Stz,   gpAttachMap->m_iPid);
-  vInfo("UTC: %s; \n"_Stz,     gpAttachMap->m_sUTC.aStz());
+  vInfo("UTC: %s; \n"_Stz,     gpAttachMap->m_oNow.sz());
   
   vInfo("RegionName   : %s \n"_Stz,     gpAttachMap->Arg.m_sRegionName.aStz());
   vInfo("RegionSize   : %lld \n"_Stz,   gpAttachMap->Arg.m_iRegionSize);
@@ -201,11 +201,8 @@ void AttachMap::vRecordArguments(bool bActionSequence,
   
   m_iPid = Process::iGetPid();
   
-  m_oSince.vNow();
-  m_oTime.vSetUTC(&m_oSince);
-  m_oTime.vUTC(m_sUTC);
-  
-  m_oNow.vSetNow();
+  m_oSince.vNow();  
+  m_oNow.vSetNowUTC();
   
   Arg.m_bActionSequence  = bActionSequence;
   Arg.m_bActivityMap     = bActivityMap;
@@ -271,7 +268,7 @@ void AttachMap::vDump(eCN eClass, Object* pObject, Stz* aTab)
   
   vTrace("pid %lld utc %s regionSize %lld\n"_Stz,
          pAttachMap->m_iPid,
-         pAttachMap->m_sUTC.aChar(),
+         pAttachMap->m_oNow.sz(),
          pAttachMap->Arg.m_iRegionSize);
 }
 
