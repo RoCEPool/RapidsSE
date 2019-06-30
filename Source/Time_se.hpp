@@ -31,15 +31,11 @@ namespace System
     Time(void);
     ~Time(void) noexcept(false);
     
-    void vAppendLocal(char** pz);
-    void vAppendUtc(char** pz);
-    bool bExtractUTC(char** ps);
-    void vSetLocalNow(void);
     void vSetLocal(Since* pSince);
-    void vSetUTCNow(void);
+    void vSetLocalNow(void);
     void vSetUTC(Since* pSince);
-    void vUTC(s32& sUTC);
-    
+    void vSetUTCNow(void);
+
     Footer* aFooter(void);
   };
 
