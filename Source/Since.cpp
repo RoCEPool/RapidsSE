@@ -129,22 +129,6 @@ i8 Since::iDeltaFromThenSeconds(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* formatted                                                                  */
-/*----------------------------------------------------------------------------*/
-Stz* Since::sFormatted(void)
-{
-  _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
-  
-  Time oDateTime;
-  oDateTime.vSetLocal(this);
-  
-  char* z = m_sFormatted.aChar();
-  oDateTime.vAppendLocal(&z);
-
-  return m_sFormatted.aStz();
-}
-
-/*----------------------------------------------------------------------------*/
 /* get                                                                        */
 /*----------------------------------------------------------------------------*/
 void Since::vGet(i8& iSeconds, i8& iMicroseconds)

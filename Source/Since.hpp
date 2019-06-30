@@ -13,8 +13,6 @@ namespace System
     i8  m_iSeconds;
     i8  m_iMicroseconds;
   
-    s32 m_sFormatted;
-
     // must be last
     Footer m_xFooter;
     
@@ -29,7 +27,6 @@ namespace System
     i8    iDeltaFromThenSeconds(void);
     void  vGet(i8& iSeconds, i8& iMicroseconds);
     i8    iGetAsMicroseconds(void);
-    Stz*  sFormatted(void);
     void  vNow(void);
     void  vSetUTC(Time* pTime);
     void  vSet(i8 iSeconds, i8 iMicroseconds);
