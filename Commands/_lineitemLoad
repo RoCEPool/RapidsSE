@@ -771,7 +771,7 @@ CACHE_LINE : 22nd March 2019
  
  sizeof(Ent) 24
  RapidsSE v4.0.5 (Compiled Mar 22 2019 13:10:31 -- release) pid 41894
- Copyright (c) Borrui Rows 2019
+ Copyright (c) Borrui Data 2019
  Args:
  --name NODE1
  --region /SE_NODE1
@@ -1015,7 +1015,7 @@ CACHE_LINE : 22nd March 2019
  
  sizeof(Ent) 24
  RapidsSE v4.0.5 (Compiled Mar 22 2019 13:10:31 -- release) pid 42180
- Copyright (c) Borrui Rows 2019
+ Copyright (c) Borrui Data 2019
  Args:
  --name NODE1
  --region /SE_NODE1
@@ -1267,7 +1267,7 @@ KEY_CMP: Feb 12 2019
  
  
  RapidsSE v4.0.5 (Compiled Feb 12 2019 12:30:25 -- release) pid 34382
- Copyright (c) Borrui Rows 2019
+ Copyright (c) Borrui Data 2019
  Args:
  --name NODE1
  --region /SE_NODE1
@@ -1495,7 +1495,7 @@ KEY_CMP: Feb 12 2019
  
  
  RapidsSE v4.0.5 (Compiled Feb 12 2019 12:30:25 -- release) pid 34303
- Copyright (c) Borrui Rows 2019
+ Copyright (c) Borrui Data 2019
  Args:
  --name NODE1
  --region /SE_NODE1
@@ -1736,7 +1736,7 @@ KEY_CMP: Feb 12 2019
  12 FEB 2019
  
  RapidsSE v4.0.5 (Compiled Feb 12 2019 16:29:17 -- release) pid 38356
- Copyright (c) Borrui Rows 2019
+ Copyright (c) Borrui Data 2019
  Args:
  --name NODE1
  --region /SE_NODE1
