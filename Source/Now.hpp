@@ -18,6 +18,8 @@ namespace Measurement
     Now(void);
     ~Now(void) noexcept(false);
   
+    void vSetNow(void);
+  
     Stz* sz(void);
     Stz* sz(Since* pSincePosixEpoch);
 

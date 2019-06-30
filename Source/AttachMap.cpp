@@ -200,6 +200,7 @@ void AttachMap::vRecordArguments(bool bActionSequence,
     vTrace("[[mainThread]] Recording arguments...\n"_Stz);
   
   m_iPid = Process::iGetPid();
+  
   m_oSince.vNow();
   m_oTime.vSetUTC(&m_oSince);
   m_oTime.vUTC(m_sUTC);
