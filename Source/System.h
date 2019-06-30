@@ -42,8 +42,7 @@ using namespace System;
 #include "Socket.hpp"
 #include "TempName.hpp"
 #include "Tsc.hpp"
-
-#include "Time_se.hpp"
+#include "TspLib.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
