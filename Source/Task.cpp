@@ -580,18 +580,14 @@ void Task::vRenderPortrait(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   if (TK_SLEEPING == m_eState) {
-
-    Time oDateTime;
-    oDateTime.vSetLocal(&m_oWakeupTime);
-    s32 sDateTime;
-    char* z = sDateTime.aChar();
-    oDateTime.vAppendLocal(&z);
-
+    
+    Now sDateTime;
+    
     m_sPortrait.vSprint("Task %p %s %s wakeup %s"_Stz,
                         this,
                         aCN[m_pJob->eClass()],
                         aTK[m_eState],
-                        sDateTime.aChar()
+                        sDateTime.sz(&m_oWakeupTime)
                         );
   }
   else if (QR_NONE != m_eQueue) {
