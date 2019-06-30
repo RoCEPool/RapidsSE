@@ -19,7 +19,8 @@ namespace Measurement
     ~Now(void) noexcept(false);
   
     Stz* sz(void);
-  
+    Stz* sz(Since* pSincePosixEpoch);
+
     Footer* aFooter(void);
   };
 }

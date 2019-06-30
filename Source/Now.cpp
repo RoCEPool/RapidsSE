@@ -77,6 +77,54 @@ Stz* Now::sz(void)
   return (Stz*) &m_caResult[0];
 }
 
+/*----------------------------------------------------------------------------*/
+/* set time using since                                                       */
+/*----------------------------------------------------------------------------*/
+Stz* Now::sz(Since* pSincePosixEpoch)
+{
+  _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
+  
+  time_t iSecondsSincePosixEpoch = pSincePosixEpoch->iSeconds();
+  
+  // convert secondsSince into a tm structure for local time zone
+  struct tm* aLocalDateTime = localtime(&iSecondsSincePosixEpoch);
+  
+  if (! aLocalDateTime)
+    vWarn("localtime_r() error; errno=%d"_Stz,errno);
+  
+  _Tsp xTsp;
+  
+  xTsp.m_uYearDelta = aLocalDateTime->tm_year;
+  xTsp.m_uMonth     = aLocalDateTime->tm_mon + 1;
+  xTsp.m_uDay       = aLocalDateTime->tm_mday;
+  xTsp.m_uHour      = aLocalDateTime->tm_hour;
+  xTsp.m_uMinute    = aLocalDateTime->tm_min;
+  xTsp.m_uSecond    = aLocalDateTime->tm_sec;
+  xTsp.m_uMicro     = (int)pSincePosixEpoch->iMicroseconds();
+  xTsp.m_uSpare     = 0;
+  
+  m_iTsp = Dtm::iTsp(xTsp.m_uYearDelta+  C_YEAR_BASE,
+                     xTsp.m_uMonth,
+                     xTsp.m_uDay,
+                     xTsp.m_uHour,
+                     xTsp.m_uMinute,
+                     xTsp.m_uSecond,
+                     xTsp.m_uMicro);
+  
+  StrLib::vSprint(m_caResult,
+                  (Stz*)F_TSP,
+                  
+                  (i8)xTsp.m_uYearDelta + C_YEAR_BASE,
+                  (i8)xTsp.m_uMonth,
+                  (i8)xTsp.m_uDay,
+                  
+                  (i8)xTsp.m_uHour,
+                  (i8)xTsp.m_uMinute,
+                  (i8)xTsp.m_uSecond);
+
+  return (Stz*) &m_caResult[0];
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
