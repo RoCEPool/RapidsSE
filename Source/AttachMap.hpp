@@ -13,6 +13,8 @@ namespace StorageEngine
     Time  m_oTime;
     s32   m_sUTC;
   
+    Now   m_oNow;
+  
     struct {
       bool m_bActionSequence;
       bool m_bActivityMap;

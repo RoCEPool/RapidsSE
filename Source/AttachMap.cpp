@@ -205,6 +205,8 @@ void AttachMap::vRecordArguments(bool bActionSequence,
   m_oTime.vSetUTC(&m_oSince);
   m_oTime.vUTC(m_sUTC);
   
+  m_oNow.vSetNow();
+  
   Arg.m_bActionSequence  = bActionSequence;
   Arg.m_bActivityMap     = bActivityMap;
   Arg.m_bDeveloper       = bDeveloper;
