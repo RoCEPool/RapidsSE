@@ -106,24 +106,25 @@ i8 HeadLine::nFreeSpace(ColumnVec* pColVec)
   ASSERT(pLastCol->bIsLastColumn());
   
   i8 i_BaseOffset = RowCoder::iBaseOffset(pColVec);
-  i8 i_Offset = i_BaseOffset;
-  i8 i_LastColumn = 0;
   
+  i8 i_ColCrs_ = 0;
+  i8 i_OfsCrs_ = i_BaseOffset;
+
   eMC eLastEncoding = eGetEncoding(pLastCol,i_BaseOffset,
-                                   i_LastColumn,i_Offset);
+                                   i_ColCrs_,i_OfsCrs_);
   
   if (pLastCol->eDatumType() == DM_VCH && MC_SHOCO_SPLIT_2T1C == eLastEncoding)
     return 0;
   
   if (pLastCol->eDatumType() == DM_VCH && MC_SHOCO_FIT_1C == eLastEncoding) {
-    i8 nCompressed = wGetLogical(i_Offset,C_1B);
+    i8 nCompressed = wGetLogical(i_OfsCrs_,C_1B);
     //RASSERT(nCompressed <= 56);
-    i_Offset += nCompressed;
+    i_OfsCrs_ += nCompressed;
   }
   
   i8 nDataBytes = RowCoder::nDataSize(eLastEncoding);
   
-  i8 nFreeBytes = nBytes() - i_Offset - nDataBytes;
+  i8 nFreeBytes = nBytes() - i_OfsCrs_ - nDataBytes;
   
   if (nFreeBytes < 0)
     vDebugPoint();
@@ -132,46 +133,53 @@ i8 HeadLine::nFreeSpace(ColumnVec* pColVec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the encoding (and offset) of a column datum                            */
+/* get the encoding (metacode and offset) of a column datum                   */
 /*----------------------------------------------------------------------------*/
-eMC HeadLine::eGetEncoding(Column* pCol, i8 i_BaseOffset,
-                           i8& i_PriorColumn_, i8& i_Offset_)
+eMC HeadLine::eGetEncoding(Column* pForCol, i8 i_BaseOffset,
+                           i8& i_ColCrs_, i8& i_OfsCrs_)
 {
-  i8 i_ForCol = pCol->iColumnNo();
+  i8 i_ForCol = pForCol->iColumnNo();
   
-  if (i_ForCol < i_PriorColumn_) {
-    i_PriorColumn_ = 0;
-    i_Offset_ = i_BaseOffset;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // move cursor forward to column required
+  
+  if (i_ForCol < i_ColCrs_) {
+    i_ColCrs_ = 0;
+    i_OfsCrs_ = i_BaseOffset;
   }
   
-  for (i8 i_Col = i_PriorColumn_; i_Col < i_ForCol; i_Col++) {
+  for (i8 i_Col = i_ColCrs_; i_Col < i_ForCol; i_Col++) {
     
     eMC eEncoding = eMetaCode(i_Col);
     
     if (MC_OVERFLOW_2T == eEncoding) {
-      i_Offset_ = nBytes() + C_U_1B;
-      eEncoding = (eMC)wGetLogical(i_Offset_++,C_1B);
-      i_Offset_ += RowCoder::nDataSize(eEncoding);
+      i_OfsCrs_ = nBytes() + C_U_1B;
+      eEncoding = (eMC)wGetLogical(i_OfsCrs_++,C_1B);
+      i_OfsCrs_ += RowCoder::nDataSize(eEncoding);
     }
     else {
-      i_Offset_ += RowCoder::nDataSize(eEncoding);
+      i_OfsCrs_ += RowCoder::nDataSize(eEncoding);
     }
     
     if (MC_STR_FIT_1L == eEncoding) {
-      i_Offset_ += wGetLogical((i_Offset_ - 1),C_1B);
+      i_OfsCrs_ += wGetLogical((i_OfsCrs_ - 1),C_1B);
     }
     else if (MC_SHOCO_FIT_1C == eEncoding) {
-      i_Offset_ += wGetLogical((i_Offset_ - 1),C_1B);
+      i_OfsCrs_ += wGetLogical((i_OfsCrs_ - 1),C_1B);
     }
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the encoding for the column
+  
   eMC eEncoding = eMetaCode(i_ForCol);
   if (MC_OVERFLOW_2T == eEncoding) {
-    i_Offset_ = nBytes() + C_U_1B + C_M_1B;
+    i_OfsCrs_ = nBytes() + C_U_1B + C_M_1B;
     OverLine* aOverLine = aGetOver();
     eEncoding = (eMC)aOverLine->w8_1B(1);
   }
-  i_PriorColumn_ = i_ForCol;
+  
+  i_ColCrs_ = i_ForCol;
   
   return eEncoding;
 }
@@ -327,17 +335,17 @@ void HeadLine::vSetOver(OverLine* aOverLine)
 /*----------------------------------------------------------------------------*/
 byte* HeadLine::ayShoco(Column* pCol, i8 i_BaseOffset)
 {
-  i8 i_LastOffset = i_BaseOffset;
-  i8 i_LastColumn = 0;
+  i8 i_ColCrs_ = 0;
+  i8 i_OfsCrs_ = i_BaseOffset;
   
   eMC eEncoding = eGetEncoding(pCol,i_BaseOffset,
-                               i_LastColumn,i_LastOffset);
+                               i_ColCrs_,i_OfsCrs_);
   
   if (MC_SHOCO_FIT_1C != eEncoding)
     return nullptr;
   
   // get address of <C><shoco...>
-  byte* ayAddress = ayAdrLogical(i_LastOffset);
+  byte* ayAddress = ayAdrLogical(i_OfsCrs_);
   
   return ayAddress;
 }

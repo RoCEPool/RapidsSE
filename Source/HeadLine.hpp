@@ -29,7 +29,7 @@ namespace Rows
     byte* ayAdrLogical(i8 i_Offset);
     i8   nFreeSpace(ColumnVec* pColVec);
     eMC  eGetEncoding(Column* pCol, i8 i_BaseOffset,
-                      i8& i_PriorColumn_, i8& i_Offset_);
+                      i8& i_ColCrs_, i8& i_OfsCrs_);
     w8   wGetLogical(i8 i_Offset, i8 nDataSize);
     OverLine* aGetOver(void);
     TailLine* aGetTailRel(i8 i_Tail_rel);
