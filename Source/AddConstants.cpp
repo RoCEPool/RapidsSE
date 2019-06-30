@@ -361,7 +361,6 @@ void Axioms::vAddConstants(void)
   /*    */ vAddConstant("CN_TASKQUEUE"_Stz,    CN_TASKQUEUE);
   /*    */ vAddConstant("CN_TEMPNAME"_Stz,     CN_TEMPNAME);
   /* 76 */ vAddConstant("CN_THREAD"_Stz,       CN_THREAD);
-  /* 79 */ vAddConstant("CN_TIME"_Stz,         CN_TIME);
   /* 80 */ vAddConstant("CN_TIMER"_Stz,        CN_TIMER);
   /* 81 */ vAddConstant("CN_TOKENISER"_Stz,    CN_TOKENISER);
   /* 82 */ vAddConstant("CN_TX"_Stz,           CN_TX);
