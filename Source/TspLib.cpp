@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Time_se.cpp - system date&time                                             */
+/* TspLib.cpp -- TimeStamp library                                            */
 /*============================================================================*/
 
 #include "System.h"
@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 /* operator new: class cannot be new'd                                        */
 /*----------------------------------------------------------------------------*/
-void* Time::operator new(size_t)
+void* TspLib::operator new(size_t)
 {
   vFatal("fatal: Time class cannot be new'd"_Stz);
   
@@ -19,7 +19,7 @@ void* Time::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* Time: constructor                                                          */
 /*----------------------------------------------------------------------------*/
-Time::Time(void)
+TspLib::TspLib(void)
 : Object(CN_TIME)
 {
   _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
@@ -32,7 +32,7 @@ Time::Time(void)
 /*----------------------------------------------------------------------------*/
 /* Time: destructor                                                           */
 /*----------------------------------------------------------------------------*/
-Time::~Time(void) noexcept(false)
+TspLib::~TspLib(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
 }
@@ -44,7 +44,7 @@ Time::~Time(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* set time using since                                                       */
 /*----------------------------------------------------------------------------*/
-Dtm Time::wToLocal(Since* pSincePosixEpoch)
+Dtm TspLib::wToLocal(Since* pSincePosixEpoch)
 {
   time_t iSecondsSincePosixEpoch = pSincePosixEpoch->iSeconds();
   
@@ -71,7 +71,7 @@ Dtm Time::wToLocal(Since* pSincePosixEpoch)
 /*----------------------------------------------------------------------------*/
 /* vSet: set time using since                                                 */
 /*----------------------------------------------------------------------------*/
-Dtm Time::wToUTC(Since* pSincePosixEpoch)
+Dtm TspLib::wToUTC(Since* pSincePosixEpoch)
 {
   time_t iSecondsSincePosixEpoch = pSincePosixEpoch->iSeconds();
   
@@ -98,7 +98,7 @@ Dtm Time::wToUTC(Since* pSincePosixEpoch)
 /*----------------------------------------------------------------------------*/
 /* set as current local time                                                  */
 /*----------------------------------------------------------------------------*/
-Dtm Time::wGetLocalNow(void)
+Dtm TspLib::wGetLocalNow(void)
 {
   // get current epoch time
   time_t iSecondsSincePosixEpoch = time(0);
@@ -126,7 +126,7 @@ Dtm Time::wGetLocalNow(void)
 /*----------------------------------------------------------------------------*/
 /* set as current UTC time                                                    */
 /*----------------------------------------------------------------------------*/
-Dtm Time::wGetUTCNow(void)
+Dtm TspLib::wGetUTCNow(void)
 {  
   // get current epoch time
   time_t iSecondsSincePosixEpoch = time(0);
@@ -158,7 +158,7 @@ Dtm Time::wGetUTCNow(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Time::aFooter(void)
+Footer* TspLib::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_TIME);
   

@@ -1,13 +1,11 @@
 /*============================================================================*/
-/* Time_se.h - system time                                                    */
+/* TspLib.hpp -- TimeStamp library                                            */
 /*============================================================================*/
 #pragma once
 
 namespace System
 {
-  class Since;
-  
-  class Time : public Object
+  class TspLib : public Object
   {
   public:
     
@@ -17,8 +15,8 @@ namespace System
   public:
     void* operator new(size_t);
     
-    Time(void);
-    ~Time(void) noexcept(false);
+    TspLib(void);
+  ~TspLib(void) noexcept(false);
     
     static Dtm wGetLocalNow(void);
     static Dtm wGetUTCNow(void);

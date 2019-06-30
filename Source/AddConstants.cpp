@@ -623,7 +623,6 @@ void Axioms::vAddConstants(void)
   /*    */ vAddConstant("SIZEOF_TASKQUEUE"_Stz,    sizeof(TaskQueue));
   /* 62 */ vAddConstant("SIZEOF_THREAD"_Stz,       sizeof(Thread));
   
-  /* 65 */ vAddConstant("SIZEOF_TIME"_Stz,         sizeof(Time));
   /* 66 */ vAddConstant("SIZEOF_TIMER"_Stz,        sizeof(Timer));
   /* 67 */ vAddConstant("SIZEOF_TOKENISER"_Stz,    sizeof(Tokeniser));
   /* 68 */ vAddConstant("SIZEOF_TX"_Stz,           sizeof(Tx));

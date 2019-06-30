@@ -608,7 +608,7 @@ i8 giClassSize[]
   /*    */ sizeof(Tenants),            // CN_TENANTS
   /*137 */ sizeof(Thread),             // CN_THREAD
   /*    */ sizeof(ThreadVec),          // CN_THREADVEC
-  /*141 */ sizeof(Time),               // CN_TIME
+  /*141 */ sizeof(TspLib),             // CN_TIME
   /*142 */ sizeof(Timer),              // CN_TIMER
   /*143 */ sizeof(Token),              // CN_TOKEN
   /*144 */ sizeof(Tokeniser),          // CN_TOKENISER
