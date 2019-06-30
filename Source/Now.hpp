@@ -7,9 +7,9 @@ namespace Measurement
 {
   class Now : public Object
   {
-  public:
+  private:
     char m_caResult[32];
-    i8   m_iTsp;
+    Dtm  m_wTsp;
 
     // must be last
     Footer m_xFooter;
@@ -20,10 +20,12 @@ namespace Measurement
   
     void vSetNow(void);
     void vSetNowUTC(void);
-
+  
     Stz* sz(void);
     Stz* sz(Since* pSincePosixEpoch);
 
+    i8   iTsp(void);
+  
     Footer* aFooter(void);
   };
 }
