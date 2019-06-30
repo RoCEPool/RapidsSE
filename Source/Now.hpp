@@ -19,7 +19,8 @@ namespace Measurement
     ~Now(void) noexcept(false);
   
     void vSetNow(void);
-  
+    void vSetNowUTC(void);
+
     Stz* sz(void);
     Stz* sz(Since* pSincePosixEpoch);
 

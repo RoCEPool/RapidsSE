@@ -119,6 +119,57 @@ void Now::vSetNow(void)
   _postcondition_(_MAGIC_,CN_NOW,_FOOTER_);
 }
 
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+void Now::vSetNowUTC(void)
+{
+  _precondition_(_MAGIC_,CN_NOW,_FOOTER_);
+  
+  // get current epoch time
+  time_t iSecondsSincePosixEpoch = time(0);
+  
+  // convert secondsSince into a tm structure for UTC/GMT time zone
+  struct tm* aUtcDateTime = gmtime(&iSecondsSincePosixEpoch);
+  
+  if (! aUtcDateTime)
+    vWarn("gmtime() error; errno=%d"_Stz,errno);
+
+  _Tsp xTsp;
+  
+  xTsp.m_uYearDelta = aUtcDateTime->tm_year;
+  xTsp.m_uMonth     = aUtcDateTime->tm_mon + 1;
+  xTsp.m_uDay       = aUtcDateTime->tm_mday;
+  xTsp.m_uHour      = aUtcDateTime->tm_hour;
+  xTsp.m_uMinute    = aUtcDateTime->tm_min;
+  xTsp.m_uSecond    = aUtcDateTime->tm_sec;
+  xTsp.m_uMicro     = 0;
+  
+  m_iTsp = Dtm::iTsp(xTsp.m_uYearDelta+  C_YEAR_BASE,
+                     xTsp.m_uMonth,
+                     xTsp.m_uDay,
+                     xTsp.m_uHour,
+                     xTsp.m_uMinute,
+                     xTsp.m_uSecond,
+                     xTsp.m_uMicro);
+  
+  StrLib::vSprint(m_caResult,
+                  (Stz*)F_TSP,
+                  
+                  (i8)xTsp.m_uYearDelta + C_YEAR_BASE,
+                  (i8)xTsp.m_uMonth,
+                  (i8)xTsp.m_uDay,
+                  
+                  (i8)xTsp.m_uHour,
+                  (i8)xTsp.m_uMinute,
+                  (i8)xTsp.m_uSecond);
+  
+  _checkInitialised_(CN_NOW);
+  
+  _postcondition_(_MAGIC_,CN_NOW,_FOOTER_);
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /* sprint Tme and return Stz* to result                                       */
