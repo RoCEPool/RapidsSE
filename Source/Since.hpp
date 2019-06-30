@@ -28,14 +28,14 @@ namespace System
     void  vGet(i8& iSeconds, i8& iMicroseconds);
     i8    iGetAsMicroseconds(void);
     void  vNow(void);
-    void  vSetUTC(Time* pTime);
+    //void  vSetUTC(Time* pTime);
     void  vSet(i8 iSeconds, i8 iMicroseconds);
     i8    iSubtract(Since& oArg);
 
     i8    iSeconds(void);
     i8    iMicroseconds(void);
     
-    void  vToTime(Time* pTime);
+    //void  vToTime(Time* pTime);
     
     Footer* aFooter(void);
   };

@@ -24,14 +24,6 @@ Time::Time(void)
 {
   _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
   
-  m_iYearDelta = 0;
-  m_iMonth     = 0;
-  m_iDay       = 0;
-  m_iHour      = 0;
-  m_iMinute    = 0;
-  m_iSecond    = 0;
-  m_iMicro     = 0;
-  
   _checkInitialised_(CN_TIME);
   
   _postcondition_(_MAGIC_,CN_TIME,_FOOTER_);
@@ -52,10 +44,8 @@ Time::~Time(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* set time using since                                                       */
 /*----------------------------------------------------------------------------*/
-void Time::vSetLocal(Since* pSincePosixEpoch)
+Dtm Time::wToLocal(Since* pSincePosixEpoch)
 {
-  _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
-  
   time_t iSecondsSincePosixEpoch = pSincePosixEpoch->iSeconds();
   
   // convert secondsSince into a tm structure for local time zone
@@ -64,22 +54,52 @@ void Time::vSetLocal(Since* pSincePosixEpoch)
   if (! aLocalDateTime)
     vWarn("localtime_r() error; errno=%d"_Stz,errno);
   
-  m_iYearDelta = aLocalDateTime->tm_year;
-  m_iMonth     = aLocalDateTime->tm_mon + 1;
-  m_iDay       = aLocalDateTime->tm_mday;
-  m_iHour      = aLocalDateTime->tm_hour;
-  m_iMinute    = aLocalDateTime->tm_min;
-  m_iSecond    = aLocalDateTime->tm_sec;
-  m_iMicro     = (int)pSincePosixEpoch->iMicroseconds();
+  Dtm wDtm;
+  
+  wDtm.xTsp.m_uYearDelta = aLocalDateTime->tm_year;
+  wDtm.xTsp.m_uMonth     = aLocalDateTime->tm_mon + 1;
+  wDtm.xTsp.m_uDay       = aLocalDateTime->tm_mday;
+  wDtm.xTsp.m_uHour      = aLocalDateTime->tm_hour;
+  wDtm.xTsp.m_uMinute    = aLocalDateTime->tm_min;
+  wDtm.xTsp.m_uSecond    = aLocalDateTime->tm_sec;
+  wDtm.xTsp.m_uMicro     = (int)pSincePosixEpoch->iMicroseconds();
+  wDtm.xTsp.m_uSpare     = 0;
+
+  return wDtm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* vSet: set time using since                                                 */
+/*----------------------------------------------------------------------------*/
+Dtm Time::wToUTC(Since* pSincePosixEpoch)
+{
+  time_t iSecondsSincePosixEpoch = pSincePosixEpoch->iSeconds();
+  
+  // convert secondsSince into a tm structure for UTC/GMT time zone
+  struct tm* aUtcDateTime = gmtime(&iSecondsSincePosixEpoch);
+  
+  if (! aUtcDateTime)
+    vWarn("gmtime() error; errno=%d"_Stz,errno);
+  
+  Dtm wDtm;
+
+  wDtm.xTsp.m_uYearDelta = aUtcDateTime->tm_year;
+  wDtm.xTsp.m_uMonth     = aUtcDateTime->tm_mon + 1;
+  wDtm.xTsp.m_uDay       = aUtcDateTime->tm_mday;
+  wDtm.xTsp.m_uHour      = aUtcDateTime->tm_hour;
+  wDtm.xTsp.m_uMinute    = aUtcDateTime->tm_min;
+  wDtm.xTsp.m_uSecond    = aUtcDateTime->tm_sec;
+  wDtm.xTsp.m_uMicro     = (int)pSincePosixEpoch->iMicroseconds();
+  wDtm.xTsp.m_uSpare     = 0;
+
+  return wDtm;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set as current local time                                                  */
 /*----------------------------------------------------------------------------*/
-void Time::vSetLocalNow(void)
+Dtm Time::wGetLocalNow(void)
 {
-  _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
-  
   // get current epoch time
   time_t iSecondsSincePosixEpoch = time(0);
   
@@ -89,46 +109,25 @@ void Time::vSetLocalNow(void)
   if ( ! aLocalDateTime )
     vWarn("localtime() error; errno=%d"_Stz,errno);
   
-  m_iYearDelta = aLocalDateTime->tm_year;
-  m_iMonth     = aLocalDateTime->tm_mon + 1;
-  m_iDay       = aLocalDateTime->tm_mday;
-  m_iHour      = aLocalDateTime->tm_hour;
-  m_iMinute    = aLocalDateTime->tm_min;
-  m_iSecond    = aLocalDateTime->tm_sec;
-  m_iMicro     = 0;
-}
+  Dtm wDtm;
+  
+  wDtm.xTsp.m_uYearDelta = aLocalDateTime->tm_year;
+  wDtm.xTsp.m_uMonth     = aLocalDateTime->tm_mon + 1;
+  wDtm.xTsp.m_uDay       = aLocalDateTime->tm_mday;
+  wDtm.xTsp.m_uHour      = aLocalDateTime->tm_hour;
+  wDtm.xTsp.m_uMinute    = aLocalDateTime->tm_min;
+  wDtm.xTsp.m_uSecond    = aLocalDateTime->tm_sec;
+  wDtm.xTsp.m_uMicro     = 0;
+  wDtm.xTsp.m_uSpare     = 0;
 
-/*----------------------------------------------------------------------------*/
-/* vSet: set time using since                                                 */
-/*----------------------------------------------------------------------------*/
-void Time::vSetUTC(Since* pSincePosixEpoch)
-{
-  _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
-  
-  time_t iSecondsSincePosixEpoch = pSincePosixEpoch->iSeconds();
-  
-  // convert secondsSince into a tm structure for UTC/GMT time zone
-  struct tm* aUtcDateTime = gmtime(&iSecondsSincePosixEpoch);
-
-  if (! aUtcDateTime)
-    vWarn("gmtime() error; errno=%d"_Stz,errno);
-  
-  m_iYearDelta = aUtcDateTime->tm_year;
-  m_iMonth     = aUtcDateTime->tm_mon + 1;
-  m_iDay       = aUtcDateTime->tm_mday;
-  m_iHour      = aUtcDateTime->tm_hour;
-  m_iMinute    = aUtcDateTime->tm_min;
-  m_iSecond    = aUtcDateTime->tm_sec;
-  m_iMicro     = (int)pSincePosixEpoch->iMicroseconds();
+  return wDtm;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set as current UTC time                                                    */
 /*----------------------------------------------------------------------------*/
-void Time::vSetUTCNow(void)
-{
-  _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
-  
+Dtm Time::wGetUTCNow(void)
+{  
   // get current epoch time
   time_t iSecondsSincePosixEpoch = time(0);
   
@@ -138,13 +137,18 @@ void Time::vSetUTCNow(void)
   if (! aUtcDateTime)
     vWarn("gmtime() error; errno=%d"_Stz,errno);
   
-  m_iYearDelta = aUtcDateTime->tm_year;
-  m_iMonth     = aUtcDateTime->tm_mon + 1;
-  m_iDay       = aUtcDateTime->tm_mday;
-  m_iHour      = aUtcDateTime->tm_hour;
-  m_iMinute    = aUtcDateTime->tm_min;
-  m_iSecond    = aUtcDateTime->tm_sec;
-  m_iMicro     = 0;
+  Dtm wDtm;
+  
+  wDtm.xTsp.m_uYearDelta = aUtcDateTime->tm_year;
+  wDtm.xTsp.m_uMonth     = aUtcDateTime->tm_mon + 1;
+  wDtm.xTsp.m_uDay       = aUtcDateTime->tm_mday;
+  wDtm.xTsp.m_uHour      = aUtcDateTime->tm_hour;
+  wDtm.xTsp.m_uMinute    = aUtcDateTime->tm_min;
+  wDtm.xTsp.m_uSecond    = aUtcDateTime->tm_sec;
+  wDtm.xTsp.m_uMicro     = 0;
+  wDtm.xTsp.m_uSpare     = 0;
+
+  return wDtm;
 }
 
 /*----------------------------------------------------------------------------*/

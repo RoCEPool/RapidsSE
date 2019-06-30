@@ -166,30 +166,30 @@ void Since::vNow(void)
 /*----------------------------------------------------------------------------*/
 /* vSet: set realtime clock                                                   */
 /*----------------------------------------------------------------------------*/
-void Since::vSetUTC(Time* pTime)
-{
-  _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
-  
-  struct tm xCalendarDateTime_UTC;
-  
-  xCalendarDateTime_UTC.tm_year   = pTime->m_iYearDelta;
-  xCalendarDateTime_UTC.tm_mon    = pTime->m_iMonth - 1;
-  xCalendarDateTime_UTC.tm_mday   = pTime->m_iDay;
-  xCalendarDateTime_UTC.tm_hour   = pTime->m_iHour;
-  xCalendarDateTime_UTC.tm_min    = pTime->m_iMinute;
-  xCalendarDateTime_UTC.tm_sec    = pTime->m_iSecond;
-  xCalendarDateTime_UTC.tm_isdst  = 0;
-  xCalendarDateTime_UTC.tm_gmtoff = 0;
-  xCalendarDateTime_UTC.tm_wday   = 0;
-  xCalendarDateTime_UTC.tm_yday   = 0;
-  xCalendarDateTime_UTC.tm_zone   = nullptr;
-  
-  // convert UTC:date&time into seconds since Posix Epoch
-  m_iSeconds = timegm(&xCalendarDateTime_UTC);
-  
-  m_iMicroseconds = pTime->m_iMicro;
-}
-
+//void Since::vSetUTC(Time* pTime)
+//{
+//  _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
+//
+//  struct tm xCalendarDateTime_UTC;
+//
+//  xCalendarDateTime_UTC.tm_year   = pTime->m_iYearDelta;
+//  xCalendarDateTime_UTC.tm_mon    = pTime->m_iMonth - 1;
+//  xCalendarDateTime_UTC.tm_mday   = pTime->m_iDay;
+//  xCalendarDateTime_UTC.tm_hour   = pTime->m_iHour;
+//  xCalendarDateTime_UTC.tm_min    = pTime->m_iMinute;
+//  xCalendarDateTime_UTC.tm_sec    = pTime->m_iSecond;
+//  xCalendarDateTime_UTC.tm_isdst  = 0;
+//  xCalendarDateTime_UTC.tm_gmtoff = 0;
+//  xCalendarDateTime_UTC.tm_wday   = 0;
+//  xCalendarDateTime_UTC.tm_yday   = 0;
+//  xCalendarDateTime_UTC.tm_zone   = nullptr;
+//
+//  // convert UTC:date&time into seconds since Posix Epoch
+//  m_iSeconds = timegm(&xCalendarDateTime_UTC);
+//
+//  m_iMicroseconds = pTime->m_iMicro;
+//}
+//
 /*----------------------------------------------------------------------------*/
 /* set                                                                        */
 /*----------------------------------------------------------------------------*/
@@ -265,26 +265,26 @@ i8 Since::iMicroseconds()
 /*----------------------------------------------------------------------------*/
 /* vToTime: get clock into given time                                         */
 /*----------------------------------------------------------------------------*/
-void Since::vToTime(Time* pTime)
-{
-  _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
-  
-  time_t iSecondsSincePosixEpoch = m_iSeconds;
-  
-  // convert secondsSince into a tm structure for UTC/GMT time zone
-  struct tm* aCalendarDateTime_UTC = gmtime(&iSecondsSincePosixEpoch);
-
-  if ( ! aCalendarDateTime_UTC )
-    vWarn("gmtime() error; errno=%d"_Stz,errno);
-  
-  pTime->m_iYearDelta = aCalendarDateTime_UTC->tm_year;
-  pTime->m_iMonth     = aCalendarDateTime_UTC->tm_mon + 1;
-  pTime->m_iDay       = aCalendarDateTime_UTC->tm_mday;
-  pTime->m_iHour      = aCalendarDateTime_UTC->tm_hour;
-  pTime->m_iMinute    = aCalendarDateTime_UTC->tm_min;
-  pTime->m_iSecond    = aCalendarDateTime_UTC->tm_sec;
-  pTime->m_iMicro     = (int)m_iMicroseconds;
-}
+//void Since::vToTime(Time* pTime)
+//{
+//  _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
+//  
+//  time_t iSecondsSincePosixEpoch = m_iSeconds;
+//  
+//  // convert secondsSince into a tm structure for UTC/GMT time zone
+//  struct tm* aCalendarDateTime_UTC = gmtime(&iSecondsSincePosixEpoch);
+//
+//  if ( ! aCalendarDateTime_UTC )
+//    vWarn("gmtime() error; errno=%d"_Stz,errno);
+//  
+//  pTime->m_iYearDelta = aCalendarDateTime_UTC->tm_year;
+//  pTime->m_iMonth     = aCalendarDateTime_UTC->tm_mon + 1;
+//  pTime->m_iDay       = aCalendarDateTime_UTC->tm_mday;
+//  pTime->m_iHour      = aCalendarDateTime_UTC->tm_hour;
+//  pTime->m_iMinute    = aCalendarDateTime_UTC->tm_min;
+//  pTime->m_iSecond    = aCalendarDateTime_UTC->tm_sec;
+//  pTime->m_iMicro     = (int)m_iMicroseconds;
+//}
 
 
 /*----------------------------------------------------------------------------*/
