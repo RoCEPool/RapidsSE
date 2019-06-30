@@ -211,7 +211,7 @@ void Encoding::vInitialEncoding(Row* pRow)
     
   } // for i_Col
   
-  m_nBytesNeeded = i_Offset_next;
+  m_nBytesNeeded = i_Offset_next + 1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -533,6 +533,8 @@ void Encoding::vSplitAt(i8 i_Col)
   
   // calc the number of bytes needed to shift columns into overflow
   m_nShiftOver = m_nHeadSize - xaColEnc[i_Col].m_i_Offset + C_U_1B + C_M_1B;
+  
+  m_nBytesNeeded += m_nShiftOver;
   
   // shift columns into overflow
   for ( ; i_Col < m_nColumns; i_Col++) {
