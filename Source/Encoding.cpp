@@ -211,7 +211,7 @@ void Encoding::vInitialEncoding(Row* pRow)
     
   } // for i_Col
   
-  m_nBytesNeeded = i_Offset_next + 1;
+  m_nBytesNeeded = i_Offset_next;
 }
 
 /*----------------------------------------------------------------------------*/
