@@ -288,11 +288,18 @@ void RowCompactor::vAnalyzeVch(Column* pCol, Row* pOuterRow, Row* pInnerRow)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 2) is there a tail for the vch
   
-  // return
+  TailStr xFindTail(pOuterRow->m_waColVal[i_Col].m_szVch);
+  
+  if (C_UNKNOWN != iFindTail((TailLine*) & xFindTail))
+    return;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 3) create a new tail
+  
+  i8 i_Tail = m_pCrwNub->iAllotTail(xFindTail.nBytes());
+  TailLine* aTail = m_pCrwNub->aGetTail(i_Tail);
 
+  ((TailStr*)aTail)->vSet(pOuterRow->m_waColVal[i_Col].m_szVch);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -434,24 +441,23 @@ i8 RowCompactor::iFindTail(TailLine* aFindLine)
        i_Tail = m_pCrwNub->iPrevTail(i_Tail)) {
     
     TailLine* aTailLine = m_pCrwNub->aGetTail(i_Tail);
-    i8 nTailWords = aTailLine->iU();
-    //RASSERT(nTailUnits <= 4);
+    i8 nTailWords = aTailLine->nWords();
     
-    //MemLib::vWordDump(aFindLine,m_nHeadBytes);
-    //MemLib::vWordDump(aTailLine,m_nHeadBytes);
-    
+    //aFindLine->vDump();
+    //aTailLine->vDump();
+
     if (0 == MemLib::iCompareWords(aTailLine,aFindLine,nTailWords)) {
       nFound++;
-      //      if (IntLib::bIsDecaCycle(nFound))
-      //        vTrace("%lld dupe tail found\n"_Stz,nFound);
+//      if (IntLib::bIsDecaCycle(nFound))
+//        vTrace("%lld dupe tail found\n"_Stz,nFound);
       return i_Tail;
     }
     
   }
   
   nNotFound++;
-  //  if (IntLib::bIsDecaCycle(nNotFound))
-  //    vTrace("%lld dupe tail NOT found\n"_Stz,nNotFound);
+//  if (IntLib::bIsDecaCycle(nNotFound))
+//    vTrace("%lld dupe tail NOT found\n"_Stz,nNotFound);
   return C_UNKNOWN;
 }
 

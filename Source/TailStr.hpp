@@ -12,6 +12,7 @@ namespace Rows
   
   public:
     TailStr(void);
+    TailStr(Stz* szStz);
     ~TailStr(void) noexcept(false);
   
     i8 nBytes(void);
