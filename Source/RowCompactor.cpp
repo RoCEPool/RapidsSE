@@ -175,8 +175,9 @@ bool RowCompactor::bCompactRow(Row* pInflatedRow)
 //      vTrace("Sample: %s\n"_Stz,spRow.sz(pSampleRow));
 //      pSampleRow = m_pRowSamples->aNextRow(pSampleRow);
 //    }
+    }
   }
-    
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // samples set is full
     
@@ -256,6 +257,52 @@ void RowCompactor::vAllotCrw(void)
   
   // link over line into head line
   m_aHeadLine->vSetOver(aOverLine);
+}
+
+/*----------------------------------------------------------------------------*/
+/* compact given row into current nub                                         */
+/*----------------------------------------------------------------------------*/
+bool RowCompactor::bCollectSamples(Row* pInflatedRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+
+#ifndef WITH_STR_DUPLICATES
+  
+  return false;
+  
+#else
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // samples for identifying str duplicates
+
+  if (m_pRowSamples->nItems() < C_SAMPLE_ROWS) {
+    
+    if (Row* pSampleRow = m_pRowSamples->aAllotRow(m_pColVec)) {
+      MemLib::vCopy(pSampleRow,pInflatedRow,sizeof(Row),CN_ROWCOMPACTOR);
+      return true;
+      
+      vTrace("No sample space\n"_Stz);
+      
+      //    SP_Row spRow;
+      //    Row* pSampleRow = m_pRowSamples->aFirstRow();
+      //    while (pSampleRow) {
+      //      vTrace("Sample: %s\n"_Stz,spRow.sz(pSampleRow));
+      //      pSampleRow = m_pRowSamples->aNextRow(pSampleRow);
+      //    }
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // samples set is full
+    
+    if (! m_bSampleEnc) {
+      
+      m_bSampleEnc = true;
+    }
+  }
+  
+  return false;
+  
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
