@@ -191,7 +191,7 @@ void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec)
     hvRec->vReset();
     
     // first get the encoded value into datum
-    RowInflator::vDecode(&oDatum,aHeadLine,pColVec,pCol,i_Col,i_Offset);
+    RowDecoder::vDecode(&oDatum,aHeadLine,pColVec,pCol,i_Col,i_Offset);
     hvRec->vAppend(pCol, &oDatum);
     
     vTrace("%s"_Stz,hvRec->szRecStr());
