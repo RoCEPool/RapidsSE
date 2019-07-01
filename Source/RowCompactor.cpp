@@ -229,6 +229,49 @@ void RowCompactor::vAllotCrw(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* analyze a collected sample                                                 */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vAnalyzeSample(Row* pSampleRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  SP_Row spRow;
+  
+  vTrace("Analyzing Sample: %s\n"_Stz,spRow.sz(pSampleRow));
+  
+  i8 nCols = m_pColVec->nItems();
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    
+    Column* pCol = m_pColVec->pGet(i_Col);
+    eDM eDatum = pCol->eDatumType();
+    
+    if (DM_VCH != eDatum)
+      continue;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+    
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* analyze collected samples                                                  */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vAnalyzeSamples(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  Row* pSampleRow = m_pRowSamples->aFirstRow();
+  while (pSampleRow) {
+    vAnalyzeSample(pSampleRow);
+    pSampleRow = m_pRowSamples->aNextRow(pSampleRow);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* collect inflated row as a sample                                           */
 /*----------------------------------------------------------------------------*/
 bool RowCompactor::bCollectSample(Row* pInflatedRow)
