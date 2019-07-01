@@ -20,6 +20,7 @@ using namespace Rows;
 #include "HeadLine.hpp"
 #include "OverLine.hpp"
 #include "TailLine.hpp"
+#include "TailStr.hpp"
 #include "Crw.hpp"
 
 //------------------------------------------------------------------------------
