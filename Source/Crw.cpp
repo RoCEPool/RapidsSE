@@ -23,7 +23,7 @@ Crw::~Crw(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump head line                                                             */
+/* dump compact row                                                           */
 /*----------------------------------------------------------------------------*/
 void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec)
 {
@@ -31,7 +31,6 @@ void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec)
   // word dump of headLine (& overLine)
   
   i8 nHeadBytes = aHeadLine->nBytes();
-  i8 nHeadWords = aHeadLine->nWords();
   
   OverLine* aOverLine = nullptr;
   i8 nOverBytes = C_UNKNOWN;
@@ -242,7 +241,6 @@ void Crw::vDumpCrw_IV(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec)
   // word dump of headLine (& overLine)
   
   i8 nHeadBytes = aHeadLine->nBytes();
-  i8 nHeadWords = aHeadLine->nWords();
   
   OverLine* aOverLine = nullptr;
   i8 nOverBytes = C_UNKNOWN;

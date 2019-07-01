@@ -15,7 +15,6 @@ namespace Rows
   
     static void vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec);
     static void vDumpCrw_IV(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec);
-
   };
 
   /*--------------------------------------------------------------------------*/
