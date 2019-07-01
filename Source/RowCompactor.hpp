@@ -22,6 +22,8 @@ namespace Rows
     // - - - - - - - - - - - -
     
     IrwBuffer* m_pRowSamples;  // the set of sample rows
+    bool       m_bSampleEnc;   // has sampel set been encoded?
+    
     Encoding*  m_pEncoding;    // encoding of row
     
     HeadLine*  m_aHeadLine;    // head of crw
@@ -48,6 +50,8 @@ namespace Rows
   private:
     void vAllotCrw(void);
     
+    bool bCompactRow_behind(Row* pInflatedRow);
+
     void vCreateTails(void);
     void vDeDupe(void);
     void vFindTails(Encoding* pEncoding);

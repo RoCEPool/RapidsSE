@@ -56,6 +56,8 @@ RowCompactor::RowCompactor(void)
   m_i_BaseOffset  = C_UNKNOWN;
   
   m_pRowSamples   = nullptr;
+  m_bSampleEnc    = false;
+  
   m_pEncoding     = nullptr;
   m_aHeadLine     = nullptr;
   
@@ -109,6 +111,8 @@ void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer)
   m_i_BaseOffset  = iBaseOffset(m_pColVec);
   
   m_pRowSamples   = new IrwBuffer;
+  m_bSampleEnc    = false;
+  
   m_pEncoding     = new Encoding(m_pColVec,m_nHeadSize,m_nMetaSize);
   m_aHeadLine     = nullptr;
 }
@@ -138,6 +142,8 @@ void RowCompactor::vCompactEnd(void)
   
   delete m_pRowSamples;
   m_pRowSamples   = nullptr;
+  m_bSampleEnc    = false;
+  
   delete m_pEncoding;
   m_pEncoding     = nullptr;
   m_aHeadLine     = nullptr;
@@ -150,52 +156,42 @@ bool RowCompactor::bCompactRow(Row* pInflatedRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
+#ifdef WITH_STR_DUPLICATES
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // samples for identifying str duplicates
   
-#ifdef WITH_STR_DUPLICATES
-  if (m_pRowSamples->nItems() < 1) {
+  if (m_pRowSamples->nItems() < C_SAMPLE_ROWS) {
     
-    if (Row* pSampleRow = m_pRowSamples->aAllotRow(m_pColVec))
+    if (Row* pSampleRow = m_pRowSamples->aAllotRow(m_pColVec)) {
       MemLib::vCopy(pSampleRow,pInflatedRow,sizeof(Row),CN_ROWCOMPACTOR);
-    else {
-      vTrace("No sample space\n"_Stz);
-    }
+      return;
+      
+    vTrace("No sample space\n"_Stz);
 
-    SP_Row spRow;
-    Row* pSampleRow = m_pRowSamples->aFirstRow();
-    while (pSampleRow) {
-      vTrace("Sample: %s\n"_Stz,spRow.sz(pSampleRow));
-      pSampleRow = m_pRowSamples->aNextRow(pSampleRow);
-    }
+//    SP_Row spRow;
+//    Row* pSampleRow = m_pRowSamples->aFirstRow();
+//    while (pSampleRow) {
+//      vTrace("Sample: %s\n"_Stz,spRow.sz(pSampleRow));
+//      pSampleRow = m_pRowSamples->aNextRow(pSampleRow);
+//    }
   }
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // samples set is full
+    
+  if (! m_bSampleEnc) {
+    
+    m_bSampleEnc = true;
+  }
+    
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // encode the inflated row
-  
-  m_pEncoding->vEncode(pInflatedRow,m_pRowSamples);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check for space in target nub
-  
-  i8 nBytesNeeded = m_pEncoding->nBytesNeeded();
-  
-  if (! m_pCrwNub->bHasSpace(nBytesNeeded)) {
-    m_nTotalBuffers++;
-    return false;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pack encoding into a compact row
-  
-  vPackCrw(m_pEncoding);
-  
-#ifdef WITH_VERIFY_TAILS
-  m_pCrwNub->vVerifyTails(C_UNKNOWN);
-#endif
-
-  return true;
+    
+  bool bResult = bCompactRow_behind(pInflatedRow);
+    
+    return bResult;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -261,6 +257,41 @@ void RowCompactor::vAllotCrw(void)
   // link over line into head line
   m_aHeadLine->vSetOver(aOverLine);
 }
+
+/*----------------------------------------------------------------------------*/
+/* compact given row into current nub                                         */
+/*----------------------------------------------------------------------------*/
+bool RowCompactor::bCompactRow_behind(Row* pInflatedRow)
+{
+_precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // encode the inflated row
+  
+  m_pEncoding->vEncode(pInflatedRow,m_pRowSamples);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check for space in target nub
+  
+  i8 nBytesNeeded = m_pEncoding->nBytesNeeded();
+  
+  if (! m_pCrwNub->bHasSpace(nBytesNeeded)) {
+    m_nTotalBuffers++;
+    return false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pack encoding into a compact row
+  
+  vPackCrw(m_pEncoding);
+  
+#ifdef WITH_VERIFY_TAILS
+  m_pCrwNub->vVerifyTails(C_UNKNOWN);
+#endif
+  
+  return true;
+}
+  
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
