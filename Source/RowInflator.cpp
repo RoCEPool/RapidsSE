@@ -73,10 +73,8 @@ void RowInflator::vInflateColumn(Row* pRow, HeadLine* aHeadLine, i8 i_ColToRetri
           
         case MC_OVERFLOW_2T: {
           //vDebugPoint();
-          //i8 i_Over_rel = aHeadLine->iOverflow2B();
-          //OverLine* aOverLine = RowNub::aGetOver(aHeadLine,i_Over_rel);
           OverLine* aOverLine = aHeadLine->aGetOver();
-          //MemLib::vWordDump(aOverLine,32);
+          //aOverLine->vDump();
           
           eMetaCode = * aAdd<eMC*>(aOverLine,C_U_1B);
           ayDataByte = aAdd<byte*>(aOverLine,C_U_1B + C_M_1B);
@@ -455,11 +453,9 @@ void RowInflator::vInflateColumn(Row* pRow, HeadLine* aHeadLine, i8 i_ColToRetri
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_OVERFLOW_2T: {
         //vDebugPoint();
-        //i8 i_Over_rel = aHeadLine->iOverflow2B();
-        //OverLine* aOverLine = RowNub::aGetOver(aHeadLine,i_Over_rel);
         OverLine* aOverLine = aHeadLine->aGetOver();
-        //MemLib::vWordDump(aOverLine,32);
-        
+        //aOverLine->vDump();
+
         eMetaCode = * aAdd<eMC*>(aOverLine,C_U_1B);
         ayDataByte = aAdd<byte*>(aOverLine,C_U_1B + C_M_1B);
         goto L_MetaCodeSwitch;
@@ -600,11 +596,9 @@ void RowInflator::vInflateColumns(Row* pRow, HeadLine* aHeadLine)
           
         case MC_OVERFLOW_2T: {
           //vDebugPoint();
-          //i8 i_Over_rel = aHeadLine->iOverflow2B();
-          //OverLine* aOverLine = RowNub::aGetOver(aHeadLine,i_Over_rel);
           OverLine* aOverLine = aHeadLine->aGetOver();
-          //MemLib::vWordDump(aOverLine,32);
-          
+          //aOverLine->vDump();
+
           eMetaCode = * aAdd<eMC*>(aOverLine,C_U_1B);
           ayDataByte = aAdd<byte*>(aOverLine,C_U_1B + C_M_1B);
           goto L_SkipCodeSwitch;
@@ -982,11 +976,9 @@ void RowInflator::vInflateColumns(Row* pRow, HeadLine* aHeadLine)
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_OVERFLOW_2T: {
         //vDebugPoint();
-        //i8 i_Over_rel = aHeadLine->iOverflow2B();
-        //OverLine* aOverLine = RowNub::aGetOver(aHeadLine,i_Over_rel);
         OverLine* aOverLine = aHeadLine->aGetOver();
-        //MemLib::vWordDump(aOverLine,32);
-        
+        //aOverLine->vDump();
+
         eMetaCode = * aAdd<eMC*>(aOverLine,C_U_1B);
         ayDataByte = aAdd<byte*>(aOverLine,C_U_1B + C_M_1B);
         goto L_MetaCodeSwitch;

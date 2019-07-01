@@ -17,6 +17,8 @@ namespace Rows
     i8 nBytes(void);
     i8 nUnits(void);
     i8 nWords(void);
+  
+    void vDump(void);
 
     i8   iU(void);
     void vU(i8 nUnits);

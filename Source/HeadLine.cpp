@@ -67,6 +67,24 @@ i8 HeadLine::nWords(void)
   return nSizeWords;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get the size <W> of this headline in words                                 */
+/*----------------------------------------------------------------------------*/
+i8 HeadLine::nW(void)
+{
+  i8 nWords = w8_1B(0);
+  
+  return nWords;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the size <W> of this headline in words                                 */
+/*----------------------------------------------------------------------------*/
+void HeadLine::vW(i8 nWords)
+{
+  v1B(0,nWords);
+}
+
 /******************************************************************************/
 /******************************************************************************/
 
@@ -93,6 +111,22 @@ byte* HeadLine::ayAdrLogical(i8 i_Offset)
   i8 i_Offset_over = i_Offset - nHeadBytes;
   byte* ayAdr = (byte*)aOverLine + i_Offset_over;
   return ayAdr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump head line (and possibly over line)                                    */
+/*----------------------------------------------------------------------------*/
+void HeadLine::vDump(void)
+{
+  i8 nSizeBytes = nBytes();
+  MemLib::vWordDump(this,nSizeBytes);
+  
+  if (! bHasOverflow())
+    return;
+  
+  OverLine* aOverLine = aGetOver();
+  
+  aOverLine->vDump();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -348,24 +382,6 @@ byte* HeadLine::ayShoco(Column* pCol, i8 i_BaseOffset)
   byte* ayAddress = ayAdrLogical(i_OfsCrs_);
   
   return ayAddress;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the size <W> of this headline in words                                 */
-/*----------------------------------------------------------------------------*/
-i8 HeadLine::nW(void)
-{
-  i8 nWords = w8_1B(0);
-  
-  return nWords;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the size <W> of this headline in words                                 */
-/*----------------------------------------------------------------------------*/
-void HeadLine::vW(i8 nWords)
-{
-  v1B(0,nWords);
 }
 
 /******************************************************************************/
