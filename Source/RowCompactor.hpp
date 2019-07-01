@@ -57,6 +57,7 @@ namespace Rows
     void vCompactSamples(void);
 
     void vCreateTails(void);
+    i8   iFindTail(TailLine* aFindLine);
     void vFindTails(Encoding* pEncoding);
 
     void vPackCrw(Encoding* pEncoding);

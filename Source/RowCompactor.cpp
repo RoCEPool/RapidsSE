@@ -422,6 +422,42 @@ void RowCompactor::vFindTails(Encoding* pEncoding)
 }
 
 /*----------------------------------------------------------------------------*/
+/* search for duplicate tail line                                             */
+/*----------------------------------------------------------------------------*/
+i8 RowCompactor::iFindTail(TailLine* aFindLine)
+{
+  static i8 nFound = 0;
+  static i8 nNotFound = 0;
+  
+  for (i8 i_Tail = m_pCrwNub->iLastTail();
+       i_Tail != C_UNKNOWN;
+       i_Tail = m_pCrwNub->iPrevTail(i_Tail)) {
+    
+    TailLine* aTailLine = m_pCrwNub->aGetTail(i_Tail);
+    i8 nTailWords = aTailLine->iU();
+    //RASSERT(nTailUnits <= 4);
+    
+    //MemLib::vWordDump(aFindLine,m_nHeadBytes);
+    //MemLib::vWordDump(aTailLine,m_nHeadBytes);
+    
+    if (0 == MemLib::iCompareWords(aTailLine,aFindLine,nTailWords)) {
+      nFound++;
+      //      if (IntLib::bIsDecaCycle(nFound))
+      //        vTrace("%lld dupe tail found\n"_Stz,nFound);
+      return i_Tail;
+    }
+    
+  }
+  
+  nNotFound++;
+  //  if (IntLib::bIsDecaCycle(nNotFound))
+  //    vTrace("%lld dupe tail NOT found\n"_Stz,nNotFound);
+  return C_UNKNOWN;
+}
+
+
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
