@@ -50,8 +50,8 @@ namespace Rows
   private:
     void vAllotCrw(void);
     
-    void vAnalyzeSample(Row* pInflatedRow);
     void vAnalyzeSamples(void);
+    void vAnalyzeVch(Column* pCol, Row* pOuterRow, Row* pInnerRow);
     bool bCollectSample(Row* pInflatedRow);
     bool bCompactInflated(Row* pInflatedRow);
     void vCompactSamples(void);

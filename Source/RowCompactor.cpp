@@ -232,15 +232,11 @@ void RowCompactor::vAllotCrw(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* analyze a collected sample                                                 */
+/* analyze collected samples                                                  */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vAnalyzeSample(Row* pSampleRow)
+void RowCompactor::vAnalyzeSamples(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  SP_Row spRow;
-  
-  vTrace("Analyzing Sample: %s\n"_Stz,spRow.sz(pSampleRow));
   
   i8 nCols = m_pColVec->nItems();
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
@@ -251,24 +247,52 @@ void RowCompactor::vAnalyzeSample(Row* pSampleRow)
     if (DM_VCH != eDatum)
       continue;
     
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    for (Row* pOuterRow = m_pRowSamples->aFirstRow();
+         pOuterRow;
+         pOuterRow = m_pRowSamples->aNextRow(pOuterRow)) {
+
+      if (StrLib::iLength(pOuterRow->m_waColVal[i_Col].m_azStr) < 8)
+        continue;
     
-    
+      for (Row* pInnerRow = m_pRowSamples->aNextRow(pOuterRow);
+           pInnerRow;
+           pInnerRow = m_pRowSamples->aNextRow(pInnerRow)) {
+
+        vAnalyzeVch(pCol,pOuterRow,pInnerRow);
+        
+      }
+    }
   }
+  
 }
 
 /*----------------------------------------------------------------------------*/
-/* analyze collected samples                                                  */
+/* analyze a vch column                                                       */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vAnalyzeSamples(void)
+void RowCompactor::vAnalyzeVch(Column* pCol, Row* pOuterRow, Row* pInnerRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  Row* pSampleRow = m_pRowSamples->aFirstRow();
-  while (pSampleRow) {
-    vAnalyzeSample(pSampleRow);
-    pSampleRow = m_pRowSamples->aNextRow(pSampleRow);
-  }
+  SP_Row spRow;
+  vTrace("Analyzing Sample: %s\n"_Stz,spRow.sz(pOuterRow));
+  
+  i8 i_Col = pCol->iColumnNo();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 1) does the inner vch equal the outer vch?
+  
+  if (! StrLib::bEqualTo(pInnerRow->m_waColVal[i_Col].m_azStr,
+                         pOuterRow->m_waColVal[i_Col].m_azStr) )
+    return;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 2) is there a tail for the vch
+  
+  // return
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 3) create a new tail
+
 }
 
 /*----------------------------------------------------------------------------*/
