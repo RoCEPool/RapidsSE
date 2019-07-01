@@ -299,7 +299,7 @@ void RowCompactor::vAnalyzeVch(Column* pCol, Row* pOuterRow, Row* pInnerRow)
   i8 i_Tail = m_pCrwNub->iAllotTail(xFindTail.nBytes());
   TailLine* aTail = m_pCrwNub->aGetTail(i_Tail);
 
-  ((TailStr*)aTail)->vSet(pOuterRow->m_waColVal[i_Col].m_szVch);
+  aTail->vAssign(pOuterRow->m_waColVal[i_Col].m_szVch);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -393,6 +393,8 @@ void RowCompactor::vCompactSamples(void)
   
   ASSERT(m_bCollecting);
   m_bCollecting = false;
+  
+  vAnalyzeSamples();
   
   SP_Row spRow;
   

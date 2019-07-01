@@ -18,10 +18,15 @@ namespace Rows
     i8 nUnits(void);
     i8 nWords(void);
 
+    i8   iL(void);
+    void vL(i8 nL);
+  
     i8   iU(void);
     void vU(i8 nUnits);
   
+    void vAssign(Stz* szStz);
     void vDump(void);
+    Stz* sz(void);
   };
   
   /*--------------------------------------------------------------------------*/

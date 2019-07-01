@@ -27,6 +27,7 @@ namespace Rows
   
     // - - - - - - - - -
   
+    void vAssign(Stz* szStz);
     void vSet(Stz* szStz);
     Stz* sz(void);
     void vDump(void);

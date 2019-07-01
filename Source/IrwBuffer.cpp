@@ -123,7 +123,7 @@ Row* IrwBuffer::aNextRow(Row* aPriorRow)
 
   Row* aRow = aAdjacentItem(aPriorRow);
   
-  if (aRow && CN_REFSET == aRow->eClass())
+  if (aRow)
     return aRow;
 
   return nullptr;
