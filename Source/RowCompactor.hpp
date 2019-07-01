@@ -50,7 +50,7 @@ namespace Rows
   private:
     void vAllotCrw(void);
     
-    bool bCollectSamples(Row* pInflatedRow);
+    bool bCollectSample(Row* pInflatedRow);
     bool bCompactInflated(Row* pInflatedRow);
     void vCompactSamples(void);
 

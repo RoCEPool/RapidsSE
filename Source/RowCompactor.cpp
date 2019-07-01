@@ -156,7 +156,7 @@ bool RowCompactor::bCompactRow(Row* pInflatedRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  if (bCollectSamples(pInflatedRow))
+  if (bCollectSample(pInflatedRow))
     return true;
   
   bool bResult = bCompactInflated(pInflatedRow);
@@ -229,9 +229,9 @@ void RowCompactor::vAllotCrw(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compact given row into current nub                                         */
+/* collect inflated row as a sample                                           */
 /*----------------------------------------------------------------------------*/
-bool RowCompactor::bCollectSamples(Row* pInflatedRow)
+bool RowCompactor::bCollectSample(Row* pInflatedRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
 
@@ -311,7 +311,7 @@ _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
-/* compact samples                                                            */
+/* compact collected samples into crw buffer                                  */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vCompactSamples(void)
 {
@@ -320,6 +320,18 @@ void RowCompactor::vCompactSamples(void)
   ASSERT(m_bCollecting);
   m_bCollecting = false;
   
+  SP_Row spRow;
+  
+  Row* pSampleRow = m_pRowSamples->aFirstRow();
+  while (pSampleRow) {
+    
+    vTrace("Compacting Sample: %s\n"_Stz,spRow.sz(pSampleRow));
+    
+    bool bCompacted = bCompactInflated(pSampleRow);
+    RASSERT(bCompacted);
+    
+    pSampleRow = m_pRowSamples->aNextRow(pSampleRow);
+  }
 }
 
 
