@@ -52,9 +52,9 @@ namespace Rows
     
     bool bCollectSamples(Row* pInflatedRow);
     bool bCompactInflated(Row* pInflatedRow);
+    void vCompactSamples(void);
 
     void vCreateTails(void);
-    void vDeDupe(void);
     void vFindTails(Encoding* pEncoding);
 
     void vPackCrw(Encoding* pEncoding);

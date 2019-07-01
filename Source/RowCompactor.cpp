@@ -127,8 +127,8 @@ void RowCompactor::vCompactEnd(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
 #ifdef WITH_STR_DUPLICATES
-  if (m_pRowSamples && m_pRowSamples->nItems()) {
-    vDeDupe();
+  if (m_bCollecting) {
+    vCompactSamples();
   }
 #endif
   
@@ -261,7 +261,8 @@ bool RowCompactor::bCollectSamples(Row* pInflatedRow)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   vTrace("No sample space left\n"_Stz);
-  m_bCollecting = false;
+  
+  vCompactSamples();
 
 //  SP_Row spRow;
 //  Row* pSampleRow = m_pRowSamples->aFirstRow();
@@ -308,7 +309,19 @@ _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
   return true;
 }
+
+/*----------------------------------------------------------------------------*/
+/* compact samples                                                            */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vCompactSamples(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
+  ASSERT(m_bCollecting);
+  m_bCollecting = false;
+  
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -319,15 +332,6 @@ _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
 void RowCompactor::vCreateTails(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* de-duplicate                                                               */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vDeDupe(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
 }
 
 /*----------------------------------------------------------------------------*/
