@@ -56,7 +56,7 @@ RowCompactor::RowCompactor(void)
   m_i_BaseOffset  = C_UNKNOWN;
   
   m_pRowSamples   = nullptr;
-  m_bSampleEnc    = false;
+  m_bCollecting   = false;
   
   m_pEncoding     = nullptr;
   m_aHeadLine     = nullptr;
@@ -111,7 +111,7 @@ void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer)
   m_i_BaseOffset  = iBaseOffset(m_pColVec);
   
   m_pRowSamples   = new IrwBuffer;
-  m_bSampleEnc    = false;
+  m_bCollecting   = true;
   
   m_pEncoding     = new Encoding(m_pColVec,m_nHeadSize,m_nMetaSize);
   m_aHeadLine     = nullptr;
@@ -142,7 +142,7 @@ void RowCompactor::vCompactEnd(void)
   
   delete m_pRowSamples;
   m_pRowSamples   = nullptr;
-  m_bSampleEnc    = false;
+  m_bCollecting   = false;
   
   delete m_pEncoding;
   m_pEncoding     = nullptr;
@@ -156,43 +156,12 @@ bool RowCompactor::bCompactRow(Row* pInflatedRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-#ifdef WITH_STR_DUPLICATES
+  if (bCollectSamples(pInflatedRow))
+    return true;
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // samples for identifying str duplicates
-  
-  if (m_pRowSamples->nItems() < C_SAMPLE_ROWS) {
+  bool bResult = bCompactInflated(pInflatedRow);
     
-    if (Row* pSampleRow = m_pRowSamples->aAllotRow(m_pColVec)) {
-      MemLib::vCopy(pSampleRow,pInflatedRow,sizeof(Row),CN_ROWCOMPACTOR);
-      return;
-      
-    vTrace("No sample space\n"_Stz);
-
-//    SP_Row spRow;
-//    Row* pSampleRow = m_pRowSamples->aFirstRow();
-//    while (pSampleRow) {
-//      vTrace("Sample: %s\n"_Stz,spRow.sz(pSampleRow));
-//      pSampleRow = m_pRowSamples->aNextRow(pSampleRow);
-//    }
-    }
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // samples set is full
-    
-  if (! m_bSampleEnc) {
-    
-    m_bSampleEnc = true;
-  }
-    
-#endif
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
-  bool bResult = bCompactRow_behind(pInflatedRow);
-    
-    return bResult;
+  return bResult;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -272,43 +241,44 @@ bool RowCompactor::bCollectSamples(Row* pInflatedRow)
   
 #else
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // samples for identifying str duplicates
-
-  if (m_pRowSamples->nItems() < C_SAMPLE_ROWS) {
+  if (! m_bCollecting)
+    return false;
     
-    if (Row* pSampleRow = m_pRowSamples->aAllotRow(m_pColVec)) {
-      MemLib::vCopy(pSampleRow,pInflatedRow,sizeof(Row),CN_ROWCOMPACTOR);
-      return true;
-      
-      vTrace("No sample space\n"_Stz);
-      
-      //    SP_Row spRow;
-      //    Row* pSampleRow = m_pRowSamples->aFirstRow();
-      //    while (pSampleRow) {
-      //      vTrace("Sample: %s\n"_Stz,spRow.sz(pSampleRow));
-      //      pSampleRow = m_pRowSamples->aNextRow(pSampleRow);
-      //    }
-    }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // samples set is full
-    
-    if (! m_bSampleEnc) {
-      
-      m_bSampleEnc = true;
-    }
+  if (m_pRowSamples->nItems() >= C_SAMPLE_ROWS) {
+    vTrace("Samples collected\n"_Stz);
+    m_bCollecting = false;
+    return false;
   }
   
-  return false;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // collect sample
   
+  if (Row* pSampleRow = m_pRowSamples->aAllotRow(m_pColVec)) {
+    MemLib::vCopy(pSampleRow,pInflatedRow,sizeof(Row),CN_ROWCOMPACTOR);
+    return true;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  vTrace("No sample space left\n"_Stz);
+  m_bCollecting = false;
+
+//  SP_Row spRow;
+//  Row* pSampleRow = m_pRowSamples->aFirstRow();
+//  while (pSampleRow) {
+//    vTrace("Sample: %s\n"_Stz,spRow.sz(pSampleRow));
+//    pSampleRow = m_pRowSamples->aNextRow(pSampleRow);
+//  }
+ 
+  return false;
+
 #endif
 }
 
 /*----------------------------------------------------------------------------*/
 /* compact given row into current nub                                         */
 /*----------------------------------------------------------------------------*/
-bool RowCompactor::bCompactRow_behind(Row* pInflatedRow)
+bool RowCompactor::bCompactInflated(Row* pInflatedRow)
 {
 _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   

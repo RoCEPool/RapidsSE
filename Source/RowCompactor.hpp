@@ -22,7 +22,7 @@ namespace Rows
     // - - - - - - - - - - - -
     
     IrwBuffer* m_pRowSamples;  // the set of sample rows
-    bool       m_bSampleEnc;   // has sampel set been encoded?
+    bool       m_bCollecting;  // has sampel set been encoded?
     
     Encoding*  m_pEncoding;    // encoding of row
     
@@ -51,7 +51,7 @@ namespace Rows
     void vAllotCrw(void);
     
     bool bCollectSamples(Row* pInflatedRow);
-    bool bCompactRow_behind(Row* pInflatedRow);
+    bool bCompactInflated(Row* pInflatedRow);
 
     void vCreateTails(void);
     void vDeDupe(void);
