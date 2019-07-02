@@ -10,8 +10,7 @@ namespace System
   class Since : public Object
   {
   public:
-    i8  m_iSeconds;
-    i8  m_iMicroseconds;
+    Dtm m_wIvl;
   
     // must be last
     Footer m_xFooter;

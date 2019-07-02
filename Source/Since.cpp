@@ -14,8 +14,8 @@ Since::Since(void)
 {
   _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
   
-  m_iSeconds      = 0;
-  m_iMicroseconds = 0;
+  m_wIvl.xIvl.m_uSecond = 0;
+  m_wIvl.xIvl.m_uMicro  = 0;
   
   _checkInitialised_(CN_SINCE);
   
@@ -54,10 +54,10 @@ void Since::vGetTimeOfDay(i8& iSeconds, i8& iMicroseconds, SysCall& oSysCall)
   
   oSysCall.vSuccess();
   
-  iSeconds      = xTimeVal.tv_sec;
-  iMicroseconds = xTimeVal.tv_usec;
+  uSeconds      = xTimeVal.tv_sec;
+  uMicroseconds = xTimeVal.tv_usec;
   
-  ASSERT(iMicroseconds < C_1M); // logic check
+  ASSERT(uMicroseconds < C_1M); // logic check
 }
 
 /*----------------------------------------------------------------------------*/
@@ -71,21 +71,21 @@ void Since::vAdd(i8 iMicroseconds)
 {
   _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
   
-  m_iMicroseconds += iMicroseconds;
+  m_wIvl.xIvl.m_uMicro += iMicroseconds;
   
-  if (m_iMicroseconds < C_1M)
+  if (m_wIvl.xIvl.m_uMicro < C_1M)
     return;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // correction needed
   
-  i8 iMultiples = m_iMicroseconds;
+  i8 iMultiples = m_wIvl.xIvl.m_uMicro;
   
-  m_iMicroseconds = iMultiples % C_1M;
+  m_wIvl.xIvl.m_uMicro = iMultiples % C_1M;
   
   i8 iSecondsDelta = iMultiples / C_1M;
   
-  m_iSeconds += iSecondsDelta;
+  m_wIvl.xIvl.m_uSecond += iSecondsDelta;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -135,8 +135,8 @@ void Since::vGet(i8& iSeconds, i8& iMicroseconds)
 {
   _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
   
-  iSeconds      = m_iSeconds;
-  iMicroseconds = m_iMicroseconds;
+  iSeconds      = m_wIvl.xIvl.m_uSecond;
+  iMicroseconds = m_wIvl.xIvl.m_uMicro;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -146,7 +146,7 @@ i8 Since::iGetAsMicroseconds(void)
 {
   _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
   
-  i8 iMicroseconds = (m_iSeconds * C_1M) + m_iMicroseconds;
+  i8 iMicroseconds = (m_wIvl.xIvl.m_uSecond * C_1M) + m_wIvl.xIvl.m_uMicro;
   
   return iMicroseconds;
 }
@@ -160,7 +160,11 @@ void Since::vNow(void)
   
   SysCall oSysCall;
   
-  vGetTimeOfDay(m_iSeconds,m_iMicroseconds,oSysCall);
+  i8 iSeconds = (i8)m_wIvl.xIvl.m_uSecond;
+  i8 iMricos  = (i8)m_wIvl.xIvl.m_uMicro;
+  vGetTimeOfDay(iSeconds,
+                iMricos,
+                oSysCall);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -199,8 +203,8 @@ void Since::vSet(i8 iSeconds, i8 iMicroseconds)
   
   ASSERT(iMicroseconds < C_1M);
 
-  m_iSeconds    = iSeconds;
-  iMicroseconds = iMicroseconds;
+  m_wIvl.xIvl.m_uSecond = iSeconds;
+  m_wIvl.xIvl.m_uMicro  = iMicroseconds;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -217,9 +221,9 @@ i8 Since::iSubtract(Since& oArg)
   i8 iMicroseconds;
   i8 iMilliseconds;
   
-  if (m_iSeconds < oArg.m_iSeconds ||
-       (m_iSeconds == oArg.m_iSeconds &&
-        m_iMicroseconds < oArg.m_iMicroseconds)) {
+  if (m_wIvl.xIvl.m_uSecond < oArg.m_wIvl.xIvl.m_uSecond ||
+       (m_wIvl.xIvl.m_uSecond == oArg.m_wIvl.xIvl.m_uSecond &&
+        m_wIvl.xIvl.m_uMicro < oArg.m_wIvl.xIvl.m_uMicro)) {
     pGreater = &oArg;
     pSmaller = this;
   }
@@ -228,13 +232,13 @@ i8 Since::iSubtract(Since& oArg)
     pSmaller = &oArg;
   }
   
-  if (pSmaller->m_iMicroseconds > pGreater->m_iMicroseconds) {
-    iMicroseconds = 1000000 + pGreater->m_iMicroseconds - pSmaller->m_iMicroseconds;
-    iSeconds = pGreater->m_iSeconds - 1 - pSmaller->m_iSeconds;
+  if (pSmaller->m_wIvl.xIvl.m_uMicro > pGreater->m_wIvl.xIvl.m_uMicro) {
+    iMicroseconds = 1000000 + pGreater->m_wIvl.xIvl.m_uMicro - pSmaller->m_wIvl.xIvl.m_uMicro;
+    iSeconds = pGreater->m_wIvl.xIvl.m_uSecond - 1 - pSmaller->m_wIvl.xIvl.m_uSecond;
   }
   else {
-    iMicroseconds = pGreater->m_iMicroseconds - pSmaller->m_iMicroseconds;
-    iSeconds = pGreater->m_iSeconds - pSmaller->m_iSeconds;
+    iMicroseconds = pGreater->m_wIvl.xIvl.m_uMicro - pSmaller->m_wIvl.xIvl.m_uMicro;
+    iSeconds = pGreater->m_wIvl.xIvl.m_uSecond - pSmaller->m_wIvl.xIvl.m_uSecond;
   }
   
   iMilliseconds = iMicroseconds / C_1K;
@@ -249,7 +253,7 @@ i8 Since::iSeconds()
 {
   _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
   
-  return m_iSeconds;
+  return (i8)m_wIvl.xIvl.m_uSecond;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -259,7 +263,7 @@ i8 Since::iMicroseconds()
 {
   _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
   
-  return m_iMicroseconds;
+  return (i8)m_wIvl.xIvl.m_uMicro;
 }
 
 /*----------------------------------------------------------------------------*/
