@@ -145,10 +145,26 @@ void Encoding::vMorphEncoding(_ColEnc* aColEnc)
   
   ASSERT(MC_STR_FIT_1L == aColEnc->m_eMetaCode);
   ASSERT(C_UNKNOWN != aColEnc->m_i_Tail);
-  
+
+  // calc the adjustment required because MC_STR_FIT_1L becoming MC_STR_TAIL_2T
+  ASSERT(aColEnc->m_nDataSize > C_2B);
+  i8 nOffsetAdj = - (aColEnc->m_nDataSize - C_2B);
+  ASSERT(nOffsetAdj < 0);
+
   return;
   
-  // more...
+  // morph the given column into a MC_STR_TAIL_2T
+  aColEnc->m_eMetaCode = MC_STR_TAIL_2T;
+  aColEnc->m_wDataCode = aColEnc->m_i_Tail;
+  aColEnc->m_nDataSize = C_2B;
+  
+  // adjust columns based on MC_STR_FIT_1L becoming MC_STR_TAIL_2T
+  for (i8 i_Col = aColEnc->m_pCol->iColumnNo() ; i_Col < m_nColumns; i_Col++) {
+    xaColEnc[i_Col].m_i_Offset += nOffsetAdj;
+    xaColEnc[i_Col].m_i_Till   += nOffsetAdj;
+  }
+  
+  m_nBytesNeeded += nOffsetAdj;
 }
 
 /*----------------------------------------------------------------------------*/
