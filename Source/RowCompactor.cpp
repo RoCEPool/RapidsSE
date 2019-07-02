@@ -367,6 +367,9 @@ _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
   vEncodeTails(pInflatedRow);
   
+  SP_Encoding spEncoding;
+  vTrace("\nPost EncodeTails:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for space in target nub
   
@@ -426,7 +429,6 @@ void RowCompactor::vEncodeTails(Row* pInflatedRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  
   i8 nCols = m_pColVec->nItems();
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
@@ -438,14 +440,16 @@ void RowCompactor::vEncodeTails(Row* pInflatedRow)
    
     TailStr xFindTail(pInflatedRow->m_waColVal[i_Col].m_szVch);
     
-    if (C_UNKNOWN != iFindTail( (TailLine*) & xFindTail) )
+    i8 i_Tail = iFindTail( (TailLine*) & xFindTail );
+    if (C_UNKNOWN == i_Tail)
       continue;
 
     // -- we have found a matching tail --
     
     _ColEnc* aColEnc = & m_pEncoding->xaColEnc[i_Col];
+    aColEnc->m_i_Tail = i_Tail;
     
-
+    // more...
     
   }
   

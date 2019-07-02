@@ -128,12 +128,12 @@ void Encoding::vEncode(Row* pRow)
   
   vInitialEncoding(pRow);
   
-  SP_Encoding spEncoding;
-  vTrace("\n%s\n"_Stz,spEncoding.sz(this));
+  //SP_Encoding spEncoding;
+  //vTrace("\n%s\n"_Stz,spEncoding.sz(this));
   
   vSplitOver();
   
-  vTrace("\n%s\n"_Stz,spEncoding.sz(this));
+  //vTrace("\n%s\n"_Stz,spEncoding.sz(this));
 }
 
 /*----------------------------------------------------------------------------*/
