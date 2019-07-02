@@ -253,6 +253,8 @@ bool RowExtractor::bExtractElement(DtmVal* pDtmVal, char** aacRecCrs,
       
     case DM_IVL:
       b = StrLib::bExtractInterval(aacRecCrs, iSecond, iMilli);
+      pDtmVal->m_wDtm.xIvl.m_uSecond = iSecond;
+      pDtmVal->m_wDtm.xIvl.m_uMicro  = iMilli*C_1K;
       break;
       
     case DM_TME:
