@@ -33,6 +33,7 @@ namespace Transform
     Row(ColumnVec* pColVec);
     ~Row(void) noexcept(false);
   
+    void vAdjustAddresses(Row* pCopiedFromRow);
     void vAppendValue(DtmVal* pDtmVal, Column* pCol);
     void vDontDecodeVch(void);
     i8   iHashColumn(Column* pCol);
