@@ -52,6 +52,7 @@ namespace Rows
   
     i8   nBytesNeeded(void);
     void vEncode(Row* pRow);
+    void vMorphEncoding(_ColEnc* aColEnc);
     bool bOverFlowed(void);
 
   private:

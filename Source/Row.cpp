@@ -99,6 +99,28 @@ Row::~Row(void) noexcept(false)
 
 
 /*----------------------------------------------------------------------------*/
+/* adjust addresses                                                           */
+/*----------------------------------------------------------------------------*/
+void Row::vAdjustAddresses(Row* pCopiedFromRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  
+  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
+    
+    Column* pCol = m_pColVec->pGet(i_Col);
+    
+    if (DM_VCH != pCol->eDatumType())
+      continue;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+    i8 nDeltaBytes = nSub(m_waColVal[i_Col].m_szVch,pCopiedFromRow);
+    
+    m_waColVal[i_Col].m_szVch = aAdd<Stz*>(this,nDeltaBytes);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* append column value to row                                                 */
 /*----------------------------------------------------------------------------*/
 void Row::vAppendValue(DtmVal* pDtmVal, Column* pCol)

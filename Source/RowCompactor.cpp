@@ -327,8 +327,23 @@ bool RowCompactor::bCollectSample(Row* pInflatedRow)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect sample
   
+  SP_Row spRow;
+  vTrace("bCollectSample:: %s\n"_Stz,spRow.sz(pInflatedRow));
+  
   if (Row* pSampleRow = m_pRowSamples->aAllotRow(m_pColVec)) {
+    
     MemLib::vCopy(pSampleRow,pInflatedRow,sizeof(Row),CN_ROWCOMPACTOR);
+    
+    pSampleRow->vAdjustAddresses(pInflatedRow);
+    
+    vTrace("pSampleRow:: %s\n"_Stz,spRow.sz(pSampleRow));
+    
+    Row* pRecheckRow = m_pRowSamples->aFirstRow();
+    while (pRecheckRow) {
+      vTrace("pRecheckRow: %s\n"_Stz,spRow.sz(pRecheckRow));
+      pRecheckRow = m_pRowSamples->aNextRow(pRecheckRow);
+    }
+
     return true;
   }
 
@@ -449,8 +464,8 @@ void RowCompactor::vEncodeTails(Row* pInflatedRow)
     _ColEnc* aColEnc = & m_pEncoding->xaColEnc[i_Col];
     aColEnc->m_i_Tail = i_Tail;
     
-    // more...
-    
+    // morph the encoding
+    m_pEncoding->vMorphEncoding(aColEnc);
   }
   
 }

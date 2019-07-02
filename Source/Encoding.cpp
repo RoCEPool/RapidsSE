@@ -137,6 +137,21 @@ void Encoding::vEncode(Row* pRow)
 }
 
 /*----------------------------------------------------------------------------*/
+/* morph the given column encoding (to MC_STR_TAIL_2T)                        */
+/*----------------------------------------------------------------------------*/
+void Encoding::vMorphEncoding(_ColEnc* aColEnc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  
+  ASSERT(MC_STR_FIT_1L == aColEnc->m_eMetaCode);
+  ASSERT(C_UNKNOWN != aColEnc->m_i_Tail);
+  
+  return;
+  
+  // more...
+}
+
+/*----------------------------------------------------------------------------*/
 /* does this encoding overflow the head?                                      */
 /*----------------------------------------------------------------------------*/
 bool Encoding::bOverFlowed(void)
