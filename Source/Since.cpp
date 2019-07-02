@@ -54,10 +54,10 @@ void Since::vGetTimeOfDay(i8& iSeconds, i8& iMicroseconds, SysCall& oSysCall)
   
   oSysCall.vSuccess();
   
-  uSeconds      = xTimeVal.tv_sec;
-  uMicroseconds = xTimeVal.tv_usec;
+  iSeconds      = xTimeVal.tv_sec;
+  iMicroseconds = xTimeVal.tv_usec;
   
-  ASSERT(uMicroseconds < C_1M); // logic check
+  ASSERT(iMicroseconds < C_1M); // logic check
 }
 
 /*----------------------------------------------------------------------------*/
