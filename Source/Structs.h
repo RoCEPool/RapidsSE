@@ -34,8 +34,8 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // interval (seconds & milliseconds)
   struct _Ivl {
-    u8 m_uMilli     : 10 ; // 0..1023
-    u8 m_uSecond    : 54 ; // 0..1.8E16
+    u8 m_uMicro     : 20 ; // 0..1M
+    u8 m_uSecond    : 44 ; // 0..1.7E13
     //               ---
     //                64
     //               ===
