@@ -94,11 +94,15 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
       StrLib::vAppendString(&szCrs,(char*)".."_Stz);
       StrLib::vAppendDecimal(&szCrs,pEncoding->xaColEnc[i_Col].m_i_Till);
     }
-    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     
     StrLib::vAppendPad(&szCrs,caLine,60);
+    StrLib::vAppendDecimal(&szCrs,pEncoding->xaColEnc[i_Col].m_i_Tail);
+
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     
-   if (C_DATUM_NULL == pEncoding->xaColEnc[i_Col].m_wDataCode.m_iInt) {
+    StrLib::vAppendPad(&szCrs,caLine,65);
+    
+    if (C_DATUM_NULL == pEncoding->xaColEnc[i_Col].m_wDataCode.m_iInt) {
       StrLib::vAppendString(&szCrs,(char*)"null"_Stz);
       continue;
     }

@@ -76,6 +76,8 @@ Encoding::Encoding(ColumnVec* pColVec, i8 nHeadSize, i8 nMetaSize)
     xaColEnc[i_Col].m_i_Till     = 0;
     xaColEnc[i_Col].m_bSplit     = false;
     
+    xaColEnc[i_Col].m_i_Tail     = C_UNKNOWN;
+    
     xaColEnc[i_Col].m_bIsSample  = false;
     xaColEnc[i_Col].m_nRepeats   = 0;
     xaColEnc[i_Col].m_i_RepeatOf = C_UNKNOWN;
@@ -480,6 +482,8 @@ void Encoding::vReset(void)
     xaColEnc[i_Col].m_i_Till     = 0;
     xaColEnc[i_Col].m_bSplit     = false;
     
+    xaColEnc[i_Col].m_i_Tail     = C_UNKNOWN;
+
     xaColEnc[i_Col].m_bIsSample  = false;
     xaColEnc[i_Col].m_nRepeats   = 0;
     xaColEnc[i_Col].m_i_RepeatOf = C_UNKNOWN;

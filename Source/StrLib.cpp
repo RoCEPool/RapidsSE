@@ -46,8 +46,15 @@ void StrLib::vAppendChar(char** pz, char cChar)
 /*----------------------------------------------------------------------------*/
 void StrLib::vAppendDecimal(char** pz, i8 iNumber)
 {
+  if (iNumber < 0) {
+    *((*pz)++) = '-';
+    
+    iNumber *= -1;
+  }
+  
   char* pBwd = *pz;
   char* pFwd = *pz;
+  
   
   i8 v = iNumber;
   
