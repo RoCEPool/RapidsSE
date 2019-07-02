@@ -464,8 +464,8 @@ void RowCompactor::vEncodeTails(Row* pInflatedRow)
     _ColEnc* aColEnc = & m_pEncoding->xaColEnc[i_Col];
     aColEnc->m_i_Tail = i_Tail;
     
-    // more...
-    
+    // morph the encoding
+    m_pEncoding->vMorphEncoding(aColEnc);
   }
   
 }
