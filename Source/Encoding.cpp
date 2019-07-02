@@ -77,10 +77,6 @@ Encoding::Encoding(ColumnVec* pColVec, i8 nHeadSize, i8 nMetaSize)
     xaColEnc[i_Col].m_bSplit     = false;
     
     xaColEnc[i_Col].m_i_Tail     = C_UNKNOWN;
-    
-    xaColEnc[i_Col].m_bIsSample  = false;
-    xaColEnc[i_Col].m_nRepeats   = 0;
-    xaColEnc[i_Col].m_i_RepeatOf = C_UNKNOWN;
   }
   
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
@@ -483,10 +479,6 @@ void Encoding::vReset(void)
     xaColEnc[i_Col].m_bSplit     = false;
     
     xaColEnc[i_Col].m_i_Tail     = C_UNKNOWN;
-
-    xaColEnc[i_Col].m_bIsSample  = false;
-    xaColEnc[i_Col].m_nRepeats   = 0;
-    xaColEnc[i_Col].m_i_RepeatOf = C_UNKNOWN;
   }
   
 #ifdef WITH_CHECK_INITIALISED

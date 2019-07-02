@@ -19,10 +19,6 @@ namespace Rows
     bool m_bSplit;     // overflow occurs at this point
     
     i8   m_i_Tail;     // absolute index of tail
-    
-    bool m_bIsSample;  // is a sample row
-    i8   m_nRepeats;   // how many additional times this (string) value repeats
-    i8   m_i_RepeatOf; // which row this is a repeat of
   };
   
   //----------------------------------------------------------------------------
