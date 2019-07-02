@@ -42,7 +42,7 @@ i8 SN_Ivl::i(char** aacCrs, Column* pCol, Formatters* pScnFmt)
     throw C_UNKNOWN;
   
   m_wDtm.xIvl.m_uSecond = iSecond;
-  m_wDtm.xIvl.m_uMicro  = iMilli*1000;
+  m_wDtm.xIvl.m_uMicro  = iMilli * C_1K;
   
   return m_wDtm.m_iI8;
 }

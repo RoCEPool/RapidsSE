@@ -88,7 +88,7 @@ i8 Dtm::iIvl(i8 iSecond, i8 iMilli)
   Dtm xDtm;
   
   xDtm.xIvl.m_uSecond = iSecond;
-  xDtm.xIvl.m_uMicro  = iMilli*1000;
+  xDtm.xIvl.m_uMicro  = iMilli * C_1K;
   
   return xDtm.m_iI8;
 }
