@@ -53,7 +53,7 @@ namespace Rows
     ~Encoding(void) noexcept(false);
   
     i8   nBytesNeeded(void);
-    void vEncode(Row* pRow, IrwBuffer* pRowSamples);
+    void vEncode(Row* pRow);
     bool bOverFlowed(void);
 
   private:

@@ -122,7 +122,7 @@ i8 Encoding::nBytesNeeded(void)
 /*----------------------------------------------------------------------------*/
 /* encode row                                                                 */
 /*----------------------------------------------------------------------------*/
-void Encoding::vEncode(Row* pRow, IrwBuffer* pRowSamples)
+void Encoding::vEncode(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   

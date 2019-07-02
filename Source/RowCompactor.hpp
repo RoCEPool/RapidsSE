@@ -56,9 +56,8 @@ namespace Rows
     bool bCompactInflated(Row* pInflatedRow);
     void vCompactSamples(void);
 
-    void vCreateTails(void);
+    void vEncodeTails(Row* pInflatedRow);
     i8   iFindTail(TailLine* aFindLine);
-    void vFindTails(Encoding* pEncoding);
 
     void vPackCrw(Encoding* pEncoding);
     

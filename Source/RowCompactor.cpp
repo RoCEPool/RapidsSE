@@ -286,11 +286,11 @@ void RowCompactor::vAnalyzeVch(Column* pCol, Row* pOuterRow, Row* pInnerRow)
     return;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 2) is there a tail for the vch
+  // 2) is there a tail for the vch?
   
   TailStr xFindTail(pOuterRow->m_waColVal[i_Col].m_szVch);
   
-  if (C_UNKNOWN != iFindTail((TailLine*) & xFindTail))
+  if (C_UNKNOWN != iFindTail( (TailLine*) & xFindTail) )
     return;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -360,7 +360,12 @@ _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // encode the inflated row
   
-  m_pEncoding->vEncode(pInflatedRow,m_pRowSamples);
+  m_pEncoding->vEncode(pInflatedRow);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // encode tails
+  
+  vEncodeTails(pInflatedRow);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for space in target nub
@@ -415,19 +420,35 @@ void RowCompactor::vCompactSamples(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* go thru sample inflated rows and create tails of duplicates                */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vCreateTails(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* mark up the encoding of a row with tails                                   */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vFindTails(Encoding* pEncoding)
+void RowCompactor::vEncodeTails(Row* pInflatedRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  
+  i8 nCols = m_pColVec->nItems();
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    
+    Column* pCol = m_pColVec->pGet(i_Col);
+    eDM eDatum = pCol->eDatumType();
+    
+    if (DM_VCH != eDatum)
+      continue;
+   
+    TailStr xFindTail(pInflatedRow->m_waColVal[i_Col].m_szVch);
+    
+    if (C_UNKNOWN != iFindTail( (TailLine*) & xFindTail) )
+      continue;
+
+    // -- we have found a matching tail --
+    
+    _ColEnc* aColEnc = & m_pEncoding->xaColEnc[i_Col];
+    
+
+    
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/
