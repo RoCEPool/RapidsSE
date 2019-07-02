@@ -160,11 +160,15 @@ void Since::vNow(void)
   
   SysCall oSysCall;
   
-  i8 iSeconds = (i8)m_wIvl.xIvl.m_uSecond;
-  i8 iMricos  = (i8)m_wIvl.xIvl.m_uMicro;
+  i8 iSeconds;
+  i8 iMricos;
   vGetTimeOfDay(iSeconds,
                 iMricos,
                 oSysCall);
+  
+  m_wIvl.xIvl.m_uSecond = iSeconds;
+  m_wIvl.xIvl.m_uMicro = iMricos;
+  
 }
 
 /*----------------------------------------------------------------------------*/
