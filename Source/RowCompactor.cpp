@@ -128,12 +128,10 @@ void RowCompactor::vCompactEnd(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-#ifdef WITH_STR_DUPLICATES
   if (m_bCollecting) {
     m_bCollecting = false;
     vCompactSamples();
   }
-#endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -325,13 +323,6 @@ void RowCompactor::vAnalyzeVch(Column* pCol, Row* pOuterRow, Row* pInnerRow)
 bool RowCompactor::bCollectSample(Row* pInflatedRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-
-#ifndef WITH_STR_DUPLICATES
-  
-  m_bCollecting = false;
-  return false;
-  
-#else
   
   if (m_pRowSamples->nItems() >= C_SAMPLE_ROWS) {
     vTrace("Samples collected\n"_Stz);
@@ -363,8 +354,6 @@ bool RowCompactor::bCollectSample(Row* pInflatedRow)
 //  }
 
   return true;
-  
- #endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -425,7 +414,9 @@ void RowCompactor::vCompactSamples(void)
   
   ASSERT(! m_bCollecting);
   
+#ifdef WITH_STR_DUPLICATES
   vAnalyzeSamples();
+#endif
   
   SP_Row spRow;
   
