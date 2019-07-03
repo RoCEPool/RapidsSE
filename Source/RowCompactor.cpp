@@ -384,7 +384,7 @@ bool RowCompactor::bCompactInflated(Row* pInflatedRow)
 _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // encode the inflated row
+  // initially encode the inflated row
   
   m_pEncoding->vEncode(pInflatedRow);
   
@@ -395,6 +395,11 @@ _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   vEncodeTails(pInflatedRow);
 #endif
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // split encoding between head and overflow
+
+  m_pEncoding->vSplitOver();
+  
   SP_Encoding spEncoding;
   vTrace("\nEncoding:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
   
