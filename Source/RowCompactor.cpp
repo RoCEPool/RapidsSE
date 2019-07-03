@@ -471,12 +471,14 @@ void RowCompactor::vEncodeTails(Row* pInflatedRow)
   i8 nCols = m_pColVec->nItems();
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
-    Column* pCol = m_pColVec->pGet(i_Col);
-    eDM eDatum = pCol->eDatumType();
+    _ColEnc* aColEnc = & m_pEncoding->xaColEnc[i_Col];
     
-    if (DM_VCH != eDatum)
+    if (DM_VCH != aColEnc->m_eDatum)
       continue;
    
+    if (StrLib::iLength(pInflatedRow->m_waColVal[i_Col].m_azStr) < 8)
+      continue;
+
     TailStr xFindTail(pInflatedRow->m_waColVal[i_Col].m_szVch);
     
     i8 i_Tail = iFindTail( (TailLine*) & xFindTail );
@@ -485,7 +487,6 @@ void RowCompactor::vEncodeTails(Row* pInflatedRow)
 
     // -- we have found a matching tail --
     
-    _ColEnc* aColEnc = & m_pEncoding->xaColEnc[i_Col];
     aColEnc->m_i_Tail = i_Tail;
     
     // morph the encoding

@@ -151,7 +151,7 @@ void Encoding::vMorphEncoding(_ColEnc* aColEnc)
   i8 nOffsetAdj = - (aColEnc->m_nDataSize - C_2B);
   ASSERT(nOffsetAdj < 0);
 
-  return;
+#ifdef WITH_STR_DUPLICATES
   
   // morph the given column into a MC_STR_TAIL_2T
   aColEnc->m_eMetaCode = MC_STR_TAIL_2T;
@@ -165,6 +165,8 @@ void Encoding::vMorphEncoding(_ColEnc* aColEnc)
   }
   
   m_nBytesNeeded += nOffsetAdj;
+  
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
