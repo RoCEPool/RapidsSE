@@ -8,6 +8,7 @@ namespace System
   class IvlLib
   {
   public:
+    static Dtm wGetCurrIvl(void);
   };
 }
 
