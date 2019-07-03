@@ -11,10 +11,9 @@ namespace System
     static Dtm wGetCurrTsp_local(void);
     static Dtm wGetCurrTsp_utc(void);
   
-    static Dtm wToLocal(Since* pSince);
-    static Dtm wToUTC(Since* pSince);
+    static Dtm wToTsp_local(Dtm wIvl);
+    static Dtm wToTsp_utc(Dtm wIvl);
   };
-
 }
 
 /*============================================================================*/

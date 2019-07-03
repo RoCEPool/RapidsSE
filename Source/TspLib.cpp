@@ -23,7 +23,7 @@ Dtm TspLib::wGetCurrTsp_local(void)
   time_t iSecondsSincePosixEpoch = wIvl.xIvl.m_uSecond;
   struct tm* aLocalDateTime = localtime(&iSecondsSincePosixEpoch);
   if (! aLocalDateTime) {
-    vWarn("localtime() error; errno=%d"_Stz,errno);
+    vWarn("wGetCurrTsp_local: localtime() error; errno=%d"_Stz,errno);
     wTsp.vSetNull();
     return wTsp;
   }
@@ -55,7 +55,7 @@ Dtm TspLib::wGetCurrTsp_utc(void)
   time_t iSecondsSincePosixEpoch = wIvl.xIvl.m_uSecond;
   struct tm* aUtcDateTime = gmtime(&iSecondsSincePosixEpoch);
   if (! aUtcDateTime) {
-    vWarn("gmtime() error; errno=%d"_Stz,errno);
+    vWarn("wGetCurrTsp_utc: gmtime() error; errno=%d"_Stz,errno);
     wTsp.vSetNull();
     return wTsp;
   }
@@ -73,19 +73,22 @@ Dtm TspLib::wGetCurrTsp_utc(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set time using since                                                       */
+/* convert interval to local timestamp                                        */
 /*----------------------------------------------------------------------------*/
-Dtm TspLib::wToLocal(Since* pSincePosixEpoch)
+Dtm TspLib::wToTsp_local(Dtm wIvl)
 {
-  time_t iSecondsSincePosixEpoch = pSincePosixEpoch->iSeconds();
+  Dtm wDtm;
+  
+  time_t iSecondsSincePosixEpoch = wIvl.xIvl.m_uSecond;
   
   // convert secondsSince into a tm structure for local time zone
   struct tm* aLocalDateTime = localtime(&iSecondsSincePosixEpoch);
 
-  if (! aLocalDateTime)
-    vWarn("localtime_r() error; errno=%d"_Stz,errno);
-  
-  Dtm wDtm;
+  if (! aLocalDateTime) {
+    vWarn("wToTsp_local: localtime_r() error; errno=%d"_Stz,errno);
+    wDtm.vSetNull();
+    return wDtm;
+  }
   
   wDtm.xTsp.m_uYearDelta = aLocalDateTime->tm_year;
   wDtm.xTsp.m_uMonth     = aLocalDateTime->tm_mon + 1;
@@ -93,26 +96,29 @@ Dtm TspLib::wToLocal(Since* pSincePosixEpoch)
   wDtm.xTsp.m_uHour      = aLocalDateTime->tm_hour;
   wDtm.xTsp.m_uMinute    = aLocalDateTime->tm_min;
   wDtm.xTsp.m_uSecond    = aLocalDateTime->tm_sec;
-  wDtm.xTsp.m_uMicro     = (int)pSincePosixEpoch->iMicroseconds();
+  wDtm.xTsp.m_uMicro     = wIvl.xIvl.m_uMicro;
   wDtm.xTsp.m_uSpare     = 0;
 
   return wDtm;
 }
 
 /*----------------------------------------------------------------------------*/
-/* vSet: set time using since                                                 */
+/* convert interval to utc timestamp                                          */
 /*----------------------------------------------------------------------------*/
-Dtm TspLib::wToUTC(Since* pSincePosixEpoch)
+Dtm TspLib::wToTsp_utc(Dtm wIvl)
 {
-  time_t iSecondsSincePosixEpoch = pSincePosixEpoch->iSeconds();
+  Dtm wDtm;
+  
+  time_t iSecondsSincePosixEpoch = wIvl.xIvl.m_uSecond;
   
   // convert secondsSince into a tm structure for UTC/GMT time zone
   struct tm* aUtcDateTime = gmtime(&iSecondsSincePosixEpoch);
   
-  if (! aUtcDateTime)
-    vWarn("gmtime() error; errno=%d"_Stz,errno);
-  
-  Dtm wDtm;
+  if (! aUtcDateTime) {
+    vWarn("wToTsp_utc: gmtime() error; errno=%d"_Stz,errno);
+    wDtm.vSetNull();
+    return wDtm;
+  }
 
   wDtm.xTsp.m_uYearDelta = aUtcDateTime->tm_year;
   wDtm.xTsp.m_uMonth     = aUtcDateTime->tm_mon + 1;
@@ -120,7 +126,7 @@ Dtm TspLib::wToUTC(Since* pSincePosixEpoch)
   wDtm.xTsp.m_uHour      = aUtcDateTime->tm_hour;
   wDtm.xTsp.m_uMinute    = aUtcDateTime->tm_min;
   wDtm.xTsp.m_uSecond    = aUtcDateTime->tm_sec;
-  wDtm.xTsp.m_uMicro     = (int)pSincePosixEpoch->iMicroseconds();
+  wDtm.xTsp.m_uMicro     = wIvl.xIvl.m_uMicro;
   wDtm.xTsp.m_uSpare     = 0;
 
   return wDtm;
