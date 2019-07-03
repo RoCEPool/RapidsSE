@@ -8,8 +8,8 @@ namespace System
   class TspLib
   {
   public:
-    static Dtm wGetLocalNow(void);
-    static Dtm wGetUTCNow(void);
+    static Dtm wGetCurrTsp_local(void);
+    static Dtm wGetCurrTsp_utc(void);
   
     static Dtm wToLocal(Since* pSince);
     static Dtm wToUTC(Since* pSince);

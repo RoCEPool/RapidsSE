@@ -11,8 +11,8 @@
 /*----------------------------------------------------------------------------*/
 /* get current local timestamp                                                */
 /*----------------------------------------------------------------------------*/
-Dtm TspLib::wGetLocalNow(void)
-{
+Dtm TspLib::wGetCurrTsp_local(void)
+{  
   // get current epoch time
   time_t iSecondsSincePosixEpoch = time(0);
   
@@ -39,7 +39,7 @@ Dtm TspLib::wGetLocalNow(void)
 /*----------------------------------------------------------------------------*/
 /* get current UTC timestamp                                                  */
 /*----------------------------------------------------------------------------*/
-Dtm TspLib::wGetUTCNow(void)
+Dtm TspLib::wGetCurrTsp_utc(void)
 {
   // get current epoch time
   time_t iSecondsSincePosixEpoch = time(0);
