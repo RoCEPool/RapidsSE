@@ -11,6 +11,11 @@ namespace System
     static Dtm wGetCurrIvl(void);
   
     static Dtm wToIvl(Dtm wTsp);
+  
+    //! to be coded
+  
+    static Dtm wAdd(Dtm wIvl1, Dtm wIvl2);
+    static Dtm wSubtract(Dtm wIvl1, Dtm wIvl2);
   };
 }
 
