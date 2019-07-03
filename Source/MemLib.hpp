@@ -67,10 +67,6 @@ namespace Base
   
     static void  vMemoryMap(void);
   
-  private:
-    template <class T>
-    static void vPrintColor(Stz* pFmt, const T& ForthValue, Stz* pColour);
-  
   public:
     
     /*----------------------------------------------------------------------------*/
