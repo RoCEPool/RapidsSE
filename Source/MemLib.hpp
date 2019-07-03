@@ -25,8 +25,6 @@ namespace Base
 
   static const i8 C_BYTES_PER_LINE   = 16;
   
-  class Word;
-  
   class MemLib
   {
   private:
@@ -38,7 +36,6 @@ namespace Base
     static void  vAsciiDump(Stz* aText, i8 nBytes);
     static void  vCheckInitialised(void* aAddress, eCN eClass);
     static void  vCheckInitialised(void* aAddress, i8 nBytes);
-    //static void  vCopy(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo);
     static bool  bCompareBytes(const void* aVal1, const void* aVal2, i8 nBytes);
     static i8    iCompareBytes(const void* aVal1, const void* aVal2, i8 nBytes);
     static bool  bCompareWords(const void* aVal1, const void* aVal2, i8 nBytes);
@@ -81,13 +78,6 @@ namespace Base
     /*----------------------------------------------------------------------------*/
     static inline i8 iCompareWords(const void* pVal1, const void* pVal2, i8 nBytes)
     {
-      //  if (gpAttachMap) {
-      //    gpAttachMap->m_oStatistics.Memory.m_iCompareTotal += nBytes;
-      //  }
-      
-      // nBytes should be a multiple of 8
-      //RASSERT(nBytes % 8 == 0);
-      
       const i8 *iWord1 = (const i8*)pVal1;
       const i8 *iWord2 = (const i8*)pVal2;
       
@@ -105,9 +95,7 @@ namespace Base
     /*----------------------------------------------------------------------------*/
     static inline void vCopy(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
     {
-      //RASSERT(nBytes >= 0);
-      
-      memcpy(pDst,pSrc,nBytes);
+      memcpy(pDst,pSrc,(size_t)nBytes);
       
   #ifdef WITH_STATISTICS_COUNTERS
       if (gpAttachMap) {
