@@ -539,6 +539,46 @@ bool MemLib::bOnBoundary(void* aAddress, i8 nByteBoundary)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is address on a cache line boundary?                                       */
+/*----------------------------------------------------------------------------*/
+bool MemLib::bOnCacheLineBoundary(void* aAddress)
+{
+  bool bOn = bOnBoundary(aAddress,sizeof(CacheLine));
+  
+  return bOn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is address on a double word boundary?                                      */
+/*----------------------------------------------------------------------------*/
+bool MemLib::bOnDoubleWordBoundary(void* aAddress)
+{
+  bool bOn = bOnBoundary(aAddress,sizeof(DoubleWord));
+  
+  return bOn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is address on a quad word boundary?                                        */
+/*----------------------------------------------------------------------------*/
+bool MemLib::bOnQuadWordBoundary(void* aAddress)
+{
+  bool bOn = bOnBoundary(aAddress,sizeof(QuadWord));
+  
+  return bOn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is address on a word boundary?                                             */
+/*----------------------------------------------------------------------------*/
+bool MemLib::bOnWordBoundary(void* aAddress)
+{
+  bool bOn = bOnBoundary(aAddress,sizeof(Word));
+
+  return bOn;
+}
+
+/*----------------------------------------------------------------------------*/
 /* compute the memory quanta required to hold n bytes                         */
 /*----------------------------------------------------------------------------*/
 i8 MemLib::nQuantaRequired(i8 nBytes, i8 nSizeQuanta)
