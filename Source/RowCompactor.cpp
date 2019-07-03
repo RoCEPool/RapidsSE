@@ -130,6 +130,7 @@ void RowCompactor::vCompactEnd(void)
   
 #ifdef WITH_STR_DUPLICATES
   if (m_bCollecting) {
+    m_bCollecting = false;
     vCompactSamples();
   }
 #endif
@@ -159,8 +160,13 @@ bool RowCompactor::bCompactRow(Row* pInflatedRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  if (bCollectSample(pInflatedRow))
-    return true;
+  if (m_bCollecting) {
+
+    if (bCollectSample(pInflatedRow))
+      return true;
+    
+    vCompactSamples();
+  }
   
   bool bResult = bCompactInflated(pInflatedRow);
     
@@ -322,15 +328,20 @@ bool RowCompactor::bCollectSample(Row* pInflatedRow)
 
 #ifndef WITH_STR_DUPLICATES
   
+  m_bCollecting = false;
   return false;
   
 #else
-
-  if (! m_bCollecting)
-    return false;
-    
+  
   if (m_pRowSamples->nItems() >= C_SAMPLE_ROWS) {
     vTrace("Samples collected\n"_Stz);
+    m_bCollecting = false;
+    return false;
+  }
+  
+  Row* pSampleRow = m_pRowSamples->aAllotRow(m_pColVec);
+  if (! pSampleRow) {
+    vTrace("Samples full\n"_Stz);
     m_bCollecting = false;
     return false;
   }
@@ -339,41 +350,21 @@ bool RowCompactor::bCollectSample(Row* pInflatedRow)
   // collect sample
   
   SP_Row spRow;
-  vTrace("bCollectSample:: %s\n"_Stz,spRow.sz(pInflatedRow));
+  MemLib::vCopy(pSampleRow,pInflatedRow,sizeof(Row),CN_ROWCOMPACTOR);
   
-  if (Row* pSampleRow = m_pRowSamples->aAllotRow(m_pColVec)) {
-    
-    MemLib::vCopy(pSampleRow,pInflatedRow,sizeof(Row),CN_ROWCOMPACTOR);
-    
-    pSampleRow->vAdjustAddresses(pInflatedRow);
-    
-    vTrace("pSampleRow:: %s\n"_Stz,spRow.sz(pSampleRow));
-    
-    Row* pRecheckRow = m_pRowSamples->aFirstRow();
-    while (pRecheckRow) {
-      vTrace("pRecheckRow: %s\n"_Stz,spRow.sz(pRecheckRow));
-      pRecheckRow = m_pRowSamples->aNextRow(pRecheckRow);
-    }
-
-    return true;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pSampleRow->vAdjustAddresses(pInflatedRow);
   
-  vTrace("No sample space left\n"_Stz);
+  vTrace("pSampleRow:: %s\n"_Stz,spRow.sz(pSampleRow));
   
-  vCompactSamples();
-
-//  SP_Row spRow;
-//  Row* pSampleRow = m_pRowSamples->aFirstRow();
-//  while (pSampleRow) {
-//    vTrace("Sample: %s\n"_Stz,spRow.sz(pSampleRow));
-//    pSampleRow = m_pRowSamples->aNextRow(pSampleRow);
+//  Row* pRecheckRow = m_pRowSamples->aFirstRow();
+//  while (pRecheckRow) {
+//    vTrace("pRecheckRow: %s\n"_Stz,spRow.sz(pRecheckRow));
+//    pRecheckRow = m_pRowSamples->aNextRow(pRecheckRow);
 //  }
- 
-  return false;
 
-#endif
+  return true;
+  
+ #endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -432,8 +423,7 @@ void RowCompactor::vCompactSamples(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  ASSERT(m_bCollecting);
-  m_bCollecting = false;
+  ASSERT(! m_bCollecting);
   
   vAnalyzeSamples();
   
