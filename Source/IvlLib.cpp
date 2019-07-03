@@ -35,6 +35,30 @@ Dtm IvlLib::wGetCurrIvl(void)
   return wDtm;
 }
 
+/*----------------------------------------------------------------------------*/
+/* convert timestamp to interval                                              */
+/*----------------------------------------------------------------------------*/
+Dtm IvlLib::wToIvl(Dtm wTsp)
+{
+  Dtm wIvl;
+  
+  struct tm xDateTime;
+  
+  xDateTime.tm_year = wTsp.xTsp.m_uYearDelta;
+  xDateTime.tm_mon  = wTsp.xTsp.m_uMonth - 1;
+  xDateTime.tm_mday = wTsp.xTsp.m_uDay;
+  xDateTime.tm_hour = wTsp.xTsp.m_uHour;
+  xDateTime.tm_min  = wTsp.xTsp.m_uMinute;
+  xDateTime.tm_sec  = wTsp.xTsp.m_uSecond;
+
+  time_t iSecondsSincePosixEpoch = timegm(&xDateTime);
+  
+  wIvl.xIvl.m_uSecond = iSecondsSincePosixEpoch;
+  wIvl.xIvl.m_uSecond = wTsp.xTsp.m_uMicro;
+  
+  return wIvl;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

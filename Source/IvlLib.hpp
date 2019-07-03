@@ -9,6 +9,8 @@ namespace System
   {
   public:
     static Dtm wGetCurrIvl(void);
+  
+    static Dtm wToIvl(Dtm wTsp);
   };
 }
 
