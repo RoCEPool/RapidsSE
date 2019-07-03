@@ -104,77 +104,77 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
     
     if (C_DATUM_NULL == pEncoding->xaColEnc[i_Col].m_wDataCode.m_iInt) {
       StrLib::vAppendString(&szCrs,(char*)"null"_Stz);
-      continue;
     }
-      
-    switch (eDatum) {
-      case DM_BCD: {
-        SP_Bcd SP_Bcd;
-        StrLib::vAppendString(&szCrs,
-          (char*)SP_Bcd.sz(pEncoding->xaColEnc[i_Col].m_wDataCode.m_iBcd));
-        break;
-      }
+    else {
+      switch (eDatum) {
+        case DM_BCD: {
+          SP_Bcd SP_Bcd;
+          StrLib::vAppendString(&szCrs,
+            (char*)SP_Bcd.sz(pEncoding->xaColEnc[i_Col].m_wDataCode.m_iBcd));
+          break;
+        }
 
-      case DM_BOL: {
-        SP_Bol SP_Bol;
-        StrLib::vAppendString(&szCrs,
-          (char*)SP_Bol.sz(pEncoding->xaColEnc[i_Col].m_wDataCode.m_iBol));
-        break;
+        case DM_BOL: {
+          SP_Bol SP_Bol;
+          StrLib::vAppendString(&szCrs,
+            (char*)SP_Bol.sz(pEncoding->xaColEnc[i_Col].m_wDataCode.m_iBol));
+          break;
+        }
+          
+        case DM_DTE: {
+          SP_Dte SP_Dte;
+          StrLib::vAppendString(&szCrs,
+            (char*)SP_Dte.sz(pEncoding->xaColEnc[i_Col].m_wDataCode.m_iDte));
+          break;
+        }
+          
+        case DM_FLT: {
+          SP_Flt SP_Flt;
+          StrLib::vAppendString(&szCrs,
+            (char*)SP_Flt.sz(*(d8*)&pEncoding->xaColEnc[i_Col].m_wDataCode.m_iInt));
+          break;
+        }
+          
+        case DM_INT: {
+          SP_Int spInt;
+          StrLib::vAppendString(&szCrs,
+            (char*)spInt.sz(pEncoding->xaColEnc[i_Col].m_wDataCode.m_iInt));
+          break;
+        }
+          
+        case DM_IVL: {
+          SP_Ivl spIvl;
+          StrLib::vAppendString(&szCrs,
+            (char*)spIvl.sz(pEncoding->xaColEnc[i_Col].m_wDataCode.m_iIvl));
+          break;
+        }
+          
+        case DM_TME: {
+          SP_Tme SP_Tme;
+          StrLib::vAppendString(&szCrs,
+            (char*)SP_Tme.sz(pEncoding->xaColEnc[i_Col].m_wDataCode.m_iTme));
+          break;
+        }
+          
+        case DM_TSP: {
+          SP_Tsp SP_Tsp;
+          StrLib::vAppendString(&szCrs,
+            (char*)SP_Tsp.sz(pEncoding->xaColEnc[i_Col].m_wDataCode.m_iTsp));
+          break;
+        }
+          
+        case DM_VCH: {
+          SP_Vch SP_Vch;
+          StrLib::vAppendString(&szCrs,
+            (char*)SP_Vch.sz(pEncoding->xaColEnc[i_Col].m_wDataCode.m_azStr));
+          break;
+        }
+          
+        default:
+          NEVER_REACH;
       }
-        
-      case DM_DTE: {
-        SP_Dte SP_Dte;
-        StrLib::vAppendString(&szCrs,
-          (char*)SP_Dte.sz(pEncoding->xaColEnc[i_Col].m_wDataCode.m_iDte));
-        break;
-      }
-        
-      case DM_FLT: {
-        SP_Flt SP_Flt;
-        StrLib::vAppendString(&szCrs,
-          (char*)SP_Flt.sz(*(d8*)&pEncoding->xaColEnc[i_Col].m_wDataCode.m_iInt));
-        break;
-      }
-        
-      case DM_INT: {
-        SP_Int spInt;
-        StrLib::vAppendString(&szCrs,
-          (char*)spInt.sz(pEncoding->xaColEnc[i_Col].m_wDataCode.m_iInt));
-        break;
-      }
-        
-      case DM_IVL: {
-        SP_Ivl spIvl;
-        StrLib::vAppendString(&szCrs,
-          (char*)spIvl.sz(pEncoding->xaColEnc[i_Col].m_wDataCode.m_iIvl));
-        break;
-      }
-        
-      case DM_TME: {
-        SP_Tme SP_Tme;
-        StrLib::vAppendString(&szCrs,
-          (char*)SP_Tme.sz(pEncoding->xaColEnc[i_Col].m_wDataCode.m_iTme));
-        break;
-      }
-        
-      case DM_TSP: {
-        SP_Tsp SP_Tsp;
-        StrLib::vAppendString(&szCrs,
-          (char*)SP_Tsp.sz(pEncoding->xaColEnc[i_Col].m_wDataCode.m_iTsp));
-        break;
-      }
-        
-      case DM_VCH: {
-        SP_Vch SP_Vch;
-        StrLib::vAppendString(&szCrs,
-          (char*)SP_Vch.sz((char*)pEncoding->xaColEnc[i_Col].m_wDataCode.m_iInt));
-        break;
-      }
-        
-      default:
-        NEVER_REACH;
     }
-
+    
     StrLib::vAppendString(&szCrs,(char*)"\n"_Stz);
     
     StrLib::vConcat(m_caEncoding,caLine);

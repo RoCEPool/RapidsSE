@@ -471,6 +471,28 @@ void Encoding::vEncodeVch(_ColEnc& xColEnc, Dtm wVch)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* find first non-fitting column                                              */
+/*----------------------------------------------------------------------------*/
+Column* Encoding::pNonFitting(void)
+{
+  i8 i_LastCol = m_nColumns - 1;
+    
+  // last column fits? (e.g. 0..31 < 32)
+  if (xaColEnc[i_LastCol].m_i_Till < m_nHeadSize)
+    return nullptr;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  for (i8 i_Col = i_LastCol - 1; i_Col >= 0; i_Col--) {
+
+    if (xaColEnc[i_Col].m_i_Till < m_nHeadSize - C_OT_2B)
+      return xaColEnc[ (i_Col + 1) ].m_pCol;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test for null encoding                                                     */
 /*----------------------------------------------------------------------------*/
 bool Encoding::bNullEnc(_ColEnc& xColEnc, Dtm wDtm)
@@ -535,18 +557,39 @@ void Encoding::vSplitOver(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // split into head and oveflow
   
-  // find first column which does not fit into the head
-  i8 i_Col;
-  for (i_Col = 0; i_Col < m_nColumns; i_Col++) {
-    if (! bWithinHead(i_Col))
-      break;
-  }
+  Column* pSplitCol = pNonFitting();
   
-  RASSERT(i_Col < m_nColumns);
-  
+  i8 i_SplitCol = pSplitCol->iColumnNo();
+
   // split at that column
-  vSplitAt(i_Col);
+  vSplitAt(i_SplitCol);
 }
+/*----------------------------------------------------------------------------*/
+//void Encoding::vSplitOver(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+//
+//  // test if encoding fits in head
+//  if (m_nBytesNeeded <= m_nHeadSize) {
+//    m_nShiftOver = 0;
+//    return;
+//  }
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // split into head and oveflow
+//
+//  // find first column which does not fit into the head
+//  i8 i_Col;
+//  for (i_Col = 0; i_Col < m_nColumns; i_Col++) {
+//    if (! bWithinHead(i_Col))
+//      break;
+//  }
+//
+//  RASSERT(i_Col < m_nColumns);
+//
+//  // split at that column
+//  vSplitAt(i_Col);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* split columns at head size for overflow                                    */

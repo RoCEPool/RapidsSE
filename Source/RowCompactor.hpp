@@ -27,7 +27,8 @@ namespace Rows
     Encoding*  m_pEncoding;    // encoding of row
     
     HeadLine*  m_aHeadLine;    // head of crw
-    
+    OverLine*  m_aOverLine;    // over of crw
+
     // - - - - - - - - - - - -
     i8 m_nTotalBuffers;        // total number of crw buffers created
     i8 m_nTotalCrws;           // total number of rows compacted

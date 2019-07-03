@@ -60,7 +60,8 @@ RowCompactor::RowCompactor(void)
   
   m_pEncoding     = nullptr;
   m_aHeadLine     = nullptr;
-  
+  m_aOverLine     = nullptr;
+
   m_nTotalBuffers = 0;
   m_nTotalCrws    = 0;
   
@@ -115,6 +116,7 @@ void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer)
   
   m_pEncoding     = new Encoding(m_pColVec,m_nHeadSize,m_nMetaSize);
   m_aHeadLine     = nullptr;
+  m_aOverLine     = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -147,6 +149,7 @@ void RowCompactor::vCompactEnd(void)
   delete m_pEncoding;
   m_pEncoding     = nullptr;
   m_aHeadLine     = nullptr;
+  m_aOverLine     = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -202,8 +205,10 @@ void RowCompactor::vAllotCrw(void)
   m_aHeadLine = m_pCrwNub->aGetHead(i_Crw);
 
   // do we allot an over line?
-  if (! m_pEncoding->bOverFlowed())
+  if (! m_pEncoding->bOverFlowed()) {
+    m_aOverLine = nullptr;
     return;
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -218,14 +223,14 @@ void RowCompactor::vAllotCrw(void)
   
   // allot the over line
   i8 i_Over = m_pCrwNub->iAllotOver(nOverSize);
-  OverLine* aOverLine = m_pCrwNub->aGetOver(i_Over);
+  m_aOverLine = m_pCrwNub->aGetOver(i_Over);
   
   // +================================+   +================================+
   // | <W>                       [OT] |---| <U> ////////////////////////// |
   // +================================+   +================================+
   
   // link over line into head line
-  m_aHeadLine->vSetOver(aOverLine);
+  m_aHeadLine->vSetOver(m_aOverLine);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -246,11 +251,14 @@ void RowCompactor::vAnalyzeSamples(void)
     
     if (DM_VCH != eDatum)
       continue;
-    
+
     for (Row* pOuterRow = m_pRowSamples->aFirstRow();
          pOuterRow;
          pOuterRow = m_pRowSamples->aNextRow(pOuterRow)) {
 
+      if (pOuterRow->m_waColVal[i_Col].bIsNull())
+        continue;
+        
       if (StrLib::iLength(pOuterRow->m_waColVal[i_Col].m_azStr) < 8)
         continue;
     
@@ -258,6 +266,9 @@ void RowCompactor::vAnalyzeSamples(void)
            pInnerRow;
            pInnerRow = m_pRowSamples->aNextRow(pInnerRow)) {
 
+        if (pInnerRow->m_waColVal[i_Col].bIsNull())
+          continue;
+        
         vAnalyzeVch(pCol,pOuterRow,pInnerRow);
         
       }
@@ -380,11 +391,13 @@ _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // encode tails
   
+#ifdef WITH_STR_DUPLICATES
   vEncodeTails(pInflatedRow);
-  
-  SP_Encoding spEncoding;
-  vTrace("\nPost EncodeTails:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
+#endif
 
+  SP_Encoding spEncoding;
+  vTrace("\nEncoding:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for space in target nub
   

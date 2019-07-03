@@ -17,7 +17,7 @@ namespace Rows
     HeadLine(void);
     ~HeadLine(void) noexcept(false);
   
-    void vMetaCode(i8 i_Meta, w8 wArg);
+    void vMetaCode(i8 i_Meta, eMC eMetaCode);
     
     i8   nBytes(void);
     i8   nUnits(void);

@@ -67,6 +67,7 @@ namespace Rows
     void vEncodeVch(_ColEnc& xCol, Dtm wVch);
   
     void vInitialEncoding(Row* pRow);
+    Column* pNonFitting(void);
     bool bNullEnc(_ColEnc& xCol, Dtm wDtm);
     void vReset(void);
     void vSplitAt(i8 i_Col);

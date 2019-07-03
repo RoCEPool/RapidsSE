@@ -84,7 +84,7 @@ namespace Structures
   {
   protected:
   
-    i8 m__filler[6]; // fill so m_xaUnits starts on a double word boundry
+    i8 m__filler[5]; // fill so m_xaUnits starts on a double word boundry
   
     SpaceUnit m_xaUnits[BYTES / C_SPACEUNIT_QUANTA]; // array of space units
   
@@ -230,6 +230,7 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iUnitDiff(HEAD* aHead, TAIL* aTail)
 {
   SpaceUnit* aHead_unit = (SpaceUnit*)MemLib::aToBoundary(aHead,C_SPACEUNIT_QUANTA);
   SpaceUnit* aTail_unit = (SpaceUnit*)MemLib::aToBoundary(aTail,C_SPACEUNIT_QUANTA);
+  RASSERT((TAIL*)aTail_unit == aTail);
   
   // n.b. when you subtract two pointers of the same type the result is
   // the distance (in array elements) between the two. (it is not the
@@ -436,6 +437,8 @@ TAIL* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aGetTail(i8 i_Tail)
   ASSERT(m_nSpaceUnits - m_nTailUnits >= 0 && i_Tail < m_nSpaceUnits);
   
   TAIL* aTail = (TAIL*)&m_axaUnits[i_Tail];
+  
+  RASSERT(aTail == (TAIL*)MemLib::aToBoundary(aTail,C_SPACEUNIT_QUANTA));
   
   return aTail;
 }
@@ -695,6 +698,8 @@ TrayNL_t<CN,HEAD,OVER,TAIL,DESC,BYTES>::TrayNL_t(void)
 : Object(CN)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
+
+  vTrace("&m_xaUnits[0] : %p\n"_Stz,&m_xaUnits[0]);
   
   MemLib::vZero(&m__filler,sizeof(m__filler),CN);
 

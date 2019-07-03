@@ -60,9 +60,9 @@ void SP_Row::vRow(Row* pRow)
     StrLib::vAppendString(&szCrs,(char*)szDatum);
     StrLib::vAppendString(&szCrs,(char*)" "_Stz);
     
-    if (C_DATUM_NULL == pRow->m_waColVal[i_Col].m_iInt) {
+    if (pRow->m_waColVal[i_Col].bIsNull()) {
       StrLib::vAppendString(&szCrs,(char*)"null"_Stz);
-      return;
+      continue;
     }
       
     switch (eDatum) {
@@ -125,7 +125,7 @@ void SP_Row::vRow(Row* pRow)
       case DM_VCH: {
         SP_Vch SP_Vch;
         StrLib::vAppendString(&szCrs,
-                              (char*)SP_Vch.sz((char*)pRow->m_waColVal[i_Col].m_iInt));
+                              (char*)SP_Vch.sz(pRow->m_waColVal[i_Col].m_azStr));
         break;
       }
         

@@ -8,7 +8,7 @@ namespace Rows
   class OverLine : public Line
   {
   public:
-    byte m_yaByte[sizeof(Word)];      //! i think overflow is in multiples of 2W
+    byte m_yaByte[sizeof(DoubleWord)]; 
 
   public:
     OverLine(void);

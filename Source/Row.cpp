@@ -112,6 +112,9 @@ void Row::vAdjustAddresses(Row* pCopiedFromRow)
     if (DM_VCH != pCol->eDatumType())
       continue;
 
+    if (m_waColVal[i_Col].bIsNull())
+      continue;
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     i8 nDeltaBytes = nSub(m_waColVal[i_Col].m_szVch,pCopiedFromRow);
@@ -135,7 +138,7 @@ void Row::vAppendValue(DtmVal* pDtmVal, Column* pCol)
   if (DM_VCH == pCol->eDatumType()) {
     
     if (pDtmVal->bIsNull()) {
-      m_waColVal[i_Col].m_iInt = C_DATUM_NULL;
+      m_waColVal[i_Col].vSetNull();
       return;
     }
     
