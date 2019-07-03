@@ -416,6 +416,8 @@ void RowCompactor::vCompactSamples(void)
   
 //#ifdef WITH_STR_DUPLICATES
   vAnalyzeSamples();
+  
+  vDumpTails();
 //#endif
   
   SP_Row spRow;
@@ -451,7 +453,11 @@ void RowCompactor::vDumpTails(void)
     
     char* azStr = aAdd<char*>(aTailLine,(C_U_1B + C_L_1B));
     
-    vTrace("Tail %lld : %s\n"_Stz,azStr);
+    vTrace("Tail %lld : <U %lld> <L %lld> %s\n"_Stz,
+           i_Tail,
+           aTailLine->iU(),
+           aTailLine->iL(),
+           azStr);
   }
 }
 
