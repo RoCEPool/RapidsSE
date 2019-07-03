@@ -282,7 +282,7 @@ void RowCompactor::vAnalyzeSamples(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* analyze a vch column                                                       */
+/* analyze a vch column and potentially create a tail for its value           */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vAnalyzeVch(Column* pCol, Row* pOuterRow, Row* pInnerRow)
 {
@@ -301,7 +301,7 @@ void RowCompactor::vAnalyzeVch(Column* pCol, Row* pOuterRow, Row* pInnerRow)
     return;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 2) is there a tail for the vch?
+  // 2) is there already a tail for the vch?
   
   TailStr xFindTail(pOuterRow->m_waColVal[i_Col].m_szVch);
   
@@ -414,9 +414,9 @@ void RowCompactor::vCompactSamples(void)
   
   ASSERT(! m_bCollecting);
   
-#ifdef WITH_STR_DUPLICATES
+//#ifdef WITH_STR_DUPLICATES
   vAnalyzeSamples();
-#endif
+//#endif
   
   SP_Row spRow;
   
@@ -435,6 +435,25 @@ void RowCompactor::vCompactSamples(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* dump duplicate tail lines                                                  */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vDumpTails(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+
+  for (i8 i_Tail = m_pCrwNub->iLastTail();
+       i_Tail != C_UNKNOWN;
+       i_Tail = m_pCrwNub->iPrevTail(i_Tail)) {
+    
+    TailLine* aTailLine = m_pCrwNub->aGetTail(i_Tail);
+    
+    char* azStr = aAdd<char*>(aTailLine,(C_U_1B + C_L_1B));
+    
+    vTrace("Tail %lld : %s\n"_Stz,azStr);
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* mark up the encoding of a row with tails                                   */
@@ -474,6 +493,8 @@ void RowCompactor::vEncodeTails(Row* pInflatedRow)
 /*----------------------------------------------------------------------------*/
 i8 RowCompactor::iFindTail(TailLine* aFindLine)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+
   static i8 nFound = 0;
   static i8 nNotFound = 0;
   
@@ -501,7 +522,6 @@ i8 RowCompactor::iFindTail(TailLine* aFindLine)
 //    vTrace("%lld dupe tail NOT found\n"_Stz,nNotFound);
   return C_UNKNOWN;
 }
-
 
 
 /*----------------------------------------------------------------------------*/
