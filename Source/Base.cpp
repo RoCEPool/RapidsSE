@@ -57,6 +57,14 @@ void Base::vTraceWith(void)
   vTrace("  WITH_DEBUG_VERSION\n"_Stz);
 #endif
   
+#ifdef WITH_DECODING_TRACE
+  vTrace("  WITH_DECODING_TRACE\n"_Stz);
+#endif
+  
+#ifdef WITH_ENCODING_TRACE
+  vTrace("  WITH_ENCODING_TRACE\n"_Stz);
+#endif
+  
 #ifdef WITH_ENCODING_XCHECK
   vTrace("  WITH_ENCODING_XCHECK\n"_Stz);
 #endif
@@ -95,14 +103,6 @@ void Base::vTraceWith(void)
   
 #ifdef WITH_TRACE_API
   vTrace("  WITH_TRACE_API\n"_Stz);
-#endif
-  
-#ifdef WITH_TRACE_ENCODING
-  vTrace("  WITH_TRACE_ENCODING\n"_Stz);
-#endif
-
-#ifdef WITH_TRACE_DECODING
-  vTrace("  WITH_TRACE_DECODING\n"_Stz);
 #endif
 }
 

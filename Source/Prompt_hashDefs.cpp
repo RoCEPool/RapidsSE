@@ -26,7 +26,7 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
 {
-  Base::vTraceWith();
+  
   
   vTrace("\n"_Stz);
 

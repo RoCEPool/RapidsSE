@@ -537,7 +537,7 @@ void RowCompactor::vPackCrw(Encoding* pEncoding)
   
   m_nTotalCrws++;
   
-  //#ifdef WITH_TRACE_ENCODING
+  //#ifdef WITH_ENCODING_TRACE
   if (m_nTotalCrws <= 10)
     Crw::vDumpCrw("vPackCrw"_Stz,m_aHeadLine,m_pColVec);
   //#endif
