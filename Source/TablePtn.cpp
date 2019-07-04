@@ -610,7 +610,7 @@ bool TablePtn::bPurge(i8 iOlderThanSeconds)
   
   m_okLock.vGrabWrite();
   
-  i8 iAge = m_pRootCrwBuffer->iAgeSsec();
+  i8 iAge = m_pRootCrwBuffer->iAgeSec();
   
   //  if (iAge <= 1) {
   //    vTrace("Purge: age is %llds\n"_Stz,iMaxAge);

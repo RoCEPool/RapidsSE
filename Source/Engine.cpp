@@ -443,7 +443,7 @@ void Engine::vMonitorPortrait(s48K& sRapidsPortrait)
 void Engine::vMonitorProfile(s48K& sPortrait)
 {
   
-  u8 uUpTime = gpAttachMap->m_oBirth.uSecondsElapsed();
+  i8 iUpTime = gpAttachMap->m_oBirth.iSecondsElapsed();
   
   s32 sRegionMag;
   Magnitudes::vByteMag(gpAttachMap->Arg.m_iRegionSize,sRegionMag);
@@ -459,7 +459,7 @@ void Engine::vMonitorProfile(s48K& sPortrait)
                     aNodeName,
                     sRegionMag.aStz(),
                     iPercentFree,
-                    uUpTime,
+                    iUpTime,
 #ifdef WITH_DEBUG_VERSION
                     "debug"_Stz,
 #else

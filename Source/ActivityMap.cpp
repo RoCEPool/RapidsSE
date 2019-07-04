@@ -723,9 +723,9 @@ void ActivityMap::vWriteToFile(bool bShortForm)
   Engine::vGetWelcome(sWelcome);
   ActivityMap::vMarkInfo(sWelcome);
   
-  u8 uUpTimeSsec = gpAttachMap->m_oBirth.uSecondsElapsed();
+  i8 iUpTimeSsec = gpAttachMap->m_oBirth.iSecondsElapsed();
   ActivityMap::vMarkInfo("Uptime %llds Requests %lld"_Stz,
-                         uUpTimeSsec,
+                         iUpTimeSsec,
                          C_UNKNOWN);
 
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼

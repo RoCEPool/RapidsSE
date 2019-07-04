@@ -22,8 +22,9 @@ namespace System
     
     static void vGetTimeOfDay(i8& iSeconds, i8& iMicroseconds, SysCall& SysCall);
     
+    void vClear(void);
     void vNow(void);
-    u8   uSecondsElapsed(void);
+    i8   iSecondsElapsed(void);
   
     Footer* aFooter(void);
   };

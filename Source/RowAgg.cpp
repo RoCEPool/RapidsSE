@@ -135,7 +135,7 @@ void RowAgg::vAggregate(i8 i_Slot, CrwBuffer* pCrwBuffer)
   
   vReset();
   
-  m_oSince = pCrwBuffer->oWhenNewed();
+  m_oBirth = pCrwBuffer->oWhenNewed();
   
   // aggregate the buffer
   i8 nRowCount = pCrwBuffer->nRowCount();
@@ -267,7 +267,7 @@ void RowAgg::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG,_FOOTER_);
   
-  m_oSince.vSet(0,0);
+  m_oBirth.vClear();
   
   m_nRows = 0;
   

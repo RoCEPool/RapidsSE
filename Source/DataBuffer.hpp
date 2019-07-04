@@ -12,7 +12,7 @@ namespace MetaData
     i8     m_iBufferNo;    // this DataBuffer's buffer number
     i8     m_iPartitionNo; // partition no this buffer belongs to
     i8     m_iBufferHeight;    // buffer height in the tree
-    Since  m_oWhenNewed;   // when was this buffer created?
+    Birth  m_oWhenNewed;   // when was this buffer created?
 
     DataBuffer* m_pNextBuffer;  // next buffer
     DataBuffer* m_pPrevBuffer;  // previous buffer
@@ -22,7 +22,7 @@ namespace MetaData
     DataBuffer(eCN eClass);
     ~DataBuffer(void) noexcept(false);
 
-    i8          iAgeSsec(void);
+    i8          iAgeSec(void);
 
     void        vBufferHeight(i8 iBufferHeight);
     i8          iBufferHeight(void);
@@ -42,7 +42,7 @@ namespace MetaData
     DataBuffer* pPrevBuffer(void);
     void        vPrevBuffer(DataBuffer* pPrevBuffer);
  
-    Since&      oWhenNewed(void);
+    Birth&      oWhenNewed(void);
   };
   
   DataBuffer* _pDataBuffer(void* aAddr);

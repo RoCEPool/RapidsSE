@@ -59,14 +59,11 @@ DataBuffer::~DataBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get age of buffer in seconds                                               */
 /*----------------------------------------------------------------------------*/
-i8 DataBuffer::iAgeSsec(void)
+i8 DataBuffer::iAgeSec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Since oSince;
-  oSince.vNow();
-  
-  i8 iAge = oSince.iSubtract(m_oWhenNewed);
+  i8 iAge = m_oWhenNewed.iSecondsElapsed();
   
   return iAge;
 }
@@ -194,7 +191,7 @@ void DataBuffer::vPrevBuffer(DataBuffer* pPrevBuffer)
 /*----------------------------------------------------------------------------*/
 /* when was this buffer newed?                                                */
 /*----------------------------------------------------------------------------*/
-Since& DataBuffer::oWhenNewed(void)
+Birth& DataBuffer::oWhenNewed(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   

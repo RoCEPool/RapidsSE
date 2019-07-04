@@ -327,7 +327,7 @@ i8 giClassSize[]
 {
   /*  0 */ 0,                          // CN_NONE
   
-  /*    */ sizeof(Since),              // CN_BIRTH
+  /*    */ sizeof(Birth),              // CN_BIRTH
   /*    */ sizeof(FipVal),             // CN_FIPVAL
   /*  7 */ sizeof(FreqDist),           // CN_FREQDIST
   /*  7 */ sizeof(IntVal),             // CN_INTVAL

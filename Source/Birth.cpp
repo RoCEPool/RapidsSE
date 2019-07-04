@@ -65,6 +65,17 @@ void Birth::vGetTimeOfDay(i8& iSeconds, i8& iMicroseconds, SysCall& oSysCall)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* clear the birth time                                                       */
+/*----------------------------------------------------------------------------*/
+void Birth::vClear(void)
+{
+  _precondition_(_MAGIC_,CN_BIRTH,_FOOTER_);
+  
+  m_wTsp.m_iI8 = 0;
+  m_wIvl.m_iI8 = 0;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set this Birth as at now                                                   */
 /*----------------------------------------------------------------------------*/
 void Birth::vNow(void)
@@ -80,7 +91,7 @@ void Birth::vNow(void)
 /*----------------------------------------------------------------------------*/
 /* get seconds elapsed since birth                                            */
 /*----------------------------------------------------------------------------*/
-u8 Birth::uSecondsElapsed(void)
+i8 Birth::iSecondsElapsed(void)
 {
   _precondition_(_MAGIC_,CN_BIRTH,_FOOTER_);
   
