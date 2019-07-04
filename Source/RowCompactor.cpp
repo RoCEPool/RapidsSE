@@ -418,11 +418,11 @@ void RowCompactor::vCompactSamples(void)
   
   ASSERT(! m_bCollecting);
   
-//#ifdef WITH_STR_DUPLICATES
+#ifdef WITH_STR_DUPLICATES
   vAnalyzeSamples();
   
   vDumpTails();
-//#endif
+#endif
   
   SP_Row spRow;
   
@@ -523,9 +523,6 @@ void RowCompactor::vEncodeTails(Row* pInflatedRow)
 i8 RowCompactor::iFindTail(TailLine* aFindLine)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-
-  static i8 nFound = 0;
-  static i8 nNotFound = 0;
   
   for (i8 i_Tail = m_pCrwNub->iLastTail();
        i_Tail != C_UNKNOWN;
@@ -537,18 +534,10 @@ i8 RowCompactor::iFindTail(TailLine* aFindLine)
     //aFindLine->vDump();
     //aTailLine->vDump();
 
-    if (0 == MemLib::iCompareWords(aTailLine,aFindLine,nTailWords)) {
-      nFound++;
-//      if (IntLib::bIsDecaCycle(nFound))
-//        vTrace("%lld dupe tail found\n"_Stz,nFound);
+    if (0 == MemLib::iCompareWords(aTailLine,aFindLine,nTailWords))
       return i_Tail;
-    }
-    
   }
   
-  nNotFound++;
-//  if (IntLib::bIsDecaCycle(nNotFound))
-//    vTrace("%lld dupe tail NOT found\n"_Stz,nNotFound);
   return C_UNKNOWN;
 }
 
@@ -557,7 +546,7 @@ i8 RowCompactor::iFindTail(TailLine* aFindLine)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* pack the encoding into head[+over]        */ //! still have to do {+tail}) */
+/* pack the encoding into head[+over]{+tail}                                  */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vPackCrw(Encoding* pEncoding)
 {
