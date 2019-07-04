@@ -595,47 +595,7 @@ void RowCompactor::vPackColVal(_ColEnc& xColEnc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  //!
-  //! handle the split point separately
-  //!
-  
-  if (xColEnc.m_bSplit) {
-    vPackColVal_split(xColEnc);
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  /*
-             -- HeadLine --                      -- OverLine --
-   +================================+   +================================+
-   | <W><M>...                      |---| <U> ////////////////////////// |
-   +================================+   +================================+
-   | {D}{D}...                      |
-   +--------------------------------+
-   |                           [OL] |
-   +--------------------------------+
-   
-   where:
-     <W>  is one byte word length of head line
-     <M>  is a metacode for a column value
-     {D}  is a set of data bytes for a column value
-     [OL] is 2B relative index of the over line
-     <U>  is one byte space unit length of over line
-   */
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // put meta code <M> into meta tape of head
-  
-  // +================================+   +================================+
-  // | <W><M>...<M>                   |---| <U> ////////////////////////// |
-  // +================================+   +================================+
-  
-  // set <M> for this column
   vPutMetaCode(xColEnc);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // put data code {D} onto crw
   
   vPutData(xColEnc);
 }
@@ -835,13 +795,10 @@ void RowCompactor::vPutMetaCode(_ColEnc& xColEnc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  i8 i_Col = xColEnc.m_pCol->iColumnNo();
-  
-  // set <M> for this column
-  m_aHeadLine->vMetaCode(i_Col,
-                         xColEnc.m_bSplit
-                           ? MC_OVERFLOW_2T
-                           : xColEnc.m_eMetaCode);
+  if (xColEnc.m_bSplit)
+    vPutMetaCode_split(xColEnc);
+  else
+    vPutMetaCode_usual(xColEnc);
 }
 
 /*----------------------------------------------------------------------------*/
