@@ -4,20 +4,25 @@
 
 startCluster;
 
-create table TABLE9 (
-pcol9   INTEGER NOT NULL,
-scol9   INTEGER NOT NULL,
-tcol9   INTEGER NOT NULL,
-colb9   VARCHAR(20),
-cold9   FLOAT,
-cole9   DECIMAL,
-colf9   INTEGER,
-colg9   INTEGER,
-ucol    INTEGER,
-ucolvc  VARCHAR(5)
+create table VchTbl (
+int_col1  INTEGER NOT NULL,
+vch_col2  VARCHAR(10)  NOT NULL,
+vch_col3  VARCHAR(32)  NOT NULL,
+int_col4  INTEGER NOT NULL,
+vch_col5  VARCHAR
 );
 
-ld TABLE9 "/DATA/Load/tbl9data.csv" ;
+create index vch_idx1 on VchTbl (vch_col2);
+
+ld VchTbl "/DATA/Datums/varchar_temp.csv" enclosed_by_leading "'";
+
+fetch VchTbl;
+
+fetch VchTbl "vch_col2 'one' ==";
+//(1,'one',101,1,'abcdefghi"jklmnopqrstuvwxyz')
+
+fetch VchTbl "vch_col2 'one zero z' ==";
+//(100,'one zero z','200',0,'abcdefghijklmnopqrstuvwxyz')
 
 
 /*============================================================================*/
