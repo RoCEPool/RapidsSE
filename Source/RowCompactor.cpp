@@ -477,20 +477,37 @@ void RowCompactor::vEncodeTails(Row* pInflatedRow)
     
     _ColEnc* aColEnc = & m_pEncoding->xaColEnc[i_Col];
     
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // test for non-null vch column of minimum length
+    
     if (DM_VCH != aColEnc->m_eDatum)
       continue;
    
-    if (StrLib::iLength(pInflatedRow->m_waColVal[i_Col].m_azStr) < 8)
+    // -- vch column --
+    
+    Dtm* aColVal = & pInflatedRow->m_waColVal[i_Col];
+    
+    if (aColVal->bIsNull())
+      continue;
+    
+    // -- non-null vch column --
+    
+    if (StrLib::iLength(aColVal->m_azStr) < 8)
       continue;
 
-    TailStr xFindTail(pInflatedRow->m_waColVal[i_Col].m_szVch);
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // attempt to find tail for non-null vch column of minimum length
+    
+    TailStr xFindTail(aColVal->m_szVch);
     
     i8 i_Tail = iFindTail( (TailLine*) & xFindTail );
     if (C_UNKNOWN == i_Tail)
       continue;
 
-    // -- we have found a matching tail --
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // found a matching tail
     
+    // put tial into the encoding
     aColEnc->m_i_Tail = i_Tail;
     aColEnc->m_aTailLine = m_pCrwNub->aGetTail(i_Tail);
     
