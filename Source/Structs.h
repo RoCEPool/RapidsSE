@@ -8,14 +8,13 @@
   struct _Dte {
     u8 m_uSpare     : 47 ; //         47b
     
-    u8 m_uDay       :  5 ; // 0..31       same as xTsp.dte
+    u8 m_uDay       :  5 ; // 0..31       same as _Tsp.dte
     u8 m_uMonth     :  4 ; // 0..15
     u8 m_uYearDelta :  8 ; // 0..255  17b (1900+8b == 2155)
     //               ---
     //                64
     //               ===
   };
-
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // era-based date
@@ -30,9 +29,8 @@
     //               ===
   };
 
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // interval (seconds & milliseconds)
+  // interval
   struct _Ivl {
     u8 m_uMicro     : 20 ; // 0..1M
     u8 m_uSecond    : 44 ; // 0..1.7E13
@@ -41,13 +39,12 @@
     //               ===
   };
 
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // time (down to microseconds)
+  // time
   struct _Tme {
     u8 m_uSpare     : 27 ; //         27b
     
-    u8 m_uMicro     : 20 ; // 0..1M       same as xTsp.tme
+    u8 m_uMicro     : 20 ; // 0..1M       same as _Tsp.tme
     u8 m_uSecond    :  6 ; // 0..63
     u8 m_uMinute    :  6 ; // 0..63
     u8 m_uHour      :  5 ; // 0..31   37b
@@ -56,9 +53,8 @@
     //               ===
   };
 
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // timestamp (down to microseconds) date & time
+  // timestamp
   struct _Tsp {
     u8 m_uSpare     :  9 ; //        9b
     

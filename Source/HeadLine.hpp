@@ -30,8 +30,9 @@ namespace Rows
                       i8& i_ColCrs_, i8& i_OfsCrs_);
     w8   wGetLogical(i8 i_Offset, i8 nDataSize);
     OverLine* aGetOver(void);
+    i8   iGetTailRel(TailLine* TailLine);
     TailLine* aGetTailRel(i8 i_Tail_rel);
-     bool bHasOverflow(void);
+    bool bHasOverflow(void);
     void vHasOverflow(void);
     i8   iOverflow2B(void);
     void vOverflow2B(i8 iOver2B);

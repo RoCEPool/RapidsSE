@@ -259,6 +259,16 @@ OverLine* HeadLine::aGetOver(void)
 /*----------------------------------------------------------------------------*/
 /* get tail line using relative index [FT]                                    */
 /*----------------------------------------------------------------------------*/
+i8 HeadLine::iGetTailRel(TailLine* TailLine)
+{
+  i8 i_Tail_rel = RowNub::iUnitDiff(this,TailLine);
+  
+  return i_Tail_rel;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get tail line using relative index [FT]                                    */
+/*----------------------------------------------------------------------------*/
 TailLine* HeadLine::aGetTailRel(i8 i_Tail_rel)
 {
   TailLine* aTail = RowNub::aGetTail(this,i_Tail_rel);

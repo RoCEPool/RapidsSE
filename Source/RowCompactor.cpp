@@ -818,9 +818,12 @@ void RowCompactor::vPutData_TAIL(_ColEnc& xColEnc)
   // | [TL]                      [OT] |
   // +--------------------------------+
   
+  // calculate [TL]
+  i8 i_Tail_rel = m_aHeadLine->iGetTailRel(xColEnc.m_aTailLine);
+  
   // put [TL]
   m_aHeadLine->vPutLogical(xColEnc.m_i_Offset,
-                           xColEnc.m_i_Tail,
+                           i_Tail_rel,
                            C_2B);
 }
 
