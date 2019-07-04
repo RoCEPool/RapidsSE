@@ -242,8 +242,8 @@ void TaskQueue::vPortrait(s48K& sPortrait)
     if (pTask == _pTask(m_pTaskSkipList->pFirst(0)->m_pObject)) {
       sPortrait.vConcat("- "_Stz);
       if (QK_SLEEPING_QUEUE == m_eKind) {
-        i8 iInUs = pTask->iWakeupInUsec();
-        sPortrait.vCatSprint("in %lldus "_Stz,iInUs);
+        u8 uInUs = pTask->uWakeupInUsec();
+        sPortrait.vCatSprint("in %lldus "_Stz,uInUs);
       }
       pTask->vMonitorPortrait(sTaskPortrait);
       sPortrait.vConcat(sTaskPortrait);

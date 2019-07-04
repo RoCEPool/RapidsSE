@@ -23,6 +23,7 @@ namespace Measurement
   
     Stz* sz(void);
     Stz* sz(Since* pSincePosixEpoch);
+    Stz* sz(Dtm* pTsp);
 
     i8   iTsp(void);
   

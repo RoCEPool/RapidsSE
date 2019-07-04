@@ -162,6 +162,27 @@ Stz* Now::sz(Since* pSincePosixEpoch)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set time using tsp                                                         */
+/*----------------------------------------------------------------------------*/
+Stz* Now::sz(Dtm* pTsp)
+{
+  _precondition_(_MAGIC_,CN_NOW,_FOOTER_);
+  
+  StrLib::vSprint(m_caResult,
+                  (Stz*)F_TSP,
+                  
+                  (i8)pTsp->xTsp.m_uYearDelta + C_YEAR_BASE,
+                  (i8)pTsp->xTsp.m_uMonth,
+                  (i8)pTsp->xTsp.m_uDay,
+                  
+                  (i8)pTsp->xTsp.m_uHour,
+                  (i8)pTsp->xTsp.m_uMinute,
+                  (i8)pTsp->xTsp.m_uSecond);
+  
+  return (Stz*) &m_caResult[0];
+}
+
+/*----------------------------------------------------------------------------*/
 /* set time using since                                                       */
 /*----------------------------------------------------------------------------*/
 i8 Now::iTsp(void)

@@ -587,7 +587,7 @@ void Task::vRenderPortrait(void)
                         this,
                         aCN[m_pJob->eClass()],
                         aTK[m_eState],
-                        sDateTime.sz(&m_oWakeupTime)
+                        sDateTime.sz(&m_oSleepTime.m_wWakeupTsp)
                         );
   }
   else if (QR_NONE != m_eQueue) {
@@ -689,8 +689,7 @@ void Task::vSleepUsec(i8 iMicroseconds)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_oWakeupTime.vNow();
-  m_oWakeupTime.vAdd(iMicroseconds);
+  m_oSleepTime.vSleepFor(iMicroseconds);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -918,13 +917,13 @@ void Task::vTraceStep(Stz* aStepNm)
 /*----------------------------------------------------------------------------*/
 /* how long before task can be woken up (in microseconds)                     */
 /*----------------------------------------------------------------------------*/
-i8 Task::iWakeupInUsec(void)
+u8 Task::uWakeupInUsec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  i8 iInUsec = m_oWakeupTime.iDeltaTillThenMicroseconds();
+  u8 uInUsec = m_oSleepTime.uWakeupInUsec();
   
-  return iInUsec;
+  return uInUsec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -933,39 +932,35 @@ i8 Task::iWakeupInUsec(void)
 bool Task::bWakeupNow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-
-  Since oSince;
   
-  oSince.vNow();
-  
-  i8 iTimeNow = oSince.iGetAsMicroseconds();
-
-  if (iWakeupTime() <= iTimeNow)
+  if (m_oSleepTime.bWakeupNow())
     return true;
   else
     return false;
+  
+  
 }
 
 /*----------------------------------------------------------------------------*/
 /* get wakeup time                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Task::iWakeupTime(void)
+u8 Task::uWakeupTime(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  i8 iMicroseconds = m_oWakeupTime.iGetAsMicroseconds();
+  u8 uMicroseconds = m_oSleepTime.uWakeupInUsec();
   
-  return iMicroseconds;
+  return uMicroseconds;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get wakeup time                                                            */
+/* get sleep time                                                             */
 /*----------------------------------------------------------------------------*/
-Since& Task::oWakeupTime(void)
+Sleep& Task::oSleepTime(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
     
-  return m_oWakeupTime;
+  return m_oSleepTime;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -976,7 +971,7 @@ void Task::vWakeupTask(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   // clear the wakeup time
-  m_oWakeupTime.vSet(0,0);
+  m_oSleepTime.vClear();
 
   m_eState = TK_READY;
 }
@@ -1184,12 +1179,12 @@ bool bTaskCompareWakeupTime(void* pObjectInsert, void* pObjectScan, bool& bMatch
   if ( ! pObjectScan )
     return false;
   
-  if (pInsertEntry->iWakeupTime() == pScanEntry->iWakeupTime())
+  if (pInsertEntry->uWakeupTime() == pScanEntry->uWakeupTime())
     bMatch = true;
   else
     bMatch = false;
   
-  if (pInsertEntry->iWakeupTime() > pScanEntry->iWakeupTime())
+  if (pInsertEntry->uWakeupTime() > pScanEntry->uWakeupTime())
     return true;
   else
     return false;
