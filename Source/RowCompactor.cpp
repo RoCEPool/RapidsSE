@@ -176,8 +176,211 @@ bool RowCompactor::bCompactRow(Row* pInflatedRow)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/******************************  Sampling  ************************************/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* collect inflated row as a sample                                           */
+/*----------------------------------------------------------------------------*/
+bool RowCompactor::bCollectSample(Row* pInflatedRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  if (m_pRowSamples->nItems() >= C_SAMPLE_ROWS) {
+    vTrace("Samples collected\n"_Stz);
+    m_bCollecting = false;
+    return false;
+  }
+  
+  Row* pSampleRow = m_pRowSamples->aAllotRow(m_pColVec);
+  if (! pSampleRow) {
+    vTrace("Samples full\n"_Stz);
+    m_bCollecting = false;
+    return false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy inflated row into sample buffer
+  
+  SP_Row spRow;
+  MemLib::vCopy(pSampleRow,pInflatedRow,sizeof(Row),CN_ROWCOMPACTOR);
+  
+  pSampleRow->vAdjustAddresses(pInflatedRow);
+  
+  vTrace("pSampleRow:: %s\n"_Stz,spRow.sz(pSampleRow));
+  
+  //  Row* pRecheckRow = m_pRowSamples->aFirstRow();
+  //  while (pRecheckRow) {
+  //    vTrace("pRecheckRow: %s\n"_Stz,spRow.sz(pRecheckRow));
+  //    pRecheckRow = m_pRowSamples->aNextRow(pRecheckRow);
+  //  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compact collected samples into crw buffer                                  */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vCompactSamples(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  ASSERT(! m_bCollecting);
+  
+#ifdef WITH_STR_DUPLICATES
+  vAnalyzeSamples();
+  
+  vDumpTails();
+#endif
+  
+  SP_Row spRow;
+  
+  Row* pSampleRow = m_pRowSamples->aFirstRow();
+  while (pSampleRow) {
+    
+    vTrace("Compacting Sample: %s\n"_Stz,spRow.sz(pSampleRow));
+    
+    bool bCompacted = bCompactInflated(pSampleRow);
+    RASSERT(bCompacted);
+    
+    pSampleRow = m_pRowSamples->aNextRow(pSampleRow);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* analyze collected samples                                                  */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vAnalyzeSamples(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  i8 nCols = m_pColVec->nItems();
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    
+    Column* pCol = m_pColVec->pGet(i_Col);
+    eDM eDatum = pCol->eDatumType();
+    
+    if (DM_VCH != eDatum)
+      continue;
+    
+    for (Row* pOuterRow = m_pRowSamples->aFirstRow();
+         pOuterRow;
+         pOuterRow = m_pRowSamples->aNextRow(pOuterRow)) {
+      
+      if (pOuterRow->m_waColVal[i_Col].bIsNull())
+        continue;
+      
+      if (StrLib::iLength(pOuterRow->m_waColVal[i_Col].m_azStr) < 8)
+        continue;
+      
+      for (Row* pInnerRow = m_pRowSamples->aNextRow(pOuterRow);
+           pInnerRow;
+           pInnerRow = m_pRowSamples->aNextRow(pInnerRow)) {
+        
+        if (pInnerRow->m_waColVal[i_Col].bIsNull())
+          continue;
+        
+        vAnalyzeVch(pCol,pOuterRow,pInnerRow);
+        
+      }
+    }
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* analyze a vch column and potentially create a tail for its value           */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vAnalyzeVch(Column* pCol, Row* pOuterRow, Row* pInnerRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  SP_Row spRow;
+  vTrace("Analyzing Sample: %s\n"_Stz,spRow.sz(pOuterRow));
+  
+  i8 i_Col = pCol->iColumnNo();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 1) does the inner vch equal the outer vch?
+  
+  if (! StrLib::bEqualTo(pInnerRow->m_waColVal[i_Col].m_azStr,
+                         pOuterRow->m_waColVal[i_Col].m_azStr) )
+    return;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 2) is there already a tail for the vch?
+  
+  TailStr xFindTail(pOuterRow->m_waColVal[i_Col].m_szVch);
+  
+  if (C_UNKNOWN != iFindTail( (TailLine*) & xFindTail) )
+    return;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 3) create a new tail
+  
+  i8 i_Tail = m_pCrwNub->iAllotTail(xFindTail.nBytes());
+  TailLine* aTail = m_pCrwNub->aGetTail(i_Tail);
+  
+  aTail->vAssign(pOuterRow->m_waColVal[i_Col].m_szVch);
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*************************  Compact Row Packing  ******************************/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* compact given row into current nub                                         */
+/*----------------------------------------------------------------------------*/
+bool RowCompactor::bCompactInflated(Row* pInflatedRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // initially encode the inflated row
+  
+  m_pEncoding->vEncode(pInflatedRow);
+  
+  SP_Encoding spEncoding;
+  vTrace("\nvEncode:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // encode tails
+  
+  
+#ifdef WITH_STR_DUPLICATES
+  vEncodeTails(pInflatedRow);
+  vTrace("\nvEncodeTails:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
+#endif
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // split encoding between head and overflow
+  
+  m_pEncoding->vSplitOver();
+  
+  vTrace("\vSplitOver:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check for space in target nub
+  
+  i8 nBytesNeeded = m_pEncoding->nBytesNeeded();
+  
+  if (! m_pCrwNub->bHasSpace(nBytesNeeded)) {
+    m_nTotalBuffers++;
+    return false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pack encoding into a compact row
+  
+  vPackCrw(m_pEncoding);
+  
+#ifdef WITH_VERIFY_TAILS
+  m_pCrwNub->vVerifyTails(C_UNKNOWN);
+#endif
+  
+  return true;
+}
 
 /*----------------------------------------------------------------------------*/
 /* pack the encoding into head[+over]{+tail}                                  */
@@ -538,204 +741,6 @@ void RowCompactor::vAllotCrw(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* analyze collected samples                                                  */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vAnalyzeSamples(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  i8 nCols = m_pColVec->nItems();
-  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
-    
-    Column* pCol = m_pColVec->pGet(i_Col);
-    eDM eDatum = pCol->eDatumType();
-    
-    if (DM_VCH != eDatum)
-      continue;
-
-    for (Row* pOuterRow = m_pRowSamples->aFirstRow();
-         pOuterRow;
-         pOuterRow = m_pRowSamples->aNextRow(pOuterRow)) {
-
-      if (pOuterRow->m_waColVal[i_Col].bIsNull())
-        continue;
-        
-      if (StrLib::iLength(pOuterRow->m_waColVal[i_Col].m_azStr) < 8)
-        continue;
-    
-      for (Row* pInnerRow = m_pRowSamples->aNextRow(pOuterRow);
-           pInnerRow;
-           pInnerRow = m_pRowSamples->aNextRow(pInnerRow)) {
-
-        if (pInnerRow->m_waColVal[i_Col].bIsNull())
-          continue;
-        
-        vAnalyzeVch(pCol,pOuterRow,pInnerRow);
-        
-      }
-    }
-  }
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* analyze a vch column and potentially create a tail for its value           */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vAnalyzeVch(Column* pCol, Row* pOuterRow, Row* pInnerRow)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  SP_Row spRow;
-  vTrace("Analyzing Sample: %s\n"_Stz,spRow.sz(pOuterRow));
-  
-  i8 i_Col = pCol->iColumnNo();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 1) does the inner vch equal the outer vch?
-  
-  if (! StrLib::bEqualTo(pInnerRow->m_waColVal[i_Col].m_azStr,
-                         pOuterRow->m_waColVal[i_Col].m_azStr) )
-    return;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 2) is there already a tail for the vch?
-  
-  TailStr xFindTail(pOuterRow->m_waColVal[i_Col].m_szVch);
-  
-  if (C_UNKNOWN != iFindTail( (TailLine*) & xFindTail) )
-    return;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 3) create a new tail
-  
-  i8 i_Tail = m_pCrwNub->iAllotTail(xFindTail.nBytes());
-  TailLine* aTail = m_pCrwNub->aGetTail(i_Tail);
-
-  aTail->vAssign(pOuterRow->m_waColVal[i_Col].m_szVch);
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect inflated row as a sample                                           */
-/*----------------------------------------------------------------------------*/
-bool RowCompactor::bCollectSample(Row* pInflatedRow)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  if (m_pRowSamples->nItems() >= C_SAMPLE_ROWS) {
-    vTrace("Samples collected\n"_Stz);
-    m_bCollecting = false;
-    return false;
-  }
-  
-  Row* pSampleRow = m_pRowSamples->aAllotRow(m_pColVec);
-  if (! pSampleRow) {
-    vTrace("Samples full\n"_Stz);
-    m_bCollecting = false;
-    return false;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // collect sample
-  
-  SP_Row spRow;
-  MemLib::vCopy(pSampleRow,pInflatedRow,sizeof(Row),CN_ROWCOMPACTOR);
-  
-  pSampleRow->vAdjustAddresses(pInflatedRow);
-  
-  vTrace("pSampleRow:: %s\n"_Stz,spRow.sz(pSampleRow));
-  
-//  Row* pRecheckRow = m_pRowSamples->aFirstRow();
-//  while (pRecheckRow) {
-//    vTrace("pRecheckRow: %s\n"_Stz,spRow.sz(pRecheckRow));
-//    pRecheckRow = m_pRowSamples->aNextRow(pRecheckRow);
-//  }
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* compact given row into current nub                                         */
-/*----------------------------------------------------------------------------*/
-bool RowCompactor::bCompactInflated(Row* pInflatedRow)
-{
-_precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // initially encode the inflated row
-  
-  m_pEncoding->vEncode(pInflatedRow);
-  
-  SP_Encoding spEncoding;
-  vTrace("\nvEncode:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // encode tails
-
-
-#ifdef WITH_STR_DUPLICATES
-  vEncodeTails(pInflatedRow);
-  vTrace("\nvEncodeTails:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
-#endif
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // split encoding between head and overflow
-
-  m_pEncoding->vSplitOver();
-  
-  vTrace("\vSplitOver:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check for space in target nub
-  
-  i8 nBytesNeeded = m_pEncoding->nBytesNeeded();
-  
-  if (! m_pCrwNub->bHasSpace(nBytesNeeded)) {
-    m_nTotalBuffers++;
-    return false;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pack encoding into a compact row
-  
-  vPackCrw(m_pEncoding);
-  
-#ifdef WITH_VERIFY_TAILS
-  m_pCrwNub->vVerifyTails(C_UNKNOWN);
-#endif
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* compact collected samples into crw buffer                                  */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vCompactSamples(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  ASSERT(! m_bCollecting);
-  
-#ifdef WITH_STR_DUPLICATES
-  vAnalyzeSamples();
-  
-  vDumpTails();
-#endif
-  
-  SP_Row spRow;
-  
-  Row* pSampleRow = m_pRowSamples->aFirstRow();
-  while (pSampleRow) {
-    
-    vTrace("Compacting Sample: %s\n"_Stz,spRow.sz(pSampleRow));
-    
-    bool bCompacted = bCompactInflated(pSampleRow);
-    RASSERT(bCompacted);
-    
-    pSampleRow = m_pRowSamples->aNextRow(pSampleRow);
-  }
-}
 
 
 /*----------------------------------------------------------------------------*/

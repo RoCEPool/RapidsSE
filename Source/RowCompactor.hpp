@@ -49,9 +49,21 @@ namespace Rows
     bool bCompactRow(Row* pInflatedRow);
   
   private:
+
+    // - - - - - - - - - - - - - - - - - - - - -
+    // Sampling (structural order)
+  
+    bool bCollectSample(Row* pInflatedRow);
+  
+    void vCompactSamples(void);
+    void vAnalyzeSamples(void);
+    void vAnalyzeVch(Column* pCol, Row* pOuterRow, Row* pInnerRow);
+
     // - - - - - - - - - - - - - - - - - - - - -
     // Compact Row Packing (structural order)
   
+    bool bCompactInflated(Row* pInflatedRow);
+
     void vPackCrw(Encoding* pEncoding);
   
     void vPackColVal(_ColEnc& xColEnc);
@@ -71,11 +83,6 @@ namespace Rows
     // Support Functions (alpha order)
 
     void vAllotCrw(void);
-    void vAnalyzeSamples(void);
-    void vAnalyzeVch(Column* pCol, Row* pOuterRow, Row* pInnerRow);
-    bool bCollectSample(Row* pInflatedRow);
-    bool bCompactInflated(Row* pInflatedRow);
-    void vCompactSamples(void);
     void vDumpTails(void);
     void vEncodeTails(Row* pInflatedRow);
     i8   iFindTail(TailLine* aFindLine);
