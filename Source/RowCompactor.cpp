@@ -637,28 +637,7 @@ void RowCompactor::vPackColVal(_ColEnc& xColEnc)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put data code {D} onto crw
   
-  // +--------------------------------+
-  // |{D}                        [OL] |
-  // +--------------------------------+
-
-  // no data code {D} case
-  if (! xColEnc.m_nDataSize)
-    return;
-  
-  // non-vch packing as {D} (max of 1 word)
-  if (DM_VCH != xColEnc.m_eDatum) {
-    vPutData_Bytes(xColEnc);
-    return;
-  }
-  
-  // vch packing (max of ??? words)
-  if (MC_STR_FIT_1L == xColEnc.m_eMetaCode)
-    vPutData_STR(xColEnc);
-  else if (MC_STR_TAIL_2T == xColEnc.m_eMetaCode)
-    vPutData_TAIL(xColEnc);
-  else {
-    RASSERT(0);
-  }
+  vPutData(xColEnc);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -708,25 +687,43 @@ void RowCompactor::vPackColVal_split(_ColEnc& xColEnc)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put data code {D} onto crw
   
+  vPutData(xColEnc);
+}
+
+/*----------------------------------------------------------------------------*/
+/* put data code {D} for encoded column value into crw                        */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vPutData(_ColEnc& xColEnc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+
+  // +--------------------------------+
+  // | {D}                       [OL] |
+  // +--------------------------------+
+  //   ^offset
+  
   // +================================+   +================================+
   // | <W><M>        <MC_OVERFLOW_2T> |---| <U><M>{D} //////////////////// |
   // +================================+   +================================+
+  //                                              ^offset
 
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   // no data code {D} case
   if (! xColEnc.m_nDataSize)
     return;
   
-  // non-vch packing as {D} (max of 1 word)
+  // non-vch packing as {1..8B} (max of 1 word)
   if (DM_VCH != xColEnc.m_eDatum) {
     vPutData_Bytes(xColEnc);
     return;
   }
   
-  // vch packing (max of ??? words)
-  if (MC_STR_FIT_1L == xColEnc.m_eMetaCode)
-    vPutData_STR(xColEnc);
-  else if (MC_STR_TAIL_2T == xColEnc.m_eMetaCode)
-    vPutData_TAIL(xColEnc);
+  // vch packing
+       if (MC_STR_FIT_1L  == xColEnc.m_eMetaCode)  vPutData_STR(xColEnc);
+  else if (MC_STR_TAIL_2T == xColEnc.m_eMetaCode)  vPutData_TAIL(xColEnc);
   else {
     RASSERT(0);
   }
@@ -827,6 +824,7 @@ void RowCompactor::vPutData_TAIL(_ColEnc& xColEnc)
                            C_2B);
 }
 
+
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -844,6 +842,92 @@ void RowCompactor::vPutMetaCode(_ColEnc& xColEnc)
                          xColEnc.m_bSplit
                            ? MC_OVERFLOW_2T
                            : xColEnc.m_eMetaCode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* put meta code into compact row for split column                            */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vPutMetaCode_split(_ColEnc& xColEnc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  /*
+             -- Head-Line --                      -- Over-Line --
+   +================================+   +================================+
+   | <W><M>                         |---| <U> ////////////////////////// |
+   +================================+   +================================+
+   | {D}{D}...                      |
+   +--------------------------------+
+   |                        {D}[OL] |
+   +--------------------------------+
+   
+   where:
+     [OL] is 2B relative index of the over line
+     <W>  is one byte word length of head line
+     <M>  is a metacode for a column value
+     {D}  is a set of data bytes for a column value
+     <U>  is one byte space unit length of over line
+   
+   */
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // +================================+   +================================+
+  // | <W><M>        <MC_OVERFLOW_2T> |---| <U> ////////////////////////// |
+  // +================================+   +================================+
+  
+  i8 i_Col = xColEnc.m_pCol->iColumnNo();
+  
+  // set <MC_OVERFLOW_2T> for this column
+  m_aHeadLine->vMetaCode(i_Col,MC_OVERFLOW_2T);
+
+  // +================================+   +================================+
+  // | <W><M>        <MC_OVERFLOW_2T> |---| <U><M> /////////////////////// |
+  // +================================+   +================================+
+  
+  // put <M> into over line
+  m_aHeadLine->vPutLogical(m_nHeadSize + C_U_1B,
+                           (i8)xColEnc.m_eMetaCode,
+                           C_1B);
+}
+
+/*----------------------------------------------------------------------------*/
+/* put meta code into compact row for usual / non-split column                */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vPutMetaCode_usual(_ColEnc& xColEnc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+
+  /*
+               -- HeadLine --                      -- OverLine --
+   +================================+   +================================+
+   | <W><M>...                      |---| <U> ////////////////////////// |
+   +================================+   +================================+
+   | {D}{D}...                      |
+   +--------------------------------+
+   |                           [OL] |
+   +--------------------------------+
+   
+   where:
+     <W>  is one byte word length of head line
+     <M>  is a metacode for a column value
+     {D}  is a set of data bytes for a column value
+     [OL] is 2B relative index of the over line
+     <U>  is one byte space unit length of over line
+     */
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // put meta code <M> into meta tape of head
+  
+  // +================================+   +================================+
+  // | <W><M>...<M>                   |---| <U> ////////////////////////// |
+  // +================================+   +================================+
+  
+  i8 i_Col = xColEnc.m_pCol->iColumnNo();
+  
+  // set <M> for this column
+  m_aHeadLine->vMetaCode(i_Col,xColEnc.m_eMetaCode);
 }
 
 
