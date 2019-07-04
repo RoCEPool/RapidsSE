@@ -1112,6 +1112,8 @@
   static void vTimerTicks(Tasks::MP_Task mpTask);
   static void vTimerUpdate(Tasks::MP_Task mpTask);
 
+  static void vTimeCurrent(Tasks::MP_Task mpTask);
+
   // to
   static void vToBody(Tasks::MP_Task mpTask);
   static void vToInt(Tasks::MP_Task mpTask);

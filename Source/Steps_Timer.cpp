@@ -23,6 +23,8 @@ void Step::vAddSteps_Timer(void)
   vAddStep("timer.start"_Stz,     &Step::vTimerStart);
   vAddStep("timer.ticks"_Stz,     &Step::vTimerTicks);
   vAddStep("timer.update"_Stz,    &Step::vTimerUpdate);
+  
+  vAddStep("time.current"_Stz,    &Step::vTimeCurrent);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -249,6 +251,24 @@ ENTRY("vTimerUpdate"_Stz);
   
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* time.current -- return current time as a string                            */
+/*----------------------------------------------------------------------------*/
+void Step::vTimeCurrent(MP_Task mpTask)
+{
+  ENTRY("vTimeCurrent"_Stz);
+  
+  Now xNow;
+  xNow.vSetNow();
+  
+  s32 s = xNow.sz();
+  
+  mpTask->m_pDataStack->vPushS32(s);
+  
+  EXIT();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
