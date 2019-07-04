@@ -19,6 +19,8 @@ namespace Rows
     bool m_bSplit;     // overflow occurs at this point
     
     i8   m_i_Tail;     // absolute index of tail
+    
+    TailLine *m_aTailLine;  // the tail line
   };
   
   //----------------------------------------------------------------------------

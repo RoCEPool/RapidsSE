@@ -173,7 +173,7 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
           }
           else {
             StrLib::vAppendString(&szCrs,
-                                  (char*)"<TAIL>"_Stz);
+                                  (char*)aColEnc->m_aTailLine->sz());
           }
           break;
         }

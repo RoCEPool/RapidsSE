@@ -488,6 +488,7 @@ void RowCompactor::vEncodeTails(Row* pInflatedRow)
     // -- we have found a matching tail --
     
     aColEnc->m_i_Tail = i_Tail;
+    aColEnc->m_aTailLine = m_pCrwNub->aGetTail(i_Tail);
     
     // morph the encoding
     m_pEncoding->vMorphEncoding(aColEnc);
@@ -641,9 +642,13 @@ void RowCompactor::vPackColVal(_ColEnc& xColEnc)
   }
   
   // vch packing (max of ??? words)
-  ASSERT(MC_STR_FIT_1L == xColEnc.m_eMetaCode);
-  vPutData_STR(xColEnc);
-  return;
+  if (MC_STR_FIT_1L == xColEnc.m_eMetaCode)
+    vPutData_STR(xColEnc);
+  else if (MC_STR_TAIL_2T == xColEnc.m_eMetaCode)
+    vPutData_TAIL(xColEnc);
+  else {
+    RASSERT(0);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -708,9 +713,13 @@ void RowCompactor::vPackColVal_split(_ColEnc& xColEnc)
   }
   
   // vch packing (max of ??? words)
-  ASSERT(MC_STR_FIT_1L == xColEnc.m_eMetaCode);
-  vPutData_STR(xColEnc);
-  return;
+  if (MC_STR_FIT_1L == xColEnc.m_eMetaCode)
+    vPutData_STR(xColEnc);
+  else if (MC_STR_TAIL_2T == xColEnc.m_eMetaCode)
+    vPutData_TAIL(xColEnc);
+  else {
+    RASSERT(0);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -783,6 +792,26 @@ void RowCompactor::vPutData_STR(_ColEnc& xColEnc)
   m_aHeadLine->vPutLogical(xColEnc.m_i_Offset + C_L_1B,
                            (Stz*)azStr,
                            n1L);
+}
+
+/*----------------------------------------------------------------------------*/
+/* put data bytes for MC_STR_TAIL_2T : [TL]                                   */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vPutData_TAIL(_ColEnc& xColEnc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // +--------------------------------+
+  // | [TL]                      [OT] |
+  // +--------------------------------+
+  
+  // put [TL]
+  m_aHeadLine->vPutLogical(xColEnc.m_i_Offset,
+                           xColEnc.m_i_Tail,
+                           C_2B);
 }
 
 /*----------------------------------------------------------------------------*/

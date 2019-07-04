@@ -77,6 +77,7 @@ Encoding::Encoding(ColumnVec* pColVec, i8 nHeadSize, i8 nMetaSize)
     xaColEnc[i_Col].m_bSplit     = false;
     
     xaColEnc[i_Col].m_i_Tail     = C_UNKNOWN;
+    xaColEnc[i_Col].m_aTailLine  = nullptr;
   }
   
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
@@ -584,6 +585,7 @@ void Encoding::vReset(void)
     xaColEnc[i_Col].m_bSplit     = false;
     
     xaColEnc[i_Col].m_i_Tail     = C_UNKNOWN;
+    xaColEnc[i_Col].m_aTailLine  = nullptr;
   }
   
 #ifdef WITH_CHECK_INITIALISED
