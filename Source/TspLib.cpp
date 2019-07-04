@@ -35,6 +35,7 @@ Dtm TspLib::wGetCurrTsp_local(void)
   wTsp.xTsp.m_uMinute    = aLocalDateTime->tm_min;
   wTsp.xTsp.m_uSecond    = aLocalDateTime->tm_sec;
   wTsp.xTsp.m_uMicro     = wIvl.xIvl.m_uMicro;
+  wTsp.xTsp.m_uLocal     = C_TSP_LOCAL;
   wTsp.xTsp.m_uSpare     = 0;
   
   return wTsp;
@@ -45,6 +46,10 @@ Dtm TspLib::wGetCurrTsp_local(void)
 /*----------------------------------------------------------------------------*/
 Dtm TspLib::wGetCurrTsp_utc(void)
 {
+  
+  // currently we don't generate any UTC tsp's
+  RASSERT(0);
+  
   Dtm wIvl;
   Dtm wTsp;
   
@@ -67,6 +72,7 @@ Dtm TspLib::wGetCurrTsp_utc(void)
   wTsp.xTsp.m_uMinute    = aUtcDateTime->tm_min;
   wTsp.xTsp.m_uSecond    = aUtcDateTime->tm_sec;
   wTsp.xTsp.m_uMicro     = wIvl.xIvl.m_uMicro;
+  wTsp.xTsp.m_uLocal     = C_TSP_UTC;
   wTsp.xTsp.m_uSpare     = 0;
   
   return wTsp;
@@ -97,6 +103,7 @@ Dtm TspLib::wToTsp_local(Dtm wIvl)
   wDtm.xTsp.m_uMinute    = aLocalDateTime->tm_min;
   wDtm.xTsp.m_uSecond    = aLocalDateTime->tm_sec;
   wDtm.xTsp.m_uMicro     = wIvl.xIvl.m_uMicro;
+  wDtm.xTsp.m_uLocal     = C_TSP_LOCAL;
   wDtm.xTsp.m_uSpare     = 0;
 
   return wDtm;
@@ -107,6 +114,10 @@ Dtm TspLib::wToTsp_local(Dtm wIvl)
 /*----------------------------------------------------------------------------*/
 Dtm TspLib::wToTsp_utc(Dtm wIvl)
 {
+  
+  // currently we don't generate any UTC tsp's
+  RASSERT(0);
+  
   Dtm wDtm;
   
   time_t iSecondsSincePosixEpoch = wIvl.xIvl.m_uSecond;
@@ -127,6 +138,7 @@ Dtm TspLib::wToTsp_utc(Dtm wIvl)
   wDtm.xTsp.m_uMinute    = aUtcDateTime->tm_min;
   wDtm.xTsp.m_uSecond    = aUtcDateTime->tm_sec;
   wDtm.xTsp.m_uMicro     = wIvl.xIvl.m_uMicro;
+  wDtm.xTsp.m_uLocal     = C_TSP_UTC;
   wDtm.xTsp.m_uSpare     = 0;
 
   return wDtm;

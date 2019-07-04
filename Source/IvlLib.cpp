@@ -70,7 +70,9 @@ Dtm IvlLib::wToIvl(Dtm wTsp)
   xDateTime.tm_hour = wTsp.xTsp.m_uHour;
   xDateTime.tm_min  = wTsp.xTsp.m_uMinute;
   xDateTime.tm_sec  = wTsp.xTsp.m_uSecond;
-
+  
+  RASSERT(wTsp.xTsp.m_uLocal == C_TSP_LOCAL);
+  
   time_t iSecondsSincePosixEpoch = timelocal(&xDateTime);
   
   wIvl.xIvl.m_uSecond = iSecondsSincePosixEpoch;

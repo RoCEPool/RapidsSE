@@ -287,6 +287,7 @@ bool RowExtractor::bExtractElement(DtmVal* pDtmVal, char** aacRecCrs,
       pDtmVal->m_wDtm.xTsp.m_uMinute = iMinute;
       pDtmVal->m_wDtm.xTsp.m_uSecond = iSecond;
       pDtmVal->m_wDtm.xTsp.m_uMicro  = iMicro;
+      pDtmVal->m_wDtm.xTsp.m_uLocal  = C_TSP_LOCAL;
       pDtmVal->m_wDtm.xTsp.m_uSpare  = 0;
       break;
       

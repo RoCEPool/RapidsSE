@@ -53,6 +53,7 @@ void Now::vSetNow(void)
   m_wTsp.xTsp.m_uHour      = aLocalDateTime->tm_hour;
   m_wTsp.xTsp.m_uMinute    = aLocalDateTime->tm_min;
   m_wTsp.xTsp.m_uSecond    = aLocalDateTime->tm_sec;
+  m_wTsp.xTsp.m_uLocal     = C_TSP_LOCAL;
   m_wTsp.xTsp.m_uMicro     = 0;
   
   StrLib::vSprint(m_caResult,
@@ -93,6 +94,7 @@ void Now::vSetNowUTC(void)
   m_wTsp.xTsp.m_uHour      = aUtcDateTime->tm_hour;
   m_wTsp.xTsp.m_uMinute    = aUtcDateTime->tm_min;
   m_wTsp.xTsp.m_uSecond    = aUtcDateTime->tm_sec;
+  m_wTsp.xTsp.m_uLocal     = C_TSP_UTC;
   m_wTsp.xTsp.m_uMicro     = 0;
   
   StrLib::vSprint(m_caResult,
@@ -145,6 +147,7 @@ Stz* Now::sz(Since* pSincePosixEpoch)
   m_wTsp.xTsp.m_uMinute    = aLocalDateTime->tm_min;
   m_wTsp.xTsp.m_uSecond    = aLocalDateTime->tm_sec;
   m_wTsp.xTsp.m_uMicro     = (int)pSincePosixEpoch->iMicroseconds();
+  m_wTsp.xTsp.m_uLocal     = C_TSP_LOCAL;
   m_wTsp.xTsp.m_uSpare     = 0;
     
   StrLib::vSprint(m_caResult,
