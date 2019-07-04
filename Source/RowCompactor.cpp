@@ -176,6 +176,305 @@ bool RowCompactor::bCompactRow(Row* pInflatedRow)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/*************************  Compact Row Packing  ******************************/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* pack the encoding into head[+over]{+tail}                                  */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vPackCrw(Encoding* pEncoding)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // allot a logical compact row
+  
+  vAllotCrw();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pack all the columns into the logical compact row
+  
+  i8 nCols = m_pColVec->nItems();
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    
+    //vDumpHead("vHeadCode a"_Stz,m_aCrw,m_pColVec);
+    if (8 == i_Col)
+      vDebugPoint();
+    vPackColVal(pEncoding->xaColEnc[i_Col]);
+    //vDumpHead("vHeadCode b"_Stz,m_aCrw,m_pColVec);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // stats and tracing
+  
+  m_nTotalCrws++;
+  
+  //#ifdef WITH_ENCODING_TRACE
+  if (m_nTotalCrws <= 10)
+    Crw::vDumpCrw("vPackCrw"_Stz,m_aHeadLine,m_pColVec);
+  //#endif
+  
+#ifdef WITH_ANALYSE_FREE
+  i8 nFreeSpace = aHeadLine->nFreeSpace(m_pColVec);
+  m_oFreqDist.vAdd(nFreeSpace);
+#endif
+  
+  m_aHeadLine = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pack column value into compact row                                         */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vPackColVal(_ColEnc& xColEnc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  vPutMetaCode(xColEnc);
+  
+  vPutDataCode(xColEnc);
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* put meta code for column value into logical compact row                    */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vPutMetaCode(_ColEnc& xColEnc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  if (xColEnc.m_bSplit)
+    vPutMeta_split(xColEnc);
+  else
+    vPutMeta_usual(xColEnc);
+}
+
+/*----------------------------------------------------------------------------*/
+/* put meta code into compact row for split column                            */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vPutMeta_split(_ColEnc& xColEnc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  /*
+   -- Head-Line --                      -- Over-Line --
+   +================================+   +================================+
+   | <W><M>                         |---| <U> ////////////////////////// |
+   +================================+   +================================+
+   | {D}{D}...                      |
+   +--------------------------------+
+   |                        {D}[OL] |
+   +--------------------------------+
+   
+   where:
+     [OL] is 2B relative index of the over line
+     <W>  is one byte word length of head line
+     <M>  is a metacode for a column value
+     {D}  is a set of data bytes for a column value
+     <U>  is one byte space unit length of over line
+   */
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // +================================+   +================================+
+  // | <W><M>        <MC_OVERFLOW_2T> |---| <U> ////////////////////////// |
+  // +================================+   +================================+
+  
+  i8 i_Col = xColEnc.m_pCol->iColumnNo();
+  
+  // set <MC_OVERFLOW_2T> for this column
+  m_aHeadLine->vMetaCode(i_Col,MC_OVERFLOW_2T);
+  
+  // +================================+   +================================+
+  // | <W><M>        <MC_OVERFLOW_2T> |---| <U><M> /////////////////////// |
+  // +================================+   +================================+
+  
+  // put <M> into over line
+  m_aHeadLine->vPutLogical(m_nHeadSize + C_U_1B,
+                           (i8)xColEnc.m_eMetaCode,
+                           C_1B);
+}
+
+/*----------------------------------------------------------------------------*/
+/* put meta code into compact row for usual / non-split column                */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vPutMeta_usual(_ColEnc& xColEnc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  
+  /*
+              -- HeadLine --                      -- OverLine --
+   +================================+   +================================+
+   | <W><M>...                      |---| <U> ////////////////////////// |
+   +================================+   +================================+
+   | {D}{D}...                      |
+   +--------------------------------+
+   |                           [OL] |
+   +--------------------------------+
+   
+   where:
+     <W>  is one byte word length of head line
+     <M>  is a metacode for a column value
+     {D}  is a set of data bytes for a column value
+     [OL] is 2B relative index of the over line
+     <U>  is one byte space unit length of over line
+   */
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // put meta code <M> into meta tape of head
+  
+  // +================================+   +================================+
+  // | <W><M>...<M>                   |---| <U> ////////////////////////// |
+  // +================================+   +================================+
+  
+  i8 i_Col = xColEnc.m_pCol->iColumnNo();
+  
+  // set <M> for this column
+  m_aHeadLine->vMetaCode(i_Col,xColEnc.m_eMetaCode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* put data code {D} for encoded column value into crw                        */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vPutDataCode(_ColEnc& xColEnc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  
+  // +--------------------------------+
+  // | {D}                       [OL] |
+  // +--------------------------------+
+  //   ^offset
+  
+  // +================================+   +================================+
+  // | <W><M>        <MC_OVERFLOW_2T> |---| <U><M>{D} //////////////////// |
+  // +================================+   +================================+
+  //                                              ^offset
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // no data code {D} case
+  if (! xColEnc.m_nDataSize)
+    return;
+  
+  // non-vch packing as {1..8B} (max of 1 word)
+  if (DM_VCH != xColEnc.m_eDatum) {
+    vPutData_Bytes(xColEnc);
+    return;
+  }
+  
+  // vch packing
+       if (MC_STR_FIT_1L  == xColEnc.m_eMetaCode)  vPutData_STR(xColEnc);
+  else if (MC_STR_TAIL_2T == xColEnc.m_eMetaCode)  vPutData_TAIL(xColEnc);
+  else {
+    RASSERT(0);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* put data bytes for unary MC (e.g. for MC_1B..MC_8N, MC_DATE_E1_2B, ...)    */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vPutData_Bytes(_ColEnc& xColEnc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  // +--------------------------------+
+  // |{D}                        [OL] |
+  // +--------------------------------+
+  
+  // put {D}
+  m_aHeadLine->vPutLogical(xColEnc.m_i_Offset,
+                           xColEnc.m_wDataCode.m_w8,
+                           xColEnc.m_nDataSize);
+}
+
+/*----------------------------------------------------------------------------*/
+/* put data bytes for MC_BSTR_FIT_2L : <2L><Stl>                              */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vPutData_BSTR(_ColEnc& xColEnc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* put data bytes for MC_SHOCO_TAIL_2T : |OT| & <C><Shoco>                    */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vPutData_SHOCO(_ColEnc& xColEnc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* put data bytes for MC_STR_FIT_1L : <1L><Stl>                               */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vPutData_STR(_ColEnc& xColEnc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  // get <Stl>
+  char* azStr = (char*)xColEnc.m_wDataCode.m_szVch;
+  
+  // calc <1L>
+  i8 n1L = xColEnc.m_nDataSize - 1;
+  RASSERT(n1L == StrLib::iLength(azStr));
+  RASSERT(n1L < (i8)C_1_BYTE);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // +--------------------------------+
+  // |<L>                        [OL] |
+  // +--------------------------------+
+  
+  // put <1L>
+  m_aHeadLine->vPutLogical(xColEnc.m_i_Offset,
+                           n1L,
+                           C_1B);
+  
+  // +--------------------------------+
+  // |<L><Stl>                   [OL] |
+  // +--------------------------------+
+  
+  // put <Stl> without null terminator
+  m_aHeadLine->vPutLogical(xColEnc.m_i_Offset + C_L_1B,
+                           (Stz*)azStr,
+                           n1L);
+}
+
+/*----------------------------------------------------------------------------*/
+/* put data bytes for MC_STR_TAIL_2T : [TL]                                   */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vPutData_TAIL(_ColEnc& xColEnc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // +--------------------------------+
+  // | [TL]                      [OT] |
+  // +--------------------------------+
+  
+  // calculate [TL]
+  i8 i_Tail_rel = m_aHeadLine->iGetTailRel(xColEnc.m_aTailLine);
+  
+  // put [TL]
+  m_aHeadLine->vPutLogical(xColEnc.m_i_Offset,
+                           i_Tail_rel,
+                           C_2B);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/**************************  Support Functions  *******************************/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* allot a compact row (head and potentially an over line)                    */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vAllotCrw(void)
@@ -541,301 +840,6 @@ i8 RowCompactor::iFindTail(TailLine* aFindLine)
   return C_UNKNOWN;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* pack the encoding into head[+over]{+tail}                                  */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vPackCrw(Encoding* pEncoding)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // allot a logical compact row
-  
-  vAllotCrw();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pack all the columns into the logical compact row
-  
-  i8 nCols = m_pColVec->nItems();
-  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
-    
-    //vDumpHead("vHeadCode a"_Stz,m_aCrw,m_pColVec);
-    if (8 == i_Col)
-      vDebugPoint();
-    vPackColVal(pEncoding->xaColEnc[i_Col]);
-    //vDumpHead("vHeadCode b"_Stz,m_aCrw,m_pColVec);
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // stats and tracing
-  
-  m_nTotalCrws++;
-  
-  //#ifdef WITH_ENCODING_TRACE
-  if (m_nTotalCrws <= 10)
-    Crw::vDumpCrw("vPackCrw"_Stz,m_aHeadLine,m_pColVec);
-  //#endif
-  
-#ifdef WITH_ANALYSE_FREE
-  i8 nFreeSpace = aHeadLine->nFreeSpace(m_pColVec);
-  m_oFreqDist.vAdd(nFreeSpace);
-#endif
-  
-  m_aHeadLine = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pack column value into compact row                                         */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vPackColVal(_ColEnc& xColEnc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  vPutMetaCode(xColEnc);
-  
-  vPutData(xColEnc);
-}
-
-/*----------------------------------------------------------------------------*/
-/* put data code {D} for encoded column value into crw                        */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vPutData(_ColEnc& xColEnc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-
-  // +--------------------------------+
-  // | {D}                       [OL] |
-  // +--------------------------------+
-  //   ^offset
-  
-  // +================================+   +================================+
-  // | <W><M>        <MC_OVERFLOW_2T> |---| <U><M>{D} //////////////////// |
-  // +================================+   +================================+
-  //                                              ^offset
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // no data code {D} case
-  if (! xColEnc.m_nDataSize)
-    return;
-  
-  // non-vch packing as {1..8B} (max of 1 word)
-  if (DM_VCH != xColEnc.m_eDatum) {
-    vPutData_Bytes(xColEnc);
-    return;
-  }
-  
-  // vch packing
-       if (MC_STR_FIT_1L  == xColEnc.m_eMetaCode)  vPutData_STR(xColEnc);
-  else if (MC_STR_TAIL_2T == xColEnc.m_eMetaCode)  vPutData_TAIL(xColEnc);
-  else {
-    RASSERT(0);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* put data bytes for unary MC (e.g. for MC_1B..MC_8N, MC_DATE_E1_2B, ...)    */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vPutData_Bytes(_ColEnc& xColEnc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  // +--------------------------------+
-  // |{D}                        [OL] |
-  // +--------------------------------+
-  
-  // put {D}
-  m_aHeadLine->vPutLogical(xColEnc.m_i_Offset,
-                           xColEnc.m_wDataCode.m_w8,
-                           xColEnc.m_nDataSize);
-}
-
-/*----------------------------------------------------------------------------*/
-/* put data bytes for MC_BSTR_FIT_2L : <2L><Stl>                              */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vPutData_BSTR(_ColEnc& xColEnc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* put data bytes for MC_SHOCO_TAIL_2T : |OT| & <C><Shoco>                    */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vPutData_SHOCO(_ColEnc& xColEnc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* put data bytes for MC_STR_FIT_1L : <1L><Stl>                               */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vPutData_STR(_ColEnc& xColEnc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  // get <Stl>
-  char* azStr = (char*)xColEnc.m_wDataCode.m_szVch;
-  
-  // calc <1L>
-  i8 n1L = xColEnc.m_nDataSize - 1;
-  RASSERT(n1L == StrLib::iLength(azStr));
-  RASSERT(n1L < (i8)C_1_BYTE);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // +--------------------------------+
-  // |<L>                        [OL] |
-  // +--------------------------------+
-  
-  // put <1L>
-  m_aHeadLine->vPutLogical(xColEnc.m_i_Offset,
-                           n1L,
-                           C_1B);
-  
-  // +--------------------------------+
-  // |<L><Stl>                   [OL] |
-  // +--------------------------------+
-  
-  // put <Stl> without null terminator
-  m_aHeadLine->vPutLogical(xColEnc.m_i_Offset + C_L_1B,
-                           (Stz*)azStr,
-                           n1L);
-}
-
-/*----------------------------------------------------------------------------*/
-/* put data bytes for MC_STR_TAIL_2T : [TL]                                   */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vPutData_TAIL(_ColEnc& xColEnc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // +--------------------------------+
-  // | [TL]                      [OT] |
-  // +--------------------------------+
-  
-  // calculate [TL]
-  i8 i_Tail_rel = m_aHeadLine->iGetTailRel(xColEnc.m_aTailLine);
-  
-  // put [TL]
-  m_aHeadLine->vPutLogical(xColEnc.m_i_Offset,
-                           i_Tail_rel,
-                           C_2B);
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* put meta code for column value into logical compact row                    */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vPutMetaCode(_ColEnc& xColEnc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  if (xColEnc.m_bSplit)
-    vPutMetaCode_split(xColEnc);
-  else
-    vPutMetaCode_usual(xColEnc);
-}
-
-/*----------------------------------------------------------------------------*/
-/* put meta code into compact row for split column                            */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vPutMetaCode_split(_ColEnc& xColEnc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  /*
-             -- Head-Line --                      -- Over-Line --
-   +================================+   +================================+
-   | <W><M>                         |---| <U> ////////////////////////// |
-   +================================+   +================================+
-   | {D}{D}...                      |
-   +--------------------------------+
-   |                        {D}[OL] |
-   +--------------------------------+
-   
-   where:
-     [OL] is 2B relative index of the over line
-     <W>  is one byte word length of head line
-     <M>  is a metacode for a column value
-     {D}  is a set of data bytes for a column value
-     <U>  is one byte space unit length of over line
-   
-   */
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // +================================+   +================================+
-  // | <W><M>        <MC_OVERFLOW_2T> |---| <U> ////////////////////////// |
-  // +================================+   +================================+
-  
-  i8 i_Col = xColEnc.m_pCol->iColumnNo();
-  
-  // set <MC_OVERFLOW_2T> for this column
-  m_aHeadLine->vMetaCode(i_Col,MC_OVERFLOW_2T);
-
-  // +================================+   +================================+
-  // | <W><M>        <MC_OVERFLOW_2T> |---| <U><M> /////////////////////// |
-  // +================================+   +================================+
-  
-  // put <M> into over line
-  m_aHeadLine->vPutLogical(m_nHeadSize + C_U_1B,
-                           (i8)xColEnc.m_eMetaCode,
-                           C_1B);
-}
-
-/*----------------------------------------------------------------------------*/
-/* put meta code into compact row for usual / non-split column                */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vPutMetaCode_usual(_ColEnc& xColEnc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-
-  /*
-               -- HeadLine --                      -- OverLine --
-   +================================+   +================================+
-   | <W><M>...                      |---| <U> ////////////////////////// |
-   +================================+   +================================+
-   | {D}{D}...                      |
-   +--------------------------------+
-   |                           [OL] |
-   +--------------------------------+
-   
-   where:
-     <W>  is one byte word length of head line
-     <M>  is a metacode for a column value
-     {D}  is a set of data bytes for a column value
-     [OL] is 2B relative index of the over line
-     <U>  is one byte space unit length of over line
-     */
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // put meta code <M> into meta tape of head
-  
-  // +================================+   +================================+
-  // | <W><M>...<M>                   |---| <U> ////////////////////////// |
-  // +================================+   +================================+
-  
-  i8 i_Col = xColEnc.m_pCol->iColumnNo();
-  
-  // set <M> for this column
-  m_aHeadLine->vMetaCode(i_Col,xColEnc.m_eMetaCode);
-}
 
 
 /*----------------------------------------------------------------------------*/

@@ -50,17 +50,17 @@ namespace Rows
   
   private:
     // - - - - - - - - - - - - - - - - - - - - -
-    // structural order
+    // Compact Row Packing (structural order)
   
     void vPackCrw(Encoding* pEncoding);
   
     void vPackColVal(_ColEnc& xColEnc);
   
     void vPutMetaCode(_ColEnc& xColEnc);
-    void vPutMetaCode_split(_ColEnc& xColEnc);
-    void vPutMetaCode_usual(_ColEnc& xColEnc);
+    void vPutMeta_split(_ColEnc& xColEnc);
+    void vPutMeta_usual(_ColEnc& xColEnc);
   
-    void vPutData(_ColEnc& xColEnc);
+    void vPutDataCode(_ColEnc& xColEnc);
     void vPutData_Bytes(_ColEnc& xColEnc);
     void vPutData_BSTR(_ColEnc& xColEnc);
     void vPutData_SHOCO(_ColEnc& xColEnc);
@@ -68,7 +68,7 @@ namespace Rows
     void vPutData_TAIL(_ColEnc& xColEnc);
   
     // - - - - - - - - - - - - - - - - - - - - -
-    // alpha order
+    // Support Functions (alpha order)
 
     void vAllotCrw(void);
     void vAnalyzeSamples(void);
