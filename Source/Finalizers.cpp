@@ -254,6 +254,7 @@ pFINALIZE *gpFinalize[]
   /*119 */ &Finalize::vUndefined,         // CN_SKIPNODE
   /*120 */ &Finalize::vUndefined,         // CN_SLAB
   /*121 */ &Finalize::vUndefined,         // CN_SLABALLOCATOR
+  /*    */ &Finalize::vUndefined,         // CN_SLEEP
   /*122 */ &Slots::vFinalize,             // CN_SLOTS
   /*123 */ &Finalize::vUndefined,         // SN_SMALLPERSISTENT
   /*124 */ &Finalize::vUndefined,         // SN_SMALLTRANSIENT

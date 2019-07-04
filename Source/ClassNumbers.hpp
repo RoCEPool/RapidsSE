@@ -256,6 +256,7 @@ enum eCN : u2 // Class Number
   /* 182 0xB6       32B Heap:S */ CN_SKIPNODE,
   /* 183 0xB7  1040416B Heap:L */ CN_SLAB,
   /* 184 0xB8       24B Heap:S */ CN_SLABALLOCATOR,
+  /*                           */ CN_SLEEP,
   /* 185 0xB9      288B Heap:I */ CN_SLOTS,
   /* 186 0xBA      232B Heap:I */ CN_SMALLPERSISTENT,
   /* 187 0xBB      232B Heap:I */ CN_SMALLTRANSIENT,
@@ -561,6 +562,7 @@ static Stz* aCN[]
   /* 182 0xB6 */ "SKIPNODE"_Stz,            // CN_SKIPNODE
   /* 183 0xB7 */ "SLAB"_Stz,                // CN_SLAB
   /* 184 0xB8 */ "SLABALLOCATOR"_Stz,       // CN_SLABALLOCATOR
+  /*          */ "SLEEP"_Stz,               // CN_SLEEP
   /* 185 0xB9 */ "SLOTS"_Stz,               // CN_SLOTS
   /* 186 0xBA */ "SMALLPERSISTENT"_Stz,     // CN_SMALLPERSISTENT
   /* 187 0xBB */ "SMALLTRANSIENT"_Stz,      // CN_SMALLTRANSIENT

@@ -10,18 +10,18 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Sleep::Sleep(void)
-: Object(CN_SINCE)
+: Object(CN_SLEEP)
 {
-  _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SLEEP,_FOOTER_);
   
   m_wSleptTsp.m_iI8 = 0;
   m_wDurationIvl.m_iI8 = 0;
   m_wWakeupIvl.m_iI8 = 0;
   m_wWakeupTsp.m_iI8 = 0;
   
-  _checkInitialised_(CN_SINCE);
+  _checkInitialised_(CN_SLEEP);
   
-  _postcondition_(_MAGIC_,CN_SINCE,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_SLEEP,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -29,7 +29,7 @@ Sleep::Sleep(void)
 /*----------------------------------------------------------------------------*/
 Sleep::~Sleep(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SLEEP,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -45,6 +45,8 @@ Sleep::~Sleep(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Sleep::vClear(void)
 {
+  _precondition_(_MAGIC_,CN_SLEEP,_FOOTER_);
+  
   // reset slept tsp
   m_wSleptTsp.m_iI8 = 0;
   
@@ -63,6 +65,8 @@ void Sleep::vClear(void)
 /*----------------------------------------------------------------------------*/
 void Sleep::vSleepFor(i8 iMicroseconds)
 {
+  _precondition_(_MAGIC_,CN_SLEEP,_FOOTER_);
+  
   // get current tsp as an ivl
   m_wSleptTsp = TspLib::wGetCurrTsp_local();
   
@@ -85,6 +89,8 @@ void Sleep::vSleepFor(i8 iMicroseconds)
 /*----------------------------------------------------------------------------*/
 bool Sleep::bWakeupNow(void)
 {
+  _precondition_(_MAGIC_,CN_SLEEP,_FOOTER_);
+  
   // get current time as an Ivl
   Dtm xCurrentIvl = IvlLib::wGetCurrIvl();
   
@@ -100,6 +106,7 @@ bool Sleep::bWakeupNow(void)
 /*----------------------------------------------------------------------------*/
 u8 Sleep::uWakeupInUsec(void)
 {
+  _precondition_(_MAGIC_,CN_SLEEP,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get current time as an Ivl
@@ -121,7 +128,7 @@ u8 Sleep::uWakeupInUsec(void)
 /*----------------------------------------------------------------------------*/
 Footer* Sleep::aFooter(void)
 {
-  _precondition_(_MAGIC_,CN_SINCE);
+  _precondition_(_MAGIC_,CN_SLEEP);
   
   return &m_xFooter;
 }
