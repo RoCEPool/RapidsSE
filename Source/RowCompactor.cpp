@@ -130,7 +130,7 @@ void RowCompactor::vCompactEnd(void)
   
   if (m_bCollecting) {
     m_bCollecting = false;
-    vCompactSamples();
+    vPackSamples();
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -163,10 +163,10 @@ bool RowCompactor::bCompactRow(Row* pInflatedRow)
     if (bCollectSample(pInflatedRow))
       return true;
     
-    vCompactSamples();
+    vPackSamples();
   }
   
-  bool bResult = bCompactInflated(pInflatedRow);
+  bool bResult = bAddCrw(pInflatedRow);
     
   return bResult;
 }
@@ -221,7 +221,7 @@ bool RowCompactor::bCollectSample(Row* pInflatedRow)
 /*----------------------------------------------------------------------------*/
 /* compact collected samples into crw buffer                                  */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vCompactSamples(void)
+void RowCompactor::vPackSamples(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -240,8 +240,8 @@ void RowCompactor::vCompactSamples(void)
     
     vTrace("Compacting Sample: %s\n"_Stz,spRow.sz(pSampleRow));
     
-    bool bCompacted = bCompactInflated(pSampleRow);
-    RASSERT(bCompacted);
+    bool bPacked = bAddCrw(pSampleRow);
+    RASSERT(bPacked);
     
     pSampleRow = m_pRowSamples->aNextRow(pSampleRow);
   }
@@ -280,7 +280,7 @@ void RowCompactor::vAnalyzeSamples(void)
         if (pInnerRow->m_waColVal[i_Col].bIsNull())
           continue;
         
-        vAnalyzeVch(pCol,pOuterRow,pInnerRow);
+        vCreateTail(pCol,pOuterRow,pInnerRow);
         
       }
     }
@@ -291,7 +291,7 @@ void RowCompactor::vAnalyzeSamples(void)
 /*----------------------------------------------------------------------------*/
 /* analyze a vch column and potentially create a tail for its value           */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vAnalyzeVch(Column* pCol, Row* pOuterRow, Row* pInnerRow)
+void RowCompactor::vCreateTail(Column* pCol, Row* pOuterRow, Row* pInnerRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -332,7 +332,7 @@ void RowCompactor::vAnalyzeVch(Column* pCol, Row* pOuterRow, Row* pInnerRow)
 /*----------------------------------------------------------------------------*/
 /* compact given row into current nub                                         */
 /*----------------------------------------------------------------------------*/
-bool RowCompactor::bCompactInflated(Row* pInflatedRow)
+bool RowCompactor::bAddCrw(Row* pInflatedRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   

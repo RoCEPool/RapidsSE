@@ -55,14 +55,14 @@ namespace Rows
   
     bool bCollectSample(Row* pInflatedRow);
   
-    void vCompactSamples(void);
+    void vPackSamples(void);
     void vAnalyzeSamples(void);
-    void vAnalyzeVch(Column* pCol, Row* pOuterRow, Row* pInnerRow);
+    void vCreateTail(Column* pCol, Row* pOuterRow, Row* pInnerRow);
 
     // - - - - - - - - - - - - - - - - - - - - -
     // Compact Row Packing (structural order)
   
-    bool bCompactInflated(Row* pInflatedRow);
+    bool bAddCrw(Row* pInflatedRow);
 
     void vPackCrw(Encoding* pEncoding);
   
