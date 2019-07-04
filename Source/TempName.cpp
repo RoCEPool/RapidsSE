@@ -16,7 +16,7 @@ TempName::TempName(void)
   
   m_okLock.vInitLock(LK_TEMP_NAME);
   
-  m_oSince.vNow();
+  m_oBirth.vNow();
   
   m_sClicker = "aaaaaaaa"_Stz;
   
@@ -48,7 +48,7 @@ void TempName::vNextName(s32& sName)
   
   sName.vSprint("%s_%x"_Stz,
                 m_sClicker.aStz(),
-                m_oSince.iSeconds());
+                m_oBirth.m_wIvl.xIvl.m_uSecond);
   
   StrLib::vClick(m_sClicker.aChar());
   
