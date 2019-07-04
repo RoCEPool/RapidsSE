@@ -29,6 +29,23 @@ Dtm IvlLib::wAdd(Dtm wIvl1, Dtm wIvl2)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add Ivl2 to Ivl1 and return the new interval                               */
+/*----------------------------------------------------------------------------*/
+Dtm IvlLib::wAdd(Dtm wIvl, u8 uMicro)
+{
+  // convert wIvl1 to microseconds
+  u8 uIvlMicro = (wIvl.xIvl.m_uSecond * C_1M) + wIvl.xIvl.m_uMicro;
+  
+  // add the two intervals
+  u8 uMicroTotal = uIvlMicro + uMicro;
+  
+  // convert microseconds to Ivl
+  Dtm xIvl = wToIvl(uMicroTotal);
+  
+  return xIvl;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get current system/epoch interval                                          */
 /*----------------------------------------------------------------------------*/
 Dtm IvlLib::wGetCurrIvl(void)

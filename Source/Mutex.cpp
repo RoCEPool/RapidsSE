@@ -268,15 +268,22 @@ void Mutex::vCondWait_Timed(i8 iMicroSeconds)
   RASSERT(m_bLocked);
   RASSERT(bMutexIsLocked());
 
-  Since oSince;
+//  Since oSince;
+//
+//  oSince.vNow();
+//
+//  oSince.vAdd(iMicroSeconds);
+//
+//  struct timespec xTimeSpec;
+//  xTimeSpec.tv_sec  = oSince.m_wIvl.xIvl.m_uSecond;
+//  xTimeSpec.tv_nsec = oSince.m_wIvl.xIvl.m_uMicro * 1000;
   
-  oSince.vNow();
-  
-  oSince.vAdd(iMicroSeconds);
+  Dtm wIvl = IvlLib::wGetCurrIvl();
+  wIvl = IvlLib::wAdd(wIvl, iMicroSeconds);
   
   struct timespec xTimeSpec;
-  xTimeSpec.tv_sec  = oSince.m_wIvl.xIvl.m_uSecond;
-  xTimeSpec.tv_nsec = oSince.m_wIvl.xIvl.m_uMicro * 1000;
+  xTimeSpec.tv_sec  = wIvl.xIvl.m_uSecond;
+  xTimeSpec.tv_nsec = wIvl.xIvl.m_uMicro * 1000;
   
   // clear this threads tracking of the mutex
   m_bLocked = false;
