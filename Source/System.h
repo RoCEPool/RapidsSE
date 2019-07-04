@@ -19,6 +19,7 @@ using namespace System;
 #include "SysCall.hpp"
 
 #include "Atomic.hpp"
+#include "Birth.hpp"
 #include "Compress.hpp"
 #include "DecaCnt.hpp"
 #include "Dir.hpp"

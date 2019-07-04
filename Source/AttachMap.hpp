@@ -9,7 +9,7 @@ namespace StorageEngine
   {
   public:
     i8    m_iPid;
-    Since m_oSince;  
+    Birth m_oBirth;  
     Now   m_oNow;
   
     struct {

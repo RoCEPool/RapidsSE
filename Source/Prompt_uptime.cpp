@@ -27,12 +27,9 @@ extern PromptCatalog gxPromptCatalog;
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_uptime(SePrompt* pPrompt)
 {
-  Since oSince;
-  oSince.vNow();
-  
-  i8 iUpTimeSsec = oSince.iSeconds() - gpAttachMap->m_oSince.iSeconds();
+  u8 uUpTimeSsec = gpAttachMap->m_oBirth.uSecondsElapsed();
 
-  vTrace("  %llds\n"_Stz,iUpTimeSsec);
+  vTrace("  %llds\n"_Stz,uUpTimeSsec);
   
   return true;
 }

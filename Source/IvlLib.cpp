@@ -108,7 +108,7 @@ Dtm IvlLib::wToIvl(u8 uMicroseconds)
 }
 
 /*----------------------------------------------------------------------------*/
-/* subtract Ivl2 from Ivl1 and return the microseconds                                                   */
+/* subtract Ivl2 from Ivl1 and return the microseconds                        */
 /*----------------------------------------------------------------------------*/
 u8 IvlLib::uSubtract(Dtm wIvl1, Dtm wIvl2)
 {

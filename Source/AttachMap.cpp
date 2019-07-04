@@ -201,7 +201,7 @@ void AttachMap::vRecordArguments(bool bActionSequence,
   
   m_iPid = Process::iGetPid();
   
-  m_oSince.vNow();  
+  m_oBirth.vNow();
   m_oNow.vSetNowUTC();
   
   Arg.m_bActionSequence  = bActionSequence;
