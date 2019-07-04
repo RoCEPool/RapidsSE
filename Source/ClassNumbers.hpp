@@ -17,6 +17,7 @@ enum eCN : u2 // Class Number
 {
   /*   0 0x00        0B Heap:I */ CN_NONE,
   
+  /*                           */ CN_BIRTH,
   /*   4 0x04       16B Heap:I */ CN_FIPVAL,
   /*                           */ CN_FREQDIST,
   /*   6 0x06       16B Heap:I */ CN_INTVAL,
@@ -323,6 +324,7 @@ static Stz* aCN[]
 {
   /*   0 0x00 */ "NONE"_Stz,                // CN_NONE
   
+  /*          */ "BIRTH"_Stz,               // CN_BIRTH
   /*   4 0x04 */ "FIPVAL"_Stz,              // CN_FIPVAL
   /*          */ "FREQDIST"_Stz,            // CN_FREQDIST
   /*   6 0x06 */ "INTVAL"_Stz,              // CN_INTVAL

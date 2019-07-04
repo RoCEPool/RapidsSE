@@ -176,6 +176,7 @@ void Axioms::vAddConstants(void)
   // CN_ : class numbers
   /*  0 */ vAddConstant("CN_NONE"_Stz,         CN_NONE);
 
+  /*    */ vAddConstant("CN_BIRTH"_Stz,        CN_BIRTH);
   /*  5 */ vAddConstant("CN_FIPVAL"_Stz,       CN_FIPVAL);
   /*    */ vAddConstant("CN_FREQDIST"_Stz,     CN_FREQDIST);
   /*  4 */ vAddConstant("CN_INTVAL"_Stz,       CN_INTVAL);
