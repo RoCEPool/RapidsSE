@@ -368,11 +368,16 @@ _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
   m_pEncoding->vEncode(pInflatedRow);
   
+  SP_Encoding spEncoding;
+  vTrace("\nvEncode:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // encode tails
-  
+
+
 #ifdef WITH_STR_DUPLICATES
   vEncodeTails(pInflatedRow);
+  vTrace("\nvEncodeTails:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
 #endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -380,8 +385,7 @@ _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
 
   m_pEncoding->vSplitOver();
   
-  SP_Encoding spEncoding;
-  vTrace("\nEncoding:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
+  vTrace("\vSplitOver:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for space in target nub

@@ -158,11 +158,14 @@ void Encoding::vMorphEncoding(_ColEnc* aColEnc)
   aColEnc->m_eMetaCode = MC_STR_TAIL_2T;
   aColEnc->m_wDataCode = aColEnc->m_i_Tail;
   aColEnc->m_nDataSize = C_2B;
-  
-  // adjust columns based on MC_STR_FIT_1L becoming MC_STR_TAIL_2T
-  for (i8 i_Col = aColEnc->m_pCol->iColumnNo() ; i_Col < m_nColumns; i_Col++) {
-    xaColEnc[i_Col].m_i_Offset += nOffsetAdj;
-    xaColEnc[i_Col].m_i_Till   += nOffsetAdj;
+  aColEnc->m_i_Till   += nOffsetAdj;
+
+  // adjust remaining columns based on MC_STR_FIT_1L becoming MC_STR_TAIL_2T
+  for (i8 i_RmgCol = (1 + aColEnc->m_pCol->iColumnNo());
+       i_RmgCol < m_nColumns;
+       i_RmgCol++) {
+    xaColEnc[i_RmgCol].m_i_Offset += nOffsetAdj;
+    xaColEnc[i_RmgCol].m_i_Till   += nOffsetAdj;
   }
   
   m_nBytesNeeded += nOffsetAdj;
