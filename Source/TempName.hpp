@@ -9,7 +9,7 @@ namespace System
   {
   public:
     Lock  m_okLock;
-    Since m_oSince;
+    Birth m_oBirth;
     s32   m_sClicker;
   
     // must be last
