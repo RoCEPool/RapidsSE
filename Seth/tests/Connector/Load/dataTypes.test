@@ -9,6 +9,7 @@ create table rapidsse.public.G1 (
   dte     date,
   tsp     timestamp,
   dec     decimal(17,2),
+  decL    decimal(19,2),
   flt     float,
   status  boolean
 );
@@ -45,13 +46,18 @@ failure contains: 'Success'
 // select from T1
 select * from rapidsse.public.G1;
  rows:
-  (10,true)
-  (null,true)
-  (30,false)
-  (40,false)
-  (50,true)
-  (60,null)
-
+(                 40, NULL       , DATE '1996-04-21', TIMESTAMP '1996-04-21 07:34:35.0' , 31.20, 3.456789e+04, false )
+(  72057594037927930, ' yzzzzz', DATE '1996-01-30', TIMESTAMP '1996-01-30 15:15:15.0' , 68.56, 67.89, true  )
+(              65530, ' abcd'  , DATE '1996-03-13', TIMESTAMP '1996-03-13 10:10:10.0' , 10.23, 1.199000e+01, true  )
+(                 30, ' ijklmn', DATE '1996-01-29', TIMESTAMP '1996-01-29 08:30:30.3' , 18.25, 7.896780e+02, false )
+(      1099511627770, ' yzzzzz', DATE '1996-01-30', TIMESTAMP '1996-01-30 15:15:15.0' , 68.56, 6.789000e+01, true  )
+( 172057594037927930, ' zzzzzz', DATE '1996-01-30', TIMESTAMP '1996-01-30 15:15:15.0' , 68.56, 6.789000e+01, true  )
+(               NULL, ' efgh'  , DATE '1996-04-12', TIMESTAMP '1996-04-12 20:20:20.2' , 20.26, 3.345600e+01, true  )
+(                 50, ' null'  , DATE '1996-03-30', TIMESTAMP '1996-03-30 12:13:14.15', 22.25, 4.590000e+01, true  )
+(         4294967290, ' yzzzzz', DATE '1996-01-30', TIMESTAMP '1996-01-30 15:15:15.0' , 68.56, 6.789000e+01, true  )
+(    281474976710650, ' yzzzzz', DATE '1996-01-30', TIMESTAMP '1996-01-30 15:15:15.0' , 68.56, 6.789000e+01, true  )
+(                255, ' yzzzzz', DATE '1996-01-30', TIMESTAMP '1996-01-30 15:15:15.0' , 68.56, 6.789000e+01, true  )
+(           16777210, ' yzzzzz', DATE '1996-01-30', TIMESTAMP '1996-01-30 15:15:15.0' , 68.56, 6.789000e+01, true  )
 // drop table
 //drop table rapidsse.public.G1;
 //success
