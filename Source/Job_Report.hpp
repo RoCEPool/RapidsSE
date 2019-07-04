@@ -23,7 +23,7 @@ namespace Jobs
     RowAgg* m_pRowAgg_3m;  // row aggregator for 3 min
     RowAgg* m_pRowAgg_15m; // row aggregator for 15 min
   
-    Since   m_oBegan;      // when the report job began
+    Birth   m_oBegan;      // when the report job began
   
     i8      m_iLast_10s;
     i8      m_iLast_1m;
