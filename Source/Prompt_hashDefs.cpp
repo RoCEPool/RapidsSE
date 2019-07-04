@@ -26,67 +26,8 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
 {
-#ifdef WITH_APPLE
-  vTrace("  WITH_APPLE\n"_Stz);
-#endif
   
-#ifdef WITH_LINUX
-  vTrace("  WITH_LINUX\n"_Stz);
-#endif
-
-#ifdef WITH_ACTIVITY_MAP
-  vTrace("  WITH_ACTIVITY_MAP\n"_Stz);
-#endif
   
-#ifdef WITH_ADDRESS_CHECKING
-  vTrace("  WITH_ADDRESS_CHECKING\n"_Stz);
-#endif
-  
-#ifdef WITH_TRACE_API
-  vTrace("  WITH_TRACE_API\n"_Stz);
-#endif
-  
-#ifdef WITH_ASSERT_MACRO
-  vTrace("  WITH_ASSERT_MACRO\n"_Stz);
-#endif
-  
-#ifdef WITH_CORECTNESS_ALGEBRA
-  vTrace("  WITH_CORECTNESS_ALGEBRA\n"_Stz);
-#endif
-  
-#ifdef WITH_DEBUG_VERSION
-  vTrace("  WITH_DEBUG_VERSION\n"_Stz);
-#endif
-  
-#ifdef WITH_TRACE_ENCODING
-  vTrace("  WITH_TRACE_ENCODING\n"_Stz);
-#endif
-  
-#ifdef WITH_ENCODING_XCHECK
-  vTrace("  WITH_ENCODING_XCHECK\n"_Stz);
-#endif
-  
-#ifdef WITH_ENTRY_EXIT
-  vTrace("  WITH_ENTRY_EXIT\n"_Stz);
-#endif
-        
-#ifdef WITH_MUNGED_SEN
-  vTrace("  WITH_MUNGED_SEN\n"_Stz);
-#endif
-  
-#ifdef WITH_PREPOST_CHECKING
-  vTrace("  WITH_PREPOST_CHECKING\n"_Stz);
-#endif
-
-#ifdef WITH_SHOCO_DUPLICATES
-  vTrace("  WITH_SHOCO_DUPLICATES\n"_Stz);
-#endif
-
-#ifdef WITH_STR_DUPLICATES
-  vTrace("  WITH_STR_DUPLICATES\n"_Stz);
-#endif
-  
-
   vTrace("\n"_Stz);
 
   return true;

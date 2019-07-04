@@ -77,6 +77,7 @@ Encoding::Encoding(ColumnVec* pColVec, i8 nHeadSize, i8 nMetaSize)
     xaColEnc[i_Col].m_bSplit     = false;
     
     xaColEnc[i_Col].m_i_Tail     = C_UNKNOWN;
+    xaColEnc[i_Col].m_aTailLine  = nullptr;
   }
   
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
@@ -108,7 +109,7 @@ Encoding::~Encoding(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* encode row                                                                 */
+/* how many bytes need in compact form                                        */
 /*----------------------------------------------------------------------------*/
 i8 Encoding::nBytesNeeded(void)
 {
@@ -127,13 +128,6 @@ void Encoding::vEncode(Row* pRow)
   vReset();
   
   vInitialEncoding(pRow);
-  
-  //SP_Encoding spEncoding;
-  //vTrace("\n%s\n"_Stz,spEncoding.sz(this));
-  
-  vSplitOver();
-  
-  //vTrace("\n%s\n"_Stz,spEncoding.sz(this));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -151,20 +145,25 @@ void Encoding::vMorphEncoding(_ColEnc* aColEnc)
   i8 nOffsetAdj = - (aColEnc->m_nDataSize - C_2B);
   ASSERT(nOffsetAdj < 0);
 
-  return;
+#ifdef WITH_STR_DUPLICATES
   
   // morph the given column into a MC_STR_TAIL_2T
   aColEnc->m_eMetaCode = MC_STR_TAIL_2T;
   aColEnc->m_wDataCode = aColEnc->m_i_Tail;
   aColEnc->m_nDataSize = C_2B;
-  
-  // adjust columns based on MC_STR_FIT_1L becoming MC_STR_TAIL_2T
-  for (i8 i_Col = aColEnc->m_pCol->iColumnNo() ; i_Col < m_nColumns; i_Col++) {
-    xaColEnc[i_Col].m_i_Offset += nOffsetAdj;
-    xaColEnc[i_Col].m_i_Till   += nOffsetAdj;
+  aColEnc->m_i_Till   += nOffsetAdj;
+
+  // adjust remaining columns based on MC_STR_FIT_1L becoming MC_STR_TAIL_2T
+  for (i8 i_RmgCol = (1 + aColEnc->m_pCol->iColumnNo());
+       i_RmgCol < m_nColumns;
+       i_RmgCol++) {
+    xaColEnc[i_RmgCol].m_i_Offset += nOffsetAdj;
+    xaColEnc[i_RmgCol].m_i_Till   += nOffsetAdj;
   }
   
   m_nBytesNeeded += nOffsetAdj;
+  
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -179,6 +178,31 @@ bool Encoding::bOverFlowed(void)
   else
     return false;
 }
+
+/*----------------------------------------------------------------------------*/
+/* split at headSize for overflow (if necessary)                              */
+/*----------------------------------------------------------------------------*/
+void Encoding::vSplitOver(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  
+  // test if encoding fits in head
+  if (m_nBytesNeeded <= m_nHeadSize) {
+    m_nShiftOver = 0;
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // split into head and oveflow
+  
+  Column* pSplitCol = pNonFitting();
+  
+  i8 i_SplitCol = pSplitCol->iColumnNo();
+  
+  // split at that column
+  vSplitAt(i_SplitCol);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
@@ -266,7 +290,7 @@ void Encoding::vEncodeBcd(_ColEnc& xColEnc, Dtm wBcd)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  //MC_1..8B
+  // MC_1..8B
   xColEnc.m_eMetaCode = (eMC)IntLib::iByteMagnitude(wBcd.m_iBcd);
   xColEnc.m_wDataCode.m_iBcd = wBcd.m_iBcd;
   xColEnc.m_nDataSize = xColEnc.m_eMetaCode;
@@ -532,6 +556,7 @@ void Encoding::vReset(void)
     xaColEnc[i_Col].m_bSplit     = false;
     
     xaColEnc[i_Col].m_i_Tail     = C_UNKNOWN;
+    xaColEnc[i_Col].m_aTailLine  = nullptr;
   }
   
 #ifdef WITH_CHECK_INITIALISED
@@ -540,56 +565,6 @@ void Encoding::vReset(void)
   m_xWsp.vInit();
 #endif
 }
-
-/*----------------------------------------------------------------------------*/
-/* split at headSize for overflow (if necessary)                              */
-/*----------------------------------------------------------------------------*/
-void Encoding::vSplitOver(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
-  
-  // test if encoding fits in head
-  if (m_nBytesNeeded <= m_nHeadSize) {
-    m_nShiftOver = 0;
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // split into head and oveflow
-  
-  Column* pSplitCol = pNonFitting();
-  
-  i8 i_SplitCol = pSplitCol->iColumnNo();
-
-  // split at that column
-  vSplitAt(i_SplitCol);
-}
-/*----------------------------------------------------------------------------*/
-//void Encoding::vSplitOver(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
-//
-//  // test if encoding fits in head
-//  if (m_nBytesNeeded <= m_nHeadSize) {
-//    m_nShiftOver = 0;
-//    return;
-//  }
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // split into head and oveflow
-//
-//  // find first column which does not fit into the head
-//  i8 i_Col;
-//  for (i_Col = 0; i_Col < m_nColumns; i_Col++) {
-//    if (! bWithinHead(i_Col))
-//      break;
-//  }
-//
-//  RASSERT(i_Col < m_nColumns);
-//
-//  // split at that column
-//  vSplitAt(i_Col);
-//}
 
 /*----------------------------------------------------------------------------*/
 /* split columns at head size for overflow                                    */

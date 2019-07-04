@@ -21,7 +21,7 @@ void RowInflator::vInflateColumn(Row* pRow, HeadLine* aHeadLine, i8 i_ColToRetri
   
   TailLine* aTail;
   
-#ifdef WITH_TRACE_DECODING
+#ifdef WITH_DECODING_TRACE
   static i8 nTotalRows = 0;
   vTrace("vInflate() of row %lld\n"_Stz,nTotalRows++);
   vDumpHead("aHeadLine"_Stz,aHeadLine,pRow->m_pColVec);
@@ -37,7 +37,7 @@ void RowInflator::vInflateColumn(Row* pRow, HeadLine* aHeadLine, i8 i_ColToRetri
   
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
-#ifdef WITH_TRACE_DECODING
+#ifdef WITH_DECODING_TRACE
     Column* pCol = pRow->m_pColVec->pGet(i_Col);
 #endif
     
@@ -468,7 +468,7 @@ void RowInflator::vInflateColumn(Row* pRow, HeadLine* aHeadLine, i8 i_ColToRetri
     
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#ifdef WITH_TRACE_DECODING
+#ifdef WITH_DECODING_TRACE
     if (C_DATUM_NULL == *(aiValue-1)) {
       vTrace(" [%lld %15s] null\n"_Stz,i_Col,pCol->szColNm());
       continue; // to next i_Col
@@ -536,7 +536,7 @@ void RowInflator::vInflateColumns(Row* pRow, HeadLine* aHeadLine)
   
   TailLine* aTail;
   
-#ifdef WITH_TRACE_DECODING
+#ifdef WITH_DECODING_TRACE
   static i8 nTotalRows = 0;
   vTrace("vInflate() of row %lld\n"_Stz,nTotalRows++);
   vDumpHead("aHeadLine"_Stz,aHeadLine,pRow->m_pColVec);
@@ -560,7 +560,7 @@ void RowInflator::vInflateColumns(Row* pRow, HeadLine* aHeadLine)
       break;
     }
     
-#ifdef WITH_TRACE_DECODING
+#ifdef WITH_DECODING_TRACE
     Column* pCol = pRow->m_pColVec->pGet(i_Col);
 #endif
     
@@ -991,7 +991,7 @@ void RowInflator::vInflateColumns(Row* pRow, HeadLine* aHeadLine)
     
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#ifdef WITH_TRACE_DECODING
+#ifdef WITH_DECODING_TRACE
     if (C_DATUM_NULL == *(aiValue-1)) {
       vTrace(" [%lld %15s] null\n"_Stz,i_Col,pCol->szColNm());
       continue; // to next i_Col
@@ -1057,7 +1057,7 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
   
   TailLine* aTail;
   
-#ifdef WITH_TRACE_DECODING
+#ifdef WITH_DECODING_TRACE
   static i8 nTotalRows = 0;
   vTrace("vInflate() of row %lld\n"_Stz,nTotalRows++);
   vDumpHead("aHeadLine"_Stz,aHeadLine,pRow->m_pColVec);
@@ -1073,7 +1073,7 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
   
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
-#ifdef WITH_TRACE_DECODING
+#ifdef WITH_DECODING_TRACE
     Column* pCol = pRow->m_pColVec->pGet(i_Col);
 #endif
     
@@ -1460,7 +1460,7 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
     
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#ifdef WITH_TRACE_DECODING
+#ifdef WITH_DECODING_TRACE
     if (C_DATUM_NULL == *(aiValue-1)) {
       vTrace(" [%lld %15s] null\n"_Stz,i_Col,pCol->szColNm());
       continue; // to next i_Col

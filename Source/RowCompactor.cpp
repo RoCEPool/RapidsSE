@@ -128,11 +128,10 @@ void RowCompactor::vCompactEnd(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-#ifdef WITH_STR_DUPLICATES
   if (m_bCollecting) {
+    m_bCollecting = false;
     vCompactSamples();
   }
-#endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -159,8 +158,13 @@ bool RowCompactor::bCompactRow(Row* pInflatedRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  if (bCollectSample(pInflatedRow))
-    return true;
+  if (m_bCollecting) {
+
+    if (bCollectSample(pInflatedRow))
+      return true;
+    
+    vCompactSamples();
+  }
   
   bool bResult = bCompactInflated(pInflatedRow);
     
@@ -278,7 +282,7 @@ void RowCompactor::vAnalyzeSamples(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* analyze a vch column                                                       */
+/* analyze a vch column and potentially create a tail for its value           */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vAnalyzeVch(Column* pCol, Row* pOuterRow, Row* pInnerRow)
 {
@@ -297,7 +301,7 @@ void RowCompactor::vAnalyzeVch(Column* pCol, Row* pOuterRow, Row* pInnerRow)
     return;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 2) is there a tail for the vch?
+  // 2) is there already a tail for the vch?
   
   TailStr xFindTail(pOuterRow->m_waColVal[i_Col].m_szVch);
   
@@ -319,18 +323,16 @@ void RowCompactor::vAnalyzeVch(Column* pCol, Row* pOuterRow, Row* pInnerRow)
 bool RowCompactor::bCollectSample(Row* pInflatedRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-
-#ifndef WITH_STR_DUPLICATES
   
-  return false;
-  
-#else
-
-  if (! m_bCollecting)
-    return false;
-    
   if (m_pRowSamples->nItems() >= C_SAMPLE_ROWS) {
     vTrace("Samples collected\n"_Stz);
+    m_bCollecting = false;
+    return false;
+  }
+  
+  Row* pSampleRow = m_pRowSamples->aAllotRow(m_pColVec);
+  if (! pSampleRow) {
+    vTrace("Samples full\n"_Stz);
     m_bCollecting = false;
     return false;
   }
@@ -339,41 +341,19 @@ bool RowCompactor::bCollectSample(Row* pInflatedRow)
   // collect sample
   
   SP_Row spRow;
-  vTrace("bCollectSample:: %s\n"_Stz,spRow.sz(pInflatedRow));
+  MemLib::vCopy(pSampleRow,pInflatedRow,sizeof(Row),CN_ROWCOMPACTOR);
   
-  if (Row* pSampleRow = m_pRowSamples->aAllotRow(m_pColVec)) {
-    
-    MemLib::vCopy(pSampleRow,pInflatedRow,sizeof(Row),CN_ROWCOMPACTOR);
-    
-    pSampleRow->vAdjustAddresses(pInflatedRow);
-    
-    vTrace("pSampleRow:: %s\n"_Stz,spRow.sz(pSampleRow));
-    
-    Row* pRecheckRow = m_pRowSamples->aFirstRow();
-    while (pRecheckRow) {
-      vTrace("pRecheckRow: %s\n"_Stz,spRow.sz(pRecheckRow));
-      pRecheckRow = m_pRowSamples->aNextRow(pRecheckRow);
-    }
-
-    return true;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pSampleRow->vAdjustAddresses(pInflatedRow);
   
-  vTrace("No sample space left\n"_Stz);
+  vTrace("pSampleRow:: %s\n"_Stz,spRow.sz(pSampleRow));
   
-  vCompactSamples();
-
-//  SP_Row spRow;
-//  Row* pSampleRow = m_pRowSamples->aFirstRow();
-//  while (pSampleRow) {
-//    vTrace("Sample: %s\n"_Stz,spRow.sz(pSampleRow));
-//    pSampleRow = m_pRowSamples->aNextRow(pSampleRow);
+//  Row* pRecheckRow = m_pRowSamples->aFirstRow();
+//  while (pRecheckRow) {
+//    vTrace("pRecheckRow: %s\n"_Stz,spRow.sz(pRecheckRow));
+//    pRecheckRow = m_pRowSamples->aNextRow(pRecheckRow);
 //  }
- 
-  return false;
 
-#endif
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -384,19 +364,28 @@ bool RowCompactor::bCompactInflated(Row* pInflatedRow)
 _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // encode the inflated row
+  // initially encode the inflated row
   
   m_pEncoding->vEncode(pInflatedRow);
   
+  SP_Encoding spEncoding;
+  vTrace("\nvEncode:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // encode tails
-  
+
+
 #ifdef WITH_STR_DUPLICATES
   vEncodeTails(pInflatedRow);
+  vTrace("\nvEncodeTails:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
 #endif
 
-  SP_Encoding spEncoding;
-  vTrace("\nEncoding:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // split encoding between head and overflow
+
+  m_pEncoding->vSplitOver();
+  
+  vTrace("\vSplitOver:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for space in target nub
@@ -427,10 +416,13 @@ void RowCompactor::vCompactSamples(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  ASSERT(m_bCollecting);
-  m_bCollecting = false;
+  ASSERT(! m_bCollecting);
   
+#ifdef WITH_STR_DUPLICATES
   vAnalyzeSamples();
+  
+  vDumpTails();
+#endif
   
   SP_Row spRow;
   
@@ -451,6 +443,29 @@ void RowCompactor::vCompactSamples(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* dump duplicate tail lines                                                  */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vDumpTails(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+
+  for (i8 i_Tail = m_pCrwNub->iLastTail();
+       i_Tail != C_UNKNOWN;
+       i_Tail = m_pCrwNub->iPrevTail(i_Tail)) {
+    
+    TailLine* aTailLine = m_pCrwNub->aGetTail(i_Tail);
+    
+    char* azStr = aAdd<char*>(aTailLine,(C_U_1B + C_L_1B));
+    
+    vTrace("Tail %lld : <U %lld> <L %lld> %s\n"_Stz,
+           i_Tail,
+           aTailLine->iU(),
+           aTailLine->iL(),
+           azStr);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* mark up the encoding of a row with tails                                   */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vEncodeTails(Row* pInflatedRow)
@@ -460,22 +475,41 @@ void RowCompactor::vEncodeTails(Row* pInflatedRow)
   i8 nCols = m_pColVec->nItems();
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
-    Column* pCol = m_pColVec->pGet(i_Col);
-    eDM eDatum = pCol->eDatumType();
+    _ColEnc* aColEnc = & m_pEncoding->xaColEnc[i_Col];
     
-    if (DM_VCH != eDatum)
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // test for non-null vch column of minimum length
+    
+    if (DM_VCH != aColEnc->m_eDatum)
       continue;
    
-    TailStr xFindTail(pInflatedRow->m_waColVal[i_Col].m_szVch);
+    // -- vch column --
+    
+    Dtm* aColVal = & pInflatedRow->m_waColVal[i_Col];
+    
+    if (aColVal->bIsNull())
+      continue;
+    
+    // -- non-null vch column --
+    
+    if (StrLib::iLength(aColVal->m_azStr) < 8)
+      continue;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // attempt to find tail for non-null vch column of minimum length
+    
+    TailStr xFindTail(aColVal->m_szVch);
     
     i8 i_Tail = iFindTail( (TailLine*) & xFindTail );
     if (C_UNKNOWN == i_Tail)
       continue;
 
-    // -- we have found a matching tail --
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // found a matching tail
     
-    _ColEnc* aColEnc = & m_pEncoding->xaColEnc[i_Col];
+    // put tial into the encoding
     aColEnc->m_i_Tail = i_Tail;
+    aColEnc->m_aTailLine = m_pCrwNub->aGetTail(i_Tail);
     
     // morph the encoding
     m_pEncoding->vMorphEncoding(aColEnc);
@@ -488,8 +522,7 @@ void RowCompactor::vEncodeTails(Row* pInflatedRow)
 /*----------------------------------------------------------------------------*/
 i8 RowCompactor::iFindTail(TailLine* aFindLine)
 {
-  static i8 nFound = 0;
-  static i8 nNotFound = 0;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
   for (i8 i_Tail = m_pCrwNub->iLastTail();
        i_Tail != C_UNKNOWN;
@@ -501,28 +534,19 @@ i8 RowCompactor::iFindTail(TailLine* aFindLine)
     //aFindLine->vDump();
     //aTailLine->vDump();
 
-    if (0 == MemLib::iCompareWords(aTailLine,aFindLine,nTailWords)) {
-      nFound++;
-//      if (IntLib::bIsDecaCycle(nFound))
-//        vTrace("%lld dupe tail found\n"_Stz,nFound);
+    if (0 == MemLib::iCompareWords(aTailLine,aFindLine,nTailWords))
       return i_Tail;
-    }
-    
   }
   
-  nNotFound++;
-//  if (IntLib::bIsDecaCycle(nNotFound))
-//    vTrace("%lld dupe tail NOT found\n"_Stz,nNotFound);
   return C_UNKNOWN;
 }
 
 
-
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* pack the encoding into head[+over]        */ //! still have to do {+tail}) */
+/* pack the encoding into head[+over]{+tail}                                  */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vPackCrw(Encoding* pEncoding)
 {
@@ -551,7 +575,7 @@ void RowCompactor::vPackCrw(Encoding* pEncoding)
   
   m_nTotalCrws++;
   
-  //#ifdef WITH_TRACE_ENCODING
+  //#ifdef WITH_ENCODING_TRACE
   if (m_nTotalCrws <= 10)
     Crw::vDumpCrw("vPackCrw"_Stz,m_aHeadLine,m_pColVec);
   //#endif
@@ -628,9 +652,13 @@ void RowCompactor::vPackColVal(_ColEnc& xColEnc)
   }
   
   // vch packing (max of ??? words)
-  ASSERT(MC_STR_FIT_1L == xColEnc.m_eMetaCode);
-  vPutData_STR(xColEnc);
-  return;
+  if (MC_STR_FIT_1L == xColEnc.m_eMetaCode)
+    vPutData_STR(xColEnc);
+  else if (MC_STR_TAIL_2T == xColEnc.m_eMetaCode)
+    vPutData_TAIL(xColEnc);
+  else {
+    RASSERT(0);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -695,9 +723,13 @@ void RowCompactor::vPackColVal_split(_ColEnc& xColEnc)
   }
   
   // vch packing (max of ??? words)
-  ASSERT(MC_STR_FIT_1L == xColEnc.m_eMetaCode);
-  vPutData_STR(xColEnc);
-  return;
+  if (MC_STR_FIT_1L == xColEnc.m_eMetaCode)
+    vPutData_STR(xColEnc);
+  else if (MC_STR_TAIL_2T == xColEnc.m_eMetaCode)
+    vPutData_TAIL(xColEnc);
+  else {
+    RASSERT(0);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -770,6 +802,26 @@ void RowCompactor::vPutData_STR(_ColEnc& xColEnc)
   m_aHeadLine->vPutLogical(xColEnc.m_i_Offset + C_L_1B,
                            (Stz*)azStr,
                            n1L);
+}
+
+/*----------------------------------------------------------------------------*/
+/* put data bytes for MC_STR_TAIL_2T : [TL]                                   */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vPutData_TAIL(_ColEnc& xColEnc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // +--------------------------------+
+  // | [TL]                      [OT] |
+  // +--------------------------------+
+  
+  // put [TL]
+  m_aHeadLine->vPutLogical(xColEnc.m_i_Offset,
+                           xColEnc.m_i_Tail,
+                           C_2B);
 }
 
 /*----------------------------------------------------------------------------*/

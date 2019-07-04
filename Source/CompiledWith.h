@@ -32,9 +32,8 @@
 #define WITH_CORECTNESS_ALGEBRA // known class, magic, footer
 #define WITH_ENTRY_EXIT         // code for ENTRY() & EXIT() macros compiled in
 #define WITH_PREPOST_CHECKING   // _pre/postCondition_()
+//#define WITH_STATISTICS_COUNTERS // statistics
 #define WITH_TRACE_API          // code for tracing api's compiled in
-//#define WITH_TRACE_ENCODING     // code for tracing encoding compiled in
-//#define WITH_TRACE_DECODING     // code for tracing decoding compiled in
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // release behaviours
@@ -49,20 +48,19 @@
 //#define WITH_CORECTNESS_ALGEBRA // known class, magic, footer
 //#define WITH_ENTRY_EXIT         // code for ENTRY() & EXIT() macros compiled in
 //#define WITH_PREPOST_CHECKING   // _pre/postCondition_()
+//#define WITH_STATISTICS_COUNTERS // statistics
 //#define WITH_TRACE_API          // code for tracing api's compiled in
-//#define WITH_TRACE_ENCODING     // code for tracing encoding compiled in
-//#define WITH_TRACE_DECODING     // code for tracing decoding compiled in
 #endif
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// testing
+// row coder dev
 
 //#define WITH_ANALYSE_FREE        // analyze free space during load
+//#define WITH_DECODING_TRACE      // code for tracing decoding compiled in
+//#define WITH_ENCODING_TRACE      // code for tracing encoding compiled in
 //#define WITH_ENCODING_XCHECK     // encode cross check
 //#define WITH_SHOCO_DUPLICATES    // test for duplicate shoco values
-//#define WITH_STATISTICS_COUNTERS // statistics
-//#define WITH_STR_DUPLICATES      // test for duplicate str values
-//#define WITH_TRACE_DECODING      // code for tracing decoding compiled in
+#define WITH_STR_DUPLICATES      // test for duplicate str values
 //#define WITH_VERIFY_TAILS        // verify tails
 
 

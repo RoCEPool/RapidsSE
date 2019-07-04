@@ -78,7 +78,7 @@ bool RowExtractor::bExtractNext(Row* pRow, char** aacRecCrs,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // debug
   
-#ifdef WITH_TRACE_ENCODING
+#ifdef WITH_ENCODING_TRACE
   char caRecord[C_16KB];
   StrLib::vCopyTill(caRecord,acRec,'\n');
   vTrace("\n--------------------------------------------------------------------------\n"_Stz);

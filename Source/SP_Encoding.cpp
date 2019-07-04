@@ -61,6 +61,8 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
   
     char* szCrs = &caLine[0];
     
+    _ColEnc* aColEnc = & pEncoding->xaColEnc[i_Col];
+    
     Column* pCol = pEncoding->m_pColVec->pGet(i_Col);
     eDM eDatum   = pCol->eDatumType();
     Stz* szDatum = (Stz*)aDM[eDatum];
@@ -71,7 +73,7 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
     StrLib::vAppendChar(&szCrs,'[');
     StrLib::vAppendDecimal(&szCrs,i_Col);
     StrLib::vAppendChar(&szCrs,']');
-    StrLib::vAppendChar(&szCrs,pEncoding->xaColEnc[i_Col].m_bSplit ? '*' : ' ');
+    StrLib::vAppendChar(&szCrs,aColEnc->m_bSplit ? '*' : ' ');
 
     StrLib::vAppendPad(&szCrs,caLine,8);
     StrLib::vAppendString(&szCrs,(char*)pCol->szColNm());
@@ -80,29 +82,29 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
     StrLib::vAppendString(&szCrs,(char*)szDatum);
     
     StrLib::vAppendPad(&szCrs,caLine,30);
-    StrLib::vAppendString(&szCrs,(char*)aMC[pEncoding->xaColEnc[i_Col].m_eMetaCode]);
+    StrLib::vAppendString(&szCrs,(char*)aMC[aColEnc->m_eMetaCode]);
     
     StrLib::vAppendPad(&szCrs,caLine,45);
     StrLib::vAppendString(&szCrs,(char*)"C_"_Stz);
-    StrLib::vAppendDecimal(&szCrs,pEncoding->xaColEnc[i_Col].m_nDataSize);
+    StrLib::vAppendDecimal(&szCrs,aColEnc->m_nDataSize);
     StrLib::vAppendString(&szCrs,(char*)"B"_Stz);
 
     StrLib::vAppendPad(&szCrs,caLine,52);
     
     if (pEncoding->xaColEnc[i_Col].m_i_Till) {
-      StrLib::vAppendDecimal(&szCrs,pEncoding->xaColEnc[i_Col].m_i_Offset);
+      StrLib::vAppendDecimal(&szCrs,aColEnc->m_i_Offset);
       StrLib::vAppendString(&szCrs,(char*)".."_Stz);
-      StrLib::vAppendDecimal(&szCrs,pEncoding->xaColEnc[i_Col].m_i_Till);
+      StrLib::vAppendDecimal(&szCrs,aColEnc->m_i_Till);
     }
     
     StrLib::vAppendPad(&szCrs,caLine,60);
-    StrLib::vAppendDecimal(&szCrs,pEncoding->xaColEnc[i_Col].m_i_Tail);
+    StrLib::vAppendDecimal(&szCrs,aColEnc->m_i_Tail);
 
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     
-    StrLib::vAppendPad(&szCrs,caLine,65);
+    StrLib::vAppendPad(&szCrs,caLine,67);
     
-    if (C_DATUM_NULL == pEncoding->xaColEnc[i_Col].m_wDataCode.m_iInt) {
+    if (C_DATUM_NULL == aColEnc->m_wDataCode.m_iInt) {
       StrLib::vAppendString(&szCrs,(char*)"null"_Stz);
     }
     else {
@@ -110,63 +112,69 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
         case DM_BCD: {
           SP_Bcd SP_Bcd;
           StrLib::vAppendString(&szCrs,
-            (char*)SP_Bcd.sz(pEncoding->xaColEnc[i_Col].m_wDataCode.m_iBcd));
+                                (char*)SP_Bcd.sz(aColEnc->m_wDataCode.m_iBcd));
           break;
         }
 
         case DM_BOL: {
           SP_Bol SP_Bol;
           StrLib::vAppendString(&szCrs,
-            (char*)SP_Bol.sz(pEncoding->xaColEnc[i_Col].m_wDataCode.m_iBol));
+                                (char*)SP_Bol.sz(aColEnc->m_wDataCode.m_iBol));
           break;
         }
           
         case DM_DTE: {
           SP_Dte SP_Dte;
           StrLib::vAppendString(&szCrs,
-            (char*)SP_Dte.sz(pEncoding->xaColEnc[i_Col].m_wDataCode.m_iDte));
+                                (char*)SP_Dte.sz(aColEnc->m_wDataCode.m_iDte));
           break;
         }
           
         case DM_FLT: {
           SP_Flt SP_Flt;
           StrLib::vAppendString(&szCrs,
-            (char*)SP_Flt.sz(*(d8*)&pEncoding->xaColEnc[i_Col].m_wDataCode.m_iInt));
+                                (char*)SP_Flt.sz(*(d8*)&aColEnc->m_wDataCode.m_iInt));
           break;
         }
           
         case DM_INT: {
           SP_Int spInt;
           StrLib::vAppendString(&szCrs,
-            (char*)spInt.sz(pEncoding->xaColEnc[i_Col].m_wDataCode.m_iInt));
+                                (char*)spInt.sz(aColEnc->m_wDataCode.m_iInt));
           break;
         }
           
         case DM_IVL: {
           SP_Ivl spIvl;
           StrLib::vAppendString(&szCrs,
-            (char*)spIvl.sz(pEncoding->xaColEnc[i_Col].m_wDataCode.m_iIvl));
+                                (char*)spIvl.sz(aColEnc->m_wDataCode.m_iIvl));
           break;
         }
           
         case DM_TME: {
           SP_Tme SP_Tme;
           StrLib::vAppendString(&szCrs,
-            (char*)SP_Tme.sz(pEncoding->xaColEnc[i_Col].m_wDataCode.m_iTme));
+                                (char*)SP_Tme.sz(aColEnc->m_wDataCode.m_iTme));
           break;
         }
           
         case DM_TSP: {
           SP_Tsp SP_Tsp;
           StrLib::vAppendString(&szCrs,
-            (char*)SP_Tsp.sz(pEncoding->xaColEnc[i_Col].m_wDataCode.m_iTsp));
+                                (char*)SP_Tsp.sz(aColEnc->m_wDataCode.m_iTsp));
           break;
         }
           
         case DM_VCH: {
           SP_Vch SP_Vch;
-          StrLib::vAppendString(&szCrs,
-            (char*)SP_Vch.sz(pEncoding->xaColEnc[i_Col].m_wDataCode.m_azStr));
+          if (MC_STR_FIT_1L == aColEnc->m_eMetaCode) {
+            StrLib::vAppendString(&szCrs,
+                                (char*)SP_Vch.sz(aColEnc->m_wDataCode.m_azStr));
+          }
+          else {
+            StrLib::vAppendString(&szCrs,
+                                  (char*)aColEnc->m_aTailLine->sz());
+          }
           break;
         }
           

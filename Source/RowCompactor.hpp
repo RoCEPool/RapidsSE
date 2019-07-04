@@ -57,6 +57,7 @@ namespace Rows
     bool bCompactInflated(Row* pInflatedRow);
     void vCompactSamples(void);
 
+    void vDumpTails(void);
     void vEncodeTails(Row* pInflatedRow);
     i8   iFindTail(TailLine* aFindLine);
 
@@ -69,6 +70,7 @@ namespace Rows
     void vPutData_BSTR(_ColEnc& xColEnc);
     void vPutData_SHOCO(_ColEnc& xColEnc);
     void vPutData_STR(_ColEnc& xColEnc);
+    void vPutData_TAIL(_ColEnc& xColEnc);
 
     void vPutMetaCode(_ColEnc& xColEnc);
 

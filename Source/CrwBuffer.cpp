@@ -194,7 +194,7 @@ bool CrwBuffer::bAppendRow(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
     
-#ifdef WITH_TRACE_ENCODING
+#ifdef WITH_ENCODING_TRACE
   vTrace("Partition:%lld\n"_Stz, m_iPartitionNo);
 #endif
   

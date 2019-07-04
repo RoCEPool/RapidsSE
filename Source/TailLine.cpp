@@ -100,7 +100,8 @@ void TailLine::vU(i8 nUnits)
 /*----------------------------------------------------------------------------*/
 void TailLine::vAssign(Stz* szStz)
 {
-  i8 nL = StrLib::nCopy((char*)sz(),(char*)szStz);
+  char* azStr = (char*)szStz;
+  i8 nL = StrLib::nCopy((char*)sz(),azStr);
   
   vL(nL);
 }

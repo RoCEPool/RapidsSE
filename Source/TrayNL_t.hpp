@@ -86,6 +86,7 @@ namespace Structures
   
     i8 m__filler[5]; // fill so m_xaUnits starts on a double word boundry
   
+    //alignas(DoubleWord)
     SpaceUnit m_xaUnits[BYTES / C_SPACEUNIT_QUANTA]; // array of space units
   
     Nub_t<CN,HEAD,OVER,TAIL,DESC> m_oNub;
@@ -699,7 +700,8 @@ TrayNL_t<CN,HEAD,OVER,TAIL,DESC,BYTES>::TrayNL_t(void)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
 
-  vTrace("&m_xaUnits[0] : %p\n"_Stz,&m_xaUnits[0]);
+  //vTrace("this : %p ; &m_xaUnits[0] : %p\n"_Stz,this,&m_xaUnits[0]);
+  ASSERT(MemLib::bOnDoubleWordBoundary(m_xaUnits));
   
   MemLib::vZero(&m__filler,sizeof(m__filler),CN);
 
