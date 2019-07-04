@@ -601,56 +601,6 @@ void RowCompactor::vPackColVal(_ColEnc& xColEnc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pack column value into compact row at split                                */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vPackColVal_split(_ColEnc& xColEnc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  /*
-              -- Head-Line --                      -- Over-Line --
-   +================================+   +================================+
-   | <W><M>                         |---| <U> ////////////////////////// |
-   +================================+   +================================+
-   | {D}{D}...                      |
-   +--------------------------------+
-   |                        {D}[OL] |
-   +--------------------------------+
-   
-   where: [OL] is 2B relative index of the over line
-          <W> is one byte word length of head line
-          <M> is a metacode for a column value
-          {D} is a set of data bytes for a column value
-          <U> is one byte space unit length of over line
-   
-   */
-
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // +================================+   +================================+
-  // | <W><M>        <MC_OVERFLOW_2T> |---| <U> ////////////////////////// |
-  // +================================+   +================================+
-  
-  // set <MC_OVERFLOW_2T> for this column
-  vPutMetaCode(xColEnc);
-  
-  // +================================+   +================================+
-  // | <W><M>        <MC_OVERFLOW_2T> |---| <U><M> /////////////////////// |
-  // +================================+   +================================+
-
-  // put <M> into over line
-  m_aHeadLine->vPutLogical(m_nHeadSize + C_U_1B,
-                           (i8)xColEnc.m_eMetaCode,
-                           C_1B);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // put data code {D} onto crw
-  
-  vPutData(xColEnc);
-}
-
-/*----------------------------------------------------------------------------*/
 /* put data code {D} for encoded column value into crw                        */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vPutData(_ColEnc& xColEnc)

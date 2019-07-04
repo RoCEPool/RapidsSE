@@ -49,34 +49,37 @@ namespace Rows
     bool bCompactRow(Row* pInflatedRow);
   
   private:
-    void vAllotCrw(void);
-    
-    void vAnalyzeSamples(void);
-    void vAnalyzeVch(Column* pCol, Row* pOuterRow, Row* pInnerRow);
-    bool bCollectSample(Row* pInflatedRow);
-    bool bCompactInflated(Row* pInflatedRow);
-    void vCompactSamples(void);
-
-    void vDumpTails(void);
-    void vEncodeTails(Row* pInflatedRow);
-    i8   iFindTail(TailLine* aFindLine);
-
+    // - - - - - - - - - - - - - - - - - - - - -
+    // structural order
+  
     void vPackCrw(Encoding* pEncoding);
-    
+  
     void vPackColVal(_ColEnc& xColEnc);
-    void vPackColVal_split(_ColEnc& xColEnc);
-
+  
+    void vPutMetaCode(_ColEnc& xColEnc);
+    void vPutMetaCode_split(_ColEnc& xColEnc);
+    void vPutMetaCode_usual(_ColEnc& xColEnc);
+  
     void vPutData(_ColEnc& xColEnc);
     void vPutData_Bytes(_ColEnc& xColEnc);
     void vPutData_BSTR(_ColEnc& xColEnc);
     void vPutData_SHOCO(_ColEnc& xColEnc);
     void vPutData_STR(_ColEnc& xColEnc);
     void vPutData_TAIL(_ColEnc& xColEnc);
+  
+    // - - - - - - - - - - - - - - - - - - - - -
+    // alpha order
 
-    void vPutMetaCode(_ColEnc& xColEnc);
-    void vPutMetaCode_split(_ColEnc& xColEnc);
-    void vPutMetaCode_usual(_ColEnc& xColEnc);
-
+    void vAllotCrw(void);
+    void vAnalyzeSamples(void);
+    void vAnalyzeVch(Column* pCol, Row* pOuterRow, Row* pInnerRow);
+    bool bCollectSample(Row* pInflatedRow);
+    bool bCompactInflated(Row* pInflatedRow);
+    void vCompactSamples(void);
+    void vDumpTails(void);
+    void vEncodeTails(Row* pInflatedRow);
+    i8   iFindTail(TailLine* aFindLine);
+  
   private:
     Footer* aFooter(void);
   };
