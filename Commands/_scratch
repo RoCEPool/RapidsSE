@@ -4,25 +4,17 @@
 
 startCluster;
 
-create table VchTbl (
-int_col1  INTEGER NOT NULL,
-vch_col2  VARCHAR(10)  NOT NULL,
-vch_col3  VARCHAR(32)  NOT NULL,
-int_col4  INTEGER NOT NULL,
-vch_col5  VARCHAR
+create table terminator_cr (
+c1 integer,
+c2 varchar,
+c3 varchar
 );
 
-create index vch_idx1 on VchTbl (vch_col2);
+// load data into the table with default formatter settings
+ld terminator_cr "/DATA/Load/terminatorLarge_cr.csv" record_ends "\r";
 
-ld VchTbl "/DATA/Datums/varchar_temp.csv" enclosed_by_leading "'";
+fetch terminator_cr;
 
-fetch VchTbl;
-
-fetch VchTbl "vch_col2 'one' ==";
-//(1,'one',101,1,'abcdefghi"jklmnopqrstuvwxyz')
-
-fetch VchTbl "vch_col2 'one zero z' ==";
-//(100,'one zero z','200',0,'abcdefghijklmnopqrstuvwxyz')
 
 
 /*============================================================================*/
