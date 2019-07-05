@@ -5,7 +5,7 @@
 
 namespace MetaData
 {
-  class DataBuffer : public Object
+  class DataBuffer : public AlignedObject
   {
   protected:
     Lock   m_okLock;       // lock

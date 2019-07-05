@@ -26,7 +26,7 @@ DataBuffer* MetaData::_pDataBuffer(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 DataBuffer::DataBuffer(eCN eClassNo)
-: Object(eClassNo)
+: AlignedObject(eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
