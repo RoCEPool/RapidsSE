@@ -209,6 +209,8 @@ i8 Wsp_t<LENGTH>::nUsed(void)
 template<int LENGTH>
 void Wsp_t<LENGTH>::vZero(eCN eClassNo)
 {
+  m_nAreaUsed = 0;
+  
   byte* ayDst = ayArea();
   
   MemLib::vZero(ayDst,LENGTH,eClassNo);
