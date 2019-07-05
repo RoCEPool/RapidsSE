@@ -148,10 +148,6 @@
   static void vCursorFetch(Tasks::MP_Task mpTask);
   static void vCursorStore(Tasks::MP_Task mpTask);
 
-  // diclock
-  static void vDicLockDropWrite(Tasks::MP_Task mpTask);
-  static void vDicLockGrabWrite(Tasks::MP_Task mpTask);
-
   // ddllock
   static void vDdlLockDropRead(Tasks::MP_Task mpTask);
   static void vDdlLockDropWrite(Tasks::MP_Task mpTask);
@@ -173,6 +169,10 @@
   static void vDicRef(Tasks::MP_Task mpTask);
   static void vDicRoot(Tasks::MP_Task mpTask);
   static void vDicWordCount(Tasks::MP_Task mpTask);
+
+  // dicLock
+  static void vDicLockDropWrite(Tasks::MP_Task mpTask);
+  static void vDicLockGrabWrite(Tasks::MP_Task mpTask);
 
   // dicPath
   static void vDicPathDepth(Tasks::MP_Task mpTask);
@@ -922,6 +922,10 @@
   static void vRstack7(Tasks::MP_Task mpTask);
   static void vRstack8(Tasks::MP_Task mpTask);
   static void vRstack9(Tasks::MP_Task mpTask);
+
+  // schLock
+  static void vSchLockDropWrite(Tasks::MP_Task mpTask);
+  static void vSchLockGrabWrite(Tasks::MP_Task mpTask);
 
   // session
   static void vSessionCommand(Tasks::MP_Task mpTask);

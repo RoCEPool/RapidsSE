@@ -142,6 +142,7 @@ void Step::vAddSteps(void)
   
   Step::vAddSteps_Rstack();
   
+  Step::vAddSteps_SchLock();
   Step::vAddSteps_Session();
   Step::vAddSteps_Shell();
   Step::vAddSteps_Slots();

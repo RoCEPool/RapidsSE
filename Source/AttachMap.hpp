@@ -37,6 +37,7 @@ namespace StorageEngine
     BufferPool*   m_pBufferPool;
     CarryOver*    m_pCarryOver;
     Lock          m_okDdlLock;
+    Lock          m_okDicLock;
     Grid*         m_pGrid;
     i8            m_iEpoch;
     HeapMem       m_xHeapMem;
