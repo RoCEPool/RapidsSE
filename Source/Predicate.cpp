@@ -116,7 +116,7 @@ void Predicate::vPredicate(ePK ePredicate)
 /*----------------------------------------------------------------------------*/
 /* get op                                                                     */
 /*----------------------------------------------------------------------------*/
-RelOp* Predicate::pOp(void)
+RelOp* Predicate::pRelOp(void)
 {
   return m_pOp;
 }
@@ -124,9 +124,9 @@ RelOp* Predicate::pOp(void)
 /*----------------------------------------------------------------------------*/
 /* set op                                                                     */
 /*----------------------------------------------------------------------------*/
-void Predicate::vOp(RelOp* pOp)
+void Predicate::vRelOp(RelOp* pRelOp)
 {
-  m_pOp = pOp;
+  m_pOp = pRelOp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -209,9 +209,9 @@ void Predicate::vNewLitArg(s256& sDatumArg)
 /*----------------------------------------------------------------------------*/
 void Predicate::vNewRelOp(eRO eRelOp)
 {
-  RelOp* pPredOp_Path = new RelOp;
-  pPredOp_Path->vRelOp(eRelOp);
-  vOp(pPredOp_Path);
+  RelOp* pRelOp = new RelOp;
+  pRelOp->vRelOp(eRelOp);
+  vRelOp(pRelOp);
 }
 
 /*----------------------------------------------------------------------------*/

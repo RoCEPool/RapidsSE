@@ -54,8 +54,8 @@ namespace Plans
     Arg* pArg2(void);
     void vArg2(Arg* pArg2);
   
-    RelOp* pOp(void);
-    void vOp(RelOp* pOp);
+    RelOp* pRelOp(void);
+    void vRelOp(RelOp* pRelOp);
   
     void vShow(void);
   

@@ -202,7 +202,7 @@ eRO Planner::eGetFirstLowerPredicateRO(i8 iPhrase)
   Predicate* pPredicate = pLowerPredicates->pGet(0);
   
   // get the relational op
-  RelOp* pOp = pPredicate->pOp();
+  RelOp* pOp = pPredicate->pRelOp();
   eRO eRelOp = pOp->eRelOp();
   
   return eRelOp;
@@ -221,7 +221,7 @@ eRO Planner::eGetFirstUpperPredicateRO(i8 iPhrase)
   Predicate* pPredicate = pUpperPredicates->pGet(0);
   
   // get the relational op
-  RelOp* pOp = pPredicate->pOp();
+  RelOp* pOp = pPredicate->pRelOp();
   eRO eRelOp = pOp->eRelOp();
   
   return eRelOp;

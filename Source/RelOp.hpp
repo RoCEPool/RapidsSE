@@ -21,7 +21,7 @@ namespace Plans
     static eRO eDecode(Stz* aOpText);
   
     RelOp(void);
-    RelOp(eRO eOpKind);
+    RelOp(eRO eRelOp);
     ~RelOp(void) noexcept(false);
   
     eRO eRelOp(void);
