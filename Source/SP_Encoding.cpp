@@ -18,7 +18,7 @@ SP_Encoding::SP_Encoding(void)
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_caEncoding,sizeof(m_caEncoding),CN_ROW);
 #else
-  m_caRow[0] = '\0';
+  m_caEncoding[0] = '\0';
 #endif
   
   _checkInitialised_(CN_ROW);
