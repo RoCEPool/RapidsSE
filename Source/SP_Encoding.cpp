@@ -167,9 +167,10 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
           
         case DM_VCH: {
           SP_Vch SP_Vch;
-          if (MC_STR_FIT_1L == aColEnc->m_eMetaCode) {
+          if (MC_STR_FIT_1L  == aColEnc->m_eMetaCode ||
+              MC_BSTR_FIT_2L == aColEnc->m_eMetaCode) {
             StrLib::vAppendString(&szCrs,
-                                (char*)SP_Vch.sz(aColEnc->m_wDataCode.m_azStr));
+                                  aColEnc->m_wDataCode.m_azStr);
           }
           else {
             StrLib::vAppendString(&szCrs,

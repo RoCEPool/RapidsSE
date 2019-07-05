@@ -52,25 +52,35 @@ void RowInflator::vInflateColumn(Row* pRow, HeadLine* aHeadLine, i8 i_ColToRetri
       
       switch(eMetaCode) {
           
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         case MC_STR_FIT_1L:
           nLength = *(u1*)ayDataByte++;
           ayDataByte += nLength;
           break;
           
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        case MC_BSTR_FIT_2L:
+          wWord.m_iI8 = 0;
+          wWord.m_yaByte[0] = *ayDataByte++;
+          wWord.m_yaByte[1] = *ayDataByte++;
+          nLength = wWord.m_iI8;
+          ayDataByte += nLength;
+          break;
+         
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         case MC_SHOCO_FIT_1C:
           nCompressed = (i8)*(u1*)ayDataByte++;
           ayDataByte += nCompressed;
           break;
           
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         case MC_SHOCO_SPLIT_2T1C:
           nCompressed = (i8)*(u1*)ayDataByte++;
           nBytesPartA = aHeadLine->nBytes() - (ayDataByte - (byte*)aHeadLine);
           ayDataByte += nBytesPartA;
           break;
           
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         case MC_OVERFLOW_2T: {
           //vDebugPoint();
           OverLine* aOverLine = aHeadLine->aGetOver();
@@ -328,6 +338,18 @@ void RowInflator::vInflateColumn(Row* pRow, HeadLine* aHeadLine, i8 i_ColToRetri
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BSTR_FIT_2L:
+        wWord.m_iI8 = 0;
+        wWord.m_yaByte[0] = *ayDataByte++;
+        wWord.m_yaByte[1] = *ayDataByte++;
+        nLength = wWord.m_iI8;
+        MemLib::vCopy((byte*)acString,
+                      (byte*)ayDataByte,
+                      nLength,
+                      CN_ROWCOMPACTOR);
+        *(char**)(aiColVal++) = acString;
+        ayDataByte += nLength;
+        acString   += nLength;
+        *acString++ = '\0';
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -575,19 +597,28 @@ void RowInflator::vInflateColumns(Row* pRow, HeadLine* aHeadLine)
       
       switch(eMetaCode) {
           
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         case MC_STR_FIT_1L:
           nLength = *(u1*)ayDataByte++;
           ayDataByte += nLength;
           break;
           
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        case MC_BSTR_FIT_2L:
+          wWord.m_iI8 = 0;
+          wWord.m_yaByte[0] = *ayDataByte++;
+          wWord.m_yaByte[1] = *ayDataByte++;
+          nLength = wWord.m_iI8;
+          ayDataByte += nLength;
+          break;
+          
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         case MC_SHOCO_FIT_1C:
           nCompressed = (i8)*(u1*)ayDataByte++;
           ayDataByte += nCompressed;
           break;
           
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         case MC_SHOCO_SPLIT_2T1C:
           nCompressed = (i8)*(u1*)ayDataByte++;
           nBytesPartA = aHeadLine->nBytes() - (ayDataByte - (byte*)aHeadLine);
@@ -851,6 +882,18 @@ void RowInflator::vInflateColumns(Row* pRow, HeadLine* aHeadLine)
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BSTR_FIT_2L:
+        wWord.m_iI8 = 0;
+        wWord.m_yaByte[0] = *ayDataByte++;
+        wWord.m_yaByte[1] = *ayDataByte++;
+        nLength = wWord.m_iI8;
+        MemLib::vCopy((byte*)acString,
+                      (byte*)ayDataByte,
+                      nLength,
+                      CN_ROWCOMPACTOR);
+        *(char**)(aiColVal++) = acString;
+        ayDataByte += nLength;
+        acString   += nLength;
+        *acString++ = '\0';
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -1318,7 +1361,10 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BSTR_FIT_2L:
-        nLength = *(u1*)ayDataByte++;
+        wWord.m_iI8 = 0;
+        wWord.m_yaByte[0] = *ayDataByte++;
+        wWord.m_yaByte[1] = *ayDataByte++;
+        nLength = wWord.m_iI8;
         MemLib::vCopy((byte*)acString,
                       (byte*)ayDataByte,
                       nLength,
