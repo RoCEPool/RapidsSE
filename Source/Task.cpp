@@ -58,7 +58,7 @@ void Task::operator delete(void* pTaskAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Task::Task(Job* pJob)
-: Object(CN_TASK)
+: LinkedBuffer(CN_TASK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   

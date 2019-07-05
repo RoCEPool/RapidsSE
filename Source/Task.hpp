@@ -49,7 +49,7 @@ namespace Tasks
     /* 8 */ "ENUMS"_Stz,
   };
   
-  class Task : public Object,
+  class Task : public LinkedBuffer,
                public ListNode_t<Task>
   {
   friend class Steps::Step;
