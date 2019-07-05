@@ -35,10 +35,6 @@ DataBuffer::DataBuffer(eCN eClassNo)
   m_iPartitionNo  = C_UNKNOWN;
   m_iBufferHeight = 0;
   m_oWhenNewed.vNow();
-
-  m_pNextBuffer   = nullptr;
-  m_pPrevBuffer   = nullptr;
-  m_pHigherBuffer = nullptr;
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);  
 }
@@ -79,7 +75,7 @@ void DataBuffer::vBufferHeight(i8 iBufferHeight)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the buffer height                                                       */
+/* get the buffer height                                                      */
 /*----------------------------------------------------------------------------*/
 i8 DataBuffer::iBufferHeight(void)
 {
@@ -109,46 +105,6 @@ void DataBuffer::vGrabWrite(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get higher buffer                                                          */
-/*----------------------------------------------------------------------------*/
-DataBuffer* DataBuffer::pHigherBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return _pDataBuffer(m_pHigherBuffer);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set higher buffer                                                          */
-/*----------------------------------------------------------------------------*/
-void DataBuffer::vHigherBuffer(DataBuffer* pHigherBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_pHigherBuffer = pHigherBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next buffer                                                            */
-/*----------------------------------------------------------------------------*/
-DataBuffer* DataBuffer::pNextBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return _pDataBuffer(m_pNextBuffer);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set next buffer                                                            */
-/*----------------------------------------------------------------------------*/
-void DataBuffer::vNextBuffer(DataBuffer* pNextBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_pNextBuffer = pNextBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set partition no                                                           */
 /*----------------------------------------------------------------------------*/
 void DataBuffer::vPartitionNo(i8 iPartitionNo)
@@ -166,26 +122,6 @@ i8 DataBuffer::iPartitionNo(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   return m_iPartitionNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get prev buffer                                                            */
-/*----------------------------------------------------------------------------*/
-DataBuffer* DataBuffer::pPrevBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return _pDataBuffer(m_pPrevBuffer);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set prev buffer                                                            */
-/*----------------------------------------------------------------------------*/
-void DataBuffer::vPrevBuffer(DataBuffer* pPrevBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_pPrevBuffer = pPrevBuffer;
 }
 
 /*----------------------------------------------------------------------------*/

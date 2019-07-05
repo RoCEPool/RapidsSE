@@ -14,10 +14,6 @@ namespace MetaData
     i8     m_iBufferHeight;    // buffer height in the tree
     Birth  m_oWhenNewed;   // when was this buffer created?
 
-//    DataBuffer* m_pNextBuffer;  // next buffer
-//    DataBuffer* m_pPrevBuffer;  // previous buffer
-//    DataBuffer* m_pHigherBuffer; // higher buffer
-
   public:
     DataBuffer(eCN eClass);
     ~DataBuffer(void) noexcept(false);
@@ -29,18 +25,9 @@ namespace MetaData
   
     void        vDropWrite(void);
     void        vGrabWrite(void);
-
-    DataBuffer* pHigherBuffer(void);
-    void        vHigherBuffer(DataBuffer* pHigherBuffer);
-  
-    DataBuffer* pNextBuffer(void);
-    void        vNextBuffer(DataBuffer* pNextBuffer);
   
     void        vPartitionNo(i8 iPartitionNo);
     i8          iPartitionNo(void);
-
-    DataBuffer* pPrevBuffer(void);
-    void        vPrevBuffer(DataBuffer* pPrevBuffer);
  
     Birth&      oWhenNewed(void);
   };
