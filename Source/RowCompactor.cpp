@@ -826,12 +826,12 @@ i8 RowCompactor::iFindTail(TailLine* aFindLine)
        i_Tail = m_pCrwNub->iPrevTail(i_Tail)) {
     
     TailLine* aTailLine = m_pCrwNub->aGetTail(i_Tail);
-    i8 nTailWords = aTailLine->nWords();
+    i8 nTailBytes = aTailLine->nBytes();
     
     //aFindLine->vDump();
     //aTailLine->vDump();
 
-    if (0 == MemLib::iCompareWords(aTailLine,aFindLine,nTailWords))
+    if (0 == MemLib::iCompareBytes(aTailLine,aFindLine,nTailBytes))
       return i_Tail;
   }
   
