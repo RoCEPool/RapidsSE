@@ -10,6 +10,9 @@ namespace Pool
   private:
     HeapBuffer* m_pNextBuffer;  // next buffer in list
     HeapBuffer* m_pPrevBuffer;  // prev buffer in list
+  
+    char m__aPadding[16];       // round up to cacheline
+
     // ..data..
     
   public:
