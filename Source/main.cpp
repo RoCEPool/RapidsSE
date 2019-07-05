@@ -11,6 +11,8 @@ extern Arguments  gxArguments;
 /*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
 {
+  Process::vEntry();
+  
   //vTrace("Task %lld\n"_Stz,sizeof(Task));
   
 //  Timer xTimer;

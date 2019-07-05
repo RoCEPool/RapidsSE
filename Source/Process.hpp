@@ -8,6 +8,7 @@ namespace System
   class Process
   {
   public:
+    static void vEntry(void);
     static void vExit(i8 iExitStatus);
     static i8   iGetPid(void);
     static bool bKillPid(i8 iPid);
