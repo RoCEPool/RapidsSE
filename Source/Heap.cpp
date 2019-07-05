@@ -186,7 +186,8 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   //vVerify();
   
   //eLastClass = eAllocClass;
-    
+  
+  ASSERT(MemLib::bOnCacheLineBoundary(pObject));
   return pObject;
 }
 
