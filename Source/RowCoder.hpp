@@ -11,6 +11,8 @@ namespace Rows
   static const i8 C_U_1B = 1;   // <U> 1B over/tail line size in units
   static const i8 C_W_1B = 1;   // <W> 1B head line size in words
 
+  static const i8 C_L_2B = 2;   // <L> 2B string length in bytes
+  
   static const i8 C_FT_2B = 2;  // |FT| 2B absolute from-tail i_Line
   static const i8 C_IT_2B = 2;  // [IT] 2B relative into-tail i_Line
   static const i8 C_OT_2B = 2;  // [OT] 2B relative over-tail i_Line

@@ -487,8 +487,19 @@ void Encoding::vEncodeVch(_ColEnc& xColEnc, Dtm wVch)
   }
 
   // MC_STR_FIT_1L : <L><Short>, where m_nDataSize <L> + <Short>
-  xColEnc.m_eMetaCode = MC_STR_FIT_1L;
-  xColEnc.m_nDataSize = C_L_1B + nChars;
+  if (xColEnc.m_nDataSize <= (i8)C_1_BYTE) {
+    xColEnc.m_eMetaCode = MC_STR_FIT_1L;
+    xColEnc.m_nDataSize = C_L_1B + nChars;
+  }
+  else
+  // MC_BSTR_FIT_2L : <L><Long>, where m_nDataSize <L> + <Long>
+  if (xColEnc.m_nDataSize <= (i8)C_2_BYTES) {
+    xColEnc.m_eMetaCode = MC_BSTR_FIT_2L;
+    xColEnc.m_nDataSize = C_L_2B + nChars;
+  }
+  else {
+    RASSERT(0);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

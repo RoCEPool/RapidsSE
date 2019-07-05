@@ -1318,6 +1318,15 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BSTR_FIT_2L:
+        nLength = *(u1*)ayDataByte++;
+        MemLib::vCopy((byte*)acString,
+                      (byte*)ayDataByte,
+                      nLength,
+                      CN_ROWCOMPACTOR);
+        *(char**)(aiColVal++) = acString;
+        ayDataByte += nLength;
+        acString   += nLength;
+        *acString++ = '\0';
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
