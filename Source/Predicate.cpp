@@ -116,7 +116,7 @@ void Predicate::vPredicate(ePK ePredicate)
 /*----------------------------------------------------------------------------*/
 /* get op                                                                     */
 /*----------------------------------------------------------------------------*/
-Op* Predicate::pOp(void)
+RelOp* Predicate::pOp(void)
 {
   return m_pOp;
 }
@@ -124,7 +124,7 @@ Op* Predicate::pOp(void)
 /*----------------------------------------------------------------------------*/
 /* set op                                                                     */
 /*----------------------------------------------------------------------------*/
-void Predicate::vOp(Op* pOp)
+void Predicate::vOp(RelOp* pOp)
 {
   m_pOp = pOp;
 }
@@ -170,7 +170,7 @@ void Predicate::vShow(void)
          aPK[m_ePredicate],
          m_pArg1 ? (char*)m_pArg1->sArgVal().aStz() : "<none>",
          m_pArg2 ? (char*)m_pArg2->sArgVal().aStz() : "<none>",
-         m_pOp ? (char*)aRO[m_pOp->eOpKind()] : "<none>"
+         m_pOp   ? (char*)aRO[m_pOp->eRelOp()]      : "<none>"
          );
 }
 
@@ -209,8 +209,8 @@ void Predicate::vNewLitArg(s256& sDatumArg)
 /*----------------------------------------------------------------------------*/
 void Predicate::vNewRelOp(eRO eRelOp)
 {
-  Op* pPredOp_Path = new Op;
-  pPredOp_Path->vOpKind(eRelOp);
+  RelOp* pPredOp_Path = new RelOp;
+  pPredOp_Path->vRelOp(eRelOp);
   vOp(pPredOp_Path);
 }
 

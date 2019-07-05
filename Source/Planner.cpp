@@ -202,10 +202,10 @@ eRO Planner::eGetFirstLowerPredicateRO(i8 iPhrase)
   Predicate* pPredicate = pLowerPredicates->pGet(0);
   
   // get the relational op
-  Op* pOp = pPredicate->pOp();
-  eRO eRelnOp = pOp->eOpKind();
+  RelOp* pOp = pPredicate->pOp();
+  eRO eRelOp = pOp->eRelOp();
   
-  return eRelnOp;
+  return eRelOp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -221,10 +221,10 @@ eRO Planner::eGetFirstUpperPredicateRO(i8 iPhrase)
   Predicate* pPredicate = pUpperPredicates->pGet(0);
   
   // get the relational op
-  Op* pOp = pPredicate->pOp();
-  eRO eRelnOp = pOp->eOpKind();
+  RelOp* pOp = pPredicate->pOp();
+  eRO eRelOp = pOp->eRelOp();
   
-  return eRelnOp;
+  return eRelOp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -480,7 +480,7 @@ void Planner::vMatchPredicates(i8 i_Phrase, PredicateVec* mpPathPredVec, eAT eAc
       // get the associated op token
       mpOpTkn_Where = pPhraseTknVec->pGet(i_ColumnTkn_Where+2);
       sOpDtmVal_Where = mpOpTkn_Where->aText();
-      eRelOp_Where = Op::eDecode(sOpDtmVal_Where.aStz());
+      eRelOp_Where = RelOp::eDecode(sOpDtmVal_Where.aStz());
       
       // have we found a bound where predicate?
       if (bIsMatchingOp(eAccess,eRelOp_Where))

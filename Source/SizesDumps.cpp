@@ -524,12 +524,12 @@ i8 giClassSize[]
   /*114 */ sizeof(MemTest),            // CN_MEMTEST
   /*114 */ sizeof(Mutex),              // CN_MUTEX
 
-  /*    */ 0,             // CN_NMVAL
+  /*    */ sizeof(NmVal),              // CN_NMVAL
   /* 75 */ sizeof(Node),               // CN_NODE
   /*    */ sizeof(Now),                // CN_NOW
   /*    */ sizeof(Numbat),             // CN_NUMBAT
 
-  /* 77 */ sizeof(Op),                 // CN_OP
+  /* 77 */ sizeof(RelOp),              // CN_OP
   
   /* 78 */ sizeof(Parser),             // CN_PARSER
   /* 82 */ sizeof(PathVec),            // CN_PATHVEC

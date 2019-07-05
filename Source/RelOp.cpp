@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Op.cpp - Set of Candidate Paths                                            */
+/* RelOp.cpp - Relational Operator                                            */
 /*============================================================================*/
 
 #include "Plans.h"
@@ -11,19 +11,19 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Op* Plans::_pOp(void* aAddr)
+RelOp* Plans::_pRelOp(void* aAddr)
 {
-  Op* pOp = reinterpret_cast<Op*>(aAddr);
+  RelOp* pRelOp = reinterpret_cast<RelOp*>(aAddr);
   
-  RASSERT_TYPE(pOp,CN_OP);
+  RASSERT_TYPE(pRelOp,CN_OP);
  
-  return pOp;
+  return pRelOp;
 }
 
 /*----------------------------------------------------------------------------*/
-/* operator new                                                               */
+/* RelOperator new                                                            */
 /*----------------------------------------------------------------------------*/
-void* Op::operator new(size_t)
+void* RelOp::operator new(size_t)
 {
   void* pObject = HeapMem::pAllocate(CN_OP);
   
@@ -31,9 +31,9 @@ void* Op::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
+/* RelOperator delete                                                         */
 /*----------------------------------------------------------------------------*/
-void Op::operator delete(void* pDataAddress)
+void RelOp::operator delete(void* pDataAddress)
 {
   AccessPath* pAccessPath = reinterpret_cast<AccessPath*>(pDataAddress);
   
@@ -43,12 +43,12 @@ void Op::operator delete(void* pDataAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Op::Op(void)
+RelOp::RelOp(void)
 : Object(CN_OP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  m_eOpKind = RO_NONE;
+  m_eRelOp = RO_NONE;
   
   _checkInitialised_(CN_OP);
   
@@ -58,12 +58,12 @@ Op::Op(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Op::Op(eRO eOpKind)
+RelOp::RelOp(eRO eRelOp)
 : Object(CN_OP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  m_eOpKind = eOpKind;
+  m_eRelOp = eRelOp;
   
   _checkInitialised_(CN_OP);
   
@@ -73,7 +73,7 @@ Op::Op(eRO eOpKind)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Op::~Op(void) noexcept(false)
+RelOp::~RelOp(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 }
@@ -81,14 +81,14 @@ Op::~Op(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-eRO Op::eDecode(Stz* aOpText)
+eRO RelOp::eDecode(Stz* aRelOpText)
 {
-  if (aOpText->bEqual("<"_Stz))  return RO_LESS_THAN;
-  if (aOpText->bEqual("<="_Stz)) return RO_LESS_EQUAL;
-  if (aOpText->bEqual("="_Stz))  return RO_EQUAL_TO;
-  if (aOpText->bEqual("=="_Stz)) return RO_EQUAL_TO;
-  if (aOpText->bEqual(">="_Stz)) return RO_GREATER_EQUAL;
-  if (aOpText->bEqual(">"_Stz))  return RO_GREATER_THAN;
+  if (aRelOpText->bEqual("<"_Stz))  return RO_LESS_THAN;
+  if (aRelOpText->bEqual("<="_Stz)) return RO_LESS_EQUAL;
+  if (aRelOpText->bEqual("="_Stz))  return RO_EQUAL_TO;
+  if (aRelOpText->bEqual("=="_Stz)) return RO_EQUAL_TO;
+  if (aRelOpText->bEqual(">="_Stz)) return RO_GREATER_EQUAL;
+  if (aRelOpText->bEqual(">"_Stz))  return RO_GREATER_THAN;
 
   return RO_NONE;
 }
@@ -98,26 +98,26 @@ eRO Op::eDecode(Stz* aOpText)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get op                                                                     */
+/* get RelOp                                                                  */
 /*----------------------------------------------------------------------------*/
-eRO Op::eOpKind(void)
+eRO RelOp::eRelOp(void)
 {
-  return m_eOpKind;
+  return m_eRelOp;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set arg kind                                                               */
 /*----------------------------------------------------------------------------*/
-void Op::vOpKind(eRO eOpKind)
+void RelOp::vRelOp(eRO eRelOp)
 {
-  m_eOpKind = eOpKind;
+  m_eRelOp = eRelOp;
 }
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__aFooterFunction(Op)
+__aFooterFunction(RelOp)
 
 /*============================================================================*/
 /* end                                                                        */

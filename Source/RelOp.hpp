@@ -1,14 +1,14 @@
 /*============================================================================*/
-/* Op.hpp - RDP Op                                                            */
+/* RelOp.hpp - Relational Operator                                            */
 /*============================================================================*/
 #pragma once
 
 namespace Plans
 {  
-  class Op : public Object
+  class RelOp : public Object
   {
   private:
-    eRO m_eOpKind; // what kind of operator
+    eRO m_eRelOp; // what kind of relational operator
   
     // must be last
     Footer m_xFooter;
@@ -20,17 +20,17 @@ namespace Plans
   
     static eRO eDecode(Stz* aOpText);
   
-    Op(void);
-    Op(eRO eOpKind);
-    ~Op(void) noexcept(false);
+    RelOp(void);
+    RelOp(eRO eOpKind);
+    ~RelOp(void) noexcept(false);
   
-    eRO eOpKind(void);
-    void vOpKind(eRO eOpKind);
+    eRO eRelOp(void);
+    void vRelOp(eRO eRelOp);
   
     Footer* aFooter(void);
   };
   
-  Op* _pOp(void* aAddr);
+  RelOp* _pRelOp(void* aAddr);
 }
 
 /*============================================================================*/

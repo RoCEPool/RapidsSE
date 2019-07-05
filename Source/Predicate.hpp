@@ -28,10 +28,10 @@ namespace Plans
   class Predicate : public Object
   {
   private:
-    ePK  m_ePredicate;
-    Arg* m_pArg1;
-    Arg* m_pArg2;
-    Op*  m_pOp;
+    ePK    m_ePredicate;
+    Arg*   m_pArg1;
+    Arg*   m_pArg2;
+    RelOp* m_pOp;
   
     // must be last
     Footer m_xFooter;
@@ -54,8 +54,8 @@ namespace Plans
     Arg* pArg2(void);
     void vArg2(Arg* pArg2);
   
-    Op* pOp(void);
-    void vOp(Op* pOp);
+    RelOp* pOp(void);
+    void vOp(RelOp* pOp);
   
     void vShow(void);
   
