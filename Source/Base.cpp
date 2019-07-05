@@ -57,16 +57,16 @@ void Base::vTraceWith(void)
   vTrace("  WITH_DEBUG_VERSION\n"_Stz);
 #endif
   
-#ifdef WITH_DECODING_TRACE
-  vTrace("  WITH_DECODING_TRACE\n"_Stz);
-#endif
-  
 #ifdef WITH_ENCODING_TRACE
   vTrace("  WITH_ENCODING_TRACE\n"_Stz);
 #endif
     
 #ifdef WITH_ENTRY_EXIT
   vTrace("  WITH_ENTRY_EXIT\n"_Stz);
+#endif
+  
+#ifdef WITH_INFLATE_TRACE
+  vTrace("  WITH_INFLATE_TRACE\n"_Stz);
 #endif
   
 #ifdef WITH_LINUX

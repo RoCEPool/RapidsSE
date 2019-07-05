@@ -56,8 +56,8 @@
 // row coder dev
 
 //#define WITH_ANALYSE_FREE        // analyze free space during load
-//#define WITH_DECODING_TRACE      // code for tracing decoding compiled in
 //#define WITH_ENCODING_TRACE      // code for tracing encoding compiled in
+//#define WITH_INFLATE_TRACE       // code for tracing inflate compiled in
 //#define WITH_SHOCO_DUPLICATES    // test for duplicate shoco values
 //#define WITH_VERIFY_TAILS        // verify tails
 
