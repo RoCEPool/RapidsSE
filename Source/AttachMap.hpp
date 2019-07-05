@@ -37,7 +37,6 @@ namespace StorageEngine
     BufferPool*   m_pBufferPool;
     CarryOver*    m_pCarryOver;
     Lock          m_okDdlLock;
-    Lock          m_okDicLock;
     Grid*         m_pGrid;
     i8            m_iEpoch;
     HeapMem       m_xHeapMem;
@@ -62,16 +61,17 @@ namespace StorageEngine
     i8            m_iQuit;
     ResourceTracker m_oResourceTracker;
     Dic           m_oRootDic;
+    Lock          m_okSchLock;
     Statistics    m_oStatistics;
     StepTiming*   m_pStepTiming;
     i8            m_iStop;
     PoolBuffer*   m_pTakenBuffers;
     i8            m_nTakenBytes;
-    ForthWord*         m_pTenants;
+    ForthWord*    m_pTenants;
     TempName      m_oTempName;
     Atomic        m_ixThreads;
     TxSet*        m_pTxSet;
-    ForthWord*         m_pWord;
+    ForthWord*    m_pWord;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // these should be in Args

@@ -22,7 +22,7 @@ void Step::vDicLockDropWrite(MP_Task mpTask)
 {
   ENTRY("vDicLockDropWrite"_Stz);
   
-  gpAttachMap->m_okDicLock.vDropWrite();
+  gpAttachMap->m_okSchLock.vDropWrite();
   
   
   EXIT();
@@ -35,7 +35,7 @@ void Step::vDicLockGrabWrite(MP_Task mpTask)
 {
   ENTRY("vDicLockGrabWrite"_Stz);
   
-  gpAttachMap->m_okDicLock.vGrabWrite();
+  gpAttachMap->m_okSchLock.vGrabWrite();
     
   EXIT();
 }

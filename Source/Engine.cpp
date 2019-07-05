@@ -831,7 +831,7 @@ void Engine::vStartSystem(void)
   gpAttachMap->m_pQueues = new Queues;
     
   gpAttachMap->m_okDdlLock.vInitLock(LK_DDL);
-  gpAttachMap->m_okDicLock.vInitLock(LK_DIC);
+  gpAttachMap->m_okSchLock.vInitLock(LK_SCH);
   
   gpAttachMap->m_pGrid = new Grid(gxArguments.m_nNodes, gxArguments.m_nSlotsPerNode);
   
