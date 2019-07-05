@@ -26,8 +26,7 @@ namespace System
     void vSleepFor(i8 iMicroseconds);
     u8   uWakeupInUsec(void);
     bool bWakeupNow(void);
-    
-    
+        
     Footer* aFooter(void);
   };
 }

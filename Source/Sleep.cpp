@@ -14,10 +14,10 @@ Sleep::Sleep(void)
 {
   _precondition_(_MAGIC_,CN_SLEEP,_FOOTER_);
   
-  m_wSleptTsp.m_iI8 = 0;
+  m_wSleptTsp.m_iI8    = 0;
+  m_wWakeupTsp.m_iI8   = 0;
+  m_wWakeupIvl.m_iI8   = 0;
   m_wDurationIvl.m_iI8 = 0;
-  m_wWakeupIvl.m_iI8 = 0;
-  m_wWakeupTsp.m_iI8 = 0;
   
   _checkInitialised_(CN_SLEEP);
   
@@ -50,14 +50,14 @@ void Sleep::vClear(void)
   // reset slept tsp
   m_wSleptTsp.m_iI8 = 0;
   
-  // reset the sleep interval
-  m_wDurationIvl.m_iI8 = 0;
+  // reset the wakeup time
+  m_wWakeupTsp.m_iI8 = 0;
   
   // reset the wakeup Ivl
   m_wWakeupIvl.m_iI8 = 0;
   
-  // reset the wakeup time
-  m_wWakeupTsp.m_iI8 = 0;
+  // reset the sleep interval
+  m_wDurationIvl.m_iI8 = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -73,15 +73,32 @@ void Sleep::vSleepFor(i8 iMicroseconds)
   // set the sleep duration as Ivl
   m_wDurationIvl = IvlLib::wToIvl(iMicroseconds);
   
-  // get current tsp as ivl
+  // get current sleptTsp as ivl
   Dtm wCurrentIvl = IvlLib::wToIvl(m_wSleptTsp);
-  Dtm wTempTsp = TspLib::wToTsp_local(wCurrentIvl);
   
   // calculate the wakeup time in Ivl
   m_wWakeupIvl = IvlLib::wAdd(wCurrentIvl, m_wDurationIvl);
   
   // set the wakeup time
   m_wWakeupTsp = TspLib::wToTsp_local(m_wWakeupIvl);
+}
+
+/*----------------------------------------------------------------------------*/
+/* how long before task can be woken up (in microseconds)                     */
+/*----------------------------------------------------------------------------*/
+u8 Sleep::uWakeupInUsec(void)
+{
+  _precondition_(_MAGIC_,CN_SLEEP,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get current time as an Ivl
+  Dtm xCurrentIvl = IvlLib::wGetCurrIvl();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // subtract wkaeupIvl from CurrentIvl
+  u8 uMicro = IvlLib::uSubtract(xCurrentIvl, m_wWakeupIvl);
+  
+  return uMicro;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,24 +116,6 @@ bool Sleep::bWakeupNow(void)
     return true;
   else
     return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* how long before task can be woken up (in microseconds)                     */
-/*----------------------------------------------------------------------------*/
-u8 Sleep::uWakeupInUsec(void)
-{
-  _precondition_(_MAGIC_,CN_SLEEP,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get current time as an Ivl
-  Dtm xCurrentIvl = IvlLib::wGetCurrIvl();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  u8 uMicro = IvlLib::uSubtract(xCurrentIvl, m_wWakeupIvl);
-  
-  return uMicro;
 }
 
 /*----------------------------------------------------------------------------*/
