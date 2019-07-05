@@ -56,7 +56,7 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
                   pEncoding->m_nShiftOver
                   );
 
-  char caLine[256];
+  char caLine[C_MAX_RECORD];
   for (i8 i_Col = 0; i_Col < pEncoding->m_nColumns; i_Col++) {
   
     char* szCrs = &caLine[0];
