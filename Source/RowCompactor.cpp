@@ -229,7 +229,7 @@ void RowCompactor::vPackSamples(void)
   
   vAnalyzeSamples();
   
-  //vDumpTails();
+  vDumpTails();
   
   SP_Row spRow;
   
@@ -321,6 +321,9 @@ void RowCompactor::vCreateTail(Column* pCol, Row* pOuterRow, Row* pInnerRow)
   // * <U> ////////////////////////// *
   // **********************************
   //
+
+  //vDumpTails();
+  //vDebugPoint();
   
   i8 i_Tail = m_pCrwNub->iAllotTail(xFindTail.nBytes());
   TailLine* aTail = m_pCrwNub->aGetTail(i_Tail);
@@ -332,6 +335,9 @@ void RowCompactor::vCreateTail(Column* pCol, Row* pOuterRow, Row* pInnerRow)
   //
   
   aTail->vAssign(pOuterRow->m_waColVal[i_Col].m_szVch);
+  
+  //vDumpTails();
+  //vDebugPoint();
 }
 
 

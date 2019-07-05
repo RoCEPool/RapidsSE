@@ -383,6 +383,21 @@ i8 StrLib::nCopy(char* psDst, const char* psSrc)
 }
 
 /*----------------------------------------------------------------------------*/
+/* copy src into dst (not including '\0' terminator)                          */
+/*----------------------------------------------------------------------------*/
+i8 StrLib::nCopy_nonull(char* psDst, const char* psSrc)
+{
+  i8 nBytes = 0;
+  
+  while ( * psSrc ) {
+    *psDst++ = *psSrc++;
+    nBytes++; // won't be executed when \0 is copied
+  }
+  
+  return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* vCopy: copy src into dst                                                   */
 /*----------------------------------------------------------------------------*/
 void StrLib::vCopy(char* psDst, const char* psSrc)

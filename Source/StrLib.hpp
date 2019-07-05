@@ -145,6 +145,7 @@ namespace Base
     static bool  bContains(char* s, const char cArg);
     static bool  bContains(char* s, const char* sArg);
     static i8    nCopy(char* psDst, const char* psSrc);
+    static i8    nCopy_nonull(char* psDst, const char* psSrc);
     static void  vCopy(char* psDst, const char* psSrc);
     static void  vCopyLen(char* psDst, const char* psSrc, i8 nBytes);
     static void  vCopySplit(char* w1, char* w2, const char* sSrc, char cSplit);
