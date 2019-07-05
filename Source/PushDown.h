@@ -14,6 +14,7 @@ using namespace PushDown;
 
 //------------------------------------------------------------------------------
 
+#include "Op.hpp"
 #include "AggOp.hpp"
 #include "FilterOp.hpp"
 #include "JoinOp.hpp"
