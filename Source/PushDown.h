@@ -16,9 +16,17 @@ using namespace PushDown;
 
 #include "Op.hpp"
 #include "AggOp.hpp"
+#include "FetchOp.hpp"
 #include "FilterOp.hpp"
 #include "JoinOp.hpp"
-#include "QueryOp.hpp"
+#include "LimitOp.hpp"
+#include "MergeOp.hpp"
+#include "OutputOp.hpp"
+#include "ProjectOp.hpp"
+#include "ReduceOp.hpp"
+#include "SinkOp.hpp"
+#include "SortOp.hpp"
+
 #include "RefSet.hpp"
 #include "RefBuffer.hpp"
 
