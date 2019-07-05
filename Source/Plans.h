@@ -17,7 +17,7 @@ using namespace Plans;
 //------------------------------------------------------------------------------
 
 #include "Arg.hpp"
-#include "Op.hpp"
+#include "RelOp.hpp"
 #include "Predicate.hpp"
 #include "PredicateVec.hpp"
 
