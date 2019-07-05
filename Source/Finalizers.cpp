@@ -28,6 +28,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_ACTIONSEQUENCE
   /*    */ &Finalize::vUndefined,         // CN_ACTIVITYMAP
   /*    */ &Finalize::vUndefined,         // CN_ACTIVITYMARK
+  /*    */ &Finalize::vUndefined,         // CN_AGGOP
   /*    */ &Finalize::vUndefined,         // CN_APISTATE
   /* 22 */ &Finalize::vUndefined,         // CN_ARG
   /* 23 */ &Finalize::vUndefined,         // CN_ARGUMENTS
