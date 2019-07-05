@@ -64,11 +64,7 @@ void Base::vTraceWith(void)
 #ifdef WITH_ENCODING_TRACE
   vTrace("  WITH_ENCODING_TRACE\n"_Stz);
 #endif
-  
-#ifdef WITH_ENCODING_XCHECK
-  vTrace("  WITH_ENCODING_XCHECK\n"_Stz);
-#endif
-  
+    
 #ifdef WITH_ENTRY_EXIT
   vTrace("  WITH_ENTRY_EXIT\n"_Stz);
 #endif
