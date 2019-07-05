@@ -10,7 +10,7 @@ namespace System
   class Birth : public Object
   {
   public:
-    Dtm m_wTsp; // birthh as tsp
+    Dtm m_wTsp; // birth as tsp
     Dtm m_wIvl; // birth as Ivl since epoch
   
     // must be last
@@ -19,8 +19,6 @@ namespace System
   public:
     Birth();
     ~Birth() noexcept(false);
-    
-    static void vGetTimeOfDay(i8& iSeconds, i8& iMicroseconds, SysCall& SysCall);
     
     void vClear(void);
     void vNow(void);
