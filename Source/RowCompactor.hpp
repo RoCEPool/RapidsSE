@@ -63,10 +63,10 @@ namespace Rows
     // Compact Row Packing (structural order)
   
     bool bAddCrw(Row* pInflatedRow);
+    
+    void vEncodeTails(Row* pInflatedRow);
     void vAllotCrw(void);
-
     void vPackCrw(Encoding* pEncoding);
-  
     void vPackColVal(_ColEnc& xColEnc);
   
     void vPutMetaCode(_ColEnc& xColEnc);
@@ -84,7 +84,6 @@ namespace Rows
     // Support Functions (alpha order)
 
     void vDumpTails(void);
-    void vEncodeTails(Row* pInflatedRow);
     i8   iFindTail(TailLine* aFindLine);
   
   private:
