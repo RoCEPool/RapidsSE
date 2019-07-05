@@ -607,7 +607,6 @@ void Axioms::vAddConstants(void)
   /* 43 */ vAddConstant("SIZEOF_SESSION"_Stz,      sizeof(Session));
   
   /* 46 */ vAddConstant("SIZEOF_SEPROMPT"_Stz,     sizeof(SePrompt));
-  /* 47 */ vAddConstant("SIZEOF_SINCE"_Stz,        sizeof(Since));
   /* 49 */ vAddConstant("SIZEOF_SKIPLIST"_Stz,     sizeof(SkipListNL));
   /* 50 */ vAddConstant("SIZEOF_SKIPNODE"_Stz,     sizeof(SkipNode));
   /*    */ vAddConstant("SIZEOF_SLOTS"_Stz,        sizeof(Slots));
