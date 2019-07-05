@@ -49,32 +49,14 @@ Predicate::Predicate(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PREDICATE,_FOOTER_);
   
   m_ePredicate = PK_NONE;
-  m_pArg1 = nullptr;
-  m_pArg2 = nullptr;
-  m_pOp   = nullptr;
+  m_pArg1  = nullptr;
+  m_pArg2  = nullptr;
+  m_pRelOp = nullptr;
   
   _checkInitialised_(CN_PREDICATE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PREDICATE,_FOOTER_);
 }
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-//Predicate::Predicate(ePK ePredicate, Arg* pArg1, Arg* pArg2, Op* pOp)
-//: Object(CN_PREDICATE)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_PREDICATE,_FOOTER_);
-//  
-//  m_ePredicate = ePredicate;
-//  m_pArg1 = pArg1;
-//  m_pOp   = pOp;
-//  m_pArg2 = pArg2;
-//  
-//  _checkInitialised_(CN_PREDICATE);
-//  
-//  _postcondition_(_ADDRESS_,_MAGIC_,CN_PREDICATE,_FOOTER_);
-//}
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
@@ -83,8 +65,8 @@ Predicate::~Predicate(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PREDICATE,_FOOTER_);
   
-  if (m_pOp)
-    delete m_pOp;
+  if (m_pRelOp)
+    delete m_pRelOp;
 
   if (m_pArg1)
     delete m_pArg1;
@@ -118,7 +100,7 @@ void Predicate::vPredicate(ePK ePredicate)
 /*----------------------------------------------------------------------------*/
 RelOp* Predicate::pRelOp(void)
 {
-  return m_pOp;
+  return m_pRelOp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -126,7 +108,7 @@ RelOp* Predicate::pRelOp(void)
 /*----------------------------------------------------------------------------*/
 void Predicate::vRelOp(RelOp* pRelOp)
 {
-  m_pOp = pRelOp;
+  m_pRelOp = pRelOp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -168,9 +150,9 @@ void Predicate::vShow(void)
 {
   vTrace("  Predicate: %s : %s %s %s\n"_Stz,
          aPK[m_ePredicate],
-         m_pArg1 ? (char*)m_pArg1->sArgVal().aStz() : "<none>",
-         m_pArg2 ? (char*)m_pArg2->sArgVal().aStz() : "<none>",
-         m_pOp   ? (char*)aRO[m_pOp->eRelOp()]      : "<none>"
+         m_pArg1  ? (char*)m_pArg1->sArgVal().aStz() : "<none>",
+         m_pArg2  ? (char*)m_pArg2->sArgVal().aStz() : "<none>",
+         m_pRelOp ? (char*)aRO[m_pRelOp->eRelOp()]   : "<none>"
          );
 }
 

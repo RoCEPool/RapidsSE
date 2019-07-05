@@ -31,7 +31,7 @@ namespace Plans
     ePK    m_ePredicate;
     Arg*   m_pArg1;
     Arg*   m_pArg2;
-    RelOp* m_pOp;
+    RelOp* m_pRelOp;
   
     // must be last
     Footer m_xFooter;
@@ -42,7 +42,6 @@ namespace Plans
     void  operator delete(void*);
     
     Predicate(void);
-  //Predicate(ePK ePredicate, Arg* pArg1, Arg* pArg2, Op* pOp);
     ~Predicate(void) noexcept(false);
     
     ePK ePredicate(void);
