@@ -15,7 +15,7 @@ RelOp* Plans::_pRelOp(void* aAddr)
 {
   RelOp* pRelOp = reinterpret_cast<RelOp*>(aAddr);
   
-  RASSERT_TYPE(pRelOp,CN_OP);
+  RASSERT_TYPE(pRelOp,CN_RELOP);
  
   return pRelOp;
 }
@@ -25,7 +25,7 @@ RelOp* Plans::_pRelOp(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* RelOp::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_OP);
+  void* pObject = HeapMem::pAllocate(CN_RELOP);
   
   return pObject;
 }
@@ -44,30 +44,30 @@ void RelOp::operator delete(void* pDataAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 RelOp::RelOp(void)
-: Object(CN_OP)
+: Object(CN_RELOP)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RELOP,_FOOTER_);
   
   m_eRelOp = RO_NONE;
   
-  _checkInitialised_(CN_OP);
+  _checkInitialised_(CN_RELOP);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_RELOP,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 RelOp::RelOp(eRO eRelOp)
-: Object(CN_OP)
+: Object(CN_RELOP)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RELOP,_FOOTER_);
   
   m_eRelOp = eRelOp;
   
-  _checkInitialised_(CN_OP);
+  _checkInitialised_(CN_RELOP);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_RELOP,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -75,7 +75,7 @@ RelOp::RelOp(eRO eRelOp)
 /*----------------------------------------------------------------------------*/
 RelOp::~RelOp(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RELOP,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
