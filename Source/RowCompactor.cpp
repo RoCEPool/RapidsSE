@@ -227,11 +227,9 @@ void RowCompactor::vPackSamples(void)
   
   ASSERT(! m_bCollecting);
   
-#ifdef WITH_STR_DUPLICATES
   vAnalyzeSamples();
   
-  vDumpTails();
-#endif
+  //vDumpTails();
   
   SP_Row spRow;
   
@@ -347,10 +345,8 @@ bool RowCompactor::bAddCrw(Row* pInflatedRow)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // encode tails
   
-#ifdef WITH_STR_DUPLICATES
   vEncodeTails(pInflatedRow);
   vTrace("\nvEncodeTails:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
-#endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // split encoding between head and overflow

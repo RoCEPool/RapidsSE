@@ -60,7 +60,6 @@
 //#define WITH_ENCODING_TRACE      // code for tracing encoding compiled in
 //#define WITH_ENCODING_XCHECK     // encode cross check
 //#define WITH_SHOCO_DUPLICATES    // test for duplicate shoco values
-#define WITH_STR_DUPLICATES      // test for duplicate str values
 //#define WITH_VERIFY_TAILS        // verify tails
 
 

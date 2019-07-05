@@ -96,10 +96,6 @@ void Base::vTraceWith(void)
 #ifdef WITH_STATISTICS_COUNTERS
   vTrace("  WITH_STATISTICS_COUNTERS\n"_Stz);
 #endif
-
-#ifdef WITH_STR_DUPLICATES
-  vTrace("  WITH_STR_DUPLICATES\n"_Stz);
-#endif
   
 #ifdef WITH_TRACE_API
   vTrace("  WITH_TRACE_API\n"_Stz);
