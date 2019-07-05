@@ -4,19 +4,43 @@
 
 startCluster;
 
-create table terminator_cr (
-c1 integer,
-c2 varchar,
-c3 varchar
+create table PART (
+p_partkey INTEGER NOT NULL,
+p_name VARCHAR(55),
+p_mfgr VARCHAR(25),
+p_brand VARCHAR(10),
+p_type VARCHAR(25),
+p_size INTEGER,
+p_container VARCHAR(10),
+p_retailprice FLOAT,
+p_comment VARCHAR(23)
 );
 
-// load data into the table with default formatter settings
-ld terminator_cr "/DATA/Load/terminatorLarge_cr.csv" record_ends "\r";
+ld PART "/DATA/Load/part_temp.csv" ;
+/*
+rows:
+(0,'zero','0',10,null)
+(1,'one','101',1,'abcdefghi"jklmnopqrstuvwxyz')
+(2,'','102',2,'abcdef''ghijklmnopqrstuvwxyz')
+(3,'null a','103',3,'abcdef''ghijklmnopqrstuvwxyz')
+(4,'four   ','104',4,'abcd,efghijklmno,pqrstuvwxyz')
+(5,'   five-ab','105',5,'abcdefghij''klmnopqrstuvwxyz')
+(6,'six    ','106',6,'abcdefghij,klmnopqrstuvwxyz')
+(7,'nulla','107',7,'abcdefghij,klmnopqrstuvwxyz')
+(8,'eight-abcd','108',8,'abcdefghijklmnopqrstuvwxyz')
+(9,'nine','109',9,null)
+(10,'one zero','110',0,null)
+(11,'one one','111',2,null)
+(12,'','112',2,null)
+(13,'one three','113',3,'abcdefghijklmnopqrstuvwxyz')
+(14,'null ','114',4,'null a')
+(15,'one five','115',5,'null ')
+(16,'abcdefghij','116',6,'abc')
+(17,'null xyz','117',7,'null xyz')
+(18,'one, eight','118',8,'abcdefghijklmnopqrstuvwxyz')
+(19,'one nine','119',9,'abcdefghijklmnopqrstuvwxyz')
 
-fetch terminator_cr;
-
-
-
+*/
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
