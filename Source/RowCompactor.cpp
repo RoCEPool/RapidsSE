@@ -219,7 +219,7 @@ bool RowCompactor::bCollectSample(Row* pInflatedRow)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compact collected samples into crw buffer                                  */
+/* pack collected samples into crw buffer                                     */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vPackSamples(void)
 {
@@ -289,7 +289,7 @@ void RowCompactor::vAnalyzeSamples(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* analyze a vch column and potentially create a tail for its value           */
+/* potentially create a tail for vch column value                             */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vCreateTail(Column* pCol, Row* pOuterRow, Row* pInnerRow)
 {
@@ -330,7 +330,7 @@ void RowCompactor::vCreateTail(Column* pCol, Row* pOuterRow, Row* pInnerRow)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* compact given row into current nub                                         */
+/* add given row into current crw buffer                                      */
 /*----------------------------------------------------------------------------*/
 bool RowCompactor::bAddCrw(Row* pInflatedRow)
 {
@@ -346,7 +346,6 @@ bool RowCompactor::bAddCrw(Row* pInflatedRow)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // encode tails
-  
   
 #ifdef WITH_STR_DUPLICATES
   vEncodeTails(pInflatedRow);
@@ -376,10 +375,12 @@ bool RowCompactor::bAddCrw(Row* pInflatedRow)
   vAllotCrw();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pack encoding into a compact row
+  // pack encoded inflated row into a compact row
   
   vPackCrw(m_pEncoding);
   
+  m_aHeadLine = nullptr;
+
 #ifdef WITH_VERIFY_TAILS
   m_pCrwNub->vVerifyTails(C_UNKNOWN);
 #endif
@@ -447,7 +448,7 @@ void RowCompactor::vAllotCrw(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
   /*
-   -- HeadLine --                      -- OverLine --
+             -- HeadLine --                      -- OverLine --
    +================================+   +================================+
    | <W>                            |---| <U> ////////////////////////// |
    +================================+   +================================+
@@ -457,9 +458,9 @@ void RowCompactor::vAllotCrw(void)
    +--------------------------------+
    
    where:
-   <W>  is one byte word length of head line
-   [OL] is 2B relative index of the over line
-   <U>  is one byte space unit length of over line
+     <W>  is one byte word length of head line
+     [OL] is 2B relative index of the over line
+     <U>  is one byte space unit length of over line
    */
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -502,7 +503,7 @@ void RowCompactor::vAllotCrw(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pack the encoding into head[+over]{+tail}                                  */
+/* pack the encoded inflated row into head[+over]{+tail}                      */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vPackCrw(Encoding* pEncoding)
 {
@@ -535,12 +536,10 @@ void RowCompactor::vPackCrw(Encoding* pEncoding)
   i8 nFreeSpace = aHeadLine->nFreeSpace(m_pColVec);
   m_oFreqDist.vAdd(nFreeSpace);
 #endif
-  
-  m_aHeadLine = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
-/* pack column value into compact row                                         */
+/* pack encoded column value into compact row                                 */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vPackColVal(_ColEnc& xColEnc)
 {
@@ -575,7 +574,7 @@ void RowCompactor::vPutMeta_split(_ColEnc& xColEnc)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
   /*
-   -- Head-Line --                      -- Over-Line --
+            -- Head-Line --                      -- Over-Line --
    +================================+   +================================+
    | <W><M>                         |---| <U> ////////////////////////// |
    +================================+   +================================+
@@ -813,7 +812,7 @@ void RowCompactor::vPutData_TAIL_2T(_ColEnc& xColEnc)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* dump duplicate tail lines                                                  */
+/* dump tail lines                                                            */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vDumpTails(void)
 {
