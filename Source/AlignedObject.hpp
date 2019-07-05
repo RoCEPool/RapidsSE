@@ -10,7 +10,7 @@ namespace Correctness
   private:
   
   public:
-    AlignedObject(eCN eClass);
+    AlignedObject(eCN eClass, i8 nChildSize);
   };
 }
 

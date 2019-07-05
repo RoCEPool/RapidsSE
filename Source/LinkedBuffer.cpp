@@ -26,7 +26,7 @@ LinkedBuffer* Structures::_pLinkedBuffer(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 LinkedBuffer::LinkedBuffer(eCN eClassNo)
-: AlignedObject(eClassNo)
+: AlignedObject(eClassNo,sizeof(LinkedBuffer))
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
