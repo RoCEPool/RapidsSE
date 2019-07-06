@@ -71,7 +71,6 @@ enum eCN : u2 // Class Number
   /*  35 0x23  1040440B Heap:L */ CN_FETCHBUFFER,
   /*                           */ CN_FETCHOP,
   /*  36 0x24      376B Heap:S */ CN_FILE,
-  /*                           */ CN_FILTEROP,
   /*  37 0x25       48B Heap:S */ CN_FORMATTERS,
   /*  38 0x26       32B Heap:I */ CN_FREEBUFFER,
   /*  39 0x27       24B Heap:I */ CN_FREECHUNK,
@@ -264,7 +263,6 @@ enum eCN : u2 // Class Number
   /* 178 0xB2    48248B Heap:M */ CN_SESSION,
   /* 179 0xB3      208B Heap:S */ CN_SESSIONSTATE,
   /* 180 0xB4       80B Heap:I */ CN_SINCE,
-  /*                           */ CN_SINKOP,
   /* 181 0xB5       64B Heap:S */ CN_SKIPLIST,
   /* 182 0xB6       32B Heap:S */ CN_SKIPNODE,
   /* 183 0xB7  1040416B Heap:L */ CN_SLAB,
@@ -319,11 +317,14 @@ enum eCN : u2 // Class Number
   /* 209 0xD1      208B Heap:S */ CN_TX,
   /* 210 0xD2      176B Heap:S */ CN_TXSET,
   
+  /*                           */ CN_WHEREOP,
   /* 211 0xD3       40B Heap:I */ CN_WILDERNESS,
   /* 212 0xD4    64672B Heap:M */ CN_WORD,
   
   /* 212 0xD4    64672B Heap:M */ CN_XMITOP,
 
+  /*                           */ CN_ZEDOP,
+  
   /* 213 0xD5     3840B Heap:I */ CN_ZSMALL_,
   /* 214 0xD6    65280B Heap:I */ CN_ZMEDIUM_,
   /* 215 0xD7  1048320B Heap:I */ CN_ZLARGE_,
@@ -393,7 +394,6 @@ static Stz* aCN[]
   /*  35 0x23 */ "FETCHBUFFER"_Stz,         // CN_FETCHBUFFER
   /*  35 0x23 */ "FETCHOP"_Stz,             // CN_FETCHOP
   /*  36 0x24 */ "FILE"_Stz,                // CN_FILE
-  /*          */ "FILTEROP"_Stz,            // CN_FILTEROP
   /*  37 0x25 */ "FORMATTERS"_Stz,          // CN_FORMATTERS
   /*  38 0x26 */ "FREEBUFFER"_Stz,          // CN_FREEBUFFER
   /*  39 0x27 */ "FREECHUNK"_Stz,           // CN_FREECHUNK
@@ -586,7 +586,6 @@ static Stz* aCN[]
   /* 178 0xB2 */ "SESSION"_Stz,             // CN_SESSION
   /* 179 0xB3 */ "SESSIONSTATE"_Stz,        // CN_SESSIONSTATE
   /* 180 0xB4 */ "SINCE"_Stz,               // CN_SINCE
-  /* 180 0xB4 */ "SINKOP"_Stz,              // CN_SINKOP
   /* 181 0xB5 */ "SKIPLIST"_Stz,            // CN_SKIPLIST
   /* 182 0xB6 */ "SKIPNODE"_Stz,            // CN_SKIPNODE
   /* 183 0xB7 */ "SLAB"_Stz,                // CN_SLAB
@@ -641,11 +640,14 @@ static Stz* aCN[]
   /* 209 0xD1 */ "TX"_Stz,                  // CN_TX
   /* 210 0xD2 */ "TXSET"_Stz,               // CN_TXSET
   
+  /*          */ "WHEREOP"_Stz,             // CN_WHEREOP
   /* 211 0xD3 */ "WILDERNESS"_Stz,          // CN_WILDERNESS
   /* 212 0xD4 */ "WORD"_Stz,                // CN_WORD
   
   /* 212 0xD4 */ "XMITOP"_Stz,              // CN_XMITOP
 
+  /* 180 0xB4 */ "ZEDOP"_Stz,               // CN_ZEDOP
+  
   /* 213 0xD5 */ "ZSMALL_"_Stz,             // CN_ZSMALL_
   /* 214 0xD6 */ "ZMEDIUM_"_Stz,            // CN_ZMEDIUM_
   /* 215 0xD7 */ "ZLARGE_"_Stz,             // CN_ZLARGE_

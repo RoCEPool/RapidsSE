@@ -68,7 +68,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_FETCHOP
   /*    */ &Finalize::vUndefined,         // CN_FILE
   /* 39 */ &Finalize::vUndefined,         // CN_FILTEROP
-  /* 40 */ &Finalize::vUndefined,         // CN_FORMATTERS
   /* 41 */ &Finalize::vUndefined,         // CN_FREEBUFFER
   /* 42 */ &Finalize::vUndefined,         // CN_FREECHUNK
   /* 43 */ &Finalize::vUndefined,         // CN_FREEDNOT
@@ -261,7 +260,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_SESSION
   /*    */ &Finalize::vUndefined,         // CN_SESSIONSTATE
   /*116 */ &Finalize::vUndefined,         // CN_SINCE
-  /*116 */ &Finalize::vUndefined,         // CN_SINKOP
   /*118 */ &Finalize::vUndefined,         // CN_SKIPLIST
   /*119 */ &Finalize::vUndefined,         // CN_SKIPNODE
   /*120 */ &Finalize::vUndefined,         // CN_SLAB
@@ -316,11 +314,14 @@ pFINALIZE *gpFinalize[]
   /*147 */ &Finalize::vUndefined,         // CN_TX
   /*148 */ &Finalize::vUndefined,         // CN_TXSET
   
+  /* 40 */ &Finalize::vUndefined,         // CN_WHEREOP
   /*149 */ &Finalize::vUndefined,         // CN_WILDERNESS
   /*150 */ &Finalize::vUndefined,         // CN_WORD
   
   /*150 */ &Finalize::vUndefined,         // CN_XMITOP
 
+  /*116 */ &Finalize::vUndefined,         // CN_ZEDOP
+  
   /*151 */ &Finalize::vUndefined,         // CN_ZSMALL_
   /*152 */ &Finalize::vUndefined,         // CN_ZMEDIUM_
   /*153 */ &Finalize::vUndefined,         // CN_ZLARGE_

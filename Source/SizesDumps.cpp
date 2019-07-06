@@ -70,7 +70,6 @@ pDUMPFUN *gpDump[]
   /* 38 */ &Dump::vInvalid,         // CN_FETCHBUFFER
   /* 38 */ &Dump::vInvalid,         // CN_FETCHOP
   /* 39 */ &Dump::vInvalid,         // CN_FILE
-  /* 39 */ &Dump::vInvalid,         // CN_FILTEROP
   /* 40 */ &Dump::vDummy,           // CN_FORMATTERS
   /* 41 */ &Dump::vDummy,           // CN_FREEBUFFER
   /* 42 */ &Dump::vDummy,           // CN_FREECHUNK
@@ -266,7 +265,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Session::vDump,         // CN_SESSION
   /*116 */ &Dump::vUndefined,       // CN_SESSIONSTATE
   /*116 */ &Dump::vUndefined,       // CN_SINCE
-  /*116 */ &Dump::vUndefined,       // CN_SINKOP
   /*118 */ &Dump::vUndefined,       // CN_SKIPLIST
   /*119 */ &Dump::vUndefined,       // CN_SKIPNODE
   /*120 */ &Dump::vUndefined,       // CN_SLAB
@@ -321,11 +319,14 @@ pDUMPFUN *gpDump[]
   /*147 */ &Tx::vDump,              // CN_TX
   /*148 */ &Dump::vUndefined,       // CN_TXSET
 
+  /* 39 */ &Dump::vInvalid,         // CN_WHEREOP
   /*149 */ &Dump::vInvalid,         // CN_WILDERNESS
   /*150 */ &ForthWord::vDump,       // CN_WORD
 
   /*148 */ &Dump::vUndefined,       // CN_XMITOP
 
+  /*116 */ &Dump::vUndefined,       // CN_ZEDOP
+  
   /*151 */ &Dump::vUndefined,       // CN_ZSMALL_
   /*152 */ &Dump::vUndefined,       // CN_ZMEDIUM_
   /*153 */ &Dump::vUndefined,       // CN_ZLARGE_
@@ -395,7 +396,6 @@ i8 giClassSize[]
   /*    */ sizeof(FetchBuffer),        // CN_FETCHBUFFER
   /*    */ sizeof(FetchOp),            // CN_FETCHOP
   /* 39 */ sizeof(File),               // CN_FILE
-  /*    */ sizeof(WhereOp),            // CN_FILTEROP
   /* 40 */ sizeof(Formatters),         // CN_FORMATTERS
   /* 41 */ sizeof(PoolBuffer),         // CN_FREEBUFFER
   /* 42 */ sizeof(FreeChunk),          // CN_FREECHUNK
@@ -590,7 +590,6 @@ i8 giClassSize[]
   /*    */ sizeof(Session),            // CN_SESSION
   /*    */ sizeof(SessionState),       // CN_SESSIONSTATE
   /*116 */ sizeof(Birth),              // CN_SINCE
-  /*116 */ sizeof(ZedOp),              // CN_SINKOP
   /*118 */ sizeof(SkipListNL),         // CN_SKIPLIST
   /*119 */ sizeof(SkipNode),           // CN_SKIPNODE
   /*120 */ sizeof(Slab),               // CN_SLAB
@@ -645,10 +644,13 @@ i8 giClassSize[]
   /*147 */ sizeof(Tx),                 // CN_TX
   /*148 */ sizeof(TxSet),              // CN_TXSET
 
+  /*    */ sizeof(WhereOp),            // CN_WHEREOP
   /*149 */ sizeof(Wilderness),         // CN_WILDERNESS
   /*150 */ sizeof(ForthWord),          // CN_WORD
   
   /*150 */ sizeof(XmitOp),             // CN_XMITOP
+  
+  /*116 */ sizeof(ZedOp),              // CN_ZEDOP
   
   /*151 */ C_SIZE_SMALL_OBJECT  - 256, // CN_ZSMALL_
   /*152 */ C_SIZE_MEDIUM_OBJECT - 256, // CN_ZMEDIUM_
@@ -719,7 +721,6 @@ eHT geWhichHeap[]
   /* 38 */ HT_TRANSIENT_LARGE,   // CN_FETCHBUFFER
   /* 38 */ HT_TRANSIENT_SMALL,   // CN_FETCHOP
   /* 39 */ HT_TRANSIENT_SMALL,   // CN_FILE
-  /* 39 */ HT_TRANSIENT_SMALL,   // CN_FILTEROP
   /* 40 */ HT_TRANSIENT_SMALL,   // CN_FORMATTERS
   /* 41 */ HT_INVALID,           // CN_FREEBUFFER
   /* 42 */ HT_INVALID,           // CN_FREECHUNK
@@ -914,7 +915,6 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_SESSION
   /*    */ HT_TRANSIENT_SMALL,   // CN_SESSIONSTATE
   /*116 */ HT_INVALID,           // CN_SINCE
-  /*118 */ HT_TRANSIENT_SMALL,   // CN_SINKOP
   /*118 */ HT_TRANSIENT_SMALL,   // CN_SKIPLIST
   /*119 */ HT_TRANSIENT_SMALL,   // CN_SKIPNODE
   /*120 */ HT_TRANSIENT_LARGE,   // CN_SLAB
@@ -969,11 +969,14 @@ eHT geWhichHeap[]
   /*147 */ HT_TRANSIENT_SMALL,   // CN_TX
   /*148 */ HT_TRANSIENT_SMALL,   // CN_TXSET
   
+  /* 39 */ HT_TRANSIENT_SMALL,   // CN_WHEREOP
   /*149 */ HT_INVALID,           // CN_WILDERNESS
   /*150 */ HT_TRANSIENT_MEDIUM,  // CN_WORD
 
   /*148 */ HT_TRANSIENT_SMALL,   // CN_XMITOP
 
+  /*118 */ HT_TRANSIENT_SMALL,   // CN_ZEDOP
+  
   /*151 */ HT_INVALID,           // CN_ZSMALL_
   /*152 */ HT_INVALID,           // CN_ZMEDIUM_
   /*153 */ HT_INVALID,           // CN_ZLARGE_
