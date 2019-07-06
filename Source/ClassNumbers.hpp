@@ -39,6 +39,7 @@ enum eCN : u2 // Class Number
   /*  18 0x12       24B Heap:I */ CN_ATOMIC,
   /*  19 0x13    19672B Heap:I */ CN_ATTACHMAP,
 
+  /*                           */ CN_BOTHOP,
   /*  20 0x14        1B Heap:I */ CN_BPA,
   /*                           */ CN_BUFFERCURSOR,
   /*  21 0x15      312B Heap:I */ CN_BUFFERPOOL,
@@ -48,6 +49,7 @@ enum eCN : u2 // Class Number
   /*                           */ CN_CATALOG,
   /*  24 0x18      120B Heap:S */ CN_COLUMN,
   /*  25 0x19     8216B Heap:M */ CN_COLUMNVEC,
+  /*                           */ CN_COMBINEOP,
   /*  26 0x1A       24B Heap:M */ CN_COMMAND,
   /*  27 0x1B       64B Heap:M */ CN_COMPILER,
   /*                           */ CN_COMPLETER,
@@ -59,6 +61,7 @@ enum eCN : u2 // Class Number
   /*  30 0x1E      792B Heap:S */ CN_DICPATH,
   /*  31 0x1F      152B Heap:S */ CN_DICSTACK,
   /*  32 0x20      608B Heap:S */ CN_DIR,
+  /*                           */ CN_DISTINCTOP,
   /*                           */ CN_DTMVAL,
 
   /*                           */ CN_ENCODING,
@@ -301,6 +304,7 @@ enum eCN : u2 // Class Number
   /* 195 0xC3     3736B Heap:I */ CN_TABLE,
   /* 196 0xC4      208B Heap:S */ CN_TABLEPTN,
   /* 197 0xC5     1048B Heap:M */ CN_TABLEPTNVEC,
+  /*                           */ CN_TAKEAWAYOP,
   /* 198 0xC6     1360B Heap:M */ CN_TASK,
   /* 199 0xC7      184B Heap:S */ CN_TASKLIST,
   /* 200 0xC8      160B Heap:S */ CN_TASKQUEUE,
@@ -363,6 +367,7 @@ static Stz* aCN[]
   /*  19 0x13 */ "ATTACHMAP"_Stz,           // CN_ATTACHMAP
 
   /*  20 0x14 */ "BPA"_Stz,                 // CN_BPA
+  /*          */ "BOTHOP"_Stz,              // CN_BOTHOP
   /*          */ "BUFFERCURSOR"_Stz,        // CN_BUFFERCURSOR
   /*  21 0x15 */ "BUFFERPOOL"_Stz,          // CN_BUFFERPOOL
   /*  22 0x16 */ "BYTERATE"_Stz,            // CN_BYTERATE
@@ -371,6 +376,7 @@ static Stz* aCN[]
   /*          */ "CATALOG"_Stz,             // CN_CATALOG
   /*  24 0x18 */ "COLUMN"_Stz,              // CN_COLUMN
   /*  25 0x19 */ "COLUMNVEC"_Stz,           // CN_COLUMNVEC
+  /*          */ "COMBINEOP"_Stz,           // CN_COMBINEOP
   /*  26 0x1A */ "COMMAND"_Stz,             // CN_COMMAND
   /*  27 0x1B */ "COMPILER"_Stz,            // CN_COMPILER
   /*          */ "COMPLETER"_Stz,           // CN_COMPLETER
@@ -382,6 +388,7 @@ static Stz* aCN[]
   /*  30 0x1E */ "DICPATH"_Stz,             // CN_DICPATH
   /*  31 0x1F */ "DICSTACK"_Stz,            // CN_DICSTACK
   /*  32 0x20 */ "DIR"_Stz,                 // CN_DIR
+  /*          */ "DISTINCTOP"_Stz,          // CN_DISTINCTOP
   /*          */ "DTMVAL"_Stz,              // CN_DTMVAL
 
   /*          */ "ENCODING"_Stz,            // CN_ENCODING
@@ -624,6 +631,7 @@ static Stz* aCN[]
   /* 195 0xC3 */ "TABLE"_Stz,               // CN_TABLE
   /* 196 0xC4 */ "TABLEPTN"_Stz,            // CN_TABLEPTN
   /* 197 0xC5 */ "TABLEPTNVEC"_Stz,         // CN_TABLEPTNVEC
+  /*          */ "TAKEAWAYOP"_Stz,          // CN_TAKEAWAYOP
   /* 198 0xC6 */ "TASK"_Stz,                // CN_TASK
   /* 199 0xC7 */ "TASKLIST"_Stz,            // CN_TASKLIST
   /* 200 0xC8 */ "TASKQUEUE"_Stz,           // CN_TASKQUEUE

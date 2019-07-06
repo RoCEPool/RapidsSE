@@ -38,6 +38,7 @@ pDUMPFUN *gpDump[]
   /* 24 */ &Dump::vInvalid,         // CN_ATOMIC
   /* 25 */ &AttachMap::vDump,       // CN_ATTACHMAP
 
+  /* 29 */ &Dump::vInvalid,         // CN_BOTHOP
   /* 29 */ &Dump::vInvalid,         // CN_BPA
   /*    */ &Dump::vInvalid,         // CN_BUFFERCURSOR
   /* 28 */ &Dump::vInvalid,         // CN_BUFFERPOOL
@@ -47,6 +48,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_CATALOG
   /* 31 */ &Dump::vDummy,           // CN_COLUMN
   /* 32 */ &Dump::vDummy,           // CN_COLUMNVEC
+  /* 32 */ &Dump::vDummy,           // CN_COMBINEOP
   /*    */ &Dump::vDummy,           // CN_COMMAND
   /*    */ &Dump::vDummy,           // CN_COMPILER
   /*    */ &Dump::vDummy,           // CN_COMPLETER
@@ -58,6 +60,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_DICPATH
   /* 34 */ &DicStack::vDump,        // CN_DICSTACK
   /* 35 */ &Dump::vInvalid,         // CN_DIR
+  /*    */ &Dump::vDummy,           // CN_DISTINCTOP
   /*    */ &Dump::vDummy,           // CN_DTMVAL
 
   /*    */ &Dump::vUndefined,       // CN_ENCODING
@@ -303,6 +306,7 @@ pDUMPFUN *gpDump[]
   /*130 */ &Table::vDump,           // CN_TABLE
   /*    */ &TablePtn::vDump,        // CN_TABLEPTN
   /*    */ &Dump::vDummy,           // CN_TABLEPTNVEC
+  /*    */ &Dump::vDummy,           // CN_TAKEAWAYOP
   /*131 */ &Task::vDump,            // CN_TASK
   /*    */ &Dump::vUndefined,       // CN_TASKLIST
   /*134 */ &Dump::vUndefined,       // CN_TASKQUEUE
@@ -364,6 +368,7 @@ i8 giClassSize[]
   /* 24 */ sizeof(Atomic),             // CN_ATOMIC
   /* 25 */ sizeof(AttachMap),          // CN_ATTACHMAP
 
+  /* 29 */ sizeof(BothOp),             // CN_BOTHOP
   /* 29 */ sizeof(BPA),                // CN_BPA
   /*    */ sizeof(BufferCursor),       // CN_BUFFERCURSOR
   /* 28 */ sizeof(BufferPool),         // CN_BUFFERPOOL
@@ -373,6 +378,7 @@ i8 giClassSize[]
   /*    */ sizeof(Catalog),            // CN_CATALOG
   /* 31 */ sizeof(Column),             // CN_COLUMN
   /* 32 */ sizeof(ColumnVec),          // CN_COLUMNVEC
+  /* 32 */ sizeof(CombineOp),          // CN_COMBINEOP
   /* 32 */ sizeof(Command),            // CN_COMMAND
   /* 32 */ sizeof(Compiler),           // CN_COMPILER
   /* 32 */ sizeof(Completer),          // CN_COMPLETER
@@ -384,6 +390,7 @@ i8 giClassSize[]
   /* 34 */ sizeof(DicPath),            // CN_DICPATH
   /* 34 */ sizeof(DicStack),           // CN_DICSTACK
   /* 35 */ sizeof(Dir),                // CN_DIR
+  /* 35 */ sizeof(DistinctOp),         // CN_DISTINCTOP
   /*    */ sizeof(DtmVal),             // CN_DTMVAL
 
   /*    */ sizeof(Encoding),           // CN_ENCODING
@@ -628,6 +635,7 @@ i8 giClassSize[]
   /*130 */ sizeof(Table),              // CN_TABLE
   /*    */ sizeof(TablePtn),           // CN_TABLEPTN
   /*    */ sizeof(TablePtnVec),        // CN_TABLEPTNVEC
+  /*    */ sizeof(TakeawayOp),         // CN_TAKEAWAYOP
   /*131 */ sizeof(Task),               // CN_TASK
   /*    */ sizeof(TaskList),           // CN_TASKLIST
   /*134 */ sizeof(TaskQueue),          // CN_TASKQUEUE
@@ -689,6 +697,7 @@ eHT geWhichHeap[]
   /* 24 */ HT_INVALID,           // CN_ATOMIC
   /* 25 */ HT_INVALID,           // CN_ATTACHMAP
 
+  /* 29 */ HT_TRANSIENT_SMALL,   // CN_BOTHOP
   /* 29 */ HT_INVALID,           // CN_BPA
   /*    */ HT_TRANSIENT_LARGE,   // CN_BUFFERCURSOR
   /* 28 */ HT_INVALID,           // CN_BUFFERPOOL
@@ -698,6 +707,7 @@ eHT geWhichHeap[]
   /*    */ HT_INVALID,           // CN_CATALOG
   /*    */ HT_TRANSIENT_SMALL,   // CN_COLUMN
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_COLUMNVEC
+  /*    */ HT_TRANSIENT_SMALL,   // CN_COMBINEOP
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_COMMAND
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_COMPILER
   /*    */ HT_TRANSIENT_SMALL,   // CN_COMPLETER
@@ -709,6 +719,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_SMALL,   // CN_DICPATH
   /* 34 */ HT_TRANSIENT_SMALL,   // CN_DICSTACK
   /* 35 */ HT_TRANSIENT_SMALL,   // CN_DIR
+  /* 35 */ HT_TRANSIENT_SMALL,   // CN_DISTINCTOP
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_DTMVAL
 
   /*    */ HT_TRANSIENT_LARGE,   // CN_ENCODING
@@ -953,6 +964,7 @@ eHT geWhichHeap[]
   /*130 */ HT_INVALID,           // CN_TABLE
   /*    */ HT_TRANSIENT_SMALL,   // CN_TABLEPTN
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_TABLEPTNVEC
+  /*    */ HT_TRANSIENT_SMALL,   // CN_TAKEAWAY
   /*131 */ HT_TRANSIENT_MEDIUM,  // CN_TASK
   /*    */ HT_TRANSIENT_SMALL,   // CN_TASKLIST
   /*    */ HT_TRANSIENT_SMALL,   // CN_TEMPNAME

@@ -35,6 +35,7 @@ pFINALIZE *gpFinalize[]
   /* 24 */ &Finalize::vUndefined,         // CN_ATOMIC
   /* 25 */ &Finalize::vUndefined,         // CN_ATTACHMAP
 
+  /* 29 */ &Finalize::vUndefined,         // CN_BOTHOP
   /* 29 */ &Finalize::vUndefined,         // CN_BPA
   /*    */ &Finalize::vUndefined,         // CN_BUFFERCURSOR
   /* 28 */ &Finalize::vUndefined,         // CN_BUFFERPOOL
@@ -44,6 +45,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_CATALOG
   /*    */ &Finalize::vUndefined,         // CN_COLUMN
   /* 32 */ &Finalize::vUndefined,         // CN_COLUMNVEC
+  /*    */ &Finalize::vUndefined,         // CN_COMBINEOP
   /*    */ &Finalize::vUndefined,         // CN_COMMAND
   /*    */ &Finalize::vUndefined,         // CN_COMPILER
   /*    */ &Finalize::vUndefined,         // CN_COMPLETER
@@ -55,6 +57,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_DICPATH
   /* 34 */ &Finalize::vUndefined,         // CN_DICSTACK
   /* 35 */ &Finalize::vUndefined,         // CN_DIR
+  /*    */ &Finalize::vUndefined,         // CN_DISTINCTOP
   /*    */ &Finalize::vUndefined,         // CN_DTMVAL
 
   /*    */ &Finalize::vUndefined,         // CN_ENCODING
@@ -298,6 +301,7 @@ pFINALIZE *gpFinalize[]
   /*130 */ &Table::vFinalize,             // CN_TABLE
   /*    */ &Finalize::vUndefined,         // CN_TABLEPTN
   /*    */ &Finalize::vUndefined,         // CN_TABLEPTNVEC
+  /*    */ &Finalize::vUndefined,         // CN_TAKEAWAYOP
   /*131 */ &Finalize::vUndefined,         // CN_TASK
   /*134 */ &Finalize::vUndefined,         // CN_TASKLIST
   /*    */ &Finalize::vUndefined,         // CN_TASKQUEUE
