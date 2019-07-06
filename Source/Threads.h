@@ -20,6 +20,7 @@ using namespace Threads;
 
 #include "TlsKeys.hpp"
 #include "Thread.hpp"
+#include "ThreadQueue.hpp"
 #include "ThreadVec.hpp"
 
 #include "Queues.hpp"
