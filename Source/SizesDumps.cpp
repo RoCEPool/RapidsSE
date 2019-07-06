@@ -395,7 +395,7 @@ i8 giClassSize[]
   /*    */ sizeof(FetchBuffer),        // CN_FETCHBUFFER
   /*    */ sizeof(FetchOp),            // CN_FETCHOP
   /* 39 */ sizeof(File),               // CN_FILE
-  /*    */ sizeof(FilterOp),           // CN_FILTEROP
+  /*    */ sizeof(WhereOp),            // CN_FILTEROP
   /* 40 */ sizeof(Formatters),         // CN_FORMATTERS
   /* 41 */ sizeof(PoolBuffer),         // CN_FREEBUFFER
   /* 42 */ sizeof(FreeChunk),          // CN_FREECHUNK
@@ -590,7 +590,7 @@ i8 giClassSize[]
   /*    */ sizeof(Session),            // CN_SESSION
   /*    */ sizeof(SessionState),       // CN_SESSIONSTATE
   /*116 */ sizeof(Birth),              // CN_SINCE
-  /*116 */ sizeof(SinkOp),             // CN_SINKOP
+  /*116 */ sizeof(ZedOp),              // CN_SINKOP
   /*118 */ sizeof(SkipListNL),         // CN_SKIPLIST
   /*119 */ sizeof(SkipNode),           // CN_SKIPNODE
   /*120 */ sizeof(Slab),               // CN_SLAB
