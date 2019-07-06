@@ -44,7 +44,7 @@ ThreadQueue::ThreadQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREADQUEUE,_FOOTER_);
   
-  m_okLock.vInitLock(LK_TASK_QUEUE);
+  m_okLock.vInitLock(LK_THREAD_QUEUE);
   
   _checkInitialised_(CN_THREADQUEUE);
 

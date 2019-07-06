@@ -18,8 +18,8 @@ void StorageEngine::vCheckAllAssumptions(void)
   Debugging::vCheckAssumptions();
   // third party??
   Correctness::vCheckAssumptions();
-  Transform::vCheckAssumptions();
   Assembler::vCheckAssumptions();
+  System::vCheckAssumptions();
   Pool::vCheckAssumptions();
   Persistence::vCheckAssumptions();
   Structures::vCheckAssumptions();
@@ -30,8 +30,11 @@ void StorageEngine::vCheckAllAssumptions(void)
   Commands::vCheckAssumptions();
   Forth::vCheckAssumptions();
   MetaData::vCheckAssumptions();
+  Transform::vCheckAssumptions();
+  ScanSprint::vCheckAssumptions();
   Rows::vCheckAssumptions();
   Indexes::vCheckAssumptions();
+  Partitioning::vCheckAssumptions();
   PushDown::vCheckAssumptions();
   Plans::vCheckAssumptions();
   Jobs::vCheckAssumptions();
@@ -39,6 +42,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   Steps::vCheckAssumptions();
   Tasks::vCheckAssumptions();
   Threads::vCheckAssumptions();
+  Scheduling::vCheckAssumptions();
   Grids::vCheckAssumptions();
   Interface::vCheckAssumptions();
   Prompt::vCheckAssumptions();

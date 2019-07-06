@@ -646,7 +646,7 @@ i8 giClassSize[]
   /*    */ sizeof(Tenant),             // CN_TENANT
   /*    */ sizeof(Tenants),            // CN_TENANTS
   /*137 */ sizeof(Thread),             // CN_THREAD
-  /*137 */ 0,             // CN_THREADQUEUE
+  /*137 */ sizeof(ThreadQueue),        // CN_THREADQUEUE
   /*    */ sizeof(ThreadVec),          // CN_THREADVEC
   /*142 */ sizeof(Timer),              // CN_TIMER
   /*143 */ sizeof(Token),              // CN_TOKEN
