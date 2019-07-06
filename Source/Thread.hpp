@@ -57,6 +57,7 @@ namespace Threads
   
     static void* aEntryPoint(void* pArg);
     static void* aEntryPointDummy(void* pArg);
+    static void* aEntryPointOp(void* pArg);
 
     static Thread* pThisTLSThread(void);
   

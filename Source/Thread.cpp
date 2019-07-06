@@ -193,6 +193,39 @@ void* Thread::aEntryPointDummy(void* pArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* op thread entry point                                                      */
+/*----------------------------------------------------------------------------*/
+void* Thread::aEntryPointOp(void* pArg)
+{
+  Thread* pThread = static_cast<Thread*>(pArg);
+  
+  pThread->m_eThreadState = TD_IDLE;
+  
+  pThread->m_pPthread->vThreadEntry();
+  
+  if (gpAttachMap->m_bVerbose)
+    vTrace("Thread::pDummyEntryPoint %p %lld\n"_Stz,
+           pThread,pThread->iThreadNo());
+  
+  while (true) {
+    
+    // sleep for a bit to generate a context switch
+    Pthread::vSleepMicro(gpAttachMap->Arg.m_nDummySleep,CN_THREAD);
+    
+    // burn some cpu
+    i8 iSum = 0;
+    for (i8 i_Loop = 0; i_Loop < gpAttachMap->Arg.m_nDummyLoop; i_Loop++)
+      iSum += Tsc::iRdTscp();
+  }
+  
+  //pThread->m_pPthread->vThreadExit();
+  
+  //delete pThread;
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get this thread                                                            */
 /*----------------------------------------------------------------------------*/
 Thread* Thread::pThisTLSThread(void)
