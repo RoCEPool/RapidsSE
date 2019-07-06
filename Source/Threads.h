@@ -23,9 +23,6 @@ using namespace Threads;
 #include "ThreadQueue.hpp"
 #include "ThreadVec.hpp"
 
-#include "Queues.hpp"
-
-#include "Handlers.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Threads
+namespace Scheduling
 {
   class Queues : public Object
   {

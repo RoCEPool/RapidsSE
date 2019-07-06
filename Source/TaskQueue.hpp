@@ -3,11 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-namespace Threads
-{
-  class Handlers;
-}
-
 namespace Tasks
 {
   class TaskQueue : public Object

@@ -3,18 +3,13 @@
 /*============================================================================*/
 #pragma once
 
-namespace Threads
-{
-  class Handlers;
-}
-
 namespace Tasks
 {
   class TaskList : public ListNL_t<Task>
   {
   private:
-   eQK  m_eKind;
-   Lock m_okLock;
+    eQK  m_eKind;
+    Lock m_okLock;
   
     // must be last
     Footer m_xFooter;

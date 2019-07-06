@@ -2,7 +2,7 @@
 /* Handlers.cpp -- Thread/Task Event Handlers                                 */
 /*============================================================================*/
 
-#include "Threads.h"
+#include "Scheduling.h"
 
 #include "StorageEngine.h"
 

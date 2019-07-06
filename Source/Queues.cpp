@@ -2,7 +2,7 @@
 /* Queues.cpp -- Collection of the Systems' Queues                            */
 /*============================================================================*/
 
-#include "Threads.h"
+#include "Scheduling.h"
 
 #include "StorageEngine.h"
 
@@ -15,7 +15,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Queues* Threads::_pQueues(void* aAddr)
+Queues* Scheduling::_pQueues(void* aAddr)
 {
   Queues* pQueues = reinterpret_cast<Queues*>(aAddr);
   
