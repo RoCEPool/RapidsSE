@@ -13,7 +13,7 @@
 /* initialize object                                                          */
 /*----------------------------------------------------------------------------*/
 JoinOp::JoinOp(void)
-: Op(CN_OP)
+: Op(CN_JOINOP)
 {
   _precondition_(_MAGIC_,CN_JOINOP);
 }
