@@ -15,6 +15,8 @@ using namespace PushDown;
 //------------------------------------------------------------------------------
 
 #include "Op.hpp"
+#include "OpQueue.hpp"
+
 #include "AggOp.hpp"
 #include "BothOp.hpp"
 #include "CombineOp.hpp"
