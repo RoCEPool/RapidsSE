@@ -10,10 +10,7 @@ namespace Structures
   {
     ITEM* m_pPrevNode;   // prev node
     ITEM* m_pNextNode;   // next node
-    
-    // must be last
-    Footer m_xFooter;
-    
+  
   public:
     void* operator new(size_t);
     
@@ -23,8 +20,6 @@ namespace Structures
     void  vNextNode(ITEM* pNext);
     ITEM* pPrevNode(void);
     void  vPrevNode(ITEM* pPrev);
-    
-    Footer* aFooter(void);
   };
 }
 
@@ -89,19 +84,6 @@ template <class OBJECT>
 void ListNode_t<OBJECT>::vPrevNode(OBJECT* pPrevNode)
 {
   m_pPrevNode = pPrevNode;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-template <class OBJECT>
-Footer* ListNode_t<OBJECT>::aFooter(void)
-{
-  return &m_xFooter;
 }
 
 /*============================================================================*/

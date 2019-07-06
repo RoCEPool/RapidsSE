@@ -5,7 +5,8 @@
 
 namespace PushDown
 {
-  class Op : public Object
+  class Op : public Object,
+             public ListNode_t<Op>
   {
   private:
   
