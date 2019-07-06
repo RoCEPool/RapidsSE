@@ -18,6 +18,7 @@ using namespace PushDown;
 #include "AggOp.hpp"
 #include "FetchOp.hpp"
 #include "FilterOp.hpp"
+#include "HashOp.hpp"
 #include "JoinOp.hpp"
 #include "LimitOp.hpp"
 #include "MergeOp.hpp"
@@ -26,6 +27,7 @@ using namespace PushDown;
 #include "ReduceOp.hpp"
 #include "SinkOp.hpp"
 #include "SortOp.hpp"
+#include "XmitOp.hpp"
 
 #include "RefSet.hpp"
 #include "RefBuffer.hpp"

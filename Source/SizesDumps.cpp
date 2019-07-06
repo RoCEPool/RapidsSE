@@ -68,7 +68,9 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_EXPORTBUFFER
 
   /* 38 */ &Dump::vInvalid,         // CN_FETCHBUFFER
+  /* 38 */ &Dump::vInvalid,         // CN_FETCHOP
   /* 39 */ &Dump::vInvalid,         // CN_FILE
+  /* 39 */ &Dump::vInvalid,         // CN_FILTEROP
   /* 40 */ &Dump::vDummy,           // CN_FORMATTERS
   /* 41 */ &Dump::vDummy,           // CN_FREEBUFFER
   /* 42 */ &Dump::vDummy,           // CN_FREECHUNK
@@ -80,6 +82,7 @@ pDUMPFUN *gpDump[]
   
   /*    */ &Dump::vDummy,           // CN_HASHBUFFER
   /*    */ &Dump::vDummy,           // CN_HASHMAP
+  /*    */ &Dump::vDummy,           // CN_HASHOP
 
   /* 50 */ &HeapBuffer::vDump,      // CN_HEAPBUFFER
   /* 51 */ &Dump::vDummy,           // CN_HPROW
@@ -196,7 +199,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_WRITEROW
 
   /*    */ &JobList::vDump,         // CN_JOBLIST
-  
+  /*    */ &Dump::vDummy,           // CN_JOINOP
   /* 59 */ &Heap::vDump,            // CN_JUMBOPERSISTENT
   /* 60 */ &Heap::vDump,            // CN_JUMBOTRANSIENT
   
@@ -204,6 +207,7 @@ pDUMPFUN *gpDump[]
   
   /* 65 */ &Heap::vDump,            // CN_LARGEPERSISTENT
   /* 66 */ &Heap::vDump,            // CN_LARGETRANSIENT
+  /*    */ &Dump::vDummy,           // CN_LIMITOP
   /*    */ &Dump::vDummy,           // CN_LOADCHUNK
   /* 71 */ &LoadMap::vDump,         // CN_LOADMAP
   /*    */ &Dump::vInvalid,         // CN_LOCAL
@@ -213,6 +217,7 @@ pDUMPFUN *gpDump[]
   /* 73 */ &Heap::vDump,            // CN_MEDIUMPERSISTENT
   /* 74 */ &Heap::vDump,            // CN_MEDIUMTRANSIENT
   /*    */ &Dump::vUndefined,       // CN_MEMTEST
+  /*    */ &Dump::vUndefined,       // CN_MERGEOP
   /*114 */ &Dump::vUndefined,       // CN_MUTEX
 
   /*    */ &Dump::vUndefined,       // CNNMVAL
@@ -221,7 +226,8 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vUndefined,       // CN_NUMBAT
 
   /* 77 */ &Dump::vUndefined,       // CN_OP
-  
+  /*    */ &Dump::vUndefined,       // CN_OUTPUT
+
   /* 78 */ &Parser::vDump,          // CN_PARSER
   /* 82 */ &Dump::vInvalid,         // CN_PATHVEC
   /* 82 */ &Dump::vInvalid,         // CN_PERUSE
@@ -230,6 +236,7 @@ pDUMPFUN *gpDump[]
   /* 87 */ &Dump::vUndefined,       // CN_PLANNER
   /* 89 */ &Dump::vUndefined,       // CN_PREDICATE
   /* 90 */ &Dump::vUndefined,       // CN_PREDVEC
+  /* 90 */ &Dump::vUndefined,       // CN_PROJECTOP
   /* 91 */ &Dump::vUndefined,       // CN_PTHREAD
   /* 94 */ &Dump::vDummy,           // CN_PTNCOLVEC
   
@@ -239,6 +246,7 @@ pDUMPFUN *gpDump[]
 
   /*    */ &Dump::vUndefined,       // CN_RECORD
   /*    */ &Dump::vUndefined,       // CN_RECORDBUFFER
+  /*    */ &Dump::vUndefined,       // CN_REDUCEOP
   /*    */ &Dump::vUndefined,       // CN_REFBUFFER
   /*    */ &Dump::vUndefined,       // CN_REFSET
   /* 77 */ &Dump::vUndefined,       // CN_RELOP
@@ -258,6 +266,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Session::vDump,         // CN_SESSION
   /*116 */ &Dump::vUndefined,       // CN_SESSIONSTATE
   /*116 */ &Dump::vUndefined,       // CN_SINCE
+  /*116 */ &Dump::vUndefined,       // CN_SINKOP
   /*118 */ &Dump::vUndefined,       // CN_SKIPLIST
   /*119 */ &Dump::vUndefined,       // CN_SKIPNODE
   /*120 */ &Dump::vUndefined,       // CN_SLAB
@@ -276,6 +285,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vInvalid,         // CN_SNTSP
   /*    */ &Dump::vInvalid,         // CN_SNVCH
   /*125 */ &Socket::vDump,          // CN_SOCKET
+  /*    */ &Dump::vInvalid,         // CN_SORTOP
   /*    */ &Dump::vInvalid,         // CN_SPBCD
   /*    */ &Dump::vInvalid,         // CN_SPBOL
   /*    */ &Dump::vInvalid,         // CN_SPDTE
@@ -313,7 +323,9 @@ pDUMPFUN *gpDump[]
 
   /*149 */ &Dump::vInvalid,         // CN_WILDERNESS
   /*150 */ &ForthWord::vDump,       // CN_WORD
-  
+
+  /*148 */ &Dump::vUndefined,       // CN_XMITOP
+
   /*151 */ &Dump::vUndefined,       // CN_ZSMALL_
   /*152 */ &Dump::vUndefined,       // CN_ZMEDIUM_
   /*153 */ &Dump::vUndefined,       // CN_ZLARGE_
@@ -381,7 +393,9 @@ i8 giClassSize[]
   /* 32 */ sizeof(ExportBuffer),       // CN_EXPORTBUFFER
 
   /*    */ sizeof(FetchBuffer),        // CN_FETCHBUFFER
+  /*    */ sizeof(FetchOp),            // CN_FETCHOP
   /* 39 */ sizeof(File),               // CN_FILE
+  /*    */ sizeof(FilterOp),           // CN_FILTEROP
   /* 40 */ sizeof(Formatters),         // CN_FORMATTERS
   /* 41 */ sizeof(PoolBuffer),         // CN_FREEBUFFER
   /* 42 */ sizeof(FreeChunk),          // CN_FREECHUNK
@@ -393,8 +407,9 @@ i8 giClassSize[]
   
   /*    */ sizeof(HashBuffer),         // CN_HASHBUFFER
   /*    */ sizeof(HashMap),            // CN_HASHMAP
+  /*    */ sizeof(HashOp),             // CN_HASHOP
   /* 50 */ sizeof(HeapBuffer),         // CN_HEAPBUFFER
-  /* 50 */ sizeof(SP_Row),              // CN_HPROW
+  /* 50 */ sizeof(SP_Row),             // CN_HPROW
 
   /* 51 */ sizeof(Index),              // CN_INDEX
   /* 52 */ sizeof(IndexTree),          // CN_INDEXTREE
@@ -508,7 +523,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_WriteRow),       // CN_JOB_WRITEROW
   
   /*    */ sizeof(JobList),            // CN_JOBLIST
-  
+  /*    */ sizeof(JoinOp),             // CN_JOINOP
   /* 59 */ sizeof(Heap), // correct    // CN_JUMBOPERSISTENT
   /* 60 */ sizeof(Heap), // correct    // CN_JUMBOTRANSIENT
   
@@ -516,6 +531,7 @@ i8 giClassSize[]
   
   /* 65 */ sizeof(Heap), // correct    // CN_LARGEPERSISTENT
   /* 66 */ sizeof(Heap), // correct    // CN_LARGETRANSIENT
+  /* 66 */ sizeof(LimitOp),            // CN_LIMITOP
   /*    */ sizeof(LoadChunk),          // CN_LOADCHUNK
   /* 71 */ sizeof(LoadMap),            // CN_LOADMAP
   /*    */ sizeof(Local),              // CN_LOCAL
@@ -525,6 +541,7 @@ i8 giClassSize[]
   /* 73 */ sizeof(Heap), // correct    // CN_MEDIUMPERSISTENT
   /* 74 */ sizeof(Heap), // correct    // CN_MEDIUMTRANSIENT
   /*114 */ sizeof(MemTest),            // CN_MEMTEST
+  /*    */ sizeof(MergeOp),            // CN_MERGEOP
   /*114 */ sizeof(Mutex),              // CN_MUTEX
 
   /*    */ sizeof(NmVal),              // CN_NMVAL
@@ -532,8 +549,9 @@ i8 giClassSize[]
   /*    */ sizeof(Now),                // CN_NOW
   /*    */ sizeof(Numbat),             // CN_NUMBAT
 
-  /* 77 */ sizeof(RelOp),              // CN_OP
-  
+  /* 77 */ sizeof(Op),                 // CN_OP
+  /* 77 */ sizeof(OutputOp),           // CN_OUTPUTOP
+
   /* 78 */ sizeof(Parser),             // CN_PARSER
   /* 82 */ sizeof(PathVec),            // CN_PATHVEC
   /*    */ sizeof(Peruse),             // CN_PERUSE
@@ -542,6 +560,7 @@ i8 giClassSize[]
   /* 87 */ sizeof(Planner),            // CN_PLANNER
   /* 90 */ sizeof(Predicate),          // CN_PREDICATE
   /* 91 */ sizeof(PredicateVec),       // CN_PREDICATEVEC
+  /* 91 */ sizeof(ProjectOp),          // CN_PROJECTOP
   /* 89 */ sizeof(Pthread),            // CN_PTHREAD
   /* 94 */ sizeof(PtnColVec),          // CN_PTNCOLVEC
   
@@ -551,6 +570,7 @@ i8 giClassSize[]
   
   /*    */ sizeof(Record),             // CN_RECORD
   /*    */ sizeof(RecordBuffer),       // CN_RECORDBUFFER
+  /*    */ sizeof(ReduceOp),           // CN_REDUCEOP
   /*    */ sizeof(RefBuffer),          // CN_REFBUFFER
   /*    */ sizeof(RefSet),             // CN_REFSET
   /* 77 */ sizeof(RelOp),              // CN_RELOP
@@ -570,6 +590,7 @@ i8 giClassSize[]
   /*    */ sizeof(Session),            // CN_SESSION
   /*    */ sizeof(SessionState),       // CN_SESSIONSTATE
   /*116 */ sizeof(Birth),              // CN_SINCE
+  /*116 */ sizeof(SinkOp),             // CN_SINKOP
   /*118 */ sizeof(SkipListNL),         // CN_SKIPLIST
   /*119 */ sizeof(SkipNode),           // CN_SKIPNODE
   /*120 */ sizeof(Slab),               // CN_SLAB
@@ -578,25 +599,26 @@ i8 giClassSize[]
   /*122 */ sizeof(Slots),              // CN_SLOTS
   /*123 */ sizeof(Heap), // correct    // SN_SMALLPERSISTENT
   /*124 */ sizeof(Heap), // correct    // SN_SMALLTRANSIENT
-  /*    */ sizeof(SN_Bcd),              // CN_SNBCD
-  /*    */ sizeof(SN_Bol),              // CN_SNBOL
-  /*    */ sizeof(SN_Dte),              // CN_SNDTE
-  /*    */ sizeof(SN_Flt),              // CN_SNFLT
-  /*    */ sizeof(SN_Int),              // CN_SNINT
-  /*    */ sizeof(SN_Ivl),              // CN_SNIVL
-  /*    */ sizeof(SN_Tme),              // CN_SNTME
-  /*    */ sizeof(SN_Tsp),              // CN_SNTSP
-  /*    */ sizeof(SN_Vch),              // CN_SNVCH
+  /*    */ sizeof(SN_Bcd),             // CN_SNBCD
+  /*    */ sizeof(SN_Bol),             // CN_SNBOL
+  /*    */ sizeof(SN_Dte),             // CN_SNDTE
+  /*    */ sizeof(SN_Flt),             // CN_SNFLT
+  /*    */ sizeof(SN_Int),             // CN_SNINT
+  /*    */ sizeof(SN_Ivl),             // CN_SNIVL
+  /*    */ sizeof(SN_Tme),             // CN_SNTME
+  /*    */ sizeof(SN_Tsp),             // CN_SNTSP
+  /*    */ sizeof(SN_Vch),             // CN_SNVCH
   /*125 */ sizeof(Socket),             // CN_SOCKET
-  /*    */ sizeof(SP_Bcd),              // CN_SPBCD
-  /*    */ sizeof(SP_Bol),              // CN_SPBOL
-  /*    */ sizeof(SP_Dte),              // CN_SPDTE
-  /*    */ sizeof(SP_Flt),              // CN_SPFLT
-  /*    */ sizeof(SP_Int),              // CN_SPINT
-  /*    */ sizeof(SP_Ivl),              // CN_SPIVL
-  /*    */ sizeof(SP_Tme),              // CN_SPTME
-  /*    */ sizeof(SP_Tsp),              // CN_SPTSP
-  /*    */ sizeof(SP_Vch),              // CN_SPVCH
+  /*125 */ sizeof(SortOp),             // CN_SORTOP
+  /*    */ sizeof(SP_Bcd),             // CN_SPBCD
+  /*    */ sizeof(SP_Bol),             // CN_SPBOL
+  /*    */ sizeof(SP_Dte),             // CN_SPDTE
+  /*    */ sizeof(SP_Flt),             // CN_SPFLT
+  /*    */ sizeof(SP_Int),             // CN_SPINT
+  /*    */ sizeof(SP_Ivl),             // CN_SPIVL
+  /*    */ sizeof(SP_Tme),             // CN_SPTME
+  /*    */ sizeof(SP_Tsp),             // CN_SPTSP
+  /*    */ sizeof(SP_Vch),             // CN_SPVCH
   /*126 */ sizeof(Stack),              // CN_STACK
   /*    */ sizeof(Statistics),         // CN_STATISTICS
   /*127 */ sizeof(StepAccum),          // CN_STEPACCUM
@@ -624,7 +646,9 @@ i8 giClassSize[]
   /*148 */ sizeof(TxSet),              // CN_TXSET
 
   /*149 */ sizeof(Wilderness),         // CN_WILDERNESS
-  /*150 */ sizeof(ForthWord),               // CN_WORD
+  /*150 */ sizeof(ForthWord),          // CN_WORD
+  
+  /*150 */ sizeof(XmitOp),             // CN_XMITOP
   
   /*151 */ C_SIZE_SMALL_OBJECT  - 256, // CN_ZSMALL_
   /*152 */ C_SIZE_MEDIUM_OBJECT - 256, // CN_ZMEDIUM_
@@ -693,7 +717,9 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_EXPORTBUFFER
 
   /* 38 */ HT_TRANSIENT_LARGE,   // CN_FETCHBUFFER
+  /* 38 */ HT_TRANSIENT_SMALL,   // CN_FETCHOP
   /* 39 */ HT_TRANSIENT_SMALL,   // CN_FILE
+  /* 39 */ HT_TRANSIENT_SMALL,   // CN_FILTEROP
   /* 40 */ HT_TRANSIENT_SMALL,   // CN_FORMATTERS
   /* 41 */ HT_INVALID,           // CN_FREEBUFFER
   /* 42 */ HT_INVALID,           // CN_FREECHUNK
@@ -705,6 +731,7 @@ eHT geWhichHeap[]
 
   /*    */ HT_TRANSIENT_LARGE,   // CN_HASHBUFFER
   /*    */ HT_TRANSIENT_SMALL,   // CN_HASHMAP
+  /*    */ HT_TRANSIENT_SMALL,   // CN_HASHOP
   /* 50 */ HT_INVALID,           // CN_HEAPBUFFER
   /* 50 */ HT_INVALID,           // CN_HPROW
 
@@ -820,7 +847,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WRITEROW
   
   /*    */ HT_TRANSIENT_SMALL,   // CN_JOBLIST
-  
+  /*    */ HT_TRANSIENT_SMALL,   // CN_JOINOP
   /* 59 */ HT_INVALID,           // CN_JUMBOPERSISTENT
   /* 60 */ HT_INVALID,           // CN_JUMBOTRANSIENT
   
@@ -828,6 +855,7 @@ eHT geWhichHeap[]
 
   /* 65 */ HT_INVALID,           // CN_LARGEPERSISTENT
   /* 66 */ HT_INVALID,           // CN_LARGETRANSIENT
+  /* 66 */ HT_TRANSIENT_SMALL,   // CN_LIMITOP
   /*    */ HT_TRANSIENT_LARGE,   // CN_LOADCHUNK
   /* 71 */ HT_TRANSIENT_JUMBO,   // CN_LOADMAP
   /*    */ HT_INVALID,           // CN_LOCAL
@@ -837,6 +865,7 @@ eHT geWhichHeap[]
   /* 73 */ HT_INVALID,           // CN_MEDIUMPERSISTENT
   /* 74 */ HT_INVALID,           // CN_MEDIUMTRANSIENT
   /*    */ HT_TRANSIENT_SMALL,   // CN_MEMTEST
+  /*    */ HT_TRANSIENT_SMALL,   // CN_MERGEOP
   /*114 */ HT_TRANSIENT_SMALL,   // CN_MUTEX
 
   /*    */ HT_TRANSIENT_SMALL,   // CN_NMVAL
@@ -845,7 +874,8 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_NUMBAT
 
   /* 77 */ HT_TRANSIENT_SMALL,   // CN_OP
-  
+  /*    */ HT_TRANSIENT_SMALL,   // CN_OUTPUTOP
+
   /* 78 */ HT_TRANSIENT_MEDIUM,  // CN_PARSER
   /* 82 */ HT_TRANSIENT_MEDIUM,  // CN_PATHVEC
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_PERUSE
@@ -854,6 +884,7 @@ eHT geWhichHeap[]
   /* 87 */ HT_TRANSIENT_MEDIUM,  // CN_PLANNER
   /* 89 */ HT_TRANSIENT_SMALL,   // CN_PREDICATE
   /* 90 */ HT_TRANSIENT_MEDIUM,  // CN_PREDICATEVEC
+  /* 90 */ HT_TRANSIENT_SMALL,   // CN_PROJECTOP
   /* 91 */ HT_TRANSIENT_SMALL,   // CN_PTHREAD
   /* 94 */ HT_TRANSIENT_MEDIUM,  // CN_PTNCOLVEC
 
@@ -863,6 +894,7 @@ eHT geWhichHeap[]
   
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_RECORD
   /*    */ HT_TRANSIENT_LARGE,   // CN_RECORDBUFFER
+  /*    */ HT_TRANSIENT_LARGE,   // CN_REDUCEOP
   /*    */ HT_TRANSIENT_LARGE,   // CN_REFBUFFER
   /*    */ HT_INVALID,           // CN_REFSET
   /* 77 */ HT_TRANSIENT_SMALL,   // CN_RELOP
@@ -882,6 +914,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_SESSION
   /*    */ HT_TRANSIENT_SMALL,   // CN_SESSIONSTATE
   /*116 */ HT_INVALID,           // CN_SINCE
+  /*118 */ HT_TRANSIENT_SMALL,   // CN_SINKOP
   /*118 */ HT_TRANSIENT_SMALL,   // CN_SKIPLIST
   /*119 */ HT_TRANSIENT_SMALL,   // CN_SKIPNODE
   /*120 */ HT_TRANSIENT_LARGE,   // CN_SLAB
@@ -900,6 +933,7 @@ eHT geWhichHeap[]
   /*125 */ HT_INVALID,           // CN_SNTSP
   /*125 */ HT_INVALID,           // CN_SNVCH
   /*125 */ HT_TRANSIENT_SMALL,   // CN_SOCKET
+  /*125 */ HT_TRANSIENT_SMALL,   // CN_SORTOP
   /*125 */ HT_INVALID,           // CN_SPBCD
   /*125 */ HT_INVALID,           // CN_SPBOL
   /*125 */ HT_INVALID,           // CN_SPDTE
@@ -937,7 +971,9 @@ eHT geWhichHeap[]
   
   /*149 */ HT_INVALID,           // CN_WILDERNESS
   /*150 */ HT_TRANSIENT_MEDIUM,  // CN_WORD
-  
+
+  /*148 */ HT_TRANSIENT_SMALL,   // CN_XMITOP
+
   /*151 */ HT_INVALID,           // CN_ZSMALL_
   /*152 */ HT_INVALID,           // CN_ZMEDIUM_
   /*153 */ HT_INVALID,           // CN_ZLARGE_
