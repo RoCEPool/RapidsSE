@@ -310,6 +310,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_TENANT
   /*    */ &Finalize::vUndefined,         // CN_TENANTS
   /*137 */ &Finalize::vUndefined,         // CN_THREAD
+  /*    */ &Finalize::vUndefined,         // CN_THREADQUE
   /*    */ &Finalize::vUndefined,         // CN_THREADVEC
   /*142 */ &Finalize::vUndefined,         // CN_TIMER
   /*143 */ &Finalize::vUndefined,         // CN_TOKEN
