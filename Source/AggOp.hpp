@@ -17,8 +17,7 @@ namespace PushDown
    ~AggOp(void) noexcept(false);
   
   private:
-    Footer* aFooter(void);
-  
+    Footer* aFooter(void);  
   };
 
   AggOp* _pAggOp(void* aAddr);

@@ -31,6 +31,9 @@ namespace PushDown
   {
   private:
   
+    // must be last
+    Footer m_xFooter;
+
   public:
     JoinOp(void);
    ~JoinOp(void) noexcept(false);
@@ -40,6 +43,9 @@ namespace PushDown
   private:
     static RefBuffer* pAddRowRefs(Queue* pQueue, RefBuffer* pRefBuffer,
                                   Ent* aLeftEntry, Ent* aRightEntry);
+  
+  private:
+    Footer* aFooter(void);
   };
 
   JoinOp* _pJoinOp(void* aAddr);

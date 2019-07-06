@@ -8,10 +8,16 @@ namespace PushDown
   class CombineOp : public Op
   {
   private:
+  
+    // must be last
+    Footer m_xFooter;
 
   public:
     CombineOp(void);
    ~CombineOp(void) noexcept(false);
+  
+  private:
+    Footer* aFooter(void);
   };
 
   CombineOp* _pCombineOp(void* aAddr);

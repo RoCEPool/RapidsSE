@@ -9,9 +9,15 @@ namespace PushDown
   {
   private:
   
+    // must be last
+    Footer m_xFooter;
+  
   public:
     OutputOp(void);
    ~OutputOp(void) noexcept(false);
+  
+  private:
+    Footer* aFooter(void);
   };
 
   OutputOp* _pOutputOp(void* aAddr);

@@ -9,9 +9,15 @@ namespace PushDown
   {
   private:
   
+    // must be last
+    Footer m_xFooter;
+
   public:
     MergeOp(void);
    ~MergeOp(void) noexcept(false);
+  
+  private:
+    Footer* aFooter(void);
   };
 
   MergeOp* _pMergeOp(void* aAddr);

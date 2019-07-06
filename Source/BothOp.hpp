@@ -8,10 +8,16 @@ namespace PushDown
   class BothOp : public Op
   {
   private:
-
+  
+    // must be last
+    Footer m_xFooter;
+  
   public:
     BothOp(void);
    ~BothOp(void) noexcept(false);
+  
+  private:
+    Footer* aFooter(void);
   };
 
   BothOp* _pBothOp(void* aAddr);
