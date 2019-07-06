@@ -5,11 +5,13 @@
 
 namespace PushDown
 {
-  class IntersectOp
+  class IntersectOp : public Op
   {
   private:
-  
+
   public:
+    IntersectOp(void);
+   ~IntersectOp(void) noexcept(false);
   };
 
   IntersectOp* _pIntersectOp(void* aAddr);

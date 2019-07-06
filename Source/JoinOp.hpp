@@ -27,11 +27,14 @@ namespace PushDown
     /*  5 */ "ENUMS_"_Stz
   };
 
-  class JoinOp
+  class JoinOp : public Op
   {
   private:
   
   public:
+    JoinOp(void);
+   ~JoinOp(void) noexcept(false);
+  
     static void vIndexJoin(Queue* pQueue, IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree);
     
   private:

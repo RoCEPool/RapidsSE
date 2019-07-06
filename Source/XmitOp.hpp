@@ -5,11 +5,13 @@
 
 namespace PushDown
 {
-  class XmitOp
+  class XmitOp : public Op
   {
   private:
   
   public:
+    XmitOp(void);
+   ~XmitOp(void) noexcept(false);
   };
 
   XmitOp* _pXmitOp(void* aAddr);

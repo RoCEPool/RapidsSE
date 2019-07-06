@@ -5,11 +5,13 @@
 
 namespace PushDown
 {
-  class ZedOp
+  class ZedOp : public Op
   {
   private:
   
   public:
+    ZedOp(void);
+   ~ZedOp(void) noexcept(false);
   };
 
   ZedOp* _pZedOp(void* aAddr);

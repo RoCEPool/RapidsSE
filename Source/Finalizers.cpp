@@ -224,7 +224,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_NUMBAT
 
   /* 77 */ &Finalize::vUndefined,         // CN_OP
-  /*    */ &Finalize::vUndefined,         // CN_OUTPUT
+  /*    */ &Finalize::vUndefined,         // CN_OUTPUTOP
 
   /* 78 */ &Finalize::vUndefined,         // CN_PARSER
   /* 82 */ &Finalize::vUndefined,         // CN_PATHVEC

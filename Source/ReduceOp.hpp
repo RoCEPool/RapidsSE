@@ -5,11 +5,13 @@
 
 namespace PushDown
 {
-  class ReduceOp
+  class ReduceOp : public Op
   {
   private:
   
   public:
+    ReduceOp(void);
+   ~ReduceOp(void) noexcept(false);
   };
 
   ReduceOp* _pReduceOp(void* aAddr);

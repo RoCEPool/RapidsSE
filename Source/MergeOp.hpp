@@ -5,11 +5,13 @@
 
 namespace PushDown
 {
-  class MergeOp
+  class MergeOp : public Op
   {
   private:
   
   public:
+    MergeOp(void);
+   ~MergeOp(void) noexcept(false);
   };
 
   MergeOp* _pMergeOp(void* aAddr);

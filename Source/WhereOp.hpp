@@ -5,11 +5,13 @@
 
 namespace PushDown
 {
-  class WhereOp
+  class WhereOp : public Op
   {
   private:
   
   public:
+    WhereOp(void);
+   ~WhereOp(void) noexcept(false);
   };
 
   WhereOp* _pWhereOp(void* aAddr);

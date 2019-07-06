@@ -5,11 +5,13 @@
 
 namespace PushDown
 {
-  class LimitOp
+  class LimitOp : public Op
   {
   private:
   
   public:
+    LimitOp(void);
+   ~LimitOp(void) noexcept(false);
   };
 
   LimitOp* _pLimitOp(void* aAddr);

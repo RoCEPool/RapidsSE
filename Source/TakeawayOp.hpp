@@ -5,11 +5,13 @@
 
 namespace PushDown
 {
-  class TakeawayOp
+  class TakeawayOp : public Op
   {
   private:
   
   public:
+    TakeawayOp(void);
+   ~TakeawayOp(void) noexcept(false);
   };
 
   TakeawayOp* _pTakeawayOp(void* aAddr);

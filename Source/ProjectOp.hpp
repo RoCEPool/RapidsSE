@@ -5,11 +5,13 @@
 
 namespace PushDown
 {
-  class ProjectOp
+  class ProjectOp : public Op
   {
   private:
   
   public:
+    ProjectOp(void);
+   ~ProjectOp(void) noexcept(false);
   };
 
   ProjectOp* _pProjectOp(void* aAddr);

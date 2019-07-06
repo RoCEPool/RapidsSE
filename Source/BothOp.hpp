@@ -5,11 +5,13 @@
 
 namespace PushDown
 {
-  class BothOp
+  class BothOp : public Op
   {
   private:
-  
+
   public:
+    BothOp(void);
+   ~BothOp(void) noexcept(false);
   };
 
   BothOp* _pBothOp(void* aAddr);

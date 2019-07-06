@@ -229,7 +229,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vUndefined,       // CN_NUMBAT
 
   /* 77 */ &Dump::vUndefined,       // CN_OP
-  /*    */ &Dump::vUndefined,       // CN_OUTPUT
+  /*    */ &Dump::vUndefined,       // CN_OUTPUTOP
 
   /* 78 */ &Parser::vDump,          // CN_PARSER
   /* 82 */ &Dump::vInvalid,         // CN_PATHVEC

@@ -5,11 +5,13 @@
 
 namespace PushDown
 {
-  class FetchOp
+  class FetchOp : public Op
   {
   private:
-  
+
   public:
+    FetchOp(void);
+   ~FetchOp(void) noexcept(false);
   };
 
   FetchOp* _pFetchOp(void* aAddr);

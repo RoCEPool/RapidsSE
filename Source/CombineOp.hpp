@@ -5,11 +5,13 @@
 
 namespace PushDown
 {
-  class CombineOp
+  class CombineOp : public Op
   {
   private:
-  
+
   public:
+    CombineOp(void);
+   ~CombineOp(void) noexcept(false);
   };
 
   CombineOp* _pCombineOp(void* aAddr);

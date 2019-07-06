@@ -5,11 +5,13 @@
 
 namespace PushDown
 {
-  class OutputOp
+  class OutputOp : public Op
   {
   private:
   
   public:
+    OutputOp(void);
+   ~OutputOp(void) noexcept(false);
   };
 
   OutputOp* _pOutputOp(void* aAddr);

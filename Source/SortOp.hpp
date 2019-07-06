@@ -5,11 +5,13 @@
 
 namespace PushDown
 {
-  class SortOp
+  class SortOp : public Op
   {
   private:
   
   public:
+    SortOp(void);
+   ~SortOp(void) noexcept(false);
   };
 
   SortOp* _pSortOp(void* aAddr);

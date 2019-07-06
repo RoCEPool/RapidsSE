@@ -5,11 +5,13 @@
 
 namespace PushDown
 {
-  class HashOp
+  class HashOp : public Op
   {
   private:
-  
+
   public:
+    HashOp(void);
+   ~HashOp(void) noexcept(false);
   };
 
   HashOp* _pHashOp(void* aAddr);
