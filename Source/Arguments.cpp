@@ -61,6 +61,9 @@ Arguments::Arguments(void)
   m_bConfig          = true;
   m_bDeveloper       = false;
   m_bDontFree        = false;
+  m_nDummyThreads    = 0;
+  m_nDummySleep      = 10;
+  m_nDummyLoop       = 0;
   m_nEntries         = 0;
   m_bFreeCB          = false;
   m_bLock            = false;
@@ -70,6 +73,7 @@ Arguments::Arguments(void)
   m_nMaxReadyLP      = 32;
   m_bMetadata        = false;
   m_bMunged          = false;
+  m_nOpThreads       = 0;
   m_bProgress        = false;
   m_bReload          = false;
   m_bRestart         = true;
@@ -77,9 +81,6 @@ Arguments::Arguments(void)
   m_nSubLoaders      = 4;
   m_iThisNode        = -1;
   m_nThreads         = 12;
-  m_nDummyThreads    = 0;
-  m_nDummySleep      = 10;
-  m_nDummyLoop       = 0;
   m_nPeriodicSleep   = 10;
   m_nSupervisorSleep = 10;
   m_bTouch           = false;
@@ -297,6 +298,12 @@ bool Arguments::bParse(int argc, Stz* argv[])
         return false;
       }
       
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--opThreads"_Stz)) {
+      m_nOpThreads = argv[++i_Arg]->iToI8();
       continue;
     }
     
@@ -809,6 +816,7 @@ void Arguments::vPrintStartupInfo(void)
   
   vTrace("  --partitionsPerNode %lld\n"_Stz,m_nSlotsPerNode);
   vTrace("  --threads %lld\n"_Stz,m_nThreads);
+  vTrace("  --opThreads %lld\n"_Stz,m_nOpThreads);
 
   if (m_nDummyThreads) {
     vTrace("  --dummyThreads %lld\n"_Stz,m_nDummyThreads);
