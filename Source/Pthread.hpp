@@ -46,6 +46,7 @@ namespace System
     static bool  bIsCppThread(void);
     static bool  bIsJavaThread(void);
   
+    static void  vSleepInfinite(void);
     static void  vSleepMicro(i8 nMicroSeconds, eCN eCallingClass);
     static void  vSleepMilli(i8 nMilliSeconds, eCN eCallingClass);
     static void  vSleepNano(i8 nNanoSeconds, eCN eCallingClass);

@@ -622,6 +622,15 @@ bool Pthread::bIsJavaThread(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* sleep indefinite                                                           */
+/*----------------------------------------------------------------------------*/
+void Pthread::vSleepInfinite(void)
+{
+  for (;;)
+    sleep(C_1B);
+}
+
+/*----------------------------------------------------------------------------*/
 /* sleep for given number of microseconds                                     */
 /*----------------------------------------------------------------------------*/
 void Pthread::vSleepMicro(i8 nMicroSeconds, eCN eCallingClass)

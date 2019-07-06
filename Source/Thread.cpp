@@ -208,14 +208,9 @@ void* Thread::aEntryPointOp(void* pArg)
            pThread,pThread->iThreadNo());
   
   while (true) {
-    
-    // sleep for a bit to generate a context switch
-    Pthread::vSleepMicro(gpAttachMap->Arg.m_nDummySleep,CN_THREAD);
-    
-    // burn some cpu
-    i8 iSum = 0;
-    for (i8 i_Loop = 0; i_Loop < gpAttachMap->Arg.m_nDummyLoop; i_Loop++)
-      iSum += Tsc::iRdTscp();
+
+    // temp
+    Pthread::vSleepInfinite();
   }
   
   //pThread->m_pPthread->vThreadExit();
