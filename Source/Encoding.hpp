@@ -30,12 +30,15 @@ namespace Rows
   {
   public:
     ColumnVec* m_pColVec;
-    i8         m_nColumns;
-    i8         m_nHeadSize;
-    i8         m_nMetaSize;
   
-    i8         m_nBytesNeeded;
-    i8         m_nShiftOver;  // by how much a shift occurs
+    i8  m_nColumns;
+    i8  m_nHeadSize;
+    i8  m_nMetaSize;
+  
+    i8  m_nBytesNeeded;
+    i8  m_nShiftOver;  // by how much a shift occurs
+  
+    i8  m_i_Offset_next;
 
     _ColEnc xaColEnc[C_MAX_COLUMNS];
 
@@ -59,18 +62,21 @@ namespace Rows
     void vSplitOver(void);
 
   private:
+    // encoding (structural order)
     void vInitialEncoding(Row* pRow);
-    void vEncodeBol(_ColEnc& xCol, Dtm wBol);
-    void vEncodeBcd(_ColEnc& xCol, Dtm wBcd);
-    void vEncodeDte(_ColEnc& xCol, Dtm wDte);
-    void vEncodeFlt(_ColEnc& xCol, Dtm wFlt);
-    void vEncodeInt(_ColEnc& xCol, Dtm wInt);
-    void vEncodeIvl(_ColEnc& xCol, Dtm wIvl);
-    void vEncodeTme(_ColEnc& xCol, Dtm wTme);
-    void vEncodeTsp(_ColEnc& xCol, Dtm wTsp);
-    void vEncodeVch(_ColEnc& xCol, Dtm wVch);
+    void vEncodeBol(_ColEnc& xColEnc, Dtm wBol);
+    void vEncodeBcd(_ColEnc& xColEnc, Dtm wBcd);
+    void vEncodeDte(_ColEnc& xColEnc, Dtm wDte);
+    void vEncodeFlt(_ColEnc& xColEnc, Dtm wFlt);
+    void vEncodeInt(_ColEnc& xColEnc, Dtm wInt);
+    void vEncodeIvl(_ColEnc& xColEnc, Dtm wIvl);
+    void vEncodeTme(_ColEnc& xColEnc, Dtm wTme);
+    void vEncodeTsp(_ColEnc& xColEnc, Dtm wTsp);
+    void vEncodeVch(_ColEnc& xColEnc, Dtm wVch);
 
-    bool bEncodeNul(_ColEnc& xCol, Dtm wDtm);
+    bool bEncodeNul(_ColEnc& xColEnc, Dtm wDtm);
+ 
+    void vOffsetTill(_ColEnc& xColEnc);
 
     // support functions
     Column* pNonFitting(void);

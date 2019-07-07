@@ -62,6 +62,8 @@ Encoding::Encoding(ColumnVec* pColVec, i8 nHeadSize, i8 nMetaSize)
   m_nBytesNeeded = C_UNKNOWN;
   m_nShiftOver   = C_UNKNOWN;
 
+  m_i_Offset_next = C_UNKNOWN;
+  
   // - - - - - - - - - - - - - - - - - -
 
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
@@ -211,11 +213,16 @@ void Encoding::vInitialEncoding(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
-  i8 i_Offset_next = C_W_1B + m_nMetaSize;
+  m_i_Offset_next = C_W_1B + m_nMetaSize;
   
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
     
     _ColEnc& xrColEnc = xaColEnc[i_Col];
+    
+    //Dtm wColVal = pRow->m_waColVal[i_Col];
+    
+    // - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // encode the column value
     
     switch (xrColEnc.m_eDatum) {
         
@@ -236,27 +243,16 @@ void Encoding::vInitialEncoding(Row* pRow)
     
     // - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // compute initial offset and till for this column
-    
-    // set the offset of this column
-    xrColEnc.m_i_Offset = i_Offset_next;
-    
-    i8 nDataBytes = nDataSize(xrColEnc.m_eMetaCode);
-    if (! nDataBytes) {
-      xrColEnc.m_i_Till = i_Offset_next;
-      continue;
-    }
-    
-    if ( bHasAuxLen(xrColEnc.m_eMetaCode) )
-      nDataBytes += xrColEnc.m_nDataSize - iAuxLen(xrColEnc.m_eMetaCode);
-    
-    i_Offset_next += nDataBytes;
-    
-    xrColEnc.m_i_Till = i_Offset_next - 1;
+
+    vOffsetTill(xrColEnc);
     
   } // for i_Col
   
-  m_nBytesNeeded = i_Offset_next;
+  m_nBytesNeeded = m_i_Offset_next;
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* encode Bcd                                                                 */
@@ -516,6 +512,36 @@ bool Encoding::bEncodeNul(_ColEnc& xColEnc, Dtm wDtm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* compute initial offset and till for column encoding                        */
+/*----------------------------------------------------------------------------*/
+void Encoding::vOffsetTill(_ColEnc& xrColEnc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  
+  // set the offset of this column
+  xrColEnc.m_i_Offset = m_i_Offset_next;
+  
+  // get the base size of the encoding
+  i8 nDataBytes = nDataSize(xrColEnc.m_eMetaCode);
+  
+  // if 0B case then till is same as offset
+  if (! nDataBytes) {
+    xrColEnc.m_i_Till = m_i_Offset_next;
+    return;
+  }
+  
+  // adjust size if encoding has auxilliary length <L>
+  if ( bHasAuxLen(xrColEnc.m_eMetaCode) )
+    nDataBytes += xrColEnc.m_nDataSize - iAuxLen(xrColEnc.m_eMetaCode);
+  
+  // set where the next offset will be
+  m_i_Offset_next += nDataBytes;
+  
+  // set the till byte of the column encoding
+  xrColEnc.m_i_Till = m_i_Offset_next - 1;
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -549,6 +575,8 @@ void Encoding::vReset(void)
   
   m_nBytesNeeded = C_UNKNOWN;
   m_nShiftOver   = C_UNKNOWN;
+  
+  m_i_Offset_next = C_UNKNOWN;
 
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
     
