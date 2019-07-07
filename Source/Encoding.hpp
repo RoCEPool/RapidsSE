@@ -56,7 +56,7 @@ namespace Rows
     ~Encoding(void) noexcept(false);
   
     i8   nBytesNeeded(void);
-    void vEncode(Row* pRow);
+    void vEncodeRow(Row* pRow);
     void vMorphEncoding(_ColEnc* aColEnc);
     bool bOverFlowed(void);
     void vSplitOver(void);

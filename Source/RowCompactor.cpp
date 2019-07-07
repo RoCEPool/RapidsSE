@@ -353,28 +353,28 @@ bool RowCompactor::bAddCrw(Row* pInflatedRow)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // initially encode the inflated row
+  // 1) initially encode the inflated row
   
-  m_pEncoding->vEncode(pInflatedRow);
+  m_pEncoding->vEncodeRow(pInflatedRow);
   
   SP_Encoding spEncoding;
   vTrace("\nvEncode:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // encode tails
+  // 2) encode tails
   
   vEncodeTails(pInflatedRow);
   vTrace("\nvEncodeTails:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // split encoding between head and overflow
+  // 3) split encoding between head and overflow
   
   m_pEncoding->vSplitOver();
   
   vTrace("\vSplitOver:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check for space in target nub
+  // 4) check for space in target nub
   
   i8 nBytesNeeded = m_pEncoding->nBytesNeeded();
   
@@ -384,17 +384,20 @@ bool RowCompactor::bAddCrw(Row* pInflatedRow)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // allot a logical compact row
+  // 5) allot a logical compact row
   
   vAllotCrw();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pack encoded inflated row into a compact row
+  // 6) pack encoded inflated row into a compact row
   
   vPackCrw(m_pEncoding);
   
   m_aHeadLine = nullptr;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 7) verify
+  
 #ifdef WITH_VERIFY_TAILS
   m_pCrwNub->vVerifyTails(C_UNKNOWN);
 #endif

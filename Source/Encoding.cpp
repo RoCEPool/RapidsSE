@@ -123,7 +123,7 @@ i8 Encoding::nBytesNeeded(void)
 /*----------------------------------------------------------------------------*/
 /* encode row                                                                 */
 /*----------------------------------------------------------------------------*/
-void Encoding::vEncode(Row* pRow)
+void Encoding::vEncodeRow(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
@@ -219,22 +219,22 @@ void Encoding::vInitialEncoding(Row* pRow)
     
     _ColEnc& xrColEnc = xaColEnc[i_Col];
     
-    //Dtm wColVal = pRow->m_waColVal[i_Col];
+    Dtm wColVal = pRow->m_waColVal[i_Col];
     
     // - - - - - - - -  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // encode the column value
     
     switch (xrColEnc.m_eDatum) {
         
-      case DM_BCD: vEncodeBcd(xrColEnc,pRow->m_waColVal[i_Col]);  break;
-      case DM_BOL: vEncodeBol(xrColEnc,pRow->m_waColVal[i_Col]);  break;
-      case DM_DTE: vEncodeDte(xrColEnc,pRow->m_waColVal[i_Col]);  break;
-      case DM_FLT: vEncodeFlt(xrColEnc,pRow->m_waColVal[i_Col]);  break;
-      case DM_INT: vEncodeInt(xrColEnc,pRow->m_waColVal[i_Col]);  break;
-      case DM_IVL: vEncodeIvl(xrColEnc,pRow->m_waColVal[i_Col]);  break;
-      case DM_TME: vEncodeTme(xrColEnc,pRow->m_waColVal[i_Col]);  break;
-      case DM_TSP: vEncodeTsp(xrColEnc,pRow->m_waColVal[i_Col]);  break;
-      case DM_VCH: vEncodeVch(xrColEnc,pRow->m_waColVal[i_Col]);  break;
+      case DM_BCD: vEncodeBcd(xrColEnc,wColVal);  break;
+      case DM_BOL: vEncodeBol(xrColEnc,wColVal);  break;
+      case DM_DTE: vEncodeDte(xrColEnc,wColVal);  break;
+      case DM_FLT: vEncodeFlt(xrColEnc,wColVal);  break;
+      case DM_INT: vEncodeInt(xrColEnc,wColVal);  break;
+      case DM_IVL: vEncodeIvl(xrColEnc,wColVal);  break;
+      case DM_TME: vEncodeTme(xrColEnc,wColVal);  break;
+      case DM_TSP: vEncodeTsp(xrColEnc,wColVal);  break;
+      case DM_VCH: vEncodeVch(xrColEnc,wColVal);  break;
         
       default:
         NEVER_REACH;
@@ -466,7 +466,7 @@ void Encoding::vEncodeVch(_ColEnc& xColEnc, Dtm wVch)
   // we have copied (nL + 1) bytes into wsp
   m_xWsp.vTake(nL + 1);
 
-  // empty string case : encode as: MC_STR_EMPTY + {}
+  // 1) empty string case : encode as: MC_STR_EMPTY + {}
   if (nL == 0) {
     xColEnc.m_eMetaCode = MC_STR_EMPTY;
     xColEnc.m_wDataCode.m_azStr = nullptr;
@@ -474,7 +474,7 @@ void Encoding::vEncodeVch(_ColEnc& xColEnc, Dtm wVch)
     return;
   }
 
-  // short string case : encode as: MC_STR_FIT_1L + {<L><Short>}
+  // 2) short string case : encode as: MC_STR_FIT_1L + {<L><Short>}
   if (nL <= (i8)C_1_BYTE) {
     xColEnc.m_eMetaCode = MC_STR_FIT_1L;
     xColEnc.m_wDataCode.m_azStr = azDst;
@@ -482,7 +482,7 @@ void Encoding::vEncodeVch(_ColEnc& xColEnc, Dtm wVch)
     return;
   }
 
-  // long string case : encode as: MC_BSTR_FIT_2L + {<LL><Long>}
+  // 3) long string case : encode as: MC_BSTR_FIT_2L + {<LL><Long>}
   if (nL <= (i8)C_2_BYTES) {
     xColEnc.m_eMetaCode = MC_BSTR_FIT_2L;
     xColEnc.m_wDataCode.m_azStr = azDst;
