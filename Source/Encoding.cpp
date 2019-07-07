@@ -276,7 +276,7 @@ void Encoding::vEncodeBcd(_ColEnc& xColEnc, Dtm wBcd)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // 0..10 case
+  // 0..10 case : encode as: MC_ZERO..MC_TEN + {}
   if (wBcd.m_iBcd >= 0 && wBcd.m_iBcd <= 10) {
     xColEnc.m_eMetaCode = (eMC)(MC_ZERO + wBcd.m_iBcd);
     xColEnc.m_wDataCode.m_iBcd = wBcd.m_iBcd;
@@ -286,7 +286,7 @@ void Encoding::vEncodeBcd(_ColEnc& xColEnc, Dtm wBcd)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // MC_1..8B
+  // encode as: MC_1..8B + {D}
   xColEnc.m_eMetaCode = (eMC)IntLib::iByteMagnitude(wBcd.m_iBcd);
   xColEnc.m_wDataCode.m_iBcd = wBcd.m_iBcd;
   xColEnc.m_nDataSize = xColEnc.m_eMetaCode;
@@ -305,7 +305,7 @@ void Encoding::vEncodeBol(_ColEnc& xColEnc, Dtm wBol)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // MC_TRUE or MC_FALSE
+  // encode as : MC_TRUE or MC_FALSE
   if (wBol.m_iBol)
     xColEnc.m_eMetaCode = MC_TRUE;
   else
@@ -327,7 +327,7 @@ void Encoding::vEncodeDte(_ColEnc& xColEnc, Dtm wDte)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // MC_DATE_En_2B case
+  // encode ast MC_DATE_En_2B + {D}
   xColEnc.m_wDataCode.m_iDte = wDte.m_iDte;
   
   i8 iEra = 0;
@@ -353,7 +353,7 @@ void Encoding::vEncodeFlt(_ColEnc& xColEnc, Dtm wFlt)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // MC_1..8B
+  // encode as: MC_1..8B + {D}
   xColEnc.m_eMetaCode = (eMC)IntLib::iByteMagnitude(wFlt.m_iInt);
   xColEnc.m_wDataCode.m_dFlt = wFlt.m_dFlt;
   xColEnc.m_nDataSize = xColEnc.m_eMetaCode;
@@ -372,7 +372,7 @@ void Encoding::vEncodeInt(_ColEnc& xColEnc, Dtm wInt)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // -1 case
+  // -1 case : encode as MC_MINUS_ONE + {}
   if (-1 == wInt.m_iInt) {
     xColEnc.m_eMetaCode = MC_MINUS_ONE;
     xColEnc.m_wDataCode.m_iInt = wInt.m_iInt;
@@ -382,7 +382,7 @@ void Encoding::vEncodeInt(_ColEnc& xColEnc, Dtm wInt)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // 0..10 case
+  // 0..10 case : encode as MC_ONE..TEN + {}
   if (wInt.m_iInt >= 0 && wInt.m_iInt <= 10) {
     xColEnc.m_eMetaCode = (eMC)(MC_ZERO + wInt.m_iInt);
     xColEnc.m_wDataCode.m_iInt = wInt.m_iInt;
@@ -392,7 +392,7 @@ void Encoding::vEncodeInt(_ColEnc& xColEnc, Dtm wInt)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // MC_1..8B
+  // encode as: MC_1..8B + {D}
   xColEnc.m_eMetaCode = (eMC)IntLib::iByteMagnitude(wInt.m_iInt);
   xColEnc.m_wDataCode.m_iInt = wInt.m_iInt;
   xColEnc.m_nDataSize = xColEnc.m_eMetaCode;
@@ -411,7 +411,7 @@ void Encoding::vEncodeIvl(_ColEnc& xColEnc, Dtm wIvl)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // MC_1..8B
+  // encode as: MC_1..8B : {D}
   xColEnc.m_eMetaCode = (eMC)IntLib::iByteMagnitude(wIvl.m_iIvl);
   xColEnc.m_wDataCode.m_iIvl = wIvl.m_iIvl;
   xColEnc.m_nDataSize = xColEnc.m_eMetaCode;
@@ -430,7 +430,7 @@ void Encoding::vEncodeTme(_ColEnc& xColEnc, Dtm wTme)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // MC_1..8B
+  // encode as: MC_1..8B : {D}
   xColEnc.m_eMetaCode = (eMC)IntLib::iByteMagnitude(wTme.m_iTme);
   xColEnc.m_wDataCode.m_iTme = wTme.m_iTme;
   xColEnc.m_nDataSize = xColEnc.m_eMetaCode;
@@ -449,7 +449,7 @@ void Encoding::vEncodeTsp(_ColEnc& xColEnc, Dtm wTsp)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // MC_1..8B
+  // encode as: MC_1..8B : {D}
   xColEnc.m_eMetaCode = (eMC)IntLib::iByteMagnitude(wTsp.m_iTsp);
   xColEnc.m_wDataCode.m_iTsp = wTsp.m_iTsp;
   xColEnc.m_nDataSize = xColEnc.m_eMetaCode;
@@ -469,33 +469,35 @@ void Encoding::vEncodeVch(_ColEnc& xColEnc, Dtm wVch)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   //
-  // xColEnc.m_wDataCode.m_szVch was set by caller to have dst address for vch
+  // note: xColEnc.m_wDataCode.m_szVch has dst address for vch
   //
   char* azDst = (char*)xColEnc.m_wDataCode.m_szVch;
   
-  i8 nChars = StrLib::nCopy(azDst,(char*)wVch.m_szVch);
+  // copy chars + null into dst, nL will be noOf(chars), not incl null
+  i8 nL = StrLib::nCopy(azDst,(char*)wVch.m_szVch);
 
-  // MC_STR_EMPTY : empty string case (i.e. "")
-  if (xColEnc.m_nDataSize == 0) {
+  // empty string case : encode as: MC_STR_EMPTY + {}
+  if (nL == 0) {
     xColEnc.m_eMetaCode = MC_STR_EMPTY;
     xColEnc.m_nDataSize = 0;
     return;
   }
 
-  // MC_STR_FIT_1L : <L><Short>, where m_nDataSize <L> + <Short>
-  if (xColEnc.m_nDataSize <= (i8)C_1_BYTE) {
+  // short string case : encode as: MC_STR_FIT_1L + {<L><Short>}
+  if (nL <= (i8)C_1_BYTE) {
     xColEnc.m_eMetaCode = MC_STR_FIT_1L;
-    xColEnc.m_nDataSize = C_L_1B + nChars;
+    xColEnc.m_nDataSize = C_L_1B + nL;
+    return;
   }
-  else
-  // MC_BSTR_FIT_2L : <L><Long>, where m_nDataSize <L> + <Long>
-  if (xColEnc.m_nDataSize <= (i8)C_2_BYTES) {
+
+  // long string case : encode as: MC_BSTR_FIT_2L + {<LL><Long>}
+  if (nL <= (i8)C_2_BYTES) {
     xColEnc.m_eMetaCode = MC_BSTR_FIT_2L;
-    xColEnc.m_nDataSize = C_L_2B + nChars;
+    xColEnc.m_nDataSize = C_L_2B + nL;
+    return;
   }
-  else {
-    RASSERT(0);
-  }
+
+  RASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/
