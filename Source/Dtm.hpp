@@ -98,6 +98,7 @@ namespace Base
   
     i8   iAsI8(void);
     void vAsI8(i8 iAsI8);
+    i8   iByteMagn(void);
     bool bIsNull(void);
     void vSetUnknown(void);
     void vSetNull(void);
