@@ -68,10 +68,11 @@ namespace Rows
     void vEncodeTme(_ColEnc& xCol, Dtm wTme);
     void vEncodeTsp(_ColEnc& xCol, Dtm wTsp);
     void vEncodeVch(_ColEnc& xCol, Dtm wVch);
-  
+
+    bool bEncodeNul(_ColEnc& xCol, Dtm wDtm);
+
     void vInitialEncoding(Row* pRow);
     Column* pNonFitting(void);
-    bool bNullEnc(_ColEnc& xCol, Dtm wDtm);
     void vReset(void);
     void vSplitAt(i8 i_Col);
     bool bWithinHead(i8 i_Col);

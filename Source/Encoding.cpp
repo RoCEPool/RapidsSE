@@ -271,7 +271,7 @@ void Encoding::vEncodeBcd(_ColEnc& xColEnc, Dtm wBcd)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
   // null case
-  if (bNullEnc(xColEnc,wBcd))
+  if (bEncodeNul(xColEnc,wBcd))
     return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -300,7 +300,7 @@ void Encoding::vEncodeBol(_ColEnc& xColEnc, Dtm wBol)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
   // null case
-  if (bNullEnc(xColEnc,wBol))
+  if (bEncodeNul(xColEnc,wBol))
     return;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -322,7 +322,7 @@ void Encoding::vEncodeDte(_ColEnc& xColEnc, Dtm wDte)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
   // null case
-  if (bNullEnc(xColEnc,wDte))
+  if (bEncodeNul(xColEnc,wDte))
     return;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -348,7 +348,7 @@ void Encoding::vEncodeFlt(_ColEnc& xColEnc, Dtm wFlt)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
   // null case
-  if (bNullEnc(xColEnc,wFlt))
+  if (bEncodeNul(xColEnc,wFlt))
     return;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -367,7 +367,7 @@ void Encoding::vEncodeInt(_ColEnc& xColEnc, Dtm wInt)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
   // null case
-  if (bNullEnc(xColEnc,wInt))
+  if (bEncodeNul(xColEnc,wInt))
     return;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -406,7 +406,7 @@ void Encoding::vEncodeIvl(_ColEnc& xColEnc, Dtm wIvl)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
   // null case
-  if (bNullEnc(xColEnc,wIvl))
+  if (bEncodeNul(xColEnc,wIvl))
     return;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -425,7 +425,7 @@ void Encoding::vEncodeTme(_ColEnc& xColEnc, Dtm wTme)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
   // null case
-  if (bNullEnc(xColEnc,wTme))
+  if (bEncodeNul(xColEnc,wTme))
     return;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -444,7 +444,7 @@ void Encoding::vEncodeTsp(_ColEnc& xColEnc, Dtm wTsp)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
   // null case
-  if (bNullEnc(xColEnc,wTsp))
+  if (bEncodeNul(xColEnc,wTsp))
     return;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -463,7 +463,7 @@ void Encoding::vEncodeVch(_ColEnc& xColEnc, Dtm wVch)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
   
   // null case
-  if (bNullEnc(xColEnc,wVch))
+  if (bEncodeNul(xColEnc,wVch))
     return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -501,6 +501,24 @@ void Encoding::vEncodeVch(_ColEnc& xColEnc, Dtm wVch)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for null encoding                                                     */
+/*----------------------------------------------------------------------------*/
+bool Encoding::bEncodeNul(_ColEnc& xColEnc, Dtm wDtm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+  
+  if (! wDtm.bIsNull())
+    return false;
+  
+  // null case : encode as: MC_NULL + {}
+  xColEnc.m_eMetaCode = MC_NULL;
+  xColEnc.m_wDataCode.vSetNull();
+  xColEnc.m_nDataSize = C_0B;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -524,23 +542,6 @@ Column* Encoding::pNonFitting(void)
 
   return nullptr;
 }
-
-/*----------------------------------------------------------------------------*/
-/* test for null encoding                                                     */
-/*----------------------------------------------------------------------------*/
-bool Encoding::bNullEnc(_ColEnc& xColEnc, Dtm wDtm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
-  
-  if (! wDtm.bIsNull())
-    return false;
-  
-  xColEnc.m_eMetaCode = MC_NULL;
-  xColEnc.m_wDataCode.vSetNull();
-  xColEnc.m_nDataSize = C_0B;
-  
-  return true;
- }
 
 /*----------------------------------------------------------------------------*/
 /* reset all encodings                                                        */
