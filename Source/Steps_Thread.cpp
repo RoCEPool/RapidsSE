@@ -87,7 +87,7 @@ void Step::vThreadCondWait(MP_Task mpTask)
   Thread* pThread = _pThread(pThreadObject);
   ASSERT(CN_THREAD == pThread->eClass());
   
-  pThread->m_pMutexThread->vCondWait();
+  pThread->m_pMutexThread->vCondWait_blocking();
   
   EXIT();
 }

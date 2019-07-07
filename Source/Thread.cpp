@@ -258,7 +258,7 @@ void Thread::vLoop(void)
       // wait upto 5ms to be given a signal
       m_eThreadState = TD_IDLE;
       iWaitDelta = Random::iInteger(0,C_10K);
-      m_pMutexThread->vCondWait_Timed(1000+iWaitDelta); // while waiting the mutex is dropped
+      m_pMutexThread->vCondWait_timed(1000+iWaitDelta); // while waiting the mutex is dropped
 
       m_eThreadState = TD_RUNNING;
 

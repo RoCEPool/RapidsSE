@@ -12,6 +12,7 @@ namespace System
   
     pthread_mutex_t     m_xMutex;     // mutex variable
     pthread_mutexattr_t m_xMutexAttr; // mutex shared attribute
+  
     pthread_cond_t      m_xCond;      // condition variable
     pthread_condattr_t  m_xCondAttr;  // condition shared attribute
 
@@ -29,8 +30,8 @@ namespace System
   
     void vCondBroadcast(void);
     void vCondSignal(void);
-    void vCondWait(void);
-    void vCondWait_Timed(i8 iMicroSeconds);
+    void vCondWait_blocking(void);
+    void vCondWait_timed(i8 iMicroSeconds);
     bool bMutexIsLocked(void);
     bool bMutexLock(void);
     void vMutexLock(void);

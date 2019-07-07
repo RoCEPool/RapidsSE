@@ -409,7 +409,7 @@ void Job::vMutexWait(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
  
-  m_pMutexJob->vCondWait();
+  m_pMutexJob->vCondWait_blocking();
   
 //  i8 rCode = pthread_cond_wait(&m_xThreadCond,&m_xThreadMutex);
 //
