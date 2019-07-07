@@ -59,6 +59,7 @@ namespace Rows
     void vSplitOver(void);
 
   private:
+    void vInitialEncoding(Row* pRow);
     void vEncodeBol(_ColEnc& xCol, Dtm wBol);
     void vEncodeBcd(_ColEnc& xCol, Dtm wBcd);
     void vEncodeDte(_ColEnc& xCol, Dtm wDte);
@@ -71,7 +72,7 @@ namespace Rows
 
     bool bEncodeNul(_ColEnc& xCol, Dtm wDtm);
 
-    void vInitialEncoding(Row* pRow);
+    // support functions
     Column* pNonFitting(void);
     void vReset(void);
     void vSplitAt(i8 i_Col);

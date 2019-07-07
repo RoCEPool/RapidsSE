@@ -231,7 +231,6 @@ void Encoding::vInitialEncoding(Row* pRow)
       case DM_VCH:
         xaColEnc[i_Col].m_wDataCode = (i8)m_xWsp.ayLatter();
         vEncodeVch(xrColEnc,pRow->m_waColVal[i_Col]);
-        m_xWsp.vTake(xrColEnc.m_nDataSize + 1);
         break;
         
       default:
@@ -475,6 +474,9 @@ void Encoding::vEncodeVch(_ColEnc& xColEnc, Dtm wVch)
   
   // copy chars + null into dst, nL will be noOf(chars), not incl null
   i8 nL = StrLib::nCopy(azDst,(char*)wVch.m_szVch);
+
+  // we have copied (nL + 1) bytes into wsp
+  m_xWsp.vTake(nL + 1);
 
   // empty string case : encode as: MC_STR_EMPTY + {}
   if (nL == 0) {
