@@ -227,11 +227,7 @@ void Encoding::vInitialEncoding(Row* pRow)
       case DM_IVL: vEncodeIvl(xrColEnc,pRow->m_waColVal[i_Col]);  break;
       case DM_TME: vEncodeTme(xrColEnc,pRow->m_waColVal[i_Col]);  break;
       case DM_TSP: vEncodeTsp(xrColEnc,pRow->m_waColVal[i_Col]);  break;
-        
-      case DM_VCH:
-        xaColEnc[i_Col].m_wDataCode = (i8)m_xWsp.ayLatter();
-        vEncodeVch(xrColEnc,pRow->m_waColVal[i_Col]);
-        break;
+      case DM_VCH: vEncodeVch(xrColEnc,pRow->m_waColVal[i_Col]);  break;
         
       default:
         NEVER_REACH;
@@ -467,12 +463,8 @@ void Encoding::vEncodeVch(_ColEnc& xColEnc, Dtm wVch)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  //
-  // note: xColEnc.m_wDataCode.m_szVch has dst address for vch
-  //
-  char* azDst = (char*)xColEnc.m_wDataCode.m_szVch;
-  
-  // copy chars + null into dst, nL will be noOf(chars), not incl null
+  // copy chars + null into wsp, nL will be noOf(chars), not incl null
+  char* azDst = (char*)m_xWsp.ayLatter();
   i8 nL = StrLib::nCopy(azDst,(char*)wVch.m_szVch);
 
   // we have copied (nL + 1) bytes into wsp
@@ -481,6 +473,7 @@ void Encoding::vEncodeVch(_ColEnc& xColEnc, Dtm wVch)
   // empty string case : encode as: MC_STR_EMPTY + {}
   if (nL == 0) {
     xColEnc.m_eMetaCode = MC_STR_EMPTY;
+    xColEnc.m_wDataCode.m_azStr = nullptr;
     xColEnc.m_nDataSize = 0;
     return;
   }
@@ -488,6 +481,7 @@ void Encoding::vEncodeVch(_ColEnc& xColEnc, Dtm wVch)
   // short string case : encode as: MC_STR_FIT_1L + {<L><Short>}
   if (nL <= (i8)C_1_BYTE) {
     xColEnc.m_eMetaCode = MC_STR_FIT_1L;
+    xColEnc.m_wDataCode.m_azStr = azDst;
     xColEnc.m_nDataSize = C_L_1B + nL;
     return;
   }
@@ -495,6 +489,7 @@ void Encoding::vEncodeVch(_ColEnc& xColEnc, Dtm wVch)
   // long string case : encode as: MC_BSTR_FIT_2L + {<LL><Long>}
   if (nL <= (i8)C_2_BYTES) {
     xColEnc.m_eMetaCode = MC_BSTR_FIT_2L;
+    xColEnc.m_wDataCode.m_azStr = azDst;
     xColEnc.m_nDataSize = C_L_2B + nL;
     return;
   }
