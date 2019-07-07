@@ -64,15 +64,15 @@ namespace Rows
   private:
     // encoding (structural order)
     void vInitialEncoding(Row* pRow);
-    void vEncodeBol(_ColEnc& xColEnc, Dtm wBol);
-    void vEncodeBcd(_ColEnc& xColEnc, Dtm wBcd);
-    void vEncodeDte(_ColEnc& xColEnc, Dtm wDte);
-    void vEncodeFlt(_ColEnc& xColEnc, Dtm wFlt);
-    void vEncodeInt(_ColEnc& xColEnc, Dtm wInt);
-    void vEncodeIvl(_ColEnc& xColEnc, Dtm wIvl);
-    void vEncodeTme(_ColEnc& xColEnc, Dtm wTme);
-    void vEncodeTsp(_ColEnc& xColEnc, Dtm wTsp);
-    void vEncodeVch(_ColEnc& xColEnc, Dtm wVch);
+    void vEncodeBcd(_ColEnc& xColEnc, Dtm wColVal);
+    void vEncodeBol(_ColEnc& xColEnc, Dtm wColVal);
+    void vEncodeDte(_ColEnc& xColEnc, Dtm wColVal);
+    void vEncodeFlt(_ColEnc& xColEnc, Dtm wColVal);
+    void vEncodeInt(_ColEnc& xColEnc, Dtm wColVal);
+    void vEncodeIvl(_ColEnc& xColEnc, Dtm wColVal);
+    void vEncodeTme(_ColEnc& xColEnc, Dtm wColVal);
+    void vEncodeTsp(_ColEnc& xColEnc, Dtm wColVal);
+    void vEncodeVch(_ColEnc& xColEnc, Dtm wColVal);
 
     bool bEncodeNul(_ColEnc& xColEnc, Dtm wDtm);
  
