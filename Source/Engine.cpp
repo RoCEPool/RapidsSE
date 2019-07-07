@@ -906,7 +906,7 @@ void Engine::vStartSystem(void)
   }
 
   while (*gpAttachMap->m_ixThreads != gxArguments.m_nThreads)
-    Pthread::vSleepMilli(10,CN_NONE);
+    Pthread::vSleepMsec(10,CN_NONE);
   
   vSpawnJobStart();
   
@@ -952,7 +952,7 @@ void Engine::vWaitStop(void)
   
   // this primary thread waits for flag indicationg systems is to stop
   while ( ! gpAttachMap->m_iQuit && ! gpAttachMap->m_iStop )
-    Pthread::vSleepMilli(10,CN_NONE);
+    Pthread::vSleepMsec(10,CN_NONE);
 }
 
 /*----------------------------------------------------------------------------*/

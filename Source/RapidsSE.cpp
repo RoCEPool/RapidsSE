@@ -657,7 +657,7 @@ eEC RapidsSE_FetchNextBuffer(i8 iTrace, Session* pSession, void* aJob,
       if (pFetchBuffer)
         break;
       //vTrace("SLEEPING\n"_Stz);
-      Pthread::vSleepMilli(1,CN_JOB_FETCHROWS);
+      Pthread::vSleepMsec(1,CN_JOB_FETCHROWS);
     }
     pJob_FetchRows->m_pFetchBuffer = pFetchBuffer;
     API_LOC(340);

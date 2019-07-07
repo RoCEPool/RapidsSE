@@ -273,7 +273,7 @@ ENTRY("vThreadSleep_s"_Stz);
   
   Thread* pThread = Thread::pThisTLSThread();
   
-  pThread->m_pPthread->vSleepSec(nSeconds,CN_WORD);
+  pThread->m_pPthread->vSleepSsec(nSeconds,CN_WORD);
   
   EXIT();
 }
@@ -292,7 +292,7 @@ ENTRY("vThreadSleep_ms"_Stz);
   
   Thread* pThread = Thread::pThisTLSThread();
   
-  pThread->m_pPthread->vSleepMilli(nMilliseconds,CN_WORD);
+  pThread->m_pPthread->vSleepMsec(nMilliseconds,CN_WORD);
   
   EXIT();
 }
@@ -311,7 +311,7 @@ ENTRY("vThreadSleep_us"_Stz);
   
   Thread* pThread = Thread::pThisTLSThread();
   
-  pThread->m_pPthread->vSleepMicro(nMicroseconds,CN_WORD);
+  pThread->m_pPthread->vSleepUsec(nMicroseconds,CN_WORD);
   
   EXIT();
 }
@@ -330,7 +330,7 @@ ENTRY("vThreadSleep_ns"_Stz);
   
   Thread* pThread = Thread::pThisTLSThread();
   
-  pThread->m_pPthread->vSleepNano(nNanoseconds,CN_WORD);
+  pThread->m_pPthread->vSleepNsec(nNanoseconds,CN_WORD);
   
   EXIT();
 }

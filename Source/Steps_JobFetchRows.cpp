@@ -523,7 +523,7 @@ void Step::vJob_SubInflateInflateRows(MP_Task mpTask)
     CrwBuffer = _pCrwBuffer(pJob_InflateRows->m_pBufferQueue->pPop());
     if (! CrwBuffer) {
       //Pthread::vSleepMilli(1,CN_JOB_FETCHROWS);
-      Pthread::vSleepMicro(250,CN_JOB_FETCHROWS);
+      Pthread::vSleepUsec(250,CN_JOB_FETCHROWS);
       continue;
     }
     
