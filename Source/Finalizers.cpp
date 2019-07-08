@@ -223,7 +223,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_NOW
   /*    */ &Finalize::vUndefined,         // CN_NUMBAT
 
-  /* 77 */ &Finalize::vUndefined,         // CN_OPQUEUE
   /*    */ &Finalize::vUndefined,         // CN_OUTPUTOP
 
   /* 78 */ &Finalize::vUndefined,         // CN_PARSER
