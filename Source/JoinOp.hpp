@@ -5,8 +5,6 @@
 
 namespace PushDown
 {
-  class RefBuffer;
-  
   enum eNE // next entry
   {
     /*  0 */ NE_NEXT_LEFT=0,

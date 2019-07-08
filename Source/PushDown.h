@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Partitioning.h"
+#include "Jobs.h"
 
 namespace PushDown
 {
@@ -36,9 +36,6 @@ using namespace PushDown;
 #include "WhereOp.hpp"
 #include "XmitOp.hpp"
 #include "ZedOp.hpp"
-
-#include "RefSet.hpp"
-#include "RefBuffer.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

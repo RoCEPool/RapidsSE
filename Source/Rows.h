@@ -46,6 +46,10 @@ typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,Table,
 #include "RowExtractor.hpp"
 #include "RowInflator.hpp"
 
+#include "RefSet.hpp"
+#include "RefBuffer.hpp"
+
+
 #include "BufferCursor.hpp"
 #include "IntBuffer.hpp"
 
