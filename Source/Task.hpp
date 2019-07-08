@@ -77,6 +77,7 @@ namespace Tasks
 
   private:
   
+    eTK     m_eKind;        // task kind
     union {
       Job*  m_pJob;         // the job for this task   [DDL]
       Op*   m_pOp;          // OR the op for this task [DML]
@@ -132,6 +133,7 @@ namespace Tasks
     void  operator delete(void*);
     
     Task(Job* pJob);
+    Task(Op* pOp);
     ~Task(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
