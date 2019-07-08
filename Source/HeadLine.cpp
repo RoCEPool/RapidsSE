@@ -147,15 +147,6 @@ i8 HeadLine::nFreeSpace(ColumnVec* pColVec)
   eMC eLastEncoding = eGetEncoding(pLastCol,i_BaseOffset,
                                    i_ColCrs_,i_OfsCrs_);
   
-  if (pLastCol->eDatumType() == DM_VCH && MC_SHOCO_SPLIT_2T1C == eLastEncoding)
-    return 0;
-  
-  if (pLastCol->eDatumType() == DM_VCH && MC_SHOCO_FIT_1C == eLastEncoding) {
-    i8 nCompressed = wGetLogical(i_OfsCrs_,C_1B);
-    //RASSERT(nCompressed <= 56);
-    i_OfsCrs_ += nCompressed;
-  }
-  
   i8 nDataBytes = RowCoder::nDataSize(eLastEncoding);
   
   i8 nFreeBytes = nBytes() - i_OfsCrs_ - nDataBytes;
@@ -198,8 +189,8 @@ eMC HeadLine::eGetEncoding(Column* pForCol, i8 i_BaseOffset,
     if (MC_STR_FIT_1L == eEncoding) {
       i_OfsCrs_ += wGetLogical((i_OfsCrs_ - 1),C_1B);
     }
-    else if (MC_SHOCO_FIT_1C == eEncoding) {
-      i_OfsCrs_ += wGetLogical((i_OfsCrs_ - 1),C_1B);
+    else if (MC_BSTR_FIT_2L == eEncoding) {
+      i_OfsCrs_ += wGetLogical((i_OfsCrs_ - 1),C_2B);
     }
   }
   
@@ -385,8 +376,8 @@ byte* HeadLine::ayShoco(Column* pCol, i8 i_BaseOffset)
   eMC eEncoding = eGetEncoding(pCol,i_BaseOffset,
                                i_ColCrs_,i_OfsCrs_);
   
-  if (MC_SHOCO_FIT_1C != eEncoding)
-    return nullptr;
+//  if (MC_SHOCO_FIT_1C != eEncoding)
+//    return nullptr;
   
   // get address of <C><shoco...>
   byte* ayAddress = ayAdrLogical(i_OfsCrs_);

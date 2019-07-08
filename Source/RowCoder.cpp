@@ -10,13 +10,12 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get auxilliary length length fow this meta code                            */
+/* get auxilliary length length fow this meta code (those MC_XYZ_nL)          */
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::iAuxLen(eMC eMetaCode)
 {
   if (MC_STR_FIT_1L   == eMetaCode) return 1;
   if (MC_BSTR_FIT_2L  == eMetaCode) return 2;
-  if (MC_SHOCO_FIT_1C == eMetaCode) return 1;
 
   return 0;
 }
@@ -84,11 +83,6 @@ i8 RowCoder::nDataSize(eMC eMetaCode)
     case MC_BSTR_TAIL_2T:     return 2;
     case MC_BSTR_SPLIT_2T2L:  return 4;
       
-    case MC_SHOCO_DUP_3D:     return 3;
-    case MC_SHOCO_FIT_1C:     return 1;
-    case MC_SHOCO_TAIL_2T:    return 2;
-    case MC_SHOCO_SPLIT_2T1C: return 3;
-            
     case MC_OVERFLOW_2T:
       return 2;
       
@@ -146,13 +140,12 @@ void RowCoder::vDteIntoEdt(Dtm wDte,
 }
 
 /*----------------------------------------------------------------------------*/
-/* does this meta code have an auxilliary length                              */
+/* does this meta code have an auxilliary length (those MC_XYZ_nL)            */
 /*----------------------------------------------------------------------------*/
 bool RowCoder::bHasAuxLen(eMC eMetaCode)
 {
   if (   MC_STR_FIT_1L   == eMetaCode // <L><Short>
-      || MC_BSTR_FIT_2L  == eMetaCode // <LL><String>
-      || MC_SHOCO_FIT_1C == eMetaCode // <C><Shoco>
+      || MC_BSTR_FIT_2L  == eMetaCode // <C><Shoco>
       )
     return true;
   

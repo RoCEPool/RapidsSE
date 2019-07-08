@@ -378,20 +378,7 @@ void RowDecoder::vDecodeVch(DtmVal* pDtmVal, HeadLine* aHeadLine,
   
   else if (MC_STR_TAIL_2T == eEncoding)
     vDecodeVchStringTail(pDtmVal,aHeadLine,pCol,i_OfsCrs_);
-  
-  else if (MC_SHOCO_FIT_1C == eEncoding)
-    vDecodeVchShocoFit(pDtmVal,aHeadLine,pCol,i_OfsCrs_);
-  
-  else if (MC_SHOCO_DUP_3D == eEncoding)
-    vDecodeVchShocoDup(pDtmVal,aHeadLine,pCol,i_OfsCrs_);
-  
-  else if (MC_SHOCO_TAIL_2T == eEncoding)
-    vDecodeVchShocoTail(pDtmVal,aHeadLine,pCol,i_OfsCrs_);
-  
-  // ??
-  else if (MC_SHOCO_SPLIT_2T1C == eEncoding)
-    vDecodeVchShocoSplit(pDtmVal,aHeadLine,pCol,i_OfsCrs_);
-  
+    
   else
     NEVER_REACH;
 }

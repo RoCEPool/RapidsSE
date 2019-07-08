@@ -66,19 +66,6 @@ void RowInflator::vInflateColumn(Row* pRow, HeadLine* aHeadLine, i8 i_ColToRetri
           nLength = wWord.m_iI8;
           ayDataByte += nLength;
           break;
-         
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        case MC_SHOCO_FIT_1C:
-          nCompressed = (i8)*(u1*)ayDataByte++;
-          ayDataByte += nCompressed;
-          break;
-          
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        case MC_SHOCO_SPLIT_2T1C:
-          nCompressed = (i8)*(u1*)ayDataByte++;
-          nBytesPartA = aHeadLine->nBytes() - (ayDataByte - (byte*)aHeadLine);
-          ayDataByte += nBytesPartA;
-          break;
           
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         case MC_OVERFLOW_2T: {
@@ -330,90 +317,6 @@ void RowInflator::vInflateColumn(Row* pRow, HeadLine* aHeadLine, i8 i_ColToRetri
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BSTR_SPLIT_2T2L:
-        break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_SHOCO_DUP_3D: {
-        wWord.m_iI8 = 0;
-        wWord.m_yaByte[0] = *ayDataByte++;
-        wWord.m_yaByte[1] = *ayDataByte++;
-        wWord.m_yaByte[2] = *ayDataByte++;
-        byte* ayShoco_dup = aAdd<byte*>(aHeadLine,( +  wWord.m_iI8 ));
-        nCompressed = (i8)*(u1*)ayShoco_dup++;
-        nLength =
-        Compress::iFromShoco(acString,                 // decompressed dest
-                             sizeof(caString),          // max destination
-                             ayShoco_dup,              // compressed source
-                             nCompressed);             // bytes compressed
-        *(char**)(aiColVal++) = acString;
-        acString += nLength;
-        *acString++ = '\0';
-      }
-        break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_SHOCO_FIT_1C:
-        nCompressed = (i8)*(u1*)ayDataByte++;
-        nLength =
-        Compress::iFromShoco(acString,                 // decompressed dest
-                             sizeof(caString),          // max destination
-                             ayDataByte,               // compressed source
-                             nCompressed);             // bytes compressed
-        *(char**)(aiColVal++) = acString;
-        acString += nLength;
-        *acString++ = '\0';
-        ayDataByte += nCompressed;
-        break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_SHOCO_TAIL_2T:
-        //i_Tail_rel  = (i8)*(i2*)aDataByte;
-        //aDataByte  += 2;
-        wWord.m_iI8 = 0;
-        wWord.m_yaByte[0] = *ayDataByte++;
-        wWord.m_yaByte[1] = *ayDataByte++;
-        i_Tail_rel = wWord.m_iI8;
-        aTail  = aHeadLine->aGetTailRel(i_Tail_rel);
-        nCompressed = aTail->w8_1B(C_COMPRESSED_OFFSET);
-        nLength =
-        Compress::iFromShoco(acString,                 // decompressed dest
-                             sizeof(caString),          // max destination
-                             ((byte*)aTail)       // compressed source
-                             + C_U_1B
-                             + C_C_1B,
-                             nCompressed);             // bytes compressed
-        *(char**)(aiColVal++) = acString;
-        acString += nLength;
-        *acString++ = '\0';
-        break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_SHOCO_SPLIT_2T1C:
-        wWord.m_iI8 = 0;
-        wWord.m_yaByte[0] = *ayDataByte++;
-        wWord.m_yaByte[1] = *ayDataByte++;
-        i_Tail_rel = wWord.m_iI8;
-        aTail  = aHeadLine->aGetTailRel(i_Tail_rel);
-        nCompressed = (i8)*(u1*)ayDataByte++;
-        nBytesPartA = aHeadLine->nBytes() - (ayDataByte - (byte*)aHeadLine);
-        nBytesPartB = nCompressed - nBytesPartA;
-        MemLib::vCopy((byte*)caString,
-                      (byte*)ayDataByte,
-                      nBytesPartA,
-                      CN_ROWCOMPACTOR);
-        MemLib::vCopy((byte*)caString+nBytesPartA,
-                      (byte*)aTail+1,
-                      nBytesPartB,
-                      CN_ROWCOMPACTOR);
-        nLength =
-        Compress::iFromShoco(acString,                 // decompressed dest
-                             sizeof(caString),          // max destination
-                             (byte*)caString,           // compressed source
-                             nCompressed);             // bytes compressed
-        *(char**)(aiColVal++) = acString;
-        acString += nLength;
-        *acString++ = '\0';
-        ayDataByte += nBytesPartA;
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -556,19 +459,6 @@ void RowInflator::vInflateColumns(Row* pRow, HeadLine* aHeadLine)
           ayDataByte += nLength;
           break;
           
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        case MC_SHOCO_FIT_1C:
-          nCompressed = (i8)*(u1*)ayDataByte++;
-          ayDataByte += nCompressed;
-          break;
-          
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        case MC_SHOCO_SPLIT_2T1C:
-          nCompressed = (i8)*(u1*)ayDataByte++;
-          nBytesPartA = aHeadLine->nBytes() - (ayDataByte - (byte*)aHeadLine);
-          ayDataByte += nBytesPartA;
-          break;
-          
         case MC_OVERFLOW_2T: {
           //vDebugPoint();
           OverLine* aOverLine = aHeadLine->aGetOver();
@@ -818,90 +708,6 @@ void RowInflator::vInflateColumns(Row* pRow, HeadLine* aHeadLine)
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BSTR_SPLIT_2T2L:
-        break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_SHOCO_DUP_3D: {
-        wWord.m_iI8 = 0;
-        wWord.m_yaByte[0] = *ayDataByte++;
-        wWord.m_yaByte[1] = *ayDataByte++;
-        wWord.m_yaByte[2] = *ayDataByte++;
-        byte* ayShoco_dup = aAdd<byte*>(aHeadLine,( +  wWord.m_iI8 ));
-        nCompressed = (i8)*(u1*)ayShoco_dup++;
-        nLength =
-        Compress::iFromShoco(acString,                 // decompressed dest
-                             sizeof(caString),          // max destination
-                             ayShoco_dup,              // compressed source
-                             nCompressed);             // bytes compressed
-        *(char**)(aiColVal++) = acString;
-        acString += nLength;
-        *acString++ = '\0';
-      }
-        break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_SHOCO_FIT_1C:
-        nCompressed = (i8)*(u1*)ayDataByte++;
-        nLength =
-        Compress::iFromShoco(acString,                 // decompressed dest
-                             sizeof(caString),          // max destination
-                             ayDataByte,               // compressed source
-                             nCompressed);             // bytes compressed
-        *(char**)(aiColVal++) = acString;
-        acString += nLength;
-        *acString++ = '\0';
-        ayDataByte += nCompressed;
-        break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_SHOCO_TAIL_2T:
-        //i_Tail_rel  = (i8)*(i2*)aDataByte;
-        //aDataByte  += 2;
-        wWord.m_iI8 = 0;
-        wWord.m_yaByte[0] = *ayDataByte++;
-        wWord.m_yaByte[1] = *ayDataByte++;
-        i_Tail_rel = wWord.m_iI8;
-        aTail  = aHeadLine->aGetTailRel(i_Tail_rel);
-        nCompressed = aTail->w8_1B(C_COMPRESSED_OFFSET);
-        nLength =
-        Compress::iFromShoco(acString,                 // decompressed dest
-                             sizeof(caString),          // max destination
-                             ((byte*)aTail)       // compressed source
-                             + C_U_1B
-                             + C_C_1B,
-                             nCompressed);             // bytes compressed
-        *(char**)(aiColVal++) = acString;
-        acString += nLength;
-        *acString++ = '\0';
-        break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_SHOCO_SPLIT_2T1C:
-        wWord.m_iI8 = 0;
-        wWord.m_yaByte[0] = *ayDataByte++;
-        wWord.m_yaByte[1] = *ayDataByte++;
-        i_Tail_rel = wWord.m_iI8;
-        aTail  = aHeadLine->aGetTailRel(i_Tail_rel);
-        nCompressed = (i8)*(u1*)ayDataByte++;
-        nBytesPartA = aHeadLine->nBytes() - (ayDataByte - (byte*)aHeadLine);
-        nBytesPartB = nCompressed - nBytesPartA;
-        MemLib::vCopy((byte*)caString,
-                      (byte*)ayDataByte,
-                      nBytesPartA,
-                      CN_ROWCOMPACTOR);
-        MemLib::vCopy((byte*)caString+nBytesPartA,
-                      (byte*)aTail+1,
-                      nBytesPartB,
-                      CN_ROWCOMPACTOR);
-        nLength =
-        Compress::iFromShoco(acString,                 // decompressed dest
-                             sizeof(caString),          // max destination
-                             (byte*)caString,           // compressed source
-                             nCompressed);             // bytes compressed
-        *(char**)(aiColVal++) = acString;
-        acString += nLength;
-        *acString++ = '\0';
-        ayDataByte += nBytesPartA;
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
@@ -1241,90 +1047,6 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BSTR_SPLIT_2T2L:
-        break;
-        
-      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_SHOCO_DUP_3D: {
-        wWord.m_iI8 = 0;
-        wWord.m_yaByte[0] = *ayDataByte++;
-        wWord.m_yaByte[1] = *ayDataByte++;
-        wWord.m_yaByte[2] = *ayDataByte++;
-        byte* ayShoco_dup = aAdd<byte*>(aHeadLine,( +  wWord.m_iI8 ));
-        nCompressed = (i8)*(u1*)ayShoco_dup++;
-        nLength =
-        Compress::iFromShoco(acString,                 // decompressed dest
-                             sizeof(caString),          // max destination
-                             ayShoco_dup,              // compressed source
-                             nCompressed);             // bytes compressed
-        *(char**)(aiColVal++) = acString;
-        acString += nLength;
-        *acString++ = '\0';
-      }
-       break;
-        
-      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_SHOCO_FIT_1C:
-        nCompressed = (i8)*(u1*)ayDataByte++;
-        nLength =
-        Compress::iFromShoco(acString,                 // decompressed dest
-                             sizeof(caString),          // max destination
-                             ayDataByte,               // compressed source
-                             nCompressed);             // bytes compressed
-        *(char**)(aiColVal++) = acString;
-        acString += nLength;
-        *acString++ = '\0';
-         ayDataByte += nCompressed;
-        break;
-        
-      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_SHOCO_TAIL_2T:
-        //i_Tail_rel  = (i8)*(i2*)aDataByte;
-        //aDataByte  += 2;
-        wWord.m_iI8 = 0;
-        wWord.m_yaByte[0] = *ayDataByte++;
-        wWord.m_yaByte[1] = *ayDataByte++;
-        i_Tail_rel = wWord.m_iI8;
-        aTail  = aHeadLine->aGetTailRel(i_Tail_rel);
-        nCompressed = aTail->w8_1B(C_COMPRESSED_OFFSET);
-        nLength =
-        Compress::iFromShoco(acString,                 // decompressed dest
-                             sizeof(caString),          // max destination
-                             ((byte*)aTail)       // compressed source
-                               + C_U_1B
-                               + C_C_1B,
-                             nCompressed);             // bytes compressed
-        *(char**)(aiColVal++) = acString;
-        acString += nLength;
-        *acString++ = '\0';
-        break;
-        
-      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_SHOCO_SPLIT_2T1C:
-        wWord.m_iI8 = 0;
-        wWord.m_yaByte[0] = *ayDataByte++;
-        wWord.m_yaByte[1] = *ayDataByte++;
-        i_Tail_rel = wWord.m_iI8;
-        aTail  = aHeadLine->aGetTailRel(i_Tail_rel);
-        nCompressed = (i8)*(u1*)ayDataByte++;
-        nBytesPartA = aHeadLine->nBytes() - (ayDataByte - (byte*)aHeadLine);
-        nBytesPartB = nCompressed - nBytesPartA;
-        MemLib::vCopy((byte*)caString,
-                      (byte*)ayDataByte,
-                      nBytesPartA,
-                      CN_ROWCOMPACTOR);
-        MemLib::vCopy((byte*)caString+nBytesPartA,
-                      (byte*)aTail+1,
-                      nBytesPartB,
-                      CN_ROWCOMPACTOR);
-        nLength =
-        Compress::iFromShoco(acString,                 // decompressed dest
-                             sizeof(caString),          // max destination
-                             (byte*)caString,           // compressed source
-                             nCompressed);             // bytes compressed
-        *(char**)(aiColVal++) = acString;
-        acString += nLength;
-        *acString++ = '\0';
-        ayDataByte += nBytesPartA;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -

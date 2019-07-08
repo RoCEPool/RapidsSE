@@ -155,11 +155,11 @@ void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec)
       RASSERT(1 == nBytes);
       nBytes += aHeadLine->wGetLogical(i_Offset,C_1B);
     }
-    if (MC_SHOCO_FIT_1C == eMetaCode) {
-      RASSERT(1 == nBytes);
-      nBytes += aHeadLine->wGetLogical(i_Offset,C_1B);
+    if (MC_BSTR_FIT_2L == eMetaCode) {
+      RASSERT(2 == nBytes);
+      nBytes += aHeadLine->wGetLogical(i_Offset,C_2B);
     }
-    
+
     //      colNo colNm Dtm  MC   aMC   Ofset Addr   Bytes
     vTrace("%3lld %-15s %-3s %02x %-19s %2lld %012llx %2lld "_Stz,
            i_Col,
@@ -195,18 +195,14 @@ void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec)
     
     vTrace("%s"_Stz,hvRec->szRecStr());
     
-    if (MC_SHOCO_SPLIT_2T1C == eMetaCode) {
-      i8 i2T = aHeadLine->wGetLogical(i_Offset,C_2B);
-      i8 i1C = aHeadLine->wGetLogical((i_Offset+2),C_1B);
-      vTrace(" [ =%lld.%lld ]"_Stz,i2T,i1C);
+    if (MC_STR_FIT_1L == eMetaCode) {
+      i8 i1L = aHeadLine->wGetLogical(i_Offset,C_1B);
+      vTrace(" [ =%lld ]"_Stz,i1L);
     }
-    else if (MC_SHOCO_FIT_1C == eMetaCode) {
-      i8 i1C = aHeadLine->wGetLogical(i_Offset,C_1B);
-      vTrace(" [ =%lld ]"_Stz,i1C);
-    }
-    else if (MC_STR_FIT_1L == eMetaCode) {
-      i8 i1C = aHeadLine->wGetLogical(i_Offset,C_1B);
-      vTrace(" [ =%lld ]"_Stz,i1C);
+    else
+    if (MC_BSTR_FIT_2L == eMetaCode) {
+      i8 i2L = aHeadLine->wGetLogical(i_Offset,C_2B);
+      vTrace(" [ =%lld ]"_Stz,i2L);
     }
     else {
       i8 iDataValue = aHeadLine->wGetLogical(i_Offset,nBytes);
@@ -223,8 +219,6 @@ void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec)
     if (eMetaCode == MC_STR_SPLIT_2T1L)
       vDebugPoint();
     if (eMetaCode == MC_STR_DUP_2H)
-      vDebugPoint();
-    if (eMetaCode == MC_SHOCO_DUP_3D)
       vDebugPoint();
   }
   

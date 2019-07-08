@@ -56,14 +56,14 @@ namespace Rows
                                //   head: 2B->tail, 2B=len, part-ascii
                                //   tail: has remaining ascii
   
-  /* 41 */ MC_SHOCO_DUP_3D,    // duplicate shoco string (3B->shoco)
-  /* 42 */ MC_SHOCO_FIT_1C,    // shoco encoded string: 1B=len, then shoco
-  /* 43 */ MC_SHOCO_TAIL_2T,   // shoco encoded string in tail:
-                               //    head: 2B->tail
-                               //    tail: has 1B=len, then shoco
-  /* 44 */ MC_SHOCO_SPLIT_2T1C,// shoco encoded string split between head and tail:
-                               //   head: 2B->tail, 1B=nCompressed, partA-shoco
-                               //   tail: has remaining partB-shoco
+//  /* 41 */ MC_SHOCO_DUP_3D,    // duplicate shoco string (3B->shoco)
+//  /* 42 */ MC_SHOCO_FIT_1C,    // shoco encoded string: 1B=len, then shoco
+//  /* 43 */ MC_SHOCO_TAIL_2T,   // shoco encoded string in tail:
+//                               //    head: 2B->tail
+//                               //    tail: has 1B=len, then shoco
+//  /* 44 */ MC_SHOCO_SPLIT_2T1C,// shoco encoded string split between head and tail:
+//                               //   head: 2B->tail, 1B=nCompressed, partA-shoco
+//                               //   tail: has remaining partB-shoco
 
   /* 52 */ MC_OVERFLOW_2T,     // overflow tail (2B->overflow tail)
   
