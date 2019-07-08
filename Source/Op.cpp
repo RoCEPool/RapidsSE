@@ -28,8 +28,8 @@ Op::Op(eCN eClassNo)
   _precondition_(_MAGIC_,eClassNo);
   
   m_pOperandQueue = new OperandQueue;
-  //! m_fpOpEntryPt;
-  m_pOpOut = nullptr;
+  m_fpOpEntryPt   = nullptr;
+  m_pOpOut        = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
