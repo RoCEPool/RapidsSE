@@ -171,7 +171,7 @@ void* Thread::aEntryPointDummy(void* pArg)
   pThread->m_pPthread->vThreadEntry();
   
   if (gpAttachMap->m_bVerbose)
-    vTrace("Thread::pDummyEntryPoint %p %lld\n"_Stz,
+    vTrace("Thread::aEntryPointDummy %p %lld\n"_Stz,
            pThread,pThread->iThreadNo());
   
   while (true) {
@@ -204,7 +204,7 @@ void* Thread::aEntryPointOp(void* pArg)
   pThread->m_pPthread->vThreadEntry();
   
   if (gpAttachMap->m_bVerbose)
-    vTrace("Thread::pDummyEntryPoint %p %lld\n"_Stz,
+    vTrace("Thread::aEntryPointOp %p %lld\n"_Stz,
            pThread,pThread->iThreadNo());
   
   while (true) {
