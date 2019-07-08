@@ -42,7 +42,6 @@ pDUMPFUN *gpDump[]
   /* 29 */ &Dump::vInvalid,         // CN_BPA
   /*    */ &Dump::vInvalid,         // CN_BUFFERCURSOR
   /* 28 */ &Dump::vInvalid,         // CN_BUFFERPOOL
-  /* 28 */ &Dump::vInvalid,         // CN_BUFFERQUEUE
   /*    */ &Dump::vInvalid,         // CN_BYTERATE
 
   /* 30 */ &Dump::vDummy,           // CN_CARRYOVER
@@ -224,11 +223,12 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vUndefined,       // CN_MERGEOP
   /*114 */ &Dump::vUndefined,       // CN_MUTEX
 
-  /*    */ &Dump::vUndefined,       // CNNMVAL
+  /*    */ &Dump::vUndefined,       // CN_NMVAL
   /* 75 */ &Node::vDump,            // CN_NODE
   /*    */ &Dump::vUndefined,       // CN_NOW
   /*    */ &Dump::vUndefined,       // CN_NUMBAT
 
+  /* 28 */ &Dump::vInvalid,         // CN_OPERANDQUEUE
   /*    */ &Dump::vUndefined,       // CN_OUTPUTOP
 
   /* 78 */ &Parser::vDump,          // CN_PARSER
@@ -374,7 +374,6 @@ i8 giClassSize[]
   /* 29 */ sizeof(BPA),                // CN_BPA
   /*    */ sizeof(BufferCursor),       // CN_BUFFERCURSOR
   /* 28 */ sizeof(BufferPool),         // CN_BUFFERPOOL
-  /* 28 */ sizeof(OperandQueue),       // CN_BUFFERQUEUE
   /* 28 */ sizeof(ByteRate),           // CN_BYTERATE
 
   /* 30 */ sizeof(CarryOver),          // CN_CARRYOVER
@@ -560,6 +559,7 @@ i8 giClassSize[]
   /*    */ sizeof(Now),                // CN_NOW
   /*    */ sizeof(Numbat),             // CN_NUMBAT
 
+  /* 28 */ sizeof(OperandQueue),       // CN_OPERANDQUEUE
   /* 77 */ sizeof(OutputOp),           // CN_OUTPUTOP
 
   /* 78 */ sizeof(Parser),             // CN_PARSER
@@ -705,7 +705,6 @@ eHT geWhichHeap[]
   /* 29 */ HT_INVALID,           // CN_BPA
   /*    */ HT_TRANSIENT_LARGE,   // CN_BUFFERCURSOR
   /* 28 */ HT_INVALID,           // CN_BUFFERPOOL
-  /* 29 */ HT_TRANSIENT_SMALL,   // CN_BUFFERQUEUE
   /* 29 */ HT_TRANSIENT_SMALL,   // CN_BYTERATE
 
   /* 30 */ HT_INVALID,           // CN_CARRYOVER
@@ -891,6 +890,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_SMALL,   // CN_NOW
   /*    */ HT_TRANSIENT_LARGE,   // CN_NUMBAT
 
+  /* 29 */ HT_TRANSIENT_SMALL,   // CN_OPERANDQUEUE
   /*    */ HT_TRANSIENT_SMALL,   // CN_OUTPUTOP
 
   /* 78 */ HT_TRANSIENT_MEDIUM,  // CN_PARSER

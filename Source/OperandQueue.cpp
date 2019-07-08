@@ -11,7 +11,7 @@ OperandQueue* PushDown::_pOperandQueue(void* aAddr)
 {
   OperandQueue* pOperandQueue = reinterpret_cast<OperandQueue*>(aAddr);
   
-  RASSERT_TYPE(pOperandQueue,CN_BUFFERQUEUE);
+  RASSERT_TYPE(pOperandQueue,CN_OPERANDQUEUE);
   
   return pOperandQueue;
 }
@@ -21,7 +21,7 @@ OperandQueue* PushDown::_pOperandQueue(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* OperandQueue::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_BUFFERQUEUE);
+  void* pObject = HeapMem::pAllocate(CN_OPERANDQUEUE);
   
   return pObject;
 }
@@ -40,15 +40,15 @@ void OperandQueue::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 OperandQueue::OperandQueue(void)
-: ListNL_t<OperandBuffer>(CN_BUFFERQUEUE)
+: ListNL_t<OperandBuffer>(CN_OPERANDQUEUE)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERQUEUE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
   m_okLock.vInitLock(LK_THREAD_QUEUE);
   
-  _checkInitialised_(CN_BUFFERQUEUE);
+  _checkInitialised_(CN_OPERANDQUEUE);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_BUFFERQUEUE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -56,7 +56,7 @@ OperandQueue::OperandQueue(void)
 /*----------------------------------------------------------------------------*/
 OperandQueue::~OperandQueue(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERQUEUE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -64,7 +64,7 @@ OperandQueue::~OperandQueue(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void OperandQueue::vAppendBuffer(OperandBuffer* pBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERQUEUE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
   ListNL_t<OperandBuffer>::vAppend(pBuffer);
 }
@@ -74,7 +74,7 @@ void OperandQueue::vAppendBuffer(OperandBuffer* pBuffer)
 /*----------------------------------------------------------------------------*/
 void OperandQueue::vDropLock(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERQUEUE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
   m_okLock.vDropWrite();
 }
@@ -84,7 +84,7 @@ void OperandQueue::vDropLock(void)
 /*----------------------------------------------------------------------------*/
 void OperandQueue::vGrabLock(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERQUEUE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
   m_okLock.vGrabWrite();
 }
@@ -94,7 +94,7 @@ void OperandQueue::vGrabLock(void)
 /*----------------------------------------------------------------------------*/
 bool OperandQueue::bGrabLock(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERQUEUE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
   return m_okLock.bGrabWrite();
 }
@@ -104,7 +104,7 @@ bool OperandQueue::bGrabLock(void)
 /*----------------------------------------------------------------------------*/
 bool OperandQueue::bIsLocked(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERQUEUE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
   return m_okLock.bIsLocked();
 }
@@ -114,7 +114,7 @@ bool OperandQueue::bIsLocked(void)
 /*----------------------------------------------------------------------------*/
 OperandBuffer* OperandQueue::pPeekBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERQUEUE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
   ASSERT(m_okLock.bIsLocked());
   
@@ -128,7 +128,7 @@ OperandBuffer* OperandQueue::pPeekBuffer(void)
 /*----------------------------------------------------------------------------*/
 OperandBuffer* OperandQueue::pPopBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERQUEUE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
   ASSERT(m_okLock.bIsLocked());
   
@@ -142,7 +142,7 @@ OperandBuffer* OperandQueue::pPopBuffer(void)
 /*----------------------------------------------------------------------------*/
 i8 OperandQueue::nQueuedOps(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERQUEUE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
 
   i8 nOps = ListNL_t<OperandBuffer>::nObjects();
 
@@ -154,7 +154,7 @@ i8 OperandQueue::nQueuedOps(void)
 /*----------------------------------------------------------------------------*/
 void OperandQueue::vContentDump(void)
 {
-  //vDump(CN_BUFFERQUEUE, this, Stz::aTab(1));
+  //vDump(CN_OPERANDQUEUE, this, Stz::aTab(1));
   
   ASSERT(m_okLock.bIsLocked());
 
@@ -184,7 +184,7 @@ void OperandQueue::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 Footer* OperandQueue::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERQUEUE);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE);
   
   return &m_xFooter;
 }

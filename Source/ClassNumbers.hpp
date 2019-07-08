@@ -43,7 +43,6 @@ enum eCN : u2 // Class Number
   /*  20 0x14        1B Heap:I */ CN_BPA,
   /*                           */ CN_BUFFERCURSOR,
   /*  21 0x15      312B Heap:I */ CN_BUFFERPOOL,
-  /*  21 0x15      312B Heap:I */ CN_BUFFERQUEUE,
   /*  22 0x16      120B Heap:S */ CN_BYTERATE,
   
   /*  23 0x17       40B Heap:I */ CN_CARRYOVER,
@@ -227,6 +226,7 @@ enum eCN : u2 // Class Number
   /* 157 0x9D       88B Heap:S */ CN_NOW,
   /*                           */ CN_NUMBAT,
 
+  /*  21 0x15      312B Heap:I */ CN_OPERANDQUEUE,
   /*                           */ CN_OUTPUTOP,
 
   /* 159 0x9F    48752B Heap:M */ CN_PARSER,
@@ -372,7 +372,6 @@ static Stz* aCN[]
   /*          */ "BOTHOP"_Stz,              // CN_BOTHOP
   /*          */ "BUFFERCURSOR"_Stz,        // CN_BUFFERCURSOR
   /*  21 0x15 */ "BUFFERPOOL"_Stz,          // CN_BUFFERPOOL
-  /*  21 0x15 */ "BUFFERQUEUE"_Stz,         // CN_BUFFERQUEUE
   /*  22 0x16 */ "BYTERATE"_Stz,            // CN_BYTERATE
   
   /*  23 0x17 */ "CARRYOVER"_Stz,           // CN_CARRYOVER
@@ -556,6 +555,7 @@ static Stz* aCN[]
   /* 157 0x9D */ "NOW"_Stz,                 // CN_NOW
   /*          */ "NUMBAT"_Stz,              // CN_NUMBAT
 
+  /*  21 0x15 */ "OPERANDQUEUE"_Stz,        // CN_OPERANDQUEUE
   /*          */ "OUTPUTOP"_Stz,            // CN_OUTPUTOP
 
   /* 159 0x9F */ "PARSER"_Stz,              // CN_PARSER
