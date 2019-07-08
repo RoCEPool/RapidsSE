@@ -50,8 +50,20 @@ Queues::Queues(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
-  m_pThreadVec  = new ThreadVec;
-  m_ixQueueOrder   = 0;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // threads
+  
+  m_pThreadVec = new ThreadVec;
+  
+  m_pIdleThreadQueue = new ThreadQueue;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
+  
+  m_ixQueueOrder = 0;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // task queues
   
   m_pSleepingQueue = new TaskQueue(QK_SLEEPING_QUEUE,
                                    C_NON_UNQIUE_KEY,

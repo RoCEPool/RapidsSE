@@ -14,13 +14,15 @@ namespace Scheduling
 
     ThreadVec* m_pThreadVec; // vector of threads in the system
   
+    ThreadQueue* m_pIdleThreadQueue; // queue of idle threads
+  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // tasks
+    // 
 
     Atomic m_ixQueueOrder;        // task ordering no
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // queues which are checked in round robin fashion
+    // task queues which are checked in round robin fashion
   
     TaskQueue* m_pSleepingQueue;   // set of queued sleeping tasks
     // QR_SLEEPING_QUEUE           // (ordered by wakeup time)
