@@ -80,8 +80,6 @@ i8 RowCoder::nDataSize(eMC eMetaCode)
     case MC_STR_SPLIT_2T1L:   return 3;
       
     case MC_BSTR_FIT_2L:      return 2;
-    case MC_BSTR_TAIL_2T:     return 2;
-    case MC_BSTR_SPLIT_2T2L:  return 4;
       
     case MC_OVERFLOW_2T:
       return 2;

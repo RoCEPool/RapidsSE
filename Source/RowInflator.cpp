@@ -312,14 +312,6 @@ void RowInflator::vInflateColumn(Row* pRow, HeadLine* aHeadLine, i8 i_ColToRetri
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_BSTR_TAIL_2T:
-        break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_BSTR_SPLIT_2T2L:
-        break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_OVERFLOW_2T: {
         //vDebugPoint();
         OverLine* aOverLine = aHeadLine->aGetOver();
@@ -703,14 +695,6 @@ void RowInflator::vInflateColumns(Row* pRow, HeadLine* aHeadLine)
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_BSTR_TAIL_2T:
-        break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_BSTR_SPLIT_2T2L:
-        break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_OVERFLOW_2T: {
         //vDebugPoint();
         OverLine* aOverLine = aHeadLine->aGetOver();
@@ -1039,14 +1023,6 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
         ayDataByte += nLength;
         acString   += nLength;
         *acString++ = '\0';
-        break;
-        
-      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_BSTR_TAIL_2T:
-        break;
-        
-      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_BSTR_SPLIT_2T2L:
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -

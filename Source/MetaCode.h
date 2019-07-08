@@ -49,22 +49,13 @@ namespace Rows
                                //   tail: has remaining ascii
   
   /* 38 */ MC_BSTR_FIT_2L,     // bigger ascii string: 2B=len then ascii
-  /* 39 */ MC_BSTR_TAIL_2T,    // bigger ascii string in tail:
-                               //    head: 2B->tail
-                               //    tail: has 2B=len, then ascii
-  /* 40 */ MC_BSTR_SPLIT_2T2L, // bigger ascii string split between head and tail:
-                               //   head: 2B->tail, 2B=len, part-ascii
-                               //   tail: has remaining ascii
-  
-//  /* 41 */ MC_SHOCO_DUP_3D,    // duplicate shoco string (3B->shoco)
-//  /* 42 */ MC_SHOCO_FIT_1C,    // shoco encoded string: 1B=len, then shoco
-//  /* 43 */ MC_SHOCO_TAIL_2T,   // shoco encoded string in tail:
+//  /* 39 */ MC_BSTR_TAIL_2T,    // bigger ascii string in tail:
 //                               //    head: 2B->tail
-//                               //    tail: has 1B=len, then shoco
-//  /* 44 */ MC_SHOCO_SPLIT_2T1C,// shoco encoded string split between head and tail:
-//                               //   head: 2B->tail, 1B=nCompressed, partA-shoco
-//                               //   tail: has remaining partB-shoco
-
+//                               //    tail: has 2B=len, then ascii
+//  /* 40 */ MC_BSTR_SPLIT_2T2L, // bigger ascii string split between head and tail:
+//                               //   head: 2B->tail, 2B=len, part-ascii
+//                               //   tail: has remaining ascii
+  
   /* 52 */ MC_OVERFLOW_2T,     // overflow tail (2B->overflow tail)
   
   /* 53 */ MC_ENUMS,
@@ -112,11 +103,6 @@ namespace Rows
   /* 38 */ "MC_BSTR_FIT_2L"_Stz,
   /* 39 */ "MC_BSTR_TAIL_2T"_Stz,
   /* 40 */ "MC_BSTR_SPLIT_2T2L"_Stz,
-  
-  /* 41 */ "MC_SHOCO_DUP_3D"_Stz,
-  /* 42 */ "MC_SHOCO_FIT_1C"_Stz,
-  /* 43 */ "MC_SHOCO_TAIL_2T"_Stz,
-  /* 44 */ "MC_SHOCO_SPLIT_2T1C"_Stz,
   
   /* 53 */ "MC_ENUMS"_Stz,
   };
