@@ -71,39 +71,6 @@ Task::Task(Job* pJob)
   
   m_pCompiler = (CN_JOB_BOOT == pJob->eClass()) ? new Compiler : nullptr;
 
-//  m_okLock.vInitLock(LK_TASK);
-//
-//  m_eKind        = TK_JOB;
-//  m_pJob         = pJob;
-//
-//  m_iQueueOrder  = C_UNKNOWN;
-//  m_iPartition   = C_UNKNOWN;
-//
-//  m_eState       = TS_NONE;
-//  m_eQueue       = QR_NONE;
-//  m_oAcksRemaining.vCheckInit();
-//  m_pThread      = nullptr;
-//
-//  m_pDataStack   = nullptr;
-//  m_pReturnStack = nullptr;
-//  m_pAuxStack    = nullptr;
-//
-//  m_pLocalsFrame = nullptr;
-//
-//  FIP.m_aCell    = nullptr;
-//
-//  m_pCompiler    = (CN_JOB_BOOT == pJob->eClass()) ? new Compiler : nullptr;
-//
-//  m_iTracing     = C_TRACE_NONE;
-//  m_i_ActionRoot = pJob->m_i_ActionRoot;
-//  m_i_NextRnd    = gpAttachMap->Arg.m_bDeveloper ? 0 : C_UNKNOWN;
-//
-//  m_pSession     = nullptr;
-//
-//  m_iDdlLocked   = 0;
-//
-//  m_pSendNode    = nullptr;
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the executing task in job
   
@@ -113,7 +80,6 @@ Task::Task(Job* pJob)
 
   _checkInitialised_(CN_TASK);
   
-  //ActionSequence::vAdd(pJob,AN_CONSTRUCTOR,CN_TASK);
   ActionSequence::vAdd(m_i_ActionRoot,0,
                        CN_TASK,AN_CONSTRUCTOR,
                        m_pJob->eClass(),_EG_CN);
@@ -131,38 +97,10 @@ Task::Task(Op* pOp)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_okLock.vInitLock(LK_TASK);
+  vInit();
   
-  m_eKind        = TK_OPERATOR;
-  m_pOp          = pOp;
-  
-  m_iQueueOrder  = C_UNKNOWN;
-  m_iPartition   = C_UNKNOWN;
-  
-  m_eState       = TS_NONE;
-  m_eQueue       = QR_NONE;
-  m_oAcksRemaining.vCheckInit();
-  m_pThread      = nullptr;
-  
-  m_pDataStack   = nullptr;
-  m_pReturnStack = nullptr;
-  m_pAuxStack    = nullptr;
-  
-  m_pLocalsFrame = nullptr;
-  
-  FIP.m_aCell    = nullptr;
-  
-  m_pCompiler    = nullptr;
-  
-  m_iTracing     = C_TRACE_NONE;
-  m_i_ActionRoot = C_UNKNOWN;
-  m_i_NextRnd    = gpAttachMap->Arg.m_bDeveloper ? 0 : C_UNKNOWN;
-  
-  m_pSession     = nullptr;
-  
-  m_iDdlLocked   = 0;
-  
-  m_pSendNode    = nullptr;
+  m_eKind = TK_OPERATOR;
+  m_pOp   = pOp;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the executing task in job
@@ -173,10 +111,9 @@ Task::Task(Op* pOp)
   
   _checkInitialised_(CN_TASK);
   
-  //ActionSequence::vAdd(pJob,AN_CONSTRUCTOR,CN_TASK);
-  ActionSequence::vAdd(m_i_ActionRoot,0,
-                       CN_TASK,AN_CONSTRUCTOR,
-                       m_pOp->eClass(),_EG_CN);
+   ActionSequence::vAdd(m_i_ActionRoot,0,
+                        CN_TASK,AN_CONSTRUCTOR,
+                        m_pOp->eClass(),_EG_CN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }
