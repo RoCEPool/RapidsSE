@@ -20,14 +20,14 @@ namespace PushDown
     OperandQueue(void);
     ~OperandQueue(void) noexcept(false);
     
-    void vAppendBuffer(OperandBuffer* pBuffer);
+    void vAppendOperand(OperandBuffer* pOperand);
     void vDropLock(void);
     void vGrabLock(void);
     bool bGrabLock(void);
     bool bIsLocked(void);
-    OperandBuffer*  pPeekBuffer(void);
-    OperandBuffer*  pPopBuffer(void);
-    i8   nQueuedOps(void);
+    OperandBuffer*  pPeekOperand(void);
+    OperandBuffer*  pPopOperand(void);
+    i8   nQueuedOperands(void);
   
     void vContentDump(void);
     

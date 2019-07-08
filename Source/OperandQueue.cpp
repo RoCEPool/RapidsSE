@@ -62,11 +62,11 @@ OperandQueue::~OperandQueue(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append thread to end of queue                                              */
 /*----------------------------------------------------------------------------*/
-void OperandQueue::vAppendBuffer(OperandBuffer* pBuffer)
+void OperandQueue::vAppendOperand(OperandBuffer* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
-  ListNL_t<OperandBuffer>::vAppend(pBuffer);
+  ListNL_t<OperandBuffer>::vAppend(pOperand);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -112,41 +112,41 @@ bool OperandQueue::bIsLocked(void)
 /*----------------------------------------------------------------------------*/
 /* peek at first thread at top of queue                                       */
 /*----------------------------------------------------------------------------*/
-OperandBuffer* OperandQueue::pPeekBuffer(void)
+OperandBuffer* OperandQueue::pPeekOperand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
   ASSERT(m_okLock.bIsLocked());
   
-  OperandBuffer* pBuffer = ListNL_t<OperandBuffer>::pHead();
+  OperandBuffer* pOperand = ListNL_t<OperandBuffer>::pHead();
 
-  return pBuffer;
+  return pOperand;
 }
 
 /*----------------------------------------------------------------------------*/
 /* pop first thread from top of queue                                         */
 /*----------------------------------------------------------------------------*/
-OperandBuffer* OperandQueue::pPopBuffer(void)
+OperandBuffer* OperandQueue::pPopOperand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
   ASSERT(m_okLock.bIsLocked());
   
-  OperandBuffer* pBuffer = ListNL_t<OperandBuffer>::pPop();
+  OperandBuffer* pOperand = ListNL_t<OperandBuffer>::pPop();
 
-  return pBuffer;
+  return pOperand;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get number of threads in queue                                             */
 /*----------------------------------------------------------------------------*/
-i8 OperandQueue::nQueuedOps(void)
+i8 OperandQueue::nQueuedOperands(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
 
-  i8 nOps = ListNL_t<OperandBuffer>::nObjects();
+  i8 nOperands = ListNL_t<OperandBuffer>::nObjects();
 
-  return nOps;
+  return nOperands;
 }
 
 /*----------------------------------------------------------------------------*/
