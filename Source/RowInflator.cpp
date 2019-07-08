@@ -234,21 +234,21 @@ void RowInflator::vInflateColumn(Row* pRow, HeadLine* aHeadLine, i8 i_ColToRetri
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_DATE_E0_2B:
+      case MC_DTE_E0_2B:
         *aiColVal++ = *(u2*)ayDataByte;
         ayDataByte += C_2B;
         vDteFromEdt((Dtm*)(aiColVal-1),C_ERA_0);
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_DATE_E1_2B:
+      case MC_DTE_E1_2B:
         *aiColVal++ = *(u2*)ayDataByte;
         ayDataByte += C_2B;
         vDteFromEdt((Dtm*)(aiColVal-1),C_ERA_1);
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_DATE_E2_2B:
+      case MC_DTE_E2_2B:
         *aiColVal++ = *(u2*)ayDataByte;
         ayDataByte += C_2B;
         vDteFromEdt((Dtm*)(aiColVal-1),C_ERA_2);
@@ -609,21 +609,21 @@ void RowInflator::vInflateColumns(Row* pRow, HeadLine* aHeadLine)
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_DATE_E0_2B:
+      case MC_DTE_E0_2B:
         *aiColVal++ = *(u2*)ayDataByte;
         ayDataByte += C_2B;
         vDteFromEdt((Dtm*)(aiColVal-1),C_ERA_0);
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_DATE_E1_2B:
+      case MC_DTE_E1_2B:
         *aiColVal++ = *(u2*)ayDataByte;
         ayDataByte += C_2B;
         vDteFromEdt((Dtm*)(aiColVal-1),C_ERA_1);
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_DATE_E2_2B:
+      case MC_DTE_E2_2B:
         *aiColVal++ = *(u2*)ayDataByte;
         ayDataByte += C_2B;
         vDteFromEdt((Dtm*)(aiColVal-1),C_ERA_2);
@@ -932,21 +932,21 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_DATE_E0_2B:
+      case MC_DTE_E0_2B:
         *aiColVal++ = *(u2*)ayDataByte;
         ayDataByte += C_2B;
         vDteFromEdt((Dtm*)(aiColVal-1),C_ERA_0);
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_DATE_E1_2B:
+      case MC_DTE_E1_2B:
         *aiColVal++ = *(u2*)ayDataByte;
         ayDataByte += C_2B;
         vDteFromEdt((Dtm*)(aiColVal-1),C_ERA_1);
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_DATE_E2_2B:
+      case MC_DTE_E2_2B:
         *aiColVal++ = *(u2*)ayDataByte;
         ayDataByte += C_2B;
         vDteFromEdt((Dtm*)(aiColVal-1),C_ERA_2);

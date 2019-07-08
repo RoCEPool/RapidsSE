@@ -706,7 +706,7 @@ void RowCompactor::vPutDataCode(_ColEnc& xColEnc)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* put data bytes for unary MC (e.g. for MC_1B..MC_8N, MC_DATE_E1_2B, ...)    */
+/* put data bytes for unary MC (e.g. for MC_1B..MC_8N, MC_DTE_E1_2B, ...)    */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vPutData_Bytes(_ColEnc& xColEnc)
 {
