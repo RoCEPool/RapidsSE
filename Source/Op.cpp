@@ -34,6 +34,8 @@ Op::Op(eCN eClassNo)
   m_pOpOut        = nullptr;
   
   m_pOperand      = nullptr;
+  
+  m_pExecutingTask = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

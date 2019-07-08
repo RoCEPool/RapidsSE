@@ -7,6 +7,8 @@ namespace PushDown
 {
   class Op : public Object
   {
+  friend Tasks::Task;
+  
   private:
     Job* m_pJob;  // job this operator belongs to
   
@@ -17,6 +19,8 @@ namespace PushDown
     Op* m_pOpOut;  // where results get queued
   
     Operand* m_pOperand; // current operand
+  
+    Tasks::Task* m_pExecutingTask;   // task executing this op
   
   public:
     Op(eCN eClass);
