@@ -155,11 +155,13 @@ namespace Tasks
     Job* pJob(void);
     void vJob(Job* pJob);
     Stz* aJobName(void);
+    eTK  eKind(void);
     void vLocalsPop(void);
     void vLocalsPush(void);
     void vMonitorPortrait(s48K& sPortrait);
     void vNewStacks(void);
     i8&  i_NextRnd(void);
+    Op*  pOp(void);
     i8   iPartition(void);
     s256& sPortrait(void);
     eQR  eQueue(void);

@@ -71,14 +71,14 @@ Task::Task(Job* pJob)
   
   m_pCompiler = (CN_JOB_BOOT == pJob->eClass()) ? new Compiler : nullptr;
 
+  _checkInitialised_(CN_TASK);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the executing task in job
   
   m_pJob->m_pExecutingTask = this;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  _checkInitialised_(CN_TASK);
   
   ActionSequence::vAdd(m_i_ActionRoot,0,
                        CN_TASK,AN_CONSTRUCTOR,
@@ -102,6 +102,8 @@ Task::Task(Op* pOp)
   m_eKind = TK_OPERATOR;
   m_pOp   = pOp;
   
+  _checkInitialised_(CN_TASK);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the executing task in job
   
@@ -109,11 +111,9 @@ Task::Task(Op* pOp)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  _checkInitialised_(CN_TASK);
-  
-   ActionSequence::vAdd(m_i_ActionRoot,0,
-                        CN_TASK,AN_CONSTRUCTOR,
-                        m_pOp->eClass(),_EG_CN);
+  ActionSequence::vAdd(m_i_ActionRoot,0,
+                       CN_TASK,AN_CONSTRUCTOR,
+                       m_pOp->eClass(),_EG_CN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }
@@ -482,6 +482,16 @@ Stz* Task::aJobName(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the kind of this task                                                  */
+/*----------------------------------------------------------------------------*/
+eTK Task::eKind(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  return m_eKind;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop locals frame                                                           */
 /*----------------------------------------------------------------------------*/
 void Task::vLocalsPop(void)
@@ -547,6 +557,16 @@ void Task::vNewStacks(void)
 i8& Task::i_NextRnd(void)
 {
   return m_i_NextRnd;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the op of this task                                                    */
+/*----------------------------------------------------------------------------*/
+Op* Task::pOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  return m_pOp;
 }
 
 /*----------------------------------------------------------------------------*/
