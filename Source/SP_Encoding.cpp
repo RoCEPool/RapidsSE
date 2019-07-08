@@ -172,6 +172,9 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
             StrLib::vAppendString(&szCrs,
                                   aColEnc->m_wDataCode.m_azStr);
           }
+          else if (MC_STR_EMPTY == aColEnc->m_eMetaCode) {
+            StrLib::vAppendString(&szCrs,(char*)""_Stz);
+          }
           else {
             StrLib::vAppendString(&szCrs,
                                   (char*)aColEnc->m_aTailLine->sz());
