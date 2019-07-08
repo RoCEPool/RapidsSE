@@ -175,6 +175,49 @@ Task::Task(Op* pOp)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+void Task::vInit(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  m_okLock.vInitLock(LK_TASK);
+  
+  m_eKind        = TK_NONE;
+  m_pJob         = nullptr;
+  
+  m_iQueueOrder  = C_UNKNOWN;
+  m_iPartition   = C_UNKNOWN;
+  
+  m_eState       = TS_NONE;
+  m_eQueue       = QR_NONE;
+  m_oAcksRemaining.vCheckInit();
+  m_pThread      = nullptr;
+  
+  m_pDataStack   = nullptr;
+  m_pReturnStack = nullptr;
+  m_pAuxStack    = nullptr;
+  
+  m_pLocalsFrame = nullptr;
+  
+  FIP.m_aCell    = nullptr;
+  
+  m_pCompiler    = nullptr;
+  
+  m_iTracing     = C_TRACE_NONE;
+  m_i_ActionRoot = C_UNKNOWN;
+  m_i_NextRnd    = gpAttachMap->Arg.m_bDeveloper ? 0 : C_UNKNOWN;
+  
+  m_pSession     = nullptr;
+  
+  m_iDdlLocked   = 0;
+  
+  m_pSendNode    = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Task::~Task(void) noexcept(false)

@@ -134,6 +134,7 @@ namespace Tasks
     
     Task(Job* pJob);
     Task(Op* pOp);
+    void vInit(void);
     ~Task(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
