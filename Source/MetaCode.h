@@ -31,11 +31,11 @@ namespace Rows
   /* 19 */ MC_NINE,        // 9  (no bytes in data code )
   /* 20 */ MC_TEN,         // 10 (no bytes in data code )
   
-  /* 21 */ MC_SAME,        // same as previous (no bytes in data code )
-  /* 22 */ MC_ADD_1B,      // previous + 1B in data code
-  /* 23 */ MC_ADD_2B,      // previous + 2B in data code
-  /* 24 */ MC_SUB_1B,      // previous - 1B in data code
-  /* 25 */ MC_SUB_2B,      // previous - 2B in data code
+//  /* 21 */ MC_SAME,        // same as previous (no bytes in data code )
+//  /* 22 */ MC_ADD_1B,      // previous + 1B in data code
+//  /* 23 */ MC_ADD_2B,      // previous + 2B in data code
+//  /* 24 */ MC_SUB_1B,      // previous - 1B in data code
+//  /* 25 */ MC_SUB_2B,      // previous - 2B in data code
   
   /* 26 */ MC_FALSE,       // false (no bytes in data code )
   /* 27 */ MC_TRUE,        // true  (no bytes in data code )

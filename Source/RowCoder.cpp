@@ -61,13 +61,7 @@ i8 RowCoder::nDataSize(eMC eMetaCode)
     case MC_EIGHT:
     case MC_NINE:
     case MC_TEN:
-    case MC_SAME:
       return 0;
-      
-    case MC_ADD_1B:  return 1;
-    case MC_ADD_2B:  return 2;
-    case MC_SUB_1B:  return 1;
-    case MC_SUB_2B:  return 2;
       
     case MC_FALSE:
     case MC_TRUE:
