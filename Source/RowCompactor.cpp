@@ -724,92 +724,57 @@ void RowCompactor::vPutData_Bytes(_ColEnc& xColEnc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* put data bytes for MC_BSTR_FIT_2L : <2L><Stl>                              */
+/* put data bytes for MC_BSTR_FIT_2L : <LL><LongN>                            */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vPutData_BSTR_FIT_2L(_ColEnc& xColEnc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  // get <Stl>
-  char* azStr = (char*)xColEnc.m_wDataCode.m_szVch;
+  // get <LongN>
+  char* azLongN = (char*)xColEnc.m_wDataCode.m_szVch;
   
-  // calc <2L>
-  i8 n2L = xColEnc.m_nDataSize - C_L_2B;
-  RASSERT(n2L == StrLib::iLength(azStr) + C_NULL_1B);
-  RASSERT(n2L < (i8)C_2_BYTES);
+  // calc <LL>
+  i8 nLL = xColEnc.m_nDataSize - C_L_2B;
+  RASSERT(nLL == StrLib::iLength(azLongN) + C_NULL_1B);
+  RASSERT(nLL < (i8)C_2_BYTES);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   //      -- HeadLine / OverLine --
   // +--------------------------------+
-  // | ...<L>                         |
+  // | ...<LL>                        |
   // +--------------------------------+
   
-  // put <2L>
+  // put <LL>
   m_aHeadLine->vPutLogical(xColEnc.m_i_Offset,
-                           n2L,
+                           nLL,
                            C_2B);
   
   //      -- HeadLine / OverLine --
   // +--------------------------------+
-  // | ...<L><Stl>                    |
+  // | ...<LL><LongN>                 |
   // +--------------------------------+
   
-  // put <Stl> without null terminator
+  // put <LongN> (has null terminator)
   m_aHeadLine->vPutLogical(xColEnc.m_i_Offset + C_L_1B,
-                           (Stz*)azStr,
-                           n2L);
+                           (Stz*)azLongN,
+                           nLL);
 }
-/*----------------------------------------------------------------------------*/
-//void RowCompactor::vPutData_BSTR_FIT_2L(_ColEnc& xColEnc)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-//
-//  // get <Stl>
-//  char* azStr = (char*)xColEnc.m_wDataCode.m_szVch;
-//
-//  // calc <2L>
-//  i8 n2L = xColEnc.m_nDataSize - 1;
-//  RASSERT(n2L == StrLib::iLength(azStr));
-//  RASSERT(n2L < (i8)C_2_BYTES);
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  //      -- HeadLine / OverLine --
-//  // +--------------------------------+
-//  // | ...<L>                         |
-//  // +--------------------------------+
-//
-//  // put <2L>
-//  m_aHeadLine->vPutLogical(xColEnc.m_i_Offset,
-//                           n2L,
-//                           C_2B);
-//
-//  //      -- HeadLine / OverLine --
-//  // +--------------------------------+
-//  // | ...<L><Stl>                    |
-//  // +--------------------------------+
-//
-//  // put <Stl> without null terminator
-//  m_aHeadLine->vPutLogical(xColEnc.m_i_Offset + C_L_1B,
-//                           (Stz*)azStr,
-//                           n2L);
-//}
 
 /*----------------------------------------------------------------------------*/
-/* put data bytes for MC_STR_FIT_1L : <1L><Stl>                               */
+/* put data bytes for MC_STR_FIT_1L : <L><ShortN>                             */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vPutData_STR_FIT_1L(_ColEnc& xColEnc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  // get <Stl>
-  char* azStr = (char*)xColEnc.m_wDataCode.m_szVch;
+  // get <ShortN>
+  char* azShortN = (char*)xColEnc.m_wDataCode.m_szVch;
   
-  // calc <1L>
-  i8 n1L = xColEnc.m_nDataSize - C_L_1B;
-  RASSERT(n1L == StrLib::iLength(azStr) + C_NULL_1B);
-  RASSERT(n1L < (i8)C_1_BYTE);
+  // calc <L>
+  i8 nL = xColEnc.m_nDataSize - C_L_1B;
+  RASSERT(nL == StrLib::iLength(azShortN) + C_NULL_1B);
+  RASSERT(nL < (i8)C_1_BYTE);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -818,56 +783,21 @@ void RowCompactor::vPutData_STR_FIT_1L(_ColEnc& xColEnc)
   // | ...<L>                         |
   // +--------------------------------+
   
-  // put <1L>
+  // put <L>
   m_aHeadLine->vPutLogical(xColEnc.m_i_Offset,
-                           n1L,
+                           nL,
                            C_1B);
   
   //      -- HeadLine / OverLine --
   // +--------------------------------+
-  // | ...<L><Stl>                    |
+  // | ...<L><ShortN>                 |
   // +--------------------------------+
   
-  // put <Stl> without null terminator
+  // put <ShortN> (has null terminator)
   m_aHeadLine->vPutLogical(xColEnc.m_i_Offset + C_L_1B,
-                           (Stz*)azStr,
-                           n1L);
+                           (Stz*)azShortN,
+                           nL);
 }
-/*----------------------------------------------------------------------------*/
-//void RowCompactor::vPutData_STR_FIT_1L(_ColEnc& xColEnc)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-//
-//  // get <Stl>
-//  char* azStr = (char*)xColEnc.m_wDataCode.m_szVch;
-//
-//  // calc <1L>
-//  i8 n1L = xColEnc.m_nDataSize - 1;
-//  RASSERT(n1L == StrLib::iLength(azStr));
-//  RASSERT(n1L < (i8)C_1_BYTE);
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  //      -- HeadLine / OverLine --
-//  // +--------------------------------+
-//  // | ...<L>                         |
-//  // +--------------------------------+
-//
-//  // put <1L>
-//  m_aHeadLine->vPutLogical(xColEnc.m_i_Offset,
-//                           n1L,
-//                           C_1B);
-//
-//  //      -- HeadLine / OverLine --
-//  // +--------------------------------+
-//  // | ...<L><Stl>                    |
-//  // +--------------------------------+
-//
-//  // put <Stl> without null terminator
-//  m_aHeadLine->vPutLogical(xColEnc.m_i_Offset + C_L_1B,
-//                           (Stz*)azStr,
-//                           n1L);
-//}
 
 /*----------------------------------------------------------------------------*/
 /* put data bytes for MC_STR_TAIL_2T : [TL]                                   */
