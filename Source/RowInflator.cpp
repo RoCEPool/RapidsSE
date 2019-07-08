@@ -59,7 +59,7 @@ void RowInflator::vInflateColumn(Row* pRow, HeadLine* aHeadLine, i8 i_ColToRetri
           break;
           
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        case MC_BSTR_FIT_2L:
+        case MC_STR_FIT_2L:
           wWord.m_iI8 = 0;
           wWord.m_yaByte[0] = *ayDataByte++;
           wWord.m_yaByte[1] = *ayDataByte++;
@@ -288,7 +288,7 @@ void RowInflator::vInflateColumn(Row* pRow, HeadLine* aHeadLine, i8 i_ColToRetri
         break;
         
          // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_BSTR_FIT_2L:
+      case MC_STR_FIT_2L:
         wWord.m_iI8 = 0;
         wWord.m_yaByte[0] = *ayDataByte++;
         wWord.m_yaByte[1] = *ayDataByte++;
@@ -435,7 +435,7 @@ void RowInflator::vInflateColumns(Row* pRow, HeadLine* aHeadLine)
           break;
           
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        case MC_BSTR_FIT_2L:
+        case MC_STR_FIT_2L:
           wWord.m_iI8 = 0;
           wWord.m_yaByte[0] = *ayDataByte++;
           wWord.m_yaByte[1] = *ayDataByte++;
@@ -663,7 +663,7 @@ void RowInflator::vInflateColumns(Row* pRow, HeadLine* aHeadLine)
         break;
                 
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_BSTR_FIT_2L:
+      case MC_STR_FIT_2L:
         wWord.m_iI8 = 0;
         wWord.m_yaByte[0] = *ayDataByte++;
         wWord.m_yaByte[1] = *ayDataByte++;
@@ -986,7 +986,7 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
          break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_BSTR_FIT_2L:
+      case MC_STR_FIT_2L:
         wWord.m_iI8 = 0;
         wWord.m_yaByte[0] = *ayDataByte++;
         wWord.m_yaByte[1] = *ayDataByte++;

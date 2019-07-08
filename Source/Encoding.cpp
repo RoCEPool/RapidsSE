@@ -491,9 +491,9 @@ void Encoding::vEncodeVch(_ColEnc& xColEnc, Dtm wColVal)
     return;
   }
   
-  // 3) long string case -- encode as: MC_BSTR_FIT_2L + {<LL><LongN>}
+  // 3) long string case -- encode as: MC_STR_FIT_2L + {<LL><LongN>}
   if (nL <= (i8)C_2_BYTES) {
-    xColEnc.m_eMetaCode = MC_BSTR_FIT_2L;
+    xColEnc.m_eMetaCode = MC_STR_FIT_2L;
     xColEnc.m_wDataCode.m_azStr = azDst;
     xColEnc.m_nDataSize = C_L_2B
                             + nL
@@ -539,9 +539,9 @@ void Encoding::vEncodeVch(_ColEnc& xColEnc, Dtm wColVal)
 //    return;
 //  }
 //
-//  // 3) long string case -- encode as: MC_BSTR_FIT_2L + {<LL><Long>}
+//  // 3) long string case -- encode as: MC_STR_FIT_2L + {<LL><Long>}
 //  if (nL <= (i8)C_2_BYTES) {
-//    xColEnc.m_eMetaCode = MC_BSTR_FIT_2L;
+//    xColEnc.m_eMetaCode = MC_STR_FIT_2L;
 //    xColEnc.m_wDataCode.m_azStr = azDst;
 //    xColEnc.m_nDataSize = C_L_2B + nL;
 //    return;

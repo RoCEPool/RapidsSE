@@ -15,7 +15,7 @@
 i8 RowCoder::iAuxLen(eMC eMetaCode)
 {
   if (MC_STR_FIT_1L   == eMetaCode) return 1;
-  if (MC_BSTR_FIT_2L  == eMetaCode) return 2;
+  if (MC_STR_FIT_2L  == eMetaCode) return 2;
 
   return 0;
 }
@@ -77,7 +77,7 @@ i8 RowCoder::nDataSize(eMC eMetaCode)
     case MC_STR_FIT_1L:       return 1;
     case MC_STR_TAIL_2T:      return 2;
       
-    case MC_BSTR_FIT_2L:      return 2;
+    case MC_STR_FIT_2L:      return 2;
       
     case MC_OVERFLOW_2T:
       return 2;
@@ -141,7 +141,7 @@ void RowCoder::vDteIntoEdt(Dtm wDte,
 bool RowCoder::bHasAuxLen(eMC eMetaCode)
 {
   if (   MC_STR_FIT_1L   == eMetaCode // <L><Short>
-      || MC_BSTR_FIT_2L  == eMetaCode // <C><Shoco>
+      || MC_STR_FIT_2L  == eMetaCode // <C><Shoco>
       )
     return true;
   

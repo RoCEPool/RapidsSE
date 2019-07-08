@@ -373,7 +373,7 @@ void RowDecoder::vDecodeVch(DtmVal* pDtmVal, HeadLine* aHeadLine,
   else if (MC_STR_FIT_1L == eEncoding)
     vDecodeVchSmall(pDtmVal,aHeadLine,pCol,i_OfsCrs_);
   
-  else if (MC_BSTR_FIT_2L == eEncoding)
+  else if (MC_STR_FIT_2L == eEncoding)
     vDecodeVchLong(pDtmVal,aHeadLine,pCol,i_OfsCrs_);
   
   else if (MC_STR_TAIL_2T == eEncoding)

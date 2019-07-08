@@ -44,7 +44,7 @@ namespace Rows
                                //    head: 2B->tail
                                //    tail: has 1B=len, then ascii
   
-  /* 38 */ MC_BSTR_FIT_2L,     // bigger ascii string: 2B=len then ascii
+  /* 38 */ MC_STR_FIT_2L,     // bigger ascii string: 2B=len then ascii
   
   /* 52 */ MC_OVERFLOW_2T,     // overflow tail (2B->overflow tail)
   
@@ -87,7 +87,7 @@ namespace Rows
   /* 33 */ "MC_STR_EMPTY"_Stz,
   /* 35 */ "MC_STR_FIT_1L"_Stz,
   /* 36 */ "MC_STR_TAIL_2T"_Stz,
-  /* 36 */ "MC_BSTR_FIT_2L"_Stz,
+  /* 36 */ "MC_STR_FIT_2L"_Stz,
 
   /* 53 */ "MC_ENUMS"_Stz,
   };
@@ -144,7 +144,7 @@ namespace Rows
                                    //   head: 2B->tail, 1B=len, then part-ascii
                                    //   tail: has remaining ascii
   
-  /* 38 */ 2, // MC_BSTR_FIT_2L,   // bigger ascii string: 2B=len then ascii
+  /* 38 */ 2, // MC_STR_FIT_2L,   // bigger ascii string: 2B=len then ascii
   /* 39 */ 2, // MC_BSTR_TAIL_2T,  // bigger ascii string:
                                    //    head: 2B->tail
                                    //    tail: has 2B=len, then ascii

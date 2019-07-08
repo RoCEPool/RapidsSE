@@ -155,7 +155,7 @@ void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec)
       RASSERT(1 == nBytes);
       nBytes += aHeadLine->wGetLogical(i_Offset,C_1B);
     }
-    if (MC_BSTR_FIT_2L == eMetaCode) {
+    if (MC_STR_FIT_2L == eMetaCode) {
       RASSERT(2 == nBytes);
       nBytes += aHeadLine->wGetLogical(i_Offset,C_2B);
     }
@@ -200,7 +200,7 @@ void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec)
       vTrace(" [ =%lld ]"_Stz,i1L);
     }
     else
-    if (MC_BSTR_FIT_2L == eMetaCode) {
+    if (MC_STR_FIT_2L == eMetaCode) {
       i8 i2L = aHeadLine->wGetLogical(i_Offset,C_2B);
       vTrace(" [ =%lld ]"_Stz,i2L);
     }
