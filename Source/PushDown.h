@@ -14,6 +14,8 @@ using namespace PushDown;
 
 //------------------------------------------------------------------------------
 
+#include "BufferQueue.hpp"
+
 #include "Op.hpp"
 
 #include "AggOp.hpp"
