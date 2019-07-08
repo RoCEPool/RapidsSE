@@ -330,7 +330,7 @@ void RowCompactor::vCreateTail(Column* pCol, Row* pOuterRow, Row* pInnerRow)
   
   //           -- TailLine --
   // **********************************
-  // * <U><L><Stl> ////////////////// *
+  // * <U><L><StringN> ////////////// *
   // **********************************
   //
   

@@ -96,12 +96,18 @@ void TailLine::vU(i8 nUnits)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* assign string a                                                            */
+/* assign string                                                              */
 /*----------------------------------------------------------------------------*/
-void TailLine::vAssign(Stz* szStz)
+void TailLine::vAssign(Stz* szStz)               //! still need to do long tails
 {
+  //           -- TailLine --
+  // **********************************
+  // * <U><L><StringN> ////////////// *
+  // **********************************
+  //
+  
   char* azStr = (char*)szStz;
-  i8 nL = StrLib::nCopy_nonull((char*)sz(),azStr);
+  i8 nL = StrLib::nCopy((char*)sz(),azStr) + C_NULL_1B;
   
   vL(nL);
 }
@@ -120,6 +126,12 @@ void TailLine::vDump(void)
 /*----------------------------------------------------------------------------*/
 Stz* TailLine::sz(void)
 {
+  //           -- TailLine --
+  // **********************************
+  // * <U><L><StringN> ////////////// *
+  // **********************************
+  //
+  
   Stz* szStz = (Stz*) &m_yaByte[C_U_1B + C_L_1B];
   
   return szStz;
