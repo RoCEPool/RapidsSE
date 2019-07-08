@@ -13,7 +13,7 @@ namespace Pool
   
     char m__aPadding[16];       // round up to cacheline
 
-    // ..data..
+    // ..allocated object..
     
   public:
     void* operator new(size_t);

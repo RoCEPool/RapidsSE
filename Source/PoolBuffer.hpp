@@ -11,7 +11,7 @@ namespace Pool
     bn   m_nBufferNo;        // this buffer number
     bn   m_nOverflowBuffer;  // logical overflow
     Stz* m_aLastByte;
-    // ..data..
+    // ..heap buffer..
     
   public:
     void* operator new(size_t);

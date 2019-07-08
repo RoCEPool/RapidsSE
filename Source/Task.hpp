@@ -57,11 +57,11 @@ namespace Tasks
 
   private:
   
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // keep
-
-    Job*    m_pJob;         // the job for this task
-
+    union {
+      Job*  m_pJob;         // the job for this task   [DDL]
+      Op*   m_pOp;          // OR the op for this task [DML]
+    };
+  
     Threads::Thread* m_pThread; // current thread
   
     eTK     m_eState;       // state (running, sleeping, ...)
