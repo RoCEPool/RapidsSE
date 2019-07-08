@@ -452,6 +452,18 @@ void Thread::vSpawnPthread(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* spawn the os/posix pthread associated with this op thread                  */
+/*----------------------------------------------------------------------------*/
+void Thread::vSpawnPthread_Op(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  bool bResult = m_pPthread->bSpawnThread(Thread::aEntryPointOp,this);
+  
+  ASSERT(bResult);
+}
+
+/*----------------------------------------------------------------------------*/
 /* spawn the os/posix pthread associated with this dummy thread               */
 /*----------------------------------------------------------------------------*/
 void Thread::vSpawnPthread_Dummy(void)

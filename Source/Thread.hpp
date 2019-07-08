@@ -73,6 +73,7 @@ namespace Threads
     void vRRstart(void);
     void vSpawnPthread(void);
     void vSpawnPthread_Dummy(void);
+    void vSpawnPthread_Op(void);
     Task* pTask(void);
     i8   iThreadNo(void);
     eTD  eThreadState(void);
