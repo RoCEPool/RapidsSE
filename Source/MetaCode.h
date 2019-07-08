@@ -129,7 +129,7 @@ namespace Rows
   /* 26 */ 0, // MC_STR_EMPTY,   // empty string (no bytes in data code)
   /* 27 */ 1, // MC_STR_FIT_1L,  // ascii string: 1B=len, then ascii with null term
   /* 28 */ 2, // MC_STR_FIT_2L,  // ascii string: 2B=len, then ascii with null term
-  /* 29 */ 2, // MC_STR_TAIL_2T, // longer ascii string:
+  /* 29 */ 2, // MC_STR_TAIL_2T, // ascii string in tail:
                                  //   head: 2B->tail
                                  //   tail: has 1B=len, then ascii with null term
   
