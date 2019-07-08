@@ -64,38 +64,45 @@ Task::Task(Job* pJob)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_okLock.vInitLock(LK_TASK);
+  vInit();
   
-  m_eKind        = TK_JOB;
-  m_pJob         = pJob;
+  m_eKind = TK_JOB;
+  m_pJob  = pJob;
   
-  m_iQueueOrder  = C_UNKNOWN;
-  m_iPartition   = C_UNKNOWN;
-  
-  m_eState       = TS_NONE;
-  m_eQueue       = QR_NONE;
-  m_oAcksRemaining.vCheckInit();
-  m_pThread      = nullptr;
-  
-  m_pDataStack   = nullptr;
-  m_pReturnStack = nullptr;
-  m_pAuxStack    = nullptr;
-  
-  m_pLocalsFrame = nullptr;
-  
-  FIP.m_aCell    = nullptr;
-  
-  m_pCompiler    = (CN_JOB_BOOT == pJob->eClass()) ? new Compiler : nullptr;
-  
-  m_iTracing     = C_TRACE_NONE;
-  m_i_ActionRoot = pJob->m_i_ActionRoot;
-  m_i_NextRnd    = gpAttachMap->Arg.m_bDeveloper ? 0 : C_UNKNOWN;
-  
-  m_pSession     = nullptr;
-  
-  m_iDdlLocked   = 0;
-  
-  m_pSendNode    = nullptr;
+  m_pCompiler = (CN_JOB_BOOT == pJob->eClass()) ? new Compiler : nullptr;
+
+//  m_okLock.vInitLock(LK_TASK);
+//
+//  m_eKind        = TK_JOB;
+//  m_pJob         = pJob;
+//
+//  m_iQueueOrder  = C_UNKNOWN;
+//  m_iPartition   = C_UNKNOWN;
+//
+//  m_eState       = TS_NONE;
+//  m_eQueue       = QR_NONE;
+//  m_oAcksRemaining.vCheckInit();
+//  m_pThread      = nullptr;
+//
+//  m_pDataStack   = nullptr;
+//  m_pReturnStack = nullptr;
+//  m_pAuxStack    = nullptr;
+//
+//  m_pLocalsFrame = nullptr;
+//
+//  FIP.m_aCell    = nullptr;
+//
+//  m_pCompiler    = (CN_JOB_BOOT == pJob->eClass()) ? new Compiler : nullptr;
+//
+//  m_iTracing     = C_TRACE_NONE;
+//  m_i_ActionRoot = pJob->m_i_ActionRoot;
+//  m_i_NextRnd    = gpAttachMap->Arg.m_bDeveloper ? 0 : C_UNKNOWN;
+//
+//  m_pSession     = nullptr;
+//
+//  m_iDdlLocked   = 0;
+//
+//  m_pSendNode    = nullptr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the executing task in job
@@ -175,7 +182,7 @@ Task::Task(Op* pOp)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
+/* init task                                                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vInit(void)
 {
