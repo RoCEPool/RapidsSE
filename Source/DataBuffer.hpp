@@ -8,11 +8,11 @@ namespace MetaData
   class DataBuffer : public LinkedBuffer
   {
   protected:
-    Lock   m_okLock;       // lock
-    i8     m_iBufferNo;    // this DataBuffer's buffer number
-    i8     m_iPartitionNo; // partition no this buffer belongs to
-    i8     m_iBufferHeight;    // buffer height in the tree
-    Birth  m_oWhenNewed;   // when was this buffer created?
+    Lock   m_okLock;        // lock
+    i8     m_iBufferNo;     // this DataBuffer's buffer number
+    i8     m_iPartitionNo;  // partition no this buffer belongs to
+    i8     m_iBufferHeight; // buffer height in the tree
+    Birth  m_oWhenNewed;    // when was this buffer created?
 
   public:
     DataBuffer(eCN eClass);

@@ -50,6 +50,8 @@ using namespace MetaData;
 #include "Tenant.hpp"
 #include "Tenants.hpp"
 
+#include "LinkedBuffer.hpp"
+#include "OperandBuffer.hpp"
 #include "DataBuffer.hpp"
 
 

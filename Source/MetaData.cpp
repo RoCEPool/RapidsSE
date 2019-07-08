@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* MetaData.cpp - MetaData namespace functions                                  */
+/* MetaData.cpp - MetaData namespace functions                                */
 /*============================================================================*/
 
 #include "MetaData.h"
@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 void MetaData::vCheckAssumptions(void)
 {
+  ASSERT(sizeof(LinkedBuffer)  == sizeof(CacheLine));
+  ASSERT(sizeof(OperandBuffer) == 2 * sizeof(CacheLine));
 }
 
 /*============================================================================*/

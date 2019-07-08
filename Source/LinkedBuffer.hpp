@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Structures
+namespace MetaData
 {
   class LinkedBuffer : public AlignedObject
   {
@@ -14,6 +14,7 @@ namespace Structures
     LinkedBuffer* m_pHigherBuffer; // higher buffer
     LinkedBuffer* m_pLowerBuffer;  // lower buffer
   
+  private:
     Word          m__Padding[3];   // padding to cache line
 
   public:

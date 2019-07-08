@@ -13,7 +13,10 @@ int main(int argc, const char* argv[])
 {
   Process::vEntry();
   
-  //vTrace("Task %lld\n"_Stz,sizeof(Task));
+  vTrace("AlignedObject %lld\n"_Stz,sizeof(AlignedObject));
+  vTrace("LinkedBuffer %lld\n"_Stz,sizeof(LinkedBuffer));
+  vTrace("ListNode_t<> %lld\n"_Stz,sizeof(ListNode_t<OperandBuffer>));
+  vTrace("OperandBuffer %lld\n"_Stz,sizeof(OperandBuffer));
   
 //  Timer xTimer;
 //  

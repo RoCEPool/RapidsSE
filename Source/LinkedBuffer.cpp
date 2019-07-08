@@ -2,7 +2,7 @@
 /* LinkedBuffer.cpp -- Linked Buffer                                          */
 /*============================================================================*/
 
-#include "Structures.h"
+#include "MetaData.h"
 
 #include "StorageEngine.h"
 
@@ -15,7 +15,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-LinkedBuffer* Structures::_pLinkedBuffer(void* aAddress)
+LinkedBuffer* MetaData::_pLinkedBuffer(void* aAddress)
 {
   LinkedBuffer* pLinkedBuffer = reinterpret_cast<LinkedBuffer*>(aAddress);
   
