@@ -17,7 +17,8 @@ int main(int argc, const char* argv[])
   vTrace("LinkedBuffer %lld\n"_Stz,sizeof(LinkedBuffer));
   vTrace("ListNode_t<> %lld\n"_Stz,sizeof(ListNode_t<OperandBuffer>));
   vTrace("OperandBuffer %lld\n"_Stz,sizeof(OperandBuffer));
-  
+  vTrace("Operand %lld\n"_Stz,sizeof(Operand));
+
 //  Timer xTimer;
 //  
 //  xTimer.vStart();
