@@ -14,7 +14,7 @@ using namespace PushDown;
 
 //------------------------------------------------------------------------------
 
-#include "BufferQueue.hpp"
+#include "OperandQueue.hpp"
 
 #include "Op.hpp"
 

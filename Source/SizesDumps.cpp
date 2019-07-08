@@ -374,7 +374,7 @@ i8 giClassSize[]
   /* 29 */ sizeof(BPA),                // CN_BPA
   /*    */ sizeof(BufferCursor),       // CN_BUFFERCURSOR
   /* 28 */ sizeof(BufferPool),         // CN_BUFFERPOOL
-  /* 28 */ sizeof(BufferQueue),        // CN_BUFFERQUEUE
+  /* 28 */ sizeof(OperandQueue),       // CN_BUFFERQUEUE
   /* 28 */ sizeof(ByteRate),           // CN_BYTERATE
 
   /* 30 */ sizeof(CarryOver),          // CN_CARRYOVER
