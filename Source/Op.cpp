@@ -20,12 +20,16 @@ Op* PushDown::_pOp(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Op::Op(eCN eClassNo)
 : Object(eClassNo)
 {
   _precondition_(_MAGIC_,eClassNo);
+  
+  m_pOperandQueue = new OperandQueue;
+  //! m_fpOpEntryPt;
+  m_pOpOut = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
