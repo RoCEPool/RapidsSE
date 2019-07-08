@@ -26,7 +26,7 @@ Operand* MetaData::_pOperand(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Operand::Operand(eCN eClassNo)
-: AlignedObject(eClassNo,sizeof(AlignedObject))
+: AlignedObject(eClassNo,sizeof(Operand))
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
     

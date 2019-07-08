@@ -26,7 +26,7 @@ DataBuffer* MetaData::_pDataBuffer(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 DataBuffer::DataBuffer(eCN eClassNo)
-: OperandBuffer(eClassNo)
+: LinkedBuffer(eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   

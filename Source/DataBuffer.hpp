@@ -5,7 +5,7 @@
 
 namespace MetaData
 {
-  class DataBuffer : public OperandBuffer
+  class DataBuffer : public LinkedBuffer
   {
   protected:
     Lock   m_okLock;        // lock

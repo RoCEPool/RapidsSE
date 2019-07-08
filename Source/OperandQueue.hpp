@@ -5,7 +5,7 @@
 
 namespace PushDown
 {
-  class OperandQueue : public ListNL_t<OperandBuffer>
+  class OperandQueue : public ListNL_t<Operand>
   {
   private:
     Lock m_okLock;
@@ -20,13 +20,13 @@ namespace PushDown
     OperandQueue(void);
     ~OperandQueue(void) noexcept(false);
     
-    void vAppendOperand(OperandBuffer* pOperand);
+    void vAppendOperand(Operand* pOperand);
     void vDropLock(void);
     void vGrabLock(void);
     bool bGrabLock(void);
     bool bIsLocked(void);
-    OperandBuffer*  pPeekOperand(void);
-    OperandBuffer*  pPopOperand(void);
+    Operand*  pPeekOperand(void);
+    Operand*  pPopOperand(void);
     i8   nQueuedOperands(void);
   
     void vContentDump(void);

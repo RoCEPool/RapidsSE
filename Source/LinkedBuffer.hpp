@@ -5,7 +5,7 @@
 
 namespace MetaData
 {
-  class LinkedBuffer : public AlignedObject
+  class LinkedBuffer : public Operand
   {
   protected:
     LinkedBuffer* m_pNextBuffer;   // next buffer
@@ -15,7 +15,7 @@ namespace MetaData
     LinkedBuffer* m_pLowerBuffer;  // lower buffer
   
   private:
-    Word          m__Padding[3];   // padding to cache line
+    Word          m__Padding[4];   // padding to cache line
 
   public:
     LinkedBuffer(eCN eClass);

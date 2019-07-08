@@ -9,8 +9,8 @@
 /*----------------------------------------------------------------------------*/
 void MetaData::vCheckAssumptions(void)
 {
-  ASSERT(sizeof(LinkedBuffer)  == sizeof(CacheLine));
-  ASSERT(sizeof(OperandBuffer) == 2 * sizeof(CacheLine));
+  ASSERT(sizeof(Operand)      == sizeof(CacheLine));
+  ASSERT(sizeof(LinkedBuffer) == 2 * sizeof(CacheLine));
 }
 
 /*============================================================================*/

@@ -40,7 +40,7 @@ void OperandQueue::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 OperandQueue::OperandQueue(void)
-: ListNL_t<OperandBuffer>(CN_OPERANDQUEUE)
+: ListNL_t<Operand>(CN_OPERANDQUEUE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
@@ -62,11 +62,11 @@ OperandQueue::~OperandQueue(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append thread to end of queue                                              */
 /*----------------------------------------------------------------------------*/
-void OperandQueue::vAppendOperand(OperandBuffer* pOperand)
+void OperandQueue::vAppendOperand(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
-  ListNL_t<OperandBuffer>::vAppend(pOperand);
+  ListNL_t<Operand>::vAppend(pOperand);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -112,13 +112,13 @@ bool OperandQueue::bIsLocked(void)
 /*----------------------------------------------------------------------------*/
 /* peek at first thread at top of queue                                       */
 /*----------------------------------------------------------------------------*/
-OperandBuffer* OperandQueue::pPeekOperand(void)
+Operand* OperandQueue::pPeekOperand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
   ASSERT(m_okLock.bIsLocked());
   
-  OperandBuffer* pOperand = ListNL_t<OperandBuffer>::pHead();
+  Operand* pOperand = ListNL_t<Operand>::pHead();
 
   return pOperand;
 }
@@ -126,13 +126,13 @@ OperandBuffer* OperandQueue::pPeekOperand(void)
 /*----------------------------------------------------------------------------*/
 /* pop first thread from top of queue                                         */
 /*----------------------------------------------------------------------------*/
-OperandBuffer* OperandQueue::pPopOperand(void)
+Operand* OperandQueue::pPopOperand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
   ASSERT(m_okLock.bIsLocked());
   
-  OperandBuffer* pOperand = ListNL_t<OperandBuffer>::pPop();
+  Operand* pOperand = ListNL_t<Operand>::pPop();
 
   return pOperand;
 }
@@ -144,7 +144,7 @@ i8 OperandQueue::nQueuedOperands(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
 
-  i8 nOperands = ListNL_t<OperandBuffer>::nObjects();
+  i8 nOperands = ListNL_t<Operand>::nObjects();
 
   return nOperands;
 }
@@ -158,7 +158,7 @@ void OperandQueue::vContentDump(void)
   
   ASSERT(m_okLock.bIsLocked());
 
-  vTrace("ITEMS %lld\n"_Stz,ListNL_t<OperandBuffer>::nObjects());
+  vTrace("ITEMS %lld\n"_Stz,ListNL_t<Operand>::nObjects());
   
 //  for (Op* pOp = ListNL_t<Op>::pHead();
 //       pOp;

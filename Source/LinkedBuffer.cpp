@@ -26,7 +26,7 @@ LinkedBuffer* MetaData::_pLinkedBuffer(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 LinkedBuffer::LinkedBuffer(eCN eClassNo)
-: AlignedObject(eClassNo,sizeof(LinkedBuffer))
+: Operand(eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   

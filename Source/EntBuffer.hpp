@@ -12,7 +12,7 @@ namespace MetaData
   static const bool C_FINAL     = true;
 
   class EntBuffer : public DataBuffer,
-                      public MiniHeap_t<Ent>
+                    public MiniHeap_t<Ent>
   {
   friend class IndexTree;
 
