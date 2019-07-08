@@ -904,6 +904,12 @@ void Engine::vStartSystem(void)
     Thread* pThread = new Thread;
     pThread->vSpawnPthread_Dummy();
   }
+  
+  // spawn op threads
+  for (i8 iThreads = 0; iThreads < gxArguments.m_nOpThreads; iThreads++) {
+    Thread* pThread = new Thread;
+    pThread->vSpawnPthread_Op();
+  }
 
   while (*gpAttachMap->m_ixThreads != gxArguments.m_nThreads)
     Pthread::vSleepMsec(10,CN_NONE);
