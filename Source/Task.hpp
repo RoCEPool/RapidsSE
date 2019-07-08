@@ -49,6 +49,26 @@ namespace Tasks
     /* 8 */ "ENUMS"_Stz,
   };
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  enum eTSK // Task Type
+  {
+  /* 0 */ TSK_NONE=0,
+  /* 1 */ TSK_JOB,      // task is a job
+  /* 2 */ TSK_OPERATOR, // task is an operator
+  /* 3 */ TSK_ENUMS
+  };
+
+  static Stz* aTSK[]
+  {
+  /* 0 */ "NONE"_Stz,
+  /* 1 */ "JOB"_Stz,
+  /* 2 */ "OPERATOR"_Stz,
+  /* 3 */ "ENUMS"_Stz,
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   class Task : public Object,
                public ListNode_t<Task>
   {
