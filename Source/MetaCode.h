@@ -39,14 +39,10 @@ namespace Rows
   /* 30 */ MC_DATE_E2_2B,  // date in era 2 expressed as 2B in data code
   
   /* 33 */ MC_STR_EMPTY,       // empty string (no bytes in data code )
-//  /* 34 */ MC_STR_DUP_2H,      // duplicate string (2B->head)
   /* 35 */ MC_STR_FIT_1L,      // ascii string: 1B=len, then ascii
   /* 36 */ MC_STR_TAIL_2T,     // ascii string in tail:
                                //    head: 2B->tail
                                //    tail: has 1B=len, then ascii
-//  /* 37 */ MC_STR_SPLIT_2T1L,  // ascii string split between head and tail:
-//                               //   head: 2B->tail, 1B=len, then part-ascii
-//                               //   tail: has remaining ascii
   
   /* 38 */ MC_BSTR_FIT_2L,     // bigger ascii string: 2B=len then ascii
   
@@ -89,11 +85,10 @@ namespace Rows
   /* 30 */ "MC_DATE_E2_2B"_Stz,
   
   /* 33 */ "MC_STR_EMPTY"_Stz,
-  /* 34 */ "MC_STR_DUP_2H"_Stz,
   /* 35 */ "MC_STR_FIT_1L"_Stz,
   /* 36 */ "MC_STR_TAIL_2T"_Stz,
-  /* 37 */ "MC_STR_SPLIT_2T1L"_Stz,
-  
+  /* 36 */ "MC_BSTR_FIT_2L"_Stz,
+
   /* 53 */ "MC_ENUMS"_Stz,
   };
   
