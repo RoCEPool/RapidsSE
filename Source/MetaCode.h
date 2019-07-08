@@ -31,8 +31,8 @@ namespace Rows
   /* 19 */ MC_NINE,        // 9  (no bytes in data code)
   /* 20 */ MC_TEN,         // 10 (no bytes in data code)
   
-  /* 21 */ MC_FALSE,       // false (no bytes in data code)
-  /* 22 */ MC_TRUE,        // true  (no bytes in data code)
+  /* 21 */ MC_BOL_FALSE,   // boolean false (no bytes in data code)
+  /* 22 */ MC_BOL_TRUE,    // boolean true  (no bytes in data code)
   
   /* 23 */ MC_DATE_E0_2B,  // date within era 0 expressed as 2B in data code
   /* 24 */ MC_DATE_E1_2B,  // date within era 1 expressed as 2B in data code
@@ -76,8 +76,8 @@ namespace Rows
   /* 19 */ "MC_NINE"_Stz,
   /* 20 */ "MC_TEN"_Stz,
   
-  /* 21 */ "MC_FALSE"_Stz,
-  /* 22 */ "MC_TRUE"_Stz,
+  /* 21 */ "MC_BOL_FALSE"_Stz,
+  /* 22 */ "MC_BOL_TRUE"_Stz,
   
   /* 23 */ "MC_DATE_E0_2B"_Stz,
   /* 24 */ "MC_DATE_E1_2B"_Stz,
@@ -119,12 +119,12 @@ namespace Rows
   /* 19 */ 0, // MC_NINE,        // 9  (no bytes in data code)
   /* 20 */ 0, // MC_TEN,         // 10 (no bytes in data code)
   
-  /* 21 */ 0, // MC_FALSE,       // false (no bytes in data code)
-  /* 22 */ 0, // MC_TRUE,        // true  (no bytes in data code)
+  /* 21 */ 0, // MC_BOL_FALSE,   // boolean false (no bytes in data code)
+  /* 22 */ 0, // MC_BOL_TRUE,    // boolean true  (no bytes in data code)
   
-  /* 23 */ 2, // MC_DATE_E0_2B,  // date in era 0 expressed as 2B in data code
-  /* 24 */ 2, // MC_DATE_E1_2B,  // date in era 1 expressed as 2B in data code
-  /* 25 */ 2, // MC_DATE_E2_2B,  // date in era 2 expressed as 2B in data code
+  /* 23 */ 2, // MC_DATE_E0_2B,  // date within era 0 expressed as 2B in data code
+  /* 24 */ 2, // MC_DATE_E1_2B,  // date within era 1 expressed as 2B in data code
+  /* 25 */ 2, // MC_DATE_E2_2B,  // date within era 2 expressed as 2B in data code
   
   /* 26 */ 0, // MC_STR_EMPTY,   // empty string (no bytes in data code)
   /* 27 */ 1, // MC_STR_FIT_1L,  // ascii string: 1B=len, then ascii with null term

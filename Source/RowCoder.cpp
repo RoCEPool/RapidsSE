@@ -62,8 +62,8 @@ i8 RowCoder::nDataSize(eMC eMetaCode)
     case MC_TEN:
       return 0;
       
-    case MC_FALSE:
-    case MC_TRUE:
+    case MC_BOL_FALSE:
+    case MC_BOL_TRUE:
       return 0;
       
     case MC_DATE_E0_2B:

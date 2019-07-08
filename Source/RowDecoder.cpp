@@ -111,9 +111,9 @@ void RowDecoder::vDecodeBol(DtmVal* pDtmVal, HeadLine* aHeadLine,Column* pCol)
   i8 i_Column = pCol->iColumnNo();
   eMC eEncoding = aHeadLine->eMetaCode(i_Column);
   
-  if (MC_FALSE == eEncoding)
+  if (MC_BOL_FALSE == eEncoding)
     pDtmVal->m_wDtm.m_iInt = 0;
-  else if (MC_TRUE == eEncoding)
+  else if (MC_BOL_TRUE == eEncoding)
     pDtmVal->m_wDtm.m_iInt = 1;
   else
     pDtmVal->m_wDtm.m_iInt = C_DATUM_NULL;
@@ -122,8 +122,8 @@ void RowDecoder::vDecodeBol(DtmVal* pDtmVal, HeadLine* aHeadLine,Column* pCol)
    switch (eEncoding) {
    
    case MC_NULL:  pDtmVal->m_iInt = C_DATUM_NULL; break;
-   case MC_FALSE: pDtmVal->m_iInt = (i8)0;        break;
-   case MC_TRUE:  pDtmVal->m_iInt = (i8)1;        break;
+   case MC_BOL_FALSE: pDtmVal->m_iInt = (i8)0;        break;
+   case MC_BOL_TRUE:  pDtmVal->m_iInt = (i8)1;        break;
    
    default:
    NEVER_REACH;

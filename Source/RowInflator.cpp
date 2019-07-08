@@ -224,12 +224,12 @@ void RowInflator::vInflateColumn(Row* pRow, HeadLine* aHeadLine, i8 i_ColToRetri
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_FALSE:
+      case MC_BOL_FALSE:
         *aiColVal++ =  0;
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_TRUE:
+      case MC_BOL_TRUE:
         *aiColVal++ =  1;
         break;
         
@@ -599,12 +599,12 @@ void RowInflator::vInflateColumns(Row* pRow, HeadLine* aHeadLine)
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_FALSE:
+      case MC_BOL_FALSE:
         *aiColVal++ =  0;
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_TRUE:
+      case MC_BOL_TRUE:
         *aiColVal++ =  1;
         break;
         
@@ -922,12 +922,12 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_FALSE:
+      case MC_BOL_FALSE:
         *aiColVal++ =  0;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_TRUE:
+      case MC_BOL_TRUE:
         *aiColVal++ =  1;
         break;
         
