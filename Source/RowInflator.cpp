@@ -261,10 +261,6 @@ void RowInflator::vInflateColumn(Row* pRow, HeadLine* aHeadLine, i8 i_ColToRetri
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_STR_DUP_2H:
-        break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_STR_FIT_1L:
         nLength = *(u1*)ayDataByte++;
         MemLib::vCopy((byte*)acString,
@@ -291,11 +287,7 @@ void RowInflator::vInflateColumn(Row* pRow, HeadLine* aHeadLine, i8 i_ColToRetri
         *acString++ = '\0';
         break;
         
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_STR_SPLIT_2T1L:
-        break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BSTR_FIT_2L:
         wWord.m_iI8 = 0;
         wWord.m_yaByte[0] = *ayDataByte++;
@@ -644,10 +636,6 @@ void RowInflator::vInflateColumns(Row* pRow, HeadLine* aHeadLine)
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_STR_DUP_2H:
-        break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_STR_FIT_1L:
         nLength = *(u1*)ayDataByte++;
         MemLib::vCopy((byte*)acString,
@@ -673,11 +661,7 @@ void RowInflator::vInflateColumns(Row* pRow, HeadLine* aHeadLine)
         acString += nLength;
         *acString++ = '\0';
         break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_STR_SPLIT_2T1L:
-        break;
-        
+                
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BSTR_FIT_2L:
         wWord.m_iI8 = 0;
@@ -975,10 +959,6 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_STR_DUP_2H:
-        break;
-
-      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_STR_FIT_1L:
         nLength = *(u1*)ayDataByte++;
         MemLib::vCopy((byte*)acString,
@@ -1004,10 +984,6 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
         acString += nLength;
         *acString++ = '\0';
          break;
-        
-      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_STR_SPLIT_2T1L:
-        break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_BSTR_FIT_2L:

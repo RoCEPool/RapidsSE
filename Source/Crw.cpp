@@ -215,13 +215,7 @@ void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec)
     vTrace("\n"_Stz);
     
     i_Offset += nBytes;
-    
-    if (eMetaCode == MC_STR_SPLIT_2T1L)
-      vDebugPoint();
-    if (eMetaCode == MC_STR_DUP_2H)
-      vDebugPoint();
   }
-  
   
   //vDumpHead_IV("DumpHeap_IV"_Stz,aHeadLine,pColVec);
 }

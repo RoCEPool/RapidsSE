@@ -74,10 +74,8 @@ i8 RowCoder::nDataSize(eMC eMetaCode)
       
     case MC_STR_EMPTY:        return 0;
       
-    case MC_STR_DUP_2H:       return 2;
     case MC_STR_FIT_1L:       return 1;
     case MC_STR_TAIL_2T:      return 2;
-    case MC_STR_SPLIT_2T1L:   return 3;
       
     case MC_BSTR_FIT_2L:      return 2;
       
