@@ -461,16 +461,16 @@ void Encoding::vEncodeVch(_ColEnc& xColEnc, Dtm wColVal)
   // null case
   if (bEncodeNul(xColEnc,wColVal))
     return;
-
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // copy chars + null into wsp, nL will be noOf(chars), not incl null
   char* azDst = (char*)m_xWsp.ayLatter();
   i8 nL = StrLib::nCopy(azDst,(char*)wColVal.m_szVch);
-
+  
   // we have copied (nL + 1) bytes into wsp
   m_xWsp.vTake(nL + 1);
-
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // 1) empty string case -- encode as: MC_STR_EMPTY + {}
@@ -480,25 +480,71 @@ void Encoding::vEncodeVch(_ColEnc& xColEnc, Dtm wColVal)
     xColEnc.m_nDataSize = 0;
     return;
   }
-
-  // 2) short string case -- encode as: MC_STR_FIT_1L + {<L><Short>}
+  
+  // 2) short string case -- encode as: MC_STR_FIT_1L + {<L><ShortN>}
   if (nL <= (i8)C_1_BYTE) {
     xColEnc.m_eMetaCode = MC_STR_FIT_1L;
     xColEnc.m_wDataCode.m_azStr = azDst;
-    xColEnc.m_nDataSize = C_L_1B + nL;
+    xColEnc.m_nDataSize = C_L_1B + nL + C_NULL_1B;
     return;
   }
-
-  // 3) long string case -- encode as: MC_BSTR_FIT_2L + {<LL><Long>}
+  
+  // 3) long string case -- encode as: MC_BSTR_FIT_2L + {<LL><LongN>}
   if (nL <= (i8)C_2_BYTES) {
     xColEnc.m_eMetaCode = MC_BSTR_FIT_2L;
     xColEnc.m_wDataCode.m_azStr = azDst;
-    xColEnc.m_nDataSize = C_L_2B + nL;
+    xColEnc.m_nDataSize = C_L_2B + nL + C_NULL_1B;
     return;
   }
-
+  
   RASSERT(0);
 }
+/*----------------------------------------------------------------------------*/
+//void Encoding::vEncodeVch(_ColEnc& xColEnc, Dtm wColVal)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ENCODING,_FOOTER_);
+//  
+//  // null case
+//  if (bEncodeNul(xColEnc,wColVal))
+//    return;
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  
+//  // copy chars + null into wsp, nL will be noOf(chars), not incl null
+//  char* azDst = (char*)m_xWsp.ayLatter();
+//  i8 nL = StrLib::nCopy(azDst,(char*)wColVal.m_szVch);
+//
+//  // we have copied (nL + 1) bytes into wsp
+//  m_xWsp.vTake(nL + 1);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  
+//  // 1) empty string case -- encode as: MC_STR_EMPTY + {}
+//  if (nL == 0) {
+//    xColEnc.m_eMetaCode = MC_STR_EMPTY;
+//    xColEnc.m_wDataCode.m_azStr = nullptr;
+//    xColEnc.m_nDataSize = 0;
+//    return;
+//  }
+//
+//  // 2) short string case -- encode as: MC_STR_FIT_1L + {<L><Short>}
+//  if (nL <= (i8)C_1_BYTE) {
+//    xColEnc.m_eMetaCode = MC_STR_FIT_1L;
+//    xColEnc.m_wDataCode.m_azStr = azDst;
+//    xColEnc.m_nDataSize = C_L_1B + nL;
+//    return;
+//  }
+//
+//  // 3) long string case -- encode as: MC_BSTR_FIT_2L + {<LL><Long>}
+//  if (nL <= (i8)C_2_BYTES) {
+//    xColEnc.m_eMetaCode = MC_BSTR_FIT_2L;
+//    xColEnc.m_wDataCode.m_azStr = azDst;
+//    xColEnc.m_nDataSize = C_L_2B + nL;
+//    return;
+//  }
+//
+//  RASSERT(0);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* test for null encoding                                                     */

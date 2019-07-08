@@ -734,8 +734,8 @@ void RowCompactor::vPutData_BSTR_FIT_2L(_ColEnc& xColEnc)
   char* azStr = (char*)xColEnc.m_wDataCode.m_szVch;
   
   // calc <2L>
-  i8 n2L = xColEnc.m_nDataSize - 1;
-  RASSERT(n2L == StrLib::iLength(azStr));
+  i8 n2L = xColEnc.m_nDataSize - C_L_2B;
+  RASSERT(n2L == StrLib::iLength(azStr) + C_NULL_1B);
   RASSERT(n2L < (i8)C_2_BYTES);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -760,6 +760,41 @@ void RowCompactor::vPutData_BSTR_FIT_2L(_ColEnc& xColEnc)
                            (Stz*)azStr,
                            n2L);
 }
+/*----------------------------------------------------------------------------*/
+//void RowCompactor::vPutData_BSTR_FIT_2L(_ColEnc& xColEnc)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+//
+//  // get <Stl>
+//  char* azStr = (char*)xColEnc.m_wDataCode.m_szVch;
+//
+//  // calc <2L>
+//  i8 n2L = xColEnc.m_nDataSize - 1;
+//  RASSERT(n2L == StrLib::iLength(azStr));
+//  RASSERT(n2L < (i8)C_2_BYTES);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  //      -- HeadLine / OverLine --
+//  // +--------------------------------+
+//  // | ...<L>                         |
+//  // +--------------------------------+
+//
+//  // put <2L>
+//  m_aHeadLine->vPutLogical(xColEnc.m_i_Offset,
+//                           n2L,
+//                           C_2B);
+//
+//  //      -- HeadLine / OverLine --
+//  // +--------------------------------+
+//  // | ...<L><Stl>                    |
+//  // +--------------------------------+
+//
+//  // put <Stl> without null terminator
+//  m_aHeadLine->vPutLogical(xColEnc.m_i_Offset + C_L_1B,
+//                           (Stz*)azStr,
+//                           n2L);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* put data bytes for MC_STR_FIT_1L : <1L><Stl>                               */
@@ -772,8 +807,8 @@ void RowCompactor::vPutData_STR_FIT_1L(_ColEnc& xColEnc)
   char* azStr = (char*)xColEnc.m_wDataCode.m_szVch;
   
   // calc <1L>
-  i8 n1L = xColEnc.m_nDataSize - 1;
-  RASSERT(n1L == StrLib::iLength(azStr));
+  i8 n1L = xColEnc.m_nDataSize - C_L_1B;
+  RASSERT(n1L == StrLib::iLength(azStr) + C_NULL_1B);
   RASSERT(n1L < (i8)C_1_BYTE);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -798,6 +833,41 @@ void RowCompactor::vPutData_STR_FIT_1L(_ColEnc& xColEnc)
                            (Stz*)azStr,
                            n1L);
 }
+/*----------------------------------------------------------------------------*/
+//void RowCompactor::vPutData_STR_FIT_1L(_ColEnc& xColEnc)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+//
+//  // get <Stl>
+//  char* azStr = (char*)xColEnc.m_wDataCode.m_szVch;
+//
+//  // calc <1L>
+//  i8 n1L = xColEnc.m_nDataSize - 1;
+//  RASSERT(n1L == StrLib::iLength(azStr));
+//  RASSERT(n1L < (i8)C_1_BYTE);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  //      -- HeadLine / OverLine --
+//  // +--------------------------------+
+//  // | ...<L>                         |
+//  // +--------------------------------+
+//
+//  // put <1L>
+//  m_aHeadLine->vPutLogical(xColEnc.m_i_Offset,
+//                           n1L,
+//                           C_1B);
+//
+//  //      -- HeadLine / OverLine --
+//  // +--------------------------------+
+//  // | ...<L><Stl>                    |
+//  // +--------------------------------+
+//
+//  // put <Stl> without null terminator
+//  m_aHeadLine->vPutLogical(xColEnc.m_i_Offset + C_L_1B,
+//                           (Stz*)azStr,
+//                           n1L);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* put data bytes for MC_STR_TAIL_2T : [TL]                                   */
