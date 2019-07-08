@@ -27,6 +27,8 @@ Op::Op(eCN eClassNo)
 {
   _precondition_(_MAGIC_,eClassNo);
   
+  m_pJob          = nullptr;
+  
   m_pOperandQueue = new OperandQueue;
   m_fpOpEntryPt   = nullptr;
   m_pOpOut        = nullptr;
@@ -38,6 +40,8 @@ Op::Op(eCN eClassNo)
 Op::~Op(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
+  
+  delete m_pOperandQueue;
 }
 
 /*----------------------------------------------------------------------------*/

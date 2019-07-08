@@ -8,9 +8,11 @@ namespace PushDown
   class Op : public Object
   {
   private:
-    OperandQueue* m_pOperandQueue;
-    bool          (*m_fpOpEntryPt)(void);
-    Op*           m_pOpOut;
+    Job* m_pJob;  // job this operator belongs to
+  
+    OperandQueue* m_pOperandQueue;         // the queue being processed
+    bool          (*m_fpOpEntryPt)(void);  // function which does the op
+    Op*           m_pOpOut;                // where results get queued
   
   public:
     Op(eCN eClass);
