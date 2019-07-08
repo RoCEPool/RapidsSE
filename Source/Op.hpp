@@ -15,6 +15,8 @@ namespace PushDown
   public:
     Op(eCN eClass);
    ~Op(void) noexcept(false);
+  
+    void vOpLoop(void);
   };
 
   Op* _pOp(void* aAddr);
