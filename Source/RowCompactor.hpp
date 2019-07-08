@@ -75,9 +75,9 @@ namespace Rows
   
     void vPutDataCode(_ColEnc& xColEnc);
     void vPutData_Bytes(_ColEnc& xColEnc);
-    void vPutData_BSTR_FIT_2L(_ColEnc& xColEnc);
+    void vPutData_STR_FIT_2L(_ColEnc& xColEnc);
     void vPutData_STR_FIT_1L(_ColEnc& xColEnc);
-    void vPutData_TAIL_2T(_ColEnc& xColEnc);
+    void vPutData_STR_TAIL_2T(_ColEnc& xColEnc);
   
     // - - - - - - - - - - - - - - - - - - - - -
     // Support Functions (alpha order)

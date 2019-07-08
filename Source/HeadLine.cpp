@@ -189,7 +189,8 @@ eMC HeadLine::eGetEncoding(Column* pForCol, i8 i_BaseOffset,
     if (MC_STR_FIT_1L == eEncoding) {
       i_OfsCrs_ += wGetLogical((i_OfsCrs_ - 1),C_1B);
     }
-    else if (MC_STR_FIT_2L == eEncoding) {
+    else
+    if (MC_STR_FIT_2L == eEncoding) {
       i_OfsCrs_ += wGetLogical((i_OfsCrs_ - 1),C_2B);
     }
   }

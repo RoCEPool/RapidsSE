@@ -274,20 +274,6 @@ void RowInflator::vInflateColumn(Row* pRow, HeadLine* aHeadLine, i8 i_ColToRetri
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_STR_TAIL_2T:
-        wWord.m_iI8 = 0;
-        wWord.m_yaByte[0] = *ayDataByte++;
-        wWord.m_yaByte[1] = *ayDataByte++;
-        i_Tail_rel = wWord.m_iI8;
-        aTail = aHeadLine->aGetTailRel(i_Tail_rel);
-        nLength = aTail->w8_1B(+ C_U_1B);
-        MemLib::vCopy(acString,(byte*)aTail+C_U_1B+C_L_1B,nLength,CN_ROWCOMPACTOR);
-        *(char**)(aiColVal++) = acString;
-        acString += nLength;
-        *acString++ = '\0';
-        break;
-        
-         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_STR_FIT_2L:
         wWord.m_iI8 = 0;
         wWord.m_yaByte[0] = *ayDataByte++;
@@ -304,6 +290,20 @@ void RowInflator::vInflateColumn(Row* pRow, HeadLine* aHeadLine, i8 i_ColToRetri
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_STR_TAIL_2T:
+        wWord.m_iI8 = 0;
+        wWord.m_yaByte[0] = *ayDataByte++;
+        wWord.m_yaByte[1] = *ayDataByte++;
+        i_Tail_rel = wWord.m_iI8;
+        aTail = aHeadLine->aGetTailRel(i_Tail_rel);
+        nLength = aTail->w8_1B(+ C_U_1B);
+        MemLib::vCopy(acString,(byte*)aTail+C_U_1B+C_L_1B,nLength,CN_ROWCOMPACTOR);
+        *(char**)(aiColVal++) = acString;
+        acString += nLength;
+        *acString++ = '\0';
+        break;
+        
+         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_OVERFLOW_2T: {
         //vDebugPoint();
         OverLine* aOverLine = aHeadLine->aGetOver();
@@ -649,20 +649,6 @@ void RowInflator::vInflateColumns(Row* pRow, HeadLine* aHeadLine)
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_STR_TAIL_2T:
-        wWord.m_iI8 = 0;
-        wWord.m_yaByte[0] = *ayDataByte++;
-        wWord.m_yaByte[1] = *ayDataByte++;
-        i_Tail_rel = wWord.m_iI8;
-        aTail = aHeadLine->aGetTailRel(i_Tail_rel);
-        nLength = aTail->w8_1B(+ C_U_1B);
-        MemLib::vCopy(acString,(byte*)aTail+C_U_1B+C_L_1B,nLength,CN_ROWCOMPACTOR);
-        *(char**)(aiColVal++) = acString;
-        acString += nLength;
-        *acString++ = '\0';
-        break;
-                
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_STR_FIT_2L:
         wWord.m_iI8 = 0;
         wWord.m_yaByte[0] = *ayDataByte++;
@@ -678,6 +664,20 @@ void RowInflator::vInflateColumns(Row* pRow, HeadLine* aHeadLine)
         *acString++ = '\0';
         break;
         
+        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_STR_TAIL_2T:
+        wWord.m_iI8 = 0;
+        wWord.m_yaByte[0] = *ayDataByte++;
+        wWord.m_yaByte[1] = *ayDataByte++;
+        i_Tail_rel = wWord.m_iI8;
+        aTail = aHeadLine->aGetTailRel(i_Tail_rel);
+        nLength = aTail->w8_1B(+ C_U_1B);
+        MemLib::vCopy(acString,(byte*)aTail+C_U_1B+C_L_1B,nLength,CN_ROWCOMPACTOR);
+        *(char**)(aiColVal++) = acString;
+        acString += nLength;
+        *acString++ = '\0';
+        break;
+                
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_OVERFLOW_2T: {
         //vDebugPoint();
@@ -971,21 +971,7 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
         *acString++ = '\0';
         break;
         
-      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_STR_TAIL_2T:
-        wWord.m_iI8 = 0;
-        wWord.m_yaByte[0] = *ayDataByte++;
-        wWord.m_yaByte[1] = *ayDataByte++;
-        i_Tail_rel = wWord.m_iI8;
-        aTail = aHeadLine->aGetTailRel(i_Tail_rel);
-        nLength = aTail->w8_1B(+ C_U_1B);
-        MemLib::vCopy(acString,(byte*)aTail+C_U_1B+C_L_1B,nLength,CN_ROWCOMPACTOR);
-        *(char**)(aiColVal++) = acString;
-        acString += nLength;
-        *acString++ = '\0';
-         break;
-        
-      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_STR_FIT_2L:
         wWord.m_iI8 = 0;
         wWord.m_yaByte[0] = *ayDataByte++;
@@ -1000,6 +986,20 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
         acString   += nLength;
         *acString++ = '\0';
         break;
+        
+      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+      case MC_STR_TAIL_2T:
+        wWord.m_iI8 = 0;
+        wWord.m_yaByte[0] = *ayDataByte++;
+        wWord.m_yaByte[1] = *ayDataByte++;
+        i_Tail_rel = wWord.m_iI8;
+        aTail = aHeadLine->aGetTailRel(i_Tail_rel);
+        nLength = aTail->w8_1B(+ C_U_1B);
+        MemLib::vCopy(acString,(byte*)aTail+C_U_1B+C_L_1B,nLength,CN_ROWCOMPACTOR);
+        *(char**)(aiColVal++) = acString;
+        acString += nLength;
+        *acString++ = '\0';
+         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_OVERFLOW_2T: {

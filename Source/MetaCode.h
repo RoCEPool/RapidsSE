@@ -18,35 +18,34 @@ namespace Rows
   /* 07 */ MC_7B,          // data code contains 7B datum
   /* 08 */ MC_8B,          // data code contains 8B datum
   
-  /* 09 */ MC_MINUS_ONE,   // -1 (no bytes in data code )
-  /* 10 */ MC_ZERO,        // 0  (no bytes in data code )
-  /* 11 */ MC_ONE,         // 1  (no bytes in data code )
-  /* 12 */ MC_TWO,         // 2  (no bytes in data code )
-  /* 13 */ MC_THREE,       // 3  (no bytes in data code )
-  /* 14 */ MC_FOUR,        // 4  (no bytes in data code )
-  /* 15 */ MC_FIVE,        // 5  (no bytes in data code )
-  /* 16 */ MC_SIX,         // 6  (no bytes in data code )
-  /* 17 */ MC_SEVEN,       // 7  (no bytes in data code )
-  /* 18 */ MC_EIGHT,       // 8  (no bytes in data code )
-  /* 19 */ MC_NINE,        // 9  (no bytes in data code )
-  /* 20 */ MC_TEN,         // 10 (no bytes in data code )
+  /* 09 */ MC_MINUS_ONE,   // -1 (no bytes in data code)
+  /* 10 */ MC_ZERO,        // 0  (no bytes in data code)
+  /* 11 */ MC_ONE,         // 1  (no bytes in data code)
+  /* 12 */ MC_TWO,         // 2  (no bytes in data code)
+  /* 13 */ MC_THREE,       // 3  (no bytes in data code)
+  /* 14 */ MC_FOUR,        // 4  (no bytes in data code)
+  /* 15 */ MC_FIVE,        // 5  (no bytes in data code)
+  /* 16 */ MC_SIX,         // 6  (no bytes in data code)
+  /* 17 */ MC_SEVEN,       // 7  (no bytes in data code)
+  /* 18 */ MC_EIGHT,       // 8  (no bytes in data code)
+  /* 19 */ MC_NINE,        // 9  (no bytes in data code)
+  /* 20 */ MC_TEN,         // 10 (no bytes in data code)
   
-  /* 26 */ MC_FALSE,       // false (no bytes in data code )
-  /* 27 */ MC_TRUE,        // true  (no bytes in data code )
+  /* 26 */ MC_FALSE,       // false (no bytes in data code)
+  /* 27 */ MC_TRUE,        // true  (no bytes in data code)
   
-  /* 28 */ MC_DATE_E0_2B,  // date in era 0 expressed as 2B in data code
-  /* 29 */ MC_DATE_E1_2B,  // date in era 1 expressed as 2B in data code
-  /* 30 */ MC_DATE_E2_2B,  // date in era 2 expressed as 2B in data code
+  /* 28 */ MC_DATE_E0_2B,  // date within era 0 expressed as 2B in data code
+  /* 29 */ MC_DATE_E1_2B,  // date within era 1 expressed as 2B in data code
+  /* 30 */ MC_DATE_E2_2B,  // date within era 2 expressed as 2B in data code
   
-  /* 33 */ MC_STR_EMPTY,       // empty string (no bytes in data code )
-  /* 35 */ MC_STR_FIT_1L,      // ascii string: 1B=len, then ascii
-  /* 36 */ MC_STR_TAIL_2T,     // ascii string in tail:
-                               //    head: 2B->tail
-                               //    tail: has 1B=len, then ascii
+  /* 33 */ MC_STR_EMPTY,   // empty string (no bytes in data code)
+  /* 35 */ MC_STR_FIT_1L,  // ascii string: 1B=len, then ascii with null term
+  /* 38 */ MC_STR_FIT_2L,  // ascii string: 2B=len, then ascii with null term
+  /* 36 */ MC_STR_TAIL_2T, // ascii string in tail:
+                           //    head: 2B->tail
+                           //    tail: has 1B=len, then ascii with null term
   
-  /* 38 */ MC_STR_FIT_2L,     // bigger ascii string: 2B=len then ascii
-  
-  /* 52 */ MC_OVERFLOW_2T,     // overflow tail (2B->overflow tail)
+  /* 52 */ MC_OVERFLOW_2T, // overflow tail: 2B->overflow tail
   
   /* 53 */ MC_ENUMS,
   };

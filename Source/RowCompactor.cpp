@@ -695,8 +695,8 @@ void RowCompactor::vPutDataCode(_ColEnc& xColEnc)
   
   // vch packing
        if (MC_STR_FIT_1L  == xColEnc.m_eMetaCode) vPutData_STR_FIT_1L (xColEnc);
-  else if (MC_STR_FIT_2L == xColEnc.m_eMetaCode) vPutData_BSTR_FIT_2L(xColEnc);
-  else if (MC_STR_TAIL_2T == xColEnc.m_eMetaCode) vPutData_TAIL_2T    (xColEnc);
+  else if (MC_STR_FIT_2L  == xColEnc.m_eMetaCode) vPutData_STR_FIT_2L (xColEnc);
+  else if (MC_STR_TAIL_2T == xColEnc.m_eMetaCode) vPutData_STR_TAIL_2T(xColEnc);
   else {
     RASSERT(0);
   }
@@ -726,7 +726,7 @@ void RowCompactor::vPutData_Bytes(_ColEnc& xColEnc)
 /*----------------------------------------------------------------------------*/
 /* put data bytes for MC_STR_FIT_2L : <LL><LongN>                            */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vPutData_BSTR_FIT_2L(_ColEnc& xColEnc)
+void RowCompactor::vPutData_STR_FIT_2L(_ColEnc& xColEnc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -802,7 +802,7 @@ void RowCompactor::vPutData_STR_FIT_1L(_ColEnc& xColEnc)
 /*----------------------------------------------------------------------------*/
 /* put data bytes for MC_STR_TAIL_2T : [TL]                                   */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vPutData_TAIL_2T(_ColEnc& xColEnc)
+void RowCompactor::vPutData_STR_TAIL_2T(_ColEnc& xColEnc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
