@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* MetaCode.h -- Meta Codes                                                   */
+/* MetaCode.h -- Meta Codes for Row Coder Mark V                              */
 /*============================================================================*/
 #pragma once
 
@@ -44,8 +44,8 @@ namespace Rows
   /* 29 */ MC_DATE_E1_2B,  // date in era 1 expressed as 2B in data code
   /* 30 */ MC_DATE_E2_2B,  // date in era 2 expressed as 2B in data code
 
-  /* 31 */ MC_DAYS_ADD_1B, // first date +days 1B in data code
-  /* 32 */ MC_DAYS_SUB_1B, // first date -days 1B in data code
+//  /* 31 */ MC_DAYS_ADD_1B, // first date +days 1B in data code
+//  /* 32 */ MC_DAYS_SUB_1B, // first date -days 1B in data code
   
   /* 33 */ MC_STR_EMPTY,       // empty string (no bytes in data code )
   /* 34 */ MC_STR_DUP_2H,      // duplicate string (2B->head)

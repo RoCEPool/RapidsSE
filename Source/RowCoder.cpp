@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RowCoder.cpp -- Row Coder Mark IV                                          */
+/* RowCoder.cpp -- Row Coder Mark V                                           */
 /*============================================================================*/
 
 #include "Rows.h"
@@ -72,9 +72,6 @@ i8 RowCoder::nDataSize(eMC eMetaCode)
     case MC_DATE_E2_2B:
       return 2;
       
-    case MC_DAYS_ADD_1B:
-    case MC_DAYS_SUB_1B:
-      return 1;
       
     case MC_STR_EMPTY:        return 0;
       

@@ -147,10 +147,6 @@ void RowDecoder::vDecodeDte(DtmVal* pDtmVal, HeadLine* aHeadLine,
   eMC eThisEncoding = aHeadLine->eGetEncoding(pCol,i_BaseOffset,
                                               i_ColCrs_,i_OfsCrs_);
   
-  if (eThisEncoding == MC_DAYS_ADD_1B || eThisEncoding == MC_DAYS_SUB_1B) {
-    // Not yet implemented in MarkIII
-    RASSERT(0);
-  }
   
   switch (eThisEncoding) {
       
@@ -173,12 +169,7 @@ void RowDecoder::vDecodeDte(DtmVal* pDtmVal, HeadLine* aHeadLine,
       NEVER_REACH;
   }
   
-  if (eThisEncoding == MC_DAYS_ADD_1B || eThisEncoding == MC_DAYS_SUB_1B) {
-    RASSERT(0);
-  }
-  else {
-    vDteFromEdt(&pDtmVal->m_wDtm,iEra);
-  }
+  vDteFromEdt(&pDtmVal->m_wDtm,iEra);
 }
 
 /*----------------------------------------------------------------------------*/

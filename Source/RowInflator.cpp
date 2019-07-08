@@ -268,14 +268,6 @@ void RowInflator::vInflateColumn(Row* pRow, HeadLine* aHeadLine, i8 i_ColToRetri
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_DAYS_ADD_1B:
-        break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_DAYS_SUB_1B:
-        break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_STR_EMPTY:
         *(char**)(aiColVal++) = acString;
         *acString++ = '\0';
@@ -792,14 +784,6 @@ void RowInflator::vInflateColumns(Row* pRow, HeadLine* aHeadLine)
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_DAYS_ADD_1B:
-        break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_DAYS_SUB_1B:
-        break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_STR_EMPTY:
         *(char**)(aiColVal++) = acString;
         *acString++ = '\0';
@@ -1248,14 +1232,6 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
         *aiColVal++ = *(u2*)ayDataByte;
         ayDataByte += C_2B;
         vDteFromEdt((Dtm*)(aiColVal-1),C_ERA_2);
-        break;
-        
-      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_DAYS_ADD_1B:
-        break;
-        
-      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_DAYS_SUB_1B:
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
