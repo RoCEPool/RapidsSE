@@ -31,21 +31,12 @@ namespace Rows
   /* 19 */ MC_NINE,        // 9  (no bytes in data code )
   /* 20 */ MC_TEN,         // 10 (no bytes in data code )
   
-//  /* 21 */ MC_SAME,        // same as previous (no bytes in data code )
-//  /* 22 */ MC_ADD_1B,      // previous + 1B in data code
-//  /* 23 */ MC_ADD_2B,      // previous + 2B in data code
-//  /* 24 */ MC_SUB_1B,      // previous - 1B in data code
-//  /* 25 */ MC_SUB_2B,      // previous - 2B in data code
-  
   /* 26 */ MC_FALSE,       // false (no bytes in data code )
   /* 27 */ MC_TRUE,        // true  (no bytes in data code )
   
   /* 28 */ MC_DATE_E0_2B,  // date in era 0 expressed as 2B in data code
   /* 29 */ MC_DATE_E1_2B,  // date in era 1 expressed as 2B in data code
   /* 30 */ MC_DATE_E2_2B,  // date in era 2 expressed as 2B in data code
-
-//  /* 31 */ MC_DAYS_ADD_1B, // first date +days 1B in data code
-//  /* 32 */ MC_DAYS_SUB_1B, // first date -days 1B in data code
   
   /* 33 */ MC_STR_EMPTY,       // empty string (no bytes in data code )
   /* 34 */ MC_STR_DUP_2H,      // duplicate string (2B->head)
@@ -74,16 +65,6 @@ namespace Rows
                                //   head: 2B->tail, 1B=nCompressed, partA-shoco
                                //   tail: has remaining partB-shoco
 
-//  /* 45 */ MC_TWOS_1B,         // data code  contains 1B two's complement datum
-//  /* 46 */ MC_TWOS_2B,         // data code  contains 2B two's complement datum
-//  /* 47 */ MC_TWOS_3B,         // data code  contains 3B two's complement datum
-//  /* 48 */ MC_TWOS_4B,         // data code  contains 4B two's complement datum
-//  /* 49 */ MC_TWOS_5B,         // data code  contains 5B two's complement datum
-//  /* 50 */ MC_TWOS_6B,         // data code  contains 6B two's complement datum
-//  /* 51 */ MC_TWOS_7B,         // data code  contains 7B two's complement datum
-  
-  //       MC_ROW_REF_2B,      // nB in data code  being a row reference [RR]
-  //       MC_RETURN,          // return
   /* 52 */ MC_OVERFLOW_2T,     // overflow tail (2B->overflow tail)
   
   /* 53 */ MC_ENUMS,
@@ -115,21 +96,12 @@ namespace Rows
   /* 19 */ "MC_NINE"_Stz,
   /* 20 */ "MC_TEN"_Stz,
   
-  /* 21 */ "MC_SAME"_Stz,
-  /* 22 */ "MC_ADD_1B"_Stz,
-  /* 23 */ "MC_ADD_2B"_Stz,
-  /* 24 */ "MC_SUB_1B"_Stz,
-  /* 25 */ "MC_SUB_2B"_Stz,
-  
   /* 26 */ "MC_FALSE"_Stz,
   /* 27 */ "MC_TRUE"_Stz,
   
   /* 28 */ "MC_DATE_E0_2B"_Stz,
   /* 29 */ "MC_DATE_E1_2B"_Stz,
   /* 30 */ "MC_DATE_E2_2B"_Stz,
-  
-  /* 31 */ "MC_DAYS_ADD_1B"_Stz,
-  /* 32 */ "MC_DAYS_SUB_1B"_Stz,
   
   /* 33 */ "MC_STR_EMPTY"_Stz,
   /* 34 */ "MC_STR_DUP_2H"_Stz,
@@ -146,15 +118,6 @@ namespace Rows
   /* 43 */ "MC_SHOCO_TAIL_2T"_Stz,
   /* 44 */ "MC_SHOCO_SPLIT_2T1C"_Stz,
   
-  /* 45 */ "MC_TWOS_1B"_Stz,
-  /* 46 */ "MC_TWOS_2B"_Stz,
-  /* 47 */ "MC_TWOS_3B"_Stz,
-  /* 48 */ "MC_TWOS_4B"_Stz,
-  /* 49 */ "MC_TWOS_5B"_Stz,
-  /* 50 */ "MC_TWOS_6B"_Stz,
-  /* 51 */ "MC_TWOS_7B"_Stz,
-  /*    */ //"MC_ROW_REF_2B"_Stz,
-  /* 52 */ "MC_OVERFLOW_2T"_Stz,
   /* 53 */ "MC_ENUMS"_Stz,
   };
   
