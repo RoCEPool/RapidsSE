@@ -49,12 +49,6 @@ namespace Rows
                                //   tail: has remaining ascii
   
   /* 38 */ MC_BSTR_FIT_2L,     // bigger ascii string: 2B=len then ascii
-//  /* 39 */ MC_BSTR_TAIL_2T,    // bigger ascii string in tail:
-//                               //    head: 2B->tail
-//                               //    tail: has 2B=len, then ascii
-//  /* 40 */ MC_BSTR_SPLIT_2T2L, // bigger ascii string split between head and tail:
-//                               //   head: 2B->tail, 2B=len, part-ascii
-//                               //   tail: has remaining ascii
   
   /* 52 */ MC_OVERFLOW_2T,     // overflow tail (2B->overflow tail)
   
@@ -99,10 +93,6 @@ namespace Rows
   /* 35 */ "MC_STR_FIT_1L"_Stz,
   /* 36 */ "MC_STR_TAIL_2T"_Stz,
   /* 37 */ "MC_STR_SPLIT_2T1L"_Stz,
-  
-  /* 38 */ "MC_BSTR_FIT_2L"_Stz,
-  /* 39 */ "MC_BSTR_TAIL_2T"_Stz,
-  /* 40 */ "MC_BSTR_SPLIT_2T2L"_Stz,
   
   /* 53 */ "MC_ENUMS"_Stz,
   };
