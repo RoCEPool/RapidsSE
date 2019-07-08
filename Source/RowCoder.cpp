@@ -88,15 +88,7 @@ i8 RowCoder::nDataSize(eMC eMetaCode)
     case MC_SHOCO_FIT_1C:     return 1;
     case MC_SHOCO_TAIL_2T:    return 2;
     case MC_SHOCO_SPLIT_2T1C: return 3;
-      
-    case MC_TWOS_1B: return 1;
-    case MC_TWOS_2B: return 2;
-    case MC_TWOS_3B: return 3;
-    case MC_TWOS_4B: return 4;
-    case MC_TWOS_5B: return 5;
-    case MC_TWOS_6B: return 6;
-    case MC_TWOS_7B: return 7;
-      
+            
     case MC_OVERFLOW_2T:
       return 2;
       

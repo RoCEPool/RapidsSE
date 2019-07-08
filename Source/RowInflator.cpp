@@ -417,34 +417,6 @@ void RowInflator::vInflateColumn(Row* pRow, HeadLine* aHeadLine, i8 i_ColToRetri
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_TWOS_1B:
-        break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_TWOS_2B:
-        break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_TWOS_3B:
-        break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_TWOS_4B:
-        break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_TWOS_5B:
-        break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_TWOS_6B:
-        break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_TWOS_7B:
-        break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_OVERFLOW_2T: {
         //vDebugPoint();
         OverLine* aOverLine = aHeadLine->aGetOver();
@@ -933,34 +905,6 @@ void RowInflator::vInflateColumns(Row* pRow, HeadLine* aHeadLine)
         break;
         
         // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_TWOS_1B:
-        break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_TWOS_2B:
-        break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_TWOS_3B:
-        break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_TWOS_4B:
-        break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_TWOS_5B:
-        break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_TWOS_6B:
-        break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_TWOS_7B:
-        break;
-        
-        // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_OVERFLOW_2T: {
         //vDebugPoint();
         OverLine* aOverLine = aHeadLine->aGetOver();
@@ -1381,34 +1325,6 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
         acString += nLength;
         *acString++ = '\0';
         ayDataByte += nBytesPartA;
-        break;
-        
-      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_TWOS_1B:
-        break;
-        
-      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_TWOS_2B:
-        break;
-        
-      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_TWOS_3B:
-        break;
-        
-      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_TWOS_4B:
-        break;
-        
-      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_TWOS_5B:
-        break;
-        
-      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_TWOS_6B:
-        break;
-        
-      // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_TWOS_7B:
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -

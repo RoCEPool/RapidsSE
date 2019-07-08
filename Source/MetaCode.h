@@ -74,13 +74,13 @@ namespace Rows
                                //   head: 2B->tail, 1B=nCompressed, partA-shoco
                                //   tail: has remaining partB-shoco
 
-  /* 45 */ MC_TWOS_1B,         // data code  contains 1B two's complement datum
-  /* 46 */ MC_TWOS_2B,         // data code  contains 2B two's complement datum
-  /* 47 */ MC_TWOS_3B,         // data code  contains 3B two's complement datum
-  /* 48 */ MC_TWOS_4B,         // data code  contains 4B two's complement datum
-  /* 49 */ MC_TWOS_5B,         // data code  contains 5B two's complement datum
-  /* 50 */ MC_TWOS_6B,         // data code  contains 6B two's complement datum
-  /* 51 */ MC_TWOS_7B,         // data code  contains 7B two's complement datum
+//  /* 45 */ MC_TWOS_1B,         // data code  contains 1B two's complement datum
+//  /* 46 */ MC_TWOS_2B,         // data code  contains 2B two's complement datum
+//  /* 47 */ MC_TWOS_3B,         // data code  contains 3B two's complement datum
+//  /* 48 */ MC_TWOS_4B,         // data code  contains 4B two's complement datum
+//  /* 49 */ MC_TWOS_5B,         // data code  contains 5B two's complement datum
+//  /* 50 */ MC_TWOS_6B,         // data code  contains 6B two's complement datum
+//  /* 51 */ MC_TWOS_7B,         // data code  contains 7B two's complement datum
   
   //       MC_ROW_REF_2B,      // nB in data code  being a row reference [RR]
   //       MC_RETURN,          // return
