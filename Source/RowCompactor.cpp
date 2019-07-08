@@ -771,7 +771,7 @@ void RowCompactor::vPutData_STR_FIT_1L(_ColEnc& xColEnc)
   // get <ShortN>
   char* azShortN = (char*)xColEnc.m_wDataCode.m_szVch;
   
-  // calc <L>
+  // calc <L> (which includes the null term character)
   i8 nL = xColEnc.m_nDataSize - C_L_1B;
   RASSERT(nL == StrLib::iLength(azShortN) + C_NULL_1B);
   RASSERT(nL < (i8)C_1_BYTE);
@@ -783,7 +783,7 @@ void RowCompactor::vPutData_STR_FIT_1L(_ColEnc& xColEnc)
   // | ...<L>                         |
   // +--------------------------------+
   
-  // put <L>
+  // put <L> (which includes the null term character)
   m_aHeadLine->vPutLogical(xColEnc.m_i_Offset,
                            nL,
                            C_1B);
@@ -793,7 +793,7 @@ void RowCompactor::vPutData_STR_FIT_1L(_ColEnc& xColEnc)
   // | ...<L><ShortN>                 |
   // +--------------------------------+
   
-  // put <ShortN> (has null terminator)
+  // put <ShortN> (with null terminator)
   m_aHeadLine->vPutLogical(xColEnc.m_i_Offset + C_L_1B,
                            (Stz*)azShortN,
                            nL);

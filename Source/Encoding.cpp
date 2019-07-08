@@ -485,7 +485,9 @@ void Encoding::vEncodeVch(_ColEnc& xColEnc, Dtm wColVal)
   if (nL <= (i8)C_1_BYTE) {
     xColEnc.m_eMetaCode = MC_STR_FIT_1L;
     xColEnc.m_wDataCode.m_azStr = azDst;
-    xColEnc.m_nDataSize = C_L_1B + nL + C_NULL_1B;
+    xColEnc.m_nDataSize = C_L_1B         // 1 byte for the length of string
+                            + nL         // L bytes of the string proper
+                            + C_NULL_1B; // 1 byte for the null term byte
     return;
   }
   
@@ -493,7 +495,9 @@ void Encoding::vEncodeVch(_ColEnc& xColEnc, Dtm wColVal)
   if (nL <= (i8)C_2_BYTES) {
     xColEnc.m_eMetaCode = MC_BSTR_FIT_2L;
     xColEnc.m_wDataCode.m_azStr = azDst;
-    xColEnc.m_nDataSize = C_L_2B + nL + C_NULL_1B;
+    xColEnc.m_nDataSize = C_L_2B
+                            + nL
+                            + C_NULL_1B;
     return;
   }
   
