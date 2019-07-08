@@ -42,6 +42,7 @@ pDUMPFUN *gpDump[]
   /* 29 */ &Dump::vInvalid,         // CN_BPA
   /*    */ &Dump::vInvalid,         // CN_BUFFERCURSOR
   /* 28 */ &Dump::vInvalid,         // CN_BUFFERPOOL
+  /* 28 */ &Dump::vInvalid,         // CN_BUFFERQUEUE
   /*    */ &Dump::vInvalid,         // CN_BYTERATE
 
   /* 30 */ &Dump::vDummy,           // CN_CARRYOVER
@@ -373,6 +374,7 @@ i8 giClassSize[]
   /* 29 */ sizeof(BPA),                // CN_BPA
   /*    */ sizeof(BufferCursor),       // CN_BUFFERCURSOR
   /* 28 */ sizeof(BufferPool),         // CN_BUFFERPOOL
+  /* 28 */ sizeof(BufferQueue),        // CN_BUFFERQUEUE
   /* 28 */ sizeof(ByteRate),           // CN_BYTERATE
 
   /* 30 */ sizeof(CarryOver),          // CN_CARRYOVER
@@ -703,6 +705,7 @@ eHT geWhichHeap[]
   /* 29 */ HT_INVALID,           // CN_BPA
   /*    */ HT_TRANSIENT_LARGE,   // CN_BUFFERCURSOR
   /* 28 */ HT_INVALID,           // CN_BUFFERPOOL
+  /* 29 */ HT_TRANSIENT_SMALL,   // CN_BUFFERQUEUE
   /* 29 */ HT_TRANSIENT_SMALL,   // CN_BYTERATE
 
   /* 30 */ HT_INVALID,           // CN_CARRYOVER

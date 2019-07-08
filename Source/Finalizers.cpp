@@ -39,6 +39,7 @@ pFINALIZE *gpFinalize[]
   /* 29 */ &Finalize::vUndefined,         // CN_BPA
   /*    */ &Finalize::vUndefined,         // CN_BUFFERCURSOR
   /* 28 */ &Finalize::vUndefined,         // CN_BUFFERPOOL
+  /* 28 */ &Finalize::vUndefined,         // CN_BUFFERQUEUE
   /*    */ &Finalize::vUndefined,         // CN_BYTERATE
   
   /* 30 */ &Finalize::vUndefined,         // CN_CARRYOVER
