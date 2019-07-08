@@ -382,6 +382,9 @@ void RowDecoder::vDecodeVch(DtmVal* pDtmVal, HeadLine* aHeadLine,
   else if (MC_STR_FIT_1L == eEncoding)
     vDecodeVchSmall(pDtmVal,aHeadLine,pCol,i_OfsCrs_);
   
+  else if (MC_BSTR_FIT_2L == eEncoding)
+    vDecodeVchLong(pDtmVal,aHeadLine,pCol,i_OfsCrs_);
+  
   else if (MC_STR_TAIL_2T == eEncoding)
     vDecodeVchStringTail(pDtmVal,aHeadLine,pCol,i_OfsCrs_);
   
@@ -400,6 +403,26 @@ void RowDecoder::vDecodeVch(DtmVal* pDtmVal, HeadLine* aHeadLine,
   
   else
     NEVER_REACH;
+}
+
+/*----------------------------------------------------------------------------*/
+/* decode varchar from given head line                                        */
+/*----------------------------------------------------------------------------*/
+void RowDecoder::vDecodeVchLong(DtmVal* pDtmVal, HeadLine* aHeadLine,
+                                 Column* pCol, i8 i_Offset)
+{
+  vDebugPoint();
+  
+  i8 nLength = aHeadLine->wGetLogical(i_Offset,C_2B);
+  
+  MemLib::vCopy((byte*)pDtmVal->m_sVch.aChar(),
+                (byte*)aHeadLine->ayAdrLogical(i_Offset + C_2B),
+                nLength,
+                CN_ROWCOMPACTOR);
+  
+  * (pDtmVal->m_sVch.aChar() + nLength) = '\0';
+  
+  pDtmVal->m_nChars = nLength;
 }
 
 /*----------------------------------------------------------------------------*/
