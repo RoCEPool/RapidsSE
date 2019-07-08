@@ -71,7 +71,7 @@ Task::Task(Job* pJob)
   m_iQueueOrder  = C_UNKNOWN;
   m_iPartition   = C_UNKNOWN;
   
-  m_eState       = TK_NONE;
+  m_eState       = TS_NONE;
   m_eQueue       = QR_NONE;
   m_oAcksRemaining.vCheckInit();
   m_pThread      = nullptr;
@@ -156,7 +156,7 @@ void Task::vTaskLoop(void)
   if (! m_pDataStack )
     vNewStacks();
   
-  while (TK_EXECUTING == m_eState) {
+  while (TS_EXECUTING == m_eState) {
     
     // get the step function to be called
     StepFp fpStep = *(FIP.m_aCell->m_afpStep);
@@ -225,7 +225,7 @@ void Task::vDump(eCN eClass, Object* pObject, Stz* aTab)
   vTrace("%s %p state %s txId %lld\n"_Stz,
          pTask->aJobName(),
          pTask,
-         aTK[pTask->m_eState]->aChar()
+         aTS[pTask->m_eState]->aChar()
          );
 }
 
@@ -319,7 +319,7 @@ void Task::vContentDump(void)
          Stz::aTab(2),
          this,
          aJobName(),
-         aTK[m_eState]->aChar()
+         aTS[m_eState]->aChar()
          );
 }
 
@@ -579,14 +579,14 @@ void Task::vRenderPortrait(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if (TK_SLEEPING == m_eState) {
+  if (TS_SLEEPING == m_eState) {
     
     Now sDateTime;
     
     m_sPortrait.vSprint("Task %p %s %s wakeup %s"_Stz,
                         this,
                         aCN[m_pJob->eClass()],
-                        aTK[m_eState],
+                        aTS[m_eState],
                         sDateTime.sz(&m_oSleepTime.m_wWakeupTsp)
                         );
   }
@@ -594,14 +594,14 @@ void Task::vRenderPortrait(void)
     m_sPortrait.vSprint("Task %p %s %s order %lld"_Stz,
                         this,
                         aCN[m_pJob->eClass()],
-                        aTK[m_eState],
+                        aTS[m_eState],
                         m_iQueueOrder);
   }
   else {
     m_sPortrait.vSprint("Task %p %s %s"_Stz,
                         this,
                         aCN[m_pJob->eClass()],
-                        aTK[m_eState]
+                        aTS[m_eState]
                         );
   }
 }
@@ -785,7 +785,7 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
 /*----------------------------------------------------------------------------*/
 /* get task state                                                             */
 /*----------------------------------------------------------------------------*/
-eTK Task::eState(void)
+eTS Task::eState(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -795,7 +795,7 @@ eTK Task::eState(void)
 /*----------------------------------------------------------------------------*/
 /* set task state                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vState(eTK eState)
+void Task::vState(eTS eState)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
@@ -803,13 +803,13 @@ void Task::vState(eTK eState)
   Statistics* pStats = &gpAttachMap->m_oStatistics;
   
   switch (eState) {
-    case TK_EXECUTING: pStats->Task.m_nExecuting++; break;
-    case TK_EXITED:    pStats->Task.m_nExited++;    break;
-    case TK_READY:     pStats->Task.m_nReady++;     break;
-    case TK_SEND:      pStats->Task.m_nSend++;      break;
-    case TK_SLEEPING:  pStats->Task.m_nSleeping++;  break;
-    case TK_WAITING:   pStats->Task.m_nWaiting++;   break;
-    case TK_YIELDED:   pStats->Task.m_nYielded++;   break;
+    case TS_EXECUTING: pStats->Task.m_nExecuting++; break;
+    case TS_EXITED:    pStats->Task.m_nExited++;    break;
+    case TS_READY:     pStats->Task.m_nReady++;     break;
+    case TS_SEND:      pStats->Task.m_nSend++;      break;
+    case TS_SLEEPING:  pStats->Task.m_nSleeping++;  break;
+    case TS_WAITING:   pStats->Task.m_nWaiting++;   break;
+    case TS_YIELDED:   pStats->Task.m_nYielded++;   break;
     default:
       NEVER_REACH;
   }
@@ -973,7 +973,7 @@ void Task::vWakeupTask(void)
   // clear the wakeup time
   m_oSleepTime.vClear();
 
-  m_eState = TK_READY;
+  m_eState = TS_READY;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -987,8 +987,8 @@ eQR Task::eWhichQueue(void)  //! RAY TO FINISH
   
   switch (m_eState) {
     
-    case TK_READY:
-    case TK_YIELDED:
+    case TS_READY:
+    case TS_YIELDED:
       if (bIsPartitioned())
         return (eQR)iSlot();
       else {
@@ -998,10 +998,10 @@ eQR Task::eWhichQueue(void)  //! RAY TO FINISH
           return QR_READY_QUEUE_LP;
       }
       
-    case TK_SLEEPING:
+    case TS_SLEEPING:
       return QR_SLEEPING_QUEUE;
       
-    case TK_WAITING: 
+    case TS_WAITING: 
       return QR_WAITING_QUEUE;
       
     default:

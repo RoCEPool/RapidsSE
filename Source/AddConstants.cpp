@@ -535,16 +535,16 @@ void Axioms::vAddConstants(void)
   /*  3 */ vAddConstant("TN_STRING"_Stz,  TN_STRING);
   /*  4 */ vAddConstant("TN_ENUMS"_Stz,   TN_ENUMS);
     
-  // TK_ : task state
-  /*  0 */ vAddConstant("TK_NONE"_Stz,       TK_NONE);
-  /*  1 */ vAddConstant("TK_EXECUTING"_Stz,  TK_EXECUTING);
-  /*  2 */ vAddConstant("TK_EXITED"_Stz,     TK_EXITED);
-  /*  3 */ vAddConstant("TK_READY"_Stz,      TK_READY);
-  /*  4 */ vAddConstant("TK_SEND"_Stz,       TK_SEND);
-  /*  5 */ vAddConstant("TK_SLEEPING"_Stz,   TK_SLEEPING);
-  /*  6 */ vAddConstant("TK_WAITING"_Stz,    TK_WAITING);
-  /*  7 */ vAddConstant("TK_YIELDED"_Stz,    TK_YIELDED);
-  /*  8 */ vAddConstant("TK_ENUMS"_Stz,      TK_ENUMS);
+  // TS_ : task state
+  /*  0 */ vAddConstant("TS_NONE"_Stz,       TS_NONE);
+  /*  1 */ vAddConstant("TS_EXECUTING"_Stz,  TS_EXECUTING);
+  /*  2 */ vAddConstant("TS_EXITED"_Stz,     TS_EXITED);
+  /*  3 */ vAddConstant("TS_READY"_Stz,      TS_READY);
+  /*  4 */ vAddConstant("TS_SEND"_Stz,       TS_SEND);
+  /*  5 */ vAddConstant("TS_SLEEPING"_Stz,   TS_SLEEPING);
+  /*  6 */ vAddConstant("TS_WAITING"_Stz,    TS_WAITING);
+  /*  7 */ vAddConstant("TS_YIELDED"_Stz,    TS_YIELDED);
+  /*  8 */ vAddConstant("TS_ENUMS"_Stz,      TS_ENUMS);
 
   // TP_ : transaction phase
   /*  0 */ vAddConstant("TP_NONE"_Stz,        TP_NONE);

@@ -344,8 +344,8 @@ void Thread::vExecuteTask(Task* pTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
     
   // task should be ready
-  RASSERT(TK_READY == pTask->eState());
-  //pTask->vState(TK_EXECUTING);
+  RASSERT(TS_READY == pTask->eState());
+  //pTask->vState(TS_EXECUTING);
   
   // thread should be idle
   //RASSERT(TD_IDLE == m_eThreadState);
@@ -379,8 +379,8 @@ bool Thread::bQueuePeek(void)
   if (! bPopped)
     return false;
 
-  if (TK_READY != pPoppedTask->eState())
-    pPoppedTask->vState(TK_READY);
+  if (TS_READY != pPoppedTask->eState())
+    pPoppedTask->vState(TS_READY);
   
   m_pTask = pPoppedTask;
 
@@ -395,8 +395,8 @@ void Thread::vReExecuteTask(Task* pTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   // task should be ready or yielded
-  RASSERT(TK_READY == pTask->eState() || TK_YIELDED == pTask->eState());
-  //pTask->vState(TK_EXECUTING);
+  RASSERT(TS_READY == pTask->eState() || TS_YIELDED == pTask->eState());
+  //pTask->vState(TS_EXECUTING);
   
   // thread should be idle
   RASSERT(TD_RUNNING == m_eThreadState);
@@ -518,8 +518,8 @@ void Thread::vTaskCall(void)
   Pthread::vTlsSet(giTLS_TaskKey,m_pTask);
   ASSERT(Pthread::pTlsGet(giTLS_TaskKey));
   
-  RASSERT(TK_READY == m_pTask->eState() || TK_YIELDED == m_pTask->eState());
-  m_pTask->vState(TK_EXECUTING);
+  RASSERT(TS_READY == m_pTask->eState() || TS_YIELDED == m_pTask->eState());
+  m_pTask->vState(TS_EXECUTING);
   m_pTask->vThread(this);
   
   // TODO: shouldn't have to refind it everytime!!!

@@ -73,7 +73,7 @@
 
   "KE` auxacks the export job here" .
 
-  pTask_[E] task.state@ TK_WAITING if
+  pTask_[E] task.state@ TS_WAITING if
     "pTask_[E] is waiting" .
   else
     "pTask_[E] is not waiting" .

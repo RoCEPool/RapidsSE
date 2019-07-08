@@ -23,20 +23,20 @@ namespace Threads
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 namespace Tasks
 {  
-  enum eTK // Task State
+  enum eTS // Task State
   {
-  /* 0 */ TK_NONE=0,
-  /* 1 */ TK_EXECUTING, // task is currenty being executed by Thread::vLoop
-  /* 2 */ TK_EXITED,    // task has completed
-  /* 3 */ TK_READY,     // task is ready to be executed
-  /* 4 */ TK_SEND,      // task is wants to send
-  /* 5 */ TK_SLEEPING,  // task is sleeping
-  /* 6 */ TK_WAITING,   // task is waiting on ack from cooperating task
-  /* 7 */ TK_YIELDED,   // task is yielded, not running and is in a TaskSet
-  /* 8 */ TK_ENUMS
+  /* 0 */ TS_NONE=0,
+  /* 1 */ TS_EXECUTING, // task is currenty being executed by Thread::vLoop
+  /* 2 */ TS_EXITED,    // task has completed
+  /* 3 */ TS_READY,     // task is ready to be executed
+  /* 4 */ TS_SEND,      // task is wants to send
+  /* 5 */ TS_SLEEPING,  // task is sleeping
+  /* 6 */ TS_WAITING,   // task is waiting on ack from cooperating task
+  /* 7 */ TS_YIELDED,   // task is yielded, not running and is in a TaskSet
+  /* 8 */ TS_ENUMS
   };
   
-  static Stz* aTK[]
+  static Stz* aTS[]
   {
     /* 0 */ "NONE"_Stz,
     /* 1 */ "EXECUTING"_Stz,
@@ -51,21 +51,6 @@ namespace Tasks
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  enum eTSK // Task Type
-  {
-  /* 0 */ TSK_NONE=0,
-  /* 1 */ TSK_JOB,      // task is a job
-  /* 2 */ TSK_OPERATOR, // task is an operator
-  /* 3 */ TSK_ENUMS
-  };
-
-  static Stz* aTSK[]
-  {
-  /* 0 */ "NONE"_Stz,
-  /* 1 */ "JOB"_Stz,
-  /* 2 */ "OPERATOR"_Stz,
-  /* 3 */ "ENUMS"_Stz,
-  };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -84,7 +69,7 @@ namespace Tasks
   
     Threads::Thread* m_pThread; // current thread
   
-    eTK     m_eState;       // state (running, sleeping, ...)
+    eTS     m_eState;       // state (running, sleeping, ...)
     eQR     m_eQueue;       // which queue the task is in
     i8      m_iQueueOrder;  // queue ordering number
     Lock    m_okLock;       // lock for this task
@@ -175,8 +160,8 @@ namespace Tasks
     i8   iSlot(void);
     void vSprint(s48K& sFormat, s48K& sString);
     void vStackContents(Stack* pStack, s48K& sStackContents);
-    eTK  eState(void);
-    void vState(eTK eState);
+    eTS  eState(void);
+    void vState(eTS eState);
     void vTaskLoop(void);
     Threads::Thread* pThread(void);
     void vThread(Threads::Thread* pThread);

@@ -133,7 +133,7 @@ void Task::vAddRoutines(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   sDefinition =
   ": ::task_exit"
-  "  TK_EXITED task::this task.state!"
+  "  TS_EXITED task::this task.state!"
   "  ;"_Stz;
   
   pCompileColon(sDefinition);

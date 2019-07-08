@@ -55,6 +55,7 @@ enum e_EG // enum groups
   _EG_TK,
   _EG_TN,
   _EG_TP,
+  _EG_TS,
   _EG_TT,
   _EG_WT,
   
@@ -102,6 +103,7 @@ static Stz* a_EG[]
   "_EG_TK"_Stz,
   "_EG_TN"_Stz,
   "_EG_TP"_Stz,
+  "_EG_TS"_Stz,
   "_EG_TT"_Stz,
   "_EG_WT"_Stz,
   

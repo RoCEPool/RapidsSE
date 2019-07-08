@@ -167,7 +167,7 @@ void ThreadQueue::vContentDump(void)
 //    vTrace("Thread %p %s %s order %lld\n"_Stz,
 //           pThread,
 //           aCN[pThread->pJob()->eClass()],
-//           aTK[pThread->eState()],
+//           aTS[pThread->eState()],
 //           pThread->iQueueOrder()
 //           );
 //

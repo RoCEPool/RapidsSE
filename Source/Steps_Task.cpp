@@ -403,7 +403,7 @@ void Step::vTaskSend(MP_Task mpTask)
 {
   ENTRY("vTaskSend"_Stz);
   
-  mpTask->vState(TK_SEND);
+  mpTask->vState(TS_SEND);
   
   EXIT();
 }
@@ -466,7 +466,7 @@ void Step::vTaskSleepUsec(MP_Task mpTask)
   ActionSequence::vAdd(mpTask->m_pJob,AN_TASK_SLEEP,nMicroSeconds);
   
   mpTask->vSleepUsec(nMicroSeconds);
-  mpTask->vState(TK_SLEEPING);
+  mpTask->vState(TS_SLEEPING);
   
   EXIT();
 }
@@ -483,7 +483,7 @@ ENTRY("vTaskStateFetch"_Stz);
     THROW_INVALID_DSTACK("task.state@"_Stz);
   Task* pThatTask = _pTask(pTaskObject);
   
-  eTK eState = pThatTask->m_eState;
+  eTS eState = pThatTask->m_eState;
   
   mpTask->m_pDataStack->vPushI8((i8)eState);
   
@@ -508,14 +508,14 @@ ENTRY("vTaskStateStore"_Stz);
     THROW_INVALID_DSTACK("task.state!"_Stz);
   
   // a task being set to waiting state must be locked
-  if (TK_WAITING == iState) {
+  if (TS_WAITING == iState) {
     //RASSERT(pThatTask->bIsLocked());
   }
   
   if (mpTask->m_pJob)                              //! why can there be no job??
     ActionSequence::vAdd(mpTask->m_pJob,AN_TASK_STATE_SET,iState);
   
-  pThatTask->m_eState = (eTK)iState;
+  pThatTask->m_eState = (eTS)iState;
   
   EXIT();
 }
@@ -562,7 +562,7 @@ void Step::vTaskWait(MP_Task mpTask)
   
   ActionSequence::vAdd(mpTask->m_pJob,AN_TASK_WAIT);
   
-  mpTask->vState(TK_WAITING);
+  mpTask->vState(TS_WAITING);
 
   EXIT();
 }
@@ -576,7 +576,7 @@ void Step::vTaskYield(MP_Task mpTask)
   
   ActionSequence::vAdd(mpTask->m_pJob,AN_TASK_YIELD);
   
-  mpTask->vState(TK_YIELDED);
+  mpTask->vState(TS_YIELDED);
   
   EXIT();
 }

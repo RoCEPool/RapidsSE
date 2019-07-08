@@ -167,7 +167,7 @@ void OperandQueue::vContentDump(void)
 //    vTrace("Op %p %s %s order %lld\n"_Stz,
 //           pOp,
 //           aCN[pOp->pJob()->eClass()],
-//           aTK[pOp->eState()],
+//           aTS[pOp->eState()],
 //           pOp->iQueueOrder()
 //           );
 //
