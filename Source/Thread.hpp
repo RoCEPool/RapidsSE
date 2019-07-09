@@ -68,6 +68,7 @@ namespace Threads
     void vContentDump(void) const;
     void vExecuteTask(Task* pTask);
     void vLoop(void);
+    void vLoop_v2(void);
     void vReExecuteTask(Task* pTask);
     bool bRRnext(void);
     void vRRstart(void);
