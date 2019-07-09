@@ -794,18 +794,33 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_1B:
+      case MC_BCD_1B:
+      case MC_FLT_1B:
+      case MC_INT_1B:
+      case MC_IVL_1B:
+      case MC_TME_1B:
         *aiColVal++ = *(u1*)(ayDataByte);
         ayDataByte += C_1B;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_2B:
+      case MC_BCD_2B:
+      case MC_FLT_2B:
+      case MC_INT_2B:
+      case MC_IVL_2B:
+      case MC_TME_2B:
         *aiColVal++ = *(u2*)(ayDataByte);
         ayDataByte += C_2B;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_3B:
+      case MC_BCD_3B:
+      case MC_FLT_3B:
+      case MC_INT_3B:
+      case MC_IVL_3B:
+      case MC_TME_3B:
         wWord.m_iI8 = 0;
         wWord.m_yaByte[0] = *ayDataByte++;
         wWord.m_yaByte[1] = *ayDataByte++;
@@ -815,12 +830,22 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_4B:
+      case MC_BCD_4B:
+      case MC_FLT_4B:
+      case MC_INT_4B:
+      case MC_IVL_4B:
+      case MC_TME_4B:
         *aiColVal++ = *(u4*)(ayDataByte);
         ayDataByte += C_4B;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_5B:
+      case MC_BCD_5B:
+      case MC_FLT_5B:
+      case MC_INT_5B:
+      case MC_IVL_5B:
+      case MC_TME_5B:
         wWord.m_iI8 = 0;
         wWord.m_yaByte[0] = *ayDataByte++;
         wWord.m_yaByte[1] = *ayDataByte++;
@@ -832,6 +857,11 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_6B:
+      case MC_BCD_6B:
+      case MC_FLT_6B:
+      case MC_INT_6B:
+      case MC_IVL_6B:
+      case MC_TME_6B:
         wWord.m_iI8 = 0;
         wWord.m_yaByte[0] = *ayDataByte++;
         wWord.m_yaByte[1] = *ayDataByte++;
@@ -844,6 +874,11 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_7B:
+      case MC_BCD_7B:
+      case MC_FLT_7B:
+      case MC_INT_7B:
+      case MC_IVL_7B:
+      case MC_TME_7B:
         wWord.m_iI8 = 0;
         wWord.m_yaByte[0] = *ayDataByte++;
         wWord.m_yaByte[1] = *ayDataByte++;
@@ -857,6 +892,11 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_8B:
+      case MC_BCD_8B:
+      case MC_FLT_8B:
+      case MC_INT_8B:
+      case MC_IVL_8B:
+      case MC_TME_8B:
         *aiColVal++ = *(u8*)(ayDataByte);
         ayDataByte += C_8B;
         break;
