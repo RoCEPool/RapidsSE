@@ -24,8 +24,6 @@ void Step::vAddSteps_Task(void)
   vAddStep("task.job@"_Stz,      &Step::vTaskJobFetch);
   vAddStep("task.job!"_Stz,      &Step::vTaskJobStore);
   vAddStep("task.name@"_Stz,     &Step::vTaskNameFetch);
-  vAddStep("task.partition@"_Stz,&Step::vTaskPartitionFetch);
-  vAddStep("task.partition!"_Stz,&Step::vTaskPartitionStore);
   vAddStep("task.seed"_Stz,      &Step::vTaskSeed);
   vAddStep("task.session@"_Stz,  &Step::vTaskSessionFetch);
   vAddStep("task.session!"_Stz,  &Step::vTaskSessionStore);
@@ -265,44 +263,6 @@ ENTRY("vTaskNameFetch"_Stz);
   s256 sName((Stz*)pThatTask->aJobName());
   
   mpTask->m_pDataStack->vPushS256(sName);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.partition@ -- fetch partition of task                                 */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskPartitionFetch(MP_Task mpTask)
-{
-  ENTRY("vTaskPartitionFetch"_Stz);
-  
-  Object* pTaskObject;
-  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
-    THROW_INVALID_DSTACK("task.name!"_Stz);
-  Task* pThatTask = _pTask(pTaskObject);
-  
-  mpTask->m_pDataStack->vPushI8(pThatTask->m_iPartition);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.partition! -- store partition of task                                 */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskPartitionStore(MP_Task mpTask)
-{
-  ENTRY("vTaskPartitionStore"_Stz);
-  
-  Object* pTaskObject;
-  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
-    THROW_INVALID_DSTACK("task.name!"_Stz);
-  Task* pThatTask = _pTask(pTaskObject);
-  
-  i8 iPartition;
-  if ( ! mpTask->m_pDataStack->bPop(iPartition) )
-    THROW_INVALID_DSTACK("task.partition!"_Stz);
-  
-  pThatTask->m_iPartition = iPartition;
   
   EXIT();
 }

@@ -1041,8 +1041,6 @@
   static void vTaskJobStore(Tasks::MP_Task mpTask);
   static void vTaskNameFetch(Tasks::MP_Task mpTask);
   static void vTaskThis(Tasks::MP_Task mpTask);
-  static void vTaskPartitionFetch(Tasks::MP_Task mpTask);
-  static void vTaskPartitionStore(Tasks::MP_Task mpTask);
   static void vTaskSeed(Tasks::MP_Task mpTask);
   static void vTaskSessionFetch(Tasks::MP_Task mpTask);
   static void vTaskSessionStore(Tasks::MP_Task mpTask);
