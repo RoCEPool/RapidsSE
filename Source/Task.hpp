@@ -92,7 +92,6 @@ namespace Tasks
     Decider m_oAcksRemaining; // number of acks still waiting for
     Sleep   m_oSleepTime;   // sleep time
 
-    i8      m_iPartition_tsk;   // which partition if a partition task
     i8      m_iDdlLocked;   // ? has the ddl lock?
     i8      m_iTracing;     // tracing mask
     i8      m_i_ActionRoot; // action root
@@ -150,8 +149,6 @@ namespace Tasks
     void vException(s256& sFile, s256& eException);
     void vGrabLock(void);
     bool bIsLocked(void);
-    bool bIsNonPartitioned(void);
-    bool bIsPartitioned(void);
     Job* pJob(void);
     void vJob(Job* pJob);
     Stz* aJobName(void);
@@ -162,7 +159,6 @@ namespace Tasks
     void vNewStacks(void);
     i8&  i_NextRnd(void);
     Op*  pOp(void);
-    i8   iPartition(void);
     s256& sPortrait(void);
     eQR  eQueue(void);
     void vQueue(eQR eQueue);
@@ -177,7 +173,6 @@ namespace Tasks
     Interface::Session* pSession(void);
     void vSession(Interface::Session* pSession);
     void vSleepUsec(i8 iMicroSeconds);
-    i8   iSlot(void);
     void vSprint(s48K& sFormat, s48K& sString);
     void vStackContents(Stack* pStack, s48K& sStackContents);
     eTS  eState(void);

@@ -279,7 +279,6 @@ void Queues::vAddToReadyQueue_NL(Task* pTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   RASSERT(TS_READY == pTask->eState());
-  RASSERT( ! pTask->bIsPartitioned());
   
   pTask->vQueue(QR_READY_QUEUE);
   pTask->vQueueOrder(++m_ixQueueOrder);
@@ -305,7 +304,6 @@ void Queues::vAddToReadyQueueLP_NL(Task* pTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   RASSERT(TS_READY == pTask->eState());
-  RASSERT( ! pTask->bIsPartitioned());
   
   pTask->vQueue(QR_READY_QUEUE_LP);
   pTask->vQueueOrder(++m_ixQueueOrder);
@@ -847,8 +845,6 @@ Task* Queues::pPopReadyQueue(Thread* pCallingThread)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  RASSERT( ! pTask->bIsPartitioned());
-  
   if (pTask->pJob()->m_bMarkActivity)
     ActivityMap::vMarkJob(pTask->pJob(),"pPopReadyQueue()"_Stz);
   
@@ -892,8 +888,6 @@ Task* Queues::pPopReadyQueueLP(Thread* pCallingThread)
     return nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  RASSERT( ! pTask->bIsPartitioned());
   
   if (pTask->pJob()->m_bMarkActivity)
     ActivityMap::vMarkJob(pTask->pJob(),"pPopReadyQueueLP()"_Stz);
@@ -1319,41 +1313,32 @@ void Queues::vScheduleYieldedTask(Task* pTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // non-partitioned task yield
   
-  if (pTask->bIsNonPartitioned()) {
-    
-    // - A general thread has executed a task which retured TS_YIELDED.
-    //   If the ready queue is empty then this general thread can
-    //     continue to execute the yield task.
-    //   Otherwise we add the task to the ready queue
-    
-    if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL) {
-      m_pReadyQueue->vGrabLock();
-      i8 iLengthReadyQueue = nTasksReady();
-      if (0 == iLengthReadyQueue) {
-        m_pReadyQueue->vDropLock();
-        pCallingThread->vReExecuteTask(pTask);
-      }
-      else {
-        pTask->vState(TS_READY);
-        vAddToReadyQueue_NL(pTask);
-        m_pReadyQueue->vDropLock();
-      }
+  
+  // - A general thread has executed a task which retured TS_YIELDED.
+  //   If the ready queue is empty then this general thread can
+  //     continue to execute the yield task.
+  //   Otherwise we add the task to the ready queue
+  
+  if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL) {
+    m_pReadyQueue->vGrabLock();
+    i8 iLengthReadyQueue = nTasksReady();
+    if (0 == iLengthReadyQueue) {
+      m_pReadyQueue->vDropLock();
+      pCallingThread->vReExecuteTask(pTask);
     }
     else {
-      m_pReadyQueueLP->vGrabLock();
       pTask->vState(TS_READY);
-      vAddToReadyQueueLP_NL(pTask);
-      m_pReadyQueueLP->vDropLock();
+      vAddToReadyQueue_NL(pTask);
+      m_pReadyQueue->vDropLock();
     }
-    return;
+  }
+  else {
+    m_pReadyQueueLP->vGrabLock();
+    pTask->vState(TS_READY);
+    vAddToReadyQueueLP_NL(pTask);
+    m_pReadyQueueLP->vDropLock();
   }
   
-  RASSERT(0);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // partitioned task yield
-  
-
 }
 
 /*----------------------------------------------------------------------------*/

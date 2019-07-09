@@ -133,7 +133,6 @@ void Task::vInit(void)
   m_pJob         = nullptr;
   
   m_iQueueOrder  = C_UNKNOWN;
-  m_iPartition_tsk   = C_UNKNOWN;
   
   m_eState       = TS_NONE;
   m_eQueue       = QR_NONE;
@@ -415,36 +414,6 @@ bool Task::bIsLocked(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a non-partitioned task?                                            */
-/*----------------------------------------------------------------------------*/
-bool Task::bIsNonPartitioned(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  RASSERT(-1 == m_iPartition_tsk);
-
-  if (-1 == m_iPartition_tsk)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a partitioned task?                                                */
-/*----------------------------------------------------------------------------*/
-bool Task::bIsPartitioned(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  RASSERT(-1 == m_iPartition_tsk);
-  
-  if (-1 != m_iPartition_tsk)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get the job of this task                                                   */
 /*----------------------------------------------------------------------------*/
 Job* Task::pJob(void)
@@ -571,15 +540,6 @@ Op* Task::pOp(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   return m_pOp;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get partiton this tasks nelongs to                                         */
-/*----------------------------------------------------------------------------*/
-i8 Task::iPartition(void)
-{
-  RASSERT(-1 == m_iPartition_tsk);
-  return m_iPartition_tsk;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -763,17 +723,6 @@ void Task::vSleepUsec(i8 iMicroseconds)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   m_oSleepTime.vSleepFor(iMicroseconds);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get slot this tasks belongs to                                             */
-/*----------------------------------------------------------------------------*/
-i8 Task::iSlot(void)
-{
-  RASSERT(-1 == m_iPartition_tsk);
-  i8 iSlot = TablePtn::iPartitionToSlot(m_iPartition_tsk);
-  
-  return iSlot;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1063,14 +1012,10 @@ eQR Task::eWhichQueue(void)  //! RAY TO FINISH
     
     case TS_READY:
     case TS_YIELDED:
-      if (bIsPartitioned())
-        return (eQR)iSlot();
-      else {
-        if (m_pJob->m_pJobClass->m_ePriority == PY_NORMAL)
-          return QR_READY_QUEUE;
-        else
-          return QR_READY_QUEUE_LP;
-      }
+      if (m_pJob->m_pJobClass->m_ePriority == PY_NORMAL)
+        return QR_READY_QUEUE;
+      else
+        return QR_READY_QUEUE_LP;
       
     case TS_SLEEPING:
       return QR_SLEEPING_QUEUE;
