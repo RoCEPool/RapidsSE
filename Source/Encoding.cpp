@@ -407,9 +407,10 @@ void Encoding::vEncodeIvl(_ColEnc& xColEnc, Dtm wColVal)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // encode as: MC_1..8B : {D}
-  xColEnc.m_eMetaCode = (eMC)wColVal.iByteMagn();
-  xColEnc.m_nDataSize = xColEnc.m_eMetaCode;
+  // general case -- encode as: MC_IVL_1..8B : {D}
+  i8 nD = wColVal.iByteMagn();
+  xColEnc.m_eMetaCode = (eMC)(MC_IVL_1B + nD - 1);
+  xColEnc.m_nDataSize = nD;
 }
 
 /*----------------------------------------------------------------------------*/
