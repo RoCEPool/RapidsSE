@@ -206,21 +206,6 @@ void Queues::vAddToReadyQueueLP(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add task to send queue                                                     */
-/*----------------------------------------------------------------------------*/
-void Queues::vAddToSendQueue(Task* pTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  // get send node no of the task
-  i8 iSendNode = pTask->pSendNode()->iNodeNo();
-  
-  m_pReadySendQueues[iSendNode]->vGrabLock();
-  vAddToSendQueue_NL(pTask);
-  m_pReadySendQueues[iSendNode]->vDropLock();
-}
-
-/*----------------------------------------------------------------------------*/
 /* add task to sleeping queue                                                 */
 /*----------------------------------------------------------------------------*/
 void Queues::vAddToSleepingQueue(Task* pTask)
@@ -319,33 +304,6 @@ void Queues::vAddToReadyQueueLP_NL(Task* pTask)
   m_pReadyQueueLP->vAddTask(pTask);
   
   ActionSequence::vAdd(pTask->pJob(),AN_ADD_READY_QUEUE_LP);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add task to a slot queue                                                   */
-/*----------------------------------------------------------------------------*/
-void Queues::vAddToSendQueue_NL(Task* pTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  RASSERT(pTask->pSendNode()->iNodeNo() != -1);
-  
-  // get send node from the task
-  i8 iSendNode = pTask->pSendNode()->iNodeNo();
-  
-  pTask->vQueue((eQR)(C_MAX_SLOTS + iSendNode));
-  pTask->vQueueOrder(++m_ixQueueOrder);
-  
-  if (pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkJob(pTask->pJob(),
-                       "Add to SendQueue: %s %p"_Stz,
-                       aCN[pTask->pJob()->eClass()],
-                       pTask->pJob());
-
-  ASSERT(m_pReadySendQueues[iSendNode]->bIsLocked());
-  m_pReadySendQueues[iSendNode]->vAddTask(pTask);
-  
-  ActionSequence::vAdd(pTask->pJob(),AN_ADD_SEND_QUEUE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -466,26 +424,6 @@ void Queues::vDumpReadyQueueLP(void)
   vTrace("====================================\n"_Stz);
   vTrace("\n"_Stz);
   vTrace("\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump the ready send queues                                                 */
-/*----------------------------------------------------------------------------*/
-void Queues::vDumpReadySendQueues(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  for (i8 i_Node = 0; i_Node < gpAttachMap->Arg.m_nNodes; i_Node++ ) {
-    vTrace("------------------------------------\n"_Stz);
-    vTrace("Ready Send Queue: %p\n"_Stz, m_pReadySendQueues[i_Node]);
-    vTrace("------------------------------------\n"_Stz);
-    m_pReadySendQueues[i_Node]->vGrabLock();
-    m_pReadySendQueues[i_Node]->vContentDump();
-    m_pReadySendQueues[i_Node]->vDropLock();
-    vTrace("====================================\n"_Stz);
-    vTrace("\n"_Stz);
-    vTrace("\n"_Stz);
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -790,10 +728,7 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
     }
     
     if (pQueues->bIsReadySendQueue(pCallingThread->m_iLastQueueRR)) {
-      if ( ! (pPoppedTask = pPopReadySendQueue(pCallingThread)) )
-        continue;
-      *ppPoppedTask = pPoppedTask;
-      return true;
+      continue;
     }
     
     NEVER_REACH;
@@ -892,58 +827,6 @@ Task* Queues::pPopReadyQueueLP(Thread* pCallingThread)
     ActivityMap::vMarkJob(pTask->pJob(),"pPopReadyQueueLP()"_Stz);
   
   // return the task popped from the ready queue
-  return pTask;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop task from ready send queue                                             */
-/*----------------------------------------------------------------------------*/
-Task* Queues::pPopReadySendQueue(Thread* pCallingThread)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  Task* pTask;
-  
-  i8 i_Queue = i_ToReadySendQueue(pCallingThread->m_iLastQueueRR);
-  
-  TaskList* pReadySendQueue = m_pReadySendQueues[i_Queue];
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // lock queue and check for task
-  
-  // attempt to grab a write lock on the queue
-  if (! pReadySendQueue->bGrabLock()) {
-    // unable to lock queue (another thread must be processing it)
-    // so move on to the next queue
-    return nullptr;
-  }
-  
-  // pop a task off the partition queues
-  pTask = pReadySendQueue->pPopTask();
-  
-  // task no longer in any queue/set
-  if (pTask)
-    pTask->vQueue(QR_NONE);
-  
- // drop lock on the queue
-  pReadySendQueue->vDropLock();
-  
-  // is there a task to run?
-  if (! pTask)
-    return nullptr;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // there is a task to run
-  
-  RASSERT(pTask->pSendNode() != nullptr);
-  
-  if (pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkInfo(
-                       "Popped ReadySend: %s %p"_Stz,
-                       aCN[pTask->pJob()->eClass()],
-                       pTask->pJob());
-
-  // return the task popped from the send queue
   return pTask;
 }
 
@@ -1177,25 +1060,6 @@ void Queues::vScheduleReadyTask(Task* pTask)
     else
       vAddToReadyQueueLP(pTask);
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* schedule a task which wants to send                                        */
-/*----------------------------------------------------------------------------*/
-void Queues::vScheduleSendTask(Task* pTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  RASSERT(0);
-  
-  if (pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkJob(pTask->pJob(),
-                       "Schedule send: %s %p"_Stz,
-                       aCN[pTask->pJob()->eClass()],
-                       pTask->pJob());
-
-  // add task to send queue
-  vAddToSendQueue(pTask);
 }
 
 /*----------------------------------------------------------------------------*/

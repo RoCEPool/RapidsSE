@@ -65,21 +65,18 @@ namespace Scheduling
     void vAddToExecutingSet(Task* pTask);
     void vAddToReadyQueue(Task* pTask);
     void vAddToReadyQueueLP(Task* pTask);
-    void vAddToSendQueue(Task* pTask);
     void vAddToSleepingQueue(Task* pTask);
     void vAddToWaitingSet(Task* pTask);
   
     void vAddToExecutingSet_NL(Task* pTask);
     void vAddToReadyQueue_NL(Task* pTask);
     void vAddToReadyQueueLP_NL(Task* pTask);
-    void vAddToSendQueue_NL(Task* pTask);
     void vAddToSleepingQueue_NL(Task* pTask);
     void vAddToWaitingSet_NL(Task* pTask);
   
     void vDumpExecutingSet(void);
     void vDumpReadyQueue(void);
     void vDumpReadyQueueLP(void);
-    void vDumpReadySendQueues(void);
     void vDumpSleepingQueue(void);
     void vDumpWaitingSet(void);
     
@@ -99,7 +96,6 @@ namespace Scheduling
 
     Task* pPopReadyQueue(Thread* pCallingThread);
     Task* pPopReadyQueueLP(Thread* pCallingThread);
-    Task* pPopReadySendQueue(Thread* pCallingThread);
     Task* pPopSleepingQueue(Thread* pCallingThread);
   
     i8 i_QueueFirst(void);
@@ -113,7 +109,6 @@ namespace Scheduling
     void vScheduleAckedTask(Task* pTask);
     void vScheduleExitedTask(Task* pTask);
     void vScheduleReadyTask(Task* pTask);
-    void vScheduleSendTask(Task* pTask);
     void vScheduleSleepingTask(Task* pTask);
     void vScheduleSpawnedTask(Task* pTask);
     void vScheduleWaitingTask(Task* pTask);
