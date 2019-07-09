@@ -826,7 +826,7 @@ void Engine::vStartSystem(void)
                                 gxArguments.m_nThreads
                                 );
   
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move
   
   gpAttachMap->m_pQueues = new Queues;
@@ -870,7 +870,7 @@ void Engine::vStartSystem(void)
   gpAttachMap->m_pOriginatingJobs   = new JobList(bJobCompare,JL_ORIGINATING);
   gpAttachMap->m_pParticipatingJobs = new JobList(bJobCompare,JL_PARTICIPATING);
   
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vOpenActivityMap();
   vOpenActionSequence();
@@ -883,15 +883,7 @@ void Engine::vStartSystem(void)
 
   vCallBoot();
   
-  //--------------------------------------------------------------------------
-  
-  
-  // get the trace file
-  //ForthWord* pTraceFileWord = gpAttachMap->m_oRootDic.pFindWord("trace_file"_Stz);
-  //gpTraceFile = reinterpret_cast<File*>(pTraceFileWord->aBodyArea());
-  
-  //if (gpAttachMap->m_bVerbose)
-  //  vTrace("Shm region initialised at: %s\n"_Stz,gpAttachMap->m_sUTC.aChar());
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // spawn general threads
   for (i8 iThreads = 0; iThreads < gxArguments.m_nThreads; iThreads++) {
@@ -911,16 +903,17 @@ void Engine::vStartSystem(void)
     pThread->vSpawnPthread_Op();
   }
 
-  while (*gpAttachMap->m_ixThreads != gxArguments.m_nThreads)
-    Pthread::vSleepMsec(10,CN_NONE);
+  // pause till all general threads are operational 
+  gpAttachMap->m_pQueues->vPauseForGeneralThreads();
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   vSpawnJobStart();
   
   if (gxArguments.m_bVerbose) {
     vInfo("Engine instance %s started\n"_Stz,gxArguments.m_sRegionName.aChar());
     gpAttachMap->m_pGrid->vDumpPartitioning();
   }
-  
 }
 
 /*----------------------------------------------------------------------------*/
