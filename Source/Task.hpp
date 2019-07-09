@@ -90,7 +90,7 @@ namespace Tasks
     LocalSet* m_pLocalsFrame; // local register frame chain
 
     union {                 // forth instruction pointer
-      Cell*   m_aCell;      // points to cell inside a word
+      Cell*   m_aFipCell;   // points to cell inside a word
     } FIP;
   
   
