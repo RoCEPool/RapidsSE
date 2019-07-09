@@ -793,7 +793,6 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_1B:
       case MC_BCD_1B:
       case MC_FLT_1B:
       case MC_INT_1B:
@@ -804,7 +803,6 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_2B:
       case MC_BCD_2B:
       case MC_FLT_2B:
       case MC_INT_2B:
@@ -815,7 +813,6 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_3B:
       case MC_BCD_3B:
       case MC_FLT_3B:
       case MC_INT_3B:
@@ -829,7 +826,6 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_4B:
       case MC_BCD_4B:
       case MC_FLT_4B:
       case MC_INT_4B:
@@ -840,7 +836,6 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_5B:
       case MC_BCD_5B:
       case MC_FLT_5B:
       case MC_INT_5B:
@@ -856,7 +851,6 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_6B:
       case MC_BCD_6B:
       case MC_FLT_6B:
       case MC_INT_6B:
@@ -873,7 +867,6 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_7B:
       case MC_BCD_7B:
       case MC_FLT_7B:
       case MC_INT_7B:
@@ -891,7 +884,6 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_8B:
       case MC_BCD_8B:
       case MC_FLT_8B:
       case MC_INT_8B:
@@ -902,84 +894,72 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_MINUS_ONE:
       case MC_BCD_M_ONE:
       case MC_INT_M_ONE:
         *aiColVal++ = -1;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_ZERO:
       case MC_BCD_ZERO:
       case MC_INT_ZERO:
         *aiColVal++ =  0;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_ONE:
       case MC_BCD_ONE:
       case MC_INT_ONE:
         *aiColVal++ =  1;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_TWO:
       case MC_BCD_TWO:
       case MC_INT_TWO:
         *aiColVal++ =  2;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_THREE:
       case MC_BCD_THREE:
       case MC_INT_THREE:
         *aiColVal++ =  3;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_FOUR:
       case MC_BCD_FOUR:
       case MC_INT_FOUR:
         *aiColVal++ =  4;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_FIVE:
       case MC_BCD_FIVE:
       case MC_INT_FIVE:
         *aiColVal++ =  5;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_SIX:
       case MC_BCD_SIX:
       case MC_INT_SIX:
         *aiColVal++ =  6;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_SEVEN:
       case MC_BCD_SEVEN:
       case MC_INT_SEVEN:
         *aiColVal++ =  7;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_EIGHT:
       case MC_BCD_EIGHT:
       case MC_INT_EIGHT:
         *aiColVal++ =  8;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_NINE:
       case MC_BCD_NINE:
       case MC_INT_NINE:
         *aiColVal++ =  9;
         break;
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case MC_TEN:
       case MC_BCD_TEN:
       case MC_INT_TEN:
         *aiColVal++ = 10;
