@@ -31,7 +31,7 @@ void Step::vFlowBegin_(MP_Task mpTask)
 {
   ENTRY("vBegin_"_Stz);
   
-  mpTask->m_pCompiler->m_pBeginIP = mpTask->FIP.m_aFipCell;
+  mpTask->m_pCompiler->m_pBeginIP = mpTask->m_aFipCell;
   
   EXIT();
 }
@@ -53,15 +53,15 @@ void Step::vFlowExecute(MP_Task mpTask)
     (fpStepFp)(mpTask);
   }
   else if (WT_OBJECT == pWord->eWordType()) {
-    mpTask->m_pReturnStack->vPushCell(mpTask->FIP.m_aFipCell);
-    mpTask->FIP.m_aFipCell = pWord->aEntryCell();
+    mpTask->m_pReturnStack->vPushCell(mpTask->m_aFipCell);
+    mpTask->m_aFipCell = pWord->aEntryCell();
     
     Object* pObject = (Object*)pWord->aFirstCell();
     mpTask->m_pDataStack->vPushPointer(pObject);
   }
   else if (WT_ROUTINE == pWord->eWordType()){
-    mpTask->m_pReturnStack->vPushCell(mpTask->FIP.m_aFipCell);
-    mpTask->FIP.m_aFipCell = pWord->aEntryCell();
+    mpTask->m_pReturnStack->vPushCell(mpTask->m_aFipCell);
+    mpTask->m_aFipCell = pWord->aEntryCell();
   }
   else {
     NEVER_REACH;
@@ -89,7 +89,7 @@ void Step::vFlowJump(MP_Task mpTask)
 {
   ENTRY("vJump"_Stz);
   
-  mpTask->FIP.m_aFipCell = mpTask->FIP.m_aFipCell->m_aJumpTo;
+  mpTask->m_aFipCell = mpTask->m_aFipCell->m_aJumpTo;
   
   EXIT();
 }
@@ -101,7 +101,7 @@ void Step::vFlowJumpBegin_(MP_Task mpTask)
 {
   ENTRY("vFlowJumpBegin_"_Stz);
   
-  mpTask->FIP.m_aFipCell = mpTask->m_pCompiler->m_pBeginIP;
+  mpTask->m_aFipCell = mpTask->m_pCompiler->m_pBeginIP;
   
   EXIT();
 }
@@ -142,10 +142,10 @@ void Step::vFlowJumpFalse(MP_Task mpTask)
   
   if (iVal)
     // do not jump, skip over argument
-    mpTask->FIP.m_aFipCell++;
+    mpTask->m_aFipCell++;
   else
     // jump to location
-    mpTask->FIP.m_aFipCell = mpTask->FIP.m_aFipCell->m_aJumpTo;
+    mpTask->m_aFipCell = mpTask->m_aFipCell->m_aJumpTo;
   
   EXIT();
 }
@@ -165,10 +165,10 @@ void Step::vFlowJumpTrue(MP_Task mpTask)
   
   if (iVal)
     // jump to location
-    mpTask->FIP.m_aFipCell = mpTask->FIP.m_aFipCell->m_aJumpTo;
+    mpTask->m_aFipCell = mpTask->m_aFipCell->m_aJumpTo;
   else
     // do not jump, skip over argument
-    mpTask->FIP.m_aFipCell++;
+    mpTask->m_aFipCell++;
   
   EXIT();
 }
@@ -190,7 +190,7 @@ void Step::vFlowRetryPoint(MP_Task mpTask)
 {
   ENTRY("vFlowRetryPoint"_Stz);
   
-  mpTask->m_pCompiler->m_pRetryIP = mpTask->FIP.m_aFipCell;
+  mpTask->m_pCompiler->m_pRetryIP = mpTask->m_aFipCell;
   
   mpTask->m_pDataStack->vRetryPoint();
   

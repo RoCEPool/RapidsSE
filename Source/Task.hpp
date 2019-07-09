@@ -82,18 +82,13 @@ namespace Tasks
     i8      m_i_ActionRoot; // action root
     i8      m_i_NextRnd;    // which next repeatable random nummber?
 
-    Stack*   m_pDataStack;   // data stack
-    Stack*   m_pReturnStack; // return stack
-    Stack*   m_pAuxStack;    // auxiliary stack
-    DicStack m_oDicStack;    // dictionary stack
-    
+    Cell*     m_aFipCell;     // points to cell inside a word
     LocalSet* m_pLocalsFrame; // local register frame chain
-
-    union {                 // forth instruction pointer
-      Cell*   m_aFipCell;   // points to cell inside a word
-    } FIP;
-  
-  
+    Stack*    m_pDataStack;   // data stack
+    Stack*    m_pReturnStack; // return stack
+    Stack*    m_pAuxStack;    // auxiliary stack
+    DicStack  m_oDicStack;    // dictionary stack
+    
     s256  m_sPortrait;      // short text description of task
   
     // exception

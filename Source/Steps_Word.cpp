@@ -334,7 +334,7 @@ void Step::vDoes_RT(MP_Task mpTask)
   ForthWord* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
   pCurrentWord->vEntryStep(&Step::vEnterObject);
-  pCurrentWord->vEntryCell(mpTask->FIP.m_aFipCell + 1);
+  pCurrentWord->vEntryCell(mpTask->m_aFipCell + 1);
   
   EXIT();
 }
