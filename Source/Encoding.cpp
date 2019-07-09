@@ -269,18 +269,28 @@ void Encoding::vEncodeBcd(_ColEnc& xColEnc, Dtm wColVal)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // 0..10 case -- encode as: MC_ZERO..MC_TEN + {}
-  if (wColVal.m_iBcd >= 0 && wColVal.m_iBcd <= 10) {
-    xColEnc.m_eMetaCode = (eMC)(MC_ZERO + wColVal.m_iBcd);
+  // -1 case -- encode as: MC_BCD_M_ONE + {}
+  if (-1 == wColVal.m_iBcd) {
+    xColEnc.m_eMetaCode = MC_BCD_M_ONE;
     xColEnc.m_nDataSize = C_0B;
     return;
   }
-
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // 0..10 case -- encode as MC_BCD_ONE..TEN + {}
+  if (wColVal.m_iBcd >= 0 && wColVal.m_iBcd <= 10) {
+    xColEnc.m_eMetaCode = (eMC)(MC_BCD_ZERO + wColVal.m_iBcd);
+    xColEnc.m_nDataSize = C_0B;
+    return;
+  }
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // general case -- encode as: MC_1..8B + {D}
-  xColEnc.m_eMetaCode = (eMC)wColVal.iByteMagn();
-  xColEnc.m_nDataSize = xColEnc.m_eMetaCode;
+  // general case -- encode as: MC_BCD_1..8B + {D}
+  i8 nD = wColVal.iByteMagn();
+  xColEnc.m_eMetaCode = (eMC)(MC_BCD_1B + nD - 1);
+  xColEnc.m_nDataSize = nD;
 }
 
 /*----------------------------------------------------------------------------*/

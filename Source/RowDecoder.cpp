@@ -71,28 +71,29 @@ void RowDecoder::vDecodeBcd(DtmVal* pDtmVal, HeadLine* aHeadLine,
                                           i_ColCrs_,i_OfsCrs_);
   switch (eEncoding) {
       
-    case MC_NULL: pDtmVal->m_wDtm.m_iInt = C_DATUM_NULL;               break;
-    case MC_1B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_1B); break;
-    case MC_2B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_2B); break;
-    case MC_3B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_3B); break;
-    case MC_4B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_4B); break;
-    case MC_5B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_5B); break;
-    case MC_6B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_6B); break;
-    case MC_7B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_7B); break;
-    case MC_8B:   pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_8B); break;
+    case MC_NULL: pDtmVal->m_wDtm.m_iInt = C_DATUM_NULL; break;
       
-    case MC_MINUS_ONE: pDtmVal->m_wDtm.m_iInt = (i8)-1;                break;
-    case MC_ZERO:      pDtmVal->m_wDtm.m_iInt = (i8)0;                 break;
-    case MC_ONE:       pDtmVal->m_wDtm.m_iInt = (i8)1;                 break;
-    case MC_TWO:       pDtmVal->m_wDtm.m_iInt = (i8)2;                 break;
-    case MC_THREE:     pDtmVal->m_wDtm.m_iInt = (i8)3;                 break;
-    case MC_FOUR:      pDtmVal->m_wDtm.m_iInt = (i8)4;                 break;
-    case MC_FIVE:      pDtmVal->m_wDtm.m_iInt = (i8)5;                 break;
-    case MC_SIX:       pDtmVal->m_wDtm.m_iInt = (i8)6;                 break;
-    case MC_SEVEN:     pDtmVal->m_wDtm.m_iInt = (i8)7;                 break;
-    case MC_EIGHT:     pDtmVal->m_wDtm.m_iInt = (i8)8;                 break;
-    case MC_NINE:      pDtmVal->m_wDtm.m_iInt = (i8)9;                 break;
-    case MC_TEN:       pDtmVal->m_wDtm.m_iInt = (i8)10;                break;
+    case MC_BCD_1B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_1B); break;
+    case MC_BCD_2B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_2B); break;
+    case MC_BCD_3B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_3B); break;
+    case MC_BCD_4B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_4B); break;
+    case MC_BCD_5B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_5B); break;
+    case MC_BCD_6B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_6B); break;
+    case MC_BCD_7B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_7B); break;
+    case MC_BCD_8B: pDtmVal->m_wDtm.m_iInt = aHeadLine->wGetLogical(i_OfsCrs_,C_8B); break;
+      
+    case MC_BCD_M_ONE: pDtmVal->m_wDtm.m_iInt = (i8)-1;  break;
+    case MC_BCD_ZERO:  pDtmVal->m_wDtm.m_iInt = (i8)0;   break;
+    case MC_BCD_ONE:   pDtmVal->m_wDtm.m_iInt = (i8)1;   break;
+    case MC_BCD_TWO:   pDtmVal->m_wDtm.m_iInt = (i8)2;   break;
+    case MC_BCD_THREE: pDtmVal->m_wDtm.m_iInt = (i8)3;   break;
+    case MC_BCD_FOUR:  pDtmVal->m_wDtm.m_iInt = (i8)4;   break;
+    case MC_BCD_FIVE:  pDtmVal->m_wDtm.m_iInt = (i8)5;   break;
+    case MC_BCD_SIX:   pDtmVal->m_wDtm.m_iInt = (i8)6;   break;
+    case MC_BCD_SEVEN: pDtmVal->m_wDtm.m_iInt = (i8)7;   break;
+    case MC_BCD_EIGHT: pDtmVal->m_wDtm.m_iInt = (i8)8;   break;
+    case MC_BCD_NINE:  pDtmVal->m_wDtm.m_iInt = (i8)9;   break;
+    case MC_BCD_TEN:   pDtmVal->m_wDtm.m_iInt = (i8)10;  break;
       
     default:
       NEVER_REACH;
