@@ -2,7 +2,11 @@
 /* _lineitemRJH - create and load TPC-H LineItem table                        */
 /*============================================================================*/
 
+print "Starting cluster..." ;
+
 startCluster;
+
+print "Cluster started" ;
 
 time create table LineItem                 // SF * 6,000,000 rows
 (

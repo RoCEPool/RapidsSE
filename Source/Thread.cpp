@@ -125,6 +125,7 @@ void* Thread::aEntryPoint(void* pArg)
     
   try {
     pThread->vLoop();
+    //pThread->vLoop_v2();
   }
   
   catch (Error* pError) {
