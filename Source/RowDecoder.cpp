@@ -338,9 +338,9 @@ void RowDecoder::vDecodeTsp(DtmVal* pDtmVal, HeadLine* aHeadLine,
       NEVER_REACH;
   }
   
-  if (eEncoding == MC_5B)
-    //vRestoreTsp(pDtmVal);
-    pDtmVal->m_wDtm.m_iInt <<= 24;
+//  if (eEncoding == MC_5B)
+//    //vRestoreTsp(pDtmVal);
+//    pDtmVal->m_wDtm.m_iInt <<= 24;
 }
 
 /*----------------------------------------------------------------------------*/
