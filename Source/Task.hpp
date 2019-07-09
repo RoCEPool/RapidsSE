@@ -92,7 +92,7 @@ namespace Tasks
     Decider m_oAcksRemaining; // number of acks still waiting for
     Sleep   m_oSleepTime;   // sleep time
 
-    i8      m_iPartition;   // which partition if a partition task
+    i8      m_iPartition_tsk;   // which partition if a partition task
     i8      m_iDdlLocked;   // ? has the ddl lock?
     i8      m_iTracing;     // tracing mask
     i8      m_i_ActionRoot; // action root

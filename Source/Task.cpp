@@ -133,7 +133,7 @@ void Task::vInit(void)
   m_pJob         = nullptr;
   
   m_iQueueOrder  = C_UNKNOWN;
-  m_iPartition   = C_UNKNOWN;
+  m_iPartition_tsk   = C_UNKNOWN;
   
   m_eState       = TS_NONE;
   m_eQueue       = QR_NONE;
@@ -421,7 +421,9 @@ bool Task::bIsNonPartitioned(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if (-1 == m_iPartition)
+  RASSERT(-1 == m_iPartition_tsk);
+
+  if (-1 == m_iPartition_tsk)
     return true;
   else
     return false;
@@ -434,7 +436,9 @@ bool Task::bIsPartitioned(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if (-1 != m_iPartition)
+  RASSERT(-1 == m_iPartition_tsk);
+  
+  if (-1 != m_iPartition_tsk)
     return true;
   else
     return false;
@@ -574,7 +578,8 @@ Op* Task::pOp(void)
 /*----------------------------------------------------------------------------*/
 i8 Task::iPartition(void)
 {
-  return m_iPartition;
+  RASSERT(-1 == m_iPartition_tsk);
+  return m_iPartition_tsk;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -765,7 +770,8 @@ void Task::vSleepUsec(i8 iMicroseconds)
 /*----------------------------------------------------------------------------*/
 i8 Task::iSlot(void)
 {
-  i8 iSlot = TablePtn::iPartitionToSlot(m_iPartition);
+  RASSERT(-1 == m_iPartition_tsk);
+  i8 iSlot = TablePtn::iPartitionToSlot(m_iPartition_tsk);
   
   return iSlot;
 }
