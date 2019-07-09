@@ -12,7 +12,7 @@ namespace Scheduling
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // threads
 
-    ThreadVec* m_pThreadVec; // vector of threads in the system
+    ThreadVec* m_pGenThreadVec; // vector of general threads in the system
   
     ThreadQueue* m_pIdleThreadQueue; // queue of idle threads
   
