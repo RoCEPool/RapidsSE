@@ -35,9 +35,6 @@
     // set which node this task will to send to
     //I grid::node task::this task.sendNode!
 
-    // move this task through send state/queue
-    //task.send
-
     // send the cancel job
     I pJob__Cancel job.forward
   loop

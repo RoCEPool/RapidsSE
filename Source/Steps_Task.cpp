@@ -28,7 +28,6 @@ void Step::vAddSteps_Task(void)
   vAddStep("task.session@"_Stz,  &Step::vTaskSessionFetch);
   vAddStep("task.session!"_Stz,  &Step::vTaskSessionStore);
   vAddStep("task.sleepUsec"_Stz, &Step::vTaskSleepUsec);
-  vAddStep("task.send"_Stz,      &Step::vTaskSend);
   vAddStep("task.sendNode@"_Stz, &Step::vTaskSendNodeFetch);
   vAddStep("task.sendNode!"_Stz, &Step::vTaskSendNodeStore);
   vAddStep("task.state@"_Stz,    &Step::vTaskStateFetch);
@@ -352,18 +351,6 @@ void Step::vTaskSessionStore(MP_Task mpTask)
   ASSERT(! pSession || CN_SESSION == pSession->eClass());
   
   pThatTask->m_pSession = pSession;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.send -- this task sends                                               */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskSend(MP_Task mpTask)
-{
-  ENTRY("vTaskSend"_Stz);
-  
-  mpTask->vState(TS_SEND);
   
   EXIT();
 }

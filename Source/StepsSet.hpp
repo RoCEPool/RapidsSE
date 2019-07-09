@@ -1043,7 +1043,6 @@
   static void vTaskSeed(Tasks::MP_Task mpTask);
   static void vTaskSessionFetch(Tasks::MP_Task mpTask);
   static void vTaskSessionStore(Tasks::MP_Task mpTask);
-  static void vTaskSend(Tasks::MP_Task mpTask);
   static void vTaskSendNodeFetch(Tasks::MP_Task mpTask);
   static void vTaskSendNodeStore(Tasks::MP_Task mpTask);
   static void vTaskSleepUsec(Tasks::MP_Task mpTask);
