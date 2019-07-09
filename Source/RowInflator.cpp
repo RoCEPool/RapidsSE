@@ -191,6 +191,7 @@ void RowInflator::vInflateColumn(Row* pRow, HeadLine* aHeadLine, i8 i_ColToRetri
       case MC_INT_8B:
       case MC_IVL_8B:
       case MC_TME_8B:
+      case MC_TSP_8B:
         *aiColVal++ = *(u8*)(ayDataByte);
         ayDataByte += C_8B;
         break;
@@ -610,6 +611,7 @@ void RowInflator::vInflateColumns(Row* pRow, HeadLine* aHeadLine)
       case MC_INT_8B:
       case MC_IVL_8B:
       case MC_TME_8B:
+      case MC_TSP_8B:
         *aiColVal++ = *(u8*)(ayDataByte);
         ayDataByte += C_8B;
         break;
