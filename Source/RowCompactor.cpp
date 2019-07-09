@@ -268,7 +268,9 @@ void RowCompactor::vAnalyzeSamples(void)
       if (pOuterRow->m_waColVal[i_Col].bIsNull())
         continue;
       
-      if (StrLib::iLength(pOuterRow->m_waColVal[i_Col].m_azStr) < 8)
+      char* azOuterStr = pOuterRow->m_waColVal[i_Col].m_azStr;
+      i8 nLength = StrLib::iLength(azOuterStr);
+      if (nLength < 8)
         continue;
       
       for (Row* pInnerRow = m_pRowSamples->aNextRow(pOuterRow);
@@ -301,8 +303,9 @@ void RowCompactor::vCreateTail(Column* pCol, Row* pOuterRow, Row* pInnerRow)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) does the inner vch equal the outer vch?
   
-  if (! StrLib::bEqualTo(pInnerRow->m_waColVal[i_Col].m_azStr,
-                         pOuterRow->m_waColVal[i_Col].m_azStr) )
+  char* azInnerStr = pInnerRow->m_waColVal[i_Col].m_azStr;
+  char* azOuterStr = pOuterRow->m_waColVal[i_Col].m_azStr;
+  if (! StrLib::bEqualTo(azInnerStr,azOuterStr) )
     return;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -325,7 +328,8 @@ void RowCompactor::vCreateTail(Column* pCol, Row* pOuterRow, Row* pInnerRow)
   //vDumpTails();
   //vDebugPoint();
   
-  i8 i_Tail = m_pCrwNub->iAllotTail(xFindTail.nBytes() + C_NULL_1B);
+  i8 nTailBytes = xFindTail.nBytes();
+  i8 i_Tail = m_pCrwNub->iAllotTail(nTailBytes);
   TailLine* aTail = m_pCrwNub->aGetTail(i_Tail);
   
   //           -- TailLine --
@@ -337,7 +341,7 @@ void RowCompactor::vCreateTail(Column* pCol, Row* pOuterRow, Row* pInnerRow)
   aTail->vAssign(pOuterRow->m_waColVal[i_Col].m_szVch);
   
   vDumpTails();
-  //vDebugPoint();
+  vDebugPoint();
 }
 
 
@@ -432,14 +436,16 @@ void RowCompactor::vEncodeTails(Row* pInflatedRow)
     
     // -- non-null vch column --
     
-    if (StrLib::iLength(aColVal->m_azStr) < 8)
+    char* azStr = aColVal->m_azStr;
+    if (StrLib::iLength(azStr) < 8)
       continue;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // attempt to find tail for non-null vch column of minimum length
     
     TailStr xFindTail(aColVal->m_szVch);
-    
+
+    vDumpTails();
     i8 i_Tail = iFindTail( (TailLine*) & xFindTail );
     if (C_UNKNOWN == i_Tail)
       continue;

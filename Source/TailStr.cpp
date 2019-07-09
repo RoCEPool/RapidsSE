@@ -121,7 +121,7 @@ void TailStr::vSet(Stz* szStz)
 {
   vReset();
   
-  i8 nL = StrLib::nCopy((char*)sz(),(char*)szStz);
+  i8 nL = StrLib::nCopy((char*)sz(),(char*)szStz) + C_1B;
   
   vL(nL);
   

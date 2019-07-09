@@ -1135,12 +1135,7 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
         
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       case MC_OVERFLOW_2T: {
-        //vDebugPoint();
-//        i8 i_Over_rel = aHeadLine->iOverflow2B();
-//        OverLine* aOverLine = RowNub::aGetOver(aHeadLine,i_Over_rel);
         OverLine* aOverLine = aHeadLine->aGetOver();
-        //MemLib::vWordDump(aOverLine,32);
-
         eMetaCode = * aAdd<eMC*>(aOverLine,C_U_1B);
         ayDataByte = aAdd<byte*>(aOverLine,C_U_1B + C_M_1B);
         goto L_MetaCodeSwitch;
