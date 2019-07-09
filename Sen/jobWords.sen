@@ -189,7 +189,7 @@
 
   i_Node grid::node task::this task.sendNode!
 
-  task.send
+  // task.send
 
   pJob job.send
 ;
@@ -204,7 +204,7 @@
 
   i_Node grid::node task::this task.sendNode!
 
-  task.send
+  // task.send
 
   pJob job.send
 ;
