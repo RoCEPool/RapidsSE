@@ -108,7 +108,6 @@ void Handlers::vTaskReturn(Task** ppTask)
   switch (pTask->eState()) {
       
     case TS_EXITED:   pQueues->vScheduleExitedTask(pTask);    break;
-    case TS_SEND:     pQueues->vScheduleSendTask(pTask);      break;
     case TS_SLEEPING: pQueues->vScheduleSleepingTask(pTask);  break;
     case TS_WAITING:  pQueues->vScheduleWaitingTask(pTask);   break;
     case TS_YIELDED:  pQueues->vScheduleYieldedTask(pTask);   break;

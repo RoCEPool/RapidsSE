@@ -540,11 +540,10 @@ void Axioms::vAddConstants(void)
   /*  1 */ vAddConstant("TS_EXECUTING"_Stz,  TS_EXECUTING);
   /*  2 */ vAddConstant("TS_EXITED"_Stz,     TS_EXITED);
   /*  3 */ vAddConstant("TS_READY"_Stz,      TS_READY);
-  /*  4 */ vAddConstant("TS_SEND"_Stz,       TS_SEND);
-  /*  5 */ vAddConstant("TS_SLEEPING"_Stz,   TS_SLEEPING);
-  /*  6 */ vAddConstant("TS_WAITING"_Stz,    TS_WAITING);
-  /*  7 */ vAddConstant("TS_YIELDED"_Stz,    TS_YIELDED);
-  /*  8 */ vAddConstant("TS_ENUMS"_Stz,      TS_ENUMS);
+  /*  4 */ vAddConstant("TS_SLEEPING"_Stz,   TS_SLEEPING);
+  /*  5 */ vAddConstant("TS_WAITING"_Stz,    TS_WAITING);
+  /*  6 */ vAddConstant("TS_YIELDED"_Stz,    TS_YIELDED);
+  /*  7 */ vAddConstant("TS_ENUMS"_Stz,      TS_ENUMS);
 
   // TP_ : transaction phase
   /*  0 */ vAddConstant("TP_NONE"_Stz,        TP_NONE);

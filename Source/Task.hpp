@@ -13,11 +13,10 @@ namespace Tasks
   /* 1 */ TS_EXECUTING, // task is currenty being executed by Thread::vLoop
   /* 2 */ TS_EXITED,    // task has completed
   /* 3 */ TS_READY,     // task is ready to be executed
-  /* 4 */ TS_SEND,      // task is wants to send
-  /* 5 */ TS_SLEEPING,  // task is sleeping
-  /* 6 */ TS_WAITING,   // task is waiting on ack from cooperating task
-  /* 7 */ TS_YIELDED,   // task is yielded, not running and is in a TaskSet
-  /* 8 */ TS_ENUMS
+  /* 4 */ TS_SLEEPING,  // task is sleeping
+  /* 5 */ TS_WAITING,   // task is waiting on ack from cooperating task
+  /* 6 */ TS_YIELDED,   // task is yielded, not running and is in a TaskSet
+  /* 7 */ TS_ENUMS
   };
   
   static Stz* aTS[]

@@ -328,7 +328,6 @@ void Queues::vAddToSendQueue_NL(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  RASSERT(TS_SEND == pTask->eState());
   RASSERT(pTask->pSendNode()->iNodeNo() != -1);
   
   // get send node from the task
@@ -1187,7 +1186,7 @@ void Queues::vScheduleSendTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  RASSERT(TS_SEND == pTask->eState());
+  RASSERT(0);
   
   if (pTask->pJob()->m_bMarkActivity)
     ActivityMap::vMarkJob(pTask->pJob(),
