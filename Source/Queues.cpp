@@ -795,11 +795,13 @@ void Queues::vPauseForGeneralThreads(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
+  // pause till all general threads have all begun
   while (*gpAttachMap->m_ixThreads != gpAttachMap->Arg.m_nThreads)
     Pthread::vSleepMsec(10,CN_NONE);
   
   RASSERT(m_pThreadVec->nItems() == gpAttachMap->Arg.m_nThreads);
   
+  // pause till all general threads are in idle state
   for (i8 i_Thread = 0; i_Thread < m_pThreadVec->nItems(); i_Thread++) {
     
     Thread* pThread = m_pThreadVec->pGet(i_Thread);
