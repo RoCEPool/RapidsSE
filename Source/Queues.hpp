@@ -31,12 +31,7 @@ namespace Scheduling
     // QR_READY_QUEUE              // (ordered by arrival)
   
     TaskList*  m_pReadyQueueLP;    //  set of low priority queued tasks ready to run
-  
-    TaskList* m_pReadySendQueues[C_MAX_NODES];
-    // gxArguments.m_nSlotsPerNode ..     // set of tasks queued for socket sending
-    //   gxArguments.m_nSlotsPerNode +    // (ordered by arrival)
-    //   gxArguments.m_nNodes - 1
-  
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // queues which are not checked in the round robin
   

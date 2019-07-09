@@ -71,14 +71,7 @@ Queues::Queues(void)
   
   m_pReadyQueue    = new TaskList(QK_READY_QUEUE);
   m_pReadyQueueLP  = new TaskList(QK_READY_QUEUE_LP);
-  
-  for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++)
-    m_pReadySendQueues[i_Node] = nullptr;
-  for (i8 i_Node = 0; i_Node < gpAttachMap->Arg.m_nNodes; i_Node++)
-    m_pReadySendQueues[i_Node] = new TaskList(QK_READY_SEND_QUEUE);
-  
   m_pExecutingSet  = new TaskList(QK_EXECUTING_SET);
-
   m_pWaitingSet    = new TaskList(QK_WAITING_SET);
 
   _checkInitialised_(CN_QUEUES);
