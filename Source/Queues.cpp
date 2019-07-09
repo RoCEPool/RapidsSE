@@ -797,7 +797,16 @@ void Queues::vPauseForGeneralThreads(void)
   
   while (*gpAttachMap->m_ixThreads != gpAttachMap->Arg.m_nThreads)
     Pthread::vSleepMsec(10,CN_NONE);
-
+  
+  RASSERT(m_pThreadVec->nItems() == gpAttachMap->Arg.m_nThreads);
+  
+  for (i8 i_Thread = 0; i_Thread < m_pThreadVec->nItems(); i_Thread++) {
+    
+    Thread* pThread = m_pThreadVec->pGet(i_Thread);
+    
+    while (TD_IDLE != pThread->m_eThreadState)
+      Pthread::vSleepMsec(10,CN_QUEUES);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
