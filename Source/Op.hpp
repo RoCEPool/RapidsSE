@@ -16,7 +16,7 @@ namespace PushDown
   
     bool (*m_fpOpEntryPt)(Operand* pOperand);  // function which does the op
   
-    Op* m_pOpOut;  // where results get queued
+    Op* m_pOpOut;  // where results get queued (piping)
   
     Operand* m_pOperand; // current operand
   

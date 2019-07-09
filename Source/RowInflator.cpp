@@ -977,6 +977,7 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
       case MC_INT_8B:
       case MC_IVL_8B:
       case MC_TME_8B:
+      case MC_TSP_8B:
         *aiColVal++ = *(u8*)(ayDataByte);
         ayDataByte += C_8B;
         break;
@@ -1127,7 +1128,7 @@ void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
         i_Tail_rel = wWord.m_iI8;
         aTail = aHeadLine->aGetTailRel(i_Tail_rel);
         nLength = aTail->w8_1B(+ C_U_1B);
-        MemLib::vCopy(acString,(byte*)aTail+C_U_1B+C_L_1B,nLength,CN_ROWCOMPACTOR);
+        MemLib::vCopy(acString,(byte*)aTail+C_U_1B+C_L_2B,nLength,CN_ROWCOMPACTOR);
         *(char**)(aiColVal++) = acString;
         acString += nLength;
         *acString++ = '\0';

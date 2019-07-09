@@ -730,44 +730,6 @@ void RowCompactor::vPutData_Bytes(_ColEnc& xColEnc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* put data bytes for MC_STR_FIT_2L : <LL><LongN>                            */
-/*----------------------------------------------------------------------------*/
-void RowCompactor::vPutData_STR_FIT_2L(_ColEnc& xColEnc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
-  
-  // get <LongN>
-  char* azLongN = (char*)xColEnc.m_wDataCode.m_szVch;
-  
-  // calc <LL>
-  i8 nLL = xColEnc.m_nDataSize - C_L_2B;
-  RASSERT(nLL == StrLib::iLength(azLongN) + C_NULL_1B);
-  RASSERT(nLL < (i8)C_2_BYTES);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  //      -- HeadLine / OverLine --
-  // +--------------------------------+
-  // | ...<LL>                        |
-  // +--------------------------------+
-  
-  // put <LL>
-  m_aHeadLine->vPutLogical(xColEnc.m_i_Offset,
-                           nLL,
-                           C_2B);
-  
-  //      -- HeadLine / OverLine --
-  // +--------------------------------+
-  // | ...<LL><LongN>                 |
-  // +--------------------------------+
-  
-  // put <LongN> (has null terminator)
-  m_aHeadLine->vPutLogical(xColEnc.m_i_Offset + C_L_2B,
-                           (Stz*)azLongN,
-                           nLL);
-}
-
-/*----------------------------------------------------------------------------*/
 /* put data bytes for MC_STR_FIT_1L : <L><ShortN>                             */
 /*----------------------------------------------------------------------------*/
 void RowCompactor::vPutData_STR_FIT_1L(_ColEnc& xColEnc)
@@ -803,6 +765,44 @@ void RowCompactor::vPutData_STR_FIT_1L(_ColEnc& xColEnc)
   m_aHeadLine->vPutLogical(xColEnc.m_i_Offset + C_L_1B,
                            (Stz*)azShortN,
                            nL);
+}
+
+/*----------------------------------------------------------------------------*/
+/* put data bytes for MC_STR_FIT_2L : <LL><LongN>                            */
+/*----------------------------------------------------------------------------*/
+void RowCompactor::vPutData_STR_FIT_2L(_ColEnc& xColEnc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  // get <LongN>
+  char* azLongN = (char*)xColEnc.m_wDataCode.m_szVch;
+  
+  // calc <LL>
+  i8 nLL = xColEnc.m_nDataSize - C_L_2B;
+  RASSERT(nLL == StrLib::iLength(azLongN) + C_NULL_1B);
+  RASSERT(nLL < (i8)C_2_BYTES);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  //      -- HeadLine / OverLine --
+  // +--------------------------------+
+  // | ...<LL>                        |
+  // +--------------------------------+
+  
+  // put <LL>
+  m_aHeadLine->vPutLogical(xColEnc.m_i_Offset,
+                           nLL,
+                           C_2B);
+  
+  //      -- HeadLine / OverLine --
+  // +--------------------------------+
+  // | ...<LL><LongN>                 |
+  // +--------------------------------+
+  
+  // put <LongN> (has null terminator)
+  m_aHeadLine->vPutLogical(xColEnc.m_i_Offset + C_L_2B,
+                           (Stz*)azLongN,
+                           nLL);
 }
 
 /*----------------------------------------------------------------------------*/
