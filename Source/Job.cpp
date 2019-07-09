@@ -75,7 +75,7 @@ Job::Job(eCN eClassNo, Session* pSession)
   m_bNoWait   = false;
   m_bWasReceived = false;
   
-  //m_oAcksRemaining
+  //m_oAcksRmg
   
   m_eJobTrace = JT_NONE;
   if (gpAttachMap->m_bMarkJobAll || gpAttachMap->m_bMarkJob[eClass()])
@@ -102,7 +102,7 @@ Job::Job(eCN eClassNo, Session* pSession)
   m_pOriginatingTask = nullptr;
   
   m_iParticipantNode  = C_UNKNOWN;
-  m_oAcksRemaining.vCheckInit();
+  m_oAcksRmg.vCheckInit();
   
   m_pCurrentBuffer = nullptr;
   m_pSendWith = nullptr;
@@ -476,7 +476,7 @@ void Job::vReport(void)
   vTrace("Job %llx id %lls ackRemaining %lld\n"_Stz,
          this,
          m_iJobId,
-         m_oAcksRemaining.iPrintOnlyValue());
+         m_oAcksRmg.iPrintOnlyValue());
 }
 
 /*----------------------------------------------------------------------------*/

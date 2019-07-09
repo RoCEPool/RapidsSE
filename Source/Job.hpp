@@ -181,7 +181,7 @@ namespace Jobs
     bool m_bNoWait;      // no wait
     bool m_bWasReceived; // job was received over a socket
 
-    Decider m_oAcksRemaining;  // acks remaining
+    Decider m_oAcksRmg;  // acks remaining
 
     bool m_bMarkActivity; // mark activity
     i8   m_i_Activity;    // activity

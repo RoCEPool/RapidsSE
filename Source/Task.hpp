@@ -5,22 +5,6 @@
 
 extern pthread_key_t  giTLS_TaskKey;
 
-namespace Interface
-{
-  class Session;
-}
-
-namespace Grids
-{
-  class Node;
-}
-
-namespace Threads
-{
-  class Thread;
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 namespace Tasks
 {  
   enum eTS // Task State
@@ -38,15 +22,15 @@ namespace Tasks
   
   static Stz* aTS[]
   {
-    /* 0 */ "NONE"_Stz,
-    /* 1 */ "EXECUTING"_Stz,
-    /* 2 */ "EXITED"_Stz,
-    /* 3 */ "READY"_Stz,
-    /* 4 */ "SEND"_Stz,
-    /* 5 */ "SLEEPING"_Stz,
-    /* 6 */ "WAITING"_Stz,
-    /* 7 */ "YIELDED"_Stz,
-    /* 8 */ "ENUMS"_Stz,
+  /* 0 */ "NONE"_Stz,
+  /* 1 */ "EXECUTING"_Stz,
+  /* 2 */ "EXITED"_Stz,
+  /* 3 */ "READY"_Stz,
+  /* 4 */ "SEND"_Stz,
+  /* 5 */ "SLEEPING"_Stz,
+  /* 6 */ "WAITING"_Stz,
+  /* 7 */ "YIELDED"_Stz,
+  /* 8 */ "ENUMS"_Stz,
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -76,28 +60,27 @@ namespace Tasks
   friend class ForthWord;
 
   private:
-  
+    Lock    m_okLock;       // lock for this task
+
     eTK     m_eKind;        // task kind
     union {
       Job*  m_pJob;         // the job for this task   [DDL]
       Op*   m_pOp;          // OR the op for this task [DML]
     };
   
-    Threads::Thread* m_pThread; // current thread
-  
+    Threads::Thread*    m_pThread;  // current thread
+    Interface::Session* m_pSession; // session for this task
+
     eTS     m_eState;       // state (running, sleeping, ...)
     eQR     m_eQueue;       // which queue the task is in
     i8      m_iQueueOrder;  // queue ordering number
-    Lock    m_okLock;       // lock for this task
-    Decider m_oAcksRemaining; // number of acks still waiting for
+    Decider m_oAcksRmg;     // number of acks still waiting for
     Sleep   m_oSleepTime;   // sleep time
 
     i8      m_iDdlLocked;   // ? has the ddl lock?
     i8      m_iTracing;     // tracing mask
     i8      m_i_ActionRoot; // action root
     i8      m_i_NextRnd;    // which next repeatable random nummber?
-
-    Grids::Node* m_pSendNode; // node to send to
 
     Stack*   m_pDataStack;   // data stack
     Stack*   m_pReturnStack; // return stack
@@ -110,18 +93,19 @@ namespace Tasks
       Cell*   m_aCell;      // points to cell inside a word
     } FIP;
   
+  
+    s256  m_sPortrait;      // short text description of task
+  
     // exception
     s256  m_sFile;
     s256  m_sException;
 
-    Compiler* m_pCompiler;  // word compiler
-  
-    s256  m_sPortrait;      // short text description of task
-   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // remove
+    // remove if we can
   
-    Interface::Session* m_pSession; // the session for this task
+    Grids::Node* m_pSendNode; // node to send to
+  
+    Compiler* m_pCompiler;  // forth word compiler
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // always last

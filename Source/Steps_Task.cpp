@@ -61,7 +61,7 @@ void Step::vTaskAck(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.acks! -- store value into given tasks m_oAcksRemaining                */
+/* task.acks! -- store value into given tasks m_oAcksRmg                */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskAcksStore(MP_Task mpTask)
 {
@@ -76,7 +76,7 @@ void Step::vTaskAcksStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(nAcksRequired) )
     THROW_INVALID_DSTACK("task.acks!"_Stz);
   
-  ASSERT(0 == pGivenTask->m_oAcksRemaining.iPrintOnlyValue());
+  ASSERT(0 == pGivenTask->m_oAcksRmg.iPrintOnlyValue());
 
   RASSERT(pGivenTask->bIsLocked());
   
@@ -92,7 +92,7 @@ void Step::vTaskAcksStore(MP_Task mpTask)
   
   ActionSequence::vAdd(pJob,AN_ACKS_REQUIRED,nAcksRequired);
   
-  pGivenTask->m_oAcksRemaining.vSetRemaining(nAcksRequired);
+  pGivenTask->m_oAcksRmg.vSetRemaining(nAcksRequired);
 
   EXIT();
 }
@@ -193,7 +193,7 @@ void Step::vTaskIsAckSet(MP_Task mpTask)
     THROW_INVALID_DSTACK("task.isAckSet"_Stz);
   Task* pTaskBeingAcked = _pTask(pTaskObject);
   
-  i8 iIsAckSet = pTaskBeingAcked->m_oAcksRemaining.bIsSet();
+  i8 iIsAckSet = pTaskBeingAcked->m_oAcksRmg.bIsSet();
   Job* pJob = pTaskBeingAcked->m_pJob;
   
   if (pJob && pJob->m_bMarkActivity) {

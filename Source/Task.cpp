@@ -136,7 +136,7 @@ void Task::vInit(void)
   
   m_eState       = TS_NONE;
   m_eQueue       = QR_NONE;
-  m_oAcksRemaining.vCheckInit();
+  m_oAcksRmg.vCheckInit();
   m_pThread      = nullptr;
   
   m_pDataStack   = nullptr;
@@ -320,7 +320,7 @@ bool Task::bAckAndDecide(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  bool bAmDecider = m_oAcksRemaining.bDecAndDecide();
+  bool bAmDecider = m_oAcksRmg.bDecAndDecide();
   
   return bAmDecider;
 }
@@ -890,7 +890,7 @@ void Task::vTracePoint(Stz* aMark)
          gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
          gpAttachMap->m_pGrid->iThisNode(),
          aJobName(),
-         m_oAcksRemaining.iPrintOnlyValue(),
+         m_oAcksRmg.iPrintOnlyValue(),
          
          sRoutine.aChar(),
          aMark,
