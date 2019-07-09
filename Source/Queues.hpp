@@ -126,7 +126,6 @@ namespace Scheduling
     i8 nTasksWaiting(void);
   
     i8 i_ToReadySendQueue(i8 i_QueueRR);
-    i8 i_ToReadySlotQueue(i8 i_QueueRR);
   
     Footer* aFooter(void);
   };

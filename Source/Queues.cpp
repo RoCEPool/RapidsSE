@@ -1440,21 +1440,6 @@ i8 Queues::i_ToReadySendQueue(i8 i_QueueRR)
   return i_ReadySendQueue;
 }
 
-/*----------------------------------------------------------------------------*/
-/* convert iQueueRR to a ready slot queue subscript                           */
-/*----------------------------------------------------------------------------*/
-i8 Queues::i_ToReadySlotQueue(i8 i_QueueRR)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  i8 i_ReadySlotQueue = i_QueueRR;
-  
-  RASSERT(i_ReadySlotQueue >= 0 &&
-          gpAttachMap->Arg.m_nSlotsPerNode);
-  
-  return i_ReadySlotQueue;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
