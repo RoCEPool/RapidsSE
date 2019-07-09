@@ -762,7 +762,7 @@ void RowCompactor::vPutData_STR_FIT_2L(_ColEnc& xColEnc)
   // +--------------------------------+
   
   // put <LongN> (has null terminator)
-  m_aHeadLine->vPutLogical(xColEnc.m_i_Offset + C_L_1B,
+  m_aHeadLine->vPutLogical(xColEnc.m_i_Offset + C_L_2B,
                            (Stz*)azLongN,
                            nLL);
 }
