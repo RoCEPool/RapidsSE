@@ -37,16 +37,16 @@ i8 RowCoder::nDataSize(eMC eMetaCode)
 {
   switch (eMetaCode) {
       
-    case MC_NULL:
-    case MC_1B:
-    case MC_2B:
-    case MC_3B:
-    case MC_4B:
-    case MC_5B:
-    case MC_6B:
-    case MC_7B:
-    case MC_8B:
-      return eMetaCode;
+    case MC_NULL: return 0;
+      
+    case MC_1B:   return 1;
+    case MC_2B:   return 2;
+    case MC_3B:   return 3;
+    case MC_4B:   return 4;
+    case MC_5B:   return 5;
+    case MC_6B:   return 6;
+    case MC_7B:   return 7;
+    case MC_8B:   return 8;
       
     case MC_MINUS_ONE:
     case MC_ZERO:
@@ -62,22 +62,94 @@ i8 RowCoder::nDataSize(eMC eMetaCode)
     case MC_TEN:
       return 0;
       
-    case MC_BOL_FALSE:
-    case MC_BOL_TRUE:
-      return 0;
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       
-    case MC_DTE_E0_2B:
-    case MC_DTE_E1_2B:
-    case MC_DTE_E2_2B:
-      return 2;
+    case MC_BCD_1B:      return 1;
+    case MC_BCD_2B:      return 2;
+    case MC_BCD_3B:      return 3;
+    case MC_BCD_4B:      return 4;
+    case MC_BCD_5B:      return 5;
+    case MC_BCD_6B:      return 6;
+    case MC_BCD_7B:      return 7;
+    case MC_BCD_8B:      return 8;
+
+    case MC_BCD_M_ONE:   return 0;
+    case MC_BCD_ZERO:    return 0;
+    case MC_BCD_ONE:     return 0;
+    case MC_BCD_TWO:     return 0;
+    case MC_BCD_THREE:   return 0;
+    case MC_BCD_FOUR:    return 0;
+    case MC_BCD_FIVE:    return 0;
+    case MC_BCD_SIX:     return 0;
+    case MC_BCD_SEVEN:   return 0;
+    case MC_BCD_EIGHT:   return 0;
+    case MC_BCD_NINE:    return 0;
+    case MC_BCD_TEN:     return 0;
       
+    case MC_BOL_FALSE:   return 0;
+    case MC_BOL_TRUE:    return 0;
       
-    case MC_STR_EMPTY:       return 0;
-    case MC_STR_FIT_1L:      return 1;
-    case MC_STR_FIT_2L:      return 2;
-    case MC_STR_TAIL_2T:     return 2;
+    case MC_DTE_E0_2B:   return 2;
+    case MC_DTE_E1_2B:   return 2;
+    case MC_DTE_E2_2B:   return 2;
       
-    case MC_OVERFLOW_2T:     return 2;
+    case MC_FLT_1B:      return 1;
+    case MC_FLT_2B:      return 2;
+    case MC_FLT_3B:      return 3;
+    case MC_FLT_4B:      return 4;
+    case MC_FLT_5B:      return 5;
+    case MC_FLT_6B:      return 6;
+    case MC_FLT_7B:      return 7;
+    case MC_FLT_8B:      return 8;
+      
+    case MC_INT_1B:      return 1;
+    case MC_INT_2B:      return 2;
+    case MC_INT_3B:      return 3;
+    case MC_INT_4B:      return 4;
+    case MC_INT_5B:      return 5;
+    case MC_INT_6B:      return 6;
+    case MC_INT_7B:      return 7;
+    case MC_INT_8B:      return 8;
+      
+    case MC_INT_M_ONE:   return 0;
+    case MC_INT_ZERO:    return 0;
+    case MC_INT_ONE:     return 0;
+    case MC_INT_TWO:     return 0;
+    case MC_INT_THREE:   return 0;
+    case MC_INT_FOUR:    return 0;
+    case MC_INT_FIVE:    return 0;
+    case MC_INT_SIX:     return 0;
+    case MC_INT_SEVEN:   return 0;
+    case MC_INT_EIGHT:   return 0;
+    case MC_INT_NINE:    return 0;
+    case MC_INT_TEN:     return 0;
+      
+    case MC_IVL_1B:      return 1;
+    case MC_IVL_2B:      return 2;
+    case MC_IVL_3B:      return 3;
+    case MC_IVL_4B:      return 4;
+    case MC_IVL_5B:      return 5;
+    case MC_IVL_6B:      return 6;
+    case MC_IVL_7B:      return 7;
+    case MC_IVL_8B:      return 8;
+      
+    case MC_STR_EMPTY:   return 0;
+    case MC_STR_FIT_1L:  return 1;
+    case MC_STR_FIT_2L:  return 2;
+    case MC_STR_TAIL_2T: return 2;
+      
+    case MC_TME_1B:      return 1;
+    case MC_TME_2B:      return 2;
+    case MC_TME_3B:      return 3;
+    case MC_TME_4B:      return 4;
+    case MC_TME_5B:      return 5;
+    case MC_TME_6B:      return 6;
+    case MC_TME_7B:      return 7;
+    case MC_TME_8B:      return 8;
+
+    case MC_TSP_8B:      return 8;
+
+    case MC_OVERFLOW_2T: return 2;
       
     default:
       NEVER_REACH;
