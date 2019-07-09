@@ -428,9 +428,10 @@ void Encoding::vEncodeTme(_ColEnc& xColEnc, Dtm wColVal)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // encode as: MC_1..8B : {D}
-  xColEnc.m_eMetaCode = (eMC)wColVal.iByteMagn();
-  xColEnc.m_nDataSize = xColEnc.m_eMetaCode;
+  // general case -- encode as: MC_TME_1..8B : {D}
+  i8 nD = wColVal.iByteMagn();
+  xColEnc.m_eMetaCode = (eMC)(MC_TME_1B + nD - 1);
+  xColEnc.m_nDataSize = nD;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -449,8 +450,9 @@ void Encoding::vEncodeTsp(_ColEnc& xColEnc, Dtm wColVal)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // encode as: MC_1..8B : {D}
-  xColEnc.m_eMetaCode = (eMC)wColVal.iByteMagn();
-  xColEnc.m_nDataSize = xColEnc.m_eMetaCode;
+  i8 nD = 8;
+  xColEnc.m_eMetaCode = (eMC)(MC_TSP_8B);
+  xColEnc.m_nDataSize = nD;
 }
 
 /*----------------------------------------------------------------------------*/
