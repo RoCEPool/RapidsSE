@@ -37,6 +37,7 @@ using namespace Base;
 
 
 #include "AxiomaticConstants.h"
+#include "ForwardClasses.h"
 #include "LimitsFormats.h"
 #include "Structs.h"
 #include "UsefulConstants.h"
