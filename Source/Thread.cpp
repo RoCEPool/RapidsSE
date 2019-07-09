@@ -244,10 +244,11 @@ void Thread::vLoop(void)
   Pthread::vTlsSet(giTLS_ThreadKey,this);
   ASSERT(Pthread::pTlsGet(giTLS_ThreadKey) == this);
   
-  i8 iWaitDelta = 0;
-
+  // thread has mutex while it is running
+  m_eThreadState = TD_RUNNING;
   m_pMutexThread->vMutexLock();
 
+  // increment m_ixThreads to indicate thread is running
   ++gpAttachMap->m_ixThreads;
   
   for (;;) {
@@ -255,11 +256,12 @@ void Thread::vLoop(void)
     // get next task
     if (! m_pTask && ! bQueuePeek()) {
       
-      // wait upto 5ms to be given a signal
-      m_eThreadState = TD_IDLE;
-      iWaitDelta = Random::iInteger(0,C_10K);
-      m_pMutexThread->vCondWait_timed(1000+iWaitDelta); // while waiting the mutex is dropped
+      // calc limited period to be given a signal
+      i8 iWaitPeriodUsec = C_1K + Random::iInteger(0,C_10K);
 
+      // while waiting the mutex is dropped
+      m_eThreadState = TD_IDLE;
+      m_pMutexThread->vCondWaitUsec(iWaitPeriodUsec);
       m_eThreadState = TD_RUNNING;
 
       // attempt again if no task
@@ -269,6 +271,7 @@ void Thread::vLoop(void)
     
     // call the task
     vTaskCall();
+    
     if (m_pTask->pJob() && m_pTask->pJob()->m_bMarkActivity)
       ActivityMap::vMarkJob(m_pTask->pJob(),
                          "Returned from task call: %s %p"_Stz,
@@ -277,12 +280,6 @@ void Thread::vLoop(void)
 
     // handle thread level event
     Handlers::vThreadLoop(&m_pTask);
-    
-    // this read may be continuing to execute:
-    //   - a task which slept but its wakeup time
-    //     had arrived before it was queue, or
-    //   - a task which had yielded but there were
-    //     no alternative tasks ready to be run
   }
   
   NEVER_REACH;

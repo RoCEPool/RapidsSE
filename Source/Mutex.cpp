@@ -235,7 +235,7 @@ void Mutex::vCondSignal(void)
 /*----------------------------------------------------------------------------*/
 /* calling thread waits to be signalled (blocking call)                       */
 /*----------------------------------------------------------------------------*/
-void Mutex::vCondWait_blocking(void)
+void Mutex::vCondWaitIndefinite(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -289,24 +289,29 @@ void Mutex::vCondWait_blocking(void)
 /*----------------------------------------------------------------------------*/
 /* calling thread waits to be signalled (time limited blocking call)          */
 /*----------------------------------------------------------------------------*/
-void Mutex::vCondWait_timed(i8 iMicroSeconds)
+void Mutex::vCondWaitUsec(i8 iMicroSeconds)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
   //!
-  //! This mutex must be locked by the calling thread
+  //! This mutex must be locked by the calling thread.  While waiting the
+  //! mutex is dropped
   //!
   RASSERT(m_bLocked);
   RASSERT(bMutexIsLocked());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  // get current secs.usec since unix epoch
   Dtm wIvl = IvlLib::wGetCurrIvl();
-  wIvl = IvlLib::wAdd(wIvl, iMicroSeconds);
   
+  // add the wait for period
+  wIvl = IvlLib::wAdd(wIvl,iMicroSeconds);
+  
+  // create a absolute time spec
   struct timespec xTimeSpec;
   xTimeSpec.tv_sec  = wIvl.xIvl.m_uSecond;
-  xTimeSpec.tv_nsec = wIvl.xIvl.m_uMicro * 1000;
+  xTimeSpec.tv_nsec = wIvl.xIvl.m_uMicro * C_1K;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

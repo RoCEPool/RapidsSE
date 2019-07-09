@@ -30,8 +30,8 @@ namespace System
   
     void vCondBroadcast(void);
     void vCondSignal(void);
-    void vCondWait_blocking(void);
-    void vCondWait_timed(i8 iMicroSeconds);
+    void vCondWaitIndefinite(void);
+    void vCondWaitUsec(i8 iMicroSeconds);
     bool bMutexIsLocked(void);
     bool bMutexLock(void);
     void vMutexLock(void);
