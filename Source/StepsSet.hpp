@@ -866,7 +866,6 @@
   // queues
   static void vQueuesExecutingLength(Tasks::MP_Task mpTask);
   static void vQueuesReadyLength(Tasks::MP_Task mpTask);
-  static void vQueuesReadySlotLength(Tasks::MP_Task mpTask);
   static void vQueuesSleepingLength(Tasks::MP_Task mpTask);
   static void vQueuesWaitingLength(Tasks::MP_Task mpTask);
 

@@ -13,7 +13,6 @@ void Step::vAddSteps_Queues(void)
 {
   vAddStep("queues::QueuesExecutingLength"_Stz, &Step::vQueuesExecutingLength);
   vAddStep("queues::QueuesReadyLength"_Stz,     &Step::vQueuesReadyLength);
-  vAddStep("queues::QueuesReadySlotLength"_Stz, &Step::vQueuesReadySlotLength);
   vAddStep("queues::QueuesSleepingLength"_Stz,  &Step::vQueuesSleepingLength);
   vAddStep("queues::QueuesWaitingLength"_Stz,   &Step::vQueuesWaitingLength);
 }
@@ -50,24 +49,6 @@ void Step::vQueuesReadyLength(MP_Task mpTask)
   
   Queues* pQueues = gpAttachMap->m_pQueues;
   mpTask->m_pDataStack->vPushI8(pQueues->nTasksReady());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* queues::QueuesReadySlotLength -- get the ready slot queue length           */
-/*----------------------------------------------------------------------------*/
-void Step::vQueuesReadySlotLength(MP_Task mpTask)
-{
-  ENTRY("vQueuesReadySlotLength"_Stz);
-  
-  i8 iSlot;
-  
-  if ( !  mpTask->m_pDataStack->bPop(iSlot) )
-    THROW_INVALID_DSTACK("queues::QueuesReadySlotLength"_Stz);
-  
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  mpTask->m_pDataStack->vPushI8(pQueues->nTasksReadySlot(iSlot));
   
   EXIT();
 }

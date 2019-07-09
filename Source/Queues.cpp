@@ -72,11 +72,6 @@ Queues::Queues(void)
   m_pReadyQueue    = new TaskList(QK_READY_QUEUE);
   m_pReadyQueueLP  = new TaskList(QK_READY_QUEUE_LP);
   
-  for (i8 i_Slot = 0; i_Slot < C_MAX_SLOTS; i_Slot++)
-    m_pReadySlotQueues[i_Slot] = nullptr;
-  for (i8 i_Slot = 0; i_Slot < gpAttachMap->Arg.m_nSlotsPerNode; i_Slot++)
-    m_pReadySlotQueues[i_Slot] = new TaskList(QK_READY_SLOT_QUEUE);
-  
   for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++)
     m_pReadySendQueues[i_Node] = nullptr;
   for (i8 i_Node = 0; i_Node < gpAttachMap->Arg.m_nNodes; i_Node++)
@@ -211,24 +206,6 @@ void Queues::vAddToReadyQueueLP(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add task to a slot queue                                                   */
-/*----------------------------------------------------------------------------*/
-void Queues::vAddToReadySlotQueue(Task* pTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  // NOTE: Task has a m_iPartition... not being set
-  // this needs to set for partition tasks
-  
-  // get slot no of the task
-  i8 iSlot = pTask->iSlot();
-  
-  m_pReadySlotQueues[iSlot]->vGrabLock();
-  vAddToReadySlotQueue_NL(pTask);
-  m_pReadySlotQueues[iSlot]->vDropLock();
-}
-
-/*----------------------------------------------------------------------------*/
 /* add task to send queue                                                     */
 /*----------------------------------------------------------------------------*/
 void Queues::vAddToSendQueue(Task* pTask)
@@ -344,37 +321,6 @@ void Queues::vAddToReadyQueueLP_NL(Task* pTask)
   m_pReadyQueueLP->vAddTask(pTask);
   
   ActionSequence::vAdd(pTask->pJob(),AN_ADD_READY_QUEUE_LP);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add task to a slot queue                                                   */
-/*----------------------------------------------------------------------------*/
-void Queues::vAddToReadySlotQueue_NL(Task* pTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  // NOTE: Task has a m_iPartition... not being set
-  // this needs to set for partition tasks
-  
-  RASSERT(TS_READY == pTask->eState());
-  RASSERT(pTask->bIsPartitioned());
-  
-  // get slot no of the task
-  i8 iSlot = TablePtn::iPartitionToSlot(pTask->iPartition());
-  
-  pTask->vQueue((eQR)iSlot);
-  pTask->vQueueOrder(++m_ixQueueOrder);
-  
-  if (pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkJob(pTask->pJob(),
-                       "Add to ReadySlot: %s %p"_Stz,
-                       aCN[pTask->pJob()->eClass()],
-                       pTask->pJob());
-
-  ASSERT(m_pReadySlotQueues[iSlot]->bIsLocked());
-  m_pReadySlotQueues[iSlot]->vAddTask(pTask);
-  
-  ActionSequence::vAdd(pTask->pJob(),AN_ADD_SLOT_QUEUE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -546,26 +492,6 @@ void Queues::vDumpReadySendQueues(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump ready slot queues                                                     */
-/*----------------------------------------------------------------------------*/
-void Queues::vDumpReadySlotQueues(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  for (i8 i_Slot = 0; i_Slot < gpAttachMap->Arg.m_nSlotsPerNode; i_Slot++ ) {
-    vTrace("------------------------------------\n"_Stz);
-    vTrace("Ready Slot Queue: %p\n"_Stz, m_pReadySlotQueues[i_Slot]);
-    vTrace("------------------------------------\n"_Stz);
-    m_pReadySlotQueues[i_Slot]->vGrabLock();
-    m_pReadySlotQueues[i_Slot]->vContentDump();
-    m_pReadySlotQueues[i_Slot]->vDropLock();
-    vTrace("====================================\n"_Stz);
-    vTrace("\n"_Stz);
-    vTrace("\n"_Stz);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* dump sleeping queue                                                        */
 /*----------------------------------------------------------------------------*/
 void Queues::vDumpSleepingQueue(void)
@@ -687,24 +613,13 @@ bool Queues::bIsReadySendQueue(i8 i_QueueRR)
    
    */
   
-  if (i_QueueRR >= gpAttachMap->Arg.m_nSlotsPerNode &&
-      i_QueueRR <  gpAttachMap->Arg.m_nSlotsPerNode + gpAttachMap->Arg.m_nNodes)
+//  if (i_QueueRR >= gpAttachMap->Arg.m_nSlotsPerNode &&
+//      i_QueueRR <  gpAttachMap->Arg.m_nSlotsPerNode + gpAttachMap->Arg.m_nNodes)
+//    return true;
+  if (i_QueueRR >= 0 &&
+      i_QueueRR <  gpAttachMap->Arg.m_nNodes)
     return true;
-  
-  return false;
-}
 
-/*----------------------------------------------------------------------------*/
-/* is iQueueRR refering to a ready slot queue ?                               */
-/*----------------------------------------------------------------------------*/
-bool Queues::bIsReadySlotQueue(i8 i_QueueRR)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  if (i_QueueRR >= QR_READY_QUEUE + 1 &&
-      i_QueueRR <  gpAttachMap->Arg.m_nSlotsPerNode)
-    return true;
-  
   return false;
 }
 
@@ -877,13 +792,6 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
       return true;
     }
     
-    if (pQueues->bIsReadySlotQueue(pCallingThread->m_iLastQueueRR)) {
-      if ( ! (pPoppedTask = pPopReadySlotQueue(pCallingThread)) )
-        continue;
-      *ppPoppedTask = pPoppedTask;
-      return true;
-    }
-    
     if (pQueues->bIsReadySendQueue(pCallingThread->m_iLastQueueRR)) {
       if ( ! (pPoppedTask = pPopReadySendQueue(pCallingThread)) )
         continue;
@@ -1047,58 +955,6 @@ Task* Queues::pPopReadySendQueue(Thread* pCallingThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop task from a ready slot queue                                           */
-/*----------------------------------------------------------------------------*/
-Task* Queues::pPopReadySlotQueue(Thread* pCallingThread)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  Task* pTask;
-  
-  i8 i_Queue = i_ToReadySlotQueue(pCallingThread->m_iLastQueueRR);
-  
-  TaskList* pReadySlotQueue = m_pReadySlotQueues[i_Queue];
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // lock queue and check for task
-  
-  // attempt to grab a write lock on the queue
-  if (! pReadySlotQueue->bGrabLock()) {
-    // unable to lock queue (another thread must be processing it)
-    // so move on to the next queue
-    return nullptr;
-  }
-  
-  // pop a task off the partition queues
-  pTask = pReadySlotQueue->pPopTask();
-  
-  // task no longer in any queue/set
-  if (pTask)
-    pTask->vQueue(QR_NONE);
-
-  // drop lock on the queue
-  pReadySlotQueue->vDropLock();
-  
-  // is there a task to run?
-  if (! pTask)
-    return nullptr;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // there is a task to run
-  
-  RASSERT(pTask->bIsPartitioned());
-  
-  if (pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkInfo(
-                       "Popped ReadySlot: %s %p"_Stz,
-                       aCN[pTask->pJob()->eClass()],
-                       pTask->pJob());
-
-  // return the task popped from the slot queue
-  return pTask;
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop task from sleeping queue                                               */
 /*----------------------------------------------------------------------------*/
 Task* Queues::pPopSleepingQueue(Thread* pCallingThread)
@@ -1182,7 +1038,7 @@ i8 Queues::i_QueueLast(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  i8 i_Last = gpAttachMap->m_pGrid->m_nSlotsPerNode
+  i8 i_Last = //gpAttachMap->m_pGrid->m_nSlotsPerNode
                + gpAttachMap->m_pGrid->m_nNodes
                -1;
   
@@ -1282,10 +1138,7 @@ void Queues::vScheduleAckedTask(Task* pTask)
   
   pTask->vState(TS_READY);
   
-  if (pTask->bIsNonPartitioned())
-    vScheduleReadyTask(pTask);
-  else
-    vScheduleReadySlotTask(pTask);
+  vScheduleReadyTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1326,39 +1179,11 @@ void Queues::vScheduleReadyTask(Task* pTask)
     pIdleThread->vExecuteTask(pTask);
   }
   else {
-    if (pTask->bIsNonPartitioned()) {
-      if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
-        vAddToReadyQueue(pTask);
-      else
-        vAddToReadyQueueLP(pTask);
-    }
+    if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
+      vAddToReadyQueue(pTask);
     else
-      vAddToReadySlotQueue(pTask);
+      vAddToReadyQueueLP(pTask);
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* schedule ready slot task                                                   */
-/*----------------------------------------------------------------------------*/
-void Queues::vScheduleReadySlotTask(Task* pTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  RASSERT(TS_READY == pTask->eState());
-  
-  if (pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkJob(pTask->pJob(),
-                       "Schedule ready slot: %s %p"_Stz,
-                       aCN[pTask->pJob()->eClass()],
-                       pTask->pJob());
-
-  Thread* pIdleThread = pFindIdleThread();
-  
-  if (pIdleThread) {
-    pIdleThread->vExecuteTask(pTask);
-  }
-  else
-    vAddToReadySlotQueue(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1522,52 +1347,13 @@ void Queues::vScheduleYieldedTask(Task* pTask)
     }
     return;
   }
+  
+  RASSERT(0);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // partitioned task yield
   
 
-  // - A general thread has executed a partition task which retured TS_YIELDED.
-  //   If the ready queue and ready slot queue is empty then this general thread can
-  //     continue to execute the yield task.
-  //   Otherwise we add the task to the ready slot queue
-
-  //for (i8 iSlot = 0; iSlot < gpAttachMap->m_pGrid->iSlots(); iSlot++)
-  
-  i8 i_Slot = pTask->iSlot();
-
-  // first check if any tasks in ready queue
-  i8 iLengthReadyQueue = nTasksReady();
-  vTrace("ReadyQ %lld\n"_Stz, i_Slot, iLengthReadyQueue);
-  
-  if (0 == iLengthReadyQueue) {
-    
-    // now check if any ready tasks in ready slot queue
-    m_pReadySlotQueues[i_Slot]->vGrabLock();
-    i8 iLengthReadySlotQueue = nTasksReadySlot(i_Slot);
-    
-    vTrace("SlotQ[%lld] %lld\n"_Stz, i_Slot, iLengthReadySlotQueue);
-    
-    if (0 == iLengthReadySlotQueue) {
-      m_pReadySlotQueues[i_Slot]->vDropLock();
-      pCallingThread->vReExecuteTask(pTask);
-      return;
-    }
-    
-    pTask->vState(TS_READY);
-    vAddToReadySlotQueue_NL(pTask);
-    m_pReadySlotQueues[i_Slot]->vDropLock();
-    return;
-  
-  }
-  
-  // just add task to ready slot queue
-  m_pReadySlotQueues[i_Slot]->vGrabLock();
-  pTask->vState(TS_READY);
-  vAddToReadySlotQueue_NL(pTask);
-  m_pReadySlotQueues[i_Slot]->vDropLock();
-  
-  return;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1601,16 +1387,6 @@ i8 Queues::nTasksReadyLP(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   return m_pReadyQueueLP->nTasks();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get no of tasks in a ready slot queue                                      */
-/*----------------------------------------------------------------------------*/
-i8 Queues::nTasksReadySlot(i8 iSlot)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  return m_pReadySlotQueues[iSlot]->nTasks();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1656,7 +1432,7 @@ i8 Queues::i_ToReadySendQueue(i8 i_QueueRR)
    
    */
   
-  i8 i_ReadySendQueue = i_QueueRR - gpAttachMap->Arg.m_nSlotsPerNode;
+  i8 i_ReadySendQueue = i_QueueRR;// - gpAttachMap->Arg.m_nSlotsPerNode;
   
   RASSERT(i_ReadySendQueue >= 0 &&
           i_ReadySendQueue < gpAttachMap->Arg.m_nSlotsPerNode);

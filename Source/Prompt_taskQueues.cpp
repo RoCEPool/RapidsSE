@@ -31,7 +31,6 @@ bool Prompt::bPrompt_taskQueues(SePrompt* pPrompt)
   pQueues->vDumpReadyQueue();
   pQueues->vDumpReadyQueueLP();
   pQueues->vDumpReadySendQueues();
-  pQueues->vDumpReadySlotQueues();
   pQueues->vDumpSleepingQueue();
   pQueues->vDumpWaitingSet();
   

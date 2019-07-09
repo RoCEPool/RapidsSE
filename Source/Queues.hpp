@@ -31,10 +31,6 @@ namespace Scheduling
     // QR_READY_QUEUE              // (ordered by arrival)
   
     TaskList*  m_pReadyQueueLP;    //  set of low priority queued tasks ready to run
-    
-    TaskList* m_pReadySlotQueues[C_MAX_SLOTS];
-    // QR_READY_QUEUE + 1 ..       // tasks queued for partitioned execution
-    //   gxArguments.m_nSlotsPerNode - 1  // (ordered by arrival)
   
     TaskList* m_pReadySendQueues[C_MAX_NODES];
     // gxArguments.m_nSlotsPerNode ..     // set of tasks queued for socket sending
@@ -69,7 +65,6 @@ namespace Scheduling
     void vAddToExecutingSet(Task* pTask);
     void vAddToReadyQueue(Task* pTask);
     void vAddToReadyQueueLP(Task* pTask);
-    void vAddToReadySlotQueue(Task* pTask);
     void vAddToSendQueue(Task* pTask);
     void vAddToSleepingQueue(Task* pTask);
     void vAddToWaitingSet(Task* pTask);
@@ -77,7 +72,6 @@ namespace Scheduling
     void vAddToExecutingSet_NL(Task* pTask);
     void vAddToReadyQueue_NL(Task* pTask);
     void vAddToReadyQueueLP_NL(Task* pTask);
-    void vAddToReadySlotQueue_NL(Task* pTask);
     void vAddToSendQueue_NL(Task* pTask);
     void vAddToSleepingQueue_NL(Task* pTask);
     void vAddToWaitingSet_NL(Task* pTask);
@@ -86,7 +80,6 @@ namespace Scheduling
     void vDumpReadyQueue(void);
     void vDumpReadyQueueLP(void);
     void vDumpReadySendQueues(void);
-    void vDumpReadySlotQueues(void);
     void vDumpSleepingQueue(void);
     void vDumpWaitingSet(void);
     
@@ -95,7 +88,6 @@ namespace Scheduling
     bool bIsReadyQueue(i8 i_QueueRR);
     bool bIsReadyQueueLP(i8 i_QueueRR);
     bool bIsReadySendQueue(i8 i_QueueRR);
-    bool bIsReadySlotQueue(i8 i_QueueRR);
     bool bIsSleepingQueue(i8 i_QueueRR);
   
     void vMonitorPortrait(s48K& sPortrait);
@@ -108,7 +100,6 @@ namespace Scheduling
     Task* pPopReadyQueue(Thread* pCallingThread);
     Task* pPopReadyQueueLP(Thread* pCallingThread);
     Task* pPopReadySendQueue(Thread* pCallingThread);
-    Task* pPopReadySlotQueue(Thread* pCallingThread);
     Task* pPopSleepingQueue(Thread* pCallingThread);
   
     i8 i_QueueFirst(void);
@@ -122,7 +113,6 @@ namespace Scheduling
     void vScheduleAckedTask(Task* pTask);
     void vScheduleExitedTask(Task* pTask);
     void vScheduleReadyTask(Task* pTask);
-    void vScheduleReadySlotTask(Task* pTask);
     void vScheduleSendTask(Task* pTask);
     void vScheduleSleepingTask(Task* pTask);
     void vScheduleSpawnedTask(Task* pTask);
@@ -132,7 +122,6 @@ namespace Scheduling
     i8 nTasksExecuting(void);
     i8 nTasksReady(void);
     i8 nTasksReadyLP(void);
-    i8 nTasksReadySlot(i8 iSlot);
     i8 nTasksSleeping(void);
     i8 nTasksWaiting(void);
   
