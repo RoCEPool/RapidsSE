@@ -72,7 +72,7 @@ bool Handlers::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
 }
 
 /*----------------------------------------------------------------------------*/
-/* spawned handler                                                            */
+/* task has beeb spawned                                                      */
 /*----------------------------------------------------------------------------*/
 void Handlers::vSpawnedTask(Task* pTask)
 {
@@ -87,9 +87,9 @@ void Handlers::vSpawnedTask(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* thread loop handler                                                        */
+/* task has returned                                                          */
 /*----------------------------------------------------------------------------*/
-void Handlers::vThreadLoop(Task** ppTask)
+void Handlers::vTaskReturn(Task** ppTask)
 {
   //
   // this handler is called from Thread::vLoop()

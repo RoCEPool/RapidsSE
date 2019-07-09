@@ -10,7 +10,7 @@ namespace Scheduling
   public:
     static bool bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking);
     static void vSpawnedTask(Task* pTask);
-    static void vThreadLoop(Task** ppTask);
+    static void vTaskReturn(Task** ppTask);
   };
 }
 

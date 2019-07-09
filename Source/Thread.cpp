@@ -278,8 +278,8 @@ void Thread::vLoop(void)
                          aCN[m_pTask->pJob()->eClass()],
                          m_pTask->pJob());
 
-    // handle thread level event
-    Handlers::vThreadLoop(&m_pTask);
+    // handle task return event
+    Handlers::vTaskReturn(&m_pTask);
   }
   
   NEVER_REACH;
