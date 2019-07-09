@@ -37,32 +37,7 @@ i8 RowCoder::nDataSize(eMC eMetaCode)
 {
   switch (eMetaCode) {
       
-    case MC_NULL: return 0;
-      
-    case MC_1B:   return 1;
-    case MC_2B:   return 2;
-    case MC_3B:   return 3;
-    case MC_4B:   return 4;
-    case MC_5B:   return 5;
-    case MC_6B:   return 6;
-    case MC_7B:   return 7;
-    case MC_8B:   return 8;
-      
-    case MC_MINUS_ONE:
-    case MC_ZERO:
-    case MC_ONE:
-    case MC_TWO:
-    case MC_THREE:
-    case MC_FOUR:
-    case MC_FIVE:
-    case MC_SIX:
-    case MC_SEVEN:
-    case MC_EIGHT:
-    case MC_NINE:
-    case MC_TEN:
-      return 0;
-      
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    case MC_NULL:        return 0;
       
     case MC_BCD_1B:      return 1;
     case MC_BCD_2B:      return 2;
