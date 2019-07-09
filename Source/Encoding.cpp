@@ -368,27 +368,28 @@ void Encoding::vEncodeInt(_ColEnc& xColEnc, Dtm wColVal)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // -1 case -- encode as: MC_MINUS_ONE + {}
+  // -1 case -- encode as: MC_INT_M_ONE + {}
   if (-1 == wColVal.m_iInt) {
-    xColEnc.m_eMetaCode = MC_MINUS_ONE;
+    xColEnc.m_eMetaCode = MC_INT_M_ONE;
     xColEnc.m_nDataSize = C_0B;
     return;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // 0..10 case -- encode as MC_ONE..TEN + {}
+  // 0..10 case -- encode as MC_INT_ONE..TEN + {}
   if (wColVal.m_iInt >= 0 && wColVal.m_iInt <= 10) {
-    xColEnc.m_eMetaCode = (eMC)(MC_ZERO + wColVal.m_iInt);
+    xColEnc.m_eMetaCode = (eMC)(MC_INT_ZERO + wColVal.m_iInt);
     xColEnc.m_nDataSize = C_0B;
     return;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // general case -- encode as: MC_1..8B + {D}
-  xColEnc.m_eMetaCode = (eMC)wColVal.iByteMagn();
-  xColEnc.m_nDataSize = xColEnc.m_eMetaCode;
+  // general case -- encode as: MC_INT_1..8B + {D}
+  i8 nD = wColVal.iByteMagn();
+  xColEnc.m_eMetaCode = (eMC)(MC_INT_1B + nD - 1);
+  xColEnc.m_nDataSize = nD;
 }
 
 /*----------------------------------------------------------------------------*/
