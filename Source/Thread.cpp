@@ -124,11 +124,6 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
   
   try {
     pThread->vLoop_dedicated();
-//#ifdef WITH_EVENT_MODEL
-//    pThread->vLoop_event();
-//#else
-//    pThread->vLoop_polling();
-//#endif
   }
   
   catch (Error* pError) {
@@ -330,9 +325,9 @@ void Thread::vLoop_event(void)
     
     if (m_pTask->pJob() && m_pTask->pJob()->m_bMarkActivity)
       ActivityMap::vMarkJob(m_pTask->pJob(),
-                         "Returned from task call: %s %p"_Stz,
-                         aCN[m_pTask->pJob()->eClass()],
-                         m_pTask->pJob());
+                            "Returned from task call: %s %p"_Stz,
+                            aCN[m_pTask->pJob()->eClass()],
+                            m_pTask->pJob());
 
     // handle task return event
     Handlers::vTaskReturn(&m_pTask);
