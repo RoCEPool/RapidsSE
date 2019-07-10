@@ -644,28 +644,18 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
   // start a round robin sequence
   pCallingThread->vRRstart();
   
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
   // round robin thru the queues
   while (pCallingThread->bRRnext()) {
     
-    if (pQueues->bIsReadyQueue(pCallingThread->m_iLastQueueRR)) {
-      if ( ! (pPoppedTask = pPopReadyQueue()) ) {
-        continue;
-      }
+    if ( (pPoppedTask = pPopReadyQueue()) ) {
       *ppPoppedTask = pPoppedTask;
       return true;
     }
     
-    if (pQueues->bIsReadyQueueLP(pCallingThread->m_iLastQueueRR)) {
-      if ( ! (pPoppedTask = pPopReadyQueueLP()) ) {
-        continue;
-      }
+    if ( (pPoppedTask = pPopReadyQueueLP()) ) {
       *ppPoppedTask = pPoppedTask;
       return true;
     }
-        
-    NEVER_REACH;
     
   } // while (true)
   
