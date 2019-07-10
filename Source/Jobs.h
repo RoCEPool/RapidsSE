@@ -176,6 +176,7 @@ static Stz* aJL[]
 #include "Job_VisualizeTable.hpp"
 
 #include "Job_WaitCluster.hpp"
+#include "Job_Waker.hpp"
 #include "Job_Walk.hpp"
 #include "Job_WriteBuffer.hpp"
 #include "Job_WriteRow.hpp"
