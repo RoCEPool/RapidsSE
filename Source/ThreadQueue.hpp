@@ -3,7 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-
 namespace Threads
 {
   class ThreadQueue : public ListNL_t<Thread>

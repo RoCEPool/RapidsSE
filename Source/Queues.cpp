@@ -144,7 +144,7 @@ void Queues::vThreadsReport(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add thread to thread vector                                                */
+/* add thread to thread vector and idle thread queue                          */
 /*----------------------------------------------------------------------------*/
 void Queues::vAddThread(Thread* pThread)
 {
@@ -155,6 +155,12 @@ void Queues::vAddThread(Thread* pThread)
   m_pGenThreadVec->vGrabLock();
   m_pGenThreadVec->vAdd(pThread);
   m_pGenThreadVec->vDropLock();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  m_pIdleThreadQueue->vGrabLock();
+  m_pIdleThreadQueue->vAppendThread(pThread);
+  m_pIdleThreadQueue->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -596,6 +602,8 @@ void Queues::vPauseForGeneralThreads(void)
     while (TD_IDLE != pThread->m_eThreadState)
       Pthread::vSleepMsec(10,CN_QUEUES);
   }
+  
+  RASSERT(m_pIdleThreadQueue->nQueuedThreads() == gpAttachMap->Arg.m_nThreads);
 }
 
 /*----------------------------------------------------------------------------*/
