@@ -12,7 +12,7 @@
   0 locals| pJobClass_Waker |
   0 locals| pJob_Waker |
 
-  CN_JOB_PERIODIC jobClass::find to pJobClass_Waker
+  CN_JOB_WAKER jobClass::find to pJobClass_Waker
 
   nullptr pJobClass_Waker jobClass.new to pJob_Waker
 
