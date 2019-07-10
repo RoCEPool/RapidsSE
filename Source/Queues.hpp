@@ -69,6 +69,8 @@ namespace Scheduling
     void vAddToSleepingQueue_NL(Task* pTask);
     void vAddToWaitingSet_NL(Task* pTask);
   
+    void vCheckSleeping(void);
+  
     void vDumpExecutingSet(void);
     void vDumpReadyQueue(void);
     void vDumpReadyQueueLP(void);
