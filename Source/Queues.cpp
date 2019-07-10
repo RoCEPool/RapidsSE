@@ -97,10 +97,10 @@ Queues::~Queues(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Queues::vThreadsReport(void)
 {
-  i8 iUser;
-  i8 iSystem;
-  i8 iUse;
-  i8 iSleep;
+  i8 iUserTime;
+  i8 iSystemTime;
+  i8 iPercentageUsage;
+  i8 iSleepSsec;
   
   Queues* pQueues = gpAttachMap->m_pQueues;
   
@@ -111,11 +111,12 @@ void Queues::vThreadsReport(void)
     
     Thread* pThread = pQueues->m_pGeneralThreadVec->pGet(i_Thread);
     
-    pThread->m_pPthread->bGetCpu(iUser,iSystem,iUse,iSleep);
+    pThread->m_pPthread->bGetCpu(iUserTime,iSystemTime,
+                                 iPercentageUsage,iSleepSsec);
     
-    vTrace("  Thread %2lld %p"
+    vTrace("  Gen Thread %2lld %p"
            " base %llx size %lld"
-           " user %lld system %lld use %lld sleep %lld"
+           " user %lld system %lld usage %lld%% sleep %llds"
            " %7s %s"
            " assigned %lld popped %lld\n"_Stz,
            pThread->m_iThreadNo,
@@ -124,10 +125,10 @@ void Queues::vThreadsReport(void)
            pThread->m_aStackBase,
            pThread->m_iStackSize,
            
-           iUser,
-           iSystem,
-           iUse,
-           iSleep,
+           iUserTime,
+           iSystemTime,
+           iPercentageUsage,
+           iSleepSsec,
            
            aTD[pThread->m_eThreadState],
            pThread->m_eDedicated ? aCN[pThread->m_eDedicated]->aChar() : "",
@@ -138,6 +139,45 @@ void Queues::vThreadsReport(void)
   }
   
   pQueues->m_pGeneralThreadVec->vDropLock();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  pQueues->m_pDedicatedThreadVec->vGrabLock();
+  
+  nThreads = pQueues->m_pDedicatedThreadVec->nItems();
+  for (i8 i_Thread = 0; i_Thread < nThreads; i_Thread++) {
+    
+    Thread* pThread = pQueues->m_pDedicatedThreadVec->pGet(i_Thread);
+    
+    pThread->m_pPthread->bGetCpu(iUserTime,iSystemTime,
+                                 iPercentageUsage,iSleepSsec);
+    
+    vTrace("  Ded Thread %2lld %p"
+           " base %llx size %lld"
+           " user %lld system %lld usage %lld%% sleep %llds"
+           " %7s %s"
+           " assigned %lld popped %lld\n"_Stz,
+           pThread->m_iThreadNo,
+           pThread,
+           
+           pThread->m_aStackBase,
+           pThread->m_iStackSize,
+           
+           iUserTime,
+           iSystemTime,
+           iPercentageUsage,
+           iSleepSsec,
+           
+           aTD[pThread->m_eThreadState],
+           pThread->m_eDedicated ? aCN[pThread->m_eDedicated]->aChar() : "",
+           
+           pThread->m_nAssignedTasks,
+           pThread->m_nPoppedTasks
+           );
+  }
+  
+  pQueues->m_pDedicatedThreadVec->vDropLock();
+
 }
 
 /*----------------------------------------------------------------------------*/
