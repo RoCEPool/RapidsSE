@@ -41,7 +41,7 @@
   begin
 
     "periodic sleeping..." .
-    args.periodicSleep task.sleepSsec
+    args.periodicSleep task::sleepSsec
 
   again
 
