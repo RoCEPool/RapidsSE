@@ -70,8 +70,6 @@ namespace Threads
     void vLoop(void);
     void vLoop_v2(void);
     void vReExecuteTask(Task* pTask);
-    bool bRRnext(void);
-    void vRRstart(void);
     void vSpawnPthread(void);
     void vSpawnPthread_Dummy(void);
     void vSpawnPthread_Op(void);

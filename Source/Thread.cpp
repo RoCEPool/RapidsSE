@@ -451,37 +451,6 @@ void Thread::vReExecuteTask(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* advance to next queue in round robin sequence                              */
-/*----------------------------------------------------------------------------*/
-bool Thread::bRRnext(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  m_iLastQueueRR++;
-  
-  if (m_iLastQueueRR > gpAttachMap->m_pQueues->i_QueueLast())
-    m_iLastQueueRR = gpAttachMap->m_pQueues->i_QueueFirst();
-  
-  if (m_iLastQueueRR == m_iStartQueueRR)
-    return false; // end of round robin sequence
-  
-  if (m_iLastQueueRR == gpAttachMap->m_pQueues->i_QueueFirst())
-    m_iStartQueueRR = gpAttachMap->m_pQueues->i_QueueFirst();
-  
-  return true;  // have advanced to next queue
-}
-
-/*----------------------------------------------------------------------------*/
-/* start another round robin sequence                                         */
-/*----------------------------------------------------------------------------*/
-void Thread::vRRstart(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
- 
-  m_iStartQueueRR = m_iLastQueueRR - 1;
-}
-
-/*----------------------------------------------------------------------------*/
 /* spawn the os/posix pthread associated with this thread                     */
 /*----------------------------------------------------------------------------*/
 void Thread::vSpawnPthread(void)
