@@ -109,6 +109,7 @@ namespace Scheduling
     void vScheduleSleepingTask(Task* pTask);
     void vScheduleSpawnedTask(Task* pTask);
     void vScheduleWaitingTask(Task* pTask);
+    void vScheduleWokenTask(Task* pTask);
     void vScheduleYieldedTask(Task* pTask);
  
     i8 nTasksExecuting(void);

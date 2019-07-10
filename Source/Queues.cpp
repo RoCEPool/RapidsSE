@@ -1164,6 +1164,23 @@ void Queues::vScheduleWaitingTask(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* schedule woken task                                                        */
+/*----------------------------------------------------------------------------*/
+void Queues::vScheduleWokenTask(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  pTask->vState(TS_READY);
+  
+  eQR eQueue = pTask->eWhichQueue();
+  RASSERT(eQueue >= QR_READY_QUEUE  || eQueue < gpAttachMap->m_pGrid->m_nSlotsPerNode);
+  
+  //vTrace("Spawned Task %p\n"_Stz,pTask);
+  
+  vScheduleReadyTask(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
 /* schedule yielded task                                                      */
 /*----------------------------------------------------------------------------*/
 void Queues::vScheduleYieldedTask(Task* pTask)
