@@ -701,14 +701,7 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // inspect the queues
-    
-    if (pQueues->bIsSleepingQueue(pCallingThread->m_iLastQueueRR)) {
-      //if ( ! (pPoppedTask = pPopSleepingQueue()) )
-        continue;
-      *ppPoppedTask = pPoppedTask;
-      return true;
-    }
-    
+        
     if (pQueues->bIsReadyQueue(pCallingThread->m_iLastQueueRR)) {
       if ( ! (pPoppedTask = pPopReadyQueue()) ) {
 //        if (32 == pCallingThread->m_iThreadNo)
