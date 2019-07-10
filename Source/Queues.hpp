@@ -12,31 +12,22 @@ namespace Scheduling
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // threads
 
-    ThreadVec* m_pGenThreadVec; // vector of general threads in the system
-  
+    ThreadVec*   m_pGenThreadVec;    // vector of general threads in the system
     ThreadQueue* m_pIdleThreadQueue; // queue of idle threads
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // 
-
-    Atomic m_ixQueueOrder;         // task ordering no
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // task queues which are checked in round robin fashion
+    // task queues
   
-    TaskQueue* m_pSleepingQueue;   // set of queued sleeping tasks
     TaskList*  m_pReadyQueue;      //  set of queued tasks ready to be executed
     TaskList*  m_pReadyQueueLP;    //  set of low priority queued tasks ready to run
-  
+    TaskQueue* m_pSleepingQueue;   // set of queued sleeping tasks
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // queues which are not checked in the round robin
+    // tast sets ordered by arrival
   
+    Atomic     m_ixQueueOrder;     // task arrival ordering no
     TaskList*  m_pExecutingSet;    // set of tasks currently executing
-                                   // (ordered by arrival)
     TaskList*  m_pWaitingSet;      // suspended tasks which waiting to be signaled
-                                   // (ordered by arrival)
-  
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
     // must be last
     Footer m_xFooter;
