@@ -112,7 +112,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
   
   pThread->m_pPthread->vThreadEntry();
   
-  gpAttachMap->m_pQueues->vAddGeneralThread(pThread);
+  gpAttachMap->m_pQueues->vAddDedicatedThread(pThread);
   
   if (gpAttachMap->m_bVerbose)
     vTrace("Thread::aEntryPoint %p %lld\n"_Stz,
