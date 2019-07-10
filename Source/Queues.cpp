@@ -640,24 +640,16 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
   
   // set popped task to be null to start with
   *ppPoppedTask = NULL;
+    
+  if ( (pPoppedTask = pPopReadyQueue()) ) {
+    *ppPoppedTask = pPoppedTask;
+    return true;
+  }
   
-  // start a round robin sequence
-  pCallingThread->vRRstart();
-  
-  // round robin thru the queues
-  while (pCallingThread->bRRnext()) {
-    
-    if ( (pPoppedTask = pPopReadyQueue()) ) {
-      *ppPoppedTask = pPoppedTask;
-      return true;
-    }
-    
-    if ( (pPoppedTask = pPopReadyQueueLP()) ) {
-      *ppPoppedTask = pPoppedTask;
-      return true;
-    }
-    
-  } // while (true)
+  if ( (pPoppedTask = pPopReadyQueueLP()) ) {
+    *ppPoppedTask = pPoppedTask;
+    return true;
+  }
   
   return false;
 }
