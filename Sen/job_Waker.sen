@@ -26,11 +26,11 @@
 
   >>am <SEED_RUN>
 
-  "Waker Job Started" .
-
   begin
 
     1 thread::sleepSsec
+
+    // "checking..." .
 
     queues::checkSleeping
 
