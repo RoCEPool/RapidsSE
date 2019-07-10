@@ -23,10 +23,11 @@ void Step::vAddSteps_Thread(void)
   vAddStep("thread.id"_Stz,              &Step::vThreadId);
   vAddStep("thread.muteoLock"_Stz,       &Step::vThreadoLockMutexLock);
   vAddStep("thread.mutexUnlock"_Stz,     &Step::vThreadMutexUnlock);
-  vAddStep("thread.sleep_s"_Stz,         &Step::vThreadSleep_s);
-  vAddStep("thread.sleep_ms"_Stz,        &Step::vThreadSleep_ms);
-  vAddStep("thread.sleep_us"_Stz,        &Step::vThreadSleep_us);
-  vAddStep("thread.sleep_ns"_Stz,        &Step::vThreadSleep_ns);
+  
+  vAddStep("thread.sleep_ms"_Stz,        &Step::vThreadSleepMsec);
+  vAddStep("thread.sleep_ns"_Stz,        &Step::vThreadSleepNsec);
+  vAddStep("thread.sleep_s"_Stz,         &Step::vThreadSleepSsec);
+  vAddStep("thread.sleep_us"_Stz,        &Step::vThreadSleepUsec);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -260,35 +261,16 @@ ENTRY("vThreadMutexUnlock"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* thread.sleep_s -- sleep for n seconds                                      */
-/*----------------------------------------------------------------------------*/
-void Step::vThreadSleep_s(MP_Task mpTask)
-{
-ENTRY("vThreadSleep_s"_Stz);
-  
-  i8 nSeconds;
-  
-  if ( ! mpTask->m_pDataStack->bPop(nSeconds) )
-    THROW_INVALID_DSTACK("sleep_s"_Stz);
-  
-  Thread* pThread = Thread::pThisTLSThread();
-  
-  pThread->m_pPthread->vSleepSsec(nSeconds,CN_WORD);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* thread.sleep_ms -- sleep for n milliseconds                                */
 /*----------------------------------------------------------------------------*/
-void Step::vThreadSleep_ms(MP_Task mpTask)
+void Step::vThreadSleepMsec(MP_Task mpTask)
 {
-ENTRY("vThreadSleep_ms"_Stz);
+ENTRY("vThreadSleepMsec"_Stz);
   
   i8 nMilliseconds;
   
   if ( ! mpTask->m_pDataStack->bPop(nMilliseconds) )
-    THROW_INVALID_DSTACK("sleep_ms"_Stz);
+    THROW_INVALID_DSTACK("sleepMsec"_Stz);
   
   Thread* pThread = Thread::pThisTLSThread();
   
@@ -298,39 +280,58 @@ ENTRY("vThreadSleep_ms"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* thread.sleep_us -- sleep for n microseconds                                */
+/* thread.sleep_ns -- sleep for n nanoseconds                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vThreadSleep_us(MP_Task mpTask)
+void Step::vThreadSleepNsec(MP_Task mpTask)
 {
-ENTRY("vThreadSleep_us"_Stz);
+  ENTRY("vThreadSleepNsec"_Stz);
   
-  i8 nMicroseconds;
+  i8 nNanoseconds;
   
-  if ( ! mpTask->m_pDataStack->bPop(nMicroseconds) )
-    THROW_INVALID_DSTACK("sleep_us"_Stz);
+  if ( ! mpTask->m_pDataStack->bPop(nNanoseconds) )
+    THROW_INVALID_DSTACK("sleepNsec"_Stz);
   
   Thread* pThread = Thread::pThisTLSThread();
   
-  pThread->m_pPthread->vSleepUsec(nMicroseconds,CN_WORD);
+  pThread->m_pPthread->vSleepNsec(nNanoseconds,CN_WORD);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* thread.sleep_ns -- sleep for n nanoseconds                                 */
+/* thread.sleepSsec -- sleep for n seconds                                      */
 /*----------------------------------------------------------------------------*/
-void Step::vThreadSleep_ns(MP_Task mpTask)
+void Step::vThreadSleepSsec(MP_Task mpTask)
 {
-ENTRY("vThreadSleep_ns"_Stz);
+  ENTRY("vThreadSleepSsec"_Stz);
   
-  i8 nNanoseconds;
+  i8 nSeconds;
   
-  if ( ! mpTask->m_pDataStack->bPop(nNanoseconds) )
-    THROW_INVALID_DSTACK("sleep_ns"_Stz);
+  if ( ! mpTask->m_pDataStack->bPop(nSeconds) )
+    THROW_INVALID_DSTACK("sleepSsec"_Stz);
   
   Thread* pThread = Thread::pThisTLSThread();
   
-  pThread->m_pPthread->vSleepNsec(nNanoseconds,CN_WORD);
+  pThread->m_pPthread->vSleepSsec(nSeconds,CN_WORD);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread.sleep_us -- sleep for n microseconds                                */
+/*----------------------------------------------------------------------------*/
+void Step::vThreadSleepUsec(MP_Task mpTask)
+{
+ENTRY("vThreadSleepUsec"_Stz);
+  
+  i8 nMicroseconds;
+  
+  if ( ! mpTask->m_pDataStack->bPop(nMicroseconds) )
+    THROW_INVALID_DSTACK("sleepUsec"_Stz);
+  
+  Thread* pThread = Thread::pThisTLSThread();
+  
+  pThread->m_pPthread->vSleepUsec(nMicroseconds,CN_WORD);
   
   EXIT();
 }

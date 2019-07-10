@@ -1095,10 +1095,10 @@
   static void vThreadId(Tasks::MP_Task mpTask);
   static void vThreadoLockMutexLock(Tasks::MP_Task mpTask);
   static void vThreadMutexUnlock(Tasks::MP_Task mpTask);
-  static void vThreadSleep_s(Tasks::MP_Task mpTask);
-  static void vThreadSleep_ms(Tasks::MP_Task mpTask);
-  static void vThreadSleep_us(Tasks::MP_Task mpTask);
-  static void vThreadSleep_ns(Tasks::MP_Task mpTask);
+  static void vThreadSleepMsec(Tasks::MP_Task mpTask);
+  static void vThreadSleepNsec(Tasks::MP_Task mpTask);
+  static void vThreadSleepSsec(Tasks::MP_Task mpTask);
+  static void vThreadSleepUsec(Tasks::MP_Task mpTask);
 
   // timer
   static void vTimerDelete(Tasks::MP_Task mpTask);
