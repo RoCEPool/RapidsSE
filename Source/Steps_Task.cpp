@@ -414,7 +414,7 @@ void Step::vTaskSleepMsec(MP_Task mpTask)
   
   i8 nMicroSeconds = nMilliSeconds * C_1K;
   
- ActionSequence::vAdd(mpTask->m_pJob,AN_TASK_SLEEP,nMicroSeconds);
+  ActionSequence::vAdd(mpTask->m_pJob,AN_TASK_SLEEP,nMicroSeconds);
   
   mpTask->vSleepUsec(nMicroSeconds);
   mpTask->vState(TS_SLEEPING);

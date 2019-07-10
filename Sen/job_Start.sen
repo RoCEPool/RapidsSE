@@ -71,8 +71,8 @@
 
   snooze start_supervisor
   snooze start_sockets
-  //snooze start_periodic
-  snooze start_waker
+  snooze start_periodic
+  //snooze start_waker
 
   nullptr pThisTask task.job!
 
