@@ -701,7 +701,7 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // inspect the queues
-        
+    
     if (pQueues->bIsReadyQueue(pCallingThread->m_iLastQueueRR)) {
       if ( ! (pPoppedTask = pPopReadyQueue()) ) {
 //        if (32 == pCallingThread->m_iThreadNo)
@@ -914,14 +914,8 @@ i8 Queues::i_QueueFirst(void)
 i8 Queues::i_QueueLast(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-//  i8 i_Last = //gpAttachMap->m_pGrid->m_nSlotsPerNode
-//               + gpAttachMap->m_pGrid->m_nNodes
-//               -1;
-//
-//  return i_Last;
-  
-  return 0;
+    
+  return QR_READY_QUEUE_LP;
 }
 
 /*----------------------------------------------------------------------------*/
