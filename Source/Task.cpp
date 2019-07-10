@@ -644,7 +644,7 @@ void Task::vRenderPortrait(void)
                         sDateTime.sz(&m_oSleepTime.m_wWakeupTsp)
                         );
   }
-  else if (QR_NONE != m_eQueue_qr) {
+  else if (QK_NONE != m_eQueue) {
     m_sPortrait.vSprint("Task %p %s %s order %lld"_Stz,
                         this,
                         aCN[m_pJob->eClass()],

@@ -232,7 +232,7 @@ void Queues::vAddToExecutingSet_NL(Task* pTask)
   
   RASSERT(TS_EXECUTING == pTask->eState());
   
-  pTask->vQueue_qr(QR_EXECUTING_QUEUE);
+  //pTask->vQueue_qr(QR_EXECUTING_QUEUE);
   pTask->vQueue(QK_EXECUTING_SET);
   pTask->vQueueOrder(++m_ixQueueOrder);
   
@@ -257,7 +257,7 @@ void Queues::vAddToReadyQueue_NL(Task* pTask)
   
   RASSERT(TS_READY == pTask->eState());
   
-  pTask->vQueue_qr(QR_READY_QUEUE);
+  //pTask->vQueue_qr(QR_READY_QUEUE);
   pTask->vQueue(QK_READY_QUEUE);
   pTask->vQueueOrder(++m_ixQueueOrder);
   
@@ -283,7 +283,7 @@ void Queues::vAddToReadyQueueLP_NL(Task* pTask)
   
   RASSERT(TS_READY == pTask->eState());
   
-  pTask->vQueue_qr(QR_READY_QUEUE_LP);
+  //pTask->vQueue_qr(QR_READY_QUEUE_LP);
   pTask->vQueue(QK_READY_QUEUE_LP);
   pTask->vQueueOrder(++m_ixQueueOrder);
   
@@ -309,7 +309,7 @@ void Queues::vAddToSleepingQueue_NL(Task* pTask)
   
   RASSERT(TS_SLEEPING == pTask->eState());
   
-  pTask->vQueue_qr(QR_SLEEPING_QUEUE);
+  //pTask->vQueue_qr(QR_SLEEPING_QUEUE);
   pTask->vQueue(QK_SLEEPING_QUEUE);
 
   if (pTask->pJob()->m_bMarkActivity)
@@ -342,10 +342,11 @@ void Queues::vAddToWaitingSet_NL(Task* pTask)
   RASSERT(pTask->bIsLocked());
 
   // task must not be in any queue
-  RASSERT(QR_NONE == pTask->eQueue_qr());
-  
+  //RASSERT(QR_NONE == pTask->eQueue_qr());
+  RASSERT(QK_NONE == pTask->eQueue());
+
   // mark task as being in the waiting queue
-  pTask->vQueue_qr(QR_WAITING_QUEUE);
+  //pTask->vQueue_qr(QR_WAITING_QUEUE);
   pTask->vQueue(QK_WAITING_SET);
   pTask->vQueueOrder(++m_ixQueueOrder);
   
@@ -660,7 +661,7 @@ Task* Queues::pPopReadyQueue(void)
  
   // task no longer in any queue/set
   if (pTask) {
-    pTask->vQueue_qr(QR_NONE);
+    //pTask->vQueue_qr(QR_NONE);
     pTask->vQueue(QK_NONE);
   }
   
@@ -706,7 +707,7 @@ Task* Queues::pPopReadyQueueLP(void)
   
   // task no longer in any queue/set
   if (pTask) {
-    pTask->vQueue_qr(QR_NONE);
+    //pTask->vQueue_qr(QR_NONE);
     pTask->vQueue(QK_NONE);
   }
   
@@ -772,7 +773,7 @@ Task* Queues::pPopSleepingQueue(void)
   m_pSleepingQueue->vAssertItems(nPriorItems - 1);
 
   // task no longer in any queue/set
-  pTask->vQueue_qr(QR_NONE);
+  //pTask->vQueue_qr(QR_NONE);
   pTask->vQueue(QK_NONE);
 
   // drop lock on sleeping queue
@@ -821,7 +822,7 @@ void Queues::vRemoveFromExecutingSet(Task* pTask)
   m_pExecutingSet->vDropLock();
   
   // task no longer in any queue/set
-  pTask->vQueue_qr(QR_NONE);
+  //pTask->vQueue_qr(QR_NONE);
   pTask->vQueue(QK_NONE);
 
   if (pTask->pJob() && pTask->pJob()->m_bMarkActivity)
@@ -843,7 +844,7 @@ void Queues::vRemoveFromWaitingSet(Task* pTask)
   m_pWaitingSet->vDropLock();
   
   // task no longer in any queue/set
-  pTask->vQueue_qr(QR_NONE);
+  //pTask->vQueue_qr(QR_NONE);
   pTask->vQueue(QK_NONE);
 
   if (pTask->pJob()->m_bMarkActivity)
@@ -876,14 +877,16 @@ void Queues::vScheduleAckedTask(Task* pTask)
   // having got the lock, the task should be TS_WAITING and QR_WAITING_QUEUE
 
   RASSERT(TS_WAITING == pTask->eState());
-  RASSERT(QR_WAITING_QUEUE == pTask->eQueue_qr());
-  
+  //RASSERT(QR_WAITING_QUEUE == pTask->eQueue_qr());
+  RASSERT(QK_WAITING_SET == pTask->eQueue());
+
   pTask->vDropLock();
   
   vRemoveFromWaitingSet(pTask);
 
-  RASSERT(QR_NONE == pTask->eQueue_qr());
-  
+  //RASSERT(QR_NONE == pTask->eQueue_qr());
+  RASSERT(QK_NONE == pTask->eQueue());
+
   pTask->vState(TS_READY);
   
   vScheduleReadyTask(pTask);
@@ -972,8 +975,9 @@ void Queues::vScheduleSpawnedTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  RASSERT(QR_NONE == pTask->eQueue_qr());
-  
+  //RASSERT(QR_NONE == pTask->eQueue_qr());
+  RASSERT(QK_NONE == pTask->eQueue());
+
   pTask->vState(TS_READY);
   
   if (pTask->pJob()->m_bMarkActivity) {
