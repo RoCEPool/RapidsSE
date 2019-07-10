@@ -5,18 +5,6 @@
 
 #include "Steps.h"
 
-enum eQR // queue round robin
-{
-  /* -6 */ QR_NONE=-6,
-  
-  /* -5 */ QR_EXECUTING_QUEUE, // not RR checked
-  /* -4 */ QR_WAITING_QUEUE,   // not RR checked
-  
-  /* -3 */ QR_SLEEPING_QUEUE,  // RR checked first
-  /* -2 */ QR_READY_QUEUE,     // ..then second
-  /* -1 */ QR_READY_QUEUE_LP,  // ...then third
-};
-
 enum eQK // queue kinds
 {
   /*  0 */ QK_NONE=0,

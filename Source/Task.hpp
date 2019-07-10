@@ -72,7 +72,6 @@ namespace Tasks
 
     eTS     m_eState;       // state (running, sleeping, ...)
     eQK     m_eQueue;       // which queue the task is in
-    eQR     m_eQueue_qr;    // which queue the task is in
     i8      m_iQueueOrder;  // queue ordering number
     Decider m_oAcksRmg;     // number of acks still waiting for
     Sleep   m_oSleepTime;   // sleep time
@@ -139,10 +138,8 @@ namespace Tasks
     i8&  i_NextRnd(void);
     Op*  pOp(void);
     s256& sPortrait(void);
-    eQK eQueue(void);
-    eQR  eQueue_qr(void);
+    eQK  eQueue(void);
     void vQueue(eQK eQueue);
-    void vQueue_qr(eQR eQueue);
     void vQueueOrder(i8 iTaskOrder);
     i8   iQueueOrder(void);
     void vRefindJobClass(void);

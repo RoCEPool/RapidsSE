@@ -136,7 +136,6 @@ void Task::vInit(void)
   
   m_eState       = TS_NONE;
   m_eQueue       = QK_NONE;
-  m_eQueue_qr    = QR_NONE;
   m_oAcksRmg.vCheckInit();
   m_pThread      = nullptr;
   
@@ -562,16 +561,6 @@ eQK Task::eQueue(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get task queue                                                             */
-/*----------------------------------------------------------------------------*/
-eQR Task::eQueue_qr(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  return m_eQueue_qr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set task queue                                                             */
 /*----------------------------------------------------------------------------*/
 void Task::vQueue(eQK eQueue)
@@ -579,16 +568,6 @@ void Task::vQueue(eQK eQueue)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   m_eQueue = eQueue;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set task queue                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vQueue_qr(eQR eQueue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  m_eQueue_qr = eQueue;
 }
 
 /*----------------------------------------------------------------------------*/

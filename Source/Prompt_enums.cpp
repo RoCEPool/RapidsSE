@@ -48,7 +48,6 @@ bool Prompt::bPrompt_enums(SePrompt* pPrompt)
   vTrace("  eLK: lock kind\n"_Stz);
   vTrace("  ePK: predicate kind\n"_Stz);
   vTrace("  eQK: queue kinds\n"_Stz);
-  vTrace("  eQR: queue round robin\n"_Stz);
   vTrace("  eRE: record end\n"_Stz);
   vTrace("  eRO: relational op\n"_Stz);
   vTrace("  eSC: system call\n"_Stz);
