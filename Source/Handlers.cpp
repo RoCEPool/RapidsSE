@@ -87,6 +87,21 @@ void Handlers::vSpawnedTask(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* task has beeb spawned                                                      */
+/*----------------------------------------------------------------------------*/
+void Handlers::vSpawnedTaskDedicated(Task* pTask)
+{
+  //
+  // this handler is called from session::bSpawnJob()
+  // we want to run given task. task should be ready to run
+  //
+  
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  pQueues->vScheduleSpawnedTask(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
 /* task has returned                                                          */
 /*----------------------------------------------------------------------------*/
 void Handlers::vTaskReturn(Task** ppTask)

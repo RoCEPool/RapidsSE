@@ -1876,7 +1876,7 @@ void Step::vJobSpawnDedicated(MP_Task mpTask)
   
   ActionSequence::vAdd(pJob,AN_SPAWN_JOB,mpTask->pJob(),i_Seed,_EG_SS);
   
-  IGNORE_RETURN(Api::bSpawnJob(nullptr,pJob,(eSS)i_Seed));
+  IGNORE_RETURN(Api::bSpawnJobDedicated(nullptr,pJob,(eSS)i_Seed));
   
   EXIT();
 }
