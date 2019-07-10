@@ -89,33 +89,35 @@ void Handlers::vSpawnedTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* task has beeb spawned                                                      */
 /*----------------------------------------------------------------------------*/
-//void Handlers::vSpawnedTaskDedicated(Task* pTask)
-//{
-//  //
-//  // this handler is called from session::bSpawnJobDedicated()
-//  // we want to run given task with deciated thread.
-//  // task should be ready to run
-//  //
-//
-//  Thread* pThread = new Thread;
-//  pThread->m_pTask = pTask;
-//  pThread->m_eDedicated = pTask->pJob()->eClass();
-//
-//  pThread->vSpawnPthread_dedicated(pTask);
-//}
-
-/*----------------------------------------------------------------------------*/
 void Handlers::vSpawnedTaskDedicated(Task* pTask)
 {
   //
-  // this handler is called from session::bSpawnJob()
-  // we want to run given task. task should be ready to run
+  // this handler is called from session::bSpawnJobDedicated()
+  // we want to run given task with deciated thread.
+  // task should be ready to run
   //
+  
+  pTask->vState(TS_READY);
 
-  Queues* pQueues = gpAttachMap->m_pQueues;
+  Thread* pThread = new Thread;
+  pThread->m_pTask = pTask;
+  pThread->m_eDedicated = pTask->pJob()->eClass();
 
-  pQueues->vScheduleSpawnedTask(pTask);
+  pThread->vSpawnPthread_dedicated(pTask);
 }
+
+/*----------------------------------------------------------------------------*/
+//void Handlers::vSpawnedTaskDedicated(Task* pTask)
+//{
+//  //
+//  // this handler is called from session::bSpawnJob()
+//  // we want to run given task. task should be ready to run
+//  //
+//
+//  Queues* pQueues = gpAttachMap->m_pQueues;
+//
+//  pQueues->vScheduleSpawnedTask(pTask);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* task has returned                                                          */
