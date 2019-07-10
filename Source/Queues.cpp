@@ -116,7 +116,7 @@ void Queues::vThreadsReport(void)
            " base %llx size %lld"
            " user %lld system %lld use %lld sleep %lld"
            " %7s %s"
-           " (%lld,%lld) assigned %lld popped %lld\n"_Stz,
+           " assigned %lld popped %lld\n"_Stz,
            pThread->m_iThreadNo,
            pThread,
            
@@ -131,8 +131,6 @@ void Queues::vThreadsReport(void)
            aTD[pThread->m_eThreadState],
            pThread->m_eDedicated ? aCN[pThread->m_eDedicated]->aChar() : "",
            
-           pThread->m_iLastQueueRR,
-           pThread->m_iStartQueueRR,
            pThread->m_nAssignedTasks,
            pThread->m_nPoppedTasks
            );
