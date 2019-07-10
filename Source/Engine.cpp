@@ -888,21 +888,15 @@ void Engine::vStartSystem(void)
   // spawn general threads
   for (i8 iThreads = 0; iThreads < gxArguments.m_nThreads; iThreads++) {
     Thread* pThread = new Thread;
-    pThread->vSpawnPthread();
+    pThread->vSpawnPthread_general();
   }
   
   // spawn dummy threads
   for (i8 iThreads = 0; iThreads < gxArguments.m_nDummyThreads; iThreads++) {
     Thread* pThread = new Thread;
-    pThread->vSpawnPthread_Dummy();
+    pThread->vSpawnPthread_dummy();
   }
   
-  // spawn op threads
-  for (i8 iThreads = 0; iThreads < gxArguments.m_nOpThreads; iThreads++) {
-    Thread* pThread = new Thread;
-    pThread->vSpawnPthread_Op();
-  }
-
   // pause till all general threads are operational 
   gpAttachMap->m_pQueues->vPauseForGeneralThreads();
   

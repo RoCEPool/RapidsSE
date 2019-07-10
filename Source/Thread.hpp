@@ -52,9 +52,8 @@ namespace Threads
     Thread(void);
     ~Thread(void) noexcept(false);
   
-    static void* aEntryPoint(void* pArg);
-    static void* aEntryPointDummy(void* pArg);
-    static void* aEntryPointOp(void* pArg);
+    static void* aEntryPoint_general(void* pArg);
+    static void* aEntryPoint_dummy(void* pArg);
 
     static Thread* pThisTLSThread(void);
   
@@ -66,9 +65,8 @@ namespace Threads
     void vLoop_event(void);
     void vLoop_polling(void);
     void vReExecuteTask(Task* pTask);
-    void vSpawnPthread(void);
-    void vSpawnPthread_Dummy(void);
-    void vSpawnPthread_Op(void);
+    void vSpawnPthread_general(void);
+    void vSpawnPthread_dummy(void);
     Task* pTask(void);
     i8   iThreadNo(void);
     eTD  eThreadState(void);

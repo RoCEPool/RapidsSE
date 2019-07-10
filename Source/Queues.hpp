@@ -41,7 +41,7 @@ namespace Scheduling
   
     static void vThreadsReport(void);
   
-    void vAddThread(Thread* pThread);
+    void vAddGeneralThread(Thread* pThread);
     
     void vAddToExecutingSet(Task* pTask);
     void vAddToReadyQueue(Task* pTask);

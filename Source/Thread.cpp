@@ -101,7 +101,7 @@ Thread::~Thread(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* thread entry point                                                         */
 /*----------------------------------------------------------------------------*/
-void* Thread::aEntryPoint(void* pArg)
+void* Thread::aEntryPoint_general(void* pArg)
 {
   Thread* pThread = static_cast<Thread*>(pArg);
   
@@ -112,7 +112,7 @@ void* Thread::aEntryPoint(void* pArg)
   
   pThread->m_pPthread->vThreadEntry();
 
-  gpAttachMap->m_pQueues->vAddThread(pThread);
+  gpAttachMap->m_pQueues->vAddGeneralThread(pThread);
   
   if (gpAttachMap->m_bVerbose)
     vTrace("Thread::aEntryPoint %p %lld\n"_Stz,
@@ -163,7 +163,7 @@ void* Thread::aEntryPoint(void* pArg)
 /*----------------------------------------------------------------------------*/
 /* dummy thread entry point                                                   */
 /*----------------------------------------------------------------------------*/
-void* Thread::aEntryPointDummy(void* pArg)
+void* Thread::aEntryPoint_dummy(void* pArg)
 {
   Thread* pThread = static_cast<Thread*>(pArg);
   
@@ -184,34 +184,6 @@ void* Thread::aEntryPointDummy(void* pArg)
     i8 iSum = 0;
     for (i8 i_Loop = 0; i_Loop < gpAttachMap->Arg.m_nDummyLoop; i_Loop++)
       iSum += Tsc::iRdTscp();
-  }
-  
-  //pThread->m_pPthread->vThreadExit();
-  
-  //delete pThread;
-  
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* op thread entry point                                                      */
-/*----------------------------------------------------------------------------*/
-void* Thread::aEntryPointOp(void* pArg)
-{
-  Thread* pThread = static_cast<Thread*>(pArg);
-  
-  pThread->m_eThreadState = TD_IDLE;
-  
-  pThread->m_pPthread->vThreadEntry();
-  
-  if (gpAttachMap->m_bVerbose)
-    vTrace("Thread::aEntryPointOp %p %lld\n"_Stz,
-           pThread,pThread->iThreadNo());
-  
-  while (true) {
-
-    // temp
-    Pthread::vSleepInfinite();
   }
   
   //pThread->m_pPthread->vThreadExit();
@@ -451,37 +423,25 @@ void Thread::vReExecuteTask(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* spawn the os/posix pthread associated with this thread                     */
-/*----------------------------------------------------------------------------*/
-void Thread::vSpawnPthread(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  bool bResult = m_pPthread->bSpawnThread(Thread::aEntryPoint,this);
-  
-  ASSERT(bResult);
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn the os/posix pthread associated with this op thread                  */
-/*----------------------------------------------------------------------------*/
-void Thread::vSpawnPthread_Op(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  bool bResult = m_pPthread->bSpawnThread(Thread::aEntryPointOp,this);
-  
-  ASSERT(bResult);
-}
-
-/*----------------------------------------------------------------------------*/
 /* spawn the os/posix pthread associated with this dummy thread               */
 /*----------------------------------------------------------------------------*/
-void Thread::vSpawnPthread_Dummy(void)
+void Thread::vSpawnPthread_dummy(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  bool bResult = m_pPthread->bSpawnThread(Thread::aEntryPointDummy,this);
+  bool bResult = m_pPthread->bSpawnThread(Thread::aEntryPoint_dummy,this);
+  
+  ASSERT(bResult);
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn the os/posix pthread associated with this thread                     */
+/*----------------------------------------------------------------------------*/
+void Thread::vSpawnPthread_general(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  bool bResult = m_pPthread->bSpawnThread(Thread::aEntryPoint_general,this);
   
   ASSERT(bResult);
 }

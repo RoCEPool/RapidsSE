@@ -146,7 +146,7 @@ void Queues::vThreadsReport(void)
 /*----------------------------------------------------------------------------*/
 /* add thread to thread vector and idle thread queue                          */
 /*----------------------------------------------------------------------------*/
-void Queues::vAddThread(Thread* pThread)
+void Queues::vAddGeneralThread(Thread* pThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
