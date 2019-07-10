@@ -34,7 +34,7 @@
   begin
     pTask_FetchRows task.IsAckSet
   not while
-    1 thread.sleep_ms
+    1 thread::sleepMsec
   repeat
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

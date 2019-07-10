@@ -14,10 +14,10 @@ void Step::vAddSteps_Thread(void)
   vAddStep("thread::disableRealtime"_Stz, &Step::vThreadDisableRealtime);
   vAddStep("thread::enableRealtime"_Stz,  &Step::vThreadEnableRealtime);
 
-  vAddStep("thread.sleep_ms"_Stz,        &Step::vThreadSleepMsec);
-  vAddStep("thread.sleep_ns"_Stz,        &Step::vThreadSleepNsec);
-  vAddStep("thread.sleep_s"_Stz,         &Step::vThreadSleepSsec);
-  vAddStep("thread.sleep_us"_Stz,        &Step::vThreadSleepUsec);
+  vAddStep("thread::sleepMsec"_Stz,       &Step::vThreadSleepMsec);
+  vAddStep("thread::sleepNsec"_Stz,       &Step::vThreadSleepNsec);
+  vAddStep("thread::sleepSsec"_Stz,       &Step::vThreadSleepSsec);
+  vAddStep("thread::sleepUsec"_Stz,       &Step::vThreadSleepUsec);
   
   vAddStep("thread.bind"_Stz,             &Step::vThreadBind);
   vAddStep("thread.condSignal"_Stz,       &Step::vThreadCondSignal);
@@ -262,7 +262,7 @@ ENTRY("vThreadMutexUnlock"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* thread.sleep_ms -- sleep for n milliseconds                                */
+/* thread::sleepMsec -- sleep for n milliseconds                                */
 /*----------------------------------------------------------------------------*/
 void Step::vThreadSleepMsec(MP_Task mpTask)
 {
@@ -281,7 +281,7 @@ ENTRY("vThreadSleepMsec"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* thread.sleep_ns -- sleep for n nanoseconds                                 */
+/* thread::sleepNsec -- sleep for n nanoseconds                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vThreadSleepNsec(MP_Task mpTask)
 {
@@ -319,7 +319,7 @@ void Step::vThreadSleepSsec(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* thread.sleep_us -- sleep for n microseconds                                */
+/* thread::sleepUsec -- sleep for n microseconds                                */
 /*----------------------------------------------------------------------------*/
 void Step::vThreadSleepUsec(MP_Task mpTask)
 {

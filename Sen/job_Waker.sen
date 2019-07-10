@@ -30,7 +30,7 @@
 
   begin
 
-    1 thread.sleep_s
+    1 thread::sleepSsec
 
   again
 

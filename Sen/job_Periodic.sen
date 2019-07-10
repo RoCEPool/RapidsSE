@@ -40,7 +40,7 @@
 
   begin
 
-    args.periodicSleep thread.sleep_s
+    args.periodicSleep thread::sleepSsec
 
   again
 
