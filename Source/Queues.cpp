@@ -511,32 +511,6 @@ Thread* Queues::pFindIdleThread(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* is iQueueRR refering to the ready queue ?                                  */
-/*----------------------------------------------------------------------------*/
-bool Queues::bIsReadyQueue(i8 i_QueueRR)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  if (i_QueueRR == QR_READY_QUEUE)
-    return true;
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is iQueueRR refering to the low priority ready queue ?                     */
-/*----------------------------------------------------------------------------*/
-bool Queues::bIsReadyQueueLP(i8 i_QueueRR)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  if (i_QueueRR == QR_READY_QUEUE_LP)
-    return true;
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get a portrait of the queues                                               */
 /*----------------------------------------------------------------------------*/
 void Queues::vMonitorPortrait(s48K& sPortrait)
@@ -640,7 +614,7 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
   
   // set popped task to be null to start with
   *ppPoppedTask = NULL;
-    
+  
   if ( (pPoppedTask = pPopReadyQueue()) ) {
     *ppPoppedTask = pPoppedTask;
     return true;
@@ -653,67 +627,6 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
   
   return false;
 }
-/*----------------------------------------------------------------------------*/
-//bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-//
-//  static i8 nTimes = 0;
-//  Task* pPoppedTask;
-//
-//  // set popped task to be null to start with
-//  *ppPoppedTask = NULL;
-//
-//  // start a round robin sequence
-//  pCallingThread->vRRstart();
-//
-//  Queues* pQueues = gpAttachMap->m_pQueues;
-//
-//  // round robin thru the queues
-//  while (pCallingThread->bRRnext()) {
-//
-//    //    if (32 == pCallingThread->m_iThreadNo)
-//    //      vTrace("[32:%lld] %lld,%lld\n"_Stz,
-//    //             nTimes++,
-//    //             pCallingThread->m_iStartQueueRR,
-//    //             pCallingThread->m_iLastQueueRR);
-//
-//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    // inspect the queues
-//
-//    if (pQueues->bIsReadyQueue(pCallingThread->m_iLastQueueRR)) {
-//      if ( ! (pPoppedTask = pPopReadyQueue()) ) {
-//        //        if (32 == pCallingThread->m_iThreadNo)
-//        //          vTrace("[32:%lld] Nothing Ready %lld,%lld\n"_Stz,
-//        //                 nTimes++,
-//        //                 pCallingThread->m_iStartQueueRR,
-//        //                 pCallingThread->m_iLastQueueRR);
-//        continue;
-//      }
-//      *ppPoppedTask = pPoppedTask;
-//      return true;
-//    }
-//
-//    if (pQueues->bIsReadyQueueLP(pCallingThread->m_iLastQueueRR)) {
-//      if ( ! (pPoppedTask = pPopReadyQueueLP()) ) {
-//        //        if (32 == pCallingThread->m_iThreadNo)
-//        //          vTrace("[32:%lld] Nothing Ready %lld,%lld\n"_Stz,
-//        //                 nTimes++,
-//        //                 pCallingThread->m_iStartQueueRR,
-//        //                 pCallingThread->m_iLastQueueRR);
-//        continue;
-//      }
-//      *ppPoppedTask = pPoppedTask;
-//      return true;
-//    }
-//
-//    NEVER_REACH;
-//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  } // while (true)
-//
-//  return false;
-//}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
