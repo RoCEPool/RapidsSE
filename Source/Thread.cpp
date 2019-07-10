@@ -313,6 +313,7 @@ void Thread::vLoop_event(void)
     
     // while waiting the mutex is dropped
     m_eThreadState = TD_IDLE;
+    gpAttachMap->m_pQueues->vAppendIdleThread(this);
     m_pMutexThread->vCondWaitIndefinite();
     m_eThreadState = TD_RUNNING;
 

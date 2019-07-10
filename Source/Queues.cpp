@@ -1020,8 +1020,12 @@ void Queues::vScheduleReadyTask(Task* pTask)
                           aCN[pTask->pJob()->eClass()],
                           pTask->pJob());
 
+#ifdef WITH_EVENT_MODEL
+  Thread* pIdleThread = pPopIdleThread();
+#else
   Thread* pIdleThread = pFindIdleThread();
-
+#endif
+  
   if (pIdleThread) {
     ActionSequence::vAdd(pTask->pJob(),AN_THREAD_EXECUTE,pIdleThread->iThreadNo());
     pIdleThread->vExecuteTask(pTask);
