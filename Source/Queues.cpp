@@ -53,24 +53,25 @@ Queues::Queues(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // threads
   
-  m_pGenThreadVec = new ThreadVec;
+  m_pDedicatedThreadVec = new ThreadVec;
+  m_pGeneralThreadVec   = new ThreadVec;
   
-  m_pIdleThreadQueue = new ThreadQueue;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
-  
-  m_ixQueueOrder = 0;
+  m_pIdleThreadQueue    = new ThreadQueue;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // task queues
   
+  m_pReadyQueue    = new TaskList(QK_READY_QUEUE);
+  m_pReadyQueueLP  = new TaskList(QK_READY_QUEUE_LP);
   m_pSleepingQueue = new TaskQueue(QK_SLEEPING_QUEUE,
                                    C_NON_UNQIUE_KEY,
                                    bTaskCompareWakeupTime);
   
-  m_pReadyQueue    = new TaskList(QK_READY_QUEUE);
-  m_pReadyQueueLP  = new TaskList(QK_READY_QUEUE_LP);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // task series ordered by arrival
+  
+  m_ixQueueOrder   = 0;
+  
   m_pExecutingSet  = new TaskList(QK_EXECUTING_SET);
   m_pWaitingSet    = new TaskList(QK_WAITING_SET);
 
@@ -103,12 +104,12 @@ void Queues::vThreadsReport(void)
   
   Queues* pQueues = gpAttachMap->m_pQueues;
   
-  pQueues->m_pGenThreadVec->vGrabLock();
+  pQueues->m_pGeneralThreadVec->vGrabLock();
 
-  i8 nThreads = pQueues->m_pGenThreadVec->nItems();
+  i8 nThreads = pQueues->m_pGeneralThreadVec->nItems();
   for (i8 i_Thread = 0; i_Thread < nThreads; i_Thread++) {
     
-    Thread* pThread = pQueues->m_pGenThreadVec->pGet(i_Thread);
+    Thread* pThread = pQueues->m_pGeneralThreadVec->pGet(i_Thread);
     
     pThread->m_pPthread->bGetCpu(iUser,iSystem,iUse,iSleep);
     
@@ -136,12 +137,26 @@ void Queues::vThreadsReport(void)
            );
   }
   
-  pQueues->m_pGenThreadVec->vDropLock();
+  pQueues->m_pGeneralThreadVec->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add thread to thread vector and idle thread queue                          */
+/*----------------------------------------------------------------------------*/
+void Queues::vAddDedicatedThread(Thread* pThread)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  RASSERT(TD_IDLE == pThread->eThreadState());
+  
+  m_pDedicatedThreadVec->vGrabLock();
+  m_pDedicatedThreadVec->vAdd(pThread);
+  m_pDedicatedThreadVec->vDropLock();
+}
 
 /*----------------------------------------------------------------------------*/
 /* add thread to thread vector and idle thread queue                          */
@@ -152,9 +167,9 @@ void Queues::vAddGeneralThread(Thread* pThread)
   
   RASSERT(TD_IDLE == pThread->eThreadState());
   
-  m_pGenThreadVec->vGrabLock();
-  m_pGenThreadVec->vAdd(pThread);
-  m_pGenThreadVec->vDropLock();
+  m_pGeneralThreadVec->vGrabLock();
+  m_pGeneralThreadVec->vAdd(pThread);
+  m_pGeneralThreadVec->vDropLock();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -489,12 +504,12 @@ Thread* Queues::pFindIdleThread(void)
   if ( ! Pthread::bIsJavaThread() )
     pThisThread = Thread::pThisTLSThread();
   
-  m_pGenThreadVec->vGrabLock();
+  m_pGeneralThreadVec->vGrabLock();
 
-  i8 nThreads = m_pGenThreadVec->nItems();
+  i8 nThreads = m_pGeneralThreadVec->nItems();
   for (i8 i_Thread = 0; i_Thread < nThreads; i_Thread++) {
 
-    Thread* pThread = m_pGenThreadVec->pGet(i_Thread);
+    Thread* pThread = m_pGeneralThreadVec->pGet(i_Thread);
     
     // skip this thread
     if (pThread == pThisThread)
@@ -502,12 +517,12 @@ Thread* Queues::pFindIdleThread(void)
 
     // attempt to grab this thread as an idle thread
     if (pThread->bGrabIfIdle()) {
-      m_pGenThreadVec->vDropLock();
+      m_pGeneralThreadVec->vDropLock();
       return pThread;
     }
   }
   
-  m_pGenThreadVec->vDropLock();
+  m_pGeneralThreadVec->vDropLock();
   return nullptr;
 }
 
@@ -553,12 +568,12 @@ void Queues::vMonitorThread(s48K& sPortrait)
   i8 nRunning = 0;
   i8 nDedicated = 0;
   
-  m_pGenThreadVec->vGrabLock();
+  m_pGeneralThreadVec->vGrabLock();
   
-  i8 nThreads = m_pGenThreadVec->nItems();
+  i8 nThreads = m_pGeneralThreadVec->nItems();
   for (i8 i_Thread = 0; i_Thread < nThreads; i_Thread++) {
     
-    Thread* pThread = m_pGenThreadVec->pGet(i_Thread);
+    Thread* pThread = m_pGeneralThreadVec->pGet(i_Thread);
     
     if (TD_IDLE == pThread->eThreadState())
       nIdle++;
@@ -570,7 +585,7 @@ void Queues::vMonitorThread(s48K& sPortrait)
       nDedicated++;
   }
   
-  m_pGenThreadVec->vDropLock();
+  m_pGeneralThreadVec->vDropLock();
   
   sPortrait.vSprint("Threads: running %lld (dedicated %lld) idle %lld\n"_Stz,
                     nThreads,
@@ -592,12 +607,12 @@ void Queues::vPauseForGeneralThreads(void)
   while (*gpAttachMap->m_ixThreads != gpAttachMap->Arg.m_nThreads)
     Pthread::vSleepMsec(10,CN_NONE);
   
-  RASSERT(m_pGenThreadVec->nItems() == gpAttachMap->Arg.m_nThreads);
+  RASSERT(m_pGeneralThreadVec->nItems() == gpAttachMap->Arg.m_nThreads);
   
   // pause till all general threads are in idle state
-  for (i8 i_Thread = 0; i_Thread < m_pGenThreadVec->nItems(); i_Thread++) {
+  for (i8 i_Thread = 0; i_Thread < m_pGeneralThreadVec->nItems(); i_Thread++) {
     
-    Thread* pThread = m_pGenThreadVec->pGet(i_Thread);
+    Thread* pThread = m_pGeneralThreadVec->pGet(i_Thread);
     
     while (TD_IDLE != pThread->m_eThreadState)
       Pthread::vSleepMsec(10,CN_QUEUES);
@@ -801,9 +816,9 @@ void Queues::vRemoveThread(Thread* pThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  m_pGenThreadVec->vGrabLock();
-  m_pGenThreadVec->vRemove(pThread);
-  m_pGenThreadVec->vDropLock();
+  m_pGeneralThreadVec->vGrabLock();
+  m_pGeneralThreadVec->vRemove(pThread);
+  m_pGeneralThreadVec->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/

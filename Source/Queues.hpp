@@ -12,8 +12,9 @@ namespace Scheduling
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // threads
 
-    ThreadVec*   m_pGenThreadVec;    // vector of general threads in the system
-    ThreadQueue* m_pIdleThreadQueue; // queue of idle threads
+    ThreadVec*   m_pDedicatedThreadVec; // vector of dedicated threads
+    ThreadVec*   m_pGeneralThreadVec;   // vector of general threads
+    ThreadQueue* m_pIdleThreadQueue;    // queue of idle threads
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // task queues
@@ -23,7 +24,7 @@ namespace Scheduling
     TaskQueue* m_pSleepingQueue;   // set of queued sleeping tasks
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // tast sets ordered by arrival
+    // task sets ordered by arrival
   
     Atomic     m_ixQueueOrder;     // task arrival ordering no
     TaskList*  m_pExecutingSet;    // set of tasks currently executing
@@ -41,8 +42,9 @@ namespace Scheduling
   
     static void vThreadsReport(void);
   
+    void vAddDedicatedThread(Thread* pThread);
     void vAddGeneralThread(Thread* pThread);
-    
+
     void vAddToExecutingSet(Task* pTask);
     void vAddToReadyQueue(Task* pTask);
     void vAddToReadyQueueLP(Task* pTask);
