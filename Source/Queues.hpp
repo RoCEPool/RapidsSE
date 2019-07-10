@@ -57,6 +57,8 @@ namespace Scheduling
     void vAddToSleepingQueue_NL(Task* pTask);
     void vAddToWaitingSet_NL(Task* pTask);
   
+    void vAppendIdleThread(Thread* pThread);
+
     void vCheckSleeping(void);
   
     void vDumpExecutingSet(void);
@@ -73,6 +75,7 @@ namespace Scheduling
     void vPauseForGeneralThreads(void);
   
     bool bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread);
+    Thread* pPopIdleThread(void);
 
     Task* pPopReadyQueue(void);
     Task* pPopReadyQueueLP(void);

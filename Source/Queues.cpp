@@ -177,7 +177,6 @@ void Queues::vThreadsReport(void)
   }
   
   pQueues->m_pDedicatedThreadVec->vDropLock();
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -420,6 +419,22 @@ void Queues::vAddToWaitingSet_NL(Task* pTask)
   // drop task lock
   pTask->vDropLock();
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* append task to waiting queue                                                  */
+/*----------------------------------------------------------------------------*/
+void Queues::vAppendIdleThread(Thread* pThread)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  m_pIdleThreadQueue->vGrabLock();
+  m_pIdleThreadQueue->vAppendThread(pThread);
+  m_pIdleThreadQueue->vDropLock();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -688,6 +703,26 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
   
   return false;
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* pop idle thread                                                            */
+/*----------------------------------------------------------------------------*/
+Thread* Queues::pPopIdleThread(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  m_pIdleThreadQueue->vGrabLock();
+  
+  Thread* pThread = m_pIdleThreadQueue->pPopThread();
+  
+  m_pIdleThreadQueue->vDropLock();
+  
+  return pThread;
+ }
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
