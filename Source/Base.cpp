@@ -65,6 +65,10 @@ void Base::vTraceWith(void)
   vTrace("  WITH_ENTRY_EXIT\n"_Stz);
 #endif
   
+#ifdef WITH_EVENT_MODEL
+  vTrace("  WITH_EVENT_MODEL\n"_Stz);
+#endif
+  
 #ifdef WITH_INFLATE_TRACE
   vTrace("  WITH_INFLATE_TRACE\n"_Stz);
 #endif

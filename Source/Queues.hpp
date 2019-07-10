@@ -18,8 +18,8 @@ namespace Scheduling
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // task queues
   
-    TaskList*  m_pReadyQueue;      //  set of queued tasks ready to be executed
-    TaskList*  m_pReadyQueueLP;    //  set of low priority queued tasks ready to run
+    TaskList*  m_pReadyQueue;      // set of queued tasks ready to be executed
+    TaskList*  m_pReadyQueueLP;    // set of low priority queued tasks ready to run
     TaskQueue* m_pSleepingQueue;   // set of queued sleeping tasks
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

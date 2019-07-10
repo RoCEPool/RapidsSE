@@ -61,6 +61,10 @@
 //#define WITH_SHOCO_DUPLICATES    // test for duplicate shoco values
 //#define WITH_VERIFY_TAILS        // verify tails
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// event-based task model
+
+//#define WITH_EVENT_MODEL           // event-based task model
 
 /*============================================================================*/
 /* end                                                                        */

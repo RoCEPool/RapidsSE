@@ -284,7 +284,7 @@ void Thread::vLoop(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* thread loop v2 (fully event based)                                         */
+/* thread loop v2 (fully event-based model)                                   */
 /*----------------------------------------------------------------------------*/
 void Thread::vLoop_v2(void)
 {
