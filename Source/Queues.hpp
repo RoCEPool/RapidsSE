@@ -78,7 +78,8 @@ namespace Scheduling
     Task* pPopReadyQueueLP(void);
     Task* pPopSleepingQueue(void);
    
-    void vRemoveThread(Thread* pThread);
+    void vRemoveDedicatedThread(Thread* pThread);
+    void vRemoveGeneralThread(Thread* pThread);
   
     void vRemoveFromExecutingSet(Task* pTask);
     void vRemoveFromWaitingSet(Task* pTask);

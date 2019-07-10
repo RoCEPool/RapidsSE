@@ -810,9 +810,21 @@ Task* Queues::pPopSleepingQueue(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* remove thread from thread vector                                           */
+/* remove thread from dedicated thread vector                                 */
 /*----------------------------------------------------------------------------*/
-void Queues::vRemoveThread(Thread* pThread)
+void Queues::vRemoveDedicatedThread(Thread* pThread)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  m_pDedicatedThreadVec->vGrabLock();
+  m_pDedicatedThreadVec->vRemove(pThread);
+  m_pDedicatedThreadVec->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove thread from general thread vector                                   */
+/*----------------------------------------------------------------------------*/
+void Queues::vRemoveGeneralThread(Thread* pThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
