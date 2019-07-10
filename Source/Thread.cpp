@@ -270,6 +270,29 @@ Thread* Thread::pThisTLSThread(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* dedicated thread loop (part of event-based model)                          */
+/*----------------------------------------------------------------------------*/
+void Thread::vLoop_dedicated(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  Pthread::vTlsSet(giTLS_ThreadKey,this);
+  ASSERT(Pthread::pTlsGet(giTLS_ThreadKey) == this);
+  
+  // thread has mutex while it is running
+  m_eThreadState = TD_RUNNING;
+  m_pMutexThread->vMutexLock();
+  
+  // increment m_ixThreads to indicate thread is running
+  ++gpAttachMap->m_ixThreads;
+  
+  for (;;)
+    vTaskCall();
+  
+  NEVER_REACH;
+}
+
+/*----------------------------------------------------------------------------*/
 /* event-based thread loop (fully event-based model)                          */
 /*----------------------------------------------------------------------------*/
 void Thread::vLoop_event(void)
