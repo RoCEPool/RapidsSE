@@ -1020,38 +1020,6 @@ void Task::vWakeupTask(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compute next queue                                                         */
-/*----------------------------------------------------------------------------*/
-eQR Task::eWhichQueue(void)  //! RAY TO FINISH
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-
-  // examine the state and determine which queue
-  
-  switch (m_eState) {
-    
-    case TS_READY:
-    case TS_YIELDED:
-      if (m_pJob->m_pJobClass->m_ePriority == PY_NORMAL)
-        return QR_READY_QUEUE;
-      else
-        return QR_READY_QUEUE_LP;
-      
-    case TS_SLEEPING:
-      return QR_SLEEPING_QUEUE;
-      
-    case TS_WAITING: 
-      return QR_WAITING_QUEUE;
-      
-    default:
-      vFatal("Task::eWhichQueue: Unexpected task state: %lld\n"_Stz,
-             (i8)m_eState);
-  }
-  
-  return QR_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
 /* sprint of stack using given format string                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vSprint(s48K& sFormat, s48K& sString)

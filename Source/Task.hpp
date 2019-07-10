@@ -168,8 +168,7 @@ namespace Tasks
     u8   uWakeupTime(void);
     Sleep& oSleepTime(void);
     void vWakeupTask(void);
-    eQR  eWhichQueue(void);
-                                              
+
     /*------------------------------------------------------------------------*/
 
     void vAddBaseWords(void);

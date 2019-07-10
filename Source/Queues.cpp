@@ -994,9 +994,6 @@ void Queues::vScheduleSpawnedTask(Task* pTask)
                             pTask->pJob()->m_i_Slot);
   }
   
-  eQR eQueue = pTask->eWhichQueue();
-  RASSERT(eQueue >= QR_READY_QUEUE  || eQueue < gpAttachMap->m_pGrid->m_nSlotsPerNode);
-  
   //vTrace("Spawned Task %p\n"_Stz,pTask);
   
   vScheduleReadyTask(pTask);
@@ -1035,9 +1032,6 @@ void Queues::vScheduleWokenTask(Task* pTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   pTask->vState(TS_READY);
-  
-  eQR eQueue = pTask->eWhichQueue();
-  RASSERT(eQueue >= QR_READY_QUEUE  || eQueue < gpAttachMap->m_pGrid->m_nSlotsPerNode);
   
   //vTrace("Spawned Task %p\n"_Stz,pTask);
   
