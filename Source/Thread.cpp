@@ -74,10 +74,7 @@ Thread::Thread(void)
 
   m_pPthread     = new Pthread;
   m_pMutexThread = new Mutex;
-  
-  m_iLastQueueRR  = gpAttachMap->m_pQueues->i_QueueFirst() - 1;
-  m_iStartQueueRR = QR_NONE;
-  
+    
   m_nAssignedTasks = 0;
   m_nPoppedTasks   = 0;
 

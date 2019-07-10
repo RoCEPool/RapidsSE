@@ -135,7 +135,7 @@ void Task::vInit(void)
   m_iQueueOrder  = C_UNKNOWN;
   
   m_eState       = TS_NONE;
-  m_eQueue       = QR_NONE;
+  m_eQueue       = QK_NONE;
   m_oAcksRmg.vCheckInit();
   m_pThread      = nullptr;
   
@@ -553,7 +553,7 @@ s256& Task::sPortrait(void)
 /*----------------------------------------------------------------------------*/
 /* get task queue                                                             */
 /*----------------------------------------------------------------------------*/
-eQR Task::eQueue(void)
+eQK Task::eQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -563,7 +563,7 @@ eQR Task::eQueue(void)
 /*----------------------------------------------------------------------------*/
 /* set task queue                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vQueue(eQR eQueue)
+void Task::vQueue(eQK eQueue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -623,7 +623,7 @@ void Task::vRenderPortrait(void)
                         sDateTime.sz(&m_oSleepTime.m_wWakeupTsp)
                         );
   }
-  else if (QR_NONE != m_eQueue) {
+  else if (QK_NONE != m_eQueue) {
     m_sPortrait.vSprint("Task %p %s %s order %lld"_Stz,
                         this,
                         aCN[m_pJob->eClass()],
@@ -996,38 +996,6 @@ void Task::vWakeupTask(void)
   m_oSleepTime.vClear();
 
   m_eState = TS_READY;
-}
-
-/*----------------------------------------------------------------------------*/
-/* compute next queue                                                         */
-/*----------------------------------------------------------------------------*/
-eQR Task::eWhichQueue(void)  //! RAY TO FINISH
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-
-  // examine the state and determine which queue
-  
-  switch (m_eState) {
-    
-    case TS_READY:
-    case TS_YIELDED:
-      if (m_pJob->m_pJobClass->m_ePriority == PY_NORMAL)
-        return QR_READY_QUEUE;
-      else
-        return QR_READY_QUEUE_LP;
-      
-    case TS_SLEEPING:
-      return QR_SLEEPING_QUEUE;
-      
-    case TS_WAITING: 
-      return QR_WAITING_QUEUE;
-      
-    default:
-      vFatal("Task::eWhichQueue: Unexpected task state: %lld\n"_Stz,
-             (i8)m_eState);
-  }
-  
-  return QR_NONE;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -5,28 +5,14 @@
 
 #include "Steps.h"
 
-enum eQR // queue round robin
-{
-  /* -6 */ QR_NONE=-6,
-  
-  /* -5 */ QR_EXECUTING_QUEUE, // not RR checked
-  /* -4 */ QR_WAITING_QUEUE,   // not RR checked
-  
-  /* -3 */ QR_SLEEPING_QUEUE,  // RR checked first
-  /* -2 */ QR_READY_QUEUE,     // ..then second
-  /* -1 */ QR_READY_QUEUE_LP,  // ...then third
-};
-
 enum eQK // queue kinds
 {
   /*  0 */ QK_NONE=0,
   /*  1 */ QK_EXECUTING_SET,
   /*  2 */ QK_READY_QUEUE,
   /*  3 */ QK_READY_QUEUE_LP,
-  /*  4 */ QK_READY_SLOT_QUEUE,
-  /*  5 */ QK_READY_SEND_QUEUE,
-  /*  6 */ QK_SLEEPING_QUEUE,
-  /*  7 */ QK_WAITING_SET,
+  /*  4 */ QK_SLEEPING_QUEUE,
+  /*  5 */ QK_WAITING_SET,
 };
 
 static Stz* aQK[]
@@ -35,10 +21,8 @@ static Stz* aQK[]
   /*   1 */ "ExecutingSet"_Stz,   // QK_EXECUTING_SET
   /*   2 */ "ReadyQueue"_Stz,     // QK_READY_QUEUE
   /*   3 */ "ReadyQueueLP"_Stz,   // QK_READY_QUEUE_LP
-  /*   4 */ "ReadySlotQueue"_Stz, // QK_READY_SLOT_QUEUE
-  /*   5 */ "ReadySendQueue"_Stz, // QK_READY_SEND_QUEUE
-  /*   6 */ "SleepingQueue"_Stz,  // QK_SLEEPING_QUEUE
-  /*   7 */ "WaitingSet"_Stz,     // QK_WAITING_SET
+  /*   4 */ "SleepingQueue"_Stz,  // QK_SLEEPING_QUEUE
+  /*   5 */ "WaitingSet"_Stz,     // QK_WAITING_SET
 };
 
 //------------------------------------------------------------------------------

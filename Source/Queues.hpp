@@ -19,17 +19,13 @@ namespace Scheduling
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // 
 
-    Atomic m_ixQueueOrder;        // task ordering no
+    Atomic m_ixQueueOrder;         // task ordering no
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // task queues which are checked in round robin fashion
   
     TaskQueue* m_pSleepingQueue;   // set of queued sleeping tasks
-    // QR_SLEEPING_QUEUE           // (ordered by wakeup time)
-  
     TaskList*  m_pReadyQueue;      //  set of queued tasks ready to be executed
-    // QR_READY_QUEUE              // (ordered by arrival)
-  
     TaskList*  m_pReadyQueueLP;    //  set of low priority queued tasks ready to run
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -37,7 +33,6 @@ namespace Scheduling
   
     TaskList*  m_pExecutingSet;    // set of tasks currently executing
                                    // (ordered by arrival)
-  
     TaskList*  m_pWaitingSet;      // suspended tasks which waiting to be signaled
                                    // (ordered by arrival)
   
@@ -89,10 +84,7 @@ namespace Scheduling
     Task* pPopReadyQueue(void);
     Task* pPopReadyQueueLP(void);
     Task* pPopSleepingQueue(void);
-  
-    i8 i_QueueFirst(void);
-    i8 i_QueueLast(void);
-  
+   
     void vRemoveThread(Thread* pThread);
   
     void vRemoveFromExecutingSet(Task* pTask);
