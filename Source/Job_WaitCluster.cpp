@@ -53,7 +53,7 @@ JobClass xJobClass_WaitCluster =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_WaitCluster_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_Walk_class;
+  *pNextFun = (pFUN*)pJob_Waker_class;
   
   return &xJobClass_WaitCluster;
 }

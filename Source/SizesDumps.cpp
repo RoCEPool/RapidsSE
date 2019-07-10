@@ -529,7 +529,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_VisualizeIndex), // CN_JOB_VISUALIZEINDEX
   /*    */ sizeof(Job_VisualizeTable), // CN_JOB_VISUALIZETABLE
   /*    */ sizeof(Job_WaitCluster),    // CN_JOB_WAITCLUSTER
-  /*    */ 0,           // CN_JOB_WAKER
+  /*    */ sizeof(Job_Waker),          // CN_JOB_WAKER
   /*    */ sizeof(Job_Walk),           // CN_JOB_WALK
   /*    */ sizeof(Job_WriteBuffer),    // CN_JOB_WRITEBUFFER
   /*    */ sizeof(Job_WriteRow),       // CN_JOB_WRITEROW

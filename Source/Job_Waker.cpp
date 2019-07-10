@@ -53,7 +53,7 @@ JobClass xJobClass_Waker =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_Waker_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_Ping_class;
+  *pNextFun = (pFUN*)pJob_Walk_class;
   
   return &xJobClass_Waker;
 }
