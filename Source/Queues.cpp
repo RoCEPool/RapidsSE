@@ -912,7 +912,7 @@ i8 Queues::i_QueueFirst(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  return QR_SLEEPING_QUEUE;
+  return QR_READY_QUEUE;
 }
 
 /*----------------------------------------------------------------------------*/

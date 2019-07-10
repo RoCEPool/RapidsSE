@@ -72,10 +72,10 @@ Thread::Thread(void)
   m_pTask        = nullptr;
   m_eDedicated   = CN_NONE;
 
-  m_pPthread = new Pthread;
-  m_pMutexThread       = new Mutex;
+  m_pPthread     = new Pthread;
+  m_pMutexThread = new Mutex;
   
-  m_iLastQueueRR  = QR_SLEEPING_QUEUE - 1;
+  m_iLastQueueRR  = gpAttachMap->m_pQueues->i_QueueFirst() - 1;
   m_iStartQueueRR = QR_NONE;
   
   m_nAssignedTasks = 0;
