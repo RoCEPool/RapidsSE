@@ -84,7 +84,7 @@
     begin
       pJob_Parent job.IsExecuting
     not while
-      1 thread.sleep_ms
+      1 thread::sleepMsec
     repeat
 
     pJob_Parent job.executingTask@ locals| pTask_Parent |
@@ -94,7 +94,7 @@
     begin
        pTask_Parent task.IsAckSet
     not while
-       1 thread.sleep_ms
+       1 thread::sleepMsec
     repeat
 
     "WriteBuffer.insert acking parentJob(endInsert/loadTable):" .verbose

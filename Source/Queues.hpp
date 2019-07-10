@@ -69,6 +69,8 @@ namespace Scheduling
     void vAddToSleepingQueue_NL(Task* pTask);
     void vAddToWaitingSet_NL(Task* pTask);
   
+    void vCheckSleeping(void);
+  
     void vDumpExecutingSet(void);
     void vDumpReadyQueue(void);
     void vDumpReadyQueueLP(void);
@@ -79,8 +81,6 @@ namespace Scheduling
 
     bool bIsReadyQueue(i8 i_QueueRR);
     bool bIsReadyQueueLP(i8 i_QueueRR);
-    bool bIsReadySendQueue(i8 i_QueueRR);
-    bool bIsSleepingQueue(i8 i_QueueRR);
   
     void vMonitorPortrait(s48K& sPortrait);
     void vMonitorThread(s48K& sPortrait);
@@ -89,9 +89,9 @@ namespace Scheduling
   
     bool bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread);
 
-    Task* pPopReadyQueue(Thread* pCallingThread);
-    Task* pPopReadyQueueLP(Thread* pCallingThread);
-    Task* pPopSleepingQueue(Thread* pCallingThread);
+    Task* pPopReadyQueue(void);
+    Task* pPopReadyQueueLP(void);
+    Task* pPopSleepingQueue(void);
   
     i8 i_QueueFirst(void);
     i8 i_QueueLast(void);
@@ -107,6 +107,7 @@ namespace Scheduling
     void vScheduleSleepingTask(Task* pTask);
     void vScheduleSpawnedTask(Task* pTask);
     void vScheduleWaitingTask(Task* pTask);
+    void vScheduleWokenTask(Task* pTask);
     void vScheduleYieldedTask(Task* pTask);
  
     i8 nTasksExecuting(void);

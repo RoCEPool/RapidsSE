@@ -864,6 +864,7 @@
   static void vQueuePop(Tasks::MP_Task mpTask);
 
   // queues
+  static void vQueuesCheckSleeping(Tasks::MP_Task mpTask);
   static void vQueuesExecutingLength(Tasks::MP_Task mpTask);
   static void vQueuesReadyLength(Tasks::MP_Task mpTask);
   static void vQueuesSleepingLength(Tasks::MP_Task mpTask);
@@ -1045,6 +1046,9 @@
   static void vTaskSessionStore(Tasks::MP_Task mpTask);
   static void vTaskSendNodeFetch(Tasks::MP_Task mpTask);
   static void vTaskSendNodeStore(Tasks::MP_Task mpTask);
+  static void vTaskSleepMsec(Tasks::MP_Task mpTask);
+  static void vTaskSleepNsec(Tasks::MP_Task mpTask);
+  static void vTaskSleepSsec(Tasks::MP_Task mpTask);
   static void vTaskSleepUsec(Tasks::MP_Task mpTask);
   static void vTaskStateFetch(Tasks::MP_Task mpTask);
   static void vTaskStateStore(Tasks::MP_Task mpTask);
@@ -1092,12 +1096,12 @@
   static void vThreadDump(Tasks::MP_Task mpTask);
   static void vThreadEnableRealtime(Tasks::MP_Task mpTask);
   static void vThreadId(Tasks::MP_Task mpTask);
-  static void vThreadoLockMutexLock(Tasks::MP_Task mpTask);
+  static void vThreadMutexLock(Tasks::MP_Task mpTask);
   static void vThreadMutexUnlock(Tasks::MP_Task mpTask);
-  static void vThreadSleep_s(Tasks::MP_Task mpTask);
-  static void vThreadSleep_ms(Tasks::MP_Task mpTask);
-  static void vThreadSleep_us(Tasks::MP_Task mpTask);
-  static void vThreadSleep_ns(Tasks::MP_Task mpTask);
+  static void vThreadSleepMsec(Tasks::MP_Task mpTask);
+  static void vThreadSleepNsec(Tasks::MP_Task mpTask);
+  static void vThreadSleepSsec(Tasks::MP_Task mpTask);
+  static void vThreadSleepUsec(Tasks::MP_Task mpTask);
 
   // timer
   static void vTimerDelete(Tasks::MP_Task mpTask);

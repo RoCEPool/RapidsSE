@@ -40,7 +40,8 @@
 
   begin
 
-    args.periodicSleep thread.sleep_s
+    // "periodic sleeping..." .
+    args.periodicSleep task::sleepSsec
 
   again
 

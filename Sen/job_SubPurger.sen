@@ -61,7 +61,7 @@
   begin
     pJob_Purge job.IsExecuting
   not while
-    1 thread.sleep_ms
+    1 thread::sleepMsec
   repeat
 
   pJob_Purge job.executingTask@ locals| pTask_Purge |
@@ -71,7 +71,7 @@
   begin
     pTask_Purge task.IsAckSet
   not while
-    1 thread.sleep_ms
+    1 thread::sleepMsec
   repeat
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

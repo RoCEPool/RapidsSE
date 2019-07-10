@@ -12,29 +12,31 @@ extern AttachMap* gpAttachMap;
 void Step::vAddSteps_Task(void)
 {
   vAddStep("task::breakPoint"_Stz, &Step::vTaskBreakPoint);
+  vAddStep("task::sleepMsec"_Stz,  &Step::vTaskSleepMsec);
+  vAddStep("task::sleepSsec"_Stz,  &Step::vTaskSleepSsec);
+  vAddStep("task::sleepUsec"_Stz,  &Step::vTaskSleepUsec);
   vAddStep("task::this"_Stz,       &Step::vTaskThis);
 
-  vAddStep("task.ack"_Stz,       &Step::vTaskAck);
-  vAddStep("task.acks!"_Stz,     &Step::vTaskAcksStore);
-  vAddStep("task.dicStack"_Stz,  &Step::vTaskDicStack);
-  vAddStep("task.dump"_Stz,      &Step::vTaskDump);
-  vAddStep("task.dropLock"_Stz,  &Step::vTaskDropLock);
-  vAddStep("task.grabLock"_Stz,  &Step::vTaskGrabLock);
-  vAddStep("task.isAckSet"_Stz,  &Step::vTaskIsAckSet);
-  vAddStep("task.job@"_Stz,      &Step::vTaskJobFetch);
-  vAddStep("task.job!"_Stz,      &Step::vTaskJobStore);
-  vAddStep("task.name@"_Stz,     &Step::vTaskNameFetch);
-  vAddStep("task.seed"_Stz,      &Step::vTaskSeed);
-  vAddStep("task.session@"_Stz,  &Step::vTaskSessionFetch);
-  vAddStep("task.session!"_Stz,  &Step::vTaskSessionStore);
-  vAddStep("task.sleepUsec"_Stz, &Step::vTaskSleepUsec);
-  vAddStep("task.sendNode@"_Stz, &Step::vTaskSendNodeFetch);
-  vAddStep("task.sendNode!"_Stz, &Step::vTaskSendNodeStore);
-  vAddStep("task.state@"_Stz,    &Step::vTaskStateFetch);
-  vAddStep("task.state!"_Stz,    &Step::vTaskStateStore);
-  vAddStep("task.thread"_Stz,    &Step::vTaskThread);
-  vAddStep("task.wait"_Stz,      &Step::vTaskWait);
-  vAddStep("task.yield"_Stz,     &Step::vTaskYield);
+  vAddStep("task.ack"_Stz,         &Step::vTaskAck);
+  vAddStep("task.acks!"_Stz,       &Step::vTaskAcksStore);
+  vAddStep("task.dicStack"_Stz,    &Step::vTaskDicStack);
+  vAddStep("task.dump"_Stz,        &Step::vTaskDump);
+  vAddStep("task.dropLock"_Stz,    &Step::vTaskDropLock);
+  vAddStep("task.grabLock"_Stz,    &Step::vTaskGrabLock);
+  vAddStep("task.isAckSet"_Stz,    &Step::vTaskIsAckSet);
+  vAddStep("task.job@"_Stz,        &Step::vTaskJobFetch);
+  vAddStep("task.job!"_Stz,        &Step::vTaskJobStore);
+  vAddStep("task.name@"_Stz,       &Step::vTaskNameFetch);
+  vAddStep("task.seed"_Stz,        &Step::vTaskSeed);
+  vAddStep("task.session@"_Stz,    &Step::vTaskSessionFetch);
+  vAddStep("task.session!"_Stz,    &Step::vTaskSessionStore);
+  vAddStep("task.sendNode@"_Stz,   &Step::vTaskSendNodeFetch);
+  vAddStep("task.sendNode!"_Stz,   &Step::vTaskSendNodeStore);
+  vAddStep("task.state@"_Stz,      &Step::vTaskStateFetch);
+  vAddStep("task.state!"_Stz,      &Step::vTaskStateStore);
+  vAddStep("task.thread"_Stz,      &Step::vTaskThread);
+  vAddStep("task.wait"_Stz,        &Step::vTaskWait);
+  vAddStep("task.yield"_Stz,       &Step::vTaskYield);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -399,7 +401,51 @@ void Step::vTaskSendNodeStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.sleepUs -- this task sleeps for given microseconds                    */
+/* task::sleepMsec -- this task sleeps for given milliseconds                  */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskSleepMsec(MP_Task mpTask)
+{
+  ENTRY("vTaskSleepMsec"_Stz);
+  
+  i8 nMilliSeconds;
+  
+  if ( ! mpTask->m_pDataStack->bPop(nMilliSeconds) )
+    THROW_INVALID_DSTACK("task::sleepMsec"_Stz);
+  
+  i8 nMicroSeconds = nMilliSeconds * C_1K;
+  
+  ActionSequence::vAdd(mpTask->m_pJob,AN_TASK_SLEEP,nMicroSeconds);
+  
+  mpTask->vSleepUsec(nMicroSeconds);
+  mpTask->vState(TS_SLEEPING);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task::sleepUsec -- this task sleeps for given microseconds                  */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskSleepSsec(MP_Task mpTask)
+{
+  ENTRY("vTaskSleepSsec"_Stz);
+  
+  i8 nSeconds;
+  
+  if ( ! mpTask->m_pDataStack->bPop(nSeconds) )
+    THROW_INVALID_DSTACK("task::sleepSsec"_Stz);
+  
+  i8 nMicroSeconds = nSeconds * C_1M;
+  
+  ActionSequence::vAdd(mpTask->m_pJob,AN_TASK_SLEEP,nMicroSeconds);
+  
+  mpTask->vSleepUsec(nMicroSeconds);
+  mpTask->vState(TS_SLEEPING);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task::sleepSsec -- this task sleeps for given seconds                       */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskSleepUsec(MP_Task mpTask)
 {
@@ -408,7 +454,7 @@ void Step::vTaskSleepUsec(MP_Task mpTask)
   i8 nMicroSeconds;
   
   if ( ! mpTask->m_pDataStack->bPop(nMicroSeconds) )
-    THROW_INVALID_DSTACK("task.sleepUsec"_Stz);
+    THROW_INVALID_DSTACK("task::sleepUsec"_Stz);
   
   ActionSequence::vAdd(mpTask->m_pJob,AN_TASK_SLEEP,nMicroSeconds);
   

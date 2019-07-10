@@ -54,7 +54,7 @@
   begin
     pJob_Publish job.IsExecuting
   not while
-    1 thread.sleep_ms
+    1 thread::sleepMsec
   repeat
 
   pJob_Publish job.executingTask@ locals| pTask_Publish |
@@ -64,7 +64,7 @@
   begin
     pTask_Publish task.IsAckSet
   not while
-    1 thread.sleep_ms
+    1 thread::sleepMsec
   repeat
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

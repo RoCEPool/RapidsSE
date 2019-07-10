@@ -40,7 +40,7 @@
   begin
     pJob_TruncateTable job.IsExecuting
   not while
-    1 thread.sleep_ms
+    1 thread::sleepMsec
   repeat
 
   pJob_TruncateTable job.executingTask@ locals| pTask_TruncateTable |
@@ -50,7 +50,7 @@
   begin
     pTask_TruncateTable task.IsAckSet
   not while
-    1 thread.sleep_ms
+    1 thread::sleepMsec
   repeat
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
