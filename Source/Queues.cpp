@@ -212,9 +212,9 @@ void Queues::vAddGeneralThread(Thread* pThread)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pIdleThreadQueue->vGrabLock();
-  m_pIdleThreadQueue->vAppendThread(pThread);
-  m_pIdleThreadQueue->vDropLock();
+//  m_pIdleThreadQueue->vGrabLock();
+//  m_pIdleThreadQueue->vAppendThread(pThread);
+//  m_pIdleThreadQueue->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -673,7 +673,6 @@ void Queues::vPauseForGeneralThreads(void)
       Pthread::vSleepMsec(10,CN_QUEUES);
   }
   
-  RASSERT(m_pIdleThreadQueue->nQueuedThreads() == gpAttachMap->Arg.m_nThreads);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1022,20 +1021,36 @@ void Queues::vScheduleReadyTask(Task* pTask)
 
 #ifdef WITH_EVENT_MODEL
   Thread* pIdleThread = pPopIdleThread();
+  
+  if (pIdleThread) {
+    ActionSequence::vAdd(pTask->pJob(),AN_THREAD_EXECUTE,pIdleThread->iThreadNo());
+    pIdleThread->m_pTask = pTask;
+    pIdleThread->m_pMutexThread->vMutexLock();
+    pIdleThread->m_pMutexThread->vCondSignal();
+    pIdleThread->m_pMutexThread->vMutexUnlock();
+    
+    return;
+  }
+
+  if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
+    vAddToReadyQueue(pTask);
+  else
+    vAddToReadyQueueLP(pTask);
 #else
   Thread* pIdleThread = pFindIdleThread();
-#endif
   
   if (pIdleThread) {
     ActionSequence::vAdd(pTask->pJob(),AN_THREAD_EXECUTE,pIdleThread->iThreadNo());
     pIdleThread->vExecuteTask(pTask);
+    
+    return;
   }
-  else {
-    if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
-      vAddToReadyQueue(pTask);
-    else
-      vAddToReadyQueueLP(pTask);
-  }
+  
+  if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
+    vAddToReadyQueue(pTask);
+  else
+    vAddToReadyQueueLP(pTask);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
