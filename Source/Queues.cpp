@@ -372,9 +372,9 @@ void Queues::vCheckSleeping(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-//  while (Task* pWokenTask = pPopSleepingQueue()) {
-//     (pWokenTask);
-//  }
+  while (Task* pWokenTask = pPopSleepingQueue()) {
+     vScheduleWokenTask(pWokenTask);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -703,7 +703,7 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
     // inspect the queues
     
     if (pQueues->bIsSleepingQueue(pCallingThread->m_iLastQueueRR)) {
-      if ( ! (pPoppedTask = pPopSleepingQueue()) )
+      //if ( ! (pPoppedTask = pPopSleepingQueue()) )
         continue;
       *ppPoppedTask = pPoppedTask;
       return true;
