@@ -537,49 +537,6 @@ bool Queues::bIsReadyQueueLP(i8 i_QueueRR)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is iQueueRR refering to a ready send queue ?                               */
-/*----------------------------------------------------------------------------*/
-bool Queues::bIsReadySendQueue(i8 i_QueueRR)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-
-  /*
-   
-      The send queues are logically after the slot queues, and
-      the slot queues are 0 .. nSlotsPerNode - 1
-
-      As an example, let's say nSlotsPerNode = 2, nNodes = 3
-
-      .: an iQueueRR of 2 .. 4 refers to a send queue
-
-      which rebased (by subtracting nSlotsPerNode) is 0 .. 2
-   
-   */
-  
-//  if (i_QueueRR >= gpAttachMap->Arg.m_nSlotsPerNode &&
-//      i_QueueRR <  gpAttachMap->Arg.m_nSlotsPerNode + gpAttachMap->Arg.m_nNodes)
-//    return true;
-  if (i_QueueRR >= 0 &&
-      i_QueueRR <  gpAttachMap->Arg.m_nNodes)
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is iQueueRR refering to the sleeping queue ?                               */
-/*----------------------------------------------------------------------------*/
-bool Queues::bIsSleepingQueue(i8 i_QueueRR)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  if (i_QueueRR == QR_SLEEPING_QUEUE)
-    return true;
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get a portrait of the queues                                               */
 /*----------------------------------------------------------------------------*/
 void Queues::vMonitorPortrait(s48K& sPortrait)
@@ -727,11 +684,7 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
       *ppPoppedTask = pPoppedTask;
       return true;
     }
-    
-    if (pQueues->bIsReadySendQueue(pCallingThread->m_iLastQueueRR)) {
-      continue;
-    }
-    
+        
     NEVER_REACH;
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
@@ -914,7 +867,7 @@ i8 Queues::i_QueueFirst(void)
 i8 Queues::i_QueueLast(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-    
+  
   return QR_READY_QUEUE_LP;
 }
 

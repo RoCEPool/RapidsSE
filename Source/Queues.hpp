@@ -81,8 +81,6 @@ namespace Scheduling
 
     bool bIsReadyQueue(i8 i_QueueRR);
     bool bIsReadyQueueLP(i8 i_QueueRR);
-    bool bIsReadySendQueue(i8 i_QueueRR);
-    bool bIsSleepingQueue(i8 i_QueueRR);
   
     void vMonitorPortrait(s48K& sPortrait);
     void vMonitorThread(s48K& sPortrait);
