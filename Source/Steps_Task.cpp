@@ -27,6 +27,8 @@ void Step::vAddSteps_Task(void)
   vAddStep("task.seed"_Stz,      &Step::vTaskSeed);
   vAddStep("task.session@"_Stz,  &Step::vTaskSessionFetch);
   vAddStep("task.session!"_Stz,  &Step::vTaskSessionStore);
+  vAddStep("task.sleepMsec"_Stz, &Step::vTaskSleepMsec);
+  vAddStep("task.sleepSsec"_Stz, &Step::vTaskSleepSsec);
   vAddStep("task.sleepUsec"_Stz, &Step::vTaskSleepUsec);
   vAddStep("task.sendNode@"_Stz, &Step::vTaskSendNodeFetch);
   vAddStep("task.sendNode!"_Stz, &Step::vTaskSendNodeStore);
@@ -399,7 +401,51 @@ void Step::vTaskSendNodeStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.sleepUs -- this task sleeps for given microseconds                    */
+/* task.sleepMsec -- this task sleeps for given milliseconds                  */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskSleepMsec(MP_Task mpTask)
+{
+  ENTRY("vTaskSleepMsec"_Stz);
+  
+  i8 nMilliSeconds;
+  
+  if ( ! mpTask->m_pDataStack->bPop(nMilliSeconds) )
+    THROW_INVALID_DSTACK("task.sleepMsec"_Stz);
+  
+  i8 nMicroSeconds = nMilliSeconds * C_1K;
+  
+ ActionSequence::vAdd(mpTask->m_pJob,AN_TASK_SLEEP,nMicroSeconds);
+  
+  mpTask->vSleepUsec(nMicroSeconds);
+  mpTask->vState(TS_SLEEPING);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.sleepUsec -- this task sleeps for given microseconds                  */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskSleepSsec(MP_Task mpTask)
+{
+  ENTRY("vTaskSleepSsec"_Stz);
+  
+  i8 nSeconds;
+  
+  if ( ! mpTask->m_pDataStack->bPop(nSeconds) )
+    THROW_INVALID_DSTACK("task.sleepSsec"_Stz);
+  
+  i8 nMicroSeconds = nSeconds * C_1M;
+  
+  ActionSequence::vAdd(mpTask->m_pJob,AN_TASK_SLEEP,nMicroSeconds);
+  
+  mpTask->vSleepUsec(nMicroSeconds);
+  mpTask->vState(TS_SLEEPING);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.sleepSsec -- this task sleeps for given seconds                       */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskSleepUsec(MP_Task mpTask)
 {
