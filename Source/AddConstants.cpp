@@ -305,6 +305,7 @@ void Axioms::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_VISUALIZEINDEX"_Stz, CN_JOB_VISUALIZEINDEX);
   /*    */ vAddConstant("CN_JOB_VISUALIZETABLE"_Stz, CN_JOB_VISUALIZETABLE);
   /*    */ vAddConstant("CN_JOB_WAITCLUSTER"_Stz,    CN_JOB_WAITCLUSTER);
+  /*    */ vAddConstant("CN_JOB_WAKER"_Stz,          CN_JOB_WAKER);
   /*    */ vAddConstant("CN_JOB_WALK"_Stz,           CN_JOB_WALK);
 
   /*    */ vAddConstant("CN_JUMBOPERSISTENT"_Stz, CN_JUMBOPERSISTENT);
