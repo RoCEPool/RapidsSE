@@ -68,7 +68,6 @@ namespace StorageEngine
     i8   m_nMaxReadyLP;      // maximum ready lp queue
     bool m_bMetadata;        // print metadata information
     bool m_bMunged;          // load munged words
-    i8   m_nOpThreads;       // number of op threads
     i8   m_nPeriodicSleep;   // sleep period for periodic job
     bool m_bProgress;        // print initialisation progress
     bool m_bReload;          // relaod from checkpoint files

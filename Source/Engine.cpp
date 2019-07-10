@@ -817,7 +817,6 @@ void Engine::vStartSystem(void)
                                 gxArguments.m_nMaxLoadErrors,
                                 gxArguments.m_nMaxReadyLP,
                                 gxArguments.m_nNodes,
-                                gxArguments.m_nOpThreads,
                                 gxArguments.m_sRegionName,
                                 gxArguments.m_iRegionSize,
                                 gxArguments.m_nSlotsPerNode,

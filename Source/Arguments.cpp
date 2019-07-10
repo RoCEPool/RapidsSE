@@ -73,7 +73,6 @@ Arguments::Arguments(void)
   m_nMaxReadyLP      = 32;
   m_bMetadata        = false;
   m_bMunged          = false;
-  m_nOpThreads       = 0;
   m_bProgress        = false;
   m_bReload          = false;
   m_bRestart         = true;
@@ -298,12 +297,6 @@ bool Arguments::bParse(int argc, Stz* argv[])
         return false;
       }
       
-      continue;
-    }
-    
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--opThreads"_Stz)) {
-      m_nOpThreads = argv[++i_Arg]->iToI8();
       continue;
     }
     
@@ -816,7 +809,6 @@ void Arguments::vPrintStartupInfo(void)
   
   vTrace("  --partitionsPerNode %lld\n"_Stz,m_nSlotsPerNode);
   vTrace("  --threads %lld\n"_Stz,m_nThreads);
-  vTrace("  --opThreads %lld\n"_Stz,m_nOpThreads);
 
   if (m_nDummyThreads) {
     vTrace("  --dummyThreads %lld\n"_Stz,m_nDummyThreads);
