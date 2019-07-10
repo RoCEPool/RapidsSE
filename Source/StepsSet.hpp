@@ -864,6 +864,7 @@
   static void vQueuePop(Tasks::MP_Task mpTask);
 
   // queues
+  static void vQueuesCheckSleeping(Tasks::MP_Task mpTask);
   static void vQueuesExecutingLength(Tasks::MP_Task mpTask);
   static void vQueuesReadyLength(Tasks::MP_Task mpTask);
   static void vQueuesSleepingLength(Tasks::MP_Task mpTask);

@@ -11,10 +11,22 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Queues(void)
 {
-  vAddStep("queues::QueuesExecutingLength"_Stz, &Step::vQueuesExecutingLength);
-  vAddStep("queues::QueuesReadyLength"_Stz,     &Step::vQueuesReadyLength);
-  vAddStep("queues::QueuesSleepingLength"_Stz,  &Step::vQueuesSleepingLength);
-  vAddStep("queues::QueuesWaitingLength"_Stz,   &Step::vQueuesWaitingLength);
+  vAddStep("queues::CheckSleeping"_Stz,   &Step::vQueuesCheckSleeping);
+  
+  vAddStep("queues::ExecutingLength"_Stz, &Step::vQueuesExecutingLength);
+  vAddStep("queues::ReadyLength"_Stz,     &Step::vQueuesReadyLength);
+  vAddStep("queues::SleepingLength"_Stz,  &Step::vQueuesSleepingLength);
+  vAddStep("queues::WaitingLength"_Stz,   &Step::vQueuesWaitingLength);
+}
+
+/*----------------------------------------------------------------------------*/
+/* queues::QueuesCheckSleeping -- check the sleeping queue                    */
+/*----------------------------------------------------------------------------*/
+void Step::vQueuesCheckSleeping(MP_Task mpTask)
+{
+  ENTRY("vQueuesCheckSleeping"_Stz);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
