@@ -11,23 +11,24 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Thread(void)
 {
-  vAddStep("thread.bind"_Stz,            &Step::vThreadBind);
-  vAddStep("thread.condSignal"_Stz,      &Step::vThreadCondSignal);
-  vAddStep("thread.condWait"_Stz,        &Step::vThreadCondWait);
-  vAddStep("thread.cpu"_Stz,             &Step::vThreadCpu);
-  vAddStep("thread.dedicated@"_Stz,      &Step::vThreadDedicatedFetch);
-  vAddStep("thread.dedicated!"_Stz,      &Step::vThreadDedicatedStore);
   vAddStep("thread::disableRealtime"_Stz, &Step::vThreadDisableRealtime);
-  vAddStep("thread.dump"_Stz,            &Step::vThreadDump);
-  vAddStep("threa::enableRealtime"_Stz,  &Step::vThreadEnableRealtime);
-  vAddStep("thread.id"_Stz,              &Step::vThreadId);
-  vAddStep("thread.muteoLock"_Stz,       &Step::vThreadoLockMutexLock);
-  vAddStep("thread.mutexUnlock"_Stz,     &Step::vThreadMutexUnlock);
-  
+  vAddStep("thread::enableRealtime"_Stz,  &Step::vThreadEnableRealtime);
+
   vAddStep("thread.sleep_ms"_Stz,        &Step::vThreadSleepMsec);
   vAddStep("thread.sleep_ns"_Stz,        &Step::vThreadSleepNsec);
   vAddStep("thread.sleep_s"_Stz,         &Step::vThreadSleepSsec);
   vAddStep("thread.sleep_us"_Stz,        &Step::vThreadSleepUsec);
+  
+  vAddStep("thread.bind"_Stz,             &Step::vThreadBind);
+  vAddStep("thread.condSignal"_Stz,       &Step::vThreadCondSignal);
+  vAddStep("thread.condWait"_Stz,         &Step::vThreadCondWait);
+  vAddStep("thread.cpu"_Stz,              &Step::vThreadCpu);
+  vAddStep("thread.dedicated@"_Stz,       &Step::vThreadDedicatedFetch);
+  vAddStep("thread.dedicated!"_Stz,       &Step::vThreadDedicatedStore);
+  vAddStep("thread.dump"_Stz,             &Step::vThreadDump);
+  vAddStep("thread.id"_Stz,               &Step::vThreadId);
+  vAddStep("thread.mutexLock"_Stz,        &Step::vThreadMutexLock);
+  vAddStep("thread.mutexUnlock"_Stz,      &Step::vThreadMutexUnlock);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -223,15 +224,15 @@ ENTRY("vThreadId"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* thread.muteoLock -- acquire a threads mutex lock                           */
+/* thread.mutexLock -- acquire a threads mutex lock                           */
 /*----------------------------------------------------------------------------*/
-void Step::vThreadoLockMutexLock(MP_Task mpTask)
+void Step::vThreadMutexLock(MP_Task mpTask)
 {
 ENTRY("vThreadoLockMutexLock"_Stz);
   
   Object* pThreadObject;
   if ( ! mpTask->m_pDataStack->bPop(pThreadObject) )
-    THROW_INVALID_DSTACK("thread.muteoLock"_Stz);
+    THROW_INVALID_DSTACK("thread.mutexLock"_Stz);
   
   Thread* pThread = _pThread(pThreadObject);
   ASSERT(CN_THREAD == pThread->eClass());
