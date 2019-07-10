@@ -32,6 +32,8 @@
 
     1 thread::sleepSsec
 
+    queues::checkSleeping
+
   again
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
