@@ -16,7 +16,7 @@
 
   nullptr pJobClass_Periodic jobClass.new to pJob_Periodic
 
-  pJob_Periodic SEED_RUN job.spawn_dedicated
+  pJob_Periodic SEED_RUN job.spawn
 ;
 
 /*----------------------------------------------------------------------------*/

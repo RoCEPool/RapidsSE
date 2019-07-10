@@ -47,11 +47,13 @@ void* Thread::operator new(size_t, Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* threads are never delete (for the moment)                                  */
+/* delete a thread                                                            */
 /*----------------------------------------------------------------------------*/
-void Thread::operator delete(void*)
+void Thread::operator delete(void* aAddr)
 {
-  vFatal("fatal: Thread class cannot be deleted"_Stz);
+  Object* pObject = reinterpret_cast<Object*>(aAddr);
+  
+  HeapMem::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -90,8 +92,8 @@ Thread::~Thread(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  delete m_pPthread;
   delete m_pMutexThread;
+  delete m_pPthread;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -121,11 +123,12 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
   //pThread->vBindCore();
   
   try {
-#ifdef WITH_EVENT_MODEL
-    pThread->vLoop_event();
-#else
-    pThread->vLoop_polling();
-#endif
+    pThread->vLoop_dedicated();
+//#ifdef WITH_EVENT_MODEL
+//    pThread->vLoop_event();
+//#else
+//    pThread->vLoop_polling();
+//#endif
   }
   
   catch (Error* pError) {
@@ -151,7 +154,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
     vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
            pThread,pThread->iThreadNo());
   
-  gpAttachMap->m_pQueues->vRemoveThread(pThread);
+  //gpAttachMap->m_pQueues->vRemoveThread(pThread);
   
   pThread->m_pPthread->vThreadExit();
   
@@ -286,10 +289,12 @@ void Thread::vLoop_dedicated(void)
   // increment m_ixThreads to indicate thread is running
   ++gpAttachMap->m_ixThreads;
   
-  for (;;)
+  while (m_pTask && m_pTask->pJob())
     vTaskCall();
   
-  NEVER_REACH;
+  m_pMutexThread->vMutexUnlock();
+  
+  vTrace("Exiting dedicated thread loop\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
