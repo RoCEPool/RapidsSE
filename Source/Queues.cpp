@@ -233,6 +233,7 @@ void Queues::vAddToExecutingSet_NL(Task* pTask)
   RASSERT(TS_EXECUTING == pTask->eState());
   
   pTask->vQueue_qr(QR_EXECUTING_QUEUE);
+  pTask->vQueue(QK_EXECUTING_SET);
   pTask->vQueueOrder(++m_ixQueueOrder);
   
   if (pTask->pJob()->m_bMarkActivity)
@@ -257,6 +258,7 @@ void Queues::vAddToReadyQueue_NL(Task* pTask)
   RASSERT(TS_READY == pTask->eState());
   
   pTask->vQueue_qr(QR_READY_QUEUE);
+  pTask->vQueue(QK_READY_QUEUE);
   pTask->vQueueOrder(++m_ixQueueOrder);
   
   if (pTask->pJob()->m_bMarkActivity)
@@ -282,6 +284,7 @@ void Queues::vAddToReadyQueueLP_NL(Task* pTask)
   RASSERT(TS_READY == pTask->eState());
   
   pTask->vQueue_qr(QR_READY_QUEUE_LP);
+  pTask->vQueue(QK_READY_QUEUE_LP);
   pTask->vQueueOrder(++m_ixQueueOrder);
   
   if (pTask->pJob()->m_bMarkActivity)
@@ -307,7 +310,8 @@ void Queues::vAddToSleepingQueue_NL(Task* pTask)
   RASSERT(TS_SLEEPING == pTask->eState());
   
   pTask->vQueue_qr(QR_SLEEPING_QUEUE);
-  
+  pTask->vQueue(QK_SLEEPING_QUEUE);
+
   if (pTask->pJob()->m_bMarkActivity)
     ActivityMap::vMarkJob(pTask->pJob(),
                        "Add to SleepingQueue: %s %p"_Stz,
@@ -342,6 +346,7 @@ void Queues::vAddToWaitingSet_NL(Task* pTask)
   
   // mark task as being in the waiting queue
   pTask->vQueue_qr(QR_WAITING_QUEUE);
+  pTask->vQueue(QK_WAITING_SET);
   pTask->vQueueOrder(++m_ixQueueOrder);
   
   if (pTask->pJob()->m_bMarkActivity)
@@ -654,9 +659,11 @@ Task* Queues::pPopReadyQueue(void)
   pTask = m_pReadyQueue->pPopTask();
  
   // task no longer in any queue/set
-  if (pTask)
+  if (pTask) {
     pTask->vQueue_qr(QR_NONE);
-
+    pTask->vQueue(QK_NONE);
+  }
+  
   // drop the lock
   m_pReadyQueue->vDropLock();
   
@@ -698,8 +705,10 @@ Task* Queues::pPopReadyQueueLP(void)
   pTask = m_pReadyQueueLP->pPopTask();
   
   // task no longer in any queue/set
-  if (pTask)
+  if (pTask) {
     pTask->vQueue_qr(QR_NONE);
+    pTask->vQueue(QK_NONE);
+  }
   
   // drop the lock
   m_pReadyQueueLP->vDropLock();
@@ -764,7 +773,8 @@ Task* Queues::pPopSleepingQueue(void)
 
   // task no longer in any queue/set
   pTask->vQueue_qr(QR_NONE);
-  
+  pTask->vQueue(QK_NONE);
+
   // drop lock on sleeping queue
   m_pSleepingQueue->vDropLock();
   
@@ -812,7 +822,8 @@ void Queues::vRemoveFromExecutingSet(Task* pTask)
   
   // task no longer in any queue/set
   pTask->vQueue_qr(QR_NONE);
-  
+  pTask->vQueue(QK_NONE);
+
   if (pTask->pJob() && pTask->pJob()->m_bMarkActivity)
     ActivityMap::vMarkJob(pTask->pJob(),
                        "Removed from ExecutingSet: %s %p"_Stz,
@@ -833,7 +844,8 @@ void Queues::vRemoveFromWaitingSet(Task* pTask)
   
   // task no longer in any queue/set
   pTask->vQueue_qr(QR_NONE);
-  
+  pTask->vQueue(QK_NONE);
+
   if (pTask->pJob()->m_bMarkActivity)
     ActivityMap::vMarkJob(pTask->pJob(),
                        "Removed from WaitingSet: %s %p"_Stz,
