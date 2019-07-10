@@ -91,9 +91,9 @@ namespace Scheduling
   
     bool bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread);
 
-    Task* pPopReadyQueue(Thread* pCallingThread);
-    Task* pPopReadyQueueLP(Thread* pCallingThread);
-    Task* pPopSleepingQueue(Thread* pCallingThread);
+    Task* pPopReadyQueue(void);
+    Task* pPopReadyQueueLP(void);
+    Task* pPopSleepingQueue(void);
   
     i8 i_QueueFirst(void);
     i8 i_QueueLast(void);

@@ -371,6 +371,12 @@ void Queues::vAddToWaitingSet_NL(Task* pTask)
 void Queues::vCheckSleeping(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  Task* pPoppedTask;
+  
+//  while ( (pPoppedTask = pPopSleepingQueue()) ) {
+//
+//  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -699,14 +705,14 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
     // inspect the queues
     
     if (pQueues->bIsSleepingQueue(pCallingThread->m_iLastQueueRR)) {
-      if ( ! (pPoppedTask = pPopSleepingQueue(pCallingThread)) )
+      if ( ! (pPoppedTask = pPopSleepingQueue()) )
         continue;
       *ppPoppedTask = pPoppedTask;
       return true;
     }
     
     if (pQueues->bIsReadyQueue(pCallingThread->m_iLastQueueRR)) {
-      if ( ! (pPoppedTask = pPopReadyQueue(pCallingThread)) ) {
+      if ( ! (pPoppedTask = pPopReadyQueue()) ) {
 //        if (32 == pCallingThread->m_iThreadNo)
 //          vTrace("[32:%lld] Nothing Ready %lld,%lld\n"_Stz,
 //                 nTimes++,
@@ -719,7 +725,7 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
     }
     
     if (pQueues->bIsReadyQueueLP(pCallingThread->m_iLastQueueRR)) {
-      if ( ! (pPoppedTask = pPopReadyQueueLP(pCallingThread)) ) {
+      if ( ! (pPoppedTask = pPopReadyQueueLP()) ) {
         //        if (32 == pCallingThread->m_iThreadNo)
         //          vTrace("[32:%lld] Nothing Ready %lld,%lld\n"_Stz,
         //                 nTimes++,
@@ -749,7 +755,7 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
 /*----------------------------------------------------------------------------*/
 /* pop task from the ready queue                                              */
 /*----------------------------------------------------------------------------*/
-Task* Queues::pPopReadyQueue(Thread* pCallingThread)
+Task* Queues::pPopReadyQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
@@ -793,7 +799,7 @@ Task* Queues::pPopReadyQueue(Thread* pCallingThread)
 /*----------------------------------------------------------------------------*/
 /* pop task from the low priority ready queue                                 */
 /*----------------------------------------------------------------------------*/
-Task* Queues::pPopReadyQueueLP(Thread* pCallingThread)
+Task* Queues::pPopReadyQueueLP(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
@@ -837,7 +843,7 @@ Task* Queues::pPopReadyQueueLP(Thread* pCallingThread)
 /*----------------------------------------------------------------------------*/
 /* pop task from sleeping queue                                               */
 /*----------------------------------------------------------------------------*/
-Task* Queues::pPopSleepingQueue(Thread* pCallingThread)
+Task* Queues::pPopSleepingQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
