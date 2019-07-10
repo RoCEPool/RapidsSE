@@ -372,10 +372,8 @@ void Queues::vCheckSleeping(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  Task* pPoppedTask;
-  
-//  while ( (pPoppedTask = pPopSleepingQueue()) ) {
-//
+//  while (Task* pWokenTask = pPopSleepingQueue()) {
+//    vScheduleWokenTask(pWokenTask);
 //  }
 }
 
