@@ -121,8 +121,11 @@ void* Thread::aEntryPoint(void* pArg)
   //pThread->vBindCore();
     
   try {
-    pThread->vLoop();
-    //pThread->vLoop_v2();
+#ifdef WITH_EVENT_MODEL
+    pThread->vLoop_event();
+#else
+    pThread->vLoop_polling();
+#endif
   }
   
   catch (Error* pError) {
@@ -233,9 +236,53 @@ Thread* Thread::pThisTLSThread(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* thread loop (original loop, which is limited cond wait)                    */
+/* event-based thread loop (fully event-based model)                          */
 /*----------------------------------------------------------------------------*/
-void Thread::vLoop(void)
+void Thread::vLoop_event(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  Pthread::vTlsSet(giTLS_ThreadKey,this);
+  ASSERT(Pthread::pTlsGet(giTLS_ThreadKey) == this);
+  
+  // thread has mutex while it is running
+  m_eThreadState = TD_RUNNING;
+  m_pMutexThread->vMutexLock();
+
+  // increment m_ixThreads to indicate thread is running
+  ++gpAttachMap->m_ixThreads;
+  
+  for (;;) {
+    
+    // while waiting the mutex is dropped
+    m_eThreadState = TD_IDLE;
+    m_pMutexThread->vCondWaitIndefinite();
+    m_eThreadState = TD_RUNNING;
+
+   // attempt again if no task
+   if (! m_pTask)
+     continue;
+    
+    // call the task
+    vTaskCall();
+    
+    if (m_pTask->pJob() && m_pTask->pJob()->m_bMarkActivity)
+      ActivityMap::vMarkJob(m_pTask->pJob(),
+                         "Returned from task call: %s %p"_Stz,
+                         aCN[m_pTask->pJob()->eClass()],
+                         m_pTask->pJob());
+
+    // handle task return event
+    Handlers::vTaskReturn(&m_pTask);
+  }
+  
+  NEVER_REACH;
+}
+
+/*----------------------------------------------------------------------------*/
+/* polling-based thread loop (original loop, which is limited cond wait)      */
+/*----------------------------------------------------------------------------*/
+void Thread::vLoop_polling(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
@@ -276,50 +323,6 @@ void Thread::vLoop(void)
                             aCN[m_pTask->pJob()->eClass()],
                             m_pTask->pJob());
     
-    // handle task return event
-    Handlers::vTaskReturn(&m_pTask);
-  }
-  
-  NEVER_REACH;
-}
-
-/*----------------------------------------------------------------------------*/
-/* thread loop v2 (fully event-based model)                                   */
-/*----------------------------------------------------------------------------*/
-void Thread::vLoop_v2(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  Pthread::vTlsSet(giTLS_ThreadKey,this);
-  ASSERT(Pthread::pTlsGet(giTLS_ThreadKey) == this);
-  
-  // thread has mutex while it is running
-  m_eThreadState = TD_RUNNING;
-  m_pMutexThread->vMutexLock();
-
-  // increment m_ixThreads to indicate thread is running
-  ++gpAttachMap->m_ixThreads;
-  
-  for (;;) {
-    
-    // while waiting the mutex is dropped
-    m_eThreadState = TD_IDLE;
-    m_pMutexThread->vCondWaitIndefinite();
-    m_eThreadState = TD_RUNNING;
-
-   // attempt again if no task
-   if (! m_pTask)
-     continue;
-    
-    // call the task
-    vTaskCall();
-    
-    if (m_pTask->pJob() && m_pTask->pJob()->m_bMarkActivity)
-      ActivityMap::vMarkJob(m_pTask->pJob(),
-                         "Returned from task call: %s %p"_Stz,
-                         aCN[m_pTask->pJob()->eClass()],
-                         m_pTask->pJob());
-
     // handle task return event
     Handlers::vTaskReturn(&m_pTask);
   }

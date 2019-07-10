@@ -63,8 +63,8 @@ namespace Threads
     i8   iCpu(void);
     void vContentDump(void) const;
     void vExecuteTask(Task* pTask);
-    void vLoop(void);
-    void vLoop_v2(void);
+    void vLoop_event(void);
+    void vLoop_polling(void);
     void vReExecuteTask(Task* pTask);
     void vSpawnPthread(void);
     void vSpawnPthread_Dummy(void);
