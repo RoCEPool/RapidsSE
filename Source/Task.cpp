@@ -135,7 +135,7 @@ void Task::vInit(void)
   m_iQueueOrder  = C_UNKNOWN;
   
   m_eState       = TS_NONE;
-  m_eQueue       = QR_NONE;
+  m_eQueue_qr    = QR_NONE;
   m_oAcksRmg.vCheckInit();
   m_pThread      = nullptr;
   
@@ -557,7 +557,7 @@ eQR Task::eQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  return m_eQueue;
+  return m_eQueue_qr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -567,7 +567,7 @@ void Task::vQueue(eQR eQueue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_eQueue = eQueue;
+  m_eQueue_qr = eQueue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -623,7 +623,7 @@ void Task::vRenderPortrait(void)
                         sDateTime.sz(&m_oSleepTime.m_wWakeupTsp)
                         );
   }
-  else if (QR_NONE != m_eQueue) {
+  else if (QR_NONE != m_eQueue_qr) {
     m_sPortrait.vSprint("Task %p %s %s order %lld"_Stz,
                         this,
                         aCN[m_pJob->eClass()],

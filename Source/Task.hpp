@@ -71,7 +71,7 @@ namespace Tasks
     Interface::Session* m_pSession; // session for this task
 
     eTS     m_eState;       // state (running, sleeping, ...)
-    eQR     m_eQueue;       // which queue the task is in
+    eQR     m_eQueue_qr;    // which queue the task is in
     i8      m_iQueueOrder;  // queue ordering number
     Decider m_oAcksRmg;     // number of acks still waiting for
     Sleep   m_oSleepTime;   // sleep time
