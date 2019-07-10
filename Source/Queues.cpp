@@ -907,11 +907,13 @@ i8 Queues::i_QueueLast(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  i8 i_Last = //gpAttachMap->m_pGrid->m_nSlotsPerNode
-               + gpAttachMap->m_pGrid->m_nNodes
-               -1;
+//  i8 i_Last = //gpAttachMap->m_pGrid->m_nSlotsPerNode
+//               + gpAttachMap->m_pGrid->m_nNodes
+//               -1;
+//
+//  return i_Last;
   
-  return i_Last;
+  return 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1248,37 +1250,6 @@ i8 Queues::nTasksWaiting(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   return m_pWaitingSet->nTasks();
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* convert iQueueRR to a ready send queue subscript                           */
-/*----------------------------------------------------------------------------*/
-i8 Queues::i_ToReadySendQueue(i8 i_QueueRR)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  /*
-   
-      The send queues are logically after the slot queues, and
-      the slot queues are 0 .. nSlotsPerNode - 1
-
-      As an example, let's say nSlotsPerNode = 2, nNodes = 3
-
-      .: an iQueueRR of 2 .. 4 refers to a send queue
-
-      which rebased (by subtracting nSlotsPerNode) is 0 .. 2
-   
-   */
-  
-  i8 i_ReadySendQueue = i_QueueRR;// - gpAttachMap->Arg.m_nSlotsPerNode;
-  
-  RASSERT(i_ReadySendQueue >= 0 &&
-          i_ReadySendQueue < gpAttachMap->Arg.m_nSlotsPerNode);
-  
-  return i_ReadySendQueue;
 }
 
 

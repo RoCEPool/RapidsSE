@@ -31,7 +31,7 @@ namespace Scheduling
     // QR_READY_QUEUE              // (ordered by arrival)
   
     TaskList*  m_pReadyQueueLP;    //  set of low priority queued tasks ready to run
-    
+  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // queues which are not checked in the round robin
   
@@ -114,8 +114,6 @@ namespace Scheduling
     i8 nTasksReadyLP(void);
     i8 nTasksSleeping(void);
     i8 nTasksWaiting(void);
-  
-    i8 i_ToReadySendQueue(i8 i_QueueRR);
   
     Footer* aFooter(void);
   };
