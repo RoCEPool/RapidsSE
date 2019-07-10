@@ -101,6 +101,68 @@ Thread::~Thread(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* thread entry point                                                         */
 /*----------------------------------------------------------------------------*/
+void* Thread::aEntryPoint_dedicated(void* pArg)
+{
+  Thread* pThread = static_cast<Thread*>(pArg);
+  
+  pThread->m_aStackBase = Pthread::aStackBase();
+  pThread->m_iStackSize = Pthread::iStackSize();
+  
+  pThread->m_eThreadState = TD_IDLE;
+  
+  pThread->m_pPthread->vThreadEntry();
+  
+  gpAttachMap->m_pQueues->vAddGeneralThread(pThread);
+  
+  if (gpAttachMap->m_bVerbose)
+    vTrace("Thread::aEntryPoint %p %lld\n"_Stz,
+           pThread,pThread->iThreadNo());
+  
+  //pThread->vBindCore();
+  
+  try {
+#ifdef WITH_EVENT_MODEL
+    pThread->vLoop_event();
+#else
+    pThread->vLoop_polling();
+#endif
+  }
+  
+  catch (Error* pError) {
+    
+    char caFileName[256];
+    const char* ps;
+    
+    ps = StrLib::sLast(pError->aFileName()->aChar());
+    bool bBackSlash = StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
+    if (bBackSlash) {
+      StrLib::vCopy(caFileName,ps+1);
+    }
+    else {
+      StrLib::vCopy(caFileName, pError->aFileName()->aChar());
+    }
+    vFatal("ERROR: [ThreadLoop] %s: line %lld in %s\n"_Stz,
+           pError->aErrorMsg(),
+           pError->iLineNo(),
+           caFileName);
+  }
+  
+  if (gpAttachMap->m_bVerbose)
+    vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
+           pThread,pThread->iThreadNo());
+  
+  gpAttachMap->m_pQueues->vRemoveThread(pThread);
+  
+  pThread->m_pPthread->vThreadExit();
+  
+  delete pThread;
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread entry point                                                         */
+/*----------------------------------------------------------------------------*/
 void* Thread::aEntryPoint_general(void* pArg)
 {
   Thread* pThread = static_cast<Thread*>(pArg);
@@ -420,6 +482,18 @@ void Thread::vReExecuteTask(Task* pTask)
   
   // set task to be executed
   m_pTask = pTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn the os/posix pthread associated with this thread                     */
+/*----------------------------------------------------------------------------*/
+void Thread::vSpawnPthread_dedicated(Task *pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  bool bResult = m_pPthread->bSpawnThread(Thread::aEntryPoint_dedicated,this);
+  
+  ASSERT(bResult);
 }
 
 /*----------------------------------------------------------------------------*/
