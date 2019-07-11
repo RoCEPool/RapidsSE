@@ -11,6 +11,7 @@ namespace Scheduling
     static bool bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking);
     static void vAddDedicatedThread(Thread* pThread);
     static void vAddGeneralThread(Thread* pThread);
+    static void vAppendExecutingSet(Task* pTask);
     static void vCheckSleeping(void);
     static void vIdleThread(Thread* pThread);
     static void vPauseForGeneralThreads(void);

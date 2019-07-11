@@ -48,13 +48,13 @@ namespace Scheduling
     void vAddDedicatedThread(Thread* pThread);
     void vAddGeneralThread(Thread* pThread);
 
-  public:
     void vAddToExecutingSet(Task* pTask);
     void vAddToReadyQueue(Task* pTask);
     void vAddToReadyQueueLP(Task* pTask);
     void vAddToSleepingQueue(Task* pTask);
     void vAddToWaitingSet(Task* pTask);
   
+  public:
     void vAddToExecutingSet_NL(Task* pTask);
     void vAddToReadyQueue_NL(Task* pTask);
     void vAddToReadyQueueLP_NL(Task* pTask);

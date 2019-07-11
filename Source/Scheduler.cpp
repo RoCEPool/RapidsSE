@@ -92,6 +92,16 @@ void Scheduler::vAddGeneralThread(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append task to executing set                                               */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vAppendExecutingSet(Task* pTask)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  pQueues->vAddToExecutingSet(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
 /* check the sleeping queue                                                   */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vCheckSleeping(void)
