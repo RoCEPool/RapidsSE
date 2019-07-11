@@ -25,6 +25,11 @@ namespace Grids
   class Node;
 }
 
+namespace Scheduling
+{
+  class Scheduler;
+}
+
 namespace Threads
 {
   class Thread;

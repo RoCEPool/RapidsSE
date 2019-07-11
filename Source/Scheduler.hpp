@@ -9,7 +9,10 @@ namespace Scheduling
   {
   public:
     static bool bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking);
+    static void vAddDedicatedThread(Thread* pThread);
+    static void vAddGeneralThread(Thread* pThread);
     static void vCheckSleeping(void);
+    static void vIdleThread(Thread* pThread);
     static void vPauseForGeneralThreads(void);
     static void vSpawnedTask(Task* pTask);
     static void vSpawnedTaskDedicated(Task* pTask);

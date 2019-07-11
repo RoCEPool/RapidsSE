@@ -72,6 +72,26 @@ bool Scheduler::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append idle thread onto idle thread queue                                  */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vAddDedicatedThread(Thread* pThread)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  pQueues->vAddDedicatedThread(pThread);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append idle thread onto idle thread queue                                  */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vAddGeneralThread(Thread* pThread)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  pQueues->vAddGeneralThread(pThread);
+}
+
+/*----------------------------------------------------------------------------*/
 /* check the sleeping queue                                                   */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vCheckSleeping(void)
@@ -81,6 +101,16 @@ void Scheduler::vCheckSleeping(void)
   while (Task* pWokenTask = pQueues->pPopSleepingQueue()) {
     vScheduleWokenTask(pWokenTask);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* append idle thread onto idle thread queue                                  */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vIdleThread(Thread* pThread)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  pQueues->vAppendIdleThread(pThread);
 }
 
 /*----------------------------------------------------------------------------*/

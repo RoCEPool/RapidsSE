@@ -7,6 +7,8 @@ namespace Scheduling
 {
   class Queues : public Object
   {
+  friend Scheduler;
+  
   public:
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -42,9 +44,11 @@ namespace Scheduling
   
     static void vThreadsReport(void);
   
+  private:
     void vAddDedicatedThread(Thread* pThread);
     void vAddGeneralThread(Thread* pThread);
 
+  public:
     void vAddToExecutingSet(Task* pTask);
     void vAddToReadyQueue(Task* pTask);
     void vAddToReadyQueueLP(Task* pTask);

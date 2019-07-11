@@ -113,7 +113,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
   
   pThread->m_pPthread->vThreadEntry();
   
-  gpAttachMap->m_pQueues->vAddDedicatedThread(pThread);
+  Scheduler::vAddDedicatedThread(pThread);
   
   if (gpAttachMap->m_bVerbose)
     vTrace("Thread::aEntryPoint %p %lld\n"_Stz,
@@ -171,7 +171,7 @@ void* Thread::aEntryPoint_general(void* pArg)
   
   pThread->m_pPthread->vThreadEntry();
 
-  gpAttachMap->m_pQueues->vAddGeneralThread(pThread);
+  Scheduler::vAddGeneralThread(pThread);
   
   if (gpAttachMap->m_bVerbose)
     vTrace("Thread::aEntryPoint %p %lld\n"_Stz,
@@ -312,7 +312,7 @@ void Thread::vLoop_event(void)
     
     // while waiting the mutex is dropped
     m_eThreadState = TD_IDLE;
-    gpAttachMap->m_pQueues->vAppendIdleThread(this);
+    Scheduler::vIdleThread(this);
     m_pMutexThread->vCondWaitIndefinite();
     m_eThreadState = TD_RUNNING;
 
