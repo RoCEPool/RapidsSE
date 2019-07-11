@@ -794,7 +794,7 @@ void Engine::vSpawnJobStart(void)
   
   Task* pStartTask = new Task(pJob_Start);
   
-  Handlers::vSpawnedTask(pStartTask);
+  Scheduler::vSpawnedTask(pStartTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -897,7 +897,7 @@ void Engine::vStartSystem(void)
   }
   
   // pause till all general threads are operational 
-  Handlers::vPauseForGeneralThreads();
+  Scheduler::vPauseForGeneralThreads();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

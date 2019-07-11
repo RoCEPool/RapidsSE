@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Handlers.hpp -- Thread/Task Event Handlers                                 */
+/* Scheduler.hpp -- Thread/Task Event Scheduler                               */
 /*============================================================================*/
 #pragma once
 
 namespace Scheduling
 {
-  class Handlers
+  class Scheduler
   {
   public:
     static bool bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking);

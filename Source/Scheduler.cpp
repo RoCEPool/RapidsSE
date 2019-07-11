@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Handlers.cpp -- Thread/Task Event Handlers                                 */
+/* Scheduler.cpp -- Thread/Task Event Scheduler                                 */
 /*============================================================================*/
 
 #include "Scheduling.h"
@@ -11,7 +11,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* ack task handler                                                           */
 /*----------------------------------------------------------------------------*/
-bool Handlers::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
+bool Scheduler::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
 {
   //
   // this handler is called from Task::vTaskAck()
@@ -74,7 +74,7 @@ bool Handlers::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
 /*----------------------------------------------------------------------------*/
 /* check the sleeping queue                                                   */
 /*----------------------------------------------------------------------------*/
-void Handlers::vCheckSleeping(void)
+void Scheduler::vCheckSleeping(void)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
   
@@ -86,7 +86,7 @@ void Handlers::vCheckSleeping(void)
 /*----------------------------------------------------------------------------*/
 /* pause till general threads are all idle                                    */
 /*----------------------------------------------------------------------------*/
-void Handlers::vPauseForGeneralThreads(void)
+void Scheduler::vPauseForGeneralThreads(void)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
 
@@ -110,7 +110,7 @@ void Handlers::vPauseForGeneralThreads(void)
 /*----------------------------------------------------------------------------*/
 /* task has beeb spawned                                                      */
 /*----------------------------------------------------------------------------*/
-void Handlers::vSpawnedTask(Task* pTask)
+void Scheduler::vSpawnedTask(Task* pTask)
 {
   //
   // this handler is called from session::bSpawnJob()
@@ -123,7 +123,7 @@ void Handlers::vSpawnedTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* task has beeb spawned                                                      */
 /*----------------------------------------------------------------------------*/
-void Handlers::vSpawnedTaskDedicated(Task* pTask)
+void Scheduler::vSpawnedTaskDedicated(Task* pTask)
 {
   //
   // this handler is called from session::bSpawnJobDedicated()
@@ -141,7 +141,7 @@ void Handlers::vSpawnedTaskDedicated(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-//void Handlers::vSpawnedTaskDedicated(Task* pTask)
+//void Scheduler::vSpawnedTaskDedicated(Task* pTask)
 //{
 //  //
 //  // this handler is called from session::bSpawnJob()
@@ -156,7 +156,7 @@ void Handlers::vSpawnedTaskDedicated(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* task has returned                                                          */
 /*----------------------------------------------------------------------------*/
-void Handlers::vTaskReturn(Task** ppTask)
+void Scheduler::vTaskReturn(Task** ppTask)
 {
   //
   // this handler is called from Thread::vLoop()
@@ -196,7 +196,7 @@ void Handlers::vTaskReturn(Task** ppTask)
 /*----------------------------------------------------------------------------*/
 /* schedule a fully acked task                                                */
 /*----------------------------------------------------------------------------*/
-void Handlers::vScheduleAckedTask(Task* pTask)
+void Scheduler::vScheduleAckedTask(Task* pTask)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
   
@@ -229,7 +229,7 @@ void Handlers::vScheduleAckedTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* schedule an exited task                                                    */
 /*----------------------------------------------------------------------------*/
-void Handlers::vScheduleExitedTask(Task* pTask)
+void Scheduler::vScheduleExitedTask(Task* pTask)
 {
   RASSERT(TS_EXITED == pTask->eState());
   
@@ -243,7 +243,7 @@ void Handlers::vScheduleExitedTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* schedule a ready to execute task                                           */
 /*----------------------------------------------------------------------------*/
-void Handlers::vScheduleReadyTask(Task* pTask)
+void Scheduler::vScheduleReadyTask(Task* pTask)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
   
@@ -296,7 +296,7 @@ void Handlers::vScheduleReadyTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* schedule sleeping task                                                     */
 /*----------------------------------------------------------------------------*/
-void Handlers::vScheduleSleepingTask(Task* pTask)
+void Scheduler::vScheduleSleepingTask(Task* pTask)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
   
@@ -327,7 +327,7 @@ void Handlers::vScheduleSleepingTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* schedule a newly spawned task                                              */
 /*----------------------------------------------------------------------------*/
-void Handlers::vScheduleSpawnedTask(Task* pTask)
+void Scheduler::vScheduleSpawnedTask(Task* pTask)
 {
   RASSERT(QK_NONE == pTask->eQueue());
   
@@ -355,7 +355,7 @@ void Handlers::vScheduleSpawnedTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* schedule ready waiting task                                                */
 /*----------------------------------------------------------------------------*/
-void Handlers::vScheduleWaitingTask(Task* pTask)
+void Scheduler::vScheduleWaitingTask(Task* pTask)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
 
@@ -380,7 +380,7 @@ void Handlers::vScheduleWaitingTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* schedule woken task                                                        */
 /*----------------------------------------------------------------------------*/
-void Handlers::vScheduleWokenTask(Task* pTask)
+void Scheduler::vScheduleWokenTask(Task* pTask)
 {
   pTask->vState(TS_READY);
   
@@ -392,7 +392,7 @@ void Handlers::vScheduleWokenTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* schedule yielded task                                                      */
 /*----------------------------------------------------------------------------*/
-void Handlers::vScheduleYieldedTask(Task* pTask)
+void Scheduler::vScheduleYieldedTask(Task* pTask)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
   
