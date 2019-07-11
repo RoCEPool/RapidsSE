@@ -177,8 +177,250 @@ void Queues::vThreadsReport(void)
   pQueues->m_pDedicatedThreadVec->vDropLock();
 }
 
+
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* dump the executing set                                                     */
+/*----------------------------------------------------------------------------*/
+void Queues::vDumpExecutingSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  vTrace("------------------------------------\n"_Stz);
+  vTrace("Executing Set: %p\n"_Stz, m_pExecutingSet);
+  vTrace("------------------------------------\n"_Stz);
+  m_pExecutingSet->vGrabLock();
+  m_pExecutingSet->vContentDump();
+  m_pExecutingSet->vDropLock();
+  vTrace("====================================\n"_Stz);
+  vTrace("\n"_Stz);
+  vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump the ready queue                                                       */
+/*----------------------------------------------------------------------------*/
+void Queues::vDumpReadyQueue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  vTrace("------------------------------------\n"_Stz);
+  vTrace("Ready Queue (normal priority): %p\n"_Stz, m_pReadyQueue);
+  vTrace("------------------------------------\n"_Stz);
+  m_pReadyQueue->vGrabLock();
+  m_pReadyQueue->vContentDump();
+  m_pReadyQueue->vDropLock();
+  vTrace("====================================\n"_Stz);
+  vTrace("\n"_Stz);
+  vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump the low priority ready queue                                          */
+/*----------------------------------------------------------------------------*/
+void Queues::vDumpReadyQueueLP(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  vTrace("------------------------------------\n"_Stz);
+  vTrace("Ready Queue (low Priority): %p\n"_Stz, m_pReadyQueueLP);
+  vTrace("------------------------------------\n"_Stz);
+  m_pReadyQueueLP->vGrabLock();
+  m_pReadyQueueLP->vContentDump();
+  m_pReadyQueueLP->vDropLock();
+  vTrace("====================================\n"_Stz);
+  vTrace("\n"_Stz);
+  vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump sleeping queue                                                        */
+/*----------------------------------------------------------------------------*/
+void Queues::vDumpSleepingQueue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  vTrace("------------------------------------\n"_Stz);
+  vTrace("Sleeping Queue: %p\n"_Stz, m_pSleepingQueue);
+  vTrace("------------------------------------\n"_Stz);
+  m_pSleepingQueue->vGrabLock();
+  m_pSleepingQueue->vContentDump();
+  m_pSleepingQueue->vDropLock();
+  vTrace("====================================\n"_Stz);
+  vTrace("\n"_Stz);
+  vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump waiting set                                                           */
+/*----------------------------------------------------------------------------*/
+void Queues::vDumpWaitingSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  vTrace("------------------------------------\n"_Stz);
+  vTrace("Waiting Set: %p\n"_Stz, m_pWaitingSet);
+  vTrace("------------------------------------\n"_Stz);
+  m_pWaitingSet->vGrabLock();
+  m_pWaitingSet->vContentDump();
+  m_pWaitingSet->vDropLock();
+  vTrace("====================================\n"_Stz);
+  vTrace("\n"_Stz);
+  vTrace("\n"_Stz);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get a portrait of the queues                                               */
+/*----------------------------------------------------------------------------*/
+void Queues::vMonitorPortrait(s48K& sPortrait)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  s48K sTasksPortrait;
+  
+  sPortrait = ""_Stz;
+  sPortrait.vConcat("Queues:\n"_Stz);
+  
+  m_pExecutingSet->vPortrait(sTasksPortrait);
+  sPortrait.vConcat(sTasksPortrait);
+  
+  m_pReadyQueue->vPortrait(sTasksPortrait);
+  sPortrait.vConcat(sTasksPortrait);
+  
+  m_pReadyQueueLP->vPortrait(sTasksPortrait);
+  sPortrait.vConcat(sTasksPortrait);
+  
+  m_pWaitingSet->vPortrait(sTasksPortrait);
+  sPortrait.vConcat(sTasksPortrait);
+  
+  m_pSleepingQueue->vPortrait(sTasksPortrait);
+  sPortrait.vConcat(sTasksPortrait);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get a portrait of the threads                                              */
+/*----------------------------------------------------------------------------*/
+void Queues::vMonitorThread(s48K& sPortrait)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  i8 nIdle = 0;
+  i8 nRunning = 0;
+  i8 nDedicated = 0;
+  
+  m_pGeneralThreadVec->vGrabLock();
+  
+  i8 nThreads = m_pGeneralThreadVec->nItems();
+  for (i8 i_Thread = 0; i_Thread < nThreads; i_Thread++) {
+    
+    Thread* pThread = m_pGeneralThreadVec->pGet(i_Thread);
+    
+    if (TD_IDLE == pThread->eThreadState())
+      nIdle++;
+    else
+      if (TD_RUNNING == pThread->eThreadState())
+        nRunning++;
+    
+    if (CN_NONE != pThread->m_eDedicated)
+      nDedicated++;
+  }
+  
+  m_pGeneralThreadVec->vDropLock();
+  
+  sPortrait.vSprint("Threads: running %lld (dedicated %lld) idle %lld\n"_Stz,
+                    nThreads,
+                    nDedicated,
+                    nIdle);
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* pop next queued task in round robin fashion                                */
+/*----------------------------------------------------------------------------*/
+bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  Task* pPoppedTask;
+  
+  // set popped task to be null to start with
+  *ppPoppedTask = NULL;
+  
+  if ( (pPoppedTask = pPopReadyQueue()) ) {
+    *ppPoppedTask = pPoppedTask;
+    return true;
+  }
+  
+  if ( (pPoppedTask = pPopReadyQueueLP()) ) {
+    *ppPoppedTask = pPoppedTask;
+    return true;
+  }
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get no of tasks in the executing set                                       */
+/*----------------------------------------------------------------------------*/
+i8 Queues::nTasksExecuting(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  return m_pExecutingSet->nTasks();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get no of tasks in the ready queue                                         */
+/*----------------------------------------------------------------------------*/
+i8 Queues::nTasksReady(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  return m_pReadyQueue->nTasks();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get no of tasks in the low priority ready queue                            */
+/*----------------------------------------------------------------------------*/
+i8 Queues::nTasksReadyLP(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  return m_pReadyQueueLP->nTasks();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get no of tasks in the sleeping queue                                      */
+/*----------------------------------------------------------------------------*/
+i8 Queues::nTasksSleeping(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  return m_pSleepingQueue->nTasks();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get no of tasks in the waiting set                                         */
+/*----------------------------------------------------------------------------*/
+i8 Queues::nTasksWaiting(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  return m_pWaitingSet->nTasks();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -416,7 +658,7 @@ void Queues::vAddToWaitingSet_NL(Task* pTask)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* append task to waiting queue                                                  */
+/* append task to waiting queue                                                 */
 /*----------------------------------------------------------------------------*/
 void Queues::vAppendIdleThread(Thread* pThread)
 {
@@ -427,99 +669,6 @@ void Queues::vAppendIdleThread(Thread* pThread)
   m_pIdleThreadQueue->vDropLock();
 }
 
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* dump the executing set                                                     */
-/*----------------------------------------------------------------------------*/
-void Queues::vDumpExecutingSet(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  vTrace("------------------------------------\n"_Stz);
-  vTrace("Executing Set: %p\n"_Stz, m_pExecutingSet);
-  vTrace("------------------------------------\n"_Stz);
-  m_pExecutingSet->vGrabLock();
-  m_pExecutingSet->vContentDump();
-  m_pExecutingSet->vDropLock();
-  vTrace("====================================\n"_Stz);
-  vTrace("\n"_Stz);
-  vTrace("\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump the ready queue                                                       */
-/*----------------------------------------------------------------------------*/
-void Queues::vDumpReadyQueue(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  vTrace("------------------------------------\n"_Stz);
-  vTrace("Ready Queue (normal priority): %p\n"_Stz, m_pReadyQueue);
-  vTrace("------------------------------------\n"_Stz);
-  m_pReadyQueue->vGrabLock();
-  m_pReadyQueue->vContentDump();
-  m_pReadyQueue->vDropLock();
-  vTrace("====================================\n"_Stz);
-  vTrace("\n"_Stz);
-  vTrace("\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump the low priority ready queue                                          */
-/*----------------------------------------------------------------------------*/
-void Queues::vDumpReadyQueueLP(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  vTrace("------------------------------------\n"_Stz);
-  vTrace("Ready Queue (low Priority): %p\n"_Stz, m_pReadyQueueLP);
-  vTrace("------------------------------------\n"_Stz);
-  m_pReadyQueueLP->vGrabLock();
-  m_pReadyQueueLP->vContentDump();
-  m_pReadyQueueLP->vDropLock();
-  vTrace("====================================\n"_Stz);
-  vTrace("\n"_Stz);
-  vTrace("\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump sleeping queue                                                        */
-/*----------------------------------------------------------------------------*/
-void Queues::vDumpSleepingQueue(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  vTrace("------------------------------------\n"_Stz);
-  vTrace("Sleeping Queue: %p\n"_Stz, m_pSleepingQueue);
-  vTrace("------------------------------------\n"_Stz);
-  m_pSleepingQueue->vGrabLock();
-  m_pSleepingQueue->vContentDump();
-  m_pSleepingQueue->vDropLock();
-  vTrace("====================================\n"_Stz);
-  vTrace("\n"_Stz);
-  vTrace("\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump waiting set                                                           */
-/*----------------------------------------------------------------------------*/
-void Queues::vDumpWaitingSet(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  vTrace("------------------------------------\n"_Stz);
-  vTrace("Waiting Set: %p\n"_Stz, m_pWaitingSet);
-  vTrace("------------------------------------\n"_Stz);
-  m_pWaitingSet->vGrabLock();
-  m_pWaitingSet->vContentDump();
-  m_pWaitingSet->vDropLock();
-  vTrace("====================================\n"_Stz);
-  vTrace("\n"_Stz);
-  vTrace("\n"_Stz);
-}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -556,101 +705,6 @@ Thread* Queues::pFindIdleThread(void)
   
   m_pGeneralThreadVec->vDropLock();
   return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get a portrait of the queues                                               */
-/*----------------------------------------------------------------------------*/
-void Queues::vMonitorPortrait(s48K& sPortrait)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  s48K sTasksPortrait;
-  
-  sPortrait = ""_Stz;
-  sPortrait.vConcat("Queues:\n"_Stz);
-  
-  m_pExecutingSet->vPortrait(sTasksPortrait);
-  sPortrait.vConcat(sTasksPortrait);
-  
-  m_pReadyQueue->vPortrait(sTasksPortrait);
-  sPortrait.vConcat(sTasksPortrait);
-  
-  m_pReadyQueueLP->vPortrait(sTasksPortrait);
-  sPortrait.vConcat(sTasksPortrait);
-  
-  m_pWaitingSet->vPortrait(sTasksPortrait);
-  sPortrait.vConcat(sTasksPortrait);
-  
-  m_pSleepingQueue->vPortrait(sTasksPortrait);
-  sPortrait.vConcat(sTasksPortrait);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get a portrait of the threads                                              */
-/*----------------------------------------------------------------------------*/
-void Queues::vMonitorThread(s48K& sPortrait)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  i8 nIdle = 0;
-  i8 nRunning = 0;
-  i8 nDedicated = 0;
-  
-  m_pGeneralThreadVec->vGrabLock();
-  
-  i8 nThreads = m_pGeneralThreadVec->nItems();
-  for (i8 i_Thread = 0; i_Thread < nThreads; i_Thread++) {
-    
-    Thread* pThread = m_pGeneralThreadVec->pGet(i_Thread);
-    
-    if (TD_IDLE == pThread->eThreadState())
-      nIdle++;
-    else
-      if (TD_RUNNING == pThread->eThreadState())
-        nRunning++;
-
-    if (CN_NONE != pThread->m_eDedicated)
-      nDedicated++;
-  }
-  
-  m_pGeneralThreadVec->vDropLock();
-  
-  sPortrait.vSprint("Threads: running %lld (dedicated %lld) idle %lld\n"_Stz,
-                    nThreads,
-                      nDedicated,
-                    nIdle);
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* pop next queued task in round robin fashion                                */
-/*----------------------------------------------------------------------------*/
-bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  Task* pPoppedTask;
-  
-  // set popped task to be null to start with
-  *ppPoppedTask = NULL;
-  
-  if ( (pPoppedTask = pPopReadyQueue()) ) {
-    *ppPoppedTask = pPoppedTask;
-    return true;
-  }
-  
-  if ( (pPoppedTask = pPopReadyQueueLP()) ) {
-    *ppPoppedTask = pPoppedTask;
-    return true;
-  }
-  
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -900,59 +954,6 @@ void Queues::vRemoveFromWaitingSet(Task* pTask)
                        "Removed from WaitingSet: %s %p"_Stz,
                        aCN[pTask->pJob()->eClass()],
                        pTask->pJob());
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get no of tasks in the executing set                                       */
-/*----------------------------------------------------------------------------*/
-i8 Queues::nTasksExecuting(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  return m_pExecutingSet->nTasks();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get no of tasks in the ready queue                                         */
-/*----------------------------------------------------------------------------*/
-i8 Queues::nTasksReady(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  return m_pReadyQueue->nTasks();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get no of tasks in the low priority ready queue                            */
-/*----------------------------------------------------------------------------*/
-i8 Queues::nTasksReadyLP(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  return m_pReadyQueueLP->nTasks();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get no of tasks in the sleeping queue                                      */
-/*----------------------------------------------------------------------------*/
-i8 Queues::nTasksSleeping(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  return m_pSleepingQueue->nTasks();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get no of tasks in the waiting set                                         */
-/*----------------------------------------------------------------------------*/
-i8 Queues::nTasksWaiting(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  return m_pWaitingSet->nTasks();
 }
 
 
