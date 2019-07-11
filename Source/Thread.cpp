@@ -148,7 +148,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
     vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
            pThread,pThread->iThreadNo());
   
-  gpAttachMap->m_pQueues->vRemoveDedicatedThread(pThread);
+  Scheduler::vRemoveDedicatedThread(pThread);
   
   pThread->m_pPthread->vThreadExit();
   
@@ -210,7 +210,7 @@ void* Thread::aEntryPoint_general(void* pArg)
     vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
            pThread,pThread->iThreadNo());
   
-  gpAttachMap->m_pQueues->vRemoveGeneralThread(pThread);
+  Scheduler::vRemoveGeneralThread(pThread);
   
   pThread->m_pPthread->vThreadExit();
 

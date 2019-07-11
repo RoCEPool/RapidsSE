@@ -15,6 +15,8 @@ namespace Scheduling
     static void vCheckSleeping(void);
     static void vIdleThread(Thread* pThread);
     static void vPauseForGeneralThreads(void);
+    static void vRemoveDedicatedThread(Thread* pThread);
+    static void vRemoveGeneralThread(Thread* pThread);
     static void vSpawnedTask(Task* pTask);
     static void vSpawnedTaskDedicated(Task* pTask);
     static void vTaskReturn(Task** ppTask);

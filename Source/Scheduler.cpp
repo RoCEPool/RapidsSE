@@ -148,6 +148,26 @@ void Scheduler::vPauseForGeneralThreads(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* remove dedicated thread from thread vector                                 */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vRemoveDedicatedThread(Thread* pThread)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  pQueues->vRemoveDedicatedThread(pThread);
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove general thread from thread vector                                   */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vRemoveGeneralThread(Thread* pThread)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  pQueues->vRemoveGeneralThread(pThread);
+}
+
+/*----------------------------------------------------------------------------*/
 /* task has beeb spawned                                                      */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vSpawnedTask(Task* pTask)
