@@ -6,28 +6,28 @@
 refresh;
 success
 
-drop table customer;
+drop table rapidsse.public.customer;
 success
 
-drop table supplier;
+drop table rapidsse.public.supplier;
 success
 
-drop table orders;
+drop table rapidsse.public.orders;
 success
 
-drop table partsupp;
+drop table rapidsse.public.partsupp;
 success
 
-drop table part;
+drop table rapidsse.public.part;
 success
 
-drop table region;
+drop table rapidsse.public.region;
 success
 
-drop table lineitem;
+drop table rapidsse.public.lineitem;
 success
 
-drop table nation;
+drop table rapidsse.public.nation;
 success
 
 CLEANUP {
