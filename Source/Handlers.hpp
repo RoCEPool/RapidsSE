@@ -15,7 +15,13 @@ namespace Scheduling
   
   public:
     static void vScheduleAckedTask(Task* pTask);
-
+    static void vScheduleExitedTask(Task* pTask);
+    static void vScheduleReadyTask(Task* pTask);
+    static void vScheduleSleepingTask(Task* pTask);
+    static void vScheduleSpawnedTask(Task* pTask);
+    static void vScheduleWaitingTask(Task* pTask);
+    static void vScheduleWokenTask(Task* pTask);
+    static void vScheduleYieldedTask(Task* pTask);
   };
 }
 

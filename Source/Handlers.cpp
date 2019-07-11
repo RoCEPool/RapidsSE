@@ -192,6 +192,221 @@ void Handlers::vScheduleAckedTask(Task* pTask)
   pQueues->vScheduleReadyTask(pTask);
 }
 
+/*----------------------------------------------------------------------------*/
+/* schedule an exited task                                                    */
+/*----------------------------------------------------------------------------*/
+void Handlers::vScheduleExitedTask(Task* pTask)
+{
+  RASSERT(TS_EXITED == pTask->eState());
+  
+  ASSERT(! pTask->bWordBody());
+  
+  //vTrace("Exited Task %p\n"_Stz,pTask);
+  
+  delete pTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* schedule a ready to execute task                                           */
+/*----------------------------------------------------------------------------*/
+void Handlers::vScheduleReadyTask(Task* pTask)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  RASSERT(TS_READY == pTask->eState());
+  
+  if (pTask->pJob()->m_bMarkActivity)
+    ActivityMap::vMarkJob(pTask->pJob(),
+                          "Schedule ready: %s %p"_Stz,
+                          aCN[pTask->pJob()->eClass()],
+                          pTask->pJob());
+  
+#ifdef WITH_EVENT_MODEL
+  Thread* pIdleThread = pQueues->pPopIdleThread();
+  
+  if (pIdleThread) {
+    ActionSequence::vAdd(pTask->pJob(),AN_THREAD_EXECUTE,pIdleThread->iThreadNo());
+    
+    pIdleThread->m_pTask = pTask;
+    
+    pIdleThread->m_nAssignedTasks++;
+    
+    pIdleThread->m_pMutexThread->vMutexLock();
+    pIdleThread->m_pMutexThread->vCondSignal();
+    pIdleThread->m_pMutexThread->vMutexUnlock();
+    
+    return;
+  }
+  
+  if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
+    pQueues->vAddToReadyQueue(pTask);
+  else
+    pQueues->vAddToReadyQueueLP(pTask);
+#else
+  Thread* pIdleThread = pFindIdleThread();
+  
+  if (pIdleThread) {
+    ActionSequence::vAdd(pTask->pJob(),AN_THREAD_EXECUTE,pIdleThread->iThreadNo());
+    pIdleThread->vExecuteTask(pTask);
+    
+    return;
+  }
+  
+  if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
+    vAddToReadyQueue(pTask);
+  else
+    vAddToReadyQueueLP(pTask);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* schedule sleeping task                                                     */
+/*----------------------------------------------------------------------------*/
+void Handlers::vScheduleSleepingTask(Task* pTask)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  RASSERT(TS_SLEEPING == pTask->eState());
+  
+  if (pTask->pJob()->m_bMarkActivity)
+    ActivityMap::vMarkJob(pTask->pJob(),
+                          "Schedule sleeping: %s %p"_Stz,
+                          aCN[pTask->pJob()->eClass()],
+                          pTask->pJob());
+  
+  // is the task still actually sleeping
+  if (! pTask->bWakeupNow()) {
+    pQueues->vAddToSleepingQueue(pTask);
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tasks wake up time has already arrived. run it
+  
+  pTask->vWakeupTask();
+  
+  Thread* pCallingThread = Thread::pThisTLSThread();
+  
+  pCallingThread->vReExecuteTask(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* schedule a newly spawned task                                              */
+/*----------------------------------------------------------------------------*/
+void Handlers::vScheduleSpawnedTask(Task* pTask)
+{
+  RASSERT(QK_NONE == pTask->eQueue());
+  
+  pTask->vState(TS_READY);
+  
+  if (pTask->pJob()->m_bMarkActivity) {
+    if (C_UNKNOWN == pTask->pJob()->iJobId())
+      ActivityMap::vMarkInfo("Schedule spawned: %s %p slot[%lld]"_Stz,
+                             aCN[pTask->pJob()->eClass()],
+                             pTask->pJob(),
+                             pTask->pJob()->m_i_Slot);
+    else
+      ActivityMap::vMarkJob(pTask->pJob(),
+                            "Schedule spawned: %s %p slot[%lld]"_Stz,
+                            aCN[pTask->pJob()->eClass()],
+                            pTask->pJob(),
+                            pTask->pJob()->m_i_Slot);
+  }
+  
+  //vTrace("Spawned Task %p\n"_Stz,pTask);
+  
+  vScheduleReadyTask(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* schedule ready waiting task                                                */
+/*----------------------------------------------------------------------------*/
+void Handlers::vScheduleWaitingTask(Task* pTask)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+
+  RASSERT(TS_WAITING == pTask->eState());
+  
+  if (pTask->pJob()->m_bMarkActivity) {
+    if (C_UNKNOWN == pTask->pJob()->iJobId())
+      ActivityMap::vMarkInfo(
+                             "Schedule waiting: %s %p"_Stz,
+                             aCN[pTask->pJob()->eClass()],
+                             pTask->pJob());
+    else
+      ActivityMap::vMarkJob(pTask->pJob(),
+                            "Schedule waiting: %s %p"_Stz,
+                            aCN[pTask->pJob()->eClass()],
+                            pTask->pJob());
+  }
+  
+  pQueues->vAddToWaitingSet(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* schedule woken task                                                        */
+/*----------------------------------------------------------------------------*/
+void Handlers::vScheduleWokenTask(Task* pTask)
+{
+  pTask->vState(TS_READY);
+  
+  //vTrace("Spawned Task %p\n"_Stz,pTask);
+  
+  vScheduleReadyTask(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* schedule yielded task                                                      */
+/*----------------------------------------------------------------------------*/
+void Handlers::vScheduleYieldedTask(Task* pTask)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  Thread* pCallingThread = Thread::pThisTLSThread();
+  
+  if (pTask->pJob()->m_bMarkActivity) {
+    if (C_UNKNOWN == pTask->pJob()->iJobId())
+      ActivityMap::vMarkInfo(
+                             "Schedule yielded: %s %p"_Stz,
+                             aCN[pTask->pJob()->eClass()],
+                             pTask->pJob());
+    else
+      ActivityMap::vMarkJob(pTask->pJob(),
+                            "Schedule yielded: %s %p"_Stz,
+                            aCN[pTask->pJob()->eClass()],
+                            pTask->pJob());
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // non-partitioned task yield
+  
+  
+  // - A general thread has executed a task which retured TS_YIELDED.
+  //   If the ready queue is empty then this general thread can
+  //     continue to execute the yield task.
+  //   Otherwise we add the task to the ready queue
+  
+  if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL) {
+    pQueues->m_pReadyQueue->vGrabLock();
+    i8 iLengthReadyQueue = pQueues->nTasksReady();
+    if (0 == iLengthReadyQueue) {
+      pQueues->m_pReadyQueue->vDropLock();
+      pCallingThread->vReExecuteTask(pTask);
+    }
+    else {
+      pTask->vState(TS_READY);
+      pQueues->vAddToReadyQueue_NL(pTask);
+      pQueues->m_pReadyQueue->vDropLock();
+    }
+  }
+  else {
+    pQueues->m_pReadyQueueLP->vGrabLock();
+    pTask->vState(TS_READY);
+    pQueues->vAddToReadyQueueLP_NL(pTask);
+    pQueues->m_pReadyQueueLP->vDropLock();
+  }
+  
+}
 
 /*============================================================================*/
 /* end                                                                        */
