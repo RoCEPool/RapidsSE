@@ -168,7 +168,7 @@ void Job_CopyBuffer::vCopy(void)
     
     // get the length of the record
     u4 uRecordLength = *((u4*)aRecord);
-    
+  /*
     // check length of record
     if (uRecordLength > C_MAX_RECORD) {
       //eErrorCode = EC_MAX_ROW_LENGTH;
@@ -181,6 +181,7 @@ void Job_CopyBuffer::vCopy(void)
     bool bBlankLine;
     Stz* szRecStr = aAdd<Stz*>(aRecord, 4);
     
+    vTrace("Raw: %s\n"_Stz, szRecStr);
     bool bValid = bExtractRow(szRecStr, bBlankLine);
     
     // is the record invalid ?
@@ -192,12 +193,27 @@ void Job_CopyBuffer::vCopy(void)
       //m_pJob_SubInserter->vDropWrite();
       continue;
     }
+  
+   // insert row into a working buffer in job InsertRow
+   m_pJob_SubInserter->vGrabWrite();
+   eEC eErrorCode = m_pJob_SubInserter->eInsertRow();
+   RASSERT(eErrorCode == EC_NONE);
+   m_pJob_SubInserter->vDropWrite();
+*/
+
+    Stz* szRecStr = aAdd<Stz*>(aRecord, 4);
     
-    // insert row into a working buffer in job InsertRow
+    // process that record into write behind
     m_pJob_SubInserter->vGrabWrite();
-    eEC eErrorCode = m_pJob_SubInserter->eInsertRow(); 
-    RASSERT(eErrorCode == EC_NONE);
+    eEC eError = m_pJob_SubInserter->eProcessRecord(szRecStr, uRecordLength);
     m_pJob_SubInserter->vDropWrite();
+    
+    // is the record invalid ?
+    if (eError == EC_INVALID_VALUE) {
+      vTrace("Error inserting row %lld %s\n"_Stz, uRecordLength, szRecStr);
+      continue;
+    }
+    
   }
   
   ++m_pJob_SubInserter->m_ixCopiedBuffers;
