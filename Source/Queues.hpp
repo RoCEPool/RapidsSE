@@ -44,6 +44,24 @@ namespace Scheduling
   
     static void vThreadsReport(void);
   
+  public:
+    void vDumpExecutingSet(void);
+    void vDumpReadyQueue(void);
+    void vDumpReadyQueueLP(void);
+    void vDumpSleepingQueue(void);
+    void vDumpWaitingSet(void);
+  
+    void vMonitorPortrait(s48K& sPortrait);
+    void vMonitorThread(s48K& sPortrait);
+  
+    bool bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread);
+
+    i8   nTasksExecuting(void);
+    i8   nTasksReady(void);
+    i8   nTasksReadyLP(void);
+    i8   nTasksSleeping(void);
+    i8   nTasksWaiting(void);
+  
   private:
     void vAddDedicatedThread(Thread* pThread);
     void vAddGeneralThread(Thread* pThread);
@@ -62,22 +80,8 @@ namespace Scheduling
   
     void vAppendIdleThread(Thread* pThread);
   
-  public:
-    void vDumpExecutingSet(void);
-    void vDumpReadyQueue(void);
-    void vDumpReadyQueueLP(void);
-    void vDumpSleepingQueue(void);
-    void vDumpWaitingSet(void);
-    
-  private:
     Thread* pFindIdleThread(void);
  
-  public:
-    void vMonitorPortrait(s48K& sPortrait);
-    void vMonitorThread(s48K& sPortrait);
-  
-    bool bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread);
-  private:
     Thread* pPopIdleThread(void);
 
     Task* pPopReadyQueue(void);
@@ -89,13 +93,6 @@ namespace Scheduling
   
     void vRemoveFromExecutingSet(Task* pTask);
     void vRemoveFromWaitingSet(Task* pTask);
-  
-  public:
-    i8 nTasksExecuting(void);
-    i8 nTasksReady(void);
-    i8 nTasksReadyLP(void);
-    i8 nTasksSleeping(void);
-    i8 nTasksWaiting(void);
   
     Footer* aFooter(void);
   };
