@@ -5,7 +5,7 @@
 " job_Alarm.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* spawn the alarm job                                                        */
+/* spawn the alarm job (as a dedicated job)                                   */
 /*----------------------------------------------------------------------------*/
 : spawn_Alarm ( -- )
 
@@ -16,7 +16,7 @@
 
   nullptr pJobClass_Alarm jobClass.new to pJob_Alarm
 
-  pJob_Alarm SEED_RUN job.spawn
+  pJob_Alarm SEED_RUN job.spawn_dedicated
 ;
 
 /*----------------------------------------------------------------------------*/

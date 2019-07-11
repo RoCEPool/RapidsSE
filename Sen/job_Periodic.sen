@@ -5,7 +5,7 @@
 " job_Periodic.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* spawn the periodic job                                                     */
+/* spawn the periodic job (as a dedicated job)                                */
 /*----------------------------------------------------------------------------*/
 : spawn_Periodic ( -- )
 

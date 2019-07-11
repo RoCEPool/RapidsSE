@@ -100,6 +100,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.signalConnector"_Stz,  &Step::vJobSignalConnector);
   vAddStep("job.slot@"_Stz,            &Step::vJobSlotFetch);
   vAddStep("job.spawn"_Stz,            &Step::vJobSpawn);
+  vAddStep("job.spawn_dedicated"_Stz,  &Step::vJobSpawnDedicated);
   vAddStep("job::stateDiagram"_Stz,    &Step::vJobStateDiagram);
 
   vAddStep("job::this"_Stz,            &Step::vJobThis);
@@ -1853,6 +1854,29 @@ void Step::vJobSpawn(MP_Task mpTask)
   ActionSequence::vAdd(pJob,AN_SPAWN_JOB,mpTask->pJob(),i_Seed,_EG_SS);
   
   IGNORE_RETURN(Api::bSpawnJob(nullptr,pJob,(eSS)i_Seed));
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.spawn_dedicated -- spawn the dedicated job on the stack                */
+/*----------------------------------------------------------------------------*/
+void Step::vJobSpawnDedicated(MP_Task mpTask)
+{
+  ENTRY("vJobSpawnDedicated"_Stz);
+  
+  i8 i_Seed;
+  if ( ! mpTask->m_pDataStack->bPop(i_Seed) )
+    THROW_INVALID_DSTACK("job.spawn_dedicated"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.spawn_dedicated"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  ActionSequence::vAdd(pJob,AN_SPAWN_JOB,mpTask->pJob(),i_Seed,_EG_SS);
+  
+  IGNORE_RETURN(Api::bSpawnJobDedicated(nullptr,pJob,(eSS)i_Seed));
   
   EXIT();
 }

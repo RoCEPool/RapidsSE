@@ -5,7 +5,7 @@
 " job_Waker.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* spawn the waker job                                                        */
+/* spawn the waker job (as a dedicated job)                                   */
 /*----------------------------------------------------------------------------*/
 : spawn_Waker ( -- )
 
@@ -16,7 +16,7 @@
 
   nullptr pJobClass_Waker jobClass.new to pJob_Waker
 
-  pJob_Waker SEED_RUN job.spawn
+  pJob_Waker SEED_RUN job.spawn_dedicated
 ;
 
 /*----------------------------------------------------------------------------*/

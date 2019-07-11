@@ -5,7 +5,7 @@
 " job_Supervisor.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* spawn the supervisor job                                                   */
+/* spawn the supervisor job (as a dedicated job)                              */
 /*----------------------------------------------------------------------------*/
 : spawn_Supervisor ( -- )
 
@@ -16,7 +16,7 @@
 
   nullptr pJobClass_Supervisor jobClass.new to pJob_Supervisor
 
-  pJob_Supervisor SEED_RUN job.spawn
+  pJob_Supervisor SEED_RUN job.spawn_dedicated
 ;
 
 /*----------------------------------------------------------------------------*/

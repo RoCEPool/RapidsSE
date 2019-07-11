@@ -12,18 +12,19 @@ namespace Scheduling
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // threads
 
-    ThreadVec*   m_pGenThreadVec;    // vector of general threads in the system
-    ThreadQueue* m_pIdleThreadQueue; // queue of idle threads
+    ThreadVec*   m_pDedicatedThreadVec; // vector of dedicated threads
+    ThreadVec*   m_pGeneralThreadVec;   // vector of general threads
+    ThreadQueue* m_pIdleThreadQueue;    // queue of idle threads
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // task queues
   
-    TaskList*  m_pReadyQueue;      //  set of queued tasks ready to be executed
-    TaskList*  m_pReadyQueueLP;    //  set of low priority queued tasks ready to run
+    TaskList*  m_pReadyQueue;      // set of queued tasks ready to be executed
+    TaskList*  m_pReadyQueueLP;    // set of low priority queued tasks ready to run
     TaskQueue* m_pSleepingQueue;   // set of queued sleeping tasks
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // tast sets ordered by arrival
+    // task sets ordered by arrival
   
     Atomic     m_ixQueueOrder;     // task arrival ordering no
     TaskList*  m_pExecutingSet;    // set of tasks currently executing
@@ -41,8 +42,9 @@ namespace Scheduling
   
     static void vThreadsReport(void);
   
-    void vAddThread(Thread* pThread);
-    
+    void vAddDedicatedThread(Thread* pThread);
+    void vAddGeneralThread(Thread* pThread);
+
     void vAddToExecutingSet(Task* pTask);
     void vAddToReadyQueue(Task* pTask);
     void vAddToReadyQueueLP(Task* pTask);
@@ -55,6 +57,8 @@ namespace Scheduling
     void vAddToSleepingQueue_NL(Task* pTask);
     void vAddToWaitingSet_NL(Task* pTask);
   
+    void vAppendIdleThread(Thread* pThread);
+
     void vCheckSleeping(void);
   
     void vDumpExecutingSet(void);
@@ -71,12 +75,14 @@ namespace Scheduling
     void vPauseForGeneralThreads(void);
   
     bool bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread);
+    Thread* pPopIdleThread(void);
 
     Task* pPopReadyQueue(void);
     Task* pPopReadyQueueLP(void);
     Task* pPopSleepingQueue(void);
    
-    void vRemoveThread(Thread* pThread);
+    void vRemoveDedicatedThread(Thread* pThread);
+    void vRemoveGeneralThread(Thread* pThread);
   
     void vRemoveFromExecutingSet(Task* pTask);
     void vRemoveFromWaitingSet(Task* pTask);

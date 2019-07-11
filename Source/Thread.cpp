@@ -47,11 +47,13 @@ void* Thread::operator new(size_t, Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* threads are never delete (for the moment)                                  */
+/* delete a thread                                                            */
 /*----------------------------------------------------------------------------*/
-void Thread::operator delete(void*)
+void Thread::operator delete(void* aAddr)
 {
-  vFatal("fatal: Thread class cannot be deleted"_Stz);
+  Object* pObject = reinterpret_cast<Object*>(aAddr);
+  
+  HeapMem::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -90,8 +92,8 @@ Thread::~Thread(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  delete m_pPthread;
   delete m_pMutexThread;
+  delete m_pPthread;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -101,28 +103,27 @@ Thread::~Thread(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* thread entry point                                                         */
 /*----------------------------------------------------------------------------*/
-void* Thread::aEntryPoint(void* pArg)
+void* Thread::aEntryPoint_dedicated(void* pArg)
 {
   Thread* pThread = static_cast<Thread*>(pArg);
   
   pThread->m_aStackBase = Pthread::aStackBase();
   pThread->m_iStackSize = Pthread::iStackSize();
-
+  
   pThread->m_eThreadState = TD_IDLE;
   
   pThread->m_pPthread->vThreadEntry();
-
-  gpAttachMap->m_pQueues->vAddThread(pThread);
+  
+  gpAttachMap->m_pQueues->vAddDedicatedThread(pThread);
   
   if (gpAttachMap->m_bVerbose)
     vTrace("Thread::aEntryPoint %p %lld\n"_Stz,
            pThread,pThread->iThreadNo());
   
   //pThread->vBindCore();
-    
+  
   try {
-    pThread->vLoop();
-    //pThread->vLoop_v2();
+    pThread->vLoop_dedicated();
   }
   
   catch (Error* pError) {
@@ -148,7 +149,69 @@ void* Thread::aEntryPoint(void* pArg)
     vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
            pThread,pThread->iThreadNo());
   
-  gpAttachMap->m_pQueues->vRemoveThread(pThread);
+  gpAttachMap->m_pQueues->vRemoveDedicatedThread(pThread);
+  
+  pThread->m_pPthread->vThreadExit();
+  
+  delete pThread;
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread entry point                                                         */
+/*----------------------------------------------------------------------------*/
+void* Thread::aEntryPoint_general(void* pArg)
+{
+  Thread* pThread = static_cast<Thread*>(pArg);
+  
+  pThread->m_aStackBase = Pthread::aStackBase();
+  pThread->m_iStackSize = Pthread::iStackSize();
+
+  pThread->m_eThreadState = TD_IDLE;
+  
+  pThread->m_pPthread->vThreadEntry();
+
+  gpAttachMap->m_pQueues->vAddGeneralThread(pThread);
+  
+  if (gpAttachMap->m_bVerbose)
+    vTrace("Thread::aEntryPoint %p %lld\n"_Stz,
+           pThread,pThread->iThreadNo());
+  
+  //pThread->vBindCore();
+    
+  try {
+#ifdef WITH_EVENT_MODEL
+    pThread->vLoop_event();
+#else
+    pThread->vLoop_polling();
+#endif
+  }
+  
+  catch (Error* pError) {
+    
+    char caFileName[256];
+    const char* ps;
+    
+    ps = StrLib::sLast(pError->aFileName()->aChar());
+    bool bBackSlash = StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
+    if (bBackSlash) {
+      StrLib::vCopy(caFileName,ps+1);
+    }
+    else {
+      StrLib::vCopy(caFileName, pError->aFileName()->aChar());
+    }
+    vFatal("ERROR: [ThreadLoop] %s: line %lld in %s\n"_Stz,
+           pError->aErrorMsg(),
+           pError->iLineNo(),
+           caFileName);
+  }
+  
+  if (gpAttachMap->m_bVerbose)
+    vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
+           pThread,pThread->iThreadNo());
+  
+  gpAttachMap->m_pQueues->vRemoveGeneralThread(pThread);
   
   pThread->m_pPthread->vThreadExit();
 
@@ -160,7 +223,7 @@ void* Thread::aEntryPoint(void* pArg)
 /*----------------------------------------------------------------------------*/
 /* dummy thread entry point                                                   */
 /*----------------------------------------------------------------------------*/
-void* Thread::aEntryPointDummy(void* pArg)
+void* Thread::aEntryPoint_dummy(void* pArg)
 {
   Thread* pThread = static_cast<Thread*>(pArg);
   
@@ -191,34 +254,6 @@ void* Thread::aEntryPointDummy(void* pArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* op thread entry point                                                      */
-/*----------------------------------------------------------------------------*/
-void* Thread::aEntryPointOp(void* pArg)
-{
-  Thread* pThread = static_cast<Thread*>(pArg);
-  
-  pThread->m_eThreadState = TD_IDLE;
-  
-  pThread->m_pPthread->vThreadEntry();
-  
-  if (gpAttachMap->m_bVerbose)
-    vTrace("Thread::aEntryPointOp %p %lld\n"_Stz,
-           pThread,pThread->iThreadNo());
-  
-  while (true) {
-
-    // temp
-    Pthread::vSleepInfinite();
-  }
-  
-  //pThread->m_pPthread->vThreadExit();
-  
-  //delete pThread;
-  
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get this thread                                                            */
 /*----------------------------------------------------------------------------*/
 Thread* Thread::pThisTLSThread(void)
@@ -233,9 +268,79 @@ Thread* Thread::pThisTLSThread(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* thread loop (original loop, which is limited cond wait)                    */
+/* dedicated thread loop (part of event-based model)                          */
 /*----------------------------------------------------------------------------*/
-void Thread::vLoop(void)
+void Thread::vLoop_dedicated(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  Pthread::vTlsSet(giTLS_ThreadKey,this);
+  ASSERT(Pthread::pTlsGet(giTLS_ThreadKey) == this);
+  
+  // thread has mutex while it is running
+  m_eThreadState = TD_RUNNING;
+  m_pMutexThread->vMutexLock();
+  
+  // increment m_ixThreads to indicate thread is running
+  ++gpAttachMap->m_ixThreads;
+  
+  while (m_pTask && m_pTask->pJob())
+    vTaskCall();
+  
+  m_pMutexThread->vMutexUnlock();
+  
+  vTrace("Exiting dedicated thread loop\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* event-based thread loop (fully event-based model)                          */
+/*----------------------------------------------------------------------------*/
+void Thread::vLoop_event(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  Pthread::vTlsSet(giTLS_ThreadKey,this);
+  ASSERT(Pthread::pTlsGet(giTLS_ThreadKey) == this);
+  
+  // thread has mutex while it is running
+  m_eThreadState = TD_RUNNING;
+  m_pMutexThread->vMutexLock();
+
+  // increment m_ixThreads to indicate thread is running
+  ++gpAttachMap->m_ixThreads;
+  
+  for (;;) {
+    
+    // while waiting the mutex is dropped
+    m_eThreadState = TD_IDLE;
+    gpAttachMap->m_pQueues->vAppendIdleThread(this);
+    m_pMutexThread->vCondWaitIndefinite();
+    m_eThreadState = TD_RUNNING;
+
+   // attempt again if no task
+   if (! m_pTask)
+     continue;
+    
+    // call the task
+    vTaskCall();
+    
+    if (m_pTask->pJob() && m_pTask->pJob()->m_bMarkActivity)
+      ActivityMap::vMarkJob(m_pTask->pJob(),
+                            "Returned from task call: %s %p"_Stz,
+                            aCN[m_pTask->pJob()->eClass()],
+                            m_pTask->pJob());
+
+    // handle task return event
+    Handlers::vTaskReturn(&m_pTask);
+  }
+  
+  NEVER_REACH;
+}
+
+/*----------------------------------------------------------------------------*/
+/* polling-based thread loop (original loop, which is limited cond wait)      */
+/*----------------------------------------------------------------------------*/
+void Thread::vLoop_polling(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
@@ -276,50 +381,6 @@ void Thread::vLoop(void)
                             aCN[m_pTask->pJob()->eClass()],
                             m_pTask->pJob());
     
-    // handle task return event
-    Handlers::vTaskReturn(&m_pTask);
-  }
-  
-  NEVER_REACH;
-}
-
-/*----------------------------------------------------------------------------*/
-/* thread loop v2 (fully event based)                                         */
-/*----------------------------------------------------------------------------*/
-void Thread::vLoop_v2(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  Pthread::vTlsSet(giTLS_ThreadKey,this);
-  ASSERT(Pthread::pTlsGet(giTLS_ThreadKey) == this);
-  
-  // thread has mutex while it is running
-  m_eThreadState = TD_RUNNING;
-  m_pMutexThread->vMutexLock();
-
-  // increment m_ixThreads to indicate thread is running
-  ++gpAttachMap->m_ixThreads;
-  
-  for (;;) {
-    
-    // while waiting the mutex is dropped
-    m_eThreadState = TD_IDLE;
-    m_pMutexThread->vCondWaitIndefinite();
-    m_eThreadState = TD_RUNNING;
-
-   // attempt again if no task
-   if (! m_pTask)
-     continue;
-    
-    // call the task
-    vTaskCall();
-    
-    if (m_pTask->pJob() && m_pTask->pJob()->m_bMarkActivity)
-      ActivityMap::vMarkJob(m_pTask->pJob(),
-                         "Returned from task call: %s %p"_Stz,
-                         aCN[m_pTask->pJob()->eClass()],
-                         m_pTask->pJob());
-
     // handle task return event
     Handlers::vTaskReturn(&m_pTask);
   }
@@ -450,23 +511,11 @@ void Thread::vReExecuteTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* spawn the os/posix pthread associated with this thread                     */
 /*----------------------------------------------------------------------------*/
-void Thread::vSpawnPthread(void)
+void Thread::vSpawnPthread_dedicated(Task *pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  bool bResult = m_pPthread->bSpawnThread(Thread::aEntryPoint,this);
-  
-  ASSERT(bResult);
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn the os/posix pthread associated with this op thread                  */
-/*----------------------------------------------------------------------------*/
-void Thread::vSpawnPthread_Op(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  bool bResult = m_pPthread->bSpawnThread(Thread::aEntryPointOp,this);
+  bool bResult = m_pPthread->bSpawnThread(Thread::aEntryPoint_dedicated,this);
   
   ASSERT(bResult);
 }
@@ -474,11 +523,23 @@ void Thread::vSpawnPthread_Op(void)
 /*----------------------------------------------------------------------------*/
 /* spawn the os/posix pthread associated with this dummy thread               */
 /*----------------------------------------------------------------------------*/
-void Thread::vSpawnPthread_Dummy(void)
+void Thread::vSpawnPthread_dummy(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  bool bResult = m_pPthread->bSpawnThread(Thread::aEntryPointDummy,this);
+  bool bResult = m_pPthread->bSpawnThread(Thread::aEntryPoint_dummy,this);
+  
+  ASSERT(bResult);
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn the os/posix pthread associated with this thread                     */
+/*----------------------------------------------------------------------------*/
+void Thread::vSpawnPthread_general(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  bool bResult = m_pPthread->bSpawnThread(Thread::aEntryPoint_general,this);
   
   ASSERT(bResult);
 }

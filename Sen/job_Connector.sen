@@ -5,7 +5,7 @@
 " job_Connector.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* spawn the connector task                                                   */
+/* spawn the connector job (as a dedicated job)                               */
 /*----------------------------------------------------------------------------*/
 : spawn_Connector ( -- )
 
@@ -16,7 +16,7 @@
 
   nullptr pJobClass_Connector jobClass.new to pJob_Connector
 
-  pJob_Connector SEED_RUN job.spawn
+  pJob_Connector SEED_RUN job.spawn_dedicated
 ;
 
 /*----------------------------------------------------------------------------*/

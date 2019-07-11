@@ -396,6 +396,42 @@ void Api::vSpawnJobAndWait(Session* pSession, Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
+/* spawn dedicated job                                                        */
+/*----------------------------------------------------------------------------*/
+bool Api::bSpawnJobDedicated(Session* pSession, Job* pJob, eSS eSeed)
+{
+  ASSERT(pJob->m_pJobClass);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Before appending request for se, ensure that se is running
+  // get the se pid from the attachmap
+  i8 iPid = gpAttachMap->m_iPid;
+  if (!Process::bTestPid(iPid)) {
+    // SE is not running anymore!
+    if (pSession)
+      vWarn("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
+    vWarn("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
+    return false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Task* pNewTask = new Task(pJob);
+  
+  // form the word to execute for the request
+  pJob->vSeed(eSeed);
+  
+  pNewTask->vSession(pSession);
+  
+  if (pJob->m_bMarkTrace)
+    pJob->m_pJobClass->vShowJob(pJob);
+  
+  Handlers::vSpawnedTaskDedicated(pNewTask);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* validate the SE session                                                    */
 /*----------------------------------------------------------------------------*/
 eEC Api::eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall)

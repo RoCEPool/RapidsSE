@@ -23,7 +23,6 @@ namespace StorageEngine
       i8   m_nMaxLoadErrors;
       i8   m_nMaxReadyLP;
       i8   m_nNodes;
-      i8   m_nOpThreads; 
       s32  m_sRegionName;
       i8   m_iRegionSize;
       i8   m_nSlotsPerNode;
@@ -111,7 +110,6 @@ namespace StorageEngine
                           i8   nMaxLoadErrors,
                           i8   nMaxReadyLP,
                           i8   nNodes,
-                          i8   nOpThreads,
                           Stz* sRegionName,
                           i8   iRegionSize,
                           i8   nSlotsPerNode,
