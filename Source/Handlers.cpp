@@ -65,7 +65,7 @@ bool Handlers::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
                          AN_AM_DECIDER,
                          pTaskBeingAcked->pJob());
     
-    pQueues->vScheduleAckedTask(pTaskBeingAcked);
+    vScheduleAckedTask(pTaskBeingAcked);
   }
   
   return bAmDecider;
@@ -154,6 +154,44 @@ void Handlers::vTaskReturn(Task** ppTask)
       break;
   }
 }
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* schedule a fully acked task                                                */
+/*----------------------------------------------------------------------------*/
+void Handlers::vScheduleAckedTask(Task* pTask)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  if (pTask->pJob()->m_bMarkActivity)
+    ActivityMap::vMarkJob(pTask->pJob(),
+                          "Scheduling acked: %s %p"_Stz,
+                          aCN[pTask->pJob()->eClass()],
+                          pTask->pJob());
+  
+  //ActionSequence::vAdd(pTask->pJob(),AN_TASK_ACKED);
+  
+  pTask->vGrabLock();
+  
+  // having got the lock, the task should be TS_WAITING and QK_WAITING_SET
+  
+  RASSERT(TS_WAITING == pTask->eState());
+  RASSERT(QK_WAITING_SET == pTask->eQueue());
+  
+  pTask->vDropLock();
+  
+  pQueues->vRemoveFromWaitingSet(pTask);
+  
+  RASSERT(QK_NONE == pTask->eQueue());
+  
+  pTask->vState(TS_READY);
+  
+  pQueues->vScheduleReadyTask(pTask);
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

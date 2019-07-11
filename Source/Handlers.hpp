@@ -12,6 +12,10 @@ namespace Scheduling
     static void vSpawnedTask(Task* pTask);
     static void vSpawnedTaskDedicated(Task* pTask);
     static void vTaskReturn(Task** ppTask);
+  
+  public:
+    static void vScheduleAckedTask(Task* pTask);
+
   };
 }
 

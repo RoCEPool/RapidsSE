@@ -118,7 +118,7 @@ void Queues::vThreadsReport(void)
            " base %llx size %lld"
            " user %lld system %lld usage %lld%% sleep %llds"
            " %7s %s"
-           " assigned %lld popped %lld\n"_Stz,
+           " assigned %lld\n"_Stz,
            pThread->m_iThreadNo,
            pThread,
            
@@ -133,8 +133,7 @@ void Queues::vThreadsReport(void)
            aTD[pThread->m_eThreadState],
            pThread->m_eDedicated ? aCN[pThread->m_eDedicated]->aChar() : "",
            
-           pThread->m_nAssignedTasks,
-           pThread->m_nPoppedTasks
+           pThread->m_nAssignedTasks
            );
   }
   
@@ -156,7 +155,7 @@ void Queues::vThreadsReport(void)
            " base %llx size %lld"
            " user %lld system %lld usage %lld%% sleep %llds"
            " %7s %s"
-           " assigned %lld popped %lld\n"_Stz,
+           " assigned %lld\n"_Stz,
            pThread->m_iThreadNo,
            pThread,
            
@@ -171,8 +170,7 @@ void Queues::vThreadsReport(void)
            aTD[pThread->m_eThreadState],
            pThread->m_eDedicated ? aCN[pThread->m_eDedicated]->aChar() : "",
            
-           pThread->m_nAssignedTasks,
-           pThread->m_nPoppedTasks
+           pThread->m_nAssignedTasks
            );
   }
   
@@ -954,39 +952,6 @@ void Queues::vRemoveFromWaitingSet(Task* pTask)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* schedule a fully acked task                                                */
-/*----------------------------------------------------------------------------*/
-void Queues::vScheduleAckedTask(Task* pTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  if (pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkJob(pTask->pJob(),
-                       "Scheduling acked: %s %p"_Stz,
-                       aCN[pTask->pJob()->eClass()],
-                       pTask->pJob());
-  
-  //ActionSequence::vAdd(pTask->pJob(),AN_TASK_ACKED);
-
-  pTask->vGrabLock();
-
-  // having got the lock, the task should be TS_WAITING and QK_WAITING_SET
-
-  RASSERT(TS_WAITING == pTask->eState());
-  RASSERT(QK_WAITING_SET == pTask->eQueue());
-
-  pTask->vDropLock();
-  
-  vRemoveFromWaitingSet(pTask);
-
-  RASSERT(QK_NONE == pTask->eQueue());
-
-  pTask->vState(TS_READY);
-  
-  vScheduleReadyTask(pTask);
-}
 
 /*----------------------------------------------------------------------------*/
 /* schedule an exited task                                                    */

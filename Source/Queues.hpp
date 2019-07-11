@@ -87,7 +87,6 @@ namespace Scheduling
     void vRemoveFromExecutingSet(Task* pTask);
     void vRemoveFromWaitingSet(Task* pTask);
   
-    void vScheduleAckedTask(Task* pTask);
     void vScheduleExitedTask(Task* pTask);
     void vScheduleReadyTask(Task* pTask);
     void vScheduleSleepingTask(Task* pTask);

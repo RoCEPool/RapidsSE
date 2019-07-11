@@ -78,7 +78,6 @@ Thread::Thread(void)
   m_pMutexThread = new Mutex;
     
   m_nAssignedTasks = 0;
-  m_nPoppedTasks   = 0;
 
   _checkInitialised_(CN_THREAD);
   
