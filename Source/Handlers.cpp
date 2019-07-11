@@ -72,6 +72,18 @@ bool Handlers::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
 }
 
 /*----------------------------------------------------------------------------*/
+/* check the sleeping queue                                                   */
+/*----------------------------------------------------------------------------*/
+void Handlers::vCheckSleeping(void)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  while (Task* pWokenTask = pQueues->pPopSleepingQueue()) {
+    vScheduleWokenTask(pWokenTask);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* task has beeb spawned                                                      */
 /*----------------------------------------------------------------------------*/
 void Handlers::vSpawnedTask(Task* pTask)
