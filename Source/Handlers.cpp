@@ -92,10 +92,8 @@ void Handlers::vSpawnedTask(Task* pTask)
   // this handler is called from session::bSpawnJob()
   // we want to run given task. task should be ready to run
   //
-    
-  Queues* pQueues = gpAttachMap->m_pQueues;
-
-  pQueues->vScheduleSpawnedTask(pTask);
+  
+  vScheduleSpawnedTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -152,10 +150,10 @@ void Handlers::vTaskReturn(Task** ppTask)
   // now add the task to another appropriate queue depending on its state
   switch (pTask->eState()) {
       
-    case TS_EXITED:   pQueues->vScheduleExitedTask(pTask);    break;
-    case TS_SLEEPING: pQueues->vScheduleSleepingTask(pTask);  break;
-    case TS_WAITING:  pQueues->vScheduleWaitingTask(pTask);   break;
-    case TS_YIELDED:  pQueues->vScheduleYieldedTask(pTask);   break;
+    case TS_EXITED:   vScheduleExitedTask(pTask);    break;
+    case TS_SLEEPING: vScheduleSleepingTask(pTask);  break;
+    case TS_WAITING:  vScheduleWaitingTask(pTask);   break;
+    case TS_YIELDED:  vScheduleYieldedTask(pTask);   break;
       
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // should never come to thread handler for these states
@@ -201,7 +199,7 @@ void Handlers::vScheduleAckedTask(Task* pTask)
   
   pTask->vState(TS_READY);
   
-  pQueues->vScheduleReadyTask(pTask);
+  vScheduleReadyTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/

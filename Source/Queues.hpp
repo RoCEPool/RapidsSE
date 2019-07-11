@@ -58,8 +58,6 @@ namespace Scheduling
     void vAddToWaitingSet_NL(Task* pTask);
   
     void vAppendIdleThread(Thread* pThread);
-
-    void vCheckSleeping(void);
   
     void vDumpExecutingSet(void);
     void vDumpReadyQueue(void);
@@ -86,15 +84,7 @@ namespace Scheduling
   
     void vRemoveFromExecutingSet(Task* pTask);
     void vRemoveFromWaitingSet(Task* pTask);
-  
-    void vScheduleExitedTask(Task* pTask);
-    void vScheduleReadyTask(Task* pTask);
-    void vScheduleSleepingTask(Task* pTask);
-    void vScheduleSpawnedTask(Task* pTask);
-    void vScheduleWaitingTask(Task* pTask);
-    void vScheduleWokenTask(Task* pTask);
-    void vScheduleYieldedTask(Task* pTask);
- 
+   
     i8 nTasksExecuting(void);
     i8 nTasksReady(void);
     i8 nTasksReadyLP(void);
