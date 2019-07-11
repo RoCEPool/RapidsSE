@@ -1024,7 +1024,11 @@ void Queues::vScheduleReadyTask(Task* pTask)
   
   if (pIdleThread) {
     ActionSequence::vAdd(pTask->pJob(),AN_THREAD_EXECUTE,pIdleThread->iThreadNo());
+    
     pIdleThread->m_pTask = pTask;
+    
+    pIdleThread->m_nAssignedTasks++;
+    
     pIdleThread->m_pMutexThread->vMutexLock();
     pIdleThread->m_pMutexThread->vCondSignal();
     pIdleThread->m_pMutexThread->vMutexUnlock();
