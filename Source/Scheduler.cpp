@@ -337,7 +337,7 @@ void Scheduler::vScheduleReadyTask(Task* pTask)
   else
     pQueues->vAddToReadyQueueLP(pTask);
 #else
-  Thread* pIdleThread = pFindIdleThread();
+  Thread* pIdleThread = pQueues->pFindIdleThread();
   
   if (pIdleThread) {
     ActionSequence::vAdd(pTask->pJob(),AN_THREAD_EXECUTE,pIdleThread->iThreadNo());
@@ -347,9 +347,9 @@ void Scheduler::vScheduleReadyTask(Task* pTask)
   }
   
   if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
-    vAddToReadyQueue(pTask);
+    pQueues->vAddToReadyQueue(pTask);
   else
-    vAddToReadyQueueLP(pTask);
+    pQueues->vAddToReadyQueueLP(pTask);
 #endif
 }
 

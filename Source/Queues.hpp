@@ -51,6 +51,8 @@ namespace Scheduling
     void vDumpSleepingQueue(void);
     void vDumpWaitingSet(void);
   
+    Thread* pFindIdleThread(void);
+  
     void vMonitorPortrait(s48K& sPortrait);
     void vMonitorThread(s48K& sPortrait);
   
@@ -62,13 +64,15 @@ namespace Scheduling
     i8   nTasksSleeping(void);
     i8   nTasksWaiting(void);
   
+    void vAddToReadyQueue(Task* pTask);
+    void vAddToReadyQueueLP(Task* pTask);
+
+  
   private:
     void vAddDedicatedThread(Thread* pThread);
     void vAddGeneralThread(Thread* pThread);
 
     void vAddToExecutingSet(Task* pTask);
-    void vAddToReadyQueue(Task* pTask);
-    void vAddToReadyQueueLP(Task* pTask);
     void vAddToSleepingQueue(Task* pTask);
     void vAddToWaitingSet(Task* pTask);
   
@@ -80,7 +84,6 @@ namespace Scheduling
   
     void vAppendIdleThread(Thread* pThread);
   
-    Thread* pFindIdleThread(void);
  
     Thread* pPopIdleThread(void);
 
