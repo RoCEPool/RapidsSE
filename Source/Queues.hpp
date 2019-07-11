@@ -69,8 +69,6 @@ namespace Scheduling
  
     void vMonitorPortrait(s48K& sPortrait);
     void vMonitorThread(s48K& sPortrait);
-
-    void vPauseForGeneralThreads(void);
   
     bool bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread);
     Thread* pPopIdleThread(void);
@@ -84,7 +82,7 @@ namespace Scheduling
   
     void vRemoveFromExecutingSet(Task* pTask);
     void vRemoveFromWaitingSet(Task* pTask);
-   
+  
     i8 nTasksExecuting(void);
     i8 nTasksReady(void);
     i8 nTasksReadyLP(void);

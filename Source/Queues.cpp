@@ -635,33 +635,6 @@ void Queues::vMonitorThread(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* pause till general threads are all idle                                    */
-/*----------------------------------------------------------------------------*/
-void Queues::vPauseForGeneralThreads(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  // pause till all general threads have all begun
-  while (*gpAttachMap->m_ixThreads != gpAttachMap->Arg.m_nThreads)
-    Pthread::vSleepMsec(10,CN_NONE);
-  
-  RASSERT(m_pGeneralThreadVec->nItems() == gpAttachMap->Arg.m_nThreads);
-  
-  // pause till all general threads are in idle state
-  for (i8 i_Thread = 0; i_Thread < m_pGeneralThreadVec->nItems(); i_Thread++) {
-    
-    Thread* pThread = m_pGeneralThreadVec->pGet(i_Thread);
-    
-    while (TD_IDLE != pThread->m_eThreadState)
-      Pthread::vSleepMsec(10,CN_QUEUES);
-  }
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
 /* pop next queued task in round robin fashion                                */
 /*----------------------------------------------------------------------------*/
 bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)

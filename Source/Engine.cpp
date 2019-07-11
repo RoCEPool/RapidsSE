@@ -897,7 +897,7 @@ void Engine::vStartSystem(void)
   }
   
   // pause till all general threads are operational 
-  gpAttachMap->m_pQueues->vPauseForGeneralThreads();
+  Handlers::vPauseForGeneralThreads();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

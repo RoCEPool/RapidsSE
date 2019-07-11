@@ -84,6 +84,30 @@ void Handlers::vCheckSleeping(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pause till general threads are all idle                                    */
+/*----------------------------------------------------------------------------*/
+void Handlers::vPauseForGeneralThreads(void)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+
+  // pause till all general threads have all begun
+  while (*gpAttachMap->m_ixThreads != gpAttachMap->Arg.m_nThreads)
+    Pthread::vSleepMsec(10,CN_NONE);
+  
+  RASSERT(pQueues->m_pGeneralThreadVec->nItems() == gpAttachMap->Arg.m_nThreads);
+  
+  // pause till all general threads are in idle state
+  for (i8 i_Thread = 0; i_Thread < pQueues->m_pGeneralThreadVec->nItems(); i_Thread++) {
+    
+    Thread* pThread = pQueues->m_pGeneralThreadVec->pGet(i_Thread);
+    
+    while (TD_IDLE != pThread->m_eThreadState)
+      Pthread::vSleepMsec(10,CN_QUEUES);
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* task has beeb spawned                                                      */
 /*----------------------------------------------------------------------------*/
 void Handlers::vSpawnedTask(Task* pTask)
