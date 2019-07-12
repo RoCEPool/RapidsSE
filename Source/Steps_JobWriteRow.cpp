@@ -72,6 +72,16 @@ void Step::vJob_WriteRowEncodeRow(MP_Task mpTask)
     pJob_WriteRow->m_iPartitionId = pTable->iRowPartition(iHash);
     pJob_InsertRow->m_iPartitionId = pJob_WriteRow->m_iPartitionId ;
 
+    // now delete the rowCompactors and the row from writeRow job before
+    // forwarding to another node
+    delete pJob_WriteRow->m_pRow;
+    pJob_WriteRow->m_pRow = nullptr;
+    
+    for (i8 i_Ptn = 0; i_Ptn < gpAttachMap->m_pGrid->m_nPartitions; i_Ptn++) {
+      delete pJob_WriteRow->m_paRowCompactor[i_Ptn];
+      pJob_WriteRow->m_paRowCompactor[i_Ptn] = nullptr;
+    }
+    
     mpTask->m_pDataStack->vPushI8(1);
   }
   EXIT();

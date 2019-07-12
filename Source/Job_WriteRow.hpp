@@ -13,6 +13,7 @@ namespace Jobs
   public:
     i8         m_iPartitionId;    // partition id
     i8         m_iParentJobId;    // parent (InsertRow) job id
+    Record*    m_pRecord;         // raw record
     
     // must be last
     Footer m_xFooter;
@@ -30,6 +31,7 @@ namespace Jobs
     static Job_WriteRow* pNewJobWriteRow(Interface::Session* pSession,
                                          Stz* sTableName,
                                          Table* pTable,
+                                         Record* pRecord,
                                          i8 iParentJobId);
     
   public:

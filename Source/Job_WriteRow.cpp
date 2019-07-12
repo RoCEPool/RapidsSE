@@ -119,6 +119,7 @@ Job_WriteRow::Job_WriteRow(Interface::Session* pSession)
   m_pTable = nullptr;
   m_iPartitionId = C_UNKNOWN;
   m_iParentJobId = C_UNKNOWN;
+  m_pRecord      = nullptr;
   
   // set the enclosed_by to be a '
   m_oFormatters.m_bDefault = false;
@@ -154,6 +155,15 @@ void Job_WriteRow::vInsertRow(void)
   
   TablePtn* pPartition = m_pTable->pPartition(i_Slot);
   
+  bool bBlankLine;
+  // extract row again
+  bool bResult = bExtractRow(m_pRecord->szRecStr(), bBlankLine);
+  RASSERT(bResult);
+  
+  // we can assert that there is no rowCompactor that came from originating node
+  RASSERT(!m_paRowCompactor[i_Slot]);
+  m_paRowCompactor[i_Slot] = new RowCompactor;
+  
   // append the row to the partition and all its indexes
   pPartition->vAppendRow(m_paRowCompactor[i_Slot],m_pRow);
 }
@@ -178,6 +188,7 @@ void Job_WriteRow::vDump(eCN eClass, Object* pObject, Stz* aTab)
 Job_WriteRow* Job_WriteRow::pNewJobWriteRow(Interface::Session* pSession,
                                    Stz* sTableName,
                                    Table* pTable,
+                                   Record* pRecord,
                                    i8 iParentJobId)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -194,6 +205,7 @@ Job_WriteRow* Job_WriteRow::pNewJobWriteRow(Interface::Session* pSession,
   pJob_WriteRow->m_iParentJobId = iParentJobId;
   pJob_WriteRow->m_sObjectName  = sTableName;
   pJob_WriteRow->m_pTable = pTable;
+  pJob_WriteRow->m_pRecord = pRecord;
   pJob_WriteRow->m_iPartitionId = C_UNKNOWN;
 
   return pJob_WriteRow;
