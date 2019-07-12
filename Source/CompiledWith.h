@@ -64,7 +64,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // event-based task model
 
-//#define WITH_EVENT_MODEL           // event-based task model
+#define WITH_EVENT_MODEL           // event-based task model
 
 /*============================================================================*/
 /* end                                                                        */

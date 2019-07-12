@@ -8,21 +8,28 @@ namespace Scheduling
   class Scheduler
   {
   public:
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // task
+  
     static bool bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking);
+    static void vAppendExecutingSet(Task* pTask);
+    static void vSpawnedTask(Task* pTask);
+    static void vSpawnedTaskDedicated(Task* pTask);
+    static void vTaskReturn(Task** ppTask);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // thread
+  
     static void vAddDedicatedThread(Thread* pThread);
     static void vAddGeneralThread(Thread* pThread);
-    static void vAppendExecutingSet(Task* pTask);
     static void vCheckSleeping(void);
     static void vIdleThread(Thread* pThread);
     static void vPauseForGeneralThreads(void);
     static void vRemoveDedicatedThread(Thread* pThread);
     static void vRemoveGeneralThread(Thread* pThread);
-    static void vRunningThread(Thread* pThread);
-    static void vSpawnedTask(Task* pTask);
-    static void vSpawnedTaskDedicated(Task* pTask);
-    static void vTaskReturn(Task** ppTask);
-  
-  public:
+    static void vWaitForTask(Thread* pThread);
+
+  private:
     static void vScheduleAckedTask(Task* pTask);
     static void vScheduleExitedTask(Task* pTask);
     static void vScheduleReadyTask(Task* pTask);

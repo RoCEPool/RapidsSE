@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Scheduler.cpp -- Thread/Task Event Scheduler                                 */
+/* Scheduler.cpp -- Thread/Task Event Scheduler                               */
 /*============================================================================*/
 
 #include "Scheduling.h"
@@ -7,6 +7,10 @@
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
+
+////////////////////////////////////////////////////////////////////////////////
+//                                task                                        //
+////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* ack task handler                                                           */
@@ -72,6 +76,104 @@ bool Scheduler::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append task to executing set                                               */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vAppendExecutingSet(Task* pTask)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  pTask->vState(TS_EXECUTING);
+  
+  pQueues->vAddToExecutingSet(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* task has beeb spawned                                                      */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vSpawnedTask(Task* pTask)
+{
+  //
+  // this handler is called from session::bSpawnJob()
+  // we want to run given task. task should be ready to run
+  //
+  
+  vScheduleSpawnedTask(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* task has beeb spawned                                                      */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vSpawnedTaskDedicated(Task* pTask)
+{
+  //
+  // this handler is called from session::bSpawnJobDedicated()
+  // we want to run given task with deciated thread.
+  // task should be ready to run
+  //
+  
+  pTask->vState(TS_READY);
+  
+  Thread* pThread = new Thread;
+  pThread->m_pTask = pTask;
+  pThread->m_eDedicated = pTask->pJob()->eClass();
+  
+  pThread->vSpawnPthread_dedicated(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+//void Scheduler::vSpawnedTaskDedicated(Task* pTask)
+//{
+//  //
+//  // this handler is called from session::bSpawnJob()
+//  // we want to run given task. task should be ready to run
+//  //
+//
+//  Queues* pQueues = gpAttachMap->m_pQueues;
+//
+//  pQueues->vScheduleSpawnedTask(pTask);
+//}
+
+/*----------------------------------------------------------------------------*/
+/* task has returned                                                          */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTaskReturn(Task** ppTask)
+{
+  //
+  // this handler is called from Thread::vLoop()
+  // after a task returns to the thread
+  //
+  
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  Task* pTask = *ppTask;
+  *ppTask = nullptr;
+  
+  // first remove this task from the running queue
+  pQueues->vRemoveFromExecutingSet(pTask);
+  
+  // now add the task to another appropriate queue depending on its state
+  switch (pTask->eState()) {
+      
+    case TS_EXITED:   vScheduleExitedTask(pTask);    break;
+    case TS_SLEEPING: vScheduleSleepingTask(pTask);  break;
+    case TS_WAITING:  vScheduleWaitingTask(pTask);   break;
+    case TS_YIELDED:  vScheduleYieldedTask(pTask);   break;
+      
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // should never come to thread handler for these states
+      
+    case TS_EXECUTING: ASSERT(0);
+      
+    default:
+      break;
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//                                thread                                      //
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
 /* append idle thread onto idle thread queue                                  */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vAddDedicatedThread(Thread* pThread)
@@ -93,18 +195,6 @@ void Scheduler::vAddGeneralThread(Thread* pThread)
   pThread->m_eThreadState = TD_IDLE;
   
   pQueues->vAddGeneralThread(pThread);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append task to executing set                                               */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vAppendExecutingSet(Task* pTask)
-{
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  pTask->vState(TS_EXECUTING);
-
-  pQueues->vAddToExecutingSet(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -174,97 +264,18 @@ void Scheduler::vRemoveGeneralThread(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set thread to running                                                      */
+/* wait for task                                                              */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vRunningThread(Thread* pThread)
+void Scheduler::vWaitForTask(Thread* pThread)
 {
 }
 
-/*----------------------------------------------------------------------------*/
-/* task has beeb spawned                                                      */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vSpawnedTask(Task* pTask)
-{
-  //
-  // this handler is called from session::bSpawnJob()
-  // we want to run given task. task should be ready to run
-  //
-  
-  vScheduleSpawnedTask(pTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* task has beeb spawned                                                      */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vSpawnedTaskDedicated(Task* pTask)
-{
-  //
-  // this handler is called from session::bSpawnJobDedicated()
-  // we want to run given task with deciated thread.
-  // task should be ready to run
-  //
-  
-  pTask->vState(TS_READY);
-
-  Thread* pThread = new Thread;
-  pThread->m_pTask = pTask;
-  pThread->m_eDedicated = pTask->pJob()->eClass();
-
-  pThread->vSpawnPthread_dedicated(pTask);
-}
-
-/*----------------------------------------------------------------------------*/
-//void Scheduler::vSpawnedTaskDedicated(Task* pTask)
-//{
-//  //
-//  // this handler is called from session::bSpawnJob()
-//  // we want to run given task. task should be ready to run
-//  //
-//
-//  Queues* pQueues = gpAttachMap->m_pQueues;
-//
-//  pQueues->vScheduleSpawnedTask(pTask);
-//}
-
-/*----------------------------------------------------------------------------*/
-/* task has returned                                                          */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTaskReturn(Task** ppTask)
-{
-  //
-  // this handler is called from Thread::vLoop()
-  // after a task returns to the thread
-  //
-  
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  Task* pTask = *ppTask;
-  *ppTask = nullptr;
-  
-  // first remove this task from the running queue
-  pQueues->vRemoveFromExecutingSet(pTask);
-  
-  // now add the task to another appropriate queue depending on its state
-  switch (pTask->eState()) {
-      
-    case TS_EXITED:   vScheduleExitedTask(pTask);    break;
-    case TS_SLEEPING: vScheduleSleepingTask(pTask);  break;
-    case TS_WAITING:  vScheduleWaitingTask(pTask);   break;
-    case TS_YIELDED:  vScheduleYieldedTask(pTask);   break;
-      
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // should never come to thread handler for these states
-
-    case TS_EXECUTING: ASSERT(0);
-      
-    default:
-      break;
-  }
-}
 
 
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+////////////////////////////////////////////////////////////////////////////////
+//                                private                                     //
+////////////////////////////////////////////////////////////////////////////////
+
 
 /*----------------------------------------------------------------------------*/
 /* schedule a fully acked task                                                */
