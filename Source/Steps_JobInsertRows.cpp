@@ -61,12 +61,14 @@ void Step::vJob_InsertRowNewJobWriteRow(MP_Task mpTask)
   Session* pSession = pJob_InsertRow->m_pSession;
   Stz* sTableName = pJob_InsertRow->m_sObjectName;
   i8 iParentJobId = pJob_InsertRow->iJobId();
+  Record* pRecord = pJob_InsertRow->m_pRecord;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // new a writeRow job
   
   Job_WriteRow* pJob_WriteRow = Job_WriteRow::pNewJobWriteRow(pSession,
                                                               sTableName,
                                                               pTable,
+                                                              pRecord,
                                                               iParentJobId);
   
   mpTask->m_pDataStack->vPushPointer(pJob_WriteRow);
