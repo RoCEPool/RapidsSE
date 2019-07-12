@@ -177,7 +177,7 @@ void* Thread::aEntryPoint_general(void* pArg)
     
   try {
 #ifdef WITH_EVENT_MODEL
-    pThread->vLoop_event();
+    pThread->vLoop_general();
 #else
     pThread->vLoop_polling();
 #endif
@@ -279,9 +279,10 @@ void Thread::vLoop_dedicated(void)
   // increment m_ixThreads to indicate thread is running
   ++gpAttachMap->m_ixThreads;
   
+  Scheduler::vAssignDedicated(m_pTask,this);
   while (m_pTask && m_pTask->pJob())
-    vTaskCall_dedicated();
-  
+    m_pTask->vTaskLoop();
+
   m_pMutexThread->vMutexUnlock();
   
   vTrace("Exiting dedicated thread loop\n"_Stz);
@@ -290,7 +291,7 @@ void Thread::vLoop_dedicated(void)
 /*----------------------------------------------------------------------------*/
 /* event-based thread loop (fully event-based model)                          */
 /*----------------------------------------------------------------------------*/
-void Thread::vLoop_event(void)
+void Thread::vLoop_general(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
@@ -311,12 +312,6 @@ void Thread::vLoop_event(void)
     
     // call the task
     m_pTask->vTaskLoop();
-
-    if (m_pTask->pJob() && m_pTask->pJob()->m_bMarkActivity)
-      ActivityMap::vMarkJob(m_pTask->pJob(),
-                            "Returned from task call: %s %p"_Stz,
-                            aCN[m_pTask->pJob()->eClass()],
-                            m_pTask->pJob());
 
     // handle task return event
     Scheduler::vTaskReturn(&m_pTask);
@@ -560,36 +555,6 @@ eTD Thread::eThreadState(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   return m_eThreadState;
-}
-
-/*----------------------------------------------------------------------------*/
-/* call the assocated task                                                    */
-/*----------------------------------------------------------------------------*/
-void Thread::vTaskCall_dedicated(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  m_eThreadState = TD_RUNNING;
-  ASSERT(m_pTask);
-  
-  Pthread::vTlsSet(giTLS_TaskKey,m_pTask);
-  ASSERT(Pthread::pTlsGet(giTLS_TaskKey));
-  
-  RASSERT(TS_READY == m_pTask->eState() || TS_YIELDED == m_pTask->eState());
-  m_pTask->vState(TS_EXECUTING);
-  m_pTask->vThread(this);
-  
-  // add this task to the executing task queue
-  Scheduler::vAppendExecutingSet(m_pTask);
-  
-  
-  // record time of call
-  // ...
-  
-  m_pTask->vTaskLoop();
-  
-  // record time of return & calculate running total times
-  // ...
 }
 
 /*----------------------------------------------------------------------------*/

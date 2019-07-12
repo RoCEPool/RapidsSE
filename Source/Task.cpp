@@ -269,6 +269,12 @@ void Task::vTaskLoop(void)
   // record time of return & calculate running total times
   // ...
 
+  if (m_pJob && m_pJob->m_bMarkActivity)
+    ActivityMap::vMarkJob(m_pJob,
+                          "Returned from task call: %s %p"_Stz,
+                          aCN[m_pJob->eClass()],
+                          m_pJob);
+
 }
 
 
