@@ -57,18 +57,16 @@ void Task::operator delete(void* pTaskAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Task::Task(Job* pJob)
+Task::Task(Job* pJob, Interface::Session* pSession)
 : Object(CN_TASK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   vInit();
   
-  m_eKind = TK_JOB;
-  m_pJob  = pJob;
-  
+  m_eKind     = TK_JOB;
+  m_pJob      = pJob;
+  m_pSession  = pSession;
   m_pCompiler = (CN_JOB_BOOT == pJob->eClass()) ? new Compiler : nullptr;
 
   _checkInitialised_(CN_TASK);
@@ -94,8 +92,6 @@ Task::Task(Op* pOp)
 : Object(CN_TASK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   vInit();
   
@@ -131,6 +127,7 @@ void Task::vInit(void)
   
   m_eKind        = TK_NONE;
   m_pJob         = nullptr;
+  m_pSession     = nullptr;
   
   m_iQueueOrder  = C_UNKNOWN;
   
@@ -153,7 +150,6 @@ void Task::vInit(void)
   m_i_ActionRoot = C_UNKNOWN;
   m_i_NextRnd    = gpAttachMap->Arg.m_bDeveloper ? 0 : C_UNKNOWN;
   
-  m_pSession     = nullptr;
   
   m_iDdlLocked   = 0;
   

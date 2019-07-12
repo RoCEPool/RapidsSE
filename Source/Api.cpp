@@ -322,8 +322,8 @@ bool Api::bSpawnJob(Session* pSession, Job* pJob, eSS eSeed)
   if (pJob->m_bMarkTrace)
     pJob->m_pJobClass->vShowJob(pJob);
   
-  Task* pNewTask = new Task(pJob);
-  pNewTask->vSession(pSession);
+  Task* pNewTask = new Task(pJob,pSession);
+  //pNewTask->vSession(pSession);
 
   Scheduler::vAddTaskGeneral(pNewTask);
   
@@ -423,8 +423,8 @@ bool Api::bSpawnJobDedicated(Session* pSession, Job* pJob, eSS eSeed)
   if (pJob->m_bMarkTrace)
     pJob->m_pJobClass->vShowJob(pJob);
   
-  Task* pNewTask = new Task(pJob);
-  pNewTask->vSession(pSession);
+  Task* pNewTask = new Task(pJob,pSession);
+  //pNewTask->vSession(pSession);
   
   Scheduler::vAddTaskDedicated(pNewTask);
   

@@ -60,15 +60,14 @@ namespace Tasks
 
   private:
     Lock    m_okLock;       // lock for this task
-
     eTK     m_eKind;        // task kind
     union {
       Job*  m_pJob;         // the job for this task   [DDL]
       Op*   m_pOp;          // OR the op for this task [DML]
     };
+    Interface::Session* m_pSession; // session for this task
   
     Threads::Thread*    m_pThread;  // current thread
-    Interface::Session* m_pSession; // session for this task
 
     eTS     m_eState;       // state (running, sleeping, ...)
     eQK     m_eQueue;       // which queue the task is in
@@ -99,7 +98,7 @@ namespace Tasks
   
     Grids::Node* m_pSendNode; // node to send to
   
-    Compiler* m_pCompiler;  // forth word compiler
+    Compiler* m_pCompiler;    // forth word compiler (Job boot)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // always last
@@ -109,7 +108,7 @@ namespace Tasks
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Task(Job* pJob);
+    Task(Job* pJob, Interface::Session* pSession);
     Task(Op* pOp);
     void vInit(void);
     ~Task(void) noexcept(false);

@@ -95,11 +95,11 @@ void Engine::vCallBoot(void)
   JobClass* pJobClass_Boot = JobClass::pFind(CN_JOB_BOOT);
   
   Job_Boot* pJob_Boot
-  = static_cast<Job_Boot*>(pJobClass_Boot->pNewJob(nullptr));
+    = static_cast<Job_Boot*>(pJobClass_Boot->pNewJob(nullptr));
   
   pJob_Boot->vSeed(SS_SEED_RUN);
   
-  Task* pBootTask = new Task(pJob_Boot);
+  Task* pBootTask = new Task(pJob_Boot,nullptr);
   pBootTask->vNewStacks();
   
   pBootTask->vAddBaseWords();
@@ -788,11 +788,11 @@ void Engine::vSpawnJobStart(void)
   JobClass* pJobClass_Start = JobClass::pFind(CN_JOB_START);
   
   Job_Start* pJob_Start
-  = static_cast<Job_Start*>(pJobClass_Start->pNewJob(nullptr));
+    = static_cast<Job_Start*>(pJobClass_Start->pNewJob(nullptr));
   
   pJob_Start->vSeed(SS_SEED_RUN);
   
-  Task* pStartTask = new Task(pJob_Start);
+  Task* pStartTask = new Task(pJob_Start,nullptr);
   
   Scheduler::vAddTaskGeneral(pStartTask);
 }
