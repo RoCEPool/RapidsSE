@@ -75,13 +75,12 @@ namespace Threads
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
- 
-    bool  bQueuePeek(void);
-
-    void  vTaskCall(void);
-  
     bool  bGrabIfIdle(void);
-  
+    bool  bQueuePeek(void);
+    void  vTaskCall_dedicated(void);
+    void  vTaskCall_general(void);
+    void  vTaskCall_polling(void);
+
   private:
 
     Footer* aFooter(void);
