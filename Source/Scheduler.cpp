@@ -263,14 +263,16 @@ void Scheduler::vRemoveGeneralThread(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* calling thread waits for task                                              */
+/* calling thread waits for task to be assigned                               */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vWaitForTask(Thread* pThread)
+void Scheduler::vWaitForTaskAssignment(Thread* pThread)
 {
-  pThread->m_eThreadState = TD_IDLE;
-  vIdleThread(pThread);
-  pThread->m_pMutexThread->vCondWaitIndefinite();
-  pThread->m_eThreadState = TD_RUNNING;
+  while (! pThread->m_pTask) {
+    pThread->m_eThreadState = TD_IDLE;
+    vIdleThread(pThread);
+    pThread->m_pMutexThread->vCondWaitIndefinite();
+    pThread->m_eThreadState = TD_RUNNING;
+  }
 }
 
 
