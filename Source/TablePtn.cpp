@@ -275,6 +275,7 @@ void TablePtn::vAppendRow(RowCompactor* pRowCompactor, Row* pRow)
     m_pCurrentCrwBuffer = m_pRootCrwBuffer;
   }
   
+  m_pCurrentCrwBuffer->vAppendOpen(pRowCompactor, false);
   bool bAppended = m_pCurrentCrwBuffer->bAppendRow(pRow);
   
   if ( ! bAppended ) {
@@ -286,13 +287,16 @@ void TablePtn::vAppendRow(RowCompactor* pRowCompactor, Row* pRow)
     m_pCurrentCrwBuffer->vNextBuffer(pCrwBuffer);
     m_pCurrentCrwBuffer = pCrwBuffer;
     
+    m_pCurrentCrwBuffer->vAppendOpen(pRowCompactor, false);
     bAppended = m_pCurrentCrwBuffer->bAppendRow(pRow);
     RASSERT(bAppended);
   }
   
+  m_pCurrentCrwBuffer->vAppendClose();
+  
   // get the row from the buffer
   Id xId;
-  i8 iRow = m_pCurrentCrwBuffer->nRowCount();
+  i8 iRow = m_pCurrentCrwBuffer->nRowCount() - 1;
   xId.vItem(iRow);
   
   // get no of indexes of the table
