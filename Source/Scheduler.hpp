@@ -33,14 +33,14 @@ namespace Scheduling
     static void vWaitForTaskAssignment(Thread* pThread);
 
   private:
-    static void vScheduleAckedTask(Task* pTask);
-    static void vScheduleExitedTask(Task* pTask);
-    static void vScheduleReadyTask(Task* pTask);
-    static void vScheduleSleepingTask(Task* pTask);
-    static void vScheduleSpawnedTask(Task* pTask);
-    static void vScheduleWaitingTask(Task* pTask);
-    static void vScheduleWokenTask(Task* pTask);
-    static void vScheduleYieldedTask(Task* pTask);
+    static void vQueue_AckedTask(Task* pTask);
+    static void vQueue_ExitedTask(Task* pTask);
+    static void vQueue_ReadyTask(Task* pTask);
+    static void vQueue_SleepingTask(Task* pTask);
+    static void vQueue_SpawnedTask(Task* pTask);
+    static void vQueue_WaitingTask(Task* pTask);
+    static void vQueue_WokenTask(Task* pTask);
+    static void vQueue_YieldedTask(Task* pTask);
   };
 }
 

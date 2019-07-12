@@ -69,7 +69,7 @@ bool Scheduler::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
                          AN_AM_DECIDER,
                          pTaskBeingAcked->pJob());
     
-    vScheduleAckedTask(pTaskBeingAcked);
+    vQueue_AckedTask(pTaskBeingAcked);
   }
   
   return bAmDecider;
@@ -119,7 +119,7 @@ void Scheduler::vSpawnedTask(Task* pTask)
   // we want to run given task. task should be ready to run
   //
   
-  vScheduleSpawnedTask(pTask);
+  vQueue_SpawnedTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -152,7 +152,7 @@ void Scheduler::vSpawnedTaskDedicated(Task* pTask)
 //
 //  Queues* pQueues = gpAttachMap->m_pQueues;
 //
-//  pQueues->vScheduleSpawnedTask(pTask);
+//  pQueues->vQueue_SpawnedTask(pTask);
 //}
 
 /*----------------------------------------------------------------------------*/
@@ -176,10 +176,10 @@ void Scheduler::vTaskReturn(Task** ppTask)
   // now add the task to another appropriate queue depending on its state
   switch (pTask->eState()) {
       
-    case TS_EXITED:   vScheduleExitedTask(pTask);    break;
-    case TS_SLEEPING: vScheduleSleepingTask(pTask);  break;
-    case TS_WAITING:  vScheduleWaitingTask(pTask);   break;
-    case TS_YIELDED:  vScheduleYieldedTask(pTask);   break;
+    case TS_EXITED:   vQueue_ExitedTask(pTask);    break;
+    case TS_SLEEPING: vQueue_SleepingTask(pTask);  break;
+    case TS_WAITING:  vQueue_WaitingTask(pTask);   break;
+    case TS_YIELDED:  vQueue_YieldedTask(pTask);   break;
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // should never come to thread handler for these states
@@ -240,7 +240,7 @@ void Scheduler::vCheckSleeping(void)
   Queues* pQueues = gpAttachMap->m_pQueues;
   
   while (Task* pWokenTask = pQueues->pPopSleepingQueue())
-    vScheduleWokenTask(pWokenTask);
+    vQueue_WokenTask(pWokenTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -343,7 +343,7 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* schedule a fully acked task                                                */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vScheduleAckedTask(Task* pTask)
+void Scheduler::vQueue_AckedTask(Task* pTask)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
   
@@ -370,13 +370,13 @@ void Scheduler::vScheduleAckedTask(Task* pTask)
   
   pTask->vState(TS_READY);
   
-  vScheduleReadyTask(pTask);
+  vQueue_ReadyTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
 /* schedule an exited task                                                    */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vScheduleExitedTask(Task* pTask)
+void Scheduler::vQueue_ExitedTask(Task* pTask)
 {
   RASSERT(TS_EXITED == pTask->eState());
   
@@ -390,7 +390,7 @@ void Scheduler::vScheduleExitedTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* schedule a ready to execute task                                           */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vScheduleReadyTask(Task* pTask)
+void Scheduler::vQueue_ReadyTask(Task* pTask)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
   
@@ -443,7 +443,7 @@ void Scheduler::vScheduleReadyTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* schedule sleeping task                                                     */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vScheduleSleepingTask(Task* pTask)
+void Scheduler::vQueue_SleepingTask(Task* pTask)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
   
@@ -474,7 +474,7 @@ void Scheduler::vScheduleSleepingTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* schedule a newly spawned task                                              */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vScheduleSpawnedTask(Task* pTask)
+void Scheduler::vQueue_SpawnedTask(Task* pTask)
 {
   RASSERT(QK_NONE == pTask->eQueue());
   
@@ -496,13 +496,13 @@ void Scheduler::vScheduleSpawnedTask(Task* pTask)
   
   //vTrace("Spawned Task %p\n"_Stz,pTask);
   
-  vScheduleReadyTask(pTask);
+  vQueue_ReadyTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
 /* schedule ready waiting task                                                */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vScheduleWaitingTask(Task* pTask)
+void Scheduler::vQueue_WaitingTask(Task* pTask)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
 
@@ -527,19 +527,19 @@ void Scheduler::vScheduleWaitingTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* schedule woken task                                                        */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vScheduleWokenTask(Task* pTask)
+void Scheduler::vQueue_WokenTask(Task* pTask)
 {
   pTask->vState(TS_READY);
   
   //vTrace("Spawned Task %p\n"_Stz,pTask);
   
-  vScheduleReadyTask(pTask);
+  vQueue_ReadyTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
 /* schedule yielded task                                                      */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vScheduleYieldedTask(Task* pTask)
+void Scheduler::vQueue_YieldedTask(Task* pTask)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
   
