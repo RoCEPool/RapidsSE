@@ -200,6 +200,16 @@ void Task::vTaskLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+  // record time of call
+  // ...
+
+  // TODO: shouldn't have to refind it everytime!!!
+  vRefindJobClass();
+  
+  if ( ! bSeeded() ) {
+    vSeedJob();
+  }
+
   if (! m_pDataStack )
     vNewStacks();
   
@@ -255,6 +265,10 @@ void Task::vTaskLoop(void)
     }
     
   }
+  
+  // record time of return & calculate running total times
+  // ...
+
 }
 
 
