@@ -174,7 +174,7 @@ void Scheduler::vTaskReturn(Task** ppTask)
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* append idle thread onto idle thread queue                                  */
+/* append idle thread onto dedicated thread vector                            */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vAddDedicatedThread(Thread* pThread)
 {
@@ -186,7 +186,7 @@ void Scheduler::vAddDedicatedThread(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append idle thread onto idle thread queue                                  */
+/* append idle thread onto general thread vector                              */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vAddGeneralThread(Thread* pThread)
 {
@@ -198,15 +198,14 @@ void Scheduler::vAddGeneralThread(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* check the sleeping queue                                                   */
+/* check tasks in the sleeping queue                                          */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vCheckSleeping(void)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
   
-  while (Task* pWokenTask = pQueues->pPopSleepingQueue()) {
+  while (Task* pWokenTask = pQueues->pPopSleepingQueue())
     vScheduleWokenTask(pWokenTask);
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -264,10 +263,14 @@ void Scheduler::vRemoveGeneralThread(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* wait for task                                                              */
+/* calling thread waits for task                                              */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vWaitForTask(Thread* pThread)
 {
+  pThread->m_eThreadState = TD_IDLE;
+  vIdleThread(pThread);
+  pThread->m_pMutexThread->vCondWaitIndefinite();
+  pThread->m_eThreadState = TD_RUNNING;
 }
 
 

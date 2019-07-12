@@ -307,10 +307,11 @@ void Thread::vLoop_event(void)
   for (;;) {
     
     // while waiting the mutex is dropped
-    m_eThreadState = TD_IDLE;
-    Scheduler::vIdleThread(this);
-    m_pMutexThread->vCondWaitIndefinite();
-    m_eThreadState = TD_RUNNING;
+//    m_eThreadState = TD_IDLE;
+//    Scheduler::vIdleThread(this);
+//    m_pMutexThread->vCondWaitIndefinite();
+//    m_eThreadState = TD_RUNNING;
+   Scheduler::vWaitForTask(this);
 
    // attempt again if no task
    if (! m_pTask)
