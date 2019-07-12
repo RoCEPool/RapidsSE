@@ -790,11 +790,13 @@ void Engine::vSpawnJobStart(void)
   Job_Start* pJob_Start
     = static_cast<Job_Start*>(pJobClass_Start->pNewJob(nullptr));
   
-  pJob_Start->vSeed(SS_SEED_RUN);
+//  pJob_Start->vSeed(SS_SEED_RUN);
+//
+//  Task* pStartTask = new Task(pJob_Start,nullptr);
+//
+//  Scheduler::vAddTaskGeneral(pStartTask);
   
-  Task* pStartTask = new Task(pJob_Start,nullptr);
-  
-  Scheduler::vAddTaskGeneral(pStartTask);
+  Api::bSpawnJob(nullptr,pJob_Start,SS_SEED_RUN);
 }
 
 /*----------------------------------------------------------------------------*/
