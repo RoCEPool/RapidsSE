@@ -88,7 +88,29 @@ void Scheduler::vAppendExecutingSet(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task has beeb spawned                                                      */
+/* assign task to dedicated thread                                            */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vAssignDedicated(Task* pTask, Thread* pThread)
+{
+  ASSERT(pThread->m_pTask == pTask);
+  
+  pThread->m_eThreadState = TD_RUNNING;
+  
+  Pthread::vTlsSet(giTLS_TaskKey,pTask);
+  ASSERT(Pthread::pTlsGet(giTLS_TaskKey));
+  
+  RASSERT(TS_READY   == pTask->eState() ||
+          TS_YIELDED == pTask->eState());
+  
+  pTask->vState(TS_EXECUTING);
+  pTask->vThread(pThread);
+  
+  // add this task to the executing task queue
+  Scheduler::vAppendExecutingSet(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* task has been spawned                                                      */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vSpawnedTask(Task* pTask)
 {

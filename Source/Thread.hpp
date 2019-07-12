@@ -78,7 +78,6 @@ namespace Threads
     bool  bGrabIfIdle(void);
     bool  bQueuePeek(void);
     void  vTaskCall_dedicated(void);
-    void  vTaskCall_general(void);
     void  vTaskCall_polling(void);
 
   private:

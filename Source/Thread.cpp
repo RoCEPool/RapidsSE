@@ -310,8 +310,8 @@ void Thread::vLoop_event(void)
     Scheduler::vWaitForTaskAssignment(this);
     
     // call the task
-    vTaskCall_general();
-    
+    m_pTask->vTaskLoop();
+
     if (m_pTask->pJob() && m_pTask->pJob()->m_bMarkActivity)
       ActivityMap::vMarkJob(m_pTask->pJob(),
                             "Returned from task call: %s %p"_Stz,
@@ -588,22 +588,6 @@ void Thread::vTaskCall_dedicated(void)
   
   m_pTask->vTaskLoop();
   
-  // record time of return & calculate running total times
-  // ...
-}
-
-/*----------------------------------------------------------------------------*/
-/* call the assocated task                                                    */
-/*----------------------------------------------------------------------------*/
-void Thread::vTaskCall_general(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  // record time of call
-  // ...
-  
-  m_pTask->vTaskLoop();
-
   // record time of return & calculate running total times
   // ...
 }
