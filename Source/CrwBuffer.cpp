@@ -176,7 +176,7 @@ void CrwBuffer::vAppendClose(void)
 /*----------------------------------------------------------------------------*/
 /* open this buffer for append                                                */
 /*----------------------------------------------------------------------------*/
-void CrwBuffer::vAppendOpen(RowCompactor* pRowCompactor)
+void CrwBuffer::vAppendOpen(RowCompactor* pRowCompactor, bool bCollectSamples)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
  
@@ -184,7 +184,7 @@ void CrwBuffer::vAppendOpen(RowCompactor* pRowCompactor)
   
   m_pRowCompactor = pRowCompactor;
   
-  m_pRowCompactor->vCompactBegin(this);
+  m_pRowCompactor->vCompactBegin(this, bCollectSamples);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -76,8 +76,11 @@ void JobWriteBehind::vHandleDanglingBuffers(void)
     CrwBuffer* pCrwBuffer = m_pCrwBuffer[i_Ptn];
     m_pCrwBuffer[i_Ptn] = nullptr;
 
+    // close the append
+    pCrwBuffer->vAppendClose();
+    
     i8 nWriteBehindBuffers = m_nWriteBehindBuffers[i_Ptn];
-
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // create a write buffer job for load
     Job_WriteBuffer::vSpawnJobWriteBuffer(m_pParentJob->m_pSession,
@@ -116,7 +119,7 @@ eEC JobWriteBehind::eInsertRow(void)
       }
 
       CrwBuffer* pCrwBuffer = m_pCrwBuffer[i_Ptn];
-      pCrwBuffer->vAppendOpen(m_paRowCompactor[i_Ptn]);
+      pCrwBuffer->vAppendOpen(m_paRowCompactor[i_Ptn], true);
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

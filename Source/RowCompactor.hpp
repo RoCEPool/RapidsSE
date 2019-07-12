@@ -44,7 +44,7 @@ namespace Rows
     RowCompactor(void);
     ~RowCompactor(void) noexcept(false);
     
-    void vCompactBegin(CrwBuffer* pCrwBuffer);
+    void vCompactBegin(CrwBuffer* pCrwBuffer, bool bCollectSamples);
     void vCompactEnd(void);
     bool bCompactRow(Row* pInflatedRow);
   

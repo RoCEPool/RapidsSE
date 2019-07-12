@@ -91,6 +91,7 @@ RowCompactor::~RowCompactor(void) noexcept(false)
   vTrace(">%lldB:%lld "_Stz,  iBucket, m_oFreqDist.iDist(i_Index));
   vTrace("\n"_Stz);
 #endif
+  
 }
 
 
@@ -101,7 +102,7 @@ RowCompactor::~RowCompactor(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* begin compactine rows into given crw buffer                                */
 /*----------------------------------------------------------------------------*/
-void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer)
+void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer, bool bCollectSamples)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
@@ -112,7 +113,7 @@ void RowCompactor::vCompactBegin(CrwBuffer* pCrwBuffer)
   m_i_BaseOffset  = iBaseOffset(m_pColVec);
   
   m_pRowSamples   = new IrwBuffer;
-  m_bCollecting   = true;
+  m_bCollecting   = bCollectSamples;
   
   m_pEncoding     = new Encoding(m_pColVec,m_nHeadSize,m_nMetaSize);
   m_aHeadLine     = nullptr;

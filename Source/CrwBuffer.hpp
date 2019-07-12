@@ -59,7 +59,7 @@ namespace Rows
     ////////////////////////////////////////////////////////////////////////////
     // row functions
     void vAppendClose(void);
-    void vAppendOpen(RowCompactor* pRowCompactor);
+    void vAppendOpen(RowCompactor* pRowCompactor, bool bCollectSamples);
     bool bAppendRow(Row* pRow);
   
   private:
