@@ -316,17 +316,16 @@ bool Api::bSpawnJob(Session* pSession, Job* pJob, eSS eSeed)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Task* pNewTask = new Task(pJob);
-  
   // form the word to execute for the request
   pJob->vSeed(eSeed);
-  
-  pNewTask->vSession(pSession);
   
   if (pJob->m_bMarkTrace)
     pJob->m_pJobClass->vShowJob(pJob);
   
-  Scheduler::vSpawnedTask(pNewTask);
+  Task* pNewTask = new Task(pJob);
+  pNewTask->vSession(pSession);
+
+  Scheduler::vAddTaskGeneral(pNewTask);
   
   return true;
 }
@@ -416,17 +415,18 @@ bool Api::bSpawnJobDedicated(Session* pSession, Job* pJob, eSS eSeed)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Task* pNewTask = new Task(pJob);
   
   // form the word to execute for the request
   pJob->vSeed(eSeed);
   
-  pNewTask->vSession(pSession);
   
   if (pJob->m_bMarkTrace)
     pJob->m_pJobClass->vShowJob(pJob);
   
-  Scheduler::vSpawnedTaskDedicated(pNewTask);
+  Task* pNewTask = new Task(pJob);
+  pNewTask->vSession(pSession);
+  
+  Scheduler::vAddTaskDedicated(pNewTask);
   
   return true;
 }

@@ -12,10 +12,10 @@ namespace Scheduling
     // task
   
     static bool bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking);
+    static void vAddTaskDedicated(Task* pTask);
+    static void vAddTaskGeneral(Task* pTask);
     static void vAppendExecutingSet(Task* pTask);
     static void vAssignDedicated(Task* pTask, Thread* pThread);
-    static void vSpawnedTask(Task* pTask);
-    static void vSpawnedTaskDedicated(Task* pTask);
     static void vTaskReturn(Task** ppTask);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

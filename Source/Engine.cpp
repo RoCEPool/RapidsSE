@@ -794,7 +794,7 @@ void Engine::vSpawnJobStart(void)
   
   Task* pStartTask = new Task(pJob_Start);
   
-  Scheduler::vSpawnedTask(pStartTask);
+  Scheduler::vAddTaskGeneral(pStartTask);
 }
 
 /*----------------------------------------------------------------------------*/

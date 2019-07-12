@@ -110,22 +110,9 @@ void Scheduler::vAssignDedicated(Task* pTask, Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task has been spawned                                                      */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vSpawnedTask(Task* pTask)
-{
-  //
-  // this handler is called from session::bSpawnJob()
-  // we want to run given task. task should be ready to run
-  //
-  
-  vQueue_SpawnedTask(pTask);
-}
-
-/*----------------------------------------------------------------------------*/
 /* task has beeb spawned                                                      */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vSpawnedTaskDedicated(Task* pTask)
+void Scheduler::vAddTaskDedicated(Task* pTask)
 {
   //
   // this handler is called from session::bSpawnJobDedicated()
@@ -154,6 +141,19 @@ void Scheduler::vSpawnedTaskDedicated(Task* pTask)
 //
 //  pQueues->vQueue_SpawnedTask(pTask);
 //}
+
+/*----------------------------------------------------------------------------*/
+/* task has been spawned                                                      */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vAddTaskGeneral(Task* pTask)
+{
+  //
+  // this handler is called from session::bSpawnJob()
+  // we want to run given task. task should be ready to run
+  //
+  
+  vQueue_SpawnedTask(pTask);
+}
 
 /*----------------------------------------------------------------------------*/
 /* task has returned                                                          */
