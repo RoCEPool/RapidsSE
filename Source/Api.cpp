@@ -326,7 +326,7 @@ bool Api::bSpawnJob(Session* pSession, Job* pJob, eSS eSeed)
   if (pJob->m_bMarkTrace)
     pJob->m_pJobClass->vShowJob(pJob);
   
-  Handlers::vSpawnedTask(pNewTask);
+  Scheduler::vSpawnedTask(pNewTask);
   
   return true;
 }
@@ -426,7 +426,7 @@ bool Api::bSpawnJobDedicated(Session* pSession, Job* pJob, eSS eSeed)
   if (pJob->m_bMarkTrace)
     pJob->m_pJobClass->vShowJob(pJob);
   
-  Handlers::vSpawnedTaskDedicated(pNewTask);
+  Scheduler::vSpawnedTaskDedicated(pNewTask);
   
   return true;
 }

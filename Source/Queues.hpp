@@ -7,6 +7,8 @@ namespace Scheduling
 {
   class Queues : public Object
   {
+  friend Scheduler;
+  
   public:
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -42,12 +44,35 @@ namespace Scheduling
   
     static void vThreadsReport(void);
   
+  public:
+    void vDumpExecutingSet(void);
+    void vDumpReadyQueue(void);
+    void vDumpReadyQueueLP(void);
+    void vDumpSleepingQueue(void);
+    void vDumpWaitingSet(void);
+  
+    Thread* pFindIdleThread(void);
+  
+    void vMonitorPortrait(s48K& sPortrait);
+    void vMonitorThread(s48K& sPortrait);
+  
+    bool bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread);
+
+    i8   nTasksExecuting(void);
+    i8   nTasksReady(void);
+    i8   nTasksReadyLP(void);
+    i8   nTasksSleeping(void);
+    i8   nTasksWaiting(void);
+  
+    void vAddToReadyQueue(Task* pTask);
+    void vAddToReadyQueueLP(Task* pTask);
+
+  
+  private:
     void vAddDedicatedThread(Thread* pThread);
     void vAddGeneralThread(Thread* pThread);
 
     void vAddToExecutingSet(Task* pTask);
-    void vAddToReadyQueue(Task* pTask);
-    void vAddToReadyQueueLP(Task* pTask);
     void vAddToSleepingQueue(Task* pTask);
     void vAddToWaitingSet(Task* pTask);
   
@@ -58,23 +83,8 @@ namespace Scheduling
     void vAddToWaitingSet_NL(Task* pTask);
   
     void vAppendIdleThread(Thread* pThread);
-
-    void vCheckSleeping(void);
   
-    void vDumpExecutingSet(void);
-    void vDumpReadyQueue(void);
-    void vDumpReadyQueueLP(void);
-    void vDumpSleepingQueue(void);
-    void vDumpWaitingSet(void);
-    
-    Thread* pFindIdleThread(void);
  
-    void vMonitorPortrait(s48K& sPortrait);
-    void vMonitorThread(s48K& sPortrait);
-
-    void vPauseForGeneralThreads(void);
-  
-    bool bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread);
     Thread* pPopIdleThread(void);
 
     Task* pPopReadyQueue(void);
@@ -86,21 +96,6 @@ namespace Scheduling
   
     void vRemoveFromExecutingSet(Task* pTask);
     void vRemoveFromWaitingSet(Task* pTask);
-  
-    void vScheduleAckedTask(Task* pTask);
-    void vScheduleExitedTask(Task* pTask);
-    void vScheduleReadyTask(Task* pTask);
-    void vScheduleSleepingTask(Task* pTask);
-    void vScheduleSpawnedTask(Task* pTask);
-    void vScheduleWaitingTask(Task* pTask);
-    void vScheduleWokenTask(Task* pTask);
-    void vScheduleYieldedTask(Task* pTask);
- 
-    i8 nTasksExecuting(void);
-    i8 nTasksReady(void);
-    i8 nTasksReadyLP(void);
-    i8 nTasksSleeping(void);
-    i8 nTasksWaiting(void);
   
     Footer* aFooter(void);
   };

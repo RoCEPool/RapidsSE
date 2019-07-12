@@ -178,7 +178,7 @@ void StorageEngine::vCheckAssumptions(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set signal handlers                                                        */
+/* set signal Scheduler                                                        */
 /*----------------------------------------------------------------------------*/
 void StorageEngine::vSetSignalHandlers(void)
 {

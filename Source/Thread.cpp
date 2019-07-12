@@ -78,7 +78,6 @@ Thread::Thread(void)
   m_pMutexThread = new Mutex;
     
   m_nAssignedTasks = 0;
-  m_nPoppedTasks   = 0;
 
   _checkInitialised_(CN_THREAD);
   
@@ -114,7 +113,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
   
   pThread->m_pPthread->vThreadEntry();
   
-  gpAttachMap->m_pQueues->vAddDedicatedThread(pThread);
+  Scheduler::vAddDedicatedThread(pThread);
   
   if (gpAttachMap->m_bVerbose)
     vTrace("Thread::aEntryPoint %p %lld\n"_Stz,
@@ -149,7 +148,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
     vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
            pThread,pThread->iThreadNo());
   
-  gpAttachMap->m_pQueues->vRemoveDedicatedThread(pThread);
+  Scheduler::vRemoveDedicatedThread(pThread);
   
   pThread->m_pPthread->vThreadExit();
   
@@ -172,7 +171,7 @@ void* Thread::aEntryPoint_general(void* pArg)
   
   pThread->m_pPthread->vThreadEntry();
 
-  gpAttachMap->m_pQueues->vAddGeneralThread(pThread);
+  Scheduler::vAddGeneralThread(pThread);
   
   if (gpAttachMap->m_bVerbose)
     vTrace("Thread::aEntryPoint %p %lld\n"_Stz,
@@ -211,7 +210,7 @@ void* Thread::aEntryPoint_general(void* pArg)
     vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
            pThread,pThread->iThreadNo());
   
-  gpAttachMap->m_pQueues->vRemoveGeneralThread(pThread);
+  Scheduler::vRemoveGeneralThread(pThread);
   
   pThread->m_pPthread->vThreadExit();
 
@@ -313,7 +312,7 @@ void Thread::vLoop_event(void)
     
     // while waiting the mutex is dropped
     m_eThreadState = TD_IDLE;
-    gpAttachMap->m_pQueues->vAppendIdleThread(this);
+    Scheduler::vIdleThread(this);
     m_pMutexThread->vCondWaitIndefinite();
     m_eThreadState = TD_RUNNING;
 
@@ -331,7 +330,7 @@ void Thread::vLoop_event(void)
                             m_pTask->pJob());
 
     // handle task return event
-    Handlers::vTaskReturn(&m_pTask);
+    Scheduler::vTaskReturn(&m_pTask);
   }
   
   NEVER_REACH;
@@ -382,7 +381,7 @@ void Thread::vLoop_polling(void)
                             m_pTask->pJob());
     
     // handle task return event
-    Handlers::vTaskReturn(&m_pTask);
+    Scheduler::vTaskReturn(&m_pTask);
   }
   
   NEVER_REACH;
@@ -599,7 +598,7 @@ void Thread::vTaskCall(void)
   }
   
   // add this task to the executing task queue
-  gpAttachMap->m_pQueues->vAddToExecutingSet(m_pTask);
+  Scheduler::vAppendExecutingSet(m_pTask);
   
   // record time of call
   // ...

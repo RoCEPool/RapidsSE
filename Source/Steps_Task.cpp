@@ -51,7 +51,7 @@ void Step::vTaskAck(MP_Task mpTask)
     THROW_INVALID_DSTACK("task.ack"_Stz);
   Task* pTaskBeingAcked = _pTask(pTaskObject);
   
-  bool bWasQueued = Handlers::bAckTask(pTaskBeingAcked,*mpTask);
+  bool bWasQueued = Scheduler::bAckTask(pTaskBeingAcked,*mpTask);
   
 #ifdef WITH_STATISTICS_COUNTERS
   if (bWasQueued)

@@ -38,8 +38,7 @@ namespace Threads
     Pthread* m_pPthread;      // its posix structure
     Mutex*   m_pMutexThread;  // this threads mutex
   
-    i8       m_nAssignedTasks;// number of tasks assigned by
-    i8       m_nPoppedTasks;  // number of tasks popped from a queue
+    i8       m_nAssignedTasks;// number of tasks scheduled to this thread
   
     // must be last
     Footer m_xFooter;
