@@ -272,19 +272,14 @@ void Thread::vLoop_dedicated(void)
   Pthread::vTlsSet(giTLS_ThreadKey,this);
   ASSERT(Pthread::pTlsGet(giTLS_ThreadKey) == this);
   
-  // thread has mutex while it is running
-  m_eThreadState = TD_RUNNING;
-  m_pMutexThread->vMutexLock();
-  
-  // increment m_ixThreads to indicate thread is running
-  ++gpAttachMap->m_ixThreads;
-  
+  Scheduler::vBeginThread(this);
+
   Scheduler::vAssignDedicated(m_pTask,this);
   while (m_pTask && m_pTask->pJob())
     m_pTask->vTaskLoop();
 
-  m_pMutexThread->vMutexUnlock();
-  
+  Scheduler::vEndThread(this);
+
   vTrace("Exiting dedicated thread loop\n"_Stz);
 }
 
@@ -297,13 +292,8 @@ void Thread::vLoop_general(void)
   
   Pthread::vTlsSet(giTLS_ThreadKey,this);
   ASSERT(Pthread::pTlsGet(giTLS_ThreadKey) == this);
-  
-  // thread has mutex while it is running
-  m_eThreadState = TD_RUNNING;
-  m_pMutexThread->vMutexLock();
 
-  // increment m_ixThreads to indicate thread is running
-  ++gpAttachMap->m_ixThreads;
+  Scheduler::vBeginThread(this);
   
   for (;;) {
     

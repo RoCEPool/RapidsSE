@@ -23,7 +23,9 @@ namespace Scheduling
   
     static void vAddDedicatedThread(Thread* pThread);
     static void vAddGeneralThread(Thread* pThread);
+    static void vBeginThread(Thread* pThread);
     static void vCheckSleeping(void);
+    static void vEndThread(Thread* pThread);
     static void vIdleThread(Thread* pThread);
     static void vPauseForGeneralThreads(void);
     static void vRemoveDedicatedThread(Thread* pThread);

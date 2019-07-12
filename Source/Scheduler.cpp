@@ -220,6 +220,19 @@ void Scheduler::vAddGeneralThread(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
+/* begin a new thread                                                         */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vBeginThread(Thread* pThread)
+{
+  // thread has mutex while it is running
+  pThread->m_eThreadState = TD_RUNNING;
+  pThread->m_pMutexThread->vMutexLock();
+  
+  // increment m_ixThreads to indicate thread is running
+  ++gpAttachMap->m_ixThreads;
+}
+
+/*----------------------------------------------------------------------------*/
 /* check tasks in the sleeping queue                                          */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vCheckSleeping(void)
@@ -228,6 +241,14 @@ void Scheduler::vCheckSleeping(void)
   
   while (Task* pWokenTask = pQueues->pPopSleepingQueue())
     vScheduleWokenTask(pWokenTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dedicated thread loop (part of event-based model)                          */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vEndThread(Thread* pThread)
+{
+  pThread->m_pMutexThread->vMutexUnlock();
 }
 
 /*----------------------------------------------------------------------------*/
