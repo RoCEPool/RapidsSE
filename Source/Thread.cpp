@@ -572,7 +572,7 @@ void Thread::vTaskCall_polling(void)
   }
   
   // add this task to the executing task queue
-  Scheduler::vAppendExecutingSet(m_pTask);
+  Scheduler::vQueue_ExecutingTask(m_pTask);
   
   // record time of call
   // ...

@@ -14,7 +14,6 @@ namespace Scheduling
     static bool bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking);
     static void vAddTaskDedicated(Task* pTask);
     static void vAddTaskGeneral(Task* pTask);
-    static void vAppendExecutingSet(Task* pTask);
     static void vAssignDedicated(Task* pTask, Thread* pThread);
     static void vTaskReturn(Task** ppTask);
 
@@ -34,6 +33,9 @@ namespace Scheduling
 
   private:
     static void vQueue_AckedTask(Task* pTask);
+  public:
+    static void vQueue_ExecutingTask(Task* pTask);
+  private:
     static void vQueue_ExitedTask(Task* pTask);
     static void vQueue_NewTask(Task* pTask);
     static void vQueue_ReadyTask(Task* pTask);

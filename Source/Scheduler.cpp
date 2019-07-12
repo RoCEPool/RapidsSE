@@ -18,13 +18,13 @@ extern AttachMap* gpAttachMap;
 bool Scheduler::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
 {
   //
-  // this handler is called from Task::vTaskAck()
+  // called from Step::vTaskAck()
   //
   
   Queues* pQueues = gpAttachMap->m_pQueues;
   
   Job* pJobBeingAcked = pTaskBeingAcked->pJob();
-  Job* pJobAcking = pTaskAcking->pJob();
+  Job* pJobAcking     = pTaskAcking->pJob();
   
   if (pJobAcking->m_bMarkActivity || pJobBeingAcked->m_bMarkActivity) {
     ActivityMap::vMarkJob(pJobBeingAcked,
@@ -76,18 +76,6 @@ bool Scheduler::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append task to executing set                                               */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vAppendExecutingSet(Task* pTask)
-{
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  pTask->vState(TS_EXECUTING);
-  
-  pQueues->vAddToExecutingSet(pTask);
-}
-
-/*----------------------------------------------------------------------------*/
 /* assign task to dedicated thread                                            */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vAssignDedicated(Task* pTask, Thread* pThread)
@@ -106,7 +94,7 @@ void Scheduler::vAssignDedicated(Task* pTask, Thread* pThread)
   pTask->vThread(pThread);
   
   // add this task to the executing task queue
-  Scheduler::vAppendExecutingSet(pTask);
+  vQueue_ExecutingTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -115,9 +103,7 @@ void Scheduler::vAssignDedicated(Task* pTask, Thread* pThread)
 void Scheduler::vAddTaskDedicated(Task* pTask)
 {
   //
-  // this handler is called from session::bSpawnJobDedicated()
-  // we want to run given task with deciated thread.
-  // task should be ready to run
+  // called from Api::bSpawnJobDedicated()
   //
   
   pTask->vState(TS_READY);
@@ -128,19 +114,6 @@ void Scheduler::vAddTaskDedicated(Task* pTask)
   
   pThread->vSpawnPthread_dedicated(pTask);
 }
-
-/*----------------------------------------------------------------------------*/
-//void Scheduler::vSpawnedTaskDedicated(Task* pTask)
-//{
-//  //
-//  // this handler is called from session::bSpawnJob()
-//  // we want to run given task. task should be ready to run
-//  //
-//
-//  Queues* pQueues = gpAttachMap->m_pQueues;
-//
-//  pQueues->vQueue_SpawnedTask(pTask);
-//}
 
 /*----------------------------------------------------------------------------*/
 /* task has been spawned                                                      */
@@ -330,7 +303,7 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
   pThread->m_pTask->vThread(pThread);
   
   // add this task to the executing task queue
-  Scheduler::vAppendExecutingSet(pThread->m_pTask);
+  vQueue_ExecutingTask(pThread->m_pTask);
 }
 
 
@@ -371,6 +344,18 @@ void Scheduler::vQueue_AckedTask(Task* pTask)
   pTask->vState(TS_READY);
   
   vQueue_ReadyTask(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append task to executing set                                               */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vQueue_ExecutingTask(Task* pTask)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  pTask->vState(TS_EXECUTING);
+  
+  pQueues->vAddToExecutingSet(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
