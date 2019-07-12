@@ -78,6 +78,8 @@ void Scheduler::vAddDedicatedThread(Thread* pThread)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
   
+  pThread->m_eThreadState = TD_IDLE;
+  
   pQueues->vAddDedicatedThread(pThread);
 }
 
@@ -87,6 +89,8 @@ void Scheduler::vAddDedicatedThread(Thread* pThread)
 void Scheduler::vAddGeneralThread(Thread* pThread)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  pThread->m_eThreadState = TD_IDLE;
   
   pQueues->vAddGeneralThread(pThread);
 }
@@ -98,6 +102,8 @@ void Scheduler::vAppendExecutingSet(Task* pTask)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
   
+  pTask->vState(TS_EXECUTING);
+
   pQueues->vAddToExecutingSet(pTask);
 }
 
@@ -165,6 +171,13 @@ void Scheduler::vRemoveGeneralThread(Thread* pThread)
   Queues* pQueues = gpAttachMap->m_pQueues;
   
   pQueues->vRemoveGeneralThread(pThread);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set thread to running                                                      */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vRunningThread(Thread* pThread)
+{
 }
 
 /*----------------------------------------------------------------------------*/

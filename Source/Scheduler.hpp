@@ -17,6 +17,7 @@ namespace Scheduling
     static void vPauseForGeneralThreads(void);
     static void vRemoveDedicatedThread(Thread* pThread);
     static void vRemoveGeneralThread(Thread* pThread);
+    static void vRunningThread(Thread* pThread);
     static void vSpawnedTask(Task* pTask);
     static void vSpawnedTaskDedicated(Task* pTask);
     static void vTaskReturn(Task** ppTask);

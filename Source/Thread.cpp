@@ -109,8 +109,6 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
   pThread->m_aStackBase = Pthread::aStackBase();
   pThread->m_iStackSize = Pthread::iStackSize();
   
-  pThread->m_eThreadState = TD_IDLE;
-  
   pThread->m_pPthread->vThreadEntry();
   
   Scheduler::vAddDedicatedThread(pThread);
@@ -166,8 +164,6 @@ void* Thread::aEntryPoint_general(void* pArg)
   
   pThread->m_aStackBase = Pthread::aStackBase();
   pThread->m_iStackSize = Pthread::iStackSize();
-
-  pThread->m_eThreadState = TD_IDLE;
   
   pThread->m_pPthread->vThreadEntry();
 
