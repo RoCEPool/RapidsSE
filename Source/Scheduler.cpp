@@ -152,7 +152,7 @@ void Scheduler::vAddTaskGeneral(Task* pTask)
   // we want to run given task. task should be ready to run
   //
   
-  vQueue_SpawnedTask(pTask);
+  vQueue_NewTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -388,6 +388,34 @@ void Scheduler::vQueue_ExitedTask(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* schedule a newly spawned task                                              */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vQueue_NewTask(Task* pTask)
+{
+  RASSERT(QK_NONE == pTask->eQueue());
+  
+  pTask->vState(TS_READY);
+  
+  if (pTask->pJob()->m_bMarkActivity) {
+    if (C_UNKNOWN == pTask->pJob()->iJobId())
+      ActivityMap::vMarkInfo("Schedule spawned: %s %p slot[%lld]"_Stz,
+                             aCN[pTask->pJob()->eClass()],
+                             pTask->pJob(),
+                             pTask->pJob()->m_i_Slot);
+    else
+      ActivityMap::vMarkJob(pTask->pJob(),
+                            "Schedule spawned: %s %p slot[%lld]"_Stz,
+                            aCN[pTask->pJob()->eClass()],
+                            pTask->pJob(),
+                            pTask->pJob()->m_i_Slot);
+  }
+  
+  //vTrace("Spawned Task %p\n"_Stz,pTask);
+  
+  vQueue_ReadyTask(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
 /* schedule a ready to execute task                                           */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vQueue_ReadyTask(Task* pTask)
@@ -469,34 +497,6 @@ void Scheduler::vQueue_SleepingTask(Task* pTask)
   Thread* pCallingThread = Thread::pThisTLSThread();
   
   pCallingThread->vReExecuteTask(pTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* schedule a newly spawned task                                              */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vQueue_SpawnedTask(Task* pTask)
-{
-  RASSERT(QK_NONE == pTask->eQueue());
-  
-  pTask->vState(TS_READY);
-  
-  if (pTask->pJob()->m_bMarkActivity) {
-    if (C_UNKNOWN == pTask->pJob()->iJobId())
-      ActivityMap::vMarkInfo("Schedule spawned: %s %p slot[%lld]"_Stz,
-                             aCN[pTask->pJob()->eClass()],
-                             pTask->pJob(),
-                             pTask->pJob()->m_i_Slot);
-    else
-      ActivityMap::vMarkJob(pTask->pJob(),
-                            "Schedule spawned: %s %p slot[%lld]"_Stz,
-                            aCN[pTask->pJob()->eClass()],
-                            pTask->pJob(),
-                            pTask->pJob()->m_i_Slot);
-  }
-  
-  //vTrace("Spawned Task %p\n"_Stz,pTask);
-  
-  vQueue_ReadyTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
