@@ -273,6 +273,21 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
     pThread->m_pMutexThread->vCondWaitIndefinite();
     pThread->m_eThreadState = TD_RUNNING;
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pThread->m_eThreadState = TD_RUNNING;
+  ASSERT(pThread->m_pTask);
+  
+  Pthread::vTlsSet(giTLS_TaskKey,pThread->m_pTask);
+  ASSERT(Pthread::pTlsGet(giTLS_TaskKey));
+  
+  RASSERT(TS_READY   == pThread->m_pTask->eState() ||
+          TS_YIELDED == pThread->m_pTask->eState());
+  pThread->m_pTask->vState(TS_EXECUTING);
+  pThread->m_pTask->vThread(pThread);
+  
+  // add this task to the executing task queue
+  Scheduler::vAppendExecutingSet(pThread->m_pTask);
 }
 
 

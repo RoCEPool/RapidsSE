@@ -605,16 +605,19 @@ void Thread::vTaskCall_general(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  m_eThreadState = TD_RUNNING;
-  ASSERT(m_pTask);
-
-  Pthread::vTlsSet(giTLS_TaskKey,m_pTask);
-  ASSERT(Pthread::pTlsGet(giTLS_TaskKey));
-
-  RASSERT(TS_READY == m_pTask->eState() || TS_YIELDED == m_pTask->eState());
-  m_pTask->vState(TS_EXECUTING);
-  m_pTask->vThread(this);
-
+//  m_eThreadState = TD_RUNNING;
+//  ASSERT(m_pTask);
+//
+//  Pthread::vTlsSet(giTLS_TaskKey,m_pTask);
+//  ASSERT(Pthread::pTlsGet(giTLS_TaskKey));
+//
+//  RASSERT(TS_READY == m_pTask->eState() || TS_YIELDED == m_pTask->eState());
+//  m_pTask->vState(TS_EXECUTING);
+//  m_pTask->vThread(this);
+//
+//  // add this task to the executing task queue
+//  Scheduler::vAppendExecutingSet(m_pTask);
+  
   // TODO: shouldn't have to refind it everytime!!!
   m_pTask->vRefindJobClass();
 
@@ -622,9 +625,6 @@ void Thread::vTaskCall_general(void)
     m_pTask->vSeedJob();
   }
 
-  // add this task to the executing task queue
-  Scheduler::vAppendExecutingSet(m_pTask);
-  
   // record time of call
   // ...
   
