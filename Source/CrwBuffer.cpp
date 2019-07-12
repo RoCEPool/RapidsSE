@@ -168,7 +168,8 @@ void CrwBuffer::vAppendClose(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  m_pRowCompactor->vCompactEnd();
+  if (m_pRowCompactor)
+    m_pRowCompactor->vCompactEnd();
 
   m_pRowCompactor = nullptr;
 }
