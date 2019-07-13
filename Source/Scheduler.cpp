@@ -100,7 +100,7 @@ bool Scheduler::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
   RASSERT(QK_WAITING_SET == pTaskBeingAcked->eQueue());
   RASSERT(0 == pTaskBeingAcked->iAcksRmg_assert_only_());
   
-  vRemove_WaitingTask(pTaskBeingAcked);
+  vRemove_WaitingSet(pTaskBeingAcked);
   
   pTaskBeingAcked->vState(TS_READY);
   vQueue_ReadyTask(pTaskBeingAcked);
@@ -174,8 +174,8 @@ void Scheduler::vReturnTaskLoop(Task** ppTask)
   Task* pTask = *ppTask;
   *ppTask = nullptr;
   
-  // first remove this task from the running queue
-  pQueues->vRemoveFromExecutingSet(pTask);
+  // first remove this task from the executing set
+  vRemove_ExecutingSet(pTask);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -386,7 +386,7 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
 
 
 /*----------------------------------------------------------------------------*/
-/* attempt to pop an idle thread                                              */
+/* attempt to pop an idle thread and assign given task to it                  */
 /*----------------------------------------------------------------------------*/
 bool Scheduler::bAssign_IdleThread(Task* pTask)
 {
@@ -633,9 +633,20 @@ void Scheduler::vQueue_YieldedTask(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove a fully acked task from waiting set                                 */
+/* remove given task from executing set                                       */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vRemove_WaitingTask(Task* pTask)
+void Scheduler::vRemove_ExecutingSet(Task* pTask)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  pQueues->vRemoveFromExecutingSet(pTask);
+  RASSERT(QK_NONE == pTask->eQueue());
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove given fully acked task from waiting set                             */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vRemove_WaitingSet(Task* pTask)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
   

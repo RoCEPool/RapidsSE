@@ -47,7 +47,8 @@ namespace Scheduling
     static void vQueue_WaitingTask(Task* pTask);
     static void vQueue_YieldedTask(Task* pTask);
   
-    static void vRemove_WaitingTask(Task* pTask);
+    static void vRemove_ExecutingSet(Task* pTask);
+    static void vRemove_WaitingSet(Task* pTask);
 
     static void vTask_Exited(Task* pTask);
     static void vTask_Executing(Task* pTask);
