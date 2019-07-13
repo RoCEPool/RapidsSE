@@ -398,13 +398,15 @@ void Scheduler::vQueue_AckedTask(Task* pTask)
   
   pTask->vDropLock();
 
-  RASSERT(TS_WAITING == pTask->eState());
-  RASSERT(QK_WAITING_SET == pTask->eQueue());
-  RASSERT(0 == pTask->iAcksRmg_assert_only_());
-
-  pQueues->vRemoveFromWaitingSet(pTask);
+//  RASSERT(TS_WAITING == pTask->eState());
+//  RASSERT(QK_WAITING_SET == pTask->eQueue());
+//  RASSERT(0 == pTask->iAcksRmg_assert_only_());
+//
+//  pQueues->vRemoveFromWaitingSet(pTask);
+//
+//  RASSERT(QK_NONE == pTask->eQueue());
   
-  RASSERT(QK_NONE == pTask->eQueue());
+  vRemove_WaitingTask(pTask);
   
   pTask->vState(TS_READY);
   
