@@ -398,18 +398,13 @@ void Scheduler::vQueue_AckedTask(Task* pTask)
   
   pTask->vDropLock();
 
-//  RASSERT(TS_WAITING == pTask->eState());
-//  RASSERT(QK_WAITING_SET == pTask->eQueue());
-//  RASSERT(0 == pTask->iAcksRmg_assert_only_());
-//
-//  pQueues->vRemoveFromWaitingSet(pTask);
-//
-//  RASSERT(QK_NONE == pTask->eQueue());
+  RASSERT(TS_WAITING == pTask->eState());
+  RASSERT(QK_WAITING_SET == pTask->eQueue());
+  RASSERT(0 == pTask->iAcksRmg_assert_only_());
   
   vRemove_WaitingTask(pTask);
   
   pTask->vState(TS_READY);
-  
   vQueue_ReadyTask(pTask);
 }
 
@@ -473,6 +468,7 @@ void Scheduler::vQueue_NewTask(Task* pTask)
   
   //vTrace("Spawned Task %p\n"_Stz,pTask);
   
+  pTask->vState(TS_READY);
   vQueue_ReadyTask(pTask);
 }
 
@@ -588,9 +584,7 @@ void Scheduler::vQueue_WaitingTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vQueue_WokenTask(Task* pTask)
 {
-  pTask->vState(TS_READY);
-  
-  //vTrace("Spawned Task %p\n"_Stz,pTask);
+  RASSERT(TS_READY == pTask->eState());
   
   vQueue_ReadyTask(pTask);
 }
