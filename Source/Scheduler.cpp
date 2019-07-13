@@ -241,8 +241,10 @@ void Scheduler::vCheckSleeping(void)
   
   Queues* pQueues = gpAttachMap->m_pQueues;
   
-  while (Task* pWokenTask = pQueues->pPopSleepingQueue())
-    vQueue_WokenTask(pWokenTask);
+  while (Task* pWokenTask = pQueues->pPopSleepingQueue()) {
+    pWokenTask->vState(TS_READY);
+    vQueue_ReadyTask(pWokenTask);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -577,16 +579,6 @@ void Scheduler::vQueue_WaitingTask(Task* pTask)
   
   // drop task lock
   pTask->vDropLock();
-}
-
-/*----------------------------------------------------------------------------*/
-/* schedule woken task                                                        */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vQueue_WokenTask(Task* pTask)
-{
-  RASSERT(TS_READY == pTask->eState());
-  
-  vQueue_ReadyTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
