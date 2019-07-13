@@ -584,6 +584,9 @@ void Scheduler::vQueue_YieldedTask(Task* pTask)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
   
+  // task must be in the yielded state
+  RASSERT(TS_YIELDED == pTask->eState());
+  
   Thread* pCallingThread = Thread::pThisTLSThread();
   
   if (pTask->pJob()->m_bMarkActivity) {
