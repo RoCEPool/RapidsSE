@@ -36,7 +36,6 @@ namespace Scheduling
   private:
     static Thread* pPop_IdleThread(Task* pTask);
   
-    static void vQueue_AckedTask(Task* pTask);
   public:
     static void vQueue_ExecutingTask(Task* pTask);
   private:

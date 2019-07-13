@@ -80,7 +80,30 @@ bool Scheduler::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
   
   RASSERT(! pTaskBeingAcked->iAcksRmg_assert_only_());
   
-  vQueue_AckedTask(pTaskBeingAcked);
+  //vQueue_AckedTask(pTaskBeingAcked);
+  
+  if (pTaskBeingAcked->pJob()->m_bMarkActivity)
+    ActivityMap::vMarkJob(pTaskBeingAcked->pJob(),
+                          "Scheduling acked: %s %p"_Stz,
+                          aCN[pTaskBeingAcked->pJob()->eClass()],
+                          pTaskBeingAcked->pJob());
+  
+  //ActionSequence::vAdd(pTask->pJob(),AN_TASK_ACKED);
+  
+  pTaskBeingAcked->vGrabLock();
+  
+  // having got the lock, the task should be TS_WAITING and QK_WAITING_SET
+  
+  pTaskBeingAcked->vDropLock();
+  
+  RASSERT(TS_WAITING == pTaskBeingAcked->eState());
+  RASSERT(QK_WAITING_SET == pTaskBeingAcked->eQueue());
+  RASSERT(0 == pTaskBeingAcked->iAcksRmg_assert_only_());
+  
+  vRemove_WaitingTask(pTaskBeingAcked);
+  
+  pTaskBeingAcked->vState(TS_READY);
+  vQueue_ReadyTask(pTaskBeingAcked);
 
   return true;
 }
@@ -381,37 +404,6 @@ Thread* Scheduler::pPop_IdleThread(Task* pTask)
   pIdleThread->m_pMutexThread->vMutexUnlock();
   
   return pIdleThread;
-}
-
-/*----------------------------------------------------------------------------*/
-/* schedule a fully acked task                                                */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vQueue_AckedTask(Task* pTask)
-{
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  if (pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkJob(pTask->pJob(),
-                          "Scheduling acked: %s %p"_Stz,
-                          aCN[pTask->pJob()->eClass()],
-                          pTask->pJob());
-  
-  //ActionSequence::vAdd(pTask->pJob(),AN_TASK_ACKED);
-  
-  pTask->vGrabLock();
-  
-  // having got the lock, the task should be TS_WAITING and QK_WAITING_SET
-  
-  pTask->vDropLock();
-
-  RASSERT(TS_WAITING == pTask->eState());
-  RASSERT(QK_WAITING_SET == pTask->eQueue());
-  RASSERT(0 == pTask->iAcksRmg_assert_only_());
-  
-  vRemove_WaitingTask(pTask);
-  
-  pTask->vState(TS_READY);
-  vQueue_ReadyTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
