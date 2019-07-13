@@ -153,7 +153,7 @@ void Scheduler::vTaskLoopReturn(Task** ppTask)
   
   Queues* pQueues = gpAttachMap->m_pQueues;
   
-  // disconnect / de-assign 
+  // disconnect / de-assign
   Task* pTask = *ppTask;
   *ppTask = nullptr;
   
@@ -650,11 +650,25 @@ void Scheduler::vRemove_WaitingTask(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task has exited                                                            */
+/* task is to exit                                                            */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Exit(Task* pTask)
 {
   vQueue_ExitedTask(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* task is to execute                                                         */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTask_Execute(Task* pTask)
+{
+}
+
+/*----------------------------------------------------------------------------*/
+/* task is ready to execute                                                   */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTask_Ready(Task* pTask)
+{
 }
 
 /*----------------------------------------------------------------------------*/

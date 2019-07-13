@@ -65,17 +65,17 @@ namespace Tasks
       Job*  m_pJob;         // the job for this task   [DDL]
       Op*   m_pOp;          // OR the op for this task [DML]
     };
-    Interface::Session* m_pSession; // session for this task
   
+    Interface::Session* m_pSession; // session for this task
     Threads::Thread*    m_pThread;  // current thread
 
     eTS     m_eState;       // state (running, sleeping, ...)
     eQK     m_eQueue;       // which queue the task is in
     i8      m_iQueueOrder;  // queue ordering number
     Decider m_oAcksRmg;     // number of acks still waiting for
-    Sleep   m_oSleepTime;   // sleep time
+    i8      m_iDdlLocked;   // has the ddl lock?
+    Sleep   m_oSleepTime;   // sleep time helper
 
-    i8      m_iDdlLocked;   // ? has the ddl lock?
     i8      m_iTracing;     // tracing mask
     i8      m_i_ActionRoot; // action root
     i8      m_i_NextRnd;    // which next repeatable random nummber?

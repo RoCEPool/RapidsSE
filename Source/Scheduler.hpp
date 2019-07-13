@@ -50,6 +50,8 @@ namespace Scheduling
     static void vRemove_WaitingTask(Task* pTask);
 
     static void vTask_Exit(Task* pTask);
+    static void vTask_Execute(Task* pTask);
+    static void vTask_Ready(Task* pTask);
     static void vTask_Sleep(Task* pTask);
     static void vTask_Wait(Task* pTask);
     static void vTask_Yield(Task* pTask);
