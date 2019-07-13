@@ -198,6 +198,34 @@ void Scheduler::vReturnTaskLoop(Task** ppTask)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* schedule a ready to execute task                                           */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vScheduleReadyTask(Task* pTask)
+{
+  //Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  RASSERT(TS_READY == pTask->eState());
+  
+  if (pTask->pJob()->m_bMarkActivity)
+    ActivityMap::vMarkJob(pTask->pJob(),
+                          "Schedule ready: %s %p"_Stz,
+                          aCN[pTask->pJob()->eClass()],
+                          pTask->pJob());
+  
+  if (bAssign_IdleThread(pTask))
+    return;
+  
+//  if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
+//    pQueues->vAddToReadyQueue(pTask);
+//  else
+//    pQueues->vAddToReadyQueueLP(pTask);
+  
+  vTask_Ready(pTask);
+}
+
+
+
 ////////////////////////////////////////////////////////////////////////////////
 //                                thread                                      //
 ////////////////////////////////////////////////////////////////////////////////

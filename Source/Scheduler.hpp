@@ -16,6 +16,7 @@ namespace Scheduling
     static void vAddTaskGeneral(Task* pTask);
     static void vCheckSleepingTasks(void);
     static void vReturnTaskLoop(Task** ppTask);
+    static void vScheduleReadyTask(Task* pTask);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // thread
