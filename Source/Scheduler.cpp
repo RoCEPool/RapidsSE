@@ -82,32 +82,6 @@ bool Scheduler::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
 }
 
 /*----------------------------------------------------------------------------*/
-/* assign task to dedicated thread                                            */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vAssignDedicated(Task* pTask, Thread* pThread)
-{
-  //
-  // called from Thread::vLoop_dedicated()
-  //
-  
-  // vBeginThread() will have been called
-  ASSERT(pThread->m_pTask == pTask);
-  ASSERT(TD_RUNNING == pThread->m_eThreadState);
-  ASSERT(pThread->m_pMutexThread->bMutexIsLocked());
-  
-  Pthread::vTlsSet(giTLS_TaskKey,pTask);
-  ASSERT(Pthread::pTlsGet(giTLS_TaskKey));
-  
-  RASSERT(TS_READY == pTask->eState());
-  
-  pTask->vState(TS_EXECUTING);
-  pTask->vThread(pThread);
-  
-  // add this task to the executing task queue
-  vQueue_ExecutingTask(pTask);
-}
-
-/*----------------------------------------------------------------------------*/
 /* dedicated task has been spawned.  spawn a dedicated thread for it          */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vAddTaskDedicated(Task* pTask)
@@ -116,6 +90,7 @@ void Scheduler::vAddTaskDedicated(Task* pTask)
   // called from Api::bSpawnJobDedicated()
   //
   
+  ASSERT(TS_NONE == pTask->eState());
   pTask->vState(TS_READY);
   
   Thread* pThread = new Thread;
@@ -134,6 +109,9 @@ void Scheduler::vAddTaskGeneral(Task* pTask)
   // called from Api::bSpawnJob()
   //
   
+  RASSERT(TS_NONE == pTask->eState());
+  pTask->vState(TS_READY);
+
   vQueue_NewTask(pTask);
 }
 
@@ -208,6 +186,31 @@ void Scheduler::vAddGeneralThread(Thread* pThread)
   pThread->m_eThreadState = TD_IDLE;
   
   pQueues->vAddGeneralThread(pThread);
+}
+
+/*----------------------------------------------------------------------------*/
+/* assign task to dedicated thread                                            */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vAssignDedicated(Thread* pThread)
+{
+  //
+  // called from Thread::vLoop_dedicated()
+  //
+  
+  // vBeginThread() will have been called
+  ASSERT(TD_RUNNING == pThread->m_eThreadState);
+  ASSERT(pThread->m_pMutexThread->bMutexIsLocked());
+  
+  Pthread::vTlsSet(giTLS_TaskKey,pThread->m_pTask);
+  ASSERT(Pthread::pTlsGet(giTLS_TaskKey));
+  
+  RASSERT(TS_READY == pThread->m_pTask->eState());
+  
+  pThread->m_pTask->vState(TS_EXECUTING);
+  pThread->m_pTask->vThread(pThread);
+  
+  // add this task to the executing task queue
+  vQueue_ExecutingTask(pThread->m_pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -451,7 +454,6 @@ void Scheduler::vQueue_NewTask(Task* pTask)
 {
   RASSERT(QK_NONE == pTask->eQueue());
   
-  pTask->vState(TS_READY);
   
   if (pTask->pJob()->m_bMarkActivity) {
     if (C_UNKNOWN == pTask->pJob()->iJobId())
@@ -639,6 +641,21 @@ void Scheduler::vQueue_YieldedTask(Task* pTask)
     pQueues->vAddToReadyQueueLP_NL(pTask);
     pQueues->m_pReadyQueueLP->vDropLock();
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove a fully acked task from waiting set                                 */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vRemove_WaitingTask(Task* pTask)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  RASSERT(TS_WAITING == pTask->eState());
+  RASSERT(0 == pTask->iAcksRmg_assert_only_());
+
+  RASSERT(QK_WAITING_SET == pTask->eQueue());
+  pQueues->vRemoveFromWaitingSet(pTask);
+  RASSERT(QK_NONE == pTask->eQueue());
 }
 
 /*============================================================================*/
