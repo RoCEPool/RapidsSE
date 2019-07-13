@@ -41,7 +41,6 @@ namespace Scheduling
     static void vQueue_ExecutingTask(Task* pTask);
   private:
     static void vQueue_IdleThread(Thread* pThread);
-    static void vQueue_NewTask(Task* pTask);
     static void vQueue_ReadyTask(Task* pTask);
     static void vQueue_SleepingTask(Task* pTask);
     static void vQueue_WaitingTask(Task* pTask);

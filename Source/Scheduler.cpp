@@ -135,7 +135,7 @@ void Scheduler::vAddTaskGeneral(Task* pTask)
   RASSERT(TS_NONE == pTask->eState());
   pTask->vState(TS_READY);
 
-  vQueue_NewTask(pTask);
+  vScheduleReadyTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -202,7 +202,8 @@ void Scheduler::vScheduleReadyTask(Task* pTask)
   //Queues* pQueues = gpAttachMap->m_pQueues;
   
   RASSERT(TS_READY == pTask->eState());
-  
+  RASSERT(QK_NONE  == pTask->eQueue());
+
   if (pTask->pJob()->m_bMarkActivity)
     ActivityMap::vMarkJob(pTask->pJob(),
                           "Schedule ready: %s %p"_Stz,
@@ -214,7 +215,6 @@ void Scheduler::vScheduleReadyTask(Task* pTask)
   
   vTask_Ready(pTask);
 }
-
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -449,34 +449,6 @@ void Scheduler::vQueue_IdleThread(Thread* pThread)
   Queues* pQueues = gpAttachMap->m_pQueues;
   
   pQueues->vAppendIdleThread(pThread);
-}
-
-/*----------------------------------------------------------------------------*/
-/* schedule a newly spawned task                                              */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vQueue_NewTask(Task* pTask)
-{
-  RASSERT(QK_NONE == pTask->eQueue());
-  
-  
-  if (pTask->pJob()->m_bMarkActivity) {
-    if (C_UNKNOWN == pTask->pJob()->iJobId())
-      ActivityMap::vMarkInfo("Schedule spawned: %s %p slot[%lld]"_Stz,
-                             aCN[pTask->pJob()->eClass()],
-                             pTask->pJob(),
-                             pTask->pJob()->m_i_Slot);
-    else
-      ActivityMap::vMarkJob(pTask->pJob(),
-                            "Schedule spawned: %s %p slot[%lld]"_Stz,
-                            aCN[pTask->pJob()->eClass()],
-                            pTask->pJob(),
-                            pTask->pJob()->m_i_Slot);
-  }
-  
-  //vTrace("Spawned Task %p\n"_Stz,pTask);
-  
-  pTask->vState(TS_READY);
-  vQueue_ReadyTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
