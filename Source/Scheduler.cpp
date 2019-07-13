@@ -13,7 +13,7 @@ extern AttachMap* gpAttachMap;
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* ack task handler                                                           */
+/* ack a waiting task                                                         */
 /*----------------------------------------------------------------------------*/
 bool Scheduler::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
 {
@@ -22,6 +22,7 @@ bool Scheduler::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
   //
   
   RASSERT(TS_EXECUTING == pTaskAcking->eState());
+  RASSERT(pTaskBeingAcked->iAcksRmg_assert_only_() > 0);
   
   Job* pJobBeingAcked = pTaskBeingAcked->pJob();
   Job* pJobAcking     = pTaskAcking->pJob();
@@ -73,6 +74,7 @@ bool Scheduler::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
                          AN_AM_DECIDER,
                          pTaskBeingAcked->pJob());
     
+    RASSERT(! pTaskBeingAcked->iAcksRmg_assert_only_());
     vQueue_AckedTask(pTaskBeingAcked);
   }
   
@@ -88,15 +90,15 @@ void Scheduler::vAssignDedicated(Task* pTask, Thread* pThread)
   // called from Thread::vLoop_dedicated()
   //
   
+  // vBeginThread() will have been called
   ASSERT(pThread->m_pTask == pTask);
-  
-  pThread->m_eThreadState = TD_RUNNING;
+  ASSERT(TD_RUNNING == pThread->m_eThreadState);
+  ASSERT(pThread->m_pMutexThread->bMutexIsLocked());
   
   Pthread::vTlsSet(giTLS_TaskKey,pTask);
   ASSERT(Pthread::pTlsGet(giTLS_TaskKey));
   
-  RASSERT(TS_READY   == pTask->eState() ||
-          TS_YIELDED == pTask->eState());
+  RASSERT(TS_READY == pTask->eState());
   
   pTask->vState(TS_EXECUTING);
   pTask->vThread(pThread);
