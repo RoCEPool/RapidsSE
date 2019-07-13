@@ -25,18 +25,23 @@ namespace Scheduling
     static void vBeginThread(Thread* pThread);
     static void vCheckSleeping(void);
     static void vEndThread(Thread* pThread);
-    static void vIdleThread(Thread* pThread);
     static void vPauseForGeneralThreads(void);
     static void vRemoveDedicatedThread(Thread* pThread);
     static void vRemoveGeneralThread(Thread* pThread);
     static void vWaitForTaskAssignment(Thread* pThread);
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // support
+  
   private:
+    static Thread* pPop_IdleThread(Task* pTask);
+  
     static void vQueue_AckedTask(Task* pTask);
   public:
     static void vQueue_ExecutingTask(Task* pTask);
   private:
     static void vQueue_ExitedTask(Task* pTask);
+    static void vQueue_IdleThread(Thread* pThread);
     static void vQueue_NewTask(Task* pTask);
     static void vQueue_ReadyTask(Task* pTask);
     static void vQueue_SleepingTask(Task* pTask);

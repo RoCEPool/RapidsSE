@@ -98,7 +98,7 @@ void Scheduler::vAssignDedicated(Task* pTask, Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task has beeb spawned                                                      */
+/* dedicated task has been spawned.  spawn a dedicated thread for it          */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vAddTaskDedicated(Task* pTask)
 {
@@ -116,26 +116,24 @@ void Scheduler::vAddTaskDedicated(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task has been spawned                                                      */
+/* general task has been spawned.  add it to queues (ready queue)             */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vAddTaskGeneral(Task* pTask)
 {
   //
-  // this handler is called from session::bSpawnJob()
-  // we want to run given task. task should be ready to run
+  // called from Api::bSpawnJob()
   //
   
   vQueue_NewTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
-/* task has returned                                                          */
+/* task has returned for task loop                                            */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTaskReturn(Task** ppTask)
 {
   //
-  // this handler is called from Thread::vLoop()
-  // after a task returns to the thread
+  // called from Thread::vLoop_general()
   //
   
   Queues* pQueues = gpAttachMap->m_pQueues;
@@ -169,11 +167,13 @@ void Scheduler::vTaskReturn(Task** ppTask)
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* append idle thread onto dedicated thread vector                            */
+/* append given idle thread onto dedicated thread vector                      */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vAddDedicatedThread(Thread* pThread)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  RASSERT(CN_NONE != pThread->m_eDedicated);
   
   pThread->m_eThreadState = TD_IDLE;
   
@@ -181,7 +181,7 @@ void Scheduler::vAddDedicatedThread(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append idle thread onto general thread vector                              */
+/* append given idle thread onto general thread vector                        */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vAddGeneralThread(Thread* pThread)
 {
@@ -206,7 +206,7 @@ void Scheduler::vBeginThread(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* check tasks in the sleeping queue                                          */
+/* check to see if tasks in the sleeping queue can be woken                   */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vCheckSleeping(void)
 {
@@ -217,21 +217,11 @@ void Scheduler::vCheckSleeping(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dedicated thread loop (part of event-based model)                          */
+/* end of thread loop                                                         */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vEndThread(Thread* pThread)
 {
   pThread->m_pMutexThread->vMutexUnlock();
-}
-
-/*----------------------------------------------------------------------------*/
-/* append idle thread onto idle thread queue                                  */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vIdleThread(Thread* pThread)
-{
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  pQueues->vAppendIdleThread(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -285,7 +275,7 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
 {
   while (! pThread->m_pTask) {
     pThread->m_eThreadState = TD_IDLE;
-    vIdleThread(pThread);
+    vQueue_IdleThread(pThread);
     pThread->m_pMutexThread->vCondWaitIndefinite();
     pThread->m_eThreadState = TD_RUNNING;
   }
@@ -312,6 +302,31 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
 //                                private                                     //
 ////////////////////////////////////////////////////////////////////////////////
 
+
+/*----------------------------------------------------------------------------*/
+/* pop an idle thread for given task                                          */
+/*----------------------------------------------------------------------------*/
+Thread* Scheduler::pPop_IdleThread(Task* pTask)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  Thread* pIdleThread = pQueues->pPopIdleThread();
+  
+  if (! pIdleThread)
+    return nullptr;
+  
+  ActionSequence::vAdd(pTask->pJob(),AN_THREAD_EXECUTE,pIdleThread->iThreadNo());
+  
+  pIdleThread->m_pTask = pTask;
+  
+  pIdleThread->m_nAssignedTasks++;
+  
+  pIdleThread->m_pMutexThread->vMutexLock();
+  pIdleThread->m_pMutexThread->vCondSignal();
+  pIdleThread->m_pMutexThread->vMutexUnlock();
+  
+  return pIdleThread;
+}
 
 /*----------------------------------------------------------------------------*/
 /* schedule a fully acked task                                                */
@@ -370,6 +385,16 @@ void Scheduler::vQueue_ExitedTask(Task* pTask)
   //vTrace("Exited Task %p\n"_Stz,pTask);
   
   delete pTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* append idle thread onto idle thread queue                                  */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vQueue_IdleThread(Thread* pThread)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  pQueues->vAppendIdleThread(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
