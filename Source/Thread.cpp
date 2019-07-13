@@ -305,7 +305,7 @@ void Thread::vLoop_general(void)
     m_pTask->vTaskLoop();
 
     // handle task return event
-    Scheduler::vTaskReturn(&m_pTask);
+    Scheduler::vTaskLoopReturn(&m_pTask);
   }
   
   NEVER_REACH;
@@ -356,7 +356,7 @@ void Thread::vLoop_polling(void)
                             m_pTask->pJob());
     
     // handle task return event
-    Scheduler::vTaskReturn(&m_pTask);
+    Scheduler::vTaskLoopReturn(&m_pTask);
   }
   
   NEVER_REACH;

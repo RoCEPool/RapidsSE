@@ -14,7 +14,7 @@ namespace Scheduling
     static bool bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking);
     static void vAddTaskDedicated(Task* pTask);
     static void vAddTaskGeneral(Task* pTask);
-    static void vTaskReturn(Task** ppTask);
+    static void vTaskLoopReturn(Task** ppTask);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // thread
@@ -49,6 +49,10 @@ namespace Scheduling
   
     static void vRemove_WaitingTask(Task* pTask);
 
+    static void vTask_Exit(Task* pTask);
+    static void vTask_Sleep(Task* pTask);
+    static void vTask_Wait(Task* pTask);
+    static void vTask_Yield(Task* pTask);
   };
 }
 

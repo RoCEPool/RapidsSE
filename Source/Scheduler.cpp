@@ -145,7 +145,7 @@ void Scheduler::vAddTaskGeneral(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* task has returned from task loop                                           */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskReturn(Task** ppTask)
+void Scheduler::vTaskLoopReturn(Task** ppTask)
 {
   //
   // called from Thread::vLoop_general()
@@ -153,27 +153,31 @@ void Scheduler::vTaskReturn(Task** ppTask)
   
   Queues* pQueues = gpAttachMap->m_pQueues;
   
+  // disconnect / de-assign 
   Task* pTask = *ppTask;
   *ppTask = nullptr;
   
   // first remove this task from the running queue
   pQueues->vRemoveFromExecutingSet(pTask);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   // now add the task to another appropriate queue depending on its state
   switch (pTask->eState()) {
       
-    case TS_EXITED:   vQueue_ExitedTask(pTask);    break;
-    case TS_SLEEPING: vQueue_SleepingTask(pTask);  break;
-    case TS_WAITING:  vQueue_WaitingTask(pTask);   break;
-    case TS_YIELDED:  vQueue_YieldedTask(pTask);   break;
+    case TS_EXITED:   vTask_Exit(pTask);   break;
+    case TS_SLEEPING: vTask_Sleep(pTask);  break;
+    case TS_WAITING:  vTask_Wait(pTask);   break;
+    case TS_YIELDED:  vTask_Yield(pTask);  break;
       
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // should never come to thread handler for these states
+     // should never come to thread handler for these states
       
     case TS_EXECUTING: ASSERT(0);
-      
+    case TS_READY:     ASSERT(0);
+    case TS_NONE:      ASSERT(0);
+
     default:
-      break;
+      NEVER_REACH;
   }
 }
 
@@ -382,7 +386,7 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
 
 
 /*----------------------------------------------------------------------------*/
-/* attempt to pop an idle thread for given task                               */
+/* attempt to pop an idle thread                                              */
 /*----------------------------------------------------------------------------*/
 Thread* Scheduler::pPop_IdleThread(Task* pTask)
 {
@@ -643,6 +647,38 @@ void Scheduler::vRemove_WaitingTask(Task* pTask)
   RASSERT(QK_WAITING_SET == pTask->eQueue());
   pQueues->vRemoveFromWaitingSet(pTask);
   RASSERT(QK_NONE == pTask->eQueue());
+}
+
+/*----------------------------------------------------------------------------*/
+/* task has exited                                                            */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTask_Exit(Task* pTask)
+{
+  vQueue_ExitedTask(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* task is to sleep                                                           */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTask_Sleep(Task* pTask)
+{
+  vQueue_SleepingTask(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* task is to wait                                                            */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTask_Wait(Task* pTask)
+{
+  vQueue_WaitingTask(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* task is to yield                                                           */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTask_Yield(Task* pTask)
+{
+  vQueue_YieldedTask(pTask);
 }
 
 /*============================================================================*/
