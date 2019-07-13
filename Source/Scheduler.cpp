@@ -21,6 +21,8 @@ bool Scheduler::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
   // called from Step::vTaskAck()
   //
   
+  RASSERT(TS_EXECUTING == pTaskAcking->eState());
+  
   Job* pJobBeingAcked = pTaskBeingAcked->pJob();
   Job* pJobAcking     = pTaskAcking->pJob();
   
@@ -40,6 +42,8 @@ bool Scheduler::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
   ActionSequence::vAdd(pTaskAcking->pJob(),
                        AN_ACK_TASK,
                        pTaskBeingAcked->pJob());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   bool bAmDecider = pTaskBeingAcked->bAckAndDecide();
   
@@ -61,6 +65,8 @@ bool Scheduler::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
            pJobAcking,
            bAmDecider ? "decider" : "not decider");
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (bAmDecider) {
     ActionSequence::vAdd(pTaskAcking->pJob(),
@@ -385,11 +391,12 @@ void Scheduler::vQueue_AckedTask(Task* pTask)
   
   // having got the lock, the task should be TS_WAITING and QK_WAITING_SET
   
+  pTask->vDropLock();
+
   RASSERT(TS_WAITING == pTask->eState());
   RASSERT(QK_WAITING_SET == pTask->eQueue());
-  
-  pTask->vDropLock();
-  
+  RASSERT(0 == pTask->iAcksRmg_assert_only_());
+
   pQueues->vRemoveFromWaitingSet(pTask);
   
   RASSERT(QK_NONE == pTask->eQueue());
@@ -537,14 +544,19 @@ void Scheduler::vQueue_SleepingTask(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* schedule ready waiting task                                                */
+/* schedule waiting task                                                      */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vQueue_WaitingTask(Task* pTask)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
 
+  // task must be in the waiting state
   RASSERT(TS_WAITING == pTask->eState());
   
+  // task must be locked
+  RASSERT(pTask->bIsLocked());
+
+  // activity
   if (pTask->pJob()->m_bMarkActivity) {
     if (C_UNKNOWN == pTask->pJob()->iJobId())
       ActivityMap::vMarkInfo(
@@ -558,7 +570,11 @@ void Scheduler::vQueue_WaitingTask(Task* pTask)
                             pTask->pJob());
   }
   
+  // add task to waiting set
   pQueues->vAddToWaitingSet(pTask);
+  
+  // drop task lock
+  pTask->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/

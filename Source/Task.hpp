@@ -118,6 +118,7 @@ namespace Tasks
     static void vMonitorProfile_stats(s48K& sPortrait);
   
     bool bAckAndDecide(void);
+    i8   iAcksRmg_assert_only_(void);
     void vAdjustFIP(i8 nBytes);
     Object* pArgObject(void);
     static void vDebug(void);

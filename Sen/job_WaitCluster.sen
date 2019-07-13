@@ -25,7 +25,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait till all nodes connected
-  grid::wait
+  grid::pause
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // distribute the job
@@ -48,7 +48,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait till all nodes connected
-  grid::wait
+  grid::pause
 
   pJob_WaitCluster job::participantExecuted
 

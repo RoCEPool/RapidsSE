@@ -342,6 +342,18 @@ bool Task::bAckAndDecide(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the number of acks remaining (for assert use only)                     */
+/*----------------------------------------------------------------------------*/
+i8 Task::iAcksRmg_assert_only_(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  i8 iRmg = m_oAcksRmg.iPrintOnlyValue();
+  
+  return iRmg;
+}
+
+/*----------------------------------------------------------------------------*/
 /* adjust forth instruction pointer                                           */
 /*----------------------------------------------------------------------------*/
 void Task::vAdjustFIP(i8 nBytes)

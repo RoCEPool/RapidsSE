@@ -649,9 +649,6 @@ void Queues::vAddToWaitingSet_NL(Task* pTask)
   m_pWaitingSet->vAddTask(pTask);
   
   ActionSequence::vAdd(pTask->pJob(),AN_ADD_WAITING_SET);
-
-  // drop task lock
-  pTask->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
