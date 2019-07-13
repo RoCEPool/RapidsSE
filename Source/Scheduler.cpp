@@ -96,10 +96,6 @@ bool Scheduler::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
   
   pTaskBeingAcked->vDropLock();
   
-  RASSERT(TS_WAITING == pTaskBeingAcked->eState());
-  RASSERT(QK_WAITING_SET == pTaskBeingAcked->eQueue());
-  RASSERT(0 == pTaskBeingAcked->iAcksRmg_assert_only_());
-  
   vRemove_WaitingSet(pTaskBeingAcked);
   
   pTaskBeingAcked->vState(TS_READY);
@@ -446,20 +442,6 @@ void Scheduler::vQueue_ExecutingTask(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete an exited task                                                      */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vQueue_ExitedTask(Task* pTask)
-{
-  RASSERT(TS_EXITED == pTask->eState());
-  
-  ASSERT(! pTask->bWordBody());
-  
-  //vTrace("Exited Task %p\n"_Stz,pTask);
-  
-  delete pTask;
-}
-
-/*----------------------------------------------------------------------------*/
 /* append idle thread onto idle thread queue                                  */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vQueue_IdleThread(Thread* pThread)
@@ -686,7 +668,14 @@ void Scheduler::vRemove_WaitingSet(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Exited(Task* pTask)
 {
-  vQueue_ExitedTask(pTask);
+  RASSERT(TS_EXITED == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+
+  ASSERT(! pTask->bWordBody());
+  
+  //vTrace("Exited Task %p\n"_Stz,pTask);
+  
+  delete pTask;
 }
 
 /*----------------------------------------------------------------------------*/
