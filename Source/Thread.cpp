@@ -274,7 +274,7 @@ void Thread::vLoop_dedicated(void)
   
   Scheduler::vBeginThread(this);
 
-  Scheduler::vAssignDedicated(this);
+  Scheduler::vAssignDedicatedThread(this);
   
   while (m_pTask && m_pTask->pJob())
     m_pTask->vTaskLoop();

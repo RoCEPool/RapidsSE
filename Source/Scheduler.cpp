@@ -215,12 +215,7 @@ void Scheduler::vScheduleReadyTask(Task* pTask)
   
   if (bAssign_IdleThread(pTask))
     return;
-  
-//  if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
-//    pQueues->vAddToReadyQueue(pTask);
-//  else
-//    pQueues->vAddToReadyQueueLP(pTask);
-  
+    
   vTask_Ready(pTask);
 }
 
@@ -267,7 +262,7 @@ void Scheduler::vAddThreadGeneral(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* assign task to dedicated thread                                            */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vAssignDedicated(Thread* pThread)
+void Scheduler::vAssignDedicatedThread(Thread* pThread)
 {
   //
   // called from Thread::vLoop_dedicated()
