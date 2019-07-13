@@ -69,8 +69,8 @@ namespace Scheduling
 
   
   private:
-    void vAddDedicatedThread(Thread* pThread);
-    void vAddGeneralThread(Thread* pThread);
+    void vAddThreadDedicated(Thread* pThread);
+    void vAddThreadGeneral(Thread* pThread);
 
     void vAddToExecutingSet(Task* pTask);
     void vAddToSleepingQueue(Task* pTask);

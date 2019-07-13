@@ -143,9 +143,26 @@ void Scheduler::vAddTaskGeneral(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* check to see if tasks in the sleeping queue can be woken                   */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vCheckSleepingTasks(void)
+{
+  //
+  // called from Step::vQueuesCheckSleeping()
+  //
+  
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  while (Task* pWokenTask = pQueues->pPopSleepingQueue()) {
+    pWokenTask->vState(TS_READY);
+    vQueue_ReadyTask(pWokenTask);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* task has returned from task loop                                           */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTaskLoopReturn(Task** ppTask)
+void Scheduler::vReturnTaskLoop(Task** ppTask)
 {
   //
   // called from Thread::vLoop_general()
@@ -153,7 +170,7 @@ void Scheduler::vTaskLoopReturn(Task** ppTask)
   
   Queues* pQueues = gpAttachMap->m_pQueues;
   
-  // disconnect / de-assign
+  // disconnect / de-assign task from thread
   Task* pTask = *ppTask;
   *ppTask = nullptr;
   
@@ -165,10 +182,10 @@ void Scheduler::vTaskLoopReturn(Task** ppTask)
   // now add the task to another appropriate queue depending on its state
   switch (pTask->eState()) {
       
-    case TS_EXITED:   vTask_Exit(pTask);   break;
-    case TS_SLEEPING: vTask_Sleep(pTask);  break;
-    case TS_WAITING:  vTask_Wait(pTask);   break;
-    case TS_YIELDED:  vTask_Yield(pTask);  break;
+    case TS_EXITED:    vTask_Exited(pTask);   break;
+    case TS_SLEEPING:  vTask_Sleeping(pTask); break;
+    case TS_WAITING:   vTask_Waiting(pTask);  break;
+    case TS_YIELDED:   vTask_Yielded(pTask);  break;
       
      // should never come to thread handler for these states
       
@@ -188,7 +205,7 @@ void Scheduler::vTaskLoopReturn(Task** ppTask)
 /*----------------------------------------------------------------------------*/
 /* append given idle thread onto dedicated thread vector                      */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vAddDedicatedThread(Thread* pThread)
+void Scheduler::vAddThreadDedicated(Thread* pThread)
 {
   //
   // called from Thread::aEntryPoint_dedicated()
@@ -200,13 +217,13 @@ void Scheduler::vAddDedicatedThread(Thread* pThread)
   
   pThread->m_eThreadState = TD_IDLE;
   
-  pQueues->vAddDedicatedThread(pThread);
+  pQueues->vAddThreadDedicated(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
 /* append given idle thread onto general thread vector                        */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vAddGeneralThread(Thread* pThread)
+void Scheduler::vAddThreadGeneral(Thread* pThread)
 {
   //
   // called from Thread::aEntryPoint_general()
@@ -216,7 +233,7 @@ void Scheduler::vAddGeneralThread(Thread* pThread)
   
   pThread->m_eThreadState = TD_IDLE;
   
-  pQueues->vAddGeneralThread(pThread);
+  pQueues->vAddThreadGeneral(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -262,23 +279,6 @@ void Scheduler::vBeginThread(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* check to see if tasks in the sleeping queue can be woken                   */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vCheckSleeping(void)
-{
-  //
-  // called from Step::vQueuesCheckSleeping()
-  //
-  
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  while (Task* pWokenTask = pQueues->pPopSleepingQueue()) {
-    pWokenTask->vState(TS_READY);
-    vQueue_ReadyTask(pWokenTask);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* end of thread loop                                                         */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vEndThread(Thread* pThread)
@@ -293,7 +293,7 @@ void Scheduler::vEndThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* pause till general threads are all idle                                    */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vPauseForGeneralThreads(void)
+void Scheduler::vPauseTillGeneralThreads(void)
 {
   //
   // called from Engine::vStartSystem()
@@ -388,14 +388,14 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* attempt to pop an idle thread                                              */
 /*----------------------------------------------------------------------------*/
-Thread* Scheduler::pPop_IdleThread(Task* pTask)
+bool Scheduler::bAssign_IdleThread(Task* pTask)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
   
   Thread* pIdleThread = pQueues->pPopIdleThread();
   
   if (! pIdleThread)
-    return nullptr;
+    return false;
   
   ActionSequence::vAdd(pTask->pJob(),AN_THREAD_EXECUTE,pIdleThread->iThreadNo());
   
@@ -407,7 +407,7 @@ Thread* Scheduler::pPop_IdleThread(Task* pTask)
   pIdleThread->m_pMutexThread->vCondSignal();
   pIdleThread->m_pMutexThread->vMutexUnlock();
   
-  return pIdleThread;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -490,9 +490,7 @@ void Scheduler::vQueue_ReadyTask(Task* pTask)
                           pTask->pJob());
   
 #ifdef WITH_EVENT_MODEL
-  Thread* pIdleThread = pPop_IdleThread(pTask);
-  
-  if (pIdleThread)
+  if (bAssign_IdleThread(pTask))
     return;
   
   if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
@@ -650,47 +648,56 @@ void Scheduler::vRemove_WaitingTask(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task is to exit                                                            */
+/* task transitions to exited                                                 */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTask_Exit(Task* pTask)
+void Scheduler::vTask_Exited(Task* pTask)
 {
   vQueue_ExitedTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
-/* task is to execute                                                         */
+/* task transitions to executing                                              */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTask_Execute(Task* pTask)
+void Scheduler::vTask_Executing(Task* pTask)
 {
 }
 
 /*----------------------------------------------------------------------------*/
-/* task is ready to execute                                                   */
+/* task transitions to ready                                                  */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Ready(Task* pTask)
 {
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  pTask->vState(TS_READY);
+  ASSERT(QK_NONE == pTask->eQueue());
+
+  if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
+    pQueues->vAddToReadyQueue(pTask);
+  else
+    pQueues->vAddToReadyQueueLP(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
-/* task is to sleep                                                           */
+/* task transitions to sleeping                                               */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTask_Sleep(Task* pTask)
+void Scheduler::vTask_Sleeping(Task* pTask)
 {
   vQueue_SleepingTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
-/* task is to wait                                                            */
+/* task transitions to waiting                                                */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTask_Wait(Task* pTask)
+void Scheduler::vTask_Waiting(Task* pTask)
 {
   vQueue_WaitingTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
-/* task is to yield                                                           */
+/* task transitions to yielded                                                */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTask_Yield(Task* pTask)
+void Scheduler::vTask_Yielded(Task* pTask)
 {
   vQueue_YieldedTask(pTask);
 }

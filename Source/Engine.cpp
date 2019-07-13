@@ -899,7 +899,7 @@ void Engine::vStartSystem(void)
   }
   
   // pause till all general threads are operational 
-  Scheduler::vPauseForGeneralThreads();
+  Scheduler::vPauseTillGeneralThreads();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

@@ -426,7 +426,7 @@ i8 Queues::nTasksWaiting(void)
 /*----------------------------------------------------------------------------*/
 /* add dedicated thread to thread vector                                      */
 /*----------------------------------------------------------------------------*/
-void Queues::vAddDedicatedThread(Thread* pThread)
+void Queues::vAddThreadDedicated(Thread* pThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
@@ -440,7 +440,7 @@ void Queues::vAddDedicatedThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* add general thread to thread vector                                        */
 /*----------------------------------------------------------------------------*/
-void Queues::vAddGeneralThread(Thread* pThread)
+void Queues::vAddThreadGeneral(Thread* pThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   

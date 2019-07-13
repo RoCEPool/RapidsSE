@@ -111,7 +111,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
   
   pThread->m_pPthread->vThreadEntry();
   
-  Scheduler::vAddDedicatedThread(pThread);
+  Scheduler::vAddThreadDedicated(pThread);
   
   if (gpAttachMap->m_bVerbose)
     vTrace("Thread::aEntryPoint %p %lld\n"_Stz,
@@ -167,7 +167,7 @@ void* Thread::aEntryPoint_general(void* pArg)
   
   pThread->m_pPthread->vThreadEntry();
 
-  Scheduler::vAddGeneralThread(pThread);
+  Scheduler::vAddThreadGeneral(pThread);
   
   if (gpAttachMap->m_bVerbose)
     vTrace("Thread::aEntryPoint %p %lld\n"_Stz,
@@ -305,7 +305,7 @@ void Thread::vLoop_general(void)
     m_pTask->vTaskLoop();
 
     // handle task return event
-    Scheduler::vTaskLoopReturn(&m_pTask);
+    Scheduler::vReturnTaskLoop(&m_pTask);
   }
   
   NEVER_REACH;
@@ -356,7 +356,7 @@ void Thread::vLoop_polling(void)
                             m_pTask->pJob());
     
     // handle task return event
-    Scheduler::vTaskLoopReturn(&m_pTask);
+    Scheduler::vReturnTaskLoop(&m_pTask);
   }
   
   NEVER_REACH;
