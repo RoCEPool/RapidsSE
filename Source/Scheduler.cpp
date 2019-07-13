@@ -103,7 +103,7 @@ bool Scheduler::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
   vRemove_WaitingSet(pTaskBeingAcked);
   
   pTaskBeingAcked->vState(TS_READY);
-  vQueue_ReadyTask(pTaskBeingAcked);
+  vScheduleReadyTask(pTaskBeingAcked);
 
   return true;
 }
@@ -215,7 +215,7 @@ void Scheduler::vScheduleReadyTask(Task* pTask)
   
   if (bAssign_IdleThread(pTask))
     return;
-    
+  
   vTask_Ready(pTask);
 }
 
