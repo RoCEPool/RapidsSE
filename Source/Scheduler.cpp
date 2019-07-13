@@ -441,21 +441,10 @@ void Scheduler::vQueue_ReadyTask(Task* pTask)
                           pTask->pJob());
   
 #ifdef WITH_EVENT_MODEL
-  Thread* pIdleThread = pQueues->pPopIdleThread();
+  Thread* pIdleThread = pPop_IdleThread(pTask);
   
-  if (pIdleThread) {
-    ActionSequence::vAdd(pTask->pJob(),AN_THREAD_EXECUTE,pIdleThread->iThreadNo());
-    
-    pIdleThread->m_pTask = pTask;
-    
-    pIdleThread->m_nAssignedTasks++;
-    
-    pIdleThread->m_pMutexThread->vMutexLock();
-    pIdleThread->m_pMutexThread->vCondSignal();
-    pIdleThread->m_pMutexThread->vMutexUnlock();
-    
+  if (pIdleThread)
     return;
-  }
   
   if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
     pQueues->vAddToReadyQueue(pTask);
