@@ -151,7 +151,7 @@ void Scheduler::vCheckSleepingTasks(void)
   
   while (Task* pWokenTask = pQueues->pPopSleepingQueue()) {
     pWokenTask->vState(TS_READY);
-    vQueue_ReadyTask(pWokenTask);
+    vScheduleReadyTask(pWokenTask);
   }
 }
 
@@ -452,46 +452,6 @@ void Scheduler::vQueue_IdleThread(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* schedule a ready to execute task                                           */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vQueue_ReadyTask(Task* pTask)
-{
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  RASSERT(TS_READY == pTask->eState());
-  
-  if (pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkJob(pTask->pJob(),
-                          "Schedule ready: %s %p"_Stz,
-                          aCN[pTask->pJob()->eClass()],
-                          pTask->pJob());
-  
-#ifdef WITH_EVENT_MODEL
-  if (bAssign_IdleThread(pTask))
-    return;
-  
-  if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
-    pQueues->vAddToReadyQueue(pTask);
-  else
-    pQueues->vAddToReadyQueueLP(pTask);
-#else
-  Thread* pIdleThread = pQueues->pFindIdleThread();
-  
-  if (pIdleThread) {
-    ActionSequence::vAdd(pTask->pJob(),AN_THREAD_EXECUTE,pIdleThread->iThreadNo());
-    pIdleThread->vExecuteTask(pTask);
-    
-    return;
-  }
-  
-  if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
-    pQueues->vAddToReadyQueue(pTask);
-  else
-    pQueues->vAddToReadyQueueLP(pTask);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
 /* schedule sleeping task                                                     */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vQueue_SleepingTask(Task* pTask)
@@ -520,40 +480,6 @@ void Scheduler::vQueue_SleepingTask(Task* pTask)
   Thread* pCallingThread = Thread::pThisTLSThread();
   
   pCallingThread->vReExecuteTask(pTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* schedule waiting task                                                      */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vQueue_WaitingTask(Task* pTask)
-{
-  Queues* pQueues = gpAttachMap->m_pQueues;
-
-  // task must be in the waiting state
-  RASSERT(TS_WAITING == pTask->eState());
-  
-  // task must be locked
-  RASSERT(pTask->bIsLocked());
-
-  // activity
-  if (pTask->pJob()->m_bMarkActivity) {
-    if (C_UNKNOWN == pTask->pJob()->iJobId())
-      ActivityMap::vMarkInfo(
-                             "Schedule waiting: %s %p"_Stz,
-                             aCN[pTask->pJob()->eClass()],
-                             pTask->pJob());
-    else
-      ActivityMap::vMarkJob(pTask->pJob(),
-                            "Schedule waiting: %s %p"_Stz,
-                            aCN[pTask->pJob()->eClass()],
-                            pTask->pJob());
-  }
-  
-  // add task to waiting set
-  pQueues->vAddToWaitingSet(pTask);
-  
-  // drop task lock
-  pTask->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -686,7 +612,31 @@ void Scheduler::vTask_Sleeping(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Waiting(Task* pTask)
 {
-  vQueue_WaitingTask(pTask);
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  // task must be in the waiting state and locked
+  RASSERT(TS_WAITING == pTask->eState());
+  RASSERT(pTask->bIsLocked());
+  
+  // activity
+  if (pTask->pJob()->m_bMarkActivity) {
+    if (C_UNKNOWN == pTask->pJob()->iJobId())
+      ActivityMap::vMarkInfo(
+                             "Schedule waiting: %s %p"_Stz,
+                             aCN[pTask->pJob()->eClass()],
+                             pTask->pJob());
+    else
+      ActivityMap::vMarkJob(pTask->pJob(),
+                            "Schedule waiting: %s %p"_Stz,
+                            aCN[pTask->pJob()->eClass()],
+                            pTask->pJob());
+  }
+  
+  // add task to waiting set
+  pQueues->vAddToWaitingSet(pTask);
+  
+  // drop task lock
+  pTask->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
