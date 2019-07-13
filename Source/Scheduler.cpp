@@ -69,16 +69,20 @@ bool Scheduler::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (bAmDecider) {
-    ActionSequence::vAdd(pTaskAcking->pJob(),
-                         AN_AM_DECIDER,
-                         pTaskBeingAcked->pJob());
-    
-    RASSERT(! pTaskBeingAcked->iAcksRmg_assert_only_());
-    vQueue_AckedTask(pTaskBeingAcked);
-  }
+  if (! bAmDecider)
+    return false;
   
-  return bAmDecider;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  ActionSequence::vAdd(pTaskAcking->pJob(),
+                       AN_AM_DECIDER,
+                       pTaskBeingAcked->pJob());
+  
+  RASSERT(! pTaskBeingAcked->iAcksRmg_assert_only_());
+  
+  vQueue_AckedTask(pTaskBeingAcked);
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
