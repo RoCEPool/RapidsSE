@@ -21,8 +21,6 @@ bool Scheduler::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
   // called from Step::vTaskAck()
   //
   
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
   Job* pJobBeingAcked = pTaskBeingAcked->pJob();
   Job* pJobAcking     = pTaskAcking->pJob();
   
@@ -80,6 +78,10 @@ bool Scheduler::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vAssignDedicated(Task* pTask, Thread* pThread)
 {
+  //
+  // called from Thread::vLoop_dedicated()
+  //
+  
   ASSERT(pThread->m_pTask == pTask);
   
   pThread->m_eThreadState = TD_RUNNING;
@@ -128,7 +130,7 @@ void Scheduler::vAddTaskGeneral(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task has returned for task loop                                            */
+/* task has returned from task loop                                           */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTaskReturn(Task** ppTask)
 {
@@ -171,6 +173,10 @@ void Scheduler::vTaskReturn(Task** ppTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vAddDedicatedThread(Thread* pThread)
 {
+  //
+  // called from Thread::aEntryPoint_dedicated()
+  //
+  
   Queues* pQueues = gpAttachMap->m_pQueues;
   
   RASSERT(CN_NONE != pThread->m_eDedicated);
@@ -185,6 +191,10 @@ void Scheduler::vAddDedicatedThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vAddGeneralThread(Thread* pThread)
 {
+  //
+  // called from Thread::aEntryPoint_general()
+  //
+  
   Queues* pQueues = gpAttachMap->m_pQueues;
   
   pThread->m_eThreadState = TD_IDLE;
@@ -197,6 +207,10 @@ void Scheduler::vAddGeneralThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vBeginThread(Thread* pThread)
 {
+  //
+  // called from Thread::vLoop_dedicated() and Thread::vLoop_general()
+  //
+  
   // thread has mutex while it is running
   pThread->m_eThreadState = TD_RUNNING;
   pThread->m_pMutexThread->vMutexLock();
@@ -210,6 +224,10 @@ void Scheduler::vBeginThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vCheckSleeping(void)
 {
+  //
+  // called from Step::vQueuesCheckSleeping()
+  //
+  
   Queues* pQueues = gpAttachMap->m_pQueues;
   
   while (Task* pWokenTask = pQueues->pPopSleepingQueue())
@@ -221,6 +239,10 @@ void Scheduler::vCheckSleeping(void)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vEndThread(Thread* pThread)
 {
+  //
+  // called from Thread::vLoop_dedicated()
+  //
+  
   pThread->m_pMutexThread->vMutexUnlock();
 }
 
@@ -229,6 +251,10 @@ void Scheduler::vEndThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vPauseForGeneralThreads(void)
 {
+  //
+  // called from Engine::vStartSystem()
+  //
+  
   Queues* pQueues = gpAttachMap->m_pQueues;
 
   // pause till all general threads have all begun
@@ -253,6 +279,10 @@ void Scheduler::vPauseForGeneralThreads(void)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vRemoveDedicatedThread(Thread* pThread)
 {
+  //
+  // called from Thread::aEntryPoint_dedicated()
+  //
+  
   Queues* pQueues = gpAttachMap->m_pQueues;
   
   pQueues->vRemoveDedicatedThread(pThread);
@@ -263,6 +293,10 @@ void Scheduler::vRemoveDedicatedThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vRemoveGeneralThread(Thread* pThread)
 {
+  //
+  // called from Thread::aEntryPoint_general()
+  //
+  
   Queues* pQueues = gpAttachMap->m_pQueues;
   
   pQueues->vRemoveGeneralThread(pThread);
@@ -273,6 +307,10 @@ void Scheduler::vRemoveGeneralThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vWaitForTaskAssignment(Thread* pThread)
 {
+  //
+  // called from Thread::vLoop_general()
+  //
+  
   while (! pThread->m_pTask) {
     pThread->m_eThreadState = TD_IDLE;
     vQueue_IdleThread(pThread);
@@ -304,7 +342,7 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
 
 
 /*----------------------------------------------------------------------------*/
-/* pop an idle thread for given task                                          */
+/* attempt to pop an idle thread for given task                               */
 /*----------------------------------------------------------------------------*/
 Thread* Scheduler::pPop_IdleThread(Task* pTask)
 {
@@ -374,7 +412,7 @@ void Scheduler::vQueue_ExecutingTask(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* schedule an exited task                                                    */
+/* delete an exited task                                                      */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vQueue_ExitedTask(Task* pTask)
 {
@@ -558,8 +596,6 @@ void Scheduler::vQueue_YieldedTask(Task* pTask)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // non-partitioned task yield
-  
   
   // - A general thread has executed a task which retured TS_YIELDED.
   //   If the ready queue is empty then this general thread can
@@ -585,7 +621,6 @@ void Scheduler::vQueue_YieldedTask(Task* pTask)
     pQueues->vAddToReadyQueueLP_NL(pTask);
     pQueues->m_pReadyQueueLP->vDropLock();
   }
-  
 }
 
 /*============================================================================*/
