@@ -294,14 +294,14 @@ void Thread::vLoop_general(void)
   
   for (;;) {
     
-    // wait for task to be assigned
+    // wait for task to be assigned to this thread
     Scheduler::vWaitForTaskAssignment(this);
     
     // call the task
     m_pTask->vTaskLoop();
 
     // handle task return event
-    Scheduler::vReturnTaskLoop(&m_pTask);
+    Scheduler::vReturnTaskLoop(this);
   }
   
   NEVER_REACH;

@@ -329,22 +329,23 @@ void Scheduler::vRemoveGeneralThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* task has returned from task loop                                           */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vReturnTaskLoop(Task** ppTask)
+void Scheduler::vReturnTaskLoop(Thread* pThread)
 {
   //
   // called from Thread::vLoop_general()
   //
   
-  // disconnect / de-assign task from thread
-  Task* pTask = *ppTask;
-  *ppTask = nullptr;
+  Task* pTask = pThread->m_pTask;
   
-  // first remove this task from the executing set
-  vRemove_ExecutingSet(pTask);
+  // disconnect / de-assign task from thread
+  vDeassign_RunningThread(pThread);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // now add the task to another appropriate queue depending on its state
+  // remove task from the executing set
+  vRemove_ExecutingSet(pTask);
+  
+  // add task to another appropriate queue depending on its state
   switch (pTask->eState()) {
       
     case TS_EXITED:    vTask_Exited(pTask);   break;
@@ -352,8 +353,7 @@ void Scheduler::vReturnTaskLoop(Task** ppTask)
     case TS_WAITING:   vTask_Waiting(pTask);  break;
     case TS_YIELDED:   vTask_Yielded(pTask);  break;
       
-      // should never come to thread handler for these states
-      
+    // should never come here for these states
     case TS_EXECUTING: ASSERT(0);
     case TS_READY:     ASSERT(0);
     case TS_NONE:      ASSERT(0);
@@ -424,9 +424,9 @@ bool Scheduler::bAssign_IdleThread(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* deassign task from thread                                                  */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vDeassign_Thread(Task* pTask, Thread* pThread)
+void Scheduler::vDeassign_RunningThread(Thread* pThread)
 {
-  
+  pThread->m_pTask = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

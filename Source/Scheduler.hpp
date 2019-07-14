@@ -28,7 +28,7 @@ namespace Scheduling
     static void vPauseTillGeneralThreads(void);
     static void vRemoveDedicatedThread(Thread* pThread);
     static void vRemoveGeneralThread(Thread* pThread);
-    static void vReturnTaskLoop(Task** ppTask);
+    static void vReturnTaskLoop(Thread* pThread);
     static void vWaitForTaskAssignment(Thread* pThread);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -37,7 +37,7 @@ namespace Scheduling
   private:
     static bool bAssign_IdleThread(Task* pTask);
 
-    static void vDeassign_Thread(Task* pTask, Thread* pThread);
+    static void vDeassign_RunningThread(Thread* pThread);
 
     static void vRemove_ExecutingSet(Task* pTask);
     static void vRemove_WaitingSet(Task* pTask);
