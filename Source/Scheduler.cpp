@@ -248,12 +248,8 @@ void Scheduler::vBeginThread(Thread* pThread)
   // called from Thread::vLoop_dedicated() and Thread::vLoop_general()
   //
   
-  // thread has mutex while it is running
-  pThread->m_eThreadState = TD_RUNNING;
-  pThread->m_pMutexThread->vMutexLock();
+  vThread_Beginning(pThread);
   
-  // increment m_ixThreads to indicate thread is running
-  ++gpAttachMap->m_ixThreads;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -265,7 +261,7 @@ void Scheduler::vEndThread(Thread* pThread)
   // called from Thread::vLoop_dedicated()
   //
   
-  pThread->m_pMutexThread->vMutexUnlock();
+  vThread_Ending(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -372,6 +368,8 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
   
   vThread_Idle(pThread);
   
+  vThread_Running(pThread);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   ASSERT(TD_RUNNING == pThread->m_eThreadState);
   ASSERT(pThread->m_pTask);
@@ -621,6 +619,27 @@ void Scheduler::vTask_Yielded(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* thread is beginning                                                        */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vThread_Beginning(Thread* pThread)
+{
+  // thread has mutex while it is running
+  pThread->m_eThreadState = TD_RUNNING;
+  pThread->m_pMutexThread->vMutexLock();
+  
+  // increment m_ixThreads to indicate thread is running
+  ++gpAttachMap->m_ixThreads;
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread is ending                                                           */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vThread_Ending(Thread* pThread)
+{
+  pThread->m_pMutexThread->vMutexUnlock();
+}
+
+/*----------------------------------------------------------------------------*/
 /* append idle thread onto idle thread queue                                  */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_Idle(Thread* pThread)
@@ -634,6 +653,13 @@ void Scheduler::vThread_Idle(Thread* pThread)
     pThread->m_eThreadState = TD_RUNNING;
   }
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread is running                                                          */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vThread_Running(Thread* pThread)
+{
 }
 
 /*============================================================================*/

@@ -51,7 +51,10 @@ namespace Scheduling
     static void vTask_Waiting(Task* pTask);
     static void vTask_Yielded(Task* pTask);
 
+    static void vThread_Beginning(Thread* pThread);
+    static void vThread_Ending(Thread* pThread);
     static void vThread_Idle(Thread* pThread);
+    static void vThread_Running(Thread* pThread);
   };
 }
 
