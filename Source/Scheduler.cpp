@@ -9,7 +9,7 @@
 extern AttachMap* gpAttachMap;
 
 ////////////////////////////////////////////////////////////////////////////////
-//                                task                                        //
+//                             task interface                                 //
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -40,7 +40,7 @@ bool Scheduler::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add new dedicated task to queues and spawn a dedicated thread for it       */
+/* add new dedicated task into system (spawn a dedicated thread for it)       */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vAddTaskDedicated(Task* pTask)
 {
@@ -58,7 +58,7 @@ void Scheduler::vAddTaskDedicated(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add new general task to queues                                             */
+/* add new general task into system                                           */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vAddTaskGeneral(Task* pTask)
 {
@@ -105,7 +105,7 @@ void Scheduler::vScheduleReadyTask(Task* pTask)
 
 
 ////////////////////////////////////////////////////////////////////////////////
-//                                thread                                      //
+//                             thread interface                               //
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -117,12 +117,9 @@ void Scheduler::vAddThreadDedicated(Thread* pThread)
   // called from Thread::aEntryPoint_dedicated()
   //
   
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
   RASSERT(CN_NONE != pThread->m_eDedicated);
   
-  pThread->m_eThreadState = TD_IDLE;
-  pQueues->vAddThreadDedicated(pThread);
+  vAdd_DedicatedThread(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -134,10 +131,7 @@ void Scheduler::vAddThreadGeneral(Thread* pThread)
   // called from Thread::aEntryPoint_general()
   //
   
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  pThread->m_eThreadState = TD_IDLE;
-  pQueues->vAddThreadGeneral(pThread);
+  vAdd_GeneralThread(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -443,7 +437,7 @@ void Scheduler::vResume_AckedTask(Task* pTask)
 
 
 ////////////////////////////////////////////////////////////////////////////////
-//                               support                                      //
+//                               support for queues                           //
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -455,6 +449,28 @@ void Scheduler::vAdd_ExecutingSet(Task* pTask)
   
   pTask->vState(TS_EXECUTING);
   pQueues->vAddToExecutingSet(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add thread to dedicated thread set                                         */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vAdd_DedicatedThread(Thread* pThread)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  pThread->m_eThreadState = TD_IDLE;
+  pQueues->vAddThreadDedicated(pThread);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add thread to general thread set                                           */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vAdd_GeneralThread(Thread* pThread)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  pThread->m_eThreadState = TD_IDLE;
+  pQueues->vAddThreadGeneral(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -594,6 +610,11 @@ void Scheduler::vRemove_WaitingSet(Task* pTask)
   pQueues->vRemoveFromWaitingSet(pTask);
   RASSERT(QK_NONE == pTask->eQueue());
 }
+
+
+////////////////////////////////////////////////////////////////////////////////
+//                               support for queues                           //
+////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* task transitions to exited                                                 */

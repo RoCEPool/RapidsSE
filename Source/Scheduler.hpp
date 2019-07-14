@@ -9,7 +9,7 @@ namespace Scheduling
   {
   public:
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // task
+    // task interface
   
     static bool bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking);
     static void vAddTaskDedicated(Task* pTask);
@@ -18,7 +18,7 @@ namespace Scheduling
     static void vScheduleReadyTask(Task* pTask);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // thread
+    // thread interface
   
     static void vAddThreadDedicated(Thread* pThread);
     static void vAddThreadGeneral(Thread* pThread);
@@ -40,10 +40,14 @@ namespace Scheduling
     static void vDeassign_RunningThread(Thread* pThread);
     static void vDedicate_ThreadTask(Thread* pThread, Task* pTask);
     static void vResume_AckedTask(Task* pTask);
+    static void vWake_SleepingTasks(Task* pTask);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // support
+    // support for queues
+  
     static void vAdd_ExecutingSet(Task* pTask);
+    static void vAdd_DedicatedThread(Thread* pThread);
+    static void vAdd_GeneralThread(Thread* pThread);
     static void vAdd_WaitingSet(Task* pTask);
 
     static void vAppend_IdleQueue(Thread* pThread);
@@ -61,6 +65,9 @@ namespace Scheduling
     static void vRemove_ExecutingSet(Task* pTask);
     static void vRemove_WaitingSet(Task* pTask);
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // support for state transitions
+  
     static void vTask_Exited(Task* pTask);
     static void vTask_Executing(Task* pTask);
     static void vTask_New(Task* pTask);
