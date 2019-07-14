@@ -58,6 +58,10 @@ namespace Scheduling
   
     bool bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread);
 
+    Task* pPopReadyQueue(void);
+    Task* pPopReadyQueueLP(void);
+    Task* pPopSleepingQueue(void);
+
     i8   nTasksExecuting(void);
     i8   nTasksReady(void);
     i8   nTasksReadyLP(void);
@@ -87,10 +91,7 @@ namespace Scheduling
  
     Thread* pPopIdleThread(void);
 
-    Task* pPopReadyQueue(void);
-    Task* pPopReadyQueueLP(void);
-    Task* pPopSleepingQueue(void);
-   
+  
     void vRemoveDedicatedThread(Thread* pThread);
     void vRemoveGeneralThread(Thread* pThread);
   

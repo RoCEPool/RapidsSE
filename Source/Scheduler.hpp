@@ -39,6 +39,9 @@ namespace Scheduling
 
     static void vDeassign_RunningThread(Thread* pThread);
 
+    static Task* pPop_ReadyQueue(void);
+    static Task* pPop_ReadyQueueLP(void);
+
     static void vRemove_ExecutingSet(Task* pTask);
     static void vRemove_WaitingSet(Task* pTask);
 

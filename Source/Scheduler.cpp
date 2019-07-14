@@ -426,6 +426,30 @@ void Scheduler::vDeassign_RunningThread(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop task from ready queue                                                  */
+/*----------------------------------------------------------------------------*/
+Task* Scheduler::pPop_ReadyQueue(void)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  Task* pTask = pQueues->pPopReadyQueue();
+  
+  return pTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop task from low-priority ready queue                                     */
+/*----------------------------------------------------------------------------*/
+Task* Scheduler::pPop_ReadyQueueLP(void)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  Task* pTask = pQueues->pPopReadyQueueLP();
+  
+  return pTask;
+}
+
+/*----------------------------------------------------------------------------*/
 /* remove given task from executing set                                       */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vRemove_ExecutingSet(Task* pTask)
