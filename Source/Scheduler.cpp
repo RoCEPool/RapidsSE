@@ -449,6 +449,30 @@ void Scheduler::vResume_AckedTask(Task* pTask)
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add task to executing set                                                  */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vAdd_ExecutingSet(Task* pTask)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* add task to waiting set                                                    */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vAdd_WaitingSet(Task* pTask)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  // task must be locked and in the waiting state
+  RASSERT(pTask->bIsLocked());
+  RASSERT(TS_WAITING == pTask->eState());
+
+  // add task to waiting set
+  pQueues->vAddToWaitingSet(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
 /* append task to ready queue                                                 */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vAppend_ReadyQueue(Task* pTask)
@@ -622,12 +646,6 @@ void Scheduler::vTask_Sleeping(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Waiting(Task* pTask)
 {
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  // task must be in the waiting state and locked
-  RASSERT(TS_WAITING == pTask->eState());
-  RASSERT(pTask->bIsLocked());
-  
   // activity
   if (pTask->pJob()->m_bMarkActivity) {
     if (C_UNKNOWN == pTask->pJob()->iJobId())
@@ -642,8 +660,10 @@ void Scheduler::vTask_Waiting(Task* pTask)
                             pTask->pJob());
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   // add task to waiting set
-  pQueues->vAddToWaitingSet(pTask);
+  vAdd_WaitingSet(pTask);
   
   // drop task lock
   pTask->vDropLock();

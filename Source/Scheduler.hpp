@@ -43,6 +43,9 @@ namespace Scheduling
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // support
+    static void vAdd_ExecutingSet(Task* pTask);
+    static void vAdd_WaitingSet(Task* pTask);
+  
     static void vAppend_ReadyQueue(Task* pTask);
     static void vAppend_ReadyQueueLP(Task* pTask);
 
