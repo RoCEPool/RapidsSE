@@ -65,7 +65,7 @@ namespace Threads
     void vLoop_dedicated(void);
     void vLoop_general(void);
     void vReExecuteTask(Task* pTask);
-    void vSpawnPthread_dedicated(Task* pTask);
+    void vSpawnPthread_dedicated(void);
     void vSpawnPthread_general(void);
     void vSpawnPthread_dummy(void);
     Task* pTask(void);

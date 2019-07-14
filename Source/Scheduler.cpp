@@ -120,7 +120,7 @@ void Scheduler::vAddTaskDedicated(Task* pTask)
   pThread->m_pTask = pTask;
   pThread->m_eDedicated = pTask->pJob()->eClass();
   
-  pThread->vSpawnPthread_dedicated(pTask);
+  pThread->vSpawnPthread_dedicated();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -430,7 +430,7 @@ void Thread::vReExecuteTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* spawn the os/posix pthread associated with this thread                     */
 /*----------------------------------------------------------------------------*/
-void Thread::vSpawnPthread_dedicated(Task *pTask)
+void Thread::vSpawnPthread_dedicated(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
