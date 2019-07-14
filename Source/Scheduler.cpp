@@ -146,10 +146,8 @@ void Scheduler::vCheckSleepingTasks(void)
   //
   // called from Step::vQueuesCheckSleeping()
   //
-  
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  while (Task* pWokenTask = pQueues->pPopSleepingQueue()) {
+    
+  while (Task* pWokenTask = pPop_SleepingQueue()) {
     pWokenTask->vState(TS_READY);
     vScheduleReadyTask(pWokenTask);
   }
@@ -445,6 +443,18 @@ Task* Scheduler::pPop_ReadyQueueLP(void)
   Queues* pQueues = gpAttachMap->m_pQueues;
   
   Task* pTask = pQueues->pPopReadyQueueLP();
+  
+  return pTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop task from ready queue                                                  */
+/*----------------------------------------------------------------------------*/
+Task* Scheduler::pPop_SleepingQueue(void)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  Task* pTask = pQueues->pPopSleepingQueue();
   
   return pTask;
 }

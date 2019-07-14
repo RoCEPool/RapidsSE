@@ -41,6 +41,7 @@ namespace Scheduling
 
     static Task* pPop_ReadyQueue(void);
     static Task* pPop_ReadyQueueLP(void);
+    static Task* pPop_SleepingQueue(void);
 
     static void vRemove_ExecutingSet(Task* pTask);
     static void vRemove_WaitingSet(Task* pTask);
