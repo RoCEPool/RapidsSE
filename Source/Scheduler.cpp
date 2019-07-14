@@ -436,37 +436,6 @@ void Scheduler::vQueue_ExecutingTask(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* schedule sleeping task                                                     */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vQueue_SleepingTask(Task* pTask)
-{
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  RASSERT(TS_SLEEPING == pTask->eState());
-  
-  if (pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkJob(pTask->pJob(),
-                          "Schedule sleeping: %s %p"_Stz,
-                          aCN[pTask->pJob()->eClass()],
-                          pTask->pJob());
-  
-  // is the task still actually sleeping
-  if (! pTask->bWakeupNow()) {
-    pQueues->vAddToSleepingQueue(pTask);
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tasks wake up time has already arrived. run it
-  
-  pTask->vWakeupTask();
-  
-  Thread* pCallingThread = Thread::pThisTLSThread();
-  
-  pCallingThread->vReExecuteTask(pTask);
-}
-
-/*----------------------------------------------------------------------------*/
 /* remove given task from executing set                                       */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vRemove_ExecutingSet(Task* pTask)
@@ -540,7 +509,30 @@ void Scheduler::vTask_Ready(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Sleeping(Task* pTask)
 {
-  vQueue_SleepingTask(pTask);
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  RASSERT(TS_SLEEPING == pTask->eState());
+  
+  if (pTask->pJob()->m_bMarkActivity)
+    ActivityMap::vMarkJob(pTask->pJob(),
+                          "Schedule sleeping: %s %p"_Stz,
+                          aCN[pTask->pJob()->eClass()],
+                          pTask->pJob());
+  
+  // is the task still actually sleeping
+  if (! pTask->bWakeupNow()) {
+    pQueues->vAddToSleepingQueue(pTask);
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tasks wake up time has already arrived. run it
+  
+  pTask->vWakeupTask();
+  
+  Thread* pCallingThread = Thread::pThisTLSThread();
+  
+  pCallingThread->vReExecuteTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
