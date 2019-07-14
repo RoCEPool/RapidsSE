@@ -374,29 +374,23 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
   // called from Thread::vLoop_general()
   //
   
-  while (! pThread->m_pTask) {
-    pThread->m_eThreadState = TD_IDLE;
-    vQueue_IdleThread(pThread);
-    pThread->m_pMutexThread->vCondWaitIndefinite();
-    pThread->m_eThreadState = TD_RUNNING;
-  }
+  vThread_Idle(pThread);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pThread->m_eThreadState = TD_RUNNING;
+  ASSERT(TD_RUNNING == pThread->m_eThreadState);
   ASSERT(pThread->m_pTask);
-  
+  RASSERT(TS_READY   == pThread->m_pTask->eState() ||
+          TS_YIELDED == pThread->m_pTask->eState());
+
   Pthread::vTlsSet(giTLS_TaskKey,pThread->m_pTask);
   ASSERT(Pthread::pTlsGet(giTLS_TaskKey));
   
-  RASSERT(TS_READY   == pThread->m_pTask->eState() ||
-          TS_YIELDED == pThread->m_pTask->eState());
   pThread->m_pTask->vState(TS_EXECUTING);
   pThread->m_pTask->vThread(pThread);
   
   // add this task to the executing task queue
   vQueue_ExecutingTask(pThread->m_pTask);
 }
-
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -439,16 +433,6 @@ void Scheduler::vQueue_ExecutingTask(Task* pTask)
   pTask->vState(TS_EXECUTING);
   
   pQueues->vAddToExecutingSet(pTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append idle thread onto idle thread queue                                  */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vQueue_IdleThread(Thread* pThread)
-{
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  pQueues->vAppendIdleThread(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -645,6 +629,22 @@ void Scheduler::vTask_Waiting(Task* pTask)
 void Scheduler::vTask_Yielded(Task* pTask)
 {
   vQueue_YieldedTask(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append idle thread onto idle thread queue                                  */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vThread_Idle(Thread* pThread)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  while (! pThread->m_pTask) {
+    pThread->m_eThreadState = TD_IDLE;
+    pQueues->vAppendIdleThread(pThread);
+    pThread->m_pMutexThread->vCondWaitIndefinite();
+    pThread->m_eThreadState = TD_RUNNING;
+  }
+  
 }
 
 /*============================================================================*/
