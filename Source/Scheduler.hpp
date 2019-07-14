@@ -45,10 +45,12 @@ namespace Scheduling
     // support
     static void vAdd_ExecutingSet(Task* pTask);
     static void vAdd_WaitingSet(Task* pTask);
-  
+
     static void vAppend_ReadyQueue(Task* pTask);
     static void vAppend_ReadyQueueLP(Task* pTask);
 
+    static void vInsert_SleepingQueue(Task* pTask);
+  
     static Task* pPop_ReadyQueue(void);
     static Task* pPop_ReadyQueueLP(void);
     static Task* pPop_SleepingQueue(void);

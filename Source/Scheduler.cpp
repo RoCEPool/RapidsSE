@@ -495,6 +495,16 @@ void Scheduler::vAppend_ReadyQueueLP(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert task into sleeping queue                                            */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vInsert_SleepingQueue(Task* pTask)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  pQueues->vAddToSleepingQueue(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop task from ready queue                                                  */
 /*----------------------------------------------------------------------------*/
 Task* Scheduler::pPop_ReadyQueue(void)
@@ -612,9 +622,7 @@ void Scheduler::vTask_New(Task* pTask)
 /* task transitions to sleeping                                               */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Sleeping(Task* pTask)
-{
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
+{  
   RASSERT(TS_SLEEPING == pTask->eState());
   
   if (pTask->pJob()->m_bMarkActivity)
@@ -625,7 +633,7 @@ void Scheduler::vTask_Sleeping(Task* pTask)
   
   // is the task still actually sleeping
   if (! pTask->bWakeupNow()) {
-    pQueues->vAddToSleepingQueue(pTask);
+    vInsert_SleepingQueue(pTask);
     return;
   }
   
