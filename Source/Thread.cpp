@@ -176,11 +176,7 @@ void* Thread::aEntryPoint_general(void* pArg)
   //pThread->vBindCore();
     
   try {
-#ifdef WITH_EVENT_MODEL
     pThread->vLoop_general();
-#else
-    pThread->vLoop_polling();
-#endif
   }
   
   catch (Error* pError) {
@@ -304,57 +300,6 @@ void Thread::vLoop_general(void)
     // call the task
     m_pTask->vTaskLoop();
 
-    // handle task return event
-    Scheduler::vReturnTaskLoop(&m_pTask);
-  }
-  
-  NEVER_REACH;
-}
-
-/*----------------------------------------------------------------------------*/
-/* polling-based thread loop (original loop, which is limited cond wait)      */
-/*----------------------------------------------------------------------------*/
-void Thread::vLoop_polling(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  Pthread::vTlsSet(giTLS_ThreadKey,this);
-  ASSERT(Pthread::pTlsGet(giTLS_ThreadKey) == this);
-  
-  // thread has mutex while it is running
-  m_eThreadState = TD_RUNNING;
-  m_pMutexThread->vMutexLock();
-  
-  // increment m_ixThreads to indicate thread is running
-  ++gpAttachMap->m_ixThreads;
-  
-  for (;;) {
-    
-    // get next task
-    if (! m_pTask && ! bQueuePeek()) {
-      
-      // calc limited period to be given a signal
-      i8 iWaitPeriodUsec = C_1K + Random::iInteger(0,C_10K);
-      
-      // while waiting the mutex is dropped
-      m_eThreadState = TD_IDLE;
-      m_pMutexThread->vCondWaitUsec(iWaitPeriodUsec);
-      m_eThreadState = TD_RUNNING;
-      
-      // attempt again if no task
-      if (! m_pTask)
-        continue;
-    }
-    
-    // call the task
-    vTaskCall_polling();
-    
-    if (m_pTask->pJob() && m_pTask->pJob()->m_bMarkActivity)
-      ActivityMap::vMarkJob(m_pTask->pJob(),
-                            "Returned from task call: %s %p"_Stz,
-                            aCN[m_pTask->pJob()->eClass()],
-                            m_pTask->pJob());
-    
     // handle task return event
     Scheduler::vReturnTaskLoop(&m_pTask);
   }
@@ -546,42 +491,6 @@ eTD Thread::eThreadState(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   return m_eThreadState;
-}
-
-/*----------------------------------------------------------------------------*/
-/* call the assocated task                                                    */
-/*----------------------------------------------------------------------------*/
-void Thread::vTaskCall_polling(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  m_eThreadState = TD_RUNNING;
-  ASSERT(m_pTask);
-  
-  Pthread::vTlsSet(giTLS_TaskKey,m_pTask);
-  ASSERT(Pthread::pTlsGet(giTLS_TaskKey));
-  
-  RASSERT(TS_READY == m_pTask->eState() || TS_YIELDED == m_pTask->eState());
-  m_pTask->vState(TS_EXECUTING);
-  m_pTask->vThread(this);
-  
-  // TODO: shouldn't have to refind it everytime!!!
-  m_pTask->vRefindJobClass();
-  
-  if ( ! m_pTask->bSeeded() ) {
-    m_pTask->vSeedJob();
-  }
-  
-  // add this task to the executing task queue
-  Scheduler::vQueue_ExecutingTask(m_pTask);
-  
-  // record time of call
-  // ...
-  
-  m_pTask->vTaskLoop();
-  
-  // record time of return & calculate running total times
-  // ...
 }
 
 /*----------------------------------------------------------------------------*/

@@ -64,7 +64,6 @@ namespace Threads
     void vExecuteTask(Task* pTask);
     void vLoop_dedicated(void);
     void vLoop_general(void);
-    void vLoop_polling(void);
     void vReExecuteTask(Task* pTask);
     void vSpawnPthread_dedicated(Task* pTask);
     void vSpawnPthread_general(void);
@@ -77,7 +76,6 @@ namespace Threads
   
     bool  bGrabIfIdle(void);
     bool  bQueuePeek(void);
-    void  vTaskCall_polling(void);
 
   private:
 
