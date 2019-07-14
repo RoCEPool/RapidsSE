@@ -277,7 +277,7 @@ void Scheduler::vAssignDedicatedThread(Thread* pThread)
   pThread->m_pTask->vThread(pThread);
   
   // add this task to the executing task queue
-  vQueue_ExecutingTask(pThread->m_pTask);
+  vTask_Executing(pThread->m_pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -389,7 +389,7 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
   pThread->m_pTask->vThread(pThread);
   
   // add this task to the executing task queue
-  vQueue_ExecutingTask(pThread->m_pTask);
+  vTask_Executing(pThread->m_pTask);
 }
 
 
@@ -565,6 +565,11 @@ void Scheduler::vTask_Exited(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Executing(Task* pTask)
 {
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  pTask->vState(TS_EXECUTING);
+  
+  pQueues->vAddToExecutingSet(pTask);
 }
 
 /*----------------------------------------------------------------------------*/

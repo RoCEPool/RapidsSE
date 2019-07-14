@@ -39,6 +39,7 @@ namespace Scheduling
   
   public:
     static void vQueue_ExecutingTask(Task* pTask);
+  
   private:
     static void vQueue_SleepingTask(Task* pTask);
     static void vQueue_YieldedTask(Task* pTask);
