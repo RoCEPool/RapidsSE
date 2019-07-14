@@ -48,16 +48,11 @@ void Scheduler::vAddTaskDedicated(Task* pTask)
   // called from Api::bSpawnJobDedicated()
   //
   
-  ASSERT(TS_NONE == pTask->eState());
   vTask_New(pTask);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Thread* pThread = new Thread;
-//  pThread->m_pTask = pTask;
-//  pThread->m_eDedicated = pTask->pJob()->eClass();
-//
-//  pThread->vSpawnPthread_dedicated();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -73,10 +68,9 @@ void Scheduler::vAddTaskGeneral(Task* pTask)
   // called from Api::bSpawnJob()
   //
   
-  RASSERT(TS_NONE == pTask->eState());
   vTask_New(pTask);
 
-  vScheduleReadyTask(pTask);
+  Scheduler::vScheduleReadyTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -88,10 +82,8 @@ void Scheduler::vCheckSleepingTasks(void)
   // called from Step::vQueuesCheckSleeping()
   //
     
-  while (Task* pWokenTask = pPop_SleepingQueue()) {
-    pWokenTask->vState(TS_READY);
-    vScheduleReadyTask(pWokenTask);
-  }
+  while (Task* pWokenTask = pPop_SleepingQueue())
+    Scheduler::vScheduleReadyTask(pWokenTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,10 +91,7 @@ void Scheduler::vCheckSleepingTasks(void)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vScheduleReadyTask(Task* pTask)
 {
-  //Queues* pQueues = gpAttachMap->m_pQueues;
-  
   RASSERT(TS_READY == pTask->eState());
-  RASSERT(QK_NONE  == pTask->eQueue());
 
   if (pTask->pJob()->m_bMarkActivity)
     ActivityMap::vMarkJob(pTask->pJob(),
@@ -113,7 +102,7 @@ void Scheduler::vScheduleReadyTask(Task* pTask)
   if (bAssign_IdleThread(pTask))
     return;
   
-  vTask_Ready(pTask);
+  vQueue_ReadyTask(pTask);
 }
 
 
@@ -431,11 +420,6 @@ void Scheduler::vDedicate_TaskThread(Task* pTask, Thread* pThread)
   pThread->vSpawnPthread_dedicated();
 }
 
-////////////////////////////////////////////////////////////////////////////////
-//                               support                                      //
-////////////////////////////////////////////////////////////////////////////////
-
-
 /*----------------------------------------------------------------------------*/
 /* resume an acked task (that had been waiting)                               */
 /*----------------------------------------------------------------------------*/
@@ -457,6 +441,31 @@ void Scheduler::vResume_AckedTask(Task* pTask)
   
   pTask->vState(TS_READY);
   vScheduleReadyTask(pTask);
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+//                               support                                      //
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* append task to ready queue                                                 */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vAppend_ReadyQueue(Task* pTask)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  pQueues->vAddToReadyQueue(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append task to ready queue (low-priority)                                  */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vAppend_ReadyQueueLP(Task* pTask)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  pQueues->vAddToReadyQueueLP(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -492,7 +501,26 @@ Task* Scheduler::pPop_SleepingQueue(void)
   
   Task* pTask = pQueues->pPopSleepingQueue();
   
+  if (pTask) {
+    RASSERT(QK_NONE  == pTask->eQueue());
+    pTask->vState(TS_READY);
+  }
+  
   return pTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* queue a ready task                                                         */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vQueue_ReadyTask(Task* pTask)
+{
+  pTask->vState(TS_READY);
+  ASSERT(QK_NONE == pTask->eQueue());
+  
+  if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
+    vAppend_ReadyQueue(pTask);
+  else
+    vAppend_ReadyQueueLP(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -553,23 +581,9 @@ void Scheduler::vTask_Executing(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_New(Task* pTask)
 {
-  pTask->vState(TS_READY);
-}
-
-/*----------------------------------------------------------------------------*/
-/* task transitions to ready                                                  */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTask_Ready(Task* pTask)
-{
-  Queues* pQueues = gpAttachMap->m_pQueues;
+  ASSERT(TS_NONE == pTask->eState());
   
   pTask->vState(TS_READY);
-  ASSERT(QK_NONE == pTask->eQueue());
-
-  if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
-    pQueues->vAddToReadyQueue(pTask);
-  else
-    pQueues->vAddToReadyQueueLP(pTask);
 }
 
 /*----------------------------------------------------------------------------*/

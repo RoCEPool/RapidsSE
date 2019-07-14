@@ -43,16 +43,20 @@ namespace Scheduling
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // support
+    static void vAppend_ReadyQueue(Task* pTask);
+    static void vAppend_ReadyQueueLP(Task* pTask);
+
     static Task* pPop_ReadyQueue(void);
     static Task* pPop_ReadyQueueLP(void);
     static Task* pPop_SleepingQueue(void);
 
+    static void vQueue_ReadyTask(Task* pTask);
+  
     static void vRemove_ExecutingSet(Task* pTask);
     static void vRemove_WaitingSet(Task* pTask);
 
     static void vTask_Exited(Task* pTask);
     static void vTask_Executing(Task* pTask);
-    static void vTask_Ready(Task* pTask);
     static void vTask_New(Task* pTask);
     static void vTask_Return(Task* pTask);
     static void vTask_Sleeping(Task* pTask);
