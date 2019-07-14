@@ -32,13 +32,16 @@ namespace Scheduling
     static void vWaitForTaskAssignment(Thread* pThread);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // support
+    // implementation
   
   private:
+    static bool bAck_WaitingTask(Task* pTaskBeingAcked, Task* pTaskAcking);
     static bool bAssign_IdleThread(Task* pTask);
     static void vDeassign_RunningThread(Thread* pThread);
     static void vResume_AckedTask(Task* pTask);
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // support
     static Task* pPop_ReadyQueue(void);
     static Task* pPop_ReadyQueueLP(void);
     static Task* pPop_SleepingQueue(void);

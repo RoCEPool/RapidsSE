@@ -21,53 +21,7 @@ bool Scheduler::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
   // called from Step::vTaskAck()
   //
   
-  RASSERT(TS_EXECUTING == pTaskAcking->eState());
-  RASSERT(pTaskBeingAcked->iAcksRmg_assert_only_() > 0);
-  
-  Job* pJobBeingAcked = pTaskBeingAcked->pJob();
-  Job* pJobAcking     = pTaskAcking->pJob();
-  
-  if (pJobAcking->m_bMarkActivity || pJobBeingAcked->m_bMarkActivity) {
-    ActivityMap::vMarkJob(pJobBeingAcked,
-                       "pTaskBeingAcked:%p Job %s "_Stz,
-                       pTaskBeingAcked,
-                       aCN[pJobBeingAcked->eClass()]
-                      );
-    ActivityMap::vMarkJob(pJobAcking,
-                       "pTaskAcking:%p Job %s "_Stz,
-                       pTaskAcking,
-                       aCN[pJobAcking->eClass()]
-                       );
-  }
-  
-  ActionSequence::vAdd(pTaskAcking->pJob(),
-                       AN_ACK_TASK,
-                       pTaskBeingAcked->pJob());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  bool bAmDecider = pTaskBeingAcked->bAckAndDecide();
-  
-  if (bAmDecider) {
-    if (pJobBeingAcked->m_bMarkActivity || pJobAcking->m_bMarkActivity)
-      ActivityMap::vMarkJob(pJobAcking,
-                            "Decider %s acks %s"_Stz,
-                            aCN[pJobAcking->eClass()],
-                            aCN[pJobBeingAcked->eClass()]
-                            );
-  }
-
-  if ( (pJobBeingAcked && JT_NONE != pJobBeingAcked->eJobTrace()) ||
-       (pJobAcking && JT_NONE != pJobAcking->eJobTrace())  ) {
-    vTrace("Ack of %s task %p by %s task %p ; %s\n"_Stz,
-           pJobBeingAcked ? aCN[pJobBeingAcked->m_pJobClass->m_eClass] : "<no job>"_Stz,
-           pTaskBeingAcked,
-           pJobAcking ? aCN[pJobAcking->m_pJobClass->m_eClass] : "<no job>"_Stz,
-           pJobAcking,
-           bAmDecider ? "decider" : "not decider");
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  bool bAmDecider = bAck_WaitingTask(pTaskBeingAcked,pTaskAcking);
   
   if (! bAmDecider)
     return false;
@@ -206,6 +160,7 @@ void Scheduler::vAssignDedicatedThread(Thread* pThread)
   ASSERT(TD_RUNNING == pThread->m_eThreadState);
   ASSERT(pThread->m_pMutexThread->bMutexIsLocked());
   
+  // put task into thread local storage
   Pthread::vTlsSet(giTLS_TaskKey,pThread->m_pTask);
   ASSERT(Pthread::pTlsGet(giTLS_TaskKey));
   
@@ -355,6 +310,7 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
   RASSERT(TS_READY   == pThread->m_pTask->eState() ||
           TS_YIELDED == pThread->m_pTask->eState());
 
+  // put task into thread local storage
   Pthread::vTlsSet(giTLS_TaskKey,pThread->m_pTask);
   ASSERT(Pthread::pTlsGet(giTLS_TaskKey));
   
@@ -370,6 +326,60 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
 //                                private                                     //
 ////////////////////////////////////////////////////////////////////////////////
 
+
+/*----------------------------------------------------------------------------*/
+/* ack a waiting task                                                         */
+/*----------------------------------------------------------------------------*/
+bool Scheduler::bAck_WaitingTask(Task* pTaskBeingAcked, Task* pTaskAcking)
+{
+  RASSERT(TS_EXECUTING == pTaskAcking->eState());
+  RASSERT(pTaskBeingAcked->iAcksRmg_assert_only_() > 0);
+  
+  Job* pJobBeingAcked = pTaskBeingAcked->pJob();
+  Job* pJobAcking     = pTaskAcking->pJob();
+  
+  if (pJobAcking->m_bMarkActivity || pJobBeingAcked->m_bMarkActivity) {
+    ActivityMap::vMarkJob(pJobBeingAcked,
+                          "pTaskBeingAcked:%p Job %s "_Stz,
+                          pTaskBeingAcked,
+                          aCN[pJobBeingAcked->eClass()]
+                          );
+    ActivityMap::vMarkJob(pJobAcking,
+                          "pTaskAcking:%p Job %s "_Stz,
+                          pTaskAcking,
+                          aCN[pJobAcking->eClass()]
+                          );
+  }
+  
+  ActionSequence::vAdd(pTaskAcking->pJob(),
+                       AN_ACK_TASK,
+                       pTaskBeingAcked->pJob());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  bool bAmDecider = pTaskBeingAcked->bAckAndDecide();
+  
+  if (bAmDecider) {
+    if (pJobBeingAcked->m_bMarkActivity || pJobAcking->m_bMarkActivity)
+      ActivityMap::vMarkJob(pJobAcking,
+                            "Decider %s acks %s"_Stz,
+                            aCN[pJobAcking->eClass()],
+                            aCN[pJobBeingAcked->eClass()]
+                            );
+  }
+  
+  if ( (pJobBeingAcked && JT_NONE != pJobBeingAcked->eJobTrace()) ||
+      (pJobAcking && JT_NONE != pJobAcking->eJobTrace())  ) {
+    vTrace("Ack of %s task %p by %s task %p ; %s\n"_Stz,
+           pJobBeingAcked ? aCN[pJobBeingAcked->m_pJobClass->m_eClass] : "<no job>"_Stz,
+           pTaskBeingAcked,
+           pJobAcking ? aCN[pJobAcking->m_pJobClass->m_eClass] : "<no job>"_Stz,
+           pJobAcking,
+           bAmDecider ? "decider" : "not decider");
+  }
+
+  return bAmDecider;
+}
 
 /*----------------------------------------------------------------------------*/
 /* attempt to pop an idle thread and assign given task to it                  */
