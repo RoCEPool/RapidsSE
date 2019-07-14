@@ -45,6 +45,7 @@ namespace Scheduling
     static void vTask_Exited(Task* pTask);
     static void vTask_Executing(Task* pTask);
     static void vTask_Ready(Task* pTask);
+    static void vTask_New(Task* pTask);
     static void vTask_Return(Task* pTask);
     static void vTask_Sleeping(Task* pTask);
     static void vTask_Waiting(Task* pTask);

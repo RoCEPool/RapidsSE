@@ -114,7 +114,7 @@ void Scheduler::vAddTaskDedicated(Task* pTask)
   //
   
   ASSERT(TS_NONE == pTask->eState());
-  pTask->vState(TS_READY);
+  vTask_New(pTask);
   
   Thread* pThread = new Thread;
   pThread->m_pTask = pTask;
@@ -133,7 +133,7 @@ void Scheduler::vAddTaskGeneral(Task* pTask)
   //
   
   RASSERT(TS_NONE == pTask->eState());
-  pTask->vState(TS_READY);
+  vTask_New(pTask);
 
   vScheduleReadyTask(pTask);
 }
@@ -183,7 +183,7 @@ void Scheduler::vScheduleReadyTask(Task* pTask)
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* append given idle thread onto dedicated thread vector                      */
+/* append new thread onto dedicated thread vector                             */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vAddThreadDedicated(Thread* pThread)
 {
@@ -196,12 +196,11 @@ void Scheduler::vAddThreadDedicated(Thread* pThread)
   RASSERT(CN_NONE != pThread->m_eDedicated);
   
   pThread->m_eThreadState = TD_IDLE;
-  
   pQueues->vAddThreadDedicated(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
-/* append given idle thread onto general thread vector                        */
+/* append new thread onto general thread vector                               */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vAddThreadGeneral(Thread* pThread)
 {
@@ -212,7 +211,6 @@ void Scheduler::vAddThreadGeneral(Thread* pThread)
   Queues* pQueues = gpAttachMap->m_pQueues;
   
   pThread->m_eThreadState = TD_IDLE;
-  
   pQueues->vAddThreadGeneral(pThread);
 }
 
@@ -480,6 +478,14 @@ void Scheduler::vTask_Executing(Task* pTask)
   pTask->vState(TS_EXECUTING);
   
   pQueues->vAddToExecutingSet(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* task transitions to new                                                    */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTask_New(Task* pTask)
+{
+  pTask->vState(TS_READY);
 }
 
 /*----------------------------------------------------------------------------*/
