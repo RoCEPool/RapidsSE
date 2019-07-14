@@ -455,6 +455,8 @@ void Scheduler::vAdd_ExecutingSet(Task* pTask)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
   
+  pTask->vState(TS_EXECUTING);
+  pQueues->vAddToExecutingSet(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -593,11 +595,7 @@ void Scheduler::vTask_Exited(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Executing(Task* pTask)
 {
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  pTask->vState(TS_EXECUTING);
-  
-  pQueues->vAddToExecutingSet(pTask);
+  vAdd_ExecutingSet(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
