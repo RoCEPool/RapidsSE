@@ -28,11 +28,11 @@ bool Scheduler::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  RASSERT(! pTaskBeingAcked->iAcksRmg_assert_only_());
+  
   ActionSequence::vAdd(pTaskAcking->pJob(),
                        AN_AM_DECIDER,
                        pTaskBeingAcked->pJob());
-  
-  RASSERT(! pTaskBeingAcked->iAcksRmg_assert_only_());
   
   vResume_AckedTask(pTaskBeingAcked);
 
@@ -51,11 +51,17 @@ void Scheduler::vAddTaskDedicated(Task* pTask)
   ASSERT(TS_NONE == pTask->eState());
   vTask_New(pTask);
   
-  Thread* pThread = new Thread;
-  pThread->m_pTask = pTask;
-  pThread->m_eDedicated = pTask->pJob()->eClass();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pThread->vSpawnPthread_dedicated();
+  Thread* pThread = new Thread;
+//  pThread->m_pTask = pTask;
+//  pThread->m_eDedicated = pTask->pJob()->eClass();
+//
+//  pThread->vSpawnPthread_dedicated();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  vDedicate_TaskThread(pTask,pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -323,7 +329,7 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
 
 
 ////////////////////////////////////////////////////////////////////////////////
-//                                private                                     //
+//                            implementation                                  //
 ////////////////////////////////////////////////////////////////////////////////
 
 
@@ -413,6 +419,22 @@ void Scheduler::vDeassign_RunningThread(Thread* pThread)
 {
   pThread->m_pTask = nullptr;
 }
+
+/*----------------------------------------------------------------------------*/
+/* dedicate thread to task                                                    */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vDedicate_TaskThread(Task* pTask, Thread* pThread)
+{
+  pThread->m_pTask = pTask;
+  pThread->m_eDedicated = pTask->pJob()->eClass();
+  
+  pThread->vSpawnPthread_dedicated();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//                               support                                      //
+////////////////////////////////////////////////////////////////////////////////
+
 
 /*----------------------------------------------------------------------------*/
 /* resume an acked task (that had been waiting)                               */
