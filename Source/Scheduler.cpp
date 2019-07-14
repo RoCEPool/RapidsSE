@@ -475,7 +475,19 @@ void Scheduler::vAdd_WaitingSet(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append task to ready queue                                                 */
+/* append idle thread onto idle thread queue                                  */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vAppend_IdleQueue(Thread* pThread)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  pThread->m_eThreadState = TD_IDLE;
+  
+  pQueues->vAppendIdleThread(pThread);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append task to ready queue (normal priority)                               */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vAppend_ReadyQueue(Task* pTask)
 {
@@ -622,7 +634,7 @@ void Scheduler::vTask_New(Task* pTask)
 /* task transitions to sleeping                                               */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Sleeping(Task* pTask)
-{  
+{
   RASSERT(TS_SLEEPING == pTask->eState());
   
   if (pTask->pJob()->m_bMarkActivity)
@@ -758,7 +770,7 @@ void Scheduler::vThread_Idle(Thread* pThread)
   
   while (! pThread->m_pTask) {
     pThread->m_eThreadState = TD_IDLE;
-    pQueues->vAppendIdleThread(pThread);
+    vAppend_IdleQueue(pThread);
     pThread->m_pMutexThread->vCondWaitIndefinite();
     pThread->m_eThreadState = TD_RUNNING;
   }
