@@ -36,8 +36,8 @@ namespace Scheduling
   
   private:
     static bool bAssign_IdleThread(Task* pTask);
-
     static void vDeassign_RunningThread(Thread* pThread);
+    static void vResume_AckedTask(Task* pTask);
 
     static Task* pPop_ReadyQueue(void);
     static Task* pPop_ReadyQueueLP(void);

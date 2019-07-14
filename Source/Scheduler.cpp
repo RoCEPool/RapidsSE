@@ -80,26 +80,7 @@ bool Scheduler::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
   
   RASSERT(! pTaskBeingAcked->iAcksRmg_assert_only_());
   
-  //vQueue_AckedTask(pTaskBeingAcked);
-  
-  if (pTaskBeingAcked->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkJob(pTaskBeingAcked->pJob(),
-                          "Scheduling acked: %s %p"_Stz,
-                          aCN[pTaskBeingAcked->pJob()->eClass()],
-                          pTaskBeingAcked->pJob());
-  
-  //ActionSequence::vAdd(pTask->pJob(),AN_TASK_ACKED);
-  
-  pTaskBeingAcked->vGrabLock();
-  
-  // having got the lock, the task should be TS_WAITING and QK_WAITING_SET
-  
-  pTaskBeingAcked->vDropLock();
-  
-  vRemove_WaitingSet(pTaskBeingAcked);
-  
-  pTaskBeingAcked->vState(TS_READY);
-  vScheduleReadyTask(pTaskBeingAcked);
+  vResume_AckedTask(pTaskBeingAcked);
 
   return true;
 }
@@ -421,6 +402,29 @@ bool Scheduler::bAssign_IdleThread(Task* pTask)
 void Scheduler::vDeassign_RunningThread(Thread* pThread)
 {
   pThread->m_pTask = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* resume an acked task (that had been waiting)                               */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vResume_AckedTask(Task* pTask)
+{
+  if (pTask->pJob()->m_bMarkActivity)
+    ActivityMap::vMarkJob(pTask->pJob(),
+                          "Scheduling acked: %s %p"_Stz,
+                          aCN[pTask->pJob()->eClass()],
+                          pTask->pJob());
+  
+  pTask->vGrabLock();
+  
+  // having got the lock, the task should be TS_WAITING and QK_WAITING_SET
+  
+  pTask->vDropLock();
+  
+  vRemove_WaitingSet(pTask);
+  
+  pTask->vState(TS_READY);
+  vScheduleReadyTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
