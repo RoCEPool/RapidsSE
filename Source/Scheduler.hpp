@@ -38,7 +38,7 @@ namespace Scheduling
     static bool bAck_WaitingTask(Task* pTaskBeingAcked, Task* pTaskAcking);
     static bool bAssign_IdleThread(Task* pTask);
     static void vDeassign_RunningThread(Thread* pThread);
-    static void vDedicate_TaskThread(Task* pTask, Thread* pThread);
+    static void vDedicate_ThreadTask(Thread* pThread, Task* pTask);
     static void vResume_AckedTask(Task* pTask);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

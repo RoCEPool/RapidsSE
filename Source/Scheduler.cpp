@@ -48,15 +48,13 @@ void Scheduler::vAddTaskDedicated(Task* pTask)
   // called from Api::bSpawnJobDedicated()
   //
   
+  Thread* pThread = new Thread;
+
   vTask_New(pTask);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Thread* pThread = new Thread;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  vDedicate_TaskThread(pTask,pThread);
+  vDedicate_ThreadTask(pThread,pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -412,7 +410,7 @@ void Scheduler::vDeassign_RunningThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* dedicate thread to task                                                    */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vDedicate_TaskThread(Task* pTask, Thread* pThread)
+void Scheduler::vDedicate_ThreadTask(Thread* pThread, Task* pTask)
 {
   pThread->m_pTask = pTask;
   pThread->m_eDedicated = pTask->pJob()->eClass();
