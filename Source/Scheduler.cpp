@@ -22,7 +22,7 @@ bool Scheduler::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
   // called from Step::vTaskAck()
   //
   
-  bool bAmDecider = bAck_WaitingTask(pTaskBeingAcked,pTaskAcking);
+  bool bAmDecider = bTask_AckWaiting(pTaskBeingAcked,pTaskAcking);
   
   if (! bAmDecider)
     return false;
@@ -35,7 +35,7 @@ bool Scheduler::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
                        AN_AM_DECIDER,
                        pTaskBeingAcked->pJob());
   
-  vResume_AckedTask(pTaskBeingAcked);
+  vTask_ResumeAck(pTaskBeingAcked);
 
   return true;
 }
@@ -51,7 +51,7 @@ void Scheduler::vAddTaskDedicated(Task* pTask)
   
   Thread* pThread = new Thread;
 
-  vSpawn_NewTask(pTask);
+  vTask_SpawnNew(pTask);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -67,7 +67,7 @@ void Scheduler::vAddTaskGeneral(Task* pTask)
   // called from Api::bSpawnJob()
   //
   
-  vSpawn_NewTask(pTask);
+  vTask_SpawnNew(pTask);
 
   Scheduler::vScheduleReadyTask(pTask);
 }
@@ -94,10 +94,10 @@ void Scheduler::vReturnTaskLoop(Thread* pThread)
   // add task to another appropriate queue depending on its state
   switch (pTask->eState()) {
       
-    case TS_EXITED:    vExit_Task(pTask);   break;
-    case TS_SLEEPING:  vSleep_Task(pTask);  break;
-    case TS_WAITING:   vWait_Task(pTask);   break;
-    case TS_YIELDED:   vYield_Task(pTask);  break;
+    case TS_EXITED:    vTask_Exit(pTask);   break;
+    case TS_SLEEPING:  vTask_Sleep(pTask);  break;
+    case TS_WAITING:   vTask_Wait(pTask);   break;
+    case TS_YIELDED:   vTask_Yield(pTask);  break;
       
       // should never come here for these states
     case TS_EXECUTING: ASSERT(0);
@@ -137,7 +137,7 @@ void Scheduler::vWakeSleepingTasks(void)
   // called from Step::vQueuesCheckSleeping()
   //
   
-  vWake_SleepingTasks();
+  vTask_WakeSleeping();
 }
 
 
@@ -207,7 +207,6 @@ void Scheduler::vBeginThread(Thread* pThread)
   //
   
   vThread_Beginning(pThread);
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -319,7 +318,7 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* ack a waiting task                                                         */
 /*----------------------------------------------------------------------------*/
-bool Scheduler::bAck_WaitingTask(Task* pTaskBeingAcked, Task* pTaskAcking)
+bool Scheduler::bTask_AckWaiting(Task* pTaskBeingAcked, Task* pTaskAcking)
 {
   RASSERT(TS_EXECUTING == pTaskAcking->eState());
   RASSERT(pTaskBeingAcked->iAcksRmg_assert_only_() > 0);
@@ -373,7 +372,7 @@ bool Scheduler::bAck_WaitingTask(Task* pTaskBeingAcked, Task* pTaskAcking)
 /*----------------------------------------------------------------------------*/
 /* task is to exit                                                            */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vExit_Task(Task* pTask)
+void Scheduler::vTask_Exit(Task* pTask)
 {
   RASSERT(TS_EXITED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
@@ -388,7 +387,7 @@ void Scheduler::vExit_Task(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* resume an acked task (that had been waiting)                               */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vResume_AckedTask(Task* pTask)
+void Scheduler::vTask_ResumeAck(Task* pTask)
 {
   if (pTask->pJob()->m_bMarkActivity)
     ActivityMap::vMarkJob(pTask->pJob(),
@@ -411,7 +410,7 @@ void Scheduler::vResume_AckedTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* task transitions to sleeping                                               */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vSleep_Task(Task* pTask)
+void Scheduler::vTask_Sleep(Task* pTask)
 {
   RASSERT(TS_SLEEPING == pTask->eState());
   
@@ -440,7 +439,7 @@ void Scheduler::vSleep_Task(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* task transitions to new                                                    */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vSpawn_NewTask(Task* pTask)
+void Scheduler::vTask_SpawnNew(Task* pTask)
 {
   ASSERT(TS_NONE == pTask->eState());
   
@@ -450,7 +449,7 @@ void Scheduler::vSpawn_NewTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* task is to wait for acks                                                   */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vWait_Task(Task* pTask)
+void Scheduler::vTask_Wait(Task* pTask)
 {
   // activity
   if (pTask->pJob()->m_bMarkActivity) {
@@ -478,7 +477,7 @@ void Scheduler::vWait_Task(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* wake any sleeping tasks whose wakeup time has arrived                      */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vWake_SleepingTasks(void)
+void Scheduler::vTask_WakeSleeping(void)
 {
   while (Task* pWokenTask = pPop_SleepingQueue())
     Scheduler::vScheduleReadyTask(pWokenTask);
@@ -487,7 +486,7 @@ void Scheduler::vWake_SleepingTasks(void)
 /*----------------------------------------------------------------------------*/
 /* task has yielded                                                           */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vYield_Task(Task* pTask)
+void Scheduler::vTask_Yield(Task* pTask)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
   
@@ -534,6 +533,133 @@ void Scheduler::vYield_Task(Task* pTask)
     pTask->vState(TS_READY);
     pQueues->vAddToReadyQueueLP_NL(pTask);
     pQueues->m_pReadyQueueLP->vDropLock();
+  }
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+//                          implementation for threads                        //
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add thread to dedicated thread set                                         */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vThread_AddDedicated(Thread* pThread)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  pThread->m_eThreadState = TD_IDLE;
+  pQueues->vAddThreadDedicated(pThread);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add thread to general thread set                                           */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vThread_AddGeneral(Thread* pThread)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  pThread->m_eThreadState = TD_IDLE;
+  pQueues->vAddThreadGeneral(pThread);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append idle thread onto idle thread queue                                  */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vThread_AppendIdle(Thread* pThread)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  pThread->m_eThreadState = TD_IDLE;
+  
+  pQueues->vAppendIdleThread(pThread);
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to pop an idle thread and assign given task to it                  */
+/*----------------------------------------------------------------------------*/
+bool Scheduler::bThread_AssignIdle(Task* pTask)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  Thread* pIdleThread = pQueues->pPopIdleThread();
+  
+  if (! pIdleThread)
+    return false;
+  
+  ActionSequence::vAdd(pTask->pJob(),AN_THREAD_EXECUTE,pIdleThread->iThreadNo());
+  
+  pIdleThread->m_pTask = pTask;
+  
+  pIdleThread->m_nAssignedTasks++;
+  
+  pIdleThread->m_pMutexThread->vMutexLock();
+  pIdleThread->m_pMutexThread->vCondSignal();
+  pIdleThread->m_pMutexThread->vMutexUnlock();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* deassign task from thread                                                  */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vThread_DeassignRunning(Thread* pThread)
+{
+  pThread->m_pTask = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread is beginning                                                        */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vThread_Beginning(Thread* pThread)
+{
+  // thread has mutex while it is running
+  pThread->m_eThreadState = TD_RUNNING;
+  pThread->m_pMutexThread->vMutexLock();
+  
+  // increment m_ixThreads to indicate thread is running
+  ++gpAttachMap->m_ixThreads;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dedicate thread to task                                                    */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vThread_DedicatedTask(Thread* pThread, Task* pTask)
+{
+  pThread->m_pTask = pTask;
+  pThread->m_eDedicated = pTask->pJob()->eClass();
+  
+  pThread->vSpawnPthread_dedicated();
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread is ending                                                           */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vThread_Ending(Thread* pThread)
+{
+  pThread->m_pMutexThread->vMutexUnlock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread is running                                                          */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vThread_Running(Thread* pThread)
+{
+}
+
+/*----------------------------------------------------------------------------*/
+/* append idle thread onto idle thread queue                                  */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vThread_WaitAssignment(Thread* pThread)
+{
+  RASSERT(pThread->m_pMutexThread->bMutexIsLocked());
+  
+  while (! pThread->m_pTask) {
+    pThread->m_eThreadState = TD_IDLE;
+    vThread_AppendIdle(pThread);
+    pThread->m_pMutexThread->vCondWaitIndefinite();
+    pThread->m_eThreadState = TD_RUNNING;
   }
 }
 
@@ -677,132 +803,6 @@ void Scheduler::vRemove_WaitingSet(Task* pTask)
   RASSERT(QK_WAITING_SET == pTask->eQueue());
   pQueues->vRemoveFromWaitingSet(pTask);
   RASSERT(QK_NONE == pTask->eQueue());
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-//                               support for queues                           //
-////////////////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* add thread to dedicated thread set                                         */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vThread_AddDedicated(Thread* pThread)
-{
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  pThread->m_eThreadState = TD_IDLE;
-  pQueues->vAddThreadDedicated(pThread);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add thread to general thread set                                           */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vThread_AddGeneral(Thread* pThread)
-{
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  pThread->m_eThreadState = TD_IDLE;
-  pQueues->vAddThreadGeneral(pThread);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append idle thread onto idle thread queue                                  */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vThread_AppendIdle(Thread* pThread)
-{
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  pThread->m_eThreadState = TD_IDLE;
-  
-  pQueues->vAppendIdleThread(pThread);
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt to pop an idle thread and assign given task to it                  */
-/*----------------------------------------------------------------------------*/
-bool Scheduler::bThread_AssignIdle(Task* pTask)
-{
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  Thread* pIdleThread = pQueues->pPopIdleThread();
-  
-  if (! pIdleThread)
-    return false;
-  
-  ActionSequence::vAdd(pTask->pJob(),AN_THREAD_EXECUTE,pIdleThread->iThreadNo());
-  
-  pIdleThread->m_pTask = pTask;
-  
-  pIdleThread->m_nAssignedTasks++;
-  
-  pIdleThread->m_pMutexThread->vMutexLock();
-  pIdleThread->m_pMutexThread->vCondSignal();
-  pIdleThread->m_pMutexThread->vMutexUnlock();
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* deassign task from thread                                                  */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vThread_DeassignRunning(Thread* pThread)
-{
-  pThread->m_pTask = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* thread is beginning                                                        */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vThread_Beginning(Thread* pThread)
-{
-  // thread has mutex while it is running
-  pThread->m_eThreadState = TD_RUNNING;
-  pThread->m_pMutexThread->vMutexLock();
-  
-  // increment m_ixThreads to indicate thread is running
-  ++gpAttachMap->m_ixThreads;
-}
-
-/*----------------------------------------------------------------------------*/
-/* dedicate thread to task                                                    */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vThread_DedicatedTask(Thread* pThread, Task* pTask)
-{
-  pThread->m_pTask = pTask;
-  pThread->m_eDedicated = pTask->pJob()->eClass();
-  
-  pThread->vSpawnPthread_dedicated();
-}
-
-/*----------------------------------------------------------------------------*/
-/* thread is ending                                                           */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vThread_Ending(Thread* pThread)
-{
-  pThread->m_pMutexThread->vMutexUnlock();
-}
-
-/*----------------------------------------------------------------------------*/
-/* thread is running                                                          */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vThread_Running(Thread* pThread)
-{
-}
-
-/*----------------------------------------------------------------------------*/
-/* append idle thread onto idle thread queue                                  */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vThread_WaitAssignment(Thread* pThread)
-{
-  RASSERT(pThread->m_pMutexThread->bMutexIsLocked());
-  
-  while (! pThread->m_pTask) {
-    pThread->m_eThreadState = TD_IDLE;
-    vThread_AppendIdle(pThread);
-    pThread->m_pMutexThread->vCondWaitIndefinite();
-    pThread->m_eThreadState = TD_RUNNING;
-  }
 }
 
 /*============================================================================*/
