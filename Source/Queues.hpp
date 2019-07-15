@@ -44,55 +44,55 @@ namespace Scheduling
   
     static void vThreadsReport(void);
   
+  // - - - - - - - - - - - - - - - - - - - - - - -
+  // task
+  private:
+    void vAddToExecutingSet(Task* pTask);
+    void vAddToReadyQueue(Task* pTask);
+    void vAddToReadyQueueLP(Task* pTask);
+    void vAddToSleepingQueue(Task* pTask);
+    void vAddToWaitingSet(Task* pTask);
+  
+    Task* pPopReadyQueue(void);
+    Task* pPopReadyQueueLP(void);
+    Task* pPopSleepingQueue(void);
+  
+    void vRemoveFromExecutingSet(Task* pTask);
+    void vRemoveFromWaitingSet(Task* pTask);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - -
+  // thread
+  private:
+    void vAddThreadDedicated(Thread* pThread);
+    void vAddThreadGeneral(Thread* pThread);
+    Thread* pPopIdleThread(void);
+    void vAppendIdleThread(Thread* pThread);
+    void vRemoveDedicatedThread(Thread* pThread);
+    void vRemoveGeneralThread(Thread* pThread);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - -
   public:
     void vDumpExecutingSet(void);
     void vDumpReadyQueue(void);
     void vDumpReadyQueueLP(void);
     void vDumpSleepingQueue(void);
     void vDumpWaitingSet(void);
-    
+  
     void vMonitorPortrait(s48K& sPortrait);
     void vMonitorThread(s48K& sPortrait);
   
-    Task* pPopReadyQueue(void);
-    Task* pPopReadyQueueLP(void);
-    Task* pPopSleepingQueue(void);
-
     i8   nTasksExecuting(void);
     i8   nTasksReady(void);
     i8   nTasksReadyLP(void);
     i8   nTasksSleeping(void);
     i8   nTasksWaiting(void);
   
-    void vAddToReadyQueue(Task* pTask);
-    void vAddToReadyQueueLP(Task* pTask);
-
-  
   private:
-    void vAddThreadDedicated(Thread* pThread);
-    void vAddThreadGeneral(Thread* pThread);
-
-    void vAddToExecutingSet(Task* pTask);
-    void vAddToSleepingQueue(Task* pTask);
-    void vAddToWaitingSet(Task* pTask);
-  
     void vAddToExecutingSet_NL(Task* pTask);
     void vAddToReadyQueue_NL(Task* pTask);
     void vAddToReadyQueueLP_NL(Task* pTask);
     void vAddToSleepingQueue_NL(Task* pTask);
     void vAddToWaitingSet_NL(Task* pTask);
-  
-    void vAppendIdleThread(Thread* pThread);
-  
- 
-    Thread* pPopIdleThread(void);
-
-  
-    void vRemoveDedicatedThread(Thread* pThread);
-    void vRemoveGeneralThread(Thread* pThread);
-  
-    void vRemoveFromExecutingSet(Task* pTask);
-    void vRemoveFromWaitingSet(Task* pTask);
   
     Footer* aFooter(void);
   };
