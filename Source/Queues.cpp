@@ -647,43 +647,6 @@ void Queues::vAppendIdleThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* attempt to find idle thread                                                */
-/*----------------------------------------------------------------------------*/
-Thread* Queues::pFindIdleThread(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  Thread* pThisThread = nullptr;
-  
-  if ( ! Pthread::bIsJavaThread() )
-    pThisThread = Thread::pThisTLSThread();
-  
-  m_pGeneralThreadVec->vGrabLock();
-
-  i8 nThreads = m_pGeneralThreadVec->nItems();
-  for (i8 i_Thread = 0; i_Thread < nThreads; i_Thread++) {
-
-    Thread* pThread = m_pGeneralThreadVec->pGet(i_Thread);
-    
-    // skip this thread
-    if (pThread == pThisThread)
-      continue;
-
-    // attempt to grab this thread as an idle thread
-    if (pThread->bGrabIfIdle()) {
-      m_pGeneralThreadVec->vDropLock();
-      return pThread;
-    }
-  }
-  
-  m_pGeneralThreadVec->vDropLock();
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
 /* pop idle thread                                                            */
 /*----------------------------------------------------------------------------*/
 Thread* Queues::pPopIdleThread(void)

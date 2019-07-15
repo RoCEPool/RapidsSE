@@ -50,9 +50,7 @@ namespace Scheduling
     void vDumpReadyQueueLP(void);
     void vDumpSleepingQueue(void);
     void vDumpWaitingSet(void);
-  
-    Thread* pFindIdleThread(void);
-  
+    
     void vMonitorPortrait(s48K& sPortrait);
     void vMonitorThread(s48K& sPortrait);
   
