@@ -340,30 +340,6 @@ void Queues::vMonitorThread(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* pop next queued task in round robin fashion                                */
-/*----------------------------------------------------------------------------*/
-bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  Task* pPoppedTask;
-  
-  // set popped task to be null to start with
-  *ppPoppedTask = NULL;
-  
-  if ( (pPoppedTask = pPopReadyQueue()) ) {
-    *ppPoppedTask = pPoppedTask;
-    return true;
-  }
-  
-  if ( (pPoppedTask = pPopReadyQueueLP()) ) {
-    *ppPoppedTask = pPoppedTask;
-    return true;
-  }
-  
-  return false;
-}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

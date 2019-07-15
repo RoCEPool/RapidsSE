@@ -75,7 +75,6 @@ namespace Threads
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
     bool  bGrabIfIdle(void);
-    bool  bQueuePeek(void);
 
   private:
 

@@ -56,8 +56,6 @@ namespace Scheduling
     void vMonitorPortrait(s48K& sPortrait);
     void vMonitorThread(s48K& sPortrait);
   
-    bool bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread);
-
     Task* pPopReadyQueue(void);
     Task* pPopReadyQueueLP(void);
     Task* pPopSleepingQueue(void);

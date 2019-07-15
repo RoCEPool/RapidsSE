@@ -386,27 +386,6 @@ void Thread::vExecuteTask(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* attempt to get a task to run by peeking at the queues                      */
-/*---------------------------------------------------------------------------*/
-bool Thread::bQueuePeek(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  Task* pPoppedTask;
-  bool bPopped = gpAttachMap->m_pQueues->bPopQueuedTask(&pPoppedTask,this);
-  
-  if (! bPopped)
-    return false;
-
-  if (TS_READY != pPoppedTask->eState())
-    pPoppedTask->vState(TS_READY);
-  
-  m_pTask = pPoppedTask;
-
-  return bPopped;
-}
-
-/*----------------------------------------------------------------------------*/
 /* re-execute same task (tried to sleep or yield but could continue)          */
 /*----------------------------------------------------------------------------*/
 void Thread::vReExecuteTask(Task* pTask)
