@@ -482,8 +482,11 @@ void Scheduler::vTask_Wait(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_WakeSleeping(void)
 {
-  while (Task* pWokenTask = pQueue_PopSleepingQueue())
+  while (Task* pWokenTask = gpAttachMap->m_pQueues->pPopSleepingQueue()) {
+    RASSERT(QK_NONE  == pWokenTask->eQueue());
+    pWokenTask->vState(TS_READY);
     Scheduler::vScheduleReadyTask(pWokenTask);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -748,23 +751,6 @@ Task* Scheduler::pQueue_PopReadyQueueLP(void)
   Queues* pQueues = gpAttachMap->m_pQueues;
   
   Task* pTask = pQueues->pPopReadyQueueLP();
-  
-  return pTask;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop task from ready queue                                                  */
-/*----------------------------------------------------------------------------*/
-Task* Scheduler::pQueue_PopSleepingQueue(void)
-{
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  Task* pTask = pQueues->pPopSleepingQueue();
-  
-  if (pTask) {
-    RASSERT(QK_NONE  == pTask->eQueue());
-    pTask->vState(TS_READY);
-  }
   
   return pTask;
 }
