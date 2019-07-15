@@ -80,8 +80,7 @@ void Scheduler::vCheckSleepingTasks(void)
   // called from Step::vQueuesCheckSleeping()
   //
     
-  while (Task* pWokenTask = pPop_SleepingQueue())
-    Scheduler::vScheduleReadyTask(pWokenTask);
+  vWake_SleepingTasks();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -310,59 +309,6 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
   vTask_Executing(pThread->m_pTask);
 }
 
-/*----------------------------------------------------------------------------*/
-/* task has yielded                                                           */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vYield_Task(Task* pTask)
-{
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  // task must be in the yielded state
-  RASSERT(TS_YIELDED == pTask->eState());
-  
-  Thread* pCallingThread = Thread::pThisTLSThread();
-  
-  if (pTask->pJob()->m_bMarkActivity) {
-    if (C_UNKNOWN == pTask->pJob()->iJobId())
-      ActivityMap::vMarkInfo(
-                             "Schedule yielded: %s %p"_Stz,
-                             aCN[pTask->pJob()->eClass()],
-                             pTask->pJob());
-    else
-      ActivityMap::vMarkJob(pTask->pJob(),
-                            "Schedule yielded: %s %p"_Stz,
-                            aCN[pTask->pJob()->eClass()],
-                            pTask->pJob());
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // - A general thread has executed a task which retured TS_YIELDED.
-  //   If the ready queue is empty then this general thread can
-  //     continue to execute the yield task.
-  //   Otherwise we add the task to the ready queue
-  
-  if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL) {
-    pQueues->m_pReadyQueue->vGrabLock();
-    i8 iLengthReadyQueue = pQueues->nTasksReady();
-    if (0 == iLengthReadyQueue) {
-      pQueues->m_pReadyQueue->vDropLock();
-      pCallingThread->vReExecuteTask(pTask);
-    }
-    else {
-      pTask->vState(TS_READY);
-      pQueues->vAddToReadyQueue_NL(pTask);
-      pQueues->m_pReadyQueue->vDropLock();
-    }
-  }
-  else {
-    pQueues->m_pReadyQueueLP->vGrabLock();
-    pTask->vState(TS_READY);
-    pQueues->vAddToReadyQueueLP_NL(pTask);
-    pQueues->m_pReadyQueueLP->vDropLock();
-  }
-}
-
 
 ////////////////////////////////////////////////////////////////////////////////
 //                            implementation                                  //
@@ -488,6 +434,68 @@ void Scheduler::vResume_AckedTask(Task* pTask)
   
   pTask->vState(TS_READY);
   vScheduleReadyTask(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* wake any sleeping tasks whose wakeup time has arrived                      */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vWake_SleepingTasks(void)
+{
+  while (Task* pWokenTask = pPop_SleepingQueue())
+    Scheduler::vScheduleReadyTask(pWokenTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* task has yielded                                                           */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vYield_Task(Task* pTask)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  // task must be in the yielded state
+  RASSERT(TS_YIELDED == pTask->eState());
+  
+  Thread* pCallingThread = Thread::pThisTLSThread();
+  
+  if (pTask->pJob()->m_bMarkActivity) {
+    if (C_UNKNOWN == pTask->pJob()->iJobId())
+      ActivityMap::vMarkInfo(
+                             "Schedule yielded: %s %p"_Stz,
+                             aCN[pTask->pJob()->eClass()],
+                             pTask->pJob());
+    else
+      ActivityMap::vMarkJob(pTask->pJob(),
+                            "Schedule yielded: %s %p"_Stz,
+                            aCN[pTask->pJob()->eClass()],
+                            pTask->pJob());
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // - A general thread has executed a task which retured TS_YIELDED.
+  //   If the ready queue is empty then this general thread can
+  //     continue to execute the yield task.
+  //   Otherwise we add the task to the ready queue
+  
+  if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL) {
+    pQueues->m_pReadyQueue->vGrabLock();
+    i8 iLengthReadyQueue = pQueues->nTasksReady();
+    if (0 == iLengthReadyQueue) {
+      pQueues->m_pReadyQueue->vDropLock();
+      pCallingThread->vReExecuteTask(pTask);
+    }
+    else {
+      pTask->vState(TS_READY);
+      pQueues->vAddToReadyQueue_NL(pTask);
+      pQueues->m_pReadyQueue->vDropLock();
+    }
+  }
+  else {
+    pQueues->m_pReadyQueueLP->vGrabLock();
+    pTask->vState(TS_READY);
+    pQueues->vAddToReadyQueueLP_NL(pTask);
+    pQueues->m_pReadyQueueLP->vDropLock();
+  }
 }
 
 
