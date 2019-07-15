@@ -878,6 +878,10 @@ void Queues::vRemoveFromWaitingSet(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
+  RASSERT(TS_WAITING == pTask->eState());
+  RASSERT(QK_WAITING_SET == pTask->eQueue());
+  RASSERT(0 == pTask->iAcksRmg_assert_only_());
+
   m_pWaitingSet->vGrabLock();
   m_pWaitingSet->vRemoveTask(pTask);
   m_pWaitingSet->vDropLock();

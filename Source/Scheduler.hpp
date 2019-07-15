@@ -77,7 +77,6 @@ namespace Scheduling
 
   
     static void vQueue_RemoveExecutingSet(Task* pTask);
-    static void vQueue_RemoveWaitingSet(Task* pTask);
   };
 }
 

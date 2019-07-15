@@ -404,7 +404,7 @@ void Scheduler::vTask_ResumeAck(Task* pTask)
   
   pTask->vDropLock();
   
-  vQueue_RemoveWaitingSet(pTask);
+  gpAttachMap->m_pQueues->vRemoveFromWaitingSet(pTask);
   
   pTask->vState(TS_READY);
   vScheduleReadyTask(pTask);
@@ -777,21 +777,6 @@ void Scheduler::vQueue_RemoveExecutingSet(Task* pTask)
   Queues* pQueues = gpAttachMap->m_pQueues;
   
   pQueues->vRemoveFromExecutingSet(pTask);
-  RASSERT(QK_NONE == pTask->eQueue());
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove given fully acked task from waiting set                             */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vQueue_RemoveWaitingSet(Task* pTask)
-{
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  RASSERT(TS_WAITING == pTask->eState());
-  RASSERT(0 == pTask->iAcksRmg_assert_only_());
-
-  RASSERT(QK_WAITING_SET == pTask->eQueue());
-  pQueues->vRemoveFromWaitingSet(pTask);
   RASSERT(QK_NONE == pTask->eQueue());
 }
 
