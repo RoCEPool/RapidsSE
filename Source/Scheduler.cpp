@@ -89,7 +89,7 @@ void Scheduler::vReturnTaskLoop(Thread* pThread)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // remove task from the executing set
-  vRemove_ExecutingSet(pTask);
+  vQueue_RemoveExecutingSet(pTask);
   
   // add task to another appropriate queue depending on its state
   switch (pTask->eState()) {
@@ -125,7 +125,7 @@ void Scheduler::vScheduleReadyTask(Task* pTask)
   if (bThread_AssignIdle(pTask))
     return;
   
-  vQueue_ReadyTask(pTask);
+  vQueue_AddReadyTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -194,7 +194,7 @@ void Scheduler::vAssignDedicatedThread(Thread* pThread)
   pThread->m_pTask->vThread(pThread);
   
   // add this task to the executing task set
-  vAdd_ExecutingSet(pThread->m_pTask);
+  vQueue_AddExecuting(pThread->m_pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -306,7 +306,7 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
   pThread->m_pTask->vThread(pThread);
   
   // add this task to the executing task set
-  vAdd_ExecutingSet(pThread->m_pTask);
+  vQueue_AddExecuting(pThread->m_pTask);
 }
 
 
@@ -401,7 +401,7 @@ void Scheduler::vTask_ResumeAck(Task* pTask)
   
   pTask->vDropLock();
   
-  vRemove_WaitingSet(pTask);
+  vQueue_RemoveWaitingSet(pTask);
   
   pTask->vState(TS_READY);
   vScheduleReadyTask(pTask);
@@ -422,7 +422,7 @@ void Scheduler::vTask_Sleep(Task* pTask)
   
   // is the task still actually sleeping
   if (! pTask->bWakeupNow()) {
-    vInsert_SleepingQueue(pTask);
+    vQueue_InsertSleeping(pTask);
     return;
   }
   
@@ -468,7 +468,7 @@ void Scheduler::vTask_Wait(Task* pTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // add task to waiting set
-  vAdd_WaitingSet(pTask);
+  vQueue_AddWaiting(pTask);
   
   // drop task lock
   pTask->vDropLock();
@@ -479,7 +479,7 @@ void Scheduler::vTask_Wait(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_WakeSleeping(void)
 {
-  while (Task* pWokenTask = pPop_SleepingQueue())
+  while (Task* pWokenTask = pQueue_PopSleepingQueue())
     Scheduler::vScheduleReadyTask(pWokenTask);
 }
 
@@ -667,11 +667,12 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
 ////////////////////////////////////////////////////////////////////////////////
 //                               support for queues                           //
 ////////////////////////////////////////////////////////////////////////////////
+//! MOVE TO QUEUES
 
 /*----------------------------------------------------------------------------*/
 /* add task to executing set                                                  */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vAdd_ExecutingSet(Task* pTask)
+void Scheduler::vQueue_AddExecuting(Task* pTask)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
   
@@ -682,7 +683,7 @@ void Scheduler::vAdd_ExecutingSet(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* add task to waiting set                                                    */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vAdd_WaitingSet(Task* pTask)
+void Scheduler::vQueue_AddWaiting(Task* pTask)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
   
@@ -697,7 +698,7 @@ void Scheduler::vAdd_WaitingSet(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* append task to ready queue (normal priority)                               */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vAppend_ReadyQueue(Task* pTask)
+void Scheduler::vQueue_AppendReady(Task* pTask)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
   
@@ -707,7 +708,7 @@ void Scheduler::vAppend_ReadyQueue(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* append task to ready queue (low-priority)                                  */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vAppend_ReadyQueueLP(Task* pTask)
+void Scheduler::vQueue_AppendReadyLP(Task* pTask)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
   
@@ -717,7 +718,7 @@ void Scheduler::vAppend_ReadyQueueLP(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* insert task into sleeping queue                                            */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vInsert_SleepingQueue(Task* pTask)
+void Scheduler::vQueue_InsertSleeping(Task* pTask)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
   
@@ -727,7 +728,7 @@ void Scheduler::vInsert_SleepingQueue(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* pop task from ready queue                                                  */
 /*----------------------------------------------------------------------------*/
-Task* Scheduler::pPop_ReadyQueue(void)
+Task* Scheduler::pQueue_PopReadyQueue(void)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
   
@@ -739,7 +740,7 @@ Task* Scheduler::pPop_ReadyQueue(void)
 /*----------------------------------------------------------------------------*/
 /* pop task from low-priority ready queue                                     */
 /*----------------------------------------------------------------------------*/
-Task* Scheduler::pPop_ReadyQueueLP(void)
+Task* Scheduler::pQueue_PopReadyQueueLP(void)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
   
@@ -751,7 +752,7 @@ Task* Scheduler::pPop_ReadyQueueLP(void)
 /*----------------------------------------------------------------------------*/
 /* pop task from ready queue                                                  */
 /*----------------------------------------------------------------------------*/
-Task* Scheduler::pPop_SleepingQueue(void)
+Task* Scheduler::pQueue_PopSleepingQueue(void)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
   
@@ -768,21 +769,21 @@ Task* Scheduler::pPop_SleepingQueue(void)
 /*----------------------------------------------------------------------------*/
 /* queue a ready task                                                         */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vQueue_ReadyTask(Task* pTask)
+void Scheduler::vQueue_AddReadyTask(Task* pTask)
 {
   pTask->vState(TS_READY);
   ASSERT(QK_NONE == pTask->eQueue());
   
   if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
-    vAppend_ReadyQueue(pTask);
+    vQueue_AppendReady(pTask);
   else
-    vAppend_ReadyQueueLP(pTask);
+    vQueue_AppendReadyLP(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
 /* remove given task from executing set                                       */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vRemove_ExecutingSet(Task* pTask)
+void Scheduler::vQueue_RemoveExecutingSet(Task* pTask)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
   
@@ -793,7 +794,7 @@ void Scheduler::vRemove_ExecutingSet(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* remove given fully acked task from waiting set                             */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vRemove_WaitingSet(Task* pTask)
+void Scheduler::vQueue_RemoveWaitingSet(Task* pTask)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
   

@@ -58,25 +58,27 @@ namespace Scheduling
     static void vThread_Running(Thread* pThread);
     static void vThread_WaitAssignment(Thread* pThread);
   
+  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // support for queues
-  
-    static void vAdd_ExecutingSet(Task* pTask);
-    static void vAdd_WaitingSet(Task* pTask);
+    //! MOVE TO QUEUES
 
-    static void vAppend_ReadyQueue(Task* pTask);
-    static void vAppend_ReadyQueueLP(Task* pTask);
+    static void vQueue_AddExecuting(Task* pTask);
+    static void vQueue_AddWaiting(Task* pTask);
 
-    static void vInsert_SleepingQueue(Task* pTask);
-  
-    static Task* pPop_ReadyQueue(void);
-    static Task* pPop_ReadyQueueLP(void);
-    static Task* pPop_SleepingQueue(void);
+    static void vQueue_AppendReady(Task* pTask);
+    static void vQueue_AppendReadyLP(Task* pTask);
 
-    static void vQueue_ReadyTask(Task* pTask);
+    static void vQueue_InsertSleeping(Task* pTask);
   
-    static void vRemove_ExecutingSet(Task* pTask);
-    static void vRemove_WaitingSet(Task* pTask);
+    static Task* pQueue_PopReadyQueue(void);
+    static Task* pQueue_PopReadyQueueLP(void);
+    static Task* pQueue_PopSleepingQueue(void);
+
+    static void vQueue_AddReadyTask(Task* pTask);
+  
+    static void vQueue_RemoveExecutingSet(Task* pTask);
+    static void vQueue_RemoveWaitingSet(Task* pTask);
   };
 }
 
