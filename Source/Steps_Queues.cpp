@@ -26,7 +26,7 @@ void Step::vQueuesCheckSleeping(MP_Task mpTask)
 {
   ENTRY("vQueuesCheckSleeping"_Stz);
   
-  Scheduler::vCheckSleepingTasks();
+  Scheduler::vWakeSleepingTasks();
   
   EXIT();
 }
