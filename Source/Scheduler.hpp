@@ -70,9 +70,6 @@ namespace Scheduling
     static void vQueue_AppendReadyLP(Task* pTask);
 
     static void vQueue_InsertSleeping(Task* pTask);
-  
-    static Task* pQueue_PopReadyQueue(void);
-    static Task* pQueue_PopReadyQueueLP(void);
   };
 }
 

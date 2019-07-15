@@ -731,30 +731,6 @@ void Scheduler::vQueue_InsertSleeping(Task* pTask)
   pQueues->vAddToSleepingQueue(pTask);
 }
 
-/*----------------------------------------------------------------------------*/
-/* pop task from ready queue                                                  */
-/*----------------------------------------------------------------------------*/
-Task* Scheduler::pQueue_PopReadyQueue(void)
-{
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  Task* pTask = pQueues->pPopReadyQueue();
-  
-  return pTask;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop task from low-priority ready queue                                     */
-/*----------------------------------------------------------------------------*/
-Task* Scheduler::pQueue_PopReadyQueueLP(void)
-{
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  Task* pTask = pQueues->pPopReadyQueueLP();
-  
-  return pTask;
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
