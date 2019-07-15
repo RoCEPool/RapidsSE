@@ -40,6 +40,7 @@ namespace Scheduling
     static void vDeassign_RunningThread(Thread* pThread);
     static void vDedicate_ThreadTask(Thread* pThread, Task* pTask);
     static void vResume_AckedTask(Task* pTask);
+    static void vWait_Task(Task* pTask);
     static void vWake_SleepingTasks(void);
     static void vYield_Task(Task* pTask);
 
@@ -74,7 +75,6 @@ namespace Scheduling
     static void vTask_New(Task* pTask);
     static void vTask_Return(Task* pTask);
     static void vTask_Sleeping(Task* pTask);
-    static void vTask_Waiting(Task* pTask);
 
     static void vThread_Beginning(Thread* pThread);
     static void vThread_Ending(Thread* pThread);

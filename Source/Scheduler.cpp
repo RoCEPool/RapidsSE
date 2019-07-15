@@ -107,7 +107,7 @@ void Scheduler::vReturnTaskLoop(Thread* pThread)
       
     case TS_EXITED:    vTask_Exited(pTask);   break;
     case TS_SLEEPING:  vTask_Sleeping(pTask); break;
-    case TS_WAITING:   vTask_Waiting(pTask);  break;
+    case TS_WAITING:   vWait_Task(pTask);  break;
     case TS_YIELDED:   vYield_Task(pTask);  break;
       
       // should never come here for these states
@@ -437,6 +437,34 @@ void Scheduler::vResume_AckedTask(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* task is to wait for acks                                                   */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vWait_Task(Task* pTask)
+{
+  // activity
+  if (pTask->pJob()->m_bMarkActivity) {
+    if (C_UNKNOWN == pTask->pJob()->iJobId())
+      ActivityMap::vMarkInfo(
+                             "Schedule waiting: %s %p"_Stz,
+                             aCN[pTask->pJob()->eClass()],
+                             pTask->pJob());
+    else
+      ActivityMap::vMarkJob(pTask->pJob(),
+                            "Schedule waiting: %s %p"_Stz,
+                            aCN[pTask->pJob()->eClass()],
+                            pTask->pJob());
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // add task to waiting set
+  vAdd_WaitingSet(pTask);
+  
+  // drop task lock
+  pTask->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
 /* wake any sleeping tasks whose wakeup time has arrived                      */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vWake_SleepingTasks(void)
@@ -739,34 +767,6 @@ void Scheduler::vTask_Sleeping(Task* pTask)
   Thread* pCallingThread = Thread::pThisTLSThread();
   
   pCallingThread->vReExecuteTask(pTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* task transitions to waiting                                                */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTask_Waiting(Task* pTask)
-{
-  // activity
-  if (pTask->pJob()->m_bMarkActivity) {
-    if (C_UNKNOWN == pTask->pJob()->iJobId())
-      ActivityMap::vMarkInfo(
-                             "Schedule waiting: %s %p"_Stz,
-                             aCN[pTask->pJob()->eClass()],
-                             pTask->pJob());
-    else
-      ActivityMap::vMarkJob(pTask->pJob(),
-                            "Schedule waiting: %s %p"_Stz,
-                            aCN[pTask->pJob()->eClass()],
-                            pTask->pJob());
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // add task to waiting set
-  vAdd_WaitingSet(pTask);
-  
-  // drop task lock
-  pTask->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
