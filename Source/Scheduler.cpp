@@ -105,10 +105,10 @@ void Scheduler::vReturnTaskLoop(Thread* pThread)
   // add task to another appropriate queue depending on its state
   switch (pTask->eState()) {
       
-    case TS_EXITED:    vTask_Exited(pTask);   break;
+    case TS_EXITED:    vExit_Task(pTask);     break;
     case TS_SLEEPING:  vTask_Sleeping(pTask); break;
-    case TS_WAITING:   vWait_Task(pTask);  break;
-    case TS_YIELDED:   vYield_Task(pTask);  break;
+    case TS_WAITING:   vWait_Task(pTask);     break;
+    case TS_YIELDED:   vYield_Task(pTask);    break;
       
       // should never come here for these states
     case TS_EXECUTING: ASSERT(0);
@@ -414,6 +414,21 @@ void Scheduler::vDedicate_ThreadTask(Thread* pThread, Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* task is to exit                                                            */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vExit_Task(Task* pTask)
+{
+  RASSERT(TS_EXITED == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+  
+  ASSERT(! pTask->bWordBody());
+  
+  //vTrace("Exited Task %p\n"_Stz,pTask);
+  
+  delete pTask;
+}
+
+/*----------------------------------------------------------------------------*/
 /* resume an acked task (that had been waiting)                               */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vResume_AckedTask(Task* pTask)
@@ -707,20 +722,6 @@ void Scheduler::vRemove_WaitingSet(Task* pTask)
 //                               support for queues                           //
 ////////////////////////////////////////////////////////////////////////////////
 
-/*----------------------------------------------------------------------------*/
-/* task transitions to exited                                                 */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTask_Exited(Task* pTask)
-{
-  RASSERT(TS_EXITED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
-
-  ASSERT(! pTask->bWordBody());
-  
-  //vTrace("Exited Task %p\n"_Stz,pTask);
-  
-  delete pTask;
-}
 
 /*----------------------------------------------------------------------------*/
 /* task transitions to executing                                              */

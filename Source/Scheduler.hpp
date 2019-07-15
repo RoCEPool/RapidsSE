@@ -39,6 +39,7 @@ namespace Scheduling
     static bool bAssign_IdleThread(Task* pTask);
     static void vDeassign_RunningThread(Thread* pThread);
     static void vDedicate_ThreadTask(Thread* pThread, Task* pTask);
+    static void vExit_Task(Task* pTask);
     static void vResume_AckedTask(Task* pTask);
     static void vWait_Task(Task* pTask);
     static void vWake_SleepingTasks(void);
@@ -70,7 +71,6 @@ namespace Scheduling
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // support for state transitions
   
-    static void vTask_Exited(Task* pTask);
     static void vTask_Executing(Task* pTask);
     static void vTask_New(Task* pTask);
     static void vTask_Return(Task* pTask);
