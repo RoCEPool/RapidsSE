@@ -15,6 +15,7 @@ namespace Scheduling
     static void vAddTaskDedicated(Task* pTask);
     static void vAddTaskGeneral(Task* pTask);
     static void vCheckSleepingTasks(void);
+    static void vReturnTaskLoop(Thread* pThread);
     static void vScheduleReadyTask(Task* pTask);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -28,7 +29,6 @@ namespace Scheduling
     static void vPauseTillGeneralThreads(void);
     static void vRemoveDedicatedThread(Thread* pThread);
     static void vRemoveGeneralThread(Thread* pThread);
-    static void vReturnTaskLoop(Thread* pThread);
     static void vWaitForTaskAssignment(Thread* pThread);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -40,7 +40,8 @@ namespace Scheduling
     static void vDeassign_RunningThread(Thread* pThread);
     static void vDedicate_ThreadTask(Thread* pThread, Task* pTask);
     static void vResume_AckedTask(Task* pTask);
-    static void vWake_SleepingTasks(Task* pTask);
+    static void vWake_SleepingTasks(void);
+    static void vYield_Task(Task* pTask);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // support for queues
@@ -74,7 +75,6 @@ namespace Scheduling
     static void vTask_Return(Task* pTask);
     static void vTask_Sleeping(Task* pTask);
     static void vTask_Waiting(Task* pTask);
-    static void vTask_Yielded(Task* pTask);
 
     static void vThread_Beginning(Thread* pThread);
     static void vThread_Ending(Thread* pThread);

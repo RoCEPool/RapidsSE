@@ -85,6 +85,43 @@ void Scheduler::vCheckSleepingTasks(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* task has returned from task loop                                           */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vReturnTaskLoop(Thread* pThread)
+{
+  //
+  // called from Thread::vLoop_general()
+  //
+  
+  Task* pTask = pThread->m_pTask;
+  
+  // disconnect / de-assign task from thread
+  vDeassign_RunningThread(pThread);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // remove task from the executing set
+  vRemove_ExecutingSet(pTask);
+  
+  // add task to another appropriate queue depending on its state
+  switch (pTask->eState()) {
+      
+    case TS_EXITED:    vTask_Exited(pTask);   break;
+    case TS_SLEEPING:  vTask_Sleeping(pTask); break;
+    case TS_WAITING:   vTask_Waiting(pTask);  break;
+    case TS_YIELDED:   vYield_Task(pTask);  break;
+      
+      // should never come here for these states
+    case TS_EXECUTING: ASSERT(0);
+    case TS_READY:     ASSERT(0);
+    case TS_NONE:      ASSERT(0);
+      
+    default:
+      NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* schedule a ready to execute task                                           */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vScheduleReadyTask(Task* pTask)
@@ -202,6 +239,8 @@ void Scheduler::vPauseTillGeneralThreads(void)
   
   RASSERT(pQueues->m_pGeneralThreadVec->nItems() == gpAttachMap->Arg.m_nThreads);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   // pause till all general threads are in idle state
   for (i8 i_Thread = 0; i_Thread < pQueues->m_pGeneralThreadVec->nItems(); i_Thread++) {
     
@@ -210,7 +249,6 @@ void Scheduler::vPauseTillGeneralThreads(void)
     while (TD_IDLE != pThread->m_eThreadState)
       Pthread::vSleepMsec(10,CN_QUEUES);
   }
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -242,43 +280,6 @@ void Scheduler::vRemoveGeneralThread(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task has returned from task loop                                           */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vReturnTaskLoop(Thread* pThread)
-{
-  //
-  // called from Thread::vLoop_general()
-  //
-  
-  Task* pTask = pThread->m_pTask;
-  
-  // disconnect / de-assign task from thread
-  vDeassign_RunningThread(pThread);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // remove task from the executing set
-  vRemove_ExecutingSet(pTask);
-  
-  // add task to another appropriate queue depending on its state
-  switch (pTask->eState()) {
-      
-    case TS_EXITED:    vTask_Exited(pTask);   break;
-    case TS_SLEEPING:  vTask_Sleeping(pTask); break;
-    case TS_WAITING:   vTask_Waiting(pTask);  break;
-    case TS_YIELDED:   vTask_Yielded(pTask);  break;
-      
-    // should never come here for these states
-    case TS_EXECUTING: ASSERT(0);
-    case TS_READY:     ASSERT(0);
-    case TS_NONE:      ASSERT(0);
-      
-    default:
-      NEVER_REACH;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* calling thread waits for task to be assigned                               */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vWaitForTaskAssignment(Thread* pThread)
@@ -292,6 +293,7 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
   vThread_Running(pThread);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   ASSERT(TD_RUNNING == pThread->m_eThreadState);
   ASSERT(pThread->m_pTask);
   RASSERT(TS_READY   == pThread->m_pTask->eState() ||
@@ -306,6 +308,59 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
   
   // add this task to the executing task queue
   vTask_Executing(pThread->m_pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* task has yielded                                                           */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vYield_Task(Task* pTask)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  // task must be in the yielded state
+  RASSERT(TS_YIELDED == pTask->eState());
+  
+  Thread* pCallingThread = Thread::pThisTLSThread();
+  
+  if (pTask->pJob()->m_bMarkActivity) {
+    if (C_UNKNOWN == pTask->pJob()->iJobId())
+      ActivityMap::vMarkInfo(
+                             "Schedule yielded: %s %p"_Stz,
+                             aCN[pTask->pJob()->eClass()],
+                             pTask->pJob());
+    else
+      ActivityMap::vMarkJob(pTask->pJob(),
+                            "Schedule yielded: %s %p"_Stz,
+                            aCN[pTask->pJob()->eClass()],
+                            pTask->pJob());
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // - A general thread has executed a task which retured TS_YIELDED.
+  //   If the ready queue is empty then this general thread can
+  //     continue to execute the yield task.
+  //   Otherwise we add the task to the ready queue
+  
+  if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL) {
+    pQueues->m_pReadyQueue->vGrabLock();
+    i8 iLengthReadyQueue = pQueues->nTasksReady();
+    if (0 == iLengthReadyQueue) {
+      pQueues->m_pReadyQueue->vDropLock();
+      pCallingThread->vReExecuteTask(pTask);
+    }
+    else {
+      pTask->vState(TS_READY);
+      pQueues->vAddToReadyQueue_NL(pTask);
+      pQueues->m_pReadyQueue->vDropLock();
+    }
+  }
+  else {
+    pQueues->m_pReadyQueueLP->vGrabLock();
+    pTask->vState(TS_READY);
+    pQueues->vAddToReadyQueueLP_NL(pTask);
+    pQueues->m_pReadyQueueLP->vDropLock();
+  }
 }
 
 
@@ -704,59 +759,6 @@ void Scheduler::vTask_Waiting(Task* pTask)
   
   // drop task lock
   pTask->vDropLock();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task transitions to yielded                                                */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTask_Yielded(Task* pTask)
-{
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  // task must be in the yielded state
-  RASSERT(TS_YIELDED == pTask->eState());
-  
-  Thread* pCallingThread = Thread::pThisTLSThread();
-  
-  if (pTask->pJob()->m_bMarkActivity) {
-    if (C_UNKNOWN == pTask->pJob()->iJobId())
-      ActivityMap::vMarkInfo(
-                             "Schedule yielded: %s %p"_Stz,
-                             aCN[pTask->pJob()->eClass()],
-                             pTask->pJob());
-    else
-      ActivityMap::vMarkJob(pTask->pJob(),
-                            "Schedule yielded: %s %p"_Stz,
-                            aCN[pTask->pJob()->eClass()],
-                            pTask->pJob());
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // - A general thread has executed a task which retured TS_YIELDED.
-  //   If the ready queue is empty then this general thread can
-  //     continue to execute the yield task.
-  //   Otherwise we add the task to the ready queue
-  
-  if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL) {
-    pQueues->m_pReadyQueue->vGrabLock();
-    i8 iLengthReadyQueue = pQueues->nTasksReady();
-    if (0 == iLengthReadyQueue) {
-      pQueues->m_pReadyQueue->vDropLock();
-      pCallingThread->vReExecuteTask(pTask);
-    }
-    else {
-      pTask->vState(TS_READY);
-      pQueues->vAddToReadyQueue_NL(pTask);
-      pQueues->m_pReadyQueue->vDropLock();
-    }
-  }
-  else {
-    pQueues->m_pReadyQueueLP->vGrabLock();
-    pTask->vState(TS_READY);
-    pQueues->vAddToReadyQueueLP_NL(pTask);
-    pQueues->m_pReadyQueueLP->vDropLock();
-  }
 }
 
 /*----------------------------------------------------------------------------*/
