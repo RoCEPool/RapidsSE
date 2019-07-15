@@ -41,6 +41,7 @@ namespace Scheduling
     static void vDedicate_ThreadTask(Thread* pThread, Task* pTask);
     static void vExit_Task(Task* pTask);
     static void vResume_AckedTask(Task* pTask);
+    static void vSpawn_NewTask(Task* pTask);
     static void vWait_Task(Task* pTask);
     static void vWake_SleepingTasks(void);
     static void vYield_Task(Task* pTask);
@@ -71,8 +72,6 @@ namespace Scheduling
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // support for state transitions
   
-    static void vTask_Executing(Task* pTask);
-    static void vTask_New(Task* pTask);
     static void vTask_Return(Task* pTask);
     static void vTask_Sleeping(Task* pTask);
 

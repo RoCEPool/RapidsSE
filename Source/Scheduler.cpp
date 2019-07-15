@@ -50,7 +50,7 @@ void Scheduler::vAddTaskDedicated(Task* pTask)
   
   Thread* pThread = new Thread;
 
-  vTask_New(pTask);
+  vSpawn_NewTask(pTask);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -66,7 +66,7 @@ void Scheduler::vAddTaskGeneral(Task* pTask)
   // called from Api::bSpawnJob()
   //
   
-  vTask_New(pTask);
+  vSpawn_NewTask(pTask);
 
   Scheduler::vScheduleReadyTask(pTask);
 }
@@ -192,8 +192,8 @@ void Scheduler::vAssignDedicatedThread(Thread* pThread)
   pThread->m_pTask->vState(TS_EXECUTING);
   pThread->m_pTask->vThread(pThread);
   
-  // add this task to the executing task queue
-  vTask_Executing(pThread->m_pTask);
+  // add this task to the executing task set
+  vAdd_ExecutingSet(pThread->m_pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -305,8 +305,8 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
   pThread->m_pTask->vState(TS_EXECUTING);
   pThread->m_pTask->vThread(pThread);
   
-  // add this task to the executing task queue
-  vTask_Executing(pThread->m_pTask);
+  // add this task to the executing task set
+  vAdd_ExecutingSet(pThread->m_pTask);
 }
 
 
@@ -449,6 +449,16 @@ void Scheduler::vResume_AckedTask(Task* pTask)
   
   pTask->vState(TS_READY);
   vScheduleReadyTask(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* task transitions to new                                                    */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vSpawn_NewTask(Task* pTask)
+{
+  ASSERT(TS_NONE == pTask->eState());
+  
+  pTask->vState(TS_READY);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -721,25 +731,6 @@ void Scheduler::vRemove_WaitingSet(Task* pTask)
 ////////////////////////////////////////////////////////////////////////////////
 //                               support for queues                           //
 ////////////////////////////////////////////////////////////////////////////////
-
-
-/*----------------------------------------------------------------------------*/
-/* task transitions to executing                                              */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTask_Executing(Task* pTask)
-{
-  vAdd_ExecutingSet(pTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* task transitions to new                                                    */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTask_New(Task* pTask)
-{
-  ASSERT(TS_NONE == pTask->eState());
-  
-  pTask->vState(TS_READY);
-}
 
 /*----------------------------------------------------------------------------*/
 /* task transitions to sleeping                                               */
