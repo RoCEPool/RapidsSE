@@ -65,11 +65,6 @@ namespace Scheduling
 
     static void vQueue_AddExecuting(Task* pTask);
     static void vQueue_AddWaiting(Task* pTask);
-
-    static void vQueue_AppendReady(Task* pTask);
-    static void vQueue_AppendReadyLP(Task* pTask);
-
-    static void vQueue_InsertSleeping(Task* pTask);
   };
 }
 

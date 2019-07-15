@@ -126,9 +126,9 @@ void Scheduler::vScheduleReadyTask(Task* pTask)
     return;
   
   if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
-    vQueue_AppendReady(pTask);
+    gpAttachMap->m_pQueues->vAddToReadyQueue(pTask);
   else
-    vQueue_AppendReadyLP(pTask);
+    gpAttachMap->m_pQueues->vAddToReadyQueueLP(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -425,7 +425,7 @@ void Scheduler::vTask_Sleep(Task* pTask)
   
   // is the task still actually sleeping
   if (! pTask->bWakeupNow()) {
-    vQueue_InsertSleeping(pTask);
+    gpAttachMap->m_pQueues->vAddToSleepingQueue(pTask);
     return;
   }
   
@@ -471,7 +471,7 @@ void Scheduler::vTask_Wait(Task* pTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // add task to waiting set
-  vQueue_AddWaiting(pTask);
+  gpAttachMap->m_pQueues->vAddToWaitingSet(pTask);
   
   // drop task lock
   pTask->vDropLock();
@@ -699,36 +699,6 @@ void Scheduler::vQueue_AddWaiting(Task* pTask)
 
   // add task to waiting set
   pQueues->vAddToWaitingSet(pTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append task to ready queue (normal priority)                               */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vQueue_AppendReady(Task* pTask)
-{
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  pQueues->vAddToReadyQueue(pTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append task to ready queue (low-priority)                                  */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vQueue_AppendReadyLP(Task* pTask)
-{
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  pQueues->vAddToReadyQueueLP(pTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert task into sleeping queue                                            */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vQueue_InsertSleeping(Task* pTask)
-{
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  pQueues->vAddToSleepingQueue(pTask);
 }
 
 /*============================================================================*/
