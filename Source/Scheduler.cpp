@@ -89,7 +89,7 @@ void Scheduler::vReturnTaskLoop(Thread* pThread)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // remove task from the executing set
-  vQueue_RemoveExecutingSet(pTask);
+  gpAttachMap->m_pQueues->vRemoveFromExecutingSet(pTask);
   
   // add task to another appropriate queue depending on its state
   switch (pTask->eState()) {
@@ -767,17 +767,6 @@ Task* Scheduler::pQueue_PopSleepingQueue(void)
   }
   
   return pTask;
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove given task from executing set                                       */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vQueue_RemoveExecutingSet(Task* pTask)
-{
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  pQueues->vRemoveFromExecutingSet(pTask);
-  RASSERT(QK_NONE == pTask->eQueue());
 }
 
 /*============================================================================*/

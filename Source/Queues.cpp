@@ -857,6 +857,8 @@ void Queues::vRemoveFromExecutingSet(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
+  RASSERT(QK_EXECUTING_SET == pTask->eQueue());
+  
   m_pExecutingSet->vGrabLock();
   m_pExecutingSet->vRemoveTask(pTask);
   m_pExecutingSet->vDropLock();
