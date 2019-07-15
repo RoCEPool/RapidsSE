@@ -125,7 +125,10 @@ void Scheduler::vScheduleReadyTask(Task* pTask)
   if (bThread_AssignIdle(pTask))
     return;
   
-  vQueue_AddReadyTask(pTask);
+  if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
+    vQueue_AppendReady(pTask);
+  else
+    vQueue_AppendReadyLP(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -764,20 +767,6 @@ Task* Scheduler::pQueue_PopSleepingQueue(void)
   }
   
   return pTask;
-}
-
-/*----------------------------------------------------------------------------*/
-/* queue a ready task                                                         */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vQueue_AddReadyTask(Task* pTask)
-{
-  pTask->vState(TS_READY);
-  ASSERT(QK_NONE == pTask->eQueue());
-  
-  if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
-    vQueue_AppendReady(pTask);
-  else
-    vQueue_AppendReadyLP(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
