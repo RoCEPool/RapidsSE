@@ -8,6 +8,7 @@
 
 extern AttachMap* gpAttachMap;
 
+
 ////////////////////////////////////////////////////////////////////////////////
 //                             task interface                                 //
 ////////////////////////////////////////////////////////////////////////////////
@@ -54,7 +55,7 @@ void Scheduler::vAddTaskDedicated(Task* pTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  vDedicate_ThreadTask(pThread,pTask);
+  vThread_DedicatedTask(pThread,pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -83,7 +84,7 @@ void Scheduler::vReturnTaskLoop(Thread* pThread)
   Task* pTask = pThread->m_pTask;
   
   // disconnect / de-assign task from thread
-  vDeassign_RunningThread(pThread);
+  vThread_DeassignRunning(pThread);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -121,7 +122,7 @@ void Scheduler::vScheduleReadyTask(Task* pTask)
                           aCN[pTask->pJob()->eClass()],
                           pTask->pJob());
   
-  if (bAssign_IdleThread(pTask))
+  if (bThread_AssignIdle(pTask))
     return;
   
   vQueue_ReadyTask(pTask);
@@ -155,7 +156,7 @@ void Scheduler::vAddThreadDedicated(Thread* pThread)
   
   RASSERT(CN_NONE != pThread->m_eDedicated);
   
-  vAdd_DedicatedThread(pThread);
+  vThread_AddDedicated(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -167,7 +168,7 @@ void Scheduler::vAddThreadGeneral(Thread* pThread)
   // called from Thread::aEntryPoint_general()
   //
   
-  vAdd_GeneralThread(pThread);
+  vThread_AddGeneral(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -287,7 +288,7 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
   // called from Thread::vLoop_general()
   //
   
-  vThread_Idle(pThread);
+  vThread_WaitAssignment(pThread);
   
   vThread_Running(pThread);
 
@@ -686,7 +687,7 @@ void Scheduler::vRemove_WaitingSet(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* add thread to dedicated thread set                                         */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vAdd_DedicatedThread(Thread* pThread)
+void Scheduler::vThread_AddDedicated(Thread* pThread)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
   
@@ -697,7 +698,7 @@ void Scheduler::vAdd_DedicatedThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* add thread to general thread set                                           */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vAdd_GeneralThread(Thread* pThread)
+void Scheduler::vThread_AddGeneral(Thread* pThread)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
   
@@ -706,9 +707,21 @@ void Scheduler::vAdd_GeneralThread(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append idle thread onto idle thread queue                                  */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vThread_AppendIdle(Thread* pThread)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  pThread->m_eThreadState = TD_IDLE;
+  
+  pQueues->vAppendIdleThread(pThread);
+}
+
+/*----------------------------------------------------------------------------*/
 /* attempt to pop an idle thread and assign given task to it                  */
 /*----------------------------------------------------------------------------*/
-bool Scheduler::bAssign_IdleThread(Task* pTask)
+bool Scheduler::bThread_AssignIdle(Task* pTask)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
   
@@ -731,34 +744,11 @@ bool Scheduler::bAssign_IdleThread(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append idle thread onto idle thread queue                                  */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vAppend_IdleQueue(Thread* pThread)
-{
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  pThread->m_eThreadState = TD_IDLE;
-  
-  pQueues->vAppendIdleThread(pThread);
-}
-
-/*----------------------------------------------------------------------------*/
 /* deassign task from thread                                                  */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vDeassign_RunningThread(Thread* pThread)
+void Scheduler::vThread_DeassignRunning(Thread* pThread)
 {
   pThread->m_pTask = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* dedicate thread to task                                                    */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vDedicate_ThreadTask(Thread* pThread, Task* pTask)
-{
-  pThread->m_pTask = pTask;
-  pThread->m_eDedicated = pTask->pJob()->eClass();
-  
-  pThread->vSpawnPthread_dedicated();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -775,6 +765,17 @@ void Scheduler::vThread_Beginning(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dedicate thread to task                                                    */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vThread_DedicatedTask(Thread* pThread, Task* pTask)
+{
+  pThread->m_pTask = pTask;
+  pThread->m_eDedicated = pTask->pJob()->eClass();
+  
+  pThread->vSpawnPthread_dedicated();
+}
+
+/*----------------------------------------------------------------------------*/
 /* thread is ending                                                           */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_Ending(Thread* pThread)
@@ -783,26 +784,25 @@ void Scheduler::vThread_Ending(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append idle thread onto idle thread queue                                  */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vThread_Idle(Thread* pThread)
-{
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  while (! pThread->m_pTask) {
-    pThread->m_eThreadState = TD_IDLE;
-    vAppend_IdleQueue(pThread);
-    pThread->m_pMutexThread->vCondWaitIndefinite();
-    pThread->m_eThreadState = TD_RUNNING;
-  }
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* thread is running                                                          */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_Running(Thread* pThread)
 {
+}
+
+/*----------------------------------------------------------------------------*/
+/* append idle thread onto idle thread queue                                  */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vThread_WaitAssignment(Thread* pThread)
+{
+  RASSERT(pThread->m_pMutexThread->bMutexIsLocked());
+  
+  while (! pThread->m_pTask) {
+    pThread->m_eThreadState = TD_IDLE;
+    vThread_AppendIdle(pThread);
+    pThread->m_pMutexThread->vCondWaitIndefinite();
+    pThread->m_eThreadState = TD_RUNNING;
+  }
 }
 
 /*============================================================================*/

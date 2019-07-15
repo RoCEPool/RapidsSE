@@ -31,10 +31,10 @@ namespace Scheduling
     static void vRemoveGeneralThread(Thread* pThread);
     static void vWaitForTaskAssignment(Thread* pThread);
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // implementation
-  
   private:
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // implementation for tasks
+  
     static bool bAck_WaitingTask(Task* pTaskBeingAcked, Task* pTaskAcking);
     static void vExit_Task(Task* pTask);
     static void vResume_AckedTask(Task* pTask);
@@ -45,7 +45,21 @@ namespace Scheduling
     static void vYield_Task(Task* pTask);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // support for task queues
+    // implementation for threads
+  
+    static void vThread_AddDedicated(Thread* pThread);
+    static void vThread_AddGeneral(Thread* pThread);
+    static void vThread_AppendIdle(Thread* pThread);
+    static bool bThread_AssignIdle(Task* pTask);
+    static void vThread_Beginning(Thread* pThread);
+    static void vThread_DeassignRunning(Thread* pThread);
+    static void vThread_DedicatedTask(Thread* pThread, Task* pTask);
+    static void vThread_Ending(Thread* pThread);
+    static void vThread_Running(Thread* pThread);
+    static void vThread_WaitAssignment(Thread* pThread);
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // support for queues
   
     static void vAdd_ExecutingSet(Task* pTask);
     static void vAdd_WaitingSet(Task* pTask);
@@ -63,21 +77,6 @@ namespace Scheduling
   
     static void vRemove_ExecutingSet(Task* pTask);
     static void vRemove_WaitingSet(Task* pTask);
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // support for thread transitions
-  
-    static void vAdd_DedicatedThread(Thread* pThread);
-    static void vAdd_GeneralThread(Thread* pThread);
-    static bool bAssign_IdleThread(Task* pTask);
-    static void vAppend_IdleQueue(Thread* pThread);
-    static void vDeassign_RunningThread(Thread* pThread);
-    static void vDedicate_ThreadTask(Thread* pThread, Task* pTask);
-  
-    static void vThread_Beginning(Thread* pThread);
-    static void vThread_Ending(Thread* pThread);
-    static void vThread_Idle(Thread* pThread);
-    static void vThread_Running(Thread* pThread);
   };
 }
 
