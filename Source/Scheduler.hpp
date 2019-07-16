@@ -21,14 +21,14 @@ namespace Scheduling
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // thread interface
   
-    static void vAddThreadDedicated(Thread* pThread);
-    static void vAddThreadGeneral(Thread* pThread);
+    static void vThreadAddDedicated(Thread* pThread);
+    static void vThreadAddGeneral(Thread* pThread);
     static void vAssignDedicatedThread(Thread* pThread);
     static void vBeginThread(Thread* pThread);
     static void vEndThread(Thread* pThread);
     static void vPauseTillGeneralThreads(void);
-    static void vRemoveDedicatedThread(Thread* pThread);
-    static void vRemoveGeneralThread(Thread* pThread);
+    static void vThreadRemoveDedicated(Thread* pThread);
+    static void vThreadRemoveGeneral(Thread* pThread);
     static void vWaitForTaskAssignment(Thread* pThread);
 
   private:

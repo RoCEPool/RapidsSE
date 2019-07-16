@@ -63,12 +63,12 @@ namespace Scheduling
   // - - - - - - - - - - - - - - - - - - - - - - -
   // thread
   private:
-    void vAddThreadDedicated(Thread* pThread);
-    void vAddThreadGeneral(Thread* pThread);
-    Thread* pPopIdleThread(void);
-    void vAppendIdleThread(Thread* pThread);
-    void vRemoveDedicatedThread(Thread* pThread);
-    void vRemoveGeneralThread(Thread* pThread);
+    void vThreadAddDedicated(Thread* pThread);
+    void vThreadAddGeneral(Thread* pThread);
+    Thread* pThreadPopIdle(void);
+    void vThreadAppendIdle(Thread* pThread);
+    void vThreadRemoveDedicated(Thread* pThread);
+    void vThreadRemoveGeneral(Thread* pThread);
   
   // - - - - - - - - - - - - - - - - - - - - - - -
   public:
