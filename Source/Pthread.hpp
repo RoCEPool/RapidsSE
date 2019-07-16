@@ -22,7 +22,6 @@ namespace System
     Pthread(void);
     ~Pthread(void) noexcept(false);
   
-    static void vMonitorPortrait(s48K& sPortrait);
   
     bool bBindThread(i8 i_Core);
     void vDisableRealtime(void);
@@ -40,12 +39,14 @@ namespace System
     void vThreadBoost(i8 nPoints);
     void vThreadPriority(i8 iPriority);
   
-  
-    //---------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
   
     static bool  bIsCppThread(void);
     static bool  bIsJavaThread(void);
   
+    static void  vMarkNonSeThread(void);
+    static void vMonitorPortrait(s48K& sPortrait);
+
     static void  vSleepInfinite(void);
     static void  vSleepMsec(i8 nMilliSeconds, eCN eCallingClass);
     static void  vSleepNsec(i8 nNanoSeconds, eCN eCallingClass);
@@ -55,6 +56,7 @@ namespace System
     static void* aStackBase(void);
     static void* aStackPointer(void);
     static i8    iStackSize(void);
+  
     static bool  bTlsCreate(pthread_key_t* aTlsKey);
     static void* pTlsGet(pthread_key_t iTlsKey);
     static void  vTlsSet(pthread_key_t iTlsKey, void* pArg);

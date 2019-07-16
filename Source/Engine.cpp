@@ -783,7 +783,7 @@ void Engine::vSpawnJobStart(void)
   if (gxArguments.m_bVerbose)
     vInfo("\n*\n* Start System Tasks\n*\n"_Stz);
   
-  Pthread::vTlsSet(giTLS_ThreadKey,(void*)-1);
+  Pthread::vMarkNonSeThread();
   
   JobClass* pJobClass_Start = JobClass::pFind(CN_JOB_START);
   
