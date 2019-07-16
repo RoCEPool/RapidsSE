@@ -188,10 +188,6 @@ void Scheduler::vAssignDedicatedThread(Thread* pThread)
   ASSERT(TD_RUNNING == pThread->m_eThreadState);
   ASSERT(pThread->m_pMutexThread->bMutexIsLocked());
   
-  // put task into thread local storage
-  Pthread::vTlsSet(giTLS_TaskKey,pThread->m_pTask);
-  ASSERT(Pthread::pTlsGet(giTLS_TaskKey));
-  
   RASSERT(TS_READY == pThread->m_pTask->eState());
   
   pThread->m_pTask->vState(TS_EXECUTING);
@@ -301,10 +297,6 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
   ASSERT(pThread->m_pTask);
   RASSERT(TS_READY   == pThread->m_pTask->eState() ||
           TS_YIELDED == pThread->m_pTask->eState());
-
-  // put task into thread local storage
-  Pthread::vTlsSet(giTLS_TaskKey,pThread->m_pTask);
-  ASSERT(Pthread::pTlsGet(giTLS_TaskKey));
   
   pThread->m_pTask->vState(TS_EXECUTING);
   pThread->m_pTask->vThread(pThread);

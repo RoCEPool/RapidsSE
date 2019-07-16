@@ -5,7 +5,6 @@
 #include "Threads.h"
 
 pthread_key_t giTLS_ThreadKey = -1;
-pthread_key_t giTLS_TaskKey   = -1;
 
 /*----------------------------------------------------------------------------*/
 /* initialise tls                                                             */
@@ -14,12 +13,7 @@ void TlsKeys::vInit(void)
 {
   bool b = Pthread::bTlsCreate(&giTLS_ThreadKey);
   ASSERT(b);
-  
-  //ASSERT(!b);
-  b = Pthread::bTlsCreate(&giTLS_TaskKey);
-  ASSERT(b);
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

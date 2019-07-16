@@ -13,7 +13,6 @@
 
 extern AttachMap* gpAttachMap;
 
-extern pthread_key_t giTLS_TaskKey;
 extern pthread_key_t giTLS_ThreadKey;
 
 /*----------------------------------------------------------------------------*/

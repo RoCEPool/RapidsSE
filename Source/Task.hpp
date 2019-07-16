@@ -3,8 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-extern pthread_key_t  giTLS_TaskKey;
-
 namespace Tasks
 {  
   enum eTS // Task State
