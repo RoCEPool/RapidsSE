@@ -197,7 +197,7 @@ void Scheduler::vAssignDedicatedThread(Thread* pThread)
   pThread->m_pTask->vThread(pThread);
   
   // add this task to the executing task set
-  vQueue_AddExecuting(pThread->m_pTask);
+  gpAttachMap->m_pQueues->vAddToExecutingSet(pThread->m_pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -309,7 +309,7 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
   pThread->m_pTask->vThread(pThread);
   
   // add this task to the executing task set
-  vQueue_AddExecuting(pThread->m_pTask);
+  gpAttachMap->m_pQueues->vAddToExecutingSet(pThread->m_pTask);
 }
 
 
@@ -667,23 +667,6 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
     pThread->m_pMutexThread->vCondWaitIndefinite();
     pThread->m_eThreadState = TD_RUNNING;
   }
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-//                               support for queues                           //
-////////////////////////////////////////////////////////////////////////////////
-//! MOVE TO QUEUES
-
-/*----------------------------------------------------------------------------*/
-/* add task to executing set                                                  */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vQueue_AddExecuting(Task* pTask)
-{
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  pTask->vState(TS_EXECUTING);
-  pQueues->vAddToExecutingSet(pTask);
 }
 
 /*============================================================================*/

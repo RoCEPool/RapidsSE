@@ -57,13 +57,6 @@ namespace Scheduling
     static void vThread_Ending(Thread* pThread);
     static void vThread_Running(Thread* pThread);
     static void vThread_WaitAssignment(Thread* pThread);
-  
-  
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // support for queues
-    //! MOVE TO QUEUES
-
-    static void vQueue_AddExecuting(Task* pTask);
   };
 }
 
