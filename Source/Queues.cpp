@@ -182,6 +182,326 @@ void Queues::vThreadsReport(void)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+////////////////////////////////////////////////////////////////////////////////
+//                          implementation for tasks                          //
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add task to executing queue                                                */
+/*----------------------------------------------------------------------------*/
+void Queues::vAddToExecutingSet(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  m_pExecutingSet->vGrabLock();
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  
+  RASSERT(TS_EXECUTING == pTask->eState());
+  
+  pTask->vQueue(QK_EXECUTING_SET);
+  pTask->vQueueOrder(++m_ixQueueOrder);
+  
+  if (pTask->pJob()->m_bMarkActivity)
+    ActivityMap::vMarkJob(pTask->pJob(),
+                          "Add to ExecutingSet: %s %p"_Stz,
+                          aCN[pTask->pJob()->eClass()],
+                          pTask->pJob());
+  
+  ASSERT(m_pExecutingSet->bIsLocked());
+  m_pExecutingSet->vAddTask(pTask);
+  
+  ActionSequence::vAdd(pTask->pJob(),AN_ADD_EXECUTING_SET);
+  
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  m_pExecutingSet->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* add task to ready queue                                                    */
+/*----------------------------------------------------------------------------*/
+void Queues::vAddToReadyQueue(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  m_pReadyQueue->vGrabLock();
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  
+  RASSERT(TS_READY == pTask->eState());
+  
+  pTask->vQueue(QK_READY_QUEUE);
+  pTask->vQueueOrder(++m_ixQueueOrder);
+  
+  if (pTask->pJob()->m_bMarkActivity)
+    ActivityMap::vMarkJob(pTask->pJob(),
+                          "Add to ReadyQueue: %s %p"_Stz,
+                          aCN[pTask->pJob()->eClass()],
+                          pTask->pJob());
+  
+  ASSERT(m_pReadyQueue->bIsLocked());
+  
+  m_pReadyQueue->vAddTask(pTask);
+  
+  ActionSequence::vAdd(pTask->pJob(),AN_ADD_READY_QUEUE);
+  
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  m_pReadyQueue->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* add task to low priority ready queue                                       */
+/*----------------------------------------------------------------------------*/
+void Queues::vAddToReadyQueueLP(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  m_pReadyQueueLP->vGrabLock();
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  
+  RASSERT(TS_READY == pTask->eState());
+  
+  pTask->vQueue(QK_READY_QUEUE_LP);
+  pTask->vQueueOrder(++m_ixQueueOrder);
+  
+  if (pTask->pJob()->m_bMarkActivity)
+    ActivityMap::vMarkJob(pTask->pJob(),
+                          "Add to ReadyQueueLP: %s %p"_Stz,
+                          aCN[pTask->pJob()->eClass()],
+                          pTask->pJob());
+  
+  ASSERT(m_pReadyQueueLP->bIsLocked());
+  
+  m_pReadyQueueLP->vAddTask(pTask);
+  
+  ActionSequence::vAdd(pTask->pJob(),AN_ADD_READY_QUEUE_LP);
+  
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  m_pReadyQueueLP->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* add task to sleeping queue                                                 */
+/*----------------------------------------------------------------------------*/
+void Queues::vAddToSleepingQueue(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  m_pSleepingQueue->vGrabLock();
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  
+  RASSERT(TS_SLEEPING == pTask->eState());
+  
+  pTask->vQueue(QK_SLEEPING_QUEUE);
+  
+  if (pTask->pJob()->m_bMarkActivity)
+    ActivityMap::vMarkJob(pTask->pJob(),
+                          "Add to SleepingQueue: %s %p"_Stz,
+                          aCN[pTask->pJob()->eClass()],
+                          pTask->pJob());
+  
+  ASSERT(m_pSleepingQueue->bIsLocked());
+  
+  i8 nPriorItems = m_pSleepingQueue->nTasks();
+  m_pSleepingQueue->vAssertItems(nPriorItems);
+  m_pSleepingQueue->vAddTask(pTask);
+  m_pSleepingQueue->vAssertItems(nPriorItems + 1);
+  
+  ActionSequence::vAdd(pTask->pJob(),AN_ADD_SLEEPING_QUEUE);
+  
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  m_pSleepingQueue->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* add task to waiting queue                                                  */
+/*----------------------------------------------------------------------------*/
+void Queues::vAddToWaitingSet(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  m_pWaitingSet->vGrabLock();
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  
+  // task must be in the waiting state
+  RASSERT(TS_WAITING == pTask->eState());
+  
+  // task must be locked
+  RASSERT(pTask->bIsLocked());
+  
+  // task must not be in any queue
+  RASSERT(QK_NONE == pTask->eQueue());
+  
+  // mark task as being in the waiting queue
+  pTask->vQueue(QK_WAITING_SET);
+  pTask->vQueueOrder(++m_ixQueueOrder);
+  
+  if (pTask->pJob()->m_bMarkActivity)
+    ActivityMap::vMarkJob(pTask->pJob(),
+                          "Add to WaitingSet: %s %p"_Stz,
+                          aCN[pTask->pJob()->eClass()],
+                          pTask->pJob());
+  
+  // put task into the waiting queue
+  ASSERT(m_pWaitingSet->bIsLocked());
+  m_pWaitingSet->vAddTask(pTask);
+  
+  ActionSequence::vAdd(pTask->pJob(),AN_ADD_WAITING_SET);
+  
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  m_pWaitingSet->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* append task to waiting queue                                               */
+/*----------------------------------------------------------------------------*/
+void Queues::vAppendIdleThread(Thread* pThread)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  m_pIdleThreadQueue->vGrabLock();
+  m_pIdleThreadQueue->vAppendThread(pThread);
+  m_pIdleThreadQueue->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* pop idle thread                                                            */
+/*----------------------------------------------------------------------------*/
+Thread* Queues::pPopIdleThread(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  m_pIdleThreadQueue->vGrabLock();
+  
+  Thread* pThread = m_pIdleThreadQueue->pPopThread();
+  
+  m_pIdleThreadQueue->vDropLock();
+  
+  return pThread;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove task from executing queue                                           */
+/*----------------------------------------------------------------------------*/
+void Queues::vRemoveFromExecutingSet(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  RASSERT(QK_EXECUTING_SET == pTask->eQueue());
+  
+  m_pExecutingSet->vGrabLock();
+  m_pExecutingSet->vRemoveTask(pTask);
+  m_pExecutingSet->vDropLock();
+  
+  // task no longer in any queue/set
+  pTask->vQueue(QK_NONE);
+  
+  if (pTask->pJob() && pTask->pJob()->m_bMarkActivity)
+    ActivityMap::vMarkJob(pTask->pJob(),
+                          "Removed from ExecutingSet: %s %p"_Stz,
+                          aCN[pTask->pJob()->eClass()],
+                          pTask->pJob());
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove task from waiting queue                                             */
+/*----------------------------------------------------------------------------*/
+void Queues::vRemoveFromWaitingSet(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  RASSERT(TS_WAITING == pTask->eState());
+  RASSERT(QK_WAITING_SET == pTask->eQueue());
+  RASSERT(0 == pTask->iAcksRmg_assert_only_());
+  
+  m_pWaitingSet->vGrabLock();
+  m_pWaitingSet->vRemoveTask(pTask);
+  m_pWaitingSet->vDropLock();
+  
+  // task no longer in any queue/set
+  pTask->vQueue(QK_NONE);
+  
+  if (pTask->pJob()->m_bMarkActivity)
+    ActivityMap::vMarkJob(pTask->pJob(),
+                          "Removed from WaitingSet: %s %p"_Stz,
+                          aCN[pTask->pJob()->eClass()],
+                          pTask->pJob());
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+//                          implementation for threads                        //
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add dedicated thread to thread vector                                      */
+/*----------------------------------------------------------------------------*/
+void Queues::vAddThreadDedicated(Thread* pThread)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  RASSERT(TD_IDLE == pThread->eThreadState());
+  
+  m_pDedicatedThreadVec->vGrabLock();
+  m_pDedicatedThreadVec->vAdd(pThread);
+  m_pDedicatedThreadVec->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* add general thread to thread vector                                        */
+/*----------------------------------------------------------------------------*/
+void Queues::vAddThreadGeneral(Thread* pThread)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  RASSERT(TD_IDLE == pThread->eThreadState());
+  
+  m_pGeneralThreadVec->vGrabLock();
+  m_pGeneralThreadVec->vAdd(pThread);
+  m_pGeneralThreadVec->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* remove thread from dedicated thread vector                                 */
+/*----------------------------------------------------------------------------*/
+void Queues::vRemoveDedicatedThread(Thread* pThread)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  m_pDedicatedThreadVec->vGrabLock();
+  m_pDedicatedThreadVec->vRemove(pThread);
+  m_pDedicatedThreadVec->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove thread from general thread vector                                   */
+/*----------------------------------------------------------------------------*/
+void Queues::vRemoveGeneralThread(Thread* pThread)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  m_pGeneralThreadVec->vGrabLock();
+  m_pGeneralThreadVec->vRemove(pThread);
+  m_pGeneralThreadVec->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+
+
+
+
+
+
 /*----------------------------------------------------------------------------*/
 /* dump the executing set                                                     */
 /*----------------------------------------------------------------------------*/
@@ -272,6 +592,8 @@ void Queues::vDumpWaitingSet(void)
   vTrace("\n"_Stz);
 }
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* get a portrait of the queues                                               */
@@ -340,10 +662,6 @@ void Queues::vMonitorThread(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
 /*----------------------------------------------------------------------------*/
 /* get no of tasks in the executing set                                       */
 /*----------------------------------------------------------------------------*/
@@ -399,236 +717,6 @@ i8 Queues::nTasksWaiting(void)
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* add dedicated thread to thread vector                                      */
-/*----------------------------------------------------------------------------*/
-void Queues::vAddThreadDedicated(Thread* pThread)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  RASSERT(TD_IDLE == pThread->eThreadState());
-  
-  m_pDedicatedThreadVec->vGrabLock();
-  m_pDedicatedThreadVec->vAdd(pThread);
-  m_pDedicatedThreadVec->vDropLock();
-}
-
-/*----------------------------------------------------------------------------*/
-/* add general thread to thread vector                                        */
-/*----------------------------------------------------------------------------*/
-void Queues::vAddThreadGeneral(Thread* pThread)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  RASSERT(TD_IDLE == pThread->eThreadState());
-  
-  m_pGeneralThreadVec->vGrabLock();
-  m_pGeneralThreadVec->vAdd(pThread);
-  m_pGeneralThreadVec->vDropLock();
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* add task to executing queue                                                */
-/*----------------------------------------------------------------------------*/
-void Queues::vAddToExecutingSet(Task* pTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  m_pExecutingSet->vGrabLock();
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  
-  RASSERT(TS_EXECUTING == pTask->eState());
-  
-  pTask->vQueue(QK_EXECUTING_SET);
-  pTask->vQueueOrder(++m_ixQueueOrder);
-  
-  if (pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkJob(pTask->pJob(),
-                          "Add to ExecutingSet: %s %p"_Stz,
-                          aCN[pTask->pJob()->eClass()],
-                          pTask->pJob());
-  
-  ASSERT(m_pExecutingSet->bIsLocked());
-  m_pExecutingSet->vAddTask(pTask);
-  
-  ActionSequence::vAdd(pTask->pJob(),AN_ADD_EXECUTING_SET);
-
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  m_pExecutingSet->vDropLock();
-}
-
-/*----------------------------------------------------------------------------*/
-/* add task to ready queue                                                    */
-/*----------------------------------------------------------------------------*/
-void Queues::vAddToReadyQueue(Task* pTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  m_pReadyQueue->vGrabLock();
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-
-  RASSERT(TS_READY == pTask->eState());
-  
-  pTask->vQueue(QK_READY_QUEUE);
-  pTask->vQueueOrder(++m_ixQueueOrder);
-  
-  if (pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkJob(pTask->pJob(),
-                          "Add to ReadyQueue: %s %p"_Stz,
-                          aCN[pTask->pJob()->eClass()],
-                          pTask->pJob());
-  
-  ASSERT(m_pReadyQueue->bIsLocked());
-  
-  m_pReadyQueue->vAddTask(pTask);
-  
-  ActionSequence::vAdd(pTask->pJob(),AN_ADD_READY_QUEUE);
-
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  m_pReadyQueue->vDropLock();
-}
-
-/*----------------------------------------------------------------------------*/
-/* add task to low priority ready queue                                       */
-/*----------------------------------------------------------------------------*/
-void Queues::vAddToReadyQueueLP(Task* pTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  m_pReadyQueueLP->vGrabLock();
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  
-  RASSERT(TS_READY == pTask->eState());
-  
-  pTask->vQueue(QK_READY_QUEUE_LP);
-  pTask->vQueueOrder(++m_ixQueueOrder);
-  
-  if (pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkJob(pTask->pJob(),
-                          "Add to ReadyQueueLP: %s %p"_Stz,
-                          aCN[pTask->pJob()->eClass()],
-                          pTask->pJob());
-  
-  ASSERT(m_pReadyQueueLP->bIsLocked());
-  
-  m_pReadyQueueLP->vAddTask(pTask);
-  
-  ActionSequence::vAdd(pTask->pJob(),AN_ADD_READY_QUEUE_LP);
-
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  m_pReadyQueueLP->vDropLock();
-}
-
-/*----------------------------------------------------------------------------*/
-/* add task to sleeping queue                                                 */
-/*----------------------------------------------------------------------------*/
-void Queues::vAddToSleepingQueue(Task* pTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  m_pSleepingQueue->vGrabLock();
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  
-  RASSERT(TS_SLEEPING == pTask->eState());
-  
-  pTask->vQueue(QK_SLEEPING_QUEUE);
-  
-  if (pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkJob(pTask->pJob(),
-                          "Add to SleepingQueue: %s %p"_Stz,
-                          aCN[pTask->pJob()->eClass()],
-                          pTask->pJob());
-  
-  ASSERT(m_pSleepingQueue->bIsLocked());
-  
-  i8 nPriorItems = m_pSleepingQueue->nTasks();
-  m_pSleepingQueue->vAssertItems(nPriorItems);
-  m_pSleepingQueue->vAddTask(pTask);
-  m_pSleepingQueue->vAssertItems(nPriorItems + 1);
-  
-  ActionSequence::vAdd(pTask->pJob(),AN_ADD_SLEEPING_QUEUE);
-
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  m_pSleepingQueue->vDropLock();
-}
-
-/*----------------------------------------------------------------------------*/
-/* add task to waiting queue                                                  */
-/*----------------------------------------------------------------------------*/
-void Queues::vAddToWaitingSet(Task* pTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  m_pWaitingSet->vGrabLock();
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  
-  // task must be in the waiting state
-  RASSERT(TS_WAITING == pTask->eState());
-  
-  // task must be locked
-  RASSERT(pTask->bIsLocked());
-  
-  // task must not be in any queue
-  RASSERT(QK_NONE == pTask->eQueue());
-  
-  // mark task as being in the waiting queue
-  pTask->vQueue(QK_WAITING_SET);
-  pTask->vQueueOrder(++m_ixQueueOrder);
-  
-  if (pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkJob(pTask->pJob(),
-                          "Add to WaitingSet: %s %p"_Stz,
-                          aCN[pTask->pJob()->eClass()],
-                          pTask->pJob());
-  
-  // put task into the waiting queue
-  ASSERT(m_pWaitingSet->bIsLocked());
-  m_pWaitingSet->vAddTask(pTask);
-  
-  ActionSequence::vAdd(pTask->pJob(),AN_ADD_WAITING_SET);
-
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  m_pWaitingSet->vDropLock();
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/* append task to waiting queue                                               */
-/*----------------------------------------------------------------------------*/
-void Queues::vAppendIdleThread(Thread* pThread)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  m_pIdleThreadQueue->vGrabLock();
-  m_pIdleThreadQueue->vAppendThread(pThread);
-  m_pIdleThreadQueue->vDropLock();
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* pop idle thread                                                            */
-/*----------------------------------------------------------------------------*/
-Thread* Queues::pPopIdleThread(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  m_pIdleThreadQueue->vGrabLock();
-  
-  Thread* pThread = m_pIdleThreadQueue->pPopThread();
-  
-  m_pIdleThreadQueue->vDropLock();
-  
-  return pThread;
- }
 
 
 /*----------------------------------------------------------------------------*/
@@ -788,98 +876,12 @@ Task* Queues::pPopSleepingQueue(void)
   return pTask;
 }
 
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* remove thread from dedicated thread vector                                 */
-/*----------------------------------------------------------------------------*/
-void Queues::vRemoveDedicatedThread(Thread* pThread)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  m_pDedicatedThreadVec->vGrabLock();
-  m_pDedicatedThreadVec->vRemove(pThread);
-  m_pDedicatedThreadVec->vDropLock();
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove thread from general thread vector                                   */
-/*----------------------------------------------------------------------------*/
-void Queues::vRemoveGeneralThread(Thread* pThread)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  m_pGeneralThreadVec->vGrabLock();
-  m_pGeneralThreadVec->vRemove(pThread);
-  m_pGeneralThreadVec->vDropLock();
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* remove task from executing queue                                           */
-/*----------------------------------------------------------------------------*/
-void Queues::vRemoveFromExecutingSet(Task* pTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  RASSERT(QK_EXECUTING_SET == pTask->eQueue());
-  
-  m_pExecutingSet->vGrabLock();
-  m_pExecutingSet->vRemoveTask(pTask);
-  m_pExecutingSet->vDropLock();
-  
-  // task no longer in any queue/set
-  pTask->vQueue(QK_NONE);
-
-  if (pTask->pJob() && pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkJob(pTask->pJob(),
-                       "Removed from ExecutingSet: %s %p"_Stz,
-                       aCN[pTask->pJob()->eClass()],
-                       pTask->pJob());
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove task from waiting queue                                             */
-/*----------------------------------------------------------------------------*/
-void Queues::vRemoveFromWaitingSet(Task* pTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  RASSERT(TS_WAITING == pTask->eState());
-  RASSERT(QK_WAITING_SET == pTask->eQueue());
-  RASSERT(0 == pTask->iAcksRmg_assert_only_());
-
-  m_pWaitingSet->vGrabLock();
-  m_pWaitingSet->vRemoveTask(pTask);
-  m_pWaitingSet->vDropLock();
-  
-  // task no longer in any queue/set
-  pTask->vQueue(QK_NONE);
-
-  if (pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkJob(pTask->pJob(),
-                       "Removed from WaitingSet: %s %p"_Stz,
-                       aCN[pTask->pJob()->eClass()],
-                       pTask->pJob());
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* Queues::aFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  return &m_xFooter;
-}
+__aFooterFunction(Queues);
 
 /*============================================================================*/
 /* end                                                                        */
