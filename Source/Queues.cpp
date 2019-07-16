@@ -440,7 +440,21 @@ void Queues::vAddToExecutingSet(Task* pTask)
   m_pExecutingSet->vGrabLock();
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   
-  vAddToExecutingSet_NL(pTask);
+  RASSERT(TS_EXECUTING == pTask->eState());
+  
+  pTask->vQueue(QK_EXECUTING_SET);
+  pTask->vQueueOrder(++m_ixQueueOrder);
+  
+  if (pTask->pJob()->m_bMarkActivity)
+    ActivityMap::vMarkJob(pTask->pJob(),
+                          "Add to ExecutingSet: %s %p"_Stz,
+                          aCN[pTask->pJob()->eClass()],
+                          pTask->pJob());
+  
+  ASSERT(m_pExecutingSet->bIsLocked());
+  m_pExecutingSet->vAddTask(pTask);
+  
+  ActionSequence::vAdd(pTask->pJob(),AN_ADD_EXECUTING_SET);
 
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   m_pExecutingSet->vDropLock();
@@ -456,8 +470,23 @@ void Queues::vAddToReadyQueue(Task* pTask)
   m_pReadyQueue->vGrabLock();
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
 
-  vAddToReadyQueue_NL(pTask);
+  RASSERT(TS_READY == pTask->eState());
   
+  pTask->vQueue(QK_READY_QUEUE);
+  pTask->vQueueOrder(++m_ixQueueOrder);
+  
+  if (pTask->pJob()->m_bMarkActivity)
+    ActivityMap::vMarkJob(pTask->pJob(),
+                          "Add to ReadyQueue: %s %p"_Stz,
+                          aCN[pTask->pJob()->eClass()],
+                          pTask->pJob());
+  
+  ASSERT(m_pReadyQueue->bIsLocked());
+  
+  m_pReadyQueue->vAddTask(pTask);
+  
+  ActionSequence::vAdd(pTask->pJob(),AN_ADD_READY_QUEUE);
+
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   m_pReadyQueue->vDropLock();
 }
@@ -472,8 +501,23 @@ void Queues::vAddToReadyQueueLP(Task* pTask)
   m_pReadyQueueLP->vGrabLock();
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   
-  vAddToReadyQueueLP_NL(pTask);
+  RASSERT(TS_READY == pTask->eState());
   
+  pTask->vQueue(QK_READY_QUEUE_LP);
+  pTask->vQueueOrder(++m_ixQueueOrder);
+  
+  if (pTask->pJob()->m_bMarkActivity)
+    ActivityMap::vMarkJob(pTask->pJob(),
+                          "Add to ReadyQueueLP: %s %p"_Stz,
+                          aCN[pTask->pJob()->eClass()],
+                          pTask->pJob());
+  
+  ASSERT(m_pReadyQueueLP->bIsLocked());
+  
+  m_pReadyQueueLP->vAddTask(pTask);
+  
+  ActionSequence::vAdd(pTask->pJob(),AN_ADD_READY_QUEUE_LP);
+
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   m_pReadyQueueLP->vDropLock();
 }
@@ -488,8 +532,25 @@ void Queues::vAddToSleepingQueue(Task* pTask)
   m_pSleepingQueue->vGrabLock();
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   
-  vAddToSleepingQueue_NL(pTask);
+  RASSERT(TS_SLEEPING == pTask->eState());
   
+  pTask->vQueue(QK_SLEEPING_QUEUE);
+  
+  if (pTask->pJob()->m_bMarkActivity)
+    ActivityMap::vMarkJob(pTask->pJob(),
+                          "Add to SleepingQueue: %s %p"_Stz,
+                          aCN[pTask->pJob()->eClass()],
+                          pTask->pJob());
+  
+  ASSERT(m_pSleepingQueue->bIsLocked());
+  
+  i8 nPriorItems = m_pSleepingQueue->nTasks();
+  m_pSleepingQueue->vAssertItems(nPriorItems);
+  m_pSleepingQueue->vAddTask(pTask);
+  m_pSleepingQueue->vAssertItems(nPriorItems + 1);
+  
+  ActionSequence::vAdd(pTask->pJob(),AN_ADD_SLEEPING_QUEUE);
+
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   m_pSleepingQueue->vDropLock();
 }
@@ -504,8 +565,31 @@ void Queues::vAddToWaitingSet(Task* pTask)
   m_pWaitingSet->vGrabLock();
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   
-  vAddToWaitingSet_NL(pTask);
+  // task must be in the waiting state
+  RASSERT(TS_WAITING == pTask->eState());
   
+  // task must be locked
+  RASSERT(pTask->bIsLocked());
+  
+  // task must not be in any queue
+  RASSERT(QK_NONE == pTask->eQueue());
+  
+  // mark task as being in the waiting queue
+  pTask->vQueue(QK_WAITING_SET);
+  pTask->vQueueOrder(++m_ixQueueOrder);
+  
+  if (pTask->pJob()->m_bMarkActivity)
+    ActivityMap::vMarkJob(pTask->pJob(),
+                          "Add to WaitingSet: %s %p"_Stz,
+                          aCN[pTask->pJob()->eClass()],
+                          pTask->pJob());
+  
+  // put task into the waiting queue
+  ASSERT(m_pWaitingSet->bIsLocked());
+  m_pWaitingSet->vAddTask(pTask);
+  
+  ActionSequence::vAdd(pTask->pJob(),AN_ADD_WAITING_SET);
+
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   m_pWaitingSet->vDropLock();
 }
