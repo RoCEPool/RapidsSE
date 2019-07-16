@@ -64,7 +64,6 @@ namespace Scheduling
     //! MOVE TO QUEUES
 
     static void vQueue_AddExecuting(Task* pTask);
-    static void vQueue_AddWaiting(Task* pTask);
   };
 }
 

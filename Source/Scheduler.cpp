@@ -686,21 +686,6 @@ void Scheduler::vQueue_AddExecuting(Task* pTask)
   pQueues->vAddToExecutingSet(pTask);
 }
 
-/*----------------------------------------------------------------------------*/
-/* add task to waiting set                                                    */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vQueue_AddWaiting(Task* pTask)
-{
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  // task must be locked and in the waiting state
-  RASSERT(pTask->bIsLocked());
-  RASSERT(TS_WAITING == pTask->eState());
-
-  // add task to waiting set
-  pQueues->vAddToWaitingSet(pTask);
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
