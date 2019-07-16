@@ -369,11 +369,13 @@ void Scheduler::vTask_ResumeAck(Task* pTask)
                           pTask->pJob());
   
   pTask->vGrabLock();
+  pTask->vDropLock();
   
   // having got the lock, the task should be TS_WAITING and QK_WAITING_SET
   
-  pTask->vDropLock();
-  
+  RASSERT(TS_WAITING == pTask->eState());
+  RASSERT(QK_WAITING_SET == pTask->eQueue());
+
   gpAttachMap->m_pQueues->vRemoveWaitingSet(pTask);
   
   pTask->vState(TS_READY);
@@ -386,7 +388,8 @@ void Scheduler::vTask_ResumeAck(Task* pTask)
 void Scheduler::vTask_ScheduleReady(Task* pTask)
 {
   RASSERT(TS_READY == pTask->eState());
-  
+  RASSERT(QK_NONE == pTask->eQueue());
+
   // attempt to assign a thread to the task
   if (bThread_AssignIdle(pTask))
     return;
@@ -404,7 +407,8 @@ void Scheduler::vTask_ScheduleReady(Task* pTask)
 void Scheduler::vTask_Sleep(Task* pTask)
 {
   RASSERT(TS_SLEEPING == pTask->eState());
-  
+  RASSERT(QK_NONE == pTask->eQueue());
+
   if (pTask->pJob()->m_bMarkActivity)
     ActivityLog::vMarkJob(pTask->pJob(),
                           "Schedule sleeping: %s %p"_Stz,
@@ -433,7 +437,8 @@ void Scheduler::vTask_Sleep(Task* pTask)
 void Scheduler::vTask_SpawnNew(Task* pTask)
 {
   ASSERT(TS_NONE == pTask->eState());
-  
+  RASSERT(QK_NONE == pTask->eQueue());
+
   pTask->vState(TS_READY);
 }
 
@@ -442,6 +447,10 @@ void Scheduler::vTask_SpawnNew(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Wait(Task* pTask)
 {
+  RASSERT(TS_WAITING == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+  RASSERT(pTask->bIsLocked());
+
   // activity
   if (pTask->pJob()->m_bMarkActivity) {
     if (C_UNKNOWN == pTask->pJob()->iJobId())
