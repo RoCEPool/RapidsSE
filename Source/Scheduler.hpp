@@ -38,8 +38,8 @@ namespace Scheduling
     static void vTask_Exit(Task* pTask);
     static void vTask_ResumeAck(Task* pTask);
     static void vTask_ScheduleReady(Task* pTask);
-    static void vTask_SpawnNew(Task* pTask);
     static void vTask_Sleep(Task* pTask);
+    static void vTask_SpawnNew(Task* pTask);
     static void vTask_Wait(Task* pTask);
     static void vTask_WakeSleeping(void);
     static void vTask_Yield(Task* pTask);

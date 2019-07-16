@@ -132,8 +132,6 @@ void Scheduler::vThreadAddDedicated(Thread* pThread)
   // called from Thread::aEntryPoint_dedicated()
   //
   
-  RASSERT(CN_NONE != pThread->m_eDedicated);
-  
   vThread_AddDedicated(pThread);
 }
 
@@ -538,6 +536,8 @@ void Scheduler::vTask_Yield(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_AddDedicated(Thread* pThread)
 {
+  RASSERT(CN_NONE != pThread->m_eDedicated);
+  
   Queues* pQueues = gpAttachMap->m_pQueues;
   
   pThread->m_eThreadState = TD_IDLE;
@@ -553,6 +553,8 @@ void Scheduler::vThread_AddGeneral(Thread* pThread)
   
   pThread->m_eThreadState = TD_IDLE;
   pQueues->vThreadAddGeneral(pThread);
+  
+  RASSERT(CN_NONE == pThread->m_eDedicated);
 }
 
 /*----------------------------------------------------------------------------*/
