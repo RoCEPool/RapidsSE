@@ -34,17 +34,16 @@ namespace Monitoring
   
     static void vAdd(i8 i_RootAct, i8 iJobId, eCN eClassNo,
                      eAN eAction=AN_NONE, i8 iArg0=0, i8 iArg1=0);
-  
-    static i8 iBegin(i8 iJobId,  eCN eClassNo,
-                     eAN eAction=AN_NONE, i8 iArg0=0, i8 iArg1=0);
-  
     static void vAdd(Jobs::Job* pJob,
                      eAN eAction=AN_NONE, i8 iArg0=0, i8 iArg1=0);
     static void vAdd(Jobs::Job* pJob,eAN eAction,
                      Jobs::Job* pSystemJob,i8 iArg0=0, i8 iArg1=0);
     static void vAdd(Jobs::Job* pJob,eAN eAction, Stz* szText);
-    static void vRoot(Jobs::Job* pJob);
+    static i8   iBegin(i8 iJobId,  eCN eClassNo,
+                       eAN eAction=AN_NONE, i8 iArg0=0, i8 iArg1=0);
     static void vEnd(Jobs::Job* pJob);
+
+    static void vRoot(Jobs::Job* pJob);
 
     static void vWriteCsv(void);
 

@@ -32,10 +32,6 @@ bool Scheduler::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
 
   RASSERT(! pTaskBeingAcked->iAcksRmg_assert_only_());
   
-  ActionSequence::vAdd(pTaskAcking->pJob(),
-                       AN_AM_DECIDER,
-                       pTaskBeingAcked->pJob());
-  
   vTask_ResumeAck(pTaskBeingAcked);
 
   return true;
@@ -70,7 +66,7 @@ void Scheduler::vAddTaskGeneral(Task* pTask)
   
   vTask_SpawnNew(pTask);
 
-  Scheduler::vScheduleReadyTask(pTask);
+  Scheduler::vTask_ScheduleReady(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -108,28 +104,6 @@ void Scheduler::vReturnTaskLoop(Thread* pThread)
     default:
       NEVER_REACH;
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* schedule a ready to execute task                                           */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vScheduleReadyTask(Task* pTask)
-{
-  RASSERT(TS_READY == pTask->eState());
-
-  if (pTask->pJob()->m_bMarkActivity)
-    ActivityLog::vMarkJob(pTask->pJob(),
-                          "Schedule ready: %s %p"_Stz,
-                          aCN[pTask->pJob()->eClass()],
-                          pTask->pJob());
-  
-  if (bThread_AssignIdle(pTask))
-    return;
-  
-  if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
-    gpAttachMap->m_pQueues->vAppendReadyQueue(pTask);
-  else
-    gpAttachMap->m_pQueues->vAppendReadyQueueLP(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -343,6 +317,11 @@ bool Scheduler::bTask_AckWaiting(Task* pTaskBeingAcked, Task* pTaskAcking)
   
   bool bAmDecider = pTaskBeingAcked->bAckAndDecide();
   
+  if (bAmDecider)
+    ActionSequence::vAdd(pTaskAcking->pJob(),
+                         AN_AM_DECIDER,
+                         pTaskBeingAcked->pJob());
+
   if (bAmDecider) {
     if (pJobBeingAcked->m_bMarkActivity || pJobAcking->m_bMarkActivity)
       ActivityLog::vMarkJob(pJobAcking,
@@ -400,7 +379,25 @@ void Scheduler::vTask_ResumeAck(Task* pTask)
   gpAttachMap->m_pQueues->vRemoveWaitingSet(pTask);
   
   pTask->vState(TS_READY);
-  vScheduleReadyTask(pTask);
+  vTask_ScheduleReady(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* schedule a ready to execute task                                           */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTask_ScheduleReady(Task* pTask)
+{
+  RASSERT(TS_READY == pTask->eState());
+  
+  // attempt to assign a thread to the task
+  if (bThread_AssignIdle(pTask))
+    return;
+  
+  // append task to a ready queue
+  if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
+    gpAttachMap->m_pQueues->vAppendReadyQueue(pTask);
+  else
+    gpAttachMap->m_pQueues->vAppendReadyQueueLP(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -478,7 +475,7 @@ void Scheduler::vTask_WakeSleeping(void)
   while (Task* pWokenTask = gpAttachMap->m_pQueues->pPopSleepingQueue()) {
     RASSERT(QK_NONE  == pWokenTask->eQueue());
     pWokenTask->vState(TS_READY);
-    Scheduler::vScheduleReadyTask(pWokenTask);
+    Scheduler::vTask_ScheduleReady(pWokenTask);
   }
 }
 
