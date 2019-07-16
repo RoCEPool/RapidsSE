@@ -198,7 +198,7 @@ void Job_LoadTable::vDumpMap(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
   
-  vTrace("Load Map for: %s:\n"_Stz,m_sFilePath.aStz());
+  vTrace("Load ShmLog for: %s:\n"_Stz,m_sFilePath.aStz());
   
   m_pLoadMap->vDumpMap();
 }

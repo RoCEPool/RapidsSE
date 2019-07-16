@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ActionSequence.cpp - Activity Map                                          */
+/* ActionSequence.cpp - Activity ShmLog                                          */
 /*============================================================================*/
 
 #include "Monitoring.h"
@@ -35,7 +35,7 @@ void ActionSequence::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ActionSequence::ActionSequence(void)
-: Map(CN_ACTIONSEQUENCE)
+: ShmLog(CN_ACTIONSEQUENCE)
 {
   _precondition_(_MAGIC_,CN_ACTIONSEQUENCE,_FOOTER_);
   
@@ -85,7 +85,7 @@ void ActionSequence::vOpenBySE(bool bStarting)
   ActionSequence* pActionSequence = nullptr;
   
   if (bStarting) {
-    pActionSequence = (ActionSequence*)Map::aMapCreate(sMapNm,nMapSz);
+    pActionSequence = (ActionSequence*)ShmLog::aMapCreate(sMapNm,nMapSz);
     if (gpAttachMap->m_bVerbose)
       vTrace("ActionSequence: created new map %s %lldB\n"_Stz,
              sMapNm.aStz(),
@@ -94,7 +94,7 @@ void ActionSequence::vOpenBySE(bool bStarting)
     
   }
   else {
-    pActionSequence = (ActionSequence*)Map::aMapExisting(sMapNm,nMapSz);
+    pActionSequence = (ActionSequence*)ShmLog::aMapExisting(sMapNm,nMapSz);
     if (gpAttachMap->m_bVerbose)
       vTrace("ActionSequence: attached to existing map %s %lldB\n"_Stz,
              sMapNm.aStz(),

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_ActivityMap.cpp -- Activity Map step group                           */
+/* Steps_ActivityMap.cpp -- Activity ShmLog step group                           */
 /*============================================================================*/
 
 #include "StorageEngine.h"
