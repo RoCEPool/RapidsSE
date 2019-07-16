@@ -189,7 +189,7 @@ void Queues::vThreadsReport(void)
 /*----------------------------------------------------------------------------*/
 /* add task to executing queue                                                */
 /*----------------------------------------------------------------------------*/
-void Queues::vAddToExecutingSet(Task* pTask)
+void Queues::vAddExecutingSet(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
@@ -219,7 +219,7 @@ void Queues::vAddToExecutingSet(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* add task to ready queue                                                    */
 /*----------------------------------------------------------------------------*/
-void Queues::vAddToReadyQueue(Task* pTask)
+void Queues::vAppendReadyQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
@@ -250,7 +250,7 @@ void Queues::vAddToReadyQueue(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* add task to low priority ready queue                                       */
 /*----------------------------------------------------------------------------*/
-void Queues::vAddToReadyQueueLP(Task* pTask)
+void Queues::vAppendReadyQueueLP(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
@@ -281,7 +281,7 @@ void Queues::vAddToReadyQueueLP(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* add task to sleeping queue                                                 */
 /*----------------------------------------------------------------------------*/
-void Queues::vAddToSleepingQueue(Task* pTask)
+void Queues::vAddSleepingQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
@@ -314,7 +314,7 @@ void Queues::vAddToSleepingQueue(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* add task to waiting queue                                                  */
 /*----------------------------------------------------------------------------*/
-void Queues::vAddToWaitingSet(Task* pTask)
+void Queues::vAddWaitingSet(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
@@ -387,7 +387,7 @@ Thread* Queues::pThreadPopIdle(void)
 /*----------------------------------------------------------------------------*/
 /* remove task from executing queue                                           */
 /*----------------------------------------------------------------------------*/
-void Queues::vRemoveFromExecutingSet(Task* pTask)
+void Queues::vRemoveExecutingSet(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
@@ -410,7 +410,7 @@ void Queues::vRemoveFromExecutingSet(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* remove task from waiting queue                                             */
 /*----------------------------------------------------------------------------*/
-void Queues::vRemoveFromWaitingSet(Task* pTask)
+void Queues::vRemoveWaitingSet(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   

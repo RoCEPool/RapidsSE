@@ -47,18 +47,19 @@ namespace Scheduling
   // - - - - - - - - - - - - - - - - - - - - - - -
   // task
   private:
-    void vAddToExecutingSet(Task* pTask);
-    void vAddToReadyQueue(Task* pTask);
-    void vAddToReadyQueueLP(Task* pTask);
-    void vAddToSleepingQueue(Task* pTask);
-    void vAddToWaitingSet(Task* pTask);
+    void vAddExecutingSet(Task* pTask);
+    void vAddWaitingSet(Task* pTask);
+    void vAddSleepingQueue(Task* pTask);
+
+    void vAppendReadyQueue(Task* pTask);
+    void vAppendReadyQueueLP(Task* pTask);
   
     Task* pPopReadyQueue(void);
     Task* pPopReadyQueueLP(void);
     Task* pPopSleepingQueue(void);
   
-    void vRemoveFromExecutingSet(Task* pTask);
-    void vRemoveFromWaitingSet(Task* pTask);
+    void vRemoveExecutingSet(Task* pTask);
+    void vRemoveWaitingSet(Task* pTask);
   
   // - - - - - - - - - - - - - - - - - - - - - - -
   // thread

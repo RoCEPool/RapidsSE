@@ -89,7 +89,7 @@ void Scheduler::vReturnTaskLoop(Thread* pThread)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // remove task from the executing set
-  gpAttachMap->m_pQueues->vRemoveFromExecutingSet(pTask);
+  gpAttachMap->m_pQueues->vRemoveExecutingSet(pTask);
   
   // add task to another appropriate queue depending on its state
   switch (pTask->eState()) {
@@ -126,9 +126,9 @@ void Scheduler::vScheduleReadyTask(Task* pTask)
     return;
   
   if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
-    gpAttachMap->m_pQueues->vAddToReadyQueue(pTask);
+    gpAttachMap->m_pQueues->vAppendReadyQueue(pTask);
   else
-    gpAttachMap->m_pQueues->vAddToReadyQueueLP(pTask);
+    gpAttachMap->m_pQueues->vAppendReadyQueueLP(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -197,7 +197,7 @@ void Scheduler::vAssignDedicatedThread(Thread* pThread)
   pThread->m_pTask->vThread(pThread);
   
   // add this task to the executing task set
-  gpAttachMap->m_pQueues->vAddToExecutingSet(pThread->m_pTask);
+  gpAttachMap->m_pQueues->vAddExecutingSet(pThread->m_pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -309,7 +309,7 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
   pThread->m_pTask->vThread(pThread);
   
   // add this task to the executing task set
-  gpAttachMap->m_pQueues->vAddToExecutingSet(pThread->m_pTask);
+  gpAttachMap->m_pQueues->vAddExecutingSet(pThread->m_pTask);
 }
 
 
@@ -404,7 +404,7 @@ void Scheduler::vTask_ResumeAck(Task* pTask)
   
   pTask->vDropLock();
   
-  gpAttachMap->m_pQueues->vRemoveFromWaitingSet(pTask);
+  gpAttachMap->m_pQueues->vRemoveWaitingSet(pTask);
   
   pTask->vState(TS_READY);
   vScheduleReadyTask(pTask);
@@ -425,7 +425,7 @@ void Scheduler::vTask_Sleep(Task* pTask)
   
   // is the task still actually sleeping
   if (! pTask->bWakeupNow()) {
-    gpAttachMap->m_pQueues->vAddToSleepingQueue(pTask);
+    gpAttachMap->m_pQueues->vAddSleepingQueue(pTask);
     return;
   }
   
@@ -471,7 +471,7 @@ void Scheduler::vTask_Wait(Task* pTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // add task to waiting set
-  gpAttachMap->m_pQueues->vAddToWaitingSet(pTask);
+  gpAttachMap->m_pQueues->vAddWaitingSet(pTask);
   
   // drop task lock
   pTask->vDropLock();
@@ -528,12 +528,12 @@ void Scheduler::vTask_Yield(Task* pTask)
     }
     else {
       pTask->vState(TS_READY);
-      gpAttachMap->m_pQueues->vAddToReadyQueue(pTask);
+      gpAttachMap->m_pQueues->vAppendReadyQueue(pTask);
     }
   }
   else {
     pTask->vState(TS_READY);
-    gpAttachMap->m_pQueues->vAddToReadyQueueLP(pTask);
+    gpAttachMap->m_pQueues->vAppendReadyQueueLP(pTask);
   }
 }
 
