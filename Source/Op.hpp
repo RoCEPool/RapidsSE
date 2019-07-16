@@ -26,6 +26,8 @@ namespace PushDown
     Op(eCN eClass);
    ~Op(void) noexcept(false);
   
+    static Op* pThisTLSOp(void);
+
     void vOpLoop(void);
   
     void vCallOpFun(void);
