@@ -72,6 +72,7 @@ namespace Scheduling
     void vThreadRemoveGeneral(Thread* pThread);
   
   // - - - - - - - - - - - - - - - - - - - - - - -
+  // misc
   public:
     void vDumpExecutingSet(void);
     void vDumpReadyQueue(void);
