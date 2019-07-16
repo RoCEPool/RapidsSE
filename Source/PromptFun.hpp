@@ -102,7 +102,7 @@ namespace Prompt
   {
   /*  0 */ "NONE"_Stz,
   /*    */ "ACTIONSEQUENCE"_Stz,
-  /*    */ "ACTIVITYMAP"_Stz,
+  /*    */ "activityLog"_Stz,
   /*    */ "AM"_Stz,
   /*    */ "AMSECTION"_Stz,
   /*    */ "APISTATE"_Stz,

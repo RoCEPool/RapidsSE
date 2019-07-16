@@ -66,7 +66,7 @@ ActionSequence::~ActionSequence(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* create or open ActivityMap (called by SE)                                  */
+/* create or open ActivityLog (called by SE)                                  */
 /*----------------------------------------------------------------------------*/
 void ActionSequence::vOpenBySE(bool bStarting)
 {
@@ -75,7 +75,7 @@ void ActionSequence::vOpenBySE(bool bStarting)
     return;
   
   if (gpActionSequence)
-    vFatal("ActivityMap::vOpenBySE() -- activity map already opened\n"_Stz);
+    vFatal("ActivityLog::vOpenBySE() -- activity map already opened\n"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -354,7 +354,7 @@ void ActionSequence::vEnd(Jobs::Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write ActivityMap to csv file                                              */
+/* write ActivityLog to csv file                                              */
 /*----------------------------------------------------------------------------*/
 void ActionSequence::vWriteCsv(void)
 {
@@ -372,7 +372,7 @@ void ActionSequence::vWriteCsv(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get a new mark in ActivityMap (non-locking)                                */
+/* get a new mark in ActivityLog (non-locking)                                */
 /*----------------------------------------------------------------------------*/
 Action* ActionSequence::pAllotAction(void)
 {
@@ -567,7 +567,7 @@ void ActionSequence::vWriteToFile(void)
   }
   
   Now oNow;
-  ActivityMap::vMarkInfo("Writing ActionSequence at: %s"_Stz,oNow.sz());
+  ActivityLog::vMarkInfo("Writing ActionSequence at: %s"_Stz,oNow.sz());
   
   
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼

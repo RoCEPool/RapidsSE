@@ -114,7 +114,7 @@ visidx         - Visualise an index
 waitCuster     - Wait for cluster to  start
 .br 
 .SH PROMPT FUNCTIONS
-activityMap  - Write the activity map to an csv file
+activityLog  - Write the activity map to an csv file
 .br 
 am           - Manage activity markers
 .br 

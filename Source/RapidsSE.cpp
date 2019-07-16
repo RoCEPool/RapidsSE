@@ -7,7 +7,7 @@
 
 extern BufferPool*  gpBufferPool;
 extern AttachMap*   gpAttachMap;
-extern ActivityMap* gpActivityMap;
+extern ActivityLog* gpActivityMap;
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -151,7 +151,7 @@ eEC RapidsSE_OpenPool(i8 iTrace, Stz* sRegion, void** aaAttachMap)
     
     *aaAttachMap = gpAttachMap;
     
-    ActivityMap::vOpenByApi();
+    ActivityLog::vOpenByApi();
     
 #ifdef WITH_STATISTICS_COUNTERS
     if (gpAttachMap)

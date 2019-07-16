@@ -477,7 +477,7 @@ docol epochDump;
 
 am "End of script: _R35";
 
-ActivityMap;
+ActivityLog;
 
 print "";
 print "=====================================================================";

@@ -202,7 +202,7 @@ void Queues::vAddExecutingSet(Task* pTask)
   pTask->vQueueOrder(++m_ixQueueOrder);
   
   if (pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkJob(pTask->pJob(),
+    ActivityLog::vMarkJob(pTask->pJob(),
                           "Add to ExecutingSet: %s %p"_Stz,
                           aCN[pTask->pJob()->eClass()],
                           pTask->pJob());
@@ -231,7 +231,7 @@ void Queues::vAddSleepingQueue(Task* pTask)
   pTask->vQueue(QK_SLEEPING_QUEUE);
   
   if (pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkJob(pTask->pJob(),
+    ActivityLog::vMarkJob(pTask->pJob(),
                           "Add to SleepingQueue: %s %p"_Stz,
                           aCN[pTask->pJob()->eClass()],
                           pTask->pJob());
@@ -273,7 +273,7 @@ void Queues::vAddWaitingSet(Task* pTask)
   pTask->vQueueOrder(++m_ixQueueOrder);
   
   if (pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkJob(pTask->pJob(),
+    ActivityLog::vMarkJob(pTask->pJob(),
                           "Add to WaitingSet: %s %p"_Stz,
                           aCN[pTask->pJob()->eClass()],
                           pTask->pJob());
@@ -304,7 +304,7 @@ void Queues::vAppendReadyQueue(Task* pTask)
   pTask->vQueueOrder(++m_ixQueueOrder);
   
   if (pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkJob(pTask->pJob(),
+    ActivityLog::vMarkJob(pTask->pJob(),
                           "Add to ReadyQueue: %s %p"_Stz,
                           aCN[pTask->pJob()->eClass()],
                           pTask->pJob());
@@ -335,7 +335,7 @@ void Queues::vAppendReadyQueueLP(Task* pTask)
   pTask->vQueueOrder(++m_ixQueueOrder);
   
   if (pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkJob(pTask->pJob(),
+    ActivityLog::vMarkJob(pTask->pJob(),
                           "Add to ReadyQueueLP: %s %p"_Stz,
                           aCN[pTask->pJob()->eClass()],
                           pTask->pJob());
@@ -389,7 +389,7 @@ Task* Queues::pPopReadyQueue(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkJob(pTask->pJob(),"pPopReadyQueue()"_Stz);
+    ActivityLog::vMarkJob(pTask->pJob(),"pPopReadyQueue()"_Stz);
   
   // return the task popped from the ready queue
   return pTask;
@@ -434,7 +434,7 @@ Task* Queues::pPopReadyQueueLP(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkJob(pTask->pJob(),"pPopReadyQueueLP()"_Stz);
+    ActivityLog::vMarkJob(pTask->pJob(),"pPopReadyQueueLP()"_Stz);
   
   // return the task popped from the ready queue
   return pTask;
@@ -495,7 +495,7 @@ Task* Queues::pPopSleepingQueue(void)
   pTask->vWakeupTask();
   
   if (pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkInfo(
+    ActivityLog::vMarkInfo(
                            "Popped SleepingQueue: %s %p"_Stz,
                            aCN[pTask->pJob()->eClass()],
                            pTask->pJob());
@@ -521,7 +521,7 @@ void Queues::vRemoveExecutingSet(Task* pTask)
   pTask->vQueue(QK_NONE);
   
   if (pTask->pJob() && pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkJob(pTask->pJob(),
+    ActivityLog::vMarkJob(pTask->pJob(),
                           "Removed from ExecutingSet: %s %p"_Stz,
                           aCN[pTask->pJob()->eClass()],
                           pTask->pJob());
@@ -546,7 +546,7 @@ void Queues::vRemoveWaitingSet(Task* pTask)
   pTask->vQueue(QK_NONE);
   
   if (pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkJob(pTask->pJob(),
+    ActivityLog::vMarkJob(pTask->pJob(),
                           "Removed from WaitingSet: %s %p"_Stz,
                           aCN[pTask->pJob()->eClass()],
                           pTask->pJob());

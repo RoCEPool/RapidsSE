@@ -174,7 +174,7 @@ void Arguments::vAddConstants(void)
   vAddConstant("args.unlink"_Stz,            m_bUnlink);
   vAddConstant("args.verbose"_Stz,           m_bVerbose);
   vAddConstant("args.welcome"_Stz,           m_bWelcome);
-  vAddConstant("args.activityMap"_Stz,       m_bActivityMap);
+  vAddConstant("args.activityLog"_Stz,       m_bActivityMap);
   vAddConstant("args.actionSequence"_Stz,    m_bActionSequence);
 }
 
@@ -183,7 +183,7 @@ void Arguments::vAddConstants(void)
 /*----------------------------------------------------------------------------*/
 void Arguments::vMark(void)
 {
-  ActivityMap::vMarkInfo("Args:"_Stz);
+  ActivityLog::vMarkInfo("Args:"_Stz);
   
   s256 sArg;
   
@@ -196,7 +196,7 @@ void Arguments::vMark(void)
       StrLib::vConcat(sArg.aChar(),gi_argv[i_Arg ++]);
     }
     
-    ActivityMap::vMarkInfo("  %s"_Stz,sArg.aChar());
+    ActivityLog::vMarkInfo("  %s"_Stz,sArg.aChar());
   }
 }
 
@@ -641,13 +641,13 @@ bool Arguments::bParse(int argc, Stz* argv[])
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 #ifdef WITH_ACTIVITY_MAP
-    if (argv[i_Arg]->bSame("--activityMap"_Stz)) {
+    if (argv[i_Arg]->bSame("--activityLog"_Stz)) {
       m_bActivityMap = true;
       continue;
     }
 #else
-    if (argv[i_Arg]->bSame("--activityMap"_Stz)) {
-      vWarn("arg --activityMap ignored; not compiled WITH_ACTIVITY_MAP\n"_Stz);
+    if (argv[i_Arg]->bSame("--activityLog"_Stz)) {
+      vWarn("arg --activityLog ignored; not compiled WITH_ACTIVITY_MAP\n"_Stz);
       continue;
     }
 #endif

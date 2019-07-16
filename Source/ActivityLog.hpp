@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ActivityMap.hpp - Activity ShmLog                                          */
+/* ActivityLog.hpp - Activity ShmLog                                          */
 /*============================================================================*/
 #pragma once
 
@@ -11,7 +11,7 @@ namespace Monitoring
   static const i8    C_INF_GROUP = -1;
   static const i8    C_MARGIN = 143;
   
-  class ActivityMap : public Object
+  class ActivityLog : public Object
   {
   private:
     Lock m_okLock;
@@ -25,15 +25,15 @@ namespace Monitoring
     Footer m_xFooter;
 
   public:
-    void* operator new(size_t, ActivityMap* pActivityMap);
+    void* operator new(size_t, ActivityLog* pActivityMap);
     void  operator delete(void*);
 
-    ActivityMap(void);
-    ~ActivityMap(void) noexcept(false);
+    ActivityLog(void);
+    ~ActivityLog(void) noexcept(false);
 
   private:
-    static ActivityMap* pAttachCreate(void);
-    static ActivityMap* pAttachExisting(void);
+    static ActivityLog* pAttachCreate(void);
+    static ActivityLog* pAttachExisting(void);
 
   public:
     static void vMarkApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...);

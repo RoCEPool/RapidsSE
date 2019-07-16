@@ -360,7 +360,7 @@ static Stz* aCN[]
   /*  12 0x0C */ "ACCESSPATH"_Stz,          // CN_ACCESSPATH
   /*          */ "ACTION"_Stz,              // CN_ACTION
   /*          */ "ACTIONJSEQUENCE"_Stz,     // CN_ACTIONSEQUENCE
-  /*  13 0x0D */ "ACTIVITYMAP"_Stz,         // CN_ACTIVITYMAP
+  /*  13 0x0D */ "activityLog"_Stz,         // CN_ACTIVITYMAP
   /*  14 0x0E */ "ACTIVITYMARK"_Stz,        // CN_ACTIVITYMARK
   /*          */ "AGGOP"_Stz,               // CN_AGGOP
   /*  15 0x0F */ "APISTATE"_Stz,            // CN_APISTATE

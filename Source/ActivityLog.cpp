@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ActivityMap.cpp - Activity ShmLog                                             */
+/* ActivityLog.cpp - Activity ShmLog                                             */
 /*============================================================================*/
 
 #include "Measurement.h"
@@ -7,7 +7,7 @@
 
 extern AttachMap* gpAttachMap;
 
-ActivityMap* gpActivityMap = nullptr;
+ActivityLog* gpActivityMap = nullptr;
 
 
 /*----------------------------------------------------------------------------*/
@@ -17,7 +17,7 @@ ActivityMap* gpActivityMap = nullptr;
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* ActivityMap::operator new(size_t, ActivityMap* pActivityMap)
+void* ActivityLog::operator new(size_t, ActivityLog* pActivityMap)
 {
   RASSERT(! gpActivityMap);
   
@@ -27,14 +27,14 @@ void* ActivityMap::operator new(size_t, ActivityMap* pActivityMap)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::operator delete(void* aAddress)
+void ActivityLog::operator delete(void* aAddress)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ActivityMap::ActivityMap(void)
+ActivityLog::ActivityLog(void)
 : Object(CN_ACTIVITYMAP)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
@@ -60,7 +60,7 @@ ActivityMap::ActivityMap(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-ActivityMap::~ActivityMap(void) noexcept(false)
+ActivityLog::~ActivityLog(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
 }
@@ -70,9 +70,9 @@ ActivityMap::~ActivityMap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* create a new ActivityMap shared memory segment                             */
+/* create a new ActivityLog shared memory segment                             */
 /*----------------------------------------------------------------------------*/
-ActivityMap* ActivityMap::pAttachCreate(void)
+ActivityLog* ActivityLog::pAttachCreate(void)
 {
   int iRegionFd;
   SysCall oSysCall;
@@ -87,33 +87,33 @@ ActivityMap* ActivityMap::pAttachCreate(void)
   // open a new shm region which will contain the activity map
   bResult = Shm::bOpenCreate(sRegionName,iRegionFd,oSysCall);
   if (! bResult)
-    vFatal("ActivityMap::bOpenCreate: failed to create region %s\n"_Stz,
+    vFatal("ActivityLog::bOpenCreate: failed to create region %s\n"_Stz,
            sRegionName.aChar());
   
   // extend the shm region
-  bResult = Shm::bExtend(iRegionFd,sizeof(ActivityMap),oSysCall);
+  bResult = Shm::bExtend(iRegionFd,sizeof(ActivityLog),oSysCall);
   if (! bResult)
-    vFatal("ActivityMap::bOpenCreate: failed to extend region %s\n"_Stz,
+    vFatal("ActivityLog::bOpenCreate: failed to extend region %s\n"_Stz,
            sRegionName.aChar());
   
   // map the shm region into a vm segment within this process address space
   void* aSegment = Shm::aMap(iRegionFd,
                              nullptr,
-                             sizeof(ActivityMap),
+                             sizeof(ActivityLog),
                              C_NO_HUGE_PAGES,
                              oSysCall);
   if (! aSegment)
-    vFatal("ActivityMap::bOpenCreate: failed to map region!\n"_Stz);
+    vFatal("ActivityLog::bOpenCreate: failed to map region!\n"_Stz);
   
-  ActivityMap* pActivityMap = static_cast<ActivityMap*>(aSegment);
+  ActivityLog* pActivityMap = static_cast<ActivityLog*>(aSegment);
   
   return pActivityMap;
 }
 
 /*----------------------------------------------------------------------------*/
-/* attach to existing shm region containing the ActivityMap                   */
+/* attach to existing shm region containing the ActivityLog                   */
 /*----------------------------------------------------------------------------*/
-ActivityMap* ActivityMap::pAttachExisting(void)
+ActivityLog* ActivityLog::pAttachExisting(void)
 {
   int iFD;
   SysCall oSysCall;
@@ -124,22 +124,22 @@ ActivityMap* ActivityMap::pAttachExisting(void)
   // open existing shm region
   bool bResult = Shm::bOpenExisting(sRegionName,iFD,oSysCall);
   if (! bResult)
-    vFatal("ActivityMap::bOpenExisting: failed to open region: %s\n"_Stz,
+    vFatal("ActivityLog::bOpenExisting: failed to open region: %s\n"_Stz,
            sRegionName.aChar());
   
   // map the shm region into a vm segment within this process address space
   void* aSegment = Shm::aMap(iFD,
                              nullptr,
-                             sizeof(ActivityMap),
+                             sizeof(ActivityLog),
                              C_NO_HUGE_PAGES,
                              oSysCall);
   if (! aSegment)  {
-    vTrace("ActivityMap::bOpenExisting: failed to map\n"_Stz);
+    vTrace("ActivityLog::bOpenExisting: failed to map\n"_Stz);
     Shm::bClose(iFD,oSysCall);
     NEVER_REACH;
   }
   
-  ActivityMap* pActivityMap = static_cast<ActivityMap*>(aSegment);
+  ActivityLog* pActivityMap = static_cast<ActivityLog*>(aSegment);
   
   return pActivityMap;
 }
@@ -151,7 +151,7 @@ ActivityMap* ActivityMap::pAttachExisting(void)
 /*----------------------------------------------------------------------------*/
 /* write an Activity mark for api call                                        */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vMarkApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...)
+void ActivityLog::vMarkApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...)
 {
 #ifdef WITH_ACTIVITY_MAP
   if ( ! gpActivityMap )
@@ -175,7 +175,7 @@ void ActivityMap::vMarkApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* write an Activity mark for api entry                                       */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vMarkApiEntry(i8 eApiCall, i8 iJobId)
+void ActivityLog::vMarkApiEntry(i8 eApiCall, i8 iJobId)
 {
 #ifdef WITH_ACTIVITY_MAP
   if ( ! gpActivityMap )
@@ -195,7 +195,7 @@ void ActivityMap::vMarkApiEntry(i8 eApiCall, i8 iJobId)
 /*----------------------------------------------------------------------------*/
 /* write an Activity mark for api error                                       */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vMarkApiError(i8 eApiCall, i8 iJobId, i8 iError)
+void ActivityLog::vMarkApiError(i8 eApiCall, i8 iJobId, i8 iError)
 {
 #ifdef WITH_ACTIVITY_MAP
   if ( ! gpActivityMap )
@@ -215,7 +215,7 @@ void ActivityMap::vMarkApiError(i8 eApiCall, i8 iJobId, i8 iError)
 /*----------------------------------------------------------------------------*/
 /* write an Activity mark for api exit                                        */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vMarkApiExit(i8 eApiCall, i8 iJobId)
+void ActivityLog::vMarkApiExit(i8 eApiCall, i8 iJobId)
 {
 #ifdef WITH_ACTIVITY_MAP
   if ( ! gpActivityMap )
@@ -235,7 +235,7 @@ void ActivityMap::vMarkApiExit(i8 eApiCall, i8 iJobId)
 /*----------------------------------------------------------------------------*/
 /* write an Activity mark                                                     */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vMarkInfo(Stz* aFormat, ...)
+void ActivityLog::vMarkInfo(Stz* aFormat, ...)
 {
 #ifdef WITH_ACTIVITY_MAP
   if ( ! gpActivityMap )
@@ -254,7 +254,7 @@ void ActivityMap::vMarkInfo(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* write an ActivityMark                                                      */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vMarkJob(Jobs::Job* pJob, Stz* szFormat, ...)
+void ActivityLog::vMarkJob(Jobs::Job* pJob, Stz* szFormat, ...)
 {
 #ifdef WITH_ACTIVITY_MAP
   if ( ! gpActivityMap )
@@ -298,7 +298,7 @@ void ActivityMap::vMarkJob(Jobs::Job* pJob, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* write an ActivityMark                                                      */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vMarkRes(eSR eSysRes,Stz* szFormat, ...)
+void ActivityLog::vMarkRes(eSR eSysRes,Stz* szFormat, ...)
 {
 
 #ifdef WITH_ACTIVITY_MAP
@@ -322,7 +322,7 @@ void ActivityMap::vMarkRes(eSR eSysRes,Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* write an ActivityMark                                                      */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vMarkSection(Stz* szSectionNm)
+void ActivityLog::vMarkSection(Stz* szSectionNm)
 {
 #ifdef WITH_ACTIVITY_MAP
   if ( ! gpActivityMap )
@@ -347,7 +347,7 @@ void ActivityMap::vMarkSection(Stz* szSectionNm)
 /*----------------------------------------------------------------------------*/
 /* write a multi-line string                                                  */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vMarkString(i8 iJobId, s48K& sString)
+void ActivityLog::vMarkString(i8 iJobId, s48K& sString)
 {
 #ifdef WITH_ACTIVITY_MAP
   if ( ! gpActivityMap )
@@ -376,11 +376,11 @@ void ActivityMap::vMarkString(i8 iJobId, s48K& sString)
 /*----------------------------------------------------------------------------*/
 /* monitor profile                                                            */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vMonitorPortrait(s48K& sPortrait)
+void ActivityLog::vMonitorPortrait(s48K& sPortrait)
 {
 #ifdef WITH_ACTIVITY_MAP
   if (! gpActivityMap) {
-    sPortrait.vSprint("ActivityMap: activity map not configured\n"_Stz);
+    sPortrait.vSprint("ActivityLog: activity map not configured\n"_Stz);
     return;
   }
   
@@ -395,21 +395,21 @@ void ActivityMap::vMonitorPortrait(s48K& sPortrait)
   s32 sArrayMag;
   Magnitudes::vUnitMag(gpActivityMap->m_nMarks, sArrayMag);
 
-  sPortrait.vSprint("ActivityMap: shm %s array %s marks %lld; %lld%% full;\n"_Stz,
+  sPortrait.vSprint("ActivityLog: shm %s array %s marks %lld; %lld%% full;\n"_Stz,
                     sShmMag.aStz(),
                     sArrayMag.aStz(),
                     gpActivityMap->m_i_Mark,
                     iPercentFull
                      );
 #else
-  sPortrait.vSprint("ActivityMap: not compiled WITH_ACTIVITY_MAP\n"_Stz);
+  sPortrait.vSprint("ActivityLog: not compiled WITH_ACTIVITY_MAP\n"_Stz);
 #endif
 }
 
 /*----------------------------------------------------------------------------*/
-/* open ActivityMap (called by API)                                           */
+/* open ActivityLog (called by API)                                           */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vOpenByApi(void)
+void ActivityLog::vOpenByApi(void)
 {
 #ifdef WITH_ACTIVITY_MAP
   if (! gpAttachMap->Arg.m_bActivityMap)
@@ -420,58 +420,58 @@ void ActivityMap::vOpenByApi(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  ActivityMap* pActivityMap = ActivityMap::pAttachExisting();
+  ActivityLog* pActivityMap = ActivityLog::pAttachExisting();
   if (gpAttachMap->m_bVerbose)
-    vTrace("ActivityMap %s : "
+    vTrace("ActivityLog %s : "
            "attached to existing map (size %lldB, max %lld marks)\n\n"_Stz,
            C_ACTIVITY_REGION,
-           sizeof(ActivityMap),
+           sizeof(ActivityLog),
            C_ACTIVITY_MARKS);
   
   gpActivityMap = pActivityMap;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  ActivityMap::vMarkInfo("Opened by API"_Stz);
+  ActivityLog::vMarkInfo("Opened by API"_Stz);
   
   Now oNow;
-  ActivityMap::vMarkInfo("Time is: "_Stz,oNow.sz());
+  ActivityLog::vMarkInfo("Time is: "_Stz,oNow.sz());
 #endif
 }
 
 /*----------------------------------------------------------------------------*/
-/* create or open ActivityMap (called by SE)                                  */
+/* create or open ActivityLog (called by SE)                                  */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vOpenBySE(bool bStarting)
+void ActivityLog::vOpenBySE(bool bStarting)
 {
 #ifdef WITH_ACTIVITY_MAP
   if (! gpAttachMap->Arg.m_bActivityMap)
     return;
   
   if (gpActivityMap)
-    vFatal("ActivityMap::vOpenBySE() -- activity map already opened\n"_Stz);
+    vFatal("ActivityLog::vOpenBySE() -- activity map already opened\n"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  ActivityMap* pActivityMap = nullptr;
+  ActivityLog* pActivityMap = nullptr;
   
   if (bStarting) {
-    pActivityMap = ActivityMap::pAttachCreate();
+    pActivityMap = ActivityLog::pAttachCreate();
     if (gpAttachMap->m_bVerbose)
-      vTrace("ActivityMap %s : "
+      vTrace("ActivityLog %s : "
              "created new map (size %lldB, max %lld marks)\n\n"_Stz,
              C_ACTIVITY_REGION,
-             sizeof(ActivityMap),
+             sizeof(ActivityLog),
              C_ACTIVITY_MARKS);
-    gpActivityMap = new(pActivityMap) ActivityMap;
+    gpActivityMap = new(pActivityMap) ActivityLog;
 
   } else {
-    pActivityMap = ActivityMap::pAttachExisting();
+    pActivityMap = ActivityLog::pAttachExisting();
     if (gpAttachMap->m_bVerbose)
-      vTrace("ActivityMap %s : "
+      vTrace("ActivityLog %s : "
              "attached to existing map (size %lldB, max %lld marks)\n\n"_Stz,
              C_ACTIVITY_REGION,
-             sizeof(ActivityMap),
+             sizeof(ActivityLog),
              C_ACTIVITY_MARKS);
     
     gpActivityMap = pActivityMap;
@@ -481,10 +481,10 @@ void ActivityMap::vOpenBySE(bool bStarting)
   
   s256 sWelcome;
   Engine::vGetWelcome(sWelcome);
-  ActivityMap::vMarkInfo(sWelcome);
+  ActivityLog::vMarkInfo(sWelcome);
   
   Now oNow;
-  ActivityMap::vMarkInfo("Time is: %s"_Stz,oNow.sz());
+  ActivityLog::vMarkInfo("Time is: %s"_Stz,oNow.sz());
 
   s32 sMem;
   Magnitudes::vByteMag(Hardware::iPhysicalMemory(),sMem);
@@ -492,7 +492,7 @@ void ActivityMap::vOpenBySE(bool bStarting)
   s32 sClock;
   Magnitudes::vHzMag(Hardware::iClockFrequency(),sClock);
   
-  ActivityMap::vMarkInfo("hw: %lld cores; %s memory; %s clock frequency"_Stz,
+  ActivityLog::vMarkInfo("hw: %lld cores; %s memory; %s clock frequency"_Stz,
                      Hardware::iCoreCount(),
                      sMem.aStz(),
                      sClock.aStz()
@@ -503,9 +503,9 @@ void ActivityMap::vOpenBySE(bool bStarting)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write ActivityMap to csv file                                              */
+/* write ActivityLog to csv file                                              */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vWriteCsv(bool bShortForm)
+void ActivityLog::vWriteCsv(bool bShortForm)
 {
 #ifdef WITH_ACTIVITY_MAP
   if (! gpActivityMap)
@@ -523,7 +523,7 @@ void ActivityMap::vWriteCsv(bool bShortForm)
 /*----------------------------------------------------------------------------*/
 /* write an ActivityMark                                                      */
 /*----------------------------------------------------------------------------*/
-i8 ActivityMap::iAddMarkArg(i8 iEnumGroup, i8 iEnum, i8 iForeign,
+i8 ActivityLog::iAddMarkArg(i8 iEnumGroup, i8 iEnum, i8 iForeign,
                             Stz* aFormat, va_list xArgs)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
@@ -547,7 +547,7 @@ i8 ActivityMap::iAddMarkArg(i8 iEnumGroup, i8 iEnum, i8 iForeign,
 /*----------------------------------------------------------------------------*/
 /* write an ActivityMark                                                      */
 /*----------------------------------------------------------------------------*/
-i8 ActivityMap::iAddMarkVbl(i8 iEnumGroup, i8 iEnum, i8 iForeign,
+i8 ActivityLog::iAddMarkVbl(i8 iEnumGroup, i8 iEnum, i8 iForeign,
                             Stz* aFormat, ...)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
@@ -562,9 +562,9 @@ i8 ActivityMap::iAddMarkVbl(i8 iEnumGroup, i8 iEnum, i8 iForeign,
 }
 
 /*----------------------------------------------------------------------------*/
-/* get a new mark in ActivityMap                                              */
+/* get a new mark in ActivityLog                                              */
 /*----------------------------------------------------------------------------*/
-ActivityMark* ActivityMap::pNewMark(void)
+ActivityMark* ActivityLog::pNewMark(void)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
   
@@ -580,9 +580,9 @@ ActivityMark* ActivityMap::pNewMark(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get a new mark in ActivityMap (non-locking)                                */
+/* get a new mark in ActivityLog (non-locking)                                */
 /*----------------------------------------------------------------------------*/
-ActivityMark* ActivityMap::pNewMark_NL(void)
+ActivityMark* ActivityLog::pNewMark_NL(void)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
 
@@ -598,9 +598,9 @@ ActivityMark* ActivityMap::pNewMark_NL(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* drop lock on ActivityMap                                                   */
+/* drop lock on ActivityLog                                                   */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vDropLock(void)
+void ActivityLog::vDropLock(void)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
 
@@ -610,7 +610,7 @@ void ActivityMap::vDropLock(void)
 /*----------------------------------------------------------------------------*/
 /* find active range                                                          */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vFindRange_NL(i8& i_MinMark, i8& i_MaxMark)
+void ActivityLog::vFindRange_NL(i8& i_MinMark, i8& i_MaxMark)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
   
@@ -635,9 +635,9 @@ void ActivityMap::vFindRange_NL(i8& i_MinMark, i8& i_MaxMark)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grab lock on ActivityMap                                                   */
+/* grab lock on ActivityLog                                                   */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vGrabLock(void)
+void ActivityLog::vGrabLock(void)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
   
@@ -647,7 +647,7 @@ void ActivityMap::vGrabLock(void)
 /*----------------------------------------------------------------------------*/
 /* calculate how full the activity map is                                     */
 /*----------------------------------------------------------------------------*/
-i8 ActivityMap::iPercentFull_NL(void)
+i8 ActivityLog::iPercentFull_NL(void)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
   
@@ -687,24 +687,24 @@ i8 ActivityMap::iPercentFull_NL(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compute the size of ActivityMap given gpAttachMap->m_nActivityMarks        */
+/* compute the size of ActivityLog given gpAttachMap->m_nActivityMarks        */
 /*----------------------------------------------------------------------------*/
-i8 ActivityMap::iSize(void)
+i8 ActivityLog::iSize(void)
 {
-  i8 iMapSize = sizeof(ActivityMap);
+  i8 iMapSize = sizeof(ActivityLog);
   
   return iMapSize;
 }
 
 /*----------------------------------------------------------------------------*/
-/* write ActivityMap to a csv file                                            */
+/* write ActivityLog to a csv file                                            */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vWriteToFile(bool bShortForm)
+void ActivityLog::vWriteToFile(bool bShortForm)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
   
   s256 sAmPath;
-  sAmPath = "/tmp/ActivityMap.csv"_Stz;
+  sAmPath = "/tmp/ActivityLog.csv"_Stz;
   
   i8 iTotalDelta = 0;
   
@@ -717,14 +717,14 @@ void ActivityMap::vWriteToFile(bool bShortForm)
   }
   
   Now oNow;
-  ActivityMap::vMarkInfo("Writing ActivityMap at: %s"_Stz,oNow.sz());
+  ActivityLog::vMarkInfo("Writing ActivityLog at: %s"_Stz,oNow.sz());
   
   s256 sWelcome;
   Engine::vGetWelcome(sWelcome);
-  ActivityMap::vMarkInfo(sWelcome);
+  ActivityLog::vMarkInfo(sWelcome);
   
   i8 iUpTimeSsec = gpAttachMap->m_oBirth.iSecondsElapsed();
-  ActivityMap::vMarkInfo("Uptime %llds Requests %lld"_Stz,
+  ActivityLog::vMarkInfo("Uptime %llds Requests %lld"_Stz,
                          iUpTimeSsec,
                          C_UNKNOWN);
 
@@ -757,7 +757,7 @@ void ActivityMap::vWriteToFile(bool bShortForm)
   
   pActivityFile->vClose();
   
-  vTrace("ActivityMap written to: %s\n"_Stz,sAmPath.aChar());
+  vTrace("ActivityLog written to: %s\n"_Stz,sAmPath.aChar());
   
   delete pActivityFile;
 }
@@ -769,7 +769,7 @@ void ActivityMap::vWriteToFile(bool bShortForm)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* ActivityMap::aFooter(void)
+Footer* ActivityLog::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMAP);
   

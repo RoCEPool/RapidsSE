@@ -44,7 +44,7 @@ void Debugging::vAssertTrap(void)
   vStackDump();
   
   // add activity dump and api state dump
-  ActivityMap::vWriteCsv(false);
+  ActivityLog::vWriteCsv(false);
   
   gpAttachMap->m_pApiState->vDump();
   

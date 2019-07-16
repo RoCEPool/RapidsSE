@@ -7,7 +7,7 @@
 
 extern BufferPool*  gpBufferPool;
 extern AttachMap*   gpAttachMap;
-extern ActivityMap* gpActivityMap;
+extern ActivityLog* gpActivityMap;
 
 
 /*----------------------------------------------------------------------------*/

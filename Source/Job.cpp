@@ -6,7 +6,7 @@
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
-extern ActivityMap* gpActivityMap;
+extern ActivityLog* gpActivityMap;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -113,7 +113,7 @@ Job::Job(eCN eClassNo, Session* pSession)
     m_pMutexJob = new Mutex;
 
   if (m_bMarkActivity)
-    ActivityMap::vMarkInfo("::Job"_Stz,""_Stz);
+    ActivityLog::vMarkInfo("::Job"_Stz,""_Stz);
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
 }
@@ -130,7 +130,7 @@ Job::~Job(void) noexcept(false)
   delete m_pMutexJob;
   
   if (m_bMarkActivity) {
-    ActivityMap::vMarkInfo("~Job %s"_Stz,aCN[eClass()]);
+    ActivityLog::vMarkInfo("~Job %s"_Stz,aCN[eClass()]);
     Job::vMarkJob();
   }
 }
@@ -332,7 +332,7 @@ void Job::vMarkJob(void)
 
   sJobMark.vConcat("\n"_Stz);
 
-  ActivityMap::vMarkString(m_iJobId,sJobMark);
+  ActivityLog::vMarkString(m_iJobId,sJobMark);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -350,7 +350,7 @@ void Job::vMarkJob(Stz* szFormat, ...)
   
   va_start(xArgs,szFormat);
   
-  ActivityMap::vMarkJob(this,szFormat,xArgs);
+  ActivityLog::vMarkJob(this,szFormat,xArgs);
   
   va_end(xArgs);
 #endif

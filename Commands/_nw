@@ -44,7 +44,7 @@ export nation "/tmp/nation_export.csv" ;
 
 actionSequence;
 
-activityMap short;
+activityLog short;
 
 walk nation;
 

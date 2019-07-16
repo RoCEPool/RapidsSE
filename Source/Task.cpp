@@ -266,7 +266,7 @@ void Task::vTaskLoop(void)
   // ...
 
   if (m_pJob && m_pJob->m_bMarkActivity)
-    ActivityMap::vMarkJob(m_pJob,
+    ActivityLog::vMarkJob(m_pJob,
                           "Returned from task call: %s %p"_Stz,
                           aCN[m_pJob->eClass()],
                           m_pJob);

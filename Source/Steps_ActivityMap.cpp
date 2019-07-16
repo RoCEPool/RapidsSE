@@ -11,29 +11,29 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_ActivityMap(void)
 {
-  vAddStep("activityMap::dump"_Stz,       &Step::vActivityMapDump);
-  vAddStep("activityMap::mark"_Stz,       &Step::vActivityMapMark);
-  vAddStep("activityMap::markEntry"_Stz,  &Step::vActivityMapMarkEntry);
-  vAddStep("activityMap::markExit"_Stz,   &Step::vActivityMapMarkExit);
+  vAddStep("activityLog::dump"_Stz,       &Step::vActivityMapDump);
+  vAddStep("activityLog::mark"_Stz,       &Step::vActivityMapMark);
+  vAddStep("activityLog::markEntry"_Stz,  &Step::vActivityMapMarkEntry);
+  vAddStep("activityLog::markExit"_Stz,   &Step::vActivityMapMarkExit);
   
   vAddStep("ActionSequence::markSeed"_Stz, &Step::vActionSequenceMarkSeed);
   vAddStep("ActionSequence::markWord"_Stz, &Step::vActionSequenceMarkWord);
 }
 
 /*----------------------------------------------------------------------------*/
-/* activityMap::dump -- dump the activity map                                 */
+/* activityLog::dump -- dump the activity map                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vActivityMapDump(MP_Task mpTask)
 {
   ENTRY("vActivityMapDump"_Stz);
   
-  ActivityMap::vWriteCsv(false);
+  ActivityLog::vWriteCsv(false);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* activityMap::mark -- write a mark into the activity map                    */
+/* activityLog::mark -- write a mark into the activity map                    */
 /*----------------------------------------------------------------------------*/
 void Step::vActivityMapMark(MP_Task mpTask)
 {
@@ -42,16 +42,16 @@ void Step::vActivityMapMark(MP_Task mpTask)
   s256 sMark;
 
   if ( ! mpTask->m_pDataStack->bPop(sMark) )
-    THROW_INVALID_DSTACK("activityMap::mark"_Stz);
+    THROW_INVALID_DSTACK("activityLog::mark"_Stz);
 
   i8 iJobId = mpTask->m_pJob->m_iJobId;
-  ActivityMap::vMarkJob(mpTask->m_pJob,sMark);
+  ActivityLog::vMarkJob(mpTask->m_pJob,sMark);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* activityMap::markEntry -- write a mark for word entry                      */
+/* activityLog::markEntry -- write a mark for word entry                      */
 /*----------------------------------------------------------------------------*/
 void Step::vActivityMapMarkEntry(MP_Task mpTask)
 {
@@ -60,10 +60,10 @@ void Step::vActivityMapMarkEntry(MP_Task mpTask)
   s256 sWordNm;
   
   if ( ! mpTask->m_pDataStack->bPop(sWordNm) )
-    THROW_INVALID_DSTACK("activityMap::markEntry"_Stz);
+    THROW_INVALID_DSTACK("activityLog::markEntry"_Stz);
     
   if (mpTask->m_pJob->m_bMarkActivity)
-    ActivityMap::vMarkJob(mpTask->m_pJob,
+    ActivityLog::vMarkJob(mpTask->m_pJob,
                           "%s %s %p"_Stz,
                           sWordNm.aStz(),
                           aCN[mpTask->pJob()->eClass()],
@@ -74,7 +74,7 @@ void Step::vActivityMapMarkEntry(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* activityMap::mark -- write a mark for word exit                            */
+/* activityLog::mark -- write a mark for word exit                            */
 /*----------------------------------------------------------------------------*/
 void Step::vActivityMapMarkExit(MP_Task mpTask)
 {
@@ -83,10 +83,10 @@ void Step::vActivityMapMarkExit(MP_Task mpTask)
   s256 sWordNm;
   
   if ( ! mpTask->m_pDataStack->bPop(sWordNm) )
-    THROW_INVALID_DSTACK("activityMap::markExit"_Stz);
+    THROW_INVALID_DSTACK("activityLog::markExit"_Stz);
   
   if (mpTask->m_pJob->m_bMarkActivity)
-    ActivityMap::vMarkJob(mpTask->m_pJob,
+    ActivityLog::vMarkJob(mpTask->m_pJob,
                           "%s %s %p"_Stz,
                           sWordNm.aStz(),
                           aCN[mpTask->pJob()->eClass()],

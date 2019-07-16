@@ -394,7 +394,7 @@ void Engine::vMonitorPortrait(s48K& sRapidsPortrait)
   sRapidsPortrait.vConcat(sPortrait.aStz());
   
   sPortrait = ""_Stz;
-  ActivityMap::vMonitorPortrait(sPortrait);
+  ActivityLog::vMonitorPortrait(sPortrait);
   sRapidsPortrait.vConcat(sPortrait.aStz());
   
   sPortrait = ""_Stz;
@@ -484,7 +484,7 @@ void Engine::vOpenActionSequence(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create or open the ActivityMap                                             */
+/* create or open the ActivityLog                                             */
 /*----------------------------------------------------------------------------*/
 void Engine::vOpenActivityMap(void)
 {
@@ -492,7 +492,7 @@ void Engine::vOpenActivityMap(void)
   if (0 == gpAttachMap->m_pGrid->m_iThisNode && gxArguments.m_bStart)
     bStarting = true;
   
-  ActivityMap::vOpenBySE(bStarting);
+  ActivityLog::vOpenBySE(bStarting);
 }
 
 /*----------------------------------------------------------------------------*/

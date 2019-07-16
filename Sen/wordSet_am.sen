@@ -114,7 +114,7 @@
   ,
 
   // encode call to markEntry
-  POSTPONE ActivityMap::markEntry
+  POSTPONE ActivityLog::markEntry
 ;
 /*----------------------------------------------------------------------------*/
 //: >>am immediate
@@ -127,7 +127,7 @@
 //  POSTPONE str.format
 //
 //  // encode call to markEntry
-//  POSTPONE ActivityMap::markEntry
+//  POSTPONE ActivityLog::markEntry
 //;
 
 
@@ -143,7 +143,7 @@
   ,
 
   // encode call to markExit
-  POSTPONE ActivityMap::markExit
+  POSTPONE ActivityLog::markExit
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -158,7 +158,7 @@
   ,
 
   // encode call to markExit
-  POSTPONE ActivityMap::markExit
+  POSTPONE ActivityLog::markExit
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -167,7 +167,7 @@
 : .am immediate
 
   // encode call to markEntry
-  POSTPONE ActivityMap::mark
+  POSTPONE ActivityLog::mark
 ;
 
 /*============================================================================*/

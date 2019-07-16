@@ -117,7 +117,7 @@ void Scheduler::vScheduleReadyTask(Task* pTask)
   RASSERT(TS_READY == pTask->eState());
 
   if (pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkJob(pTask->pJob(),
+    ActivityLog::vMarkJob(pTask->pJob(),
                           "Schedule ready: %s %p"_Stz,
                           aCN[pTask->pJob()->eClass()],
                           pTask->pJob());
@@ -330,12 +330,12 @@ bool Scheduler::bTask_AckWaiting(Task* pTaskBeingAcked, Task* pTaskAcking)
   Job* pJobAcking     = pTaskAcking->pJob();
   
   if (pJobAcking->m_bMarkActivity || pJobBeingAcked->m_bMarkActivity) {
-    ActivityMap::vMarkJob(pJobBeingAcked,
+    ActivityLog::vMarkJob(pJobBeingAcked,
                           "pTaskBeingAcked:%p Job %s "_Stz,
                           pTaskBeingAcked,
                           aCN[pJobBeingAcked->eClass()]
                           );
-    ActivityMap::vMarkJob(pJobAcking,
+    ActivityLog::vMarkJob(pJobAcking,
                           "pTaskAcking:%p Job %s "_Stz,
                           pTaskAcking,
                           aCN[pJobAcking->eClass()]
@@ -352,7 +352,7 @@ bool Scheduler::bTask_AckWaiting(Task* pTaskBeingAcked, Task* pTaskAcking)
   
   if (bAmDecider) {
     if (pJobBeingAcked->m_bMarkActivity || pJobAcking->m_bMarkActivity)
-      ActivityMap::vMarkJob(pJobAcking,
+      ActivityLog::vMarkJob(pJobAcking,
                             "Decider %s acks %s"_Stz,
                             aCN[pJobAcking->eClass()],
                             aCN[pJobBeingAcked->eClass()]
@@ -393,7 +393,7 @@ void Scheduler::vTask_Exit(Task* pTask)
 void Scheduler::vTask_ResumeAck(Task* pTask)
 {
   if (pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkJob(pTask->pJob(),
+    ActivityLog::vMarkJob(pTask->pJob(),
                           "Scheduling acked: %s %p"_Stz,
                           aCN[pTask->pJob()->eClass()],
                           pTask->pJob());
@@ -418,7 +418,7 @@ void Scheduler::vTask_Sleep(Task* pTask)
   RASSERT(TS_SLEEPING == pTask->eState());
   
   if (pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkJob(pTask->pJob(),
+    ActivityLog::vMarkJob(pTask->pJob(),
                           "Schedule sleeping: %s %p"_Stz,
                           aCN[pTask->pJob()->eClass()],
                           pTask->pJob());
@@ -457,12 +457,12 @@ void Scheduler::vTask_Wait(Task* pTask)
   // activity
   if (pTask->pJob()->m_bMarkActivity) {
     if (C_UNKNOWN == pTask->pJob()->iJobId())
-      ActivityMap::vMarkInfo(
+      ActivityLog::vMarkInfo(
                              "Schedule waiting: %s %p"_Stz,
                              aCN[pTask->pJob()->eClass()],
                              pTask->pJob());
     else
-      ActivityMap::vMarkJob(pTask->pJob(),
+      ActivityLog::vMarkJob(pTask->pJob(),
                             "Schedule waiting: %s %p"_Stz,
                             aCN[pTask->pJob()->eClass()],
                             pTask->pJob());
@@ -503,12 +503,12 @@ void Scheduler::vTask_Yield(Task* pTask)
   
   if (pTask->pJob()->m_bMarkActivity) {
     if (C_UNKNOWN == pTask->pJob()->iJobId())
-      ActivityMap::vMarkInfo(
+      ActivityLog::vMarkInfo(
                              "Schedule yielded: %s %p"_Stz,
                              aCN[pTask->pJob()->eClass()],
                              pTask->pJob());
     else
-      ActivityMap::vMarkJob(pTask->pJob(),
+      ActivityLog::vMarkJob(pTask->pJob(),
                             "Schedule yielded: %s %p"_Stz,
                             aCN[pTask->pJob()->eClass()],
                             pTask->pJob());

@@ -25,7 +25,7 @@
 #define WITH_DEBUG_VERSION      // compile as debug version
 
 #define WITH_ACTION_SEQUENCE    // code for ActionSequence compiled in
-#define WITH_ACTIVITY_MAP       // code for ActivityMap compiled in
+#define WITH_ACTIVITY_MAP       // code for ActivityLog compiled in
 #define WITH_ADDRESS_CHECKING   // check that address is in pool
 #define WITH_ASSERT_MACRO       // Assert() macro
 #define WITH_CHECK_INITIALISED  // _checkInitialised_()
@@ -43,7 +43,7 @@
 #define WITH_RELEASE_VERSION    // compile as release version
 
 //#define WITH_ACTION_SEQUENCE    // code for ActionSequence compiled in
-//#define WITH_ACTIVITY_MAP       // code for ActivityMap compiled in
+//#define WITH_ACTIVITY_MAP       // code for ActivityLog compiled in
 //#define WITH_CHECK_INITIALISED  // _checkInitialised_()
 //#define WITH_CORECTNESS_ALGEBRA // known class, magic, footer
 //#define WITH_ENTRY_EXIT         // code for ENTRY() & EXIT() macros compiled in

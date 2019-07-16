@@ -103,7 +103,7 @@ Mutex::Mutex()
 #endif
   
   if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MUTEX])
-    ActivityMap::vMarkRes(SR_MUTEX,"SysRes: Mutex created : %p"_Stz,this);
+    ActivityLog::vMarkRes(SR_MUTEX,"SysRes: Mutex created : %p"_Stz,this);
 
   _checkInitialised_(CN_MUTEX);
 
@@ -136,7 +136,7 @@ Mutex::~Mutex(void) noexcept(false)
 #endif
   
   if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MUTEX])
-    ActivityMap::vMarkRes(SR_MUTEX,"SysRes: Mutex destroyed : %p"_Stz,this);
+    ActivityLog::vMarkRes(SR_MUTEX,"SysRes: Mutex destroyed : %p"_Stz,this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -212,7 +212,7 @@ void Mutex::vCondSignal(void)
 #endif
   
   if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MUTEX])
-    ActivityMap::vMarkRes(SR_MUTEX,"SysRes: Mutex signaled : %p"_Stz,this);
+    ActivityLog::vMarkRes(SR_MUTEX,"SysRes: Mutex signaled : %p"_Stz,this);
   
   //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
   i8 rCode = pthread_cond_signal(&m_xCond);                      // non-blocking
@@ -255,7 +255,7 @@ void Mutex::vCondWaitIndefinite(void)
 #endif
   
   if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MUTEX])
-    ActivityMap::vMarkRes(SR_MUTEX,"SysRes: Mutex wait : %p"_Stz,this);
+    ActivityLog::vMarkRes(SR_MUTEX,"SysRes: Mutex wait : %p"_Stz,this);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -271,7 +271,7 @@ void Mutex::vCondWaitIndefinite(void)
 #endif
   
   if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MUTEX])
-    ActivityMap::vMarkRes(SR_MUTEX,"SysRes: Mutex unblocked : %p"_Stz,this);
+    ActivityLog::vMarkRes(SR_MUTEX,"SysRes: Mutex unblocked : %p"_Stz,this);
 
   // success
 
@@ -320,7 +320,7 @@ void Mutex::vCondWaitUsec(i8 iMicroSeconds)
 #endif
   
   if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MUTEX])
-    ActivityMap::vMarkRes(SR_MUTEX,"SysRes: Mutex timedwait : %p %lldus"_Stz,
+    ActivityLog::vMarkRes(SR_MUTEX,"SysRes: Mutex timedwait : %p %lldus"_Stz,
                        this,iMicroSeconds);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -342,7 +342,7 @@ void Mutex::vCondWaitUsec(i8 iMicroSeconds)
 #endif
     
     if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MUTEX])
-      ActivityMap::vMarkRes(SR_MUTEX,"SysRes: Mutex timed unblock : %p %lldus"_Stz,
+      ActivityLog::vMarkRes(SR_MUTEX,"SysRes: Mutex timed unblock : %p %lldus"_Stz,
                          this,iMicroSeconds);
     m_bLocked = true;
     return;
@@ -359,7 +359,7 @@ void Mutex::vCondWaitUsec(i8 iMicroSeconds)
 #endif
     
     if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MUTEX])
-      ActivityMap::vMarkRes(SR_MUTEX,"SysRes: Mutex timeout : %p %lldus"_Stz,
+      ActivityLog::vMarkRes(SR_MUTEX,"SysRes: Mutex timeout : %p %lldus"_Stz,
                          this,iMicroSeconds);
    m_bLocked = true;
     return;

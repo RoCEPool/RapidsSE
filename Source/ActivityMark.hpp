@@ -9,7 +9,7 @@ namespace Monitoring
   
   class ActivityMark : public Object
   {
-  friend class ActivityMap;
+  friend class ActivityLog;
   
   private:
     i8   m_iMark;       // mark no

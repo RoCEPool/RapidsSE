@@ -289,19 +289,19 @@ void JobList::vMarkContents(i8 iJobId)
   
   if (0 == m_pJobsSkipList->nObjects()) {
     vDropLock();
-    ActivityMap::vMarkInfo("%s List is empty"_Stz,
+    ActivityLog::vMarkInfo("%s List is empty"_Stz,
                            aJL[m_eJobsList]);
     return;
   }
   
   SkipNode* pNode = m_pJobsSkipList->pFirst(iLevel);
   
-  ActivityMap::vMarkInfo("Contents of %s List:"_Stz,
+  ActivityLog::vMarkInfo("Contents of %s List:"_Stz,
                          aJL[m_eJobsList]);
 
   while (pNode) {
     Job* pJob = _pJob(pNode->m_pObject);
-    ActivityMap::vMarkInfo("  %s %p %03lld parent %03lld slot[%lld] "
+    ActivityLog::vMarkInfo("  %s %p %03lld parent %03lld slot[%lld] "
                            "phase %s state %s acksRmg %lld/%lld partNode %lld"_Stz,
                            
                            aCN[pJob->eClass()],
