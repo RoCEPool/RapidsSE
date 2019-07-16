@@ -14,7 +14,10 @@ namespace System
     /*----------------------------------------------------------------------------*/
     static inline i8 iIntoShoco(byte* aDst, i8 iDstLen, char* aSrc, i8 iSrcLen)
     {
-      i8 iLenCompressed = shoco_compress(aSrc,iSrcLen,(char*)aDst,iDstLen);
+      i8 iLenCompressed = (i8)shoco_compress(aSrc,
+                                             (size_t)iSrcLen,
+                                             (char*)aDst,
+                                             (size_t)iDstLen);
       
       return iLenCompressed;
     }
@@ -24,7 +27,10 @@ namespace System
     /*----------------------------------------------------------------------------*/
     static inline i8 iFromShoco(char* aDst, i8 iDstLen, byte* aSrc, i8 iSrcLen)
     {
-      i8 iLenDecompressed = shoco_decompress((char*)aSrc,iSrcLen,aDst,iDstLen);
+      i8 iLenDecompressed = (i8)shoco_decompress((char*)aSrc,
+                                                 (size_t)iSrcLen,
+                                                 aDst,
+                                                 (size_t)iDstLen);
       
       return iLenDecompressed;
     }

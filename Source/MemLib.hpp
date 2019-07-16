@@ -90,18 +90,23 @@ namespace Base
     /*----------------------------------------------------------------------------*/
     /* copy from src to dst                                                       */
     /*----------------------------------------------------------------------------*/
+#ifdef WITH_STATISTICS_COUNTERS
     static inline void vCopy(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
     {
       memcpy(pDst,pSrc,(size_t)nBytes);
       
-  #ifdef WITH_STATISTICS_COUNTERS
       if (gpAttachMap) {
         gpAttachMap->m_oStatistics.Memory.m_iCopyTotal += nBytes;
         gpAttachMap->m_oStatistics.Memory.m_iaCopy[eClassNo] += nBytes;
       }
-  #endif
-      
     }
+#else
+    static inline void vCopy(void* pDst, const void* pSrc, i8 nBytes, eCN )
+    {
+      memcpy(pDst,pSrc,(size_t)nBytes);
+    }
+#endif
+  
   };
 }
 

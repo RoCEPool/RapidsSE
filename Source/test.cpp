@@ -1099,7 +1099,7 @@ void vTest17(void)
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a High cursor pointing to the first element in the array
   pIntBuffer = pRootBuffer;
-  IntBuffer* pLastBuffer;
+  IntBuffer* pLastBuffer = nullptr;
   i8 iBufferNo = C_UNKNOWN;
   while (pIntBuffer) {
     pLastBuffer = pIntBuffer;

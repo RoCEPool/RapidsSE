@@ -807,7 +807,7 @@ void MemLib::vWordDump(void *aAddress, i8 nBytes, i8 iHighlightWord)
     
     iWord++;
       
-    for (i8 i_Byte = 0; i_Byte < C_BYTES_PER_WORD; i_Byte++) {
+    for (i8 i_Byte = 0; i_Byte < (i8)C_BYTES_PER_WORD; i_Byte++) {
       
       u1 cChar = *((u1*)aAddress + iOffset + i_Byte);
       
@@ -886,7 +886,7 @@ void MemLib::vWordDump(void *aAddress, i8 nBytes, i8 iHighlightWord)
   }
   
   // end of buffer and not at word boundary ?
-  if (iWord > 0 && iWord < C_BYTES_PER_WORD) {
+  if (iWord > 0 && iWord < (i8)C_BYTES_PER_WORD) {
     
     for (i8 i = 0; i < iWord; i++) {
       u1 cChar = *((u1*)aAddress + iOffset + i);
