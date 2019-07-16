@@ -3,7 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-namespace Interface { class RecordBuffer; }
 namespace Jobs
 {
   class Job_SubInserter;

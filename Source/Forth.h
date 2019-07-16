@@ -9,7 +9,6 @@
 
 namespace Tasks
 {
-  class Task;
   typedef MP<Task,CN_TASK> MP_Task;
 }
 

@@ -7,12 +7,8 @@
 #include "Forth.h"
 
 
-namespace Jobs { class Job_CreateTable; class Job_CreateIndex; }
-namespace Rows { class IndexTree;       class CrwBuffer;       }
-
 namespace MetaData
 {
-
   void vCheckAssumptions(void);
   
   enum eDS // data source

@@ -3,7 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-namespace Partitioning { class TablePtn; }
 
 namespace MetaData
 {
