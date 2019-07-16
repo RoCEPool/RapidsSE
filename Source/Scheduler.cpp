@@ -66,6 +66,8 @@ void Scheduler::vAddTaskGeneral(Task* pTask)
   
   vTask_SpawnNew(pTask);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   Scheduler::vTask_ScheduleReady(pTask);
 }
 
@@ -192,24 +194,7 @@ void Scheduler::vPauseTillGeneralThreads(void)
   // called from Engine::vStartSystem()
   //
   
-  Queues* pQueues = gpAttachMap->m_pQueues;
-
-  // pause till all general threads have all begun
-  while (*gpAttachMap->m_ixThreads != gpAttachMap->Arg.m_nThreads)
-    Pthread::vSleepMsec(10,CN_NONE);
-  
-  RASSERT(pQueues->m_pGeneralThreadVec->nItems() == gpAttachMap->Arg.m_nThreads);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // pause till all general threads are in idle state
-  for (i8 i_Thread = 0; i_Thread < pQueues->m_pGeneralThreadVec->nItems(); i_Thread++) {
-    
-    Thread* pThread = pQueues->m_pGeneralThreadVec->pGet(i_Thread);
-    
-    while (TD_IDLE != pThread->m_eThreadState)
-      Pthread::vSleepMsec(10,CN_QUEUES);
-  }
+  vThread_PauseGeneral();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -651,6 +636,31 @@ void Scheduler::vThread_DedicatedTask(Thread* pThread, Task* pTask)
 void Scheduler::vThread_Ending(Thread* pThread)
 {
   pThread->m_pMutexThread->vMutexUnlock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* pause till general threads are all idle                                    */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vThread_PauseGeneral(void)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  // pause till all general threads have all begun
+  while (*gpAttachMap->m_ixThreads != gpAttachMap->Arg.m_nThreads)
+    Pthread::vSleepMsec(10,CN_NONE);
+  
+  RASSERT(pQueues->m_pGeneralThreadVec->nItems() == gpAttachMap->Arg.m_nThreads);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // pause till all general threads are in idle state
+  for (i8 i_Thread = 0; i_Thread < pQueues->m_pGeneralThreadVec->nItems(); i_Thread++) {
+    
+    Thread* pThread = pQueues->m_pGeneralThreadVec->pGet(i_Thread);
+    
+    while (TD_IDLE != pThread->m_eThreadState)
+      Pthread::vSleepMsec(10,CN_QUEUES);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
