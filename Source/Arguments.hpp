@@ -52,7 +52,7 @@ namespace StorageEngine
 
     // options
     bool m_bActionSequence;  // use action sequence map
-    bool m_bActivityMap;     // use activity map
+    bool m_bActivityLog;     // use activity map
     bool m_bConfig;          // print configuration information
     bool m_bDeveloper;       // user is a developer
     bool m_bDontFree;        // dont actually free objects back to heap

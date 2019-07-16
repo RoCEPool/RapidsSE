@@ -22,7 +22,7 @@ namespace Steps
     static void vAddStep(Stz* aName, StepFp fpStep, bool bImmediate=false);
 
     static void vAddSteps_AccessPath(void);
-    static void vAddSteps_ActivityMap(void);
+    static void vAddSteps_ActivityLog(void);
     static void vAddSteps_Address(void);
     static void vAddSteps_ApiState(void);
     static void vAddSteps_Args(void);

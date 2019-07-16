@@ -38,7 +38,7 @@ void Step::vAddSteps(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Step::vAddSteps_AccessPath();
-  Step::vAddSteps_ActivityMap();
+  Step::vAddSteps_ActivityLog();
   Step::vAddSteps_Address();
   Step::vAddSteps_ApiState();
   Step::vAddSteps_Args();

@@ -24,10 +24,10 @@
   static void vAccumSumStore(Tasks::MP_Task mpTask);
 
   // activity map
-  static void vActivityMapDump(Tasks::MP_Task mpTask);
-  static void vActivityMapMark(Tasks::MP_Task mpTask);
-  static void vActivityMapMarkEntry(Tasks::MP_Task mpTask);
-  static void vActivityMapMarkExit(Tasks::MP_Task mpTask);
+  static void vActivityLogDump(Tasks::MP_Task mpTask);
+  static void vActivityLogMark(Tasks::MP_Task mpTask);
+  static void vActivityLogMarkEntry(Tasks::MP_Task mpTask);
+  static void vActivityLogMarkExit(Tasks::MP_Task mpTask);
 
   // action sequence map
   static void vActionSequenceMarkWord(Tasks::MP_Task mpTask);

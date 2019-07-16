@@ -14,7 +14,7 @@ namespace StorageEngine
   
     struct {
       bool m_bActionSequence;
-      bool m_bActivityMap;
+      bool m_bActivityLog;
       bool m_bDeveloper;
       i8   m_nDummyLoop;    // loop count for dummy threads
       i8   m_nDummySleep;   // sleep period for dummy threads
@@ -101,7 +101,7 @@ namespace StorageEngine
     void vPrintAttachMap(void);
     void vRecordArguments(
                           bool bActionSequence,
-                          bool bActivityMap,
+                          bool bActivityLog,
                           bool bDeveloper,
                           i8   nDummyLoop,
                           i8   nDummySleep,

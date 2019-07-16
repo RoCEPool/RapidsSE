@@ -87,7 +87,7 @@ Arguments::Arguments(void)
   m_bTracing         = false;
   m_bVerbose         = false;
   m_bWelcome         = true;
-  m_bActivityMap     = false;
+  m_bActivityLog     = false;
   m_bActionSequence  = false;
 
   _checkInitialised_(CN_ARGUMENTS);
@@ -174,7 +174,7 @@ void Arguments::vAddConstants(void)
   vAddConstant("args.unlink"_Stz,            m_bUnlink);
   vAddConstant("args.verbose"_Stz,           m_bVerbose);
   vAddConstant("args.welcome"_Stz,           m_bWelcome);
-  vAddConstant("args.activityLog"_Stz,       m_bActivityMap);
+  vAddConstant("args.activityLog"_Stz,       m_bActivityLog);
   vAddConstant("args.actionSequence"_Stz,    m_bActionSequence);
 }
 
@@ -642,7 +642,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
 
 #ifdef WITH_ACTIVITY_MAP
     if (argv[i_Arg]->bSame("--activityLog"_Stz)) {
-      m_bActivityMap = true;
+      m_bActivityLog = true;
       continue;
     }
 #else
@@ -652,8 +652,8 @@ bool Arguments::bParse(int argc, Stz* argv[])
     }
 #endif
 
-    if (argv[i_Arg]->bSame("--noActivityMap"_Stz)) {
-      m_bActivityMap = false;
+    if (argv[i_Arg]->bSame("--noActivityLog"_Stz)) {
+      m_bActivityLog = false;
       continue;
     }
 

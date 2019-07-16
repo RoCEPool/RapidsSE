@@ -26,7 +26,7 @@ namespace StorageEngine
     static void vMonitorPortrait(s48K& sRapidsPortrait);
     static void vMonitorProfile(s48K& sPortrait);
     static void vOpenActionSequence(void);
-    static void vOpenActivityMap(void);
+    static void vOpenActivityLog(void);
     static void vOpenPool(void);
     static bool bOpenPool(s32& sPoolName);
     static void vOpenTraceFile(void);

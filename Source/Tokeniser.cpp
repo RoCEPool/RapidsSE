@@ -78,7 +78,7 @@ Tokeniser::Tokeniser(void)
                       "",
 #endif
   #ifdef WITH_ACTIVITY_MAP
-                      gpAttachMap->Arg.m_bActivityMap? " AM+" : " AM",
+                      gpAttachMap->Arg.m_bActivityLog? " AM+" : " AM",
   #else
                       "",
   #endif

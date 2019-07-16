@@ -7,7 +7,7 @@
 
 extern AttachMap* gpAttachMap;
 
-ActivityLog* gpActivityMap = nullptr;
+ActivityLog* gpActivityLog = nullptr;
 
 
 /*----------------------------------------------------------------------------*/
@@ -17,11 +17,11 @@ ActivityLog* gpActivityMap = nullptr;
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* ActivityLog::operator new(size_t, ActivityLog* pActivityMap)
+void* ActivityLog::operator new(size_t, ActivityLog* pActivityLog)
 {
-  RASSERT(! gpActivityMap);
+  RASSERT(! gpActivityLog);
   
-  return pActivityMap;
+  return pActivityLog;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -105,9 +105,9 @@ ActivityLog* ActivityLog::pAttachCreate(void)
   if (! aSegment)
     vFatal("ActivityLog::bOpenCreate: failed to map region!\n"_Stz);
   
-  ActivityLog* pActivityMap = static_cast<ActivityLog*>(aSegment);
+  ActivityLog* pActivityLog = static_cast<ActivityLog*>(aSegment);
   
-  return pActivityMap;
+  return pActivityLog;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -139,9 +139,9 @@ ActivityLog* ActivityLog::pAttachExisting(void)
     NEVER_REACH;
   }
   
-  ActivityLog* pActivityMap = static_cast<ActivityLog*>(aSegment);
+  ActivityLog* pActivityLog = static_cast<ActivityLog*>(aSegment);
   
-  return pActivityMap;
+  return pActivityLog;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -154,7 +154,7 @@ ActivityLog* ActivityLog::pAttachExisting(void)
 void ActivityLog::vMarkApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...)
 {
 #ifdef WITH_ACTIVITY_MAP
-  if ( ! gpActivityMap )
+  if ( ! gpActivityLog )
     return;
   
   if ( ! gpAttachMap->m_bMarkApi[eApiCall] &&
@@ -166,7 +166,7 @@ void ActivityLog::vMarkApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...)
   va_start(xArgs,aFormat);
   
   bool bForeign = Job::bIsForeign(iJobId);
-  gpActivityMap->iAddMarkArg(C_JOB_GROUP,iJobId,bForeign,aFormat,xArgs);
+  gpActivityLog->iAddMarkArg(C_JOB_GROUP,iJobId,bForeign,aFormat,xArgs);
   
   va_end(xArgs);
 #endif
@@ -178,7 +178,7 @@ void ActivityLog::vMarkApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...)
 void ActivityLog::vMarkApiEntry(i8 eApiCall, i8 iJobId)
 {
 #ifdef WITH_ACTIVITY_MAP
-  if ( ! gpActivityMap )
+  if ( ! gpActivityLog )
     return;
   
   if ( ! gpAttachMap->m_bMarkApi[eApiCall] &&
@@ -188,7 +188,7 @@ void ActivityLog::vMarkApiEntry(i8 eApiCall, i8 iJobId)
   Stz* zApiName = aAC[eApiCall];
   
   bool bForeign = Job::bIsForeign(iJobId);
-  gpActivityMap->iAddMarkVbl(C_JOB_GROUP,iJobId,bForeign,">Api %s"_Stz,zApiName);
+  gpActivityLog->iAddMarkVbl(C_JOB_GROUP,iJobId,bForeign,">Api %s"_Stz,zApiName);
 #endif
 }
 
@@ -198,7 +198,7 @@ void ActivityLog::vMarkApiEntry(i8 eApiCall, i8 iJobId)
 void ActivityLog::vMarkApiError(i8 eApiCall, i8 iJobId, i8 iError)
 {
 #ifdef WITH_ACTIVITY_MAP
-  if ( ! gpActivityMap )
+  if ( ! gpActivityLog )
     return;
   
   if ( ! gpAttachMap->m_bMarkApi[eApiCall] &&
@@ -208,7 +208,7 @@ void ActivityLog::vMarkApiError(i8 eApiCall, i8 iJobId, i8 iError)
   Stz* zApiName = aAC[eApiCall];
   
   bool bForeign = Job::bIsForeign(iJobId);
-  gpActivityMap->iAddMarkVbl(C_JOB_GROUP,iJobId,bForeign,"!Api %s Error %lld"_Stz,zApiName,iError);
+  gpActivityLog->iAddMarkVbl(C_JOB_GROUP,iJobId,bForeign,"!Api %s Error %lld"_Stz,zApiName,iError);
 #endif
 }
 
@@ -218,7 +218,7 @@ void ActivityLog::vMarkApiError(i8 eApiCall, i8 iJobId, i8 iError)
 void ActivityLog::vMarkApiExit(i8 eApiCall, i8 iJobId)
 {
 #ifdef WITH_ACTIVITY_MAP
-  if ( ! gpActivityMap )
+  if ( ! gpActivityLog )
     return;
   
   if ( ! gpAttachMap->m_bMarkApi[eApiCall] &&
@@ -228,7 +228,7 @@ void ActivityLog::vMarkApiExit(i8 eApiCall, i8 iJobId)
   Stz* zApiName = aAC[eApiCall];
   
   bool bForeign = Job::bIsForeign(iJobId);
-  gpActivityMap->iAddMarkVbl(C_JOB_GROUP,iJobId,bForeign,"<Api %s"_Stz,zApiName);
+  gpActivityLog->iAddMarkVbl(C_JOB_GROUP,iJobId,bForeign,"<Api %s"_Stz,zApiName);
 #endif
 }
 
@@ -238,14 +238,14 @@ void ActivityLog::vMarkApiExit(i8 eApiCall, i8 iJobId)
 void ActivityLog::vMarkInfo(Stz* aFormat, ...)
 {
 #ifdef WITH_ACTIVITY_MAP
-  if ( ! gpActivityMap )
+  if ( ! gpActivityLog )
     return;
   
   va_list xArgs;
   
   va_start(xArgs,aFormat);
   
-  gpActivityMap->iAddMarkArg(C_INF_GROUP,0,false,aFormat,xArgs);
+  gpActivityLog->iAddMarkArg(C_INF_GROUP,0,false,aFormat,xArgs);
   
   va_end(xArgs);
 #endif
@@ -257,7 +257,7 @@ void ActivityLog::vMarkInfo(Stz* aFormat, ...)
 void ActivityLog::vMarkJob(Jobs::Job* pJob, Stz* szFormat, ...)
 {
 #ifdef WITH_ACTIVITY_MAP
-  if ( ! gpActivityMap )
+  if ( ! gpActivityLog )
     return;
   
   va_list xArgs;
@@ -288,7 +288,7 @@ void ActivityLog::vMarkJob(Jobs::Job* pJob, Stz* szFormat, ...)
   
   i8 iJobId = pJob->iJobId();
   bool bForeign = pJob->m_bWasReceived;
-  pJob->m_i_Activity = gpActivityMap->iAddMarkArg(C_JOB_GROUP,iJobId,bForeign,
+  pJob->m_i_Activity = gpActivityLog->iAddMarkArg(C_JOB_GROUP,iJobId,bForeign,
                                                   szCombinedFormat,xArgs);
   
   va_end(xArgs);
@@ -302,7 +302,7 @@ void ActivityLog::vMarkRes(eSR eSysRes,Stz* szFormat, ...)
 {
 
 #ifdef WITH_ACTIVITY_MAP
-  if ( ! gpActivityMap )
+  if ( ! gpActivityLog )
     return;
   
   if ( ! gpAttachMap->m_bMarkResource[eSysRes] &&
@@ -313,7 +313,7 @@ void ActivityLog::vMarkRes(eSR eSysRes,Stz* szFormat, ...)
   
   va_start(xArgs,szFormat);
   
-  gpActivityMap->iAddMarkArg(_EG_SR,eSysRes,false,szFormat,xArgs);
+  gpActivityLog->iAddMarkArg(_EG_SR,eSysRes,false,szFormat,xArgs);
   
   va_end(xArgs);
 #endif
@@ -325,7 +325,7 @@ void ActivityLog::vMarkRes(eSR eSysRes,Stz* szFormat, ...)
 void ActivityLog::vMarkSection(Stz* szSectionNm)
 {
 #ifdef WITH_ACTIVITY_MAP
-  if ( ! gpActivityMap )
+  if ( ! gpActivityLog )
     return;
 
   char caSection[256];
@@ -350,7 +350,7 @@ void ActivityLog::vMarkSection(Stz* szSectionNm)
 void ActivityLog::vMarkString(i8 iJobId, s48K& sString)
 {
 #ifdef WITH_ACTIVITY_MAP
-  if ( ! gpActivityMap )
+  if ( ! gpActivityLog )
     return;
   
   s4K sLine;
@@ -359,15 +359,15 @@ void ActivityLog::vMarkString(i8 iJobId, s48K& sString)
   bool bForeign = Job::bIsForeign(iJobId);
 
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
-  gpActivityMap->vGrabLock();
+  gpActivityLog->vGrabLock();
   
   while (StrLib::bEachLine(&aCharAdr,sLine.aChar())) {
     //vTrace("Line: ]]%s[[\n"_Stz,sLine.aChar());
-    ActivityMark* pActivityMark = gpActivityMap->pNewMark_NL();
+    ActivityMark* pActivityMark = gpActivityLog->pNewMark_NL();
     pActivityMark->vWrite(C_JOB_GROUP,iJobId,bForeign,sLine.aChar());
   }
   
-  gpActivityMap->vDropLock();
+  gpActivityLog->vDropLock();
   // ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲
 
 #endif
@@ -379,26 +379,26 @@ void ActivityLog::vMarkString(i8 iJobId, s48K& sString)
 void ActivityLog::vMonitorPortrait(s48K& sPortrait)
 {
 #ifdef WITH_ACTIVITY_MAP
-  if (! gpActivityMap) {
+  if (! gpActivityLog) {
     sPortrait.vSprint("ActivityLog: activity map not configured\n"_Stz);
     return;
   }
   
-  gpActivityMap->vGrabLock();
-  i8 iPercentFull = gpActivityMap->iPercentFull_NL();
-  gpActivityMap->vDropLock();
+  gpActivityLog->vGrabLock();
+  i8 iPercentFull = gpActivityLog->iPercentFull_NL();
+  gpActivityLog->vDropLock();
   
-  i8 iMapSize = gpActivityMap->iSize();
+  i8 iMapSize = gpActivityLog->iSize();
   s32 sShmMag;
   Magnitudes::vByteMag(iMapSize, sShmMag);
   
   s32 sArrayMag;
-  Magnitudes::vUnitMag(gpActivityMap->m_nMarks, sArrayMag);
+  Magnitudes::vUnitMag(gpActivityLog->m_nMarks, sArrayMag);
 
   sPortrait.vSprint("ActivityLog: shm %s array %s marks %lld; %lld%% full;\n"_Stz,
                     sShmMag.aStz(),
                     sArrayMag.aStz(),
-                    gpActivityMap->m_i_Mark,
+                    gpActivityLog->m_i_Mark,
                     iPercentFull
                      );
 #else
@@ -412,15 +412,15 @@ void ActivityLog::vMonitorPortrait(s48K& sPortrait)
 void ActivityLog::vOpenByApi(void)
 {
 #ifdef WITH_ACTIVITY_MAP
-  if (! gpAttachMap->Arg.m_bActivityMap)
+  if (! gpAttachMap->Arg.m_bActivityLog)
     return;
   
-  if (gpActivityMap)
+  if (gpActivityLog)
     return;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  ActivityLog* pActivityMap = ActivityLog::pAttachExisting();
+  ActivityLog* pActivityLog = ActivityLog::pAttachExisting();
   if (gpAttachMap->m_bVerbose)
     vTrace("ActivityLog %s : "
            "attached to existing map (size %lldB, max %lld marks)\n\n"_Stz,
@@ -428,7 +428,7 @@ void ActivityLog::vOpenByApi(void)
            sizeof(ActivityLog),
            C_ACTIVITY_MARKS);
   
-  gpActivityMap = pActivityMap;
+  gpActivityLog = pActivityLog;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -445,28 +445,28 @@ void ActivityLog::vOpenByApi(void)
 void ActivityLog::vOpenBySE(bool bStarting)
 {
 #ifdef WITH_ACTIVITY_MAP
-  if (! gpAttachMap->Arg.m_bActivityMap)
+  if (! gpAttachMap->Arg.m_bActivityLog)
     return;
   
-  if (gpActivityMap)
+  if (gpActivityLog)
     vFatal("ActivityLog::vOpenBySE() -- activity map already opened\n"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  ActivityLog* pActivityMap = nullptr;
+  ActivityLog* pActivityLog = nullptr;
   
   if (bStarting) {
-    pActivityMap = ActivityLog::pAttachCreate();
+    pActivityLog = ActivityLog::pAttachCreate();
     if (gpAttachMap->m_bVerbose)
       vTrace("ActivityLog %s : "
              "created new map (size %lldB, max %lld marks)\n\n"_Stz,
              C_ACTIVITY_REGION,
              sizeof(ActivityLog),
              C_ACTIVITY_MARKS);
-    gpActivityMap = new(pActivityMap) ActivityLog;
+    gpActivityLog = new(pActivityLog) ActivityLog;
 
   } else {
-    pActivityMap = ActivityLog::pAttachExisting();
+    pActivityLog = ActivityLog::pAttachExisting();
     if (gpAttachMap->m_bVerbose)
       vTrace("ActivityLog %s : "
              "attached to existing map (size %lldB, max %lld marks)\n\n"_Stz,
@@ -474,7 +474,7 @@ void ActivityLog::vOpenBySE(bool bStarting)
              sizeof(ActivityLog),
              C_ACTIVITY_MARKS);
     
-    gpActivityMap = pActivityMap;
+    gpActivityLog = pActivityLog;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -508,10 +508,10 @@ void ActivityLog::vOpenBySE(bool bStarting)
 void ActivityLog::vWriteCsv(bool bShortForm)
 {
 #ifdef WITH_ACTIVITY_MAP
-  if (! gpActivityMap)
+  if (! gpActivityLog)
     return;
   
-  gpActivityMap->vWriteToFile(bShortForm);
+  gpActivityLog->vWriteToFile(bShortForm);
 #endif
 }
 

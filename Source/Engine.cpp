@@ -486,7 +486,7 @@ void Engine::vOpenActionSequence(void)
 /*----------------------------------------------------------------------------*/
 /* create or open the ActivityLog                                             */
 /*----------------------------------------------------------------------------*/
-void Engine::vOpenActivityMap(void)
+void Engine::vOpenActivityLog(void)
 {
   bool bStarting = false;
   if (0 == gpAttachMap->m_pGrid->m_iThisNode && gxArguments.m_bStart)
@@ -706,7 +706,7 @@ void Engine::vRunCmdLine(void)
     }
     
     else if (gxArguments.m_bPrompt) {
-      vOpenActivityMap();
+      vOpenActivityLog();
       vOpenActionSequence();
       vCallPrompt();
     }
@@ -810,7 +810,7 @@ void Engine::vStartSystem(void)
   ASSERT( ! gpAttachMap->m_oRootDic.bHasWords() );
     
   gpAttachMap->vRecordArguments(gxArguments.m_bActionSequence,
-                                gxArguments.m_bActivityMap,
+                                gxArguments.m_bActivityLog,
                                 gxArguments.m_bDeveloper,
                                 gxArguments.m_nDummyLoop,
                                 gxArguments.m_nDummySleep,
@@ -873,7 +873,7 @@ void Engine::vStartSystem(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vOpenActivityMap();
+  vOpenActivityLog();
   vOpenActionSequence();
 
   Step::vAddSteps();
