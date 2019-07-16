@@ -66,8 +66,8 @@ namespace Scheduling
   private:
     void vThreadAddDedicated(Thread* pThread);
     void vThreadAddGeneral(Thread* pThread);
-    Thread* pThreadPopIdle(void);
     void vThreadAppendIdle(Thread* pThread);
+    Thread* pThreadPopIdle(void);
     void vThreadRemoveDedicated(Thread* pThread);
     void vThreadRemoveGeneral(Thread* pThread);
   

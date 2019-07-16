@@ -217,68 +217,6 @@ void Queues::vAddExecutingSet(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add task to ready queue                                                    */
-/*----------------------------------------------------------------------------*/
-void Queues::vAppendReadyQueue(Task* pTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  m_pReadyQueue->vGrabLock();
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  
-  RASSERT(TS_READY == pTask->eState());
-  
-  pTask->vQueue(QK_READY_QUEUE);
-  pTask->vQueueOrder(++m_ixQueueOrder);
-  
-  if (pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkJob(pTask->pJob(),
-                          "Add to ReadyQueue: %s %p"_Stz,
-                          aCN[pTask->pJob()->eClass()],
-                          pTask->pJob());
-  
-  ASSERT(m_pReadyQueue->bIsLocked());
-  
-  m_pReadyQueue->vAddTask(pTask);
-  
-  ActionSequence::vAdd(pTask->pJob(),AN_ADD_READY_QUEUE);
-  
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  m_pReadyQueue->vDropLock();
-}
-
-/*----------------------------------------------------------------------------*/
-/* add task to low priority ready queue                                       */
-/*----------------------------------------------------------------------------*/
-void Queues::vAppendReadyQueueLP(Task* pTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  m_pReadyQueueLP->vGrabLock();
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  
-  RASSERT(TS_READY == pTask->eState());
-  
-  pTask->vQueue(QK_READY_QUEUE_LP);
-  pTask->vQueueOrder(++m_ixQueueOrder);
-  
-  if (pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkJob(pTask->pJob(),
-                          "Add to ReadyQueueLP: %s %p"_Stz,
-                          aCN[pTask->pJob()->eClass()],
-                          pTask->pJob());
-  
-  ASSERT(m_pReadyQueueLP->bIsLocked());
-  
-  m_pReadyQueueLP->vAddTask(pTask);
-  
-  ActionSequence::vAdd(pTask->pJob(),AN_ADD_READY_QUEUE_LP);
-  
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  m_pReadyQueueLP->vDropLock();
-}
-
-/*----------------------------------------------------------------------------*/
 /* add task to sleeping queue                                                 */
 /*----------------------------------------------------------------------------*/
 void Queues::vAddSleepingQueue(Task* pTask)
@@ -351,37 +289,219 @@ void Queues::vAddWaitingSet(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add task to ready queue                                                    */
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* append task to waiting queue                                               */
-/*----------------------------------------------------------------------------*/
-void Queues::vThreadAppendIdle(Thread* pThread)
+void Queues::vAppendReadyQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  m_pIdleThreadQueue->vGrabLock();
-  m_pIdleThreadQueue->vAppendThread(pThread);
-  m_pIdleThreadQueue->vDropLock();
+  m_pReadyQueue->vGrabLock();
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  
+  RASSERT(TS_READY == pTask->eState());
+  
+  pTask->vQueue(QK_READY_QUEUE);
+  pTask->vQueueOrder(++m_ixQueueOrder);
+  
+  if (pTask->pJob()->m_bMarkActivity)
+    ActivityMap::vMarkJob(pTask->pJob(),
+                          "Add to ReadyQueue: %s %p"_Stz,
+                          aCN[pTask->pJob()->eClass()],
+                          pTask->pJob());
+  
+  ASSERT(m_pReadyQueue->bIsLocked());
+  
+  m_pReadyQueue->vAddTask(pTask);
+  
+  ActionSequence::vAdd(pTask->pJob(),AN_ADD_READY_QUEUE);
+  
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  m_pReadyQueue->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
+/* add task to low priority ready queue                                       */
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* pop idle thread                                                            */
-/*----------------------------------------------------------------------------*/
-Thread* Queues::pThreadPopIdle(void)
+void Queues::vAppendReadyQueueLP(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  m_pIdleThreadQueue->vGrabLock();
+  m_pReadyQueueLP->vGrabLock();
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   
-  Thread* pThread = m_pIdleThreadQueue->pPopThread();
+  RASSERT(TS_READY == pTask->eState());
   
-  m_pIdleThreadQueue->vDropLock();
+  pTask->vQueue(QK_READY_QUEUE_LP);
+  pTask->vQueueOrder(++m_ixQueueOrder);
   
-  return pThread;
+  if (pTask->pJob()->m_bMarkActivity)
+    ActivityMap::vMarkJob(pTask->pJob(),
+                          "Add to ReadyQueueLP: %s %p"_Stz,
+                          aCN[pTask->pJob()->eClass()],
+                          pTask->pJob());
+  
+  ASSERT(m_pReadyQueueLP->bIsLocked());
+  
+  m_pReadyQueueLP->vAddTask(pTask);
+  
+  ActionSequence::vAdd(pTask->pJob(),AN_ADD_READY_QUEUE_LP);
+  
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  m_pReadyQueueLP->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop task from the ready queue                                              */
+/*----------------------------------------------------------------------------*/
+Task* Queues::pPopReadyQueue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  Task* pTask;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // lock queue and check for task
+  
+  // attempt to grab a write lock on the general queue
+  if (! m_pReadyQueue->bGrabLock()) {
+    // unable to lock queue (another thread must be processing it)
+    // so move on to the next queue
+    return nullptr;
+  }
+  
+  //m_pReadyQueue->vGrabLock();
+  
+  // pop task off the general queue
+  pTask = m_pReadyQueue->pPopTask();
+  
+  // task no longer in any queue/set
+  if (pTask) {
+    pTask->vQueue(QK_NONE);
+  }
+  
+  // drop the lock
+  m_pReadyQueue->vDropLock();
+  
+  // is there a task to run?
+  if (! pTask)
+    return nullptr;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (pTask->pJob()->m_bMarkActivity)
+    ActivityMap::vMarkJob(pTask->pJob(),"pPopReadyQueue()"_Stz);
+  
+  // return the task popped from the ready queue
+  return pTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop task from the low priority ready queue                                 */
+/*----------------------------------------------------------------------------*/
+Task* Queues::pPopReadyQueueLP(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  Task* pTask;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // lock queue and check for task
+  
+  // attempt to grab a write lock on the general queue
+  if (! m_pReadyQueueLP->bGrabLock()) {
+    // unable to lock queue (another thread must be processing it)
+    // so move on to the next queue
+    return nullptr;
+  }
+  
+  //m_pReadyQueue->vGrabLock();
+  
+  // pop task off the general queue
+  pTask = m_pReadyQueueLP->pPopTask();
+  
+  // task no longer in any queue/set
+  if (pTask) {
+    pTask->vQueue(QK_NONE);
+  }
+  
+  // drop the lock
+  m_pReadyQueueLP->vDropLock();
+  
+  // is there a task to run?
+  if (! pTask)
+    return nullptr;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (pTask->pJob()->m_bMarkActivity)
+    ActivityMap::vMarkJob(pTask->pJob(),"pPopReadyQueueLP()"_Stz);
+  
+  // return the task popped from the ready queue
+  return pTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop task from sleeping queue                                               */
+/*----------------------------------------------------------------------------*/
+Task* Queues::pPopSleepingQueue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  Task* pTask;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // lock queue and peek at task
+  
+  // attempt to grab a write lock on the sleeping queue
+  if (! m_pSleepingQueue->bGrabLock()) {
+    // unable to lock queue (another thread must be processing it)
+    // so move on to the next queue
+    return nullptr;
+  }
+  
+  // peek at the first task in the sleeping queue
+  ASSERT(m_pSleepingQueue->bIsLocked());
+  pTask = m_pSleepingQueue->pPeekTask();
+  
+  // check if peeked task's wakeup time is after now
+  if (! pTask || ! pTask->bWakeupNow()) {
+    
+    // - peeked task is to be woken up in the future
+    
+    // drop lock on sleeping queue
+    m_pSleepingQueue->vDropLock();
+    
+    // didn't find a task, move to next queue
+    return nullptr;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // peeked task can be be woken up
+  
+  // pop the task off the sleeping queue
+  ASSERT(m_pSleepingQueue->bIsLocked());
+  i8 nPriorItems = m_pSleepingQueue->nTasks();
+  m_pSleepingQueue->vAssertItems(nPriorItems);
+  pTask = m_pSleepingQueue->pPopTask();
+  m_pSleepingQueue->vAssertItems(nPriorItems - 1);
+  
+  // task no longer in any queue/set
+  pTask->vQueue(QK_NONE);
+  
+  // drop lock on sleeping queue
+  m_pSleepingQueue->vDropLock();
+  
+  // clear wakeup time of the task
+  pTask->vWakeupTask();
+  
+  if (pTask->pJob()->m_bMarkActivity)
+    ActivityMap::vMarkInfo(
+                           "Popped SleepingQueue: %s %p"_Stz,
+                           aCN[pTask->pJob()->eClass()],
+                           pTask->pJob());
+  
+  // return the task popped from the sleeping queue
+  return pTask;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -432,6 +552,9 @@ void Queues::vRemoveWaitingSet(Task* pTask)
                           pTask->pJob());
 }
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
 
 ////////////////////////////////////////////////////////////////////////////////
 //                          implementation for threads                        //
@@ -466,7 +589,33 @@ void Queues::vThreadAddGeneral(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append task to waiting queue                                               */
 /*----------------------------------------------------------------------------*/
+void Queues::vThreadAppendIdle(Thread* pThread)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  m_pIdleThreadQueue->vGrabLock();
+  m_pIdleThreadQueue->vAppendThread(pThread);
+  m_pIdleThreadQueue->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop idle thread                                                            */
+/*----------------------------------------------------------------------------*/
+Thread* Queues::pThreadPopIdle(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  m_pIdleThreadQueue->vGrabLock();
+  
+  Thread* pThread = m_pIdleThreadQueue->pPopThread();
+  
+  m_pIdleThreadQueue->vDropLock();
+  
+  return pThread;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* remove thread from dedicated thread vector                                 */
@@ -492,15 +641,10 @@ void Queues::vThreadRemoveGeneral(Thread* pThread)
   m_pGeneralThreadVec->vDropLock();
 }
 
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
-
-
-
-
-
-
+////////////////////////////////////////////////////////////////////////////////
+//                                 misc                                       //
+////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* dump the executing set                                                     */
@@ -710,170 +854,6 @@ i8 Queues::nTasksWaiting(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   return m_pWaitingSet->nTasks();
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* pop task from the ready queue                                              */
-/*----------------------------------------------------------------------------*/
-Task* Queues::pPopReadyQueue(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  Task* pTask;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // lock queue and check for task
-  
-  // attempt to grab a write lock on the general queue
-  if (! m_pReadyQueue->bGrabLock()) {
-    // unable to lock queue (another thread must be processing it)
-    // so move on to the next queue
-    return nullptr;
-  }
-  
-  //m_pReadyQueue->vGrabLock();
-  
-  // pop task off the general queue
-  pTask = m_pReadyQueue->pPopTask();
- 
-  // task no longer in any queue/set
-  if (pTask) {
-    pTask->vQueue(QK_NONE);
-  }
-  
-  // drop the lock
-  m_pReadyQueue->vDropLock();
-  
-  // is there a task to run?
-  if (! pTask)
-    return nullptr;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  if (pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkJob(pTask->pJob(),"pPopReadyQueue()"_Stz);
-  
-  // return the task popped from the ready queue
-  return pTask;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop task from the low priority ready queue                                 */
-/*----------------------------------------------------------------------------*/
-Task* Queues::pPopReadyQueueLP(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  Task* pTask;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // lock queue and check for task
-  
-  // attempt to grab a write lock on the general queue
-  if (! m_pReadyQueueLP->bGrabLock()) {
-    // unable to lock queue (another thread must be processing it)
-    // so move on to the next queue
-    return nullptr;
-  }
-  
-  //m_pReadyQueue->vGrabLock();
-  
-  // pop task off the general queue
-  pTask = m_pReadyQueueLP->pPopTask();
-  
-  // task no longer in any queue/set
-  if (pTask) {
-    pTask->vQueue(QK_NONE);
-  }
-  
-  // drop the lock
-  m_pReadyQueueLP->vDropLock();
-  
-  // is there a task to run?
-  if (! pTask)
-    return nullptr;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  if (pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkJob(pTask->pJob(),"pPopReadyQueueLP()"_Stz);
-  
-  // return the task popped from the ready queue
-  return pTask;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop task from sleeping queue                                               */
-/*----------------------------------------------------------------------------*/
-Task* Queues::pPopSleepingQueue(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  Task* pTask;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // lock queue and peek at task
-  
-  // attempt to grab a write lock on the sleeping queue
-  if (! m_pSleepingQueue->bGrabLock()) {
-    // unable to lock queue (another thread must be processing it)
-    // so move on to the next queue
-    return nullptr;
-  }
-  
-  // peek at the first task in the sleeping queue
-  ASSERT(m_pSleepingQueue->bIsLocked());
-  pTask = m_pSleepingQueue->pPeekTask();
-  
-  // check if peeked task's wakeup time is after now
-  if (! pTask || ! pTask->bWakeupNow()) {
-    
-    // - peeked task is to be woken up in the future
-    
-    // drop lock on sleeping queue
-    m_pSleepingQueue->vDropLock();
-    
-    // didn't find a task, move to next queue
-    return nullptr;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // peeked task can be be woken up
-  
-  // pop the task off the sleeping queue
-  ASSERT(m_pSleepingQueue->bIsLocked());
-  i8 nPriorItems = m_pSleepingQueue->nTasks();
-  m_pSleepingQueue->vAssertItems(nPriorItems);
-  pTask = m_pSleepingQueue->pPopTask();
-  m_pSleepingQueue->vAssertItems(nPriorItems - 1);
-
-  // task no longer in any queue/set
-  pTask->vQueue(QK_NONE);
-
-  // drop lock on sleeping queue
-  m_pSleepingQueue->vDropLock();
-  
-  // clear wakeup time of the task
-  pTask->vWakeupTask();
-  
-  if (pTask->pJob()->m_bMarkActivity)
-    ActivityMap::vMarkInfo(
-                       "Popped SleepingQueue: %s %p"_Stz,
-                       aCN[pTask->pJob()->eClass()],
-                       pTask->pJob());
-
-  // return the task popped from the sleeping queue
-  return pTask;
 }
 
 
