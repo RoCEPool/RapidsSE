@@ -27,10 +27,8 @@ namespace Correctness
     /*------------------------------------------------------------------------*/
     ~HV<CLASS,PARAMETER>(void)
     {
-      if (! m_pObject)
-        throw (i8)__LINE__;
-    
-      delete m_pObject;
+      if (m_pObject)
+        delete m_pObject;
     }
     
     /*------------------------------------------------------------------------*/
