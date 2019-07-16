@@ -3,8 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-namespace Jobs { class Job; }
-
 namespace Monitoring
 {
   static const i8    C_ACTIVITY_MARKS  = C_1M * 10;

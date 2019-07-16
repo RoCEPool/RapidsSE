@@ -3,8 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-namespace Jobs { class Job; }
-
 namespace Monitoring
 {
   static const i8    C_ACTION_SEQUENCE = C_1M * 1;

@@ -3,38 +3,14 @@
 /*============================================================================*/
 #pragma once
 
-namespace StorageEngine
-{
-}
-
-namespace Axioms
-{
-}
-
-namespace Prompt
-{
-}
-
-namespace Interface
-{
-  class Session;
-}
-
-namespace Grids
-{
-  class Node;
-}
-
-namespace Scheduling
-{
-  class Scheduler;
-}
-
-namespace Threads
-{
-  class Thread;
-}
-
+namespace Axioms        { }
+namespace Grids         { class Node; }
+namespace Interface     { class Session; }
+namespace Jobs          { class Job; }
+namespace Prompt        { }
+namespace Scheduling    { class Scheduler; }
+namespace StorageEngine { }
+namespace Threads       { class Thread; }
 
 /*============================================================================*/
 /* end                                                                        */

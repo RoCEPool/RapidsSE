@@ -63,6 +63,8 @@ fileCat "/tpch/SF0/lineitem_100.csv" 10;
 
 //compactidx LineItem LineItem_Idx1;
 
+activityMap;
+
 /*
 time fetch lineitem
   "l_orderKey 2341987 > l_orderKey 443873129 < and"
@@ -72,6 +74,7 @@ time fetch lineitem
   "l_shipdate '1998-09-01 00:00:00' >= l_shipdate '1998-12-01 00:00:00' <= and"
   displayOff;
 */
+
 
 /*============================================================================*/
 /* end                                                                        */
