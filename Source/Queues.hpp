@@ -86,14 +86,7 @@ namespace Scheduling
     i8   nTasksReadyLP(void);
     i8   nTasksSleeping(void);
     i8   nTasksWaiting(void);
-  
-  private:
-    void vAddToExecutingSet_NL(Task* pTask);
-    void vAddToReadyQueue_NL(Task* pTask);
-    void vAddToReadyQueueLP_NL(Task* pTask);
-    void vAddToSleepingQueue_NL(Task* pTask);
-    void vAddToWaitingSet_NL(Task* pTask);
-  
+    
     Footer* aFooter(void);
   };
   
