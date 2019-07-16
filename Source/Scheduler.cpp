@@ -522,23 +522,18 @@ void Scheduler::vTask_Yield(Task* pTask)
   //   Otherwise we add the task to the ready queue
   
   if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL) {
-    pQueues->m_pReadyQueue->vGrabLock();
     i8 iLengthReadyQueue = pQueues->nTasksReady();
     if (0 == iLengthReadyQueue) {
-      pQueues->m_pReadyQueue->vDropLock();
       pCallingThread->vReExecuteTask(pTask);
     }
     else {
       pTask->vState(TS_READY);
-      pQueues->vAddToReadyQueue_NL(pTask);
-      pQueues->m_pReadyQueue->vDropLock();
+      gpAttachMap->m_pQueues->vAddToReadyQueue(pTask);
     }
   }
   else {
-    pQueues->m_pReadyQueueLP->vGrabLock();
     pTask->vState(TS_READY);
-    pQueues->vAddToReadyQueueLP_NL(pTask);
-    pQueues->m_pReadyQueueLP->vDropLock();
+    gpAttachMap->m_pQueues->vAddToReadyQueueLP(pTask);
   }
 }
 
