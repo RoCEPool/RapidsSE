@@ -10,7 +10,7 @@ namespace Prompt
   /*  0 */ PF_NONE=0,
   
   /*    */ PF_ACTIONSEQUENCE,
-  /*    */ PF_ACTIVITYMAP,
+  /*    */ PF_ACTIVITYLOG,
   /*    */ PF_AM,
   /*    */ PF_AMSECTION,
   /*    */ PF_APISTATE,

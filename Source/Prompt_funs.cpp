@@ -28,7 +28,7 @@ extern PromptNote mPromptNote_actionSequence;
 bool Prompt::bPrompt_funs(SePrompt* pPrompt)
 {
   gxPromptCatalog.vFuns(PF_ACTIONSEQUENCE);
-  gxPromptCatalog.vFuns(PF_ACTIVITYMAP);
+  gxPromptCatalog.vFuns(PF_ACTIVITYLOG);
   gxPromptCatalog.vFuns(PF_AM);
   gxPromptCatalog.vFuns(PF_AMSECTION);
   gxPromptCatalog.vFuns(PF_APISTATE);
