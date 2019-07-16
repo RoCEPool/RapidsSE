@@ -236,20 +236,9 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
   
   vThread_WaitAssignment(pThread);
   
+  vTask_AssignedThread(pThread->m_pTask,pThread);
+  
   vThread_Running(pThread);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  ASSERT(TD_RUNNING == pThread->m_eThreadState);
-  ASSERT(pThread->m_pTask);
-  RASSERT(TS_READY   == pThread->m_pTask->eState() ||
-          TS_YIELDED == pThread->m_pTask->eState());
-  
-  pThread->m_pTask->vState(TS_EXECUTING);
-  pThread->m_pTask->vThread(pThread);
-  
-  // add this task to the executing task set
-  gpAttachMap->m_pQueues->vAddExecutingSet(pThread->m_pTask);
 }
 
 
@@ -315,6 +304,24 @@ bool Scheduler::bTask_AckWaiting(Task* pTaskBeingAcked, Task* pTaskAcking)
   }
 
   return bAmDecider;
+}
+
+/*----------------------------------------------------------------------------*/
+/* task has been assigned a thread                                            */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTask_AssignedThread(Task* pTask, Thread* pThread)
+{
+  RASSERT(TS_READY   == pTask->eState() ||
+          TS_YIELDED == pTask->eState());
+  
+  ASSERT(TD_RUNNING == pThread->m_eThreadState);
+  ASSERT(pThread->m_pTask);
+  
+  pTask->vState(TS_EXECUTING);
+  pTask->vThread(pThread);
+  
+  // add this task to the executing task set
+  gpAttachMap->m_pQueues->vAddExecutingSet(pTask);
 }
 
 /*----------------------------------------------------------------------------*/

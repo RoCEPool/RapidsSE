@@ -35,6 +35,7 @@ namespace Scheduling
     // implementation for tasks
   
     static bool bTask_AckWaiting(Task* pTaskBeingAcked, Task* pTaskAcking);
+    static void vTask_AssignedThread(Task* pTask, Thread* pThread);
     static void vTask_Exit(Task* pTask);
     static void vTask_ResumeAck(Task* pTask);
     static void vTask_ScheduleReady(Task* pTask);
