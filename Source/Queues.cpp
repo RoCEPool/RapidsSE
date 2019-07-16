@@ -438,7 +438,11 @@ void Queues::vAddToExecutingSet(Task* pTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   m_pExecutingSet->vGrabLock();
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  
   vAddToExecutingSet_NL(pTask);
+
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   m_pExecutingSet->vDropLock();
 }
 
@@ -450,7 +454,11 @@ void Queues::vAddToReadyQueue(Task* pTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   m_pReadyQueue->vGrabLock();
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
   vAddToReadyQueue_NL(pTask);
+  
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   m_pReadyQueue->vDropLock();
 }
 
@@ -462,7 +470,11 @@ void Queues::vAddToReadyQueueLP(Task* pTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   m_pReadyQueueLP->vGrabLock();
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  
   vAddToReadyQueueLP_NL(pTask);
+  
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   m_pReadyQueueLP->vDropLock();
 }
 
@@ -474,7 +486,11 @@ void Queues::vAddToSleepingQueue(Task* pTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   m_pSleepingQueue->vGrabLock();
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  
   vAddToSleepingQueue_NL(pTask);
+  
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   m_pSleepingQueue->vDropLock();
 }
 
@@ -486,7 +502,11 @@ void Queues::vAddToWaitingSet(Task* pTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   m_pWaitingSet->vGrabLock();
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  
   vAddToWaitingSet_NL(pTask);
+  
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   m_pWaitingSet->vDropLock();
 }
 
