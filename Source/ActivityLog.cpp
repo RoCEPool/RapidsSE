@@ -35,9 +35,9 @@ void ActivityLog::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ActivityLog::ActivityLog(void)
-: Object(CN_ACTIVITYMAP)
+: Object(CN_ACTIVITYLOG)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
   
   if (0 != gpAttachMap->m_pGrid->m_iThisNode || Pthread::bIsJavaThread() )
     RASSERT(0);
@@ -52,9 +52,9 @@ ActivityLog::ActivityLog(void)
     pActivityMark->vInit();
   }
   
-  _checkInitialised_(CN_ACTIVITYMAP);
+  _checkInitialised_(CN_ACTIVITYLOG);
   
-  _postcondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -62,7 +62,7 @@ ActivityLog::ActivityLog(void)
 /*----------------------------------------------------------------------------*/
 ActivityLog::~ActivityLog(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -526,7 +526,7 @@ void ActivityLog::vWriteCsv(bool bShortForm)
 i8 ActivityLog::iAddMarkArg(i8 iEnumGroup, i8 iEnum, i8 iForeign,
                             Stz* aFormat, va_list xArgs)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
   
   char caMark[1024];
   
@@ -550,7 +550,7 @@ i8 ActivityLog::iAddMarkArg(i8 iEnumGroup, i8 iEnum, i8 iForeign,
 i8 ActivityLog::iAddMarkVbl(i8 iEnumGroup, i8 iEnum, i8 iForeign,
                             Stz* aFormat, ...)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
   
   va_list xArgs;
   
@@ -566,7 +566,7 @@ i8 ActivityLog::iAddMarkVbl(i8 iEnumGroup, i8 iEnum, i8 iForeign,
 /*----------------------------------------------------------------------------*/
 ActivityMark* ActivityLog::pNewMark(void)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
   
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
   vGrabLock();
@@ -584,7 +584,7 @@ ActivityMark* ActivityLog::pNewMark(void)
 /*----------------------------------------------------------------------------*/
 ActivityMark* ActivityLog::pNewMark_NL(void)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
 
   m_okLock.vAssertWrite();
   
@@ -602,7 +602,7 @@ ActivityMark* ActivityLog::pNewMark_NL(void)
 /*----------------------------------------------------------------------------*/
 void ActivityLog::vDropLock(void)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
 
   m_okLock.vDropWrite();
 }
@@ -612,7 +612,7 @@ void ActivityLog::vDropLock(void)
 /*----------------------------------------------------------------------------*/
 void ActivityLog::vFindRange_NL(i8& i_MinMark, i8& i_MaxMark)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
   
   RASSERT(m_okLock.bIsLocked());
   
@@ -639,7 +639,7 @@ void ActivityLog::vFindRange_NL(i8& i_MinMark, i8& i_MaxMark)
 /*----------------------------------------------------------------------------*/
 void ActivityLog::vGrabLock(void)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
   
   m_okLock.vGrabWrite();
 }
@@ -649,7 +649,7 @@ void ActivityLog::vGrabLock(void)
 /*----------------------------------------------------------------------------*/
 i8 ActivityLog::iPercentFull_NL(void)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
   
   RASSERT(m_okLock.bIsLocked());
   
@@ -701,7 +701,7 @@ i8 ActivityLog::iSize(void)
 /*----------------------------------------------------------------------------*/
 void ActivityLog::vWriteToFile(bool bShortForm)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
   
   s256 sAmPath;
   sAmPath = "/tmp/ActivityLog.csv"_Stz;
@@ -771,7 +771,7 @@ void ActivityLog::vWriteToFile(bool bShortForm)
 /*----------------------------------------------------------------------------*/
 Footer* ActivityLog::aFooter(void)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYMAP);
+  _precondition_(_MAGIC_,CN_ACTIVITYLOG);
   
   return &m_xFooter;
 }
