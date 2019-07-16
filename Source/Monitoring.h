@@ -14,7 +14,7 @@ using namespace Monitoring;
 
 //------------------------------------------------------------------------------
 
-#include "Map.hpp"
+#include "ShmLog.hpp"
 
 #include "Action.hpp"
 #include "ActionSequence.hpp"
