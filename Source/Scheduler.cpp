@@ -8,6 +8,7 @@
 
 extern AttachMap* gpAttachMap;
 
+extern pthread_key_t giTLS_ThreadKey;
 
 ////////////////////////////////////////////////////////////////////////////////
 //                             task interface                                 //
@@ -618,6 +619,9 @@ void Scheduler::vThread_Beginning(Thread* pThread)
   // thread has mutex while it is running
   pThread->m_eThreadState = TD_RUNNING;
   pThread->m_pMutexThread->vMutexLock();
+  
+  Pthread::vTlsSet(giTLS_ThreadKey,pThread);
+  ASSERT(Pthread::pTlsGet(giTLS_ThreadKey) == pThread);
   
   // increment m_ixThreads to indicate thread is running
   ++gpAttachMap->m_ixThreads;

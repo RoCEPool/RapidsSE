@@ -9,7 +9,6 @@
 extern AttachMap*    gpAttachMap;
 extern Arguments     gxArguments;
 
-extern pthread_key_t giTLS_TaskKey;
 extern pthread_key_t giTLS_ThreadKey;
 
 /*----------------------------------------------------------------------------*/
@@ -265,9 +264,6 @@ void Thread::vLoop_dedicated(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  Pthread::vTlsSet(giTLS_ThreadKey,this);
-  ASSERT(Pthread::pTlsGet(giTLS_ThreadKey) == this);
-  
   Scheduler::vBeginThread(this);
 
   Scheduler::vAssignDedicatedThread(this);
@@ -287,9 +283,6 @@ void Thread::vLoop_general(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  Pthread::vTlsSet(giTLS_ThreadKey,this);
-  ASSERT(Pthread::pTlsGet(giTLS_ThreadKey) == this);
-
   Scheduler::vBeginThread(this);
   
   for (;;) {
