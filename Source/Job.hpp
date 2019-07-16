@@ -208,7 +208,9 @@ namespace Jobs
   public:
     Job(eCN eClassNo, Interface::Session* pSession);
     ~Job(void) noexcept(false);
-    
+  
+    static Job* pThisTLSJob(void);
+
     static bool bIsForeign(i8 iJobId);
     static i8   iJobNo(i8 iJobId);
     static i8   iNodeNo(i8 iJobId);
