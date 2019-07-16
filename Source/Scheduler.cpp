@@ -155,18 +155,8 @@ void Scheduler::vAssignDedicatedThread(Thread* pThread)
   //
   // called from Thread::vLoop_dedicated()
   //
-  
-  // vBeginThread() will have been called
-  ASSERT(TD_RUNNING == pThread->m_eThreadState);
-  ASSERT(pThread->m_pMutexThread->bMutexIsLocked());
-  
-  RASSERT(TS_READY == pThread->m_pTask->eState());
-  
-  pThread->m_pTask->vState(TS_EXECUTING);
-  pThread->m_pTask->vThread(pThread);
-  
-  // add this task to the executing task set
-  gpAttachMap->m_pQueues->vAddExecutingSet(pThread->m_pTask);
+
+  vThread_AssignDedicated(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -576,6 +566,23 @@ void Scheduler::vThread_AppendIdle(Thread* pThread)
   pThread->m_eThreadState = TD_IDLE;
   
   pQueues->vThreadAppendIdle(pThread);
+}
+
+/*----------------------------------------------------------------------------*/
+/* assign task to dedicated thread                                            */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vThread_AssignDedicated(Thread* pThread)
+{
+  ASSERT(TD_RUNNING == pThread->m_eThreadState);
+  ASSERT(pThread->m_pMutexThread->bMutexIsLocked());
+  
+  RASSERT(TS_READY == pThread->m_pTask->eState());
+  
+  pThread->m_pTask->vState(TS_EXECUTING);
+  pThread->m_pTask->vThread(pThread);
+  
+  // add this task to the executing task set
+  gpAttachMap->m_pQueues->vAddExecutingSet(pThread->m_pTask);
 }
 
 /*----------------------------------------------------------------------------*/
