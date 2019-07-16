@@ -19,7 +19,7 @@ using namespace Monitoring;
 #include "Action.hpp"
 #include "ActionSequence.hpp"
 #include "ActivityMark.hpp"
-#include "ActivityMap.hpp"
+#include "ActivityLog.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
