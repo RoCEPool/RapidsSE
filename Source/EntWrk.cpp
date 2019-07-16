@@ -410,7 +410,7 @@ void EntWrk::vRandomLevels(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
-  Task* pTask = Task::pExecutingTask();
+  Task* pTask = Task::pThisTLSTask();
   
   i8 nLevels = Random::iLogLevel(3,C_FLAT_FREQ + 1,pTask->i_NextRnd()) + 1;
 
