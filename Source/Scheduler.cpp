@@ -479,10 +479,11 @@ void Scheduler::vTask_Yield(Task* pTask)
   Queues* pQueues = gpAttachMap->m_pQueues;
   
   // task must be in the yielded state
-  RASSERT(TS_YIELDED == pTask->eState());
-  RASSERT(TR_EXIT == pTask->eTransition());
+  RASSERT(TS_EXECUTING == pTask->eState());
+  RASSERT(TR_YIELD == pTask->eTransition());
   RASSERT(QK_NONE == pTask->eQueue());
 
+  pTask->vState(TS_YIELDED);
   pTask->vTransition(TR_NONE);
   
   Thread* pThread = Thread::pThisTLSThread();
