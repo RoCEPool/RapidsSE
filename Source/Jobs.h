@@ -120,8 +120,11 @@ static Stz* aJL[]
 #include "Job_Periodic.hpp"
 #include "Job_Ping.hpp"
 #include "Job_Publish.hpp"
+
 #include "Job_Purge.hpp"
 #include "Job_Pwf.hpp"
+
+#include "Job_Query.hpp"
 
 #include "Job_Receiver.hpp"
 #include "Job_Repeater.hpp"
