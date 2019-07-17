@@ -97,7 +97,6 @@ void Step::vJob_SubLoaderChunk(MP_Task mpTask)
   if (gpAttachMap->m_pQueues->m_pReadyQueueLP->nTasks() >
       gpAttachMap->Arg.m_nMaxReadyLP) {
     mpTask->vSleepUsec(1000);
-    //mpTask->vState(TS_SLEEPING);
     mpTask->vTransition(TR_SLEEP);
     mpTask->m_pDataStack->vPushBool(true);
   }

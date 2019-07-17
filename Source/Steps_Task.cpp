@@ -172,7 +172,6 @@ void Step::vTaskExit(MP_Task mpTask)
   
   //ActionSequence::vAdd(mpTask->m_pJob,AN_TASK_WAIT);
   
-  //mpTask->vState(TS_EXITED);
   mpTask->vTransition(TR_EXIT);
 
   EXIT();
@@ -432,7 +431,6 @@ void Step::vTaskSleepMsec(MP_Task mpTask)
   ActionSequence::vAdd(mpTask->m_pJob,AN_TASK_SLEEP,nMicroSeconds);
   
   mpTask->vSleepUsec(nMicroSeconds);
-  //mpTask->vState(TS_SLEEPING);
   mpTask->vTransition(TR_SLEEP);
 
   EXIT();
@@ -455,7 +453,6 @@ void Step::vTaskSleepSsec(MP_Task mpTask)
   ActionSequence::vAdd(mpTask->m_pJob,AN_TASK_SLEEP,nMicroSeconds);
   
   mpTask->vSleepUsec(nMicroSeconds);
-  //mpTask->vState(TS_SLEEPING);
   mpTask->vTransition(TR_SLEEP);
 
   EXIT();
@@ -476,7 +473,6 @@ void Step::vTaskSleepUsec(MP_Task mpTask)
   ActionSequence::vAdd(mpTask->m_pJob,AN_TASK_SLEEP,nMicroSeconds);
   
   mpTask->vSleepUsec(nMicroSeconds);
-  //mpTask->vState(TS_SLEEPING);
   mpTask->vTransition(TR_SLEEP);
 
   EXIT();
@@ -543,7 +539,6 @@ void Step::vTaskWait(MP_Task mpTask)
   
   ActionSequence::vAdd(mpTask->m_pJob,AN_TASK_WAIT);
   
-  //mpTask->vState(TS_WAITING);
   mpTask->vTransition(TR_WAIT);
 
   EXIT();
@@ -558,7 +553,6 @@ void Step::vTaskYield(MP_Task mpTask)
   
   ActionSequence::vAdd(mpTask->m_pJob,AN_TASK_YIELD);
   
-  //mpTask->vState(TS_YIELDED);
   mpTask->vTransition(TR_YIELD);
 
   EXIT();

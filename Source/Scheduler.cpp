@@ -397,6 +397,7 @@ void Scheduler::vTask_Sleep(Task* pTask)
   
   // is the task still actually sleeping
   if (! pTask->bWakeupNow()) {
+    pTask->vState(TS_SLEEPING);
     gpAttachMap->m_pQueues->vAddSleepingQueue(pTask);
     return;
   }

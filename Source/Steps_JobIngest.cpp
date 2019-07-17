@@ -55,7 +55,6 @@ void Step::vJob_IngestChunk(MP_Task mpTask)
 //  if (! bCallAgain) {
 //    // sleep for 10 seconds
 //    mpTask->vSleepUs(C_1M * 100);
-//    mpTask->vState(TS_SLEEPING);
 //    mpTask->vTransition(TR_SLEEP);
 //  }
 

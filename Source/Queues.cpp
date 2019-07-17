@@ -226,8 +226,7 @@ void Queues::vAddSleepingQueue(Task* pTask)
   m_pSleepingQueue->vGrabLock();
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   
-  RASSERT(TS_EXECUTING == pTask->eState());
-  pTask->vState(TS_SLEEPING);
+  RASSERT(TS_SLEEPING == pTask->eState());
   
   pTask->vQueue(QK_SLEEPING_QUEUE);
   
