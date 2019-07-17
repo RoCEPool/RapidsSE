@@ -69,6 +69,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB_MONITOR);
   nJobs++; JobClass::vJobCat(CN_JOB_PING);
   nJobs++; JobClass::vJobCat(CN_JOB_PWF);
+  nJobs++; JobClass::vJobCat(CN_JOB_QUERY);
   nJobs++; JobClass::vJobCat(CN_JOB_REPEATER);
   nJobs++; JobClass::vJobCat(CN_JOB_REPORT);
   nJobs++; JobClass::vJobCat(CN_JOB_SELECTTABLE);

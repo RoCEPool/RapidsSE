@@ -158,6 +158,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_PUBLISH
   /*    */ &Finalize::vUndefined,         // CN_JOB_PURGE
   /*    */ &Finalize::vUndefined,         // CN_JOB_PWF
+  /*    */ &Finalize::vUndefined,         // CN_JOB_QUERY
   /*    */ &Finalize::vUndefined,         // CN_JOB_RECEIVER
   /*    */ &Finalize::vUndefined,         // CN_JOB_REPEATER
   /*    */ &Finalize::vUndefined,         // CN_JOB_REPORT

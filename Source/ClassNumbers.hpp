@@ -162,6 +162,7 @@ enum eCN : u2 // Class Number
   /* 108 0x6C    71000B Heap:L */ CN_JOB_PUBLISH,
   /* 109 0x6D    70880B Heap:L */ CN_JOB_PURGE,
   /* 110 0x6E    70592B Heap:L */ CN_JOB_PWF,
+  /* 110 0x6E    70592B Heap:L */ CN_JOB_QUERY,
   /* 111 0x6F    70608B Heap:L */ CN_JOB_RECEIVER,
   /* 112 0x70    71168B Heap:L */ CN_JOB_REPEATER,
   /* 113 0x71    71168B Heap:L */ CN_JOB_REPORT,
@@ -492,6 +493,7 @@ static Stz* aCN[]
   /* 108 0x6C */ "JOB_PUBLISH"_Stz,         // CN_JOB_PUBLISH
   /* 109 0x6D */ "JOB_PURGE"_Stz,           // CN_JOB_PURGE
   /* 110 0x6E */ "JOB_PWF"_Stz,             // CN_JOB_PWF
+  /* 110 0x6E */ "JOB_QUERY"_Stz,           // CN_JOB_QUERY
   /* 111 0x6F */ "JOB_RECEIVER"_Stz,        // CN_JOB_RECEIVER
   /* 112 0x70 */ "JOB_REPEATER"_Stz,        // CN_JOB_REPEATER
   /* 113 0x71 */ "JOB_REPORT"_Stz,          // CN_JOB_REPORT
