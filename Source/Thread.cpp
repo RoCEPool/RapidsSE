@@ -375,27 +375,6 @@ void Thread::vExecuteTask(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* re-execute same task (tried to sleep or yield but could continue)          */
-/*----------------------------------------------------------------------------*/
-void Thread::vReExecuteTask(Task* pTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  // task should be ready or yielded
-  RASSERT(TS_READY == pTask->eState() || TS_YIELDED == pTask->eState());
-  //pTask->vState(TS_EXECUTING);
-  
-  // thread should be idle
-  RASSERT(TD_ASSIGNED == m_eThreadState);
-  
-  // thread should have no task
-  RASSERT(! m_pTask);
-  
-  // set task to be executed
-  m_pTask = pTask;
-}
-
-/*----------------------------------------------------------------------------*/
 /* spawn the os/posix pthread associated with this thread                     */
 /*----------------------------------------------------------------------------*/
 void Thread::vSpawnPthread_dedicated(void)

@@ -405,9 +405,9 @@ void Scheduler::vTask_Sleep(Task* pTask)
   
   pTask->vWakeupTask();
   
-  Thread* pCallingThread = Thread::pThisTLSThread();
+  Thread* pThread = Thread::pThisTLSThread();
   
-  pCallingThread->vReExecuteTask(pTask);
+  vThread_ReExecuteTask(pThread,pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -475,7 +475,7 @@ void Scheduler::vTask_Yield(Task* pTask)
   // task must be in the yielded state
   RASSERT(TS_YIELDED == pTask->eState());
   
-  Thread* pCallingThread = Thread::pThisTLSThread();
+  Thread* pThread = Thread::pThisTLSThread();
   
   if (pTask->pJob()->m_bMarkActivity) {
     if (C_UNKNOWN == pTask->pJob()->iJobId())
@@ -500,7 +500,7 @@ void Scheduler::vTask_Yield(Task* pTask)
   if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL) {
     i8 iLengthReadyQueue = pQueues->nTasksReady();
     if (0 == iLengthReadyQueue) {
-      pCallingThread->vReExecuteTask(pTask);
+      vThread_ReExecuteTask(pThread,pTask);
     }
     else {
       pTask->vState(TS_READY);
