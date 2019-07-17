@@ -198,9 +198,7 @@ void Scheduler::vThreadRemoveDedicated(Thread* pThread)
   // called from Thread::aEntryPoint_dedicated()
   //
   
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  pQueues->vThreadRemoveDedicated(pThread);
+  vThread_RemoveDedicated(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -212,9 +210,7 @@ void Scheduler::vThreadRemoveGeneral(Thread* pThread)
   // called from Thread::aEntryPoint_general()
   //
   
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  pQueues->vThreadRemoveGeneral(pThread);
+  vThread_RemoveGeneral(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -698,6 +694,34 @@ void Scheduler::vThread_ReExecuteTask(Thread* pThread, Task* pTask)
   
   // set task to be executed
   pThread->m_pTask = pTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove dedicated thread from thread vector                                 */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vThread_RemoveDedicated(Thread* pThread)
+{
+  //
+  // called from Thread::aEntryPoint_dedicated()
+  //
+  
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  pQueues->vThreadRemoveDedicated(pThread);
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove general thread from thread vector                                   */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vThread_RemoveGeneral(Thread* pThread)
+{
+  //
+  // called from Thread::aEntryPoint_general()
+  //
+  
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  pQueues->vThreadRemoveGeneral(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
