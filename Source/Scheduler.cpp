@@ -90,17 +90,12 @@ void Scheduler::vReturnTaskLoop(Thread* pThread)
   gpAttachMap->m_pQueues->vRemoveExecutingSet(pTask);
   
   // add task to another appropriate queue depending on its state
-  switch (pTask->eState()) {
+  switch (pTask->eTransition()) {
       
-    case TS_EXITED:    vTask_Exit(pTask);   break;
-    case TS_SLEEPING:  vTask_Sleep(pTask);  break;
-    case TS_WAITING:   vTask_Wait(pTask);   break;
-    case TS_YIELDED:   vTask_Yield(pTask);  break;
-      
-      // should never come here for these states
-    case TS_EXECUTING: ASSERT(0);
-    case TS_READY:     ASSERT(0);
-    case TS_NONE:      ASSERT(0);
+    case TR_EXIT:   vTask_Exit(pTask);   break;
+    case TR_SLEEP:  vTask_Sleep(pTask);  break;
+    case TR_WAIT:   vTask_Wait(pTask);   break;
+    case TR_YIELD:  vTask_Yield(pTask);  break;
       
     default:
       NEVER_REACH;
