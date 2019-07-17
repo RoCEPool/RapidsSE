@@ -387,6 +387,8 @@ void Scheduler::vTask_Sleep(Task* pTask)
   RASSERT(TR_SLEEP == pTask->eTransition());
   RASSERT(QK_NONE == pTask->eQueue());
 
+  pTask->vTransition(TR_NONE);
+
   if (pTask->pJob()->m_bMarkActivity)
     ActivityLog::vMarkJob(pTask->pJob(),
                           "Schedule sleeping: %s %p"_Stz,
@@ -402,8 +404,6 @@ void Scheduler::vTask_Sleep(Task* pTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tasks wake up time has already arrived. run it
   
-  pTask->vTransition(TR_NONE);
-
   pTask->vWakeupTask();
   
   Thread* pThread = Thread::pThisTLSThread();
@@ -432,6 +432,8 @@ void Scheduler::vTask_Wait(Task* pTask)
   RASSERT(QK_NONE == pTask->eQueue());
   RASSERT(pTask->bIsLocked());
 
+  pTask->vTransition(TR_NONE);
+  
   // activity
   if (pTask->pJob()->m_bMarkActivity) {
     if (C_UNKNOWN == pTask->pJob()->iJobId())
@@ -448,8 +450,6 @@ void Scheduler::vTask_Wait(Task* pTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pTask->vTransition(TR_NONE);
-
   // add task to waiting set
   gpAttachMap->m_pQueues->vAddWaitingSet(pTask);
   
@@ -481,6 +481,8 @@ void Scheduler::vTask_Yield(Task* pTask)
   RASSERT(TR_EXIT == pTask->eTransition());
   RASSERT(QK_NONE == pTask->eQueue());
 
+  pTask->vTransition(TR_NONE);
+  
   Thread* pThread = Thread::pThisTLSThread();
   
   if (pTask->pJob()->m_bMarkActivity) {
@@ -498,8 +500,6 @@ void Scheduler::vTask_Yield(Task* pTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pTask->vTransition(TR_NONE);
-
   // - A general thread has executed a task which retured TS_YIELDED.
   //   If the ready queue is empty then this general thread can
   //     continue to execute the yield task.

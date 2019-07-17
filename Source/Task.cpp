@@ -224,7 +224,7 @@ void Task::vTaskLoop(void)
   if (! m_pDataStack )
     vNewStacks();
   
-  while (TS_EXECUTING == m_eState) {
+  while (TR_NONE == m_eTransition) {
     
     // get the step function to be called
     StepFp fpStep = *(m_aFipCell->m_afpStep);

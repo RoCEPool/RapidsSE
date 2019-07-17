@@ -63,7 +63,7 @@ void Step::vTaskAck(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.acks! -- store value into given tasks m_oAcksRmg                */
+/* task.acks! -- store value into given tasks m_oAcksRmg                      */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskAcksStore(MP_Task mpTask)
 {
@@ -165,7 +165,7 @@ ENTRY("vTaskDump"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* task::exit -- this task exits                                               */
+/* task::exit -- this task exits                                              */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskExit(MP_Task mpTask)
 {
@@ -417,7 +417,7 @@ void Step::vTaskSendNodeStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task::sleepMsec -- this task sleeps for given milliseconds                  */
+/* task::sleepMsec -- this task sleeps for given milliseconds                 */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskSleepMsec(MP_Task mpTask)
 {
@@ -440,7 +440,7 @@ void Step::vTaskSleepMsec(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task::sleepUsec -- this task sleeps for given microseconds                  */
+/* task::sleepSsec -- this task sleeps for given seconds                      */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskSleepSsec(MP_Task mpTask)
 {
@@ -463,7 +463,7 @@ void Step::vTaskSleepSsec(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task::sleepSsec -- this task sleeps for given seconds                       */
+/* task::sleepUsec -- this task sleeps for given microseconds                 */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskSleepUsec(MP_Task mpTask)
 {
@@ -533,7 +533,7 @@ ENTRY("vTaskStateStore"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* task::this -- push this task                                                */
+/* task::this -- push this task                                               */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskThis(MP_Task mpTask)
 {
@@ -581,7 +581,7 @@ void Step::vTaskWait(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task::yield -- this task yields                                             */
+/* task::yield -- this task yields                                            */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskYield(MP_Task mpTask)
 {
