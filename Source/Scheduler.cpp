@@ -236,8 +236,6 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
   vThread_WaitAssignment(pThread);
   
   vTask_AssignedThread(pThread->m_pTask,pThread);
-  
-  vThread_Running(pThread);
 }
 
 
@@ -673,17 +671,11 @@ void Scheduler::vThread_PauseGeneral(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* thread is running                                                          */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vThread_Running(Thread* pThread)
-{
-}
-
-/*----------------------------------------------------------------------------*/
 /* append idle thread onto idle thread queue                                  */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_WaitAssignment(Thread* pThread)
 {
+  ASSERT(TD_RUNNING == pThread->m_eThreadState);
   RASSERT(pThread->m_pMutexThread->bMutexIsLocked());
   
   while (! pThread->m_pTask) {
