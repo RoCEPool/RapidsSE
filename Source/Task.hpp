@@ -43,35 +43,33 @@ namespace Tasks
   /* 2 */ "EXITED"_Stz,
   /* 3 */ "READY"_Stz,
   /* 4 */ "SEND"_Stz,
-  /* 5 */ "SLEEPING"_Stz,
-  /* 6 */ "WAITING"_Stz,
-  /* 7 */ "YIELDED"_Stz,
-  /* 8 */ "ENUMS"_Stz,
+  /* 5 */ "WAITING"_Stz,
+  /* 6 */ "YIELDED"_Stz,
+  /* 7 */ "ENUMS"_Stz,
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   enum eTR // Task State Transition
   {
   /* 0 */ TR_NONE=0,
-  /* 1 */ TR_EXECUTING, // task is currenty being executed by Thread::vLoop
-  /* 2 */ TR_EXITED,    // task has completed
-  /* 3 */ TR_READY,     // task is ready to be executed
-  /* 4 */ TR_SLEEPING,  // task is sleeping
-  /* 5 */ TR_WAITING,   // task is waiting on ack from cooperating task
-  /* 6 */ TR_YIELDED,   // task is yielded, not running and is in a TaskSet
+  /* 1 */ TR_EXECUTE, // task is currenty being executed by Thread::vLoop
+  /* 2 */ TR_EXIT,    // task has completed
+  /* 3 */ TR_READY,   // task is ready to be executed
+  /* 4 */ TR_SLEEP,   // task is sleeping
+  /* 5 */ TR_WAIT,    // task is waiting on ack from cooperating task
+  /* 6 */ TR_YIELD,   // task is yielded, not running and is in a TaskSet
   /* 7 */ TR_ENUMS
   };
   
   static Stz* aTR[]
   {
   /* 0 */ "NONE"_Stz,
-  /* 1 */ "EXECUTING"_Stz,
-  /* 2 */ "EXITED"_Stz,
+  /* 1 */ "EXECUTE"_Stz,
+  /* 2 */ "EXIT"_Stz,
   /* 3 */ "READY"_Stz,
-  /* 4 */ "SEND"_Stz,
-  /* 5 */ "SLEEPING"_Stz,
-  /* 6 */ "WAITING"_Stz,
-  /* 7 */ "YIELDED"_Stz,
+  /* 5 */ "SLEEP"_Stz,
+  /* 6 */ "WAIT"_Stz,
+  /* 7 */ "YIELD"_Stz,
   /* 8 */ "ENUMS"_Stz,
   };
   
@@ -96,6 +94,7 @@ namespace Tasks
     Threads::Thread*    m_pThread;  // current thread
 
     eTS     m_eState;       // state (running, sleeping, ...)
+    eTR     m_eTransition;  // state transition request
     eQK     m_eQueue;       // which queue the task is in
     i8      m_iQueueOrder;  // queue ordering number
     Decider m_oAcksRmg;     // number of acks still waiting for
@@ -187,6 +186,8 @@ namespace Tasks
     void vThread(Threads::Thread* pThread);
     void vTracePoint(Stz* aMark);
     void vTraceStep(Stz* aStepNm);
+    eTR  eTransition(void);
+    void vTransition(eTR eTransition);
     u8   uWakeupInUsec(void);
     bool bWakeupNow(void);
     u8   uWakeupTime(void);

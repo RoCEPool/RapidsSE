@@ -129,10 +129,12 @@ void Task::vInit(void)
   m_pJob         = nullptr;
   m_pSession     = nullptr;
   
+  m_eState       = TS_NONE;
+  m_eTransition  = TR_NONE;
+  m_eQueue       = QK_NONE;
+  
   m_iQueueOrder  = C_UNKNOWN;
   
-  m_eState       = TS_NONE;
-  m_eQueue       = QK_NONE;
   m_oAcksRmg.vCheckInit();
   m_pThread      = nullptr;
   
@@ -963,6 +965,26 @@ void Task::vTraceStep(Stz* aStepNm)
   s48K sStackContents;
   vStackContents(m_pDataStack, sStackContents);
   vTrace("%s\n"_Stz,sStackContents.aChar());
+}
+
+/*----------------------------------------------------------------------------*/
+/* get transition request                                                     */
+/*----------------------------------------------------------------------------*/
+eTR Task::eTransition(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  return m_eTransition;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set transition request                                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vTransition(eTR eTransition)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  m_eTransition = eTransition;
 }
 
 /*----------------------------------------------------------------------------*/
