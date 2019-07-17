@@ -105,15 +105,13 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
 {
   Thread* pThread = static_cast<Thread*>(pArg);
   
-  pThread->m_aStackBase = Pthread::aStackBase();
-  pThread->m_iStackSize = Pthread::iStackSize();
-  
+  pThread->vThreadEntry();
   pThread->m_pPthread->vThreadEntry();
   
   Scheduler::vThreadAddDedicated(pThread);
   
   if (gpAttachMap->m_bVerbose)
-    vTrace("Thread::aEntryPoint %p %lld\n"_Stz,
+    vTrace("Thread::aEntryPoint_dedicated %p %lld\n"_Stz,
            pThread,pThread->iThreadNo());
   
   //pThread->vBindCore();
@@ -161,15 +159,13 @@ void* Thread::aEntryPoint_general(void* pArg)
 {
   Thread* pThread = static_cast<Thread*>(pArg);
   
-  pThread->m_aStackBase = Pthread::aStackBase();
-  pThread->m_iStackSize = Pthread::iStackSize();
-  
+  pThread->vThreadEntry();
   pThread->m_pPthread->vThreadEntry();
 
   Scheduler::vThreadAddGeneral(pThread);
   
   if (gpAttachMap->m_bVerbose)
-    vTrace("Thread::aEntryPoint %p %lld\n"_Stz,
+    vTrace("Thread::aEntryPoint_general %p %lld\n"_Stz,
            pThread,pThread->iThreadNo());
   
   //pThread->vBindCore();
@@ -222,7 +218,7 @@ void* Thread::aEntryPoint_dummy(void* pArg)
   pThread->m_pPthread->vThreadEntry();
   
   if (gpAttachMap->m_bVerbose)
-    vTrace("Thread::aEntryPointDummy %p %lld\n"_Stz,
+    vTrace("Thread::aEntryPoint_dummy %p %lld\n"_Stz,
            pThread,pThread->iThreadNo());
   
   while (true) {
@@ -450,8 +446,20 @@ Task* Thread::pTask(void)
 /*----------------------------------------------------------------------------*/
 void Thread::vThisTLSThread(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   Pthread::vTlsSet(giTLS_ThreadKey,this);
   ASSERT(Pthread::pTlsGet(giTLS_ThreadKey) == this);
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread entry intialisation                                                 */
+/*----------------------------------------------------------------------------*/
+void Thread::vThreadEntry(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+
+  m_aStackBase = Pthread::aStackBase();
+  m_iStackSize = Pthread::iStackSize();
 }
 
 /*----------------------------------------------------------------------------*/
