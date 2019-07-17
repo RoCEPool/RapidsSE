@@ -47,7 +47,7 @@
 
   // wait for final aux ack from last KE`
   1 pTask_[E] task.acks!
-  pTask_[E] task.wait
+  task::wait
 ;
 
 /*----------------------------------------------------------------------------*/

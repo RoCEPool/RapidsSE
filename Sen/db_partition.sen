@@ -102,7 +102,7 @@
   begin
     i_Partition pTable table.getPtn tablePtn.attemptGrabRead
     not while
-      task.yield
+      task::yield
   repeat
 ;
 
@@ -117,7 +117,7 @@
   begin
     i_Partition pTable table.getPtn tablePtn.attemptGrabWrite
     not while
-      task.yield
+      task::yield
   repeat
 ;
 

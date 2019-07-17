@@ -12,17 +12,19 @@ extern AttachMap* gpAttachMap;
 void Step::vAddSteps_Task(void)
 {
   vAddStep("task::breakPoint"_Stz, &Step::vTaskBreakPoint);
+  //vAddStep("task::exit"_Stz,       &Step::vTaskExit);
   vAddStep("task::sleepMsec"_Stz,  &Step::vTaskSleepMsec);
   vAddStep("task::sleepSsec"_Stz,  &Step::vTaskSleepSsec);
   vAddStep("task::sleepUsec"_Stz,  &Step::vTaskSleepUsec);
   vAddStep("task::this"_Stz,       &Step::vTaskThis);
+  vAddStep("task::wait"_Stz,       &Step::vTaskWait);
+  vAddStep("task::yield"_Stz,      &Step::vTaskYield);
 
   vAddStep("task.ack"_Stz,         &Step::vTaskAck);
   vAddStep("task.acks!"_Stz,       &Step::vTaskAcksStore);
   vAddStep("task.dicStack"_Stz,    &Step::vTaskDicStack);
   vAddStep("task.dump"_Stz,        &Step::vTaskDump);
   vAddStep("task.dropLock"_Stz,    &Step::vTaskDropLock);
-  vAddStep("task.exit"_Stz,        &Step::vTaskExit);
   vAddStep("task.grabLock"_Stz,    &Step::vTaskGrabLock);
   vAddStep("task.isAckSet"_Stz,    &Step::vTaskIsAckSet);
   vAddStep("task.job@"_Stz,        &Step::vTaskJobFetch);
@@ -36,8 +38,6 @@ void Step::vAddSteps_Task(void)
   vAddStep("task.state@"_Stz,      &Step::vTaskStateFetch);
   vAddStep("task.state!"_Stz,      &Step::vTaskStateStore);
   vAddStep("task.thread"_Stz,      &Step::vTaskThread);
-  vAddStep("task.wait"_Stz,        &Step::vTaskWait);
-  vAddStep("task.yield"_Stz,       &Step::vTaskYield);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -165,7 +165,7 @@ ENTRY("vTaskDump"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.exit -- this task exits                                               */
+/* task::exit -- this task exits                                               */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskExit(MP_Task mpTask)
 {
@@ -576,7 +576,7 @@ void Step::vTaskWait(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.yield -- this task yields                                             */
+/* task::yield -- this task yields                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskYield(MP_Task mpTask)
 {
