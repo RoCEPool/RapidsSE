@@ -361,7 +361,7 @@ void Thread::vExecuteTask(Task* pTask)
   
   // thread should be idle
   //RASSERT(TD_IDLE == m_eThreadState);
-  RASSERT(TD_RUNNING == m_eThreadState);
+  RASSERT(TD_ASSIGNED == m_eThreadState);
   
   // thread should have no task
   RASSERT(! m_pTask);
@@ -369,7 +369,7 @@ void Thread::vExecuteTask(Task* pTask)
   // set task to be executed
   m_pTask = pTask;
   
-  //m_eThreadState = TD_RUNNING;
+  //m_eThreadState = TD_ASSIGNED;
   
   // signal the thread
   //vSignalThread();
@@ -390,7 +390,7 @@ void Thread::vReExecuteTask(Task* pTask)
   //pTask->vState(TS_EXECUTING);
   
   // thread should be idle
-  RASSERT(TD_RUNNING == m_eThreadState);
+  RASSERT(TD_ASSIGNED == m_eThreadState);
   
   // thread should have no task
   RASSERT(! m_pTask);
@@ -487,7 +487,7 @@ bool Thread::bGrabIfIdle(void)
   
   // if this thread is idle return with mutex locked
   if (TD_IDLE == m_eThreadState) {
-    m_eThreadState = TD_RUNNING;
+    m_eThreadState = TD_ASSIGNED;
     return true;
   }
   

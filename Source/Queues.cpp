@@ -788,7 +788,7 @@ void Queues::vMonitorThread(s48K& sPortrait)
     if (TD_IDLE == pThread->eThreadState())
       nIdle++;
     else
-      if (TD_RUNNING == pThread->eThreadState())
+      if (TD_ASSIGNED == pThread->eThreadState())
         nRunning++;
     
     if (CN_NONE != pThread->m_eDedicated)

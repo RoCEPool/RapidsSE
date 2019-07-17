@@ -82,7 +82,7 @@ void Scheduler::vReturnTaskLoop(Thread* pThread)
   Task* pTask = pThread->m_pTask;
   
   // disconnect / de-assign task from thread
-  vThread_DeassignRunning(pThread);
+  vThread_Deassign(pThread);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -311,7 +311,7 @@ void Scheduler::vTask_AssignedThread(Task* pTask, Thread* pThread)
   RASSERT(TS_READY   == pTask->eState() ||
           TS_YIELDED == pTask->eState());
   
-  ASSERT(TD_RUNNING == pThread->m_eThreadState);
+  ASSERT(TD_ASSIGNED == pThread->m_eThreadState);
   ASSERT(pThread->m_pTask);
   
   pTask->vState(TS_EXECUTING);
@@ -565,7 +565,7 @@ void Scheduler::vThread_AppendIdle(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_AssignDedicated(Thread* pThread)
 {
-  ASSERT(TD_RUNNING == pThread->m_eThreadState);
+  ASSERT(TD_ASSIGNED == pThread->m_eThreadState);
   ASSERT(pThread->m_pMutexThread->bMutexIsLocked());
   
   RASSERT(pThread->m_pTask);
@@ -606,7 +606,7 @@ bool Scheduler::bThread_AssignIdle(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* deassign task from thread                                                  */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vThread_DeassignRunning(Thread* pThread)
+void Scheduler::vThread_Deassign(Thread* pThread)
 {
   pThread->m_pTask = nullptr;
 }
@@ -619,7 +619,7 @@ void Scheduler::vThread_Beginning(Thread* pThread)
   pThread->vThisTLSThread();
   
   // thread has mutex while it is running
-  pThread->m_eThreadState = TD_RUNNING;
+  pThread->m_eThreadState = TD_ASSIGNED;
   pThread->m_pMutexThread->vMutexLock();
   
   // increment m_ixThreads to indicate thread is running
@@ -675,14 +675,14 @@ void Scheduler::vThread_PauseGeneral(void)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_WaitAssignment(Thread* pThread)
 {
-  ASSERT(TD_RUNNING == pThread->m_eThreadState);
+  ASSERT(TD_ASSIGNED == pThread->m_eThreadState);
   RASSERT(pThread->m_pMutexThread->bMutexIsLocked());
   
   while (! pThread->m_pTask) {
     pThread->m_eThreadState = TD_IDLE;
     vThread_AppendIdle(pThread);
     pThread->m_pMutexThread->vCondWaitIndefinite();
-    pThread->m_eThreadState = TD_RUNNING;
+    pThread->m_eThreadState = TD_ASSIGNED;
   }
 }
 

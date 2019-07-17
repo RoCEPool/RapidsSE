@@ -54,7 +54,7 @@ namespace Scheduling
     static void vThread_AssignDedicated(Thread* pThread);
     static bool bThread_AssignIdle(Task* pTask);
     static void vThread_Beginning(Thread* pThread);
-    static void vThread_DeassignRunning(Thread* pThread);
+    static void vThread_Deassign(Thread* pThread);
     static void vThread_DedicatedTask(Thread* pThread, Task* pTask);
     static void vThread_Ending(Thread* pThread);
     static void vThread_PauseGeneral(void);
