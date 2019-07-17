@@ -29,8 +29,6 @@ bool Scheduler::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  RASSERT(! pTaskBeingAcked->iAcksRmg_assert_only_());
-  
   vTask_ResumeAck(pTaskBeingAcked);
 
   return true;
@@ -89,7 +87,7 @@ void Scheduler::vReturnTaskLoop(Thread* pThread)
   // remove task from the executing set
   gpAttachMap->m_pQueues->vRemoveExecutingSet(pTask);
   
-  // add task to another appropriate queue depending on its state
+  // add task to another appropriate queue depending on its transition request
   switch (pTask->eTransition()) {
       
     case TR_EXIT:   vTask_Exit(pTask);   break;
@@ -339,6 +337,8 @@ void Scheduler::vTask_Exit(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_ResumeAck(Task* pTask)
 {
+  RASSERT(! pTask->iAcksRmg_assert_only_());
+  
   if (pTask->pJob()->m_bMarkActivity)
     ActivityLog::vMarkJob(pTask->pJob(),
                           "Scheduling acked: %s %p"_Stz,
