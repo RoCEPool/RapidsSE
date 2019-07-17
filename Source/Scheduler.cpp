@@ -539,12 +539,12 @@ void Scheduler::vThread_AddDedicated(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_AddGeneral(Thread* pThread)
 {
+  RASSERT(CN_NONE == pThread->m_eDedicated);
+  
   Queues* pQueues = gpAttachMap->m_pQueues;
   
   pThread->m_eThreadState = TD_IDLE;
   pQueues->vThreadAddGeneral(pThread);
-  
-  RASSERT(CN_NONE == pThread->m_eDedicated);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -552,6 +552,9 @@ void Scheduler::vThread_AddGeneral(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_AppendIdle(Thread* pThread)
 {
+  RASSERT(! pThread->m_pTask);
+  RASSERT(CN_NONE == pThread->m_eDedicated);
+
   Queues* pQueues = gpAttachMap->m_pQueues;
   
   pThread->m_eThreadState = TD_IDLE;
@@ -567,6 +570,7 @@ void Scheduler::vThread_AssignDedicated(Thread* pThread)
   ASSERT(TD_RUNNING == pThread->m_eThreadState);
   ASSERT(pThread->m_pMutexThread->bMutexIsLocked());
   
+  RASSERT(pThread->m_pTask);
   RASSERT(TS_READY == pThread->m_pTask->eState());
   
   pThread->m_pTask->vState(TS_EXECUTING);
