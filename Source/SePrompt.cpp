@@ -7,7 +7,6 @@
 
 extern AttachMap*    gpAttachMap;
 extern BufferPool*   gpBufferPool;
-extern pthread_key_t giTLS_ThreadKey;
 
 PromptCatalog gxPromptCatalog;
 

@@ -12,8 +12,6 @@ BufferPool*   gpBufferPool   = nullptr;
 AttachMap *   gpAttachMap    = nullptr;
 File*         gpTraceFile    = nullptr;
 
-extern pthread_key_t giTLS_ThreadKey;
-
 bool          gbSHM          = false;
 
 

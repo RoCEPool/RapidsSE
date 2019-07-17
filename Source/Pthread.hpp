@@ -45,7 +45,7 @@ namespace System
     static bool  bIsJavaThread(void);
   
     static void  vMarkNonSeThread(void);
-    static void vMonitorPortrait(s48K& sPortrait);
+    static void  vMonitorPortrait(s48K& sPortrait);
 
     static void  vSleepInfinite(void);
     static void  vSleepMsec(i8 nMilliSeconds, eCN eCallingClass);

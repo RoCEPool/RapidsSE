@@ -446,6 +446,15 @@ Task* Thread::pTask(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set this thread into TLS of current pthread                                */
+/*----------------------------------------------------------------------------*/
+void Thread::vThisTLSThread(void)
+{
+  Pthread::vTlsSet(giTLS_ThreadKey,this);
+  ASSERT(Pthread::pTlsGet(giTLS_ThreadKey) == this);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get our thread number                                                      */
 /*----------------------------------------------------------------------------*/
 i8 Thread::iThreadNo(void)
