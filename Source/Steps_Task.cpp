@@ -12,7 +12,7 @@ extern AttachMap* gpAttachMap;
 void Step::vAddSteps_Task(void)
 {
   vAddStep("task::breakPoint"_Stz, &Step::vTaskBreakPoint);
-  //vAddStep("task::exit"_Stz,       &Step::vTaskExit);
+  vAddStep("task::exit"_Stz,       &Step::vTaskExit);
   vAddStep("task::sleepMsec"_Stz,  &Step::vTaskSleepMsec);
   vAddStep("task::sleepSsec"_Stz,  &Step::vTaskSleepSsec);
   vAddStep("task::sleepUsec"_Stz,  &Step::vTaskSleepUsec);
@@ -171,7 +171,7 @@ void Step::vTaskExit(MP_Task mpTask)
 {
   ENTRY("vTaskExit"_Stz);
   
-  ActionSequence::vAdd(mpTask->m_pJob,AN_TASK_WAIT);
+  //ActionSequence::vAdd(mpTask->m_pJob,AN_TASK_WAIT);
   
   mpTask->vState(TS_EXITED);
   
