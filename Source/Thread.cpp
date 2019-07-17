@@ -482,43 +482,11 @@ eTD Thread::eThreadState(void)
   return m_eThreadState;
 }
 
-/*----------------------------------------------------------------------------*/
-/* attempt to grab this thread as an idle thread                             */
-/*----------------------------------------------------------------------------*/
-bool Thread::bGrabIfIdle(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  // attempt to lock threads mutex
-  if (! m_pMutexThread->bMutexLock())
-    return false;
-  
-  // if this thread is idle return with mutex locked
-  if (TD_IDLE == m_eThreadState) {
-    m_eThreadState = TD_ASSIGNED;
-    return true;
-  }
-  
-  // thread is not idle, so unlock mutex
-  m_pMutexThread->vMutexUnlock();
-
-  return false;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* Thread::aFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD);
-  
-  return &m_xFooter;
-}
+__aFooterFunction(Thread);
 
 /*============================================================================*/
 /* end                                                                        */

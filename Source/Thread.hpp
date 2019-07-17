@@ -74,10 +74,6 @@ namespace Threads
     i8   iThreadNo(void);
     eTD  eThreadState(void);
   
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-    bool  bGrabIfIdle(void);
-
   private:
 
     Footer* aFooter(void);
