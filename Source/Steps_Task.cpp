@@ -36,7 +36,6 @@ void Step::vAddSteps_Task(void)
   vAddStep("task.sendNode@"_Stz,   &Step::vTaskSendNodeFetch);
   vAddStep("task.sendNode!"_Stz,   &Step::vTaskSendNodeStore);
   vAddStep("task.state@"_Stz,      &Step::vTaskStateFetch);
-  vAddStep("task.state!"_Stz,      &Step::vTaskStateStore);
   vAddStep("task.thread"_Stz,      &Step::vTaskThread);
 }
 
@@ -498,36 +497,6 @@ ENTRY("vTaskStateFetch"_Stz);
   eTS eState = pThatTask->m_eState;
   
   mpTask->m_pDataStack->vPushI8((i8)eState);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.state! -- store state of task                                         */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskStateStore(MP_Task mpTask)
-{
-ENTRY("vTaskStateStore"_Stz);
-  
-  Object* pTaskObject;
-  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
-    THROW_INVALID_DSTACK("task.state!"_Stz);
-  Task* pThatTask = _pTask(pTaskObject);
-  
-  i8 iState;
-  
-  if ( ! mpTask->m_pDataStack->bPop(iState) )
-    THROW_INVALID_DSTACK("task.state!"_Stz);
-  
-  // a task being set to waiting state must be locked
-  if (TS_WAITING == iState) {
-    //RASSERT(pThatTask->bIsLocked());
-  }
-  
-  if (mpTask->m_pJob)                              //! why can there be no job??
-    ActionSequence::vAdd(mpTask->m_pJob,AN_TASK_STATE_SET,iState);
-  
-  pThatTask->m_eState = (eTS)iState;
   
   EXIT();
 }

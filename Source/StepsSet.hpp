@@ -1053,7 +1053,6 @@
   static void vTaskSleepSsec(Tasks::MP_Task mpTask);
   static void vTaskSleepUsec(Tasks::MP_Task mpTask);
   static void vTaskStateFetch(Tasks::MP_Task mpTask);
-  static void vTaskStateStore(Tasks::MP_Task mpTask);
   static void vTaskThread(Tasks::MP_Task mpTask);
   static void vTaskWait(Tasks::MP_Task mpTask);
   static void vTaskYield(Tasks::MP_Task mpTask);
