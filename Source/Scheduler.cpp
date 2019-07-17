@@ -671,6 +671,25 @@ void Scheduler::vThread_PauseGeneral(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* re-execute same task (tried to sleep or yield but could continue)          */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vThread_ReExecuteTask(Thread* pThread, Task* pTask)
+{
+  // task should be ready or yielded
+  RASSERT(TS_READY == pTask->eState() || TS_YIELDED == pTask->eState());
+  //pTask->vState(TS_EXECUTING);
+  
+  // thread should be idle
+  RASSERT(TD_ASSIGNED == pThread->m_eThreadState);
+  
+  // thread should have no task
+  RASSERT(! pThread->m_pTask);
+  
+  // set task to be executed
+  pThread->m_pTask = pTask;
+}
+
+/*----------------------------------------------------------------------------*/
 /* append idle thread onto idle thread queue                                  */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_WaitAssignment(Thread* pThread)

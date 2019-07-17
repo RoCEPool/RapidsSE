@@ -58,6 +58,7 @@ namespace Scheduling
     static void vThread_DedicatedTask(Thread* pThread, Task* pTask);
     static void vThread_Ending(Thread* pThread);
     static void vThread_PauseGeneral(void);
+    static void vThread_ReExecuteTask(Thread* pThread, Task* pTask);
     static void vThread_WaitAssignment(Thread* pThread);
   };
 }
