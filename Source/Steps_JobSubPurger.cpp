@@ -67,6 +67,7 @@ void Step::vJob_SubPurgerChunk(MP_Task mpTask)
     else
       mpTask->vSleepUsec(C_1M * 10);
     mpTask->vState(TS_SLEEPING);
+    mpTask->vTransition(TR_SLEEP);
   }
     
   EXIT();

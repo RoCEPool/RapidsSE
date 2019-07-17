@@ -54,6 +54,7 @@ void Step::vJob_MonitorTake(MP_Task mpTask)
   if (bCallAgain) {
     mpTask->vSleepUsec(pJob_Monitor->m_iInterval * C_1M);
     mpTask->vState(TS_SLEEPING);
+    mpTask->vTransition(TR_SLEEP);
   }
   
   EXIT();

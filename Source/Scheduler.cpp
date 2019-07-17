@@ -327,6 +327,7 @@ void Scheduler::vTask_AssignedThread(Task* pTask, Thread* pThread)
 void Scheduler::vTask_Exit(Task* pTask)
 {
   RASSERT(TS_EXITED == pTask->eState());
+  RASSERT(TR_EXIT == pTask->eTransition());
   RASSERT(QK_NONE == pTask->eQueue());
   
   pTask->vTransition(TR_NONE);
@@ -388,6 +389,7 @@ void Scheduler::vTask_ScheduleReady(Task* pTask)
 void Scheduler::vTask_Sleep(Task* pTask)
 {
   RASSERT(TS_SLEEPING == pTask->eState());
+  RASSERT(TR_SLEEP == pTask->eTransition());
   RASSERT(QK_NONE == pTask->eQueue());
 
   if (pTask->pJob()->m_bMarkActivity)
@@ -431,6 +433,7 @@ void Scheduler::vTask_SpawnNew(Task* pTask)
 void Scheduler::vTask_Wait(Task* pTask)
 {
   RASSERT(TS_WAITING == pTask->eState());
+  RASSERT(TR_WAIT == pTask->eTransition());
   RASSERT(QK_NONE == pTask->eQueue());
   RASSERT(pTask->bIsLocked());
 
@@ -480,7 +483,9 @@ void Scheduler::vTask_Yield(Task* pTask)
   
   // task must be in the yielded state
   RASSERT(TS_YIELDED == pTask->eState());
-  
+  RASSERT(TR_EXIT == pTask->eTransition());
+  RASSERT(QK_NONE == pTask->eQueue());
+
   Thread* pThread = Thread::pThisTLSThread();
   
   if (pTask->pJob()->m_bMarkActivity) {

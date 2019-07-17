@@ -58,6 +58,7 @@ void Step::vJob_SubPublishChunk(MP_Task mpTask)
   if (! bBufferPublished) {
     mpTask->vSleepUsec(C_100K);
     mpTask->vState(TS_SLEEPING);
+    mpTask->vTransition(TR_SLEEP);
   }
   
   EXIT();
