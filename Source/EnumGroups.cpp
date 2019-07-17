@@ -49,6 +49,7 @@ Stz* EnumGroups::szEnumText(i8 iEnumGroup, i8 i_Enum)
     case _EG_TK: return aTK[i_Enum];
     case _EG_TN: return aTN[i_Enum];
     case _EG_TP: return aTP[i_Enum];
+    case _EG_TR: return aTR[i_Enum];
     case _EG_TS: return aTS[i_Enum];
     case _EG_TT: return aTT[i_Enum];
     case _EG_WT: return aWT[i_Enum];

@@ -5,6 +5,25 @@
 
 namespace Tasks
 {  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  enum eTK // Task Kind
+  {
+  /* 0 */ TK_NONE=0,
+  /* 1 */ TK_JOB,      // task is a job
+  /* 2 */ TK_OPERATOR, // task is an operator
+  /* 3 */ TK_ENUMS
+  };
+  
+  static Stz* aTK[]
+  {
+  /* 0 */ "NONE"_Stz,
+  /* 1 */ "JOB"_Stz,
+  /* 2 */ "OPERATOR"_Stz,
+  /* 3 */ "ENUMS"_Stz,
+  };
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   enum eTS // Task State
   {
   /* 0 */ TS_NONE=0,
@@ -31,22 +50,31 @@ namespace Tasks
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  enum eTK // Task Kind
+  enum eTR // Task State Transition
   {
-  /* 0 */ TK_NONE=0,
-  /* 1 */ TK_JOB,      // task is a job
-  /* 2 */ TK_OPERATOR, // task is an operator
-  /* 3 */ TK_ENUMS
+  /* 0 */ TR_NONE=0,
+  /* 1 */ TR_EXECUTING, // task is currenty being executed by Thread::vLoop
+  /* 2 */ TR_EXITED,    // task has completed
+  /* 3 */ TR_READY,     // task is ready to be executed
+  /* 4 */ TR_SLEEPING,  // task is sleeping
+  /* 5 */ TR_WAITING,   // task is waiting on ack from cooperating task
+  /* 6 */ TR_YIELDED,   // task is yielded, not running and is in a TaskSet
+  /* 7 */ TR_ENUMS
   };
   
-  static Stz* aTK[]
+  static Stz* aTR[]
   {
   /* 0 */ "NONE"_Stz,
-  /* 1 */ "JOB"_Stz,
-  /* 2 */ "OPERATOR"_Stz,
-  /* 3 */ "ENUMS"_Stz,
+  /* 1 */ "EXECUTING"_Stz,
+  /* 2 */ "EXITED"_Stz,
+  /* 3 */ "READY"_Stz,
+  /* 4 */ "SEND"_Stz,
+  /* 5 */ "SLEEPING"_Stz,
+  /* 6 */ "WAITING"_Stz,
+  /* 7 */ "YIELDED"_Stz,
+  /* 8 */ "ENUMS"_Stz,
   };
+  
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
