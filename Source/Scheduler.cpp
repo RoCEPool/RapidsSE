@@ -329,6 +329,8 @@ void Scheduler::vTask_Exit(Task* pTask)
   RASSERT(TS_EXITED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
   
+  pTask->vTransition(TR_NONE);
+  
   ASSERT(! pTask->bWordBody());
   
   //vTrace("Exited Task %p\n"_Stz,pTask);
@@ -403,6 +405,8 @@ void Scheduler::vTask_Sleep(Task* pTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tasks wake up time has already arrived. run it
   
+  pTask->vTransition(TR_NONE);
+
   pTask->vWakeupTask();
   
   Thread* pThread = Thread::pThisTLSThread();
@@ -446,6 +450,8 @@ void Scheduler::vTask_Wait(Task* pTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  pTask->vTransition(TR_NONE);
+
   // add task to waiting set
   gpAttachMap->m_pQueues->vAddWaitingSet(pTask);
   
@@ -492,6 +498,8 @@ void Scheduler::vTask_Yield(Task* pTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  pTask->vTransition(TR_NONE);
+
   // - A general thread has executed a task which retured TS_YIELDED.
   //   If the ready queue is empty then this general thread can
   //     continue to execute the yield task.

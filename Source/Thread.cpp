@@ -353,10 +353,8 @@ void Thread::vExecuteTask(Task* pTask)
     
   // task should be ready
   RASSERT(TS_READY == pTask->eState());
-  //pTask->vState(TS_EXECUTING);
   
   // thread should be idle
-  //RASSERT(TD_IDLE == m_eThreadState);
   RASSERT(TD_ASSIGNED == m_eThreadState);
   
   // thread should have no task
@@ -365,11 +363,7 @@ void Thread::vExecuteTask(Task* pTask)
   // set task to be executed
   m_pTask = pTask;
   
-  //m_eThreadState = TD_ASSIGNED;
-  
   // signal the thread
-  //vSignalThread();
-  
   m_pMutexThread->vCondSignal();
   m_pMutexThread->vMutexUnlock();
 }

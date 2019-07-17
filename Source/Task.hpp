@@ -52,25 +52,21 @@ namespace Tasks
   enum eTR // Task State Transition
   {
   /* 0 */ TR_NONE=0,
-  /* 1 */ TR_EXECUTE, // task is currenty being executed by Thread::vLoop
-  /* 2 */ TR_EXIT,    // task has completed
-  /* 3 */ TR_READY,   // task is ready to be executed
-  /* 4 */ TR_SLEEP,   // task is sleeping
-  /* 5 */ TR_WAIT,    // task is waiting on ack from cooperating task
-  /* 6 */ TR_YIELD,   // task is yielded, not running and is in a TaskSet
-  /* 7 */ TR_ENUMS
+  /* 1 */ TR_EXIT,    // task to exit
+  /* 2 */ TR_SLEEP,   // task to sleep
+  /* 3 */ TR_WAIT,    // task to wait on ack from cooperating task
+  /* 4 */ TR_YIELD,   // task to yield to other task
+  /* 5 */ TR_ENUMS
   };
   
   static Stz* aTR[]
   {
   /* 0 */ "NONE"_Stz,
-  /* 1 */ "EXECUTE"_Stz,
-  /* 2 */ "EXIT"_Stz,
-  /* 3 */ "READY"_Stz,
-  /* 5 */ "SLEEP"_Stz,
-  /* 6 */ "WAIT"_Stz,
-  /* 7 */ "YIELD"_Stz,
-  /* 8 */ "ENUMS"_Stz,
+  /* 1 */ "EXIT"_Stz,
+  /* 2 */ "SLEEP"_Stz,
+  /* 3 */ "WAIT"_Stz,
+  /* 4 */ "YIELD"_Stz,
+  /* 5 */ "ENUMS"_Stz,
   };
   
 
