@@ -321,7 +321,7 @@ void Scheduler::vTask_AssignedThread(Task* pTask, Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Exit(Task* pTask)
 {
-  RASSERT(TS_EXITED == pTask->eState());
+  RASSERT(TS_EXECUTING == pTask->eState());
   RASSERT(TR_EXIT == pTask->eTransition());
   RASSERT(QK_NONE == pTask->eQueue());
   
@@ -383,7 +383,7 @@ void Scheduler::vTask_ScheduleReady(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Sleep(Task* pTask)
 {
-  RASSERT(TS_SLEEPING == pTask->eState());
+  RASSERT(TS_EXECUTING == pTask->eState());
   RASSERT(TR_SLEEP == pTask->eTransition());
   RASSERT(QK_NONE == pTask->eQueue());
 
@@ -427,11 +427,12 @@ void Scheduler::vTask_SpawnNew(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Wait(Task* pTask)
 {
-  RASSERT(TS_WAITING == pTask->eState());
+  RASSERT(TS_EXECUTING == pTask->eState());
   RASSERT(TR_WAIT == pTask->eTransition());
   RASSERT(QK_NONE == pTask->eQueue());
   RASSERT(pTask->bIsLocked());
 
+  pTask->vState(TS_WAITING);
   pTask->vTransition(TR_NONE);
   
   // activity

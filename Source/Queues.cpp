@@ -226,7 +226,8 @@ void Queues::vAddSleepingQueue(Task* pTask)
   m_pSleepingQueue->vGrabLock();
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   
-  RASSERT(TS_SLEEPING == pTask->eState());
+  RASSERT(TS_EXECUTING == pTask->eState());
+  pTask->vState(TS_SLEEPING);
   
   pTask->vQueue(QK_SLEEPING_QUEUE);
   
@@ -268,6 +269,7 @@ void Queues::vAddWaitingSet(Task* pTask)
   // task must not be in any queue
   RASSERT(QK_NONE == pTask->eQueue());
   
+ 
   // mark task as being in the waiting queue
   pTask->vQueue(QK_WAITING_SET);
   pTask->vQueueOrder(++m_ixQueueOrder);
