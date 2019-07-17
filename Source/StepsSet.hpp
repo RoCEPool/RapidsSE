@@ -1036,6 +1036,7 @@
   static void vTaskDicStack(Tasks::MP_Task mpTask);
   static void vTaskDropLock(Tasks::MP_Task mpTask);
   static void vTaskDump(Tasks::MP_Task mpTask);
+  static void vTaskExit(Tasks::MP_Task mpTask);
   static void vTaskGrabLock(Tasks::MP_Task mpTask);
   static void vTaskIsAckSet(Tasks::MP_Task mpTask);
   static void vTaskJobFetch(Tasks::MP_Task mpTask);

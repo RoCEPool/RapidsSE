@@ -22,6 +22,7 @@ void Step::vAddSteps_Task(void)
   vAddStep("task.dicStack"_Stz,    &Step::vTaskDicStack);
   vAddStep("task.dump"_Stz,        &Step::vTaskDump);
   vAddStep("task.dropLock"_Stz,    &Step::vTaskDropLock);
+  vAddStep("task.exit"_Stz,        &Step::vTaskExit);
   vAddStep("task.grabLock"_Stz,    &Step::vTaskGrabLock);
   vAddStep("task.isAckSet"_Stz,    &Step::vTaskIsAckSet);
   vAddStep("task.job@"_Stz,        &Step::vTaskJobFetch);
@@ -159,6 +160,20 @@ ENTRY("vTaskDump"_Stz);
   Task* pThatTask = _pTask(pObject);
   
   pThatTask->vContentDump();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.exit -- this task exits                                               */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskExit(MP_Task mpTask)
+{
+  ENTRY("vTaskExit"_Stz);
+  
+  ActionSequence::vAdd(mpTask->m_pJob,AN_TASK_WAIT);
+  
+  mpTask->vState(TS_EXITED);
   
   EXIT();
 }
