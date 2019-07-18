@@ -105,6 +105,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobNodeInfo();
   Step::vAddSteps_JobPublish();
   Step::vAddSteps_JobPurge();
+  Step::vAddSteps_JobQuery();
   Step::vAddSteps_JobReceiver();
   Step::vAddSteps_JobRepeater();
   Step::vAddSteps_JobReport();
