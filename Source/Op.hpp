@@ -10,7 +10,7 @@ namespace PushDown
   friend Tasks::Task;
   
   private:
-    Job* m_pJob;  // job this operator belongs to
+    Jobs::Job* m_pJob;  // job this operator belongs to
   
     OperandQueue* m_pOperandQueue; // the queue being processed
   
