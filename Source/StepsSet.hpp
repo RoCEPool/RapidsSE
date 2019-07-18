@@ -627,6 +627,11 @@
   static void vJob_PurgeSpawnSub(Tasks::MP_Task mpTask);
   static void vJob_PurgeTableStore(Tasks::MP_Task mpTask);
 
+  // job Query
+  static void vJob_QueryBegin(Tasks::MP_Task mpTask);
+  static void vJob_QueryEnd(Tasks::MP_Task mpTask);
+  static void vJob_QueryExecute(Tasks::MP_Task mpTask);
+
   // job Receiver
   static void vJob_ReceiverConnNoFetch(Tasks::MP_Task mpTask);
   static void vJob_ReceiverConnNoStore(Tasks::MP_Task mpTask);

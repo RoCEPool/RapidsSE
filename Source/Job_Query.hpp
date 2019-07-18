@@ -26,6 +26,10 @@ namespace Jobs
     bool bPopulateJob(TokenVec* pTokenVec);
     void vShow(void);
   
+    void vBegin(void);
+    void vEnd(void);
+    void vExecute(void);
+
   public:
     Footer* aFooter(void);
   
