@@ -71,8 +71,8 @@ Op* Op::pThisTLSOp(void)
 /*----------------------------------------------------------------------------*/
 void Op::vOpLoop(void)
 {
-  _precondition_(_MAGIC_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_);
+
   while (bGetNextOperand()) {
     vCallOpFun();
   }
@@ -86,7 +86,7 @@ void Op::vOpLoop(void)
 /*----------------------------------------------------------------------------*/
 void Op::vCallOpFun(void)
 {
-  _precondition_(_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_);
 
   (*m_fpOpEntryPt)(m_pOperand);
 }
@@ -96,11 +96,21 @@ void Op::vCallOpFun(void)
 /*----------------------------------------------------------------------------*/
 bool Op::bGetNextOperand(void)
 {
-  _precondition_(_MAGIC_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_);
+
   m_pOperand = nullptr;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set op out                                                                 */
+/*----------------------------------------------------------------------------*/
+void Op::vOpOut(Op* pOpOut)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_pOpOut = pOpOut;
 }
 
 /*============================================================================*/

@@ -117,7 +117,7 @@ Job_Query::Job_Query(Interface::Session* pSession)
   m_pZedOp    = new ZedOp;
 
   _checkInitialised_(CN_JOB_QUERY);
-  
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_QUERY,_FOOTER_);
 }
 
@@ -194,6 +194,10 @@ void Job_Query::vShow(void)
 void Job_Query::vBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_QUERY,_FOOTER_);
+  
+  m_pFetchOp->vOpOut(m_pOutputOp);
+  m_pOutputOp->vOpOut(m_pZedOp);
+  m_pZedOp->vOpOut(nullptr);
 }
 
 /*----------------------------------------------------------------------------*/

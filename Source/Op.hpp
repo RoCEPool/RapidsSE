@@ -28,10 +28,13 @@ namespace PushDown
   
     static Op* pThisTLSOp(void);
 
+    // - - - - - - - - - - - - - - - -
     void vOpLoop(void);
   
+    // - - - - - - - - - - - - - - - -
     void vCallOpFun(void);
     bool bGetNextOperand(void);
+    void vOpOut(Op* pOpOut);
   };
 
   Op* _pOp(void* aAddr);
