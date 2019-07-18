@@ -14,7 +14,7 @@ namespace PushDown
   
     OperandQueue* m_pOperandQueue; // the queue being processed
   
-    bool (*m_fpOpFun)(void);  // function which does the op
+    bool (*m_fpOpFun)(void* aThis);  // function which does the op
   
     Op* m_pOpOut;  // where results get queued (piping)
   
