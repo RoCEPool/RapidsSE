@@ -73,9 +73,11 @@ void Op::vOpLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  while (bGetNextOperand()) {
-    (*m_fpOpFun)(this);
-  }
+//  while (bGetNextOperand()) {
+//    (*m_fpOpFun)(this);
+//  }
+  
+  (*m_fpOpFun)(this);
 }
 
 /*----------------------------------------------------------------------------*/

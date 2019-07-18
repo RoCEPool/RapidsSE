@@ -265,7 +265,7 @@ void Thread::vLoop_dedicated(void)
   Scheduler::vAssignDedicatedThread(this);
   
   while (m_pTask && m_pTask->pJob())
-    m_pTask->vTaskLoop();
+    m_pTask->vTaskLoop_job();
 
   Scheduler::vEndThread(this);
 
@@ -287,7 +287,10 @@ void Thread::vLoop_general(void)
     Scheduler::vWaitForTaskAssignment(this);
     
     // call the task
-    m_pTask->vTaskLoop();
+    if (TK_JOB == m_pTask->eKind())
+      m_pTask->vTaskLoop_job();
+    else
+      m_pTask->vTaskLoop_op();
 
     // handle task return event
     Scheduler::vReturnTaskLoop(this);

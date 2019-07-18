@@ -88,16 +88,17 @@ Task::Task(Job* pJob, Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Task::Task(Op* pOp)
+Task::Task(Op* pOp, Interface::Session* pSession)
 : Object(CN_TASK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   vInit();
   
-  m_eKind = TK_OPERATOR;
-  m_pOp   = pOp;
-  
+  m_eKind     = TK_OPERATOR;
+  m_pOp       = pOp;
+  m_pSession  = pSession;
+
   _checkInitialised_(CN_TASK);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -207,7 +208,7 @@ Task* Task::pThisTLSTask(void)
 /*----------------------------------------------------------------------------*/
 /* task loop                                                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskLoop(void)
+void Task::vTaskLoop_job(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -217,8 +218,11 @@ void Task::vTaskLoop(void)
   // TODO: shouldn't have to refind it everytime!!!
   vRefindJobClass();
   
-  if ( ! bSeeded() ) {
+  if (TK_JOB == m_eKind && ! bSeeded() ) {
     vSeedJob();
+  }
+  else {
+    // op??
   }
 
   if (! m_pDataStack )
@@ -286,6 +290,37 @@ void Task::vTaskLoop(void)
                           aCN[m_pJob->eClass()],
                           m_pJob);
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* task loop                                                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskLoop_op(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  // record time of call
+  // ...
+  
+  // TODO: shouldn't have to refind it everytime!!!
+  vRefindJobClass();
+  
+  if (! m_pDataStack )
+    vNewStacks();
+  
+  while (TR_NONE == m_eTransition) {
+    m_pOp->vOpLoop();
+  }
+  
+  // record time of return & calculate running total times
+  // ...
+  
+//  if (m_pJob && m_pJob->m_bMarkActivity)
+//    ActivityLog::vMarkJob(m_pJob,
+//                          "Returned from task call: %s %p"_Stz,
+//                          aCN[m_pJob->eClass()],
+//                          m_pJob);
+  
 }
 
 
@@ -462,7 +497,6 @@ void Task::vJob(Job* pJob)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   if (pJob && pJob->eClass() == CN_JOB_PUBLISH) {
-    int iDebug = 1;
     vTrace("Task::vJob: CN_JOB_PUBLISH task %p job %p\n"_Stz,
            this,pJob);
   }

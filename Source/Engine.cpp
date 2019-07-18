@@ -119,7 +119,7 @@ void Engine::vCallImmmediate(Task* pImmediateTask)
   
   pImmediateTask->vState(TS_EXECUTING);
   
-  pImmediateTask->vTaskLoop();
+  pImmediateTask->vTaskLoop_job();
 }
 
 /*----------------------------------------------------------------------------*/

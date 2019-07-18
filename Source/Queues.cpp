@@ -201,16 +201,16 @@ void Queues::vAddExecutingSet(Task* pTask)
   pTask->vQueue(QK_EXECUTING_SET);
   pTask->vQueueOrder(++m_ixQueueOrder);
   
-  if (pTask->pJob()->m_bMarkActivity)
-    ActivityLog::vMarkJob(pTask->pJob(),
-                          "Add to ExecutingSet: %s %p"_Stz,
-                          aCN[pTask->pJob()->eClass()],
-                          pTask->pJob());
+//  if (pTask->pJob()->m_bMarkActivity)
+//    ActivityLog::vMarkJob(pTask->pJob(),
+//                          "Add to ExecutingSet: %s %p"_Stz,
+//                          aCN[pTask->pJob()->eClass()],
+//                          pTask->pJob());
   
   ASSERT(m_pExecutingSet->bIsLocked());
   m_pExecutingSet->vAddTask(pTask);
   
-  ActionSequence::vAdd(pTask->pJob(),AN_ADD_EXECUTING_SET);
+//  ActionSequence::vAdd(pTask->pJob(),AN_ADD_EXECUTING_SET);
   
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   m_pExecutingSet->vDropLock();

@@ -130,7 +130,7 @@ namespace Tasks
     void  operator delete(void*);
     
     Task(Job* pJob, Interface::Session* pSession);
-    Task(Op* pOp);
+    Task(Op* pOp, Interface::Session* pSession);
     void vInit(void);
     ~Task(void) noexcept(false);
     
@@ -177,7 +177,8 @@ namespace Tasks
     void vStackContents(Stack* pStack, s48K& sStackContents);
     eTS  eState(void);
     void vState(eTS eState);
-    void vTaskLoop(void);
+    void vTaskLoop_job(void);
+    void vTaskLoop_op(void);
     Threads::Thread* pThread(void);
     void vThread(Threads::Thread* pThread);
     void vTracePoint(Stz* aMark);

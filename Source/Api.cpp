@@ -432,6 +432,32 @@ bool Api::bSpawnJobDedicated(Session* pSession, Job* pJob, eSS eSeed)
 }
 
 /*----------------------------------------------------------------------------*/
+/* spawn operator                                                              */
+/*----------------------------------------------------------------------------*/
+bool Api::bSpawnOp(Session* pSession, Op* pOp)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Before appending request for se, ensure that se is running
+  // get the se pid from the attachmap
+  i8 iPid = gpAttachMap->m_iPid;
+  if (!Process::bTestPid(iPid)) {
+    // SE is not running anymore!
+    if (pSession)
+      vWarn("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
+    vWarn("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
+    return false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Task* pNewTask = new Task(pOp,pSession);
+  
+  Scheduler::vAddTaskGeneral(pNewTask);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* validate the SE session                                                    */
 /*----------------------------------------------------------------------------*/
 eEC Api::eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall)

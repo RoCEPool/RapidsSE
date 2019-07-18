@@ -596,7 +596,7 @@ bool Scheduler::bThread_AssignIdle(Task* pTask)
   if (! pIdleThread)
     return false;
   
-  ActionSequence::vAdd(pTask->pJob(),AN_THREAD_EXECUTE,pIdleThread->iThreadNo());
+  //ActionSequence::vAdd(pTask->pJob(),AN_THREAD_EXECUTE,pIdleThread->iThreadNo());
   
   pIdleThread->m_pTask = pTask;
   

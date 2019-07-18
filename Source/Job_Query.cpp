@@ -203,6 +203,12 @@ void Job_Query::vBegin(void)
   
   TablePtn* pTablePtn = m_pTable->pPartition(0);
   m_pFetchOp->vTablePtn(pTablePtn);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Session* pSession = Task::pThisTLSTask()->pSession();
+  bool b = Api::bSpawnOp(pSession,m_pFetchOp);
+  ASSERT(b);
 }
 
 /*----------------------------------------------------------------------------*/
