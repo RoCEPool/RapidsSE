@@ -43,8 +43,8 @@ void ZedOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* initialize object                                                          */
 /*----------------------------------------------------------------------------*/
-ZedOp::ZedOp(Jobs::Job* pJob)
-: Op(CN_ZEDOP,pJob)
+ZedOp::ZedOp(Jobs::Job* pJob, Stz* szOpLabel)
+: Op(CN_ZEDOP,pJob,szOpLabel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ZEDOP,_FOOTER_);
 }

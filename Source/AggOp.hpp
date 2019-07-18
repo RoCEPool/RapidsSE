@@ -13,7 +13,7 @@ namespace PushDown
     Footer m_xFooter;
 
   public:
-    AggOp(Jobs::Job* pJob);
+    AggOp(Jobs::Job* pJob, Stz* szOpLabel);
    ~AggOp(void) noexcept(false);
   
   private:

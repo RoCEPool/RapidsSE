@@ -13,7 +13,7 @@ namespace PushDown
     Footer m_xFooter;
   
   public:
-    BothOp(Jobs::Job* pJob);
+    BothOp(Jobs::Job* pJob, Stz* szOpLabel);
    ~BothOp(void) noexcept(false);
   
   private:

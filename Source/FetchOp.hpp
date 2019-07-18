@@ -18,7 +18,7 @@ namespace PushDown
     void* operator new(size_t);
     void  operator delete(void*);
 
-    FetchOp(Jobs::Job* pJob);
+    FetchOp(Jobs::Job* pJob, Stz* szOpLabel);
    ~FetchOp(void) noexcept(false);
 
     static bool bCall(void* aThis);

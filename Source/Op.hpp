@@ -18,7 +18,7 @@ namespace PushDown
     Op* m_pOpOut;                    // where results get queued (piping)
   
   public:
-    Op(eCN eClass, Jobs::Job* pJob);
+    Op(eCN eClass, Jobs::Job* pJob, Stz* szOpLabel);
    ~Op(void) noexcept(false);
   
     static Op* pThisTLSOp(void);

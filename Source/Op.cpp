@@ -23,13 +23,13 @@ Op* PushDown::_pOp(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Op::Op(eCN eClassNo, Job* pJob)
+Op::Op(eCN eClassNo, Job* pJob, Stz* szOpLabel)
 : Object(eClassNo)
 {
   _precondition_(_MAGIC_,eClassNo);
   
   m_pJob          = pJob;
-  m_sOpLabel      = ""_Stz;
+  m_sOpLabel      = szOpLabel;
   
   m_pOperandQueue = new OperandQueue;
   m_fpOpFun       = nullptr;
@@ -87,7 +87,7 @@ void Op::vAppendIn(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  vTrace("Op::vAppendIn : %p\n"_Stz,pOperand);
+  vTrace("%s::vAppendIn : %p\n"_Stz,m_sOpLabel.aStz(),pOperand);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -97,7 +97,7 @@ void Op::vAppendOut(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  vTrace("Op::vAppendOut : %p\n"_Stz,pOperand);
+  vTrace("%s::vAppendOut : %p\n"_Stz,m_sOpLabel.aStz(),pOperand);
   m_pOpOut->vAppendIn(pOperand);
 }
 

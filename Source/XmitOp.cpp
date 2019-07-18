@@ -22,8 +22,8 @@ XmitOp* PushDown::_pXmitOp(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* initialize object                                                          */
 /*----------------------------------------------------------------------------*/
-XmitOp::XmitOp(Jobs::Job* pJob)
-: Op(CN_XMITOP,pJob)
+XmitOp::XmitOp(Jobs::Job* pJob, Stz* szOpLabel)
+: Op(CN_XMITOP,pJob,szOpLabel)
 {
   _precondition_(_MAGIC_,CN_XMITOP);
 }

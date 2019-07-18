@@ -22,8 +22,8 @@ ProjectOp* PushDown::_pProjectOp(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* initialize object                                                          */
 /*----------------------------------------------------------------------------*/
-ProjectOp::ProjectOp(Jobs::Job* pJob)
-: Op(CN_PROJECTOP,pJob)
+ProjectOp::ProjectOp(Jobs::Job* pJob, Stz* szOpLabel)
+: Op(CN_PROJECTOP,pJob,szOpLabel)
 {
   _precondition_(_MAGIC_,CN_PROJECTOP);
 }

@@ -45,8 +45,8 @@ void FetchOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* initialize object                                                          */
 /*----------------------------------------------------------------------------*/
-FetchOp::FetchOp(Jobs::Job* pJob)
-: Op(CN_FETCHOP,pJob)
+FetchOp::FetchOp(Jobs::Job* pJob, Stz* szOpLabel)
+: Op(CN_FETCHOP,pJob,szOpLabel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
   
@@ -93,7 +93,7 @@ bool FetchOp::bFetch(void)
        m_pCrwBuffer;
        m_pCrwBuffer = m_pCrwBuffer->pNextBuffer()) {
     
-    vTrace("FetchOp::bFetch : %p\n"_Stz,m_pCrwBuffer);
+    vTrace("%s:: %p\n"_Stz,m_sOpLabel.aStz(),m_pCrwBuffer);
     
     vAppendOut(m_pCrwBuffer);
   }

@@ -22,8 +22,8 @@ AggOp* PushDown::_pAggOp(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* initialize object                                                          */
 /*----------------------------------------------------------------------------*/
-AggOp::AggOp(Jobs::Job* pJob)
-: Op(CN_AGGOP,pJob)
+AggOp::AggOp(Jobs::Job* pJob, Stz* szOpLabel)
+: Op(CN_AGGOP,pJob,szOpLabel)
 {
   _precondition_(_MAGIC_,CN_AGGOP);
 }
