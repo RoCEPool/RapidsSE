@@ -22,8 +22,8 @@ ReduceOp* PushDown::_pReduceOp(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* initialize object                                                          */
 /*----------------------------------------------------------------------------*/
-ReduceOp::ReduceOp(void)
-: Op(CN_REDUCEOP)
+ReduceOp::ReduceOp(Jobs::Job* pJob)
+: Op(CN_REDUCEOP,pJob)
 {
   _precondition_(_MAGIC_,CN_REDUCEOP);
 }

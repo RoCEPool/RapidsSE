@@ -22,8 +22,8 @@ CombineOp* PushDown::_pCombineOp(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* initialize object                                                          */
 /*----------------------------------------------------------------------------*/
-CombineOp::CombineOp(void)
-: Op(CN_COMBINEOP)
+CombineOp::CombineOp(Jobs::Job* pJob)
+: Op(CN_COMBINEOP,pJob)
 {
   _precondition_(_MAGIC_,CN_COMBINEOP);
 }

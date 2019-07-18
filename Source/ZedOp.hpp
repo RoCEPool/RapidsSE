@@ -16,7 +16,7 @@ namespace PushDown
     void* operator new(size_t);
     void  operator delete(void*);
   
-    ZedOp(void);
+    ZedOp(Jobs::Job* pJob);
    ~ZedOp(void) noexcept(false);
   
     static bool bCall(void* aThis);

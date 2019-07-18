@@ -22,8 +22,8 @@ MergeOp* PushDown::_pMergeOp(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* initialize object                                                          */
 /*----------------------------------------------------------------------------*/
-MergeOp::MergeOp(void)
-: Op(CN_MERGEOP)
+MergeOp::MergeOp(Jobs::Job* pJob)
+: Op(CN_MERGEOP,pJob)
 {
   _precondition_(_MAGIC_,CN_MERGEOP);
 }

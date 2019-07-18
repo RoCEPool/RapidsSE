@@ -33,7 +33,7 @@ namespace PushDown
     Footer m_xFooter;
 
   public:
-    JoinOp(void);
+    JoinOp(Jobs::Job* pJob);
    ~JoinOp(void) noexcept(false);
   
     static void vIndexJoin(Queue* pQueue, IndexTree* pLeftIndexTree, IndexTree* pRightIndexTree);

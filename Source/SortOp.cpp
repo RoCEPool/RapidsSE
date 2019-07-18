@@ -22,8 +22,8 @@ SortOp* PushDown::_pSortOp(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* initialize object                                                          */
 /*----------------------------------------------------------------------------*/
-SortOp::SortOp(void)
-: Op(CN_SORTOP)
+SortOp::SortOp(Jobs::Job* pJob)
+: Op(CN_SORTOP,pJob)
 {
   _precondition_(_MAGIC_,CN_SORTOP);
 }

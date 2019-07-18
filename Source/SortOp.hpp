@@ -13,7 +13,7 @@ namespace PushDown
     Footer m_xFooter;
 
   public:
-    SortOp(void);
+    SortOp(Jobs::Job* pJob);
    ~SortOp(void) noexcept(false);
   
   private:

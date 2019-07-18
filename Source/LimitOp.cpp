@@ -22,8 +22,8 @@ LimitOp* PushDown::_pLimitOp(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* initialize object                                                          */
 /*----------------------------------------------------------------------------*/
-LimitOp::LimitOp(void)
-: Op(CN_LIMITOP)
+LimitOp::LimitOp(Jobs::Job* pJob)
+: Op(CN_LIMITOP,pJob)
 {
   _precondition_(_MAGIC_,CN_LIMITOP);
 }

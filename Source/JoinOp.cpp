@@ -12,8 +12,8 @@
 /*----------------------------------------------------------------------------*/
 /* initialize object                                                          */
 /*----------------------------------------------------------------------------*/
-JoinOp::JoinOp(void)
-: Op(CN_JOINOP)
+JoinOp::JoinOp(Jobs::Job* pJob)
+: Op(CN_JOINOP,pJob)
 {
   _precondition_(_MAGIC_,CN_JOINOP);
 }

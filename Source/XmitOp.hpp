@@ -13,7 +13,7 @@ namespace PushDown
     Footer m_xFooter;
 
   public:
-    XmitOp(void);
+    XmitOp(Jobs::Job* pJob);
    ~XmitOp(void) noexcept(false);
   
   private:

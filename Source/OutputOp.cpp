@@ -43,8 +43,8 @@ void OutputOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* initialize object                                                          */
 /*----------------------------------------------------------------------------*/
-OutputOp::OutputOp(void)
-: Op(CN_OUTPUTOP)
+OutputOp::OutputOp(Jobs::Job* pJob)
+: Op(CN_OUTPUTOP,pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
 }

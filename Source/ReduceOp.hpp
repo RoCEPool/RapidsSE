@@ -13,7 +13,7 @@ namespace PushDown
     Footer m_xFooter;
   
   public:
-    ReduceOp(void);
+    ReduceOp(Jobs::Job* pJob);
    ~ReduceOp(void) noexcept(false);
   
   private:

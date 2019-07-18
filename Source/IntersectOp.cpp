@@ -22,8 +22,8 @@ IntersectOp* PushDown::_pIntersectOp(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* initialize object                                                          */
 /*----------------------------------------------------------------------------*/
-IntersectOp::IntersectOp(void)
-: Op(CN_INTERSECTOP)
+IntersectOp::IntersectOp(Jobs::Job* pJob)
+: Op(CN_INTERSECTOP,pJob)
 {
   _precondition_(_MAGIC_,CN_INTERSECTOP);
 }

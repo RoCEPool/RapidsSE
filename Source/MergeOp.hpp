@@ -13,7 +13,7 @@ namespace PushDown
     Footer m_xFooter;
 
   public:
-    MergeOp(void);
+    MergeOp(Jobs::Job* pJob);
    ~MergeOp(void) noexcept(false);
   
   private:

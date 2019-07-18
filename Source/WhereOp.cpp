@@ -22,8 +22,8 @@ WhereOp* PushDown::_pWhereOp(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* initialize object                                                          */
 /*----------------------------------------------------------------------------*/
-WhereOp::WhereOp(void)
-: Op(CN_WHEREOP)
+WhereOp::WhereOp(Jobs::Job* pJob)
+: Op(CN_WHEREOP,pJob)
 {
   _precondition_(_MAGIC_,CN_WHEREOP);
 }

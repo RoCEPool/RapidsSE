@@ -23,7 +23,7 @@ namespace PushDown
     Tasks::Task* m_pExecutingTask;   // task executing this op
   
   public:
-    Op(eCN eClass);
+    Op(eCN eClass, Jobs::Job* pJob);
    ~Op(void) noexcept(false);
   
     static Op* pThisTLSOp(void);

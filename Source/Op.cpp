@@ -23,12 +23,12 @@ Op* PushDown::_pOp(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Op::Op(eCN eClassNo)
+Op::Op(eCN eClassNo, Job* pJob)
 : Object(eClassNo)
 {
   _precondition_(_MAGIC_,eClassNo);
   
-  m_pJob          = nullptr;
+  m_pJob          = pJob;
   
   m_pOperandQueue = new OperandQueue;
   m_fpOpFun       = nullptr;

@@ -112,9 +112,9 @@ Job_Query::Job_Query(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_QUERY,_FOOTER_);
   
-  m_pFetchOp  = new FetchOp;
-  m_pOutputOp = new OutputOp;
-  m_pZedOp    = new ZedOp;
+  m_pFetchOp  = new FetchOp(this);
+  m_pOutputOp = new OutputOp(this);
+  m_pZedOp    = new ZedOp(this);
 
   _checkInitialised_(CN_JOB_QUERY);
 
@@ -198,12 +198,6 @@ void Job_Query::vBegin(void)
   m_pFetchOp->vOpOut(m_pOutputOp);
   m_pOutputOp->vOpOut(m_pZedOp);
   m_pZedOp->vOpOut(nullptr);
-  
-  //! to be moved
-  m_pFetchOp->vJob(this);
-  m_pOutputOp->vJob(this);
-  m_pZedOp->vJob(this);
-
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
