@@ -13,6 +13,33 @@
 
   100 apiState::senLoc
 
+  ": query_req" .
+
+  task::this      locals| pTask |
+  pTask task.job@ locals| pJob_Query |
+  0               locals| sTableNm |
+  0               locals| pTable |
+
+  pJob_Query job.pushPath task::dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  ddlLock::grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the table name
+  pJob_Query job.objectName@ to sTableNm
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find the table
+  sTableNm pushTable assert
+  sTableNm find execute to pTable
+  pTable pJob_Query jobMark2.table!
+
+  popIndexes
+  popTable
+
+  ": query_req END" .
 
   900 apiState::senLoc
 

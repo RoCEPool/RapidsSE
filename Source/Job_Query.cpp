@@ -27,7 +27,7 @@ JobClass xJobClass_Query =
   false,                 // detached job?
   false,                 // buffer attached?
   JT_NONE,               // job trace
-  DL_NONE,               // ddl lock model
+  DL_GRAB_READ,          // ddl lock model
   PY_NORMAL,             // priority
   JF_NONE,               // flags
 
