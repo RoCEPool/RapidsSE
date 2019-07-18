@@ -35,6 +35,8 @@ namespace PushDown
     void vCallOpFun(void);
     bool bGetNextOperand(void);
     void vOpOut(Op* pOpOut);
+  
+    void vJob(Jobs::Job* pJob);
   };
 
   Op* _pOp(void* aAddr);

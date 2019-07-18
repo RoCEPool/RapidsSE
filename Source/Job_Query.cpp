@@ -199,6 +199,12 @@ void Job_Query::vBegin(void)
   m_pOutputOp->vOpOut(m_pZedOp);
   m_pZedOp->vOpOut(nullptr);
   
+  //! to be moved
+  m_pFetchOp->vJob(this);
+  m_pOutputOp->vJob(this);
+  m_pZedOp->vJob(this);
+
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   TablePtn* pTablePtn = m_pTable->pPartition(0);

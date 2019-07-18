@@ -65,7 +65,7 @@ fileCat "/tpch/SF0/lineitem_100.csv" 10;
 
 //compactidx LineItem LineItem_Idx1;
 
-//query lineitem;
+query lineitem;
 
 activityLog;
 actionSequence;

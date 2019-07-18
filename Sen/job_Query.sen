@@ -47,9 +47,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  ": query_req SLEEP" .
-
-  10000 task::sleepSsec
+  ": query_req SLEEP" .  10000 task::sleepSsec
 
   ": query_req END" .
 

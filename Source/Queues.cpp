@@ -521,11 +521,11 @@ void Queues::vRemoveExecutingSet(Task* pTask)
   // task no longer in any queue/set
   pTask->vQueue(QK_NONE);
   
-  if (pTask->pJob() && pTask->pJob()->m_bMarkActivity)
-    ActivityLog::vMarkJob(pTask->pJob(),
-                          "Removed from ExecutingSet: %s %p"_Stz,
-                          aCN[pTask->pJob()->eClass()],
-                          pTask->pJob());
+//  if (pTask->pJob() && pTask->pJob()->m_bMarkActivity)
+//    ActivityLog::vMarkJob(pTask->pJob(),
+//                          "Removed from ExecutingSet: %s %p"_Stz,
+//                          aCN[pTask->pJob()->eClass()],
+//                          pTask->pJob());
 }
 
 /*----------------------------------------------------------------------------*/

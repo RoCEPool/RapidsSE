@@ -4,6 +4,7 @@
 
 #include "PushDown.h"
 
+#include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -49,7 +50,14 @@ FetchOp::FetchOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
   
+  m_pTablePtn = nullptr;
+  m_pCrwBuffer = nullptr;
+
+  _checkInitialised_(CN_FETCHOP);
+
   m_fpOpFun = FetchOp::bCall;
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -80,6 +88,17 @@ bool FetchOp::bCall(void* aThis)
 bool FetchOp::bFetch(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
+  
+  for (m_pCrwBuffer = m_pTablePtn->pRootCrwBuffer();
+       m_pCrwBuffer;
+       m_pCrwBuffer = m_pCrwBuffer->pNextBuffer()) {
+    
+    vTrace("FetchOp::bFetch : %p\n"_Stz,m_pCrwBuffer);
+  }
+  
+  Task* pTask = Task::pThisTLSTask();
+  
+  pTask->vTransition(TR_EXIT);
   
   return false;
 }
