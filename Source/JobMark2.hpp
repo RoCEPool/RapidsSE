@@ -14,6 +14,8 @@ namespace Jobs
     JobMark2(eCN eClassNo, Interface::Session* pSession);
    ~JobMark2(void) noexcept(false);
   };
+  
+  JobMark2* _pJobMark2(void* aAddr);
 }
 
 

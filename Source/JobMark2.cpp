@@ -13,6 +13,22 @@ extern ActivityLog* gpActivityLog;
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+JobMark2* Jobs::_pJobMark2(void* aAddr)
+{
+  JobMark2* pJobMark2 = reinterpret_cast<JobMark2*>(aAddr);
+  
+  if (pJobMark2 && ! _bIsValidJob(pJobMark2->eClass()) )
+    vTrace("_pJobMark2 got class %s\n"_Stz,aCN[pJobMark2->eClass()]);
+  
+  RASSERT( ! pJobMark2 || _bIsValidJob(pJobMark2->eClass()) );
+  
+  return pJobMark2;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 JobMark2::JobMark2(eCN eClassNo, Session* pSession)

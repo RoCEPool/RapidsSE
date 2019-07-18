@@ -23,6 +23,13 @@ void Step::vJobMark2TableNameFetch(MP_Task mpTask)
 {
   ENTRY("vJobMark2TableNameFetch"_Stz);
   
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("jobMark2.tableName@"_Stz);
+  JobMark2* pJobMark2 = _pJobMark2(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushS32(pJobMark2->m_sObjectName);
+
   EXIT();
 }
 
@@ -31,8 +38,20 @@ void Step::vJobMark2TableNameFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Step::vJobMark2TableStore(MP_Task mpTask)
 {
-  ENTRY("table"_Stz);
+  ENTRY("vJobMark2TableStore"_Stz);
   
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("jobMark2.table!"_Stz);
+  JobMark2* pJobMark2 = _pJobMark2(pJobPtr);
+
+  Object* pTablePtr;
+  if ( ! mpTask->m_pDataStack->bPop(pTablePtr) )
+    THROW_INVALID_DSTACK("jobMark2.table!"_Stz);
+  Table* pTable = _pTable(pTablePtr);
+  
+  pJobMark2->m_pTable = pTable;
+
   EXIT();
 }
 
