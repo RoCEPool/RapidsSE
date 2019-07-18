@@ -48,6 +48,8 @@ FetchOp::FetchOp(void)
 : Op(CN_FETCHOP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
+  
+  m_fpOpFun = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -68,6 +70,15 @@ void FetchOp::vTablePtn(TablePtn* pTablePtn)
   m_pTablePtn = pTablePtn;
 }
 
+/*----------------------------------------------------------------------------*/
+/* set table partition                                                        */
+/*----------------------------------------------------------------------------*/
+bool FetchOp::bFetch(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
+
+  return false;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

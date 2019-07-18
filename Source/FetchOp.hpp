@@ -21,6 +21,8 @@ namespace PushDown
     FetchOp(void);
    ~FetchOp(void) noexcept(false);
   
+    bool bFetch(void);
+  
     void vTablePtn(TablePtn* pTablePtn);
   
   private:

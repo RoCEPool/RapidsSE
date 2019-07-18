@@ -9,12 +9,12 @@ namespace PushDown
   {
   friend Tasks::Task;
   
-  private:
+  protected:
     Jobs::Job* m_pJob;  // job this operator belongs to
   
     OperandQueue* m_pOperandQueue; // the queue being processed
   
-    bool (*m_fpOpEntryPt)(Operand* pOperand);  // function which does the op
+    bool (*m_fpOpFun)(void);  // function which does the op
   
     Op* m_pOpOut;  // where results get queued (piping)
   

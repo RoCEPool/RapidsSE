@@ -31,7 +31,7 @@ Op::Op(eCN eClassNo)
   m_pJob          = nullptr;
   
   m_pOperandQueue = new OperandQueue;
-  m_fpOpEntryPt   = nullptr;
+  m_fpOpFun       = nullptr;
   m_pOpOut        = nullptr;
   
   m_pOperand      = nullptr;
@@ -74,7 +74,7 @@ void Op::vOpLoop(void)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   while (bGetNextOperand()) {
-    vCallOpFun();
+    (*m_fpOpFun)();
   }
 }
 
@@ -88,7 +88,7 @@ void Op::vCallOpFun(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  (*m_fpOpEntryPt)(m_pOperand);
+  (*m_fpOpFun)();
 }
 
 /*----------------------------------------------------------------------------*/
