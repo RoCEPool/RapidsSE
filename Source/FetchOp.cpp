@@ -94,6 +94,8 @@ bool FetchOp::bFetch(void)
        m_pCrwBuffer = m_pCrwBuffer->pNextBuffer()) {
     
     vTrace("FetchOp::bFetch : %p\n"_Stz,m_pCrwBuffer);
+    
+    vAppendOut(m_pCrwBuffer);
   }
   
   Task* pTask = Task::pThisTLSTask();

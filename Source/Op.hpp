@@ -32,6 +32,8 @@ namespace PushDown
     void vOpLoop(void);
   
     // - - - - - - - - - - - - - - - -
+    void vAppendIn(Operand* pOperand);
+    void vAppendOut(Operand* pOperand);
     void vCallOpFun(void);
     bool bGetNextOperand(void);
     void vOpOut(Op* pOpOut);
