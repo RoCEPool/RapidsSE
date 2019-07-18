@@ -112,7 +112,11 @@ Job_Query::Job_Query(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_QUERY,_FOOTER_);
   
-   _checkInitialised_(CN_JOB_QUERY);
+  m_pFetchOp  = nullptr;
+  m_pOutputOp = nullptr;
+  m_pZedOp    = nullptr;
+
+  _checkInitialised_(CN_JOB_QUERY);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_QUERY,_FOOTER_);
 }
