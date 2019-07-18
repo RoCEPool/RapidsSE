@@ -496,7 +496,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_Publish),        // CN_JOB_PUBLISH
   /*    */ sizeof(Job_Purge),          // CN_JOB_PURGE
   /*    */ sizeof(Job_Pwf),            // CN_JOB_PWF
-  /*    */ 0,            // CN_JOB_QUERY
+  /*    */ sizeof(Job_Query),          // CN_JOB_QUERY
   /*    */ sizeof(Job_Receiver),       // CN_JOB_RECEIVER
   /*    */ sizeof(Job_Repeater),       // CN_JOB_REPEATER
   /*    */ sizeof(Job_Repeater),       // CN_JOB_REPORT

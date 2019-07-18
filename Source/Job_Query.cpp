@@ -153,18 +153,22 @@ bool Job_Query::bPopulateJob(TokenVec* pTokenVec)
   
   i8 iNumTokens;
   
-  ASSERT(pTokenVec->pGet(0)->bSame("pwf"_Stz));
+  ASSERT(pTokenVec->pGet(0)->bSame("query"_Stz));
   
   // - - - - - - - - - - - - - - - - - - - - -
   // get no of tokens in token vector
-  iNumTokens = pTokenVec->nTokens();;
+  iNumTokens = pTokenVec->nTokens();
   
   // - - - - - - - - - - - - - - - - - - - - -
-  // there should be only 1 tokens
-  if (iNumTokens != 1) {
+  // there should be only 2 tokens
+  if (iNumTokens != 2) {
     return nullptr;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - -
+  // set the table name
+  m_sObjectName = pTokenVec->pGet(1)->aText();
+
   return true;
 }
 

@@ -45,6 +45,7 @@ void MemLib::vCheckInitialised(void* aAddress, eCN eClass)
   i8  nBytes = giClassSize[eClass];
   i8  nWords = nBytes / 8;
   
+  // if this fails check the size of the object in giClassSize[]
   ASSERT(nWords);
 
   for (i8 i_Word = 0; i_Word < nWords; i_Word++) {
