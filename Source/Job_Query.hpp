@@ -5,7 +5,7 @@
 
 namespace Jobs
 {
-  class Job_Query : public Job
+  class Job_Query : public JobMark2
   {
   public:
     

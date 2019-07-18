@@ -108,7 +108,7 @@ void Job_Query::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_Query::Job_Query(Interface::Session* pSession)
-: Job(CN_JOB_QUERY, pSession)
+: JobMark2(CN_JOB_QUERY, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_QUERY,_FOOTER_);
   
