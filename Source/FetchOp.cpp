@@ -20,6 +20,28 @@ FetchOp* PushDown::_pFetchOp(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* allocate a new entry buffer from heap                                      */
+/*----------------------------------------------------------------------------*/
+void* FetchOp::operator new(size_t)
+{
+  FetchOp* pFetchOp =
+    static_cast<FetchOp*>(HeapMem::pAllocate(CN_FETCHOP));
+  
+  return pFetchOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* free an entry buffer back to the heap                                      */
+/*----------------------------------------------------------------------------*/
+void FetchOp::operator delete(void* aAddress)
+{
+  FetchOp* pFetchOp = static_cast<FetchOp*>(aAddress);
+  
+  HeapMem::vFree(pFetchOp);
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* initialize object                                                          */
 /*----------------------------------------------------------------------------*/
 FetchOp::FetchOp(void)

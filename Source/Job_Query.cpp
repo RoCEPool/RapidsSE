@@ -112,9 +112,9 @@ Job_Query::Job_Query(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_QUERY,_FOOTER_);
   
-  m_pFetchOp  = nullptr;
-  m_pOutputOp = nullptr;
-  m_pZedOp    = nullptr;
+  m_pFetchOp  = new FetchOp;
+  m_pOutputOp = new OutputOp;
+  m_pZedOp    = new ZedOp;
 
   _checkInitialised_(CN_JOB_QUERY);
   
@@ -127,6 +127,10 @@ Job_Query::Job_Query(Interface::Session* pSession)
 Job_Query::~Job_Query(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_QUERY,_FOOTER_);
+  
+  delete m_pFetchOp;
+  delete m_pOutputOp;
+  delete m_pZedOp;
 }
 
 

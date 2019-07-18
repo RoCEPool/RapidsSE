@@ -20,6 +20,27 @@ OutputOp* PushDown::_pOutputOp(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* allocate a new entry buffer from heap                                      */
+/*----------------------------------------------------------------------------*/
+void* OutputOp::operator new(size_t)
+{
+  OutputOp* pOutputOp =
+    static_cast<OutputOp*>(HeapMem::pAllocate(CN_OUTPUTOP));
+  
+  return pOutputOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* free an entry buffer back to the heap                                      */
+/*----------------------------------------------------------------------------*/
+void OutputOp::operator delete(void* aAddress)
+{
+  OutputOp* pOutputOp = static_cast<OutputOp*>(aAddress);
+  
+  HeapMem::vFree(pOutputOp);
+}
+
+/*----------------------------------------------------------------------------*/
 /* initialize object                                                          */
 /*----------------------------------------------------------------------------*/
 OutputOp::OutputOp(void)

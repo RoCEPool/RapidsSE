@@ -20,6 +20,27 @@ ZedOp* PushDown::_pZedOp(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* allocate a new entry buffer from heap                                      */
+/*----------------------------------------------------------------------------*/
+void* ZedOp::operator new(size_t)
+{
+  ZedOp* pZedOp =
+    static_cast<ZedOp*>(HeapMem::pAllocate(CN_ZEDOP));
+  
+  return pZedOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* free an entry buffer back to the heap                                      */
+/*----------------------------------------------------------------------------*/
+void ZedOp::operator delete(void* aAddress)
+{
+  ZedOp* pZedOp = static_cast<ZedOp*>(aAddress);
+  
+  HeapMem::vFree(pZedOp);
+}
+
+/*----------------------------------------------------------------------------*/
 /* initialize object                                                          */
 /*----------------------------------------------------------------------------*/
 ZedOp::ZedOp(void)
