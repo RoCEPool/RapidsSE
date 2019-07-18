@@ -420,6 +420,10 @@
   static void vJobAssertParticipant(Tasks::MP_Task mpTask);
   static void vJobAssertReceived(Tasks::MP_Task mpTask);
 
+  // job mark 2
+  static void vJobMark2TableNameFetch(Tasks::MP_Task mpTask);
+  static void vJobMark2TableStore(Tasks::MP_Task mpTask);
+
   static void vJobClass(Tasks::MP_Task mpTask);
   static void vJobColumnCountFetch(Tasks::MP_Task mpTask);
   static void vJobColumnNameFetch(Tasks::MP_Task mpTask);
