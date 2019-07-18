@@ -47,7 +47,7 @@ void FetchOp::operator delete(void* aAddress)
 FetchOp::FetchOp(void)
 : Op(CN_FETCHOP)
 {
-  _precondition_(_MAGIC_,CN_FETCHOP);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -55,8 +55,19 @@ FetchOp::FetchOp(void)
 /*----------------------------------------------------------------------------*/
 FetchOp::~FetchOp(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_FETCHOP);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
 }
+
+/*----------------------------------------------------------------------------*/
+/* set table partition                                                        */
+/*----------------------------------------------------------------------------*/
+void FetchOp::vTablePtn(TablePtn* pTablePtn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
+
+  m_pTablePtn = pTablePtn;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

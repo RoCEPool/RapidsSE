@@ -8,6 +8,8 @@ namespace PushDown
   class FetchOp : public Op
   {
   private:
+    TablePtn*  m_pTablePtn;
+    CrwBuffer* m_pCrwBuffer;
   
     // must be last
     Footer m_xFooter;
@@ -18,6 +20,8 @@ namespace PushDown
 
     FetchOp(void);
    ~FetchOp(void) noexcept(false);
+  
+    void vTablePtn(TablePtn* pTablePtn);
   
   private:
     Footer* aFooter(void);

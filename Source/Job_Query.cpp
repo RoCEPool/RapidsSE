@@ -198,6 +198,11 @@ void Job_Query::vBegin(void)
   m_pFetchOp->vOpOut(m_pOutputOp);
   m_pOutputOp->vOpOut(m_pZedOp);
   m_pZedOp->vOpOut(nullptr);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  TablePtn* pTablePtn = m_pTable->pPartition(0);
+  m_pFetchOp->vTablePtn(pTablePtn);
 }
 
 /*----------------------------------------------------------------------------*/
