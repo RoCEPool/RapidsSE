@@ -46,7 +46,7 @@ void OutputOp::operator delete(void* aAddress)
 OutputOp::OutputOp(void)
 : Op(CN_OUTPUTOP)
 {
-  _precondition_(_MAGIC_,CN_OUTPUTOP);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -54,7 +54,31 @@ OutputOp::OutputOp(void)
 /*----------------------------------------------------------------------------*/
 OutputOp::~OutputOp(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_OUTPUTOP);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* call the output function                                                   */
+/*----------------------------------------------------------------------------*/
+bool OutputOp::bCall(void* aThis)
+{
+  bool b = ((OutputOp*)aThis)->bOutput();
+  
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* the output operator function                                              */
+/*----------------------------------------------------------------------------*/
+bool OutputOp::bOutput(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

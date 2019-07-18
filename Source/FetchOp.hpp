@@ -22,7 +22,6 @@ namespace PushDown
    ~FetchOp(void) noexcept(false);
 
     static bool bCall(void* aThis);
- 
     bool bFetch(void);
 
     void vTablePtn(TablePtn* pTablePtn);

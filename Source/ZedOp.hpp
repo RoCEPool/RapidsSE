@@ -19,6 +19,9 @@ namespace PushDown
     ZedOp(void);
    ~ZedOp(void) noexcept(false);
   
+    static bool bCall(void* aThis);
+    bool bZed(void);
+  
   private:
     Footer* aFooter(void);
   };

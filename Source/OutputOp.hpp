@@ -19,6 +19,9 @@ namespace PushDown
     OutputOp(void);
    ~OutputOp(void) noexcept(false);
   
+    static bool bCall(void* aThis);
+    bool bOutput(void);
+
   private:
     Footer* aFooter(void);
   };
