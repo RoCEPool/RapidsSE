@@ -20,24 +20,32 @@
   0               locals| sTableNm |
   0               locals| pTable |
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // set dic stack
   pJob_Query job.pushPath task::dicStack.set
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
   ddlLock::grabRead
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the table name
+  // get table name
   pJob_Query job.objectName@ to sTableNm
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // find the table
+  // find table
   sTableNm pushTable assert
   sTableNm find execute to pTable
   pTable pJob_Query jobMark2.table!
 
   popIndexes
   popTable
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pJob_Query job_query.begin
+  pJob_Query job_query.end
+  pJob_Query job_query.execute
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   ": query_req END" .
 
