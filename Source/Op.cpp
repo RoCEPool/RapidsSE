@@ -127,6 +127,18 @@ void Op::vAppendOut(Operand* pOperand)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append end-marker to output op's operand queue                             */
+/*----------------------------------------------------------------------------*/
+void Op::vAppendOut_endMarker(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  EndMarker* pEndMarker = new EndMarker;
+  
+  vAppendOut(pEndMarker);
+}
+
+/*----------------------------------------------------------------------------*/
 /* set op out                                                                 */
 /*----------------------------------------------------------------------------*/
 void Op::vOpOut(Op* pOpOut)

@@ -33,6 +33,7 @@ namespace PushDown
     void vAckJobEnd(bool m_bAckJobEnd);
     void vAppendIn(Operand* pOperand);
     void vAppendOut(Operand* pOperand);
+    void vAppendOut_endMarker(void);
     void vOpOut(Op* pOpOut);
   };
 
