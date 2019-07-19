@@ -223,7 +223,14 @@ void Job_Query::vExecute(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_QUERY,_FOOTER_);
   
   Session* pSession = Task::pThisTLSTask()->pSession();
-  bool b = Api::bSpawnOp(pSession,m_pFetchOp);
+  
+  bool b;
+  
+  b = Api::bSpawnOp(pSession,m_pZedOp);
+  ASSERT(b);
+  b = Api::bSpawnOp(pSession,m_pOutputOp);
+  ASSERT(b);
+  b = Api::bSpawnOp(pSession,m_pFetchOp);
   ASSERT(b);
 }
 

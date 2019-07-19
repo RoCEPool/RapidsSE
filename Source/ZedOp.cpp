@@ -4,6 +4,7 @@
 
 #include "PushDown.h"
 
+#include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -47,6 +48,12 @@ ZedOp::ZedOp(Jobs::Job* pJob, Stz* szOpLabel)
 : Op(CN_ZEDOP,pJob,szOpLabel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ZEDOP,_FOOTER_);
+  
+  _checkInitialised_(CN_ZEDOP);
+  
+  m_fpOpFun = ZedOp::bCall;
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ZEDOP,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -91,9 +98,13 @@ bool ZedOp::bZed(void)
       delete (EndMarker*)pOperand;
       break;
     }
-    
-    vAppendOut(pOperand);
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Task* pTask = Task::pThisTLSTask();
+  pTask->vTransition(TR_EXIT);
+
   return false;
 }
 

@@ -161,8 +161,10 @@ Operand* Op::pPopOperand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
+  m_pOperandQueue->vGrabLock();
   Operand* pOperand = m_pOperandQueue->pPopOperand();
-  
+  m_pOperandQueue->vDropLock();
+
   if (pOperand) {
     vTrace("%s::pPopOperand : %p %s\n"_Stz,
            m_sOpLabel.aStz(),
