@@ -55,6 +55,9 @@ namespace PushDown
     void vAppendOut(Operand* pOperand);
     void vAppendOut_endMarker(void);
     void vBideOperand(void);
+    void vDropLock(void);
+    void vGrabLock(void);
+    bool bIsLocked(void);
     void vOpOut(Op* pOpOut);
     eOZ  eOpState(void);
     void vOpState(eOZ eOpState);
