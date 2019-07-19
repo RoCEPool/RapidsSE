@@ -91,6 +91,16 @@ void Op::vOpLoop(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* set ack job on end marker                                                  */
+/*----------------------------------------------------------------------------*/
+void Op::vAckJobEnd(bool m_bAckJobEnd)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_bAckJobEnd = m_bAckJobEnd;
+}
+
+/*----------------------------------------------------------------------------*/
 /* append oprand to this op's operand queue                                   */
 /*----------------------------------------------------------------------------*/
 void Op::vAppendIn(Operand* pOperand)
@@ -113,16 +123,6 @@ void Op::vAppendOut(Operand* pOperand)
   
   vTrace("%s::vAppendOut : %p\n"_Stz,m_sOpLabel.aStz(),pOperand);
   m_pOpOut->vAppendIn(pOperand);
-}
-
-/*----------------------------------------------------------------------------*/
-/* call op function                                                           */
-/*----------------------------------------------------------------------------*/
-void Op::vCallOpFun(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  (*m_fpOpFun)(this);
 }
 
 /*----------------------------------------------------------------------------*/
