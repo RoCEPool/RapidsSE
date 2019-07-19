@@ -98,6 +98,8 @@ bool FetchOp::bFetch(void)
     vAppendOut(m_pCrwBuffer);
   }
   
+  vAppendOut_endMarker();
+  
   Task* pTask = Task::pThisTLSTask();
   
   Task* pTaskQuery = m_pJob->m_pExecutingTask;
