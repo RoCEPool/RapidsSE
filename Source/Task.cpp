@@ -312,6 +312,11 @@ void Task::vTaskLoop_op(void)
     m_pOp->vOpLoop();
   }
   
+  if (TR_EXIT == m_eTransition) {
+    //delete m_pOp;
+    m_pOp = nullptr;
+  }
+    
   // record time of return & calculate running total times
   // ...
   

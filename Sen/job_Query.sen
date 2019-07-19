@@ -41,13 +41,23 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pJob_Query job_query.begin
-  pJob_Query job_query.end
-  pJob_Query job_query.execute
+  pTask task.grabLock
+  1 task::acks!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  ": query_req SLEEP" .  10000 task::sleepSsec
+  pJob_Query job_query.begin
+  pJob_Query job_query.execute
+  pJob_Query job_query.end
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  task::wait
+
+  //": query_req SLEEP" .  10000 task::sleepSsec
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   ": query_req END" .
 

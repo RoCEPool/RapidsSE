@@ -18,6 +18,8 @@ namespace PushDown
     Op* m_pOpOut;                    // where results get queued (piping)
   
   public:
+    void  operator delete(void*);
+  
     Op(eCN eClass, Jobs::Job* pJob, Stz* szOpLabel);
    ~Op(void) noexcept(false);
   

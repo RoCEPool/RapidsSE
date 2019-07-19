@@ -243,50 +243,50 @@ bool Scheduler::bTask_AckWaiting(Task* pTaskBeingAcked, Task* pTaskAcking)
   Job* pJobBeingAcked = pTaskBeingAcked->pJob();
   Job* pJobAcking     = pTaskAcking->pJob();
   
-  if (pJobAcking->m_bMarkActivity || pJobBeingAcked->m_bMarkActivity) {
-    ActivityLog::vMarkJob(pJobBeingAcked,
-                          "pTaskBeingAcked:%p Job %s "_Stz,
-                          pTaskBeingAcked,
-                          aCN[pJobBeingAcked->eClass()]
-                          );
-    ActivityLog::vMarkJob(pJobAcking,
-                          "pTaskAcking:%p Job %s "_Stz,
-                          pTaskAcking,
-                          aCN[pJobAcking->eClass()]
-                          );
-  }
-  
-  ActionSequence::vAdd(pTaskAcking->pJob(),
-                       AN_ACK_TASK,
-                       pTaskBeingAcked->pJob());
+//  if (pJobAcking->m_bMarkActivity || pJobBeingAcked->m_bMarkActivity) {
+//    ActivityLog::vMarkJob(pJobBeingAcked,
+//                          "pTaskBeingAcked:%p Job %s "_Stz,
+//                          pTaskBeingAcked,
+//                          aCN[pJobBeingAcked->eClass()]
+//                          );
+//    ActivityLog::vMarkJob(pJobAcking,
+//                          "pTaskAcking:%p Job %s "_Stz,
+//                          pTaskAcking,
+//                          aCN[pJobAcking->eClass()]
+//                          );
+//  }
+//
+//  ActionSequence::vAdd(pTaskAcking->pJob(),
+//                       AN_ACK_TASK,
+//                       pTaskBeingAcked->pJob());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   bool bAmDecider = pTaskBeingAcked->bAckAndDecide();
   
-  if (bAmDecider)
-    ActionSequence::vAdd(pTaskAcking->pJob(),
-                         AN_AM_DECIDER,
-                         pTaskBeingAcked->pJob());
-
-  if (bAmDecider) {
-    if (pJobBeingAcked->m_bMarkActivity || pJobAcking->m_bMarkActivity)
-      ActivityLog::vMarkJob(pJobAcking,
-                            "Decider %s acks %s"_Stz,
-                            aCN[pJobAcking->eClass()],
-                            aCN[pJobBeingAcked->eClass()]
-                            );
-  }
-  
-  if ( (pJobBeingAcked && JT_NONE != pJobBeingAcked->eJobTrace()) ||
-      (pJobAcking && JT_NONE != pJobAcking->eJobTrace())  ) {
-    vTrace("Ack of %s task %p by %s task %p ; %s\n"_Stz,
-           pJobBeingAcked ? aCN[pJobBeingAcked->m_pJobClass->m_eClass] : "<no job>"_Stz,
-           pTaskBeingAcked,
-           pJobAcking ? aCN[pJobAcking->m_pJobClass->m_eClass] : "<no job>"_Stz,
-           pJobAcking,
-           bAmDecider ? "decider" : "not decider");
-  }
+//  if (bAmDecider)
+//    ActionSequence::vAdd(pTaskAcking->pJob(),
+//                         AN_AM_DECIDER,
+//                         pTaskBeingAcked->pJob());
+//
+//  if (bAmDecider) {
+//    if (pJobBeingAcked->m_bMarkActivity || pJobAcking->m_bMarkActivity)
+//      ActivityLog::vMarkJob(pJobAcking,
+//                            "Decider %s acks %s"_Stz,
+//                            aCN[pJobAcking->eClass()],
+//                            aCN[pJobBeingAcked->eClass()]
+//                            );
+//  }
+//  
+//  if ( (pJobBeingAcked && JT_NONE != pJobBeingAcked->eJobTrace()) ||
+//      (pJobAcking && JT_NONE != pJobAcking->eJobTrace())  ) {
+//    vTrace("Ack of %s task %p by %s task %p ; %s\n"_Stz,
+//           pJobBeingAcked ? aCN[pJobBeingAcked->m_pJobClass->m_eClass] : "<no job>"_Stz,
+//           pTaskBeingAcked,
+//           pJobAcking ? aCN[pJobAcking->m_pJobClass->m_eClass] : "<no job>"_Stz,
+//           pJobAcking,
+//           bAmDecider ? "decider" : "not decider");
+//  }
 
   return bAmDecider;
 }

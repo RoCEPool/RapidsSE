@@ -21,6 +21,16 @@ Op* PushDown::_pOp(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* free back to the heap                                                      */
+/*----------------------------------------------------------------------------*/
+void Op::operator delete(void* aAddress)
+{
+  Object* pObject = static_cast<Object*>(aAddress);
+  
+  HeapMem::vFree(pObject);
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Op::Op(eCN eClassNo, Job* pJob, Stz* szOpLabel)
@@ -88,6 +98,10 @@ void Op::vAppendIn(Operand* pOperand)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   vTrace("%s::vAppendIn : %p\n"_Stz,m_sOpLabel.aStz(),pOperand);
+  
+  m_pOperandQueue->vGrabLock();
+  m_pOperandQueue->vAppendOperand(pOperand);
+  m_pOperandQueue->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -93,13 +93,19 @@ bool FetchOp::bFetch(void)
        m_pCrwBuffer;
        m_pCrwBuffer = m_pCrwBuffer->pNextBuffer()) {
     
-    vTrace("%s:: %p\n"_Stz,m_sOpLabel.aStz(),m_pCrwBuffer);
+    vTrace("%s::bFetch %p\n"_Stz,m_sOpLabel.aStz(),m_pCrwBuffer);
     
     vAppendOut(m_pCrwBuffer);
   }
   
   Task* pTask = Task::pThisTLSTask();
   
+  Task* pTaskQuery = m_pJob->m_pExecutingTask;
+  
+  Pthread::vSleepSsec(3,CN_FETCHOP);
+  
+  bool bWasQueued = Scheduler::bAckTask(pTaskQuery,pTask);
+
   pTask->vTransition(TR_EXIT);
   
   return false;

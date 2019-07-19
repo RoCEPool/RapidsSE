@@ -66,6 +66,8 @@ void OperandQueue::vAppendOperand(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
+  RASSERT(m_okLock.bIsWriteLocked());
+  
   ListNL_t<Operand>::vAppend(pOperand);
 }
 

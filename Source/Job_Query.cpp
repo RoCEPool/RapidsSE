@@ -204,11 +204,6 @@ void Job_Query::vBegin(void)
   TablePtn* pTablePtn = m_pTable->pPartition(0);
   m_pFetchOp->vTablePtn(pTablePtn);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Session* pSession = Task::pThisTLSTask()->pSession();
-  bool b = Api::bSpawnOp(pSession,m_pFetchOp);
-  ASSERT(b);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -225,6 +220,10 @@ void Job_Query::vEnd(void)
 void Job_Query::vExecute(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_QUERY,_FOOTER_);
+  
+  Session* pSession = Task::pThisTLSTask()->pSession();
+  bool b = Api::bSpawnOp(pSession,m_pFetchOp);
+  ASSERT(b);
 }
 
 
