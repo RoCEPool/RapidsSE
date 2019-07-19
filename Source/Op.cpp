@@ -117,9 +117,7 @@ void Op::vAppendIn(Operand* pOperand)
   
   m_okLock.vGrabWrite();
   
-  m_pOperandQueue->vGrabLock();
   m_pOperandQueue->vAppendOperand(pOperand);
-  m_pOperandQueue->vDropLock();
   
   m_okLock.vDropWrite();
 }
@@ -192,7 +190,6 @@ Operand* Op::pPopOperand(void)
   for (;;) {
     
     m_okLock.vGrabWrite();
-    m_pOperandQueue->vGrabLock();
   
     pOperand = m_pOperandQueue->pPopOperand();
   
@@ -200,12 +197,10 @@ Operand* Op::pPopOperand(void)
       
       vWaitOperand();
       
-      m_pOperandQueue->vDropLock();
       m_okLock.vDropWrite();
       break;
     }
   
-    m_pOperandQueue->vDropLock();
     m_okLock.vDropWrite();
     break;
   }
@@ -229,11 +224,11 @@ void Op::vWaitOperand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  ASSERT(m_pOperandQueue->bIsLocked());
+  ASSERT(m_okLock.bIsLocked());
   
   Scheduler::vWaitOperand(m_pJob->m_pExecutingTask);
   
-  ASSERT(m_pOperandQueue->bIsLocked());
+  ASSERT(m_okLock.bIsLocked());
 }
 
 /*============================================================================*/

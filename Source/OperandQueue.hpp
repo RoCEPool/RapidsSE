@@ -8,7 +8,6 @@ namespace PushDown
   class OperandQueue : public ListNL_t<Operand>
   {
   private:
-    Lock m_okLock;
   
     // must be last
     Footer m_xFooter;
@@ -21,16 +20,10 @@ namespace PushDown
     ~OperandQueue(void) noexcept(false);
     
     void vAppendOperand(Operand* pOperand);
-    void vDropLock(void);
-    void vGrabLock(void);
-    bool bGrabLock(void);
-    bool bIsLocked(void);
     Operand*  pPeekOperand(void);
     Operand*  pPopOperand(void);
     i8   nQueuedOperands(void);
-  
-    void vContentDump(void);
-    
+      
     Footer* aFooter(void);
   };
   

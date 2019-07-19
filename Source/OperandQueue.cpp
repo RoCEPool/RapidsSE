@@ -44,8 +44,6 @@ OperandQueue::OperandQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
-  m_okLock.vInitLock(LK_THREAD_QUEUE);
-  
   _checkInitialised_(CN_OPERANDQUEUE);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
@@ -66,49 +64,7 @@ void OperandQueue::vAppendOperand(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   
-  RASSERT(m_okLock.bIsWriteLocked());
-  
   ListNL_t<Operand>::vAppend(pOperand);
-}
-
-/*----------------------------------------------------------------------------*/
-/* drop lock for write                                                        */
-/*----------------------------------------------------------------------------*/
-void OperandQueue::vDropLock(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
-  
-  m_okLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grab lock for write                                                        */
-/*----------------------------------------------------------------------------*/
-void OperandQueue::vGrabLock(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
-  
-  m_okLock.vGrabWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grab lock for write                                                        */
-/*----------------------------------------------------------------------------*/
-bool OperandQueue::bGrabLock(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
-  
-  return m_okLock.bGrabWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/* is locked ?                                                                */
-/*----------------------------------------------------------------------------*/
-bool OperandQueue::bIsLocked(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
-  
-  return m_okLock.bIsLocked();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -117,8 +73,6 @@ bool OperandQueue::bIsLocked(void)
 Operand* OperandQueue::pPeekOperand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
-  
-  ASSERT(m_okLock.bIsLocked());
   
   Operand* pOperand = ListNL_t<Operand>::pHead();
 
@@ -131,8 +85,6 @@ Operand* OperandQueue::pPeekOperand(void)
 Operand* OperandQueue::pPopOperand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
-  
-  ASSERT(m_okLock.bIsLocked());
   
   Operand* pOperand = ListNL_t<Operand>::pPop();
 
@@ -149,31 +101,6 @@ i8 OperandQueue::nQueuedOperands(void)
   i8 nOperands = ListNL_t<Operand>::nObjects();
 
   return nOperands;
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump                                                                       */
-/*----------------------------------------------------------------------------*/
-void OperandQueue::vContentDump(void)
-{
-  //vDump(CN_OPERANDQUEUE, this, Stz::aTab(1));
-  
-  ASSERT(m_okLock.bIsLocked());
-
-  vTrace("ITEMS %lld\n"_Stz,ListNL_t<Operand>::nObjects());
-  
-//  for (Op* pOp = ListNL_t<Op>::pHead();
-//       pOp;
-//       pOp = pOp->pNextNode()) {
-//
-//    vTrace("Op %p %s %s order %lld\n"_Stz,
-//           pOp,
-//           aCN[pOp->pJob()->eClass()],
-//           aTS[pOp->eState()],
-//           pOp->iQueueOrder()
-//           );
-//
-//  }
 }
 
 
