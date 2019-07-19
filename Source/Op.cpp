@@ -87,7 +87,13 @@ void Op::vOpLoop(void)
 //    (*m_fpOpFun)(this);
 //  }
   
+  m_okLock.vGrabWrite();
+  m_eOpState = OZ_PROCESSING;
+  m_okLock.vDropWrite();
+  
   (*m_fpOpFun)(this);
+  
+  RASSERT(OZ_PROCESSING == m_eOpState);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -197,10 +203,14 @@ Operand* Op::pPopOperand(void)
       
       vWaitOperand();
       
+      m_eOpState = OZ_DORMANT;
+      
       m_okLock.vDropWrite();
       break;
     }
   
+    m_eOpState = OZ_PROCESSING;
+    
     m_okLock.vDropWrite();
     break;
   }
