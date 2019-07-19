@@ -61,6 +61,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_DTMVAL
 
   /*    */ &Finalize::vUndefined,         // CN_ENCODING
+  /*    */ &Finalize::vUndefined,         // CN_ENDMARKER
   /* 36 */ &Finalize::vUndefined,         // CN_ENT
   /* 37 */ &Finalize::vUndefined,         // CN_ENTBUFFER
   /* 64 */ &Finalize::vUndefined,         // CN_ENTWRK

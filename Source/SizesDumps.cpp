@@ -64,6 +64,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_DTMVAL
 
   /*    */ &Dump::vUndefined,       // CN_ENCODING
+  /*    */ &Dump::vUndefined,       // CN_ENDMARKER
   /* 36 */ &Dump::vDummy,           // CN_ENT
   /* 37 */ &Dump::vDummy,           // CN_ENTBUFFER
   /* 64 */ &Dump::vInvalid,         // CN_ENTWRK
@@ -398,6 +399,7 @@ i8 giClassSize[]
   /*    */ sizeof(DtmVal),             // CN_DTMVAL
 
   /*    */ sizeof(Encoding),           // CN_ENCODING
+  /*    */ 0,           // CN_ENDMARKER
   /* 36 */ sizeof(Ent),                // CN_ENT
   /* 37 */ sizeof(EntBuffer),          // CN_ENTBUFFER
   /* 64 */ sizeof(EntWrk),             // CN_ENTWRK
@@ -731,6 +733,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_DTMVAL
 
   /*    */ HT_TRANSIENT_LARGE,   // CN_ENCODING
+  /*    */ HT_TRANSIENT_SMALL,   // CN_ENDMARKER
   /* 36 */ HT_INVALID,           // CN_ENT
   /* 37 */ HT_TRANSIENT_LARGE,   // CN_ENTBUFFER
   /* 64 */ HT_INVALID,           // CN_ENTWRK
