@@ -35,6 +35,8 @@ namespace PushDown
     void vAppendOut(Operand* pOperand);
     void vAppendOut_endMarker(void);
     void vOpOut(Op* pOpOut);
+  
+    Operand* pPopOperand(void);
   };
 
   Op* _pOp(void* aAddr);
