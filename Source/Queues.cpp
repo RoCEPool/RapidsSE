@@ -68,9 +68,9 @@ Queues::Queues(void)
                                    bTaskCompareWakeupTime);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // task series ordered by arrival
+  // task sets ordered by arrival
   
-  m_ixQueueOrder   = 0;
+  m_ixTaskSetOrder  = 0;
   
   m_pBidingSet     = new TaskList(QK_BIDING_SET);
   m_pExecutingSet  = new TaskList(QK_EXECUTING_SET);
@@ -188,6 +188,36 @@ void Queues::vThreadsReport(void)
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add task to biding set                                                     */
+/*----------------------------------------------------------------------------*/
+void Queues::vAddBidingSet(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  m_pBidingSet->vGrabLock();
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  
+  RASSERT(TS_EXECUTING == pTask->eState());
+  
+  pTask->vQueue(QK_BIDING_SET);
+  pTask->vQueueOrder(++m_ixTaskSetOrder);
+  
+  //  if (pTask->pJob()->m_bMarkActivity)
+  //    ActivityLog::vMarkJob(pTask->pJob(),
+  //                          "Add to ExecutingSet: %s %p"_Stz,
+  //                          aCN[pTask->pJob()->eClass()],
+  //                          pTask->pJob());
+  
+  ASSERT(m_pBidingSet->bIsLocked());
+  m_pBidingSet->vAddTask(pTask);
+  
+  //  ActionSequence::vAdd(pTask->pJob(),AN_ADD_EXECUTING_SET);
+  
+  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+  m_pBidingSet->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
 /* add task to executing queue                                                */
 /*----------------------------------------------------------------------------*/
 void Queues::vAddExecutingSet(Task* pTask)
@@ -200,7 +230,7 @@ void Queues::vAddExecutingSet(Task* pTask)
   RASSERT(TS_EXECUTING == pTask->eState());
   
   pTask->vQueue(QK_EXECUTING_SET);
-  pTask->vQueueOrder(++m_ixQueueOrder);
+  pTask->vQueueOrder(++m_ixTaskSetOrder);
   
 //  if (pTask->pJob()->m_bMarkActivity)
 //    ActivityLog::vMarkJob(pTask->pJob(),
@@ -272,7 +302,7 @@ void Queues::vAddWaitingSet(Task* pTask)
  
   // mark task as being in the waiting queue
   pTask->vQueue(QK_WAITING_SET);
-  pTask->vQueueOrder(++m_ixQueueOrder);
+  pTask->vQueueOrder(++m_ixTaskSetOrder);
   
   if (pTask->pJob()->m_bMarkActivity)
     ActivityLog::vMarkJob(pTask->pJob(),
@@ -303,7 +333,7 @@ void Queues::vAppendReadyQueue(Task* pTask)
   RASSERT(TS_READY == pTask->eState());
   
   pTask->vQueue(QK_READY_QUEUE);
-  pTask->vQueueOrder(++m_ixQueueOrder);
+  pTask->vQueueOrder(++m_ixTaskSetOrder);
   
   if (pTask->pJob()->m_bMarkActivity)
     ActivityLog::vMarkJob(pTask->pJob(),
@@ -334,7 +364,7 @@ void Queues::vAppendReadyQueueLP(Task* pTask)
   RASSERT(TS_READY == pTask->eState());
   
   pTask->vQueue(QK_READY_QUEUE_LP);
-  pTask->vQueueOrder(++m_ixQueueOrder);
+  pTask->vQueueOrder(++m_ixTaskSetOrder);
   
   if (pTask->pJob()->m_bMarkActivity)
     ActivityLog::vMarkJob(pTask->pJob(),
@@ -507,6 +537,23 @@ Task* Queues::pPopSleepingQueue(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* remove task from biding set                                               */
+/*----------------------------------------------------------------------------*/
+void Queues::vRemoveBidingSet(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  RASSERT(QK_BIDING_SET == pTask->eQueue());
+  
+  m_pBidingSet->vGrabLock();
+  m_pBidingSet->vRemoveTask(pTask);
+  m_pBidingSet->vDropLock();
+  
+  // task no longer in any queue/set
+  pTask->vQueue(QK_NONE);
+}
+
+/*----------------------------------------------------------------------------*/
 /* remove task from executing queue                                           */
 /*----------------------------------------------------------------------------*/
 void Queues::vRemoveExecutingSet(Task* pTask)
@@ -647,6 +694,24 @@ void Queues::vThreadRemoveGeneral(Thread* pThread)
 ////////////////////////////////////////////////////////////////////////////////
 //                                 misc                                       //
 ////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* dump the biding set                                                        */
+/*----------------------------------------------------------------------------*/
+void Queues::vDumpBidingSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  vTrace("------------------------------------\n"_Stz);
+  vTrace("Biding Set: %p\n"_Stz, m_pBidingSet);
+  vTrace("------------------------------------\n"_Stz);
+  m_pBidingSet->vGrabLock();
+  m_pBidingSet->vContentDump();
+  m_pBidingSet->vDropLock();
+  vTrace("====================================\n"_Stz);
+  vTrace("\n"_Stz);
+  vTrace("\n"_Stz);
+}
 
 /*----------------------------------------------------------------------------*/
 /* dump the executing set                                                     */
@@ -807,6 +872,16 @@ void Queues::vMonitorThread(s48K& sPortrait)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get no of tasks in the biding set                                          */
+/*----------------------------------------------------------------------------*/
+i8 Queues::nTasksBiding(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  return m_pBidingSet->nTasks();
+}
 
 /*----------------------------------------------------------------------------*/
 /* get no of tasks in the executing set                                       */

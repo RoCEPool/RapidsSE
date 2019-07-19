@@ -16,22 +16,23 @@ namespace Scheduling
 
     ThreadVec*   m_pDedicatedThreadVec; // vector of dedicated threads
     ThreadVec*   m_pGeneralThreadVec;   // vector of general threads
+  
     ThreadQueue* m_pIdleThreadQueue;    // queue of idle threads
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // task queues
   
-    TaskList*  m_pReadyQueue;      // set of queued tasks ready to be executed
-    TaskList*  m_pReadyQueueLP;    // set of low priority queued tasks ready to run
-    TaskQueue* m_pSleepingQueue;   // set of queued sleeping tasks
+    TaskList*  m_pReadyQueue;      // queue of tasks ready to be executed
+    TaskList*  m_pReadyQueueLP;    // queue of low priority tasks ready to exe
+    TaskQueue* m_pSleepingQueue;   // queue of sleeping tasks
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // task sets (ordered by arrival)
   
-    Atomic     m_ixQueueOrder;     // task arrival ordering no
-    TaskList*  m_pBidingSet;       // op tasks biding to be triggered
+    Atomic     m_ixTaskSetOrder;   // task ordering within set
+    TaskList*  m_pBidingSet;       // set of op tasks biding to be triggered
     TaskList*  m_pExecutingSet;    // set of tasks currently executing
-    TaskList*  m_pWaitingSet;      // suspended tasks which waiting to be signaled
+    TaskList*  m_pWaitingSet;      // set of suspended tasks waiting to be signaled
 
     // must be last
     Footer m_xFooter;
@@ -48,6 +49,7 @@ namespace Scheduling
   // - - - - - - - - - - - - - - - - - - - - - - -
   // task
   private:
+    void vAddBidingSet(Task* pTask);
     void vAddExecutingSet(Task* pTask);
     void vAddWaitingSet(Task* pTask);
     void vAddSleepingQueue(Task* pTask);
@@ -59,6 +61,7 @@ namespace Scheduling
     Task* pPopReadyQueueLP(void);
     Task* pPopSleepingQueue(void);
   
+    void vRemoveBidingSet(Task* pTask);
     void vRemoveExecutingSet(Task* pTask);
     void vRemoveWaitingSet(Task* pTask);
   
@@ -75,6 +78,7 @@ namespace Scheduling
   // - - - - - - - - - - - - - - - - - - - - - - -
   // misc
   public:
+    void vDumpBidingSet(void);
     void vDumpExecutingSet(void);
     void vDumpReadyQueue(void);
     void vDumpReadyQueueLP(void);
@@ -84,6 +88,7 @@ namespace Scheduling
     void vMonitorPortrait(s48K& sPortrait);
     void vMonitorThread(s48K& sPortrait);
   
+    i8   nTasksBiding(void);
     i8   nTasksExecuting(void);
     i8   nTasksReady(void);
     i8   nTasksReadyLP(void);
