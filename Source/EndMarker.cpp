@@ -47,8 +47,11 @@ void EndMarker::operator delete(void* aAddress)
 EndMarker::EndMarker(void)
 : Operand(CN_ENDMARKER)
 {
-  _precondition_(_MAGIC_,CN_ENDMARKER);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENDMARKER,_FOOTER_);
+
+  _checkInitialised_(CN_ENDMARKER);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENDMARKER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -56,7 +59,7 @@ EndMarker::EndMarker(void)
 /*----------------------------------------------------------------------------*/
 EndMarker::~EndMarker(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENDMARKER,_FOOTER_);
 }
 
 

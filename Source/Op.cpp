@@ -108,7 +108,10 @@ void Op::vAppendIn(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  vTrace("%s::vAppendIn : %p\n"_Stz,m_sOpLabel.aStz(),pOperand);
+  vTrace("%s::vAppendIn : %p %s\n"_Stz,
+         m_sOpLabel.aStz(),
+         pOperand,
+         aCN[pOperand->eClass()]);
   
   m_pOperandQueue->vGrabLock();
   m_pOperandQueue->vAppendOperand(pOperand);
@@ -122,7 +125,10 @@ void Op::vAppendOut(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  vTrace("%s::vAppendOut : %p\n"_Stz,m_sOpLabel.aStz(),pOperand);
+  vTrace("%s::vAppendOut : %p %s\n"_Stz,
+         m_sOpLabel.aStz(),
+         pOperand,
+         aCN[pOperand->eClass()]);
   m_pOpOut->vAppendIn(pOperand);
 }
 

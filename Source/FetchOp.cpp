@@ -100,6 +100,8 @@ bool FetchOp::bFetch(void)
   
   vAppendOut_endMarker();
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   Task* pTask = Task::pThisTLSTask();
   
   Task* pTaskQuery = m_pJob->m_pExecutingTask;

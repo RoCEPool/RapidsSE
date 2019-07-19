@@ -399,7 +399,7 @@ i8 giClassSize[]
   /*    */ sizeof(DtmVal),             // CN_DTMVAL
 
   /*    */ sizeof(Encoding),           // CN_ENCODING
-  /*    */ 0,           // CN_ENDMARKER
+  /*    */ sizeof(EndMarker),          // CN_ENDMARKER
   /* 36 */ sizeof(Ent),                // CN_ENT
   /* 37 */ sizeof(EntBuffer),          // CN_ENTBUFFER
   /* 64 */ sizeof(EntWrk),             // CN_ENTWRK
