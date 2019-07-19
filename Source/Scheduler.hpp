@@ -10,8 +10,8 @@ namespace Scheduling
   public:
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // op interface
-    static void vTriggeringOperand(Task* pTask);
-    static void vWaitOperand(Task* pTask);
+    static void vBideOperand(Task* pTask);
+    static void vTriggerOperand(Task* pTask);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // task interface
@@ -38,8 +38,8 @@ namespace Scheduling
   private:
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // implementation for ops
-   static void vOp_TriggeringOperand(Task* pTask);
-   static void vOp_WaitOperand(Task* pTask);
+    static void vOp_BideOperand(Task* pTask);
+    static void vOp_TriggerOperand(Task* pTask);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // implementation for tasks

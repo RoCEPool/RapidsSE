@@ -110,7 +110,7 @@ void Op::vAckJobEnd(bool m_bAckJobEnd)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append oprand to this op's operand queue                                   */
+/* append operand to this op's operand queue                                  */
 /*----------------------------------------------------------------------------*/
 void Op::vAppendIn(Operand* pOperand)
 {
@@ -124,6 +124,10 @@ void Op::vAppendIn(Operand* pOperand)
   m_okLock.vGrabWrite();
   
   m_pOperandQueue->vAppendOperand(pOperand);
+  
+  // trigger this op where the operand is being queued
+  if (OZ_BIDING == m_eOpState)
+    Scheduler::vTriggerOperand(m_pJob->m_pExecutingTask);
   
   m_okLock.vDropWrite();
 }
@@ -152,6 +156,20 @@ void Op::vAppendOut_endMarker(void)
   EndMarker* pEndMarker = new EndMarker;
   
   vAppendOut(pEndMarker);
+}
+
+/*----------------------------------------------------------------------------*/
+/* bide/wait for operand to arrive                                            */
+/*----------------------------------------------------------------------------*/
+void Op::vBideOperand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  ASSERT(m_okLock.bIsLocked());
+  
+  Scheduler::vBideOperand(m_pJob->m_pExecutingTask);
+  
+  ASSERT(m_okLock.bIsLocked());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -201,9 +219,9 @@ Operand* Op::pPopOperand(void)
   
     if (! pOperand) {
       
-      vWaitOperand();
+      vBideOperand();
       
-      m_eOpState = OZ_DORMANT;
+      m_eOpState = OZ_BIDING;
       
       m_okLock.vDropWrite();
       break;
@@ -225,20 +243,6 @@ Operand* Op::pPopOperand(void)
   }
   
   return pOperand;
-}
-
-/*----------------------------------------------------------------------------*/
-/* wait for operand to arrive                                                 */
-/*----------------------------------------------------------------------------*/
-void Op::vWaitOperand(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  ASSERT(m_okLock.bIsLocked());
-  
-  Scheduler::vWaitOperand(m_pJob->m_pExecutingTask);
-  
-  ASSERT(m_okLock.bIsLocked());
 }
 
 /*============================================================================*/

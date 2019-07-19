@@ -8,7 +8,7 @@ namespace PushDown
   enum eOZ // Op State
   {
   /* 0 */ OZ_NONE=0,
-  /* 1 */ OZ_DORMANT,    // op is dormant, waiting for operand
+  /* 1 */ OZ_BIDING,     // op is dormant, waiting for operand
   /* 2 */ OZ_PROCESSING, // op is processing an operand
   /* 3 */ OZ_ENUMS
   };
@@ -16,7 +16,7 @@ namespace PushDown
   static Stz* aOZ[]
   {
   /* 0 */ "NONE"_Stz,
-  /* 1 */ "DORMANT"_Stz,
+  /* 1 */ "BIDING"_Stz,
   /* 2 */ "PROCESSING"_Stz,
   /* 3 */ "ENUMS"_Stz,
   };
@@ -54,11 +54,11 @@ namespace PushDown
     void vAppendIn(Operand* pOperand);
     void vAppendOut(Operand* pOperand);
     void vAppendOut_endMarker(void);
+    void vBideOperand(void);
     void vOpOut(Op* pOpOut);
     eOZ  eOpState(void);
     void vOpState(eOZ eOpState);
     Operand* pPopOperand(void);
-    void vWaitOperand(void);
   };
 
   Op* _pOp(void* aAddr);

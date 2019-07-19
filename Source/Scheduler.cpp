@@ -16,25 +16,25 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* wait for operand to arrive                                                 */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTriggeringOperand(Task* pTask)
-{
-  //
-  // called from Op::???()
-  //
-  
-  vOp_TriggeringOperand(pTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* wait for operand to arrive                                                 */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vWaitOperand(Task* pTask)
+void Scheduler::vBideOperand(Task* pTask)
 {
   //
   // called from Op::pPopOperand()
   //
   
-  vOp_WaitOperand(pTask);
+  vOp_BideOperand(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* wait for operand to arrive                                                 */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTriggerOperand(Task* pTask)
+{
+  //
+  // called from Op::???()
+  //
+  
+  vOp_TriggerOperand(pTask);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -260,19 +260,18 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* op task bides/waits for operand to arrive in operand queue                 */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vOp_BideOperand(Task* pTask)
+{
+}
+
+/*----------------------------------------------------------------------------*/
 /* op task has an operand arriving into its queue while its dormant           */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vOp_TriggeringOperand(Task* pTask)
+void Scheduler::vOp_TriggerOperand(Task* pTask)
 {
 }
-
-/*----------------------------------------------------------------------------*/
-/* op task waits for operand to arrive in operand queue                       */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vOp_WaitOperand(Task* pTask)
-{
-}
-
 
 
 ////////////////////////////////////////////////////////////////////////////////
