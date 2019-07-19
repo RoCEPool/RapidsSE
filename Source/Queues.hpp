@@ -26,12 +26,13 @@ namespace Scheduling
     TaskQueue* m_pSleepingQueue;   // set of queued sleeping tasks
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // task sets ordered by arrival
+    // task sets (ordered by arrival)
   
     Atomic     m_ixQueueOrder;     // task arrival ordering no
+    TaskList*  m_pBidingSet;       // op tasks biding to be triggered
     TaskList*  m_pExecutingSet;    // set of tasks currently executing
     TaskList*  m_pWaitingSet;      // suspended tasks which waiting to be signaled
-  
+
     // must be last
     Footer m_xFooter;
   

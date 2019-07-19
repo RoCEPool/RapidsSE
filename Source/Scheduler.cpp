@@ -264,6 +264,7 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vOp_BideOperand(Task* pTask)
 {
+  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -271,6 +272,7 @@ void Scheduler::vOp_BideOperand(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vOp_TriggerOperand(Task* pTask)
 {
+  vDebugPoint();
 }
 
 

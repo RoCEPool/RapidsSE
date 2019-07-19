@@ -72,6 +72,7 @@ Queues::Queues(void)
   
   m_ixQueueOrder   = 0;
   
+  m_pBidingSet     = new TaskList(QK_BIDING_SET);
   m_pExecutingSet  = new TaskList(QK_EXECUTING_SET);
   m_pWaitingSet    = new TaskList(QK_WAITING_SET);
 
