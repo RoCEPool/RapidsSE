@@ -39,14 +39,14 @@ Op::Op(eCN eClassNo, Job* pJob, Stz* szOpLabel)
   _precondition_(_MAGIC_,eClassNo);
   
   m_sOpLabel      = szOpLabel;
-  m_eOpState      = OZ_NONE;
-  
   m_pJob          = pJob;
   m_bAckJobEnd    = false;
-  
-  m_pOperandQueue = new OperandQueue;
   m_fpOpFun       = nullptr;
   m_pOpOut        = nullptr;
+
+  m_okLock.vInitLock(LK_OP);
+  m_eOpState      = OZ_NONE;
+  m_pOperandQueue = new OperandQueue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -115,9 +115,13 @@ void Op::vAppendIn(Operand* pOperand)
          pOperand,
          aCN[pOperand->eClass()]);
   
+  m_okLock.vGrabWrite();
+  
   m_pOperandQueue->vGrabLock();
   m_pOperandQueue->vAppendOperand(pOperand);
   m_pOperandQueue->vDropLock();
+  
+  m_okLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -187,6 +191,7 @@ Operand* Op::pPopOperand(void)
   
   for (;;) {
     
+    m_okLock.vGrabWrite();
     m_pOperandQueue->vGrabLock();
   
     pOperand = m_pOperandQueue->pPopOperand();
@@ -196,10 +201,12 @@ Operand* Op::pPopOperand(void)
       vWaitOperand();
       
       m_pOperandQueue->vDropLock();
+      m_okLock.vDropWrite();
       break;
     }
   
     m_pOperandQueue->vDropLock();
+    m_okLock.vDropWrite();
     break;
   }
   

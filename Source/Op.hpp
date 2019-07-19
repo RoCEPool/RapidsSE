@@ -29,15 +29,15 @@ namespace PushDown
   
   protected:
     s32  m_sOpLabel;    // label of this op
-    eOZ  m_eOpState;    // state of this op
-  
     Jobs::Job* m_pJob;  // job this operator belongs to
     bool m_bAckJobEnd;  // ack job on end marker
-  
-    OperandQueue* m_pOperandQueue;   // the input queue being processed
     bool (*m_fpOpFun)(void* aThis);  // function which does the op
     Op*  m_pOpOut;                   // where results get queued (piping)
-  
+
+    Lock m_okLock;      // op lock
+    eOZ  m_eOpState;    // state of this op
+    OperandQueue* m_pOperandQueue;   // the input queue being processed
+
   public:
     void  operator delete(void*);
   
