@@ -198,7 +198,8 @@ void Job_Query::vBegin(void)
   m_pFetchOp->vOpOut(m_pOutputOp);
   m_pOutputOp->vOpOut(m_pZedOp);
   m_pZedOp->vOpOut(nullptr);
-  
+  m_pZedOp->vAckJobEnd(true);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   TablePtn* pTablePtn = m_pTable->pPartition(0);

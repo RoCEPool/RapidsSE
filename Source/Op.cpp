@@ -40,6 +40,7 @@ Op::Op(eCN eClassNo, Job* pJob, Stz* szOpLabel)
   
   m_pJob          = pJob;
   m_sOpLabel      = szOpLabel;
+  m_bAckJobEnd    = false;
   
   m_pOperandQueue = new OperandQueue;
   m_fpOpFun       = nullptr;
