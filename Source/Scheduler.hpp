@@ -9,6 +9,10 @@ namespace Scheduling
   {
   public:
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // op interface
+    static void vWaitOperand(Task* pTask);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // task interface
   
     static bool bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking);

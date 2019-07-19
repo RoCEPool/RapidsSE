@@ -164,11 +164,15 @@ Operand* Op::pPopOperand(void)
   Operand* pOperand = nullptr;
   
   for (;;) {
+    
     m_pOperandQueue->vGrabLock();
   
     pOperand = m_pOperandQueue->pPopOperand();
   
     if (! pOperand) {
+      
+      vWaitOperand();
+      
       m_pOperandQueue->vDropLock();
       break;
     }
@@ -188,6 +192,22 @@ Operand* Op::pPopOperand(void)
   
   return pOperand;
 }
+
+/*----------------------------------------------------------------------------*/
+/* wait for operand to arrive                                                 */
+/*----------------------------------------------------------------------------*/
+void Op::vWaitOperand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  ASSERT(m_pOperandQueue->bIsLocked());
+  
+  Scheduler::vWaitOperand(m_pJob->m_pExecutingTask);
+  
+  ASSERT(m_pOperandQueue->bIsLocked());
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
