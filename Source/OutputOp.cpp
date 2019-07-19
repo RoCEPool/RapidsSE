@@ -78,6 +78,23 @@ bool OutputOp::bOutput(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
   
+  for (;;) {
+    
+    Operand* pOperand = pPopOperand();
+    
+    if (! pOperand) {
+      Pthread::vSleepMsec(100,CN_OUTPUTOP);
+      continue;
+    }
+    
+    if (CN_ENDMARKER == pOperand->eClass()) {
+      vAppendOut(pOperand);
+      break;
+    }
+    
+    vAppendOut(pOperand);
+  }
+  
   return false;
 }
 

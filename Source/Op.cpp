@@ -163,6 +163,13 @@ Operand* Op::pPopOperand(void)
   
   Operand* pOperand = m_pOperandQueue->pPopOperand();
   
+  if (pOperand) {
+    vTrace("%s::pPopOperand : %p %s\n"_Stz,
+           m_sOpLabel.aStz(),
+           pOperand,
+           aCN[pOperand->eClass()]);
+  }
+  
   return pOperand;
 }
 

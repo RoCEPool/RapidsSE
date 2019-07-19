@@ -78,6 +78,22 @@ bool ZedOp::bZed(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ZEDOP,_FOOTER_);
   
+  for (;;) {
+    
+    Operand* pOperand = pPopOperand();
+    
+    if (! pOperand) {
+      Pthread::vSleepMsec(100,CN_ZEDOP);
+      continue;
+    }
+    
+    if (CN_ENDMARKER == pOperand->eClass()) {
+      delete (EndMarker*)pOperand;
+      break;
+    }
+    
+    vAppendOut(pOperand);
+  }
   return false;
 }
 
