@@ -38,8 +38,10 @@ Op::Op(eCN eClassNo, Job* pJob, Stz* szOpLabel)
 {
   _precondition_(_MAGIC_,eClassNo);
   
-  m_pJob          = pJob;
   m_sOpLabel      = szOpLabel;
+  m_eOpState      = OZ_NONE;
+  
+  m_pJob          = pJob;
   m_bAckJobEnd    = false;
   
   m_pOperandQueue = new OperandQueue;
@@ -152,6 +154,26 @@ void Op::vOpOut(Op* pOpOut)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   m_pOpOut = pOpOut;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get op state                                                               */
+/*----------------------------------------------------------------------------*/
+eOZ Op::eOpState(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_eOpState;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set op state                                                               */
+/*----------------------------------------------------------------------------*/
+void Op::vOpState(eOZ eOpState)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_eOpState = eOpState;
 }
 
 /*----------------------------------------------------------------------------*/
