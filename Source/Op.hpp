@@ -5,9 +5,6 @@
 
 namespace PushDown
 {
-  static const bool B_CALL_AGAIN      = true;
-  static const bool B_DONT_CALL_AGAIN = false;
-
   class Op : public Object
   {
   protected:
