@@ -76,25 +76,24 @@ Op* Op::pThisTLSOp(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* op loop                                                                    */
+/* call op loop                                                               */
 /*----------------------------------------------------------------------------*/
 void Op::vOpLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-
-//  while (bGetNextOperand()) {
-//    (*m_fpOpFun)(this);
-//  }
   
   bool bCallAgain = (*m_fpOpFun)(this);
   
   if (bCallAgain) {
     ASSERT(bIsLocked());
     m_pTask->vTransition(TR_BIDE);
+    return;
   }
-  else {
-    m_pTask->vTransition(TR_EXIT);
-  }
+
+  if (m_bAckJobEnd)
+    vAckJob();
+  
+  m_pTask->vTransition(TR_EXIT);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -103,11 +102,24 @@ void Op::vOpLoop(void)
 /*----------------------------------------------------------------------------*/
 /* set ack job on end marker                                                  */
 /*----------------------------------------------------------------------------*/
-void Op::vAckJobEnd(bool m_bAckJobEnd)
+void Op::vAckJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_bAckJobEnd = m_bAckJobEnd;
+  Task* pTask_JobQuery = m_pJob->m_pExecutingTask;
+    
+  bool bWasQueued = Scheduler::bAckTask(pTask_JobQuery,m_pTask);
+  ASSERT(bWasQueued);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set ack job on end marker                                                  */
+/*----------------------------------------------------------------------------*/
+void Op::vAckJobEnd(bool bAckJobEnd)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_bAckJobEnd = bAckJobEnd;
 }
 
 /*----------------------------------------------------------------------------*/

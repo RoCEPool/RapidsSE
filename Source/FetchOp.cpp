@@ -102,12 +102,12 @@ bool FetchOp::bFetch(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Task* pTask_JobQuery = m_pJob->m_pExecutingTask;
-  
-  Pthread::vSleepSsec(3,CN_FETCHOP);
-  
-  bool bWasQueued = Scheduler::bAckTask(pTask_JobQuery,m_pTask);
-  ASSERT(bWasQueued);
+//  Task* pTask_JobQuery = m_pJob->m_pExecutingTask;
+//  
+//  Pthread::vSleepSsec(3,CN_FETCHOP);
+//  
+//  bool bWasQueued = Scheduler::bAckTask(pTask_JobQuery,m_pTask);
+//  ASSERT(bWasQueued);
   
   return B_DONT_CALL_AGAIN;
 }
