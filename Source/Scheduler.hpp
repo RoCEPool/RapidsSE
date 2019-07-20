@@ -8,10 +8,6 @@ namespace Scheduling
   class Scheduler
   {
   public:
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // op interface
-    static void vBideOperand(Task* pTask);
-    static void vTriggerOperand(Task* pTask);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // task interface
@@ -19,7 +15,9 @@ namespace Scheduling
     static bool bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking);
     static void vAddTaskDedicated(Task* pTask);
     static void vAddTaskGeneral(Task* pTask);
+    static void vBideTask(Task* pTask);
     static void vReturnTaskLoop(Thread* pThread);
+    static void vTriggerTask(Task* pTask);
     static void vWakeSleepingTasks(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -37,11 +35,6 @@ namespace Scheduling
 
   private:
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // implementation for ops
-    static void vOp_BideOperand(Task* pTask);
-    static void vOp_TriggerOperand(Task* pTask);
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // implementation for tasks
   
     static bool bTask_AckWaiting(Task* pTaskBeingAcked, Task* pTaskAcking);
@@ -52,6 +45,7 @@ namespace Scheduling
     static void vTask_ScheduleReady(Task* pTask);
     static void vTask_Sleep(Task* pTask);
     static void vTask_SpawnNew(Task* pTask);
+    static void vTask_Trigger(Task* pTask);
     static void vTask_Wait(Task* pTask);
     static void vTask_WakeSleeping(void);
     static void vTask_Yield(Task* pTask);

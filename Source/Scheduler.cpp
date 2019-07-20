@@ -13,30 +13,6 @@ extern AttachMap* gpAttachMap;
 //                              op interface                                  //
 ////////////////////////////////////////////////////////////////////////////////
 
-/*----------------------------------------------------------------------------*/
-/* wait for operand to arrive                                                 */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vBideOperand(Task* pTask)
-{
-  //
-  // called from Op::pPopOperand()
-  //
-  
-  vOp_BideOperand(pTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* wait for operand to arrive                                                 */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTriggerOperand(Task* pTask)
-{
-  //
-  // called from Op::???()
-  //
-  
-  vOp_TriggerOperand(pTask);
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 //                             task interface                                 //
 ////////////////////////////////////////////////////////////////////////////////
@@ -96,6 +72,18 @@ void Scheduler::vAddTaskGeneral(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bide till operand arrives                                                  */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vBideTask(Task* pTask)
+{
+  //
+  // called from Op::pPopOperand()
+  //
+  
+  vTask_Bide(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
 /* task has returned from task loop                                           */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vReturnTaskLoop(Thread* pThread)
@@ -126,6 +114,18 @@ void Scheduler::vReturnTaskLoop(Thread* pThread)
     default:
       NEVER_REACH;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* trigger biding task that operand has arrived                               */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTriggerTask(Task* pTask)
+{
+  //
+  // called from Op::???()
+  //
+  
+  vTask_Trigger(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -253,49 +253,6 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
   vThread_WaitAssignment(pThread);
   
   vTask_AssignedThread(pThread->m_pTask,pThread);
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-//                          implementation for ops                            //
-////////////////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* op task bides/waits for operand to arrive in operand queue                 */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vOp_BideOperand(Task* pTask)
-{
-  vDebugPoint();
-  
-#ifndef WITH_BIDING_OPS
-  return;
-#endif
-  
-  // remove this task from the executing task set
-  gpAttachMap->m_pQueues->vRemoveExecutingSet(pTask);
-
-  RASSERT(pTask->pOp()->bIsLocked());
-  
-  pTask->pOp()->vOpState(OZ_BIDING);
-
-  // add this task to the biding task set
-  gpAttachMap->m_pQueues->vAddBidingSet(pTask);
-
-  pTask->pOp()->vDropLock();
-}
-
-/*----------------------------------------------------------------------------*/
-/* op task has an operand arriving into its queue while its dormant           */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vOp_TriggerOperand(Task* pTask)
-{
-  vDebugPoint();
-
-#ifndef WITH_BIDING_OPS
-  return;
-#endif
-  
-  
 }
 
 
@@ -511,6 +468,19 @@ void Scheduler::vTask_SpawnNew(Task* pTask)
   pTask->vState(TS_READY);
 }
 
+/*----------------------------------------------------------------------------*/
+/* op task has an operand arriving into its queue while its dormant           */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTask_Trigger(Task* pTask)
+{
+  vDebugPoint();
+  
+#ifndef WITH_BIDING_OPS
+  return;
+#endif
+  
+  
+}
 /*----------------------------------------------------------------------------*/
 /* task is to wait for acks                                                   */
 /*----------------------------------------------------------------------------*/

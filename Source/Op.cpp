@@ -130,7 +130,7 @@ void Op::vAppendIn(Operand* pOperand)
   
   // trigger this op where the operand is being queued
   if (OZ_BIDING == m_eOpState)
-    Scheduler::vTriggerOperand(m_pJob->m_pExecutingTask);
+    Scheduler::vTriggerTask(m_pTask);
   
   m_okLock.vDropWrite();
 }
@@ -170,7 +170,7 @@ void Op::vBideOperand(void)
   
   ASSERT(m_okLock.bIsLocked());
   
-  Scheduler::vBideOperand(m_pTask);
+  Scheduler::vBideTask(m_pTask);
   
   ASSERT(m_okLock.bIsLocked());
 }
