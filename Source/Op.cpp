@@ -40,15 +40,13 @@ Op::Op(eCN eClassNo, Stz* szOpLabel, Job* pJob)
   
   m_sOpLabel      = szOpLabel;
   m_pJob          = pJob;
-  
-  m_bAckJobEnd    = false;
-  m_fpOpFun       = nullptr;
-  m_pOpOut        = nullptr;
-
-  m_eOpState      = OZ_NONE;
-  m_pOperandQueue = new OperandQueue;
-  
   m_pTask         = nullptr;
+  m_bAckJobEnd    = false;
+  
+  m_fpOpFun       = nullptr;
+
+  m_pOperandQueue = new OperandQueue;
+  m_pOpOut        = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -89,13 +87,7 @@ void Op::vOpLoop(void)
 //    (*m_fpOpFun)(this);
 //  }
   
-  vGrabLock();
-  m_eOpState = OZ_EXECUTING;
-  vDropLock();
-  
   (*m_fpOpFun)(this);
-  
-  RASSERT(OZ_EXECUTING == m_eOpState);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -128,10 +120,10 @@ void Op::vAppendIn(Operand* pOperand)
   m_pOperandQueue->vAppendOperand(pOperand);
   
   // trigger this op where the operand is being queued
-  if (OZ_BIDING == m_eOpState)
+  if (TS_BIDING == m_pTask->eState())
     Scheduler::vTriggerTask(m_pTask);
-  
-  vDropLock();
+  else
+    vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -223,26 +215,6 @@ void Op::vOpOut(Op* pOpOut)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get op state                                                               */
-/*----------------------------------------------------------------------------*/
-eOZ Op::eOpState(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_eOpState;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set op state                                                               */
-/*----------------------------------------------------------------------------*/
-void Op::vOpState(eOZ eOpState)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_eOpState = eOpState;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get task                                                                   */
 /*----------------------------------------------------------------------------*/
 Tasks::Task* Op::pTask(void)
@@ -280,14 +252,8 @@ Operand* Op::pPopOperand(void)
     if (! pOperand) {
       
       vBideOperand();
-      
-      m_eOpState = OZ_BIDING;
-      
-      vDropLock();
       break;
     }
-  
-    m_eOpState = OZ_EXECUTING;
     
     vDropLock();
     break;
