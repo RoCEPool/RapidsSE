@@ -51,7 +51,7 @@ ZedOp::ZedOp(Stz* szOpLabel, Jobs::Job* pJob)
   
   _checkInitialised_(CN_ZEDOP);
   
-  m_fpOpFun = ZedOp::bCall;
+  m_fpOpFun = ZedOp::bCallLoop;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ZEDOP,_FOOTER_);
 }
@@ -69,11 +69,11 @@ ZedOp::~ZedOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* call the fetch function                                                    */
+/* call the zed loop function                                                 */
 /*----------------------------------------------------------------------------*/
-bool ZedOp::bCall(void* aThis)
+bool ZedOp::bCallLoop(void* aThis)
 {
-  bool bCallAgain = ((ZedOp*)aThis)->bZed();
+  bool bCallAgain = ((ZedOp*)aThis)->bZedLoop();
   
   return bCallAgain;
 }
@@ -81,7 +81,7 @@ bool ZedOp::bCall(void* aThis)
 /*----------------------------------------------------------------------------*/
 /* the fetch operator function                                                */
 /*----------------------------------------------------------------------------*/
-bool ZedOp::bZed(void)
+bool ZedOp::bZedLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ZEDOP,_FOOTER_);
   
@@ -89,8 +89,10 @@ bool ZedOp::bZed(void)
     
     Operand* pOperand = pPopOperand();
     
-    if (! pOperand)
+    if (! pOperand) {
+      ASSERT(bIsLocked());
       return B_CALL_AGAIN;
+    }
     
     if (CN_ENDMARKER == pOperand->eClass()) {
       delete (EndMarker*)pOperand;

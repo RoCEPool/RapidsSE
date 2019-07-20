@@ -21,8 +21,8 @@ namespace PushDown
     FetchOp(Stz* szOpLabel, Jobs::Job* pJob);
    ~FetchOp(void) noexcept(false);
 
-    static bool bCall(void* aThis);
-    bool bFetch(void);
+    static bool bCallLoop(void* aThis);
+    bool bFetchLoop(void);
 
     void vTablePtn(TablePtn* pTablePtn);
   

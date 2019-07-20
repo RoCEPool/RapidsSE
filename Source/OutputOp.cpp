@@ -51,7 +51,7 @@ OutputOp::OutputOp(Stz* szOpLabel, Jobs::Job* pJob)
   
   _checkInitialised_(CN_OUTPUTOP);
 
-  m_fpOpFun = OutputOp::bCall;
+  m_fpOpFun = OutputOp::bCallLoop;
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
 }
@@ -69,19 +69,19 @@ OutputOp::~OutputOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* call the output function                                                   */
+/* call the output loop function                                              */
 /*----------------------------------------------------------------------------*/
-bool OutputOp::bCall(void* aThis)
+bool OutputOp::bCallLoop(void* aThis)
 {
-  bool bCallAgain = ((OutputOp*)aThis)->bOutput();
+  bool bCallAgain = ((OutputOp*)aThis)->bOutputLoop();
   
   return bCallAgain;
 }
 
 /*----------------------------------------------------------------------------*/
-/* the output operator function                                               */
+/* the output operator loop function                                          */
 /*----------------------------------------------------------------------------*/
-bool OutputOp::bOutput(void)
+bool OutputOp::bOutputLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
   
@@ -89,9 +89,11 @@ bool OutputOp::bOutput(void)
     
     Operand* pOperand = pPopOperand();
     
-    if (! pOperand)
+    if (! pOperand) {
+      ASSERT(bIsLocked());
       return B_CALL_AGAIN;
-
+    }
+    
     if (CN_ENDMARKER == pOperand->eClass()) {
       vAppendOut(pOperand);
       break;

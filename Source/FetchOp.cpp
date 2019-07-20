@@ -55,7 +55,7 @@ FetchOp::FetchOp(Stz* szOpLabel, Jobs::Job* pJob)
 
   _checkInitialised_(CN_FETCHOP);
 
-  m_fpOpFun = FetchOp::bCall;
+  m_fpOpFun = FetchOp::bCallLoop;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
 }
@@ -73,19 +73,19 @@ FetchOp::~FetchOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* call the fetch function                                                    */
+/* call the fetch loop function                                               */
 /*----------------------------------------------------------------------------*/
-bool FetchOp::bCall(void* aThis)
+bool FetchOp::bCallLoop(void* aThis)
 {  
-  bool bCallAgain = ((FetchOp*)aThis)->bFetch();
+  bool bCallAgain = ((FetchOp*)aThis)->bFetchLoop();
   
   return bCallAgain;
 }
 
 /*----------------------------------------------------------------------------*/
-/* the fetch operator function                                                */
+/* the fetch operator loop function                                           */
 /*----------------------------------------------------------------------------*/
-bool FetchOp::bFetch(void)
+bool FetchOp::bFetchLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
   
@@ -98,16 +98,9 @@ bool FetchOp::bFetch(void)
     vAppendOut(m_pCrwBuffer);
   }
   
-  vAppendOut_endMarker();
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-//  Task* pTask_JobQuery = m_pJob->m_pExecutingTask;
-//  
-//  Pthread::vSleepSsec(3,CN_FETCHOP);
-//  
-//  bool bWasQueued = Scheduler::bAckTask(pTask_JobQuery,m_pTask);
-//  ASSERT(bWasQueued);
+  vAppendOut_endMarker();
   
   return B_DONT_CALL_AGAIN;
 }
