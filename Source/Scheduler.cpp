@@ -392,6 +392,17 @@ void Scheduler::vTask_Exit(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* task transitions to none                                                   */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTask_None(Task* pTask)
+{
+  ASSERT(TS_NONE == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+  
+  pTask->vState(TS_NONE);
+}
+
+/*----------------------------------------------------------------------------*/
 /* task transitions to ready                                                  */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Ready(Task* pTask)
