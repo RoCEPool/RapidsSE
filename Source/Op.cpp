@@ -125,11 +125,11 @@ void Op::vAckJobEnd(bool bAckJobEnd)
 /*----------------------------------------------------------------------------*/
 /* append operand to this op's operand queue                                  */
 /*----------------------------------------------------------------------------*/
-void Op::vAppendIn(Operand* pOperand)
+void Op::vAppendOperand(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  vTrace("%s::vAppendIn : %p %s\n"_Stz,
+  vTrace("%s::vAppendOperand : %p %s\n"_Stz,
          m_sOpLabel.aStz(),
          pOperand,
          aCN[pOperand->eClass()]);
@@ -142,35 +142,11 @@ void Op::vAppendIn(Operand* pOperand)
     vDropLock();
     return;
   }
-    
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   // trigger this biding op
   Scheduler::vTriggerTask(m_pTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append operand to output op's operand queue                                */
-/*----------------------------------------------------------------------------*/
-void Op::vAppendOut(Operand* pOperand)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  vTrace("%s::vAppendOut : %p %s\n"_Stz,
-         m_sOpLabel.aStz(),
-         pOperand,
-         aCN[pOperand->eClass()]);
-  m_pOpOut->vAppendIn(pOperand);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append end-marker to output op's operand queue                             */
-/*----------------------------------------------------------------------------*/
-void Op::vAppendOut_endMarker(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  EndMarker* pEndMarker = new EndMarker;
-  
-  vAppendOut(pEndMarker);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -226,13 +202,40 @@ bool Op::bIsLocked(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set op out                                                                 */
+/* set out operator                                                           */
 /*----------------------------------------------------------------------------*/
 void Op::vOpOut(Op* pOpOut)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
   m_pOpOut = pOpOut;
+}
+
+/*----------------------------------------------------------------------------*/
+/* append operand to output op's operand queue                                */
+/*----------------------------------------------------------------------------*/
+void Op::vPipeOut(Operand* pOperand)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  vTrace("%s::vPipeOut : %p %s\n"_Stz,
+         m_sOpLabel.aStz(),
+         pOperand,
+         aCN[pOperand->eClass()]);
+  
+  m_pOpOut->vAppendOperand(pOperand);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append end-marker to output op's operand queue                             */
+/*----------------------------------------------------------------------------*/
+void Op::vPipeOut_endMarker(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  EndMarker* pEndMarker = new EndMarker;
+  
+  vPipeOut(pEndMarker);
 }
 
 /*----------------------------------------------------------------------------*/

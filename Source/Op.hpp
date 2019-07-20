@@ -34,14 +34,14 @@ namespace PushDown
     // - - - - - - - - - - - - - - - -
     void vAckJob(void);
     void vAckJobEnd(bool m_bAckJobEnd);
-    void vAppendIn(Operand* pOperand);
-    void vAppendOut(Operand* pOperand);
-    void vAppendOut_endMarker(void);
+    void vAppendOperand(Operand* pOperand);
     void vBideOperand(void);
     void vDropLock(void);
     void vGrabLock(void);
     bool bIsLocked(void);
     void vOpOut(Op* pOpOut);
+    void vPipeOut(Operand* pOperand);
+    void vPipeOut_endMarker(void);
     Operand* pPopOperand(void);
     Tasks::Task* pTask(void);
     void vTask(Tasks::Task* pTask);

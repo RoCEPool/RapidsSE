@@ -95,11 +95,11 @@ bool OutputOp::bOutputLoop(void)
     }
     
     if (CN_ENDMARKER == pOperand->eClass()) {
-      vAppendOut(pOperand);
+      vPipeOut(pOperand);
       break;
     }
     
-    vAppendOut(pOperand);
+    vPipeOut(pOperand);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

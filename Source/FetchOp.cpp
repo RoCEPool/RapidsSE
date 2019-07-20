@@ -95,12 +95,12 @@ bool FetchOp::bFetchLoop(void)
     
     vTrace("%s::bFetch %p\n"_Stz,m_sOpLabel.aStz(),m_pCrwBuffer);
     
-    vAppendOut(m_pCrwBuffer);
+    vPipeOut(m_pCrwBuffer);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  vAppendOut_endMarker();
+  vPipeOut_endMarker();
   
   return B_DONT_CALL_AGAIN;
 }
