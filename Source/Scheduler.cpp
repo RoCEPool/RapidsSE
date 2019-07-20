@@ -241,11 +241,14 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
   // called from Thread::vLoop_general()
   //
   
-  // threads was for task assignement
+  // thread waits for task assignement
   vThread_WaitAssignment(pThread);
   
   // task was assigned to this thread
-  vTask_AssignedThread(pThread->m_pTask,pThread);
+  vTask_Thread(pThread->m_pTask,pThread);
+
+  // task enters execute state
+  vTask_Execute(pThread->m_pTask);
 }
 
 
@@ -314,24 +317,6 @@ bool Scheduler::bTask_AckWaiting(Task* pTaskBeingAcked, Task* pTaskAcking)
 //  }
 
   return bAmDecider;
-}
-
-/*----------------------------------------------------------------------------*/
-/* task has been assigned the given thread                                    */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTask_AssignedThread(Task* pTask, Thread* pThread)
-{
-  RASSERT(TS_READY   == pTask->eState() ||
-          TS_YIELDED == pTask->eState());
-  
-  ASSERT(TD_ASSIGNED == pThread->m_eThreadState);
-  ASSERT(pThread->m_pTask);
-  
-  pTask->vState(TS_EXECUTING);
-  pTask->vThread(pThread);
-  
-  // add this task to the executing task set
-  gpAttachMap->m_pQueues->vAddExecutingSet(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
