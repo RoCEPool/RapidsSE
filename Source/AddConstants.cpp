@@ -496,14 +496,8 @@ void Axioms::vAddConstants(void)
   /* 60 */ vAddConstant("EC_VERSION_MISMATCH"_Stz,   EC_VERSION_MISMATCH);
   /* 61 */ vAddConstant("EC_ENUMS"_Stz,              EC_ENUMS);
 
-  // GO_ : go (aka proceed)
-  /*  0 */ vAddConstant("GO_NONE"_Stz,     GO_NONE);
-  /*  1 */ vAddConstant("GO_CONTINUE"_Stz, GO_CONTINUE);
-  /*  2 */ vAddConstant("GO_END"_Stz,      GO_END);
-  /*  3 */ vAddConstant("GO_STALL"_Stz,    GO_STALL);
-  /*  4 */ vAddConstant("GO_YIELD"_Stz,    GO_YIELD);
   
- // JK_ : job kind
+  // JK_ : job kind
   /*  0 */ vAddConstant("JK_NONE"_Stz,     JK_NONE);
   /*  1 */ vAddConstant("JK_CHILD"_Stz,    JK_CHILD);
   /*  2 */ vAddConstant("JK_DIST2PC"_Stz,  JK_DIST2PC);
@@ -539,13 +533,14 @@ void Axioms::vAddConstants(void)
     
   // TS_ : task state
   /*  0 */ vAddConstant("TS_NONE"_Stz,       TS_NONE);
-  /*  1 */ vAddConstant("TS_EXECUTING"_Stz,  TS_EXECUTING);
-  /*  2 */ vAddConstant("TS_EXITED"_Stz,     TS_EXITED);
-  /*  3 */ vAddConstant("TS_READY"_Stz,      TS_READY);
-  /*  4 */ vAddConstant("TS_SLEEPING"_Stz,   TS_SLEEPING);
-  /*  5 */ vAddConstant("TS_WAITING"_Stz,    TS_WAITING);
-  /*  6 */ vAddConstant("TS_YIELDED"_Stz,    TS_YIELDED);
-  /*  7 */ vAddConstant("TS_ENUMS"_Stz,      TS_ENUMS);
+  /*  1 */ vAddConstant("TS_BIDING"_Stz,     TS_BIDING);
+  /*  2 */ vAddConstant("TS_EXECUTING"_Stz,  TS_EXECUTING);
+  /*  3 */ vAddConstant("TS_EXITED"_Stz,     TS_EXITED);
+  /*  4 */ vAddConstant("TS_READY"_Stz,      TS_READY);
+  /*  5 */ vAddConstant("TS_SLEEPING"_Stz,   TS_SLEEPING);
+  /*  6 */ vAddConstant("TS_WAITING"_Stz,    TS_WAITING);
+  /*  7 */ vAddConstant("TS_YIELDED"_Stz,    TS_YIELDED);
+  /*  8 */ vAddConstant("TS_ENUMS"_Stz,      TS_ENUMS);
 
   // TP_ : transaction phase
   /*  0 */ vAddConstant("TP_NONE"_Stz,        TP_NONE);

@@ -34,24 +34,6 @@ namespace Jobs
     /*  1 */ "LOW"_Stz,
     /*  2 */ "NORMAL"_Stz
   };
-
-  enum eGO // go (aka proceed)
-  {
-  /*  0 */ GO_NONE=0,
-  /*  1 */ GO_CONTINUE,
-  /*  2 */ GO_END,
-  /*  3 */ GO_STALL,
-  /*  4 */ GO_YIELD,
-  };
-  
-  static Stz* aGO[]
-  {
-  /*  0 */ "NONE"_Stz,
-  /*  1 */ "CONTINUE"_Stz,
-  /*  2 */ "END"_Stz,
-  /*  3 */ "STALL"_Stz,
-  /*  4 */ "YIELD"_Stz,
-  };
   
   enum eJK // job kind
   {
