@@ -8,16 +8,15 @@ namespace PushDown
   class Op : public Object
   {
   protected:
-    s32           m_sOpLabel;         // label of this op
-    Jobs::Job*    m_pJob;             // job this operator belongs to
-    Tasks::Task*  m_pTask;            // task running this op
-    bool          m_bAckJobEnd;       // ack job on end marker
-  
-    bool (*m_fpOpFun)(void* aThis);   // function which does the op
- 
-    OperandQueue*  m_pOperandQueue;   // the input queue being processed
-    Op*            m_pOpOut;          // where results get queued (piping)
+    s32            m_sOpLabel;         // label of this op
+    Jobs::Job*     m_pJob;             // job this operator belongs to
+    Tasks::Task*   m_pTask;            // task running this op
+    bool           m_bAckJobEnd;       // ack job on end marker
+    OperandQueue*  m_pOperandQueue;    // the input queue being processed
+    Op*            m_pOpOut;           // where results get queued (piping)
 
+    void (*m_fpOpFun)(void* aThis);   // function which does the op
+  
   public:
     void  operator delete(void*);
   

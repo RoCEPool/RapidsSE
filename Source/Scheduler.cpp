@@ -122,7 +122,7 @@ void Scheduler::vReturnTaskLoop(Thread* pThread)
 void Scheduler::vTriggerTask(Task* pTask)
 {
   //
-  // called from Op::???()
+  // called from Op::vAppendIn()
   //
   
   vTask_Trigger(pTask);

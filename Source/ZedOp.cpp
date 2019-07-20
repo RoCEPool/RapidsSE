@@ -51,7 +51,7 @@ ZedOp::ZedOp(Stz* szOpLabel, Jobs::Job* pJob)
   
   _checkInitialised_(CN_ZEDOP);
   
-  m_fpOpFun = ZedOp::bCall;
+  m_fpOpFun = ZedOp::vCall;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ZEDOP,_FOOTER_);
 }
@@ -71,17 +71,15 @@ ZedOp::~ZedOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* call the fetch function                                                    */
 /*----------------------------------------------------------------------------*/
-bool ZedOp::bCall(void* aThis)
+void ZedOp::vCall(void* aThis)
 {
-  bool b = ((ZedOp*)aThis)->bZed();
-  
-  return b;
+  ((ZedOp*)aThis)->vZed();
 }
 
 /*----------------------------------------------------------------------------*/
 /* the fetch operator function                                                */
 /*----------------------------------------------------------------------------*/
-bool ZedOp::bZed(void)
+void ZedOp::vZed(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ZEDOP,_FOOTER_);
   
@@ -102,10 +100,7 @@ bool ZedOp::bZed(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Task* pTask = Task::pThisTLSTask();
-  pTask->vTransition(TR_EXIT);
-
-  return false;
+  m_pTask->vTransition(TR_EXIT);
 }
 
 /*----------------------------------------------------------------------------*/

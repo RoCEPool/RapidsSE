@@ -42,11 +42,10 @@ Op::Op(eCN eClassNo, Stz* szOpLabel, Job* pJob)
   m_pJob          = pJob;
   m_pTask         = nullptr;
   m_bAckJobEnd    = false;
-  
-  m_fpOpFun       = nullptr;
-
   m_pOperandQueue = new OperandQueue;
   m_pOpOut        = nullptr;
+
+  m_fpOpFun       = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -119,11 +118,13 @@ void Op::vAppendIn(Operand* pOperand)
   
   m_pOperandQueue->vAppendOperand(pOperand);
   
-  // trigger this op where the operand is being queued
-  if (TS_BIDING == m_pTask->eState())
-    Scheduler::vTriggerTask(m_pTask);
-  else
+  if (TS_BIDING != m_pTask->eState()) {
     vDropLock();
+    return;
+  }
+    
+  // trigger this biding op
+  Scheduler::vTriggerTask(m_pTask);
 }
 
 /*----------------------------------------------------------------------------*/

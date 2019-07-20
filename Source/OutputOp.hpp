@@ -19,8 +19,8 @@ namespace PushDown
     OutputOp(Stz* szOpLabel, Jobs::Job* pJob);
    ~OutputOp(void) noexcept(false);
   
-    static bool bCall(void* aThis);
-    bool bOutput(void);
+    static void vCall(void* aThis);
+    void vOutput(void);
 
   private:
     Footer* aFooter(void);

@@ -51,7 +51,7 @@ OutputOp::OutputOp(Stz* szOpLabel, Jobs::Job* pJob)
   
   _checkInitialised_(CN_OUTPUTOP);
 
-  m_fpOpFun = OutputOp::bCall;
+  m_fpOpFun = OutputOp::vCall;
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
 }
@@ -71,17 +71,15 @@ OutputOp::~OutputOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* call the output function                                                   */
 /*----------------------------------------------------------------------------*/
-bool OutputOp::bCall(void* aThis)
+void OutputOp::vCall(void* aThis)
 {
-  bool b = ((OutputOp*)aThis)->bOutput();
-  
-  return b;
+  ((OutputOp*)aThis)->vOutput();
 }
 
 /*----------------------------------------------------------------------------*/
-/* the output operator function                                              */
+/* the output operator function                                               */
 /*----------------------------------------------------------------------------*/
-bool OutputOp::bOutput(void)
+void OutputOp::vOutput(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
   
@@ -104,10 +102,7 @@ bool OutputOp::bOutput(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Task* pTask = Task::pThisTLSTask();
-  pTask->vTransition(TR_EXIT);
-  
-  return false;
+  m_pTask->vTransition(TR_EXIT);
 }
 
 /*----------------------------------------------------------------------------*/

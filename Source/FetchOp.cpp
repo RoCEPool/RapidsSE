@@ -55,7 +55,7 @@ FetchOp::FetchOp(Stz* szOpLabel, Jobs::Job* pJob)
 
   _checkInitialised_(CN_FETCHOP);
 
-  m_fpOpFun = FetchOp::bCall;
+  m_fpOpFun = FetchOp::vCall;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
 }
@@ -75,17 +75,15 @@ FetchOp::~FetchOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* call the fetch function                                                    */
 /*----------------------------------------------------------------------------*/
-bool FetchOp::bCall(void* aThis)
+void FetchOp::vCall(void* aThis)
 {  
-  bool b = ((FetchOp*)aThis)->bFetch();
-  
-  return b;
+  ((FetchOp*)aThis)->vFetch();
 }
 
 /*----------------------------------------------------------------------------*/
 /* the fetch operator function                                                */
 /*----------------------------------------------------------------------------*/
-bool FetchOp::bFetch(void)
+void FetchOp::vFetch(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
   
@@ -102,17 +100,14 @@ bool FetchOp::bFetch(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Task* pTask = Task::pThisTLSTask();
-  
-  Task* pTaskQuery = m_pJob->m_pExecutingTask;
+  Task* pTask_JobQuery = m_pJob->m_pExecutingTask;
   
   Pthread::vSleepSsec(3,CN_FETCHOP);
   
-  bool bWasQueued = Scheduler::bAckTask(pTaskQuery,pTask);
-
-  pTask->vTransition(TR_EXIT);
+  bool bWasQueued = Scheduler::bAckTask(pTask_JobQuery,m_pTask);
+  ASSERT(bWasQueued);
   
-  return false;
+  m_pTask->vTransition(TR_EXIT);
 }
 
 /*----------------------------------------------------------------------------*/
