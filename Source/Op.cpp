@@ -45,7 +45,6 @@ Op::Op(eCN eClassNo, Stz* szOpLabel, Job* pJob)
   m_fpOpFun       = nullptr;
   m_pOpOut        = nullptr;
 
-  m_okLock.vInitLock(LK_OP);
   m_eOpState      = OZ_NONE;
   m_pOperandQueue = new OperandQueue;
   
@@ -90,9 +89,9 @@ void Op::vOpLoop(void)
 //    (*m_fpOpFun)(this);
 //  }
   
-  m_okLock.vGrabWrite();
+  vGrabLock();
   m_eOpState = OZ_EXECUTING;
-  m_okLock.vDropWrite();
+  vDropLock();
   
   (*m_fpOpFun)(this);
   
@@ -124,7 +123,7 @@ void Op::vAppendIn(Operand* pOperand)
          pOperand,
          aCN[pOperand->eClass()]);
   
-  m_okLock.vGrabWrite();
+  vGrabLock();
   
   m_pOperandQueue->vAppendOperand(pOperand);
   
@@ -132,7 +131,7 @@ void Op::vAppendIn(Operand* pOperand)
   if (OZ_BIDING == m_eOpState)
     Scheduler::vTriggerTask(m_pTask);
   
-  m_okLock.vDropWrite();
+  vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -168,11 +167,11 @@ void Op::vBideOperand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  ASSERT(m_okLock.bIsLocked());
+  ASSERT(bIsLocked());
   
   Scheduler::vBideTask(m_pTask);
   
-  ASSERT(m_okLock.bIsLocked());
+  ASSERT(bIsLocked());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -182,7 +181,9 @@ void Op::vDropLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_okLock.vDropWrite();
+//  m_okLock.vDropWrite();
+  
+  m_pTask->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -192,7 +193,9 @@ void Op::vGrabLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_okLock.vGrabWrite();
+  //m_okLock.vGrabWrite();
+  
+  m_pTask->vGrabLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -202,8 +205,10 @@ bool Op::bIsLocked(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  bool bLocked = m_okLock.bIsLocked();
-  
+//  bool bLocked = m_okLock.bIsLocked();
+
+  bool bLocked = m_pTask->bIsLocked();
+
   return bLocked;
 }
 
@@ -268,7 +273,7 @@ Operand* Op::pPopOperand(void)
   
   for (;;) {
     
-    m_okLock.vGrabWrite();
+    vGrabLock();
   
     pOperand = m_pOperandQueue->pPopOperand();
   
@@ -278,13 +283,13 @@ Operand* Op::pPopOperand(void)
       
       m_eOpState = OZ_BIDING;
       
-      m_okLock.vDropWrite();
+      vDropLock();
       break;
     }
   
     m_eOpState = OZ_EXECUTING;
     
-    m_okLock.vDropWrite();
+    vDropLock();
     break;
   }
   

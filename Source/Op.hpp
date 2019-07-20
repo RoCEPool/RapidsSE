@@ -33,7 +33,6 @@ namespace PushDown
     bool (*m_fpOpFun)(void* aThis);  // function which does the op
     Op*  m_pOpOut;                   // where results get queued (piping)
 
-    Lock m_okLock;      // op lock
     eOZ  m_eOpState;    // state of this op
     OperandQueue* m_pOperandQueue;   // the input queue being processed
   
