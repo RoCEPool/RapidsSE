@@ -112,9 +112,9 @@ Job_Query::Job_Query(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_QUERY,_FOOTER_);
   
-  m_pFetchOp  = new FetchOp(this,"F_0"_Stz);
-  m_pOutputOp = new OutputOp(this,"O_0"_Stz);
-  m_pZedOp    = new ZedOp(this,"Z_0"_Stz);
+  m_pFetchOp  = new FetchOp ("F_0"_Stz,this);
+  m_pOutputOp = new OutputOp("O_0"_Stz,this);
+  m_pZedOp    = new ZedOp   ("Z_0"_Stz,this);
 
   _checkInitialised_(CN_JOB_QUERY);
 

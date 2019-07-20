@@ -33,14 +33,14 @@ void Op::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Op::Op(eCN eClassNo, Job* pJob, Stz* szOpLabel)
+Op::Op(eCN eClassNo, Stz* szOpLabel, Job* pJob)
 : Object(eClassNo)
 {
   _precondition_(_MAGIC_,eClassNo);
   
   m_sOpLabel      = szOpLabel;
-  
   m_pJob          = pJob;
+  
   m_bAckJobEnd    = false;
   m_fpOpFun       = nullptr;
   m_pOpOut        = nullptr;
@@ -170,7 +170,7 @@ void Op::vBideOperand(void)
   
   ASSERT(m_okLock.bIsLocked());
   
-  Scheduler::vBideOperand(m_pJob->m_pExecutingTask);
+  Scheduler::vBideOperand(m_pTask);
   
   ASSERT(m_okLock.bIsLocked());
 }

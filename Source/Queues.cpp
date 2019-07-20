@@ -197,8 +197,9 @@ void Queues::vAddBidingSet(Task* pTask)
   m_pBidingSet->vGrabLock();
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   
-  RASSERT(TS_EXECUTING == pTask->eState());
-  
+  //RASSERT(TS_EXECUTING == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+
   pTask->vQueue(QK_BIDING_SET);
   pTask->vQueueOrder(++m_ixTaskSetOrder);
   

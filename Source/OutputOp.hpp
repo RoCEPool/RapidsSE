@@ -16,7 +16,7 @@ namespace PushDown
     void* operator new(size_t);
     void  operator delete(void*);
   
-    OutputOp(Jobs::Job* pJob, Stz* szOpLabel);
+    OutputOp(Stz* szOpLabel, Jobs::Job* pJob);
    ~OutputOp(void) noexcept(false);
   
     static bool bCall(void* aThis);

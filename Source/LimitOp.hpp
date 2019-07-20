@@ -13,7 +13,7 @@ namespace PushDown
     Footer m_xFooter;
 
   public:
-    LimitOp(Jobs::Job* pJob, Stz* szOpLabel);
+    LimitOp(Stz* szOpLabel, Jobs::Job* pJob);
    ~LimitOp(void) noexcept(false);
   
   private:

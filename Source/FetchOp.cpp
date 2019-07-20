@@ -45,8 +45,8 @@ void FetchOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* initialize object                                                          */
 /*----------------------------------------------------------------------------*/
-FetchOp::FetchOp(Jobs::Job* pJob, Stz* szOpLabel)
-: Op(CN_FETCHOP,pJob,szOpLabel)
+FetchOp::FetchOp(Stz* szOpLabel, Jobs::Job* pJob)
+: Op(CN_FETCHOP,szOpLabel,pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
   

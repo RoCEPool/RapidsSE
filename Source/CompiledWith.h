@@ -63,7 +63,7 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // event-based task model
-#define WITH_BIDING_OPS            // biding ops
+//#define WITH_BIDING_OPS            // biding ops
 
 
 /*============================================================================*/

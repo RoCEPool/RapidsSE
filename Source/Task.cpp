@@ -307,7 +307,7 @@ void Task::vTaskLoop_op(void)
   
   if (! m_pDataStack )
     vNewStacks();
-  
+    
   while (TR_NONE == m_eTransition) {
     m_pOp->vOpLoop();
   }

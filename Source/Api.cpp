@@ -451,7 +451,7 @@ bool Api::bSpawnOp(Session* pSession, Op* pOp)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Task* pNewTask = new Task(pOp,pSession);
-  
+  pOp->vTask(pNewTask);
   Scheduler::vAddTaskGeneral(pNewTask);
   
   return true;

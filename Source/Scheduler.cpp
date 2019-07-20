@@ -270,6 +270,9 @@ void Scheduler::vOp_BideOperand(Task* pTask)
   return;
 #endif
   
+  // remove this task from the executing task set
+  gpAttachMap->m_pQueues->vRemoveExecutingSet(pTask);
+
   RASSERT(pTask->pOp()->bIsLocked());
   
   pTask->pOp()->vOpState(OZ_BIDING);

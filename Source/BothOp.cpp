@@ -22,8 +22,8 @@ BothOp* PushDown::_pBothOp(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* initialize object                                                          */
 /*----------------------------------------------------------------------------*/
-BothOp::BothOp(Jobs::Job* pJob, Stz* szOpLabel)
-: Op(CN_BOTHOP,pJob,szOpLabel)
+BothOp::BothOp(Stz* szOpLabel, Jobs::Job* pJob)
+: Op(CN_BOTHOP,szOpLabel,pJob)
 {
   _precondition_(_MAGIC_,CN_BOTHOP);
 }

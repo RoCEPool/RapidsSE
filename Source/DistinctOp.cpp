@@ -22,8 +22,8 @@ DistinctOp* PushDown::_pDistinctOp(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* initialize object                                                          */
 /*----------------------------------------------------------------------------*/
-DistinctOp::DistinctOp(Jobs::Job* pJob, Stz* szOpLabel)
-: Op(CN_DISTINCTOP,pJob,szOpLabel)
+DistinctOp::DistinctOp(Stz* szOpLabel, Jobs::Job* pJob)
+: Op(CN_DISTINCTOP,szOpLabel,pJob)
 {
   _precondition_(_MAGIC_,CN_DISTINCTOP);
 }

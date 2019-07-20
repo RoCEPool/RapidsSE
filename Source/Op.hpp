@@ -25,12 +25,10 @@ namespace PushDown
 
   class Op : public Object
   {
-  friend Tasks::Task;
-  
   protected:
     s32  m_sOpLabel;    // label of this op
-  
     Jobs::Job* m_pJob;  // job this operator belongs to
+  
     bool m_bAckJobEnd;  // ack job on end marker
     bool (*m_fpOpFun)(void* aThis);  // function which does the op
     Op*  m_pOpOut;                   // where results get queued (piping)
@@ -44,7 +42,7 @@ namespace PushDown
   public:
     void  operator delete(void*);
   
-    Op(eCN eClass, Jobs::Job* pJob, Stz* szOpLabel);
+    Op(eCN eClass, Stz* szOpLabel, Jobs::Job* pJob);
    ~Op(void) noexcept(false);
   
     static Op* pThisTLSOp(void);

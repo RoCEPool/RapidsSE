@@ -22,8 +22,8 @@ HashOp* PushDown::_pHashOp(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* initialize object                                                          */
 /*----------------------------------------------------------------------------*/
-HashOp::HashOp(Jobs::Job* pJob, Stz* szOpLabel)
-: Op(CN_HASHOP,pJob,szOpLabel)
+HashOp::HashOp(Stz* szOpLabel, Jobs::Job* pJob)
+: Op(CN_HASHOP,szOpLabel,pJob)
 {
   _precondition_(_MAGIC_,CN_HASHOP);
 }
