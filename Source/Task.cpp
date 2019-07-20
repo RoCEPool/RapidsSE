@@ -206,7 +206,7 @@ Task* Task::pThisTLSTask(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* task loop                                                                  */
+/* task loop (job)                                                            */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskLoop_job(void)
 {
@@ -293,21 +293,12 @@ void Task::vTaskLoop_job(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task loop                                                                  */
+/* task loop (operator)                                                       */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskLoop_op(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  // record time of call
-  // ...
-  
-  // TODO: shouldn't have to refind it everytime!!!
-  vRefindJobClass();
-  
-  if (! m_pDataStack )
-    vNewStacks();
-    
   while (TR_NONE == m_eTransition) {
     m_pOp->vOpLoop();
   }
@@ -316,16 +307,6 @@ void Task::vTaskLoop_op(void)
     //delete m_pOp;
     m_pOp = nullptr;
   }
-    
-  // record time of return & calculate running total times
-  // ...
-  
-//  if (m_pJob && m_pJob->m_bMarkActivity)
-//    ActivityLog::vMarkJob(m_pJob,
-//                          "Returned from task call: %s %p"_Stz,
-//                          aCN[m_pJob->eClass()],
-//                          m_pJob);
-  
 }
 
 
