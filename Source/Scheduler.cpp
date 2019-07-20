@@ -284,8 +284,9 @@ bool Scheduler::bTask_Ack(Task* pTaskBeingAcked, Task* pTaskAcking)
   //       between when the task grabs its lock + sets the number of acks and
   //       when it enters the waiting state and drops the lock
   
-  RASSERT(TS_EXECUTING == pTaskAcking->eState());
   RASSERT(pTaskBeingAcked->iAcksRmg_assert_only_() > 0);
+  
+  RASSERT(TS_EXECUTING == pTaskAcking->eState());
   
 //  Job* pJobBeingAcked = pTaskBeingAcked->pJob();
 //  Job* pJobAcking     = pTaskAcking->pJob();
@@ -339,7 +340,7 @@ bool Scheduler::bTask_Ack(Task* pTaskBeingAcked, Task* pTaskAcking)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task is to bide till operand arrives                                       */
+/* op-task is to bide till operand arrives                                    */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Bide(Task* pTask)
 {
@@ -361,7 +362,7 @@ void Scheduler::vTask_Bide(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task is to execute                                                         */
+/* task transitions to executing                                              */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Execute(Task* pTask)
 {
@@ -376,7 +377,7 @@ void Scheduler::vTask_Execute(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task is to exit                                                            */
+/* task transitions to exited and is deleted                                  */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Exit(Task* pTask)
 {

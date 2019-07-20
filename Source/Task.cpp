@@ -166,6 +166,10 @@ Task::~Task(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+  RASSERT(TS_EXITED == m_eState);
+  RASSERT(! m_pJob);
+  RASSERT(! m_iDdlLocked);
+  
   // delete the stacks
   delete m_pDataStack;
   delete m_pReturnStack;
@@ -180,9 +184,6 @@ Task::~Task(void) noexcept(false)
   
     delete pLocalsFrame;
   }
-  
-  RASSERT(! m_pJob);
-  RASSERT(! m_iDdlLocked);
   
   ActionSequence::vAdd(m_i_ActionRoot,0,CN_TASK,AN_DESTRUCTOR,CN_TASK);
 
