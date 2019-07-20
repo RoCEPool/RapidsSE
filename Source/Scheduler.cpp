@@ -473,8 +473,6 @@ void Scheduler::vTask_SpawnNew(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Trigger(Task* pTask)
 {
-  vDebugPoint();
-  
   RASSERT(TS_BIDING == pTask->eState());
   RASSERT(TR_NONE == pTask->eTransition());
   RASSERT(QK_BIDING_SET == pTask->eQueue());
