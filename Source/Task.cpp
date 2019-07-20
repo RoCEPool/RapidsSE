@@ -378,6 +378,16 @@ i8 Task::iAcksRmg_assert_only_(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set the number of acks remaining                                           */
+/*----------------------------------------------------------------------------*/
+void Task::vAcksRmg(i8 iAcksRmg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  m_oAcksRmg.vSetRemaining(iAcksRmg);
+}
+
+/*----------------------------------------------------------------------------*/
 /* adjust forth instruction pointer                                           */
 /*----------------------------------------------------------------------------*/
 void Task::vAdjustFIP(i8 nBytes)
