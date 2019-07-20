@@ -10,10 +10,6 @@ extern AttachMap* gpAttachMap;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-//                              op interface                                  //
-////////////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////////////////
 //                             task interface                                 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -201,7 +197,7 @@ void Scheduler::vEndThread(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pause till general threads are all idle                                    */
+/* pause till all general threads are all idle (at system startup)            */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vPauseTillGeneralThreads(void)
 {
@@ -213,7 +209,7 @@ void Scheduler::vPauseTillGeneralThreads(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove dedicated thread from thread vector                                 */
+/* remove dedicated thread from dedicated thread vector                       */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThreadRemoveDedicated(Thread* pThread)
 {
@@ -225,7 +221,7 @@ void Scheduler::vThreadRemoveDedicated(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove general thread from thread vector                                   */
+/* remove general thread from general thread vector                           */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThreadRemoveGeneral(Thread* pThread)
 {
@@ -245,8 +241,10 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
   // called from Thread::vLoop_general()
   //
   
+  // threads was for task assignement
   vThread_WaitAssignment(pThread);
   
+  // task was assigned to this thread
   vTask_AssignedThread(pThread->m_pTask,pThread);
 }
 
@@ -260,12 +258,16 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 bool Scheduler::bTask_AckWaiting(Task* pTaskBeingAcked, Task* pTaskAcking)
 {
+  // note: the task may not yet be waiting.  there is an indefinite period
+  //       between when the task grabs its lock + sets the number of acks and
+  //       when it enters the waiting state and drops the lock
+  
   RASSERT(TS_EXECUTING == pTaskAcking->eState());
   RASSERT(pTaskBeingAcked->iAcksRmg_assert_only_() > 0);
   
-  Job* pJobBeingAcked = pTaskBeingAcked->pJob();
-  Job* pJobAcking     = pTaskAcking->pJob();
-  
+//  Job* pJobBeingAcked = pTaskBeingAcked->pJob();
+//  Job* pJobAcking     = pTaskAcking->pJob();
+//
 //  if (pJobAcking->m_bMarkActivity || pJobBeingAcked->m_bMarkActivity) {
 //    ActivityLog::vMarkJob(pJobBeingAcked,
 //                          "pTaskBeingAcked:%p Job %s "_Stz,
@@ -315,7 +317,7 @@ bool Scheduler::bTask_AckWaiting(Task* pTaskBeingAcked, Task* pTaskAcking)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task has been assigned a thread                                            */
+/* task has been assigned the given thread                                    */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_AssignedThread(Task* pTask, Thread* pThread)
 {
@@ -355,6 +357,19 @@ void Scheduler::vTask_Bide(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* task is to execute                                                         */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTask_Execute(Task* pTask)
+{
+  RASSERT(TS_READY   == pTask->eState() ||
+          TS_YIELDED == pTask->eState());
+  
+  pTask->vState(TS_EXECUTING);
+
+  gpAttachMap->m_pQueues->vAddExecutingSet(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
 /* task is to exit                                                            */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Exit(Task* pTask)
@@ -373,7 +388,7 @@ void Scheduler::vTask_Exit(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* resume an acked task (that had been waiting)                               */
+/* resume a fully acked task (that had been waiting)                          */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_ResumeAck(Task* pTask)
 {
@@ -385,14 +400,16 @@ void Scheduler::vTask_ResumeAck(Task* pTask)
                           aCN[pTask->pJob()->eClass()],
                           pTask->pJob());
   
+  // cycle the task lock to ensure task has fully entered wait state
   pTask->vGrabLock();
   pTask->vDropLock();
   
   // having got the lock, the task should be TS_WAITING and QK_WAITING_SET
-  
   RASSERT(TS_WAITING == pTask->eState());
   RASSERT(QK_WAITING_SET == pTask->eQueue());
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   gpAttachMap->m_pQueues->vRemoveWaitingSet(pTask);
   
   pTask->vState(TS_READY);
