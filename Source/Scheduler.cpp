@@ -367,7 +367,9 @@ void Scheduler::vTask_Execute(Task* pTask)
 {
   RASSERT(TS_READY   == pTask->eState() ||
           TS_YIELDED == pTask->eState());
-  
+  RASSERT(TR_NONE == pTask->eTransition());
+  RASSERT(QK_NONE == pTask->eQueue());
+
   pTask->vState(TS_EXECUTING);
 
   gpAttachMap->m_pQueues->vAddExecutingSet(pTask);
@@ -381,11 +383,11 @@ void Scheduler::vTask_Exit(Task* pTask)
   RASSERT(TS_EXECUTING == pTask->eState());
   RASSERT(TR_EXIT == pTask->eTransition());
   RASSERT(QK_NONE == pTask->eQueue());
-  
-  pTask->vTransition(TR_NONE);
-  
   ASSERT(! pTask->bWordBody());
-  
+
+  pTask->vState(TS_EXITED);
+  pTask->vTransition(TR_NONE);
+
   //vTrace("Exited Task %p\n"_Stz,pTask);
   
   delete pTask;
@@ -396,7 +398,6 @@ void Scheduler::vTask_Exit(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_None(Task* pTask)
 {
-  ASSERT(TS_NONE == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
   
   pTask->vState(TS_NONE);
@@ -407,7 +408,6 @@ void Scheduler::vTask_None(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Ready(Task* pTask)
 {
-  ASSERT(TS_NONE == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
   
   pTask->vState(TS_READY);
@@ -439,7 +439,8 @@ void Scheduler::vTask_Resume(Task* pTask)
   gpAttachMap->m_pQueues->vRemoveWaitingSet(pTask);
   
   pTask->vState(TS_READY);
-  vScheduleReadyTask(pTask);
+  
+  Scheduler::vScheduleReadyTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -505,7 +506,7 @@ void Scheduler::vTask_Trigger(Task* pTask)
   pTask->vState(TS_READY);
   pTask->vDropLock();
   
-  vScheduleReadyTask(pTask);
+  Scheduler::vScheduleReadyTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
