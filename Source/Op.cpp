@@ -41,7 +41,7 @@ Op::Op(eCN eClassNo, Stz* szOpLabel, Job* pJob)
   m_sOpLabel      = szOpLabel;
   m_pJob          = pJob;
   m_pTask         = nullptr;
-  m_bAckJobEnd    = false;
+  m_bAckJobEnd    = true;
   m_pOperandQueue = new OperandQueue;
   m_pOpOut        = nullptr;
 
@@ -108,8 +108,7 @@ void Op::vAckJob(void)
   
   Task* pTask_JobQuery = m_pJob->m_pExecutingTask;
     
-  bool bWasQueued = Scheduler::bAckTask(pTask_JobQuery,m_pTask);
-  ASSERT(bWasQueued);
+  IGNORE_RETURN(Scheduler::bAckTask(pTask_JobQuery,m_pTask));
 }
 
 /*----------------------------------------------------------------------------*/

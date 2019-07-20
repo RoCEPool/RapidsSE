@@ -195,18 +195,17 @@ void Job_Query::vBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_QUERY,_FOOTER_);
   
-  m_pExecutingTask->vAcksRmg(1);
+  m_pExecutingTask->vAcksRmg(3);
 
   m_pFetchOp->vOpOut(m_pOutputOp);
   m_pOutputOp->vOpOut(m_pZedOp);
   m_pZedOp->vOpOut(nullptr);
-  m_pZedOp->vAckJobEnd(true);
+  //m_pZedOp->vAckJobEnd(true);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   TablePtn* pTablePtn = m_pTable->pPartition(0);
   m_pFetchOp->vTablePtn(pTablePtn);
-  
 }
 
 /*----------------------------------------------------------------------------*/
