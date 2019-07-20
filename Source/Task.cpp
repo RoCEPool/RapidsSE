@@ -304,7 +304,7 @@ void Task::vTaskLoop_op(void)
   }
   
   if (TR_EXIT == m_eTransition) {
-    //delete m_pOp;
+    // the op is deleted by the job
     m_pOp = nullptr;
   }
 }
