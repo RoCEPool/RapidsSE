@@ -39,6 +39,7 @@ Op::Op(eCN eClassNo, Job* pJob, Stz* szOpLabel)
   _precondition_(_MAGIC_,eClassNo);
   
   m_sOpLabel      = szOpLabel;
+  
   m_pJob          = pJob;
   m_bAckJobEnd    = false;
   m_fpOpFun       = nullptr;
@@ -47,6 +48,8 @@ Op::Op(eCN eClassNo, Job* pJob, Stz* szOpLabel)
   m_okLock.vInitLock(LK_OP);
   m_eOpState      = OZ_NONE;
   m_pOperandQueue = new OperandQueue;
+  
+  m_pTask         = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -232,6 +235,26 @@ void Op::vOpState(eOZ eOpState)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_eOpState = eOpState;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get task                                                                   */
+/*----------------------------------------------------------------------------*/
+Tasks::Task* Op::pTask(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_pTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set task                                                                   */
+/*----------------------------------------------------------------------------*/
+void Op::vTask(Tasks::Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_pTask = pTask;
 }
 
 /*----------------------------------------------------------------------------*/

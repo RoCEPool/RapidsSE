@@ -270,7 +270,14 @@ void Scheduler::vOp_BideOperand(Task* pTask)
   return;
 #endif
   
+  RASSERT(pTask->pOp()->bIsLocked());
+  
+  pTask->pOp()->vOpState(OZ_BIDING);
 
+  // add this task to the biding task set
+  gpAttachMap->m_pQueues->vAddBidingSet(pTask);
+
+  pTask->pOp()->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/

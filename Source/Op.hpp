@@ -29,6 +29,7 @@ namespace PushDown
   
   protected:
     s32  m_sOpLabel;    // label of this op
+  
     Jobs::Job* m_pJob;  // job this operator belongs to
     bool m_bAckJobEnd;  // ack job on end marker
     bool (*m_fpOpFun)(void* aThis);  // function which does the op
@@ -37,6 +38,8 @@ namespace PushDown
     Lock m_okLock;      // op lock
     eOZ  m_eOpState;    // state of this op
     OperandQueue* m_pOperandQueue;   // the input queue being processed
+  
+    Tasks::Task*  m_pTask;           // task running this op
 
   public:
     void  operator delete(void*);
@@ -62,6 +65,8 @@ namespace PushDown
     eOZ  eOpState(void);
     void vOpState(eOZ eOpState);
     Operand* pPopOperand(void);
+    Tasks::Task* pTask(void);
+    void vTask(Tasks::Task* pTask);
   };
 
   Op* _pOp(void* aAddr);
