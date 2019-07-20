@@ -18,7 +18,7 @@ extern AttachMap* gpAttachMap;
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* ack a waiting task                                                         */
+/* ack a waiting task (returns true if task is resumed)                       */
 /*----------------------------------------------------------------------------*/
 bool Scheduler::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
 {
@@ -46,17 +46,14 @@ void Scheduler::vAddTaskDedicated(Task* pTask)
   //
   // called from Api::bSpawnJobDedicated()
   //
-  
 
   vTask_SpawnNew(pTask);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   vThread_DedicatedTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
-/* add new general task into system                                           */
+/* add new general task into system and schedule it as ready                  */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vAddTaskGeneral(Task* pTask)
 {
@@ -65,14 +62,12 @@ void Scheduler::vAddTaskGeneral(Task* pTask)
   //
   
   vTask_SpawnNew(pTask);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Scheduler::vTask_ScheduleReady(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
-/* bide till operand arrives                                                  */
+/* op task is to bide till operand arrives                                    */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vBideTask(Task* pTask)
 {
@@ -84,7 +79,7 @@ void Scheduler::vBideTask(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task has returned from task loop                                           */
+/* task has returned from task loop (action depends on transition request)    */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vReturnTaskLoop(Thread* pThread)
 {
@@ -97,12 +92,12 @@ void Scheduler::vReturnTaskLoop(Thread* pThread)
   // disconnect / de-assign task from thread
   vThread_Deassign(pThread);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   // remove task from the executing set
   gpAttachMap->m_pQueues->vRemoveExecutingSet(pTask);
   
-  // add task to another appropriate queue depending on its transition request
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // add task to another queue depending on its transition request
   switch (pTask->eTransition()) {
       
     case TR_BIDE:   vTask_Bide(pTask);   break;
@@ -117,7 +112,7 @@ void Scheduler::vReturnTaskLoop(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* trigger biding task that operand has arrived                               */
+/* trigger biding op task that operand has arrived                            */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTriggerTask(Task* pTask)
 {
@@ -129,7 +124,7 @@ void Scheduler::vTriggerTask(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* check to see if tasks in the sleeping queue can be woken                   */
+/* check to see if any tasks in the sleeping queue can be woken               */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vWakeSleepingTasks(void)
 {
