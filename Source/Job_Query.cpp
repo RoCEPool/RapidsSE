@@ -224,14 +224,14 @@ void Job_Query::vExecute(void)
   
   Session* pSession = Task::pThisTLSTask()->pSession();
   
-  bool b;
+  bool bSpawned;
   
-  b = Api::bSpawnOp(pSession,m_pZedOp);
-  ASSERT(b);
-  b = Api::bSpawnOp(pSession,m_pOutputOp);
-  ASSERT(b);
-  b = Api::bSpawnOp(pSession,m_pFetchOp);
-  ASSERT(b);
+  bSpawned = Api::bSpawnOp(pSession,m_pZedOp);
+  ASSERT(bSpawned);
+  bSpawned = Api::bSpawnOp(pSession,m_pOutputOp);
+  ASSERT(bSpawned);
+  bSpawned = Api::bSpawnOp(pSession,m_pFetchOp);
+  ASSERT(bSpawned);
 }
 
 

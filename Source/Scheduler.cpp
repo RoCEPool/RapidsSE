@@ -475,12 +475,19 @@ void Scheduler::vTask_Trigger(Task* pTask)
 {
   vDebugPoint();
   
-#ifndef WITH_BIDING_OPS
-  return;
-#endif
+  RASSERT(TS_BIDING == pTask->eState());
+  RASSERT(TR_NONE == pTask->eTransition());
+  RASSERT(QK_BIDING_SET == pTask->eQueue());
+  ASSERT(pTask->bIsLocked());
   
+  gpAttachMap->m_pQueues->vRemoveBidingSet(pTask);
   
+  pTask->vState(TS_READY);
+  pTask->vDropLock();
+  
+  vTask_ScheduleReady(pTask);
 }
+
 /*----------------------------------------------------------------------------*/
 /* task is to wait for acks                                                   */
 /*----------------------------------------------------------------------------*/
