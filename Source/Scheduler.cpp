@@ -481,6 +481,20 @@ void Scheduler::vTask_SpawnNew(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* task has been assigned the given thread                                    */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTask_Thread(Task* pTask, Thread* pThread)
+{
+  RASSERT(TS_READY   == pTask->eState() ||
+          TS_YIELDED == pTask->eState());
+  
+  ASSERT(TD_ASSIGNED == pThread->m_eThreadState);
+  ASSERT(pTask == pThread->m_pTask);
+  
+  pTask->vThread(pThread);
+}
+
+/*----------------------------------------------------------------------------*/
 /* op task has an operand arriving into its queue while its dormant           */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Trigger(Task* pTask)

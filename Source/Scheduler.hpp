@@ -46,6 +46,7 @@ namespace Scheduling
     static void vTask_ScheduleReady(Task* pTask);
     static void vTask_Sleep(Task* pTask);
     static void vTask_SpawnNew(Task* pTask);
+    static void vTask_Thread(Task* pTask, Thread* pThread);
     static void vTask_Trigger(Task* pTask);
     static void vTask_Wait(Task* pTask);
     static void vTask_WakeSleeping(void);
