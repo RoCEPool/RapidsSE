@@ -59,7 +59,7 @@ void Scheduler::vAddTaskGeneral(Task* pTask)
   
   vTask_SpawnNew(pTask);
   
-  Scheduler::vTask_ScheduleReady(pTask);
+  Scheduler::vScheduleReadyTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -105,6 +105,25 @@ void Scheduler::vReturnTaskLoop(Thread* pThread)
     default:
       NEVER_REACH;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* schedule a ready to execute task                                           */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vScheduleReadyTask(Task* pTask)
+{
+  RASSERT(TS_READY == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+  
+  // attempt to assign a thread to the task
+  if (bThread_AssignIdle(pTask))
+    return;
+  
+  // append task to a ready queue
+  if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
+    gpAttachMap->m_pQueues->vAppendReadyQueue(pTask);
+  else
+    gpAttachMap->m_pQueues->vAppendReadyQueueLP(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -398,26 +417,7 @@ void Scheduler::vTask_ResumeAck(Task* pTask)
   gpAttachMap->m_pQueues->vRemoveWaitingSet(pTask);
   
   pTask->vState(TS_READY);
-  vTask_ScheduleReady(pTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* schedule a ready to execute task                                           */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTask_ScheduleReady(Task* pTask)
-{
-  RASSERT(TS_READY == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
-
-  // attempt to assign a thread to the task
-  if (bThread_AssignIdle(pTask))
-    return;
-  
-  // append task to a ready queue
-  if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
-    gpAttachMap->m_pQueues->vAppendReadyQueue(pTask);
-  else
-    gpAttachMap->m_pQueues->vAppendReadyQueueLP(pTask);
+  vScheduleReadyTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -494,7 +494,7 @@ void Scheduler::vTask_Trigger(Task* pTask)
   pTask->vState(TS_READY);
   pTask->vDropLock();
   
-  vTask_ScheduleReady(pTask);
+  vScheduleReadyTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -541,7 +541,7 @@ void Scheduler::vTask_WakeSleeping(void)
   while (Task* pWokenTask = gpAttachMap->m_pQueues->pPopSleepingQueue()) {
     RASSERT(QK_NONE  == pWokenTask->eQueue());
     pWokenTask->vState(TS_READY);
-    Scheduler::vTask_ScheduleReady(pWokenTask);
+    Scheduler::vScheduleReadyTask(pWokenTask);
   }
 }
 

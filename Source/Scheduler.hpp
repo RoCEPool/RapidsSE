@@ -17,6 +17,7 @@ namespace Scheduling
     static void vAddTaskGeneral(Task* pTask);
     static void vBideTask(Task* pTask);
     static void vReturnTaskLoop(Thread* pThread);
+    static void vScheduleReadyTask(Task* pTask);
     static void vTriggerTask(Task* pTask);
     static void vWakeSleepingTasks(void);
 
@@ -42,7 +43,6 @@ namespace Scheduling
     static void vTask_Execute(Task* pTask);
     static void vTask_Exit(Task* pTask);
     static void vTask_ResumeAck(Task* pTask);
-    static void vTask_ScheduleReady(Task* pTask);
     static void vTask_Sleep(Task* pTask);
     static void vTask_SpawnNew(Task* pTask);
     static void vTask_Thread(Task* pTask, Thread* pThread);
