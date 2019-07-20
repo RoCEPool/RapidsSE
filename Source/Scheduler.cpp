@@ -22,14 +22,14 @@ bool Scheduler::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
   // called from Step::vTaskAck()
   //
   
-  bool bAmDecider = bTask_AckWaiting(pTaskBeingAcked,pTaskAcking);
+  bool bAmDecider = bTask_Ack(pTaskBeingAcked,pTaskAcking);
   
   if (! bAmDecider)
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vTask_ResumeAck(pTaskBeingAcked);
+  vTask_Resume(pTaskBeingAcked);
 
   return true;
 }
@@ -43,7 +43,7 @@ void Scheduler::vAddTaskDedicated(Task* pTask)
   // called from Api::bSpawnJobDedicated()
   //
 
-  vTask_SpawnNew(pTask);
+  vTask_Ready(pTask);
   
   vThread_DedicatedTask(pTask);
 }
@@ -57,7 +57,7 @@ void Scheduler::vAddTaskGeneral(Task* pTask)
   // called from Api::bSpawnJob()
   //
   
-  vTask_SpawnNew(pTask);
+  vTask_Ready(pTask);
   
   Scheduler::vScheduleReadyTask(pTask);
 }
@@ -147,7 +147,7 @@ void Scheduler::vWakeSleepingTasks(void)
   // called from Step::vQueuesCheckSleeping()
   //
   
-  vTask_WakeSleeping();
+  vTask_Wake();
 }
 
 
@@ -278,7 +278,7 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* ack a waiting task                                                         */
 /*----------------------------------------------------------------------------*/
-bool Scheduler::bTask_AckWaiting(Task* pTaskBeingAcked, Task* pTaskAcking)
+bool Scheduler::bTask_Ack(Task* pTaskBeingAcked, Task* pTaskAcking)
 {
   // note: the task may not yet be waiting.  there is an indefinite period
   //       between when the task grabs its lock + sets the number of acks and
@@ -392,9 +392,20 @@ void Scheduler::vTask_Exit(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* task transitions to ready                                                  */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTask_Ready(Task* pTask)
+{
+  ASSERT(TS_NONE == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+  
+  pTask->vState(TS_READY);
+}
+
+/*----------------------------------------------------------------------------*/
 /* resume a fully acked task (that had been waiting)                          */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTask_ResumeAck(Task* pTask)
+void Scheduler::vTask_Resume(Task* pTask)
 {
   RASSERT(! pTask->iAcksRmg_assert_only_());
   
@@ -452,17 +463,6 @@ void Scheduler::vTask_Sleep(Task* pTask)
   Thread* pThread = Thread::pThisTLSThread();
   
   vThread_ReExecuteTask(pThread,pTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* task transitions to new                                                    */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTask_SpawnNew(Task* pTask)
-{
-  ASSERT(TS_NONE == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
-
-  pTask->vState(TS_READY);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -536,7 +536,7 @@ void Scheduler::vTask_Wait(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* wake any sleeping tasks whose wakeup time has arrived                      */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTask_WakeSleeping(void)
+void Scheduler::vTask_Wake(void)
 {
   while (Task* pWokenTask = gpAttachMap->m_pQueues->pPopSleepingQueue()) {
     RASSERT(QK_NONE  == pWokenTask->eQueue());

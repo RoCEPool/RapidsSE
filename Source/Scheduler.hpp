@@ -38,17 +38,17 @@ namespace Scheduling
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // implementation for tasks
   
-    static bool bTask_AckWaiting(Task* pTaskBeingAcked, Task* pTaskAcking);
+    static bool bTask_Ack(Task* pTaskBeingAcked, Task* pTaskAcking);
     static void vTask_Bide(Task* pTask);
     static void vTask_Execute(Task* pTask);
     static void vTask_Exit(Task* pTask);
-    static void vTask_ResumeAck(Task* pTask);
+    static void vTask_Ready(Task* pTask);
+    static void vTask_Resume(Task* pTask);
     static void vTask_Sleep(Task* pTask);
-    static void vTask_SpawnNew(Task* pTask);
     static void vTask_Thread(Task* pTask, Thread* pThread);
     static void vTask_Trigger(Task* pTask);
     static void vTask_Wait(Task* pTask);
-    static void vTask_WakeSleeping(void);
+    static void vTask_Wake(void);
     static void vTask_Yield(Task* pTask);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
