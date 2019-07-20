@@ -51,7 +51,7 @@ ZedOp::ZedOp(Stz* szOpLabel, Jobs::Job* pJob)
   
   _checkInitialised_(CN_ZEDOP);
   
-  m_fpOpFun = ZedOp::vCall;
+  m_fpOpFun = ZedOp::bCall;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ZEDOP,_FOOTER_);
 }
@@ -71,15 +71,17 @@ ZedOp::~ZedOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* call the fetch function                                                    */
 /*----------------------------------------------------------------------------*/
-void ZedOp::vCall(void* aThis)
+bool ZedOp::bCall(void* aThis)
 {
-  ((ZedOp*)aThis)->vZed();
+  bool bCallAgain = ((ZedOp*)aThis)->bZed();
+  
+  return bCallAgain;
 }
 
 /*----------------------------------------------------------------------------*/
 /* the fetch operator function                                                */
 /*----------------------------------------------------------------------------*/
-void ZedOp::vZed(void)
+bool ZedOp::bZed(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ZEDOP,_FOOTER_);
   
@@ -87,10 +89,8 @@ void ZedOp::vZed(void)
     
     Operand* pOperand = pPopOperand();
     
-    if (! pOperand) {
-      Pthread::vSleepMsec(100,CN_ZEDOP);
-      continue;
-    }
+    if (! pOperand)
+      return B_CALL_AGAIN;
     
     if (CN_ENDMARKER == pOperand->eClass()) {
       delete (EndMarker*)pOperand;
@@ -100,7 +100,7 @@ void ZedOp::vZed(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pTask->vTransition(TR_EXIT);
+  return B_DONT_CALL_AGAIN;
 }
 
 /*----------------------------------------------------------------------------*/

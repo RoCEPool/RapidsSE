@@ -55,7 +55,7 @@ FetchOp::FetchOp(Stz* szOpLabel, Jobs::Job* pJob)
 
   _checkInitialised_(CN_FETCHOP);
 
-  m_fpOpFun = FetchOp::vCall;
+  m_fpOpFun = FetchOp::bCall;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
 }
@@ -75,15 +75,17 @@ FetchOp::~FetchOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* call the fetch function                                                    */
 /*----------------------------------------------------------------------------*/
-void FetchOp::vCall(void* aThis)
+bool FetchOp::bCall(void* aThis)
 {  
-  ((FetchOp*)aThis)->vFetch();
+  bool bCallAgain = ((FetchOp*)aThis)->bFetch();
+  
+  return bCallAgain;
 }
 
 /*----------------------------------------------------------------------------*/
 /* the fetch operator function                                                */
 /*----------------------------------------------------------------------------*/
-void FetchOp::vFetch(void)
+bool FetchOp::bFetch(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
   
@@ -107,7 +109,7 @@ void FetchOp::vFetch(void)
   bool bWasQueued = Scheduler::bAckTask(pTask_JobQuery,m_pTask);
   ASSERT(bWasQueued);
   
-  m_pTask->vTransition(TR_EXIT);
+  return B_DONT_CALL_AGAIN;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -343,7 +343,7 @@ void Scheduler::vTask_AssignedThread(Task* pTask, Thread* pThread)
 void Scheduler::vTask_Bide(Task* pTask)
 {
   RASSERT(TS_EXECUTING == pTask->eState());
-  RASSERT(TR_NONE == pTask->eTransition());
+  RASSERT(TR_BIDE == pTask->eTransition());
   RASSERT(QK_NONE == pTask->eQueue());
   RASSERT(pTask->bIsLocked());
   

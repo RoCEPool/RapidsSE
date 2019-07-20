@@ -51,7 +51,7 @@ OutputOp::OutputOp(Stz* szOpLabel, Jobs::Job* pJob)
   
   _checkInitialised_(CN_OUTPUTOP);
 
-  m_fpOpFun = OutputOp::vCall;
+  m_fpOpFun = OutputOp::bCall;
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
 }
@@ -71,15 +71,17 @@ OutputOp::~OutputOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* call the output function                                                   */
 /*----------------------------------------------------------------------------*/
-void OutputOp::vCall(void* aThis)
+bool OutputOp::bCall(void* aThis)
 {
-  ((OutputOp*)aThis)->vOutput();
+  bool bCallAgain = ((OutputOp*)aThis)->bOutput();
+  
+  return bCallAgain;
 }
 
 /*----------------------------------------------------------------------------*/
 /* the output operator function                                               */
 /*----------------------------------------------------------------------------*/
-void OutputOp::vOutput(void)
+bool OutputOp::bOutput(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
   
@@ -87,11 +89,9 @@ void OutputOp::vOutput(void)
     
     Operand* pOperand = pPopOperand();
     
-    if (! pOperand) {
-      Pthread::vSleepMsec(100,CN_OUTPUTOP);
-      continue;
-    }
-    
+    if (! pOperand)
+      return B_CALL_AGAIN;
+
     if (CN_ENDMARKER == pOperand->eClass()) {
       vAppendOut(pOperand);
       break;
@@ -102,7 +102,7 @@ void OutputOp::vOutput(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pTask->vTransition(TR_EXIT);
+  return B_DONT_CALL_AGAIN;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -86,7 +86,15 @@ void Op::vOpLoop(void)
 //    (*m_fpOpFun)(this);
 //  }
   
-  (*m_fpOpFun)(this);
+  bool bCallAgain = (*m_fpOpFun)(this);
+  
+  if (bCallAgain) {
+    ASSERT(bIsLocked());
+    m_pTask->vTransition(TR_BIDE);
+  }
+  else {
+    m_pTask->vTransition(TR_EXIT);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -244,21 +252,12 @@ Operand* Op::pPopOperand(void)
   
   Operand* pOperand = nullptr;
   
-  for (;;) {
-    
-    vGrabLock();
+  vGrabLock();
   
-    pOperand = m_pOperandQueue->pPopOperand();
+  pOperand = m_pOperandQueue->pPopOperand();
   
-    if (! pOperand) {
-      
-      vBideOperand();
-      break;
-    }
-    
+  if (pOperand)
     vDropLock();
-    break;
-  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
