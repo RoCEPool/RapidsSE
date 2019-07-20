@@ -27,46 +27,50 @@ namespace Tasks
   enum eTS // Task State
   {
   /* 0 */ TS_NONE=0,
-  /* 1 */ TS_EXECUTING, // task is currenty being executed by Thread::vLoop
-  /* 2 */ TS_EXITED,    // task has completed
-  /* 3 */ TS_READY,     // task is ready to be executed
-  /* 4 */ TS_SLEEPING,  // task is sleeping
-  /* 5 */ TS_WAITING,   // task is waiting on ack from cooperating task
-  /* 6 */ TS_YIELDED,   // task is yielded, not running and is in a TaskSet
-  /* 7 */ TS_ENUMS
+  /* 1 */ TS_BIDING,    // task is biding
+  /* 2 */ TS_EXECUTING, // task is currenty being executed by Thread::vLoop
+  /* 3 */ TS_EXITED,    // task has completed
+  /* 4 */ TS_READY,     // task is ready to be executed
+  /* 5 */ TS_SLEEPING,  // task is sleeping
+  /* 6 */ TS_WAITING,   // task is waiting on ack from cooperating task
+  /* 7 */ TS_YIELDED,   // task is yielded, not running and is in a TaskSet
+  /* 8 */ TS_ENUMS
   };
   
   static Stz* aTS[]
   {
   /* 0 */ "NONE"_Stz,
-  /* 1 */ "EXECUTING"_Stz,
-  /* 2 */ "EXITED"_Stz,
-  /* 3 */ "READY"_Stz,
-  /* 4 */ "SEND"_Stz,
-  /* 5 */ "WAITING"_Stz,
-  /* 6 */ "YIELDED"_Stz,
-  /* 7 */ "ENUMS"_Stz,
+  /* 1 */ "BIDING"_Stz,
+  /* 2 */ "EXECUTING"_Stz,
+  /* 3 */ "EXITED"_Stz,
+  /* 4 */ "READY"_Stz,
+  /* 5 */ "SEND"_Stz,
+  /* 6 */ "WAITING"_Stz,
+  /* 7 */ "YIELDED"_Stz,
+  /* 8 */ "ENUMS"_Stz,
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   enum eTR // Task State Transition
   {
   /* 0 */ TR_NONE=0,
-  /* 1 */ TR_EXIT,    // task to exit
-  /* 2 */ TR_SLEEP,   // task to sleep
-  /* 3 */ TR_WAIT,    // task to wait on ack from cooperating task
-  /* 4 */ TR_YIELD,   // task to yield to other task
-  /* 5 */ TR_ENUMS
+  /* 1 */ TR_BIDE,    // task to bide
+  /* 2 */ TR_EXIT,    // task to exit
+  /* 3 */ TR_SLEEP,   // task to sleep
+  /* 4 */ TR_WAIT,    // task to wait on ack from cooperating task
+  /* 5 */ TR_YIELD,   // task to yield to other task
+  /* 6 */ TR_ENUMS
   };
   
   static Stz* aTR[]
   {
   /* 0 */ "NONE"_Stz,
-  /* 1 */ "EXIT"_Stz,
-  /* 2 */ "SLEEP"_Stz,
-  /* 3 */ "WAIT"_Stz,
-  /* 4 */ "YIELD"_Stz,
-  /* 5 */ "ENUMS"_Stz,
+  /* 1 */ "BIDE"_Stz,
+  /* 2 */ "EXIT"_Stz,
+  /* 3 */ "SLEEP"_Stz,
+  /* 4 */ "WAIT"_Stz,
+  /* 5 */ "YIELD"_Stz,
+  /* 6 */ "ENUMS"_Stz,
   };
   
 

@@ -91,12 +91,12 @@ void Op::vOpLoop(void)
 //  }
   
   m_okLock.vGrabWrite();
-  m_eOpState = OZ_PROCESSING;
+  m_eOpState = OZ_EXECUTING;
   m_okLock.vDropWrite();
   
   (*m_fpOpFun)(this);
   
-  RASSERT(OZ_PROCESSING == m_eOpState);
+  RASSERT(OZ_EXECUTING == m_eOpState);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -282,7 +282,7 @@ Operand* Op::pPopOperand(void)
       break;
     }
   
-    m_eOpState = OZ_PROCESSING;
+    m_eOpState = OZ_EXECUTING;
     
     m_okLock.vDropWrite();
     break;

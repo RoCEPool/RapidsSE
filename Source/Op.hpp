@@ -9,7 +9,7 @@ namespace PushDown
   {
   /* 0 */ OZ_NONE=0,
   /* 1 */ OZ_BIDING,     // op is dormant, waiting for operand
-  /* 2 */ OZ_PROCESSING, // op is processing an operand
+  /* 2 */ OZ_EXECUTING,  // op is processing an operand
   /* 3 */ OZ_ENUMS
   };
   
