@@ -117,6 +117,7 @@ void Scheduler::vReturnTaskLoop(Thread* pThread)
   // add task to another appropriate queue depending on its transition request
   switch (pTask->eTransition()) {
       
+    case TR_BIDE:   vTask_Bide(pTask);   break;
     case TR_EXIT:   vTask_Exit(pTask);   break;
     case TR_SLEEP:  vTask_Sleep(pTask);  break;
     case TR_WAIT:   vTask_Wait(pTask);   break;
@@ -377,6 +378,28 @@ void Scheduler::vTask_AssignedThread(Task* pTask, Thread* pThread)
   
   // add this task to the executing task set
   gpAttachMap->m_pQueues->vAddExecutingSet(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* task is to bide till operand arrives                                       */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTask_Bide(Task* pTask)
+{
+  RASSERT(TS_EXECUTING == pTask->eState());
+  RASSERT(TR_WAIT == pTask->eTransition());
+  RASSERT(QK_NONE == pTask->eQueue());
+  RASSERT(pTask->bIsLocked());
+  
+  pTask->vState(TS_BIDING);
+  pTask->vTransition(TR_NONE);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // add task to biding set
+  gpAttachMap->m_pQueues->vAddBidingSet(pTask);
+  
+  // drop task lock
+  pTask->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
