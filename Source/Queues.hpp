@@ -29,7 +29,7 @@ namespace Scheduling
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // task sets (ordered by arrival)
   
-    Atomic     m_ixTaskSetOrder;   // task ordering within set
+    Atomic     m_ixTaskArrival;    // task ordering within set
     TaskList*  m_pBidingSet;       // set of op tasks biding to be triggered
     TaskList*  m_pExecutingSet;    // set of tasks currently executing
     TaskList*  m_pWaitingSet;      // set of suspended tasks waiting to be signaled

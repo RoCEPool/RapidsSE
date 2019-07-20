@@ -70,7 +70,7 @@ Queues::Queues(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // task sets ordered by arrival
   
-  m_ixTaskSetOrder  = 0;
+  m_ixTaskArrival  = 0;
   
   m_pBidingSet     = new TaskList(QK_BIDING_SET);
   m_pExecutingSet  = new TaskList(QK_EXECUTING_SET);
@@ -201,7 +201,7 @@ void Queues::vAddBidingSet(Task* pTask)
   RASSERT(QK_NONE == pTask->eQueue());
 
   pTask->vQueue(QK_BIDING_SET);
-  pTask->vQueueOrder(++m_ixTaskSetOrder);
+  pTask->vQueueOrder(++m_ixTaskArrival);
   
   //  if (pTask->pJob()->m_bMarkActivity)
   //    ActivityLog::vMarkJob(pTask->pJob(),
@@ -231,7 +231,7 @@ void Queues::vAddExecutingSet(Task* pTask)
   RASSERT(TS_EXECUTING == pTask->eState());
   
   pTask->vQueue(QK_EXECUTING_SET);
-  pTask->vQueueOrder(++m_ixTaskSetOrder);
+  pTask->vQueueOrder(++m_ixTaskArrival);
   
 //  if (pTask->pJob()->m_bMarkActivity)
 //    ActivityLog::vMarkJob(pTask->pJob(),
@@ -303,7 +303,7 @@ void Queues::vAddWaitingSet(Task* pTask)
  
   // mark task as being in the waiting queue
   pTask->vQueue(QK_WAITING_SET);
-  pTask->vQueueOrder(++m_ixTaskSetOrder);
+  pTask->vQueueOrder(++m_ixTaskArrival);
   
   if (pTask->pJob()->m_bMarkActivity)
     ActivityLog::vMarkJob(pTask->pJob(),
@@ -334,7 +334,7 @@ void Queues::vAppendReadyQueue(Task* pTask)
   RASSERT(TS_READY == pTask->eState());
   
   pTask->vQueue(QK_READY_QUEUE);
-  pTask->vQueueOrder(++m_ixTaskSetOrder);
+  pTask->vQueueOrder(++m_ixTaskArrival);
   
   if (pTask->pJob()->m_bMarkActivity)
     ActivityLog::vMarkJob(pTask->pJob(),
@@ -365,7 +365,7 @@ void Queues::vAppendReadyQueueLP(Task* pTask)
   RASSERT(TS_READY == pTask->eState());
   
   pTask->vQueue(QK_READY_QUEUE_LP);
-  pTask->vQueueOrder(++m_ixTaskSetOrder);
+  pTask->vQueueOrder(++m_ixTaskArrival);
   
   if (pTask->pJob()->m_bMarkActivity)
     ActivityLog::vMarkJob(pTask->pJob(),
