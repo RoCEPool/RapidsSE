@@ -103,7 +103,7 @@ namespace Tasks
     i8      m_iQueueOrder;  // queue ordering number
     Decider m_oAcksRmg;     // number of acks still waiting for
     i8      m_iDdlLocked;   // has the ddl lock?
-    Sleep   m_oWakeup;      // sleep time helper
+    Sleep   m_oWakeup;      // wakeup time from sleeping
 
     i8      m_iTracing;     // tracing mask
     i8      m_i_ActionRoot; // action root
