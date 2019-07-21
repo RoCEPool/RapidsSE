@@ -450,18 +450,15 @@ Task* Queues::pPopSleepingQueue(void)
   
   Task* pTask;
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // lock queue and peek at task
-  
-  // attempt to grab a write lock on the sleeping queue
   if (! m_pSleepingQueue->bGrabLock()) {
     // unable to lock queue (another thread must be processing it)
     // so move on to the next queue
     return nullptr;
   }
-  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // peek at the first task in the sleeping queue
-  ASSERT(m_pSleepingQueue->bIsLocked());
   pTask = m_pSleepingQueue->pPeekTask();
   
   // check if peeked task's wakeup time is after now
@@ -469,10 +466,8 @@ Task* Queues::pPopSleepingQueue(void)
     
     // - peeked task is to be woken up in the future
     
-    // drop lock on sleeping queue
     m_pSleepingQueue->vDropLock();
     
-    // didn't find a task, move to next queue
     return nullptr;
   }
   
@@ -480,19 +475,15 @@ Task* Queues::pPopSleepingQueue(void)
   // peeked task can be be woken up
   
   // pop the task off the sleeping queue
-  ASSERT(m_pSleepingQueue->bIsLocked());
   i8 nPriorItems = m_pSleepingQueue->nTasks();
   m_pSleepingQueue->vAssertItems(nPriorItems);
   pTask = m_pSleepingQueue->pPopTask();
   m_pSleepingQueue->vAssertItems(nPriorItems - 1);
   
-  // task no longer in any queue/set
-  pTask->vQueue(QK_NONE);
-  
-  // drop lock on sleeping queue
   m_pSleepingQueue->vDropLock();
   
-  // clear wakeup time of the task
+  pTask->vQueue(QK_NONE);
+  
   pTask->vWakeupClear();
   
   if (pTask->pJob()->m_bMarkActivity)
@@ -501,7 +492,6 @@ Task* Queues::pPopSleepingQueue(void)
                            aCN[pTask->pJob()->eClass()],
                            pTask->pJob());
   
-  // return the task popped from the sleeping queue
   return pTask;
 }
 
