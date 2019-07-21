@@ -682,7 +682,7 @@ void Task::vRenderPortrait(void)
                         this,
                         aCN[m_pJob->eClass()],
                         aTS[m_eState],
-                        sDateTime.sz(&m_oSleepTime.m_wWakeupTsp)
+                        sDateTime.sz(&m_oWakeup.m_wWakeupTsp)
                         );
   }
   else if (QK_NONE != m_eQueue) {
@@ -784,7 +784,7 @@ void Task::vSleepUsec(i8 iMicroseconds)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_oSleepTime.vSleepFor(iMicroseconds);
+  m_oWakeup.vSleepFor(iMicroseconds);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1025,10 +1025,7 @@ void Task::vWakeupClear(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  // clear the wakeup time
-  m_oSleepTime.vClear();
-  
-  m_eState = TS_READY;
+  m_oWakeup.vClear();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1038,7 +1035,7 @@ u8 Task::uWakeupInUsec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  u8 uInUsec = m_oSleepTime.uWakeupInUsec();
+  u8 uInUsec = m_oWakeup.uWakeupInUsec();
   
   return uInUsec;
 }
@@ -1050,7 +1047,7 @@ bool Task::bWakeupNow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if (m_oSleepTime.bWakeupNow())
+  if (m_oWakeup.bWakeupNow())
     return true;
   else
     return false;
@@ -1063,7 +1060,7 @@ Sleep& Task::oWakeupSleep(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
     
-  return m_oSleepTime;
+  return m_oWakeup;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1073,7 +1070,7 @@ u8 Task::uWakeupTime(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  u8 uMicroseconds = m_oSleepTime.uWakeupInUsec();
+  u8 uMicroseconds = m_oWakeup.uWakeupInUsec();
   
   return uMicroseconds;
 }
