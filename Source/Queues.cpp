@@ -574,7 +574,7 @@ void Queues::vRemoveWaitingSet(Task* pTask)
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* add dedicated thread to thread vector                                      */
+/* add  thread to dedicated thread vector                                     */
 /*----------------------------------------------------------------------------*/
 void Queues::vThreadAddDedicated(Thread* pThread)
 {
@@ -588,7 +588,7 @@ void Queues::vThreadAddDedicated(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add general thread to thread vector                                        */
+/* add thread to general thread vector                                        */
 /*----------------------------------------------------------------------------*/
 void Queues::vThreadAddGeneral(Thread* pThread)
 {
@@ -602,11 +602,13 @@ void Queues::vThreadAddGeneral(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append task to waiting queue                                               */
+/* append thread to idle thread queue                                          */
 /*----------------------------------------------------------------------------*/
 void Queues::vThreadAppendIdle(Thread* pThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
+  
+  RASSERT(TD_IDLE == pThread->eThreadState());
   
   m_pIdleThreadQueue->vGrabLock();
   m_pIdleThreadQueue->vAppendThread(pThread);
@@ -621,10 +623,10 @@ Thread* Queues::pThreadPopIdle(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   m_pIdleThreadQueue->vGrabLock();
-  
   Thread* pThread = m_pIdleThreadQueue->pPopThread();
-  
   m_pIdleThreadQueue->vDropLock();
+  
+  RASSERT(TD_IDLE == pThread->eThreadState());
   
   return pThread;
 }
