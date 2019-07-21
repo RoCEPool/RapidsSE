@@ -576,7 +576,14 @@ void Scheduler::vTask_Wait(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Wake(Task* pTask)
 {
-  //! ...to be done
+  RASSERT(TS_SLEEPING == pTask->eState());
+  RASSERT(QK_NONE  == pTask->eQueue());
+  
+  vTask_Ready(pTask);
+  
+  Scheduler::vScheduleReadyTask(pTask);
+  
+  // **do not touch task**
 }
 
 /*----------------------------------------------------------------------------*/
@@ -584,12 +591,9 @@ void Scheduler::vTask_Wake(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Wakeup(void)
 {
-  while (Task* pWokenTask = gpAttachMap->m_pQueues->pPopSleepingQueue()) {
-    RASSERT(QK_NONE  == pWokenTask->eQueue());
-    pWokenTask->vState(TS_READY);
-    Scheduler::vScheduleReadyTask(pWokenTask);
+  while (Task* pTask = gpAttachMap->m_pQueues->pPopSleepingQueue())
+    vTask_Wake(pTask);
     // **do not touch task**
-  }
 }
 
 /*----------------------------------------------------------------------------*/

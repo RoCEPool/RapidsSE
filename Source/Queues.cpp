@@ -626,7 +626,7 @@ Thread* Queues::pThreadPopIdle(void)
   Thread* pThread = m_pIdleThreadQueue->pPopThread();
   m_pIdleThreadQueue->vDropLock();
   
-  RASSERT(TD_IDLE == pThread->eThreadState());
+  RASSERT(!pThread || TD_IDLE == pThread->eThreadState());
   
   return pThread;
 }
