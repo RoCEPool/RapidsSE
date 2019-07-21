@@ -49,7 +49,7 @@ namespace Scheduling
     static void vTask_Thread(Task* pTask, Thread* pThread);
     static void vTask_Trigger(Task* pTask);
     static void vTask_Wait(Task* pTask);
-    static void vTask_Wake(void);
+    static void vTask_Wakeup(void);
     static void vTask_Yield(Task* pTask);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

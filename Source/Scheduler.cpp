@@ -147,7 +147,7 @@ void Scheduler::vWakeSleepingTasks(void)
   // called from Step::vQueuesCheckSleeping()
   //
   
-  vTask_Wake();
+  vTask_Wakeup();
 }
 
 
@@ -434,16 +434,15 @@ void Scheduler::vTask_Resume(Task* pTask)
   pTask->vGrabLock();
   pTask->vDropLock();
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   // having got the lock, the task should be TS_WAITING and QK_WAITING_SET
   RASSERT(TS_WAITING == pTask->eState());
   RASSERT(QK_WAITING_SET == pTask->eQueue());
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   gpAttachMap->m_pQueues->vRemoveWaitingSet(pTask);
   
   pTask->vState(TS_READY);
-  
   Scheduler::vScheduleReadyTask(pTask);
 }
 
@@ -550,9 +549,9 @@ void Scheduler::vTask_Wait(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* wake any sleeping tasks whose wakeup time has arrived                      */
+/* wakeup any sleeping tasks whose wakeup time has arrived                    */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTask_Wake(void)
+void Scheduler::vTask_Wakeup(void)
 {
   while (Task* pWokenTask = gpAttachMap->m_pQueues->pPopSleepingQueue()) {
     RASSERT(QK_NONE  == pWokenTask->eQueue());
