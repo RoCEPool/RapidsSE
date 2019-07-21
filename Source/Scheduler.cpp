@@ -313,7 +313,7 @@ bool Scheduler::bTask_Ack(Task* pTaskBeingAcked, Task* pTaskAcking)
 
   
   
-  
+  // decrement the acks remaining
   bool bAmDecider = pTaskBeingAcked->bAcksRmgDec();
   
 //  if (bAmDecider)

@@ -194,14 +194,13 @@ void Queues::vAddBidingSet(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  m_pBidingSet->vGrabLock();
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  
-  //RASSERT(TS_EXECUTING == pTask->eState());
+  RASSERT(TS_BIDING == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
-
+  
   pTask->vQueue(QK_BIDING_SET);
   pTask->vQueueOrder(++m_ixTaskArrival);
+  
+  m_pBidingSet->vGrabLock();
   
   //  if (pTask->pJob()->m_bMarkActivity)
   //    ActivityLog::vMarkJob(pTask->pJob(),
@@ -209,13 +208,13 @@ void Queues::vAddBidingSet(Task* pTask)
   //                          aCN[pTask->pJob()->eClass()],
   //                          pTask->pJob());
   
-  ASSERT(m_pBidingSet->bIsLocked());
   m_pBidingSet->vAddTask(pTask);
   
   //  ActionSequence::vAdd(pTask->pJob(),AN_ADD_EXECUTING_SET);
   
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   m_pBidingSet->vDropLock();
+  
+  // **do not touch task** (other than to drop lock)
 }
 
 /*----------------------------------------------------------------------------*/
@@ -225,13 +224,13 @@ void Queues::vAddExecutingSet(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  m_pExecutingSet->vGrabLock();
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  
   RASSERT(TS_EXECUTING == pTask->eState());
-  
+  RASSERT(QK_NONE == pTask->eQueue());
+
   pTask->vQueue(QK_EXECUTING_SET);
   pTask->vQueueOrder(++m_ixTaskArrival);
+  
+  m_pExecutingSet->vGrabLock();
   
 //  if (pTask->pJob()->m_bMarkActivity)
 //    ActivityLog::vMarkJob(pTask->pJob(),
@@ -239,13 +238,13 @@ void Queues::vAddExecutingSet(Task* pTask)
 //                          aCN[pTask->pJob()->eClass()],
 //                          pTask->pJob());
   
-  ASSERT(m_pExecutingSet->bIsLocked());
   m_pExecutingSet->vAddTask(pTask);
   
 //  ActionSequence::vAdd(pTask->pJob(),AN_ADD_EXECUTING_SET);
   
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   m_pExecutingSet->vDropLock();
+  
+  // **do not touch task** (other than to drop lock)
 }
 
 /*----------------------------------------------------------------------------*/
