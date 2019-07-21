@@ -692,7 +692,6 @@ void Scheduler::vThread_AppendIdle(Thread* pThread)
   Queues* pQueues = gpAttachMap->m_pQueues;
   
   pThread->m_eThreadState = TD_IDLE;
-  
   pQueues->vThreadAppendIdle(pThread);
 }
 
@@ -721,20 +720,23 @@ bool Scheduler::bThread_AssignIdle(Task* pTask)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
   
-  Thread* pIdleThread = pQueues->pThreadPopIdle();
+  Thread* pThread = pQueues->pThreadPopIdle();
   
-  if (! pIdleThread)
+  if (! pThread)
     return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   //ActionSequence::vAdd(pTask->pJob(),AN_THREAD_EXECUTE,pIdleThread->iThreadNo());
   
-  pIdleThread->m_pTask = pTask;
+  pThread->m_pTask = pTask;
+  pThread->m_nAssignedTasks++;
   
-  pIdleThread->m_nAssignedTasks++;
-  
-  pIdleThread->m_pMutexThread->vMutexLock();
-  pIdleThread->m_pMutexThread->vCondSignal();
-  pIdleThread->m_pMutexThread->vMutexUnlock();
+  pThread->m_eThreadState = TD_ASSIGNED;
+
+  pThread->m_pMutexThread->vMutexLock();
+  pThread->m_pMutexThread->vCondSignal();
+  pThread->m_pMutexThread->vMutexUnlock();
   
   return true;
 }
@@ -867,8 +869,10 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
     pThread->m_eThreadState = TD_IDLE;
     vThread_AppendIdle(pThread);
     pThread->m_pMutexThread->vCondWaitIndefinite();
-    pThread->m_eThreadState = TD_ASSIGNED;
   }
+
+  RASSERT(TD_ASSIGNED == pThread->m_eThreadState);
+  RASSERT(pThread->m_pTask);
 }
 
 /*============================================================================*/
