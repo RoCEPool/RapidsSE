@@ -641,18 +641,19 @@ void Scheduler::vTask_Yield(Task* pTask)
       return;
     }
   }
-    
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vTask_Ready(pTask);
-  
-  if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL) {
-    gpAttachMap->m_pQueues->vAppendReadyQueue(pTask);
-  }
-  else {
-    gpAttachMap->m_pQueues->vAppendReadyQueueLP(pTask);
-  }
+  Scheduler::vScheduleReadyTask(pTask);
   // **do not touch task**
+
+//  if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL) {
+//    gpAttachMap->m_pQueues->vAppendReadyQueue(pTask);
+//  }
+//  else {
+//    gpAttachMap->m_pQueues->vAppendReadyQueueLP(pTask);
+//  }
 }
 
 
