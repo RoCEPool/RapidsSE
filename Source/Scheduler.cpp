@@ -473,7 +473,7 @@ void Scheduler::vTask_Sleep(Task* pTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tasks wake up time has already arrived. run it
   
-  pTask->vWakeupTask();
+  pTask->vWakeupClear();
   
   Thread* pThread = Thread::pThisTLSThread();
   

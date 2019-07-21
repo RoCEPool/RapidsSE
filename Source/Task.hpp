@@ -194,11 +194,11 @@ namespace Tasks
     void vTraceStep(Stz* aStepNm);
     eTR  eTransition(void);
     void vTransition(eTR eTransition);
+    void vWakeupClear(void);
     u8   uWakeupInUsec(void);
     bool bWakeupNow(void);
+    Sleep& oWakeupSleep(void);
     u8   uWakeupTime(void);
-    Sleep& oSleepTime(void);
-    void vWakeupTask(void);
 
     /*------------------------------------------------------------------------*/
 

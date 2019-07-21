@@ -525,7 +525,7 @@ Task* Queues::pPopSleepingQueue(void)
   m_pSleepingQueue->vDropLock();
   
   // clear wakeup time of the task
-  pTask->vWakeupTask();
+  pTask->vWakeupClear();
   
   if (pTask->pJob()->m_bMarkActivity)
     ActivityLog::vMarkInfo(

@@ -1019,6 +1019,19 @@ void Task::vTransition(eTR eTransition)
 }
 
 /*----------------------------------------------------------------------------*/
+/* wakeup the task                                                            */
+/*----------------------------------------------------------------------------*/
+void Task::vWakeupClear(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  // clear the wakeup time
+  m_oSleepTime.vClear();
+  
+  m_eState = TS_READY;
+}
+
+/*----------------------------------------------------------------------------*/
 /* how long before task can be woken up (in microseconds)                     */
 /*----------------------------------------------------------------------------*/
 u8 Task::uWakeupInUsec(void)
@@ -1041,8 +1054,16 @@ bool Task::bWakeupNow(void)
     return true;
   else
     return false;
-  
-  
+}
+
+/*----------------------------------------------------------------------------*/
+/* get sleep time                                                             */
+/*----------------------------------------------------------------------------*/
+Sleep& Task::oWakeupSleep(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+    
+  return m_oSleepTime;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1055,29 +1076,6 @@ u8 Task::uWakeupTime(void)
   u8 uMicroseconds = m_oSleepTime.uWakeupInUsec();
   
   return uMicroseconds;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get sleep time                                                             */
-/*----------------------------------------------------------------------------*/
-Sleep& Task::oSleepTime(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-    
-  return m_oSleepTime;
-}
-
-/*----------------------------------------------------------------------------*/
-/* wakeup the task                                                            */
-/*----------------------------------------------------------------------------*/
-void Task::vWakeupTask(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  // clear the wakeup time
-  m_oSleepTime.vClear();
-
-  m_eState = TS_READY;
 }
 
 /*----------------------------------------------------------------------------*/
