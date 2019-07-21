@@ -147,9 +147,9 @@ namespace Tasks
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static void vMonitorProfile_stats(s48K& sPortrait);
   
-    bool bAckAndDecide(void);
     i8   iAcksRmg_assert_only_(void);
     void vAcksRmg(i8 iAcksRmg);
+    bool bAcksRmgDec(void);
     void vAdjustFIP(i8 nBytes);
     Object* pArgObject(void);
     static void vDebug(void);

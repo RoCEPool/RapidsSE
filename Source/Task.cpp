@@ -355,19 +355,7 @@ void Task::vMonitorProfile_stats(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* decrement ack and return if caller is decider                              */
-/*----------------------------------------------------------------------------*/
-bool Task::bAckAndDecide(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  bool bAmDecider = m_oAcksRmg.bDecAndDecide();
-  
-  return bAmDecider;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the number of acks remaining (for assert use only)                     */
+/* get the number of acks remaining (for assert/print use only)               */
 /*----------------------------------------------------------------------------*/
 i8 Task::iAcksRmg_assert_only_(void)
 {
@@ -386,6 +374,18 @@ void Task::vAcksRmg(i8 iAcksRmg)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   m_oAcksRmg.vSetRemaining(iAcksRmg);
+}
+
+/*----------------------------------------------------------------------------*/
+/* decrement acks remaining and return if caller is decider                   */
+/*----------------------------------------------------------------------------*/
+bool Task::bAcksRmgDec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  bool bAmDecider = m_oAcksRmg.bDecAndDecide();
+  
+  return bAmDecider;
 }
 
 /*----------------------------------------------------------------------------*/
