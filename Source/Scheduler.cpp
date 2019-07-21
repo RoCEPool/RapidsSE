@@ -637,20 +637,22 @@ void Scheduler::vTask_Yield(Task* pTask)
     i8 iLengthReadyQueue = pQueues->nTasksReady();
     if (0 == iLengthReadyQueue) {
       vThread_ReExecuteTask(pThread,pTask);
+      // **do not touch task**
       return;
     }
   }
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  vTask_Ready(pTask);
+  
   if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL) {
-    pTask->vState(TS_READY);
     gpAttachMap->m_pQueues->vAppendReadyQueue(pTask);
   }
   else {
-    pTask->vState(TS_READY);
     gpAttachMap->m_pQueues->vAppendReadyQueueLP(pTask);
   }
+  // **do not touch task**
 }
 
 
