@@ -55,22 +55,26 @@ namespace Tasks
   {
   /* 0 */ TR_NONE=0,
   /* 1 */ TR_BIDE,    // task to bide
-  /* 2 */ TR_EXIT,    // task to exit
-  /* 3 */ TR_SLEEP,   // task to sleep
-  /* 4 */ TR_WAIT,    // task to wait on ack from cooperating task
-  /* 5 */ TR_YIELD,   // task to yield to other task
-  /* 6 */ TR_ENUMS
+  /* 2 */ TR_EXECUTE, // task to execute
+  /* 3 */ TR_EXIT,    // task to exit
+  /* 4 */ TR_READY,   // task to ready
+  /* 5 */ TR_SLEEP,   // task to sleep
+  /* 6 */ TR_WAIT,    // task to wait
+  /* 7 */ TR_YIELD,   // task to yield
+  /* 8 */ TR_ENUMS
   };
   
   static Stz* aTR[]
   {
   /* 0 */ "NONE"_Stz,
   /* 1 */ "BIDE"_Stz,
-  /* 2 */ "EXIT"_Stz,
-  /* 3 */ "SLEEP"_Stz,
-  /* 4 */ "WAIT"_Stz,
-  /* 5 */ "YIELD"_Stz,
-  /* 6 */ "ENUMS"_Stz,
+  /* 2 */ "EXECUTE"_Stz,
+  /* 3 */ "EXIT"_Stz,
+  /* 4 */ "READY"_Stz,
+  /* 5 */ "SLEEP"_Stz,
+  /* 6 */ "WAIT"_Stz,
+  /* 7 */ "YIELD"_Stz,
+  /* 8 */ "ENUMS"_Stz,
   };
   
 

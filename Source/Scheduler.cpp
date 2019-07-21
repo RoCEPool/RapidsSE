@@ -264,10 +264,12 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
   vThread_WaitAssignment(pThread);
   
   // task was assigned to this thread
-  vTask_Thread(pThread->m_pTask,pThread);
+  Task* pTask = pThread->m_pTask;
+  vTask_Thread(pTask,pThread);
 
   // task enters execute state
-  vTask_Execute(pThread->m_pTask);
+  pTask->vTransition(TR_EXECUTE);
+  vTask_Execute(pTask);
 }
 
 
@@ -308,7 +310,9 @@ bool Scheduler::bTask_Ack(Task* pTaskBeingAcked, Task* pTaskAcking)
 //                       AN_ACK_TASK,
 //                       pTaskBeingAcked->pJob());
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  
+  
   
   bool bAmDecider = pTaskBeingAcked->bAckAndDecide();
   
@@ -352,8 +356,6 @@ void Scheduler::vTask_Bide(Task* pTask)
   pTask->vState(TS_BIDING);
   pTask->vTransition(TR_NONE);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   // add task to biding set
   gpAttachMap->m_pQueues->vAddBidingSet(pTask);
   
@@ -368,10 +370,11 @@ void Scheduler::vTask_Execute(Task* pTask)
 {
   RASSERT(TS_READY   == pTask->eState() ||
           TS_YIELDED == pTask->eState());
-  RASSERT(TR_NONE == pTask->eTransition());
+  RASSERT(TR_EXECUTE == pTask->eTransition());
   RASSERT(QK_NONE == pTask->eQueue());
 
   pTask->vState(TS_EXECUTING);
+  pTask->vTransition(TR_NONE);
 
   gpAttachMap->m_pQueues->vAddExecutingSet(pTask);
 }
