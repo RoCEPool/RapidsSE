@@ -192,7 +192,7 @@ void Queues::vThreadsReport(void)
 /*----------------------------------------------------------------------------*/
 void Queues::vAddBidingSet(Task* pTask)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   RASSERT(TS_BIDING == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
@@ -223,7 +223,7 @@ void Queues::vAddBidingSet(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Queues::vAddExecutingSet(Task* pTask)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   RASSERT(TS_EXECUTING == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
@@ -253,7 +253,7 @@ void Queues::vAddExecutingSet(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Queues::vAddSleepingQueue(Task* pTask)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   RASSERT(TS_SLEEPING == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
@@ -285,7 +285,7 @@ void Queues::vAddSleepingQueue(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Queues::vAddWaitingSet(Task* pTask)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   RASSERT(TS_WAITING == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
@@ -316,7 +316,7 @@ void Queues::vAddWaitingSet(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Queues::vAppendReadyQueue(Task* pTask)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   m_pReadyQueue->vGrabLock();
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
@@ -347,7 +347,7 @@ void Queues::vAppendReadyQueue(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Queues::vAppendReadyQueueLP(Task* pTask)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   m_pReadyQueueLP->vGrabLock();
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
@@ -378,7 +378,7 @@ void Queues::vAppendReadyQueueLP(Task* pTask)
 /*----------------------------------------------------------------------------*/
 Task* Queues::pPopReadyQueue(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   Task* pTask;
   
@@ -423,7 +423,7 @@ Task* Queues::pPopReadyQueue(void)
 /*----------------------------------------------------------------------------*/
 Task* Queues::pPopReadyQueueLP(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   Task* pTask;
   
@@ -468,7 +468,7 @@ Task* Queues::pPopReadyQueueLP(void)
 /*----------------------------------------------------------------------------*/
 Task* Queues::pPopSleepingQueue(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   Task* pTask;
   
@@ -532,7 +532,7 @@ Task* Queues::pPopSleepingQueue(void)
 /*----------------------------------------------------------------------------*/
 void Queues::vRemoveBidingSet(Task* pTask)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   RASSERT(QK_BIDING_SET == pTask->eQueue());
   
@@ -549,7 +549,7 @@ void Queues::vRemoveBidingSet(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Queues::vRemoveExecutingSet(Task* pTask)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   RASSERT(QK_EXECUTING_SET == pTask->eQueue());
   
@@ -572,7 +572,7 @@ void Queues::vRemoveExecutingSet(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Queues::vRemoveWaitingSet(Task* pTask)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   RASSERT(TS_WAITING == pTask->eState());
   RASSERT(QK_WAITING_SET == pTask->eQueue());
@@ -605,7 +605,7 @@ void Queues::vRemoveWaitingSet(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Queues::vThreadAddDedicated(Thread* pThread)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   RASSERT(TD_IDLE == pThread->eThreadState());
   
@@ -619,7 +619,7 @@ void Queues::vThreadAddDedicated(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Queues::vThreadAddGeneral(Thread* pThread)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   RASSERT(TD_IDLE == pThread->eThreadState());
   
@@ -633,7 +633,7 @@ void Queues::vThreadAddGeneral(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Queues::vThreadAppendIdle(Thread* pThread)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   m_pIdleThreadQueue->vGrabLock();
   m_pIdleThreadQueue->vAppendThread(pThread);
@@ -645,7 +645,7 @@ void Queues::vThreadAppendIdle(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 Thread* Queues::pThreadPopIdle(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   m_pIdleThreadQueue->vGrabLock();
   
@@ -662,7 +662,7 @@ Thread* Queues::pThreadPopIdle(void)
 /*----------------------------------------------------------------------------*/
 void Queues::vThreadRemoveDedicated(Thread* pThread)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   m_pDedicatedThreadVec->vGrabLock();
   m_pDedicatedThreadVec->vRemove(pThread);
@@ -674,7 +674,7 @@ void Queues::vThreadRemoveDedicated(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Queues::vThreadRemoveGeneral(Thread* pThread)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   m_pGeneralThreadVec->vGrabLock();
   m_pGeneralThreadVec->vRemove(pThread);
@@ -691,7 +691,7 @@ void Queues::vThreadRemoveGeneral(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Queues::vDumpBidingSet(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   vTrace("------------------------------------\n"_Stz);
   vTrace("Biding Set: %p\n"_Stz, m_pBidingSet);
@@ -709,7 +709,7 @@ void Queues::vDumpBidingSet(void)
 /*----------------------------------------------------------------------------*/
 void Queues::vDumpExecutingSet(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   vTrace("------------------------------------\n"_Stz);
   vTrace("Executing Set: %p\n"_Stz, m_pExecutingSet);
@@ -727,7 +727,7 @@ void Queues::vDumpExecutingSet(void)
 /*----------------------------------------------------------------------------*/
 void Queues::vDumpReadyQueue(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   vTrace("------------------------------------\n"_Stz);
   vTrace("Ready Queue (normal priority): %p\n"_Stz, m_pReadyQueue);
@@ -745,7 +745,7 @@ void Queues::vDumpReadyQueue(void)
 /*----------------------------------------------------------------------------*/
 void Queues::vDumpReadyQueueLP(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   vTrace("------------------------------------\n"_Stz);
   vTrace("Ready Queue (low Priority): %p\n"_Stz, m_pReadyQueueLP);
@@ -763,7 +763,7 @@ void Queues::vDumpReadyQueueLP(void)
 /*----------------------------------------------------------------------------*/
 void Queues::vDumpSleepingQueue(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   vTrace("------------------------------------\n"_Stz);
   vTrace("Sleeping Queue: %p\n"_Stz, m_pSleepingQueue);
@@ -781,7 +781,7 @@ void Queues::vDumpSleepingQueue(void)
 /*----------------------------------------------------------------------------*/
 void Queues::vDumpWaitingSet(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   vTrace("------------------------------------\n"_Stz);
   vTrace("Waiting Set: %p\n"_Stz, m_pWaitingSet);
@@ -802,7 +802,7 @@ void Queues::vDumpWaitingSet(void)
 /*----------------------------------------------------------------------------*/
 void Queues::vMonitorPortrait(s48K& sPortrait)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   s48K sTasksPortrait;
   
@@ -830,7 +830,7 @@ void Queues::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 void Queues::vMonitorThread(s48K& sPortrait)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   i8 nIdle = 0;
   i8 nRunning = 0;
@@ -869,7 +869,7 @@ void Queues::vMonitorThread(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 i8 Queues::nTasksBiding(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   return m_pBidingSet->nTasks();
 }
@@ -879,7 +879,7 @@ i8 Queues::nTasksBiding(void)
 /*----------------------------------------------------------------------------*/
 i8 Queues::nTasksExecuting(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   return m_pExecutingSet->nTasks();
 }
@@ -889,7 +889,7 @@ i8 Queues::nTasksExecuting(void)
 /*----------------------------------------------------------------------------*/
 i8 Queues::nTasksReady(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   return m_pReadyQueue->nTasks();
 }
@@ -899,7 +899,7 @@ i8 Queues::nTasksReady(void)
 /*----------------------------------------------------------------------------*/
 i8 Queues::nTasksReadyLP(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   return m_pReadyQueueLP->nTasks();
 }
@@ -909,7 +909,7 @@ i8 Queues::nTasksReadyLP(void)
 /*----------------------------------------------------------------------------*/
 i8 Queues::nTasksSleeping(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   return m_pSleepingQueue->nTasks();
 }
@@ -919,7 +919,7 @@ i8 Queues::nTasksSleeping(void)
 /*----------------------------------------------------------------------------*/
 i8 Queues::nTasksWaiting(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   return m_pWaitingSet->nTasks();
 }
