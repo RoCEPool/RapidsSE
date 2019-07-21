@@ -372,7 +372,7 @@ void Queues::vAppendReadyQueueLP(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop task from the ready queue                                              */
+/* pop task from the ready queue (normal priority)                            */
 /*----------------------------------------------------------------------------*/
 Task* Queues::pPopReadyQueue(void)
 {
@@ -380,27 +380,16 @@ Task* Queues::pPopReadyQueue(void)
   
   Task* pTask;
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // lock queue and check for task
-  
-  // attempt to grab a write lock on the general queue
   if (! m_pReadyQueue->bGrabLock()) {
     // unable to lock queue (another thread must be processing it)
     // so move on to the next queue
     return nullptr;
   }
   
-  //m_pReadyQueue->vGrabLock();
-  
-  // pop task off the general queue
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   pTask = m_pReadyQueue->pPopTask();
   
-  // task no longer in any queue/set
-  if (pTask) {
-    pTask->vQueue(QK_NONE);
-  }
-  
-  // drop the lock
   m_pReadyQueue->vDropLock();
   
   // is there a task to run?
@@ -408,11 +397,12 @@ Task* Queues::pPopReadyQueue(void)
     return nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
+  pTask->vQueue(QK_NONE);
+
   if (pTask->pJob()->m_bMarkActivity)
     ActivityLog::vMarkJob(pTask->pJob(),"pPopReadyQueue()"_Stz);
   
-  // return the task popped from the ready queue
   return pTask;
 }
 
@@ -425,27 +415,16 @@ Task* Queues::pPopReadyQueueLP(void)
   
   Task* pTask;
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // lock queue and check for task
-  
-  // attempt to grab a write lock on the general queue
   if (! m_pReadyQueueLP->bGrabLock()) {
     // unable to lock queue (another thread must be processing it)
     // so move on to the next queue
     return nullptr;
   }
   
-  //m_pReadyQueue->vGrabLock();
-  
-  // pop task off the general queue
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   pTask = m_pReadyQueueLP->pPopTask();
   
-  // task no longer in any queue/set
-  if (pTask) {
-    pTask->vQueue(QK_NONE);
-  }
-  
-  // drop the lock
   m_pReadyQueueLP->vDropLock();
   
   // is there a task to run?
@@ -454,10 +433,11 @@ Task* Queues::pPopReadyQueueLP(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  pTask->vQueue(QK_NONE);
+  
   if (pTask->pJob()->m_bMarkActivity)
     ActivityLog::vMarkJob(pTask->pJob(),"pPopReadyQueueLP()"_Stz);
   
-  // return the task popped from the ready queue
   return pTask;
 }
 
