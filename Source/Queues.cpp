@@ -312,19 +312,19 @@ void Queues::vAddWaitingSet(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add task to ready queue                                                    */
+/* add task to ready queue (normal priority)                                  */
 /*----------------------------------------------------------------------------*/
 void Queues::vAppendReadyQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
-  m_pReadyQueue->vGrabLock();
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  
   RASSERT(TS_READY == pTask->eState());
-  
+  RASSERT(QK_NONE == pTask->eQueue());
+
   pTask->vQueue(QK_READY_QUEUE);
   pTask->vQueueOrder(++m_ixTaskArrival);
+  
+  m_pReadyQueue->vGrabLock();
   
   if (pTask->pJob()->m_bMarkActivity)
     ActivityLog::vMarkJob(pTask->pJob(),
@@ -332,14 +332,13 @@ void Queues::vAppendReadyQueue(Task* pTask)
                           aCN[pTask->pJob()->eClass()],
                           pTask->pJob());
   
-  ASSERT(m_pReadyQueue->bIsLocked());
-  
   m_pReadyQueue->vAddTask(pTask);
   
   ActionSequence::vAdd(pTask->pJob(),AN_ADD_READY_QUEUE);
   
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   m_pReadyQueue->vDropLock();
+  
+  // **do not touch task**
 }
 
 /*----------------------------------------------------------------------------*/
@@ -349,13 +348,13 @@ void Queues::vAppendReadyQueueLP(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
-  m_pReadyQueueLP->vGrabLock();
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
-  
   RASSERT(TS_READY == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
   
   pTask->vQueue(QK_READY_QUEUE_LP);
   pTask->vQueueOrder(++m_ixTaskArrival);
+  
+  m_pReadyQueueLP->vGrabLock();
   
   if (pTask->pJob()->m_bMarkActivity)
     ActivityLog::vMarkJob(pTask->pJob(),
@@ -363,14 +362,13 @@ void Queues::vAppendReadyQueueLP(Task* pTask)
                           aCN[pTask->pJob()->eClass()],
                           pTask->pJob());
   
-  ASSERT(m_pReadyQueueLP->bIsLocked());
-  
   m_pReadyQueueLP->vAddTask(pTask);
   
   ActionSequence::vAdd(pTask->pJob(),AN_ADD_READY_QUEUE_LP);
   
-  // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   m_pReadyQueueLP->vDropLock();
+  
+  // **do not touch task**
 }
 
 /*----------------------------------------------------------------------------*/
