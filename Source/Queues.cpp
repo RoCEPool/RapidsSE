@@ -194,10 +194,14 @@ void Queues::vAddBidingSet(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
-  RASSERT(TS_BIDING == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
+  // note: a biding task must locked at this point because it is visible to
+  //       other tasks in the system which could invoke a trigger() on it
+  //       before the biding task gets into the biding set
   RASSERT(pTask->bIsLocked());
 
+  RASSERT(TS_BIDING == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+  
   pTask->vQueue(QK_BIDING_SET);
   pTask->vQueueOrder(++m_ixTaskArrival);
   
@@ -287,9 +291,13 @@ void Queues::vAddWaitingSet(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
+  // note: a waiting task must locked at this point because it is visible to
+  //       other tasks in the system which could invoke an ack() on it
+  //       before the waiting task gets into the waiting set
+  RASSERT(pTask->bIsLocked());
+
   RASSERT(TS_WAITING == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
-  RASSERT(pTask->bIsLocked());
 
   pTask->vQueue(QK_WAITING_SET);
   pTask->vQueueOrder(++m_ixTaskArrival);
@@ -372,7 +380,7 @@ void Queues::vAppendReadyQueueLP(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop task from the ready queue (normal priority)                            */
+/* pop a task from the ready queue (normal priority)                          */
 /*----------------------------------------------------------------------------*/
 Task* Queues::pPopReadyQueue(void)
 {
@@ -407,7 +415,7 @@ Task* Queues::pPopReadyQueue(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop task from the low priority ready queue                                 */
+/* pop a task from the low priority ready queue                               */
 /*----------------------------------------------------------------------------*/
 Task* Queues::pPopReadyQueueLP(void)
 {
@@ -442,7 +450,7 @@ Task* Queues::pPopReadyQueueLP(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop task from sleeping queue                                               */
+/* pop a wakeable task from sleeping queue                                    */
 /*----------------------------------------------------------------------------*/
 Task* Queues::pPopSleepingQueue(void)
 {
@@ -508,7 +516,6 @@ void Queues::vRemoveBidingSet(Task* pTask)
   m_pBidingSet->vRemoveTask(pTask);
   m_pBidingSet->vDropLock();
   
-  // task no longer in any queue/set
   pTask->vQueue(QK_NONE);
 }
 
@@ -525,7 +532,6 @@ void Queues::vRemoveExecutingSet(Task* pTask)
   m_pExecutingSet->vRemoveTask(pTask);
   m_pExecutingSet->vDropLock();
   
-  // task no longer in any queue/set
   pTask->vQueue(QK_NONE);
   
 //  if (pTask->pJob() && pTask->pJob()->m_bMarkActivity)
@@ -542,15 +548,17 @@ void Queues::vRemoveWaitingSet(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
+  // note: a waiting task can ony be removed from the waiting set when it
+  //       has been fully ack'd
+  RASSERT(0 == pTask->iAcksRmg_assert_only_());
+  
   RASSERT(TS_WAITING == pTask->eState());
   RASSERT(QK_WAITING_SET == pTask->eQueue());
-  RASSERT(0 == pTask->iAcksRmg_assert_only_());
   
   m_pWaitingSet->vGrabLock();
   m_pWaitingSet->vRemoveTask(pTask);
   m_pWaitingSet->vDropLock();
   
-  // task no longer in any queue/set
   pTask->vQueue(QK_NONE);
   
   if (pTask->pJob()->m_bMarkActivity)
@@ -559,9 +567,6 @@ void Queues::vRemoveWaitingSet(Task* pTask)
                           aCN[pTask->pJob()->eClass()],
                           pTask->pJob());
 }
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 
 ////////////////////////////////////////////////////////////////////////////////
