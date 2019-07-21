@@ -608,7 +608,7 @@ void Scheduler::vTask_Yield(Task* pTask)
   RASSERT(TR_YIELD == pTask->eTransition());
   RASSERT(QK_NONE == pTask->eQueue());
 
-  pTask->vState(TS_YIELDED);
+  pTask->vState(TS_READY);
   pTask->vTransition(TR_NONE);
   
   Thread* pThread = Thread::pThisTLSThread();
