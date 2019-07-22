@@ -43,7 +43,7 @@ void Scheduler::vAddTaskDedicated(Task* pTask)
   // called from Api::bSpawnJobDedicated()
   //
 
-  vThread_DedicatedTask(pTask);
+  vThread_SpawnDedicated(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -729,7 +729,7 @@ void Scheduler::vThread_Beginning(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* re-execute same task (tried to sleep or yield but could continue)          */
+/* continue execute same task (tried to sleep or yield but could continue)    */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_ContinueSame(Thread* pThread, Task* pTask)
 {
@@ -740,21 +740,6 @@ void Scheduler::vThread_ContinueSame(Thread* pThread, Task* pTask)
   
   pThread->m_pTask = pTask;
   pThread->m_eThreadState = TD_ASSIGNED;
-}
-
-/*----------------------------------------------------------------------------*/
-/* dedicate thread to task                                                    */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vThread_DedicatedTask(Task* pTask)
-{
-  RASSERT(TS_ABLE == pTask->eState());
-  
-  Thread* pThread = new Thread;
-
-  pThread->m_pTask = pTask;
-  pThread->m_eDedicated = pTask->pJob()->eClass();
-  
-  pThread->vSpawnPthread_dedicated();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -816,6 +801,21 @@ void Scheduler::vThread_RemoveGeneral(Thread* pThread)
   Queues* pQueues = gpAttachMap->m_pQueues;
   
   pQueues->vRemoveGeneralThread(pThread);
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn dedicate thread for given task                                       */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vThread_SpawnDedicated(Task* pTask)
+{
+  RASSERT(TS_ABLE == pTask->eState());
+  
+  Thread* pThread = new Thread;
+  
+  pThread->m_pTask = pTask;
+  pThread->m_eDedicated = pTask->pJob()->eClass();
+  
+  pThread->vSpawnPthread_dedicated();
 }
 
 /*----------------------------------------------------------------------------*/
