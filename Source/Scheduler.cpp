@@ -242,7 +242,7 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* task transitions to TS_ABLE                                                */
+/* task changes state to TS_ABLE                                              */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Able(Task* pTask)
 {
@@ -374,7 +374,7 @@ void Scheduler::vTask_Exit(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task transitions to TS_READY and is appended to a ready queue              */
+/* task changes state to TS_READY and is appended to a ready queue            */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Ready(Task* pTask)
 {
@@ -423,7 +423,7 @@ void Scheduler::vTask_Resume(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* schedule an TS_ABLE to execute task                                        */
+/* schedule a TS_ABLE to execute                                              */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Schedule(Task* pTask)
 {
@@ -434,6 +434,8 @@ void Scheduler::vTask_Schedule(Task* pTask)
   // attempt to assign an idle thread to the able task
   if (bThread_AssignIdle(pTask))
     return;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   vTask_Ready(pTask);
 }
@@ -474,7 +476,7 @@ void Scheduler::vTask_Sleep(Task* pTask)
   
   Thread* pThread = Thread::pThisTLSThread();
   
-  vThread_ReExecuteTask(pThread,pTask);
+  vThread_ContinueSame(pThread,pTask);
   vTask_Execute(pTask);
   // **do not touch task**
 }
@@ -514,7 +516,7 @@ void Scheduler::vTask_Trigger(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task transitions to waiting and is added to waiting set                    */
+/* task transitions to TS_WAITING and is added to waiting set                 */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Wait(Task* pTask)
 {
@@ -549,7 +551,7 @@ void Scheduler::vTask_Wait(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* sleeping task transitions to able and is scheduled                         */
+/* sleeping task changes state to TS_ABLE and is scheduled                    */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Wake(Task* pTask)
 {
@@ -574,7 +576,7 @@ void Scheduler::vTask_Wakeup(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task has yielded                                                           */
+/* task has yielded, task is scheduled                                        */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Yield(Task* pTask)
 {
@@ -611,7 +613,7 @@ void Scheduler::vTask_Yield(Task* pTask)
   if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL) {
     i8 iLengthReadyQueue = gpAttachMap->m_pQueues->nTasksReady();
     if (0 == iLengthReadyQueue) {
-      vThread_ReExecuteTask(pThread,pTask);
+      vThread_ContinueSame(pThread,pTask);
       vTask_Execute(pTask);
       // **do not touch task**
       return;
@@ -743,6 +745,20 @@ void Scheduler::vThread_Beginning(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
+/* re-execute same task (tried to sleep or yield but could continue)          */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vThread_ContinueSame(Thread* pThread, Task* pTask)
+{
+  RASSERT(TS_ABLE == pTask->eState());
+  
+  RASSERT(TD_ASSIGNED == pThread->m_eThreadState);
+  
+  RASSERT(! pThread->m_pTask);
+  
+  pThread->m_pTask = pTask;
+}
+
+/*----------------------------------------------------------------------------*/
 /* dedicate thread to task                                                    */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_DedicatedTask(Task* pTask)
@@ -788,20 +804,6 @@ void Scheduler::vThread_PauseGeneral(void)
     while (TD_IDLE != pThread->m_eThreadState)
       Pthread::vSleepMsec(10,CN_QUEUES);
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* re-execute same task (tried to sleep or yield but could continue)          */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vThread_ReExecuteTask(Thread* pThread, Task* pTask)
-{
-  RASSERT(TS_ABLE == pTask->eState());
-  
-  RASSERT(TD_ASSIGNED == pThread->m_eThreadState);
-  
-  RASSERT(! pThread->m_pTask);
-  
-  pThread->m_pTask = pTask;
 }
 
 /*----------------------------------------------------------------------------*/
