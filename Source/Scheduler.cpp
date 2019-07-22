@@ -35,31 +35,7 @@ bool Scheduler::bAckWaitingTask(Task* pTaskWaiting, Task* pTaskAcking)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add new dedicated task into system (spawn a dedicated thread for it)       */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vAddTaskDedicated(Task* pTask)
-{
-  //
-  // called from Api::bSpawnJobDedicated()
-  //
-
-  vThread_SpawnDedicated(pTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add new general task into system and schedule it                           */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vAddTaskGeneral(Task* pTask)
-{
-  //
-  // called from Api::bSpawnJob()
-  //
-  
-  vTask_Schedule(pTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* execute dedicated task                                                    */
+/* set dedicated task to be executed by dedicated thread                      */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vExecuteDedicatedTask(Task* pTask, Thread* pThread)
 {
@@ -68,6 +44,30 @@ void Scheduler::vExecuteDedicatedTask(Task* pTask, Thread* pThread)
   //
   
   vThread_ExecuteDedicated(pThread);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add new dedicated task into system (spawn a dedicated thread for it)       */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vNewTaskDedicated(Task* pTask)
+{
+  //
+  // called from Api::bSpawnJobDedicated()
+  //
+  
+  vThread_SpawnDedicated(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add new general task into system (start scheduling it as per normal)       */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vNewTaskGeneral(Task* pTask)
+{
+  //
+  // called from Api::bSpawnJob()
+  //
+  
+  vTask_Schedule(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -104,12 +104,12 @@ void Scheduler::vTaskLoopTransition(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* trigger biding op task that operand has arrived                            */
+/* trigger op-task that operand has arrived while it is biding                */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTriggerBidingTask(Task* pTask)
 {
   //
-  // called from Op::vAppendIn()
+  // called from Op::vAppendOperand()
   //
   
   vTask_Trigger(pTask);
@@ -133,7 +133,7 @@ void Scheduler::vWakeSleepingTasks(void)
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* append new thread onto dedicated thread vector                             */
+/* add new dedicated thread into dedicated thread vector                      */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vAddDedicatedThread(Thread* pThread)
 {
@@ -145,7 +145,7 @@ void Scheduler::vAddDedicatedThread(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append new thread onto general thread vector                               */
+/* add new dedicated thread into general thread vector                        */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vAddGeneralThread(Thread* pThread)
 {
@@ -217,7 +217,7 @@ void Scheduler::vRemoveGeneralThread(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* calling thread waits for task to be assigned                               */
+/* general thread waits for task to be assigned                               */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vWaitForTaskAssignment(Thread* pThread)
 {
@@ -242,7 +242,7 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* change any task state to TS_ABLE (able to be executed)                     */
+/* change any task to TS_ABLE state (able to be executed)                     */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Able(Task* pTask)
 {
@@ -255,7 +255,7 @@ void Scheduler::vTask_Able(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ack a waiting task                                                         */
+/* ack a waiting job-task                                                     */
 /*----------------------------------------------------------------------------*/
 bool Scheduler::bTask_Ack(Task* pTaskWaiting, Task* pTaskAcking)
 {
@@ -322,7 +322,8 @@ bool Scheduler::bTask_Ack(Task* pTaskWaiting, Task* pTaskAcking)
 }
 
 /*----------------------------------------------------------------------------*/
-/* locked desisted op-task transitions to TS_BIDING and added to biding set   */
+/* op-task with empty operand queue transitions to TS_BIDING and              */
+/*   is added to biding set                                                   */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Bide(Task* pTask)
 {
@@ -355,7 +356,7 @@ void Scheduler::vTask_Desist(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* change able-to-run task to TS_EXECUTING and add to executing set           */
+/* change able-to-run task to TS_EXECUTING state and add to executing set     */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Execute(Task* pTask)
 {
@@ -370,7 +371,7 @@ void Scheduler::vTask_Execute(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* desisted task transitions to TS_EXITED and is deleted                      */
+/* desisted task transitions to TS_EXITED state and is deleted                */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Exit(Task* pTask)
 {
@@ -388,7 +389,7 @@ void Scheduler::vTask_Exit(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* change able-to-run task state to TS_READY and append to a ready queue      */
+/* change able-to-run task to TS_READY state and append to a ready queue      */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Ready(Task* pTask)
 {
@@ -455,7 +456,7 @@ void Scheduler::vTask_Schedule(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* transition desisted task to TS_SLEEPING and add to sleeping queue          */
+/* transition desisted task to TS_SLEEPING state and add to sleeping queue    */
 /*   (if wakeup time has already arrived, calling thread re-executes task)    */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Sleep(Task* pTask)
@@ -509,7 +510,7 @@ void Scheduler::vTask_Thread(Task* pTask, Thread* pThread)
 
 /*----------------------------------------------------------------------------*/
 /* locked biding op-task is removed from biding set,                          */
-/*   transitions to TS_ABLE, unlocked and scheduled                           */
+/*   transitions to TS_ABLE state, unlocked and scheduled                     */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Trigger(Task* pTask)
 {
@@ -528,7 +529,7 @@ void Scheduler::vTask_Trigger(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* transition locked desisted task to TS_WAITING and add to waiting set       */
+/* transition locked desisted task to TS_WAITING state and add to waiting set */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Wait(Task* pTask)
 {
@@ -627,7 +628,7 @@ void Scheduler::vTask_Yield(Task* pTask)
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* add thread to dedicated thread set                                         */
+/* add dedicated thread to dedicated thread set                               */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_AddDedicated(Thread* pThread)
 {
@@ -640,7 +641,7 @@ void Scheduler::vThread_AddDedicated(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add thread to general thread set                                           */
+/* add general thread to general thread set                                   */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_AddGeneral(Thread* pThread)
 {
@@ -653,7 +654,7 @@ void Scheduler::vThread_AddGeneral(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append idle thread onto idle thread queue                                  */
+/* append idle general thread onto idle thread queue                          */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_AppendIdle(Thread* pThread)
 {
@@ -667,7 +668,7 @@ void Scheduler::vThread_AppendIdle(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* attempt to pop an idle thread and assign given task to it                  */
+/* attempt to pop an idle general thread and assign given task to it          */
 /*----------------------------------------------------------------------------*/
 bool Scheduler::bThread_AssignIdle(Task* pTask)
 {
@@ -681,6 +682,8 @@ bool Scheduler::bThread_AssignIdle(Task* pTask)
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  RASSERT(TD_IDLE == pThread->m_eThreadState);
   
   //ActionSequence::vAdd(pTask->pJob(),AN_THREAD_EXECUTE,pIdleThread->iThreadNo());
   
@@ -697,7 +700,7 @@ bool Scheduler::bThread_AssignIdle(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* thread is beginning                                                        */
+/* thread is at beginning of thread loop                                      */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_BeginLoop(Thread* pThread)
 {
@@ -726,7 +729,7 @@ void Scheduler::vThread_ContinueSame(Thread* pThread, Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* thread is ending                                                           */
+/* thread is at end of thread loop                                            */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_EndLoop(Thread* pThread)
 {
@@ -776,7 +779,7 @@ void Scheduler::vThread_PauseGeneral(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove dedicated thread from thread vector                                 */
+/* remove dedicated thread from dedicated thread vector                       */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_RemoveDedicated(Thread* pThread)
 {
@@ -790,7 +793,7 @@ void Scheduler::vThread_RemoveDedicated(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove general thread from thread vector                                   */
+/* remove general thread from dedicated thread vector                         */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_RemoveGeneral(Thread* pThread)
 {
@@ -841,6 +844,8 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
     pThread->m_pMutexThread->vCondWaitIndefinite();
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   RASSERT(TD_ASSIGNED == pThread->m_eThreadState);
   RASSERT(pThread->m_pTask);
 }

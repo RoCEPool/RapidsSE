@@ -326,7 +326,7 @@ bool Api::bSpawnJob(Session* pSession, Job* pJob, eSS eSeed)
   pNewTask->vState(TS_ABLE);
   //pNewTask->vSession(pSession);
 
-  Scheduler::vAddTaskGeneral(pNewTask);
+  Scheduler::vNewTaskGeneral(pNewTask);
   
   return true;
 }
@@ -428,7 +428,7 @@ bool Api::bSpawnJobDedicated(Session* pSession, Job* pJob, eSS eSeed)
   pNewTask->vState(TS_ABLE);
   //pNewTask->vSession(pSession);
   
-  Scheduler::vAddTaskDedicated(pNewTask);
+  Scheduler::vNewTaskDedicated(pNewTask);
   
   return true;
 }
@@ -455,7 +455,7 @@ bool Api::bSpawnOp(Session* pSession, Op* pOp)
   Task* pNewTask = new Task(pOp,pSession);
   pNewTask->vState(TS_ABLE);
   pOp->vTask(pNewTask);
-  Scheduler::vAddTaskGeneral(pNewTask);
+  Scheduler::vNewTaskGeneral(pNewTask);
   
   return true;
 }

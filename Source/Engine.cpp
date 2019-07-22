@@ -793,7 +793,7 @@ void Engine::vSpawnJobStart(void)
 //
 //  Task* pStartTask = new Task(pJob_Start,nullptr);
 //
-//  Scheduler::vAddTaskGeneral(pStartTask);
+//  Scheduler::vNewTaskGeneral(pStartTask);
   
   Api::bSpawnJob(nullptr,pJob_Start,SS_SEED_RUN);
 }
