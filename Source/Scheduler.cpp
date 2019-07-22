@@ -44,9 +44,7 @@ void Scheduler::vAddTaskDedicated(Task* pTask)
   //
 
   RASSERT(TS_ABLE == pTask->eState());
-  
-  vTask_Ready(pTask);
-  
+    
   vThread_DedicatedTask(pTask);
 }
 
@@ -721,7 +719,8 @@ void Scheduler::vThread_AssignDedicated(Thread* pThread)
   ASSERT(pThread->m_pMutexThread->bMutexIsLocked());
   
   RASSERT(pThread->m_pTask);
-  RASSERT(TS_READY == pThread->m_pTask->eState());
+  RASSERT(TS_ABLE  == pThread->m_pTask->eState() ||
+          TS_READY == pThread->m_pTask->eState());
   
   pThread->m_pTask->vState(TS_EXECUTING);
   pThread->m_pTask->vThread(pThread);
