@@ -10,7 +10,8 @@ namespace Threads
     /*  0 */ TD_NONE=0,
     /*  1 */ TD_ASSIGNED,
     /*  2 */ TD_IDLE,
-    /*  3 */ TD_ENUMS,
+    /*  3 */ TD_UNASSIGNED,
+    /*  4 */ TD_ENUMS,
   };
   
   static Stz* aTD[]
@@ -18,7 +19,8 @@ namespace Threads
     /*  0 */ "NONE"_Stz,
     /*  1 */ "ASSIGNED"_Stz,
     /*  2 */ "IDLE"_Stz,
-    /*  3 */ "ENUMS"_Stz,
+    /*  3 */ "UNASSIGNED"_Stz,
+    /*  4 */ "ENUMS"_Stz,
   };
   
   class Thread : public Object,

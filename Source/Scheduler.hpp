@@ -62,12 +62,12 @@ namespace Scheduling
     static bool bThread_AssignIdle(Task* pTask);
     static void vThread_Beginning(Thread* pThread);
     static void vThread_ContinueSame(Thread* pThread, Task* pTask);
-    static void vThread_Deassign(Thread* pThread);
     static void vThread_DedicatedTask(Task* pTask);
     static void vThread_Ending(Thread* pThread);
     static void vThread_PauseGeneral(void);
     static void vThread_RemoveDedicated(Thread* pThread);
     static void vThread_RemoveGeneral(Thread* pThread);
+    static void vThread_Unassign(Thread* pThread);
     static void vThread_WaitAssignment(Thread* pThread);
   };
 }

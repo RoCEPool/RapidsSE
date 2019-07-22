@@ -70,7 +70,7 @@ void Scheduler::vReturnTaskLoop(Thread* pThread)
   Task* pTask = pThread->m_pTask;
   
   // disconnect / de-assign task from thread
-  vThread_Deassign(pThread);
+  vThread_Unassign(pThread);
   
   // remove task from the executing set
   gpAttachMap->m_pQueues->vRemoveExecutingSet(pTask);
@@ -677,7 +677,7 @@ void Scheduler::vThread_AppendIdle(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_AssignDedicated(Thread* pThread)
 {
-  ASSERT(TD_ASSIGNED == pThread->m_eThreadState);
+  ASSERT(TD_UNASSIGNED == pThread->m_eThreadState);
   ASSERT(pThread->m_pMutexThread->bMutexIsLocked());
   
   RASSERT(pThread->m_pTask);
@@ -722,14 +722,6 @@ bool Scheduler::bThread_AssignIdle(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* deassign task from thread                                                  */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vThread_Deassign(Thread* pThread)
-{
-  pThread->m_pTask = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* thread is beginning                                                        */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_Beginning(Thread* pThread)
@@ -737,7 +729,7 @@ void Scheduler::vThread_Beginning(Thread* pThread)
   pThread->vThisTLSThread();
   
   // thread has mutex while it is running
-  pThread->m_eThreadState = TD_ASSIGNED;
+  pThread->m_eThreadState = TD_UNASSIGNED;
   pThread->m_pMutexThread->vMutexLock();
   
   // increment m_ixThreads to indicate thread is running
@@ -751,11 +743,12 @@ void Scheduler::vThread_ContinueSame(Thread* pThread, Task* pTask)
 {
   RASSERT(TS_ABLE == pTask->eState());
   
-  RASSERT(TD_ASSIGNED == pThread->m_eThreadState);
+  RASSERT(TD_UNASSIGNED == pThread->m_eThreadState);
   
   RASSERT(! pThread->m_pTask);
   
   pThread->m_pTask = pTask;
+  pThread->m_eThreadState = TD_ASSIGNED;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -835,11 +828,20 @@ void Scheduler::vThread_RemoveGeneral(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
+/* deassign task from thread                                                  */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vThread_Unassign(Thread* pThread)
+{
+  pThread->m_pTask = nullptr;
+  pThread->m_eThreadState = TD_UNASSIGNED;
+}
+
+/*----------------------------------------------------------------------------*/
 /* append idle thread onto idle thread queue                                  */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_WaitAssignment(Thread* pThread)
 {
-  ASSERT(TD_ASSIGNED == pThread->m_eThreadState);
+  ASSERT(TD_UNASSIGNED == pThread->m_eThreadState);
   RASSERT(pThread->m_pMutexThread->bMutexIsLocked());
   
   while (! pThread->m_pTask) {
