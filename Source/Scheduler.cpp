@@ -281,6 +281,7 @@ void Scheduler::vTask_Able(Task* pTask)
   RASSERT(QK_NONE == pTask->eQueue());
   
   pTask->vState(TS_ABLE);
+  pTask->vTransition(TR_NONE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -492,8 +493,7 @@ void Scheduler::vTask_Sleep(Task* pTask)
   
   pTask->vWakeupClear();
   
-  pTask->vTransition(TR_READY);
-  vTask_Ready(pTask);
+  vTask_Able(pTask);
   
   Thread* pThread = Thread::pThisTLSThread();
   
@@ -583,7 +583,7 @@ void Scheduler::vTask_Wake(Task* pTask)
   RASSERT(TS_SLEEPING == pTask->eState());
   RASSERT(QK_NONE  == pTask->eQueue());
   
-  vTask_Ready(pTask);
+  vTask_Able(pTask);
   
   Scheduler::vScheduleAbleTask(pTask);
   
