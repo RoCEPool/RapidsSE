@@ -89,7 +89,7 @@ void Scheduler::vTaskLoopTransition(Thread* pThread)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // transition task to different state/queue depending on transition request
+  // transition task to different state+queue depending on transition request
   switch (pTask->eTransition()) {
       
     case TR_BIDE:   vTask_Bide(pTask);   break;
@@ -181,7 +181,7 @@ void Scheduler::vEndThreadLoop(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pause till all general threads are all idle (at system startup)            */
+/* pause till all general threads are idle (at system startup)                */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vPauseTillGeneralThreads(void)
 {
@@ -217,7 +217,8 @@ void Scheduler::vRemoveGeneralThread(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* general thread waits for task to be assigned                               */
+/* general thread waits in idle state for task to be assigned,                */
+/*   then executes task that was assigned                                     */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vWaitForTaskAssignment(Thread* pThread)
 {
@@ -225,15 +226,11 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
   // called from Thread::vLoop_general()
   //
   
-  // thread waits for task assignement
   vThread_WaitAssignment(pThread);
   
-  // task was assigned to this thread
-  Task* pTask = pThread->m_pTask;
-  vTask_Thread(pTask,pThread);
+  vTask_Thread(pThread->m_pTask,pThread);
 
-  // task enters execute state
-  vTask_Execute(pTask);
+  vTask_Execute(pThread->m_pTask);
 }
 
 
@@ -654,12 +651,14 @@ void Scheduler::vThread_AddGeneral(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append idle general thread onto idle thread queue                          */
+/* append unassigned general thread onto idle thread queue                    */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_AppendIdle(Thread* pThread)
 {
   RASSERT(! pThread->m_pTask);
+  ASSERT(TD_UNASSIGNED == pThread->m_eThreadState);
   RASSERT(CN_NONE == pThread->m_eDedicated);
+  RASSERT(pThread->m_pMutexThread->bMutexIsLocked());
 
   Queues* pQueues = gpAttachMap->m_pQueues;
   
@@ -695,6 +694,8 @@ bool Scheduler::bThread_AssignIdle(Task* pTask)
   pThread->m_pMutexThread->vMutexLock();
   pThread->m_pMutexThread->vCondSignal();
   pThread->m_pMutexThread->vMutexUnlock();
+  
+  // mutex can now be acquired by the m_pPthread of pThread
   
   return true;
 }
@@ -737,7 +738,7 @@ void Scheduler::vThread_EndLoop(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* assign task to dedicated thread                                            */
+/* give task to dedicated thread to execute                                   */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_ExecuteDedicated(Thread* pThread)
 {
@@ -745,7 +746,7 @@ void Scheduler::vThread_ExecuteDedicated(Thread* pThread)
   ASSERT(pThread->m_pMutexThread->bMutexIsLocked());
   
   RASSERT(pThread->m_pTask);
-  RASSERT(TS_ABLE  == pThread->m_pTask->eState());
+  RASSERT(TS_ABLE == pThread->m_pTask->eState());
   
   pThread->m_pTask->vThread(pThread);
   
@@ -807,7 +808,7 @@ void Scheduler::vThread_RemoveGeneral(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* spawn dedicate thread for given task                                       */
+/* spawn dedicated thread for given task                                      */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_SpawnDedicated(Task* pTask)
 {
@@ -831,7 +832,7 @@ void Scheduler::vThread_UnassignTask(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append idle thread onto idle thread queue                                  */
+/* append unassigned general thread onto idle queue, wait for task assignment */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_WaitAssignment(Thread* pThread)
 {
@@ -839,13 +840,17 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
   RASSERT(pThread->m_pMutexThread->bMutexIsLocked());
   
   while (! pThread->m_pTask) {
-    pThread->m_eThreadState = TD_IDLE;
     vThread_AppendIdle(pThread);
     pThread->m_pMutexThread->vCondWaitIndefinite();
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // TD_ASSIGNED state will have been set by
+  //
+  //   ... -> vTask_Schedule() -> bThread_AssignIdle()
+  //
   
+  RASSERT(pThread->m_pMutexThread->bMutexIsLocked());
   RASSERT(TD_ASSIGNED == pThread->m_eThreadState);
   RASSERT(pThread->m_pTask);
 }
