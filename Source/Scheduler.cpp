@@ -246,8 +246,10 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Able(Task* pTask)
 {
-  RASSERT(TR_NONE == pTask->eTransition());
+  // note: task can be in any current state
+  
   RASSERT(QK_NONE == pTask->eQueue());
+  RASSERT(TR_NONE == pTask->eTransition());
 
   pTask->vState(TS_ABLE);
 }
@@ -285,11 +287,12 @@ bool Scheduler::bTask_Ack(Task* pTaskWaiting, Task* pTaskAcking)
 //                       AN_ACK_TASK,
 //                       pTaskBeingAcked->pJob());
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  
-  
   // decrement the acks remaining
   bool bAmDecider = pTaskWaiting->bAcksRmgDec();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
 //  if (bAmDecider)
 //    ActionSequence::vAdd(pTaskAcking->pJob(),
@@ -344,7 +347,9 @@ void Scheduler::vTask_Bide(Task* pTask)
 void Scheduler::vTask_Desist(Task* pTask)
 {
   RASSERT(TS_EXECUTING == pTask->eState());
-  
+  RASSERT(QK_EXECUTING_SET == pTask->eQueue());
+  RASSERT(TR_NONE != pTask->eTransition());
+
   // remove task from the executing set
   gpAttachMap->m_pQueues->vRemoveExecutingSet(pTask);
   
