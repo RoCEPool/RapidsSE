@@ -60,9 +60,7 @@ void Scheduler::vAddTaskGeneral(Task* pTask)
   //
   
   RASSERT(TS_ABLE == pTask->eState());
-  
-  vTask_Ready(pTask);
-  
+    
   Scheduler::vScheduleAbleTask(pTask);
 }
 
@@ -385,7 +383,7 @@ void Scheduler::vTask_Bide(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Execute(Task* pTask)
 {
-  RASSERT(TS_READY   == pTask->eState());
+  RASSERT(TS_ABLE == pTask->eState() || TS_READY   == pTask->eState());
   RASSERT(TR_EXECUTE == pTask->eTransition());
   RASSERT(QK_NONE == pTask->eQueue());
 
@@ -515,7 +513,7 @@ void Scheduler::vTask_Sleep(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Thread(Task* pTask, Thread* pThread)
 {
-  RASSERT(TS_READY   == pTask->eState());
+  RASSERT(TS_ABLE == pTask->eState() || TS_READY == pTask->eState());
   
   ASSERT(TD_ASSIGNED == pThread->m_eThreadState);
   ASSERT(pTask == pThread->m_pTask);
