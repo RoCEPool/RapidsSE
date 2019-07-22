@@ -681,13 +681,11 @@ void Scheduler::vThread_AssignDedicated(Thread* pThread)
   ASSERT(pThread->m_pMutexThread->bMutexIsLocked());
   
   RASSERT(pThread->m_pTask);
-  RASSERT(TS_ABLE  == pThread->m_pTask->eState() ||
-          TS_READY == pThread->m_pTask->eState());
+  RASSERT(TS_ABLE  == pThread->m_pTask->eState());
   
-  pThread->m_pTask->vState(TS_EXECUTING);
   pThread->m_pTask->vThread(pThread);
   
-  // add this task to the executing task set
+  pThread->m_pTask->vState(TS_EXECUTING);
   gpAttachMap->m_pQueues->vAddExecutingSet(pThread->m_pTask);
 }
 
