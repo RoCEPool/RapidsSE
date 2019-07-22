@@ -1016,6 +1016,16 @@ void Task::vTransition(eTR eTransition)
 }
 
 /*----------------------------------------------------------------------------*/
+/* clear transition request                                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vTransitionClear()
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  m_eTransition = TR_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
 /* wakeup the task                                                            */
 /*----------------------------------------------------------------------------*/
 void Task::vWakeupClear(void)

@@ -248,9 +248,9 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
 void Scheduler::vTask_Able(Task* pTask)
 {
   RASSERT(QK_NONE == pTask->eQueue());
-  
+  RASSERT(TR_NONE == pTask->eTransition());
+
   pTask->vState(TS_ABLE);
-  pTask->vTransition(TR_NONE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -325,9 +325,9 @@ bool Scheduler::bTask_Ack(Task* pTaskWaiting, Task* pTaskAcking)
 void Scheduler::vTask_Bide(Task* pTask)
 {
   RASSERT(pTask->bIsLocked());
-  
-  RASSERT(TS_EXECUTING == pTask->eState());
   RASSERT(TR_BIDE == pTask->eTransition());
+
+  RASSERT(TS_EXECUTING == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
   
   pTask->vState(TS_BIDING);
@@ -361,9 +361,9 @@ void Scheduler::vTask_Execute(Task* pTask)
 void Scheduler::vTask_Exit(Task* pTask)
 {
   ASSERT(! pTask->bWordBody());
-  
-  RASSERT(TS_EXECUTING == pTask->eState());
   RASSERT(TR_EXIT == pTask->eTransition());
+
+  RASSERT(TS_EXECUTING == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
 
   pTask->vState(TS_EXITED);
@@ -444,8 +444,9 @@ void Scheduler::vTask_Schedule(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Sleep(Task* pTask)
 {
-  RASSERT(TS_EXECUTING == pTask->eState());
   RASSERT(TR_SLEEP == pTask->eTransition());
+  
+  RASSERT(TS_EXECUTING == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
 
   pTask->vTransition(TR_NONE);
@@ -579,12 +580,13 @@ void Scheduler::vTask_Wakeup(void)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Yield(Task* pTask)
 {
-  RASSERT(TS_EXECUTING == pTask->eState());
   RASSERT(TR_YIELD == pTask->eTransition());
+  pTask->vTransitionClear();
+
+  RASSERT(TS_EXECUTING == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
 
   vTask_Able(pTask);
-  pTask->vTransition(TR_NONE);
   
   Thread* pThread = Thread::pThisTLSThread();
   
