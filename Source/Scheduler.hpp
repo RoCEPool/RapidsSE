@@ -60,9 +60,9 @@ namespace Scheduling
     static void vThread_AppendIdle(Thread* pThread);
     static void vThread_AssignDedicated(Thread* pThread);
     static bool bThread_AssignIdle(Task* pTask);
-    static void vThread_Beginning(Thread* pThread);
+    static void vThread_BeginLoop(Thread* pThread);
     static void vThread_ContinueSame(Thread* pThread, Task* pTask);
-    static void vThread_Ending(Thread* pThread);
+    static void vThread_EndLoop(Thread* pThread);
     static void vThread_PauseGeneral(void);
     static void vThread_RemoveDedicated(Thread* pThread);
     static void vThread_RemoveGeneral(Thread* pThread);

@@ -157,7 +157,7 @@ void Scheduler::vAssignDedicatedThread(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* begin a new thread                                                         */
+/* beginning of thread loop                                                   */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vBeginThreadLoop(Thread* pThread)
 {
@@ -165,7 +165,7 @@ void Scheduler::vBeginThreadLoop(Thread* pThread)
   // called from Thread::vLoop_dedicated() and Thread::vLoop_general()
   //
   
-  vThread_Beginning(pThread);
+  vThread_BeginLoop(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -177,7 +177,7 @@ void Scheduler::vEndThreadLoop(Thread* pThread)
   // called from Thread::vLoop_dedicated()
   //
   
-  vThread_Ending(pThread);
+  vThread_EndLoop(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -716,7 +716,7 @@ bool Scheduler::bThread_AssignIdle(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* thread is beginning                                                        */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vThread_Beginning(Thread* pThread)
+void Scheduler::vThread_BeginLoop(Thread* pThread)
 {
   pThread->vThisTLSThread();
   
@@ -745,7 +745,7 @@ void Scheduler::vThread_ContinueSame(Thread* pThread, Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* thread is ending                                                           */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vThread_Ending(Thread* pThread)
+void Scheduler::vThread_EndLoop(Thread* pThread)
 {
   pThread->m_pMutexThread->vMutexUnlock();
 }
