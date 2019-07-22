@@ -294,7 +294,7 @@ void Thread::vLoop_general(void)
       m_pTask->vTaskLoop_op();
 
     // handle task return event
-    Scheduler::vReturnTaskLoop(this);
+    Scheduler::vTaskLoopTransition(this);
   }
   
   NEVER_REACH;

@@ -15,7 +15,7 @@ namespace Scheduling
     static bool bAckWaitingTask(Task* pTaskWaiting, Task* pTaskAcking);
     static void vAddTaskDedicated(Task* pTask);
     static void vAddTaskGeneral(Task* pTask);
-    static void vReturnTaskLoop(Thread* pThread);
+    static void vTaskLoopTransition(Thread* pThread);
     static void vTriggerBidingTask(Task* pTask);
     static void vWakeSleepingTasks(void);
 

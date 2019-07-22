@@ -59,9 +59,9 @@ void Scheduler::vAddTaskGeneral(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task has returned from task loop (action depends on transition request)    */
+/* task has returned from task loop, action depends on transition request     */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vReturnTaskLoop(Thread* pThread)
+void Scheduler::vTaskLoopTransition(Thread* pThread)
 {
   //
   // called from Thread::vLoop_general()
@@ -69,15 +69,15 @@ void Scheduler::vReturnTaskLoop(Thread* pThread)
   
   Task* pTask = pThread->m_pTask;
   
-  // disconnect / de-assign task from thread
-  vThread_Unassign(pThread);
-  
   // remove task from the executing set
   gpAttachMap->m_pQueues->vRemoveExecutingSet(pTask);
+
+  // disconnect / de-assign task from calling thread
+  vThread_Unassign(pThread);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // add task to a queue depending on its transition request
+  // transition task to different state/queue depending on transition request
   switch (pTask->eTransition()) {
       
     case TR_BIDE:   vTask_Bide(pTask);   break;
