@@ -351,21 +351,18 @@ bool Scheduler::bTask_Ack(Task* pTaskBeingAcked, Task* pTaskAcking)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Bide(Task* pTask)
 {
+  RASSERT(pTask->bIsLocked());
+  
   RASSERT(TS_EXECUTING == pTask->eState());
   RASSERT(TR_BIDE == pTask->eTransition());
   RASSERT(QK_NONE == pTask->eQueue());
   
-  RASSERT(pTask->bIsLocked());
-  
   pTask->vState(TS_BIDING);
   pTask->vTransition(TR_NONE);
   
-  // add task to biding set
   gpAttachMap->m_pQueues->vAddBidingSet(pTask);
-  
   // **do not touch task** (other than to drop lock)
   
-  // drop task lock
   pTask->vDropLock();
 }
 
@@ -382,7 +379,6 @@ void Scheduler::vTask_Execute(Task* pTask)
   pTask->vTransition(TR_NONE);
 
   gpAttachMap->m_pQueues->vAddExecutingSet(pTask);
-  
   // **do not touch task**
 }
 
@@ -391,10 +387,11 @@ void Scheduler::vTask_Execute(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Exit(Task* pTask)
 {
+  ASSERT(! pTask->bWordBody());
+  
   RASSERT(TS_EXECUTING == pTask->eState());
   RASSERT(TR_EXIT == pTask->eTransition());
   RASSERT(QK_NONE == pTask->eQueue());
-  ASSERT(! pTask->bWordBody());
 
   pTask->vState(TS_EXITED);
   pTask->vTransition(TR_NONE);
@@ -402,19 +399,7 @@ void Scheduler::vTask_Exit(Task* pTask)
   //vTrace("Exited Task %p\n"_Stz,pTask);
   
   delete pTask;
-  
   // **do not touch task**
-}
-
-/*----------------------------------------------------------------------------*/
-/* task transitions to none                                                   */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTask_None(Task* pTask)
-{
-  RASSERT(QK_NONE == pTask->eQueue());
-  
-  pTask->vState(TS_NONE);
-  pTask->vTransition(TR_NONE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -431,7 +416,6 @@ void Scheduler::vTask_Ready(Task* pTask)
     gpAttachMap->m_pQueues->vAppendReadyQueue(pTask);
   else
     gpAttachMap->m_pQueues->vAppendReadyQueueLP(pTask);
-  
   // **do not touch task**
 }
 
@@ -462,7 +446,6 @@ void Scheduler::vTask_Resume(Task* pTask)
   
   pTask->vState(TS_ABLE);
   Scheduler::vScheduleAbleTask(pTask);
-  
   // **do not touch task**
 }
 
@@ -487,7 +470,6 @@ void Scheduler::vTask_Sleep(Task* pTask)
   if (! pTask->bWakeupNow()) {
     pTask->vState(TS_SLEEPING);
     gpAttachMap->m_pQueues->vAddSleepingQueue(pTask);
-    
     // **do not touch task**
 
     return;
@@ -503,7 +485,6 @@ void Scheduler::vTask_Sleep(Task* pTask)
   Thread* pThread = Thread::pThisTLSThread();
   
   vThread_ReExecuteTask(pThread,pTask);
-  
   // **do not touch task**
 }
 
@@ -518,7 +499,6 @@ void Scheduler::vTask_Thread(Task* pTask, Thread* pThread)
   ASSERT(pTask == pThread->m_pTask);
   
   pTask->vThread(pThread);
-  
   // ok to touch task
 }
 
@@ -527,10 +507,11 @@ void Scheduler::vTask_Thread(Task* pTask, Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Trigger(Task* pTask)
 {
+  ASSERT(pTask->bIsLocked());
+  
   RASSERT(TS_BIDING == pTask->eState());
   RASSERT(TR_NONE == pTask->eTransition());
   RASSERT(QK_BIDING_SET == pTask->eQueue());
-  ASSERT(pTask->bIsLocked());
   
   gpAttachMap->m_pQueues->vRemoveBidingSet(pTask);
   
@@ -538,7 +519,6 @@ void Scheduler::vTask_Trigger(Task* pTask)
   pTask->vDropLock();
   
   Scheduler::vScheduleAbleTask(pTask);
-  
   // **do not touch task**
 }
 
@@ -547,15 +527,15 @@ void Scheduler::vTask_Trigger(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Wait(Task* pTask)
 {
+  RASSERT(pTask->bIsLocked());
+  
   RASSERT(TS_EXECUTING == pTask->eState());
   RASSERT(TR_WAIT == pTask->eTransition());
   RASSERT(QK_NONE == pTask->eQueue());
-  RASSERT(pTask->bIsLocked());
 
   pTask->vState(TS_WAITING);
   pTask->vTransition(TR_NONE);
   
-  // activity
   if (pTask->pJob()->m_bMarkActivity) {
     if (C_UNKNOWN == pTask->pJob()->iJobId())
       ActivityLog::vMarkInfo(
@@ -571,12 +551,9 @@ void Scheduler::vTask_Wait(Task* pTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // add task to waiting set
   gpAttachMap->m_pQueues->vAddWaitingSet(pTask);
-  
   // **do not touch task** (other than to drop lock)
 
-  // drop task lock
   pTask->vDropLock();
 }
 
@@ -586,12 +563,12 @@ void Scheduler::vTask_Wait(Task* pTask)
 void Scheduler::vTask_Wake(Task* pTask)
 {
   RASSERT(TS_SLEEPING == pTask->eState());
-  RASSERT(QK_NONE  == pTask->eQueue());
+  RASSERT(TR_NONE == pTask->eTransition());
+  RASSERT(QK_NONE == pTask->eQueue());
   
   vTask_Able(pTask);
   
   Scheduler::vScheduleAbleTask(pTask);
-  
   // **do not touch task**
 }
 
@@ -610,9 +587,6 @@ void Scheduler::vTask_Wakeup(void)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Yield(Task* pTask)
 {
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  // task must be in the yielded state
   RASSERT(TS_EXECUTING == pTask->eState());
   RASSERT(TR_YIELD == pTask->eTransition());
   RASSERT(QK_NONE == pTask->eQueue());
@@ -643,7 +617,7 @@ void Scheduler::vTask_Yield(Task* pTask)
   //   Otherwise we add the task to the ready queue
   
   if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL) {
-    i8 iLengthReadyQueue = pQueues->nTasksReady();
+    i8 iLengthReadyQueue = gpAttachMap->m_pQueues->nTasksReady();
     if (0 == iLengthReadyQueue) {
       vThread_ReExecuteTask(pThread,pTask);
       // **do not touch task**
@@ -656,13 +630,6 @@ void Scheduler::vTask_Yield(Task* pTask)
   vTask_Able(pTask);
   Scheduler::vScheduleAbleTask(pTask);
   // **do not touch task**
-
-//  if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL) {
-//    gpAttachMap->m_pQueues->vAppendReadyQueue(pTask);
-//  }
-//  else {
-//    gpAttachMap->m_pQueues->vAppendReadyQueueLP(pTask);
-//  }
 }
 
 
