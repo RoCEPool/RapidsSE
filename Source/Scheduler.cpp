@@ -14,7 +14,7 @@ extern AttachMap* gpAttachMap;
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* ack a waiting task (returns true if task is resumed)                       */
+/* ack a waiting task (returns true if task was resumed)                      */
 /*----------------------------------------------------------------------------*/
 bool Scheduler::bAckWaitingTask(Task* pTaskWaiting, Task* pTaskAcking)
 {
@@ -55,7 +55,7 @@ void Scheduler::vAddTaskGeneral(Task* pTask)
   // called from Api::bSpawnJob()
   //
   
-  Scheduler::vScheduleAbleTask(pTask);
+  vTask_Schedule(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -80,8 +80,7 @@ void Scheduler::vReturnTaskLoop(Thread* pThread)
   // add task to a queue depending on its transition request
   switch (pTask->eTransition()) {
       
-    case TR_BIDE:
-      vTask_Bide(pTask);   break;
+    case TR_BIDE:   vTask_Bide(pTask);   break;
     case TR_EXIT:   vTask_Exit(pTask);   break;
     case TR_SLEEP:  vTask_Sleep(pTask);  break;
     case TR_WAIT:   vTask_Wait(pTask);   break;
@@ -90,21 +89,6 @@ void Scheduler::vReturnTaskLoop(Thread* pThread)
     default:
       NEVER_REACH;
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* schedule an able to execute task                                           */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vScheduleAbleTask(Task* pTask)
-{
-  RASSERT(TS_ABLE == pTask->eState() || TS_READY == pTask->eState() );
-  RASSERT(QK_NONE == pTask->eQueue());
-  
-  // attempt to assign an idle thread to the able task
-  if (bThread_AssignIdle(pTask))
-    return;
-  
-  vTask_Ready(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -409,7 +393,7 @@ void Scheduler::vTask_Ready(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* fully acked task is removed from waiting set,                              *
+/* fully acked task is removed from waiting set,                              */
 /*   transitions to TS_ABLE and scheduled                                     */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Resume(Task* pTask)
@@ -435,8 +419,23 @@ void Scheduler::vTask_Resume(Task* pTask)
   gpAttachMap->m_pQueues->vRemoveWaitingSet(pTask);
   
   pTask->vState(TS_ABLE);
-  Scheduler::vScheduleAbleTask(pTask);
+  vTask_Schedule(pTask);
   // **do not touch task**
+}
+
+/*----------------------------------------------------------------------------*/
+/* schedule an able to execute task                                           */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTask_Schedule(Task* pTask)
+{
+  RASSERT(TS_ABLE == pTask->eState() || TS_READY == pTask->eState() );
+  RASSERT(QK_NONE == pTask->eQueue());
+  
+  // attempt to assign an idle thread to the able task
+  if (bThread_AssignIdle(pTask))
+    return;
+  
+  vTask_Ready(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -511,7 +510,7 @@ void Scheduler::vTask_Trigger(Task* pTask)
   vTask_Able(pTask);
   pTask->vDropLock();
   
-  Scheduler::vScheduleAbleTask(pTask);
+  vTask_Schedule(pTask);
   // **do not touch task**
 }
 
@@ -561,7 +560,7 @@ void Scheduler::vTask_Wake(Task* pTask)
   
   vTask_Able(pTask);
   
-  Scheduler::vScheduleAbleTask(pTask);
+  vTask_Schedule(pTask);
   // **do not touch task**
 }
 
@@ -623,10 +622,9 @@ void Scheduler::vTask_Yield(Task* pTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vTask_Able(pTask);
-  Scheduler::vScheduleAbleTask(pTask);
+  vTask_Schedule(pTask);
   // **do not touch task**
 }
-
 
 
 ////////////////////////////////////////////////////////////////////////////////
