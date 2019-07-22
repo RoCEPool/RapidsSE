@@ -28,13 +28,14 @@ namespace Tasks
   {
   /* 0 */ TS_NONE=0,
   /* 1 */ TS_ABLE,      // task is able to be executed
-  /* 2 */ TS_BIDING,    // task is biding till operand arrives
-  /* 3 */ TS_EXECUTING, // task is currenty being executed by Thread::vLoop
-  /* 4 */ TS_EXITED,    // task has completed
-  /* 5 */ TS_READY,     // task is ready to be executed
-  /* 6 */ TS_SLEEPING,  // task is sleeping till wakeup time arrives
-  /* 7 */ TS_WAITING,   // task is waiting on ack from cooperating task
-  /* 8 */ TS_ENUMS
+  /* 2 */ TS_BIDING,    // task is biding till operand arrives and triggers
+  /* 3 */ TS_DESISTED,  // task has desisted from executing
+  /* 4 */ TS_EXECUTING, // task is currenty being executing by a thread
+  /* 5 */ TS_EXITED,    // task has completed
+  /* 6 */ TS_READY,     // task is queue ready to be executed
+  /* 7 */ TS_SLEEPING,  // task is sleeping till wakeup time arrives
+  /* 8 */ TS_WAITING,   // task is waiting on ack from cooperating task
+  /* 9 */ TS_ENUMS
   };
   
   static Stz* aTS[]
@@ -42,13 +43,14 @@ namespace Tasks
   /* 0 */ "NONE"_Stz,
   /* 1 */ "ABLE"_Stz,
   /* 2 */ "BIDING"_Stz,
-  /* 3 */ "EXECUTING"_Stz,
-  /* 4 */ "EXITED"_Stz,
-  /* 5 */ "READY"_Stz,
-  /* 6 */ "SEND"_Stz,
-  /* 7 */ "WAITING"_Stz,
-  /* 8 */ "YIELDED"_Stz,
-  /* 9 */ "ENUMS"_Stz,
+  /* 3 */ "DESISTED"_Stz,
+  /* 4 */ "EXECUTING"_Stz,
+  /* 5 */ "EXITED"_Stz,
+  /* 6 */ "READY"_Stz,
+  /* 7 */ "SEND"_Stz,
+  /* 8 */ "WAITING"_Stz,
+  /* 9 */ "YIELDED"_Stz,
+  /*10 */ "ENUMS"_Stz,
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
