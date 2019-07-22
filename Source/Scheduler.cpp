@@ -332,7 +332,6 @@ void Scheduler::vTask_Bide(Task* pTask)
   RASSERT(TR_BIDE == pTask->eTransition());
   
   pTask->vTransitionClear();
-
   pTask->vState(TS_BIDING);
   
   gpAttachMap->m_pQueues->vAddBidingSet(pTask);
@@ -440,7 +439,7 @@ void Scheduler::vTask_Resume(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* schedule a able-to-run task to execute                                     */
+/* attempt to assign a thread to able-to-run task, else add to ready queue    */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Schedule(Task* pTask)
 {
@@ -613,8 +612,8 @@ void Scheduler::vTask_Yield(Task* pTask)
     i8 iLengthReadyQueue = gpAttachMap->m_pQueues->nTasksReady();
     if (0 == iLengthReadyQueue) {
       vTask_Able(pTask);
-      vThread_ContinueSame(pThread,pTask);
       vTask_Execute(pTask);
+      vThread_ContinueSame(pThread,pTask);
       // **do not touch task**
       return;
     }
