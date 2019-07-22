@@ -326,12 +326,12 @@ void Scheduler::vTask_Bide(Task* pTask)
 {
   RASSERT(pTask->bIsLocked());
   RASSERT(TR_BIDE == pTask->eTransition());
+  pTask->vTransitionClear();
 
   RASSERT(TS_EXECUTING == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
   
   pTask->vState(TS_BIDING);
-  pTask->vTransition(TR_NONE);
   
   gpAttachMap->m_pQueues->vAddBidingSet(pTask);
   // **do not touch task** (other than to drop lock)
@@ -362,12 +362,12 @@ void Scheduler::vTask_Exit(Task* pTask)
 {
   ASSERT(! pTask->bWordBody());
   RASSERT(TR_EXIT == pTask->eTransition());
+  pTask->vTransitionClear();
 
   RASSERT(TS_EXECUTING == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
 
   pTask->vState(TS_EXITED);
-  pTask->vTransition(TR_NONE);
 
   //vTrace("Exited Task %p\n"_Stz,pTask);
   
@@ -445,11 +445,10 @@ void Scheduler::vTask_Schedule(Task* pTask)
 void Scheduler::vTask_Sleep(Task* pTask)
 {
   RASSERT(TR_SLEEP == pTask->eTransition());
-  
+  pTask->vTransitionClear();
+
   RASSERT(TS_EXECUTING == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
-
-  pTask->vTransition(TR_NONE);
 
   if (pTask->pJob()->m_bMarkActivity)
     ActivityLog::vMarkJob(pTask->pJob(),
@@ -521,13 +520,13 @@ void Scheduler::vTask_Trigger(Task* pTask)
 void Scheduler::vTask_Wait(Task* pTask)
 {
   RASSERT(pTask->bIsLocked());
-  
-  RASSERT(TS_EXECUTING == pTask->eState());
   RASSERT(TR_WAIT == pTask->eTransition());
+  pTask->vTransitionClear();
+
+  RASSERT(TS_EXECUTING == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
 
   pTask->vState(TS_WAITING);
-  pTask->vTransition(TR_NONE);
   
   if (pTask->pJob()->m_bMarkActivity) {
     if (C_UNKNOWN == pTask->pJob()->iJobId())
