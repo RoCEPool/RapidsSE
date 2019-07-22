@@ -371,7 +371,7 @@ void Scheduler::vTask_Bide(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Execute(Task* pTask)
 {
-  RASSERT(TS_ABLE == pTask->eState() || TS_READY   == pTask->eState());
+  RASSERT(TS_ABLE == pTask->eState());
   RASSERT(TR_EXECUTE == pTask->eTransition());
   RASSERT(QK_NONE == pTask->eQueue());
 
@@ -593,7 +593,7 @@ void Scheduler::vTask_Yield(Task* pTask)
   RASSERT(TR_YIELD == pTask->eTransition());
   RASSERT(QK_NONE == pTask->eQueue());
 
-  pTask->vState(TS_READY);
+  vTask_Able(pTask);
   pTask->vTransition(TR_NONE);
   
   Thread* pThread = Thread::pThisTLSThread();
@@ -808,7 +808,7 @@ void Scheduler::vThread_PauseGeneral(void)
 void Scheduler::vThread_ReExecuteTask(Thread* pThread, Task* pTask)
 {
   // task should be ready or yielded
-  RASSERT(TS_READY == pTask->eState());
+  RASSERT(TS_ABLE == pTask->eState());
   //pTask->vState(TS_EXECUTING);
   
   // thread should be idle
