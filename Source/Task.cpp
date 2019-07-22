@@ -337,15 +337,13 @@ void Task::vMonitorProfile_stats(s48K& sPortrait)
   Statistics* pStats = &gpAttachMap->m_oStatistics;
   
   sPortrait.vSprint("Task: acks %lld executing %lld exited %lld ready %lld "
-                          "send %lld sleeping %lld waiting %lld yielded %lld\n"_Stz,
+                          "sleeping %lld waiting %lld\n"_Stz,
                     pStats->Task.m_nAcks,
                     pStats->Task.m_nExecuting,
                     pStats->Task.m_nExited,
                     pStats->Task.m_nReady,
-                    pStats->Task.m_nSend,
-                    pStats->Task.m_nSleeping,
-                    pStats->Task.m_nWaiting,
-                    pStats->Task.m_nYielded
+                     pStats->Task.m_nSleeping,
+                    pStats->Task.m_nWaiting
                     );
   
 }
@@ -893,7 +891,6 @@ void Task::vState(eTS eState)
     case TS_READY:     pStats->Task.m_nReady++;     break;
     case TS_SLEEPING:  pStats->Task.m_nSleeping++;  break;
     case TS_WAITING:   pStats->Task.m_nWaiting++;   break;
-    case TS_YIELDED:   pStats->Task.m_nYielded++;   break;
     default:
       NEVER_REACH;
   }

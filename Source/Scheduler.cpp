@@ -371,8 +371,7 @@ void Scheduler::vTask_Bide(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Execute(Task* pTask)
 {
-  RASSERT(TS_READY   == pTask->eState() ||
-          TS_YIELDED == pTask->eState());
+  RASSERT(TS_READY   == pTask->eState());
   RASSERT(TR_EXECUTE == pTask->eTransition());
   RASSERT(QK_NONE == pTask->eQueue());
 
@@ -502,8 +501,7 @@ void Scheduler::vTask_Sleep(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Thread(Task* pTask, Thread* pThread)
 {
-  RASSERT(TS_READY   == pTask->eState() ||
-          TS_YIELDED == pTask->eState());
+  RASSERT(TS_READY   == pTask->eState());
   
   ASSERT(TD_ASSIGNED == pThread->m_eThreadState);
   ASSERT(pTask == pThread->m_pTask);
@@ -628,7 +626,7 @@ void Scheduler::vTask_Yield(Task* pTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // - A general thread has executed a task which retured TS_YIELDED.
+  // - A general thread has executed a task which retured TR_YIELD.
   //   If the ready queue is empty then this general thread can
   //     continue to execute the yield task.
   //   Otherwise we add the task to the ready queue
@@ -823,7 +821,7 @@ void Scheduler::vThread_PauseGeneral(void)
 void Scheduler::vThread_ReExecuteTask(Thread* pThread, Task* pTask)
 {
   // task should be ready or yielded
-  RASSERT(TS_READY == pTask->eState() || TS_YIELDED == pTask->eState());
+  RASSERT(TS_READY == pTask->eState());
   //pTask->vState(TS_EXECUTING);
   
   // thread should be idle

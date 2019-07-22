@@ -33,8 +33,7 @@ namespace Tasks
   /* 4 */ TS_READY,     // task is ready to be executed
   /* 5 */ TS_SLEEPING,  // task is sleeping
   /* 6 */ TS_WAITING,   // task is waiting on ack from cooperating task
-  /* 7 */ TS_YIELDED,   // task is yielded, not running and is in a TaskSet
-  /* 8 */ TS_ENUMS
+  /* 7 */ TS_ENUMS
   };
   
   static Stz* aTS[]
