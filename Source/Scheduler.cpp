@@ -341,7 +341,7 @@ void Scheduler::vTask_Bide(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove execting task from executing set and change state to TS_DESISTED    */
+/* remove executing task from executing set and change state to TS_DESISTED   */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Desist(Task* pTask)
 {
@@ -349,7 +349,6 @@ void Scheduler::vTask_Desist(Task* pTask)
   RASSERT(QK_EXECUTING_SET == pTask->eQueue());
   RASSERT(TR_NONE != pTask->eTransition());
 
-  // remove task from the executing set
   gpAttachMap->m_pQueues->vRemoveExecutingSet(pTask);
   
   pTask->vState(TS_DESISTED);
@@ -447,7 +446,6 @@ void Scheduler::vTask_Schedule(Task* pTask)
   RASSERT(QK_NONE == pTask->eQueue());
   RASSERT(TR_NONE == pTask->eTransition());
 
-  // attempt to assign an idle thread to the able task
   if (bThread_AssignIdle(pTask))
     return;
   
@@ -602,11 +600,7 @@ void Scheduler::vTask_Yield(Task* pTask)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // - A general thread has executed a task which retured TR_YIELD.
-  //   If the ready queue is empty then this general thread can
-  //     continue to execute the yield task.
-  //   Otherwise we add the task to the ready queue
+  // no other ready to run tasks, so thread continues executing the task
   
   if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL) {
     i8 iLengthReadyQueue = gpAttachMap->m_pQueues->nTasksReady();
@@ -620,6 +614,7 @@ void Scheduler::vTask_Yield(Task* pTask)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // other ready to run tasks, task is scheduled
 
   vTask_Able(pTask);
   vTask_Schedule(pTask);
@@ -738,13 +733,12 @@ void Scheduler::vThread_Beginning(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_ContinueSame(Thread* pThread, Task* pTask)
 {
-  RASSERT(TS_ABLE == pTask->eState());
-  RASSERT(TD_UNASSIGNED == pThread->m_eThreadState);
+  RASSERT(TS_EXECUTING == pTask->eState());
   
+  RASSERT(TD_UNASSIGNED == pThread->m_eThreadState);
   RASSERT(! pThread->m_pTask);
   
   pThread->m_pTask = pTask;
-  
   pThread->m_eThreadState = TD_ASSIGNED;
 }
 
