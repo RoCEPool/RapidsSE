@@ -254,7 +254,7 @@ Thread* Thread::pThisTLSThread(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* dedicated thread loop (part of event-based model)                          */
+/* dedicated thread loop                                                      */
 /*----------------------------------------------------------------------------*/
 void Thread::vLoop_dedicated(void)
 {
@@ -262,7 +262,7 @@ void Thread::vLoop_dedicated(void)
   
   Scheduler::vBeginThreadLoop(this);
 
-  Scheduler::vAssignDedicatedThread(this);
+  Scheduler::vExecuteDedicatedTask(m_pTask,this);
   
   while (m_pTask && m_pTask->pJob())
     m_pTask->vTaskLoop_job();
@@ -273,7 +273,7 @@ void Thread::vLoop_dedicated(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* event-based thread loop (fully event-based model)                          */
+/* general thread loop                                                        */
 /*----------------------------------------------------------------------------*/
 void Thread::vLoop_general(void)
 {

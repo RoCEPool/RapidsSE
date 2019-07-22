@@ -15,6 +15,7 @@ namespace Scheduling
     static bool bAckWaitingTask(Task* pTaskWaiting, Task* pTaskAcking);
     static void vAddTaskDedicated(Task* pTask);
     static void vAddTaskGeneral(Task* pTask);
+    static void vExecuteDedicatedTask(Task* pTask, Thread* pThread);
     static void vTaskLoopTransition(Thread* pThread);
     static void vTriggerBidingTask(Task* pTask);
     static void vWakeSleepingTasks(void);
@@ -24,7 +25,6 @@ namespace Scheduling
   
     static void vAddDedicatedThread(Thread* pThread);
     static void vAddGeneralThread(Thread* pThread);
-    static void vAssignDedicatedThread(Thread* pThread);
     static void vBeginThreadLoop(Thread* pThread);
     static void vEndThreadLoop(Thread* pThread);
     static void vPauseTillGeneralThreads(void);
@@ -58,11 +58,11 @@ namespace Scheduling
     static void vThread_AddDedicated(Thread* pThread);
     static void vThread_AddGeneral(Thread* pThread);
     static void vThread_AppendIdle(Thread* pThread);
-    static void vThread_AssignDedicated(Thread* pThread);
     static bool bThread_AssignIdle(Task* pTask);
     static void vThread_BeginLoop(Thread* pThread);
     static void vThread_ContinueSame(Thread* pThread, Task* pTask);
     static void vThread_EndLoop(Thread* pThread);
+    static void vThread_ExecuteDedicated(Thread* pThread);
     static void vThread_PauseGeneral(void);
     static void vThread_RemoveDedicated(Thread* pThread);
     static void vThread_RemoveGeneral(Thread* pThread);

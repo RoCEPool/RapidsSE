@@ -59,6 +59,18 @@ void Scheduler::vAddTaskGeneral(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* execute dedicated task                                                    */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vExecuteDedicatedTask(Task* pTask, Thread* pThread)
+{
+  //
+  // called from Thread::vLoop_dedicated()
+  //
+  
+  vThread_ExecuteDedicated(pThread);
+}
+
+/*----------------------------------------------------------------------------*/
 /* task has returned from task loop, action depends on transition request     */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTaskLoopTransition(Thread* pThread)
@@ -142,18 +154,6 @@ void Scheduler::vAddGeneralThread(Thread* pThread)
   //
   
   vThread_AddGeneral(pThread);
-}
-
-/*----------------------------------------------------------------------------*/
-/* assign task to dedicated thread                                            */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vAssignDedicatedThread(Thread* pThread)
-{
-  //
-  // called from Thread::vLoop_dedicated()
-  //
-
-  vThread_AssignDedicated(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -667,23 +667,6 @@ void Scheduler::vThread_AppendIdle(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* assign task to dedicated thread                                            */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vThread_AssignDedicated(Thread* pThread)
-{
-  ASSERT(TD_UNASSIGNED == pThread->m_eThreadState);
-  ASSERT(pThread->m_pMutexThread->bMutexIsLocked());
-  
-  RASSERT(pThread->m_pTask);
-  RASSERT(TS_ABLE  == pThread->m_pTask->eState());
-  
-  pThread->m_pTask->vThread(pThread);
-  
-  pThread->m_pTask->vState(TS_EXECUTING);
-  gpAttachMap->m_pQueues->vAddExecutingSet(pThread->m_pTask);
-}
-
-/*----------------------------------------------------------------------------*/
 /* attempt to pop an idle thread and assign given task to it                  */
 /*----------------------------------------------------------------------------*/
 bool Scheduler::bThread_AssignIdle(Task* pTask)
@@ -748,6 +731,23 @@ void Scheduler::vThread_ContinueSame(Thread* pThread, Task* pTask)
 void Scheduler::vThread_EndLoop(Thread* pThread)
 {
   pThread->m_pMutexThread->vMutexUnlock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* assign task to dedicated thread                                            */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vThread_ExecuteDedicated(Thread* pThread)
+{
+  ASSERT(TD_UNASSIGNED == pThread->m_eThreadState);
+  ASSERT(pThread->m_pMutexThread->bMutexIsLocked());
+  
+  RASSERT(pThread->m_pTask);
+  RASSERT(TS_ABLE  == pThread->m_pTask->eState());
+  
+  pThread->m_pTask->vThread(pThread);
+  
+  pThread->m_pTask->vState(TS_EXECUTING);
+  gpAttachMap->m_pQueues->vAddExecutingSet(pThread->m_pTask);
 }
 
 /*----------------------------------------------------------------------------*/
