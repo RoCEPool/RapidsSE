@@ -108,7 +108,7 @@ void Op::vAckJob(void)
   
   Task* pTask_JobQuery = m_pJob->m_pExecutingTask;
     
-  IGNORE_RETURN(Scheduler::bAckTask(pTask_JobQuery,m_pTask));
+  IGNORE_RETURN(Scheduler::bAckWaitingTask(pTask_JobQuery,m_pTask));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -145,7 +145,7 @@ void Op::vAppendOperand(Operand* pOperand)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // trigger this biding op
-  Scheduler::vTriggerTask(m_pTask);
+  Scheduler::vTriggerBidingTask(m_pTask);
 }
 
 /*----------------------------------------------------------------------------*/

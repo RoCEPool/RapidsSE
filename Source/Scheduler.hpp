@@ -12,12 +12,12 @@ namespace Scheduling
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // task interface
   
-    static bool bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking);
+    static bool bAckWaitingTask(Task* pTaskWaiting, Task* pTaskAcking);
     static void vAddTaskDedicated(Task* pTask);
     static void vAddTaskGeneral(Task* pTask);
     static void vReturnTaskLoop(Thread* pThread);
     static void vScheduleAbleTask(Task* pTask);
-    static void vTriggerTask(Task* pTask);
+    static void vTriggerBidingTask(Task* pTask);
     static void vWakeSleepingTasks(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -38,7 +38,7 @@ namespace Scheduling
     // implementation for tasks
   
     static void vTask_Able(Task* pTask);
-    static bool bTask_Ack(Task* pTaskBeingAcked, Task* pTaskAcking);
+    static bool bTask_Ack(Task* pTaskWaiting, Task* pTaskAcking);
     static void vTask_Bide(Task* pTask);
     static void vTask_Execute(Task* pTask);
     static void vTask_Exit(Task* pTask);

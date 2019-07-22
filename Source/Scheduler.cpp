@@ -16,20 +16,20 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* ack a waiting task (returns true if task is resumed)                       */
 /*----------------------------------------------------------------------------*/
-bool Scheduler::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
+bool Scheduler::bAckWaitingTask(Task* pTaskWaiting, Task* pTaskAcking)
 {
   //
   // called from Step::vTaskAck()
   //
   
-  bool bAmDecider = bTask_Ack(pTaskBeingAcked,pTaskAcking);
+  bool bAmDecider = bTask_Ack(pTaskWaiting,pTaskAcking);
   
   if (! bAmDecider)
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vTask_Resume(pTaskBeingAcked);
+  vTask_Resume(pTaskWaiting);
 
   return true;
 }
@@ -110,7 +110,7 @@ void Scheduler::vScheduleAbleTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* trigger biding op task that operand has arrived                            */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTriggerTask(Task* pTask)
+void Scheduler::vTriggerBidingTask(Task* pTask)
 {
   //
   // called from Op::vAppendIn()
@@ -272,13 +272,13 @@ void Scheduler::vTask_Able(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* ack a waiting task                                                         */
 /*----------------------------------------------------------------------------*/
-bool Scheduler::bTask_Ack(Task* pTaskBeingAcked, Task* pTaskAcking)
+bool Scheduler::bTask_Ack(Task* pTaskWaiting, Task* pTaskAcking)
 {
   // note: the task may not yet be waiting.  there is an indefinite period
   //       between when the task grabs its lock + sets the number of acks and
   //       when it enters the waiting state and drops the lock
   
-  RASSERT(pTaskBeingAcked->iAcksRmg_assert_only_() > 0);
+  RASSERT(pTaskWaiting->iAcksRmg_assert_only_() > 0);
   
   RASSERT(TS_EXECUTING == pTaskAcking->eState());
   
@@ -306,7 +306,7 @@ bool Scheduler::bTask_Ack(Task* pTaskBeingAcked, Task* pTaskAcking)
   
   
   // decrement the acks remaining
-  bool bAmDecider = pTaskBeingAcked->bAcksRmgDec();
+  bool bAmDecider = pTaskWaiting->bAcksRmgDec();
   
 //  if (bAmDecider)
 //    ActionSequence::vAdd(pTaskAcking->pJob(),
