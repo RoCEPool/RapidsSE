@@ -242,7 +242,7 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* change task state to TS_ABLE (able to be executed)                         */
+/* change any task state to TS_ABLE (able to be executed)                     */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Able(Task* pTask)
 {
@@ -322,7 +322,7 @@ bool Scheduler::bTask_Ack(Task* pTaskWaiting, Task* pTaskAcking)
 }
 
 /*----------------------------------------------------------------------------*/
-/* locked op-task transitions to TS_BIDING and is added to biding set         */
+/* locked desisted op-task transitions to TS_BIDING and added to biding set   */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Bide(Task* pTask)
 {
@@ -342,7 +342,7 @@ void Scheduler::vTask_Bide(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove task from executing set and change state to TS_DESISTED             */
+/* remove execting task from executing set and change state to TS_DESISTED    */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Desist(Task* pTask)
 {
@@ -357,7 +357,7 @@ void Scheduler::vTask_Desist(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* change task state to TS_EXECUTING and add to executing set                 */
+/* change able-to-run task to TS_EXECUTING and add to executing set           */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Execute(Task* pTask)
 {
@@ -372,11 +372,10 @@ void Scheduler::vTask_Execute(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task transitions to TS_EXITED and is deleted                               */
+/* desisted task transitions to TS_EXITED and is deleted                      */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Exit(Task* pTask)
 {
-  ASSERT(! pTask->bWordBody());
   RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
   RASSERT(TR_EXIT == pTask->eTransition());
@@ -391,7 +390,7 @@ void Scheduler::vTask_Exit(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* change task state to TS_READY and append to a ready queue                  */
+/* change able-to-run task state to TS_READY and append to a ready queue      */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Ready(Task* pTask)
 {
@@ -441,7 +440,7 @@ void Scheduler::vTask_Resume(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* schedule a TS_ABLE to execute                                              */
+/* schedule a able-to-run task to execute                                     */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Schedule(Task* pTask)
 {
@@ -459,7 +458,7 @@ void Scheduler::vTask_Schedule(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* transition task to TS_SLEEPING and add to sleeping queue                   */
+/* transition desisted task to TS_SLEEPING and add to sleeping queue          */
 /*   (if wakeup time has already arrived, calling thread re-executes task)    */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Sleep(Task* pTask)
@@ -500,7 +499,7 @@ void Scheduler::vTask_Sleep(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task has been assigned the given thread                                    */
+/* able-to-run task has been assigned the given thread                        */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Thread(Task* pTask, Thread* pThread)
 {
@@ -514,8 +513,8 @@ void Scheduler::vTask_Thread(Task* pTask, Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* locked op-task is removed from biding set,                                 */
-/*   transitions to TS_ABLE and scheduled                                     */
+/* locked biding op-task is removed from biding set,                          */
+/*   transitions to TS_ABLE, unlocked and scheduled                           */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Trigger(Task* pTask)
 {
@@ -534,7 +533,7 @@ void Scheduler::vTask_Trigger(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* transition locked task to TS_WAITING and add to waiting set                */
+/* transition locked desisted task to TS_WAITING and add to waiting set       */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Wait(Task* pTask)
 {
@@ -580,7 +579,7 @@ void Scheduler::vTask_Wakeup(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task has yielded and is scheduled                                          */
+/* desisted task has yielded and is scheduled                                 */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Yield(Task* pTask)
 {

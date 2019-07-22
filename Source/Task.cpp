@@ -169,7 +169,8 @@ Task::~Task(void) noexcept(false)
   RASSERT(TS_EXITED == m_eState);
   RASSERT(! m_pJob);
   RASSERT(! m_iDdlLocked);
-  
+  RASSERT(! bWordBody());
+
   // delete the stacks
   delete m_pDataStack;
   delete m_pReturnStack;
