@@ -73,7 +73,7 @@ void Scheduler::vTaskLoopTransition(Thread* pThread)
   vTask_Desist(pTask);
 
   // disconnect / de-assign task from calling thread
-  vThread_Unassign(pThread);
+  vThread_UnassignTask(pThread);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -159,7 +159,7 @@ void Scheduler::vAssignDedicatedThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* begin a new thread                                                         */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vBeginThread(Thread* pThread)
+void Scheduler::vBeginThreadLoop(Thread* pThread)
 {
   //
   // called from Thread::vLoop_dedicated() and Thread::vLoop_general()
@@ -171,7 +171,7 @@ void Scheduler::vBeginThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* end of thread loop                                                         */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vEndThread(Thread* pThread)
+void Scheduler::vEndThreadLoop(Thread* pThread)
 {
   //
   // called from Thread::vLoop_dedicated()
@@ -821,7 +821,7 @@ void Scheduler::vThread_SpawnDedicated(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* deassign task from thread                                                  */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vThread_Unassign(Thread* pThread)
+void Scheduler::vThread_UnassignTask(Thread* pThread)
 {
   pThread->m_pTask = nullptr;
   pThread->m_eThreadState = TD_UNASSIGNED;

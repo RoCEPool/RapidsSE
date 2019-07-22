@@ -25,8 +25,8 @@ namespace Scheduling
     static void vAddDedicatedThread(Thread* pThread);
     static void vAddGeneralThread(Thread* pThread);
     static void vAssignDedicatedThread(Thread* pThread);
-    static void vBeginThread(Thread* pThread);
-    static void vEndThread(Thread* pThread);
+    static void vBeginThreadLoop(Thread* pThread);
+    static void vEndThreadLoop(Thread* pThread);
     static void vPauseTillGeneralThreads(void);
     static void vRemoveDedicatedThread(Thread* pThread);
     static void vRemoveGeneralThread(Thread* pThread);
@@ -67,7 +67,7 @@ namespace Scheduling
     static void vThread_RemoveDedicated(Thread* pThread);
     static void vThread_RemoveGeneral(Thread* pThread);
     static void vThread_SpawnDedicated(Task* pTask);
-    static void vThread_Unassign(Thread* pThread);
+    static void vThread_UnassignTask(Thread* pThread);
     static void vThread_WaitAssignment(Thread* pThread);
   };
 }

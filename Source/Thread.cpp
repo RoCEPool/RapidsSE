@@ -260,14 +260,14 @@ void Thread::vLoop_dedicated(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  Scheduler::vBeginThread(this);
+  Scheduler::vBeginThreadLoop(this);
 
   Scheduler::vAssignDedicatedThread(this);
   
   while (m_pTask && m_pTask->pJob())
     m_pTask->vTaskLoop_job();
 
-  Scheduler::vEndThread(this);
+  Scheduler::vEndThreadLoop(this);
 
   vTrace("Exiting dedicated thread loop\n"_Stz);
 }
@@ -279,7 +279,7 @@ void Thread::vLoop_general(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  Scheduler::vBeginThread(this);
+  Scheduler::vBeginThreadLoop(this);
   
   for (;;) {
     
