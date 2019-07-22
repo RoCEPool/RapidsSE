@@ -233,7 +233,6 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
   vTask_Thread(pTask,pThread);
 
   // task enters execute state
-  pTask->vTransition(TR_EXECUTE);
   vTask_Execute(pTask);
 }
 
@@ -340,16 +339,15 @@ void Scheduler::vTask_Bide(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task transitions to TS_EXECUTING and is added to executing set             */
+/* task changes state to TS_EXECUTING and is added to executing set           */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Execute(Task* pTask)
 {
   RASSERT(TS_ABLE == pTask->eState());
-  RASSERT(TR_EXECUTE == pTask->eTransition());
+  RASSERT(TR_NONE == pTask->eTransition());
   RASSERT(QK_NONE == pTask->eQueue());
 
   pTask->vState(TS_EXECUTING);
-  pTask->vTransition(TR_NONE);
 
   gpAttachMap->m_pQueues->vAddExecutingSet(pTask);
   // **do not touch task**
@@ -381,9 +379,9 @@ void Scheduler::vTask_Exit(Task* pTask)
 void Scheduler::vTask_Ready(Task* pTask)
 {
   RASSERT(QK_NONE == pTask->eQueue());
-  
+  RASSERT(TR_NONE == pTask->eTransition());
+
   pTask->vState(TS_READY);
-  pTask->vTransition(TR_NONE);
 
   if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
     gpAttachMap->m_pQueues->vAppendReadyQueue(pTask);
@@ -414,17 +412,18 @@ void Scheduler::vTask_Resume(Task* pTask)
   
   // having got the lock, the task should be TS_WAITING and QK_WAITING_SET
   RASSERT(TS_WAITING == pTask->eState());
+  RASSERT(TR_NONE == pTask->eTransition());
   RASSERT(QK_WAITING_SET == pTask->eQueue());
 
   gpAttachMap->m_pQueues->vRemoveWaitingSet(pTask);
   
-  pTask->vState(TS_ABLE);
+  vTask_Able(pTask);
   vTask_Schedule(pTask);
   // **do not touch task**
 }
 
 /*----------------------------------------------------------------------------*/
-/* schedule an able to execute task                                           */
+/* schedule an TS_ABLE to execute task                                        */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Schedule(Task* pTask)
 {
@@ -475,7 +474,6 @@ void Scheduler::vTask_Sleep(Task* pTask)
   Thread* pThread = Thread::pThisTLSThread();
   
   vThread_ReExecuteTask(pThread,pTask);
-  pTask->vTransition(TR_EXECUTE);
   vTask_Execute(pTask);
   // **do not touch task**
 }
@@ -613,7 +611,6 @@ void Scheduler::vTask_Yield(Task* pTask)
     i8 iLengthReadyQueue = gpAttachMap->m_pQueues->nTasksReady();
     if (0 == iLengthReadyQueue) {
       vThread_ReExecuteTask(pThread,pTask);
-      pTask->vTransition(TR_EXECUTE);
       vTask_Execute(pTask);
       // **do not touch task**
       return;
