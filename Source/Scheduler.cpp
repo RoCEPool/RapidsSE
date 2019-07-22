@@ -246,8 +246,8 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Able(Task* pTask)
 {
-  RASSERT(QK_NONE == pTask->eQueue());
   RASSERT(TR_NONE == pTask->eTransition());
+  RASSERT(QK_NONE == pTask->eQueue());
 
   pTask->vState(TS_ABLE);
 }
@@ -319,17 +319,17 @@ bool Scheduler::bTask_Ack(Task* pTaskWaiting, Task* pTaskAcking)
 }
 
 /*----------------------------------------------------------------------------*/
-/* op-task transitions to TS_BIDING and is added to biding set                */
+/* locked op-task transitions to TS_BIDING and is added to biding set         */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Bide(Task* pTask)
 {
   RASSERT(pTask->bIsLocked());
   RASSERT(TR_BIDE == pTask->eTransition());
-  pTask->vTransitionClear();
-
   RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
   
+  pTask->vTransitionClear();
+
   pTask->vState(TS_BIDING);
   
   gpAttachMap->m_pQueues->vAddBidingSet(pTask);
@@ -343,6 +343,8 @@ void Scheduler::vTask_Bide(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Desist(Task* pTask)
 {
+  RASSERT(TS_EXECUTING == pTask->eState());
+  
   // remove task from the executing set
   gpAttachMap->m_pQueues->vRemoveExecutingSet(pTask);
   
@@ -371,11 +373,10 @@ void Scheduler::vTask_Exit(Task* pTask)
 {
   ASSERT(! pTask->bWordBody());
   RASSERT(TR_EXIT == pTask->eTransition());
-  pTask->vTransitionClear();
-
   RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
 
+  pTask->vTransitionClear();
   pTask->vState(TS_EXITED);
 
   //vTrace("Exited Task %p\n"_Stz,pTask);
@@ -389,6 +390,7 @@ void Scheduler::vTask_Exit(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Ready(Task* pTask)
 {
+  RASSERT(TS_ABLE == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
   RASSERT(TR_NONE == pTask->eTransition());
 
@@ -458,11 +460,11 @@ void Scheduler::vTask_Schedule(Task* pTask)
 void Scheduler::vTask_Sleep(Task* pTask)
 {
   RASSERT(TR_SLEEP == pTask->eTransition());
-  pTask->vTransitionClear();
-
   RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
 
+  pTask->vTransitionClear();
+  
   if (pTask->pJob()->m_bMarkActivity)
     ActivityLog::vMarkJob(pTask->pJob(),
                           "Schedule sleeping: %s %p"_Stz,
@@ -499,20 +501,20 @@ void Scheduler::vTask_Thread(Task* pTask, Thread* pThread)
 {
   RASSERT(TS_ABLE == pTask->eState());
   
-  ASSERT(TD_ASSIGNED == pThread->m_eThreadState);
-  ASSERT(pTask == pThread->m_pTask);
+  RASSERT(TD_ASSIGNED == pThread->m_eThreadState);
+  RASSERT(pTask == pThread->m_pTask);
   
   pTask->vThread(pThread);
   // ok to touch task
 }
 
 /*----------------------------------------------------------------------------*/
-/* op-task is removed from biding set, transitions to TS_ABLE and scheduled   */
+/* locked op-task is removed from biding set,                                 */
+/*   transitions to TS_ABLE and scheduled                                     */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Trigger(Task* pTask)
 {
-  ASSERT(pTask->bIsLocked());
-  
+  RASSERT(pTask->bIsLocked());
   RASSERT(TS_BIDING == pTask->eState());
   RASSERT(TR_NONE == pTask->eTransition());
   RASSERT(QK_BIDING_SET == pTask->eQueue());
@@ -527,17 +529,16 @@ void Scheduler::vTask_Trigger(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* transition task to TS_WAITING and add to waiting set                       */
+/* transition locked task to TS_WAITING and add to waiting set                */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Wait(Task* pTask)
 {
   RASSERT(pTask->bIsLocked());
   RASSERT(TR_WAIT == pTask->eTransition());
-  pTask->vTransitionClear();
-
   RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
 
+  pTask->vTransitionClear();
   pTask->vState(TS_WAITING);
   
   if (pTask->pJob()->m_bMarkActivity) {
@@ -562,43 +563,28 @@ void Scheduler::vTask_Wait(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* change sleeping task state to TS_ABLE and schedule                         */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTask_Wake(Task* pTask)
-{
-  RASSERT(TS_SLEEPING == pTask->eState());
-  RASSERT(TR_NONE == pTask->eTransition());
-  RASSERT(QK_NONE == pTask->eQueue());
-  
-  vTask_Able(pTask);
-  
-  vTask_Schedule(pTask);
-  // **do not touch task**
-}
-
-/*----------------------------------------------------------------------------*/
 /* wakeup any sleeping tasks whose wakeup time has arrived                    */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Wakeup(void)
 {
-  while (Task* pTask = gpAttachMap->m_pQueues->pPopSleepingQueue())
-    vTask_Wake(pTask);
+  while (Task* pTask = gpAttachMap->m_pQueues->pPopSleepingQueue()) {
+    vTask_Able(pTask);
+    vTask_Schedule(pTask);
     // **do not touch task**
+  }
 }
 
 /*----------------------------------------------------------------------------*/
-/* task has yielded, task is scheduled                                        */
+/* task has yielded and is scheduled                                          */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Yield(Task* pTask)
 {
+  RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(TR_YIELD == pTask->eTransition());
+  RASSERT(QK_NONE == pTask->eQueue());
+  
   pTask->vTransitionClear();
 
-  RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(QK_NONE == pTask->eQueue());
-
-  vTask_Able(pTask);
-  
   Thread* pThread = Thread::pThisTLSThread();
   
   if (pTask->pJob()->m_bMarkActivity) {
@@ -624,6 +610,7 @@ void Scheduler::vTask_Yield(Task* pTask)
   if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL) {
     i8 iLengthReadyQueue = gpAttachMap->m_pQueues->nTasksReady();
     if (0 == iLengthReadyQueue) {
+      vTask_Able(pTask);
       vThread_ContinueSame(pThread,pTask);
       vTask_Execute(pTask);
       // **do not touch task**
@@ -751,12 +738,12 @@ void Scheduler::vThread_Beginning(Thread* pThread)
 void Scheduler::vThread_ContinueSame(Thread* pThread, Task* pTask)
 {
   RASSERT(TS_ABLE == pTask->eState());
-  
   RASSERT(TD_UNASSIGNED == pThread->m_eThreadState);
   
   RASSERT(! pThread->m_pTask);
   
   pThread->m_pTask = pTask;
+  
   pThread->m_eThreadState = TD_ASSIGNED;
 }
 
