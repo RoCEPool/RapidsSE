@@ -111,15 +111,11 @@ void Scheduler::vScheduleAbleTask(Task* pTask)
   RASSERT(TS_ABLE == pTask->eState() || TS_READY == pTask->eState() );
   RASSERT(QK_NONE == pTask->eQueue());
   
-  // attempt to assign a thread to the task
+  // attempt to assign an idle thread to the able task
   if (bThread_AssignIdle(pTask))
     return;
   
-  // append task to a ready queue
-  if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
-    gpAttachMap->m_pQueues->vAppendReadyQueue(pTask);
-  else
-    gpAttachMap->m_pQueues->vAppendReadyQueueLP(pTask);
+  vTask_Ready(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -428,6 +424,13 @@ void Scheduler::vTask_Ready(Task* pTask)
   RASSERT(QK_NONE == pTask->eQueue());
   
   pTask->vState(TS_READY);
+
+  if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
+    gpAttachMap->m_pQueues->vAppendReadyQueue(pTask);
+  else
+    gpAttachMap->m_pQueues->vAppendReadyQueueLP(pTask);
+  
+  // **do not touch task**
 }
 
 /*----------------------------------------------------------------------------*/
@@ -648,7 +651,7 @@ void Scheduler::vTask_Yield(Task* pTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vTask_Ready(pTask);
+  vTask_Able(pTask);
   Scheduler::vScheduleAbleTask(pTask);
   // **do not touch task**
 
