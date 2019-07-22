@@ -70,7 +70,7 @@ void Scheduler::vTaskLoopTransition(Thread* pThread)
   Task* pTask = pThread->m_pTask;
   
   // remove task from the executing set
-  gpAttachMap->m_pQueues->vRemoveExecutingSet(pTask);
+  vTask_Desist(pTask);
 
   // disconnect / de-assign task from calling thread
   vThread_Unassign(pThread);
@@ -242,7 +242,7 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* task changes state to TS_ABLE                                              */
+/* change task state to TS_ABLE (able to be executed)                         */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Able(Task* pTask)
 {
@@ -339,7 +339,16 @@ void Scheduler::vTask_Bide(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task changes state to TS_EXECUTING and is added to executing set           */
+/* remove task from executing set ((and change state to TS_ABLE))             */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTask_Desist(Task* pTask)
+{
+  // remove task from the executing set
+  gpAttachMap->m_pQueues->vRemoveExecutingSet(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* change task state to TS_EXECUTING and add to executing set                 */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Execute(Task* pTask)
 {
@@ -374,7 +383,7 @@ void Scheduler::vTask_Exit(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task changes state to TS_READY and is appended to a ready queue            */
+/* change task state to TS_READY and append to a ready queue                  */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Ready(Task* pTask)
 {
@@ -441,7 +450,7 @@ void Scheduler::vTask_Schedule(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task transitions to TS_SLEEPING and added to sleeping queue                */
+/* transition task to TS_SLEEPING and add to sleeping queue                   */
 /*   (if wakeup time has already arrived, calling thread re-executes task)    */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Sleep(Task* pTask)
@@ -516,7 +525,7 @@ void Scheduler::vTask_Trigger(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task transitions to TS_WAITING and is added to waiting set                 */
+/* transition task to TS_WAITING and add to waiting set                       */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Wait(Task* pTask)
 {
@@ -551,7 +560,7 @@ void Scheduler::vTask_Wait(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* sleeping task changes state to TS_ABLE and is scheduled                    */
+/* change sleeping task state to TS_ABLE and schedule                         */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Wake(Task* pTask)
 {

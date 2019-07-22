@@ -39,6 +39,7 @@ namespace Scheduling
     static void vTask_Able(Task* pTask);
     static bool bTask_Ack(Task* pTaskWaiting, Task* pTaskAcking);
     static void vTask_Bide(Task* pTask);
+    static void vTask_Desist(Task* pTask);
     static void vTask_Execute(Task* pTask);
     static void vTask_Exit(Task* pTask);
     static void vTask_Ready(Task* pTask);
