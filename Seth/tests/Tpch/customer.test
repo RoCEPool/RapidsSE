@@ -42,7 +42,7 @@ rows:
   ("C_NATIONKEY", "INTEGER", 19, 0, false, false)
 
 // load the table
-ld customer "/TPCH/SF1/customer.tbl" field_delimiter "|";
+ld customer "/TPCH/SF1/customer.csv";
 success
 
 fetch customer;

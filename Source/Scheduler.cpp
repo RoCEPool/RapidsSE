@@ -485,6 +485,8 @@ void Scheduler::vTask_Sleep(Task* pTask)
   Thread* pThread = Thread::pThisTLSThread();
   
   vThread_ReExecuteTask(pThread,pTask);
+  pTask->vTransition(TR_EXECUTE);
+  vTask_Execute(pTask);
   // **do not touch task**
 }
 
@@ -493,7 +495,7 @@ void Scheduler::vTask_Sleep(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Thread(Task* pTask, Thread* pThread)
 {
-  RASSERT(TS_ABLE == pTask->eState() || TS_READY == pTask->eState());
+  RASSERT(TS_ABLE == pTask->eState());
   
   ASSERT(TD_ASSIGNED == pThread->m_eThreadState);
   ASSERT(pTask == pThread->m_pTask);
@@ -515,7 +517,7 @@ void Scheduler::vTask_Trigger(Task* pTask)
   
   gpAttachMap->m_pQueues->vRemoveBidingSet(pTask);
   
-  pTask->vState(TS_READY);
+  vTask_Able(pTask);
   pTask->vDropLock();
   
   Scheduler::vScheduleAbleTask(pTask);
@@ -620,6 +622,8 @@ void Scheduler::vTask_Yield(Task* pTask)
     i8 iLengthReadyQueue = gpAttachMap->m_pQueues->nTasksReady();
     if (0 == iLengthReadyQueue) {
       vThread_ReExecuteTask(pThread,pTask);
+      pTask->vTransition(TR_EXECUTE);
+      vTask_Execute(pTask);
       // **do not touch task**
       return;
     }
@@ -702,6 +706,8 @@ void Scheduler::vThread_AssignDedicated(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 bool Scheduler::bThread_AssignIdle(Task* pTask)
 {
+  RASSERT(TS_ABLE == pTask->eState());
+  
   Queues* pQueues = gpAttachMap->m_pQueues;
   
   Thread* pThread = pQueues->pThreadPopIdle();

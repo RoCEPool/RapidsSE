@@ -284,7 +284,8 @@ void Thread::vLoop_general(void)
   for (;;) {
     
     // wait for task to be assigned to this thread
-    Scheduler::vWaitForTaskAssignment(this);
+    if (! m_pTask)
+      Scheduler::vWaitForTaskAssignment(this);
     
     // call the task
     if (TK_JOB == m_pTask->eKind())
