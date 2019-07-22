@@ -149,20 +149,6 @@ void Op::vAppendOperand(Operand* pOperand)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bide/wait for operand to arrive                                            */
-/*----------------------------------------------------------------------------*/
-void Op::vBideOperand(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  ASSERT(bIsLocked());
-  
-  Scheduler::vBideOpTask(m_pTask);
-  
-  ASSERT(bIsLocked());
-}
-
-/*----------------------------------------------------------------------------*/
 /* drop lock                                                                  */
 /*----------------------------------------------------------------------------*/
 void Op::vDropLock(void)

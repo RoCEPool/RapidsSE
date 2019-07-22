@@ -59,18 +59,6 @@ void Scheduler::vAddTaskGeneral(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* op task is to bide till operand arrives                                    */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vBideOpTask(Task* pTask)
-{
-  //
-  // called from Op::pPopOperand()
-  //
-  
-  vTask_Bide(pTask);
-}
-
-/*----------------------------------------------------------------------------*/
 /* task has returned from task loop (action depends on transition request)    */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vReturnTaskLoop(Thread* pThread)
@@ -92,7 +80,8 @@ void Scheduler::vReturnTaskLoop(Thread* pThread)
   // add task to a queue depending on its transition request
   switch (pTask->eTransition()) {
       
-    case TR_BIDE:   vTask_Bide(pTask);   break;
+    case TR_BIDE:
+      vTask_Bide(pTask);   break;
     case TR_EXIT:   vTask_Exit(pTask);   break;
     case TR_SLEEP:  vTask_Sleep(pTask);  break;
     case TR_WAIT:   vTask_Wait(pTask);   break;

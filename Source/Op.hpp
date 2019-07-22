@@ -32,7 +32,6 @@ namespace PushDown
     void vAckJob(void);
     void vAckJobEnd(bool m_bAckJobEnd);
     void vAppendOperand(Operand* pOperand);
-    void vBideOperand(void);
     void vDropLock(void);
     void vGrabLock(void);
     bool bIsLocked(void);
