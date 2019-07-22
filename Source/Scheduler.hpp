@@ -38,6 +38,7 @@ namespace Scheduling
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // implementation for tasks
   
+    static void vTask_Able(Task* pTask);
     static bool bTask_Ack(Task* pTaskBeingAcked, Task* pTaskAcking);
     static void vTask_Bide(Task* pTask);
     static void vTask_Execute(Task* pTask);

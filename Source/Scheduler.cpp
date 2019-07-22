@@ -278,6 +278,16 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* task transitions to able to be executed                                    */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTask_Able(Task* pTask)
+{
+  RASSERT(QK_NONE == pTask->eQueue());
+  
+  pTask->vState(TS_ABLE);
+}
+
+/*----------------------------------------------------------------------------*/
 /* ack a waiting task                                                         */
 /*----------------------------------------------------------------------------*/
 bool Scheduler::bTask_Ack(Task* pTaskBeingAcked, Task* pTaskAcking)

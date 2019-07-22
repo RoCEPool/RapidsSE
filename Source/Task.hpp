@@ -27,26 +27,28 @@ namespace Tasks
   enum eTS // Task State
   {
   /* 0 */ TS_NONE=0,
-  /* 1 */ TS_BIDING,    // task is biding
-  /* 2 */ TS_EXECUTING, // task is currenty being executed by Thread::vLoop
-  /* 3 */ TS_EXITED,    // task has completed
-  /* 4 */ TS_READY,     // task is ready to be executed
-  /* 5 */ TS_SLEEPING,  // task is sleeping
-  /* 6 */ TS_WAITING,   // task is waiting on ack from cooperating task
-  /* 7 */ TS_ENUMS
+  /* 1 */ TS_ABLE,      // task is able to be executed
+  /* 2 */ TS_BIDING,    // task is biding
+  /* 3 */ TS_EXECUTING, // task is currenty being executed by Thread::vLoop
+  /* 4 */ TS_EXITED,    // task has completed
+  /* 5 */ TS_READY,     // task is ready to be executed
+  /* 6 */ TS_SLEEPING,  // task is sleeping
+  /* 7 */ TS_WAITING,   // task is waiting on ack from cooperating task
+  /* 8 */ TS_ENUMS
   };
   
   static Stz* aTS[]
   {
   /* 0 */ "NONE"_Stz,
-  /* 1 */ "BIDING"_Stz,
-  /* 2 */ "EXECUTING"_Stz,
-  /* 3 */ "EXITED"_Stz,
-  /* 4 */ "READY"_Stz,
-  /* 5 */ "SEND"_Stz,
-  /* 6 */ "WAITING"_Stz,
-  /* 7 */ "YIELDED"_Stz,
-  /* 8 */ "ENUMS"_Stz,
+  /* 1 */ "ABLE"_Stz,
+  /* 2 */ "BIDING"_Stz,
+  /* 3 */ "EXECUTING"_Stz,
+  /* 4 */ "EXITED"_Stz,
+  /* 5 */ "READY"_Stz,
+  /* 6 */ "SEND"_Stz,
+  /* 7 */ "WAITING"_Stz,
+  /* 8 */ "YIELDED"_Stz,
+  /* 9 */ "ENUMS"_Stz,
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -342,7 +342,7 @@ void Task::vMonitorProfile_stats(s48K& sPortrait)
                     pStats->Task.m_nExecuting,
                     pStats->Task.m_nExited,
                     pStats->Task.m_nReady,
-                     pStats->Task.m_nSleeping,
+                    pStats->Task.m_nSleeping,
                     pStats->Task.m_nWaiting
                     );
   
