@@ -429,8 +429,8 @@ void Scheduler::vTask_Resume(Task* pTask)
   
   // having got the lock, the task should be TS_WAITING and QK_WAITING_SET
   RASSERT(TS_WAITING == pTask->eState());
-  RASSERT(TR_NONE == pTask->eTransition());
   RASSERT(QK_WAITING_SET == pTask->eQueue());
+  RASSERT(TR_NONE == pTask->eTransition());
 
   gpAttachMap->m_pQueues->vRemoveWaitingSet(pTask);
   
@@ -480,7 +480,6 @@ void Scheduler::vTask_Sleep(Task* pTask)
     pTask->vState(TS_SLEEPING);
     gpAttachMap->m_pQueues->vAddSleepingQueue(pTask);
     // **do not touch task**
-
     return;
   }
   
@@ -489,11 +488,10 @@ void Scheduler::vTask_Sleep(Task* pTask)
   
   pTask->vWakeupClear();
   
-  vTask_Able(pTask);
-  
   Thread* pThread = Thread::pThisTLSThread();
-  
   vThread_ContinueSame(pThread,pTask);
+  
+  vTask_Able(pTask);
   vTask_Execute(pTask);
   // **do not touch task**
 }
@@ -525,9 +523,9 @@ void Scheduler::vTask_Trigger(Task* pTask)
 
   gpAttachMap->m_pQueues->vRemoveBidingSet(pTask);
   
-  vTask_Able(pTask);
   pTask->vDropLock();
   
+  vTask_Able(pTask);
   vTask_Schedule(pTask);
   // **do not touch task**
 }
