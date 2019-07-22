@@ -324,9 +324,9 @@ bool Scheduler::bTask_Ack(Task* pTaskWaiting, Task* pTaskAcking)
 void Scheduler::vTask_Bide(Task* pTask)
 {
   RASSERT(pTask->bIsLocked());
-  RASSERT(TR_BIDE == pTask->eTransition());
   RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
+  RASSERT(TR_BIDE == pTask->eTransition());
   
   pTask->vTransitionClear();
 
@@ -357,8 +357,8 @@ void Scheduler::vTask_Desist(Task* pTask)
 void Scheduler::vTask_Execute(Task* pTask)
 {
   RASSERT(TS_ABLE == pTask->eState());
-  RASSERT(TR_NONE == pTask->eTransition());
   RASSERT(QK_NONE == pTask->eQueue());
+  RASSERT(TR_NONE == pTask->eTransition());
 
   pTask->vState(TS_EXECUTING);
 
@@ -372,9 +372,9 @@ void Scheduler::vTask_Execute(Task* pTask)
 void Scheduler::vTask_Exit(Task* pTask)
 {
   ASSERT(! pTask->bWordBody());
-  RASSERT(TR_EXIT == pTask->eTransition());
   RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
+  RASSERT(TR_EXIT == pTask->eTransition());
 
   pTask->vTransitionClear();
   pTask->vState(TS_EXITED);
@@ -441,9 +441,9 @@ void Scheduler::vTask_Resume(Task* pTask)
 void Scheduler::vTask_Schedule(Task* pTask)
 {
   RASSERT(TS_ABLE == pTask->eState());
-  RASSERT(TR_NONE == pTask->eTransition());
   RASSERT(QK_NONE == pTask->eQueue());
-  
+  RASSERT(TR_NONE == pTask->eTransition());
+
   // attempt to assign an idle thread to the able task
   if (bThread_AssignIdle(pTask))
     return;
@@ -459,9 +459,9 @@ void Scheduler::vTask_Schedule(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Sleep(Task* pTask)
 {
-  RASSERT(TR_SLEEP == pTask->eTransition());
   RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
+  RASSERT(TR_SLEEP == pTask->eTransition());
 
   pTask->vTransitionClear();
   
@@ -516,9 +516,9 @@ void Scheduler::vTask_Trigger(Task* pTask)
 {
   RASSERT(pTask->bIsLocked());
   RASSERT(TS_BIDING == pTask->eState());
-  RASSERT(TR_NONE == pTask->eTransition());
   RASSERT(QK_BIDING_SET == pTask->eQueue());
-  
+  RASSERT(TR_NONE == pTask->eTransition());
+
   gpAttachMap->m_pQueues->vRemoveBidingSet(pTask);
   
   vTask_Able(pTask);
@@ -534,9 +534,9 @@ void Scheduler::vTask_Trigger(Task* pTask)
 void Scheduler::vTask_Wait(Task* pTask)
 {
   RASSERT(pTask->bIsLocked());
-  RASSERT(TR_WAIT == pTask->eTransition());
   RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
+  RASSERT(TR_WAIT == pTask->eTransition());
 
   pTask->vTransitionClear();
   pTask->vState(TS_WAITING);
@@ -580,9 +580,9 @@ void Scheduler::vTask_Wakeup(void)
 void Scheduler::vTask_Yield(Task* pTask)
 {
   RASSERT(TS_DESISTED == pTask->eState());
-  RASSERT(TR_YIELD == pTask->eTransition());
   RASSERT(QK_NONE == pTask->eQueue());
-  
+  RASSERT(TR_YIELD == pTask->eTransition());
+
   pTask->vTransitionClear();
 
   Thread* pThread = Thread::pThisTLSThread();
