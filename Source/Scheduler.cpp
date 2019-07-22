@@ -43,8 +43,6 @@ void Scheduler::vAddTaskDedicated(Task* pTask)
   // called from Api::bSpawnJobDedicated()
   //
 
-  RASSERT(TS_ABLE == pTask->eState());
-    
   vThread_DedicatedTask(pTask);
 }
 
@@ -57,8 +55,6 @@ void Scheduler::vAddTaskGeneral(Task* pTask)
   // called from Api::bSpawnJob()
   //
   
-  RASSERT(TS_ABLE == pTask->eState());
-    
   Scheduler::vScheduleAbleTask(pTask);
 }
 
@@ -785,6 +781,8 @@ void Scheduler::vThread_Beginning(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_DedicatedTask(Task* pTask)
 {
+  RASSERT(TS_ABLE == pTask->eState());
+  
   Thread* pThread = new Thread;
 
   pThread->m_pTask = pTask;
