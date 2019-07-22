@@ -59,7 +59,7 @@ void Scheduler::vAddTaskGeneral(Task* pTask)
   
   vTask_Ready(pTask);
   
-  Scheduler::vScheduleReadyTask(pTask);
+  Scheduler::vScheduleAbleTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -108,11 +108,11 @@ void Scheduler::vReturnTaskLoop(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* schedule a ready to execute task                                           */
+/* schedule an able to execute task                                           */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vScheduleReadyTask(Task* pTask)
+void Scheduler::vScheduleAbleTask(Task* pTask)
 {
-  RASSERT(TS_READY == pTask->eState());
+  RASSERT(TS_ABLE == pTask->eState() || TS_READY == pTask->eState() );
   RASSERT(QK_NONE == pTask->eQueue());
   
   // attempt to assign a thread to the task
@@ -459,7 +459,7 @@ void Scheduler::vTask_Resume(Task* pTask)
   gpAttachMap->m_pQueues->vRemoveWaitingSet(pTask);
   
   pTask->vState(TS_READY);
-  Scheduler::vScheduleReadyTask(pTask);
+  Scheduler::vScheduleAbleTask(pTask);
   
   // **do not touch task**
 }
@@ -536,7 +536,7 @@ void Scheduler::vTask_Trigger(Task* pTask)
   pTask->vState(TS_READY);
   pTask->vDropLock();
   
-  Scheduler::vScheduleReadyTask(pTask);
+  Scheduler::vScheduleAbleTask(pTask);
   
   // **do not touch task**
 }
@@ -589,7 +589,7 @@ void Scheduler::vTask_Wake(Task* pTask)
   
   vTask_Ready(pTask);
   
-  Scheduler::vScheduleReadyTask(pTask);
+  Scheduler::vScheduleAbleTask(pTask);
   
   // **do not touch task**
 }
@@ -653,7 +653,7 @@ void Scheduler::vTask_Yield(Task* pTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vTask_Ready(pTask);
-  Scheduler::vScheduleReadyTask(pTask);
+  Scheduler::vScheduleAbleTask(pTask);
   // **do not touch task**
 
 //  if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL) {
