@@ -61,7 +61,7 @@ void Scheduler::vAddTaskGeneral(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* op task is to bide till operand arrives                                    */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vBideTask(Task* pTask)
+void Scheduler::vBideOpTask(Task* pTask)
 {
   //
   // called from Op::pPopOperand()
@@ -89,7 +89,7 @@ void Scheduler::vReturnTaskLoop(Thread* pThread)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // add task to another queue depending on its transition request
+  // add task to a queue depending on its transition request
   switch (pTask->eTransition()) {
       
     case TR_BIDE:   vTask_Bide(pTask);   break;
@@ -270,7 +270,7 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* task transitions to able to be executed                                    */
+/* task transitions to TS_ABLE                                                */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Able(Task* pTask)
 {
@@ -347,7 +347,7 @@ bool Scheduler::bTask_Ack(Task* pTaskBeingAcked, Task* pTaskAcking)
 }
 
 /*----------------------------------------------------------------------------*/
-/* op-task is to bide till operand arrives                                    */
+/* op-task transitions to TS_BIDING and is added to biding set                */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Bide(Task* pTask)
 {
@@ -367,7 +367,7 @@ void Scheduler::vTask_Bide(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task transitions to executing                                              */
+/* task transitions to TS_EXECUTING and is added to executing set             */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Execute(Task* pTask)
 {
@@ -383,7 +383,7 @@ void Scheduler::vTask_Execute(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task transitions to exited and is deleted                                  */
+/* task transitions to TS_EXITED and is deleted                               */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Exit(Task* pTask)
 {
@@ -403,7 +403,7 @@ void Scheduler::vTask_Exit(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task transitions to ready                                                  */
+/* task transitions to TS_READY and is appended to a ready queue              */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Ready(Task* pTask)
 {
@@ -420,7 +420,8 @@ void Scheduler::vTask_Ready(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* resume a fully acked task (that had been waiting)                          */
+/* fully acked task is removed from waiting set,                              *
+/*   transitions to TS_ABLE and scheduled                                     */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Resume(Task* pTask)
 {
@@ -450,7 +451,8 @@ void Scheduler::vTask_Resume(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task transitions to sleeping                                               */
+/* task transitions to TS_SLEEPING and added to sleeping queue                */
+/*   (if wakeup time has already arrived, calling thread re-executes task)    */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Sleep(Task* pTask)
 {
@@ -466,7 +468,7 @@ void Scheduler::vTask_Sleep(Task* pTask)
                           aCN[pTask->pJob()->eClass()],
                           pTask->pJob());
   
-  // is the task still actually sleeping
+  // is the task to actually sleep?
   if (! pTask->bWakeupNow()) {
     pTask->vState(TS_SLEEPING);
     gpAttachMap->m_pQueues->vAddSleepingQueue(pTask);
@@ -505,7 +507,7 @@ void Scheduler::vTask_Thread(Task* pTask, Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* op task has an operand arriving into its queue while its dormant           */
+/* op-task is removed from biding set, transitions to TS_ABLE and scheduled   */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Trigger(Task* pTask)
 {
@@ -525,7 +527,7 @@ void Scheduler::vTask_Trigger(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task is to wait for acks                                                   */
+/* task transitions to waiting and is added to waiting set                    */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Wait(Task* pTask)
 {
@@ -560,7 +562,7 @@ void Scheduler::vTask_Wait(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task is to be woken                                                        */
+/* sleeping task transitions to able and is scheduled                         */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Wake(Task* pTask)
 {
@@ -807,17 +809,12 @@ void Scheduler::vThread_PauseGeneral(void)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_ReExecuteTask(Thread* pThread, Task* pTask)
 {
-  // task should be ready or yielded
   RASSERT(TS_ABLE == pTask->eState());
-  //pTask->vState(TS_EXECUTING);
   
-  // thread should be idle
   RASSERT(TD_ASSIGNED == pThread->m_eThreadState);
   
-  // thread should have no task
   RASSERT(! pThread->m_pTask);
   
-  // set task to be executed
   pThread->m_pTask = pTask;
 }
 

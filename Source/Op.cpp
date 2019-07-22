@@ -157,7 +157,7 @@ void Op::vBideOperand(void)
   
   ASSERT(bIsLocked());
   
-  Scheduler::vBideTask(m_pTask);
+  Scheduler::vBideOpTask(m_pTask);
   
   ASSERT(bIsLocked());
 }
