@@ -108,7 +108,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
   pThread->vThreadEntry();
   pThread->m_pPthread->vThreadEntry();
   
-  Scheduler::vThreadAddDedicated(pThread);
+  Scheduler::vAddDedicatedThread(pThread);
   
   if (gpAttachMap->m_bVerbose)
     vTrace("Thread::aEntryPoint_dedicated %p %lld\n"_Stz,
@@ -143,7 +143,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
     vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
            pThread,pThread->iThreadNo());
   
-  Scheduler::vThreadRemoveDedicated(pThread);
+  Scheduler::vRemoveDedicatedThread(pThread);
   
   pThread->m_pPthread->vThreadExit();
   
@@ -162,7 +162,7 @@ void* Thread::aEntryPoint_general(void* pArg)
   pThread->vThreadEntry();
   pThread->m_pPthread->vThreadEntry();
 
-  Scheduler::vThreadAddGeneral(pThread);
+  Scheduler::vAddGeneralThread(pThread);
   
   if (gpAttachMap->m_bVerbose)
     vTrace("Thread::aEntryPoint_general %p %lld\n"_Stz,
@@ -197,7 +197,7 @@ void* Thread::aEntryPoint_general(void* pArg)
     vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
            pThread,pThread->iThreadNo());
   
-  Scheduler::vThreadRemoveGeneral(pThread);
+  Scheduler::vRemoveGeneralThread(pThread);
   
   pThread->m_pPthread->vThreadExit();
 

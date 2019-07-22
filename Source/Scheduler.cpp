@@ -139,7 +139,7 @@ void Scheduler::vWakeSleepingTasks(void)
 /*----------------------------------------------------------------------------*/
 /* append new thread onto dedicated thread vector                             */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vThreadAddDedicated(Thread* pThread)
+void Scheduler::vAddDedicatedThread(Thread* pThread)
 {
   //
   // called from Thread::aEntryPoint_dedicated()
@@ -151,7 +151,7 @@ void Scheduler::vThreadAddDedicated(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* append new thread onto general thread vector                               */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vThreadAddGeneral(Thread* pThread)
+void Scheduler::vAddGeneralThread(Thread* pThread)
 {
   //
   // called from Thread::aEntryPoint_general()
@@ -211,7 +211,7 @@ void Scheduler::vPauseTillGeneralThreads(void)
 /*----------------------------------------------------------------------------*/
 /* remove dedicated thread from dedicated thread vector                       */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vThreadRemoveDedicated(Thread* pThread)
+void Scheduler::vRemoveDedicatedThread(Thread* pThread)
 {
   //
   // called from Thread::aEntryPoint_dedicated()
@@ -223,7 +223,7 @@ void Scheduler::vThreadRemoveDedicated(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* remove general thread from general thread vector                           */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vThreadRemoveGeneral(Thread* pThread)
+void Scheduler::vRemoveGeneralThread(Thread* pThread)
 {
   //
   // called from Thread::aEntryPoint_general()
@@ -643,7 +643,7 @@ void Scheduler::vThread_AddDedicated(Thread* pThread)
   Queues* pQueues = gpAttachMap->m_pQueues;
   
   pThread->m_eThreadState = TD_IDLE;
-  pQueues->vThreadAddDedicated(pThread);
+  pQueues->vAddDedicatedThread(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -656,7 +656,7 @@ void Scheduler::vThread_AddGeneral(Thread* pThread)
   Queues* pQueues = gpAttachMap->m_pQueues;
   
   pThread->m_eThreadState = TD_IDLE;
-  pQueues->vThreadAddGeneral(pThread);
+  pQueues->vAddGeneralThread(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -818,7 +818,7 @@ void Scheduler::vThread_RemoveDedicated(Thread* pThread)
   
   Queues* pQueues = gpAttachMap->m_pQueues;
   
-  pQueues->vThreadRemoveDedicated(pThread);
+  pQueues->vRemoveDedicatedThread(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -832,7 +832,7 @@ void Scheduler::vThread_RemoveGeneral(Thread* pThread)
   
   Queues* pQueues = gpAttachMap->m_pQueues;
   
-  pQueues->vThreadRemoveGeneral(pThread);
+  pQueues->vRemoveGeneralThread(pThread);
 }
 
 /*----------------------------------------------------------------------------*/

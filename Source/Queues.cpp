@@ -576,7 +576,7 @@ void Queues::vRemoveWaitingSet(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* add  thread to dedicated thread vector                                     */
 /*----------------------------------------------------------------------------*/
-void Queues::vThreadAddDedicated(Thread* pThread)
+void Queues::vAddDedicatedThread(Thread* pThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -590,7 +590,7 @@ void Queues::vThreadAddDedicated(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* add thread to general thread vector                                        */
 /*----------------------------------------------------------------------------*/
-void Queues::vThreadAddGeneral(Thread* pThread)
+void Queues::vAddGeneralThread(Thread* pThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -635,7 +635,7 @@ Thread* Queues::pThreadPopIdle(void)
 /*----------------------------------------------------------------------------*/
 /* remove thread from dedicated thread vector                                 */
 /*----------------------------------------------------------------------------*/
-void Queues::vThreadRemoveDedicated(Thread* pThread)
+void Queues::vRemoveDedicatedThread(Thread* pThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
@@ -647,7 +647,7 @@ void Queues::vThreadRemoveDedicated(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* remove thread from general thread vector                                   */
 /*----------------------------------------------------------------------------*/
-void Queues::vThreadRemoveGeneral(Thread* pThread)
+void Queues::vRemoveGeneralThread(Thread* pThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
