@@ -43,19 +43,23 @@ void Scheduler::vAddTaskDedicated(Task* pTask)
   // called from Api::bSpawnJobDedicated()
   //
 
+  RASSERT(TS_ABLE == pTask->eState());
+  
   vTask_Ready(pTask);
   
   vThread_DedicatedTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
-/* add new general task into system and schedule it as ready                  */
+/* add new general task into system and schedule it                           */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vAddTaskGeneral(Task* pTask)
 {
   //
   // called from Api::bSpawnJob()
   //
+  
+  RASSERT(TS_ABLE == pTask->eState());
   
   vTask_Ready(pTask);
   

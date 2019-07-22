@@ -28,11 +28,11 @@ namespace Tasks
   {
   /* 0 */ TS_NONE=0,
   /* 1 */ TS_ABLE,      // task is able to be executed
-  /* 2 */ TS_BIDING,    // task is biding
+  /* 2 */ TS_BIDING,    // task is biding till operand arrives
   /* 3 */ TS_EXECUTING, // task is currenty being executed by Thread::vLoop
   /* 4 */ TS_EXITED,    // task has completed
   /* 5 */ TS_READY,     // task is ready to be executed
-  /* 6 */ TS_SLEEPING,  // task is sleeping
+  /* 6 */ TS_SLEEPING,  // task is sleeping till wakeup time arrives
   /* 7 */ TS_WAITING,   // task is waiting on ack from cooperating task
   /* 8 */ TS_ENUMS
   };
