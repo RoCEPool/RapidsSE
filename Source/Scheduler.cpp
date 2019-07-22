@@ -427,7 +427,8 @@ void Scheduler::vTask_Resume(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Schedule(Task* pTask)
 {
-  RASSERT(TS_ABLE == pTask->eState() || TS_READY == pTask->eState() );
+  RASSERT(TS_ABLE == pTask->eState());
+  RASSERT(TR_NONE == pTask->eTransition());
   RASSERT(QK_NONE == pTask->eQueue());
   
   // attempt to assign an idle thread to the able task
