@@ -327,7 +327,7 @@ void Scheduler::vTask_Bide(Task* pTask)
   RASSERT(TR_BIDE == pTask->eTransition());
   pTask->vTransitionClear();
 
-  RASSERT(TS_EXECUTING == pTask->eState());
+  RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
   
   pTask->vState(TS_BIDING);
@@ -339,12 +339,14 @@ void Scheduler::vTask_Bide(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove task from executing set ((and change state to TS_ABLE))             */
+/* remove task from executing set and change state to TS_DESISTED             */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Desist(Task* pTask)
 {
   // remove task from the executing set
   gpAttachMap->m_pQueues->vRemoveExecutingSet(pTask);
+  
+  pTask->vState(TS_DESISTED);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -371,7 +373,7 @@ void Scheduler::vTask_Exit(Task* pTask)
   RASSERT(TR_EXIT == pTask->eTransition());
   pTask->vTransitionClear();
 
-  RASSERT(TS_EXECUTING == pTask->eState());
+  RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
 
   pTask->vState(TS_EXITED);
@@ -458,7 +460,7 @@ void Scheduler::vTask_Sleep(Task* pTask)
   RASSERT(TR_SLEEP == pTask->eTransition());
   pTask->vTransitionClear();
 
-  RASSERT(TS_EXECUTING == pTask->eState());
+  RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
 
   if (pTask->pJob()->m_bMarkActivity)
@@ -533,7 +535,7 @@ void Scheduler::vTask_Wait(Task* pTask)
   RASSERT(TR_WAIT == pTask->eTransition());
   pTask->vTransitionClear();
 
-  RASSERT(TS_EXECUTING == pTask->eState());
+  RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
 
   pTask->vState(TS_WAITING);
@@ -592,7 +594,7 @@ void Scheduler::vTask_Yield(Task* pTask)
   RASSERT(TR_YIELD == pTask->eTransition());
   pTask->vTransitionClear();
 
-  RASSERT(TS_EXECUTING == pTask->eState());
+  RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
 
   vTask_Able(pTask);
