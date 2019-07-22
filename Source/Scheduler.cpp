@@ -414,6 +414,7 @@ void Scheduler::vTask_None(Task* pTask)
   RASSERT(QK_NONE == pTask->eQueue());
   
   pTask->vState(TS_NONE);
+  pTask->vTransition(TR_NONE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -424,6 +425,7 @@ void Scheduler::vTask_Ready(Task* pTask)
   RASSERT(QK_NONE == pTask->eQueue());
   
   pTask->vState(TS_READY);
+  pTask->vTransition(TR_NONE);
 
   if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
     gpAttachMap->m_pQueues->vAppendReadyQueue(pTask);
@@ -458,7 +460,7 @@ void Scheduler::vTask_Resume(Task* pTask)
 
   gpAttachMap->m_pQueues->vRemoveWaitingSet(pTask);
   
-  pTask->vState(TS_READY);
+  pTask->vState(TS_ABLE);
   Scheduler::vScheduleAbleTask(pTask);
   
   // **do not touch task**
