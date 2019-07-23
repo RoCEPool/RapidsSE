@@ -38,10 +38,7 @@ ActionLog::ActionLog(void)
 : ShmLog(CN_ACTIONLOG)
 {
   _precondition_(_MAGIC_,CN_ACTIONLOG,_FOOTER_);
-  
-  m_i_Mark = 0;
-  m_nMarks = C_ACTION_MARKS;
-  
+    
   for (i8 i_Action = 0; i_Action < m_nMarks; i_Action++)
     m_oaAction[i_Action].vInit(i_Action);
   

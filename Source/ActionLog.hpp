@@ -5,7 +5,6 @@
 
 namespace Logging
 {
-  static const i8    C_ACTION_MARKS = C_1M * 1;
   static const char* C_ACTION_REGION   = "/SE_ActionLog";
 
   class ActionLog : public ShmLog
@@ -13,10 +12,8 @@ namespace Logging
   friend class Action;
   
   private:
-    i8   m_i_Mark;  // current subscript
-    i8   m_nMarks;  // number of available marks in array
 
-    Action m_oaAction[C_ACTION_MARKS];
+    Action m_oaAction[C_LOG_MARKS];
 
     // must be last
     Footer m_xFooter;

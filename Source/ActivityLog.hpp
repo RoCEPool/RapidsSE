@@ -5,7 +5,6 @@
 
 namespace Logging
 {
-  static const i8    C_ACTIVITY_MARKS  = C_1M * 10;
   static const char* C_ACTIVITY_REGION = "/SE_ActivityLog";
   
   static const i8    C_JOB_GROUP = 0;
@@ -15,11 +14,9 @@ namespace Logging
   class ActivityLog : public ShmLog
   {
   private:
-    i8   m_i_Mark;  // current mark subscript
-    i8   m_nMarks;  // number of available marks in array
   
     // circular array of activity marks
-    ActivityMark m_oaMark[C_ACTIVITY_MARKS];
+    ActivityMark m_oaMark[C_LOG_MARKS];
   
     // must be last
     Footer m_xFooter;

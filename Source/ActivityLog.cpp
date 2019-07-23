@@ -42,9 +42,6 @@ ActivityLog::ActivityLog(void)
   if (0 != gpAttachMap->m_pGrid->m_iThisNode || Pthread::bIsJavaThread() )
     RASSERT(0);
   
-  m_i_Mark = 0;
-  m_nMarks = C_ACTIVITY_MARKS;
-  
   for (i8 i_Mark = 0; i_Mark < m_nMarks; i_Mark++) {
     ActivityMark* pActivityMark = &m_oaMark[i_Mark];
     pActivityMark->vInit();
@@ -424,7 +421,7 @@ void ActivityLog::vOpenByApi(void)
            "attached to existing map (size %lldB, max %lld marks)\n\n"_Stz,
            C_ACTIVITY_REGION,
            sizeof(ActivityLog),
-           C_ACTIVITY_MARKS);
+           C_LOG_MARKS);
   
   gpActivityLog = pActivityLog;
   
@@ -460,7 +457,7 @@ void ActivityLog::vOpenBySE(bool bStarting)
              "created new map (size %lldB, max %lld marks)\n\n"_Stz,
              C_ACTIVITY_REGION,
              sizeof(ActivityLog),
-             C_ACTIVITY_MARKS);
+             C_LOG_MARKS);
     gpActivityLog = new(pActivityLog) ActivityLog;
 
   } else {
@@ -470,7 +467,7 @@ void ActivityLog::vOpenBySE(bool bStarting)
              "attached to existing map (size %lldB, max %lld marks)\n\n"_Stz,
              C_ACTIVITY_REGION,
              sizeof(ActivityLog),
-             C_ACTIVITY_MARKS);
+             C_LOG_MARKS);
     
     gpActivityLog = pActivityLog;
   }
