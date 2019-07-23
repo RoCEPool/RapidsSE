@@ -35,21 +35,21 @@ void Log::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Log::Log(void)
-: ShmLog(CN_ACTIVITYLOG)
+: ShmLog(CN_LOG)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   if (0 != gpAttachMap->m_pGrid->m_iThisNode || Pthread::bIsJavaThread() )
     RASSERT(0);
   
   for (i8 i_Entry = 0; i_Entry < m_nEntries; i_Entry++) {
-    LogEntry* pLogEntry = &m_oaMark[i_Entry];
+    LogEntry* pLogEntry = &m_oaEntry[i_Entry];
     pLogEntry->vInit();
   }
   
-  _checkInitialised_(CN_ACTIVITYLOG);
+  _checkInitialised_(CN_LOG);
   
-  _postcondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_LOG,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,7 +57,7 @@ Log::Log(void)
 /*----------------------------------------------------------------------------*/
 Log::~Log(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -521,7 +521,7 @@ void Log::vWriteCsv(bool bShortForm)
 i8 Log::iAddMarkArg(i8 iEnumGroup, i8 iEnum, i8 iForeign,
                             Stz* aFormat, va_list xArgs)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   char caMark[1024];
   
@@ -545,7 +545,7 @@ i8 Log::iAddMarkArg(i8 iEnumGroup, i8 iEnum, i8 iForeign,
 i8 Log::iAddMarkVbl(i8 iEnumGroup, i8 iEnum, i8 iForeign,
                             Stz* aFormat, ...)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   va_list xArgs;
   
@@ -561,7 +561,7 @@ i8 Log::iAddMarkVbl(i8 iEnumGroup, i8 iEnum, i8 iForeign,
 /*----------------------------------------------------------------------------*/
 LogEntry* Log::pNewMark(void)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
   vGrabLock();
@@ -579,11 +579,11 @@ LogEntry* Log::pNewMark(void)
 /*----------------------------------------------------------------------------*/
 LogEntry* Log::pNewMark_NL(void)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
 
   m_okLock.vAssertWrite();
   
-  LogEntry* pLogEntry = &m_oaMark[m_i_Entry % m_nEntries];
+  LogEntry* pLogEntry = &m_oaEntry[m_i_Entry % m_nEntries];
   
   pLogEntry->m_iMark = m_i_Entry;
   
@@ -597,7 +597,7 @@ LogEntry* Log::pNewMark_NL(void)
 /*----------------------------------------------------------------------------*/
 void Log::vFindRange_NL(i8& i_MinMark, i8& i_MaxMark)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   RASSERT(m_okLock.bIsLocked());
   
@@ -608,14 +608,14 @@ void Log::vFindRange_NL(i8& i_MinMark, i8& i_MaxMark)
   
   for (i8 i_Entry = 0; i_Entry < m_nEntries; i_Entry++) {
     
-    if (-1 == m_oaMark[i_Entry].m_iMark)
+    if (-1 == m_oaEntry[i_Entry].m_iMark)
       return;
     
-    if (m_oaMark[i_Entry].m_iMark < i_MinMark)
-      i_MinMark = m_oaMark[i_Entry].m_iMark;
+    if (m_oaEntry[i_Entry].m_iMark < i_MinMark)
+      i_MinMark = m_oaEntry[i_Entry].m_iMark;
     
-    if (m_oaMark[i_Entry].m_iMark > i_MaxMark)
-      i_MaxMark = m_oaMark[i_Entry].m_iMark;
+    if (m_oaEntry[i_Entry].m_iMark > i_MaxMark)
+      i_MaxMark = m_oaEntry[i_Entry].m_iMark;
   }
 }
 
@@ -624,7 +624,7 @@ void Log::vFindRange_NL(i8& i_MinMark, i8& i_MaxMark)
 /*----------------------------------------------------------------------------*/
 i8 Log::iPercentFull_NL(void)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   RASSERT(m_okLock.bIsLocked());
   
@@ -676,7 +676,7 @@ i8 Log::iSize(void)
 /*----------------------------------------------------------------------------*/
 void Log::vWriteToFile(bool bShortForm)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   s256 sAmPath;
   sAmPath = "/tmp/Log.csv"_Stz;
@@ -711,19 +711,19 @@ void Log::vWriteToFile(bool bShortForm)
   
   vFindRange_NL(i_MinMark,i_MaxMark);
   
-  LogEntry* pLogEntry = &m_oaMark[i_MinMark % m_nEntries];
+  LogEntry* pLogEntry = &m_oaEntry[i_MinMark % m_nEntries];
   pLogEntry->vDump(pActivityFile, bShortForm,
                        nullptr,iTotalDelta);
   
   for (i8 i_Entry = i_MinMark + 1; i_Entry <= i_MaxMark; i_Entry++) {
     
-    pLogEntry = &m_oaMark[i_Entry % m_nEntries];
+    pLogEntry = &m_oaEntry[i_Entry % m_nEntries];
     
     if (-1 == pLogEntry->m_iMark)
       break;
     
     pLogEntry->vDump(pActivityFile, bShortForm,
-                         &m_oaMark[(i_Entry - 1) % m_nEntries],
+                         &m_oaEntry[(i_Entry - 1) % m_nEntries],
                          iTotalDelta);
   }
   
@@ -740,16 +740,7 @@ void Log::vWriteToFile(bool bShortForm)
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* Log::aFooter(void)
-{
-  _precondition_(_MAGIC_,CN_ACTIVITYLOG);
-  
-  return &m_xFooter;
-}
+__aFooterFunction(Log);
 
 /*============================================================================*/
 /* end                                                                        */

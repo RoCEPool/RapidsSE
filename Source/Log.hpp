@@ -11,8 +11,8 @@ namespace Logging
   {
   private:
   
-    // circular array of activity marks
-    LogEntry m_oaMark[C_LOG_ENTRIES];
+    // circular array of log entries
+    LogEntry m_oaEntry[C_LOG_ENTRIES];
   
     // must be last
     Footer m_xFooter;
