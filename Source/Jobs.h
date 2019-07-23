@@ -44,6 +44,8 @@ static Stz* aJL[]
 #include "JobTable.hpp"
 #include "Job.hpp"
 #include "JobMark2.hpp"
+#include "JobLog.hpp"
+
 #include "JobWriteBehind.hpp"
 #include "RowAgg.hpp"
 #include "RowOnce.hpp"
