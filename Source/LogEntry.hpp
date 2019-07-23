@@ -12,8 +12,8 @@ namespace Logging
   friend class Log;
   
   private:
-    i8   m_iMark;       // mark no
-    i8   m_iTick;       // tick when mark made
+    i8   m_i_Entry;     // entry no
+    i8   m_iTick;       // tick when entry added
     char m_caNode[32];  // which node
     i8   m_iEnumGroup;  // enum group
     i8   m_iEnum;       // enum/jobid

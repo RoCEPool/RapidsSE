@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* LogEntry.cpp - Activity Mark                                           */
+/* LogEntry.cpp - Shared Log Entry                                            */
 /*============================================================================*/
 
 #include "Measurement.h"
@@ -18,7 +18,7 @@ LogEntry* Logging::_pLogEntry(void* aAddr)
 {
   LogEntry* pLogEntry = reinterpret_cast<LogEntry*>(aAddr);
   
-  RASSERT_TYPE(pLogEntry,CN_ACTIVITYMARK);
+  RASSERT_TYPE(pLogEntry,CN_LOGENTRY);
  
   return pLogEntry;
 }
@@ -45,13 +45,13 @@ void LogEntry::operator delete(void* pDataAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 LogEntry::LogEntry(void)
-: Object(CN_ACTIVITYMARK)
+: Object(CN_LOGENTRY)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
+  _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
-  _checkInitialised_(CN_ACTIVITYMARK);
+  _checkInitialised_(CN_LOGENTRY);
   
-  _postcondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -59,7 +59,7 @@ LogEntry::LogEntry(void)
 /*----------------------------------------------------------------------------*/
 LogEntry::~LogEntry(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
+  _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -85,9 +85,9 @@ i8 LogEntry::iAsMicroseconds(i8 iTickDelta)
 /*----------------------------------------------------------------------------*/
 void LogEntry::vInit(void)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
+  _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
-  m_iMark      = -1;
+  m_i_Entry      = -1;
   m_iTick      = -1;
   m_caNode[0]  = '\0';
   m_iEnumGroup = -1;
@@ -100,7 +100,7 @@ void LogEntry::vInit(void)
 /*----------------------------------------------------------------------------*/
 void LogEntry::vWrite(i8 iEnumGroup, i8 iEnum, i8 iForeign, char* aText)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
+  _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
   m_iTick = Tsc::iTicks();
   
@@ -116,7 +116,7 @@ void LogEntry::vWrite(i8 iEnumGroup, i8 iEnum, i8 iForeign, char* aText)
                    aText,
                    sizeof(m_caText) - 1);
   
-  _postcondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -125,7 +125,7 @@ void LogEntry::vWrite(i8 iEnumGroup, i8 iEnum, i8 iForeign, char* aText)
 void LogEntry::vDump(File* pFile, bool bShortForm,
                          LogEntry* pPrevMark, i8& iTotalDelta)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
+  _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
   if (bShortForm) {
     vDumpShort(pFile);
@@ -145,7 +145,7 @@ void LogEntry::vDump(File* pFile, bool bShortForm,
 
   if (m_iEnum < 0)
     pFile->vPrint("%lld,%lld,%lld,%lld,%s,%s,%s\n"_Stz,
-                  m_iMark,
+                  m_i_Entry,
                   m_iTick,
                   iDeltaUs,
                   iTotalDelta,
@@ -156,7 +156,7 @@ void LogEntry::vDump(File* pFile, bool bShortForm,
   else
   if (m_iEnum == 0)
     pFile->vPrint("%lld,%lld,%lld,%lld,%s,inf,%s\n"_Stz,
-                  m_iMark,
+                  m_i_Entry,
                   m_iTick,
                   iDeltaUs,
                   iTotalDelta,
@@ -165,7 +165,7 @@ void LogEntry::vDump(File* pFile, bool bShortForm,
                   m_caText);
   else
     pFile->vPrint("%lld,%lld,%lld,%lld,%s,%lld,%s\n"_Stz,
-                  m_iMark,
+                  m_i_Entry,
                   m_iTick,
                   iDeltaUs,
                   iTotalDelta,
@@ -180,7 +180,7 @@ void LogEntry::vDump(File* pFile, bool bShortForm,
 /*----------------------------------------------------------------------------*/
 void LogEntry::vDumpShort(File* pFile)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
+  _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
   if (m_iForeign) {
     vDumpShortForeign(pFile);
@@ -190,7 +190,7 @@ void LogEntry::vDumpShort(File* pFile)
   // inf
   if (C_INF_GROUP == m_iEnumGroup) {
     pFile->vPrint("[%3lld %s inf] %s\n"_Stz,
-                  m_iMark,
+                  m_i_Entry,
                   m_caNode,
                   m_caText);
     return;
@@ -199,7 +199,7 @@ void LogEntry::vDumpShort(File* pFile)
   // job
   if (C_JOB_GROUP == m_iEnumGroup) {
     pFile->vPrint("[%3lld %s %03lld] %s\n"_Stz,
-                  m_iMark,
+                  m_i_Entry,
                   m_caNode,
                   m_iEnum,
                   m_caText);
@@ -208,7 +208,7 @@ void LogEntry::vDumpShort(File* pFile)
   
   // enum
   pFile->vPrint("[%3lld %s %s] %s\n"_Stz,
-                m_iMark,
+                m_i_Entry,
                 m_caNode,
                 EnumGroups::szEnumText(m_iEnumGroup,m_iEnum),
                 m_caText);
@@ -219,7 +219,7 @@ void LogEntry::vDumpShort(File* pFile)
 /*----------------------------------------------------------------------------*/
 void LogEntry::vDumpShortForeign(File* pFile)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
+  _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
   char caText[C_MARGIN+1] = { '\0' };
   char caRightAdj[C_MARGIN+1]  = { '\0' };
@@ -231,7 +231,7 @@ void LogEntry::vDumpShortForeign(File* pFile)
     StrLib::vSprint(caText,"%s [inf %s %3lld]"_Stz,
                     m_caText,
                     m_caNode,
-                    m_iMark);
+                    m_i_Entry);
     iLen = StrLib::iLength(caText);
     StrLib::vPad(caRightAdj,C_MARGIN-iLen,' ');
     StrLib::vConcat(caRightAdj,caText);
@@ -246,7 +246,7 @@ void LogEntry::vDumpShortForeign(File* pFile)
                     m_caText,
                     m_iEnum,
                     m_caNode,
-                    m_iMark);
+                    m_i_Entry);
     iLen = StrLib::iLength(caText);
     StrLib::vPad(caRightAdj,C_MARGIN-iLen,' ');
     StrLib::vConcat(caRightAdj,caText);
@@ -260,7 +260,7 @@ void LogEntry::vDumpShortForeign(File* pFile)
                   m_caText,
                   EnumGroups::szEnumText(m_iEnumGroup,m_iEnum),
                   m_caNode,
-                  m_iMark);
+                  m_i_Entry);
   iLen = StrLib::iLength(caText);
   StrLib::vPad(caRightAdj,C_MARGIN-iLen,' ');
   StrLib::vConcat(caRightAdj,caText);

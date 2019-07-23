@@ -536,7 +536,7 @@ i8 Log::iAddMarkArg(i8 iEnumGroup, i8 iEnum, i8 iForeign,
   
   pLogEntry->vWrite(iEnumGroup,iEnum,iForeign,caMark);
   
-  return pLogEntry->m_iMark;
+  return pLogEntry->m_i_Entry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -585,7 +585,7 @@ LogEntry* Log::pNewMark_NL(void)
   
   LogEntry* pLogEntry = &m_oaEntry[m_i_Entry % m_nEntries];
   
-  pLogEntry->m_iMark = m_i_Entry;
+  pLogEntry->m_i_Entry = m_i_Entry;
   
   m_i_Entry++;
   
@@ -608,14 +608,14 @@ void Log::vFindRange_NL(i8& i_MinMark, i8& i_MaxMark)
   
   for (i8 i_Entry = 0; i_Entry < m_nEntries; i_Entry++) {
     
-    if (-1 == m_oaEntry[i_Entry].m_iMark)
+    if (-1 == m_oaEntry[i_Entry].m_i_Entry)
       return;
     
-    if (m_oaEntry[i_Entry].m_iMark < i_MinMark)
-      i_MinMark = m_oaEntry[i_Entry].m_iMark;
+    if (m_oaEntry[i_Entry].m_i_Entry < i_MinMark)
+      i_MinMark = m_oaEntry[i_Entry].m_i_Entry;
     
-    if (m_oaEntry[i_Entry].m_iMark > i_MaxMark)
-      i_MaxMark = m_oaEntry[i_Entry].m_iMark;
+    if (m_oaEntry[i_Entry].m_i_Entry > i_MaxMark)
+      i_MaxMark = m_oaEntry[i_Entry].m_i_Entry;
   }
 }
 
@@ -719,7 +719,7 @@ void Log::vWriteToFile(bool bShortForm)
     
     pLogEntry = &m_oaEntry[i_Entry % m_nEntries];
     
-    if (-1 == pLogEntry->m_iMark)
+    if (-1 == pLogEntry->m_i_Entry)
       break;
     
     pLogEntry->vDump(pActivityFile, bShortForm,
