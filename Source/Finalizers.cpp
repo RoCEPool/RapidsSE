@@ -214,7 +214,8 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_LOCAL
   /*    */ &Finalize::vUndefined,         // CN_LOCALSET
   /* 72 */ &Finalize::vUndefined,         // CN_LOCK
-  
+  /*    */ &Finalize::vUndefined,         // CN_LOG
+
   /* 73 */ &Finalize::vUndefined,         // CN_MEDIUMPERSISTENT
   /* 74 */ &Finalize::vUndefined,         // CN_MEDIUMTRANSIENT
   /*    */ &Finalize::vUndefined,         // CN_MEMTEST

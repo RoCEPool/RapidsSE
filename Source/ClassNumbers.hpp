@@ -217,7 +217,8 @@ enum eCN : u2 // Class Number
   /* 150 0x96     8216B Heap:I */ CN_LOCAL,
   /* 151 0x97   262944B Heap:L */ CN_LOCALSET,
   /* 152 0x98      128B Heap:I */ CN_LOCK,
-  
+  /*                           */ CN_LOG,
+
   /* 153 0x99      232B Heap:I */ CN_MEDIUMPERSISTENT,
   /* 154 0x9A      232B Heap:I */ CN_MEDIUMTRANSIENT,
   /*                           */ CN_MEMTEST,
@@ -549,7 +550,8 @@ static Stz* aCN[]
   /* 150 0x96 */ "LOCAL"_Stz,               // CN_LOCAL
   /* 151 0x97 */ "LOCALSET"_Stz,            // CN_LOCALSET
   /* 152 0x98 */ "LOCK"_Stz,                // CN_LOCK
-  
+  /*          */ "LOG"_Stz,                 // CN_LOG
+
   /* 153 0x99 */ "MEDIUMPERSISTENT"_Stz,    // CN_MEDIUMPERSISTENT
   /* 154 0x9A */ "MEDIUMTRANSIENT"_Stz,     // CN_MEDIUMTRANSIENT
   /*          */ "MEMTEST"_Stz,             // CN_MEMTEST

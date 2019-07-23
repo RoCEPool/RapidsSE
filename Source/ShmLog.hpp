@@ -17,12 +17,12 @@ namespace Logging
     void  operator delete(void*);
   
     ShmLog(eCN eClassNo);
-    ~ShmLog(void) noexcept(false);
+   ~ShmLog(void) noexcept(false);
   
   protected:
     static void* aCreateNew(s32 sRegionNm, i8 nRegionSz);
     static void* aOpenExisting(s32 sRegionNm, i8 nRegionSz);
-  
+    
     void vDropLock(void);
     void vGrabLock(void);
   };
