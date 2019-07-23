@@ -13,7 +13,7 @@ namespace System
   enum eLK // lock kind
   {
   /*  0 */ LK_NONE=0,
-  /*  1 */ LK_ACTION_JOURNAL,
+  /*  1 */ LK_ACTION_LOG,
   /*  2 */ LK_ACTIVITY_MAP,
   /*  3 */ LK_API_STATE,
   /*  4 */ LK_BIT_ARRAY,
