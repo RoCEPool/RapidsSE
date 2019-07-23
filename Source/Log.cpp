@@ -65,7 +65,7 @@ Log::~Log(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* create a new Log shared memory segment                             */
+/* create a new Log shared memory segment                                     */
 /*----------------------------------------------------------------------------*/
 Log* Log::pAttachCreate(void)
 {
@@ -74,12 +74,12 @@ Log* Log::pAttachCreate(void)
   s32 sRegionName;
   bool bResult;
   
-  sRegionName = *C_ACTIVITY_REGION;
+  sRegionName = *C_LOG_REGION;
   
   // unlink the name of any previous segment
   IGNORE_RETURN( Shm::bUnlink(sRegionName,oSysCall) );
   
-  // open a new shm region which will contain the activity map
+  // open a new shm region which will contain the shared log
   bResult = Shm::bOpenCreate(sRegionName,iRegionFd,oSysCall);
   if (! bResult)
     vFatal("Log::bOpenCreate: failed to create region %s\n"_Stz,
@@ -106,7 +106,7 @@ Log* Log::pAttachCreate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* attach to existing shm region containing the Log                   */
+/* attach to existing shm region containing the Log                           */
 /*----------------------------------------------------------------------------*/
 Log* Log::pAttachExisting(void)
 {
@@ -114,7 +114,7 @@ Log* Log::pAttachExisting(void)
   SysCall oSysCall;
   s32 sRegionName;
   
-  sRegionName = *C_ACTIVITY_REGION;
+  sRegionName = *C_LOG_REGION;
   
   // open existing shm region
   bool bResult = Shm::bOpenExisting(sRegionName,iFD,oSysCall);
@@ -375,7 +375,7 @@ void Log::vMonitorPortrait(s48K& sPortrait)
 {
 #ifdef WITH_ACTIVITY_MAP
   if (! gpLog) {
-    sPortrait.vSprint("Log: activity map not configured\n"_Stz);
+    sPortrait.vSprint("Log: shared log not configured\n"_Stz);
     return;
   }
   
@@ -418,8 +418,8 @@ void Log::vOpenByApi(void)
   Log* pLog = Log::pAttachExisting();
   if (gpAttachMap->m_bVerbose)
     vTrace("Log %s : "
-           "attached to existing map (size %lldB, max %lld marks)\n\n"_Stz,
-           C_ACTIVITY_REGION,
+           "attached to existing shared log (size %lldB, max %lld marks)\n\n"_Stz,
+           C_LOG_REGION,
            sizeof(Log),
            C_LOG_ENTRIES);
   
@@ -444,7 +444,7 @@ void Log::vOpenBySE(bool bStarting)
     return;
   
   if (gpLog)
-    vFatal("Log::vOpenBySE() -- activity map already opened\n"_Stz);
+    vFatal("Log::vOpenBySE() -- shared log already opened\n"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -454,8 +454,8 @@ void Log::vOpenBySE(bool bStarting)
     pLog = Log::pAttachCreate();
     if (gpAttachMap->m_bVerbose)
       vTrace("Log %s : "
-             "created new map (size %lldB, max %lld marks)\n\n"_Stz,
-             C_ACTIVITY_REGION,
+             "created new shared log (size %lldB, max %lld marks)\n\n"_Stz,
+             C_LOG_REGION,
              sizeof(Log),
              C_LOG_ENTRIES);
     gpLog = new(pLog) Log;
@@ -464,8 +464,8 @@ void Log::vOpenBySE(bool bStarting)
     pLog = Log::pAttachExisting();
     if (gpAttachMap->m_bVerbose)
       vTrace("Log %s : "
-             "attached to existing map (size %lldB, max %lld marks)\n\n"_Stz,
-             C_ACTIVITY_REGION,
+             "attached to existing shared log (size %lldB, max %lld marks)\n\n"_Stz,
+             C_LOG_REGION,
              sizeof(Log),
              C_LOG_ENTRIES);
     
@@ -620,7 +620,7 @@ void Log::vFindRange_NL(i8& i_MinMark, i8& i_MaxMark)
 }
 
 /*----------------------------------------------------------------------------*/
-/* calculate how full the activity map is                                     */
+/* calculate how full the shared log is                                     */
 /*----------------------------------------------------------------------------*/
 i8 Log::iPercentFull_NL(void)
 {
