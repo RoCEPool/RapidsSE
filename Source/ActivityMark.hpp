@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Monitoring
+namespace Logging
 {
   static const i8 C_MARK_TEXT = 128;
   

@@ -16,9 +16,9 @@ namespace Indexes       {                                                     }
 namespace Interface     { class RecordBuffer; class Session;                  }
 namespace Jobs          { class Job; class Job_CreateTable;
                                      class Job_CreateIndex;                   }
+namespace Logging       {                                                     }
 namespace MetaData      {                                                     }
 namespace Measurement   {                                                     }
-namespace Monitoring    {                                                     }
 namespace Partitioning  { class TablePtn;                                     }
 namespace Persistence   {                                                     }
 namespace Plans         {                                                     }

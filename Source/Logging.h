@@ -1,16 +1,16 @@
 /*============================================================================*/
-/* Logging.h -- Monitoring Namespace                                       */
+/* Logging.h -- Logging Namespace                                             */
 /*============================================================================*/
 #pragma once
 
 #include "Measurement.h"
 
-namespace Monitoring
+namespace Logging
 {
   void vCheckAssumptions(void);
 }
 
-using namespace Monitoring;
+using namespace Logging;
 
 //------------------------------------------------------------------------------
 

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Monitoring.cpp - Monitoring namespace functions                            */
+/* Logging.cpp - Logging namespace functions                                  */
 /*============================================================================*/
 
 #include "Logging.h"
@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
-void Monitoring::vCheckAssumptions(void)
+void Logging::vCheckAssumptions(void)
 {
 }
 

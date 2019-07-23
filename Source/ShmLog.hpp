@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Monitoring
+namespace Logging
 {
   class ShmLog : public Object
   {

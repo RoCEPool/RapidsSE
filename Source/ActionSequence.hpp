@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Monitoring
+namespace Logging
 {
   static const i8    C_ACTION_SEQUENCE = C_1M * 1;
   static const char* C_ACTION_REGION   = "/SE_ActionSequence";

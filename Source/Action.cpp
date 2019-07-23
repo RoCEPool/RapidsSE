@@ -14,7 +14,7 @@ extern ActionSequence* gpActionSequence;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Action* Monitoring::_pAction(void* aAddr)
+Action* Logging::_pAction(void* aAddr)
 {
   Action* pAction = reinterpret_cast<Action*>(aAddr);
   
