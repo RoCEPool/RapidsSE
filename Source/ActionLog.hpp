@@ -5,7 +5,7 @@
 
 namespace Logging
 {
-  static const i8    C_ACTION_SEQUENCE = C_1M * 1;
+  static const i8    C_ACTION_MARKS = C_1M * 1;
   static const char* C_ACTION_REGION   = "/SE_ActionLog";
 
   class ActionLog : public ShmLog
@@ -17,7 +17,7 @@ namespace Logging
     i8   m_i_Action;  // current subscript
     i8   m_nActions;  // number of available actions in array
 
-    Action m_oaAction[C_ACTION_SEQUENCE];
+    Action m_oaAction[C_ACTION_MARKS];
 
     // must be last
     Footer m_xFooter;

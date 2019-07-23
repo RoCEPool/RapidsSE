@@ -42,7 +42,7 @@ ActionLog::ActionLog(void)
   m_okLock.vInitLock(LK_ACTION_JOURNAL);
   
   m_i_Action = 0;
-  m_nActions = C_ACTION_SEQUENCE;
+  m_nActions = C_ACTION_MARKS;
   
   for (i8 i_Action = 0; i_Action < m_nActions; i_Action++)
     m_oaAction[i_Action].vInit(i_Action);
