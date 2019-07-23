@@ -22,6 +22,8 @@ using namespace Logging;
 #include "ActivityMark.hpp"
 #include "ActivityLog.hpp"
 
+#include "LogEntry.hpp"
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
