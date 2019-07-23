@@ -7,6 +7,7 @@ namespace Logging
 {
   static const i8    C_ACTIVITY_MARKS  = C_1M * 10;
   static const char* C_ACTIVITY_REGION = "/SE_ActivityLog";
+  
   static const i8    C_JOB_GROUP = 0;
   static const i8    C_INF_GROUP = -1;
   static const i8    C_MARGIN = 143;

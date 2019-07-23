@@ -35,9 +35,9 @@ void ActionLog::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ActionLog::ActionLog(void)
-: ShmLog(CN_ACTIONSEQUENCE)
+: ShmLog(CN_ACTIONLOG)
 {
-  _precondition_(_MAGIC_,CN_ACTIONSEQUENCE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ACTIONLOG,_FOOTER_);
   
   m_okLock.vInitLock(LK_ACTION_JOURNAL);
   
@@ -47,9 +47,9 @@ ActionLog::ActionLog(void)
   for (i8 i_Action = 0; i_Action < m_nActions; i_Action++)
     m_oaAction[i_Action].vInit(i_Action);
   
-  _checkInitialised_(CN_ACTIONSEQUENCE);
+  _checkInitialised_(CN_ACTIONLOG);
   
-  _postcondition_(_MAGIC_,CN_ACTIONSEQUENCE,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_ACTIONLOG,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,7 +57,7 @@ ActionLog::ActionLog(void)
 /*----------------------------------------------------------------------------*/
 ActionLog::~ActionLog(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_ACTIONSEQUENCE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ACTIONLOG,_FOOTER_);
 }
 
 
@@ -376,7 +376,7 @@ void ActionLog::vWriteCsv(void)
 /*----------------------------------------------------------------------------*/
 Action* ActionLog::pAllotAction(void)
 {
-  _precondition_(_MAGIC_,CN_ACTIONSEQUENCE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ACTIONLOG,_FOOTER_);
   
   vGrabLock();
   
@@ -398,7 +398,7 @@ Action* ActionLog::pAllotAction(void)
 /*----------------------------------------------------------------------------*/
 void ActionLog::vDropLock(void)
 {
-  _precondition_(_MAGIC_,CN_ACTIONSEQUENCE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ACTIONLOG,_FOOTER_);
   
   m_okLock.vDropWrite();
 }
@@ -408,7 +408,7 @@ void ActionLog::vDropLock(void)
 /*----------------------------------------------------------------------------*/
 void ActionLog::vFindRange_NL(i8& i_Min, i8& i_Max)
 {
-  _precondition_(_MAGIC_,CN_ACTIONSEQUENCE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ACTIONLOG,_FOOTER_);
   
   RASSERT(m_okLock.bIsLocked());
   
@@ -435,7 +435,7 @@ void ActionLog::vFindRange_NL(i8& i_Min, i8& i_Max)
 /*----------------------------------------------------------------------------*/
 void ActionLog::vGrabLock(void)
 {
-  _precondition_(_MAGIC_,CN_ACTIONSEQUENCE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ACTIONLOG,_FOOTER_);
   
   m_okLock.vGrabWrite();
 }
@@ -447,7 +447,7 @@ void ActionLog::vGrabLock(void)
 /*----------------------------------------------------------------------------*/
 void ActionLog::vLinkAction(Action* pRoot, Action* pNewAction)
 {
-  _precondition_(_MAGIC_,CN_ACTIONSEQUENCE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ACTIONLOG,_FOOTER_);
   
   for (;;) {
     
@@ -464,7 +464,7 @@ void ActionLog::vLinkAction(Action* pRoot, Action* pNewAction)
 /*----------------------------------------------------------------------------*/
 Action* ActionLog::pNewLinkedAction(Action *pRoot)
 {
-  _precondition_(_MAGIC_,CN_ACTIONSEQUENCE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ACTIONLOG,_FOOTER_);
   
   Action* pLinked = pAllotAction();
   
@@ -480,7 +480,7 @@ Action* ActionLog::pNewLinkedAction(Action *pRoot)
 /*----------------------------------------------------------------------------*/
 Action* ActionLog::pNewRootAction(void)
 {
-  _precondition_(_MAGIC_,CN_ACTIONSEQUENCE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ACTIONLOG,_FOOTER_);
   
   Action* pRoot = pAllotAction();
   
@@ -495,7 +495,7 @@ Action* ActionLog::pNewRootAction(void)
 /*----------------------------------------------------------------------------*/
 Action* ActionLog::pNextAction(Action *pAction)
 {
-  _precondition_(_MAGIC_,CN_ACTIONSEQUENCE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ACTIONLOG,_FOOTER_);
   
   i8 i_NextAction = * pAction->m_wLink;
   
@@ -512,7 +512,7 @@ Action* ActionLog::pNextAction(Action *pAction)
 /*----------------------------------------------------------------------------*/
 i8 ActionLog::iPercentFull_NL(void)
 {
-  _precondition_(_MAGIC_,CN_ACTIONSEQUENCE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ACTIONLOG,_FOOTER_);
   
   RASSERT(m_okLock.bIsLocked());
   
@@ -554,7 +554,7 @@ i8 ActionLog::iPercentFull_NL(void)
 /*----------------------------------------------------------------------------*/
 void ActionLog::vWriteToFile(void)
 {
-  _precondition_(_MAGIC_,CN_ACTIONSEQUENCE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ACTIONLOG,_FOOTER_);
   
   s256 sAsPath("/tmp/ActionLog.csv"_Stz);
   
@@ -611,7 +611,7 @@ void ActionLog::vWriteToFile(void)
 /*----------------------------------------------------------------------------*/
 Footer* ActionLog::aFooter(void)
 {
-  _precondition_(_MAGIC_,CN_ACTIONSEQUENCE);
+  _precondition_(_MAGIC_,CN_ACTIONLOG);
   
   return &m_xFooter;
 }
