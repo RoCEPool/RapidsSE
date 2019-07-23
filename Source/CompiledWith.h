@@ -32,6 +32,7 @@
 #define WITH_CORECTNESS_ALGEBRA // known class, magic, footer
 #define WITH_ENTRY_EXIT         // code for ENTRY() & EXIT() macros compiled in
 #define WITH_PREPOST_CHECKING   // _pre/postCondition_()
+#define WITH_SHARED_LOG         // code for Log compiled in
 //#define WITH_STATISTICS_COUNTERS // statistics
 #define WITH_TRACE_API          // code for tracing api's compiled in
 

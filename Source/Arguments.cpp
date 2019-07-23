@@ -679,14 +679,14 @@ bool Arguments::bParse(int argc, Stz* argv[])
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-#ifdef WITH_LOG
+#ifdef WITH_SHARED_LOG
     if (argv[i_Arg]->bSame("--log"_Stz)) {
       m_bLog = true;
       continue;
     }
 #else
     if (argv[i_Arg]->bSame("--log"_Stz)) {
-      vWarn("arg --log ignored; not compiled WITH_LOG\n"_Stz);
+      vWarn("arg --log ignored; not compiled WITH_SHARED_LOG\n"_Stz);
       continue;
     }
 #endif

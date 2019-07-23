@@ -85,6 +85,10 @@ void Base::vTraceWith(void)
   vTrace("  WITH_RELEASE_VERSION\n"_Stz);
 #endif
   
+#ifdef WITH_SHARED_LOG
+  vTrace("  WITH_SHARED_LOG\n"_Stz);
+#endif
+  
 #ifdef WITH_SHOCO_DUPLICATES
   vTrace("  WITH_SHOCO_DUPLICATES\n"_Stz);
 #endif
