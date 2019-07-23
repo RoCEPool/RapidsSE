@@ -23,7 +23,7 @@ namespace Structures
     u8   m_uEntryTape;
     u8   m_nEntryTapeBits;
     u8   m_uEntryHash;
-    i8   m_i_Entry;
+    i8   m_i_item;
   
 
     bool m_bArcTrc;
@@ -36,7 +36,7 @@ namespace Structures
       
       u8 m_uEntryTape;
       u8 m_uEntryHash;
-      i8 m_i_Entry;
+      i8 m_i_item;
     } xHistory[32];
   
     i8 m_nHistory;

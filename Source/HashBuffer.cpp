@@ -177,7 +177,7 @@ i8 HashBuffer::iCalcArc(HashInsert* pHi)
 /*----------------------------------------------------------------------------*/
 i8 HashBuffer::iCalcEntry(HashInsert* pHi)
 {
-  i8 i_Entry = pHi->m_i_Entry;
+  i8 i_Entry = pHi->m_i_item;
   
   return i_Entry;
 }

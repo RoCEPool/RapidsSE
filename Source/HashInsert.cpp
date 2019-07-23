@@ -47,7 +47,7 @@ HashInsert::HashInsert(i8 nEntriesPerBuffer)
     
     xHistory[i_History].m_uEntryTape = 0;
     xHistory[i_History].m_uEntryHash = 0;
-    xHistory[i_History].m_i_Entry    = C_UNKNOWN;
+    xHistory[i_History].m_i_item    = C_UNKNOWN;
   }
   
   m_nHistory = 0;
@@ -91,7 +91,7 @@ void HashInsert::vArcEntry(void)
   m_nEntryTapeBits -= 1;
   m_uEntryHash = m_uEntryTape;
   
-  m_i_Entry = m_uEntryHash % m_nEntriesPerBuffer;
+  m_i_item = m_uEntryHash % m_nEntriesPerBuffer;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // record history
@@ -102,7 +102,7 @@ void HashInsert::vArcEntry(void)
   
   xHistory[m_nHistory].m_uEntryTape = m_uEntryTape;
   xHistory[m_nHistory].m_uEntryHash = m_uEntryHash;
-  xHistory[m_nHistory].m_i_Entry    = m_i_Entry;
+  xHistory[m_nHistory].m_i_item    = m_i_item;
 
   m_nHistory++;
 }
@@ -135,7 +135,7 @@ void HashInsert::vDumpHistory(void)
            xHistory[i_History].m_i_Arc,
            
             xHistory[i_History].m_uEntryHash,
-           xHistory[i_History].m_i_Entry
+           xHistory[i_History].m_i_item
            );
   }
 }
@@ -159,7 +159,7 @@ void HashInsert::vSet(byte* yaKey, i8 nBytes, i8 iValue)
   m_uEntryTape     = m_uSignature;
   m_nEntryTapeBits = 64;
   m_uEntryHash     = m_uEntryTape;
-  m_i_Entry        = m_uEntryHash % m_nEntriesPerBuffer;
+  m_i_item        = m_uEntryHash % m_nEntriesPerBuffer;
 
   m_bArcTrc = false;
   m_bDebug  = false;
@@ -170,7 +170,7 @@ void HashInsert::vSet(byte* yaKey, i8 nBytes, i8 iValue)
   
   xHistory[m_nHistory].m_uEntryTape = m_uEntryTape;
   xHistory[m_nHistory].m_uEntryHash = m_uEntryHash;
-  xHistory[m_nHistory].m_i_Entry    = m_i_Entry;
+  xHistory[m_nHistory].m_i_item    = m_i_item;
 
   m_nHistory++;
   
