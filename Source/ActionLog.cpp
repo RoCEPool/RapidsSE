@@ -41,7 +41,7 @@ ActionLog::ActionLog(void)
   
   m_okLock.vInitLock(LK_ACTION_JOURNAL);
   
-  m_i_Action = 0;
+  m_i_Mark = 0;
   m_nActions = C_ACTION_MARKS;
   
   for (i8 i_Action = 0; i_Action < m_nActions; i_Action++)
@@ -275,7 +275,7 @@ i8 ActionLog::iBegin(i8 iJobId, eCN eClassNo,
   pRoot->m_iArg1    = iArg1;
   pRoot->m_wLink.vSetWithoutTest(C_UNKNOWN);
 
-  return pRoot->m_i_Action;
+  return pRoot->m_i_Mark;
 #else
   return C_UNKNOWN;
 #endif
@@ -296,7 +296,7 @@ void ActionLog::vRoot(Jobs::Job* pJob)
   
   Action* pRoot = gpActionSequence->pNewRootAction();
   
-  pJob->m_i_ActionRoot = pRoot->m_i_Action;
+  pJob->m_i_ActionRoot = pRoot->m_i_Mark;
   
   pRoot->m_iJobId     = pJob->m_iJobId;
   pRoot->m_eClassNo   = pJob->eClass();
@@ -380,13 +380,13 @@ Action* ActionLog::pAllotAction(void)
   
   vGrabLock();
   
-  Action* pAction = &m_oaAction[m_i_Action % m_nActions];
+  Action* pAction = &m_oaAction[m_i_Mark % m_nActions];
   
   pAction->vReset();
-  pAction->m_i_Action = m_i_Action;
+  pAction->m_i_Mark = m_i_Mark;
   pAction->m_iTick    = Tsc::iRdTscp();
   
-  m_i_Action++;
+  m_i_Mark++;
   
   vDropLock();
   
@@ -419,14 +419,14 @@ void ActionLog::vFindRange_NL(i8& i_Min, i8& i_Max)
   
   for (i8 i_Action = 0; i_Action < m_nActions; i_Action++) {
     
-    if (-1 == m_oaAction[i_Action].m_i_Action)
+    if (-1 == m_oaAction[i_Action].m_i_Mark)
       return;
     
-    if (m_oaAction[i_Action].m_i_Action < i_Min)
-      i_Min = m_oaAction[i_Action].m_i_Action;
+    if (m_oaAction[i_Action].m_i_Mark < i_Min)
+      i_Min = m_oaAction[i_Action].m_i_Mark;
     
-    if (m_oaAction[i_Action].m_i_Action > i_Max)
-      i_Max = m_oaAction[i_Action].m_i_Action;
+    if (m_oaAction[i_Action].m_i_Mark > i_Max)
+      i_Max = m_oaAction[i_Action].m_i_Mark;
   }
 }
 
@@ -454,7 +454,7 @@ void ActionLog::vLinkAction(Action* pRoot, Action* pNewAction)
     i8 iWhatRootLinksTo = * pRoot->m_wLink;
     pNewAction->m_wLink.vSetWithoutTest(iWhatRootLinksTo);
     
-    if (pRoot->m_wLink.bTestAndSet(iWhatRootLinksTo,pNewAction->m_i_Action))
+    if (pRoot->m_wLink.bTestAndSet(iWhatRootLinksTo,pNewAction->m_i_Mark))
       break;
   }
 }
@@ -468,7 +468,7 @@ Action* ActionLog::pNewLinkedAction(Action *pRoot)
   
   Action* pLinked = pAllotAction();
   
-  pLinked->m_i_Root = pRoot->m_i_Action;
+  pLinked->m_i_Root = pRoot->m_i_Mark;
   
   vLinkAction(pRoot,pLinked);
 
@@ -484,7 +484,7 @@ Action* ActionLog::pNewRootAction(void)
   
   Action* pRoot = pAllotAction();
   
-  pRoot->m_i_Root = pRoot->m_i_Action;
+  pRoot->m_i_Root = pRoot->m_i_Mark;
   pRoot->m_wLink.vSetWithoutTest(C_UNKNOWN);
 
   return pRoot;

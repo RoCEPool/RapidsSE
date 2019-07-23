@@ -144,7 +144,7 @@ namespace Logging
   friend class ActionLog;
   
   private:
-    i8    m_i_Action;
+    i8    m_i_Mark;
     i8    m_i_Root;
     i8    m_iTick;
   

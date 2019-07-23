@@ -14,7 +14,7 @@ namespace Logging
   
   private:
     Lock m_okLock;
-    i8   m_i_Action;  // current subscript
+    i8   m_i_Mark;    // current subscript
     i8   m_nActions;  // number of available actions in array
 
     Action m_oaAction[C_ACTION_MARKS];
