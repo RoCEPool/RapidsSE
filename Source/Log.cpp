@@ -65,7 +65,7 @@ Log::~Log(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* create a new Log shared memory segment                                     */
+/* create and attach to a new shm region containing the Log                   */
 /*----------------------------------------------------------------------------*/
 Log* Log::pAttachCreate(void)
 {
@@ -82,13 +82,13 @@ Log* Log::pAttachCreate(void)
   // open a new shm region which will contain the shared log
   bResult = Shm::bOpenCreate(sRegionName,iRegionFd,oSysCall);
   if (! bResult)
-    vFatal("Log::bOpenCreate: failed to create region %s\n"_Stz,
+    vFatal("Log::pAttachCreate: failed to create region %s\n"_Stz,
            sRegionName.aChar());
   
   // extend the shm region
   bResult = Shm::bExtend(iRegionFd,sizeof(Log),oSysCall);
   if (! bResult)
-    vFatal("Log::bOpenCreate: failed to extend region %s\n"_Stz,
+    vFatal("Log::pAttachCreate: failed to extend region %s\n"_Stz,
            sRegionName.aChar());
   
   // map the shm region into a vm segment within this process address space
@@ -98,7 +98,7 @@ Log* Log::pAttachCreate(void)
                              C_NO_HUGE_PAGES,
                              oSysCall);
   if (! aSegment)
-    vFatal("Log::bOpenCreate: failed to map region!\n"_Stz);
+    vFatal("Log::pAttachCreate: failed to map region!\n"_Stz);
   
   Log* pLog = static_cast<Log*>(aSegment);
   
@@ -119,7 +119,7 @@ Log* Log::pAttachExisting(void)
   // open existing shm region
   bool bResult = Shm::bOpenExisting(sRegionName,iFD,oSysCall);
   if (! bResult)
-    vFatal("Log::bOpenExisting: failed to open region: %s\n"_Stz,
+    vFatal("Log::pAttachExisting: failed to open region: %s\n"_Stz,
            sRegionName.aChar());
   
   // map the shm region into a vm segment within this process address space
@@ -129,7 +129,7 @@ Log* Log::pAttachExisting(void)
                              C_NO_HUGE_PAGES,
                              oSysCall);
   if (! aSegment)  {
-    vTrace("Log::bOpenExisting: failed to map\n"_Stz);
+    vTrace("Log::pAttachExisting: failed to map\n"_Stz);
     Shm::bClose(iFD,oSysCall);
     NEVER_REACH;
   }
@@ -144,7 +144,7 @@ Log* Log::pAttachExisting(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* write an Activity mark for api call                                        */
+/* add a log entry for an api call                                            */
 /*----------------------------------------------------------------------------*/
 void Log::vMarkApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...)
 {
@@ -168,7 +168,7 @@ void Log::vMarkApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write an Activity mark for api entry                                       */
+/* add a log entry for api entry                                              */
 /*----------------------------------------------------------------------------*/
 void Log::vMarkApiEntry(i8 eApiCall, i8 iJobId)
 {
@@ -188,7 +188,7 @@ void Log::vMarkApiEntry(i8 eApiCall, i8 iJobId)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write an Activity mark for api error                                       */
+/* add a log entry for api error                                              */
 /*----------------------------------------------------------------------------*/
 void Log::vMarkApiError(i8 eApiCall, i8 iJobId, i8 iError)
 {
@@ -208,7 +208,7 @@ void Log::vMarkApiError(i8 eApiCall, i8 iJobId, i8 iError)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write an Activity mark for api exit                                        */
+/* add a log entry for api exit                                               */
 /*----------------------------------------------------------------------------*/
 void Log::vMarkApiExit(i8 eApiCall, i8 iJobId)
 {
@@ -228,7 +228,7 @@ void Log::vMarkApiExit(i8 eApiCall, i8 iJobId)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write an Activity mark                                                     */
+/* add a general log entry                                                    */
 /*----------------------------------------------------------------------------*/
 void Log::vMarkInfo(Stz* aFormat, ...)
 {
@@ -247,7 +247,7 @@ void Log::vMarkInfo(Stz* aFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write an LogEntry                                                      */
+/* add a job-specific log entry                                               */
 /*----------------------------------------------------------------------------*/
 void Log::vMarkJob(Jobs::Job* pJob, Stz* szFormat, ...)
 {
@@ -291,7 +291,7 @@ void Log::vMarkJob(Jobs::Job* pJob, Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write an LogEntry                                                      */
+/* add a resource specific log entry                                          */
 /*----------------------------------------------------------------------------*/
 void Log::vMarkRes(eSR eSysRes,Stz* szFormat, ...)
 {
@@ -315,7 +315,7 @@ void Log::vMarkRes(eSR eSysRes,Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write an LogEntry                                                      */
+/* add a log entry section marker                                             */
 /*----------------------------------------------------------------------------*/
 void Log::vMarkSection(Stz* szSectionNm)
 {
@@ -340,7 +340,7 @@ void Log::vMarkSection(Stz* szSectionNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write a multi-line string                                                  */
+/* add a multi-line string log entry                                          */
 /*----------------------------------------------------------------------------*/
 void Log::vMarkString(i8 iJobId, s48K& sString)
 {
@@ -402,7 +402,7 @@ void Log::vMonitorPortrait(s48K& sPortrait)
 }
 
 /*----------------------------------------------------------------------------*/
-/* open Log (called by API)                                           */
+/* open Log (called by API)                                                   */
 /*----------------------------------------------------------------------------*/
 void Log::vOpenByApi(void)
 {
@@ -435,7 +435,7 @@ void Log::vOpenByApi(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create or open Log (called by SE)                                  */
+/* create or open Log (called by SE)                                          */
 /*----------------------------------------------------------------------------*/
 void Log::vOpenBySE(bool bStarting)
 {
@@ -498,7 +498,7 @@ void Log::vOpenBySE(bool bStarting)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write Log to csv file                                              */
+/* write Log to csv file                                                      */
 /*----------------------------------------------------------------------------*/
 void Log::vWriteCsv(bool bShortForm)
 {
@@ -516,7 +516,7 @@ void Log::vWriteCsv(bool bShortForm)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* write an LogEntry                                                      */
+/* write an log entry                                                         */
 /*----------------------------------------------------------------------------*/
 i8 Log::iAddMarkArg(i8 iEnumGroup, i8 iEnum, i8 iForeign,
                             Stz* aFormat, va_list xArgs)
@@ -540,7 +540,7 @@ i8 Log::iAddMarkArg(i8 iEnumGroup, i8 iEnum, i8 iForeign,
 }
 
 /*----------------------------------------------------------------------------*/
-/* write an LogEntry                                                      */
+/* write an log entry                                                         */
 /*----------------------------------------------------------------------------*/
 i8 Log::iAddMarkVbl(i8 iEnumGroup, i8 iEnum, i8 iForeign,
                             Stz* aFormat, ...)
@@ -557,7 +557,7 @@ i8 Log::iAddMarkVbl(i8 iEnumGroup, i8 iEnum, i8 iForeign,
 }
 
 /*----------------------------------------------------------------------------*/
-/* get a new mark in Log                                              */
+/* get a new log entry in Log                                                 */
 /*----------------------------------------------------------------------------*/
 LogEntry* Log::pNewMark(void)
 {
@@ -575,7 +575,7 @@ LogEntry* Log::pNewMark(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get a new mark in Log (non-locking)                                */
+/* get a new log entry in Log (non-locking)                                   */
 /*----------------------------------------------------------------------------*/
 LogEntry* Log::pNewMark_NL(void)
 {
@@ -620,7 +620,7 @@ void Log::vFindRange_NL(i8& i_MinMark, i8& i_MaxMark)
 }
 
 /*----------------------------------------------------------------------------*/
-/* calculate how full the shared log is                                     */
+/* calculate how full the shared log is                                       */
 /*----------------------------------------------------------------------------*/
 i8 Log::iPercentFull_NL(void)
 {
@@ -662,17 +662,17 @@ i8 Log::iPercentFull_NL(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compute the size of Log given gpAttachMap->m_nLogEntrys        */
+/* compute the size of Log given gpAttachMap->m_nLogEntrys                    */
 /*----------------------------------------------------------------------------*/
 i8 Log::iSize(void)
 {
-  i8 iMapSize = sizeof(Log);
+  i8 iLogSize = sizeof(Log);
   
-  return iMapSize;
+  return iLogSize;
 }
 
 /*----------------------------------------------------------------------------*/
-/* write Log to a csv file                                            */
+/* write Log to a csv file                                                    */
 /*----------------------------------------------------------------------------*/
 void Log::vWriteToFile(bool bShortForm)
 {
