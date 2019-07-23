@@ -42,9 +42,9 @@ ActionLog::ActionLog(void)
   m_okLock.vInitLock(LK_ACTION_JOURNAL);
   
   m_i_Mark = 0;
-  m_nActions = C_ACTION_MARKS;
+  m_nMarks = C_ACTION_MARKS;
   
-  for (i8 i_Action = 0; i_Action < m_nActions; i_Action++)
+  for (i8 i_Action = 0; i_Action < m_nMarks; i_Action++)
     m_oaAction[i_Action].vInit(i_Action);
   
   _checkInitialised_(CN_ACTIONLOG);
@@ -380,7 +380,7 @@ Action* ActionLog::pAllotAction(void)
   
   vGrabLock();
   
-  Action* pAction = &m_oaAction[m_i_Mark % m_nActions];
+  Action* pAction = &m_oaAction[m_i_Mark % m_nMarks];
   
   pAction->vReset();
   pAction->m_i_Mark = m_i_Mark;
@@ -417,7 +417,7 @@ void ActionLog::vFindRange_NL(i8& i_Min, i8& i_Max)
   i_Min = C_I8_MAX;
   i_Max = C_I8_MIN;
   
-  for (i8 i_Action = 0; i_Action < m_nActions; i_Action++) {
+  for (i8 i_Action = 0; i_Action < m_nMarks; i_Action++) {
     
     if (-1 == m_oaAction[i_Action].m_i_Mark)
       return;
@@ -502,7 +502,7 @@ Action* ActionLog::pNextAction(Action *pAction)
   if (i_NextAction == C_UNKNOWN)
     return nullptr;
   
-  Action* pNextAction = &m_oaAction[i_NextAction % m_nActions];;
+  Action* pNextAction = &m_oaAction[i_NextAction % m_nMarks];;
   
   return pNextAction;
 }
@@ -528,7 +528,7 @@ i8 ActionLog::iPercentFull_NL(void)
     // Example: 0 .. 25 __ [64]
     //          i_Min is 0
     //          i_Max is 48
-    //          m_nActions  is 64
+    //          m_nMarks  is 64
     // then only 0..25 is in use out of 64
     //
     nInUse = (i_Max - i_Min);
@@ -538,13 +538,13 @@ i8 ActionLog::iPercentFull_NL(void)
     // Example: .. 25 __ 48 .. [64]
     //          i_Min is 48
     //          i_Max is 25
-    //          m_nActions  is 64
+    //          m_nMarks  is 64
     // then 48 .. 63 + 0 ..25 is in use
     //
-    nInUse = (m_nActions - i_Min) + (i_Max);
+    nInUse = (m_nMarks - i_Min) + (i_Max);
   }
   
-  iPercent = (nInUse * 100) / m_nActions;
+  iPercent = (nInUse * 100) / m_nMarks;
   
   return iPercent;
 }
@@ -580,7 +580,7 @@ void ActionLog::vWriteToFile(void)
   
   for (i8 i_Action = i_Min; i_Action <= i_Max; i_Action++) {
 
-    Action* pAction = &m_oaAction[i_Action % m_nActions];
+    Action* pAction = &m_oaAction[i_Action % m_nMarks];
     
     if (! pAction->bIsRoot())
       continue;
