@@ -2,7 +2,7 @@
 /* ActionSequence.cpp - Activity ShmLog                                          */
 /*============================================================================*/
 
-#include "Monitoring.h"
+#include "Logging.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
