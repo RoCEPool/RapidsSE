@@ -23,6 +23,7 @@ using namespace Logging;
 #include "ActivityLog.hpp"
 
 #include "LogEntry.hpp"
+#include "Log.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

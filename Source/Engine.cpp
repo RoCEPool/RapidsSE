@@ -815,6 +815,7 @@ void Engine::vStartSystem(void)
                                 gxArguments.m_nDummySleep,
                                 gxArguments.m_nDummyThreads,
                                 gxArguments.m_iJumboSize,
+                                gxArguments.m_bLog,
                                 gxArguments.m_nMaxLoadErrors,
                                 gxArguments.m_nMaxReadyLP,
                                 gxArguments.m_nNodes,

@@ -58,6 +58,8 @@ Arguments::Arguments(void)
   m_bUnlink     = false;
 
   // options
+  m_bActivityLog     = false;
+  m_bActionSequence  = false;
   m_bConfig          = true;
   m_bDeveloper       = false;
   m_bDontFree        = false;
@@ -69,6 +71,7 @@ Arguments::Arguments(void)
   m_bLock            = false;
   m_bHugePages       = false;
   m_bKillPrev        = false;
+  m_bLog             = false;
   m_nMaxLoadErrors   = 0;
   m_nMaxReadyLP      = 32;
   m_bMetadata        = false;
@@ -87,8 +90,6 @@ Arguments::Arguments(void)
   m_bTracing         = false;
   m_bVerbose         = false;
   m_bWelcome         = true;
-  m_bActivityLog     = false;
-  m_bActionSequence  = false;
 
   _checkInitialised_(CN_ARGUMENTS);
   
@@ -673,6 +674,25 @@ bool Arguments::bParse(int argc, Stz* argv[])
     
     if (argv[i_Arg]->bSame("--noActionSequence"_Stz)) {
       m_bActionSequence = false;
+      continue;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+#ifdef WITH_LOG
+    if (argv[i_Arg]->bSame("--log"_Stz)) {
+      m_bLog = true;
+      continue;
+    }
+#else
+    if (argv[i_Arg]->bSame("--log"_Stz)) {
+      vWarn("arg --log ignored; not compiled WITH_LOG\n"_Stz);
+      continue;
+    }
+#endif
+    
+    if (argv[i_Arg]->bSame("--noLog"_Stz)) {
+      m_bLog = false;
       continue;
     }
     

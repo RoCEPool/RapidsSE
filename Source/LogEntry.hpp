@@ -9,7 +9,7 @@ namespace Logging
   
   class LogEntry : public Object
   {
-  friend class ActivityLog;
+  friend class Log;
   
   private:
     i8   m_iMark;       // mark no
