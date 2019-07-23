@@ -11,7 +11,7 @@ namespace Logging
   static const i8    C_INF_GROUP = -1;
   static const i8    C_MARGIN = 143;
   
-  class ActivityLog : public Object
+  class ActivityLog : public ShmLog
   {
   private:
     Lock m_okLock;

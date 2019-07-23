@@ -35,7 +35,7 @@ void ActivityLog::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ActivityLog::ActivityLog(void)
-: Object(CN_ACTIVITYLOG)
+: ShmLog(CN_ACTIVITYLOG)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
   
