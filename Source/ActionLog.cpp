@@ -392,16 +392,6 @@ Action* ActionLog::pAllotAction(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* drop lock on ActionLog                                                */
-/*----------------------------------------------------------------------------*/
-void ActionLog::vDropLock(void)
-{
-  _precondition_(_MAGIC_,CN_ACTIONLOG,_FOOTER_);
-  
-  m_okLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
 /* find active range                                                          */
 /*----------------------------------------------------------------------------*/
 void ActionLog::vFindRange_NL(i8& i_Min, i8& i_Max)
@@ -427,18 +417,6 @@ void ActionLog::vFindRange_NL(i8& i_Min, i8& i_Max)
       i_Max = m_oaAction[i_Action].m_i_Mark;
   }
 }
-
-/*----------------------------------------------------------------------------*/
-/* grab lock on ActionLog                                                */
-/*----------------------------------------------------------------------------*/
-void ActionLog::vGrabLock(void)
-{
-  _precondition_(_MAGIC_,CN_ACTIONLOG,_FOOTER_);
-  
-  m_okLock.vGrabWrite();
-}
-
-
 
 /*----------------------------------------------------------------------------*/
 /* link body into chain given by head                                         */

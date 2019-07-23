@@ -48,9 +48,7 @@ namespace Logging
 
   private:
     Action* pAllotAction(void);
-    void vDropLock(void);
     void vFindRange_NL(i8& i_Min, i8& i_Max);
-    void vGrabLock(void);
     void vLinkAction(Action* pRoot, Action* pAction);
     Action* pNewLinkedAction(Action *pRootAction);
     Action* pNewRootAction(void);

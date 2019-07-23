@@ -60,9 +60,7 @@ namespace Logging
                    Stz* aFormat, ...);
     ActivityMark* pNewMark(void);
     ActivityMark* pNewMark_NL(void);
-    void vDropLock(void);
     void vFindRange_NL(i8& i_MinMark, i8& i_MaxMark);
-    void vGrabLock(void);
     i8   iPercentFull_NL(void);
     i8   iSize(void);
     void vWriteToFile(bool bShortForm);

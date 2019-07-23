@@ -596,16 +596,6 @@ ActivityMark* ActivityLog::pNewMark_NL(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* drop lock on ActivityLog                                                   */
-/*----------------------------------------------------------------------------*/
-void ActivityLog::vDropLock(void)
-{
-  _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
-
-  m_okLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
 /* find active range                                                          */
 /*----------------------------------------------------------------------------*/
 void ActivityLog::vFindRange_NL(i8& i_MinMark, i8& i_MaxMark)
@@ -630,16 +620,6 @@ void ActivityLog::vFindRange_NL(i8& i_MinMark, i8& i_MaxMark)
     if (m_oaMark[i_Mark].m_iMark > i_MaxMark)
       i_MaxMark = m_oaMark[i_Mark].m_iMark;
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* grab lock on ActivityLog                                                   */
-/*----------------------------------------------------------------------------*/
-void ActivityLog::vGrabLock(void)
-{
-  _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
-  
-  m_okLock.vGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/
