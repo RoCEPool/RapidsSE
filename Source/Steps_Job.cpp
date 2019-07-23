@@ -156,7 +156,7 @@ void Step::vJobAddOriginator(MP_Task mpTask)
     gpAttachMap->m_pOriginatingJobs->vMarkContents(pJob->m_iJobId);
   }
   
-  ActionSequence::vAdd(mpTask->m_pJob,
+  ActionLog::vAdd(mpTask->m_pJob,
                        AN_ADDED_ORIGINATOR);
   
   EXIT();
@@ -185,7 +185,7 @@ void Step::vJobAddParticipant(MP_Task mpTask)
     gpAttachMap->m_pParticipatingJobs->vMarkContents(pJob->m_iJobId);
   }
   
-  ActionSequence::vAdd(mpTask->m_pJob,
+  ActionLog::vAdd(mpTask->m_pJob,
                        AN_ADDED_PARTICIPANT);
   
   EXIT();
@@ -630,7 +630,7 @@ void Step::vJobErrorStore(MP_Task mpTask)
   pJob->m_bHasError = true;
   pJob->m_xResponse.m_eErrorCode = (eEC)iJobError;
   
-  ActionSequence::vAdd(pJob,AN_ERROR_CODE,iJobError);
+  ActionLog::vAdd(pJob,AN_ERROR_CODE,iJobError);
   
   EXIT();
 }
@@ -703,7 +703,7 @@ void Step::vJobFindOriginator(MP_Task mpTask)
   Job* pJobFound = gpAttachMap->m_pOriginatingJobs->pFindJob(iJobId);
   RASSERT(pJobFound);
   
-  ActionSequence::vAdd(pJobFound,AN_FIND_ORIGINATOR,mpTask->pJob());
+  ActionLog::vAdd(pJobFound,AN_FIND_ORIGINATOR,mpTask->pJob());
   
   mpTask->m_pDataStack->vPushPointer(pJobFound);
   
@@ -724,7 +724,7 @@ void Step::vJobFindParticipant(MP_Task mpTask)
   Job* pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(iJobId);
   RASSERT(pJobFound);
   
-  ActionSequence::vAdd(pJobFound,AN_FIND_PARTICIPANT,mpTask->pJob());
+  ActionLog::vAdd(pJobFound,AN_FIND_PARTICIPANT,mpTask->pJob());
   
   mpTask->m_pDataStack->vPushPointer(pJobFound);
   
@@ -1227,7 +1227,7 @@ void Step::vJobParticipantResponseStore(MP_Task mpTask)
   pJob->m_pResponseVec->vAdd(pResponse);
   
   if (pResponse->m_eErrorCode != EC_NONE)
-    ActionSequence::vAdd(pJob,AN_ERROR_CODE,pResponse->m_eErrorCode);
+    ActionLog::vAdd(pJob,AN_ERROR_CODE,pResponse->m_eErrorCode);
   
   EXIT();
 }
@@ -1284,7 +1284,7 @@ void Step::vJobPhaseStore(MP_Task mpTask)
   
   pJob->m_eJobPhase = (eJP)iJobPhase;
   
-  ActionSequence::vAdd(pJob,AN_JOB_PHASE,iJobPhase,_EG_JP);
+  ActionLog::vAdd(pJob,AN_JOB_PHASE,iJobPhase,_EG_JP);
   
   EXIT();
 }
@@ -1320,7 +1320,7 @@ void Step::vJobPostRecv(MP_Task mpTask)
     pJob->vMarkJob();
   }
   
-  ActionSequence::vAdd(pJob,AN_POST_RECV,mpTask->pJob());
+  ActionLog::vAdd(pJob,AN_POST_RECV,mpTask->pJob());
 
   EXIT();
 }
@@ -1339,7 +1339,7 @@ void Step::vJobPreSend(MP_Task mpTask)
   
   JobClass* pJobClass = pJob->m_pJobClass;
   
-  ActionSequence::vAdd(pJob,AN_PRE_SEND,mpTask->pJob());
+  ActionLog::vAdd(pJob,AN_PRE_SEND,mpTask->pJob());
   if (pJobClass->m_fpSend)
     (*pJobClass->m_fpSend)(pJob);
   
@@ -1410,7 +1410,7 @@ void Step::vJobRemoveOriginator(MP_Task mpTask)
     gpAttachMap->m_pOriginatingJobs->vMarkContents(pJob->m_iJobId);
   }
   
-  ActionSequence::vAdd(mpTask->m_pJob,
+  ActionLog::vAdd(mpTask->m_pJob,
                        AN_REMOVED_ORIGINATOR);
   
   EXIT();
@@ -1450,7 +1450,7 @@ void Step::vJobRemoveParticipant(MP_Task mpTask)
     gpAttachMap->m_pParticipatingJobs->vMarkContents(pJob->m_iJobId);
   }
   
-  ActionSequence::vAdd(mpTask->m_pJob,
+  ActionLog::vAdd(mpTask->m_pJob,
                        AN_REMOVED_PARTICIPANT);
   
   EXIT();
@@ -1851,7 +1851,7 @@ void Step::vJobSpawn(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.spawn"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  ActionSequence::vAdd(pJob,AN_SPAWN_JOB,mpTask->pJob(),i_Seed,_EG_SS);
+  ActionLog::vAdd(pJob,AN_SPAWN_JOB,mpTask->pJob(),i_Seed,_EG_SS);
   
   IGNORE_RETURN(Api::bSpawnJob(nullptr,pJob,(eSS)i_Seed));
   
@@ -1874,7 +1874,7 @@ void Step::vJobSpawnDedicated(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.spawn_dedicated"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  ActionSequence::vAdd(pJob,AN_SPAWN_JOB,mpTask->pJob(),i_Seed,_EG_SS);
+  ActionLog::vAdd(pJob,AN_SPAWN_JOB,mpTask->pJob(),i_Seed,_EG_SS);
   
   IGNORE_RETURN(Api::bSpawnJobDedicated(nullptr,pJob,(eSS)i_Seed));
   

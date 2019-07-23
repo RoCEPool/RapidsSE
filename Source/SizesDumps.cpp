@@ -363,7 +363,7 @@ i8 giClassSize[]
 
   /* 19 */ sizeof(AccessPath),         // CN_ACCESSPATH
   /*    */ sizeof(Action),             // CN_ACTION
-  /*    */ sizeof(ActionSequence),     // CN_ACTIONSEQUENCE
+  /*    */ sizeof(ActionLog),     // CN_ACTIONSEQUENCE
   /*    */ sizeof(ActivityMark),       // CN_ACTIVITYLOG
   /*    */ sizeof(ActivityMark),       // CN_ACTIVITYMARK
   /*    */ sizeof(AggOp),              // CN_AGGOP

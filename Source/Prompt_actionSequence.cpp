@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Prompt_actionSequence.cpp -- Print ActionSequence Information              */
+/* Prompt_actionSequence.cpp -- Print ActionLog Information              */
 /*============================================================================*/
 
 #include "Prompt.h"
@@ -26,7 +26,7 @@ PromptNote mPromptNote_actionSequence (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_actionSequence(SePrompt* pPrompt)
 {
-  ActionSequence::vWriteCsv();
+  ActionLog::vWriteCsv();
 
   return true;
 }

@@ -122,8 +122,8 @@ Job_Export::Job_Export(Interface::Session* pSession)
 
   _checkInitialised_(CN_JOB_EXPORT);
   
-  ActionSequence::vRoot(this);
-  ActionSequence::vAdd(this,AN_CONSTRUCTOR,CN_JOB_EXPORT,_EG_CN);
+  ActionLog::vRoot(this);
+  ActionLog::vAdd(this,AN_CONSTRUCTOR,CN_JOB_EXPORT,_EG_CN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
 }
@@ -165,7 +165,7 @@ bool Job_Export::bBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
   
-  ActionSequence::vAdd(this,AN_JOB_BEGIN);
+  ActionLog::vAdd(this,AN_JOB_BEGIN);
 
   m_pTable->vMarkTable();
   
@@ -174,7 +174,7 @@ bool Job_Export::bBegin(void)
     return false;
   }
   
-  ActionSequence::vAdd(this,AN_OPEN_FILE,m_sFilePath.aStz());
+  ActionLog::vAdd(this,AN_OPEN_FILE,m_sFilePath.aStz());
   
   return true;
 }
@@ -186,8 +186,8 @@ void Job_Export::vEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
 
-  ActionSequence::vAdd(this,AN_JOB_END);
-  ActionSequence::vAdd(this,AN_CLOSE_FILE,m_sFilePath.aStz());
+  ActionLog::vAdd(this,AN_JOB_END);
+  ActionLog::vAdd(this,AN_CLOSE_FILE,m_sFilePath.aStz());
   
   m_oCsvFile.vClose();
   vTrace("CLOSING EXPORT FILE\n"_Stz);
@@ -306,7 +306,7 @@ void Jobs::vJob_Export_post(Interface::Session* pSession, Job* pJob)
 {
   Job_Export* pJob_Export = _pJob_Export(pJob);
 
-  ActionSequence::vAdd(pJob_Export,AN_POST_PROMPT,pJob_Export->m_bHasError);
+  ActionLog::vAdd(pJob_Export,AN_POST_PROMPT,pJob_Export->m_bHasError);
 }
 
 /*----------------------------------------------------------------------------*/

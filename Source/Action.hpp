@@ -141,7 +141,7 @@ namespace Logging
 
   class Action : public Object
   {
-  friend class ActionSequence;
+  friend class ActionLog;
   
   private:
     i8    m_i_Action;

@@ -5,7 +5,7 @@
 #include "Logging.h"
 #include "StorageEngine.h"
 
-extern ActionSequence* gpActionSequence;
+extern ActionLog* gpActionSequence;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

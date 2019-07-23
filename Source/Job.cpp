@@ -87,7 +87,7 @@ Job::Job(eCN eClassNo, Session* pSession)
   if ( gpAttachMap->m_oMarkAction.bAll() ||
       gpAttachMap->m_oMarkAction.bFlagged(eClass()) ) {
     m_bMarkAction  = true;
-    m_i_ActionRoot = ActionSequence::iBegin(m_iJobId,eClassNo);
+    m_i_ActionRoot = ActionLog::iBegin(m_iJobId,eClassNo);
   }
   else {
     m_bMarkAction  = false;
@@ -128,7 +128,7 @@ Job::~Job(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  ActionSequence::vAdd(this,AN_DESTRUCTOR);
+  ActionLog::vAdd(this,AN_DESTRUCTOR);
   
   delete m_pMutexJob;
   

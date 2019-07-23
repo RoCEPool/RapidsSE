@@ -17,7 +17,8 @@ using namespace Logging;
 #include "ShmLog.hpp"
 
 #include "Action.hpp"
-#include "ActionSequence.hpp"
+#include "ActionLog.hpp"
+
 #include "ActivityMark.hpp"
 #include "ActivityLog.hpp"
 

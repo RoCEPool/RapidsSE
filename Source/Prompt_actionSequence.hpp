@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Prompt_actionSequence.hpp -- Dump ActionSequence Information               */
+/* Prompt_actionSequence.hpp -- Dump ActionLog Information               */
 /*============================================================================*/
 #pragma once
 

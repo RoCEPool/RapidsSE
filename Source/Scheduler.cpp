@@ -280,7 +280,7 @@ bool Scheduler::bTask_Ack(Task* pTaskWaiting, Task* pTaskAcking)
 //                          );
 //  }
 //
-//  ActionSequence::vAdd(pTaskAcking->pJob(),
+//  ActionLog::vAdd(pTaskAcking->pJob(),
 //                       AN_ACK_TASK,
 //                       pTaskBeingAcked->pJob());
   
@@ -292,7 +292,7 @@ bool Scheduler::bTask_Ack(Task* pTaskWaiting, Task* pTaskAcking)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
 //  if (bAmDecider)
-//    ActionSequence::vAdd(pTaskAcking->pJob(),
+//    ActionLog::vAdd(pTaskAcking->pJob(),
 //                         AN_AM_DECIDER,
 //                         pTaskBeingAcked->pJob());
 //
@@ -688,7 +688,7 @@ bool Scheduler::bThread_AssignIdle(Task* pTask)
   
   RASSERT(TD_IDLE == pThread->m_eThreadState);
   
-  //ActionSequence::vAdd(pTask->pJob(),AN_THREAD_EXECUTE,pIdleThread->iThreadNo());
+  //ActionLog::vAdd(pTask->pJob(),AN_THREAD_EXECUTE,pIdleThread->iThreadNo());
   
   pThread->m_pTask = pTask;
   pThread->m_nAssignedTasks++;

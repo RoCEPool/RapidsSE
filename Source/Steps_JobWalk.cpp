@@ -72,7 +72,7 @@ void Step::vJob_WalkIndexStore(MP_Task mpTask)
   
   pJob_Walk->m_pIndex = pIndex;
   
-  //ActionSequence::vAdd(pJob_Walk,AN_INDEX_USE,pIndex->aIndexName());
+  //ActionLog::vAdd(pJob_Walk,AN_INDEX_USE,pIndex->aIndexName());
   
   EXIT();
 }
@@ -96,7 +96,7 @@ void Step::vJob_WalkTableStore(MP_Task mpTask)
   
   pJob_Walk->m_pTable = pTable;
   
-  ActionSequence::vAdd(pJob_Walk,AN_TABLE_USE,pTable->aTableName());
+  ActionLog::vAdd(pJob_Walk,AN_TABLE_USE,pTable->aTableName());
   
   EXIT();
 }

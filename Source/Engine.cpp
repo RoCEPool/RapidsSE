@@ -471,7 +471,7 @@ void Engine::vMonitorProfile(s48K& sPortrait)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create or open the ActionSequence map                                      */
+/* create or open the ActionLog map                                      */
 /*----------------------------------------------------------------------------*/
 void Engine::vOpenActionSequence(void)
 {
@@ -479,7 +479,7 @@ void Engine::vOpenActionSequence(void)
   if (0 == gpAttachMap->m_pGrid->m_iThisNode && gxArguments.m_bStart)
     bStarting = true;
   
-  ActionSequence::vOpenBySE(bStarting);
+  ActionLog::vOpenBySE(bStarting);
 }
 
 /*----------------------------------------------------------------------------*/

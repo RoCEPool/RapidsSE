@@ -16,8 +16,8 @@ void Step::vAddSteps_ActivityLog(void)
   vAddStep("activityLog::markEntry"_Stz,  &Step::vActivityLogMarkEntry);
   vAddStep("activityLog::markExit"_Stz,   &Step::vActivityLogMarkExit);
   
-  vAddStep("ActionSequence::markSeed"_Stz, &Step::vActionSequenceMarkSeed);
-  vAddStep("ActionSequence::markWord"_Stz, &Step::vActionSequenceMarkWord);
+  vAddStep("ActionLog::markSeed"_Stz, &Step::vActionSequenceMarkSeed);
+  vAddStep("ActionLog::markWord"_Stz, &Step::vActionSequenceMarkWord);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -113,7 +113,7 @@ void Step::vActionSequenceMarkSeed(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(sWordNm) )
     THROW_INVALID_DSTACK("actionSequence::markSeed"_Stz);
   
-  ActionSequence::vAdd(mpTask->m_pJob,(eAN)iSeed,sWordNm.aStz());
+  ActionLog::vAdd(mpTask->m_pJob,(eAN)iSeed,sWordNm.aStz());
   
   EXIT();
 }
@@ -133,7 +133,7 @@ void Step::vActionSequenceMarkWord(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(sWordNm) )
     THROW_INVALID_DSTACK("actionSequence::markWord"_Stz);
   
-  ActionSequence::vAdd(mpTask->m_pJob,(eAN)iAN,sWordNm.aStz());
+  ActionLog::vAdd(mpTask->m_pJob,(eAN)iAN,sWordNm.aStz());
   
   EXIT();
 }

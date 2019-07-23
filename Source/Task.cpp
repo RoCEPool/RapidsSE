@@ -78,7 +78,7 @@ Task::Task(Job* pJob, Interface::Session* pSession)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  ActionSequence::vAdd(m_i_ActionRoot,0,
+  ActionLog::vAdd(m_i_ActionRoot,0,
                        CN_TASK,AN_CONSTRUCTOR,
                        m_pJob->eClass(),_EG_CN);
 
@@ -108,7 +108,7 @@ Task::Task(Op* pOp, Interface::Session* pSession)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  ActionSequence::vAdd(m_i_ActionRoot,0,
+  ActionLog::vAdd(m_i_ActionRoot,0,
                        CN_TASK,AN_CONSTRUCTOR,
                        m_pOp->eClass(),_EG_CN);
   
@@ -186,7 +186,7 @@ Task::~Task(void) noexcept(false)
     delete pLocalsFrame;
   }
   
-  ActionSequence::vAdd(m_i_ActionRoot,0,CN_TASK,AN_DESTRUCTOR,CN_TASK);
+  ActionLog::vAdd(m_i_ActionRoot,0,CN_TASK,AN_DESTRUCTOR,CN_TASK);
 
 }
 

@@ -113,7 +113,7 @@ Job__Ended::Job__Ended(Job* pDistJob)
 
   _checkInitialised_(CN_JOB__ENDED);
   
-  ActionSequence::vAdd(this,AN_CONSTRUCTOR,CN_JOB__ENDED,_EG_CN);
+  ActionLog::vAdd(this,AN_CONSTRUCTOR,CN_JOB__ENDED,_EG_CN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB__ENDED,_FOOTER_);
 }
