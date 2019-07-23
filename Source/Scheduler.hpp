@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Scheduler.hpp -- Thread/Task Event Scheduler                               */
+/* Scheduler.hpp -- Thread/Task Scheduler Mark II                             */
 /*============================================================================*/
 #pragma once
 

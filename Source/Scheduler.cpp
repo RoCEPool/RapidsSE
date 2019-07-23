@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Scheduler.cpp -- Thread/Task Event Scheduler                               */
+/* Scheduler.cpp -- Thread/Task Scheduler Mark II                             */
 /*============================================================================*/
 
 #include "Scheduling.h"
@@ -239,7 +239,7 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* change any task to TS_ABLE state (able to be executed)                     */
+/* change given task to TS_ABLE state (able to be executed)                   */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Able(Task* pTask)
 {
@@ -256,9 +256,9 @@ void Scheduler::vTask_Able(Task* pTask)
 /*----------------------------------------------------------------------------*/
 bool Scheduler::bTask_Ack(Task* pTaskWaiting, Task* pTaskAcking)
 {
-  // note: the task may not yet be waiting.  there is an indefinite period
-  //       between when the task grabs its lock + sets the number of acks and
-  //       when it enters the waiting state and drops the lock
+  // note: the 'waiting' task may not yet be waiting.  there is an indefinite
+  //       period between when the task grabs its lock + sets the number of
+  //       acks and when it enters the waiting state and drops the lock
   
   RASSERT(pTaskWaiting->iAcksRmg_assert_only_() > 0);
   
@@ -409,6 +409,10 @@ void Scheduler::vTask_Ready(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Resume(Task* pTask)
 {
+  // note: the 'waiting' task may not yet be waiting.  there is an indefinite
+  //       period between when the task grabs its lock + sets the number of
+  //       acks and when it enters the waiting state and drops the lock
+  
   RASSERT(! pTask->iAcksRmg_assert_only_());
   
   if (pTask->pJob()->m_bMarkActivity)
@@ -770,7 +774,8 @@ void Scheduler::vThread_PauseGeneral(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // pause till all general threads are in idle state
-  for (i8 i_Thread = 0; i_Thread < pQueues->m_pGeneralThreadVec->nItems(); i_Thread++) {
+  i8 nGeneralThreads = pQueues->m_pGeneralThreadVec->nItems();
+  for (i8 i_Thread = 0; i_Thread < nGeneralThreads; i_Thread++) {
     
     Thread* pThread = pQueues->m_pGeneralThreadVec->pGet(i_Thread);
     
