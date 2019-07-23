@@ -31,7 +31,7 @@ Action::Action(void)
 {
   _precondition_(_MAGIC_,CN_ACTION,_FOOTER_);
   
-  m_i_Mark = 0;
+  m_i_Entry = 0;
   m_i_Root   = 0;
   m_iTick    = 0;
   
@@ -101,7 +101,7 @@ void Action::vInit(i8 i_Action)
 {
   _precondition_(_MAGIC_,CN_ACTION);
   
-  m_i_Mark = 0;
+  m_i_Entry = 0;
   m_i_Root   = 0;
   m_iTick    = 0;
   
@@ -136,7 +136,7 @@ bool Action::bIsRoot(void)
 {
   _precondition_(_MAGIC_,CN_ACTION);
   
-  if (m_i_Mark == m_i_Root && m_iTick)
+  if (m_i_Entry == m_i_Root && m_iTick)
     return true;
   else
     return false;
@@ -166,7 +166,7 @@ void Action::vReset(void)
 {
   _precondition_(_MAGIC_,CN_ACTION);
   
-  m_i_Mark = 0;
+  m_i_Entry = 0;
   m_i_Root   = 0;
   m_iTick    = 0;
   
@@ -323,7 +323,7 @@ void Action::vWriteLead(File* pFile)
   
   pFile->vPrint("[%03lld, %03lld, %lld (+%06lld)] "_Stz,
                 
-                m_i_Mark,
+                m_i_Entry,
                 m_i_Root,
                 m_iTick,
                 iDeltaUsec
@@ -373,7 +373,7 @@ void Action::vWrite_Default(File* pFile)
                 /* 4 */ "(%2lld, %14p) "
                 /* 5 */ "<<%lld, %03lld>>\n"_Stz,
                 
-                /* 0 */ m_i_Mark,
+                /* 0 */ m_i_Entry,
                 m_i_Root,
                 m_iTick,
                 

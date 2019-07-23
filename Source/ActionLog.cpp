@@ -39,8 +39,8 @@ ActionLog::ActionLog(void)
 {
   _precondition_(_MAGIC_,CN_ACTIONLOG,_FOOTER_);
     
-  for (i8 i_Action = 0; i_Action < m_nMarks; i_Action++)
-    m_oaAction[i_Action].vInit(i_Action);
+  for (i8 i_Entry = 0; i_Entry < m_nEntries; i_Entry++)
+    m_oaAction[i_Entry].vInit(i_Entry);
   
   _checkInitialised_(CN_ACTIONLOG);
   
@@ -270,7 +270,7 @@ i8 ActionLog::iBegin(i8 iJobId, eCN eClassNo,
   pRoot->m_iArg1    = iArg1;
   pRoot->m_wLink.vSetWithoutTest(C_UNKNOWN);
 
-  return pRoot->m_i_Mark;
+  return pRoot->m_i_Entry;
 #else
   return C_UNKNOWN;
 #endif
@@ -291,7 +291,7 @@ void ActionLog::vRoot(Jobs::Job* pJob)
   
   Action* pRoot = gpActionSequence->pNewRootAction();
   
-  pJob->m_i_ActionRoot = pRoot->m_i_Mark;
+  pJob->m_i_ActionRoot = pRoot->m_i_Entry;
   
   pRoot->m_iJobId     = pJob->m_iJobId;
   pRoot->m_eClassNo   = pJob->eClass();
@@ -375,13 +375,13 @@ Action* ActionLog::pAllotAction(void)
   
   vGrabLock();
   
-  Action* pAction = &m_oaAction[m_i_Mark % m_nMarks];
+  Action* pAction = &m_oaAction[m_i_Entry % m_nEntries];
   
   pAction->vReset();
-  pAction->m_i_Mark = m_i_Mark;
+  pAction->m_i_Entry = m_i_Entry;
   pAction->m_iTick    = Tsc::iRdTscp();
   
-  m_i_Mark++;
+  m_i_Entry++;
   
   vDropLock();
   
@@ -402,16 +402,16 @@ void ActionLog::vFindRange_NL(i8& i_Min, i8& i_Max)
   i_Min = C_I8_MAX;
   i_Max = C_I8_MIN;
   
-  for (i8 i_Action = 0; i_Action < m_nMarks; i_Action++) {
+  for (i8 i_Entry = 0; i_Entry < m_nEntries; i_Entry++) {
     
-    if (-1 == m_oaAction[i_Action].m_i_Mark)
+    if (-1 == m_oaAction[i_Entry].m_i_Entry)
       return;
     
-    if (m_oaAction[i_Action].m_i_Mark < i_Min)
-      i_Min = m_oaAction[i_Action].m_i_Mark;
+    if (m_oaAction[i_Entry].m_i_Entry < i_Min)
+      i_Min = m_oaAction[i_Entry].m_i_Entry;
     
-    if (m_oaAction[i_Action].m_i_Mark > i_Max)
-      i_Max = m_oaAction[i_Action].m_i_Mark;
+    if (m_oaAction[i_Entry].m_i_Entry > i_Max)
+      i_Max = m_oaAction[i_Entry].m_i_Entry;
   }
 }
 
@@ -427,7 +427,7 @@ void ActionLog::vLinkAction(Action* pRoot, Action* pNewAction)
     i8 iWhatRootLinksTo = * pRoot->m_wLink;
     pNewAction->m_wLink.vSetWithoutTest(iWhatRootLinksTo);
     
-    if (pRoot->m_wLink.bTestAndSet(iWhatRootLinksTo,pNewAction->m_i_Mark))
+    if (pRoot->m_wLink.bTestAndSet(iWhatRootLinksTo,pNewAction->m_i_Entry))
       break;
   }
 }
@@ -441,7 +441,7 @@ Action* ActionLog::pNewLinkedAction(Action *pRoot)
   
   Action* pLinked = pAllotAction();
   
-  pLinked->m_i_Root = pRoot->m_i_Mark;
+  pLinked->m_i_Root = pRoot->m_i_Entry;
   
   vLinkAction(pRoot,pLinked);
 
@@ -457,7 +457,7 @@ Action* ActionLog::pNewRootAction(void)
   
   Action* pRoot = pAllotAction();
   
-  pRoot->m_i_Root = pRoot->m_i_Mark;
+  pRoot->m_i_Root = pRoot->m_i_Entry;
   pRoot->m_wLink.vSetWithoutTest(C_UNKNOWN);
 
   return pRoot;
@@ -475,7 +475,7 @@ Action* ActionLog::pNextAction(Action *pAction)
   if (i_NextAction == C_UNKNOWN)
     return nullptr;
   
-  Action* pNextAction = &m_oaAction[i_NextAction % m_nMarks];;
+  Action* pNextAction = &m_oaAction[i_NextAction % m_nEntries];;
   
   return pNextAction;
 }
@@ -501,7 +501,7 @@ i8 ActionLog::iPercentFull_NL(void)
     // Example: 0 .. 25 __ [64]
     //          i_Min is 0
     //          i_Max is 48
-    //          m_nMarks  is 64
+    //          m_nEntries  is 64
     // then only 0..25 is in use out of 64
     //
     nInUse = (i_Max - i_Min);
@@ -511,13 +511,13 @@ i8 ActionLog::iPercentFull_NL(void)
     // Example: .. 25 __ 48 .. [64]
     //          i_Min is 48
     //          i_Max is 25
-    //          m_nMarks  is 64
+    //          m_nEntries  is 64
     // then 48 .. 63 + 0 ..25 is in use
     //
-    nInUse = (m_nMarks - i_Min) + (i_Max);
+    nInUse = (m_nEntries - i_Min) + (i_Max);
   }
   
-  iPercent = (nInUse * 100) / m_nMarks;
+  iPercent = (nInUse * 100) / m_nEntries;
   
   return iPercent;
 }
@@ -551,9 +551,9 @@ void ActionLog::vWriteToFile(void)
   
   vFindRange_NL(i_Min,i_Max);
   
-  for (i8 i_Action = i_Min; i_Action <= i_Max; i_Action++) {
+  for (i8 i_Entry = i_Min; i_Entry <= i_Max; i_Entry++) {
 
-    Action* pAction = &m_oaAction[i_Action % m_nMarks];
+    Action* pAction = &m_oaAction[i_Entry % m_nEntries];
     
     if (! pAction->bIsRoot())
       continue;

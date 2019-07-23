@@ -13,7 +13,7 @@ namespace Logging
   
   private:
 
-    Action m_oaAction[C_LOG_MARKS];
+    Action m_oaAction[C_LOG_ENTRIES];
 
     // must be last
     Footer m_xFooter;

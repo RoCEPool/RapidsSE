@@ -42,8 +42,8 @@ ActivityLog::ActivityLog(void)
   if (0 != gpAttachMap->m_pGrid->m_iThisNode || Pthread::bIsJavaThread() )
     RASSERT(0);
   
-  for (i8 i_Mark = 0; i_Mark < m_nMarks; i_Mark++) {
-    ActivityMark* pActivityMark = &m_oaMark[i_Mark];
+  for (i8 i_Entry = 0; i_Entry < m_nEntries; i_Entry++) {
+    ActivityMark* pActivityMark = &m_oaMark[i_Entry];
     pActivityMark->vInit();
   }
   
@@ -388,12 +388,12 @@ void ActivityLog::vMonitorPortrait(s48K& sPortrait)
   Magnitudes::vByteMag(iMapSize, sShmMag);
   
   s32 sArrayMag;
-  Magnitudes::vUnitMag(gpActivityLog->m_nMarks, sArrayMag);
+  Magnitudes::vUnitMag(gpActivityLog->m_nEntries, sArrayMag);
 
   sPortrait.vSprint("ActivityLog: shm %s array %s marks %lld; %lld%% full;\n"_Stz,
                     sShmMag.aStz(),
                     sArrayMag.aStz(),
-                    gpActivityLog->m_i_Mark,
+                    gpActivityLog->m_i_Entry,
                     iPercentFull
                      );
 #else
@@ -421,7 +421,7 @@ void ActivityLog::vOpenByApi(void)
            "attached to existing map (size %lldB, max %lld marks)\n\n"_Stz,
            C_ACTIVITY_REGION,
            sizeof(ActivityLog),
-           C_LOG_MARKS);
+           C_LOG_ENTRIES);
   
   gpActivityLog = pActivityLog;
   
@@ -457,7 +457,7 @@ void ActivityLog::vOpenBySE(bool bStarting)
              "created new map (size %lldB, max %lld marks)\n\n"_Stz,
              C_ACTIVITY_REGION,
              sizeof(ActivityLog),
-             C_LOG_MARKS);
+             C_LOG_ENTRIES);
     gpActivityLog = new(pActivityLog) ActivityLog;
 
   } else {
@@ -467,7 +467,7 @@ void ActivityLog::vOpenBySE(bool bStarting)
              "attached to existing map (size %lldB, max %lld marks)\n\n"_Stz,
              C_ACTIVITY_REGION,
              sizeof(ActivityLog),
-             C_LOG_MARKS);
+             C_LOG_ENTRIES);
     
     gpActivityLog = pActivityLog;
   }
@@ -583,11 +583,11 @@ ActivityMark* ActivityLog::pNewMark_NL(void)
 
   m_okLock.vAssertWrite();
   
-  ActivityMark* pActivityMark = &m_oaMark[m_i_Mark % m_nMarks];
+  ActivityMark* pActivityMark = &m_oaMark[m_i_Entry % m_nEntries];
   
-  pActivityMark->m_iMark = m_i_Mark;
+  pActivityMark->m_iMark = m_i_Entry;
   
-  m_i_Mark++;
+  m_i_Entry++;
   
   return pActivityMark;
 }
@@ -606,16 +606,16 @@ void ActivityLog::vFindRange_NL(i8& i_MinMark, i8& i_MaxMark)
   i_MinMark = C_I8_MAX;
   i_MaxMark = C_I8_MIN;
   
-  for (i8 i_Mark = 0; i_Mark < m_nMarks; i_Mark++) {
+  for (i8 i_Entry = 0; i_Entry < m_nEntries; i_Entry++) {
     
-    if (-1 == m_oaMark[i_Mark].m_iMark)
+    if (-1 == m_oaMark[i_Entry].m_iMark)
       return;
     
-    if (m_oaMark[i_Mark].m_iMark < i_MinMark)
-      i_MinMark = m_oaMark[i_Mark].m_iMark;
+    if (m_oaMark[i_Entry].m_iMark < i_MinMark)
+      i_MinMark = m_oaMark[i_Entry].m_iMark;
     
-    if (m_oaMark[i_Mark].m_iMark > i_MaxMark)
-      i_MaxMark = m_oaMark[i_Mark].m_iMark;
+    if (m_oaMark[i_Entry].m_iMark > i_MaxMark)
+      i_MaxMark = m_oaMark[i_Entry].m_iMark;
   }
 }
 
@@ -640,7 +640,7 @@ i8 ActivityLog::iPercentFull_NL(void)
     // Example: 0 .. 25 __ [64]
     //          i_MinMark is 0
     //          i_Maxmark is 48
-    //          m_nMarks  is 64
+    //          m_nEntries  is 64
     // then only 0..25 is in use out of 64
     //
     nMarksInUse = (i_MaxMark - i_MinMark);
@@ -650,13 +650,13 @@ i8 ActivityLog::iPercentFull_NL(void)
     // Example: .. 25 __ 48 .. [64]
     //          i_MinMark is 48
     //          i_Maxmark is 25
-    //          m_nMarks  is 64
+    //          m_nEntries  is 64
     // then 48 .. 63 + 0 ..25 is in use
     //
-    nMarksInUse = (m_nMarks - i_MinMark) + (i_MaxMark);
+    nMarksInUse = (m_nEntries - i_MinMark) + (i_MaxMark);
   }
   
-  iPercent = (nMarksInUse * 100) / m_nMarks;
+  iPercent = (nMarksInUse * 100) / m_nEntries;
   
   return iPercent;
 }
@@ -711,19 +711,19 @@ void ActivityLog::vWriteToFile(bool bShortForm)
   
   vFindRange_NL(i_MinMark,i_MaxMark);
   
-  ActivityMark* pActivityMark = &m_oaMark[i_MinMark % m_nMarks];
+  ActivityMark* pActivityMark = &m_oaMark[i_MinMark % m_nEntries];
   pActivityMark->vDump(pActivityFile, bShortForm,
                        nullptr,iTotalDelta);
   
-  for (i8 i_Mark = i_MinMark + 1; i_Mark <= i_MaxMark; i_Mark++) {
+  for (i8 i_Entry = i_MinMark + 1; i_Entry <= i_MaxMark; i_Entry++) {
     
-    pActivityMark = &m_oaMark[i_Mark % m_nMarks];
+    pActivityMark = &m_oaMark[i_Entry % m_nEntries];
     
     if (-1 == pActivityMark->m_iMark)
       break;
     
     pActivityMark->vDump(pActivityFile, bShortForm,
-                         &m_oaMark[(i_Mark - 1) % m_nMarks],
+                         &m_oaMark[(i_Entry - 1) % m_nEntries],
                          iTotalDelta);
   }
   
