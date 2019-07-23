@@ -5,7 +5,6 @@
 
 namespace Monitoring
 {
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class ShmLog : public Object
   {
   public:
@@ -16,8 +15,8 @@ namespace Monitoring
     ~ShmLog(void) noexcept(false);
   
   protected:
-    static void* aMapCreate(s32 sRegionNm, i8 nRegionSz);
-    static void* aMapExisting(s32 sRegionNm, i8 nRegionSz);
+    static void* aCreateNew(s32 sRegionNm, i8 nRegionSz);
+    static void* aOpenExisting(s32 sRegionNm, i8 nRegionSz);
   };
 }
 

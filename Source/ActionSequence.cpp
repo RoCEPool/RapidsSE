@@ -85,7 +85,7 @@ void ActionSequence::vOpenBySE(bool bStarting)
   ActionSequence* pActionSequence = nullptr;
   
   if (bStarting) {
-    pActionSequence = (ActionSequence*)ShmLog::aMapCreate(sMapNm,nMapSz);
+    pActionSequence = (ActionSequence*)ShmLog::aCreateNew(sMapNm,nMapSz);
     if (gpAttachMap->m_bVerbose)
       vTrace("ActionSequence: created new map %s %lldB\n"_Stz,
              sMapNm.aStz(),
@@ -94,7 +94,7 @@ void ActionSequence::vOpenBySE(bool bStarting)
     
   }
   else {
-    pActionSequence = (ActionSequence*)ShmLog::aMapExisting(sMapNm,nMapSz);
+    pActionSequence = (ActionSequence*)ShmLog::aOpenExisting(sMapNm,nMapSz);
     if (gpAttachMap->m_bVerbose)
       vTrace("ActionSequence: attached to existing map %s %lldB\n"_Stz,
              sMapNm.aStz(),

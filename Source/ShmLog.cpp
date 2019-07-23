@@ -50,7 +50,7 @@ ShmLog::~ShmLog(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* create a new shm region and map into vm segment                            */
 /*----------------------------------------------------------------------------*/
-void* ShmLog::aMapCreate(s32 sRegionNm, i8 nRegionSz)
+void* ShmLog::aCreateNew(s32 sRegionNm, i8 nRegionSz)
 {
   int iRegionFd;
   SysCall oSysCall;
@@ -62,13 +62,13 @@ void* ShmLog::aMapCreate(s32 sRegionNm, i8 nRegionSz)
   // open a new shm region which will contain the activity map
   bResult = Shm::bOpenCreate(sRegionNm,iRegionFd,oSysCall);
   if (! bResult)
-    vFatal("ShmLog::aMapCreate: failed to create region %s\n"_Stz,
+    vFatal("ShmLog::aCreateNew: failed to create region %s\n"_Stz,
            sRegionNm.aChar());
   
   // extend the shm region
   bResult = Shm::bExtend(iRegionFd,nRegionSz,oSysCall);
   if (! bResult)
-    vFatal("ShmLog::aMapCreate: failed to extend region %s to %lldB\n"_Stz,
+    vFatal("ShmLog::aCreateNew: failed to extend region %s to %lldB\n"_Stz,
            sRegionNm.aChar(),nRegionSz);
   
   // map the shm region into a vm segment within this process address space
@@ -78,7 +78,7 @@ void* ShmLog::aMapCreate(s32 sRegionNm, i8 nRegionSz)
                              C_NO_HUGE_PAGES,
                              oSysCall);
   if (! aSegment)
-    vFatal("ShmLog::aMapCreate: failed to map region %s\n"_Stz,
+    vFatal("ShmLog::aCreateNew: failed to map region %s\n"_Stz,
            sRegionNm.aChar());
   
   return aSegment;
@@ -87,7 +87,7 @@ void* ShmLog::aMapCreate(s32 sRegionNm, i8 nRegionSz)
 /*----------------------------------------------------------------------------*/
 /* attach to existing shm region and map into vm segment                      */
 /*----------------------------------------------------------------------------*/
-void* ShmLog::aMapExisting(s32 sRegionNm, i8 nRegionSz)
+void* ShmLog::aOpenExisting(s32 sRegionNm, i8 nRegionSz)
 {
   int iFD;
   SysCall oSysCall;
@@ -95,7 +95,7 @@ void* ShmLog::aMapExisting(s32 sRegionNm, i8 nRegionSz)
   // open existing shm region
   bool bResult = Shm::bOpenExisting(sRegionNm,iFD,oSysCall);
   if (! bResult)
-    vFatal("ShmLog::aMapExisting: failed to open region: %s\n"_Stz,
+    vFatal("ShmLog::aOpenExisting: failed to open region: %s\n"_Stz,
            sRegionNm.aChar());
   
   // map the shm region into a vm segment within this process address space
@@ -105,7 +105,7 @@ void* ShmLog::aMapExisting(s32 sRegionNm, i8 nRegionSz)
                              C_NO_HUGE_PAGES,
                              oSysCall);
   if (! aSegment)
-    vFatal("ShmLog::aMapExisting: failed to map region %s\n"_Stz,
+    vFatal("ShmLog::aOpenExisting: failed to map region %s\n"_Stz,
            sRegionNm.aChar());
   
   return aSegment;
