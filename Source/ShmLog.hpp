@@ -7,6 +7,9 @@ namespace Logging
 {
   class ShmLog : public Object
   {
+  protected:
+    Lock m_okLock;
+  
   public:
     void* operator new(size_t, ShmLog* pShmLog);
     void  operator delete(void*);

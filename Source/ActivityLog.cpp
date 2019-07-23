@@ -42,8 +42,6 @@ ActivityLog::ActivityLog(void)
   if (0 != gpAttachMap->m_pGrid->m_iThisNode || Pthread::bIsJavaThread() )
     RASSERT(0);
   
-  m_okLock.vInitLock(LK_ACTIVITY_MAP);
-  
   m_i_Mark = 0;
   m_nMarks = C_ACTIVITY_MARKS;
   

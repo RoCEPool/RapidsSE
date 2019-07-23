@@ -13,7 +13,6 @@ namespace Logging
   friend class Action;
   
   private:
-    Lock m_okLock;
     i8   m_i_Mark;  // current subscript
     i8   m_nMarks;  // number of available marks in array
 

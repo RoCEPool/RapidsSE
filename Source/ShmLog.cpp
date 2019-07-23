@@ -32,6 +32,8 @@ ShmLog::ShmLog(eCN eClassNo)
 {
   _precondition_(_MAGIC_,eClassNo);
   
+  m_okLock.vInitLock(LK_ACTION_LOG);
+  
   _postcondition_(_MAGIC_,eClassNo);
 }
 

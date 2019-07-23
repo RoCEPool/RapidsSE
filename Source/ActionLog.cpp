@@ -39,8 +39,6 @@ ActionLog::ActionLog(void)
 {
   _precondition_(_MAGIC_,CN_ACTIONLOG,_FOOTER_);
   
-  m_okLock.vInitLock(LK_ACTION_LOG);
-  
   m_i_Mark = 0;
   m_nMarks = C_ACTION_MARKS;
   
