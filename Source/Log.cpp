@@ -358,7 +358,7 @@ void Log::vNoteString(i8 iJobId, s48K& sString)
   while (StrLib::bEachLine(&aCharAdr,sLine.aChar())) {
     //vTrace("Line: ]]%s[[\n"_Stz,sLine.aChar());
     LogEntry* pLogEntry = gpLog->pNewEntry_NL();
-    pLogEntry->vWrite(C_JOB_GROUP,iJobId,bForeign,sLine.aChar());
+    pLogEntry->vSet(C_JOB_GROUP,iJobId,bForeign,sLine.aChar());
   }
   
   gpLog->vDropLock();
@@ -536,7 +536,7 @@ i8 Log::iAddMarkArg(i8 iEnumGroup, i8 iEnum, i8 iForeign,
   if (! pLogEntry)
     return C_UNKNOWN;
   
-  pLogEntry->vWrite(iEnumGroup,iEnum,iForeign,caMark);
+  pLogEntry->vSet(iEnumGroup,iEnum,iForeign,caMark);
   
   return pLogEntry->m_i_Entry;
 }

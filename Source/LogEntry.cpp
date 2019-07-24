@@ -96,9 +96,9 @@ void LogEntry::vInit(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write                                                                      */
+/* set                                                                        */
 /*----------------------------------------------------------------------------*/
-void LogEntry::vWrite(i8 iEnumGroup, i8 iEnum, i8 iForeign, char* aText)
+void LogEntry::vSet(i8 iEnumGroup, i8 iEnum, i8 iForeign, char* aText)
 {
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
@@ -118,6 +118,9 @@ void LogEntry::vWrite(i8 iEnumGroup, i8 iEnum, i8 iForeign, char* aText)
   
   _postcondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* dump to csv file                                                           */
