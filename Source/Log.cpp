@@ -680,12 +680,11 @@ void Log::vWriteToFile(bool bShortForm)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  s256 sLogPath;
-  sLogPath = "/tmp/Log.csv"_Stz;
+  s256 sLogPath((Stz*)C_LOG_FILE);
   
   i8 iTotalDelta = 0;
   
-  File* pLogFile = new File();
+  File* pLogFile = new File;
   
   bool bOpened = pLogFile->bOpenWrite(sLogPath);
   if (! bOpened) {
