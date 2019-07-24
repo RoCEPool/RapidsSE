@@ -65,7 +65,7 @@ Log::~Log(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* create a new Log shared memory segment                                     */
+/* create a new shm segment for Log                                           */
 /*----------------------------------------------------------------------------*/
 Log* Log::pAttachCreate(void)
 {
@@ -106,7 +106,7 @@ Log* Log::pAttachCreate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* attach to existing shm region containing the Log                           */
+/* attach to existing shm segment containing the Log                          */
 /*----------------------------------------------------------------------------*/
 Log* Log::pAttachExisting(void)
 {
@@ -144,7 +144,7 @@ Log* Log::pAttachExisting(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* write an Activity mark for api call                                        */
+/* add a log entry for api call                                               */
 /*----------------------------------------------------------------------------*/
 void Log::vMarkApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...)
 {
@@ -168,7 +168,7 @@ void Log::vMarkApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write an Activity mark for api entry                                       */
+/* add a log entry for api entry                                              */
 /*----------------------------------------------------------------------------*/
 void Log::vMarkApiEntry(i8 eApiCall, i8 iJobId)
 {
@@ -188,7 +188,7 @@ void Log::vMarkApiEntry(i8 eApiCall, i8 iJobId)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write an Activity mark for api error                                       */
+/* add a log entry for api error                                              */
 /*----------------------------------------------------------------------------*/
 void Log::vMarkApiError(i8 eApiCall, i8 iJobId, i8 iError)
 {
@@ -208,7 +208,7 @@ void Log::vMarkApiError(i8 eApiCall, i8 iJobId, i8 iError)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write an Activity mark for api exit                                        */
+/* add a log entry for api exit                                               */
 /*----------------------------------------------------------------------------*/
 void Log::vMarkApiExit(i8 eApiCall, i8 iJobId)
 {
@@ -228,7 +228,7 @@ void Log::vMarkApiExit(i8 eApiCall, i8 iJobId)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write an Activity mark                                                     */
+/* add a log entry for info                                                   */
 /*----------------------------------------------------------------------------*/
 void Log::vMarkInfo(Stz* aFormat, ...)
 {
@@ -247,7 +247,7 @@ void Log::vMarkInfo(Stz* aFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write an LogEntry                                                          */
+/* add a log entry for job                                                    */
 /*----------------------------------------------------------------------------*/
 void Log::vMarkJob(Jobs::Job* pJob, Stz* szFormat, ...)
 {
@@ -291,11 +291,10 @@ void Log::vMarkJob(Jobs::Job* pJob, Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write an LogEntry                                                          */
+/* add a log entry for resource                                               */
 /*----------------------------------------------------------------------------*/
 void Log::vMarkRes(eSR eSysRes,Stz* szFormat, ...)
 {
-
 #ifdef WITH_ACTIVITY_MAP
   if ( ! gpLog )
     return;
@@ -315,7 +314,7 @@ void Log::vMarkRes(eSR eSysRes,Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write an LogEntry                                                          */
+/* add a section line log entry                                               */
 /*----------------------------------------------------------------------------*/
 void Log::vMarkSection(Stz* szSectionNm)
 {
@@ -340,7 +339,7 @@ void Log::vMarkSection(Stz* szSectionNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write a multi-line string                                                  */
+/* add a multi-line string entry                                              */
 /*----------------------------------------------------------------------------*/
 void Log::vMarkString(i8 iJobId, s48K& sString)
 {
@@ -367,6 +366,9 @@ void Log::vMarkString(i8 iJobId, s48K& sString)
 
 #endif
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* monitor profile                                                            */
@@ -595,7 +597,7 @@ LogEntry* Log::pNewEntry_NL(void)
 /*----------------------------------------------------------------------------*/
 /* find active range                                                          */
 /*----------------------------------------------------------------------------*/
-void Log::vFindRange_NL(i8& i_MinMark, i8& i_MaxMark)
+void Log::vFindRange_NL(i8& i_MinEntry, i8& i_MaxEntry)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
@@ -603,24 +605,24 @@ void Log::vFindRange_NL(i8& i_MinMark, i8& i_MaxMark)
   
   // should be a quicker way to do this
   
-  i_MinMark = C_I8_MAX;
-  i_MaxMark = C_I8_MIN;
+  i_MinEntry = C_I8_MAX;
+  i_MaxEntry = C_I8_MIN;
   
   for (i8 i_Entry = 0; i_Entry < m_nEntries; i_Entry++) {
     
     if (-1 == m_oaEntry[i_Entry].m_i_Entry)
       return;
     
-    if (m_oaEntry[i_Entry].m_i_Entry < i_MinMark)
-      i_MinMark = m_oaEntry[i_Entry].m_i_Entry;
+    if (m_oaEntry[i_Entry].m_i_Entry < i_MinEntry)
+      i_MinEntry = m_oaEntry[i_Entry].m_i_Entry;
     
-    if (m_oaEntry[i_Entry].m_i_Entry > i_MaxMark)
-      i_MaxMark = m_oaEntry[i_Entry].m_i_Entry;
+    if (m_oaEntry[i_Entry].m_i_Entry > i_MaxEntry)
+      i_MaxEntry = m_oaEntry[i_Entry].m_i_Entry;
   }
 }
 
 /*----------------------------------------------------------------------------*/
-/* calculate how full the activity map is                                     */
+/* calculate how full the log is                                              */
 /*----------------------------------------------------------------------------*/
 i8 Log::iPercentFull_NL(void)
 {
@@ -628,35 +630,35 @@ i8 Log::iPercentFull_NL(void)
   
   RASSERT(m_okLock.bIsLocked());
   
-  i8 nMarksInUse = 0;
+  i8 nEntriesInUse = 0;
   i8 iPercent = 0;
   
-  i8 i_MinMark;
-  i8 i_MaxMark;
-  vFindRange_NL(i_MinMark,i_MaxMark);
+  i8 i_MinEntry;
+  i8 i_MaxEntry;
+  vFindRange_NL(i_MinEntry,i_MaxEntry);
   
-  if (i_MinMark < i_MaxMark) {
+  if (i_MinEntry < i_MaxEntry) {
     //
     // Example: 0 .. 25 __ [64]
-    //          i_MinMark is 0
-    //          i_Maxmark is 48
+    //          i_MinEntry is 0
+    //          i_MaxEntry is 48
     //          m_nEntries  is 64
     // then only 0..25 is in use out of 64
     //
-    nMarksInUse = (i_MaxMark - i_MinMark);
+    nEntriesInUse = (i_MaxEntry - i_MinEntry);
   }
   else {
     //
     // Example: .. 25 __ 48 .. [64]
-    //          i_MinMark is 48
-    //          i_Maxmark is 25
+    //          i_MinEntry is 48
+    //          i_MaxEntry is 25
     //          m_nEntries  is 64
     // then 48 .. 63 + 0 ..25 is in use
     //
-    nMarksInUse = (m_nEntries - i_MinMark) + (i_MaxMark);
+    nEntriesInUse = (m_nEntries - i_MinEntry) + (i_MaxEntry);
   }
   
-  iPercent = (nMarksInUse * 100) / m_nEntries;
+  iPercent = (nEntriesInUse * 100) / m_nEntries;
   
   return iPercent;
 }
@@ -678,16 +680,16 @@ void Log::vWriteToFile(bool bShortForm)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  s256 sAmPath;
-  sAmPath = "/tmp/Log.csv"_Stz;
+  s256 sLogPath;
+  sLogPath = "/tmp/Log.csv"_Stz;
   
   i8 iTotalDelta = 0;
   
-  File* pActivityFile = new File();
+  File* pLogFile = new File();
   
-  bool bOpened = pActivityFile->bOpenWrite(sAmPath);
+  bool bOpened = pLogFile->bOpenWrite(sLogPath);
   if (! bOpened) {
-    vTrace("Unable to open activity file: %s\n"_Stz,sAmPath.aChar());
+    vTrace("Unable to open log file: %s\n"_Stz,sLogPath.aChar());
     return;
   }
   
@@ -712,7 +714,7 @@ void Log::vWriteToFile(bool bShortForm)
   vFindRange_NL(i_MinEntry,i_MaxEntry);
   
   LogEntry* pLogEntry = &m_oaEntry[i_MinEntry % m_nEntries];
-  pLogEntry->vDump(pActivityFile, bShortForm,
+  pLogEntry->vDump(pLogFile, bShortForm,
                        nullptr,iTotalDelta);
   
   for (i8 i_Entry = i_MinEntry + 1; i_Entry <= i_MaxEntry; i_Entry++) {
@@ -722,7 +724,7 @@ void Log::vWriteToFile(bool bShortForm)
     if (-1 == pLogEntry->m_i_Entry)
       break;
     
-    pLogEntry->vDump(pActivityFile, bShortForm,
+    pLogEntry->vDump(pLogFile, bShortForm,
                          &m_oaEntry[(i_Entry - 1) % m_nEntries],
                          iTotalDelta);
   }
@@ -730,11 +732,11 @@ void Log::vWriteToFile(bool bShortForm)
   vDropLock();
   // ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲
   
-  pActivityFile->vClose();
+  pLogFile->vClose();
   
-  vTrace("Log written to: %s\n"_Stz,sAmPath.aChar());
+  vTrace("Log written to: %s\n"_Stz,sLogPath.aChar());
   
-  delete pActivityFile;
+  delete pLogFile;
 }
 
 /*----------------------------------------------------------------------------*/

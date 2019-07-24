@@ -58,7 +58,7 @@ namespace Logging
                    Stz* aFormat, ...);
     LogEntry* pNewEntry(void);
     LogEntry* pNewEntry_NL(void);
-    void vFindRange_NL(i8& i_MinMark, i8& i_MaxMark);
+    void vFindRange_NL(i8& i_MinEntry, i8& i_MaxEntry);
     i8   iPercentFull_NL(void);
     i8   iSize(void);
     void vWriteToFile(bool bShortForm);
