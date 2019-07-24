@@ -20,7 +20,6 @@ using namespace Logging;
 #include "Action.hpp"
 #include "ActionLog.hpp"
 
-#include "ActivityMark.hpp"
 #include "ActivityLog.hpp"
 
 #include "Log.hpp"
