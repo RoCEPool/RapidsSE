@@ -74,7 +74,7 @@ Log* Log::pAttachCreate(void)
   s32 sRegionName;
   bool bResult;
   
-  sRegionName = *C_ACTIVITY_REGION;
+  sRegionName = *C_LOG_REGION;
   
   // unlink the name of any previous segment
   IGNORE_RETURN( Shm::bUnlink(sRegionName,oSysCall) );
@@ -114,7 +114,7 @@ Log* Log::pAttachExisting(void)
   SysCall oSysCall;
   s32 sRegionName;
   
-  sRegionName = *C_ACTIVITY_REGION;
+  sRegionName = *C_LOG_REGION;
   
   // open existing shm region
   bool bResult = Shm::bOpenExisting(sRegionName,iFD,oSysCall);
@@ -419,7 +419,7 @@ void Log::vOpenByApi(void)
   if (gpAttachMap->m_bVerbose)
     vTrace("Log %s : "
            "attached to existing map (size %lldB, max %lld marks)\n\n"_Stz,
-           C_ACTIVITY_REGION,
+           C_LOG_REGION,
            sizeof(Log),
            C_LOG_ENTRIES);
   
@@ -455,7 +455,7 @@ void Log::vOpenBySE(bool bStarting)
     if (gpAttachMap->m_bVerbose)
       vTrace("Log %s : "
              "created new map (size %lldB, max %lld marks)\n\n"_Stz,
-             C_ACTIVITY_REGION,
+             C_LOG_REGION,
              sizeof(Log),
              C_LOG_ENTRIES);
     gpLog = new(pActivityLog) Log;
@@ -465,7 +465,7 @@ void Log::vOpenBySE(bool bStarting)
     if (gpAttachMap->m_bVerbose)
       vTrace("Log %s : "
              "attached to existing map (size %lldB, max %lld marks)\n\n"_Stz,
-             C_ACTIVITY_REGION,
+             C_LOG_REGION,
              sizeof(Log),
              C_LOG_ENTRIES);
     

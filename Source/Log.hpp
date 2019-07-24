@@ -5,7 +5,7 @@
 
 namespace Logging
 {
-  static const char* C_ACTIVITY_REGION = "/SE_ActivityLog";
+  static const char* C_LOG_REGION = "/SE_Log";
   
   static const i8    C_JOB_GROUP = 0;
   static const i8    C_INF_GROUP = -1;
@@ -42,6 +42,7 @@ namespace Logging
     static void vMarkRes(eSR eSysRes, Stz* szFormat, ...);
     static void vMarkSection(Stz* szSectionNm);
     static void vMarkString(i8 iJobId, s48K& sString);
+  
     static void vMonitorPortrait(s48K& sPortrait);
     static void vOpenByApi(void);
     static void vOpenBySE(bool bStarting);
