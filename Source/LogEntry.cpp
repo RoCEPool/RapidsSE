@@ -62,19 +62,6 @@ LogEntry::~LogEntry(void) noexcept(false)
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
 }
 
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* convert tick delta to microseconds                                         */
-/*----------------------------------------------------------------------------*/
-i8 LogEntry::iAsMicroseconds(i8 iTickDelta)
-{
-  i8 iMicroseconds = iTickDelta / C_1K;
-  
-  return iMicroseconds;
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -135,12 +122,13 @@ void LogEntry::vDump(File* pFile, bool bShortForm,
     return;
   }
   
-  i8 iDeltaUs = 0;
+  i8 iDeltaUsec = 0;
   
-  if (pPrevMark)
-    iDeltaUs = iAsMicroseconds(m_iTick - pPrevMark->m_iTick);
+  if (pPrevMark) {
+    iDeltaUsec = Tsc::iToUsec(m_iTick - pPrevMark->m_iTick);
+  }
   
-  iTotalDelta += iDeltaUs;
+  iTotalDelta += iDeltaUsec;
   
   if (StrLib::bSame(m_caText,"delta reset"))
     iTotalDelta = 0;
@@ -150,7 +138,7 @@ void LogEntry::vDump(File* pFile, bool bShortForm,
     pFile->vPrint("%lld,%lld,%lld,%lld,%s,%s,%s\n"_Stz,
                   m_i_Entry,
                   m_iTick,
-                  iDeltaUs,
+                  iDeltaUsec,
                   iTotalDelta,
                   
                   m_caNode,
@@ -161,7 +149,7 @@ void LogEntry::vDump(File* pFile, bool bShortForm,
     pFile->vPrint("%lld,%lld,%lld,%lld,%s,inf,%s\n"_Stz,
                   m_i_Entry,
                   m_iTick,
-                  iDeltaUs,
+                  iDeltaUsec,
                   iTotalDelta,
                   
                   m_caNode,
@@ -170,7 +158,7 @@ void LogEntry::vDump(File* pFile, bool bShortForm,
     pFile->vPrint("%lld,%lld,%lld,%lld,%s,%lld,%s\n"_Stz,
                   m_i_Entry,
                   m_iTick,
-                  iDeltaUs,
+                  iDeltaUsec,
                   iTotalDelta,
                   
                   m_caNode,
