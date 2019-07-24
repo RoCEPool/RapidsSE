@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Log.cpp - Activity ShmLog                                             */
+/* Log.cpp - Log                                                              */
 /*============================================================================*/
 
 #include "Measurement.h"
@@ -43,7 +43,7 @@ Log::Log(void)
     RASSERT(0);
   
   for (i8 i_Entry = 0; i_Entry < m_nEntries; i_Entry++) {
-    LogEntry* pActivityMark = &m_oaMark[i_Entry];
+    LogEntry* pActivityMark = &m_oaEntry[i_Entry];
     pActivityMark->vInit();
   }
   
@@ -583,7 +583,7 @@ LogEntry* Log::pNewMark_NL(void)
 
   m_okLock.vAssertWrite();
   
-  LogEntry* pActivityMark = &m_oaMark[m_i_Entry % m_nEntries];
+  LogEntry* pActivityMark = &m_oaEntry[m_i_Entry % m_nEntries];
   
   pActivityMark->m_i_Entry = m_i_Entry;
   
@@ -608,14 +608,14 @@ void Log::vFindRange_NL(i8& i_MinMark, i8& i_MaxMark)
   
   for (i8 i_Entry = 0; i_Entry < m_nEntries; i_Entry++) {
     
-    if (-1 == m_oaMark[i_Entry].m_i_Entry)
+    if (-1 == m_oaEntry[i_Entry].m_i_Entry)
       return;
     
-    if (m_oaMark[i_Entry].m_i_Entry < i_MinMark)
-      i_MinMark = m_oaMark[i_Entry].m_i_Entry;
+    if (m_oaEntry[i_Entry].m_i_Entry < i_MinMark)
+      i_MinMark = m_oaEntry[i_Entry].m_i_Entry;
     
-    if (m_oaMark[i_Entry].m_i_Entry > i_MaxMark)
-      i_MaxMark = m_oaMark[i_Entry].m_i_Entry;
+    if (m_oaEntry[i_Entry].m_i_Entry > i_MaxMark)
+      i_MaxMark = m_oaEntry[i_Entry].m_i_Entry;
   }
 }
 
@@ -711,19 +711,19 @@ void Log::vWriteToFile(bool bShortForm)
   
   vFindRange_NL(i_MinMark,i_MaxMark);
   
-  LogEntry* pActivityMark = &m_oaMark[i_MinMark % m_nEntries];
+  LogEntry* pActivityMark = &m_oaEntry[i_MinMark % m_nEntries];
   pActivityMark->vDump(pActivityFile, bShortForm,
                        nullptr,iTotalDelta);
   
   for (i8 i_Entry = i_MinMark + 1; i_Entry <= i_MaxMark; i_Entry++) {
     
-    pActivityMark = &m_oaMark[i_Entry % m_nEntries];
+    pActivityMark = &m_oaEntry[i_Entry % m_nEntries];
     
     if (-1 == pActivityMark->m_i_Entry)
       break;
     
     pActivityMark->vDump(pActivityFile, bShortForm,
-                         &m_oaMark[(i_Entry - 1) % m_nEntries],
+                         &m_oaEntry[(i_Entry - 1) % m_nEntries],
                          iTotalDelta);
   }
   
