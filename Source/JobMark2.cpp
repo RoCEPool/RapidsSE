@@ -6,7 +6,7 @@
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
-extern Log* gpActivityLog;
+extern Log* gpLog;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

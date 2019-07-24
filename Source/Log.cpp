@@ -7,7 +7,7 @@
 
 extern AttachMap* gpAttachMap;
 
-Log* gpActivityLog = nullptr;
+Log* gpLog = nullptr;
 
 
 /*----------------------------------------------------------------------------*/
@@ -19,7 +19,7 @@ Log* gpActivityLog = nullptr;
 /*----------------------------------------------------------------------------*/
 void* Log::operator new(size_t, Log* pActivityLog)
 {
-  RASSERT(! gpActivityLog);
+  RASSERT(! gpLog);
   
   return pActivityLog;
 }
@@ -35,9 +35,9 @@ void Log::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Log::Log(void)
-: ShmLog(CN_ACTIVITYLOG)
+: ShmLog(CN_LOG)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   if (0 != gpAttachMap->m_pGrid->m_iThisNode || Pthread::bIsJavaThread() )
     RASSERT(0);
@@ -47,9 +47,9 @@ Log::Log(void)
     pActivityMark->vInit();
   }
   
-  _checkInitialised_(CN_ACTIVITYLOG);
+  _checkInitialised_(CN_LOG);
   
-  _postcondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_LOG,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,7 +57,7 @@ Log::Log(void)
 /*----------------------------------------------------------------------------*/
 Log::~Log(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -65,7 +65,7 @@ Log::~Log(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* create a new Log shared memory segment                             */
+/* create a new Log shared memory segment                                     */
 /*----------------------------------------------------------------------------*/
 Log* Log::pAttachCreate(void)
 {
@@ -106,7 +106,7 @@ Log* Log::pAttachCreate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* attach to existing shm region containing the Log                   */
+/* attach to existing shm region containing the Log                           */
 /*----------------------------------------------------------------------------*/
 Log* Log::pAttachExisting(void)
 {
@@ -149,7 +149,7 @@ Log* Log::pAttachExisting(void)
 void Log::vMarkApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...)
 {
 #ifdef WITH_ACTIVITY_MAP
-  if ( ! gpActivityLog )
+  if ( ! gpLog )
     return;
   
   if ( ! gpAttachMap->m_bMarkApi[eApiCall] &&
@@ -161,7 +161,7 @@ void Log::vMarkApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...)
   va_start(xArgs,aFormat);
   
   bool bForeign = Job::bIsForeign(iJobId);
-  gpActivityLog->iAddMarkArg(C_JOB_GROUP,iJobId,bForeign,aFormat,xArgs);
+  gpLog->iAddMarkArg(C_JOB_GROUP,iJobId,bForeign,aFormat,xArgs);
   
   va_end(xArgs);
 #endif
@@ -173,7 +173,7 @@ void Log::vMarkApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...)
 void Log::vMarkApiEntry(i8 eApiCall, i8 iJobId)
 {
 #ifdef WITH_ACTIVITY_MAP
-  if ( ! gpActivityLog )
+  if ( ! gpLog )
     return;
   
   if ( ! gpAttachMap->m_bMarkApi[eApiCall] &&
@@ -183,7 +183,7 @@ void Log::vMarkApiEntry(i8 eApiCall, i8 iJobId)
   Stz* zApiName = aAC[eApiCall];
   
   bool bForeign = Job::bIsForeign(iJobId);
-  gpActivityLog->iAddMarkVbl(C_JOB_GROUP,iJobId,bForeign,">Api %s"_Stz,zApiName);
+  gpLog->iAddMarkVbl(C_JOB_GROUP,iJobId,bForeign,">Api %s"_Stz,zApiName);
 #endif
 }
 
@@ -193,7 +193,7 @@ void Log::vMarkApiEntry(i8 eApiCall, i8 iJobId)
 void Log::vMarkApiError(i8 eApiCall, i8 iJobId, i8 iError)
 {
 #ifdef WITH_ACTIVITY_MAP
-  if ( ! gpActivityLog )
+  if ( ! gpLog )
     return;
   
   if ( ! gpAttachMap->m_bMarkApi[eApiCall] &&
@@ -203,7 +203,7 @@ void Log::vMarkApiError(i8 eApiCall, i8 iJobId, i8 iError)
   Stz* zApiName = aAC[eApiCall];
   
   bool bForeign = Job::bIsForeign(iJobId);
-  gpActivityLog->iAddMarkVbl(C_JOB_GROUP,iJobId,bForeign,"!Api %s Error %lld"_Stz,zApiName,iError);
+  gpLog->iAddMarkVbl(C_JOB_GROUP,iJobId,bForeign,"!Api %s Error %lld"_Stz,zApiName,iError);
 #endif
 }
 
@@ -213,7 +213,7 @@ void Log::vMarkApiError(i8 eApiCall, i8 iJobId, i8 iError)
 void Log::vMarkApiExit(i8 eApiCall, i8 iJobId)
 {
 #ifdef WITH_ACTIVITY_MAP
-  if ( ! gpActivityLog )
+  if ( ! gpLog )
     return;
   
   if ( ! gpAttachMap->m_bMarkApi[eApiCall] &&
@@ -223,7 +223,7 @@ void Log::vMarkApiExit(i8 eApiCall, i8 iJobId)
   Stz* zApiName = aAC[eApiCall];
   
   bool bForeign = Job::bIsForeign(iJobId);
-  gpActivityLog->iAddMarkVbl(C_JOB_GROUP,iJobId,bForeign,"<Api %s"_Stz,zApiName);
+  gpLog->iAddMarkVbl(C_JOB_GROUP,iJobId,bForeign,"<Api %s"_Stz,zApiName);
 #endif
 }
 
@@ -233,26 +233,26 @@ void Log::vMarkApiExit(i8 eApiCall, i8 iJobId)
 void Log::vMarkInfo(Stz* aFormat, ...)
 {
 #ifdef WITH_ACTIVITY_MAP
-  if ( ! gpActivityLog )
+  if ( ! gpLog )
     return;
   
   va_list xArgs;
   
   va_start(xArgs,aFormat);
   
-  gpActivityLog->iAddMarkArg(C_INF_GROUP,0,false,aFormat,xArgs);
+  gpLog->iAddMarkArg(C_INF_GROUP,0,false,aFormat,xArgs);
   
   va_end(xArgs);
 #endif
 }
 
 /*----------------------------------------------------------------------------*/
-/* write an LogEntry                                                      */
+/* write an LogEntry                                                          */
 /*----------------------------------------------------------------------------*/
 void Log::vMarkJob(Jobs::Job* pJob, Stz* szFormat, ...)
 {
 #ifdef WITH_ACTIVITY_MAP
-  if ( ! gpActivityLog )
+  if ( ! gpLog )
     return;
   
   va_list xArgs;
@@ -283,7 +283,7 @@ void Log::vMarkJob(Jobs::Job* pJob, Stz* szFormat, ...)
   
   i8 iJobId = pJob->iJobId();
   bool bForeign = pJob->m_bWasReceived;
-  pJob->m_i_Activity = gpActivityLog->iAddMarkArg(C_JOB_GROUP,iJobId,bForeign,
+  pJob->m_i_Activity = gpLog->iAddMarkArg(C_JOB_GROUP,iJobId,bForeign,
                                                   szCombinedFormat,xArgs);
   
   va_end(xArgs);
@@ -291,13 +291,13 @@ void Log::vMarkJob(Jobs::Job* pJob, Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write an LogEntry                                                      */
+/* write an LogEntry                                                          */
 /*----------------------------------------------------------------------------*/
 void Log::vMarkRes(eSR eSysRes,Stz* szFormat, ...)
 {
 
 #ifdef WITH_ACTIVITY_MAP
-  if ( ! gpActivityLog )
+  if ( ! gpLog )
     return;
   
   if ( ! gpAttachMap->m_bMarkResource[eSysRes] &&
@@ -308,19 +308,19 @@ void Log::vMarkRes(eSR eSysRes,Stz* szFormat, ...)
   
   va_start(xArgs,szFormat);
   
-  gpActivityLog->iAddMarkArg(_EG_SR,eSysRes,false,szFormat,xArgs);
+  gpLog->iAddMarkArg(_EG_SR,eSysRes,false,szFormat,xArgs);
   
   va_end(xArgs);
 #endif
 }
 
 /*----------------------------------------------------------------------------*/
-/* write an LogEntry                                                      */
+/* write an LogEntry                                                          */
 /*----------------------------------------------------------------------------*/
 void Log::vMarkSection(Stz* szSectionNm)
 {
 #ifdef WITH_ACTIVITY_MAP
-  if ( ! gpActivityLog )
+  if ( ! gpLog )
     return;
 
   char caSection[256];
@@ -345,7 +345,7 @@ void Log::vMarkSection(Stz* szSectionNm)
 void Log::vMarkString(i8 iJobId, s48K& sString)
 {
 #ifdef WITH_ACTIVITY_MAP
-  if ( ! gpActivityLog )
+  if ( ! gpLog )
     return;
   
   s4K sLine;
@@ -354,15 +354,15 @@ void Log::vMarkString(i8 iJobId, s48K& sString)
   bool bForeign = Job::bIsForeign(iJobId);
 
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
-  gpActivityLog->vGrabLock();
+  gpLog->vGrabLock();
   
   while (StrLib::bEachLine(&aCharAdr,sLine.aChar())) {
     //vTrace("Line: ]]%s[[\n"_Stz,sLine.aChar());
-    LogEntry* pActivityMark = gpActivityLog->pNewMark_NL();
+    LogEntry* pActivityMark = gpLog->pNewMark_NL();
     pActivityMark->vWrite(C_JOB_GROUP,iJobId,bForeign,sLine.aChar());
   }
   
-  gpActivityLog->vDropLock();
+  gpLog->vDropLock();
   // ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲
 
 #endif
@@ -374,26 +374,26 @@ void Log::vMarkString(i8 iJobId, s48K& sString)
 void Log::vMonitorPortrait(s48K& sPortrait)
 {
 #ifdef WITH_ACTIVITY_MAP
-  if (! gpActivityLog) {
+  if (! gpLog) {
     sPortrait.vSprint("Log: activity map not configured\n"_Stz);
     return;
   }
   
-  gpActivityLog->vGrabLock();
-  i8 iPercentFull = gpActivityLog->iPercentFull_NL();
-  gpActivityLog->vDropLock();
+  gpLog->vGrabLock();
+  i8 iPercentFull = gpLog->iPercentFull_NL();
+  gpLog->vDropLock();
   
-  i8 iMapSize = gpActivityLog->iSize();
+  i8 iMapSize = gpLog->iSize();
   s32 sShmMag;
   Magnitudes::vByteMag(iMapSize, sShmMag);
   
   s32 sArrayMag;
-  Magnitudes::vUnitMag(gpActivityLog->m_nEntries, sArrayMag);
+  Magnitudes::vUnitMag(gpLog->m_nEntries, sArrayMag);
 
   sPortrait.vSprint("Log: shm %s array %s marks %lld; %lld%% full;\n"_Stz,
                     sShmMag.aStz(),
                     sArrayMag.aStz(),
-                    gpActivityLog->m_i_Entry,
+                    gpLog->m_i_Entry,
                     iPercentFull
                      );
 #else
@@ -402,7 +402,7 @@ void Log::vMonitorPortrait(s48K& sPortrait)
 }
 
 /*----------------------------------------------------------------------------*/
-/* open Log (called by API)                                           */
+/* open Log (called by API)                                                   */
 /*----------------------------------------------------------------------------*/
 void Log::vOpenByApi(void)
 {
@@ -410,7 +410,7 @@ void Log::vOpenByApi(void)
   if (! gpAttachMap->Arg.m_bActivityLog)
     return;
   
-  if (gpActivityLog)
+  if (gpLog)
     return;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -423,7 +423,7 @@ void Log::vOpenByApi(void)
            sizeof(Log),
            C_LOG_ENTRIES);
   
-  gpActivityLog = pActivityLog;
+  gpLog = pActivityLog;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -435,7 +435,7 @@ void Log::vOpenByApi(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create or open Log (called by SE)                                  */
+/* create or open Log (called by SE)                                          */
 /*----------------------------------------------------------------------------*/
 void Log::vOpenBySE(bool bStarting)
 {
@@ -443,7 +443,7 @@ void Log::vOpenBySE(bool bStarting)
   if (! gpAttachMap->Arg.m_bActivityLog)
     return;
   
-  if (gpActivityLog)
+  if (gpLog)
     vFatal("Log::vOpenBySE() -- activity map already opened\n"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -458,7 +458,7 @@ void Log::vOpenBySE(bool bStarting)
              C_ACTIVITY_REGION,
              sizeof(Log),
              C_LOG_ENTRIES);
-    gpActivityLog = new(pActivityLog) Log;
+    gpLog = new(pActivityLog) Log;
 
   } else {
     pActivityLog = Log::pAttachExisting();
@@ -469,7 +469,7 @@ void Log::vOpenBySE(bool bStarting)
              sizeof(Log),
              C_LOG_ENTRIES);
     
-    gpActivityLog = pActivityLog;
+    gpLog = pActivityLog;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -498,15 +498,15 @@ void Log::vOpenBySE(bool bStarting)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write Log to csv file                                              */
+/* write Log to csv file                                                      */
 /*----------------------------------------------------------------------------*/
 void Log::vWriteCsv(bool bShortForm)
 {
 #ifdef WITH_ACTIVITY_MAP
-  if (! gpActivityLog)
+  if (! gpLog)
     return;
   
-  gpActivityLog->vWriteToFile(bShortForm);
+  gpLog->vWriteToFile(bShortForm);
 #endif
 }
 
@@ -516,12 +516,12 @@ void Log::vWriteCsv(bool bShortForm)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* write an LogEntry                                                      */
+/* write an LogEntry                                                          */
 /*----------------------------------------------------------------------------*/
 i8 Log::iAddMarkArg(i8 iEnumGroup, i8 iEnum, i8 iForeign,
                             Stz* aFormat, va_list xArgs)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   char caMark[1024];
   
@@ -540,12 +540,12 @@ i8 Log::iAddMarkArg(i8 iEnumGroup, i8 iEnum, i8 iForeign,
 }
 
 /*----------------------------------------------------------------------------*/
-/* write an LogEntry                                                      */
+/* write an LogEntry                                                          */
 /*----------------------------------------------------------------------------*/
 i8 Log::iAddMarkVbl(i8 iEnumGroup, i8 iEnum, i8 iForeign,
                             Stz* aFormat, ...)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   va_list xArgs;
   
@@ -557,11 +557,11 @@ i8 Log::iAddMarkVbl(i8 iEnumGroup, i8 iEnum, i8 iForeign,
 }
 
 /*----------------------------------------------------------------------------*/
-/* get a new mark in Log                                              */
+/* get a new mark in Log                                                      */
 /*----------------------------------------------------------------------------*/
 LogEntry* Log::pNewMark(void)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
   vGrabLock();
@@ -575,11 +575,11 @@ LogEntry* Log::pNewMark(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get a new mark in Log (non-locking)                                */
+/* get a new mark in Log (non-locking)                                        */
 /*----------------------------------------------------------------------------*/
 LogEntry* Log::pNewMark_NL(void)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
 
   m_okLock.vAssertWrite();
   
@@ -597,7 +597,7 @@ LogEntry* Log::pNewMark_NL(void)
 /*----------------------------------------------------------------------------*/
 void Log::vFindRange_NL(i8& i_MinMark, i8& i_MaxMark)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   RASSERT(m_okLock.bIsLocked());
   
@@ -624,7 +624,7 @@ void Log::vFindRange_NL(i8& i_MinMark, i8& i_MaxMark)
 /*----------------------------------------------------------------------------*/
 i8 Log::iPercentFull_NL(void)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   RASSERT(m_okLock.bIsLocked());
   
@@ -662,7 +662,7 @@ i8 Log::iPercentFull_NL(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compute the size of Log given gpAttachMap->m_nActivityMarks        */
+/* compute the size of Log given gpAttachMap->m_nActivityMarks                */
 /*----------------------------------------------------------------------------*/
 i8 Log::iSize(void)
 {
@@ -672,11 +672,11 @@ i8 Log::iSize(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write Log to a csv file                                            */
+/* write Log to a csv file                                                    */
 /*----------------------------------------------------------------------------*/
 void Log::vWriteToFile(bool bShortForm)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   s256 sAmPath;
   sAmPath = "/tmp/Log.csv"_Stz;
@@ -746,7 +746,7 @@ void Log::vWriteToFile(bool bShortForm)
 /*----------------------------------------------------------------------------*/
 Footer* Log::aFooter(void)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYLOG);
+  _precondition_(_MAGIC_,CN_LOG);
   
   return &m_xFooter;
 }

@@ -6,7 +6,7 @@
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
-extern Log* gpActivityLog;
+extern Log* gpLog;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -359,7 +359,7 @@ void Job::vMarkJob(Stz* szFormat, ...)
   _precondition_(_ADDRESS_,_MAGIC_);
 
 #ifdef WITH_ACTIVITY_MAP
-  if ( ! gpActivityLog )
+  if ( ! gpLog )
     return;
   
   va_list xArgs;
