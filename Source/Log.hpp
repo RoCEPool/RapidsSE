@@ -53,9 +53,9 @@ namespace Logging
   
 
   private:
-    i8   iAddMarkArg(i8 iEnumGroup, i8 iEnum, i8 iForeign,
+    i8   iAddNoteArg(i8 iEnumGroup, i8 iEnum, i8 iForeign,
                    Stz* aFormat, va_list xArgs);
-    i8   iAddMarkVbl(i8 iEnumGroup, i8 iEnum, i8 iForeign,
+    i8   iAddNoteVbl(i8 iEnumGroup, i8 iEnum, i8 iForeign,
                    Stz* aFormat, ...);
     LogEntry* pNewEntry(void);
     LogEntry* pNewEntry_NL(void);

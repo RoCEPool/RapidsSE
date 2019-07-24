@@ -442,7 +442,7 @@ void Engine::vMonitorPortrait(s48K& sRapidsPortrait)
 void Engine::vMonitorProfile(s48K& sPortrait)
 {
   
-  i8 iUpTime = gpAttachMap->m_oBirth.iSecondsElapsed();
+  i8 iUpTime = gpAttachMap->m_oBirth.iElapsedSsec();
   
   s32 sRegionMag;
   Magnitudes::vByteMag(gpAttachMap->Arg.m_iRegionSize,sRegionMag);

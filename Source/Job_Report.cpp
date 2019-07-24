@@ -295,7 +295,7 @@ bool Job_Report::bTake(void)
   m_pRowAgg->vReadIn(m_oInFile);
   //m_pRowAgg->vPrintOut(m_oOutFile);
 
-  i8 iDeltaSeconds = m_oBegan.iSecondsElapsed();
+  i8 iDeltaSeconds = m_oBegan.iElapsedSsec();
   
   // initial second
   if (! iDeltaSeconds) {

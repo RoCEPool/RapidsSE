@@ -50,6 +50,21 @@ void Birth::vClear(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get seconds elapsed since birth                                            */
+/*----------------------------------------------------------------------------*/
+i8 Birth::iElapsedSsec(void)
+{
+  _precondition_(_MAGIC_,CN_BIRTH,_FOOTER_);
+  
+  // get current tsp as Ivl
+  Dtm wCurrentIvl = IvlLib::wGetCurrIvl();
+  
+  u8 uMicros = IvlLib::uSubtract(wCurrentIvl, m_wIvl);
+  
+  return uMicros/C_1M;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set this Birth as at now                                                   */
 /*----------------------------------------------------------------------------*/
 void Birth::vNow(void)
@@ -60,22 +75,6 @@ void Birth::vNow(void)
   m_wTsp = TspLib::wGetCurrTsp_local();
   
   m_wIvl = IvlLib::wToIvl(m_wTsp);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get seconds elapsed since birth                                            */
-/*----------------------------------------------------------------------------*/
-i8 Birth::iSecondsElapsed(void)
-{
-  _precondition_(_MAGIC_,CN_BIRTH,_FOOTER_);
-  
-  // get current tsp as Ivl
-  Dtm wCurrentIvl = IvlLib::wGetCurrIvl();
-  
-  u8 uMicros = IvlLib::uSubtract(wCurrentIvl, m_wIvl);
-  
-  return uMicros/C_1M;
-  
 }
 
 /*----------------------------------------------------------------------------*/

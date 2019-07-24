@@ -59,7 +59,7 @@ i8 DataBuffer::iAgeSec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  i8 iAge = m_oWhenNewed.iSecondsElapsed();
+  i8 iAge = m_oWhenNewed.iElapsedSsec();
   
   return iAge;
 }

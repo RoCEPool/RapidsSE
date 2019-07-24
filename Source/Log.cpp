@@ -156,7 +156,7 @@ void Log::vNote(Stz* aFormat, ...)
   
   va_start(xArgs,aFormat);
   
-  gpLog->iAddMarkArg(C_INF_GROUP,0,false,aFormat,xArgs);
+  gpLog->iAddNoteArg(C_INF_GROUP,0,false,aFormat,xArgs);
   
   va_end(xArgs);
 #endif
@@ -180,7 +180,7 @@ void Log::vNoteApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...)
   va_start(xArgs,aFormat);
   
   bool bForeign = Job::bIsForeign(iJobId);
-  gpLog->iAddMarkArg(C_JOB_GROUP,iJobId,bForeign,aFormat,xArgs);
+  gpLog->iAddNoteArg(C_JOB_GROUP,iJobId,bForeign,aFormat,xArgs);
   
   va_end(xArgs);
 #endif
@@ -202,7 +202,7 @@ void Log::vNoteApiEntry(i8 eApiCall, i8 iJobId)
   Stz* zApiName = aAC[eApiCall];
   
   bool bForeign = Job::bIsForeign(iJobId);
-  gpLog->iAddMarkVbl(C_JOB_GROUP,iJobId,bForeign,">Api %s"_Stz,zApiName);
+  gpLog->iAddNoteVbl(C_JOB_GROUP,iJobId,bForeign,">Api %s"_Stz,zApiName);
 #endif
 }
 
@@ -222,7 +222,7 @@ void Log::vNoteApiError(i8 eApiCall, i8 iJobId, i8 iError)
   Stz* zApiName = aAC[eApiCall];
   
   bool bForeign = Job::bIsForeign(iJobId);
-  gpLog->iAddMarkVbl(C_JOB_GROUP,iJobId,bForeign,"!Api %s Error %lld"_Stz,zApiName,iError);
+  gpLog->iAddNoteVbl(C_JOB_GROUP,iJobId,bForeign,"!Api %s Error %lld"_Stz,zApiName,iError);
 #endif
 }
 
@@ -242,7 +242,7 @@ void Log::vNoteApiExit(i8 eApiCall, i8 iJobId)
   Stz* zApiName = aAC[eApiCall];
   
   bool bForeign = Job::bIsForeign(iJobId);
-  gpLog->iAddMarkVbl(C_JOB_GROUP,iJobId,bForeign,"<Api %s"_Stz,zApiName);
+  gpLog->iAddNoteVbl(C_JOB_GROUP,iJobId,bForeign,"<Api %s"_Stz,zApiName);
 #endif
 }
 
@@ -283,7 +283,7 @@ void Log::vNoteJob(Jobs::Job* pJob, Stz* szFormat, ...)
   
   i8 iJobId = pJob->iJobId();
   bool bForeign = pJob->m_bWasReceived;
-  pJob->m_i_Activity = gpLog->iAddMarkArg(C_JOB_GROUP,iJobId,bForeign,
+  pJob->m_i_Activity = gpLog->iAddNoteArg(C_JOB_GROUP,iJobId,bForeign,
                                                   szCombinedFormat,xArgs);
   
   va_end(xArgs);
@@ -307,7 +307,7 @@ void Log::vNoteRes(eSR eSysRes,Stz* szFormat, ...)
   
   va_start(xArgs,szFormat);
   
-  gpLog->iAddMarkArg(_EG_SR,eSysRes,false,szFormat,xArgs);
+  gpLog->iAddNoteArg(_EG_SR,eSysRes,false,szFormat,xArgs);
   
   va_end(xArgs);
 #endif
@@ -520,7 +520,7 @@ void Log::vWriteCsv(bool bShortForm)
 /*----------------------------------------------------------------------------*/
 /* write an LogEntry                                                          */
 /*----------------------------------------------------------------------------*/
-i8 Log::iAddMarkArg(i8 iEnumGroup, i8 iEnum, i8 iForeign,
+i8 Log::iAddNoteArg(i8 iEnumGroup, i8 iEnum, i8 iForeign,
                             Stz* aFormat, va_list xArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
@@ -544,7 +544,7 @@ i8 Log::iAddMarkArg(i8 iEnumGroup, i8 iEnum, i8 iForeign,
 /*----------------------------------------------------------------------------*/
 /* write an LogEntry                                                          */
 /*----------------------------------------------------------------------------*/
-i8 Log::iAddMarkVbl(i8 iEnumGroup, i8 iEnum, i8 iForeign,
+i8 Log::iAddNoteVbl(i8 iEnumGroup, i8 iEnum, i8 iForeign,
                             Stz* aFormat, ...)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
@@ -552,7 +552,7 @@ i8 Log::iAddMarkVbl(i8 iEnumGroup, i8 iEnum, i8 iForeign,
   va_list xArgs;
   
   va_start(xArgs,aFormat);
-  iAddMarkArg(iEnumGroup,iEnum,iForeign,aFormat,xArgs);
+  iAddNoteArg(iEnumGroup,iEnum,iForeign,aFormat,xArgs);
   va_end(xArgs);
   
   return C_UNKNOWN;
@@ -643,7 +643,7 @@ i8 Log::iPercentFull_NL(void)
     //          i_MinEntry is 0
     //          i_MaxEntry is 48
     //          m_nEntries  is 64
-    // then only 0..25 is in use out of 64
+    // then only (0..25) is in use out of 64
     //
     nEntriesInUse = (i_MaxEntry - i_MinEntry);
   }
@@ -653,7 +653,7 @@ i8 Log::iPercentFull_NL(void)
     //          i_MinEntry is 48
     //          i_MaxEntry is 25
     //          m_nEntries  is 64
-    // then 48 .. 63 + 0 ..25 is in use
+    // then (48..63) + (0..25) is in use
     //
     nEntriesInUse = (m_nEntries - i_MinEntry) + (i_MaxEntry);
   }
@@ -692,6 +692,8 @@ void Log::vWriteToFile(bool bShortForm)
     return;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   Now oNow;
   Log::vNote("Writing Log at: %s"_Stz,oNow.sz());
   
@@ -699,10 +701,8 @@ void Log::vWriteToFile(bool bShortForm)
   Engine::vGetWelcome(sWelcome);
   Log::vNote(sWelcome);
   
-  i8 iUpTimeSsec = gpAttachMap->m_oBirth.iSecondsElapsed();
-  Log::vNote("Uptime %llds Requests %lld"_Stz,
-                         iUpTimeSsec,
-                         C_UNKNOWN);
+  i8 iUpTimeSsec = gpAttachMap->m_oBirth.iElapsedSsec();
+  Log::vNote("Uptime %llds Requests %lld"_Stz,iUpTimeSsec,C_UNKNOWN);
 
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
   vGrabLock();
@@ -713,8 +713,7 @@ void Log::vWriteToFile(bool bShortForm)
   vFindRange_NL(i_MinEntry,i_MaxEntry);
   
   LogEntry* pLogEntry = &m_oaEntry[i_MinEntry % m_nEntries];
-  pLogEntry->vDump(pLogFile, bShortForm,
-                       nullptr,iTotalDelta);
+  pLogEntry->vDump(pLogFile,bShortForm,nullptr,iTotalDelta);
   
   for (i8 i_Entry = i_MinEntry + 1; i_Entry <= i_MaxEntry; i_Entry++) {
     
@@ -724,8 +723,8 @@ void Log::vWriteToFile(bool bShortForm)
       break;
     
     pLogEntry->vDump(pLogFile, bShortForm,
-                         &m_oaEntry[(i_Entry - 1) % m_nEntries],
-                         iTotalDelta);
+                     &m_oaEntry[(i_Entry - 1) % m_nEntries],
+                     iTotalDelta);
   }
   
   vDropLock();

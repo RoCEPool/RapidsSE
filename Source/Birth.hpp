@@ -22,7 +22,7 @@ namespace System
     
     void vClear(void);
     void vNow(void);
-    i8   iSecondsElapsed(void);
+    i8   iElapsedSsec(void);
   
     Footer* aFooter(void);
   };
