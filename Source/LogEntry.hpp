@@ -10,7 +10,7 @@ namespace Logging
   class LogEntry : public Object
   {
   friend class Log;
-  friend class ActivityLog;
+  friend class Log;
 
   private:
     i8   m_i_Entry;     // entry no

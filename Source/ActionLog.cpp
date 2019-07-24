@@ -61,7 +61,7 @@ ActionLog::~ActionLog(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* create or open ActivityLog (called by SE)                                  */
+/* create or open Log (called by SE)                                  */
 /*----------------------------------------------------------------------------*/
 void ActionLog::vOpenBySE(bool bStarting)
 {
@@ -70,7 +70,7 @@ void ActionLog::vOpenBySE(bool bStarting)
     return;
   
   if (gpActionSequence)
-    vFatal("ActivityLog::vOpenBySE() -- activity map already opened\n"_Stz);
+    vFatal("Log::vOpenBySE() -- activity map already opened\n"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -349,7 +349,7 @@ void ActionLog::vEnd(Jobs::Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write ActivityLog to csv file                                              */
+/* write Log to csv file                                              */
 /*----------------------------------------------------------------------------*/
 void ActionLog::vWriteCsv(void)
 {
@@ -367,7 +367,7 @@ void ActionLog::vWriteCsv(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get a new mark in ActivityLog (non-locking)                                */
+/* get a new mark in Log (non-locking)                                */
 /*----------------------------------------------------------------------------*/
 Action* ActionLog::pAllotAction(void)
 {
@@ -540,7 +540,7 @@ void ActionLog::vWriteToFile(void)
   }
   
   Now oNow;
-  ActivityLog::vMarkInfo("Writing ActionLog at: %s"_Stz,oNow.sz());
+  Log::vMarkInfo("Writing ActionLog at: %s"_Stz,oNow.sz());
   
   
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼

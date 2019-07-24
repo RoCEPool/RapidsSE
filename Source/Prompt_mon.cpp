@@ -32,7 +32,7 @@ bool Prompt::bPrompt_mon(SePrompt* pPrompt)
   
   vTrace("%s\n"_Stz,sPortrait.aStz());
   
-  ActivityLog::vMarkString(-1,sPortrait);
+  Log::vMarkString(-1,sPortrait);
   
   return true;
 }

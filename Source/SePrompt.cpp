@@ -417,7 +417,7 @@ void SePrompt::vFreeSpace(void)
 
   s32 sFreeSpaceMag;
   Magnitudes::vByteMag(iFreeSpace + iFreeSpaceInPool,1,sFreeSpaceMag);
-  ActivityLog::vMarkInfo("Command completed (free space: %s)"_Stz,
+  Log::vMarkInfo("Command completed (free space: %s)"_Stz,
                          sFreeSpaceMag.aStz());
 }
 
@@ -551,7 +551,7 @@ void SePrompt::vMarkCommand(void)
 
   pTknVec->vToString(sCommand);
   
-  ActivityLog::vMarkInfo("Prompt command: %s"_Stz,sCommand.aStz());
+  Log::vMarkInfo("Prompt command: %s"_Stz,sCommand.aStz());
 }
 
 /*----------------------------------------------------------------------------*/

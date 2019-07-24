@@ -232,7 +232,7 @@ bool Job_WriteBuffer::bInsertRows(void)
     }
     
     if (m_bMarkActivity) {
-      ActivityLog::vMarkJob(this,
+      Log::vMarkJob(this,
                             "Setting m_nWriteBehindBuffers in partition %lld slot %lld to %lld"_Stz,
                             m_iPartitionId,
                             iSlot,
@@ -252,7 +252,7 @@ bool Job_WriteBuffer::bInsertRows(void)
   
   if (bAllBuffersWritten) {
     if (m_bMarkActivity) {
-      ActivityLog::vMarkJob(this,
+      Log::vMarkJob(this,
                             "All buffers written for partition %lld"_Stz,
                             m_iPartitionId);
     }

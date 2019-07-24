@@ -10,7 +10,7 @@
 : pwf_req ( -- <R> )
 
   >>am <SEED_REQ>
-  //">>pwf_req" activityLog::mark
+  //">>pwf_req" log::mark
 
   100 apiState::senLoc
 
@@ -59,7 +59,7 @@
 
   900 apiState::senLoc
 
-  //"<<pwf_req" activityLog::mark
+  //"<<pwf_req" log::mark
     <<am <DONE_REQ>
 ;
 

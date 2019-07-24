@@ -467,7 +467,7 @@ void Lock::vGrabWrite(void)
     oTimer.vUpdate();
     if (oTimer.iMilliseconds() > 100 && ! bReported) {
       bReported = true;
-      ActivityLog::vMarkInfo("Lock::vGrabWrite -- Unable to grab write lock %p %s %p"_Stz,
+      Log::vMarkInfo("Lock::vGrabWrite -- Unable to grab write lock %p %s %p"_Stz,
                          this,
                          aLK[m_eLockKind],
                          m_uLockWord);
@@ -481,7 +481,7 @@ void Lock::vGrabWrite(void)
   } while ( ! iResult );
   
   if (bReported) {
-    ActivityLog::vMarkInfo("Lock::vGrabWrite -- Able to grab write lock %p %s %p"_Stz,
+    Log::vMarkInfo("Lock::vGrabWrite -- Able to grab write lock %p %s %p"_Stz,
                        this,
                        aLK[m_eLockKind],
                        m_uLockWord);

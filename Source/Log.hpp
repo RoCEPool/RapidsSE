@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ActivityLog.hpp - Activity ShmLog                                          */
+/* Log.hpp - Log                                                              */
 /*============================================================================*/
 #pragma once
 
@@ -11,7 +11,7 @@ namespace Logging
   static const i8    C_INF_GROUP = -1;
   static const i8    C_MARGIN = 143;
   
-  class ActivityLog : public ShmLog
+  class Log : public ShmLog
   {
   private:
   
@@ -22,15 +22,15 @@ namespace Logging
     Footer m_xFooter;
 
   public:
-    void* operator new(size_t, ActivityLog* pActivityLog);
+    void* operator new(size_t, Log* pActivityLog);
     void  operator delete(void*);
 
-    ActivityLog(void);
-    ~ActivityLog(void) noexcept(false);
+    Log(void);
+    ~Log(void) noexcept(false);
 
   private:
-    static ActivityLog* pAttachCreate(void);
-    static ActivityLog* pAttachExisting(void);
+    static Log* pAttachCreate(void);
+    static Log* pAttachExisting(void);
 
   public:
     static void vMarkApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...);

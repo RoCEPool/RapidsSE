@@ -280,7 +280,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
       gpAttachMap->m_bMarkResourceAll) {
     s256 sHeader;
     ((Header*)caObjectHeader)->vSprint(sHeader);
-    ActivityLog::vMarkRes(SR_SOCKET,
+    Log::vMarkRes(SR_SOCKET,
                           "Recv header: %s"_Stz,
                           sHeader.aStz());
   }
@@ -324,12 +324,12 @@ void Step::vSocketRecvObject(MP_Task mpTask)
       s256 sFooter;
       Footer* pFooter = aAdd<Footer*>(pJob,nObjectSize-sizeof(Footer));
       pFooter->vSprint(sFooter);
-      ActivityLog::vMarkRes(SR_SOCKET,
+      Log::vMarkRes(SR_SOCKET,
                             "Recv footer: %s"_Stz,
                             sFooter.aStz());
     }
     if (pJob->m_bMarkActivity) {
-      ActivityLog::vMarkJob(pJob,
+      Log::vMarkJob(pJob,
                          "Recv: %s %p socket %llx"_Stz,
                          aCN[eClass],
                          pJob,
@@ -373,7 +373,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     
     if (gpAttachMap->m_bMarkResource[SR_SOCKET] ||
         gpAttachMap->m_bMarkResourceAll) {
-      ActivityLog::vMarkRes(SR_SOCKET,
+      Log::vMarkRes(SR_SOCKET,
                             "Recv CrwBuffer: %p"_Stz,
                             pCrwBuffer);
     }
@@ -413,7 +413,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     
     if (gpAttachMap->m_bMarkResource[SR_SOCKET] ||
         gpAttachMap->m_bMarkResourceAll) {
-      ActivityLog::vMarkRes(SR_SOCKET,
+      Log::vMarkRes(SR_SOCKET,
                             "Recv ExportBuffer: %p"_Stz,
                             pExportBuffer);
     }
@@ -624,7 +624,7 @@ void Step::vSocketSendObject(MP_Task mpTask)
   if (_bIsValidJob(eClass)) {
     Job* pJob = _pJob(pObject);
     if (pJob->m_bMarkActivity)
-      ActivityLog::vMarkJob(pJob,"Send: %s %p socket %llx"_Stz,
+      Log::vMarkJob(pJob,"Send: %s %p socket %llx"_Stz,
                          aCN[eClass],
                          pJob,
                          pSocket);

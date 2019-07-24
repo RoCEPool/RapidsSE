@@ -59,7 +59,7 @@ bool Prompt::bPrompt_sizes(SePrompt* pPrompt)
 
   vTrace("  sizeof(FreeChunk)    = %lu; \n"_Stz, sizeof(FreeChunk));
   vTrace("  sizeof(ApiState)     = %lu; \n"_Stz, sizeof(ApiState));
-  vTrace("  sizeof(ActivityLog)  = %lu; \n"_Stz, sizeof(ActivityLog));
+  vTrace("  sizeof(Log)  = %lu; \n"_Stz, sizeof(Log));
   vTrace("  sizeof(AttachMap)    = %lu; \n"_Stz, sizeof(AttachMap));
   vTrace("  sizeof(SessionState) = %lu; \n"_Stz, sizeof(SessionState));
   vTrace("\n"_Stz);

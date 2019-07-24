@@ -168,7 +168,7 @@ bool Job_SubExporter::bBegin(void)
   m_nCrwBuffers = pTblPtn->nCrwBuffers();
   
   if (m_bMarkActivity)
-    ActivityLog::vMarkJob(this,
+    Log::vMarkJob(this,
                           "TableTpn[%lld] for table %s has %lld buffers"_Stz,
                           m_i_Slot,
                           pTable->aTableName(),
@@ -190,7 +190,7 @@ bool Job_SubExporter::bChunk(void)
     return false;
   
   if (m_bMarkActivity)
-    ActivityLog::vMarkJob(this,
+    Log::vMarkJob(this,
                           "Exporting Table %s CrwBuffer[%lld/%lld] %p"_Stz,
                           m_pJobExport->m_pTable->aTableName(),
                           m_iCrwBuffer,

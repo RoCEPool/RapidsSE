@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Prompt_activityLog.hpp -- Dump ActivityLog Information                     */
+/* Prompt_activityLog.hpp -- Dump Log Information                     */
 /*============================================================================*/
 #pragma once
 

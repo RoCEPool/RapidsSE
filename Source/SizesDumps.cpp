@@ -365,7 +365,7 @@ i8 giClassSize[]
   /* 19 */ sizeof(AccessPath),         // CN_ACCESSPATH
   /*    */ sizeof(Action),             // CN_ACTION
   /*    */ sizeof(ActionLog),     // CN_ACTIONLOG
-  /*    */ sizeof(ActivityLog),       // CN_ACTIVITYLOG
+  /*    */ sizeof(Log),       // CN_ACTIVITYLOG
   /*    */ sizeof(AggOp),              // CN_AGGOP
   /*    */ sizeof(ApiState),           // CN_APISTATE
   /* 22 */ sizeof(Arg),                // CN_ARG
@@ -553,7 +553,7 @@ i8 giClassSize[]
   /*    */ sizeof(Local),              // CN_LOCAL
   /*    */ sizeof(LocalSet),           // CN_LOCALSET
   /* 72 */ sizeof(Lock),               // CN_LOCK
-  /*    */ sizeof(ActivityLog),        // CN_LOG
+  /*    */ sizeof(Log),        // CN_LOG
   /*    */ sizeof(LogEntry),           // CN_LOGENTRY
 
   /* 73 */ sizeof(Heap), // correct    // CN_MEDIUMPERSISTENT

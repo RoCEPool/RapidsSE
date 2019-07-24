@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Prompt_activityLog.hpp -- Print ActivityLog Information                    */
+/* Prompt_activityLog.hpp -- Print Log Information                    */
 /*============================================================================*/
 
 #include "Prompt.h"
@@ -31,12 +31,12 @@ bool Prompt::bPrompt_activityLog(SePrompt* pPrompt)
   
   if (iNumTokens > 1 && pTokenVec->pGet(1)->eToken() == TN_NAME) {
     if (pTokenVec->pGet(1)->bSame("short"_Stz))
-      ActivityLog::vWriteCsv(true);
+      Log::vWriteCsv(true);
     else
-      ActivityLog::vWriteCsv(false);
+      Log::vWriteCsv(false);
   }
   else
-    ActivityLog::vWriteCsv(false);
+    Log::vWriteCsv(false);
 
   return true;
 }

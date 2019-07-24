@@ -28,7 +28,7 @@ bool Prompt::bPrompt_amSection(SePrompt* pPrompt)
   if (pTokenVec->nTokens() > 1) {
 
     Stz* szSectionNm = pTokenVec->pGet(1)->aText();
-    ActivityLog::vMarkSection(szSectionNm);
+    Log::vMarkSection(szSectionNm);
   }
   
   return true;
