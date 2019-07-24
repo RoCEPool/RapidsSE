@@ -15,6 +15,7 @@ using namespace Logging;
 //------------------------------------------------------------------------------
 
 #include "ShmLog.hpp"
+#include "LogEntry.hpp"
 
 #include "Action.hpp"
 #include "ActionLog.hpp"
@@ -22,7 +23,6 @@ using namespace Logging;
 #include "ActivityMark.hpp"
 #include "ActivityLog.hpp"
 
-#include "LogEntry.hpp"
 #include "Log.hpp"
 
 /*============================================================================*/

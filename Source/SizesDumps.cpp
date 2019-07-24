@@ -555,8 +555,8 @@ i8 giClassSize[]
   /*    */ sizeof(Local),              // CN_LOCAL
   /*    */ sizeof(LocalSet),           // CN_LOCALSET
   /* 72 */ sizeof(Lock),               // CN_LOCK
-  /*    */ 0,               // CN_LOG
-  /*    */ 0,               // CN_LOGENTRY
+  /*    */ sizeof(Log),                // CN_LOG
+  /*    */ sizeof(LogEntry),           // CN_LOGENTRY
 
   /* 73 */ sizeof(Heap), // correct    // CN_MEDIUMPERSISTENT
   /* 74 */ sizeof(Heap), // correct    // CN_MEDIUMTRANSIENT

@@ -10,7 +10,8 @@ namespace Logging
   class LogEntry : public Object
   {
   friend class Log;
-  
+  friend class ActivityLog;
+
   private:
     i8   m_i_Entry;     // entry no
     i8   m_iTick;       // tick when entry added

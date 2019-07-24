@@ -16,7 +16,7 @@ namespace Logging
   private:
   
     // circular array of activity marks
-    ActivityMark m_oaMark[C_LOG_ENTRIES];
+    LogEntry m_oaMark[C_LOG_ENTRIES];
   
     // must be last
     Footer m_xFooter;
@@ -55,8 +55,8 @@ namespace Logging
                    Stz* aFormat, va_list xArgs);
     i8   iAddMarkVbl(i8 iEnumGroup, i8 iEnum, i8 iForeign,
                    Stz* aFormat, ...);
-    ActivityMark* pNewMark(void);
-    ActivityMark* pNewMark_NL(void);
+    LogEntry* pNewMark(void);
+    LogEntry* pNewMark_NL(void);
     void vFindRange_NL(i8& i_MinMark, i8& i_MaxMark);
     i8   iPercentFull_NL(void);
     i8   iSize(void);

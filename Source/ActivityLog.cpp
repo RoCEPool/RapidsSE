@@ -43,7 +43,7 @@ ActivityLog::ActivityLog(void)
     RASSERT(0);
   
   for (i8 i_Entry = 0; i_Entry < m_nEntries; i_Entry++) {
-    ActivityMark* pActivityMark = &m_oaMark[i_Entry];
+    LogEntry* pActivityMark = &m_oaMark[i_Entry];
     pActivityMark->vInit();
   }
   
@@ -247,7 +247,7 @@ void ActivityLog::vMarkInfo(Stz* aFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write an ActivityMark                                                      */
+/* write an LogEntry                                                      */
 /*----------------------------------------------------------------------------*/
 void ActivityLog::vMarkJob(Jobs::Job* pJob, Stz* szFormat, ...)
 {
@@ -291,7 +291,7 @@ void ActivityLog::vMarkJob(Jobs::Job* pJob, Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write an ActivityMark                                                      */
+/* write an LogEntry                                                      */
 /*----------------------------------------------------------------------------*/
 void ActivityLog::vMarkRes(eSR eSysRes,Stz* szFormat, ...)
 {
@@ -315,7 +315,7 @@ void ActivityLog::vMarkRes(eSR eSysRes,Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write an ActivityMark                                                      */
+/* write an LogEntry                                                      */
 /*----------------------------------------------------------------------------*/
 void ActivityLog::vMarkSection(Stz* szSectionNm)
 {
@@ -358,7 +358,7 @@ void ActivityLog::vMarkString(i8 iJobId, s48K& sString)
   
   while (StrLib::bEachLine(&aCharAdr,sLine.aChar())) {
     //vTrace("Line: ]]%s[[\n"_Stz,sLine.aChar());
-    ActivityMark* pActivityMark = gpActivityLog->pNewMark_NL();
+    LogEntry* pActivityMark = gpActivityLog->pNewMark_NL();
     pActivityMark->vWrite(C_JOB_GROUP,iJobId,bForeign,sLine.aChar());
   }
   
@@ -516,7 +516,7 @@ void ActivityLog::vWriteCsv(bool bShortForm)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* write an ActivityMark                                                      */
+/* write an LogEntry                                                      */
 /*----------------------------------------------------------------------------*/
 i8 ActivityLog::iAddMarkArg(i8 iEnumGroup, i8 iEnum, i8 iForeign,
                             Stz* aFormat, va_list xArgs)
@@ -529,18 +529,18 @@ i8 ActivityLog::iAddMarkArg(i8 iEnumGroup, i8 iEnum, i8 iForeign,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  ActivityMark* pActivityMark = pNewMark();
+  LogEntry* pActivityMark = pNewMark();
   
   if (! pActivityMark)
     return C_UNKNOWN;
   
   pActivityMark->vWrite(iEnumGroup,iEnum,iForeign,caMark);
   
-  return pActivityMark->m_iMark;
+  return pActivityMark->m_i_Entry;
 }
 
 /*----------------------------------------------------------------------------*/
-/* write an ActivityMark                                                      */
+/* write an LogEntry                                                      */
 /*----------------------------------------------------------------------------*/
 i8 ActivityLog::iAddMarkVbl(i8 iEnumGroup, i8 iEnum, i8 iForeign,
                             Stz* aFormat, ...)
@@ -559,14 +559,14 @@ i8 ActivityLog::iAddMarkVbl(i8 iEnumGroup, i8 iEnum, i8 iForeign,
 /*----------------------------------------------------------------------------*/
 /* get a new mark in ActivityLog                                              */
 /*----------------------------------------------------------------------------*/
-ActivityMark* ActivityLog::pNewMark(void)
+LogEntry* ActivityLog::pNewMark(void)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
   
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
   vGrabLock();
   
-  ActivityMark* pActivityMark = pNewMark_NL();
+  LogEntry* pActivityMark = pNewMark_NL();
   
   vDropLock();
   // ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲
@@ -577,15 +577,15 @@ ActivityMark* ActivityLog::pNewMark(void)
 /*----------------------------------------------------------------------------*/
 /* get a new mark in ActivityLog (non-locking)                                */
 /*----------------------------------------------------------------------------*/
-ActivityMark* ActivityLog::pNewMark_NL(void)
+LogEntry* ActivityLog::pNewMark_NL(void)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYLOG,_FOOTER_);
 
   m_okLock.vAssertWrite();
   
-  ActivityMark* pActivityMark = &m_oaMark[m_i_Entry % m_nEntries];
+  LogEntry* pActivityMark = &m_oaMark[m_i_Entry % m_nEntries];
   
-  pActivityMark->m_iMark = m_i_Entry;
+  pActivityMark->m_i_Entry = m_i_Entry;
   
   m_i_Entry++;
   
@@ -608,14 +608,14 @@ void ActivityLog::vFindRange_NL(i8& i_MinMark, i8& i_MaxMark)
   
   for (i8 i_Entry = 0; i_Entry < m_nEntries; i_Entry++) {
     
-    if (-1 == m_oaMark[i_Entry].m_iMark)
+    if (-1 == m_oaMark[i_Entry].m_i_Entry)
       return;
     
-    if (m_oaMark[i_Entry].m_iMark < i_MinMark)
-      i_MinMark = m_oaMark[i_Entry].m_iMark;
+    if (m_oaMark[i_Entry].m_i_Entry < i_MinMark)
+      i_MinMark = m_oaMark[i_Entry].m_i_Entry;
     
-    if (m_oaMark[i_Entry].m_iMark > i_MaxMark)
-      i_MaxMark = m_oaMark[i_Entry].m_iMark;
+    if (m_oaMark[i_Entry].m_i_Entry > i_MaxMark)
+      i_MaxMark = m_oaMark[i_Entry].m_i_Entry;
   }
 }
 
@@ -711,7 +711,7 @@ void ActivityLog::vWriteToFile(bool bShortForm)
   
   vFindRange_NL(i_MinMark,i_MaxMark);
   
-  ActivityMark* pActivityMark = &m_oaMark[i_MinMark % m_nEntries];
+  LogEntry* pActivityMark = &m_oaMark[i_MinMark % m_nEntries];
   pActivityMark->vDump(pActivityFile, bShortForm,
                        nullptr,iTotalDelta);
   
@@ -719,7 +719,7 @@ void ActivityLog::vWriteToFile(bool bShortForm)
     
     pActivityMark = &m_oaMark[i_Entry % m_nEntries];
     
-    if (-1 == pActivityMark->m_iMark)
+    if (-1 == pActivityMark->m_i_Entry)
       break;
     
     pActivityMark->vDump(pActivityFile, bShortForm,
