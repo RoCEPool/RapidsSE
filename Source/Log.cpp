@@ -17,11 +17,11 @@ Log* gpLog = nullptr;
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Log::operator new(size_t, Log* pActivityLog)
+void* Log::operator new(size_t, Log* pLog)
 {
   RASSERT(! gpLog);
   
-  return pActivityLog;
+  return pLog;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -43,8 +43,8 @@ Log::Log(void)
     RASSERT(0);
   
   for (i8 i_Entry = 0; i_Entry < m_nEntries; i_Entry++) {
-    LogEntry* pActivityMark = &m_oaEntry[i_Entry];
-    pActivityMark->vInit();
+    LogEntry* pLogEntry = &m_oaEntry[i_Entry];
+    pLogEntry->vInit();
   }
   
   _checkInitialised_(CN_LOG);
@@ -100,9 +100,9 @@ Log* Log::pAttachCreate(void)
   if (! aSegment)
     vFatal("Log::bOpenCreate: failed to map region!\n"_Stz);
   
-  Log* pActivityLog = static_cast<Log*>(aSegment);
+  Log* pLog = static_cast<Log*>(aSegment);
   
-  return pActivityLog;
+  return pLog;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -134,9 +134,9 @@ Log* Log::pAttachExisting(void)
     NEVER_REACH;
   }
   
-  Log* pActivityLog = static_cast<Log*>(aSegment);
+  Log* pLog = static_cast<Log*>(aSegment);
   
-  return pActivityLog;
+  return pLog;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -358,8 +358,8 @@ void Log::vMarkString(i8 iJobId, s48K& sString)
   
   while (StrLib::bEachLine(&aCharAdr,sLine.aChar())) {
     //vTrace("Line: ]]%s[[\n"_Stz,sLine.aChar());
-    LogEntry* pActivityMark = gpLog->pNewMark_NL();
-    pActivityMark->vWrite(C_JOB_GROUP,iJobId,bForeign,sLine.aChar());
+    LogEntry* pLogEntry = gpLog->pNewEntry_NL();
+    pLogEntry->vWrite(C_JOB_GROUP,iJobId,bForeign,sLine.aChar());
   }
   
   gpLog->vDropLock();
@@ -415,7 +415,7 @@ void Log::vOpenByApi(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Log* pActivityLog = Log::pAttachExisting();
+  Log* pLog = Log::pAttachExisting();
   if (gpAttachMap->m_bVerbose)
     vTrace("Log %s : "
            "attached to existing map (size %lldB, max %lld marks)\n\n"_Stz,
@@ -423,7 +423,7 @@ void Log::vOpenByApi(void)
            sizeof(Log),
            C_LOG_ENTRIES);
   
-  gpLog = pActivityLog;
+  gpLog = pLog;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -448,20 +448,20 @@ void Log::vOpenBySE(bool bStarting)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Log* pActivityLog = nullptr;
+  Log* pLog = nullptr;
   
   if (bStarting) {
-    pActivityLog = Log::pAttachCreate();
+    pLog = Log::pAttachCreate();
     if (gpAttachMap->m_bVerbose)
       vTrace("Log %s : "
              "created new map (size %lldB, max %lld marks)\n\n"_Stz,
              C_LOG_REGION,
              sizeof(Log),
              C_LOG_ENTRIES);
-    gpLog = new(pActivityLog) Log;
+    gpLog = new(pLog) Log;
 
   } else {
-    pActivityLog = Log::pAttachExisting();
+    pLog = Log::pAttachExisting();
     if (gpAttachMap->m_bVerbose)
       vTrace("Log %s : "
              "attached to existing map (size %lldB, max %lld marks)\n\n"_Stz,
@@ -469,7 +469,7 @@ void Log::vOpenBySE(bool bStarting)
              sizeof(Log),
              C_LOG_ENTRIES);
     
-    gpLog = pActivityLog;
+    gpLog = pLog;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -529,14 +529,14 @@ i8 Log::iAddMarkArg(i8 iEnumGroup, i8 iEnum, i8 iForeign,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  LogEntry* pActivityMark = pNewMark();
+  LogEntry* pLogEntry = pNewEntry();
   
-  if (! pActivityMark)
+  if (! pLogEntry)
     return C_UNKNOWN;
   
-  pActivityMark->vWrite(iEnumGroup,iEnum,iForeign,caMark);
+  pLogEntry->vWrite(iEnumGroup,iEnum,iForeign,caMark);
   
-  return pActivityMark->m_i_Entry;
+  return pLogEntry->m_i_Entry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -559,37 +559,37 @@ i8 Log::iAddMarkVbl(i8 iEnumGroup, i8 iEnum, i8 iForeign,
 /*----------------------------------------------------------------------------*/
 /* get a new mark in Log                                                      */
 /*----------------------------------------------------------------------------*/
-LogEntry* Log::pNewMark(void)
+LogEntry* Log::pNewEntry(void)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
   vGrabLock();
   
-  LogEntry* pActivityMark = pNewMark_NL();
+  LogEntry* pLogEntry = pNewEntry_NL();
   
   vDropLock();
   // ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲
 
-  return pActivityMark;
+  return pLogEntry;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get a new mark in Log (non-locking)                                        */
 /*----------------------------------------------------------------------------*/
-LogEntry* Log::pNewMark_NL(void)
+LogEntry* Log::pNewEntry_NL(void)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
 
   m_okLock.vAssertWrite();
   
-  LogEntry* pActivityMark = &m_oaEntry[m_i_Entry % m_nEntries];
+  LogEntry* pLogEntry = &m_oaEntry[m_i_Entry % m_nEntries];
   
-  pActivityMark->m_i_Entry = m_i_Entry;
+  pLogEntry->m_i_Entry = m_i_Entry;
   
   m_i_Entry++;
   
-  return pActivityMark;
+  return pLogEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -706,23 +706,23 @@ void Log::vWriteToFile(bool bShortForm)
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
   vGrabLock();
   
-  i8 i_MinMark;
-  i8 i_MaxMark;
+  i8 i_MinEntry;
+  i8 i_MaxEntry;
   
-  vFindRange_NL(i_MinMark,i_MaxMark);
+  vFindRange_NL(i_MinEntry,i_MaxEntry);
   
-  LogEntry* pActivityMark = &m_oaEntry[i_MinMark % m_nEntries];
-  pActivityMark->vDump(pActivityFile, bShortForm,
+  LogEntry* pLogEntry = &m_oaEntry[i_MinEntry % m_nEntries];
+  pLogEntry->vDump(pActivityFile, bShortForm,
                        nullptr,iTotalDelta);
   
-  for (i8 i_Entry = i_MinMark + 1; i_Entry <= i_MaxMark; i_Entry++) {
+  for (i8 i_Entry = i_MinEntry + 1; i_Entry <= i_MaxEntry; i_Entry++) {
     
-    pActivityMark = &m_oaEntry[i_Entry % m_nEntries];
+    pLogEntry = &m_oaEntry[i_Entry % m_nEntries];
     
-    if (-1 == pActivityMark->m_i_Entry)
+    if (-1 == pLogEntry->m_i_Entry)
       break;
     
-    pActivityMark->vDump(pActivityFile, bShortForm,
+    pLogEntry->vDump(pActivityFile, bShortForm,
                          &m_oaEntry[(i_Entry - 1) % m_nEntries],
                          iTotalDelta);
   }
@@ -741,15 +741,7 @@ void Log::vWriteToFile(bool bShortForm)
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* Log::aFooter(void)
-{
-  _precondition_(_MAGIC_,CN_LOG);
-  
-  return &m_xFooter;
-}
+__aFooterFunction(Log);
 
 /*============================================================================*/
 /* end                                                                        */

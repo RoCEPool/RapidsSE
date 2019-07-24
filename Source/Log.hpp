@@ -56,8 +56,8 @@ namespace Logging
                    Stz* aFormat, va_list xArgs);
     i8   iAddMarkVbl(i8 iEnumGroup, i8 iEnum, i8 iForeign,
                    Stz* aFormat, ...);
-    LogEntry* pNewMark(void);
-    LogEntry* pNewMark_NL(void);
+    LogEntry* pNewEntry(void);
+    LogEntry* pNewEntry_NL(void);
     void vFindRange_NL(i8& i_MinMark, i8& i_MaxMark);
     i8   iPercentFull_NL(void);
     i8   iSize(void);
