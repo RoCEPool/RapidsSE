@@ -16,13 +16,12 @@ using namespace Logging;
 
 #include "ShmLog.hpp"
 #include "LogEntry.hpp"
+#include "Log.hpp"
+
+
 
 #include "Action.hpp"
 #include "ActionLog.hpp"
-
-#include "ActivityLog.hpp"
-
-#include "Log.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
