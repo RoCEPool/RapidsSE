@@ -116,7 +116,7 @@ Job::Job(eCN eClassNo, Session* pSession)
     m_pMutexJob = new Mutex;
 
   if (m_bMarkActivity)
-    Log::vNoteInfo("::Job"_Stz,""_Stz);
+    Log::vNote("::Job"_Stz,""_Stz);
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
 }
@@ -133,7 +133,7 @@ Job::~Job(void) noexcept(false)
   delete m_pMutexJob;
   
   if (m_bMarkActivity) {
-    Log::vNoteInfo("~Job %s"_Stz,aCN[eClass()]);
+    Log::vNote("~Job %s"_Stz,aCN[eClass()]);
     Job::vMarkJob();
   }
 }

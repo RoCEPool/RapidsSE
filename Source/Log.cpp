@@ -144,6 +144,25 @@ Log* Log::pAttachExisting(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* add a log entry                                                            */
+/*----------------------------------------------------------------------------*/
+void Log::vNote(Stz* aFormat, ...)
+{
+#ifdef WITH_ACTIVITY_MAP
+  if ( ! gpLog )
+    return;
+  
+  va_list xArgs;
+  
+  va_start(xArgs,aFormat);
+  
+  gpLog->iAddMarkArg(C_INF_GROUP,0,false,aFormat,xArgs);
+  
+  va_end(xArgs);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
 /* add a log entry for api call                                               */
 /*----------------------------------------------------------------------------*/
 void Log::vNoteApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...)
@@ -224,25 +243,6 @@ void Log::vNoteApiExit(i8 eApiCall, i8 iJobId)
   
   bool bForeign = Job::bIsForeign(iJobId);
   gpLog->iAddMarkVbl(C_JOB_GROUP,iJobId,bForeign,"<Api %s"_Stz,zApiName);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* add a log entry for info                                                   */
-/*----------------------------------------------------------------------------*/
-void Log::vNoteInfo(Stz* aFormat, ...)
-{
-#ifdef WITH_ACTIVITY_MAP
-  if ( ! gpLog )
-    return;
-  
-  va_list xArgs;
-  
-  va_start(xArgs,aFormat);
-  
-  gpLog->iAddMarkArg(C_INF_GROUP,0,false,aFormat,xArgs);
-  
-  va_end(xArgs);
 #endif
 }
 
@@ -334,7 +334,7 @@ void Log::vNoteSection(Stz* szSectionNm)
   StrLib::vConcat(caSection,'#');
   StrLib::vConcat(caSection,'#');
     
-  vNoteInfo((Stz*)caSection);
+  vNote((Stz*)caSection);
 #endif
 }
 
@@ -429,10 +429,10 @@ void Log::vOpenByApi(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Log::vNoteInfo("Opened by API"_Stz);
+  Log::vNote("Opened by API"_Stz);
   
   Now oNow;
-  Log::vNoteInfo("Time is: "_Stz,oNow.sz());
+  Log::vNote("Time is: "_Stz,oNow.sz());
 #endif
 }
 
@@ -478,10 +478,10 @@ void Log::vOpenBySE(bool bStarting)
   
   s256 sWelcome;
   Engine::vGetWelcome(sWelcome);
-  Log::vNoteInfo(sWelcome);
+  Log::vNote(sWelcome);
   
   Now oNow;
-  Log::vNoteInfo("Time is: %s"_Stz,oNow.sz());
+  Log::vNote("Time is: %s"_Stz,oNow.sz());
 
   s32 sMem;
   Magnitudes::vByteMag(Hardware::iPhysicalMemory(),sMem);
@@ -489,7 +489,7 @@ void Log::vOpenBySE(bool bStarting)
   s32 sClock;
   Magnitudes::vHzMag(Hardware::iClockFrequency(),sClock);
   
-  Log::vNoteInfo("hw: %lld cores; %s memory; %s clock frequency"_Stz,
+  Log::vNote("hw: %lld cores; %s memory; %s clock frequency"_Stz,
                      Hardware::iCoreCount(),
                      sMem.aStz(),
                      sClock.aStz()
@@ -693,14 +693,14 @@ void Log::vWriteToFile(bool bShortForm)
   }
   
   Now oNow;
-  Log::vNoteInfo("Writing Log at: %s"_Stz,oNow.sz());
+  Log::vNote("Writing Log at: %s"_Stz,oNow.sz());
   
   s256 sWelcome;
   Engine::vGetWelcome(sWelcome);
-  Log::vNoteInfo(sWelcome);
+  Log::vNote(sWelcome);
   
   i8 iUpTimeSsec = gpAttachMap->m_oBirth.iSecondsElapsed();
-  Log::vNoteInfo("Uptime %llds Requests %lld"_Stz,
+  Log::vNote("Uptime %llds Requests %lld"_Stz,
                          iUpTimeSsec,
                          C_UNKNOWN);
 

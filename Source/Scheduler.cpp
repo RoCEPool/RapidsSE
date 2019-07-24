@@ -544,7 +544,7 @@ void Scheduler::vTask_Wait(Task* pTask)
   
   if (pTask->pJob()->m_bMarkActivity) {
     if (C_UNKNOWN == pTask->pJob()->iJobId())
-      Log::vNoteInfo(
+      Log::vNote(
                              "Schedule waiting: %s %p"_Stz,
                              aCN[pTask->pJob()->eClass()],
                              pTask->pJob());
@@ -590,7 +590,7 @@ void Scheduler::vTask_Yield(Task* pTask)
   
   if (pTask->pJob()->m_bMarkActivity) {
     if (C_UNKNOWN == pTask->pJob()->iJobId())
-      Log::vNoteInfo(
+      Log::vNote(
                              "Schedule yielded: %s %p"_Stz,
                              aCN[pTask->pJob()->eClass()],
                              pTask->pJob());

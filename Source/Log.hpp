@@ -6,7 +6,7 @@
 namespace Logging
 {
   static const char* C_LOG_REGION = "/SE_Log";
-  static const char* C_LOG_FILE   = "/tmp/Log.csv";
+  static const char* C_LOG_FILE   = "/tmp/SE_Log.csv";
 
   static const i8    C_JOB_GROUP = 0;
   static const i8    C_INF_GROUP = -1;
@@ -34,11 +34,11 @@ namespace Logging
     static Log* pAttachExisting(void);
 
   public:
+    static void vNote(Stz* aFormat, ...);
     static void vNoteApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...);
     static void vNoteApiEntry(i8 eApiCall, i8 iJobId=-1);
     static void vNoteApiError(i8 eApiCall, i8 iError, i8 iJobId=-1);
     static void vNoteApiExit(i8 eApiCall, i8 iJobId=-1);
-    static void vNoteInfo(Stz* aFormat, ...);
     static void vNoteJob(Jobs::Job* pJob, Stz* szFormat, ...);
     static void vNoteRes(eSR eSysRes, Stz* szFormat, ...);
     static void vNoteSection(Stz* szSectionNm);

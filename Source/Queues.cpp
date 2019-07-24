@@ -495,7 +495,7 @@ Task* Queues::pPopSleepingQueue(void)
   pTask->vWakeupClear();
   
   if (pTask->pJob()->m_bMarkActivity)
-    Log::vNoteInfo(
+    Log::vNote(
                            "Popped SleepingQueue: %s %p"_Stz,
                            aCN[pTask->pJob()->eClass()],
                            pTask->pJob());
