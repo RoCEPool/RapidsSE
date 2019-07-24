@@ -713,7 +713,7 @@ void Log::vWriteToFile(bool bShortForm)
   vFindRange_NL(i_MinEntry,i_MaxEntry);
   
   LogEntry* pLogEntry = &m_oaEntry[i_MinEntry % m_nEntries];
-  pLogEntry->vDump(pLogFile,bShortForm,nullptr,iTotalDelta);
+  pLogEntry->vDump(pLogFile,bShortForm,0,iTotalDelta);
   
   for (i8 i_Entry = i_MinEntry + 1; i_Entry <= i_MaxEntry; i_Entry++) {
     
@@ -722,9 +722,10 @@ void Log::vWriteToFile(bool bShortForm)
     if (-1 == pLogEntry->m_i_Entry)
       break;
     
-    pLogEntry->vDump(pLogFile, bShortForm,
-                     &m_oaEntry[(i_Entry - 1) % m_nEntries],
-                     iTotalDelta);
+    LogEntry* pPrevEntry = &m_oaEntry[(i_Entry - 1) % m_nEntries];
+    i8 iDeltaUsec = Tsc::iToUsec(pLogEntry->m_iTick - pPrevEntry->m_iTick);
+
+    pLogEntry->vDump(pLogFile,bShortForm,iDeltaUsec,iTotalDelta);
   }
   
   vDropLock();

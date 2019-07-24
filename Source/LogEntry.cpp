@@ -113,7 +113,7 @@ void LogEntry::vSet(i8 iEnumGroup, i8 iEnum, i8 iForeign, char* aText)
 /* dump to csv file                                                           */
 /*----------------------------------------------------------------------------*/
 void LogEntry::vDump(File* pFile, bool bShortForm,
-                         LogEntry* pPrevMark, i8& iTotalDelta)
+                     i8 iTickDeltaUsec, i8& iTotalDelta)
 {
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
@@ -122,23 +122,16 @@ void LogEntry::vDump(File* pFile, bool bShortForm,
     return;
   }
   
-  i8 iDeltaUsec = 0;
-  
-  if (pPrevMark) {
-    iDeltaUsec = Tsc::iToUsec(m_iTick - pPrevMark->m_iTick);
-  }
-  
-  iTotalDelta += iDeltaUsec;
+  iTotalDelta += iTickDeltaUsec;
   
   if (StrLib::bSame(m_caText,"delta reset"))
     iTotalDelta = 0;
   
-
   if (m_iEnum < 0)
     pFile->vPrint("%lld,%lld,%lld,%lld,%s,%s,%s\n"_Stz,
                   m_i_Entry,
                   m_iTick,
-                  iDeltaUsec,
+                  iTickDeltaUsec,
                   iTotalDelta,
                   
                   m_caNode,
@@ -149,7 +142,7 @@ void LogEntry::vDump(File* pFile, bool bShortForm,
     pFile->vPrint("%lld,%lld,%lld,%lld,%s,inf,%s\n"_Stz,
                   m_i_Entry,
                   m_iTick,
-                  iDeltaUsec,
+                  iTickDeltaUsec,
                   iTotalDelta,
                   
                   m_caNode,
@@ -158,7 +151,7 @@ void LogEntry::vDump(File* pFile, bool bShortForm,
     pFile->vPrint("%lld,%lld,%lld,%lld,%s,%lld,%s\n"_Stz,
                   m_i_Entry,
                   m_iTick,
-                  iDeltaUsec,
+                  iTickDeltaUsec,
                   iTotalDelta,
                   
                   m_caNode,

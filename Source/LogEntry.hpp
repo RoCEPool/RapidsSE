@@ -19,7 +19,7 @@ namespace Logging
   
     i8   m_iEnumGroup;  // enum group
     i8   m_iEnum;       // enum/jobid
-    i8   m_iForeign;    // foreign job
+    i8   m_iForeign;    // foreign job id
   
     char m_caText[C_LOG_TEXT]; // comment
   
@@ -39,9 +39,7 @@ namespace Logging
   
     // - - - - - - - - - - - - - - - - - - - - - - - - -
   
-    void vDump(File* pFile, bool bShortForm,
-               LogEntry* pPrevMark, i8& iTotalDelta);
-  
+    void vDump(File* pFile, bool bShortForm, i8 iTickDelta, i8& iTotalDelta);
     void vDumpShort(File* pFile);
     void vDumpShortForeign(File* pFile);
 
