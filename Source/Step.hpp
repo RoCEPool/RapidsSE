@@ -22,7 +22,6 @@ namespace Steps
     static void vAddStep(Stz* aName, StepFp fpStep, bool bImmediate=false);
 
     static void vAddSteps_AccessPath(void);
-    static void vAddSteps_ActivityLog(void);
     static void vAddSteps_Address(void);
     static void vAddSteps_ApiState(void);
     static void vAddSteps_Args(void);
@@ -111,6 +110,7 @@ namespace Steps
     static void vAddSteps_Locals(void);
     static void vAddSteps_Lock(void);
     static void vAddSteps_LockTracker(void);
+    static void vAddSteps_Log(void);
     static void vAddSteps_Logic(void);
   
     static void vAddSteps_Magnitude(void);

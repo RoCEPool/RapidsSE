@@ -23,12 +23,6 @@
   static void vAccumSumFetch(Tasks::MP_Task mpTask);
   static void vAccumSumStore(Tasks::MP_Task mpTask);
 
-  // activity map
-  static void vActivityLogDump(Tasks::MP_Task mpTask);
-  static void vActivityLogMark(Tasks::MP_Task mpTask);
-  static void vActivityLogMarkEntry(Tasks::MP_Task mpTask);
-  static void vActivityLogMarkExit(Tasks::MP_Task mpTask);
-
   // action sequence map
   static void vActionSequenceMarkWord(Tasks::MP_Task mpTask);
   static void vActionSequenceMarkSeed(Tasks::MP_Task mpTask);
@@ -769,6 +763,12 @@
   // locks
   static void vLockTrackerList(Tasks::MP_Task mpTask);
   static void vLockTrackerReset(Tasks::MP_Task mpTask);
+
+  // log
+  static void vLogDump(Tasks::MP_Task mpTask);
+  static void vLogMark(Tasks::MP_Task mpTask);
+  static void vLogMarkEntry(Tasks::MP_Task mpTask);
+  static void vLogMarkExit(Tasks::MP_Task mpTask);
 
   // logic
   static void vLogicAnd(Tasks::MP_Task mpTask);
