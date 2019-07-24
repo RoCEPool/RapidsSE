@@ -31,7 +31,6 @@ enum eCN : u2 // Class Number
   /*                           */ CN_ACTION,
   /*                           */ CN_ACTIONLOG,
   /*  13 0x0D      200B Heap:I */ CN_ACTIVITYLOG,
-  /*  14 0x0E      200B Heap:I */ CN_ACTIVITYMARK,
   /*                           */ CN_AGGOP,
   /*  15 0x0F   213152B Heap:L */ CN_APISTATE,
   /*  16 0x10      296B Heap:S */ CN_ARG,
@@ -365,7 +364,6 @@ static Stz* aCN[]
   /*          */ "ACTION"_Stz,              // CN_ACTION
   /*          */ "ACTIONLOG"_Stz,           // CN_ACTIONLOG
   /*  13 0x0D */ "ACTIVITYLOG"_Stz,         // CN_ACTIVITYLOG
-  /*  14 0x0E */ "ACTIVITYMARK"_Stz,        // CN_ACTIVITYMARK
   /*          */ "AGGOP"_Stz,               // CN_AGGOP
   /*  15 0x0F */ "APISTATE"_Stz,            // CN_APISTATE
   /*  16 0x10 */ "ARG"_Stz,                 // CN_ARG

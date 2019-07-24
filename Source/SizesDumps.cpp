@@ -30,7 +30,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_ACTION
   /*    */ &Dump::vDummy,           // CN_ACTIONLOG
   /*    */ &Dump::vDummy,           // CN_ACTIVITYLOG
-  /*    */ &Dump::vDummy,           // CN_ACTIVITYMARK
   /*    */ &Dump::vDummy,           // CN_AGGOP
   /* 21 */ &Dump::vInvalid,         // CN_APISTATE
   /* 22 */ &Dump::vInvalid,         // CN_ARG
@@ -367,7 +366,6 @@ i8 giClassSize[]
   /*    */ sizeof(Action),             // CN_ACTION
   /*    */ sizeof(ActionLog),     // CN_ACTIONLOG
   /*    */ sizeof(ActivityLog),       // CN_ACTIVITYLOG
-  /*    */ 0,       // CN_ACTIVITYMARK
   /*    */ sizeof(AggOp),              // CN_AGGOP
   /*    */ sizeof(ApiState),           // CN_APISTATE
   /* 22 */ sizeof(Arg),                // CN_ARG
@@ -703,7 +701,6 @@ eHT geWhichHeap[]
   /*    */ HT_INVALID,           // CN_ACTION
   /*    */ HT_INVALID,           // CN_ACTIONLOG
   /*    */ HT_INVALID,           // CN_ACTIVITYLOG
-  /*    */ HT_INVALID,           // CN_ACTIVITYMARK
   /*    */ HT_TRANSIENT_SMALL,   // CN_AGGOP
   /*    */ HT_TRANSIENT_LARGE,   // CN_APISTATE
   /* 22 */ HT_TRANSIENT_SMALL,   // CN_ARG
