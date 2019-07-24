@@ -15,6 +15,7 @@ namespace Logging
     i8   m_i_Entry;     // entry no
     i8   m_iTick;       // tick when entry added
     char m_caNode[32];  // which node
+  
     i8   m_iEnumGroup;  // enum group
     i8   m_iEnum;       // enum/jobid
     i8   m_iForeign;    // foreign job
@@ -30,7 +31,7 @@ namespace Logging
     void  operator delete(void*);
     
     LogEntry(void);
-  ~LogEntry(void) noexcept(false);
+   ~LogEntry(void) noexcept(false);
   
     static i8 iAsMicroseconds(i8 iTickDelta);
   

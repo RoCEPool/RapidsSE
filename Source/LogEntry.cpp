@@ -87,7 +87,7 @@ void LogEntry::vInit(void)
 {
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
-  m_i_Entry      = -1;
+  m_i_Entry    = -1;
   m_iTick      = -1;
   m_caNode[0]  = '\0';
   m_iEnumGroup = -1;
