@@ -43,7 +43,7 @@ using namespace System;
 #include "Sleep.hpp"
 #include "Socket.hpp"
 #include "TempName.hpp"
-#include "Tsc.hpp"
+#include "Tick.hpp"
 #include "TspLib.hpp"
 
 /*============================================================================*/
