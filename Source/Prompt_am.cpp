@@ -28,7 +28,7 @@ bool Prompt::bPrompt_am(SePrompt* pPrompt)
   ASSERT((*pTokenVec)[0]->bSame("am"_Stz));
   
   if (pTokenVec->nTokens() > 1)
-    Log::vMarkInfo(pTokenVec->pGet(1)->aText());
+    Log::vNoteInfo(pTokenVec->pGet(1)->aText());
 
   return true;
 }

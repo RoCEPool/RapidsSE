@@ -34,15 +34,15 @@ namespace Logging
     static Log* pAttachExisting(void);
 
   public:
-    static void vMarkApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...);
-    static void vMarkApiEntry(i8 eApiCall, i8 iJobId=-1);
-    static void vMarkApiError(i8 eApiCall, i8 iError, i8 iJobId=-1);
-    static void vMarkApiExit(i8 eApiCall, i8 iJobId=-1);
-    static void vMarkInfo(Stz* aFormat, ...);
-    static void vMarkJob(Jobs::Job* pJob, Stz* szFormat, ...);
-    static void vMarkRes(eSR eSysRes, Stz* szFormat, ...);
-    static void vMarkSection(Stz* szSectionNm);
-    static void vMarkString(i8 iJobId, s48K& sString);
+    static void vNoteApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...);
+    static void vNoteApiEntry(i8 eApiCall, i8 iJobId=-1);
+    static void vNoteApiError(i8 eApiCall, i8 iError, i8 iJobId=-1);
+    static void vNoteApiExit(i8 eApiCall, i8 iJobId=-1);
+    static void vNoteInfo(Stz* aFormat, ...);
+    static void vNoteJob(Jobs::Job* pJob, Stz* szFormat, ...);
+    static void vNoteRes(eSR eSysRes, Stz* szFormat, ...);
+    static void vNoteSection(Stz* szSectionNm);
+    static void vNoteString(i8 iJobId, s48K& sString);
   
     static void vMonitorPortrait(s48K& sPortrait);
     static void vOpenByApi(void);

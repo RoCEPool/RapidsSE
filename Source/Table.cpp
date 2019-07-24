@@ -537,7 +537,7 @@ void Table::vMarkTable(void)
 
   }
   
-  Log::vMarkString(-1,sTableMark);
+  Log::vNoteString(-1,sTableMark);
 }
 
 /*----------------------------------------------------------------------------*/

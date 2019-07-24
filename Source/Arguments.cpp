@@ -184,7 +184,7 @@ void Arguments::vAddConstants(void)
 /*----------------------------------------------------------------------------*/
 void Arguments::vMark(void)
 {
-  Log::vMarkInfo("Args:"_Stz);
+  Log::vNoteInfo("Args:"_Stz);
   
   s256 sArg;
   
@@ -197,7 +197,7 @@ void Arguments::vMark(void)
       StrLib::vConcat(sArg.aChar(),gi_argv[i_Arg ++]);
     }
     
-    Log::vMarkInfo("  %s"_Stz,sArg.aChar());
+    Log::vNoteInfo("  %s"_Stz,sArg.aChar());
   }
 }
 

@@ -540,7 +540,7 @@ void ActionLog::vWriteToFile(void)
   }
   
   Now oNow;
-  Log::vMarkInfo("Writing ActionLog at: %s"_Stz,oNow.sz());
+  Log::vNoteInfo("Writing ActionLog at: %s"_Stz,oNow.sz());
   
   
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼

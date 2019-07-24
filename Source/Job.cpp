@@ -116,7 +116,7 @@ Job::Job(eCN eClassNo, Session* pSession)
     m_pMutexJob = new Mutex;
 
   if (m_bMarkActivity)
-    Log::vMarkInfo("::Job"_Stz,""_Stz);
+    Log::vNoteInfo("::Job"_Stz,""_Stz);
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
 }
@@ -133,7 +133,7 @@ Job::~Job(void) noexcept(false)
   delete m_pMutexJob;
   
   if (m_bMarkActivity) {
-    Log::vMarkInfo("~Job %s"_Stz,aCN[eClass()]);
+    Log::vNoteInfo("~Job %s"_Stz,aCN[eClass()]);
     Job::vMarkJob();
   }
 }
@@ -348,7 +348,7 @@ void Job::vMarkJob(void)
 
   sJobMark.vConcat("\n"_Stz);
 
-  Log::vMarkString(m_iJobId,sJobMark);
+  Log::vNoteString(m_iJobId,sJobMark);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -366,7 +366,7 @@ void Job::vMarkJob(Stz* szFormat, ...)
   
   va_start(xArgs,szFormat);
   
-  Log::vMarkJob(this,szFormat,xArgs);
+  Log::vNoteJob(this,szFormat,xArgs);
   
   va_end(xArgs);
 #endif

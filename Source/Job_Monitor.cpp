@@ -268,7 +268,7 @@ bool Job_Monitor::bTake(void)
   
   m_pOutFile->vPrint("%s\n"_Stz,sRapidsPortrait.aStz());
 
-  Log::vMarkString(-1,sRapidsPortrait);
+  Log::vNoteString(-1,sRapidsPortrait);
 
   return true;
 }

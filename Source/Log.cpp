@@ -146,7 +146,7 @@ Log* Log::pAttachExisting(void)
 /*----------------------------------------------------------------------------*/
 /* add a log entry for api call                                               */
 /*----------------------------------------------------------------------------*/
-void Log::vMarkApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...)
+void Log::vNoteApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...)
 {
 #ifdef WITH_ACTIVITY_MAP
   if ( ! gpLog )
@@ -170,7 +170,7 @@ void Log::vMarkApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a log entry for api entry                                              */
 /*----------------------------------------------------------------------------*/
-void Log::vMarkApiEntry(i8 eApiCall, i8 iJobId)
+void Log::vNoteApiEntry(i8 eApiCall, i8 iJobId)
 {
 #ifdef WITH_ACTIVITY_MAP
   if ( ! gpLog )
@@ -190,7 +190,7 @@ void Log::vMarkApiEntry(i8 eApiCall, i8 iJobId)
 /*----------------------------------------------------------------------------*/
 /* add a log entry for api error                                              */
 /*----------------------------------------------------------------------------*/
-void Log::vMarkApiError(i8 eApiCall, i8 iJobId, i8 iError)
+void Log::vNoteApiError(i8 eApiCall, i8 iJobId, i8 iError)
 {
 #ifdef WITH_ACTIVITY_MAP
   if ( ! gpLog )
@@ -210,7 +210,7 @@ void Log::vMarkApiError(i8 eApiCall, i8 iJobId, i8 iError)
 /*----------------------------------------------------------------------------*/
 /* add a log entry for api exit                                               */
 /*----------------------------------------------------------------------------*/
-void Log::vMarkApiExit(i8 eApiCall, i8 iJobId)
+void Log::vNoteApiExit(i8 eApiCall, i8 iJobId)
 {
 #ifdef WITH_ACTIVITY_MAP
   if ( ! gpLog )
@@ -230,7 +230,7 @@ void Log::vMarkApiExit(i8 eApiCall, i8 iJobId)
 /*----------------------------------------------------------------------------*/
 /* add a log entry for info                                                   */
 /*----------------------------------------------------------------------------*/
-void Log::vMarkInfo(Stz* aFormat, ...)
+void Log::vNoteInfo(Stz* aFormat, ...)
 {
 #ifdef WITH_ACTIVITY_MAP
   if ( ! gpLog )
@@ -249,7 +249,7 @@ void Log::vMarkInfo(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a log entry for job                                                    */
 /*----------------------------------------------------------------------------*/
-void Log::vMarkJob(Jobs::Job* pJob, Stz* szFormat, ...)
+void Log::vNoteJob(Jobs::Job* pJob, Stz* szFormat, ...)
 {
 #ifdef WITH_ACTIVITY_MAP
   if ( ! gpLog )
@@ -293,7 +293,7 @@ void Log::vMarkJob(Jobs::Job* pJob, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a log entry for resource                                               */
 /*----------------------------------------------------------------------------*/
-void Log::vMarkRes(eSR eSysRes,Stz* szFormat, ...)
+void Log::vNoteRes(eSR eSysRes,Stz* szFormat, ...)
 {
 #ifdef WITH_ACTIVITY_MAP
   if ( ! gpLog )
@@ -316,7 +316,7 @@ void Log::vMarkRes(eSR eSysRes,Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a section line log entry                                               */
 /*----------------------------------------------------------------------------*/
-void Log::vMarkSection(Stz* szSectionNm)
+void Log::vNoteSection(Stz* szSectionNm)
 {
 #ifdef WITH_ACTIVITY_MAP
   if ( ! gpLog )
@@ -334,14 +334,14 @@ void Log::vMarkSection(Stz* szSectionNm)
   StrLib::vConcat(caSection,'#');
   StrLib::vConcat(caSection,'#');
     
-  vMarkInfo((Stz*)caSection);
+  vNoteInfo((Stz*)caSection);
 #endif
 }
 
 /*----------------------------------------------------------------------------*/
 /* add a multi-line string entry                                              */
 /*----------------------------------------------------------------------------*/
-void Log::vMarkString(i8 iJobId, s48K& sString)
+void Log::vNoteString(i8 iJobId, s48K& sString)
 {
 #ifdef WITH_ACTIVITY_MAP
   if ( ! gpLog )
@@ -429,10 +429,10 @@ void Log::vOpenByApi(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Log::vMarkInfo("Opened by API"_Stz);
+  Log::vNoteInfo("Opened by API"_Stz);
   
   Now oNow;
-  Log::vMarkInfo("Time is: "_Stz,oNow.sz());
+  Log::vNoteInfo("Time is: "_Stz,oNow.sz());
 #endif
 }
 
@@ -478,10 +478,10 @@ void Log::vOpenBySE(bool bStarting)
   
   s256 sWelcome;
   Engine::vGetWelcome(sWelcome);
-  Log::vMarkInfo(sWelcome);
+  Log::vNoteInfo(sWelcome);
   
   Now oNow;
-  Log::vMarkInfo("Time is: %s"_Stz,oNow.sz());
+  Log::vNoteInfo("Time is: %s"_Stz,oNow.sz());
 
   s32 sMem;
   Magnitudes::vByteMag(Hardware::iPhysicalMemory(),sMem);
@@ -489,7 +489,7 @@ void Log::vOpenBySE(bool bStarting)
   s32 sClock;
   Magnitudes::vHzMag(Hardware::iClockFrequency(),sClock);
   
-  Log::vMarkInfo("hw: %lld cores; %s memory; %s clock frequency"_Stz,
+  Log::vNoteInfo("hw: %lld cores; %s memory; %s clock frequency"_Stz,
                      Hardware::iCoreCount(),
                      sMem.aStz(),
                      sClock.aStz()
@@ -693,14 +693,14 @@ void Log::vWriteToFile(bool bShortForm)
   }
   
   Now oNow;
-  Log::vMarkInfo("Writing Log at: %s"_Stz,oNow.sz());
+  Log::vNoteInfo("Writing Log at: %s"_Stz,oNow.sz());
   
   s256 sWelcome;
   Engine::vGetWelcome(sWelcome);
-  Log::vMarkInfo(sWelcome);
+  Log::vNoteInfo(sWelcome);
   
   i8 iUpTimeSsec = gpAttachMap->m_oBirth.iSecondsElapsed();
-  Log::vMarkInfo("Uptime %llds Requests %lld"_Stz,
+  Log::vNoteInfo("Uptime %llds Requests %lld"_Stz,
                          iUpTimeSsec,
                          C_UNKNOWN);
 
