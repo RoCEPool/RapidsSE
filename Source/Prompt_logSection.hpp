@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Prompt_logSection.hpp -- write a section mark into the activity map         */
+/* Prompt_logSection.hpp -- write a section line into the log                 */
 /*============================================================================*/
 #pragma once
 

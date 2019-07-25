@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Prompt_logSection.cpp -- write a section mark into the activity map         */
+/* Prompt_logSection.cpp -- write a section line into the log                 */
 /*============================================================================*/
 
 #include "Prompt.h"
