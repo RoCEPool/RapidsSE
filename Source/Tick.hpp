@@ -8,6 +8,8 @@ namespace System
   class Tick
   {
   public:
+    static i8 iClockRes(void);
+  
     static i8 iRdClock(void);
     static i8 iRdTscp(void);
   
