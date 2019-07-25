@@ -42,8 +42,6 @@ amSection "EXPORT" ;
 
 export nation "/tmp/nation_export.csv" ;
 
-actionSequence;
-
 activityLog short;
 
 walk nation;

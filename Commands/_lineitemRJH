@@ -68,7 +68,6 @@ fileCat "/tpch/SF0/lineitem_100.csv" 10;
 query lineitem;
 
 activityLog;
-actionSequence;
 
 /*
 time fetch lineitem
