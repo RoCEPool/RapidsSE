@@ -22,7 +22,6 @@ using namespace Prompt;
 #include "PromptNote.hpp"
 #include "PromptHelper.hpp"
 
-#include "Prompt_activityLog.hpp"
 #include "Prompt_am.hpp"
 #include "Prompt_amSection.hpp"
 #include "Prompt_apiState.hpp"
@@ -66,6 +65,7 @@ using namespace Prompt;
 
 #include "Prompt_limits.hpp"
 #include "Prompt_locks.hpp"
+#include "Prompt_logWrite.hpp"
 #include "Prompt_ls.hpp"
 #include "Prompt_lvl.hpp"
 
