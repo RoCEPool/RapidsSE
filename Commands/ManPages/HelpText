@@ -116,7 +116,7 @@ waitCuster     - Wait for cluster to  start
 .SH PROMPT FUNCTIONS
 activityLog  - Write the activity map to an csv file
 .br 
-am           - Manage activity markers
+logNote           - Manage activity markers
 .br 
 apiState     - Show the state of all api sessions
 .br 

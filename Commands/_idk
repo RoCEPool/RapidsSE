@@ -2,7 +2,7 @@
 /* _idk -- ingest testing (sensorEvents via Kafka)                            */
 /*============================================================================*/
 
-am "Running script: _idk";
+logNote "Running script: _idk";
 
 print "";
 print "---------------------------------------------------------------------";

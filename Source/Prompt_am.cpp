@@ -8,13 +8,13 @@ PromptNote mPromptNote_am (
   PF_AM,             // prompt function
   "Prompt_am"_Stz,   // name of the prompt function
   "comment"_Stz,     // comment about the function
-  "am"_Stz,          // the prompt command
+  "logNote"_Stz,     // the prompt command
   nullptr,           // the second word
   bPrompt_am,        // prompt function
   true,              // enabled
 
   true,              // visible
-  "am"_Stz,          // help
+  "logNote"_Stz,     // help
   ""_Stz             // description
 );
 
@@ -25,7 +25,7 @@ bool Prompt::bPrompt_am(SePrompt* pPrompt)
 {
   TokenVec* pTokenVec = pPrompt->pTknVec();
 
-  ASSERT((*pTokenVec)[0]->bSame("am"_Stz));
+  ASSERT((*pTokenVec)[0]->bSame("logNote"_Stz));
   
   if (pTokenVec->nTokens() > 1)
     Log::vNote(pTokenVec->pGet(1)->aText());

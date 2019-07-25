@@ -546,7 +546,7 @@ void SePrompt::vMarkCommand(void)
   TokenVec* pTknVec = this->pTknVec();
   
   Token* pTkn0 = pTknVec->pGet(0);
-  if (pTkn0->bSame("am"_Stz))
+  if (pTkn0->bSame("logNote"_Stz))
     return;
 
   pTknVec->vToString(sCommand);

@@ -637,7 +637,7 @@ Job* Jobs::pJob_CreateTable_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 void Jobs::vJob_CreateTable_post(Interface::Session* pSession, Job* pJob)
 {
-  vTrace("I am here\n"_Stz);
+  vTrace("I logNote here\n"_Stz);
   
   i8 iResponses = pJob->m_pResponseVec->nItems();
   

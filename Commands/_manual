@@ -475,7 +475,7 @@ docol epochDump;
 //print "=====================================================================";
 //bye;
 
-am "End of script: _R35";
+logNote "End of script: _R35";
 
 Log;
 

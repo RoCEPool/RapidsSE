@@ -2,7 +2,7 @@
 /* _R35 -- R35 requests                                                       */
 /*============================================================================*/
 
-am "Running script: _R35";
+logNote "Running script: _R35";
 
 //markjob all on;
 
@@ -675,7 +675,7 @@ docol epochDump;
 //print "=====================================================================";
 //bye;
 
-am "End of script: _R35";
+logNote "End of script: _R35";
 
 Log;
 
