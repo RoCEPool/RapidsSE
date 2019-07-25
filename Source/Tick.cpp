@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Tick.cpp -- Time Stamp Counter                                              */
+/* Tick.cpp -- Tick reader (Hardward Clock or Time Stamp Counter              */
 /*============================================================================*/
 
 #include "System.h"
@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 /* get ticks                                                                  */
 /*----------------------------------------------------------------------------*/
-i8 Tick::iTicks(void)
+i8 Tick::iRdClock(void)
 {
 #ifdef WITH_APPLE
   struct timespec tp;
@@ -32,6 +32,41 @@ i8 Tick::iTicks(void)
 #endif
   
   return iTicks;
+}
+
+/*----------------------------------------------------------------------------*/
+/* read hardware timestamp counter                                            */
+/*----------------------------------------------------------------------------*/
+i8 Tick::iRdTscp(void)
+{
+  /*
+   Intel SDM says:
+   The processor monotonically increments the time-stamp counter MSR
+   every clock cycle and resets it to 0 whenever the processor is reset.
+   -----------------
+   
+   The time stamp counter in newer processors may support an enhancement,
+   referred to as invariant TSC. Processor’s support for invariant TSC is
+   indicated by CPUID.80000007H:EDX[8].
+   
+   The invariant TSC will run at a constant rate in all ACPI P-, C-. and
+   T-states. This is the architectural behavior moving forward.
+   On processors with invariant TSC support, the OS may use the TSC for
+   wall clock timer services (instead of ACPI or HPET timers). TSC reads
+   are much more efficient and do not incur the overhead associated with
+   a ring transition or access to a platform resource.
+   */
+  
+#ifdef WITH_APPLE
+  
+  i8 iTscp = iRdtscp();
+  return iTscp;
+  
+#else
+  
+  return 0;
+  
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -82,41 +117,6 @@ i8 Tick::iToUsec(i8 iTickDelta)
   i8 iMicroseconds = iTickDelta / iTicksPerMicrosecond;
   
   return iMicroseconds;
-}
-
-/*----------------------------------------------------------------------------*/
-/* read hardware timestamp counter                                            */
-/*----------------------------------------------------------------------------*/
-i8 Tick::iRdTscp(void)
-{
-  /*
-     Intel SDM says:
-       The processor monotonically increments the time-stamp counter MSR
-       every clock cycle and resets it to 0 whenever the processor is reset.
-       -----------------
-   
-       The time stamp counter in newer processors may support an enhancement,
-       referred to as invariant TSC. Processor’s support for invariant TSC is
-       indicated by CPUID.80000007H:EDX[8].
-   
-       The invariant TSC will run at a constant rate in all ACPI P-, C-. and
-       T-states. This is the architectural behavior moving forward.
-       On processors with invariant TSC support, the OS may use the TSC for
-       wall clock timer services (instead of ACPI or HPET timers). TSC reads
-       are much more efficient and do not incur the overhead associated with
-       a ring transition or access to a platform resource.
-  */
-  
-#ifdef WITH_APPLE
-  
-  i8 iTscp = iRdtscp();
-  return iTscp;
-  
-#else
-  
-  return 0;
-  
-#endif
 }
 
 /*============================================================================*/

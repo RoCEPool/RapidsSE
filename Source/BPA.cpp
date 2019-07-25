@@ -678,7 +678,7 @@ void BPA::vWriteBuffers(Stz* sFilePath)
   File* pFile = new File();
   pFile->bOpenWrite(sFilePath);
   
-  i8 iStart  = Tick::iTicks();
+  i8 iStart  = Tick::iRdClock();
   bn nBuffer;
   
   bn nBufferCount = gpBufferPool->m_nBuffers - 1;
@@ -693,7 +693,7 @@ void BPA::vWriteBuffers(Stz* sFilePath)
   }
   ASSERT(*nBufferCount + 1 == *nBuffer);
   
-  i8 iUpdate = Tick::iTicks();
+  i8 iUpdate = Tick::iRdClock();
   
   i8 iTicks = (iUpdate - iStart);
   i8 iTicksPerSecond = Tick::iTicksPerSecond();
