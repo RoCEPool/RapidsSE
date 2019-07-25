@@ -18,6 +18,7 @@ using namespace Logging;
 #include "ShmLog.hpp"
 #include "LogEntry.hpp"
 #include "Log.hpp"
+#include "ActLog.hpp"
 
 
 
