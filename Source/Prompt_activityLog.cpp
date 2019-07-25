@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Prompt_activityLog.hpp -- Print Log Information                    */
+/* Prompt_activityLog.hpp -- Print Log Information                            */
 /*============================================================================*/
 
 #include "Prompt.h"
@@ -11,13 +11,13 @@ PromptNote mPromptNote_ActivityLog (
   PF_ACTIVITYLOG,           // prompt function
   "Prompt_activityLog"_Stz, // name of the prompt function
   "comment"_Stz,            // comment about the function
-  "activityLog"_Stz,        // the prompt command
+  "logWrite"_Stz,           // the prompt command
   nullptr,                  // the second word
   bPrompt_activityLog,      // prompt function
   true,                     // enabled
 
   true,                     // visible
-  "activityLog"_Stz,        // help
+  "logWrite"_Stz,           // help
   ""_Stz                    // description
 );
 
