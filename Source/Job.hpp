@@ -165,11 +165,12 @@ namespace Jobs
 
     Decider m_oAcksRmg;  // acks remaining
 
+    bool m_bMarkTrace;    // trace (mark version)
     bool m_bMarkActivity; // mark activity
     i8   m_i_Activity;    // activity
+  
     bool m_bMarkAction;   // mark actions
     i8   m_i_ActionRoot;  // action
-    bool m_bMarkTrace;    // trace (mark version)
 
     JobClass*    m_pJobClass;        // job class
     Tasks::Task* m_pExecutingTask;   // task executing the job
