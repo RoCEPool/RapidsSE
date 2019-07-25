@@ -176,7 +176,7 @@ void AttachMap::vPrintAttachMap(void)
 /*----------------------------------------------------------------------------*/
 /* record all the needed arguments                                            */
 /*----------------------------------------------------------------------------*/
-void AttachMap::vRecordArguments(bool bActionSequence,
+void AttachMap::vRecordArguments(
                                  bool bActivityLog,
                                  bool bDeveloper,
                                  i8   nDummyLoop,
@@ -205,7 +205,6 @@ void AttachMap::vRecordArguments(bool bActionSequence,
   m_oBirth.vNow();
   m_oNow.vSetNowUTC();
   
-  Arg.m_bActionSequence  = bActionSequence;
   Arg.m_bActivityLog     = bActivityLog;
   Arg.m_bDeveloper       = bDeveloper;
   Arg.m_nDummyLoop       = nDummyLoop;

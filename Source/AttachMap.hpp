@@ -13,7 +13,6 @@ namespace StorageEngine
     Now   m_oNow;
   
     struct {
-      bool m_bActionSequence;
       bool m_bActivityLog;
       bool m_bDeveloper;
       i8   m_nDummyLoop;    // loop count for dummy threads
@@ -101,7 +100,6 @@ namespace StorageEngine
     void vGetGlobals(void);
     void vPrintAttachMap(void);
     void vRecordArguments(
-                          bool bActionSequence,
                           bool bActivityLog,
                           bool bDeveloper,
                           i8   nDummyLoop,
