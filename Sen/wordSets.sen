@@ -4,14 +4,14 @@
 
 "-wordSets.sen" .verbose
 
-"wordSet_core.sen" include
+"wordSet_core.sen"     include
 "wordSet_corePlus.sen" include
 
-"wordSet_am.sen" include
-"wordSet_debug.sen" include
-"wordSet_dic.sen" include
-"wordSet_object.sen" include
-"wordSet_useful.sen" include
+"wordSet_log.sen"      include
+"wordSet_debug.sen"    include
+"wordSet_dic.sen"      include
+"wordSet_object.sen"   include
+"wordSet_useful.sen"   include
 
 "wordSet_dicStack.sen" include
 
