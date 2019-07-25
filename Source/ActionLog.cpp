@@ -61,7 +61,7 @@ ActionLog::~ActionLog(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* create or open Log (called by SE)                                  */
+/* create or open Log (called by SE)                                          */
 /*----------------------------------------------------------------------------*/
 void ActionLog::vOpenBySE(bool bStarting)
 {
@@ -80,7 +80,7 @@ void ActionLog::vOpenBySE(bool bStarting)
   ActionLog* pActionSequence = nullptr;
   
   if (bStarting) {
-    pActionSequence = (ActionLog*)ShmLog::aCreateNew(sMapNm,nMapSz);
+    pActionSequence = (ActionLog*)ShmLog::aOpenNew(sMapNm,nMapSz);
     if (gpAttachMap->m_bVerbose)
       vTrace("ActionLog: created new map %s %lldB\n"_Stz,
              sMapNm.aStz(),

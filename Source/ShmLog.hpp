@@ -20,9 +20,9 @@ namespace Logging
    ~ShmLog(void) noexcept(false);
   
   protected:
-    static void* aCreateNew(s32 sRegionNm, i8 nRegionSz);
     static void* aOpenExisting(s32 sRegionNm, i8 nRegionSz);
-    
+    static void* aOpenNew(s32 sRegionNm, i8 nRegionSz);
+
     void vDropLock(void);
     void vGrabLock(void);
   };
