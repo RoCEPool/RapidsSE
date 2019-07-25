@@ -44,7 +44,7 @@ markres;
 
 print "exporting nation.csv..." ;
 
-amSection "EXPORT" ;
+logSection "EXPORT" ;
 
 export nation "/tmp/nation_export.csv" ;
 

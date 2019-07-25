@@ -10,7 +10,7 @@ namespace Prompt
   /*  0 */ PF_NONE=0,
   
   /*    */ PF_AM,
-  /*    */ PF_AMSECTION,
+  /*    */ PF_logSection,
   /*    */ PF_APISTATE,
   /*    */ PF_ARGS,
   /*    */ PF_ASCII,
@@ -101,7 +101,7 @@ namespace Prompt
   {
   /*  0 */ "NONE"_Stz,
   /*    */ "AM"_Stz,
-  /*    */ "AMSECTION"_Stz,
+  /*    */ "logSection"_Stz,
   /*    */ "APISTATE"_Stz,
   /*    */ "ARGS"_Stz,
   /*    */ "ASCII"_Stz,

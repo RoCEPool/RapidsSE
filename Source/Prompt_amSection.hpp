@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* Prompt_amSection.hpp -- write a section mark into the activity map         */
+/* Prompt_logSection.hpp -- write a section mark into the activity map         */
 /*============================================================================*/
 #pragma once
 
 namespace Prompt
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  bool bPrompt_amSection(SePrompt* pPrompt);
+  bool bPrompt_logSection(SePrompt* pPrompt);
 }
 
 /*============================================================================*/

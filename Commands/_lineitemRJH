@@ -10,6 +10,8 @@ startCluster;
 
 print "Cluster started" ;
 
+logSection createTable;
+
 time create table LineItem                 // SF * 6,000,000 rows
 (
   L_ORDERKEY      INTEGER       NOT NULL,  //  0)  8B   3B  O_ORDERKEY 1+
