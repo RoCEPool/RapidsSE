@@ -25,8 +25,8 @@ void Base::vTraceWith(void)
   vTrace("  WITH_ACTION_SEQUENCE\n"_Stz);
 #endif
 
-#ifdef WITH_ACTIVITY_MAP
-  vTrace("  WITH_ACTIVITY_MAP\n"_Stz);
+#ifdef WITH_SHARED_LOG
+  vTrace("  WITH_SHARED_LOG\n"_Stz);
 #endif
 
 #ifdef WITH_ADDRESS_CHECKING

@@ -13,7 +13,7 @@ extern Log* gpLog;
 /*----------------------------------------------------------------------------*/
 void ResLog::vNote(eSR eSysRes,Stz* szFormat, ...)
 {
-#ifdef WITH_ACTIVITY_MAP
+#ifdef WITH_SHARED_LOG
   if ( ! gpLog )
     return;
   

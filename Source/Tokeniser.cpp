@@ -72,8 +72,8 @@ Tokeniser::Tokeniser(void)
                       nNodes,
                       pNode->aNodeName(),
                       Process::iGetPid(),
-  #ifdef WITH_ACTIVITY_MAP
-                      gpAttachMap->Arg.m_bActivityLog? " AM+" : " AM",
+  #ifdef WITH_SHARED_LOG
+                      gpAttachMap->Arg.m_bLog? " LG+" : " LG-",
   #else
                       "",
   #endif

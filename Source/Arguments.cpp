@@ -58,7 +58,6 @@ Arguments::Arguments(void)
   m_bUnlink     = false;
 
   // options
-  m_bActivityLog     = false;
   m_bConfig          = true;
   m_bDeveloper       = false;
   m_bDontFree        = false;
@@ -144,6 +143,7 @@ void Arguments::vAddConstants(void)
   vAddConstant("args.jumboTook"_Stz,         m_nJumboTook);
   vAddConstant("args.killPrev"_Stz,          m_bKillPrev);
   vAddConstant("args.lock"_Stz,              m_bLock);
+  vAddConstant("args.log"_Stz,               m_bLog);
   vAddConstant("args.maxLoadErrors"_Stz,     m_nMaxLoadErrors);
   vAddConstant("args.maxReadyLP"_Stz,        m_nMaxReadyLP);
   vAddConstant("args.metadata"_Stz,          m_bMetadata);
@@ -174,7 +174,6 @@ void Arguments::vAddConstants(void)
   vAddConstant("args.unlink"_Stz,            m_bUnlink);
   vAddConstant("args.verbose"_Stz,           m_bVerbose);
   vAddConstant("args.welcome"_Stz,           m_bWelcome);
-  vAddConstant("args.activityLog"_Stz,       m_bActivityLog);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -634,25 +633,6 @@ bool Arguments::bParse(int argc, Stz* argv[])
     
     if (argv[i_Arg]->bSame("--developer"_Stz)) {
       m_bDeveloper = true;
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-#ifdef WITH_ACTIVITY_MAP
-    if (argv[i_Arg]->bSame("--activityLog"_Stz)) {
-      m_bActivityLog = true;
-      continue;
-    }
-#else
-    if (argv[i_Arg]->bSame("--activityLog"_Stz)) {
-      vWarn("arg --activityLog ignored; not compiled WITH_ACTIVITY_MAP\n"_Stz);
-      continue;
-    }
-#endif
-
-    if (argv[i_Arg]->bSame("--noActivityLog"_Stz)) {
-      m_bActivityLog = false;
       continue;
     }
     

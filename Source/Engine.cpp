@@ -808,7 +808,6 @@ void Engine::vStartSystem(void)
   ASSERT( ! gpAttachMap->m_oRootDic.bHasWords() );
     
   gpAttachMap->vRecordArguments(
-                                gxArguments.m_bActivityLog,
                                 gxArguments.m_bDeveloper,
                                 gxArguments.m_nDummyLoop,
                                 gxArguments.m_nDummySleep,

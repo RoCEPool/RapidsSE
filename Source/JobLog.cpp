@@ -13,7 +13,7 @@ extern Log* gpLog;
 /*----------------------------------------------------------------------------*/
 void JobLog::vNote(Jobs::Job* pJob, Stz* szFormat, ...)
 {
-#ifdef WITH_ACTIVITY_MAP
+#ifdef WITH_SHARED_LOG
   if ( ! gpLog )
     return;
   
@@ -57,7 +57,7 @@ void JobLog::vNote(Jobs::Job* pJob, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 void JobLog::vNoteState(Jobs::Job* pJob, Stz* szPoint)
 {
-#ifdef WITH_ACTIVITY_MAP
+#ifdef WITH_SHARED_LOG
   if (! gpLog)
     return;
   

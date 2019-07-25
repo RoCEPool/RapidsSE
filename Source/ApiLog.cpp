@@ -13,7 +13,7 @@ extern Log* gpLog;
 /*----------------------------------------------------------------------------*/
 void ApiLog::vNoteEntry(i8 eApiCall, i8 iJobId)
 {
-#ifdef WITH_ACTIVITY_MAP
+#ifdef WITH_SHARED_LOG
   if ( ! gpLog )
     return;
   
@@ -33,7 +33,7 @@ void ApiLog::vNoteEntry(i8 eApiCall, i8 iJobId)
 /*----------------------------------------------------------------------------*/
 void ApiLog::vNoteError(i8 eApiCall, i8 iJobId, i8 iError)
 {
-#ifdef WITH_ACTIVITY_MAP
+#ifdef WITH_SHARED_LOG
   if ( ! gpLog )
     return;
   
@@ -53,7 +53,7 @@ void ApiLog::vNoteError(i8 eApiCall, i8 iJobId, i8 iError)
 /*----------------------------------------------------------------------------*/
 void ApiLog::vNoteExit(i8 eApiCall, i8 iJobId)
 {
-#ifdef WITH_ACTIVITY_MAP
+#ifdef WITH_SHARED_LOG
   if ( ! gpLog )
     return;
   

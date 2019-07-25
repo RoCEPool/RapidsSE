@@ -146,7 +146,7 @@ Log* Log::pAttachExisting(void)
 /*----------------------------------------------------------------------------*/
 void Log::vNote(Stz* aFormat, ...)
 {
-#ifdef WITH_ACTIVITY_MAP
+#ifdef WITH_SHARED_LOG
   if ( ! gpLog )
     return;
   
@@ -165,7 +165,7 @@ void Log::vNote(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 void Log::vNoteSection(Stz* szSectionNm)
 {
-#ifdef WITH_ACTIVITY_MAP
+#ifdef WITH_SHARED_LOG
   if ( ! gpLog )
     return;
 
@@ -190,7 +190,7 @@ void Log::vNoteSection(Stz* szSectionNm)
 /*----------------------------------------------------------------------------*/
 void Log::vNoteString(i8 iJobId, s48K& sString)
 {
-#ifdef WITH_ACTIVITY_MAP
+#ifdef WITH_SHARED_LOG
   if ( ! gpLog )
     return;
   
@@ -222,7 +222,7 @@ void Log::vNoteString(i8 iJobId, s48K& sString)
 /*----------------------------------------------------------------------------*/
 void Log::vMonitorPortrait(s48K& sPortrait)
 {
-#ifdef WITH_ACTIVITY_MAP
+#ifdef WITH_SHARED_LOG
   if (! gpLog) {
     sPortrait.vSprint("Log: activity map not configured\n"_Stz);
     return;
@@ -246,7 +246,7 @@ void Log::vMonitorPortrait(s48K& sPortrait)
                     iPercentFull
                      );
 #else
-  sPortrait.vSprint("Log: not compiled WITH_ACTIVITY_MAP\n"_Stz);
+  sPortrait.vSprint("Log: not compiled WITH_SHARED_LOG\n"_Stz);
 #endif
 }
 
@@ -255,8 +255,8 @@ void Log::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 void Log::vOpenByApi(void)
 {
-#ifdef WITH_ACTIVITY_MAP
-  if (! gpAttachMap->Arg.m_bActivityLog)
+#ifdef WITH_SHARED_LOG
+  if (! gpAttachMap->Arg.m_bLog)
     return;
   
   if (gpLog)
@@ -288,8 +288,8 @@ void Log::vOpenByApi(void)
 /*----------------------------------------------------------------------------*/
 void Log::vOpenBySE(bool bStarting)
 {
-#ifdef WITH_ACTIVITY_MAP
-  if (! gpAttachMap->Arg.m_bActivityLog)
+#ifdef WITH_SHARED_LOG
+  if (! gpAttachMap->Arg.m_bLog)
     return;
   
   if (gpLog)
@@ -352,7 +352,7 @@ void Log::vOpenBySE(bool bStarting)
 /*----------------------------------------------------------------------------*/
 void Log::vWriteCsv(bool bShortForm)
 {
-#ifdef WITH_ACTIVITY_MAP
+#ifdef WITH_SHARED_LOG
   if (! gpLog)
     return;
   
