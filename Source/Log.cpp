@@ -115,7 +115,7 @@ Log* Log::pAttachExisting(void)
   sRegionName = *C_LOG_REGION;
   
   // open existing shm region
-  bool bResult = Shm::bOpenExisting(sRegionName,iFD,oSysCall);
+  bool bResult = Shm::bOpenExisting(iFD,sRegionName,oSysCall);
   if (! bResult)
     vFatal("Log::bOpenExisting: failed to open region: %s\n"_Stz,
            sRegionName.aChar());

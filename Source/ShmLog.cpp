@@ -100,7 +100,7 @@ void* ShmLog::aOpenExisting(s32 sRegionNm, i8 nRegionSz)
   SysCall oSysCall;
   
   // open existing shm region
-  bool bResult = Shm::bOpenExisting(sRegionNm,iFD,oSysCall);
+  bool bResult = Shm::bOpenExisting(iFD,sRegionNm,oSysCall);
   if (! bResult)
     vFatal("ShmLog::aOpenExisting: failed to open region: %s\n"_Stz,
            sRegionNm.aChar());

@@ -88,7 +88,7 @@ bool Shm::bOpenCreate(int& iShmFd, s32& sShmNm, SysCall& oSysCall)
 /*----------------------------------------------------------------------------*/
 /* open an existing shared memory sement                                      */
 /*----------------------------------------------------------------------------*/
-bool Shm::bOpenExisting(s32& sShmNm, int& iShmFd, SysCall& oSysCall)
+bool Shm::bOpenExisting(int& iShmFd, s32& sShmNm, SysCall& oSysCall)
 {
   oSysCall.vClear();
   
@@ -155,7 +155,7 @@ bool Shm::bTest(s32& sShmNm)
   SysCall oSysCall;
   
   // open existing shm region
-  bool bResult = Shm::bOpenExisting(sShmNm,iShmFd,oSysCall);
+  bool bResult = Shm::bOpenExisting(iShmFd,sShmNm,oSysCall);
   if ( ! bResult )
     return false;
   

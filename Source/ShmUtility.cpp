@@ -86,9 +86,7 @@ void ShmUtility::vAttach(void)
   SysCall oSysCall;
  
   // open existing shm region
-  bool bResult = Shm::bOpenExisting(msRegionName,
-                              iFD,
-                              oSysCall);
+  bool bResult = Shm::bOpenExisting(iFD,msRegionName,oSysCall);
 
   if ( ! bResult ) {
     vFatal("ShmUtility::vAttach: failed to open region: %s\n"_Stz,

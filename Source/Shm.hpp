@@ -17,7 +17,7 @@ namespace System
     static void* aMap(int iShmFd, void* aAddress, i8 iSize,
                       bool bHugeTlb, SysCall& SysCall);
     static bool  bOpenCreate(int& iShmFd, s32& sShmNm, SysCall& SysCall);
-    static bool  bOpenExisting(s32& sShmNm, int& iShmFd, SysCall& SysCall);
+    static bool  bOpenExisting(int& iShmFd, s32& sShmNm, SysCall& SysCall);
     static bool  bTest(s32& sShmNm);
     static bool  bUnmap(void* aAddress, i8 iSize, SysCall& oSysCall);
     static bool  bUnlink(s32& sShmNm, SysCall& oSysCall);
