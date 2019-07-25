@@ -70,7 +70,7 @@
 /*----------------------------------------------------------------------------*/
 : Job__Executed_rcv ( -- )
 
-  >>am <SEED_RCV>
+  >>logEntry <SEED_RCV>
   an::seed_rcv
 
   job::this locals| pJob__Executed |

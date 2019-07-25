@@ -39,8 +39,8 @@
   // get schema name from job
   pJob_UseSchema job.objectName@ to sSchemaNm
 
-  sSchemaNm checkIsWord not if EC_NO_SUCH_SCHEMA pJob_UseSchema <ERROR_JOB> !!am exit then
-  checkIsSchema not if pJob_UseSchema <ERROR_JOB> !!am exit then
+  sSchemaNm checkIsWord not if EC_NO_SUCH_SCHEMA pJob_UseSchema <ERROR_JOB> !!logError exit then
+  checkIsSchema not if pJob_UseSchema <ERROR_JOB> !!logError exit then
   execute pathPush
 
   // find the tables folder
@@ -56,7 +56,7 @@
 /*----------------------------------------------------------------------------*/
 : UseSchema_req ( -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| sSchemaNm pJob_UseSchema pTask |
 
@@ -85,7 +85,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // return
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*============================================================================*/

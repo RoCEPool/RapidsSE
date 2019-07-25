@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : insertRow_req ( -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| pJob_InsertRow pTask |
 
@@ -41,13 +41,13 @@
   pJob_InsertRow job.pushPath task::dicStack.set
 
   // there should be a table folder
-  sTableNm checkIsTableFolder not if pJob_InsertRow <ERROR_JOB> !!am <DONE_REQ> then
+  sTableNm checkIsTableFolder not if pJob_InsertRow <ERROR_JOB> !!logError <DONE_REQ> then
 
   // push table dictionary
   sTableNm pushTable assert
 
   // check it is a table
-  sTableNm checkIsTable not if popTable pJob_InsertRow <ERROR_JOB> !!am <DONE_REQ> then
+  sTableNm checkIsTable not if popTable pJob_InsertRow <ERROR_JOB> !!logError <DONE_REQ> then
 
   // use table name find and set target table
   sTableNm find execute locals| pTable |
@@ -62,7 +62,7 @@
   // encode the row
   pJob_InsertRow pJob_WriteRow job_writeRow.encodeRow locals| bResult |
 
-  bResult not if EC_INVALID_VALUE pJob_InsertRow <ERROR_JOB> !!am <DONE_REQ> then
+  bResult not if EC_INVALID_VALUE pJob_InsertRow <ERROR_JOB> !!logError <DONE_REQ> then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn the writeRow job for the node to which the row hashes to
@@ -72,7 +72,7 @@
   // distribute the job
   pJob_InsertRow job.distribute
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -80,7 +80,7 @@
 /*----------------------------------------------------------------------------*/
 : insertRow_exe ( pJob_InsertRow -- )
 
-  >>am <SEED_EXE>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_Space |
   job::this locals| pJob_InsertRow |
@@ -110,7 +110,7 @@
 
   pJob_InsertRow job::participantExecuted
 
-  <<am <DONE_EXE>
+  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -118,7 +118,7 @@
 /*----------------------------------------------------------------------------*/
 : insertRow.checkResources ( pJob_InsertRow -- )
 
-  >>am <Check_Resources>
+  >>logEntry <Check_Resources>
 
   params| pJob_InsertRow  |
 
@@ -139,7 +139,7 @@
   //pathDump
 
   // there should be a table folder
-  sTableNm checkIsTableFolder not if pJob_InsertRow <ERROR_JOB> !!am exit then
+  sTableNm checkIsTableFolder not if pJob_InsertRow <ERROR_JOB> !!logError exit then
   //sTableNm "In table folder: %v" fmt.print
 
   // push table dictionary
@@ -147,7 +147,7 @@
   //pathDump
 
   // check it is a table
-  sTableNm checkIsTable not if popTable pJob_InsertRow <ERROR_JOB> !!am exit then
+  sTableNm checkIsTable not if popTable pJob_InsertRow <ERROR_JOB> !!logError exit then
 
   // pop table dictionary
   popTable
@@ -156,9 +156,9 @@
   //----------------------------------------------------------------------------
   // check if we have enough buffers
 
-  node::checkEnoughBuffers not if pJob_InsertRow <ERROR_JOB> !!am exit then
+  node::checkEnoughBuffers not if pJob_InsertRow <ERROR_JOB> !!logError exit then
 
-  <<am <Resources_Checked>
+  <<logExit <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -166,14 +166,14 @@
 /*----------------------------------------------------------------------------*/
 : insertRow.releaseResources ( pJob_InsertRow -- )
 
-  >>am <Release_Resources>
+  >>logEntry <Release_Resources>
 
   params| pJob_InsertRow  |
 
   tp: insertRow.releaseResources
   //releaseResources received" .
 
-  <<am <Resources_Released>
+  <<logExit <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -181,7 +181,7 @@
 /*----------------------------------------------------------------------------*/
 : insertRow_beg ( -- )
 
-  >>am <SEED_BEG>
+  >>logEntry <SEED_BEG>
 
   job::this locals| pJob_InsertRow |
 
@@ -192,7 +192,7 @@
 
   job::participantBegun
 
-  <<am <DONE_BEG>
+  <<logExit <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -200,7 +200,7 @@
 /*----------------------------------------------------------------------------*/
 : insertRow_end ( -- )
 
-  >>am <SEED_END>
+  >>logEntry <SEED_END>
 
   job::this locals| pJob_InsertRow |
 
@@ -211,7 +211,7 @@
 
   job::participantEnded
 
-  <<am <DONE_END>
+  <<logExit <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -219,13 +219,13 @@
 /*----------------------------------------------------------------------------*/
 : insertRow_can ( -- )
 
-  >>am <SEED_CAN>
+  >>logEntry <SEED_CAN>
 
   ">> insertRow_can <<" .verbose
 
   job::participantCancelled
 
-  <<am <DONE_CAN>
+  <<logExit <DONE_CAN>
 ;
 
 /*============================================================================*/

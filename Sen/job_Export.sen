@@ -138,7 +138,7 @@
 /*----------------------------------------------------------------------------*/
 : (E`).checkResources ( pJob_(E`) -- )
 
-  >>am <Check_Resources>
+  >>logEntry <Check_Resources>
 
   params| pJob_(E`)  |
 
@@ -156,10 +156,10 @@
    pJob_(E`) job.objectName@ (E`).checkTable
    not if
      pJob_(E`) <ERROR_JOB>
-     !!am exit
+     !!logError exit
   then
 
-  <<am <Resources_Checked>
+  <<logExit <Resources_Checked>
   an::resources_checked
 ;
 
@@ -168,11 +168,11 @@
 /*----------------------------------------------------------------------------*/
 : (E`).releaseResources ( pJob_Export -- )
 
-  >>am <Release_Resources>
+  >>logEntry <Release_Resources>
 
   params| pJob_Export  |
 
-  <<am <Resources_Released>
+  <<logExit <Resources_Released>
   an::resources_released
 ;
 
@@ -184,7 +184,7 @@
 /*----------------------------------------------------------------------------*/
 : export_req ( -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
   an::seed_req
 
   job::this locals| pJob_E |
@@ -215,7 +215,7 @@
   // close the export file E::m_oCsvFile
   pJob_E job_export.end
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -225,7 +225,7 @@
 /*----------------------------------------------------------------------------*/
 : export_beg ( -- )
 
-  >>am <SEED_BEG>
+  >>logEntry <SEED_BEG>
   an::seed_rcv
 
   job::this locals| pJob_E` |
@@ -251,7 +251,7 @@
   // send job__begin to [E]                                  __BEGUN[E](E`):(E`)
   job::participantBegun
 
-  <<am <DONE_BEG>
+  <<logExit <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -259,7 +259,7 @@
 /*----------------------------------------------------------------------------*/
 : export_exe ( -- )
 
-  >>am <SEED_EXE>
+  >>logEntry <SEED_EXE>
   an::seed_exe
 
   job::this locals| pJob_(E`) |
@@ -275,7 +275,7 @@
   // (E`) sends job__executed to [E]                      __EXECUTED[E](E`):(E`)
   pJob_(E`) job::participantExecuted
 
-  <<am <DONE_EXE>
+  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -283,7 +283,7 @@
 /*----------------------------------------------------------------------------*/
 : export_end ( -- )
 
-  >>am <SEED_END>
+  >>logEntry <SEED_END>
   an::seed_end
 
   job::this locals| pJob_(E`) |
@@ -298,7 +298,7 @@
 
   CN_JOB_EXPORT job::stateDiagram .
 
-  <<am <DONE_END>
+  <<logExit <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -306,7 +306,7 @@
 /*----------------------------------------------------------------------------*/
 : export_can ( -- )
 
-  >>am <SEED_CAN>
+  >>logEntry <SEED_CAN>
   an::seed_can
 
   job::this locals| pJob_(E`) |
@@ -317,7 +317,7 @@
   // (E`) sends job__cancelled to [E]                        __CANCELLED[E]():()
   job::participantCancelled
 
-  <<am <DONE_CAN>
+  <<logExit <DONE_CAN>
 ;
 
 /*============================================================================*/

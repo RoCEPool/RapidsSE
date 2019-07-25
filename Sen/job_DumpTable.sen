@@ -38,7 +38,7 @@
 /*----------------------------------------------------------------------------*/
 : dumpTable_req ( -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   0 0 0 0 locals| pTask sTableNm sIndexNm pJob_DumpTable |
 
@@ -71,7 +71,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //check if we can dump the table
-  sTableNm checkDumpTable not if pJob_DumpTable <ERROR_REQUEST> !!am exit then
+  sTableNm checkDumpTable not if pJob_DumpTable <ERROR_REQUEST> !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table folder
@@ -87,7 +87,7 @@
 
   pJob_DumpTable job.notice
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -114,7 +114,7 @@
   // get table name
   pJob_DumpTable job.objectName@ to sTableNm
 
-  sTableNm checkDumpTable not if pJob_DumpTable <ERROR_JOB> !!am exit then
+  sTableNm checkDumpTable not if pJob_DumpTable <ERROR_JOB> !!logError exit then
 
   ddlLock::dropWrite
 ;

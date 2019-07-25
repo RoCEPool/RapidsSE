@@ -10,7 +10,7 @@
 /*----------------------------------------------------------------------------*/
 : listCatalogs_req ( -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| pJob_ListCatalogs pTask |
 
@@ -35,7 +35,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the catalogs folder
-  checkInCatalogs not if pJob_ListCatalogs <ERROR_REQUEST> !!am exit then
+  checkInCatalogs not if pJob_ListCatalogs <ERROR_REQUEST> !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // list catalogs folder contents
@@ -43,7 +43,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // return
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*============================================================================*/

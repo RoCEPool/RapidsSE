@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : SubInflate_run ( -- <R> )
 
-  >>am <SEED_RUN>
+  >>logEntry <SEED_RUN>
 
   0 0 0 locals| pTask pJob_SubInflate pJob_InflateRows |
 

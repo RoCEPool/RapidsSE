@@ -23,13 +23,13 @@
 /*----------------------------------------------------------------------------*/
 : Repeater_req (  -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   job::this locals| pJob_Repeater |
 
   pJob_Repeater Repeater_process
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*============================================================================*/

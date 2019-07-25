@@ -60,7 +60,7 @@
 /*----------------------------------------------------------------------------*/
 : createTable_req (  -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -75,7 +75,7 @@
   // distribute the job
   pJob job.distribute
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -83,7 +83,7 @@
 /*----------------------------------------------------------------------------*/
 : createTable_exe ( pJob_CreateTable -- )
 
-  >>am <SEED_EXE>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_CreateTable |
   job::this locals| pJob_CreateTable |
@@ -131,7 +131,7 @@
 
   pJob_CreateTable job::participantExecuted
 
-  <<am <DONE_EXE>
+  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -139,7 +139,7 @@
 /*----------------------------------------------------------------------------*/
 : createTable.checkResources ( pJob_CreateTable -- )
 
-  >>am <Check_Resources>
+  >>logEntry <Check_Resources>
 
   params| pJob_CreateTable  |
 
@@ -157,14 +157,14 @@
 
   //----------------------------------------------------------------------------
   // check if we have enough buffers
-  node::checkEnoughBuffers not if pJob_CreateTable <ERROR_JOB> !!am exit then
+  node::checkEnoughBuffers not if pJob_CreateTable <ERROR_JOB> !!logError exit then
 
   //----------------------------------------------------------------------------
   // check if we can make the table
   pJob_CreateTable job.objectName@
-  checkMakeTable not if pJob_CreateTable <ERROR_JOB> !!am exit then
+  checkMakeTable not if pJob_CreateTable <ERROR_JOB> !!logError exit then
 
-  <<am <Resources_Checked>
+  <<logExit <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -172,14 +172,14 @@
 /*----------------------------------------------------------------------------*/
 : createTable.releaseResources ( pJob_CreateTable -- )
 
-  >>am <Release_Resources>
+  >>logEntry <Release_Resources>
 
   params| pJob_CreateTable  |
 
   tp: createTable.releaseResources
   //"releaseResources received" .
 
-  <<am <Resources_Released>
+  <<logExit <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -187,7 +187,7 @@
 /*----------------------------------------------------------------------------*/
 : createTable_beg ( -- )
 
-  >>am <SEED_BEG>
+  >>logEntry <SEED_BEG>
 
   job::this locals| pJob_CreateTable |
 
@@ -202,7 +202,7 @@
   // this job has begun
   job::participantBegun
 
-  <<am <DONE_BEG>
+  <<logExit <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -210,7 +210,7 @@
 /*----------------------------------------------------------------------------*/
 : createTable_end ( -- )
 
-  >>am <SEED_END>
+  >>logEntry <SEED_END>
 
   job::this locals| pJob_CreateTable |
 
@@ -221,7 +221,7 @@
 
   job::participantEnded
 
-  <<am <DONE_END>
+  <<logExit <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -229,7 +229,7 @@
 /*----------------------------------------------------------------------------*/
 : createTable_can ( -- )
 
-  >>am <SEED_CAN>
+  >>logEntry <SEED_CAN>
 
   job::this locals| pJob_CreateTable |
 
@@ -237,7 +237,7 @@
 
   job::participantCancelled
 
-  <<am <DONE_CAN>
+  <<logExit <DONE_CAN>
 ;
 
 /*============================================================================*/

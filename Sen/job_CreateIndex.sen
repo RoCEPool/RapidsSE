@@ -146,7 +146,7 @@
 /*----------------------------------------------------------------------------*/
 : createIndex_req (  -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -164,7 +164,7 @@
   // distribute the job
   pJob job.distribute
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -172,7 +172,7 @@
 /*----------------------------------------------------------------------------*/
 : createIndex_exe ( Job_CreateIndex -- )
 
-  >>am <SEED_EXE>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_CreateIndex |
   job::this locals| pJob_CreateIndex |
@@ -206,7 +206,7 @@
 
   pJob_CreateIndex job::participantExecuted
 
-  <<am <DONE_EXE>
+  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -214,7 +214,7 @@
 /*----------------------------------------------------------------------------*/
 : createIndex.checkResources ( Job_CreateIndex -- )
 
-  >>am <Check_Resources>
+  >>logEntry <Check_Resources>
 
   params| pJob_CreateIndex  |
   0 0 locals| sTableNm sIndexNm |
@@ -233,13 +233,13 @@
 
   //----------------------------------------------------------------------------
   // check if we have enough buffers
-  node::checkEnoughBuffers not if pJob_CreateIndex <ERROR_JOB> !!am exit then
+  node::checkEnoughBuffers not if pJob_CreateIndex <ERROR_JOB> !!logError exit then
 
   //----------------------------------------------------------------------------
   // check ok to make index
-  pJob_CreateIndex checkMakeIndex not if pJob_CreateIndex <ERROR_JOB> !!am exit then
+  pJob_CreateIndex checkMakeIndex not if pJob_CreateIndex <ERROR_JOB> !!logError exit then
 
-  <<am <Resources_Checked>
+  <<logExit <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -247,14 +247,14 @@
 /*----------------------------------------------------------------------------*/
 : createIndex.releaseResources ( Job_CreateIndex -- )
 
-  >>am <Release_Resources>
+  >>logEntry <Release_Resources>
 
   params| pJob_CreateIndex  |
 
   tp: createIndex.releaseResources
   //"releaseResources received" .
 
-  <<am <Resources_Released>
+  <<logExit <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -262,7 +262,7 @@
 /*----------------------------------------------------------------------------*/
 : createIndex_beg ( -- )
 
-  >>am <SEED_BEG>
+  >>logEntry <SEED_BEG>
 
   job::this locals| pJob_createIndex |
 
@@ -272,7 +272,7 @@
 
   job::participantBegun
 
-  <<am <DONE_BEG>
+  <<logExit <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -280,7 +280,7 @@
 /*----------------------------------------------------------------------------*/
 : createIndex_end ( -- )
 
-  >>am <SEED_END>
+  >>logEntry <SEED_END>
 
   job::this locals| pJob_createIndex |
 
@@ -288,7 +288,7 @@
 
   job::participantEnded
 
-  <<am <DONE_END>
+  <<logExit <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -296,7 +296,7 @@
 /*----------------------------------------------------------------------------*/
 : createIndex_can ( -- )
 
-  >>am <SEED_CAN>
+  >>logEntry <SEED_CAN>
 
   job::this locals| pJob_createIndex |
 
@@ -305,7 +305,7 @@
 
   job::participantCancelled
 
-  <<am <DONE_CAN>
+  <<logExit <DONE_CAN>
 ;
 
 /*============================================================================*/

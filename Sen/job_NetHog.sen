@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : NetHog_rcv (  -- <R> )
 
-  >>am <SEED_BEG>
+  >>logEntry <SEED_BEG>
 
   0 locals| iHogNo  |
   0 locals| iNodeNo |
@@ -51,7 +51,7 @@
   iNextNodeNo job::this job.forward
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  <<am
+  <<logExit
   job::deleteThis
   <DONE_RCV>
 ;
@@ -61,13 +61,13 @@
 /*----------------------------------------------------------------------------*/
 : NetHog_req (  -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   //"Hog Boss" .
 
   job::this locals| pJob_NetHog |
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*============================================================================*/

@@ -46,7 +46,7 @@
 /*----------------------------------------------------------------------------*/
 : listIdxColumns_req ( -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   0 0 0 0 locals| sTableNm sIndexNm pJob_ListIdxColumns pTask |
 
@@ -71,7 +71,7 @@
 
   //----------------------------------------------------------------------------
   // should be in the tables folder
-  checkInTables not if pJob_ListIdxColumns <ERROR_REQUEST> !!am exit then
+  checkInTables not if pJob_ListIdxColumns <ERROR_REQUEST> !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get table name from job
@@ -79,7 +79,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // there should be a table folder
-  sTableNm checkIsTableFolder not if pJob_ListIdxColumns <ERROR_REQUEST> !!am exit then
+  sTableNm checkIsTableFolder not if pJob_ListIdxColumns <ERROR_REQUEST> !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
@@ -87,7 +87,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is a table
-  sTableNm checkIsTable not if popTable pJob_ListIdxColumns <ERROR_REQUEST> !!am exit then
+  sTableNm checkIsTable not if popTable pJob_ListIdxColumns <ERROR_REQUEST> !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push indexes folder
@@ -101,7 +101,7 @@
   // check it is an index
   sIndexNm checkIsIndex
   not if
-    popIndexes popTable assertInTables pJob_ListIdxColumns <ERROR_REQUEST> !!am exit
+    popIndexes popTable assertInTables pJob_ListIdxColumns <ERROR_REQUEST> !!logError exit
   then
 
   args.metadata if
@@ -122,7 +122,7 @@
   popTable
   assertInTables
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*============================================================================*/

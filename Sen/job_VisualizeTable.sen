@@ -38,7 +38,7 @@
 /*----------------------------------------------------------------------------*/
 : visualizeTable_req ( -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   0 0 0 0 0 locals| pTask pIndex sTableNm sIndexNm pjob_VisualizeTable |
 
@@ -71,7 +71,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can visualize table
-  sTableNm checkVisualizeTable not if pjob_VisualizeTable <ERROR_REQUEST> !!am exit then
+  sTableNm checkVisualizeTable not if pjob_VisualizeTable <ERROR_REQUEST> !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table folder
@@ -87,7 +87,7 @@
 
   pjob_VisualizeTable job.notice
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*============================================================================*/

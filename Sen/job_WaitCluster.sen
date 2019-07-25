@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : waitCluster_req ( -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -31,7 +31,7 @@
   // distribute the job
   pJob job.distribute
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -39,7 +39,7 @@
 /*----------------------------------------------------------------------------*/
 : waitCluster_exe ( pJob_WaitCluster -- )
 
-  >>am <SEED_EXE>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_WaitCluster |
   job::this locals| pJob_WaitCluster |
@@ -52,7 +52,7 @@
 
   pJob_WaitCluster job::participantExecuted
 
-  <<am <DONE_EXE>
+  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +60,7 @@
 /*----------------------------------------------------------------------------*/
 : waitCluster_beg ( -- )
 
-  >>am <SEED_BEG>
+  >>logEntry <SEED_BEG>
 
   job::this locals| pJob_WaitCluster |
 
@@ -68,7 +68,7 @@
 
   job::participantBegun
 
-  <<am <DONE_BEG>
+  <<logExit <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -76,13 +76,13 @@
 /*----------------------------------------------------------------------------*/
 : waitCluster_end ( -- )
 
-  >>am <SEED_END>
+  >>logEntry <SEED_END>
 
   job::this locals| pJob_WaitCluster |
 
   job::participantEnded
 
-  <<am <DONE_END>
+  <<logExit <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -90,13 +90,13 @@
 /*----------------------------------------------------------------------------*/
 : waitCluster_can ( -- )
 
-  >>am <SEED_CAN>
+  >>logEntry <SEED_CAN>
 
   job::this locals| pJob_WaitCluster |
 
   job::participantCancelled
 
-  <<am <DONE_CAN>
+  <<logExit <DONE_CAN>
 ;
 
 /*============================================================================*/

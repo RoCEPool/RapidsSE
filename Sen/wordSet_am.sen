@@ -105,7 +105,7 @@
 /*----------------------------------------------------------------------------*/
 /* word entry mark                                                            */
 /*----------------------------------------------------------------------------*/
-: >>am immediate
+: >>logEntry immediate
 
   // format the string to be printed
   word::this word.name ">>%v" str.format
@@ -117,7 +117,7 @@
   POSTPONE Log::markEntry
 ;
 /*----------------------------------------------------------------------------*/
-//: >>am immediate
+//: >>logEntry immediate
 //
 //  POSTPONE job::this
 //  POSTPONE job.class
@@ -134,7 +134,7 @@
 /*----------------------------------------------------------------------------*/
 /* word exit mark                                                             */
 /*----------------------------------------------------------------------------*/
-: <<am immediate
+: <<logExit immediate
 
   // format the string to be printed
   word::this word.name "<<%v" str.format
@@ -149,7 +149,7 @@
 /*----------------------------------------------------------------------------*/
 /* word error mark                                                            */
 /*----------------------------------------------------------------------------*/
-: !!am immediate
+: !!logError immediate
 
   // format the string to be printed
   word::this word.name "!!%v" str.format
@@ -164,7 +164,7 @@
 /*----------------------------------------------------------------------------*/
 /* activity mark                                                              */
 /*----------------------------------------------------------------------------*/
-: .am immediate
+: .logNote immediate
 
   // encode call to markEntry
   POSTPONE Log::mark

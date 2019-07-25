@@ -77,7 +77,7 @@
 /*----------------------------------------------------------------------------*/
 : startCluster_req ( -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -112,7 +112,7 @@
 
   pJob job.distribute
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -120,7 +120,7 @@
 /*----------------------------------------------------------------------------*/
 : startCluster_exe ( pJob_StartCluster -- )
 
-  >>am <SEED_EXE>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_StartCluster |
   job::this locals| pJob_StartCluster |
@@ -133,7 +133,7 @@
 
   pJob_StartCluster job::participantExecuted
 
-  <<am <DONE_EXE>
+  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -141,7 +141,7 @@
 /*----------------------------------------------------------------------------*/
 : startCluster_beg ( -- )
 
-  >>am <SEED_BEG>
+  >>logEntry <SEED_BEG>
 
   job::this locals| pJob_status |
 
@@ -149,7 +149,7 @@
 
   job::participantBegun
 
-  <<am <DONE_BEG>
+  <<logExit <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -157,13 +157,13 @@
 /*----------------------------------------------------------------------------*/
 : startCluster_end ( -- )
 
-  >>am <SEED_END>
+  >>logEntry <SEED_END>
 
   job::this locals| pJob_status |
 
   job::participantEnded
 
-  <<am <DONE_END>
+  <<logExit <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -171,11 +171,11 @@
 /*----------------------------------------------------------------------------*/
 : startCluster_can ( -- )
 
-  >>am <SEED_CAN>
+  >>logEntry <SEED_CAN>
 
   job::this locals| pJob_status |
 
-  <<am <DONE_CAN>
+  <<logExit <DONE_CAN>
 ;
 
 /*============================================================================*/

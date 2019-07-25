@@ -39,7 +39,7 @@
 /*----------------------------------------------------------------------------*/
 : dropCatalog_req ( -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -57,7 +57,7 @@
   // distribute the job
   pJob job.distribute
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -65,7 +65,7 @@
 /*----------------------------------------------------------------------------*/
 : dropCatalog_exe ( pJob_DropCatalog -- )
 
-  >>am <SEED_EXE>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_DropCatalog |
   job::this locals| pJob_DropCatalog |
@@ -94,7 +94,7 @@
 
   pJob_DropCatalog job::participantExecuted
 
-  <<am <DONE_EXE>
+  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -102,7 +102,7 @@
 /*----------------------------------------------------------------------------*/
 : dropCatalog.checkResources ( Job_DropCatalog -- )
 
-  >>am <Check_Resources>
+  >>logEntry <Check_Resources>
 
   params| pJob_DropCatalog  |
 
@@ -121,9 +121,9 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the catalog
   pJob_DropCatalog job.objectName@
-  checkRemoveCatalog not if pJob_DropCatalog <ERROR_JOB> !!am exit then
+  checkRemoveCatalog not if pJob_DropCatalog <ERROR_JOB> !!logError exit then
 
-  <<am <Resources_Checked>
+  <<logExit <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -131,14 +131,14 @@
 /*----------------------------------------------------------------------------*/
 : dropCatalog.releaseResources ( Job_DropCatalog -- )
 
-  >>am <Release_Resources>
+  >>logEntry <Release_Resources>
 
   params| pJob_DropCatalog  |
 
   tp: dropCatalog.releaseResources
   //releaseResources received" .
 
-  <<am <Resources_Released>
+  <<logExit <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -146,7 +146,7 @@
 /*----------------------------------------------------------------------------*/
 : dropCatalog_beg ( -- )
 
-  >>am <SEED_BEG>
+  >>logEntry <SEED_BEG>
 
   job::this locals| pJob_dropCatalog |
 
@@ -157,7 +157,7 @@
 
   job::participantBegun
 
-  <<am <DONE_BEG>
+  <<logExit <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -165,7 +165,7 @@
 /*----------------------------------------------------------------------------*/
 : dropCatalog_end ( -- )
 
-  >>am <SEED_END>
+  >>logEntry <SEED_END>
 
   job::this locals| pJob_dropCatalog |
 
@@ -173,7 +173,7 @@
 
   job::participantEnded
 
-  <<am <DONE_END>
+  <<logExit <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -181,7 +181,7 @@
 /*----------------------------------------------------------------------------*/
 : dropCatalog_can ( -- )
 
-  >>am <SEED_CAN>
+  >>logEntry <SEED_CAN>
 
   job::this locals| pJob_dropCatalog |
 
@@ -189,7 +189,7 @@
 
   job::participantCancelled
 
-  <<am <DONE_CAN>
+  <<logExit <DONE_CAN>
 ;
 
 /*============================================================================*/

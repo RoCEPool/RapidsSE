@@ -52,7 +52,7 @@
 /*----------------------------------------------------------------------------*/
 : compactIndex_req ( -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -70,7 +70,7 @@
   // distribute the job
   pJob job.distribute
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -78,7 +78,7 @@
 /*----------------------------------------------------------------------------*/
 : compactIndex_exe ( Job_CompactIndex -- )
 
-  >>am <SEED_EXE>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_CompactIndex |
   job::this locals| pJob_CompactIndex |
@@ -122,7 +122,7 @@
 
   pJob_CompactIndex job::participantExecuted
 
-  <<am <DONE_EXE>
+  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -130,7 +130,7 @@
 /*----------------------------------------------------------------------------*/
 : compactIndex.checkResources ( Job_CompactIndex -- )
 
-  >>am <Check_Resources>
+  >>logEntry <Check_Resources>
 
   params| pJob_CompactIndex  |
   0 0 locals| sIndexNm sTableNm |
@@ -152,9 +152,9 @@
   pJob_CompactIndex job.indexName@ to sIndexNm
   pJob_CompactIndex job.objectName@ to sTableNm
 
-  sTableNm sIndexNm checkCompactIndex not if pJob_CompactIndex <ERROR_JOB> !!am exit then
+  sTableNm sIndexNm checkCompactIndex not if pJob_CompactIndex <ERROR_JOB> !!logError exit then
 
-  <<am <Resources_Checked>
+  <<logExit <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -162,14 +162,14 @@
 /*----------------------------------------------------------------------------*/
 : compactIndex.releaseResources ( Job_CompactIndex -- )
 
-  >>am <Release_Resources>
+  >>logEntry <Release_Resources>
 
   params| pJob_CompactIndex  |
 
   tp: compactIndex.releaseResources
   //"releaseResources received" .
 
-  <<am <Resources_Released>
+  <<logExit <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -177,7 +177,7 @@
 /*----------------------------------------------------------------------------*/
 : compactIndex_beg ( -- )
 
-  >>am <SEED_BEG>
+  >>logEntry <SEED_BEG>
 
   job::this locals| pJob_compactIndex |
 
@@ -188,7 +188,7 @@
 
   job::participantBegun
 
-  <<am <DONE_BEG>
+  <<logExit <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -196,7 +196,7 @@
 /*----------------------------------------------------------------------------*/
 : compactIndex_end ( -- )
 
-  >>am <SEED_END>
+  >>logEntry <SEED_END>
 
   job::this locals| pJob_compactIndex |
 
@@ -204,7 +204,7 @@
 
   job::participantEnded
 
-  <<am <DONE_END>
+  <<logExit <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -212,7 +212,7 @@
 /*----------------------------------------------------------------------------*/
 : compactIndex_can ( -- )
 
-  >>am <SEED_CAN>
+  >>logEntry <SEED_CAN>
 
   job::this locals| pJob_compactIndex |
 
@@ -220,7 +220,7 @@
 
   job::participantCancelled
 
-  <<am <DONE_CAN>
+  <<logExit <DONE_CAN>
 ;
 
 /*============================================================================*/

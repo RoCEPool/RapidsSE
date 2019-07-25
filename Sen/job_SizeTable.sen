@@ -37,7 +37,7 @@
 /*----------------------------------------------------------------------------*/
 : sizeTable_req ( -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -62,7 +62,7 @@
   // distribute the job
   pJob job.distribute
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -70,7 +70,7 @@
 /*----------------------------------------------------------------------------*/
 : sizeTable_exe ( Job_SizeTable -- )
 
-  >>am <SEED_EXE>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_SizeTable |
   job::this locals| pJob_SizeTable |
@@ -116,7 +116,7 @@
 
   pJob_SizeTable job::participantExecuted
 
-  <<am <DONE_EXE>
+  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -124,7 +124,7 @@
 /*----------------------------------------------------------------------------*/
 : sizeTable.checkResources ( Job_SizeTable -- )
 
-  >>am <Check_Resources>
+  >>logEntry <Check_Resources>
 
   params| pJob_SizeTable  |
 
@@ -143,9 +143,9 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the table
   pJob_SizeTable job.objectName@
-  checkSizeTable not if pJob_SizeTable <ERROR_JOB> !!am exit then
+  checkSizeTable not if pJob_SizeTable <ERROR_JOB> !!logError exit then
 
-  <<am <Resources_Checked>
+  <<logExit <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -153,14 +153,14 @@
 /*----------------------------------------------------------------------------*/
 : sizeTable.releaseResources ( Job_SizeTable -- )
 
-  >>am <Release_Resources>
+  >>logEntry <Release_Resources>
 
   params| pJob_SizeTable  |
 
   tp: sizeTable.releaseResources
   //releaseResources received" .
 
-  <<am <Resources_Released>
+  <<logExit <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -168,7 +168,7 @@
 /*----------------------------------------------------------------------------*/
 : sizeTable_beg ( -- )
 
-  >>am <SEED_BEG>
+  >>logEntry <SEED_BEG>
 
  job::this locals| pJob_sizeTable |
 
@@ -178,7 +178,7 @@
 
   job::participantBegun
 
-  <<am <DONE_BEG>
+  <<logExit <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -186,7 +186,7 @@
 /*----------------------------------------------------------------------------*/
 : sizeTable_end ( -- )
 
-  >>am <SEED_END>
+  >>logEntry <SEED_END>
 
   job::this locals| pJob_sizeTable |
 
@@ -194,7 +194,7 @@
 
   job::participantEnded
 
-  <<am <DONE_END>
+  <<logExit <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -202,7 +202,7 @@
 /*----------------------------------------------------------------------------*/
 : sizeTable_can ( -- )
 
-  >>am <SEED_CAN>
+  >>logEntry <SEED_CAN>
 
   job::this locals| pJob_sizeTable |
 
@@ -210,7 +210,7 @@
 
   job::participantCancelled
 
-  <<am <DONE_CAN>
+  <<logExit <DONE_CAN>
 ;
 
 /*============================================================================*/

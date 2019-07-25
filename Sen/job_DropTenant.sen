@@ -39,7 +39,7 @@
 /*----------------------------------------------------------------------------*/
 : dropTenant_req ( -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -57,7 +57,7 @@
   // distribute the job
   pJob job.distribute
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -65,7 +65,7 @@
 /*----------------------------------------------------------------------------*/
 : dropTenant_exe ( pJob_DropTenant -- )
 
-  >>am <SEED_EXE>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_DropTenant |
   job::this locals| pJob_DropTenant |
@@ -94,7 +94,7 @@
 
   pJob_DropTenant job::participantExecuted
 
-  <<am <DONE_EXE>
+  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -102,7 +102,7 @@
 /*----------------------------------------------------------------------------*/
 : dropTenant.checkResources ( Job_DropTenant -- )
 
-  >>am <Check_Resources>
+  >>logEntry <Check_Resources>
 
   params| pJob_DropTenant  |
 
@@ -121,9 +121,9 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the catalog
   pJob_DropTenant job.objectName@
-  checkRemoveTenant not if pJob_DropTenant <ERROR_JOB> !!am exit then
+  checkRemoveTenant not if pJob_DropTenant <ERROR_JOB> !!logError exit then
 
-  <<am <Resources_Checked>
+  <<logExit <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -131,14 +131,14 @@
 /*----------------------------------------------------------------------------*/
 : dropTenant.releaseResources ( Job_DropTenant -- )
 
-  >>am <Release_Resources>
+  >>logEntry <Release_Resources>
 
   params| pJob_DropTenant  |
 
   tp: dropTenant.releaseResources
   //releaseResources received" .
 
-  <<am <Resources_Released>
+  <<logExit <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -146,7 +146,7 @@
 /*----------------------------------------------------------------------------*/
 : dropTenant_beg ( -- )
 
-  >>am <SEED_BEG>
+  >>logEntry <SEED_BEG>
 
   job::this locals| pJob_dropTenant |
 
@@ -157,7 +157,7 @@
 
   job::participantBegun
 
-  <<am <DONE_BEG>
+  <<logExit <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -165,7 +165,7 @@
 /*----------------------------------------------------------------------------*/
 : dropTenant_end ( -- )
 
-  >>am <SEED_END>
+  >>logEntry <SEED_END>
 
   job::this locals| pJob_dropTenant |
 
@@ -173,7 +173,7 @@
 
   job::participantEnded
 
-  <<am <DONE_END>
+  <<logExit <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -181,7 +181,7 @@
 /*----------------------------------------------------------------------------*/
 : dropTenant_can ( -- )
 
-  >>am <SEED_CAN>
+  >>logEntry <SEED_CAN>
 
   job::this locals| pJob_dropTenant |
 
@@ -190,7 +190,7 @@
 
   job::participantCancelled
 
-  <<am <DONE_CAN>
+  <<logExit <DONE_CAN>
 ;
 
 /*============================================================================*/

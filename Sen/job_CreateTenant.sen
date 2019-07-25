@@ -51,7 +51,7 @@
 /*----------------------------------------------------------------------------*/
 : createTenant_req ( -- )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| pJob_CreateTenant pTask |
 
@@ -66,7 +66,7 @@
   // distribute the job
   pJob_CreateTenant job.distribute
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -74,7 +74,7 @@
 /*----------------------------------------------------------------------------*/
 : createTenant_exe ( pJob_CreateTenant -- )
 
-  >>am <SEED_EXE>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_CreateTenant |
   job::this locals| pJob_CreateTenant |
@@ -103,7 +103,7 @@
 
   pJob_CreateTenant job::participantExecuted
 
-  <<am <DONE_EXE>
+  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -111,7 +111,7 @@
 /*----------------------------------------------------------------------------*/
 : createTenant.checkResources ( pJob_CreateTenant -- )
 
-  >>am <Check_Resources>
+  >>logEntry <Check_Resources>
 
   params| pJob_CreateTenant  |
 
@@ -129,14 +129,14 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we have enough buffers
-  node::checkEnoughBuffers not if pJob_CreateTenant <ERROR_JOB> !!am exit then
+  node::checkEnoughBuffers not if pJob_CreateTenant <ERROR_JOB> !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can make the catalog
   pJob_CreateTenant job.objectName@
-  checkMakeTenant not if pJob_CreateTenant <ERROR_JOB> !!am exit then
+  checkMakeTenant not if pJob_CreateTenant <ERROR_JOB> !!logError exit then
 
-  <<am <Resources_Checked>
+  <<logExit <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -144,14 +144,14 @@
 /*----------------------------------------------------------------------------*/
 : createTenant.releaseResources ( pJob_CreateTenant -- )
 
-  >>am <Release_Resources>
+  >>logEntry <Release_Resources>
 
   params| pJob_CreateTenant  |
 
   tp: createTenant.releaseResources
   //releaseResources received" .
 
-  <<am <Resources_Released>
+  <<logExit <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -159,7 +159,7 @@
 /*----------------------------------------------------------------------------*/
 : createTenant_beg ( -- )
 
-  >>am <SEED_BEG>
+  >>logEntry <SEED_BEG>
 
   job::this locals| pJob_createTenant |
 
@@ -170,7 +170,7 @@
 
   job::participantBegun
 
-  <<am <DONE_BEG>
+  <<logExit <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -178,7 +178,7 @@
 /*----------------------------------------------------------------------------*/
 : createTenant_end ( -- )
 
-  >>am <SEED_END>
+  >>logEntry <SEED_END>
 
   job::this locals| pJob_createTenant |
 
@@ -186,7 +186,7 @@
 
   job::participantEnded
 
-  <<am <DONE_END>
+  <<logExit <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -194,7 +194,7 @@
 /*----------------------------------------------------------------------------*/
 : createTenant_can ( -- )
 
-  >>am <SEED_CAN>
+  >>logEntry <SEED_CAN>
 
   job::this locals| pJob_createTenant |
 
@@ -202,7 +202,7 @@
 
   job::participantCancelled
 
-  <<am <DONE_CAN>
+  <<logExit <DONE_CAN>
 ;
 
 /*============================================================================*/

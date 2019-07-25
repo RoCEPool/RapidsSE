@@ -109,7 +109,7 @@
 /*----------------------------------------------------------------------------*/
 : fetchRows_req ( -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   100 apiState::senLoc
 
@@ -146,7 +146,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can fetch rows
-  sColumnNm sTableNm iFetchPartition checkFetchRows not if pJob_FetchRows <ERROR_REQUEST> !!am exit then
+  sColumnNm sTableNm iFetchPartition checkFetchRows not if pJob_FetchRows <ERROR_REQUEST> !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the table
@@ -204,7 +204,7 @@
 
   900 apiState::senLoc
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*============================================================================*/

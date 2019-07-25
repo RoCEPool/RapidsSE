@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 : kidExport_kid ( -- )
 
-  >>am <SEED_KID>
+  >>logEntry <SEED_KID>
 
   job::this locals| pJob_KE |
   pJob_KE job.assertNeutral
@@ -26,7 +26,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete this KE on this participant node:          KE`[E](E`)SE,xx:(E`)SE,xx
-  <<am job::deleteThis
+  <<logExit job::deleteThis
 
   <DONE_KID>
 ;
@@ -88,7 +88,7 @@
 /*----------------------------------------------------------------------------*/
 : kidExport_rcv ( -- )
 
-  >>am <SEED_RCV>
+  >>logEntry <SEED_RCV>
 
   job::this locals| pJob_KE`  |
   pJob_KE` job.assertNeutral

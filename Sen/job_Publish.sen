@@ -31,7 +31,7 @@
 /*----------------------------------------------------------------------------*/
 : publish_req ( -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -49,7 +49,7 @@
   // distribute the job
   pJob job.distribute
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -57,7 +57,7 @@
 /*----------------------------------------------------------------------------*/
 : publish_exe (  Job_publish -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   job::this locals| pJob_publish |
 
@@ -95,7 +95,7 @@
 
   pJob_publish job::participantExecuted
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -103,7 +103,7 @@
 /*----------------------------------------------------------------------------*/
 : publish.checkResources ( Job_publish -- )
 
-  >>am <Check_Resources>
+  >>logEntry <Check_Resources>
 
   params| pJob_publish  |
   0 locals| sTableNm |
@@ -122,12 +122,12 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the tables folder
-  checkInTables not if pJob_publish <ERROR_JOB> !!am exit then
+  checkInTables not if pJob_publish <ERROR_JOB> !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // there should be a table folder
   pJob_publish job.objectName@ to sTableNm
-  sTableNm checkIsTableFolder not if pJob_publish <ERROR_JOB> !!am exit then
+  sTableNm checkIsTableFolder not if pJob_publish <ERROR_JOB> !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
@@ -135,13 +135,13 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is a table
-  sTableNm checkIsTable not if popTable pJob_publish <ERROR_JOB> !!am exit then
+  sTableNm checkIsTable not if popTable pJob_publish <ERROR_JOB> !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table dictionary
   popTable
 
-  <<am <Resources_Checked>
+  <<logExit <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -149,14 +149,14 @@
 /*----------------------------------------------------------------------------*/
 : publish.releaseResources ( Job_publish -- )
 
-  >>am <Release_Resources>
+  >>logEntry <Release_Resources>
 
   params| pJob_publish  |
 
   tp: publish.releaseResources
   //releaseResources received" .
 
-  <<am <Resources_Released>
+  <<logExit <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -164,7 +164,7 @@
 /*----------------------------------------------------------------------------*/
 : publish_beg ( -- )
 
-  >>am <SEED_BEG>
+  >>logEntry <SEED_BEG>
 
   job::this locals| pJob_publish |
 
@@ -175,7 +175,7 @@
 
   job::participantBegun
 
-  <<am <DONE_BEG>
+  <<logExit <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -183,7 +183,7 @@
 /*----------------------------------------------------------------------------*/
 : publish_end ( -- )
 
-  >>am <SEED_END>
+  >>logEntry <SEED_END>
 
   job::this locals| pJob_publish |
 
@@ -191,7 +191,7 @@
 
   job::participantEnded
 
-  <<am <DONE_END>
+  <<logExit <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -199,7 +199,7 @@
 /*----------------------------------------------------------------------------*/
 : publish_can ( -- )
 
-  >>am <SEED_CAN>
+  >>logEntry <SEED_CAN>
 
   job::this locals| pJob_publish |
 
@@ -207,7 +207,7 @@
 
   job::participantCancelled
 
-  <<am <DONE_CAN>
+  <<logExit <DONE_CAN>
 ;
 
 /*============================================================================*/

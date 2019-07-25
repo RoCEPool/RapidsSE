@@ -52,7 +52,7 @@
 /*----------------------------------------------------------------------------*/
 : createCatalog_req ( -- )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| pJob_CreateCatalog pTask |
 
@@ -70,7 +70,7 @@
   // distribute the job
   pJob_CreateCatalog job.distribute
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -78,7 +78,7 @@
 /*----------------------------------------------------------------------------*/
 : createCatalog_exe ( pJob_CreateCatalog -- )
 
-  >>am <SEED_EXE>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_CreateCatalog |
   job::this locals| pJob_CreateCatalog |
@@ -107,7 +107,7 @@
 
   pJob_CreateCatalog job::participantExecuted
 
-  <<am <DONE_EXE>
+  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -115,7 +115,7 @@
 /*----------------------------------------------------------------------------*/
 : createCatalog.checkResources ( pJob_CreateCatalog -- )
 
-  >>am <Check_Resources>
+  >>logEntry <Check_Resources>
 
   params| pJob_CreateCatalog  |
 
@@ -133,15 +133,15 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we have enough buffers
-  node::checkEnoughBuffers not if pJob_CreateCatalog <ERROR_JOB> !!am exit then
+  node::checkEnoughBuffers not if pJob_CreateCatalog <ERROR_JOB> !!logError exit then
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can make the catalog
   pJob_CreateCatalog job.objectName@
-  checkMakeCatalog not if pJob_CreateCatalog <ERROR_JOB> !!am exit then
+  checkMakeCatalog not if pJob_CreateCatalog <ERROR_JOB> !!logError exit then
 
-  <<am <Resources_Checked>
+  <<logExit <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -149,14 +149,14 @@
 /*----------------------------------------------------------------------------*/
 : createCatalog.releaseResources ( pJob_CreateCatalog -- )
 
-  >>am <Release_Resources>
+  >>logEntry <Release_Resources>
 
   params| pJob_CreateCatalog  |
 
   tp: createCatalog.releaseResources
   //"releaseResources received" .
 
-  <<am <Resources_Released>
+  <<logExit <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -164,7 +164,7 @@
 /*----------------------------------------------------------------------------*/
 : createCatalog_beg ( -- )
 
-  >>am <SEED_BEG>
+  >>logEntry <SEED_BEG>
 
   job::this locals| pJob_createCatalog |
 
@@ -175,7 +175,7 @@
 
   job::participantBegun
 
-  <<am <DONE_BEG>
+  <<logExit <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -183,7 +183,7 @@
 /*----------------------------------------------------------------------------*/
 : createCatalog_end ( -- )
 
-  >>am <SEED_END>
+  >>logEntry <SEED_END>
 
   job::this locals| pJob_createCatalog |
 
@@ -191,7 +191,7 @@
 
   job::participantEnded
 
-  <<am <DONE_END>
+  <<logExit <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -199,7 +199,7 @@
 /*----------------------------------------------------------------------------*/
 : createCatalog_can ( -- )
 
-  >>am <SEED_CAN>
+  >>logEntry <SEED_CAN>
 
   job::this locals| pJob_createCatalog |
 
@@ -207,7 +207,7 @@
 
   job::participantCancelled
 
-  <<am <DONE_CAN>
+  <<logExit <DONE_CAN>
 ;
 
 /*============================================================================*/

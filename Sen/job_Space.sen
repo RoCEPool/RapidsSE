@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : space_req ( -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -34,7 +34,7 @@
   // distribute the job
   pJob job.distribute
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -42,7 +42,7 @@
 /*----------------------------------------------------------------------------*/
 : space_exe ( pJob_Space -- )
 
-  >>am <SEED_EXE>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_Space |
   job::this locals| pJob_Space |
@@ -68,7 +68,7 @@
 
   pJob_Space job::participantExecuted
 
-  <<am <DONE_EXE>
+  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -76,7 +76,7 @@
 /*----------------------------------------------------------------------------*/
 : space_beg ( -- )
 
-  >>am <SEED_BEG>
+  >>logEntry <SEED_BEG>
 
   job::this locals| pJob_space |
 
@@ -84,7 +84,7 @@
 
   job::participantBegun
 
-  <<am <DONE_BEG>
+  <<logExit <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -92,13 +92,13 @@
 /*----------------------------------------------------------------------------*/
 : space_end ( -- )
 
-  >>am <SEED_END>
+  >>logEntry <SEED_END>
 
   ">> space_end <<" .verbose
 
   job::participantEnded
 
-  <<am <DONE_END>
+  <<logExit <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -106,13 +106,13 @@
 /*----------------------------------------------------------------------------*/
 : space_can ( -- )
 
-  >>am <SEED_CAN>
+  >>logEntry <SEED_CAN>
 
   ">> space_can <<" .verbose
 
   job::participantCancelled
 
-  <<am <DONE_CAN>
+  <<logExit <DONE_CAN>
 ;
 
 /*============================================================================*/

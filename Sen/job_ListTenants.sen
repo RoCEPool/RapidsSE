@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : listTenants_req ( -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| pJob_ListTenants pTask |
 
@@ -34,7 +34,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the tenants folder
-  checkInTenants not if pJob_ListTenants <ERROR_REQUEST> !!am exit then
+  checkInTenants not if pJob_ListTenants <ERROR_REQUEST> !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // list tables folder contents
@@ -42,7 +42,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // return
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*============================================================================*/

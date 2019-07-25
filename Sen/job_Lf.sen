@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : lf_req ( -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   0 0 0 locals| iCount pJob_Lf pTask |
 
@@ -72,7 +72,7 @@
   pJob_Lf job.response!
   iCount pJob_Lf job.rowsProcessed!
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*============================================================================*/

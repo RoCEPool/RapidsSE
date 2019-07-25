@@ -78,7 +78,7 @@
 /*----------------------------------------------------------------------------*/
 : dropIndex_req ( -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -96,7 +96,7 @@
   // distribute the job
   pJob job.distribute
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -104,7 +104,7 @@
 /*----------------------------------------------------------------------------*/
 : dropIndex_exe ( Job_DropIndex -- )
 
-  >>am <SEED_EXE>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_DropIndex |
   job::this locals| pJob_DropIndex |
@@ -133,7 +133,7 @@
 
   pJob_DropIndex job::participantExecuted
 
-  <<am <DONE_EXE>
+  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -141,7 +141,7 @@
 /*----------------------------------------------------------------------------*/
 : dropIndex.checkResources ( Job_DropIndex -- )
 
-  >>am <Check_Resources>
+  >>logEntry <Check_Resources>
 
   params| pJob_DropIndex  |
   0 0 locals| sIndexNm sTableNm |
@@ -165,7 +165,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check remove index
-  sTableNm checkRemoveIndex not if pJob_DropIndex <ERROR_JOB> !!am exit then
+  sTableNm checkRemoveIndex not if pJob_DropIndex <ERROR_JOB> !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
@@ -178,10 +178,10 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is an index we are dropping
   sIndexNm checkIsIndex not if
-    popIndexes popTable assertInTables pJob_DropIndex <ERROR_JOB> !!am exit
+    popIndexes popTable assertInTables pJob_DropIndex <ERROR_JOB> !!logError exit
   then
 
-  <<am <Resources_Checked>
+  <<logExit <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -189,14 +189,14 @@
 /*----------------------------------------------------------------------------*/
 : dropIndex.releaseResources ( Job_DropIndex -- )
 
-  >>am <Release_Resources>
+  >>logEntry <Release_Resources>
 
   params| pJob_DropIndex  |
 
   tp: dropIndex.releaseResources
   //releaseResources received" .
 
-  <<am <Resources_Released>
+  <<logExit <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -204,7 +204,7 @@
 /*----------------------------------------------------------------------------*/
 : dropIndex_beg ( -- )
 
-  >>am <SEED_BEG>
+  >>logEntry <SEED_BEG>
 
   job::this locals| pJob_dropIndex |
 
@@ -215,7 +215,7 @@
 
   job::participantBegun
 
-  <<am <DONE_BEG>
+  <<logExit <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -223,7 +223,7 @@
 /*----------------------------------------------------------------------------*/
 : dropIndex_end ( -- )
 
-  >>am <SEED_END>
+  >>logEntry <SEED_END>
 
   job::this locals| pJob_dropIndex |
 
@@ -231,7 +231,7 @@
 
   job::participantEnded
 
-  <<am <DONE_END>
+  <<logExit <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -239,7 +239,7 @@
 /*----------------------------------------------------------------------------*/
 : dropIndex_can ( -- )
 
-  >>am <SEED_CAN>
+  >>logEntry <SEED_CAN>
 
   job::this locals| pJob_dropIndex |
 
@@ -247,7 +247,7 @@
 
   job::participantCancelled
 
-  <<am <DONE_CAN>
+  <<logExit <DONE_CAN>
 ;
 
 /*============================================================================*/

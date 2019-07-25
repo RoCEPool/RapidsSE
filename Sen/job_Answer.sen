@@ -41,7 +41,7 @@
   // delete the node info job
   pJob_NodeInfo job.delete
 
-  //pAnsweredNode node.name "Answered node %v" str.format .am
+  //pAnsweredNode node.name "Answered node %v" str.format .logNote
 
   // return the answered node
   pAnsweredNode
@@ -52,7 +52,7 @@
 /*----------------------------------------------------------------------------*/
 : answer_run ( -- )
 
-  >>am <SEED_RUN>
+  >>logEntry <SEED_RUN>
 
   assertStackDepthZero
 

@@ -97,14 +97,14 @@
 /*----------------------------------------------------------------------------*/
 : LoadTable_req (  -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   job::this locals| pJob_LoadTable |
 
   // add job to originator list and distribute
   pJob_LoadTable job.distribute
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -112,7 +112,7 @@
 /*----------------------------------------------------------------------------*/
 : loadTable_exe ( -- )
 
-  >>am <SEED_EXE>
+  >>logEntry <SEED_EXE>
 
   job::this locals| pJob_LoadTable |
 
@@ -128,7 +128,7 @@
 
   pJob_LoadTable job::participantExecuted
 
-  <<am <DONE_EXE>
+  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -136,7 +136,7 @@
 /*----------------------------------------------------------------------------*/
 : loadTable.checkResources ( pJob_LoadTable -- )
 
-  >>am <Check_Resources>
+  >>logEntry <Check_Resources>
 
   params| pJob_LoadTable  |
 
@@ -148,7 +148,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for sufficient memory
 
-  node::checkEnoughBuffers not if pJob_LoadTable <ERROR_JOB> !!am exit then
+  node::checkEnoughBuffers not if pJob_LoadTable <ERROR_JOB> !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if file exists (SHOULDN"T THIS BE ONLY ON ORIGINATING NODE?)
@@ -161,7 +161,7 @@
 
     pJob_LoadTable job_LoadTable.filePath@ OPEN_READ pFile file.open
     not if
-       pFile file.delete assert::stack_0 EC_INVALID_FILE pJob_LoadTable <ERROR_JOB> !!am exit
+       pFile file.delete assert::stack_0 EC_INVALID_FILE pJob_LoadTable <ERROR_JOB> !!logError exit
     then
 
     pFile file.close pFile file.delete assert::stack_0
@@ -181,7 +181,7 @@
   //pathDump
 
   // there should be a table folder
-  sTableNm checkIsTableFolder not if pJob_LoadTable <ERROR_JOB> !!am exit then
+  sTableNm checkIsTableFolder not if pJob_LoadTable <ERROR_JOB> !!logError exit then
   //sTableNm "In table folder: %v" fmt.print
 
   // push table dictionary
@@ -189,7 +189,7 @@
   //pathDump
 
   // check it is a table
-  sTableNm checkIsTable not if popTable pJob_LoadTable <ERROR_JOB> !!am exit then
+  sTableNm checkIsTable not if popTable pJob_LoadTable <ERROR_JOB> !!logError exit then
 
   // pop table dictionary
   popTable
@@ -198,9 +198,9 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we have enough buffers
 
-  node::testEnoughBuffers not if pJob_LoadTable <ERROR_JOB> !!am exit then
+  node::testEnoughBuffers not if pJob_LoadTable <ERROR_JOB> !!logError exit then
 
-  <<am <Resources_Checked>
+  <<logExit <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -208,11 +208,11 @@
 /*----------------------------------------------------------------------------*/
 : loadTable.releaseResources ( pJob_LoadTable -- )
 
-  >>am <Release_Resources>
+  >>logEntry <Release_Resources>
 
   params| pJob_LoadTable  |
 
-  <<am <Resources_Released>
+  <<logExit <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -220,7 +220,7 @@
 /*----------------------------------------------------------------------------*/
 : loadTable_beg ( -- )
 
-  >>am <SEED_BEG>
+  >>logEntry <SEED_BEG>
 
   job::this locals| pJob_LoadTable |
 
@@ -230,7 +230,7 @@
 
   job::participantBegun
 
-  <<am <DONE_BEG>
+  <<logExit <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -238,7 +238,7 @@
 /*----------------------------------------------------------------------------*/
 : loadTable_end ( -- )
 
-  >>am <SEED_END>
+  >>logEntry <SEED_END>
 
   job::this locals| pJob_LoadTable |
 
@@ -246,7 +246,7 @@
 
   job::participantEnded
 
-  <<am <DONE_END>
+  <<logExit <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -254,7 +254,7 @@
 /*----------------------------------------------------------------------------*/
 : loadTable_can ( -- )
 
-  >>am <SEED_CAN>
+  >>logEntry <SEED_CAN>
 
   job::this locals| pJob_LoadTable |
 
@@ -262,7 +262,7 @@
 
   job::participantCancelled
 
-  <<am <DONE_CAN>
+  <<logExit <DONE_CAN>
 ;
 
 /*============================================================================*/

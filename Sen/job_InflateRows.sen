@@ -69,7 +69,7 @@
 /*----------------------------------------------------------------------------*/
 : InflateRows_req ( -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   100 apiState::senLoc
 
@@ -104,7 +104,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can fetch rows
-  sColumnNm sTableNm checkInflateRows not if pJob_InflateRows <ERROR_REQUEST> !!am exit then
+  sColumnNm sTableNm checkInflateRows not if pJob_InflateRows <ERROR_REQUEST> !!logError exit then
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -150,7 +150,7 @@
 
   900 apiState::senLoc
  
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*============================================================================*/

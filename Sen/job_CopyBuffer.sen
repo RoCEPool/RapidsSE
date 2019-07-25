@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : Job_CopyBuffer_req (  -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   0 locals| pThisTask |
   job::this locals| pJob_CopyBuffer |

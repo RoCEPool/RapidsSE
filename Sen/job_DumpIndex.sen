@@ -49,7 +49,7 @@
 /*----------------------------------------------------------------------------*/
 : dumpIndex_req ( -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   0 0 0 0 0 locals| pTask pIndex sTableNm sIndexNm pJob_DumpIndex |
 
@@ -83,7 +83,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //check if we can dump the index
-  sTableNm sIndexNm checkDumpIndex not if pJob_DumpIndex <ERROR_REQUEST> !!am exit then
+  sTableNm sIndexNm checkDumpIndex not if pJob_DumpIndex <ERROR_REQUEST> !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table and indexes folder
@@ -101,7 +101,7 @@
 
   pJob_DumpIndex job.notice
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -129,7 +129,7 @@
   pJob_DumpIndex job.indexName@ to sIndexNm
   pJob_DumpIndex job.objectName@ to sTableNm
 
-  sTableNm sIndexNm checkDumpIndex not if pJob_DumpIndex <ERROR_JOB> !!am exit then
+  sTableNm sIndexNm checkDumpIndex not if pJob_DumpIndex <ERROR_JOB> !!logError exit then
 
   ddlLock::dropWrite
 ;

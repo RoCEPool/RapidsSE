@@ -54,7 +54,7 @@
 /*----------------------------------------------------------------------------*/
 : insertTable_req (  -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -69,7 +69,7 @@
   // distribute the job
   pJob job.distribute
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -77,7 +77,7 @@
 /*----------------------------------------------------------------------------*/
 : insertTable_exe ( Job_InsertTable -- )
 
-  >>am <SEED_EXE>
+  >>logEntry <SEED_EXE>
 
   job::this locals| pJob_InsertTable |
 
@@ -112,7 +112,7 @@
 
   pJob_InsertTable job::participantExecuted
 
-  <<am <DONE_EXE>
+  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -140,7 +140,7 @@
 /*----------------------------------------------------------------------------*/
 : insertTable_beg ( -- )
 
-  >>am <SEED_BEG>
+  >>logEntry <SEED_BEG>
 
   job::this locals| pJob_InsertTable |
 
@@ -155,7 +155,7 @@
   // this job has begun
   job::participantBegun
 
-  <<am <DONE_BEG>
+  <<logExit <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -163,7 +163,7 @@
 /*----------------------------------------------------------------------------*/
 : insertTable_end ( -- )
 
-  >>am <SEED_END>
+  >>logEntry <SEED_END>
 
   job::this locals| pJob_InsertTable |
 
@@ -174,7 +174,7 @@
 
   job::participantEnded
 
-  <<am <DONE_END>
+  <<logExit <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -182,7 +182,7 @@
 /*----------------------------------------------------------------------------*/
 : insertTable_can ( -- )
 
-  >>am <SEED_CAN>
+  >>logEntry <SEED_CAN>
 
   job::this locals| pJob_InsertTable |
 
@@ -190,7 +190,7 @@
 
   job::participantCancelled
 
-  <<am <DONE_CAN>
+  <<logExit <DONE_CAN>
 ;
 
 /*============================================================================*/

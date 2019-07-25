@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : selectTable_req ( -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   100 apiState::senLoc
 
@@ -45,7 +45,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //check if we can fetch rows from selected table
-  sTableNm iPartition checkFetchRows not if pJob_SelectTable <ERROR_REQUEST> !!am exit then
+  sTableNm iPartition checkFetchRows not if pJob_SelectTable <ERROR_REQUEST> !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the table
@@ -59,7 +59,7 @@
 
   900 apiState::senLoc
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*============================================================================*/

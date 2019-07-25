@@ -49,7 +49,7 @@
 /*----------------------------------------------------------------------------*/
 : visualizeIndex_req ( -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   0 0 0 0 0 locals| pTask pIndex sTableNm sIndexNm pJob_VisualizeIndex |
 
@@ -83,7 +83,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //check if we can visualize index
-  sTableNm sIndexNm checkVisualizeIndex not if pJob_VisualizeIndex <ERROR_REQUEST> !!am exit then
+  sTableNm sIndexNm checkVisualizeIndex not if pJob_VisualizeIndex <ERROR_REQUEST> !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table and indexes folder
@@ -101,7 +101,7 @@
 
   pJob_VisualizeIndex job.notice
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*============================================================================*/

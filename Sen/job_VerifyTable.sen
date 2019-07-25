@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : checkverifyTable ( "<tableNm>" -- true | errorCode false )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   params| sTableNm |
 
@@ -71,7 +71,7 @@
 /*----------------------------------------------------------------------------*/
 : verifyTable_exe ( job_VerifyTable )
 
-  >>am <SEED_EXE>
+  >>logEntry <SEED_EXE>
 
   //params| pjob_VerifyTable |
   job::this locals| pjob_VerifyTable |
@@ -118,7 +118,7 @@
 
   pjob_VerifyTable job::participantExecuted
 
-  <<am <DONE_EXE>
+  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -145,7 +145,7 @@
   // get table name
   pjob_VerifyTable job.objectName@ to sTableNm
 
-  sTableNm checkverifyTable not if pjob_VerifyTable <ERROR_JOB> !!am exit then
+  sTableNm checkverifyTable not if pjob_VerifyTable <ERROR_JOB> !!logError exit then
 
   ddlLock::dropRead
 ;
@@ -166,7 +166,7 @@
 /*----------------------------------------------------------------------------*/
 : verifyTable_beg ( -- )
 
-  >>am <SEED_BEG>
+  >>logEntry <SEED_BEG>
 
   job::this locals| pjob_VerifyTable |
 
@@ -177,7 +177,7 @@
 
   job::participantBegun
 
-  <<am <DONE_BEG>
+  <<logExit <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -185,7 +185,7 @@
 /*----------------------------------------------------------------------------*/
 : verifyTable_end ( -- )
 
-  >>am <SEED_END>
+  >>logEntry <SEED_END>
 
   job::this locals| pjob_VerifyTable |
 
@@ -193,7 +193,7 @@
 
   job::participantEnded
 
-  <<am <DONE_END>
+  <<logExit <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -201,7 +201,7 @@
 /*----------------------------------------------------------------------------*/
 : verifyTable_can ( -- )
 
-  >>am <SEED_CAN>
+  >>logEntry <SEED_CAN>
 
   job::this locals| pjob_VerifyTable |
 
@@ -209,7 +209,7 @@
 
   job::participantCancelled
 
-  <<am <DONE_CAN>
+  <<logExit <DONE_CAN>
 ;
 
 /*============================================================================*/

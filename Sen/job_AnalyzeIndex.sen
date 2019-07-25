@@ -47,7 +47,7 @@
 /*----------------------------------------------------------------------------*/
 : analyzeIndex_req ( -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   0 0 0 locals| pJob pTask bIsDetailed |
 
@@ -76,7 +76,7 @@
   // distribute the job
   pJob job.distribute
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -84,7 +84,7 @@
 /*----------------------------------------------------------------------------*/
 : analyzeIndex_exe ( Job_AnalyzeIndex -- )
 
-  >>am <SEED_EXE>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_AnalyzeIndex |
   job::this locals| pJob_AnalyzeIndex |
@@ -135,7 +135,7 @@
 
   pJob_AnalyzeIndex job::participantExecuted
 
-  <<am <DONE_EXE>
+  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -143,7 +143,7 @@
 /*----------------------------------------------------------------------------*/
 : analyzeIndex.checkResources ( Job_AnalyzeIndex -- )
 
-  >>am <Check_Resources>
+  >>logEntry <Check_Resources>
 
   params| pJob_AnalyzeIndex  |
 
@@ -163,9 +163,9 @@
   // check if we can remove the table
   pJob_AnalyzeIndex job.objectName@
   pJob_AnalyzeIndex job.indexName@
-  checkAnalyzeIndex not if pJob_AnalyzeIndex <ERROR_JOB> !!am exit then
+  checkAnalyzeIndex not if pJob_AnalyzeIndex <ERROR_JOB> !!logError exit then
 
-  <<am <Resources_Checked>
+  <<logExit <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -173,14 +173,14 @@
 /*----------------------------------------------------------------------------*/
 : analyzeIndex.releaseResources ( Job_AnalyzeIndex -- )
 
-  >>am <Release_Resources>
+  >>logEntry <Release_Resources>
 
   params| pJob_AnalyzeIndex  |
 
   tp: analyzeIndex.releaseResources
   //"releaseResources received" .
 
-  <<am <Resources_Released>
+  <<logExit <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -188,7 +188,7 @@
 /*----------------------------------------------------------------------------*/
 : analyzeIndex_beg ( -- )
 
-  >>am <SEED_BEG>
+  >>logEntry <SEED_BEG>
 
   job::this locals| pJob_analyzeIndex |
 
@@ -199,7 +199,7 @@
 
   job::participantBegun
 
-  <<am <DONE_BEG>
+  <<logExit <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -207,7 +207,7 @@
 /*----------------------------------------------------------------------------*/
 : analyzeIndex_end ( -- )
 
-  >>am <SEED_END>
+  >>logEntry <SEED_END>
 
   job::this locals| pJob_analyzeIndex |
 
@@ -215,7 +215,7 @@
 
   job::participantEnded
 
-  <<am <DONE_END>
+  <<logExit <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -223,7 +223,7 @@
 /*----------------------------------------------------------------------------*/
 : analyzeIndex_can ( -- )
 
-  >>am <SEED_CAN>
+  >>logEntry <SEED_CAN>
 
   job::this locals| pJob_analyzeIndex |
 
@@ -231,7 +231,7 @@
 
   job::participantCancelled
 
-  <<am <DONE_CAN>
+  <<logExit <DONE_CAN>
 ;
 
 /*============================================================================*/

@@ -45,7 +45,7 @@
 /*----------------------------------------------------------------------------*/
 : Job__Ended_rcv ( -- )
 
-  >>am <SEED_RCV>
+  >>logEntry <SEED_RCV>
   an::seed_rcv
 
   job::this locals| pJob__Ended |

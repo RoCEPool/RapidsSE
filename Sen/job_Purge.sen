@@ -29,7 +29,7 @@
 /*----------------------------------------------------------------------------*/
 : purge_req ( -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -47,7 +47,7 @@
   // distribute the job
   pJob job.distribute
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -55,7 +55,7 @@
 /*----------------------------------------------------------------------------*/
 : purge_exe (  Job_Purge -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   job::this locals| pJob_Purge |
 
@@ -93,7 +93,7 @@
 
   pJob_purge job::participantExecuted
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -101,7 +101,7 @@
 /*----------------------------------------------------------------------------*/
 : purge.checkResources ( Job_Purge -- )
 
-  >>am <Check_Resources>
+  >>logEntry <Check_Resources>
 
   params| pJob_Purge  |
   0 locals| sTableNm |
@@ -120,12 +120,12 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the tables folder
-  checkInTables not if pJob_Purge <ERROR_JOB> !!am exit then
+  checkInTables not if pJob_Purge <ERROR_JOB> !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // there should be a table folder
   pJob_Purge job.objectName@ to sTableNm
-  sTableNm checkIsTableFolder not if pJob_Purge <ERROR_JOB> !!am exit then
+  sTableNm checkIsTableFolder not if pJob_Purge <ERROR_JOB> !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
@@ -133,13 +133,13 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is a table
-  sTableNm checkIsTable not if popTable pJob_Purge <ERROR_JOB> !!am exit then
+  sTableNm checkIsTable not if popTable pJob_Purge <ERROR_JOB> !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table dictionary
   popTable
 
-  <<am <Resources_Checked>
+  <<logExit <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -147,14 +147,14 @@
 /*----------------------------------------------------------------------------*/
 : purge.releaseResources ( Job_Purge -- )
 
-  >>am <Release_Resources>
+  >>logEntry <Release_Resources>
 
   params| pJob_Purge  |
 
   tp: purge.releaseResources
   //releaseResources received" .
 
-  <<am <Resources_Released>
+  <<logExit <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -162,7 +162,7 @@
 /*----------------------------------------------------------------------------*/
 : purge_beg ( -- )
 
-  >>am <SEED_BEG>
+  >>logEntry <SEED_BEG>
 
   job::this locals| pJob_Purge |
 
@@ -173,7 +173,7 @@
 
   job::participantBegun
 
-  <<am <DONE_BEG>
+  <<logExit <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -181,7 +181,7 @@
 /*----------------------------------------------------------------------------*/
 : purge_end ( -- )
 
-  >>am <SEED_END>
+  >>logEntry <SEED_END>
 
   job::this locals| pJob_Purge |
 
@@ -189,7 +189,7 @@
 
   job::participantEnded
 
-  <<am <DONE_END>
+  <<logExit <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -197,7 +197,7 @@
 /*----------------------------------------------------------------------------*/
 : purge_can ( -- )
 
-  >>am <SEED_CAN>
+  >>logEntry <SEED_CAN>
 
   job::this locals| pJob_Purge |
 
@@ -205,7 +205,7 @@
 
   job::participantCancelled
 
-  <<am <DONE_CAN>
+  <<logExit <DONE_CAN>
 ;
 
 /*============================================================================*/

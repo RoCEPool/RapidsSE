@@ -33,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 : supervisor_run ( -- )
 
-  >>am <SEED_RUN>
+  >>logEntry <SEED_RUN>
 
   // "Supervisor Job Started" .
 

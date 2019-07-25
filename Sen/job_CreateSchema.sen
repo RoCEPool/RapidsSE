@@ -52,7 +52,7 @@
 /*----------------------------------------------------------------------------*/
 : createSchema_req ( -- )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   0 0 locals| pJob_CreateSchema pTask |
 
@@ -67,7 +67,7 @@
   // distribute the job
   pJob_CreateSchema job.distribute
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -75,7 +75,7 @@
 /*----------------------------------------------------------------------------*/
 : createSchema_exe ( pJob_CreateSchema -- )
 
-  >>am <SEED_EXE>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_CreateSchema |
   job::this locals| pJob_CreateSchema |
@@ -104,7 +104,7 @@
 
   pJob_CreateSchema job::participantExecuted
 
-  <<am <DONE_EXE>
+  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -112,7 +112,7 @@
 /*----------------------------------------------------------------------------*/
 : createSchema.checkResources ( pJob_CreateSchema -- )
 
-  >>am <Check_Resources>
+  >>logEntry <Check_Resources>
 
   params| pJob_CreateSchema  |
 
@@ -130,15 +130,15 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we have enough buffers
-  node::checkEnoughBuffers not if pJob_CreateSchema <ERROR_JOB> !!am exit then
+  node::checkEnoughBuffers not if pJob_CreateSchema <ERROR_JOB> !!logError exit then
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can make the catalog
   pJob_CreateSchema job.objectName@
-  checkMakeSchema not if pJob_CreateSchema <ERROR_JOB> !!am exit then
+  checkMakeSchema not if pJob_CreateSchema <ERROR_JOB> !!logError exit then
 
-  <<am <Resources_Checked>
+  <<logExit <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -146,14 +146,14 @@
 /*----------------------------------------------------------------------------*/
 : createSchema.releaseResources ( pJob_CreateSchema -- )
 
-  >>am <Release_Resources>
+  >>logEntry <Release_Resources>
 
   params| pJob_CreateSchema  |
 
   tp: createSchema.releaseResources
   //"releaseResources received" .
 
-  <<am <Resources_Released>
+  <<logExit <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -161,7 +161,7 @@
 /*----------------------------------------------------------------------------*/
 : createSchema_beg ( -- )
 
-  >>am <SEED_BEG>
+  >>logEntry <SEED_BEG>
 
   job::this locals| pJob_createSchema |
 
@@ -172,7 +172,7 @@
 
   job::participantBegun
 
-  <<am <DONE_BEG>
+  <<logExit <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -180,7 +180,7 @@
 /*----------------------------------------------------------------------------*/
 : createSchema_end ( -- )
 
-  >>am <SEED_END>
+  >>logEntry <SEED_END>
 
   job::this locals| pJob_createSchema |
 
@@ -188,7 +188,7 @@
 
   job::participantEnded
 
-  <<am <DONE_END>
+  <<logExit <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -196,7 +196,7 @@
 /*----------------------------------------------------------------------------*/
 : createSchema_can ( -- )
 
-  >>am <SEED_CAN>
+  >>logEntry <SEED_CAN>
 
   job::this locals| pJob_createSchema |
 
@@ -204,7 +204,7 @@
 
   job::participantCancelled
 
-  <<am <DONE_CAN>
+  <<logExit <DONE_CAN>
 ;
 
 /*============================================================================*/

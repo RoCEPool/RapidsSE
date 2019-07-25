@@ -102,7 +102,7 @@
 /*----------------------------------------------------------------------------*/
 : walk.checkResources ( pJob_Walk -- )
 
-  >>am <Check_Resources>
+  >>logEntry <Check_Resources>
 
   params| pJob_Walk  |
 
@@ -120,7 +120,7 @@
   pJob_Walk job.objectName@ walk.checkTable
   not if
     pJob_Walk <ERROR_JOB>
-    !!am exit
+    !!logError exit
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -132,10 +132,10 @@
   sTableNm sIndexNm checkSizeIndex
   not if
     pJob_Walk <ERROR_JOB>
-    !!am exit
+    !!logError exit
   then
 
-  <<am <Resources_Checked>
+  <<logExit <Resources_Checked>
   an::resources_checked
 ;
 
@@ -144,11 +144,11 @@
 /*----------------------------------------------------------------------------*/
 : walk.releaseResources ( pJob_Walk -- )
 
-  >>am <Release_Resources>
+  >>logEntry <Release_Resources>
 
   params| pJob_Walk  |
 
-  <<am <Resources_Released>
+  <<logExit <Resources_Released>
   an::resources_released
 ;
 
@@ -160,14 +160,14 @@
 /*----------------------------------------------------------------------------*/
 : walk_req ( -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
   an::seed_req
 
   job::this locals| pJob_Walk |
 
   pJob_Walk job.distribute
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -177,7 +177,7 @@
 /*----------------------------------------------------------------------------*/
 : walk_beg ( -- )
 
-  >>am <SEED_BEG>
+  >>logEntry <SEED_BEG>
   an::seed_rcv
 
   job::this locals| pJob_Walk |
@@ -188,7 +188,7 @@
 
   job::participantBegun
 
-  <<am <DONE_BEG>
+  <<logExit <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -196,7 +196,7 @@
 /*----------------------------------------------------------------------------*/
 : walk_exe ( pJob_Walk -- )
 
-  >>am <SEED_EXE>
+  >>logEntry <SEED_EXE>
   an::seed_exe
 
   job::this locals| pJob_Walk |
@@ -210,7 +210,7 @@
 
 pJob_Walk job::participantExecuted
 
-  <<am <DONE_EXE>
+  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -218,7 +218,7 @@ pJob_Walk job::participantExecuted
 /*----------------------------------------------------------------------------*/
 : walk_end ( -- )
 
-  >>am <SEED_END>
+  >>logEntry <SEED_END>
   an::seed_end
 
   job::this locals| pJob_Walk |
@@ -227,7 +227,7 @@ pJob_Walk job::participantExecuted
 
   job::participantEnded
 
-  <<am <DONE_END>
+  <<logExit <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -235,7 +235,7 @@ pJob_Walk job::participantExecuted
 /*----------------------------------------------------------------------------*/
 : walk_can ( -- )
 
-  >>am <SEED_CAN>
+  >>logEntry <SEED_CAN>
   an::seed_can
 
   job::this locals| pJob_Walk |
@@ -244,7 +244,7 @@ pJob_Walk job::participantExecuted
 
   job::participantCancelled
 
-  <<am <DONE_CAN>
+  <<logExit <DONE_CAN>
 ;
 
 /*============================================================================*/

@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : cf_req ( -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   0 0 0 0 locals| pCurrentFolder sFolderNm pJob_Cf pTask |
 
@@ -39,7 +39,7 @@
   sFolderNm ".." str.equal if
     pathCurrentFolder dic.name "tenants" str.equal not if pathDrop then
     savePath
-    <<am <DONE_REQ>
+    <<logExit <DONE_REQ>
     exit
   then
 
@@ -50,7 +50,7 @@
   sFolderNm "~" str.equal if
     begin pathCurrentFolder dic.name "tenants" str.equal not while pathDrop repeat
     savePath
-    <<am <DONE_REQ>
+    <<logExit <DONE_REQ>
     exit
   then
 
@@ -62,7 +62,7 @@
     pathDropAll
     attachmap::tenants@ execute pathPush
     savePath
-    <<am <DONE_REQ>
+    <<logExit <DONE_REQ>
     exit
   then
 
@@ -70,10 +70,10 @@
   // otherwise we expect a name of a sub -folder to which we push path to
   // push sub-folder
   sFolderNm findInCurrent to pCurrentFolder
-  pCurrentFolder checkIsDic not if pJob_Cf <ERROR_REQUEST> !!am exit then
+  pCurrentFolder checkIsDic not if pJob_Cf <ERROR_REQUEST> !!logError exit then
   pCurrentFolder execute pathPush
   savePath
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*============================================================================*/

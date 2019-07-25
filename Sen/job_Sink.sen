@@ -23,13 +23,13 @@
 /*----------------------------------------------------------------------------*/
 : Sink_req (  -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   job::this locals| pJob_Sink |
 
   pJob_Sink Sink_process
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*============================================================================*/

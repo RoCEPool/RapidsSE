@@ -202,7 +202,7 @@
 /*----------------------------------------------------------------------------*/
 : table::find ( sTableNm -- pTable )
 
-  dup "table::find %v" str.format .am
+  dup "table::find %v" str.format .logNote
 
   find execute
 ;

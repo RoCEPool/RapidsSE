@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : checkVerifyIndex ( "<tableNm>" "<indexNm>" -- true | errorCode false )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   params| sIndexNm sTableNm |
 
@@ -82,7 +82,7 @@
 /*----------------------------------------------------------------------------*/
 : verifyIndex_exe ( Job_VerifyIndex )
 
-  >>am <SEED_EXE>
+  >>logEntry <SEED_EXE>
 
   //params| pJob_VerifyIndex |
   job::this locals| pJob_VerifyIndex |
@@ -131,7 +131,7 @@
 
   pJob_VerifyIndex job::participantExecuted
 
-  <<am <DONE_EXE>
+  <<logExit <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -159,7 +159,7 @@
   pJob_VerifyIndex job.indexName@ to sIndexNm
   pJob_VerifyIndex job.objectName@ to sTableNm
 
-  sTableNm sIndexNm checkVerifyIndex not if pJob_VerifyIndex <ERROR_JOB> !!am exit then
+  sTableNm sIndexNm checkVerifyIndex not if pJob_VerifyIndex <ERROR_JOB> !!logError exit then
 
   ddlLock::dropRead
 ;
@@ -180,7 +180,7 @@
 /*----------------------------------------------------------------------------*/
 : verifyIndex_beg ( -- )
 
-  >>am <SEED_BEG>
+  >>logEntry <SEED_BEG>
 
   job::this locals| pJob_VerifyIndex |
 
@@ -191,7 +191,7 @@
 
   job::participantBegun
 
-  <<am <DONE_BEG>
+  <<logExit <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -199,7 +199,7 @@
 /*----------------------------------------------------------------------------*/
 : verifyIndex_end ( -- )
 
-  >>am <SEED_END>
+  >>logEntry <SEED_END>
 
   job::this locals| pJob_VerifyIndex |
 
@@ -207,7 +207,7 @@
 
   job::participantEnded
 
-  <<am <DONE_END>
+  <<logExit <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -215,7 +215,7 @@
 /*----------------------------------------------------------------------------*/
 : verifyIndex_can ( -- )
 
-  >>am <SEED_CAN>
+  >>logEntry <SEED_CAN>
 
   job::this locals| pJob_VerifyIndex |
 
@@ -223,7 +223,7 @@
 
   job::participantCancelled
 
-  <<am <DONE_CAN>
+  <<logExit <DONE_CAN>
 ;
 
 /*============================================================================*/

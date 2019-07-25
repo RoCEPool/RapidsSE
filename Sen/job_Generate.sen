@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : Generate_req (  -- <R> )
 
-  >>am <SEED_REQ>
+  >>logEntry <SEED_REQ>
 
   0 locals| sTableNm |
   0 locals| pTable |
@@ -27,7 +27,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the tables folder
-  checkInTables not if pJob_Generate <ERROR_REQUEST> !!am exit then
+  checkInTables not if pJob_Generate <ERROR_REQUEST> !!logError exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get table name from job
@@ -39,7 +39,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is a table
-  sTableNm checkIsTable not if popTable pJob_Generate <ERROR_REQUEST> !!am exit then
+  sTableNm checkIsTable not if popTable pJob_Generate <ERROR_REQUEST> !!logError exit then
 
   //----------------------------------------------------------------------------
 
@@ -56,7 +56,7 @@
   popTable
   assertInTables
 
-  <<am <DONE_REQ>
+  <<logExit <DONE_REQ>
 ;
 
 /*============================================================================*/
