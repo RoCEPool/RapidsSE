@@ -89,7 +89,7 @@ void LogEntry::vSet(i8 iEnumGroup, i8 iEnum, i8 iForeign, char* aText)
 {
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
-  m_iTick = Tsc::iTicks();
+  m_iTick = Tick::iTicks();
   
   StrLib::vCopyLen(m_caNode,
                    gpAttachMap->m_pGrid->m_pThisNode->aNodeName()->aChar(),

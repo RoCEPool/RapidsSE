@@ -723,7 +723,7 @@ void Log::vWriteToFile(bool bShortForm)
       break;
     
     LogEntry* pPrevEntry = &m_oaEntry[(i_Entry - 1) % m_nEntries];
-    i8 iDeltaUsec = Tsc::iToUsec(pLogEntry->m_iTick - pPrevEntry->m_iTick);
+    i8 iDeltaUsec = Tick::iToUsec(pLogEntry->m_iTick - pPrevEntry->m_iTick);
 
     pLogEntry->vDump(pLogFile,bShortForm,iDeltaUsec,iTotalDelta);
   }

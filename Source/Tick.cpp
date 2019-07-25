@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Tsc.cpp -- Time Stamp Counter                                              */
+/* Tick.cpp -- Time Stamp Counter                                              */
 /*============================================================================*/
 
 #include "System.h"
@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 /* get ticks                                                                  */
 /*----------------------------------------------------------------------------*/
-i8 Tsc::iTicks(void)
+i8 Tick::iTicks(void)
 {
 #ifdef WITH_APPLE
   struct timespec tp;
@@ -37,7 +37,7 @@ i8 Tsc::iTicks(void)
 /*----------------------------------------------------------------------------*/
 /* get tick frequency                                                         */
 /*----------------------------------------------------------------------------*/
-i8 Tsc::iTicksPerSecond(void)
+i8 Tick::iTicksPerSecond(void)
 {
 #if defined(WITH_APPLE) || defined(WITH_LINUX)
   i8 iFrequency = C_1G;
@@ -51,7 +51,7 @@ i8 Tsc::iTicksPerSecond(void)
 /*----------------------------------------------------------------------------*/
 /* convert tick delta to milliseconds                                         */
 /*----------------------------------------------------------------------------*/
-i8 Tsc::iToMsec(i8 iTickDelta)
+i8 Tick::iToMsec(i8 iTickDelta)
 {
   i8 iTicksPerMillisecond = iTicksPerSecond() / C_1K;
   
@@ -63,7 +63,7 @@ i8 Tsc::iToMsec(i8 iTickDelta)
 /*----------------------------------------------------------------------------*/
 /* convert tick delta to nanoseconds                                          */
 /*----------------------------------------------------------------------------*/
-i8 Tsc::iToNsec(i8 iTickDelta)
+i8 Tick::iToNsec(i8 iTickDelta)
 {
   i8 iTicksPerNanosecond = iTicksPerSecond() / C_1G;
   
@@ -75,7 +75,7 @@ i8 Tsc::iToNsec(i8 iTickDelta)
 /*----------------------------------------------------------------------------*/
 /* convert tick delta to microseconds                                         */
 /*----------------------------------------------------------------------------*/
-i8 Tsc::iToUsec(i8 iTickDelta)
+i8 Tick::iToUsec(i8 iTickDelta)
 {
   i8 iTicksPerMicrosecond = iTicksPerSecond() / C_1M;
   
@@ -87,7 +87,7 @@ i8 Tsc::iToUsec(i8 iTickDelta)
 /*----------------------------------------------------------------------------*/
 /* read hardware timestamp counter                                            */
 /*----------------------------------------------------------------------------*/
-i8 Tsc::iRdTscp(void)
+i8 Tick::iRdTscp(void)
 {
   /*
      Intel SDM says:

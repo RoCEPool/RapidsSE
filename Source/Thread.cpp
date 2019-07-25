@@ -229,7 +229,7 @@ void* Thread::aEntryPoint_dummy(void* pArg)
     // burn some cpu
     i8 iSum = 0;
     for (i8 i_Loop = 0; i_Loop < gpAttachMap->Arg.m_nDummyLoop; i_Loop++)
-      iSum += Tsc::iRdTscp();
+      iSum += Tick::iRdTscp();
   }
   
   //pThread->m_pPthread->vThreadExit();

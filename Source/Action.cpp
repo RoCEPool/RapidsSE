@@ -89,7 +89,7 @@ i8 Action::iDeltaNextUsec(void)
   
   i8 iTickDelta = m_iTick - pNext->m_iTick;
   
-  i8 iDeltaUsec = Tsc::iToUsec(iTickDelta);
+  i8 iDeltaUsec = Tick::iToUsec(iTickDelta);
   
   return iDeltaUsec;
 }

@@ -379,7 +379,7 @@ Action* ActionLog::pAllotAction(void)
   
   pAction->vReset();
   pAction->m_i_Entry = m_i_Entry;
-  pAction->m_iTick    = Tsc::iRdTscp();
+  pAction->m_iTick    = Tick::iRdTscp();
   
   m_i_Entry++;
   

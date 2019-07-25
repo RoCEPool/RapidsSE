@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Tsc.hpp -- Time Stamp Counter                                              */
+/* Tick.hpp -- Time Stamp Counter                                              */
 /*============================================================================*/
 #pragma once
 
 namespace System
 {
-  class Tsc
+  class Tick
   {
   public:
     static i8 iTicks(void);
