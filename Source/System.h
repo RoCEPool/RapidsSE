@@ -37,6 +37,7 @@ using namespace System;
 #include "Pthread.hpp"
 #include "Process.hpp"
 #include "Random.hpp"
+#include "ResLog.hpp"
 #include "Shell.hpp"
 #include "Shm.hpp"
 #include "Shm.hpp"

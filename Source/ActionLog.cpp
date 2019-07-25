@@ -80,7 +80,7 @@ void ActionLog::vOpenBySE(bool bStarting)
   ActionLog* pActionSequence = nullptr;
   
   if (bStarting) {
-    pActionSequence = (ActionLog*)ShmLog::aOpenNew(sMapNm,nMapSz);
+    pActionSequence = (ActionLog*)ShmLog::aOpenCreate(sMapNm,nMapSz);
     if (gpAttachMap->m_bVerbose)
       vTrace("ActionLog: created new map %s %lldB\n"_Stz,
              sMapNm.aStz(),
