@@ -86,11 +86,11 @@ Job::Job(eCN eClassNo, Session* pSession)
   
   if ( gpAttachMap->m_oMarkAction.bAll() ||
       gpAttachMap->m_oMarkAction.bFlagged(eClass()) ) {
-    m_bLogActions  = true;
+    m_bMarkAction  = true;
     m_i_ActionRoot = ActionLog::iBegin(m_iJobId,eClassNo);
   }
   else {
-    m_bLogActions  = false;
+    m_bMarkAction  = false;
     m_i_ActionRoot = C_UNKNOWN;
   }
   

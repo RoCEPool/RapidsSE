@@ -912,7 +912,7 @@ void Step::vJobMarkActionFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.markAction@"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  mpTask->m_pDataStack->vPushI8(pJob->m_bLogActions);
+  mpTask->m_pDataStack->vPushI8(pJob->m_bMarkAction);
   
   EXIT();
 }
@@ -933,7 +933,7 @@ void Step::vJobMarkActionStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iMarkAction) )
     THROW_INVALID_DSTACK("job.markAction!"_Stz);
   
-  pJob->m_bLogActions = (bool)iMarkAction;
+  pJob->m_bMarkAction = (bool)iMarkAction;
   
   EXIT();
 }
