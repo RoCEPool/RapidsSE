@@ -52,7 +52,7 @@ namespace Logging
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
 
-  private:
+  //private:
     i8   iAddNoteArg(i8 iEnumGroup, i8 iEnum, i8 iForeign,
                    Stz* aFormat, va_list xArgs);
     i8   iAddNoteVbl(i8 iEnumGroup, i8 iEnum, i8 iForeign,

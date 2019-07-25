@@ -8,6 +8,7 @@ namespace System
   class ResLog
   {
   public:
+    static void vNote(eSR eSysRes, Stz* szFormat, ...);
   };
 }
 
