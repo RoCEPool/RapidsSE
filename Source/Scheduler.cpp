@@ -332,6 +332,8 @@ void Scheduler::vTask_Bide(Task* pTask)
   pTask->vTransitionClear();
   pTask->vState(TS_BIDING);
   
+  JobLog::vNoteState(pTask->pJob(),"Bide"_Stz);
+  
   gpAttachMap->m_pQueues->vAddBidingSet(pTask);
   // **do not touch task** (other than to drop lock)
   
@@ -350,6 +352,8 @@ void Scheduler::vTask_Desist(Task* pTask)
   gpAttachMap->m_pQueues->vRemoveExecutingSet(pTask);
   
   pTask->vState(TS_DESISTED);
+  
+  JobLog::vNoteState(pTask->pJob(),"Desist"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -363,6 +367,8 @@ void Scheduler::vTask_Execute(Task* pTask)
 
   pTask->vState(TS_EXECUTING);
 
+  JobLog::vNoteState(pTask->pJob(),"Executing"_Stz);
+  
   gpAttachMap->m_pQueues->vAddExecutingSet(pTask);
   // **do not touch task**
 }
@@ -396,6 +402,8 @@ void Scheduler::vTask_Ready(Task* pTask)
 
   pTask->vState(TS_READY);
 
+  JobLog::vNoteState(pTask->pJob(),"Ready"_Stz);
+  
   if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
     gpAttachMap->m_pQueues->vAppendReadyQueue(pTask);
   else
@@ -415,11 +423,7 @@ void Scheduler::vTask_Resume(Task* pTask)
   
   RASSERT(! pTask->iAcksRmg_assert_only_());
   
-  if (pTask->pJob()->m_bMarkActivity)
-    JobLog::vNote(pTask->pJob(),
-                          "Scheduling acked: %s %p"_Stz,
-                          aCN[pTask->pJob()->eClass()],
-                          pTask->pJob());
+  JobLog::vNoteState(pTask->pJob(),"Resume"_Stz);
   
   // cycle the task lock to ensure task has fully entered wait state
   pTask->vGrabLock();
@@ -448,6 +452,8 @@ void Scheduler::vTask_Schedule(Task* pTask)
   RASSERT(QK_NONE == pTask->eQueue());
   RASSERT(TR_NONE == pTask->eTransition());
 
+  JobLog::vNoteState(pTask->pJob(),"Schedule"_Stz);
+  
   if (bThread_AssignIdle(pTask))
     return;
   
@@ -468,12 +474,8 @@ void Scheduler::vTask_Sleep(Task* pTask)
 
   pTask->vTransitionClear();
   
-  if (pTask->pJob()->m_bMarkActivity)
-    JobLog::vNote(pTask->pJob(),
-                          "Schedule sleeping: %s %p"_Stz,
-                          aCN[pTask->pJob()->eClass()],
-                          pTask->pJob());
-  
+  JobLog::vNoteState(pTask->pJob(),"Sleep"_Stz);
+
   // is the task to actually sleep?
   if (! pTask->bWakeupNow()) {
     pTask->vState(TS_SLEEPING);
@@ -505,6 +507,8 @@ void Scheduler::vTask_Thread(Task* pTask, Thread* pThread)
   RASSERT(TD_ASSIGNED == pThread->m_eThreadState);
   RASSERT(pTask == pThread->m_pTask);
   
+  JobLog::vNoteState(pTask->pJob(),"Thread"_Stz);
+  
   pTask->vThread(pThread);
   // ok to touch task
 }
@@ -521,6 +525,8 @@ void Scheduler::vTask_Trigger(Task* pTask)
   RASSERT(TR_NONE == pTask->eTransition());
 
   gpAttachMap->m_pQueues->vRemoveBidingSet(pTask);
+  
+  JobLog::vNoteState(pTask->pJob(),"Trigger"_Stz);
   
   pTask->vDropLock();
   
@@ -542,19 +548,8 @@ void Scheduler::vTask_Wait(Task* pTask)
   pTask->vTransitionClear();
   pTask->vState(TS_WAITING);
   
-  if (pTask->pJob()->m_bMarkActivity) {
-    if (C_UNKNOWN == pTask->pJob()->iJobId())
-      Log::vNote(
-                             "Schedule waiting: %s %p"_Stz,
-                             aCN[pTask->pJob()->eClass()],
-                             pTask->pJob());
-    else
-      JobLog::vNote(pTask->pJob(),
-                            "Schedule waiting: %s %p"_Stz,
-                            aCN[pTask->pJob()->eClass()],
-                            pTask->pJob());
-  }
-  
+  JobLog::vNoteState(pTask->pJob(),"Wait"_Stz);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   gpAttachMap->m_pQueues->vAddWaitingSet(pTask);
@@ -569,6 +564,7 @@ void Scheduler::vTask_Wait(Task* pTask)
 void Scheduler::vTask_Wakeup(void)
 {
   while (Task* pTask = gpAttachMap->m_pQueues->pPopSleepingQueue()) {
+    JobLog::vNoteState(pTask->pJob(),"Wakeup"_Stz);
     vTask_Able(pTask);
     vTask_Schedule(pTask);
     // **do not touch task**
@@ -588,19 +584,8 @@ void Scheduler::vTask_Yield(Task* pTask)
 
   Thread* pThread = Thread::pThisTLSThread();
   
-  if (pTask->pJob()->m_bMarkActivity) {
-    if (C_UNKNOWN == pTask->pJob()->iJobId())
-      Log::vNote(
-                             "Schedule yielded: %s %p"_Stz,
-                             aCN[pTask->pJob()->eClass()],
-                             pTask->pJob());
-    else
-      JobLog::vNote(pTask->pJob(),
-                            "Schedule yielded: %s %p"_Stz,
-                            aCN[pTask->pJob()->eClass()],
-                            pTask->pJob());
-  }
-  
+  JobLog::vNoteState(pTask->pJob(),"Yield"_Stz);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // no other ready to run tasks, so thread continues executing the task
   

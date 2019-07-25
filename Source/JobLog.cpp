@@ -61,7 +61,7 @@ void JobLog::vNoteState(Jobs::Job* pJob, Stz* szPoint)
   if (! gpLog)
     return;
   
-  if (! pJob->m_bMarkActivity)
+  if (! pJob || ! Jobs::_bIsValidJob(pJob->eClass()) || ! pJob->m_bMarkActivity)
     return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
