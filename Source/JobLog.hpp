@@ -8,6 +8,7 @@ namespace Jobs
   class JobLog
   {
   public:
+    static void vNote(Jobs::Job* pJob, Stz* szFormat, ...);
   };
 }
 
