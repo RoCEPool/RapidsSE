@@ -9,7 +9,6 @@ namespace Prompt
   {
   /*  0 */ PF_NONE=0,
   
-  /*    */ PF_ACTIONSEQUENCE,
   /*    */ PF_AM,
   /*    */ PF_AMSECTION,
   /*    */ PF_APISTATE,
@@ -101,7 +100,6 @@ namespace Prompt
   static Stz* aPF[]
   {
   /*  0 */ "NONE"_Stz,
-  /*    */ "ACTIONSEQUENCE"_Stz,
   /*    */ "AM"_Stz,
   /*    */ "AMSECTION"_Stz,
   /*    */ "APISTATE"_Stz,
