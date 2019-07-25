@@ -17,6 +17,8 @@ namespace PushDown
 
     bool (*m_fpOpFun)(void* aThis);  // function which does the op
   
+    //! need to add pulsing and cancelling
+  
   public:
     void  operator delete(void*);
   

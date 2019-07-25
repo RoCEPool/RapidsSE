@@ -5,7 +5,7 @@
 #include "Prompt.h"
 
 PromptNote mPromptNote_logSection (
-  PF_logSection,           // prompt function
+  PF_LOGSECTION,           // prompt function
   "Prompt_logSection"_Stz, // name of the prompt function
   "comment"_Stz,           // comment about the function
   "logSection"_Stz,        // the prompt command
