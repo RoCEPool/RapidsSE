@@ -479,7 +479,6 @@ void Engine::vOpenActionSequence(void)
   if (0 == gpAttachMap->m_pGrid->m_iThisNode && gxArguments.m_bStart)
     bStarting = true;
   
-  ActionLog::vOpenBySE(bStarting);
 }
 
 /*----------------------------------------------------------------------------*/

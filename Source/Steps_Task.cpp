@@ -91,7 +91,7 @@ void Step::vTaskAcksStore(MP_Task mpTask)
     gpAttachMap->m_pOriginatingJobs->vMarkContents(pJob->m_iJobId);
   }
   
-  ActionLog::vAdd(pJob,AN_ACKS_REQUIRED,nAcksRequired);
+  ActLog::vAdd(pJob,AN_ACKS_REQUIRED,nAcksRequired);
   
   pGivenTask->m_oAcksRmg.vSetRemaining(nAcksRequired);
 
@@ -170,7 +170,7 @@ void Step::vTaskExit(MP_Task mpTask)
 {
   ENTRY("vTaskExit"_Stz);
   
-  //ActionLog::vAdd(mpTask->m_pJob,AN_TASK_WAIT);
+  //ActLog::vAdd(mpTask->m_pJob,AN_TASK_WAIT);
   
   mpTask->vTransition(TR_EXIT);
 
@@ -190,7 +190,7 @@ void Step::vTaskGrabLock(MP_Task mpTask)
   Task* pThatTask = _pTask(pObject);
   
   pThatTask->vGrabLock();
-  ActionLog::vAdd(mpTask->m_pJob,AN_TASK_LOCKED);
+  ActLog::vAdd(mpTask->m_pJob,AN_TASK_LOCKED);
 
   
   EXIT();
@@ -428,7 +428,7 @@ void Step::vTaskSleepMsec(MP_Task mpTask)
   
   i8 nMicroSeconds = nMilliSeconds * C_1K;
   
-  ActionLog::vAdd(mpTask->m_pJob,AN_TASK_SLEEP,nMicroSeconds);
+  ActLog::vAdd(mpTask->m_pJob,AN_TASK_SLEEP,nMicroSeconds);
   
   mpTask->vSleepUsec(nMicroSeconds);
   mpTask->vTransition(TR_SLEEP);
@@ -450,7 +450,7 @@ void Step::vTaskSleepSsec(MP_Task mpTask)
   
   i8 nMicroSeconds = nSeconds * C_1M;
   
-  ActionLog::vAdd(mpTask->m_pJob,AN_TASK_SLEEP,nMicroSeconds);
+  ActLog::vAdd(mpTask->m_pJob,AN_TASK_SLEEP,nMicroSeconds);
   
   mpTask->vSleepUsec(nMicroSeconds);
   mpTask->vTransition(TR_SLEEP);
@@ -470,7 +470,7 @@ void Step::vTaskSleepUsec(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(nMicroSeconds) )
     THROW_INVALID_DSTACK("task::sleepUsec"_Stz);
   
-  ActionLog::vAdd(mpTask->m_pJob,AN_TASK_SLEEP,nMicroSeconds);
+  ActLog::vAdd(mpTask->m_pJob,AN_TASK_SLEEP,nMicroSeconds);
   
   mpTask->vSleepUsec(nMicroSeconds);
   mpTask->vTransition(TR_SLEEP);
@@ -537,7 +537,7 @@ void Step::vTaskWait(MP_Task mpTask)
 {
   ENTRY("vTaskWait"_Stz);
   
-  ActionLog::vAdd(mpTask->m_pJob,AN_TASK_WAIT);
+  ActLog::vAdd(mpTask->m_pJob,AN_TASK_WAIT);
   
   mpTask->vTransition(TR_WAIT);
 
@@ -551,7 +551,7 @@ void Step::vTaskYield(MP_Task mpTask)
 {
   ENTRY("vTaskYield"_Stz);
   
-  ActionLog::vAdd(mpTask->m_pJob,AN_TASK_YIELD);
+  ActLog::vAdd(mpTask->m_pJob,AN_TASK_YIELD);
   
   mpTask->vTransition(TR_YIELD);
 

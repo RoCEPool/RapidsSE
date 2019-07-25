@@ -119,7 +119,7 @@ Job__Executed::Job__Executed(Job* pDistJob)
   
   _checkInitialised_(CN_JOB__EXECUTED);
   
-  ActionLog::vAdd(this,AN_CONSTRUCTOR,CN_JOB__EXECUTED,_EG_CN);
+  ActLog::vAdd(this,AN_CONSTRUCTOR,CN_JOB__EXECUTED,_EG_CN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB__EXECUTED,_FOOTER_);
 }

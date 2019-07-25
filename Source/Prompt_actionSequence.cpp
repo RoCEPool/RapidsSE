@@ -26,7 +26,7 @@ PromptNote mPromptNote_actionSequence (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_actionSequence(SePrompt* pPrompt)
 {
-  ActionLog::vWriteCsv();
+  //ActLog::vWriteCsv();
 
   return true;
 }

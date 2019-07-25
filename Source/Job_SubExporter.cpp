@@ -123,7 +123,7 @@ Job_SubExporter::Job_SubExporter(Interface::Session* pSession)
   
   _checkInitialised_(CN_JOB_SUBEXPORTER);
   
-  ActionLog::vAdd(this,AN_CONSTRUCTOR,CN_JOB_SUBEXPORTER,_EG_CN);
+  ActLog::vAdd(this,AN_CONSTRUCTOR,CN_JOB_SUBEXPORTER,_EG_CN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
 }
@@ -174,7 +174,7 @@ bool Job_SubExporter::bBegin(void)
                           pTable->aTableName(),
                           m_nCrwBuffers);
   
-  ActionLog::vAdd(this,AN_JOB_BEGIN,m_nCrwBuffers);
+  ActLog::vAdd(this,AN_JOB_BEGIN,m_nCrwBuffers);
   
   return true;
 }
@@ -197,7 +197,7 @@ bool Job_SubExporter::bChunk(void)
                           m_nCrwBuffers,
                           m_pCrwBuffer);
   
-  ActionLog::vAdd(this,AN_JOB_CHUNK,m_iCrwBuffer);
+  ActLog::vAdd(this,AN_JOB_CHUNK,m_iCrwBuffer);
 
   if (m_pCrwBuffer->nRowCount())
     vSprintRows();
@@ -218,7 +218,7 @@ void Job_SubExporter::vEnd(void)
   if (m_pExportBuffer)
     vSpawnKidExport(true);
   
-  ActionLog::vAdd(this,AN_JOB_END,m_iCrwBuffer);
+  ActLog::vAdd(this,AN_JOB_END,m_iCrwBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
