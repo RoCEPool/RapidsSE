@@ -26,6 +26,7 @@ using namespace Interface;
 #include "ApiMacros.hpp"
 
 #include "Api.hpp"
+#include "ApiLog.hpp"
 #include "SessionState.hpp"
 #include "ApiState.hpp"
 #include "RapidsSE.hpp"
