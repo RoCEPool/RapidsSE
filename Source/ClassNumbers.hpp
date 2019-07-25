@@ -28,7 +28,6 @@ enum eCN : u2 // Class Number
   /*   7 0x07       16B Heap:I */ CN_IVLVAL__,     //! TO BE DELETED
 
   /*  12 0x0C       80B Heap:M */ CN_ACCESSPATH,
-  /*  13 0x0D      200B Heap:I */ CN_ACTIVITYLOG,
   /*                           */ CN_AGGOP,
   /*  15 0x0F   213152B Heap:L */ CN_APISTATE,
   /*  16 0x10      296B Heap:S */ CN_ARG,
@@ -359,7 +358,6 @@ static Stz* aCN[]
   /*   7 0x07 */ "IVLVAL"_Stz,              // CN_IVLVAL
 
   /*  12 0x0C */ "ACCESSPATH"_Stz,          // CN_ACCESSPATH
-  /*  13 0x0D */ "ACTIVITYLOG"_Stz,         // CN_ACTIVITYLOG
   /*          */ "AGGOP"_Stz,               // CN_AGGOP
   /*  15 0x0F */ "APISTATE"_Stz,            // CN_APISTATE
   /*  16 0x10 */ "ARG"_Stz,                 // CN_ARG
