@@ -150,7 +150,7 @@ void Step::vJobAddOriginator(MP_Task mpTask)
   gpAttachMap->m_pOriginatingJobs->vDropLock();
 
   if (pJob->m_bMarkActivity) {
-    Log::vNoteJob(pJob,"Added to Originator List: %s %p"_Stz,
+    JobLog::vNote(pJob,"Added to Originator List: %s %p"_Stz,
                        aCN[pJob->eClass()],
                        pJob);
     gpAttachMap->m_pOriginatingJobs->vMarkContents(pJob->m_iJobId);
@@ -179,7 +179,7 @@ void Step::vJobAddParticipant(MP_Task mpTask)
   gpAttachMap->m_pParticipatingJobs->vDropLock();
   
   if (pJob->m_bMarkActivity) {
-    Log::vNoteJob(pJob,"Added to ParticipantList: %s %p "_Stz,
+    JobLog::vNote(pJob,"Added to ParticipantList: %s %p "_Stz,
                           aCN[pJob->eClass()],
                           pJob);
     gpAttachMap->m_pParticipatingJobs->vMarkContents(pJob->m_iJobId);
@@ -1313,7 +1313,7 @@ void Step::vJobPostRecv(MP_Task mpTask)
     (*pJobClass->m_fpRecv)(pJob);
   
   if (pJob->m_bMarkActivity) {
-    Log::vNoteJob(pJob,
+    JobLog::vNote(pJob,
                           "PostRecv: %s %p"_Stz,
                           aCN[pJob->eClass()],
                           pJob);
@@ -1344,7 +1344,7 @@ void Step::vJobPreSend(MP_Task mpTask)
     (*pJobClass->m_fpSend)(pJob);
   
   if (pJob->m_bMarkActivity)
-    Log::vNoteJob(pJob,
+    JobLog::vNote(pJob,
                           "PreSend: %s %p"_Stz,
                           aCN[pJob->eClass()],
                           pJob);
@@ -1403,7 +1403,7 @@ void Step::vJobRemoveOriginator(MP_Task mpTask)
   }
   
   if (pJob->m_bMarkActivity) {
-    Log::vNoteJob(pJob,
+    JobLog::vNote(pJob,
                        "Removed from Originator List: %s %p"_Stz,
                        aCN[pJob->eClass()],
                        pJob);
@@ -1444,7 +1444,7 @@ void Step::vJobRemoveParticipant(MP_Task mpTask)
   }
   
   if (pJob->m_bMarkActivity) {
-    Log::vNoteJob(pJob,"Removed from Participant List: "_Stz,
+    JobLog::vNote(pJob,"Removed from Participant List: "_Stz,
                        aCN[pJob->eClass()],
                        pJob);
     gpAttachMap->m_pParticipatingJobs->vMarkContents(pJob->m_iJobId);
@@ -1774,7 +1774,7 @@ void Step::vJobSignalConnector(MP_Task mpTask)
   }
   
   if (pJob->m_bMarkActivity)
-    Log::vNoteJob(pJob,"Connector signalled by %s"_Stz,
+    JobLog::vNote(pJob,"Connector signalled by %s"_Stz,
                        aCN[pJob->eClass()]);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -287,7 +287,7 @@ void Task::vTaskLoop_job(void)
   // ...
 
   if (m_pJob && m_pJob->m_bMarkActivity)
-    Log::vNoteJob(m_pJob,
+    JobLog::vNote(m_pJob,
                           "Returned from task call: %s %p"_Stz,
                           aCN[m_pJob->eClass()],
                           m_pJob);

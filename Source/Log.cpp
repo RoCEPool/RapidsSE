@@ -245,50 +245,6 @@ void Log::vNoteApiExit(i8 eApiCall, i8 iJobId)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add a log entry for job                                                    */
-/*----------------------------------------------------------------------------*/
-void Log::vNoteJob(Jobs::Job* pJob, Stz* szFormat, ...)
-{
-#ifdef WITH_ACTIVITY_MAP
-  if ( ! gpLog )
-    return;
-  
-  va_list xArgs;
-  
-  va_start(xArgs,szFormat);
-  
-  s4K szCombinedFormat;
-
-  if (pJob->m_bWasReceived) {
-    
-    s32 sNodeNm;
-    sNodeNm = pJob->szNodeNm();
-    
-    StrLib::vSprint(szCombinedFormat,
-                  "%s (recv from %s)"_Stz,
-                  
-                  szFormat,
-                  sNodeNm.aStz()
-                  );
-  }
-  else {
-    StrLib::vSprint(szCombinedFormat,
-                    "%s"_Stz,
-                    
-                    szFormat
-                    );
-  }
-  
-  i8 iJobId = pJob->iJobId();
-  bool bForeign = pJob->m_bWasReceived;
-  pJob->m_i_Activity = gpLog->iAddNoteArg(C_JOB_GROUP,iJobId,bForeign,
-                                                  szCombinedFormat,xArgs);
-  
-  va_end(xArgs);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
 /* add a section line log entry                                               */
 /*----------------------------------------------------------------------------*/
 void Log::vNoteSection(Stz* szSectionNm)

@@ -327,7 +327,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
                             sFooter.aStz());
     }
     if (pJob->m_bMarkActivity) {
-      Log::vNoteJob(pJob,
+      JobLog::vNote(pJob,
                          "Recv: %s %p socket %llx"_Stz,
                          aCN[eClass],
                          pJob,
@@ -622,7 +622,7 @@ void Step::vSocketSendObject(MP_Task mpTask)
   if (_bIsValidJob(eClass)) {
     Job* pJob = _pJob(pObject);
     if (pJob->m_bMarkActivity)
-      Log::vNoteJob(pJob,"Send: %s %p socket %llx"_Stz,
+      JobLog::vNote(pJob,"Send: %s %p socket %llx"_Stz,
                          aCN[eClass],
                          pJob,
                          pSocket);

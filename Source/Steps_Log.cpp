@@ -45,7 +45,7 @@ void Step::vLogMark(MP_Task mpTask)
     THROW_INVALID_DSTACK("log::mark"_Stz);
 
   //i8 iJobId = mpTask->m_pJob->m_iJobId;
-  Log::vNoteJob(mpTask->m_pJob,sMark);
+  JobLog::vNote(mpTask->m_pJob,sMark);
   
   EXIT();
 }
@@ -63,7 +63,7 @@ void Step::vLogMarkEntry(MP_Task mpTask)
     THROW_INVALID_DSTACK("log::markEntry"_Stz);
     
   if (mpTask->m_pJob->m_bMarkActivity)
-    Log::vNoteJob(mpTask->m_pJob,
+    JobLog::vNote(mpTask->m_pJob,
                           "%s %s %p"_Stz,
                           sWordNm.aStz(),
                           aCN[mpTask->pJob()->eClass()],
@@ -86,7 +86,7 @@ void Step::vLogMarkExit(MP_Task mpTask)
     THROW_INVALID_DSTACK("log::markExit"_Stz);
   
   if (mpTask->m_pJob->m_bMarkActivity)
-    Log::vNoteJob(mpTask->m_pJob,
+    JobLog::vNote(mpTask->m_pJob,
                           "%s %s %p"_Stz,
                           sWordNm.aStz(),
                           aCN[mpTask->pJob()->eClass()],

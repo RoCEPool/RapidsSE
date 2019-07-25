@@ -366,7 +366,7 @@ void Job::vMarkJob(Stz* szFormat, ...)
   
   va_start(xArgs,szFormat);
   
-  Log::vNoteJob(this,szFormat,xArgs);
+  JobLog::vNote(this,szFormat,xArgs);
   
   va_end(xArgs);
 #endif
