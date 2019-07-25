@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* Prompt_am.hpp -- write a mark into the activity map                        */
+/* Prompt_logNote.hpp -- write a note into the log                            */
 /*============================================================================*/
 #pragma once
 
 namespace Prompt
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  bool bPrompt_am(SePrompt* pPrompt);
+  bool bPrompt_logNote(SePrompt* pPrompt);
 }
 
 /*============================================================================*/
