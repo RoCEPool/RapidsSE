@@ -8,8 +8,8 @@
 extern AttachMap* gpAttachMap;
 
 PromptNote mPromptNote_ActivityLog (
-  PF_ACTIVITYLOG,           // prompt function
-  "Prompt_activityLog"_Stz, // name of the prompt function
+  PF_LOGWRITE,              // prompt function
+  "Prompt_logWrite"_Stz,    // name of the prompt function
   "comment"_Stz,            // comment about the function
   "logWrite"_Stz,           // the prompt command
   nullptr,                  // the second word

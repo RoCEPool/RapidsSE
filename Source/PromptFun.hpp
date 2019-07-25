@@ -10,7 +10,6 @@ namespace Prompt
   /*  0 */ PF_NONE=0,
   
   /*    */ PF_ACTIONSEQUENCE,
-  /*    */ PF_ACTIVITYLOG,
   /*    */ PF_AM,
   /*    */ PF_AMSECTION,
   /*    */ PF_APISTATE,
@@ -45,6 +44,7 @@ namespace Prompt
   /*    */ PF_JOBCLASS,
   /*    */ PF_LIMITS,
   /*    */ PF_LOCKS,
+  /*    */ PF_LOGWRITE,
   /*    */ PF_LS,
   /*    */ PF_LVL,
   /*    */ PF_MARKACT,
@@ -102,7 +102,6 @@ namespace Prompt
   {
   /*  0 */ "NONE"_Stz,
   /*    */ "ACTIONSEQUENCE"_Stz,
-  /*    */ "activityLog"_Stz,
   /*    */ "AM"_Stz,
   /*    */ "AMSECTION"_Stz,
   /*    */ "APISTATE"_Stz,
@@ -137,6 +136,7 @@ namespace Prompt
   /*    */ "JOBCLASS"_Stz,
   /*    */ "LIMITS"_Stz,
   /*    */ "LOCKS"_Stz,
+  /*    */ "LOGWRITE"_Stz,
   /*    */ "LS"_Stz,
   /*    */ "LVL"_Stz,
   /*    */ "MARKACT"_Stz,
