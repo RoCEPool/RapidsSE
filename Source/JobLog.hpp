@@ -9,6 +9,7 @@ namespace Jobs
   {
   public:
     static void vNote(Jobs::Job* pJob, Stz* szFormat, ...);
+    static void vNoteState(Jobs::Job* pJob, Stz* szPoint);
   };
 }
 

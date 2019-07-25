@@ -52,6 +52,45 @@ void JobLog::vNote(Jobs::Job* pJob, Stz* szFormat, ...)
 #endif
 }
 
+/*----------------------------------------------------------------------------*/
+/* add a log entry for job state at some point in the code                    */
+/*----------------------------------------------------------------------------*/
+void JobLog::vNoteState(Jobs::Job* pJob, Stz* szPoint)
+{
+#ifdef WITH_ACTIVITY_MAP
+  if (! gpLog)
+    return;
+  
+  if (! pJob->m_bMarkActivity)
+    return;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  s4K szEntryText;
+  
+  szEntryText.vReset();
+  
+  szEntryText.vSprint("%s %s %p "
+                      "%s %s"_Stz,
+                      
+                      szPoint,
+                      aCN[pJob->eClass()],
+                      pJob,
+                      
+                      aTS[pJob->m_pExecutingTask->eState()],
+                      aQK[pJob->m_pExecutingTask->eQueue()]
+                      );
+  
+  if (pJob->m_bWasReceived) {
+    
+    s32 sNodeNm;
+    sNodeNm = pJob->szNodeNm();
+    
+    szEntryText.vCatSprint(" (recv from %s)"_Stz,sNodeNm.aStz());
+  }
+
+#endif
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
