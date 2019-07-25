@@ -61,9 +61,15 @@ void JobLog::vNoteState(Jobs::Job* pJob, Stz* szPoint)
   if (! gpLog)
     return;
   
-  if (! pJob || ! Jobs::_bIsValidJob(pJob->eClass()) || ! pJob->m_bMarkActivity)
+  if (! pJob)
     return;
 
+  if (! Jobs::_bIsValidJob(pJob->eClass()))
+    return;
+  
+  if (! pJob->m_bMarkAction)
+    return;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   s4K szEntryText;
   
@@ -87,6 +93,11 @@ void JobLog::vNoteState(Jobs::Job* pJob, Stz* szPoint)
     
     szEntryText.vCatSprint(" (recv from %s)"_Stz,sNodeNm.aStz());
   }
+
+  i8 iJobId = pJob->iJobId();
+  bool bForeign = pJob->m_bWasReceived;
+  pJob->m_i_Activity = gpLog->iAddNoteVbl(C_JOB_GROUP,iJobId,bForeign,
+                                          szEntryText);
 
 #endif
 }

@@ -249,6 +249,8 @@ void Scheduler::vTask_Able(Task* pTask)
   RASSERT(TR_NONE == pTask->eTransition());
 
   pTask->vState(TS_ABLE);
+  
+  JobLog::vNoteState(pTask->pJob(),"Able"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -367,7 +369,7 @@ void Scheduler::vTask_Execute(Task* pTask)
 
   pTask->vState(TS_EXECUTING);
 
-  JobLog::vNoteState(pTask->pJob(),"Executing"_Stz);
+  JobLog::vNoteState(pTask->pJob(),"Execute"_Stz);
   
   gpAttachMap->m_pQueues->vAddExecutingSet(pTask);
   // **do not touch task**
@@ -670,6 +672,8 @@ bool Scheduler::bThread_AssignIdle(Task* pTask)
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  JobLog::vNoteState(pTask->pJob(),"AssignIdle"_Stz);
   
   RASSERT(TD_IDLE == pThread->m_eThreadState);
   
