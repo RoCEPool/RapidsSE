@@ -161,90 +161,6 @@ void Log::vNote(Stz* aFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add a log entry for api call                                               */
-/*----------------------------------------------------------------------------*/
-void Log::vNoteApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...)
-{
-#ifdef WITH_ACTIVITY_MAP
-  if ( ! gpLog )
-    return;
-  
-  if ( ! gpAttachMap->m_bMarkApi[eApiCall] &&
-       ! gpAttachMap->m_bMarkApiAll )
-    return;
-  
-  va_list xArgs;
-  
-  va_start(xArgs,aFormat);
-  
-  bool bForeign = Job::bIsForeign(iJobId);
-  gpLog->iAddNoteArg(C_JOB_GROUP,iJobId,bForeign,aFormat,xArgs);
-  
-  va_end(xArgs);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* add a log entry for api entry                                              */
-/*----------------------------------------------------------------------------*/
-void Log::vNoteApiEntry(i8 eApiCall, i8 iJobId)
-{
-#ifdef WITH_ACTIVITY_MAP
-  if ( ! gpLog )
-    return;
-  
-  if ( ! gpAttachMap->m_bMarkApi[eApiCall] &&
-      ! gpAttachMap->m_bMarkApiAll )
-    return;
-  
-  Stz* zApiName = aAC[eApiCall];
-  
-  bool bForeign = Job::bIsForeign(iJobId);
-  gpLog->iAddNoteVbl(C_JOB_GROUP,iJobId,bForeign,">Api %s"_Stz,zApiName);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* add a log entry for api error                                              */
-/*----------------------------------------------------------------------------*/
-void Log::vNoteApiError(i8 eApiCall, i8 iJobId, i8 iError)
-{
-#ifdef WITH_ACTIVITY_MAP
-  if ( ! gpLog )
-    return;
-  
-  if ( ! gpAttachMap->m_bMarkApi[eApiCall] &&
-      ! gpAttachMap->m_bMarkApiAll )
-    return;
-  
-  Stz* zApiName = aAC[eApiCall];
-  
-  bool bForeign = Job::bIsForeign(iJobId);
-  gpLog->iAddNoteVbl(C_JOB_GROUP,iJobId,bForeign,"!Api %s Error %lld"_Stz,zApiName,iError);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* add a log entry for api exit                                               */
-/*----------------------------------------------------------------------------*/
-void Log::vNoteApiExit(i8 eApiCall, i8 iJobId)
-{
-#ifdef WITH_ACTIVITY_MAP
-  if ( ! gpLog )
-    return;
-  
-  if ( ! gpAttachMap->m_bMarkApi[eApiCall] &&
-      ! gpAttachMap->m_bMarkApiAll )
-    return;
-  
-  Stz* zApiName = aAC[eApiCall];
-  
-  bool bForeign = Job::bIsForeign(iJobId);
-  gpLog->iAddNoteVbl(C_JOB_GROUP,iJobId,bForeign,"<Api %s"_Stz,zApiName);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
 /* add a section line log entry                                               */
 /*----------------------------------------------------------------------------*/
 void Log::vNoteSection(Stz* szSectionNm)
@@ -393,7 +309,8 @@ void Log::vOpenBySE(bool bStarting)
              C_LOG_ENTRIES);
     gpLog = new(pLog) Log;
 
-  } else {
+   }
+   else {
     pLog = Log::pAttachExisting();
     if (gpAttachMap->m_bVerbose)
       vTrace("Log %s : "

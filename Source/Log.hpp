@@ -35,10 +35,6 @@ namespace Logging
 
   public:
     static void vNote(Stz* aFormat, ...);
-    static void vNoteApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...);
-    static void vNoteApiEntry(i8 eApiCall, i8 iJobId=-1);
-    static void vNoteApiError(i8 eApiCall, i8 iError, i8 iJobId=-1);
-    static void vNoteApiExit(i8 eApiCall, i8 iJobId=-1);
     static void vNoteSection(Stz* szSectionNm);
     static void vNoteString(i8 iJobId, s48K& sString);
   
