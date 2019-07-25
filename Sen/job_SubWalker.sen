@@ -24,7 +24,7 @@
 : subWalker_run ( -- )
 
   >>logEntry <SEED_RUN>
-  an::seed_run
+  actLog::seed_run
 
   task::this locals| pThisTask |
   job::this  locals| pJob_SubWalker |

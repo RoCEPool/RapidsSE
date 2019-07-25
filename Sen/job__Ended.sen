@@ -46,7 +46,7 @@
 : Job__Ended_rcv ( -- )
 
   >>logEntry <SEED_RCV>
-  an::seed_rcv
+  actLog::seed_rcv
 
   job::this locals| pJob__Ended |
   pJob__Ended job.id@ locals| iJobId |

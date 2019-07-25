@@ -136,7 +136,7 @@
   then
 
   <<logExit <Resources_Checked>
-  an::resources_checked
+  actLog::resources_checked
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -149,7 +149,7 @@
   params| pJob_Walk  |
 
   <<logExit <Resources_Released>
-  an::resources_released
+  actLog::resources_released
 ;
 
 
@@ -161,7 +161,7 @@
 : walk_req ( -- <R> )
 
   >>logEntry <SEED_REQ>
-  an::seed_req
+  actLog::seed_req
 
   job::this locals| pJob_Walk |
 
@@ -178,7 +178,7 @@
 : walk_beg ( -- )
 
   >>logEntry <SEED_BEG>
-  an::seed_rcv
+  actLog::seed_rcv
 
   job::this locals| pJob_Walk |
 
@@ -197,7 +197,7 @@
 : walk_exe ( pJob_Walk -- )
 
   >>logEntry <SEED_EXE>
-  an::seed_exe
+  actLog::seed_exe
 
   job::this locals| pJob_Walk |
 
@@ -219,7 +219,7 @@ pJob_Walk job::participantExecuted
 : walk_end ( -- )
 
   >>logEntry <SEED_END>
-  an::seed_end
+  actLog::seed_end
 
   job::this locals| pJob_Walk |
 
@@ -236,7 +236,7 @@ pJob_Walk job::participantExecuted
 : walk_can ( -- )
 
   >>logEntry <SEED_CAN>
-  an::seed_can
+  actLog::seed_can
 
   job::this locals| pJob_Walk |
 

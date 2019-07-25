@@ -160,7 +160,7 @@
   then
 
   <<logExit <Resources_Checked>
-  an::resources_checked
+  actLog::resources_checked
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -173,7 +173,7 @@
   params| pJob_Export  |
 
   <<logExit <Resources_Released>
-  an::resources_released
+  actLog::resources_released
 ;
 
 
@@ -185,7 +185,7 @@
 : export_req ( -- <R> )
 
   >>logEntry <SEED_REQ>
-  an::seed_req
+  actLog::seed_req
 
   job::this locals| pJob_E |
   pJob_E job.assertNeutral
@@ -226,7 +226,7 @@
 : export_beg ( -- )
 
   >>logEntry <SEED_BEG>
-  an::seed_rcv
+  actLog::seed_rcv
 
   job::this locals| pJob_E` |
   pJob_E` job.assertBegin // check for either [E]E`: or :E`
@@ -260,7 +260,7 @@
 : export_exe ( -- )
 
   >>logEntry <SEED_EXE>
-  an::seed_exe
+  actLog::seed_exe
 
   job::this locals| pJob_(E`) |
   pJob_(E`) job.assertParticipant 
@@ -284,7 +284,7 @@
 : export_end ( -- )
 
   >>logEntry <SEED_END>
-  an::seed_end
+  actLog::seed_end
 
   job::this locals| pJob_(E`) |
   pJob_(E`) job.assertParticipant
@@ -307,7 +307,7 @@
 : export_can ( -- )
 
   >>logEntry <SEED_CAN>
-  an::seed_can
+  actLog::seed_can
 
   job::this locals| pJob_(E`) |
   pJob_(E`) job.assertParticipant

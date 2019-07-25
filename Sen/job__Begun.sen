@@ -54,7 +54,7 @@
 : Job__Begun_rcv ( -- )
 
   >>logEntry <SEED_RCV>
-  an::seed_rcv
+  actLog::seed_rcv
 
   //
   // where:  On the originator node.

@@ -31,7 +31,7 @@
 : subExporter_run ( -- )
 
   >>logEntry <SEED_RUN>
-  an::seed_run
+  actLog::seed_run
 
   job::this locals| pJob_SE |
   pJob_SE job.assertNeutral

@@ -71,7 +71,7 @@
 : Job__Executed_rcv ( -- )
 
   >>logEntry <SEED_RCV>
-  an::seed_rcv
+  actLog::seed_rcv
 
   job::this locals| pJob__Executed |
   pJob__Executed job.id@ locals| iJobId |

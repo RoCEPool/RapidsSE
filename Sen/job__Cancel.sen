@@ -51,7 +51,7 @@
 : Job__Cancel_rcv ( -- )
 
   >>logEntry <SEED_RCV>
-  an::seed_rcv
+  actLog::seed_rcv
 
   //
   // where: on the participating node
