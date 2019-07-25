@@ -167,7 +167,7 @@ namespace Jobs
 
     bool m_bMarkActivity; // mark activity
     i8   m_i_Activity;    // activity
-    bool m_bMarkAction;   // mark actions
+    bool m_bLogActions;   // mark actions
     i8   m_i_ActionRoot;  // action
     bool m_bMarkTrace;    // trace (mark version)
 

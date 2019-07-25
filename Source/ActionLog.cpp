@@ -143,7 +143,7 @@ void ActionLog::vAdd(Jobs::Job* pJob,
   if (! gpActionSequence)
     return;
   
-  if (! (pJob->m_bMarkAction ||
+  if (! (pJob->m_bLogActions ||
          gpAttachMap->m_oMarkAction.bFlagged(pJob->eClass())) )
     return;
   
@@ -178,7 +178,7 @@ void ActionLog::vAdd(Jobs::Job* pJob, eAN eAction, Stz* szText)
   if (! gpActionSequence)
     return;
   
-  if (! (pJob->m_bMarkAction ||
+  if (! (pJob->m_bLogActions ||
          gpAttachMap->m_oMarkAction.bFlagged(pJob->eClass())) )
     return;
   
@@ -216,7 +216,7 @@ void ActionLog::vAdd(Jobs::Job* pJob, eAN eAction,
   if (! gpActionSequence)
     return;
   
-  if (! (pJob->m_bMarkAction ||
+  if (! (pJob->m_bLogActions ||
          gpAttachMap->m_oMarkAction.bFlagged(pJob->eClass())) )
     return;
   
@@ -285,7 +285,7 @@ void ActionLog::vRoot(Jobs::Job* pJob)
   if (! gpActionSequence)
     return;
 
-  if (! (pJob->m_bMarkAction ||
+  if (! (pJob->m_bLogActions ||
          gpAttachMap->m_oMarkAction.bFlagged(pJob->eClass())) )
     return;
   
@@ -320,7 +320,7 @@ void ActionLog::vEnd(Jobs::Job* pJob)
   if (! gpActionSequence)
     return;
   
-  if (! (pJob->m_bMarkAction ||
+  if (! (pJob->m_bLogActions ||
          gpAttachMap->m_oMarkAction.bFlagged(pJob->eClass())) )
     return;
   
