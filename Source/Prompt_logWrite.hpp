@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* Prompt_activityLog.hpp -- Dump Log Information                     */
+/* Prompt_logWrite.hpp -- Write Log to csv file                               */
 /*============================================================================*/
 #pragma once
 
 namespace Prompt
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  bool bPrompt_activityLog(SePrompt* pPrompt);
+  bool bPrompt_logWrite(SePrompt* pPrompt);
 }
 
 /*============================================================================*/

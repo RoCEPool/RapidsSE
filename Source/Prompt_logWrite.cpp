@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Prompt_activityLog.hpp -- Print Log Information                            */
+/* Prompt_logWrite.cpp -- Write Log to csv file                               */
 /*============================================================================*/
 
 #include "Prompt.h"
@@ -7,13 +7,13 @@
 
 extern AttachMap* gpAttachMap;
 
-PromptNote mPromptNote_ActivityLog (
+PromptNote mPromptNote_logWrite (
   PF_LOGWRITE,              // prompt function
   "Prompt_logWrite"_Stz,    // name of the prompt function
   "comment"_Stz,            // comment about the function
   "logWrite"_Stz,           // the prompt command
   nullptr,                  // the second word
-  bPrompt_activityLog,      // prompt function
+  bPrompt_logWrite,         // prompt function
   true,                     // enabled
 
   true,                     // visible
@@ -24,7 +24,7 @@ PromptNote mPromptNote_ActivityLog (
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool Prompt::bPrompt_activityLog(SePrompt* pPrompt)
+bool Prompt::bPrompt_logWrite(SePrompt* pPrompt)
 {
   TokenVec* pTokenVec = pPrompt->pTknVec();
   i8 iNumTokens = pTokenVec->nItems();
