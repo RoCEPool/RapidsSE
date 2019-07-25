@@ -27,7 +27,6 @@ extern PromptNote mPromptNote_actionSequence;
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_funs(SePrompt* pPrompt)
 {
-  gxPromptCatalog.vFuns(PF_AM);
   gxPromptCatalog.vFuns(PF_LOGSECTION);
   gxPromptCatalog.vFuns(PF_APISTATE);
   gxPromptCatalog.vFuns(PF_ARGS);
@@ -58,6 +57,8 @@ bool Prompt::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_JOBCAT);
   gxPromptCatalog.vFuns(PF_JOBCLASS);
   gxPromptCatalog.vFuns(PF_LOCKS);
+  gxPromptCatalog.vFuns(PF_LOGNOTE);
+  gxPromptCatalog.vFuns(PF_LOGSECTION);
   gxPromptCatalog.vFuns(PF_LOGWRITE);
   gxPromptCatalog.vFuns(PF_LS);
   gxPromptCatalog.vFuns(PF_LVL);

@@ -9,7 +9,6 @@ namespace Prompt
   {
   /*  0 */ PF_NONE=0,
   
-  /*    */ PF_AM,
   /*    */ PF_APISTATE,
   /*    */ PF_ARGS,
   /*    */ PF_ASCII,
@@ -42,6 +41,7 @@ namespace Prompt
   /*    */ PF_JOBCLASS,
   /*    */ PF_LIMITS,
   /*    */ PF_LOCKS,
+  /*    */ PF_LOGNOTE,
   /*    */ PF_LOGSECTION,
   /*    */ PF_LOGWRITE,
   /*    */ PF_LS,
@@ -100,7 +100,6 @@ namespace Prompt
   static Stz* aPF[]
   {
   /*  0 */ "NONE"_Stz,
-  /*    */ "AM"_Stz,
   /*    */ "APISTATE"_Stz,
   /*    */ "ARGS"_Stz,
   /*    */ "ASCII"_Stz,
@@ -133,6 +132,7 @@ namespace Prompt
   /*    */ "JOBCLASS"_Stz,
   /*    */ "LIMITS"_Stz,
   /*    */ "LOCKS"_Stz,
+  /*    */ "LOGNOTE"_Stz,
   /*    */ "LOGSECTION"_Stz,
   /*    */ "LOGWRITE"_Stz,
   /*    */ "LS"_Stz,
