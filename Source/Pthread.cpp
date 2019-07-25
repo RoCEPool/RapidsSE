@@ -461,7 +461,7 @@ bool Pthread::bSpawnThread(void* pFun(void*), void* pArg)
   
   if (gpAttachMap) gpAttachMap->m_oResourceTracker.vIncThreadOpen();
   if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_THREAD])
-    Log::vNoteRes(SR_THREAD,"SysRes: Spawned thread : %lld"_Stz,m_iPthreadId);
+    ResLog::vNote(SR_THREAD,"SysRes: Spawned thread : %lld"_Stz,m_iPthreadId);
 
   // this is important otherwise resources are not released
   pthread_detach(m_iPthreadId);

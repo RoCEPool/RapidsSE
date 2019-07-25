@@ -40,7 +40,6 @@ namespace Logging
     static void vNoteApiError(i8 eApiCall, i8 iError, i8 iJobId=-1);
     static void vNoteApiExit(i8 eApiCall, i8 iJobId=-1);
     static void vNoteJob(Jobs::Job* pJob, Stz* szFormat, ...);
-    static void vNoteRes(eSR eSysRes, Stz* szFormat, ...);
     static void vNoteSection(Stz* szSectionNm);
     static void vNoteString(i8 iJobId, s48K& sString);
   

@@ -289,29 +289,6 @@ void Log::vNoteJob(Jobs::Job* pJob, Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add a log entry for resource                                               */
-/*----------------------------------------------------------------------------*/
-void Log::vNoteRes(eSR eSysRes,Stz* szFormat, ...)
-{
-#ifdef WITH_ACTIVITY_MAP
-  if ( ! gpLog )
-    return;
-  
-  if ( ! gpAttachMap->m_bMarkResource[eSysRes] &&
-       ! gpAttachMap->m_bMarkResourceAll )
-    return;
-  
-  va_list xArgs;
-  
-  va_start(xArgs,szFormat);
-  
-  gpLog->iAddNoteArg(_EG_SR,eSysRes,false,szFormat,xArgs);
-  
-  va_end(xArgs);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
 /* add a section line log entry                                               */
 /*----------------------------------------------------------------------------*/
 void Log::vNoteSection(Stz* szSectionNm)
