@@ -24,7 +24,6 @@ pFINALIZE *gpFinalize[]
   /*  9 */ &Finalize::vUndefined,         // CN_IVLVAL
 
   /* 19 */ &Finalize::vUndefined,         // CN_ACCESSPATH
-  /*    */ &Finalize::vUndefined,         // CN_ACTION
   /*    */ &Finalize::vUndefined,         // CN_ACTIONLOG
   /*    */ &Finalize::vUndefined,         // CN_ACTIVITYLOG
   /*    */ &Finalize::vUndefined,         // CN_AGGOP
