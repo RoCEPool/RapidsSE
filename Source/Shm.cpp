@@ -66,7 +66,7 @@ bool Shm::bLock(void* aAddress, i8 iBytes, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 /* create and open a new shared memory segment                                */
 /*----------------------------------------------------------------------------*/
-bool Shm::bOpenCreate(s32& sShmNm, int& iShmFd, SysCall& oSysCall)
+bool Shm::bOpenCreate(int& iShmFd, s32& sShmNm, SysCall& oSysCall)
 {
   oSysCall.vClear();
   

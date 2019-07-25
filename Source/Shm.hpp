@@ -16,7 +16,7 @@ namespace System
     static bool  bLock(void* aAddress, i8 iSize, SysCall& SysCall);
     static void* aMap(int iShmFd, void* aAddress, i8 iSize,
                       bool bHugeTlb, SysCall& SysCall);
-    static bool  bOpenCreate(s32& sShmNm, int& iShmFd, SysCall& SysCall);
+    static bool  bOpenCreate(int& iShmFd, s32& sShmNm, SysCall& SysCall);
     static bool  bOpenExisting(s32& sShmNm, int& iShmFd, SysCall& SysCall);
     static bool  bTest(s32& sShmNm);
     static bool  bUnmap(void* aAddress, i8 iSize, SysCall& oSysCall);

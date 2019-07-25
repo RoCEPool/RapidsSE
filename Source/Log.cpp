@@ -70,26 +70,24 @@ Log::~Log(void) noexcept(false)
 Log* Log::pAttachCreate(void)
 {
   int iRegionFd;
-  SysCall oSysCall;
-  s32 sRegionName;
   bool bResult;
-  
-  sRegionName = *C_LOG_REGION;
-  
+  SysCall oSysCall;
+
   // unlink the name of any previous segment
-  IGNORE_RETURN( Shm::bUnlink(sRegionName,oSysCall) );
+  s32 sLogRegionNm((Stz*)C_LOG_REGION);
+  IGNORE_RETURN( Shm::bUnlink(sLogRegionNm,oSysCall) );
   
-  // open a new shm region which will contain the activity map
-  bResult = Shm::bOpenCreate(sRegionName,iRegionFd,oSysCall);
+  // open a new shm region
+  bResult = Shm::bOpenCreate(iRegionFd,sLogRegionNm,oSysCall);
   if (! bResult)
     vFatal("Log::bOpenCreate: failed to create region %s\n"_Stz,
-           sRegionName.aChar());
+           sLogRegionNm.aChar());
   
   // extend the shm region
   bResult = Shm::bExtend(iRegionFd,sizeof(Log),oSysCall);
   if (! bResult)
     vFatal("Log::bOpenCreate: failed to extend region %s\n"_Stz,
-           sRegionName.aChar());
+           sLogRegionNm.aChar());
   
   // map the shm region into a vm segment within this process address space
   void* aSegment = Shm::aMap(iRegionFd,

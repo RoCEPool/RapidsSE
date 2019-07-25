@@ -67,7 +67,7 @@ void* ShmLog::aCreateNew(s32 sRegionNm, i8 nRegionSz)
   IGNORE_RETURN( Shm::bUnlink(sRegionNm,oSysCall) );
   
   // open a new shm region which will contain the activity map
-  bResult = Shm::bOpenCreate(sRegionNm,iRegionFd,oSysCall);
+  bResult = Shm::bOpenCreate(iRegionFd,sRegionNm,oSysCall);
   if (! bResult)
     vFatal("ShmLog::aCreateNew: failed to create region %s\n"_Stz,
            sRegionNm.aChar());

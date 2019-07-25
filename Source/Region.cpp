@@ -104,7 +104,7 @@ void Region::vCreate(s32& sRegionName, bool bVerbose,
            iRegionSize);
   
   // open a new shm region which will contain the activity map
-  bResult = Shm::bOpenCreate(sRegionName,iRegionFd,oSysCall);
+  bResult = Shm::bOpenCreate(iRegionFd,sRegionName,oSysCall);
   if (! bResult)
     vFatal("Engine::vCreate: failed to create region %s\n"_Stz,
            sRegionName.aChar());

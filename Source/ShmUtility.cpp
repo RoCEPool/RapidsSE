@@ -126,7 +126,7 @@ void ShmUtility::vCreate(void)
   bool bResult;
   
   // open a new shm region which will contain the activity map
-  bResult = Shm::bOpenCreate(msRegionName,iFD,oSysCall);
+  bResult = Shm::bOpenCreate(iFD,msRegionName,oSysCall);
   if (! bResult)
     vFatal("ShmUtility::vCreate: failed to create region %s\n"_Stz,
            msRegionName.aChar());
