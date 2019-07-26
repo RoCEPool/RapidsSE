@@ -7,6 +7,7 @@ namespace StorageEngine
 {
   class AttachMap : public PoolBuffer
   {
+  private:
   public:
     i8    m_iPid;
     Birth m_oBirth;  

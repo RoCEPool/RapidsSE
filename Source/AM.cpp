@@ -7,6 +7,8 @@
 extern AttachMap* gpAttachMap;
 extern Log* gpLog;
 
+i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
+
 // Arg
 bool AM::bDeveloper(void)     { return gpAttachMap->Arg.m_bDeveloper;         }
 i8   AM::nDummyLoop(void)     { return gpAttachMap->Arg.m_nDummyLoop;         }

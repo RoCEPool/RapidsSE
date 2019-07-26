@@ -8,6 +8,11 @@ namespace Jobs
   class AM
   {
   public:
+    //
+  
+    static i8   iPid(void);
+  
+    // args
     static bool bDeveloper(void);
     static i8   nDummyLoop(void);
     static i8   nDummySleep(void);
