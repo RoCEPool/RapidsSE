@@ -74,8 +74,8 @@ namespace StorageEngine
     i8            m_nTakenBytes;
     ForthWord*    m_pTenants;
     TempName      m_oTempName;
-    Atomic        m_ixThreads;
   private:
+    Atomic        m_ixThreads;
     TxSet*        m_pTxSet;
   public:
     ForthWord*    m_pForthWord;
