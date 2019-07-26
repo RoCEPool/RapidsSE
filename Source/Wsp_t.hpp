@@ -9,7 +9,7 @@
  
  */
 
-namespace Correctness
+namespace Library
 {
   template<int LENGTH>
   class Wsp_t

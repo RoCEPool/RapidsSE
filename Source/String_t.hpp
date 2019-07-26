@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Correctness
+namespace Library
 {
   template <int SPACE>
   class String_t : public Object
