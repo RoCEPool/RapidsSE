@@ -35,6 +35,7 @@ namespace StorageEngine
     static JobList* pParticipatingJobs(void);
     static bool bProgress(void);
     static bool bMetadata(void);
+    static i8   iNextJobId(void);
     static i8   iNextPlanId(void);
     static Queues* pQueues(void);
     static ResourceTracker* pResourceTracker(void);

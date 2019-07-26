@@ -33,6 +33,7 @@ JobList* AM::pParticipatingJobs(void) { return gpAttachMap->m_pParticipatingJobs
 i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
 bool AM::bProgress(void)      { return gpAttachMap->m_bProgress;              }
 bool AM::bMetadata(void)      { return gpAttachMap->m_bMetadata;              }
+i8   AM::iNextJobId(void)     { return ++ gpAttachMap->m_ixNextJobId;        }
 i8   AM::iNextPlanId(void)    { return ++ gpAttachMap->m_ixNextPlanId;        }
 Queues* AM::pQueues(void)     { return gpAttachMap->m_pQueues;                }
 ResourceTracker* AM::pResourceTracker(void) { return & gpAttachMap->m_oResourceTracker; }
