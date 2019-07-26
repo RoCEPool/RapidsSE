@@ -62,6 +62,7 @@ namespace PushDown
     void vPipeOut(Operand* pOperand);
     void vPipeOut_endMarker(void);
     Operand* pPopOperand(void);
+    void vStdDrain(void);
     Tasks::Task* pTask(void);
     void vTask(Tasks::Task* pTask);
     void vWorkQuanta(i8 iWorkQuanta);

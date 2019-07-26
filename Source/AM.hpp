@@ -27,6 +27,7 @@ namespace StorageEngine
     static i8   nThreads(void);
 
     //
+    static BufferPool* pBufferPool(void);
     static CarryOver* pCarryOver(void);
     static Lock* pDdlLock(void);
     static Lock* pDicLock(void);

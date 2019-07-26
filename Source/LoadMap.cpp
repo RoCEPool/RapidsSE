@@ -307,7 +307,7 @@ bool LoadMap::bGetNextMapping(i8& iSeek, i8& nBytes, i8& i_Entry)
   
   if (bProgressPrint) {
     
-    i8 iPercentFree = gpAttachMap->m_pBufferPool->iFreePercent();
+    i8 iPercentFree = AM::pBufferPool()->iFreePercent();
     vTrace("Load Progress: %lld%% (free %lld%%)"_Stz,iPercent,iPercentFree);
     
     if (gpAttachMap->Arg.m_bDeveloper)
