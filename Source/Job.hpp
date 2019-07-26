@@ -7,8 +7,6 @@ namespace Jobs
 {
   struct JobClass; // forward definition
 
-  class Job;
-  
   enum eJF // job flags
   {
     /*  0 */ JF_NONE   = 0x0,

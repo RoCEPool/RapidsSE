@@ -27,6 +27,7 @@ namespace StorageEngine
     static i8   nThreads(void);
 
     //
+    static Lock* pDicLock(void);
     static i8   iElapsedSsec(void);
     static i8   iEpoch(void);
     static Formatters* pFormatters(void);

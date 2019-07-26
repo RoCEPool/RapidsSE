@@ -25,6 +25,7 @@ i8   AM::nSubLoaders(void)    { return gpAttachMap->Arg.m_nSubLoaders;        }
 i8   AM::nThreads(void)       { return gpAttachMap->Arg.m_nThreads;           }
 
 //
+Lock* AM::pDicLock(void)      { return & gpAttachMap->m_okDicLock;            }
 i8   AM::iElapsedSsec(void)   { return gpAttachMap->m_oBirth.iElapsedSsec();  }
 i8   AM::iEpoch(void)         { return gpAttachMap->m_iEpoch;                 }
 Formatters* AM::pFormatters(void) { return & gpAttachMap->m_oFormatters;      }

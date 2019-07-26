@@ -5,6 +5,24 @@
 
 namespace PushDown
 {
+  enum eOR // op return
+  {
+  /*  0 */ OC_NONE = 0,
+  /*  1 */ OC_BIDE,  // bid till operand
+  /*  2 */ OC_EXIT,  // exit
+  /*  3 */ OC_PAUSE, // pause till continued
+  };
+  
+  static Stz* aOR[]
+  {
+  /*  0 */ "NONE"_Stz,
+  /*  1 */ "BIDE"_Stz,
+  /*  2 */ "EXIT"_Stz,
+  /*  3 */ "PAUSE"_Stz,
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   class Op : public Object
   {
   protected:

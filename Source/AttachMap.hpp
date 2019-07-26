@@ -41,7 +41,6 @@ namespace StorageEngine
     BufferPool*   m_pBufferPool;
     CarryOver*    m_pCarryOver;
     Lock          m_okDdlLock;
-    Lock          m_okDicLock;
     bool          m_bMarkApiAll;
     bool          m_bMarkApi[AC_ENUMS];
     bool          m_bMarkJobAll;
@@ -52,6 +51,7 @@ namespace StorageEngine
     EnumFlags     m_oMarkTrace;
     i8            m_nObjectsInPool[CN_ENUMS];
   private:
+    Lock          m_okDicLock;
     i8            m_iEpoch;
     Formatters    m_oFormatters;
     ForthWord*    m_pForthWord;
