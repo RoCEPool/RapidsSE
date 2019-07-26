@@ -101,6 +101,16 @@ void AttachMap::vGetGlobals(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set index entries                                                          */
+/*----------------------------------------------------------------------------*/
+void AttachMap::vIndexEntries(i8 nIndexEntries)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+ 
+  m_nIndexEntries = nIndexEntries;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get pid                                                                    */
 /*----------------------------------------------------------------------------*/
 i8 AttachMap::iPid(void)
@@ -130,7 +140,7 @@ void AttachMap::vPrintAttachMap(void)
   vInfo("BootError      : %lld \n"_Stz, gpAttachMap->m_bBootError);
   vInfo("IndexEntries   : %lld \n"_Stz, gpAttachMap->m_nIndexEntries);
   vInfo("IndexHeight    : %lld \n"_Stz, gpAttachMap->m_nIndexHeight);
-  vInfo("IndexOffsets   : %lld \n"_Stz, gpAttachMap->m_nIndexLevels);
+  vInfo("IndexOffsets   : %lld \n"_Stz, C_INDEX_LEVELS);
   
   vInfo("Verbose        : %s \n"_Stz, gpAttachMap->m_bVerbose ? "true"_Stz : "false"_Stz);
   vInfo("Tracepoint     : %s \n"_Stz, gpAttachMap->m_bTracepoint ? "true"_Stz : "false"_Stz);

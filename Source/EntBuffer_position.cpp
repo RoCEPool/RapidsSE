@@ -86,7 +86,7 @@ Ent* EntBuffer::pPositionPriorEntry(Ent* aFindKey)
   
   bool bKeyIsGreaterEqual;
   
-  for (i8 i_ScanLevel = gpAttachMap->m_nIndexLevels - 1;
+  for (i8 i_ScanLevel = C_INDEX_LEVELS - 1;
        i_ScanLevel >= 0;
        i_ScanLevel--) {
     
@@ -123,7 +123,7 @@ void EntBuffer::vPositionPriorVecEntry(Ent* aFindKey, Ent* aPriorVec[],
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexLevels; i_Offset++)
+  for (i8 i_Offset = 0; i_Offset < C_INDEX_LEVELS; i_Offset++)
     aPriorVec[i_Offset] = aSkipRoots();
   
   if (nItems() == 0)
@@ -137,7 +137,7 @@ void EntBuffer::vPositionPriorVecEntry(Ent* aFindKey, Ent* aPriorVec[],
   
   bool bIsJuxta;
   Ent* aScanEntry_sl = aSkipRoots();
-  for (i8 i_ScanLevel = gpAttachMap->m_nIndexLevels - 1;
+  for (i8 i_ScanLevel = C_INDEX_LEVELS - 1;
        i_ScanLevel >= 0;
        i_ScanLevel--) {
     
@@ -215,7 +215,7 @@ void EntBuffer::vPositionPriorVecBuffer(Ent* aInsertingEntry,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  for (i8 i_Level = 0; i_Level < gpAttachMap->m_nIndexLevels; i_Level++)
+  for (i8 i_Level = 0; i_Level < C_INDEX_LEVELS; i_Level++)
     aPriorVec[i_Level] = aSkipRoots();
 
   // first entry
@@ -224,7 +224,7 @@ void EntBuffer::vPositionPriorVecBuffer(Ent* aInsertingEntry,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  i8 i_ScanLevel = gpAttachMap->m_nIndexLevels - 1;
+  i8 i_ScanLevel = C_INDEX_LEVELS - 1;
   Ent* aPriorEntry_sl = aSkipRoots();
 
   for (; i_ScanLevel >= 0; i_ScanLevel--) {
@@ -310,7 +310,7 @@ void EntBuffer::vPositionPriorVecBuffer(Ent* aInsertingEntry,
 //
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
-//  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexLevels; i_Offset++)
+//  for (i8 i_Offset = 0; i_Offset < C_INDEX_LEVELS; i_Offset++)
 //    aPriorVec[i_Offset] = aSkipRoots();
 //
 //  if (nItems() == 0)
@@ -322,7 +322,7 @@ void EntBuffer::vPositionPriorVecBuffer(Ent* aInsertingEntry,
 //  bool bNextKeyIsGreater;
 //  Ent* aScanEntry_sl = aSkipRoots();
 //
-//  for (i8 i_ScanLevel = gpAttachMap->m_nIndexLevels - 1;
+//  for (i8 i_ScanLevel = C_INDEX_LEVELS - 1;
 //       i_ScanLevel >= 0;
 //       i_ScanLevel--) {
 //

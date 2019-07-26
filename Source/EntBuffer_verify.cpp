@@ -710,7 +710,7 @@ bool EntBuffer::bVerifySkipListEntry(bool bShowKeys)
   Ent* aNextEntry1;
   Ent* aNextEntry0;
   
-  for (i8 i_ScanLevel = gpAttachMap->m_nIndexLevels - 1;
+  for (i8 i_ScanLevel = C_INDEX_LEVELS - 1;
        i_ScanLevel >= 0;
        i_ScanLevel--) {
     

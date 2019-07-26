@@ -8,7 +8,9 @@ namespace StorageEngine
   class AttachMap : public PoolBuffer
   {
   friend class AM;
-  
+  friend class Engine;
+  friend class Prompt;
+
   private:
     i8    m_iPid;
     Birth m_oBirth;
@@ -85,10 +87,12 @@ namespace StorageEngine
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // remove?
+  
+  private:
     i8            m_nIndexEntries;  // no of entries per buffer
     i8            m_nIndexHeight;   // no of buffer height
     i8            m_nIndexLevels;  // no of offsets per index buffer entry
-    
+  
     // must be last
     Footer m_xFooter;
     
@@ -99,9 +103,15 @@ namespace StorageEngine
     AttachMap(void);
     ~AttachMap(void) noexcept(false);
     
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+  
+    eAC  eFindApi(Stz* aApiNm);
     void vGetGlobals(void);
+    void vIndexEntries(i8 nIndexEntries);
     i8   iPid(void);
     void vPrintAttachMap(void);
+    void vPrintStartupInfo(void);
+  
     void vRecordArguments(
                           bool bDeveloper,
                           i8   nDummyLoop,
@@ -119,13 +129,7 @@ namespace StorageEngine
                           i8   nSubLoaders,
                           i8   nThreads
                           );
-    
-    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    
-    void vPrintStartupInfo(void);
   
-    eAC  eFindApi(Stz* aApiNm);
-    
     Footer* aFooter(void);
   };
   

@@ -68,8 +68,8 @@ EntBuffer::EntBuffer(void)
   //m_xSkipRoots
   m_aLazyChain  = nullptr;
   
-  if (gpAttachMap->m_nIndexEntries != 0)
-    vMaxItems(gpAttachMap->m_nIndexEntries);
+  if (AM::nIndexEntries() != 0)
+    vMaxItems(AM::nIndexEntries());
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -274,7 +274,7 @@ void EntBuffer::vDeleteEntry(Ent** aaEnt)
   
   Ent* aEnt = *aaEnt;
   
-  Ent* xPriorVec[gpAttachMap->m_nIndexLevels];
+  Ent* xPriorVec[3];
   
   vPositionPriorVecEntry(aEnt, xPriorVec, aEnt);
   

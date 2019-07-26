@@ -78,9 +78,9 @@ void EntBuffer::vBuildSkipListSorted(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Ent* xPrevVec[gpAttachMap->m_nIndexLevels];
+  Ent* xPrevVec[C_INDEX_LEVELS];
   
-  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexLevels; i_Offset++)
+  for (i8 i_Offset = 0; i_Offset < C_INDEX_LEVELS; i_Offset++)
     xPrevVec[i_Offset] = aSkipRoots();
   
   
@@ -128,7 +128,7 @@ void EntBuffer::vCompact(void)
   
   FreeItem* aFreeItem;
   Ent*     aMoveEntry;
-  Ent*     xPriorVec[gpAttachMap->m_nIndexLevels];
+  Ent*     xPriorVec[C_INDEX_LEVELS];
   
   // scan item is the working pointer
   Ent* aScanItem = aFirstItem();
@@ -289,7 +289,7 @@ void EntBuffer::vCompactLeft(void)
   
   vItems(0);
   
-  for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexLevels; i_Offset++)
+  for (i8 i_Offset = 0; i_Offset < C_INDEX_LEVELS; i_Offset++)
     aSkipRoots()->vNEO(i_Offset,-1);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -688,7 +688,7 @@ void EntBuffer::vInsertKeySkip(Ent* aKeyEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the entry after which the new entry will be inserted
   
-  Ent* xPriorVec[gpAttachMap->m_nIndexLevels];
+  Ent* xPriorVec[C_INDEX_LEVELS];
   
   //Key* aKey = _aKey(aKeyEntry->aDataArea());
   

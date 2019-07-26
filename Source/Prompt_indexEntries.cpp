@@ -39,7 +39,7 @@ bool Prompt::bPrompt_indexEntries(SePrompt* pPrompt)
     return false;
   
   if (nTokens == 1) {
-    vTrace("IndexEntries: %lld\n"_Stz, gpAttachMap->m_nIndexEntries);
+    vTrace("IndexEntries: %lld\n"_Stz, AM::nIndexEntries());
     vTrace("success: 1 rows affected\n"_Stz);
     return true;
   }
@@ -49,7 +49,7 @@ bool Prompt::bPrompt_indexEntries(SePrompt* pPrompt)
   
   // get the no of indexEntries to set
   i8 iIndexEntries = pTokenVec->pGet(1)->iToI8();
-  gpAttachMap->m_nIndexEntries = iIndexEntries;
+  gpAttachMap->vIndexEntries(iIndexEntries);
   vTrace("success: 0 rows affected\n"_Stz);
   
   return true;

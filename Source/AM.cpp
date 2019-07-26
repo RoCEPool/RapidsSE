@@ -26,6 +26,7 @@ i8   AM::nThreads(void)       { return gpAttachMap->Arg.m_nThreads;           }
 
 //
 i8   AM::iElapsedSsec(void)   { return gpAttachMap->m_oBirth.iElapsedSsec();  }
+i8   AM::nIndexEntries(void)  { return gpAttachMap->m_nIndexEntries;          }
 i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
 
 

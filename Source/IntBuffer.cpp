@@ -161,9 +161,9 @@ bool IntBuffer::bHasSpace(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INTBUFFER,_FOOTER_);
   
-  if (gpAttachMap->m_nIndexEntries > 0) {
+  if (AM::nIndexEntries() > 0) {
     // has space calculation based on no of entries
-    if (m_nInts >= gpAttachMap->m_nIndexEntries)
+    if (m_nInts >= AM::nIndexEntries())
       return false;
     else
       return true;

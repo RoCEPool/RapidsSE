@@ -28,6 +28,7 @@ namespace StorageEngine
 
     //
     static i8   iElapsedSsec(void);
+    static i8   nIndexEntries(void);
     static i8   iPid(void);
   
   };
