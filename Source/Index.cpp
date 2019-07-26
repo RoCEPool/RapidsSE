@@ -131,7 +131,7 @@ void Index::vFinalize(eCN eClass, Object* pObject)
 /*----------------------------------------------------------------------------*/
 void Index::vMonitorPortrait(s48K& sPortrait)
 {
-  Statistics* pStats = &gpAttachMap->m_oStatistics;
+  Statistics* pStats = AM::pStatistics();
   
   sPortrait.vSprint("Index: creates %lld drops %lld\n"_Stz,
                     pStats->Index.m_nCreates,

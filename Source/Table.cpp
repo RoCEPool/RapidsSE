@@ -153,7 +153,7 @@ Table* Table::pFindTable(DicStack* pDicStack, Stz* aTableNm)
 /*----------------------------------------------------------------------------*/
 void Table::vMonitorPortrait(s48K& sPortrait)
 {
-  Statistics* pStats = &gpAttachMap->m_oStatistics;
+  Statistics* pStats = AM::pStatistics();
   
   sPortrait.vSprint("Table: creates %lld drops %lld loads %lld\n"_Stz,
                     pStats->Table.m_nCreates,

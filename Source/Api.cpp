@@ -140,33 +140,35 @@ void Api::vIncStatistics(eAC eApiCall)
   if (! gpAttachMap)
     return;
   
+  Statistics* pStats = AM::pStatistics();
+
   switch (eApiCall) {
-    case AC_BeginFetch:          gpAttachMap->m_oStatistics.Api.m_nBeginFetch++;          break;
-    case AC_BeginInsert:         gpAttachMap->m_oStatistics.Api.m_nBeginInsert++;          break;
-    case AC_BeginSubInserter:    gpAttachMap->m_oStatistics.Api.m_nBeginSubInserter++;     break;
-    case AC_CheckVersion:        gpAttachMap->m_oStatistics.Api.m_nCheckVersion++;         break;
-    case AC_CopyBuffer:          gpAttachMap->m_oStatistics.Api.m_nCopyBuffer++;           break;
-    case AC_DeleteSession:       gpAttachMap->m_oStatistics.Api.m_nDeleteSession++;        break;
-    case AC_EndInsert:           gpAttachMap->m_oStatistics.Api.m_nEndInsert++;            break;
-    case AC_EndJobs:             gpAttachMap->m_oStatistics.Api.m_nEndJobs++;              break;
-    case AC_EndSubInserter:      gpAttachMap->m_oStatistics.Api.m_nEndSubInserter++;       break;
-    case AC_ExecuteCommand:      gpAttachMap->m_oStatistics.Api.m_nExecuteCommand++;       break;
-    case AC_FetchNextBuffer:     gpAttachMap->m_oStatistics.Api.m_nFetchNextBuffer++;      break;
-    case AC_FetchTable:          gpAttachMap->m_oStatistics.Api.m_nFetchTable++;           break;
-    case AC_GetFirstBuffer:      gpAttachMap->m_oStatistics.Api.m_nGetFirstBuffer++;       break;
-    case AC_GetLoadResult:       gpAttachMap->m_oStatistics.Api.m_nGetLoadResult++;        break;
-    case AC_GetNextBuffer:       gpAttachMap->m_oStatistics.Api.m_nGetNextBuffer++;        break;
-    case AC_GetRecordBuffer:     gpAttachMap->m_oStatistics.Api.m_nGetRecordBuffer++;      break;
-    case AC_GetRow:              gpAttachMap->m_oStatistics.Api.m_nGetRow++;               break;
-    case AC_GetRowCount:         gpAttachMap->m_oStatistics.Api.m_nGetRowCount++;          break;
-    case AC_GetTableColumnRow:   gpAttachMap->m_oStatistics.Api.m_nGetTableColumnRow++;    break;
-    case AC_GetTableColumnRowCount: gpAttachMap->m_oStatistics.Api.m_nGetTableColumnRowCount++;  break;
-    case AC_InsertRow:           gpAttachMap->m_oStatistics.Api.m_nInsertRow++;            break;
-    case AC_IsInvalidSession:    gpAttachMap->m_oStatistics.Api.m_nIsInvalidSession++;     break;
-    case AC_NewSession:          gpAttachMap->m_oStatistics.Api.m_nNewSession++;           break;
-    case AC_NextRow:             gpAttachMap->m_oStatistics.Api.m_nNextRow++;              break;
-    case AC_OpenPool:            gpAttachMap->m_oStatistics.Api.m_nPoolOpen++;             break;
-    case AC_TranslateError:      gpAttachMap->m_oStatistics.Api.m_nTranslateError++;       break;
+    case AC_BeginFetch:          pStats->Api.m_nBeginFetch++;          break;
+    case AC_BeginInsert:         pStats->Api.m_nBeginInsert++;          break;
+    case AC_BeginSubInserter:    pStats->Api.m_nBeginSubInserter++;     break;
+    case AC_CheckVersion:        pStats->Api.m_nCheckVersion++;         break;
+    case AC_CopyBuffer:          pStats->Api.m_nCopyBuffer++;           break;
+    case AC_DeleteSession:       pStats->Api.m_nDeleteSession++;        break;
+    case AC_EndInsert:           pStats->Api.m_nEndInsert++;            break;
+    case AC_EndJobs:             pStats->Api.m_nEndJobs++;              break;
+    case AC_EndSubInserter:      pStats->Api.m_nEndSubInserter++;       break;
+    case AC_ExecuteCommand:      pStats->Api.m_nExecuteCommand++;       break;
+    case AC_FetchNextBuffer:     pStats->Api.m_nFetchNextBuffer++;      break;
+    case AC_FetchTable:          pStats->Api.m_nFetchTable++;           break;
+    case AC_GetFirstBuffer:      pStats->Api.m_nGetFirstBuffer++;       break;
+    case AC_GetLoadResult:       pStats->Api.m_nGetLoadResult++;        break;
+    case AC_GetNextBuffer:       pStats->Api.m_nGetNextBuffer++;        break;
+    case AC_GetRecordBuffer:     pStats->Api.m_nGetRecordBuffer++;      break;
+    case AC_GetRow:              pStats->Api.m_nGetRow++;               break;
+    case AC_GetRowCount:         pStats->Api.m_nGetRowCount++;          break;
+    case AC_GetTableColumnRow:   pStats->Api.m_nGetTableColumnRow++;    break;
+    case AC_GetTableColumnRowCount: pStats->Api.m_nGetTableColumnRowCount++;  break;
+    case AC_InsertRow:           pStats->Api.m_nInsertRow++;            break;
+    case AC_IsInvalidSession:    pStats->Api.m_nIsInvalidSession++;     break;
+    case AC_NewSession:          pStats->Api.m_nNewSession++;           break;
+    case AC_NextRow:             pStats->Api.m_nNextRow++;              break;
+    case AC_OpenPool:            pStats->Api.m_nPoolOpen++;             break;
+    case AC_TranslateError:      pStats->Api.m_nTranslateError++;       break;
     default:
       NEVER_REACH;
   }
@@ -181,8 +183,9 @@ void Api::vMonitorPortrait(s48K& sPortrait)
   i8 nCats = 0;
   i8 nBreak = 80;
   i8 iPrev = 0;
-  Statistics* pStats = &gpAttachMap->m_oStatistics;
   
+  Statistics* pStats = AM::pStatistics();
+
   if (pStats->Api.m_nBeginFetch) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
     s.vSprintCat("beginFetch %lld "_Stz,pStats->Api.m_nBeginFetch);

@@ -67,8 +67,8 @@ namespace StorageEngine
     ResourceTracker m_oResourceTracker;
     Dic           m_oRootDic;
     Lock          m_okSchLock;
-    Statistics    m_oStatistics;
   private:
+    Statistics    m_oStatistics;
     StepTiming*   m_pStepTiming;
     i8            m_iStop;
     PoolBuffer*   m_pTakenBuffers;

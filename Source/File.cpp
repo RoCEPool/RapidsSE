@@ -105,8 +105,8 @@ bool File::bExists(Stz* aFilePath)
 /*----------------------------------------------------------------------------*/
 void File::vMonitorPortrait(s48K& sPortrait)
 {
-  Statistics* pStats = &gpAttachMap->m_oStatistics;
-  
+  Statistics* pStats = AM::pStatistics();
+
   s32 sReadMag;  Magnitudes::vByteMag(pStats->File.m_nReadBytes,  sReadMag);
   s32 sWriteMag; Magnitudes::vByteMag(pStats->File.m_nWriteBytes, sWriteMag);
   s32 sPrintMag; Magnitudes::vByteMag(pStats->File.m_nPrintBytes, sPrintMag);
@@ -166,7 +166,7 @@ bool File::bRemove(Stz* aFilePath)
 /*----------------------------------------------------------------------------*/
 void File::vStatistics(void)
 {
-  Statistics* pStats = &gpAttachMap->m_oStatistics;
+  Statistics* pStats = AM::pStatistics();
 
   s32 sByteMag;
   

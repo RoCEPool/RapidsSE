@@ -119,7 +119,7 @@ void Socket::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 void Socket::vMonitorPortrait(s48K& sPortrait)
 {
-  Statistics* pStat = &gpAttachMap->m_oStatistics;
+  Statistics* pStat = AM::pStatistics();
   
   s32 sRecvMag; Magnitudes::vByteMag(pStat->Socket.m_nRecvBytes, sRecvMag);
   s32 sSendMag; Magnitudes::vByteMag(pStat->Socket.m_nSendBytes, sSendMag);
@@ -159,19 +159,21 @@ void Socket::vStatistics(void)
 {
   s32 sByteMag;
   
-  vTrace("  nSocketAccepts    %lld\n"_Stz,gpAttachMap->m_oStatistics.Socket.m_nAccepts);
-  vTrace("  nSocketCloses     %lld\n"_Stz,gpAttachMap->m_oStatistics.Socket.m_nCloses);
-  vTrace("  nSocketConnects   %lld\n"_Stz,gpAttachMap->m_oStatistics.Socket.m_nConnects);
-  vTrace("  nSocketListens    %lld\n"_Stz,gpAttachMap->m_oStatistics.Socket.m_nListens);
-  vTrace("  nSocketPeeks      %lld\n"_Stz,gpAttachMap->m_oStatistics.Socket.m_nPeeks);
-  vTrace("  nSocketRecvs      %lld\n"_Stz,gpAttachMap->m_oStatistics.Socket.m_nRecvs);
-  vTrace("  nSocketRecvFroms  %lld\n"_Stz,gpAttachMap->m_oStatistics.Socket.m_nRecvFroms);
-  vTrace("  nSocketSends      %lld\n"_Stz,gpAttachMap->m_oStatistics.Socket.m_nSends);
-  vTrace("  nSocketSendTos    %lld\n"_Stz,gpAttachMap->m_oStatistics.Socket.m_nSendTos);
+  Statistics* pStat = AM::pStatistics();
 
-  Magnitudes::vByteMag(gpAttachMap->m_oStatistics.Socket.m_nRecvBytes,  sByteMag);
+  vTrace("  nSocketAccepts    %lld\n"_Stz,pStat->Socket.m_nAccepts);
+  vTrace("  nSocketCloses     %lld\n"_Stz,pStat->Socket.m_nCloses);
+  vTrace("  nSocketConnects   %lld\n"_Stz,pStat->Socket.m_nConnects);
+  vTrace("  nSocketListens    %lld\n"_Stz,pStat->Socket.m_nListens);
+  vTrace("  nSocketPeeks      %lld\n"_Stz,pStat->Socket.m_nPeeks);
+  vTrace("  nSocketRecvs      %lld\n"_Stz,pStat->Socket.m_nRecvs);
+  vTrace("  nSocketRecvFroms  %lld\n"_Stz,pStat->Socket.m_nRecvFroms);
+  vTrace("  nSocketSends      %lld\n"_Stz,pStat->Socket.m_nSends);
+  vTrace("  nSocketSendTos    %lld\n"_Stz,pStat->Socket.m_nSendTos);
+
+  Magnitudes::vByteMag(pStat->Socket.m_nRecvBytes,  sByteMag);
   vTrace("  nSocketRecvBytes  %s\n"_Stz,sByteMag.aStz());
-  Magnitudes::vByteMag(gpAttachMap->m_oStatistics.Socket.m_nSendBytes,  sByteMag);
+  Magnitudes::vByteMag(pStat->Socket.m_nSendBytes,  sByteMag);
   vTrace("  nSocketSendBytes  %s\n"_Stz,sByteMag.aStz());
 }
 

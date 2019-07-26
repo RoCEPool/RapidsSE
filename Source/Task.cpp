@@ -335,7 +335,7 @@ void Task::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 void Task::vMonitorProfile_stats(s48K& sPortrait)
 {
-  Statistics* pStats = &gpAttachMap->m_oStatistics;
+  Statistics* pStats = AM::pStatistics();
   
   sPortrait.vSprint("Task: acks %lld executing %lld exited %lld ready %lld "
                           "sleeping %lld waiting %lld\n"_Stz,

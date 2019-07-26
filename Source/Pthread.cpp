@@ -94,7 +94,7 @@ void Pthread::vMonitorPortrait(s48K& sPortrait)
   s32 sUnitMag;
   s32 sTimeMag;
 
-  Statistics* pStats = &gpAttachMap->m_oStatistics;
+  Statistics* pStats = AM::pStatistics();
   
   sPortrait.vSprint("Pthread: sleeps %lld"_Stz,
                     pStats->Thread.m_nSleeps);
@@ -754,7 +754,7 @@ void Pthread::vSleepers(void)
   s32 sUnitMag;
   s32 sTimeMag;
 
-  Statistics* pStats = &gpAttachMap->m_oStatistics;
+  Statistics* pStats = AM::pStatistics();
   
   Magnitudes::vUnitMag(pStats->Thread.m_nSleeps,sUnitMag);
   vTrace("Pthread::vSleep() total %s\n"_Stz,sUnitMag.aStz());

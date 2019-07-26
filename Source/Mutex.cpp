@@ -148,7 +148,8 @@ Mutex::~Mutex(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Mutex::vMonitorPortrait(s48K& sPortrait)
 {
-  Statistics* pStats = &gpAttachMap->m_oStatistics;
+  Statistics* pStats = AM::pStatistics();
+  
   sPortrait.vSprint("Mutex: broadcast %lld destroys %lld inits %lld "
                     "signals %lld waits %lld timedwaits %lld "
                     "unblocks %lld timeouts %lld\n"_Stz,

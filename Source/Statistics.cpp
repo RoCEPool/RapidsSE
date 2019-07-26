@@ -67,13 +67,13 @@ Statistics::~Statistics(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Statistics::vMemoryPortrait(s48K& sPortrait)
 {
-  Statistics* pStat = &gpAttachMap->m_oStatistics;
+  Statistics* pStats = AM::pStatistics();
 
-  s32 sCopyMag; Magnitudes::vByteMag(pStat->Memory.m_iCopyTotal,     sCopyMag);
-  s32 sMoveMag; Magnitudes::vByteMag(pStat->Memory.m_iMoveTotal,     sMoveMag);
-  s32 sSribMag; Magnitudes::vByteMag(pStat->Memory.m_iScribbleTotal, sSribMag);
-  s32 sSetMag;  Magnitudes::vByteMag(pStat->Memory.m_iSetTotal,      sSetMag);
-  s32 sZeroMag; Magnitudes::vByteMag(pStat->Memory.m_iZeroTotal,     sZeroMag);
+  s32 sCopyMag; Magnitudes::vByteMag(pStats->Memory.m_iCopyTotal,     sCopyMag);
+  s32 sMoveMag; Magnitudes::vByteMag(pStats->Memory.m_iMoveTotal,     sMoveMag);
+  s32 sSribMag; Magnitudes::vByteMag(pStats->Memory.m_iScribbleTotal, sSribMag);
+  s32 sSetMag;  Magnitudes::vByteMag(pStats->Memory.m_iSetTotal,      sSetMag);
+  s32 sZeroMag; Magnitudes::vByteMag(pStats->Memory.m_iZeroTotal,     sZeroMag);
 
   sPortrait.vSprint("Memory: copy %s move %s scribble %s set %s zero %s\n"_Stz,
                     sCopyMag.aStz(),

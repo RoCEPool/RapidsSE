@@ -33,6 +33,7 @@ namespace StorageEngine
     static i8   iPid(void);
     static bool bProgress(void);
     static bool bMetadata(void);
+    static Statistics* pStatistics(void);
     static StepTiming* pStepTiming(void);
     static PoolBuffer* pTakenBuffers(void);
     static i8   nTakenBytes(void);

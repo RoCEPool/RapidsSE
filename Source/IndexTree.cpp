@@ -108,8 +108,8 @@ void IndexTree::vFinalize(eCN eClass, Object* pObject)
 /*----------------------------------------------------------------------------*/
 void IndexTree::vMonitorPortrait(s48K& sPortrait)
 {
-  Statistics* pStats = &gpAttachMap->m_oStatistics;
-  
+  Statistics* pStats = AM::pStatistics();
+
   sPortrait.vSprint("IndexTree: appendBuffers %lld appendRows %lld "
                                "buffersPurged %lld\n"_Stz,
                     pStats->IndexTree.m_nAppendBuffers,
