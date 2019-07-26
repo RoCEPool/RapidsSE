@@ -145,15 +145,15 @@ void Step::vJobAddOriginator(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
     
   // add the job to the originating jobs
-  gpAttachMap->m_pOriginatingJobs->vGrabLock();
-  gpAttachMap->m_pOriginatingJobs->vAddJob(pJob);
-  gpAttachMap->m_pOriginatingJobs->vDropLock();
+  AM::pOriginatingJobs()->vGrabLock();
+  AM::pOriginatingJobs()->vAddJob(pJob);
+  AM::pOriginatingJobs()->vDropLock();
 
   if (pJob->m_bMarkActivity) {
     JobLog::vNote(pJob,"Added to Originator List: %s %p"_Stz,
                        aCN[pJob->eClass()],
                        pJob);
-    gpAttachMap->m_pOriginatingJobs->vMarkContents(pJob->m_iJobId);
+    AM::pOriginatingJobs()->vMarkContents(pJob->m_iJobId);
   }
   
   ActLog::vAdd(mpTask->m_pJob,
@@ -215,7 +215,7 @@ void Step::vJobAssertBegin(MP_Task mpTask)
              "Job::m_eJobList is not JL_none [Job %s on node %lld]\n"_Stz,
              aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
     
-    Job* pJobFound = gpAttachMap->m_pOriginatingJobs->pFindJob(pJob->m_iJobId);
+    Job* pJobFound = AM::pOriginatingJobs()->pFindJob(pJob->m_iJobId);
     if (! pJobFound)
       vFatal("job.assertBegin: "
              "Job not found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
@@ -243,7 +243,7 @@ void Step::vJobAssertBegin(MP_Task mpTask)
            "Job::m_eJobList is not JL_none [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
   
-  Job* pJobFound = gpAttachMap->m_pOriginatingJobs->pFindJob(pJob->m_iJobId);
+  Job* pJobFound = AM::pOriginatingJobs()->pFindJob(pJob->m_iJobId);
   if (pJobFound)
     vFatal("job.assertBegin: "
            "Job found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
@@ -275,7 +275,7 @@ void Step::vJobAssertNeutral(MP_Task mpTask)
            "Job::m_eJobList is not JL_none [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
   
-  Job* pJobFound = gpAttachMap->m_pOriginatingJobs->pFindJob(pJob->m_iJobId);
+  Job* pJobFound = AM::pOriginatingJobs()->pFindJob(pJob->m_iJobId);
   if (pJobFound)
     vFatal("job.assertNeutral: "
            "Job found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
@@ -312,7 +312,7 @@ void Step::vJobAssertOriginator(MP_Task mpTask)
            "Job::m_bWasReceived is true [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
   
-  Job* pJobFound = gpAttachMap->m_pOriginatingJobs->pFindJob(pJob->m_iJobId);
+  Job* pJobFound = AM::pOriginatingJobs()->pFindJob(pJob->m_iJobId);
   if (! pJobFound)
     vFatal("job.assertOriginator: "
            "Job not found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
@@ -700,7 +700,7 @@ void Step::vJobFindOriginator(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iJobId) )
     THROW_INVALID_DSTACK("job::findOriginator"_Stz);
   
-  Job* pJobFound = gpAttachMap->m_pOriginatingJobs->pFindJob(iJobId);
+  Job* pJobFound = AM::pOriginatingJobs()->pFindJob(iJobId);
   RASSERT(pJobFound);
   
   ActLog::vAdd(pJobFound,AN_FIND_ORIGINATOR,mpTask->pJob());
@@ -1387,19 +1387,19 @@ void Step::vJobRemoveOriginator(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
   
   
-  gpAttachMap->m_pOriginatingJobs->vGrabLock();
-  bool bRemove = gpAttachMap->m_pOriginatingJobs->bRemoveJob(pJob);
-  gpAttachMap->m_pOriginatingJobs->vDropLock();
+  AM::pOriginatingJobs()->vGrabLock();
+  bool bRemove = AM::pOriginatingJobs()->bRemoveJob(pJob);
+  AM::pOriginatingJobs()->vDropLock();
   
   if (! bRemove) {
     vTrace("------------------------------------\n"_Stz);
     vTrace("%s Failed to Remove JobId %lld from originator\n"_Stz, aCN[pJob->eClass()],pJob->m_iJobId);
     vTrace("------------------------------------\n"_Stz);
     
-    gpAttachMap->m_pOriginatingJobs->vGrabLock();
-    gpAttachMap->m_pOriginatingJobs->vContentDump();
-    bRemove = gpAttachMap->m_pOriginatingJobs->bRemoveJob(pJob);
-    gpAttachMap->m_pOriginatingJobs->vDropLock();
+    AM::pOriginatingJobs()->vGrabLock();
+    AM::pOriginatingJobs()->vContentDump();
+    bRemove = AM::pOriginatingJobs()->bRemoveJob(pJob);
+    AM::pOriginatingJobs()->vDropLock();
   }
   
   if (pJob->m_bMarkActivity) {
@@ -1407,7 +1407,7 @@ void Step::vJobRemoveOriginator(MP_Task mpTask)
                        "Removed from Originator List: %s %p"_Stz,
                        aCN[pJob->eClass()],
                        pJob);
-    gpAttachMap->m_pOriginatingJobs->vMarkContents(pJob->m_iJobId);
+    AM::pOriginatingJobs()->vMarkContents(pJob->m_iJobId);
   }
   
   ActLog::vAdd(mpTask->m_pJob,

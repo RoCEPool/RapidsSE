@@ -59,8 +59,8 @@ namespace StorageEngine
     Atomic        m_ixNextDiagram;
     Atomic        m_ixNextJobId;
     i8            m_nObjectsInPool[CN_ENUMS];
-    JobList*      m_pOriginatingJobs;
   private:
+    JobList*      m_pOriginatingJobs;
     JobList*      m_pParticipatingJobs;
     Atomic        m_ixNextPlanId;
     Queues*       m_pQueues;

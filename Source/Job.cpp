@@ -220,7 +220,7 @@ i8 Job::iAsNodeNo_Bits(i8 iNodeNo)
 void Job::vStateDiagram(s256& sDiagram, eCN eJobClass)
 {
   TaskList* pExecuting     = AM::pQueues()->m_pExecutingSet;
-  JobList*  pOriginating   = gpAttachMap->m_pOriginatingJobs;
+  JobList*  pOriginating   = AM::pOriginatingJobs();
   JobList*  pParticipating = AM::pParticipatingJobs();
 
   sDiagram = ""_Stz;

@@ -74,6 +74,7 @@ Queues::Queues(void)
   
   m_pBidingSet     = new TaskList(QK_BIDING_SET);
   m_pExecutingSet  = new TaskList(QK_EXECUTING_SET);
+  m_pPausedSet     = new TaskList(QK_PAUSED_SET);
   m_pWaitingSet    = new TaskList(QK_WAITING_SET);
 
   _checkInitialised_(CN_QUEUES);
@@ -250,6 +251,41 @@ void Queues::vAddExecutingSet(Task* pTask)
   m_pExecutingSet->vDropLock();
   
   // **do not touch task**
+}
+
+/*----------------------------------------------------------------------------*/
+/* add task to paused set                                                     */
+/*----------------------------------------------------------------------------*/
+void Queues::vAddPausedSet(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
+  
+  // note: a biding task must locked at this point because it is visible to
+  //       other tasks in the system which could invoke a trigger() on it
+  //       before the biding task gets into the biding set
+  RASSERT(pTask->bIsLocked());
+  
+  RASSERT(TS_BIDING == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+  
+  pTask->vQueue(QK_PAUSED_SET);
+  pTask->vQueueOrder(++m_ixTaskArrival);
+  
+  m_pPausedSet->vGrabLock();
+  
+  //  if (pTask->pJob()->m_bMarkActivity)
+  //    JobLog::vNote(pTask->pJob(),
+  //                          "Add to ExecutingSet: %s %p"_Stz,
+  //                          aCN[pTask->pJob()->eClass()],
+  //                          pTask->pJob());
+  
+  m_pPausedSet->vAddTask(pTask);
+  
+  //  ActLog::vAdd(pTask->pJob(),AN_ADD_EXECUTING_SET);
+  
+  m_pPausedSet->vDropLock();
+  
+  // **do not touch task** (other than to drop lock)
 }
 
 /*----------------------------------------------------------------------------*/
@@ -539,6 +575,22 @@ void Queues::vRemoveExecutingSet(Task* pTask)
 //                          "Removed from ExecutingSet: %s %p"_Stz,
 //                          aCN[pTask->pJob()->eClass()],
 //                          pTask->pJob());
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove task from paused set                                                */
+/*----------------------------------------------------------------------------*/
+void Queues::vRemovePausedSet(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
+  
+  RASSERT(QK_PAUSED_SET == pTask->eQueue());
+  
+  m_pPausedSet->vGrabLock();
+  m_pPausedSet->vRemoveTask(pTask);
+  m_pPausedSet->vDropLock();
+  
+  pTask->vQueue(QK_NONE);
 }
 
 /*----------------------------------------------------------------------------*/

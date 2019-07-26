@@ -30,9 +30,9 @@ bool Prompt::bPrompt_olist(SePrompt* pPrompt)
   vTrace("Originator List\n"_Stz);
   vTrace("------------------------------------\n"_Stz);
   
-  gpAttachMap->m_pOriginatingJobs->vGrabLock();
-  gpAttachMap->m_pOriginatingJobs->vContentDump();
-  gpAttachMap->m_pOriginatingJobs->vDropLock();
+  AM::pOriginatingJobs()->vGrabLock();
+  AM::pOriginatingJobs()->vContentDump();
+  AM::pOriginatingJobs()->vDropLock();
 
   return true;
 }

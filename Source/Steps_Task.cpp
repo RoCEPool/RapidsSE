@@ -88,7 +88,7 @@ void Step::vTaskAcksStore(MP_Task mpTask)
                        aCN[pJob->eClass()],
                        pJob,
                        nAcksRequired);
-    gpAttachMap->m_pOriginatingJobs->vMarkContents(pJob->m_iJobId);
+    AM::pOriginatingJobs()->vMarkContents(pJob->m_iJobId);
   }
   
   ActLog::vAdd(pJob,AN_ACKS_REQUIRED,nAcksRequired);
