@@ -1,0 +1,70 @@
+\hypertarget{structpci}{}\section{pci Struct Reference}
+\label{structpci}\index{pci@{pci}}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structpci_a4fbf5aef85cf6f114ef2c251d1d6c589}\label{structpci_a4fbf5aef85cf6f114ef2c251d1d6c589}} 
+bool {\bfseries exist} = false
+\item 
+\mbox{\Hypertarget{structpci_a7a1fb1574c140948cd9f7fae2f621e0b}\label{structpci_a7a1fb1574c140948cd9f7fae2f621e0b}} 
+struct \mbox{\hyperlink{structbdf}{bdf}} {\bfseries bdf}
+\item 
+\mbox{\Hypertarget{structpci_af70b39686d691ac28718d77909edd189}\label{structpci_af70b39686d691ac28718d77909edd189}} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+union \{\\
+\mbox{\Hypertarget{unionpci_1_1_0D11_affa4816d356736545f3d9d51fafee616}\label{unionpci_1_1_0D11_affa4816d356736545f3d9d51fafee616}} 
+\>struct \{\\
+\>\>uint16\_t {\bfseries vendor\_id}\\
+\>\>uint16\_t {\bfseries device\_id}\\
+\>\} \\
+\>uint32\_t {\bfseries offset\_0}\\
+\}; \\
+
+\end{tabbing}\item 
+\mbox{\Hypertarget{structpci_a12b405a6b3ed7846f1e45cd06709e794}\label{structpci_a12b405a6b3ed7846f1e45cd06709e794}} 
+int8\+\_\+t {\bfseries header\+\_\+type}
+\item 
+\mbox{\Hypertarget{structpci_a2834e29859bf5fbad19d4a23c5aa51d8}\label{structpci_a2834e29859bf5fbad19d4a23c5aa51d8}} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+union \{\\
+\mbox{\Hypertarget{unionpci_1_1_0D13_a82f419dcc1fe1810804349324fab05ba}\label{unionpci_1_1_0D13_a82f419dcc1fe1810804349324fab05ba}} 
+\>struct \{\\
+\>\>uint8\_t {\bfseries primary\_bus\_number}\\
+\>\>uint8\_t {\bfseries secondary\_bus\_number}\\
+\>\>uint8\_t {\bfseries subordinate\_bus\_number}\\
+\>\>uint8\_t {\bfseries junk}\\
+\>\} \\
+\>uint32\_t {\bfseries offset\_18}\\
+\}; \\
+
+\end{tabbing}\item 
+\mbox{\Hypertarget{structpci_a50137b346b342d2ce39a58d0273ab6cd}\label{structpci_a50137b346b342d2ce39a58d0273ab6cd}} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+union \{\\
+\mbox{\Hypertarget{unionpci_1_1_0D15_a981d2ed9425eaf4db7fec65fbd0e979e}\label{unionpci_1_1_0D15_a981d2ed9425eaf4db7fec65fbd0e979e}} 
+\>struct \{\\
+\>\>uint16\_t {\bfseries link\_ctrl}\\
+\mbox{\Hypertarget{structpci_1_1_0D15_1_1_0D21_ac356c1dcee4a11e8bbe2b6c28c74aab8}\label{structpci_1_1_0D15_1_1_0D21_ac356c1dcee4a11e8bbe2b6c28c74aab8}} 
+\>\>union \{\\
+\mbox{\Hypertarget{unionpci_1_1_0D15_1_1_0D21_1_1_0D23_a1ae869adfe82220f16d40c4c49673b9e}\label{unionpci_1_1_0D15_1_1_0D21_1_1_0D23_a1ae869adfe82220f16d40c4c49673b9e}} 
+\>\>\>struct \{\\
+\>\>\>\>uint16\_t {\bfseries link\_speed}: 4\\
+\>\>\>\>uint16\_t {\bfseries link\_width}: 6\\
+\>\>\>\>uint16\_t {\bfseries undefined}: 1\\
+\>\>\>\>uint16\_t {\bfseries link\_trained}: 1\\
+\>\>\>\} \\
+\>\>\>uint16\_t {\bfseries link\_sta}\\
+\>\>\} \\
+\>\} \\
+\>uint32\_t {\bfseries link\_info}\\
+\}; \\
+
+\end{tabbing}\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+lspci.\+h\end{DoxyCompactItemize}

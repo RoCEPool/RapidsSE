@@ -1,0 +1,160 @@
+\hypertarget{class_system_counter_state}{}\section{System\+Counter\+State Class Reference}
+\label{class_system_counter_state}\index{System\+Counter\+State@{System\+Counter\+State}}
+
+
+System-\/wide counter state.  
+
+
+
+
+{\ttfamily \#include $<$cpucounters.\+h$>$}
+
+Inheritance diagram for System\+Counter\+State\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_system_counter_state}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_system_counter_state_af8fb0cdf2c4d03ec03b1ef2e4c27aac4}\label{class_system_counter_state_af8fb0cdf2c4d03ec03b1ef2e4c27aac4}} 
+void {\bfseries accumulate\+Socket\+State} (const \mbox{\hyperlink{class_socket_counter_state}{Socket\+Counter\+State}} \&o)
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_system_counter_state_a1755dd4a5ffc57d0423620336aab534b}\label{class_system_counter_state_a1755dd4a5ffc57d0423620336aab534b}} 
+void {\bfseries read\+And\+Aggregate} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_safe_msr_handle}{Safe\+Msr\+Handle}} $>$ handle)
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_system_counter_state_ab5f56d2e95ba3daf52c17b8a1d356d64}\label{class_system_counter_state_ab5f56d2e95ba3daf52c17b8a1d356d64}} 
+class {\bfseries P\+CM}
+\item 
+uint64 \mbox{\hyperlink{class_system_counter_state_aca1b1d8ba1679c4a0c394c2647428fd3}{get\+Incoming\+Q\+P\+I\+Link\+Bytes}} (uint32 socket\+Nr, uint32 link\+Nr, const \mbox{\hyperlink{class_system_counter_state}{System\+Counter\+State}} \&before, const \mbox{\hyperlink{class_system_counter_state}{System\+Counter\+State}} \&after)
+\begin{DoxyCompactList}\small\item\em Get estimation of Q\+PI data traffic per incoming Q\+PI link. \end{DoxyCompactList}\item 
+uint64 \mbox{\hyperlink{class_system_counter_state_a42d6a119a26ea41c40d5585356d832ca}{get\+Incoming\+Q\+P\+I\+Link\+Bytes}} (uint32 socket\+Nr, uint32 link\+Nr, const \mbox{\hyperlink{class_system_counter_state}{System\+Counter\+State}} \&now)
+\begin{DoxyCompactList}\small\item\em Return current value of the counter of Q\+PI data traffic per incoming Q\+PI link. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_system_counter_state_ac7b1863133a9a711117fcb8b68d2d773}{get\+Outgoing\+Q\+P\+I\+Link\+Utilization}} (uint32 socket\+Nr, uint32 link\+Nr, const \mbox{\hyperlink{class_system_counter_state}{System\+Counter\+State}} \&before, const \mbox{\hyperlink{class_system_counter_state}{System\+Counter\+State}} \&after)
+\begin{DoxyCompactList}\small\item\em Get utilization of outgoing Q\+PI link (0..1) \end{DoxyCompactList}\item 
+uint64 \mbox{\hyperlink{class_system_counter_state_a6bdb34d102d7353421bd878da7b9ef23}{get\+Outgoing\+Q\+P\+I\+Link\+Bytes}} (uint32 socket\+Nr, uint32 link\+Nr, const \mbox{\hyperlink{class_system_counter_state}{System\+Counter\+State}} \&before, const \mbox{\hyperlink{class_system_counter_state}{System\+Counter\+State}} \&after)
+\begin{DoxyCompactList}\small\item\em Get estimation of Q\+PI (data+nondata) traffic per outgoing Q\+PI link. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_system_counter_state_a336f198b4a81e0d34bb581e8bd8be0e0}\label{class_system_counter_state_a336f198b4a81e0d34bb581e8bd8be0e0}} 
+uint64 {\bfseries get\+Outgoing\+Q\+P\+I\+Link\+Bytes} (uint32 socket\+Nr, uint32 link\+Nr, const \mbox{\hyperlink{class_system_counter_state}{System\+Counter\+State}} \&now)
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+System-\/wide counter state. 
+
+\subsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{class_system_counter_state_aca1b1d8ba1679c4a0c394c2647428fd3}\label{class_system_counter_state_aca1b1d8ba1679c4a0c394c2647428fd3}} 
+\index{System\+Counter\+State@{System\+Counter\+State}!get\+Incoming\+Q\+P\+I\+Link\+Bytes@{get\+Incoming\+Q\+P\+I\+Link\+Bytes}}
+\index{get\+Incoming\+Q\+P\+I\+Link\+Bytes@{get\+Incoming\+Q\+P\+I\+Link\+Bytes}!System\+Counter\+State@{System\+Counter\+State}}
+\subsubsection{\texorpdfstring{get\+Incoming\+Q\+P\+I\+Link\+Bytes}{getIncomingQPILinkBytes}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily uint64 get\+Incoming\+Q\+P\+I\+Link\+Bytes (\begin{DoxyParamCaption}\item[{uint32}]{socket\+Nr,  }\item[{uint32}]{link\+Nr,  }\item[{const \mbox{\hyperlink{class_system_counter_state}{System\+Counter\+State}} \&}]{before,  }\item[{const \mbox{\hyperlink{class_system_counter_state}{System\+Counter\+State}} \&}]{after }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+Get estimation of Q\+PI data traffic per incoming Q\+PI link. 
+
+Returns an estimation of number of data bytes transferred to a socket over Intel(r) Quick Path Interconnect
+
+
+\begin{DoxyParams}{Parameters}
+{\em socket\+Nr} & socket identifier \\
+\hline
+{\em link\+Nr} & link\+Nr \\
+\hline
+{\em before} & System C\+PU counter state before the experiment \\
+\hline
+{\em after} & System C\+PU counter state after the experiment \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Number of bytes 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_system_counter_state_a42d6a119a26ea41c40d5585356d832ca}\label{class_system_counter_state_a42d6a119a26ea41c40d5585356d832ca}} 
+\index{System\+Counter\+State@{System\+Counter\+State}!get\+Incoming\+Q\+P\+I\+Link\+Bytes@{get\+Incoming\+Q\+P\+I\+Link\+Bytes}}
+\index{get\+Incoming\+Q\+P\+I\+Link\+Bytes@{get\+Incoming\+Q\+P\+I\+Link\+Bytes}!System\+Counter\+State@{System\+Counter\+State}}
+\subsubsection{\texorpdfstring{get\+Incoming\+Q\+P\+I\+Link\+Bytes}{getIncomingQPILinkBytes}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily uint64 get\+Incoming\+Q\+P\+I\+Link\+Bytes (\begin{DoxyParamCaption}\item[{uint32}]{socket\+Nr,  }\item[{uint32}]{link\+Nr,  }\item[{const \mbox{\hyperlink{class_system_counter_state}{System\+Counter\+State}} \&}]{now }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+Return current value of the counter of Q\+PI data traffic per incoming Q\+PI link. 
+
+Returns the number of incoming data bytes to a socket over Intel(r) Quick Path Interconnect
+
+
+\begin{DoxyParams}{Parameters}
+{\em socket\+Nr} & socket identifier \\
+\hline
+{\em link\+Nr} & link\+Nr \\
+\hline
+{\em now} & Current System C\+PU counter state \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Number of bytes 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_system_counter_state_a6bdb34d102d7353421bd878da7b9ef23}\label{class_system_counter_state_a6bdb34d102d7353421bd878da7b9ef23}} 
+\index{System\+Counter\+State@{System\+Counter\+State}!get\+Outgoing\+Q\+P\+I\+Link\+Bytes@{get\+Outgoing\+Q\+P\+I\+Link\+Bytes}}
+\index{get\+Outgoing\+Q\+P\+I\+Link\+Bytes@{get\+Outgoing\+Q\+P\+I\+Link\+Bytes}!System\+Counter\+State@{System\+Counter\+State}}
+\subsubsection{\texorpdfstring{get\+Outgoing\+Q\+P\+I\+Link\+Bytes}{getOutgoingQPILinkBytes}}
+{\footnotesize\ttfamily uint64 get\+Outgoing\+Q\+P\+I\+Link\+Bytes (\begin{DoxyParamCaption}\item[{uint32}]{socket\+Nr,  }\item[{uint32}]{link\+Nr,  }\item[{const \mbox{\hyperlink{class_system_counter_state}{System\+Counter\+State}} \&}]{before,  }\item[{const \mbox{\hyperlink{class_system_counter_state}{System\+Counter\+State}} \&}]{after }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+Get estimation of Q\+PI (data+nondata) traffic per outgoing Q\+PI link. 
+
+Returns an estimation of number of data bytes transferred from a socket over Intel(r) Quick Path Interconnect
+
+
+\begin{DoxyParams}{Parameters}
+{\em socket\+Nr} & socket identifier \\
+\hline
+{\em link\+Nr} & link\+Nr \\
+\hline
+{\em before} & System C\+PU counter state before the experiment \\
+\hline
+{\em after} & System C\+PU counter state after the experiment \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Number of bytes 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_system_counter_state_ac7b1863133a9a711117fcb8b68d2d773}\label{class_system_counter_state_ac7b1863133a9a711117fcb8b68d2d773}} 
+\index{System\+Counter\+State@{System\+Counter\+State}!get\+Outgoing\+Q\+P\+I\+Link\+Utilization@{get\+Outgoing\+Q\+P\+I\+Link\+Utilization}}
+\index{get\+Outgoing\+Q\+P\+I\+Link\+Utilization@{get\+Outgoing\+Q\+P\+I\+Link\+Utilization}!System\+Counter\+State@{System\+Counter\+State}}
+\subsubsection{\texorpdfstring{get\+Outgoing\+Q\+P\+I\+Link\+Utilization}{getOutgoingQPILinkUtilization}}
+{\footnotesize\ttfamily double get\+Outgoing\+Q\+P\+I\+Link\+Utilization (\begin{DoxyParamCaption}\item[{uint32}]{socket\+Nr,  }\item[{uint32}]{link\+Nr,  }\item[{const \mbox{\hyperlink{class_system_counter_state}{System\+Counter\+State}} \&}]{before,  }\item[{const \mbox{\hyperlink{class_system_counter_state}{System\+Counter\+State}} \&}]{after }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+Get utilization of outgoing Q\+PI link (0..1) 
+
+Returns an estimation of utilization of Q\+PI link by (data+nondata) traffic transferred from a socket over Intel(r) Quick Path Interconnect
+
+
+\begin{DoxyParams}{Parameters}
+{\em socket\+Nr} & socket identifier \\
+\hline
+{\em link\+Nr} & link\+Nr \\
+\hline
+{\em before} & System C\+PU counter state before the experiment \\
+\hline
+{\em after} & System C\+PU counter state after the experiment \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+utilization (0..1) 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{cpucounters_8h}{cpucounters.\+h}}\end{DoxyCompactItemize}

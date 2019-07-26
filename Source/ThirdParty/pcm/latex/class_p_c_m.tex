@@ -1,0 +1,1302 @@
+\hypertarget{class_p_c_m}{}\section{P\+CM Class Reference}
+\label{class_p_c_m}\index{P\+CM@{P\+CM}}
+
+
+C\+PU Performance Monitor.  
+
+
+
+
+{\ttfamily \#include $<$cpucounters.\+h$>$}
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_p_c_m_1_1_custom_core_event_description}{Custom\+Core\+Event\+Description}}
+\begin{DoxyCompactList}\small\item\em Custom Core event description. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{struct_p_c_m_1_1_custom_i_i_o_event_description}{Custom\+I\+I\+O\+Event\+Description}}
+\item 
+struct \mbox{\hyperlink{struct_p_c_m_1_1_extended_custom_core_event_description}{Extended\+Custom\+Core\+Event\+Description}}
+\begin{DoxyCompactList}\small\item\em Extended custom core event description. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{struct_p_c_m_1_1_simple_p_c_ie_dev_info}{Simple\+P\+C\+Ie\+Dev\+Info}}
+\end{DoxyCompactItemize}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_p_c_m_a0d4ffa4b31603643806e33b899719793}\label{class_p_c_m_a0d4ffa4b31603643806e33b899719793}} 
+enum \{ {\bfseries M\+A\+X\+\_\+\+C\+\_\+\+S\+T\+A\+TE} = 10
+ \}
+\item 
+enum \mbox{\hyperlink{class_p_c_m_a88584813a3ef51376efeb22928764786}{Program\+Mode}} \{ \mbox{\hyperlink{class_p_c_m_a88584813a3ef51376efeb22928764786a0e861144f482697cfa423b012ed42451}{D\+E\+F\+A\+U\+L\+T\+\_\+\+E\+V\+E\+N\+TS}} = 0, 
+\mbox{\hyperlink{class_p_c_m_a88584813a3ef51376efeb22928764786ac092b2b5f351e33046b87e5cee31f38f}{C\+U\+S\+T\+O\+M\+\_\+\+C\+O\+R\+E\+\_\+\+E\+V\+E\+N\+TS}} = 1, 
+\mbox{\hyperlink{class_p_c_m_a88584813a3ef51376efeb22928764786a0f2ff80b85b8f9483c7f03544f73fcbd}{E\+X\+T\+\_\+\+C\+U\+S\+T\+O\+M\+\_\+\+C\+O\+R\+E\+\_\+\+E\+V\+E\+N\+TS}} = 2, 
+\mbox{\hyperlink{class_p_c_m_a88584813a3ef51376efeb22928764786ad60e2f3b64e27eaaa84d2b07fea8e225}{I\+N\+V\+A\+L\+I\+D\+\_\+\+M\+O\+DE}}
+ \}
+\begin{DoxyCompactList}\small\item\em Mode of programming (parameter in the \mbox{\hyperlink{class_p_c_m_abae9577a1a172c944d133bef10683825}{program()}} method) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_p_c_m_abebf5f22d794719dfc49155741e264e5}\label{class_p_c_m_abebf5f22d794719dfc49155741e264e5}} 
+enum \mbox{\hyperlink{class_p_c_m_abebf5f22d794719dfc49155741e264e5}{Error\+Code}} \{ {\bfseries Success} = 0, 
+{\bfseries M\+S\+R\+Access\+Denied} = 1, 
+{\bfseries P\+M\+U\+Busy} = 2, 
+{\bfseries Unknown\+Error}
+ \}
+\begin{DoxyCompactList}\small\item\em Return codes (e.\+g. for program(..) method) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_p_c_m_a4e729e5eba43d92e18495fc721e981fe}\label{class_p_c_m_a4e729e5eba43d92e18495fc721e981fe}} 
+enum {\bfseries Perfmon\+Field} \{ \newline
+{\bfseries I\+N\+V\+A\+L\+ID}, 
+{\bfseries O\+P\+C\+O\+DE}, 
+{\bfseries E\+V\+E\+N\+T\+\_\+\+S\+E\+L\+E\+CT}, 
+{\bfseries U\+M\+A\+SK}, 
+\newline
+{\bfseries R\+E\+S\+ET}, 
+{\bfseries E\+D\+G\+E\+\_\+\+D\+ET}, 
+{\bfseries I\+G\+N\+O\+R\+ED}, 
+{\bfseries O\+V\+E\+R\+F\+L\+O\+W\+\_\+\+E\+N\+A\+B\+LE}, 
+\newline
+{\bfseries E\+N\+A\+B\+LE}, 
+{\bfseries I\+N\+V\+E\+RT}, 
+{\bfseries T\+H\+R\+E\+SH}, 
+{\bfseries C\+H\+\_\+\+M\+A\+SK}, 
+\newline
+{\bfseries F\+C\+\_\+\+M\+A\+SK}, 
+{\bfseries H\+\_\+\+E\+V\+E\+N\+T\+\_\+\+N\+A\+ME}, 
+{\bfseries V\+\_\+\+E\+V\+E\+N\+T\+\_\+\+N\+A\+ME}, 
+{\bfseries M\+U\+L\+T\+I\+P\+L\+I\+ER}, 
+\newline
+{\bfseries D\+I\+V\+I\+D\+ER}, 
+{\bfseries C\+O\+U\+N\+T\+E\+R\+\_\+\+I\+N\+D\+EX}
+ \}
+\item 
+\mbox{\Hypertarget{class_p_c_m_a8b95584dd1ea84c9f005dd0413c1dd0f}\label{class_p_c_m_a8b95584dd1ea84c9f005dd0413c1dd0f}} 
+enum {\bfseries P\+C\+Ie\+Width\+Mode} \{ \newline
+{\bfseries X1}, 
+{\bfseries X4}, 
+{\bfseries X8}, 
+{\bfseries X16}, 
+\newline
+{\bfseries X\+FF}
+ \}
+\item 
+\mbox{\Hypertarget{class_p_c_m_a6bc57e347e286d0299c9329f37bb7b64}\label{class_p_c_m_a6bc57e347e286d0299c9329f37bb7b64}} 
+enum \{ \newline
+{\bfseries I\+I\+O\+\_\+\+C\+B\+D\+MA} = 0, 
+{\bfseries I\+I\+O\+\_\+\+P\+C\+Ie0} = 1, 
+{\bfseries I\+I\+O\+\_\+\+P\+C\+Ie1} = 2, 
+{\bfseries I\+I\+O\+\_\+\+P\+C\+Ie2} = 3, 
+\newline
+{\bfseries I\+I\+O\+\_\+\+M\+C\+P0} = 4, 
+{\bfseries I\+I\+O\+\_\+\+M\+C\+P1} = 5, 
+{\bfseries I\+I\+O\+\_\+\+S\+T\+A\+C\+K\+\_\+\+C\+O\+U\+NT} = 6
+ \}
+\item 
+\mbox{\Hypertarget{class_p_c_m_a7ca50e5907ef2b7cf7c81a5e069135f7}\label{class_p_c_m_a7ca50e5907ef2b7cf7c81a5e069135f7}} 
+enum \mbox{\hyperlink{class_p_c_m_a7ca50e5907ef2b7cf7c81a5e069135f7}{Supported\+C\+P\+U\+Models}} \{ \newline
+{\bfseries N\+E\+H\+A\+L\+E\+M\+\_\+\+EP} = 26, 
+{\bfseries N\+E\+H\+A\+L\+EM} = 30, 
+{\bfseries A\+T\+OM} = 28, 
+{\bfseries A\+T\+O\+M\+\_\+2} = 53, 
+\newline
+{\bfseries A\+T\+O\+M\+\_\+\+C\+E\+N\+T\+E\+R\+T\+ON} = 54, 
+{\bfseries A\+T\+O\+M\+\_\+\+B\+A\+Y\+T\+R\+A\+IL} = 55, 
+{\bfseries A\+T\+O\+M\+\_\+\+A\+V\+O\+T\+ON} = 77, 
+{\bfseries A\+T\+O\+M\+\_\+\+C\+H\+E\+R\+R\+Y\+T\+R\+A\+IL} = 76, 
+\newline
+{\bfseries A\+T\+O\+M\+\_\+\+A\+P\+O\+L\+L\+O\+\_\+\+L\+A\+KE} = 92, 
+{\bfseries A\+T\+O\+M\+\_\+\+D\+E\+N\+V\+E\+R\+T\+ON} = 95, 
+{\bfseries C\+L\+A\+R\+K\+D\+A\+LE} = 37, 
+{\bfseries W\+E\+S\+T\+M\+E\+R\+E\+\_\+\+EP} = 44, 
+\newline
+{\bfseries N\+E\+H\+A\+L\+E\+M\+\_\+\+EX} = 46, 
+{\bfseries W\+E\+S\+T\+M\+E\+R\+E\+\_\+\+EX} = 47, 
+{\bfseries S\+A\+N\+D\+Y\+\_\+\+B\+R\+I\+D\+GE} = 42, 
+{\bfseries J\+A\+K\+E\+T\+O\+WN} = 45, 
+\newline
+{\bfseries I\+V\+Y\+\_\+\+B\+R\+I\+D\+GE} = 58, 
+{\bfseries H\+A\+S\+W\+E\+LL} = 60, 
+{\bfseries H\+A\+S\+W\+E\+L\+L\+\_\+\+U\+LT} = 69, 
+{\bfseries H\+A\+S\+W\+E\+L\+L\+\_\+2} = 70, 
+\newline
+{\bfseries I\+V\+Y\+T\+O\+WN} = 62, 
+{\bfseries H\+A\+S\+W\+E\+L\+LX} = 63, 
+{\bfseries B\+R\+O\+A\+D\+W\+E\+LL} = 61, 
+{\bfseries B\+R\+O\+A\+D\+W\+E\+L\+L\+\_\+\+X\+E\+O\+N\+\_\+\+E3} = 71, 
+\newline
+{\bfseries B\+D\+X\+\_\+\+DE} = 86, 
+{\bfseries S\+K\+L\+\_\+\+UY} = 78, 
+{\bfseries K\+BL} = 158, 
+{\bfseries K\+B\+L\+\_\+1} = 142, 
+\newline
+{\bfseries B\+DX} = 79, 
+{\bfseries K\+NL} = 87, 
+{\bfseries S\+KL} = 94, 
+{\bfseries S\+KX} = 85, 
+\newline
+{\bfseries E\+N\+D\+\_\+\+O\+F\+\_\+\+M\+O\+D\+E\+L\+\_\+\+L\+I\+ST} = 0x0ffff
+ \}
+\begin{DoxyCompactList}\small\item\em Identifiers of supported C\+PU models. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_p_c_m_a77b8031a61ae839bdd021ee7b56aa585}\label{class_p_c_m_a77b8031a61ae839bdd021ee7b56aa585}} 
+enum {\bfseries P\+C\+Ie\+Event\+Code} \{ \newline
+{\bfseries P\+C\+Ie\+Rd\+Cur} = 0x19E, 
+{\bfseries P\+C\+Ie\+N\+S\+Rd} = 0x1\+E4, 
+{\bfseries P\+C\+Ie\+Wi\+LF} = 0x194, 
+{\bfseries P\+C\+Ie\+ItoM} = 0x19C, 
+\newline
+{\bfseries P\+C\+Ie\+N\+S\+Wr} = 0x1\+E5, 
+{\bfseries P\+C\+Ie\+N\+S\+WrF} = 0x1\+E6, 
+{\bfseries R\+FO} = 0x180, 
+{\bfseries C\+Rd} = 0x181, 
+\newline
+{\bfseries D\+Rd} = 0x182, 
+{\bfseries P\+Rd} = 0x187, 
+{\bfseries WiL} = 0x18F, 
+{\bfseries ItoM} = 0x1\+C8, 
+\newline
+{\bfseries S\+K\+X\+\_\+\+R\+FO} = 0x200, 
+{\bfseries S\+K\+X\+\_\+\+C\+Rd} = 0x201, 
+{\bfseries S\+K\+X\+\_\+\+D\+Rd} = 0x202, 
+{\bfseries S\+K\+X\+\_\+\+P\+Rd} = 0x207, 
+\newline
+{\bfseries S\+K\+X\+\_\+\+WiL} = 0x20F, 
+{\bfseries S\+K\+X\+\_\+\+Rd\+Cur} = 0x21E, 
+{\bfseries S\+K\+X\+\_\+\+ItoM} = 0x248
+ \}
+\item 
+\mbox{\Hypertarget{class_p_c_m_afd71939913b70911ed3d076b07e18308}\label{class_p_c_m_afd71939913b70911ed3d076b07e18308}} 
+enum {\bfseries Cha\+Pipeline\+Queue} \{ {\bfseries None}, 
+{\bfseries I\+RQ}, 
+{\bfseries P\+RQ}
+ \}
+\item 
+\mbox{\Hypertarget{class_p_c_m_a6c72526891bf528aaf85b18103c7b07b}\label{class_p_c_m_a6c72526891bf528aaf85b18103c7b07b}} 
+enum {\bfseries C\+Bo\+Event\+Tid} \{ {\bfseries R\+F\+Otid} = 0x3E, 
+{\bfseries Ito\+Mtid} = 0x3E
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_p_c_m_af43f3a1e920264467a3855ced5f8162b}\label{class_p_c_m_af43f3a1e920264467a3855ced5f8162b}} 
+bool \mbox{\hyperlink{class_p_c_m_af43f3a1e920264467a3855ced5f8162b}{is\+Core\+C\+State\+Residency\+Supported}} (int state)
+\begin{DoxyCompactList}\small\item\em Returns true if the specified core C-\/state residency metric is supported. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_p_c_m_aad05d8a2f383ad41d25892175373b613}\label{class_p_c_m_aad05d8a2f383ad41d25892175373b613}} 
+bool \mbox{\hyperlink{class_p_c_m_aad05d8a2f383ad41d25892175373b613}{is\+Package\+C\+State\+Residency\+Supported}} (int state)
+\begin{DoxyCompactList}\small\item\em Returns true if the specified package C-\/state residency metric is supported. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_p_c_m_aaab4b857581f55723fc3959cf6c8cd91}\label{class_p_c_m_aaab4b857581f55723fc3959cf6c8cd91}} 
+void \mbox{\hyperlink{class_p_c_m_aaab4b857581f55723fc3959cf6c8cd91}{set\+Output}} (const std\+::string filename)
+\begin{DoxyCompactList}\small\item\em Redirects output destination to provided file, instead of std\+::cout. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_p_c_m_af8bcd9d89ee64d8effdf968132f3b842}\label{class_p_c_m_af8bcd9d89ee64d8effdf968132f3b842}} 
+void \mbox{\hyperlink{class_p_c_m_af8bcd9d89ee64d8effdf968132f3b842}{restore\+Output}} ()
+\begin{DoxyCompactList}\small\item\em Restores output, closes output file if opened. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_p_c_m_adb5b4989751f87a17649810a964fa053}\label{class_p_c_m_adb5b4989751f87a17649810a964fa053}} 
+void \mbox{\hyperlink{class_p_c_m_adb5b4989751f87a17649810a964fa053}{set\+Run\+State}} (int new\+\_\+state)
+\begin{DoxyCompactList}\small\item\em Set Run State. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_p_c_m_a5fc8a2d2073ce855558d201883ecf3cd}\label{class_p_c_m_a5fc8a2d2073ce855558d201883ecf3cd}} 
+int \mbox{\hyperlink{class_p_c_m_a5fc8a2d2073ce855558d201883ecf3cd}{get\+Run\+State}} (void)
+\begin{DoxyCompactList}\small\item\em Returns program\textquotesingle{}s Run State. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_p_c_m_ab665ed42ffe2818dbc4f44e6b7ea5436}\label{class_p_c_m_ab665ed42ffe2818dbc4f44e6b7ea5436}} 
+bool {\bfseries is\+Blocked} (void)
+\item 
+\mbox{\Hypertarget{class_p_c_m_ad61cae141755617819b1a81d5fac91d3}\label{class_p_c_m_ad61cae141755617819b1a81d5fac91d3}} 
+void {\bfseries set\+Blocked} (const bool new\+\_\+blocked)
+\item 
+\mbox{\Hypertarget{class_p_c_m_a4261a7c1980c16cfe289856401aa3bee}\label{class_p_c_m_a4261a7c1980c16cfe289856401aa3bee}} 
+void \mbox{\hyperlink{class_p_c_m_a4261a7c1980c16cfe289856401aa3bee}{allow\+Multiple\+Instances}} ()
+\begin{DoxyCompactList}\small\item\em Call it before \mbox{\hyperlink{class_p_c_m_abae9577a1a172c944d133bef10683825}{program()}} to allow multiple running instances of \mbox{\hyperlink{class_p_c_m}{P\+CM}} on the same system. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_p_c_m_ad12300d8a7096cc4258108ced23cd491}{Q\+O\+S\+Metric\+Available}} () const
+\begin{DoxyCompactList}\small\item\em checks if Q\+OS monitoring support present \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_p_c_m_ab1be879d2c871816ddbcfa30bb58a3e7}{L3\+Q\+O\+S\+Metric\+Available}} () const
+\begin{DoxyCompactList}\small\item\em checks L3 cache support for Q\+OS present \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_p_c_m_a6a6580b296a5a0236c9e00956988c0fc}{L3\+Cache\+Occupancy\+Metric\+Available}} () const
+\begin{DoxyCompactList}\small\item\em checks if L3 cache monitoring present \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_p_c_m_af0648834f063a6bd2ea88c61a2ba286d}{Core\+Local\+Memory\+B\+W\+Metric\+Available}} () const
+\begin{DoxyCompactList}\small\item\em checks if local memory bandwidth monitoring present \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_p_c_m_a9b2b73d2af7c5a851e5c43df37d7fdb2}{Core\+Remote\+Memory\+B\+W\+Metric\+Available}} () const
+\begin{DoxyCompactList}\small\item\em checks if total memory bandwidth monitoring present \end{DoxyCompactList}\item 
+unsigned \mbox{\hyperlink{class_p_c_m_a0e1151b2a215849ab67ab2b0056e0e0f}{get\+Max\+R\+M\+ID}} () const
+\begin{DoxyCompactList}\small\item\em returns the max number of R\+M\+ID supported by socket \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_p_c_m_a56eedaa84893f72b1723f8d580ee3329}{good}} ()
+\begin{DoxyCompactList}\small\item\em Checks the status of \mbox{\hyperlink{class_p_c_m}{P\+CM}} object. \end{DoxyCompactList}\item 
+const std\+::string \& \mbox{\hyperlink{class_p_c_m_afbb527aac9b4a15b5437bbfc3111cdeb}{get\+Error\+Message}} () const
+\begin{DoxyCompactList}\small\item\em Returns the error message. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_p_c_m_abebf5f22d794719dfc49155741e264e5}{Error\+Code}} \mbox{\hyperlink{class_p_c_m_abae9577a1a172c944d133bef10683825}{program}} (const \mbox{\hyperlink{class_p_c_m_a88584813a3ef51376efeb22928764786}{Program\+Mode}} mode\+\_\+=\mbox{\hyperlink{class_p_c_m_a88584813a3ef51376efeb22928764786a0e861144f482697cfa423b012ed42451}{D\+E\+F\+A\+U\+L\+T\+\_\+\+E\+V\+E\+N\+TS}}, const void $\ast$parameter\+\_\+=N\+U\+LL)
+\begin{DoxyCompactList}\small\item\em Programs performance counters. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_p_c_m_abebf5f22d794719dfc49155741e264e5}{Error\+Code}} \mbox{\hyperlink{class_p_c_m_a3a30cec6e4e7a78ec964d194e3844637}{program\+Server\+Uncore\+Power\+Metrics}} (int mc\+\_\+profile, int pcu\+\_\+profile, int $\ast$freq\+\_\+bands=N\+U\+LL)
+\begin{DoxyCompactList}\small\item\em Programs uncore power/energy counters on microarchitectures codename Sandy\+Bridge-\/\+EP and later Xeon uarch. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_p_c_m_abebf5f22d794719dfc49155741e264e5}{Error\+Code}} \mbox{\hyperlink{class_p_c_m_aa2263c70dabe237a8aeb9cdc58736ee5}{program\+Server\+Uncore\+Memory\+Metrics}} (int rankA=-\/1, int rankB=-\/1)
+\begin{DoxyCompactList}\small\item\em Programs uncore memory counters on microarchitectures codename Sandy\+Bridge-\/\+EP and later Xeon uarch. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_p_c_m_a9f142010bb99ba6b81e93895bfa20252}\label{class_p_c_m_a9f142010bb99ba6b81e93895bfa20252}} 
+void \mbox{\hyperlink{class_p_c_m_a9f142010bb99ba6b81e93895bfa20252}{freeze\+Server\+Uncore\+Counters}} ()
+\begin{DoxyCompactList}\small\item\em Freezes uncore event counting (works only on microarchitecture codename Sandy\+Bridge-\/\+EP and Ivy\+Town) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_p_c_m_a617beda55da4de32593a7aa925fe1f02}\label{class_p_c_m_a617beda55da4de32593a7aa925fe1f02}} 
+void \mbox{\hyperlink{class_p_c_m_a617beda55da4de32593a7aa925fe1f02}{unfreeze\+Server\+Uncore\+Counters}} ()
+\begin{DoxyCompactList}\small\item\em Unfreezes uncore event counting (works only on microarchitecture codename Sandy\+Bridge-\/\+EP and Ivy\+Town) \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_server_uncore_power_state}{Server\+Uncore\+Power\+State}} \mbox{\hyperlink{class_p_c_m_a9db0d472d9cdc0aa3c6db8ed7bb38f77}{get\+Server\+Uncore\+Power\+State}} (uint32 socket)
+\begin{DoxyCompactList}\small\item\em Reads the power/energy counter state of a socket (works only on microarchitecture codename Sandy\+Bridge-\/\+EP) \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_p_c_m_ac0c8d3764ff95840ece17d632de4df9b}{cleanup}} ()
+\begin{DoxyCompactList}\small\item\em Cleanups resources and stops performance counting. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_p_c_m_ad4f5ff2c6ce12f0fb4bb5ae1e5bd157a}{reset\+P\+MU}} ()
+\begin{DoxyCompactList}\small\item\em Forces P\+MU reset. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_p_c_m_ade92d30321a659ca54d423eaf0e30e12}{get\+All\+Counter\+States}} (\mbox{\hyperlink{class_system_counter_state}{System\+Counter\+State}} \&system\+State, std\+::vector$<$ \mbox{\hyperlink{class_socket_counter_state}{Socket\+Counter\+State}} $>$ \&socket\+States, std\+::vector$<$ \mbox{\hyperlink{class_core_counter_state}{Core\+Counter\+State}} $>$ \&core\+States)
+\begin{DoxyCompactList}\small\item\em Reads all counter states (including system, sockets and cores) \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_p_c_m_a9f1ffc2220b041f739a672b5be82361f}{get\+Uncore\+Counter\+States}} (\mbox{\hyperlink{class_system_counter_state}{System\+Counter\+State}} \&system\+State, std\+::vector$<$ \mbox{\hyperlink{class_socket_counter_state}{Socket\+Counter\+State}} $>$ \&socket\+States)
+\begin{DoxyCompactList}\small\item\em Reads uncore counter states (including system and sockets) but no core counters. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_p_c_m_aabb7e0514fd741966fec461ccd9427f3}{is\+Core\+Online}} (int32 os\+\_\+core\+\_\+id) const
+\begin{DoxyCompactList}\small\item\em Return true if the core in online. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_p_c_m_a67f21fcae47cfb6153055bf922c8a981}{is\+Socket\+Online}} (int32 socket\+\_\+id) const
+\begin{DoxyCompactList}\small\item\em Return true if the socket in online. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_system_counter_state}{System\+Counter\+State}} \mbox{\hyperlink{class_p_c_m_a603bf92fb67f294f5bc59185bc5c89cb}{get\+System\+Counter\+State}} ()
+\begin{DoxyCompactList}\small\item\em Reads the counter state of the system. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_socket_counter_state}{Socket\+Counter\+State}} \mbox{\hyperlink{class_p_c_m_ade00dbbd2a71ec32ae6747bfca66cd3c}{get\+Socket\+Counter\+State}} (uint32 socket)
+\begin{DoxyCompactList}\small\item\em Reads the counter state of a socket. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_core_counter_state}{Core\+Counter\+State}} \mbox{\hyperlink{class_p_c_m_a4ed1c64e3cb00c76851e3373a1fa54a3}{get\+Core\+Counter\+State}} (uint32 core)
+\begin{DoxyCompactList}\small\item\em Reads the counter state of a (logical) core. \end{DoxyCompactList}\item 
+uint32 \mbox{\hyperlink{class_p_c_m_a18d1666c08f014378cf49c707fc978d1}{get\+Num\+Cores}} () const
+\begin{DoxyCompactList}\small\item\em Reads number of logical cores in the system. \end{DoxyCompactList}\item 
+uint32 \mbox{\hyperlink{class_p_c_m_a30210eb2ddc9eee6bfe1db4b159f922b}{get\+Num\+Online\+Cores}} () const
+\begin{DoxyCompactList}\small\item\em Reads number of online logical cores in the system. \end{DoxyCompactList}\item 
+uint32 \mbox{\hyperlink{class_p_c_m_a7d4964e57e7692b5cc67d8b5056e5299}{get\+Num\+Sockets}} () const
+\begin{DoxyCompactList}\small\item\em Reads number of sockets (C\+P\+Us) in the system. \end{DoxyCompactList}\item 
+uint32 \mbox{\hyperlink{class_p_c_m_a9b3c25455743ff4475b237d7c338d4a2}{get\+Num\+Online\+Sockets}} () const
+\begin{DoxyCompactList}\small\item\em Reads number of online sockets (C\+P\+Us) in the system. \end{DoxyCompactList}\item 
+uint32 \mbox{\hyperlink{class_p_c_m_a850a9aeee162133adbc4b5d8df679639}{get\+Threads\+Per\+Core}} () const
+\begin{DoxyCompactList}\small\item\em Reads how many hardware threads has a physical core \char`\"{}\+Hardware thread\char`\"{} is a logical core in a different terminology. If Intel(r) Hyperthreading(tm) is enabled then this function returns 2. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_p_c_m_a27548ccdca19f180dcc8acd2ca484669}{get\+S\+MT}} () const
+\begin{DoxyCompactList}\small\item\em Checks if S\+MT (Hyper\+Threading) is enabled. \end{DoxyCompactList}\item 
+uint64 \mbox{\hyperlink{class_p_c_m_a83cd795814da47148632b24e485e6075}{get\+Nominal\+Frequency}} () const
+\begin{DoxyCompactList}\small\item\em Reads the nominal core frequency. \end{DoxyCompactList}\item 
+uint32 \mbox{\hyperlink{class_p_c_m_a2cdc063d0b3fdf7c6b81ef4e5b4c341e}{get\+L3\+Scaling\+Factor}} () const
+\begin{DoxyCompactList}\small\item\em runs C\+P\+U\+I\+D.\+0x\+F.\+0x01 to get the L3 up scaling factor to calculate L3 Occupancy Scaling factor is returned in E\+BX register after running the C\+PU instruction \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_p_c_m_aab16be3893549f5f2d782071aeaead5f}{is\+Some\+Core\+Offlined}} ()
+\begin{DoxyCompactList}\small\item\em runs C\+P\+U\+I\+D.\+0x\+B.\+0x01 to get maximum logical cores (including S\+MT) per socket. max\+\_\+lcores\+\_\+per\+\_\+socket is returned in E\+BX\mbox{[}15\+:0\mbox{]}. Compare this value with number of cores per socket detected in the system to see if some cores are offlined \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_p_c_m_a945943a093784e959f2b5930aac85080}\label{class_p_c_m_a945943a093784e959f2b5930aac85080}} 
+int32 \mbox{\hyperlink{class_p_c_m_a945943a093784e959f2b5930aac85080}{get\+Max\+Custom\+Core\+Events}} ()
+\begin{DoxyCompactList}\small\item\em Returns the maximum number of custom (general-\/purpose) core events supported by C\+PU. \end{DoxyCompactList}\item 
+uint32 \mbox{\hyperlink{class_p_c_m_a5f8c7d4c978238706fe74ec00c803f9a}{get\+C\+P\+U\+Model}} () const
+\begin{DoxyCompactList}\small\item\em Reads C\+PU model id. \end{DoxyCompactList}\item 
+uint32 \mbox{\hyperlink{class_p_c_m_ade53fbb558df9f80eac56435f2bd0e55}{get\+Original\+C\+P\+U\+Model}} () const
+\begin{DoxyCompactList}\small\item\em Reads original C\+PU model id. \end{DoxyCompactList}\item 
+uint32 \mbox{\hyperlink{class_p_c_m_afcf71f98767227aa64821a715bfab099}{get\+C\+P\+U\+Stepping}} () const
+\begin{DoxyCompactList}\small\item\em Reads C\+PU stepping id. \end{DoxyCompactList}\item 
+int32 \mbox{\hyperlink{class_p_c_m_a728347cf85816c42833a1a8a1f14b861}{get\+Thread\+Id}} (uint32 os\+\_\+id) const
+\begin{DoxyCompactList}\small\item\em Determines physical thread of given processor ID within a core. \end{DoxyCompactList}\item 
+int32 \mbox{\hyperlink{class_p_c_m_a90eb072bebf4be22bce23d550983f6fe}{get\+Core\+Id}} (uint32 os\+\_\+id) const
+\begin{DoxyCompactList}\small\item\em Determines physical core of given processor ID within a socket. \end{DoxyCompactList}\item 
+int32 \mbox{\hyperlink{class_p_c_m_a2b4433865e00da98c4fa588cb1be913c}{get\+Tile\+Id}} (uint32 os\+\_\+id) const
+\begin{DoxyCompactList}\small\item\em Determines physical tile (cores sharing L2 cache) of given processor ID. \end{DoxyCompactList}\item 
+int32 \mbox{\hyperlink{class_p_c_m_a015a39143b7bb87b41dc34b43a926029}{get\+Socket\+Id}} (uint32 core\+\_\+id) const
+\begin{DoxyCompactList}\small\item\em Determines socket of given core. \end{DoxyCompactList}\item 
+uint64 \mbox{\hyperlink{class_p_c_m_af0f62775b214218edf64a3f68df6c932}{get\+Q\+P\+I\+Links\+Per\+Socket}} () const
+\begin{DoxyCompactList}\small\item\em Returns the number of Intel(r) Quick Path Interconnect(tm) links per socket. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_p_c_m_af47f2de0de9403d00a4dac72919c8c38}\label{class_p_c_m_af47f2de0de9403d00a4dac72919c8c38}} 
+uint32 \mbox{\hyperlink{class_p_c_m_af47f2de0de9403d00a4dac72919c8c38}{get\+M\+C\+Per\+Socket}} () const
+\begin{DoxyCompactList}\small\item\em Returns the number of detected integrated memory controllers per socket. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_p_c_m_a8509261ccf013554e4ca31f66edf65af}\label{class_p_c_m_a8509261ccf013554e4ca31f66edf65af}} 
+size\+\_\+t \mbox{\hyperlink{class_p_c_m_a8509261ccf013554e4ca31f66edf65af}{get\+M\+C\+Channels\+Per\+Socket}} () const
+\begin{DoxyCompactList}\small\item\em Returns the total number of detected memory channels on all integrated memory controllers per socket. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_p_c_m_a51b8f36a804566a381cba176107ded6d}\label{class_p_c_m_a51b8f36a804566a381cba176107ded6d}} 
+size\+\_\+t \mbox{\hyperlink{class_p_c_m_a51b8f36a804566a381cba176107ded6d}{get\+E\+D\+C\+Channels\+Per\+Socket}} () const
+\begin{DoxyCompactList}\small\item\em Returns the total number of detected memory channels on all integrated memory controllers per socket. \end{DoxyCompactList}\item 
+uint32 \mbox{\hyperlink{class_p_c_m_a17084236c1d744a92adec4205415e0ad}{get\+Max\+I\+PC}} () const
+\begin{DoxyCompactList}\small\item\em Returns the max number of instructions per cycle. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_p_c_m_a9911d0d2edf17ecffd24ffce5a31a982}\label{class_p_c_m_a9911d0d2edf17ecffd24ffce5a31a982}} 
+uint64 \mbox{\hyperlink{class_p_c_m_a9911d0d2edf17ecffd24ffce5a31a982}{get\+P\+C\+U\+Frequency}} () const
+\begin{DoxyCompactList}\small\item\em Returns the frequency of Power Control Unit. \end{DoxyCompactList}\item 
+uint64 \mbox{\hyperlink{class_p_c_m_a794f5852662a2827b34eb16025564c70}{get\+Tick\+Count}} (uint64 multiplier=1000, uint32 core=0)
+\begin{DoxyCompactList}\small\item\em Return T\+SC timer value in time units. \end{DoxyCompactList}\item 
+uint64 \mbox{\hyperlink{class_p_c_m_a0d5153c7ec05003da7d20aeea737113e}{get\+Tick\+Count\+R\+D\+T\+S\+CP}} (uint64 multiplier=1000)
+\begin{DoxyCompactList}\small\item\em Return T\+SC timer value in time units using rdtscp instruction from current core. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_p_c_m_a09ea813c4cd70d3f7fe73cf1e0aca706}\label{class_p_c_m_a09ea813c4cd70d3f7fe73cf1e0aca706}} 
+uint64 \mbox{\hyperlink{class_p_c_m_a09ea813c4cd70d3f7fe73cf1e0aca706}{get\+Uncore\+Clocks}} (const uint32 socket\+\_\+)
+\begin{DoxyCompactList}\small\item\em Returns uncore clock ticks on specified socket. \end{DoxyCompactList}\item 
+uint64 \mbox{\hyperlink{class_p_c_m_a9bfa5b2f12f2e98382f9d8ddbc0c02e1}{get\+Q\+P\+I\+Link\+Speed}} (uint32 socket\+Nr, uint32 link\+Nr) const
+\begin{DoxyCompactList}\small\item\em Return Q\+PI Link Speed in G\+Bytes/second. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_p_c_m_ae933960b6244fe1d96ec4306a61c0e3a}\label{class_p_c_m_ae933960b6244fe1d96ec4306a61c0e3a}} 
+double \mbox{\hyperlink{class_p_c_m_ae933960b6244fe1d96ec4306a61c0e3a}{get\+Joules\+Per\+Energy\+Unit}} () const
+\begin{DoxyCompactList}\small\item\em Returns how many joules are in an internal processor energy unit. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_p_c_m_a2dd024b683196cfbd6106252c47c3337}\label{class_p_c_m_a2dd024b683196cfbd6106252c47c3337}} 
+int32 \mbox{\hyperlink{class_p_c_m_a2dd024b683196cfbd6106252c47c3337}{get\+Package\+Thermal\+Spec\+Power}} () const
+\begin{DoxyCompactList}\small\item\em Returns thermal specification power of the package domain in Watt. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_p_c_m_ad3038bc44fb2fdd31e072b8cc8cf4b09}\label{class_p_c_m_ad3038bc44fb2fdd31e072b8cc8cf4b09}} 
+int32 \mbox{\hyperlink{class_p_c_m_ad3038bc44fb2fdd31e072b8cc8cf4b09}{get\+Package\+Minimum\+Power}} () const
+\begin{DoxyCompactList}\small\item\em Returns minimum power derived from electrical spec of the package domain in Watt. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_p_c_m_a51b39ec58f622cd07c07fdf03ae4f543}\label{class_p_c_m_a51b39ec58f622cd07c07fdf03ae4f543}} 
+int32 \mbox{\hyperlink{class_p_c_m_a51b39ec58f622cd07c07fdf03ae4f543}{get\+Package\+Maximum\+Power}} () const
+\begin{DoxyCompactList}\small\item\em Returns maximum power derived from electrical spec of the package domain in Watt. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_p_c_m_abb695430e52dcf00adab2aa270f0cb11}\label{class_p_c_m_abb695430e52dcf00adab2aa270f0cb11}} 
+void {\bfseries disable\+J\+K\+T\+Workaround} ()
+\item 
+void \mbox{\hyperlink{class_p_c_m_af1b4ebd0ddc3ea32c04cb410f1eb48ad}{program\+P\+C\+Ie\+Counters}} (const P\+C\+Ie\+Event\+Code event\+\_\+, const uint32 tid\+\_\+=0, const uint32 miss\+\_\+=0, const uint32 q\+\_\+=0, const uint32 nc\+\_\+=0)
+\begin{DoxyCompactList}\small\item\em Program uncore P\+C\+Ie monitoring event(s) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_p_c_m_a371855c0801aac4c04157524fa5a4666}\label{class_p_c_m_a371855c0801aac4c04157524fa5a4666}} 
+void {\bfseries program\+P\+C\+Ie\+Miss\+Counters} (const P\+C\+Ie\+Event\+Code event\+\_\+, const uint32 tid\+\_\+=0, const uint32 q\+\_\+=0, const uint32 nc\+\_\+=0)
+\item 
+\mbox{\hyperlink{class_simple_counter_state}{P\+C\+Ie\+Counter\+State}} \mbox{\hyperlink{class_p_c_m_a3b1b549672af4c14c00eb7d461c87ac4}{get\+P\+C\+Ie\+Counter\+State}} (const uint32 socket\+\_\+)
+\begin{DoxyCompactList}\small\item\em Get the state of P\+C\+Ie \mbox{\hyperlink{structcounter}{counter(s)}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_p_c_m_ac75fcae283d8c6f0ef7085a913685f0b}{program\+I\+I\+O\+Counters}} (\mbox{\hyperlink{struct_i_i_o_p_m_u_c_n_t_c_t_l_register}{I\+I\+O\+P\+M\+U\+C\+N\+T\+C\+T\+L\+Register}} raw\+Events\mbox{[}4\mbox{]}, int I\+I\+O\+Stack=-\/1)
+\begin{DoxyCompactList}\small\item\em Program uncore I\+IO events. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_simple_counter_state}{I\+I\+O\+Counter\+State}} \mbox{\hyperlink{class_p_c_m_a85e2036c24c34ab5eecce856382d19fb}{get\+I\+I\+O\+Counter\+State}} (int socket, int I\+I\+O\+Stack, int \mbox{\hyperlink{structcounter}{counter}})
+\begin{DoxyCompactList}\small\item\em Get the state of I\+IO counter. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_p_c_m_a25e8b223197728858a704d53b8ab5534}{get\+I\+I\+O\+Counter\+States}} (int socket, int I\+I\+O\+Stack, \mbox{\hyperlink{class_simple_counter_state}{I\+I\+O\+Counter\+State}} $\ast$result)
+\begin{DoxyCompactList}\small\item\em Get the states of the four I\+IO counters in bulk (faster than four single reads) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_p_c_m_abe37e4fcbf856df75c9fbdd83d9054a1}\label{class_p_c_m_abe37e4fcbf856df75c9fbdd83d9054a1}} 
+uint64 {\bfseries extract\+Core\+Gen\+Counter\+Value} (uint64 val)
+\item 
+\mbox{\Hypertarget{class_p_c_m_a9efedba414c4b01207e6d57dc83dd66a}\label{class_p_c_m_a9efedba414c4b01207e6d57dc83dd66a}} 
+uint64 {\bfseries extract\+Core\+Fixed\+Counter\+Value} (uint64 val)
+\item 
+\mbox{\Hypertarget{class_p_c_m_abad9ccfca970ae03229377926df029cc}\label{class_p_c_m_abad9ccfca970ae03229377926df029cc}} 
+uint64 {\bfseries extract\+Uncore\+Gen\+Counter\+Value} (uint64 val)
+\item 
+\mbox{\Hypertarget{class_p_c_m_a8ea22c144bd0a0a2c2672b49b0ad5a5b}\label{class_p_c_m_a8ea22c144bd0a0a2c2672b49b0ad5a5b}} 
+uint64 {\bfseries extract\+Uncore\+Fixed\+Counter\+Value} (uint64 val)
+\item 
+\mbox{\Hypertarget{class_p_c_m_ab42f103a8df6035c075f022d6c7de04d}\label{class_p_c_m_ab42f103a8df6035c075f022d6c7de04d}} 
+uint64 {\bfseries extract\+Q\+O\+S\+Monitoring} (uint64 val)
+\item 
+const char $\ast$ \mbox{\hyperlink{class_p_c_m_a4c6bf89a6b0ab826a251a231ff1602ad}{get\+U\+Arch\+Codename}} (int32 cpu\+\_\+model\+\_\+=-\/1) const
+\begin{DoxyCompactList}\small\item\em Get a string describing the codename of the processor microarchitecture. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_p_c_m_aa593d2445c7c96ebcb2e37222c2d8ff4}\label{class_p_c_m_aa593d2445c7c96ebcb2e37222c2d8ff4}} 
+std\+::string {\bfseries get\+C\+P\+U\+Family\+Model\+String} ()
+\item 
+\mbox{\Hypertarget{class_p_c_m_a7e6e4c165db2cfaabaf8f5758a29ae40}\label{class_p_c_m_a7e6e4c165db2cfaabaf8f5758a29ae40}} 
+int64 \mbox{\hyperlink{class_p_c_m_a7e6e4c165db2cfaabaf8f5758a29ae40}{get\+C\+P\+U\+Microcode\+Level}} () const
+\begin{DoxyCompactList}\small\item\em Get microcode level (returns -\/1 if retrieval not supported due to some restrictions) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_p_c_m_a12b0f8e35174cd37da0f3b9200faf978}\label{class_p_c_m_a12b0f8e35174cd37da0f3b9200faf978}} 
+bool {\bfseries package\+Energy\+Metrics\+Available} () const
+\item 
+\mbox{\Hypertarget{class_p_c_m_a2202ca6339cf5df064bd94f22036e92a}\label{class_p_c_m_a2202ca6339cf5df064bd94f22036e92a}} 
+bool {\bfseries dram\+Energy\+Metrics\+Available} () const
+\item 
+\mbox{\Hypertarget{class_p_c_m_aaa584d7a737db19e0ee032eae012d1dd}\label{class_p_c_m_aaa584d7a737db19e0ee032eae012d1dd}} 
+bool {\bfseries package\+Thermal\+Metrics\+Available} () const
+\item 
+\mbox{\Hypertarget{class_p_c_m_a004d5ea964102d4c3522e1be0b0f28ff}\label{class_p_c_m_a004d5ea964102d4c3522e1be0b0f28ff}} 
+bool {\bfseries outgoing\+Q\+P\+I\+Traffic\+Metrics\+Available} () const
+\item 
+\mbox{\Hypertarget{class_p_c_m_a822228200e8f6a4f46fd3abb106fae2c}\label{class_p_c_m_a822228200e8f6a4f46fd3abb106fae2c}} 
+bool {\bfseries incoming\+Q\+P\+I\+Traffic\+Metrics\+Available} () const
+\item 
+\mbox{\Hypertarget{class_p_c_m_a913d07e562d0c12276e1d88da68133cf}\label{class_p_c_m_a913d07e562d0c12276e1d88da68133cf}} 
+bool {\bfseries qpi\+Utilization\+Metrics\+Available} () const
+\item 
+\mbox{\Hypertarget{class_p_c_m_afc270d601a110e0a6667bfbaf2441844}\label{class_p_c_m_afc270d601a110e0a6667bfbaf2441844}} 
+bool {\bfseries memory\+Traffic\+Metrics\+Available} () const
+\item 
+\mbox{\Hypertarget{class_p_c_m_ac43b77a3c73011dc885219d1f02301f0}\label{class_p_c_m_ac43b77a3c73011dc885219d1f02301f0}} 
+bool {\bfseries M\+C\+D\+R\+A\+Mmemory\+Traffic\+Metrics\+Available} () const
+\item 
+\mbox{\Hypertarget{class_p_c_m_adb2821d0a34e459b897b11b2b6a2bc55}\label{class_p_c_m_adb2821d0a34e459b897b11b2b6a2bc55}} 
+bool {\bfseries memory\+I\+O\+Traffic\+Metric\+Available} () const
+\item 
+\mbox{\Hypertarget{class_p_c_m_adb0ec9f5d7d476e15de4b292a8d09227}\label{class_p_c_m_adb0ec9f5d7d476e15de4b292a8d09227}} 
+bool {\bfseries I\+I\+O\+Events\+Available} () const
+\item 
+\mbox{\Hypertarget{class_p_c_m_afea9a88fefc7deb2374698498b26a623}\label{class_p_c_m_afea9a88fefc7deb2374698498b26a623}} 
+bool {\bfseries L\+L\+C\+Read\+Miss\+Latency\+Metrics\+Available} () const
+\item 
+\mbox{\Hypertarget{class_p_c_m_a9f46c4337260f8bd2a0239fa34d58ca7}\label{class_p_c_m_a9f46c4337260f8bd2a0239fa34d58ca7}} 
+bool {\bfseries has\+Beckton\+Uncore} () const
+\item 
+\mbox{\Hypertarget{class_p_c_m_abeaa5778a26d62b6b55a1696a2189ff1}\label{class_p_c_m_abeaa5778a26d62b6b55a1696a2189ff1}} 
+bool {\bfseries has\+P\+C\+I\+C\+F\+G\+Uncore} () const
+\item 
+\mbox{\Hypertarget{class_p_c_m_a757dea905954dc838707260c58d86e5f}\label{class_p_c_m_a757dea905954dc838707260c58d86e5f}} 
+bool {\bfseries has\+U\+PI} () const
+\item 
+\mbox{\Hypertarget{class_p_c_m_accac637ae1f85101df7a04883f09b2da}\label{class_p_c_m_accac637ae1f85101df7a04883f09b2da}} 
+const char $\ast$ {\bfseries x\+PI} () const
+\item 
+\mbox{\Hypertarget{class_p_c_m_a3fd40f38d7808f0500c89fd0fee37d7f}\label{class_p_c_m_a3fd40f38d7808f0500c89fd0fee37d7f}} 
+bool {\bfseries supports\+H\+LE} () const
+\item 
+\mbox{\Hypertarget{class_p_c_m_af716484d0216f34fc2012aa9287dd48f}\label{class_p_c_m_af716484d0216f34fc2012aa9287dd48f}} 
+bool {\bfseries supports\+R\+TM} () const
+\item 
+\mbox{\Hypertarget{class_p_c_m_a7f5aaa92b67a86c6e31e42a7ff072132}\label{class_p_c_m_a7f5aaa92b67a86c6e31e42a7ff072132}} 
+bool {\bfseries use\+Skylake\+Events} () const
+\item 
+\mbox{\Hypertarget{class_p_c_m_a27c442047ee84f0807ab61b81f9a7f1a}\label{class_p_c_m_a27c442047ee84f0807ab61b81f9a7f1a}} 
+double {\bfseries get\+Bytes\+Per\+Flit} () const
+\item 
+\mbox{\Hypertarget{class_p_c_m_a579b94eed3d9bfa6a707bee9be0edf86}\label{class_p_c_m_a579b94eed3d9bfa6a707bee9be0edf86}} 
+double {\bfseries get\+Data\+Bytes\+Per\+Flit} () const
+\item 
+\mbox{\Hypertarget{class_p_c_m_a03d9964b35c963041e923523bebbefdd}\label{class_p_c_m_a03d9964b35c963041e923523bebbefdd}} 
+double {\bfseries get\+Bytes\+Per\+Link\+Cycle} () const
+\item 
+\mbox{\Hypertarget{class_p_c_m_af809894fbc9dda902300016cd4f4ad7b}\label{class_p_c_m_af809894fbc9dda902300016cd4f4ad7b}} 
+double {\bfseries get\+Bytes\+Per\+Link\+Transfer} () const
+\item 
+void \mbox{\hyperlink{class_p_c_m_aab6624cfd942b9727136dc59a2c7df87}{setup\+Custom\+Core\+Events\+For\+Numa}} (\mbox{\hyperlink{struct_p_c_m_1_1_extended_custom_core_event_description}{P\+C\+M\+::\+Extended\+Custom\+Core\+Event\+Description}} \&conf) const
+\begin{DoxyCompactList}\small\item\em Setup \mbox{\hyperlink{struct_p_c_m_1_1_extended_custom_core_event_description}{Extended\+Custom\+Core\+Event\+Description}} object to read offcore (numa) counters for each processor type. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_p_c_m_a384a9b89191d22000c06cb821831da25}\label{class_p_c_m_a384a9b89191d22000c06cb821831da25}} 
+{\bfseries P\+C\+M\+\_\+\+G\+E\+N\+E\+R\+A\+T\+E\+\_\+\+M\+E\+T\+R\+I\+C\+\_\+\+A\+V\+A\+I\+L\+A\+B\+L\+E\+\_\+\+F\+U\+N\+C\+T\+I\+ON} (Cycles\+Lost\+Due\+L3\+Cache\+Misses\+Available) P\+C\+M\+\_\+\+G\+E\+N\+E\+R\+A\+T\+E\+\_\+\+M\+E\+T\+R\+I\+C\+\_\+\+A\+V\+A\+I\+L\+A\+B\+L\+E\+\_\+\+F\+U\+N\+C\+T\+I\+ON(Cycles\+Lost\+Due\+L2\+Cache\+Misses\+Available) bool is\+Active\+Relative\+Frequency\+Available() const
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{class_p_c_m}{P\+CM}} $\ast$ \mbox{\hyperlink{class_p_c_m_a155611028fb95409625e44784f7b4c7b}{get\+Instance}} ()
+\begin{DoxyCompactList}\small\item\em Returns \mbox{\hyperlink{class_p_c_m}{P\+CM}} object. \end{DoxyCompactList}\item 
+static bool \mbox{\hyperlink{class_p_c_m_a5e4cabfe4223f1d2e7e1e0da8b1179b3}{init\+Win\+Ring0\+Lib}} ()
+\begin{DoxyCompactList}\small\item\em Loads and initializes Winring0 third party library for access to processor model specific and P\+CI configuration registers. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_p_c_m_a3279d88bbd5c2eab06c9c6cb6248c3c7}\label{class_p_c_m_a3279d88bbd5c2eab06c9c6cb6248c3c7}} 
+static std\+::string \mbox{\hyperlink{class_p_c_m_a3279d88bbd5c2eab06c9c6cb6248c3c7}{get\+C\+P\+U\+Brand\+String}} ()
+\begin{DoxyCompactList}\small\item\em Get Brand string of processor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_p_c_m_aafe68963c6367e5cf69d7800b4ab4f16}\label{class_p_c_m_aafe68963c6367e5cf69d7800b4ab4f16}} 
+static double {\bfseries get\+Bytes\+Per\+Flit} (int32 cpu\+\_\+model\+\_\+)
+\item 
+\mbox{\Hypertarget{class_p_c_m_a18864560cbdfe1b91d6a0157f34503df}\label{class_p_c_m_a18864560cbdfe1b91d6a0157f34503df}} 
+static double {\bfseries get\+Data\+Bytes\+Per\+Flit} (int32 cpu\+\_\+model\+\_\+)
+\item 
+\mbox{\Hypertarget{class_p_c_m_ac403b42e61409ce5f0f630b41c5e2a32}\label{class_p_c_m_ac403b42e61409ce5f0f630b41c5e2a32}} 
+static double {\bfseries get\+Flits\+Per\+Link\+Cycle} (int32 cpu\+\_\+model\+\_\+)
+\item 
+\mbox{\Hypertarget{class_p_c_m_a6b4130371367f0ab31b05828ee0c02a0}\label{class_p_c_m_a6b4130371367f0ab31b05828ee0c02a0}} 
+static double {\bfseries get\+Bytes\+Per\+Link\+Cycle} (int32 cpu\+\_\+model\+\_\+)
+\item 
+\mbox{\Hypertarget{class_p_c_m_a746b80c6942509dec884cbaabf663a74}\label{class_p_c_m_a746b80c6942509dec884cbaabf663a74}} 
+static double {\bfseries get\+Link\+Transfers\+Per\+Link\+Cycle} ()
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_p_c_m_ae338fe587ce44ca6801b2f280dd87b25}\label{class_p_c_m_ae338fe587ce44ca6801b2f280dd87b25}} 
+class {\bfseries Basic\+Counter\+State}
+\item 
+\mbox{\Hypertarget{class_p_c_m_a50a2644b6d84c756de9746c1cf1ed68e}\label{class_p_c_m_a50a2644b6d84c756de9746c1cf1ed68e}} 
+class {\bfseries Uncore\+Counter\+State}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+C\+PU Performance Monitor. 
+
+This singleton object needs to be instantiated for each process before accessing counting and measuring routines 
+
+\subsection{Member Enumeration Documentation}
+\mbox{\Hypertarget{class_p_c_m_a88584813a3ef51376efeb22928764786}\label{class_p_c_m_a88584813a3ef51376efeb22928764786}} 
+\index{P\+CM@{P\+CM}!Program\+Mode@{Program\+Mode}}
+\index{Program\+Mode@{Program\+Mode}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{Program\+Mode}{ProgramMode}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{class_p_c_m_a88584813a3ef51376efeb22928764786}{P\+C\+M\+::\+Program\+Mode}}}
+
+
+
+Mode of programming (parameter in the \mbox{\hyperlink{class_p_c_m_abae9577a1a172c944d133bef10683825}{program()}} method) 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{D\+E\+F\+A\+U\+L\+T\+\_\+\+E\+V\+E\+N\+TS@{D\+E\+F\+A\+U\+L\+T\+\_\+\+E\+V\+E\+N\+TS}!P\+CM@{P\+CM}}\index{P\+CM@{P\+CM}!D\+E\+F\+A\+U\+L\+T\+\_\+\+E\+V\+E\+N\+TS@{D\+E\+F\+A\+U\+L\+T\+\_\+\+E\+V\+E\+N\+TS}}}\mbox{\Hypertarget{class_p_c_m_a88584813a3ef51376efeb22928764786a0e861144f482697cfa423b012ed42451}\label{class_p_c_m_a88584813a3ef51376efeb22928764786a0e861144f482697cfa423b012ed42451}} 
+D\+E\+F\+A\+U\+L\+T\+\_\+\+E\+V\+E\+N\+TS&Default choice of events, the additional parameter is not needed and ignored \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{C\+U\+S\+T\+O\+M\+\_\+\+C\+O\+R\+E\+\_\+\+E\+V\+E\+N\+TS@{C\+U\+S\+T\+O\+M\+\_\+\+C\+O\+R\+E\+\_\+\+E\+V\+E\+N\+TS}!P\+CM@{P\+CM}}\index{P\+CM@{P\+CM}!C\+U\+S\+T\+O\+M\+\_\+\+C\+O\+R\+E\+\_\+\+E\+V\+E\+N\+TS@{C\+U\+S\+T\+O\+M\+\_\+\+C\+O\+R\+E\+\_\+\+E\+V\+E\+N\+TS}}}\mbox{\Hypertarget{class_p_c_m_a88584813a3ef51376efeb22928764786ac092b2b5f351e33046b87e5cee31f38f}\label{class_p_c_m_a88584813a3ef51376efeb22928764786ac092b2b5f351e33046b87e5cee31f38f}} 
+C\+U\+S\+T\+O\+M\+\_\+\+C\+O\+R\+E\+\_\+\+E\+V\+E\+N\+TS&Custom set of core events specified in the parameter to the program method. The parameter must be a pointer to array of four {\ttfamily \mbox{\hyperlink{struct_p_c_m_1_1_custom_core_event_description}{Custom\+Core\+Event\+Description}}} values \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{E\+X\+T\+\_\+\+C\+U\+S\+T\+O\+M\+\_\+\+C\+O\+R\+E\+\_\+\+E\+V\+E\+N\+TS@{E\+X\+T\+\_\+\+C\+U\+S\+T\+O\+M\+\_\+\+C\+O\+R\+E\+\_\+\+E\+V\+E\+N\+TS}!P\+CM@{P\+CM}}\index{P\+CM@{P\+CM}!E\+X\+T\+\_\+\+C\+U\+S\+T\+O\+M\+\_\+\+C\+O\+R\+E\+\_\+\+E\+V\+E\+N\+TS@{E\+X\+T\+\_\+\+C\+U\+S\+T\+O\+M\+\_\+\+C\+O\+R\+E\+\_\+\+E\+V\+E\+N\+TS}}}\mbox{\Hypertarget{class_p_c_m_a88584813a3ef51376efeb22928764786a0f2ff80b85b8f9483c7f03544f73fcbd}\label{class_p_c_m_a88584813a3ef51376efeb22928764786a0f2ff80b85b8f9483c7f03544f73fcbd}} 
+E\+X\+T\+\_\+\+C\+U\+S\+T\+O\+M\+\_\+\+C\+O\+R\+E\+\_\+\+E\+V\+E\+N\+TS&Custom set of core events specified in the parameter to the program method. The parameter must be a pointer to a {\ttfamily \mbox{\hyperlink{struct_p_c_m_1_1_extended_custom_core_event_description}{Extended\+Custom\+Core\+Event\+Description}}} data structure \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{I\+N\+V\+A\+L\+I\+D\+\_\+\+M\+O\+DE@{I\+N\+V\+A\+L\+I\+D\+\_\+\+M\+O\+DE}!P\+CM@{P\+CM}}\index{P\+CM@{P\+CM}!I\+N\+V\+A\+L\+I\+D\+\_\+\+M\+O\+DE@{I\+N\+V\+A\+L\+I\+D\+\_\+\+M\+O\+DE}}}\mbox{\Hypertarget{class_p_c_m_a88584813a3ef51376efeb22928764786ad60e2f3b64e27eaaa84d2b07fea8e225}\label{class_p_c_m_a88584813a3ef51376efeb22928764786ad60e2f3b64e27eaaa84d2b07fea8e225}} 
+I\+N\+V\+A\+L\+I\+D\+\_\+\+M\+O\+DE&Non-\/programmed mode \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_p_c_m_ac0c8d3764ff95840ece17d632de4df9b}\label{class_p_c_m_ac0c8d3764ff95840ece17d632de4df9b}} 
+\index{P\+CM@{P\+CM}!cleanup@{cleanup}}
+\index{cleanup@{cleanup}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{cleanup()}{cleanup()}}
+{\footnotesize\ttfamily void P\+C\+M\+::cleanup (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Cleanups resources and stops performance counting. 
+
+One needs to call this method when your program finishes or/and you are not going to use the performance counting routines anymore. \mbox{\Hypertarget{class_p_c_m_af0648834f063a6bd2ea88c61a2ba286d}\label{class_p_c_m_af0648834f063a6bd2ea88c61a2ba286d}} 
+\index{P\+CM@{P\+CM}!Core\+Local\+Memory\+B\+W\+Metric\+Available@{Core\+Local\+Memory\+B\+W\+Metric\+Available}}
+\index{Core\+Local\+Memory\+B\+W\+Metric\+Available@{Core\+Local\+Memory\+B\+W\+Metric\+Available}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{Core\+Local\+Memory\+B\+W\+Metric\+Available()}{CoreLocalMemoryBWMetricAvailable()}}
+{\footnotesize\ttfamily bool P\+C\+M\+::\+Core\+Local\+Memory\+B\+W\+Metric\+Available (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+checks if local memory bandwidth monitoring present 
+
+\begin{DoxyReturn}{Returns}
+true or false 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_a9b2b73d2af7c5a851e5c43df37d7fdb2}\label{class_p_c_m_a9b2b73d2af7c5a851e5c43df37d7fdb2}} 
+\index{P\+CM@{P\+CM}!Core\+Remote\+Memory\+B\+W\+Metric\+Available@{Core\+Remote\+Memory\+B\+W\+Metric\+Available}}
+\index{Core\+Remote\+Memory\+B\+W\+Metric\+Available@{Core\+Remote\+Memory\+B\+W\+Metric\+Available}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{Core\+Remote\+Memory\+B\+W\+Metric\+Available()}{CoreRemoteMemoryBWMetricAvailable()}}
+{\footnotesize\ttfamily bool P\+C\+M\+::\+Core\+Remote\+Memory\+B\+W\+Metric\+Available (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+checks if total memory bandwidth monitoring present 
+
+\begin{DoxyReturn}{Returns}
+true or false 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_ade92d30321a659ca54d423eaf0e30e12}\label{class_p_c_m_ade92d30321a659ca54d423eaf0e30e12}} 
+\index{P\+CM@{P\+CM}!get\+All\+Counter\+States@{get\+All\+Counter\+States}}
+\index{get\+All\+Counter\+States@{get\+All\+Counter\+States}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{get\+All\+Counter\+States()}{getAllCounterStates()}}
+{\footnotesize\ttfamily void P\+C\+M\+::get\+All\+Counter\+States (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_system_counter_state}{System\+Counter\+State}} \&}]{system\+State,  }\item[{std\+::vector$<$ \mbox{\hyperlink{class_socket_counter_state}{Socket\+Counter\+State}} $>$ \&}]{socket\+States,  }\item[{std\+::vector$<$ \mbox{\hyperlink{class_core_counter_state}{Core\+Counter\+State}} $>$ \&}]{core\+States }\end{DoxyParamCaption})}
+
+
+
+Reads all counter states (including system, sockets and cores) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em system\+State} & system counter state (return parameter) \\
+\hline
+{\em socket\+States} & socket counter states (return parameter) \\
+\hline
+{\em core\+States} & core counter states (return parameter) \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_p_c_m_a4ed1c64e3cb00c76851e3373a1fa54a3}\label{class_p_c_m_a4ed1c64e3cb00c76851e3373a1fa54a3}} 
+\index{P\+CM@{P\+CM}!get\+Core\+Counter\+State@{get\+Core\+Counter\+State}}
+\index{get\+Core\+Counter\+State@{get\+Core\+Counter\+State}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{get\+Core\+Counter\+State()}{getCoreCounterState()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_core_counter_state}{Core\+Counter\+State}} P\+C\+M\+::get\+Core\+Counter\+State (\begin{DoxyParamCaption}\item[{uint32}]{core }\end{DoxyParamCaption})}
+
+
+
+Reads the counter state of a (logical) core. 
+
+Be aware that during the measurement other threads may be scheduled on the same core by the operating system (this is called context-\/switching). The performance events caused by these threads will be counted as well.
+
+
+\begin{DoxyParams}{Parameters}
+{\em core} & core id \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+State of counters in the core 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_a90eb072bebf4be22bce23d550983f6fe}\label{class_p_c_m_a90eb072bebf4be22bce23d550983f6fe}} 
+\index{P\+CM@{P\+CM}!get\+Core\+Id@{get\+Core\+Id}}
+\index{get\+Core\+Id@{get\+Core\+Id}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{get\+Core\+Id()}{getCoreId()}}
+{\footnotesize\ttfamily int32 P\+C\+M\+::get\+Core\+Id (\begin{DoxyParamCaption}\item[{uint32}]{os\+\_\+id }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Determines physical core of given processor ID within a socket. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em os\+\_\+id} & processor identifier \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+physical core identifier 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_a5f8c7d4c978238706fe74ec00c803f9a}\label{class_p_c_m_a5f8c7d4c978238706fe74ec00c803f9a}} 
+\index{P\+CM@{P\+CM}!get\+C\+P\+U\+Model@{get\+C\+P\+U\+Model}}
+\index{get\+C\+P\+U\+Model@{get\+C\+P\+U\+Model}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{get\+C\+P\+U\+Model()}{getCPUModel()}}
+{\footnotesize\ttfamily uint32 P\+C\+M\+::get\+C\+P\+U\+Model (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Reads C\+PU model id. 
+
+\begin{DoxyReturn}{Returns}
+C\+PU model ID 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_afcf71f98767227aa64821a715bfab099}\label{class_p_c_m_afcf71f98767227aa64821a715bfab099}} 
+\index{P\+CM@{P\+CM}!get\+C\+P\+U\+Stepping@{get\+C\+P\+U\+Stepping}}
+\index{get\+C\+P\+U\+Stepping@{get\+C\+P\+U\+Stepping}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{get\+C\+P\+U\+Stepping()}{getCPUStepping()}}
+{\footnotesize\ttfamily uint32 P\+C\+M\+::get\+C\+P\+U\+Stepping (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Reads C\+PU stepping id. 
+
+\begin{DoxyReturn}{Returns}
+C\+PU stepping ID 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_afbb527aac9b4a15b5437bbfc3111cdeb}\label{class_p_c_m_afbb527aac9b4a15b5437bbfc3111cdeb}} 
+\index{P\+CM@{P\+CM}!get\+Error\+Message@{get\+Error\+Message}}
+\index{get\+Error\+Message@{get\+Error\+Message}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{get\+Error\+Message()}{getErrorMessage()}}
+{\footnotesize\ttfamily const std\+::string\& P\+C\+M\+::get\+Error\+Message (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns the error message. 
+
+Call this when \mbox{\hyperlink{class_p_c_m_a56eedaa84893f72b1723f8d580ee3329}{good()}} returns false, otherwise return an empty string \mbox{\Hypertarget{class_p_c_m_a85e2036c24c34ab5eecce856382d19fb}\label{class_p_c_m_a85e2036c24c34ab5eecce856382d19fb}} 
+\index{P\+CM@{P\+CM}!get\+I\+I\+O\+Counter\+State@{get\+I\+I\+O\+Counter\+State}}
+\index{get\+I\+I\+O\+Counter\+State@{get\+I\+I\+O\+Counter\+State}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{get\+I\+I\+O\+Counter\+State()}{getIIOCounterState()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_simple_counter_state}{I\+I\+O\+Counter\+State}} P\+C\+M\+::get\+I\+I\+O\+Counter\+State (\begin{DoxyParamCaption}\item[{int}]{socket,  }\item[{int}]{I\+I\+O\+Stack,  }\item[{int}]{counter }\end{DoxyParamCaption})}
+
+
+
+Get the state of I\+IO counter. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em socket} & socket of the I\+IO stack \\
+\hline
+{\em I\+I\+O\+Stack} & id of the I\+IO stack \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+State of I\+IO counter 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_a25e8b223197728858a704d53b8ab5534}\label{class_p_c_m_a25e8b223197728858a704d53b8ab5534}} 
+\index{P\+CM@{P\+CM}!get\+I\+I\+O\+Counter\+States@{get\+I\+I\+O\+Counter\+States}}
+\index{get\+I\+I\+O\+Counter\+States@{get\+I\+I\+O\+Counter\+States}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{get\+I\+I\+O\+Counter\+States()}{getIIOCounterStates()}}
+{\footnotesize\ttfamily void P\+C\+M\+::get\+I\+I\+O\+Counter\+States (\begin{DoxyParamCaption}\item[{int}]{socket,  }\item[{int}]{I\+I\+O\+Stack,  }\item[{\mbox{\hyperlink{class_simple_counter_state}{I\+I\+O\+Counter\+State}} $\ast$}]{result }\end{DoxyParamCaption})}
+
+
+
+Get the states of the four I\+IO counters in bulk (faster than four single reads) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em socket} & socket of the I\+IO stack \\
+\hline
+{\em I\+I\+O\+Stack} & id of the I\+IO stack \\
+\hline
+{\em result} & states of I\+IO counters (array of four I\+I\+O\+Counter\+State elements) \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_p_c_m_a155611028fb95409625e44784f7b4c7b}\label{class_p_c_m_a155611028fb95409625e44784f7b4c7b}} 
+\index{P\+CM@{P\+CM}!get\+Instance@{get\+Instance}}
+\index{get\+Instance@{get\+Instance}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{get\+Instance()}{getInstance()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_p_c_m}{P\+CM}} $\ast$ P\+C\+M\+::get\+Instance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Returns \mbox{\hyperlink{class_p_c_m}{P\+CM}} object. 
+
+Returns \mbox{\hyperlink{class_p_c_m}{P\+CM}} object. If the \mbox{\hyperlink{class_p_c_m}{P\+CM}} has not been created before than an instance is created. \mbox{\hyperlink{class_p_c_m}{P\+CM}} is a singleton.
+
+\begin{DoxyReturn}{Returns}
+Pointer to \mbox{\hyperlink{class_p_c_m}{P\+CM}} object 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_a2cdc063d0b3fdf7c6b81ef4e5b4c341e}\label{class_p_c_m_a2cdc063d0b3fdf7c6b81ef4e5b4c341e}} 
+\index{P\+CM@{P\+CM}!get\+L3\+Scaling\+Factor@{get\+L3\+Scaling\+Factor}}
+\index{get\+L3\+Scaling\+Factor@{get\+L3\+Scaling\+Factor}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{get\+L3\+Scaling\+Factor()}{getL3ScalingFactor()}}
+{\footnotesize\ttfamily uint32 P\+C\+M\+::get\+L3\+Scaling\+Factor (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+runs C\+P\+U\+I\+D.\+0x\+F.\+0x01 to get the L3 up scaling factor to calculate L3 Occupancy Scaling factor is returned in E\+BX register after running the C\+PU instruction 
+
+\begin{DoxyReturn}{Returns}
+L3 up scaling factor 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_a17084236c1d744a92adec4205415e0ad}\label{class_p_c_m_a17084236c1d744a92adec4205415e0ad}} 
+\index{P\+CM@{P\+CM}!get\+Max\+I\+PC@{get\+Max\+I\+PC}}
+\index{get\+Max\+I\+PC@{get\+Max\+I\+PC}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{get\+Max\+I\+P\+C()}{getMaxIPC()}}
+{\footnotesize\ttfamily uint32 P\+C\+M\+::get\+Max\+I\+PC (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns the max number of instructions per cycle. 
+
+\begin{DoxyReturn}{Returns}
+max number of instructions per cycle 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_a0e1151b2a215849ab67ab2b0056e0e0f}\label{class_p_c_m_a0e1151b2a215849ab67ab2b0056e0e0f}} 
+\index{P\+CM@{P\+CM}!get\+Max\+R\+M\+ID@{get\+Max\+R\+M\+ID}}
+\index{get\+Max\+R\+M\+ID@{get\+Max\+R\+M\+ID}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{get\+Max\+R\+M\+I\+D()}{getMaxRMID()}}
+{\footnotesize\ttfamily unsigned P\+C\+M\+::get\+Max\+R\+M\+ID (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+returns the max number of R\+M\+ID supported by socket 
+
+\begin{DoxyReturn}{Returns}
+maximum number of R\+M\+ID supported by socket 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_a83cd795814da47148632b24e485e6075}\label{class_p_c_m_a83cd795814da47148632b24e485e6075}} 
+\index{P\+CM@{P\+CM}!get\+Nominal\+Frequency@{get\+Nominal\+Frequency}}
+\index{get\+Nominal\+Frequency@{get\+Nominal\+Frequency}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{get\+Nominal\+Frequency()}{getNominalFrequency()}}
+{\footnotesize\ttfamily uint64 P\+C\+M\+::get\+Nominal\+Frequency (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Reads the nominal core frequency. 
+
+\begin{DoxyReturn}{Returns}
+Nominal frequency in Hz 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_a18d1666c08f014378cf49c707fc978d1}\label{class_p_c_m_a18d1666c08f014378cf49c707fc978d1}} 
+\index{P\+CM@{P\+CM}!get\+Num\+Cores@{get\+Num\+Cores}}
+\index{get\+Num\+Cores@{get\+Num\+Cores}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{get\+Num\+Cores()}{getNumCores()}}
+{\footnotesize\ttfamily uint32 P\+C\+M\+::get\+Num\+Cores (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Reads number of logical cores in the system. 
+
+\begin{DoxyReturn}{Returns}
+Number of logical cores in the system 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_a30210eb2ddc9eee6bfe1db4b159f922b}\label{class_p_c_m_a30210eb2ddc9eee6bfe1db4b159f922b}} 
+\index{P\+CM@{P\+CM}!get\+Num\+Online\+Cores@{get\+Num\+Online\+Cores}}
+\index{get\+Num\+Online\+Cores@{get\+Num\+Online\+Cores}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{get\+Num\+Online\+Cores()}{getNumOnlineCores()}}
+{\footnotesize\ttfamily uint32 P\+C\+M\+::get\+Num\+Online\+Cores (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Reads number of online logical cores in the system. 
+
+\begin{DoxyReturn}{Returns}
+Number of online logical cores in the system 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_a9b3c25455743ff4475b237d7c338d4a2}\label{class_p_c_m_a9b3c25455743ff4475b237d7c338d4a2}} 
+\index{P\+CM@{P\+CM}!get\+Num\+Online\+Sockets@{get\+Num\+Online\+Sockets}}
+\index{get\+Num\+Online\+Sockets@{get\+Num\+Online\+Sockets}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{get\+Num\+Online\+Sockets()}{getNumOnlineSockets()}}
+{\footnotesize\ttfamily uint32 P\+C\+M\+::get\+Num\+Online\+Sockets (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Reads number of online sockets (C\+P\+Us) in the system. 
+
+\begin{DoxyReturn}{Returns}
+Number of online sockets in the system 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_a7d4964e57e7692b5cc67d8b5056e5299}\label{class_p_c_m_a7d4964e57e7692b5cc67d8b5056e5299}} 
+\index{P\+CM@{P\+CM}!get\+Num\+Sockets@{get\+Num\+Sockets}}
+\index{get\+Num\+Sockets@{get\+Num\+Sockets}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{get\+Num\+Sockets()}{getNumSockets()}}
+{\footnotesize\ttfamily uint32 P\+C\+M\+::get\+Num\+Sockets (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Reads number of sockets (C\+P\+Us) in the system. 
+
+\begin{DoxyReturn}{Returns}
+Number of sockets in the system 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_ade53fbb558df9f80eac56435f2bd0e55}\label{class_p_c_m_ade53fbb558df9f80eac56435f2bd0e55}} 
+\index{P\+CM@{P\+CM}!get\+Original\+C\+P\+U\+Model@{get\+Original\+C\+P\+U\+Model}}
+\index{get\+Original\+C\+P\+U\+Model@{get\+Original\+C\+P\+U\+Model}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{get\+Original\+C\+P\+U\+Model()}{getOriginalCPUModel()}}
+{\footnotesize\ttfamily uint32 P\+C\+M\+::get\+Original\+C\+P\+U\+Model (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Reads original C\+PU model id. 
+
+\begin{DoxyReturn}{Returns}
+C\+PU model ID 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_a3b1b549672af4c14c00eb7d461c87ac4}\label{class_p_c_m_a3b1b549672af4c14c00eb7d461c87ac4}} 
+\index{P\+CM@{P\+CM}!get\+P\+C\+Ie\+Counter\+State@{get\+P\+C\+Ie\+Counter\+State}}
+\index{get\+P\+C\+Ie\+Counter\+State@{get\+P\+C\+Ie\+Counter\+State}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{get\+P\+C\+Ie\+Counter\+State()}{getPCIeCounterState()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_simple_counter_state}{P\+C\+Ie\+Counter\+State}} P\+C\+M\+::get\+P\+C\+Ie\+Counter\+State (\begin{DoxyParamCaption}\item[{const uint32}]{socket\+\_\+ }\end{DoxyParamCaption})}
+
+
+
+Get the state of P\+C\+Ie \mbox{\hyperlink{structcounter}{counter(s)}} 
+
+
+\begin{DoxyParams}{Parameters}
+{\em socket\+\_\+} & socket of the P\+C\+Ie controller \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+State of P\+C\+Ie \mbox{\hyperlink{structcounter}{counter(s)}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_a9bfa5b2f12f2e98382f9d8ddbc0c02e1}\label{class_p_c_m_a9bfa5b2f12f2e98382f9d8ddbc0c02e1}} 
+\index{P\+CM@{P\+CM}!get\+Q\+P\+I\+Link\+Speed@{get\+Q\+P\+I\+Link\+Speed}}
+\index{get\+Q\+P\+I\+Link\+Speed@{get\+Q\+P\+I\+Link\+Speed}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{get\+Q\+P\+I\+Link\+Speed()}{getQPILinkSpeed()}}
+{\footnotesize\ttfamily uint64 P\+C\+M\+::get\+Q\+P\+I\+Link\+Speed (\begin{DoxyParamCaption}\item[{uint32}]{socket\+Nr,  }\item[{uint32}]{link\+Nr }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Return Q\+PI Link Speed in G\+Bytes/second. 
+
+\begin{DoxyWarning}{Warning}
+Works only for Nehalem-\/\+EX (Xeon 7500) and Xeon E7 and E5 processors 
+\end{DoxyWarning}
+\begin{DoxyReturn}{Returns}
+Q\+PI Link Speed in G\+Bytes/second 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_af0f62775b214218edf64a3f68df6c932}\label{class_p_c_m_af0f62775b214218edf64a3f68df6c932}} 
+\index{P\+CM@{P\+CM}!get\+Q\+P\+I\+Links\+Per\+Socket@{get\+Q\+P\+I\+Links\+Per\+Socket}}
+\index{get\+Q\+P\+I\+Links\+Per\+Socket@{get\+Q\+P\+I\+Links\+Per\+Socket}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{get\+Q\+P\+I\+Links\+Per\+Socket()}{getQPILinksPerSocket()}}
+{\footnotesize\ttfamily uint64 P\+C\+M\+::get\+Q\+P\+I\+Links\+Per\+Socket (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns the number of Intel(r) Quick Path Interconnect(tm) links per socket. 
+
+\begin{DoxyReturn}{Returns}
+number of Q\+PI links per socket 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_a9db0d472d9cdc0aa3c6db8ed7bb38f77}\label{class_p_c_m_a9db0d472d9cdc0aa3c6db8ed7bb38f77}} 
+\index{P\+CM@{P\+CM}!get\+Server\+Uncore\+Power\+State@{get\+Server\+Uncore\+Power\+State}}
+\index{get\+Server\+Uncore\+Power\+State@{get\+Server\+Uncore\+Power\+State}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{get\+Server\+Uncore\+Power\+State()}{getServerUncorePowerState()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_server_uncore_power_state}{Server\+Uncore\+Power\+State}} P\+C\+M\+::get\+Server\+Uncore\+Power\+State (\begin{DoxyParamCaption}\item[{uint32}]{socket }\end{DoxyParamCaption})}
+
+
+
+Reads the power/energy counter state of a socket (works only on microarchitecture codename Sandy\+Bridge-\/\+EP) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em socket} & socket id \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+State of power counters in the socket 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_a27548ccdca19f180dcc8acd2ca484669}\label{class_p_c_m_a27548ccdca19f180dcc8acd2ca484669}} 
+\index{P\+CM@{P\+CM}!get\+S\+MT@{get\+S\+MT}}
+\index{get\+S\+MT@{get\+S\+MT}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{get\+S\+M\+T()}{getSMT()}}
+{\footnotesize\ttfamily bool P\+C\+M\+::get\+S\+MT (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Checks if S\+MT (Hyper\+Threading) is enabled. 
+
+\begin{DoxyReturn}{Returns}
+true iff S\+MT (Hyper\+Threading) is enabled. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_ade00dbbd2a71ec32ae6747bfca66cd3c}\label{class_p_c_m_ade00dbbd2a71ec32ae6747bfca66cd3c}} 
+\index{P\+CM@{P\+CM}!get\+Socket\+Counter\+State@{get\+Socket\+Counter\+State}}
+\index{get\+Socket\+Counter\+State@{get\+Socket\+Counter\+State}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{get\+Socket\+Counter\+State()}{getSocketCounterState()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_socket_counter_state}{Socket\+Counter\+State}} P\+C\+M\+::get\+Socket\+Counter\+State (\begin{DoxyParamCaption}\item[{uint32}]{socket }\end{DoxyParamCaption})}
+
+
+
+Reads the counter state of a socket. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em socket} & socket id \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+State of counters in the socket 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_a015a39143b7bb87b41dc34b43a926029}\label{class_p_c_m_a015a39143b7bb87b41dc34b43a926029}} 
+\index{P\+CM@{P\+CM}!get\+Socket\+Id@{get\+Socket\+Id}}
+\index{get\+Socket\+Id@{get\+Socket\+Id}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{get\+Socket\+Id()}{getSocketId()}}
+{\footnotesize\ttfamily int32 P\+C\+M\+::get\+Socket\+Id (\begin{DoxyParamCaption}\item[{uint32}]{core\+\_\+id }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Determines socket of given core. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em core\+\_\+id} & core identifier \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+socket identifier 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_a603bf92fb67f294f5bc59185bc5c89cb}\label{class_p_c_m_a603bf92fb67f294f5bc59185bc5c89cb}} 
+\index{P\+CM@{P\+CM}!get\+System\+Counter\+State@{get\+System\+Counter\+State}}
+\index{get\+System\+Counter\+State@{get\+System\+Counter\+State}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{get\+System\+Counter\+State()}{getSystemCounterState()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_system_counter_state}{System\+Counter\+State}} P\+C\+M\+::get\+System\+Counter\+State (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Reads the counter state of the system. 
+
+System consists of several sockets (C\+P\+Us). Socket has a C\+PU in it. Socket (C\+PU) consists of several (logical) cores.
+
+\begin{DoxyReturn}{Returns}
+State of counters in the entire system 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_a728347cf85816c42833a1a8a1f14b861}\label{class_p_c_m_a728347cf85816c42833a1a8a1f14b861}} 
+\index{P\+CM@{P\+CM}!get\+Thread\+Id@{get\+Thread\+Id}}
+\index{get\+Thread\+Id@{get\+Thread\+Id}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{get\+Thread\+Id()}{getThreadId()}}
+{\footnotesize\ttfamily int32 P\+C\+M\+::get\+Thread\+Id (\begin{DoxyParamCaption}\item[{uint32}]{os\+\_\+id }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Determines physical thread of given processor ID within a core. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em os\+\_\+id} & processor identifier \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+physical thread identifier 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_a850a9aeee162133adbc4b5d8df679639}\label{class_p_c_m_a850a9aeee162133adbc4b5d8df679639}} 
+\index{P\+CM@{P\+CM}!get\+Threads\+Per\+Core@{get\+Threads\+Per\+Core}}
+\index{get\+Threads\+Per\+Core@{get\+Threads\+Per\+Core}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{get\+Threads\+Per\+Core()}{getThreadsPerCore()}}
+{\footnotesize\ttfamily uint32 P\+C\+M\+::get\+Threads\+Per\+Core (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Reads how many hardware threads has a physical core \char`\"{}\+Hardware thread\char`\"{} is a logical core in a different terminology. If Intel(r) Hyperthreading(tm) is enabled then this function returns 2. 
+
+\begin{DoxyReturn}{Returns}
+Number of hardware threads per physical core 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_a794f5852662a2827b34eb16025564c70}\label{class_p_c_m_a794f5852662a2827b34eb16025564c70}} 
+\index{P\+CM@{P\+CM}!get\+Tick\+Count@{get\+Tick\+Count}}
+\index{get\+Tick\+Count@{get\+Tick\+Count}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{get\+Tick\+Count()}{getTickCount()}}
+{\footnotesize\ttfamily uint64 P\+C\+M\+::get\+Tick\+Count (\begin{DoxyParamCaption}\item[{uint64}]{multiplier = {\ttfamily 1000},  }\item[{uint32}]{core = {\ttfamily 0} }\end{DoxyParamCaption})}
+
+
+
+Return T\+SC timer value in time units. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em multiplier} & use 1 for seconds, 1000 for ms, 1000000 for mks, etc (default is 1000\+: ms) \\
+\hline
+{\em core} & core to read on-\/chip T\+SC value (default is 0) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+time counter value 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_a0d5153c7ec05003da7d20aeea737113e}\label{class_p_c_m_a0d5153c7ec05003da7d20aeea737113e}} 
+\index{P\+CM@{P\+CM}!get\+Tick\+Count\+R\+D\+T\+S\+CP@{get\+Tick\+Count\+R\+D\+T\+S\+CP}}
+\index{get\+Tick\+Count\+R\+D\+T\+S\+CP@{get\+Tick\+Count\+R\+D\+T\+S\+CP}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{get\+Tick\+Count\+R\+D\+T\+S\+C\+P()}{getTickCountRDTSCP()}}
+{\footnotesize\ttfamily uint64 P\+C\+M\+::get\+Tick\+Count\+R\+D\+T\+S\+CP (\begin{DoxyParamCaption}\item[{uint64}]{multiplier = {\ttfamily 1000} }\end{DoxyParamCaption})}
+
+
+
+Return T\+SC timer value in time units using rdtscp instruction from current core. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em multiplier} & use 1 for seconds, 1000 for ms, 1000000 for mks, etc (default is 1000\+: ms) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyWarning}{Warning}
+Processor support is required bit 27 of cpuid E\+DX must be set, for Windows, Visual Studio 2010 is required 
+\end{DoxyWarning}
+\begin{DoxyReturn}{Returns}
+time counter value 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_a2b4433865e00da98c4fa588cb1be913c}\label{class_p_c_m_a2b4433865e00da98c4fa588cb1be913c}} 
+\index{P\+CM@{P\+CM}!get\+Tile\+Id@{get\+Tile\+Id}}
+\index{get\+Tile\+Id@{get\+Tile\+Id}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{get\+Tile\+Id()}{getTileId()}}
+{\footnotesize\ttfamily int32 P\+C\+M\+::get\+Tile\+Id (\begin{DoxyParamCaption}\item[{uint32}]{os\+\_\+id }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Determines physical tile (cores sharing L2 cache) of given processor ID. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em os\+\_\+id} & processor identifier \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+physical tile identifier 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_a4c6bf89a6b0ab826a251a231ff1602ad}\label{class_p_c_m_a4c6bf89a6b0ab826a251a231ff1602ad}} 
+\index{P\+CM@{P\+CM}!get\+U\+Arch\+Codename@{get\+U\+Arch\+Codename}}
+\index{get\+U\+Arch\+Codename@{get\+U\+Arch\+Codename}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{get\+U\+Arch\+Codename()}{getUArchCodename()}}
+{\footnotesize\ttfamily const char $\ast$ P\+C\+M\+::get\+U\+Arch\+Codename (\begin{DoxyParamCaption}\item[{int32}]{cpu\+\_\+model\+\_\+ = {\ttfamily -\/1} }\end{DoxyParamCaption}) const}
+
+
+
+Get a string describing the codename of the processor microarchitecture. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cpu\+\_\+model\+\_\+} & cpu model (if no parameter provided the codename of the detected C\+PU is returned) \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_p_c_m_a9f1ffc2220b041f739a672b5be82361f}\label{class_p_c_m_a9f1ffc2220b041f739a672b5be82361f}} 
+\index{P\+CM@{P\+CM}!get\+Uncore\+Counter\+States@{get\+Uncore\+Counter\+States}}
+\index{get\+Uncore\+Counter\+States@{get\+Uncore\+Counter\+States}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{get\+Uncore\+Counter\+States()}{getUncoreCounterStates()}}
+{\footnotesize\ttfamily void P\+C\+M\+::get\+Uncore\+Counter\+States (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_system_counter_state}{System\+Counter\+State}} \&}]{system\+State,  }\item[{std\+::vector$<$ \mbox{\hyperlink{class_socket_counter_state}{Socket\+Counter\+State}} $>$ \&}]{socket\+States }\end{DoxyParamCaption})}
+
+
+
+Reads uncore counter states (including system and sockets) but no core counters. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em system\+State} & system counter state (return parameter) \\
+\hline
+{\em socket\+States} & socket counter states (return parameter) \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_p_c_m_a56eedaa84893f72b1723f8d580ee3329}\label{class_p_c_m_a56eedaa84893f72b1723f8d580ee3329}} 
+\index{P\+CM@{P\+CM}!good@{good}}
+\index{good@{good}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{good()}{good()}}
+{\footnotesize\ttfamily bool P\+C\+M\+::good (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Checks the status of \mbox{\hyperlink{class_p_c_m}{P\+CM}} object. 
+
+Call this method to check if \mbox{\hyperlink{class_p_c_m}{P\+CM}} gained access to model specific registers. The method is deprecated, see program error code instead.
+
+\begin{DoxyReturn}{Returns}
+true iff access to model specific registers works without problems 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_a5e4cabfe4223f1d2e7e1e0da8b1179b3}\label{class_p_c_m_a5e4cabfe4223f1d2e7e1e0da8b1179b3}} 
+\index{P\+CM@{P\+CM}!init\+Win\+Ring0\+Lib@{init\+Win\+Ring0\+Lib}}
+\index{init\+Win\+Ring0\+Lib@{init\+Win\+Ring0\+Lib}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{init\+Win\+Ring0\+Lib()}{initWinRing0Lib()}}
+{\footnotesize\ttfamily static bool P\+C\+M\+::init\+Win\+Ring0\+Lib (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Loads and initializes Winring0 third party library for access to processor model specific and P\+CI configuration registers. 
+
+\begin{DoxyReturn}{Returns}
+returns true in case of success 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_aabb7e0514fd741966fec461ccd9427f3}\label{class_p_c_m_aabb7e0514fd741966fec461ccd9427f3}} 
+\index{P\+CM@{P\+CM}!is\+Core\+Online@{is\+Core\+Online}}
+\index{is\+Core\+Online@{is\+Core\+Online}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{is\+Core\+Online()}{isCoreOnline()}}
+{\footnotesize\ttfamily bool P\+C\+M\+::is\+Core\+Online (\begin{DoxyParamCaption}\item[{int32}]{os\+\_\+core\+\_\+id }\end{DoxyParamCaption}) const}
+
+
+
+Return true if the core in online. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em os\+\_\+core\+\_\+id} & OS core id \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_p_c_m_a67f21fcae47cfb6153055bf922c8a981}\label{class_p_c_m_a67f21fcae47cfb6153055bf922c8a981}} 
+\index{P\+CM@{P\+CM}!is\+Socket\+Online@{is\+Socket\+Online}}
+\index{is\+Socket\+Online@{is\+Socket\+Online}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{is\+Socket\+Online()}{isSocketOnline()}}
+{\footnotesize\ttfamily bool P\+C\+M\+::is\+Socket\+Online (\begin{DoxyParamCaption}\item[{int32}]{socket\+\_\+id }\end{DoxyParamCaption}) const}
+
+
+
+Return true if the socket in online. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em socket\+\_\+id} & OS socket id \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_p_c_m_aab16be3893549f5f2d782071aeaead5f}\label{class_p_c_m_aab16be3893549f5f2d782071aeaead5f}} 
+\index{P\+CM@{P\+CM}!is\+Some\+Core\+Offlined@{is\+Some\+Core\+Offlined}}
+\index{is\+Some\+Core\+Offlined@{is\+Some\+Core\+Offlined}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{is\+Some\+Core\+Offlined()}{isSomeCoreOfflined()}}
+{\footnotesize\ttfamily bool P\+C\+M\+::is\+Some\+Core\+Offlined (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+runs C\+P\+U\+I\+D.\+0x\+B.\+0x01 to get maximum logical cores (including S\+MT) per socket. max\+\_\+lcores\+\_\+per\+\_\+socket is returned in E\+BX\mbox{[}15\+:0\mbox{]}. Compare this value with number of cores per socket detected in the system to see if some cores are offlined 
+
+\begin{DoxyReturn}{Returns}
+true iff max\+\_\+lcores\+\_\+per\+\_\+socket == number of cores per socket detected 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_a6a6580b296a5a0236c9e00956988c0fc}\label{class_p_c_m_a6a6580b296a5a0236c9e00956988c0fc}} 
+\index{P\+CM@{P\+CM}!L3\+Cache\+Occupancy\+Metric\+Available@{L3\+Cache\+Occupancy\+Metric\+Available}}
+\index{L3\+Cache\+Occupancy\+Metric\+Available@{L3\+Cache\+Occupancy\+Metric\+Available}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{L3\+Cache\+Occupancy\+Metric\+Available()}{L3CacheOccupancyMetricAvailable()}}
+{\footnotesize\ttfamily bool P\+C\+M\+::\+L3\+Cache\+Occupancy\+Metric\+Available (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+checks if L3 cache monitoring present 
+
+\begin{DoxyReturn}{Returns}
+true or false 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_ab1be879d2c871816ddbcfa30bb58a3e7}\label{class_p_c_m_ab1be879d2c871816ddbcfa30bb58a3e7}} 
+\index{P\+CM@{P\+CM}!L3\+Q\+O\+S\+Metric\+Available@{L3\+Q\+O\+S\+Metric\+Available}}
+\index{L3\+Q\+O\+S\+Metric\+Available@{L3\+Q\+O\+S\+Metric\+Available}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{L3\+Q\+O\+S\+Metric\+Available()}{L3QOSMetricAvailable()}}
+{\footnotesize\ttfamily bool P\+C\+M\+::\+L3\+Q\+O\+S\+Metric\+Available (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+checks L3 cache support for Q\+OS present 
+
+\begin{DoxyReturn}{Returns}
+true or false 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_abae9577a1a172c944d133bef10683825}\label{class_p_c_m_abae9577a1a172c944d133bef10683825}} 
+\index{P\+CM@{P\+CM}!program@{program}}
+\index{program@{program}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{program()}{program()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_p_c_m_abebf5f22d794719dfc49155741e264e5}{P\+C\+M\+::\+Error\+Code}} P\+C\+M\+::program (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_p_c_m_a88584813a3ef51376efeb22928764786}{Program\+Mode}}}]{mode\+\_\+ = {\ttfamily \mbox{\hyperlink{class_p_c_m_a88584813a3ef51376efeb22928764786a0e861144f482697cfa423b012ed42451}{D\+E\+F\+A\+U\+L\+T\+\_\+\+E\+V\+E\+N\+TS}}},  }\item[{const void $\ast$}]{parameter\+\_\+ = {\ttfamily NULL} }\end{DoxyParamCaption})}
+
+
+
+Programs performance counters. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mode\+\_\+} & mode of programming, see Program\+Mode definition \\
+\hline
+{\em parameter\+\_\+} & optional parameter for some of programming modes \begin{DoxyVerb}    Call this method before you start using the performance counting routines.
+\end{DoxyVerb}
+\\
+\hline
+\end{DoxyParams}
+\begin{DoxyWarning}{Warning}
+Using this routines with other tools that {\itshape program} Performance Monitoring Units (P\+M\+Us) on C\+P\+Us is not recommended because P\+MU can not be shared. Tools that are known to program P\+M\+Us\+: Intel(r) V\+Tune(tm), Intel(r) Performance Tuning Utility (P\+TU). This code may make V\+Tune or P\+TU measurements invalid. V\+Tune or P\+TU measurement may make measurement with this code invalid. Please enable either usage of these routines or V\+Tune/\+P\+T\+U/etc. 
+\end{DoxyWarning}
+\mbox{\Hypertarget{class_p_c_m_ac75fcae283d8c6f0ef7085a913685f0b}\label{class_p_c_m_ac75fcae283d8c6f0ef7085a913685f0b}} 
+\index{P\+CM@{P\+CM}!program\+I\+I\+O\+Counters@{program\+I\+I\+O\+Counters}}
+\index{program\+I\+I\+O\+Counters@{program\+I\+I\+O\+Counters}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{program\+I\+I\+O\+Counters()}{programIIOCounters()}}
+{\footnotesize\ttfamily void P\+C\+M\+::program\+I\+I\+O\+Counters (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_i_i_o_p_m_u_c_n_t_c_t_l_register}{I\+I\+O\+P\+M\+U\+C\+N\+T\+C\+T\+L\+Register}}}]{raw\+Events\mbox{[}4\mbox{]},  }\item[{int}]{I\+I\+O\+Stack = {\ttfamily -\/1} }\end{DoxyParamCaption})}
+
+
+
+Program uncore I\+IO events. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em raw\+Events} & events to program (raw format) \\
+\hline
+{\em I\+I\+O\+Stack} & id of the I\+IO stack to program (-\/1 for all, if parameter omitted) \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_p_c_m_af1b4ebd0ddc3ea32c04cb410f1eb48ad}\label{class_p_c_m_af1b4ebd0ddc3ea32c04cb410f1eb48ad}} 
+\index{P\+CM@{P\+CM}!program\+P\+C\+Ie\+Counters@{program\+P\+C\+Ie\+Counters}}
+\index{program\+P\+C\+Ie\+Counters@{program\+P\+C\+Ie\+Counters}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{program\+P\+C\+Ie\+Counters()}{programPCIeCounters()}}
+{\footnotesize\ttfamily void P\+C\+M\+::program\+P\+C\+Ie\+Counters (\begin{DoxyParamCaption}\item[{const P\+C\+Ie\+Event\+Code}]{event\+\_\+,  }\item[{const uint32}]{tid\+\_\+ = {\ttfamily 0},  }\item[{const uint32}]{miss\+\_\+ = {\ttfamily 0},  }\item[{const uint32}]{q\+\_\+ = {\ttfamily 0},  }\item[{const uint32}]{nc\+\_\+ = {\ttfamily 0} }\end{DoxyParamCaption})}
+
+
+
+Program uncore P\+C\+Ie monitoring event(s) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em event\+\_\+} & a P\+C\+Ie event to monitor \\
+\hline
+{\em tid\+\_\+} & tid filter (\mbox{\hyperlink{class_p_c_m}{P\+CM}} supports it only on Haswell server) \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_p_c_m_aa2263c70dabe237a8aeb9cdc58736ee5}\label{class_p_c_m_aa2263c70dabe237a8aeb9cdc58736ee5}} 
+\index{P\+CM@{P\+CM}!program\+Server\+Uncore\+Memory\+Metrics@{program\+Server\+Uncore\+Memory\+Metrics}}
+\index{program\+Server\+Uncore\+Memory\+Metrics@{program\+Server\+Uncore\+Memory\+Metrics}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{program\+Server\+Uncore\+Memory\+Metrics()}{programServerUncoreMemoryMetrics()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_p_c_m_abebf5f22d794719dfc49155741e264e5}{P\+C\+M\+::\+Error\+Code}} P\+C\+M\+::program\+Server\+Uncore\+Memory\+Metrics (\begin{DoxyParamCaption}\item[{int}]{rankA = {\ttfamily -\/1},  }\item[{int}]{rankB = {\ttfamily -\/1} }\end{DoxyParamCaption})}
+
+
+
+Programs uncore memory counters on microarchitectures codename Sandy\+Bridge-\/\+EP and later Xeon uarch. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rankA} & count D\+I\+MM rank1 statistics (disables memory channel monitoring) \\
+\hline
+{\em rankB} & count D\+I\+MM rank2 statistics (disables memory channel monitoring)\\
+\hline
+\end{DoxyParams}
+Call this method before you start using the memory counter routines on microarchitecture codename Sandy\+Bridge-\/\+EP and later Xeon uarch
+
+\begin{DoxyWarning}{Warning}
+Using this routines with other tools that {\itshape program} Performance Monitoring Units (P\+M\+Us) on C\+P\+Us is not recommended because P\+MU can not be shared. Tools that are known to program P\+M\+Us\+: Intel(r) V\+Tune(tm), Intel(r) Performance Tuning Utility (P\+TU). This code may make V\+Tune or P\+TU measurements invalid. V\+Tune or P\+TU measurement may make measurement with this code invalid. Please enable either usage of these routines or V\+Tune/\+P\+T\+U/etc. 
+\end{DoxyWarning}
+\mbox{\Hypertarget{class_p_c_m_a3a30cec6e4e7a78ec964d194e3844637}\label{class_p_c_m_a3a30cec6e4e7a78ec964d194e3844637}} 
+\index{P\+CM@{P\+CM}!program\+Server\+Uncore\+Power\+Metrics@{program\+Server\+Uncore\+Power\+Metrics}}
+\index{program\+Server\+Uncore\+Power\+Metrics@{program\+Server\+Uncore\+Power\+Metrics}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{program\+Server\+Uncore\+Power\+Metrics()}{programServerUncorePowerMetrics()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_p_c_m_abebf5f22d794719dfc49155741e264e5}{P\+C\+M\+::\+Error\+Code}} P\+C\+M\+::program\+Server\+Uncore\+Power\+Metrics (\begin{DoxyParamCaption}\item[{int}]{mc\+\_\+profile,  }\item[{int}]{pcu\+\_\+profile,  }\item[{int $\ast$}]{freq\+\_\+bands = {\ttfamily NULL} }\end{DoxyParamCaption})}
+
+
+
+Programs uncore power/energy counters on microarchitectures codename Sandy\+Bridge-\/\+EP and later Xeon uarch. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mc\+\_\+profile} & profile for integrated memory controller P\+MU. See possible profile values in pcm-\/power.\+cpp example \\
+\hline
+{\em pcu\+\_\+profile} & profile for power control unit P\+MU. See possible profile values in pcm-\/power.\+cpp example \\
+\hline
+{\em freq\+\_\+bands} & array of three integer values for core frequency band monitoring. See usage in pcm-\/power.\+cpp example\\
+\hline
+\end{DoxyParams}
+Call this method before you start using the power counter routines on microarchitecture codename Sandy\+Bridge-\/\+EP and later Xeon uarch
+
+\begin{DoxyWarning}{Warning}
+After this call the memory and Q\+PI bandwidth counters on microarchitecture codename Sandy\+Bridge-\/\+EP and later Xeon uarch will not work. 
+
+Using this routines with other tools that {\itshape program} Performance Monitoring Units (P\+M\+Us) on C\+P\+Us is not recommended because P\+MU can not be shared. Tools that are known to program P\+M\+Us\+: Intel(r) V\+Tune(tm), Intel(r) Performance Tuning Utility (P\+TU). This code may make V\+Tune or P\+TU measurements invalid. V\+Tune or P\+TU measurement may make measurement with this code invalid. Please enable either usage of these routines or V\+Tune/\+P\+T\+U/etc. 
+\end{DoxyWarning}
+\mbox{\Hypertarget{class_p_c_m_ad12300d8a7096cc4258108ced23cd491}\label{class_p_c_m_ad12300d8a7096cc4258108ced23cd491}} 
+\index{P\+CM@{P\+CM}!Q\+O\+S\+Metric\+Available@{Q\+O\+S\+Metric\+Available}}
+\index{Q\+O\+S\+Metric\+Available@{Q\+O\+S\+Metric\+Available}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{Q\+O\+S\+Metric\+Available()}{QOSMetricAvailable()}}
+{\footnotesize\ttfamily bool P\+C\+M\+::\+Q\+O\+S\+Metric\+Available (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+checks if Q\+OS monitoring support present 
+
+\begin{DoxyReturn}{Returns}
+true or false 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_p_c_m_ad4f5ff2c6ce12f0fb4bb5ae1e5bd157a}\label{class_p_c_m_ad4f5ff2c6ce12f0fb4bb5ae1e5bd157a}} 
+\index{P\+CM@{P\+CM}!reset\+P\+MU@{reset\+P\+MU}}
+\index{reset\+P\+MU@{reset\+P\+MU}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{reset\+P\+M\+U()}{resetPMU()}}
+{\footnotesize\ttfamily void P\+C\+M\+::reset\+P\+MU (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Forces P\+MU reset. 
+
+If there is no chance to free up P\+MU from other applications you might try to call this method at your own risk. \mbox{\Hypertarget{class_p_c_m_aab6624cfd942b9727136dc59a2c7df87}\label{class_p_c_m_aab6624cfd942b9727136dc59a2c7df87}} 
+\index{P\+CM@{P\+CM}!setup\+Custom\+Core\+Events\+For\+Numa@{setup\+Custom\+Core\+Events\+For\+Numa}}
+\index{setup\+Custom\+Core\+Events\+For\+Numa@{setup\+Custom\+Core\+Events\+For\+Numa}!P\+CM@{P\+CM}}
+\subsubsection{\texorpdfstring{setup\+Custom\+Core\+Events\+For\+Numa()}{setupCustomCoreEventsForNuma()}}
+{\footnotesize\ttfamily void P\+C\+M\+::setup\+Custom\+Core\+Events\+For\+Numa (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_p_c_m_1_1_extended_custom_core_event_description}{P\+C\+M\+::\+Extended\+Custom\+Core\+Event\+Description}} \&}]{conf }\end{DoxyParamCaption}) const}
+
+
+
+Setup \mbox{\hyperlink{struct_p_c_m_1_1_extended_custom_core_event_description}{Extended\+Custom\+Core\+Event\+Description}} object to read offcore (numa) counters for each processor type. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em conf} & conf object to setup offcore M\+SR values \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{cpucounters_8h}{cpucounters.\+h}}\item 
+\mbox{\hyperlink{cpucounters_8cpp}{cpucounters.\+cpp}}\end{DoxyCompactItemize}
