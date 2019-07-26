@@ -26,7 +26,7 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_locks(SePrompt* pPrompt)
 {
-  gpAttachMap->m_oLockTracker.vReport();
+  AM::pLockTracker()->vReport();
   
   return true;
 }

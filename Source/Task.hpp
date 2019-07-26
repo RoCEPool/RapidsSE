@@ -136,6 +136,7 @@ namespace Tasks
     Compiler* m_pCompiler;    // forth word compiler (Job boot)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
     // always last
     Footer m_xFooter;
 
@@ -207,7 +208,7 @@ namespace Tasks
     Sleep& oWakeupSleep(void);
     u8   uWakeupTime(void);
 
-    /*------------------------------------------------------------------------*/
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     void vAddBaseWords(void);
     void vAddMunged(MP_Task mpTask);
@@ -215,13 +216,10 @@ namespace Tasks
     ForthWord* pCompileColon(s48K& sDefinition);
     void  vCompileConstant(s48K& sDefinition);
 
-    /*------------------------------------------------------------------------*/
-    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   private:
     Footer* aFooter(void);
-
-    /*------------------------------------------------------------------------*/
-    
   };
 
   Task* _pTask(void* aAddr);

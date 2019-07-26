@@ -30,6 +30,7 @@ namespace StorageEngine
     static i8   iElapsedSsec(void);
     static ForthWord* pForthWord(void);
     static i8   nIndexEntries(void);
+    static LockTracker* pLockTracker(void);
     static JobList* pOriginatingJobs(void);
     static i8   iPid(void);
     static JobList* pParticipatingJobs(void);

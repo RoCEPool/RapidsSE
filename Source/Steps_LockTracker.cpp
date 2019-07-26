@@ -25,7 +25,7 @@ ENTRY("vLockTrackerList"_Stz);
   File oFile;
   oFile.bOpenWrite("locks.csv"_Stz);
   
-  gpAttachMap->m_oLockTracker.vList(oFile);
+  AM::pLockTracker()->vList(oFile);
   
   oFile.vClose();
   
@@ -39,7 +39,7 @@ void Step::vLockTrackerReset(MP_Task mpTask)
 {
   ENTRY("vLockTrackerReset"_Stz);
   
-  gpAttachMap->m_oLockTracker.vReset();
+  AM::pLockTracker()->vReset();
   
   EXIT();
 }

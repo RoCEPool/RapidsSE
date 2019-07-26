@@ -394,6 +394,28 @@ void Scheduler::vTask_Exit(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* op-task which has perform its work quanta transitions to TS_PAUSED and     */
+/*   is added to paused set                                                   */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTask_Pause(Task* pTask)
+{
+  RASSERT(pTask->bIsLocked());
+  RASSERT(TS_DESISTED == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+  RASSERT(TR_PAUSE == pTask->eTransition());
+  
+  pTask->vTransitionClear();
+  pTask->vState(TS_PAUSED);
+  
+  JobLog::vNoteState(pTask->pJob(),"Pause"_Stz);
+  
+  AM::pQueues()->vAddPausedSet(pTask);
+  // **do not touch task** (other than to drop lock)
+  
+  pTask->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
 /* change able-to-run task to TS_READY state and append to a ready queue      */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Ready(Task* pTask)

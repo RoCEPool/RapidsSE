@@ -42,6 +42,7 @@ namespace Scheduling
     static void vTask_Desist(Task* pTask);
     static void vTask_Execute(Task* pTask);
     static void vTask_Exit(Task* pTask);
+    static void vTask_Pause(Task* pTask);
     static void vTask_Ready(Task* pTask);
     static void vTask_Resume(Task* pTask);
     static void vTask_Schedule(Task* pTask);

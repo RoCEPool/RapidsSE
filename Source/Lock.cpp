@@ -299,7 +299,7 @@ bool Lock::bGrabRead(void)
   ASSERT(m_eLockKind);
   
   ++m_ixReadGrabs;
-  ++gpAttachMap->m_oLockTracker.m_ixReadGrabs[m_eLockKind];
+  ++AM::pLockTracker()->m_ixReadGrabs[m_eLockKind];
   
   i8 iResult = Lock::iLockGrabRead(&m_uLockWord);
   if (iResult) {
@@ -308,7 +308,7 @@ bool Lock::bGrabRead(void)
   }
   
   ++m_ixReadCollisions;
-  ++gpAttachMap->m_oLockTracker.m_ixReadCollisions[m_eLockKind];
+  ++AM::pLockTracker()->m_ixReadCollisions[m_eLockKind];
   
   return false;
 }
@@ -323,7 +323,7 @@ void Lock::vGrabRead(void)
   ASSERT(m_eLockKind);
   
   ++m_ixReadGrabs;
-  ++gpAttachMap->m_oLockTracker.m_ixReadGrabs[m_eLockKind];
+  ++AM::pLockTracker()->m_ixReadGrabs[m_eLockKind];
   
   i8 iResult = Lock::iLockGrabRead(&m_uLockWord);
   if (iResult) {
@@ -332,7 +332,7 @@ void Lock::vGrabRead(void)
   }
   
   ++m_ixReadCollisions;
-  ++gpAttachMap->m_oLockTracker.m_ixReadCollisions[m_eLockKind];
+  ++AM::pLockTracker()->m_ixReadCollisions[m_eLockKind];
   
   Timer oTimer;
   oTimer.vStart();
@@ -420,7 +420,7 @@ bool Lock::bGrabWrite(void)
   ASSERT(m_eLockKind);
 
   ++m_ixWriteGrabs;
-  ++gpAttachMap->m_oLockTracker.m_ixWriteGrabs[m_eLockKind];
+  ++AM::pLockTracker()->m_ixWriteGrabs[m_eLockKind];
 
   i8 iResult = Lock::iLockGrabWrite(&m_uLockWord);
   if (iResult) {
@@ -429,7 +429,7 @@ bool Lock::bGrabWrite(void)
   }
   
   ++m_ixWriteCollisions;
-  ++gpAttachMap->m_oLockTracker.m_ixWriteCollisions[m_eLockKind];
+  ++AM::pLockTracker()->m_ixWriteCollisions[m_eLockKind];
   
   return false;
 }
@@ -448,7 +448,7 @@ void Lock::vGrabWrite(void)
 //         m_aName ? m_aName : "<noName>"_Stz);
 
   ++m_ixWriteGrabs;
-  ++gpAttachMap->m_oLockTracker.m_ixWriteGrabs[m_eLockKind];
+  ++AM::pLockTracker()->m_ixWriteGrabs[m_eLockKind];
   
   i8 iResult = Lock::iLockGrabWrite(&m_uLockWord);
   if (iResult) {
@@ -457,7 +457,7 @@ void Lock::vGrabWrite(void)
   }
   
   ++m_ixWriteCollisions;
-  ++gpAttachMap->m_oLockTracker.m_ixWriteCollisions[m_eLockKind];
+  ++AM::pLockTracker()->m_ixWriteCollisions[m_eLockKind];
   
   Timer oTimer;
   oTimer.vStart();

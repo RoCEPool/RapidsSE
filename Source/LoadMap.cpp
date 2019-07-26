@@ -264,7 +264,7 @@ void LoadMap::vAddEntry(i8 i_ChunkEndLoc)
   
   m_okLock.vGrabWrite();
   
-  ++gpAttachMap->m_oLockTracker.m_ixWorkUnits[LK_LOAD_MAP];
+  ++AM::pLockTracker()->m_ixWorkUnits[LK_LOAD_MAP];
   
   m_xMap.iaEndLoc[m_xMap.nEntries] = i_ChunkEndLoc;
   

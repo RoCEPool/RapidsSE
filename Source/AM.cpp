@@ -28,6 +28,7 @@ i8   AM::nThreads(void)       { return gpAttachMap->Arg.m_nThreads;           }
 i8   AM::iElapsedSsec(void)   { return gpAttachMap->m_oBirth.iElapsedSsec();  }
 ForthWord* AM::pForthWord(void) { return gpAttachMap->m_pForthWord;           }
 i8   AM::nIndexEntries(void)  { return gpAttachMap->m_nIndexEntries;          }
+LockTracker* AM::pLockTracker(void) { return & gpAttachMap->m_oLockTracker;   }
 JobList* AM::pOriginatingJobs(void) { return gpAttachMap->m_pOriginatingJobs; }
 JobList* AM::pParticipatingJobs(void) { return gpAttachMap->m_pParticipatingJobs; }
 i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }

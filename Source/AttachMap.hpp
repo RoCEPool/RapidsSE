@@ -46,7 +46,6 @@ namespace StorageEngine
     i8            m_iEpoch;
     HeapMem       m_xHeapMem;
     Formatters    m_oFormatters;
-    LockTracker   m_oLockTracker;
     bool          m_bMarkApiAll;
     bool          m_bMarkApi[AC_ENUMS];
     bool          m_bMarkJobAll;
@@ -55,13 +54,14 @@ namespace StorageEngine
     bool          m_bMarkResource[SR_ENUMS];
     EnumFlags     m_oMarkAction;
     EnumFlags     m_oMarkTrace;
-    Atomic        m_ixMonitorTake;
     i8            m_nObjectsInPool[CN_ENUMS];
   private:
+    LockTracker   m_oLockTracker;
     JobList*      m_pOriginatingJobs;
     JobList*      m_pParticipatingJobs;
     Atomic        m_ixNextDiagram;
     Atomic        m_ixNextJobId;
+    Atomic        m_ixNextMonitor;
     Atomic        m_ixNextPlanId;
     Queues*       m_pQueues;
     i8            m_iQuit;
