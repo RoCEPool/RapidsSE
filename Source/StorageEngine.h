@@ -27,6 +27,8 @@ using namespace StorageEngine;
 
 #include "Engine.hpp"
 
+#include "AM.hpp"
+
 typedef void (pDUMPFUN)(eCN eClass, Object* pObject, Stz*);
 extern pDUMPFUN *gpDump[];
 
