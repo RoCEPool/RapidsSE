@@ -55,7 +55,7 @@ FetchOp::FetchOp(Stz* szOpLabel, Jobs::Job* pJob)
 
   _checkInitialised_(CN_FETCHOP);
 
-  m_fpOpFun = FetchOp::bCallLoop;
+  m_fpOpFun = FetchOp::eCallLoop;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
 }
@@ -75,17 +75,17 @@ FetchOp::~FetchOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* call the fetch loop function                                               */
 /*----------------------------------------------------------------------------*/
-bool FetchOp::bCallLoop(void* aThis)
+eOR FetchOp::eCallLoop(void* aThis)
 {  
-  bool bCallAgain = ((FetchOp*)aThis)->bFetchLoop();
+  eOR eCallAgain = ((FetchOp*)aThis)->eFetchLoop();
   
-  return bCallAgain;
+  return eCallAgain;
 }
 
 /*----------------------------------------------------------------------------*/
 /* the fetch operator loop function                                           */
 /*----------------------------------------------------------------------------*/
-bool FetchOp::bFetchLoop(void)
+eOR FetchOp::eFetchLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
   
@@ -102,7 +102,7 @@ bool FetchOp::bFetchLoop(void)
   
   vPipeOut_endMarker();
   
-  return B_DONT_CALL_AGAIN;
+  return OR_EXIT;
 }
 
 /*----------------------------------------------------------------------------*/

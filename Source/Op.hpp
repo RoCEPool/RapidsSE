@@ -7,10 +7,10 @@ namespace PushDown
 {
   enum eOR // op return
   {
-  /*  0 */ OC_NONE = 0,
-  /*  1 */ OC_BIDE,  // bid till operand
-  /*  2 */ OC_EXIT,  // exit
-  /*  3 */ OC_PAUSE, // pause till continued
+  /*  0 */ OR_NONE = 0,
+  /*  1 */ OR_BIDE,  // bid till operand
+  /*  2 */ OR_EXIT,  // exit
+  /*  3 */ OR_PAUSE, // pause till continued
   };
   
   static Stz* aOR[]
@@ -35,7 +35,7 @@ namespace PushDown
     i8             m_iWorkQuanta;    // quanta of work between pulses
     Op*            m_pOpOut;         // where results get piped (queued)
 
-    bool (*m_fpOpFun)(void* aThis);  // function which does the op
+    eOR  (*m_fpOpFun)(void* aThis);  // function which does the op
     void (*m_fpDrain)(void* aThis);  // function which drains the operand queue
 
     //! need to add pulsing and cancelling

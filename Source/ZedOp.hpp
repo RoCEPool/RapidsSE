@@ -19,8 +19,8 @@ namespace PushDown
     ZedOp(Stz* szOpLabel, Jobs::Job* pJob);
    ~ZedOp(void) noexcept(false);
   
-    static bool bCallLoop(void* aThis);
-    bool bZedLoop(void);
+    static eOR eCallLoop(void* aThis);
+    eOR eZedLoop(void);
   
   private:
     Footer* aFooter(void);

@@ -85,18 +85,28 @@ void Op::vOpLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  bool bCallAgain = (*m_fpOpFun)(this);
+  eOR eCallAgain = (*m_fpOpFun)(this);
   
-  if (bCallAgain) {
-    ASSERT(bIsLocked());
-    m_pTask->vTransition(TR_BIDE);
-    return;
+  switch (eCallAgain) {
+   
+    case OR_BIDE:
+      ASSERT(bIsLocked());
+      m_pTask->vTransition(TR_BIDE);
+      return;
+    
+    case OR_EXIT:
+      if (m_bAckJobEnd)
+        vAckJob();
+      m_pTask->vTransition(TR_EXIT);
+      return;
+    
+    case OR_PAUSE:
+      m_pTask->vTransition(TR_PAUSE);
+      return;
+    
+    default:
+      NEVER_REACH;
   }
-
-  if (m_bAckJobEnd)
-    vAckJob();
-  
-  m_pTask->vTransition(TR_EXIT);
 }
 
 /*----------------------------------------------------------------------------*/

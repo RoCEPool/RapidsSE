@@ -51,7 +51,7 @@ OutputOp::OutputOp(Stz* szOpLabel, Jobs::Job* pJob)
   
   _checkInitialised_(CN_OUTPUTOP);
 
-  m_fpOpFun = OutputOp::bCallLoop;
+  m_fpOpFun = OutputOp::eCallLoop;
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
 }
@@ -71,17 +71,17 @@ OutputOp::~OutputOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* call the output loop function                                              */
 /*----------------------------------------------------------------------------*/
-bool OutputOp::bCallLoop(void* aThis)
+eOR OutputOp::eCallLoop(void* aThis)
 {
-  bool bCallAgain = ((OutputOp*)aThis)->bOutputLoop();
+  eOR eCallAgain = ((OutputOp*)aThis)->eOutputLoop();
   
-  return bCallAgain;
+  return eCallAgain;
 }
 
 /*----------------------------------------------------------------------------*/
 /* the output operator loop function                                          */
 /*----------------------------------------------------------------------------*/
-bool OutputOp::bOutputLoop(void)
+eOR OutputOp::eOutputLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
   
@@ -91,7 +91,7 @@ bool OutputOp::bOutputLoop(void)
     
     if (! pOperand) {
       ASSERT(bIsLocked());
-      return B_CALL_AGAIN;
+      return OR_BIDE;
     }
     
     if (CN_ENDMARKER == pOperand->eClass()) {
@@ -104,7 +104,7 @@ bool OutputOp::bOutputLoop(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  return B_DONT_CALL_AGAIN;
+  return OR_EXIT;
 }
 
 /*----------------------------------------------------------------------------*/
