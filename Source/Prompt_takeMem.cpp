@@ -41,10 +41,10 @@ bool Prompt::bPrompt_takeMem(SePrompt* pPrompt)
   
   while (gpBufferPool->nFreeCount() >= C_LOW_BUFFERS + nSpare) {
 
-    PoolBuffer* p2ndBuffer  = gpAttachMap->m_pTakenBuffers;
-    gpAttachMap->m_pTakenBuffers = gpBufferPool->pAllocOtherBuffer();
+    PoolBuffer* p2ndBuffer  = AM::pTakenBuffers();
+    AM::vTakenBuffers(gpBufferPool->pAllocOtherBuffer());
     
-    PoolBuffer** ppNextBuffer = (PoolBuffer**)gpAttachMap->m_pTakenBuffers->aDataArea();
+    PoolBuffer** ppNextBuffer = (PoolBuffer**)AM::pTakenBuffers()->aDataArea();
     *ppNextBuffer = p2ndBuffer;
     
     AM::vTakenBytes(C_SIZE_POOL_BUFFER);

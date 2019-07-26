@@ -26,12 +26,12 @@ PromptNote mPromptNote_giveMem (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_giveMem(SePrompt* pPrompt)
 {
-  while (gpAttachMap->m_pTakenBuffers) {
+  while (AM::pTakenBuffers()) {
     
-    PoolBuffer* pBuffer     = gpAttachMap->m_pTakenBuffers;
+    PoolBuffer* pBuffer     = AM::pTakenBuffers();
     PoolBuffer* pNextBuffer = *(PoolBuffer**)pBuffer->aDataArea();
 
-    gpAttachMap->m_pTakenBuffers = pNextBuffer;
+    AM::vTakenBuffers(pNextBuffer);
     
     gpBufferPool->vFree(pBuffer);
   }

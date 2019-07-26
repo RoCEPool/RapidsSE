@@ -70,8 +70,8 @@ namespace StorageEngine
     Statistics    m_oStatistics;
     StepTiming*   m_pStepTiming;
     i8            m_iStop;
-    PoolBuffer*   m_pTakenBuffers;
   private:
+    PoolBuffer*   m_pTakenBuffers;
     i8            m_nTakenBytes;
     ForthWord*    m_pTenants;
     TempName      m_oTempName;

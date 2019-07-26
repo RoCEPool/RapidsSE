@@ -31,6 +31,7 @@ i8   AM::nIndexEntries(void)  { return gpAttachMap->m_nIndexEntries;          }
 i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
 bool AM::bProgress(void)      { return gpAttachMap->m_bProgress;              }
 bool AM::bMetadata(void)      { return gpAttachMap->m_bMetadata;              }
+PoolBuffer* AM::pTakenBuffers(void) { return gpAttachMap->m_pTakenBuffers;    }
 i8   AM::nTakenBytes(void)    { return gpAttachMap->m_nTakenBytes;            }
 ForthWord* AM::pTenants(void) { return gpAttachMap->m_pTenants;               }
 void AM::vThreadBegins(void)  { ++ gpAttachMap->m_ixThreads;                  }
@@ -41,6 +42,8 @@ bool AM::bVerbose(void)       { return gpAttachMap->m_bVerbose;               }
 
 //
 void AM::vForthWord(ForthWord *pWord)  { gpAttachMap->m_pForthWord = pWord;   }
+void AM::vTakenBuffers(PoolBuffer* pTakenBuffers) {
+  gpAttachMap->m_pTakenBuffers = pTakenBuffers; }
 void AM::vTakeBytes(i8 nTakeBytes)     { gpAttachMap->m_nTakenBytes = nTakeBytes; }
 void AM::vTakenBytes(i8 nTakenBytes)   { gpAttachMap->m_nTakenBytes += nTakenBytes; }
 void AM::vTenants(ForthWord *pTenants) { gpAttachMap->m_pTenants = pTenants;  }
