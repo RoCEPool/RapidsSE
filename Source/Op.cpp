@@ -46,6 +46,7 @@ Op::Op(eCN eClassNo, Stz* szOpLabel, Job* pJob)
   m_pOpOut        = nullptr;
 
   m_fpOpFun       = nullptr;
+  m_fpDrain       = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

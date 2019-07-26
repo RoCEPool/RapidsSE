@@ -16,7 +16,8 @@ namespace PushDown
     Op*            m_pOpOut;         // where results get piped (queued)
 
     bool (*m_fpOpFun)(void* aThis);  // function which does the op
-  
+    void (*m_fpDrain)(void* aThis);  // function which drains the operand queue
+
     //! need to add pulsing and cancelling
   
   public:

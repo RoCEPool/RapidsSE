@@ -61,8 +61,8 @@ namespace StorageEngine
     i8            m_nObjectsInPool[CN_ENUMS];
     JobList*      m_pOriginatingJobs;
     JobList*      m_pParticipatingJobs;
-    Atomic        m_ixPlanId;
   private:
+    Atomic        m_ixNextPlanId;
     Queues*       m_pQueues;
     i8            m_iQuit;
     ResourceTracker m_oResourceTracker;
