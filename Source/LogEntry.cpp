@@ -92,7 +92,7 @@ void LogEntry::vSet(i8 iEnumGroup, i8 iEnum, i8 iForeign, char* aText)
   m_iTick = Tick::iRdClock();
   
   StrLib::vCopyLen(m_caNode,
-                   gpAttachMap->m_pGrid->m_pThisNode->aNodeName()->aChar(),
+                   AM::pGrid()->m_pThisNode->aNodeName()->aChar(),
                    sizeof(m_caNode) - 1);
   
   m_iEnumGroup = iEnumGroup;

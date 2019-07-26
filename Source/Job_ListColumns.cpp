@@ -224,7 +224,7 @@ void Jobs::vJob_ListColumns_post(Interface::Session* pSession, Job* pJob)
   Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJob);
   
   if ( pJob_ListColumns->m_bHasError ) {
-    vTrace("error: (node%lld) %s\n"_Stz, gpAttachMap->m_pGrid->iThisNode(),
+    vTrace("error: (node%lld) %s\n"_Stz, AM::pGrid()->iThisNode(),
            aEC[pJob_ListColumns->m_xResponse.m_eErrorCode]);
   }
   else {

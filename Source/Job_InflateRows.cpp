@@ -303,7 +303,7 @@ void Jobs::vJob_InflateRows_post(Interface::Session* pSession, Job* pJob)
   
   if ( pJob_InflateRows->m_bHasError ) {
     
-    vTrace("error: (node%lld) %s\n"_Stz, gpAttachMap->m_pGrid->iThisNode(),
+    vTrace("error: (node%lld) %s\n"_Stz, AM::pGrid()->iThisNode(),
            aEC[pJob_InflateRows->m_xResponse.m_eErrorCode]);
     
     return;

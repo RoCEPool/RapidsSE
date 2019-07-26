@@ -77,7 +77,7 @@ void Step::vJob_WriteRowEncodeRow(MP_Task mpTask)
     delete pJob_WriteRow->m_pRow;
     pJob_WriteRow->m_pRow = nullptr;
     
-    for (i8 i_Ptn = 0; i_Ptn < gpAttachMap->m_pGrid->m_nPartitions; i_Ptn++) {
+    for (i8 i_Ptn = 0; i_Ptn < AM::pGrid()->m_nPartitions; i_Ptn++) {
       delete pJob_WriteRow->m_paRowCompactor[i_Ptn];
       pJob_WriteRow->m_paRowCompactor[i_Ptn] = nullptr;
     }

@@ -61,10 +61,10 @@ Tokeniser::Tokeniser(void)
   }
   else {
   
-    i8 nNodes = gpAttachMap->m_pGrid->nNodes();
-    Node* pNode = gpAttachMap->m_pGrid->pThisNode();
+    i8 nNodes = AM::pGrid()->nNodes();
+    Node* pNode = AM::pGrid()->pThisNode();
     i8  i_Node = pNode->iNodeNo();
-    //bool bHasStarted = gpAttachMap->m_pGrid->m_bHasStarted;
+    //bool bHasStarted = AM::pGrid()->m_bHasStarted;
     
     m_sPrompt.vSprint("[N%lld/%lld %s %lld%s%s%s] se %s%c"_Stz,
                       

@@ -948,8 +948,8 @@ void Task::vTracePoint(Stz* aMark)
   
   vTrace("[%s(N%d):%8s\\%lld %-11s] %-16s : a%2lld="_Stz,
         
-         gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
-         gpAttachMap->m_pGrid->iThisNode(),
+         AM::pGrid()->pThisNode()->aNodeName(),
+         AM::pGrid()->iThisNode(),
          aJobName(),
          m_oAcksRmg.iPrintOnlyValue(),
          

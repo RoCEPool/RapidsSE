@@ -140,8 +140,8 @@ bool LoadMap::bMapChunk(void)
            m_oFile.sFilePath().aStz(),sFileSize.aStz(),
            m_xMap.nEntries,
            gpAttachMap->Arg.m_nSubLoaders,
-           gpAttachMap->m_pGrid->nNodes(),
-           gpAttachMap->m_pGrid->m_nPartitions);
+           AM::pGrid()->nNodes(),
+           AM::pGrid()->m_nPartitions);
     vMappingDone(true);
     return false;
   }

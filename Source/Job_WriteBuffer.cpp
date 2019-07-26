@@ -212,7 +212,7 @@ bool Job_WriteBuffer::bInsertRows(void)
 //    Job_LoadTable* pJob_LoadTable = static_cast<Job_LoadTable*>(pJob);
 //
 //    // add the number of rows into rows processed
-//    i8 iThisNode = gpAttachMap->m_pGrid->m_iThisNode;
+//    i8 iThisNode = AM::pGrid()->m_iThisNode;
 //    pJob_LoadTable->m_xNode[iThisNode].m_ixRowsProcessed += m_nRows;
     
     if (C_UNKNOWN != m_nWriteBehindBuffers)

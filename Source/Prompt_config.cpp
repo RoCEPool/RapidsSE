@@ -42,7 +42,7 @@ bool Prompt::bPrompt_config(SePrompt* pPrompt)
          gxArguments.m_nThreads,
          gxArguments.m_nSubIngesters,
          gxArguments.m_nSubLoaders,
-         gpAttachMap->m_pGrid->m_bHasStarted ? "cluster started"
+         AM::pGrid()->m_bHasStarted ? "cluster started"
                                             : "cluster not started"
          );
   

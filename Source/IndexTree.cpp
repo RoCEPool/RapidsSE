@@ -135,7 +135,7 @@ Stz* IndexTree::pAnalyze(void)
   s48K sAnalysis;
   
   sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s\n"_Stz,
-                        gpAttachMap->m_pGrid->iThisNode(),
+                        AM::pGrid()->iThisNode(),
                         m_pIndex->aIndexName()->aChar(),
                         m_pIndex->pTable()->aTableName());
   

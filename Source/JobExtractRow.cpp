@@ -33,7 +33,7 @@ JobExtractRow::JobExtractRow(void)
   for (i8 i_Ptn = 0; i_Ptn < C_MAX_PARTITIONS; i_Ptn++)
     m_paRowCompactor[i_Ptn] = nullptr;
   
-  for (i8 i_Ptn = 0; i_Ptn < gpAttachMap->m_pGrid->m_nPartitions; i_Ptn++)
+  for (i8 i_Ptn = 0; i_Ptn < AM::pGrid()->m_nPartitions; i_Ptn++)
     m_paRowCompactor[i_Ptn] = new RowCompactor;
 }
 
@@ -44,7 +44,7 @@ JobExtractRow::~JobExtractRow(void) noexcept(false)
 {
   delete m_pRow;
   
-  for (i8 i_Ptn = 0; i_Ptn < gpAttachMap->m_pGrid->m_nPartitions; i_Ptn++) {
+  for (i8 i_Ptn = 0; i_Ptn < AM::pGrid()->m_nPartitions; i_Ptn++) {
     delete m_paRowCompactor[i_Ptn];
   }
 

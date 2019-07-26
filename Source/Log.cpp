@@ -39,7 +39,7 @@ Log::Log(void)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  if (0 != gpAttachMap->m_pGrid->m_iThisNode || Pthread::bIsJavaThread() )
+  if (0 != AM::pGrid()->m_iThisNode || Pthread::bIsJavaThread() )
     RASSERT(0);
   
   for (i8 i_Entry = 0; i_Entry < m_nEntries; i_Entry++) {

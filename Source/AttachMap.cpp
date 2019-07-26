@@ -164,19 +164,19 @@ void AttachMap::vPrintAttachMap(void)
   vInfo("TransientSmallHeap : %p \n"_Stz, gpAttachMap->m_xHeapMem.Transient.m_pSmall);
   
   vInfo("\n"_Stz);
-  vInfo("Total Nodes      : %lld \n"_Stz, gpAttachMap->m_pGrid->m_nNodes);
-  vInfo("This node        : %lld \n"_Stz, gpAttachMap->m_pGrid->m_iThisNode);
+  vInfo("Total Nodes      : %lld \n"_Stz, AM::pGrid()->m_nNodes);
+  vInfo("This node        : %lld \n"_Stz, AM::pGrid()->m_iThisNode);
   
-  vInfo("Cluster started  : %s \n"_Stz,  gpAttachMap->m_pGrid->m_bHasStarted ? "true"_Stz : "false"_Stz);
-  if (gpAttachMap->m_pGrid->m_bHasStarted)
-    vInfo("Start node       : %lld \n"_Stz, gpAttachMap->m_pGrid->m_iStartNode);
+  vInfo("Cluster started  : %s \n"_Stz,  AM::pGrid()->m_bHasStarted ? "true"_Stz : "false"_Stz);
+  if (AM::pGrid()->m_bHasStarted)
+    vInfo("Start node       : %lld \n"_Stz, AM::pGrid()->m_iStartNode);
   
-  vInfo("Slots per node   : %lld \n"_Stz, gpAttachMap->m_pGrid->m_nSlotsPerNode);
-  vInfo("Total Partitions : %lld \n"_Stz, gpAttachMap->m_pGrid->m_nPartitions);
+  vInfo("Slots per node   : %lld \n"_Stz, AM::pGrid()->m_nSlotsPerNode);
+  vInfo("Total Partitions : %lld \n"_Stz, AM::pGrid()->m_nPartitions);
 
-  vInfo("Partitions on this node : %lld \n"_Stz, gpAttachMap->m_pGrid->m_nPartitions);
-  for (i8 iIndex = 0; iIndex < gpAttachMap->m_pGrid->m_nSlotsPerNode; iIndex++)
-    vInfo("Slot#%lld      : partition %lld \n"_Stz, iIndex, gpAttachMap->m_pGrid->m_iPartition[iIndex]);
+  vInfo("Partitions on this node : %lld \n"_Stz, AM::pGrid()->m_nPartitions);
+  for (i8 iIndex = 0; iIndex < AM::pGrid()->m_nSlotsPerNode; iIndex++)
+    vInfo("Slot#%lld      : partition %lld \n"_Stz, iIndex, AM::pGrid()->m_iPartition[iIndex]);
   
   vInfo("\n"_Stz);
   vInfo("Enclosed_by_Leading  : %c\n"_Stz,

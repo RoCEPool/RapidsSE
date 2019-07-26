@@ -113,7 +113,7 @@ Job_Sanity::Job_Sanity(Interface::Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SANITY,_FOOTER_);
       
   m_iRegionSize = gpAttachMap->Arg.m_iRegionSize;
-  m_iPartitions = gpAttachMap->m_pGrid->m_nSlotsPerNode;
+  m_iPartitions = AM::pGrid()->m_nSlotsPerNode;
   
   _checkInitialised_(CN_JOB_STATUS);
   

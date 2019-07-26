@@ -842,7 +842,7 @@ void Parser::vReadLineStdin(void)
   if (AM::bTracepoint())
     Pthread::vSleepMsec(300,CN_PARSER);
   
-  bool bHasStarted = gpAttachMap->m_pGrid->m_bHasStarted;
+  bool bHasStarted = AM::pGrid()->m_bHasStarted;
 
   bool bLowMem = gpBufferPool->bLowMemory();
   

@@ -274,7 +274,7 @@ void Job_SubLoader::vEnd(void)
   // handle any dangling buffers
   vHandleDanglingBuffers();
   
-  i8 i_Node = gpAttachMap->m_pGrid->m_iThisNode;
+  i8 i_Node = AM::pGrid()->m_iThisNode;
   
   // add invalid rows into parent load table job
   i8 iRowsInvalid = *m_xResponse.m_ixRowsInvalid;

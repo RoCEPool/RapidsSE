@@ -31,6 +31,7 @@ namespace StorageEngine
     static i8   iEpoch(void);
     static Formatters* pFormatters(void);
     static ForthWord* pForthWord(void);
+    static Grid* pGrid(void);
     static HeapMem* pHeapMem(void);
     static i8   nIndexEntries(void);
     static LockTracker* pLockTracker(void);

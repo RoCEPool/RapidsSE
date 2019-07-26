@@ -648,7 +648,7 @@ void Jobs::vJob_CreateTable_post(Interface::Session* pSession, Job* pJob)
     return;
   }
   
-  RASSERT(iResponses == gpAttachMap->m_pGrid->m_nNodes);
+  RASSERT(iResponses == AM::pGrid()->m_nNodes);
   
   vTrace("success: 0 rows affected\n"_Stz);
 }

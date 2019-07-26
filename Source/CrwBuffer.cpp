@@ -150,7 +150,7 @@ void CrwBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
     
     if (bDetailed)
       sAnalysis.vCatSprint("row: (%s, %lld, %5lld, %lld )\n"_Stz,
-                           gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
+                           AM::pGrid()->pThisNode()->aNodeName(),
                            pNextBuffer->m_iPartitionNo,
                            iBuffers,
                            pNextBuffer->nRowCount());

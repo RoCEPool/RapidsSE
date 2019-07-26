@@ -78,7 +78,7 @@ bool Completer::bIncProcessed(i8 nUnitsExpected)
   }
 
   if (C_UNKNOWN != m_nUnitsExpected) {
-    if (m_nPartitionsComplete == gpAttachMap->m_pGrid->m_nPartitions &&
+    if (m_nPartitionsComplete == AM::pGrid()->m_nPartitions &&
         m_nUnitsProcessed == m_nUnitsExpected)
       bHasCompleted = true;
   }

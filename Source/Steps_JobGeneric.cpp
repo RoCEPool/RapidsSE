@@ -34,7 +34,7 @@ void Step::vJob__BegunNew(MP_Task mpTask)
 
   Job* pJobBegun = new Job__Begun(pDistJob);
   pJobBegun->m_iJobId = pDistJob->m_iJobId;
-  pJobBegun->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
+  pJobBegun->m_iParticipantNode = AM::pGrid()->m_iThisNode;
   
   JobClass* pJobClass__Begun = JobClass::pFind(CN_JOB__BEGUN);
   pJobBegun->m_pJobClass = pJobClass__Begun;
@@ -60,7 +60,7 @@ void Step::vJob__CancelNew(MP_Task mpTask)
 
   Job* pJobCancel = new Job__Cancel(pDistJob);
   pJobCancel->m_iJobId = pDistJob->m_iJobId;
-  pJobCancel->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
+  pJobCancel->m_iParticipantNode = AM::pGrid()->m_iThisNode;
   
   JobClass* pJobClass__Cancel = JobClass::pFind(CN_JOB__CANCEL);
   pJobCancel->m_pJobClass = pJobClass__Cancel;
@@ -86,7 +86,7 @@ void Step::vJob__CancelledNew(MP_Task mpTask)
 
   Job* pJobCancelled = new Job__Cancelled(pDistJob);
   pJobCancelled->m_iJobId = pDistJob->m_iJobId;
-  pJobCancelled->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
+  pJobCancelled->m_iParticipantNode = AM::pGrid()->m_iThisNode;
   
   JobClass* pJobClass__Cancelled = JobClass::pFind(CN_JOB__CANCELLED);
   pJobCancelled->m_pJobClass = pJobClass__Cancelled;
@@ -112,7 +112,7 @@ void Step::vJob__EndNew(MP_Task mpTask)
 
   Job* pJobEnd = new Job__End(pDistJob);
   pJobEnd->m_iJobId = pDistJob->m_iJobId;
-  pJobEnd->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
+  pJobEnd->m_iParticipantNode = AM::pGrid()->m_iThisNode;
   
   JobClass* pJobClass__End = JobClass::pFind(CN_JOB__END);
   pJobEnd->m_pJobClass = pJobClass__End;
@@ -138,7 +138,7 @@ void Step::vJob__EndedNew(MP_Task mpTask)
 
   Job* pJobEnded = new Job__Ended(pDistJob);
   pJobEnded->m_iJobId = pDistJob->m_iJobId;
-  pJobEnded->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
+  pJobEnded->m_iParticipantNode = AM::pGrid()->m_iThisNode;
   
   JobClass* pJobClass__Ended = JobClass::pFind(CN_JOB__ENDED);
   pJobEnded->m_pJobClass = pJobClass__Ended;
@@ -164,7 +164,7 @@ void Step::vJob__ExecuteNew(MP_Task mpTask)
 
   Job* pJobExecute = new Job__Execute(pDistJob);
   pJobExecute->m_iJobId = pDistJob->m_iJobId;
-  pJobExecute->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
+  pJobExecute->m_iParticipantNode = AM::pGrid()->m_iThisNode;
   
   JobClass* pJobClass__Execute = JobClass::pFind(CN_JOB__EXECUTE);
   pJobExecute->m_pJobClass = pJobClass__Execute;
@@ -190,7 +190,7 @@ void Step::vJob__ExecutedNew(MP_Task mpTask)
 
   Job* pJobExecuted = new Job__Executed(pDistJob);
   pJobExecuted->m_iJobId = pDistJob->m_iJobId;
-  pJobExecuted->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
+  pJobExecuted->m_iParticipantNode = AM::pGrid()->m_iThisNode;
   
   JobClass* pJobClass__Executed = JobClass::pFind(CN_JOB__EXECUTED);
   pJobExecuted->m_pJobClass = pJobClass__Executed;

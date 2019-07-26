@@ -56,7 +56,7 @@ JobResult::~JobResult(void) noexcept(false)
 void JobResult::vAddError(eEC eError)
 {
   // get the node id
-  i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
+  i8 iNode = AM::pGrid()->m_iThisNode;
   
   // create a response vector
   m_pResponseVec = new ResponseVec();
@@ -87,7 +87,7 @@ void JobResult::vPrintLoadRows(void)
     return;
   }
 
-  RASSERT(iResponses == gpAttachMap->m_pGrid->m_nNodes);
+  RASSERT(iResponses == AM::pGrid()->m_nNodes);
   
   i8 iRowsProcessed = 0;
   i8 iRowsInvalid   = 0;
@@ -115,7 +115,7 @@ void JobResult::vPrintLoadRows(void)
 void JobResult::vPrintLocalErrors(void)
 {
   if (m_bHasError) {
-    vTrace("error: (node%lld) %s\n"_Stz, gpAttachMap->m_pGrid->iThisNode(),
+    vTrace("error: (node%lld) %s\n"_Stz, AM::pGrid()->iThisNode(),
            aEC[m_xResponse.m_eErrorCode]);
     return;
   }
@@ -127,7 +127,7 @@ void JobResult::vPrintLocalErrors(void)
 void JobResult::vPrintLocalRows(void)
 {
   if (m_bHasError) {
-    vTrace("error: (node%lld) %s\n"_Stz, gpAttachMap->m_pGrid->iThisNode(),
+    vTrace("error: (node%lld) %s\n"_Stz, AM::pGrid()->iThisNode(),
            aEC[m_xResponse.m_eErrorCode]);
     return;
   }
@@ -147,7 +147,7 @@ void JobResult::vPrintLocalRows(void)
 void JobResult::vPrintNodeErrors(void)
 {
   i8 iResponses = m_pResponseVec->nItems();
-  RASSERT(iResponses == gpAttachMap->m_pGrid->m_nNodes);
+  RASSERT(iResponses == AM::pGrid()->m_nNodes);
   
   if (m_bHasError) {
     for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
@@ -170,7 +170,7 @@ void JobResult::vPrintNodeRows(void)
     return;
   }
   
-  RASSERT(iResponses == gpAttachMap->m_pGrid->m_nNodes);
+  RASSERT(iResponses == AM::pGrid()->m_nNodes);
   
   if (AM::bMetadata()) {
     vTrace("metadata: %s\n"_Stz, m_sMetadata.aStz());
@@ -199,7 +199,7 @@ void JobResult::vPrintNodeZero(void)
     return;
   }
   
-  RASSERT(iResponses == gpAttachMap->m_pGrid->m_nNodes);
+  RASSERT(iResponses == AM::pGrid()->m_nNodes);
   
   vTrace("success: 0 rows affected\n"_Stz);
 }
@@ -211,7 +211,7 @@ void JobResult::vPrintLocalZero(void)
 {
   if (m_bHasError) {
     vTrace("error: (node%lld) %s\n"_Stz,
-           gpAttachMap->m_pGrid->iThisNode(),
+           AM::pGrid()->iThisNode(),
            aEC[m_xResponse.m_eErrorCode]);
     return;
   }

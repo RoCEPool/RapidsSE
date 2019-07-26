@@ -62,7 +62,7 @@ Job::Job(eCN eClassNo, Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
   //vTrace("%s: CREATING JOB %p %s\n"_Stz,
-  //       gpAttachMap->m_pGrid->pThisNode()->aNodeName(), this, aCN[eClass()]);
+  //       AM::pGrid()->pThisNode()->aNodeName(), this, aCN[eClass()]);
   
   m_iJobId    = AM::iNextJobId();
   m_iParentId = C_UNKNOWN;
@@ -166,7 +166,7 @@ bool Job::bIsForeign(i8 iJobId)
   i8 iOrigin = Job::iOriginatorNode(iJobId);
   
   bool bIsForeign =
-   iOrigin == gpAttachMap->m_pGrid->m_iThisNode ? false : true;
+   iOrigin == AM::pGrid()->m_iThisNode ? false : true;
   
   return bIsForeign;
 }
@@ -442,7 +442,7 @@ Stz* Job::szNodeNm(void)
   
   i8 i_Node = iOriginatorNode();
   
-  Stz* szNodeNm = gpAttachMap->m_pGrid->pGetNode(i_Node)->aNodeName();
+  Stz* szNodeNm = AM::pGrid()->pGetNode(i_Node)->aNodeName();
   
   return szNodeNm;
 }
@@ -557,7 +557,7 @@ void Job::vShow(void)
 /*----------------------------------------------------------------------------*/
 eEC Jobs::eJob_checkCluster(Interface::Session* pSession)
 {
-  if (gpAttachMap->m_pGrid->m_bHasStarted)
+  if (AM::pGrid()->m_bHasStarted)
     return EC_NONE;
   else
     return EC_CLUSTER_NOT_CONNECTED;

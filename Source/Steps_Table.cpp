@@ -275,7 +275,7 @@ ENTRY("vTableDump"_Stz);
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
-  for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nSlotsPerNode; iPartition++) {
+  for (i8 iPartition = 0; iPartition < AM::pGrid()->m_nSlotsPerNode; iPartition++) {
     TablePtn* pPartition = pTable->pPartition(iPartition);
     vTrace("Partition %lld\n"_Stz, iPartition);
     pPartition->vDump();
@@ -903,7 +903,7 @@ void Step::vTableVisualize(MP_Task mpTask)
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
-  for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nSlotsPerNode; iPartition++) {
+  for (i8 iPartition = 0; iPartition < AM::pGrid()->m_nSlotsPerNode; iPartition++) {
     TablePtn* pPartition = pTable->pPartition(iPartition);
     vTrace("Table Partition %lld\n"_Stz, iPartition);
     pPartition->vVisualizeTable();

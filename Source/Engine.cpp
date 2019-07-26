@@ -449,8 +449,8 @@ void Engine::vMonitorProfile(s48K& sPortrait)
   Magnitudes::vByteMag(gpAttachMap->Arg.m_iRegionSize,sRegionMag);
 
   i8 iPercentFree = gpAttachMap->m_pBufferPool->iFreePercent();
-  Stz* aNodeName  = gpAttachMap->m_pGrid->pGetNode(gxArguments.m_iThisNode)->aNodeName();
-  bool bStarted   = gpAttachMap->m_pGrid->bHasStarted();
+  Stz* aNodeName  = AM::pGrid()->pGetNode(gxArguments.m_iThisNode)->aNodeName();
+  bool bStarted   = AM::pGrid()->bHasStarted();
   bool bDdlLocked = gpAttachMap->m_okDdlLock.bIsWriteLocked();
   
   sPortrait.vSprint("Node %s region %s free %lld%% uptime %llds (%s)\n"
@@ -477,7 +477,7 @@ void Engine::vMonitorProfile(s48K& sPortrait)
 void Engine::vOpenActionSequence(void)
 {
   bool bStarting = false;
-  if (0 == gpAttachMap->m_pGrid->m_iThisNode && gxArguments.m_bStart)
+  if (0 == AM::pGrid()->m_iThisNode && gxArguments.m_bStart)
     bStarting = true;
   
 }
@@ -488,7 +488,7 @@ void Engine::vOpenActionSequence(void)
 void Engine::vOpenActivityLog(void)
 {
   bool bStarting = false;
-  if (0 == gpAttachMap->m_pGrid->m_iThisNode && gxArguments.m_bStart)
+  if (0 == AM::pGrid()->m_iThisNode && gxArguments.m_bStart)
     bStarting = true;
   
   Log::vOpenBySE(bStarting);
@@ -837,22 +837,22 @@ void Engine::vStartSystem(void)
   
   gpAttachMap->m_pGrid = new Grid(gxArguments.m_nNodes, gxArguments.m_nSlotsPerNode);
   
-  for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+  for (i8 i_Node = 0; i_Node < AM::pGrid()->m_nNodes; i_Node++) {
     Node* pNode = new Node(i_Node,
                            gxArguments.m_xNodes[i_Node].m_sNodeName,
                            gxArguments.m_xNodes[i_Node].m_sIPAddress,
                            gxArguments.m_xNodes[i_Node].m_iPortNo);
     ASSERT(CN_NODE == pNode->eClass());
-    gpAttachMap->m_pGrid->vAddNode(pNode);
+    AM::pGrid()->vAddNode(pNode);
   }
   
-  Node* pThisNode = gpAttachMap->m_pGrid->pFindNode(gxArguments.m_sNodeName);
+  Node* pThisNode = AM::pGrid()->pFindNode(gxArguments.m_sNodeName);
   if (! pThisNode)
     vFatal("Cannot fine Node %s in the cluster"_Stz,
           gxArguments.m_sNodeName.aChar());
   
   i8 iThisNodeNo = pThisNode->iNodeNo();
-  gpAttachMap->m_pGrid->vThisNode(iThisNodeNo);
+  AM::pGrid()->vThisNode(iThisNodeNo);
 
   gpAttachMap->m_ixNextJobId = Job::iAsNodeNo_Bits(iThisNodeNo);
   
@@ -861,11 +861,11 @@ void Engine::vStartSystem(void)
   gpAttachMap->m_pApiState = new ApiState;
   
   // create the tx sets
-  gpAttachMap->m_pTxSet = new TxSet(gpAttachMap->m_pGrid->iThisNode());
+  gpAttachMap->m_pTxSet = new TxSet(AM::pGrid()->iThisNode());
   
   
   // initialize the plan number
-  gpAttachMap->m_ixNextPlanId = gpAttachMap->m_pGrid->iThisNode() << 48;
+  gpAttachMap->m_ixNextPlanId = AM::pGrid()->iThisNode() << 48;
 
   gpAttachMap->m_pOriginatingJobs   = new JobList(bJobCompare,JL_ORIGINATING);
   gpAttachMap->m_pParticipatingJobs = new JobList(bJobCompare,JL_PARTICIPATING);
@@ -906,7 +906,7 @@ void Engine::vStartSystem(void)
   
   if (gxArguments.m_bVerbose) {
     vInfo("Engine instance %s started\n"_Stz,gxArguments.m_sRegionName.aChar());
-    gpAttachMap->m_pGrid->vDumpPartitioning();
+    AM::pGrid()->vDumpPartitioning();
   }
 }
 

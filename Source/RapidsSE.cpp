@@ -955,7 +955,7 @@ eEC RapidsSE_GetTableColumnRow(i8 iTrace, Session* pSession, void* aJob,
   Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(aJob);
   API_LOC(310);
   
-  //i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
+  //i8 iNode = AM::pGrid()->m_iThisNode;
   Table* pTable =
   (Table*)StrLib::iToI8(pJob_ListColumns->m_xResponse.m_sResponse.aChar());
   API_LOC(320);
@@ -998,7 +998,7 @@ eEC RapidsSE_GetTableColumnRowCount(i8 iTrace, Session* pSession, void* aJob,
   Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(aJob);
   API_LOC(310);
 
-  //i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
+  //i8 iNode = AM::pGrid()->m_iThisNode;
   Table* pTable =
     (Table*)StrLib::iToI8(pJob_ListColumns->m_xResponse.m_sResponse.aChar());
   API_LOC(320);

@@ -42,7 +42,6 @@ namespace StorageEngine
     CarryOver*    m_pCarryOver;
     Lock          m_okDdlLock;
     Lock          m_okDicLock;
-    Grid*         m_pGrid;
     bool          m_bMarkApiAll;
     bool          m_bMarkApi[AC_ENUMS];
     bool          m_bMarkJobAll;
@@ -56,6 +55,7 @@ namespace StorageEngine
     i8            m_iEpoch;
     Formatters    m_oFormatters;
     ForthWord*    m_pForthWord;
+    Grid*         m_pGrid;
     HeapMem       m_xHeapMem;
     LockTracker   m_oLockTracker;
     JobList*      m_pOriginatingJobs;

@@ -95,7 +95,7 @@ void Step::vNodePartitions(MP_Task mpTask)
 {
   ENTRY("vNodePartitions"_Stz);
   
-  mpTask->m_pDataStack->vPushI8(gpAttachMap->m_pGrid->m_nSlotsPerNode);
+  mpTask->m_pDataStack->vPushI8(AM::pGrid()->m_nSlotsPerNode);
   
   EXIT();
 }
@@ -220,7 +220,7 @@ void Step::vNodeStatus(MP_Task mpTask)
 
   s256 s;
   
-  Grid* pGrid = gpAttachMap->m_pGrid;
+  Grid* pGrid = AM::pGrid();
   
   if (Region::bTest(gpAttachMap->Arg.m_sRegionName))
     s.vSprint("row: ('%s', '%s', 'running')"_Stz,

@@ -203,29 +203,29 @@ void Step::vJobAssertBegin(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.assertBegin"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  if (Job::iNodeNo(pJob->m_iJobId) == gpAttachMap->m_pGrid->m_iThisNode) {
+  if (Job::iNodeNo(pJob->m_iJobId) == AM::pGrid()->m_iThisNode) {
     
     if (! pJob->m_bWasReceived)
       vFatal("job.assertOriginator: "
              "Job::m_bWasReceived is false [Job %s on node %lld]\n"_Stz,
-             aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+             aCN[pJob->eClass()],AM::pGrid()->m_iThisNode);
     
     if (JL_NONE != pJob->m_eJobList)
       vFatal("job.assertBegin: "
              "Job::m_eJobList is not JL_none [Job %s on node %lld]\n"_Stz,
-             aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+             aCN[pJob->eClass()],AM::pGrid()->m_iThisNode);
     
     Job* pJobFound = AM::pOriginatingJobs()->pFindJob(pJob->m_iJobId);
     if (! pJobFound)
       vFatal("job.assertBegin: "
              "Job not found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
-             aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+             aCN[pJob->eClass()],AM::pGrid()->m_iThisNode);
     
     pJobFound = AM::pParticipatingJobs()->pFindJob(pJob->m_iJobId);
     if (pJobFound)
       vFatal("job.assertBegin: "
              "Job found in ParticipatingJobs [Job %s on node %lld]\n"_Stz,
-             aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+             aCN[pJob->eClass()],AM::pGrid()->m_iThisNode);
     
     EXIT();
     return;
@@ -236,24 +236,24 @@ void Step::vJobAssertBegin(MP_Task mpTask)
   if (! pJob->m_bWasReceived)
     vFatal("job.assertOriginator: "
            "Job::m_bWasReceived is false [Job %s on node %lld]\n"_Stz,
-           aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+           aCN[pJob->eClass()],AM::pGrid()->m_iThisNode);
   
   if (JL_NONE != pJob->m_eJobList)
     vFatal("job.assertBegin: "
            "Job::m_eJobList is not JL_none [Job %s on node %lld]\n"_Stz,
-           aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+           aCN[pJob->eClass()],AM::pGrid()->m_iThisNode);
   
   Job* pJobFound = AM::pOriginatingJobs()->pFindJob(pJob->m_iJobId);
   if (pJobFound)
     vFatal("job.assertBegin: "
            "Job found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
-           aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+           aCN[pJob->eClass()],AM::pGrid()->m_iThisNode);
   
   pJobFound = AM::pParticipatingJobs()->pFindJob(pJob->m_iJobId);
   if (pJobFound)
     vFatal("job.assertBegin: "
            "Job found in ParticipatingJobs [Job %s on node %lld]\n"_Stz,
-           aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+           aCN[pJob->eClass()],AM::pGrid()->m_iThisNode);
   
   EXIT();
 }
@@ -273,19 +273,19 @@ void Step::vJobAssertNeutral(MP_Task mpTask)
   if (JL_NONE != pJob->m_eJobList)
     vFatal("job.assertNeutral: "
            "Job::m_eJobList is not JL_none [Job %s on node %lld]\n"_Stz,
-           aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+           aCN[pJob->eClass()],AM::pGrid()->m_iThisNode);
   
   Job* pJobFound = AM::pOriginatingJobs()->pFindJob(pJob->m_iJobId);
   if (pJobFound)
     vFatal("job.assertNeutral: "
            "Job found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
-           aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+           aCN[pJob->eClass()],AM::pGrid()->m_iThisNode);
 
   pJobFound = AM::pParticipatingJobs()->pFindJob(pJob->m_iJobId);
   if (pJobFound)
     vFatal("job.assertNeutral: "
            "Job found in ParticipatingJobs [Job %s on node %lld]\n"_Stz,
-           aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+           aCN[pJob->eClass()],AM::pGrid()->m_iThisNode);
 
   EXIT();
 }
@@ -305,18 +305,18 @@ void Step::vJobAssertOriginator(MP_Task mpTask)
   if (JL_ORIGINATING != pJob->m_eJobList)
     vFatal("job.assertOriginator: "
            "Job::m_eJobList is not JL_ORIGINATING [Job %s on node %lld]\n"_Stz,
-           aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+           aCN[pJob->eClass()],AM::pGrid()->m_iThisNode);
 
   if (pJob->m_bWasReceived)
     vFatal("job.assertOriginator: "
            "Job::m_bWasReceived is true [Job %s on node %lld]\n"_Stz,
-           aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+           aCN[pJob->eClass()],AM::pGrid()->m_iThisNode);
   
   Job* pJobFound = AM::pOriginatingJobs()->pFindJob(pJob->m_iJobId);
   if (! pJobFound)
     vFatal("job.assertOriginator: "
            "Job not found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
-           aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+           aCN[pJob->eClass()],AM::pGrid()->m_iThisNode);
 
   EXIT();
 }
@@ -336,18 +336,18 @@ void Step::vJobAssertParticipant(MP_Task mpTask)
   if (JL_PARTICIPATING != pJob->m_eJobList)
     vFatal("job.assertParticipant: "
            "Job::m_eJobList is not JL_PARTICIPATING [Job %s on node %lld]\n"_Stz,
-           aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+           aCN[pJob->eClass()],AM::pGrid()->m_iThisNode);
   
   if (! pJob->m_bWasReceived)
     vFatal("job.assertOriginator: "
            "Job::m_bWasReceived is false [Job %s on node %lld]\n"_Stz,
-           aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+           aCN[pJob->eClass()],AM::pGrid()->m_iThisNode);
   
   Job* pJobFound = AM::pParticipatingJobs()->pFindJob(pJob->m_iJobId);
   if (! pJobFound)
     vFatal("job.assertParticipant: "
            "Job not found in ParticipatingJobs [Job %s on node %lld]\n"_Stz,
-           aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+           aCN[pJob->eClass()],AM::pGrid()->m_iThisNode);
 
   EXIT();
 }
@@ -367,7 +367,7 @@ void Step::vJobAssertReceived(MP_Task mpTask)
   if (! pJob->m_bWasReceived)
     vFatal("job.assertReceived: "
            "Job::m_bWasReceived is false [Job %s on node %lld]\n"_Stz,
-           aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
+           aCN[pJob->eClass()],AM::pGrid()->m_iThisNode);
   
   EXIT();
 }

@@ -268,7 +268,7 @@ Job* Jobs::pJob_SubInserter_pre(Interface::Session* pSession)
 //  bool bResult = pJob_SubInserter->bPopulateJob(pTokenVec);
 //  
 //  if ( !bResult) {
-//    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
+//    i8 iNode = AM::pGrid()->m_iThisNode;
 //    pJob_SubInserter->m_bHasError = true;
 //    pJob_SubInserter->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
 //  }

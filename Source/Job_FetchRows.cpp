@@ -645,7 +645,7 @@ void Jobs::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
   
   if ( pJob_FetchRows->m_bHasError ) {
     
-    vTrace("error: (node%lld) %s\n"_Stz, gpAttachMap->m_pGrid->iThisNode(),
+    vTrace("error: (node%lld) %s\n"_Stz, AM::pGrid()->iThisNode(),
              aEC[pJob_FetchRows->m_xResponse.m_eErrorCode]);
    
     return;
