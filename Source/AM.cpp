@@ -5,7 +5,6 @@
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
-extern Log* gpLog;
 
 // Arg
 bool AM::bDeveloper(void)     { return gpAttachMap->Arg.m_bDeveloper;         }

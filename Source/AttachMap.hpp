@@ -8,12 +8,13 @@ namespace StorageEngine
   class AttachMap : public PoolBuffer
   {
   friend class AM;
+  
   private:
     i8    m_iPid;
     Birth m_oBirth;
-  public:
     Now   m_oNow;
   
+  public:
     struct {
       bool m_bDeveloper;
       i8   m_nDummyLoop;    // loop count for dummy threads
@@ -31,7 +32,7 @@ namespace StorageEngine
       i8   m_nSubInserters;
       i8   m_nSubLoaders;
       i8   m_nThreads;      // number of general threads
-   } Arg;
+    } Arg;
   
     ApiState*     m_pApiState;
     bool          m_bBootError;
@@ -75,19 +76,19 @@ namespace StorageEngine
     TxSet*        m_pTxSet;
     ForthWord*    m_pWord;
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // these should be in Args
-  bool          m_bVerbose;
-  bool          m_bTracepoint;
-  bool          m_bProgress;
-  bool          m_bMetadata;
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // these should be in Args
+    bool          m_bVerbose;
+    bool          m_bTracepoint;
+    bool          m_bProgress;
+    bool          m_bMetadata;
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // remove?
-  i8            m_nIndexEntries;  // no of entries per buffer
-  i8            m_nIndexHeight;   // no of buffer height
-  i8            m_nIndexLevels;  // no of offsets per index buffer entry
-  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // remove?
+    i8            m_nIndexEntries;  // no of entries per buffer
+    i8            m_nIndexHeight;   // no of buffer height
+    i8            m_nIndexLevels;  // no of offsets per index buffer entry
+    
     // must be last
     Footer m_xFooter;
     
