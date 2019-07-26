@@ -174,15 +174,15 @@ void Step::vJobAddParticipant(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.addParticipant"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  gpAttachMap->m_pParticipatingJobs->vGrabLock();
-  gpAttachMap->m_pParticipatingJobs->vAddJob(pJob);
-  gpAttachMap->m_pParticipatingJobs->vDropLock();
+  AM::pParticipatingJobs()->vGrabLock();
+  AM::pParticipatingJobs()->vAddJob(pJob);
+  AM::pParticipatingJobs()->vDropLock();
   
   if (pJob->m_bMarkActivity) {
     JobLog::vNote(pJob,"Added to ParticipantList: %s %p "_Stz,
                           aCN[pJob->eClass()],
                           pJob);
-    gpAttachMap->m_pParticipatingJobs->vMarkContents(pJob->m_iJobId);
+    AM::pParticipatingJobs()->vMarkContents(pJob->m_iJobId);
   }
   
   ActLog::vAdd(mpTask->m_pJob,
@@ -221,7 +221,7 @@ void Step::vJobAssertBegin(MP_Task mpTask)
              "Job not found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
              aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
     
-    pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(pJob->m_iJobId);
+    pJobFound = AM::pParticipatingJobs()->pFindJob(pJob->m_iJobId);
     if (pJobFound)
       vFatal("job.assertBegin: "
              "Job found in ParticipatingJobs [Job %s on node %lld]\n"_Stz,
@@ -249,7 +249,7 @@ void Step::vJobAssertBegin(MP_Task mpTask)
            "Job found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
   
-  pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(pJob->m_iJobId);
+  pJobFound = AM::pParticipatingJobs()->pFindJob(pJob->m_iJobId);
   if (pJobFound)
     vFatal("job.assertBegin: "
            "Job found in ParticipatingJobs [Job %s on node %lld]\n"_Stz,
@@ -281,7 +281,7 @@ void Step::vJobAssertNeutral(MP_Task mpTask)
            "Job found in OriginatingJobs [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
 
-  pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(pJob->m_iJobId);
+  pJobFound = AM::pParticipatingJobs()->pFindJob(pJob->m_iJobId);
   if (pJobFound)
     vFatal("job.assertNeutral: "
            "Job found in ParticipatingJobs [Job %s on node %lld]\n"_Stz,
@@ -343,7 +343,7 @@ void Step::vJobAssertParticipant(MP_Task mpTask)
            "Job::m_bWasReceived is false [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eClass()],gpAttachMap->m_pGrid->m_iThisNode);
   
-  Job* pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(pJob->m_iJobId);
+  Job* pJobFound = AM::pParticipatingJobs()->pFindJob(pJob->m_iJobId);
   if (! pJobFound)
     vFatal("job.assertParticipant: "
            "Job not found in ParticipatingJobs [Job %s on node %lld]\n"_Stz,
@@ -721,7 +721,7 @@ void Step::vJobFindParticipant(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iJobId) )
     THROW_INVALID_DSTACK("job::findPartcipant"_Stz);
     
-  Job* pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(iJobId);
+  Job* pJobFound = AM::pParticipatingJobs()->pFindJob(iJobId);
   RASSERT(pJobFound);
   
   ActLog::vAdd(pJobFound,AN_FIND_PARTICIPANT,mpTask->pJob());
@@ -1428,26 +1428,26 @@ void Step::vJobRemoveParticipant(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.id@"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  gpAttachMap->m_pParticipatingJobs->vGrabLock();
-  bool bRemove = gpAttachMap->m_pParticipatingJobs->bRemoveJob(pJob);
-  gpAttachMap->m_pParticipatingJobs->vDropLock();
+  AM::pParticipatingJobs()->vGrabLock();
+  bool bRemove = AM::pParticipatingJobs()->bRemoveJob(pJob);
+  AM::pParticipatingJobs()->vDropLock();
  
   if (! bRemove) {
     vTrace("------------------------------------\n"_Stz);
     vTrace("%s Failed to Remove JobId %lld from participant\n"_Stz, aCN[pJob->eClass()],pJob->m_iJobId);
     vTrace("------------------------------------\n"_Stz);
     
-    gpAttachMap->m_pParticipatingJobs->vGrabLock();
-    gpAttachMap->m_pParticipatingJobs->vContentDump();
-    bRemove = gpAttachMap->m_pParticipatingJobs->bRemoveJob(pJob);
-    gpAttachMap->m_pParticipatingJobs->vDropLock();
+    AM::pParticipatingJobs()->vGrabLock();
+    AM::pParticipatingJobs()->vContentDump();
+    bRemove = AM::pParticipatingJobs()->bRemoveJob(pJob);
+    AM::pParticipatingJobs()->vDropLock();
   }
   
   if (pJob->m_bMarkActivity) {
     JobLog::vNote(pJob,"Removed from Participant List: "_Stz,
                        aCN[pJob->eClass()],
                        pJob);
-    gpAttachMap->m_pParticipatingJobs->vMarkContents(pJob->m_iJobId);
+    AM::pParticipatingJobs()->vMarkContents(pJob->m_iJobId);
   }
   
   ActLog::vAdd(mpTask->m_pJob,
@@ -1978,14 +1978,14 @@ void Step::vJobWaitParticipant(MP_Task mpTask)
   Job* pJobFound = nullptr;
 
   while ( ! pJobFound ) {
-    gpAttachMap->m_pParticipatingJobs->vGrabLock();
-    pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
-    gpAttachMap->m_pParticipatingJobs->vDropLock();
+    AM::pParticipatingJobs()->vGrabLock();
+    pJobFound = AM::pParticipatingJobs()->pFindJob(pFindJob);
+    AM::pParticipatingJobs()->vDropLock();
   }
 
   delete pFindJob;
   
-//  Job* pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(iJobId);
+//  Job* pJobFound = AM::pParticipatingJobs()->pFindJob(iJobId);
 //  RASSERT(pJobFound);
   
   mpTask->m_pDataStack->vPushPointer(pJobFound);

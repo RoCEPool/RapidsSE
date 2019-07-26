@@ -41,10 +41,12 @@ Op::Op(eCN eClassNo, Stz* szOpLabel, Job* pJob)
   m_sOpLabel      = szOpLabel;
   m_pJob          = pJob;
   m_pTask         = nullptr;
+  
   m_bAckJobEnd    = true;
   m_pOperandQueue = new OperandQueue;
+  m_iWorkQuanta   = C_UNKNOWN;
   m_pOpOut        = nullptr;
-
+  
   m_fpOpFun       = nullptr;
   m_fpDrain       = nullptr;
 }
@@ -225,6 +227,34 @@ void Op::vPipeOut_endMarker(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop operand queue                                                          */
+/*----------------------------------------------------------------------------*/
+Operand* Op::pPopOperand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  Operand* pOperand = nullptr;
+  
+  vGrabLock();
+  
+  pOperand = m_pOperandQueue->pPopOperand();
+  
+  if (pOperand)
+    vDropLock();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (pOperand) {
+    vTrace("%s::pPopOperand : %p %s\n"_Stz,
+           m_sOpLabel.aStz(),
+           pOperand,
+           aCN[pOperand->eClass()]);
+  }
+  
+  return pOperand;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get task                                                                   */
 /*----------------------------------------------------------------------------*/
 Tasks::Task* Op::pTask(void)
@@ -245,31 +275,13 @@ void Op::vTask(Tasks::Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop operand queue                                                          */
+/* set work quanta                                                            */
 /*----------------------------------------------------------------------------*/
-Operand* Op::pPopOperand(void)
+void Op::vWorkQuanta(i8 iWorkQuanta)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Operand* pOperand = nullptr;
-  
-  vGrabLock();
-  
-  pOperand = m_pOperandQueue->pPopOperand();
-  
-  if (pOperand)
-    vDropLock();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  if (pOperand) {
-    vTrace("%s::pPopOperand : %p %s\n"_Stz,
-           m_sOpLabel.aStz(),
-           pOperand,
-           aCN[pOperand->eClass()]);
-  }
-  
-  return pOperand;
+  m_iWorkQuanta = iWorkQuanta;
 }
 
 /*============================================================================*/

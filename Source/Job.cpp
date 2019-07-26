@@ -221,7 +221,7 @@ void Job::vStateDiagram(s256& sDiagram, eCN eJobClass)
 {
   TaskList* pExecuting     = AM::pQueues()->m_pExecutingSet;
   JobList*  pOriginating   = gpAttachMap->m_pOriginatingJobs;
-  JobList*  pParticipating = gpAttachMap->m_pParticipatingJobs;
+  JobList*  pParticipating = AM::pParticipatingJobs();
 
   sDiagram = ""_Stz;
   

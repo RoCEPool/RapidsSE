@@ -30,9 +30,9 @@ bool Prompt::bPrompt_plist(SePrompt* pPrompt)
   vTrace("Participant List\n"_Stz);
   vTrace("------------------------------------\n"_Stz);
   
-  gpAttachMap->m_pParticipatingJobs->vGrabLock();
-  gpAttachMap->m_pParticipatingJobs->vContentDump();
-  gpAttachMap->m_pParticipatingJobs->vDropLock();
+  AM::pParticipatingJobs()->vGrabLock();
+  AM::pParticipatingJobs()->vContentDump();
+  AM::pParticipatingJobs()->vDropLock();
 
   return true;
 }

@@ -11,8 +11,10 @@ namespace PushDown
     s32            m_sOpLabel;       // label of this op
     Jobs::Job*     m_pJob;           // job this operator belongs to
     Tasks::Task*   m_pTask;          // task running this op
+  
     bool           m_bAckJobEnd;     // ack job on end marker
     OperandQueue*  m_pOperandQueue;  // the input queue being processed
+    i8             m_iWorkQuanta;    // quanta of work between pulses
     Op*            m_pOpOut;         // where results get piped (queued)
 
     bool (*m_fpOpFun)(void* aThis);  // function which does the op
@@ -44,6 +46,7 @@ namespace PushDown
     Operand* pPopOperand(void);
     Tasks::Task* pTask(void);
     void vTask(Tasks::Task* pTask);
+    void vWorkQuanta(i8 iWorkQuanta);
   };
 
   Op* _pOp(void* aAddr);

@@ -162,7 +162,7 @@ bool Job_SubPublish::bBegin(void)
   m_pRowAgg->vTable(m_pTable);
   
   m_pJob_Publish =
-    _pJob_Publish(gpAttachMap->m_pParticipatingJobs->pFindJob(m_iPublishJobId));
+    _pJob_Publish(AM::pParticipatingJobs()->pFindJob(m_iPublishJobId));
   
   s256 aFilePath = m_pJob_Publish->m_sFilePath;
   

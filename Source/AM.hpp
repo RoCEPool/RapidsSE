@@ -31,6 +31,7 @@ namespace StorageEngine
     static ForthWord* pForthWord(void);
     static i8   nIndexEntries(void);
     static i8   iPid(void);
+    static JobList* pParticipatingJobs(void);
     static bool bProgress(void);
     static bool bMetadata(void);
     static i8   iNextPlanId(void);

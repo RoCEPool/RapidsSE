@@ -293,7 +293,7 @@ bool Job_WriteBuffer::bInsertRows_LowMem(void)
 //
 //    delete pFindJob;
     
-    Job* pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(m_iParentJobId);
+    Job* pJobFound = AM::pParticipatingJobs()->pFindJob(m_iParentJobId);
 
     Job_LoadTable* pJob_LoadTable = static_cast<Job_LoadTable*>(pJobFound);
 

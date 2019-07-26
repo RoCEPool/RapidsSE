@@ -26,17 +26,18 @@ i8   AM::nThreads(void)       { return gpAttachMap->Arg.m_nThreads;           }
 
 //
 i8   AM::iElapsedSsec(void)   { return gpAttachMap->m_oBirth.iElapsedSsec();  }
-ForthWord* AM::pForthWord(void)     { return gpAttachMap->m_pForthWord;       }
+ForthWord* AM::pForthWord(void) { return gpAttachMap->m_pForthWord;           }
 i8   AM::nIndexEntries(void)  { return gpAttachMap->m_nIndexEntries;          }
+JobList* AM::pParticipatingJobs(void) { return gpAttachMap->m_pParticipatingJobs; }
 i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
 bool AM::bProgress(void)      { return gpAttachMap->m_bProgress;              }
 bool AM::bMetadata(void)      { return gpAttachMap->m_bMetadata;              }
 i8   AM::iNextPlanId(void)    { return ++ gpAttachMap->m_ixNextPlanId;        }
 Queues* AM::pQueues(void)     { return gpAttachMap->m_pQueues;                }
-ResourceTracker* AM::pResourceTracker(void)  { return & gpAttachMap->m_oResourceTracker; }
+ResourceTracker* AM::pResourceTracker(void) { return & gpAttachMap->m_oResourceTracker; }
 Dic* AM::pRootDic(void)       { return & gpAttachMap->m_oRootDic;             }
-Statistics* AM::pStatistics(void)   { return & gpAttachMap->m_oStatistics;    }
-StepTiming* AM::pStepTiming(void)   { return gpAttachMap->m_pStepTiming;      }
+Statistics* AM::pStatistics(void) { return & gpAttachMap->m_oStatistics;      }
+StepTiming* AM::pStepTiming(void)  { return gpAttachMap->m_pStepTiming;       }
 PoolBuffer* AM::pTakenBuffers(void) { return gpAttachMap->m_pTakenBuffers;    }
 i8   AM::nTakenBytes(void)    { return gpAttachMap->m_nTakenBytes;            }
 ForthWord* AM::pTenants(void) { return gpAttachMap->m_pTenants;               }

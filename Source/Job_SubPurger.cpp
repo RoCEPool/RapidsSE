@@ -166,7 +166,7 @@ bool Job_SubPurger::bBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBPURGER,_FOOTER_);
   
-  Job* pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(m_iPurgeJobId);
+  Job* pJobFound = AM::pParticipatingJobs()->pFindJob(m_iPurgeJobId);
   RASSERT(pJobFound);
   
   m_pJob_Purge = _pJob_Purge(pJobFound);
