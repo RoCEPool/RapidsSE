@@ -91,7 +91,7 @@ Session::Session(i8 iPartition)
   m_bSessionExiting = false;
   m_pJobStack       = new Stack;
 
-  m_pSessionState   = gpAttachMap->m_pApiState->pAllocState(this);
+  m_pSessionState   = AM::pApiState()->pAllocState(this);
   m_pCommand        = new Command;
 
   _checkInitialised_(CN_SESSION);
@@ -106,7 +106,7 @@ Session::~Session(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
-  gpAttachMap->m_pApiState->vFreeState(this);
+  AM::pApiState()->vFreeState(this);
   
   RASSERT(0 == m_pJobStack->nValues());
   delete m_pJobStack;

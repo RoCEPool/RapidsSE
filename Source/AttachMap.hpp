@@ -36,7 +36,7 @@ namespace StorageEngine
       i8   m_nThreads;      // number of general threads
     } Arg;
   
-    ApiState*     m_pApiState;
+  public:
     bool          m_bMarkApiAll;
     bool          m_bMarkApi[AC_ENUMS];
     bool          m_bMarkJobAll;
@@ -45,8 +45,9 @@ namespace StorageEngine
     bool          m_bMarkResource[SR_ENUMS];
     EnumFlags     m_oMarkAction;
     EnumFlags     m_oMarkTrace;
-    i8            m_nObjectsInPool[CN_ENUMS];
   private:
+    i8            m_nObjectsInPool[CN_ENUMS];
+    ApiState*     m_pApiState;
     bool          m_bBootError;
     BufferPool*   m_pBufferPool;
     CarryOver*    m_pCarryOver;
@@ -80,7 +81,6 @@ namespace StorageEngine
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // these should be in Args
-  private:
     bool          m_bVerbose;
     bool          m_bTracepoint;
     bool          m_bProgress;

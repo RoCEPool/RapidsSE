@@ -34,7 +34,7 @@ bool Prompt::bPrompt_apiState(SePrompt* pPrompt)
   if (nTokens == 2)
     pArg = pTokenVec->pGet(1);
   
-  gpAttachMap->m_pApiState->vDump();
+  AM::pApiState()->vDump();
   
   return true;
 }

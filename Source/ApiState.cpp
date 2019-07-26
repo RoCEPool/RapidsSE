@@ -86,7 +86,7 @@ ApiState::~ApiState(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void ApiState::vMarkApiLoc(Session* pSession, i8 iApiLoc)
 {
-  gpAttachMap->m_pApiState->vApiLoc(pSession,iApiLoc);
+  AM::pApiState()->vApiLoc(pSession,iApiLoc);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -94,7 +94,7 @@ void ApiState::vMarkApiLoc(Session* pSession, i8 iApiLoc)
 /*----------------------------------------------------------------------------*/
 void ApiState::vMarkCall(Session* pSession, eAC eApiCall)
 {
-  gpAttachMap->m_pApiState->vApiCall(pSession,eApiCall);
+  AM::pApiState()->vApiCall(pSession,eApiCall);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -102,7 +102,7 @@ void ApiState::vMarkCall(Session* pSession, eAC eApiCall)
 /*----------------------------------------------------------------------------*/
 void ApiState::vMarkError(Session* pSession, eEC eError)
 {
-  gpAttachMap->m_pApiState->vApiError(pSession,eError);
+  AM::pApiState()->vApiError(pSession,eError);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -110,7 +110,7 @@ void ApiState::vMarkError(Session* pSession, eEC eError)
 /*----------------------------------------------------------------------------*/
 void ApiState::vMarkIncBegun(Session* pSession)
 {
-  gpAttachMap->m_pApiState->vIncBegun(pSession);
+  AM::pApiState()->vIncBegun(pSession);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -118,7 +118,7 @@ void ApiState::vMarkIncBegun(Session* pSession)
 /*----------------------------------------------------------------------------*/
 void ApiState::vMarkIncCancelled(Session* pSession)
 {
-  gpAttachMap->m_pApiState->vIncCancelled(pSession);
+  AM::pApiState()->vIncCancelled(pSession);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -126,7 +126,7 @@ void ApiState::vMarkIncCancelled(Session* pSession)
 /*----------------------------------------------------------------------------*/
 void ApiState::vMarkIncEnded(Session* pSession)
 {
-  gpAttachMap->m_pApiState->vIncEnded(pSession);
+  AM::pApiState()->vIncEnded(pSession);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -134,7 +134,7 @@ void ApiState::vMarkIncEnded(Session* pSession)
 /*----------------------------------------------------------------------------*/
 void ApiState::vMarkIncExecuted(Session* pSession)
 {
-  gpAttachMap->m_pApiState->vIncExecuted(pSession);
+  AM::pApiState()->vIncExecuted(pSession);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -142,7 +142,7 @@ void ApiState::vMarkIncExecuted(Session* pSession)
 /*----------------------------------------------------------------------------*/
 void ApiState::vMarkJob(Session* pSession, Job* pJob)
 {
-  gpAttachMap->m_pApiState->vApiJob(pSession,pJob);
+  AM::pApiState()->vApiJob(pSession,pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -150,7 +150,7 @@ void ApiState::vMarkJob(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 void ApiState::vMarkJobLoc(Session* pSession, i8 iJobLoc)
 {
-  gpAttachMap->m_pApiState->vJobLoc(pSession,iJobLoc);
+  AM::pApiState()->vJobLoc(pSession,iJobLoc);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -158,7 +158,7 @@ void ApiState::vMarkJobLoc(Session* pSession, i8 iJobLoc)
 /*----------------------------------------------------------------------------*/
 void ApiState::vMarkReturn(Session* pSession)
 {
-  gpAttachMap->m_pApiState->vApiReturn(pSession);
+  AM::pApiState()->vApiReturn(pSession);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -166,7 +166,7 @@ void ApiState::vMarkReturn(Session* pSession)
 /*----------------------------------------------------------------------------*/
 void ApiState::vMarkSenLoc(Session* pSession, i8 iSenLoc)
 {
-  gpAttachMap->m_pApiState->vApiLoc(pSession,iSenLoc);
+  AM::pApiState()->vApiLoc(pSession,iSenLoc);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -174,7 +174,7 @@ void ApiState::vMarkSenLoc(Session* pSession, i8 iSenLoc)
 /*----------------------------------------------------------------------------*/
 void ApiState::vMarkSignalled(Session* pSession)
 {
-  gpAttachMap->m_pApiState->vSignalled(pSession);
+  AM::pApiState()->vSignalled(pSession);
 }
 
 

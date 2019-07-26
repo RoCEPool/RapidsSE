@@ -34,7 +34,7 @@ void Step::vApiStateIncBegun(MP_Task mpTask)
   
   i8 i_State = pJob->m_i_State;
   
-  SessionState* pState = gpAttachMap->m_pApiState->pGetState(i_State);
+  SessionState* pState = AM::pApiState()->pGetState(i_State);
   Session* pSession = pState->m_pSession;
   
   ApiState::vMarkIncBegun(pSession);
@@ -57,7 +57,7 @@ void Step::vApiStateIncCancelled(MP_Task mpTask)
   
   i8 i_State = pJob->m_i_State;
   
-  SessionState* pState = gpAttachMap->m_pApiState->pGetState(i_State);
+  SessionState* pState = AM::pApiState()->pGetState(i_State);
   Session* pSession = pState->m_pSession;
 
   ApiState::vMarkIncCancelled(pSession);
@@ -80,7 +80,7 @@ void Step::vApiStateIncEnded(MP_Task mpTask)
   
   i8 i_State = pJob->m_i_State;
   
-  SessionState* pState = gpAttachMap->m_pApiState->pGetState(i_State);
+  SessionState* pState = AM::pApiState()->pGetState(i_State);
   Session* pSession = pState->m_pSession;
 
   ApiState::vMarkIncEnded(pSession);
@@ -103,7 +103,7 @@ void Step::vApiStateIncExecuted(MP_Task mpTask)
   
   i8 i_State = pJob->m_i_State;
   
-  SessionState* pState = gpAttachMap->m_pApiState->pGetState(i_State);
+  SessionState* pState = AM::pApiState()->pGetState(i_State);
   Session* pSession = pState->m_pSession;
 
   ApiState::vMarkIncExecuted(pSession);
@@ -144,7 +144,7 @@ void Step::vApiStateTraceSession(MP_Task mpTask)
   
   i8 i_State = pJob->m_i_State;
   
-  SessionState* pState = gpAttachMap->m_pApiState->pGetState(i_State);
+  SessionState* pState = AM::pApiState()->pGetState(i_State);
   
   //pState->vTraceState();
   

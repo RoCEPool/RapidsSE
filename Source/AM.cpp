@@ -25,6 +25,7 @@ i8   AM::nSubLoaders(void)    { return gpAttachMap->Arg.m_nSubLoaders;        }
 i8   AM::nThreads(void)       { return gpAttachMap->Arg.m_nThreads;           }
 
 //
+ApiState* AM::pApiState(void) { return gpAttachMap->m_pApiState;              }
 bool AM::bBootError(void)     { return gpAttachMap->m_bBootError;             }
 BufferPool* AM::pBufferPool(void) { return gpAttachMap->m_pBufferPool;        }
 CarryOver* AM::pCarryOver(void) { return gpAttachMap->m_pCarryOver;           }
@@ -47,6 +48,7 @@ bool AM::bMetadata(void)      { return gpAttachMap->m_bMetadata;              }
 i8   AM::iNextDiagram(void)   { return ++ gpAttachMap->m_ixNextDiagram;       }
 i8   AM::iNextJobId(void)     { return ++ gpAttachMap->m_ixNextJobId;         }
 i8   AM::iNextPlanId(void)    { return ++ gpAttachMap->m_ixNextPlanId;        }
+i8*  AM::iaObjectsInPool(void){ return gpAttachMap->m_nObjectsInPool;         }
 Queues* AM::pQueues(void)     { return gpAttachMap->m_pQueues;                }
 ResourceTracker* AM::pResourceTracker(void) { return & gpAttachMap->m_oResourceTracker; }
 Dic* AM::pRootDic(void)       { return & gpAttachMap->m_oRootDic;             }

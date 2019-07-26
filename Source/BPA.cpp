@@ -49,7 +49,7 @@ void BPA::vEpochDump(s48K& sPortrait)
     
     eCN eClass = (eCN)i_Object;
     
-    if (iSnapshotObjects[eClass] == gpAttachMap->m_nObjectsInPool[eClass])
+    if (iSnapshotObjects[eClass] == AM::iaObjectsInPool()[eClass])
       continue;
     
     sPortrait.vSprintCat(
@@ -57,7 +57,7 @@ void BPA::vEpochDump(s48K& sPortrait)
       Stz::aTab(1),
       aCN[eClass],
       eClass,
-      iSnapshotObjects[eClass] - gpAttachMap->m_nObjectsInPool[eClass]
+      iSnapshotObjects[eClass] - AM::iaObjectsInPool()[eClass]
       );
   }
 
@@ -70,7 +70,7 @@ void BPA::vEpochTake(void)
 {
   // increment the epoch
   AM::iNextEpoch();
-  BPA::vObjectSnapshot(gpAttachMap->m_nObjectsInPool);
+  BPA::vObjectSnapshot(AM::iaObjectsInPool());
 }
 
 /*----------------------------------------------------------------------------*/

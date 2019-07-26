@@ -46,7 +46,7 @@ void Debugging::vAssertTrap(void)
   // add activity dump and api state dump
   Log::vWriteCsv(false);
   
-  gpAttachMap->m_pApiState->vDump();
+  AM::pApiState()->vDump();
   
   // put a breakpoint here to trap asserts
   sleep(0);

@@ -27,6 +27,7 @@ namespace StorageEngine
     static i8   nThreads(void);
 
     //
+    static ApiState* pApiState(void);
     static bool bBootError(void);
     static BufferPool* pBufferPool(void);
     static CarryOver* pCarryOver(void);
@@ -40,6 +41,7 @@ namespace StorageEngine
     static HeapMem* pHeapMem(void);
     static i8   nIndexEntries(void);
     static LockTracker* pLockTracker(void);
+    static i8*   iaObjectsInPool(void);
     static JobList* pOriginatingJobs(void);
     static i8   iPid(void);
     static JobList* pParticipatingJobs(void);
