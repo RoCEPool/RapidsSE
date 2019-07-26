@@ -23,13 +23,14 @@ using namespace Base;
 
 //-----------------------------------------------------------------------------
 
+#include "UsefulConstants.h"
+
 #include "BitLib.hpp"
 #include "ByteLiterals.hpp"
 #include "ClassNumbers.hpp"
 #include "IntLib.hpp"
 #include "i3.hpp"
 #include "Line.hpp"
-#include "Magnitudes.hpp"
 #include "MemLib.hpp"
 #include "Null.hpp"
 #include "Stz.hpp"
@@ -40,7 +41,6 @@ using namespace Base;
 #include "ForwardClasses.h"
 #include "LimitsFormats.h"
 #include "Structs.h"
-#include "UsefulConstants.h"
 
 #include "Dtm.hpp"
 
