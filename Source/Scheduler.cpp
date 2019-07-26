@@ -705,7 +705,7 @@ void Scheduler::vThread_BeginLoop(Thread* pThread)
   pThread->m_pMutexThread->vMutexLock();
   
   // increment m_ixThreads to indicate thread is running
-  ++gpAttachMap->m_ixThreads;
+  AM::vThreadBegins();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -755,7 +755,7 @@ void Scheduler::vThread_PauseGeneral(void)
   Queues* pQueues = gpAttachMap->m_pQueues;
   
   // pause till all general threads have all begun
-  while (*gpAttachMap->m_ixThreads != gpAttachMap->Arg.m_nThreads)
+  while (AM::nThreadsBegun() != gpAttachMap->Arg.m_nThreads)
     Pthread::vSleepMsec(10,CN_NONE);
   
   RASSERT(pQueues->m_pGeneralThreadVec->nItems() == gpAttachMap->Arg.m_nThreads);

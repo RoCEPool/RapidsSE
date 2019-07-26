@@ -30,6 +30,8 @@ i8   AM::nIndexEntries(void)  { return gpAttachMap->m_nIndexEntries;          }
 i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
 bool AM::bProgress(void)      { return gpAttachMap->m_bProgress;              }
 bool AM::bMetadata(void)      { return gpAttachMap->m_bMetadata;              }
+void AM::vThreadBegins(void)  { ++ gpAttachMap->m_ixThreads;                  }
+i8   AM::nThreadsBegun(void)  { return * gpAttachMap->m_ixThreads;            }
 bool AM::bTracepoint(void)    { return gpAttachMap->m_bTracepoint;            }
 TxSet* AM::pTxSet(void)       { return gpAttachMap->m_pTxSet;                 }
 bool AM::bVerbose(void)       { return gpAttachMap->m_bVerbose;               }

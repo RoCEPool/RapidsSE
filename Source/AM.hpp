@@ -32,6 +32,8 @@ namespace StorageEngine
     static i8   iPid(void);
     static bool bProgress(void);
     static bool bMetadata(void);
+    static void vThreadBegins(void);
+    static i8   nThreadsBegun(void);
     static bool bTracepoint(void);
     static TxSet* pTxSet(void);
     static bool bVerbose(void);
