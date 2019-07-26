@@ -33,6 +33,7 @@ namespace StorageEngine
     static i8   iPid(void);
     static bool bProgress(void);
     static bool bMetadata(void);
+    static Queues* pQueues(void);
     static ResourceTracker* pResourceTracker(void);
     static Dic* pRootDic(void);
     static Statistics* pStatistics(void);

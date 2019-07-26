@@ -26,7 +26,7 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_sleeping(SePrompt* pPrompt)
 {
-  gpAttachMap->m_pQueues->vDumpSleepingQueue();
+  AM::pQueues()->vDumpSleepingQueue();
 
   return true;
 }

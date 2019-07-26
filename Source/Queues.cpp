@@ -103,7 +103,7 @@ void Queues::vThreadsReport(void)
   i8 iPercentageUsage;
   i8 iSleepSsec;
   
-  Queues* pQueues = gpAttachMap->m_pQueues;
+  Queues* pQueues = AM::pQueues();
   
   pQueues->m_pGeneralThreadVec->vGrabLock();
 

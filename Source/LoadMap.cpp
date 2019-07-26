@@ -312,7 +312,7 @@ bool LoadMap::bGetNextMapping(i8& iSeek, i8& nBytes, i8& i_Entry)
     
     if (gpAttachMap->Arg.m_bDeveloper)
       vTrace(" (ReadyLP %lld tasks)"_Stz,
-             gpAttachMap->m_pQueues->m_pReadyQueueLP->nTasks());
+             AM::pQueues()->m_pReadyQueueLP->nTasks());
 
     vTrace("\n"_Stz);
   }

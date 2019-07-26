@@ -336,7 +336,7 @@ void Scheduler::vTask_Bide(Task* pTask)
   
   JobLog::vNoteState(pTask->pJob(),"Bide"_Stz);
   
-  gpAttachMap->m_pQueues->vAddBidingSet(pTask);
+  AM::pQueues()->vAddBidingSet(pTask);
   // **do not touch task** (other than to drop lock)
   
   pTask->vDropLock();
@@ -351,7 +351,7 @@ void Scheduler::vTask_Desist(Task* pTask)
   RASSERT(QK_EXECUTING_SET == pTask->eQueue());
   RASSERT(TR_NONE != pTask->eTransition());
 
-  gpAttachMap->m_pQueues->vRemoveExecutingSet(pTask);
+  AM::pQueues()->vRemoveExecutingSet(pTask);
   
   pTask->vState(TS_DESISTED);
   
@@ -371,7 +371,7 @@ void Scheduler::vTask_Execute(Task* pTask)
 
   JobLog::vNoteState(pTask->pJob(),"Execute"_Stz);
   
-  gpAttachMap->m_pQueues->vAddExecutingSet(pTask);
+  AM::pQueues()->vAddExecutingSet(pTask);
   // **do not touch task**
 }
 
@@ -407,9 +407,9 @@ void Scheduler::vTask_Ready(Task* pTask)
   JobLog::vNoteState(pTask->pJob(),"Ready"_Stz);
   
   if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
-    gpAttachMap->m_pQueues->vAppendReadyQueue(pTask);
+    AM::pQueues()->vAppendReadyQueue(pTask);
   else
-    gpAttachMap->m_pQueues->vAppendReadyQueueLP(pTask);
+    AM::pQueues()->vAppendReadyQueueLP(pTask);
   // **do not touch task**
 }
 
@@ -438,7 +438,7 @@ void Scheduler::vTask_Resume(Task* pTask)
   RASSERT(QK_WAITING_SET == pTask->eQueue());
   RASSERT(TR_NONE == pTask->eTransition());
 
-  gpAttachMap->m_pQueues->vRemoveWaitingSet(pTask);
+  AM::pQueues()->vRemoveWaitingSet(pTask);
   
   vTask_Able(pTask);
   vTask_Schedule(pTask);
@@ -481,7 +481,7 @@ void Scheduler::vTask_Sleep(Task* pTask)
   // is the task to actually sleep?
   if (! pTask->bWakeupNow()) {
     pTask->vState(TS_SLEEPING);
-    gpAttachMap->m_pQueues->vAddSleepingQueue(pTask);
+    AM::pQueues()->vAddSleepingQueue(pTask);
     // **do not touch task**
     return;
   }
@@ -526,7 +526,7 @@ void Scheduler::vTask_Trigger(Task* pTask)
   RASSERT(QK_BIDING_SET == pTask->eQueue());
   RASSERT(TR_NONE == pTask->eTransition());
 
-  gpAttachMap->m_pQueues->vRemoveBidingSet(pTask);
+  AM::pQueues()->vRemoveBidingSet(pTask);
   
   JobLog::vNoteState(pTask->pJob(),"Trigger"_Stz);
   
@@ -554,7 +554,7 @@ void Scheduler::vTask_Wait(Task* pTask)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  gpAttachMap->m_pQueues->vAddWaitingSet(pTask);
+  AM::pQueues()->vAddWaitingSet(pTask);
   // **do not touch task** (other than to drop lock)
 
   pTask->vDropLock();
@@ -565,7 +565,7 @@ void Scheduler::vTask_Wait(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Wakeup(void)
 {
-  while (Task* pTask = gpAttachMap->m_pQueues->pPopSleepingQueue()) {
+  while (Task* pTask = AM::pQueues()->pPopSleepingQueue()) {
     JobLog::vNoteState(pTask->pJob(),"Wakeup"_Stz);
     vTask_Able(pTask);
     vTask_Schedule(pTask);
@@ -592,7 +592,7 @@ void Scheduler::vTask_Yield(Task* pTask)
   // no other ready to run tasks, so thread continues executing the task
   
   if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL) {
-    i8 iLengthReadyQueue = gpAttachMap->m_pQueues->nTasksReady();
+    i8 iLengthReadyQueue = AM::pQueues()->nTasksReady();
     if (0 == iLengthReadyQueue) {
       vTask_Able(pTask);
       vTask_Execute(pTask);
@@ -622,7 +622,7 @@ void Scheduler::vThread_AddDedicated(Thread* pThread)
 {
   RASSERT(CN_NONE != pThread->m_eDedicated);
   
-  Queues* pQueues = gpAttachMap->m_pQueues;
+  Queues* pQueues = AM::pQueues();
   
   pThread->m_eThreadState = TD_IDLE;
   pQueues->vAddDedicatedThread(pThread);
@@ -635,7 +635,7 @@ void Scheduler::vThread_AddGeneral(Thread* pThread)
 {
   RASSERT(CN_NONE == pThread->m_eDedicated);
   
-  Queues* pQueues = gpAttachMap->m_pQueues;
+  Queues* pQueues = AM::pQueues();
   
   pThread->m_eThreadState = TD_IDLE;
   pQueues->vAddGeneralThread(pThread);
@@ -651,7 +651,7 @@ void Scheduler::vThread_AppendIdle(Thread* pThread)
   RASSERT(CN_NONE == pThread->m_eDedicated);
   RASSERT(pThread->m_pMutexThread->bMutexIsLocked());
 
-  Queues* pQueues = gpAttachMap->m_pQueues;
+  Queues* pQueues = AM::pQueues();
   
   pThread->m_eThreadState = TD_IDLE;
   pQueues->vThreadAppendIdle(pThread);
@@ -664,7 +664,7 @@ bool Scheduler::bThread_AssignIdle(Task* pTask)
 {
   RASSERT(TS_ABLE == pTask->eState());
   
-  Queues* pQueues = gpAttachMap->m_pQueues;
+  Queues* pQueues = AM::pQueues();
   
   Thread* pThread = pQueues->pThreadPopIdle();
   
@@ -744,7 +744,7 @@ void Scheduler::vThread_ExecuteDedicated(Thread* pThread)
   pThread->m_pTask->vThread(pThread);
   
   pThread->m_pTask->vState(TS_EXECUTING);
-  gpAttachMap->m_pQueues->vAddExecutingSet(pThread->m_pTask);
+  AM::pQueues()->vAddExecutingSet(pThread->m_pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -752,7 +752,7 @@ void Scheduler::vThread_ExecuteDedicated(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_PauseGeneral(void)
 {
-  Queues* pQueues = gpAttachMap->m_pQueues;
+  Queues* pQueues = AM::pQueues();
   
   // pause till all general threads have all begun
   while (AM::nThreadsBegun() != gpAttachMap->Arg.m_nThreads)
@@ -782,7 +782,7 @@ void Scheduler::vThread_RemoveDedicated(Thread* pThread)
   // called from Thread::aEntryPoint_dedicated()
   //
   
-  Queues* pQueues = gpAttachMap->m_pQueues;
+  Queues* pQueues = AM::pQueues();
   
   pQueues->vRemoveDedicatedThread(pThread);
 }
@@ -796,7 +796,7 @@ void Scheduler::vThread_RemoveGeneral(Thread* pThread)
   // called from Thread::aEntryPoint_general()
   //
   
-  Queues* pQueues = gpAttachMap->m_pQueues;
+  Queues* pQueues = AM::pQueues();
   
   pQueues->vRemoveGeneralThread(pThread);
 }

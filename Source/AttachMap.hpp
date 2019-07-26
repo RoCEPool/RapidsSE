@@ -62,9 +62,9 @@ namespace StorageEngine
     JobList*      m_pOriginatingJobs;
     JobList*      m_pParticipatingJobs;
     Atomic        m_ixPlanId;
+  private:
     Queues*       m_pQueues;
     i8            m_iQuit;
-  private:
     ResourceTracker m_oResourceTracker;
     Dic           m_oRootDic;
     Statistics    m_oStatistics;

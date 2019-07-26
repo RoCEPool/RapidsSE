@@ -94,7 +94,7 @@ void Step::vJob_SubLoaderChunk(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // stall if ready queue LP is building up (to discuss with Ray)
-  if (gpAttachMap->m_pQueues->m_pReadyQueueLP->nTasks() >
+  if (AM::pQueues()->m_pReadyQueueLP->nTasks() >
       gpAttachMap->Arg.m_nMaxReadyLP) {
     mpTask->vSleepUsec(1000);
     mpTask->vTransition(TR_SLEEP);

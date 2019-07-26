@@ -26,7 +26,7 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_waiting(SePrompt* pPrompt)
 {
-  gpAttachMap->m_pQueues->vDumpWaitingSet();
+  AM::pQueues()->vDumpWaitingSet();
 
   return true;
 }

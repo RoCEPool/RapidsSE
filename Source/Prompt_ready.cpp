@@ -26,8 +26,8 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_ready(SePrompt* pPrompt)
 {
-  gpAttachMap->m_pQueues->vDumpReadyQueue();
-  gpAttachMap->m_pQueues->vDumpReadyQueueLP();
+  AM::pQueues()->vDumpReadyQueue();
+  AM::pQueues()->vDumpReadyQueueLP();
   
   return true;
 }
