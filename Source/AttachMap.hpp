@@ -90,8 +90,6 @@ namespace StorageEngine
   
   private:
     i8            m_nIndexEntries;  // no of entries per buffer
-    i8            m_nIndexHeight;   // no of buffer height
-    i8            m_nIndexLevels;  // no of offsets per index buffer entry
   
     // must be last
     Footer m_xFooter;
