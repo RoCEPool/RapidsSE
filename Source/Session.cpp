@@ -193,7 +193,7 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
   
   // /tenants
   //ForthWord* pTenants = gpAttachMap->m_oRootDic.pFindWord("tenants"_Stz);
-  ForthWord* pTenants = gpAttachMap->m_pTenants;
+  ForthWord* pTenants = AM::pTenants();
   ASSERT(pTenants);
   Cell* aCell = pTenants->aFirstCell();
   m_oDicStack.vPush(reinterpret_cast<Dic*>(aCell));

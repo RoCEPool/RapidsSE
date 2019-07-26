@@ -319,7 +319,7 @@ void DicStack::vSetStack(DicPath* pDicPath)
   
   s32 sFolderNm;
   
-  Dic* pDic = _pDic(gpAttachMap->m_pTenants->aWspArea());
+  Dic* pDic = _pDic(AM::pTenants()->aWspArea());
   
   i8 nFolders = pDicPath->nDicNames();
   for (i8 i_Folder = 0; i_Folder < nFolders; i_Folder++) {

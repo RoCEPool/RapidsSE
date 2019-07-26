@@ -72,8 +72,8 @@ namespace StorageEngine
     i8            m_iStop;
     PoolBuffer*   m_pTakenBuffers;
     i8            m_nTakenBytes;
-    ForthWord*    m_pTenants;
   private:
+    ForthWord*    m_pTenants;
     TempName      m_oTempName;
     Atomic        m_ixThreads;
     TxSet*        m_pTxSet;

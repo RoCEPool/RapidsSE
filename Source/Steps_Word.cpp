@@ -302,7 +302,7 @@ void Step::vCreateTenants(MP_Task mpTask)
   
   mpTask->m_pCompiler->m_pCurrentWord = pNewWord;
   
-  gpAttachMap->m_pTenants = pNewWord;
+  AM::vTenants(pNewWord);
   
   EXIT();
 }
