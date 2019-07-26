@@ -19,6 +19,7 @@ using namespace StorageEngine;
 
 //-----------------------------------------------------------------------------
 
+#include "AM.hpp"
 #include "Arguments.hpp"
 #include "AttachMap.hpp"
 #include "SizesDumps.hpp"
@@ -27,7 +28,6 @@ using namespace StorageEngine;
 
 #include "Engine.hpp"
 
-#include "AM.hpp"
 
 typedef void (pDUMPFUN)(eCN eClass, Object* pObject, Stz*);
 extern pDUMPFUN *gpDump[];

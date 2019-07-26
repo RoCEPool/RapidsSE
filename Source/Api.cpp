@@ -305,12 +305,12 @@ bool Api::bSpawnJob(Session* pSession, Job* pJob, eSS eSeed)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Before appending request for se, ensure that se is running
   // get the se pid from the attachmap
-  i8 iPid = gpAttachMap->m_iPid;
+  i8 iPid = AM::iPid();
   if (!Process::bTestPid(iPid)) {
     // SE is not running anymore!
     if (pSession)
-      vWarn("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
-    vWarn("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
+      vWarn("Cannot find pid %lld\n"_Stz, iPid);
+    vWarn("Cannot find pid %lld\n"_Stz, iPid);
     return false;
   }
   
@@ -405,12 +405,12 @@ bool Api::bSpawnJobDedicated(Session* pSession, Job* pJob, eSS eSeed)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Before appending request for se, ensure that se is running
   // get the se pid from the attachmap
-  i8 iPid = gpAttachMap->m_iPid;
+  i8 iPid = AM::iPid();
   if (!Process::bTestPid(iPid)) {
     // SE is not running anymore!
     if (pSession)
-      vWarn("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
-    vWarn("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
+      vWarn("Cannot find pid %lld\n"_Stz, iPid);
+    vWarn("Cannot find pid %lld\n"_Stz, iPid);
     return false;
   }
   
@@ -441,12 +441,12 @@ bool Api::bSpawnOp(Session* pSession, Op* pOp)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Before appending request for se, ensure that se is running
   // get the se pid from the attachmap
-  i8 iPid = gpAttachMap->m_iPid;
+  i8 iPid = AM::iPid();
   if (!Process::bTestPid(iPid)) {
     // SE is not running anymore!
     if (pSession)
-      vWarn("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
-    vWarn("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
+      vWarn("Cannot find pid %lld\n"_Stz, iPid);
+    vWarn("Cannot find pid %lld\n"_Stz, iPid);
     return false;
   }
   

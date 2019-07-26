@@ -315,19 +315,20 @@ void Engine::vKillPrev(void)
     
     AttachMap* pAttachMap = (AttachMap*)ahAdd<AttachMap*>((Object*)aRegion,C_SIZE_POOL_BUFFER);
     
+    i8 iPid = pAttachMap->iPid();
     if (gxArguments.m_bDeveloper)
-      vTrace("vKillPrev: prev pid %lld\n"_Stz,pAttachMap->m_iPid);
+      vTrace("vKillPrev: prev pid %lld\n"_Stz,iPid);
 
-    if (pAttachMap->m_iPid &&
-        pAttachMap->m_iPid != Process::iGetPid() &&
-        Process::bTestPid(pAttachMap->m_iPid)) {
+    if (iPid &&
+        iPid != Process::iGetPid() &&
+        Process::bTestPid(iPid)) {
       
-      bool bResult = Process::bKillPid(pAttachMap->m_iPid);
+      bool bResult = Process::bKillPid(iPid);
       if (gxArguments.m_bDeveloper) {
         if (bResult)
-          vTrace("vKillPrev: process %lld killed\n"_Stz,pAttachMap->m_iPid);
+          vTrace("vKillPrev: process %lld killed\n"_Stz,iPid);
         else
-          vTrace("vKillPrev: process %lld not killed\n"_Stz,pAttachMap->m_iPid);
+          vTrace("vKillPrev: process %lld not killed\n"_Stz,iPid);
       }
     }
     
@@ -646,7 +647,8 @@ void Engine::vPrintStatus(void)
     vAttachRegion();
     
     // check if the Pid in the shm is still alive
-    if ( Process::bTestPid(gpAttachMap->m_iPid) ) {
+    i8 iPid = AM::iPid();
+    if ( Process::bTestPid(iPid) ) {
       vTrace("Engine instance %s running\n"_Stz,
              gxArguments.m_sRegionName.aChar());
       return;

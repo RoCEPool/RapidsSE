@@ -7,10 +7,11 @@ namespace StorageEngine
 {
   class AttachMap : public PoolBuffer
   {
+  friend class AM;
   private:
-  public:
     i8    m_iPid;
-    Birth m_oBirth;  
+  public:
+    Birth m_oBirth;
     Now   m_oNow;
   
     struct {
@@ -98,6 +99,7 @@ namespace StorageEngine
     ~AttachMap(void) noexcept(false);
     
     void vGetGlobals(void);
+    i8   iPid(void);
     void vPrintAttachMap(void);
     void vRecordArguments(
                           bool bDeveloper,
