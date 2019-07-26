@@ -44,7 +44,6 @@ namespace StorageEngine
     Lock          m_okDicLock;
     Grid*         m_pGrid;
     i8            m_iEpoch;
-    HeapMem       m_xHeapMem;
     bool          m_bMarkApiAll;
     bool          m_bMarkApi[AC_ENUMS];
     bool          m_bMarkJobAll;
@@ -56,6 +55,8 @@ namespace StorageEngine
     i8            m_nObjectsInPool[CN_ENUMS];
   private:
     Formatters    m_oFormatters;
+    ForthWord*    m_pForthWord;
+    HeapMem       m_xHeapMem;
     LockTracker   m_oLockTracker;
     JobList*      m_pOriginatingJobs;
     JobList*      m_pParticipatingJobs;
@@ -76,7 +77,6 @@ namespace StorageEngine
     TempName      m_oTempName;
     Atomic        m_ixThreads;
     TxSet*        m_pTxSet;
-    ForthWord*    m_pForthWord;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // these should be in Args

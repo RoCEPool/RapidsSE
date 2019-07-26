@@ -60,7 +60,7 @@ void HeapMem::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 Object* HeapMem::pAllocate(eCN eAllocClass, bool bPersistent)
 {
-  HeapMem* pHeapMem = &gpAttachMap->m_xHeapMem;
+  HeapMem* pHeapMem = AM::pHeapMem();
   
   eHT eHeap = geWhichHeap[eAllocClass];
   
@@ -126,7 +126,7 @@ Object* HeapMem::pAllocate(eCN eAllocClass, bool bPersistent)
 /*----------------------------------------------------------------------------*/
 void HeapMem::vFree(Object* pObject, bool bPersistent)
 {
-  HeapMem* pHeapMem = &gpAttachMap->m_xHeapMem;
+  HeapMem* pHeapMem = AM::pHeapMem();
   
   eCN eAllocClass = pObject->eClass();
   
@@ -209,7 +209,7 @@ void HeapMem::vFree_NonObject(PoolBuffer* pBuffer)
 {
   pBuffer->vSetMagic();
   
-  gpAttachMap->m_xHeapMem.Transient.m_pLarge->vFreeObject(pBuffer);
+  AM::pHeapMem()->Transient.m_pLarge->vFreeObject(pBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -229,105 +229,105 @@ void HeapMem::vReport(void)
   
   vTrace("  Transient  Small  (%6s) buffers %-6lld alloc %-6lld free %-6lld (sum=%lld)\n"_Stz,
          sMagSmall.aChar(),
-         gpAttachMap->m_xHeapMem.Transient.m_pSmall->iBufferCount(),
-         gpAttachMap->m_xHeapMem.Transient.m_pSmall->iAllocCount(),
-         gpAttachMap->m_xHeapMem.Transient.m_pSmall->iFreeCount(),
+         AM::pHeapMem()->Transient.m_pSmall->iBufferCount(),
+         AM::pHeapMem()->Transient.m_pSmall->iAllocCount(),
+         AM::pHeapMem()->Transient.m_pSmall->iFreeCount(),
          
-         gpAttachMap->m_xHeapMem.Transient.m_pSmall->iAllocCount() *
+         AM::pHeapMem()->Transient.m_pSmall->iAllocCount() *
          C_SIZE_SMALL_OBJECT
          +
-         gpAttachMap->m_xHeapMem.Transient.m_pSmall->iFreeCount()  *
+         AM::pHeapMem()->Transient.m_pSmall->iFreeCount()  *
          C_SIZE_SMALL_OBJECT
          );
   
   vTrace("             Medium (%6s) buffers %-6lld alloc %-6lld free %-6lld (sum=%lld)\n"_Stz,
          sMagMedium.aChar(),
-         gpAttachMap->m_xHeapMem.Transient.m_pMedium->iBufferCount(),
-         gpAttachMap->m_xHeapMem.Transient.m_pMedium->iAllocCount(),
-         gpAttachMap->m_xHeapMem.Transient.m_pMedium->iFreeCount(),
+         AM::pHeapMem()->Transient.m_pMedium->iBufferCount(),
+         AM::pHeapMem()->Transient.m_pMedium->iAllocCount(),
+         AM::pHeapMem()->Transient.m_pMedium->iFreeCount(),
          
-         gpAttachMap->m_xHeapMem.Transient.m_pMedium->iAllocCount() *
+         AM::pHeapMem()->Transient.m_pMedium->iAllocCount() *
          C_SIZE_MEDIUM_OBJECT
          +
-         gpAttachMap->m_xHeapMem.Transient.m_pMedium->iFreeCount()  *
+         AM::pHeapMem()->Transient.m_pMedium->iFreeCount()  *
          C_SIZE_MEDIUM_OBJECT
          );
   
   vTrace("             Large  (%6s) buffers %-6lld alloc %-6lld free %-6lld (sum=%lld)\n"_Stz,
          sMagLarge.aChar(),
-         gpAttachMap->m_xHeapMem.Transient.m_pLarge->iBufferCount(),
-         gpAttachMap->m_xHeapMem.Transient.m_pLarge->iAllocCount(),
-         gpAttachMap->m_xHeapMem.Transient.m_pLarge->iFreeCount(),
+         AM::pHeapMem()->Transient.m_pLarge->iBufferCount(),
+         AM::pHeapMem()->Transient.m_pLarge->iAllocCount(),
+         AM::pHeapMem()->Transient.m_pLarge->iFreeCount(),
          
-         gpAttachMap->m_xHeapMem.Transient.m_pLarge->iAllocCount() *
+         AM::pHeapMem()->Transient.m_pLarge->iAllocCount() *
          C_SIZE_LARGE_OBJECT
          +
-         gpAttachMap->m_xHeapMem.Transient.m_pLarge->iFreeCount()  *
+         AM::pHeapMem()->Transient.m_pLarge->iFreeCount()  *
          C_SIZE_LARGE_OBJECT
          );
   
   vTrace("             Jumbo  (%6s) buffers %-6lld alloc %-6lld free %-6lld (sum=%lld)\n"_Stz,
          sMagJumbo.aChar(),
-         gpAttachMap->m_xHeapMem.Transient.m_pJumbo->iBufferCount(),
-         gpAttachMap->m_xHeapMem.Transient.m_pJumbo->iAllocCount(),
-         gpAttachMap->m_xHeapMem.Transient.m_pJumbo->iFreeCount(),
+         AM::pHeapMem()->Transient.m_pJumbo->iBufferCount(),
+         AM::pHeapMem()->Transient.m_pJumbo->iAllocCount(),
+         AM::pHeapMem()->Transient.m_pJumbo->iFreeCount(),
          
-         gpAttachMap->m_xHeapMem.Transient.m_pJumbo->iAllocCount() *
+         AM::pHeapMem()->Transient.m_pJumbo->iAllocCount() *
          C_SIZE_JUMBO_OBJECT
          +
-         gpAttachMap->m_xHeapMem.Transient.m_pJumbo->iFreeCount()  *
+         AM::pHeapMem()->Transient.m_pJumbo->iFreeCount()  *
          C_SIZE_JUMBO_OBJECT
          );
   
   vTrace("  Persistent Small  (%6s) buffers %-6lld alloc %-6lld free %-6lld (sum=%lld)\n"_Stz,
          sMagSmall.aChar(),
-         gpAttachMap->m_xHeapMem.Persistent.m_pSmall->iBufferCount(),
-         gpAttachMap->m_xHeapMem.Persistent.m_pSmall->iAllocCount(),
-         gpAttachMap->m_xHeapMem.Persistent.m_pSmall->iFreeCount(),
+         AM::pHeapMem()->Persistent.m_pSmall->iBufferCount(),
+         AM::pHeapMem()->Persistent.m_pSmall->iAllocCount(),
+         AM::pHeapMem()->Persistent.m_pSmall->iFreeCount(),
 
-         gpAttachMap->m_xHeapMem.Persistent.m_pSmall->iAllocCount() *
+         AM::pHeapMem()->Persistent.m_pSmall->iAllocCount() *
          C_SIZE_SMALL_OBJECT
          +
-         gpAttachMap->m_xHeapMem.Persistent.m_pSmall->iFreeCount()  *
+         AM::pHeapMem()->Persistent.m_pSmall->iFreeCount()  *
          C_SIZE_SMALL_OBJECT
          );
   
   vTrace("             Medium (%6s) buffers %-6lld alloc %-6lld free %-6lld (sum=%lld)\n"_Stz,
          sMagMedium.aChar(),
-         gpAttachMap->m_xHeapMem.Persistent.m_pMedium->iBufferCount(),
-         gpAttachMap->m_xHeapMem.Persistent.m_pMedium->iAllocCount(),
-         gpAttachMap->m_xHeapMem.Persistent.m_pMedium->iFreeCount(),
+         AM::pHeapMem()->Persistent.m_pMedium->iBufferCount(),
+         AM::pHeapMem()->Persistent.m_pMedium->iAllocCount(),
+         AM::pHeapMem()->Persistent.m_pMedium->iFreeCount(),
          
-         gpAttachMap->m_xHeapMem.Persistent.m_pMedium->iAllocCount() *
+         AM::pHeapMem()->Persistent.m_pMedium->iAllocCount() *
          C_SIZE_MEDIUM_OBJECT
          +
-         gpAttachMap->m_xHeapMem.Persistent.m_pMedium->iFreeCount()  *
+         AM::pHeapMem()->Persistent.m_pMedium->iFreeCount()  *
          C_SIZE_MEDIUM_OBJECT
          );
   
   vTrace("             Large  (%6s) buffers %-6lld alloc %-6lld free %-6lld (sum=%lld)\n"_Stz,
          sMagLarge.aChar(),
-         gpAttachMap->m_xHeapMem.Persistent.m_pLarge->iBufferCount(),
-         gpAttachMap->m_xHeapMem.Persistent.m_pLarge->iAllocCount(),
-         gpAttachMap->m_xHeapMem.Persistent.m_pLarge->iFreeCount(),
+         AM::pHeapMem()->Persistent.m_pLarge->iBufferCount(),
+         AM::pHeapMem()->Persistent.m_pLarge->iAllocCount(),
+         AM::pHeapMem()->Persistent.m_pLarge->iFreeCount(),
          
-         gpAttachMap->m_xHeapMem.Persistent.m_pLarge->iAllocCount() *
+         AM::pHeapMem()->Persistent.m_pLarge->iAllocCount() *
          C_SIZE_LARGE_OBJECT
          +
-         gpAttachMap->m_xHeapMem.Persistent.m_pLarge->iFreeCount()  *
+         AM::pHeapMem()->Persistent.m_pLarge->iFreeCount()  *
          C_SIZE_LARGE_OBJECT
          );
   
   vTrace("             Jumbo  (%6s) buffers %-6lld alloc %-6lld free %-6lld (sum=%lld)\n"_Stz,
          sMagJumbo.aChar(),
-         gpAttachMap->m_xHeapMem.Persistent.m_pJumbo->iBufferCount(),
-         gpAttachMap->m_xHeapMem.Persistent.m_pJumbo->iAllocCount(),
-         gpAttachMap->m_xHeapMem.Persistent.m_pJumbo->iFreeCount(),
+         AM::pHeapMem()->Persistent.m_pJumbo->iBufferCount(),
+         AM::pHeapMem()->Persistent.m_pJumbo->iAllocCount(),
+         AM::pHeapMem()->Persistent.m_pJumbo->iFreeCount(),
          
-         gpAttachMap->m_xHeapMem.Persistent.m_pJumbo->iAllocCount() *
+         AM::pHeapMem()->Persistent.m_pJumbo->iAllocCount() *
          C_SIZE_JUMBO_OBJECT
          +
-         gpAttachMap->m_xHeapMem.Persistent.m_pJumbo->iFreeCount()  *
+         AM::pHeapMem()->Persistent.m_pJumbo->iFreeCount()  *
          C_SIZE_JUMBO_OBJECT
          );
 }
@@ -338,7 +338,7 @@ void HeapMem::vReport(void)
 void HeapMem::vSearchFree(void)
 {
   if (gbAddrAllocated) {
-    for (FreeChunk* pTestChunk = gpAttachMap->m_xHeapMem.Transient.m_pMedium->m_pFreeHead;
+    for (FreeChunk* pTestChunk = AM::pHeapMem()->Transient.m_pMedium->m_pFreeHead;
          pTestChunk;
          pTestChunk = pTestChunk->pNextFree())
       if ((void*)pTestChunk >= (void*)0x204828fc0038 &&

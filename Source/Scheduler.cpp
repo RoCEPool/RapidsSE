@@ -35,6 +35,18 @@ bool Scheduler::bAckWaitingTask(Task* pTaskWaiting, Task* pTaskAcking)
 }
 
 /*----------------------------------------------------------------------------*/
+/* continue a paused task                                                     */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vContinuePausedTask(Task* pTask)
+{
+  //
+  // called from Step::???()
+  //
+  
+  // vTask_Continue(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
 /* set dedicated task to be executed by dedicated thread                      */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vExecuteDedicatedTask(Task* pTask, Thread* pThread)
