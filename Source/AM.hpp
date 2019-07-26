@@ -33,6 +33,7 @@ namespace StorageEngine
     static bool bProgress(void);
     static bool bMetadata(void);
     static bool bTracepoint(void);
+    static TxSet* pTxSet(void);
     static bool bVerbose(void);
   };
 }

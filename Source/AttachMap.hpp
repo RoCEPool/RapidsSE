@@ -75,8 +75,10 @@ namespace StorageEngine
     ForthWord*    m_pTenants;
     TempName      m_oTempName;
     Atomic        m_ixThreads;
+  private:
     TxSet*        m_pTxSet;
-    ForthWord*    m_pWord;
+  public:
+    ForthWord*    m_pForthWord;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // these should be in Args

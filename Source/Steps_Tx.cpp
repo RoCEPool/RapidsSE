@@ -210,7 +210,7 @@ void Step::vTxDumpAll(MP_Task mpTask)
 {
   ENTRY("vTxDumpAll"_Stz);
   
-  gpAttachMap->m_pTxSet->vDumpAll();
+  AM::pTxSet()->vDumpAll();
   
   EXIT();
 }

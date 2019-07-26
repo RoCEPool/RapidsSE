@@ -33,7 +33,7 @@ void Step::vAddSteps(void)
     vTrace("[[mainThread]] Adding primitives...\n"_Stz);
   
   vAddStep("word"_Stz,            &Step::vWord);
-  gpAttachMap->m_pWord = gpAttachMap->m_oRootDic.pFindWord("word"_Stz);
+  gpAttachMap->m_pForthWord = gpAttachMap->m_oRootDic.pFindWord("word"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

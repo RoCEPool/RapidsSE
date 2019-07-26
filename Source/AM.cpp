@@ -31,7 +31,9 @@ i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
 bool AM::bProgress(void)      { return gpAttachMap->m_bProgress;              }
 bool AM::bMetadata(void)      { return gpAttachMap->m_bMetadata;              }
 bool AM::bTracepoint(void)    { return gpAttachMap->m_bTracepoint;            }
+TxSet* AM::pTxSet(void)       { return gpAttachMap->m_pTxSet;                 }
 bool AM::bVerbose(void)       { return gpAttachMap->m_bVerbose;               }
+
 
 /*============================================================================*/
 /* end                                                                        */

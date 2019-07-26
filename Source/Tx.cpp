@@ -65,7 +65,7 @@ Tx::Tx(bool bAddToSet)
   _checkInitialised_(CN_TX);
 
   if (bAddToSet)
-    gpAttachMap->m_pTxSet->vAddLocalTx(this);
+    AM::pTxSet()->vAddLocalTx(this);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
 }
@@ -88,7 +88,7 @@ Tx::Tx(i8 iDistTxId)
   
   _checkInitialised_(CN_TX);
   
-  gpAttachMap->m_pTxSet->vAddDistTx_NL(this);
+  AM::pTxSet()->vAddDistTx_NL(this);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
 }
@@ -101,7 +101,7 @@ Tx::~Tx(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
   
   if (-1 != m_iLocalTxId)
-    gpAttachMap->m_pTxSet->vRemoveTx(this);
+    AM::pTxSet()->vRemoveTx(this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -115,7 +115,7 @@ Tx* Tx::pTestDistTx(i8 iDistTxId)
 {
   Tx* pDistTx = nullptr;
   
-  TxSet* pTxSet = gpAttachMap->m_pTxSet;
+  TxSet* pTxSet = AM::pTxSet();
   
   pTxSet->vGrabWrite();
   
