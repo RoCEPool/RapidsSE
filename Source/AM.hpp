@@ -33,6 +33,7 @@ namespace StorageEngine
     static i8   iPid(void);
     static bool bProgress(void);
     static bool bMetadata(void);
+    static i8   nTakenBytes(void);
     static ForthWord* pTenants(void);
     static void vThreadBegins(void);
     static i8   nThreadsBegun(void);
@@ -42,6 +43,8 @@ namespace StorageEngine
   
     //
     static void vForthWord(ForthWord* pForthWord);
+    static void vTakeBytes(i8 nTakeBytes);
+    static void vTakenBytes(i8 nTakenBytes);
     static void vTenants(ForthWord* pTenants);
   };
 }

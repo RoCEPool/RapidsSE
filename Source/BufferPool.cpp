@@ -497,7 +497,7 @@ void BufferPool::vMonitorPortrait(s48K& sPortrait)
                       *m_ixHeapBuffers,
                       *m_ixOtherBuffers,
                     m_nFreeCount,
-                    gpAttachMap->m_nTakenBytes
+                    AM::nTakenBytes()
                     );
 }
 

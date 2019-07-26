@@ -47,7 +47,7 @@ bool Prompt::bPrompt_takeMem(SePrompt* pPrompt)
     PoolBuffer** ppNextBuffer = (PoolBuffer**)gpAttachMap->m_pTakenBuffers->aDataArea();
     *ppNextBuffer = p2ndBuffer;
     
-    gpAttachMap->m_nTakenBytes += C_SIZE_POOL_BUFFER;
+    AM::vTakenBytes(C_SIZE_POOL_BUFFER);
   }
   
   return true;

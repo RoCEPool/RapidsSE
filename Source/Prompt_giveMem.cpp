@@ -36,7 +36,7 @@ bool Prompt::bPrompt_giveMem(SePrompt* pPrompt)
     gpBufferPool->vFree(pBuffer);
   }
   
-  gpAttachMap->m_nTakenBytes = 0;
+  AM::vTakenBytes(0);
   
   return true;
 }
