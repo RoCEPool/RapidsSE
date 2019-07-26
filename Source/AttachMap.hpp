@@ -56,11 +56,11 @@ namespace StorageEngine
     EnumFlags     m_oMarkAction;
     EnumFlags     m_oMarkTrace;
     Atomic        m_ixMonitorTake;
-    Atomic        m_ixNextDiagram;
     i8            m_nObjectsInPool[CN_ENUMS];
   private:
     JobList*      m_pOriginatingJobs;
     JobList*      m_pParticipatingJobs;
+    Atomic        m_ixNextDiagram;
     Atomic        m_ixNextJobId;
     Atomic        m_ixNextPlanId;
     Queues*       m_pQueues;

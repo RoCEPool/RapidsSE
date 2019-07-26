@@ -230,7 +230,7 @@ void Job::vStateDiagram(s256& sDiagram, eCN eJobClass)
     // generate state diagram for export job
     case Base::CN_JOB_EXPORT: {
       
-      i8 iDiagram = ++gpAttachMap->m_ixNextDiagram;
+      i8 iDiagram = AM::iNextDiagram();
       
       // whats in the system relevant to export?
       bool bKE_received   = pExecuting->bHasJobClass(CN_JOB_KIDEXPORT,false);
