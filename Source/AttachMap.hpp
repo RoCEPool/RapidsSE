@@ -66,7 +66,6 @@ namespace StorageEngine
     i8            m_iQuit;
     ResourceTracker m_oResourceTracker;
     Dic           m_oRootDic;
-    Lock          m_okSchLock;
   private:
     Statistics    m_oStatistics;
     StepTiming*   m_pStepTiming;

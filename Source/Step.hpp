@@ -129,7 +129,6 @@ namespace Steps
   
     static void vAddSteps_Rstack(void);
   
-    static void vAddSteps_SchLock(void);
     static void vAddSteps_Session(void);
     static void vAddSteps_Shell(void);
     static void vAddSteps_Slots(void);
