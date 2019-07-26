@@ -73,8 +73,8 @@ namespace StorageEngine
     PoolBuffer*   m_pTakenBuffers;
     i8            m_nTakenBytes;
     ForthWord*    m_pTenants;
-    TempName      m_oTempName;
   private:
+    TempName      m_oTempName;
     Atomic        m_ixThreads;
     TxSet*        m_pTxSet;
   public:
@@ -108,6 +108,7 @@ namespace StorageEngine
     eAC  eFindApi(Stz* aApiNm);
     void vGetGlobals(void);
     void vIndexEntries(i8 nIndexEntries);
+    void vNextTempName(s32& sName);
     i8   iPid(void);
     void vPrintAttachMap(void);
     void vPrintStartupInfo(void);

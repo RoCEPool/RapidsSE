@@ -29,7 +29,7 @@ bool Prompt::bPrompt_tempName(SePrompt* pPrompt)
   s32 sName;
   
   for (i8 n = 0; n < 1000; n++) {
-    gpAttachMap->m_oTempName.vNextName(sName);
+    gpAttachMap->vNextTempName(sName);
     vTrace("%s\n"_Stz,sName.aStz());
   }
   

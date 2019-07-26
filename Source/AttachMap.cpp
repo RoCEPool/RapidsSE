@@ -121,6 +121,16 @@ i8 AttachMap::iPid(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get next temp name                                                         */
+/*----------------------------------------------------------------------------*/
+void AttachMap::vNextTempName(s32& sName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+  
+  m_oTempName.vNextName(sName);
+}
+
+/*----------------------------------------------------------------------------*/
 /* print atachmap                                                             */
 /*----------------------------------------------------------------------------*/
 void AttachMap::vPrintAttachMap(void)
