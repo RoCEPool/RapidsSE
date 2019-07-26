@@ -18,9 +18,9 @@
   i8 _iEnterCycles = 0; \
   i8 _iEnterMisses = 0; \
   \
-  if (gpAttachMap->m_pStepTiming) { \
+  if (AM::pStepTiming()) { \
     if (! _pStepAccum) { \
-      StepTiming* pStepTiming = gpAttachMap->m_pStepTiming; \
+      StepTiming* pStepTiming = AM::pStepTiming(); \
       pStepTiming->vGrabWrite(); \
       if (! _pStepAccum) \
         _pStepAccum = pStepTiming->pAllocAccum(aStepNm); \

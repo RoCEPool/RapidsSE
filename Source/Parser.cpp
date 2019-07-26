@@ -857,7 +857,7 @@ void Parser::vReadLineStdin(void)
             gpAttachMap->m_bBootError  ? " *BOOTERROR* " : "",
             bLowMem                    ? " *LOWMEM* "    : "",
   #ifdef WITH_ENTRY_EXIT
-            gpAttachMap->m_pStepTiming ? " *STEPTIMING*" : "",
+            AM::pStepTiming()          ? " *STEPTIMING*" : "",
   #else
             "",
   #endif

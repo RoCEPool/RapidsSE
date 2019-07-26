@@ -33,6 +33,7 @@ namespace StorageEngine
     static i8   iPid(void);
     static bool bProgress(void);
     static bool bMetadata(void);
+    static StepTiming* pStepTiming(void);
     static PoolBuffer* pTakenBuffers(void);
     static i8   nTakenBytes(void);
     static ForthWord* pTenants(void);
@@ -44,6 +45,7 @@ namespace StorageEngine
   
     //
     static void vForthWord(ForthWord* pForthWord);
+    static void vStepTiming(StepTiming* pStepTiming);
     static void vTakenBuffers(PoolBuffer* pTakenBuffers);
     static void vTakeBytes(i8 nTakeBytes);
     static void vTakenBytes(i8 nTakenBytes);

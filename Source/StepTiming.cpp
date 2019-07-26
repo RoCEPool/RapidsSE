@@ -26,7 +26,7 @@ StepTiming* Measurement::_pStepTiming(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* StepTiming::operator new(size_t)
 {
-  RASSERT(! gpAttachMap->m_pStepTiming);
+  RASSERT(! AM::pStepTiming());
   
   StepTiming* pStepTiming = (StepTiming*)HeapMem::pAllocate(CN_STEPTIMING);
   

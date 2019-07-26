@@ -30,8 +30,8 @@ void Step::vStepTimingReset(MP_Task mpTask)
   
 #else
   
-  if (gpAttachMap->m_pStepTiming)
-    gpAttachMap->m_pStepTiming->vReset();
+  if (AM::pStepTiming())
+    AM::pStepTiming()->vReset();
   
 #endif
 
@@ -52,8 +52,8 @@ void Step::vStepTimingStart(MP_Task mpTask)
   
 #else
   
-  if (! gpAttachMap->m_pStepTiming)
-    gpAttachMap->m_pStepTiming = new StepTiming;
+  if (! AM::pStepTiming())
+    AM::vStepTiming(new StepTiming);
   
 #endif
 
@@ -74,8 +74,8 @@ void Step::vStepTimingWrite(MP_Task mpTask)
   
 #else
   
-  if (gpAttachMap->m_pStepTiming)
-    gpAttachMap->m_pStepTiming->vWrite();
+  if (AM::pStepTiming())
+    AM::pStepTiming()->vWrite();
   
 #endif
   
