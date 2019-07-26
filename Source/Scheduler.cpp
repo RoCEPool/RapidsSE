@@ -40,10 +40,10 @@ bool Scheduler::bAckWaitingTask(Task* pTaskWaiting, Task* pTaskAcking)
 void Scheduler::vContinuePausedTask(Task* pTask)
 {
   //
-  // called from Step::???()
+  // called from ???()
   //
   
-  // vTask_Continue(pTask);
+  vTask_Continue(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -353,6 +353,28 @@ void Scheduler::vTask_Bide(Task* pTask)
   // **do not touch task** (other than to drop lock)
   
   pTask->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* locked paused op-task is removed from paused set,                          */
+/*   transitions to TS_ABLE state, unlocked and scheduled                     */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTask_Continue(Task* pTask)
+{
+  RASSERT(pTask->bIsLocked());
+  RASSERT(TS_PAUSED == pTask->eState());
+  RASSERT(QK_PAUSED_SET == pTask->eQueue());
+  RASSERT(TR_NONE == pTask->eTransition());
+  
+  AM::pQueues()->vRemovePausedSet(pTask);
+  
+  JobLog::vNoteState(pTask->pJob(),"Continue"_Stz);
+  
+  pTask->vDropLock();
+  
+  vTask_Able(pTask);
+  vTask_Schedule(pTask);
+  // **do not touch task**
 }
 
 /*----------------------------------------------------------------------------*/

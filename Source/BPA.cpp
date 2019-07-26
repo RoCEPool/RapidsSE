@@ -39,7 +39,7 @@ void BPA::vEpochDump(s48K& sPortrait)
   //vTrace("\n"_Stz);
   //vTrace("%sWords created since last epoch:\n"_Stz,Stz::aTab(1));
   
-  BPA::vWordList(gpAttachMap->m_iEpoch);
+  BPA::vWordList(AM::iEpoch());
   
   BPA::vObjectSnapshot(&iSnapshotObjects[0]);
   
@@ -69,7 +69,7 @@ void BPA::vEpochDump(s48K& sPortrait)
 void BPA::vEpochTake(void)
 {
   // increment the epoch
-  gpAttachMap->m_iEpoch++;
+  AM::iNextEpoch();
   BPA::vObjectSnapshot(gpAttachMap->m_nObjectsInPool);
 }
 
@@ -463,7 +463,7 @@ void BPA::vObjectSnapshot(i8* pCountObjects)
 void BPA::vPoolAnalyze(void)
 {
   // increment the epoch
-  gpAttachMap->m_iEpoch++;
+  AM::iNextEpoch();
   
   vTrace("\n"_Stz);
   vTrace("****************************************************************\n"_Stz);
@@ -483,7 +483,7 @@ void BPA::vPoolAnalyze(void)
 void BPA::vPoolDump(void)
 {
   // increment the epoch
-  gpAttachMap->m_iEpoch++;
+  AM::iNextEpoch();
   
   vTrace("\n"_Stz);
   vTrace("****************************************************************\n"_Stz);
@@ -565,7 +565,7 @@ void BPA::vRegionSummary()
          gpAttachMap->Arg.m_sRegionName.aChar(),
          gpBufferPool,
          gpAttachMap->Arg.m_iRegionSize,
-         gpAttachMap->m_iEpoch);
+         AM::iEpoch());
   
   vTrace("\n"_Stz);
   

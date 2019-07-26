@@ -43,7 +43,6 @@ namespace StorageEngine
     Lock          m_okDdlLock;
     Lock          m_okDicLock;
     Grid*         m_pGrid;
-    i8            m_iEpoch;
     bool          m_bMarkApiAll;
     bool          m_bMarkApi[AC_ENUMS];
     bool          m_bMarkJobAll;
@@ -54,6 +53,7 @@ namespace StorageEngine
     EnumFlags     m_oMarkTrace;
     i8            m_nObjectsInPool[CN_ENUMS];
   private:
+    i8            m_iEpoch;
     Formatters    m_oFormatters;
     ForthWord*    m_pForthWord;
     HeapMem       m_xHeapMem;

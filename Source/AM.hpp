@@ -28,6 +28,7 @@ namespace StorageEngine
 
     //
     static i8   iElapsedSsec(void);
+    static i8   iEpoch(void);
     static Formatters* pFormatters(void);
     static ForthWord* pForthWord(void);
     static HeapMem* pHeapMem(void);
@@ -39,6 +40,7 @@ namespace StorageEngine
     static bool bProgress(void);
     static bool bMetadata(void);
     static i8   iNextDiagram(void);
+    static i8   iNextEpoch(void);
     static i8   iNextJobId(void);
     static i8   iNextPlanId(void);
     static Queues* pQueues(void);

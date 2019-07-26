@@ -76,7 +76,7 @@ ForthWord::ForthWord(Stz* sName)
   m_iTrace        = 0;
   //m_pDic        = pDic;
   m_pKind         = AM::pForthWord() ? AM::pForthWord() : this;
-  m_iEpoch        = gpAttachMap->m_iEpoch;
+  m_iEpoch        = AM::iEpoch();
   m_bImmediate    = false;
   m_iParams       = 0;
   m_pPrevWord     = nullptr;

@@ -26,11 +26,13 @@ i8   AM::nThreads(void)       { return gpAttachMap->Arg.m_nThreads;           }
 
 //
 i8   AM::iElapsedSsec(void)   { return gpAttachMap->m_oBirth.iElapsedSsec();  }
+i8   AM::iEpoch(void)         { return gpAttachMap->m_iEpoch;                 }
 Formatters* AM::pFormatters(void) { return & gpAttachMap->m_oFormatters;      }
 ForthWord* AM::pForthWord(void) { return gpAttachMap->m_pForthWord;           }
 HeapMem* AM::pHeapMem(void) { return & gpAttachMap->m_xHeapMem;               }
 i8   AM::nIndexEntries(void)  { return gpAttachMap->m_nIndexEntries;          }
 LockTracker* AM::pLockTracker(void) { return & gpAttachMap->m_oLockTracker;   }
+i8   AM::iNextEpoch(void)     { return ++ gpAttachMap->m_iEpoch;              }
 JobList* AM::pOriginatingJobs(void) { return gpAttachMap->m_pOriginatingJobs; }
 JobList* AM::pParticipatingJobs(void) { return gpAttachMap->m_pParticipatingJobs; }
 i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
