@@ -82,11 +82,11 @@ void JobClass::vDropDdlLock(void)
       vFatal("No ddl lock specified for job class: %s\n"_Stz,aCN[m_eClass]);
       
     case DL_GRAB_READ:
-      gpAttachMap->m_okDdlLock.vDropRead();
+      AM::pDdlLock()->vDropRead();
       break;
       
     case DL_GRAB_WRITE:
-      gpAttachMap->m_okDdlLock.vDropWrite();
+      AM::pDdlLock()->vDropWrite();
       break;
       
     default:
@@ -104,11 +104,11 @@ void JobClass::vGrabDdlLock(void)
       vFatal("No ddl lock specified for job class: %s\n"_Stz,aCN[m_eClass]);
       
     case DL_GRAB_READ:
-      gpAttachMap->m_okDdlLock.vGrabRead();
+      AM::pDdlLock()->vGrabRead();
       break;
       
     case DL_GRAB_WRITE:
-      gpAttachMap->m_okDdlLock.vGrabWrite();
+      AM::pDdlLock()->vGrabWrite();
       break;
       
     default:

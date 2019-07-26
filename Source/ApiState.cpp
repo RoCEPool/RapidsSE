@@ -226,7 +226,7 @@ void ApiState::vDump(void)
   }
   
   vTrace("  firstFree %lld\n"_Stz,m_iFirstFree);
-  vTrace("  DdlLock %llx\n"_Stz,gpAttachMap->m_okDdlLock.uLockWord());
+  vTrace("  DdlLock %llx\n"_Stz,AM::pDdlLock()->uLockWord());
   
   m_okLock.vDropRead();
 }
