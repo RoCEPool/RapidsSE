@@ -28,6 +28,7 @@ namespace StorageEngine
 
     //
     static i8   iElapsedSsec(void);
+    static ForthWord* pForthWord(void);
     static i8   nIndexEntries(void);
     static i8   iPid(void);
     static bool bProgress(void);
@@ -39,7 +40,8 @@ namespace StorageEngine
     static TxSet* pTxSet(void);
     static bool bVerbose(void);
   
-  
+    //
+    static void vForthWord(ForthWord* pForthWord);
     static void vTenants(ForthWord* pTenants);
   };
 }

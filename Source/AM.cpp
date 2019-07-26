@@ -26,6 +26,7 @@ i8   AM::nThreads(void)       { return gpAttachMap->Arg.m_nThreads;           }
 
 //
 i8   AM::iElapsedSsec(void)   { return gpAttachMap->m_oBirth.iElapsedSsec();  }
+ForthWord* AM::pForthWord(void) { return gpAttachMap->m_pForthWord;           }
 i8   AM::nIndexEntries(void)  { return gpAttachMap->m_nIndexEntries;          }
 i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
 bool AM::bProgress(void)      { return gpAttachMap->m_bProgress;              }
@@ -38,7 +39,8 @@ TxSet* AM::pTxSet(void)       { return gpAttachMap->m_pTxSet;                 }
 bool AM::bVerbose(void)       { return gpAttachMap->m_bVerbose;               }
 
 //
-void AM::vTenants(ForthWord *pTenants)   {gpAttachMap->m_pTenants = pTenants; }
+void AM::vForthWord(ForthWord *pWord)  { gpAttachMap->m_pForthWord = pWord;   }
+void AM::vTenants(ForthWord *pTenants) { gpAttachMap->m_pTenants = pTenants;  }
 
 /*============================================================================*/
 /* end                                                                        */
