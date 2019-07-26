@@ -38,7 +38,7 @@ bool Prompt::bPrompt_version(SePrompt* pPrompt)
    */
   ASSERT((*pTokenVec)[0]->bSame("version"_Stz));
   
-  if (gpAttachMap->m_bMetadata) {
+  if (AM::bMetadata()) {
     vTrace("metadata: (version VARCHAR)\n"_Stz);
     vInfo("row: ('%s')\n"_Stz, (Stz*)RAPIDSSE_VERSION_STRING);
     vTrace("success: 1 rows affected\n"_Stz);

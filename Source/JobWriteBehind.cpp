@@ -167,7 +167,7 @@ eEC JobWriteBehind::eProcessRecord(Stz* szRecStr, i8 nBytes)
   bool bBlankLine = false;
   
   if (nBytes > C_MAX_RECORD) {
-    if ( ! gpAttachMap->m_bMetadata ) {
+    if (! AM::bMetadata()) {
       vWarn("Skipping row %.20s... - record in file > %lld bytes\n"_Stz,
             szRecStr,
             C_MAX_RECORD);

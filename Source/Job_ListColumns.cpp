@@ -228,7 +228,7 @@ void Jobs::vJob_ListColumns_post(Interface::Session* pSession, Job* pJob)
            aEC[pJob_ListColumns->m_xResponse.m_eErrorCode]);
   }
   else {
-    if (gpAttachMap->m_bMetadata) {
+    if (AM::bMetadata()) {
       vTrace("metadata: %s\n"_Stz, pJob_ListColumns->m_sMetadata.aStz());
     }
     

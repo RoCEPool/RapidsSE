@@ -29,7 +29,7 @@ void Step::vAddStep(Stz* aName, StepFp fpStep, bool bImmediate)
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps(void)
 {
-  if (gpAttachMap->m_bVerbose)
+  if (AM::bVerbose())
     vTrace("[[mainThread]] Adding primitives...\n"_Stz);
   
   vAddStep("word"_Stz,            &Step::vWord);

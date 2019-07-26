@@ -76,7 +76,7 @@ void Step::vDotVerbose(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(xVariable) )
     THROW_INVALID_DSTACK(".verbose"_Stz);
   
-  if (gpAttachMap->m_bVerbose) {
+  if (AM::bVerbose()) {
     vTrace("[%p %s] %s\n"_Stz,
            *mpTask,
            mpTask->aJobName(),

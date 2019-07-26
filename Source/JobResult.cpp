@@ -132,7 +132,7 @@ void JobResult::vPrintLocalRows(void)
     return;
   }
   
-  if (gpAttachMap->m_bMetadata)
+  if (AM::bMetadata())
     vTrace("metadata: %s\n"_Stz, m_sMetadata.aStz());
   
   if (*m_xResponse.m_ixRowsProcessed)
@@ -172,7 +172,7 @@ void JobResult::vPrintNodeRows(void)
   
   RASSERT(iResponses == gpAttachMap->m_pGrid->m_nNodes);
   
-  if (gpAttachMap->m_bMetadata) {
+  if (AM::bMetadata()) {
     vTrace("metadata: %s\n"_Stz, m_sMetadata.aStz());
   }
   

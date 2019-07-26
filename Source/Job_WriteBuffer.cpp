@@ -172,7 +172,7 @@ bool Job_WriteBuffer::bInsertRows(void)
   RASSERT_TYPE(pPartition,CN_TABLEPTN);
   RASSERT_TYPE(m_pCurrentBuffer,CN_CRWBUFFER);
 
-//  if (gpAttachMap->m_bVerbose)
+//  if (AM::bVerbose())
 //    vTrace("Job_WriteBuffer %lld %lld %s\n"_Stz,
 //           m_pCurrentBuffer->nWorkingRows(),
 //           m_nRows,
@@ -270,7 +270,7 @@ bool Job_WriteBuffer::bInsertRows_LowMem(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (gpAttachMap->m_bVerbose)
+  if (AM::bVerbose())
     vTrace("Job_WriteBuffer (LowMem) \n"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -300,7 +300,7 @@ bool Job_WriteBuffer::bInsertRows_LowMem(void)
     // add the number of rows into rows skipped
     pJob_LoadTable->m_xResponse.m_ixRowsSkipped += m_nRows;
   
-    if (gpAttachMap->m_bVerbose)
+    if (AM::bVerbose())
       vTrace("m_iRowsSkipped %lld m_nRows %lld\n"_Stz,
              *pJob_LoadTable->m_xResponse.m_ixRowsSkipped,
              m_nRows);

@@ -30,6 +30,10 @@ namespace StorageEngine
     static i8   iElapsedSsec(void);
     static i8   nIndexEntries(void);
     static i8   iPid(void);
+    static bool bProgress(void);
+    static bool bMetadata(void);
+    static bool bTracepoint(void);
+    static bool bVerbose(void);
   };
 }
 

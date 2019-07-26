@@ -229,7 +229,7 @@ bool LoadMap::bNextChunk(i8& i_Seek, i8& nBytes)
   // got a mapping
   
   // print progress
-  if (gpAttachMap->m_bProgress) {
+  if (AM::bProgress()) {
     if (0 == i_Entry % 100) {
       vInfo("read chunk %lld of %lld        \r"_Stz,i_Entry,m_xMap.nEntries);
       fflush(stdout);
@@ -347,7 +347,7 @@ void LoadMap::vTestMap(void)
   
   while (bGetNextMapping(i_Seek,nBytes,i_Entry)) {
     
-    if (gpAttachMap->m_bProgress) {
+    if (AM::bProgress()) {
       if (0 == i_Entry % 1000) {
         vInfo("chunk %lld (of %lld) @ %lld     \r"_Stz,
               i_Entry,m_xMap.nEntries,i_Seek);

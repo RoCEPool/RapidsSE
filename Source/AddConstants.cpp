@@ -39,7 +39,7 @@ void Axioms::vAddConstant(Stz* szName, Stz* szVal)
 /*----------------------------------------------------------------------------*/
 void Axioms::vAddConstants(void)
 {
-  if (gpAttachMap->m_bVerbose)
+  if (AM::bVerbose())
     vTrace("[[mainThread]] Adding constants...\n"_Stz);
   
   // true / flase

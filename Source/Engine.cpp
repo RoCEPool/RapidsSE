@@ -81,7 +81,7 @@ void Engine::vAttachRegion(void)
   // get pointers to global objects from attach map
   gpAttachMap->vGetGlobals();
   
-  if (gpAttachMap->m_bVerbose)
+  if (AM::bVerbose())
     AttachMap::vDump(CN_ATTACHMAP, gpAttachMap, Stz::aTab(1));
 }
 
@@ -102,7 +102,7 @@ void Engine::vCallBoot(void)
   
   pBootTask->vAddBaseWords();
   
-  if (gpAttachMap->m_bVerbose)
+  if (AM::bVerbose())
     vTrace("[[mainThread]] Compiling dictionaries...\n"_Stz);
   
   vCallImmmediate(pBootTask);
@@ -941,7 +941,7 @@ void Engine::vUnlinkSystem(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vWaitStop(void)
 {
-  if (gpAttachMap->m_bVerbose)
+  if (AM::bVerbose())
     vTrace("[[mainThread]] Waiting on stop %s\n"_Stz,"..."_Stz);
   
   // this primary thread waits for flag indicationg systems is to stop

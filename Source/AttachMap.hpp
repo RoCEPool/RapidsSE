@@ -80,6 +80,7 @@ namespace StorageEngine
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // these should be in Args
+  private:
     bool          m_bVerbose;
     bool          m_bTracepoint;
     bool          m_bProgress;
@@ -88,7 +89,6 @@ namespace StorageEngine
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // remove?
   
-  private:
     i8            m_nIndexEntries;  // no of entries per buffer
   
     // must be last

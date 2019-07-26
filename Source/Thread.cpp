@@ -110,7 +110,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
   
   Scheduler::vAddDedicatedThread(pThread);
   
-  if (gpAttachMap->m_bVerbose)
+  if (AM::bVerbose())
     vTrace("Thread::aEntryPoint_dedicated %p %lld\n"_Stz,
            pThread,pThread->iThreadNo());
   
@@ -139,7 +139,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
            caFileName);
   }
   
-  if (gpAttachMap->m_bVerbose)
+  if (AM::bVerbose())
     vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
            pThread,pThread->iThreadNo());
   
@@ -164,7 +164,7 @@ void* Thread::aEntryPoint_general(void* pArg)
 
   Scheduler::vAddGeneralThread(pThread);
   
-  if (gpAttachMap->m_bVerbose)
+  if (AM::bVerbose())
     vTrace("Thread::aEntryPoint_general %p %lld\n"_Stz,
            pThread,pThread->iThreadNo());
   
@@ -193,7 +193,7 @@ void* Thread::aEntryPoint_general(void* pArg)
            caFileName);
   }
   
-  if (gpAttachMap->m_bVerbose)
+  if (AM::bVerbose())
     vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
            pThread,pThread->iThreadNo());
   
@@ -217,7 +217,7 @@ void* Thread::aEntryPoint_dummy(void* pArg)
   
   pThread->m_pPthread->vThreadEntry();
   
-  if (gpAttachMap->m_bVerbose)
+  if (AM::bVerbose())
     vTrace("Thread::aEntryPoint_dummy %p %lld\n"_Stz,
            pThread,pThread->iThreadNo());
   

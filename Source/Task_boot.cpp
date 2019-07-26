@@ -29,7 +29,7 @@ void Task::vAddRoutines(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if (gpAttachMap->m_bVerbose)
+  if (AM::bVerbose())
     vTrace("[[mainThread]] Adding routines...\n"_Stz);
   
   s48K sDefinition;

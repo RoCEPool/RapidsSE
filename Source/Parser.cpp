@@ -839,7 +839,7 @@ void Parser::vReadLineStdin(void)
   
   m_pRawChar = m_sRawLine.aChar();
   
-  if (gpAttachMap->m_bTracepoint)
+  if (AM::bTracepoint())
     Pthread::vSleepMsec(300,CN_PARSER);
   
   bool bHasStarted = gpAttachMap->m_pGrid->m_bHasStarted;

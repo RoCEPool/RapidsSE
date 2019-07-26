@@ -237,7 +237,7 @@ bool TablePtn::bAllBuffersWritten(eDS eDataSource)
   }
   
   if (bAllDone) {
-    if (gpAttachMap->m_bVerbose)
+    if (AM::bVerbose())
       vTrace("All buffers have been loaded: %lld\n"_Stz,m_nBuffersWritten);
     
     // reset for next load

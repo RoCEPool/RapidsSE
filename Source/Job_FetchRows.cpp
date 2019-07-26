@@ -662,7 +662,7 @@ void Jobs::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
   // retrieve
   if ( pJob_FetchRows->m_bRetrieve) {
     
-    if (pJob_FetchRows->m_bPrint && gpAttachMap->m_bMetadata) {
+    if (pJob_FetchRows->m_bPrint && AM::bMetadata()) {
       Column* pCol = pJob_FetchRows->m_pColumn;
       vTrace("metadata: (%s %s)\n"_Stz, pCol->sColumnName().aChar(), aCT[pCol->eColumnType()]);
     }
@@ -698,7 +698,7 @@ void Jobs::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fetch
-  if (gpAttachMap->m_bMetadata) {
+  if (AM::bMetadata()) {
     vTrace("metadata: %s\n"_Stz, pJob_FetchRows->m_sMetadata.aStz());
   }
   

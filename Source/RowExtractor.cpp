@@ -92,7 +92,7 @@ bool RowExtractor::bExtractNext(Row* pRow, char** aacRecCrs,
   
   // any invalid field?
   if (pBadCol) {
-    if (! gpAttachMap->m_bMetadata) {
+    if (! AM::bMetadata()) {
       vWarn("Skipping row - invalid field %s in record: "_Stz,
             pBadCol->szColNm());
       for (char* ac = acRec; ( *ac && '\n' != *ac && '\r' != *ac ); ac++)

@@ -273,7 +273,7 @@ void Jobs::vJob_IndexJoin_post(Interface::Session* pSession, Job* pJob)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fetch
-  if (gpAttachMap->m_bMetadata) {
+  if (AM::bMetadata()) {
     vTrace("metadata: %s\n"_Stz, pJob_IndexJoin->m_sMetadata.aStz());
   }
   

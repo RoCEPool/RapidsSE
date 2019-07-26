@@ -108,7 +108,7 @@ void Step::vSocketConnect(MP_Task mpTask)
   // get address of node
   Stz* sAddr = xNodeVar.szStz();
   
-  if (gpAttachMap->m_bVerbose)
+  if (AM::bVerbose())
     vTrace("SOCKET ADDR: %s\n"_Stz,sAddr);
   
   // get pSocket

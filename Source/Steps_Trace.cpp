@@ -53,7 +53,7 @@ void Step::vTracePoint(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(sPointName) )
     THROW_INVALID_DSTACK("tracePoint"_Stz);
   
-  if (gpAttachMap->m_bTracepoint)
+  if (AM::bTracepoint())
     mpTask->vTracePoint(sPointName);
   
   EXIT();

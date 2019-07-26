@@ -265,7 +265,7 @@ void Log::vOpenByApi(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Log* pLog = Log::pAttachExisting();
-  if (gpAttachMap->m_bVerbose)
+  if (AM::bVerbose())
     vTrace("Log %s : "
            "attached to existing map (size %lldB, max %lld marks)\n\n"_Stz,
            C_LOG_REGION,
@@ -301,7 +301,7 @@ void Log::vOpenBySE(bool bStarting)
   
   if (bStarting) {
     pLog = Log::pAttachCreate();
-    if (gpAttachMap->m_bVerbose)
+    if (AM::bVerbose())
       vTrace("Log %s : "
              "created new map (size %lldB, max %lld marks)\n\n"_Stz,
              C_LOG_REGION,
@@ -312,7 +312,7 @@ void Log::vOpenBySE(bool bStarting)
    }
    else {
     pLog = Log::pAttachExisting();
-    if (gpAttachMap->m_bVerbose)
+    if (AM::bVerbose())
       vTrace("Log %s : "
              "attached to existing map (size %lldB, max %lld marks)\n\n"_Stz,
              C_LOG_REGION,

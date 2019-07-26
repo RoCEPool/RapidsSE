@@ -326,7 +326,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
       
       // if trailing is specified, leading should also have been specified
       if (m_oFormatters.m_cEnclosedBy_Leading == '\0') {
-        if ( ! gpAttachMap->m_bMetadata)
+        if (! AM::bMetadata())
         vWarn("Invalid load : enclosed_by_trailing specified but no enclosed_by_leading\n"_Stz);
         return false;
       }
@@ -346,7 +346,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
     else if (pTokenVec->pGet(i_Token)->bSame(C_DATE_FORMAT)) {
       // extract date format
       if ( ! bExtractDateFormat(pTokenVec->pGet(++i_Token)->sText()) ) {
-        if ( ! gpAttachMap->m_bMetadata)
+        if ( ! AM::bMetadata())
         vWarn("Invalid load : enclosed_by_trailing specified but no enclosed_by_leading\n"_Stz);
         return false;
       }

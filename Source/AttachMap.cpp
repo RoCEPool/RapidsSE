@@ -141,7 +141,7 @@ void AttachMap::vPrintAttachMap(void)
   vInfo("IndexEntries   : %lld \n"_Stz, gpAttachMap->m_nIndexEntries);
   vInfo("IndexOffsets   : %lld \n"_Stz, C_INDEX_LEVELS);
   
-  vInfo("Verbose        : %s \n"_Stz, gpAttachMap->m_bVerbose ? "true"_Stz : "false"_Stz);
+  vInfo("Verbose        : %s \n"_Stz, AM::bVerbose() ? "true"_Stz : "false"_Stz);
   vInfo("Tracepoint     : %s \n"_Stz, gpAttachMap->m_bTracepoint ? "true"_Stz : "false"_Stz);
   vInfo("Progress       : %s \n"_Stz, gpAttachMap->m_bProgress ? "true"_Stz : "false"_Stz);
   vInfo("Metadata       : %s \n"_Stz, gpAttachMap->m_bMetadata ? "true"_Stz : "false"_Stz);
