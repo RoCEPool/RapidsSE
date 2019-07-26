@@ -114,7 +114,7 @@ void SePrompt::vPromptLoop(void)
     vGetCommand();
        
     if (bBlankLine()) {
-      if (gpAttachMap->Arg.m_bDeveloper)
+      if (AM::bDeveloper())
         vDumpTokenVec();
       continue;
     }

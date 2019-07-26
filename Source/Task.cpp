@@ -151,7 +151,7 @@ void Task::vInit(void)
   
   m_iTracing     = C_TRACE_NONE;
   m_i_ActionRoot = C_UNKNOWN;
-  m_i_NextRnd    = gpAttachMap->Arg.m_bDeveloper ? 0 : C_UNKNOWN;
+  m_i_NextRnd    = AM::bDeveloper() ? 0 : C_UNKNOWN;
   
   
   m_iDdlLocked   = 0;
@@ -927,7 +927,7 @@ void Task::vThread(Threads::Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Task::vTracePoint(Stz* aMark)
 {
-  if (gpAttachMap->Arg.m_nNodes > 1) {
+  if (AM::nNodes() > 1) {
     i8 iPause = Random::iInteger(999,99999);
     Pthread::vSleepUsec(iPause,CN_TASK);
   }

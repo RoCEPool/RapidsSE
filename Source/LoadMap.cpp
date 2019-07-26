@@ -139,7 +139,7 @@ bool LoadMap::bMapChunk(void)
     vTrace("Loading %s %s in %lld chunks by %lld subLoaders %lld nodes %lld partitions\n"_Stz,
            m_oFile.sFilePath().aStz(),sFileSize.aStz(),
            m_xMap.nEntries,
-           gpAttachMap->Arg.m_nSubLoaders,
+           AM::nSubLoaders(),
            AM::pGrid()->nNodes(),
            AM::pGrid()->m_nPartitions);
     vMappingDone(true);
@@ -310,7 +310,7 @@ bool LoadMap::bGetNextMapping(i8& iSeek, i8& nBytes, i8& i_Entry)
     i8 iPercentFree = AM::pBufferPool()->iFreePercent();
     vTrace("Load Progress: %lld%% (free %lld%%)"_Stz,iPercent,iPercentFree);
     
-    if (gpAttachMap->Arg.m_bDeveloper)
+    if (AM::bDeveloper())
       vTrace(" (ReadyLP %lld tasks)"_Stz,
              AM::pQueues()->m_pReadyQueueLP->nTasks());
 

@@ -16,7 +16,6 @@ namespace StorageEngine
     Birth m_oBirth;
     Now   m_oNow;
   
-  public:
     struct {
       bool m_bDeveloper;
       i8   m_nDummyLoop;    // loop count for dummy threads

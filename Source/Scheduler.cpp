@@ -812,10 +812,10 @@ void Scheduler::vThread_PauseGeneral(void)
   Queues* pQueues = AM::pQueues();
   
   // pause till all general threads have all begun
-  while (AM::nThreadsBegun() != gpAttachMap->Arg.m_nThreads)
+  while (AM::nThreadsBegun() != AM::nThreads())
     Pthread::vSleepMsec(10,CN_NONE);
   
-  RASSERT(pQueues->m_pGeneralThreadVec->nItems() == gpAttachMap->Arg.m_nThreads);
+  RASSERT(pQueues->m_pGeneralThreadVec->nItems() == AM::nThreads());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

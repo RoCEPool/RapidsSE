@@ -73,7 +73,7 @@ Tokeniser::Tokeniser(void)
                       pNode->aNodeName(),
                       Process::iGetPid(),
   #ifdef WITH_SHARED_LOG
-                      gpAttachMap->Arg.m_bLog? " LG+" : " LG-",
+                      AM::bLog() ? " LG+" : " LG-",
   #else
                       "",
   #endif

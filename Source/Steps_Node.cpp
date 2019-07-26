@@ -206,7 +206,7 @@ void Step::vNodeSize(MP_Task mpTask)
 {
   ENTRY("vNodeSize"_Stz);
   
-  mpTask->m_pDataStack->vPushI8(gpAttachMap->Arg.m_iRegionSize);
+  mpTask->m_pDataStack->vPushI8(AM::iRegionSize());
   
   EXIT();
 }
@@ -222,14 +222,16 @@ void Step::vNodeStatus(MP_Task mpTask)
   
   Grid* pGrid = AM::pGrid();
   
-  if (Region::bTest(gpAttachMap->Arg.m_sRegionName))
+  s32 sRegionNm(AM::szRegionName());
+  
+  if (Region::bTest(sRegionNm))
     s.vSprint("row: ('%s', '%s', 'running')"_Stz,
             pGrid->pThisNode()->aNodeName(),
-            gpAttachMap->Arg.m_sRegionName.aChar());
+            sRegionNm.aChar());
   else
     s.vSprint("row: ('%s', '%s', 'not running')"_Stz,
             pGrid->pThisNode()->aNodeName(),
-            gpAttachMap->Arg.m_sRegionName.aChar());
+            sRegionNm.aChar());
   
   mpTask->m_pDataStack->vPushS256(s);
   

@@ -232,7 +232,7 @@ eEC RapidsSE_BeginInsert(i8 iTrace, Session* pSession,
     API_LOC(350);
 
     // set subInserters in the TblPtb
-    gpAttachMap->Arg.m_nSubInserters = nSubInserters;   //! Is this right? (ray)
+    AM::vSubInserters(nSubInserters);   //! Is this right? (ray)
     API_LOC(360);
 
     // push the InsertTable job onto the jobstack

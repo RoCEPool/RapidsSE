@@ -69,6 +69,7 @@ namespace StorageEngine
     static void vBootError(bool bBootError);
     static void vForthWord(ForthWord* pForthWord);
     static void vStepTiming(StepTiming* pStepTiming);
+    static void vSubInserters(i8 nSubInserters);
     static void vTakenBuffers(PoolBuffer* pTakenBuffers);
     static void vTakeBytes(i8 nTakeBytes);
     static void vTakenBytes(i8 nTakenBytes);

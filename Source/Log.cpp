@@ -256,7 +256,7 @@ void Log::vMonitorPortrait(s48K& sPortrait)
 void Log::vOpenByApi(void)
 {
 #ifdef WITH_SHARED_LOG
-  if (! gpAttachMap->Arg.m_bLog)
+  if (! AM::bLog())
     return;
   
   if (gpLog)
@@ -289,7 +289,7 @@ void Log::vOpenByApi(void)
 void Log::vOpenBySE(bool bStarting)
 {
 #ifdef WITH_SHARED_LOG
-  if (! gpAttachMap->Arg.m_bLog)
+  if (! AM::bLog())
     return;
   
   if (gpLog)

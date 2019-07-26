@@ -224,11 +224,11 @@ void* Thread::aEntryPoint_dummy(void* pArg)
   while (true) {
     
     // sleep for a bit to generate a context switch
-    Pthread::vSleepUsec(gpAttachMap->Arg.m_nDummySleep,CN_THREAD);
+    Pthread::vSleepUsec(AM::nDummySleep(),CN_THREAD);
     
     // burn some cpu
     i8 iSum = 0;
-    for (i8 i_Loop = 0; i_Loop < gpAttachMap->Arg.m_nDummyLoop; i_Loop++)
+    for (i8 i_Loop = 0; i_Loop < AM::nDummyLoop(); i_Loop++)
       iSum += Tick::iRdTscp();
   }
   

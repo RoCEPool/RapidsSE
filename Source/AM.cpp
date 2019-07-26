@@ -70,6 +70,9 @@ void AM::vBootError(bool bBootError) {
 void AM::vForthWord(ForthWord *pWord) {
   gpAttachMap->m_pForthWord = pWord;
 }
+void AM::vSubInserters(i8 nSubInserters) {
+  gpAttachMap->Arg.m_nSubInserters = nSubInserters;
+}
 void AM::vStepTiming(StepTiming* pStepTiming) {
   gpAttachMap->m_pStepTiming = pStepTiming;
 }
