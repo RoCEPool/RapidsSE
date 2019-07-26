@@ -260,12 +260,11 @@ void Queues::vAddPausedSet(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
-  // note: a biding task must locked at this point because it is visible to
-  //       other tasks in the system which could invoke a trigger() on it
-  //       before the biding task gets into the biding set
+  // note:
+  
   RASSERT(pTask->bIsLocked());
   
-  RASSERT(TS_BIDING == pTask->eState());
+  RASSERT(TS_PAUSED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
   
   pTask->vQueue(QK_PAUSED_SET);

@@ -96,21 +96,21 @@ void Formatters::vReset(void)
 
   m_bDefault = true;
   
-  m_bAllowNonPrintable   = gpAttachMap->m_oFormatters.m_bAllowNonPrintable;
-  m_cEnclosedBy_Leading  = gpAttachMap->m_oFormatters.m_cEnclosedBy_Leading;
-  m_cEnclosedBy_Trailing = gpAttachMap->m_oFormatters.m_cEnclosedBy_Trailing;
+  m_bAllowNonPrintable   = AM::pFormatters()->m_bAllowNonPrintable;
+  m_cEnclosedBy_Leading  = AM::pFormatters()->m_cEnclosedBy_Leading;
+  m_cEnclosedBy_Trailing = AM::pFormatters()->m_cEnclosedBy_Trailing;
   
-  m_cEscapeChar       = gpAttachMap->m_oFormatters.m_cEscapeChar;
-  m_cFieldDelimiter   = gpAttachMap->m_oFormatters.m_cFieldDelimiter;
-  m_cRecordTerminator = gpAttachMap->m_oFormatters.m_cRecordTerminator;
-  m_eRecordEnd        = gpAttachMap->m_oFormatters.m_eRecordEnd;
+  m_cEscapeChar       = AM::pFormatters()->m_cEscapeChar;
+  m_cFieldDelimiter   = AM::pFormatters()->m_cFieldDelimiter;
+  m_cRecordTerminator = AM::pFormatters()->m_cRecordTerminator;
+  m_eRecordEnd        = AM::pFormatters()->m_eRecordEnd;
   
-  m_eDateComponent[0] = gpAttachMap->m_oFormatters.m_eDateComponent[0];
-  m_eDateComponent[1] = gpAttachMap->m_oFormatters.m_eDateComponent[1];
-  m_eDateComponent[2] = gpAttachMap->m_oFormatters.m_eDateComponent[2];
+  m_eDateComponent[0] = AM::pFormatters()->m_eDateComponent[0];
+  m_eDateComponent[1] = AM::pFormatters()->m_eDateComponent[1];
+  m_eDateComponent[2] = AM::pFormatters()->m_eDateComponent[2];
   
-  m_cDateSeparator    = gpAttachMap->m_oFormatters.m_cDateSeparator;
-  m_nMaxErrors        = gpAttachMap->m_oFormatters.m_nMaxErrors;
+  m_cDateSeparator    = AM::pFormatters()->m_cDateSeparator;
+  m_nMaxErrors        = AM::pFormatters()->m_nMaxErrors;
 }
 
 /*----------------------------------------------------------------------------*/

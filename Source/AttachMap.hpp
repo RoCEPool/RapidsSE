@@ -45,7 +45,6 @@ namespace StorageEngine
     Grid*         m_pGrid;
     i8            m_iEpoch;
     HeapMem       m_xHeapMem;
-    Formatters    m_oFormatters;
     bool          m_bMarkApiAll;
     bool          m_bMarkApi[AC_ENUMS];
     bool          m_bMarkJobAll;
@@ -56,6 +55,7 @@ namespace StorageEngine
     EnumFlags     m_oMarkTrace;
     i8            m_nObjectsInPool[CN_ENUMS];
   private:
+    Formatters    m_oFormatters;
     LockTracker   m_oLockTracker;
     JobList*      m_pOriginatingJobs;
     JobList*      m_pParticipatingJobs;

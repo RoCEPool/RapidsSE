@@ -112,7 +112,7 @@ Job_Sink::Job_Sink(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SINK,_FOOTER_);
   
-  m_pIoChunk  = new IoChunk(&gpAttachMap->m_oFormatters);
+  m_pIoChunk  = new IoChunk(AM::pFormatters());
   m_pByteRate = nullptr;
   
   _checkInitialised_(CN_JOB_SINK);

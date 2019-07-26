@@ -26,6 +26,7 @@ i8   AM::nThreads(void)       { return gpAttachMap->Arg.m_nThreads;           }
 
 //
 i8   AM::iElapsedSsec(void)   { return gpAttachMap->m_oBirth.iElapsedSsec();  }
+Formatters* AM::pFormatters(void) { return & gpAttachMap->m_oFormatters;      }
 ForthWord* AM::pForthWord(void) { return gpAttachMap->m_pForthWord;           }
 i8   AM::nIndexEntries(void)  { return gpAttachMap->m_nIndexEntries;          }
 LockTracker* AM::pLockTracker(void) { return & gpAttachMap->m_oLockTracker;   }

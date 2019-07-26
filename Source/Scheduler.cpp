@@ -94,6 +94,7 @@ void Scheduler::vTaskLoopTransition(Thread* pThread)
       
     case TR_BIDE:   vTask_Bide(pTask);   break;
     case TR_EXIT:   vTask_Exit(pTask);   break;
+    case TR_PAUSE:  vTask_Pause(pTask);   break;
     case TR_SLEEP:  vTask_Sleep(pTask);  break;
     case TR_WAIT:   vTask_Wait(pTask);   break;
     case TR_YIELD:  vTask_Yield(pTask);  break;

@@ -28,6 +28,7 @@ namespace StorageEngine
 
     //
     static i8   iElapsedSsec(void);
+    static Formatters* pFormatters(void);
     static ForthWord* pForthWord(void);
     static i8   nIndexEntries(void);
     static LockTracker* pLockTracker(void);
