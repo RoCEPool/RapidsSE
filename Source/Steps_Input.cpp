@@ -193,7 +193,7 @@ void Step::vInputUnknown(MP_Task mpTask)
          );
   vTrace("\n"_Stz);
 
-  gpAttachMap->m_bBootError = true;
+  AM::vBootError(true);
   
   EXIT();
 }

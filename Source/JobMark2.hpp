@@ -10,7 +10,8 @@ namespace Jobs
   {
   public:
     bool m_bCancel; // cancel job
-
+    bool m_bEarly;  // early exit
+  
   public:
     JobMark2(eCN eClassNo, Interface::Session* pSession);
    ~JobMark2(void) noexcept(false);

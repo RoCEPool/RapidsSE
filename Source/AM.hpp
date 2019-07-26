@@ -27,6 +27,7 @@ namespace StorageEngine
     static i8   nThreads(void);
 
     //
+    static bool bBootError(void);
     static BufferPool* pBufferPool(void);
     static CarryOver* pCarryOver(void);
     static Lock* pDdlLock(void);
@@ -63,6 +64,7 @@ namespace StorageEngine
     static bool bVerbose(void);
   
     //
+    static void vBootError(bool bBootError);
     static void vForthWord(ForthWord* pForthWord);
     static void vStepTiming(StepTiming* pStepTiming);
     static void vTakenBuffers(PoolBuffer* pTakenBuffers);

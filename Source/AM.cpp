@@ -25,6 +25,7 @@ i8   AM::nSubLoaders(void)    { return gpAttachMap->Arg.m_nSubLoaders;        }
 i8   AM::nThreads(void)       { return gpAttachMap->Arg.m_nThreads;           }
 
 //
+bool AM::bBootError(void)     { return gpAttachMap->m_bBootError;             }
 BufferPool* AM::pBufferPool(void) { return gpAttachMap->m_pBufferPool;        }
 CarryOver* AM::pCarryOver(void) { return gpAttachMap->m_pCarryOver;           }
 Lock* AM::pDdlLock(void)      { return & gpAttachMap->m_okDdlLock;            }
@@ -61,7 +62,10 @@ TxSet* AM::pTxSet(void)       { return gpAttachMap->m_pTxSet;                 }
 bool AM::bVerbose(void)       { return gpAttachMap->m_bVerbose;               }
 
 //
-void AM::vForthWord(ForthWord *pWord)  {
+void AM::vBootError(bool bBootError) {
+  gpAttachMap->m_bBootError = bBootError;
+}
+void AM::vForthWord(ForthWord *pWord) {
   gpAttachMap->m_pForthWord = pWord;
 }
 void AM::vStepTiming(StepTiming* pStepTiming) {

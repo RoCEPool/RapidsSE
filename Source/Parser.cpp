@@ -854,14 +854,14 @@ void Parser::vReadLineStdin(void)
     else {
       vInfo("%s%s%s%s %s> "_Stz,
             m_sPrompt.aChar(),
-            gpAttachMap->m_bBootError  ? " *BOOTERROR* " : "",
-            bLowMem                    ? " *LOWMEM* "    : "",
+            AM::bBootError()      ? " *BOOTERROR* " : "",
+            bLowMem               ? " *LOWMEM* "    : "",
   #ifdef WITH_ENTRY_EXIT
-            AM::pStepTiming()          ? " *STEPTIMING*" : "",
+            AM::pStepTiming()     ? " *STEPTIMING*" : "",
   #else
             "",
   #endif
-            bHasStarted ? "has" : "not"
+            bHasStarted           ? "has" : "not"
 
             );
     }
