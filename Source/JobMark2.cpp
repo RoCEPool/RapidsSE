@@ -27,7 +27,6 @@ JobMark2* Jobs::_pJobMark2(void* aAddr)
   return pJobMark2;
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
@@ -36,6 +35,7 @@ JobMark2::JobMark2(eCN eClassNo, Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
+  m_bCancel = false;
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
 }

@@ -263,7 +263,7 @@ bool Socket::bAcceptClient(int& iSocketId, SysCall& SysCall)
     return false;
   }
   
-  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vIncSocketOpen();
+  if (gpAttachMap) AM::pResourceTracker()->vIncSocketOpen();
   if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_SOCKET])
     ResLog::vNote(SR_SOCKET,"SysRes: Socket accepted cient"_Stz);
 
@@ -299,7 +299,7 @@ bool Socket::bClose(SysCall& SysCall)
   
   m_iSocketId = -1;
   
-  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vDecSocketOpen();
+  if (gpAttachMap) AM::pResourceTracker()->vDecSocketOpen();
   if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_SOCKET])
     ResLog::vNote(SR_SOCKET,"SysRes: Socket closed"_Stz);
 
@@ -367,7 +367,7 @@ bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
     return false;
   }
   
-  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vIncSocketOpen();
+  if (gpAttachMap) AM::pResourceTracker()->vIncSocketOpen();
   if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_SOCKET])
     ResLog::vNote(SR_SOCKET,"SysRes: Socket connected to server %s %d"_Stz,
                        sAddr,iPort);
@@ -431,7 +431,7 @@ bool Socket::bCreateServer(int iPort, SysCall& SysCall)
     return false;
   }
   
-  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vIncSocketOpen();
+  if (gpAttachMap) AM::pResourceTracker()->vIncSocketOpen();
   if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_SOCKET])
     ResLog::vNote(SR_SOCKET,"SysRes: Socket created listening socket : %d"_Stz,
                        iPort);

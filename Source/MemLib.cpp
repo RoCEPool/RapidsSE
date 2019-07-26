@@ -388,7 +388,7 @@ void MemLib::vFreeBlock(void* aBlock, i8 nBytes)
 {
   free(aBlock);
   
-  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vSubMallocAmt(nBytes);
+  if (gpAttachMap) AM::pResourceTracker()->vSubMallocAmt(nBytes);
   if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MALLOC])
     ResLog::vNote(SR_MALLOC,"SysRes: Free'd %lld bytes"_Stz,nBytes);
 }
@@ -505,7 +505,7 @@ void* MemLib::aMallocBlock(i8 nBytes)
 {
   void* aBlock = (void*)malloc(nBytes);
   
-  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vAddMallocAmt(nBytes);
+  if (gpAttachMap) AM::pResourceTracker()->vAddMallocAmt(nBytes);
     if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MALLOC])
   ResLog::vNote(SR_MALLOC,"SysRes: Malloc'd %lld bytes"_Stz,nBytes);
 

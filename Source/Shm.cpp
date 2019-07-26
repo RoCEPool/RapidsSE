@@ -25,7 +25,7 @@ bool Shm::bClose(int iShmFd, SysCall& oSysCall)
     return false;
   }
   
-  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vDecShmOpen();
+  if (gpAttachMap) AM::pResourceTracker()->vDecShmOpen();
 
   oSysCall.vSuccess();
   
@@ -80,7 +80,7 @@ bool Shm::bOpenCreate(int& iShmFd, s32& sShmNm, SysCall& oSysCall)
     return false;
   }
   
-  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vIncShmOpen();
+  if (gpAttachMap) AM::pResourceTracker()->vIncShmOpen();
   
   return true;
 }
@@ -102,7 +102,7 @@ bool Shm::bOpenExisting(int& iShmFd, s32& sShmNm, SysCall& oSysCall)
     return false;
   }
   
-  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vIncShmOpen();
+  if (gpAttachMap) AM::pResourceTracker()->vIncShmOpen();
   
   return true;
 }

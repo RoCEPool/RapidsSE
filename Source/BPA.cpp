@@ -633,11 +633,11 @@ void BPA::vResourceSummary(void)
   vTrace("\n"_Stz);
   vTrace("****************************************************************\n"_Stz);
   vTrace(" Resources: dir %lld file %lld shm %lld socket %lld thread %lld\n"_Stz,
-         gpAttachMap->m_oResourceTracker.nDirOpen(),
-         gpAttachMap->m_oResourceTracker.nFileOpen(),
-         gpAttachMap->m_oResourceTracker.nShmOpen(),
-         gpAttachMap->m_oResourceTracker.nSocketOpen(),
-         gpAttachMap->m_oResourceTracker.nThreadOpen());
+         AM::pResourceTracker()->nDirOpen(),
+         AM::pResourceTracker()->nFileOpen(),
+         AM::pResourceTracker()->nShmOpen(),
+         AM::pResourceTracker()->nSocketOpen(),
+         AM::pResourceTracker()->nThreadOpen());
   vTrace("****************************************************************\n"_Stz);
 }
 

@@ -26,7 +26,7 @@ PromptNote mPromptNote_resources (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_resources(SePrompt* pPrompt)
 {
-  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vReport();
+  if (gpAttachMap) AM::pResourceTracker()->vReport();
   
   return true;
 }

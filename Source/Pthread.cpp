@@ -459,7 +459,7 @@ bool Pthread::bSpawnThread(void* pFun(void*), void* pArg)
     return false;
   }
   
-  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vIncThreadOpen();
+  if (gpAttachMap) AM::pResourceTracker()->vIncThreadOpen();
   if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_THREAD])
     ResLog::vNote(SR_THREAD,"SysRes: Spawned thread : %lld"_Stz,m_iPthreadId);
 
@@ -524,7 +524,7 @@ void Pthread::vThreadExit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
   
-  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vDecThreadOpen();
+  if (gpAttachMap) AM::pResourceTracker()->vDecThreadOpen();
 }
         
 /*----------------------------------------------------------------------------*/

@@ -9,6 +9,7 @@ namespace Jobs
                    public JobTable
   {
   public:
+    bool m_bCancel; // cancel job
 
   public:
     JobMark2(eCN eClassNo, Interface::Session* pSession);

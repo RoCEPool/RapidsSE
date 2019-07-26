@@ -64,8 +64,8 @@ namespace StorageEngine
     Atomic        m_ixPlanId;
     Queues*       m_pQueues;
     i8            m_iQuit;
-    ResourceTracker m_oResourceTracker;
   private:
+    ResourceTracker m_oResourceTracker;
     Dic           m_oRootDic;
     Statistics    m_oStatistics;
     StepTiming*   m_pStepTiming;

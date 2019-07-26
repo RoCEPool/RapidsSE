@@ -96,7 +96,7 @@ Mutex::Mutex()
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vIncMutexOpen();
+  if (gpAttachMap) AM::pResourceTracker()->vIncMutexOpen();
   
 #ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Mutex.m_nInits++;
@@ -129,7 +129,7 @@ Mutex::~Mutex(void) noexcept(false)
   iResult = pthread_condattr_destroy(&m_xCondAttr);
   RASSERT(! iResult);
 
-  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vDecMutexOpen();
+  if (gpAttachMap) AM::pResourceTracker()->vDecMutexOpen();
     
 #ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Mutex.m_nDestroys++;
