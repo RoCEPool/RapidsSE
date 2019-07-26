@@ -27,7 +27,7 @@ extern PromptCatalog gxPromptCatalog;
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_uptime(SePrompt* pPrompt)
 {
-  i8 iUpTimeSsec = gpAttachMap->m_oBirth.iElapsedSsec();
+  i8 iUpTimeSsec = AM::iElapsedSsec();
 
   vTrace("  %llds\n"_Stz,iUpTimeSsec);
   

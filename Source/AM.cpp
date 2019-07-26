@@ -7,8 +7,6 @@
 extern AttachMap* gpAttachMap;
 extern Log* gpLog;
 
-i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
-
 // Arg
 bool AM::bDeveloper(void)     { return gpAttachMap->Arg.m_bDeveloper;         }
 i8   AM::nDummyLoop(void)     { return gpAttachMap->Arg.m_nDummyLoop;         }
@@ -26,6 +24,11 @@ i8   AM::nSubIngesters(void)  { return gpAttachMap->Arg.m_nSubIngesters;      }
 i8   AM::nSubInserters(void)  { return gpAttachMap->Arg.m_nSubInserters;      }
 i8   AM::nSubLoaders(void)    { return gpAttachMap->Arg.m_nSubLoaders;        }
 i8   AM::nThreads(void)       { return gpAttachMap->Arg.m_nThreads;           }
+
+//
+i8   AM::iElapsedSsec(void)   { return gpAttachMap->m_oBirth.iElapsedSsec();  }
+i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
+
 
 /*============================================================================*/
 /* end                                                                        */

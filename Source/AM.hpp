@@ -8,10 +8,6 @@ namespace StorageEngine
   class AM
   {
   public:
-    //
-  
-    static i8   iPid(void);
-  
     // args
     static bool bDeveloper(void);
     static i8   nDummyLoop(void);
@@ -29,6 +25,11 @@ namespace StorageEngine
     static i8   nSubInserters(void);
     static i8   nSubLoaders(void);
     static i8   nThreads(void);
+
+    //
+    static i8   iElapsedSsec(void);
+    static i8   iPid(void);
+  
   };
 }
 

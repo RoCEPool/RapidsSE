@@ -549,7 +549,7 @@ void Log::vWriteToFile(bool bShortForm)
   Engine::vGetWelcome(sWelcome);
   Log::vNote(sWelcome);
   
-  i8 iUpTimeSsec = gpAttachMap->m_oBirth.iElapsedSsec();
+  i8 iUpTimeSsec = AM::iElapsedSsec();
   Log::vNote("Uptime %llds Requests %lld"_Stz,iUpTimeSsec,C_UNKNOWN);
 
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼

@@ -10,8 +10,8 @@ namespace StorageEngine
   friend class AM;
   private:
     i8    m_iPid;
-  public:
     Birth m_oBirth;
+  public:
     Now   m_oNow;
   
     struct {
