@@ -65,8 +65,8 @@ namespace StorageEngine
     Queues*       m_pQueues;
     i8            m_iQuit;
     ResourceTracker m_oResourceTracker;
-    Dic           m_oRootDic;
   private:
+    Dic           m_oRootDic;
     Statistics    m_oStatistics;
     StepTiming*   m_pStepTiming;
     i8            m_iStop;

@@ -238,7 +238,8 @@ ForthWord* Task::pCompileColon(s48K& sDefinition)
   if (m_oDicStack.iCount())
     pDic = m_oDicStack.pTop();
   else
-    pDic = &gpAttachMap->m_oRootDic;
+    pDic = AM::pRootDic();
+;
 
   pNewWord = new(pDic) ForthWord(m_pCompiler->m_pTokeniser->sToken());
   

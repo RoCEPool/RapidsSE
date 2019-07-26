@@ -304,7 +304,8 @@ void ForthWord::vContentDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  ForthWord* pStepWord = gpAttachMap->m_oRootDic.pFindStep(m_fpEntryStep);
+  Dic* pRootDic = AM::pRootDic();
+  ForthWord* pStepWord = pRootDic->pFindStep(m_fpEntryStep);
   
   vTrace("ForthWord %p: %s %s Kind %s Immediate %d DataBytes %lld "_Stz
          "Step %p %s ..Rows.. %p\n"_Stz,
@@ -397,7 +398,8 @@ void ForthWord::vEncode(Stz* aWordNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  ForthWord* pCalledWord = gpAttachMap->m_oRootDic.pFindWord(aWordNm);
+  Dic* pRootDic = AM::pRootDic();
+  ForthWord* pCalledWord = pRootDic->pFindWord(aWordNm);
   ASSERT(pCalledWord);
   
   vAppend(pCalledWord->afpEntryStep());

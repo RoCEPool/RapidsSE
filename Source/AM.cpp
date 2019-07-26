@@ -31,6 +31,7 @@ i8   AM::nIndexEntries(void)  { return gpAttachMap->m_nIndexEntries;          }
 i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
 bool AM::bProgress(void)      { return gpAttachMap->m_bProgress;              }
 bool AM::bMetadata(void)      { return gpAttachMap->m_bMetadata;              }
+Dic* AM::pRootDic(void)       { return & gpAttachMap->m_oRootDic;             }
 Statistics* AM::pStatistics(void)   { return & gpAttachMap->m_oStatistics;    }
 StepTiming* AM::pStepTiming(void)   { return gpAttachMap->m_pStepTiming;      }
 PoolBuffer* AM::pTakenBuffers(void) { return gpAttachMap->m_pTakenBuffers;    }

@@ -738,7 +738,9 @@ void Task::vSeedJob(void)
   
   Stz* szSeed = m_pJob->sJobSeed();
   
-  ForthWord* pWord = gpAttachMap->m_oRootDic.pFindWord(szSeed);
+  Dic* pRootDic = AM::pRootDic();
+
+  ForthWord* pWord = pRootDic->pFindWord(szSeed);
   
   if (! pWord)
     vFatal("Unable to find seed word: %s\n"_Stz,szSeed);

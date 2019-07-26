@@ -200,7 +200,8 @@ void Step::vDicRoot(MP_Task mpTask)
 {
   ENTRY("vDicRoot"_Stz);
   
-  mpTask->m_pDataStack->vPushPointer(&gpAttachMap->m_oRootDic);
+  Dic* pRootDic = AM::pRootDic();
+  mpTask->m_pDataStack->vPushPointer(pRootDic);
   
   EXIT();
 }

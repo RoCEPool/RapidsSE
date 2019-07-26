@@ -162,7 +162,9 @@ ForthWord* DicStack::pFindWord(Stz* aName)
       return pWord;
   }
   
-  if ( (pWord = gpAttachMap->m_oRootDic.pFindWord((Stz*)aName)) )
+  Dic* pRootDic = AM::pRootDic();
+
+  if ( (pWord = pRootDic->pFindWord((Stz*)aName)) )
     return pWord;
   
   return nullptr;
@@ -203,7 +205,8 @@ ForthWord* DicStack::pLocateWord(Cell* aHasCell)
         return pWord;
   }
   
-  for (pWord = gpAttachMap->m_oRootDic.pLastWord(); pWord; pWord = pWord->pPrevWord())
+  Dic* pRootDic = AM::pRootDic();
+  for (pWord = pRootDic->pLastWord(); pWord; pWord = pWord->pPrevWord())
     if (pWord->bHasCell(aHasCell))
       return pWord;
   
@@ -229,7 +232,8 @@ ForthWord* DicStack::pLocateWord(StepFp fpHasStep)
         return pWord;
   }
   
-  for (pWord = gpAttachMap->m_oRootDic.pLastWord();
+  Dic* pRootDic = AM::pRootDic();
+  for (pWord = pRootDic->pLastWord();
        pWord;
        pWord = pWord->pPrevWord())
     if (WT_PRIMITIVE == pWord->eWordType() &&
@@ -304,7 +308,8 @@ ForthWord* DicStack::pRemoveWord(s32& sName)
       return pRemovedWord;
   }
   
-  if ( (pRemovedWord = gpAttachMap->m_oRootDic.pRemoveWord(sName)) )
+  Dic* pRootDic = AM::pRootDic();
+  if ( (pRemovedWord = pRootDic->pRemoveWord(sName)) )
     return pRemovedWord;
   
   return nullptr;

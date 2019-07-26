@@ -106,7 +106,8 @@ void Step::vColon(MP_Task mpTask)
   if (mpTask->m_oDicStack.iCount())
     pDic = mpTask->m_oDicStack.pTop();
   else
-    pDic = &gpAttachMap->m_oRootDic;
+    pDic = AM::pRootDic();
+
   
   //vTrace(": %s\n"_Stz,sName.aChar());
   
@@ -172,7 +173,8 @@ ENTRY("vCreate"_Stz);
   if (mpTask->m_oDicStack.iCount())
     pDic = mpTask->m_oDicStack.pTop();
   else
-    pDic = &gpAttachMap->m_oRootDic;
+    pDic = AM::pRootDic();
+
   
   //vTrace(": %s\n"_Stz,mpTask->m_pCompiler->m_pTokeniser->sToken().aChar());
 
@@ -196,8 +198,8 @@ void Step::vCreatePersistent(MP_Task mpTask)
   if (mpTask->m_oDicStack.iCount())
     pDic = mpTask->m_oDicStack.pTop();
   else
-    pDic = &gpAttachMap->m_oRootDic;
-  
+    pDic = AM::pRootDic();
+
   //vTrace(": %s\n"_Stz,mpTask->m_pCompiler->m_pTokeniser->sToken().aChar());
   
   ForthWord* pNewWord = new(pDic,true) ForthWord(mpTask->m_pCompiler->m_pTokeniser->sToken());
@@ -222,8 +224,8 @@ ENTRY("vCreateFrom"_Stz);
   if (mpTask->m_oDicStack.iCount())
     pDic = mpTask->m_oDicStack.pTop();
   else
-    pDic = &gpAttachMap->m_oRootDic;
-  
+    pDic = AM::pRootDic();
+
   //vTrace(": %s\n"_Stz,sName.aChar());
   ForthWord* pNewWord = new(pDic) ForthWord(sName);
   
@@ -250,8 +252,8 @@ void Step::vCreateFromPersistent(MP_Task mpTask)
   if (mpTask->m_oDicStack.iCount())
     pDic = mpTask->m_oDicStack.pTop();
   else
-    pDic = &gpAttachMap->m_oRootDic;
-  
+    pDic = AM::pRootDic();
+
   //vTrace(": %s\n"_Stz,sName.aChar());
   ForthWord* pNewWord = new(pDic,true) ForthWord(sName);
   
@@ -271,8 +273,8 @@ void Step::vCreateFromInRoot(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(sName) )
     THROW_INVALID_DSTACK(">createInRoot"_Stz);
   
-  Dic* pDic = &gpAttachMap->m_oRootDic;
-  
+  Dic* pDic = AM::pRootDic();
+
   //vTrace(": %s\n"_Stz,sName.aChar());
   ForthWord* pNewWord = new(pDic) ForthWord(sName);
   

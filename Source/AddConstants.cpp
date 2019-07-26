@@ -11,7 +11,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Axioms::vAddConstant(Stz* szName, i8 iVal)
 {
-  ForthWord* pNewWord = new(&gpAttachMap->m_oRootDic) ForthWord(szName);
+  ForthWord* pNewWord = new(AM::pRootDic()) ForthWord(szName);
   
   GenVar xVar;
   xVar = iVal;
@@ -25,7 +25,7 @@ void Axioms::vAddConstant(Stz* szName, i8 iVal)
 /*----------------------------------------------------------------------------*/
 void Axioms::vAddConstant(Stz* szName, Stz* szVal)
 {
-  ForthWord* pNewWord = new(&gpAttachMap->m_oRootDic) ForthWord(szName);
+  ForthWord* pNewWord = new(AM::pRootDic()) ForthWord(szName);
   
   GenVar xVar;
   xVar = szVal;

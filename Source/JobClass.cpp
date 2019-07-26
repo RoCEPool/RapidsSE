@@ -393,6 +393,7 @@ void JobClass::vVerifySeeds(void)
 {
   //vTrace("FindJob: %s %s\n"_Stz, aCommand1, aCommand2);
   
+  Dic* pRootDic = AM::pRootDic();
   JobClass* pJobClass = nullptr;
   
   for (pJOBCLASSFUN pfJobClass = (pJOBCLASSFUN)pJob__Begun_class; pfJobClass; ) {
@@ -411,32 +412,32 @@ void JobClass::vVerifySeeds(void)
 //    if (pJobClass->m_aSeedCan) vTrace("  %s\n"_Stz,pJobClass->m_aSeedCan);
 
     if (pJobClass->m_aSeedRun &&
-        ! gpAttachMap->m_oRootDic.pFindWord(pJobClass->m_aSeedRun))
+        ! pRootDic->pFindWord(pJobClass->m_aSeedRun))
       vFatal("Cannot find class %s run seed %s\n"_Stz,
              aCN[pJobClass->m_eClass],pJobClass->m_aSeedRun);
 
     if (pJobClass->m_aSeedReq &&
-        ! gpAttachMap->m_oRootDic.pFindWord(pJobClass->m_aSeedReq))
+        ! pRootDic->pFindWord(pJobClass->m_aSeedReq))
       vFatal("Cannot find class %s req seed %s\n"_Stz,
              aCN[pJobClass->m_eClass],pJobClass->m_aSeedReq);
     
     if (pJobClass->m_aSeedRcv &&
-        ! gpAttachMap->m_oRootDic.pFindWord(pJobClass->m_aSeedRcv))
+        ! pRootDic->pFindWord(pJobClass->m_aSeedRcv))
       vFatal("Cannot find class %s rcv seed %s\n"_Stz,
              aCN[pJobClass->m_eClass],pJobClass->m_aSeedRcv);
     
     if (pJobClass->m_aSeedExe &&
-        ! gpAttachMap->m_oRootDic.pFindWord(pJobClass->m_aSeedExe))
+        ! pRootDic->pFindWord(pJobClass->m_aSeedExe))
       vFatal("Cannot find class %s exe seed %s\n"_Stz,
              aCN[pJobClass->m_eClass],pJobClass->m_aSeedExe);
     
     if (pJobClass->m_aSeedEnd &&
-        ! gpAttachMap->m_oRootDic.pFindWord(pJobClass->m_aSeedEnd))
+        ! pRootDic->pFindWord(pJobClass->m_aSeedEnd))
       vFatal("Cannot find class %s end seed %s\n"_Stz,
              aCN[pJobClass->m_eClass],pJobClass->m_aSeedEnd);
     
     if (pJobClass->m_aSeedCan &&
-        ! gpAttachMap->m_oRootDic.pFindWord(pJobClass->m_aSeedCan))
+        ! pRootDic->pFindWord(pJobClass->m_aSeedCan))
       vFatal("Cannot find class %s can seed %s\n"_Stz,
              aCN[pJobClass->m_eClass],pJobClass->m_aSeedCan);
     

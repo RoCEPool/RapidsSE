@@ -447,9 +447,9 @@ bool SePrompt::bIsPromptWord(void)
   s32 sWordNm;
   sWordNm = pTkn0->aText();
   
-  Dic* pDic = &gpAttachMap->m_oRootDic;
-  
-  ForthWord* pWord = pDic->pFindWord(sWordNm);
+  Dic* pRootDic = AM::pRootDic();
+
+  ForthWord* pWord = pRootDic->pFindWord(sWordNm);
   
   if ( ! (pWord && pWord->bPrompt()) )
     return false;
