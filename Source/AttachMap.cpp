@@ -281,7 +281,6 @@ void AttachMap::vRecordArguments(
   
       
     
-  m_bMarkApiAll = false;
   m_bMarkJobAll = false;
 }
 

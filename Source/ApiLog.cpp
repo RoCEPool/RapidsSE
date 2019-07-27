@@ -17,8 +17,8 @@ void ApiLog::vNoteEntry(i8 eApiCall, i8 iJobId)
   if ( ! gpLog )
     return;
   
-  if ( ! gpAttachMap->m_bMarkApi[eApiCall] &&
-      ! gpAttachMap->m_bMarkApiAll )
+  if ( ! AM::pMarkApi()->bEnum(eApiCall) &&
+       ! AM::pMarkApi()->bAll() )
     return;
   
   Stz* zApiName = aAC[eApiCall];
@@ -37,10 +37,10 @@ void ApiLog::vNoteError(i8 eApiCall, i8 iJobId, i8 iError)
   if ( ! gpLog )
     return;
   
-  if ( ! gpAttachMap->m_bMarkApi[eApiCall] &&
-      ! gpAttachMap->m_bMarkApiAll )
+  if ( ! AM::pMarkApi()->bEnum(eApiCall) &&
+      ! AM::pMarkApi()->bAll() )
     return;
-  
+
   Stz* zApiName = aAC[eApiCall];
   
   bool bForeign = Job::bIsForeign(iJobId);
@@ -57,10 +57,10 @@ void ApiLog::vNoteExit(i8 eApiCall, i8 iJobId)
   if ( ! gpLog )
     return;
   
-  if ( ! gpAttachMap->m_bMarkApi[eApiCall] &&
-      ! gpAttachMap->m_bMarkApiAll )
+  if ( ! AM::pMarkApi()->bEnum(eApiCall) &&
+      ! AM::pMarkApi()->bAll() )
     return;
-  
+
   Stz* zApiName = aAC[eApiCall];
   
   bool bForeign = Job::bIsForeign(iJobId);
