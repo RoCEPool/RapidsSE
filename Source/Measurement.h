@@ -24,7 +24,6 @@ using namespace Measurement;
 #include "Now.hpp"
 #include "Peruse.hpp"
 #include "ResourceTracker.hpp"
-#include "Statistics.hpp"
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 

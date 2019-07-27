@@ -2,12 +2,12 @@
 /* String_t.cpp -- fixed-length string variable (template)                       */
 /*============================================================================*/
 
-#include "Library.h"
+#include "Correctness.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-void* Library::_pStrVar(void* aAddr)
+void* Correctness::_pStrVar(void* aAddr)
 {
   Object* pStrVar = reinterpret_cast<Object*>(aAddr);
   
