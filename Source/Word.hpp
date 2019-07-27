@@ -5,7 +5,7 @@
 
 namespace Base
 {
-  class Word : public Line
+  class Word
   {
   public:
     union {

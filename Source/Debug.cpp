@@ -5,7 +5,6 @@
 #include "Debugging.h"
 #include "StorageEngine.h"
 
-extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* assert for been called                                                     */
