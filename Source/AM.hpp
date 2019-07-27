@@ -57,7 +57,7 @@ namespace StorageEngine
     static i8   iNextJobId(void);
     static i8   iNextPlanId(void);
     static Scheduling::Queues* pQueues(void);
-    static Measurement::ResourceTracker* pResourceTracker(void);
+    static Correctness::ResourceTracker* pResourceTracker(void);
     static Forth::Dic* pRootDic(void);
     static Correctness::Statistics* pStatistics(void);
     static Measurement::StepTiming* pStepTiming(void);

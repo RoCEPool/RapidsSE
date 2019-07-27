@@ -20,7 +20,6 @@ namespace Jobs          { class Job; class JobList;
 namespace Logging       {                                                     }
 namespace MetaData      {                                                     }
 namespace Measurement   { class LockTracker;
-                          class ResourceTracker;
                           class StepTiming;                                   }
 namespace Partitioning  { class TablePtn;                                     }
 namespace Persistence   { class CarryOver;                                    }

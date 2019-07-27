@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Measurement
+namespace Correctness
 {
   class ResourceTracker : public Object
   {

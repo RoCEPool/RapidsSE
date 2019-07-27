@@ -22,7 +22,6 @@ using namespace Measurement;
 #include "LockTracker.hpp"
 #include "Now.hpp"
 #include "Peruse.hpp"
-#include "ResourceTracker.hpp"
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 
