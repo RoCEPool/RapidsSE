@@ -17,7 +17,7 @@ void* Stz::operator new(size_t)
 {
   vFatal("fatal: Stz class cannot be new'd\n"_Stz);
   
-  NEVER_REACH;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

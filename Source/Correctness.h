@@ -17,6 +17,8 @@ using namespace Correctness;
 
 //-----------------------------------------------------------------------------
 
+#include "AssertMacros.hpp"
+
 #include "Footer.hpp"
 #include "Header.hpp"
 #include "Object.hpp"
