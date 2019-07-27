@@ -5,8 +5,6 @@
 
 #include "Correctness.h"
 
-//-----------------------------------------------------------------------------
-
 namespace Library
 {
   void vCheckAssumptions(void);
@@ -14,7 +12,7 @@ namespace Library
 
 using namespace Library;
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 #include "String_t.hpp"
 #include "Wsp_t.hpp"
@@ -28,6 +26,8 @@ typedef String_t<C_48K>  s48K;  // note this is 48K not 48KB
 typedef String_t<C_1M>   s1M;   // note this is 1M not 1MB
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#include "Atomic.hpp"
 #include "Magnitudes.hpp"
 
 /*============================================================================*/

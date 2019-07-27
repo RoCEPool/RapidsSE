@@ -46,7 +46,8 @@ Op::Op(eCN eClassNo, Stz* szOpLabel, Job* pJob)
   m_pOperandQueue = new OperandQueue;
   m_iWorkQuanta   = C_UNKNOWN;
   m_pOpOut        = nullptr;
-  
+  m_pOpContinue   = nullptr;
+
   m_fpOpFun       = nullptr;
   m_fpDrain       = nullptr;
 }

@@ -34,6 +34,7 @@ namespace PushDown
     OperandQueue*  m_pOperandQueue;  // the input queue being processed
     i8             m_iWorkQuanta;    // quanta of work between pulses
     Op*            m_pOpOut;         // where results get piped (queued)
+    Op*            m_pOpContinue;    // op which gets continued
 
     eOR  (*m_fpOpFun)(void* aThis);  // function which does the op
     void (*m_fpDrain)(void* aThis);  // function which drains the operand queue

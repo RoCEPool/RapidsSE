@@ -19,7 +19,6 @@ using namespace System;
 #include "SystemResources.h"
 #include "SysCall.hpp"
 
-#include "Atomic.hpp"
 #include "Birth.hpp"
 #include "Compress.hpp"
 #include "DecaCnt.hpp"
