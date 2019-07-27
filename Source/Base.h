@@ -10,7 +10,7 @@
 #include "MachineTypes.h"
 #include "SystemIncludes.h"
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 namespace Base
 {
@@ -19,24 +19,16 @@ namespace Base
 
 using namespace Base;
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-#include "UsefulConstants.h"
 #include "AxiomaticConstants.h"
-#include "ForwardClasses.h"
-//#include "AM.hpp"
-
 #include "BitLib.hpp"
 #include "ByteLiterals.hpp"
+#include "ForwardClasses.h"
 #include "i3.hpp"
 #include "Null.hpp"
-
-
 #include "Structs.h"
-
-
-
-
+#include "UsefulConstants.h"
 
 /*============================================================================*/
 /* end                                                                        */
