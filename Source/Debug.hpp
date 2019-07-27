@@ -37,8 +37,6 @@ namespace Debugging
         printf("ASSERT in %s at %d\n",__FILE__,__LINE__); \
         /* Debugging::vAssertDebug(); */ \
         Debugging::vAssertTrap(); \
-        THROW_ERROR_MSG(EC_ASSERT,(__builtin_expect(!(condition), 0) \
-                                    ? (Stz*) #condition : ""_Stz)); \
     } \
   }
   #else
@@ -86,19 +84,9 @@ namespace Debugging
   /*--------------------------------------------------------------------------*/
   #define NEVER_REACH { \
     Debugging::vAssertTrap(); \
-    THROW_ERROR_MSG(EC_ASSERT,"NEVER_REACH"_Stz); \
+    throw(-1); \
   }
   
-  /*--------------------------------------------------------------------------*/
-  /* throw exception macro's                                                  */
-  /*--------------------------------------------------------------------------*/
-  
-  #define THROW_ERROR(exception) \
-    throw new Error(exception,(Stz*)__FILE__,__LINE__);
-  
-  #define THROW_ERROR_MSG(exception, msg) \
-    throw new Error(exception,msg,(Stz*)__FILE__,__LINE__);
-
 };
 
 /*============================================================================*/
