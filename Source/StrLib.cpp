@@ -5,8 +5,6 @@
 #include "Base.h"
 #include "StorageEngine.h"
 
-extern AttachMap* gpAttachMap;
-
 /*----------------------------------------------------------------------------*/
 /* wAllocate: allocate a workspace/string of given size                       */
 /*----------------------------------------------------------------------------*/

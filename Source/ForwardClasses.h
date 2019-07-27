@@ -13,16 +13,16 @@ namespace Debugging     {                                                     }
 namespace Forth         {                                                     }
 namespace Grids         { class Node;                                         }
 namespace Indexes       {                                                     }
-namespace Interface     { class RecordBuffer; class Session;                  }
+namespace Interface     { class ApiState; class RecordBuffer; class Session;  }
 namespace Jobs          { class Job; class Job_CreateTable;
                                      class Job_CreateIndex;                   }
 namespace Logging       {                                                     }
 namespace MetaData      {                                                     }
 namespace Measurement   {                                                     }
 namespace Partitioning  { class TablePtn;                                     }
-namespace Persistence   {                                                     }
+namespace Persistence   { class CarryOver;                                    }
 namespace Plans         {                                                     }
-namespace Pool          {                                                     }
+namespace Pool          { class BufferPool;                                   }
 namespace Prompt        { class SePrompt;                                     }
 namespace PushDown      {                                                     }
 namespace Rows          { class IndexTree; class CrwBuffer;                   }
@@ -31,7 +31,7 @@ namespace Scheduling    { class Scheduler;                                    }
 namespace Steps         {                                                     }
 namespace StorageEngine { class Engine;                                       }
 namespace Structures    {                                                     }
-namespace System        {                                                     }
+namespace System        { class Lock;                                         }
 namespace Tasks         { class Task;                                         }
 namespace Threads       { class Thread;                                       }
 namespace Transactions  {                                                     }

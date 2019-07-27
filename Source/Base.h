@@ -24,6 +24,9 @@ using namespace Base;
 //-----------------------------------------------------------------------------
 
 #include "UsefulConstants.h"
+#include "AxiomaticConstants.h"
+#include "ForwardClasses.h"
+//#include "AM.hpp"
 
 #include "BitLib.hpp"
 #include "ByteLiterals.hpp"
@@ -37,8 +40,6 @@ using namespace Base;
 #include "StrLib.hpp"
 
 
-#include "AxiomaticConstants.h"
-#include "ForwardClasses.h"
 #include "LimitsFormats.h"
 #include "Structs.h"
 
