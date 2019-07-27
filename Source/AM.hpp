@@ -59,7 +59,7 @@ namespace StorageEngine
     static Scheduling::Queues* pQueues(void);
     static Measurement::ResourceTracker* pResourceTracker(void);
     static Forth::Dic* pRootDic(void);
-    static Measurement::Statistics* pStatistics(void);
+    static Correctness::Statistics* pStatistics(void);
     static Measurement::StepTiming* pStepTiming(void);
     static Pool::PoolBuffer* pTakenBuffers(void);
     static i8   nTakenBytes(void);

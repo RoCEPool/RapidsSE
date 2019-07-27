@@ -10,7 +10,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Statistics* Measurement::_pStatistics(void* aAddr)
+Statistics* Correctness::_pStatistics(void* aAddr)
 {
   Statistics* pStatistics = reinterpret_cast<Statistics*>(aAddr);
   
