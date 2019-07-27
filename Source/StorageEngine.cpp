@@ -17,7 +17,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   Base::vCheckAssumptions();
   Assembler::vCheckAssumptions();
   // third party??
-  Debugging::vCheckAssumptions();
   Correctness::vCheckAssumptions();
   Library::vCheckAssumptions();
   Lines::vCheckAssumptions();
