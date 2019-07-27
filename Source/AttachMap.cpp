@@ -74,10 +74,6 @@ AttachMap::AttachMap(void)
   m_xHeapMem.Persistent.m_pSmall  =
     new Heap(CN_SMALLPERSISTENT,  C_SIZE_SMALL_OBJECT);
 
-  m_bMarkJobAll = false;
-  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++)
-    m_bMarkJob[i_Class] = false;
-
   _checkInitialised_(CN_ATTACHMAP);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
@@ -97,7 +93,6 @@ AttachMap::~AttachMap(void) noexcept(false)
 void AttachMap::vGetGlobals(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -278,10 +273,6 @@ void AttachMap::vRecordArguments(
   
   m_iStop       = 0;
   m_iQuit       = 0;
-  
-      
-    
-  m_bMarkJobAll = false;
 }
 
 /*----------------------------------------------------------------------------*/

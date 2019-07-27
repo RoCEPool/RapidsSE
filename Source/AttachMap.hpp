@@ -35,13 +35,6 @@ namespace StorageEngine
       i8   m_nThreads;      // number of general threads
     } Arg;
   
-  public:
-//    bool          m_bMarkApiAll;
-//    bool          m_bMarkApi[AC_ENUMS];
-    bool          m_bMarkJobAll;
-    bool          m_bMarkJob[CN_ENUMS];
-  
-  private:
     EnumFlags     m_oMarkAction;
     EnumFlags     m_oMarkApi;
     EnumFlags     m_oMarkJob;

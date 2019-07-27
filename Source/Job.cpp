@@ -78,7 +78,7 @@ Job::Job(eCN eClassNo, Session* pSession)
   //m_oAcksRmg
   
   m_eJobTrace = JT_NONE;
-  if (gpAttachMap->m_bMarkJobAll || gpAttachMap->m_bMarkJob[eClass()])
+  if (AM::pMarkJob()->bAll() || AM::pMarkJob()->bEnum(eClass()))
     m_bMarkActivity = true;
   else
     m_bMarkActivity = false;

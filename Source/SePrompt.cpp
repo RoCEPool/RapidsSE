@@ -521,7 +521,7 @@ bool SePrompt::bMarkAll(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return gpAttachMap->m_bMarkJobAll;
+  return AM::pMarkJob()->bAll();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -531,7 +531,7 @@ void SePrompt::vMarkAll(bool bMarkAll)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  gpAttachMap->m_bMarkJobAll = bMarkAll;
+  AM::pMarkJob()->vAll(bMarkAll);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -561,7 +561,7 @@ bool SePrompt::bMarkJob(eCN e_Class)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return gpAttachMap->m_bMarkJob[e_Class];
+  return AM::pMarkJob()->bEnum(e_Class);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -571,7 +571,7 @@ void SePrompt::vMarkJob(eCN e_Class, bool bMarkJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  gpAttachMap->m_bMarkJob[e_Class] = bMarkJob;
+  AM::pMarkJob()->vEnum(e_Class,bMarkJob);
 }
 
 /*----------------------------------------------------------------------------*/
