@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Measurement.h"
+#include "AM.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -184,7 +185,7 @@ void Peruse::vAdd(i8 iArg, Stz* szFormat,...)
     
     va_list xArgs;
     va_start(xArgs,szFormat);
-    ::vPrint(szFormat,xArgs);
+    StorageEngine::AM::vWriteTrace(szFormat,xArgs);
     va_end(xArgs);
   }
 }
@@ -222,7 +223,7 @@ void Peruse::vPrint(Stz* szFormat,...)
   
   va_list xArgs;
   va_start(xArgs,szFormat);
-  ::vPrint(szFormat,xArgs);
+  StorageEngine::AM::vWriteTrace(szFormat,xArgs);
   va_end(xArgs);
   
   i8 iGrandAvg = m_iGrandSum / m_iGrandCount;
