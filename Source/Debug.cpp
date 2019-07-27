@@ -1,13 +1,10 @@
 /*============================================================================*/
-/* Debug.cpp -- Debugging Functions                                           */
+/* Debug.cpp -- Debug functions                                               */
 /*============================================================================*/
 
 #include "Correctness.h"
 
-#include "StorageEngine.h"
 #include "AM.hpp"
-#include "Log.hpp"
-
 
 /*----------------------------------------------------------------------------*/
 /* assert for been called                                                     */
@@ -46,9 +43,9 @@ void Correctness::vAssertTrap(void)
   vStackDump();
   
   // add activity dump and api state dump
-  Log::vWriteCsv(false);
+  StorageEngine::AM::vWriteLog();
   
-  AM::pApiState()->vDump();
+  StorageEngine::AM::vDumpApi();
   
   // put a breakpoint here to trap asserts
   sleep(0);

@@ -79,6 +79,11 @@ namespace StorageEngine
     static void vTakeBytes(i8 nTakeBytes);
     static void vTakenBytes(i8 nTakenBytes);
     static void vTenants(Forth::ForthWord* pTenants);
+  
+    //
+    static void vDumpApi(void);
+    static void vWriteLog(void);
+
   };
 }
 

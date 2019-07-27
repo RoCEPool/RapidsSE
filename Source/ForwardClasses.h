@@ -33,7 +33,7 @@ namespace Rows          { class IndexTree; class CrwBuffer;                   }
 namespace ScanSprint    {                                                     }
 namespace Scheduling    { class Queues; class Scheduler;                      }
 namespace Steps         {                                                     }
-namespace StorageEngine { class Engine;                                       }
+namespace StorageEngine { class AM; class Engine;                             }
 namespace Structures    {                                                     }
 namespace System        { class Lock;                                         }
 namespace Tasks         { class Task;                                         }

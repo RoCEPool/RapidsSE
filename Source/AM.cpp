@@ -93,6 +93,13 @@ void AM::vTakenBytes(i8 nTakenBytes) {
 void AM::vTenants(ForthWord *pTenants) {
   gpAttachMap->m_pTenants = pTenants;
 }
+//
+void AM::vDumpApi(void) {
+  pApiState()->vDump();
+}
+void AM::vWriteLog(void) {
+  Log::vWriteCsv(false);
+}
 
 /*============================================================================*/
 /* end                                                                        */

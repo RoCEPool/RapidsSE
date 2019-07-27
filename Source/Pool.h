@@ -35,7 +35,6 @@ static const u8 C_OBJECT_TO_BUFFER_MASK = BITWISE_NOT((C_SIZE_POOL_BUFFER - 1));
 #include "BufferPool.hpp"
 #include "BPA.hpp"
 
-#include "FreeChunk.hpp"
 #include "HeapBuffer.hpp"
 #include "HeapMem.hpp"
 #include "Heap.hpp"

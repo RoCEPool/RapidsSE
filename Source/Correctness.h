@@ -19,6 +19,9 @@ using namespace Correctness;
 #include "Stz.hpp"
 #include "LimitsFormats.h"
 #include "ClassNumbers.hpp"
+#include "Footer.hpp"
+#include "Header.hpp"
+#include "FreeChunk.hpp"
 #include "Debug.hpp"
 
 #include "StrLib.hpp"
@@ -27,8 +30,6 @@ using namespace Correctness;
 
 #include "AssertMacros.hpp"
 
-#include "Footer.hpp"
-#include "Header.hpp"
 #include "Object.hpp"
 #include "AlignedObject.hpp"
 #include "SeeMe.hpp"
