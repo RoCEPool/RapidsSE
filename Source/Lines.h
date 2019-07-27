@@ -16,6 +16,11 @@ using namespace Lines;
 
 //-----------------------------------------------------------------------------
 
+#include "Line.hpp"
+#include "DoubleWord.hpp"
+#include "QuadWord.hpp"
+#include "CacheLine.hpp"
+#include "SpaceUnit.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

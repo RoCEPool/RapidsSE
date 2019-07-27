@@ -33,7 +33,6 @@ using namespace Base;
 #include "ErrorCodes.hpp"
 #include "IntLib.hpp"
 #include "i3.hpp"
-#include "Line.hpp"
 #include "MemLib.hpp"
 #include "Null.hpp"
 #include "Stz.hpp"
@@ -46,10 +45,6 @@ using namespace Base;
 #include "Dtm.hpp"
 
 #include "Word.hpp"
-#include "DoubleWord.hpp"
-#include "QuadWord.hpp"
-#include "CacheLine.hpp"
-#include "SpaceUnit.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Base
+namespace Lines
 {
   class QuadWord : public Line
   {
