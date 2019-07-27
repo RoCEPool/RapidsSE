@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Chunks
+namespace Base
 {
   enum eRE // record ends
   {

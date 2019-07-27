@@ -32,6 +32,7 @@ using namespace Base;
 #include "ByteLiterals.hpp"
 #include "ClassNumbers.hpp"
 #include "IntLib.hpp"
+#include "Formatters.hpp"
 #include "i3.hpp"
 #include "Line.hpp"
 #include "MemLib.hpp"

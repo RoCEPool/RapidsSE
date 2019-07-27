@@ -16,8 +16,6 @@ using namespace Chunks;
 
 //------------------------------------------------------------------------------
 
-#include "Formatters.hpp"
-
 #include "DataChunk.hpp"
 #include "RecordExtractor.hpp"
 #include "FileChunk.hpp"
