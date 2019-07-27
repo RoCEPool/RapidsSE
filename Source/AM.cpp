@@ -94,6 +94,12 @@ void AM::vTenants(ForthWord *pTenants) {
   gpAttachMap->m_pTenants = pTenants;
 }
 //
+bool AM::bAttached(void) {
+  if (gpAttachMap)
+    return true;
+  else
+    return false;
+}
 void AM::vDumpApi(void) {
   pApiState()->vDump();
 }

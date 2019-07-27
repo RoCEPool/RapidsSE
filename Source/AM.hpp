@@ -81,6 +81,7 @@ namespace StorageEngine
     static void vTenants(Forth::ForthWord* pTenants);
   
     //
+    static bool bAttached(void);
     static void vDumpApi(void);
     static void vWriteLog(void);
 

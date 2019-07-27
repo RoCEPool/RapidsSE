@@ -6,7 +6,6 @@
 #include "Correctness.h"
 
 
-extern AttachMap* gpAttachMap;
 
 extern i8 giClassSize[];
 
@@ -387,7 +386,7 @@ void MemLib::vFreeBlock(void* aBlock, i8 nBytes)
 {
   free(aBlock);
   
-  if (gpAttachMap) AM::pResourceTracker()->vSubMallocAmt(nBytes);
+  if (AM::bAttached()) AM::pResourceTracker()->vSubMallocAmt(nBytes);
 
   if (AM::pMarkResource()->bEnum(SR_MALLOC) ||
       AM::pMarkResource()->bAll())
@@ -506,7 +505,7 @@ void* MemLib::aMallocBlock(i8 nBytes)
 {
   void* aBlock = (void*)malloc(nBytes);
   
-  if (gpAttachMap) AM::pResourceTracker()->vAddMallocAmt(nBytes);
+  if (AM::bAttached()) AM::pResourceTracker()->vAddMallocAmt(nBytes);
   if (AM::pMarkResource()->bEnum(SR_MALLOC) ||
       AM::pMarkResource()->bAll())
     ResLog::vNote(SR_MALLOC,"SysRes: Malloc'd %lld bytes"_Stz,nBytes);
