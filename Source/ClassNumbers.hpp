@@ -5,8 +5,6 @@
 
 #include "Correctness.h"
 
-#include "Stz.hpp"
-
 namespace Correctness
 {
 
