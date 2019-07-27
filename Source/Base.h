@@ -16,7 +16,6 @@
 namespace Base
 {
   void vCheckAssumptions(void);
-  void vTraceWith(void);
 }
 
 using namespace Base;

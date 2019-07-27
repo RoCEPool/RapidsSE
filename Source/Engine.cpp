@@ -25,7 +25,7 @@ void Engine::vMainEntry(void)
   
   vPrintWelcome();
   
-  Base::vTraceWith();
+  Correctness::vTraceWith();
   
   vSetSignalHandlers();
   

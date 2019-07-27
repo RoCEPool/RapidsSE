@@ -10,6 +10,7 @@
 namespace Correctness
 {
   void vCheckAssumptions(void);
+  void vTraceWith(void);
 }
 
 using namespace Correctness;
