@@ -101,8 +101,8 @@ void Pthread::vMonitorPortrait(s48K& sPortrait)
   
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
     if (pStats->Thread.m_iaSleeps[i_Class]) {
-      Magnitudes::vUnitMag(pStats->Thread.m_iaSleeps[i_Class],   sUnitMag);
-      Magnitudes::vTimeMag(pStats->Thread.m_iaDuration[i_Class], sTimeMag);
+      MagLib::vUnitMag(pStats->Thread.m_iaSleeps[i_Class],   sUnitMag);
+      MagLib::vTimeMag(pStats->Thread.m_iaDuration[i_Class], sTimeMag);
       sPortrait.vSprintCat(" %s %s/%s"_Stz,
              aCN[i_Class],sUnitMag.aStz(),sTimeMag.aStz());
     }
@@ -757,13 +757,13 @@ void Pthread::vSleepers(void)
 
   Statistics* pStats = AM::pStatistics();
   
-  Magnitudes::vUnitMag(pStats->Thread.m_nSleeps,sUnitMag);
+  MagLib::vUnitMag(pStats->Thread.m_nSleeps,sUnitMag);
   vTrace("Pthread::vSleep() total %s\n"_Stz,sUnitMag.aStz());
   
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
     if (pStats->Thread.m_iaSleeps[i_Class]) {
-      Magnitudes::vUnitMag(pStats->Thread.m_iaSleeps[i_Class],   sUnitMag);
-      Magnitudes::vTimeMag(pStats->Thread.m_iaDuration[i_Class], sTimeMag);
+      MagLib::vUnitMag(pStats->Thread.m_iaSleeps[i_Class],   sUnitMag);
+      MagLib::vTimeMag(pStats->Thread.m_iaDuration[i_Class], sTimeMag);
       vTrace("  %s: %s times for duration of %s\n"_Stz,
              aCN[i_Class],sUnitMag.aStz(),sTimeMag.aStz());
     }

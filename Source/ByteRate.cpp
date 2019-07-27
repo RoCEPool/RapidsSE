@@ -175,10 +175,10 @@ void ByteRate::vReportStatistics(void)
   i8 iAvgBytesPerSec = nBytesPerSecond();
   i8 iAvgBytesPerDay = nBytesPerDay();
 
-  Magnitudes::vByteMag(m_nBytesSoFar,  2,sSumMag);
-  Magnitudes::vByteMag(iAvgBytesPerMil,2,sMilMag);
-  Magnitudes::vByteMag(iAvgBytesPerSec,2,sSecMag);
-  Magnitudes::vByteMag(iAvgBytesPerDay,2,sDayMag);
+  MagLib::vByteMag(m_nBytesSoFar,  2,sSumMag);
+  MagLib::vByteMag(iAvgBytesPerMil,2,sMilMag);
+  MagLib::vByteMag(iAvgBytesPerSec,2,sSecMag);
+  MagLib::vByteMag(iAvgBytesPerDay,2,sDayMag);
 
   m_nNextReport += m_iReportQuantum;
   vTrace("%s %s %llds: sum %s %s/ms %s/s %s/day\n"_Stz,

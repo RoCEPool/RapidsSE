@@ -234,10 +234,10 @@ void Log::vMonitorPortrait(s48K& sPortrait)
   
   i8 iMapSize = gpLog->iSize();
   s32 sShmMag;
-  Magnitudes::vByteMag(iMapSize, sShmMag);
+  MagLib::vByteMag(iMapSize, sShmMag);
   
   s32 sArrayMag;
-  Magnitudes::vUnitMag(gpLog->m_nEntries, sArrayMag);
+  MagLib::vUnitMag(gpLog->m_nEntries, sArrayMag);
 
   sPortrait.vSprint("Log: shm %s array %s marks %lld; %lld%% full;\n"_Stz,
                     sShmMag.aStz(),
@@ -332,10 +332,10 @@ void Log::vOpenBySE(bool bStarting)
   Log::vNote("Time is: %s"_Stz,oNow.sz());
 
   s32 sMem;
-  Magnitudes::vByteMag(Hardware::iPhysicalMemory(),sMem);
+  MagLib::vByteMag(Hardware::iPhysicalMemory(),sMem);
   
   s32 sClock;
-  Magnitudes::vHzMag(Hardware::iClockFrequency(),sClock);
+  MagLib::vHzMag(Hardware::iClockFrequency(),sClock);
   
   Log::vNote("hw: %lld cores; %s memory; %s clock frequency"_Stz,
                      Hardware::iCoreCount(),

@@ -107,9 +107,9 @@ void File::vMonitorPortrait(s48K& sPortrait)
 {
   Statistics* pStats = AM::pStatistics();
 
-  s32 sReadMag;  Magnitudes::vByteMag(pStats->File.m_nReadBytes,  sReadMag);
-  s32 sWriteMag; Magnitudes::vByteMag(pStats->File.m_nWriteBytes, sWriteMag);
-  s32 sPrintMag; Magnitudes::vByteMag(pStats->File.m_nPrintBytes, sPrintMag);
+  s32 sReadMag;  MagLib::vByteMag(pStats->File.m_nReadBytes,  sReadMag);
+  s32 sWriteMag; MagLib::vByteMag(pStats->File.m_nWriteBytes, sWriteMag);
+  s32 sPrintMag; MagLib::vByteMag(pStats->File.m_nPrintBytes, sPrintMag);
 
   sPortrait.vSprint("File: "
                     "opens %lld "
@@ -182,11 +182,11 @@ void File::vStatistics(void)
   vTrace("  nFileUngetcs %lld\n"_Stz,pStats->File.m_nUngetcs);
   vTrace("\n"_Stz);
 
-  Magnitudes::vByteMag(pStats->File.m_nReadBytes,  sByteMag);
+  MagLib::vByteMag(pStats->File.m_nReadBytes,  sByteMag);
   vTrace("  nFileReadBytes  %s\n"_Stz,sByteMag.aStz());
-  Magnitudes::vByteMag(pStats->File.m_nPrintBytes, sByteMag);
+  MagLib::vByteMag(pStats->File.m_nPrintBytes, sByteMag);
   vTrace("  nFilePrintBytes %s\n"_Stz,sByteMag.aStz());
-  Magnitudes::vByteMag(pStats->File.m_nWriteBytes, sByteMag);
+  MagLib::vByteMag(pStats->File.m_nWriteBytes, sByteMag);
   vTrace("  nFileWriteBytes %s\n"_Stz,sByteMag.aStz());
 }
 

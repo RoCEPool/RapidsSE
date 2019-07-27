@@ -121,8 +121,8 @@ void Socket::vMonitorPortrait(s48K& sPortrait)
 {
   Statistics* pStat = AM::pStatistics();
   
-  s32 sRecvMag; Magnitudes::vByteMag(pStat->Socket.m_nRecvBytes, sRecvMag);
-  s32 sSendMag; Magnitudes::vByteMag(pStat->Socket.m_nSendBytes, sSendMag);
+  s32 sRecvMag; MagLib::vByteMag(pStat->Socket.m_nRecvBytes, sRecvMag);
+  s32 sSendMag; MagLib::vByteMag(pStat->Socket.m_nSendBytes, sSendMag);
 
   sPortrait.vSprint("Socket: "
                     "accepts %lld "
@@ -171,9 +171,9 @@ void Socket::vStatistics(void)
   vTrace("  nSocketSends      %lld\n"_Stz,pStat->Socket.m_nSends);
   vTrace("  nSocketSendTos    %lld\n"_Stz,pStat->Socket.m_nSendTos);
 
-  Magnitudes::vByteMag(pStat->Socket.m_nRecvBytes,  sByteMag);
+  MagLib::vByteMag(pStat->Socket.m_nRecvBytes,  sByteMag);
   vTrace("  nSocketRecvBytes  %s\n"_Stz,sByteMag.aStz());
-  Magnitudes::vByteMag(pStat->Socket.m_nSendBytes,  sByteMag);
+  MagLib::vByteMag(pStat->Socket.m_nSendBytes,  sByteMag);
   vTrace("  nSocketSendBytes  %s\n"_Stz,sByteMag.aStz());
 }
 

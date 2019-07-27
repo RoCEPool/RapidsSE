@@ -96,7 +96,7 @@ void Region::vCreate(s32& sRegionName, bool bVerbose,
   bool bResult;
   
   // verbose
-  Magnitudes::vByteMag(iRegionSize, sSizeMag);
+  MagLib::vByteMag(iRegionSize, sSizeMag);
   if (bVerbose)
     vInfo("Creating Engine instance %s; size %s (%lldB)...\n"_Stz,
            sRegionName.aChar(),

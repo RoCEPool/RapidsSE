@@ -135,7 +135,7 @@ bool LoadMap::bMapChunk(void)
     vAddEntry(m_i_EofLoc - 1);
 
     s32 sFileSize;
-    Magnitudes::vByteMag(m_i_EofLoc, 3, sFileSize);
+    MagLib::vByteMag(m_i_EofLoc, 3, sFileSize);
     vTrace("Loading %s %s in %lld chunks by %lld subLoaders %lld nodes %lld partitions\n"_Stz,
            m_oFile.sFilePath().aStz(),sFileSize.aStz(),
            m_xMap.nEntries,

@@ -554,11 +554,11 @@ void BPA::vReadBuffers(Stz* sFilePath)
 /*----------------------------------------------------------------------------*/
 void BPA::vRegionSummary()
 {
-  // get magnitudes of the various buffer pools
-  s32 sMagSmall;  Magnitudes::vByteMag(C_SIZE_SMALL_OBJECT, sMagSmall);
-  s32 sMagMedium; Magnitudes::vByteMag(C_SIZE_MEDIUM_OBJECT,sMagMedium);
-  s32 sMagLarge;  Magnitudes::vByteMag(C_SIZE_LARGE_OBJECT, sMagLarge);
-  s32 sMagJumbo;  Magnitudes::vByteMag(C_SIZE_JUMBO_OBJECT, sMagJumbo);
+  // get MagLib of the various buffer pools
+  s32 sMagSmall;  MagLib::vByteMag(C_SIZE_SMALL_OBJECT, sMagSmall);
+  s32 sMagMedium; MagLib::vByteMag(C_SIZE_MEDIUM_OBJECT,sMagMedium);
+  s32 sMagLarge;  MagLib::vByteMag(C_SIZE_LARGE_OBJECT, sMagLarge);
+  s32 sMagJumbo;  MagLib::vByteMag(C_SIZE_JUMBO_OBJECT, sMagJumbo);
   
   vTrace("\n"_Stz);
   vTrace("  Region %s %p size %lldB epoch %lld\n"_Stz,

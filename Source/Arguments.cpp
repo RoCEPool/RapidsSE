@@ -401,7 +401,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--size"_Stz)) {
       
-      bool bResult = Magnitudes::bToBytes((Stz*)argv[++i_Arg], m_iRegionSize);
+      bool bResult = MagLib::bToBytes((Stz*)argv[++i_Arg], m_iRegionSize);
       if (!bResult) {
         vWarn("Invalid size argument: --size %s\n"_Stz,argv[i_Arg]);
         return false;
@@ -411,7 +411,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
       if (m_iRegionSize > DIV(C_MEMORY_PERCENT * iTotalMemory, 100)) {
         vWarn("Invalid size argument: --size %s\n"_Stz,argv[i_Arg]);
         s32 sMag;
-        Magnitudes::vByteMag(iTotalMemory,sMag);
+        MagLib::vByteMag(iTotalMemory,sMag);
         vWarn("Cannot set size > %lld%% of memory on this node (node has only %s of memory)\n"_Stz,
                C_MEMORY_PERCENT,
                sMag.aChar());
@@ -419,10 +419,10 @@ bool Arguments::bParse(int argc, Stz* argv[])
       }
       
       s32 sMinSize;
-      Magnitudes::vByteMag(C_MIN_REGION, sMinSize);
+      MagLib::vByteMag(C_MIN_REGION, sMinSize);
       
       s32 sSize;
-      Magnitudes::vByteMag(m_iRegionSize, sSize);
+      MagLib::vByteMag(m_iRegionSize, sSize);
       
       if (m_iRegionSize < C_MIN_REGION) {
         vWarn("Insufficient region size: %s. At least %s is required\n"_Stz,
@@ -776,7 +776,7 @@ void Arguments::vPrintStartupInfo(void)
 #endif
   
   s32 sSizeMag;
-  Magnitudes::vByteMag(m_iRegionSize,sSizeMag);
+  MagLib::vByteMag(m_iRegionSize,sSizeMag);
   vTrace("  --size %s\n"_Stz,sSizeMag.aChar());
   
   for (i8 i_Index = 0; i_Index < m_nNodes; i_Index++) {

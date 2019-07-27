@@ -416,7 +416,7 @@ void SePrompt::vFreeSpace(void)
   i8 iFreeSpaceInPool = BPA::iPoolFree();
 
   s32 sFreeSpaceMag;
-  Magnitudes::vByteMag(iFreeSpace + iFreeSpaceInPool,1,sFreeSpaceMag);
+  MagLib::vByteMag(iFreeSpace + iFreeSpaceInPool,1,sFreeSpaceMag);
   Log::vNote("Command completed (free space: %s)"_Stz,
                          sFreeSpaceMag.aStz());
 }

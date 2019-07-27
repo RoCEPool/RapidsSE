@@ -30,7 +30,7 @@ static const i8 C_TSP_LOCAL = 1;
 static const i8 C_TSP_UTC   = 0;
 
 
-// the 1024^n magnitudes
+// the 1024^n MagLib
 static const i8 C_1KB = 1024LL;          // 1 kilobyte    = 1,024
 static const i8 C_1MB = C_1KB * C_1KB;   // 1 megabyte    = 1,048,576
 static const i8 C_1GB = C_1MB * C_1KB;   // 1 gigabyte    = 1,073,741,824
@@ -104,7 +104,7 @@ static const i8 C_128PB  = C_1PB * 128;  // 128 petabytes =
 static const i8 C_256PB  = C_1PB * 256;  // 256 petabytes =
 static const i8 C_512PB  = C_1PB * 512;  // 512 petabytes =
 
-// the 10^n magnitudes
+// the 10^n MagLib
 static const i8 C_1K   = 1000LL;         // 1 thousand    = 1,000
 static const i8 C_10K  = C_1K   * 10;    // 10 thousand   = 10,000
 static const i8 C_100K = C_10K  * 10;    // 100 thousand  = 100,000

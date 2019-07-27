@@ -190,25 +190,25 @@ void LlcTest::vAnIteration(i8 iIteration, i8 nStepLength, i8 nMissRatio)
   i8 iAvgElement = iRandomSum / nIterations;
   
   s32 sElapsedMag;
-  Magnitudes::vTimeMag(xElapsedTimer.iNanoseconds(),sElapsedMag);
+  MagLib::vTimeMag(xElapsedTimer.iNanoseconds(),sElapsedMag);
   
   s32 sSizeMag;
-  Magnitudes::vByteMag(sizeof(xArray),sSizeMag);
+  MagLib::vByteMag(sizeof(xArray),sSizeMag);
   
   s32 sIterationsMag;
-  Magnitudes::vUnitMag(nIterations,sIterationsMag);
+  MagLib::vUnitMag(nIterations,sIterationsMag);
   
   s32 sMissesMag;
-  Magnitudes::vUnitMag(nSumMisses,sMissesMag);
+  MagLib::vUnitMag(nSumMisses,sMissesMag);
   
   s32 sAdjustedMag;
-  Magnitudes::vUnitMag(iAdjMisses,sAdjustedMag);
+  MagLib::vUnitMag(iAdjMisses,sAdjustedMag);
   
   s32 sStepsMag;
-  Magnitudes::vUnitMag(nSteps,sStepsMag);
+  MagLib::vUnitMag(nSteps,sStepsMag);
   
   s32 sEveryMag;
-  Magnitudes::vTimeMag(iEvery,sEveryMag);
+  MagLib::vTimeMag(iEvery,sEveryMag);
   
   
   vTrace("\n-- Iteration %lld ----------------------------------------------------------------------\n"

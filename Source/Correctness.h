@@ -54,7 +54,7 @@ typedef String_t<C_1M>   s1M;   // note this is 1M not 1MB
 
 
 #include "Atomic.hpp"
-#include "Magnitudes.hpp"
+#include "MagLib.hpp"
 #include "ResourceEnums.h"
 #include "ResourceTracker.hpp"
 #include "Statistics.hpp"

@@ -446,7 +446,7 @@ void Engine::vMonitorProfile(s48K& sPortrait)
   i8 iUpTime = AM::iElapsedSsec();
   
   s32 sRegionMag;
-  Magnitudes::vByteMag(gpAttachMap->Arg.m_iRegionSize,sRegionMag);
+  MagLib::vByteMag(gpAttachMap->Arg.m_iRegionSize,sRegionMag);
 
   i8 iPercentFree = gpAttachMap->m_pBufferPool->iFreePercent();
   Stz* aNodeName  = AM::pGrid()->pGetNode(gxArguments.m_iThisNode)->aNodeName();

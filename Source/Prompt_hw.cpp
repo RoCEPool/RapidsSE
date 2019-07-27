@@ -27,10 +27,10 @@ PromptNote mPromptNote_hw (
 bool Prompt::bPrompt_hw(SePrompt* pPrompt)
 {
   s32 sMem;
-  Magnitudes::vByteMag(Hardware::iPhysicalMemory(),sMem);
+  MagLib::vByteMag(Hardware::iPhysicalMemory(),sMem);
 
   s32 sClock;
-  Magnitudes::vHzMag(Hardware::iClockFrequency(),sClock);
+  MagLib::vHzMag(Hardware::iClockFrequency(),sClock);
 
   unsigned int x = 0x1;
   char *c = (char*) &x;

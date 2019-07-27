@@ -159,7 +159,7 @@ void Peruse::vAdd(i8 iArg, Stz* szFormat,...)
     
     m_oTimer.vUpdate();
     s32 sElapsedMag;
-    Magnitudes::vTimeMag(m_oTimer.iMilliseconds()*C_1M, sElapsedMag);
+    MagLib::vTimeMag(m_oTimer.iMilliseconds()*C_1M, sElapsedMag);
     
     s32 sCountComma;
     StrLib::vComma(sCountComma.aChar(), m_iGrandCount);
@@ -238,7 +238,7 @@ void Peruse::vPrint(Stz* szFormat,...)
   
   m_oTimer.vUpdate();
   s32 sElapsedMag;
-  Magnitudes::vTimeMag(m_oTimer.iMilliseconds()*C_1M, sElapsedMag);
+  MagLib::vTimeMag(m_oTimer.iMilliseconds()*C_1M, sElapsedMag);
   
   s32 sCountComma;
   StrLib::vComma(sCountComma.aChar(), m_iGrandCount);
