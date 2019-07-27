@@ -4,8 +4,7 @@
 
 #include "StorageEngine.h"
 #include "Correctness.h"
-
-
+#include "AM.hpp"
 
 extern i8 giClassSize[];
 
@@ -386,10 +385,11 @@ void MemLib::vFreeBlock(void* aBlock, i8 nBytes)
 {
   free(aBlock);
   
-  if (AM::bAttached()) AM::pResourceTracker()->vSubMallocAmt(nBytes);
+  if (StorageEngine::AM::bAttached())
+    StorageEngine::AM::pResourceTracker()->vSubMallocAmt(nBytes);
 
-  if (AM::pMarkResource()->bEnum(SR_MALLOC) ||
-      AM::pMarkResource()->bAll())
+  if (StorageEngine::AM::pMarkResource()->bEnum(SR_MALLOC) ||
+      StorageEngine::AM::pMarkResource()->bAll())
     ResLog::vNote(SR_MALLOC,"SysRes: Free'd %lld bytes"_Stz,nBytes);
 }
 
@@ -505,9 +505,10 @@ void* MemLib::aMallocBlock(i8 nBytes)
 {
   void* aBlock = (void*)malloc(nBytes);
   
-  if (AM::bAttached()) AM::pResourceTracker()->vAddMallocAmt(nBytes);
-  if (AM::pMarkResource()->bEnum(SR_MALLOC) ||
-      AM::pMarkResource()->bAll())
+  if (StorageEngine::AM::bAttached())
+    StorageEngine::AM::pResourceTracker()->vAddMallocAmt(nBytes);
+  if (StorageEngine::AM::pMarkResource()->bEnum(SR_MALLOC) ||
+      StorageEngine::AM::pMarkResource()->bAll())
     ResLog::vNote(SR_MALLOC,"SysRes: Malloc'd %lld bytes"_Stz,nBytes);
 
   return aBlock;
@@ -612,7 +613,7 @@ i8 MemLib::nQuantaRequired(i8 nBytes, i8 nSizeQuanta)
 /*----------------------------------------------------------------------------*/
 void MemLib::vReset(void)
 {
-  Statistics* pStats = AM::pStatistics();
+  Statistics* pStats = StorageEngine::AM::pStatistics();
 
   pStats->Memory.m_iCopyTotal = 0;
   pStats->Memory.m_iCompareTotal = 0;
