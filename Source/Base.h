@@ -31,6 +31,7 @@ using namespace Base;
 #include "BitLib.hpp"
 #include "ByteLiterals.hpp"
 #include "ClassNumbers.hpp"
+#include "ErrorCodes.hpp"
 #include "IntLib.hpp"
 #include "i3.hpp"
 #include "Line.hpp"
