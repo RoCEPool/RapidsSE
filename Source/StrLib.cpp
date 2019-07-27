@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "Correctness.h"
-#include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
 /* wAllocate: allocate a workspace/string of given size                       */
@@ -1794,9 +1793,12 @@ bool StrLib::bExtractVarcharDefault(char** aaSrc,
 {
   i8 iLength = 0;
   
-  char cEscapeChar = AM::pFormatters()->m_cEscapeChar;
-  char cFieldDelimiter = AM::pFormatters()->m_cFieldDelimiter;
-  
+//  char cEscapeChar = AM::pFormatters()->m_cEscapeChar;
+//  char cFieldDelimiter = AM::pFormatters()->m_cFieldDelimiter;
+
+  char cEscapeChar = D_ESCAPE_CHAR;
+  char cFieldDelimiter = D_FIELD_DELIMITER;
+
   char *aDst = (char*)aVarChar;
   
   char cSrc = **aaSrc;
