@@ -13,7 +13,7 @@ namespace Prompt
                               Stz* szGroupNm,
                               TokenVec* pTknVec);
   
-    static void vEnumFlags(EnumFlags& oFlags,
+    static void vEnumFlags(EnumFlags* pFlags,
                            Stz* szGroupNm,
                            Stz* szaEnumNm[],
                            i8   iEnumLimit,

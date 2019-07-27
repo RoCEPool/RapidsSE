@@ -26,7 +26,7 @@ EarlyMarker* PushDown::_pEarlyMarker(void* aAddr)
 void* EarlyMarker::operator new(size_t)
 {
   EarlyMarker* pEarlyMarker =
-    static_cast<EarlyMarker*>(HeapMem::pAllocate(CN_ENDMARKER));
+    static_cast<EarlyMarker*>(HeapMem::pAllocate(CN_EARLYMARKER));
   
   return pEarlyMarker;
 }
@@ -45,13 +45,13 @@ void EarlyMarker::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 EarlyMarker::EarlyMarker(void)
-: Operand(CN_ENDMARKER)
+: Operand(CN_EARLYMARKER)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENDMARKER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EARLYMARKER,_FOOTER_);
 
-  _checkInitialised_(CN_ENDMARKER);
+  _checkInitialised_(CN_EARLYMARKER);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENDMARKER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_EARLYMARKER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -59,7 +59,7 @@ EarlyMarker::EarlyMarker(void)
 /*----------------------------------------------------------------------------*/
 EarlyMarker::~EarlyMarker(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENDMARKER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_EARLYMARKER,_FOOTER_);
 }
 
 

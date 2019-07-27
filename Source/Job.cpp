@@ -84,8 +84,8 @@ Job::Job(eCN eClassNo, Session* pSession)
     m_bMarkActivity = false;
   m_i_Activity   = C_UNKNOWN;
   
-  if ( gpAttachMap->m_oMarkAction.bAll() ||
-      gpAttachMap->m_oMarkAction.bFlagged(eClass()) ) {
+  if ( AM::pMarkAction()->bAll() ||
+       AM::pMarkAction()->bFlagged(eClass()) ) {
     m_bMarkAction  = true;
     m_i_ActionRoot = ActLog::iBegin(m_iJobId,eClassNo);
   }
@@ -94,8 +94,8 @@ Job::Job(eCN eClassNo, Session* pSession)
     m_i_ActionRoot = C_UNKNOWN;
   }
   
-  if ( gpAttachMap->m_oMarkTrace.bAll() ||
-      gpAttachMap->m_oMarkTrace.bFlagged(eClass()) )
+  if ( AM::pMarkTrace()->bAll() ||
+       AM::pMarkTrace()->bFlagged(eClass()) )
     m_bMarkTrace  = true;
   else
     m_bMarkTrace  = false;

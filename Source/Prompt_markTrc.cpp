@@ -26,7 +26,7 @@ extern AttachMap*    gpAttachMap;
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_markTrc(SePrompt* pPrompt)
 {
-  PromptHelper::vEnumFlags(gpAttachMap->m_oMarkTrace,
+  PromptHelper::vEnumFlags(AM::pMarkTrace(),
                            "Trc"_Stz,
                            aCN,
                            CN_ENUMS,

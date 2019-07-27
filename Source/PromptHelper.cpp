@@ -142,7 +142,7 @@ void PromptHelper::vCommandFlags(EnumFlags& oFlags,
 /*----------------------------------------------------------------------------*/
 /* process command flags                                                      */
 /*----------------------------------------------------------------------------*/
-void PromptHelper::vEnumFlags(EnumFlags& oFlags,
+void PromptHelper::vEnumFlags(EnumFlags* pFlags,
                               Stz* szGroupNm,
                               Stz* szaEnumNm[],
                               i8   iEnumLimit,
@@ -159,14 +159,14 @@ void PromptHelper::vEnumFlags(EnumFlags& oFlags,
   if (nTokens == 1) {
     
     for (i8 i_Enum = 1; i_Enum < iEnumLimit; i_Enum++)
-      if (oFlags.bEnum((eCN)i_Enum))
+      if (pFlags->bEnum((eCN)i_Enum))
         vTrace("%s : %s\n"_Stz,
                szaEnumNm[i_Enum],
                "on"_Stz);
     
     vTrace("Mark%sAll is currently : %s\n"_Stz,
            szGroupNm,
-           oFlags.bAll() ? "on"_Stz : "off"_Stz);
+           pFlags->bAll() ? "on"_Stz : "off"_Stz);
     
     return;
   }
@@ -188,7 +188,7 @@ void PromptHelper::vEnumFlags(EnumFlags& oFlags,
     if (aTkn1->bSame("all"_Stz)) {
       vTrace("Mark%sAll is currently : %s\n"_Stz,
              szGroupNm,
-             oFlags.bAll() ? "on"_Stz : "off"_Stz);
+             pFlags->bAll() ? "on"_Stz : "off"_Stz);
       return;
     }
     
@@ -196,7 +196,7 @@ void PromptHelper::vEnumFlags(EnumFlags& oFlags,
       if (aTkn1->bSame(szaEnumNm[i_Enum]))
         vTrace("%s : %s\n"_Stz,
                szaEnumNm[i_Enum],
-               oFlags.bEnum(i_Enum) ? "on"_Stz : "off"_Stz);
+               pFlags->bEnum(i_Enum) ? "on"_Stz : "off"_Stz);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -211,24 +211,24 @@ void PromptHelper::vEnumFlags(EnumFlags& oFlags,
     
     if (aTkn1->bSame("all"_Stz)) {
       if (aTkn2->bIsSomeTrue())
-        oFlags.vAll(true);
+        pFlags->vAll(true);
       else
         if (aTkn2->bIsSomeFalse())
-          oFlags.vAll(false);
+          pFlags->vAll(false);
       return;
     }
     
     if (aTkn2->bIsSomeTrue()) {
       for (i8 i_Enum = 1; i_Enum < iEnumLimit; i_Enum++)
         if (aTkn1->bSame(szaEnumNm[i_Enum]))
-          oFlags.vEnum(i_Enum,true);
+          pFlags->vEnum(i_Enum,true);
       return;
     }
     
     if (aTkn2->bIsSomeFalse()) {
       for (i8 i_Enum = 1; i_Enum < iEnumLimit; i_Enum++)
         if (aTkn1->bSame(szaEnumNm[i_Enum]))
-          oFlags.vEnum(i_Enum,false);
+          pFlags->vEnum(i_Enum,false);
       return;
     }
     

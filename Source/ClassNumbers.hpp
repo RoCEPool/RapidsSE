@@ -61,6 +61,7 @@ enum eCN : u2 // Class Number
   /*                           */ CN_DISTINCTOP,
   /*                           */ CN_DTMVAL,
 
+  /*                           */ CN_EARLYMARKER,
   /*                           */ CN_ENCODING,
   /*                           */ CN_ENDMARKER,
   /*  33 0x21       40B Heap:I */ CN_ENT,
@@ -392,6 +393,7 @@ static Stz* aCN[]
   /*          */ "DISTINCTOP"_Stz,          // CN_DISTINCTOP
   /*          */ "DTMVAL"_Stz,              // CN_DTMVAL
 
+  /*          */ "EARLYMARKER"_Stz,         // CN_EARLYMARKER
   /*          */ "ENCODING"_Stz,            // CN_ENCODING
   /*          */ "ENDMARKER"_Stz,           // CN_ENDMARKER
   /*  33 0x21 */ "ENT"_Stz,                 // CN_ENT
