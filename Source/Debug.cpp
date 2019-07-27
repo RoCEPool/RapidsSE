@@ -2,14 +2,14 @@
 /* Debug.cpp -- Debugging Functions                                           */
 /*============================================================================*/
 
-#include "Debugging.h"
+#include "Correctness.h"
 #include "StorageEngine.h"
 
 
 /*----------------------------------------------------------------------------*/
 /* assert for been called                                                     */
 /*----------------------------------------------------------------------------*/
-void Debugging::vAssertCalled(void)
+void Correctness::vAssertCalled(void)
 {
   vAssertTrap();
 }
@@ -17,7 +17,7 @@ void Debugging::vAssertCalled(void)
 /*----------------------------------------------------------------------------*/
 /* assert for debug                                                           */
 /*----------------------------------------------------------------------------*/
-void Debugging::vAssertDebug(void)
+void Correctness::vAssertDebug(void)
 {
   vAssertTrap();
 }
@@ -25,7 +25,7 @@ void Debugging::vAssertDebug(void)
 /*----------------------------------------------------------------------------*/
 /* assert for release                                                         */
 /*----------------------------------------------------------------------------*/
-void Debugging::vAssertRelease(void)
+void Correctness::vAssertRelease(void)
 {
   // dump the call stack
   vStackDump();
@@ -37,7 +37,7 @@ void Debugging::vAssertRelease(void)
 /*----------------------------------------------------------------------------*/
 /* assert trap                                                                */
 /*----------------------------------------------------------------------------*/
-void Debugging::vAssertTrap(void)
+void Correctness::vAssertTrap(void)
 {
   // dump the call stack
   vStackDump();
@@ -57,7 +57,7 @@ void Debugging::vAssertTrap(void)
 /*----------------------------------------------------------------------------*/
 /* handle an rassert                                                          */
 /*----------------------------------------------------------------------------*/
-void Debugging::vAssertType(void* aObject, eCN eExpectingClass)
+void Correctness::vAssertType(void* aObject, eCN eExpectingClass)
 {
   Object* pObject = static_cast<Object*>(aObject);
   eCN eGotClass = pObject->eClass();
@@ -84,7 +84,7 @@ void Debugging::vAssertType(void* aObject, eCN eExpectingClass)
 /*----------------------------------------------------------------------------*/
 /* assert warning                                                             */
 /*----------------------------------------------------------------------------*/
-void Debugging::vAssertWarn(void)
+void Correctness::vAssertWarn(void)
 {
   // dump the call stack
   vStackDump();
@@ -96,7 +96,7 @@ void Debugging::vAssertWarn(void)
 /*----------------------------------------------------------------------------*/
 /* debug point                                                                */
 /*----------------------------------------------------------------------------*/
-void Debugging::vDebugPoint(void)
+void Correctness::vDebugPoint(void)
 {
   sleep(0);
 }
@@ -104,7 +104,7 @@ void Debugging::vDebugPoint(void)
 /*----------------------------------------------------------------------------*/
 /* debug trap                                                                 */
 /*----------------------------------------------------------------------------*/
-void Debugging::vDebugTrap(void)
+void Correctness::vDebugTrap(void)
 {
   // put a breakpoint here to trap specific debug points
   sleep(0);
@@ -113,7 +113,7 @@ void Debugging::vDebugTrap(void)
 /*----------------------------------------------------------------------------*/
 /* error handler                                                              */
 /*----------------------------------------------------------------------------*/
-void Debugging::vStackDump(void)
+void Correctness::vStackDump(void)
 {
   void *pArray[C_STACK_BACKTRACE];
   int iSize;
@@ -129,7 +129,7 @@ void Debugging::vStackDump(void)
 /*----------------------------------------------------------------------------*/
 /* throw trap                                                                 */
 /*----------------------------------------------------------------------------*/
-void Debugging::vThrowTrap(void)
+void Correctness::vThrowTrap(void)
 {
   // put a breakpoint here to trap throws
   sleep(0);

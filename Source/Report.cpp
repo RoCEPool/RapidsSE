@@ -2,7 +2,7 @@
 /* Report.cpp - message reporter                                              */
 /*============================================================================*/
 
-#include "Debugging.h"
+#include "Correctness.h"
 #include "StorageEngine.h"
 
 extern File*       gpTraceFile;
@@ -13,7 +13,7 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* report a non-recoverable fatal message                                     */
 /*----------------------------------------------------------------------------*/
-void Debugging::vFatal(Stz* aFormat, ...)
+void Correctness::vFatal(Stz* aFormat, ...)
 {
   vStackDump();
   
@@ -29,7 +29,7 @@ void Debugging::vFatal(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* report an information message                                              */
 /*----------------------------------------------------------------------------*/
-void Debugging::vInfo(Stz* aFormat, ...)
+void Correctness::vInfo(Stz* aFormat, ...)
 {
   va_list xArgs;
   
@@ -41,7 +41,7 @@ void Debugging::vInfo(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* report a trace message                                                     */
 /*----------------------------------------------------------------------------*/
-void Debugging::vTrace(Stz* aFormat, ...)
+void Correctness::vTrace(Stz* aFormat, ...)
 {
   va_list xArgs;
 
@@ -53,7 +53,7 @@ void Debugging::vTrace(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* report a warning message                                                   */
 /*----------------------------------------------------------------------------*/
-void Debugging::vWarn(Stz* aFormat, ...)
+void Correctness::vWarn(Stz* aFormat, ...)
 {
   va_list xArgs;
   
@@ -68,7 +68,7 @@ void Debugging::vWarn(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* write to trace file etc                                                    */
 /*----------------------------------------------------------------------------*/
-void Debugging::vPrint(Stz* aFormat, va_list xArgs)
+void Correctness::vPrint(Stz* aFormat, va_list xArgs)
 {
   static Lock oLock(LK_TRACE);
   static char caFormatted[C_1MB] = {'\0'};

@@ -4,9 +4,8 @@
 
 #pragma once
 
-namespace Chunks { class Formatters; }
 
-namespace Base
+namespace Correctness
 {
   enum eDC // date components
   {

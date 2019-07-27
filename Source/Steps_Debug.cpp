@@ -21,7 +21,7 @@ void Step::vDebugTrap(MP_Task mpTask)
 {
 ENTRY("vDebugTrap"_Stz);
 
-  Debugging::vDebugTrap();
+  Correctness::vDebugTrap();
   
   EXIT();
 }

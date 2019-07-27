@@ -28,22 +28,15 @@ using namespace Base;
 
 #include "BitLib.hpp"
 #include "ByteLiterals.hpp"
-#include "ClassNumbers.hpp"
-#include "ErrorCodes.hpp"
-#include "IntLib.hpp"
 #include "i3.hpp"
-#include "MemLib.hpp"
 #include "Null.hpp"
-#include "Stz.hpp"
-#include "StrLib.hpp"
 
 
-#include "LimitsFormats.h"
 #include "Structs.h"
 
-#include "Dtm.hpp"
 
-#include "Word.hpp"
+
+
 
 /*============================================================================*/
 /* end                                                                        */

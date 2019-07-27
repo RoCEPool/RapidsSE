@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Base
+namespace Correctness
 {
   static const u8 C_SCRIBBLE_PATTERN = 0x21454D54494E4921; // !INITME!
   static const u8 C_MEMORY_MARKER0   = 0x0706050403020100;

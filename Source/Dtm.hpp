@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Base
+namespace Lines
 {
   enum eDM : u1 // Dtm Kind
   {

@@ -8,7 +8,7 @@
   /* check the object is within the pool                                      */
   /*--------------------------------------------------------------------------*/
   #ifdef WITH_ADDRESS_CHECKING
-    #define _poolAddress_(pArg) Base::vCheckAddress(pArg)
+    #define _poolAddress_(pArg) Correctness::vCheckAddress(pArg)
   #else
     #define _poolAddress_(pArg)
   #endif
@@ -21,8 +21,7 @@
     { \
       if ( !(condition) ) { \
         printf("ASSERT in %s at %d\n",__FILE__,__LINE__); \
-        /* Debugging::vAssertDebug(); */ \
-        Debugging::vAssertTrap(); \
+        Correctness::vAssertTrap(); \
     } \
   }
   #else
@@ -34,7 +33,7 @@
   { \
     if ( !(_condition) ) { \
       printf("BEEN_CALLED in %s at %d\n",__FILE__,__LINE__); \
-    Debugging::vAssertCalled(); \
+      Correctness::vAssertCalled(); \
     } \
   }
   
@@ -43,7 +42,7 @@
   { \
     if ( !(condition) ) { \
       printf("RASSERT in %s at %d\n",__FILE__,__LINE__); \
-      Debugging::vAssertRelease(); \
+      Correctness::vAssertRelease(); \
     } \
   }
   
@@ -52,7 +51,7 @@
   { \
     if ( pARG && eCLASS != pARG->eClass()  ) { \
       printf("RASSERT_TYPE in %s at %d\n",__FILE__,__LINE__); \
-      Debugging::vAssertType(pARG,eCLASS); \
+      Correctness::vAssertType(pARG,eCLASS); \
     } \
   }
 
@@ -61,7 +60,7 @@
   { \
     if ( !(condition) ) { \
       printf("RASSERT_WARN in %s at %d\n",__FILE__,__LINE__); \
-      Debugging::vAssertWarn(); \
+      Correctness::vAssertWarn(); \
     } \
   }
         
@@ -69,7 +68,7 @@
   /* NEVER_REACH macro (point in code which should never be reached           */
   /*--------------------------------------------------------------------------*/
   #define NEVER_REACH { \
-    Debugging::vAssertTrap(); \
+    Correctness::vAssertTrap(); \
     throw(-1); \
   }
 

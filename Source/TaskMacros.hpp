@@ -17,7 +17,7 @@
   sException.vSprint(p1); \
   Task* pTask = Task::pThisTLSTask(); \
   pTask->vException(sFile,sException); \
-  Debugging::vThrowTrap(); \
+  Correctness::vThrowTrap(); \
   throw (i8)__LINE__; \
 }
 
@@ -28,7 +28,7 @@
   sException.vSprint(p1,p2); \
   Task* pTask = Task::pThisTLSTask(); \
   pTask->vException(sFile,sException); \
-  Debugging::vThrowTrap(); \
+  Correctness::vThrowTrap(); \
   throw (i8)__LINE__; \
 }
 

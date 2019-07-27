@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Debugging
+namespace Correctness
 {
   void  vFatal(Stz* aFormat,...);
   void  vInfo(Stz* aFormat,...);

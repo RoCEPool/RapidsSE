@@ -3,9 +3,8 @@
 /*============================================================================*/
 
 #include "StorageEngine.h"
-#include "Base.h"
+#include "Correctness.h"
 
-#include "Debugging.h"
 
 extern AttachMap* gpAttachMap;
 
@@ -918,7 +917,7 @@ void MemLib::vWordFlip(w8* aWord)
 {
   wordAsBytes* aAsBytes = (wordAsBytes*)aWord;
   
-  y1 yByte;
+  byte yByte;
   
   yByte = aAsBytes->m_caByte[0];
   aAsBytes->m_caByte[0] = aAsBytes->m_caByte[7];

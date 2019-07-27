@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Base
+namespace Correctness
 {
   i8 nSub(void* aAddress0, void* aAddress1);
   

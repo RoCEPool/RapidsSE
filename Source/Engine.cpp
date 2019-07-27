@@ -256,7 +256,7 @@ void Engine::vErrorHandler(Error* pError)
     vTrace("Engine::vErrorHandler: Unknown error\n"_Stz);
   }
            
-  Debugging::vStackDump();
+  Correctness::vStackDump();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -771,7 +771,7 @@ void Engine::vSignalHandler(int iSignal)
   // print out all the frames to stderr
   vFatal("Error: signal %d:\n"_Stz, iSignal);
   
-  Debugging::vStackDump();
+  Correctness::vStackDump();
   Process::vExit(1);
 }
 

@@ -2,7 +2,7 @@
 /* Stz.cpp -- str datum                                                       */
 /*============================================================================*/
 
-#include "Base.h"
+#include "Correctness.h"
 
 #include "Debugging.h"
 
@@ -307,7 +307,7 @@ void Stz::vToLower(void)
 /*----------------------------------------------------------------------------*/
 /* _Stz literal suffix (which converts const char* to Stz*)                   */
 /*----------------------------------------------------------------------------*/
-Stz* Base::operator "" _Stz(const char* aArg, size_t nSize)
+Stz* Correctness::operator "" _Stz(const char* aArg, size_t nSize)
 {
   return (Stz*)(aArg);
 }

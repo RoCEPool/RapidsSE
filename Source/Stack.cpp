@@ -849,11 +849,11 @@ bool Stack::bPopAsInt_Quick(i8& iArg)
   
   switch (eClassNo) {
       
-    case Base::CN_INTVAL:
+    case Correctness::CN_INTVAL:
       iArg = _aIntVal(aTopValue)->iInt();
       return true;
       
-    case Base::CN_PTRVAL:
+    case Correctness::CN_PTRVAL:
       iArg = _aPtrVal(aTopValue)->pObj() ? 1 : 0;
       return true;
       

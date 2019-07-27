@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Base.h"
+#include "Correctness.h"
 
 #include "Stz.hpp"
 
-namespace Base
+namespace Correctness
 {
 
 /*----------------------------------------------------------------------------*/

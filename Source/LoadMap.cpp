@@ -165,7 +165,7 @@ bool LoadMap::bMapChunk(void)
   RASSERT(bFoundEol);
   
   // compute the number of bytes which belong to the current chunk
-  i8 nPartialBytes = Base::nSub((void*)aFinalEol,aFinalBlock) + 1;
+  i8 nPartialBytes = Correctness::nSub((void*)aFinalEol,aFinalBlock) + 1;
   
   // compute end location of chunk
   i8 i_EndChunkLoc = i_FinalBlockLoc + nPartialBytes - 1;

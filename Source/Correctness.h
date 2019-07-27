@@ -16,6 +16,14 @@ namespace Correctness
 using namespace Correctness;
 
 //-----------------------------------------------------------------------------
+#include "Stz.hpp"
+#include "LimitsFormats.h"
+#include "ClassNumbers.hpp"
+#include "Debug.hpp"
+
+#include "StrLib.hpp"
+#include "MemLib.hpp"
+#include "ErrorCodes.hpp"
 
 #include "AssertMacros.hpp"
 
@@ -29,6 +37,8 @@ using namespace Correctness;
 #include "MP.hpp"
 #include "HeapVar.hpp"
 #include "SizedHeader.hpp"
+#include "Report.hpp"
+#include "IntLib.hpp"
 
 #define IGNORE_RETURN(call) call
 

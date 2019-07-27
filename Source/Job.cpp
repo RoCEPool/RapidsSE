@@ -45,7 +45,7 @@ Job* Jobs::_pJob(i8 iAddr)
 /*----------------------------------------------------------------------------*/
 /* is given class a valid job?                                                */
 /*----------------------------------------------------------------------------*/
-bool Jobs::_bIsValidJob(Base::eCN eClass)
+bool Jobs::_bIsValidJob(Correctness::eCN eClass)
 {
   if (eClass >= CN_JOB__BEGUN && eClass <= CN_JOB_WRITEROW)
     return true;
@@ -228,7 +228,7 @@ void Job::vStateDiagram(s256& sDiagram, eCN eJobClass)
   switch (eJobClass) {
      
     // generate state diagram for export job
-    case Base::CN_JOB_EXPORT: {
+    case Correctness::CN_JOB_EXPORT: {
       
       i8 iDiagram = AM::iNextDiagram();
       

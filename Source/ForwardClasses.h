@@ -6,7 +6,7 @@
 namespace Assembler     {                                                     }
 namespace Axioms        {                                                     }
 namespace Base          {                                                     }
-namespace Chunks        {                                                     }
+namespace Chunks        { class Formatters;                                   }
 namespace Commands      { class Command; class Parser; class Tokeniser;       }
 namespace Correctness   {                                                     }
 namespace Debugging     {                                                     }
