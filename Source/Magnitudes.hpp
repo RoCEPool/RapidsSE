@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Library
+namespace Correctness
 {
   class Magnitudes {
   public:
