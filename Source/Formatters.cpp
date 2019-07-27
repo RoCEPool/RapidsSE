@@ -58,13 +58,13 @@ Formatters::Formatters(void)
   // these are the default values
   //
   
-  m_cEnclosedBy_Leading  = '\0';
-  m_cEnclosedBy_Trailing = m_cEnclosedBy_Leading;
+  m_cEnclosedBy_Leading  = D_ENCLOSED_BY_LEADING;  //  '\0';
+  m_cEnclosedBy_Trailing = D_ENCLOSED_BY_TRAILING; //  '\0';
   //m_cEnclosedBy_Leading  = '{';
   //m_cEnclosedBy_Trailing = '}';
-  m_cEscapeChar          = '\\';
-  m_cFieldDelimiter      = ',';
-  m_cRecordTerminator    = '\0';
+  m_cEscapeChar          = D_ESCAPE_CHAR;          //  '\\';
+  m_cFieldDelimiter      = D_FIELD_DELIMITER;      //  ',';
+  m_cRecordTerminator    = D_RECORD_TERMINATOR;    //  '\0';
   m_eRecordEnd           = RE_NL;
   
   m_eDateComponent[0]    = DC_YYYY;  // default is YYYY-MM-DD

@@ -41,6 +41,12 @@ static const Stz* F_TSP_frac  = "TIMESTAMP '%02lld-%02lld-%02lld %02lld:%02lld:%
 
 static const Stz* F_VCH_enclose = "'"_Stz;
 
+static const char D_ENCLOSED_BY_LEADING  = '\0';
+static const char D_ENCLOSED_BY_TRAILING = '\0';
+static const char D_ESCAPE_CHAR          = '\\';
+static const char D_FIELD_DELIMITER      = ',';
+static const char D_RECORD_TERMINATOR    = '\0';
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 static const i8  C_LOG_ENTRIES = C_1M * 1;
