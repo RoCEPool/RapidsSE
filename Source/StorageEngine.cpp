@@ -15,10 +15,12 @@ void StorageEngine::vCheckAllAssumptions(void)
 {
   // this is in reverse order of the spaces in the project
   Base::vCheckAssumptions();
-  Debugging::vCheckAssumptions();
-  // third party??
-  Correctness::vCheckAssumptions();
   Assembler::vCheckAssumptions();
+  // third party??
+  Debugging::vCheckAssumptions();
+  Correctness::vCheckAssumptions();
+  Library::vCheckAssumptions();
+  Lines::vCheckAssumptions();
   System::vCheckAssumptions();
   Pool::vCheckAssumptions();
   Persistence::vCheckAssumptions();
