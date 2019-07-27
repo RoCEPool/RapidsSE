@@ -182,7 +182,8 @@ void Dir::vClose(void)
   }
 
   if (gpAttachMap) AM::pResourceTracker()->vDecDirOpen();
-  if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_DIR])
+  if (AM::pMarkResource()->bEnum(SR_DIR) ||
+      AM::pMarkResource()->bAll())
     ResLog::vNote(SR_DIR,"SysRes: Dir closed %s"_Stz,m_sDirPath.aStz());
 
   m_aDir = nullptr;
@@ -257,7 +258,8 @@ bool Dir::bOpen(Stz* aDirPath)
   }
 
   if (gpAttachMap) AM::pResourceTracker()->vIncDirOpen();
-  if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_DIR])
+  if (AM::pMarkResource()->bEnum(SR_DIR) ||
+      AM::pMarkResource()->bAll())
     ResLog::vNote(SR_DIR,"SysRes: Dir opened %s"_Stz,aDirPath);
 
   ASSERT(bIsOpen());

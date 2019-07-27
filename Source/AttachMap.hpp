@@ -40,8 +40,8 @@ namespace StorageEngine
     bool          m_bMarkApi[AC_ENUMS];
     bool          m_bMarkJobAll;
     bool          m_bMarkJob[CN_ENUMS];
-    bool          m_bMarkResourceAll;
-    bool          m_bMarkResource[SR_ENUMS];
+//    bool          m_bMarkResourceAll;
+//    bool          m_bMarkResource[SR_ENUMS];
   
   private:
     EnumFlags     m_oMarkAction;

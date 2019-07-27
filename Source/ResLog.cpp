@@ -17,8 +17,8 @@ void ResLog::vNote(eSR eSysRes,Stz* szFormat, ...)
   if ( ! gpLog )
     return;
   
-  if ( ! gpAttachMap->m_bMarkResource[eSysRes] &&
-       ! gpAttachMap->m_bMarkResourceAll )
+  if (AM::pMarkResource()->bEnum(eSysRes) ||
+      AM::pMarkResource()->bAll())
     return;
   
   va_list xVaArgs;

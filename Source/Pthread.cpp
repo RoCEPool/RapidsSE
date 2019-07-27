@@ -460,7 +460,8 @@ bool Pthread::bSpawnThread(void* pFun(void*), void* pArg)
   }
   
   if (gpAttachMap) AM::pResourceTracker()->vIncThreadOpen();
-  if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_THREAD])
+  if (AM::pMarkResource()->bEnum(SR_THREAD) ||
+      AM::pMarkResource()->bAll())
     ResLog::vNote(SR_THREAD,"SysRes: Spawned thread : %lld"_Stz,m_iPthreadId);
 
   // this is important otherwise resources are not released

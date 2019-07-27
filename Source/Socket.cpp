@@ -264,7 +264,8 @@ bool Socket::bAcceptClient(int& iSocketId, SysCall& SysCall)
   }
   
   if (gpAttachMap) AM::pResourceTracker()->vIncSocketOpen();
-  if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_SOCKET])
+  if (AM::pMarkResource()->bEnum(SR_SOCKET) ||
+      AM::pMarkResource()->bAll())
     ResLog::vNote(SR_SOCKET,"SysRes: Socket accepted cient"_Stz);
 
   SysCall.vSuccess();
@@ -300,7 +301,8 @@ bool Socket::bClose(SysCall& SysCall)
   m_iSocketId = -1;
   
   if (gpAttachMap) AM::pResourceTracker()->vDecSocketOpen();
-  if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_SOCKET])
+  if (AM::pMarkResource()->bEnum(SR_SOCKET) ||
+      AM::pMarkResource()->bAll())
     ResLog::vNote(SR_SOCKET,"SysRes: Socket closed"_Stz);
 
   SysCall.vSuccess();
@@ -368,7 +370,8 @@ bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
   }
   
   if (gpAttachMap) AM::pResourceTracker()->vIncSocketOpen();
-  if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_SOCKET])
+  if (AM::pMarkResource()->bEnum(SR_SOCKET) ||
+      AM::pMarkResource()->bAll())
     ResLog::vNote(SR_SOCKET,"SysRes: Socket connected to server %s %d"_Stz,
                        sAddr,iPort);
 
@@ -432,7 +435,8 @@ bool Socket::bCreateServer(int iPort, SysCall& SysCall)
   }
   
   if (gpAttachMap) AM::pResourceTracker()->vIncSocketOpen();
-  if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_SOCKET])
+  if (AM::pMarkResource()->bEnum(SR_SOCKET) ||
+      AM::pMarkResource()->bAll())
     ResLog::vNote(SR_SOCKET,"SysRes: Socket created listening socket : %d"_Stz,
                        iPort);
 
@@ -508,7 +512,8 @@ bool Socket::bRecvBytes(void* pWS, i8 nBytes, SysCall& SysCall)
     gpAttachMap->m_oStatistics.Socket.m_nRecvBytes += nRecvBytes;
 #endif
     
-    if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_SOCKET])
+    if (AM::pMarkResource()->bEnum(SR_SOCKET) ||
+        AM::pMarkResource()->bAll())
       ResLog::vNote(SR_SOCKET,"SysRes: Socket received %lld bytes"_Stz,
                          nRecvBytes);
 
@@ -542,7 +547,8 @@ bool Socket::bSendBytes(void* pBuffer, i8 nBytes, SysCall& SysCall)
   gpAttachMap->m_oStatistics.Socket.m_nSendBytes += nSentBytes;
 #endif
   
-  if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_SOCKET])
+  if (AM::pMarkResource()->bEnum(SR_SOCKET) ||
+      AM::pMarkResource()->bAll())
     ResLog::vNote(SR_SOCKET,"SysRes: Socket set %lld bytes"_Stz,
                       nSentBytes);
 

@@ -102,7 +102,8 @@ Mutex::Mutex()
   gpAttachMap->m_oStatistics.Mutex.m_nInits++;
 #endif
   
-  if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MUTEX])
+  if (AM::pMarkResource()->bEnum(SR_MUTEX) ||
+      AM::pMarkResource()->bAll())
     ResLog::vNote(SR_MUTEX,"SysRes: Mutex created : %p"_Stz,this);
 
   _checkInitialised_(CN_MUTEX);
@@ -135,7 +136,8 @@ Mutex::~Mutex(void) noexcept(false)
   gpAttachMap->m_oStatistics.Mutex.m_nDestroys++;
 #endif
   
-  if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MUTEX])
+  if (AM::pMarkResource()->bEnum(SR_MUTEX) ||
+      AM::pMarkResource()->bAll())
     ResLog::vNote(SR_MUTEX,"SysRes: Mutex destroyed : %p"_Stz,this);
 }
 
@@ -212,7 +214,8 @@ void Mutex::vCondSignal(void)
   gpAttachMap->m_oStatistics.Mutex.m_nSignals++;
 #endif
   
-  if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MUTEX])
+  if (AM::pMarkResource()->bEnum(SR_MUTEX) ||
+      AM::pMarkResource()->bAll())
     ResLog::vNote(SR_MUTEX,"SysRes: Mutex signaled : %p"_Stz,this);
   
   //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
@@ -255,7 +258,8 @@ void Mutex::vCondWaitIndefinite(void)
   gpAttachMap->m_oStatistics.Mutex.m_nWaits++;
 #endif
   
-  if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MUTEX])
+  if (AM::pMarkResource()->bEnum(SR_MUTEX) ||
+      AM::pMarkResource()->bAll())
     ResLog::vNote(SR_MUTEX,"SysRes: Mutex wait : %p"_Stz,this);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -271,7 +275,8 @@ void Mutex::vCondWaitIndefinite(void)
   gpAttachMap->m_oStatistics.Mutex.m_nUnblocks++;
 #endif
   
-  if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MUTEX])
+  if (AM::pMarkResource()->bEnum(SR_MUTEX) ||
+      AM::pMarkResource()->bAll())
     ResLog::vNote(SR_MUTEX,"SysRes: Mutex unblocked : %p"_Stz,this);
 
   // success
@@ -320,7 +325,8 @@ void Mutex::vCondWaitUsec(i8 iMicroSeconds)
   gpAttachMap->m_oStatistics.Mutex.m_nTimedWaits++;
 #endif
   
-  if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MUTEX])
+  if (AM::pMarkResource()->bEnum(SR_MUTEX) ||
+      AM::pMarkResource()->bAll())
     ResLog::vNote(SR_MUTEX,"SysRes: Mutex timedwait : %p %lldus"_Stz,
                        this,iMicroSeconds);
 
@@ -342,7 +348,8 @@ void Mutex::vCondWaitUsec(i8 iMicroSeconds)
     gpAttachMap->m_oStatistics.Mutex.m_nUnblocks++;
 #endif
     
-    if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MUTEX])
+    if (AM::pMarkResource()->bEnum(SR_MUTEX) ||
+        AM::pMarkResource()->bAll())
       ResLog::vNote(SR_MUTEX,"SysRes: Mutex timed unblock : %p %lldus"_Stz,
                          this,iMicroSeconds);
     m_bLocked = true;
@@ -359,7 +366,8 @@ void Mutex::vCondWaitUsec(i8 iMicroSeconds)
     gpAttachMap->m_oStatistics.Mutex.m_nTimeOuts++;
 #endif
     
-    if (gpAttachMap->m_bMarkResourceAll || gpAttachMap->m_bMarkResource[SR_MUTEX])
+    if (AM::pMarkResource()->bEnum(SR_MUTEX) ||
+        AM::pMarkResource()->bAll())
       ResLog::vNote(SR_MUTEX,"SysRes: Mutex timeout : %p %lldus"_Stz,
                          this,iMicroSeconds);
    m_bLocked = true;
