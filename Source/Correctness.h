@@ -16,6 +16,7 @@ namespace Correctness
 using namespace Correctness;
 
 //-----------------------------------------------------------------------------
+#include "Process.hpp"
 #include "Stz.hpp"
 #include "LimitsFormats.h"
 #include "ClassNumbers.hpp"

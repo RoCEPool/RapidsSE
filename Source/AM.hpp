@@ -85,6 +85,9 @@ namespace StorageEngine
     static void vDumpApi(void);
     static void vWriteLog(void);
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    //
+    static void vWriteTrace(Stz* aFormat, va_list xArgs);
   };
 }
 

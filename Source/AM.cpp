@@ -4,7 +4,10 @@
 
 #include "StorageEngine.h"
 
-extern AttachMap* gpAttachMap;
+extern AttachMap*  gpAttachMap;
+extern BufferPool* gpBufferPool;
+extern File*       gpTraceFile;
+
 
 // Arg
 bool AM::bDeveloper(void)     { return gpAttachMap->Arg.m_bDeveloper;         }
@@ -106,6 +109,40 @@ void AM::vDumpApi(void) {
 void AM::vWriteLog(void) {
   Log::vWriteCsv(false);
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* write to trace file etc                                                    */
+/*----------------------------------------------------------------------------*/
+void AM::vWriteTrace(Stz* aFormat, va_list xArgs)
+{
+  static Lock oLock(LK_TRACE);
+  static char caFormatted[C_1MB] = {'\0'};
+  
+  bool bUseLock = (gpAttachMap ? true : false);
+  bool bLowMem  = gpBufferPool ? gpBufferPool->bLowMemory() : false;
+  
+  if (bUseLock)
+    oLock.vGrabWrite();
+  
+  // produce formatted line
+  vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->aChar(),xArgs);
+  
+  // print formatted line
+  fprintf(stdout,"%s%s",bLowMem ? "LOW-MEMORY! " : "",caFormatted);
+  fflush(stdout);
+  
+  if (gpTraceFile) {
+    gpTraceFile->vPrint("%s%s"_Stz,bLowMem ? "LOW-MEMORY! " : "",caFormatted);
+    gpTraceFile->vFlush();
+  }
+  
+  if (bUseLock)
+    oLock.vDropWrite();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
