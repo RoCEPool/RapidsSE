@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Debugging
+namespace Tasks
 {
   class Error
   {

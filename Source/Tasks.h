@@ -40,6 +40,7 @@ using namespace Tasks;
 
 //------------------------------------------------------------------------------
 
+#include "Error.hpp"
 
 #include "Task.hpp"
 #include "TaskMacros.hpp"
