@@ -2,7 +2,7 @@
 /* EnumFlags.cpp -- Class Flags                                              */
 /*============================================================================*/
 
-#include "Measurement.h"
+#include "Correctness.h"
 
 #include "Pool.h"
 
@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-EnumFlags* Measurement::_pEnumFlags(void* aAddr)
+EnumFlags* Correctness::_pEnumFlags(void* aAddr)
 {
   EnumFlags* pEnumFlags = reinterpret_cast<EnumFlags*>(aAddr);
   

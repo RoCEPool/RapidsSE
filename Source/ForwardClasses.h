@@ -19,7 +19,7 @@ namespace Jobs          { class Job; class JobList;
                                      class Job_CreateIndex;                   }
 namespace Logging       {                                                     }
 namespace MetaData      {                                                     }
-namespace Measurement   { class EnumFlags; class LockTracker;
+namespace Measurement   { class LockTracker;
                                            class ResourceTracker;
                                            class Statistics;
                                            class StepTiming;                  }
