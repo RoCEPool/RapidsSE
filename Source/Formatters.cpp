@@ -14,7 +14,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Formatters* Base::_pFormatters(void* aAddr)
+Formatters* Chunks::_pFormatters(void* aAddr)
 {
   Formatters* pFormatters = reinterpret_cast<Formatters*>(aAddr);
   

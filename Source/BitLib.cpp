@@ -63,7 +63,7 @@ void BitLib::vDump(u8 uBitMap, char cBuffer[])
 {
   char* aChar;
   
-  StrLib::vCopy(cBuffer,"");
+  cBuffer[0] = '\0';
   
   aChar = cBuffer;
   
