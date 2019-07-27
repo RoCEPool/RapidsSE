@@ -17,7 +17,6 @@ using namespace Library;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #include "Wsp_t.hpp"
 
-#include "Atomic.hpp"
 #include "Magnitudes.hpp"
 
 /*============================================================================*/

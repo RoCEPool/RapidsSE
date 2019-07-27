@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Library
+namespace Correctness
 {
   class Atomic : public Object
   {
