@@ -41,6 +41,7 @@ enum eCN : u2 // Class Number
   /*  21 0x15      312B Heap:I */ CN_BUFFERPOOL,
   /*  22 0x16      120B Heap:S */ CN_BYTERATE,
   
+  /*                           */ CN_CANCELMARKER,
   /*  23 0x17       40B Heap:I */ CN_CARRYOVER,
   /*                           */ CN_CATALOG,
   /*  24 0x18      120B Heap:S */ CN_COLUMN,
@@ -371,6 +372,7 @@ static Stz* aCN[]
   /*  21 0x15 */ "BUFFERPOOL"_Stz,          // CN_BUFFERPOOL
   /*  22 0x16 */ "BYTERATE"_Stz,            // CN_BYTERATE
   
+  /*          */ "CANCELMARKER"_Stz,        // CN_CANCELMARKER
   /*  23 0x17 */ "CARRYOVER"_Stz,           // CN_CARRYOVER
   /*          */ "CATALOG"_Stz,             // CN_CATALOG
   /*  24 0x18 */ "COLUMN"_Stz,              // CN_COLUMN

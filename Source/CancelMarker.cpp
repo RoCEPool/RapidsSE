@@ -26,7 +26,7 @@ CancelMarker* PushDown::_pCancelMarker(void* aAddr)
 void* CancelMarker::operator new(size_t)
 {
   CancelMarker* pCancelMarker =
-    static_cast<CancelMarker*>(HeapMem::pAllocate(CN_ENDMARKER));
+    static_cast<CancelMarker*>(HeapMem::pAllocate(CN_CANCELMARKER));
   
   return pCancelMarker;
 }
@@ -45,13 +45,13 @@ void CancelMarker::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 CancelMarker::CancelMarker(void)
-: Operand(CN_ENDMARKER)
+: Operand(CN_CANCELMARKER)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENDMARKER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CANCELMARKER,_FOOTER_);
 
-  _checkInitialised_(CN_ENDMARKER);
+  _checkInitialised_(CN_CANCELMARKER);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENDMARKER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CANCELMARKER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -59,7 +59,7 @@ CancelMarker::CancelMarker(void)
 /*----------------------------------------------------------------------------*/
 CancelMarker::~CancelMarker(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENDMARKER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CANCELMARKER,_FOOTER_);
 }
 
 

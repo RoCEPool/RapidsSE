@@ -39,6 +39,11 @@ Grid* AM::pGrid(void)         { return gpAttachMap->m_pGrid;                  }
 HeapMem* AM::pHeapMem(void)   { return & gpAttachMap->m_xHeapMem;             }
 i8   AM::nIndexEntries(void)  { return gpAttachMap->m_nIndexEntries;          }
 LockTracker* AM::pLockTracker(void) { return & gpAttachMap->m_oLockTracker;   }
+EnumFlags* AM::pMarkAction(void) { return & gpAttachMap->m_oMarkAction;       }
+EnumFlags* AM::pMarkApi(void) { return & gpAttachMap->m_oMarkApi;             }
+EnumFlags* AM::pMarkJob(void) { return & gpAttachMap->m_oMarkJob;             }
+EnumFlags* AM::pMarkResource(void) { return & gpAttachMap->m_oMarkResource;   }
+EnumFlags* AM::pMarkTrace(void) { return & gpAttachMap->m_oMarkTrace;         }
 i8   AM::iNextEpoch(void)     { return ++ gpAttachMap->m_iEpoch;              }
 JobList* AM::pOriginatingJobs(void) { return gpAttachMap->m_pOriginatingJobs; }
 JobList* AM::pParticipatingJobs(void) { return gpAttachMap->m_pParticipatingJobs; }

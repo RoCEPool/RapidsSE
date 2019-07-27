@@ -41,6 +41,11 @@ namespace StorageEngine
     static HeapMem* pHeapMem(void);
     static i8   nIndexEntries(void);
     static LockTracker* pLockTracker(void);
+    static EnumFlags* pMarkAction(void);
+    static EnumFlags* pMarkApi(void);
+    static EnumFlags* pMarkJob(void);
+    static EnumFlags* pMarkResource(void);
+    static EnumFlags* pMarkTrace(void);
     static i8*   iaObjectsInPool(void);
     static JobList* pOriginatingJobs(void);
     static i8   iPid(void);
