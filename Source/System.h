@@ -16,6 +16,7 @@ using namespace System;
 
 //-----------------------------------------------------------------------------
 
+#include "SystemResources.h"
 #include "SysCall.hpp"
 
 #include "Atomic.hpp"
