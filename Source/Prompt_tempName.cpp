@@ -3,9 +3,7 @@
 /*============================================================================*/
 
 #include "Prompt.h"
-#include "StorageEngine.h"
-
-extern AttachMap*   gpAttachMap;
+#include "AM.hpp"
 
 PromptNote mPromptNote_tempName (
   PF_TEMPNAME,           // prompt function
@@ -29,7 +27,7 @@ bool Prompt::bPrompt_tempName(SePrompt* pPrompt)
   s32 sName;
   
   for (i8 n = 0; n < 1000; n++) {
-    gpAttachMap->vNextTempName(sName);
+    AM::vNextTempName(sName);
     vTrace("%s\n"_Stz,sName.aStz());
   }
   

@@ -95,6 +95,9 @@ void AM::vIndexEntries(i8 nIndexEntries) {
 void AM::vMonitorPortrait(s48K& sPortrait) {
   Engine::vMonitorPortrait(sPortrait);
 }
+void AM::vNextTempName(s32& sName) {
+  gpAttachMap->m_oTempName.vNextName(sName);
+}
 void AM::vStepTiming(StepTiming* pStepTiming) {
   gpAttachMap->m_pStepTiming = pStepTiming;
 }
