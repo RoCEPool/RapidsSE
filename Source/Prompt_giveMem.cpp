@@ -3,9 +3,7 @@
 /*============================================================================*/
 
 #include "Prompt.h"
-#include "StorageEngine.h"
-
-extern AttachMap*   gpAttachMap;
+#include "AM.hpp"
 
 PromptNote mPromptNote_giveMem (
   PF_GIVEMEM,           // prompt function

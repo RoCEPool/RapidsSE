@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "Prompt.h"
-#include "StorageEngine.h"
 
 PromptNote mPromptNote_hashDefs (
   PF_HASHDEFS,          // prompt function
@@ -19,7 +18,6 @@ PromptNote mPromptNote_hashDefs (
   ""_Stz                // description
 );
 
-extern AttachMap*  gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
