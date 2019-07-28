@@ -3,9 +3,7 @@
 /*============================================================================*/
 
 #include "Prompt.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
+#include "AM.hpp"
 
 PromptNote mPromptNote_mon (
   PF_MON,                 // prompt function
@@ -28,7 +26,7 @@ bool Prompt::bPrompt_mon(SePrompt* pPrompt)
 {
   s48K sPortrait;
   
-  Engine::vMonitorPortrait(sPortrait);
+  AM::vMonitorPortrait(sPortrait);
   
   vTrace("%s\n"_Stz,sPortrait.aStz());
   

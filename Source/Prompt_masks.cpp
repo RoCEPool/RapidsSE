@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "Prompt.h"
-#include "StorageEngine.h"
 
 PromptNote mPromptNote_masks (
   PF_MASKS,             // prompt function
@@ -18,8 +17,6 @@ PromptNote mPromptNote_masks (
   "masks"_Stz,          // help
   ""_Stz                // description
 );
-
-extern AttachMap*  gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */

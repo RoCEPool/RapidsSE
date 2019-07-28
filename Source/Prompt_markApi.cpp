@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "Prompt.h"
-#include "StorageEngine.h"
+#include "AM.hpp"
 
 PromptNote mPromptNote_markApi (
   PF_MARKAPI,           // prompt function
@@ -19,8 +19,6 @@ PromptNote mPromptNote_markApi (
   ""_Stz             // description
 );
 
-extern PromptCatalog gxPromptCatalog;
-extern AttachMap*    gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */

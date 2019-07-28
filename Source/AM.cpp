@@ -92,11 +92,14 @@ void AM::vForthWord(ForthWord *pWord) {
 void AM::vIndexEntries(i8 nIndexEntries) {
   gpAttachMap->m_nIndexEntries = nIndexEntries;
 }
-void AM::vSubInserters(i8 nSubInserters) {
-  gpAttachMap->Arg.m_nSubInserters = nSubInserters;
+void AM::vMonitorPortrait(s48K& sPortrait) {
+  Engine::vMonitorPortrait(sPortrait);
 }
 void AM::vStepTiming(StepTiming* pStepTiming) {
   gpAttachMap->m_pStepTiming = pStepTiming;
+}
+void AM::vSubInserters(i8 nSubInserters) {
+  gpAttachMap->Arg.m_nSubInserters = nSubInserters;
 }
 void AM::vTakenBuffers(PoolBuffer* pTakenBuffers) {
   gpAttachMap->m_pTakenBuffers = pTakenBuffers;

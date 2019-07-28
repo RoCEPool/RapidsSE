@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "Prompt.h"
-#include "StorageEngine.h"
+#include "AM.hpp"
 
 PromptNote mPromptNote_markTrc (
   PF_MARKTRC,           // prompt function
@@ -18,8 +18,6 @@ PromptNote mPromptNote_markTrc (
   "markTrc"_Stz,        // help
   ""_Stz                // description
 );
-
-extern AttachMap*    gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
