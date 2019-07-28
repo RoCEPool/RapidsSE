@@ -4,6 +4,7 @@
 
 #include "StorageEngine.h"
 
+Arguments  gxArguments;
 
 extern bool gbSHM;
 

@@ -5,11 +5,11 @@
 #include "StorageEngine.h"
 #include "ShmUtility.hpp"
 
-Arguments  gxArguments;
+extern Arguments  gxArguments;
+extern AttachMap* gpAttachMap;
 
 Header*       gaSeShmRegion  = nullptr;
 BufferPool*   gpBufferPool   = nullptr;
-AttachMap *   gpAttachMap    = nullptr;
 File*         gpTraceFile    = nullptr;
 
 bool          gbSHM          = false;
@@ -791,7 +791,7 @@ void Engine::vStartSystem(void)
   if (gxArguments.m_bVerbose)
     vInfo("\n*\n* System Init\n*\n"_Stz);
   
-  ASSERT( ! gpAttachMap->m_oRootDic.bHasWords() );
+  ASSERT( ! AM::pRootDic()->bHasWords() );
     
   gpAttachMap->vRecordArguments(
                                 gxArguments.m_bDeveloper,
