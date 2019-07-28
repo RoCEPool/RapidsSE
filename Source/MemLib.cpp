@@ -2,7 +2,6 @@
 /* MemLib.cpp -- Memory Library                                               */
 /*============================================================================*/
 
-#include "StorageEngine.h"
 #include "Correctness.h"
 #include "AM.hpp"
 
