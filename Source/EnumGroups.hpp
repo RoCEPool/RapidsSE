@@ -3,10 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-#include "Base.h"
-#include "Stz.hpp"
+#include "Library.h"
 
-namespace StorageEngine
+namespace Library
 {
 
 /*----------------------------------------------------------------------------*/

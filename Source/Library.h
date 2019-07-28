@@ -14,6 +14,7 @@ using namespace Library;
 
 //------------------------------------------------------------------------------
 
+#include "EnumGroups.hpp"
 #include "Lock.hpp"
 #include "LockTracker.hpp"
 #include "Wsp_t.hpp"
