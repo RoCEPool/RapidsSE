@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "Chunks.h"
-#include "StorageEngine.h"
 #include "AM.hpp"
 
 
@@ -139,8 +138,8 @@ bool LoadMap::bMapChunk(void)
            m_oFile.sFilePath().aStz(),sFileSize.aStz(),
            m_xMap.nEntries,
            AM::nSubLoaders(),
-           AM::pGrid()->nNodes(),
-           AM::pGrid()->m_nPartitions);
+           AM::nNodes(),
+           AM::nPartitions());
     vMappingDone(true);
     return false;
   }
@@ -309,10 +308,6 @@ bool LoadMap::bGetNextMapping(i8& iSeek, i8& nBytes, i8& i_Entry)
     i8 iPercentFree = AM::pBufferPool()->iFreePercent();
     vTrace("Load Progress: %lld%% (free %lld%%)"_Stz,iPercent,iPercentFree);
     
-    if (AM::bDeveloper())
-      vTrace(" (ReadyLP %lld tasks)"_Stz,
-             AM::pQueues()->m_pReadyQueueLP->nTasks());
-
     vTrace("\n"_Stz);
   }
   

@@ -59,6 +59,7 @@ i8   AM::iNextDiagram(void)   { return ++ gpAttachMap->m_ixNextDiagram;       }
 i8   AM::iNextJobId(void)     { return ++ gpAttachMap->m_ixNextJobId;         }
 i8   AM::iNextPlanId(void)    { return ++ gpAttachMap->m_ixNextPlanId;        }
 i8*  AM::iaObjectsInPool(void){ return gpAttachMap->m_nObjectsInPool;         }
+i8   AM::nPartitions(void)    { return gpAttachMap->m_pGrid->m_nPartitions;   }
 Queues* AM::pQueues(void)     { return gpAttachMap->m_pQueues;                }
 ResourceTracker* AM::pResourceTracker(void) { return & gpAttachMap->m_oResourceTracker; }
 Dic* AM::pRootDic(void)       { return & gpAttachMap->m_oRootDic;             }
