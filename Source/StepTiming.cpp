@@ -3,9 +3,8 @@
 /*============================================================================*/
 
 #include "Measurement.h"
-#include "StorageEngine.h"
+#include "AM.hpp"
 
-extern AttachMap* gpAttachMap;
 
 const Stz* C_StepTiming_FILE = "../StepTimings/StepTiming %s.csv"_Stz;
 
