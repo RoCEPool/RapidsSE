@@ -96,6 +96,7 @@ namespace StorageEngine
     static bool bAttached(void);
     static void vDumpApi(void);
     static void vPrintAttachMap(void);
+    static i8   nRandomLevels(void);
     static Tasks::Task* pThisTLSTask(void);
     static void vWriteLog(void);
 

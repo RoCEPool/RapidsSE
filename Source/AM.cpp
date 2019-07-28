@@ -127,6 +127,11 @@ bool AM::bAttached(void) {
 void AM::vDumpApi(void) {
   pApiState()->vDump();
 }
+i8 AM::nRandomLevels(void) {
+  Task* pTask = Task::pThisTLSTask();
+  i8 nLevels = Random::iLogLevel(3,C_FLAT_FREQ + 1,pTask->i_NextRnd()) + 1;
+  return nLevels;
+}
 void AM::vPrintAttachMap(void) {
   gpAttachMap->vPrintAttachMap();
 }

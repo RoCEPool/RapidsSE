@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "Transform.h"
-#include "StorageEngine.h"
+#include "AM.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -408,10 +408,8 @@ i8 EntWrk::nNEOsize(void)
 void EntWrk::vRandomLevels(void)
 {
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
-  
-  Task* pTask = Task::pThisTLSTask();
-  
-  i8 nLevels = Random::iLogLevel(3,C_FLAT_FREQ + 1,pTask->i_NextRnd()) + 1;
+    
+  i8 nLevels = AM::nRandomLevels();
 
   m_xEnt.vLevels(nLevels);
 }
