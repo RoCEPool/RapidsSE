@@ -18,8 +18,6 @@ PromptNote mPromptNote_se (
   ""_Stz           // description
 );
 
-extern PromptCatalog gxPromptCatalog;
-
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/

@@ -3,9 +3,7 @@
 /*============================================================================*/
 
 #include "Prompt.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
+#include "AM.hpp"
 
 PromptNote mPromptNote_resources (
   PF_RESOURCES,          // prompt function
@@ -26,7 +24,7 @@ PromptNote mPromptNote_resources (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_resources(SePrompt* pPrompt)
 {
-  if (gpAttachMap) AM::pResourceTracker()->vReport();
+  if (AM::bAttached()) AM::pResourceTracker()->vReport();
   
   return true;
 }

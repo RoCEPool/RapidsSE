@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Prompt_prefixes.cpp -- bye from prompt                                          */
+/* Prompt_prefixes.cpp -- list of available prompt prefixes                   */
 /*============================================================================*/
 
 #include "Prompt.h"

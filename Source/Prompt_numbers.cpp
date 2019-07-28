@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "Prompt.h"
-#include "StorageEngine.h"
 
 PromptNote mPromptNote_numbers (
   PF_NUMBERS,           // prompt function
@@ -19,7 +18,6 @@ PromptNote mPromptNote_numbers (
   ""_Stz                // description
 );
 
-extern AttachMap*  gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */

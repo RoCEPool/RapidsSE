@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "Prompt.h"
-#include "StorageEngine.h"
+#include "AM.hpp"
 
 PromptNote mPromptNote_plist (
   PF_PLIST,             // prompt function
@@ -18,8 +18,6 @@ PromptNote mPromptNote_plist (
   "plist"_Stz,          // help
   ""_Stz                // description
 );
-
-extern AttachMap*  gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
