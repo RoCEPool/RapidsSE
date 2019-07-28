@@ -5,9 +5,6 @@
 
 #include "Tasks.h"
 
-
-static const i8 C_THREADS = 256;
-
 //-----------------------------------------------------------------------------
 namespace Threads
 {

@@ -18,6 +18,9 @@ static const i8 C_MAX_PARTITIONS = C_MAX_SLOTS * C_MAX_NODES;
 
 static const i8 C_MAX_INDEX_COLUMNS = 16;
 
+static const i8 C_MAX_THREADS = 256;
+
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 static const i8 C_MAX_PRECISION_BCD = 19;

@@ -290,9 +290,9 @@ bool Arguments::bParse(int argc, Stz* argv[])
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--threads"_Stz)) {
       m_nThreads = argv[++i_Arg]->iToI8();
-      if (m_nThreads > C_THREADS) {
+      if (m_nThreads > C_MAX_THREADS) {
         vWarn("Maximum number of thread allowed is %lld\n"_Stz,
-               C_THREADS);
+               C_MAX_THREADS);
         return false;
       }
       
@@ -332,9 +332,9 @@ bool Arguments::bParse(int argc, Stz* argv[])
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--subIngesters"_Stz)) {
       m_nSubIngesters = argv[++i_Arg]->iToI8();
-      if (m_nThreads > C_THREADS) {
+      if (m_nThreads > C_MAX_THREADS) {
         vWarn("Maximum number of subIngesters allowed is %lld\n"_Stz,
-               C_THREADS);
+               C_MAX_THREADS);
         return false;
       }
       
@@ -344,9 +344,9 @@ bool Arguments::bParse(int argc, Stz* argv[])
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--subloaders"_Stz)) {
       m_nSubLoaders = argv[++i_Arg]->iToI8();
-      if (m_nThreads > C_THREADS) {
+      if (m_nThreads > C_MAX_THREADS) {
         vWarn("Maximum number of subloaders allowed is %lld\n"_Stz,
-               C_THREADS);
+               C_MAX_THREADS);
         return false;
       }
       

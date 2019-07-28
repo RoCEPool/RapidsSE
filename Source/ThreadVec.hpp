@@ -5,7 +5,7 @@
 
 namespace Threads
 {
-  class ThreadVec : public VectorNL_t<CN_THREADVEC,Thread,CN_THREAD,C_THREADS,u8>
+  class ThreadVec : public VectorNL_t<CN_THREADVEC,Thread,CN_THREAD,C_MAX_THREADS,u8>
   {
   private:
     
