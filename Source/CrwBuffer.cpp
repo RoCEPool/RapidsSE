@@ -3,10 +3,7 @@
 /*============================================================================*/
 
 #include "Rows.h"
-
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
+#include "AM.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -150,7 +147,7 @@ void CrwBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
     
     if (bDetailed)
       sAnalysis.vCatSprint("row: (%s, %lld, %5lld, %lld )\n"_Stz,
-                           AM::pGrid()->pThisNode()->aNodeName(),
+                           AM::szNodeName(),
                            pNextBuffer->m_iPartitionNo,
                            iBuffers,
                            pNextBuffer->nRowCount());

@@ -4,9 +4,7 @@
 
 #include "Rows.h"
 
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
+#include "AM.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
