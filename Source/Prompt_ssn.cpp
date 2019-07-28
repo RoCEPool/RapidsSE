@@ -3,9 +3,6 @@
 /*============================================================================*/
 
 #include "Prompt.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 PromptNote mPromptNote_ssn (
   PF_SSN,                 // prompt function
