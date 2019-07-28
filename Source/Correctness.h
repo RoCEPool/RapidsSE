@@ -25,6 +25,8 @@ using namespace Correctness;
 #include "FreeChunk.hpp"
 #include "Debug.hpp"
 
+#include "ResourceEnums.h"
+#include "ResLog.hpp"
 #include "StrLib.hpp"
 #include "MemLib.hpp"
 #include "ErrorCodes.hpp"
@@ -55,7 +57,6 @@ typedef String_t<C_1M>   s1M;   // note this is 1M not 1MB
 
 #include "Atomic.hpp"
 #include "MagLib.hpp"
-#include "ResourceEnums.h"
 #include "ResourceTracker.hpp"
 #include "Statistics.hpp"
 #include "EnumFlags.hpp"

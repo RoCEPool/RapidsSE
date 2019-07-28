@@ -232,6 +232,7 @@ enum eCN : u2 // Class Number
 
   /* 159 0x9F    48752B Heap:M */ CN_PARSER,
   /* 160 0xA0     1048B Heap:M */ CN_PATHVEC,
+  /*                           */ CN_PAUSEMARKER,
   /*                           */ CN_PERUSE,
   /* 161 0xA1      320B Heap:S */ CN_PIPE,
   /* 162 0xA2    48376B Heap:M */ CN_PLAN,
@@ -564,6 +565,7 @@ static Stz* aCN[]
 
   /* 159 0x9F */ "PARSER"_Stz,              // CN_PARSER
   /* 160 0xA0 */ "PATHVEC"_Stz,             // CN_PATHVEC
+  /*          */ "PAUSEMARKER"_Stz,         // CN_PAUSEMARKER
   /*          */ "PERUSE"_Stz,              // CN_PERUSE
   /* 161 0xA1 */ "PIPE"_Stz,                // CN_PIPE
   /* 162 0xA2 */ "PLAN"_Stz,                // CN_PLAN

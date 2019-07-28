@@ -35,7 +35,6 @@ using namespace System;
 #include "Pipe.hpp"
 #include "Pthread.hpp"
 #include "Random.hpp"
-#include "ResLog.hpp"
 #include "Shell.hpp"
 #include "Shm.hpp"
 #include "Shm.hpp"

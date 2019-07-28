@@ -231,6 +231,7 @@ pFINALIZE *gpFinalize[]
 
   /* 78 */ &Finalize::vUndefined,         // CN_PARSER
   /* 82 */ &Finalize::vUndefined,         // CN_PATHVEC
+  /* 82 */ &Finalize::vUndefined,         // CN_PAUSEMARKER
   /* 82 */ &Finalize::vUndefined,         // CN_PERUSE
   /*    */ &Finalize::vUndefined,         // CN_PIPE
   /* 86 */ &Finalize::vUndefined,         // CN_PLAN
