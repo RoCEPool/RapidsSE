@@ -4,14 +4,12 @@
 
 #include "System.h"
 
-#include "StorageEngine.h"
+#include "AM.hpp"
 
 #ifdef WITH_APPLE
   #include <mach/mach_time.h>
   #include <mach/thread_policy.h>
 #endif
-
-extern AttachMap* gpAttachMap;
 
 extern pthread_key_t giTLS_ThreadKey;
 
@@ -459,7 +457,7 @@ bool Pthread::bSpawnThread(void* pFun(void*), void* pArg)
     return false;
   }
   
-  if (gpAttachMap) AM::pResourceTracker()->vIncThreadOpen();
+  if (AM::bAttached()) AM::pResourceTracker()->vIncThreadOpen();
   if (AM::pMarkResource()->bEnum(SR_THREAD) ||
       AM::pMarkResource()->bAll())
     AM::vNote(SR_THREAD,"SysRes: Spawned thread : %lld"_Stz,m_iPthreadId);
@@ -525,7 +523,7 @@ void Pthread::vThreadExit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
   
-  if (gpAttachMap) AM::pResourceTracker()->vDecThreadOpen();
+  if (AM::bAttached()) AM::pResourceTracker()->vDecThreadOpen();
 }
         
 /*----------------------------------------------------------------------------*/
