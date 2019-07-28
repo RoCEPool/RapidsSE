@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "Logging.h"
-#include "StorageEngine.h"
 #include "AM.hpp"
 
 
@@ -92,7 +91,7 @@ void LogEntry::vSet(i8 iEnumGroup, i8 iEnum, i8 iForeign, char* aText)
   m_iTick = Tick::iRdClock();
   
   StrLib::vCopyLen(m_caNode,
-                   AM::pGrid()->m_pThisNode->aNodeName()->aChar(),
+                   AM::szNodeName()->aChar(),
                    sizeof(m_caNode) - 1);
   
   m_iEnumGroup = iEnumGroup;

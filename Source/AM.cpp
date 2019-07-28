@@ -50,6 +50,7 @@ EnumFlags* AM::pMarkJob(void) { return & gpAttachMap->m_oMarkJob;             }
 EnumFlags* AM::pMarkResource(void) { return & gpAttachMap->m_oMarkResource;   }
 EnumFlags* AM::pMarkTrace(void) { return & gpAttachMap->m_oMarkTrace;         }
 i8   AM::iNextEpoch(void)     { return ++ gpAttachMap->m_iEpoch;              }
+Stz* AM::szNodeName(void)     { return gpAttachMap->m_pGrid->m_pThisNode->aNodeName();  }
 JobList* AM::pOriginatingJobs(void) { return gpAttachMap->m_pOriginatingJobs; }
 JobList* AM::pParticipatingJobs(void) { return gpAttachMap->m_pParticipatingJobs; }
 i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
