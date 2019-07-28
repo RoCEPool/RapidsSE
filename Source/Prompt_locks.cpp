@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "Prompt.h"
-#include "StorageEngine.h"
+#include "AM.hpp"
 
 PromptNote mPromptNote_locks (
   PF_LOCKS,             // prompt function
@@ -18,8 +18,6 @@ PromptNote mPromptNote_locks (
   "locks"_Stz,          // help
   ""_Stz                // description
 );
-
-extern AttachMap*  gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */

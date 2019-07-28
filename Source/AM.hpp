@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+//! Do not include StorageEngine.hpp
+
 namespace StorageEngine
 {
   class AM

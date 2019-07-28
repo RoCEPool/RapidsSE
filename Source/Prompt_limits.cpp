@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "Prompt.h"
-#include "StorageEngine.h"
 
 PromptNote mPromptNote_limits (
   PF_LIMITS,            // prompt function
@@ -18,8 +17,6 @@ PromptNote mPromptNote_limits (
   "numbers"_Stz,        // help
   ""_Stz                // description
 );
-
-extern AttachMap*  gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
