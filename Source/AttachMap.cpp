@@ -216,7 +216,8 @@ void AttachMap::vRecordArguments(
                                  i8   nSlotsPerNode,
                                  i8   nSubIngesters,
                                  i8   nSubLoaders,
-                                 i8   nThreads
+                                 i8   nThreads,
+                                 bool bVerbose
                                  )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
@@ -246,7 +247,12 @@ void AttachMap::vRecordArguments(
   Arg.m_nSubInserters    = 0;
   Arg.m_nSubLoaders      = nSubLoaders;
   Arg.m_nThreads         = nThreads;
+  
+  // these are args
+  m_bVerbose             = bVerbose;
 
+  
+  
   m_pBufferPool = gpBufferPool;
   
   m_iEpoch      = 0;

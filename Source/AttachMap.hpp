@@ -122,8 +122,9 @@ namespace StorageEngine
                           i8   nSlotsPerNode,
                           i8   nSubIngesters,
                           i8   nSubLoaders,
-                          i8   nThreads
-                          );
+                          i8   nThreads,
+                          bool bVerbose
+                         );
   
     Footer* aFooter(void);
   };

@@ -76,13 +76,15 @@ void Engine::vMainEntry(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vAttachRegion(void)
 {
-  gpAttachMap = pAdd<AttachMap*>((Object*)gaSeShmRegion,C_SIZE_POOL_BUFFER);
+  AttachMap* pAttachMap = pAdd<AttachMap*>((Object*)gaSeShmRegion,C_SIZE_POOL_BUFFER);
+  
+  AM::vAttachMap(pAttachMap);
   
   // get pointers to global objects from attach map
-  gpAttachMap->vGetGlobals();
+  pAttachMap->vGetGlobals();
   
   if (AM::bVerbose())
-    AttachMap::vDump(CN_ATTACHMAP, gpAttachMap, Stz::aTab(1));
+    AttachMap::vDump(CN_ATTACHMAP, pAttachMap, Stz::aTab(1));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -358,27 +360,28 @@ void Engine::vMonitorPortrait(s48K& sRapidsPortrait)
   sRapidsPortrait.vConcat(sPortrait.aStz());
   
   sPortrait = ""_Stz;
-  gpAttachMap->m_pQueues->vMonitorPortrait(sPortrait);
+  AM::pQueues()->vMonitorPortrait(sPortrait);
   sRapidsPortrait.vConcat(sPortrait.aStz());
   
   sPortrait = ""_Stz;
-  gpAttachMap->m_oLockTracker.vMonitorPortrait(sPortrait);
+  AM::pLockTracker()->vMonitorPortrait(sPortrait);
   sRapidsPortrait.vConcat(sPortrait.aStz());
   
   sPortrait = ""_Stz;
-  gpAttachMap->m_pBufferPool->vMonitorPortrait(sPortrait);
+  AM::pBufferPool()->vMonitorPortrait(sPortrait);
   sRapidsPortrait.vConcat(sPortrait.aStz());
   
   sPortrait = ""_Stz;
-  gpAttachMap->m_xHeapMem.vMonitorPortrait(sPortrait);
+  AM::pHeapMem()->vMonitorPortrait(sPortrait);
   sRapidsPortrait.vConcat(sPortrait.aStz());
   
   sPortrait = ""_Stz;
-  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vMonitorPortrait(sPortrait);
+  if (AM::bAttached())
+    AM::pResourceTracker()->vMonitorPortrait(sPortrait);
   sRapidsPortrait.vConcat(sPortrait.aStz());
   
   sPortrait = ""_Stz;
-  gpAttachMap->m_pQueues->vMonitorThread(sPortrait);
+  AM::pQueues()->vMonitorThread(sPortrait);
   sRapidsPortrait.vConcat(sPortrait.aStz());
   
   sPortrait = ""_Stz;
@@ -446,12 +449,12 @@ void Engine::vMonitorProfile(s48K& sPortrait)
   i8 iUpTime = AM::iElapsedSsec();
   
   s32 sRegionMag;
-  MagLib::vByteMag(gpAttachMap->Arg.m_iRegionSize,sRegionMag);
+  MagLib::vByteMag(AM::iRegionSize(),sRegionMag);
 
-  i8 iPercentFree = gpAttachMap->m_pBufferPool->iFreePercent();
+  i8 iPercentFree = AM::pBufferPool()->iFreePercent();
   Stz* aNodeName  = AM::pGrid()->pGetNode(gxArguments.m_iThisNode)->aNodeName();
   bool bStarted   = AM::pGrid()->bHasStarted();
-  bool bDdlLocked = gpAttachMap->m_okDdlLock.bIsWriteLocked();
+  bool bDdlLocked = AM::pDdlLock()->bIsWriteLocked();
   
   sPortrait.vSprint("Node %s region %s free %lld%% uptime %llds (%s)\n"
                     "     cluster %s ddl %s \n"_Stz,
@@ -756,7 +759,7 @@ void Engine::vSetGlobals(void)
     vInfo("\n*\n* Set Globals From Arguments\n*\n"_Stz);
   
   // set globals from gxArguments
-  gpAttachMap->m_bVerbose      = gxArguments.m_bVerbose;
+  //gpAttachMap->m_bVerbose      = gxArguments.m_bVerbose;
   gpAttachMap->m_bTracepoint   = gxArguments.m_bTracepoint;
   gpAttachMap->m_bProgress     = gxArguments.m_bProgress;
   gpAttachMap->m_bMetadata     = gxArguments.m_bMetadata;
@@ -825,7 +828,8 @@ void Engine::vStartSystem(void)
                                 gxArguments.m_nSlotsPerNode,
                                 gxArguments.m_nSubIngesters,
                                 gxArguments.m_nSubLoaders,
-                                gxArguments.m_nThreads
+                                gxArguments.m_nThreads,
+                                gxArguments.m_bVerbose
                                 );
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
