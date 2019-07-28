@@ -111,6 +111,7 @@ namespace StorageEngine
                           i8   nDummyLoop,
                           i8   nDummySleep,
                           i8   nDummyThreads,
+                          i8   nIndexEntries,
                           i8   iJumboSize,
                           bool bLog,
                           i8   nMaxLoadErrors,

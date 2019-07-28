@@ -205,6 +205,7 @@ void AttachMap::vRecordArguments(
                                  i8   nDummyLoop,
                                  i8   nDummySleep,
                                  i8   nDummyThreads,
+                                 i8   nIndexEntries,
                                  i8   iJumboSize,
                                  bool bLog,
                                  i8   nMaxLoadErrors,
@@ -252,6 +253,7 @@ void AttachMap::vRecordArguments(
   Arg.m_nThreads         = nThreads;
   
   // these are args
+  m_nIndexEntries        = nIndexEntries;
   m_bMetadata            = bMetadata;
   m_bProgress            = bProgress;
   m_bTracepoint          = bTracepoint;
