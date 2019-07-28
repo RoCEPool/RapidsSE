@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* MagLib.cpp -- Magnitude Conversions                                    */
+/* MagLib.cpp -- Magnitude Conversions                                        */
 /*============================================================================*/
 
-#include "Library.h"
+#include "Correctness.h"
 
 /*----------------------------------------------------------------------------*/
 /* convert magnitude to equivalent bytes                                      */

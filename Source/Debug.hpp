@@ -17,7 +17,6 @@ namespace Correctness
   void vDebugTrap(void);
   void vStackDump(void);
   void vThrowTrap(void);
-  
 };
 
 /*============================================================================*/

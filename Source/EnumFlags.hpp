@@ -14,12 +14,9 @@ namespace Correctness
     // must be last
     Footer m_xFooter;
     
-  public:
-    void* operator new(size_t);
-    void operator delete(void* pAddr);
-  
+  public:  
     EnumFlags(void);
-    ~EnumFlags() noexcept(false);
+   ~EnumFlags() noexcept(false);
   
     bool bAll(void);
     void vAll(bool bAll);

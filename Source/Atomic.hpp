@@ -14,9 +14,6 @@ namespace Correctness
     Footer m_xFooter;
     
   public:
-    void* operator new(size_t, Atomic* pAtomic);
-    void  operator delete(void* pAtomicAddress);
-    
     Atomic(void);
     ~Atomic(void) noexcept(false);
   
