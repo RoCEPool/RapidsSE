@@ -27,7 +27,7 @@ QuadWord::~QuadWord(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 bool QuadWord::bOnQuadWordBoundary(void* aAddress)
 {
-  bool bOn = MemLib::bOnBoundary(aAddress,sizeof(QuadWord));
+  bool bOn = AlignedObject::bOnBoundary(aAddress,sizeof(QuadWord));
   
   return bOn;
 }

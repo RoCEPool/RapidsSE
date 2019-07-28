@@ -11,6 +11,8 @@ namespace Alignment
   
   public:
     AlignedObject(eCN eClass, i8 nChildSize);
+  
+    static bool bOnBoundary(void* aAddress, i8 nByteBoundary);
   };
 }
 

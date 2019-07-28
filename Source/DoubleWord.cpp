@@ -27,7 +27,7 @@ DoubleWord::~DoubleWord(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 bool DoubleWord::bOnDoubleWordBoundary(void* aAddress)
 {
-  bool bOn = MemLib::bOnBoundary(aAddress,sizeof(DoubleWord));
+  bool bOn = AlignedObject::bOnBoundary(aAddress,sizeof(DoubleWord));
   
   return bOn;
 }

@@ -27,7 +27,7 @@ CacheLine::~CacheLine(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 bool CacheLine::bOnCacheLineBoundary(void* aAddress)
 {
-  bool bOn = MemLib::bOnBoundary(aAddress,sizeof(CacheLine));
+  bool bOn = AlignedObject::bOnBoundary(aAddress,sizeof(CacheLine));
   
   return bOn;
 }

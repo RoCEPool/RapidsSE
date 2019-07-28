@@ -531,17 +531,6 @@ void MemLib::vMove(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is address on an nByte boundary?                                           */
-/*----------------------------------------------------------------------------*/
-bool MemLib::bOnBoundary(void* aAddress, i8 nByteBoundary)
-{
-  if (0 == (u8)aAddress % nByteBoundary)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* compute the memory quanta required to hold n bytes                         */
 /*----------------------------------------------------------------------------*/
 i8 MemLib::nQuantaRequired(i8 nBytes, i8 nSizeQuanta)

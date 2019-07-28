@@ -43,7 +43,7 @@ Word::~Word(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 bool Word::bOnWordBoundary(void* aAddress)
 {
-  bool bOn = MemLib::bOnBoundary(aAddress,sizeof(Word));
+  bool bOn = AlignedObject::bOnBoundary(aAddress,sizeof(Word));
   
   return bOn;
 }
