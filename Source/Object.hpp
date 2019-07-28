@@ -1,14 +1,7 @@
 /*============================================================================*/
-/* Object.hpp -- Base Class for Objects in Buffer Pool                        */
+/* Object.hpp -- Proper Object in system                                      */
 /*============================================================================*/
 #pragma once
-
-namespace Pool
-{
-  class bn;
-  
-  class PoolBuffer;
-}
 
 namespace Correctness
 {

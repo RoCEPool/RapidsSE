@@ -5,7 +5,6 @@
 
 namespace Correctness
 {
-  
   template <class OBJECT, eCN eClassNo>
   class MP
   {

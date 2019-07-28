@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Object.cpp - root class for objects in buffer pool                         */
+/* Object.cpp -- Proper Object in system                                      */
 /*============================================================================*/
 
 #include "Correctness.h"

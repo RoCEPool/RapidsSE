@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* String_t.cpp -- fixed-length string variable (template)                       */
+/* String_t.cpp -- fixed-length string variable (template)                    */
 /*============================================================================*/
 
 #include "Correctness.h"

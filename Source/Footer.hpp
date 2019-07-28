@@ -10,14 +10,14 @@ namespace Correctness
   class Footer
   {
   private:
-  union {
-    u8   m_uFooter;
-    char m_caFooter[8];
-  };
+    union {
+      u8   m_uFooter;
+      char m_caFooter[8];
+    };
   
   public:
     Footer(void);
-    ~Footer(void) noexcept(false);
+   ~Footer(void) noexcept(false);
     
     void vAssertFooter(void) const;
     void vSetFooter(void);

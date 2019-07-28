@@ -16,7 +16,7 @@ namespace Correctness
     void  operator delete(void*);
 
     FreeChunk(void);
-    ~FreeChunk(void) noexcept(false);
+   ~FreeChunk(void) noexcept(false);
     void vInit(eCN eWasClass);
     eCN eWasClass(void);
     void vWasClass(eCN eWasClass);
