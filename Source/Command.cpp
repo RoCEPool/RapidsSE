@@ -1,12 +1,10 @@
 /*============================================================================*/
-/* Command.cpp - Command Processor                                   */
+/* Command.cpp - Command Processor                                            */
 /*============================================================================*/
 
 #include "Commands.h"
-#include "StorageEngine.h"
+#include "AM.hpp"
 
-extern Arguments   gxArguments;
-extern AttachMap*  gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -170,11 +168,11 @@ void Command::vGetCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMAND,_FOOTER_);
   
-  if (gxArguments.m_bCommand) {
-    vGetCommandArgument();
-    return;
-  }
-  else
+//  if (gxArguments.m_bCommand) {
+//    vGetCommandArgument();
+//    return;
+//  }
+//  else
     vGetCommandInput();
     
   // if empty line just return
@@ -201,36 +199,36 @@ void Command::vGetCommand(void)
 /*----------------------------------------------------------------------------*/
 /* get command from arguments                                                 */
 /*----------------------------------------------------------------------------*/
-void Command::vGetCommandArgument(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMAND,_FOOTER_);
-  
-  s48K sCommand(gxArguments.m_sCommand);
-  
-  m_pTokeniser->vUseString(sCommand);
-  
-  pTknVec()->vReset();
-  
-  //while (TN_NONE !=
-  //       m_pTokeniser->eNextToken((char*)pTkn(pTknVec()->nTokens())->aText())) {
-  
-  while (true) {
-    
-    Token* pToken = pTkn(pTknVec()->nTokens());
-    
-    eTN eToken = m_pTokeniser->eNextToken((char*)pToken->aText());
-    
-    if (TN_NONE == eToken)
-      break;
-    
-    pToken->vToken(eToken);
-
-   //vTrace("vGetCommand : [%lld] %s\n"_Stz,i_Token,pTkn(i_Token));
-    
-    pTknVec()->vIncTokens();
-    ASSERT(pTknVec()->nTokens() < C_TOKENS);
-  }
-}
+//void Command::vGetCommandArgument(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMAND,_FOOTER_);
+//
+//  s48K sCommand(gxArguments.m_sCommand);
+//
+//  m_pTokeniser->vUseString(sCommand);
+//
+//  pTknVec()->vReset();
+//
+//  //while (TN_NONE !=
+//  //       m_pTokeniser->eNextToken((char*)pTkn(pTknVec()->nTokens())->aText())) {
+//
+//  while (true) {
+//
+//    Token* pToken = pTkn(pTknVec()->nTokens());
+//
+//    eTN eToken = m_pTokeniser->eNextToken((char*)pToken->aText());
+//
+//    if (TN_NONE == eToken)
+//      break;
+//
+//    pToken->vToken(eToken);
+//
+//   //vTrace("vGetCommand : [%lld] %s\n"_Stz,i_Token,pTkn(i_Token));
+//
+//    pTknVec()->vIncTokens();
+//    ASSERT(pTknVec()->nTokens() < C_TOKENS);
+//  }
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get command from input                                                     */
