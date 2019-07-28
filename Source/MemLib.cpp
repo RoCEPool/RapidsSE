@@ -531,16 +531,6 @@ void MemLib::vMove(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is nBytes a muliple of CacheLine?                                          */
-/*----------------------------------------------------------------------------*/
-bool MemLib::bMultipleCacheLines(i8 nBytes)
-{
-  bool bIsMultiple = nBytes % sizeof(CacheLine) == 0 ? true : false;
-  
-  return bIsMultiple;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is address on an nByte boundary?                                           */
 /*----------------------------------------------------------------------------*/
 bool MemLib::bOnBoundary(void* aAddress, i8 nByteBoundary)

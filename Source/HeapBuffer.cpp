@@ -159,7 +159,7 @@ FreeChunk* HeapBuffer::aNextChunk(FreeChunk* aChunk, i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HEAPBUFFER,_FOOTER_);
   
-  ASSERT(MemLib::bMultipleCacheLines(nBytes));
+  ASSERT(CacheLine::bMultipleCacheLines(nBytes));
   
   // calculate address of next buffer
   FreeChunk* aNextChunk = aAdd<FreeChunk*>(aChunk,nBytes);

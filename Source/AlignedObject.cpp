@@ -13,7 +13,7 @@ AlignedObject::AlignedObject(eCN eClassNo, i8 nChildSize)
   _precondition_(_MAGIC_,eClassNo);
   
   ASSERT(CacheLine::bOnCacheLineBoundary(this));
-  ASSERT(MemLib::bMultipleCacheLines(nChildSize));
+  ASSERT(CacheLine::bMultipleCacheLines(nChildSize));
 }
 
 /*============================================================================*/
