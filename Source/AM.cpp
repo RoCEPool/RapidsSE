@@ -74,6 +74,9 @@ TxSet* AM::pTxSet(void)       { return gpAttachMap->m_pTxSet;                 }
 bool AM::bVerbose(void)       { return gpAttachMap->m_bVerbose;               }
 
 //
+void AM::vAttachMap(Header* aHeader) {
+  gpAttachMap = static_cast<AttachMap*>(aHeader);
+}
 void AM::vBootError(bool bBootError) {
   gpAttachMap->m_bBootError = bBootError;
 }

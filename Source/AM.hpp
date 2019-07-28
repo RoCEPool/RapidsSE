@@ -72,6 +72,7 @@ namespace StorageEngine
     static bool bVerbose(void);
   
     //
+    static void vAttachMap(Header* aHeader);
     static void vBootError(bool bBootError);
     static void vForthWord(Forth::ForthWord* pForthWord);
     static void vStepTiming(Measurement::StepTiming* pStepTiming);
