@@ -19,8 +19,6 @@ namespace Correctness
   public:
     Object(eCN eClass);
   
-    Pool::bn nPoolBufferNo(void);
- 
     bool bWordBody(void);
     void vWordBody(bool bIsWordBody);
     

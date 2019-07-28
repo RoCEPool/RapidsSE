@@ -149,6 +149,19 @@ i8 DataBuffer::iPoolBufferNo(void)
   return iBufferNo;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get the buffer no of the pool buffer that the object is within             */
+/*----------------------------------------------------------------------------*/
+Pool::bn DataBuffer::nPoolBufferNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  PoolBuffer* pPoolBuffer = PoolBuffer::pGetPoolBuffer(this);
+  
+  bn nBufferNo = pPoolBuffer->nPoolBufferNo();
+  
+  return nBufferNo;
+}
 
 /*============================================================================*/
 /* end                                                                        */

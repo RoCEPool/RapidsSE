@@ -32,7 +32,8 @@ namespace MetaData
     Birth&      oWhenNewed(void);
   
     // - - - - - - - - - - - - - -
-    i8  iPoolBufferNo(void);
+    i8 iPoolBufferNo(void);
+    bn nPoolBufferNo(void);
   };
   
   DataBuffer* _pDataBuffer(void* aAddr);

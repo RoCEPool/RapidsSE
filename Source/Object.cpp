@@ -18,20 +18,6 @@ Object::Object(eCN eClassNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the buffer no of the pool buffer that the object is within             */
-/*----------------------------------------------------------------------------*/
-Pool::bn Object::nPoolBufferNo(void)
-{
-  _precondition_(_MAGIC_);
-  
-  PoolBuffer* pBuffer = PoolBuffer::pGetPoolBuffer(this);
-  
-  bn nBufferNo = pBuffer->nPoolBufferNo();
-  
-  return nBufferNo;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set is word body                                                           */
 /*----------------------------------------------------------------------------*/
 void Object::vWordBody(bool bWordBody)
