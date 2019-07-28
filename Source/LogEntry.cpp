@@ -2,10 +2,10 @@
 /* LogEntry.cpp - Shared Log Entry                                            */
 /*============================================================================*/
 
-#include "Measurement.h"
+#include "Logging.h"
 #include "StorageEngine.h"
+#include "AM.hpp"
 
-extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
