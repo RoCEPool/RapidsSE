@@ -80,6 +80,7 @@ namespace StorageEngine
     static void vAttachMap(Header* aHeader);
     static void vBootError(bool bBootError);
     static void vForthWord(Forth::ForthWord* pForthWord);
+    static void vIndexEntries(i8 nIndexEntries);
     static void vStepTiming(Measurement::StepTiming* pStepTiming);
     static void vSubInserters(i8 nSubInserters);
     static void vTakenBuffers(Pool::PoolBuffer* pTakenBuffers);

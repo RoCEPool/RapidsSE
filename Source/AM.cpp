@@ -89,6 +89,9 @@ void AM::vBootError(bool bBootError) {
 void AM::vForthWord(ForthWord *pWord) {
   gpAttachMap->m_pForthWord = pWord;
 }
+void AM::vIndexEntries(i8 nIndexEntries) {
+  gpAttachMap->m_nIndexEntries = nIndexEntries;
+}
 void AM::vSubInserters(i8 nSubInserters) {
   gpAttachMap->Arg.m_nSubInserters = nSubInserters;
 }

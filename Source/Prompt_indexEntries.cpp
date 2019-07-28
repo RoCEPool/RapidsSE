@@ -3,9 +3,8 @@
 /*============================================================================*/
 
 #include "Prompt.h"
-#include "StorageEngine.h"
+#include "AM.hpp"
 
-extern AttachMap* gpAttachMap;
 
 PromptNote mPromptNote_indexEntries (
   PF_INDEXENTRIES,            // prompt function
@@ -49,7 +48,9 @@ bool Prompt::bPrompt_indexEntries(SePrompt* pPrompt)
   
   // get the no of indexEntries to set
   i8 iIndexEntries = pTokenVec->pGet(1)->iToI8();
-  gpAttachMap->vIndexEntries(iIndexEntries);
+  
+  AM::vIndexEntries(iIndexEntries);
+  
   vTrace("success: 0 rows affected\n"_Stz);
   
   return true;
