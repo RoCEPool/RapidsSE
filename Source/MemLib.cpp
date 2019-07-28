@@ -915,7 +915,7 @@ void MemLib::vWordDump(void *aAddress, i8 nBytes, i8 iHighlightWord)
 /*----------------------------------------------------------------------------*/
 void MemLib::vWordFlip(w8* aWord)
 {
-  wordAsBytes* aAsBytes = (wordAsBytes*)aWord;
+  _WordAsBytes* aAsBytes = (_WordAsBytes*)aWord;
   
   byte yByte;
   

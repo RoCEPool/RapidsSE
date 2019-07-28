@@ -223,8 +223,8 @@ i8 IntLib::iDecile(i8 iArg, i8 iMax)
 /*----------------------------------------------------------------------------*/
 i8 IntLib::iFlipEndian(i8 iArg)
 {
-  wordAsBytes xArg;
-  wordAsBytes xResult;
+  _WordAsBytes xArg;
+  _WordAsBytes xResult;
   
   xArg.m_iAsI8 = iArg;
   

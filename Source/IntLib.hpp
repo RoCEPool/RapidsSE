@@ -11,17 +11,8 @@
 
 namespace Lines
 { 
-  struct wordAsBytes {
-    union {
-      b1 m_caByte[C_BYTES_PER_WORD];
-      i8 m_iAsI8;
-    };
-  };
-  
   class IntLib
   {
-  private:
-  
   public:
     static u8 uBits(u8 uArg, i8 i_Bit, i8 nBits);
     static u8 uByte(u8 uArg, i8 i_Byte);
