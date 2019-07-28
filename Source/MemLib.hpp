@@ -52,8 +52,6 @@ namespace Correctness
     static bool  bOnBoundary(void* aAddress, i8 nByteBoundary);
     static bool  bOnCacheLineBoundary(void* aAddress);
     static bool  bOnDoubleWordBoundary(void* aAddress);
-    static bool  bOnQuadWordBoundary(void* aAddress);
-    static bool  bOnWordBoundary(void* aAddress);
     static i8    nQuantaRequired(i8 nBytes, i8 nSizeQuanta);
     static void  vReset(void);
     static void  vRotate(void* aArg, i8 nBytes, i8 nBy);

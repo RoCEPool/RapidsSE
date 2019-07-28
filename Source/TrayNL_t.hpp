@@ -701,7 +701,7 @@ TrayNL_t<CN,HEAD,OVER,TAIL,DESC,BYTES>::TrayNL_t(void)
   _precondition_(_MAGIC_,CN,_FOOTER_);
 
   //vTrace("this : %p ; &m_xaUnits[0] : %p\n"_Stz,this,&m_xaUnits[0]);
-  ASSERT(MemLib::bOnDoubleWordBoundary(m_xaUnits));
+  ASSERT(DoubleWord::bOnDoubleWordBoundary(m_xaUnits));
   
   MemLib::vZero(&m__filler,sizeof(m__filler),CN);
 

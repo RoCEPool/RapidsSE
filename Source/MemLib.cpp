@@ -572,26 +572,6 @@ bool MemLib::bOnDoubleWordBoundary(void* aAddress)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is address on a quad word boundary?                                        */
-/*----------------------------------------------------------------------------*/
-bool MemLib::bOnQuadWordBoundary(void* aAddress)
-{
-  bool bOn = bOnBoundary(aAddress,sizeof(QuadWord));
-  
-  return bOn;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is address on a word boundary?                                             */
-/*----------------------------------------------------------------------------*/
-bool MemLib::bOnWordBoundary(void* aAddress)
-{
-  bool bOn = bOnBoundary(aAddress,sizeof(Word));
-
-  return bOn;
-}
-
-/*----------------------------------------------------------------------------*/
 /* compute the memory quanta required to hold n bytes                         */
 /*----------------------------------------------------------------------------*/
 i8 MemLib::nQuantaRequired(i8 nBytes, i8 nSizeQuanta)

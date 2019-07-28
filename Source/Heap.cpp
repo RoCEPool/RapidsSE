@@ -187,7 +187,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   
   //eLastClass = eAllocClass;
   
-  ASSERT(MemLib::bOnCacheLineBoundary(pObject));
+  ASSERT(CacheLine::bOnCacheLineBoundary(pObject));
   return pObject;
 }
 

@@ -148,7 +148,7 @@ FreeChunk* HeapBuffer::aFirstChunk(void)
   
   FreeChunk* aFirstChunk = aAdd<FreeChunk*>(this,sizeof(HeapBuffer));
   
-  ASSERT(MemLib::bOnCacheLineBoundary(aFirstChunk));
+  ASSERT(CacheLine::bOnCacheLineBoundary(aFirstChunk));
   return aFirstChunk;
 }
 
@@ -168,7 +168,7 @@ FreeChunk* HeapBuffer::aNextChunk(FreeChunk* aChunk, i8 nBytes)
   if (aChunkEnd(aNextChunk,nBytes) > m_aLastByte)
     return nullptr;
   
-  ASSERT(MemLib::bOnCacheLineBoundary(aNextChunk));
+  ASSERT(CacheLine::bOnCacheLineBoundary(aNextChunk));
   return aNextChunk;
 }
 
