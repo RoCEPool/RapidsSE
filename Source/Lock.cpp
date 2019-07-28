@@ -4,9 +4,7 @@
 
 #include "StorageEngine.h"
 #include "Library.h"
-#include "Pool.h"
-
-extern AttachMap* gpAttachMap;
+#include "AM.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
