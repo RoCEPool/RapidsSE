@@ -3,9 +3,8 @@
 /*============================================================================*/
 
 #include "System.h"
-#include "StorageEngine.h"
+#include "AM.hpp"
 
-extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -181,7 +180,7 @@ void Dir::vClose(void)
     return;
   }
 
-  if (gpAttachMap) AM::pResourceTracker()->vDecDirOpen();
+  if (AM::bAttached()) AM::pResourceTracker()->vDecDirOpen();
   if (AM::pMarkResource()->bEnum(SR_DIR) ||
       AM::pMarkResource()->bAll())
     AM::vNote(SR_DIR,"SysRes: Dir closed %s"_Stz,m_sDirPath.aStz());
@@ -257,7 +256,7 @@ bool Dir::bOpen(Stz* aDirPath)
     return false;
   }
 
-  if (gpAttachMap) AM::pResourceTracker()->vIncDirOpen();
+  if (AM::bAttached()) AM::pResourceTracker()->vIncDirOpen();
   if (AM::pMarkResource()->bEnum(SR_DIR) ||
       AM::pMarkResource()->bAll())
     AM::vNote(SR_DIR,"SysRes: Dir opened %s"_Stz,aDirPath);

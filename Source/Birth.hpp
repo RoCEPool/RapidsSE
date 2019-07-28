@@ -5,8 +5,6 @@
 
 namespace System
 {
-  class Time;
-  
   class Birth : public Object
   {
   public:

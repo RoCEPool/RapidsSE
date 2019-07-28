@@ -3,10 +3,8 @@
 /*============================================================================*/
 
 #include "System.h"
-
 #include "AM.hpp"
 
-#include "Pool.h"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -49,7 +47,7 @@ void DecaCnt::vInc(Stz* szFormat,...)
     vTrace("%s %lld:"_Stz,m_sName.aStz(),m_iCount);
     va_list xArgs;
     va_start(xArgs,szFormat);
-    StorageEngine::AM::vWriteTrace(szFormat,xArgs);
+    AM::vWriteTrace(szFormat,xArgs);
     va_end(xArgs);
   }
 }
