@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "Prompt.h"
-#include "StorageEngine.h"
+#include "AM.hpp"
 
 PromptNote mPromptNote_executing (
   PF_EXECUTING,           // prompt function
@@ -19,7 +19,6 @@ PromptNote mPromptNote_executing (
   ""_Stz                  // description
 );
 
-extern AttachMap*  gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */

@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "Prompt.h"
-#include "StorageEngine.h"
 
 PromptNote mPromptNote_constants (
   PF_CONSTANTS,            // prompt function
@@ -19,7 +18,6 @@ PromptNote mPromptNote_constants (
   ""_Stz                   // description
 );
 
-extern AttachMap*  gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */

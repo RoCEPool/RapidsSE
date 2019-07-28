@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "Prompt.h"
-#include "StorageEngine.h"
 
 PromptNote mPromptNote_classes (
   PF_CLASSES,           // prompt function
@@ -18,8 +17,6 @@ PromptNote mPromptNote_classes (
   "classes"_Stz,        // help
   ""_Stz                // description
 );
-
-extern AttachMap*  gpAttachMap;
 
 extern eHT geWhichHeap[];
 extern i8  giClassSize[];
