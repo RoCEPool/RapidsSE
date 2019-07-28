@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "Prompt.h"
-#include "StorageEngine.h"
+#include "AM.hpp"
 
 PromptNote mPromptNote_uptime (
   PF_UPTIME,             // prompt function
@@ -19,8 +19,6 @@ PromptNote mPromptNote_uptime (
   ""_Stz                 // description
 );
 
-extern AttachMap* gpAttachMap;
-extern PromptCatalog gxPromptCatalog;
 
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */

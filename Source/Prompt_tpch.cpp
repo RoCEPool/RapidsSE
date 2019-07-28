@@ -3,9 +3,6 @@
 /*============================================================================*/
 
 #include "Prompt.h"
-#include "StorageEngine.h"
-
-extern AttachMap*   gpAttachMap;
 
 PromptNote mPromptNote_tpch (
   PF_TPCH,           // prompt function

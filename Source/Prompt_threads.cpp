@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "Prompt.h"
-#include "StorageEngine.h"
 
 PromptNote mPromptNote_threads (
   PF_THREADS,           // prompt function
@@ -18,8 +17,6 @@ PromptNote mPromptNote_threads (
   "threads"_Stz,        // help
   ""_Stz                // description
 );
-
-extern AttachMap*  gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
