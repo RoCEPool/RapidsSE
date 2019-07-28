@@ -2,11 +2,9 @@
 /* EntBuffer_position.cpp -- position related functions for EntBuffer     */
 /*============================================================================*/
 
-#include "Rows.h"
+#include "Indexes.h"
 
 #include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* position at an index buffer at given height starting from this buffer      */

@@ -2,11 +2,10 @@
 /* EntBuffer_insert.cpp -- insert related functions for Entry Buffer        */
 /*============================================================================*/
 
-#include "Rows.h"
+#include "Indexes.h"
 
 #include "StorageEngine.h"
 
-extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* build skip list from the lazy chain                                        */
