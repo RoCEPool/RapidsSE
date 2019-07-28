@@ -3,8 +3,7 @@
 /*============================================================================*/
 
 #include "Commands.h"
-
-#include "StorageEngine.h"
+#include "AM.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -677,7 +676,8 @@ char Parser::cFromRawInput(void)
       break;
       
     default:
-      THROW("Invalid m_eSource %lld"_Stz,m_eSource);
+      cRaw = '\0';
+      vFatal("Invalid m_eSource %lld"_Stz,m_eSource);
   }
   
   return cRaw;
