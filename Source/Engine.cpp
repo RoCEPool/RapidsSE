@@ -762,7 +762,7 @@ void Engine::vSetGlobals(void)
   //gpAttachMap->m_bVerbose      = gxArguments.m_bVerbose;
   //gpAttachMap->m_bTracepoint   = gxArguments.m_bTracepoint;
   //gpAttachMap->m_bProgress     = gxArguments.m_bProgress;
-  gpAttachMap->m_bMetadata     = gxArguments.m_bMetadata;
+  //gpAttachMap->m_bMetadata     = gxArguments.m_bMetadata;
   gpAttachMap->m_nIndexEntries = gxArguments.m_nEntries;
 }
 
@@ -821,6 +821,7 @@ void Engine::vStartSystem(void)
                                 gxArguments.m_bLog,
                                 gxArguments.m_nMaxLoadErrors,
                                 gxArguments.m_nMaxReadyLP,
+                                gxArguments.m_bMetadata,
                                 gxArguments.m_nNodes,
                                 gxArguments.m_bProgress,
                                 gxArguments.m_sRegionName,

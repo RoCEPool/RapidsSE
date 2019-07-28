@@ -115,6 +115,7 @@ namespace StorageEngine
                           bool bLog,
                           i8   nMaxLoadErrors,
                           i8   nMaxReadyLP,
+                          bool bMetadata,
                           i8   nNodes,
                           bool bProgress,
                           Stz* sRegionName,
