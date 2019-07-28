@@ -2,11 +2,9 @@
 /* IrwBuffer.hpp -- Inflated Row Buffer                                       */
 /*============================================================================*/
 
-#include "PushDown.h"
+#include "Transform.h"
 
-#include "StorageEngine.h"
 
-extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
