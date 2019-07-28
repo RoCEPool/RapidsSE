@@ -116,6 +116,29 @@ void AM::vWriteLog(void) {
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* add a log entry for resource                                               */
+/*----------------------------------------------------------------------------*/
+void AM::vNote(eSR eSysRes,Stz* szFormat, ...)
+{
+#ifdef WITH_SHARED_LOG
+  if (! AM::bLogging())
+    return;
+  
+  if (AM::pMarkResource()->bEnum(eSysRes) ||
+      AM::pMarkResource()->bAll())
+    return;
+  
+  va_list xVaArgs;
+  
+  va_start(xVaArgs,szFormat);
+  
+  gpLog->iAddNoteArg(_EG_SR,eSysRes,false,szFormat,xVaArgs);
+  
+  va_end(xVaArgs);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
 /* write to trace file etc                                                    */
 /*----------------------------------------------------------------------------*/
 void AM::vWriteTrace(Stz* aFormat, va_list xArgs)

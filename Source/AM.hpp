@@ -88,6 +88,7 @@ namespace StorageEngine
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     //
+    static void vNote(eSR eSysRes,Stz* szFormat, ...);
     static void vWriteTrace(Stz* aFormat, va_list xArgs);
   };
 }
