@@ -7,6 +7,7 @@
 extern AttachMap*  gpAttachMap;
 extern BufferPool* gpBufferPool;
 extern File*       gpTraceFile;
+extern Log*        gpLog;
 
 
 // Arg
@@ -42,6 +43,7 @@ Grid* AM::pGrid(void)         { return gpAttachMap->m_pGrid;                  }
 HeapMem* AM::pHeapMem(void)   { return & gpAttachMap->m_xHeapMem;             }
 i8   AM::nIndexEntries(void)  { return gpAttachMap->m_nIndexEntries;          }
 LockTracker* AM::pLockTracker(void) { return & gpAttachMap->m_oLockTracker;   }
+bool AM::bLogging(void)       { return gpLog ? true : false;                  }
 EnumFlags* AM::pMarkAction(void) { return & gpAttachMap->m_oMarkAction;       }
 EnumFlags* AM::pMarkApi(void) { return & gpAttachMap->m_oMarkApi;             }
 EnumFlags* AM::pMarkJob(void) { return & gpAttachMap->m_oMarkJob;             }

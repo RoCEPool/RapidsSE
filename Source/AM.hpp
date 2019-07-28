@@ -41,6 +41,7 @@ namespace StorageEngine
     static Pool::HeapMem* pHeapMem(void);
     static i8   nIndexEntries(void);
     static Measurement::LockTracker* pLockTracker(void);
+    static bool bLogging(void);
     static Correctness::EnumFlags* pMarkAction(void);
     static Correctness::EnumFlags* pMarkApi(void);
     static Correctness::EnumFlags* pMarkJob(void);

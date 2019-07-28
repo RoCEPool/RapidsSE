@@ -14,7 +14,7 @@ extern Log* gpLog;
 void ResLog::vNote(eSR eSysRes,Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  if ( ! gpLog )
+  if (! AM::bLogging())
     return;
   
   if (AM::pMarkResource()->bEnum(eSysRes) ||
