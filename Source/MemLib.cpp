@@ -700,7 +700,7 @@ void MemLib::vStatistics(void)
 {
   s32 sByteMag;
   
-  Statistics* pStats = AM::pStatistics();
+  Statistics* pStats = StorageEngine::AM::pStatistics();
 
   MagLib::vByteMag(pStats->Memory.m_iCopyTotal, sByteMag);
   vTrace("MemLib::vCopy() total %s\n"_Stz,sByteMag.aStz());

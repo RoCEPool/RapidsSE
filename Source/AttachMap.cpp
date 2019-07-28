@@ -110,7 +110,7 @@ void AttachMap::vIndexEntries(i8 nIndexEntries)
 /*----------------------------------------------------------------------------*/
 i8 AttachMap::iPid(void)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
   
   return m_iPid;
 }

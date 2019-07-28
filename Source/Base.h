@@ -29,6 +29,7 @@ using namespace Base;
 #include "Null.hpp"
 #include "Structs.h"
 #include "UsefulConstants.h"
+#include "WordAsBytes.h"
 
 /*============================================================================*/
 /* end                                                                        */
