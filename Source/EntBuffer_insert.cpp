@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EntBuffer_insert.cpp -- insert related functions for Entry Buffer        */
+/* EntBuffer_insert.cpp -- insert related functions for Entry Buffer          */
 /*============================================================================*/
 
 #include "Indexes.h"

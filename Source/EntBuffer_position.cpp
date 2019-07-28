@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EntBuffer_position.cpp -- position related functions for EntBuffer     */
+/* EntBuffer_position.cpp -- position related functions for EntBuffer         */
 /*============================================================================*/
 
 #include "Indexes.h"

@@ -2,10 +2,8 @@
 /* IndexTree.cpp - index data portion of table partition                      */
 /*============================================================================*/
 
-#include "Rows.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
+#include "Indexes.h"
+#include "AM.hpp"
 
 //#define TRACE_COMPACT(x) x
 #define TRACE_COMPACT(x)
@@ -135,7 +133,7 @@ Stz* IndexTree::pAnalyze(void)
   s48K sAnalysis;
   
   sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s\n"_Stz,
-                        AM::pGrid()->iThisNode(),
+                        AM::iThisNodeNo(),
                         m_pIndex->aIndexName()->aChar(),
                         m_pIndex->pTable()->aTableName());
   
