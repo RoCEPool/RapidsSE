@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Correctness
+namespace Lines
 {
   class AlignedObject : public Object
   {

@@ -18,6 +18,7 @@ using namespace Lines;
 
 #include "Dtm.hpp"
 #include "Word.hpp"
+#include "AlignedObject.hpp"
 
 #include "Line.hpp"
 #include "DoubleWord.hpp"

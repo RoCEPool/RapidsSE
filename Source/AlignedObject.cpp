@@ -2,7 +2,7 @@
 /* AlignedObject.cpp -- Base Class for CacheLine Aligned Objects              */
 /*============================================================================*/
 
-#include "Correctness.h"
+#include "Lines.h"
 
 /*----------------------------------------------------------------------------*/
 /* initialize object                                                          */

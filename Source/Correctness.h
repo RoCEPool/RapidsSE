@@ -34,7 +34,6 @@ using namespace Correctness;
 #include "AssertMacros.hpp"
 
 #include "Object.hpp"
-#include "AlignedObject.hpp"
 #include "SeeMe.hpp"
 
 #include "Addressing.hpp"
