@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "Transactions.h"
-#include "StorageEngine.h"
 #include "AM.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -57,7 +56,7 @@ Tx::Tx(bool bAddToSet)
   m_iLocalTxId = -1;
   m_iDistTxId  = -1;
   m_ePhase     = TP_EXECUTING;
-  m_ixCounter  = AM::pGrid()->m_nSlotsPerNode;
+  m_ixCounter  = AM::nSlotsPerNode();
   
   for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++)
     m_xNode[i_Node].m_bDistMember = false;
@@ -81,7 +80,7 @@ Tx::Tx(i8 iDistTxId)
   m_iLocalTxId = -1;
   m_iDistTxId  = iDistTxId;
   m_ePhase     = TP_EXECUTING;
-  m_ixCounter  = AM::pGrid()->m_nSlotsPerNode;
+  m_ixCounter  = AM::nSlotsPerNode();
 
   for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++)
     m_xNode[i_Node].m_bDistMember = false;
