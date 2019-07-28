@@ -18,18 +18,6 @@ Object::Object(eCN eClassNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the buffer no (as i8) of the pool buffer that the object is within     */
-/*----------------------------------------------------------------------------*/
-i8 Object::iPoolBufferNo(void)
-{
-  _precondition_(_MAGIC_);
-  
-  i8 iBufferNo = *(this->nPoolBufferNo());
-  
-  return iBufferNo;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get the buffer no of the pool buffer that the object is within             */
 /*----------------------------------------------------------------------------*/
 Pool::bn Object::nPoolBufferNo(void)

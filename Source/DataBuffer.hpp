@@ -16,7 +16,7 @@ namespace MetaData
 
   public:
     DataBuffer(eCN eClass);
-    ~DataBuffer(void) noexcept(false);
+   ~DataBuffer(void) noexcept(false);
 
     i8          iAgeSec(void);
 
@@ -30,6 +30,9 @@ namespace MetaData
     i8          iPartitionNo(void);
  
     Birth&      oWhenNewed(void);
+  
+    // - - - - - - - - - - - - - -
+    i8  iPoolBufferNo(void);
   };
   
   DataBuffer* _pDataBuffer(void* aAddr);
