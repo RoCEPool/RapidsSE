@@ -4,7 +4,6 @@
 
 #include "Commands.h"
 #include "AM.hpp"
-#include "StorageEngine.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -60,16 +59,15 @@ Tokeniser::Tokeniser(void)
   }
   else {
   
-    i8 nNodes = AM::pGrid()->nNodes();
-    Node* pNode = AM::pGrid()->pThisNode();
-    i8  i_Node = pNode->iNodeNo();
-    //bool bHasStarted = AM::pGrid()->m_bHasStarted;
+    i8 nNodes = AM::nNodes();
+    Stz* szNodeNm = AM::szNodeName();
+    i8  i_Node = AM::iThisNodeNo();
     
     m_sPrompt.vSprint("[N%lld/%lld %s %lld%s%s%s] se %s%c"_Stz,
                       
                       i_Node,
                       nNodes,
-                      pNode->aNodeName(),
+                      szNodeNm,
                       Process::iGetPid(),
   #ifdef WITH_SHARED_LOG
                       AM::bLog() ? " LG+" : " LG-",
