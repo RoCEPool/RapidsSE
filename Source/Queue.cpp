@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "Structures.h"
-#include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -217,7 +216,6 @@ Object* Queue::pPop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
-  Forth::GenVar xValWrk;
   
   m_okLock.vGrabWrite();
   
