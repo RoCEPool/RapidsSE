@@ -3,9 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-#include "Measurement.h"
+#include "Library.h"
 
-namespace Measurement
+namespace Library
 {
   class LockTracker
   {
@@ -18,7 +18,6 @@ namespace Measurement
     Atomic m_ixWriteGrabs[LK_ENUMS];      // number of write grabs
     Atomic m_ixWriteCollisions[LK_ENUMS]; // number of write collisions
   
-    void vList(File& oFile);
     void vMonitorPortrait(s48K& sPortrait);
     void vReport(void);
     void vReset(void);

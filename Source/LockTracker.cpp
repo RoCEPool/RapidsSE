@@ -2,27 +2,9 @@
 /* LockTracker.cpp -- lock statistics tracker                                 */
 /*============================================================================*/
 
-#include "Measurement.h"
+#include "Library.h"
 #include "Pool.h"
 
-/*----------------------------------------------------------------------------*/
-/* list steps                                                                 */
-/*----------------------------------------------------------------------------*/
-void LockTracker::vList(File& oFile)
-{
-  oFile.vPrint("Lock, LockNm, WorkUnits, ReadGrab, ReadCollision, WriteGrab, WriteCollision\n"_Stz);
-  for (i8 i_Lock = 0; i_Lock < LK_ENUMS; i_Lock++)
-    oFile.vPrint("%lld, %s, %lld, %lld, %lld, %lld, %lld\n"_Stz,
-                 i_Lock,
-                 aLK[i_Lock],
-                 *m_ixWorkUnits[i_Lock],
-                 *m_ixReadGrabs[i_Lock],
-                 *m_ixReadCollisions[i_Lock],
-                 *m_ixWriteGrabs[i_Lock],
-                 *m_ixWriteCollisions[i_Lock]
-                 );
-                 
-}
 
 /*----------------------------------------------------------------------------*/
 /* monitor portrait                                                           */

@@ -19,7 +19,6 @@ using namespace Measurement;
 
 #include "ByteRate.hpp"
 #include "FreqDist.hpp"
-#include "LockTracker.hpp"
 #include "Now.hpp"
 #include "Peruse.hpp"
 #include "StepAccum.hpp"

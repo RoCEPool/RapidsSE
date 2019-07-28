@@ -15,6 +15,7 @@ using namespace Library;
 //------------------------------------------------------------------------------
 
 #include "Lock.hpp"
+#include "LockTracker.hpp"
 #include "Wsp_t.hpp"
 
 

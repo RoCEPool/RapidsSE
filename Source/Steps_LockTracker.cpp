@@ -22,12 +22,6 @@ void Step::vLockTrackerList(MP_Task mpTask)
 {
 ENTRY("vLockTrackerList"_Stz);
 
-  File oFile;
-  oFile.bOpenWrite("locks.csv"_Stz);
-  
-  AM::pLockTracker()->vList(oFile);
-  
-  oFile.vClose();
   
   EXIT();
 }

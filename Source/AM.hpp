@@ -40,7 +40,7 @@ namespace StorageEngine
     static Grids::Grid* pGrid(void);
     static Pool::HeapMem* pHeapMem(void);
     static i8   nIndexEntries(void);
-    static Measurement::LockTracker* pLockTracker(void);
+    static Library::LockTracker* pLockTracker(void);
     static bool bLogging(void);
     static Correctness::EnumFlags* pMarkAction(void);
     static Correctness::EnumFlags* pMarkApi(void);

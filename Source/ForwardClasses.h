@@ -17,11 +17,10 @@ namespace Interface     { class ApiState; class RecordBuffer; class Session;  }
 namespace Jobs          { class Job; class JobList;
                                      class Job_CreateTable;
                                      class Job_CreateIndex;                   }
-namespace Library       { class Lock;                                         }
+namespace Library       { class Lock; class LockTracker;                      }
 namespace Logging       {                                                     }
 namespace MetaData      {                                                     }
-namespace Measurement   { class LockTracker;
-                          class StepTiming;                                   }
+namespace Measurement   { class StepTiming;                                   }
 namespace Partitioning  { class TablePtn;                                     }
 namespace Persistence   { class CarryOver;                                    }
 namespace Plans         {                                                     }
