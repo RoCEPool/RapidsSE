@@ -6,7 +6,6 @@
 
 #include "StorageEngine.h"
 
-extern AttachMap*  gpAttachMap;
 extern BufferPool* gpBufferPool;
 
 /*----------------------------------------------------------------------------*/

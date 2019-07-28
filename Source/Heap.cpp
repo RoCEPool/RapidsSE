@@ -5,7 +5,6 @@
 #include "StorageEngine.h"
 #include "Pool.h"
 
-extern AttachMap*  gpAttachMap;
 extern BufferPool* gpBufferPool;
 
 extern i8  giClassSize[];
