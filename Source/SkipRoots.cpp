@@ -2,10 +2,8 @@
 /* SkipRoots.cpp -- roots of the skips list in an entry buffer                */
 /*============================================================================*/
 
-#include "Rows.h"
-#include "StorageEngine.h"
+#include "Indexes.h"
 
-extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -14,7 +12,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-SkipRoots* MetaData::_aSkipRoots(void* aAddr)
+SkipRoots* Indexes::_aSkipRoots(void* aAddr)
 {
   SkipRoots* aFreeEntry = reinterpret_cast<SkipRoots*>(aAddr);
   

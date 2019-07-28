@@ -2,11 +2,9 @@
 /* EntBuffer_verify.cpp -- verify related functions for Entry Buffer        */
 /*============================================================================*/
 
-#include "Rows.h"
+#include "Indexes.h"
 
 #include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /*-- Verify ------------------------------------------------------------------*/

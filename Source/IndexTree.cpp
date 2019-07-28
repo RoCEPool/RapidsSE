@@ -73,7 +73,7 @@ IndexTree::~IndexTree(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-IndexTree* Rows::_pIndexTree(void* pAddr)
+IndexTree* Indexes::_pIndexTree(void* pAddr)
 {
   IndexTree* pIndexTree = reinterpret_cast<IndexTree*>(pAddr);
   

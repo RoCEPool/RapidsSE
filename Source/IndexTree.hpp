@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Rows
+namespace Indexes
 {
   static const i8 C_HIGHER_LEVEL_ID = 0xFFFF;
   
