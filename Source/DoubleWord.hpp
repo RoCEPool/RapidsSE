@@ -16,6 +16,8 @@ namespace Lines
   public:
     DoubleWord(void);
    ~DoubleWord(void) noexcept(false);
+  
+    static bool bOnDoubleWordBoundary(void* aAddress);
   };
   
   /*--------------------------------------------------------------------------*/

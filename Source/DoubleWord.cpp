@@ -22,6 +22,16 @@ DoubleWord::~DoubleWord(void) noexcept(false)
 {
 }
 
+/*----------------------------------------------------------------------------*/
+/* is address on a double word boundary?                                      */
+/*----------------------------------------------------------------------------*/
+bool DoubleWord::bOnDoubleWordBoundary(void* aAddress)
+{
+  bool bOn = MemLib::bOnBoundary(aAddress,sizeof(DoubleWord));
+  
+  return bOn;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

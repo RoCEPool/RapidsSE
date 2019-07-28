@@ -16,6 +16,8 @@ namespace Lines
   public:
     QuadWord(void);
    ~QuadWord(void) noexcept(false);
+  
+    static bool bOnQuadWordBoundary(void* aAddress);
   };
   
   /*--------------------------------------------------------------------------*/

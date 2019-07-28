@@ -38,7 +38,9 @@ namespace Lines
     Word(void);
     Word(i8 iArg);
     Word(w8 wArg);
-    ~Word(void) noexcept(false);
+   ~Word(void) noexcept(false);
+  
+    static bool bOnWordBoundary(void* aAddress);
   
     void operator =(i8 iArg);
     void operator =(w8 wArg);

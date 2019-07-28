@@ -15,7 +15,10 @@ namespace Lines
   
   public:
     CacheLine(void);
-    ~CacheLine(void) noexcept(false);
+   ~CacheLine(void) noexcept(false);
+  
+    static bool bMultipleCacheLines(i8 nBytes);
+    static bool bOnCacheLineBoundary(void* aAddress);
   };
   
   /*--------------------------------------------------------------------------*/
