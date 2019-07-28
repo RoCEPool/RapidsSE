@@ -59,6 +59,10 @@ typedef String_t<C_1M>   s1M;   // note this is 1M not 1MB
 #include "Statistics.hpp"
 #include "EnumFlags.hpp"
 
+#include "SysCall.hpp"
+#include "Shm.hpp"
+
+
 #define IGNORE_RETURN(call) call
 
 /*============================================================================*/

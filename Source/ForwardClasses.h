@@ -17,6 +17,7 @@ namespace Interface     { class ApiState; class RecordBuffer; class Session;  }
 namespace Jobs          { class Job; class JobList;
                                      class Job_CreateTable;
                                      class Job_CreateIndex;                   }
+namespace Library       { class Lock;                                         }
 namespace Logging       {                                                     }
 namespace MetaData      {                                                     }
 namespace Measurement   { class LockTracker;
@@ -33,7 +34,7 @@ namespace Scheduling    { class Queues; class Scheduler;                      }
 namespace Steps         {                                                     }
 namespace StorageEngine { class AM; class Engine;                             }
 namespace Structures    {                                                     }
-namespace System        { class Lock;                                         }
+namespace System        {                                                     }
 namespace Tasks         { class Task;                                         }
 namespace Threads       { class Thread;                                       }
 namespace Transactions  { class Tx; class TxSet;                              }

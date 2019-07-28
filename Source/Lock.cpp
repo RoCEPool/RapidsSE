@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "StorageEngine.h"
-#include "System.h"
+#include "Library.h"
 #include "Pool.h"
 
 extern AttachMap* gpAttachMap;
@@ -15,7 +15,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Lock* System::_pLock(void* aAddr)
+Lock* Library::_pLock(void* aAddr)
 {
   Lock* pLock = reinterpret_cast<Lock*>(aAddr);
   

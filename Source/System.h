@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Alignment.h"
+#include "Pool.h"
 
 //-----------------------------------------------------------------------------
 
@@ -16,8 +16,6 @@ using namespace System;
 
 //-----------------------------------------------------------------------------
 
-#include "SysCall.hpp"
-
 #include "Birth.hpp"
 #include "Compress.hpp"
 #include "DecaCnt.hpp"
@@ -27,7 +25,6 @@ using namespace System;
 #include "Hardware.hpp"
 #include "HwCounters.hpp"
 #include "IvlLib.hpp"
-#include "Lock.hpp"
 #include "MemTest.hpp"
 #include "Mutex.hpp"
 #include "NmVal.hpp"
@@ -36,8 +33,6 @@ using namespace System;
 #include "Pthread.hpp"
 #include "Random.hpp"
 #include "Shell.hpp"
-#include "Shm.hpp"
-#include "Shm.hpp"
 #include "Sleep.hpp"
 #include "Socket.hpp"
 #include "TempName.hpp"

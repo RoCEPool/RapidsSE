@@ -31,8 +31,8 @@ namespace StorageEngine
     static bool bBootError(void);
     static Pool::BufferPool* pBufferPool(void);
     static Persistence::CarryOver* pCarryOver(void);
-    static System::Lock* pDdlLock(void);
-    static System::Lock* pDicLock(void);
+    static Library::Lock* pDdlLock(void);
+    static Library::Lock* pDicLock(void);
     static i8   iElapsedSsec(void);
     static i8   iEpoch(void);
     static Chunks::Formatters* pFormatters(void);

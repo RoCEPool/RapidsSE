@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace System
+namespace Correctness
 {
   static const bool C_HUGE_PAGES    = true;
   static const bool C_NO_HUGE_PAGES = false;
