@@ -13,7 +13,7 @@ namespace Pool
 
   class BufferPool : public Object
   {
-    friend class BPA;
+  friend class Utilities::BPA;
     
   private:
     i8      m_nBuffers;   // number of buffers in pool

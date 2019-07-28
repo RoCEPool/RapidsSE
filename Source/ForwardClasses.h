@@ -38,7 +38,7 @@ namespace Tasks         { class Task;                                         }
 namespace Threads       { class Thread;                                       }
 namespace Transactions  { class Tx; class TxSet;                              }
 namespace Transform     {                                                     }
-namespace Utilities     {                                                     }
+namespace Utilities     { class BPA;                                          }
 
 // for use of AM
 using namespace StorageEngine;

@@ -5,6 +5,8 @@
 
 namespace Pool
 {
+  class Heap;
+  
   class HeapMem
   {
   public:

@@ -3,10 +3,8 @@
 /*============================================================================*/
 #pragma once
 
-namespace Pool
+namespace Utilities
 {
-  class Heap;
-  
   class BPA
   {
   public:

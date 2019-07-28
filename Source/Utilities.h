@@ -16,6 +16,7 @@ using namespace Utilities;
 
 //------------------------------------------------------------------------------
 
+#include "BPA.hpp"
 #include "GenData.hpp"
 #include "LlcTest.hpp"
 #include "Prefetch.hpp"
