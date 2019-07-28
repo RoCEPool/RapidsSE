@@ -3,8 +3,7 @@
 /*============================================================================*/
 
 #include "Indexes.h"
-
-#include "StorageEngine.h"
+#include "AM.hpp"
 
 bool mbWatch = false;
 
@@ -180,7 +179,7 @@ void EntBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
   
   if (bDetailed)
     sAnalysis.vCatSprint(" row: (%s, %lld, %5lld,' L%lld', %lld)\n"_Stz,
-                         AM::pGrid()->pThisNode()->aNodeName(),
+                         AM::szNodeName(),
                          m_iPartitionNo,
                          iBuffers,
                          m_iBufferHeight,
