@@ -217,6 +217,7 @@ void AttachMap::vRecordArguments(
                                  i8   nSubIngesters,
                                  i8   nSubLoaders,
                                  i8   nThreads,
+                                 bool bTracepoint,
                                  bool bVerbose
                                  )
 {
@@ -249,6 +250,7 @@ void AttachMap::vRecordArguments(
   Arg.m_nThreads         = nThreads;
   
   // these are args
+  m_bTracepoint           = bTracepoint;
   m_bVerbose             = bVerbose;
 
   

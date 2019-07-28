@@ -123,6 +123,7 @@ namespace StorageEngine
                           i8   nSubIngesters,
                           i8   nSubLoaders,
                           i8   nThreads,
+                          bool bTracepoint,
                           bool bVerbose
                          );
   

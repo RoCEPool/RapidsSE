@@ -760,7 +760,7 @@ void Engine::vSetGlobals(void)
   
   // set globals from gxArguments
   //gpAttachMap->m_bVerbose      = gxArguments.m_bVerbose;
-  gpAttachMap->m_bTracepoint   = gxArguments.m_bTracepoint;
+  //gpAttachMap->m_bTracepoint   = gxArguments.m_bTracepoint;
   gpAttachMap->m_bProgress     = gxArguments.m_bProgress;
   gpAttachMap->m_bMetadata     = gxArguments.m_bMetadata;
   gpAttachMap->m_nIndexEntries = gxArguments.m_nEntries;
@@ -829,6 +829,7 @@ void Engine::vStartSystem(void)
                                 gxArguments.m_nSubIngesters,
                                 gxArguments.m_nSubLoaders,
                                 gxArguments.m_nThreads,
+                                gxArguments.m_bTracepoint,
                                 gxArguments.m_bVerbose
                                 );
   
