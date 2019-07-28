@@ -2,9 +2,9 @@
 /* Tx.cpp - Transaction                                                       */
 /*============================================================================*/
 
+#include "Transactions.h"
 #include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
+#include "AM.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
