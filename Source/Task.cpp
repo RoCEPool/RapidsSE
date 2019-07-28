@@ -2,9 +2,9 @@
 /* Task.cpp - task                                                            */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "Tasks.h"
+#include "AM.hpp"
 
-extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -195,9 +195,7 @@ Task::~Task(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Task* Task::pThisTLSTask(void)
 {
-  Thread* pThread = Thread::pThisTLSThread();
-  
-  Task* pTask = pThread->pTask();
+  Task* pTask = AM::pThisTLSTask();
   
   return pTask;
 }
@@ -948,8 +946,8 @@ void Task::vTracePoint(Stz* aMark)
   
   vTrace("[%s(N%d):%8s\\%lld %-11s] %-16s : a%2lld="_Stz,
         
-         AM::pGrid()->pThisNode()->aNodeName(),
-         AM::pGrid()->iThisNode(),
+         AM::szNodeName(),
+         AM::iThisNodeNo(),
          aJobName(),
          m_oAcksRmg.iPrintOnlyValue(),
          

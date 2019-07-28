@@ -130,6 +130,13 @@ void AM::vDumpApi(void) {
 void AM::vPrintAttachMap(void) {
   gpAttachMap->vPrintAttachMap();
 }
+Tasks::Task* AM::pThisTLSTask(void) {
+  Thread* pThread = Thread::pThisTLSThread();
+  
+  Task* pTask = pThread->pTask();
+  
+  return pTask;
+}
 void AM::vWriteLog(void) {
   Log::vWriteCsv(false);
 }
