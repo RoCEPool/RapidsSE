@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Alignment.cpp -- Alignment namespace functions                                     */
+/* Alignment.cpp -- Alignment namespace functions                             */
 /*============================================================================*/
 
 #include "Alignment.h"
