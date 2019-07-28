@@ -4,7 +4,6 @@
 
 #include "Pool.h"
 
-#include "StorageEngine.h"
 #include "AM.hpp"
 
 extern BufferPool* gpBufferPool;
@@ -663,7 +662,7 @@ FreeBuffer* BufferPool::pPopFreeBuffer(void)
   // test for empty free chain
   if (bn::nNil() == m_nFreeHead) {
     ASSERT( ! m_nFreeCount );
-    vTrace("NODE%lld: RUNNING OUT OF MEMORY!!!\n"_Stz, AM::pGrid()->iThisNode());
+    vTrace("NODE%lld: RUNNING OUT OF MEMORY!!!\n"_Stz, AM::iThisNodeNo());
     vWarn("BufferPool::pAllocBuffer: zero free buffers\n"_Stz);
     m_oFreeLock.vDropWrite();
     return nullptr;

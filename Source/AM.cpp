@@ -67,6 +67,7 @@ StepTiming* AM::pStepTiming(void)  { return gpAttachMap->m_pStepTiming;       }
 PoolBuffer* AM::pTakenBuffers(void) { return gpAttachMap->m_pTakenBuffers;    }
 i8   AM::nTakenBytes(void)    { return gpAttachMap->m_nTakenBytes;            }
 ForthWord* AM::pTenants(void) { return gpAttachMap->m_pTenants;               }
+i8   AM::iThisNodeNo(void)    { return gpAttachMap->m_pGrid->iThisNode();     }
 void AM::vThreadBegins(void)  { ++ gpAttachMap->m_ixThreads;                  }
 i8   AM::nThreadsBegun(void)  { return * gpAttachMap->m_ixThreads;            }
 bool AM::bTracepoint(void)    { return gpAttachMap->m_bTracepoint;            }

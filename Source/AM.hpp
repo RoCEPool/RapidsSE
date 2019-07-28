@@ -65,6 +65,7 @@ namespace StorageEngine
     static Pool::PoolBuffer* pTakenBuffers(void);
     static i8   nTakenBytes(void);
     static Forth::ForthWord* pTenants(void);
+    static i8   iThisNodeNo(void);
     static void vThreadBegins(void);
     static i8   nThreadsBegun(void);
     static bool bTracepoint(void);
