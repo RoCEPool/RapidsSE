@@ -2,9 +2,9 @@
 /* AddConstants.cpp - add constants into main dictionary at startup           */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "Axioms.h"
+#include "AM.hpp"
 
-extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* add constant to main dictionary                                            */
@@ -570,9 +570,7 @@ void Axioms::vAddConstants(void)
   /*  6 */ vAddConstant("SIZEOF_VALSET"_Stz, sizeof(GenVar)); // correct
   /*  7 */ vAddConstant("SIZEOF_ValWrk"_Stz, sizeof(GenVar)); // correct
   
-  /*  8 */ vAddConstant("SIZEOF_ARGUMENTS"_Stz,    sizeof(Arguments));
   /*  9 */ vAddConstant("SIZEOF_ATOMIC"_Stz,       sizeof(Atomic));
-  /* 10 */ vAddConstant("SIZEOF_ATTACHMAP"_Stz,    sizeof(AttachMap));
   /* 11 */ vAddConstant("SIZEOF_POOLBUFFER"_Stz,   sizeof(PoolBuffer));
   /* 12 */ vAddConstant("SIZEOF_BUFFERPOOL"_Stz,   sizeof(BufferPool));
   /* 13 */ vAddConstant("SIZEOF_BPA"_Stz,          sizeof(BPA));
