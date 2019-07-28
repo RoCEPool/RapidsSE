@@ -3,10 +3,8 @@
 /*============================================================================*/
 #pragma once
 
-
 namespace System
 {
-
   static const i8 C_NO_BUFFERING = 0;
 
   // Opens for reading. If the file does not exist or cannot be found, the

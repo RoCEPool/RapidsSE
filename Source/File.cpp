@@ -3,10 +3,8 @@
 /*============================================================================*/
 
 #include "System.h"
+#include "AM.hpp"
 
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -229,8 +227,8 @@ void File::vClose(void)
     return;
   }
   
-  if (gpAttachMap) AM::pResourceTracker()->vDecFileOpen();
-  if (gpAttachMap &&
+  if (AM::bAttached()) AM::pResourceTracker()->vDecFileOpen();
+  if (AM::bAttached() &&
       (AM::pMarkResource()->bEnum(SR_FILE) ||
        AM::pMarkResource()->bAll()))
     AM::vNote(SR_FILE,"SysRes: File closed %s"_Stz,m_sFilePath.aStz());
@@ -413,8 +411,8 @@ bool File::bOpenMode(Stz* aFilePath, Stz* aOpenMode)
     return false;
   }
   
-  if (gpAttachMap) AM::pResourceTracker()->vIncFileOpen();
-  if (gpAttachMap &&
+  if (AM::bAttached()) AM::pResourceTracker()->vIncFileOpen();
+  if (AM::bAttached() &&
       (AM::pMarkResource()->bEnum(SR_FILE) ||
        AM::pMarkResource()->bAll()))
     AM::vNote(SR_FILE,"SysRes: File opened %s %s"_Stz,aFilePath,aOpenMode);
