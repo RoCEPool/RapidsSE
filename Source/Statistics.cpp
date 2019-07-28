@@ -2,10 +2,8 @@
 /* Statistics.cpp -- Statistics                                               */
 /*============================================================================*/
 
-#include "Measurement.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
+#include "Correctness.h"
+#include "AM.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -17,24 +15,6 @@ Statistics* Correctness::_pStatistics(void* aAddr)
   RASSERT_TYPE(pStatistics,CN_STATISTICS);
   
   return pStatistics;
-}
-
-/*----------------------------------------------------------------------------*/
-/* new operator                                                               */
-/*----------------------------------------------------------------------------*/
-void* Statistics::operator new(size_t)
-{
-  Statistics* pStatistics = (Statistics*)HeapMem::pAllocate(CN_STATISTICS);
-  
-  return pStatistics;
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete operator                                                            */
-/*----------------------------------------------------------------------------*/
-void Statistics::operator delete(void*)
-{
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -67,7 +47,7 @@ Statistics::~Statistics(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Statistics::vMemoryPortrait(s48K& sPortrait)
 {
-  Statistics* pStats = AM::pStatistics();
+  Statistics* pStats = StorageEngine::AM::pStatistics();
 
   s32 sCopyMag; MagLib::vByteMag(pStats->Memory.m_iCopyTotal,     sCopyMag);
   s32 sMoveMag; MagLib::vByteMag(pStats->Memory.m_iMoveTotal,     sMoveMag);

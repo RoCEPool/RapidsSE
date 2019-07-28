@@ -136,11 +136,8 @@ namespace Correctness
     Footer m_xFooter;
     
   public:
-    void* operator new(size_t);
-    void operator delete(void*);
-  
     Statistics(void);
-    ~Statistics() noexcept(false);
+   ~Statistics() noexcept(false);
   
     static void vMemoryPortrait(s48K& sPortrait);
 

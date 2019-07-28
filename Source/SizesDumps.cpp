@@ -973,7 +973,7 @@ eHT geWhichHeap[]
   /*125 */ HT_INVALID,           // CN_SPVCH
   /*126 */ HT_TRANSIENT_LARGE,   // CN_STACK
   /*127 */ HT_INVALID,           // CN_STEPACCUM
-  /*127 */ HT_TRANSIENT_SMALL,   // CN_STATISTICS
+  /*127 */ HT_INVALID,           // CN_STATISTICS
   /*128 */ HT_TRANSIENT_LARGE,   // CN_STEPTIMING
   /* 13 */ HT_INVALID,           // CN_STRING_T
   /*129 */ HT_INVALID,           // CN_SYSCALL
