@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* OperandQueue.cpp -- queue of buffers to be processed by an op               */
+/* OperandQueue.cpp -- queue of buffers to be processed by an op              */
 /*============================================================================*/
 
 #include "PushDown.h"
