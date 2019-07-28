@@ -3,10 +3,8 @@
 /*============================================================================*/
 
 #include "System.h"
+#include "AM.hpp"
 
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -96,7 +94,7 @@ Mutex::Mutex()
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (gpAttachMap) AM::pResourceTracker()->vIncMutexOpen();
+  if (AM::bAttached()) AM::pResourceTracker()->vIncMutexOpen();
   
 #ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Mutex.m_nInits++;
@@ -130,7 +128,7 @@ Mutex::~Mutex(void) noexcept(false)
   iResult = pthread_condattr_destroy(&m_xCondAttr);
   RASSERT(! iResult);
 
-  if (gpAttachMap) AM::pResourceTracker()->vDecMutexOpen();
+  if (AM::bAttached()) AM::pResourceTracker()->vDecMutexOpen();
     
 #ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.Mutex.m_nDestroys++;
