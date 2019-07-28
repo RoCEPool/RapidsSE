@@ -239,7 +239,7 @@ bool Job_SubWalker::bChunk(void)
     
     oTimer.vUpdate();
     vTrace("1st: Ahead %lld Time %lldms "
-           ": Lines %lld sum %lld (%lldns/f)\n"_Stz,
+           ": Alignment %lld sum %lld (%lldns/f)\n"_Stz,
            nAhead,oTimer.iMilliseconds(),
            C_LINES,iSum,oTimer.iNanoseconds()/C_LINES);
   }
@@ -290,7 +290,7 @@ bool Job_SubWalker::bChunk(void)
       
       oTimer.vUpdate();
       vTrace("1st: i_Dist %lld Ahead %lld Time %lldms "
-             ": Lines %lld sum %lld (%lldns/f)\n"_Stz,
+             ": Alignment %lld sum %lld (%lldns/f)\n"_Stz,
              i_Dist,nAhead,oTimer.iMilliseconds(),
              C_LINES,iSum,oTimer.iNanoseconds()/C_LINES);
     
@@ -308,7 +308,7 @@ bool Job_SubWalker::bChunk(void)
       
       oTimer.vUpdate();
       vTrace("2nd: i_Dist %lld Ahead %lld Time %lldms "
-             ": Lines %lld sum %lld (%lldns/f)\n"_Stz,
+             ": Alignment %lld sum %lld (%lldns/f)\n"_Stz,
              i_Dist,nAhead,oTimer.iMilliseconds(),
              C_LINES,iSum,oTimer.iNanoseconds()/C_LINES);
     }

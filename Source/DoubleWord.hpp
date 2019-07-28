@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Lines
+namespace Alignment
 {
   class DoubleWord : public Line
   {

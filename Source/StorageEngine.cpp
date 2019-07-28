@@ -19,7 +19,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   // third party??
   Correctness::vCheckAssumptions();
   Library::vCheckAssumptions();
-  Lines::vCheckAssumptions();
+  Alignment::vCheckAssumptions();
   System::vCheckAssumptions();
   Pool::vCheckAssumptions();
   Persistence::vCheckAssumptions();
