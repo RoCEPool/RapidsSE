@@ -41,6 +41,30 @@ namespace Pool
       return pPoolBuffer;
     }
   
+    /*----------------------------------------------------------------------------*/
+    /* get the buffer no of the pool buffer that the object is within             */
+    /*----------------------------------------------------------------------------*/
+    inline static bn nPoolBufferNo(Object* pObject)
+    {
+      PoolBuffer* pBuffer = pGetPoolBuffer(pObject);
+    
+      bn nBufferNo = pBuffer->nPoolBufferNo();
+    
+      return nBufferNo;
+    }
+  
+    /*----------------------------------------------------------------------------*/
+    /* get the buffer no of the pool buffer that the object is within             */
+    /*----------------------------------------------------------------------------*/
+    inline static i8 iPoolBufferNo(Object* pObject)
+    {
+      PoolBuffer* pBuffer = pGetPoolBuffer(pObject);
+    
+      bn nBufferNo = pBuffer->nPoolBufferNo();
+    
+      return *nBufferNo;
+    }
+  
   };
   
   PoolBuffer* _pPoolBuffer(void* aAddr);
