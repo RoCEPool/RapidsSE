@@ -389,7 +389,7 @@ void MemLib::vFreeBlock(void* aBlock, i8 nBytes)
 
   if (StorageEngine::AM::pMarkResource()->bEnum(SR_MALLOC) ||
       StorageEngine::AM::pMarkResource()->bAll())
-    ResLog::vNote(SR_MALLOC,"SysRes: Free'd %lld bytes"_Stz,nBytes);
+    AM::vNote(SR_MALLOC,"SysRes: Free'd %lld bytes"_Stz,nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -508,7 +508,7 @@ void* MemLib::aMallocBlock(i8 nBytes)
     StorageEngine::AM::pResourceTracker()->vAddMallocAmt(nBytes);
   if (StorageEngine::AM::pMarkResource()->bEnum(SR_MALLOC) ||
       StorageEngine::AM::pMarkResource()->bAll())
-    ResLog::vNote(SR_MALLOC,"SysRes: Malloc'd %lld bytes"_Stz,nBytes);
+    AM::vNote(SR_MALLOC,"SysRes: Malloc'd %lld bytes"_Stz,nBytes);
 
   return aBlock;
 }

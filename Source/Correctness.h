@@ -26,7 +26,6 @@ using namespace Correctness;
 #include "Debug.hpp"
 
 #include "ResourceEnums.h"
-#include "ResLog.hpp"
 #include "StrLib.hpp"
 #include "MemLib.hpp"
 #include "ErrorCodes.hpp"
