@@ -1,9 +1,8 @@
 /*============================================================================*/
-/* ForthValue.cpp --Base Class for Self-Describing Values                          */
+/* ForthValue.cpp --Base Class for Self-Describing Values                     */
 /*============================================================================*/
 
 #include "Forth.h"
-#include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */

@@ -1,9 +1,8 @@
 /*============================================================================*/
-/* FipVal.cpp - Forth Instruction Pointer ForthValue                               */
+/* FipVal.cpp - Forth Instruction Pointer ForthValue                          */
 /*============================================================================*/
 
 #include "Forth.h"
-#include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* FipVal.hpp - Forth Instruction Pointer ForthValue                               */
+/* FipVal.hpp - Forth Instruction Pointer ForthValue                          */
 /*============================================================================*/
 #pragma once
 
