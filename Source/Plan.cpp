@@ -2,10 +2,9 @@
 /* Plan.cpp - plan                                                            */
 /*============================================================================*/
 
-#include "StorageEngine.h"
 #include "Plans.h"
+#include "AM.hpp"
 
-extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */

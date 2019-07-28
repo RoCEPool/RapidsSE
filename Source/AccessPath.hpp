@@ -3,11 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-namespace Interface
-{
-  class Session;
-}
-
 namespace Plans
 {
   enum eAT // access technique
