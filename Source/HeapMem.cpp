@@ -3,9 +3,7 @@
 /*============================================================================*/
 
 #include "Pool.h"
-#include "StorageEngine.h"
-
-extern AttachMap*  gpAttachMap;
+#include "AM.hpp"
 
 extern i8  giClassSize[];
 extern eHT geWhichHeap[];
