@@ -3,10 +3,9 @@
 /*============================================================================*/
 
 #include "Commands.h"
+#include "AM.hpp"
 #include "StorageEngine.h"
 
-extern AttachMap*  gpAttachMap;
-extern Arguments   gxArguments;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -56,7 +55,7 @@ Tokeniser::Tokeniser(void)
   m_eToken  = TN_NONE;
   
   
-  if (! gxArguments.m_bDeveloper) {
+  if (! AM::bDeveloper()) {
     m_sPrompt.vSprint("se>"_Stz);
   }
   else {
