@@ -7,9 +7,8 @@
 #include "StorageEngine.h"
 
 #include "Arguments.hpp"
-
-extern AttachMap* gpAttachMap;
 extern Arguments  gxArguments;
+
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -848,7 +847,7 @@ void Parser::vReadLineStdin(void)
   
   if ( ! gxArguments.m_bSethScript ) {
     
-    if (! gxArguments.m_bDeveloper) {
+    if (! AM::bDeveloper()) {
       vInfo("%s "_Stz,m_sPrompt.aChar());
     }
     else {
