@@ -3,9 +3,8 @@
 /*============================================================================*/
 
 #include "Partitioning.h"
-#include "StorageEngine.h"
+#include "AM.hpp"
 
-extern AttachMap*  gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
@@ -39,7 +38,7 @@ void TablePtn::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 i8 TablePtn::iPartitionToNode(i8 iPartition)
 {
-  i8 iNode = iPartition % AM::pGrid()->nNodes();
+  i8 iNode = iPartition % AM::nNodes();
   
   return iNode;
 }
@@ -49,7 +48,7 @@ i8 TablePtn::iPartitionToNode(i8 iPartition)
 /*----------------------------------------------------------------------------*/
 i8 TablePtn::iPartitionToSlot(i8 iPartition)
 {
-  i8 iSlot = iPartition / AM::pGrid()->nNodes();
+  i8 iSlot = iPartition / AM::nNodes();
   
   return iSlot;
 }
@@ -60,7 +59,7 @@ i8 TablePtn::iPartitionToSlot(i8 iPartition)
 i8 TablePtn::iSlotToPartition(i8 iSlot)
 {
   i8 iPartition =
-   (iSlot * AM::pGrid()->nNodes()) + AM::pGrid()->iThisNode();
+   (iSlot * AM::nNodes()) + AM::iThisNodeNo();
   
   return iPartition;
 }
