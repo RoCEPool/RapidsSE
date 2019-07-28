@@ -116,6 +116,7 @@ namespace StorageEngine
                           i8   nMaxLoadErrors,
                           i8   nMaxReadyLP,
                           i8   nNodes,
+                          bool bProgress,
                           Stz* sRegionName,
                           i8   iRegionSize,
                           bool bSethScript,

@@ -210,6 +210,7 @@ void AttachMap::vRecordArguments(
                                  i8   nMaxLoadErrors,
                                  i8   nMaxReadyLP,
                                  i8   nNodes,
+                                 bool bProgress,
                                  Stz* aRegionName,
                                  i8   iRegionSize,
                                  bool bSethScript,
@@ -250,7 +251,8 @@ void AttachMap::vRecordArguments(
   Arg.m_nThreads         = nThreads;
   
   // these are args
-  m_bTracepoint           = bTracepoint;
+  m_bProgress            = bProgress;
+  m_bTracepoint          = bTracepoint;
   m_bVerbose             = bVerbose;
 
   
