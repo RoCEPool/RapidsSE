@@ -52,9 +52,6 @@ void Engine::vMainEntry(void)
 
   vOpenTraceFile();
   
-  if (gxArguments.m_bStart)
-    vSetGlobals();
-
   vCheckPort();
   
   //gpAttachMap->vPrintAttachMap();
@@ -748,22 +745,6 @@ bool Engine::bRunUtilities(int argc, Stz* argv[])
 void Engine::vSanityCheck(void)
 {
   gxArguments.vSanityCheck();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set globals                                                                */
-/*----------------------------------------------------------------------------*/
-void Engine::vSetGlobals(void)
-{
-  if (gxArguments.m_bVerbose)
-    vInfo("\n*\n* Set Globals From Arguments\n*\n"_Stz);
-  
-  // set globals from gxArguments
-  //gpAttachMap->m_bVerbose      = gxArguments.m_bVerbose;
-  //gpAttachMap->m_bTracepoint   = gxArguments.m_bTracepoint;
-  //gpAttachMap->m_bProgress     = gxArguments.m_bProgress;
-  //gpAttachMap->m_bMetadata     = gxArguments.m_bMetadata;
-  //gpAttachMap->m_nIndexEntries = gxArguments.m_nEntries;
 }
 
 /*----------------------------------------------------------------------------*/
