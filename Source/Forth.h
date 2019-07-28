@@ -21,7 +21,6 @@ namespace Forth
 
 using namespace Forth;
 
-typedef String_t<C_MAX_VCH> sVCH;
 
 //-----------------------------------------------------------------------------
 
