@@ -2,9 +2,10 @@
 /* Task_boot.cpp - parts of task which boot the system                        */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "Tasks.h"
+#include "AM.hpp"
+#include "Axioms.h"
 
-extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* add initial set of words in main dictionary                                */
