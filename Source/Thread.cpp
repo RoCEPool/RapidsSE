@@ -3,11 +3,9 @@
 /*============================================================================*/
 
 #include "Threads.h"
+#include "Scheduling.h"
+#include "AM.hpp"
 
-#include "StorageEngine.h"
-
-extern AttachMap*    gpAttachMap;
-extern Arguments     gxArguments;
 
 extern pthread_key_t giTLS_ThreadKey;
 
