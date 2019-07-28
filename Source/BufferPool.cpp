@@ -5,6 +5,7 @@
 #include "Pool.h"
 
 #include "StorageEngine.h"
+#include "AM.hpp"
 
 extern BufferPool* gpBufferPool;
 

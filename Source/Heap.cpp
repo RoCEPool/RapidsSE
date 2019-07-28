@@ -2,7 +2,6 @@
 /* Heap.cpp -- Heap Allocator                                                 */
 /*============================================================================*/
 
-#include "StorageEngine.h"
 #include "Pool.h"
 
 extern BufferPool* gpBufferPool;
@@ -11,7 +10,6 @@ extern i8  giClassSize[];
 extern eHT geWhichHeap[];
 
 extern BufferPool* gpBufferPool;
-
 
 
 /*----------------------------------------------------------------------------*/
