@@ -2,12 +2,10 @@
 /* Region.cpp -- Region                                                       */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "Pool.h"
+#include "AM.hpp"
 
-extern AttachMap* gpAttachMap;
 extern Header*    gaSeShmRegion;
-
-//extern void* C_ADDR_POOL;
 
 /*----------------------------------------------------------------------------*/
 /* attach to an existing shm region                                           */
@@ -39,12 +37,16 @@ bool Region::bAttach(s32& sRegionName, bool bVerbose, void* aRegionAddr)
   }
   
   // overlay attach map onto 2nd buffer (buffer #1)
-  gpAttachMap = pAdd<AttachMap*>((Object*)gaSeShmRegion,C_SIZE_POOL_BUFFER);
+  Header* aAttachMap =
+      pAdd<Header*>((Object*)gaSeShmRegion,C_SIZE_POOL_BUFFER);
+  
+  // temp set
+  AM::vAttachMap(aAttachMap);
   
   // get the actual size
   i8 iRegionSize = AM::iRegionSize();
-  gpAttachMap = nullptr;
-  
+  AM::vAttachMap(nullptr);
+
   // close the temporary mapping
   bResult = Shm::bClose(iFD,oSysCall);
   bResult = Shm::bUnmap(gaSeShmRegion,10_MB,oSysCall);

@@ -101,6 +101,7 @@ void AM::vTakenBytes(i8 nTakenBytes) {
 void AM::vTenants(ForthWord *pTenants) {
   gpAttachMap->m_pTenants = pTenants;
 }
+
 //
 bool AM::bAttached(void) {
   if (gpAttachMap)
