@@ -3,10 +3,7 @@
 /*============================================================================*/
 
 #include "Prompt.h"
-#include "StorageEngine.h"
-
-extern AttachMap*    gpAttachMap;
-extern BufferPool*   gpBufferPool;
+#include "AM.hpp"
 
 PromptCatalog gxPromptCatalog;
 
