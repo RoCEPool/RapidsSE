@@ -90,6 +90,7 @@ namespace StorageEngine
     //
     static bool bAttached(void);
     static void vDumpApi(void);
+    static void vPrintAttachMap(void);
     static void vWriteLog(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

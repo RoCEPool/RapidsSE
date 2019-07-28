@@ -118,6 +118,9 @@ bool AM::bAttached(void) {
 void AM::vDumpApi(void) {
   pApiState()->vDump();
 }
+void AM::vPrintAttachMap(void) {
+  gpAttachMap->vPrintAttachMap();
+}
 void AM::vWriteLog(void) {
   Log::vWriteCsv(false);
 }

@@ -3,9 +3,7 @@
 /*============================================================================*/
 
 #include "Prompt.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
+#include "AM.hpp"
 
 PromptNote mPromptNote_attachMap (
   PF_ATTACHMAP,           // prompt function
@@ -26,8 +24,8 @@ PromptNote mPromptNote_attachMap (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_attachMap(SePrompt* pPrompt)
 {
-  if (gpAttachMap)
-    gpAttachMap->vPrintAttachMap();
+  if (AM::bAttached())
+    AM::vPrintAttachMap();
   
   return true;
 }

@@ -3,9 +3,8 @@
 /*============================================================================*/
 
 #include "Prompt.h"
-#include "StorageEngine.h"
+#include "AM.hpp"
 
-extern AttachMap* gpAttachMap;
 
 PromptNote mPromptNote_apiState (
   PF_APISTATE,            // prompt function

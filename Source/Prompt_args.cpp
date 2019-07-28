@@ -3,7 +3,9 @@
 /*============================================================================*/
 
 #include "Prompt.h"
+
 #include "StorageEngine.h"
+extern Arguments gxArguments;
 
 PromptNote mPromptNote_args (
   PF_ARGS,           // prompt function
@@ -19,7 +21,6 @@ PromptNote mPromptNote_args (
   ""_Stz             // description
 );
 
-extern Arguments gxArguments;
 
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
