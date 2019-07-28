@@ -5,8 +5,6 @@
 #include "Interface.h"
 #include "StorageEngine.h"
 
-extern AttachMap* gpAttachMap;
-
 struct ReqTable {
   Stz* aCommand;
   bool (Session::*aFunc)(TokenVec& xTokenVec, i8 iReqNo);

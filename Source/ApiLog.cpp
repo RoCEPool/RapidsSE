@@ -2,10 +2,9 @@
 /* ApiLog.hpp -- Api log helper                                               */
 /*============================================================================*/
 
-#include "Jobs.h"
-#include "StorageEngine.h"
+#include "Interface.h"
+#include "AM.hpp"
 
-extern AttachMap* gpAttachMap;
 extern Log* gpLog;
 
 /*----------------------------------------------------------------------------*/

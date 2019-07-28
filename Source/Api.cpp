@@ -3,10 +3,9 @@
 /*============================================================================*/
 
 #include "Interface.h"
-#include "StorageEngine.h"
+#include "AM.hpp"
 
 extern BufferPool*  gpBufferPool;
-extern AttachMap*   gpAttachMap;
 extern Log* gpLog;
 
 
@@ -137,7 +136,7 @@ Job* Api::pExecuteCommand(Session* pSession, Stz* sCommand,
 /*----------------------------------------------------------------------------*/
 void Api::vIncStatistics(eAC eApiCall)
 {
-  if (! gpAttachMap)
+  if (! AM::bAttached())
     return;
   
   Statistics* pStats = AM::pStatistics();
