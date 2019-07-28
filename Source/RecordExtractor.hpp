@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RecordExtractor.hpp -- Record RowExtractor                                    */
+/* RecordExtractor.hpp -- Record RowExtractor                                 */
 /*============================================================================*/
 #pragma once
 

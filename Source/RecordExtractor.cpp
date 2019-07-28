@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RecordExtractor.cpp -- Record RowExtractor                                */
+/* RecordExtractor.cpp -- Record Extractor                                    */
 /*============================================================================*/
 
 #include "Chunks.h"
