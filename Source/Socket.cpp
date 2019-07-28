@@ -3,9 +3,7 @@
 /*============================================================================*/
 
 #include "System.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
+#include "AM.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -263,7 +261,7 @@ bool Socket::bAcceptClient(int& iSocketId, SysCall& SysCall)
     return false;
   }
   
-  if (gpAttachMap) AM::pResourceTracker()->vIncSocketOpen();
+  if (AM::bAttached()) AM::pResourceTracker()->vIncSocketOpen();
   if (AM::pMarkResource()->bEnum(SR_SOCKET) ||
       AM::pMarkResource()->bAll())
     AM::vNote(SR_SOCKET,"SysRes: Socket accepted cient"_Stz);
@@ -300,7 +298,7 @@ bool Socket::bClose(SysCall& SysCall)
   
   m_iSocketId = -1;
   
-  if (gpAttachMap) AM::pResourceTracker()->vDecSocketOpen();
+  if (AM::bAttached()) AM::pResourceTracker()->vDecSocketOpen();
   if (AM::pMarkResource()->bEnum(SR_SOCKET) ||
       AM::pMarkResource()->bAll())
     AM::vNote(SR_SOCKET,"SysRes: Socket closed"_Stz);
@@ -369,7 +367,7 @@ bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
     return false;
   }
   
-  if (gpAttachMap) AM::pResourceTracker()->vIncSocketOpen();
+  if (AM::bAttached()) AM::pResourceTracker()->vIncSocketOpen();
   if (AM::pMarkResource()->bEnum(SR_SOCKET) ||
       AM::pMarkResource()->bAll())
     AM::vNote(SR_SOCKET,"SysRes: Socket connected to server %s %d"_Stz,
@@ -434,7 +432,7 @@ bool Socket::bCreateServer(int iPort, SysCall& SysCall)
     return false;
   }
   
-  if (gpAttachMap) AM::pResourceTracker()->vIncSocketOpen();
+  if (AM::bAttached()) AM::pResourceTracker()->vIncSocketOpen();
   if (AM::pMarkResource()->bEnum(SR_SOCKET) ||
       AM::pMarkResource()->bAll())
     AM::vNote(SR_SOCKET,"SysRes: Socket created listening socket : %d"_Stz,

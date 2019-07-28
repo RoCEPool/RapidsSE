@@ -9,8 +9,6 @@ extern BufferPool* gpBufferPool;
 extern i8  giClassSize[];
 extern eHT geWhichHeap[];
 
-extern BufferPool* gpBufferPool;
-
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
