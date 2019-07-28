@@ -30,7 +30,7 @@ namespace PushDown      {                                                     }
 namespace Rows          { class IndexTree; class CrwBuffer;                   }
 namespace ScanSprint    {                                                     }
 namespace Scheduling    { class Queues; class Scheduler;                      }
-namespace Steps         {                                                     }
+namespace Steps         { class Step;                                         }
 namespace StorageEngine { class AM; class Engine;                             }
 namespace Structures    {                                                     }
 namespace System        {                                                     }

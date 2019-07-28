@@ -3,12 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-// forward declarations
-namespace Tasks { class Task; }
-namespace Steps { class Step; }
-
-//------------------------------------------------------------------------------
-
 namespace Forth
 {
   static const i8 C_WSP_STACK = C_SIZE_LARGE_OBJECT - C_1KB;
@@ -19,8 +13,6 @@ namespace Forth
   friend class Tasks::Task;
   friend class Steps::Step;
 
-  private:
-  
   private:
     ForthValue* m_aTop;    // current top of stack
     i8     m_nValues; // number of values currently on stack
