@@ -40,6 +40,8 @@ namespace Transactions  { class Tx; class TxSet;                              }
 namespace Transform     {                                                     }
 namespace Utilities     {                                                     }
 
+// for use of AM
+using namespace StorageEngine;
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -47,7 +47,7 @@ Statistics::~Statistics(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Statistics::vMemoryPortrait(s48K& sPortrait)
 {
-  Statistics* pStats = StorageEngine::AM::pStatistics();
+  Statistics* pStats = AM::pStatistics();
 
   s32 sCopyMag; MagLib::vByteMag(pStats->Memory.m_iCopyTotal,     sCopyMag);
   s32 sMoveMag; MagLib::vByteMag(pStats->Memory.m_iMoveTotal,     sMoveMag);

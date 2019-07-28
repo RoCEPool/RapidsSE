@@ -2,10 +2,10 @@
 /* ResLog.cpp -- Resource log helper                                          */
 /*============================================================================*/
 
-#include "System.h"
+#include "Correctness.h"
 #include "StorageEngine.h"
+#include "AM.hpp"
 
-extern AttachMap* gpAttachMap;
 extern Log* gpLog;
 
 /*----------------------------------------------------------------------------*/
