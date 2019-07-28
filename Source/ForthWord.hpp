@@ -3,11 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-namespace StorageEngine
-{
-  class AttachMap;
-}
-
 namespace Forth
 {
   enum eWT // word type
