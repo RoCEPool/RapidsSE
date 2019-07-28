@@ -6,9 +6,6 @@
 
 #include "StorageEngine.h"
 
-#include "Arguments.hpp"
-extern Arguments  gxArguments;
-
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -841,11 +838,11 @@ void Parser::vReadLineStdin(void)
   if (AM::bTracepoint())
     Pthread::vSleepMsec(300,CN_PARSER);
   
-  bool bHasStarted = AM::pGrid()->m_bHasStarted;
+  bool bHasStarted = AM::bHasStarted();
 
   bool bLowMem = gpBufferPool->bLowMemory();
   
-  if ( ! gxArguments.m_bSethScript ) {
+  if (! AM::bSethScript()) {
     
     if (! AM::bDeveloper()) {
       vInfo("%s "_Stz,m_sPrompt.aChar());

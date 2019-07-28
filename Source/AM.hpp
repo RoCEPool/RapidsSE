@@ -39,6 +39,7 @@ namespace StorageEngine
     static Chunks::Formatters* pFormatters(void);
     static Forth::ForthWord* pForthWord(void);
     static Grids::Grid* pGrid(void);
+    static bool bHasStarted(void);
     static Pool::HeapMem* pHeapMem(void);
     static i8   nIndexEntries(void);
     static Library::LockTracker* pLockTracker(void);
