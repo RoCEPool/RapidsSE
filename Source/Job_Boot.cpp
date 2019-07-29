@@ -2,12 +2,7 @@
 /* Job_Boot.cpp -- System Boot Job                                            */
 /*============================================================================*/
 
-// Job Short: Boot
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Boot =
 {

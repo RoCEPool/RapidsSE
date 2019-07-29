@@ -2,12 +2,7 @@
 /* Job_SubInserter.cpp -- SubInserter Job                                     */
 /*============================================================================*/
 
-// Job Short: SubInserter
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_SubInserter =
 {

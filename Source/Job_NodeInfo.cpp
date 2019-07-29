@@ -2,12 +2,8 @@
 /* Job_NodeInfo.cpp -- Node Information Job                                   */
 /*============================================================================*/
 
-// Job Short: Lf
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
+#include "AM.hpp"
 
 JobClass xJobClass_NodeInfo =
 {
@@ -112,7 +108,7 @@ Job_NodeInfo::Job_NodeInfo(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_NODEINFO,_FOOTER_);
   
-  m_sNodeName = AM::pGrid()->pThisNode()->aNodeName();
+  m_sNodeName = AM::szNodeName();
   
   _checkInitialised_(CN_JOB_NODEINFO);
   

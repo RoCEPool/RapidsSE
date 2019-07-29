@@ -2,12 +2,7 @@
 /* Job_SubLoader.cpp -- Table SubLoader Job                                   */
 /*============================================================================*/
 
-// Job Short: SubLoader
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_SubLoader =
 {

@@ -2,12 +2,7 @@
 /* Job_SubIndexJoin.cpp -- Sub Index Join Job                                 */
 /*============================================================================*/
 
-// Job Short: SubIndexJoin
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_SubIndexJoin =
 {

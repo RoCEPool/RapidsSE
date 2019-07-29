@@ -2,12 +2,7 @@
 /* Job_SubInflate.cpp -- Sub Inflate Job                                      */
 /*============================================================================*/
 
-// Job Short: SubInflate
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_SubInflate =
 {

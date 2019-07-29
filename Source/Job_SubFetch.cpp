@@ -2,12 +2,7 @@
 /* Job_SubFetch.cpp -- Sub Fetch Job                                          */
 /*============================================================================*/
 
-// Job Short: SubFetch
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_SubFetch =
 {

@@ -2,12 +2,7 @@
 /* Job_SubIngester.cpp -- Table SubIngester Job                               */
 /*============================================================================*/
 
-// Job Short: SubIngester
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_SubIngester =
 {
