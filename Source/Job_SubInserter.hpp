@@ -5,7 +5,7 @@
 
 namespace Jobs
 {
-  class Job_InsertTable;
+  class Job_InsertTable; 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_SubInserter : public Job,

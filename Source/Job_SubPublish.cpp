@@ -2,12 +2,8 @@
 /* Job_SubPublish.cpp -- Sub-Publish Job                                      */
 /*============================================================================*/
 
-// Job Short: SubPublish
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
+#include "AM.hpp"
 
 JobClass xJobClass_SubPublish =
 {

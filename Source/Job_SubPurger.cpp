@@ -2,12 +2,8 @@
 /* Job_SubPurger.cpp -- Sub Purge Job                                          */
 /*============================================================================*/
 
-// Job Short: SubPurge
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
+#include "AM.hpp"
 
 JobClass xJobClass_SubPurger =
 {

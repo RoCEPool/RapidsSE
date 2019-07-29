@@ -1,8 +1,10 @@
 /*============================================================================*/
-/* Job_SubLoader.cpp -- Table SubLoader Job                                   */
+/* Job_SubLoader.cpp -- Table SubLoader Job                                    */
 /*============================================================================*/
 
 #include "Jobs.h"
+#include "AM.hpp"
+#include "Session.hpp"
 
 JobClass xJobClass_SubLoader =
 {
@@ -269,7 +271,7 @@ void Job_SubLoader::vEnd(void)
   // handle any dangling buffers
   vHandleDanglingBuffers();
   
-  i8 i_Node = AM::pGrid()->m_iThisNode;
+  i8 i_Node = AM::iThisNodeNo();
   
   // add invalid rows into parent load table job
   i8 iRowsInvalid = *m_xResponse.m_ixRowsInvalid;
