@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Interface
+namespace Sessions
 {
   class SessionState : public Object
   {

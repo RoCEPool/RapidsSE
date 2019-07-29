@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-SessionState* Interface::_pSessionState(void* aAddr)
+SessionState* Sessions::_pSessionState(void* aAddr)
 {
   SessionState* pSessionState = reinterpret_cast<SessionState*>(aAddr);
   

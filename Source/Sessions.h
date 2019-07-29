@@ -18,6 +18,7 @@ using namespace Sessions;
 
 #include "eAC.h"
 #include "Session.hpp"
+#include "SessionState.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

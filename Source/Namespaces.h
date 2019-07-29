@@ -13,7 +13,7 @@ namespace Debugging     {                                                     }
 namespace Forth         { class Cell; class Dic; class ForthWord;             }
 namespace Grids         { class Grid; class Node;                             }
 namespace Indexes       { class IndexTree;                                    }
-namespace Interface     { class ApiState; class RecordBuffer; class SessionState;  }
+namespace Interface     { class ApiState; class RecordBuffer;                 }
 namespace Jobs          { class Job; class JobList;
                                      class Job_CreateTable;
                                      class Job_CreateIndex;                   }
@@ -30,6 +30,7 @@ namespace PushDown      {                                                     }
 namespace Rows          { class CrwBuffer;                                    }
 namespace ScanSprint    {                                                     }
 namespace Scheduling    { class Queues; class Scheduler;                      }
+namespace Sessions      { class SessionState;                                 }
 namespace Steps         { class Step;                                         }
 namespace StorageEngine { class AM; class Engine;                             }
 namespace Structures    {                                                     }
@@ -67,6 +68,7 @@ using namespace PushDown;
 using namespace Rows;
 using namespace ScanSprint;
 using namespace Scheduling;
+using namespace Sessions;
 using namespace Steps;
 using namespace StorageEngine;
 using namespace Structures;
