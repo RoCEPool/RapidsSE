@@ -2,12 +2,8 @@
 /* JobWriteBehind.cpp -- Write Behind part of a Job (Ingest/Insert/Load)     */
 /*============================================================================*/
 
-// Job Short: WriteBehind
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
+#include "AM.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -47,7 +43,7 @@ JobWriteBehind::JobWriteBehind(eDS eDataSource)
 JobWriteBehind::~JobWriteBehind(void) noexcept(false)
 {
   // Assert we don't have any dangling buffers
-  for (i8 i_Ptn = 0; i_Ptn < AM::pGrid()->m_nPartitions; i_Ptn++) {
+  for (i8 i_Ptn = 0; i_Ptn < AM::nPartitions(); i_Ptn++) {
     RASSERT( ! m_pCrwBuffer[i_Ptn] );
   }
 }
@@ -65,7 +61,7 @@ JobWriteBehind::~JobWriteBehind(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void JobWriteBehind::vHandleDanglingBuffers(void)
 {
-  for (i8 i_Ptn = 0; i_Ptn < AM::pGrid()->m_nPartitions; i_Ptn++) {
+  for (i8 i_Ptn = 0; i_Ptn < AM::nPartitions(); i_Ptn++) {
 
     if ( ! m_pCrwBuffer[i_Ptn] )
       vNewCrwBuffer(i_Ptn);
