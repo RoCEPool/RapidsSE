@@ -5,11 +5,6 @@
 
 namespace Forth
 {
-  class Cell;
-}
-
-namespace Forth
-{
   class FipVal : public ForthValue
   {
   private:

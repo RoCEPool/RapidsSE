@@ -315,6 +315,7 @@ pFINALIZE *gpFinalize[]
   /*137 */ &Finalize::vUndefined,         // CN_THREAD
   /*    */ &Finalize::vUndefined,         // CN_THREADQUEUE
   /*    */ &Finalize::vUndefined,         // CN_THREADVEC
+  /*142 */ &Finalize::vUndefined,         // CN_TIMEMARKER
   /*142 */ &Finalize::vUndefined,         // CN_TIMER
   /*143 */ &Finalize::vUndefined,         // CN_TOKEN
   /*144 */ &Finalize::vUndefined,         // CN_TOKENISER
