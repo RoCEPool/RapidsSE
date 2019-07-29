@@ -3,9 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-#include "Jobs.h"
+#include "Sessions.h"
 
-namespace Jobs
+namespace Sessions
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Session : public Object
@@ -14,13 +14,13 @@ namespace Jobs
     i8       m_iPid;             // process which created this session
     i8       m_iPartition;       // which partition this session connects to
     DicStack m_oDicStack;        // dictionary stack
-    Job*     m_pJob;             // job session currently executing
     s48K     m_sResponse;        // response
-    Tx*      m_pTx;              // current transaction
     bool     m_bSessionExiting;  // is session exiting ?
     Stack*   m_pJobStack;        // stack of jobs
     Command* m_pCommand;         // command processor
 
+    Tx*         m_pTx;           // current transaction
+    Jobs::Job*  m_pJob;          // job session currently executing
     Interface::SessionState*     m_pSessionState;   // session state
 
     // must be last

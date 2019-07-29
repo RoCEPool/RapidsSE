@@ -18,7 +18,7 @@ struct ReqTable {
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Session* Jobs::_pSession(void* aAddr)
+Session* Sessions::_pSession(void* aAddr)
 {
   Session* pSession = reinterpret_cast<Session*>(aAddr);
   
@@ -35,7 +35,7 @@ Session* Jobs::_pSession(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Session* Jobs::_pSession(i8 iAddr)
+Session* Sessions::_pSession(i8 iAddr)
 {
   Session* pSession = reinterpret_cast<Session*>(iAddr);
   
