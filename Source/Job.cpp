@@ -3,9 +3,8 @@
 /*============================================================================*/
 
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern Log* gpLog;
+#include "AM.hpp"
+#include "Interface.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -358,7 +357,7 @@ void Job::vMarkJob(Stz* szFormat, ...)
   _precondition_(_ADDRESS_,_MAGIC_);
 
 #ifdef WITH_SHARED_LOG
-  if ( ! gpLog )
+  if (! AM::bLogging())
     return;
   
   va_list xArgs;
