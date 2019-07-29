@@ -46,6 +46,8 @@
   #include "mach/thread_act.h"
   #include <libkern/OSAtomic.h>
   #include "mach/vm_map.h"
+  #include <mach/mach_time.h>
+  #include <mach/thread_policy.h>
 #endif
 
 #include <netinet/in.h>

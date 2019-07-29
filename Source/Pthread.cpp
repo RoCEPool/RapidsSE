@@ -5,11 +5,6 @@
 #include "System.h"
 #include "AM.hpp"
 
-#ifdef WITH_APPLE
-  #include <mach/mach_time.h>
-  #include <mach/thread_policy.h>
-#endif
-
 extern pthread_key_t giTLS_ThreadKey;
 
 /*----------------------------------------------------------------------------*/
