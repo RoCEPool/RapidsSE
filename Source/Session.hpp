@@ -19,9 +19,9 @@ namespace Sessions
     Stack*   m_pJobStack;        // stack of jobs
     Command* m_pCommand;         // command processor
 
-    Tx*         m_pTx;           // current transaction
-    Jobs::Job*  m_pJob;          // job session currently executing
-    Interface::SessionState*     m_pSessionState;   // session state
+    Jobs::Job*                m_pJob;          // job session currently executing
+    Transactions::Tx*         m_pTx;           // current transaction
+    Interface::SessionState*  m_pSessionState; // session state
 
     // must be last
     Footer m_xFooter;
@@ -46,8 +46,8 @@ namespace Sessions
     void      vReport(void);
     
     i8        iSlot(void);
-    Tx*       pTx(void);
-    void      vTx(Tx* pTx);
+    Transactions::Tx*       pTx(void);
+    void      vTx(Transactions::Tx* pTx);
   
     Footer* aFooter(void);
   };
