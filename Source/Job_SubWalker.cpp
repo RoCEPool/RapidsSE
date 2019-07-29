@@ -2,8 +2,6 @@
 /* Job_SubWalker.cpp -- Sub Walker Job                                        */
 /*============================================================================*/
 
-// Job Short: SubWalker
-
 #include "Jobs.h"
 #include "StorageEngine.h"
 

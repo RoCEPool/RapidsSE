@@ -2,12 +2,7 @@
 /* Job_SubScan.cpp -- Sub Fetch Job                                          */
 /*============================================================================*/
 
-// Job Short: SubScan
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_SubScan =
 {

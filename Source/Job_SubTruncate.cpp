@@ -2,12 +2,7 @@
 /* Job_SubTruncate.cpp -- Sub Truncate Job                                    */
 /*============================================================================*/
 
-// Job Short: SubTruncate
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_SubTruncate =
 {
