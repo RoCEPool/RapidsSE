@@ -2,7 +2,7 @@
 /* Tick.cpp -- Tick reader (Hardward Clock or Time Stamp Counter              */
 /*============================================================================*/
 
-#include "System.h"
+#include "Base.h"
 
 #include "Asm.h"
 
@@ -71,7 +71,7 @@ i8 Tick::iRdTscp(void)
   
 #ifdef WITH_APPLE
   
-  i8 iTscp = iRdtscp();
+  i8 iTscp = Assembler::iRdtscp();
   return iTscp;
   
 #else

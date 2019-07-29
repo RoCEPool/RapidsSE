@@ -28,6 +28,7 @@ using namespace Base;
 #include "i3.hpp"
 #include "Null.hpp"
 #include "Structs.h"
+#include "Tick.hpp"
 #include "UsefulConstants.h"
 #include "WordAsBytes.h"
 
