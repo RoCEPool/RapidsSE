@@ -5,8 +5,6 @@
 
 namespace Forth
 {
-  class ForthWord;
-  
   class Dic : public Object
   {
   private:
