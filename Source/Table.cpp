@@ -3,8 +3,10 @@
 /*============================================================================*/
 
 #include "MetaData.h"
-#include "StorageEngine.h"
 #include "AM.hpp"
+
+#include "Jobs.h"
+#include "Partitioning.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -179,7 +181,7 @@ void Table::vAddIndex(Index* pIndex)
   m_pIdxVec->vAdd(pIndex);
   
   // create an IndexTree for the index in each partition
-  for (i8 iPartition = 0; iPartition < AM::pGrid()->m_nSlotsPerNode; iPartition++) {
+  for (i8 iPartition = 0; iPartition < AM::nSlotsPerNode(); iPartition++) {
     TablePtn* pPartition = this->pPartition(iPartition);
     pPartition->vAddIndex(new IndexTree(pIndex, iPartition));
   }
@@ -196,7 +198,7 @@ Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed, i8 &nRows)
   i8 nBuffersTotal = 0;
   s48K sAnalysis;
   
-  for (i8 iSlot = 0; iSlot < AM::pGrid()->m_nSlotsPerNode; iSlot++) {
+  for (i8 iSlot = 0; iSlot < AM::nSlotsPerNode(); iSlot++) {
     
     i8 iPartition = TablePtn::iSlotToPartition(iSlot);
     
@@ -213,7 +215,7 @@ Stz* Table::pAnalyzeIndex(Index* pIndex, bool bDetailed, i8 &nRows)
     
     if ( ! bDetailed ) {
       sAnalysis.vCatSprint("row: ('%s',%lld,%lld,%lld)\n"_Stz,
-                           AM::pGrid()->pThisNode()->aNodeName(),
+                           AM::szNodeName(),
                            iPartition,
                            nBuffers,
                            nEntries);
@@ -246,7 +248,7 @@ Stz* Table::pAnalyzeTable(bool bDetailed, i8 &nRows)
   i8 nBuffersTotal = 0;
   s48K sAnalysis;
   
-  for (i8 iSlot = 0; iSlot < AM::pGrid()->m_nSlotsPerNode; iSlot++) {
+  for (i8 iSlot = 0; iSlot < AM::nSlotsPerNode(); iSlot++) {
     
     i8 iPartition = TablePtn::iSlotToPartition(iSlot);
     
@@ -265,7 +267,7 @@ Stz* Table::pAnalyzeTable(bool bDetailed, i8 &nRows)
     
     if ( ! bDetailed ) {
       sAnalysis.vCatSprint("row: ('%s',%lld,%lld,%lld)\n"_Stz,
-                           AM::pGrid()->pThisNode()->aNodeName(),
+                           AM::szNodeName(),
                            iPartition,
                            nBuffers,
                            nRows);
@@ -294,7 +296,7 @@ void Table::vCompactIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  for (i8 iSlot = 0; iSlot < AM::pGrid()->m_nSlotsPerNode; iSlot++) {
+  for (i8 iSlot = 0; iSlot < AM::nSlotsPerNode(); iSlot++) {
     
     i8 iPartition = TablePtn::iSlotToPartition(iSlot);
     
@@ -345,7 +347,7 @@ void Table::vInsertEntries(i8 iTxId, i8 iSlot, CrwBuffer* pCrwBuffer)
   // This function is invoked when we insert rows into a table via a
   // begin/insert/end and via the API's insert-select
 
-  ASSERT(iSlot < AM::pGrid()->m_nSlotsPerNode);
+  ASSERT(iSlot < AM::nSlotsPerNode());
 
   // if buffer has 0 entries (only head) then should be last buffer
   if (pCrwBuffer->nRowCount() == 0) {
@@ -581,7 +583,7 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
   
   i8 iBuffers = 0;
   
-  for (i8 iPartition = 0; iPartition < AM::pGrid()->m_nSlotsPerNode; iPartition++) {
+  for (i8 iPartition = 0; iPartition < AM::nSlotsPerNode(); iPartition++) {
     IndexTree* pIndexTree = pPartition(iPartition)->pIndexTree(iIndexNo);
 
     iBuffers += pIndexTree->nEntBuffers();
@@ -665,9 +667,7 @@ i8 Table::iRowPartition(i8 iHash)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   // modulo to get partition number
-  i8 iPartition =
-  iHash
-  % (AM::pGrid()->m_nSlotsPerNode * AM::pGrid()->nNodes());
+  i8 iPartition = iHash % (AM::nSlotsPerNode() * AM::nNodes());
   
   return iPartition;  
 }
@@ -716,7 +716,7 @@ i8 Table::nCrwBuffers(void)
   
   i8 iBuffers = 0;
   
-  for (i8 iPartition = 0; iPartition < AM::pGrid()->m_nSlotsPerNode; iPartition++) {
+  for (i8 iPartition = 0; iPartition < AM::nSlotsPerNode(); iPartition++) {
     iBuffers += pPartition(iPartition)->nCrwBuffers();
   }
   
@@ -858,7 +858,7 @@ bool Table::bVerifyIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  for (i8 iSlot = 0; iSlot < AM::pGrid()->m_nSlotsPerNode; iSlot++) {
+  for (i8 iSlot = 0; iSlot < AM::nSlotsPerNode(); iSlot++) {
     
     bool bVerify = true;
     
@@ -882,7 +882,7 @@ bool Table::bVerifyTable(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   // verify all the row buffers with the r ow data
-  for (i8 iSlot = 0; iSlot < AM::pGrid()->m_nSlotsPerNode; iSlot++) {
+  for (i8 iSlot = 0; iSlot < AM::nSlotsPerNode(); iSlot++) {
     
     bool bVerify = true;
     

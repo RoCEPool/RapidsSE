@@ -17,6 +17,7 @@ using namespace PushDown;
 #include "CancelMarker.hpp"
 #include "EarlyMarker.hpp"
 #include "EndMarker.hpp"
+#include "PauseMarker.hpp"
 #include "OperandQueue.hpp"
 
 #include "Op.hpp"
