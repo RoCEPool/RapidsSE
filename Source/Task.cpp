@@ -57,7 +57,7 @@ void Task::operator delete(void* pTaskAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Task::Task(Job* pJob, Interface::Session* pSession)
+Task::Task(Job* pJob, Session* pSession)
 : Object(CN_TASK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
@@ -88,7 +88,7 @@ Task::Task(Job* pJob, Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Task::Task(Op* pOp, Interface::Session* pSession)
+Task::Task(Op* pOp, Session* pSession)
 : Object(CN_TASK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
@@ -759,7 +759,7 @@ Grids::Node* Task::pSendNode(void)
 /*----------------------------------------------------------------------------*/
 /* get session                                                                */
 /*----------------------------------------------------------------------------*/
-Interface::Session* Task::pSession(void)
+Session* Task::pSession(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -769,7 +769,7 @@ Interface::Session* Task::pSession(void)
 /*----------------------------------------------------------------------------*/
 /* set session                                                                */
 /*----------------------------------------------------------------------------*/
-void Task::vSession(Interface::Session* pSession)
+void Task::vSession(Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   

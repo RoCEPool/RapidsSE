@@ -10,13 +10,13 @@ namespace Jobs
   public:
     DicPath m_oDicPath; // dictionary path
   
-    Interface::Session* m_pSession;
+    Session* m_pSession;
   
   public:
     void* operator new(size_t);
   
     JobDicPath(void);
-    JobDicPath(Interface::Session* pSession);
+    JobDicPath(Session* pSession);
    ~JobDicPath(void) noexcept(false);
   };
 }

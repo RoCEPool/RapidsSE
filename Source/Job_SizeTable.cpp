@@ -107,7 +107,7 @@ void Job_SizeTable::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SizeTable::Job_SizeTable(Interface::Session* pSession)
+Job_SizeTable::Job_SizeTable(Session* pSession)
 : Job(CN_JOB_SIZETABLE, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SIZETABLE,_FOOTER_);
@@ -197,7 +197,7 @@ Footer* Job_SizeTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SizeTable_pre(Interface::Session* pSession)
+Job* Jobs::pJob_SizeTable_pre(Session* pSession)
 {
   Job_SizeTable* pJob_SizeTable = new Job_SizeTable(pSession);
   
@@ -215,7 +215,7 @@ Job* Jobs::pJob_SizeTable_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_SizeTable_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_SizeTable_delete(Session* pSession, Job* pJob)
 {
   Job_SizeTable* pJob_SizeTable = _pJob_SizeTable(pJob);
   

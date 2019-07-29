@@ -102,7 +102,7 @@ void Job_SubIndexJoin::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SubIndexJoin::Job_SubIndexJoin(Interface::Session* pSession)
+Job_SubIndexJoin::Job_SubIndexJoin(Session* pSession)
 : Job(CN_JOB_SUBINDEXJOIN, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINDEXJOIN,_FOOTER_);
@@ -170,7 +170,7 @@ Footer* Job_SubIndexJoin::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubIndexJoin_pre(Interface::Session* pSession)
+Job* Jobs::pJob_SubIndexJoin_pre(Session* pSession)
 {
   Job_SubIndexJoin* pJob_SubIndexJoin = new Job_SubIndexJoin(pSession);
   
@@ -180,7 +180,7 @@ Job* Jobs::pJob_SubIndexJoin_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_SubIndexJoin_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_SubIndexJoin_delete(Session* pSession, Job* pJob)
 {
   Job_SubIndexJoin* pJob_SubIndexJoin = _pJob_SubIndexJoin(pJob);
   

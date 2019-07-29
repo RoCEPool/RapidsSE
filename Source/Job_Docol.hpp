@@ -18,7 +18,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Docol(Interface::Session* pSession);
+    Job_Docol(Session* pSession);
     ~Job_Docol(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -35,8 +35,8 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Docol* _pJob_Docol(void* aAddr);
   
-  Job* pJob_Docol_pre(Interface::Session* pSession);
-  void vJob_Docol_delete(Interface::Session* pSession, Job* pJob);
+  Job* pJob_Docol_pre(Session* pSession);
+  void vJob_Docol_delete(Session* pSession, Job* pJob);
   void vJob_Docol_show(Job* pJob);
   
   JobClass* pJob_Docol_class(pFUN** aaFun);

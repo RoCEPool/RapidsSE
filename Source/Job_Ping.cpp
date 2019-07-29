@@ -107,7 +107,7 @@ void Job_Ping::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Ping::Job_Ping(Interface::Session* pSession)
+Job_Ping::Job_Ping(Session* pSession)
 : Job(CN_JOB_PING, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PING,_FOOTER_);
@@ -197,7 +197,7 @@ Footer* Job_Ping::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Ping_pre(Interface::Session* pSession)
+Job* Jobs::pJob_Ping_pre(Session* pSession)
 {
   Job_Ping* pJob_Ping = new Job_Ping(pSession);
   
@@ -215,7 +215,7 @@ Job* Jobs::pJob_Ping_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Ping_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Ping_delete(Session* pSession, Job* pJob)
 {
   Job_Ping* pJob_Ping = _pJob_Ping(pJob);
   

@@ -107,7 +107,7 @@ void Job_UseSchema::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_UseSchema::Job_UseSchema(Interface::Session* pSession)
+Job_UseSchema::Job_UseSchema(Session* pSession)
 : Job(CN_JOB_USESCHEMA, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_USESCHEMA,_FOOTER_);
@@ -203,7 +203,7 @@ Footer* Job_UseSchema::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_UseSchema_pre(Interface::Session* pSession)
+Job* Jobs::pJob_UseSchema_pre(Session* pSession)
 {
   Job_UseSchema* pJob_UseSchema = new Job_UseSchema(pSession);
   
@@ -221,7 +221,7 @@ Job* Jobs::pJob_UseSchema_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_UseSchema_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_UseSchema_delete(Session* pSession, Job* pJob)
 {
   Job_UseSchema* pJob_UseSchema = _pJob_UseSchema(pJob);
   

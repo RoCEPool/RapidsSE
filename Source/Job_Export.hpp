@@ -28,7 +28,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Export(Interface::Session* pSession);
+    Job_Export(Session* pSession);
     ~Job_Export(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -50,10 +50,10 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Export* _pJob_Export(void* aAddr);
   
-  Job* pJob_Export_pre(Interface::Session* pSession);
-  void vJob_Export_post(Interface::Session* pSession, Job* pJob);
+  Job* pJob_Export_pre(Session* pSession);
+  void vJob_Export_post(Session* pSession, Job* pJob);
   Job* pJob_Export_new(Job* pArg);
-  void vJob_Export_delete(Interface::Session* pSession, Job* pJob);
+  void vJob_Export_delete(Session* pSession, Job* pJob);
   void vJob_Export_show(Job* pJob);
   
   JobClass* pJob_Export_class(pFUN** aaFun);

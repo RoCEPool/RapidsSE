@@ -113,7 +113,7 @@ void Job_LoadTable::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_LoadTable::Job_LoadTable(Interface::Session* pSession)
+Job_LoadTable::Job_LoadTable(Session* pSession)
 : Job(CN_JOB_LOADTABLE, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
@@ -632,7 +632,7 @@ bool Job_LoadTable::bExtractDateFormat(Stz* dateFormat)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_LoadTable_pre(Interface::Session* pSession)
+Job* Jobs::pJob_LoadTable_pre(Session* pSession)
 {
   Job_LoadTable* pJob_LoadTable = new Job_LoadTable(pSession);
   
@@ -660,7 +660,7 @@ Job* Jobs::pJob_LoadTable_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_LoadTable_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_LoadTable_delete(Session* pSession, Job* pJob)
 {
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pJob);
   

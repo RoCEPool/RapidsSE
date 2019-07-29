@@ -107,7 +107,7 @@ void Job_DropTable::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_DropTable::Job_DropTable(Interface::Session* pSession)
+Job_DropTable::Job_DropTable(Session* pSession)
 : Job(CN_JOB_DROPTABLE, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPTABLE,_FOOTER_);
@@ -198,7 +198,7 @@ Footer* Job_DropTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_DropTable_pre(Interface::Session* pSession)
+Job* Jobs::pJob_DropTable_pre(Session* pSession)
 {
   Job_DropTable* pJob_DropTable = new Job_DropTable(pSession);
   
@@ -216,7 +216,7 @@ Job* Jobs::pJob_DropTable_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_DropTable_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_DropTable_delete(Session* pSession, Job* pJob)
 {
   Job_DropTable* pJob_DropTable = _pJob_DropTable(pJob);
   

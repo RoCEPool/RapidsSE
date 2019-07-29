@@ -21,7 +21,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Query(Interface::Session* pSession);
+    Job_Query(Session* pSession);
     ~Job_Query(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -42,8 +42,8 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Query* _pJob_Query(void* aAddr);
   
-  Job* pJob_Query_pre(Interface::Session* pSession);
-  void vJob_Query_delete(Interface::Session* pSession, Job* pJob);
+  Job* pJob_Query_pre(Session* pSession);
+  void vJob_Query_delete(Session* pSession, Job* pJob);
   void vJob_Query_show(Job* pJob);
   
   JobClass* pJob_Query_class(pFUN** aaFun);

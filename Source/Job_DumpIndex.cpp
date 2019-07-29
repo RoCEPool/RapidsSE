@@ -107,7 +107,7 @@ void Job_DumpIndex::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_DumpIndex::Job_DumpIndex(Interface::Session* pSession)
+Job_DumpIndex::Job_DumpIndex(Session* pSession)
 : Job(CN_JOB_DUMPINDEX, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DUMPINDEX,_FOOTER_);
@@ -202,7 +202,7 @@ Footer* Job_DumpIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_DumpIndex_pre(Interface::Session* pSession)
+Job* Jobs::pJob_DumpIndex_pre(Session* pSession)
 {
   Job_DumpIndex* pJob_DumpIndex = new Job_DumpIndex(pSession);
   
@@ -220,7 +220,7 @@ Job* Jobs::pJob_DumpIndex_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_DumpIndex_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_DumpIndex_delete(Session* pSession, Job* pJob)
 {
   Job_DumpIndex* pJob_DumpIndex = _pJob_DumpIndex(pJob);
   

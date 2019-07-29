@@ -30,7 +30,7 @@ JobDicPath::JobDicPath(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-JobDicPath::JobDicPath(Interface::Session* pSession)
+JobDicPath::JobDicPath(Session* pSession)
 {
   m_pSession = pSession;
   

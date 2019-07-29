@@ -18,7 +18,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_ListIdxColumns(Interface::Session* pSession);
+    Job_ListIdxColumns(Session* pSession);
     ~Job_ListIdxColumns(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -35,8 +35,8 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_ListIdxColumns* _pJob_ListIdxColumns(void* aAddr);
   
-  Job* pJob_ListIdxColumns_pre(Interface::Session* pSession);
-  void vJob_ListIdxColumns_delete(Interface::Session* pSession, Job* pJob);
+  Job* pJob_ListIdxColumns_pre(Session* pSession);
+  void vJob_ListIdxColumns_delete(Session* pSession, Job* pJob);
   void vJob_ListIdxColumns_show(Job* pJob);
   
   JobClass* pJob_ListIdxColumns_class(pFUN** aaFun);

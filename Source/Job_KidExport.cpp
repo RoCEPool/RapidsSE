@@ -105,7 +105,7 @@ void Job_KidExport::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_KidExport::Job_KidExport(Interface::Session* pSession)
+Job_KidExport::Job_KidExport(Session* pSession)
 : Job(CN_JOB_KIDEXPORT, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_KIDEXPORT,_FOOTER_);
@@ -214,7 +214,7 @@ Footer* Job_KidExport::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_KidExport_pre(Interface::Session* pSession)
+Job* Jobs::pJob_KidExport_pre(Session* pSession)
 {
   Job_KidExport* pJob_KidExport = new Job_KidExport(pSession);
   
@@ -234,7 +234,7 @@ Job* Jobs::pJob_KidExport_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_KidExport_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_KidExport_delete(Session* pSession, Job* pJob)
 {
   Job_KidExport* pJob_KidExport = _pJob_KidExport(pJob);
   

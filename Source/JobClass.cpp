@@ -5,7 +5,7 @@
 #include "Jobs.h"
 #include "AM.hpp"
 
-#include "Session.hpp"
+#include "StorageEngine.h"
 
 extern i8 giClassSize[];
 
@@ -33,7 +33,7 @@ JobClass* Jobs::_pJobClass(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* post-receive fucntion                                                      */
 /*----------------------------------------------------------------------------*/
-eEC JobClass::eCheckJob(Interface::Session *pSession)
+eEC JobClass::eCheckJob(Session *pSession)
 {
   if (! m_fpCheck)
     return EC_NONE;
@@ -68,7 +68,7 @@ Job* JobClass::pNewJob(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* delete the job by running the delete-function                              */
 /*----------------------------------------------------------------------------*/
-void JobClass::vDeleteJob(Interface::Session* pSession, Job* pJob)
+void JobClass::vDeleteJob(Session* pSession, Job* pJob)
 {
   (*m_fpDelete)(pSession, pJob);
 }
@@ -120,7 +120,7 @@ void JobClass::vGrabDdlLock(void)
 /*----------------------------------------------------------------------------*/
 /* end the job by running the post-function                                   */
 /*----------------------------------------------------------------------------*/
-void JobClass::vPostJob(Interface::Session* pSession, Job* pJob)
+void JobClass::vPostJob(Session* pSession, Job* pJob)
 {
   (*m_fpPost)(pSession, pJob);
 }
@@ -128,7 +128,7 @@ void JobClass::vPostJob(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* create a new job by running the pre-function                                */
 /*----------------------------------------------------------------------------*/
-Job* JobClass::pPreJob(Interface::Session* pSession)
+Job* JobClass::pPreJob(Session* pSession)
 {
   Job* pJob = (*m_fpPre)(pSession);
   

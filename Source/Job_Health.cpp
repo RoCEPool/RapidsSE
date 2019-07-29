@@ -108,7 +108,7 @@ void Job_Health::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Health::Job_Health(Interface::Session* pSession)
+Job_Health::Job_Health(Session* pSession)
 : Job(CN_JOB_NETHOG, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_NETHOG,_FOOTER_);
@@ -177,7 +177,7 @@ Footer* Job_Health::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Health_pre(Interface::Session* pSession)
+Job* Jobs::pJob_Health_pre(Session* pSession)
 {
   Job_Health* pJob_Health = new Job_Health(pSession);
   
@@ -206,7 +206,7 @@ Job* Jobs::pJob_Health_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Health_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Health_post(Session* pSession, Job* pJob)
 {
 }
 
@@ -223,7 +223,7 @@ Job* Jobs::pJob_Health_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Health_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Health_delete(Session* pSession, Job* pJob)
 {
   Job_Health* pJob_Health = _pJob_Health(pJob);
   

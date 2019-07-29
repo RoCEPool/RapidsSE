@@ -107,7 +107,7 @@ void Job_Waker::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Waker::Job_Waker(Interface::Session* pSession)
+Job_Waker::Job_Waker(Session* pSession)
 : Job(CN_JOB_WAKER, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WAKER,_FOOTER_);
@@ -184,7 +184,7 @@ Job* Jobs::pJob_Waker_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Waker_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Waker_delete(Session* pSession, Job* pJob)
 {
   Job_Waker* pJob_Waker = _pJob_Waker(pJob);
   

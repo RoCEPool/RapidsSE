@@ -107,7 +107,7 @@ void Job_IndexJoin::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_IndexJoin::Job_IndexJoin(Interface::Session* pSession)
+Job_IndexJoin::Job_IndexJoin(Session* pSession)
 : Job(CN_JOB_INDEXJOIN, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INDEXJOIN,_FOOTER_);
@@ -236,7 +236,7 @@ Footer* Job_IndexJoin::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_IndexJoin_pre(Interface::Session* pSession)
+Job* Jobs::pJob_IndexJoin_pre(Session* pSession)
 {
   Job_IndexJoin* pJob_IndexJoin = new Job_IndexJoin(pSession);
   
@@ -254,7 +254,7 @@ Job* Jobs::pJob_IndexJoin_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_IndexJoin_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_IndexJoin_post(Session* pSession, Job* pJob)
 {
   Job_IndexJoin* pJob_IndexJoin = _pJob_IndexJoin(pJob);
   
@@ -308,7 +308,7 @@ void Jobs::vJob_IndexJoin_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_IndexJoin_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_IndexJoin_delete(Session* pSession, Job* pJob)
 {
   Job_IndexJoin* pJob_IndexJoin = _pJob_IndexJoin(pJob);
   

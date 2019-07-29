@@ -107,7 +107,7 @@ void Job_Docol::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Docol::Job_Docol(Interface::Session* pSession)
+Job_Docol::Job_Docol(Session* pSession)
 : Job(CN_JOB_DOCOL, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DOCOL,_FOOTER_);
@@ -200,7 +200,7 @@ Footer* Job_Docol::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Docol_pre(Interface::Session* pSession)
+Job* Jobs::pJob_Docol_pre(Session* pSession)
 {
   Job_Docol* pJob_Docol = new Job_Docol(pSession);
   
@@ -218,7 +218,7 @@ Job* Jobs::pJob_Docol_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Docol_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Docol_delete(Session* pSession, Job* pJob)
 {
   Job_Docol* pJob_Docol = _pJob_Docol(pJob);
   

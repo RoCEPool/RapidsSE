@@ -35,7 +35,9 @@ static Stz* aJL[]
 #include "ExportBuffer.hpp"
 #include "FetchBuffer.hpp"
 
+#include "Session.hpp"
 #include "Response.hpp"
+
 #include "JobDicPath.hpp"
 #include "JobExtractRow.hpp"
 #include "JobFilePath.hpp"

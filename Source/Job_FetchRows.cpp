@@ -146,7 +146,7 @@ void Job_FetchRows::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_FetchRows::Job_FetchRows(Interface::Session* pSession)
+Job_FetchRows::Job_FetchRows(Session* pSession)
 : Job(CN_JOB_FETCHROWS, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_FETCHROWS,_FOOTER_);
@@ -621,7 +621,7 @@ Footer* Job_FetchRows::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_FetchRows_pre(Interface::Session* pSession)
+Job* Jobs::pJob_FetchRows_pre(Session* pSession)
 {
   Job_FetchRows* pJob_FetchRows = new Job_FetchRows(pSession);
   
@@ -639,7 +639,7 @@ Job* Jobs::pJob_FetchRows_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_FetchRows_post(Session* pSession, Job* pJob)
 {
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJob);
   
@@ -746,7 +746,7 @@ void Jobs::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_FetchRows_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_FetchRows_delete(Session* pSession, Job* pJob)
 {
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJob);
   

@@ -107,7 +107,7 @@ void Job_CopyBuffer::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_CopyBuffer::Job_CopyBuffer(Interface::Session* pSession)
+Job_CopyBuffer::Job_CopyBuffer(Session* pSession)
 : Job(CN_JOB_COPYBUFFER, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_COPYBUFFER,_FOOTER_);
@@ -252,7 +252,7 @@ Footer* Job_CopyBuffer::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_CopyBuffer_pre(Interface::Session* pSession)
+Job* Jobs::pJob_CopyBuffer_pre(Session* pSession)
 {
   Job_CopyBuffer* pJob_CopyBuffer = new Job_CopyBuffer(pSession);
   
@@ -272,7 +272,7 @@ Job* Jobs::pJob_CopyBuffer_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_CopyBuffer_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_CopyBuffer_delete(Session* pSession, Job* pJob)
 {
   Job_CopyBuffer* pJob_CopyBuffer = _pJob_CopyBuffer(pJob);
   

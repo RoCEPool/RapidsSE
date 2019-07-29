@@ -103,7 +103,7 @@ void Job_SubExporter::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SubExporter::Job_SubExporter(Interface::Session* pSession)
+Job_SubExporter::Job_SubExporter(Session* pSession)
 : Job(CN_JOB_SUBEXPORTER, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
@@ -331,7 +331,7 @@ Footer* Job_SubExporter::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubExporter_pre(Interface::Session* pSession)
+Job* Jobs::pJob_SubExporter_pre(Session* pSession)
 {
   Job_SubExporter* pJob_SubExporter = new Job_SubExporter(pSession);
   
@@ -341,7 +341,7 @@ Job* Jobs::pJob_SubExporter_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_SubExporter_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_SubExporter_delete(Session* pSession, Job* pJob)
 {
   Job_SubExporter* pJob_SubExporter = _pJob_SubExporter(pJob);
   

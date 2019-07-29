@@ -107,7 +107,7 @@ void Job_DropTenant::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_DropTenant::Job_DropTenant(Interface::Session* pSession)
+Job_DropTenant::Job_DropTenant(Session* pSession)
 : Job(CN_JOB_DROPTENANT, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPTENANT,_FOOTER_);
@@ -201,7 +201,7 @@ Footer* Job_DropTenant::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_DropTenant_pre(Interface::Session* pSession)
+Job* Jobs::pJob_DropTenant_pre(Session* pSession)
 {
   Job_DropTenant* pJob_DropTenant = new Job_DropTenant(pSession);
   
@@ -219,7 +219,7 @@ Job* Jobs::pJob_DropTenant_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_DropTenant_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_DropTenant_delete(Session* pSession, Job* pJob)
 {
   Job_DropTenant* pJob_DropTenant = _pJob_DropTenant(pJob);
   

@@ -107,7 +107,7 @@ void Job_VisualizeIndex::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_VisualizeIndex::Job_VisualizeIndex(Interface::Session* pSession)
+Job_VisualizeIndex::Job_VisualizeIndex(Session* pSession)
 : Job(CN_JOB_VISUALIZEINDEX, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_VISUALIZEINDEX,_FOOTER_);
@@ -202,7 +202,7 @@ Footer* Job_VisualizeIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_VisualizeIndex_pre(Interface::Session* pSession)
+Job* Jobs::pJob_VisualizeIndex_pre(Session* pSession)
 {
   Job_VisualizeIndex* pJob_VisualizeIndex = new Job_VisualizeIndex(pSession);
   
@@ -220,7 +220,7 @@ Job* Jobs::pJob_VisualizeIndex_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_VisualizeIndex_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_VisualizeIndex_delete(Session* pSession, Job* pJob)
 {
   Job_VisualizeIndex* pJob_VisualizeIndex = _pJob_VisualizeIndex(pJob);
   

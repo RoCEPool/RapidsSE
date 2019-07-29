@@ -107,7 +107,7 @@ void Job_ListIndexes::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_ListIndexes::Job_ListIndexes(Interface::Session* pSession)
+Job_ListIndexes::Job_ListIndexes(Session* pSession)
 : Job(CN_JOB_LISTINDEXES, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTINDEXES,_FOOTER_);
@@ -201,7 +201,7 @@ Footer* Job_ListIndexes::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_ListIndexes_pre(Interface::Session* pSession)
+Job* Jobs::pJob_ListIndexes_pre(Session* pSession)
 {
   Job_ListIndexes* pJob_ListIndexes = new Job_ListIndexes(pSession);
   
@@ -219,7 +219,7 @@ Job* Jobs::pJob_ListIndexes_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_ListIndexes_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_ListIndexes_delete(Session* pSession, Job* pJob)
 {
   Job_ListIndexes* pJob_ListIndexes = _pJob_ListIndexes(pJob);
   

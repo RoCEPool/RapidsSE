@@ -102,7 +102,7 @@ void Job_SubIngester::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SubIngester::Job_SubIngester(Interface::Session* pSession)
+Job_SubIngester::Job_SubIngester(Session* pSession)
 : Job(CN_JOB_SUBINGESTER, pSession) , JobWriteBehind(DS_INGEST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINGESTER,_FOOTER_);
@@ -313,7 +313,7 @@ Footer* Job_SubIngester::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::vJob_SubIngester_pre(Interface::Session* pSession)
+Job* Jobs::vJob_SubIngester_pre(Session* pSession)
 {
   Job_SubIngester* pJob_SubIngester = new Job_SubIngester(pSession);
   
@@ -333,7 +333,7 @@ Job* Jobs::pJob_SubIngester_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_SubIngester_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_SubIngester_delete(Session* pSession, Job* pJob)
 {
   Job_SubIngester* pJob_SubIngester = _pJob_SubIngester(pJob);
   

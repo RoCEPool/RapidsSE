@@ -102,7 +102,7 @@ void Job_Boot::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Boot::Job_Boot(Interface::Session* pSession)
+Job_Boot::Job_Boot(Session* pSession)
 : Job(CN_JOB_BOOT, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_BOOT,_FOOTER_);
@@ -178,7 +178,7 @@ Job* Jobs::pJob_Boot_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Boot_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Boot_delete(Session* pSession, Job* pJob)
 {
   Job_Boot* pJob_Boot = _pJob_Boot(pJob);
   

@@ -107,7 +107,7 @@ void Job_WaitCluster::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_WaitCluster::Job_WaitCluster(Interface::Session* pSession)
+Job_WaitCluster::Job_WaitCluster(Session* pSession)
 : Job(CN_JOB_WAITCLUSTER, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WAITCLUSTER,_FOOTER_);
@@ -196,7 +196,7 @@ Footer* Job_WaitCluster::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_WaitCluster_pre(Interface::Session* pSession)
+Job* Jobs::pJob_WaitCluster_pre(Session* pSession)
 {
   Job_WaitCluster* pJob_WaitCluster = new Job_WaitCluster(pSession);
   
@@ -206,14 +206,14 @@ Job* Jobs::pJob_WaitCluster_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_WaitCluster_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_WaitCluster_post(Session* pSession, Job* pJob)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_WaitCluster_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_WaitCluster_delete(Session* pSession, Job* pJob)
 {
   Job_WaitCluster* pJob_WaitCluster = _pJob_WaitCluster(pJob);
   

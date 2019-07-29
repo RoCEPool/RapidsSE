@@ -107,7 +107,7 @@ void Job_Export::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Export::Job_Export(Interface::Session* pSession)
+Job_Export::Job_Export(Session* pSession)
 : Job(CN_JOB_EXPORT, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
@@ -284,7 +284,7 @@ Footer* Job_Export::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Export_pre(Interface::Session* pSession)
+Job* Jobs::pJob_Export_pre(Session* pSession)
 {
   Job_Export* pJob_Export = new Job_Export(pSession);
   
@@ -302,7 +302,7 @@ Job* Jobs::pJob_Export_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Export_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Export_post(Session* pSession, Job* pJob)
 {
   Job_Export* pJob_Export = _pJob_Export(pJob);
 
@@ -322,7 +322,7 @@ Job* Jobs::pJob_Export_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Export_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Export_delete(Session* pSession, Job* pJob)
 {
   Job_Export* pJob_Export = _pJob_Export(pJob);
   

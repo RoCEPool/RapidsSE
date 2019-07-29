@@ -25,7 +25,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Repeater(Interface::Session* pSession);
+    Job_Repeater(Session* pSession);
     ~Job_Repeater(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -45,9 +45,9 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Repeater* _pJob_Repeater(void* aAddr);
   
-  Job* pJob_Repeater_pre(Interface::Session* pSession);
+  Job* pJob_Repeater_pre(Session* pSession);
   Job* pJob_Repeater_new(Job* pArg);
-  void vJob_Repeater_delete(Interface::Session* pSession, Job* pJob);
+  void vJob_Repeater_delete(Session* pSession, Job* pJob);
   void vJob_Repeater_show(Job* pJob);
   
   JobClass* pJob_Repeater_class(pFUN** aaFun);

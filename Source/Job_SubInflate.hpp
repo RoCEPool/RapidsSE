@@ -20,7 +20,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_SubInflate(Interface::Session* pSession);
+    Job_SubInflate(Session* pSession);
     ~Job_SubInflate(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -36,8 +36,8 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_SubInflate* _pJob_SubInflate(void* aAddr);
   
-  Job* pJob_SubInflate_pre(Interface::Session* pSession);
-  void vJob_SubInflate_delete(Interface::Session* pSession, Job* pJob);
+  Job* pJob_SubInflate_pre(Session* pSession);
+  void vJob_SubInflate_delete(Session* pSession, Job* pJob);
   void vJob_SubInflate_show(Job* pJob);
   
   JobClass* pJob_SubInflate_class(pFUN** aaFun);

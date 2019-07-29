@@ -13,7 +13,7 @@ namespace Jobs
     bool m_bEarly;  // early exit
   
   public:
-    JobMark2(eCN eClassNo, Interface::Session* pSession);
+    JobMark2(eCN eClassNo, Session* pSession);
    ~JobMark2(void) noexcept(false);
   };
   

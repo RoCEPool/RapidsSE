@@ -107,7 +107,7 @@ void Job_Alarm::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Alarm::Job_Alarm(Interface::Session* pSession)
+Job_Alarm::Job_Alarm(Session* pSession)
 : Job(CN_JOB_ALARM, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_ALARM,_FOOTER_);
@@ -184,7 +184,7 @@ Job* Jobs::pJob_Alarm_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Alarm_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Alarm_delete(Session* pSession, Job* pJob)
 {
   Job_Alarm* pJob_Alarm = _pJob_Alarm(pJob);
   

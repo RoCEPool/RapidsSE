@@ -25,7 +25,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Receiver(Interface::Session* pSession);
+    Job_Receiver(Session* pSession);
     ~Job_Receiver(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -47,7 +47,7 @@ namespace Jobs
   Job_Receiver* _pJob_Receiver(void* aAddr);
   
   Job* pJob_Receiver_new(Job* pArg);
-  void vJob_Receiver_delete(Interface::Session* pSession, Job* pJob);
+  void vJob_Receiver_delete(Session* pSession, Job* pJob);
   void vJob_Receiver_show(Job* pJob);
   
   JobClass* pJob_Receiver_class(pFUN** aaFun);

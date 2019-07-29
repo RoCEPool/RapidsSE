@@ -107,7 +107,7 @@ void Job_Periodic::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Periodic::Job_Periodic(Interface::Session* pSession)
+Job_Periodic::Job_Periodic(Session* pSession)
 : Job(CN_JOB_PERIODIC, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PERIODIC,_FOOTER_);
@@ -184,7 +184,7 @@ Job* Jobs::pJob_Periodic_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Periodic_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Periodic_delete(Session* pSession, Job* pJob)
 {
   Job_Periodic* pJob_Periodic = _pJob_Periodic(pJob);
   

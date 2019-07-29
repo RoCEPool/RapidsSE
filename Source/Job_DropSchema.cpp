@@ -108,7 +108,7 @@ void Job_DropSchema::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_DropSchema::Job_DropSchema(Interface::Session* pSession)
+Job_DropSchema::Job_DropSchema(Session* pSession)
 : Job(CN_JOB_DROPSCHEMA, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPSCHEMA,_FOOTER_);
@@ -202,7 +202,7 @@ Footer* Job_DropSchema::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_DropSchema_pre(Interface::Session* pSession)
+Job* Jobs::pJob_DropSchema_pre(Session* pSession)
 {
   Job_DropSchema* pJob_DropSchema = new Job_DropSchema(pSession);
   
@@ -220,7 +220,7 @@ Job* Jobs::pJob_DropSchema_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_DropSchema_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_DropSchema_delete(Session* pSession, Job* pJob)
 {
   Job_DropSchema* pJob_DropSchema = _pJob_DropSchema(pJob);
   

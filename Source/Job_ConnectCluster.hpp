@@ -18,7 +18,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_ConnectCluster(Interface::Session* pSession);
+    Job_ConnectCluster(Session* pSession);
     ~Job_ConnectCluster(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -34,9 +34,9 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_ConnectCluster* _pJob_ConnectCluster(void* aAddr);
   
-  Job* pJob_ConnectCluster_pre(Interface::Session* pSession);
-  void vJob_ConnectCluster_post(Interface::Session* pSession, Job* pJob);
-  void vJob_ConnectCluster_delete(Interface::Session* pSession, Job* pJob);
+  Job* pJob_ConnectCluster_pre(Session* pSession);
+  void vJob_ConnectCluster_post(Session* pSession, Job* pJob);
+  void vJob_ConnectCluster_delete(Session* pSession, Job* pJob);
   void vJob_ConnectCluster_show(Job* pJob);
   
   JobClass* pJob_ConnectCluster_class(pFUN** aaFun);

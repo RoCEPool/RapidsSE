@@ -25,7 +25,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_SubPurger(Interface::Session* pSession);
+    Job_SubPurger(Session* pSession);
     ~Job_SubPurger(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -44,8 +44,8 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_SubPurger* _pJob_SubPurger(void* aAddr);
   
-  Job* pJob_SubPurger_pre(Interface::Session* pSession);
-  void vJob_SubPurger_delete(Interface::Session* pSession, Job* pJob);
+  Job* pJob_SubPurger_pre(Session* pSession);
+  void vJob_SubPurger_delete(Session* pSession, Job* pJob);
   void vJob_SubPurger_show(Job* pJob);
   
   JobClass* pJob_SubPurger_class(pFUN** aaFun);

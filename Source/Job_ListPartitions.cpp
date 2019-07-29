@@ -107,7 +107,7 @@ void Job_ListPartitions::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_ListPartitions::Job_ListPartitions(Interface::Session* pSession)
+Job_ListPartitions::Job_ListPartitions(Session* pSession)
 : Job(CN_JOB_LISTPARTITIONS, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTPARTITIONS,_FOOTER_);
@@ -197,7 +197,7 @@ Footer* Job_ListPartitions::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_ListPartitions_pre(Interface::Session* pSession)
+Job* Jobs::pJob_ListPartitions_pre(Session* pSession)
 {
   Job_ListPartitions* pJob_ListPartitions = new Job_ListPartitions(pSession);
   
@@ -215,7 +215,7 @@ Job* Jobs::pJob_ListPartitions_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_ListPartitions_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_ListPartitions_delete(Session* pSession, Job* pJob)
 {
   Job_ListPartitions* pJob_ListPartitions = _pJob_ListPartitions(pJob);
   

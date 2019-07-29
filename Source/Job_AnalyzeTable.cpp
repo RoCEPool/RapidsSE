@@ -107,7 +107,7 @@ void Job_AnalyzeTable::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_AnalyzeTable::Job_AnalyzeTable(Interface::Session* pSession)
+Job_AnalyzeTable::Job_AnalyzeTable(Session* pSession)
 : Job(CN_JOB_ANALYZETABLE, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_ANALYZETABLE,_FOOTER_);
@@ -202,7 +202,7 @@ Footer* Job_AnalyzeTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_AnalyzeTable_pre(Interface::Session* pSession)
+Job* Jobs::pJob_AnalyzeTable_pre(Session* pSession)
 {
   Job_AnalyzeTable* pJob_AnalyzeTable = new Job_AnalyzeTable(pSession);
   
@@ -220,7 +220,7 @@ Job* Jobs::pJob_AnalyzeTable_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_AnalyzeTable_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_AnalyzeTable_delete(Session* pSession, Job* pJob)
 {
   Job_AnalyzeTable* pJob_AnalyzeTable = _pJob_AnalyzeTable(pJob);
   

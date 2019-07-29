@@ -108,7 +108,7 @@ void Job_NetHog::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_NetHog::Job_NetHog(Interface::Session* pSession)
+Job_NetHog::Job_NetHog(Session* pSession)
 : Job(CN_JOB_NETHOG, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_NETHOG,_FOOTER_);
@@ -177,7 +177,7 @@ Footer* Job_NetHog::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_NetHog_pre(Interface::Session* pSession)
+Job* Jobs::pJob_NetHog_pre(Session* pSession)
 {
   Job_NetHog* pJob_NetHog = new Job_NetHog(pSession);
   
@@ -206,7 +206,7 @@ Job* Jobs::pJob_NetHog_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_NetHog_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_NetHog_post(Session* pSession, Job* pJob)
 {
 }
 
@@ -223,7 +223,7 @@ Job* Jobs::pJob_NetHog_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_NetHog_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_NetHog_delete(Session* pSession, Job* pJob)
 {
   Job_NetHog* pJob_NetHog = _pJob_NetHog(pJob);
   

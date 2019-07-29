@@ -18,7 +18,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_SizeIndex(Interface::Session* pSession);
+    Job_SizeIndex(Session* pSession);
     ~Job_SizeIndex(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -35,8 +35,8 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_SizeIndex* _pJob_SizeIndex(void* aAddr);
   
-  Job* pJob_SizeIndex_pre(Interface::Session* pSession);
-  void vJob_SizeIndex_delete(Interface::Session* pSession, Job* pJob);
+  Job* pJob_SizeIndex_pre(Session* pSession);
+  void vJob_SizeIndex_delete(Session* pSession, Job* pJob);
   void vJob_SizeIndex_show(Job* pJob);
   
   JobClass* pJob_SizeIndex_class(pFUN** aaFun);

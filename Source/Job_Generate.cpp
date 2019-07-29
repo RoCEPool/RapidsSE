@@ -107,7 +107,7 @@ void Job_Generate::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Generate::Job_Generate(Interface::Session* pSession)
+Job_Generate::Job_Generate(Session* pSession)
 : Job(CN_JOB_GENERATE, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
@@ -192,7 +192,7 @@ Footer* Job_Generate::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Generate_pre(Interface::Session* pSession)
+Job* Jobs::pJob_Generate_pre(Session* pSession)
 {
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -247,7 +247,7 @@ Job* Jobs::pJob_Generate_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Generate_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Generate_delete(Session* pSession, Job* pJob)
 {
   Job_Generate* pJob_Generate = _pJob_Generate(pJob);
   

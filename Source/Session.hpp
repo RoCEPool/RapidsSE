@@ -3,12 +3,10 @@
 /*============================================================================*/
 #pragma once
 
-#include "Interface.h"
+#include "Jobs.h"
 
-namespace Interface
+namespace Jobs
 {
-  class SessionState;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Session : public Object
   {
@@ -21,9 +19,9 @@ namespace Interface
     Tx*      m_pTx;              // current transaction
     bool     m_bSessionExiting;  // is session exiting ?
     Stack*   m_pJobStack;        // stack of jobs
-    
-    SessionState*     m_pSessionState;      // session state
-     Command* m_pCommand;  // command processor
+    Command* m_pCommand;         // command processor
+
+    Interface::SessionState*     m_pSessionState;   // session state
 
     // must be last
     Footer m_xFooter;

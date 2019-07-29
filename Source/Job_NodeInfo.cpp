@@ -103,7 +103,7 @@ void Job_NodeInfo::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_NodeInfo::Job_NodeInfo(Interface::Session* pSession)
+Job_NodeInfo::Job_NodeInfo(Session* pSession)
 : Job(CN_JOB_NODEINFO, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_NODEINFO,_FOOTER_);
@@ -181,7 +181,7 @@ Job* Jobs::pJob_NodeInfo_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_NodeInfo_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_NodeInfo_delete(Session* pSession, Job* pJob)
 {
   Job_NodeInfo* pJob_NodeInfo = _pJob_NodeInfo(pJob);
   

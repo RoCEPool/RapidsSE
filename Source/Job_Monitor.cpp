@@ -107,7 +107,7 @@ void Job_Monitor::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Monitor::Job_Monitor(Interface::Session* pSession)
+Job_Monitor::Job_Monitor(Session* pSession)
 : Job(CN_JOB_MONITOR, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_MONITOR,_FOOTER_);
@@ -179,7 +179,7 @@ Footer* Job_Monitor::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Monitor_pre(Interface::Session* pSession)
+Job* Jobs::pJob_Monitor_pre(Session* pSession)
 {
   i8 nTokens;
 
@@ -215,7 +215,7 @@ Job* Jobs::pJob_Monitor_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Monitor_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Monitor_delete(Session* pSession, Job* pJob)
 {
   Job_Monitor* pJob_Monitor = _pJob_Monitor(pJob);
   

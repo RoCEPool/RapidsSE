@@ -107,7 +107,7 @@ void Job_Cat::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Cat::Job_Cat(Interface::Session* pSession)
+Job_Cat::Job_Cat(Session* pSession)
 : Job(CN_JOB_CAT, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CAT,_FOOTER_);
@@ -180,7 +180,7 @@ Footer* Job_Cat::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Cat_pre(Interface::Session* pSession)
+Job* Jobs::pJob_Cat_pre(Session* pSession)
 {
   i8 nTokens;
 
@@ -223,7 +223,7 @@ Job* Jobs::pJob_Cat_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Cat_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Cat_delete(Session* pSession, Job* pJob)
 {
   Job_Cat* pJob_Cat = _pJob_Cat(pJob);
   

@@ -23,7 +23,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_InsertRow(Interface::Session* pSession);
+    Job_InsertRow(Session* pSession);
     ~Job_InsertRow(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -44,9 +44,9 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_InsertRow* _pJob_InsertRow(void* aAddr);
   
-  Job* pJob_InsertRow_pre(Interface::Session* pSession);
+  Job* pJob_InsertRow_pre(Session* pSession);
   Job* pJob_InsertRow_new(Job* pArg);
-  void vJob_InsertRow_delete(Interface::Session* pSession, Job* pJob);
+  void vJob_InsertRow_delete(Session* pSession, Job* pJob);
   void vJob_InsertRow_show(Job* pJob);
   
   JobClass* pJob_InsertRow_class(pFUN** aaFun);

@@ -18,7 +18,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_VerifyTable(Interface::Session* pSession);
+    Job_VerifyTable(Session* pSession);
     ~Job_VerifyTable(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -35,8 +35,8 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_VerifyTable* _pJob_VerifyTable(void* aAddr);
   
-  Job* pJob_VerifyTable_pre(Interface::Session* pSession);
-  void vJob_VerifyTable_delete(Interface::Session* pSession, Job* pJob);
+  Job* pJob_VerifyTable_pre(Session* pSession);
+  void vJob_VerifyTable_delete(Session* pSession, Job* pJob);
   void vJob_VerifyTable_show(Job* pJob);
   
   JobClass* pJob_VerifyTable_class(pFUN** aaFun);

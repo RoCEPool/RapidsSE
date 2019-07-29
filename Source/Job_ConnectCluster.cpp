@@ -107,7 +107,7 @@ void Job_ConnectCluster::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_ConnectCluster::Job_ConnectCluster(Interface::Session* pSession)
+Job_ConnectCluster::Job_ConnectCluster(Session* pSession)
 : Job(CN_JOB_CONNECTCLUSTER, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CONNECTCLUSTER,_FOOTER_);
@@ -195,7 +195,7 @@ Footer* Job_ConnectCluster::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_ConnectCluster_pre(Interface::Session* pSession)
+Job* Jobs::pJob_ConnectCluster_pre(Session* pSession)
 {
   Job_ConnectCluster* pJob_ConnectCluster = new Job_ConnectCluster(pSession);
   
@@ -213,14 +213,14 @@ Job* Jobs::pJob_ConnectCluster_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_ConnectCluster_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_ConnectCluster_post(Session* pSession, Job* pJob)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_ConnectCluster_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_ConnectCluster_delete(Session* pSession, Job* pJob)
 {
   Job_ConnectCluster* pJob_ConnectCluster = _pJob_ConnectCluster(pJob);
   

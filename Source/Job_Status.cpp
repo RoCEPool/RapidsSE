@@ -107,7 +107,7 @@ void Job_Status::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Status::Job_Status(Interface::Session* pSession)
+Job_Status::Job_Status(Session* pSession)
 : Job(CN_JOB_STATUS, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_STATUS,_FOOTER_);
@@ -195,7 +195,7 @@ Footer* Job_Status::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Status_pre(Interface::Session* pSession)
+Job* Jobs::pJob_Status_pre(Session* pSession)
 {
   Job_Status* pJob_Status = new Job_Status(pSession);
   
@@ -213,7 +213,7 @@ Job* Jobs::pJob_Status_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Status_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Status_delete(Session* pSession, Job* pJob)
 {
   Job_Status* pJob_Status = _pJob_Status(pJob);
   

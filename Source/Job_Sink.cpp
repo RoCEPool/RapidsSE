@@ -107,7 +107,7 @@ void Job_Sink::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Sink::Job_Sink(Interface::Session* pSession)
+Job_Sink::Job_Sink(Session* pSession)
 : Job(CN_JOB_SINK, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SINK,_FOOTER_);
@@ -179,7 +179,7 @@ Footer* Job_Sink::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Sink_pre(Interface::Session* pSession)
+Job* Jobs::pJob_Sink_pre(Session* pSession)
 {
   i8 nTokens;
 
@@ -219,7 +219,7 @@ Job* Jobs::pJob_Sink_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Sink_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Sink_delete(Session* pSession, Job* pJob)
 {
   Job_Sink* pJob_Sink = _pJob_Sink(pJob);
   

@@ -18,7 +18,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_CreateSchema(Interface::Session* pSession);
+    Job_CreateSchema(Session* pSession);
     ~Job_CreateSchema(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -35,8 +35,8 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_CreateSchema* _pJob_CreateSchema(void* aAddr);
   
-  Job* pJob_CreateSchema_pre(Interface::Session* pSession);
-  void vJob_CreateSchema_delete(Interface::Session* pSession, Job* pJob);
+  Job* pJob_CreateSchema_pre(Session* pSession);
+  void vJob_CreateSchema_delete(Session* pSession, Job* pJob);
   void vJob_CreateSchema_show(Job* pJob);
   
   JobClass* pJob_CreateSchema_class(pFUN** aaFun);

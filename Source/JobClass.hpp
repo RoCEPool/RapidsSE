@@ -47,11 +47,11 @@ namespace Jobs
       ePY  m_ePriority;  // job priority
       eJF  m_eFlags;     // job flags
   
-      eEC  (*m_fpCheck)(Interface::Session* pSession);
-      Job* (*m_fpPre)(Interface::Session* pSession);
-      void (*m_fpPost)(Interface::Session* pSession, Job* pJob);
+      eEC  (*m_fpCheck)(Session* pSession);
+      Job* (*m_fpPre)(Session* pSession);
+      void (*m_fpPost)(Session* pSession, Job* pJob);
       Job* (*m_fpNew)(Job* pArg);
-      void (*m_fpDelete)(Interface::Session* pSession, Job* pJob);
+      void (*m_fpDelete)(Session* pSession, Job* pJob);
       void (*m_fpSend)(Job* pJob);
       void (*m_fpRecv)(Job* pJob);
       void (*m_fpShow)(Job* pJob);
@@ -64,14 +64,14 @@ namespace Jobs
       bool m_bSeedsSpawned[SS_ENUMS]; // which seeds have been spawned
   
     public:
-      eEC  eCheckJob(Interface::Session* pSession);
+      eEC  eCheckJob(Session* pSession);
       void vCmds(void);
-      void vDeleteJob(Interface::Session* pSession, Job* pJob);
+      void vDeleteJob(Session* pSession, Job* pJob);
       void vDropDdlLock(void);
       void vGrabDdlLock(void);
       Job* pNewJob(Job* pJob);
-      void vPostJob(Interface::Session* pSession, Job* pJob);
-      Job* pPreJob(Interface::Session* pSession);
+      void vPostJob(Session* pSession, Job* pJob);
+      Job* pPreJob(Session* pSession);
       void vRecvJob(Job* pJob);
       Stz* sSeed(eSS eSeed);
       void vSendJob(Job* pJob);

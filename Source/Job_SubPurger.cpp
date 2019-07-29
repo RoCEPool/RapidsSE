@@ -103,7 +103,7 @@ void Job_SubPurger::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SubPurger::Job_SubPurger(Interface::Session* pSession)
+Job_SubPurger::Job_SubPurger(Session* pSession)
 : Job(CN_JOB_SUBPURGER, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBPURGER,_FOOTER_);
@@ -228,7 +228,7 @@ Footer* Job_SubPurger::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubPurger_pre(Interface::Session* pSession)
+Job* Jobs::pJob_SubPurger_pre(Session* pSession)
 {
   Job_SubPurger* pJob_SubPurger = new Job_SubPurger(pSession);
   
@@ -238,7 +238,7 @@ Job* Jobs::pJob_SubPurger_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_SubPurger_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_SubPurger_delete(Session* pSession, Job* pJob)
 {
   Job_SubPurger* pJob_SubPurger = _pJob_SubPurger(pJob);
   

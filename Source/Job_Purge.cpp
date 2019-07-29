@@ -107,7 +107,7 @@ void Job_Purge::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Purge::Job_Purge(Interface::Session* pSession)
+Job_Purge::Job_Purge(Session* pSession)
 : Job(CN_JOB_PURGE, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PURGE,_FOOTER_);
@@ -176,7 +176,7 @@ Footer* Job_Purge::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Purge_pre(Interface::Session* pSession)
+Job* Jobs::pJob_Purge_pre(Session* pSession)
 {
   i8 nTokens;
 
@@ -202,7 +202,7 @@ Job* Jobs::pJob_Purge_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Purge_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Purge_post(Session* pSession, Job* pJob)
 {
 }
 
@@ -219,7 +219,7 @@ Job* Jobs::pJob_Purge_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Purge_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Purge_delete(Session* pSession, Job* pJob)
 {
   Job_Purge* pJob_Purge = _pJob_Purge(pJob);
   

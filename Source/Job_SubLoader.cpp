@@ -104,7 +104,7 @@ void Job_SubLoader::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SubLoader::Job_SubLoader(Interface::Session* pSession)
+Job_SubLoader::Job_SubLoader(Session* pSession)
 : Job(CN_JOB_SUBLOADER, pSession), JobWriteBehind(DS_LOAD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
@@ -339,7 +339,7 @@ Footer* Job_SubLoader::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::vJob_SubLoader_pre(Interface::Session* pSession)
+Job* Jobs::vJob_SubLoader_pre(Session* pSession)
 {
   Job_SubLoader* pJob_SubLoader = new Job_SubLoader(pSession);
   
@@ -359,7 +359,7 @@ Job* Jobs::pJob_SubLoader_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_SubLoader_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_SubLoader_delete(Session* pSession, Job* pJob)
 {
   Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pJob);
   

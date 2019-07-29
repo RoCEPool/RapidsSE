@@ -34,7 +34,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_IndexJoin(Interface::Session* pSession);
+    Job_IndexJoin(Session* pSession);
     ~Job_IndexJoin(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -51,9 +51,9 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_IndexJoin* _pJob_IndexJoin(void* aAddr);
   
-  Job* pJob_IndexJoin_pre(Interface::Session* pSession);
-  void vJob_IndexJoin_post(Interface::Session* pSession, Job* pJob);
-  void vJob_IndexJoin_delete(Interface::Session* pSession, Job* pJob);
+  Job* pJob_IndexJoin_pre(Session* pSession);
+  void vJob_IndexJoin_post(Session* pSession, Job* pJob);
+  void vJob_IndexJoin_delete(Session* pSession, Job* pJob);
   void vIterateBuffer(Job_IndexJoin* pJob_IndexJoin, RefBuffer* pRefBuffer);
   void vRetrieveColumn(Job_IndexJoin* pJob_IndexJoin, RefBuffer* pRefBuffer);
   void vJob_IndexJoin_show(Job* pJob);

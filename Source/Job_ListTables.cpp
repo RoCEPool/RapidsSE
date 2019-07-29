@@ -107,7 +107,7 @@ void Job_ListTables::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_ListTables::Job_ListTables(Interface::Session* pSession)
+Job_ListTables::Job_ListTables(Session* pSession)
 : Job(CN_JOB_LISTTABLES, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTTABLES,_FOOTER_);
@@ -197,7 +197,7 @@ Footer* Job_ListTables::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_ListTables_pre(Interface::Session* pSession)
+Job* Jobs::pJob_ListTables_pre(Session* pSession)
 {
   Job_ListTables* pJob_ListTables = new Job_ListTables(pSession);
   
@@ -215,7 +215,7 @@ Job* Jobs::pJob_ListTables_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_ListTables_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_ListTables_delete(Session* pSession, Job* pJob)
 {
   Job_ListTables* pJob_ListTables = _pJob_ListTables(pJob);
   

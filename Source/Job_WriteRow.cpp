@@ -111,7 +111,7 @@ void Job_WriteRow::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_WriteRow::Job_WriteRow(Interface::Session* pSession)
+Job_WriteRow::Job_WriteRow(Session* pSession)
 : Job(CN_JOB_WRITEROW, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEROW,_FOOTER_);
@@ -185,7 +185,7 @@ void Job_WriteRow::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* new a WriteRow job                                                         */
 /*----------------------------------------------------------------------------*/
-Job_WriteRow* Job_WriteRow::pNewJobWriteRow(Interface::Session* pSession,
+Job_WriteRow* Job_WriteRow::pNewJobWriteRow(Session* pSession,
                                    Stz* sTableName,
                                    Table* pTable,
                                    Record* pRecord,
@@ -248,7 +248,7 @@ Footer* Job_WriteRow::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_WriteRow_pre(Interface::Session* pSession)
+Job* Jobs::pJob_WriteRow_pre(Session* pSession)
 {
   Job_WriteRow* pJob_WriteRow = new Job_WriteRow(pSession);
   
@@ -268,7 +268,7 @@ Job* Jobs::pJob_WriteRow_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_WriteRow_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_WriteRow_delete(Session* pSession, Job* pJob)
 {
   Job_WriteRow* pJob_WriteRow = _pJob_WriteRow(pJob);
   

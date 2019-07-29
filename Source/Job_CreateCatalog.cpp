@@ -107,7 +107,7 @@ void Job_CreateCatalog::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_CreateCatalog::Job_CreateCatalog(Interface::Session* pSession)
+Job_CreateCatalog::Job_CreateCatalog(Session* pSession)
 : Job(CN_JOB_CREATECATALOG, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATECATALOG,_FOOTER_);
@@ -199,7 +199,7 @@ Footer* Job_CreateCatalog::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_CreateCatalog_pre(Interface::Session* pSession)
+Job* Jobs::pJob_CreateCatalog_pre(Session* pSession)
 {
   Job_CreateCatalog* pJob_CreateCatalog = new Job_CreateCatalog(pSession);
   
@@ -217,7 +217,7 @@ Job* Jobs::pJob_CreateCatalog_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_CreateCatalog_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_CreateCatalog_delete(Session* pSession, Job* pJob)
 {
   Job_CreateCatalog* pJob_CreateCatalog = _pJob_CreateCatalog(pJob);
   

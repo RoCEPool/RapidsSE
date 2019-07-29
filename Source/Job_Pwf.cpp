@@ -107,7 +107,7 @@ void Job_Pwf::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Pwf::Job_Pwf(Interface::Session* pSession)
+Job_Pwf::Job_Pwf(Session* pSession)
 : Job(CN_JOB_PWF, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PWF,_FOOTER_);
@@ -197,7 +197,7 @@ Footer* Job_Pwf::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Pwf_pre(Interface::Session* pSession)
+Job* Jobs::pJob_Pwf_pre(Session* pSession)
 {
   Job_Pwf* pJob_Pwf = new Job_Pwf(pSession);
   
@@ -215,7 +215,7 @@ Job* Jobs::pJob_Pwf_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Pwf_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Pwf_delete(Session* pSession, Job* pJob)
 {
   Job_Pwf* pJob_Pwf = _pJob_Pwf(pJob);
   

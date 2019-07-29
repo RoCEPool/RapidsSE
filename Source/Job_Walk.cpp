@@ -107,7 +107,7 @@ void Job_Walk::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Walk::Job_Walk(Interface::Session* pSession)
+Job_Walk::Job_Walk(Session* pSession)
 : Job(CN_JOB_WALK, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WALK,_FOOTER_);
@@ -232,7 +232,7 @@ Footer* Job_Walk::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Walk_pre(Interface::Session* pSession)
+Job* Jobs::pJob_Walk_pre(Session* pSession)
 {
   Job_Walk* pJob_Walk = new Job_Walk(pSession);
   
@@ -250,7 +250,7 @@ Job* Jobs::pJob_Walk_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Walk_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Walk_delete(Session* pSession, Job* pJob)
 {
   Job_Walk* pJob_Walk = _pJob_Walk(pJob);
   

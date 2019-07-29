@@ -23,12 +23,12 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_WriteRow(Interface::Session* pSession);
+    Job_WriteRow(Session* pSession);
     ~Job_WriteRow(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    static Job_WriteRow* pNewJobWriteRow(Interface::Session* pSession,
+    static Job_WriteRow* pNewJobWriteRow(Session* pSession,
                                          Stz* sTableName,
                                          Table* pTable,
                                          Record* pRecord,
@@ -46,9 +46,9 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_WriteRow* _pJob_WriteRow(void* aAddr);
   
-  Job* pJob_WriteRow_pre(Interface::Session* pSession);
+  Job* pJob_WriteRow_pre(Session* pSession);
   Job* pJob_WriteRow_new(Job* pArg);
-  void vJob_WriteRow_delete(Interface::Session* pSession, Job* pJob);
+  void vJob_WriteRow_delete(Session* pSession, Job* pJob);
   void vJob_WriteRow_show(Job* pJob);
   
   JobClass* pJob_WriteRow_class(pFUN** aaFun);

@@ -187,7 +187,7 @@ namespace Jobs
     eJT  m_eJobTrace;     // job trace (to be removed)
 
   public:
-    Job(eCN eClassNo, Interface::Session* pSession);
+    Job(eCN eClassNo, Session* pSession);
     ~Job(void) noexcept(false);
   
     static Job* pThisTLSJob(void);
@@ -231,10 +231,10 @@ namespace Jobs
   bool _bIsValidJob(eCN eClass);
 
   ////////////////////////////////////////////////////////////////////////////////
-  eEC  eJob_checkCluster(Interface::Session* pSession);
+  eEC  eJob_checkCluster(Session* pSession);
   void vJob_recv(Job* pJob);
   void vJob_send(Job* pJob);
-  void vJob_post(Interface::Session* pSession, Job* pJob);
+  void vJob_post(Session* pSession, Job* pJob);
 }
 
 bool bJobCompare(void* pObjectInsert, void* pObjectScan, bool& bMatch);

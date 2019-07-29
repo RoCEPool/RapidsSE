@@ -29,7 +29,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_InflateRows(Interface::Session* pSession);
+    Job_InflateRows(Session* pSession);
     ~Job_InflateRows(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -46,9 +46,9 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_InflateRows* _pJob_InflateRows(void* aAddr);
   
-  Job* pJob_InflateRows_pre(Interface::Session* pSession);
-  void vJob_InflateRows_post(Interface::Session* pSession, Job* pJob);
-  void vJob_InflateRows_delete(Interface::Session* pSession, Job* pJob);
+  Job* pJob_InflateRows_pre(Session* pSession);
+  void vJob_InflateRows_post(Session* pSession, Job* pJob);
+  void vJob_InflateRows_delete(Session* pSession, Job* pJob);
   void vRetrieveRows(Job_InflateRows* pJob_InflateRows, CrwBuffer* pCrwBuffer, Row* pRow);
   void vRetrieveColumns(Job_InflateRows* pJob_InflateRows, CrwBuffer* pCrwBuffer, Row* pRow);
   void vJob_InflateRows_show(Job* pJob);

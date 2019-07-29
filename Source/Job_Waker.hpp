@@ -17,7 +17,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Waker(Interface::Session* pSession);
+    Job_Waker(Session* pSession);
     ~Job_Waker(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -36,7 +36,7 @@ namespace Jobs
   Job_Waker* _pJob_Waker(void* aAddr);
   
   Job* pJob_Waker_new(Job* pArg);
-  void vJob_Waker_delete(Interface::Session* pSession, Job* pJob);
+  void vJob_Waker_delete(Session* pSession, Job* pJob);
   void vJob_Waker_show(Job* pJob);
   
   JobClass* pJob_Waker_class(pFUN** aaFun);

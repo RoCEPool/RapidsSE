@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job__Cancelled* _pJob__Cancelled(void* aAddr);
   
-  void vJob__Cancelled_delete(Interface::Session* pSession, Job* pJob);
+  void vJob__Cancelled_delete(Session* pSession, Job* pJob);
   
   JobClass* pJob__Cancelled_class(pFUN** aaFun);
 }

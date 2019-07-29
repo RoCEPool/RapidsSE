@@ -107,7 +107,7 @@ void Job_ListSchemas::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_ListSchemas::Job_ListSchemas(Interface::Session* pSession)
+Job_ListSchemas::Job_ListSchemas(Session* pSession)
 : Job(CN_JOB_LISTSCHEMAS, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTSCHEMAS,_FOOTER_);
@@ -197,7 +197,7 @@ Footer* Job_ListSchemas::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_ListSchemas_pre(Interface::Session* pSession)
+Job* Jobs::pJob_ListSchemas_pre(Session* pSession)
 {
   Job_ListSchemas* pJob_ListSchemas = new Job_ListSchemas(pSession);
   
@@ -215,7 +215,7 @@ Job* Jobs::pJob_ListSchemas_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_ListSchemas_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_ListSchemas_delete(Session* pSession, Job* pJob)
 {
   Job_ListSchemas* pJob_ListSchemas = _pJob_ListSchemas(pJob);
 

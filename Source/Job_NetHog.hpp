@@ -19,7 +19,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_NetHog(Interface::Session* pSession);
+    Job_NetHog(Session* pSession);
     ~Job_NetHog(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -36,10 +36,10 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_NetHog* _pJob_NetHog(void* aAddr);
   
-  Job* pJob_NetHog_pre(Interface::Session* pSession);
-  void vJob_NetHog_post(Interface::Session* pSession, Job* pJob);
+  Job* pJob_NetHog_pre(Session* pSession);
+  void vJob_NetHog_post(Session* pSession, Job* pJob);
   Job* pJob_NetHog_new(Job* pArg);
-  void vJob_NetHog_delete(Interface::Session* pSession, Job* pJob);
+  void vJob_NetHog_delete(Session* pSession, Job* pJob);
   void vJob_NetHog_show(Job* pJob);
   
   JobClass* pJob_NetHog_class(pFUN** aaFun);

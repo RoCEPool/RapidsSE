@@ -111,7 +111,7 @@ void Job_WriteBuffer::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_WriteBuffer::Job_WriteBuffer(Interface::Session* pSession)
+Job_WriteBuffer::Job_WriteBuffer(Session* pSession)
 : Job(CN_JOB_WRITEBUFFER, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEBUFFER,_FOOTER_);
@@ -433,7 +433,7 @@ Footer* Job_WriteBuffer::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_WriteBuffer_pre(Interface::Session* pSession)
+Job* Jobs::pJob_WriteBuffer_pre(Session* pSession)
 {
   Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(pSession);
   
@@ -453,7 +453,7 @@ Job* Jobs::pJob_WriteBuffer_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_WriteBuffer_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_WriteBuffer_delete(Session* pSession, Job* pJob)
 {
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJob);
   

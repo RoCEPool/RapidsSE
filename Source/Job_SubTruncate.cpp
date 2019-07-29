@@ -102,7 +102,7 @@ void Job_SubTruncate::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SubTruncate::Job_SubTruncate(Interface::Session* pSession)
+Job_SubTruncate::Job_SubTruncate(Session* pSession)
 : Job(CN_JOB_SUBTRUNCATE, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBTRUNCATE,_FOOTER_);
@@ -169,7 +169,7 @@ Footer* Job_SubTruncate::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubTruncate_pre(Interface::Session* pSession)
+Job* Jobs::pJob_SubTruncate_pre(Session* pSession)
 {
   Job_SubTruncate* pJob_SubTruncate = new Job_SubTruncate(pSession);
   
@@ -179,7 +179,7 @@ Job* Jobs::pJob_SubTruncate_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_SubTruncate_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_SubTruncate_delete(Session* pSession, Job* pJob)
 {
   Job_SubTruncate* pJob_SubTruncate = _pJob_SubTruncate(pJob);
   

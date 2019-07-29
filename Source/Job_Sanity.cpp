@@ -107,7 +107,7 @@ void Job_Sanity::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Sanity::Job_Sanity(Interface::Session* pSession)
+Job_Sanity::Job_Sanity(Session* pSession)
 : Job(CN_JOB_SANITY, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SANITY,_FOOTER_);
@@ -199,7 +199,7 @@ Footer* Job_Sanity::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Sanity_pre(Interface::Session* pSession)
+Job* Jobs::pJob_Sanity_pre(Session* pSession)
 {
   Job_Sanity* pJob_Sanity = new Job_Sanity(pSession);
   
@@ -217,7 +217,7 @@ Job* Jobs::pJob_Sanity_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Sanity_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Sanity_delete(Session* pSession, Job* pJob)
 {
   Job_Sanity* pJob_Sanity = _pJob_Sanity(pJob);
   

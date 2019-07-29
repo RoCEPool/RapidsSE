@@ -18,7 +18,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_WaitCluster(Interface::Session* pSession);
+    Job_WaitCluster(Session* pSession);
     ~Job_WaitCluster(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -35,9 +35,9 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_WaitCluster* _pJob_WaitCluster(void* aAddr);
   
-  Job* pJob_WaitCluster_pre(Interface::Session* pSession);
-  void vJob_WaitCluster_post(Interface::Session* pSession, Job* pJob);
-  void vJob_WaitCluster_delete(Interface::Session* pSession, Job* pJob);
+  Job* pJob_WaitCluster_pre(Session* pSession);
+  void vJob_WaitCluster_post(Session* pSession, Job* pJob);
+  void vJob_WaitCluster_delete(Session* pSession, Job* pJob);
   void vJob_WaitCluster_show(Job* pJob);
   
   JobClass* pJob_WaitCluster_class(pFUN** pNextFun);

@@ -107,7 +107,7 @@ void Job_Connector::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Connector::Job_Connector(Interface::Session* pSession)
+Job_Connector::Job_Connector(Session* pSession)
 : Job(CN_JOB_CONNECTOR, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CONNECTOR,_FOOTER_);
@@ -183,7 +183,7 @@ Job* Jobs::pJob_Connector_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Connector_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Connector_delete(Session* pSession, Job* pJob)
 {
   Job_Connector* pJob_Connector = _pJob_Connector(pJob);
   

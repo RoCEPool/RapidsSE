@@ -107,7 +107,7 @@ void Job_CreateTenant::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_CreateTenant::Job_CreateTenant(Interface::Session* pSession)
+Job_CreateTenant::Job_CreateTenant(Session* pSession)
 : Job(CN_JOB_CREATETENANT, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETENANT,_FOOTER_);
@@ -199,7 +199,7 @@ Footer* Job_CreateTenant::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_CreateTenant_pre(Interface::Session* pSession)
+Job* Jobs::pJob_CreateTenant_pre(Session* pSession)
 {
   Job_CreateTenant* pJob_CreateTenant = new Job_CreateTenant(pSession);
   
@@ -217,7 +217,7 @@ Job* Jobs::pJob_CreateTenant_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_CreateTenant_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_CreateTenant_delete(Session* pSession, Job* pJob)
 {
   Job_CreateTenant* pJob_CreateTenant = _pJob_CreateTenant(pJob);
   

@@ -107,7 +107,7 @@ void Job_Report::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Report::Job_Report(Interface::Session* pSession)
+Job_Report::Job_Report(Session* pSession)
 : Job(CN_JOB_REPORT, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPORT,_FOOTER_);
@@ -189,7 +189,7 @@ Footer* Job_Report::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Report_pre(Interface::Session* pSession)
+Job* Jobs::pJob_Report_pre(Session* pSession)
 {
   i8 nTokens;
 
@@ -232,7 +232,7 @@ Job* Jobs::pJob_Report_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Report_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Report_delete(Session* pSession, Job* pJob)
 {
   Job_Report* pJob_Report = _pJob_Report(pJob);
   

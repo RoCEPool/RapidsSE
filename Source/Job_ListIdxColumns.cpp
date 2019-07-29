@@ -107,7 +107,7 @@ void Job_ListIdxColumns::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_ListIdxColumns::Job_ListIdxColumns(Interface::Session* pSession)
+Job_ListIdxColumns::Job_ListIdxColumns(Session* pSession)
 : Job(CN_JOB_LISTIDXCOLUMNS, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTIDXCOLUMNS,_FOOTER_);
@@ -205,7 +205,7 @@ Footer* Job_ListIdxColumns::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_ListIdxColumns_pre(Interface::Session* pSession)
+Job* Jobs::pJob_ListIdxColumns_pre(Session* pSession)
 {
   Job_ListIdxColumns* pJob_ListIdxColumns = new Job_ListIdxColumns(pSession);
   
@@ -223,7 +223,7 @@ Job* Jobs::pJob_ListIdxColumns_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_ListIdxColumns_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_ListIdxColumns_delete(Session* pSession, Job* pJob)
 {
   Job_ListIdxColumns* pJob_ListIdxColumns = _pJob_ListIdxColumns(pJob);
   

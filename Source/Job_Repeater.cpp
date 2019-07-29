@@ -107,7 +107,7 @@ void Job_Repeater::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Repeater::Job_Repeater(Interface::Session* pSession)
+Job_Repeater::Job_Repeater(Session* pSession)
 : Job(CN_JOB_REPEATER, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPEATER,_FOOTER_);
@@ -184,7 +184,7 @@ Footer* Job_Repeater::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Repeater_pre(Interface::Session* pSession)
+Job* Jobs::pJob_Repeater_pre(Session* pSession)
 {
   i8 nTokens;
 
@@ -231,7 +231,7 @@ Job* Jobs::pJob_Repeater_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Repeater_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Repeater_delete(Session* pSession, Job* pJob)
 {
   Job_Repeater* pJob_Repeater = _pJob_Repeater(pJob);
   

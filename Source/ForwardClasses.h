@@ -13,7 +13,7 @@ namespace Debugging     {                                                     }
 namespace Forth         { class Cell; class Dic; class ForthWord;             }
 namespace Grids         { class Grid; class Node;                             }
 namespace Indexes       { class IndexTree;                                    }
-namespace Interface     { class ApiState; class RecordBuffer; class Session;  }
+namespace Interface     { class ApiState; class RecordBuffer; class SessionState;  }
 namespace Jobs          { class Job; class JobList;
                                      class Job_CreateTable;
                                      class Job_CreateIndex;                   }

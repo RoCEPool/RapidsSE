@@ -107,7 +107,7 @@ void Job_VisualizeTable::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_VisualizeTable::Job_VisualizeTable(Interface::Session* pSession)
+Job_VisualizeTable::Job_VisualizeTable(Session* pSession)
 : Job(CN_JOB_VISUALIZETABLE, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_VISUALIZETABLE,_FOOTER_);
@@ -198,7 +198,7 @@ Footer* Job_VisualizeTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_VisualizeTable_pre(Interface::Session* pSession)
+Job* Jobs::pJob_VisualizeTable_pre(Session* pSession)
 {
   Job_VisualizeTable* pJob_VisualizeTable = new Job_VisualizeTable(pSession);
   
@@ -216,7 +216,7 @@ Job* Jobs::pJob_VisualizeTable_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_VisualizeTable_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_VisualizeTable_delete(Session* pSession, Job* pJob)
 {
   Job_VisualizeTable* pJob_VisualizeTable = _pJob_VisualizeTable(pJob);
   

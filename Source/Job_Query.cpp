@@ -107,7 +107,7 @@ void Job_Query::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Query::Job_Query(Interface::Session* pSession)
+Job_Query::Job_Query(Session* pSession)
 : JobMark2(CN_JOB_QUERY, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_QUERY,_FOOTER_);
@@ -257,7 +257,7 @@ Footer* Job_Query::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Query_pre(Interface::Session* pSession)
+Job* Jobs::pJob_Query_pre(Session* pSession)
 {
   Job_Query* pJob_Query = new Job_Query(pSession);
   
@@ -275,7 +275,7 @@ Job* Jobs::pJob_Query_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Query_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Query_delete(Session* pSession, Job* pJob)
 {
   Job_Query* pJob_Query = _pJob_Query(pJob);
   

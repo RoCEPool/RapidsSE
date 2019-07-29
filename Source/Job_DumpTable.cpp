@@ -107,7 +107,7 @@ void Job_DumpTable::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_DumpTable::Job_DumpTable(Interface::Session* pSession)
+Job_DumpTable::Job_DumpTable(Session* pSession)
 : Job(CN_JOB_DUMPTABLE, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DUMPTABLE,_FOOTER_);
@@ -198,7 +198,7 @@ Footer* Job_DumpTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_DumpTable_pre(Interface::Session* pSession)
+Job* Jobs::pJob_DumpTable_pre(Session* pSession)
 {
   Job_DumpTable* pJob_DumpTable = new Job_DumpTable(pSession);
   
@@ -216,7 +216,7 @@ Job* Jobs::pJob_DumpTable_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_DumpTable_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_DumpTable_delete(Session* pSession, Job* pJob)
 {
   Job_DumpTable* pJob_DumpTable = _pJob_DumpTable(pJob);
   

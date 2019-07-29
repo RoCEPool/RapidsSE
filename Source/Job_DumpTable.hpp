@@ -18,7 +18,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_DumpTable(Interface::Session* pSession);
+    Job_DumpTable(Session* pSession);
     ~Job_DumpTable(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -35,8 +35,8 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_DumpTable* _pJob_DumpTable(void* aAddr);
   
-  Job* pJob_DumpTable_pre(Interface::Session* pSession);
-  void vJob_DumpTable_delete(Interface::Session* pSession, Job* pJob);
+  Job* pJob_DumpTable_pre(Session* pSession);
+  void vJob_DumpTable_delete(Session* pSession, Job* pJob);
   void vJob_DumpTable_show(Job* pJob);
   
   JobClass* pJob_DumpTable_class(pFUN** aaFun);

@@ -107,7 +107,7 @@ void Job_ListColumns::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_ListColumns::Job_ListColumns(Interface::Session* pSession)
+Job_ListColumns::Job_ListColumns(Session* pSession)
 : Job(CN_JOB_LISTCOLUMNS, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTCOLUMNS,_FOOTER_);
@@ -201,7 +201,7 @@ Footer* Job_ListColumns::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_ListColumns_pre(Interface::Session* pSession)
+Job* Jobs::pJob_ListColumns_pre(Session* pSession)
 {
   Job_ListColumns* pJob_ListColumns = new Job_ListColumns(pSession);
   
@@ -219,7 +219,7 @@ Job* Jobs::pJob_ListColumns_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_ListColumns_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_ListColumns_post(Session* pSession, Job* pJob)
 {
   Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJob);
   
@@ -258,7 +258,7 @@ void Jobs::vJob_ListColumns_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_ListColumns_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_ListColumns_delete(Session* pSession, Job* pJob)
 {
   Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJob);
   

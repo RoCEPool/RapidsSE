@@ -107,7 +107,7 @@ void Job_InflateRows::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_InflateRows::Job_InflateRows(Interface::Session* pSession)
+Job_InflateRows::Job_InflateRows(Session* pSession)
 : Job(CN_JOB_INFLATEROWS, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INFLATEROWS,_FOOTER_);
@@ -279,7 +279,7 @@ Footer* Job_InflateRows::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_InflateRows_pre(Interface::Session* pSession)
+Job* Jobs::pJob_InflateRows_pre(Session* pSession)
 {
   Job_InflateRows* pJob_InflateRows = new Job_InflateRows(pSession);
   
@@ -297,7 +297,7 @@ Job* Jobs::pJob_InflateRows_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_InflateRows_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_InflateRows_post(Session* pSession, Job* pJob)
 {
   Job_InflateRows* pJob_InflateRows = _pJob_InflateRows(pJob);
   
@@ -319,7 +319,7 @@ void Jobs::vJob_InflateRows_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_InflateRows_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_InflateRows_delete(Session* pSession, Job* pJob)
 {
   Job_InflateRows* pJob_InflateRows = _pJob_InflateRows(pJob);
   

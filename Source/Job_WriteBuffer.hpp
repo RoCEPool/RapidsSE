@@ -27,11 +27,11 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_WriteBuffer(Interface::Session* pSession);
+    Job_WriteBuffer(Session* pSession);
     ~Job_WriteBuffer(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static void vSpawnJobWriteBuffer(Interface::Session* pSession,
+    static void vSpawnJobWriteBuffer(Session* pSession,
                                      Stz* sTableName, eDS eDataSource,
                                      CrwBuffer* pCrwBuffer,
                                      i8 iParentJobId,
@@ -52,9 +52,9 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_WriteBuffer* _pJob_WriteBuffer(void* aAddr);
   
-  Job* pJob_WriteBuffer_pre(Interface::Session* pSession);
+  Job* pJob_WriteBuffer_pre(Session* pSession);
   Job* pJob_WriteBuffer_new(Job* pArg);
-  void vJob_WriteBuffer_delete(Interface::Session* pSession, Job* pJob);
+  void vJob_WriteBuffer_delete(Session* pSession, Job* pJob);
   void vJob_WriteBuffer_show(Job* pJob);
   
   JobClass* pJob_WriteBuffer_class(pFUN** aaFun);

@@ -107,7 +107,7 @@ void Job_Receiver::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Receiver::Job_Receiver(Interface::Session* pSession)
+Job_Receiver::Job_Receiver(Session* pSession)
 : Job(CN_JOB_RECEIVER, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_RECEIVER,_FOOTER_);
@@ -225,7 +225,7 @@ Job* Jobs::pJob_Receiver_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Receiver_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Receiver_delete(Session* pSession, Job* pJob)
 {
   Job_Receiver* pJob_Receiver = _pJob_Receiver(pJob);
   

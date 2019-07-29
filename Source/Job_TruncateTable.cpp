@@ -107,7 +107,7 @@ void Job_TruncateTable::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_TruncateTable::Job_TruncateTable(Interface::Session* pSession)
+Job_TruncateTable::Job_TruncateTable(Session* pSession)
 : Job(CN_JOB_TRUNCATETABLE, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_TRUNCATETABLE,_FOOTER_);
@@ -198,7 +198,7 @@ Footer* Job_TruncateTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_TruncateTable_pre(Interface::Session* pSession)
+Job* Jobs::pJob_TruncateTable_pre(Session* pSession)
 {
   Job_TruncateTable* pJob_TruncateTable = new Job_TruncateTable(pSession);
   
@@ -216,7 +216,7 @@ Job* Jobs::pJob_TruncateTable_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_TruncateTable_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_TruncateTable_delete(Session* pSession, Job* pJob)
 {
   Job_TruncateTable* pJob_TruncateTable = _pJob_TruncateTable(pJob);
   

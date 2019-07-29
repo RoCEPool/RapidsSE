@@ -20,7 +20,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_SubIndexJoin(Interface::Session* pSession);
+    Job_SubIndexJoin(Session* pSession);
     ~Job_SubIndexJoin(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -36,8 +36,8 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_SubIndexJoin* _pJob_SubIndexJoin(void* aAddr);
   
-  Job* pJob_SubIndexJoin_pre(Interface::Session* pSession);
-  void vJob_SubIndexJoin_delete(Interface::Session* pSession, Job* pJob);
+  Job* pJob_SubIndexJoin_pre(Session* pSession);
+  void vJob_SubIndexJoin_delete(Session* pSession, Job* pJob);
   void vJob_SubIndexJoin_show(Job* pJob);
   
   JobClass* pJob_SubIndexJoin_class(pFUN** aaFun);

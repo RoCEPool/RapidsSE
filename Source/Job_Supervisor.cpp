@@ -107,7 +107,7 @@ void Job_Supervisor::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Supervisor::Job_Supervisor(Interface::Session* pSession)
+Job_Supervisor::Job_Supervisor(Session* pSession)
 : Job(CN_JOB_SUPERVISOR, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUPERVISOR,_FOOTER_);
@@ -184,7 +184,7 @@ Job* Jobs::pJob_Supervisor_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Supervisor_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Supervisor_delete(Session* pSession, Job* pJob)
 {
   Job_Supervisor* pJob_Supervisor = _pJob_Supervisor(pJob);
   

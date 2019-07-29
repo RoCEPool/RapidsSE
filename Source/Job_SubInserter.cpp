@@ -102,7 +102,7 @@ void Job_SubInserter::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SubInserter::Job_SubInserter(Interface::Session* pSession)
+Job_SubInserter::Job_SubInserter(Session* pSession)
 : Job(CN_JOB_SUBINSERTER, pSession), JobWriteBehind(DS_INSERT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINSERTER,_FOOTER_);
@@ -254,7 +254,7 @@ Footer* Job_SubInserter::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubInserter_pre(Interface::Session* pSession)
+Job* Jobs::pJob_SubInserter_pre(Session* pSession)
 {
   Job_SubInserter* pJob_SubInserter = new Job_SubInserter(pSession);
   
@@ -284,7 +284,7 @@ Job* Jobs::pJob_SubInserter_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_SubInserter_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_SubInserter_delete(Session* pSession, Job* pJob)
 {
   Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(pJob);
   

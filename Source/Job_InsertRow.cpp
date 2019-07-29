@@ -107,7 +107,7 @@ void Job_InsertRow::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_InsertRow::Job_InsertRow(Interface::Session* pSession)
+Job_InsertRow::Job_InsertRow(Session* pSession)
 : Job(CN_JOB_INSERTROW, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROW,_FOOTER_);
@@ -231,7 +231,7 @@ Footer* Job_InsertRow::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_InsertRow_pre(Interface::Session* pSession)
+Job* Jobs::pJob_InsertRow_pre(Session* pSession)
 {
   Job_InsertRow* pJob_InsertRow = new Job_InsertRow(pSession);
   
@@ -266,7 +266,7 @@ Job* Jobs::pJob_InsertRow_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_InsertRow_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_InsertRow_delete(Session* pSession, Job* pJob)
 {
   Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJob);
   

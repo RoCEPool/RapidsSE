@@ -107,7 +107,7 @@ void Job_VerifyIndex::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_VerifyIndex::Job_VerifyIndex(Interface::Session* pSession)
+Job_VerifyIndex::Job_VerifyIndex(Session* pSession)
 : Job(CN_JOB_VERIFYINDEX, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_VERIFYINDEX,_FOOTER_);
@@ -202,7 +202,7 @@ Footer* Job_VerifyIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_VerifyIndex_pre(Interface::Session* pSession)
+Job* Jobs::pJob_VerifyIndex_pre(Session* pSession)
 {
   Job_VerifyIndex* pJob_VerifyIndex = new Job_VerifyIndex(pSession);
   
@@ -220,7 +220,7 @@ Job* Jobs::pJob_VerifyIndex_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_VerifyIndex_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_VerifyIndex_delete(Session* pSession, Job* pJob)
 {
   Job_VerifyIndex* pJob_VerifyIndex = _pJob_VerifyIndex(pJob);
   

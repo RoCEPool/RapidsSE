@@ -18,7 +18,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_ShowCluster(Interface::Session* pSession);
+    Job_ShowCluster(Session* pSession);
     ~Job_ShowCluster(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -35,8 +35,8 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_ShowCluster* _pJob_ShowCluster(void* aAddr);
   
-  Job* pJob_ShowCluster_pre(Interface::Session* pSession);
-  void vJob_ShowCluster_delete(Interface::Session* pSession, Job* pJob);
+  Job* pJob_ShowCluster_pre(Session* pSession);
+  void vJob_ShowCluster_delete(Session* pSession, Job* pJob);
   void vJob_ShowCluster_show(Job* pJob);
   
   JobClass* pJob_ShowCluster_class(pFUN** aaFun);

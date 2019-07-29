@@ -98,7 +98,7 @@ namespace Tasks
       Op*   m_pOp;          // OR the op for this task [DML]
     };
   
-    Interface::Session* m_pSession; // session for this task
+    Session* m_pSession; // session for this task
     Threads::Thread*    m_pThread;  // current thread
 
     eTS     m_eState;       // state (running, sleeping, ...)
@@ -142,8 +142,8 @@ namespace Tasks
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Task(Job* pJob, Interface::Session* pSession);
-    Task(Op* pOp, Interface::Session* pSession);
+    Task(Job* pJob, Session* pSession);
+    Task(Op* pOp, Session* pSession);
     void vInit(void);
     ~Task(void) noexcept(false);
     
@@ -184,8 +184,8 @@ namespace Tasks
     bool bSeeded(void);
     void vSeedJob(void);
     Grids::Node* pSendNode(void);
-    Interface::Session* pSession(void);
-    void vSession(Interface::Session* pSession);
+    Session* pSession(void);
+    void vSession(Session* pSession);
     void vSleepUsec(i8 iMicroSeconds);
     void vSprint(s48K& sFormat, s48K& sString);
     void vStackContents(Stack* pStack, s48K& sStackContents);

@@ -5,6 +5,7 @@
 #include "Jobs.h"
 #include "AM.hpp"
 
+#include "StorageEngine.h"
 #include "Session.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -165,7 +166,7 @@ bool Job::bIsForeign(i8 iJobId)
   i8 iOrigin = Job::iOriginatorNode(iJobId);
   
   bool bIsForeign =
-   iOrigin == AM::pGrid()->m_iThisNode ? false : true;
+   iOrigin == AM::iThisNodeNo() ? false : true;
   
   return bIsForeign;
 }
@@ -554,7 +555,7 @@ void Job::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* check if the cluster has started                                           */
 /*----------------------------------------------------------------------------*/
-eEC Jobs::eJob_checkCluster(Interface::Session* pSession)
+eEC Jobs::eJob_checkCluster(Session* pSession)
 {
   if (AM::pGrid()->m_bHasStarted)
     return EC_NONE;
@@ -565,7 +566,7 @@ eEC Jobs::eJob_checkCluster(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* post-execute job function                                                  */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_post(Session* pSession, Job* pJob)
 {
   eCN eClass = pJob->eClass();
   JobClass* pJobClass = JobClass::pFind(eClass);

@@ -18,7 +18,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Periodic(Interface::Session* pSession);
+    Job_Periodic(Session* pSession);
     ~Job_Periodic(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -36,7 +36,7 @@ namespace Jobs
   Job_Periodic* _pJob_Periodic(void* aAddr);
   
   Job* pJob_Periodic_new(Job* pArg);
-  void vJob_Periodic_delete(Interface::Session* pSession, Job* pJob);
+  void vJob_Periodic_delete(Session* pSession, Job* pJob);
   void vJob_Periodic_show(Job* pJob);
   
   JobClass* pJob_Periodic_class(pFUN** aaFun);

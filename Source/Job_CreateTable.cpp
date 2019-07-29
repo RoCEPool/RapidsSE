@@ -116,7 +116,7 @@ void Job_CreateTable::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_CreateTable::Job_CreateTable(Interface::Session* pSession)
+Job_CreateTable::Job_CreateTable(Session* pSession)
 : Job(CN_JOB_CREATETABLE, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
@@ -617,7 +617,7 @@ Footer* Job_CreateTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_CreateTable_pre(Interface::Session* pSession)
+Job* Jobs::pJob_CreateTable_pre(Session* pSession)
 {
   Job_CreateTable* pJob_CreateTable = new Job_CreateTable(pSession);
   
@@ -635,7 +635,7 @@ Job* Jobs::pJob_CreateTable_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* print success                                                              */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_CreateTable_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_CreateTable_post(Session* pSession, Job* pJob)
 {
   vTrace("I logNote here\n"_Stz);
   
@@ -666,7 +666,7 @@ Job* Jobs::pJob_CreateTable_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_CreateTable_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_CreateTable_delete(Session* pSession, Job* pJob)
 {
   Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJob);
     

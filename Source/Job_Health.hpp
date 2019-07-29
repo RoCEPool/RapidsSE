@@ -19,7 +19,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Health(Interface::Session* pSession);
+    Job_Health(Session* pSession);
     ~Job_Health(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -36,10 +36,10 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Health* _pJob_Health(void* aAddr);
   
-  Job* pJob_Health_pre(Interface::Session* pSession);
-  void vJob_Health_post(Interface::Session* pSession, Job* pJob);
+  Job* pJob_Health_pre(Session* pSession);
+  void vJob_Health_post(Session* pSession, Job* pJob);
   Job* pJob_Health_new(Job* pArg);
-  void vJob_Health_delete(Interface::Session* pSession, Job* pJob);
+  void vJob_Health_delete(Session* pSession, Job* pJob);
   void vJob_Health_show(Job* pJob);
   
   JobClass* pJob_Health_class(pFUN** aaFun);

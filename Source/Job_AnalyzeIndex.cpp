@@ -103,7 +103,7 @@ void Job_AnalyzeIndex::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_AnalyzeIndex::Job_AnalyzeIndex(Interface::Session* pSession)
+Job_AnalyzeIndex::Job_AnalyzeIndex(Session* pSession)
 : Job(CN_JOB_ANALYZEINDEX, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_ANALYZEINDEX,_FOOTER_);
@@ -202,7 +202,7 @@ Footer* Job_AnalyzeIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_AnalyzeIndex_pre(Interface::Session* pSession)
+Job* Jobs::pJob_AnalyzeIndex_pre(Session* pSession)
 {
   Job_AnalyzeIndex* pJob_AnalyzeIndex = new Job_AnalyzeIndex(pSession);
   
@@ -230,7 +230,7 @@ Job* Jobs::pJob_AnalyzeIndex_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_AnalyzeIndex_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_AnalyzeIndex_delete(Session* pSession, Job* pJob)
 {
   Job_AnalyzeIndex* pJob_AnalyzeIndex = _pJob_AnalyzeIndex(pJob);
   

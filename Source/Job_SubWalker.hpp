@@ -25,7 +25,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_SubWalker(Interface::Session* pSession);
+    Job_SubWalker(Session* pSession);
     ~Job_SubWalker(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -45,8 +45,8 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_SubWalker* _pJob_SubWalker(void* aAddr);
   
-  Job* pJob_SubWalker_pre(Interface::Session* pSession);
-  void vJob_SubWalker_delete(Interface::Session* pSession, Job* pJob);
+  Job* pJob_SubWalker_pre(Session* pSession);
+  void vJob_SubWalker_delete(Session* pSession, Job* pJob);
   void vJob_SubWalker_show(Job* pJob);
   
   JobClass* pJob_SubWalker_class(pFUN** aaFun);

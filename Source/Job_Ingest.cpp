@@ -107,7 +107,7 @@ void Job_Ingest::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Ingest::Job_Ingest(Interface::Session* pSession)
+Job_Ingest::Job_Ingest(Session* pSession)
 : Job(CN_JOB_INGEST, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
@@ -186,7 +186,7 @@ Footer* Job_Ingest::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Ingest_pre(Interface::Session* pSession)
+Job* Jobs::pJob_Ingest_pre(Session* pSession)
 {
   i8 nTokens;
 
@@ -229,7 +229,7 @@ Job* Jobs::pJob_Ingest_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Ingest_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Ingest_delete(Session* pSession, Job* pJob)
 {
   Job_Ingest* pJob_Ingest = _pJob_Ingest(pJob);
   

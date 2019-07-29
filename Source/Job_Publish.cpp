@@ -107,7 +107,7 @@ void Job_Publish::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Publish::Job_Publish(Interface::Session* pSession)
+Job_Publish::Job_Publish(Session* pSession)
 : Job(CN_JOB_PUBLISH, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PUBLISH,_FOOTER_);
@@ -179,7 +179,7 @@ Footer* Job_Publish::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Publish_pre(Interface::Session* pSession)
+Job* Jobs::pJob_Publish_pre(Session* pSession)
 {
   i8 nTokens;
 
@@ -206,7 +206,7 @@ Job* Jobs::pJob_Publish_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Publish_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Publish_post(Session* pSession, Job* pJob)
 {
 }
 
@@ -223,7 +223,7 @@ Job* Jobs::pJob_Publish_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Publish_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Publish_delete(Session* pSession, Job* pJob)
 {
   Job_Publish* pJob_Publish = _pJob_Publish(pJob);
   
