@@ -2,10 +2,9 @@
 /* Completer.cpp -- multi-partition completer                                 */
 /*============================================================================*/
 
-#include "Tasks.h"
-#include "StorageEngine.h"
+#include "Jobs.h"
+#include "AM.hpp"
 
-extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
@@ -78,7 +77,7 @@ bool Completer::bIncProcessed(i8 nUnitsExpected)
   }
 
   if (C_UNKNOWN != m_nUnitsExpected) {
-    if (m_nPartitionsComplete == AM::pGrid()->m_nPartitions &&
+    if (m_nPartitionsComplete == AM::nPartitions() &&
         m_nUnitsProcessed == m_nUnitsExpected)
       bHasCompleted = true;
   }
