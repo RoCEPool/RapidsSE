@@ -150,6 +150,25 @@ void AM::vWriteLog(void) {
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* add a log entry                                                            */
+/*----------------------------------------------------------------------------*/
+void AM::vNote(Stz* aFormat, ...)
+{
+#ifdef WITH_SHARED_LOG
+  if (! AM::bLogging())
+    return;
+  
+  va_list xArgs;
+  
+  va_start(xArgs,aFormat);
+  
+  gpLog->iAddNoteArg(C_INF_GROUP,0,false,aFormat,xArgs);
+  
+  va_end(xArgs);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
 /* add a log entry for resource                                               */
 /*----------------------------------------------------------------------------*/
 void AM::vNote(eSR eSysRes,Stz* szFormat, ...)
