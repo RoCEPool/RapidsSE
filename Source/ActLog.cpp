@@ -2,11 +2,7 @@
 /* ActLog.cpp -- Action log helper                                            */
 /*============================================================================*/
 
-#include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
-extern Log* gpLog;
+#include "Logging.h"
 
 /*----------------------------------------------------------------------------*/
 /* add a new action to a sequence                                             */
