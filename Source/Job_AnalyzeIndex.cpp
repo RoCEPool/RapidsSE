@@ -2,12 +2,8 @@
 /* Job_AnalyzeIndex.cpp -- analyze index Job                                  */
 /*============================================================================*/
 
-// Job Short: AnalyzeIndex
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
+#include "Session.hpp"
 
 JobClass xJobClass_AnalyzeIndex =
 {
