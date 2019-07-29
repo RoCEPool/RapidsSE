@@ -3,9 +3,10 @@
 /*============================================================================*/
 
 #include "Jobs.h"
-#include "StorageEngine.h"
+#include "AM.hpp"
 
-extern AttachMap* gpAttachMap;
+#include "Session.hpp"
+
 extern i8 giClassSize[];
 
 /*----------------------------------------------------------------------------*/
