@@ -2,7 +2,7 @@
 /* IntLib.hpp -- integer utility                                              */
 /*============================================================================*/
 
-#include "Alignment.h"
+#include "Library.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- VLQ Support -------------------------------------------------------------*/
@@ -31,7 +31,7 @@ u8 IntLib::uBits(u8 uArg, i8 i_Bit, i8 nBits)
 /*----------------------------------------------------------------------------*/
 u8 IntLib::uByte(u8 uArg, i8 i_Byte)
 {
-  Word wWord;
+  _WordAsBytes wWord;
   
   wWord.m_uU8 = uArg;
   
@@ -226,18 +226,18 @@ i8 IntLib::iFlipEndian(i8 iArg)
   _WordAsBytes xArg;
   _WordAsBytes xResult;
   
-  xArg.m_iAsI8 = iArg;
+  xArg.m_iI8 = iArg;
   
-  xResult.m_caByte[7] = xArg.m_caByte[0];
-  xResult.m_caByte[6] = xArg.m_caByte[1];
-  xResult.m_caByte[5] = xArg.m_caByte[2];
-  xResult.m_caByte[4] = xArg.m_caByte[3];
-  xResult.m_caByte[3] = xArg.m_caByte[4];
-  xResult.m_caByte[2] = xArg.m_caByte[5];
-  xResult.m_caByte[1] = xArg.m_caByte[6];
-  xResult.m_caByte[0] = xArg.m_caByte[7];
+  xResult.m_yaByte[7] = xArg.m_yaByte[0];
+  xResult.m_yaByte[6] = xArg.m_yaByte[1];
+  xResult.m_yaByte[5] = xArg.m_yaByte[2];
+  xResult.m_yaByte[4] = xArg.m_yaByte[3];
+  xResult.m_yaByte[3] = xArg.m_yaByte[4];
+  xResult.m_yaByte[2] = xArg.m_yaByte[5];
+  xResult.m_yaByte[1] = xArg.m_yaByte[6];
+  xResult.m_yaByte[0] = xArg.m_yaByte[7];
 
-  return xResult.m_iAsI8;
+  return xResult.m_iI8;
 }
 
 /*----------------------------------------------------------------------------*/

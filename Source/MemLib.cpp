@@ -857,21 +857,21 @@ void MemLib::vWordFlip(w8* aWord)
   
   byte yByte;
   
-  yByte = aAsBytes->m_caByte[0];
-  aAsBytes->m_caByte[0] = aAsBytes->m_caByte[7];
-  aAsBytes->m_caByte[7] = yByte;
+  yByte = aAsBytes->m_yaByte[0];
+  aAsBytes->m_yaByte[0] = aAsBytes->m_yaByte[7];
+  aAsBytes->m_yaByte[7] = yByte;
   
-  yByte = aAsBytes->m_caByte[1];
-  aAsBytes->m_caByte[1] = aAsBytes->m_caByte[6];
-  aAsBytes->m_caByte[6] = yByte;
+  yByte = aAsBytes->m_yaByte[1];
+  aAsBytes->m_yaByte[1] = aAsBytes->m_yaByte[6];
+  aAsBytes->m_yaByte[6] = yByte;
   
-  yByte = aAsBytes->m_caByte[2];
-  aAsBytes->m_caByte[2] = aAsBytes->m_caByte[5];
-  aAsBytes->m_caByte[5] = yByte;
+  yByte = aAsBytes->m_yaByte[2];
+  aAsBytes->m_yaByte[2] = aAsBytes->m_yaByte[5];
+  aAsBytes->m_yaByte[5] = yByte;
   
-  yByte = aAsBytes->m_caByte[3];
-  aAsBytes->m_caByte[3] = aAsBytes->m_caByte[4];
-  aAsBytes->m_caByte[4] = yByte;
+  yByte = aAsBytes->m_yaByte[3];
+  aAsBytes->m_yaByte[3] = aAsBytes->m_yaByte[4];
+  aAsBytes->m_yaByte[4] = yByte;
 }
 
 /*----------------------------------------------------------------------------*/

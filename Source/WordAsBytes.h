@@ -7,8 +7,9 @@ namespace Correctness
 { 
   struct _WordAsBytes {
     union {
-      b1 m_caByte[C_BYTES_PER_WORD];
-      i8 m_iAsI8;
+      b1 m_yaByte[C_BYTES_PER_WORD];
+      i8 m_iI8;
+      u8 m_uU8;
     };
   };
 }

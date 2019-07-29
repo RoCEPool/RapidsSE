@@ -22,7 +22,6 @@ using namespace Alignment;
 
 #include "Line.hpp"
 #include "DoubleWord.hpp"
-#include "IntLib.hpp"
 #include "QuadWord.hpp"
 #include "CacheLine.hpp"
 #include "SpaceUnit.hpp"
