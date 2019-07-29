@@ -15,8 +15,6 @@ using namespace Measurement;
 
 //-----------------------------------------------------------------------------
 
-#include "Timer.hpp"
-
 #include "ByteRate.hpp"
 #include "FreqDist.hpp"
 #include "Now.hpp"

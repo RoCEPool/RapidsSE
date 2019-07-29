@@ -2,7 +2,6 @@
 /* Lock.cpp -- Shared Read / Exclusive Write Lock                             */
 /*============================================================================*/
 
-#include "StorageEngine.h"
 #include "Library.h"
 #include "AM.hpp"
 
@@ -465,7 +464,7 @@ void Lock::vGrabWrite(void)
     oTimer.vUpdate();
     if (oTimer.iMilliseconds() > 100 && ! bReported) {
       bReported = true;
-      Log::vNote("Lock::vGrabWrite -- Unable to grab write lock %p %s %p"_Stz,
+      AM::vNote("Lock::vGrabWrite -- Unable to grab write lock %p %s %p"_Stz,
                          this,
                          aLK[m_eLockKind],
                          m_uLockWord);
@@ -479,7 +478,7 @@ void Lock::vGrabWrite(void)
   } while ( ! iResult );
   
   if (bReported) {
-    Log::vNote("Lock::vGrabWrite -- Able to grab write lock %p %s %p"_Stz,
+    AM::vNote("Lock::vGrabWrite -- Able to grab write lock %p %s %p"_Stz,
                        this,
                        aLK[m_eLockKind],
                        m_uLockWord);

@@ -14,6 +14,8 @@ using namespace Library;
 
 //------------------------------------------------------------------------------
 
+#include "Timer.hpp"
+
 #include "EnumGroups.hpp"
 #include "Lock.hpp"
 #include "LockTracker.hpp"
