@@ -9,6 +9,7 @@
 #include "CompiledWith.h"
 #include "MachineTypes.h"
 #include "SystemIncludes.h"
+#include "Namespaces.h"
 
 //------------------------------------------------------------------------------
 
@@ -17,14 +18,11 @@ namespace Base
   void vCheckAssumptions(void);
 }
 
-using namespace Base;
-
 //------------------------------------------------------------------------------
 
 #include "AxiomaticConstants.h"
 #include "BitLib.hpp"
 #include "ByteLiterals.hpp"
-#include "ForwardClasses.h"
 #include "i3.hpp"
 #include "Null.hpp"
 #include "Structs.h"

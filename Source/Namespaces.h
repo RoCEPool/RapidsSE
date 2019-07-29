@@ -1,0 +1,82 @@
+/*============================================================================*/
+/* ForwardClasses.h -- Forward Class declarations                             */
+/*============================================================================*/
+#pragma once
+
+namespace Assembler     {                                                     }
+namespace Axioms        {                                                     }
+namespace Base          {                                                     }
+namespace Chunks        { class Formatters;                                   }
+namespace Commands      { class Command; class Parser; class Tokeniser;       }
+namespace Correctness   {                                                     }
+namespace Debugging     {                                                     }
+namespace Forth         { class Cell; class Dic; class ForthWord;             }
+namespace Grids         { class Grid; class Node;                             }
+namespace Indexes       { class IndexTree;                                    }
+namespace Interface     { class ApiState; class RecordBuffer; class SessionState;  }
+namespace Jobs          { class Job; class JobList;
+                                     class Job_CreateTable;
+                                     class Job_CreateIndex;                   }
+namespace Library       { class Lock; class LockTracker;                      }
+namespace Logging       {                                                     }
+namespace MetaData      {                                                     }
+namespace Measurement   { class StepTiming;                                   }
+namespace Partitioning  { class TablePtn;                                     }
+namespace Persistence   { class CarryOver;                                    }
+namespace Plans         {                                                     }
+namespace Pool          { class BufferPool; class HeapMem; class PoolBuffer;  }
+namespace Prompt        { class SePrompt;                                     }
+namespace PushDown      {                                                     }
+namespace Rows          { class CrwBuffer;                                    }
+namespace ScanSprint    {                                                     }
+namespace Scheduling    { class Queues; class Scheduler;                      }
+namespace Steps         { class Step;                                         }
+namespace StorageEngine { class AM; class Engine;                             }
+namespace Structures    {                                                     }
+namespace System        {                                                     }
+namespace Tasks         { class Task;                                         }
+namespace Threads       { class Thread;                                       }
+namespace Transactions  { class Tx; class TxSet;                              }
+namespace Transform     {                                                     }
+namespace Utilities     { class BPA;                                          }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+using namespace Assembler;
+using namespace Axioms;
+using namespace Base;
+using namespace Chunks;
+using namespace Commands;
+using namespace Correctness;
+using namespace Debugging;
+using namespace Forth;
+using namespace Grids;
+using namespace Indexes;
+using namespace Interface;
+using namespace Jobs;
+using namespace Library;
+using namespace Logging;
+using namespace MetaData;
+using namespace Measurement;
+using namespace Partitioning;
+using namespace Persistence;
+using namespace Plans;
+using namespace Pool;
+using namespace Prompt;
+using namespace PushDown;
+using namespace Rows;
+using namespace ScanSprint;
+using namespace Scheduling;
+using namespace Steps;
+using namespace StorageEngine;
+using namespace Structures;
+using namespace System;
+using namespace Tasks;
+using namespace Threads;
+using namespace Transactions;
+using namespace Transform;
+using namespace Utilities;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
