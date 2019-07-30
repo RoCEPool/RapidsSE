@@ -59,6 +59,7 @@ typedef String_t<C_MAX_VCH> sVCH;
 #include "ResourceTracker.hpp"
 #include "Statistics.hpp"
 #include "EnumFlags.hpp"
+#include "EnumGroups.h"
 
 #include "SysCall.hpp"
 #include "Shm.hpp"
