@@ -2,12 +2,8 @@
 /* Job_CopyBuffer.cpp -- CopyBuffer Job                                       */
 /*============================================================================*/
 
-// Job Short: SubInserter
-
 #include "Jobs.h"
 #include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_CopyBuffer =
 {

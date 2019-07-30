@@ -5,8 +5,6 @@
 #include "Jobs.h"
 #include "StorageEngine.h"
 
-extern AttachMap* gpAttachMap;
-
 JobClass xJobClass_WriteRecord =
 {
   CN_JOB_KIDEXPORT,       // class enum

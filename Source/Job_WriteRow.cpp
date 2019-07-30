@@ -5,14 +5,6 @@
 #include "Jobs.h"
 #include "StorageEngine.h"
 
-extern AttachMap* gpAttachMap;
-
-/* example:
- 
- ld lineitem "/tpch/SF1/lineitem.csv" ;
- 
- */
-
 JobClass xJobClass_WriteRow =
 {
   CN_JOB_WRITEROW,     // class enum

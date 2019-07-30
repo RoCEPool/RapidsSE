@@ -5,7 +5,6 @@
 
 namespace Jobs
 {
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_WriteRow : public Job,
                        public JobExtractRow
