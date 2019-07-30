@@ -19,7 +19,6 @@ using namespace StorageEngine;
 
 //-----------------------------------------------------------------------------
 
-#include "AM.hpp"
 #include "Arguments.hpp"
 #include "AttachMap.hpp"
 #include "Constants.hpp"
@@ -27,13 +26,6 @@ using namespace StorageEngine;
 #include "Finalizers.hpp"
 
 #include "Engine.hpp"
-
-
-typedef void (pDUMPFUN)(eCN eClass, Object* pObject, Stz*);
-extern pDUMPFUN *gpDump[];
-
-typedef void (pFINALIZE(eCN eClass, Object* pObject));
-extern pFINALIZE *gpFinalize[];
 
 /*============================================================================*/
 /* end                                                                        */

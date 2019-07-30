@@ -66,6 +66,12 @@ typedef String_t<C_MAX_VCH> sVCH;
 
 #define IGNORE_RETURN(call) call
 
+typedef void (pDUMPFUN)(eCN eClass, Object* pObject, Stz*);
+extern pDUMPFUN *gpDump[];
+
+typedef void (pFINALIZE(eCN eClass, Object* pObject));
+extern pFINALIZE *gpFinalize[];
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
