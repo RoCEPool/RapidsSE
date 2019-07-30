@@ -46,6 +46,7 @@ using namespace Transform;
 #include "EntWrk.hpp"
 
 #include "Record.hpp"
+#include "RecordBuffer.hpp"
 #include "IrwBuffer.hpp"
 
 

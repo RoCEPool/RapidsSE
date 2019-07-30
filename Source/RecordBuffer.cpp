@@ -2,7 +2,7 @@
 /* RecordBuffer.cpp -- Record Buffer                                          */
 /*============================================================================*/
 
-#include "Interface.h"
+#include "Transform.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-RecordBuffer* Interface::_pRecordBuffer(void* aAddr)
+RecordBuffer* Transform::_pRecordBuffer(void* aAddr)
 {
   RecordBuffer* pRecordBuffer = reinterpret_cast<RecordBuffer*>(aAddr);
   

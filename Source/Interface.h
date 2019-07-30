@@ -20,7 +20,6 @@ using namespace Interface;
 
 //-----------------------------------------------------------------------------
 
-#include "RecordBuffer.hpp"
 
 #include "ApiMacros.hpp"
 

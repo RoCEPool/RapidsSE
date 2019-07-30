@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Interface
+namespace Transform
 {
   const int C_SIZEOF_RECORDSIZE = 4;
   
