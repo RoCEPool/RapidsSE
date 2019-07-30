@@ -4,7 +4,6 @@
 #pragma once
 
 namespace Assembler     {                                                     }
-namespace Axioms        {                                                     }
 namespace Base          {                                                     }
 namespace Chunks        { class Formatters;                                   }
 namespace Commands      { class Command; class Parser; class Tokeniser;       }
@@ -44,7 +43,6 @@ namespace Utilities     { class BPA;                                          }
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 using namespace Assembler;
-using namespace Axioms;
 using namespace Base;
 using namespace Chunks;
 using namespace Commands;
