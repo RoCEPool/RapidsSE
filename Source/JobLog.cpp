@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "Jobs.h"
-#include "StorageEngine.h"
 #include "AM.hpp"
 #include "eQK.h"
 #include "eTS.h"
@@ -85,7 +84,7 @@ void JobLog::vNoteState(Jobs::Job* pJob, Stz* szPoint)
                       pJob,
                       
                       aTS[AM::iTaskState(pJob->m_pExecutingTask)],
-                      aQK[pJob->m_pExecutingTask->eQueue()]
+                      aQK[AM::iTaskQueue(pJob->m_pExecutingTask)]
                       );
   
   if (pJob->m_bWasReceived) {

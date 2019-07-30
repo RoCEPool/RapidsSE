@@ -161,6 +161,10 @@ i8 AM::nRandomLevels(void) {
   i8 nLevels = Random::iLogLevel(3,C_FLAT_FREQ + 1,pTask->i_NextRnd()) + 1;
   return nLevels;
 }
+i8 AM::iTaskQueue(Task* pTask) {
+  eQK eQueue = pTask->eQueue();
+  return eQueue;
+}
 i8 AM::iTaskState(Task* pTask) {
   eTS eState = pTask->eState();
   return eState;
