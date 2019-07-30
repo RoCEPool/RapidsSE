@@ -41,6 +41,7 @@ using namespace Tasks;
 //------------------------------------------------------------------------------
 
 #include "Error.hpp"
+#include "eTR.h"
 
 #include "Task.hpp"
 #include "TaskMacros.hpp"
