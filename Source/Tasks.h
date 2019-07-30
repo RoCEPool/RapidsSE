@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Threads.h"
+#include "Jobs.h"
 
 enum eQK // queue kinds
 {
