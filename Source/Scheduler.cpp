@@ -349,7 +349,7 @@ void Scheduler::vTask_Bide(Task* pTask)
   AM::pQueues()->vAddBidingSet(pTask);
   // **do not touch task** (other than to drop lock)
   
-  pTask->vDropTaskLock();
+  pTask->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -367,7 +367,7 @@ void Scheduler::vTask_Continue(Task* pTask)
   
   JobLog::vNoteState(pTask->pJob(),"Continue"_Stz);
   
-  pTask->vDropTaskLock();
+  pTask->vDropLock();
   
   vTask_Able(pTask);
   vTask_Schedule(pTask);
@@ -444,7 +444,7 @@ void Scheduler::vTask_Pause(Task* pTask)
   AM::pQueues()->vAddPausedSet(pTask);
   // **do not touch task** (other than to drop lock)
   
-  pTask->vDropTaskLock();
+  pTask->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -482,8 +482,8 @@ void Scheduler::vTask_Resume(Task* pTask)
   JobLog::vNoteState(pTask->pJob(),"Resume"_Stz);
   
   // cycle the task lock to ensure task has fully entered wait state
-  pTask->vGrabTaskLock();
-  pTask->vDropTaskLock();
+  pTask->vGrabLock();
+  pTask->vDropLock();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -584,7 +584,7 @@ void Scheduler::vTask_Trigger(Task* pTask)
   
   JobLog::vNoteState(pTask->pJob(),"Trigger"_Stz);
   
-  pTask->vDropTaskLock();
+  pTask->vDropLock();
   
   vTask_Able(pTask);
   vTask_Schedule(pTask);
@@ -611,7 +611,7 @@ void Scheduler::vTask_Wait(Task* pTask)
   AM::pQueues()->vAddWaitingSet(pTask);
   // **do not touch task** (other than to drop lock)
 
-  pTask->vDropTaskLock();
+  pTask->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
