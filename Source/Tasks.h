@@ -19,14 +19,14 @@ enum eQK // queue kinds
 
 static Stz* aQK[]
 {
-  /*   0 */ "NONE"_Stz,           // QK_NONE
-  /*   1 */ "BidingSet"_Stz,      // QK_BIDING_SET
-  /*   2 */ "ExecutingSet"_Stz,   // QK_EXECUTING_SET
-  /*   3 */ "PausedSet"_Stz,      // QK_PAUSED_SET
-  /*   4 */ "ReadyQueue"_Stz,     // QK_READY_QUEUE
-  /*   5 */ "ReadyQueueLP"_Stz,   // QK_READY_QUEUE_LP
-  /*   6 */ "SleepingQueue"_Stz,  // QK_SLEEPING_QUEUE
-  /*   7 */ "WaitingSet"_Stz,     // QK_WAITING_SET
+  /*  0 */ "NONE"_Stz,           // QK_NONE
+  /*  1 */ "BidingSet"_Stz,      // QK_BIDING_SET
+  /*  2 */ "ExecutingSet"_Stz,   // QK_EXECUTING_SET
+  /*  3 */ "PausedSet"_Stz,      // QK_PAUSED_SET
+  /*  4 */ "ReadyQueue"_Stz,     // QK_READY_QUEUE
+  /*  5 */ "ReadyQueueLP"_Stz,   // QK_READY_QUEUE_LP
+  /*  6 */ "SleepingQueue"_Stz,  // QK_SLEEPING_QUEUE
+  /*  7 */ "WaitingSet"_Stz,     // QK_WAITING_SET
 };
 
 //------------------------------------------------------------------------------
