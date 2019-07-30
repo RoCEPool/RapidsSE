@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Scheduling.h"
+#include "Partitioning.h"
 
 //------------------------------------------------------------------------------
 
