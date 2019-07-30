@@ -99,6 +99,7 @@ namespace StorageEngine
     static void vPrintAttachMap(void);
     static i8   nRandomLevels(void);
     static Job* pThisTLSJob(void);
+    static Op*  pThisTLSOp(void);
     static Session* pThisTLSSession(void);
     static Task* pThisTLSTask(void);
     static void vWriteLog(void);

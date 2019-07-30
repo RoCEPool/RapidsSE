@@ -144,6 +144,12 @@ Job* AM::pThisTLSJob(void) {
   Job* pJob = pTask->pJob();
   return pJob;
 }
+Op* AM::pThisTLSOp(void) {
+  Thread* pThread = Thread::pThisTLSThread();
+  Task* pTask = pThread->pTask();
+  Op* pOp = pTask->pOp();
+  return pOp;
+}
 Session* AM::pThisTLSSession(void) {
   Thread* pThread = Thread::pThisTLSThread();
   Task* pTask = pThread->pTask();

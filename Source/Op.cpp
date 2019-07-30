@@ -68,9 +68,7 @@ Op::~Op(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Op* Op::pThisTLSOp(void)
 {
-  Task* pTask = Task::pThisTLSTask();
-  
-  Op* pOp = pTask->pOp();
+  Op* pOp = AM::pThisTLSOp();
   
   return pOp;
 }
