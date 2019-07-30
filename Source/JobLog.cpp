@@ -4,6 +4,9 @@
 
 #include "Jobs.h"
 #include "StorageEngine.h"
+#include "AM.hpp"
+#include "eQK.h"
+#include "eTS.h"
 
 extern Log* gpLog;
 
@@ -81,7 +84,7 @@ void JobLog::vNoteState(Jobs::Job* pJob, Stz* szPoint)
                       aCN[pJob->eClass()],
                       pJob,
                       
-                      aTS[pJob->m_pExecutingTask->eState()],
+                      aTS[AM::iTaskState(pJob->m_pExecutingTask)],
                       aQK[pJob->m_pExecutingTask->eQueue()]
                       );
   
