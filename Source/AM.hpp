@@ -97,7 +97,8 @@ namespace StorageEngine
     static bool bTaskIsLocked(Task* pTask);
     static void vTaskTransition(Task* pTask, i8 iTransition);
     static void vTenants(ForthWord* pTenants);
-  
+    static void vTriggerBidingTask(Task* pTask);
+
     //
     static bool bAttached(void);
     static void vDumpApi(void);

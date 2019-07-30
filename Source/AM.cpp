@@ -135,6 +135,9 @@ bool AM::bTaskIsLocked(Task* pTask) {
 void AM::vTenants(ForthWord *pTenants) {
   gpAttachMap->m_pTenants = pTenants;
 }
+void AM::vTriggerBidingTask(Task* pTask) {
+  Scheduler::vTriggerBidingTask(pTask);
+}
 
 //
 bool AM::bAttached(void) {

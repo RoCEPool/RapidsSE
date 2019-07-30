@@ -160,7 +160,7 @@ void Op::vAppendOperand(Operand* pOperand)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // trigger this biding op
-  Scheduler::vTriggerBidingTask(m_pTask);
+  AM::vTriggerBidingTask(m_pTask);
 }
 
 /*----------------------------------------------------------------------------*/
