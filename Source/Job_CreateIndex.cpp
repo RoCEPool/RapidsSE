@@ -2,12 +2,7 @@
 /* Job_CreateIndex.cpp -- Create Index Job                                    */
 /*============================================================================*/
 
-// Job Short: CreateIndex
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_CreateIndex =
 {

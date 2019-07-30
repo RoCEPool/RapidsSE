@@ -2,12 +2,7 @@
 /* Job_CreateCatalog.cpp -- Create Catalog Job                                */
 /*============================================================================*/
 
-// Job Short: CreateCatalog
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_CreateCatalog =
 {

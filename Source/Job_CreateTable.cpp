@@ -2,12 +2,7 @@
 /* Job_CreateTable.cpp -- Create Table Job                                    */
 /*============================================================================*/
 
-// Job Short: CreateTable
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_CreateTable =
 {
@@ -648,7 +643,7 @@ void Jobs::vJob_CreateTable_post(Session* pSession, Job* pJob)
     return;
   }
   
-  RASSERT(iResponses == AM::pGrid()->m_nNodes);
+  RASSERT(iResponses == AM::nNodes());
   
   vTrace("success: 0 rows affected\n"_Stz);
 }

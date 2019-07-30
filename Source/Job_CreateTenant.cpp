@@ -2,12 +2,7 @@
 /* Job_CreateTenant.cpp -- Create Tennant Job                                 */
 /*============================================================================*/
 
-// Job Short: CreateTenant
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_CreateTenant =
 {

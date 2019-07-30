@@ -2,12 +2,7 @@
 /* Job_CreateSchema.cpp -- Create Schema Job                                  */
 /*============================================================================*/
 
-// Job Short: CreateSchema
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_CreateSchema =
 {

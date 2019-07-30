@@ -2,12 +2,7 @@
 /* Job_ConnectCluster.cpp -- Cluster Connect Job                              */
 /*============================================================================*/
 
-// Job Short: StartCluster
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_ConnectCluster =
 {

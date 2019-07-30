@@ -2,12 +2,7 @@
 /* Job_CompactIndex.cpp -- compact index Job                                  */
 /*============================================================================*/
 
-// Job Short: CompactIndex
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_CompactIndex =
 {
