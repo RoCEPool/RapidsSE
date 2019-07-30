@@ -125,8 +125,12 @@ void AM::vTakeBytes(i8 nTakeBytes) {
 void AM::vTakenBytes(i8 nTakenBytes) {
   gpAttachMap->m_nTakenBytes += nTakenBytes;
 }
-void AM::vTaskTransition(Tasks::Task *pTask, i8 iTransition) {
+void AM::vTaskTransition(Tasks::Task* pTask, i8 iTransition) {
   pTask->vTransition((eTR)iTransition);
+}
+bool AM::bTaskIsLocked(Task* pTask) {
+  bool bLocked = pTask->bIsLocked();
+  return bLocked;
 }
 void AM::vTenants(ForthWord *pTenants) {
   gpAttachMap->m_pTenants = pTenants;

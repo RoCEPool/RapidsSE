@@ -94,6 +94,7 @@ namespace StorageEngine
     static void vTakenBuffers(Pool::PoolBuffer* pTakenBuffers);
     static void vTakeBytes(i8 nTakeBytes);
     static void vTakenBytes(i8 nTakenBytes);
+    static bool bTaskIsLocked(Task* pTask);
     static void vTaskTransition(Task* pTask, i8 iTransition);
     static void vTenants(ForthWord* pTenants);
   

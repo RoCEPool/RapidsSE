@@ -191,7 +191,7 @@ bool Op::bIsLocked(void)
   
 //  bool bLocked = m_okLock.bIsLocked();
 
-  bool bLocked = m_pTask->bIsLocked();
+  bool bLocked = AM::bTaskIsLocked(m_pTask);
 
   return bLocked;
 }
