@@ -4,7 +4,6 @@
 #pragma once
 
 #include "Jobs.h"
-#include "eQK.h"
 
 //------------------------------------------------------------------------------
 
@@ -17,10 +16,11 @@ using namespace Tasks;
 
 //------------------------------------------------------------------------------
 
-#include "Error.hpp"
+#include "eQK.h"
 #include "eTR.h"
 #include "eTS.h"
 
+#include "Error.hpp"
 #include "Task.hpp"
 #include "TaskMacros.hpp"
 #include "TaskList.hpp"
