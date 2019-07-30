@@ -169,9 +169,7 @@ void Op::vDropTaskLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-//  m_okLock.vDropWrite();
-  
-  m_pTask->vDropLock();
+  AM::vDropTaskLock(m_pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -181,9 +179,7 @@ void Op::vGrabTaskLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  //m_okLock.vGrabWrite();
-  
-  m_pTask->vGrabLock();
+  AM::vGrabTaskLock(m_pTask);
 }
 
 /*----------------------------------------------------------------------------*/

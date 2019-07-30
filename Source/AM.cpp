@@ -89,8 +89,14 @@ void AM::vAttachMap(Header* aHeader) {
 void AM::vBootError(bool bBootError) {
   gpAttachMap->m_bBootError = bBootError;
 }
+void AM::vDropTaskLock(Task* pTask) {
+  pTask->vDropLock();
+}
 void AM::vForthWord(ForthWord *pWord) {
   gpAttachMap->m_pForthWord = pWord;
+}
+void AM::vGrabTaskLock(Task* pTask) {
+  pTask->vGrabLock();
 }
 void AM::vIndexEntries(i8 nIndexEntries) {
   gpAttachMap->m_nIndexEntries = nIndexEntries;

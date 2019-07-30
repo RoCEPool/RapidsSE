@@ -82,7 +82,9 @@ namespace StorageEngine
     static void vAckWaitingTask(Task* pTaskWaiting, Task* pTaskAcking);
     static void vAttachMap(Header* aHeader);
     static void vBootError(bool bBootError);
+    static void vDropTaskLock(Task* pTask);
     static void vForthWord(Forth::ForthWord* pForthWord);
+    static void vGrabTaskLock(Task* pTask);
     static void vIndexEntries(i8 nIndexEntries);
     static void vMonitorPortrait(s48K& sRapidsPortrait);
     static void vNextTempName(s32& sName);
