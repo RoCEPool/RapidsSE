@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "Jobs.h"
-#include "StorageEngine.h"
 
 JobClass xJobClass_Health =
 {
@@ -192,7 +191,7 @@ Job* Jobs::pJob_Health_pre(Session* pSession)
     pJob_Health->m_iHogNo  = i_Hog;
     pJob_Health->m_bNoWait = true;
     
-    bool bResult = Api::bSpawnJob(pSession,pJob_Health,SS_SEED_RCV);
+    bool bResult = AM::bSpawnJob(pSession,pJob_Health,SS_SEED_RCV);
     RASSERT_WARN(bResult);
   }
   
