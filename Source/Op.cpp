@@ -122,7 +122,7 @@ void Op::vAckJob(void)
   
   Task* pTask_JobQuery = m_pJob->m_pExecutingTask;
     
-  IGNORE_RETURN(Scheduler::bAckWaitingTask(pTask_JobQuery,m_pTask));
+  AM::vAckWaitingTask(pTask_JobQuery,m_pTask);
 }
 
 /*----------------------------------------------------------------------------*/

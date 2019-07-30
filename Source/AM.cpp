@@ -80,6 +80,9 @@ TxSet* AM::pTxSet(void)       { return gpAttachMap->m_pTxSet;                 }
 bool AM::bVerbose(void)       { return gpAttachMap->m_bVerbose;               }
 
 //
+void AM::vAckWaitingTask(Task* pTaskWaiting, Task* pTaskAcking) {
+  IGNORE_RETURN(Scheduler::bAckWaitingTask(pTaskWaiting,pTaskAcking));
+}
 void AM::vAttachMap(Header* aHeader) {
   gpAttachMap = static_cast<AttachMap*>(aHeader);
 }

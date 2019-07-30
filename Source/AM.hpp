@@ -79,6 +79,7 @@ namespace StorageEngine
     static bool bVerbose(void);
   
     //
+    static void vAckWaitingTask(Task* pTaskWaiting, Task* pTaskAcking);
     static void vAttachMap(Header* aHeader);
     static void vBootError(bool bBootError);
     static void vForthWord(Forth::ForthWord* pForthWord);
@@ -86,13 +87,13 @@ namespace StorageEngine
     static void vMonitorPortrait(s48K& sRapidsPortrait);
     static void vNextTempName(s32& sName);
     static void vSetAcksRmg(Task* pTask, i8 nAcks);
-    static void vStepTiming(Measurement::StepTiming* pStepTiming);
+    static void vStepTiming(StepTiming* pStepTiming);
     static void vSubInserters(i8 nSubInserters);
     static void vTakenBuffers(Pool::PoolBuffer* pTakenBuffers);
     static void vTakeBytes(i8 nTakeBytes);
     static void vTakenBytes(i8 nTakenBytes);
     static void vTaskTransition(Task* pTask, i8 iTransition);
-    static void vTenants(Forth::ForthWord* pTenants);
+    static void vTenants(ForthWord* pTenants);
   
     //
     static bool bAttached(void);
