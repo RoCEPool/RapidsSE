@@ -4,7 +4,7 @@
 
 #include "Forth.h"
 
-#include "StorageEngine.h"
+extern StepFp gfpEntryStep;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -85,8 +85,8 @@ ForthWord::ForthWord(Stz* sName)
   
   _setFooter_();
   
-  m_fpEntryStep   = &Steps::Step::vEnterRoutine;
-  m_aEntryCell   = aFirstCell();
+  m_fpEntryStep   = gfpEntryStep;
+  m_aEntryCell    = aFirstCell();
 
   _checkInitialised_(CN_WORD);
   

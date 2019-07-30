@@ -7,6 +7,8 @@
 
 extern AttachMap* gpAttachMap;
 
+StepFp gfpEntryStep = &Steps::Step::vEnterRoutine;
+
 /*----------------------------------------------------------------------------*/
 /* add primitive word into main dictionary                                    */
 /*----------------------------------------------------------------------------*/

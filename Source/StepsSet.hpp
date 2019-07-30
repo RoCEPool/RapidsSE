@@ -251,10 +251,12 @@
   static void vEncodeUntil(Tasks::MP_Task mpTask);
 
   // enter
+public:
   static void vEnterObject(Tasks::MP_Task mpTask);
   static void vEnterRoutine(Tasks::MP_Task mpTask);
 
   // entry
+private:
   static void vEntryMatches(Tasks::MP_Task mpTask);
   static void vEntrySame(Tasks::MP_Task mpTask);
   static void vEntryToDataRow(Tasks::MP_Task mpTask);
