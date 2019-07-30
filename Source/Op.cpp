@@ -91,17 +91,17 @@ void Op::vOpLoop(void)
    
     case OR_BIDE:
       ASSERT(bIsLocked());
-      m_pTask->vTransition(TR_BIDE);
+      AM::vTaskTransition(m_pTask,TR_BIDE);
       return;
     
     case OR_EXIT:
       if (m_bAckJobEnd)
         vAckJob();
-      m_pTask->vTransition(TR_EXIT);
+      AM::vTaskTransition(m_pTask,TR_EXIT);
       return;
     
     case OR_PAUSE:
-      m_pTask->vTransition(TR_PAUSE);
+      AM::vTaskTransition(m_pTask,TR_PAUSE);
       return;
     
     default:
