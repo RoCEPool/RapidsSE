@@ -2,12 +2,7 @@
 /* Job_ListSchemas.cpp -- List Schemas Job                                    */
 /*============================================================================*/
 
-// Job Short: ListSchemas
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_ListSchemas =
 {

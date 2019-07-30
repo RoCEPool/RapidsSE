@@ -2,12 +2,7 @@
 /* Job_ListPartitions.cpp -- List Partitions Job                              */
 /*============================================================================*/
 
-// Job Short: ListPartitions
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_ListPartitions =
 {

@@ -2,12 +2,7 @@
 /* Job_ListIndexes.cpp -- List Columns Job                                    */
 /*============================================================================*/
 
-// Job Short: ListIndexes
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_ListIndexes =
 {

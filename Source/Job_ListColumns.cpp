@@ -2,12 +2,7 @@
 /* Job_ListColumns.cpp -- List Columns Job                                    */
 /*============================================================================*/
 
-// Job Short: ListColumns
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_ListColumns =
 {

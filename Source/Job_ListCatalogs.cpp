@@ -2,12 +2,7 @@
 /* Job_ListCatalogs.cpp -- List Catalogs Job                                  */
 /*============================================================================*/
 
-// Job Short: ListCatalogs
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_ListCatalogs =
 {

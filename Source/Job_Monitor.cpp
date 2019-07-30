@@ -2,12 +2,8 @@
 /* Job_Monitor.cpp -- Monitor Job                                             */
 /*============================================================================*/
 
-// Job Short: Cat
-
 #include "Jobs.h"
 #include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Monitor =
 {

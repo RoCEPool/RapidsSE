@@ -2,12 +2,7 @@
 /* Job_Lf.cpp -- List Folder Job                                              */
 /*============================================================================*/
 
-// Job Short: Lf
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Lf =
 {

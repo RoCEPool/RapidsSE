@@ -2,12 +2,7 @@
 /* Job_ListTables.cpp -- List Tables Job                                      */
 /*============================================================================*/
 
-// Job Short: ListTables
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_ListTables =
 {

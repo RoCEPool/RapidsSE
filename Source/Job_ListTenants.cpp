@@ -2,12 +2,7 @@
 /* Job_ListTenants.cpp -- List Tenants Job                                    */
 /*============================================================================*/
 
-// Job Short: ListTenants
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_ListTenants =
 {
