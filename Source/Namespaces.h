@@ -25,7 +25,7 @@ namespace Persistence   { class CarryOver;                                    }
 namespace Plans         {                                                     }
 namespace Pool          { class BufferPool; class HeapMem; class PoolBuffer;  }
 namespace Prompt        { class SePrompt;                                     }
-namespace PushDown      {                                                     }
+namespace PushDown      { class Op;                                           }
 namespace Rows          { class CrwBuffer;                                    }
 namespace ScanSprint    {                                                     }
 namespace Scheduling    { class Queues; class Scheduler;                      }

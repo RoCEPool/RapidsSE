@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "Jobs.h"
-#include "StorageEngine.h"
 
 JobClass xJobClass_Query =
 {
@@ -191,7 +190,7 @@ void Job_Query::vBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_QUERY,_FOOTER_);
   
-  m_pExecutingTask->vAcksRmg(3);
+  AM::vSetAcksRmg(m_pExecutingTask,3);
 
   m_pFetchOp->vOpOut(m_pOutputOp);
   m_pOutputOp->vOpOut(m_pZedOp);
@@ -219,15 +218,15 @@ void Job_Query::vExecute(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_QUERY,_FOOTER_);
   
-  Session* pSession = Task::pThisTLSTask()->pSession();
+  Session* pSession = AM::pThisTLSSession();
   
   bool bSpawned;
   
-  bSpawned = Api::bSpawnOp(pSession,m_pZedOp);
+  bSpawned = AM::bSpawnOp(pSession,m_pZedOp);
   ASSERT(bSpawned);
-  bSpawned = Api::bSpawnOp(pSession,m_pOutputOp);
+  bSpawned = AM::bSpawnOp(pSession,m_pOutputOp);
   ASSERT(bSpawned);
-  bSpawned = Api::bSpawnOp(pSession,m_pFetchOp);
+  bSpawned = AM::bSpawnOp(pSession,m_pFetchOp);
   ASSERT(bSpawned);
 }
 

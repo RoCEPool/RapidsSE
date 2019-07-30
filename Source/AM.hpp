@@ -85,6 +85,7 @@ namespace StorageEngine
     static void vIndexEntries(i8 nIndexEntries);
     static void vMonitorPortrait(s48K& sRapidsPortrait);
     static void vNextTempName(s32& sName);
+    static void vSetAcksRmg(Task* pTask, i8 nAcks);
     static void vStepTiming(Measurement::StepTiming* pStepTiming);
     static void vSubInserters(i8 nSubInserters);
     static void vTakenBuffers(Pool::PoolBuffer* pTakenBuffers);
@@ -98,6 +99,7 @@ namespace StorageEngine
     static void vPrintAttachMap(void);
     static i8   nRandomLevels(void);
     static Job* pThisTLSJob(void);
+    static Session* pThisTLSSession(void);
     static Task* pThisTLSTask(void);
     static void vWriteLog(void);
 
@@ -105,6 +107,7 @@ namespace StorageEngine
     //
     static Stz* szEnumText(i8 iEnumGroup, i8 i_Enum);
     static bool bSpawnJob(Session* pSession, Job* pJob, i8 iSeed);
+    static bool bSpawnOp(Session* pSession, Op* pOp);
     static void vStateDiagram(s256& sDiagram, eCN eJobClass);
     static void vNote(Stz* szFormat, ...);
     static void vNote(eSR eSysRes,Stz* szFormat, ...);

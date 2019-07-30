@@ -98,6 +98,9 @@ void AM::vMonitorPortrait(s48K& sPortrait) {
 void AM::vNextTempName(s32& sName) {
   gpAttachMap->m_oTempName.vNextName(sName);
 }
+void AM::vSetAcksRmg(Task* pTask, i8 nAcks) {
+  pTask->vAcksRmg(nAcks);
+}
 void AM::vStepTiming(StepTiming* pStepTiming) {
   gpAttachMap->m_pStepTiming = pStepTiming;
 }
@@ -140,6 +143,12 @@ Job* AM::pThisTLSJob(void) {
   Task* pTask = pThread->pTask();
   Job* pJob = pTask->pJob();
   return pJob;
+}
+Session* AM::pThisTLSSession(void) {
+  Thread* pThread = Thread::pThisTLSThread();
+  Task* pTask = pThread->pTask();
+  Session* pSession = pTask->pSession();
+  return pSession;
 }
 Tasks::Task* AM::pThisTLSTask(void) {
   Thread* pThread = Thread::pThisTLSThread();
@@ -214,6 +223,16 @@ Stz* AM::szEnumText(i8 iEnumGroup, i8 i_Enum)
 bool AM::bSpawnJob(Session* pSession, Job* pJob, i8 iSeed)
 {
   bool bResult = Api::bSpawnJob(pSession,pJob,(eSS)iSeed);
+  
+  return bResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* state diagram                                                              */
+/*----------------------------------------------------------------------------*/
+bool AM::bSpawnOp(Session* pSession, Op* pOp)
+{
+  bool bResult = Api::bSpawnOp(pSession,pOp);
   
   return bResult;
 }
