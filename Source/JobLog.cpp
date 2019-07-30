@@ -5,7 +5,6 @@
 #include "Jobs.h"
 #include "StorageEngine.h"
 
-extern AttachMap* gpAttachMap;
 extern Log* gpLog;
 
 /*----------------------------------------------------------------------------*/

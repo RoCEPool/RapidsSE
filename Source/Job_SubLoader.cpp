@@ -4,7 +4,6 @@
 
 #include "Jobs.h"
 #include "AM.hpp"
-#include "Session.hpp"
 
 JobClass xJobClass_SubLoader =
 {
