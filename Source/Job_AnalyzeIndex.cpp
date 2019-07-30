@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "Jobs.h"
-#include "Session.hpp"
 
 JobClass xJobClass_AnalyzeIndex =
 {

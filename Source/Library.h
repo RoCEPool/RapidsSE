@@ -14,6 +14,8 @@ using namespace Library;
 
 //------------------------------------------------------------------------------
 
+#include "AM.hpp"
+
 #include "Timer.hpp"
 
 #include "EnumGroups.hpp"
