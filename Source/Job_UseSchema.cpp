@@ -2,12 +2,7 @@
 /* Job_UseSchema.cpp -- Use Schema Job                                        */
 /*============================================================================*/
 
-// Job Short: UseSchema
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_UseSchema =
 {

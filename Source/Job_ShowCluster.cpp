@@ -2,12 +2,7 @@
 /* Job_ShowCluster.cpp -- Show Cluster Job                                    */
 /*============================================================================*/
 
-// Job Short: ShowCluster
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_ShowCluster =
 {

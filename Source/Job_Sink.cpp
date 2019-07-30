@@ -2,12 +2,7 @@
 /* Job_Sink.cpp -- Sink Job                                                   */
 /*============================================================================*/
 
-// Job Short: Sink
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Sink =
 {

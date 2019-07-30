@@ -2,12 +2,7 @@
 /* Job_VisualizeTable.cpp -- visualize index Job                              */
 /*============================================================================*/
 
-// Job Short: VisualizeIndex
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_VisualizeTable =
 {

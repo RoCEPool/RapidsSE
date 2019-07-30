@@ -2,12 +2,7 @@
 /* Job_Repeater.cpp -- Repeater Job                                           */
 /*============================================================================*/
 
-// Job Short: Repeater
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Repeater =
 {

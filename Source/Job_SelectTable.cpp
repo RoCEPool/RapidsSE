@@ -1,13 +1,8 @@
 /*============================================================================*/
-/* Job_SelectTable.cpp -- Fetch Rows Job                                        */
+/* Job_SelectTable.cpp -- Fetch Rows Job                                      */
 /*============================================================================*/
 
-// Job Short: SelectTable
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_SelectTable =
 {
