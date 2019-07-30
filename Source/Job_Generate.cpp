@@ -2,12 +2,7 @@
 /* Job_Generate.cpp -- Generate Rows Job                                      */
 /*============================================================================*/
 
-// Job Short: GenData
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_GenData =
 {

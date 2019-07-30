@@ -2,12 +2,7 @@
 /* Job_Cf.cpp -- Change Folder Job                                            */
 /*============================================================================*/
 
-// Job Short: Cf
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Cf =
 {

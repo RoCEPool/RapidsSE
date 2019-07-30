@@ -2,12 +2,7 @@
 /* Job_Docol.cpp -- Docol Job                                                 */
 /*============================================================================*/
 
-// Job Short: Docol
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Docol =
 {

@@ -2,12 +2,7 @@
 /* Job_FetchRows.cpp -- Fetch Rows Job                                        */
 /*============================================================================*/
 
-// Job Short: FetchRows
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_FetchRows =
 {

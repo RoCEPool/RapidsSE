@@ -2,12 +2,7 @@
 /* Job_InflateRows.cpp -- Fetch Rows Job                                        */
 /*============================================================================*/
 
-// Job Short: InflateRows
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_InflateRows =
 {

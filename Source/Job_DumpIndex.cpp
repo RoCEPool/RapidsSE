@@ -2,12 +2,7 @@
 /* Job_DumpIndex.cpp -- dump index Job                                        */
 /*============================================================================*/
 
-// Job Short: DumpIndex
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_DumpIndex =
 {

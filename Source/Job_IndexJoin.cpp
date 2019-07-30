@@ -2,12 +2,7 @@
 /* Job_IndexJoin.cpp -- Fetch Rows Job                                        */
 /*============================================================================*/
 
-// Job Short: IndexJoin
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_IndexJoin =
 {

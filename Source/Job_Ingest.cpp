@@ -2,12 +2,7 @@
 /* Job_Ingest.cpp -- Ingest Job                                               */
 /*============================================================================*/
 
-// Job Short: Ingest
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Ingest =
 {
