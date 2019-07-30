@@ -3,8 +3,6 @@
 /*============================================================================*/
 
 #include "Jobs.h"
-
-#include "StorageEngine.h"
 #include "AM.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -142,9 +140,7 @@ Job::~Job(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Job* Job::pThisTLSJob(void)
 {
-  Task* pTask = Task::pThisTLSTask();
-
-  Job* pJob = pTask->pJob();
+  Job* pJob = AM::pThisTLSJob();
 
   return pJob;
 }

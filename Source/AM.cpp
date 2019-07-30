@@ -135,11 +135,15 @@ i8 AM::nRandomLevels(void) {
 void AM::vPrintAttachMap(void) {
   gpAttachMap->vPrintAttachMap();
 }
+Job* AM::pThisTLSJob(void) {
+  Thread* pThread = Thread::pThisTLSThread();
+  Task* pTask = pThread->pTask();
+  Job* pJob = pTask->pJob();
+  return pJob;
+}
 Tasks::Task* AM::pThisTLSTask(void) {
   Thread* pThread = Thread::pThisTLSThread();
-  
   Task* pTask = pThread->pTask();
-  
   return pTask;
 }
 void AM::vWriteLog(void) {
