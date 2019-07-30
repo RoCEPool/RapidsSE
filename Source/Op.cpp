@@ -147,12 +147,12 @@ void Op::vAppendOperand(Operand* pOperand)
          pOperand,
          aCN[pOperand->eClass()]);
   
-  vGrabLock();
+  vGrabTaskLock();
   
   m_pOperandQueue->vAppendOperand(pOperand);
   
   if (TS_BIDING != m_pTask->eState()) {
-    vDropLock();
+    vDropTaskLock();
     return;
   }
   
@@ -165,7 +165,7 @@ void Op::vAppendOperand(Operand* pOperand)
 /*----------------------------------------------------------------------------*/
 /* drop lock                                                                  */
 /*----------------------------------------------------------------------------*/
-void Op::vDropLock(void)
+void Op::vDropTaskLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -177,7 +177,7 @@ void Op::vDropLock(void)
 /*----------------------------------------------------------------------------*/
 /* grab lock                                                                  */
 /*----------------------------------------------------------------------------*/
-void Op::vGrabLock(void)
+void Op::vGrabTaskLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -246,12 +246,12 @@ Operand* Op::pPopOperand(void)
   
   Operand* pOperand = nullptr;
   
-  vGrabLock();
+  vGrabTaskLock();
   
   pOperand = m_pOperandQueue->pPopOperand();
   
   if (pOperand)
-    vDropLock();
+    vDropTaskLock();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

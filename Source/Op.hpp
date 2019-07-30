@@ -56,8 +56,8 @@ namespace PushDown
     void vAckJob(void);
     void vAckJobEnd(bool m_bAckJobEnd);
     void vAppendOperand(Operand* pOperand);
-    void vDropLock(void);
-    void vGrabLock(void);
+    void vDropTaskLock(void);
+    void vGrabTaskLock(void);
     bool bIsLocked(void);
     void vOpOut(Op* pOpOut);
     void vPipeOut(Operand* pOperand);
