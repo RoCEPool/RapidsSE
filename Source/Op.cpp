@@ -4,7 +4,7 @@
 
 #include "PushDown.h"
 
-#include "StorageEngine.h"
+//#include "StorageEngine.h"
 #include "AM.hpp"
 #include "eTR.h"
 #include "eTS.h"
@@ -121,7 +121,7 @@ void Op::vAckJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Task* pTask_JobQuery = m_pJob->m_pExecutingTask;
+  Task* pTask_JobQuery = AM::pExecutingTask(m_pJob);
     
   AM::vAckWaitingTask(pTask_JobQuery,m_pTask);
 }

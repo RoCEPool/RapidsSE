@@ -149,6 +149,10 @@ bool AM::bAttached(void) {
 void AM::vDumpApi(void) {
   pApiState()->vDump();
 }
+Task* AM::pExecutingTask(Job* pJob) {
+  Task* pTask = pJob->m_pExecutingTask;
+  return pTask;
+}
 void AM::vPrintAttachMap(void) {
   gpAttachMap->vPrintAttachMap();
 }
