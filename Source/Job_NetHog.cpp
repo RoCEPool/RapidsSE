@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "Jobs.h"
-#include "StorageEngine.h"
 
 JobClass xJobClass_NetHog =
 {
@@ -192,7 +191,7 @@ Job* Jobs::pJob_NetHog_pre(Session* pSession)
     pJob_NetHog->m_iHogNo  = i_Hog;
     pJob_NetHog->m_bNoWait = true;
     
-    bool bResult = Api::bSpawnJob(pSession,pJob_NetHog,SS_SEED_RCV);
+    bool bResult = AM::bSpawnJob(pSession,pJob_NetHog,SS_SEED_RCV);
     RASSERT_WARN(bResult);
   }
   

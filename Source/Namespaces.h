@@ -29,7 +29,7 @@ namespace PushDown      {                                                     }
 namespace Rows          { class CrwBuffer;                                    }
 namespace ScanSprint    {                                                     }
 namespace Scheduling    { class Queues; class Scheduler;                      }
-namespace Sessions      { class SessionState;                                 }
+namespace Sessions      { class Session; class SessionState;                  }
 namespace Steps         { class Step;                                         }
 namespace StorageEngine { class AM; class Engine;                             }
 namespace Structures    {                                                     }

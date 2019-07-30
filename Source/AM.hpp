@@ -104,6 +104,7 @@ namespace StorageEngine
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     //
     static Stz* szEnumText(i8 iEnumGroup, i8 i_Enum);
+    static bool bSpawnJob(Session* pSession, Job* pJob, i8 iSeed);
     static void vStateDiagram(s256& sDiagram, eCN eJobClass);
     static void vNote(Stz* szFormat, ...);
     static void vNote(eSR eSysRes,Stz* szFormat, ...);

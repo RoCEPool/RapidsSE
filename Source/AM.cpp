@@ -211,6 +211,16 @@ Stz* AM::szEnumText(i8 iEnumGroup, i8 i_Enum)
 /*----------------------------------------------------------------------------*/
 /* state diagram                                                              */
 /*----------------------------------------------------------------------------*/
+bool AM::bSpawnJob(Session* pSession, Job* pJob, i8 iSeed)
+{
+  bool bResult = Api::bSpawnJob(pSession,pJob,(eSS)iSeed);
+  
+  return bResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* state diagram                                                              */
+/*----------------------------------------------------------------------------*/
 void AM::vStateDiagram(s256& sDiagram, eCN eJobClass)
 {
   TaskList* pExecuting     = AM::pQueues()->m_pExecutingSet;
