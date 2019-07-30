@@ -171,7 +171,7 @@ void Op::vDropLock(void)
   
 //  m_okLock.vDropWrite();
   
-  m_pTask->vDropLock();
+  m_pTask->vDropTaskLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -183,7 +183,7 @@ void Op::vGrabLock(void)
   
   //m_okLock.vGrabWrite();
   
-  m_pTask->vGrabLock();
+  m_pTask->vGrabTaskLock();
 }
 
 /*----------------------------------------------------------------------------*/
