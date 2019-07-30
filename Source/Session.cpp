@@ -3,13 +3,6 @@
 /*============================================================================*/
 
 #include "Interface.h"
-#include "StorageEngine.h"
-
-struct ReqTable {
-  Stz* aCommand;
-  bool (Session::*aFunc)(TokenVec& xTokenVec, i8 iReqNo);
-  Stz* aRequest;
-};
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
