@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "Jobs.h"
-#include "Api.hpp"
 
 JobClass xJobClass_SubExporter =
 {
@@ -256,7 +255,7 @@ void Job_SubExporter::vSpawnKidExport(bool bLast)
 
   m_pExportBuffer = nullptr;
   
-  IGNORE_RETURN(Interface::Api::bSpawnJob(nullptr,pJob_KidExport,SS_SEED_RUN));
+  IGNORE_RETURN(AM::bSpawnJob(nullptr,pJob_KidExport,SS_SEED_RUN));
 }
 
 /*----------------------------------------------------------------------------*/
