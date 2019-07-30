@@ -2,10 +2,7 @@
 /* Job__Cancel.cpp -- Job Cancel                                              */
 /*============================================================================*/
 
-// Job Short: _Cancel
-
 #include "Jobs.h"
-#include "StorageEngine.h"
 
 JobClass xJobClass__Cancel =
 {

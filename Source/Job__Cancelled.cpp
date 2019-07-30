@@ -2,10 +2,7 @@
 /* Job__Cancelled.cpp -- Job Cancelled                                        */
 /*============================================================================*/
 
-// Job Short: _Cancelled
-
 #include "Jobs.h"
-#include "StorageEngine.h"
 
 JobClass xJobClass__Cancelled =
 {

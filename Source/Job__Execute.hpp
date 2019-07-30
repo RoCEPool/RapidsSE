@@ -5,7 +5,6 @@
 
 namespace Jobs
 {
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job__Execute : public Job
   {

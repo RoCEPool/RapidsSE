@@ -2,10 +2,7 @@
 /* Job__Begun.cpp -- Job Begun                                                */
 /*============================================================================*/
 
-// Job Short: _Begun
-
 #include "Jobs.h"
-#include "StorageEngine.h"
 
 JobClass xJobClass__Begun =
 {

@@ -2,10 +2,7 @@
 /* Job__End.cpp -- Job End                                                    */
 /*============================================================================*/
 
-// Job Short: _End
-
 #include "Jobs.h"
-#include "StorageEngine.h"
 
 JobClass xJobClass__End =
 {

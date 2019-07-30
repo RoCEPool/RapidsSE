@@ -2,10 +2,7 @@
 /* Job__Execute.cpp -- Job Execute                                            */
 /*============================================================================*/
 
-// Job Short: _Execute
-
 #include "Jobs.h"
-#include "StorageEngine.h"
 
 JobClass xJobClass__Execute =
 {
