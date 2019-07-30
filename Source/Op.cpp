@@ -152,7 +152,7 @@ void Op::vAppendOperand(Operand* pOperand)
   
   m_pOperandQueue->vAppendOperand(pOperand);
   
-  if (TS_BIDING != m_pTask->eState()) {
+  if (TS_BIDING != (eTS)AM::iTaskState(m_pTask)) {
     vDropTaskLock();
     return;
   }

@@ -149,13 +149,17 @@ bool AM::bAttached(void) {
 void AM::vDumpApi(void) {
   pApiState()->vDump();
 }
+void AM::vPrintAttachMap(void) {
+  gpAttachMap->vPrintAttachMap();
+}
 i8 AM::nRandomLevels(void) {
   Task* pTask = Task::pThisTLSTask();
   i8 nLevels = Random::iLogLevel(3,C_FLAT_FREQ + 1,pTask->i_NextRnd()) + 1;
   return nLevels;
 }
-void AM::vPrintAttachMap(void) {
-  gpAttachMap->vPrintAttachMap();
+i8 AM::iTaskState(Task* pTask) {
+  eTS eState = pTask->eState();
+  return eState;
 }
 Job* AM::pThisTLSJob(void) {
   Thread* pThread = Thread::pThisTLSThread();

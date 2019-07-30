@@ -104,6 +104,7 @@ namespace StorageEngine
     static void vDumpApi(void);
     static void vPrintAttachMap(void);
     static i8   nRandomLevels(void);
+    static i8   iTaskState(Task* pTask);
     static Job* pThisTLSJob(void);
     static Op*  pThisTLSOp(void);
     static Session* pThisTLSSession(void);
