@@ -3,9 +3,8 @@
 /*============================================================================*/
 
 #include "System.h"
-#include "StorageEngine.h"
+#include "AM.hpp"
 
-extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
@@ -25,7 +24,7 @@ bool Shm::bClose(int iShmFd, SysCall& oSysCall)
     return false;
   }
   
-  if (gpAttachMap) AM::pResourceTracker()->vDecShmOpen();
+  if (AM::bAttached()) AM::pResourceTracker()->vDecShmOpen();
 
   oSysCall.vSuccess();
   
@@ -80,7 +79,7 @@ bool Shm::bOpenCreate(int& iShmFd, s32& sShmNm, SysCall& oSysCall)
     return false;
   }
   
-  if (gpAttachMap) AM::pResourceTracker()->vIncShmOpen();
+  if (AM::bAttached()) AM::pResourceTracker()->vIncShmOpen();
   
   return true;
 }
@@ -102,7 +101,7 @@ bool Shm::bOpenExisting(int& iShmFd, s32& sShmNm, SysCall& oSysCall)
     return false;
   }
   
-  if (gpAttachMap) AM::pResourceTracker()->vIncShmOpen();
+  if (AM::bAttached()) AM::pResourceTracker()->vIncShmOpen();
   
   return true;
 }
