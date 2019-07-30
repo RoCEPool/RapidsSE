@@ -5,12 +5,12 @@
 
 #include "Commands.h"
 
-//-----------------------------------------------------------------------------
-
 namespace Tasks
 {
   typedef MP<Task,CN_TASK> MP_Task;
 }
+
+//-----------------------------------------------------------------------------
 
 namespace Forth
 {
@@ -18,9 +18,6 @@ namespace Forth
   
   void vCheckAssumptions(void);
 }
-
-using namespace Forth;
-
 
 //-----------------------------------------------------------------------------
 
