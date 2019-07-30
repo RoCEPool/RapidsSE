@@ -2,12 +2,7 @@
 /* Job_Pwf.cpp -- Present Working Folder Job                                  */
 /*============================================================================*/
 
-// Job Short: Pwf
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Pwf =
 {

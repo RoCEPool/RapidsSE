@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "Jobs.h"
-#include "StorageEngine.h"
 
 JobClass xJobClass_Monitor =
 {
@@ -260,7 +259,7 @@ bool Job_Monitor::bTake(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_MONITOR,_FOOTER_);
   
   s48K sRapidsPortrait;
-  Engine::vMonitorPortrait(sRapidsPortrait);
+  AM::vMonitorPortrait(sRapidsPortrait);
   
   m_pOutFile->vPrint("%s\n"_Stz,sRapidsPortrait.aStz());
 
