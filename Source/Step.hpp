@@ -5,11 +5,6 @@
 
 namespace Steps
 {
-  // tracing masks
-  static const i8 C_TRACE_NONE     = 0x0;
-  static const i8 C_TRACE_STEPS    = 0x1;
-  static const i8 C_TRACE_ROUTINES = 0x2;
-
   class Step
   {
   friend class Tasks::Task;
