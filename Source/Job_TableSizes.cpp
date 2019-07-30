@@ -2,12 +2,7 @@
 /* Job_TableSizes.cpp -- Table Sizes Job                                      */
 /*============================================================================*/
 
-// Job Short: TableSizes
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_TableSizes =
 {

@@ -2,12 +2,7 @@
 /* Job_DropTable.cpp -- drop table Job                                        */
 /*============================================================================*/
 
-// Job Short: DropTable
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_DropTable =
 {

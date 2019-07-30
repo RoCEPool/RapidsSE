@@ -2,12 +2,7 @@
 /* Job_DropTenant.cpp -- Drop Tenant Job                                      */
 /*============================================================================*/
 
-// Job Short: DropTenant
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_DropTenant =
 {

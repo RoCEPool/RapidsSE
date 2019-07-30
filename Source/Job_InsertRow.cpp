@@ -2,12 +2,7 @@
 /* Job_InsertRow.cpp -- Single Row Insert Job                                 */
 /*============================================================================*/
 
-// Job Short: InsertRow
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_InsertRow =
 {

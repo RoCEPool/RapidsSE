@@ -2,12 +2,7 @@
 /* Job_Export.cpp -- Export Table Job                                         */
 /*============================================================================*/
 
-// Job Short: Export
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Export =
 {

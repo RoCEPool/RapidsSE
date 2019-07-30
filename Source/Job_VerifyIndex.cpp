@@ -2,12 +2,7 @@
 /* Job_VerifyIndex.cpp -- verify index Job                                    */
 /*============================================================================*/
 
-// Job Short: VerifyIndex
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_VerifyIndex =
 {

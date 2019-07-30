@@ -2,12 +2,7 @@
 /* Job_WaitCluster.cpp -- Wait for cluster to start                           */
 /*============================================================================*/
 
-// Job Short: WaitCluster
-
-#include "StorageEngine.h"
 #include "Jobs.h"
-
-extern AttachMap*      gpAttachMap;
 
 JobClass xJobClass_WaitCluster =
 {

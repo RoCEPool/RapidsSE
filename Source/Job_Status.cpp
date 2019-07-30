@@ -2,12 +2,7 @@
 /* Job_Status.cpp -- Status Job                                               */
 /*============================================================================*/
 
-// Job Short: Status
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Status =
 {

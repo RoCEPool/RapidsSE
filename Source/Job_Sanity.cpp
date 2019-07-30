@@ -2,12 +2,7 @@
 /* Job_Sanity.cpp -- Sanity Job                                               */
 /*============================================================================*/
 
-// Job Short: Sanity
-
 #include "StorageEngine.h"
-#include "Jobs.h"
-
-extern AttachMap*      gpAttachMap;
 
 JobClass xJobClass_Sanity =
 {

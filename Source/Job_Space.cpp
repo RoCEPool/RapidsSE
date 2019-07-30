@@ -2,12 +2,7 @@
 /* Job_Space.cpp -- Space Job                                                 */
 /*============================================================================*/
 
-// Job Short: Space
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Space =
 {

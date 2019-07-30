@@ -2,18 +2,7 @@
 /* Job_LoadTable.cpp -- Load Table Job                                        */
 /*============================================================================*/
 
-// Job Short: LoadTable
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
-
-/* example:
- 
- ld lineitem "/tpch/SF1/lineitem.csv" ;
- 
- */
 
 JobClass xJobClass_LoadTable =
 {

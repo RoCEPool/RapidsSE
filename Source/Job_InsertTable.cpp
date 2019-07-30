@@ -1,19 +1,8 @@
 /*============================================================================*/
-/* Job_InsertTable.cpp -- Insert Row Job                                        */
+/* Job_InsertTable.cpp -- Insert Row Job                                      */
 /*============================================================================*/
 
-// Job Short: EndInsert
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
-
-/* example:
- 
- ld lineitem "/tpch/SF1/lineitem.csv" ;
- 
- */
 
 JobClass xJobClass_EndInsert =
 {

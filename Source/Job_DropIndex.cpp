@@ -2,12 +2,7 @@
 /* Job_DropIndex.cpp -- drop index Job                                        */
 /*============================================================================*/
 
-// Job Short: DropIndex
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_DropIndex =
 {

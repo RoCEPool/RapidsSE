@@ -2,13 +2,7 @@
 /* Job_DropSchema.cpp -- Drop Schema Job                                      */
 /*============================================================================*/
 
-// Job Short: DropSchema
-
 #include "Jobs.h"
-
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_DropSchema =
 {

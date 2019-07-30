@@ -5,10 +5,6 @@
 // Job Short: DropCatalog
 
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
-
 JobClass xJobClass_DropCatalog =
 {
   CN_JOB_DROPCATALOG,      // class enum

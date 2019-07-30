@@ -2,12 +2,7 @@
 /* Job_SizeIndex.cpp -- size index Job                                        */
 /*============================================================================*/
 
-// Job Short: SizeIndex
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_SizeIndex =
 {
