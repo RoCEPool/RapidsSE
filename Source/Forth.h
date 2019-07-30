@@ -9,8 +9,6 @@
 
 namespace Forth
 {
-  typedef void (*StepFp)(Tasks::MP_Task);
-  
   void vCheckAssumptions(void);
 }
 
