@@ -2,12 +2,8 @@
 /* Job_NetHog.cpp -- Network Hog Job                                          */
 /*============================================================================*/
 
-// Job Short: NetHog
-
 #include "Jobs.h"
 #include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_NetHog =
 {

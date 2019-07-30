@@ -1,13 +1,9 @@
 /*============================================================================*/
-/* Job_Health.cpp -- Network Hog Job                                          */
+/* Job_Health.cpp -- Health Job                                               */
 /*============================================================================*/
-
-// Job Short: NetHog
 
 #include "Jobs.h"
 #include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Health =
 {
