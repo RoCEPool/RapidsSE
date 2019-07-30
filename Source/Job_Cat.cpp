@@ -2,12 +2,7 @@
 /* Job_Cat.cpp -- Cat Job                                                     */
 /*============================================================================*/
 
-// Job Short: Cat
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Cat =
 {
