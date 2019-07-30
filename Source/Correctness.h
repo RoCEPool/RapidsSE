@@ -72,6 +72,8 @@ extern pDUMPFUN *gpDump[];
 typedef void (pFINALIZE(eCN eClass, Object* pObject));
 extern pFINALIZE *gpFinalize[];
 
+namespace Tasks { typedef MP<Task,CN_TASK> MP_Task; }
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
