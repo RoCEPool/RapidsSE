@@ -1894,7 +1894,7 @@ void Step::vJobStateDiagram(MP_Task mpTask)
 
   s256 sDiagram;
   
-  Job::vStateDiagram(sDiagram,(eCN)iClassNo);
+  AM::vStateDiagram(sDiagram,(eCN)iClassNo);
   
   mpTask->m_pDataStack->vPushS256(sDiagram);
   

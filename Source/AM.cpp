@@ -205,6 +205,60 @@ Stz* AM::szEnumText(i8 iEnumGroup, i8 i_Enum)
 }
 
 /*----------------------------------------------------------------------------*/
+/* state diagram                                                              */
+/*----------------------------------------------------------------------------*/
+void AM::vStateDiagram(s256& sDiagram, eCN eJobClass)
+{
+  TaskList* pExecuting     = AM::pQueues()->m_pExecutingSet;
+  JobList*  pOriginating   = AM::pOriginatingJobs();
+  JobList*  pParticipating = AM::pParticipatingJobs();
+  
+  sDiagram = ""_Stz;
+  
+  switch (eJobClass) {
+      
+      // generate state diagram for export job
+    case Correctness::CN_JOB_EXPORT: {
+      
+      i8 iDiagram = AM::iNextDiagram();
+      
+      // whats in the system relevant to export?
+      bool bKE_received   = pExecuting->bHasJobClass(CN_JOB_KIDEXPORT,false);
+      bool bE_neutral     = pExecuting->bHasJobClass(CN_JOB_EXPORT,false);
+      bool bE_originator  = pOriginating->bHasJobClass(CN_JOB_EXPORT);
+      bool bE_participant = pParticipating->bHasJobClass(CN_JOB_EXPORT);
+      bool bE_received    = pExecuting->bHasJobClass(CN_JOB_EXPORT,true);
+      bool bSE_neutral    = pExecuting->bHasJobClass(CN_JOB_SUBEXPORTER,false);
+      
+      // form the state diagram
+      sDiagram.vSprint("%03lld# "_Stz,iDiagram);
+      
+      if (bKE_received)         { sDiagram.vConcat("KE`"_Stz);  }
+      if (bE_originator)        { sDiagram.vConcat("[E]"_Stz);  }
+      if (! bE_originator &&
+          bE_neutral)           { sDiagram.vConcat("E"_Stz);    }
+      if (bE_participant)       { sDiagram.vConcat("(E`)"_Stz); }
+      if (! bE_participant &&
+          bE_received)          { sDiagram.vConcat("E`"_Stz);   }
+      
+      if (bSE_neutral)          { sDiagram.vConcat("SE"_Stz);   }
+      
+      sDiagram.vConcat(":"_Stz);
+      
+      if (bE_participant)       { sDiagram.vConcat("(E`)"_Stz); }
+      if (! bE_participant &&
+          bE_received)          { sDiagram.vConcat("E`"_Stz);   }
+      if (bSE_neutral)          { sDiagram.vConcat("SE"_Stz);   }
+      
+      return;
+    }
+      
+    default:
+      sDiagram.vSprint("Warning: No diagram for class %lld %s"_Stz,
+                       eJobClass,aCN[eJobClass]);
+  }
+}
+/*----------------------------------------------------------------------------*/
 /* add a log entry                                                            */
 /*----------------------------------------------------------------------------*/
 void AM::vNote(Stz* aFormat, ...)
