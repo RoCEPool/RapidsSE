@@ -869,7 +869,7 @@ void Engine::vStartSystem(void)
   
   gxArguments.vAddConstants();
   
-  Axioms::vAddConstants();
+  Constants::vAddConstants();
 
   vCallBoot();
   

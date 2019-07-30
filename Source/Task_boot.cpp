@@ -4,7 +4,7 @@
 
 #include "Tasks.h"
 #include "AM.hpp"
-#include "Axioms.h"
+#include "StorageEngine.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -332,7 +332,7 @@ void Task::vCompileConstant(s48K& sDefinition)
 
   //vTrace("CompileConstant: %s %s\n"_Stz,aName,sConstantValue.aChar());
   
-  vAddConstant(aName,(Stz*)sConstantValue.aChar());
+  Constants::vAddConstant(aName,(Stz*)sConstantValue.aChar());
   
   m_pCompiler->m_pTokeniser->vNextToken();
   

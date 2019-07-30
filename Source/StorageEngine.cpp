@@ -48,7 +48,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   Grids::vCheckAssumptions();
   Interface::vCheckAssumptions();
   Prompt::vCheckAssumptions();
-  Axioms::vCheckAssumptions();
   StorageEngine::vCheckAssumptions();
 }
 

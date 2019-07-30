@@ -4,14 +4,15 @@
 
 #pragma once
 
-#include "Axioms.h"
+#include "StorageEngine.h"
 
 //-----------------------------------------------------------------------------
 
-namespace Axioms
+namespace StorageEngine
 {
   class Constants
   {
+  public:
   static void vAddConstant(Stz* aName, i8 iVal);
   static void vAddConstant(Stz* aName, Stz* aValue);
   static void vAddConstants(void);
