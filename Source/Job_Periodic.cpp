@@ -2,12 +2,7 @@
 /* Job_Periodic.cpp -- Periodic Job                                           */
 /*============================================================================*/
 
-// Job Short: Periodic
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Periodic =
 {

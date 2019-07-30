@@ -2,12 +2,7 @@
 /* Job_Receiver.cpp -- Socket Receiver Job                                    */
 /*============================================================================*/
 
-// Job Short: Receiver
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Receiver =
 {

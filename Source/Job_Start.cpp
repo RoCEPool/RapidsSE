@@ -2,12 +2,7 @@
 /* Job_Start.cpp -- System Start Job                                          */
 /*============================================================================*/
 
-// Job Short: Start
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Start =
 {

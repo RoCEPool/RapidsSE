@@ -1,13 +1,8 @@
 /*============================================================================*/
-/* Job_Alarm.cpp -- Alarm Job                                           */
+/* Job_Alarm.cpp -- Alarm Job                                                 */
 /*============================================================================*/
 
-// Job Short: Alarm
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Alarm =
 {

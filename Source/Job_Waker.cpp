@@ -2,12 +2,7 @@
 /* Job_Waker.cpp -- Waker Job                                                 */
 /*============================================================================*/
 
-// Job Short: Waker
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Waker =
 {

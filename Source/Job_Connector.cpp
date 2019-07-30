@@ -2,12 +2,7 @@
 /* Job_Connector.cpp -- Socket/Node Cross Connector Job                       */
 /*============================================================================*/
 
-// Job Short: Connector
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Connector =
 {

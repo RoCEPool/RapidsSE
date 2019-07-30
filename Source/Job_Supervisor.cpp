@@ -1,13 +1,8 @@
 /*============================================================================*/
-/* Job_Supervisor.cpp -- Supervisor Job                                           */
+/* Job_Supervisor.cpp -- Supervisor Job                                       */
 /*============================================================================*/
 
-// Job Short: Supervisor
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Supervisor =
 {

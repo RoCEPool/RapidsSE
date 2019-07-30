@@ -2,12 +2,7 @@
 /* Job_Answer.cpp -- Socket Answer Job                                        */
 /*============================================================================*/
 
-// Job Short: Answer
-
 #include "Jobs.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_Answer =
 {
