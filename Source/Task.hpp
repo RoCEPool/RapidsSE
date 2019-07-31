@@ -7,24 +7,6 @@ namespace Tasks
 {  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  enum eTK // Task Kind
-  {
-  /* 0 */ TK_NONE=0,
-  /* 1 */ TK_JOB,      // task is a job
-  /* 2 */ TK_OPERATOR, // task is an operator
-  /* 3 */ TK_ENUMS
-  };
-  
-  static Stz* aTK[]
-  {
-  /* 0 */ "NONE"_Stz,
-  /* 1 */ "JOB"_Stz,
-  /* 2 */ "OPERATOR"_Stz,
-  /* 3 */ "ENUMS"_Stz,
-  };
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   // tracing masks
   static const i8 C_TRACE_NONE     = 0x0;
   static const i8 C_TRACE_STEPS    = 0x1;

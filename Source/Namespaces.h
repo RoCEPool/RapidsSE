@@ -15,7 +15,7 @@ namespace Forth         { class Cell; class Dic; class ForthWord;             }
 namespace Grids         { class Grid; class Node;                             }
 namespace Indexes       { class IndexTree;                                    }
 namespace Interface     { class ApiState;                                     }
-namespace Jobs          { class Job; class JobList;
+namespace Jobs          { class Job; struct JobClass;  class JobList;
                                      class Job_CreateTable;
                                      class Job_CreateIndex;                   }
 namespace Library       { class Lock; class LockTracker;                      }

@@ -20,6 +20,7 @@ namespace Enums
 #include "eTR.h"
 #include "eTS.h"
 
+#include "e_AllOthers.h"
 
 /*============================================================================*/
 /* end                                                                        */

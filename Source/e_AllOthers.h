@@ -1,0 +1,407 @@
+/*============================================================================*/
+/* e_AllOthers.h -- collection of all the other enums                         */
+/*============================================================================*/
+#pragma once
+
+
+//------------------------------------------------------------------------------
+
+enum eJL // jobs list
+{
+  /* 0 */ JL_NONE=0,
+  /* 1 */ JL_ORIGINATING,
+  /* 2 */ JL_PARTICIPATING
+};
+
+static Stz* aJL[]
+{
+  /* 0 */ "None"_Stz,
+  /* 1 */ "Originating"_Stz,
+  /* 2 */ "Participating"_Stz
+};
+
+//------------------------------------------------------------------------------
+
+enum ePF // prompt function
+{
+  /*  0 */ PF_NONE=0,
+  
+  /*    */ PF_APISTATE,
+  /*    */ PF_ARGS,
+  /*    */ PF_ASCII,
+  /*    */ PF_ATTACHMAP,
+  /*    */ PF_BP,
+  /*    */ PF_BYE,
+  /*    */ PF_CACHE,
+  /*    */ PF_CD,
+  /*    */ PF_CLASSES,
+  /*    */ PF_CMDS,
+  /*    */ PF_CONFIG,
+  /*    */ PF_CONSTANTS,
+  /*    */ PF_ENUMS,
+  /*    */ PF_ERRNO,
+  /*    */ PF_EXECUTING,
+  /*    */ PF_FILECAT,
+  /*    */ PF_FILEPROC,
+  /*    */ PF_FILESTATS,
+  /*    */ PF_FLOATS,
+  /*    */ PF_FUNS,
+  /*    */ PF_GIVEMEM,
+  /*    */ PF_HASHDEFS,
+  /*    */ PF_HEAPMEM,
+  /*    */ PF_HELP,
+  /*    */ PF_HEXDUMP,
+  /*    */ PF_HW,
+  /*    */ PF_INDEXENTRIES,
+  /*    */ PF_JOB,
+  /*    */ PF_JOBCAT,
+  /*    */ PF_JOBCLASS,
+  /*    */ PF_LIMITS,
+  /*    */ PF_LOCKS,
+  /*    */ PF_LOGNOTE,
+  /*    */ PF_LOGSECTION,
+  /*    */ PF_LOGWRITE,
+  /*    */ PF_LS,
+  /*    */ PF_LVL,
+  /*    */ PF_MARKACT,
+  /*    */ PF_MARKAPI,
+  /*    */ PF_MARKJOB,
+  /*    */ PF_MARKRES,
+  /*    */ PF_MARKTRC,
+  /*    */ PF_MASKS,
+  /*    */ PF_MEMORY,
+  /*    */ PF_MEMTEST,
+  /*    */ PF_MKPIPE,
+  /*    */ PF_MON,
+  /*    */ PF_NOW,
+  /*    */ PF_NUMBERS,
+  /*    */ PF_OLIST,
+  /*    */ PF_OPSYS,
+  /*    */ PF_PLIST,
+  /*    */ PF_PMC,
+  /*    */ PF_POW2,
+  /*    */ PF_PREFIXES,
+  /*    */ PF_PRINT,
+  /*    */ PF_PWD,
+  /*    */ PF_QUESTION,
+  /*    */ PF_RASSERT,
+  /*    */ PF_READY,
+  /*    */ PF_RESOURCES,
+  /*    */ PF_RMPIPE,
+  /*    */ PF_RND,
+  /*    */ PF_SE,
+  /*    */ PF_SETDBG,
+  /*    */ PF_SHELL,
+  /*    */ PF_SINCE,
+  /*    */ PF_SIZES,
+  /*    */ PF_SLEEP,
+  /*    */ PF_SLEEPERS,
+  /*    */ PF_SLEEPING,
+  /*    */ PF_SOCKET,
+  /*    */ PF_SSN,
+  /*    */ PF_ST,
+  /*    */ PF_TAKEMEM,
+  /*    */ PF_TASKQUEUES,
+  /*    */ PF_TEMPNAME,
+  /*    */ PF_THREADS,
+  /*    */ PF_TIMEREND,
+  /*    */ PF_TIMERSTART,
+  /*    */ PF_TPCH,
+  /*    */ PF_UPTIME,
+  /*    */ PF_VERSION,
+  /*    */ PF_WAITING,
+  
+  /*    */ PF_ENUMS_
+};
+
+static Stz* aPF[]
+{
+  /*  0 */ "NONE"_Stz,
+  /*    */ "APISTATE"_Stz,
+  /*    */ "ARGS"_Stz,
+  /*    */ "ASCII"_Stz,
+  /*    */ "ATTACHMAP"_Stz,
+  /*    */ "BP"_Stz,
+  /*    */ "BYE"_Stz,
+  /*    */ "CACHE"_Stz,
+  /*    */ "CD"_Stz,
+  /*    */ "CLASSES"_Stz,
+  /*    */ "CMDS"_Stz,
+  /*    */ "CONFIG"_Stz,
+  /*    */ "CONSTANTS"_Stz,
+  /*    */ "ENUMS"_Stz,
+  /*    */ "ERRNO"_Stz,
+  /*    */ "EXECUTING"_Stz,
+  /*    */ "FILECAT"_Stz,
+  /*    */ "FILEPROC"_Stz,
+  /*    */ "FILESTATS"_Stz,
+  /*    */ "FLOATS"_Stz,
+  /*    */ "FUNS"_Stz,
+  /*    */ "GIVEMEM"_Stz,
+  /*    */ "HASHDEFS"_Stz,
+  /*    */ "HEAPMEM"_Stz,
+  /*    */ "HELP"_Stz,
+  /*    */ "HEXDUMP"_Stz,
+  /*    */ "HW"_Stz,
+  /*    */ "INDEXENTRIES"_Stz,
+  /*    */ "JOB"_Stz,
+  /*    */ "JOBCAT"_Stz,
+  /*    */ "JOBCLASS"_Stz,
+  /*    */ "LIMITS"_Stz,
+  /*    */ "LOCKS"_Stz,
+  /*    */ "LOGNOTE"_Stz,
+  /*    */ "LOGSECTION"_Stz,
+  /*    */ "LOGWRITE"_Stz,
+  /*    */ "LS"_Stz,
+  /*    */ "LVL"_Stz,
+  /*    */ "MARKACT"_Stz,
+  /*    */ "MARKAPI"_Stz,
+  /*    */ "MARKJOB"_Stz,
+  /*    */ "MARKRES"_Stz,
+  /*    */ "MARKTRC"_Stz,
+  /*    */ "MASKS"_Stz,
+  /*    */ "MEMORY"_Stz,
+  /*    */ "MEMTEST"_Stz,
+  /*    */ "MKPIPE"_Stz,
+  /*    */ "MON"_Stz,
+  /*    */ "OW"_Stz,
+  /*    */ "NUMBERS"_Stz,
+  /*    */ "OLIST"_Stz,
+  /*    */ "OPSYS"_Stz,
+  /*    */ "PLIST"_Stz,
+  /*    */ "PMC"_Stz,
+  /*    */ "POW2"_Stz,
+  /*    */ "PREFIXES"_Stz,
+  /*    */ "PRINT"_Stz,
+  /*    */ "PWD"_Stz,
+  /*    */ "QUESTION"_Stz,
+  /*    */ "RASSERT"_Stz,
+  /*    */ "READY"_Stz,
+  /*    */ "RESOURCES"_Stz,
+  /*    */ "RMPIPE"_Stz,
+  /*    */ "RND"_Stz,
+  /*    */ "SE"_Stz,
+  /*    */ "SETDBG"_Stz,
+  /*    */ "SHELL"_Stz,
+  /*    */ "SINCE"_Stz,
+  /*    */ "SIZES"_Stz,
+  /*    */ "SLEEP"_Stz,
+  /*    */ "SLEEPERS"_Stz,
+  /*    */ "SLEEPING"_Stz,
+  /*    */ "SOCKET"_Stz,
+  /*    */ "SSN"_Stz,
+  /*    */ "ST"_Stz,
+  /*    */ "TAKEMEM"_Stz,
+  /*    */ "TASKQUEUES"_Stz,
+  /*    */ "TEMPNAME"_Stz,
+  /*    */ "THREADS"_Stz,
+  /*    */ "TIMEREND"_Stz,
+  /*    */ "TIMERSTART"_Stz,
+  /*    */ "TPCH"_Stz,
+  /*    */ "UPTIME"_Stz,
+  /*    */ "VERSION"_Stz,
+  /*    */ "WAITING"_Stz,
+  
+  /*    */ "ENUMS_"_Stz
+};
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+enum eTD // thread state
+{
+  /*  0 */ TD_NONE=0,
+  /*  1 */ TD_ASSIGNED,
+  /*  2 */ TD_IDLE,
+  /*  3 */ TD_UNASSIGNED,
+  /*  4 */ TD_ENUMS,
+};
+  
+static Stz* aTD[]
+{
+  /*  0 */ "NONE"_Stz,
+  /*  1 */ "ASSIGNED"_Stz,
+  /*  2 */ "IDLE"_Stz,
+  /*  3 */ "UNASSIGNED"_Stz,
+  /*  4 */ "ENUMS"_Stz,
+};
+  
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+enum eTK // Task Kind
+{
+  /* 0 */ TK_NONE=0,
+  /* 1 */ TK_JOB,      // task is a job
+  /* 2 */ TK_OPERATOR, // task is an operator
+  /* 3 */ TK_ENUMS
+};
+
+static Stz* aTK[]
+{
+  /* 0 */ "NONE"_Stz,
+  /* 1 */ "JOB"_Stz,
+  /* 2 */ "OPERATOR"_Stz,
+  /* 3 */ "ENUMS"_Stz,
+};
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+enum eJF // job flags
+{
+  /*  0 */ JF_NONE   = 0x0,
+  /*  1 */ JF_LOWMEM = 0x1,  // low memory sensistive
+};
+
+static Stz* aJF[]
+{
+  /*  0 */ "NONE"_Stz,
+  /*  1 */ "LOWMEM"_Stz,
+};
+
+enum ePY // priority
+{
+  /*  0 */ PY_NONE=0,
+  /*  1 */ PY_LOW,
+  /*  2 */ PY_NORMAL
+};
+
+static Stz* aPY[]
+{
+  /*  0 */ "NONE"_Stz,
+  /*  1 */ "LOW"_Stz,
+  /*  2 */ "NORMAL"_Stz
+};
+
+enum eJK // job kind
+{
+  /*  0 */ JK_NONE=0,
+  /*  1 */ JK_CHILD,     // subordinate helper run on originator
+  /*  2 */ JK_DIST2PC,   // distributed two-phase jobs
+  /*  3 */ JK_GENERIC,   // the generic jobs for two-phase messaging
+  /*  4 */ JK_GRANDKID,  // subordinate helper run on participant
+  /*  5 */ JK_INFO,      // job is for info purposes only
+  /*  6 */ JK_LOCAL,     // job is run on the local node
+  /*  7 */ JK_SYSTEM,    // system job (such as socket receiver)
+  /*  8 */ JK_THREAD,    // job is run by calling thread
+  /*  9 */ JK_OTHER,     // any other
+};
+
+static Stz* aJK[]
+{
+  /*  0 */ "NONE"_Stz,
+  /*  1 */ "CHILD"_Stz,
+  /*  2 */ "DIST2PC"_Stz,
+  /*  3 */ "GENERIC"_Stz,
+  /*  4 */ "GRANDKID"_Stz,
+  /*  5 */ "INFO"_Stz,
+  /*  6 */ "LOCAL"_Stz,
+  /*  7 */ "SYSTEM"_Stz,
+  /*  8 */ "THREAD"_Stz,
+  /*  9 */ "OTHER"_Stz,
+};
+
+enum eJP // job phase
+{
+  /*  0 */ JP_NONE=0,
+  /*  1 */ JP_BEGINING,
+  /*  2 */ JP_BEGUN,
+  /*  3 */ JP_EXECUTING,
+  /*  4 */ JP_EXECUTED,
+  /*  5 */ JP_ENDING,
+  /*  6 */ JP_ENDED,
+  /*  7 */ JP_CANCELING,
+  /*  8 */ JP_CANCELED,
+  /*  9 */ JP_ENUMS
+};
+
+static Stz* aJP[]
+{
+  /*  0 */ "NONE"_Stz,
+  /*  1 */ "BEGINING"_Stz,
+  /*  2 */ "BEGUN"_Stz,
+  /*  3 */ "EXECUTING"_Stz,
+  /*  4 */ "EXECUTED"_Stz,
+  /*  5 */ "ENDING"_Stz,
+  /*  6 */ "ENDED"_Stz,
+  /*  7 */ "CANCELING"_Stz,
+  /*  8 */ "CANCELED"_Stz,
+  /*  9 */ "ENUMS"_Stz,
+};
+
+enum eJS // job state
+{
+  /*  0 */ JS_RUNNING=0,
+  /*  1 */ JS_LOCKED,
+  /*  2 */ JS_WAITING,
+  /*  3 */ JS_SIGNALLED
+};
+
+static Stz* aJS[]
+{
+  /*  0 */ "RUNNING"_Stz,
+  /*  1 */ "LOCKED"_Stz,
+  /*  2 */ "WAITING"_Stz,
+  /*  2 */ "SIGNALLED"_Stz,
+};
+
+enum eJT // job trace
+{
+  /*  0 */ JT_NONE=0,
+  /*  1 */ JT_ALL,
+  /*  2 */ JT_JOB,
+  /*  3 */ JT_TASK
+};
+
+static Stz* aJT[]
+{
+  /*  0 */ "NONE"_Stz,
+  /*  1 */ "ALL"_Stz,
+  /*  2 */ "JOB"_Stz,
+  /*  3 */ "TASK"_Stz
+};
+
+enum eSS // seed string
+{
+  /*  0 */ SS_SEED_RUN=0,
+  /*  1 */ SS_SEED_REQ,
+  /*  2 */ SS_SEED_RCV,
+  /*  3 */ SS_SEED_EXE,
+  /*  4 */ SS_SEED_END,
+  /*  5 */ SS_SEED_CAN,
+  /*  6 */ SS_ENUMS
+};
+
+static Stz* aSS[]
+{
+  /*  0 */ "SS_SEED_RUN"_Stz,
+  /*  1 */ "SS_SEED_REQ"_Stz,
+  /*  2 */ "SS_SEED_RCV"_Stz,
+  /*  3 */ "SS_SEED_EXE"_Stz,
+  /*  4 */ "SS_SEED_END"_Stz,
+  /*  5 */ "SS_SEED_CAN"_Stz,
+  /*  6 */ "SS_ENUMS"_Stz,
+};
+
+enum eRU // Resource Usage
+{
+  /*  0 */ RU_NONE=0,
+  /*  1 */ RU_SMALL,
+  /*  2 */ RU_MEDIUM,
+  /*  3 */ RU_LARGE,
+  /*  4 */ RU_ENUMS
+};
+
+static Stz* aRU[]
+{
+  /*  0 */ "RU_NONE"_Stz,
+  /*  1 */ "RU_SMALL"_Stz,
+  /*  2 */ "RU_MEDIUM"_Stz,
+  /*  3 */ "RU_LARGE"_Stz,
+  /*  4 */ "RU_ENUMS"_Stz,
+};
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
