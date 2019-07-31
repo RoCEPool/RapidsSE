@@ -2,6 +2,7 @@
 /* Steps_Error.cpp - error step group                                         */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

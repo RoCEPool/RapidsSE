@@ -2,6 +2,7 @@
 /* Steps_Index.cpp - index step group                                         */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

@@ -1,7 +1,8 @@
 /*============================================================================*/
-/* Steps_EntBuffer.cpp - entry buffer step group                            */
+/* Steps_EntBuffer.cpp - entry buffer step group                              */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

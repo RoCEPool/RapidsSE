@@ -2,6 +2,7 @@
 /* Steps_Handler.cpp - handler group                                          */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

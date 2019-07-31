@@ -2,6 +2,7 @@
 /* Steps_Flow.cpp - flow step group                                           */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

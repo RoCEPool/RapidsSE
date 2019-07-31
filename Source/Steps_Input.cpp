@@ -2,6 +2,7 @@
 /* Steps_Input.cpp - input step group                                         */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
