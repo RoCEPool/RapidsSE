@@ -2,8 +2,7 @@
 /* ShmUtility.cpp - share memory utility                                      */
 /*============================================================================*/
 
-#include "StorageEngine.h"
-#include "ShmUtility.hpp"
+#include "Utilities.h"
 
 bool  mbCreate = false;
 bool  mbAttach = false;

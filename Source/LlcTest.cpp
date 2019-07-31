@@ -2,7 +2,7 @@
 /* LlcTest.cpp -- LLC Miss Test                                               */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "Utilities.h"
 
 // this is too large an array to fit on thread stack so it's declared global
 #define C_ELEMENTS (C_1MB * 32)

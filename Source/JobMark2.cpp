@@ -33,6 +33,7 @@ JobMark2::JobMark2(eCN eClassNo, Session* pSession)
   
   m_bCancel = false;
   m_bEarly  = false;
+  m_ixTempBuffers.vCheckInit();
 
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
 }
