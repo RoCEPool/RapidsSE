@@ -253,7 +253,7 @@ void AM::vStateDiagram(s256& sDiagram, eCN eJobClass)
   switch (eJobClass) {
       
       // generate state diagram for export job
-    case Correctness::CN_JOB_EXPORT: {
+    case CN_JOB_EXPORT: {
       
       i8 iDiagram = AM::iNextDiagram();
       
