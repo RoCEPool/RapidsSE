@@ -6,7 +6,7 @@
 
 JobClass xJobClass_TableSizes =
 {
-  CN_JOB_TABLESIZES,     // class enum
+  CN_JOB_TABLESIZES,     // class number
   JK_DIST2PC,            // job kind
   RK_NODE_ROWS,          // response kind
   "table sizes"_Stz,     // comment about the job

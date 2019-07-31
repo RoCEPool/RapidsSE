@@ -6,7 +6,7 @@
 
 JobClass xJobClass_Periodic =
 {
-  CN_JOB_PERIODIC,       // class enum
+  CN_JOB_PERIODIC,       // class number
   JK_SYSTEM,             // job kind
   RK_NONE,               // response kind
   "periodic"_Stz,        // comment about the job

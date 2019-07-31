@@ -6,7 +6,7 @@
 
 JobClass xJobClass_WriteBuffer =
 {
-  CN_JOB_WRITEBUFFER,     // class enum
+  CN_JOB_WRITEBUFFER,     // class number
   JK_GRANDKID,            // job kind
   RK_NONE,                // response kind
   "write buffer"_Stz,     // comment about the job

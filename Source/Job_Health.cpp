@@ -6,7 +6,7 @@
 
 JobClass xJobClass_Health =
 {
-  CN_JOB_HEALTH,         // class enum
+  CN_JOB_HEALTH,         // class number
   JK_OTHER,              // job kind
   RK_NONE,               // response kind
   "network hog"_Stz,     // comment about the job

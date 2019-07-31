@@ -6,7 +6,7 @@
 
 JobClass xJobClass_Repeater =
 {
-  CN_JOB_REPEATER,       // class enum
+  CN_JOB_REPEATER,       // class number
   JK_LOCAL,              // job kind
   RK_NONE,               // response kind
   "repeat data"_Stz,     // comment about the job

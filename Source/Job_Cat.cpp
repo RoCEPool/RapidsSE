@@ -6,7 +6,7 @@
 
 JobClass xJobClass_Cat =
 {
-  CN_JOB_CAT,         // class enum
+  CN_JOB_CAT,         // class number
   JK_LOCAL,           // job kind
   RK_NONE,            // response kind
   "cat data"_Stz,     // comment about the job

@@ -6,7 +6,7 @@
 
 JobClass xJobClass_SizeTable =
 {
-  CN_JOB_SIZETABLE,      // class enum
+  CN_JOB_SIZETABLE,      // class number
   JK_DIST2PC,            // job kind
   RK_NODE_ROWS,          // response kind
   "size of table"_Stz,   // comment about the job

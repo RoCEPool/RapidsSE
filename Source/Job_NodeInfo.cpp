@@ -6,7 +6,7 @@
 
 JobClass xJobClass_NodeInfo =
 {
-  CN_JOB_NODEINFO,   // class enum
+  CN_JOB_NODEINFO,   // class number
   JK_INFO,           // job kind
   RK_NONE,           // response kind
   "node info"_Stz,   // comment about the job

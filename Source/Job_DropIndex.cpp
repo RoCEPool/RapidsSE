@@ -6,7 +6,7 @@
 
 JobClass xJobClass_DropIndex =
 {
-  CN_JOB_DROPINDEX,      // class enum
+  CN_JOB_DROPINDEX,      // class number
   JK_DIST2PC,            // job kind
   RK_NODE_ZERO,          // response kind
   "drop index"_Stz,      // comment about the job

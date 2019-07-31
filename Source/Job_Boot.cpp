@@ -6,7 +6,7 @@
 
 JobClass xJobClass_Boot =
 {
-  CN_JOB_BOOT,       // class enum
+  CN_JOB_BOOT,       // class number
   JK_THREAD,         // job kind
   RK_NONE,           // response kind
   "system boot"_Stz, // comment about the job

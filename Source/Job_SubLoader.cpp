@@ -6,7 +6,7 @@
 
 JobClass xJobClass_SubLoader =
 {
-  CN_JOB_SUBLOADER,       // class enum
+  CN_JOB_SUBLOADER,       // class number
   JK_CHILD,               // job kind
   RK_NONE,                  // response kind
   "table sub-loader"_Stz, // comment about the job

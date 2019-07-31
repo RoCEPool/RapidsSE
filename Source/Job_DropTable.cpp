@@ -6,7 +6,7 @@
 
 JobClass xJobClass_DropTable =
 {
-  CN_JOB_DROPTABLE,      // class enum
+  CN_JOB_DROPTABLE,      // class number
   JK_DIST2PC,            // job kind
   RK_NODE_ZERO,          // response kind
   "drop table"_Stz,      // comment about the job

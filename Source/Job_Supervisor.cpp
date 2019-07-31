@@ -6,7 +6,7 @@
 
 JobClass xJobClass_Supervisor =
 {
-  CN_JOB_SUPERVISOR,     // class enum
+  CN_JOB_SUPERVISOR,     // class number
   JK_SYSTEM,             // job kind
   RK_NONE,               // response kind
   "supervisor"_Stz,      // comment about the job

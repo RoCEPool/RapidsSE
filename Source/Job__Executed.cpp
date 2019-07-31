@@ -6,7 +6,7 @@
 
 JobClass xJobClass__Executed =
 {
-  CN_JOB__EXECUTED,        // class enum
+  CN_JOB__EXECUTED,        // class number
   JK_GENERIC,              // job kind
   RK_NONE,                 // response kind
   "job was executed"_Stz,  // comment about the job

@@ -6,7 +6,7 @@
 
 JobClass xJobClass_CreateSchema =
 {
-  CN_JOB_CREATESCHEMA,      // class enum
+  CN_JOB_CREATESCHEMA,      // class number
   JK_DIST2PC,               // job kind
   RK_NODE_ZERO,             // response kind
   "create schema"_Stz,      // comment about the job

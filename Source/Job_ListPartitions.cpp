@@ -6,7 +6,7 @@
 
 JobClass xJobClass_ListPartitions =
 {
-  CN_JOB_LISTPARTITIONS,    // class enum
+  CN_JOB_LISTPARTITIONS,    // class number
   JK_DIST2PC,               // job kind
   RK_NODE_ROWS,             // response kind
   "list partitions"_Stz,    // comment about the job

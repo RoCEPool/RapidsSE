@@ -6,7 +6,7 @@
 
 JobClass xJobClass_ListCatalogs =
 {
-  CN_JOB_LISTCATALOGS,     // class enum
+  CN_JOB_LISTCATALOGS,     // class number
   JK_LOCAL,                // job kind
   RK_LOCAL_ROWS,           // response kind
   "list catalogs"_Stz,     // comment about the job

@@ -6,7 +6,7 @@
 
 JobClass xJobClass_Query =
 {
-  CN_JOB_QUERY,          // class enum
+  CN_JOB_QUERY,          // class number
   JK_LOCAL,              // job kind
   RK_LOCAL_ROWS,         // response kind
   "query"_Stz,           // comment about the job

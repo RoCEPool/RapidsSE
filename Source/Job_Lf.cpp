@@ -6,7 +6,7 @@
 
 JobClass xJobClass_Lf =
 {
-  CN_JOB_LF,         // class enum
+  CN_JOB_LF,         // class number
   JK_LOCAL,          // job kind
   RK_LOCAL_ROWS,     // response kind
   "list folder"_Stz, // comment about the job

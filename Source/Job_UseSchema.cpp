@@ -6,7 +6,7 @@
 
 JobClass xJobClass_UseSchema =
 {
-  CN_JOB_USESCHEMA,      // class enum
+  CN_JOB_USESCHEMA,      // class number
   JK_LOCAL,              // job kind
   RK_LOCAL_ERRORS,       // response kind
   "use schema"_Stz,      // comment about the job

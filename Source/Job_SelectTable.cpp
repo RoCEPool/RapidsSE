@@ -6,7 +6,7 @@
 
 JobClass xJobClass_SelectTable =
 {
-  CN_JOB_SELECTTABLE,        // class enum
+  CN_JOB_SELECTTABLE,        // class number
   JK_LOCAL,                  // job kind
   RK_NONE,                   // response kind
   "select table"_Stz,        // comment about the job

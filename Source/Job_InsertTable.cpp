@@ -6,7 +6,7 @@
 
 JobClass xJobClass_EndInsert =
 {
-  CN_JOB_INSERTTABLE,       // class enum
+  CN_JOB_INSERTTABLE,       // class number
   JK_DIST2PC,               // job kind
   RK_NODE_ERRORS,           // response kind
   "insert table"_Stz,       // comment about the job

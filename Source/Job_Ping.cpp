@@ -6,7 +6,7 @@
 
 JobClass xJobClass_Ping =
 {
-  CN_JOB_PING,       // class enum
+  CN_JOB_PING,       // class number
   JK_LOCAL,          // job kind
   RK_LOCAL_ROWS,     // response kind
   "ping"_Stz,        // comment about the job

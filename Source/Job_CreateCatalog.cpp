@@ -6,7 +6,7 @@
 
 JobClass xJobClass_CreateCatalog =
 {
-  CN_JOB_CREATECATALOG,     // class enum
+  CN_JOB_CREATECATALOG,     // class number
   JK_DIST2PC,               // job kind
   RK_NODE_ZERO,             // response kind
   "create catalog"_Stz,     // comment about the job

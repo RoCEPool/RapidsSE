@@ -6,7 +6,7 @@
 
 JobClass xJobClass_InsertRow =
 {
-  CN_JOB_INSERTROW,       // class enum
+  CN_JOB_INSERTROW,       // class number
   JK_DIST2PC,             // job kind
   RK_NODE_ERRORS,         // response kind
   "insert into tableNm"_Stz, // comment about the job

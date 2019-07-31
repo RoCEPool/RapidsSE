@@ -6,7 +6,7 @@
 
 JobClass xJobClass_Export =
 {
-  CN_JOB_EXPORT,        // class enum
+  CN_JOB_EXPORT,        // class number
   JK_DIST2PC,           // job kind
   RK_NONE,              // response kind
   "export table"_Stz,   // comment about the job

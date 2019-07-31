@@ -6,7 +6,7 @@
 
 JobClass xJobClass_ListSchemas =
 {
-  CN_JOB_LISTSCHEMAS,     // class enum
+  CN_JOB_LISTSCHEMAS,     // class number
   JK_LOCAL,               // job kind
   RK_LOCAL_ROWS,          // response kind
   "list schemas"_Stz,     // comment about the job

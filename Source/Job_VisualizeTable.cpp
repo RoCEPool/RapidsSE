@@ -6,7 +6,7 @@
 
 JobClass xJobClass_VisualizeTable =
 {
-  CN_JOB_VISUALIZETABLE,      // class enum
+  CN_JOB_VISUALIZETABLE,      // class number
   JK_LOCAL,                   // job kind
   RK_LOCAL_ERRORS,            // response kind
   "visualize table"_Stz,      // comment about the job

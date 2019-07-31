@@ -6,7 +6,7 @@
 
 JobClass xJobClass_TruncateTable =
 {
-  CN_JOB_TRUNCATETABLE,      // class enum
+  CN_JOB_TRUNCATETABLE,      // class number
   JK_DIST2PC,                // job kind
   RK_NODE_ZERO,              // response kind
   "truncate table"_Stz,      // comment about the job

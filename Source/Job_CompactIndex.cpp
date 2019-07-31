@@ -6,7 +6,7 @@
 
 JobClass xJobClass_CompactIndex =
 {
-  CN_JOB_COMPACTINDEX,    // class enum
+  CN_JOB_COMPACTINDEX,    // class number
   JK_DIST2PC,             // job kind
   RK_NODE_ZERO,           // response kind
   "compact index"_Stz,    // comment about the job

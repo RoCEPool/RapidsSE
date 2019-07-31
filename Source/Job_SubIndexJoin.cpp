@@ -6,7 +6,7 @@
 
 JobClass xJobClass_SubIndexJoin =
 {
-  CN_JOB_SUBINDEXJOIN,       // class enum
+  CN_JOB_SUBINDEXJOIN,       // class number
   JK_CHILD,                  // job kind
   RK_NODE_ERRORS,            // response kind
   "sub-indexJoin"_Stz,       // comment about the job

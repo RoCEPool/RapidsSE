@@ -6,7 +6,7 @@
 
 JobClass xJobClass_CreateTenant =
 {
-  CN_JOB_CREATETENANT,       // class enum
+  CN_JOB_CREATETENANT,       // class number
   JK_DIST2PC,                // job kind
   RK_NODE_ZERO,              // response kind
   "create tenant"_Stz,       // comment about the job

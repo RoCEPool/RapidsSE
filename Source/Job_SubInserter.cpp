@@ -6,7 +6,7 @@
 
 JobClass xJobClass_SubInserter =
 {
-  CN_JOB_SUBINSERTER,       // class enum
+  CN_JOB_SUBINSERTER,       // class number
   JK_CHILD,                 // job kind
   RK_NODE_ERRORS,           // response kind
   "insert into table"_Stz,  // comment about the job

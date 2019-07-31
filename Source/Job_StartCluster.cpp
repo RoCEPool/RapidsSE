@@ -6,7 +6,7 @@
 
 JobClass xJobClass_StartCluster =
 {
-  CN_JOB_STARTCLUSTER,     // class enum
+  CN_JOB_STARTCLUSTER,     // class number
   JK_DIST2PC,              // job kind
   RK_NONE,                 // response kind
   "start cluster"_Stz,     // comment about the job

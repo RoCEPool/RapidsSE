@@ -6,7 +6,7 @@
 
 JobClass xJobClass_Docol =
 {
-  CN_JOB_DOCOL,      // class enum
+  CN_JOB_DOCOL,      // class number
   JK_LOCAL,          // job kind
   RK_LOCAL_ERRORS,   // response kind
   "execute word"_Stz,// comment about the job

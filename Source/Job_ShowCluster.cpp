@@ -6,7 +6,7 @@
 
 JobClass xJobClass_ShowCluster =
 {
-  CN_JOB_SHOWCLUSTER,    // class enum
+  CN_JOB_SHOWCLUSTER,    // class number
   JK_LOCAL,              // job kind
   RK_NONE,               // response kind
   "show cluster"_Stz,    // comment about the job

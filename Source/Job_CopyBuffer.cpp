@@ -6,7 +6,7 @@
 
 JobClass xJobClass_CopyBuffer =
 {
-  CN_JOB_COPYBUFFER,        // class enum
+  CN_JOB_COPYBUFFER,        // class number
   JK_GRANDKID,              // job kind
   RK_NODE_ERRORS,           // response kind
   "copy buffer"_Stz,        // comment about the job

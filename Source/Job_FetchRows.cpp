@@ -6,7 +6,7 @@
 
 JobClass xJobClass_FetchRows =
 {
-  CN_JOB_FETCHROWS,          // class enum
+  CN_JOB_FETCHROWS,          // class number
   JK_LOCAL,                  // job kind
   RK_DATA_ROWS,              // response kind
   "fetch rows"_Stz,          // comment about the job
@@ -45,7 +45,7 @@ JobClass xJobClass_FetchRows =
 
 JobClass xJobClass_FetchRetrieveRows =
 {
-  CN_JOB_FETCHROWS,          // class enum
+  CN_JOB_FETCHROWS,          // class number
   JK_LOCAL,                  // job kind
   RK_DATA_ROWS,              // response kind
   "fetch retrive rows"_Stz,  // comment about the job

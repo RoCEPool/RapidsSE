@@ -6,7 +6,7 @@
 
 JobClass xJobClass_Sink =
 {
-  CN_JOB_SINK,         // class enum
+  CN_JOB_SINK,         // class number
   JK_LOCAL,            // job kind
   RK_NONE,             // response kind
   "sink data"_Stz,     // comment about the job

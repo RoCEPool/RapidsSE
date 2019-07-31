@@ -6,7 +6,7 @@
 
 JobClass xJobClass_Waker =
 {
-  CN_JOB_WAKER,          // class enum
+  CN_JOB_WAKER,          // class number
   JK_SYSTEM,             // job kind
   RK_NONE,               // response kind
   "waker"_Stz,           // comment about the job

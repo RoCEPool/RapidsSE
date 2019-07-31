@@ -6,7 +6,7 @@
 
 JobClass xJobClass_ListTenants =
 {
-  CN_JOB_LISTTENANTS,     // class enum
+  CN_JOB_LISTTENANTS,     // class number
   JK_LOCAL,               // job kind
   RK_LOCAL_ROWS,          // response kind
   "list tenants"_Stz,     // comment about the job

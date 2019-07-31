@@ -6,7 +6,7 @@
 
 JobClass xJobClass_Answer =
 {
-  CN_JOB_ANSWER,       // class enum
+  CN_JOB_ANSWER,       // class number
   JK_SYSTEM,           // job kind
   RK_NONE,             // response kind
   "socket answer"_Stz, // comment about the job

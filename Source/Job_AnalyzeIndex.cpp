@@ -6,7 +6,7 @@
 
 JobClass xJobClass_AnalyzeIndex =
 {
-  CN_JOB_ANALYZEINDEX,       // class enum
+  CN_JOB_ANALYZEINDEX,       // class number
   JK_DIST2PC,                // job kind
   RK_NODE_ROWS,              // response kind
   "analyse index"_Stz,       // comment about the job

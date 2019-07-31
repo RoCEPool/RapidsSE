@@ -6,7 +6,7 @@
 
 JobClass xJobClass_DropTenant =
 {
-  CN_JOB_DROPTENANT,      // class enum
+  CN_JOB_DROPTENANT,      // class number
   JK_DIST2PC,             // job kind
   RK_NODE_ZERO,           // response kind
   "drop tenant"_Stz,      // comment about the job

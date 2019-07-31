@@ -6,7 +6,7 @@
 
 JobClass xJobClass_Publish =
 {
-  CN_JOB_PUBLISH,        // class enum
+  CN_JOB_PUBLISH,        // class number
   JK_DIST2PC,            // job kind
   RK_NONE,               // response kind
   "publish table"_Stz,   // comment about the job

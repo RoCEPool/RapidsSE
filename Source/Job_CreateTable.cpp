@@ -6,7 +6,7 @@
 
 JobClass xJobClass_CreateTable =
 {
-  CN_JOB_CREATETABLE,     // class enum
+  CN_JOB_CREATETABLE,     // class number
   JK_DIST2PC,             // job kind
   RK_NODE_ZERO,           // response kind
   "create table"_Stz,     // comment about the job

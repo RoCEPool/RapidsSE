@@ -6,7 +6,7 @@
 
 JobClass xJobClass_SubPurger =
 {
-  CN_JOB_SUBPURGER,       // class enum
+  CN_JOB_SUBPURGER,       // class number
   JK_CHILD,               // job kind
   RK_NODE_ERRORS,         // response kind
   "table sub-purger"_Stz, // comment about the job

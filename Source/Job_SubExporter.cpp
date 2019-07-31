@@ -6,7 +6,7 @@
 
 JobClass xJobClass_SubExporter =
 {
-  CN_JOB_SUBEXPORTER,        // class enum
+  CN_JOB_SUBEXPORTER,        // class number
   JK_CHILD,                  // job kind
   RK_NODE_ERRORS,            // response kind
   "sub-export rows"_Stz,     // comment about the job

@@ -6,7 +6,7 @@
 
 JobClass xJobClass_Status =
 {
-  CN_JOB_STATUS,     // class enum
+  CN_JOB_STATUS,     // class number
   JK_DIST2PC,        // job kind
   RK_NODE_ROWS,      // response kind
   "status"_Stz,      // comment about the job

@@ -6,7 +6,7 @@
 
 JobClass xJobClass_VerifyIndex =
 {
-  CN_JOB_VERIFYINDEX,         // class enum
+  CN_JOB_VERIFYINDEX,         // class number
   JK_DIST2PC,                 // job kind
   RK_NODE_ROWS,               // response kind
   "verify index"_Stz,         // comment about the job

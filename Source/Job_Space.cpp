@@ -6,7 +6,7 @@
 
 JobClass xJobClass_Space =
 {
-  CN_JOB_SPACE,     // class enum
+  CN_JOB_SPACE,     // class number
   JK_DIST2PC,       // job kind
   RK_NODE_ROWS,     // response kind
   "space"_Stz,      // comment about the job

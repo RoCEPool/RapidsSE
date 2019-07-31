@@ -6,7 +6,7 @@
 
 JobClass xJobClass_InflateRows =
 {
-  CN_JOB_INFLATEROWS,        // class enum
+  CN_JOB_INFLATEROWS,        // class number
   JK_LOCAL,                  // job kind
   RK_DATA_ROWS,              // response kind
   "inflate rows"_Stz,        // comment about the job

@@ -6,7 +6,7 @@
 
 JobClass xJobClass_CreateIndex =
 {
-  CN_JOB_CREATEINDEX,      // class enum
+  CN_JOB_CREATEINDEX,      // class number
   JK_DIST2PC,              // job kind
   RK_NODE_ZERO,            // response kind
   "create index"_Stz,      // comment about the job
@@ -45,7 +45,7 @@ JobClass xJobClass_CreateIndex =
 
 JobClass xJobClass_CreateIndexUnique =
 {
-  CN_JOB_CREATEINDEX,      // class enum
+  CN_JOB_CREATEINDEX,      // class number
   JK_DIST2PC,              // job kind
   RK_NODE_ZERO,            // response kind
   "create unique index"_Stz, // comment about the job

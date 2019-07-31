@@ -6,7 +6,7 @@
 
 JobClass xJobClass_ListPartColumns =
 {
-  CN_JOB_LISTPARTCOLUMNS,           // class enum
+  CN_JOB_LISTPARTCOLUMNS,           // class number
   JK_LOCAL,                         // job kind
   RK_LOCAL_ROWS,                    // response kind
   "list partition key"_Stz,         // comment about the job

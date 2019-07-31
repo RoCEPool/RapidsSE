@@ -6,7 +6,7 @@
 
 JobClass xJobClass_DumpIndex =
 {
-  CN_JOB_DUMPINDEX,      // class enum
+  CN_JOB_DUMPINDEX,      // class number
   JK_LOCAL,              // job kind
   RK_LOCAL_ZERO,         // response kind
   "dump index"_Stz,      // comment about the job

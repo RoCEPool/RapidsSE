@@ -6,7 +6,7 @@
 
 JobClass xJobClass_SubFetch =
 {
-  CN_JOB_SUBFETCH,           // class enum
+  CN_JOB_SUBFETCH,           // class number
   JK_CHILD,                  // job kind
   RK_NODE_ERRORS,            // response kind
   "sub-fetch rows"_Stz,      // comment about the job

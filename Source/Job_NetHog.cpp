@@ -6,7 +6,7 @@
 
 JobClass xJobClass_NetHog =
 {
-  CN_JOB_NETHOG,         // class enum
+  CN_JOB_NETHOG,         // class number
   JK_OTHER,              // job kind
   RK_NONE,               // response kind
   "network hog"_Stz,     // comment about the job

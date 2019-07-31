@@ -6,7 +6,7 @@
 
 JobClass xJobClass__End =
 {
-  CN_JOB__END,             // class enum
+  CN_JOB__END,             // class number
   JK_GENERIC,              // job kind
   RK_NONE,                 // response kind
   "job to end"_Stz,        // comment about the job

@@ -6,7 +6,7 @@
 
 JobClass xJobClass_VerifyTable =
 {
-  CN_JOB_VERIFYTABLE,         // class enum
+  CN_JOB_VERIFYTABLE,         // class number
   JK_DIST2PC,                 // job kind
   RK_NODE_ROWS,               // response kind
   "verify table"_Stz,         // comment about the job

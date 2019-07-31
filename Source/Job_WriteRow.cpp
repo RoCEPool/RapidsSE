@@ -6,7 +6,7 @@
 
 JobClass xJobClass_WriteRow =
 {
-  CN_JOB_WRITEROW,     // class enum
+  CN_JOB_WRITEROW,     // class number
   JK_GRANDKID,         // job kind
   RK_NONE,             // response kind
   "write row"_Stz,     // comment about the job

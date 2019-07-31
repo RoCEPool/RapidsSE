@@ -7,7 +7,7 @@
 #include "Jobs.h"
 JobClass xJobClass_DropCatalog =
 {
-  CN_JOB_DROPCATALOG,      // class enum
+  CN_JOB_DROPCATALOG,      // class number
   JK_DIST2PC,              // job kind
   RK_NODE_ZERO,            // response kind
   "drop catalog"_Stz,      // comment about the job

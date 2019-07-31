@@ -6,7 +6,7 @@
 
 JobClass xJobClass_Purge =
 {
-  CN_JOB_PURGE,          // class enum
+  CN_JOB_PURGE,          // class number
   JK_DIST2PC,            // job kind
   RK_NONE,               // response kind
   "purge table"_Stz,     // comment about the job

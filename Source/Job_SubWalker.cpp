@@ -9,7 +9,7 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_SubWalker =
 {
-  CN_JOB_SUBWALKER,          // class enum
+  CN_JOB_SUBWALKER,          // class number
   JK_CHILD,                  // job kind
   RK_NODE_ERRORS,            // response kind
   "sub-walker"_Stz,          // comment about the job

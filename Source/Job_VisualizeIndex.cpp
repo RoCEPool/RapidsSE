@@ -6,7 +6,7 @@
 
 JobClass xJobClass_VisualizeIndex =
 {
-  CN_JOB_VISUALIZEINDEX,      // class enum
+  CN_JOB_VISUALIZEINDEX,      // class number
   JK_LOCAL,                   // job kind
   RK_LOCAL_ERRORS,            // response kind
   "visualize index"_Stz,      // comment about the job

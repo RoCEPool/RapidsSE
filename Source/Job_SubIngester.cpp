@@ -6,7 +6,7 @@
 
 JobClass xJobClass_SubIngester =
 {
-  CN_JOB_SUBINGESTER,       // class enum
+  CN_JOB_SUBINGESTER,       // class number
   JK_CHILD,                 // job kind
   RK_NONE,                  // response kind
   "table sub-ingester"_Stz, // comment about the job
