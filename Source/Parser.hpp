@@ -7,36 +7,8 @@ namespace Commands
 {
   const char C_END_OF_LINE = '\n';
   
-  enum eIS // input source
-  {
-    IS_NONE=0,
-    IS_FILE,
-    IS_STDIN,
-    IS_STRING,
-    IS_ENUMS
-  };
-  
-  static Stz* aIS[]
-  {
-  /* 0 */ "NONE"_Stz,
-  /* 1 */ "FILE"_Stz,
-  /* 2 */ "STDIN"_Stz,
-  /* 3 */ "STRING"_Stz,
-  /* 4 */ "ENUMS"_Stz
-  };
-
-
   class Parser : public Object
   {
-  private:
-//    enum eIS // input source
-//    {
-//      IS_NONE=0,
-//      IS_FILE,
-//      IS_STDIN,
-//      IS_STRING
-//    };
-//  
   private:
     bool    m_bMalloc;   // is this object in malloc heap (or small heap)?
     i8      m_iDepth;    // depth of this parser
