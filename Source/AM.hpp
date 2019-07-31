@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-//! Do not include StorageEngine.hpp
+//!                    ** Do not include StorageEngine.hpp **
 
 namespace StorageEngine
 {
