@@ -25,11 +25,9 @@ namespace Enums
 #include "eTR.h"
 #include "eTS.h"
 
-
-
 #include "e_AllOthers.h"
 
-#include "EnumGroups.h"
+#include "EnumGroups.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
