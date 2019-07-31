@@ -10,6 +10,7 @@ namespace Chunks        { class Formatters;                                   }
 namespace Commands      { class Command; class Parser; class Tokeniser;       }
 namespace Correctness   {                                                     }
 namespace Debugging     {                                                     }
+namespace Enums         {                                                     }
 namespace Forth         { class Cell; class Dic; class ForthWord;             }
 namespace Grids         { class Grid; class Node;                             }
 namespace Indexes       { class IndexTree;                                    }
