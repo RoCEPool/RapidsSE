@@ -4,7 +4,7 @@
 
 #include "StorageEngine.h"
 
-AttachMap *   gpAttachMap    = nullptr;
+extern AttachMap*  gpAttachMap;
 
 extern Arguments   gxArguments;
 extern BufferPool* gpBufferPool;

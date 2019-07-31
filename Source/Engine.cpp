@@ -5,13 +5,13 @@
 #include "StorageEngine.h"
 
 extern Arguments  gxArguments;
-extern AttachMap* gpAttachMap;
 
-Header*       gaSeShmRegion  = nullptr;
-BufferPool*   gpBufferPool   = nullptr;
-File*         gpTraceFile    = nullptr;
+extern AttachMap*   gpAttachMap;
+extern BufferPool*  gpBufferPool;
+extern Header*      gaSeShmRegion;
+extern File*        gpTraceFile;
 
-bool          gbSHM          = false;
+extern bool gbSHM;
 
 
 /*----------------------------------------------------------------------------*/

@@ -5,8 +5,7 @@
 #include "StorageEngine.h"
 
 extern Arguments  gxArguments;
-
-extern bool gbSHM;
+extern bool       gbSHM;
 
 int    gi_argc;
 char** gi_argv;
