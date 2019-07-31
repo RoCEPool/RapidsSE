@@ -104,6 +104,7 @@ namespace StorageEngine
     static bool bAttached(void);
     static void vDumpApi(void);
     static Task* pExecutingTask(Job* pJob);
+    static void vPrintArguments(void);
     static void vPrintAttachMap(void);
     static i8   nRandomLevels(void);
     static i8   iTaskQueue(Task* pTask);

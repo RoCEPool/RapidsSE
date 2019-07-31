@@ -6,6 +6,7 @@
 
 AttachMap *   gpAttachMap    = nullptr;
 
+extern Arguments   gxArguments;
 extern BufferPool* gpBufferPool;
 extern File*       gpTraceFile;
 extern Log*        gpLog;
@@ -155,6 +156,9 @@ void AM::vDumpApi(void) {
 Task* AM::pExecutingTask(Job* pJob) {
   Task* pTask = pJob->m_pExecutingTask;
   return pTask;
+}
+void AM::vPrintArguments(void) {
+  gxArguments.vPrint();
 }
 void AM::vPrintAttachMap(void) {
   gpAttachMap->vPrintAttachMap();

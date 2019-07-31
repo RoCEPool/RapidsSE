@@ -3,9 +3,7 @@
 /*============================================================================*/
 
 #include "Prompt.h"
-
-#include "StorageEngine.h"
-extern Arguments gxArguments;
+#include "AM.hpp"
 
 PromptNote mPromptNote_args (
   PF_ARGS,           // prompt function
@@ -27,8 +25,8 @@ PromptNote mPromptNote_args (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_args(SePrompt* pPrompt)
 {
-  gxArguments.vPrint();
-  
+  AM::vPrintArguments();
+
   return true;
 }
 
