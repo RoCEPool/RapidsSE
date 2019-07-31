@@ -5,12 +5,14 @@
 
 #include "Indexes.h"
 
+//------------------------------------------------------------------------------
+
 namespace Partitioning
 {  
   void vCheckAssumptions(void);
 }
 
-using namespace Partitioning;
+//------------------------------------------------------------------------------
 
 #include "TablePtn.hpp"
 

@@ -624,6 +624,10 @@ eEC RapidsSE_EndSubInserter(i8 iTrace, Session* pSession, void* aJob)
 //
 // THIS SHOULD GO
 //
+
+static const i8 C_ROWS_PER_BUFFER
+  = (C_SIZE_LARGE_OBJECT - C_1KB*4)/sizeof(CacheLine*);
+
 eEC RapidsSE_FetchNextBuffer(i8 iTrace, Session* pSession, void* aJob,
                              void** aaFetchBuffer, i8* aiExpectedRows)
 {

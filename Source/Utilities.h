@@ -12,8 +12,6 @@ namespace Utilities
   void vCheckAssumptions(void);
 }
 
-using namespace Utilities;
-
 //------------------------------------------------------------------------------
 
 #include "BPA.hpp"

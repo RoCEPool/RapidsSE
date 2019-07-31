@@ -12,8 +12,6 @@ namespace Tasks
   void vCheckAssumptions(void);
 }
 
-using namespace Tasks;
-
 //------------------------------------------------------------------------------
 
 #include "eQK.h"

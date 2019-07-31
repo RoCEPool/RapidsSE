@@ -5,6 +5,8 @@
 
 #include "Rows.h"
 
+//------------------------------------------------------------------------------
+
 namespace Indexes
 {  
   void vCheckAssumptions(void);
@@ -14,7 +16,7 @@ namespace Indexes
   static const i8 C_FLAT_FREQ         = 2;
 }
 
-using namespace Indexes;
+//------------------------------------------------------------------------------
 
 #include "SkipRoots.hpp"
 #include "EntBuffer.hpp"

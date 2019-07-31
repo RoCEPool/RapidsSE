@@ -12,8 +12,6 @@ namespace Steps
   void vCheckAssumptions(void);
 }
 
-using namespace Steps;
-
 //------------------------------------------------------------------------------
 
 #include "Step.hpp"

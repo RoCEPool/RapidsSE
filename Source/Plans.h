@@ -12,8 +12,6 @@ namespace Plans
   void vCheckAssumptions(void);
 }
 
-using namespace Plans;
-
 //------------------------------------------------------------------------------
 
 #include "Arg.hpp"
