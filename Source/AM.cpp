@@ -157,6 +157,10 @@ Task* AM::pExecutingTask(Job* pJob) {
   Task* pTask = pJob->m_pExecutingTask;
   return pTask;
 }
+bool AM::bJobIsForeign(i8 iJobId) {
+  bool bForeign = Job::bIsForeign(iJobId);
+  return bForeign;
+}
 void AM::vNoteArguments(void) {
   gxArguments.vMark();
 }

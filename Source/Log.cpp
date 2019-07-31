@@ -196,7 +196,7 @@ void Log::vNoteString(i8 iJobId, s48K& sString)
   s4K sLine;
   char* aCharAdr = sString.aChar();
 
-  bool bForeign = Job::bIsForeign(iJobId);
+  bool bForeign = AM::bJobIsForeign(iJobId);
 
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
   gpLog->vGrabLock();
