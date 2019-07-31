@@ -157,6 +157,9 @@ Task* AM::pExecutingTask(Job* pJob) {
   Task* pTask = pJob->m_pExecutingTask;
   return pTask;
 }
+void AM::vNoteArguments(void) {
+  gxArguments.vMark();
+}
 void AM::vPrintArguments(void) {
   gxArguments.vPrint();
 }

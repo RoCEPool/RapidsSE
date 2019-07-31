@@ -342,7 +342,7 @@ void Log::vOpenBySE(bool bStarting)
                      sClock.aStz()
                      );
   
-  Arguments::vMark();
+  AM::vNoteArguments();
 #endif
 }
 
