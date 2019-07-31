@@ -42,9 +42,9 @@ void Correctness::vAssertTrap(void)
   vStackDump();
   
   // add activity dump and api state dump
-  StorageEngine::AM::vWriteLog();
+  AM::vWriteLog();
   
-  StorageEngine::AM::vDumpApi();
+  AM::vDumpApi();
   
   // put a breakpoint here to trap asserts
   sleep(0);

@@ -15,7 +15,7 @@ void Correctness::vFatal(Stz* aFormat, ...)
   va_list xArgs;
   
   va_start(xArgs,aFormat);
-  StorageEngine::AM::vWriteTrace(aFormat,xArgs);
+  AM::vWriteTrace(aFormat,xArgs);
   va_end(xArgs);
   
   Process::vExit(EXIT_FAILURE);
@@ -29,7 +29,7 @@ void Correctness::vInfo(Stz* aFormat, ...)
   va_list xArgs;
   
   va_start(xArgs,aFormat);
-  StorageEngine::AM::vWriteTrace(aFormat,xArgs);
+  AM::vWriteTrace(aFormat,xArgs);
   va_end(xArgs);
 }
 
@@ -41,7 +41,7 @@ void Correctness::vTrace(Stz* aFormat, ...)
   va_list xArgs;
 
   va_start(xArgs,aFormat);
-  StorageEngine::AM::vWriteTrace(aFormat,xArgs);
+  AM::vWriteTrace(aFormat,xArgs);
   va_end(xArgs);
 }
 
@@ -53,7 +53,7 @@ void Correctness::vWarn(Stz* aFormat, ...)
   va_list xArgs;
   
   va_start(xArgs,aFormat);
-  StorageEngine::AM::vWriteTrace(aFormat,xArgs);
+  AM::vWriteTrace(aFormat,xArgs);
   va_end(xArgs);
 }
 

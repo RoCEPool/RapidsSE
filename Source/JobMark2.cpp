@@ -46,6 +46,7 @@ JobMark2::~JobMark2(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
+  ASSERT(0 == * m_ixTempBuffers);
 }
 
 /*============================================================================*/
