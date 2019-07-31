@@ -2,6 +2,7 @@
 /* Steps_JobMark2.cpp - job mark II step group                                */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

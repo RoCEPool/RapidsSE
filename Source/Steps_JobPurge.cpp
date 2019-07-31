@@ -2,6 +2,7 @@
 /* Steps_JobPurge.cpp - job_purge step group                                  */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

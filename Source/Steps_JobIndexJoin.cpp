@@ -2,6 +2,7 @@
 /* Steps_JobIndexJoin.cpp - jobIndexJoin step group                           */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

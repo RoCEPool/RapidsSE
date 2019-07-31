@@ -2,6 +2,7 @@
 /* Steps_JobNetHog.cpp - job_netHog step group                                */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

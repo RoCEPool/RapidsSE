@@ -2,6 +2,7 @@
 /* Steps_JobReceiver.cpp - job_receiver step group                            */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

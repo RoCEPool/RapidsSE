@@ -2,6 +2,7 @@
 /* Steps_JobRepeater.cpp - job_repeater step group                            */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

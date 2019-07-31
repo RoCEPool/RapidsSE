@@ -2,6 +2,7 @@
 /* Steps_JobSubWalker.cpp - jobSubWalker step group                           */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

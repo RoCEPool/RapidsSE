@@ -2,6 +2,7 @@
 /* Steps_JobWriteRow.cpp - job step group                                    */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

@@ -2,6 +2,7 @@
 /* Steps_JobCat.cpp - job_cat step group                                      */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

@@ -2,6 +2,7 @@
 /* Steps_JobGenData.cpp - job_genData step group                              */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

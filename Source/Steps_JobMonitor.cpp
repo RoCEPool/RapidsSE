@@ -2,6 +2,7 @@
 /* Steps_JobMonitor.cpp - job_monitor step group                              */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
