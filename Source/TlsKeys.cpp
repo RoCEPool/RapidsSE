@@ -4,7 +4,7 @@
 
 #include "Threads.h"
 
-pthread_key_t giTLS_ThreadKey = C_UNKNOWN;
+extern pthread_key_t giTLS_ThreadKey;
 
 /*----------------------------------------------------------------------------*/
 /* initialise tls                                                             */
