@@ -333,7 +333,7 @@ void Parser::vResetParser(void)
   m_nLoaded   = 0;
   m_cFirst    = '\0';
   m_cSecond   = '\0';
-  m_eComment  = CT_NONE;
+  m_eComment  = CS_NONE;
   m_bRead     = false;
   m_bEOF      = false;
 }
@@ -488,14 +488,14 @@ void Parser::vStripComment(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
-  switch (eCommentType()) {
+  switch (eCommentStyle()) {
       
-    case CT_BLOCK:
+    case CS_BLOCK:
       vBlockCommentSkip();
       vRewindLocals(' ');
       break;
       
-    case CT_LINE:
+    case CS_LINE:
       vLineCommentSkip();
       vRewindLocals(' ');
       break;
@@ -586,17 +586,17 @@ bool Parser::bPossibleComment(void)
 /*----------------------------------------------------------------------------*/
 /* test for start of comment                                                  */
 /*----------------------------------------------------------------------------*/
-Parser::eCT Parser::eCommentType(void)
+Parser::eCS Parser::eCommentStyle(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
   if (bLineCommentStart())
-    return CT_LINE;
+    return CS_LINE;
   
   if (bBlockCommentStart())
-    return CT_BLOCK;
+    return CS_BLOCK;
   
-  return CT_NONE;
+  return CS_NONE;
 }
 
 /*----------------------------------------------------------------------------*/

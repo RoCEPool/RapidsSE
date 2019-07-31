@@ -37,11 +37,11 @@ namespace Commands
       IS_STRING
     };
   
-    enum eCT // comment type
+    enum eCS // comment style
     {
-      CT_NONE=0,
-      CT_BLOCK,
-      CT_LINE
+      CS_NONE=0,
+      CS_BLOCK,
+      CS_LINE
     };
     
   private:
@@ -64,7 +64,7 @@ namespace Commands
                          // 2: m_cFirst and m_cSecond each have a char
     char    m_cFirst;    // first single char
     char    m_cSecond;   // second single char
-    eCT     m_eComment;  // comment type currently being processed
+    eCS     m_eComment;  // comment style currently being processed
     bool    m_bRead;     // prompt user for more input
     bool    m_bEOF;      // eof seen?
     
@@ -124,7 +124,7 @@ namespace Commands
     void vBlockCommentSkip(void);
     bool bBlockCommentStart(void);
     bool bPossibleComment(void);
-    eCT  eCommentType(void);
+    eCS  eCommentStyle(void);
     bool bLineCommentEnd(void);
     void vLineCommentSkip(void);
     bool bLineCommentStart(void);
