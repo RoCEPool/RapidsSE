@@ -5,20 +5,6 @@
 
 namespace Chunks
 {
-  enum eRE // record ends
-  {
-  /* 0 */ RE_NL,     // record finally ends with \n
-  /* 1 */ RE_CR,     // record finally ends with \r
-  /* 2 */ RE_CRNL    // record finally ends with \r\n
-  };
-  
-  static Stz* aRE[]
-  {
-  /* 0 */ "NL"_Stz,
-  /* 1 */ "CR"_Stz,
-  /* 2 */ "CRNL"_Stz
-  };
-  
   class Formatters : public Object
   {
   public:

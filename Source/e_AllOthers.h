@@ -702,6 +702,68 @@ static Stz* aWT[]
   /*  5 */ "ENUMS"_Stz,
 };
 
+enum eTN // token type
+{
+  /*  0 */ TN_NONE=0,  // none
+  /*  1 */ TN_INTEGER, // integer literal, e.g. 1, 42
+  /*  2 */ TN_NAME,    // name token, e.g. WASHER (or ++ in special mode)
+  /*  3 */ TN_OTHER,   // other literal, e.g. {,~
+  /*  4 */ TN_STRING,  // string literal, e.g. "the answer"
+  /*  5 */ TN_ENUMS
+};
+
+static Stz* aTN[]
+{
+  /*  0 */ "NONE"_Stz,
+  /*  1 */ "INTEGER"_Stz,
+  /*  2 */ "NAME"_Stz,
+  /*  3 */ "OTHER"_Stz,
+  /*  4 */ "STRING"_Stz,
+  /*  5 */ "ENUMS"_Stz,
+};
+
+enum eRE // record ends
+{
+  /* 0 */ RE_NL,     // record finally ends with \n
+  /* 1 */ RE_CR,     // record finally ends with \r
+  /* 2 */ RE_CRNL    // record finally ends with \r\n
+};
+
+static Stz* aRE[]
+{
+  /* 0 */ "NL"_Stz,
+  /* 1 */ "CR"_Stz,
+  /* 2 */ "CRNL"_Stz
+};
+
+enum eHT // Heap type
+{
+  /*  0 */ HT_INVALID=0,
+  /*  1 */ HT_PERSISTENT_SMALL,
+  /*  2 */ HT_PERSISTENT_MEDIUM,
+  /*  3 */ HT_PERSISTENT_LARGE,
+  /*  4 */ HT_PERSISTENT_JUMBO,
+  /*  5 */ HT_TRANSIENT_SMALL,
+  /*  6 */ HT_TRANSIENT_MEDIUM,
+  /*  7 */ HT_TRANSIENT_LARGE,
+  /*  8 */ HT_TRANSIENT_JUMBO,
+  /*  9 */ HT_ENUMS
+};
+
+static Stz* aHT[]
+{
+  /*  0 */ "INVALID"_Stz,
+  /*  1 */ "PERSISTENT_SMALL"_Stz,
+  /*  2 */ "PERSISTENT_MEDIUM"_Stz,
+  /*  3 */ "PERSISTENT_LARGE"_Stz,
+  /*  4 */ "PERSISTENT_JUMBO"_Stz,
+  /*  5 */ "TRANSIENT_SMALL"_Stz,
+  /*  6 */ "TRANSIENT_MEDIUM"_Stz,
+  /*  7 */ "TRANSIENT_LARGE"_Stz,
+  /*  8 */ "TRANSIENT_JUMBO"_Stz,
+  /*  9 */ "ENUMS"_Stz
+};
+
 
 
 /*============================================================================*/
