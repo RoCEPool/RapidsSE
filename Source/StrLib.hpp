@@ -3,24 +3,10 @@
 /*============================================================================*/
 #pragma once
 
+#include "eDC.h"
+
 namespace Correctness
 {
-  enum eDC // date components
-  {
-  /* 0 */ DC_NONE=0,
-  /* 1 */ DC_YYYY,
-  /* 2 */ DC_MM,
-  /* 3 */ DC_DD
-  };
-  
-  static Stz* aDC[]
-  {
-  /* 0 */ "none"_Stz,
-  /* 1 */ "YYYY"_Stz,
-  /* 2 */ "MM"_Stz,
-  /* 3 */ "DD"_Stz
-  };
-  
   static i8 iDaysPerMonth[12]     = { 31,28,31,30,31,30,31,31,30,31,30,31};
   static i8 iDaysPerMonthLeap[12] = { 31,29,31,30,31,30,31,31,30,31,30,31};
   
