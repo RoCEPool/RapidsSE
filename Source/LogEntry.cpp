@@ -193,7 +193,7 @@ void LogEntry::vDumpShort(File* pFile)
   pFile->vPrint("[%3lld %s %s] %s\n"_Stz,
                 m_i_Entry,
                 m_caNode,
-                AM::szEnumText(m_iEnumGroup,m_iEnum),
+                EnumGroups::szEnumText(m_iEnumGroup,m_iEnum),
                 m_caText);
 }
 
@@ -241,7 +241,7 @@ void LogEntry::vDumpShortForeign(File* pFile)
   // enum
   StrLib::vSprint(caText,"%s [%s %s %3lld]"_Stz,
                   m_caText,
-                  AM::szEnumText(m_iEnumGroup,m_iEnum),
+                  EnumGroups::szEnumText(m_iEnumGroup,m_iEnum),
                   m_caNode,
                   m_i_Entry);
   iLen = StrLib::iLength(caText);
