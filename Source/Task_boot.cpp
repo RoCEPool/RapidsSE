@@ -4,8 +4,6 @@
 
 #include "Tasks.h"
 #include "AM.hpp"
-#include "StorageEngine.h"
-
 
 /*----------------------------------------------------------------------------*/
 /* add initial set of words in main dictionary                                */
@@ -311,14 +309,14 @@ void Task::vCompileConstant(s48K& sDefinition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  s48K sConstantValue;
+  s48K sValue;
   
   m_pCompiler->m_pTokeniser->vUseString(sDefinition);
   
   // get string
   m_pCompiler->m_pTokeniser->vNextToken();
   //vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->m_pTokeniser->sToken().aChar());
-  sConstantValue = (Stz*)m_pCompiler->m_pTokeniser->sToken().aChar();
+  sValue = (Stz*)m_pCompiler->m_pTokeniser->sToken().aChar();
   
   // get CONSTANT
   m_pCompiler->m_pTokeniser->vNextToken();
@@ -328,11 +326,11 @@ void Task::vCompileConstant(s48K& sDefinition)
   m_pCompiler->m_pTokeniser->vNextToken();
   //vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->m_pTokeniser->sToken().aChar());
 
-  Stz* aName = (Stz*)m_pCompiler->m_pTokeniser->sToken().aChar();
+  Stz* szName = (Stz*)m_pCompiler->m_pTokeniser->sToken().aChar();
 
   //vTrace("CompileConstant: %s %s\n"_Stz,aName,sConstantValue.aChar());
   
-  Constants::vAddConstant(aName,(Stz*)sConstantValue.aChar());
+  AM::vAddConstant(szName,sValue.aStz());
   
   m_pCompiler->m_pTokeniser->vNextToken();
   

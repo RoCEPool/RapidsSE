@@ -83,6 +83,9 @@ bool AM::bVerbose(void)       { return gpAttachMap->m_bVerbose;               }
 void AM::vAckWaitingTask(Task* pTaskWaiting, Task* pTaskAcking) {
   IGNORE_RETURN(Scheduler::bAckWaitingTask(pTaskWaiting,pTaskAcking));
 }
+void AM::vAddConstant(Stz* szName,Stz* szValue) {
+  Constants::vAddConstant(szName,szValue);
+}
 void AM::vAttachMap(Header* aHeader) {
   gpAttachMap = static_cast<AttachMap*>(aHeader);
 }

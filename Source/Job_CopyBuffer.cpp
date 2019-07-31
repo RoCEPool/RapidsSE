@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "Jobs.h"
-#include "StorageEngine.h"
 
 JobClass xJobClass_CopyBuffer =
 {

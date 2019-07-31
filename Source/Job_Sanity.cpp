@@ -2,7 +2,7 @@
 /* Job_Sanity.cpp -- Sanity Job                                               */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "Jobs.h"
 
 JobClass xJobClass_Sanity =
 {

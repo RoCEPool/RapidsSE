@@ -19,7 +19,6 @@ namespace Forth
     Cell* m_pBeginIP;
     Cell* m_pRetryIP;
 
-
     Tokeniser* m_pTokeniser; // input stream tokenizer
 
     // must be last
