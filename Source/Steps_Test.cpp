@@ -3,10 +3,7 @@
 /*============================================================================*/
 
 #include "Steps.h"
-#include "StorageEngine.h"
 #include "Test.hpp"
-
-extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
