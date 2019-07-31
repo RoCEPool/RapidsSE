@@ -37,13 +37,6 @@ namespace Commands
       IS_STRING
     };
   
-    enum eCS // comment style
-    {
-      CS_NONE=0,
-      CS_BLOCK,
-      CS_LINE
-    };
-    
   private:
     bool    m_bMalloc;   // is this object in malloc heap (or small heap)?
     i8      m_iDepth;    // depth of this parser

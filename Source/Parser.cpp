@@ -586,7 +586,7 @@ bool Parser::bPossibleComment(void)
 /*----------------------------------------------------------------------------*/
 /* test for start of comment                                                  */
 /*----------------------------------------------------------------------------*/
-Parser::eCS Parser::eCommentStyle(void)
+eCS Parser::eCommentStyle(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
