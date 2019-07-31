@@ -2,9 +2,7 @@
 /* Steps_AccessPath.cpp - access path step group                              */
 /*============================================================================*/
 
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
+#include "Steps.h"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

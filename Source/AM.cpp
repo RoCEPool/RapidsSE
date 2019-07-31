@@ -163,6 +163,9 @@ void AM::vPrintArguments(void) {
 void AM::vPrintAttachMap(void) {
   gpAttachMap->vPrintAttachMap();
 }
+void AM::vPrintStartupInfo(void) {
+  gxArguments.vPrintStartupInfo();
+}
 i8 AM::nRandomLevels(void) {
   Task* pTask = Task::pThisTLSTask();
   i8 nLevels = Random::iLogLevel(3,C_FLAT_FREQ + 1,pTask->i_NextRnd()) + 1;

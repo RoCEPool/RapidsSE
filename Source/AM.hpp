@@ -106,6 +106,7 @@ namespace StorageEngine
     static Task* pExecutingTask(Job* pJob);
     static void vPrintArguments(void);
     static void vPrintAttachMap(void);
+    static void vPrintStartupInfo(void);
     static i8   nRandomLevels(void);
     static i8   iTaskQueue(Task* pTask);
     static i8   iTaskState(Task* pTask);

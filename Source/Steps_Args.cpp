@@ -2,10 +2,7 @@
 /* Steps_Args.cpp - args step group                                           */
 /*============================================================================*/
 
-#include "StorageEngine.h"
-
-extern Arguments  gxArguments;
-extern AttachMap* gpAttachMap;
+#include "Steps.h"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -33,7 +30,7 @@ void Step::vArgsPrint(MP_Task mpTask)
 {
 ENTRY("vArgsPrint"_Stz);
   
-  gxArguments.vPrintStartupInfo();
+  AM::vPrintStartupInfo();
   
   EXIT();
 }
