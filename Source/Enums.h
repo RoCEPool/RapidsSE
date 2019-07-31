@@ -20,6 +20,9 @@ namespace Enums
 #include "eTR.h"
 #include "eTS.h"
 
+#include "MetaCode.h"
+
+
 #include "e_AllOthers.h"
 
 /*============================================================================*/

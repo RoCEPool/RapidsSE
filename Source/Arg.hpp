@@ -5,21 +5,6 @@
 
 namespace Plans
 {  
-  enum eAK // arg kind
-  {
-  /* 0 */ AK_NONE=0,
-  /* 1 */ AK_COLUMNNM,
-  /* 2 */ AK_LITERAL,
-  /* 4 */ AK_ENUMS
-  };
-  
-  static Stz* aAK[]
-  {
-  /* 0 */ "none"_Stz,
-  /* 1 */ "columnnm"_Stz,
-  /* 2 */ "literal"_Stz,
-  };
-
   class Arg : public Object
   {
   private:

@@ -5,23 +5,6 @@
 
 namespace Jobs
 {
-  enum eDL // ddl lock
-  {
-  /* 0 */ DL_NONE=0,
-  /* 1 */ DL_GRAB_READ,
-  /* 2 */ DL_GRAB_WRITE,
-  /* 3 */ DL_ENUMS
-  };
-  
-  static Stz* aDL[]
-  {
-  /* 0 */ "none"_Stz,
-  /* 1 */ "grab_read"_Stz,
-  /* 2 */ "grab_write"_Stz,
-  /* 3 */ "enums"_Stz
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   struct JobClass
   {
     public:

@@ -401,6 +401,180 @@ static Stz* aRU[]
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+enum eDL // ddl lock
+{
+  /* 0 */ DL_NONE=0,
+  /* 1 */ DL_GRAB_READ,
+  /* 2 */ DL_GRAB_WRITE,
+  /* 3 */ DL_ENUMS
+};
+
+static Stz* aDL[]
+{
+  /* 0 */ "none"_Stz,
+  /* 1 */ "grab_read"_Stz,
+  /* 2 */ "grab_write"_Stz,
+  /* 3 */ "enums"_Stz
+};
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+enum eRK // response kind
+{
+  /* 0 */ RK_NONE=0,
+  
+  /* 1 */ RK_DATA_ROWS,
+  /* 2 */ RK_LOAD_ROWS,
+  /* 3 */ RK_LOCAL_ERRORS,
+  /* 4 */ RK_LOCAL_ROWS,
+  /* 5 */ RK_LOCAL_ZERO,
+  /* 6 */ RK_NODE_ERRORS,
+  /* 7 */ RK_NODE_ROWS,
+  /* 8 */ RK_NODE_ZERO,
+  
+  /* 9 */ RK_ENUMS_
+};
+
+static Stz* aRK[]
+{
+  /* 0 */ "NONE"_Stz,
+  
+  /* 1 */ "DATA_ROWS"_Stz,
+  /* 2 */ "LOAD_ROWS"_Stz,
+  /* 3 */ "LOCAL_ERRORS"_Stz,
+  /* 4 */ "LOCAL_ROWS"_Stz,
+  /* 5 */ "LOCAL_ZERO"_Stz,
+  /* 6 */ "NODE_ERRORS"_Stz,
+  /* 7 */ "NODE_ROWS"_Stz,
+  /* 8 */ "NODE_ZERO"_Stz,
+  
+  /* 9 */ "ENUMS_"_Stz
+};
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+enum eOR // op return
+{
+  /*  0 */ OR_NONE = 0,
+  /*  1 */ OR_BIDE,  // bid till operand
+  /*  2 */ OR_EXIT,  // exit
+  /*  3 */ OR_PAUSE, // pause till continued
+};
+
+static Stz* aOR[]
+{
+  /*  0 */ "NONE"_Stz,
+  /*  1 */ "BIDE"_Stz,
+  /*  2 */ "EXIT"_Stz,
+  /*  3 */ "PAUSE"_Stz,
+};
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+enum eNE // next entry
+{
+  /*  0 */ NE_NEXT_LEFT=0,
+  /*  1 */ NE_NEXT_RIGHT,
+  /*  2 */ NE_NEXT_LEFT_RIGHT,
+  /*  3 */ NE_NEXT_NONE,
+  /*  4 */ NE_NEXT_EXIT,
+  /*  5 */ NE_ENUMS_
+};
+
+static Stz* aNE[]
+{
+  /*  0 */ "NEXT_LEFT"_Stz,
+  /*  1 */ "NEXT_RIGHT"_Stz,
+  /*  2 */ "NEXT_LEFT_RIGHT"_Stz,
+  /*  3 */ "NEXT_NONE"_Stz,
+  /*  4 */ "NEXT_EXIT"_Stz,
+  /*  5 */ "ENUMS_"_Stz
+};
+
+enum eAK // arg kind
+{
+  /* 0 */ AK_NONE=0,
+  /* 1 */ AK_COLUMNNM,
+  /* 2 */ AK_LITERAL,
+  /* 4 */ AK_ENUMS
+};
+
+static Stz* aAK[]
+{
+  /* 0 */ "none"_Stz,
+  /* 1 */ "columnnm"_Stz,
+  /* 2 */ "literal"_Stz,
+};
+
+enum eAT // access technique
+{
+  /* 0 */ AT_NONE=0,
+  /* 1 */ AT_EXACT,
+  /* 2 */ AT_LOWER,
+  /* 3 */ AT_UPPER,
+  /* 4 */ AT_RANGE,
+  /* 5 */ AT_SCAN,
+  /* 6 */ AT_ENUMS
+};
+
+static Stz* aAT[]
+{
+  /* 0 */ "none"_Stz,
+  /* 1 */ "exact"_Stz,
+  /* 2 */ "lower"_Stz,
+  /* 3 */ "upper"_Stz,
+  /* 4 */ "range"_Stz,
+  /* 5 */ "scan"_Stz,
+  /* 6 */ "enums"_Stz
+};
+
+enum ePK // predicate kind
+{
+  /* 0 */ PK_NONE=0,
+  /* 1 */ PK_COLUMN_COLUMN_OP,
+  /* 2 */ PK_COLUMN_LITERAL_OP,   // this should always be the case
+  /* 3 */ PK_LITERAL_LITERAL_OP,
+  /* 4 */ PK_LITERAL_COLUMN_OP,
+  /* 5 */ PK_ENUMS
+};
+  
+static Stz* aPK[]
+{
+  /* 0 */ "none"_Stz,
+  /* 1 */ "column column op"_Stz,
+  /* 2 */ "column literal op"_Stz,
+  /* 3 */ "literal literal op"_Stz,
+  /* 4 */ "literal column op"_Stz,
+  /* 5 */ "enums"_Stz,
+};
+  
+enum eTP // Transaction Phase
+{
+  /* 0 */ TP_NONE=0,
+  /* 1 */ TP_EXECUTING,
+  /* 2 */ TP_COMMITTING,
+  /* 3 */ TP_COMMITTED,
+  /* 4 */ TP_PREPARING,
+  /* 5 */ TP_PREPARED,
+  /* 6 */ TP_ROLLINGBACK,
+  /* 7 */ TP_ROLLEDBACK,
+  /* 8 */ TP_ENUMS
+};
+
+static Stz* aTP[]
+{
+  /* 0 */ "NONE"_Stz,
+  /* 1 */ "EXECUTING"_Stz,
+  /* 2 */ "COMMITTING"_Stz,
+  /* 3 */ "COMMITTED"_Stz,
+  /* 4 */ "PREPARING"_Stz,
+  /* 5 */ "PREPARED"_Stz,
+  /* 6 */ "ROLLINGBACK"_Stz,
+  /* 7 */ "ROLLEDBACK"_Stz,
+  /* 8 */ "ENUMS"_Stz
+};
+
+
 
 /*============================================================================*/
 /* end                                                                        */

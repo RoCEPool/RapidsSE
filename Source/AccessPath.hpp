@@ -5,28 +5,6 @@
 
 namespace Plans
 {
-  enum eAT // access technique
-  {
-  /* 0 */ AT_NONE=0,
-  /* 1 */ AT_EXACT,
-  /* 2 */ AT_LOWER,
-  /* 3 */ AT_UPPER,
-  /* 4 */ AT_RANGE,
-  /* 5 */ AT_SCAN,
-  /* 6 */ AT_ENUMS
-  };
-  
-  static Stz* aAT[]
-  {
-  /* 0 */ "none"_Stz,
-  /* 1 */ "exact"_Stz,
-  /* 2 */ "lower"_Stz,
-  /* 3 */ "upper"_Stz,
-  /* 4 */ "range"_Stz,
-  /* 5 */ "scan"_Stz,
-  /* 6 */ "enums"_Stz
-  };
-  
   class AccessPath : public Object
   {
   
