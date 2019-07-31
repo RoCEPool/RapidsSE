@@ -29,14 +29,14 @@ namespace Commands
   class Parser : public Object
   {
   private:
-    enum eIS // input source
-    {
-      IS_NONE=0,
-      IS_FILE,
-      IS_STDIN,
-      IS_STRING
-    };
-  
+//    enum eIS // input source
+//    {
+//      IS_NONE=0,
+//      IS_FILE,
+//      IS_STDIN,
+//      IS_STRING
+//    };
+//  
   private:
     bool    m_bMalloc;   // is this object in malloc heap (or small heap)?
     i8      m_iDepth;    // depth of this parser
