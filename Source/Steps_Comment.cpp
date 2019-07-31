@@ -2,6 +2,7 @@
 /* Steps_Comment.cpp - comment steps group                                    */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

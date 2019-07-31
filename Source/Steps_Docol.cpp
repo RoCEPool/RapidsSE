@@ -2,6 +2,7 @@
 /* Steps_Docol.cpp - docol step group                                         */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

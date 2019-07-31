@@ -2,6 +2,7 @@
 /* Steps_Cast.cpp - cast step group                                           */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

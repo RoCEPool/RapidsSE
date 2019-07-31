@@ -2,6 +2,7 @@
 /* Steps_Cursor.cpp - cursor steps group                                      */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

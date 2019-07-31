@@ -2,6 +2,7 @@
 /* Steps_DdlLock.cpp - ddl lock step group                                    */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

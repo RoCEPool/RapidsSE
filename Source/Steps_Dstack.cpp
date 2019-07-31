@@ -2,6 +2,7 @@
 /* Steps_Dstack.cpp - data stack step group                                   */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

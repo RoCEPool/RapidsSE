@@ -2,6 +2,7 @@
 /* Steps_Bp.cpp - buffer pool step group                                      */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap*   gpAttachMap;

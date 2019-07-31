@@ -2,6 +2,7 @@
 /* Steps_CoreWords.cpp - core words step group                                */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

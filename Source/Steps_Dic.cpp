@@ -2,6 +2,7 @@
 /* Steps_Dic.cpp - dic step group                                             */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
