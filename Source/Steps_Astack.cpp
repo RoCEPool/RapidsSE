@@ -2,9 +2,7 @@
 /* Steps_Astack.cpp - aux stack step group                                    */
 /*============================================================================*/
 
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
+#include "Steps.h"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
