@@ -8,18 +8,6 @@ namespace MetaData
   class Index;
   class EntBuffer;
   
-  enum eTT // Table Type
-  {
-    /* 0 */ TT_NONE=0,
-    /* 1 */ TT_NORMAL
-  };
-
-  static Stz* aTT[]
-  {
-    /* 0 */ "NONE"_Stz,
-    /* 1 */ "NORMAL"_Stz
-  };
-  
   static const char* C_SORT_REGION_BASE  = (char*)0x409600000000;
   static const i8    C_SORT_REGION_DELTA = C_1GB * 128;
 
