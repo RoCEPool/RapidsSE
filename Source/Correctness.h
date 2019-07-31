@@ -25,7 +25,6 @@ namespace Correctness
 #include "FreeChunk.hpp"
 #include "Debug.hpp"
 
-#include "ResourceEnums.h"
 #include "StrLib.hpp"
 #include "MemLib.hpp"
 

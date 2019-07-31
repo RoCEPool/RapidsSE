@@ -22,6 +22,7 @@ namespace Enums
 #include "eQK.h"
 #include "eRO.h"
 #include "eSC.h"
+#include "eSR.h"
 #include "eTR.h"
 #include "eTS.h"
 

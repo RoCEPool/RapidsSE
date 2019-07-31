@@ -5,6 +5,8 @@
 
 //!                    ** Do not include StorageEngine.hpp **
 
+#include "eSR.h"
+
 namespace StorageEngine
 {
   class AM
