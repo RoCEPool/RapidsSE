@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "StorageEngine.h"
-#include "ShmUtility.hpp"
 
 extern Arguments  gxArguments;
 extern AttachMap* gpAttachMap;
