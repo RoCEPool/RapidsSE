@@ -15,10 +15,11 @@ namespace Correctness
 
 //------------------------------------------------------------------------------
 
-#include "Process.hpp"
 #include "Stz.hpp"
+
+#include "Process.hpp"
 #include "LimitsFormats.h"
-#include "ClassNumbers.hpp"
+#include "ClassNumbers.h"
 #include "Footer.hpp"
 #include "Header.hpp"
 #include "FreeChunk.hpp"

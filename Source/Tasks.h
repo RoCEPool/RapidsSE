@@ -14,10 +14,6 @@ namespace Tasks
 
 //------------------------------------------------------------------------------
 
-#include "eQK.h"
-#include "eTR.h"
-#include "eTS.h"
-
 #include "Error.hpp"
 #include "Task.hpp"
 #include "TaskMacros.hpp"

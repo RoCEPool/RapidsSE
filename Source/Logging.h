@@ -14,7 +14,6 @@ namespace Logging
 
 //------------------------------------------------------------------------------
 
-#include "eAN.hpp"
 #include "ShmLog.hpp"
 #include "LogEntry.hpp"
 #include "Log.hpp"
