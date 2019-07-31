@@ -18,6 +18,7 @@ namespace Enums
 #include "eAN.h"
 #include "eDC.h"
 #include "eQK.h"
+#include "eSC.h"
 #include "eTR.h"
 #include "eTS.h"
 
