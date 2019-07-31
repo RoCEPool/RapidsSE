@@ -3,9 +3,6 @@
 /*============================================================================*/
 
 #include "Steps.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 StepFp gfpEntryStep = &Steps::Step::vEnterRoutine;
 
