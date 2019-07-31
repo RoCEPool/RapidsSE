@@ -1,11 +1,8 @@
 /*============================================================================*/
-/* Steps_JobReport.cpp - job_report step group                              */
+/* Steps_JobReport.cpp - job_report step group                                */
 /*============================================================================*/
 
 #include "Steps.h"
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
