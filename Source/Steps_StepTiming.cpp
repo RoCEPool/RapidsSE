@@ -2,6 +2,7 @@
 /* Steps_StepTiming.cpp - StepTiming step group                               */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -17,7 +18,7 @@ void Step::vAddSteps_StepTiming(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StepTiming::reset -- reset steps                                          */
+/* StepTiming::reset -- reset steps                                           */
 /*----------------------------------------------------------------------------*/
 void Step::vStepTimingReset(MP_Task mpTask)
 {
@@ -39,7 +40,7 @@ void Step::vStepTimingReset(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* StepTiming::start -- start step tracking                                  */
+/* StepTiming::start -- start step tracking                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vStepTimingStart(MP_Task mpTask)
 {

@@ -2,6 +2,7 @@
 /* Steps_ActivityLog.cpp -- Activity Log step group                           */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

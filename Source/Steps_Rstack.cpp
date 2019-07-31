@@ -2,6 +2,7 @@
 /* Steps_Rstack.cpp - return stack step group                                 */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

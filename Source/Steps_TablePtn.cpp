@@ -2,6 +2,7 @@
 /* Steps_TablePtn.cpp -- Table Partition Step Group                           */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

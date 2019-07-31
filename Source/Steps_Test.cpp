@@ -2,6 +2,7 @@
 /* Steps_Test.cpp - test step group                                           */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 #include "Test.hpp"
 

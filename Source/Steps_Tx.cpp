@@ -2,6 +2,7 @@
 /* Steps_Tx.cpp - tx step grou                                                */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

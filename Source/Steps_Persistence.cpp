@@ -2,6 +2,7 @@
 /* Steps_Persistence.cpp - persistence step group                             */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

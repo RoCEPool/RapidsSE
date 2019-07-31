@@ -2,6 +2,7 @@
 /* Steps_Process.cpp - process step group                                     */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

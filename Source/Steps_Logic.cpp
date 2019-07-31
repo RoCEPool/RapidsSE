@@ -2,6 +2,7 @@
 /* Steps_Logic.cpp - logic step group                                         */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

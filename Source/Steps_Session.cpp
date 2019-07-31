@@ -2,6 +2,7 @@
 /* Steps_Session.cpp - Session step group                                     */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

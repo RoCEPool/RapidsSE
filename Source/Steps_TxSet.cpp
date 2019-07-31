@@ -2,6 +2,7 @@
 /* Steps_TxSet.cpp - tx set step group                                        */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

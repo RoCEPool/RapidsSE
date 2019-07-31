@@ -2,6 +2,7 @@
 /* Steps_Object.cpp - object step group                                       */
 /*============================================================================*/
 
+#include "Steps.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
