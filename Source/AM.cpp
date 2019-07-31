@@ -209,6 +209,9 @@ Tasks::Task* AM::pThisTLSTask(void) {
   Task* pTask = pThread->pTask();
   return pTask;
 }
+void AM::vWelcomeText(s256& sWelcome) {
+  Engine::vGetWelcome(sWelcome);
+}
 void AM::vWriteLog(void) {
   Log::vWriteCsv(false);
 }

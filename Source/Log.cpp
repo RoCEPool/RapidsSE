@@ -5,8 +5,6 @@
 #include "Logging.h"
 #include "AM.hpp"
 
-#include "StorageEngine.h"
-
 Log* gpLog = nullptr;
 
 /*----------------------------------------------------------------------------*/
@@ -324,7 +322,7 @@ void Log::vOpenBySE(bool bStarting)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   s256 sWelcome;
-  Engine::vGetWelcome(sWelcome);
+  AM::vWelcomeText(sWelcome);
   Log::vNote(sWelcome);
   
   Now oNow;
@@ -545,7 +543,7 @@ void Log::vWriteToFile(bool bShortForm)
   Log::vNote("Writing Log at: %s"_Stz,oNow.sz());
   
   s256 sWelcome;
-  Engine::vGetWelcome(sWelcome);
+  AM::vWelcomeText(sWelcome);
   Log::vNote(sWelcome);
   
   i8 iUpTimeSsec = AM::iElapsedSsec();

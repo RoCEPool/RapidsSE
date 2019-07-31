@@ -116,6 +116,7 @@ namespace StorageEngine
     static Op*  pThisTLSOp(void);
     static Session* pThisTLSSession(void);
     static Task* pThisTLSTask(void);
+    static void vWelcomeText(s256& sWelcome);
     static void vWriteLog(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
