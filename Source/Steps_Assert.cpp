@@ -2,9 +2,7 @@
 /* Steps_Assert.cpp - assert step group                                       */
 /*============================================================================*/
 
-#include "StorageEngine.h"
-
-extern AttachMap* gpAttachMap;
+#include "Steps.h"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

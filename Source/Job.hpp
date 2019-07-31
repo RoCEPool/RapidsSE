@@ -143,6 +143,24 @@ namespace Jobs
   /*  6 */ "SS_ENUMS"_Stz,
   };
 
+  enum eRU // Resource Usage
+  {
+  /*  0 */ RU_NONE=0,
+  /*  1 */ RU_SMALL,
+  /*  2 */ RU_MEDIUM,
+  /*  3 */ RU_LARGE,
+  /*  4 */ RU_ENUMS
+  };
+  
+  static Stz* aRU[]
+  {
+  /*  0 */ "RU_NONE"_Stz,
+  /*  1 */ "RU_SMALL"_Stz,
+  /*  2 */ "RU_MEDIUM"_Stz,
+  /*  3 */ "RU_LARGE"_Stz,
+  /*  4 */ "RU_ENUMS"_Stz,
+  };
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job : public Object,
               public JobDicPath,

@@ -12,6 +12,7 @@ namespace Jobs
     bool   m_bCancel; // cancel job
     bool   m_bEarly;  // early exit
     Atomic m_ixTempBuffers; // temp buffers in flight
+    eRU    m_eResUsage;     // resource usage
   
   public:
     JobMark2(eCN eClassNo, Session* pSession);
