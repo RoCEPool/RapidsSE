@@ -3,6 +3,7 @@
 /*============================================================================*/
 #pragma once
 
+namespace Alignment     {                                                     }
 namespace Assembler     {                                                     }
 namespace Base          {                                                     }
 namespace Chunks        { class Formatters;                                   }
@@ -42,6 +43,7 @@ namespace Utilities     { class BPA;                                          }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+using namespace Alignment;
 using namespace Assembler;
 using namespace Base;
 using namespace Chunks;

@@ -5,6 +5,8 @@
 
 #include "Forth.h"
 
+//------------------------------------------------------------------------------
+
 namespace MetaData
 {
   void vCheckAssumptions(void);
@@ -27,8 +29,6 @@ namespace MetaData
   /* 4 */ "enums"_Stz
   };
 }
-
-using namespace MetaData;
 
 //------------------------------------------------------------------------------
 

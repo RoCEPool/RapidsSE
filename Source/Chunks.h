@@ -12,8 +12,6 @@ namespace Chunks
   void vCheckAssumptions(void);
 }
 
-using namespace Chunks;
-
 //------------------------------------------------------------------------------
 
 #include "Formatters.hpp"

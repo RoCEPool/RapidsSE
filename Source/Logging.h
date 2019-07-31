@@ -5,12 +5,12 @@
 
 #include "Measurement.h"
 
+//------------------------------------------------------------------------------
+
 namespace Logging
 {
   void vCheckAssumptions(void);
 }
-
-using namespace Logging;
 
 //------------------------------------------------------------------------------
 
@@ -19,11 +19,6 @@ using namespace Logging;
 #include "LogEntry.hpp"
 #include "Log.hpp"
 #include "ActLog.hpp"
-
-
-
-//#include "Action.hpp"
-//#include "ActionLog.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
