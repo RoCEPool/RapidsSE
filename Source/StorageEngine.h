@@ -24,6 +24,7 @@ using namespace StorageEngine;
 #include "Constants.hpp"
 #include "SizesDumps.hpp"
 #include "Finalizers.hpp"
+#include "Globals.hpp"
 
 #include "Engine.hpp"
 
