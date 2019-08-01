@@ -20,8 +20,7 @@ namespace Rows
   static const i8 C_OT_2B = 2;  // [OT] 2B relative over-tail i_Line
   
   static const i8 C_METABITS = 8;
-  static const i8 C_HEAD_MIN_BYTES = 24;
-  static const i8 C_COMPRESSED_OFFSET = C_U_1B;
+  static const i8 C_MIN_HEAD_BYTES = 24;
   
   static const i8 C_ERA_0 =  0; // 1900
   static const i8 C_ERA_1 = 92; // 1992

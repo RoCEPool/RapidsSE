@@ -516,15 +516,15 @@ void RowDecoder::vDecodeVchShocoTail(DtmVal* pDtmVal, HeadLine* aHeadLine,
    <shoco...> being the shoco compressed bytes
    */
   
-  i8 nCompressed = aShocoTail->w8_1B(C_COMPRESSED_OFFSET);
+  i8 nCompressed = aShocoTail->w8_1B(+ C_U_1B);
   //RASSERT(nCompressed <= 4);
   
   i8 nDecompressed =
-  Compress::iFromShoco(pDtmVal->m_sVch.aChar(),   // decompressed destination
+  Compress::iFromShoco(pDtmVal->m_sVch.aChar(),  // decompressed destination
                        255,                      // max destination
                        ((byte*)aShocoTail)       // from compressed source
-                       + C_COMPRESSED_OFFSET
-                       + C_C_1B,
+                         + C_U_1B
+                         + C_C_1B,
                        nCompressed);             // bytes compressed
   ASSERT(nDecompressed);
   pDtmVal->m_nChars = nDecompressed;
