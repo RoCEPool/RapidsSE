@@ -87,6 +87,7 @@
 "Job_Sink.sen" include
 "Job_SizeIndex.sen" include
 "Job_SizeTable.sen" include
+"Job_SortExp.sen" include
 "job_Space.sen" include
 "job_StartCluster.sen" include
 "job_Status.sen" include

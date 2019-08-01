@@ -166,6 +166,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_SINK
   /*    */ &Finalize::vUndefined,         // CN_JOB_SIZEINDEX
   /*    */ &Finalize::vUndefined,         // CN_JOB_SIZETABLE
+  /*    */ &Finalize::vUndefined,         // CN_JOB_SORTEXP
   /*    */ &Finalize::vUndefined,         // CN_JOB_SPACE
   /*    */ &Finalize::vUndefined,         // CN_JOB_START
   /*    */ &Finalize::vUndefined,         // CN_JOB_STARTCLUSTER

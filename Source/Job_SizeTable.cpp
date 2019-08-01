@@ -48,7 +48,7 @@ JobClass xJobClass_SizeTable =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_SizeTable_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_Space_class;
+  *pNextFun = (pFUN*)pJob_SortExp_class;
   
   return &xJobClass_SizeTable;
 }

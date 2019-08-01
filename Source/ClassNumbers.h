@@ -169,6 +169,7 @@ enum eCN : u2 // Class Number
   /* 117 0x75    70880B Heap:L */ CN_JOB_SINK,
   /* 118 0x76    70592B Heap:L */ CN_JOB_SIZEINDEX,
   /* 119 0x77    70592B Heap:L */ CN_JOB_SIZETABLE,
+  /*                           */ CN_JOB_SORTEXP,
   /* 120 0x78    70592B Heap:L */ CN_JOB_SPACE,
   /* 121 0x79    70592B Heap:L */ CN_JOB_START,
   /* 122 0x7A    70592B Heap:L */ CN_JOB_STARTCLUSTER,
@@ -503,6 +504,7 @@ static Stz* aCN[]
   /* 117 0x75 */ "JOB_SINK"_Stz,            // CN_JOB_SINK
   /* 118 0x76 */ "JOB_SIZEINDEX"_Stz,       // CN_JOB_SIZEINDEX
   /* 119 0x77 */ "JOB_SIZETABLE"_Stz,       // CN_JOB_SIZETABLE
+  /*          */ "JOB_SORTEXP"_Stz,         // CN_JOB_SORTEXP
   /* 120 0x78 */ "JOB_SPACE"_Stz,           // CN_JOB_SPACE
   /* 121 0x79 */ "JOB_START"_Stz,           // CN_JOB_START
   /* 122 0x7A */ "JOB_STARTCLUSTER"_Stz,    // CN_JOB_STARTCLUSTER
