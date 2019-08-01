@@ -13,15 +13,16 @@ extern i8 giClassSize[];
 /*----------------------------------------------------------------------------*/
 void StorageEngine::vCheckAllAssumptions(void)
 {
-  // this is in reverse order of the spaces in the project
+  // in reverse order of the namespaces in the project
   Base::vCheckAssumptions();
   Assembler::vCheckAssumptions();
   // third party??
   Correctness::vCheckAssumptions();
+  Enums::vCheckAssumptions();
   Library::vCheckAssumptions();
   Alignment::vCheckAssumptions();
-  System::vCheckAssumptions();
   Pool::vCheckAssumptions();
+  System::vCheckAssumptions();
   Persistence::vCheckAssumptions();
   Structures::vCheckAssumptions();
   Chunks::vCheckAssumptions();
@@ -30,23 +31,24 @@ void StorageEngine::vCheckAllAssumptions(void)
   Transactions::vCheckAssumptions();
   Commands::vCheckAssumptions();
   Forth::vCheckAssumptions();
-  Sessions::vCheckAssumptions();
   MetaData::vCheckAssumptions();
   Transform::vCheckAssumptions();
   ScanSprint::vCheckAssumptions();
   Rows::vCheckAssumptions();
   Indexes::vCheckAssumptions();
   Partitioning::vCheckAssumptions();
-  PushDown::vCheckAssumptions();
+  Grids::vCheckAssumptions();
+  Sessions::vCheckAssumptions();
+  Transactions::vCheckAssumptions();
   Plans::vCheckAssumptions();
+  PushDown::vCheckAssumptions();
   Jobs::vCheckAssumptions();
-  Utilities::vCheckAssumptions();
-  Steps::vCheckAssumptions();
   Tasks::vCheckAssumptions();
   Threads::vCheckAssumptions();
   Scheduling::vCheckAssumptions();
-  Grids::vCheckAssumptions();
   Interface::vCheckAssumptions();
+  Utilities::vCheckAssumptions();
+  Steps::vCheckAssumptions();
   Prompt::vCheckAssumptions();
   StorageEngine::vCheckAssumptions();
 }
