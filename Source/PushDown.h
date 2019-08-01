@@ -27,6 +27,7 @@ namespace PushDown
 #include "CombineOp.hpp"
 #include "DistinctOp.hpp"
 #include "FetchOp.hpp"
+#include "GenerateOp.hpp"
 #include "HashOp.hpp"
 #include "IntersectOp.hpp"
 #include "JoinOp.hpp"

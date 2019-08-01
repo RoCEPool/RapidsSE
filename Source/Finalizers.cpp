@@ -74,6 +74,7 @@ pFINALIZE *gpFinalize[]
   /* 43 */ &Finalize::vUndefined,         // CN_FREEDNOT
   /* 44 */ &Finalize::vUndefined,         // CN_FREEITEM
   
+  /*    */ &Finalize::vUndefined,         // CN_GENERATEOP
   /*    */ &Finalize::vUndefined,         // CN_GENVAR
   /* 48 */ &Finalize::vUndefined,         // CN_GRID
   
