@@ -46,9 +46,9 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pJob_SortExp job_query.begin
-  pJob_SortExp job_query.execute
-  pJob_SortExp job_query.end
+  pJob_SortExp job_sortExp.begin
+  pJob_SortExp job_sortExp.execute
+  pJob_SortExp job_sortExp.end
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
