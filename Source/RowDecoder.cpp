@@ -403,56 +403,6 @@ void RowDecoder::vDecodeVchLong(DtmVal* pDtmVal, HeadLine* aHeadLine,
 }
 
 /*----------------------------------------------------------------------------*/
-/* decode MC_SHOCO_DUP_3D shoco duplicate                                     */
-/*----------------------------------------------------------------------------*/
-void RowDecoder::vDecodeVchShocoDup(DtmVal* pDtmVal, HeadLine* aHeadLine,
-                                      Column* pCol, i8 i_Offset)
-{
-  /*
-   -- Head-Line (with shoco) --
-   +================================+
-   | <W>{M}     ,MC_SHOCO_FIT_1C,   |
-   +================================+
-   |                                |
-   +--------------------------------+
-   |    <C><shoco...>               |
-   +--------------------------------+
-   
-   -- Head-Line (with dsr) --
-   +================================+
-   | <W>{M}     ,MC_SHOCO_DUP_3D,   |
-   +================================+
-   |                                |
-   +--------------------------------+
-   |    [DSR]                       |
-   +--------------------------------+
-   
-   where: MC_SHOCO_FIT_1C are the meta-bits for the column which has the shoco
-   MC_SHOCO_DUP_3D are the meta-bits for the column which ref's the shoco
-   <W> is one byte being the word length of head line
-   {M} is the set of metacodes
-   <C> is one byte being the number of shoco compressed bytes
-   <shoco...> being the shoco compressed bytes
-   [DSR] is the 3B relative backwards address of <C><shoco>
-   
-   */
-  
-  i8 i_Dsr = aHeadLine->wGetLogical(i_Offset,C_DSR_3B);
-  
-  byte* ayC_Shoco = aAdd<byte*>(aHeadLine,( + i_Dsr )); //! WARNING
-  
-  i8 nCompressed = *(u1*)ayC_Shoco;
-  
-  i8 nDecompressed =
-  Compress::iFromShoco((char*)pDtmVal->m_sVch.aChar(),
-                       pDtmVal->m_sVch.nSpace(),
-                       ayC_Shoco + C_C_1B,
-                       nCompressed);
-  ASSERT(nDecompressed > 0);
-  pDtmVal->m_nChars = nDecompressed;
-}
-
-/*----------------------------------------------------------------------------*/
 /* decode MC_SHOCO_FIT_1C tail line shoco                                     */
 /*----------------------------------------------------------------------------*/
 void RowDecoder::vDecodeVchShocoFit(DtmVal* pDtmVal, HeadLine* aHeadLine,

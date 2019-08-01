@@ -39,8 +39,6 @@ namespace Rows
                            i8& i_ColCrs_, i8& i_OfsCrs_);
     static void vDecodeVchLong(DtmVal* pDtmVal, HeadLine* aHeadLine,
                                 Column* pCol, i8 i_Offset);
-    static void vDecodeVchShocoDup(DtmVal* pDtmVal, HeadLine* aHeadLine,
-                                   Column* pCol, i8 i_Offset);
     static void vDecodeVchShocoFit(DtmVal* pDtmVal, HeadLine* aHeadLine,
                                    Column* pCol, i8 i_Offset);
     static void vDecodeVchShocoSplit(DtmVal* pDtmVal, HeadLine* aHeadLine,

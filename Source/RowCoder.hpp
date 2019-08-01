@@ -19,8 +19,6 @@ namespace Rows
   static const i8 C_IT_2B = 2;  // [IT] 2B relative into-tail i_Line
   static const i8 C_OT_2B = 2;  // [OT] 2B relative over-tail i_Line
   
-  static const i8 C_DSR_3B = 3; // [DSR] 3B relative distance to shoco
-
   static const i8 C_METABITS = 8;
   static const i8 C_HEAD_MIN_BYTES = 24;
   static const i8 C_COMPRESSED_OFFSET = C_U_1B;
@@ -29,7 +27,7 @@ namespace Rows
   static const i8 C_ERA_1 = 92; // 1992
   static const i8 C_ERA_2 = 99; // 1999
 
-  /*--------------------------------------------------------------------------*/
+  //----------------------------------------------------------------------------
 
   class RowCoder
   {
