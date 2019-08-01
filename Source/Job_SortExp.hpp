@@ -9,9 +9,10 @@ namespace Jobs
   {
   public:
 
-    SortOp*   m_pSortOp;    // sort
-    OutputOp* m_pOutputOp;  // output
-    ZedOp*    m_pZedOp;     // sink
+    GenerateOp* m_pGenerateOp; // generate
+    SortOp*     m_pSortOp;     // sort
+    OutputOp*   m_pOutputOp;   // output
+    ZedOp*      m_pZedOp;      // sink
 
     // must be last
     Footer m_xFooter;
