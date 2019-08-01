@@ -243,7 +243,7 @@ w8 HeadLine::wGetLogical(i8 i_Offset, i8 nDataSize)
 OverLine* HeadLine::aGetOver(void)
 {
   i8 i_Over_rel = iOverflow2B();
-  OverLine* aOver = RowNub::aGetOver(this,i_Over_rel);
+  OverLine* aOver = RowNub::aGetOver_rel(this,i_Over_rel);
   
   return aOver;
 }
@@ -263,7 +263,7 @@ i8 HeadLine::iGetTailRel(TailLine* TailLine)
 /*----------------------------------------------------------------------------*/
 TailLine* HeadLine::aGetTailRel(i8 i_Tail_rel)
 {
-  TailLine* aTail = RowNub::aGetTail(this,i_Tail_rel);
+  TailLine* aTail = RowNub::aGetTail_rel(this,i_Tail_rel);
   
   return aTail;
 }

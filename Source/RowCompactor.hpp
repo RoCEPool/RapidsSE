@@ -80,7 +80,8 @@ namespace Rows
 
     void vDumpTails(void);
     i8   iFindTail(TailLine* aFindLine);
-  
+    TailLine* aFindTail(TailLine* aFindLine);
+
   private:
     Footer* aFooter(void);
   };

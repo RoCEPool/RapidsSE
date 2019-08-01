@@ -69,7 +69,7 @@ void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec)
   
   if (aHeadLine->bHasOverflow()) {
     i8 i_Over_rel = aHeadLine->iOverflow2B();
-    OverLine* aOverLine = RowNub::aGetOver(aHeadLine,i_Over_rel);
+    OverLine* aOverLine = RowNub::aGetOver_rel(aHeadLine,i_Over_rel);
     eMC eOverMeta = (eMC)aOverLine->w8_1B(1);
     i8 i_Col_over;
     for (i_Col_over = 0; i_Col_over < nColumns; i_Col_over++)
@@ -136,7 +136,7 @@ void Crw::vDumpCrw(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec)
     
     if (MC_OVERFLOW_2T == eMetaCode) {
       i8 i_Over_rel = aHeadLine->iOverflow2B();
-      OverLine* aOverLine = RowNub::aGetOver(aHeadLine,i_Over_rel);
+      OverLine* aOverLine = RowNub::aGetOver_rel(aHeadLine,i_Over_rel);
       eMetaCode  = (eMC)aOverLine->w8_1B(1);
       szMetaCode = aMC[eMetaCode];
       i_Offset   = nHeadBytes + 2;
@@ -267,7 +267,7 @@ void Crw::vDumpCrw_IV(Stz* szTitle, HeadLine* aHeadLine, ColumnVec* pColVec)
   
   if (aHeadLine->bHasOverflow()) {
     i8 i_Over_rel = aHeadLine->iOverflow2B();
-    OverLine* aOverLine = RowNub::aGetOver(aHeadLine,i_Over_rel);
+    OverLine* aOverLine = RowNub::aGetOver_rel(aHeadLine,i_Over_rel);
     eMC eOverMeta = (eMC)aOverLine->w8_1B(1);
     i8 i_Col_over;
     for (i_Col_over = 0; i_Col_over < nColumns; i_Col_over++)

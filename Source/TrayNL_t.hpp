@@ -41,8 +41,8 @@ namespace Structures
     ~Nub_t(void) noexcept(false);
   
     static i8    nBytes(i8 nUnits);
-    static OVER* aGetOver(HEAD* aHead, i8 i_Over_rel);
-    static TAIL* aGetTail(HEAD* aHead, i8 i_Tail_rel);
+    static OVER* aGetOver_rel(HEAD* aHead, i8 i_Over_rel);
+    static TAIL* aGetTail_rel(HEAD* aHead, i8 i_Tail_rel);
     static i8    nUnits(i8 nBytes);
     static i8    iUnitDiff(HEAD* aHead, TAIL* aTail);
 
@@ -65,7 +65,9 @@ namespace Structures
     bool  bHasSpace(i8 nBytes);
     i8    nItems(void);
     i8    iLastTail(void);
+    TAIL* aLastTail(void);
     i8    iPrevTail(i8 i_Tail);
+    TAIL* aPrevTail(TAIL* aCurrTail);
     void  vReset(void);
     i8    nTails(void);
     void  vVerifyTails(i8 i_Dump);
@@ -192,9 +194,9 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::nBytes(i8 nUnits)
 /* compute over from head + relative distance (in units)                      */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
-OVER* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aGetOver(HEAD* aHead, i8 i_Over_rel)
+OVER* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aGetOver_rel(HEAD* aHead, i8 i_Over_rel)
 {
-  OVER* aOver = (OVER*)aGetTail(aHead,i_Over_rel);
+  OVER* aOver = (OVER*)aGetTail_rel(aHead,i_Over_rel);
   
   return aOver;
 }
@@ -203,7 +205,7 @@ OVER* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aGetOver(HEAD* aHead, i8 i_Over_rel)
 /* compute tail from head + relative distance (in units)                      */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
-TAIL* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aGetTail(HEAD* aHead, i8 i_Tail_rel)
+TAIL* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aGetTail_rel(HEAD* aHead, i8 i_Tail_rel)
 {
   SpaceUnit* aHead_unit = (SpaceUnit*)MemLib::aToBoundary(aHead,C_SPACEUNIT_QUANTA);
   
@@ -534,6 +536,24 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iLastTail(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get last tail                                                              */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+TAIL* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aLastTail(void)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  if (! m_nTailUnits)
+    return nullptr;
+  
+  i8 i_LastTail = m_nSpaceUnits - m_nTailUnits; // 10 - 3 : [0 1 2 .. 7 8 9];
+  
+  TAIL* aLastTail = (TAIL*) & m_axaUnits[i_LastTail];
+
+  return aLastTail;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get prev tail (goes left-to-right / ascending memory address)              */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
@@ -550,6 +570,24 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iPrevTail(i8 i_CurrTail)
 
   i8 i_PrevTail = i_CurrTail + nCurrUnits;
   return i_PrevTail;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get prev tail (goes left-to-right / ascending memory address)              */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+TAIL* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aPrevTail(TAIL* aCurrTail)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  i8 nCurrUnits = aCurrTail->w8_1B(0);
+  
+  SpaceUnit* aPrevTail_unit = (SpaceUnit*)aCurrTail + nCurrUnits;
+  if (aPrevTail_unit >= &m_axaUnits[m_nSpaceUnits])
+    return nullptr;
+  
+  TAIL* aPrevTail = (TAIL*) & aPrevTail_unit;
+  return aPrevTail;
 }
 
 /*----------------------------------------------------------------------------*/

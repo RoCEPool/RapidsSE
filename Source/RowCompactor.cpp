@@ -896,12 +896,35 @@ i8 RowCompactor::iFindTail(TailLine* aFindLine)
     
     //aFindLine->vDump();
     //aTailLine->vDump();
-
+    
     if (0 == MemLib::iCompareBytes(aTailLine,aFindLine,nTailBytes))
       return i_Tail;
   }
   
   return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/* search for duplicate tail line                                             */
+/*----------------------------------------------------------------------------*/
+TailLine* RowCompactor::aFindTail(TailLine* aFindLine)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
+  
+  for (TailLine* aTailLine = m_pCrwNub->aLastTail();
+       aTailLine;
+       aTailLine = m_pCrwNub->aPrevTail(aTailLine)) {
+    
+    i8 nTailBytes = aTailLine->nBytes();
+    
+    //aFindLine->vDump();
+    //aTailLine->vDump();
+    
+    if (0 == MemLib::iCompareBytes(aTailLine,aFindLine,nTailBytes))
+      return aTailLine;
+  }
+  
+  return nullptr;
 }
 
 
