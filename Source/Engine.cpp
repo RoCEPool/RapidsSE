@@ -807,7 +807,6 @@ void Engine::vStartSystem(void)
                                 gxArguments.m_bProgress,
                                 gxArguments.m_sRegionName,
                                 gxArguments.m_iRegionSize,
-                                gxArguments.m_bSethScript,
                                 gxArguments.m_nSlotsPerNode,
                                 gxArguments.m_nSubIngesters,
                                 gxArguments.m_nSubLoaders,

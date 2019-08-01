@@ -215,7 +215,6 @@ void AttachMap::vRecordArguments(
                                  bool bProgress,
                                  Stz* aRegionName,
                                  i8   iRegionSize,
-                                 bool bSethScript,
                                  i8   nSlotsPerNode,
                                  i8   nSubIngesters,
                                  i8   nSubLoaders,
@@ -245,7 +244,6 @@ void AttachMap::vRecordArguments(
   Arg.m_nNodes           = nNodes;
   Arg.m_sRegionName      = aRegionName;
   Arg.m_iRegionSize      = iRegionSize;
-  Arg.m_bSethScript      = bSethScript;
   Arg.m_nSlotsPerNode    = nSlotsPerNode;
   Arg.m_nSubIngesters    = nSubIngesters;
   Arg.m_nSubInserters    = 0;

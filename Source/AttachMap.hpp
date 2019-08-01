@@ -28,7 +28,6 @@ namespace StorageEngine
       i8   m_nNodes;
       s32  m_sRegionName;
       i8   m_iRegionSize;
-      bool m_bSethScript;
       i8   m_nSlotsPerNode;
       i8   m_nSubIngesters;
       i8   m_nSubInserters;
@@ -121,7 +120,6 @@ namespace StorageEngine
                           bool bProgress,
                           Stz* sRegionName,
                           i8   iRegionSize,
-                          bool bSethScript,
                           i8   nSlotsPerNode,
                           i8   nSubIngesters,
                           i8   nSubLoaders,

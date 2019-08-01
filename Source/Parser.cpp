@@ -5,6 +5,8 @@
 #include "Commands.h"
 #include "AM.hpp"
 
+#include "Arguments.hpp"
+extern Arguments gxArguments;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -842,7 +844,7 @@ void Parser::vReadLineStdin(void)
 
   bool bLowMem = gpBufferPool->bLowMemory();
   
-  if (! AM::bSethScript()) {
+  if (! gxArguments.m_bSethScript) {
     
     if (! AM::bDeveloper()) {
       vInfo("%s "_Stz,m_sPrompt.aChar());

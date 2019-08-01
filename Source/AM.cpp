@@ -24,7 +24,6 @@ i8   AM::nMaxReadyLP(void)    { return gpAttachMap->Arg.m_nMaxReadyLP;        }
 i8   AM::nNodes(void)         { return gpAttachMap->Arg.m_nNodes;             }
 Stz* AM::szRegionName(void)   { return gpAttachMap->Arg.m_sRegionName.aStz(); }
 i8   AM::iRegionSize(void)    { return gpAttachMap->Arg.m_iRegionSize;        }
-bool AM::bSethScript(void)    { return gpAttachMap->Arg.m_bSethScript;        }
 i8   AM::nSlotsPerNode(void)  { return gpAttachMap->Arg.m_nSlotsPerNode;      }
 i8   AM::nSubIngesters(void)  { return gpAttachMap->Arg.m_nSubIngesters;      }
 i8   AM::nSubInserters(void)  { return gpAttachMap->Arg.m_nSubInserters;      }
