@@ -26,6 +26,9 @@ namespace Rows
   static const i8 C_ERA_1 = 92; // 1992
   static const i8 C_ERA_2 = 99; // 1999
 
+  // numer of rows to sample before creating tails set
+  static const i8 C_SAMPLE_ROWS = 100;
+  
   //----------------------------------------------------------------------------
 
   class RowCoder

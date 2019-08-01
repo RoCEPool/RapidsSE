@@ -5,10 +5,6 @@
 
 namespace Rows
 {
-  // numer of rows to sample before creating tails set
-  static const i8 C_SAMPLE_ROWS = 100;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class RowCompactor : public Object,
                        private RowCoder
   {

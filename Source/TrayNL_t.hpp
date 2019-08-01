@@ -528,9 +528,9 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iLastTail(void)
   if (! m_nTailUnits)
     return C_UNKNOWN;
   
-  i8 i_Tail = m_nSpaceUnits - m_nTailUnits; // 10 - 3 : [0 1 2 .. 7 8 9];
+  i8 i_LastTail = m_nSpaceUnits - m_nTailUnits; // 10 - 3 : [0 1 2 .. 7 8 9];
   
-  return i_Tail;
+  return i_LastTail;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -541,16 +541,15 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iPrevTail(i8 i_CurrTail)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
-  TAIL* aPriorTail = aGetTail(i_CurrTail);
-  i8 nPriorUnits = aPriorTail->w8_1B(0);
-  //RASSERT(nPriorUnits <= 4);
+  TAIL* aCurrTail = aGetTail(i_CurrTail);
+  i8 nCurrUnits = aCurrTail->w8_1B(0);
   
-  SpaceUnit* aPrevTail_unit = (SpaceUnit*)aPriorTail + nPriorUnits;
-  if (aPrevTail_unit >= &m_axaUnits[m_nSpaceUnits])
+  SpaceUnit* aCurrTail_unit = (SpaceUnit*)aCurrTail + nCurrUnits;
+  if (aCurrTail_unit >= &m_axaUnits[m_nSpaceUnits])
     return C_UNKNOWN;
 
-  i8 i_Tail = i_CurrTail + nPriorUnits;
-  return i_Tail;
+  i8 i_PrevTail = i_CurrTail + nCurrUnits;
+  return i_PrevTail;
 }
 
 /*----------------------------------------------------------------------------*/

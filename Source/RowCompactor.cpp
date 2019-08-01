@@ -375,20 +375,20 @@ bool RowCompactor::bAddCrw(Row* pInflatedRow)
   
   m_pEncoding->vEncodeRow(pInflatedRow);
   
-  SP_Encoding spEncoding;
-  
 #ifdef WITH_ENCODING_TRACE
+  SP_Encoding spEncoding;
   vTrace("\nvEncode:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 2) encode tails
   
+#ifndef WITH_NO_TAILS
   vEncodeTails(pInflatedRow);
 #ifdef WITH_ENCODING_TRACE
   vTrace("\nvEncodeTails:\n%s\n"_Stz,spEncoding.sz(m_pEncoding));
 #endif
-  
+#endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 3) split encoding between head and overflow
   
