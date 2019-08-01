@@ -653,6 +653,11 @@ private:
   static void vJob_SinkChunk(Tasks::MP_Task mpTask);
   static void vJob_SinkEnd(Tasks::MP_Task mpTask);
 
+  // job Sort
+  static void vJob_SortBegin(Tasks::MP_Task mpTask);
+  static void vJob_SortEnd(Tasks::MP_Task mpTask);
+  static void vJob_SortExecute(Tasks::MP_Task mpTask);
+
   // job SubExporter
   static void vJob_SubExporterBegin(Tasks::MP_Task mpTask);
   static void vJob_SubExporterChunk(Tasks::MP_Task mpTask);
