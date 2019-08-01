@@ -3,10 +3,8 @@
 /*============================================================================*/
 #pragma once
 
-namespace Rows
+enum eMC : u1 // meta code
 {
-  enum eMC : u1 // meta code
-  {
   /* 00 */ MC_NULL = 0,    // null datum (no bytes in data code )
   
   /* 01 */ MC_BCD_1B,      // data code contains 1B datum
@@ -99,12 +97,12 @@ namespace Rows
   /* 75 */ MC_OVERFLOW_2T, // overflow tail: 2B->overflow tail
   
   /* 76 */ MC_ENUMS,
-  };
+};
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  static Stz* aMC[]
-  {
+static Stz* aMC[]
+{
   /* 00 */ "MC_NULL"_Stz,
   
   /* 01 */ "MC_BCD_1B"_Stz,
@@ -195,12 +193,12 @@ namespace Rows
   /* 75 */ "MC_OVERFLOW_2T"_Stz,
   
   /* 76 */ "MC_ENUMS"_Stz,
-  };
+};
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  static i8 nMC[] = // size of meta code
-  {
+static i8 nMC[] = // size of meta code
+{
   /* 00 */ 0, // MC_NULL         // null datum (no bytes in data code )
     
   /* 01 */ 1, // MC_BCD_1B,      // data code contains 1B datum
@@ -293,8 +291,7 @@ namespace Rows
   /* 75 */ 2, // MC_OVERFLOW_2T, // overflow tail (2B->overflow tail)
   
   /* 76 */ 0  // MC_ENUMS,
-  };
-}
+};
 
 /*============================================================================*/
 /* end                                                                        */

@@ -3,8 +3,8 @@
 /*============================================================================*/
 #pragma once
 
-  enum eEC // error code
-  {
+enum eEC // error code
+{
   /*  0 */ EC_NONE=0,
   
   /*  1 */ EC_ASSERT,
@@ -91,10 +91,10 @@
   /* 60 */ EC_VERSION_MISMATCH,
   
   /* 61 */ EC_ENUMS
-  };
+};
   
-  static Stz* aEC[]
-  {
+static Stz* aEC[]
+{
   /*  0 */ "none"_Stz,
   
   /*  1 */ "assert"_Stz,
@@ -182,8 +182,7 @@
 
   /* 61 */ "enums"_Stz
   
-  };
-
+};
 
 /*============================================================================*/
 /* end                                                                        */

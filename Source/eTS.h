@@ -3,10 +3,8 @@
 /*============================================================================*/
 #pragma once
 
-namespace Tasks
-{  
-  enum eTS // Task State
-  {
+enum eTS // Task State
+{
   /* 0 */ TS_NONE=0,
   /* 1 */ TS_ABLE,      // task is able to be executed
   /* 2 */ TS_BIDING,    // task is biding till operand arrives and triggers
@@ -18,10 +16,10 @@ namespace Tasks
   /* 8 */ TS_SLEEPING,  // task is sleeping till wakeup time arrives
   /* 9 */ TS_WAITING,   // task is waiting on ack from cooperating task
   /*10 */ TS_ENUMS
-  };
+};
   
-  static Stz* aTS[]
-  {
+static Stz* aTS[]
+{
   /* 0 */ "NONE"_Stz,
   /* 1 */ "ABLE"_Stz,
   /* 2 */ "BIDING"_Stz,
@@ -33,8 +31,7 @@ namespace Tasks
   /* 8 */ "WAITING"_Stz,
   /* 9 */ "YIELDED"_Stz,
   /*10 */ "ENUMS"_Stz,
-  };
-}
+};
 
 /*============================================================================*/
 /* end                                                                        */

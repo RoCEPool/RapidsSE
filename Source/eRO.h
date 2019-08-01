@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RelationalOps.h -- The Standard Relational Operators                       */
+/* eRO.h -- The Standard Relational/Boolean Operators                         */
 /*============================================================================*/
 #pragma once
 
