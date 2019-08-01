@@ -22,10 +22,8 @@ namespace PushDown
    ~GenerateOp(void) noexcept(false);
 
     static eOR eCallLoop(void* aThis);
-    eOR eFetchLoop(void);
-
-    void vTablePtn(TablePtn* pTablePtn);
-  
+    eOR eGenerateLoop(void);
+    
   private:
     Footer* aFooter(void);
   };

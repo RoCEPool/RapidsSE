@@ -108,7 +108,7 @@ Job_SortExp::Job_SortExp(Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SORTEXP,_FOOTER_);
   
   m_pGenerateOp = new GenerateOp("G_0"_Stz,this);
-  m_pSortOp   = new SortOp ("F_0"_Stz,this);
+  m_pSortOp   = new SortOp ("S_0"_Stz,this);
   m_pOutputOp = new OutputOp("O_0"_Stz,this);
   m_pZedOp    = new ZedOp   ("Z_0"_Stz,this);
 
@@ -192,7 +192,7 @@ void Job_SortExp::vBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SORTEXP,_FOOTER_);
   
-  AM::vSetAcksRmg(m_pExecutingTask,3);
+  AM::vSetAcksRmg(m_pExecutingTask,4);
 
   m_pGenerateOp->vOpOut(m_pSortOp);
   m_pSortOp->vOpOut(m_pOutputOp);
@@ -230,6 +230,8 @@ void Job_SortExp::vExecute(void)
   bSpawned = AM::bSpawnOp(pSession,m_pOutputOp);
   ASSERT(bSpawned);
   bSpawned = AM::bSpawnOp(pSession,m_pSortOp);
+  ASSERT(bSpawned);
+  bSpawned = AM::bSpawnOp(pSession,m_pGenerateOp);
   ASSERT(bSpawned);
 }
 

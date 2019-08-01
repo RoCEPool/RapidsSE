@@ -75,27 +75,50 @@ GenerateOp::~GenerateOp(void) noexcept(false)
 /* call the fetch loop function                                               */
 /*----------------------------------------------------------------------------*/
 eOR GenerateOp::eCallLoop(void* aThis)
-{  
-  eOR eCallAgain = ((GenerateOp*)aThis)->eFetchLoop();
+{
+  eOR eCallAgain = ((GenerateOp*)aThis)->eGenerateLoop();
   
   return eCallAgain;
 }
 
 /*----------------------------------------------------------------------------*/
-/* the fetch operator loop function                                           */
+/* call the fetch loop function                                               */
 /*----------------------------------------------------------------------------*/
-eOR GenerateOp::eFetchLoop(void)
+eOR GenerateOp::eGenerateLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GENERATEOP,_FOOTER_);
   
-  for (m_pCrwBuffer = m_pTablePtn->pRootCrwBuffer();
-       m_pCrwBuffer;
-       m_pCrwBuffer = m_pCrwBuffer->pNextBuffer()) {
-    
-    vTrace("%s::bFetch %p\n"_Stz,m_sOpLabel.aStz(),m_pCrwBuffer);
-    
-    vPipeOut(m_pCrwBuffer);
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create an IntBuffer
+  IntBuffer* pRootBuffer = new IntBuffer();
+  IntBuffer* pIntBuffer = pRootBuffer;
+  
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Add random integer values to the buffer till the buffer is full
+  i8 iTotalValues = ELEMENTS; // * 6;
+  
+  while (iTotalValues--) {
+    i8 iRandom = Random::iInteger(0,1000);
+    if (pIntBuffer->bHasSpace())
+      pIntBuffer->vAppendValue(iRandom);
+    else {
+      // create a new buffer
+      IntBuffer* pNextBuffer = new IntBuffer();
+      pIntBuffer->vNextBuffer(pNextBuffer);
+      pNextBuffer->vPrevBuffer(pIntBuffer);
+      pIntBuffer = pNextBuffer;
+      pIntBuffer->vAppendValue(iRandom);
+    }
   }
+  
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // dump the buffer
+  vTrace("\n\nSorting buffer:\n"_Stz);
+  pRootBuffer->vDump();
+  
+  vTrace("%s::Generate %p\n"_Stz,m_sOpLabel.aStz(),pIntBuffer);
+  
+  vPipeOut(pIntBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -103,17 +126,6 @@ eOR GenerateOp::eFetchLoop(void)
   
   return OR_EXIT;
 }
-
-/*----------------------------------------------------------------------------*/
-/* set table partition                                                        */
-/*----------------------------------------------------------------------------*/
-void GenerateOp::vTablePtn(TablePtn* pTablePtn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GENERATEOP,_FOOTER_);
-
-  m_pTablePtn = pTablePtn;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
