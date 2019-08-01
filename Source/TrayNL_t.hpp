@@ -69,10 +69,10 @@ namespace Structures
     i8    iPrevTail(i8 i_Tail);
     TAIL* aPrevTail(TAIL* aCurrTail);
     void  vReset(void);
-    i8    nTails(void);
-    void  vVerifyTails(i8 i_Dump);
-  
     void  vSetItems(i8 nSpaceUnits, SpaceUnit* axaUnits);
+    i8    nTails(void);
+    i8    iToUnit(TAIL* aTail);
+    void  vVerifyTails(i8 i_Dump);
   
   private:
     Footer* aFooter(void);
@@ -611,17 +611,6 @@ void Nub_t<CN,HEAD,OVER,TAIL,DESC>::vReset(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get current number of tail items                                           */
-/*----------------------------------------------------------------------------*/
-template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
-i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::nTails(void)
-{
-  _precondition_(_MAGIC_,CN,_FOOTER_);
-  
-  return m_nTailItems;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set item array                                                             */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
@@ -633,6 +622,34 @@ void Nub_t<CN,HEAD,OVER,TAIL,DESC>::vSetItems(i8 nSpaceUnits, SpaceUnit* axaUnit
   
   m_axaUnits    = axaUnits;
   m_axaWords    = (Word*)axaUnits;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current number of tail items                                           */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::nTails(void)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  return m_nTailItems;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute the i_Unit subscript of given tail                                 */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iToUnit(TAIL* aTail)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  // how far (in bytes) into m_axaUnits
+  i8 nBytes = nSub(aTail,m_axaUnits);
+  
+  // how far (in units) into m_axaUnits
+  i8 i_Unit = nBytes / (u8)sizeof(SpaceUnit);
+  
+  return i_Unit;
 }
 
 /*----------------------------------------------------------------------------*/
