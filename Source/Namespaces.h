@@ -51,6 +51,7 @@ using namespace Chunks;
 using namespace Commands;
 using namespace Correctness;
 using namespace Debugging;
+using namespace Enums;
 using namespace Forth;
 using namespace Grids;
 using namespace Indexes;
