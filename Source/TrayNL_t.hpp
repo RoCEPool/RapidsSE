@@ -67,7 +67,7 @@ namespace Structures
     i8    iLastTail(void);
     TAIL* aLastTail(void);
     i8    iPrevTail(i8 i_Tail);
-    TAIL* aPrevTail(TAIL* aCurrTail);
+    TAIL* aPrevTail(TAIL* aCurrTail, i8& i_Tail);
     void  vReset(void);
     void  vSetItems(i8 nSpaceUnits, SpaceUnit* axaUnits);
     i8    nTails(void);
@@ -576,7 +576,7 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iPrevTail(i8 i_CurrTail)
 /* get prev tail (goes left-to-right / ascending memory address)              */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
-TAIL* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aPrevTail(TAIL* aCurrTail)
+TAIL* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aPrevTail(TAIL* aCurrTail, i8& i_Tail)
 {
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
@@ -587,6 +587,9 @@ TAIL* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aPrevTail(TAIL* aCurrTail)
     return nullptr;
   
   TAIL* aPrevTail = (TAIL*) & aPrevTail_unit;
+  
+  i_Tail = iToUnit(aPrevTail);
+  
   return aPrevTail;
 }
 

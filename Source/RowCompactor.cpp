@@ -469,6 +469,8 @@ void RowCompactor::vEncodeTails(Row* pInflatedRow)
     vDumpTails();
 #endif
     
+    
+#if 1
     i8 i_Tail = iFindTail( (TailLine*) & xFindTail );
     if (C_UNKNOWN == i_Tail)
       continue;
@@ -479,6 +481,19 @@ void RowCompactor::vEncodeTails(Row* pInflatedRow)
     // put tial into the encoding
     aColEnc->m_i_Tail = i_Tail;
     aColEnc->m_aTailLine = m_pCrwNub->aGetTail(i_Tail);
+#else
+    i8 i_Tail;
+    TailLine* aTailLine = aFindTail((TailLine*) & xFindTail, i_Tail);
+    if (! aTailLine)
+      continue;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // found a matching tail
+    
+    // put tial into the encoding
+    aColEnc->m_i_Tail = i_Tail;
+    aColEnc->m_aTailLine = aTailLine;
+#endif
     
     // morph the encoding
     m_pEncoding->vMorphEncoding(aColEnc);
@@ -907,13 +922,13 @@ i8 RowCompactor::iFindTail(TailLine* aFindLine)
 /*----------------------------------------------------------------------------*/
 /* search for duplicate tail line                                             */
 /*----------------------------------------------------------------------------*/
-TailLine* RowCompactor::aFindTail(TailLine* aFindLine)
+TailLine* RowCompactor::aFindTail(TailLine* aFindLine, i8& i_Tail)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
   for (TailLine* aTailLine = m_pCrwNub->aLastTail();
        aTailLine;
-       aTailLine = m_pCrwNub->aPrevTail(aTailLine)) {
+       aTailLine = m_pCrwNub->aPrevTail(aTailLine,i_Tail)) {
     
     i8 nTailBytes = aTailLine->nBytes();
     
