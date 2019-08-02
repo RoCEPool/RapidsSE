@@ -12,7 +12,7 @@ namespace PushDown
     OpDefn  m_xOpDefn[128]; // array of op definitions
   
   public:
-    OpDefn* pFindOp(Stz* szCommand);
+    OpDefn* aFindOp(Stz* szCommand);
     void    vHelp(eCN eClass);
   };
 }

@@ -8,7 +8,7 @@ namespace Prompt
   class OpHelper
   {
   public:
-    static void vXyz(Op** apaOp, TokenVec* pTknVec);
+    static void vDynamicCommand(Op** apaOp, TokenVec* pTknVec);
   };
 }
 

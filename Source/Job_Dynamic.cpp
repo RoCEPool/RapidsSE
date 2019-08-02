@@ -164,7 +164,7 @@ bool Job_Dynamic::bPopulateJob(TokenVec* pTokenVec)
 //    return nullptr;
 //  }
 
-  OpHelper::vXyz(m_paOp,pTokenVec);
+  OpHelper::vDynamicCommand(m_paOp,pTokenVec);
   
   return true;
 }

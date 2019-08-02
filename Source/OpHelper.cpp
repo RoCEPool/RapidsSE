@@ -5,12 +5,39 @@
 #include "PushDown.h"
 #include "AM.hpp"
 
+extern OpCatalog gxOpCatalog;
 
 /*----------------------------------------------------------------------------*/
-/* process command flags                                                      */
+/* process dynamic command                                                    */
 /*----------------------------------------------------------------------------*/
-void OpHelper::vXyz(Op** apaOp, TokenVec* pTknVec)
+void OpHelper::vDynamicCommand(Op** apaOp, TokenVec* pTknVec)
 {
+  i8 nTokens = pTknVec->nItems();
+
+  s256 sTknStr;
+  
+  i8 i_Tkn = 1;
+  while (i_Tkn < nTokens) {
+
+    sTknStr = pTknVec->pGet(i_Tkn)->aText();
+    
+    if (sTknStr.bSame("|"_Stz)) {
+      i_Tkn++;
+      continue;
+    }
+    
+    OpDefn* aOpDefn = gxOpCatalog.aFindOp(sTknStr);
+    
+    if (aOpDefn) {
+      vTrace(" { %s }\n"_Stz,aOpDefn->m_szCommand);
+      i_Tkn++;
+      continue;
+    }
+
+    // unknown
+    vTrace(" ? %s\n"_Stz,sTknStr.aStz());
+    i_Tkn++;
+  }
 }
 
 /*============================================================================*/
