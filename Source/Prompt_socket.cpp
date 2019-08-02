@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptNote mPromptNote_socket (
+PromptDesc mPromptNote_socket (
   PF_SOCKET,           // prompt function
   "Prompt_socket"_Stz, // name of the prompt function
   "comment"_Stz,       // comment about the function

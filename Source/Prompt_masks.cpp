@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptNote mPromptNote_masks (
+PromptDesc mPromptNote_masks (
   PF_MASKS,             // prompt function
   "Prompt_masks"_Stz,   // name of the prompt function
   "comment"_Stz,        // comment about the function

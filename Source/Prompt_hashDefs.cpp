@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptNote mPromptNote_hashDefs (
+PromptDesc mPromptNote_hashDefs (
   PF_HASHDEFS,          // prompt function
   "Prompt_numbers"_Stz, // name of the prompt function
   "comment"_Stz,        // comment about the function

@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptNote mPromptNote_enums (
+PromptDesc mPromptNote_enums (
   PF_ENUMS,             // prompt function
   "Prompt_enums"_Stz,   // name of the prompt function
   "comment"_Stz,        // comment about the function

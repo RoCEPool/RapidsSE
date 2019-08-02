@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptNote mPromptNote_fileCat (
+PromptDesc mPromptNote_fileCat (
   PF_FILECAT,           // prompt function
   "Prompt_fileCat"_Stz, // name of the prompt function
   "comment"_Stz,        // comment about the function

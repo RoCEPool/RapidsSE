@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptNote mPromptNote_cache (
+PromptDesc mPromptNote_cache (
   PF_CACHE,           // prompt function
   "Prompt_cache"_Stz, // name of the prompt function
   "comment"_Stz,      // comment about the function

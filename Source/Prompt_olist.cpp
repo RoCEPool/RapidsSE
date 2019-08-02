@@ -5,7 +5,7 @@
 #include "Prompt.h"
 #include "AM.hpp"
 
-PromptNote mPromptNote_olist (
+PromptDesc mPromptNote_olist (
   PF_OLIST,             // prompt function
   "Prompt_olist"_Stz,   // name of the prompt function
   "comment"_Stz,        // comment about the function

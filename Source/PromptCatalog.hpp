@@ -5,7 +5,7 @@
 
 namespace Prompt
 {
-  class PromptNote;
+  class PromptDesc;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class PromptCatalog

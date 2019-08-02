@@ -6,7 +6,7 @@
 #include "AM.hpp"
 
 
-PromptNote mPromptNote_apiState (
+PromptDesc mPromptNote_apiState (
   PF_APISTATE,            // prompt function
   "Prompt_apiState"_Stz,  // name of the prompt function
   "comment"_Stz,          // comment about the function

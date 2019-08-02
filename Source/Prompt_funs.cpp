@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptNote mPromptNote_funs (
+PromptDesc mPromptNote_funs (
   PF_FUNS,               // prompt function
   "Prompt_funs"_Stz,     // name of the prompt function
   "comment"_Stz,         // comment about the function
@@ -20,7 +20,7 @@ PromptNote mPromptNote_funs (
 
 extern PromptCatalog gxPromptCatalog;
 
-extern PromptNote mPromptNote_actionSequence;
+extern PromptDesc mPromptNote_actionSequence;
 
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */

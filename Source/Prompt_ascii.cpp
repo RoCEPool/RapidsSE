@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptNote mPromptNote_ascii (
+PromptDesc mPromptNote_ascii (
   PF_ASCII,           // prompt function
   "Prompt_ascii"_Stz, // name of the prompt function
   "comment"_Stz,      // comment about the function

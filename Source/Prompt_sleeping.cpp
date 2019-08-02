@@ -5,7 +5,7 @@
 #include "Prompt.h"
 #include "AM.hpp"
 
-PromptNote mPromptNote_sleeping (
+PromptDesc mPromptNote_sleeping (
   PF_SLEEPING,            // prompt function
   "Prompt_sleeping"_Stz,  // name of the prompt function
   "comment"_Stz,          // comment about the function

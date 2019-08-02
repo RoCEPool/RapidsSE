@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptNote mPromptNote_jobClass (
+PromptDesc mPromptNote_jobClass (
   PF_JOBCLASS,           // prompt function
   "Prompt_jobClass"_Stz, // name of the prompt function
   "comment"_Stz,         // comment about the function

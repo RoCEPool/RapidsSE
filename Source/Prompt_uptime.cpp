@@ -5,7 +5,7 @@
 #include "Prompt.h"
 #include "AM.hpp"
 
-PromptNote mPromptNote_uptime (
+PromptDesc mPromptNote_uptime (
   PF_UPTIME,             // prompt function
   "Prompt_uptime"_Stz,   // name of the prompt function
   "comment"_Stz,         // comment about the function

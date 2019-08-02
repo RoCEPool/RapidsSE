@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptNote mPromptNote_memTest (
+PromptDesc mPromptNote_memTest (
   PF_MEMTEST,           // prompt function
   "Prompt_memTest"_Stz, // name of the prompt function
   "comment"_Stz,        // comment about the function

@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptNote mPromptNote_opsys (
+PromptDesc mPromptNote_opsys (
   PF_OPSYS,           // prompt function
   "Prompt_opsys"_Stz, // name of the prompt function
   "comment"_Stz,      // comment about the function

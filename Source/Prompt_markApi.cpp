@@ -5,7 +5,7 @@
 #include "Prompt.h"
 #include "AM.hpp"
 
-PromptNote mPromptNote_markApi (
+PromptDesc mPromptNote_markApi (
   PF_MARKAPI,           // prompt function
   "Prompt_markApi"_Stz, // name of the prompt function
   "comment"_Stz,     // comment about the function

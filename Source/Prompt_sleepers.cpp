@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptNote mPromptNote_sleepers (
+PromptDesc mPromptNote_sleepers (
   PF_SLEEPERS,           // prompt function
   "Prompt_sleepers"_Stz, // name of the prompt function
   "comment"_Stz,         // comment about the function

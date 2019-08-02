@@ -5,7 +5,7 @@
 #include "Prompt.h"
 #include "AM.hpp"
 
-PromptNote mPromptNote_markRes (
+PromptDesc mPromptNote_markRes (
   PF_MARKRES,           // prompt function
   "Prompt_markRes"_Stz, // name of the prompt function
   "comment"_Stz,     // comment about the function

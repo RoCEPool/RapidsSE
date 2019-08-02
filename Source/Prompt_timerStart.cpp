@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptNote mPromptNote_timerStart (
+PromptDesc mPromptNote_timerStart (
   PF_TIMERSTART,           // prompt function
   "Prompt_timerStart"_Stz, // name of the prompt function
   "comment"_Stz,           // comment about the function

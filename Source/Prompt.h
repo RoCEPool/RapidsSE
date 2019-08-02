@@ -18,7 +18,7 @@ namespace Prompt
 
 #include "PromptFun.hpp"
 #include "PromptCatalog.hpp"
-#include "PromptNote.hpp"
+#include "PromptDesc.hpp"
 #include "PromptHelper.hpp"
 
 #include "Prompt_apiState.hpp"
