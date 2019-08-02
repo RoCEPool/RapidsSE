@@ -83,7 +83,9 @@ ZedOp::~ZedOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Op* ZedOp::pNew(TokenVec* pTknVec, i8& i_Tkn_)
 {
-  return nullptr;
+  ZedOp* pZedOp = new ZedOp("<none>:"_Stz,nullptr);
+  
+  return pZedOp;
 }
 
 /*----------------------------------------------------------------------------*/

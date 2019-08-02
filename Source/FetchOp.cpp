@@ -86,7 +86,9 @@ FetchOp::~FetchOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Op* FetchOp::pNew(TokenVec* pTknVec, i8& i_Tkn_)
 {
-  return nullptr;
+  FetchOp* pFetchOp = new FetchOp("<none>:"_Stz,nullptr);
+  
+  return pFetchOp;
 }
 
 /*----------------------------------------------------------------------------*/

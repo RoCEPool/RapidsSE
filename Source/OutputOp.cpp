@@ -83,7 +83,9 @@ OutputOp::~OutputOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Op* OutputOp::pNew(TokenVec* pTknVec, i8& i_Tkn_)
 {
-  return nullptr;
+  OutputOp* pOutputOp = new OutputOp("<none>:"_Stz,nullptr);
+  
+  return pOutputOp;
 }
 
 /*----------------------------------------------------------------------------*/
