@@ -109,15 +109,17 @@ void TaskQueue::vContentDump(void)
   //  vTrace("HEIGHT %lld HEAD 0x%llx ITEMS %lld\n"_Stz,
   //         pSkipList->m_iHeight,pSkipList->m_pHead, pSkipList->m_nObjects);
   
+  s256 sPortrait; // short text description of task
+
   for (SkipNode* pNode = m_pTaskSkipList->pFirst(0);
        pNode;
        pNode = m_pTaskSkipList->pNext(pNode,0)) {
     
     Task* pTask = _pTask(pNode->m_pObject);
  
-    pTask->vRenderPortrait();
+    pTask->vRenderPortrait(sPortrait);
     
-    vTrace("%s\n"_Stz,pTask->sPortrait().aChar());
+    vTrace("%s\n"_Stz,sPortrait.aChar());
   }
 }
 

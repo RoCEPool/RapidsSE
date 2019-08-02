@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "Threads.h"
-#include "Scheduling.h"
+#include "Scheduler.hpp"
 #include "AM.hpp"
 
 

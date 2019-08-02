@@ -29,8 +29,8 @@ namespace Tasks
       Op*   m_pOp;          // OR the op for this task [DML]
     };
   
-    Session* m_pSession; // session for this task
-    Threads::Thread*    m_pThread;  // current thread
+    Thread*   m_pThread;    // current thread
+    Session*  m_pSession;   // session for this task
 
     eTS     m_eState;       // state (running, sleeping, ...)
     eTR     m_eTransition;  // state transition request
@@ -44,28 +44,20 @@ namespace Tasks
     i8      m_i_ActionRoot; // action root
     i8      m_i_NextRnd;    // which next repeatable random nummber?
 
+    Compiler* m_pCompiler;  // forth word compiler (Job boot, create table etc)
+    Node*     m_pSendNode;  // node to send to
+  
     Cell*     m_aFipCell;     // points to cell inside a word
     LocalSet* m_pLocalsFrame; // local register frame chain
     Stack*    m_pDataStack;   // data stack
     Stack*    m_pReturnStack; // return stack
     Stack*    m_pAuxStack;    // auxiliary stack
     DicStack  m_oDicStack;    // dictionary stack
-    
-    s256  m_sPortrait;      // short text description of task
-  
+      
     // exception
     s256  m_sFile;
     s256  m_sException;
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // remove if we can
-  
-    Grids::Node* m_pSendNode; // node to send to
-  
-    Compiler* m_pCompiler;    // forth word compiler (Job boot)
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
     // always last
     Footer m_xFooter;
 
@@ -104,13 +96,12 @@ namespace Tasks
     void vNewStacks(void);
     i8&  i_NextRnd(void);
     Op*  pOp(void);
-    s256& sPortrait(void);
     eQK  eQueue(void);
     void vQueue(eQK eQueue);
     void vQueueOrder(i8 iTaskOrder);
     i8   iQueueOrder(void);
     void vRefindJobClass(void);
-    void vRenderPortrait(void);
+    void vRenderPortrait(s256& sTaskPortrait);
     void vRetry(void);
     bool bSeeded(void);
     void vSeedJob(void);
