@@ -26,6 +26,8 @@ extern OpCatalog gxOpCatalog;
 bool Prompt::bPrompt_ops(SePrompt* pPrompt)
 {
   gxOpCatalog.vHelp(CN_FETCHOP);
+  gxOpCatalog.vHelp(CN_OUTPUTOP);
+  gxOpCatalog.vHelp(CN_ZEDOP);
 
   return true;
 }

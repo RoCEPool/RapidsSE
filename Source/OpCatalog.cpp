@@ -36,7 +36,7 @@ void OpCatalog::vHelp(eCN eClass)
       continue;
     
     if (m_xOpDefn[i_OpDefn].m_szHelp)
-      vTrace("%s %s\n"_Stz, m_xOpDefn[i_OpDefn].m_szCommand,
+      vTrace("%8s %s\n"_Stz, m_xOpDefn[i_OpDefn].m_szCommand,
                             m_xOpDefn[i_OpDefn].m_szHelp);
   }
 }
