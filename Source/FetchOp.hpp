@@ -21,7 +21,7 @@ namespace PushDown
     FetchOp(Stz* szOpLabel, Jobs::Job* pJob);
    ~FetchOp(void) noexcept(false);
 
-    static Op* pNew(Job_Dynamic* pJob, TokenVec* pTknVec, i8& i_Tkn_);
+    static Op* pNew(Job_Dynamic* pJob, Stz* szLabel, TokenVec* pTknVec, i8& i_Tkn_);
     static eOR eCall(void* aThis);
   
     eOR eFetchLoop(void);

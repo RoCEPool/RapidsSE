@@ -84,7 +84,7 @@ FetchOp::~FetchOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* function which parses the command and new's an op                          */
 /*----------------------------------------------------------------------------*/
-Op* FetchOp::pNew(Job_Dynamic* pJob, TokenVec* pTknVec, i8& i_Tkn_)
+Op* FetchOp::pNew(Job_Dynamic* pJob, Stz* szLabel, TokenVec* pTknVec, i8& i_Tkn_)
 {
   i_Tkn_++;
   
@@ -92,7 +92,7 @@ Op* FetchOp::pNew(Job_Dynamic* pJob, TokenVec* pTknVec, i8& i_Tkn_)
   
   AM::vTableName(pJob,sTableNm);
   
-  FetchOp* pFetchOp = new FetchOp("FetchOp:"_Stz,(Job*)pJob);
+  FetchOp* pFetchOp = new FetchOp(szLabel,(Job*)pJob);
   
   return pFetchOp;
 }

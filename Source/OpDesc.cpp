@@ -12,7 +12,8 @@ extern OpCatalog gxOpCatalog;
 OpDesc::OpDesc(eCN  eClass,     // class number
                eOK  eKind,      // op kind
                Stz* szCommand,  // first word of prompt command
-               Op*  (*fpNew)(Job_Dynamic* pJob, TokenVec* pTknVec, i8& i_Tkn),
+               Op*  (*fpNew)(Job_Dynamic* pJob,  Stz* szLabel,
+                             TokenVec* pTknVec, i8& i_Tkn),
                eOR  (*fpCall)(void* aThis),  // function which does the op
                void (*fpDrain)(void* aThis),  // function which drains the operand queue
                Stz* szHelp      // help text

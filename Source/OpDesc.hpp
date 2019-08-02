@@ -14,7 +14,8 @@ namespace PushDown
            eOK  eKind,      // op kind
            Stz* szCommand,  // first word of prompt command
            
-           Op*  (*fpNew)(Job_Dynamic* pJob, TokenVec* pTknVec, i8& i_Tkn_),
+           Op*  (*fpNew)(Job_Dynamic* pJob, Stz* szLabel,
+                         TokenVec* pTknVec, i8& i_Tkn_),
            
            eOR  (*fpCall)(void* aThis),   // function which calls the op
            void (*fpDrain)(void* aThis),  // function which drains the operand queue
