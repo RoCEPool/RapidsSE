@@ -27,6 +27,8 @@ namespace Structures
     i8 m_nTailItems;  // number of items allocated from the tail
     i8 m_nTailUnits;  // number of space units allocated from the tail
     i8 m_nTailBytes;  // number of bytes allocated from the tail
+  
+    i8 m_i_LastStr;   // last string tail
 
     DESC* m_pDesc;    // object describing the items
   
@@ -70,6 +72,7 @@ namespace Structures
     TAIL* aPrevTail(TAIL* aCurrTail, i8& i_Tail);
     void  vReset(void);
     void  vSetItems(i8 nSpaceUnits, SpaceUnit* axaUnits);
+    void  vSetLastStr(i8 i_LastStr);
     i8    nTails(void);
     i8    iToUnit(TAIL* aTail);
     void  vVerifyTails(i8 i_Dump);
@@ -150,6 +153,8 @@ Nub_t<CN,HEAD,OVER,TAIL,DESC>::Nub_t(void)
   m_nTailItems  = 0;
   m_nTailUnits  = 0;
   m_nTailBytes  = 0;
+  
+  m_i_LastStr   = 0;
 
   m_pDesc       = nullptr;
 
@@ -586,7 +591,7 @@ TAIL* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aPrevTail(TAIL* aCurrTail, i8& i_Tail)
   if (aPrevTail_unit >= &m_axaUnits[m_nSpaceUnits])
     return nullptr;
   
-  TAIL* aPrevTail = (TAIL*) & aPrevTail_unit;
+  TAIL* aPrevTail = (TAIL*) aPrevTail_unit;
   
   i_Tail = iToUnit(aPrevTail);
   
@@ -625,6 +630,17 @@ void Nub_t<CN,HEAD,OVER,TAIL,DESC>::vSetItems(i8 nSpaceUnits, SpaceUnit* axaUnit
   
   m_axaUnits    = axaUnits;
   m_axaWords    = (Word*)axaUnits;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set last string subscript                                                  */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+void Nub_t<CN,HEAD,OVER,TAIL,DESC>::vSetLastStr(i8 i_LastStr)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  m_i_LastStr = i_LastStr;
 }
 
 /*----------------------------------------------------------------------------*/

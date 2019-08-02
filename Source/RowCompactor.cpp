@@ -470,7 +470,7 @@ void RowCompactor::vEncodeTails(Row* pInflatedRow)
 #endif
     
     
-#if 1
+#if 0
     i8 i_Tail = iFindTail( (TailLine*) & xFindTail );
     if (C_UNKNOWN == i_Tail)
       continue;
@@ -929,6 +929,10 @@ TailLine* RowCompactor::aFindTail(TailLine* aFindLine, i8& i_Tail)
   for (TailLine* aTailLine = m_pCrwNub->aLastTail();
        aTailLine;
        aTailLine = m_pCrwNub->aPrevTail(aTailLine,i_Tail)) {
+    
+    vTrace("i_Tail %lld\n"_Stz,i_Tail);
+    
+    continue;
     
     i8 nTailBytes = aTailLine->nBytes();
     
