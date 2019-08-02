@@ -12,8 +12,7 @@ namespace PushDown
     OpDefn  m_xOpDefn[128]; // array of op definitions
   
   public:
-    //PromptFun* pFindFun(Stz* aCommand1, Stz* aCommand2);
-    //void vFuns(ePF ePromptFun);
+    OpDefn* pFindOp(Stz* szCommand);
   };
 }
 

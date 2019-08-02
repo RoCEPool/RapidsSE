@@ -9,7 +9,7 @@ extern OpCatalog gxOpCatalog;
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OpDesc::OpDesc(eCN  eClass,
+OpDesc::OpDesc(eCN  eClass,     // class number
                eOK  eKind,      // op kind
                Stz* szCommand,  // first word of prompt command
                eOR  (*fpOpFun)(void* aThis),  // function which does the op
