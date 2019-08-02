@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Scheduler.hpp -- Thread/Task Scheduler Mark II                             */
+/* Scheduler.hpp -- Job/Task/Thread Scheduler Mark II                         */
 /*============================================================================*/
 #pragma once
 
@@ -13,6 +13,8 @@ namespace Scheduling
     // job interface
     static void vAddOriginatingJob(Job* pJob);
     static void vAddParticipatingJob(Job* pJob);
+    static Job* pFindOriginatingJob(i8 iJobId);
+    static Job* pFindParticipatingJob(i8 iJobId);
     static void vRemoveOriginatingJob(Job* pJob);
     static void vRemoveParticipatingJob(Job* pJob);
 
