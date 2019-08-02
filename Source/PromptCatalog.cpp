@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 /* find prompt function given command                                         */
 /*----------------------------------------------------------------------------*/
-PromptFun* PromptCatalog::pFindFun(Stz* aCommand1, Stz* aCommand2)
+PromptDefn* PromptCatalog::pFindFun(Stz* aCommand1, Stz* aCommand2)
 {
   for (i8 i_Fun = 0; i_Fun < m_nFunctions; i_Fun++) {
     

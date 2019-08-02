@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SePrompt.cpp -- se> prompt                                                 */
+/* SePrompt.cpp -- the se> prompt                                             */
 /*============================================================================*/
 
 #include "Prompt.h"
@@ -386,7 +386,7 @@ bool SePrompt::bExecuteFunction(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  PromptFun* pPromptFun =
+  PromptDefn* pPromptFun =
     gxPromptCatalog.pFindFun(pTkn(0)->aText(), pTkn(1)->aText());
   
   if (! pPromptFun)
