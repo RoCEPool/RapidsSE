@@ -107,6 +107,9 @@ Job_Dynamic::Job_Dynamic(Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
   
+  for (i8 i_Op = 0; i_Op < C_DYNAMIC_OPS; i_Op++)
+    m_paOp[i_Op] = nullptr;
+  
   _checkInitialised_(CN_JOB_DYNAMIC);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);

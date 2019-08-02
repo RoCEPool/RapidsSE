@@ -5,9 +5,12 @@
 
 namespace Jobs
 {
+  static const i8 C_DYNAMIC_OPS = 32;
+  
   class Job_Dynamic : public JobMark2
   {
   public:
+    Op* m_paOp[C_DYNAMIC_OPS];
 
     // must be last
     Footer m_xFooter;
