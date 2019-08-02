@@ -29,8 +29,8 @@ namespace Tasks
       Op*   m_pOp;          // OR the op for this task [DML]
     };
   
-    Session* m_pSession; // session for this task
-    Threads::Thread*    m_pThread;  // current thread
+    Thread*   m_pThread;    // current thread
+    Session*  m_pSession;   // session for this task
 
     eTS     m_eState;       // state (running, sleeping, ...)
     eTR     m_eTransition;  // state transition request
@@ -44,6 +44,9 @@ namespace Tasks
     i8      m_i_ActionRoot; // action root
     i8      m_i_NextRnd;    // which next repeatable random nummber?
 
+    Compiler* m_pCompiler;  // forth word compiler (Job boot, create table etc)
+    Node*     m_pSendNode;  // node to send to
+  
     Cell*     m_aFipCell;     // points to cell inside a word
     LocalSet* m_pLocalsFrame; // local register frame chain
     Stack*    m_pDataStack;   // data stack
@@ -57,15 +60,6 @@ namespace Tasks
     s256  m_sFile;
     s256  m_sException;
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // remove if we can
-  
-    Grids::Node* m_pSendNode; // node to send to
-  
-    Compiler* m_pCompiler;    // forth word compiler (Job boot)
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
     // always last
     Footer m_xFooter;
 

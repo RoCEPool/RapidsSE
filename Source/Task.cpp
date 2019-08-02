@@ -122,40 +122,33 @@ void Task::vInit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   m_okLock.vInitLock(LK_TASK);
-  
   m_eKind        = TK_NONE;
   m_pJob         = nullptr;
+  
+  m_pThread      = nullptr;
   m_pSession     = nullptr;
   
   m_eState       = TS_NONE;
   m_eTransition  = TR_NONE;
   m_eQueue       = QK_NONE;
-  
   m_iQueueOrder  = C_UNKNOWN;
-  
   m_oAcksRmg.vCheckInit();
-  m_pThread      = nullptr;
-  
-  m_pDataStack   = nullptr;
-  m_pReturnStack = nullptr;
-  m_pAuxStack    = nullptr;
-  
-  m_pLocalsFrame = nullptr;
-  
-  m_aFipCell     = nullptr;
-  
-  m_pCompiler    = nullptr;
+  m_iDdlLocked   = 0;
+  // m_oWakeup
   
   m_iTracing     = C_TRACE_NONE;
   m_i_ActionRoot = C_UNKNOWN;
   m_i_NextRnd    = AM::bDeveloper() ? 0 : C_UNKNOWN;
   
+  m_aFipCell     = nullptr;
+  m_pLocalsFrame = nullptr;
+  m_pDataStack   = nullptr;
+  m_pReturnStack = nullptr;
+  m_pAuxStack    = nullptr;
+  // m_oDicStack
   
-  m_iDdlLocked   = 0;
-  
+  m_pCompiler    = nullptr;
   m_pSendNode    = nullptr;
 }
 
