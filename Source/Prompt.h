@@ -83,6 +83,7 @@ namespace Prompt
 #include "Prompt_numbers.hpp"
 
 #include "Prompt_olist.hpp"
+#include "Prompt_ops.hpp"
 #include "Prompt_opsys.hpp"
 
 #include "Prompt_plist.hpp"
