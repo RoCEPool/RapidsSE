@@ -35,12 +35,12 @@ void Op::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Op::Op(eCN eClassNo, Stz* szOpLabel, Job* pJob)
+Op::Op(eCN eClassNo, Stz* szLabel, Job* pJob)
 : Object(eClassNo)
 {
   _precondition_(_MAGIC_,eClassNo);
   
-  m_sOpLabel      = szOpLabel;
+  m_sLabel        = szLabel;
   m_pJob          = pJob;
   m_pTask         = nullptr;
   
@@ -144,7 +144,7 @@ void Op::vAppendOperand(Operand* pOperand)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   vTrace("%s::vAppendOperand : %p %s\n"_Stz,
-         m_sOpLabel.aStz(),
+         m_sLabel.aStz(),
          pOperand,
          aCN[pOperand->eClass()]);
   
@@ -198,6 +198,26 @@ bool Op::bIsLocked(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get label                                                                  */
+/*----------------------------------------------------------------------------*/
+Stz* Op::szLabel(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_sLabel;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set label                                                                  */
+/*----------------------------------------------------------------------------*/
+void Op::vLabel(Stz* szLabel)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_sLabel = szLabel;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set out operator                                                           */
 /*----------------------------------------------------------------------------*/
 void Op::vOpOut(Op* pOpOut)
@@ -215,7 +235,7 @@ void Op::vPipeOut(Operand* pOperand)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   vTrace("%s::vPipeOut : %p %s\n"_Stz,
-         m_sOpLabel.aStz(),
+         m_sLabel.aStz(),
          pOperand,
          aCN[pOperand->eClass()]);
   
@@ -254,7 +274,7 @@ Operand* Op::pPopOperand(void)
   
   if (pOperand) {
     vTrace("%s::pPopOperand : %p %s\n"_Stz,
-           m_sOpLabel.aStz(),
+           m_sLabel.aStz(),
            pOperand,
            aCN[pOperand->eClass()]);
   }
@@ -275,7 +295,7 @@ void Op::vStdDrain(void)
 /*----------------------------------------------------------------------------*/
 /* get task                                                                   */
 /*----------------------------------------------------------------------------*/
-Tasks::Task* Op::pTask(void)
+Task* Op::pTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -285,7 +305,7 @@ Tasks::Task* Op::pTask(void)
 /*----------------------------------------------------------------------------*/
 /* set task                                                                   */
 /*----------------------------------------------------------------------------*/
-void Op::vTask(Tasks::Task* pTask)
+void Op::vTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   

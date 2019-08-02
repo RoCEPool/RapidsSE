@@ -32,7 +32,10 @@ void OpHelper::vDynamicCommand(Job_Dynamic* pJob, Op** apaOp, TokenVec* pTknVec)
       vTrace(" { [%lld] %s }\n"_Stz,
              nOps,aOpDefn->m_szCommand);
       Op* pOp = (aOpDefn->m_fpNew)(pJob,pTknVec,i_Tkn);
-      apaOp[nOps++] = pOp;
+      if (nOps)
+        apaOp[nOps-1]->vOpOut(pOp);
+      apaOp[nOps] = pOp;
+      nOps++;
       continue;
     }
 

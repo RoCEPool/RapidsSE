@@ -69,6 +69,8 @@ fileCat "/tpch/SF0/lineitem_100.csv" 10;
 
 query lineitem;
 
+dynamic fetch lineitem | output | zed;
+
 logWrite;
 
 /*

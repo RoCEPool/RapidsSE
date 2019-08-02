@@ -8,7 +8,7 @@ namespace PushDown
   class Op : public Object
   {
   protected:
-    s32            m_sOpLabel;       // label of this op
+    s32            m_sLabel;         // label of this op
     Jobs::Job*     m_pJob;           // job this operator belongs to
     Tasks::Task*   m_pTask;          // task running this op
   
@@ -42,13 +42,15 @@ namespace PushDown
     void vDropTaskLock(void);
     void vGrabTaskLock(void);
     bool bIsLocked(void);
+    Stz* szLabel(void);
+    void vLabel(Stz* szLabel);
     void vOpOut(Op* pOpOut);
     void vPipeOut(Operand* pOperand);
     void vPipeOut_endMarker(void);
     Operand* pPopOperand(void);
     void vStdDrain(void);
-    Tasks::Task* pTask(void);
-    void vTask(Tasks::Task* pTask);
+    Task* pTask(void);
+    void vTask(Task* pTask);
     void vWorkQuanta(i8 iWorkQuanta);
   };
 

@@ -122,7 +122,7 @@ eOR FetchOp::eFetchLoop(void)
        m_pCrwBuffer;
        m_pCrwBuffer = m_pCrwBuffer->pNextBuffer()) {
     
-    vTrace("%s::bFetch %p\n"_Stz,m_sOpLabel.aStz(),m_pCrwBuffer);
+    vTrace("%s::bFetch %p\n"_Stz,m_sLabel.aStz(),m_pCrwBuffer);
     
     vPipeOut(m_pCrwBuffer);
   }
