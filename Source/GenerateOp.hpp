@@ -8,8 +8,7 @@ namespace PushDown
   class GenerateOp : public Op
   {
   private:
-    TablePtn*  m_pTablePtn;
-    CrwBuffer* m_pCrwBuffer;
+    IntBuffer* m_pRootBuffer;
   
     // must be last
     Footer m_xFooter;

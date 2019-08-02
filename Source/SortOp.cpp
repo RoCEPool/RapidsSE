@@ -4,7 +4,6 @@
 
 #include "PushDown.h"
 
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -20,7 +19,7 @@ SortOp* PushDown::_pSortOp(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allocate a new entry buffer from heap                                      */
+/* allocate a new SortOp from heap                                            */
 /*----------------------------------------------------------------------------*/
 void* SortOp::operator new(size_t)
 {
@@ -31,7 +30,7 @@ void* SortOp::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
-/* free an entry buffer back to the heap                                      */
+/* free a SortOp back to the heap                                             */
 /*----------------------------------------------------------------------------*/
 void SortOp::operator delete(void* aAddress)
 {
@@ -90,10 +89,10 @@ BufferCursor* SortOp::pPartitionBuffer(IntBuffer* pIntBuffer, BufferCursor* pLow
   // point a cusror at the pivot point
   BufferCursor* pPivotCursor = new BufferCursor(pLowCursor);
   
-  vTrace("iPivot %lld Low %lld High %lld\n"_Stz,
-         *pPivotCursor->m_aElement,
-         *pLowCursor->m_aElement,
-         *pHighCursor->m_aElement);
+//  vTrace("iPivot %lld Low %lld High %lld\n"_Stz,
+//         *pPivotCursor->m_aElement,
+//         *pLowCursor->m_aElement,
+//         *pHighCursor->m_aElement);
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // define the start and end positions
@@ -111,7 +110,7 @@ BufferCursor* SortOp::pPartitionBuffer(IntBuffer* pIntBuffer, BufferCursor* pLow
   
   while (true) {
     
-    vTrace("\nLeft %lld Right %lld\n"_Stz, *pLeft->m_aElement, *pRight->m_aElement);
+    //vTrace("\nLeft %lld Right %lld\n"_Stz, *pLeft->m_aElement, *pRight->m_aElement);
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -- - - - - -
     // move start cursor forward till we go beyond the pivot value
@@ -130,13 +129,13 @@ BufferCursor* SortOp::pPartitionBuffer(IntBuffer* pIntBuffer, BufferCursor* pLow
     if (pLeft->bIsAfterOrSame(pRight)) {
       // create a Partition cursor intially with a nullptr element
       BufferCursor* pPartitionCursor = new BufferCursor(pRight);
-      vTrace("Returning %lld\n"_Stz, *pRight->m_aElement);
+      //vTrace("Returning %lld\n"_Stz, *pRight->m_aElement);
       return pPartitionCursor;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -- - - - - - -
     // swap the inverted eIright and left) lements
-    vTrace("Swapping %lld %lld\n"_Stz, *pLeft->m_aElement, *pRight->m_aElement);
+    //vTrace("Swapping %lld %lld\n"_Stz, *pLeft->m_aElement, *pRight->m_aElement);
     pLeft->vSwap(pRight);
     //pIntBuffer->vDump();
     
@@ -211,8 +210,8 @@ eOR SortOp::eSortLoop(void)
     // call quick sort (recursive call)
     vQuickSortBuffer(pIntBuffer, pLowCursor, pHighCursor);
     
-    vTrace("\nSorted buffer:\n"_Stz);
-    pIntBuffer->vDump();
+    //vTrace("\nSorted buffer:\n"_Stz);
+    //pIntBuffer->vDump();
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // verify that the data is sorted

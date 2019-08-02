@@ -20,7 +20,7 @@ GenerateOp* PushDown::_pGenerateOp(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allocate a new entry buffer from heap                                      */
+/* allocate a new generatorOp from heap                                       */
 /*----------------------------------------------------------------------------*/
 void* GenerateOp::operator new(size_t)
 {
@@ -31,7 +31,7 @@ void* GenerateOp::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
-/* free an entry buffer back to the heap                                      */
+/* free a generatorOp back to the heap                                        */
 /*----------------------------------------------------------------------------*/
 void GenerateOp::operator delete(void* aAddress)
 {
@@ -39,7 +39,6 @@ void GenerateOp::operator delete(void* aAddress)
   
   HeapMem::vFree(pGenerateOp);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* initialize object                                                          */
@@ -49,8 +48,7 @@ GenerateOp::GenerateOp(Stz* szOpLabel, Jobs::Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GENERATEOP,_FOOTER_);
   
-  m_pTablePtn = nullptr;
-  m_pCrwBuffer = nullptr;
+  m_pRootBuffer = nullptr;
 
   _checkInitialised_(CN_GENERATEOP);
 
@@ -90,8 +88,8 @@ eOR GenerateOp::eGenerateLoop(void)
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create an IntBuffer
-  IntBuffer* pRootBuffer = new IntBuffer();
-  IntBuffer* pIntBuffer = pRootBuffer;
+  m_pRootBuffer = new IntBuffer();
+  IntBuffer* pIntBuffer = m_pRootBuffer;
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Add random integer values to the buffer till the buffer is full
@@ -102,6 +100,11 @@ eOR GenerateOp::eGenerateLoop(void)
     if (pIntBuffer->bHasSpace())
       pIntBuffer->vAppendValue(iRandom);
     else {
+      
+      // pipeout buffer
+      vTrace("%s::Generate %p\n"_Stz,m_sOpLabel.aStz(),pIntBuffer);
+      vPipeOut(pIntBuffer);
+      
       // create a new buffer
       IntBuffer* pNextBuffer = new IntBuffer();
       pIntBuffer->vNextBuffer(pNextBuffer);
@@ -111,14 +114,14 @@ eOR GenerateOp::eGenerateLoop(void)
     }
   }
   
+  // pipeout buffer
+  vTrace("%s::Generate %p\n"_Stz,m_sOpLabel.aStz(),pIntBuffer);
+  vPipeOut(pIntBuffer);
+  
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the buffer
-  vTrace("\n\nSorting buffer:\n"_Stz);
-  pRootBuffer->vDump();
-  
-  vTrace("%s::Generate %p\n"_Stz,m_sOpLabel.aStz(),pIntBuffer);
-  
-  vPipeOut(pIntBuffer);
+  //vTrace("\n\nSorting buffer:\n"_Stz);
+  //m_pRootBuffer->vDump();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

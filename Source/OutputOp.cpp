@@ -98,6 +98,18 @@ eOR OutputOp::eOutputLoop(void)
       break;
     }
     
+    IntBuffer* pIntBuffer = _pIntBuffer(pOperand);
+    switch (pOperand->eClass()) {
+        
+      case CN_INTBUFFER:
+        pIntBuffer->vShow();
+        break;
+        
+      default:
+        break;
+    }
+    
+    
     vPipeOut(pOperand);
   }
   

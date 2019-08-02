@@ -27,13 +27,13 @@ JobClass xJobClass_Sort =
   JF_NONE,               // flags
 
   nullptr,               // prompt check function
-  pJob_SortExp_pre,         // prompt pre-process function
+  pJob_SortExp_pre,      // prompt pre-process function
   vJob_post,             // prompt post-process function
   nullptr,               // job new function
-  vJob_SortExp_delete,      // job delete function
+  vJob_SortExp_delete,   // job delete function
   nullptr,               // job pre-send function
   nullptr,               // job post-receive function
-  vJob_SortExp_show,        // job show function
+  vJob_SortExp_show,     // job show function
   
   // help and example
   true,
@@ -52,7 +52,6 @@ JobClass* Jobs::pJob_SortExp_class(pFUN** pNextFun)
   
   return &xJobClass_Sort;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -108,9 +107,9 @@ Job_SortExp::Job_SortExp(Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SORTEXP,_FOOTER_);
   
   m_pGenerateOp = new GenerateOp("G_0"_Stz,this);
-  m_pSortOp   = new SortOp ("S_0"_Stz,this);
-  m_pOutputOp = new OutputOp("O_0"_Stz,this);
-  m_pZedOp    = new ZedOp   ("Z_0"_Stz,this);
+  m_pSortOp     = new SortOp ("S_0"_Stz,this);
+  m_pOutputOp   = new OutputOp("O_0"_Stz,this);
+  m_pZedOp      = new ZedOp   ("Z_0"_Stz,this);
 
   _checkInitialised_(CN_JOB_SORTEXP);
 
@@ -186,7 +185,7 @@ void Job_SortExp::vShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* query begin                                                                */
+/* sort begin                                                                 */
 /*----------------------------------------------------------------------------*/
 void Job_SortExp::vBegin(void)
 {
@@ -198,7 +197,6 @@ void Job_SortExp::vBegin(void)
   m_pSortOp->vOpOut(m_pOutputOp);
   m_pOutputOp->vOpOut(m_pZedOp);
   m_pZedOp->vOpOut(nullptr);
-  //m_pZedOp->vAckJobEnd(true);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -207,7 +205,7 @@ void Job_SortExp::vBegin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* query end                                                                  */
+/* sort end                                                                   */
 /*----------------------------------------------------------------------------*/
 void Job_SortExp::vEnd(void)
 {
@@ -215,7 +213,7 @@ void Job_SortExp::vEnd(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* query execute                                                               */
+/* sort execute                                                               */
 /*----------------------------------------------------------------------------*/
 void Job_SortExp::vExecute(void)
 {
@@ -291,8 +289,6 @@ void Jobs::vJob_SortExp_show(Job* pJob)
 
   pJob_SortExp->vShow();
 }
-
-
 
 /*============================================================================*/
 /* end                                                                        */
