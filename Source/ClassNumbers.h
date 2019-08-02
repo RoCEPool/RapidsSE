@@ -131,6 +131,7 @@ enum eCN : u2 // Class Number
   /*  84 0x54    70592B Heap:L */ CN_JOB_DROPTENANT,
   /*  85 0x55    70592B Heap:L */ CN_JOB_DUMPINDEX,
   /*                           */ CN_JOB_DUMPTABLE,
+  /*                           */ CN_JOB_DYNAMIC,
   /*  86 0x56    70864B Heap:L */ CN_JOB_EXPORT,
   /*  87 0x57    70936B Heap:L */ CN_JOB_FETCHROWS,
   /*  88 0x58   122912B Heap:L */ CN_JOB_GENERATE,
@@ -467,6 +468,7 @@ static Stz* aCN[]
   /*  84 0x54 */ "JOB_DROPTENANT"_Stz,      // CN_JOB_DROPTENANT
   /*  85 0x55 */ "JOB_DUMPINDEX"_Stz,       // CN_JOB_DUMPINDEX
   /*          */ "JOB_DUMPTABLE"_Stz,       // CN_JOB_DUMPTABLE
+  /*          */ "JOB_DYNAMIC"_Stz,         // CN_JOB_DYNAMIC
   /*  86 0x56 */ "JOB_EXPORT"_Stz,          // CN_JOB_EXPORT
   /*  87 0x57 */ "JOB_FETCHROWS"_Stz,       // CN_JOB_FETCHROWS
   /*  88 0x58 */ "JOB_GENERATE"_Stz,        // CN_JOB_GENERATE
