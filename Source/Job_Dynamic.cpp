@@ -160,9 +160,11 @@ bool Job_Dynamic::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // there should be only 2 tokens
-  if (iNumTokens != 1) {
-    return nullptr;
-  }
+//  if (iNumTokens != 1) {
+//    return nullptr;
+//  }
+
+  OpHelper::vXyz(m_paOp,pTokenVec);
   
   return true;
 }
