@@ -1,9 +1,18 @@
 /*============================================================================*/
-/* ZedOp.cpp -- Zed                                                           */
+/* ZedOp.cpp -- Zed Sink                                                      */
 /*============================================================================*/
 
 #include "PushDown.h"
 
+OpDesc __Op_Zed (
+  CN_ZEDOP,         // class number
+  OK_SIMPLE,        // op kind
+  "Zed"_Stz,        // first word of prompt command
+  ZedOp::eCallLoop, // function which does the op
+  nullptr,          // function which drains the operand queue
+  
+  "<help>"_Stz
+);
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

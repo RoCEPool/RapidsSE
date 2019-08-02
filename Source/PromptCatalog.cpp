@@ -36,7 +36,7 @@ PromptFun* PromptCatalog::pFindFun(Stz* aCommand1, Stz* aCommand2)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
+/* help                                                                       */
 /*----------------------------------------------------------------------------*/
 void PromptCatalog::vFuns(ePF ePromptFun)
 {

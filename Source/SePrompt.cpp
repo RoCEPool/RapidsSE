@@ -129,6 +129,9 @@ void SePrompt::vPromptLoop(void)
     if (bExecuteFunction())
       continue;
     
+    if (bExecuteDynamic())
+      continue;
+    
     if (! bFindJobClass()) {
       
       if (! bIsPromptWord() ) {
@@ -350,6 +353,16 @@ void SePrompt::vDumpTokenVec(void)
 //
 //  pTknVec->vToString(sCommand);
 //  vTrace("Command %lld tokens: %s\n"_Stz,pTknVec->nTokens(),sCommand.aStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* potentially execute a dynamic job                                          */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bExecuteDynamic(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

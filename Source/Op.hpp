@@ -14,6 +14,7 @@ namespace PushDown
   
     bool           m_bAckJobEnd;     // ack job on end marker
     OperandQueue*  m_pOperandQueue;  // the input queue being processed
+    OperandQueue*  m_pOperandQueue2; // the input queue being processed
     i8             m_iWorkQuanta;    // quanta of work between pulses
     Op*            m_pOpOut;         // where results get piped (queued)
     Op*            m_pOpContinue;    // op which gets continued

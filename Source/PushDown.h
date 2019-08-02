@@ -21,6 +21,9 @@ namespace PushDown
 #include "OperandQueue.hpp"
 
 #include "Op.hpp"
+#include "OpDefn.hpp"
+#include "OpDesc.hpp"
+#include "OpCatalog.hpp"
 
 #include "AggOp.hpp"
 #include "BothOp.hpp"

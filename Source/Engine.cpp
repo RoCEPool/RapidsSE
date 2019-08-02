@@ -854,9 +854,6 @@ void Engine::vStartSystem(void)
   
   // initialize the plan number
   gpAttachMap->m_ixNextPlanId = AM::pGrid()->iThisNode() << 48;
-
-  gpAttachMap->m_pOriginatingJobs   = new JobList(bJobCompare,JL_ORIGINATING);
-  gpAttachMap->m_pParticipatingJobs = new JobList(bJobCompare,JL_PARTICIPATING);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

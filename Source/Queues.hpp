@@ -34,6 +34,12 @@ namespace Scheduling
     TaskList*  m_pExecutingSet;    // set of tasks currently executing
     TaskList*  m_pPausedSet;       // set of op tasks paused to be continued
     TaskList*  m_pWaitingSet;      // set of suspended tasks waiting to be signaled
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // jobs
+  
+    JobList*   m_pOriginatingJobs;
+    JobList*   m_pParticipatingJobs;
 
     // must be last
     Footer m_xFooter;

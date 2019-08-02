@@ -15,9 +15,11 @@
 /*----------------------------------------------------------------------------*/
 void Scheduler::vAddOriginatingJob(Job* pJob)
 {
-  AM::pOriginatingJobs()->vGrabLock();
-  AM::pOriginatingJobs()->vAddJob(pJob);
-  AM::pOriginatingJobs()->vDropLock();
+  Queues* pQueues = AM::pQueues();
+  
+  pQueues->m_pOriginatingJobs->vGrabLock();
+  pQueues->m_pOriginatingJobs->vAddJob(pJob);
+  pQueues->m_pOriginatingJobs->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -25,9 +27,11 @@ void Scheduler::vAddOriginatingJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vAddParticipatingJob(Job* pJob)
 {
-  AM::pParticipatingJobs()->vGrabLock();
-  AM::pParticipatingJobs()->vAddJob(pJob);
-  AM::pParticipatingJobs()->vDropLock();
+  Queues* pQueues = AM::pQueues();
+  
+  pQueues->m_pParticipatingJobs->vGrabLock();
+  pQueues->m_pParticipatingJobs->vAddJob(pJob);
+  pQueues->m_pParticipatingJobs->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,9 +39,11 @@ void Scheduler::vAddParticipatingJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vDumpOriginatingJobs(void)
 {
-  AM::pOriginatingJobs()->vGrabLock();
-  AM::pOriginatingJobs()->vContentDump();
-  AM::pOriginatingJobs()->vDropLock();
+  Queues* pQueues = AM::pQueues();
+  
+  pQueues->m_pOriginatingJobs->vGrabLock();
+  pQueues->m_pOriginatingJobs->vContentDump();
+  pQueues->m_pOriginatingJobs->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -45,9 +51,11 @@ void Scheduler::vDumpOriginatingJobs(void)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vDumpParticipatingJobs(void)
 {
-  AM::pParticipatingJobs()->vGrabLock();
-  AM::pParticipatingJobs()->vContentDump();
-  AM::pParticipatingJobs()->vDropLock();
+  Queues* pQueues = AM::pQueues();
+  
+  pQueues->m_pParticipatingJobs->vGrabLock();
+  pQueues->m_pParticipatingJobs->vContentDump();
+  pQueues->m_pParticipatingJobs->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -55,7 +63,9 @@ void Scheduler::vDumpParticipatingJobs(void)
 /*----------------------------------------------------------------------------*/
 Job* Scheduler::pFindOriginatingJob(i8 iJobId)
 {
-  Job* pJob = AM::pOriginatingJobs()->pFindJob(iJobId);
+  Queues* pQueues = AM::pQueues();
+  
+  Job* pJob = pQueues->m_pOriginatingJobs->pFindJob(iJobId);
   
   return pJob;
 }
@@ -65,7 +75,9 @@ Job* Scheduler::pFindOriginatingJob(i8 iJobId)
 /*----------------------------------------------------------------------------*/
 Job* Scheduler::pFindParticipatingJob(i8 iJobId)
 {
-  Job* pJob = AM::pParticipatingJobs()->pFindJob(iJobId);
+  Queues* pQueues = AM::pQueues();
+
+  Job* pJob = pQueues->m_pParticipatingJobs->pFindJob(iJobId);
   
   return pJob;
 }
@@ -75,14 +87,16 @@ Job* Scheduler::pFindParticipatingJob(i8 iJobId)
 /*----------------------------------------------------------------------------*/
 bool Scheduler::bRemoveOriginatingJob(Job* pJob, bool bDump)
 {
-  AM::pOriginatingJobs()->vGrabLock();
+  Queues* pQueues = AM::pQueues();
+  
+  pQueues->m_pOriginatingJobs->vGrabLock();
   
   if (bDump)
-    AM::pOriginatingJobs()->vContentDump();
+    pQueues->m_pOriginatingJobs->vContentDump();
   
-  bool bRemoved = AM::pOriginatingJobs()->bRemoveJob(pJob);
+  bool bRemoved = pQueues->m_pOriginatingJobs->bRemoveJob(pJob);
   
-  AM::pOriginatingJobs()->vDropLock();
+  pQueues->m_pOriginatingJobs->vDropLock();
   
   return bRemoved;
 }
@@ -92,14 +106,16 @@ bool Scheduler::bRemoveOriginatingJob(Job* pJob, bool bDump)
 /*----------------------------------------------------------------------------*/
 bool Scheduler::bRemoveParticipatingJob(Job* pJob, bool bDump)
 {
-  AM::pParticipatingJobs()->vGrabLock();
+  Queues* pQueues = AM::pQueues();
+  
+  pQueues->m_pParticipatingJobs->vGrabLock();
   
   if (bDump)
-    AM::pParticipatingJobs()->vContentDump();
+    pQueues->m_pParticipatingJobs->vContentDump();
 
-  bool bRemoved = AM::pParticipatingJobs()->bRemoveJob(pJob);
+  bool bRemoved = pQueues->m_pParticipatingJobs->bRemoveJob(pJob);
   
-  AM::pParticipatingJobs()->vDropLock();
+  pQueues->m_pParticipatingJobs->vDropLock();
   
   return bRemoved;
 }
@@ -440,12 +456,14 @@ void Scheduler::vTask_Bide(Task* pTask)
   RASSERT(QK_NONE == pTask->eQueue());
   RASSERT(TR_BIDE == pTask->eTransition());
   
+  Queues* pQueues = AM::pQueues();
+  
   pTask->vTransitionClear();
   pTask->vState(TS_BIDING);
   
   JobLog::vNoteState(pTask->pJob(),"Bide"_Stz);
   
-  AM::pQueues()->vAddBidingSet(pTask);
+  pQueues->vAddBidingSet(pTask);
   // **do not touch task** (other than to drop lock)
   
   pTask->vDropLock();
@@ -462,7 +480,9 @@ void Scheduler::vTask_Continue(Task* pTask)
   RASSERT(QK_PAUSED_SET == pTask->eQueue());
   RASSERT(TR_NONE == pTask->eTransition());
   
-  AM::pQueues()->vRemovePausedSet(pTask);
+  Queues* pQueues = AM::pQueues();
+  
+  pQueues->vRemovePausedSet(pTask);
   
   JobLog::vNoteState(pTask->pJob(),"Continue"_Stz);
   
@@ -482,7 +502,9 @@ void Scheduler::vTask_Desist(Task* pTask)
   RASSERT(QK_EXECUTING_SET == pTask->eQueue());
   RASSERT(TR_NONE != pTask->eTransition());
 
-  AM::pQueues()->vRemoveExecutingSet(pTask);
+  Queues* pQueues = AM::pQueues();
+  
+  pQueues->vRemoveExecutingSet(pTask);
   
   pTask->vState(TS_DESISTED);
   
@@ -498,11 +520,13 @@ void Scheduler::vTask_Execute(Task* pTask)
   RASSERT(QK_NONE == pTask->eQueue());
   RASSERT(TR_NONE == pTask->eTransition());
 
+  Queues* pQueues = AM::pQueues();
+  
   pTask->vState(TS_EXECUTING);
 
   JobLog::vNoteState(pTask->pJob(),"Execute"_Stz);
   
-  AM::pQueues()->vAddExecutingSet(pTask);
+  pQueues->vAddExecutingSet(pTask);
   // **do not touch task**
 }
 
@@ -535,12 +559,14 @@ void Scheduler::vTask_Pause(Task* pTask)
   RASSERT(QK_NONE == pTask->eQueue());
   RASSERT(TR_PAUSE == pTask->eTransition());
   
+  Queues* pQueues = AM::pQueues();
+  
   pTask->vTransitionClear();
   pTask->vState(TS_PAUSED);
   
   JobLog::vNoteState(pTask->pJob(),"Pause"_Stz);
   
-  AM::pQueues()->vAddPausedSet(pTask);
+  pQueues->vAddPausedSet(pTask);
   // **do not touch task** (other than to drop lock)
   
   pTask->vDropLock();
@@ -555,14 +581,16 @@ void Scheduler::vTask_Ready(Task* pTask)
   RASSERT(QK_NONE == pTask->eQueue());
   RASSERT(TR_NONE == pTask->eTransition());
 
+  Queues* pQueues = AM::pQueues();
+  
   pTask->vState(TS_READY);
 
   JobLog::vNoteState(pTask->pJob(),"Ready"_Stz);
   
   if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
-    AM::pQueues()->vAppendReadyQueue(pTask);
+    pQueues->vAppendReadyQueue(pTask);
   else
-    AM::pQueues()->vAppendReadyQueueLP(pTask);
+    pQueues->vAppendReadyQueueLP(pTask);
   // **do not touch task**
 }
 
@@ -591,7 +619,9 @@ void Scheduler::vTask_Resume(Task* pTask)
   RASSERT(QK_WAITING_SET == pTask->eQueue());
   RASSERT(TR_NONE == pTask->eTransition());
 
-  AM::pQueues()->vRemoveWaitingSet(pTask);
+  Queues* pQueues = AM::pQueues();
+  
+  pQueues->vRemoveWaitingSet(pTask);
   
   vTask_Able(pTask);
   vTask_Schedule(pTask);
@@ -627,6 +657,8 @@ void Scheduler::vTask_Sleep(Task* pTask)
   RASSERT(QK_NONE == pTask->eQueue());
   RASSERT(TR_SLEEP == pTask->eTransition());
 
+  Queues* pQueues = AM::pQueues();
+  
   pTask->vTransitionClear();
   
   JobLog::vNoteState(pTask->pJob(),"Sleep"_Stz);
@@ -634,7 +666,7 @@ void Scheduler::vTask_Sleep(Task* pTask)
   // is the task to actually sleep?
   if (! pTask->bWakeupNow()) {
     pTask->vState(TS_SLEEPING);
-    AM::pQueues()->vAddSleepingQueue(pTask);
+    pQueues->vAddSleepingQueue(pTask);
     // **do not touch task**
     return;
   }
@@ -679,7 +711,9 @@ void Scheduler::vTask_Trigger(Task* pTask)
   RASSERT(QK_BIDING_SET == pTask->eQueue());
   RASSERT(TR_NONE == pTask->eTransition());
 
-  AM::pQueues()->vRemoveBidingSet(pTask);
+  Queues* pQueues = AM::pQueues();
+  
+  pQueues->vRemoveBidingSet(pTask);
   
   JobLog::vNoteState(pTask->pJob(),"Trigger"_Stz);
   
@@ -700,6 +734,8 @@ void Scheduler::vTask_Wait(Task* pTask)
   RASSERT(QK_NONE == pTask->eQueue());
   RASSERT(TR_WAIT == pTask->eTransition());
 
+  Queues* pQueues = AM::pQueues();
+  
   pTask->vTransitionClear();
   pTask->vState(TS_WAITING);
   
@@ -707,7 +743,7 @@ void Scheduler::vTask_Wait(Task* pTask)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  AM::pQueues()->vAddWaitingSet(pTask);
+  pQueues->vAddWaitingSet(pTask);
   // **do not touch task** (other than to drop lock)
 
   pTask->vDropLock();
@@ -718,7 +754,9 @@ void Scheduler::vTask_Wait(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Wakeup(void)
 {
-  while (Task* pTask = AM::pQueues()->pPopSleepingQueue()) {
+  Queues* pQueues = AM::pQueues();
+  
+  while (Task* pTask = pQueues->pPopSleepingQueue()) {
     JobLog::vNoteState(pTask->pJob(),"Wakeup"_Stz);
     vTask_Able(pTask);
     vTask_Schedule(pTask);
@@ -735,6 +773,8 @@ void Scheduler::vTask_Yield(Task* pTask)
   RASSERT(QK_NONE == pTask->eQueue());
   RASSERT(TR_YIELD == pTask->eTransition());
 
+  Queues* pQueues = AM::pQueues();
+  
   pTask->vTransitionClear();
 
   Thread* pThread = Thread::pThisTLSThread();
@@ -745,7 +785,7 @@ void Scheduler::vTask_Yield(Task* pTask)
   // no other ready to run tasks, so thread continues executing the task
   
   if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL) {
-    i8 iLengthReadyQueue = AM::pQueues()->nTasksReady();
+    i8 iLengthReadyQueue = pQueues->nTasksReady();
     if (0 == iLengthReadyQueue) {
       vTask_Able(pTask);
       vTask_Execute(pTask);
@@ -894,10 +934,12 @@ void Scheduler::vThread_ExecuteDedicated(Thread* pThread)
   RASSERT(pThread->m_pTask);
   RASSERT(TS_ABLE == pThread->m_pTask->eState());
   
+  Queues* pQueues = AM::pQueues();
+  
   pThread->m_pTask->vThread(pThread);
   
   pThread->m_pTask->vState(TS_EXECUTING);
-  AM::pQueues()->vAddExecutingSet(pThread->m_pTask);
+  pQueues->vAddExecutingSet(pThread->m_pTask);
 }
 
 /*----------------------------------------------------------------------------*/

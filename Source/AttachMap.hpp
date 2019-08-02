@@ -53,8 +53,6 @@ namespace StorageEngine
     Grid*         m_pGrid;
     HeapMem       m_xHeapMem;
     LockTracker   m_oLockTracker;
-    JobList*      m_pOriginatingJobs;
-    JobList*      m_pParticipatingJobs;
     Atomic        m_ixNextDiagram;
     Atomic        m_ixNextJobId;
     Atomic        m_ixNextMonitor;

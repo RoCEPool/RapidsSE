@@ -29,12 +29,12 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   
   i8 nJobs = 0;
   
-  // thread
-  nJobs++; JobClass::vJobCat(CN_JOB_BOOT);
-
   // info
   nJobs++; JobClass::vJobCat(CN_JOB_NODEINFO);
   
+  // thread
+  nJobs++; JobClass::vJobCat(CN_JOB_BOOT);
+
   // system
   nJobs++; JobClass::vJobCat(CN_JOB_ALARM);
   nJobs++; JobClass::vJobCat(CN_JOB_ANSWER);
@@ -48,10 +48,10 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   // local
   nJobs++; JobClass::vJobCat(CN_JOB_CAT);
   nJobs++; JobClass::vJobCat(CN_JOB_CF);
-  nJobs++; JobClass::vJobCat(CN_JOB_COPYBUFFER);
   nJobs++; JobClass::vJobCat(CN_JOB_DOCOL);
   nJobs++; JobClass::vJobCat(CN_JOB_DUMPINDEX);
   nJobs++; JobClass::vJobCat(CN_JOB_DUMPTABLE);
+  nJobs++; JobClass::vJobCat(CN_JOB_DYNAMIC);
   nJobs++; JobClass::vJobCat(CN_JOB_FETCHROWS);
   nJobs++; JobClass::vJobCat(CN_JOB_GENERATE);
   nJobs++; JobClass::vJobCat(CN_JOB_INDEXJOIN);
@@ -75,7 +75,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB_SELECTTABLE);
   nJobs++; JobClass::vJobCat(CN_JOB_SHOWCLUSTER);
   nJobs++; JobClass::vJobCat(CN_JOB_SINK);
-  nJobs++; JobClass::vJobCat(CN_JOB_SUBINSERTER);
+  nJobs++; JobClass::vJobCat(CN_JOB_SORTEXP);
   nJobs++; JobClass::vJobCat(CN_JOB_USESCHEMA);
   nJobs++; JobClass::vJobCat(CN_JOB_VISUALIZEINDEX);
   nJobs++; JobClass::vJobCat(CN_JOB_VISUALIZETABLE);
@@ -132,6 +132,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB_SUBINFLATE);
   nJobs++; JobClass::vJobCat(CN_JOB_SUBINGESTER);
   nJobs++; JobClass::vJobCat(CN_JOB_SUBLOADER);
+  nJobs++; JobClass::vJobCat(CN_JOB_SUBINSERTER);
   nJobs++; JobClass::vJobCat(CN_JOB_SUBPUBLISH);
   nJobs++; JobClass::vJobCat(CN_JOB_SUBPURGER);
   nJobs++; JobClass::vJobCat(CN_JOB_SUBSCAN);
@@ -139,6 +140,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB_SUBWALKER);
 
   // grankid
+  nJobs++; JobClass::vJobCat(CN_JOB_COPYBUFFER);
   nJobs++; JobClass::vJobCat(CN_JOB_KIDEXPORT);
   nJobs++; JobClass::vJobCat(CN_JOB_WRITEBUFFER);
   nJobs++; JobClass::vJobCat(CN_JOB_WRITEROW);

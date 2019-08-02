@@ -74,6 +74,14 @@ Queues::Queues(void)
   m_pExecutingSet  = new TaskList(QK_EXECUTING_SET);
   m_pPausedSet     = new TaskList(QK_PAUSED_SET);
   m_pWaitingSet    = new TaskList(QK_WAITING_SET);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // jobs
+  
+  m_pOriginatingJobs   = new JobList(bJobCompare,JL_ORIGINATING);
+  m_pParticipatingJobs = new JobList(bJobCompare,JL_PARTICIPATING);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   _checkInitialised_(CN_QUEUES);
   

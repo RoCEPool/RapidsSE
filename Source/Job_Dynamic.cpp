@@ -1,0 +1,260 @@
+/*============================================================================*/
+/* Job_Dynamic.cpp -- Query Job                                                 */
+/*============================================================================*/
+
+#include "Jobs.h"
+
+JobClass xJobClass_Dynamic =
+{
+  CN_JOB_DYNAMIC,        // class number
+  JK_LOCAL,              // job kind
+  RK_LOCAL_ROWS,         // response kind
+  "dynamic"_Stz,         // comment about the job
+  "dynamic"_Stz,         // the prompt command
+  nullptr,               // the second word
+  nullptr,               // the _run task seed
+  "dynamic_req"_Stz,     // the _req task seed
+  nullptr,               // the _rcv task seed
+  nullptr,               // the _exe task seed
+  nullptr,               // the _end task seed
+  nullptr,               // the _can task seed
+  false,                 // check resources?
+  false,                 // detached job?
+  false,                 // buffer attached?
+  JT_NONE,               // job trace
+  DL_GRAB_READ,          // ddl lock model
+  PY_NORMAL,             // priority
+  JF_NONE,               // flags
+
+  nullptr,               // prompt check function
+  pJob_Dynamic_pre,      // prompt pre-process function
+  vJob_post,             // prompt post-process function
+  nullptr,               // job new function
+  vJob_Dynamic_delete,   // job delete function
+  nullptr,               // job pre-send function
+  nullptr,               // job post-receive function
+  vJob_Dynamic_show,     // job show function
+  
+  // help and example
+  true,
+  "dynamic"_Stz,
+  "dynamic;"_Stz,
+
+  { 0, 0, 0, 0 ,0, 0 } // seeds spawned
+};
+
+/*----------------------------------------------------------------------------*/
+/* next function                                                              */
+/*----------------------------------------------------------------------------*/
+JobClass* Jobs::pJob_Dynamic_class(pFUN** pNextFun)
+{
+  *pNextFun = (pFUN*)pJob_Export_class;
+
+  return &xJobClass_Dynamic;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+Job_Dynamic* Jobs::_pJob_Dynamic(void* aAddress)
+{
+  Job_Dynamic* pJob_Dynamic = reinterpret_cast<Job_Dynamic*>(aAddress);
+  
+  RASSERT_TYPE(pJob_Dynamic,CN_JOB_DYNAMIC);
+  
+  return pJob_Dynamic;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate a new entry buffer from heap                                      */
+/*----------------------------------------------------------------------------*/
+void* Job_Dynamic::operator new(size_t)
+{
+  Job_Dynamic* pJob_Dynamic =
+    static_cast<Job_Dynamic*>(HeapMem::pAllocate(CN_JOB_DYNAMIC));
+  
+  return pJob_Dynamic;
+}
+
+/*----------------------------------------------------------------------------*/
+/* perform new of entry buffer for given address                              */
+/*----------------------------------------------------------------------------*/
+void* Job_Dynamic::operator new(size_t, void* aAddress)
+{
+  return aAddress;
+}
+
+/*----------------------------------------------------------------------------*/
+/* free an entry buffer back to the heap                                      */
+/*----------------------------------------------------------------------------*/
+void Job_Dynamic::operator delete(void* aAddress)
+{
+  Job_Dynamic* pJob_Dynamic = static_cast<Job_Dynamic*>(aAddress);
+  
+  HeapMem::vFree(pJob_Dynamic);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Job_Dynamic::Job_Dynamic(Session* pSession)
+: JobMark2(CN_JOB_DYNAMIC, pSession)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
+  
+  _checkInitialised_(CN_JOB_DYNAMIC);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+Job_Dynamic::~Job_Dynamic(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
+  
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Static Functions --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void Job_Dynamic::vDump(eCN eClass, Object* pObject, Stz* aTab)
+{
+  Job_Dynamic* pJob_Dynamic = _pJob_Dynamic(pObject);
+
+  pJob_Dynamic->vShow();
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Member Functions --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* populate the job                                                           */
+/*----------------------------------------------------------------------------*/
+bool Job_Dynamic::bPopulateJob(TokenVec* pTokenVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
+  
+  i8 iNumTokens;
+  
+  ASSERT(pTokenVec->pGet(0)->bSame("dynamic"_Stz));
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // get no of tokens in token vector
+  iNumTokens = pTokenVec->nTokens();
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // there should be only 2 tokens
+  if (iNumTokens != 1) {
+    return nullptr;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show                                                                       */
+/*----------------------------------------------------------------------------*/
+void Job_Dynamic::vShow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* query begin                                                                */
+/*----------------------------------------------------------------------------*/
+void Job_Dynamic::vBegin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* query end                                                                  */
+/*----------------------------------------------------------------------------*/
+void Job_Dynamic::vEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* query execute                                                              */
+/*----------------------------------------------------------------------------*/
+void Job_Dynamic::vExecute(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
+  
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* Job_Dynamic::aFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC);
+  
+  return &m_xFooter;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Catalog Functions -------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* prompt pre execute function                                                */
+/*----------------------------------------------------------------------------*/
+Job* Jobs::pJob_Dynamic_pre(Session* pSession)
+{
+  Job_Dynamic* pJob_Dynamic = new Job_Dynamic(pSession);
+  
+  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
+  
+  bool bResult = pJob_Dynamic->bPopulateJob(pTokenVec);
+  
+  if ( !bResult) {
+    pJob_Dynamic->vAddError(EC_INVALID_COMMAND);
+  }
+  
+  return pJob_Dynamic;
+}
+
+/*----------------------------------------------------------------------------*/
+/* job delete function                                                        */
+/*----------------------------------------------------------------------------*/
+void Jobs::vJob_Dynamic_delete(Session* pSession, Job* pJob)
+{
+  Job_Dynamic* pJob_Dynamic = _pJob_Dynamic(pJob);
+  
+  delete pJob_Dynamic;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void Jobs::vJob_Dynamic_show(Job* pJob)
+{
+  Job_Dynamic* pJob_Dynamic = _pJob_Dynamic(pJob);
+
+  pJob_Dynamic->vShow();
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

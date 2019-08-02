@@ -4,6 +4,15 @@
 
 #include "PushDown.h"
 
+OpDesc __Op_Output (
+   CN_OUTPUTOP,         // class number
+   OK_SIMPLE,           // op kind
+   "Output"_Stz,        // first word of prompt command
+   OutputOp::eCallLoop, // function which does the op
+   nullptr,             // function which drains the operand queue
+   
+   "<help>"_Stz
+);
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -98,11 +107,11 @@ eOR OutputOp::eOutputLoop(void)
       break;
     }
     
-    IntBuffer* pIntBuffer = _pIntBuffer(pOperand) ;
 
     switch (pOperand->eClass()) {
         
       case CN_INTBUFFER: {
+        IntBuffer* pIntBuffer = _pIntBuffer(pOperand) ;
         pIntBuffer->vShow();
         break;
       }
