@@ -23,7 +23,7 @@ void Step::vJob_QueryBegin(MP_Task mpTask)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("Job_IndexJoin.lastBuffers!"_Stz);
+    THROW_INVALID_DSTACK("Job_Query.begin"_Stz);
   Job_Query* pJob_Query = _pJob_Query(pJobPtr);
   
   pJob_Query->vBegin();
@@ -40,7 +40,7 @@ void Step::vJob_QueryEnd(MP_Task mpTask)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("Job_IndexJoin.lastBuffers!"_Stz);
+    THROW_INVALID_DSTACK("Job_Query.end"_Stz);
   Job_Query* pJob_Query = _pJob_Query(pJobPtr);
 
   pJob_Query->vEnd();
@@ -57,7 +57,7 @@ void Step::vJob_QueryExecute(MP_Task mpTask)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("Job_IndexJoin.lastBuffers!"_Stz);
+    THROW_INVALID_DSTACK("Job_Query.execute"_Stz);
   Job_Query* pJob_Query = _pJob_Query(pJobPtr);
   
   pJob_Query->vExecute();

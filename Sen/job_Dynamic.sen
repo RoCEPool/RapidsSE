@@ -24,9 +24,9 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  //pJob_Dynamic job_Dynamic.begin
-  //pJob_Dynamic job_Dynamic.execute
-  //pJob_Dynamic job_Dynamic.end
+  pJob_Dynamic job_Dynamic.begin
+  pJob_Dynamic job_Dynamic.execute
+  pJob_Dynamic job_Dynamic.end
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
