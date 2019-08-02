@@ -149,7 +149,7 @@ bool Job_Dynamic::bPopulateJob(TokenVec* pTokenVec)
   
   i8 iNumTokens;
   
-  ASSERT(pTokenVec->pGet(0)->bSame("query"_Stz));
+  ASSERT(pTokenVec->pGet(0)->bSame("dynamic"_Stz));
   
   // - - - - - - - - - - - - - - - - - - - - -
   // get no of tokens in token vector
@@ -157,14 +157,10 @@ bool Job_Dynamic::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // there should be only 2 tokens
-  if (iNumTokens != 2) {
+  if (iNumTokens != 1) {
     return nullptr;
   }
   
-  // - - - - - - - - - - - - - - - - - - - - -
-  // set the table name
-  m_sObjectName = pTokenVec->pGet(1)->aText();
-
   return true;
 }
 
