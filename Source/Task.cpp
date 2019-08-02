@@ -595,14 +595,6 @@ Op* Task::pOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* trace performance print                                                    */
-/*----------------------------------------------------------------------------*/
-s256& Task::sPortrait(void)
-{
-  return m_sPortrait;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get task queue                                                             */
 /*----------------------------------------------------------------------------*/
 eQK Task::eQueue(void)
@@ -660,7 +652,7 @@ void Task::vRefindJobClass(void)
 /*----------------------------------------------------------------------------*/
 /* render text portrait of task                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vRenderPortrait(void)
+void Task::vRenderPortrait(s256& sTaskPortrait)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -668,26 +660,26 @@ void Task::vRenderPortrait(void)
     
     Now sDateTime;
     
-    m_sPortrait.vSprint("Task %p %s %s wakeup %s"_Stz,
-                        this,
-                        aCN[m_pJob->eClass()],
-                        aTS[m_eState],
-                        sDateTime.sz(&m_oWakeup.m_wWakeupTsp)
+    sTaskPortrait.vSprint("Task %p %s %s wakeup %s"_Stz,
+                          this,
+                          aCN[m_pJob->eClass()],
+                          aTS[m_eState],
+                          sDateTime.sz(&m_oWakeup.m_wWakeupTsp)
                         );
   }
   else if (QK_NONE != m_eQueue) {
-    m_sPortrait.vSprint("Task %p %s %s order %lld"_Stz,
-                        this,
-                        aCN[m_pJob->eClass()],
-                        aTS[m_eState],
-                        m_iQueueOrder);
+    sTaskPortrait.vSprint("Task %p %s %s order %lld"_Stz,
+                          this,
+                          aCN[m_pJob->eClass()],
+                          aTS[m_eState],
+                          m_iQueueOrder);
   }
   else {
-    m_sPortrait.vSprint("Task %p %s %s"_Stz,
-                        this,
-                        aCN[m_pJob->eClass()],
-                        aTS[m_eState]
-                        );
+    sTaskPortrait.vSprint("Task %p %s %s"_Stz,
+                          this,
+                          aCN[m_pJob->eClass()],
+                          aTS[m_eState]
+                          );
   }
 }
 

@@ -53,9 +53,7 @@ namespace Tasks
     Stack*    m_pReturnStack; // return stack
     Stack*    m_pAuxStack;    // auxiliary stack
     DicStack  m_oDicStack;    // dictionary stack
-    
-    s256  m_sPortrait;      // short text description of task
-  
+      
     // exception
     s256  m_sFile;
     s256  m_sException;
@@ -98,13 +96,12 @@ namespace Tasks
     void vNewStacks(void);
     i8&  i_NextRnd(void);
     Op*  pOp(void);
-    s256& sPortrait(void);
     eQK  eQueue(void);
     void vQueue(eQK eQueue);
     void vQueueOrder(i8 iTaskOrder);
     i8   iQueueOrder(void);
     void vRefindJobClass(void);
-    void vRenderPortrait(void);
+    void vRenderPortrait(s256& sTaskPortrait);
     void vRetry(void);
     bool bSeeded(void);
     void vSeedJob(void);
