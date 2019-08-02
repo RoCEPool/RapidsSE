@@ -195,8 +195,8 @@ eOR SortOp::eSortLoop(void)
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // dump the buffer
-    vTrace("\n\nSorting buffer:\n"_Stz);
-    pIntBuffer->vDump();
+    //vTrace("\n\nSorting buffer:\n"_Stz);
+    //pIntBuffer->vDump();
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // create a Low cursor pointing to the first element in the array

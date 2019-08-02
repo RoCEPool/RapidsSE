@@ -98,7 +98,7 @@ eOR OutputOp::eOutputLoop(void)
       break;
     }
     
-    IntBuffer* pIntBuffer = _pIntBuffer(pOperand);
+    IntBuffer* pIntBuffer = _pIntBuffer(pOperand) ;
     switch (pOperand->eClass()) {
         
       case CN_INTBUFFER:
