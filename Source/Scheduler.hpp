@@ -13,6 +13,8 @@ namespace Scheduling
     // job interface
     static void vAddOriginatingJob(Job* pJob);
     static void vAddParticipatingJob(Job* pJob);
+    static void vDumpOriginatingJobs(void);
+    static void vDumpParticipatingJobs(void);
     static Job* pFindOriginatingJob(i8 iJobId);
     static Job* pFindParticipatingJob(i8 iJobId);
     static bool bRemoveOriginatingJob(Job* pJob, bool bDump=false);

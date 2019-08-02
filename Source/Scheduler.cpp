@@ -31,6 +31,26 @@ void Scheduler::vAddParticipatingJob(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add job to originating list                                                */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vDumpOriginatingJobs(void)
+{
+  AM::pOriginatingJobs()->vGrabLock();
+  AM::pOriginatingJobs()->vContentDump();
+  AM::pOriginatingJobs()->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* add job to participating list                                              */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vDumpParticipatingJobs(void)
+{
+  AM::pParticipatingJobs()->vGrabLock();
+  AM::pParticipatingJobs()->vContentDump();
+  AM::pParticipatingJobs()->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
 /* find job in originating list                                               */
 /*----------------------------------------------------------------------------*/
 Job* Scheduler::pFindOriginatingJob(i8 iJobId)
