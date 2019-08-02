@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptDesc mPromptNote_timerEnd (
+PromptDesc __Prompt_timerEnd (
   PF_TIMEREND,           // prompt function
   "Prompt_timerEnd"_Stz, // name of the prompt function
   "comment"_Stz,         // comment about the function

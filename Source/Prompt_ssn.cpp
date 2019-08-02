@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptDesc mPromptNote_ssn (
+PromptDesc __Prompt_ssn (
   PF_SSN,                 // prompt function
   "Prompt_ssn"_Stz,       // name of the prompt function
   "comment"_Stz,          // comment about the function

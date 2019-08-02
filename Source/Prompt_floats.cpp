@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptDesc mPromptNote_floats (
+PromptDesc __Prompt_floats (
   PF_FLOATS,             // prompt function
   "Prompt_floats"_Stz,   // name of the prompt function
   "comment"_Stz,         // comment about the function
@@ -20,7 +20,7 @@ PromptDesc mPromptNote_floats (
 
 extern PromptCatalog gxPromptCatalog;
 
-extern PromptDesc mPromptNote_actionSequence;
+extern PromptDesc __Prompt_actionSequence;
 
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */

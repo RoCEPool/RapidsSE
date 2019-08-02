@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptDesc mPromptNote_logWrite (
+PromptDesc __Prompt_logWrite (
   PF_LOGWRITE,              // prompt function
   "Prompt_logWrite"_Stz,    // name of the prompt function
   "comment"_Stz,            // comment about the function

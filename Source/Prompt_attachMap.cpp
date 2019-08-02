@@ -5,7 +5,7 @@
 #include "Prompt.h"
 #include "AM.hpp"
 
-PromptDesc mPromptNote_attachMap (
+PromptDesc __Prompt_attachMap (
   PF_ATTACHMAP,           // prompt function
   "Prompt_attachMap"_Stz, // name of the prompt function
   "comment"_Stz,          // comment about the function

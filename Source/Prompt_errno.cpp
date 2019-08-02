@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptDesc mPromptNote_errno (
+PromptDesc __Prompt_errno (
   PF_ERRNO,             // prompt function
   "Prompt_errno"_Stz,   // name of the prompt function
   "comment"_Stz,        // comment about the function

@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptDesc mPromptNote_sizes (
+PromptDesc __Prompt_sizes (
   PF_SIZES,             // prompt function
   "Prompt_sizes"_Stz,   // name of the prompt function
   "comment"_Stz,        // comment about the function

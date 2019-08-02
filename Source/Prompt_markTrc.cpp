@@ -5,7 +5,7 @@
 #include "Prompt.h"
 #include "AM.hpp"
 
-PromptDesc mPromptNote_markTrc (
+PromptDesc __Prompt_markTrc (
   PF_MARKTRC,           // prompt function
   "Prompt_markTrc"_Stz, // name of the prompt function
   "comment"_Stz,        // comment about the function

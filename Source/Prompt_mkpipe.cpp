@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptDesc mPromptNote_mkpipe (
+PromptDesc __Prompt_mkpipe (
   PF_MKPIPE,             // prompt function
   "Prompt_mkpipe"_Stz,   // name of the prompt function
   "comment"_Stz,         // comment about the function

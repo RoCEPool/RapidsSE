@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptDesc mPromptNote_prefixes (
+PromptDesc __Prompt_prefixes (
   PF_PREFIXES,            // prompt function
   "Prompt_prefixes"_Stz,  // name of the prompt function
   "comment"_Stz,          // comment about the function

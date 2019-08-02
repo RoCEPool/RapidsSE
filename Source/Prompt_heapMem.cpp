@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptDesc mPromptNote_heapMem (
+PromptDesc __Prompt_heapMem (
   PF_HEAPMEM,           // prompt function
   "Prompt_heapMem"_Stz, // name of the prompt function
   "comment"_Stz,        // comment about the function

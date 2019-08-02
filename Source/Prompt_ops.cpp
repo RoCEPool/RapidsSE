@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptDesc mPromptNote_ops (
+PromptDesc __Prompt_ops (
   PF_FUNS,               // prompt function
   "Prompt_ops"_Stz,      // name of the prompt function
   "comment"_Stz,         // comment about the function

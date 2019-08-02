@@ -5,7 +5,7 @@
 #include "Prompt.h"
 #include "AM.hpp"
 
-PromptDesc mPromptNote_giveMem (
+PromptDesc __Prompt_giveMem (
   PF_GIVEMEM,           // prompt function
   "Prompt_giveMem"_Stz, // name of the prompt function
   "comment"_Stz,        // comment about the function

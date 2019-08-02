@@ -5,7 +5,7 @@
 #include "Prompt.h"
 #include "AM.hpp"
 
-PromptDesc mPromptNote_executing (
+PromptDesc __Prompt_executing (
   PF_EXECUTING,           // prompt function
   "Prompt_executing"_Stz, // name of the prompt function
   "comment"_Stz,          // comment about the function

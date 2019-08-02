@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptDesc mPromptNote_limits (
+PromptDesc __Prompt_limits (
   PF_LIMITS,            // prompt function
   "Prompt_limits"_Stz,  // name of the prompt function
   "comment"_Stz,        // comment about the function

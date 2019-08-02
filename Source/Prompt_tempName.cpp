@@ -5,7 +5,7 @@
 #include "Prompt.h"
 #include "AM.hpp"
 
-PromptDesc mPromptNote_tempName (
+PromptDesc __Prompt_tempName (
   PF_TEMPNAME,           // prompt function
   "Prompt_tempName"_Stz, // name of the prompt function
   "comment"_Stz,         // comment about the function

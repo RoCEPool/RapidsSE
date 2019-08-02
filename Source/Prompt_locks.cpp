@@ -5,7 +5,7 @@
 #include "Prompt.h"
 #include "AM.hpp"
 
-PromptDesc mPromptNote_locks (
+PromptDesc __Prompt_locks (
   PF_LOCKS,             // prompt function
   "Prompt_locks"_Stz,   // name of the prompt function
   "comment"_Stz,        // comment about the function

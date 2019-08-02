@@ -5,7 +5,7 @@
 #include "Prompt.h"
 #include "AM.hpp"
 
-PromptDesc mPromptNote_taskQueues (
+PromptDesc __Prompt_taskQueues (
   PF_TASKQUEUES,            // prompt function
   "bPrompt_taskQueues"_Stz, // name of the prompt function
   "comment"_Stz,        // comment about the function

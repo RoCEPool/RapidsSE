@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptDesc mPromptNote_rassert (
+PromptDesc __Prompt_rassert (
   PF_RASSERT,          // prompt function
   "Prompt_rassert"_Stz,// name of the prompt function
   "comment"_Stz,       // comment about the function

@@ -4,7 +4,7 @@
 
 #include "Prompt.h"
 
-PromptDesc mPromptNote_rmpipe (
+PromptDesc __Prompt_rmpipe (
   PF_RMPIPE,             // prompt function
   "Prompt_rmpipe"_Stz,   // name of the prompt function
   "comment"_Stz,         // comment about the function

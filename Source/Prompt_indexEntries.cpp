@@ -6,7 +6,7 @@
 #include "AM.hpp"
 
 
-PromptDesc mPromptNote_indexEntries (
+PromptDesc __Prompt_indexEntries (
   PF_INDEXENTRIES,            // prompt function
   "Prompt_indexEntries"_Stz,  // name of the prompt function
   "comment"_Stz,              // comment about the function

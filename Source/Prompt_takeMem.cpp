@@ -6,7 +6,7 @@
 #include "AM.hpp"
 
 
-PromptDesc mPromptNote_takeMem (
+PromptDesc __Prompt_takeMem (
   PF_TAKEMEM,           // prompt function
   "Prompt_takeMem"_Stz, // name of the prompt function
   "comment"_Stz,        // comment about the function
