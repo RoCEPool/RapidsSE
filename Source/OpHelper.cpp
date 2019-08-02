@@ -16,6 +16,7 @@ void OpHelper::vDynamicCommand(Op** apaOp, TokenVec* pTknVec)
 
   s256 sTknStr;
   
+  i8 nOps = 0;
   i8 i_Tkn = 1;
   while (i_Tkn < nTokens) {
 
@@ -29,7 +30,9 @@ void OpHelper::vDynamicCommand(Op** apaOp, TokenVec* pTknVec)
     OpDefn* aOpDefn = gxOpCatalog.aFindOp(sTknStr);
     
     if (aOpDefn) {
-      vTrace(" { %s }\n"_Stz,aOpDefn->m_szCommand);
+      vTrace(" { [%lld] %s }\n"_Stz,
+             nOps,aOpDefn->m_szCommand);
+      nOps++;
       i_Tkn++;
       continue;
     }
