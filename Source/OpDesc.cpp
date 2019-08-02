@@ -16,6 +16,15 @@ OpDesc::OpDesc(eCN  eClass,     // class number
                void (*fpDrain)(void* aThis)   // function which drains the operand queue
               )
 {
+  i8 i_OpDefn = gxOpCatalog.m_nOpDefns++;
+  
+  gxOpCatalog.m_xOpDefn[i_OpDefn].m_eClass = eClass;
+  gxOpCatalog.m_xOpDefn[i_OpDefn].m_eKind  = eKind;
+
+  gxOpCatalog.m_xOpDefn[i_OpDefn].m_szCommand = szCommand;
+
+  gxOpCatalog.m_xOpDefn[i_OpDefn].m_fpOpFun   = fpOpFun;
+  gxOpCatalog.m_xOpDefn[i_OpDefn].m_fpDrain   = fpDrain;
 }
 
 /*============================================================================*/
