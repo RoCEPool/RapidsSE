@@ -1,19 +1,21 @@
 /*============================================================================*/
-/* OpClass.cpp -- a description of an op class                                */
+/* OpDesc.cpp -- the class which populates the op catalog                     */
 /*============================================================================*/
 
 #include "PushDown.h"
 
-extern i8 giClassSize[];
+extern OpCatalog gxOpCatalog;
 
 /*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
+/* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OpClass* PushDown::_pOpClass(void* aAddr)
+OpDesc::OpDesc(eCN  eClass,
+               eOK  eKind,      // op kind
+               Stz* szCommand,  // first word of prompt command
+               eOR  (*fpOpFun)(void* aThis),  // function which does the op
+               void (*fpDrain)(void* aThis)   // function which drains the operand queue
+              )
 {
-  OpClass* pOpClass = reinterpret_cast<OpClass*>(aAddr);
-  
-  return pOpClass;
 }
 
 /*============================================================================*/

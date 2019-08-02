@@ -5,6 +5,7 @@
 #include "StorageEngine.h"
 
 Arguments     gxArguments;
+OpCatalog     gxOpCatalog;
 PromptCatalog gxPromptCatalog;
 
 AttachMap*    gpAttachMap   = nullptr;
