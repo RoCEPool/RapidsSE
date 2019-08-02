@@ -6,7 +6,6 @@
 #include "Scheduler.hpp"
 #include "AM.hpp"
 
-
 extern pthread_key_t giTLS_ThreadKey;
 
 /*----------------------------------------------------------------------------*/

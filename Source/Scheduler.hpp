@@ -10,6 +10,13 @@ namespace Scheduling
   public:
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // job interface
+    static void vAddOriginatingJob(Job* pJob);
+    static void vAddParticipatingJob(Job* pJob);
+    static void vRemoveOriginatingJob(Job* pJob);
+    static void vRemoveParticipatingJob(Job* pJob);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // task interface
   
     static bool bAckWaitingTask(Task* pTaskWaiting, Task* pTaskAcking);
