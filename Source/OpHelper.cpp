@@ -12,6 +12,7 @@ extern OpCatalog gxOpCatalog;
 void OpHelper::vDynamicCommand(Job_Dynamic* pJob, Op** apaOp, TokenVec* pTknVec)
 {
   s256 sTknStr;
+  s32  sLabel;
   i8 nTokens = pTknVec->nItems();
 
   i8 nOps = 0;
@@ -31,17 +32,17 @@ void OpHelper::vDynamicCommand(Job_Dynamic* pJob, Op** apaOp, TokenVec* pTknVec)
     
     OpDefn* aOpDefn = gxOpCatalog.aFindOp(sTknStr);
     
-    if (aOpDefn) {
-      s32 sLabel(aOpDefn->m_szCommand);
-      Op* pOp = (aOpDefn->m_fpNew)(pJob,sLabel,pTknVec,i_Tkn);
-      apaOp[nOps] = pOp;
-      nOps++;
+    // unknown
+    if (! aOpDefn) {
+      vTrace(" ? %s\n"_Stz,sTknStr.aStz());
+      i_Tkn++;
       continue;
     }
 
-    // unknown
-    vTrace(" ? %s\n"_Stz,sTknStr.aStz());
-    i_Tkn++;
+    // new an op
+    sLabel.vSprint("%s_%02lld"_Stz,aOpDefn->m_szPrefix);
+    Op* pOp = (aOpDefn->m_fpNew)(pJob,sLabel,pTknVec,i_Tkn);
+    apaOp[nOps++] = pOp;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -59,11 +60,13 @@ void OpHelper::vDynamicCommand(Job_Dynamic* pJob, Op** apaOp, TokenVec* pTknVec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump
 
+  vTrace("Dynamic Job:\n"_Stz);
+         
   for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
     
     Op* pOp = apaOp[i_Op];
 
-    vTrace(" [%02lld] { %8s: %8s :%-8s }\n"_Stz,
+    vTrace("  [%02lld] { %6s: %8s :%-6s }\n"_Stz,
            i_Op,
            pOp->szLabel(),
            aCN[pOp->eClass()],

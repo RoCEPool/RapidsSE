@@ -12,7 +12,8 @@ namespace PushDown
       eOK  m_eKind;      // op kind
   
       Stz* m_szCommand;  // first word of prompt command
-  
+      Stz* m_szPrefix;   // prefix
+
       Op*  (*m_fpNew)(Job_Dynamic* pJob, Stz* szLabel,
                       TokenVec* pTknVec, i8& i_Tkn);
   

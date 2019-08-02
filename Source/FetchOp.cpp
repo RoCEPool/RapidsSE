@@ -8,6 +8,7 @@ OpDesc __Op_Fetch (
   CN_FETCHOP,         // class number
   OK_SIMPLE,          // op kind
   "Fetch"_Stz,        // first word of prompt command
+  "Fet"_Stz,          // prefix
                    
   FetchOp::pNew,      // function which parses the command and new's an op
   FetchOp::eCall,     // function which does the op

@@ -8,7 +8,8 @@ OpDesc __Op_Output (
    CN_OUTPUTOP,         // class number
    OK_SIMPLE,           // op kind
    "Output"_Stz,        // first word of prompt command
-                    
+   "Out"_Stz,           // prefix
+
    OutputOp::pNew,      // function which parses the command and new's an op
    OutputOp::eCall,     // function which does the op
    nullptr,             // function which drains the operand queue

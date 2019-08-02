@@ -13,7 +13,8 @@ namespace PushDown
     OpDesc(eCN  eClass,     // class number
            eOK  eKind,      // op kind
            Stz* szCommand,  // first word of prompt command
-           
+           Stz* szPrefix,   // prefix
+
            Op*  (*fpNew)(Job_Dynamic* pJob, Stz* szLabel,
                          TokenVec* pTknVec, i8& i_Tkn_),
            
