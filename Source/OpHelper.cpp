@@ -40,7 +40,7 @@ void OpHelper::vDynamicCommand(Job_Dynamic* pJob, Op** apaOp, TokenVec* pTknVec)
     }
 
     // new an op
-    sLabel.vSprint("%s_%02lld"_Stz,aOpDefn->m_szPrefix);
+    sLabel.vSprint("%s_%02lld"_Stz,aOpDefn->m_szPrefix,nOps);
     Op* pOp = (aOpDefn->m_fpNew)(pJob,sLabel,pTknVec,i_Tkn);
     apaOp[nOps++] = pOp;
   }
