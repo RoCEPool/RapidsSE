@@ -94,6 +94,7 @@ namespace StorageEngine
     static void vSetAcksRmg(Task* pTask, i8 nAcks);
     static void vStepTiming(StepTiming* pStepTiming);
     static void vSubInserters(i8 nSubInserters);
+    static void vTableName(Job_Dynamic* pJob, Stz* szTableNm);
     static void vTakenBuffers(Pool::PoolBuffer* pTakenBuffers);
     static void vTakeBytes(i8 nTakeBytes);
     static void vTakenBytes(i8 nTakenBytes);

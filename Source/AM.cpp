@@ -123,6 +123,9 @@ void AM::vStepTiming(StepTiming* pStepTiming) {
 void AM::vSubInserters(i8 nSubInserters) {
   gpAttachMap->Arg.m_nSubInserters = nSubInserters;
 }
+void AM::vTableName(Job_Dynamic* pJob, Stz* szTableNm) {
+  pJob->m_sObjectName = szTableNm;
+}
 void AM::vTakenBuffers(PoolBuffer* pTakenBuffers) {
   gpAttachMap->m_pTakenBuffers = pTakenBuffers;
 }
