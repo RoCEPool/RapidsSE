@@ -66,10 +66,11 @@ void OpHelper::vDynamicCommand(Job_Dynamic* pJob, Op** apaOp, TokenVec* pTknVec)
     
     Op* pOp = apaOp[i_Op];
 
-    vTrace("  [%02lld] { %6s: %8s :%-6s }\n"_Stz,
+    vTrace("  [%02lld] { %6s: %8s(%s) :%-6s }\n"_Stz,
            i_Op,
            pOp->szLabel(),
            aCN[pOp->eClass()],
+           pOp->szArgs(),
            pOp->szNextLabel());
   }
   

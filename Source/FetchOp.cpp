@@ -89,11 +89,12 @@ Op* FetchOp::pNew(Job_Dynamic* pJob, Stz* szLabel, TokenVec* pTknVec, i8& i_Tkn_
 {
   i_Tkn_++;
   
-  s32 sTableNm = pTknVec->pGet(i_Tkn_++)->aText();
+  FetchOp* pFetchOp = new FetchOp(szLabel,(Job*)pJob);
   
+  s32 sTableNm = pTknVec->pGet(i_Tkn_++)->aText();
   AM::vTableName(pJob,sTableNm);
   
-  FetchOp* pFetchOp = new FetchOp(szLabel,(Job*)pJob);
+  pFetchOp->m_sArgs = sTableNm;
   
   return pFetchOp;
 }

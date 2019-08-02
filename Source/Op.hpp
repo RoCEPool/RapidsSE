@@ -9,6 +9,7 @@ namespace PushDown
   {
   protected:
     s32            m_sLabel;         // label of this op
+    s256           m_sArgs;          // args of this op   (initial dev only)
     s32            m_sNextLabel;     // label of this op
     Jobs::Job*     m_pJob;           // job this operator belongs to
     Tasks::Task*   m_pTask;          // task running this op
@@ -40,6 +41,7 @@ namespace PushDown
     void vAckJob(void);
     void vAckJobEnd(bool m_bAckJobEnd);
     void vAppendOperand(Operand* pOperand);
+    Stz* szArgs(void);
     void vDropTaskLock(void);
     void vGrabTaskLock(void);
     bool bIsLocked(void);

@@ -41,6 +41,7 @@ Op::Op(eCN eClassNo, Stz* szLabel, Job* pJob)
   _precondition_(_MAGIC_,eClassNo);
   
   m_sLabel        = szLabel;
+  m_sArgs         = ""_Stz;
   m_sNextLabel    = "<nil>"_Stz;
   m_pJob          = pJob;
   m_pTask         = nullptr;
@@ -162,6 +163,16 @@ void Op::vAppendOperand(Operand* pOperand)
   
   // trigger this biding op
   AM::vTriggerBidingTask(m_pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get args                                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* Op::szArgs(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_sArgs;
 }
 
 /*----------------------------------------------------------------------------*/
