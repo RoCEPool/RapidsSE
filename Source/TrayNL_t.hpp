@@ -66,9 +66,11 @@ namespace Structures
     void  vHeadBytes_used(i8 nBytes);
     bool  bHasSpace(i8 nBytes);
     i8    nItems(void);
+    TAIL* aLastStr(void);
     i8    iLastTail(void);
     TAIL* aLastTail(void);
     i8    iPrevTail(i8 i_Tail);
+    TAIL* aPrevStr(TAIL* aCurrStr, i8& i_Tail);
     TAIL* aPrevTail(TAIL* aCurrTail, i8& i_Tail);
     void  vReset(void);
     void  vSetItems(i8 nSpaceUnits, SpaceUnit* axaUnits);
@@ -525,6 +527,22 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::nItems(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get last string line                                                       */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+TAIL* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aLastStr(void)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  if (! m_i_LastStr)
+    return nullptr;
+  
+  TAIL* aLastStr = (TAIL*) & m_axaUnits[m_i_LastStr];
+  
+  return aLastStr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get last tail                                                              */
 /*----------------------------------------------------------------------------*/
 template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
@@ -556,6 +574,27 @@ TAIL* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aLastTail(void)
   TAIL* aLastTail = (TAIL*) & m_axaUnits[i_LastTail];
 
   return aLastTail;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get prev string line (goes left-to-right / ascending memory address)       */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+TAIL* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aPrevStr(TAIL* aCurrStr, i8& i_Tail)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  i8 nCurrUnits = aCurrStr->w8_1B(0);
+  
+  SpaceUnit* aPrevStr_unit = (SpaceUnit*)aCurrStr + nCurrUnits;
+  if (aPrevStr_unit >= &m_axaUnits[m_nSpaceUnits])
+    return nullptr;
+  
+  TAIL* aPrevStr = (TAIL*) aPrevStr_unit;
+  
+  i_Tail = iToUnit(aPrevStr);
+  
+  return aPrevStr;
 }
 
 /*----------------------------------------------------------------------------*/
