@@ -83,6 +83,8 @@ ZedOp::~ZedOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Op* ZedOp::pNew(Job_Dynamic* pJob, TokenVec* pTknVec, i8& i_Tkn_)
 {
+  i_Tkn_++;
+  
   ZedOp* pZedOp = new ZedOp("ZedOp:"_Stz,(Job*)pJob);
   
   return pZedOp;

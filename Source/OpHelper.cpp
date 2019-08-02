@@ -10,7 +10,7 @@ extern OpCatalog gxOpCatalog;
 /*----------------------------------------------------------------------------*/
 /* process dynamic command                                                    */
 /*----------------------------------------------------------------------------*/
-void OpHelper::vDynamicCommand(Op** apaOp, TokenVec* pTknVec)
+void OpHelper::vDynamicCommand(Job_Dynamic* pJob, Op** apaOp, TokenVec* pTknVec)
 {
   i8 nTokens = pTknVec->nItems();
 
@@ -32,8 +32,8 @@ void OpHelper::vDynamicCommand(Op** apaOp, TokenVec* pTknVec)
     if (aOpDefn) {
       vTrace(" { [%lld] %s }\n"_Stz,
              nOps,aOpDefn->m_szCommand);
-      nOps++;
-      i_Tkn++;
+      Op* pOp = (aOpDefn->m_fpNew)(nullptr,pTknVec,i_Tkn);
+      apaOp[nOps++] = pOp;
       continue;
     }
 

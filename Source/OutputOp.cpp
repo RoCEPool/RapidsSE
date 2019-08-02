@@ -83,6 +83,8 @@ OutputOp::~OutputOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Op* OutputOp::pNew(Job_Dynamic* pJob, TokenVec* pTknVec, i8& i_Tkn_)
 {
+  i_Tkn_++;
+  
   OutputOp* pOutputOp = new OutputOp("OutputOp:"_Stz,(Job*)pJob);
   
   return pOutputOp;
