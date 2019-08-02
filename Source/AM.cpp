@@ -53,9 +53,12 @@ EnumFlags* AM::pMarkJob(void) { return & gpAttachMap->m_oMarkJob;             }
 EnumFlags* AM::pMarkResource(void) { return & gpAttachMap->m_oMarkResource;   }
 EnumFlags* AM::pMarkTrace(void) { return & gpAttachMap->m_oMarkTrace;         }
 i8   AM::iNextEpoch(void)     { return ++ gpAttachMap->m_iEpoch;              }
-Stz* AM::szNodeName(void)     { return gpAttachMap->m_pGrid->m_pThisNode->aNodeName();  }
-JobList* AM::pOriginatingJobs(void) { return gpAttachMap->m_pOriginatingJobs; }
-JobList* AM::pParticipatingJobs(void) { return gpAttachMap->m_pParticipatingJobs; }
+Stz* AM::szNodeName(void)     {
+  return gpAttachMap->m_pGrid->m_pThisNode->aNodeName();  }
+JobList* AM::pOriginatingJobs(void) {
+  return gpAttachMap->m_pQueues->m_pOriginatingJobs; }
+JobList* AM::pParticipatingJobs(void) {
+  return gpAttachMap->m_pQueues->m_pParticipatingJobs; }
 i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
 bool AM::bProgress(void)      { return gpAttachMap->m_bProgress;              }
 bool AM::bMetadata(void)      { return gpAttachMap->m_bMetadata;              }
@@ -65,7 +68,8 @@ i8   AM::iNextPlanId(void)    { return ++ gpAttachMap->m_ixNextPlanId;        }
 i8*  AM::iaObjectsInPool(void){ return gpAttachMap->m_nObjectsInPool;         }
 i8   AM::nPartitions(void)    { return gpAttachMap->m_pGrid->m_nPartitions;   }
 Queues* AM::pQueues(void)     { return gpAttachMap->m_pQueues;                }
-ResourceTracker* AM::pResourceTracker(void) { return & gpAttachMap->m_oResourceTracker; }
+ResourceTracker* AM::pResourceTracker(void) {
+  return & gpAttachMap->m_oResourceTracker; }
 Dic* AM::pRootDic(void)       { return & gpAttachMap->m_oRootDic;             }
 Statistics* AM::pStatistics(void) { return & gpAttachMap->m_oStatistics;      }
 StepTiming* AM::pStepTiming(void)  { return gpAttachMap->m_pStepTiming;       }

@@ -11,6 +11,7 @@ namespace Scheduling
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // job interface
+  
     static void vAddOriginatingJob(Job* pJob);
     static void vAddParticipatingJob(Job* pJob);
     static void vDumpOriginatingJobs(void);
