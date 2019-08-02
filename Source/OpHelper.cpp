@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "PushDown.h"
-#include "AM.hpp"
 
 extern OpCatalog gxOpCatalog;
 
@@ -32,7 +31,7 @@ void OpHelper::vDynamicCommand(Job_Dynamic* pJob, Op** apaOp, TokenVec* pTknVec)
     if (aOpDefn) {
       vTrace(" { [%lld] %s }\n"_Stz,
              nOps,aOpDefn->m_szCommand);
-      Op* pOp = (aOpDefn->m_fpNew)(nullptr,pTknVec,i_Tkn);
+      Op* pOp = (aOpDefn->m_fpNew)(pJob,pTknVec,i_Tkn);
       apaOp[nOps++] = pOp;
       continue;
     }
