@@ -17,7 +17,8 @@ namespace Indexes       { class IndexTree;                                    }
 namespace Interface     { class ApiState;                                     }
 namespace Jobs          { class Job; struct JobClass;  class JobList;
                                      class Job_CreateTable;
-                                     class Job_CreateIndex;                   }
+                                     class Job_CreateIndex;
+                                     class Job_Dynamic;                       }
 namespace Library       { class Lock; class LockTracker;                      }
 namespace Logging       {                                                     }
 namespace MetaData      {                                                     }

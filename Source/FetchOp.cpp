@@ -84,7 +84,7 @@ FetchOp::~FetchOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* function which parses the command and new's an op                          */
 /*----------------------------------------------------------------------------*/
-Op* FetchOp::pNew(TokenVec* pTknVec, i8& i_Tkn_)
+Op* FetchOp::pNew(Job_Dynamic* pJob, TokenVec* pTknVec, i8& i_Tkn_)
 {
   FetchOp* pFetchOp = new FetchOp("<none>:"_Stz,nullptr);
   

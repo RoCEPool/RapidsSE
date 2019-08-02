@@ -13,7 +13,7 @@ namespace PushDown
   
       Stz* m_szCommand;  // first word of prompt command
   
-      Op*  (*m_fpNew)(TokenVec* pTknVec, i8& i_Tkn);
+      Op*  (*m_fpNew)(Job_Dynamic* pJob, TokenVec* pTknVec, i8& i_Tkn);
   
       eOR  (*m_fpCall)(void* aThis);   // function which calls the op
       void (*m_fpDrain)(void* aThis);  // function which drains the operand queue

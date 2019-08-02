@@ -81,7 +81,7 @@ OutputOp::~OutputOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* function which parses the command and new's an op                          */
 /*----------------------------------------------------------------------------*/
-Op* OutputOp::pNew(TokenVec* pTknVec, i8& i_Tkn_)
+Op* OutputOp::pNew(Job_Dynamic* pJob, TokenVec* pTknVec, i8& i_Tkn_)
 {
   OutputOp* pOutputOp = new OutputOp("<none>:"_Stz,nullptr);
   
