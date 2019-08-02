@@ -1391,7 +1391,8 @@ void Step::vJobRemoveOriginator(MP_Task mpTask)
   
   if (! bRemove) {
     vTrace("------------------------------------\n"_Stz);
-    vTrace("%s Failed to Remove JobId %lld from originator\n"_Stz, aCN[pJob->eClass()],pJob->m_iJobId);
+    vTrace("%s Failed to Remove JobId %lld from originator\n"_Stz,
+           aCN[pJob->eClass()],pJob->m_iJobId);
     vTrace("------------------------------------\n"_Stz);
     
     AM::pOriginatingJobs()->vGrabLock();
@@ -1432,7 +1433,8 @@ void Step::vJobRemoveParticipant(MP_Task mpTask)
  
   if (! bRemove) {
     vTrace("------------------------------------\n"_Stz);
-    vTrace("%s Failed to Remove JobId %lld from participant\n"_Stz, aCN[pJob->eClass()],pJob->m_iJobId);
+    vTrace("%s Failed to Remove JobId %lld from participant\n"_Stz,
+           aCN[pJob->eClass()],pJob->m_iJobId);
     vTrace("------------------------------------\n"_Stz);
     
     AM::pParticipatingJobs()->vGrabLock();

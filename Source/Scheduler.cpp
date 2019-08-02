@@ -15,6 +15,9 @@
 /*----------------------------------------------------------------------------*/
 void Scheduler::vAddOriginatingJob(Job* pJob)
 {
+  AM::pOriginatingJobs()->vGrabLock();
+  AM::pOriginatingJobs()->vAddJob(pJob);
+  AM::pOriginatingJobs()->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -22,6 +25,9 @@ void Scheduler::vAddOriginatingJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vAddParticipatingJob(Job* pJob)
 {
+  AM::pParticipatingJobs()->vGrabLock();
+  AM::pParticipatingJobs()->vAddJob(pJob);
+  AM::pParticipatingJobs()->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -29,7 +35,9 @@ void Scheduler::vAddParticipatingJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* Scheduler::pFindOriginatingJob(i8 iJobId)
 {
-  return nullptr;
+  Job* pJob = AM::pOriginatingJobs()->pFindJob(iJobId);
+  
+  return pJob;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -37,21 +45,43 @@ Job* Scheduler::pFindOriginatingJob(i8 iJobId)
 /*----------------------------------------------------------------------------*/
 Job* Scheduler::pFindParticipatingJob(i8 iJobId)
 {
-  return nullptr;
+  Job* pJob = AM::pParticipatingJobs()->pFindJob(iJobId);
+  
+  return pJob;
 }
 
 /*----------------------------------------------------------------------------*/
 /* remove job from originating list                                           */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vRemoveOriginatingJob(Job* pJob)
+bool Scheduler::bRemoveOriginatingJob(Job* pJob, bool bDump)
 {
+  AM::pOriginatingJobs()->vGrabLock();
+  
+  if (bDump)
+    AM::pOriginatingJobs()->vContentDump();
+  
+  bool bRemoved = AM::pOriginatingJobs()->bRemoveJob(pJob);
+  
+  AM::pOriginatingJobs()->vDropLock();
+  
+  return bRemoved;
 }
 
 /*----------------------------------------------------------------------------*/
 /* remove job from participating list                                         */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vRemoveParticipatingJob(Job* pJob)
+bool Scheduler::bRemoveParticipatingJob(Job* pJob, bool bDump)
 {
+  AM::pParticipatingJobs()->vGrabLock();
+  
+  if (bDump)
+    AM::pParticipatingJobs()->vContentDump();
+
+  bool bRemoved = AM::pParticipatingJobs()->bRemoveJob(pJob);
+  
+  AM::pParticipatingJobs()->vDropLock();
+  
+  return bRemoved;
 }
 
 
