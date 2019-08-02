@@ -13,7 +13,7 @@ namespace MetaData
 
   typedef VectorNL_t<CN_IDXVEC,Index,CN_INDEX,C_MAX_INDEXES,u8> IdxVec;
   
-  class Table : public Object
+  class Table : public Object // Operand
   {
   private:
     s32    m_sTableName;   // table name
