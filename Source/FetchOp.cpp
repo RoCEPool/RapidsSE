@@ -86,7 +86,7 @@ FetchOp::~FetchOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Op* FetchOp::pNew(Job_Dynamic* pJob, TokenVec* pTknVec, i8& i_Tkn_)
 {
-  FetchOp* pFetchOp = new FetchOp("<none>:"_Stz,nullptr);
+  FetchOp* pFetchOp = new FetchOp("FetchOp:"_Stz,(Job*)pJob);
   
   return pFetchOp;
 }
