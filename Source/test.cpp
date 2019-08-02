@@ -1090,7 +1090,11 @@ void vTest17(void)
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the buffer
   vTrace("\n\nSorting buffer:\n"_Stz);
-  pRootBuffer->vDump();
+  pIntBuffer = pRootBuffer;
+  while (pIntBuffer) {
+    pIntBuffer->vDump();
+    pIntBuffer = pIntBuffer->pNextBuffer();
+  }
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a Low cursor pointing to the first element in the array
@@ -1116,7 +1120,10 @@ void vTest17(void)
   vTrace("\nSorted buffer:\n"_Stz);
   pIntBuffer = pRootBuffer;
   
-  pRootBuffer->vDump();
+  while (pIntBuffer) {
+    pIntBuffer->vDump();
+    pIntBuffer = pIntBuffer->pNextBuffer();
+  }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify that the data is sorted

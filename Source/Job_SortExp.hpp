@@ -11,6 +11,7 @@ namespace Jobs
 
     GenerateOp* m_pGenerateOp; // generate
     SortOp*     m_pSortOp;     // sort
+    MergeOp*    m_pMergeOp;    // merge
     OutputOp*   m_pOutputOp;   // output
     ZedOp*      m_pZedOp;      // sink
 

@@ -93,7 +93,7 @@ eOR GenerateOp::eGenerateLoop(void)
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Add random integer values to the buffer till the buffer is full
-  i8 iTotalValues = ELEMENTS * 6;
+  i8 iTotalValues = ELEMENTS * 2;
   
   while (iTotalValues--) {
     i8 iRandom = Random::iInteger(0,1000);

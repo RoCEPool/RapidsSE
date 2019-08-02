@@ -65,7 +65,7 @@ SortOp::~SortOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* call the fetch loop function                                               */
+/* call the sort loop function                                               */
 /*----------------------------------------------------------------------------*/
 eOR SortOp::eCallLoop(void* aThis)
 {
@@ -172,7 +172,7 @@ void SortOp::vQuickSortBuffer(IntBuffer* pIntBuffer, BufferCursor* pLowCursor, B
 }
 
 /*----------------------------------------------------------------------------*/
-/* the fetch operator loop function                                           */
+/* the sort operator loop function                                            */
 /*----------------------------------------------------------------------------*/
 eOR SortOp::eSortLoop(void)
 {
@@ -212,6 +212,10 @@ eOR SortOp::eSortLoop(void)
     
     //vTrace("\nSorted buffer:\n"_Stz);
     //pIntBuffer->vDump();
+    
+    // before feeding to mergeOp, delink the buffer first
+    pIntBuffer->vNextBuffer(nullptr);
+    pIntBuffer->vPrevBuffer(nullptr);
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // verify that the data is sorted

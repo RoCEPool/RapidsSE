@@ -34,6 +34,12 @@ namespace Rows
     // is before
     bool bIsBefore(BufferCursor* pBufferCursor)
     {
+      if (m_iBufferNo < pBufferCursor->m_iBufferNo)
+        return true;
+
+      if (m_iBufferNo > pBufferCursor->m_iBufferNo)
+        return false;
+
       if (m_aElement < pBufferCursor->m_aElement)
         return true;
       else
