@@ -9,8 +9,8 @@ OpDesc __Op_Zed (
   OK_SIMPLE,        // op kind
   "Zed"_Stz,        // first word of prompt command
                  
-  nullptr,          // function which parses the command and new's an op
-  ZedOp::eCallLoop, // function which does the op
+  ZedOp::pNew,      // function which parses the command and new's an op
+  ZedOp::eCall,     // function which calls the op
   nullptr,          // function which drains the operand queue
   
   "<help>"_Stz
@@ -61,7 +61,7 @@ ZedOp::ZedOp(Stz* szOpLabel, Jobs::Job* pJob)
   
   _checkInitialised_(CN_ZEDOP);
   
-  m_fpOpFun = ZedOp::eCallLoop;
+  m_fpOpFun = ZedOp::eCall;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ZEDOP,_FOOTER_);
 }
@@ -81,7 +81,7 @@ ZedOp::~ZedOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* function which parses the command and new's an op                          */
 /*----------------------------------------------------------------------------*/
-Op* ZedOp::pParse(TokenVec* pTknVec, i8& i_Tkn_)
+Op* ZedOp::pNew(TokenVec* pTknVec, i8& i_Tkn_)
 {
   return nullptr;
 }
@@ -89,7 +89,7 @@ Op* ZedOp::pParse(TokenVec* pTknVec, i8& i_Tkn_)
 /*----------------------------------------------------------------------------*/
 /* call the zed loop function                                                 */
 /*----------------------------------------------------------------------------*/
-eOR ZedOp::eCallLoop(void* aThis)
+eOR ZedOp::eCall(void* aThis)
 {
   eOR eCallAgain = ((ZedOp*)aThis)->eZedLoop();
   

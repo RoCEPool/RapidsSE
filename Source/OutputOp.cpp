@@ -9,8 +9,8 @@ OpDesc __Op_Output (
    OK_SIMPLE,           // op kind
    "Output"_Stz,        // first word of prompt command
                     
-   nullptr,             // function which parses the command and new's an op
-   OutputOp::eCallLoop, // function which does the op
+   OutputOp::pNew,      // function which parses the command and new's an op
+   OutputOp::eCall,     // function which does the op
    nullptr,             // function which drains the operand queue
    
    "<help>"_Stz
@@ -61,7 +61,7 @@ OutputOp::OutputOp(Stz* szOpLabel, Jobs::Job* pJob)
   
   _checkInitialised_(CN_OUTPUTOP);
 
-  m_fpOpFun = OutputOp::eCallLoop;
+  m_fpOpFun = OutputOp::eCall;
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
 }
@@ -81,7 +81,7 @@ OutputOp::~OutputOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* function which parses the command and new's an op                          */
 /*----------------------------------------------------------------------------*/
-Op* OutputOp::pParse(TokenVec* pTknVec, i8& i_Tkn_)
+Op* OutputOp::pNew(TokenVec* pTknVec, i8& i_Tkn_)
 {
   return nullptr;
 }
@@ -89,7 +89,7 @@ Op* OutputOp::pParse(TokenVec* pTknVec, i8& i_Tkn_)
 /*----------------------------------------------------------------------------*/
 /* call the output loop function                                              */
 /*----------------------------------------------------------------------------*/
-eOR OutputOp::eCallLoop(void* aThis)
+eOR OutputOp::eCall(void* aThis)
 {
   eOR eCallAgain = ((OutputOp*)aThis)->eOutputLoop();
   

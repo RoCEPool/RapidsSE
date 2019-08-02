@@ -9,8 +9,8 @@ OpDesc __Op_Fetch (
   OK_SIMPLE,          // op kind
   "Fetch"_Stz,        // first word of prompt command
                    
-  nullptr,            // function which parses the command and new's an op
-  FetchOp::eCallLoop, // function which does the op
+  FetchOp::pNew,      // function which parses the command and new's an op
+  FetchOp::eCall,     // function which does the op
   nullptr,            // function which drains the operand queue
 
   "<help>"_Stz
@@ -64,7 +64,7 @@ FetchOp::FetchOp(Stz* szOpLabel, Jobs::Job* pJob)
 
   _checkInitialised_(CN_FETCHOP);
 
-  m_fpOpFun = FetchOp::eCallLoop;
+  m_fpOpFun = FetchOp::eCall;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
 }
@@ -84,7 +84,7 @@ FetchOp::~FetchOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* function which parses the command and new's an op                          */
 /*----------------------------------------------------------------------------*/
-Op* FetchOp::pParse(TokenVec* pTknVec, i8& i_Tkn_)
+Op* FetchOp::pNew(TokenVec* pTknVec, i8& i_Tkn_)
 {
   return nullptr;
 }
@@ -92,7 +92,7 @@ Op* FetchOp::pParse(TokenVec* pTknVec, i8& i_Tkn_)
 /*----------------------------------------------------------------------------*/
 /* call the fetch loop function                                               */
 /*----------------------------------------------------------------------------*/
-eOR FetchOp::eCallLoop(void* aThis)
+eOR FetchOp::eCall(void* aThis)
 {  
   eOR eCallAgain = ((FetchOp*)aThis)->eFetchLoop();
   
