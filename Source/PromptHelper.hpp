@@ -5,7 +5,6 @@
 
 namespace Prompt
 {
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class PromptHelper
   {
   public:

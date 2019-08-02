@@ -24,6 +24,7 @@ namespace PushDown
 #include "OpDefn.hpp"
 #include "OpDesc.hpp"
 #include "OpCatalog.hpp"
+#include "OpHelper.hpp"
 
 #include "AggOp.hpp"
 #include "BothOp.hpp"
