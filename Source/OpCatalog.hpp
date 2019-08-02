@@ -13,6 +13,7 @@ namespace PushDown
   
   public:
     OpDefn* pFindOp(Stz* szCommand);
+    void    vHelp(eCN eClass);
   };
 }
 

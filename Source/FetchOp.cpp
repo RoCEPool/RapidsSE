@@ -9,7 +9,9 @@ OpDesc __Op_Fetch (
   OK_SIMPLE,          // op kind
   "Fetch"_Stz,        // first word of prompt command
   FetchOp::eCallLoop, // function which does the op
-  nullptr             // function which drains the operand queue
+  nullptr,            // function which drains the operand queue
+
+  "<help>"_Stz
 );
 
 /*----------------------------------------------------------------------------*/

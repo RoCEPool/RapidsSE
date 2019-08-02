@@ -25,6 +25,21 @@ OpDefn* OpCatalog::pFindOp(Stz* szCommand)
   return nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/* help                                                                       */
+/*----------------------------------------------------------------------------*/
+void OpCatalog::vHelp(eCN eClass)
+{
+  for (i8 i_OpDefn = 0; i_OpDefn < m_nOpDefns; i_OpDefn++) {
+    
+    if (m_xOpDefn[i_OpDefn].m_eClass != eClass)
+      continue;
+    
+    if (m_xOpDefn[i_OpDefn].m_szHelp)
+      vTrace("%s\n"_Stz,m_xOpDefn[i_OpDefn].m_szHelp);
+  }
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

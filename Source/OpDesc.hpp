@@ -15,7 +15,8 @@ namespace PushDown
            eOK  eKind,      // op kind
            Stz* szCommand,  // first word of prompt command
            eOR  (*fpOpFun)(void* aThis),  // function which does the op
-           void (*fpDrain)(void* aThis)   // function which drains the operand queue
+           void (*fpDrain)(void* aThis),  // function which drains the operand queue
+           Stz* szHelp      // help text
           );
   };
 }

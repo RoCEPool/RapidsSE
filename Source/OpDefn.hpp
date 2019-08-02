@@ -16,6 +16,7 @@ namespace PushDown
       eOR  (*m_fpOpFun)(void* aThis);  // function which does the op
       void (*m_fpDrain)(void* aThis);  // function which drains the operand queue
 
+      Stz* m_szHelp;     // help text
     public:
   };
   
