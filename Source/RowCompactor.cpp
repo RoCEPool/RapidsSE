@@ -351,6 +351,8 @@ void RowCompactor::vCreateTail(Column* pCol, Row* pOuterRow, Row* pInnerRow)
   
   aTail->vAssign(pOuterRow->m_waColVal[i_Col].m_szVch);
  
+  m_pCrwNub->vSetLastStr(i_Tail);
+  
 #ifdef WITH_ENCODING_TRACE
   vDumpTails();
 #endif
@@ -926,21 +928,17 @@ TailLine* RowCompactor::aFindTail(TailLine* aFindLine, i8& i_Tail)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCOMPACTOR,_FOOTER_);
   
-  for (TailLine* aTailLine = m_pCrwNub->aLastTail();
-       aTailLine;
-       aTailLine = m_pCrwNub->aPrevTail(aTailLine,i_Tail)) {
-    
-    vTrace("i_Tail %lld\n"_Stz,i_Tail);
-    
-    continue;
-    
-    i8 nTailBytes = aTailLine->nBytes();
+  for (TailLine* aStrLine = m_pCrwNub->aLastStr();
+       aStrLine;
+       aStrLine = m_pCrwNub->aPrevStr(aStrLine,i_Tail)) {
+
+    i8 nTailBytes = aStrLine->nBytes();
     
     //aFindLine->vDump();
     //aTailLine->vDump();
     
-    if (0 == MemLib::iCompareBytes(aTailLine,aFindLine,nTailBytes))
-      return aTailLine;
+    if (0 == MemLib::iCompareBytes(aStrLine,aFindLine,nTailBytes))
+      return aStrLine;
   }
   
   return nullptr;
