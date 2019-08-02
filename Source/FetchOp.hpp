@@ -21,6 +21,8 @@ namespace PushDown
     FetchOp(Stz* szOpLabel, Jobs::Job* pJob);
    ~FetchOp(void) noexcept(false);
 
+    static Op* pParse(TokenVec* pTknVec, i8& i_Tkn_);
+
     static eOR eCallLoop(void* aThis);
     eOR eFetchLoop(void);
 

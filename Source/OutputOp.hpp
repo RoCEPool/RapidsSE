@@ -19,6 +19,8 @@ namespace PushDown
     OutputOp(Stz* szOpLabel, Jobs::Job* pJob);
    ~OutputOp(void) noexcept(false);
   
+    static Op* pParse(TokenVec* pTknVec, i8& i_Tkn_);
+  
     static eOR eCallLoop(void* aThis);
     eOR eOutputLoop(void);
 

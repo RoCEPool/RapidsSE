@@ -8,6 +8,8 @@ OpDesc __Op_Output (
    CN_OUTPUTOP,         // class number
    OK_SIMPLE,           // op kind
    "Output"_Stz,        // first word of prompt command
+                    
+   nullptr,             // function which parses the command and new's an op
    OutputOp::eCallLoop, // function which does the op
    nullptr,             // function which drains the operand queue
    
@@ -73,8 +75,16 @@ OutputOp::~OutputOp(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* function which parses the command and new's an op                          */
+/*----------------------------------------------------------------------------*/
+Op* OutputOp::pParse(TokenVec* pTknVec, i8& i_Tkn_)
+{
+  return nullptr;
+}
 
 /*----------------------------------------------------------------------------*/
 /* call the output loop function                                              */
@@ -85,6 +95,10 @@ eOR OutputOp::eCallLoop(void* aThis)
   
   return eCallAgain;
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* the output operator loop function                                          */

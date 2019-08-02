@@ -8,6 +8,8 @@ OpDesc __Op_Fetch (
   CN_FETCHOP,         // class number
   OK_SIMPLE,          // op kind
   "Fetch"_Stz,        // first word of prompt command
+                   
+  nullptr,            // function which parses the command and new's an op
   FetchOp::eCallLoop, // function which does the op
   nullptr,            // function which drains the operand queue
 
@@ -76,8 +78,16 @@ FetchOp::~FetchOp(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* function which parses the command and new's an op                          */
+/*----------------------------------------------------------------------------*/
+Op* FetchOp::pParse(TokenVec* pTknVec, i8& i_Tkn_)
+{
+  return nullptr;
+}
 
 /*----------------------------------------------------------------------------*/
 /* call the fetch loop function                                               */
@@ -88,6 +98,10 @@ eOR FetchOp::eCallLoop(void* aThis)
   
   return eCallAgain;
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* the fetch operator loop function                                           */

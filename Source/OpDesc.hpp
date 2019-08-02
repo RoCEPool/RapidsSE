@@ -13,7 +13,10 @@ namespace PushDown
     OpDesc(eCN  eClass,     // class number
            eOK  eKind,      // op kind
            Stz* szCommand,  // first word of prompt command
-           eOR  (*fpOpFun)(void* aThis),  // function which does the op
+           
+           Op   (*fpNew)(TokenVec* pTknVec, i8& i_Tkn_),
+           
+           eOR  (*fpCall)(void* aThis),   // function which calls the op
            void (*fpDrain)(void* aThis),  // function which drains the operand queue
            Stz* szHelp      // help text
           );
