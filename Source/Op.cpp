@@ -41,6 +41,7 @@ Op::Op(eCN eClassNo, Stz* szLabel, Job* pJob)
   _precondition_(_MAGIC_,eClassNo);
   
   m_sLabel        = szLabel;
+  m_sNextLabel    = "<nil>"_Stz;
   m_pJob          = pJob;
   m_pTask         = nullptr;
   
@@ -215,6 +216,26 @@ void Op::vLabel(Stz* szLabel)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_sLabel = szLabel;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next label                                                             */
+/*----------------------------------------------------------------------------*/
+Stz* Op::szNextLabel(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_sNextLabel;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set next label                                                             */
+/*----------------------------------------------------------------------------*/
+void Op::vNextLabel(Stz* szNextLabel)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_sNextLabel = szNextLabel;
 }
 
 /*----------------------------------------------------------------------------*/
