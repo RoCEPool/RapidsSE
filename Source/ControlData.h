@@ -14,6 +14,8 @@ namespace ControlData
 
 //------------------------------------------------------------------------------
 
+#include "Marker.hpp"
+
 #include "CancelMarker.hpp"
 #include "EarlyMarker.hpp"
 #include "EndMarker.hpp"
