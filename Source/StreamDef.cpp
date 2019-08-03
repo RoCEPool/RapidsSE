@@ -40,7 +40,7 @@ void StreamDef::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 StreamDef::StreamDef(void)
-: Operand(CN_STREAMDEF)
+: Definition(CN_STREAMDEF)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   

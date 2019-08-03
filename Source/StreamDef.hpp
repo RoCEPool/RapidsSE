@@ -5,7 +5,7 @@
 
 namespace MetaData
 {
-  class StreamDef : public Operand
+  class StreamDef : public Definition
   {
   private:
     s32    m_sName;   // name
