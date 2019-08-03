@@ -11,6 +11,8 @@ void MetaData::vCheckAssumptions(void)
 {
   ASSERT(sizeof(Operand)      == sizeof(CacheLine));
   ASSERT(sizeof(LinkedBuffer) == 2 * sizeof(CacheLine));
+  
+  ASSERT(sizeof(StreamDef)    < C_SIZE_LARGE_OBJECT);
 }
 
 /*============================================================================*/

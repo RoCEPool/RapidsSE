@@ -8,7 +8,9 @@ namespace MetaData
   class StreamDef : public Operand
   {
   private:
-  
+    s32    m_sName;   // name
+    Column m_xaColumn[C_MAX_COLUMNS];
+
     // must be last
     Footer m_xFooter;
     
