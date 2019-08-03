@@ -16,6 +16,7 @@ namespace MetaData
 
 #include "Operand.hpp"
 #include "LinkedBuffer.hpp"
+#include "Definition.hpp"
 
 #include "Column.hpp"
 #include "Slots.hpp"
