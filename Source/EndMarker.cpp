@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-EndMarker* PushDown::_pEndMarker(void* aAddr)
+EndMarker* ControlData::_pEndMarker(void* aAddr)
 {
   EndMarker* pOp = reinterpret_cast<EndMarker*>(aAddr);
   

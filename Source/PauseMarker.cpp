@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-PauseMarker* PushDown::_pPauseMarker(void* aAddr)
+PauseMarker* ControlData::_pPauseMarker(void* aAddr)
 {
   PauseMarker* pOp = reinterpret_cast<PauseMarker*>(aAddr);
   

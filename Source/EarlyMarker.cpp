@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-EarlyMarker* PushDown::_pEarlyMarker(void* aAddr)
+EarlyMarker* ControlData::_pEarlyMarker(void* aAddr)
 {
   EarlyMarker* pOp = reinterpret_cast<EarlyMarker*>(aAddr);
   

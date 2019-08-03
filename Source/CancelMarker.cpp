@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-CancelMarker* PushDown::_pCancelMarker(void* aAddr)
+CancelMarker* ControlData::_pCancelMarker(void* aAddr)
 {
   CancelMarker* pOp = reinterpret_cast<CancelMarker*>(aAddr);
   

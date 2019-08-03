@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace PushDown
+namespace ControlData
 {
   class PauseMarker : public Operand
   {
