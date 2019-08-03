@@ -133,12 +133,9 @@ namespace MetaData
     
       return m_pColVec;
     }
-  
-
   };
   
   Column* _pColumn(void* aAddr);
-  
 }
 
 /*============================================================================*/
