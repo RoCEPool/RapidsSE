@@ -14,6 +14,9 @@ namespace MetaData
 
 //------------------------------------------------------------------------------
 
+#include "Operand.hpp"
+#include "LinkedBuffer.hpp"
+
 #include "Column.hpp"
 #include "Slots.hpp"
 #include "Table.hpp"
@@ -24,9 +27,8 @@ namespace MetaData
 #include "Tenant.hpp"
 #include "Tenants.hpp"
 
-#include "Operand.hpp"
-#include "LinkedBuffer.hpp"
 #include "DataBuffer.hpp"
+#include "StreamDef.hpp"
 
 
 /*============================================================================*/
