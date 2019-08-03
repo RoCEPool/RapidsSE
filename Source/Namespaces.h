@@ -8,6 +8,7 @@ namespace Assembler     {                                                     }
 namespace Base          {                                                     }
 namespace Chunks        { class Formatters;                                   }
 namespace Commands      { class Command; class Parser; class Tokeniser;       }
+namespace ControlData   {                                                     }
 namespace Correctness   {                                                     }
 namespace Debugging     {                                                     }
 namespace Enums         {                                                     }
@@ -50,6 +51,7 @@ using namespace Assembler;
 using namespace Base;
 using namespace Chunks;
 using namespace Commands;
+using namespace ControlData;
 using namespace Correctness;
 using namespace Debugging;
 using namespace Enums;
