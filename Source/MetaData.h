@@ -17,8 +17,9 @@ namespace MetaData
 #include "Operand.hpp"
 #include "LinkedBuffer.hpp"
 #include "Definition.hpp"
-
 #include "Column.hpp"
+#include "StreamDef.hpp"
+
 #include "Slots.hpp"
 #include "Table.hpp"
 #include "Index.hpp"
@@ -29,7 +30,6 @@ namespace MetaData
 #include "Tenants.hpp"
 
 #include "DataBuffer.hpp"
-#include "StreamDef.hpp"
 
 
 /*============================================================================*/

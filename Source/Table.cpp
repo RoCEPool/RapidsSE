@@ -84,6 +84,8 @@ Table::Table(void)
   
   m_bIsLoading = false;
   
+  m_pStreamDef = nullptr;
+  
   _checkInitialised_(CN_TABLE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
@@ -789,6 +791,8 @@ void Table::vTidyUp(void)
   
   delete m_pIdxVec;
   delete m_pColumnVec;
+  
+  delete m_pStreamDef;
   
   m_xSlots.vTidyUp();
 }

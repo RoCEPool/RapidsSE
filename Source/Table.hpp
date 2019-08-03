@@ -13,7 +13,7 @@ namespace MetaData
 
   typedef VectorNL_t<CN_IDXVEC,Index,CN_INDEX,C_MAX_INDEXES,u8> IdxVec;
   
-  class Table : public Object // Operand
+  class Table : public Object
   {
   private:
     s32    m_sTableName;   // table name
@@ -27,6 +27,11 @@ namespace MetaData
 
     Atomic     m_ixSubLoaders[C_MAX_SLOTS];  // subloader*slot count
     bool       m_bIsLoading;   // data is loading
+  
+    // - - - - - - - - - - - - -
+    // in-progress
+    StreamDef* m_pStreamDef;   // definition
+  
     
     // must be last
     Footer m_xFooter;
