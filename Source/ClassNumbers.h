@@ -325,7 +325,6 @@ enum eCN : u2 // Class Number
   /* 204 0xCC       32B Heap:S */ CN_TIMER,
   /* 205 0xCD      296B Heap:S */ CN_TOKEN,
   /* 206 0xCE    56832B Heap:M */ CN_TOKENISER,
-  /* 207 0xCF     8216B Heap:I */ CN_TOKENARY,
   /* 208 0xD0     8232B Heap:M */ CN_TOKENVEC,
   /* 209 0xD1      208B Heap:S */ CN_TX,
   /* 210 0xD2      176B Heap:S */ CN_TXSET,
@@ -663,7 +662,6 @@ static Stz* aCN[]
   /* 204 0xCC */ "TIMER"_Stz,               // CN_TIMER
   /* 205 0xCD */ "TOKEN"_Stz,               // CN_TOKEN
   /* 206 0xCE */ "TOKENISER"_Stz,           // CN_TOKENISER
-  /* 207 0xCF */ "TOKENARY"_Stz,            // CN_TOKENARY
   /* 208 0xD0 */ "TOKENVEC"_Stz,            // CN_TOKENVEC
   /* 209 0xD1 */ "TX"_Stz,                  // CN_TX
   /* 210 0xD2 */ "TXSET"_Stz,               // CN_TXSET

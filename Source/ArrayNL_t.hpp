@@ -5,7 +5,7 @@
 
 namespace Structures
 {  
-  template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
+  template <eCN CN, class ITEM, i8 MAX_ITEMS>
   class ArrayNL_t : public Object
   {
   private:
@@ -37,8 +37,8 @@ namespace Structures
     Footer* aFooter(void);
   };
   
-  template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
-  ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>* _pArrayNL_t(void* aAddr);
+  template <eCN CN, class ITEM, i8 MAX_ITEMS>
+  ArrayNL_t<CN, ITEM, MAX_ITEMS>* _pArrayNL_t(void* aAddr);
 }
 
 using namespace Structures;
@@ -55,13 +55,13 @@ using namespace Structures;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
-ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>* Structures::_pArrayNL_t(void* aAddr)
+template <eCN CN, class ITEM, i8 MAX_ITEMS>
+ArrayNL_t<CN, ITEM, MAX_ITEMS>* Structures::_pArrayNL_t(void* aAddr)
 {
-  ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>* pArrayNL_t =
-    reinterpret_cast<ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>*>(aAddr);
+  ArrayNL_t<CN, ITEM, MAX_ITEMS>* pArrayNL_t =
+    reinterpret_cast<ArrayNL_t<CN, ITEM, MAX_ITEMS>*>(aAddr);
   
-  RASSERT_TYPE(pArrayNL_t,ARRAY_CN);
+  RASSERT_TYPE(pArrayNL_t,CN);
   
   return pArrayNL_t;
 }
@@ -69,10 +69,10 @@ ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>* Structures::_pArrayNL_t(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
-void* ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>::operator new(size_t)
+template <eCN CN, class ITEM, i8 MAX_ITEMS>
+void* ArrayNL_t<CN, ITEM, MAX_ITEMS>::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(ARRAY_CN);
+  void* pObject = HeapMem::pAllocate(CN);
   
   return pObject;
 }
@@ -80,8 +80,8 @@ void* ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
-void* ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>::operator new(size_t, void* aAddr)
+template <eCN CN, class ITEM, i8 MAX_ITEMS>
+void* ArrayNL_t<CN, ITEM, MAX_ITEMS>::operator new(size_t, void* aAddr)
 {
   return aAddr;
 }
@@ -89,12 +89,12 @@ void* ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>::operator new(size_t, void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
-void ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>::operator delete(void* pArrayNL_tAddress)
+template <eCN CN, class ITEM, i8 MAX_ITEMS>
+void ArrayNL_t<CN, ITEM, MAX_ITEMS>::operator delete(void* pArrayNL_tAddress)
 {
-  ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>* pArrayNL_t =
-  //reinterpret_cast<ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>*>(pVecAddress);
-    _pArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>(pArrayNL_tAddress);
+  ArrayNL_t<CN, ITEM, MAX_ITEMS>* pArrayNL_t =
+  //reinterpret_cast<ArrayNL_t<CN, ITEM, MAX_ITEMS>*>(pVecAddress);
+    _pArrayNL_t<CN, ITEM, MAX_ITEMS>(pArrayNL_tAddress);
   
   HeapMem::vFree(pArrayNL_t);
 }
@@ -102,11 +102,11 @@ void ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>::operator delete(void* pArrayNL_tAddre
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
-ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>::ArrayNL_t(void)
-: Object(ARRAY_CN)
+template <eCN CN, class ITEM, i8 MAX_ITEMS>
+ArrayNL_t<CN, ITEM, MAX_ITEMS>::ArrayNL_t(void)
+: Object(CN)
 {
-  _precondition_(_MAGIC_,ARRAY_CN,_FOOTER_);
+  _precondition_(_MAGIC_,CN,_FOOTER_);
   
   m_nItems = 0;
   
@@ -115,18 +115,18 @@ ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>::ArrayNL_t(void)
   
   _setFooter_();
   
-  _checkInitialised_(ARRAY_CN);
+  _checkInitialised_(CN);
   
-  _postcondition_(_MAGIC_,ARRAY_CN,_FOOTER_);
+  _postcondition_(_MAGIC_,CN,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
-ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>::~ArrayNL_t(void) noexcept(false)
+template <eCN CN, class ITEM, i8 MAX_ITEMS>
+ArrayNL_t<CN, ITEM, MAX_ITEMS>::~ArrayNL_t(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,ARRAY_CN,_FOOTER_);
+  _precondition_(_MAGIC_,CN,_FOOTER_);
   
 //  for (i8 i_Item = 0; i_Item < m_nItems; i_Item++) {
 //    ITEM xItem = m_xItem[i_Item];
@@ -141,10 +141,10 @@ ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>::~ArrayNL_t(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* [] operator                                                                */
 /*----------------------------------------------------------------------------*/
-template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
-ITEM& ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>::operator [](i8 iItemNo)
+template <eCN CN, class ITEM, i8 MAX_ITEMS>
+ITEM& ArrayNL_t<CN, ITEM, MAX_ITEMS>::operator [](i8 iItemNo)
 {
-  _precondition_(_MAGIC_,ARRAY_CN,_FOOTER_);
+  _precondition_(_MAGIC_,CN,_FOOTER_);
   
   ASSERT(iItemNo >= 0 and iItemNo < MAX_ITEMS);
   
@@ -154,10 +154,10 @@ ITEM& ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>::operator [](i8 iItemNo)
 /*----------------------------------------------------------------------------*/
 /* add an item                                                                */
 /*----------------------------------------------------------------------------*/
-template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
-void ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>::vAdd(ITEM xItem)
+template <eCN CN, class ITEM, i8 MAX_ITEMS>
+void ArrayNL_t<CN, ITEM, MAX_ITEMS>::vAdd(ITEM xItem)
 {
-  _precondition_(_MAGIC_,ARRAY_CN,_FOOTER_);
+  _precondition_(_MAGIC_,CN,_FOOTER_);
   
   // check we have a free slot
   ASSERT(m_nItems >= 0 && m_nItems < MAX_ITEMS - 1);
@@ -176,10 +176,10 @@ void ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>::vAdd(ITEM xItem)
 /*----------------------------------------------------------------------------*/
 /* clear all items                                                            */
 /*----------------------------------------------------------------------------*/
-template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
-void ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>::vClear(void)
+template <eCN CN, class ITEM, i8 MAX_ITEMS>
+void ArrayNL_t<CN, ITEM, MAX_ITEMS>::vClear(void)
 {
-  _precondition_(_MAGIC_,ARRAY_CN,_FOOTER_);
+  _precondition_(_MAGIC_,CN,_FOOTER_);
   
   for (i8 i_Item = 0; i_Item < m_nItems; i_Item++) {
     m_xItem[i_Item] = (ITEM)0;
@@ -191,10 +191,10 @@ void ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>::vClear(void)
 /*----------------------------------------------------------------------------*/
 /* insert an item as first                                                    */
 /*----------------------------------------------------------------------------*/
-template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
-void ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>::vInsert(ITEM xItem)
+template <eCN CN, class ITEM, i8 MAX_ITEMS>
+void ArrayNL_t<CN, ITEM, MAX_ITEMS>::vInsert(ITEM xItem)
 {
-  _precondition_(_MAGIC_,ARRAY_CN,_FOOTER_);
+  _precondition_(_MAGIC_,CN,_FOOTER_);
   
   // check we have a free slot
   ASSERT(m_nItems >= 0 && m_nItems < MAX_ITEMS - 1);
@@ -213,7 +213,7 @@ void ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>::vInsert(ITEM xItem)
     char* aLst = pAdd<char*>(&m_xItem[iItem],sizeof(ITEM));
     i8 nBytes = nSub(aLst,aDst);
     
-    MemLib::vMove(aDst,aSrc,nBytes,ARRAY_CN);
+    MemLib::vMove(aDst,aSrc,nBytes,CN);
   }
   
   // set item
@@ -223,10 +223,10 @@ void ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>::vInsert(ITEM xItem)
 /*----------------------------------------------------------------------------*/
 /* get number of actual items                                                 */
 /*----------------------------------------------------------------------------*/
-template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
-i8 ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>::nItems(void)
+template <eCN CN, class ITEM, i8 MAX_ITEMS>
+i8 ArrayNL_t<CN, ITEM, MAX_ITEMS>::nItems(void)
 {
-  _precondition_(_MAGIC_,ARRAY_CN,_FOOTER_);
+  _precondition_(_MAGIC_,CN,_FOOTER_);
   
   ASSERT(m_nItems >= 0 && m_nItems < MAX_ITEMS);
   
@@ -236,10 +236,10 @@ i8 ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>::nItems(void)
 /*----------------------------------------------------------------------------*/
 /* set number of actual items                                                 */
 /*----------------------------------------------------------------------------*/
-template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
-void ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>::vItems(i8 nItems)
+template <eCN CN, class ITEM, i8 MAX_ITEMS>
+void ArrayNL_t<CN, ITEM, MAX_ITEMS>::vItems(i8 nItems)
 {
-  _precondition_(_MAGIC_,ARRAY_CN,_FOOTER_);
+  _precondition_(_MAGIC_,CN,_FOOTER_);
   
   ASSERT(nItems >= 0 && nItems < MAX_ITEMS);
   
@@ -249,10 +249,10 @@ void ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>::vItems(i8 nItems)
 /*----------------------------------------------------------------------------*/
 /* get a specific item                                                        */
 /*----------------------------------------------------------------------------*/
-template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
-ITEM ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>::xGet(i8 iItem)
+template <eCN CN, class ITEM, i8 MAX_ITEMS>
+ITEM ArrayNL_t<CN, ITEM, MAX_ITEMS>::xGet(i8 iItem)
 {
-  _precondition_(_MAGIC_,ARRAY_CN,_FOOTER_);
+  _precondition_(_MAGIC_,CN,_FOOTER_);
   
   ASSERT(iItem >= 0 && iItem < m_nItems);
   
@@ -264,10 +264,10 @@ ITEM ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>::xGet(i8 iItem)
 /*----------------------------------------------------------------------------*/
 /* get maximum number of items                                                */
 /*----------------------------------------------------------------------------*/
-template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
-i8 ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>::iMaxItems(void)
+template <eCN CN, class ITEM, i8 MAX_ITEMS>
+i8 ArrayNL_t<CN, ITEM, MAX_ITEMS>::iMaxItems(void)
 {
-  _precondition_(_MAGIC_,ARRAY_CN,_FOOTER_);
+  _precondition_(_MAGIC_,CN,_FOOTER_);
   
   return MAX_ITEMS;
 }
@@ -279,10 +279,10 @@ i8 ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>::iMaxItems(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
-Footer* ArrayNL_t<ARRAY_CN, ITEM, MAX_ITEMS>::aFooter(void)
+template <eCN CN, class ITEM, i8 MAX_ITEMS>
+Footer* ArrayNL_t<CN, ITEM, MAX_ITEMS>::aFooter(void)
 {
-  _precondition_(_MAGIC_,ARRAY_CN);
+  _precondition_(_MAGIC_,CN);
   
   return &m_xFooter;
 }
