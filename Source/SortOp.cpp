@@ -130,6 +130,12 @@ BufferCursor* SortOp::pPartitionBuffer(IntBuffer* pIntBuffer, BufferCursor* pLow
       // create a Partition cursor intially with a nullptr element
       BufferCursor* pPartitionCursor = new BufferCursor(pRight);
       //vTrace("Returning %lld\n"_Stz, *pRight->m_aElement);
+      
+      // cleanup
+      delete pLeft;
+      delete pRight;
+      delete pPivotCursor;
+      
       return pPartitionCursor;
     }
     
@@ -167,6 +173,9 @@ void SortOp::vQuickSortBuffer(IntBuffer* pIntBuffer, BufferCursor* pLowCursor, B
     pPartitionCursor->vMoveRight();
     BufferCursor* pPartitionNext = new BufferCursor(pPartitionCursor);
     vQuickSortBuffer(pIntBuffer, pPartitionNext, pHighCursor);
+    
+    delete pPartitionCursor;
+    delete pPartitionNext;
   }
   
 }
@@ -188,6 +197,8 @@ eOR SortOp::eSortLoop(void)
     }
     
     if (CN_ENDMARKER == pOperand->eClass()) {
+      EndMarker* pEndMarker = _pEndMarker(pOperand);
+      delete pEndMarker;
       break;
     }
     
