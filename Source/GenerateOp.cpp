@@ -20,7 +20,7 @@ GenerateOp* PushDown::_pGenerateOp(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allocate a new generatorOp from heap                                       */
+/* new                                                                        */
 /*----------------------------------------------------------------------------*/
 void* GenerateOp::operator new(size_t)
 {
@@ -31,7 +31,7 @@ void* GenerateOp::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
-/* free a generatorOp back to the heap                                        */
+/* delete                                                                     */
 /*----------------------------------------------------------------------------*/
 void GenerateOp::operator delete(void* aAddress)
 {
@@ -41,7 +41,7 @@ void GenerateOp::operator delete(void* aAddress)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 GenerateOp::GenerateOp(Stz* szOpLabel, Jobs::Job* pJob)
 : Op(CN_GENERATEOP,szOpLabel,pJob)
@@ -58,7 +58,7 @@ GenerateOp::GenerateOp(Stz* szOpLabel, Jobs::Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 GenerateOp::~GenerateOp(void) noexcept(false)
 {

@@ -19,7 +19,7 @@ SortOp* PushDown::_pSortOp(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allocate a new SortOp from heap                                            */
+/* new                                                                        */
 /*----------------------------------------------------------------------------*/
 void* SortOp::operator new(size_t)
 {
@@ -30,7 +30,7 @@ void* SortOp::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
-/* free a SortOp back to the heap                                             */
+/* delete                                                                     */
 /*----------------------------------------------------------------------------*/
 void SortOp::operator delete(void* aAddress)
 {
@@ -40,7 +40,7 @@ void SortOp::operator delete(void* aAddress)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SortOp::SortOp(Stz* szOpLabel, Jobs::Job* pJob)
 : Op(CN_SORTOP,szOpLabel,pJob)
@@ -53,7 +53,7 @@ SortOp::SortOp(Stz* szOpLabel, Jobs::Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 SortOp::~SortOp(void) noexcept(false)
 {

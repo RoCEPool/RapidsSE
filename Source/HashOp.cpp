@@ -20,7 +20,7 @@ HashOp* PushDown::_pHashOp(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 HashOp::HashOp(Stz* szOpLabel, Jobs::Job* pJob)
 : Op(CN_HASHOP,szOpLabel,pJob)
@@ -29,7 +29,7 @@ HashOp::HashOp(Stz* szOpLabel, Jobs::Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 HashOp::~HashOp(void) noexcept(false)
 {

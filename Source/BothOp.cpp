@@ -19,7 +19,7 @@ BothOp* PushDown::_pBothOp(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 BothOp::BothOp(Stz* szOpLabel, Jobs::Job* pJob)
 : Op(CN_BOTHOP,szOpLabel,pJob)
@@ -28,7 +28,7 @@ BothOp::BothOp(Stz* szOpLabel, Jobs::Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 BothOp::~BothOp(void) noexcept(false)
 {

@@ -32,7 +32,7 @@ FetchOp* PushDown::_pFetchOp(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allocate from heap                                                         */
+/* new                                                                        */
 /*----------------------------------------------------------------------------*/
 void* FetchOp::operator new(size_t)
 {
@@ -43,7 +43,7 @@ void* FetchOp::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
-/* free to heap                                                               */
+/* delete                                                                     */
 /*----------------------------------------------------------------------------*/
 void FetchOp::operator delete(void* aAddress)
 {
@@ -53,7 +53,7 @@ void FetchOp::operator delete(void* aAddress)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 FetchOp::FetchOp(Stz* szOpLabel, Jobs::Job* pJob)
 : Op(CN_FETCHOP,szOpLabel,pJob)
@@ -71,7 +71,7 @@ FetchOp::FetchOp(Stz* szOpLabel, Jobs::Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 FetchOp::~FetchOp(void) noexcept(false)
 {

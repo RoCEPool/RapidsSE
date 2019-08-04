@@ -20,7 +20,7 @@ TakeawayOp* PushDown::_pTakeawayOp(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 TakeawayOp::TakeawayOp(Stz* szOpLabel, Jobs::Job* pJob)
 : Op(CN_TAKEAWAYOP,szOpLabel,pJob)
@@ -29,7 +29,7 @@ TakeawayOp::TakeawayOp(Stz* szOpLabel, Jobs::Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 TakeawayOp::~TakeawayOp(void) noexcept(false)
 {

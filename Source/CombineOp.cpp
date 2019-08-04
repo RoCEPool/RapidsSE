@@ -19,7 +19,7 @@ CombineOp* PushDown::_pCombineOp(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 CombineOp::CombineOp(Stz* szOpLabel, Jobs::Job* pJob)
 : Op(CN_COMBINEOP,szOpLabel,pJob)
@@ -28,7 +28,7 @@ CombineOp::CombineOp(Stz* szOpLabel, Jobs::Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 CombineOp::~CombineOp(void) noexcept(false)
 {

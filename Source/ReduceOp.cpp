@@ -20,7 +20,7 @@ ReduceOp* PushDown::_pReduceOp(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ReduceOp::ReduceOp(Stz* szOpLabel, Jobs::Job* pJob)
 : Op(CN_REDUCEOP,szOpLabel,pJob)
@@ -29,7 +29,7 @@ ReduceOp::ReduceOp(Stz* szOpLabel, Jobs::Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 ReduceOp::~ReduceOp(void) noexcept(false)
 {

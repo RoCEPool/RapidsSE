@@ -20,7 +20,7 @@ XmitOp* PushDown::_pXmitOp(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XmitOp::XmitOp(Stz* szOpLabel, Jobs::Job* pJob)
 : Op(CN_XMITOP,szOpLabel,pJob)
@@ -29,7 +29,7 @@ XmitOp::XmitOp(Stz* szOpLabel, Jobs::Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 XmitOp::~XmitOp(void) noexcept(false)
 {

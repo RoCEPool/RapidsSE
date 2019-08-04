@@ -20,7 +20,7 @@ WhereOp* PushDown::_pWhereOp(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 WhereOp::WhereOp(Stz* szOpLabel, Jobs::Job* pJob)
 : Op(CN_WHEREOP,szOpLabel,pJob)
@@ -29,7 +29,7 @@ WhereOp::WhereOp(Stz* szOpLabel, Jobs::Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 WhereOp::~WhereOp(void) noexcept(false)
 {

@@ -20,7 +20,7 @@ DistinctOp* PushDown::_pDistinctOp(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 DistinctOp::DistinctOp(Stz* szOpLabel, Jobs::Job* pJob)
 : Op(CN_DISTINCTOP,szOpLabel,pJob)
@@ -29,7 +29,7 @@ DistinctOp::DistinctOp(Stz* szOpLabel, Jobs::Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 DistinctOp::~DistinctOp(void) noexcept(false)
 {

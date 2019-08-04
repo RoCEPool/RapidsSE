@@ -32,7 +32,7 @@ OutputOp* PushDown::_pOutputOp(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allocate a new entry buffer from heap                                      */
+/* new                                                                        */
 /*----------------------------------------------------------------------------*/
 void* OutputOp::operator new(size_t)
 {
@@ -43,7 +43,7 @@ void* OutputOp::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
-/* free an entry buffer back to the heap                                      */
+/* delete                                                                     */
 /*----------------------------------------------------------------------------*/
 void OutputOp::operator delete(void* aAddress)
 {
@@ -53,7 +53,7 @@ void OutputOp::operator delete(void* aAddress)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 OutputOp::OutputOp(Stz* szOpLabel, Jobs::Job* pJob)
 : Op(CN_OUTPUTOP,szOpLabel,pJob)
@@ -68,7 +68,7 @@ OutputOp::OutputOp(Stz* szOpLabel, Jobs::Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 OutputOp::~OutputOp(void) noexcept(false)
 {

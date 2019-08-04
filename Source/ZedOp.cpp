@@ -32,7 +32,7 @@ ZedOp* PushDown::_pZedOp(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allocate a new entry buffer from heap                                      */
+/* new                                                                        */
 /*----------------------------------------------------------------------------*/
 void* ZedOp::operator new(size_t)
 {
@@ -43,7 +43,7 @@ void* ZedOp::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
-/* free an entry buffer back to the heap                                      */
+/* delete                                                                     */
 /*----------------------------------------------------------------------------*/
 void ZedOp::operator delete(void* aAddress)
 {
@@ -53,7 +53,7 @@ void ZedOp::operator delete(void* aAddress)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ZedOp::ZedOp(Stz* szOpLabel, Jobs::Job* pJob)
 : Op(CN_ZEDOP,szOpLabel,pJob)
@@ -68,7 +68,7 @@ ZedOp::ZedOp(Stz* szOpLabel, Jobs::Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 ZedOp::~ZedOp(void) noexcept(false)
 {

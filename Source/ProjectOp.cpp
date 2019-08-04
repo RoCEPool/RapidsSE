@@ -20,7 +20,7 @@ ProjectOp* PushDown::_pProjectOp(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ProjectOp::ProjectOp(Stz* szOpLabel, Jobs::Job* pJob)
 : Op(CN_PROJECTOP,szOpLabel,pJob)
@@ -29,7 +29,7 @@ ProjectOp::ProjectOp(Stz* szOpLabel, Jobs::Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 ProjectOp::~ProjectOp(void) noexcept(false)
 {

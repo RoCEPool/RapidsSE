@@ -20,7 +20,7 @@ MergeOp* PushDown::_pMergeOp(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allocate a new MergeOp from heap                                           */
+/* new                                                                        */
 /*----------------------------------------------------------------------------*/
 void* MergeOp::operator new(size_t)
 {
@@ -31,7 +31,7 @@ void* MergeOp::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
-/* free a MergeOp back to the heap                                            */
+/* delete                                                                     */
 /*----------------------------------------------------------------------------*/
 void MergeOp::operator delete(void* aAddress)
 {
@@ -41,7 +41,7 @@ void MergeOp::operator delete(void* aAddress)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 MergeOp::MergeOp(Stz* szOpLabel, Jobs::Job* pJob)
 : Op(CN_MERGEOP,szOpLabel,pJob)
@@ -58,7 +58,7 @@ MergeOp::MergeOp(Stz* szOpLabel, Jobs::Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 MergeOp::~MergeOp(void) noexcept(false)
 {

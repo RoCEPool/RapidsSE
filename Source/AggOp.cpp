@@ -19,7 +19,7 @@ AggOp* PushDown::_pAggOp(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 AggOp::AggOp(Stz* szOpLabel, Jobs::Job* pJob)
 : Op(CN_AGGOP,szOpLabel,pJob)
@@ -28,7 +28,7 @@ AggOp::AggOp(Stz* szOpLabel, Jobs::Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 AggOp::~AggOp(void) noexcept(false)
 {

@@ -20,7 +20,7 @@ IntersectOp* PushDown::_pIntersectOp(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 IntersectOp::IntersectOp(Stz* szOpLabel, Jobs::Job* pJob)
 : Op(CN_INTERSECTOP,szOpLabel,pJob)
@@ -29,7 +29,7 @@ IntersectOp::IntersectOp(Stz* szOpLabel, Jobs::Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 IntersectOp::~IntersectOp(void) noexcept(false)
 {
