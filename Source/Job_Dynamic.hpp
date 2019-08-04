@@ -12,7 +12,7 @@ namespace Jobs
   public:
     Op*   m_paOp[C_DYNAMIC_OPS];
   
-    OpSet m_oOpSet;
+    OpVec m_oOpSet;
 
     // must be last
     Footer m_xFooter;
