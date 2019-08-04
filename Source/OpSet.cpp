@@ -24,7 +24,6 @@ OpSet* PushDown::_pOpSet(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 OpSet::OpSet(void)
-: Object(CN_OPSET)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSET,_FOOTER_);
 }
