@@ -535,7 +535,7 @@ void Table::vMarkTable(void)
                           pColumn->iColumnScale(),
                           
                           pColumn->bIsNullable() ? "nullable" : "not-null",
-                          pColumn->bIsPartitionKey() ? "part-key" : ""
+                          pColumn->bIsPtnKey() ? "ptn-key" : ""
                           );
 
   }

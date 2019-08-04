@@ -241,7 +241,7 @@ void Jobs::vJob_ListColumns_post(Session* pSession, Job* pJob)
              pColumn->iColumnLength(),
              pColumn->iColumnScale(),
              pColumn->bIsNullable() ? "true"_Stz : "false"_Stz,
-             pColumn->bIsPartitionKey() ? "true"_Stz : "false"_Stz
+             pColumn->bIsPtnKey() ? "true"_Stz : "false"_Stz
       );
       
     }

@@ -150,7 +150,7 @@ void Row::vAppendValue(DtmVal* pDtmVal, Column* pCol)
     
     m_xWsp.vTake(nSrcLength + 1);
 
-    if (pCol->bIsPartitionKey())
+    if (pCol->bIsPtnKey())
       m_iHash += iHashColumn(pCol);
     
     return;
@@ -161,7 +161,7 @@ void Row::vAppendValue(DtmVal* pDtmVal, Column* pCol)
   
   m_waColVal[i_Col].m_iInt = pDtmVal->m_wDtm.m_iInt;
 
-  if (pCol->bIsPartitionKey())
+  if (pCol->bIsPtnKey())
     m_iHash += iHashColumn(pCol);
 }
 

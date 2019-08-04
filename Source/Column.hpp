@@ -90,8 +90,8 @@ namespace MetaData
     bool bIsNullable(void);
     void vIsNullable(bool bIsNullable);
   
-    bool bIsPartitionKey(void);
-    void vIsPartitionKey(bool bIsPartitionKey);
+    bool bIsPtnKey(void);
+    void vIsPtnKey(bool bIsPtnKey);
 
     void vShow(void);
   

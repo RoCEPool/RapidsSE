@@ -204,7 +204,7 @@ eEC Job_CreateTable::ePopulateJob(TokenVec* pTokenVec)
   else {
     // no partition by clause
     // we will create partitioning using the first column
-    m_xColumns[0].vIsPartitionKey(true);
+    m_xColumns[0].vIsPtnKey(true);
   }
   
   //vShow();
@@ -234,7 +234,7 @@ void Job_CreateTable::vShow(void)
     vTrace("  m_xColumns[%lld].iColumnScale = %lld\n"_Stz, i_Column, m_xColumns[i_Column].iColumnScale());
     vTrace("  m_xColumns[%lld].bIsNullable = %s\n"_Stz, i_Column, m_xColumns[i_Column].bIsNullable() ? "true" : "false");
     vTrace("  m_xColumns[%lld].bIsUnique = %s\n"_Stz, i_Column, m_xColumns[i_Column].bIsUnique()? "true" : "false");
-    vTrace("  m_xColumns[%lld].bIsPartitionKey = %s\n"_Stz, i_Column, m_xColumns[i_Column].bIsPartitionKey() ? "true" : "false");
+    vTrace("  m_xColumns[%lld].bIsPartitionKey = %s\n"_Stz, i_Column, m_xColumns[i_Column].bIsPtnKey() ? "true" : "false");
     vTrace("  m_xColumns[%lld].eDatum = %s\n"_Stz, i_Column, m_xColumns[i_Column].eDatumType());
   }
 }
@@ -542,7 +542,7 @@ bool Job_CreateTable::bPartitionTable(TokenVec* pTokenVec, i8 iCurrentToken)
     // find column and set as partition column
     for (i8 i_Column=0; i_Column< m_iColumns; i_Column++) {
       if (m_xColumns[i_Column].sColumnName().bSame(pTokenVec->pGet(iCurrentToken)->aText())) {
-        m_xColumns[i_Column].vIsPartitionKey(true);
+        m_xColumns[i_Column].vIsPtnKey(true);
         iCurrentToken++;
         bFound = true;
         break;

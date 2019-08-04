@@ -130,7 +130,7 @@ void Slots::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
   ASSERT(bFound);
   
   // mark teh column as a partion key column
-  pColumn->vIsPartitionKey(true);
+  pColumn->vIsPtnKey(true);
   
   m_pPtnColVec->vInsert(pColumn);
 }
@@ -150,7 +150,7 @@ void Slots::vCreateColumnVec(void)
   bool bFound = false;
   for (i8 i_Col = 0; i_Col < iColumns; i_Col++) {
     pColumn = m_pTable->pColumnVec()->pGet(i_Col);
-    if (pColumn->bIsPartitionKey()) {
+    if (pColumn->bIsPtnKey()) {
       m_pPtnColVec->vInsert(pColumn);
     }
   }

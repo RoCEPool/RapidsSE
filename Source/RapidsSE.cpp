@@ -975,7 +975,7 @@ eEC RapidsSE_GetTableColumnRow(i8 iTrace, Session* pSession, void* aJob,
           pColumn->iColumnLength(),
           pColumn->iColumnScale(),
           pColumn->bIsNullable() ? "true" : "false",
-          pColumn->bIsPartitionKey() ? "true": "false"
+          pColumn->bIsPtnKey() ? "true": "false"
           );
   API_LOC(340);
   

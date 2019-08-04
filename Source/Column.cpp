@@ -360,7 +360,7 @@ bool Column::bIsUnique(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set is unique?                                                           */
+/* set is unique?                                                             */
 /*----------------------------------------------------------------------------*/
 void Column::vIsUnique(bool bIsUnique)
 {
@@ -372,7 +372,7 @@ void Column::vIsUnique(bool bIsUnique)
 /*----------------------------------------------------------------------------*/
 /* get is partition key?                                                      */
 /*----------------------------------------------------------------------------*/
-bool Column::bIsPartitionKey(void)
+bool Column::bIsPtnKey(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
@@ -382,11 +382,11 @@ bool Column::bIsPartitionKey(void)
 /*----------------------------------------------------------------------------*/
 /* set is partition key?                                                      */
 /*----------------------------------------------------------------------------*/
-void Column::vIsPartitionKey(bool bIsPartitionKey)
+void Column::vIsPtnKey(bool bIsPtnKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
-  m_bIsPtnKey = bIsPartitionKey;
+  m_bIsPtnKey = bIsPtnKey;
 }
 
 /*----------------------------------------------------------------------------*/

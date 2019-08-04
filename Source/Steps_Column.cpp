@@ -56,7 +56,7 @@ void Step::vColumnIsPartitionKeyFetch(MP_Task mpTask)
   ASSERT(CN_COLUMN == pColumn->eClass());
   
   s32 sIsPartitionKey;
-  sIsPartitionKey = pColumn->bIsPartitionKey() ? "true"_Stz : "false"_Stz;
+  sIsPartitionKey = pColumn->bIsPtnKey() ? "true"_Stz : "false"_Stz;
   
   mpTask->m_pDataStack->vPushS32(sIsPartitionKey);
   
