@@ -18,7 +18,7 @@ namespace PushDown
     void* operator new(size_t);
     void  operator delete(void*);
 
-    FetchOp(Stz* szOpLabel, Jobs::Job* pJob);
+    FetchOp(Stz* szOpLabel, Digest* pDigest, Jobs::Job* pJob);
    ~FetchOp(void) noexcept(false);
 
     static Op* pNew(Digest* pDigest, Job_Dynamic* pJob, Stz* szLabel,

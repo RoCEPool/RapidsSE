@@ -55,7 +55,7 @@ void ZedOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ZedOp::ZedOp(Stz* szOpLabel, Jobs::Job* pJob)
+ZedOp::ZedOp(Stz* szOpLabel, Digest* pDigest, Jobs::Job* pJob)
 : Op(CN_ZEDOP,&__Op_Zed,szOpLabel,pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ZEDOP,_FOOTER_);
@@ -87,7 +87,7 @@ Op* ZedOp::pNew(Digest* pDigest, Job_Dynamic* pJob, Stz* szLabel,
 {
   i_Tkn_++;
   
-  ZedOp* pZedOp = new ZedOp(szLabel,(Job*)pJob);
+  ZedOp* pZedOp = new ZedOp(szLabel,pDigest,(Job*)pJob);
   
   return pZedOp;
 }

@@ -55,7 +55,7 @@ void FetchOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-FetchOp::FetchOp(Stz* szOpLabel, Jobs::Job* pJob)
+FetchOp::FetchOp(Stz* szOpLabel, Digest* pDigest, Jobs::Job* pJob)
 : Op(CN_FETCHOP,&__Op_Fetch,szOpLabel,pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
@@ -90,7 +90,7 @@ Op* FetchOp::pNew(Digest* pDigest, Job_Dynamic* pJob, Stz* szLabel,
 {
   i_Tkn_++;
   
-  FetchOp* pFetchOp = new FetchOp(szLabel,(Job*)pJob);
+  FetchOp* pFetchOp = new FetchOp(szLabel,pDigest,(Job*)pJob);
   
   s32 sTableNm = pTknVec->pGet(i_Tkn_++)->aText();
   AM::vTableName(pJob,sTableNm);

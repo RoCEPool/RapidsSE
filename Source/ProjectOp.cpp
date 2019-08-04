@@ -22,7 +22,7 @@ ProjectOp* PushDown::_pProjectOp(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ProjectOp::ProjectOp(Stz* szOpLabel, Jobs::Job* pJob)
+ProjectOp::ProjectOp(Stz* szOpLabel, Digest* pDigest, Jobs::Job* pJob)
 : Op(CN_PROJECTOP,nullptr,szOpLabel,pJob)
 {
   _precondition_(_MAGIC_,CN_PROJECTOP);

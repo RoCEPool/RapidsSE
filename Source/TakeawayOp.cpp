@@ -22,7 +22,7 @@ TakeawayOp* PushDown::_pTakeawayOp(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TakeawayOp::TakeawayOp(Stz* szOpLabel, Jobs::Job* pJob)
+TakeawayOp::TakeawayOp(Stz* szOpLabel, Digest* pDigest, Jobs::Job* pJob)
 : Op(CN_TAKEAWAYOP,nullptr,szOpLabel,pJob)
 {
   _precondition_(_MAGIC_,CN_TAKEAWAYOP);

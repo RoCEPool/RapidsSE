@@ -13,7 +13,7 @@ namespace PushDown
     Footer m_xFooter;
 
   public:
-    DistinctOp(Stz* szOpLabel, Jobs::Job* pJob);
+    DistinctOp(Stz* szOpLabel, Digest* pDigest, Jobs::Job* pJob);
    ~DistinctOp(void) noexcept(false);
   
   private:

@@ -55,7 +55,7 @@ void OutputOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OutputOp::OutputOp(Stz* szOpLabel, Jobs::Job* pJob)
+OutputOp::OutputOp(Stz* szOpLabel, Digest* pDigest, Jobs::Job* pJob)
 : Op(CN_OUTPUTOP,&__Op_Output,szOpLabel,pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
@@ -87,7 +87,7 @@ Op* OutputOp::pNew(Digest* pDigest, Job_Dynamic* pJob, Stz* szLabel,
 {
   i_Tkn_++;
   
-  OutputOp* pOutputOp = new OutputOp(szLabel,(Job*)pJob);
+  OutputOp* pOutputOp = new OutputOp(szLabel,pDigest,(Job*)pJob);
   
   return pOutputOp;
 }

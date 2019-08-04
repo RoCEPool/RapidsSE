@@ -17,7 +17,7 @@ namespace PushDown
     void* operator new(size_t);
     void  operator delete(void*);
 
-    GenerateOp(Stz* szOpLabel, Jobs::Job* pJob);
+    GenerateOp(Stz* szOpLabel, Digest* pDigest, Jobs::Job* pJob);
    ~GenerateOp(void) noexcept(false);
 
     static eOR eCallLoop(void* aThis);

@@ -43,7 +43,7 @@ void MergeOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MergeOp::MergeOp(Stz* szOpLabel, Jobs::Job* pJob)
+MergeOp::MergeOp(Stz* szOpLabel, Digest* pDigest, Jobs::Job* pJob)
 : Op(CN_MERGEOP,nullptr,szOpLabel,pJob)
 {
   _precondition_(_MAGIC_,CN_MERGEOP);

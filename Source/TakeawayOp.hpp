@@ -13,7 +13,7 @@ namespace PushDown
     Footer m_xFooter;
 
   public:
-    TakeawayOp(Stz* szOpLabel, Jobs::Job* pJob);
+    TakeawayOp(Stz* szOpLabel, Digest* pDigest, Jobs::Job* pJob);
    ~TakeawayOp(void) noexcept(false);
   
   private:
