@@ -5,8 +5,6 @@
 
 namespace Logging
 {
-  static const i8 C_LOG_TEXT = 128;
-  
   class LogEntry : public Object
   {
   friend class Log;
