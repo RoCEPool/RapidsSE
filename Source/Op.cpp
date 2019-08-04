@@ -35,7 +35,7 @@ void Op::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Op::Op(eCN eClassNo, Stz* szLabel, Digest* pDigest, OpDesc* aOpDesc)
+Op::Op(eCN eClassNo, Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn)
 : Object(eClassNo)
 {
   _precondition_(_MAGIC_,eClassNo);
