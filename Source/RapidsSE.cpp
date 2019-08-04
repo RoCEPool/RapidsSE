@@ -17,19 +17,19 @@ extern Log* gpLog;
 /*----------------------------------------------------------------------------*/
 /* check the library version against given version                            */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_CheckVersion(i8 iTrace, Stz* sVersion)
+eEC RapidsSE_CheckVersion(i8 iTrace, Stz* szVersion)
 {
   API_SYSTEM_LEVEL();
   API_ENTER(AC_CheckVersion);
-  API_PARAM(sVersion);
+  API_PARAM(szVersion);
   API_BEGIN();
   
   try {
     
-    if ( ! sVersion->bEqual((Stz*)RAPIDSSE_VERSION_STRING)) {
+    if ( ! szVersion->bEqual((Stz*)RAPIDSSE_VERSION_STRING)) {
       
       vTrace(">RapidsSE_CheckLibraryVersion: RDP (%s) does not match Engine (%s)"_Stz,
-             sVersion, RAPIDSSE_VERSION_STRING);
+             szVersion, RAPIDSSE_VERSION_STRING);
       
       API_RETURN_ERROR_NO_SESSION(EC_VERSION_MISMATCH);
     }
@@ -96,13 +96,13 @@ int RapidsSE_IsInvalidSession(i8 iTrace, int iError)
 /* create a new se session                                                    */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_NewSession(i8 iTrace,
-                        Stz* sCatalog, Stz* sSchema, i8 iPartition,
+                        Stz* szCatalog, Stz* szSchema, i8 iPartition,
                         void** aaSession)
 {
   API_SYSTEM_LEVEL();
   API_ENTER(AC_NewSession);
-  API_PARAM(sCatalog);
-  API_PARAM(sSchema);
+  API_PARAM(szCatalog);
+  API_PARAM(szSchema);
   API_NOTNULL(aaSession);
   API_BEGIN();
   try {
@@ -111,7 +111,7 @@ eEC RapidsSE_NewSession(i8 iTrace,
    
     pSession = new Session(iPartition);
     
-    eEC eError = pSession->eInit(sCatalog,sSchema);
+    eEC eError = pSession->eInit(szCatalog,szSchema);
 
     
     if (eError != EC_NONE)
@@ -130,18 +130,18 @@ eEC RapidsSE_NewSession(i8 iTrace,
 /*----------------------------------------------------------------------------*/
 /* open the shared memory buffer pool                                         */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_OpenPool(i8 iTrace, Stz* sRegion, void** aaAttachMap)
+eEC RapidsSE_OpenPool(i8 iTrace, Stz* szRegion, void** aaAttachMap)
 {
   API_SYSTEM_LEVEL();
   API_ENTER(AC_OpenPool);
-  API_PARAM(sRegion);
+  API_PARAM(szRegion);
   API_BEGIN();
   
   try {
     
     // open the pool
     s32 sPoolName;
-    sPoolName = (Stz*)sRegion;
+    sPoolName = (Stz*)szRegion;
     
     bool bResult = Engine::bOpenPool(sPoolName);
     if (! bResult)
@@ -174,18 +174,18 @@ eEC RapidsSE_OpenPool(i8 iTrace, Stz* sRegion, void** aaAttachMap)
 /* begin the insert table job                                                 */
 /*----------------------------------------------------------------------------*/
 eEC  RapidsSE_BeginFetch(i8 iTrace, Session* pSession,
-                         Stz* aTable, void** aaTable)
+                         Stz* szTable, void** aaTable)
 {
   API_SESSION_LEVEL();
   API_ENTER(AC_BeginFetch);
-  API_PARAM(aTable);
+  API_PARAM(szTable);
   API_NOTNULL(aaTable);
   API_BEGIN();
   
   try {
     
     // find the table in the session dictionary stack
-    Table* pTable = Table::pFindTable(pSession->pPathStack(), aTable);
+    Table* pTable = Table::pFindTable(pSession->pPathStack(), szTable);
     API_LOC(310);
     
     *aaTable = pTable;
@@ -201,7 +201,7 @@ eEC  RapidsSE_BeginFetch(i8 iTrace, Session* pSession,
 /* begin the insert table job                                                 */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_BeginInsert(i8 iTrace, Session* pSession,
-                         Stz* sTable, i8 nSubInserters, void** aaJob)
+                         Stz* szTable, i8 nSubInserters, void** aaJob)
 {
   API_SESSION_LEVEL();
   API_ENTER(AC_BeginInsert);
@@ -220,7 +220,7 @@ eEC RapidsSE_BeginInsert(i8 iTrace, Session* pSession,
     API_LOC(320);
 
     // find the table in the session dictionary stack
-    Table* pTable = Table::pFindTable(pSession->pPathStack(), sTable);
+    Table* pTable = Table::pFindTable(pSession->pPathStack(), szTable);
     API_LOC(330);
 
     // set the table in the InsertTable job
@@ -272,24 +272,24 @@ eEC RapidsSE_EndJobs(i8 iTrace, Session* pSession)
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession,
-                            Stz* sCatalog, Stz* sSchema, Stz* sCommand,
+                            Stz* szCatalog, Stz* szSchema, Stz* szCommand,
                             void** aaJob)
 {
   API_SESSION_LEVEL();
   API_ENTER(AC_ExecuteCommand);
-  API_PARAM(sCommand);
+  API_PARAM(szCommand);
   API_BEGIN();
   
   try {
     
     // set the catalog and schema in the session
-    eEC eError = pSession->eInit(sCatalog, sSchema);
+    eEC eError = pSession->eInit(szCatalog, szSchema);
     if (eError != EC_NONE)
       API_RETURN_ERROR(eError);
     API_LOC(310);
 
     // execute the command
-    Job* pJob = Api::pExecuteCommand(pSession, sCommand, false, false);
+    Job* pJob = Api::pExecuteCommand(pSession, szCommand, false, false);
     API_LOC(320);
 
     ApiState::vMarkJob(pSession,pJob);
@@ -328,11 +328,11 @@ eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession,
 /* insert the given row into a table                                          */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
-                       Stz* sTableName, Stz* sRecord)
+                       Stz* szTableNm, Stz* szRecord)
 {
   API_SESSION_LEVEL();
   API_ENTER(AC_InsertRow);
-  API_NOTNULL(sRecord);
+  API_NOTNULL(szRecord);
   API_BEGIN();
   
   try {
@@ -354,7 +354,7 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
     API_LOC(340);
     
     // get the length of the record
-    i8 iRawDataLength = StrLib::iSize(sRecord->aChar());
+    i8 iRawDataLength = StrLib::iSize(szRecord->aChar());
     API_LOC(350);
     
     // check length of record
@@ -363,8 +363,8 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
     API_LOC(360);
     
     // set the row in the insertRow job
-    pJob_InsertRow->m_sObjectName = sTableName;
-    pJob_InsertRow->m_pRecord->vRecStr(sRecord);
+    pJob_InsertRow->m_sObjectName = szTableNm;
+    pJob_InsertRow->m_pRecord->vRecStr(szRecord);
     
     //pJob_InsertRow->m_nRawDataBytes = iRawDataLength;
     API_LOC(370);
@@ -699,7 +699,7 @@ eEC RapidsSE_FetchNextBuffer(i8 iTrace, Session* pSession, void* aJob,
 /*----------------------------------------------------------------------------*/
 /* fetch table                                                                */
 /*----------------------------------------------------------------------------*/
-eEC  RapidsSE_FetchTable (i8 iTrace, Session* pSession, Stz* aTable,
+eEC  RapidsSE_FetchTable (i8 iTrace, Session* pSession, Stz* szTable,
                           i8 iPartition, void** aaCrwBuffer, i8* aiRowCount)
 {
 
@@ -714,7 +714,7 @@ eEC  RapidsSE_FetchTable (i8 iTrace, Session* pSession, Stz* aTable,
   try {
     
     // find the table in the session dictionary stack
-    Table* pTable = Table::pFindTable(pSession->pPathStack(), aTable);
+    Table* pTable = Table::pFindTable(pSession->pPathStack(), szTable);
     API_LOC(310);
     
     // get first entry buffer
@@ -1028,7 +1028,8 @@ eEC RapidsSE_GetTableColumnRowCount(i8 iTrace, Session* pSession, void* aJob,
 eEC RapidsSE_NextRow(i8 iTrace, Session* pSession, void* aTable, i8 iPartition,
                      i8* aiExpectedRows,
                      void** aaEntBuffer,
-                     void** aaItem, void** aaRow
+                     void** aaItem,
+                     void** aaRow
                      )
 {
   API_SESSION_LEVEL();
