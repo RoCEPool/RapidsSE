@@ -8,7 +8,7 @@ namespace PushDown
   class OpHelper
   {
   public:
-    static void vDynamicCommand(Digest* pDigest, OpVec* pOpVec,TokenVec* pTknVec);
+    static void vDynamicCommand(Digest* pDigest, TokenVec* pTknVec);
   };
 }
 

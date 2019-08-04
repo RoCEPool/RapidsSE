@@ -9,7 +9,7 @@ extern OpCatalog gxOpCatalog;
 /*----------------------------------------------------------------------------*/
 /* process dynamic command                                                    */
 /*----------------------------------------------------------------------------*/
-void OpHelper::vDynamicCommand(Digest* pDigest, OpVec* pOpVec, TokenVec* pTknVec)
+void OpHelper::vDynamicCommand(Digest* pDigest, TokenVec* pTknVec)
 {
   s256 sTknStr;
   s32  sLabel;
@@ -38,18 +38,20 @@ void OpHelper::vDynamicCommand(Digest* pDigest, OpVec* pOpVec, TokenVec* pTknVec
     }
 
     // new an op
-    sLabel.vSprint("%s_%02lld"_Stz,aOpDefn->m_szPrefix,pOpVec->nItems());
+    sLabel.vSprint("%s_%02lld"_Stz,
+                   aOpDefn->m_szPrefix,
+                   pDigest->m_oOpVec.nItems());
     Op* pOp = (aOpDefn->m_fpNew)(pDigest,(Job_Dynamic*)pDigest->m_pJob,sLabel,pTknVec,i_Tkn);
-    pOpVec->vAdd(pOp);
+    pDigest->m_oOpVec.vAdd(pOp);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // link
   
-  for (i8 i_Op = 0; i_Op < pOpVec->nItems() - 1; i_Op++) {
+  for (i8 i_Op = 0; i_Op < pDigest->m_oOpVec.nItems() - 1; i_Op++) {
     
-    Op* pOp = pOpVec->pGet(i_Op);
-    Op* pOpNext = pOpVec->pGet(i_Op + 1);
+    Op* pOp = pDigest->m_oOpVec.pGet(i_Op);
+    Op* pOpNext = pDigest->m_oOpVec.pGet(i_Op + 1);
     
     pOp->vNextLabel(pOpNext->szLabel());
     pOp->vOpOut(pOpNext);
@@ -60,9 +62,9 @@ void OpHelper::vDynamicCommand(Digest* pDigest, OpVec* pOpVec, TokenVec* pTknVec
 
   vTrace("Dynamic Job:\n"_Stz);
          
-  for (i8 i_Op = 0; i_Op < pOpVec->nItems(); i_Op++) {
+  for (i8 i_Op = 0; i_Op < pDigest->m_oOpVec.nItems(); i_Op++) {
     
-    Op* pOp = pOpVec->pGet(i_Op);
+    Op* pOp = pDigest->m_oOpVec.pGet(i_Op);
 
     vTrace("  [%02lld] { %6s: %8s(%s) :%-6s }\n"_Stz,
            i_Op,
