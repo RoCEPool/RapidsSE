@@ -81,6 +81,7 @@ namespace MetaData
     Dic* pSubDic(void);
     void vSubLoaders(i8 iSubLoaders);
     Slots* pSlots(void);
+    StreamDef* pStreamDef(void);
     Stz* aTableName(void);
     void vTidyUp(void);
     void vTidyUpIndex(i8 iIndexNo);

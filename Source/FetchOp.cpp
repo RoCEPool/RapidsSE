@@ -124,7 +124,9 @@ eOR FetchOp::eFetchLoop(void)
     m_pTablePtn = AM::pTable((Job_Dynamic*)m_pJob)->pSlots()->pPartition(0);
   }
   
-  
+  StreamDef* pStreamDef = AM::pTable((Job_Dynamic*)m_pJob)->pStreamDef();
+  vPipeOut(pStreamDef);
+
   for (m_pCrwBuffer = m_pTablePtn->pRootCrwBuffer();
        m_pCrwBuffer;
        m_pCrwBuffer = m_pCrwBuffer->pNextBuffer()) {
