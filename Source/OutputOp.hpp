@@ -19,7 +19,8 @@ namespace PushDown
     OutputOp(Stz* szOpLabel, Jobs::Job* pJob);
    ~OutputOp(void) noexcept(false);
   
-    static Op* pNew(Job_Dynamic* pJob, Stz* szLabel, TokenVec* pTknVec, i8& i_Tkn_);
+    static Op* pNew(Digest* pDigest, Job_Dynamic* pJob, Stz* szLabel,
+                    TokenVec* pTknVec, i8& i_Tkn_);
     static eOR eCall(void* aThis);
   
     eOR eOutputLoop(void);

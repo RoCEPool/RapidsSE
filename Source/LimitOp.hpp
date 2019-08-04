@@ -22,7 +22,8 @@ namespace PushDown
     LimitOp(Stz* szOpLabel, Jobs::Job* pJob);
    ~LimitOp(void) noexcept(false);
   
-    static Op* pNew(Job_Dynamic* pJob, Stz* szLabel, TokenVec* pTknVec, i8& i_Tkn_);
+    static Op* pNew(Digest* pDigest, Job_Dynamic* pJob, Stz* szLabel,
+                    TokenVec* pTknVec, i8& i_Tkn_);
     static eOR eCall(void* aThis);
   
     eOR eLimitLoop(void);

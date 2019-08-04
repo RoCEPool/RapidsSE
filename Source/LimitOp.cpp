@@ -85,7 +85,8 @@ LimitOp::~LimitOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new function                                                       */
 /*----------------------------------------------------------------------------*/
-Op* LimitOp::pNew(Job_Dynamic* pJob, Stz* szLabel, TokenVec* pTknVec, i8& i_Tkn_)
+Op* LimitOp::pNew(Digest* pDigest, Job_Dynamic* pJob, Stz* szLabel,
+                  TokenVec* pTknVec, i8& i_Tkn_)
 {
   i_Tkn_++;
   

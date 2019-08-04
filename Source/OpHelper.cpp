@@ -40,7 +40,7 @@ void OpHelper::vDynamicCommand(Digest* pDigest, Job_Dynamic* pJob,
 
     // new an op
     sLabel.vSprint("%s_%02lld"_Stz,aOpDefn->m_szPrefix,pOpVec->nItems());
-    Op* pOp = (aOpDefn->m_fpNew)(pJob,sLabel,pTknVec,i_Tkn);
+    Op* pOp = (aOpDefn->m_fpNew)(pDigest,pJob,sLabel,pTknVec,i_Tkn);
     pOpVec->vAdd(pOp);
   }
   

@@ -82,7 +82,8 @@ ZedOp::~ZedOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* function which parses the command and new's an op                          */
 /*----------------------------------------------------------------------------*/
-Op* ZedOp::pNew(Job_Dynamic* pJob, Stz* szLabel, TokenVec* pTknVec, i8& i_Tkn_)
+Op* ZedOp::pNew(Digest* pDigest, Job_Dynamic* pJob, Stz* szLabel,
+                TokenVec* pTknVec, i8& i_Tkn_)
 {
   i_Tkn_++;
   
