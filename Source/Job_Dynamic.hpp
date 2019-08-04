@@ -10,7 +10,9 @@ namespace Jobs
   class Job_Dynamic : public JobMark2
   {
   public:
-    Op* m_paOp[C_DYNAMIC_OPS];
+    Op*   m_paOp[C_DYNAMIC_OPS];
+  
+    OpSet m_oOpSet;
 
     // must be last
     Footer m_xFooter;
