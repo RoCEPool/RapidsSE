@@ -60,9 +60,13 @@ LimitOp::LimitOp(Stz* szOpLabel, Jobs::Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LIMITOP,_FOOTER_);
   
+  m_fpOpFun = LimitOp::eCall;
+
   m_nLimit = 0;
   m_nSoFar = 0;
   
+  _checkInitialised_(CN_LIMITOP);
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_LIMITOP,_FOOTER_);
 }
 
@@ -87,6 +91,8 @@ Op* LimitOp::pNew(Job_Dynamic* pJob, Stz* szLabel, TokenVec* pTknVec, i8& i_Tkn_
   
   LimitOp* pLimitOp = new LimitOp(szLabel,(Job*)pJob);
   
+  pLimitOp->m_nLimit = pTknVec->pGet(i_Tkn_++)->iToI8();
+  
   return pLimitOp;
 }
 
@@ -109,8 +115,38 @@ eOR LimitOp::eCall(void* aThis)
 /*----------------------------------------------------------------------------*/
 eOR LimitOp::eLimitLoop(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LIMITOP,_FOOTER_);
   
+  for (;;) {
+    
+    Operand* pOperand = pPopOperand();
+    
+    if (! pOperand) {
+      ASSERT(bIsLocked());
+      return OR_BIDE;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    switch (pOperand->eClass()) {
+        
+      case CN_ENDMARKER:
+        vPipeOut(pOperand);
+        goto L_EXIT;
+        
+      case CN_CRWBUFFER:
+        m_nSoFar++;
+        break;
+        
+      default:
+        break;
+    }
+    
+    vPipeOut(pOperand);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+L_EXIT:
   return OR_EXIT;
 }
 

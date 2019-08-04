@@ -60,9 +60,9 @@ OutputOp::OutputOp(Stz* szOpLabel, Jobs::Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
   
-  _checkInitialised_(CN_OUTPUTOP);
-
   m_fpOpFun = OutputOp::eCall;
+  
+  _checkInitialised_(CN_OUTPUTOP);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
 }
