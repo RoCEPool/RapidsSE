@@ -35,7 +35,7 @@ void Op::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Op::Op(eCN eClassNo, OpDesc* aOpDesc, Stz* szLabel, Job* pJob)
+Op::Op(eCN eClassNo, OpDesc* aOpDesc, Stz* szLabel, Digest* pDigest)
 : Object(eClassNo)
 {
   _precondition_(_MAGIC_,eClassNo);
@@ -44,7 +44,7 @@ Op::Op(eCN eClassNo, OpDesc* aOpDesc, Stz* szLabel, Job* pJob)
   m_sArgs         = ""_Stz;
   m_sNextLabel    = "<nil>"_Stz;
   
-  m_pJob          = pJob;
+  m_pJob          = pDigest->m_pJob;
   m_pTask         = nullptr;
   
   m_bAckJobEnd    = true;

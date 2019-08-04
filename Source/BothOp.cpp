@@ -21,8 +21,8 @@ BothOp* PushDown::_pBothOp(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-BothOp::BothOp(Stz* szOpLabel, Digest* pDigest, Jobs::Job* pJob)
-: Op(CN_BOTHOP,nullptr,szOpLabel,pJob)
+BothOp::BothOp(Stz* szOpLabel, Digest* pDigest)
+: Op(CN_BOTHOP,nullptr,szOpLabel,pDigest)
 {
   _precondition_(_MAGIC_,CN_BOTHOP);
 }

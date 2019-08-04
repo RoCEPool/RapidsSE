@@ -22,8 +22,8 @@ WhereOp* PushDown::_pWhereOp(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-WhereOp::WhereOp(Stz* szOpLabel, Digest* pDigest, Jobs::Job* pJob)
-: Op(CN_WHEREOP,nullptr,szOpLabel,pJob)
+WhereOp::WhereOp(Stz* szOpLabel, Digest* pDigest)
+: Op(CN_WHEREOP,nullptr,szOpLabel,pDigest)
 {
   _precondition_(_MAGIC_,CN_WHEREOP);
 }

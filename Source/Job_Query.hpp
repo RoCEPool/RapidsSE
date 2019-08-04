@@ -8,6 +8,8 @@ namespace Jobs
   class Job_Query : public JobMark2
   {
   public:
+  
+    Digest*   m_pDigest;    // op digest
 
     FetchOp*  m_pFetchOp;   // source
     OutputOp* m_pOutputOp;  // output

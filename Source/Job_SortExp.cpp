@@ -106,11 +106,13 @@ Job_SortExp::Job_SortExp(Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SORTEXP,_FOOTER_);
   
-  m_pGenerateOp = new GenerateOp("G_0"_Stz,nullptr,this);
-  m_pSortOp     = new SortOp ("S_0"_Stz,nullptr,this);
-  m_pMergeOp    = new MergeOp ("M_0"_Stz,nullptr,this);
-  m_pOutputOp   = new OutputOp("O_0"_Stz,nullptr,this);
-  m_pZedOp      = new ZedOp   ("Z_0"_Stz,nullptr,this);
+  m_pDigest = new Digest(this);
+  
+  m_pGenerateOp = new GenerateOp("G_0"_Stz,m_pDigest);
+  m_pSortOp     = new SortOp    ("S_0"_Stz,m_pDigest);
+  m_pMergeOp    = new MergeOp   ("M_0"_Stz,m_pDigest);
+  m_pOutputOp   = new OutputOp  ("O_0"_Stz,m_pDigest);
+  m_pZedOp      = new ZedOp     ("Z_0"_Stz,m_pDigest);
 
   _checkInitialised_(CN_JOB_SORTEXP);
 
@@ -129,6 +131,8 @@ Job_SortExp::~Job_SortExp(void) noexcept(false)
   delete m_pMergeOp;
   delete m_pOutputOp;
   delete m_pZedOp;
+  
+  delete m_pDigest;
 }
 
 

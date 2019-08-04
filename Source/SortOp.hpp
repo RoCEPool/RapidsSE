@@ -16,7 +16,7 @@ namespace PushDown
     void* operator new(size_t);
     void  operator delete(void*);
     
-    SortOp(Stz* szOpLabel, Digest* pDigest, Jobs::Job* pJob);
+    SortOp(Stz* szOpLabel, Digest* pDigest);
    ~SortOp(void) noexcept(false);
   
     static eOR eCallLoop(void* aThis);

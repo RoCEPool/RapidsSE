@@ -13,7 +13,7 @@ namespace PushDown
     Footer m_xFooter;
 
   public:
-    IntersectOp(Stz* szOpLabel, Digest* pDigest, Jobs::Job* pJob);
+    IntersectOp(Stz* szOpLabel, Digest* pDigest);
    ~IntersectOp(void) noexcept(false);
   
   private:

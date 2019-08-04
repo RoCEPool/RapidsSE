@@ -13,7 +13,7 @@ namespace PushDown
     Footer m_xFooter;
 
   public:
-    WhereOp(Stz* szOpLabel, Digest* pDigest, Jobs::Job* pJob);
+    WhereOp(Stz* szOpLabel, Digest* pDigest);
    ~WhereOp(void) noexcept(false);
   
   private:

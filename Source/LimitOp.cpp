@@ -55,8 +55,8 @@ void LimitOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-LimitOp::LimitOp(Stz* szOpLabel, Digest* pDigest, Jobs::Job* pJob)
-: Op(CN_LIMITOP,&__Op_Limit,szOpLabel,pJob)
+LimitOp::LimitOp(Stz* szOpLabel, Digest* pDigest)
+: Op(CN_LIMITOP,&__Op_Limit,szOpLabel,pDigest)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LIMITOP,_FOOTER_);
   
@@ -90,7 +90,7 @@ Op* LimitOp::pNew(Digest* pDigest, Job_Dynamic* pJob, Stz* szLabel,
 {
   i_Tkn_++;
   
-  LimitOp* pLimitOp = new LimitOp(szLabel,pDigest,(Job*)pJob);
+  LimitOp* pLimitOp = new LimitOp(szLabel,pDigest);
   
   pLimitOp->m_nLimit = pTknVec->pGet(i_Tkn_++)->iToI8();
   

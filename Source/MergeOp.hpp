@@ -22,7 +22,7 @@ namespace PushDown
     void* operator new(size_t);
     void  operator delete(void*);
     
-    MergeOp(Stz* szOpLabel, Digest* pDigest, Jobs::Job* pJob);
+    MergeOp(Stz* szOpLabel, Digest* pDigest);
    ~MergeOp(void) noexcept(false);
   
     static eOR eCallLoop(void* aThis);

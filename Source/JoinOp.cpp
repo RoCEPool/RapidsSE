@@ -12,8 +12,8 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-JoinOp::JoinOp(Stz* szOpLabel, Digest* pDigest, Jobs::Job* pJob)
-: Op(CN_JOINOP,nullptr,szOpLabel,pJob)
+JoinOp::JoinOp(Stz* szOpLabel, Digest* pDigest)
+: Op(CN_JOINOP,nullptr,szOpLabel,pDigest)
 {
   _precondition_(_MAGIC_,CN_JOINOP);
 }

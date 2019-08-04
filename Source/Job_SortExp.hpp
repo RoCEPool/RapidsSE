@@ -9,6 +9,8 @@ namespace Jobs
   {
   public:
 
+    Digest*     m_pDigest;     // op digest
+  
     GenerateOp* m_pGenerateOp; // generate
     SortOp*     m_pSortOp;     // sort
     MergeOp*    m_pMergeOp;    // merge

@@ -107,9 +107,11 @@ Job_Query::Job_Query(Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_QUERY,_FOOTER_);
   
-  m_pFetchOp  = new FetchOp ("F_0"_Stz,nullptr,this);
-  m_pOutputOp = new OutputOp("O_0"_Stz,nullptr,this);
-  m_pZedOp    = new ZedOp   ("Z_0"_Stz,nullptr,this);
+  m_pDigest = new Digest(this);
+  
+  m_pFetchOp  = new FetchOp ("F_0"_Stz,m_pDigest);
+  m_pOutputOp = new OutputOp("O_0"_Stz,m_pDigest);
+  m_pZedOp    = new ZedOp   ("Z_0"_Stz,m_pDigest);
 
   _checkInitialised_(CN_JOB_QUERY);
 
@@ -126,6 +128,8 @@ Job_Query::~Job_Query(void) noexcept(false)
   delete m_pFetchOp;
   delete m_pOutputOp;
   delete m_pZedOp;
+  
+  delete m_pDigest;
 }
 
 

@@ -16,7 +16,7 @@ namespace PushDown
     void* operator new(size_t);
     void  operator delete(void*);
   
-    ZedOp(Stz* szOpLabel, Digest* pDigest, Jobs::Job* pJob);
+    ZedOp(Stz* szOpLabel, Digest* pDigest);
    ~ZedOp(void) noexcept(false);
   
     static Op* pNew(Digest* pDigest, Job_Dynamic* pJob, Stz* szLabel,
