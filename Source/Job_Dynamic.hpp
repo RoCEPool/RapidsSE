@@ -10,8 +10,6 @@ namespace Jobs
   public:
     OpVec m_oOpVec;  // set of operators
   
-    bool  m_bPulsed; // is job pulsed?
-  
     Digest* m_pDigest;
   
     // must be last

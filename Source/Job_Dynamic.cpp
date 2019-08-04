@@ -108,9 +108,7 @@ Job_Dynamic::Job_Dynamic(Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
   
   //m_oOpVec
-  
-  m_bPulsed = false;
-  
+    
   m_pDigest = new Digest;
     
   _checkInitialised_(CN_JOB_DYNAMIC);
