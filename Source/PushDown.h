@@ -21,6 +21,8 @@ namespace PushDown
 #include "Op.hpp"
 #include "OpVec.hpp"
 #include "OpCatalog.hpp"
+
+#include "Digest.hpp"
 #include "OpHelper.hpp"
 
 #include "AggOp.hpp"
@@ -43,7 +45,6 @@ namespace PushDown
 #include "XmitOp.hpp"
 #include "ZedOp.hpp"
 
-#include "Digest.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

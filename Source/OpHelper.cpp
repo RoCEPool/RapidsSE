@@ -9,7 +9,8 @@ extern OpCatalog gxOpCatalog;
 /*----------------------------------------------------------------------------*/
 /* process dynamic command                                                    */
 /*----------------------------------------------------------------------------*/
-void OpHelper::vDynamicCommand(Job_Dynamic* pJob, OpVec* pOpVec, TokenVec* pTknVec)
+void OpHelper::vDynamicCommand(Digest* pDigest, Job_Dynamic* pJob,
+                               OpVec* pOpVec, TokenVec* pTknVec)
 {
   s256 sTknStr;
   s32  sLabel;
