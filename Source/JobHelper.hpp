@@ -8,7 +8,6 @@ namespace Jobs
   class JobHelper
   {
   public:
-    static void vDynamicJob(Digest* pDigest);
   };
 }
 

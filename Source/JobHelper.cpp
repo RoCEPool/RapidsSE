@@ -4,31 +4,6 @@
 
 #include "Jobs.h"
 
-/*----------------------------------------------------------------------------*/
-/* process dynamic command                                                    */
-/*----------------------------------------------------------------------------*/
-void JobHelper::vDynamicJob(Digest* pDigest)
-{  
-  vDebugPoint();
-  
-  i8 nOps = pDigest->m_oOpVec.nItems();
-  
-  for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
-    Op* pOp = pDigest->m_oOpVec.pGet(i_Op);
-    
-    if (CN_LIMITOP == pOp->eClass()) {
-      pDigest->m_bPulsed = true;
-      break;
-    }
-  }
-  
-  if (! pDigest->m_bPulsed)
-    return;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
