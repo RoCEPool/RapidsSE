@@ -70,7 +70,7 @@ Digest::~Digest(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* process dynamic command                                                    */
 /*----------------------------------------------------------------------------*/
-void Digest::vDynamicCommand(TokenVec* pTknVec)
+void Digest::vParseCommand(TokenVec* pTknVec)
 {
   s256 sTknStr;
   s32  sLabel;
@@ -139,9 +139,9 @@ void Digest::vDynamicCommand(TokenVec* pTknVec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* process dynamic command                                                    */
+/* set up the job                                                             */
 /*----------------------------------------------------------------------------*/
-void Digest::vDynamicJob(void)
+void Digest::vSetupJob(void)
 {
   vDebugPoint();
   

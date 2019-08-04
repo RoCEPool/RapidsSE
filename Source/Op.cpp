@@ -44,6 +44,7 @@ Op::Op(eCN eClassNo, OpDesc* aOpDesc, Stz* szLabel, Digest* pDigest)
   m_sArgs         = ""_Stz;
   m_sNextLabel    = "<nil>"_Stz;
   
+  m_pDigest       = pDigest;
   m_pJob          = pDigest->m_pJob;
   m_pTask         = nullptr;
   

@@ -12,6 +12,7 @@ namespace PushDown
     s256           m_sArgs;          // args of this op   (initial dev only)
     s32            m_sNextLabel;     // label of this op
   
+    Digest*        m_pDigest;        // op digest
     Job*           m_pJob;           // job this operator belongs to
     Task*          m_pTask;          // task running this op
   

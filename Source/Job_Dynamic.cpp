@@ -166,8 +166,8 @@ bool Job_Dynamic::bPopulateJob(TokenVec* pTokenVec)
 //    return nullptr;
 //  }
 
-  m_pDigest->vDynamicCommand(pTokenVec);
-  m_pDigest->vDynamicJob();
+  m_pDigest->vParseCommand(pTokenVec);
+  m_pDigest->vSetupJob();
   
   return true;
 }
