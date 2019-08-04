@@ -8,7 +8,6 @@ namespace Logging
   class LogEntry : public Object
   {
   friend class Log;
-  friend class Log;
 
   private:
     i8   m_i_Entry;     // entry no
@@ -17,16 +16,14 @@ namespace Logging
   
     eEK  m_eKind;       // log entry kind
   
-    i8   m_iEnumGroup;  // enum group
-    i8   m_iEnum;       // enum/jobid
-    i8   m_iForeign;    // foreign job id
-  
-    char m_caText[C_LOG_TEXT]; // comment
+    union {
+      _LogEntryText m_xText;
+    };
   
     // must be last
     Footer m_xFooter;
     
-    public:
+  public:
     
     void* operator new(size_t);
     void  operator delete(void*);

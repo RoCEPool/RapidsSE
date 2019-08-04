@@ -79,9 +79,9 @@ void LogEntry::vInit(void)
   
   m_eKind      = EK_TEXT;
   
-  m_iEnumGroup = -1;
-  m_iEnum      = -1;
-  m_caText[0]  = '\0';
+  m_xText.m_iEnumGroup = -1;
+  m_xText.m_iEnum      = -1;
+  m_xText.m_caText[0]  = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
@@ -97,13 +97,13 @@ void LogEntry::vSet(i8 iEnumGroup, i8 iEnum, i8 iForeign, char* aText)
                    AM::szNodeName()->aChar(),
                    sizeof(m_caNode) - 1);
   
-  m_iEnumGroup = iEnumGroup;
-  m_iEnum      = iEnum;
-  m_iForeign   = iForeign;
+  m_xText.m_iEnumGroup = iEnumGroup;
+  m_xText.m_iEnum      = iEnum;
+  m_xText.m_iForeign   = iForeign;
 
-  StrLib::vCopyLen(m_caText,
+  StrLib::vCopyLen(m_xText.m_caText,
                    aText,
-                   sizeof(m_caText) - 1);
+                   sizeof(m_xText.m_caText) - 1);
   
   _postcondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
 }
@@ -126,10 +126,10 @@ void LogEntry::vDump(File* pFile, bool bShortForm,
   
   iTotalDelta += iTickDeltaUsec;
   
-  if (StrLib::bSame(m_caText,"delta reset"))
+  if (StrLib::bSame(m_xText.m_caText,"delta reset"))
     iTotalDelta = 0;
   
-  if (m_iEnum < 0)
+  if (m_xText.m_iEnum < 0)
     pFile->vPrint("%lld,%lld,%lld,%lld,%s,%s,%s\n"_Stz,
                   m_i_Entry,
                   m_iTick,
@@ -137,10 +137,10 @@ void LogEntry::vDump(File* pFile, bool bShortForm,
                   iTotalDelta,
                   
                   m_caNode,
-                  aSR_Short[-m_iEnum],
-                  m_caText);
+                  aSR_Short[ - m_xText.m_iEnum ],
+                  m_xText.m_caText);
   else
-  if (m_iEnum == 0)
+  if (m_xText.m_iEnum == 0)
     pFile->vPrint("%lld,%lld,%lld,%lld,%s,inf,%s\n"_Stz,
                   m_i_Entry,
                   m_iTick,
@@ -148,7 +148,7 @@ void LogEntry::vDump(File* pFile, bool bShortForm,
                   iTotalDelta,
                   
                   m_caNode,
-                  m_caText);
+                  m_xText.m_caText);
   else
     pFile->vPrint("%lld,%lld,%lld,%lld,%s,%lld,%s\n"_Stz,
                   m_i_Entry,
@@ -157,8 +157,8 @@ void LogEntry::vDump(File* pFile, bool bShortForm,
                   iTotalDelta,
                   
                   m_caNode,
-                  m_iEnum,
-                  m_caText);
+                  m_xText.m_iEnum,
+                  m_xText.m_caText);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -168,27 +168,27 @@ void LogEntry::vDumpShort(File* pFile)
 {
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
-  if (m_iForeign) {
+  if (m_xText.m_iForeign) {
     vDumpShortForeign(pFile);
     return;
   }
   
   // inf
-  if (C_INF_GROUP == m_iEnumGroup) {
+  if (C_INF_GROUP == m_xText.m_iEnumGroup) {
     pFile->vPrint("[%3lld %s inf] %s\n"_Stz,
                   m_i_Entry,
                   m_caNode,
-                  m_caText);
+                  m_xText.m_caText);
     return;
   }
   
   // job
-  if (C_JOB_GROUP == m_iEnumGroup) {
+  if (C_JOB_GROUP == m_xText.m_iEnumGroup) {
     pFile->vPrint("[%3lld %s %03lld] %s\n"_Stz,
                   m_i_Entry,
                   m_caNode,
-                  m_iEnum,
-                  m_caText);
+                  m_xText.m_iEnum,
+                  m_xText.m_caText);
     return;
   }
   
@@ -196,8 +196,8 @@ void LogEntry::vDumpShort(File* pFile)
   pFile->vPrint("[%3lld %s %s] %s\n"_Stz,
                 m_i_Entry,
                 m_caNode,
-                EnumGroups::szEnumText(m_iEnumGroup,m_iEnum),
-                m_caText);
+                EnumGroups::szEnumText(m_xText.m_iEnumGroup,m_xText.m_iEnum),
+                m_xText.m_caText);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -212,10 +212,10 @@ void LogEntry::vDumpShortForeign(File* pFile)
   i8 iLen;
   
   // inf
-  if (C_INF_GROUP == m_iEnumGroup) {
+  if (C_INF_GROUP == m_xText.m_iEnumGroup) {
   
     StrLib::vSprint(caText,"%s [inf %s %3lld]"_Stz,
-                    m_caText,
+                    m_xText.m_caText,
                     m_caNode,
                     m_i_Entry);
     iLen = StrLib::iLength(caText);
@@ -227,10 +227,10 @@ void LogEntry::vDumpShortForeign(File* pFile)
   }
   
   // job
-  if (C_JOB_GROUP == m_iEnumGroup) {
+  if (C_JOB_GROUP == m_xText.m_iEnumGroup) {
     StrLib::vSprint(caText,"%s [%3lld %s %03lld]"_Stz,
-                    m_caText,
-                    m_iEnum,
+                    m_xText.m_caText,
+                    m_xText.m_iEnum,
                     m_caNode,
                     m_i_Entry);
     iLen = StrLib::iLength(caText);
@@ -243,8 +243,8 @@ void LogEntry::vDumpShortForeign(File* pFile)
   
   // enum
   StrLib::vSprint(caText,"%s [%s %s %3lld]"_Stz,
-                  m_caText,
-                  EnumGroups::szEnumText(m_iEnumGroup,m_iEnum),
+                  m_xText.m_caText,
+                  EnumGroups::szEnumText(m_xText.m_iEnumGroup,m_xText.m_iEnum),
                   m_caNode,
                   m_i_Entry);
   iLen = StrLib::iLength(caText);
