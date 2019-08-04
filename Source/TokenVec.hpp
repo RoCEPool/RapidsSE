@@ -5,7 +5,7 @@
 
 namespace Commands
 {
-  class TokenVec : public VectorNL_t<CN_TOKENVEC,Token,CN_TOKEN,C_MAX_TOKENS,u8>
+  class TokenVec : public VectorNL_t<CN_TOKENVEC,Token,C_MAX_TOKENS,u8>
   {
   private:
   

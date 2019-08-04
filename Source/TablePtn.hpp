@@ -7,7 +7,7 @@ namespace Partitioning
 {
   
   typedef VectorNL_t  <CN_INDEXTREEVEC, IndexTree,
-                       CN_INDEXTREE,    C_MAX_INDEXES, u8>  IndexTreeVec;
+                       C_MAX_INDEXES, u8>                          IndexTreeVec;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
