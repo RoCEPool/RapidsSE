@@ -9,28 +9,26 @@ namespace Structures
   class ArrayNL_t
   {
   private:
-    i8    m_nItems;           // number of actual items
-    ITEM  m_xItem[MAX_ITEMS]; // array of items (not proper objects)
+    i8    m_nItems;            // number of actual items
+    ITEM  m_oaItem[MAX_ITEMS]; // array of items
   
     // must be last
     Footer m_xFooter;
 
   public:
     ArrayNL_t(void);
-    ~ArrayNL_t(void) noexcept(false);
+   ~ArrayNL_t(void) noexcept(false);
   
-    ITEM& operator [](i8 iItemNo);
-  
+    ITEM* pGet(i8 i_Item);
     i8    nItems(void);
     void  vItems(i8 nItems);
-    ITEM  xGet(i8 iItem);
     i8    nMaxItems(void);
   
     Footer* aFooter(void);
   };
   
   template <class ITEM, i8 MAX_ITEMS>
-  ArrayNL_t<ITEM, MAX_ITEMS>* _pArrayNL_t(void* aAddr);
+    ArrayNL_t<ITEM, MAX_ITEMS>* _pArrayNL_t(void* aAddr);
 }
 
 using namespace Structures;
@@ -54,9 +52,6 @@ ArrayNL_t<ITEM, MAX_ITEMS>::ArrayNL_t(void)
   
   m_nItems = 0;
   
-  for (i8 i_Item = 0; i_Item < MAX_ITEMS; i_Item++)
-    m_xItem[i_Item] = (ITEM)0;
-  
   _setFooter_();
   
   aFooter()->vAssertFooter();
@@ -70,10 +65,6 @@ ArrayNL_t<ITEM, MAX_ITEMS>::~ArrayNL_t(void) noexcept(false)
 {
   aFooter()->vAssertFooter();
   
-//  for (i8 i_Item = 0; i_Item < m_nItems; i_Item++) {
-//    ITEM xItem = m_xItem[i_Item];
-//    delete xItem;
-//  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -81,16 +72,18 @@ ArrayNL_t<ITEM, MAX_ITEMS>::~ArrayNL_t(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* [] operator                                                                */
+/* get a specific item                                                        */
 /*----------------------------------------------------------------------------*/
 template <class ITEM, i8 MAX_ITEMS>
-ITEM& ArrayNL_t<ITEM, MAX_ITEMS>::operator [](i8 iItemNo)
+ITEM* ArrayNL_t<ITEM, MAX_ITEMS>::pGet(i8 i_Item)
 {
   aFooter()->vAssertFooter();
   
-  ASSERT(iItemNo >= 0 and iItemNo < MAX_ITEMS);
+  ASSERT(i_Item >= 0 && i_Item < m_nItems);
   
-  return m_xItem[iItemNo];
+  ITEM* pItem = &m_oaItem[i_Item];
+  
+  return pItem;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -117,21 +110,6 @@ void ArrayNL_t<ITEM, MAX_ITEMS>::vItems(i8 nItems)
   ASSERT(nItems >= 0 && nItems < MAX_ITEMS);
   
   m_nItems = nItems;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get a specific item                                                        */
-/*----------------------------------------------------------------------------*/
-template <class ITEM, i8 MAX_ITEMS>
-ITEM ArrayNL_t<ITEM, MAX_ITEMS>::xGet(i8 iItem)
-{
-  aFooter()->vAssertFooter();
-  
-  ASSERT(iItem >= 0 && iItem < m_nItems);
-  
-  ITEM xItem = m_xItem[iItem];
-  
-  return xItem;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -7,9 +7,11 @@ namespace MetaData
 {
   class StreamDef : public Definition
   {
-  private:
-    s32    m_sName;   // name
-    Column m_xaColumn[C_MAX_COLUMNS];
+  public:
+    s32  m_sName;   // name
+    s256 m_sPath;   // full name
+
+    ArrayNL_t<Column,C_MAX_COLUMNS> m_oColAry;
 
     // must be last
     Footer m_xFooter;
@@ -19,7 +21,7 @@ namespace MetaData
     void  operator delete(void*);
     
     StreamDef(void);
-    ~StreamDef(void) noexcept(false);
+   ~StreamDef(void) noexcept(false);
     
     Footer* aFooter(void);
   };
