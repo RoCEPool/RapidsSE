@@ -138,6 +138,32 @@ void Digest::vDynamicCommand(TokenVec* pTknVec)
   vDebugPoint();
 }
 
+/*----------------------------------------------------------------------------*/
+/* process dynamic command                                                    */
+/*----------------------------------------------------------------------------*/
+void Digest::vDynamicJob(void)
+{
+  vDebugPoint();
+  
+  i8 nOps = m_oOpVec.nItems();
+  
+  for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
+    Op* pOp = m_oOpVec.pGet(i_Op);
+    
+    if (CN_LIMITOP == pOp->eClass()) {
+      m_bPulsed = true;
+      break;
+    }
+  }
+  
+  if (! m_bPulsed)
+    return;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

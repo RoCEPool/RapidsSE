@@ -28,7 +28,8 @@ namespace PushDown
    ~Digest(void) noexcept(false);
   
     void vDynamicCommand(TokenVec* pTknVec);
-  
+    void vDynamicJob(void);
+
     Footer* aFooter(void);
   };
   

@@ -167,8 +167,7 @@ bool Job_Dynamic::bPopulateJob(TokenVec* pTokenVec)
 //  }
 
   m_pDigest->vDynamicCommand(pTokenVec);
-  
-  JobHelper::vDynamicJob(m_pDigest);
+  m_pDigest->vDynamicJob();
   
   return true;
 }
