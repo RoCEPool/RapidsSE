@@ -52,6 +52,7 @@ namespace PushDown
     void vOpOut(Op* pOpOut);
     void vPipeOut(Operand* pOperand);
     void vPipeOut_endMarker(void);
+    void vPipeSelf(Operand* pOperand);
     Operand* pPopOperand(void);
     void vStdDrain(void);
     Task* pTask(void);

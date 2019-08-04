@@ -12,6 +12,7 @@ namespace PushDown
   private:
   
     Operand* m_pOperand[C_OPERANDS];
+    bool     m_bEndMarker;
     
     // must be last
     Footer m_xFooter;

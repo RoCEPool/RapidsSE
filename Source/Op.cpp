@@ -287,6 +287,21 @@ void Op::vPipeOut_endMarker(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append operand to self op's operand queue                                  */
+/*----------------------------------------------------------------------------*/
+void Op::vPipeSelf(Operand* pOperand)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  vTrace("%s::vPipeSelf : %p %s\n"_Stz,
+         m_sLabel.aStz(),
+         pOperand,
+         aCN[pOperand->eClass()]);
+  
+  m_pOperandQueue->vAppendOperand(pOperand);
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop operand queue                                                          */
 /*----------------------------------------------------------------------------*/
 Operand* Op::pPopOperand(void)

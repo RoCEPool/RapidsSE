@@ -20,7 +20,7 @@ MergeOp* PushDown::_pMergeOp(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allocate a new SortOp from heap                                            */
+/* allocate a new MergeOp from heap                                           */
 /*----------------------------------------------------------------------------*/
 void* MergeOp::operator new(size_t)
 {
@@ -31,7 +31,7 @@ void* MergeOp::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
-/* free a SortOp back to the heap                                             */
+/* free a MergeOp back to the heap                                            */
 /*----------------------------------------------------------------------------*/
 void MergeOp::operator delete(void* aAddress)
 {
@@ -50,6 +50,8 @@ MergeOp::MergeOp(Stz* szOpLabel, Jobs::Job* pJob)
   
   for (i8 i_Index = 0; i_Index < C_OPERANDS; i_Index++)
     m_pOperand[i_Index] = nullptr;
+  
+  m_bEndMarker = false;
   
   m_fpOpFun = MergeOp::eCallLoop;
 }
@@ -90,6 +92,8 @@ i8 MergeOp::iCalculateCardinality(i8 iCount)
   if (iCount == 1)
     return iCardinality;
   
+  iCardinality++;
+  
   while(iCount % 2 != 0) {
     iCardinality++;
     iCount /= 2;
@@ -111,20 +115,27 @@ eOR MergeOp::eMergeLoop(void)
     
     if (! pOperand) {
       ASSERT(bIsLocked());
+      if (m_bEndMarker)
+        break;
       return OR_BIDE;
     }
     
     if (CN_ENDMARKER == pOperand->eClass()) {
-      break;
+      m_bEndMarker = true;
+      EndMarker* pEndMarker = _pEndMarker(pOperand);
+      delete pEndMarker;
+      continue;
     }
     
     IntBuffer* pRootBuffer = _pIntBuffer(pOperand);
     
     // count no. of linked buffers received
     IntBuffer* pIntBuffer = pRootBuffer;
+    IntBuffer* pLastBuffer = pRootBuffer;
     i8 iCount = 0;
     while (pIntBuffer) {
       iCount++;
+      pLastBuffer = pIntBuffer;
       pIntBuffer = pIntBuffer->pNextBuffer();
     }
     
@@ -142,8 +153,18 @@ eOR MergeOp::eMergeLoop(void)
       
       // link the buffers
       IntBuffer* pIntBuffer2 = _pIntBuffer(m_pOperand[iCardinality]);
-      pRootBuffer->vNextBuffer(pIntBuffer2);
-      pIntBuffer2->vPrevBuffer(pRootBuffer);
+      pLastBuffer->vNextBuffer(pIntBuffer2);
+      pIntBuffer2->vPrevBuffer(pLastBuffer);
+      
+      // count no. of linked buffers received
+      IntBuffer* pIntBuffer = pRootBuffer;
+      IntBuffer* pLastBuffer = pRootBuffer;
+      i8 iCount = 0;
+      while (pIntBuffer) {
+        iCount++;
+        pLastBuffer = pIntBuffer;
+        pIntBuffer = pIntBuffer->pNextBuffer();
+      }
       
       //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // create a Low cursor pointing to the first element in the array
@@ -152,7 +173,7 @@ eOR MergeOp::eMergeLoop(void)
       //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // create a High cursor pointing to the last element in the array
       
-      BufferCursor* pHighCursor = new BufferCursor(pIntBuffer2, 1, pIntBuffer2->aGetElement(pIntBuffer2->nCount() - 1));
+      BufferCursor* pHighCursor = new BufferCursor(pLastBuffer, iCount-1, pLastBuffer->aGetElement(pLastBuffer->nCount() - 1));
       
       //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // call quick sort (recursive call)
@@ -168,14 +189,16 @@ eOR MergeOp::eMergeLoop(void)
       //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // move the merged sorted linked buffers to next cardinality
       m_pOperand[iCardinality] = nullptr;
-      m_pOperand[++iCardinality] = pRootBuffer;
+      if ( ! m_pOperand[++iCardinality])
+        m_pOperand[iCardinality] = pRootBuffer;
+      else
+        vPipeSelf(pRootBuffer);
       
       //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // delete the bufferCursors
       delete pLowCursor;
       delete pHighCursor;
       
-//      vPipeOut(pOperand);
     }
     else {
       // save the buffer set till we have a similar set to merge with
@@ -255,6 +278,13 @@ BufferCursor* MergeOp::pPartitionBuffer(IntBuffer* pIntBuffer, BufferCursor* pLo
       // create a Partition cursor intially with a nullptr element
       BufferCursor* pPartitionCursor = new BufferCursor(pRight);
       //vTrace("Returning %lld\n"_Stz, *pRight->m_aElement);
+      
+      // cleanup
+      delete pLeft;
+      delete pRight;
+      delete pPivotCursor;
+      
+      // return partition cursor
       return pPartitionCursor;
     }
     
@@ -292,6 +322,9 @@ void MergeOp::vQuickSortBuffer(IntBuffer* pIntBuffer, BufferCursor* pLowCursor, 
     pPartitionCursor->vMoveRight();
     BufferCursor* pPartitionNext = new BufferCursor(pPartitionCursor);
     vQuickSortBuffer(pIntBuffer, pPartitionNext, pHighCursor);
+    
+    delete pPartitionCursor;
+    delete pPartitionNext;
   }
   
 }
