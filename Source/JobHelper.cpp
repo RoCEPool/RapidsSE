@@ -10,6 +10,23 @@
 void JobHelper::vDynamicJob(Job_Dynamic* pJob)
 {  
   vDebugPoint();
+  
+  i8 nOps = pJob->m_oOpVec.nItems();
+  
+  for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
+    Op* pOp = pJob->m_oOpVec.pGet(i_Op);
+    
+    if (CN_LIMITOP == pOp->eClass()) {
+      pJob->m_bPulsed = true;
+      break;
+    }
+  }
+  
+  if (! pJob->m_bPulsed)
+    return;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
 }
 
 /*============================================================================*/
