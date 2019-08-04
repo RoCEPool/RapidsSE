@@ -37,7 +37,7 @@ bool Prompt::bPrompt_constants(SePrompt* pPrompt)
   vTrace("  C_MAX_SLOTS    = %lld\n"_Stz,C_MAX_SLOTS);
   vTrace("  C_WSP_DATACHUNK     = %lld\n"_Stz,C_WSP_DATACHUNK);
   vTrace("  C_WSP_STACK         = %lld\n"_Stz,C_WSP_STACK);
-  vTrace("  C_TOKENS            = %lld\n"_Stz,C_TOKENS);
+  vTrace("  C_MAX_TOKENS            = %lld\n"_Stz,C_MAX_TOKENS);
   vTrace("\n"_Stz);
 
 

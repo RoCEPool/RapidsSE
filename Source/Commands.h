@@ -10,8 +10,6 @@
 namespace Commands
 {
   void vCheckAssumptions(void);
-  
-  static const i8 C_TOKENS = 1024;
 }
 
 //------------------------------------------------------------------------------

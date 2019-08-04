@@ -110,7 +110,7 @@ Tokeniser::~Tokeniser(void) noexcept(false)
   
   m_xTokenVec.vSetAllTokens();
   
-  ASSERT(C_TOKENS == m_xTokenVec.nItems());
+  ASSERT(C_MAX_TOKENS == m_xTokenVec.nItems());
   delete m_pParser;
 }
 
@@ -206,7 +206,7 @@ void Tokeniser::vCollectStatement(void)
   i8 i_Token = m_xTokenVec.iFindToken(";"_Stz);
   
   if (i_Token >= 0) {
-    //m_pTokeniser->vDumpTokens("\nCommand : "_Stz,m_xTokenVec,C_TOKENS);
+    //m_pTokeniser->vDumpTokens("\nCommand : "_Stz,m_xTokenVec,C_MAX_TOKENS);
     return;
   }
   
@@ -218,7 +218,7 @@ void Tokeniser::vCollectStatement(void)
   vPrompt(m_sContinue);
   
   // get tokens delimited by ';'
-  for ( ; i_Token < C_TOKENS; i_Token++) {
+  for ( ; i_Token < C_MAX_TOKENS; i_Token++) {
     
     Token* pToken = m_xTokenVec[i_Token];
     eTN eToken = eNextToken((char*)pToken->aText());
@@ -234,7 +234,7 @@ void Tokeniser::vCollectStatement(void)
   vLineMode(true);
   vPrompt(m_sPrompt);
   
-  //m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
+  //m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_MAX_TOKENS);
 }
 
 /*----------------------------------------------------------------------------*/

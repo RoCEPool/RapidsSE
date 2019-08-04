@@ -20,6 +20,8 @@ static const i8 C_MAX_INDEX_COLUMNS = 16;
 
 static const i8 C_MAX_THREADS = 256;
 
+static const i8 C_MAX_TOKENS = 1024;
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

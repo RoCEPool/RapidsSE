@@ -43,7 +43,7 @@ TokenVec::TokenVec(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  for (i8 i_Token = 0; i_Token < C_TOKENS; i_Token++)
+  for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++)
     m_pItem[i_Token] = new Token;
   
   vReset();
@@ -95,7 +95,7 @@ i8 TokenVec::iCountTokens(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  for (i8 i_Token = 0; i_Token < C_TOKENS; i_Token++) {
+  for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++) {
     Token* pToken = m_pItem[i_Token];
     if ( ! pToken->bHasText() )
       return i_Token;
@@ -173,7 +173,7 @@ i8 TokenVec::iFindToken(Stz* aLookFor)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  for (i8 i_Token = 0; i_Token < C_TOKENS; i_Token++) {
+  for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++) {
     Token* pToken = m_pItem[i_Token];
     if (aLookFor->bSame(pToken->aText()))
       return i_Token;
@@ -238,7 +238,7 @@ void TokenVec::vReset(void)
   
   m_nItems = 0;
   
-  for (i8 i_Token = 0; i_Token < C_TOKENS; i_Token++)
+  for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++)
     m_pItem[i_Token]->vReset();
   
   m_bDetachedRequest = false;
@@ -251,7 +251,7 @@ void TokenVec::vSetAllTokens(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
     
-  m_nItems = C_TOKENS;
+  m_nItems = C_MAX_TOKENS;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -263,7 +263,7 @@ void TokenVec::vSetTokens(void)
   
    // get count of words in pWords
   i8 i_Token;
-  for (i_Token = 0; i_Token < C_TOKENS; i_Token++) {
+  for (i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++) {
     if ( ! m_pItem[i_Token]->bHasText() )
       break;
   }
@@ -278,7 +278,7 @@ void TokenVec::vStripAmpersand(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  for (i8 i_Token = 0; i_Token < C_TOKENS; i_Token++) {
+  for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++) {
     Token* pToken = m_pItem[i_Token];
     if (TN_OTHER == pToken->eToken() && pToken->bSame("&"_Stz)) {
       m_bDetachedRequest = true;
@@ -306,7 +306,7 @@ void TokenVec::vStripSemicolon(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  for (i8 i_Token = 0; i_Token < C_TOKENS; i_Token++) {
+  for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++) {
     Token* pToken = m_pItem[i_Token];
     if (TN_OTHER == pToken->eToken() && pToken->bSame(";"_Stz)) {
       pToken->vReset();

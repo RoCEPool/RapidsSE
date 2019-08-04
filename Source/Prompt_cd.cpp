@@ -32,7 +32,7 @@ bool Prompt::bPrompt_cd(SePrompt* pPrompt)
   sDir = (*pTokenVec)[1]->aText();
   
   i8 i_Token;
-  for (i_Token = 2; i_Token < C_TOKENS; i_Token++) {
+  for (i_Token = 2; i_Token < C_MAX_TOKENS; i_Token++) {
     if (! (*pTokenVec)[i_Token]->bHasText())
       break;
     sDir.vConcat((*pTokenVec)[i_Token]->aText());

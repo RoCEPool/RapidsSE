@@ -226,7 +226,7 @@ void Command::vGetCommand(void)
 //   //vTrace("vGetCommand : [%lld] %s\n"_Stz,i_Token,pTkn(i_Token));
 //
 //    pTknVec()->vIncTokens();
-//    ASSERT(pTknVec()->nTokens() < C_TOKENS);
+//    ASSERT(pTknVec()->nTokens() < C_MAX_TOKENS);
 //  }
 //}
 
@@ -257,7 +257,7 @@ void Command::vGetCommandInput(void)
       //             pTkn(pTknVec()->nTokens())->aText());
       
       pTknVec()->vIncTokens();
-      ASSERT(pTknVec()->nTokens() < C_TOKENS);
+      ASSERT(pTknVec()->nTokens() < C_MAX_TOKENS);
     }
     
     // end of file? if so, pop and retry
