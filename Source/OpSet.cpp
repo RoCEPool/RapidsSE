@@ -25,7 +25,7 @@ OpSet* PushDown::_pOpSet(void* aAddr)
 /*----------------------------------------------------------------------------*/
 OpSet::OpSet(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSET,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPVEC,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ OpSet::OpSet(void)
 /*----------------------------------------------------------------------------*/
 OpSet::~OpSet(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSET,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPVEC,_FOOTER_);
 }
 
 

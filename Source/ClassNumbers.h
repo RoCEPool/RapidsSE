@@ -231,7 +231,7 @@ enum eCN : u2 // Class Number
   /*                           */ CN_NUMBAT,
 
   /*  21 0x15      312B Heap:I */ CN_OPERANDQUEUE,
-  /*  21 0x15      312B Heap:I */ CN_OPSET,
+  /*  21 0x15      312B Heap:I */ CN_OPVEC,
   /*                           */ CN_OUTPUTOP,
 
   /* 159 0x9F    48752B Heap:M */ CN_PARSER,
@@ -569,7 +569,7 @@ static Stz* aCN[]
   /*          */ "NUMBAT"_Stz,              // CN_NUMBAT
 
   /*  21 0x15 */ "OPERANDQUEUE"_Stz,        // CN_OPERANDQUEUE
-  /*  21 0x15 */ "OPSET"_Stz,               // CN_OPSET
+  /*  21 0x15 */ "OPVEC"_Stz,               // CN_OPVEC
   /*          */ "OUTPUTOP"_Stz,            // CN_OUTPUTOP
 
   /* 159 0x9F */ "PARSER"_Stz,              // CN_PARSER

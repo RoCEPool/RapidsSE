@@ -5,7 +5,7 @@
 
 namespace PushDown
 {
-  class OpSet : public VectorNL_t<CN_OPSET,Op,32>
+  class OpSet : public VectorNL_t<CN_OPVEC,Op,32>
   {
   private:
 
