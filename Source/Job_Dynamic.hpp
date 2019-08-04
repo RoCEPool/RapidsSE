@@ -8,8 +8,6 @@ namespace Jobs
   class Job_Dynamic : public JobMark2
   {
   public:
-    OpVec m_oOpVec;  // set of operators
-  
     Digest* m_pDigest;
   
     // must be last

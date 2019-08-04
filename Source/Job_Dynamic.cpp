@@ -166,7 +166,7 @@ bool Job_Dynamic::bPopulateJob(TokenVec* pTokenVec)
 //    return nullptr;
 //  }
 
-  OpHelper::vDynamicCommand(this,&m_oOpVec,pTokenVec);
+  OpHelper::vDynamicCommand(this,&m_pDigest->m_oOpVec,pTokenVec);
   
   JobHelper::vDynamicJob(this,m_pDigest);
   
@@ -188,14 +188,14 @@ void Job_Dynamic::vBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
   
-  i8 nOps = m_oOpVec.nItems();
+  i8 nOps = m_pDigest->m_oOpVec.nItems();
   AM::vSetAcksRmg(m_pExecutingTask,nOps);
   
   Session* pSession = AM::pThisTLSSession();
 
-  for (i8 i_Op = m_oOpVec.nItems() - 1; i_Op >= 0; i_Op--) {
+  for (i8 i_Op = m_pDigest->m_oOpVec.nItems() - 1; i_Op >= 0; i_Op--) {
    
-    Op* pOp = m_oOpVec.pGet(i_Op);
+    Op* pOp = m_pDigest->m_oOpVec.pGet(i_Op);
     bool bSpawned = AM::bSpawnOp(pSession,pOp);
     ASSERT(bSpawned);
   }
