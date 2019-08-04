@@ -229,6 +229,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_NUMBAT
 
   /* 28 */ &Finalize::vUndefined,         // CN_OPERANDQUEUE
+  /* 28 */ &Finalize::vUndefined,         // CN_OPSET
   /*    */ &Finalize::vUndefined,         // CN_OUTPUTOP
 
   /* 78 */ &Finalize::vUndefined,         // CN_PARSER
