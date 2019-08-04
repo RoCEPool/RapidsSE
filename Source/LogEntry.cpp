@@ -76,6 +76,9 @@ void LogEntry::vInit(void)
   m_i_Entry    = -1;
   m_iTick      = -1;
   m_caNode[0]  = '\0';
+  
+  m_eKind      = EK_TEXT;
+  
   m_iEnumGroup = -1;
   m_iEnum      = -1;
   m_caText[0]  = '\0';

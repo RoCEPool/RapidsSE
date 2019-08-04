@@ -17,6 +17,8 @@ namespace Logging
     i8   m_iTick;       // tick when entry added
     char m_caNode[32];  // which node
   
+    eEK  m_eKind;       // log entry kind
+  
     i8   m_iEnumGroup;  // enum group
     i8   m_iEnum;       // enum/jobid
     i8   m_iForeign;    // foreign job id
