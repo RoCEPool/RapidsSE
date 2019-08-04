@@ -5,7 +5,7 @@
 
 namespace PushDown
 {
-  class OpVec : public VectorNL_t<CN_OPVEC,Op,32>
+  class OpVec : public VectorNL_t<CN_OPVEC,Op,C_MAX_OPS>
   {
   private:
 

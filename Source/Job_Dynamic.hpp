@@ -5,8 +5,6 @@
 
 namespace Jobs
 {
-  static const i8 C_DYNAMIC_OPS = 32;
-  
   class Job_Dynamic : public JobMark2
   {
   public:

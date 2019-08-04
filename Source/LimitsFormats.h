@@ -22,6 +22,8 @@ static const i8 C_MAX_THREADS = 256;
 
 static const i8 C_MAX_TOKENS = 1024;
 
+static const i8 C_MAX_OPS = 256;
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
