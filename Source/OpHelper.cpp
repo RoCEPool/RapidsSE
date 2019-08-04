@@ -9,13 +9,11 @@ extern OpCatalog gxOpCatalog;
 /*----------------------------------------------------------------------------*/
 /* process dynamic command                                                    */
 /*----------------------------------------------------------------------------*/
-void OpHelper::vDynamicCommand(Job_Dynamic* pJob, Op** apaOp, TokenVec* pTknVec)
+void OpHelper::vDynamicCommand(Job_Dynamic* pJob, OpVec* pOpVec, TokenVec* pTknVec)
 {
   s256 sTknStr;
   s32  sLabel;
   i8 nTokens = pTknVec->nItems();
-
-  i8 nOps = 0;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create
@@ -40,18 +38,18 @@ void OpHelper::vDynamicCommand(Job_Dynamic* pJob, Op** apaOp, TokenVec* pTknVec)
     }
 
     // new an op
-    sLabel.vSprint("%s_%02lld"_Stz,aOpDefn->m_szPrefix,nOps);
+    sLabel.vSprint("%s_%02lld"_Stz,aOpDefn->m_szPrefix,pOpVec->nItems());
     Op* pOp = (aOpDefn->m_fpNew)(pJob,sLabel,pTknVec,i_Tkn);
-    apaOp[nOps++] = pOp;
+    pOpVec->vAdd(pOp);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // link
   
-  for (i8 i_Op = 0; i_Op < nOps - 1; i_Op++) {
+  for (i8 i_Op = 0; i_Op < pOpVec->nItems() - 1; i_Op++) {
     
-    Op* pOp = apaOp[i_Op];
-    Op* pOpNext = apaOp[i_Op + 1];
+    Op* pOp = pOpVec->pGet(i_Op);
+    Op* pOpNext = pOpVec->pGet(i_Op + 1);
     
     pOp->vNextLabel(pOpNext->szLabel());
     pOp->vOpOut(pOpNext);
@@ -62,9 +60,9 @@ void OpHelper::vDynamicCommand(Job_Dynamic* pJob, Op** apaOp, TokenVec* pTknVec)
 
   vTrace("Dynamic Job:\n"_Stz);
          
-  for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
+  for (i8 i_Op = 0; i_Op < pOpVec->nItems(); i_Op++) {
     
-    Op* pOp = apaOp[i_Op];
+    Op* pOp = pOpVec->pGet(i_Op);
 
     vTrace("  [%02lld] { %6s: %8s(%s) :%-6s }\n"_Stz,
            i_Op,

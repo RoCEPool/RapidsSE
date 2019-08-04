@@ -154,15 +154,15 @@ void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::vAdd(ITEM* pItem)
   ASSERT(m_nItems >= 0 && m_nItems < MAX_ITEMS);
   
   // get item number
-  u8 nItemNo = m_nItems++;
+  u8 i_Item = m_nItems++;
   
   ASSERT(m_nItems > 0 && m_nItems <= MAX_ITEMS);
   
   // there shouldnt already be a item
-  ASSERT( ! m_pItem[nItemNo] );
+  ASSERT( ! m_pItem[i_Item] );
   
   // set item
-  m_pItem[nItemNo] = pItem;
+  m_pItem[i_Item] = pItem;
 }
 
 /*----------------------------------------------------------------------------*/
