@@ -44,6 +44,12 @@ StreamDef::StreamDef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
+  //m_sName;
+  //m_sPath;
+  //m_oColAry;
+  
+  m_bTemp = false;
+  
   _checkInitialised_(CN_STREAMDEF);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);

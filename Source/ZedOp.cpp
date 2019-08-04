@@ -124,8 +124,15 @@ eOR ZedOp::eZedLoop(void)
     switch (pOperand->eClass()) {
         
       case CN_ENDMARKER:
-      delete (EndMarker*)pOperand;
-      goto L_EXIT;
+        delete (EndMarker*)pOperand;
+        goto L_EXIT;
+        
+      case CN_STREAMDEF: {
+        StreamDef* pStreamDef = _pStreamDef(pOperand);
+        if (pStreamDef->m_bTemp)
+          delete pStreamDef;
+        break;
+      }
         
       default:
         break;

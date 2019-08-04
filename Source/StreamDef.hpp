@@ -12,6 +12,8 @@ namespace MetaData
     s256 m_sPath;   // full name
 
     ArrayNL_t<Column,C_MAX_COLUMNS> m_oColAry;
+  
+    bool m_bTemp;   // is this a temporary definition?
 
     // must be last
     Footer m_xFooter;

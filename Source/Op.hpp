@@ -11,13 +11,16 @@ namespace PushDown
     s32            m_sLabel;         // label of this op
     s256           m_sArgs;          // args of this op   (initial dev only)
     s32            m_sNextLabel;     // label of this op
+  
     Job*           m_pJob;           // job this operator belongs to
     Task*          m_pTask;          // task running this op
   
     bool           m_bAckJobEnd;     // ack job on end marker
+    bool           m_bPulsed;        // is this a pulsed operand?
+    i8             m_iWorkQuanta;    // quanta of work between pulses
+
     OperandQueue*  m_pOperandQueue;  // the input queue being processed
     OperandQueue*  m_pOperandQueue2; // the input queue being processed
-    i8             m_iWorkQuanta;    // quanta of work between pulses
     Op*            m_pOpOut;         // where results get piped (queued)
     Op*            m_pOpContinue;    // op which gets continued
 

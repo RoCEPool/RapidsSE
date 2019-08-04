@@ -43,13 +43,16 @@ Op::Op(eCN eClassNo, Stz* szLabel, Job* pJob)
   m_sLabel        = szLabel;
   m_sArgs         = ""_Stz;
   m_sNextLabel    = "<nil>"_Stz;
+  
   m_pJob          = pJob;
   m_pTask         = nullptr;
   
   m_bAckJobEnd    = true;
+  m_bPulsed       = false;
+  m_iWorkQuanta   = C_UNKNOWN;
+
   m_pOperandQueue = new OperandQueue;
   m_pOperandQueue2 = nullptr;
-  m_iWorkQuanta   = C_UNKNOWN;
   m_pOpOut        = nullptr;
   m_pOpContinue   = nullptr;
 
