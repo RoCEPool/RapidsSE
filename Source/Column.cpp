@@ -59,7 +59,7 @@ Column::Column(void)
   m_eDatumType    = DM_NONE;
   m_bIsNullable   = true;
   m_bIsUnique     = false;
-  m_bIsPartitionKey = false;
+  m_bIsPtnKey     = false;
   
   m_bIsLastColumn = false;
   
@@ -86,9 +86,9 @@ Column::Column(Jobs::Job_CreateTable* pJob, i8 iColumnNo)
   m_eDatumType    = pJob->m_xColumns[iColumnNo].m_eDatumType;
   m_bIsNullable   = pJob->m_xColumns[iColumnNo].m_bIsNullable;
   m_bIsUnique     = pJob->m_xColumns[iColumnNo].m_bIsUnique;
-  m_bIsPartitionKey = pJob->m_xColumns[iColumnNo].m_bIsPartitionKey;
-  m_bIsLastColumn   = false;
-  m_pColVec         = nullptr;
+  m_bIsPtnKey     = pJob->m_xColumns[iColumnNo].m_bIsPtnKey;
+  m_bIsLastColumn = false;
+  m_pColVec       = nullptr;
 
   _checkInitialised_(CN_COLUMN);
   
@@ -264,6 +264,30 @@ void Column::vColVec(ColumnVec* pColVec)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+void Column::vCopy(Column* pCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  m_iColumnNo       = pCol->m_iColumnNo;
+  m_sColumnName     = pCol->m_sColumnName;
+  m_eColumnType     = pCol->m_eColumnType;
+  m_iColumnLength   = pCol->m_iColumnLength;
+  m_iColumnScale    = pCol->m_iColumnScale;
+  m_eDatumType      = pCol->m_eDatumType;
+  m_bIsNullable     = pCol->m_bIsNullable;
+  m_bIsUnique       = pCol->m_bIsUnique;
+  m_bIsPtnKey       = pCol->m_bIsPtnKey;
+  m_bIsLastColumn   = pCol->m_bIsLastColumn;
+  m_pColVec         = nullptr;
+  
+  _checkInitialised_(CN_COLUMN);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* set datum type                                                             */
 /*----------------------------------------------------------------------------*/
 void Column::vDatumType(eDM eDatumType)
@@ -352,7 +376,7 @@ bool Column::bIsPartitionKey(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
-  return m_bIsPartitionKey;
+  return m_bIsPtnKey;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -362,7 +386,7 @@ void Column::vIsPartitionKey(bool bIsPartitionKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
-  m_bIsPartitionKey = bIsPartitionKey;
+  m_bIsPtnKey = bIsPartitionKey;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -380,7 +404,7 @@ void Column::vShow(void)
          m_iColumnScale,
          aDM[m_eDatumType],
          m_bIsNullable ? "nullable"_Stz : "not null"_Stz,
-         m_bIsPartitionKey? "partitionKey"_Stz : ""_Stz);
+         m_bIsPtnKey? "partitionKey"_Stz : ""_Stz);
 }
 
 

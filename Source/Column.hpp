@@ -34,7 +34,7 @@ namespace MetaData
     eDM   m_eDatumType;
     bool  m_bIsNullable;
     bool  m_bIsUnique;
-    bool  m_bIsPartitionKey;
+    bool  m_bIsPtnKey;
     bool  m_bIsLastColumn;
   
     ColumnVec* m_pColVec;
@@ -74,6 +74,8 @@ namespace MetaData
     //ColumnVec* pColVec(void);
     void vColVec(ColumnVec* pColVec);
 
+    void vCopy(Column* pCol);
+  
     //eDM  eDatumType(void);
     void vDatumType(eDM eDatumType);
   
