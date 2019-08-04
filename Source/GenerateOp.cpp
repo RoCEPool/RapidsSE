@@ -52,7 +52,7 @@ GenerateOp::GenerateOp(Stz* szOpLabel, Digest* pDigest)
 
   _checkInitialised_(CN_GENERATEOP);
 
-  m_fpOpFun = GenerateOp::eCallLoop;
+  m_fpCall = GenerateOp::eCallLoop;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_GENERATEOP,_FOOTER_);
 }

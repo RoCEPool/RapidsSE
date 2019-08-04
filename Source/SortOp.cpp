@@ -47,7 +47,7 @@ SortOp::SortOp(Stz* szOpLabel, Digest* pDigest)
 {
   _precondition_(_MAGIC_,CN_SORTOP);
   
-  m_fpOpFun = SortOp::eCallLoop;
+  m_fpCall = SortOp::eCallLoop;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SORTOP,_FOOTER_);
 }

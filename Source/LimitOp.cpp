@@ -60,7 +60,7 @@ LimitOp::LimitOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LIMITOP,_FOOTER_);
   
-  m_fpOpFun = LimitOp::eCall;
+  m_fpCall = LimitOp::eCall;
 
   m_nLimit = 0;
   m_nSoFar = 0;

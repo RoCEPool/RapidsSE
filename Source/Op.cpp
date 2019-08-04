@@ -44,6 +44,7 @@ Op::Op(eCN eClassNo, Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn)
   m_sArgs         = ""_Stz;
   m_sNextLabel    = "<nil>"_Stz;
   
+  m_aOpDefn       = aOpDefn;
   m_pDigest       = pDigest;
   m_pJob          = pDigest->m_pJob;
   m_pTask         = nullptr;
@@ -57,8 +58,8 @@ Op::Op(eCN eClassNo, Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn)
   m_pOpOut        = nullptr;
   m_pOpContinue   = nullptr;
 
-  m_fpOpFun       = nullptr;
-  m_fpDrain       = nullptr;
+  m_fpCall        = m_aOpDefn ? m_aOpDefn->m_fpCall  : nullptr;
+  m_fpDrain       = m_aOpDefn ? m_aOpDefn->m_fpDrain : nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -93,7 +94,7 @@ void Op::vOpLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  eOR eCallAgain = (*m_fpOpFun)(this);
+  eOR eCallAgain = (*m_fpCall)(this);
   
   switch (eCallAgain) {
    

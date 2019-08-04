@@ -54,7 +54,7 @@ MergeOp::MergeOp(Stz* szOpLabel, Digest* pDigest)
   m_iOperands = 0;
   m_bEndMarker = false;
   
-  m_fpOpFun = MergeOp::eCallLoop;
+  m_fpCall = MergeOp::eCallLoop;
 }
 
 /*----------------------------------------------------------------------------*/

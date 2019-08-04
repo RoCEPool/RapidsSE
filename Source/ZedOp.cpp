@@ -62,7 +62,7 @@ ZedOp::ZedOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn)
   
   _checkInitialised_(CN_ZEDOP);
   
-  m_fpOpFun = ZedOp::eCall;
+  m_fpCall = ZedOp::eCall;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ZEDOP,_FOOTER_);
 }

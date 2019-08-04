@@ -12,6 +12,7 @@ namespace PushDown
     s256           m_sArgs;          // args of this op   (initial dev only)
     s32            m_sNextLabel;     // label of this op
   
+    OpDefn*        m_aOpDefn;        // op definition
     Digest*        m_pDigest;        // op digest
     Job*           m_pJob;           // job this operator belongs to
     Task*          m_pTask;          // task running this op
@@ -25,7 +26,7 @@ namespace PushDown
     Op*            m_pOpOut;         // where results get piped (queued)
     Op*            m_pOpContinue;    // op which gets continued
 
-    eOR  (*m_fpOpFun)(void* aThis);  // function which does the op
+    eOR  (*m_fpCall)(void* aThis);   // function which calls the op loop
     void (*m_fpDrain)(void* aThis);  // function which drains the operand queue
 
     //! need to add pulsing and cancelling

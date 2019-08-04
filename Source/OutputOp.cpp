@@ -60,7 +60,7 @@ OutputOp::OutputOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
   
-  m_fpOpFun = OutputOp::eCall;
+  m_fpCall = OutputOp::eCall;
   
   _checkInitialised_(CN_OUTPUTOP);
 

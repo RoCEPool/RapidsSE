@@ -65,7 +65,7 @@ FetchOp::FetchOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn)
 
   _checkInitialised_(CN_FETCHOP);
 
-  m_fpOpFun = FetchOp::eCall;
+  m_fpCall = FetchOp::eCall;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
 }
