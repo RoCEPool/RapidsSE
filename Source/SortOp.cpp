@@ -202,6 +202,11 @@ eOR SortOp::eSortLoop(void)
       break;
     }
     
+    // (ray added this)
+    if (CN_STREAMDEF == pOperand->eClass()) {
+      continue;
+    }
+    
     IntBuffer* pIntBuffer = _pIntBuffer(pOperand);
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -121,14 +121,19 @@ eOR ZedOp::eZedLoop(void)
       return OR_BIDE;
     }
     
-    if (CN_ENDMARKER == pOperand->eClass()) {
+    switch (pOperand->eClass()) {
+        
+      case CN_ENDMARKER:
       delete (EndMarker*)pOperand;
-      break;
+      goto L_EXIT;
+        
+      default:
+        break;
     }
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+L_EXIT:
   return OR_EXIT;
 }
 

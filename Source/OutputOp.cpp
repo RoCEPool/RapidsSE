@@ -121,29 +121,27 @@ eOR OutputOp::eOutputLoop(void)
       return OR_BIDE;
     }
     
-    if (CN_ENDMARKER == pOperand->eClass()) {
-      vPipeOut(pOperand);
-      break;
-    }
-    
-
     switch (pOperand->eClass()) {
+        
+      case CN_ENDMARKER:
+       vPipeOut(pOperand);
+       goto L_EXIT;
         
       case CN_INTBUFFER: {
         IntBuffer* pIntBuffer = _pIntBuffer(pOperand) ;
         pIntBuffer->vShow();
         break;
       }
+        
       default:
         break;
     }
-    
     
     vPipeOut(pOperand);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+L_EXIT:
   return OR_EXIT;
 }
 
