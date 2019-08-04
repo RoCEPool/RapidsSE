@@ -7,6 +7,7 @@ namespace Alignment     {                                                     }
 namespace Assembler     {                                                     }
 namespace Base          {                                                     }
 namespace Chunks        { class Formatters;                                   }
+namespace ClassData     {                                                     }
 namespace Commands      { class Command; class Parser; class Tokeniser;       }
 namespace ControlData   {                                                     }
 namespace Correctness   {                                                     }
@@ -50,6 +51,7 @@ using namespace Alignment;
 using namespace Assembler;
 using namespace Base;
 using namespace Chunks;
+using namespace ClassData;
 using namespace Commands;
 using namespace ControlData;
 using namespace Correctness;

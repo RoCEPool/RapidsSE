@@ -19,6 +19,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   // third party??
   Correctness::vCheckAssumptions();
   Enums::vCheckAssumptions();
+  ClassData::vCheckAssumptions();
   Library::vCheckAssumptions();
   Alignment::vCheckAssumptions();
   Pool::vCheckAssumptions();
