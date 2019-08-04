@@ -86,7 +86,7 @@ namespace StorageEngine
     static void vAttachMap(Header* aHeader);
     static void vBootError(bool bBootError);
     static void vDropTaskLock(Task* pTask);
-    static void vForthWord(Forth::ForthWord* pForthWord);
+    static void vForthWord(ForthWord* pForthWord);
     static void vGrabTaskLock(Task* pTask);
     static void vIndexEntries(i8 nIndexEntries);
     static void vMonitorPortrait(s48K& sRapidsPortrait);
@@ -95,7 +95,8 @@ namespace StorageEngine
     static void vStepTiming(StepTiming* pStepTiming);
     static void vSubInserters(i8 nSubInserters);
     static void vTableName(Job_Dynamic* pJob, Stz* szTableNm);
-    static void vTakenBuffers(Pool::PoolBuffer* pTakenBuffers);
+    static Table* pTable(Job_Dynamic* pJob);
+    static void vTakenBuffers(PoolBuffer* pTakenBuffers);
     static void vTakeBytes(i8 nTakeBytes);
     static void vTakenBytes(i8 nTakenBytes);
     static bool bTaskIsLocked(Task* pTask);

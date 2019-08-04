@@ -16,21 +16,43 @@
   ": dynamic_req" .
 
   task::this      locals| pTask |
-  pTask task.job@ locals| pJob_Dynamic |
+  pTask task.job@ locals| pJob |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  //pTask task.grabLock
+  0 locals| sTableNm |
+  0 locals| pTable |
+
+  // set dic stack
+  pJob job.pushPath task::dicStack.set
+
+  // grab a ddl lock
+  ddlLock::grabRead
+
+  // get table name
+  pJob job.objectName@ to sTableNm
+
+  // find table
+  sTableNm pushTable assert
+  sTableNm find execute to pTable
+  pTable pJob jobMark2.table!
+
+  popIndexes
+  popTable
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pJob_Dynamic job_Dynamic.begin
-  pJob_Dynamic job_Dynamic.execute
-  pJob_Dynamic job_Dynamic.end
+  pTask task.grabLock
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  //task::wait
+  pJob job_Dynamic.begin
+  pJob job_Dynamic.execute
+  pJob job_Dynamic.end
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  task::wait
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

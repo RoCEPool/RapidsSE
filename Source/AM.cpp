@@ -126,6 +126,9 @@ void AM::vSubInserters(i8 nSubInserters) {
 void AM::vTableName(Job_Dynamic* pJob, Stz* szTableNm) {
   pJob->m_sObjectName = szTableNm;
 }
+Table* AM::pTable(Job_Dynamic* pJob) {
+  return pJob->m_pTable;
+}
 void AM::vTakenBuffers(PoolBuffer* pTakenBuffers) {
   gpAttachMap->m_pTakenBuffers = pTakenBuffers;
 }

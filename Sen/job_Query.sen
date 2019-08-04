@@ -17,10 +17,11 @@
 
   task::this      locals| pTask |
   pTask task.job@ locals| pJob_Query |
-  0               locals| sTableNm |
-  0               locals| pTable |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  0 locals| sTableNm |
+  0 locals| pTable |
 
   // set dic stack
   pJob_Query job.pushPath task::dicStack.set

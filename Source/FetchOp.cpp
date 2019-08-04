@@ -120,6 +120,11 @@ eOR FetchOp::eFetchLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
   
+  if (! m_pTablePtn) {
+    m_pTablePtn = AM::pTable((Job_Dynamic*)m_pJob)->pSlots()->pPartition(0);
+  }
+  
+  
   for (m_pCrwBuffer = m_pTablePtn->pRootCrwBuffer();
        m_pCrwBuffer;
        m_pCrwBuffer = m_pCrwBuffer->pNextBuffer()) {

@@ -8,8 +8,8 @@ namespace Jobs
   class Job_Dynamic : public JobMark2
   {
   public:
-   OpVec m_oOpSet;
-
+  OpVec m_oOpVec;
+  
     // must be last
     Footer m_xFooter;
   
