@@ -5,7 +5,7 @@
 
 namespace Structures
 {  
-  template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS, class SUB>
+  template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
   class VectorNL_t : public Object
   {
   //friend class TokenVec;
@@ -25,21 +25,21 @@ namespace Structures
     VectorNL_t(void);
     ~VectorNL_t(void) noexcept(false);
 
-    ITEM*& operator [](SUB nItemNo);
+    ITEM*& operator [](u8 nItemNo);
 
     void  vAdd(ITEM* pObject);
     void  vClear(void);
     bool  bContains(ITEM* pObject);
     void  vInsert(ITEM* pObject);
     i8    nItems(void);
-    ITEM* pGet(SUB nItemNo);
+    ITEM* pGet(u8 nItemNo);
     void  vRemove(ITEM* pObject);
   
     Footer* aFooter(void);
   };
   
-  template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS, class SUB>
-  VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>* _pVector_NL(void* aAddr);
+  template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
+  VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>* _pVector_NL(void* aAddr);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -53,11 +53,11 @@ using namespace Structures;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS, class SUB>
-VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>* Structures::_pVector_NL(void* aAddr)
+template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
+VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>* Structures::_pVector_NL(void* aAddr)
 {
-  VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>* pVector =
-    reinterpret_cast<VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>*>(aAddr);
+  VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>* pVector =
+    reinterpret_cast<VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>*>(aAddr);
   
   RASSERT_TYPE(pVector,VEC_CN);
   
@@ -67,8 +67,8 @@ VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>* Structures::_pVector_NL(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS, class SUB>
-void* VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>::operator new(size_t)
+template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
+void* VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::operator new(size_t)
 {
   void* pObject = HeapMem::pAllocate(VEC_CN);
   
@@ -78,11 +78,11 @@ void* VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS, class SUB>
-void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>::operator delete(void* pVectorAddress)
+template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
+void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::operator delete(void* pVectorAddress)
 {
-  VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>* pVector =
-    _pVector_NL<VEC_CN,ITEM,MAX_ITEMS,SUB>(pVectorAddress);
+  VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>* pVector =
+    _pVector_NL<VEC_CN,ITEM,MAX_ITEMS>(pVectorAddress);
   
   HeapMem::vFree(pVector);
 }
@@ -90,22 +90,22 @@ void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>::operator delete(void* pVectorAddress
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS, class SUB>
-VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>::VectorNL_t(void)
+template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
+VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::VectorNL_t(void)
 : Object(VEC_CN)
 {
   _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
   m_nItems = 0;
   
-  SUB nItemNo;
+  u8 nItemNo;
   for (nItemNo = (i8)0; nItemNo < MAX_ITEMS; nItemNo++)
     m_pItem[(i8)nItemNo] = nullptr;
   
   _setFooter_();
   
   // compute size of this vector proper (in case it is inherited)
-  i8 nBytes = sizeof(VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>);
+  i8 nBytes = sizeof(VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>);
   
   _checkInitialisedSize_(nBytes);
   
@@ -115,12 +115,12 @@ VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>::VectorNL_t(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS, class SUB>
-VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>::~VectorNL_t(void) noexcept(false)
+template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
+VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::~VectorNL_t(void) noexcept(false)
 {
   _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
-  SUB nItemNo;
+  u8 nItemNo;
   for (nItemNo = (i8)0; (i8)nItemNo < (i8)m_nItems; nItemNo++) {
     ITEM* pItem = m_pItem[nItemNo];
     delete pItem;
@@ -134,8 +134,8 @@ VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>::~VectorNL_t(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* [] operator                                                                */
 /*----------------------------------------------------------------------------*/
-template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS, class SUB>
-ITEM*& VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>::operator [](SUB nItemNo)
+template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
+ITEM*& VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::operator [](u8 nItemNo)
 {
   _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
@@ -147,8 +147,8 @@ ITEM*& VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>::operator [](SUB nItemNo)
 /*----------------------------------------------------------------------------*/
 /* add an item                                                                */
 /*----------------------------------------------------------------------------*/
-template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS, class SUB>
-void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>::vAdd(ITEM* pItem)
+template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
+void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::vAdd(ITEM* pItem)
 {
   _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
@@ -156,7 +156,7 @@ void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>::vAdd(ITEM* pItem)
   ASSERT(m_nItems >= 0 && m_nItems < MAX_ITEMS);
   
   // get item number
-  SUB nItemNo = m_nItems++;
+  u8 nItemNo = m_nItems++;
   
   ASSERT(m_nItems > 0 && m_nItems <= MAX_ITEMS);
   
@@ -170,12 +170,12 @@ void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>::vAdd(ITEM* pItem)
 /*----------------------------------------------------------------------------*/
 /* clear all items                                                            */
 /*----------------------------------------------------------------------------*/
-template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS, class SUB>
-void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>::vClear(void)
+template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
+void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::vClear(void)
 {
   _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
-  for (SUB nItemNo = 0; nItemNo < m_nItems; nItemNo++)
+  for (u8 nItemNo = 0; nItemNo < m_nItems; nItemNo++)
     m_pItem[nItemNo] = nullptr;
   
   m_nItems = 0;
@@ -184,12 +184,12 @@ void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>::vClear(void)
 /*----------------------------------------------------------------------------*/
 /* test if the vector contains the given item                                 */
 /*----------------------------------------------------------------------------*/
-template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS, class SUB>
-bool VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>::bContains(ITEM* pItem)
+template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
+bool VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::bContains(ITEM* pItem)
 {
   _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
-  SUB nItemNo;
+  u8 nItemNo;
   
   for (nItemNo = 0; nItemNo < m_nItems; nItemNo++)
     if (m_pItem[nItemNo] == pItem)
@@ -201,8 +201,8 @@ bool VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>::bContains(ITEM* pItem)
 /*----------------------------------------------------------------------------*/
 /* insert an item as first                                                    */
 /*----------------------------------------------------------------------------*/
-template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS, class SUB>
-void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>::vInsert(ITEM* pItem)
+template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
+void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::vInsert(ITEM* pItem)
 {
   _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
@@ -210,7 +210,7 @@ void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>::vInsert(ITEM* pItem)
   ASSERT(m_nItems >= 0 && m_nItems < MAX_ITEMS - 1);
   
   // get item number
-  SUB nItemNo = m_nItems++;
+  u8 nItemNo = m_nItems++;
   ASSERT(m_nItems > 0 && m_nItems < MAX_ITEMS);
   
   // there shouldnt already be a item
@@ -233,8 +233,8 @@ void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>::vInsert(ITEM* pItem)
 /*----------------------------------------------------------------------------*/
 /* get number of actual items                                                 */
 /*----------------------------------------------------------------------------*/
-template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS, class SUB>
-i8 VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>::nItems(void)
+template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
+i8 VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::nItems(void)
 {
   _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
@@ -246,8 +246,8 @@ i8 VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>::nItems(void)
 /*----------------------------------------------------------------------------*/
 /* get a specific item                                                        */
 /*----------------------------------------------------------------------------*/
-template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS, class SUB>
-ITEM* VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>::pGet(SUB nItemNo)
+template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
+ITEM* VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::pGet(u8 nItemNo)
 {
   _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
@@ -261,8 +261,8 @@ ITEM* VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>::pGet(SUB nItemNo)
 /*----------------------------------------------------------------------------*/
 /* remove the given item                                                      */
 /*----------------------------------------------------------------------------*/
-template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS, class SUB>
-void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>::vRemove(ITEM* pItem)
+template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
+void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::vRemove(ITEM* pItem)
 {
   _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
@@ -270,7 +270,7 @@ void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>::vRemove(ITEM* pItem)
   ASSERT(m_nItems >= 0);
   
   // find the item
-  SUB nItemNo;
+  u8 nItemNo;
   
   for (nItemNo = 0; nItemNo < m_nItems; nItemNo++) {
     if (m_pItem[nItemNo] == pItem)
@@ -308,8 +308,8 @@ void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>::vRemove(ITEM* pItem)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS, class SUB>
-Footer* VectorNL_t<VEC_CN,ITEM,MAX_ITEMS,SUB>::aFooter(void)
+template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
+Footer* VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::aFooter(void)
 {
   _precondition_(_MAGIC_,VEC_CN);
   

@@ -36,7 +36,7 @@ namespace Jobs
 /*--------------------------------------------------------------------------*/
 /* ResponseVec -- Response Vector                                           */
 /*--------------------------------------------------------------------------*/
-typedef VectorNL_t<CN_RESPONSEVEC,Response,C_MAX_NODES,u8> ResponseVec;
+typedef VectorNL_t<CN_RESPONSEVEC,Response,C_MAX_NODES> ResponseVec;
 
 /*============================================================================*/
 /* end                                                                        */

@@ -10,17 +10,17 @@ namespace MetaData
   /*--------------------------------------------------------------------------*/
   /* ColumnVec -- Column Vector                                               */
   /*--------------------------------------------------------------------------*/
-  typedef VectorNL_t<CN_COLUMNVEC,Column,1024,u8> ColumnVec;
+  typedef VectorNL_t<CN_COLUMNVEC,Column,1024> ColumnVec;
   
   /*--------------------------------------------------------------------------*/
   /* IdxColVec -- Index Column Vector                                         */
   /*--------------------------------------------------------------------------*/
-  typedef VectorNL_t<CN_IDXCOLVEC,Column,1024,u8> IdxColVec;
+  typedef VectorNL_t<CN_IDXCOLVEC,Column,1024> IdxColVec;
   
   /*--------------------------------------------------------------------------*/
   /* PtnColVec -- Partition Column Vector                                     */
   /*--------------------------------------------------------------------------*/
-  typedef VectorNL_t<CN_PTNCOLVEC,Column,1024,u8> PtnColVec;
+  typedef VectorNL_t<CN_PTNCOLVEC,Column,1024> PtnColVec;
   
   
   class Column : public Object

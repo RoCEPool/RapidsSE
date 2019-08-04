@@ -21,11 +21,10 @@ namespace Structures
   
     ITEM& operator [](i8 iItemNo);
   
-    void  vClear(void);
     i8    nItems(void);
     void  vItems(i8 nItems);
     ITEM  xGet(i8 iItem);
-    i8    iMaxItems(void);
+    i8    nMaxItems(void);
   
     Footer* aFooter(void);
   };
@@ -95,21 +94,6 @@ ITEM& ArrayNL_t<ITEM, MAX_ITEMS>::operator [](i8 iItemNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* clear all items                                                            */
-/*----------------------------------------------------------------------------*/
-template <class ITEM, i8 MAX_ITEMS>
-void ArrayNL_t<ITEM, MAX_ITEMS>::vClear(void)
-{
-  aFooter()->vAssertFooter();
-  
-  for (i8 i_Item = 0; i_Item < m_nItems; i_Item++) {
-    m_xItem[i_Item] = (ITEM)0;
-  }
-    
-  m_nItems = 0;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get number of actual items                                                 */
 /*----------------------------------------------------------------------------*/
 template <class ITEM, i8 MAX_ITEMS>
@@ -154,7 +138,7 @@ ITEM ArrayNL_t<ITEM, MAX_ITEMS>::xGet(i8 iItem)
 /* get maximum number of items                                                */
 /*----------------------------------------------------------------------------*/
 template <class ITEM, i8 MAX_ITEMS>
-i8 ArrayNL_t<ITEM, MAX_ITEMS>::iMaxItems(void)
+i8 ArrayNL_t<ITEM, MAX_ITEMS>::nMaxItems(void)
 {
   aFooter()->vAssertFooter();
   
