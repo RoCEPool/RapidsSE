@@ -84,7 +84,7 @@ Table::Table(void)
   
   m_bIsLoading = false;
   
-  m_pStreamDef = nullptr;
+  m_pStreamDef = new StreamDef;
   
   _checkInitialised_(CN_TABLE);
   
@@ -436,10 +436,19 @@ void Table::vCreateColumnVec(Jobs::Job_CreateTable* pJob)
   
   Column* pColumn = nullptr;
   
+  m_pStreamDef->m_sName = m_sTableName;
+  m_pStreamDef->m_sPath.vSprint("../%s"_Stz,m_sTableName.aStz());
+  m_pStreamDef->m_oColAry.vItems(pJob->m_iColumns);
+
+  
   for (i8 i_Col = 0; i_Col < pJob->m_iColumns; i_Col++) {
     pColumn = new Column(pJob,i_Col);
     m_pColumnVec->vAdd(pColumn);
     pColumn->vColVec(m_pColumnVec);
+    
+    // - - - - - - - - - - - - - - -
+    
+    m_pStreamDef->m_oColAry.pGet(i_Col)->vCopy(pColumn);
   }
   
   if (pColumn)
