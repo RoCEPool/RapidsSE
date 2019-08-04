@@ -71,7 +71,7 @@ Job_Dynamic* Jobs::_pJob_Dynamic(void* aAddress)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allocate a new entry buffer from heap                                      */
+/* new                                                                        */
 /*----------------------------------------------------------------------------*/
 void* Job_Dynamic::operator new(size_t)
 {
@@ -82,7 +82,7 @@ void* Job_Dynamic::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
-/* perform new of entry buffer for given address                              */
+/* new                                                                        */
 /*----------------------------------------------------------------------------*/
 void* Job_Dynamic::operator new(size_t, void* aAddress)
 {
@@ -90,7 +90,7 @@ void* Job_Dynamic::operator new(size_t, void* aAddress)
 }
 
 /*----------------------------------------------------------------------------*/
-/* free an entry buffer back to the heap                                      */
+/* delete                                                                     */
 /*----------------------------------------------------------------------------*/
 void Job_Dynamic::operator delete(void* aAddress)
 {
@@ -110,6 +110,8 @@ Job_Dynamic::Job_Dynamic(Session* pSession)
   //m_oOpVec
   
   m_bPulsed = false;
+  
+  m_pDigest = new Digest;
     
   _checkInitialised_(CN_JOB_DYNAMIC);
 
@@ -122,7 +124,8 @@ Job_Dynamic::Job_Dynamic(Session* pSession)
 Job_Dynamic::~Job_Dynamic(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
-  
+ 
+  delete m_pDigest;
 }
 
 
