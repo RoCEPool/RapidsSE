@@ -56,7 +56,7 @@ void LimitOp::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 LimitOp::LimitOp(Stz* szOpLabel, Jobs::Job* pJob)
-: Op(CN_LIMITOP,szOpLabel,pJob)
+: Op(CN_LIMITOP,&__Op_Limit,szOpLabel,pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LIMITOP,_FOOTER_);
   

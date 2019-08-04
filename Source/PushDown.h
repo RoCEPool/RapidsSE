@@ -15,11 +15,11 @@ namespace PushDown
 //------------------------------------------------------------------------------
 
 #include "OperandQueue.hpp"
+#include "OpDefn.hpp"
+#include "OpDesc.hpp"
 
 #include "Op.hpp"
 #include "OpVec.hpp"
-#include "OpDefn.hpp"
-#include "OpDesc.hpp"
 #include "OpCatalog.hpp"
 #include "OpHelper.hpp"
 

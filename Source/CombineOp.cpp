@@ -22,7 +22,7 @@ CombineOp* PushDown::_pCombineOp(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 CombineOp::CombineOp(Stz* szOpLabel, Jobs::Job* pJob)
-: Op(CN_COMBINEOP,szOpLabel,pJob)
+: Op(CN_COMBINEOP,nullptr,szOpLabel,pJob)
 {
   _precondition_(_MAGIC_,CN_COMBINEOP);
 }

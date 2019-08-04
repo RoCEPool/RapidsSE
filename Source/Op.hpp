@@ -32,7 +32,7 @@ namespace PushDown
   public:
     void  operator delete(void*);
   
-    Op(eCN eClass, Stz* szOpLabel, Jobs::Job* pJob);
+    Op(eCN eClass, OpDesc* aOpDesc, Stz* szOpLabel, Jobs::Job* pJob);
    ~Op(void) noexcept(false);
   
     static Op* pThisTLSOp(void);

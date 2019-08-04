@@ -23,7 +23,7 @@ XmitOp* PushDown::_pXmitOp(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XmitOp::XmitOp(Stz* szOpLabel, Jobs::Job* pJob)
-: Op(CN_XMITOP,szOpLabel,pJob)
+: Op(CN_XMITOP,nullptr,szOpLabel,pJob)
 {
   _precondition_(_MAGIC_,CN_XMITOP);
 }

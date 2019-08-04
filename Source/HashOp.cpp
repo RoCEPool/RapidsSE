@@ -23,7 +23,7 @@ HashOp* PushDown::_pHashOp(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 HashOp::HashOp(Stz* szOpLabel, Jobs::Job* pJob)
-: Op(CN_HASHOP,szOpLabel,pJob)
+: Op(CN_HASHOP,nullptr,szOpLabel,pJob)
 {
   _precondition_(_MAGIC_,CN_HASHOP);
 }

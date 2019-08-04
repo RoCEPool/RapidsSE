@@ -20,7 +20,6 @@ namespace PushDown
       void (*m_fpDrain)(void* aThis);  // function which drains the operand queue
 
       Stz* m_szHelp;     // help text
-  
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
