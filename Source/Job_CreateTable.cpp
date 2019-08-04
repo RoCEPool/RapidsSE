@@ -309,7 +309,6 @@ eEC Job_CreateTable::eAddTableColumns(TokenVec* pTokenVec, i8& iCurrentToken)
       if (iFirstDate == C_UNKNOWN) {
         iFirstDate = iColumn;
       }
-      m_xColumns[iColumn].vFirstDate(iFirstDate);
       iCurrentToken++;
     }
     else if (pTokenVec->pGet(iCurrentToken)->bSame("time"_Stz)) {

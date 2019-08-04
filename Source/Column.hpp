@@ -32,7 +32,6 @@ namespace MetaData
     i8    m_iColumnLength;
     i8    m_iColumnScale;
     eDM   m_eDatumType;
-    i8    m_iFirstDate;
     bool  m_bIsNullable;
     bool  m_bIsUnique;
     bool  m_bIsPartitionKey;
@@ -77,15 +76,10 @@ namespace MetaData
 
     //eDM  eDatumType(void);
     void vDatumType(eDM eDatumType);
-    
-    i8   iFirstDate(void);
-    void vFirstDate(i8 iFirstDate);
-    
+  
     bool bIsLastColumn(void);
     void vIsLastColumn(bool bIsLastColumn);
-  
-    bool bIsFirstDate(void);
-  
+    
     bool bIsName(s32& sName);
   
     bool bIsUnique(void);

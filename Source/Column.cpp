@@ -57,7 +57,6 @@ Column::Column(void)
   m_iColumnLength = 0;
   m_iColumnScale  = 0;
   m_eDatumType    = DM_NONE;
-  m_iFirstDate    = C_UNKNOWN;
   m_bIsNullable   = true;
   m_bIsUnique     = false;
   m_bIsPartitionKey = false;
@@ -85,7 +84,6 @@ Column::Column(Jobs::Job_CreateTable* pJob, i8 iColumnNo)
   m_iColumnLength = pJob->m_xColumns[iColumnNo].m_iColumnLength;
   m_iColumnScale  = pJob->m_xColumns[iColumnNo].m_iColumnScale;
   m_eDatumType    = pJob->m_xColumns[iColumnNo].m_eDatumType;
-   m_iFirstDate   = pJob->m_xColumns[iColumnNo].m_iFirstDate;
   m_bIsNullable   = pJob->m_xColumns[iColumnNo].m_bIsNullable;
   m_bIsUnique     = pJob->m_xColumns[iColumnNo].m_bIsUnique;
   m_bIsPartitionKey = pJob->m_xColumns[iColumnNo].m_bIsPartitionKey;
@@ -276,26 +274,6 @@ void Column::vDatumType(eDM eDatumType)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get first date column no                                                   */
-/*----------------------------------------------------------------------------*/
-i8 Column::iFirstDate(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
-  return m_iFirstDate;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set first date column no                                                   */
-/*----------------------------------------------------------------------------*/
-void Column::vFirstDate(i8 iFirstDate)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
-  m_iFirstDate = iFirstDate;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get is last column?                                                        */
 /*----------------------------------------------------------------------------*/
 bool Column::bIsLastColumn(void)
@@ -313,19 +291,6 @@ void Column::vIsLastColumn(bool bIsLastColumn)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
   m_bIsLastColumn = bIsLastColumn;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is column the first date in the column vector?                             */
-/*----------------------------------------------------------------------------*/
-bool Column::bIsFirstDate(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
-  if (CT_DATE == m_eColumnType && m_iFirstDate == m_iColumnNo)
-    return true;
-  else
-    return false;
 }
 
 /*----------------------------------------------------------------------------*/
