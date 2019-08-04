@@ -19,7 +19,7 @@ namespace PushDown
     void* operator new(size_t);
     void  operator delete(void*);
   
-    LimitOp(Stz* szOpLabel, Digest* pDigest);
+    LimitOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn);
    ~LimitOp(void) noexcept(false);
   
     static Op* pNew(Stz* szLabel, Digest* pDigest,  OpDefn* aOpDefn,

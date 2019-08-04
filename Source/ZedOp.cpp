@@ -55,7 +55,7 @@ void ZedOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ZedOp::ZedOp(Stz* szOpLabel, Digest* pDigest)
+ZedOp::ZedOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn)
 : Op(CN_ZEDOP,szOpLabel,pDigest,&__Op_Zed)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ZEDOP,_FOOTER_);
@@ -87,7 +87,7 @@ Op* ZedOp::pNew(Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn,
 {
   i_Tkn_++;
   
-  ZedOp* pZedOp = new ZedOp(szLabel,pDigest);
+  ZedOp* pZedOp = new ZedOp(szLabel,pDigest,aOpDefn);
   
   return pZedOp;
 }

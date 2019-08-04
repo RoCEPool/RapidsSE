@@ -111,8 +111,8 @@ Job_SortExp::Job_SortExp(Session* pSession)
   m_pGenerateOp = new GenerateOp("G_0"_Stz,m_pDigest);
   m_pSortOp     = new SortOp    ("S_0"_Stz,m_pDigest);
   m_pMergeOp    = new MergeOp   ("M_0"_Stz,m_pDigest);
-  m_pOutputOp   = new OutputOp  ("O_0"_Stz,m_pDigest);
-  m_pZedOp      = new ZedOp     ("Z_0"_Stz,m_pDigest);
+  m_pOutputOp   = new OutputOp  ("O_0"_Stz,m_pDigest,nullptr);
+  m_pZedOp      = new ZedOp     ("Z_0"_Stz,m_pDigest,nullptr);
 
   _checkInitialised_(CN_JOB_SORTEXP);
 
