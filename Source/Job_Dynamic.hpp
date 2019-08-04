@@ -8,7 +8,9 @@ namespace Jobs
   class Job_Dynamic : public JobMark2
   {
   public:
-  OpVec m_oOpVec;
+    OpVec m_oOpVec;  // set of operators
+  
+    bool  m_bPulsed; // is job pulsed?
   
     // must be last
     Footer m_xFooter;

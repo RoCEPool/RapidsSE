@@ -106,6 +106,10 @@ Job_Dynamic::Job_Dynamic(Session* pSession)
 : JobMark2(CN_JOB_DYNAMIC, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
+  
+  //m_oOpVec
+  
+  m_bPulsed = false;
     
   _checkInitialised_(CN_JOB_DYNAMIC);
 
