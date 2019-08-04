@@ -82,7 +82,7 @@ OutputOp::~OutputOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* function which parses the command and new's an op                          */
 /*----------------------------------------------------------------------------*/
-Op* OutputOp::pNew(Digest* pDigest, Stz* szLabel,
+Op* OutputOp::pNew(Stz* szLabel, Digest* pDigest, 
                    TokenVec* pTknVec, i8& i_Tkn_)
 {
   i_Tkn_++;

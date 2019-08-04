@@ -85,7 +85,7 @@ FetchOp::~FetchOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new function                                                       */
 /*----------------------------------------------------------------------------*/
-Op* FetchOp::pNew(Digest* pDigest, Stz* szLabel,
+Op* FetchOp::pNew(Stz* szLabel, Digest* pDigest, 
                   TokenVec* pTknVec, i8& i_Tkn_)
 {
   i_Tkn_++;

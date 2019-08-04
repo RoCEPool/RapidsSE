@@ -14,7 +14,7 @@ namespace PushDown
       Stz* m_szCommand;  // first word of prompt command
       Stz* m_szPrefix;   // prefix
 
-      Op*  (*m_fpNew)(Digest* pDigest, Stz* szLabel, // new op fun
+      Op*  (*m_fpNew)(Stz* szLabel, Digest* pDigest,  // new op fun
                       TokenVec* pTknVec, i8& i_Tkn);
       eOR  (*m_fpCall)(void* aThis);   // function which calls the op
       void (*m_fpDrain)(void* aThis);  // function which drains the operand queue

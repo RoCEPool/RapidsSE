@@ -15,8 +15,7 @@ namespace PushDown
            Stz* szCommand,  // first word of prompt command
            Stz* szPrefix,   // prefix
 
-           Op*  (*fpNew)(Digest* pDigest,
-                         Stz* szLabel,
+           Op*  (*fpNew)(Stz* szLabel, Digest* pDigest, 
                          TokenVec* pTknVec, i8& i_Tkn_),
            
            eOR  (*fpCall)(void* aThis),   // function which calls the op

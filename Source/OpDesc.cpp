@@ -13,7 +13,7 @@ OpDesc::OpDesc(eCN  eClass,     // class number
                eOK  eKind,      // op kind
                Stz* szCommand,  // first word of prompt command
                Stz* szPrefix,   // prefix
-               Op*  (*fpNew)(Digest* pDigest, Stz* szLabel,
+               Op*  (*fpNew)(Stz* szLabel, Digest* pDigest, 
                              TokenVec* pTknVec, i8& i_Tkn),
                eOR  (*fpCall)(void* aOp),   // function which does the op
                void (*fpDrain)(void* aOp),  // function which drains the operand queue
