@@ -98,9 +98,8 @@ VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::VectorNL_t(void)
   
   m_nItems = 0;
   
-  u8 nItemNo;
-  for (nItemNo = (i8)0; nItemNo < MAX_ITEMS; nItemNo++)
-    m_pItem[(i8)nItemNo] = nullptr;
+  for (u8 i_Item = (i8)0; i_Item < MAX_ITEMS; i_Item++)
+    m_pItem[(i8)i_Item] = nullptr;
   
   _setFooter_();
   
@@ -120,9 +119,8 @@ VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::~VectorNL_t(void) noexcept(false)
 {
   _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
-  u8 nItemNo;
-  for (nItemNo = (i8)0; (i8)nItemNo < (i8)m_nItems; nItemNo++) {
-    ITEM* pItem = m_pItem[nItemNo];
+  for (u8 i_Item = (i8)0; (i8)i_Item < (i8)m_nItems; i_Item++) {
+    ITEM* pItem = m_pItem[i_Item];
     delete pItem;
   }
 }
@@ -175,8 +173,8 @@ void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::vClear(void)
 {
   _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
-  for (u8 nItemNo = 0; nItemNo < m_nItems; nItemNo++)
-    m_pItem[nItemNo] = nullptr;
+  for (u8 i_Item = 0; i_Item < m_nItems; i_Item++)
+    m_pItem[i_Item] = nullptr;
   
   m_nItems = 0;
 }
@@ -189,10 +187,8 @@ bool VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::bContains(ITEM* pItem)
 {
   _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
-  u8 nItemNo;
-  
-  for (nItemNo = 0; nItemNo < m_nItems; nItemNo++)
-    if (m_pItem[nItemNo] == pItem)
+  for (u8 i_Item = 0; i_Item < m_nItems; i_Item++)
+    if (m_pItem[i_Item] == pItem)
       return true;
 
   return false;
@@ -210,17 +206,17 @@ void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::vInsert(ITEM* pItem)
   ASSERT(m_nItems >= 0 && m_nItems < MAX_ITEMS - 1);
   
   // get item number
-  u8 nItemNo = m_nItems++;
+  u8 i_Item = m_nItems++;
   ASSERT(m_nItems > 0 && m_nItems < MAX_ITEMS);
   
   // there shouldnt already be a item
-  ASSERT( ! m_pItem[nItemNo] );
+  ASSERT( ! m_pItem[i_Item] );
   
   // if there are items in the array then move array up
-  if (nItemNo) {
+  if (i_Item) {
     char* aSrc = reinterpret_cast<char*>(&m_pItem[0]);
     char* aDst = reinterpret_cast<char*>(&m_pItem[1]);
-    char* aLst = aAdd<char*>(&m_pItem[nItemNo],sizeof(ITEM*));
+    char* aLst = aAdd<char*>(&m_pItem[i_Item],sizeof(ITEM*));
     i8 nBytes = nSub(aLst,aDst);
     
     MemLib::vMove(aDst,aSrc,nBytes,VEC_CN);
@@ -247,13 +243,13 @@ i8 VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::nItems(void)
 /* get a specific item                                                        */
 /*----------------------------------------------------------------------------*/
 template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
-ITEM* VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::pGet(u8 nItemNo)
+ITEM* VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::pGet(u8 i_Item)
 {
   _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   
-  ASSERT(nItemNo >= 0 && nItemNo < m_nItems);
+  ASSERT(i_Item >= 0 && i_Item < m_nItems);
   
-  ITEM* pItem = m_pItem[nItemNo];
+  ITEM* pItem = m_pItem[i_Item];
   
   return pItem;
 }
@@ -270,28 +266,28 @@ void VectorNL_t<VEC_CN,ITEM,MAX_ITEMS>::vRemove(ITEM* pItem)
   ASSERT(m_nItems >= 0);
   
   // find the item
-  u8 nItemNo;
+  u8 i_Item;
   
-  for (nItemNo = 0; nItemNo < m_nItems; nItemNo++) {
-    if (m_pItem[nItemNo] == pItem)
+  for (i_Item = 0; i_Item < m_nItems; i_Item++) {
+    if (m_pItem[i_Item] == pItem)
       break;
   }
 
   // item should be there
-  ASSERT(pItem == m_pItem[nItemNo] );
+  ASSERT(pItem == m_pItem[i_Item] );
   
   // reduce no of items
   m_nItems--;
   
-  m_pItem[nItemNo] = nullptr;
+  m_pItem[i_Item] = nullptr;
   
   // last item removed, nothing to do
-  if (nItemNo == m_nItems)
+  if (i_Item == m_nItems)
     return;
   
   // move array up
-  char* aSrc = reinterpret_cast<char*>(&m_pItem[nItemNo+1]);
-  char* aDst = reinterpret_cast<char*>(&m_pItem[nItemNo]);
+  char* aSrc = reinterpret_cast<char*>(&m_pItem[i_Item+1]);
+  char* aDst = reinterpret_cast<char*>(&m_pItem[i_Item]);
   char* aLst = aAdd<char*>(&m_pItem[m_nItems-1],sizeof(ITEM*));
   i8 nBytes = nSub(aLst,aDst);
   
