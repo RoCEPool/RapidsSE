@@ -82,7 +82,7 @@ ZedOp::~ZedOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* function which parses the command and new's an op                          */
 /*----------------------------------------------------------------------------*/
-Op* ZedOp::pNew(Digest* pDigest, Job_Dynamic* pJob, Stz* szLabel,
+Op* ZedOp::pNew(Digest* pDigest, Stz* szLabel,
                 TokenVec* pTknVec, i8& i_Tkn_)
 {
   i_Tkn_++;
@@ -95,9 +95,9 @@ Op* ZedOp::pNew(Digest* pDigest, Job_Dynamic* pJob, Stz* szLabel,
 /*----------------------------------------------------------------------------*/
 /* call the zed loop function                                                 */
 /*----------------------------------------------------------------------------*/
-eOR ZedOp::eCall(void* aThis)
+eOR ZedOp::eCall(void* aThisOp)
 {
-  eOR eCallAgain = ((ZedOp*)aThis)->eZedLoop();
+  eOR eCallAgain = ((ZedOp*)aThisOp)->eZedLoop();
   
   return eCallAgain;
 }

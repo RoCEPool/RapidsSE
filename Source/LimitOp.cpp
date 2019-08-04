@@ -85,7 +85,7 @@ LimitOp::~LimitOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new function                                                       */
 /*----------------------------------------------------------------------------*/
-Op* LimitOp::pNew(Digest* pDigest, Job_Dynamic* pJob, Stz* szLabel,
+Op* LimitOp::pNew(Digest* pDigest, Stz* szLabel,
                   TokenVec* pTknVec, i8& i_Tkn_)
 {
   i_Tkn_++;
@@ -100,9 +100,9 @@ Op* LimitOp::pNew(Digest* pDigest, Job_Dynamic* pJob, Stz* szLabel,
 /*----------------------------------------------------------------------------*/
 /* call the loop function                                                     */
 /*----------------------------------------------------------------------------*/
-eOR LimitOp::eCall(void* aThis)
+eOR LimitOp::eCall(void* aThisOp)
 {
-  eOR eCallAgain = ((LimitOp*)aThis)->eLimitLoop();
+  eOR eCallAgain = ((LimitOp*)aThisOp)->eLimitLoop();
   
   return eCallAgain;
 }

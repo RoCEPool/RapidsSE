@@ -85,7 +85,7 @@ FetchOp::~FetchOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new function                                                       */
 /*----------------------------------------------------------------------------*/
-Op* FetchOp::pNew(Digest* pDigest, Job_Dynamic* pJob, Stz* szLabel,
+Op* FetchOp::pNew(Digest* pDigest, Stz* szLabel,
                   TokenVec* pTknVec, i8& i_Tkn_)
 {
   i_Tkn_++;
@@ -93,7 +93,7 @@ Op* FetchOp::pNew(Digest* pDigest, Job_Dynamic* pJob, Stz* szLabel,
   FetchOp* pFetchOp = new FetchOp(szLabel,pDigest);
   
   s32 sTableNm = pTknVec->pGet(i_Tkn_++)->aText();
-  AM::vTableName(pJob,sTableNm);
+  AM::vTableName((Job_Dynamic*)pDigest->m_pJob,sTableNm);
   
   pFetchOp->m_sArgs = sTableNm;
   
@@ -103,9 +103,9 @@ Op* FetchOp::pNew(Digest* pDigest, Job_Dynamic* pJob, Stz* szLabel,
 /*----------------------------------------------------------------------------*/
 /* call loop function                                                         */
 /*----------------------------------------------------------------------------*/
-eOR FetchOp::eCall(void* aThis)
+eOR FetchOp::eCall(void* aThisOp)
 {  
-  eOR eCallAgain = ((FetchOp*)aThis)->eFetchLoop();
+  eOR eCallAgain = ((FetchOp*)aThisOp)->eFetchLoop();
   
   return eCallAgain;
 }

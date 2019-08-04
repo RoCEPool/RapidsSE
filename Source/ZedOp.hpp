@@ -19,7 +19,7 @@ namespace PushDown
     ZedOp(Stz* szOpLabel, Digest* pDigest);
    ~ZedOp(void) noexcept(false);
   
-    static Op* pNew(Digest* pDigest, Job_Dynamic* pJob, Stz* szLabel,
+    static Op* pNew(Digest* pDigest, Stz* szLabel,
                     TokenVec* pTknVec, i8& i_Tkn_);
     static eOR eCall(void* aThis);
   

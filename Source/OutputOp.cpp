@@ -82,7 +82,7 @@ OutputOp::~OutputOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* function which parses the command and new's an op                          */
 /*----------------------------------------------------------------------------*/
-Op* OutputOp::pNew(Digest* pDigest, Job_Dynamic* pJob, Stz* szLabel,
+Op* OutputOp::pNew(Digest* pDigest, Stz* szLabel,
                    TokenVec* pTknVec, i8& i_Tkn_)
 {
   i_Tkn_++;
@@ -95,9 +95,9 @@ Op* OutputOp::pNew(Digest* pDigest, Job_Dynamic* pJob, Stz* szLabel,
 /*----------------------------------------------------------------------------*/
 /* call the output loop function                                              */
 /*----------------------------------------------------------------------------*/
-eOR OutputOp::eCall(void* aThis)
+eOR OutputOp::eCall(void* aThisOp)
 {
-  eOR eCallAgain = ((OutputOp*)aThis)->eOutputLoop();
+  eOR eCallAgain = ((OutputOp*)aThisOp)->eOutputLoop();
   
   return eCallAgain;
 }

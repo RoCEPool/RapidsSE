@@ -16,7 +16,7 @@ namespace PushDown
            Stz* szPrefix,   // prefix
 
            Op*  (*fpNew)(Digest* pDigest,
-                         Job_Dynamic* pJob, Stz* szLabel,
+                         Stz* szLabel,
                          TokenVec* pTknVec, i8& i_Tkn_),
            
            eOR  (*fpCall)(void* aThis),   // function which calls the op
