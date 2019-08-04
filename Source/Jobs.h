@@ -32,8 +32,11 @@ namespace Jobs
 #include "JobLog.hpp"
 
 #include "JobWriteBehind.hpp"
+
 #include "RowAgg.hpp"
 #include "RowOnce.hpp"
+
+#include "JobHelper.hpp"
 
 #include "Job__Begun.hpp"
 #include "Job__Cancel.hpp"

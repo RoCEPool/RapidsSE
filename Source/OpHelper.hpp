@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Prompt
+namespace PushDown
 {
   class OpHelper
   {
