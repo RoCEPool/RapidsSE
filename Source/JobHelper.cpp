@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* process dynamic command                                                    */
 /*----------------------------------------------------------------------------*/
-void JobHelper::vDynamicJob(Job_Dynamic* pJob)
+void JobHelper::vDynamicJob(Job_Dynamic* pJob, Digest* pDigest)
 {  
   vDebugPoint();
   
@@ -17,12 +17,12 @@ void JobHelper::vDynamicJob(Job_Dynamic* pJob)
     Op* pOp = pJob->m_oOpVec.pGet(i_Op);
     
     if (CN_LIMITOP == pOp->eClass()) {
-      pJob->m_pDigest->m_bPulsed = true;
+      pDigest->m_bPulsed = true;
       break;
     }
   }
   
-  if (! pJob->m_pDigest->m_bPulsed)
+  if (! pDigest->m_bPulsed)
     return;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
