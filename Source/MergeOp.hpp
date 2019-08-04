@@ -12,6 +12,7 @@ namespace PushDown
   private:
   
     Operand* m_pOperand[C_OPERANDS];
+    i8       m_iOperands;
     bool     m_bEndMarker;
     
     // must be last
@@ -27,7 +28,6 @@ namespace PushDown
     static eOR eCallLoop(void* aThis);
     
   private:
-    i8 iCalculateCardinality(i8 iCount);
     eOR eMergeLoop(void);
     BufferCursor* pPartitionBuffer(IntBuffer* pIntBuffer, BufferCursor* pLowCursor,
                                    BufferCursor* pHighCursor);

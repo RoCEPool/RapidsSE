@@ -40,6 +40,7 @@ namespace Rows
     IntBuffer* pPrevBuffer(void);
     void       vPrevBuffer(IntBuffer* pPrevBuffer);
     void       vShow(void);
+    bool       bVerifyNextPrev(void);
     bool       bVerifyOrder(void);
     
     ////////////////////////////////////////////////////////////////////////////

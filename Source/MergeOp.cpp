@@ -51,6 +51,7 @@ MergeOp::MergeOp(Stz* szOpLabel, Jobs::Job* pJob)
   for (i8 i_Index = 0; i_Index < C_OPERANDS; i_Index++)
     m_pOperand[i_Index] = nullptr;
   
+  m_iOperands = 0;
   m_bEndMarker = false;
   
   m_fpOpFun = MergeOp::eCallLoop;
@@ -83,26 +84,6 @@ eOR MergeOp::eCallLoop(void* aThis)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* calculate the cardinality of given number                                  */
-/*----------------------------------------------------------------------------*/
-i8 MergeOp::iCalculateCardinality(i8 iCount)
-{
-  i8 iCardinality = 0;
-  
-  if (iCount == 1)
-    return iCardinality;
-  
-  iCardinality++;
-  
-  while(iCount % 2 != 0) {
-    iCardinality++;
-    iCount /= 2;
-  }
-
-  return iCardinality;
-}
-
-/*----------------------------------------------------------------------------*/
 /* the merge operator loop function                                           */
 /*----------------------------------------------------------------------------*/
 eOR MergeOp::eMergeLoop(void)
@@ -115,7 +96,7 @@ eOR MergeOp::eMergeLoop(void)
     
     if (! pOperand) {
       ASSERT(bIsLocked());
-      if (m_bEndMarker)
+      if (m_bEndMarker & (m_iOperands == 1))
         break;
       return OR_BIDE;
     }
@@ -140,12 +121,12 @@ eOR MergeOp::eMergeLoop(void)
     }
     
     // calculate 2^ of number of linked sorted buffers
-    i8 iCardinality = iCalculateCardinality(iCount);
+    i8 iCardinality = (i8)log2(iCount);
     
     // check if we have another set of this cardinality
     if (m_pOperand[iCardinality]) {
       // merge given buffer set with this buffer set
-      vTrace("Merging %p %p(%lld)\n"_Stz, m_pOperand[iCardinality], pRootBuffer, iCardinality);
+      vTrace("Merging %p %p %lld (%lld)\n"_Stz, m_pOperand[iCardinality], pRootBuffer, iCount, iCardinality);
       //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // dump the buffer
       //vTrace("\n\nSorting buffer:\n"_Stz);
@@ -155,11 +136,12 @@ eOR MergeOp::eMergeLoop(void)
       IntBuffer* pIntBuffer2 = _pIntBuffer(m_pOperand[iCardinality]);
       pLastBuffer->vNextBuffer(pIntBuffer2);
       pIntBuffer2->vPrevBuffer(pLastBuffer);
+      RASSERT(pRootBuffer->bVerifyNextPrev());
       
       // count no. of linked buffers received
-      IntBuffer* pIntBuffer = pRootBuffer;
-      IntBuffer* pLastBuffer = pRootBuffer;
-      i8 iCount = 0;
+      pIntBuffer = pRootBuffer;
+      pLastBuffer = pRootBuffer;
+      iCount = 0;
       while (pIntBuffer) {
         iCount++;
         pLastBuffer = pIntBuffer;
@@ -189,10 +171,16 @@ eOR MergeOp::eMergeLoop(void)
       //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // move the merged sorted linked buffers to next cardinality
       m_pOperand[iCardinality] = nullptr;
-      if ( ! m_pOperand[++iCardinality])
+      m_iOperands--;
+      
+      if ( ! m_pOperand[++iCardinality]) {
         m_pOperand[iCardinality] = pRootBuffer;
-      else
+        m_iOperands++;
+      }
+      else {
+        vTrace("Piping self %p(%lld)\n"_Stz, pRootBuffer, iCardinality);
         vPipeSelf(pRootBuffer);
+      }
       
       //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // delete the bufferCursors
@@ -203,6 +191,7 @@ eOR MergeOp::eMergeLoop(void)
     else {
       // save the buffer set till we have a similar set to merge with
       m_pOperand[iCardinality] = pRootBuffer;
+      m_iOperands++;
     }
     
   }

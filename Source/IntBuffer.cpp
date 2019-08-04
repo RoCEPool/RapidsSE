@@ -254,6 +254,39 @@ void IntBuffer::vShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* verify the next, previous pointers                                         */
+/*----------------------------------------------------------------------------*/
+bool IntBuffer::bVerifyNextPrev(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTBUFFER,_FOOTER_);
+  
+  /*
+   Any buffer should have a next whose prev point back to it; any prev should
+   point forward to it; a child buffer should point back to its parent
+   */
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (m_pPrevBuffer) {
+    IntBuffer* pPrevBuffer = _pIntBuffer(m_pPrevBuffer);
+    if (pPrevBuffer->pNextBuffer() != this) {
+      return false;
+    }
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (m_pNextBuffer) {
+    IntBuffer* pNextBuffer = _pIntBuffer(m_pNextBuffer);
+    if (pNextBuffer->pPrevBuffer() != this) {
+      return false;
+    }
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* verify the order of the integers in this buffer                            */
 /*----------------------------------------------------------------------------*/
 bool IntBuffer::bVerifyOrder(void)
