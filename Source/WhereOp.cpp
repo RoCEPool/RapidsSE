@@ -23,7 +23,7 @@ WhereOp* PushDown::_pWhereOp(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 WhereOp::WhereOp(Stz* szOpLabel, Digest* pDigest)
-: Op(CN_WHEREOP,nullptr,szOpLabel,pDigest)
+: Op(CN_WHEREOP,szOpLabel,pDigest,nullptr)
 {
   _precondition_(_MAGIC_,CN_WHEREOP);
 }

@@ -23,7 +23,7 @@ ReduceOp* PushDown::_pReduceOp(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ReduceOp::ReduceOp(Stz* szOpLabel, Digest* pDigest)
-: Op(CN_REDUCEOP,nullptr,szOpLabel,pDigest)
+: Op(CN_REDUCEOP,szOpLabel,pDigest,nullptr)
 {
   _precondition_(_MAGIC_,CN_REDUCEOP);
 }

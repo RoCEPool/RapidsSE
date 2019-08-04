@@ -23,7 +23,7 @@ DistinctOp* PushDown::_pDistinctOp(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 DistinctOp::DistinctOp(Stz* szOpLabel, Digest* pDigest)
-: Op(CN_DISTINCTOP,nullptr,szOpLabel,pDigest)
+: Op(CN_DISTINCTOP,szOpLabel,pDigest,nullptr)
 {
   _precondition_(_MAGIC_,CN_DISTINCTOP);
 }
