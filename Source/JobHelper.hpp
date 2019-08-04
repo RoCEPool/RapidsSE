@@ -8,7 +8,7 @@ namespace Jobs
   class JobHelper
   {
   public:
-    static void vDynamicJob(Job_Dynamic* pJob, Digest* pDigest);
+    static void vDynamicJob(Digest* pDigest);
   };
 }
 

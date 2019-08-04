@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* process dynamic command                                                    */
 /*----------------------------------------------------------------------------*/
-void JobHelper::vDynamicJob(Job_Dynamic* pJob, Digest* pDigest)
+void JobHelper::vDynamicJob(Digest* pDigest)
 {  
   vDebugPoint();
   
