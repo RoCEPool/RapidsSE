@@ -55,6 +55,7 @@ enum eCN : u2 // Class Number
   /*  29 0x1D      248B Heap:M */ CN_DIC,
   /*  30 0x1E      792B Heap:S */ CN_DICPATH,
   /*  31 0x1F      152B Heap:S */ CN_DICSTACK,
+  /*  31 0x1F      152B Heap:S */ CN_DIGEST,
   /*  32 0x20      608B Heap:S */ CN_DIR,
   /*                           */ CN_DISTINCTOP,
   /*                           */ CN_DTMVAL,
@@ -393,6 +394,7 @@ static Stz* aCN[]
   /*  29 0x1D */ "DIC"_Stz,                 // CN_DIC
   /*  30 0x1E */ "DICPATH"_Stz,             // CN_DICPATH
   /*  31 0x1F */ "DICSTACK"_Stz,            // CN_DICSTACK
+  /*  31 0x1F */ "DIGEST"_Stz,              // CN_DIGEST
   /*  32 0x20 */ "DIR"_Stz,                 // CN_DIR
   /*          */ "DISTINCTOP"_Stz,          // CN_DISTINCTOP
   /*          */ "DTMVAL"_Stz,              // CN_DTMVAL

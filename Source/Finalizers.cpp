@@ -52,6 +52,7 @@ pFINALIZE *gpFinalize[]
   /* 33 */ &Dic::vFinalize,               // CN_DIC
   /*    */ &Finalize::vUndefined,         // CN_DICPATH
   /* 34 */ &Finalize::vUndefined,         // CN_DICSTACK
+  /* 34 */ &Finalize::vUndefined,         // CN_DIGEST
   /* 35 */ &Finalize::vUndefined,         // CN_DIR
   /*    */ &Finalize::vUndefined,         // CN_DISTINCTOP
   /*    */ &Finalize::vUndefined,         // CN_DTMVAL

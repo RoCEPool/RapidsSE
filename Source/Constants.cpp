@@ -196,6 +196,7 @@ void Constants::vAddConstants(void)
   /* 18 */ vAddConstant("CN_DIC"_Stz,          CN_DIC);
   /*    */ vAddConstant("CN_DICPATH"_Stz,      CN_DICPATH);
   /* 19 */ vAddConstant("CN_DICSTACK"_Stz,     CN_DICSTACK);
+  /* 19 */ vAddConstant("CN_DIGEST"_Stz,       CN_DIGEST);
   /* 20 */ vAddConstant("CN_DIR"_Stz,          CN_DIR);
   
   /*    */ vAddConstant("CN_FETCHBUFFER"_Stz,  CN_FETCHBUFFER);
