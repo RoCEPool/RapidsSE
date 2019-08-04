@@ -575,7 +575,7 @@ i8 giClassSize[]
   /*    */ sizeof(Numbat),             // CN_NUMBAT
 
   /* 28 */ sizeof(OperandQueue),       // CN_OPERANDQUEUE
-  /* 28 */ 0,//sizeof(OpSet),       // CN_OPSET
+  /* 28 */ sizeof(OpSet),              // CN_OPSET
   /* 77 */ sizeof(OutputOp),           // CN_OUTPUTOP
 
   /* 78 */ sizeof(Parser),             // CN_PARSER
