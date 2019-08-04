@@ -32,7 +32,7 @@ FetchOp* PushDown::_pFetchOp(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allocate a new entry buffer from heap                                      */
+/* allocate from heap                                                         */
 /*----------------------------------------------------------------------------*/
 void* FetchOp::operator new(size_t)
 {
@@ -43,7 +43,7 @@ void* FetchOp::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
-/* free an entry buffer back to the heap                                      */
+/* free to heap                                                               */
 /*----------------------------------------------------------------------------*/
 void FetchOp::operator delete(void* aAddress)
 {
@@ -83,7 +83,7 @@ FetchOp::~FetchOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* function which parses the command and new's an op                          */
+/* parse & new function                                                       */
 /*----------------------------------------------------------------------------*/
 Op* FetchOp::pNew(Job_Dynamic* pJob, Stz* szLabel, TokenVec* pTknVec, i8& i_Tkn_)
 {
@@ -100,7 +100,7 @@ Op* FetchOp::pNew(Job_Dynamic* pJob, Stz* szLabel, TokenVec* pTknVec, i8& i_Tkn_
 }
 
 /*----------------------------------------------------------------------------*/
-/* call the fetch loop function                                               */
+/* call loop function                                                         */
 /*----------------------------------------------------------------------------*/
 eOR FetchOp::eCall(void* aThis)
 {  
@@ -114,7 +114,7 @@ eOR FetchOp::eCall(void* aThis)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* the fetch operator loop function                                           */
+/* loop function                                                              */
 /*----------------------------------------------------------------------------*/
 eOR FetchOp::eFetchLoop(void)
 {

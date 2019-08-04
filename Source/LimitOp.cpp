@@ -4,6 +4,19 @@
 
 #include "PushDown.h"
 
+OpDesc __Op_Limit (
+  CN_LIMITOP,         // class number
+  OK_SIMPLE,          // op kind
+  "Limit"_Stz,        // first word of prompt command
+  "Lim"_Stz,          // prefix
+
+  LimitOp::pNew,      // function which parses the command and new's an op
+  LimitOp::eCall,     // function which does the op
+  nullptr,            // function which drains the operand queue
+
+  "<help>"_Stz
+  );
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -20,20 +33,85 @@ LimitOp* PushDown::_pLimitOp(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/* allocate from heap memory                                                  */
+/*----------------------------------------------------------------------------*/
+void* LimitOp::operator new(size_t)
+{
+  LimitOp* pLimitOp = static_cast<LimitOp*>(HeapMem::pAllocate(CN_LIMITOP));
+  
+  return pLimitOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* free to heap memory                                                        */
+/*----------------------------------------------------------------------------*/
+void LimitOp::operator delete(void* aAddress)
+{
+  LimitOp* pLimitOp = static_cast<LimitOp*>(aAddress);
+  
+  HeapMem::vFree(pLimitOp);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 LimitOp::LimitOp(Stz* szOpLabel, Jobs::Job* pJob)
 : Op(CN_LIMITOP,szOpLabel,pJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LIMITOP,_FOOTER_);
+  
+  m_nLimit = 0;
+  m_nSoFar = 0;
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_LIMITOP,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+LimitOp::~LimitOp(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_LIMITOP);
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialize object                                                          */
+/*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-LimitOp::~LimitOp(void) noexcept(false)
+
+/*----------------------------------------------------------------------------*/
+/* parse & new function                                                       */
+/*----------------------------------------------------------------------------*/
+Op* LimitOp::pNew(Job_Dynamic* pJob, Stz* szLabel, TokenVec* pTknVec, i8& i_Tkn_)
 {
-  _precondition_(_MAGIC_,CN_LIMITOP);
+  i_Tkn_++;
+  
+  LimitOp* pLimitOp = new LimitOp(szLabel,(Job*)pJob);
+  
+  return pLimitOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* call the loop function                                                     */
+/*----------------------------------------------------------------------------*/
+eOR LimitOp::eCall(void* aThis)
+{
+  eOR eCallAgain = ((LimitOp*)aThis)->eLimitLoop();
+  
+  return eCallAgain;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* the fetch operator loop function                                           */
+/*----------------------------------------------------------------------------*/
+eOR LimitOp::eLimitLoop(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
+  
+  return OR_EXIT;
 }
 
 /*----------------------------------------------------------------------------*/
