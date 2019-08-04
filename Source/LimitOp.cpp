@@ -85,7 +85,7 @@ LimitOp::~LimitOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* LimitOp::pNew(Stz* szLabel, Digest* pDigest, 
+Op* LimitOp::pNew(Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn,
                   TokenVec* pTknVec, i8& i_Tkn_)
 {
   i_Tkn_++;

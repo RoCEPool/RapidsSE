@@ -102,7 +102,7 @@ void Digest::vParseCommand(TokenVec* pTknVec)
     sLabel.vSprint("%s_%02lld"_Stz,
                    aOpDefn->m_szPrefix,
                    m_oOpVec.nItems());
-    Op* pOp = (aOpDefn->m_fpNew)(sLabel,this,pTknVec,i_Tkn);
+    Op* pOp = (aOpDefn->m_fpNew)(sLabel,this,aOpDefn,pTknVec,i_Tkn);
     m_oOpVec.vAdd(pOp);
   }
   
