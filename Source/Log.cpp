@@ -333,12 +333,19 @@ void Log::vOpenBySE(bool bStarting)
   
   s32 sClock;
   MagLib::vHzMag(Hardware::iClockFrequency(),sClock);
-  
-  Log::vNote("hw: %lld cores; %s memory; %s clock frequency"_Stz,
-                     Hardware::iCoreCount(),
-                     sMem.aStz(),
-                     sClock.aStz()
-                     );
+
+  s32 sHost;
+  s32 sUser;
+  Hardware::vHostName(sHost);
+  Hardware::vLoginName(sUser);
+
+  Log::vNote("hw: host %s user %s; %lld cores; %s memory; %s clock frequency"_Stz,
+             sHost.aChar(),
+             sUser.aChar(),
+             Hardware::iCoreCount(),
+             sMem.aStz(),
+             sClock.aStz()
+             );
   
   AM::vNoteArguments();
 #endif
