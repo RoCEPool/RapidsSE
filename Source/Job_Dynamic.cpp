@@ -108,8 +108,8 @@ Job_Dynamic::Job_Dynamic(Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
   
   //m_oOpVec
-    
-  m_pDigest = new Digest;
+  
+  m_pDigest = new Digest(this);
     
   _checkInitialised_(CN_JOB_DYNAMIC);
 

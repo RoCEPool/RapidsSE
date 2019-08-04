@@ -39,10 +39,12 @@ void Digest::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Digest::Digest(void)
+Digest::Digest(Job* pJob)
 : Object(CN_DIGEST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIGEST,_FOOTER_);
+  
+  m_pJob = pJob;
   
   m_bPulsed = false;
   

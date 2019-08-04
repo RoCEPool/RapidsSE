@@ -8,8 +8,13 @@ namespace PushDown
   class Digest : public Object
   {
   public:
-    bool m_bPulsed;
   
+    Job*  m_pJob;
+  
+    bool  m_bPulsed;
+  
+    OpVec m_oOpVec;  // set of operators
+
   private:
   
     // must be last
@@ -19,7 +24,7 @@ namespace PushDown
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Digest(void);
+    Digest(Job* pJob);
    ~Digest(void) noexcept(false);
   
     Footer* aFooter(void);
