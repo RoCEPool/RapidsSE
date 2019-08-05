@@ -115,6 +115,7 @@ void AM::vNextTempName(s32& sName) {
   gpAttachMap->m_oTempName.vNextName(sName);
 }
 void AM::vPulseTask(Task* pTask) {
+  pTask->vGrabLock();
   Scheduler::vPulsePausedTask(pTask);
 }
 void AM::vSetAcksRmg(Task* pTask, i8 nAcks) {

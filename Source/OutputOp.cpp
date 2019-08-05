@@ -125,8 +125,10 @@ eOR OutputOp::eOutputLoop(void)
     switch (pOperand->eClass()) {
         
       case CN_ENDMARKER:
-       vPipeOut(pOperand);
-       goto L_EXIT;
+        vPipeOut(pOperand);
+        goto L_EXIT;
+        
+      // -- -- -- -- -- --
         
       case CN_INTBUFFER: {
         IntBuffer* pIntBuffer = _pIntBuffer(pOperand) ;

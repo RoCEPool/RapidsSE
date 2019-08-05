@@ -272,6 +272,9 @@ bool Op::bPause(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
+  if (! m_bPulsed)
+    return false;
+  
   if (0 == m_iWorkDone % m_iWorkQuanta)
     return true;
   

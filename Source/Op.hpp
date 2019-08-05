@@ -7,6 +7,8 @@ namespace PushDown
 {
   class Op : public Object
   {
+  friend class Digest;
+  
   protected:
     s32            m_sLabel;         // label of this op
     s256           m_sArgs;          // args of this op   (initial dev only)

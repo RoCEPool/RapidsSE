@@ -166,6 +166,7 @@ void Digest::vSetupJob(void)
     
     if (CN_FETCHOP == pOp->eClass()) {
       m_pOpToPulse = pOp;
+      pOp->m_bPulsed = true;
       break;
     }
   }

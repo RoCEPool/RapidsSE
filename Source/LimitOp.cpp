@@ -134,7 +134,13 @@ eOR LimitOp::eLimitLoop(void)
       case CN_ENDMARKER:
         vPipeOut(pOperand);
         goto L_EXIT;
+
+      // -- -- -- -- -- -- 
         
+      case CN_PAUSEMARKER:
+        AM::vPulseTask(m_pDigest->m_pOpToPulse->pTask());
+        break;
+
       case CN_CRWBUFFER:
         m_nSoFar++;
         break;
