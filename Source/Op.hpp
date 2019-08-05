@@ -61,7 +61,6 @@ namespace PushDown
     bool bPause(void);
     void vPipeOut(Operand* pOperand);
     void vPipeOut_endMarker(void);
-    void vPipeSelf(Operand* pOperand);
     Operand* pPopOperand(void);
     bool bIsCancelling(void);
     void vStdDrain(void);
