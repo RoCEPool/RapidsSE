@@ -177,6 +177,26 @@ bool IntBuffer::bHasSpace(void)
 /*----------------------------------------------------------------------------*/
 /* get next buffer                                                            */
 /*----------------------------------------------------------------------------*/
+void IntBuffer::vLinkBuffer(IntBuffer* pIntBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTBUFFER,_FOOTER_);
+  
+  // count no. of linked buffers received
+  IntBuffer* pLastBuffer = this;
+  IntBuffer* pBuffer = this;
+  
+  while (pBuffer) {
+    pLastBuffer = pBuffer;
+    pBuffer = pBuffer->pNextBuffer();
+  }
+
+  pLastBuffer->vNextBuffer(pIntBuffer);
+  pIntBuffer->vPrevBuffer(pLastBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next buffer                                                            */
+/*----------------------------------------------------------------------------*/
 IntBuffer* IntBuffer::pNextBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INTBUFFER,_FOOTER_);

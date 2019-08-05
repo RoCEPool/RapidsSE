@@ -87,12 +87,16 @@ eOR MergeOp::eCallLoop(void* aThis)
 /*----------------------------------------------------------------------------*/
 void MergeOp::vMergeDangling(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MERGEOP,_FOOTER_);
+  
   i8 i_Index;
-  i8 j_Index = 0;
+  i8 j_Index;
   Operand* pOperandPair[2];
   
   // merge remaining operand set pairs till we are left with one single set
   while (m_iOperands != 1) {
+    
+    j_Index = 0;
     
     // find a buffer set
     for (i_Index = 0; i_Index < C_OPERANDS; i_Index++) {
@@ -193,36 +197,23 @@ eOR MergeOp::eMergeLoop(void)
 /*----------------------------------------------------------------------------*/
 void MergeOp::vMergeOperands(Operand* pOperand1, Operand* pOperand2)
 {
-  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // dump the buffer
-  //vTrace("\n\nSorting buffer:\n"_Stz);
-  //pIntBuffer->vDump();
-  
-  // link the buffers
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MERGEOP,_FOOTER_);
+
   IntBuffer* pIntBuffer1 = _pIntBuffer(pOperand1);
   RASSERT(pIntBuffer1->bVerifyNextPrev());
   
   IntBuffer* pIntBuffer2 = _pIntBuffer(pOperand2);
   RASSERT(pIntBuffer2->bVerifyNextPrev());
   
-  // count no. of linked buffers received
-  IntBuffer* pLastBuffer = pIntBuffer1;
-  IntBuffer* pIntBuffer = pIntBuffer1;
-  i8 iCount = 0;
-  while (pIntBuffer) {
-    iCount++;
-    pLastBuffer = pIntBuffer;
-    pIntBuffer = pIntBuffer->pNextBuffer();
-  }
-  
-  pLastBuffer->vNextBuffer(pIntBuffer2);
-  pIntBuffer2->vPrevBuffer(pLastBuffer);
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // link the buffers
+  pIntBuffer1->vLinkBuffer(pIntBuffer2);
   RASSERT(pIntBuffer1->bVerifyNextPrev());
   
   // count no. of linked buffers received
-  pIntBuffer = pIntBuffer1;
-  pLastBuffer = pIntBuffer1;
-  iCount = 0;
+  IntBuffer* pIntBuffer = pIntBuffer1;
+  IntBuffer* pLastBuffer = pIntBuffer1;
+  i8 iCount = 0;
   while (pIntBuffer) {
     iCount++;
     pLastBuffer = pIntBuffer;
