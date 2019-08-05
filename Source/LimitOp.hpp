@@ -25,8 +25,10 @@ namespace PushDown
     static Op* pNew(Stz* szLabel, Digest* pDigest,  OpDefn* aOpDefn,
                     TokenVec* pTknVec, i8& i_Tkn_);
     static eOR eCall(void* aThis);
-  
+    static eOR eDrain(void* aThis);
+
     eOR eLimitLoop(void);
+    eOR eDrainLoop(void);
 
   private:
     Footer* aFooter(void);

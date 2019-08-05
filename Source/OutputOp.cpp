@@ -11,8 +11,8 @@ OpDesc __Op_Output (
    "Out"_Stz,           // prefix
 
    OutputOp::pNew,      // function which parses the command and new's an op
-   OutputOp::eCall,     // function which does the op
-   nullptr,             // function which drains the operand queue
+   OutputOp::eCall,     // function which calls the op loop
+   OutputOp::eDrain,    // function which calls the drain loop
    
    "<help>"_Stz
 );
@@ -103,6 +103,16 @@ eOR OutputOp::eCall(void* aThisOp)
 }
 
 /*----------------------------------------------------------------------------*/
+/* call drain loop                                                            */
+/*----------------------------------------------------------------------------*/
+eOR OutputOp::eDrain(void* aThisOp)
+{
+  eOR eCallAgain = ((OutputOp*)aThisOp)->eDrainLoop();
+  
+  return eCallAgain;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -135,6 +145,54 @@ eOR OutputOp::eOutputLoop(void)
         goto L_EXIT;
         
       // -- -- -- -- -- --
+        
+      case CN_INTBUFFER: {
+        IntBuffer* pIntBuffer = _pIntBuffer(pOperand) ;
+        pIntBuffer->vShow();
+        break;
+      }
+        
+      default:
+        break;
+    }
+    
+    vPipeOut(pOperand);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+L_EXIT:
+  return OR_EXIT;
+}
+
+/*----------------------------------------------------------------------------*/
+/* drain loop                                                                 */
+/*----------------------------------------------------------------------------*/
+eOR OutputOp::eDrainLoop(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
+  
+  for (;;) {
+    
+    Operand* pOperand = pPopOperand();
+    
+    if (! pOperand) {
+      ASSERT(bIsLocked());
+      return OR_BIDE;
+    }
+    
+    if (bIsCancelling()) {
+      
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+    switch (pOperand->eClass()) {
+        
+      case CN_ENDMARKER:
+        vPipeOut(pOperand);
+        goto L_EXIT;
+        
+        // -- -- -- -- -- --
         
       case CN_INTBUFFER: {
         IntBuffer* pIntBuffer = _pIntBuffer(pOperand) ;

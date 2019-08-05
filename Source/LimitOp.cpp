@@ -11,8 +11,8 @@ OpDesc __Op_Limit (
   "Lim"_Stz,          // prefix
 
   LimitOp::pNew,      // function which parses the command and new's an op
-  LimitOp::eCall,     // function which does the op
-  nullptr,            // function which drains the operand queue
+  LimitOp::eCall,     // function which calls the op loop
+  LimitOp::eDrain,    // function which calls the drain loop
 
   "<help>"_Stz
   );
@@ -98,11 +98,21 @@ Op* LimitOp::pNew(Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn,
 }
 
 /*----------------------------------------------------------------------------*/
-/* call loop                                                                  */
+/* call op loop                                                               */
 /*----------------------------------------------------------------------------*/
 eOR LimitOp::eCall(void* aThisOp)
 {
   eOR eCallAgain = ((LimitOp*)aThisOp)->eLimitLoop();
+  
+  return eCallAgain;
+}
+
+/*----------------------------------------------------------------------------*/
+/* call drain loop                                                            */
+/*----------------------------------------------------------------------------*/
+eOR LimitOp::eDrain(void* aThisOp)
+{
+  eOR eCallAgain = ((LimitOp*)aThisOp)->eDrainLoop();
   
   return eCallAgain;
 }
@@ -145,6 +155,56 @@ eOR LimitOp::eLimitLoop(void)
         AM::vPulseTask(m_pDigest->m_pOpToPulse->pTask());
         break;
 
+      case CN_CRWBUFFER:
+        m_nSoFar++;
+        break;
+        
+      default:
+        break;
+    }
+    
+    vPipeOut(pOperand);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+L_EXIT:
+  return OR_EXIT;
+}
+
+/*----------------------------------------------------------------------------*/
+/* drain loop                                                                 */
+/*----------------------------------------------------------------------------*/
+eOR LimitOp::eDrainLoop(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LIMITOP,_FOOTER_);
+  
+  for (;;) {
+    
+    Operand* pOperand = pPopOperand();
+    
+    if (! pOperand) {
+      ASSERT(bIsLocked());
+      return OR_BIDE;
+    }
+    
+    if (bIsCancelling()) {
+      
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+    switch (pOperand->eClass()) {
+        
+      case CN_ENDMARKER:
+        vPipeOut(pOperand);
+        goto L_EXIT;
+        
+        // -- -- -- -- -- --
+        
+      case CN_PAUSEMARKER:
+        AM::vPulseTask(m_pDigest->m_pOpToPulse->pTask());
+        break;
+        
       case CN_CRWBUFFER:
         m_nSoFar++;
         break;

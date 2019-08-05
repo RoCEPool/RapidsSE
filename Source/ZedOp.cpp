@@ -11,8 +11,8 @@ OpDesc __Op_Zed (
   "Zed"_Stz,        // prefix
 
   ZedOp::pNew,      // function which parses the command and new's an op
-  ZedOp::eCall,     // function which calls the op
-  nullptr,          // function which drains the operand queue
+  ZedOp::eCall,     // function which calls the op loop
+  nullptr,          // function which calls the drain loop
   
   "<help>"_Stz
 );
@@ -121,11 +121,7 @@ eOR ZedOp::eZedLoop(void)
       ASSERT(bIsLocked());
       return OR_BIDE;
     }
-    
-    if (bIsCancelling()) {
-      
-    }
-    
+        
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     switch (pOperand->eClass()) {
