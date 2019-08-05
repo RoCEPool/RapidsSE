@@ -138,7 +138,17 @@ eOR FetchOp::eFetchLoop(void)
     
     vPipeOut(m_pCrwBuffer);
     
+    vIncWorkDone();
+    
     m_pCrwBuffer = m_pCrwBuffer->pNextBuffer();
+    
+#ifdef WITH_PULSING
+    if (bPause()) {
+      AM::vGrabTaskLock(m_pTask);
+      vPipeOut(new PauseMarker);
+      return OR_PAUSE;
+    }
+#endif
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

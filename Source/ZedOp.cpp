@@ -128,6 +128,10 @@ eOR ZedOp::eZedLoop(void)
         delete (EndMarker*)pOperand;
         goto L_EXIT;
         
+      case CN_PAUSEMARKER:
+        delete (PauseMarker*)pOperand;
+        goto L_EXIT;
+        
       case CN_STREAMDEF: {
         StreamDef* pStreamDef = _pStreamDef(pOperand);
         if (pStreamDef->m_bTemp)
