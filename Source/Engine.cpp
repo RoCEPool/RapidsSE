@@ -593,6 +593,7 @@ bool Engine::bOpenPool(s32& sPoolName)
     return bResult;
   
   vAttachRegion();
+  
   return true;
 }
 
@@ -603,11 +604,11 @@ void Engine::vOpenTrace(void)
 {
   gpTraceFile = new File;
   
-  bool bOpened = gpTraceFile->bOpenWrite("/tmp/se_trace.txt"_Stz);
+  bool bOpened = gpTraceFile->bOpenWrite(C_SE_TRACE);
   RASSERT(bOpened);
   
   if (gxArguments.m_bVerbose)
-    vInfo("** trace file opened: /tmp/se_trace.txt\n"_Stz);
+    vInfo("** trace file opened: %s\n"_Stz,C_SE_TRACE);
 }
 
 /*----------------------------------------------------------------------------*/

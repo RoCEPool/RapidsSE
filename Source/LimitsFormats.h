@@ -64,6 +64,8 @@ static const char D_ESCAPE_CHAR          = '\\';
 static const char D_FIELD_DELIMITER      = ',';
 static const char D_RECORD_TERMINATOR    = '\0';
 
+static Stz* C_SE_TRACE = "/tmp/se_trace.txt"_Stz;
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 static const i8  C_LOG_ENTRIES = C_1M * 1;
