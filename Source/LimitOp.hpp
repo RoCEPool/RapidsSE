@@ -10,7 +10,6 @@ namespace PushDown
   private:
   
     i8 m_nLimit;    // what is the limit?
-    i8 m_nSoFar;    // how many so far
   
     // must be last
     Footer m_xFooter;

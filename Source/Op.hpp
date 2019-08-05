@@ -52,6 +52,7 @@ namespace PushDown
     Stz* szArgs(void);
     void vDropTaskLock(void);
     void vGrabTaskLock(void);
+    void vIncWorkDone(void);
     bool bIsLocked(void);
     Stz* szLabel(void);
     void vLabel(Stz* szLabel);
@@ -63,10 +64,8 @@ namespace PushDown
     void vPipeOut_endMarker(void);
     Operand* pPopOperand(void);
     bool bIsCancelling(void);
-    void vStdDrain(void);
     Task* pTask(void);
     void vTask(Task* pTask);
-    void vIncWorkDone(void);
     void vWorkQuanta(i8 iWorkQuanta);
   };
 

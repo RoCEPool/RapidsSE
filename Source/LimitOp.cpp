@@ -63,7 +63,6 @@ LimitOp::LimitOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn)
   m_fpCall = LimitOp::eCall;
 
   m_nLimit = 0;
-  m_nSoFar = 0;
   
   _checkInitialised_(CN_LIMITOP);
 
@@ -159,12 +158,12 @@ eOR LimitOp::eLimitLoop(void)
         
       case CN_CRWBUFFER:
         vPipeOut(pOperand);
-        m_nSoFar++;
+        vIncWorkDone();
         
-        if (m_nSoFar == m_nLimit) {
+        if (m_iWorkDone == m_nLimit) {
           vTrace("%s::!CANCELLING : after popping %lld buffers\n"_Stz,
                  m_sLabel.aStz(),
-                 m_nSoFar);
+                 m_iWorkDone);
           m_pDigest->m_bCancelling = true;
         }
         

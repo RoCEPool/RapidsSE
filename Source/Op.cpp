@@ -51,7 +51,7 @@ Op::Op(eCN eClassNo, Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn)
   
   m_bAckJobEnd    = true;
   m_bPulsed       = false;
-  m_iWorkQuanta   = C_UNKNOWN;
+  m_iWorkQuanta   = 1;
   m_iWorkDone     = 0;
 
   m_pOperandQueue = new OperandQueue;
@@ -206,6 +206,16 @@ void Op::vGrabTaskLock(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* inc work done                                                              */
+/*----------------------------------------------------------------------------*/
+void Op::vIncWorkDone(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_iWorkDone++;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is cancelling?                                                             */
 /*----------------------------------------------------------------------------*/
 bool Op::bIsCancelling(void)
@@ -353,16 +363,6 @@ Operand* Op::pPopOperand(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* standard drain                                                             */
-/*----------------------------------------------------------------------------*/
-void Op::vStdDrain(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  // to be coded...
-}
-
-/*----------------------------------------------------------------------------*/
 /* get task                                                                   */
 /*----------------------------------------------------------------------------*/
 Task* Op::pTask(void)
@@ -380,16 +380,6 @@ void Op::vTask(Task* pTask)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_pTask = pTask;
-}
-
-/*----------------------------------------------------------------------------*/
-/* inc work done                                                              */
-/*----------------------------------------------------------------------------*/
-void Op::vIncWorkDone(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_iWorkDone++;
 }
 
 /*----------------------------------------------------------------------------*/
