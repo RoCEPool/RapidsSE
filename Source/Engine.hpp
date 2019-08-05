@@ -25,11 +25,10 @@ namespace StorageEngine
     static void vMainEntry(void);
     static void vMonitorPortrait(s48K& sRapidsPortrait);
     static void vMonitorProfile(s48K& sPortrait);
-    static void vOpenActionSequence(void);
-    static void vOpenActivityLog(void);
+    static void vOpenLog(void);
     static void vOpenPool(void);
     static bool bOpenPool(s32& sPoolName);
-    static void vOpenTraceFile(void);
+    static void vOpenTrace(void);
     static void vPrintExit(void);
     static void vPrintStatus(void);
     static void vPrintWelcome(void);

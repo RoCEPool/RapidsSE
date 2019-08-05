@@ -4,14 +4,14 @@
 
 #include "StorageEngine.h"
 
-extern Arguments  gxArguments;
+extern Arguments    gxArguments;
 
 extern AttachMap*   gpAttachMap;
 extern BufferPool*  gpBufferPool;
 extern Header*      gaSeShmRegion;
 extern File*        gpTraceFile;
 
-extern bool gbSHM;
+extern bool         gbSHM;
 
 
 /*----------------------------------------------------------------------------*/
@@ -49,7 +49,7 @@ void Engine::vMainEntry(void)
 //  gpAttachMap->m_bMarkResource[SR_FILE] = true;
 //  gpAttachMap->m_bMarkResource[SR_DIR] = true;
 
-  vOpenTraceFile();
+  vOpenTrace();
   
   vCheckPort();
   
@@ -470,21 +470,11 @@ void Engine::vMonitorProfile(s48K& sPortrait)
                     );
 }
 
-/*----------------------------------------------------------------------------*/
-/* create or open the ActionLog map                                      */
-/*----------------------------------------------------------------------------*/
-void Engine::vOpenActionSequence(void)
-{
-  bool bStarting = false;
-  if (0 == AM::pGrid()->m_iThisNode && gxArguments.m_bStart)
-    bStarting = true;
-  
-}
 
 /*----------------------------------------------------------------------------*/
-/* create or open the Log                                             */
+/* create or open the Log                                                     */
 /*----------------------------------------------------------------------------*/
-void Engine::vOpenActivityLog(void)
+void Engine::vOpenLog(void)
 {
   bool bStarting = false;
   if (0 == AM::pGrid()->m_iThisNode && gxArguments.m_bStart)
@@ -609,7 +599,7 @@ bool Engine::bOpenPool(s32& sPoolName)
 /*----------------------------------------------------------------------------*/
 /* open trace file                                                            */
 /*----------------------------------------------------------------------------*/
-void Engine::vOpenTraceFile(void)
+void Engine::vOpenTrace(void)
 {
   gpTraceFile = new File;
   
@@ -705,8 +695,7 @@ void Engine::vRunCmdLine(void)
     }
     
     else if (gxArguments.m_bPrompt) {
-      vOpenActivityLog();
-      vOpenActionSequence();
+      vOpenLog();
       vCallPrompt();
     }
     else if (gxArguments.m_bStatus)  vPrintStatus();
@@ -857,8 +846,7 @@ void Engine::vStartSystem(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vOpenActivityLog();
-  vOpenActionSequence();
+  vOpenLog();
 
   Step::vAddSteps();
   
