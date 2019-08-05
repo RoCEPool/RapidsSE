@@ -46,6 +46,8 @@ StreamDef::StreamDef(void)
   
   //m_sName;
   //m_sPath;
+  
+  m_iStreamId = AM::iNextStreamId();
   //m_oColAry;
   
   m_bTemp = false;

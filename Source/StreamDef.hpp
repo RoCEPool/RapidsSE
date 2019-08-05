@@ -10,6 +10,7 @@ namespace MetaData
   public:
     s32  m_sName;   // name
     s256 m_sPath;   // full name
+    i8   m_iStreamId; // unique stream identifier
 
     ArrayNL_t<Column,C_MAX_COLUMNS> m_oColAry;
   
