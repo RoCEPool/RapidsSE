@@ -9,6 +9,7 @@ namespace Jobs
   {
   public:
 
+    i8          m_iBuffers;
     Digest*     m_pDigest;     // op digest
   
     GenerateOp* m_pGenerateOp; // generate

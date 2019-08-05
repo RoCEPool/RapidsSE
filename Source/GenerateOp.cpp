@@ -43,13 +43,14 @@ void GenerateOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-GenerateOp::GenerateOp(Stz* szOpLabel, Digest* pDigest)
+GenerateOp::GenerateOp(Stz* szOpLabel, Digest* pDigest, i8 iBuffers)
 : Op(CN_GENERATEOP,szOpLabel,pDigest,nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GENERATEOP,_FOOTER_);
   
   m_pRootBuffer = nullptr;
-
+  m_iBuffers = iBuffers;
+  
   _checkInitialised_(CN_GENERATEOP);
 
   m_fpCall = GenerateOp::eCallLoop;
@@ -93,7 +94,7 @@ eOR GenerateOp::eGenerateLoop(void)
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Add random integer values to the buffer till the buffer is full
-  i8 iTotalValues = ELEMENTS * 17;
+  i8 iTotalValues = ELEMENTS * m_iBuffers;
   
   while (iTotalValues--) {
     i8 iRandom = Random::iInteger(0,1000);

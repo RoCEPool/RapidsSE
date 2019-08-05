@@ -106,13 +106,14 @@ Job_SortExp::Job_SortExp(Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SORTEXP,_FOOTER_);
   
+  m_iBuffers = 0;
   m_pDigest = new Digest(this);
   
-  m_pGenerateOp = new GenerateOp("G_0"_Stz,m_pDigest);
-  m_pSortOp     = new SortOp    ("S_0"_Stz,m_pDigest);
-  m_pMergeOp    = new MergeOp   ("M_0"_Stz,m_pDigest);
-  m_pOutputOp   = new OutputOp  ("O_0"_Stz,m_pDigest,nullptr);
-  m_pZedOp      = new ZedOp     ("Z_0"_Stz,m_pDigest,nullptr);
+  m_pGenerateOp = nullptr;
+  m_pSortOp     = nullptr;
+  m_pMergeOp    = nullptr;
+  m_pOutputOp   = nullptr;
+  m_pZedOp      = nullptr;
 
   _checkInitialised_(CN_JOB_SORTEXP);
 
@@ -170,14 +171,14 @@ bool Job_SortExp::bPopulateJob(TokenVec* pTokenVec)
   iNumTokens = pTokenVec->nTokens();
   
   // - - - - - - - - - - - - - - - - - - - - -
-  // there should be only 1 tokens
-  if (iNumTokens != 1) {
+  // there should be only 2 tokens
+  if (iNumTokens != 2) {
     return nullptr;
   }
   
   // - - - - - - - - - - - - - - - - - - - - -
-  // set the table name
-  //m_sObjectName = pTokenVec->pGet(1)->aText();
+  // set the number of buffers to generate/sort
+  m_iBuffers = pTokenVec->pGet(1)->iToI8();
 
   return true;
 }
@@ -275,6 +276,12 @@ Job* Jobs::pJob_SortExp_pre(Session* pSession)
   if ( !bResult) {
     pJob_SortExp->vAddError(EC_INVALID_COMMAND);
   }
+  
+  pJob_SortExp->m_pGenerateOp = new GenerateOp("G_0"_Stz,pJob_SortExp->m_pDigest, pJob_SortExp->m_iBuffers);
+  pJob_SortExp->m_pSortOp     = new SortOp    ("S_0"_Stz,pJob_SortExp->m_pDigest);
+  pJob_SortExp->m_pMergeOp    = new MergeOp   ("M_0"_Stz,pJob_SortExp->m_pDigest);
+  pJob_SortExp->m_pOutputOp   = new OutputOp  ("O_0"_Stz,pJob_SortExp->m_pDigest,nullptr);
+  pJob_SortExp->m_pZedOp      = new ZedOp     ("Z_0"_Stz,pJob_SortExp->m_pDigest,nullptr);
   
   return pJob_SortExp;
 }

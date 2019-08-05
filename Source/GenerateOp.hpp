@@ -8,6 +8,7 @@ namespace PushDown
   class GenerateOp : public Op
   {
   private:
+    i8         m_iBuffers;
     IntBuffer* m_pRootBuffer;
   
     // must be last
@@ -17,7 +18,7 @@ namespace PushDown
     void* operator new(size_t);
     void  operator delete(void*);
 
-    GenerateOp(Stz* szOpLabel, Digest* pDigest);
+    GenerateOp(Stz* szOpLabel, Digest* pDigest, i8 iBuffers);
    ~GenerateOp(void) noexcept(false);
 
     static eOR eCallLoop(void* aThis);
