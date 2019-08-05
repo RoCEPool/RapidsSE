@@ -147,18 +147,6 @@ bool Scheduler::bAckWaitingTask(Task* pTaskWaiting, Task* pTaskAcking)
 }
 
 /*----------------------------------------------------------------------------*/
-/* continue a paused task                                                     */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vContinuePausedTask(Task* pTask)
-{
-  //
-  // called from ???()
-  //
-  
-  vTask_Continue(pTask);
-}
-
-/*----------------------------------------------------------------------------*/
 /* set dedicated task to be executed by dedicated thread                      */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vExecuteDedicatedTask(Task* pTask, Thread* pThread)
@@ -168,6 +156,18 @@ void Scheduler::vExecuteDedicatedTask(Task* pTask, Thread* pThread)
   //
   
   vThread_ExecuteDedicated(pThread);
+}
+
+/*----------------------------------------------------------------------------*/
+/* pulse a paused task                                                        */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vPulsePausedTask(Task* pTask)
+{
+  //
+  // called from ???()
+  //
+  
+  vTask_Pulse(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -470,30 +470,6 @@ void Scheduler::vTask_Bide(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* locked paused op-task is removed from paused set,                          */
-/*   transitions to TS_ABLE state, unlocked and scheduled                     */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vTask_Continue(Task* pTask)
-{
-  RASSERT(pTask->bIsLocked());
-  RASSERT(TS_PAUSED == pTask->eState());
-  RASSERT(QK_PAUSED_SET == pTask->eQueue());
-  RASSERT(TR_NONE == pTask->eTransition());
-  
-  Queues* pQueues = AM::pQueues();
-  
-  pQueues->vRemovePausedSet(pTask);
-  
-  JobLog::vNoteState(pTask->pJob(),"Continue"_Stz);
-  
-  pTask->vDropLock();
-  
-  vTask_Able(pTask);
-  vTask_Schedule(pTask);
-  // **do not touch task**
-}
-
-/*----------------------------------------------------------------------------*/
 /* remove executing task from executing set and change state to TS_DESISTED   */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Desist(Task* pTask)
@@ -570,6 +546,30 @@ void Scheduler::vTask_Pause(Task* pTask)
   // **do not touch task** (other than to drop lock)
   
   pTask->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* locked paused op-task is removed from paused set,                          */
+/*   transitions to TS_ABLE state, unlocked and scheduled                     */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTask_Pulse(Task* pTask)
+{
+  RASSERT(pTask->bIsLocked());
+  RASSERT(TS_PAUSED == pTask->eState());
+  RASSERT(QK_PAUSED_SET == pTask->eQueue());
+  RASSERT(TR_NONE == pTask->eTransition());
+  
+  Queues* pQueues = AM::pQueues();
+  
+  pQueues->vRemovePausedSet(pTask);
+  
+  JobLog::vNoteState(pTask->pJob(),"Pulse"_Stz);
+  
+  pTask->vDropLock();
+  
+  vTask_Able(pTask);
+  vTask_Schedule(pTask);
+  // **do not touch task**
 }
 
 /*----------------------------------------------------------------------------*/
