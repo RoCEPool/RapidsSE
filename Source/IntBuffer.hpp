@@ -35,6 +35,7 @@ namespace Rows
     i8         iGetValue(i8 iIndex);
     i8*        aGetElement(i8 iIndex);
     bool       bHasSpace(void);
+    IntBuffer* pLastBuffer(i8& iCount);
     void       vLinkBuffer(IntBuffer* pIntBuffer);
     IntBuffer* pNextBuffer(void);
     void       vNextBuffer(IntBuffer* pNextBuffer);

@@ -199,6 +199,8 @@ void MergeOp::vMergeOperands(Operand* pOperand1, Operand* pOperand2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MERGEOP,_FOOTER_);
 
+  vTrace("Merging operands %p %p\n"_Stz, pOperand1, pOperand2);
+  
   IntBuffer* pIntBuffer1 = _pIntBuffer(pOperand1);
   RASSERT(pIntBuffer1->bVerifyNextPrev());
   
@@ -210,15 +212,10 @@ void MergeOp::vMergeOperands(Operand* pOperand1, Operand* pOperand2)
   pIntBuffer1->vLinkBuffer(pIntBuffer2);
   RASSERT(pIntBuffer1->bVerifyNextPrev());
   
-  // count no. of linked buffers received
-  IntBuffer* pIntBuffer = pIntBuffer1;
-  IntBuffer* pLastBuffer = pIntBuffer1;
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get count and last buffer
   i8 iCount = 0;
-  while (pIntBuffer) {
-    iCount++;
-    pLastBuffer = pIntBuffer;
-    pIntBuffer = pIntBuffer->pNextBuffer();
-  }
+  IntBuffer* pLastBuffer = pIntBuffer1->pLastBuffer(iCount);
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a Low cursor pointing to the first element in the array
@@ -251,7 +248,6 @@ void MergeOp::vMergeOperands(Operand* pOperand1, Operand* pOperand2)
     m_iOperands++;
   }
   else {
-    vTrace("Merging self %p(%lld)\n"_Stz, pIntBuffer1, iCardinality);
     Operand* pOperand = m_pOperand[iCardinality];
     m_pOperand[iCardinality] = nullptr;
     m_iOperands--;
