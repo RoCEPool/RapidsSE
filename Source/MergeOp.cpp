@@ -96,8 +96,8 @@ eOR MergeOp::eMergeLoop(void)
     
     if (! pOperand) {
       ASSERT(bIsLocked());
-      if (m_bEndMarker & (m_iOperands == 1))
-        break;
+//      if (m_bEndMarker & (m_iOperands == 1))
+//        break;
       return OR_BIDE;
     }
     
@@ -105,116 +105,155 @@ eOR MergeOp::eMergeLoop(void)
       m_bEndMarker = true;
       EndMarker* pEndMarker = _pEndMarker(pOperand);
       delete pEndMarker;
-      continue;
+      break;
     }
     
     IntBuffer* pRootBuffer = _pIntBuffer(pOperand);
     
-    // count no. of linked buffers received
-    IntBuffer* pIntBuffer = pRootBuffer;
-    IntBuffer* pLastBuffer = pRootBuffer;
-    i8 iCount = 0;
-    while (pIntBuffer) {
-      iCount++;
-      pLastBuffer = pIntBuffer;
-      pIntBuffer = pIntBuffer->pNextBuffer();
-    }
-    
-    // calculate 2^ of number of linked sorted buffers
-    i8 iCardinality = (i8)log2(iCount);
+    RASSERT( ! pRootBuffer->pNextBuffer());
+    RASSERT( ! pRootBuffer->pPrevBuffer());
     
     // check if we have another set of this cardinality
-    if (m_pOperand[iCardinality]) {
+    if (m_pOperand[0]) {
       // merge given buffer set with this buffer set
-      vTrace("Merging %p %p %lld (%lld)\n"_Stz, m_pOperand[iCardinality], pRootBuffer, iCount, iCardinality);
-      //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // dump the buffer
-      //vTrace("\n\nSorting buffer:\n"_Stz);
-      //pIntBuffer->vDump();
-      
-      // link the buffers
-      IntBuffer* pIntBuffer2 = _pIntBuffer(m_pOperand[iCardinality]);
-      pLastBuffer->vNextBuffer(pIntBuffer2);
-      pIntBuffer2->vPrevBuffer(pLastBuffer);
-      RASSERT(pRootBuffer->bVerifyNextPrev());
-      
-      // count no. of linked buffers received
-      pIntBuffer = pRootBuffer;
-      pLastBuffer = pRootBuffer;
-      iCount = 0;
-      while (pIntBuffer) {
-        iCount++;
-        pLastBuffer = pIntBuffer;
-        pIntBuffer = pIntBuffer->pNextBuffer();
-      }
-      
-      //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // create a Low cursor pointing to the first element in the array
-      BufferCursor* pLowCursor = new BufferCursor(pRootBuffer, 0, pRootBuffer->aGetElement(0));
-      
-      //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // create a High cursor pointing to the last element in the array
-      
-      BufferCursor* pHighCursor = new BufferCursor(pLastBuffer, iCount-1, pLastBuffer->aGetElement(pLastBuffer->nCount() - 1));
-      
-      //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // call quick sort (recursive call)
-      vQuickSortBuffer(pRootBuffer, pLowCursor, pHighCursor);
-      
-      //vTrace("\nSorted buffer:\n"_Stz);
-      //pIntBuffer->vDump();
-      
-      //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // verify that the data is sorted
-      RASSERT(pRootBuffer->bVerifyOrder());
-      
+      vTrace("Merging %p %p %lld (%lld)\n"_Stz, m_pOperand[0], pRootBuffer, 1, 0);
       //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // move the merged sorted linked buffers to next cardinality
-      m_pOperand[iCardinality] = nullptr;
+      Operand* pOperand2 = m_pOperand[0];
+      m_pOperand[0] = nullptr;
       m_iOperands--;
-      
-      if ( ! m_pOperand[++iCardinality]) {
-        m_pOperand[iCardinality] = pRootBuffer;
-        m_iOperands++;
-      }
-      else {
-        vTrace("Piping self %p(%lld)\n"_Stz, pRootBuffer, iCardinality);
-        vPipeSelf(pRootBuffer);
-      }
-      
-      //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // delete the bufferCursors
-      delete pLowCursor;
-      delete pHighCursor;
-      
+      vMergeSelf(pRootBuffer, pOperand2);
     }
     else {
       // save the buffer set till we have a similar set to merge with
-      m_pOperand[iCardinality] = pRootBuffer;
+      m_pOperand[0] = pRootBuffer;
       m_iOperands++;
     }
     
   }
   
+  i8 i_Index;
+  
+  while (m_iOperands != 1) {
+  
+    // merge the dangling buffers
+   
+    i8 j_Index = 0;
+    Operand* pOperand[2];
+    for (i_Index = 0; i_Index < C_OPERANDS; i_Index++)
+      if (m_pOperand[i_Index]) {
+        pOperand[j_Index++] = m_pOperand[i_Index];
+        m_pOperand[i_Index] = nullptr;
+        m_iOperands--;
+        if (j_Index == 2)
+          break;
+      }
+    
+    vMergeSelf(pOperand[0], pOperand[1]);
+  }
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the root buffer from the operands
-  i8 i_Index;
   for (i_Index = 0; i_Index < C_OPERANDS; i_Index++)
     if (m_pOperand[i_Index])
       break;
 
   IntBuffer* pIntBuffer = _pIntBuffer(m_pOperand[i_Index]);
   
+  i8 iCount = 0;
   while (pIntBuffer) {
     vPipeOut(pIntBuffer);
+    iCount++;
     pIntBuffer = pIntBuffer->pNextBuffer();
   }
+  
+  vTrace("MERGE Piped Out %lld buffer\n"_Stz, iCount);
   
   vPipeOut_endMarker();
   
   return OR_EXIT;
 }
 
+/*----------------------------------------------------------------------------*/
+/* mergeSelf                                                                  */
+/*----------------------------------------------------------------------------*/
+void MergeOp::vMergeSelf(Operand* pOperand1, Operand* pOperand2)
+{
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // dump the buffer
+  //vTrace("\n\nSorting buffer:\n"_Stz);
+  //pIntBuffer->vDump();
+  
+  // link the buffers
+  IntBuffer* pIntBuffer1 = _pIntBuffer(pOperand1);
+  RASSERT(pIntBuffer1->bVerifyNextPrev());
+  
+  IntBuffer* pIntBuffer2 = _pIntBuffer(pOperand2);
+  RASSERT(pIntBuffer2->bVerifyNextPrev());
+  
+  // count no. of linked buffers received
+  IntBuffer* pLastBuffer = pIntBuffer1;
+  IntBuffer* pIntBuffer = pIntBuffer1;
+  i8 iCount = 0;
+  while (pIntBuffer) {
+    iCount++;
+    pLastBuffer = pIntBuffer;
+    pIntBuffer = pIntBuffer->pNextBuffer();
+  }
+  
+  pLastBuffer->vNextBuffer(pIntBuffer2);
+  pIntBuffer2->vPrevBuffer(pLastBuffer);
+  RASSERT(pIntBuffer1->bVerifyNextPrev());
+  
+  // count no. of linked buffers received
+  pIntBuffer = pIntBuffer1;
+  pLastBuffer = pIntBuffer1;
+  iCount = 0;
+  while (pIntBuffer) {
+    iCount++;
+    pLastBuffer = pIntBuffer;
+    pIntBuffer = pIntBuffer->pNextBuffer();
+  }
+  
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create a Low cursor pointing to the first element in the array
+  BufferCursor* pLowCursor = new BufferCursor(pIntBuffer1, 0, pIntBuffer1->aGetElement(0));
+  
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create a High cursor pointing to the last element in the array
+  
+  BufferCursor* pHighCursor = new BufferCursor(pLastBuffer, iCount-1, pLastBuffer->aGetElement(pLastBuffer->nCount() - 1));
+  
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // call quick sort (recursive call)
+  vQuickSortBuffer(pIntBuffer1, pLowCursor, pHighCursor);
+  
+  //vTrace("\nSorted buffer:\n"_Stz);
+  //pIntBuffer->vDump();
+  
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // delete the bufferCursors
+  delete pLowCursor;
+  delete pHighCursor;
+  
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // verify that the data is sorted
+  RASSERT(pIntBuffer1->bVerifyOrder());
+  
+  i8 iCardinality = (i8)log2(iCount);
+  if ( ! m_pOperand[iCardinality]) {
+    m_pOperand[iCardinality] = pIntBuffer1;
+    m_iOperands++;
+  }
+  else {
+    vTrace("Merging self %p(%lld)\n"_Stz, pIntBuffer1, iCardinality);
+    Operand* pOperand = m_pOperand[iCardinality];
+    m_pOperand[iCardinality] = nullptr;
+    m_iOperands--;
+    vMergeSelf(pIntBuffer1, pOperand);
+  }
+  
+}
 /*----------------------------------------------------------------------------*/
 /* Partition                                                                  */
 /*----------------------------------------------------------------------------*/

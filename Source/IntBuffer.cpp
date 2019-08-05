@@ -265,22 +265,26 @@ bool IntBuffer::bVerifyNextPrev(void)
    point forward to it; a child buffer should point back to its parent
    */
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  if (m_pPrevBuffer) {
-    IntBuffer* pPrevBuffer = _pIntBuffer(m_pPrevBuffer);
-    if (pPrevBuffer->pNextBuffer() != this) {
-      return false;
+  IntBuffer* pIntBuffer = this;
+  while (pIntBuffer) {
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+    if (pIntBuffer->pPrevBuffer()) {
+      IntBuffer* pPrevBuffer = _pIntBuffer(pIntBuffer->pPrevBuffer());
+      if (pPrevBuffer->pNextBuffer() != pIntBuffer) {
+        return false;
+      }
     }
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  if (m_pNextBuffer) {
-    IntBuffer* pNextBuffer = _pIntBuffer(m_pNextBuffer);
-    if (pNextBuffer->pPrevBuffer() != this) {
-      return false;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+    if (pIntBuffer->pNextBuffer()) {
+      IntBuffer* pNextBuffer = _pIntBuffer(pIntBuffer->pNextBuffer());
+      if (pNextBuffer->pPrevBuffer() != pIntBuffer) {
+        return false;
+      }
     }
+    pIntBuffer = pIntBuffer->pNextBuffer();
   }
   
   return true;
