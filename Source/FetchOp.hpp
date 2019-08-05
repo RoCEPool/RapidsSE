@@ -11,6 +11,8 @@ namespace PushDown
     TablePtn*  m_pTablePtn;
     CrwBuffer* m_pCrwBuffer;
   
+    bool       m_bRunPrelim;
+  
     // must be last
     Footer m_xFooter;
 
@@ -26,6 +28,9 @@ namespace PushDown
     static eOR eCall(void* aThis);
   
     eOR eFetchLoop(void);
+  
+    void vPreliminary(void);
+
     void vTablePtn(TablePtn* pTablePtn);
   
   private:

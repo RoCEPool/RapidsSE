@@ -60,9 +60,10 @@ FetchOp::FetchOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
   
-  m_pTablePtn = nullptr;
+  m_pTablePtn  = nullptr;
   m_pCrwBuffer = nullptr;
-
+  m_bRunPrelim = true;
+  
   _checkInitialised_(CN_FETCHOP);
 
   m_fpCall = FetchOp::eCall;
@@ -121,17 +122,9 @@ eOR FetchOp::eFetchLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
   
-  // temp
-  if (! m_pTablePtn) {
-    m_pTablePtn = AM::pTable((Job_Dynamic*)m_pJob)->pSlots()->pPartition(0);
-  }
+  if (m_bRunPrelim)
+    vPreliminary();
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pipe StreamDef
-  
-  StreamDef* pStreamDef = AM::pTable((Job_Dynamic*)m_pJob)->pStreamDef();
-  vPipeOut(pStreamDef);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pipe the crw buffers
   
@@ -139,13 +132,13 @@ eOR FetchOp::eFetchLoop(void)
     vDebugPoint();
   }
   
-  for (m_pCrwBuffer = m_pTablePtn->pRootCrwBuffer();
-       m_pCrwBuffer;
-       m_pCrwBuffer = m_pCrwBuffer->pNextBuffer()) {
+  while (m_pCrwBuffer) {
     
     vTrace("%s::bFetch %p\n"_Stz,m_sLabel.aStz(),m_pCrwBuffer);
     
     vPipeOut(m_pCrwBuffer);
+    
+    m_pCrwBuffer = m_pCrwBuffer->pNextBuffer();
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -154,6 +147,28 @@ eOR FetchOp::eFetchLoop(void)
   vPipeOut_endMarker();
   
   return OR_EXIT;
+}
+
+/*----------------------------------------------------------------------------*/
+/* preliminary                                                                */
+/*----------------------------------------------------------------------------*/
+void FetchOp::vPreliminary(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
+  
+  m_bRunPrelim = false;
+  
+  // temp
+  if (! m_pTablePtn) {
+    m_pTablePtn = AM::pTable((Job_Dynamic*)m_pJob)->pSlots()->pPartition(0);
+  }
+  
+  // pipe StreamDef
+  StreamDef* pStreamDef = AM::pTable((Job_Dynamic*)m_pJob)->pStreamDef();
+  vPipeOut(pStreamDef);
+  
+  // get first buffer
+  m_pCrwBuffer = m_pTablePtn->pRootCrwBuffer();
 }
 
 /*----------------------------------------------------------------------------*/
