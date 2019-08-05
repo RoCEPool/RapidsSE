@@ -135,6 +135,10 @@ eOR FetchOp::eFetchLoop(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pipe the crw buffers
   
+  if (m_pDigest->m_bPulsed) {
+    vDebugPoint();
+  }
+  
   for (m_pCrwBuffer = m_pTablePtn->pRootCrwBuffer();
        m_pCrwBuffer;
        m_pCrwBuffer = m_pCrwBuffer->pNextBuffer()) {

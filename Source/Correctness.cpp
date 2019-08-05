@@ -81,6 +81,10 @@ void Correctness::vTraceWith(void)
   vTrace("  WITH_PREPOST_CHECKING\n"_Stz);
 #endif
   
+#ifdef WITH_PULSING
+  vTrace("  WITH_PULSING\n"_Stz);
+#endif
+  
 #ifdef WITH_RELEASE_VERSION
   vTrace("  WITH_RELEASE_VERSION\n"_Stz);
 #endif
