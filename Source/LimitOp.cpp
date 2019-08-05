@@ -137,10 +137,6 @@ eOR LimitOp::eLimitLoop(void)
       return OR_BIDE;
     }
     
-    if (bIsCancelling()) {
-      
-    }
-
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     switch (pOperand->eClass()) {
@@ -153,17 +149,21 @@ eOR LimitOp::eLimitLoop(void)
         
       case CN_PAUSEMARKER:
         AM::vPulseTask(m_pDigest->m_pOpToPulse->pTask());
-        break;
+        vPipeOut(pOperand);
+       break;
 
+      // -- -- -- -- -- --
+        
       case CN_CRWBUFFER:
         m_nSoFar++;
+        vPipeOut(pOperand);
         break;
         
       default:
+        vPipeOut(pOperand);
         break;
     }
     
-    vPipeOut(pOperand);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -187,10 +187,6 @@ eOR LimitOp::eDrainLoop(void)
       return OR_BIDE;
     }
     
-    if (bIsCancelling()) {
-      
-    }
-    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     switch (pOperand->eClass()) {
@@ -202,18 +198,23 @@ eOR LimitOp::eDrainLoop(void)
         // -- -- -- -- -- --
         
       case CN_PAUSEMARKER:
-        AM::vPulseTask(m_pDigest->m_pOpToPulse->pTask());
+        delete (PauseMarker*)pOperand;
         break;
         
       case CN_CRWBUFFER:
-        m_nSoFar++;
         break;
+        
+      case CN_STREAMDEF: {
+        StreamDef* pStreamDef = _pStreamDef(pOperand);
+        if (pStreamDef->m_bTemp)
+          delete pStreamDef;
+        break;
+      }
         
       default:
         break;
     }
     
-    vPipeOut(pOperand);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

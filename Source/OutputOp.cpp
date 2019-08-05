@@ -132,10 +132,6 @@ eOR OutputOp::eOutputLoop(void)
       return OR_BIDE;
     }
     
-    if (bIsCancelling()) {
-      
-    }
-
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     switch (pOperand->eClass()) {
@@ -149,14 +145,15 @@ eOR OutputOp::eOutputLoop(void)
       case CN_INTBUFFER: {
         IntBuffer* pIntBuffer = _pIntBuffer(pOperand) ;
         pIntBuffer->vShow();
+        vPipeOut(pOperand);
         break;
       }
         
       default:
+        vPipeOut(pOperand);
         break;
     }
     
-    vPipeOut(pOperand);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -180,10 +177,6 @@ eOR OutputOp::eDrainLoop(void)
       return OR_BIDE;
     }
     
-    if (bIsCancelling()) {
-      
-    }
-    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     switch (pOperand->eClass()) {
@@ -192,19 +185,22 @@ eOR OutputOp::eDrainLoop(void)
         vPipeOut(pOperand);
         goto L_EXIT;
         
-        // -- -- -- -- -- --
+      // -- -- -- -- -- --
         
-      case CN_INTBUFFER: {
-        IntBuffer* pIntBuffer = _pIntBuffer(pOperand) ;
-        pIntBuffer->vShow();
+      case CN_PAUSEMARKER:
+        vPipeOut(pOperand);
         break;
-      }
+        
+      // -- -- -- -- -- --
+        
+      case CN_INTBUFFER:
+        //vPipeOut(pOperand);
+        break;
         
       default:
         break;
     }
     
-    vPipeOut(pOperand);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

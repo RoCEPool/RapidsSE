@@ -136,6 +136,8 @@ eOR ZedOp::eZedLoop(void)
         delete (PauseMarker*)pOperand;
         break;
 
+      // -- -- -- -- -- --
+        
       case CN_STREAMDEF: {
         StreamDef* pStreamDef = _pStreamDef(pOperand);
         if (pStreamDef->m_bTemp)
