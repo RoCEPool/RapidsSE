@@ -29,8 +29,8 @@ namespace PushDown
     Op*            m_pOpOut;         // where results get piped (queued)
     Op*            m_pOpContinue;    // op which gets continued
 
-    eOR  (*m_fpCall)(void* aThis);   // function which calls the op loop
-    void (*m_fpDrain)(void* aThis);  // function which drains the operand queue
+    eOR (*m_fpCall) (void* aThisOp);  // function which calls the op loop
+    eOR (*m_fpDrain)(void* aThisOp);  // function which calls the drain loop
 
     //! need to add pulsing and cancelling
   

@@ -95,8 +95,12 @@ void Op::vOpLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  eOR eCallAgain = (*m_fpCall)(this);
-  
+  eOR eCallAgain;
+//  if (bIsCancelling() && m_fpDrain)
+//    eCallAgain = (*m_fpDrain)(this);
+//  else
+    eCallAgain = (*m_fpCall)(this);
+
   switch (eCallAgain) {
    
     case OR_BIDE:

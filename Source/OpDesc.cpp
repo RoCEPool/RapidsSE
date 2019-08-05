@@ -15,8 +15,8 @@ OpDesc::OpDesc(eCN  eClass,     // class number
                Stz* szPrefix,   // prefix
                Op*  (*fpNew)(Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn,
                              TokenVec* pTknVec, i8& i_Tkn),
-               eOR  (*fpCall)(void* aOp),   // function which does the op
-               void (*fpDrain)(void* aOp),  // function which drains the operand queue
+               eOR  (*fpCall) (void* aThisOp),  // fun which calls the op loop
+               eOR  (*fpDrain)(void* aThisOp),  // fun which calls the drain loop
                Stz* szHelp      // help text
               )
 {
