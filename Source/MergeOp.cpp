@@ -104,25 +104,24 @@ eOR MergeOp::eMergeLoop(void)
       break;
     }
     
-    IntBuffer* pRootBuffer = _pIntBuffer(pOperand);
-    
-    RASSERT( ! pRootBuffer->pNextBuffer());
-    RASSERT( ! pRootBuffer->pPrevBuffer());
-    
-    // check if we have another set of this cardinality
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // check if we have another buffer binary magnitude 0
     if (m_pOperand[0]) {
-      // merge given buffer set with this buffer set
-      vTrace("Merging %p %p %lld (%lld)\n"_Stz, m_pOperand[0], pRootBuffer, 1, 0);
-      //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // move the merged sorted linked buffers to next cardinality
+      
+      //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // get the operand of same magnitude
       Operand* pOperand2 = m_pOperand[0];
+      
+      // remove the operand from the m_pOperands array
       m_pOperand[0] = nullptr;
       m_iOperands--;
-      vMergeSelf(pRootBuffer, pOperand2);
+      
+      // merge the two operands
+      vMergeOperands(pOperand, pOperand2);
     }
     else {
       // save the buffer set till we have a similar set to merge with
-      m_pOperand[0] = pRootBuffer;
+      m_pOperand[0] = pOperand;
       m_iOperands++;
     }
     
@@ -145,7 +144,7 @@ eOR MergeOp::eMergeLoop(void)
           break;
       }
     
-    vMergeSelf(pOperand[0], pOperand[1]);
+    vMergeOperands(pOperand[0], pOperand[1]);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -173,7 +172,7 @@ eOR MergeOp::eMergeLoop(void)
 /*----------------------------------------------------------------------------*/
 /* mergeSelf                                                                  */
 /*----------------------------------------------------------------------------*/
-void MergeOp::vMergeSelf(Operand* pOperand1, Operand* pOperand2)
+void MergeOp::vMergeOperands(Operand* pOperand1, Operand* pOperand2)
 {
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump the buffer
@@ -246,7 +245,7 @@ void MergeOp::vMergeSelf(Operand* pOperand1, Operand* pOperand2)
     Operand* pOperand = m_pOperand[iCardinality];
     m_pOperand[iCardinality] = nullptr;
     m_iOperands--;
-    vMergeSelf(pIntBuffer1, pOperand);
+    vMergeOperands(pIntBuffer1, pOperand);
   }
   
 }

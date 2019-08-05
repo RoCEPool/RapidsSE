@@ -27,8 +27,9 @@ namespace PushDown
     static eOR eCallLoop(void* aThis);
     
   private:
-    eOR eMergeLoop(void);
-    void vMergeSelf(Operand* pOperand1, Operand* pOperand2);
+    eOR  eMergeLoop(void);
+    void vMergeOperands(Operand* pOperand1, Operand* pOperand2);
+    
     BufferCursor* pPartitionBuffer(IntBuffer* pIntBuffer, BufferCursor* pLowCursor,
                                    BufferCursor* pHighCursor);
     void vQuickSortBuffer(IntBuffer* pIntBuffer, BufferCursor* pLowCursor, BufferCursor* pHighCursor);
