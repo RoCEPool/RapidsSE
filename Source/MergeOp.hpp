@@ -27,6 +27,7 @@ namespace PushDown
     static eOR eCallLoop(void* aThis);
     
   private:
+    void vMergeDangling(void);
     eOR  eMergeLoop(void);
     void vMergeOperands(Operand* pOperand1, Operand* pOperand2);
     

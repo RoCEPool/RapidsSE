@@ -83,6 +83,37 @@ eOR MergeOp::eCallLoop(void* aThis)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* merge dangling operand sets into a single operand set                      */
+/*----------------------------------------------------------------------------*/
+void MergeOp::vMergeDangling(void)
+{
+  i8 i_Index;
+  i8 j_Index = 0;
+  Operand* pOperandPair[2];
+  
+  // merge remaining operand set pairs till we are left with one single set
+  while (m_iOperands != 1) {
+    
+    // find a buffer set
+    for (i_Index = 0; i_Index < C_OPERANDS; i_Index++) {
+      
+      if (m_pOperand[i_Index]) {
+        pOperandPair[j_Index++] = m_pOperand[i_Index];
+        m_pOperand[i_Index] = nullptr;
+        m_iOperands--;
+        
+        // do we have a pair ?
+        if (j_Index == 2)
+          break;
+      }
+    }
+    
+    // merge the operand set pair
+    vMergeOperands(pOperandPair[0], pOperandPair[1]);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* the merge operator loop function                                           */
 /*----------------------------------------------------------------------------*/
 eOR MergeOp::eMergeLoop(void)
@@ -120,35 +151,21 @@ eOR MergeOp::eMergeLoop(void)
       vMergeOperands(pOperand, pOperand2);
     }
     else {
-      // save the buffer set till we have a similar set to merge with
+      // save the buffer set till we have a similar magnitude buffer set to merge with
       m_pOperand[0] = pOperand;
       m_iOperands++;
     }
     
   }
   
-  i8 i_Index;
-  
-  while (m_iOperands != 1) {
-  
-    // merge the dangling buffers
-   
-    i8 j_Index = 0;
-    Operand* pOperand[2];
-    for (i_Index = 0; i_Index < C_OPERANDS; i_Index++)
-      if (m_pOperand[i_Index]) {
-        pOperand[j_Index++] = m_pOperand[i_Index];
-        m_pOperand[i_Index] = nullptr;
-        m_iOperands--;
-        if (j_Index == 2)
-          break;
-      }
-    
-    vMergeOperands(pOperand[0], pOperand[1]);
-  }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // merge all remaining operand sets into a single operand set
+  vMergeDangling();
+  RASSERT(m_iOperands == 1);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // find the root buffer from the operands
+  // find the one remaining operand set
+  i8 i_Index;
   for (i_Index = 0; i_Index < C_OPERANDS; i_Index++)
     if (m_pOperand[i_Index])
       break;
@@ -164,6 +181,8 @@ eOR MergeOp::eMergeLoop(void)
   
   vTrace("MERGE Piped Out %lld buffer\n"_Stz, iCount);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pipe out an end marker
   vPipeOut_endMarker();
   
   return OR_EXIT;
