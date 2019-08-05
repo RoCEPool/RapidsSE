@@ -127,6 +127,10 @@ eOR LimitOp::eLimitLoop(void)
       return OR_BIDE;
     }
     
+    if (bIsCancelling()) {
+      
+    }
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     switch (pOperand->eClass()) {

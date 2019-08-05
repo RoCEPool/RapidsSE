@@ -122,6 +122,12 @@ eOR OutputOp::eOutputLoop(void)
       return OR_BIDE;
     }
     
+    if (bIsCancelling()) {
+      
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
     switch (pOperand->eClass()) {
         
       case CN_ENDMARKER:

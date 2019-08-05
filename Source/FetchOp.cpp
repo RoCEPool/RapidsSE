@@ -134,6 +134,10 @@ eOR FetchOp::eFetchLoop(void)
   
   while (m_pCrwBuffer) {
     
+    if (bIsCancelling()) {
+      
+    }
+    
     vTrace("%s::bFetch %p\n"_Stz,m_sLabel.aStz(),m_pCrwBuffer);
     
     vPipeOut(m_pCrwBuffer);
