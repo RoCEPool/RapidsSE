@@ -13,6 +13,8 @@ namespace PushDown
     bool  m_bPulsed;
     Op*   m_pOpToPulse;
   
+    bool  m_bCancelling;
+  
     OpVec m_oOpVec;  // set of operators
   
   private:

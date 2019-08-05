@@ -16,8 +16,8 @@ namespace PushDown
 
       Op*  (*m_fpNew)(Stz* szLabel, Digest* pDigest,  OpDefn* aOpDefn, // new op fun
                       TokenVec* pTknVec, i8& i_Tkn);
-      eOR  (*m_fpCall)(void* aThis);   // function which calls the op
-      void (*m_fpDrain)(void* aThis);  // function which drains the operand queue
+      eOR  (*m_fpCall) (void* aThisOp);  // function which calls the op loop
+      eOR  (*m_fpDrain)(void* aThisOp);  // function which calls the drain loop
 
       Stz* m_szHelp;     // help text
   };

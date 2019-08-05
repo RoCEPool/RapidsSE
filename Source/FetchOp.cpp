@@ -11,8 +11,8 @@ OpDesc __Op_Fetch (
   "Fet"_Stz,          // prefix
                    
   FetchOp::pNew,      // function which parses the command and new's an op
-  FetchOp::eCall,     // function which does the op
-  nullptr,            // function which drains the operand queue
+  FetchOp::eCall,     // function which calls the op loop
+  nullptr,            // function which calls the drain loop
 
   "<help>"_Stz
 );
@@ -134,7 +134,12 @@ eOR FetchOp::eFetchLoop(void)
   
   while (m_pCrwBuffer) {
     
-    vTrace("%s::bFetch %p\n"_Stz,m_sLabel.aStz(),m_pCrwBuffer);
+    if (bIsCancelling()) {
+      vTrace("%s::!canceled :   after piping %lld buffers\n"_Stz,
+             m_sLabel.aStz(),
+             m_iWorkDone);
+      break;
+    }
     
     vPipeOut(m_pCrwBuffer);
     

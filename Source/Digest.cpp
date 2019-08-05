@@ -50,6 +50,8 @@ Digest::Digest(Job* pJob)
   m_bPulsed    = false;
   m_pOpToPulse = nullptr;
   
+  m_bCancelling = false;
+  
   _checkInitialised_(CN_DIGEST);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_DIGEST,_FOOTER_);
