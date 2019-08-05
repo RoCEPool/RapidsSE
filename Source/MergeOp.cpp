@@ -176,6 +176,8 @@ eOR MergeOp::eMergeLoop(void)
 
   IntBuffer* pIntBuffer = _pIntBuffer(m_pOperand[i_Index]);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pipe out merge-sorted buffers
   i8 iCount = 0;
   while (pIntBuffer) {
     vPipeOut(pIntBuffer);
@@ -183,7 +185,7 @@ eOR MergeOp::eMergeLoop(void)
     pIntBuffer = pIntBuffer->pNextBuffer();
   }
   
-  vTrace("MERGE Piped Out %lld buffer\n"_Stz, iCount);
+  vTrace("MERGE PIPED OUT %lld buffer\n"_Stz, iCount);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pipe out an end marker

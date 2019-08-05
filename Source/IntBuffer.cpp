@@ -175,7 +175,7 @@ bool IntBuffer::bHasSpace(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next buffer                                                            */
+/* get last buffer and count of buffers                                       */
 /*----------------------------------------------------------------------------*/
 IntBuffer* IntBuffer::pLastBuffer(i8& iCount)
 {
@@ -183,6 +183,7 @@ IntBuffer* IntBuffer::pLastBuffer(i8& iCount)
   IntBuffer* pBuffer = this;
   IntBuffer* pLastBuffer = this;
 
+  iCount = 0;
   while (pBuffer) {
     iCount++;
     pLastBuffer = pBuffer;
