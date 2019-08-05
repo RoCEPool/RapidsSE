@@ -112,15 +112,15 @@ void LogEntry::vSet(i8 iEnumGroup, i8 iEnum, i8 iForeign, char* aText)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* dump to csv file                                                           */
+/* write to csv file                                                          */
 /*----------------------------------------------------------------------------*/
-void LogEntry::vDump(File* pFile, bool bShortForm,
-                     i8 iTickDeltaUsec, i8& iTotalDelta)
+void LogEntry::vWrite(File* pFile, bool bShortForm,
+                      i8 iTickDeltaUsec, i8& iTotalDelta)
 {
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
   if (bShortForm) {
-    vDumpShort(pFile);
+    vWriteShort(pFile);
     return;
   }
   
@@ -162,14 +162,14 @@ void LogEntry::vDump(File* pFile, bool bShortForm,
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump to csv file                                                           */
+/* write to csv file                                                          */
 /*----------------------------------------------------------------------------*/
-void LogEntry::vDumpShort(File* pFile)
+void LogEntry::vWriteShort(File* pFile)
 {
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
   if (m_xText.m_iForeign) {
-    vDumpShortForeign(pFile);
+    vWriteShortForeign(pFile);
     return;
   }
   
@@ -201,9 +201,9 @@ void LogEntry::vDumpShort(File* pFile)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump to csv file                                                           */
+/* write to csv file                                                          */
 /*----------------------------------------------------------------------------*/
-void LogEntry::vDumpShortForeign(File* pFile)
+void LogEntry::vWriteShortForeign(File* pFile)
 {
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   

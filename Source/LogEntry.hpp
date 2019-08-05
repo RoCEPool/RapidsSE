@@ -36,9 +36,9 @@ namespace Logging
   
     // - - - - - - - - - - - - - - - - - - - - - - - - -
   
-    void vDump(File* pFile, bool bShortForm, i8 iTickDelta, i8& iTotalDelta);
-    void vDumpShort(File* pFile);
-    void vDumpShortForeign(File* pFile);
+    void vWrite(File* pFile, bool bShortForm, i8 iTickDelta, i8& iTotalDelta);
+    void vWriteShort(File* pFile);
+    void vWriteShortForeign(File* pFile);
 
     Footer* aFooter(void);
   };

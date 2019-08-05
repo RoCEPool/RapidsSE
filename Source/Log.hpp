@@ -27,7 +27,7 @@ namespace Logging
     void  operator delete(void*);
 
     Log(void);
-    ~Log(void) noexcept(false);
+   ~Log(void) noexcept(false);
 
   private:
     static Log* pAttachCreate(void);

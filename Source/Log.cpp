@@ -541,6 +541,7 @@ void Log::vWriteToFile(bool bShortForm)
   bool bOpened = pLogFile->bOpenWrite(sLogPath);
   if (! bOpened) {
     vTrace("Unable to open log file: %s\n"_Stz,sLogPath.aChar());
+    delete pLogFile;
     return;
   }
   
@@ -565,7 +566,7 @@ void Log::vWriteToFile(bool bShortForm)
   vFindRange_NL(i_MinEntry,i_MaxEntry);
   
   LogEntry* pLogEntry = &m_oaEntry[i_MinEntry % m_nEntries];
-  pLogEntry->vDump(pLogFile,bShortForm,0,iTotalDelta);
+  pLogEntry->vWrite(pLogFile,bShortForm,0,iTotalDelta);
   
   for (i8 i_Entry = i_MinEntry + 1; i_Entry <= i_MaxEntry; i_Entry++) {
     
@@ -577,7 +578,7 @@ void Log::vWriteToFile(bool bShortForm)
     LogEntry* pPrevEntry = &m_oaEntry[(i_Entry - 1) % m_nEntries];
     i8 iDeltaUsec = Tick::iToUsec(pLogEntry->m_iTick - pPrevEntry->m_iTick);
 
-    pLogEntry->vDump(pLogFile,bShortForm,iDeltaUsec,iTotalDelta);
+    pLogEntry->vWrite(pLogFile,bShortForm,iDeltaUsec,iTotalDelta);
   }
   
   vDropLock();

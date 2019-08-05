@@ -16,7 +16,7 @@ namespace Logging
 
 #include "ShmLog.hpp"
 
-#include "LogEntryText.h"
+#include "LogEntryText.hpp"
 #include "LogEntry.hpp"
 #include "Log.hpp"
 #include "ActLog.hpp"
