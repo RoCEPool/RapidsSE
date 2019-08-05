@@ -92,8 +92,11 @@ Op* LimitOp::pNew(Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn,
   
   LimitOp* pLimitOp = new LimitOp(szLabel,pDigest,aOpDefn);
   
+  pLimitOp->m_sArgs = pTknVec->pGet(i_Tkn_)->aText();
+  
   pLimitOp->m_nLimit = pTknVec->pGet(i_Tkn_++)->iToI8();
   
+
   return pLimitOp;
 }
 
@@ -159,7 +162,7 @@ eOR LimitOp::eLimitLoop(void)
         m_nSoFar++;
         
         if (m_nSoFar == m_nLimit) {
-          vTrace("%s::!cancelling : after popping %lld buffers\n"_Stz,
+          vTrace("%s::!CANCELLING : after popping %lld buffers\n"_Stz,
                  m_sLabel.aStz(),
                  m_nSoFar);
           m_pDigest->m_bCancelling = true;

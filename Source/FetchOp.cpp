@@ -135,7 +135,7 @@ eOR FetchOp::eFetchLoop(void)
   while (m_pCrwBuffer) {
     
     if (bIsCancelling()) {
-      vTrace("%s::!canceled :   after piping %lld buffers\n"_Stz,
+      vTrace("%s::!CANCELED :   after piping %lld buffers\n"_Stz,
              m_sLabel.aStz(),
              m_iWorkDone);
       break;
