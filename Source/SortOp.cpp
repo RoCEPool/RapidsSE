@@ -210,11 +210,6 @@ eOR SortOp::eSortLoop(void)
     IntBuffer* pIntBuffer = _pIntBuffer(pOperand);
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // dump the buffer
-    //vTrace("\n\nSorting buffer:\n"_Stz);
-    //pIntBuffer->vDump();
-    
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // create a Low cursor pointing to the first element in the array
     BufferCursor* pLowCursor = new BufferCursor(pIntBuffer, 0, pIntBuffer->aGetElement(0));
     
@@ -226,16 +221,13 @@ eOR SortOp::eSortLoop(void)
     // call quick sort (recursive call)
     vQuickSortBuffer(pIntBuffer, pLowCursor, pHighCursor);
     
-    //vTrace("\nSorted buffer:\n"_Stz);
-    //pIntBuffer->vDump();
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // verify that the data is sorted
+    RASSERT(pIntBuffer->bVerifyOrder());
     
     // before feeding to mergeOp, delink the buffer first
     pIntBuffer->vNextBuffer(nullptr);
     pIntBuffer->vPrevBuffer(nullptr);
-    
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // verify that the data is sorted
-    RASSERT(pIntBuffer->bVerifyOrder());
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // delete the bufferCursors

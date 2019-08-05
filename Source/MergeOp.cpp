@@ -52,7 +52,6 @@ MergeOp::MergeOp(Stz* szOpLabel, Digest* pDigest)
     m_pOperand[i_Index] = nullptr;
   
   m_iOperands = 0;
-  m_bEndMarker = false;
   
   m_fpCall = MergeOp::eCallLoop;
 }
@@ -96,13 +95,10 @@ eOR MergeOp::eMergeLoop(void)
     
     if (! pOperand) {
       ASSERT(bIsLocked());
-//      if (m_bEndMarker & (m_iOperands == 1))
-//        break;
       return OR_BIDE;
     }
     
     if (CN_ENDMARKER == pOperand->eClass()) {
-      m_bEndMarker = true;
       EndMarker* pEndMarker = _pEndMarker(pOperand);
       delete pEndMarker;
       break;

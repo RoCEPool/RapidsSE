@@ -13,7 +13,6 @@ namespace PushDown
   
     Operand* m_pOperand[C_OPERANDS];
     i8       m_iOperands;
-    bool     m_bEndMarker;
     
     // must be last
     Footer m_xFooter;
