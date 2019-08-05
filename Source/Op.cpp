@@ -155,10 +155,10 @@ void Op::vAppendOperand(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  vTrace("%s::vAppendOperand : %p %s\n"_Stz,
-         m_sLabel.aStz(),
-         pOperand,
-         aCN[pOperand->eClass()]);
+//  vTrace("%s::vAppendOperand : %p %s\n"_Stz,
+//         m_sLabel.aStz(),
+//         pOperand,
+//         aCN[pOperand->eClass()]);
   
   vGrabTaskLock();
   
@@ -304,11 +304,11 @@ void Op::vPipeOut(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  vTrace("%s::vPipeOut : %p %s\n"_Stz,
+  vTrace("%s::vPipeOut :    %s %p\n"_Stz,
          m_sLabel.aStz(),
-         pOperand,
-         aCN[pOperand->eClass()]);
-  
+         aCN[pOperand->eClass()],
+         pOperand);
+
   m_pOpOut->vAppendOperand(pOperand);
 }
 
@@ -358,10 +358,10 @@ Operand* Op::pPopOperand(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (pOperand) {
-    vTrace("%s::pPopOperand : %p %s\n"_Stz,
+    vTrace("%s::pPopOperand : %s %p\n"_Stz,
            m_sLabel.aStz(),
-           pOperand,
-           aCN[pOperand->eClass()]);
+           aCN[pOperand->eClass()],
+           pOperand);
   }
   
   return pOperand;

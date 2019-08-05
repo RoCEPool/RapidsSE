@@ -69,7 +69,7 @@ time fetch lineitem noPrint;
 
 query lineitem;
 
-dynamic fetch lineitem | limit 10 | output | zed;
+dynamic fetch lineitem | limit 2 | output | zed;
 
 logWrite;
 

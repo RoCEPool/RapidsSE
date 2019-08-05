@@ -155,8 +155,16 @@ eOR LimitOp::eLimitLoop(void)
       // -- -- -- -- -- --
         
       case CN_CRWBUFFER:
-        m_nSoFar++;
         vPipeOut(pOperand);
+        m_nSoFar++;
+        
+        if (m_nSoFar == m_nLimit) {
+          vTrace("%s::!cancelling : after popping %lld buffers\n"_Stz,
+                 m_sLabel.aStz(),
+                 m_nSoFar);
+          m_pDigest->m_bCancelling = true;
+        }
+        
         break;
         
       default:
