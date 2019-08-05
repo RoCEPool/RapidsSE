@@ -54,13 +54,12 @@ Op::Op(eCN eClassNo, Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn)
   m_iWorkQuanta   = 1;
   m_iWorkDone     = 0;
 
-  m_pOperandQueue = new OperandQueue;
+  m_pOperandQueue  = new OperandQueue;
   m_pOperandQueue2 = nullptr;
-  m_pOpOut        = nullptr;
-  m_pOpContinue   = nullptr;
+  m_pOpOut         = nullptr;
 
-  m_fpCall        = m_aOpDefn ? m_aOpDefn->m_fpCall  : nullptr;
-  m_fpDrain       = m_aOpDefn ? m_aOpDefn->m_fpDrain : nullptr;
+  m_fpCall         = m_aOpDefn ? m_aOpDefn->m_fpCall  : nullptr;
+  m_fpDrain        = m_aOpDefn ? m_aOpDefn->m_fpDrain : nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

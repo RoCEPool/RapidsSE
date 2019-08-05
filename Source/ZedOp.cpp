@@ -97,7 +97,7 @@ Op* ZedOp::pNew(Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn,
 /*----------------------------------------------------------------------------*/
 eOR ZedOp::eCall(void* aThisOp)
 {
-  eOR eCallAgain = ((ZedOp*)aThisOp)->eZedLoop();
+  eOR eCallAgain = ((ZedOp*)aThisOp)->eOpLoop();
   
   return eCallAgain;
 }
@@ -109,7 +109,7 @@ eOR ZedOp::eCall(void* aThisOp)
 /*----------------------------------------------------------------------------*/
 /* op loop                                                                    */
 /*----------------------------------------------------------------------------*/
-eOR ZedOp::eZedLoop(void)
+eOR ZedOp::eOpLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ZEDOP,_FOOTER_);
   

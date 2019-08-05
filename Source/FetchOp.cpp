@@ -106,7 +106,7 @@ Op* FetchOp::pNew(Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn,
 /*----------------------------------------------------------------------------*/
 eOR FetchOp::eCall(void* aThisOp)
 {  
-  eOR eCallAgain = ((FetchOp*)aThisOp)->eFetchLoop();
+  eOR eCallAgain = ((FetchOp*)aThisOp)->eOpLoop();
   
   return eCallAgain;
 }
@@ -118,7 +118,7 @@ eOR FetchOp::eCall(void* aThisOp)
 /*----------------------------------------------------------------------------*/
 /* op loop                                                                    */
 /*----------------------------------------------------------------------------*/
-eOR FetchOp::eFetchLoop(void)
+eOR FetchOp::eOpLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
   

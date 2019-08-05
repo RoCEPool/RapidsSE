@@ -24,7 +24,7 @@ namespace PushDown
     static eOR eCall(void* aThis);
     static eOR eDrain(void* aThis);
 
-    eOR eOutputLoop(void);
+    eOR eOpLoop(void);
     eOR eDrainLoop(void);
 
   private:

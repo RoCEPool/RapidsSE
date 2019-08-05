@@ -104,7 +104,7 @@ Op* LimitOp::pNew(Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn,
 /*----------------------------------------------------------------------------*/
 eOR LimitOp::eCall(void* aThisOp)
 {
-  eOR eCallAgain = ((LimitOp*)aThisOp)->eLimitLoop();
+  eOR eCallAgain = ((LimitOp*)aThisOp)->eOpLoop();
   
   return eCallAgain;
 }
@@ -126,7 +126,7 @@ eOR LimitOp::eDrain(void* aThisOp)
 /*----------------------------------------------------------------------------*/
 /* op  loop                                                                   */
 /*----------------------------------------------------------------------------*/
-eOR LimitOp::eLimitLoop(void)
+eOR LimitOp::eOpLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LIMITOP,_FOOTER_);
   

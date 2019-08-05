@@ -97,7 +97,7 @@ Op* OutputOp::pNew(Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn,
 /*----------------------------------------------------------------------------*/
 eOR OutputOp::eCall(void* aThisOp)
 {
-  eOR eCallAgain = ((OutputOp*)aThisOp)->eOutputLoop();
+  eOR eCallAgain = ((OutputOp*)aThisOp)->eOpLoop();
   
   return eCallAgain;
 }
@@ -119,7 +119,7 @@ eOR OutputOp::eDrain(void* aThisOp)
 /*----------------------------------------------------------------------------*/
 /* op loop                                                                    */
 /*----------------------------------------------------------------------------*/
-eOR OutputOp::eOutputLoop(void)
+eOR OutputOp::eOpLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
   

@@ -23,7 +23,7 @@ namespace PushDown
                     TokenVec* pTknVec, i8& i_Tkn_);
     static eOR eCall(void* aThis);
   
-    eOR eZedLoop(void);
+    eOR eOpLoop(void);
   
   private:
     Footer* aFooter(void);

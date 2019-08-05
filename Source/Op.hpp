@@ -27,13 +27,10 @@ namespace PushDown
     OperandQueue*  m_pOperandQueue;  // the input queue being processed
     OperandQueue*  m_pOperandQueue2; // the input queue being processed
     Op*            m_pOpOut;         // where results get piped (queued)
-    Op*            m_pOpContinue;    // op which gets continued
 
     eOR (*m_fpCall) (void* aThisOp);  // function which calls the op loop
     eOR (*m_fpDrain)(void* aThisOp);  // function which calls the drain loop
 
-    //! need to add pulsing and cancelling
-  
   public:
     void  operator delete(void*);
   

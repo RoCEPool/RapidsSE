@@ -27,7 +27,7 @@ namespace PushDown
                     TokenVec* pTknVec, i8& i_Tkn_);
     static eOR eCall(void* aThis);
   
-    eOR eFetchLoop(void);
+    eOR eOpLoop(void);
   
     void vPreliminary(void);
 
