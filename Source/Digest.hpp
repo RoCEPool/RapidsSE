@@ -10,11 +10,11 @@ namespace PushDown
   public:
   
     Job*  m_pJob;
-  
     bool  m_bPulsed;
+    Op*   m_pOpToPulse;
   
     OpVec m_oOpVec;  // set of operators
-
+  
   private:
   
     // must be last

@@ -46,9 +46,9 @@ Digest::Digest(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIGEST,_FOOTER_);
   
-  m_pJob = pJob;
-  
-  m_bPulsed = false;
+  m_pJob       = pJob;
+  m_bPulsed    = false;
+  m_pOpToPulse = nullptr;
   
   _checkInitialised_(CN_DIGEST);
 
@@ -160,6 +160,15 @@ void Digest::vSetupJob(void)
     return;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
+    Op* pOp = m_oOpVec.pGet(i_Op);
+    
+    if (CN_FETCHOP == pOp->eClass()) {
+      m_pOpToPulse = pOp;
+      break;
+    }
+  }
   
 }
 
