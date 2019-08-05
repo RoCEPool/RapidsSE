@@ -20,6 +20,7 @@ namespace PushDown
     bool           m_bAckJobEnd;     // ack job on end marker
     bool           m_bPulsed;        // is this a pulsed operand?
     i8             m_iWorkQuanta;    // quanta of work between pulses
+    i8             m_iWorkDone;      // work done
 
     OperandQueue*  m_pOperandQueue;  // the input queue being processed
     OperandQueue*  m_pOperandQueue2; // the input queue being processed
@@ -55,6 +56,7 @@ namespace PushDown
     Stz* szNextLabel(void);
     void vNextLabel(Stz* szNextLabel);
     void vOpOut(Op* pOpOut);
+    bool bPause(void);
     void vPipeOut(Operand* pOperand);
     void vPipeOut_endMarker(void);
     void vPipeSelf(Operand* pOperand);
@@ -62,6 +64,7 @@ namespace PushDown
     void vStdDrain(void);
     Task* pTask(void);
     void vTask(Task* pTask);
+    void vIncWorkDone(void);
     void vWorkQuanta(i8 iWorkQuanta);
   };
 

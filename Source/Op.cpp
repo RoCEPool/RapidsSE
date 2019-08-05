@@ -52,6 +52,7 @@ Op::Op(eCN eClassNo, Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn)
   m_bAckJobEnd    = true;
   m_bPulsed       = false;
   m_iWorkQuanta   = C_UNKNOWN;
+  m_iWorkDone     = 0;
 
   m_pOperandQueue = new OperandQueue;
   m_pOperandQueue2 = nullptr;
@@ -265,6 +266,19 @@ void Op::vOpOut(Op* pOpOut)
 }
 
 /*----------------------------------------------------------------------------*/
+/* operator is to pause?                                                      */
+/*----------------------------------------------------------------------------*/
+bool Op::bPause(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  if (0 == m_iWorkDone % m_iWorkQuanta)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* append operand to output op's operand queue                                */
 /*----------------------------------------------------------------------------*/
 void Op::vPipeOut(Operand* pOperand)
@@ -362,6 +376,16 @@ void Op::vTask(Task* pTask)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_pTask = pTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc work done                                                              */
+/*----------------------------------------------------------------------------*/
+void Op::vIncWorkDone(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_iWorkDone++;
 }
 
 /*----------------------------------------------------------------------------*/
