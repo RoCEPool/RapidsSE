@@ -91,6 +91,7 @@ namespace StorageEngine
     static void vIndexEntries(i8 nIndexEntries);
     static void vMonitorPortrait(s48K& sRapidsPortrait);
     static void vNextTempName(s32& sName);
+    static void vPulseTask(Task* pTask);
     static void vSetAcksRmg(Task* pTask, i8 nAcks);
     static void vStepTiming(StepTiming* pStepTiming);
     static void vSubInserters(i8 nSubInserters);
