@@ -267,6 +267,7 @@ enum eCN : u2 // Class Number
   /* 174 0xAE      152B Heap:S */ CN_ROWONCE,
   /*                           */ CN_ROWTRAY,
   
+  /*                           */ CN_SCANOP,
   /*                           */ CN_SCHEMA,
   /* 176 0xB0    50208B Heap:L */ CN_SCHEMATEST,
   /*                           */ CN_SEEME,
@@ -606,6 +607,7 @@ static Stz* aCN[]
   /* 174 0xAE */ "ROWONCE"_Stz,             // CN_ROWONCE
   /*          */ "ROWTRAY"_Stz,             // CN_ROWTRAY
   
+  /*          */ "SCANOP"_Stz,              // CN_SCANOP
   /*          */ "SCHEMA"_Stz,              // CN_SCHEMA
   /* 176 0xB0 */ "SCHEMATEST"_Stz,          // CN_SCHEMATEST
   /*          */ "SEEME"_Stz,               // CN_SEEME
