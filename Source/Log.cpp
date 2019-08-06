@@ -582,7 +582,7 @@ void Log::vWriteToFile(bool bShortForm)
   
   s256 sLogPath((Stz*)C_LOG_FILE);
   
-  i8 iTotalDelta = 0;
+  i8 iTotalDeltaUsec = 0;
   
   File* pLogFile = new File;
   
@@ -614,7 +614,7 @@ void Log::vWriteToFile(bool bShortForm)
   vFindRange_NL(i_MinEntry,i_MaxEntry);
   
   LogEntry* pLogEntry = &m_oaEntry[i_MinEntry % m_nEntries];
-  pLogEntry->vWrite(pLogFile,bShortForm,0,iTotalDelta);
+  pLogEntry->vWrite(pLogFile,0,iTotalDeltaUsec);
   
   for (i8 i_Entry = i_MinEntry + 1; i_Entry <= i_MaxEntry; i_Entry++) {
     
@@ -624,9 +624,9 @@ void Log::vWriteToFile(bool bShortForm)
       break;
     
     LogEntry* pPrevEntry = &m_oaEntry[(i_Entry - 1) % m_nEntries];
-    i8 iDeltaUsec = Tick::iToUsec(pLogEntry->m_iTick - pPrevEntry->m_iTick);
+    i8 iEntryDeltaUsec = Tick::iToUsec(pLogEntry->m_iTick - pPrevEntry->m_iTick);
 
-    pLogEntry->vWrite(pLogFile,bShortForm,iDeltaUsec,iTotalDelta);
+    pLogEntry->vWrite(pLogFile,iEntryDeltaUsec,iTotalDeltaUsec);
   }
   
   vDropLock();

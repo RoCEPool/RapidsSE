@@ -83,28 +83,27 @@ void LogEntry::vInit(void)
 /*----------------------------------------------------------------------------*/
 /* write to csv file                                                          */
 /*----------------------------------------------------------------------------*/
-void LogEntry::vWrite(File* pFile, bool bShortForm,
-                      i8 iTickDeltaUsec, i8& iTotalDelta)
+void LogEntry::vWrite(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
 {
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
-  iTotalDelta += iTickDeltaUsec;
+  iTotalDeltaUsec += iEntryDeltaUsec;
   
   if (StrLib::bSame(m_xText.m_caText,"delta reset"))
-    iTotalDelta = 0;
+    iTotalDeltaUsec = 0;
   
   switch (m_eKind) {
       
     case EK_JOB:
-      m_xJob.vWrite(pFile,this,iTickDeltaUsec,iTotalDelta);
+      m_xJob.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
       break;
       
     case EK_RES:
-      m_xResource.vWrite(pFile,this,iTickDeltaUsec,iTotalDelta);
+      m_xResource.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
       break;
 
     case EK_TXT:
-      m_xText.vWrite(pFile,this,iTickDeltaUsec,iTotalDelta);
+      m_xText.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
       break;
       
     default:

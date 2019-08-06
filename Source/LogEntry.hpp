@@ -37,7 +37,7 @@ namespace Logging
    ~LogEntry(void) noexcept(false);
 
     void vInit(void);
-    void vWrite(File* pFile, bool bShortForm, i8 iTickDelta, i8& iTotalDelta);
+    void vWrite(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec);
     void vZero(void);
 
     Footer* aFooter(void);
