@@ -24,7 +24,6 @@ namespace System
 #include "MemTest.hpp"
 #include "NmVal.hpp"
 #include "OpSys.hpp"
-#include "Pipe.hpp"
 #include "Random.hpp"
 #include "Shell.hpp"
 #include "Sleep.hpp"
@@ -35,6 +34,7 @@ namespace System
 #include "Dir.hpp"
 #include "File.hpp"
 #include "Mutex.hpp"
+#include "Pipe.hpp"
 #include "Pthread.hpp"
 #include "Socket.hpp"
 
