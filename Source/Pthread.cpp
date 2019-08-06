@@ -454,7 +454,7 @@ bool Pthread::bSpawnThread(void* pFun(void*), void* pArg)
   if (AM::bAttached()) AM::pResourceTracker()->vIncThreadOpen();
   if (AM::pMarkResource()->bEnum(SR_THREAD) ||
       AM::pMarkResource()->bAll())
-    AM::vNote(SR_THREAD,"SysRes: Spawned thread : %lld"_Stz,m_iPthreadId);
+    AM::vNoteRes(SR_THREAD,"SysRes: Spawned thread : %lld"_Stz,m_iPthreadId);
 
   // this is important otherwise resources are not released
   pthread_detach(m_iPthreadId);

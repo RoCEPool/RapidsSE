@@ -264,7 +264,7 @@ bool Socket::bAcceptClient(int& iSocketId, SysCall& SysCall)
   if (AM::bAttached()) AM::pResourceTracker()->vIncSocketOpen();
   if (AM::pMarkResource()->bEnum(SR_SOCKET) ||
       AM::pMarkResource()->bAll())
-    AM::vNote(SR_SOCKET,"SysRes: Socket accepted cient"_Stz);
+    AM::vNoteRes(SR_SOCKET,"SysRes: Socket accepted cient"_Stz);
 
   SysCall.vSuccess();
   return true;
@@ -301,7 +301,7 @@ bool Socket::bClose(SysCall& SysCall)
   if (AM::bAttached()) AM::pResourceTracker()->vDecSocketOpen();
   if (AM::pMarkResource()->bEnum(SR_SOCKET) ||
       AM::pMarkResource()->bAll())
-    AM::vNote(SR_SOCKET,"SysRes: Socket closed"_Stz);
+    AM::vNoteRes(SR_SOCKET,"SysRes: Socket closed"_Stz);
 
   SysCall.vSuccess();
   return true;
@@ -370,7 +370,7 @@ bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
   if (AM::bAttached()) AM::pResourceTracker()->vIncSocketOpen();
   if (AM::pMarkResource()->bEnum(SR_SOCKET) ||
       AM::pMarkResource()->bAll())
-    AM::vNote(SR_SOCKET,"SysRes: Socket connected to server %s %d"_Stz,
+    AM::vNoteRes(SR_SOCKET,"SysRes: Socket connected to server %s %d"_Stz,
                        sAddr,iPort);
 
   SysCall.vSuccess();
@@ -435,7 +435,7 @@ bool Socket::bCreateServer(int iPort, SysCall& SysCall)
   if (AM::bAttached()) AM::pResourceTracker()->vIncSocketOpen();
   if (AM::pMarkResource()->bEnum(SR_SOCKET) ||
       AM::pMarkResource()->bAll())
-    AM::vNote(SR_SOCKET,"SysRes: Socket created listening socket : %d"_Stz,
+    AM::vNoteRes(SR_SOCKET,"SysRes: Socket created listening socket : %d"_Stz,
                        iPort);
 
   SysCall.vSuccess();
@@ -512,7 +512,7 @@ bool Socket::bRecvBytes(void* pWS, i8 nBytes, SysCall& SysCall)
     
     if (AM::pMarkResource()->bEnum(SR_SOCKET) ||
         AM::pMarkResource()->bAll())
-      AM::vNote(SR_SOCKET,"SysRes: Socket received %lld bytes"_Stz,
+      AM::vNoteRes(SR_SOCKET,"SysRes: Socket received %lld bytes"_Stz,
                          nRecvBytes);
 
     //vTrace("Bytes received: (%lld) %lld\n"_Stz, nBytes, nSoFar);
@@ -547,7 +547,7 @@ bool Socket::bSendBytes(void* pBuffer, i8 nBytes, SysCall& SysCall)
   
   if (AM::pMarkResource()->bEnum(SR_SOCKET) ||
       AM::pMarkResource()->bAll())
-    AM::vNote(SR_SOCKET,"SysRes: Socket set %lld bytes"_Stz,
+    AM::vNoteRes(SR_SOCKET,"SysRes: Socket set %lld bytes"_Stz,
                       nSentBytes);
 
   if (nSentBytes == nBytes) {

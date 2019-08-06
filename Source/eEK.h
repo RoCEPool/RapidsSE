@@ -6,15 +6,17 @@
 enum eEK // entry kind
 {
   /* 0 */ EK_NONE=0,
-  /* 1 */ EK_TEXT,
-  /* 2 */ EK_ENUMS
+  /* 1 */ EK_RESOURCE,
+  /* 2 */ EK_TEXT,
+  /* 3 */ EK_ENUMS
 };
 
 static Stz* aEK[]
 {
   /* 0 */ "none"_Stz,
-  /* 1 */ "text"_Stz,
-  /* 2 */ "enums"_Stz
+  /* 1 */ "resource"_Stz,
+  /* 2 */ "text"_Stz,
+  /* 3 */ "enums"_Stz
 };
 
 /*============================================================================*/

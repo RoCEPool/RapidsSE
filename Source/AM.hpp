@@ -131,7 +131,7 @@ namespace StorageEngine
     static bool bSpawnOp(Session* pSession, Op* pOp);
     static void vStateDiagram(s256& sDiagram, eCN eJobClass);
     static void vNote(Stz* szFormat, ...);
-    static void vNote(eSR eSysRes,Stz* szFormat, ...);
+    static void vNoteRes(eSR eSysRes,Stz* szFormat, ...);
     static void vWriteTrace(Stz* aFormat, va_list xArgs);
   };
 }

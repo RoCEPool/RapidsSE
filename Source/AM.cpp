@@ -329,7 +329,7 @@ void AM::vNote(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a log entry for resource                                               */
 /*----------------------------------------------------------------------------*/
-void AM::vNote(eSR eSysRes,Stz* szFormat, ...)
+void AM::vNoteRes(eSR eSysRes,Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())

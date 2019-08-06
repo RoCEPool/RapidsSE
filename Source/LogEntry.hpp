@@ -8,17 +8,17 @@ namespace Logging
   class LogEntry : public Object
   {
   friend class Log;
-  friend class _LogEntryText;
+  friend class _LogEntryTxt;
 
   private:
     i8   m_i_Entry;     // entry no
     i8   m_iTick;       // tick when entry added
     char m_caNode[32];  // which node
   
-    eEK  m_eKind;       // log entry kind
-  
+    eEK  m_eKind;       // log entry kind.  one of the following
     union {
-      _LogEntryText m_xText;
+      _LogEntryRes m_xResource; // when m_eKind == EK_RESOURCE
+      _LogEntryTxt m_xText;     // when m_eKind == EK_TEXT
     };
   
     // must be last
