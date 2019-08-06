@@ -11,9 +11,9 @@ enum eSR // System resource
   SR_FILE,
   SR_MALLOC,
   SR_MUTEX,
+  SR_PTHREAD,
   SR_SHM,
   SR_SOCKET,
-  SR_THREAD,
   
   SR_ENUMS
 };
@@ -26,9 +26,9 @@ static Stz* aSR[]
   "FILE"_Stz,
   "MALLOC"_Stz,
   "MUTEX"_Stz,
+  "PTHREAD"_Stz,
   "SHM"_Stz,
   "SOCKET"_Stz,
-  "THREAD"_Stz,
   
   "ENUMS"_Stz,
 };
