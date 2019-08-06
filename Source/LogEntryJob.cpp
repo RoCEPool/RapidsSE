@@ -27,7 +27,8 @@ void _LogEntryJob::vWrite(File* pFile, LogEntry* pLogEntry,
 {
   pFile->vPrint("%lld,%lld,%lld,%lld,"
                 "%s,%s,%s,"
-                "%lld,%lld,%s\n"_Stz,
+                "%lld,%lld,"
+                "%s\n"_Stz,
                 
                 pLogEntry->m_i_Entry,
                 pLogEntry->m_iTick,
@@ -40,6 +41,7 @@ void _LogEntryJob::vWrite(File* pFile, LogEntry* pLogEntry,
                 
                 m_iJobId,
                 m_iForeign,
+                
                 m_caText);
 }
 

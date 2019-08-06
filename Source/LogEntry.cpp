@@ -98,6 +98,10 @@ void LogEntry::vWrite(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
       m_xJob.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
       break;
       
+    case EK_OP:
+      m_xOp.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
+      break;
+      
     case EK_RES:
       m_xResource.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
       break;

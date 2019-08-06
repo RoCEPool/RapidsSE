@@ -8,7 +8,7 @@ namespace Logging
   class _LogEntryJob
   {
   public:  
-    i8   m_iJobId;       // enum/jobid
+    i8   m_iJobId;      // jobid
     i8   m_iForeign;    // is foreign job id?
   
     eLN  m_eLogNote;           //

@@ -9,6 +9,7 @@ namespace Logging
   {
   friend class Log;
   friend class _LogEntryJob;
+  friend class _LogEntryOp;
   friend class _LogEntryRes;
   friend class _LogEntryTxt;
 
@@ -21,6 +22,7 @@ namespace Logging
     eEK  m_eKind;       // log entry kind.  one of the following
     union {
       _LogEntryJob m_xJob;      // when m_eKind == EK_JOB
+      _LogEntryOp  m_xOp;       // when m_eKind == EK_OP
       _LogEntryRes m_xResource; // when m_eKind == EK_RESOURCE
       _LogEntryTxt m_xText;     // when m_eKind == EK_TEXT
     };
