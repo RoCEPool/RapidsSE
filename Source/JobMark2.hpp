@@ -6,7 +6,8 @@
 namespace Jobs
 {
   class JobMark2 : public Job,
-                   public JobTable
+                   public JobTable,
+                   public JobIndex
   {
   public:
     bool   m_bCancel; // cancel job

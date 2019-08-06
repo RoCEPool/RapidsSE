@@ -9,10 +9,32 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobMark2(void)
 {
+  vAddStep("jobMark2.index!"_Stz,       &Step::vJobMark2IndexStore);
   vAddStep("jobMark2.tableName@"_Stz,   &Step::vJobMark2TableNameFetch);
   vAddStep("jobMark2.table!"_Stz,       &Step::vJobMark2TableStore);
 }
 
+/*----------------------------------------------------------------------------*/
+/* jobMark2.index! -- store index pointer                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vJobMark2IndexStore(MP_Task mpTask)
+{
+  ENTRY("vJobMark2IndexStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("jobMark2indextable!"_Stz);
+  JobMark2* pJobMark2 = _pJobMark2(pJobPtr);
+  
+  Object* pIndexPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pIndexPtr) )
+    THROW_INVALID_DSTACK("jobMark2indextable!"_Stz);
+  Index* pIndex = _pIndex(pIndexPtr);
+  
+  pJobMark2->m_pIndex = pIndex;
+  
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* jobMark2.tableName@ -- fetch table name                                    */

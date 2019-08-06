@@ -417,6 +417,7 @@ private:
   static void vJobAssertReceived(Tasks::MP_Task mpTask);
 
   // job mark 2
+  static void vJobMark2IndexStore(Tasks::MP_Task mpTask);
   static void vJobMark2TableNameFetch(Tasks::MP_Task mpTask);
   static void vJobMark2TableStore(Tasks::MP_Task mpTask);
 

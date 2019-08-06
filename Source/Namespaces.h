@@ -23,7 +23,7 @@ namespace Jobs          { class Job; struct JobClass;  class JobList;
                                      class Job_Dynamic;                       }
 namespace Library       { class Lock; class LockTracker;                      }
 namespace Logging       { class LogEntry;                                     }
-namespace MetaData      { class Table;                                        }
+namespace MetaData      { class Table; class Index;                           }
 namespace Measurement   { class StepTiming;                                   }
 namespace Partitioning  { class TablePtn;                                     }
 namespace Persistence   { class CarryOver;                                    }

@@ -148,6 +148,13 @@ eOR OutputOp::eOpLoop(void)
         vPipeOut(pOperand);
         break;
       }
+       
+      case CN_ENTBUFFER: {
+        EntBuffer* pEntBuffer = _pEntBuffer(pOperand) ;
+        pEntBuffer->vShow();
+        vPipeOut(pOperand);
+        break;
+      }
         
       default:
         vPipeOut(pOperand);
