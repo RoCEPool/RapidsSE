@@ -203,7 +203,7 @@ void Log::vNoteString(i8 iJobId, s48K& sString)
     //vTrace("Line: ]]%s[[\n"_Stz,sLine.aChar());
     LogEntry* pLogEntry = gpLog->pNewEntry_NL();
     pLogEntry->vInit();
-    pLogEntry->vSet(C_JOB_GROUP,iJobId,bForeign,sLine.aChar());
+    pLogEntry->m_xJob.vSet(pLogEntry,iJobId,bForeign,sLine.aChar());
   }
   
   gpLog->vDropLock();
@@ -388,8 +388,9 @@ i8 Log::iAddNoteArg(i8 iJobId, i8 iForeign, Stz* aFormat, va_list xVaArgs)
   if (! pLogEntry)
     return C_UNKNOWN;
   
-  pLogEntry->vSet(C_JOB_GROUP,iJobId,iForeign,caMark);
-  
+  //pLogEntry->vSet(C_JOB_GROUP,iJobId,iForeign,caMark);
+  pLogEntry->m_xJob.vSet(pLogEntry,iJobId,iForeign,caMark);
+
   return pLogEntry->m_i_Entry;
 }
 
