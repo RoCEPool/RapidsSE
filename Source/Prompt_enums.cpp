@@ -53,7 +53,7 @@ bool Prompt::bPrompt_enums(SePrompt* pPrompt)
   vTrace("  eSC: system call\n"_Stz);
   vTrace("  eSR: system resource\n"_Stz);
   vTrace("  eSS: seed string\n"_Stz);
-  vTrace("  eTD: thread state\n"_Stz);
+  vTrace("  eHS: thread state\n"_Stz);
   vTrace("  eTS: task state\n"_Stz);
   vTrace("  eTN: token type\n"_Stz);
   vTrace("  eTP: transaction phase\n"_Stz);

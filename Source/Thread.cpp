@@ -66,7 +66,7 @@ Thread::Thread(void)
   m_aStackBase   = nullptr;
   m_iStackSize   = 0;
   
-  m_eThreadState = TD_NONE;
+  m_eThreadState = HS_NONE;
   m_pTask        = nullptr;
   m_eDedicated   = CN_NONE;
 
@@ -210,7 +210,7 @@ void* Thread::aEntryPoint_dummy(void* pArg)
 {
   Thread* pThread = static_cast<Thread*>(pArg);
   
-  pThread->m_eThreadState = TD_IDLE;
+  pThread->m_eThreadState = HS_IDLE;
   
   pThread->m_pPthread->vThreadEntry();
   
@@ -356,7 +356,7 @@ void Thread::vExecuteTask(Task* pTask)
   RASSERT(TS_READY == pTask->eState());
   
   // thread should be idle
-  RASSERT(TD_ASSIGNED == m_eThreadState);
+  RASSERT(HS_ASSIGNED == m_eThreadState);
   
   // thread should have no task
   RASSERT(! m_pTask);
@@ -449,7 +449,7 @@ i8 Thread::iThreadNo(void)
 /*----------------------------------------------------------------------------*/
 /* get thread state                                                           */
 /*----------------------------------------------------------------------------*/
-eTD Thread::eThreadState(void)
+eHS Thread::eThreadState(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   

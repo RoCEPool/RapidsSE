@@ -15,7 +15,7 @@ namespace Threads
     void*    m_aStackBase;    // stack base address
     i8       m_iStackSize;    // stack size
   
-    eTD      m_eThreadState;  // thread state
+    eHS      m_eThreadState;  // thread state
     Task*    m_pTask;         // task current being executed
     eCN      m_eDedicated;    // thread is dedicated to one specific job?
 
@@ -55,7 +55,7 @@ namespace Threads
     void vThisTLSThread(void);
     void vThreadEntry(void);
     i8   iThreadNo(void);
-    eTD  eThreadState(void);
+    eHS  eThreadState(void);
   
   private:
 

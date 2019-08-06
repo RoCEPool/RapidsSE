@@ -138,7 +138,7 @@ void Queues::vThreadsReport(void)
            iPercentageUsage,
            iSleepSsec,
            
-           aTD[pThread->m_eThreadState],
+           aHS[pThread->m_eThreadState],
            pThread->m_eDedicated ? aCN[pThread->m_eDedicated]->aChar() : "",
            
            pThread->m_nAssignedTasks
@@ -175,7 +175,7 @@ void Queues::vThreadsReport(void)
            iPercentageUsage,
            iSleepSsec,
            
-           aTD[pThread->m_eThreadState],
+           aHS[pThread->m_eThreadState],
            pThread->m_eDedicated ? aCN[pThread->m_eDedicated]->aChar() : "",
            
            pThread->m_nAssignedTasks
@@ -637,7 +637,7 @@ void Queues::vAddDedicatedThread(Thread* pThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
-  RASSERT(TD_IDLE == pThread->eThreadState());
+  RASSERT(HS_IDLE == pThread->eThreadState());
   
   m_pDedicatedThreadVec->vGrabLock();
   m_pDedicatedThreadVec->vAdd(pThread);
@@ -651,7 +651,7 @@ void Queues::vAddGeneralThread(Thread* pThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
-  RASSERT(TD_IDLE == pThread->eThreadState());
+  RASSERT(HS_IDLE == pThread->eThreadState());
   
   m_pGeneralThreadVec->vGrabLock();
   m_pGeneralThreadVec->vAdd(pThread);
@@ -665,7 +665,7 @@ void Queues::vThreadAppendIdle(Thread* pThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
-  RASSERT(TD_IDLE == pThread->eThreadState());
+  RASSERT(HS_IDLE == pThread->eThreadState());
   
   m_pIdleThreadQueue->vGrabLock();
   m_pIdleThreadQueue->vAppendThread(pThread);
@@ -683,7 +683,7 @@ Thread* Queues::pThreadPopIdle(void)
   Thread* pThread = m_pIdleThreadQueue->pPopThread();
   m_pIdleThreadQueue->vDropLock();
   
-  RASSERT(!pThread || TD_IDLE == pThread->eThreadState());
+  RASSERT(!pThread || HS_IDLE == pThread->eThreadState());
   
   return pThread;
 }
@@ -874,10 +874,10 @@ void Queues::vMonitorThread(s48K& sPortrait)
     
     Thread* pThread = m_pGeneralThreadVec->pGet(i_Thread);
     
-    if (TD_IDLE == pThread->eThreadState())
+    if (HS_IDLE == pThread->eThreadState())
       nIdle++;
     else
-      if (TD_ASSIGNED == pThread->eThreadState())
+      if (HS_ASSIGNED == pThread->eThreadState())
         nRunning++;
     
     if (CN_NONE != pThread->m_eDedicated)

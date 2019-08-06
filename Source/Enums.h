@@ -54,7 +54,7 @@ namespace Enums
 #include "eSC.h"
 #include "eSR.h"
 #include "eSS.h"
-#include "eTD.h"
+#include "eHS.h"
 #include "eTK.h"
 #include "eTN.h"
 #include "eTP.h"

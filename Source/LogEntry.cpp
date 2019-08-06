@@ -106,6 +106,10 @@ void LogEntry::vWrite(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
       m_xResource.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
       break;
 
+    case EK_THD:
+      m_xThread.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
+      break;
+      
     case EK_TXT:
       m_xText.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
       break;

@@ -11,6 +11,7 @@ namespace Logging
   friend class _LogEntryJob;
   friend class _LogEntryOp;
   friend class _LogEntryRes;
+  friend class _LogEntryThd;
   friend class _LogEntryTxt;
 
   private:
@@ -24,6 +25,7 @@ namespace Logging
       _LogEntryJob m_xJob;      // when m_eKind == EK_JOB
       _LogEntryOp  m_xOp;       // when m_eKind == EK_OP
       _LogEntryRes m_xResource; // when m_eKind == EK_RESOURCE
+      _LogEntryThd m_xThread;   // when m_eKind == EK_THREAD
       _LogEntryTxt m_xText;     // when m_eKind == EK_TEXT
     };
   
