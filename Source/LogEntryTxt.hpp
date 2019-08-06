@@ -5,8 +5,6 @@
 
 namespace Logging
 {
-  static const i8 C_LOG_TEXT = 128;
-  
   class _LogEntryTxt
   {
   public:
@@ -17,6 +15,8 @@ namespace Logging
     char m_caText[C_LOG_TEXT]; // comment
   
   public:
+    void vSet(LogEntry* pLogEntry, char* aText);
+  
     void vWrite(File* pFile, LogEntry* pLogEntry, i8 iTickDeltaUsec, i8& iTotalDelta);
   };
 }

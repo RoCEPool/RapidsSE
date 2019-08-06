@@ -41,7 +41,7 @@ Log::Log(void)
   
   for (i8 i_Entry = 0; i_Entry < m_nEntries; i_Entry++) {
     LogEntry* pLogEntry = &m_oaEntry[i_Entry];
-    pLogEntry->vInit();
+    pLogEntry->vZero();
   }
   
   _checkInitialised_(CN_LOG);
@@ -202,6 +202,7 @@ void Log::vNoteString(i8 iJobId, s48K& sString)
   while (StrLib::bEachLine(&aCharAdr,sLine.aChar())) {
     //vTrace("Line: ]]%s[[\n"_Stz,sLine.aChar());
     LogEntry* pLogEntry = gpLog->pNewEntry_NL();
+    pLogEntry->vInit();
     pLogEntry->vSet(C_JOB_GROUP,iJobId,bForeign,sLine.aChar());
   }
   
@@ -394,6 +395,52 @@ i8 Log::iAddNoteArg(i8 iEnumGroup, i8 iEnum, i8 iForeign,
 }
 
 /*----------------------------------------------------------------------------*/
+/* ass a text log entry                                                       */
+/*----------------------------------------------------------------------------*/
+i8 Log::iAddNoteTxt(Stz* szFormat, va_list xArgs)
+{
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
+  
+  char caMark[1024];
+  
+  vsnprintf(caMark,sizeof(caMark)-1,szFormat->aChar(),xArgs);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  LogEntry* pLogEntry = pNewEntry();
+  
+  if (! pLogEntry)
+    return C_UNKNOWN;
+  
+  pLogEntry->m_xText.vSet(pLogEntry,caMark);
+  
+  return pLogEntry->m_i_Entry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* ass a resource log entry                                                   */
+/*----------------------------------------------------------------------------*/
+i8 Log::iAddNoteRes(eSR eSysRes, Stz* szFormat, va_list xArgs)
+{
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
+  
+  char caMark[1024];
+  
+  vsnprintf(caMark,sizeof(caMark)-1,szFormat->aChar(),xArgs);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  LogEntry* pLogEntry = pNewEntry();
+  
+  if (! pLogEntry)
+    return C_UNKNOWN;
+  
+  pLogEntry->m_xResource.vSet(pLogEntry,eSysRes,caMark);
+  
+  return pLogEntry->m_i_Entry;
+}
+
+/*----------------------------------------------------------------------------*/
 /* write an LogEntry                                                          */
 /*----------------------------------------------------------------------------*/
 i8 Log::iAddNoteVbl(i8 iEnumGroup, i8 iEnum, i8 iForeign,
@@ -424,6 +471,8 @@ LogEntry* Log::pNewEntry(void)
   
   vDropLock();
   // ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲
+  
+  pLogEntry->vInit();
 
   return pLogEntry;
 }

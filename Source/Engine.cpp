@@ -481,6 +481,9 @@ void Engine::vOpenLog(void)
     bStarting = true;
   
   Log::vOpenBySE(bStarting);
+  
+  gpAttachMap->m_oMarkResource.vAll(true);
+  
 }
 
 /*----------------------------------------------------------------------------*/

@@ -67,21 +67,17 @@ LogEntry::~LogEntry(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* init                                                                       */
+/* init                                                                        */
 /*----------------------------------------------------------------------------*/
 void LogEntry::vInit(void)
 {
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
-  m_i_Entry    = -1;
-  m_iTick      = -1;
-  m_caNode[0]  = '\0';
+  m_iTick = Tick::iRdClock();
   
-  m_eKind      = EK_TEXT;
-  
-  m_xText.m_iEnumGroup = -1;
-  m_xText.m_iEnum      = -1;
-  m_xText.m_caText[0]  = '\0';
+  StrLib::vCopyLen(m_caNode,
+                   AM::szNodeName()->aChar(),
+                   sizeof(m_caNode) - 1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -129,6 +125,12 @@ void LogEntry::vWrite(File* pFile, bool bShortForm,
   if (StrLib::bSame(m_xText.m_caText,"delta reset"))
     iTotalDelta = 0;
   
+  if (EK_RESOURCE == m_eKind)
+    m_xResource.vWrite(pFile,this,iTickDeltaUsec,iTotalDelta);
+  else
+  if (EK_TEXT == m_eKind)
+    m_xText.vWrite(pFile,this,iTickDeltaUsec,iTotalDelta);
+  else
   if (m_xText.m_iEnum < 0)
     pFile->vPrint("%lld,%lld,%lld,%lld,%s,%s,%s\n"_Stz,
                   m_i_Entry,
@@ -149,7 +151,7 @@ void LogEntry::vWrite(File* pFile, bool bShortForm,
 //
 //                  m_caNode,
 //                  m_xText.m_caText);
-    m_xText.vWrite(pFile,this, iTickDeltaUsec, iTotalDelta);
+    m_xText.vWrite(pFile,this, iTickDeltaUsec,iTotalDelta);
   else
     pFile->vPrint("%lld,%lld,%lld,%lld,%s,%lld,%s\n"_Stz,
                   m_i_Entry,
@@ -254,6 +256,25 @@ void LogEntry::vWriteShortForeign(File* pFile)
 
   pFile->vPrint("%s\n"_Stz,caRightAdj);
 }
+
+/*----------------------------------------------------------------------------*/
+/* init                                                                       */
+/*----------------------------------------------------------------------------*/
+void LogEntry::vZero(void)
+{
+  _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
+  
+  m_i_Entry    = -1;
+  m_iTick      = -1;
+  m_caNode[0]  = '\0';
+  
+  m_eKind      = EK_TEXT;
+  
+  //  m_xText.m_iEnumGroup = -1;
+  //  m_xText.m_iEnum      = -1;
+  //  m_xText.m_caText[0]  = '\0';
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

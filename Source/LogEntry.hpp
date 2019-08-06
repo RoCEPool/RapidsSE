@@ -8,10 +8,12 @@ namespace Logging
   class LogEntry : public Object
   {
   friend class Log;
+  friend class _LogEntryRes;
   friend class _LogEntryTxt;
 
   private:
     i8   m_i_Entry;     // entry no
+  
     i8   m_iTick;       // tick when entry added
     char m_caNode[32];  // which node
   
@@ -31,15 +33,13 @@ namespace Logging
     
     LogEntry(void);
    ~LogEntry(void) noexcept(false);
-  
+
     void vInit(void);
     void vSet(i8 iEnumGroup, i8 iEnum, i8 iForeign, char* aText);
-  
-    // - - - - - - - - - - - - - - - - - - - - - - - - -
-  
     void vWrite(File* pFile, bool bShortForm, i8 iTickDelta, i8& iTotalDelta);
     void vWriteShort(File* pFile);
     void vWriteShortForeign(File* pFile);
+    void vZero(void);
 
     Footer* aFooter(void);
   };

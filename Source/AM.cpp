@@ -335,15 +335,15 @@ void AM::vNoteRes(eSR eSysRes,Stz* szFormat, ...)
   if (! AM::bLogging())
     return;
   
-  if (AM::pMarkResource()->bEnum(eSysRes) ||
-      AM::pMarkResource()->bAll())
+  if (! (AM::pMarkResource()->bEnum(eSysRes) ||
+         AM::pMarkResource()->bAll()) )
     return;
   
   va_list xVaArgs;
   
   va_start(xVaArgs,szFormat);
   
-  gpLog->iAddNoteArg(_EG_SR,eSysRes,false,szFormat,xVaArgs);
+  gpLog->iAddNoteRes(eSysRes,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif

@@ -8,12 +8,13 @@ namespace Logging
   class _LogEntryRes
   {
   public:
-    i8   m_iEnumGroup;  // enum group
-    i8   m_iEnum;       // enum/jobid
-    i8   m_iForeign;    // foreign job id
-  
+    eSR  m_eSysRes;            // enum/jobid
+    char m_caText[C_LOG_TEXT]; // comment
+
   public:
-    void vWrite(File* pFile, LogEntry* pLogEntry,
+   void vSet(LogEntry* pLogEntry, eSR eSysRes, char* aText);
+  
+   void vWrite(File* pFile, LogEntry* pLogEntry,
                 i8 iTickDeltaUsec, i8& iTotalDelta);
   };
 }
