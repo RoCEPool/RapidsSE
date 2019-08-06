@@ -15,6 +15,9 @@ namespace Logging
     i8   m_iForeign;    // foreign job id
   
     char m_caText[C_LOG_TEXT]; // comment
+  
+  public:
+    void vWrite(File* pFile, LogEntry* pLogEntry, i8 iTickDeltaUsec, i8& iTotalDelta);
   };
 }
 

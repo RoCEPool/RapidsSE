@@ -8,6 +8,7 @@ namespace Logging
   class LogEntry : public Object
   {
   friend class Log;
+  friend class _LogEntryText;
 
   private:
     i8   m_i_Entry;     // entry no

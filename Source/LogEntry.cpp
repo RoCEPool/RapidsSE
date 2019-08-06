@@ -141,14 +141,15 @@ void LogEntry::vWrite(File* pFile, bool bShortForm,
                   m_xText.m_caText);
   else
   if (m_xText.m_iEnum == 0)
-    pFile->vPrint("%lld,%lld,%lld,%lld,%s,inf,%s\n"_Stz,
-                  m_i_Entry,
-                  m_iTick,
-                  iTickDeltaUsec,
-                  iTotalDelta,
-                  
-                  m_caNode,
-                  m_xText.m_caText);
+//    pFile->vPrint("%lld,%lld,%lld,%lld,%s,inf,%s\n"_Stz,
+//                  m_i_Entry,
+//                  m_iTick,
+//                  iTickDeltaUsec,
+//                  iTotalDelta,
+//
+//                  m_caNode,
+//                  m_xText.m_caText);
+    m_xText.vWrite(pFile,this, iTickDeltaUsec, iTotalDelta);
   else
     pFile->vPrint("%lld,%lld,%lld,%lld,%s,%lld,%s\n"_Stz,
                   m_i_Entry,
