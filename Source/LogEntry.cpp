@@ -89,10 +89,14 @@ void LogEntry::vWrite(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
   
   iTotalDeltaUsec += iEntryDeltaUsec;
   
-  if (StrLib::bSame(m_xText.m_caText,"delta reset"))
-    iTotalDeltaUsec = 0;
+  //if (StrLib::bSame(m_xInf.m_caText,"delta reset"))
+  //  iTotalDeltaUsec = 0;
   
   switch (m_eKind) {
+      
+    case EK_INF:
+      m_xInf.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
+      break;
       
     case EK_JOB:
       m_xJob.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
@@ -106,12 +110,16 @@ void LogEntry::vWrite(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
       m_xResource.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
       break;
 
-    case EK_THD:
-      m_xThread.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
+    case EK_SVC:
+      m_xService.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
       break;
       
-    case EK_TXT:
-      m_xText.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
+    case EK_TSK:
+      m_xTask.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
+      break;
+      
+    case EK_THD:
+      m_xThread.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
       break;
       
     default:
@@ -130,7 +138,7 @@ void LogEntry::vZero(void)
   m_iTick      = -1;
   m_caNode[0]  = '\0';
   
-  m_eKind      = EK_TXT;
+  m_eKind      = EK_INF;
 }
 
 

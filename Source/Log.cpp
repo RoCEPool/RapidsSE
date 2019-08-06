@@ -434,7 +434,7 @@ i8 Log::iAddNoteRes(eSR eSysRes, Stz* szFormat, va_list xVaArgs)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ass a text log entry                                                       */
+/* add a text log entry                                                       */
 /*----------------------------------------------------------------------------*/
 i8 Log::iAddNoteTxt(Stz* szFormat, va_list xVaArgs)
 {
@@ -451,7 +451,7 @@ i8 Log::iAddNoteTxt(Stz* szFormat, va_list xVaArgs)
   if (! pLogEntry)
     return C_UNKNOWN;
   
-  pLogEntry->m_xText.vSet(pLogEntry,caMark);
+  pLogEntry->m_xInf.vSet(pLogEntry,caMark);
   
   return pLogEntry->m_i_Entry;
 }
