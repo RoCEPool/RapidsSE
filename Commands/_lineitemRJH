@@ -72,9 +72,6 @@ query lineitem;
 
 dynamic scan lineitem | limit 2 | output | zed;
 
-//dynamic fetch LT LI | output | zed;
-
-//dynamic fetch LT LI , fetch RT RI | join  | output | zed;
 logWrite;
 
 /*
