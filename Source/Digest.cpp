@@ -166,7 +166,7 @@ void Digest::vSetupJob(void)
   for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
     Op* pOp = m_oOpVec.pGet(i_Op);
     
-    if (CN_FETCHOP == pOp->eClass()) {
+    if (CN_SCANOP == pOp->eClass()) {
       m_pOpToPulse = pOp;
       pOp->m_bPulsed = true;
       break;
