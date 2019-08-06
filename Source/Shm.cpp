@@ -2,7 +2,7 @@
 /* Shm.cpp -- shared memory                                                   */
 /*============================================================================*/
 
-#include "System.h"
+#include "Correctness.h"
 #include "AM.hpp"
 
 
