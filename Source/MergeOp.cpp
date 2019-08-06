@@ -4,7 +4,6 @@
 
 #include "PushDown.h"
 
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -244,14 +243,25 @@ void MergeOp::vMergeOperands(Operand* pOperand1, Operand* pOperand2)
   // verify that the data is sorted
   RASSERT(pIntBuffer1->bVerifyOrder());
   
-  i8 iCardinality = (i8)log2(iCount);
-  if ( ! m_pOperand[iCardinality]) {
-    m_pOperand[iCardinality] = pIntBuffer1;
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // calculate the magnitude of this sorted buffer
+  i8 iMagnitude = (i8)log2(iCount);
+  
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // do we have another buffer set of the same magnitude ?
+  if ( ! m_pOperand[iMagnitude]) {
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // save this buffer set
+    m_pOperand[iMagnitude] = pIntBuffer1;
     m_iOperands++;
   }
   else {
-    Operand* pOperand = m_pOperand[iCardinality];
-    m_pOperand[iCardinality] = nullptr;
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // merge this buffer set with another of same magnitude
+    Operand* pOperand = m_pOperand[iMagnitude];
+    m_pOperand[iMagnitude] = nullptr;
     m_iOperands--;
     vMergeOperands(pIntBuffer1, pOperand);
   }
