@@ -99,46 +99,23 @@ void LogEntry::vWrite(File* pFile, bool bShortForm,
   if (StrLib::bSame(m_xText.m_caText,"delta reset"))
     iTotalDelta = 0;
   
-  if (EK_RES == m_eKind)
-    m_xResource.vWrite(pFile,this,iTickDeltaUsec,iTotalDelta);
-  else
-  if (EK_TXT == m_eKind)
-    m_xText.vWrite(pFile,this,iTickDeltaUsec,iTotalDelta);
-  else
-  if (EK_JOB == m_eKind)
-    m_xJob.vWrite(pFile,this,iTickDeltaUsec,iTotalDelta);
-  else
-  if (m_xText.m_iEnum < 0)
-    pFile->vPrint("%lld,%lld,%lld,%lld,%s,%s,%s\n"_Stz,
-                  m_i_Entry,
-                  m_iTick,
-                  iTickDeltaUsec,
-                  iTotalDelta,
-                  
-                  m_caNode,
-                  aSR_Short[ - m_xText.m_iEnum ],
-                  m_xText.m_caText);
-  else
-  if (m_xText.m_iEnum == 0)
-//    pFile->vPrint("%lld,%lld,%lld,%lld,%s,inf,%s\n"_Stz,
-//                  m_i_Entry,
-//                  m_iTick,
-//                  iTickDeltaUsec,
-//                  iTotalDelta,
-//
-//                  m_caNode,
-//                  m_xText.m_caText);
-    m_xText.vWrite(pFile,this, iTickDeltaUsec,iTotalDelta);
-  else
-    pFile->vPrint("%lld,%lld,%lld,%lld,%s,%lld,%s\n"_Stz,
-                  m_i_Entry,
-                  m_iTick,
-                  iTickDeltaUsec,
-                  iTotalDelta,
-                  
-                  m_caNode,
-                  m_xText.m_iEnum,
-                  m_xText.m_caText);
+  switch (m_eKind) {
+      
+    case EK_JOB:
+      m_xJob.vWrite(pFile,this,iTickDeltaUsec,iTotalDelta);
+      break;
+      
+    case EK_RES:
+      m_xResource.vWrite(pFile,this,iTickDeltaUsec,iTotalDelta);
+      break;
+
+    case EK_TXT:
+      m_xText.vWrite(pFile,this,iTickDeltaUsec,iTotalDelta);
+      break;
+      
+    default:
+      NEVER_REACH;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
