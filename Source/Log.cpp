@@ -582,8 +582,6 @@ void Log::vWriteToFile(bool bShortForm)
   
   s256 sLogPath((Stz*)C_LOG_FILE);
   
-  i8 iTotalDeltaUsec = 0;
-  
   File* pLogFile = new File;
   
   bool bOpened = pLogFile->bOpenWrite(sLogPath);
@@ -610,6 +608,7 @@ void Log::vWriteToFile(bool bShortForm)
   
   i8 i_MinEntry;
   i8 i_MaxEntry;
+  i8 iTotalDeltaUsec = 0;
   
   vFindRange_NL(i_MinEntry,i_MaxEntry);
   
