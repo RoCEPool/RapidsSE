@@ -14,6 +14,7 @@ namespace System
 
 //-----------------------------------------------------------------------------
 
+
 #include "Birth.hpp"
 #include "Compress.hpp"
 #include "DecaCnt.hpp"
@@ -35,6 +36,8 @@ namespace System
 #include "Socket.hpp"
 #include "TempName.hpp"
 #include "TspLib.hpp"
+
+#include "Resource.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
