@@ -37,6 +37,7 @@ namespace Enums
 #include "eJT.h"
 #include "eKC.h"
 #include "eLK.h"
+#include "eLN.h"
 #include "eMC.h"
 #include "eNE.h"
 #include "eOC.h"

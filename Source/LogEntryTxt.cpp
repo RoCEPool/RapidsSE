@@ -10,9 +10,8 @@
 void _LogEntryTxt::vSet(LogEntry* pLogEntry, char* aText)
 {  
   pLogEntry->m_eKind = EK_TEXT;
-  
-  m_iEnumGroup = 0;
-  m_iEnum      = 0;
+
+  m_eLogNote = LN_TEXT;
   
   StrLib::vCopyLen(m_caText,
                    aText,
@@ -26,7 +25,7 @@ void _LogEntryTxt::vWrite(File* pFile, LogEntry* pLogEntry,
                            i8 iTickDeltaUsec, i8& iTotalDelta)
 {
   pFile->vPrint("%lld,%lld,%lld,%lld,"
-                "%s,%s,%s\n"_Stz,
+                "%s,%s,%s,%s\n"_Stz,
                 
                 pLogEntry->m_i_Entry,
                 pLogEntry->m_iTick,
@@ -35,7 +34,8 @@ void _LogEntryTxt::vWrite(File* pFile, LogEntry* pLogEntry,
               
                 pLogEntry->m_caNode,
                 aEK[pLogEntry->m_eKind],
-                pLogEntry->m_xText.m_caText);
+                aLN[m_eLogNote],
+                m_caText);
 }
 
 /*============================================================================*/

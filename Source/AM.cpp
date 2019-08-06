@@ -310,7 +310,7 @@ void AM::vStateDiagram(s256& sDiagram, eCN eJobClass)
 /*----------------------------------------------------------------------------*/
 /* add a log entry                                                            */
 /*----------------------------------------------------------------------------*/
-void AM::vNote(Stz* aFormat, ...)
+void AM::vNote(Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -318,9 +318,9 @@ void AM::vNote(Stz* aFormat, ...)
   
   va_list xArgs;
   
-  va_start(xArgs,aFormat);
+  va_start(xArgs,szFormat);
   
-  gpLog->iAddNoteArg(C_INF_GROUP,0,false,aFormat,xArgs);
+  gpLog->iAddNoteTxt(szFormat,xArgs);
   
   va_end(xArgs);
 #endif

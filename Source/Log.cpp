@@ -141,7 +141,7 @@ Log* Log::pAttachExisting(void)
 /*----------------------------------------------------------------------------*/
 /* add a log entry                                                            */
 /*----------------------------------------------------------------------------*/
-void Log::vNote(Stz* aFormat, ...)
+void Log::vNote(Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if ( ! gpLog )
@@ -149,9 +149,9 @@ void Log::vNote(Stz* aFormat, ...)
   
   va_list xArgs;
   
-  va_start(xArgs,aFormat);
+  va_start(xArgs,szFormat);
   
-  gpLog->iAddNoteArg(C_INF_GROUP,0,false,aFormat,xArgs);
+  gpLog->iAddNoteTxt(szFormat,xArgs);
   
   va_end(xArgs);
 #endif

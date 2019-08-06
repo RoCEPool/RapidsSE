@@ -26,15 +26,16 @@ void _LogEntryRes::vWrite(File* pFile, LogEntry* pLogEntry,
                           i8 iTickDeltaUsec, i8& iTotalDelta)
 {
   pFile->vPrint("%lld,%lld,%lld,%lld,"
-                "%s,%s,%s\n"_Stz,
-                
+                "%s,%s,%s,%s\n"_Stz,
+
                 pLogEntry->m_i_Entry,
                 pLogEntry->m_iTick,
                 iTickDeltaUsec,
                 iTotalDelta,
                 
                 pLogEntry->m_caNode,
-                aSR_Short[ m_eSysRes ],
+                aEK[pLogEntry->m_eKind],
+                aSR_Short[m_eSysRes],
                 m_caText);
 }
 

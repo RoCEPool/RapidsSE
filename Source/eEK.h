@@ -13,10 +13,10 @@ enum eEK // entry kind
 
 static Stz* aEK[]
 {
-  /* 0 */ "none"_Stz,
-  /* 1 */ "resource"_Stz,
-  /* 2 */ "text"_Stz,
-  /* 3 */ "enums"_Stz
+  /* 0 */ "NONE"_Stz,
+  /* 1 */ "RES"_Stz,
+  /* 2 */ "TXT"_Stz,
+  /* 3 */ "ENUMS"_Stz
 };
 
 /*============================================================================*/
