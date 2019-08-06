@@ -37,7 +37,6 @@ void* LogEntry::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void LogEntry::operator delete(void* pDataAddress)
 {
-  LogEntry* pLogEntry = reinterpret_cast<LogEntry*>(pDataAddress);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -84,158 +83,36 @@ void LogEntry::vInit(void)
 /*----------------------------------------------------------------------------*/
 /* write to csv file                                                          */
 /*----------------------------------------------------------------------------*/
-void LogEntry::vWrite(File* pFile, bool bShortForm,
-                      i8 iTickDeltaUsec, i8& iTotalDelta)
+void LogEntry::vWrite(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
 {
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
-  if (bShortForm) {
-    vWriteShort(pFile);
-    return;
-  }
-  
-  iTotalDelta += iTickDeltaUsec;
+  iTotalDeltaUsec += iEntryDeltaUsec;
   
   if (StrLib::bSame(m_xText.m_caText,"delta reset"))
-    iTotalDelta = 0;
+    iTotalDeltaUsec = 0;
   
-  if (EK_RES == m_eKind)
-    m_xResource.vWrite(pFile,this,iTickDeltaUsec,iTotalDelta);
-  else
-  if (EK_TXT == m_eKind)
-    m_xText.vWrite(pFile,this,iTickDeltaUsec,iTotalDelta);
-  else
-  if (EK_JOB == m_eKind)
-    m_xJob.vWrite(pFile,this,iTickDeltaUsec,iTotalDelta);
-  else
-  if (m_xText.m_iEnum < 0)
-    pFile->vPrint("%lld,%lld,%lld,%lld,%s,%s,%s\n"_Stz,
-                  m_i_Entry,
-                  m_iTick,
-                  iTickDeltaUsec,
-                  iTotalDelta,
-                  
-                  m_caNode,
-                  aSR_Short[ - m_xText.m_iEnum ],
-                  m_xText.m_caText);
-  else
-  if (m_xText.m_iEnum == 0)
-//    pFile->vPrint("%lld,%lld,%lld,%lld,%s,inf,%s\n"_Stz,
-//                  m_i_Entry,
-//                  m_iTick,
-//                  iTickDeltaUsec,
-//                  iTotalDelta,
-//
-//                  m_caNode,
-//                  m_xText.m_caText);
-    m_xText.vWrite(pFile,this, iTickDeltaUsec,iTotalDelta);
-  else
-    pFile->vPrint("%lld,%lld,%lld,%lld,%s,%lld,%s\n"_Stz,
-                  m_i_Entry,
-                  m_iTick,
-                  iTickDeltaUsec,
-                  iTotalDelta,
-                  
-                  m_caNode,
-                  m_xText.m_iEnum,
-                  m_xText.m_caText);
+  switch (m_eKind) {
+      
+    case EK_JOB:
+      m_xJob.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
+      break;
+      
+    case EK_RES:
+      m_xResource.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
+      break;
+
+    case EK_TXT:
+      m_xText.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
+      break;
+      
+    default:
+      NEVER_REACH;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
-/* write to csv file                                                          */
-/*----------------------------------------------------------------------------*/
-void LogEntry::vWriteShort(File* pFile)
-{
-  _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
-  
-  if (m_xText.m_iForeign) {
-    vWriteShortForeign(pFile);
-    return;
-  }
-  
-  // inf
-  if (C_INF_GROUP == m_xText.m_iEnumGroup) {
-    pFile->vPrint("[%3lld %s inf] %s\n"_Stz,
-                  m_i_Entry,
-                  m_caNode,
-                  m_xText.m_caText);
-    return;
-  }
-  
-  // job
-  if (C_JOB_GROUP == m_xText.m_iEnumGroup) {
-    pFile->vPrint("[%3lld %s %03lld] %s\n"_Stz,
-                  m_i_Entry,
-                  m_caNode,
-                  m_xText.m_iEnum,
-                  m_xText.m_caText);
-    return;
-  }
-  
-  // enum
-  pFile->vPrint("[%3lld %s %s] %s\n"_Stz,
-                m_i_Entry,
-                m_caNode,
-                EnumGroups::szEnumText(m_xText.m_iEnumGroup,m_xText.m_iEnum),
-                m_xText.m_caText);
-}
-
-/*----------------------------------------------------------------------------*/
-/* write to csv file                                                          */
-/*----------------------------------------------------------------------------*/
-void LogEntry::vWriteShortForeign(File* pFile)
-{
-  _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
-  
-  char caText[C_MARGIN+1] = { '\0' };
-  char caRightAdj[C_MARGIN+1]  = { '\0' };
-  i8 iLen;
-  
-  // inf
-  if (C_INF_GROUP == m_xText.m_iEnumGroup) {
-  
-    StrLib::vSprint(caText,"%s [inf %s %3lld]"_Stz,
-                    m_xText.m_caText,
-                    m_caNode,
-                    m_i_Entry);
-    iLen = StrLib::iLength(caText);
-    StrLib::vPad(caRightAdj,C_MARGIN-iLen,' ');
-    StrLib::vConcat(caRightAdj,caText);
-    
-    pFile->vPrint("%s\n"_Stz,caRightAdj);
-    return;
-  }
-  
-  // job
-  if (C_JOB_GROUP == m_xText.m_iEnumGroup) {
-    StrLib::vSprint(caText,"%s [%3lld %s %03lld]"_Stz,
-                    m_xText.m_caText,
-                    m_xText.m_iEnum,
-                    m_caNode,
-                    m_i_Entry);
-    iLen = StrLib::iLength(caText);
-    StrLib::vPad(caRightAdj,C_MARGIN-iLen,' ');
-    StrLib::vConcat(caRightAdj,caText);
-
-    pFile->vPrint("%s\n"_Stz,caRightAdj);
-    return;
-  }
-  
-  // enum
-  StrLib::vSprint(caText,"%s [%s %s %3lld]"_Stz,
-                  m_xText.m_caText,
-                  EnumGroups::szEnumText(m_xText.m_iEnumGroup,m_xText.m_iEnum),
-                  m_caNode,
-                  m_i_Entry);
-  iLen = StrLib::iLength(caText);
-  StrLib::vPad(caRightAdj,C_MARGIN-iLen,' ');
-  StrLib::vConcat(caRightAdj,caText);
-
-  pFile->vPrint("%s\n"_Stz,caRightAdj);
-}
-
-/*----------------------------------------------------------------------------*/
-/* init                                                                       */
+/* zero                                                                       */
 /*----------------------------------------------------------------------------*/
 void LogEntry::vZero(void)
 {
@@ -246,10 +123,6 @@ void LogEntry::vZero(void)
   m_caNode[0]  = '\0';
   
   m_eKind      = EK_TXT;
-  
-  //  m_xText.m_iEnumGroup = -1;
-  //  m_xText.m_iEnum      = -1;
-  //  m_xText.m_caText[0]  = '\0';
 }
 
 
