@@ -23,6 +23,9 @@
   0 locals| sTableNm |
   0 locals| pTable |
 
+  0 locals| sIndexNm |
+  0 locals| pIndex |
+
   // set dic stack
   pJob job.pushPath task::dicStack.set
 
@@ -37,7 +40,17 @@
   sTableNm find execute to pTable
   pTable pJob jobMark2.table!
 
-  popIndexes
+  // get index name
+  pJob job.indexName@ to sIndexNm
+
+  // find index
+  sIndexNm '' str.equal not if
+    pushIndexes assert
+    sIndexNm find execute to pIndex
+    pIndex pJob jobMark2.index!
+    popIndexes
+  then
+
   popTable
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

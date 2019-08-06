@@ -109,6 +109,12 @@ void AM::vGrabTaskLock(Task* pTask) {
 void AM::vIndexEntries(i8 nIndexEntries) {
   gpAttachMap->m_nIndexEntries = nIndexEntries;
 }
+void AM::vIndexName(Job_Dynamic* pJob, Stz* szIndexNm) {
+  pJob->m_sIndexName = szIndexNm;
+}
+Index* AM::pIndex(Job_Dynamic* pJob) {
+  return pJob->m_pIndex;
+}
 void AM::vMonitorPortrait(s48K& sPortrait) {
   Engine::vMonitorPortrait(sPortrait);
 }

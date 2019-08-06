@@ -11,7 +11,7 @@ namespace Jobs
   
     Digest*   m_pDigest;    // op digest
 
-    FetchOp*  m_pFetchOp;   // source
+    ScanOp*   m_pScanOp;   // source
     OutputOp* m_pOutputOp;  // output
     ZedOp*    m_pZedOp;     // sink
 

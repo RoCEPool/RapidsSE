@@ -109,7 +109,7 @@ Job_Query::Job_Query(Session* pSession)
   
   m_pDigest = new Digest(this);
   
-  m_pFetchOp  = new FetchOp ("F_0"_Stz,m_pDigest,nullptr);
+  m_pScanOp  = new ScanOp ("S_0"_Stz,m_pDigest,nullptr);
   m_pOutputOp = new OutputOp("O_0"_Stz,m_pDigest,nullptr);
   m_pZedOp    = new ZedOp   ("Z_0"_Stz,m_pDigest,nullptr);
 
@@ -125,7 +125,7 @@ Job_Query::~Job_Query(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_QUERY,_FOOTER_);
   
-  delete m_pFetchOp;
+  delete m_pScanOp;
   delete m_pOutputOp;
   delete m_pZedOp;
   
@@ -196,7 +196,7 @@ void Job_Query::vBegin(void)
   
   AM::vSetAcksRmg(m_pExecutingTask,3);
 
-  m_pFetchOp->vOpOut(m_pOutputOp);
+  m_pScanOp->vOpOut(m_pOutputOp);
   m_pOutputOp->vOpOut(m_pZedOp);
   m_pZedOp->vOpOut(nullptr);
   //m_pZedOp->vAckJobEnd(true);
@@ -204,7 +204,7 @@ void Job_Query::vBegin(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   TablePtn* pTablePtn = m_pTable->pPartition(0);
-  m_pFetchOp->vTablePtn(pTablePtn);
+  m_pScanOp->vTablePtn(pTablePtn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -230,7 +230,7 @@ void Job_Query::vExecute(void)
   ASSERT(bSpawned);
   bSpawned = AM::bSpawnOp(pSession,m_pOutputOp);
   ASSERT(bSpawned);
-  bSpawned = AM::bSpawnOp(pSession,m_pFetchOp);
+  bSpawned = AM::bSpawnOp(pSession,m_pScanOp);
   ASSERT(bSpawned);
 }
 

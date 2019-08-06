@@ -61,7 +61,7 @@ FetchOp::FetchOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
   
   m_pTablePtn  = nullptr;
-  m_pCrwBuffer = nullptr;
+  m_pEntBuffer = nullptr;
   m_bRunPrelim = true;
   
   _checkInitialised_(CN_FETCHOP);
@@ -94,7 +94,10 @@ Op* FetchOp::pNew(Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn,
   FetchOp* pFetchOp = new FetchOp(szLabel,pDigest,aOpDefn);
   
   s32 sTableNm = pTknVec->pGet(i_Tkn_++)->aText();
+  s32 sIndexNm = pTknVec->pGet(i_Tkn_++)->aText();
+  
   AM::vTableName((Job_Dynamic*)pDigest->m_pJob,sTableNm);
+  AM::vIndexName((Job_Dynamic*)pDigest->m_pJob,sIndexNm);
   
   pFetchOp->m_sArgs = sTableNm;
   
@@ -132,7 +135,7 @@ eOR FetchOp::eOpLoop(void)
     vDebugPoint();
   }
   
-  while (m_pCrwBuffer) {
+  while (m_pEntBuffer) {
     
     if (bIsCancelling()) {
       vTrace("%s::!CANCELED :   after piping %lld buffers\n"_Stz,
@@ -141,11 +144,11 @@ eOR FetchOp::eOpLoop(void)
       break;
     }
     
-    vPipeOut(m_pCrwBuffer);
+    vPipeOut(m_pEntBuffer);
     
     vIncWorkDone();
     
-    m_pCrwBuffer = m_pCrwBuffer->pNextBuffer();
+    m_pEntBuffer = m_pEntBuffer->pNextBuffer();
     
 #ifdef WITH_PULSING
     if (bPause()) {
@@ -183,7 +186,9 @@ void FetchOp::vPreliminary(void)
   vPipeOut(pStreamDef);
   
   // get first buffer
-  m_pCrwBuffer = m_pTablePtn->pRootCrwBuffer();
+  Index* pIndex = AM::pIndex((Job_Dynamic*)m_pJob);
+  IndexTree* pIndexTree = m_pTablePtn->pIndexTree(pIndex->iIndexNo());
+  m_pEntBuffer = pIndexTree->pFirstH0Buffer();
 }
 
 /*----------------------------------------------------------------------------*/

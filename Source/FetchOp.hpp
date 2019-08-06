@@ -9,7 +9,7 @@ namespace PushDown
   {
   private:
     TablePtn*  m_pTablePtn;
-    CrwBuffer* m_pCrwBuffer;
+    EntBuffer* m_pEntBuffer;
   
     bool       m_bRunPrelim;
   
