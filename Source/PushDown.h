@@ -39,6 +39,7 @@ namespace PushDown
 #include "OutputOp.hpp"
 #include "ProjectOp.hpp"
 #include "ReduceOp.hpp"
+#include "ScanOp.hpp"
 #include "SortOp.hpp"
 #include "TakeawayOp.hpp"
 #include "WhereOp.hpp"
