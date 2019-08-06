@@ -38,8 +38,6 @@ namespace Logging
 
     void vInit(void);
     void vWrite(File* pFile, bool bShortForm, i8 iTickDelta, i8& iTotalDelta);
-    void vWriteShort(File* pFile);
-    void vWriteShortForeign(File* pFile);
     void vZero(void);
 
     Footer* aFooter(void);
