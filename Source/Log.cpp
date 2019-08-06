@@ -388,8 +388,9 @@ i8 Log::iAddNoteArg(i8 iJobId, i8 iForeign, Stz* aFormat, va_list xVaArgs)
   if (! pLogEntry)
     return C_UNKNOWN;
   
-  pLogEntry->vSet(C_JOB_GROUP,iJobId,iForeign,caMark);
-  
+  //pLogEntry->vSet(C_JOB_GROUP,iJobId,iForeign,caMark);
+  pLogEntry->m_xJob.vSet(pLogEntry,iJobId,iForeign,caMark);
+
   return pLogEntry->m_i_Entry;
 }
 
