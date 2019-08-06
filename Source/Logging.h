@@ -23,6 +23,7 @@ namespace Logging
 #include "LogEntrySvc.hpp"
 #include "LogEntryThd.hpp"
 #include "LogEntryTsk.hpp"
+#include "LogEntryTxn.hpp"
 #include "LogEntry.hpp"
 #include "Log.hpp"
 #include "ActLog.hpp"

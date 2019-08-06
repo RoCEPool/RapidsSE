@@ -122,6 +122,10 @@ void LogEntry::vWrite(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
       m_xThd.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
       break;
       
+    case EK_TXN:
+      m_xTxn.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
+      break;
+      
     default:
       NEVER_REACH;
   }

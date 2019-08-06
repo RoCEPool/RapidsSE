@@ -15,6 +15,7 @@ namespace Logging
   friend class _LogEntrySvc;
   friend class _LogEntryThd;
   friend class _LogEntryTsk;
+  friend class _LogEntryTxn;
 
   private:
     i8   m_i_Entry;     // entry no
@@ -27,10 +28,11 @@ namespace Logging
       _LogEntryInf m_xInf;  // when m_eKind == EK_INF
       _LogEntryJob m_xJob;  // when m_eKind == EK_JOB
       _LogEntryOp  m_xOp;   // when m_eKind == EK_OP
-      _LogEntryRes m_xRes;  // when m_eKind == EK_RESOURCE
-      _LogEntrySvc m_xSvc;  // when m_eKind == EK_SERVICE
-      _LogEntryTsk m_xTsk;  // when m_eKind == EK_TASK
-      _LogEntryThd m_xThd;  // when m_eKind == EK_THREAD
+      _LogEntryRes m_xRes;  // when m_eKind == EK_RES
+      _LogEntrySvc m_xSvc;  // when m_eKind == EK_SVC
+      _LogEntryTsk m_xTsk;  // when m_eKind == EK_TSK
+      _LogEntryThd m_xThd;  // when m_eKind == EK_THD
+      _LogEntryTxn m_xTxn;  // when m_eKind == EK_TXN
     };
   
     // must be last
