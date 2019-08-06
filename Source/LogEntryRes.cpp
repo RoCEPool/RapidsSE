@@ -16,7 +16,6 @@ void _LogEntryRes::vSet(LogEntry* pLogEntry, eSR eSysRes, char* aText)
   StrLib::vCopyLen(m_caText,
                    aText,
                    sizeof(m_caText) - 1);
-  
 }
 
 /*----------------------------------------------------------------------------*/

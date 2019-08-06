@@ -18,6 +18,7 @@ namespace Logging
 
 #include "LogEntryRes.hpp"
 #include "LogEntryTxt.hpp"
+#include "LogEntryVbl.hpp"
 #include "LogEntry.hpp"
 #include "Log.hpp"
 #include "ActLog.hpp"

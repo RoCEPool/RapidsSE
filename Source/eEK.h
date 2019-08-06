@@ -8,7 +8,8 @@ enum eEK // entry kind
   /* 0 */ EK_NONE=0,
   /* 1 */ EK_RESOURCE,
   /* 2 */ EK_TEXT,
-  /* 3 */ EK_ENUMS
+  /* 3 */ EK_VARIABLE,
+  /* 4 */ EK_ENUMS
 };
 
 static Stz* aEK[]
@@ -16,7 +17,8 @@ static Stz* aEK[]
   /* 0 */ "NONE"_Stz,
   /* 1 */ "RES"_Stz,
   /* 2 */ "TXT"_Stz,
-  /* 3 */ "ENUMS"_Stz
+  /* 3 */ "VBL"_Stz,
+  /* 4 */ "ENUMS"_Stz
 };
 
 /*============================================================================*/

@@ -10,6 +10,7 @@ namespace Logging
   friend class Log;
   friend class _LogEntryRes;
   friend class _LogEntryTxt;
+  friend class _LogEntryVbl;
 
   private:
     i8   m_i_Entry;     // entry no
