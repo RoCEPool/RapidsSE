@@ -373,8 +373,7 @@ void Log::vWriteCsv(bool bShortForm)
 /*----------------------------------------------------------------------------*/
 /* write an LogEntry                                                          */
 /*----------------------------------------------------------------------------*/
-i8 Log::iAddNoteArg(i8 iEnumGroup, i8 iJobId, i8 iForeign,
-                            Stz* aFormat, va_list xVaArgs)
+i8 Log::iAddNoteArg(i8 iJobId, i8 iForeign, Stz* aFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
@@ -397,15 +396,14 @@ i8 Log::iAddNoteArg(i8 iEnumGroup, i8 iJobId, i8 iForeign,
 /*----------------------------------------------------------------------------*/
 /* write an LogEntry                                                          */
 /*----------------------------------------------------------------------------*/
-i8 Log::iAddNoteJob(i8 iEnumGroup, i8 iJobId, i8 iForeign,
-                    Stz* aFormat, ...)
+i8 Log::iAddNoteJob(i8 iJobId, i8 iForeign, Stz* aFormat, ...)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   va_list xVaArgs;
   
   va_start(xVaArgs,aFormat);
-  iAddNoteArg(C_JOB_GROUP,iJobId,iForeign,aFormat,xVaArgs);
+  iAddNoteArg(iJobId,iForeign,aFormat,xVaArgs);
   va_end(xVaArgs);
   
   return C_UNKNOWN;

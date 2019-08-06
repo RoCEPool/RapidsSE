@@ -23,7 +23,7 @@ void ApiLog::vNoteEntry(i8 eApiCall, i8 iJobId)
   Stz* zApiName = aAC[eApiCall];
   
   bool bForeign = Job::bIsForeign(iJobId);
-  gpLog->iAddNoteJob(C_JOB_GROUP,iJobId,bForeign,">Api %s"_Stz,zApiName);
+  gpLog->iAddNoteJob(iJobId,bForeign,">Api %s"_Stz,zApiName);
 #endif
 }
 
@@ -43,7 +43,7 @@ void ApiLog::vNoteError(i8 eApiCall, i8 iJobId, i8 iError)
   Stz* zApiName = aAC[eApiCall];
   
   bool bForeign = Job::bIsForeign(iJobId);
-  gpLog->iAddNoteJob(C_JOB_GROUP,iJobId,bForeign,"!Api %s Error %lld"_Stz,zApiName,iError);
+  gpLog->iAddNoteJob(iJobId,bForeign,"!Api %s Error %lld"_Stz,zApiName,iError);
 #endif
 }
 
@@ -63,7 +63,7 @@ void ApiLog::vNoteExit(i8 eApiCall, i8 iJobId)
   Stz* zApiName = aAC[eApiCall];
   
   bool bForeign = Job::bIsForeign(iJobId);
-  gpLog->iAddNoteJob(C_JOB_GROUP,iJobId,bForeign,"<Api %s"_Stz,zApiName);
+  gpLog->iAddNoteJob(iJobId,bForeign,"<Api %s"_Stz,zApiName);
 #endif
 }
 
