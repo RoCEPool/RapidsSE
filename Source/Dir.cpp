@@ -2,7 +2,7 @@
 /* Dir.cpp -- directory services                                              */
 /*============================================================================*/
 
-#include "System.h"
+#include "Resources.h"
 #include "AM.hpp"
 
 
@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Dir* System::_pDir(void* aAddr)
+Dir* Resources::_pDir(void* aAddr)
 {
   Dir* pDir = reinterpret_cast<Dir*>(aAddr);
   

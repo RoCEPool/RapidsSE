@@ -2,7 +2,7 @@
 /* Resource.cpp -- Operating System Resource                                  */
 /*============================================================================*/
 
-#include "System.h"
+#include "Resources.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Resource* System::_pResource(void* aAddress)
+Resource* Resources::_pResource(void* aAddress)
 {
   Resource* pResource = reinterpret_cast<Resource*>(aAddress);
   

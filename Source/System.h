@@ -30,13 +30,6 @@ namespace System
 #include "TempName.hpp"
 #include "TspLib.hpp"
 
-#include "Resource.hpp"
-#include "Dir.hpp"
-#include "File.hpp"
-#include "Mutex.hpp"
-#include "Pipe.hpp"
-#include "Pthread.hpp"
-#include "Socket.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

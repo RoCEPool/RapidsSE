@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace System
+namespace Resources
 {
   class Mutex : public Object
   {

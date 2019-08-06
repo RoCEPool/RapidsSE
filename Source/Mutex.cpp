@@ -2,7 +2,7 @@
 /* Mutex.cpp -- Pthread Mutex (& cond variable)                               */
 /*============================================================================*/
 
-#include "System.h"
+#include "Resources.h"
 #include "AM.hpp"
 
 
@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Mutex* System::_pMutex(void* aAddr)
+Mutex* Resources::_pMutex(void* aAddr)
 {
   Mutex* pMutex = reinterpret_cast<Mutex*>(aAddr);
   

@@ -73,6 +73,7 @@ using namespace Plans;
 using namespace Pool;
 using namespace Prompt;
 using namespace PushDown;
+using namespace Resources;
 using namespace Rows;
 using namespace ScanSprint;
 using namespace Scheduling;

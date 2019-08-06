@@ -2,14 +2,14 @@
 /* File.cpp -- os file                                                        */
 /*============================================================================*/
 
-#include "System.h"
+#include "Resources.h"
 #include "AM.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-File* System::_pFile(void* aAddr)
+File* Resources::_pFile(void* aAddr)
 {
   File* pFile = reinterpret_cast<File*>(aAddr);
   

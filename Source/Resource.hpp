@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace System
+namespace Resources
 {
   class Resource : public Object
   {

@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace System
+namespace Resources
 {
   static const i8 C_NO_BUFFERING = 0;
 

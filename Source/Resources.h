@@ -13,6 +13,14 @@ namespace Resources
 
 //------------------------------------------------------------------------------
 
+#include "Resource.hpp"
+#include "Dir.hpp"
+#include "File.hpp"
+#include "Mutex.hpp"
+#include "Pipe.hpp"
+#include "Pthread.hpp"
+#include "Socket.hpp"
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

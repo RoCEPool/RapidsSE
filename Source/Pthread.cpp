@@ -2,7 +2,7 @@
 /* Pthread - a posix thread                                                   */
 /*============================================================================*/
 
-#include "System.h"
+#include "Resources.h"
 #include "AM.hpp"
 
 extern pthread_key_t giTLS_ThreadKey;
@@ -14,7 +14,7 @@ extern pthread_key_t giTLS_ThreadKey;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Pthread* System::_pPthread(void* aAddr)
+Pthread* Resources::_pPthread(void* aAddr)
 {
   Pthread* pPthread = reinterpret_cast<Pthread*>(aAddr);
   
