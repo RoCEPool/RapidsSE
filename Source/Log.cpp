@@ -203,7 +203,7 @@ void Log::vNoteString(i8 iJobId, s48K& sString)
     //vTrace("Line: ]]%s[[\n"_Stz,sLine.aChar());
     LogEntry* pLogEntry = gpLog->pNewEntry_NL();
     pLogEntry->vInit();
-    pLogEntry->vSet(C_JOB_GROUP,iJobId,bForeign,sLine.aChar());
+    pLogEntry->m_xJob.vSet(pLogEntry,iJobId,bForeign,sLine.aChar());
   }
   
   gpLog->vDropLock();

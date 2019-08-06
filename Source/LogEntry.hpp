@@ -37,7 +37,6 @@ namespace Logging
    ~LogEntry(void) noexcept(false);
 
     void vInit(void);
-    void vSet(i8 iEnumGroup, i8 iEnum, i8 iForeign, char* aText);
     void vWrite(File* pFile, bool bShortForm, i8 iTickDelta, i8& iTotalDelta);
     void vWriteShort(File* pFile);
     void vWriteShortForeign(File* pFile);

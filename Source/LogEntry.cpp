@@ -75,33 +75,7 @@ void LogEntry::vInit(void)
   
   m_iTick = Tick::iRdClock();
   
-  StrLib::vCopyLen(m_caNode,
-                   AM::szNodeName()->aChar(),
-                   sizeof(m_caNode) - 1);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set                                                                        */
-/*----------------------------------------------------------------------------*/
-void LogEntry::vSet(i8 iEnumGroup, i8 iEnum, i8 iForeign, char* aText)
-{
-  _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
-  
-  m_iTick = Tick::iRdClock();
-  
-  StrLib::vCopyLen(m_caNode,
-                   AM::szNodeName()->aChar(),
-                   sizeof(m_caNode) - 1);
-  
-  m_xText.m_iEnumGroup = iEnumGroup;
-  m_xText.m_iEnum      = iEnum;
-  m_xText.m_iForeign   = iForeign;
-
-  StrLib::vCopyLen(m_xText.m_caText,
-                   aText,
-                   sizeof(m_xText.m_caText) - 1);
-  
-  _postcondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
+  StrLib::vCopyLen(m_caNode,AM::szNodeName()->aChar(),sizeof(m_caNode) - 1);
 }
 
 /*----------------------------------------------------------------------------*/
