@@ -55,7 +55,7 @@ Tx::Tx(bool bAddToSet)
 
   m_iLocalTxId = -1;
   m_iDistTxId  = -1;
-  m_ePhase     = TP_EXECUTING;
+  m_ePhase     = XP_EXECUTING;
   m_ixCounter  = AM::nSlotsPerNode();
   
   for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++)
@@ -79,7 +79,7 @@ Tx::Tx(i8 iDistTxId)
   
   m_iLocalTxId = -1;
   m_iDistTxId  = iDistTxId;
-  m_ePhase     = TP_EXECUTING;
+  m_ePhase     = XP_EXECUTING;
   m_ixCounter  = AM::nSlotsPerNode();
 
   for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++)
@@ -293,7 +293,7 @@ void Tx::vDistTxId(i8 iDistTxId)
 /*----------------------------------------------------------------------------*/
 /* get phase                                                                  */
 /*----------------------------------------------------------------------------*/
-eTP Tx::ePhase(void)
+eXP Tx::ePhase(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
   
@@ -303,7 +303,7 @@ eTP Tx::ePhase(void)
 /*----------------------------------------------------------------------------*/
 /* set phase                                                                  */
 /*----------------------------------------------------------------------------*/
-void Tx::vPhase(eTP ePhase)
+void Tx::vPhase(eXP ePhase)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
   
@@ -340,7 +340,7 @@ void Tx::vDump(eCN eClass, Object* pObject, Stz* aTab)
   vTrace("tx: %lld.%lld-%lld.%lld phase %s counter %lld %s\n"_Stz,
          pTx->iLocalTxNode(), pTx->iLocalTxNo(),
          pTx->iDistTxNode(), pTx->iDistTxNo(),  
-         aTP[pTx->m_ePhase],
+         aXP[pTx->m_ePhase],
          pTx->iCounterGet(),
          caMembers);
 }
@@ -413,10 +413,10 @@ bool Tx::bIsActive(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
   
-  if (TP_EXECUTING   == m_ePhase ||
-      TP_COMMITTING  == m_ePhase ||
-      TP_PREPARING   == m_ePhase ||
-      TP_ROLLINGBACK == m_ePhase)
+  if (XP_EXECUTING   == m_ePhase ||
+      XP_COMMITTING  == m_ePhase ||
+      XP_PREPARING   == m_ePhase ||
+      XP_ROLLINGBACK == m_ePhase)
     return true;
   else
     return false;

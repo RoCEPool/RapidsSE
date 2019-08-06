@@ -136,7 +136,7 @@ void Session::vCommitTx()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
-  m_pTx->vPhase(TP_COMMITTED);
+  m_pTx->vPhase(XP_COMMITTED);
 }
 
 /*----------------------------------------------------------------------------*/

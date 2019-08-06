@@ -544,16 +544,16 @@ void Constants::vAddConstants(void)
   /*  6 */ vAddConstant("TS_WAITING"_Stz,    TS_WAITING);
   /*  7 */ vAddConstant("TS_ENUMS"_Stz,      TS_ENUMS);
 
-  // TP_ : transaction phase
-  /*  0 */ vAddConstant("TP_NONE"_Stz,        TP_NONE);
-  /*  1 */ vAddConstant("TP_EXECUTING"_Stz,   TP_EXECUTING);
-  /*  2 */ vAddConstant("TP_COMMITTING"_Stz,  TP_COMMITTING);
-  /*  3 */ vAddConstant("TP_COMMITTED"_Stz,   TP_COMMITTED);
-  /*  4 */ vAddConstant("TP_PREPARING"_Stz,   TP_PREPARING);
-  /*  5 */ vAddConstant("TP_PREPARED"_Stz,    TP_PREPARED);
-  /*  6 */ vAddConstant("TP_ROLLINGBACK"_Stz, TP_ROLLINGBACK);
-  /*  7 */ vAddConstant("TP_ROLLEDBACK"_Stz,  TP_ROLLEDBACK);
-  /*  8 */ vAddConstant("TP_ENUMS"_Stz,       TP_ENUMS);
+  // XP_ : transaction phase
+  /*  0 */ vAddConstant("XP_NONE"_Stz,        XP_NONE);
+  /*  1 */ vAddConstant("XP_EXECUTING"_Stz,   XP_EXECUTING);
+  /*  2 */ vAddConstant("XP_COMMITTING"_Stz,  XP_COMMITTING);
+  /*  3 */ vAddConstant("XP_COMMITTED"_Stz,   XP_COMMITTED);
+  /*  4 */ vAddConstant("XP_PREPARING"_Stz,   XP_PREPARING);
+  /*  5 */ vAddConstant("XP_PREPARED"_Stz,    XP_PREPARED);
+  /*  6 */ vAddConstant("XP_ROLLINGBACK"_Stz, XP_ROLLINGBACK);
+  /*  7 */ vAddConstant("XP_ROLLEDBACK"_Stz,  XP_ROLLEDBACK);
+  /*  8 */ vAddConstant("XP_ENUMS"_Stz,       XP_ENUMS);
 
   // WT_ : word type
   /*  0 */ vAddConstant("WT_NONE"_Stz,      WT_NONE);

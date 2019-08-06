@@ -57,11 +57,11 @@ namespace Enums
 #include "eHS.h"
 #include "eTK.h"
 #include "eTN.h"
-#include "eTP.h"
 #include "eTR.h"
 #include "eTS.h"
 #include "eTT.h"
 #include "eWT.h"
+#include "eXP.h"
 
 #include "EnumGroups.hpp"
 

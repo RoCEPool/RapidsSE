@@ -56,7 +56,7 @@ void Step::vTxCommit(MP_Task mpTask)
     THROW_INVALID_DSTACK("tx.commit"_Stz);
   Tx* pTx = _pTx(pPtrTx);
   
-  pTx->vPhase(TP_COMMITTED);
+  pTx->vPhase(XP_COMMITTED);
 
 //  vTrace("Committed tx: %lld.%lld-%lld.%lld(%s)\n"_Stz,
 //         pTx->iLocalTxNode(), pTx->iLocalTxNo(),
@@ -267,7 +267,7 @@ void Step::vTxPrepare(MP_Task mpTask)
     THROW_INVALID_DSTACK("tx.prepare"_Stz);
   Tx* pTx = _pTx(pPtrTx);
   
-  pTx->vPhase(TP_PREPARED);
+  pTx->vPhase(XP_PREPARED);
   
 //  vTrace("Prepared tx: %lld.%lld-%lld.%lld(%s)\n"_Stz,
 //         pTx->iLocalTxNode(), pTx->iLocalTxNo(),
@@ -289,7 +289,7 @@ void Step::vTxRollback(MP_Task mpTask)
     THROW_INVALID_DSTACK("tx.rollback"_Stz);
   Tx* pTx = _pTx(pPtrTx);
   
-  pTx->vPhase(TP_ROLLEDBACK);
+  pTx->vPhase(XP_ROLLEDBACK);
   
 //  vTrace("Rolledback tx: %lld.%lld-%lld.%lld(%s)\n"_Stz,
 //         pTx->iLocalTxNode(), pTx->iLocalTxNo(),

@@ -11,7 +11,7 @@ namespace Transactions
     Lock   m_okLock;      // lock
     i8     m_iLocalTxId; // local transaction id
     i8     m_iDistTxId;  // distributed transaction id
-    eTP    m_ePhase;     // phase (executing, committing, ...)
+    eXP    m_ePhase;     // phase (executing, committing, ...)
     Atomic m_ixCounter;   // general counter
 
     struct {
@@ -46,8 +46,8 @@ namespace Transactions
     i8 iDistTxNode(void);
     void vDistTxId(i8 iTxId);
   
-    eTP ePhase(void);
-    void vPhase(eTP ePhase);
+    eXP ePhase(void);
+    void vPhase(eXP ePhase);
     
     void vContentDump(void);
   

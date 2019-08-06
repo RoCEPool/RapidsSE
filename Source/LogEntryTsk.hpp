@@ -1,25 +1,23 @@
 /*============================================================================*/
-/* eTS.h -- Thread State                                                      */
+/* LogEntryTsk.hpp - Log Entry for Task                                       */
 /*============================================================================*/
 #pragma once
 
-enum eTD // thread state
+namespace Logging
 {
-  /*  0 */ TD_NONE=0,
-  /*  1 */ TD_ASSIGNED,
-  /*  2 */ TD_IDLE,
-  /*  3 */ TD_UNASSIGNED,
-  /*  4 */ TD_ENUMS,
-};
+  class _LogEntryTsk
+  {
+  public:
+    i8   m_iTskId;             // task id
+    char m_caText[C_LOG_TEXT]; // comment
 
-static Stz* aTD[]
-{
-  /*  0 */ "NONE"_Stz,
-  /*  1 */ "ASSIGNED"_Stz,
-  /*  2 */ "IDLE"_Stz,
-  /*  3 */ "UNASSIGNED"_Stz,
-  /*  4 */ "ENUMS"_Stz,
-};
+  public:
+   void vSet(LogEntry* pLogEntry, i8 iTskId, char* aText);
+  
+   void vWrite(File* pFile, LogEntry* pLogEntry,
+                i8 iTickDeltaUsec, i8& iTotalDelta);
+  };
+}
 
 /*============================================================================*/
 /* end                                                                        */
