@@ -107,19 +107,19 @@ void LogEntry::vWrite(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
       break;
       
     case EK_RES:
-      m_xResource.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
+      m_xRes.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
       break;
 
     case EK_SVC:
-      m_xService.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
+      m_xSvc.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
       break;
       
     case EK_TSK:
-      m_xTask.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
+      m_xTsk.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
       break;
       
     case EK_THD:
-      m_xThread.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
+      m_xThd.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
       break;
       
     default:

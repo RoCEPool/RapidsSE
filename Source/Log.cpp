@@ -428,7 +428,7 @@ i8 Log::iAddNoteRes(eSR eSysRes, Stz* szFormat, va_list xVaArgs)
   if (! pLogEntry)
     return C_UNKNOWN;
   
-  pLogEntry->m_xResource.vSet(pLogEntry,eSysRes,caMark);
+  pLogEntry->m_xRes.vSet(pLogEntry,eSysRes,caMark);
   
   return pLogEntry->m_i_Entry;
 }

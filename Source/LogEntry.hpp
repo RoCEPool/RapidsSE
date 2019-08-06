@@ -24,13 +24,13 @@ namespace Logging
   
     eEK  m_eKind;       // log entry kind.  one of the following
     union {
-      _LogEntryInf m_xInf;      // when m_eKind == EK_INF
-      _LogEntryJob m_xJob;      // when m_eKind == EK_JOB
-      _LogEntryOp  m_xOp;       // when m_eKind == EK_OP
-      _LogEntryRes m_xResource; // when m_eKind == EK_RESOURCE
-      _LogEntrySvc m_xService;  // when m_eKind == EK_SERVICE
-      _LogEntryTsk m_xTask;     // when m_eKind == EK_TASK
-      _LogEntryThd m_xThread;   // when m_eKind == EK_THREAD
+      _LogEntryInf m_xInf;  // when m_eKind == EK_INF
+      _LogEntryJob m_xJob;  // when m_eKind == EK_JOB
+      _LogEntryOp  m_xOp;   // when m_eKind == EK_OP
+      _LogEntryRes m_xRes;  // when m_eKind == EK_RESOURCE
+      _LogEntrySvc m_xSvc;  // when m_eKind == EK_SERVICE
+      _LogEntryTsk m_xTsk;  // when m_eKind == EK_TASK
+      _LogEntryThd m_xThd;  // when m_eKind == EK_THREAD
     };
   
     // must be last
