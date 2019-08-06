@@ -1,21 +1,19 @@
 /*============================================================================*/
-/* LogEntryText.cpp - Log Entry Text                                          */
+/* LogEntryRes.cpp - Log Entry for Resource                                   */
 /*============================================================================*/
 
 #include "Logging.h"
 
 /*----------------------------------------------------------------------------*/
-/* set                                                                        */
+/* set resource entry                                                         */
 /*----------------------------------------------------------------------------*/
 void _LogEntryRes::vSet(LogEntry* pLogEntry, eSR eSysRes, char* aText)
 {
-  pLogEntry->m_eKind = EK_RESOURCE;
+  pLogEntry->m_eKind = EK_RES;
   
   m_eSysRes = eSysRes;
   
-  StrLib::vCopyLen(m_caText,
-                   aText,
-                   sizeof(m_caText) - 1);
+  StrLib::vCopyLen(m_caText,aText,sizeof(m_caText) - 1);
 }
 
 /*----------------------------------------------------------------------------*/

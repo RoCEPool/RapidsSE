@@ -5,17 +5,15 @@
 #include "Logging.h"
 
 /*----------------------------------------------------------------------------*/
-/* set                                                                        */
+/* set text entry                                                             */
 /*----------------------------------------------------------------------------*/
 void _LogEntryTxt::vSet(LogEntry* pLogEntry, char* aText)
 {  
-  pLogEntry->m_eKind = EK_TEXT;
+  pLogEntry->m_eKind = EK_TXT;
 
   m_eLogNote = LN_TEXT;
   
-  StrLib::vCopyLen(m_caText,
-                   aText,
-                   sizeof(m_caText) - 1);
+  StrLib::vCopyLen(m_caText,aText,sizeof(m_caText) - 1);
 }
 
 /*----------------------------------------------------------------------------*/

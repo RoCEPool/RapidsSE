@@ -147,13 +147,13 @@ void Log::vNote(Stz* szFormat, ...)
   if ( ! gpLog )
     return;
   
-  va_list xArgs;
+  va_list xVaArgs;
   
-  va_start(xArgs,szFormat);
+  va_start(xVaArgs,szFormat);
   
-  gpLog->iAddNoteTxt(szFormat,xArgs);
+  gpLog->iAddNoteTxt(szFormat,xVaArgs);
   
-  va_end(xArgs);
+  va_end(xVaArgs);
 #endif
 }
 
@@ -373,14 +373,14 @@ void Log::vWriteCsv(bool bShortForm)
 /*----------------------------------------------------------------------------*/
 /* write an LogEntry                                                          */
 /*----------------------------------------------------------------------------*/
-i8 Log::iAddNoteArg(i8 iEnumGroup, i8 iEnum, i8 iForeign,
-                            Stz* aFormat, va_list xArgs)
+i8 Log::iAddNoteArg(i8 iEnumGroup, i8 iJobId, i8 iForeign,
+                            Stz* aFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   char caMark[1024];
   
-  vsnprintf(caMark,sizeof(caMark)-1,aFormat->aChar(),xArgs);
+  vsnprintf(caMark,sizeof(caMark)-1,aFormat->aChar(),xVaArgs);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -389,44 +389,38 @@ i8 Log::iAddNoteArg(i8 iEnumGroup, i8 iEnum, i8 iForeign,
   if (! pLogEntry)
     return C_UNKNOWN;
   
-  pLogEntry->vSet(iEnumGroup,iEnum,iForeign,caMark);
+  pLogEntry->vSet(C_JOB_GROUP,iJobId,iForeign,caMark);
   
   return pLogEntry->m_i_Entry;
 }
 
 /*----------------------------------------------------------------------------*/
-/* ass a text log entry                                                       */
+/* write an LogEntry                                                          */
 /*----------------------------------------------------------------------------*/
-i8 Log::iAddNoteTxt(Stz* szFormat, va_list xArgs)
+i8 Log::iAddNoteJob(i8 iEnumGroup, i8 iJobId, i8 iForeign,
+                    Stz* aFormat, ...)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  char caMark[1024];
+  va_list xVaArgs;
   
-  vsnprintf(caMark,sizeof(caMark)-1,szFormat->aChar(),xArgs);
+  va_start(xVaArgs,aFormat);
+  iAddNoteArg(C_JOB_GROUP,iJobId,iForeign,aFormat,xVaArgs);
+  va_end(xVaArgs);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  LogEntry* pLogEntry = pNewEntry();
-  
-  if (! pLogEntry)
-    return C_UNKNOWN;
-  
-  pLogEntry->m_xText.vSet(pLogEntry,caMark);
-  
-  return pLogEntry->m_i_Entry;
+  return C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
 /* ass a resource log entry                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Log::iAddNoteRes(eSR eSysRes, Stz* szFormat, va_list xArgs)
+i8 Log::iAddNoteRes(eSR eSysRes, Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   char caMark[1024];
   
-  vsnprintf(caMark,sizeof(caMark)-1,szFormat->aChar(),xArgs);
+  vsnprintf(caMark,sizeof(caMark)-1,szFormat->aChar(),xVaArgs);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -441,20 +435,26 @@ i8 Log::iAddNoteRes(eSR eSysRes, Stz* szFormat, va_list xArgs)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write an LogEntry                                                          */
+/* ass a text log entry                                                       */
 /*----------------------------------------------------------------------------*/
-i8 Log::iAddNoteVbl(i8 iEnumGroup, i8 iEnum, i8 iForeign,
-                            Stz* aFormat, ...)
+i8 Log::iAddNoteTxt(Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  va_list xArgs;
+  char caMark[1024];
   
-  va_start(xArgs,aFormat);
-  iAddNoteArg(iEnumGroup,iEnum,iForeign,aFormat,xArgs);
-  va_end(xArgs);
+  vsnprintf(caMark,sizeof(caMark)-1,szFormat->aChar(),xVaArgs);
   
-  return C_UNKNOWN;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  LogEntry* pLogEntry = pNewEntry();
+  
+  if (! pLogEntry)
+    return C_UNKNOWN;
+  
+  pLogEntry->m_xText.vSet(pLogEntry,caMark);
+  
+  return pLogEntry->m_i_Entry;
 }
 
 /*----------------------------------------------------------------------------*/

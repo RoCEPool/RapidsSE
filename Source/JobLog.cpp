@@ -96,7 +96,7 @@ void JobLog::vNoteState(Jobs::Job* pJob, Stz* szPoint)
 
   i8 iJobId = pJob->iJobId();
   bool bForeign = pJob->m_bWasReceived;
-  pJob->m_i_Activity = gpLog->iAddNoteVbl(C_JOB_GROUP,iJobId,bForeign,
+  pJob->m_i_Activity = gpLog->iAddNoteJob(C_JOB_GROUP,iJobId,bForeign,
                                           szEntryText);
 
 #endif

@@ -307,27 +307,9 @@ void AM::vStateDiagram(s256& sDiagram, eCN eJobClass)
                        eJobClass,aCN[eJobClass]);
   }
 }
-/*----------------------------------------------------------------------------*/
-/* add a log entry                                                            */
-/*----------------------------------------------------------------------------*/
-void AM::vNote(Stz* szFormat, ...)
-{
-#ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
-    return;
-  
-  va_list xArgs;
-  
-  va_start(xArgs,szFormat);
-  
-  gpLog->iAddNoteTxt(szFormat,xArgs);
-  
-  va_end(xArgs);
-#endif
-}
 
 /*----------------------------------------------------------------------------*/
-/* add a log entry for resource                                               */
+/* add a resource log entry                                                   */
 /*----------------------------------------------------------------------------*/
 void AM::vNoteRes(eSR eSysRes,Stz* szFormat, ...)
 {
@@ -346,6 +328,25 @@ void AM::vNoteRes(eSR eSysRes,Stz* szFormat, ...)
   gpLog->iAddNoteRes(eSysRes,szFormat,xVaArgs);
   
   va_end(xVaArgs);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a text log entry                                                       */
+/*----------------------------------------------------------------------------*/
+void AM::vNoteTxt(Stz* szFormat, ...)
+{
+#ifdef WITH_SHARED_LOG
+  if (! AM::bLogging())
+    return;
+  
+  va_list xArgs;
+  
+  va_start(xArgs,szFormat);
+  
+  gpLog->iAddNoteTxt(szFormat,xArgs);
+  
+  va_end(xArgs);
 #endif
 }
 

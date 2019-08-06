@@ -47,12 +47,12 @@ namespace Logging
   
 
   //private:
-    i8   iAddNoteArg(i8 iEnumGroup, i8 iEnum, i8 iForeign,
+    i8   iAddNoteArg(i8 iEnumGroup, i8 iJobId, i8 iForeign,
                      Stz* szFormat, va_list xArgs);
+    i8   iAddNoteJob(i8 iEnumGroup, i8 iJobId, i8 iForeign,
+                     Stz* aFormat, ...);
     i8   iAddNoteRes(eSR eSysRes, Stz* szFormat, va_list xArgs);
     i8   iAddNoteTxt(Stz* szFormat, va_list xArgs);
-    i8   iAddNoteVbl(i8 iEnumGroup, i8 iEnum, i8 iForeign,
-                   Stz* aFormat, ...);
     LogEntry* pNewEntry(void);
     LogEntry* pNewEntry_NL(void);
     void vFindRange_NL(i8& i_MinEntry, i8& i_MaxEntry);

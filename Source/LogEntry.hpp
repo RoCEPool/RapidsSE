@@ -8,9 +8,9 @@ namespace Logging
   class LogEntry : public Object
   {
   friend class Log;
+  friend class _LogEntryJob;
   friend class _LogEntryRes;
   friend class _LogEntryTxt;
-  friend class _LogEntryVbl;
 
   private:
     i8   m_i_Entry;     // entry no
@@ -20,6 +20,7 @@ namespace Logging
   
     eEK  m_eKind;       // log entry kind.  one of the following
     union {
+      _LogEntryJob m_xJob;      // when m_eKind == EK_JOB
       _LogEntryRes m_xResource; // when m_eKind == EK_RESOURCE
       _LogEntryTxt m_xText;     // when m_eKind == EK_TEXT
     };
