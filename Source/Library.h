@@ -19,7 +19,6 @@ namespace Library
 
 #include "Compress.hpp"
 #include "IvlLib.hpp"
-#include "MemTest.hpp"
 #include "Random.hpp"
 #include "TspLib.hpp"
 

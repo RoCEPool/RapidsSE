@@ -2,7 +2,7 @@
 /* MemTest.hpp -- Memory pattern test                                         */
 /*============================================================================*/
 
-#include "Library.h"
+#include "Pool.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,13 +12,13 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-MemTest* Library::_pMemTest(void* aAddr)
+MemTest* Pool::_pMemTest(void* aAddr)
 {
-  MemTest* pMutex = reinterpret_cast<MemTest*>(aAddr);
+  MemTest* pMemTest = reinterpret_cast<MemTest*>(aAddr);
   
-  RASSERT_TYPE(pMutex,CN_MEMTEST);
+  RASSERT_TYPE(pMemTest,CN_MEMTEST);
   
-  return pMutex;
+  return pMemTest;
 }
 
 /*----------------------------------------------------------------------------*/

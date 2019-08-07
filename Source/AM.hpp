@@ -64,6 +64,7 @@ namespace StorageEngine
     static JobList* pOriginatingJobs(void);
     static JobList* pParticipatingJobs(void);
     static i8   iPid(void);
+    static void vProcessExit(void);
     static bool bProgress(void);
     static i8   nPartitions(void);
     static Queues* pQueues(void);

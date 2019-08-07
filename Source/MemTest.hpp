@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Library
+namespace Pool
 {
   class MemTest : public Object
   {

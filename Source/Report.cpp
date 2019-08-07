@@ -12,13 +12,13 @@ void Correctness::vFatal(Stz* aFormat, ...)
 {
   vStackDump();
   
-  va_list xArgs;
+  va_list xVaArgs;
   
-  va_start(xArgs,aFormat);
-  AM::vWriteTrace(aFormat,xArgs);
-  va_end(xArgs);
+  va_start(xVaArgs,aFormat);
+  AM::vWriteTrace(aFormat,xVaArgs);
+  va_end(xVaArgs);
   
-  Process::vExit(EXIT_FAILURE);
+  AM::vProcessExit();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -26,11 +26,11 @@ void Correctness::vFatal(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 void Correctness::vInfo(Stz* aFormat, ...)
 {
-  va_list xArgs;
+  va_list xVaArgs;
   
-  va_start(xArgs,aFormat);
-  AM::vWriteTrace(aFormat,xArgs);
-  va_end(xArgs);
+  va_start(xVaArgs,aFormat);
+  AM::vWriteTrace(aFormat,xVaArgs);
+  va_end(xVaArgs);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -38,11 +38,11 @@ void Correctness::vInfo(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 void Correctness::vTrace(Stz* aFormat, ...)
 {
-  va_list xArgs;
+  va_list xVaArgs;
 
-  va_start(xArgs,aFormat);
-  AM::vWriteTrace(aFormat,xArgs);
-  va_end(xArgs);
+  va_start(xVaArgs,aFormat);
+  AM::vWriteTrace(aFormat,xVaArgs);
+  va_end(xVaArgs);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -50,11 +50,11 @@ void Correctness::vTrace(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 void Correctness::vWarn(Stz* aFormat, ...)
 {
-  va_list xArgs;
+  va_list xVaArgs;
   
-  va_start(xArgs,aFormat);
-  AM::vWriteTrace(aFormat,xArgs);
-  va_end(xArgs);
+  va_start(xVaArgs,aFormat);
+  AM::vWriteTrace(aFormat,xVaArgs);
+  va_end(xVaArgs);
 }
 
 /*============================================================================*/
