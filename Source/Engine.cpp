@@ -835,8 +835,9 @@ void Engine::vStartSystem(void)
   i8 iThisNodeNo = pThisNode->iNodeNo();
   AM::pGrid()->vThisNode(iThisNodeNo);
 
-  gpAttachMap->m_ixNextJobId = Job::iAsNodeNo_Bits(iThisNodeNo);
-  
+  //gpAttachMap->m_inNextJobId = Job::iAsNodeNo_Bits(iThisNodeNo);
+  gpAttachMap->m_inNextJobId.vNodeNo(iThisNodeNo);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   gpAttachMap->m_pApiState = new ApiState;

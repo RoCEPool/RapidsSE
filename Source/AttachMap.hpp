@@ -54,7 +54,7 @@ namespace StorageEngine
     HeapMem       m_xHeapMem;
     LockTracker   m_oLockTracker;
     Atomic        m_ixNextDiagram;
-    Atomic        m_ixNextJobId;
+    NextId        m_inNextJobId;
     Atomic        m_ixNextMonitor;
     Atomic        m_ixNextPlanId;
     Atomic        m_ixNextStreamId;
