@@ -15,6 +15,8 @@ namespace Resources
 //------------------------------------------------------------------------------
 
 #include "Resource.hpp"
+#include "ResourceTracker.hpp"
+
 #include "Dir.hpp"
 #include "File.hpp"
 #include "Mutex.hpp"

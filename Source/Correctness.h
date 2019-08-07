@@ -53,7 +53,6 @@ typedef String_t<C_MAX_VCH> sVCH;
 
 #include "Atomic.hpp"
 #include "MagLib.hpp"
-#include "ResourceTracker.hpp"
 #include "Statistics.hpp"
 #include "EnumFlags.hpp"
 

@@ -34,7 +34,7 @@ namespace Plans         {                                                     }
 namespace Pool          { class BufferPool; class HeapMem; class PoolBuffer;  }
 namespace Prompt        { class SePrompt;                                     }
 namespace PushDown      { class Op; class Digest;                             }
-namespace Resources     {                                                     }
+namespace Resources     { class ResourceTracker;                              }
 namespace Rows          { class CrwBuffer;                                    }
 namespace ScanSprint    {                                                     }
 namespace Scheduling    { class Queues; class Scheduler;                      }
