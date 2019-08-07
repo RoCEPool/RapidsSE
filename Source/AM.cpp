@@ -67,7 +67,12 @@ i8   AM::iNextDiagram(void)   { return ++ gpAttachMap->m_inNextDiagram;       }
 i8   AM::iNextJobId(void)     { return ++ gpAttachMap->m_inNextJobId;         }
 i8   AM::iNextOpId(void)      { return ++ gpAttachMap->m_inNextOpId;          }
 i8   AM::iNextPlanId(void)    { return ++ gpAttachMap->m_inNextPlanId;        }
-i8   AM::iNextResourceId(void){ return ++ gpAttachMap->m_inNextResourceId;    }
+i8   AM::iNextResourceId(void){
+  if (gpAttachMap)
+    return ++ gpAttachMap->m_inNextResourceId;
+  else
+    return C_UNKNOWN;
+}
 i8   AM::iNextStreamId(void)  { return ++ gpAttachMap->m_inNextStreamId;      }
 i8   AM::iNextTaskId(void)    { return ++ gpAttachMap->m_inNextTaskId;        }
 i8   AM::iNextThreadId(void)  { return ++ gpAttachMap->m_inNextThreadId;      }

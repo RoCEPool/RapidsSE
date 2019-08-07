@@ -44,7 +44,7 @@ i8 NextId::operator ++(void)
   
   i8 iId = ++ m_ixId;
   
-  vTrace("NextId %lld\n"_Stz,iId);
+  //vTrace("NextId %lld\n"_Stz,iId);
   
   return iId;
 }
