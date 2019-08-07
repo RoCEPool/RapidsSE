@@ -56,8 +56,12 @@ namespace StorageEngine
     NextId        m_inNextDiagram;
     NextId        m_inNextJobId;
     NextId        m_inNextMonitor;
+    NextId        m_inNextOpId;
     NextId        m_inNextPlanId;
+    NextId        m_inNextResourceId;
     NextId        m_inNextStreamId;
+    NextId        m_inNextTaskId;
+    NextId        m_inNextThreadId;
     Queues*       m_pQueues;
     i8            m_iQuit;
     ResourceTracker m_oResourceTracker;

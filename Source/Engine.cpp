@@ -835,8 +835,14 @@ void Engine::vStartSystem(void)
   i8 iThisNodeNo = pThisNode->iNodeNo();
   AM::pGrid()->vThisNode(iThisNodeNo);
 
-  //gpAttachMap->m_inNextJobId = Job::iAsNodeNo_Bits(iThisNodeNo);
+  // initialize the next id generators
   gpAttachMap->m_inNextJobId.vNodeNo(iThisNodeNo);
+  gpAttachMap->m_inNextOpId.vNodeNo(iThisNodeNo);
+  gpAttachMap->m_inNextPlanId.vNodeNo(iThisNodeNo);
+  gpAttachMap->m_inNextResourceId.vNodeNo(iThisNodeNo);
+  gpAttachMap->m_inNextStreamId.vNodeNo(iThisNodeNo);
+  gpAttachMap->m_inNextTaskId.vNodeNo(iThisNodeNo);
+  gpAttachMap->m_inNextThreadId.vNodeNo(iThisNodeNo);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -845,9 +851,6 @@ void Engine::vStartSystem(void)
   // create the tx sets
   gpAttachMap->m_pTxSet = new TxSet(AM::pGrid()->iThisNode());
   
-  // initialize the plan number
-  gpAttachMap->m_inNextPlanId.vNodeNo(AM::pGrid()->iThisNode());
-  gpAttachMap->m_inNextStreamId.vNodeNo(AM::pGrid()->iThisNode());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

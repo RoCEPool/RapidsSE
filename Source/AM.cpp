@@ -65,8 +65,12 @@ bool AM::bProgress(void)      { return gpAttachMap->m_bProgress;              }
 bool AM::bMetadata(void)      { return gpAttachMap->m_bMetadata;              }
 i8   AM::iNextDiagram(void)   { return ++ gpAttachMap->m_inNextDiagram;       }
 i8   AM::iNextJobId(void)     { return ++ gpAttachMap->m_inNextJobId;         }
+i8   AM::iNextOpId(void)      { return ++ gpAttachMap->m_inNextOpId;          }
 i8   AM::iNextPlanId(void)    { return ++ gpAttachMap->m_inNextPlanId;        }
+i8   AM::iNextResourceId(void){ return ++ gpAttachMap->m_inNextResourceId;    }
 i8   AM::iNextStreamId(void)  { return ++ gpAttachMap->m_inNextStreamId;      }
+i8   AM::iNextTaskId(void)    { return ++ gpAttachMap->m_inNextTaskId;        }
+i8   AM::iNextThreadId(void)  { return ++ gpAttachMap->m_inNextThreadId;      }
 i8*  AM::iaObjectsInPool(void){ return gpAttachMap->m_nObjectsInPool;         }
 i8   AM::nPartitions(void)    { return gpAttachMap->m_pGrid->m_nPartitions;   }
 Queues* AM::pQueues(void)     { return gpAttachMap->m_pQueues;                }
