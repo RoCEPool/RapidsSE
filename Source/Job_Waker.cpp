@@ -7,7 +7,7 @@
 JobClass xJobClass_Waker =
 {
   CN_JOB_WAKER,          // class number
-  JK_SYSTEM,             // job kind
+  JK_SERVICE,             // job kind
   RK_NONE,               // response kind
   "waker"_Stz,           // comment about the job
   nullptr,               // the prompt command

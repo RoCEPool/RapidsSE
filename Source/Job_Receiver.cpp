@@ -7,7 +7,7 @@
 JobClass xJobClass_Receiver =
 {
   CN_JOB_RECEIVER,       // class number
-  JK_SYSTEM,             // job kind
+  JK_SERVICE,             // job kind
   RK_NONE,               // response kind
   "socket receiver"_Stz, // comment about the job
   nullptr,               // the prompt command

@@ -12,7 +12,7 @@ enum eJK // job kind
   /*  4 */ JK_GRANDKID,  // subordinate helper run on participant
   /*  5 */ JK_INFO,      // job is for info purposes only
   /*  6 */ JK_LOCAL,     // job is run on the local node
-  /*  7 */ JK_SYSTEM,    // system job (such as socket receiver)
+  /*  7 */ JK_SERVICE,   // service job (such as socket receiver)
   /*  8 */ JK_THREAD,    // job is run by calling thread
   /*  9 */ JK_OTHER,     // any other
 };
@@ -26,7 +26,7 @@ static Stz* aJK[]
   /*  4 */ "GRANDKID"_Stz,
   /*  5 */ "INFO"_Stz,
   /*  6 */ "LOCAL"_Stz,
-  /*  7 */ "SYSTEM"_Stz,
+  /*  7 */ "SERVICE"_Stz,
   /*  8 */ "THREAD"_Stz,
   /*  9 */ "OTHER"_Stz,
 };

@@ -507,7 +507,7 @@ void Constants::vAddConstants(void)
   /*  3 */ vAddConstant("JK_GENERIC"_Stz,  JK_GENERIC);
   /*  4 */ vAddConstant("JK_GRANDKID"_Stz, JK_GRANDKID);
   /*  5 */ vAddConstant("JK_LOCAL"_Stz,    JK_LOCAL);
-  /*  6 */ vAddConstant("JK_SYSTEM"_Stz,   JK_SYSTEM);
+  /*  6 */ vAddConstant("JK_SERVICE"_Stz,  JK_SERVICE);
 
   // JP_ : job phase
   /*  0 */ vAddConstant("JP_NONE"_Stz,      JP_NONE);

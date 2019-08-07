@@ -7,7 +7,7 @@
 JobClass xJobClass_Alarm =
 {
   CN_JOB_ALARM,          // class number
-  JK_SYSTEM,             // job kind
+  JK_SERVICE,             // job kind
   RK_NONE,               // response kind
   "alarm"_Stz,           // comment about the job
   nullptr,               // the prompt command
