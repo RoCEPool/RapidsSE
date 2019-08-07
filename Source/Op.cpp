@@ -309,12 +309,12 @@ void Op::vNextLabel(Stz* szNextLabel)
 /*----------------------------------------------------------------------------*/
 /* set out operator                                                           */
 /*----------------------------------------------------------------------------*/
-void Op::vOpOut(Op* pOpOut, bool bAppRight)
+void Op::vOpOut(Op* pOpOut, bool bAppendRight)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
   m_pOpOut = pOpOut;
-  m_bAppendRight = false; // bAppRight;
+  m_bAppendRight = false; // bAppendRight;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -78,7 +78,7 @@ void Digest::vParseCommand(TokenVec* pTknVec)
   s32  sLabel;
   i8 nTokens = pTknVec->nItems();
   
-  bool bAppR = false;
+  bool bAppendRight = false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create
@@ -90,18 +90,18 @@ void Digest::vParseCommand(TokenVec* pTknVec)
     
     if (sTknStr.bSame("|"_Stz)) {
       i_Tkn++;
-      bAppR = false;
+      bAppendRight = false;
       continue;
     }
     
     if (sTknStr.bSame("||"_Stz)) {
       i_Tkn++;
-      bAppR = true;
+      bAppendRight = true;
       continue;
     }
 
     //! temp
-    bAppR = false;
+    bAppendRight = false;
 
     OpDefn* aOpDefn = gxOpCatalog.aFindOp(sTknStr);
     
@@ -116,7 +116,7 @@ void Digest::vParseCommand(TokenVec* pTknVec)
     sLabel.vSprint("%s_%02lld"_Stz,
                    aOpDefn->m_szPrefix,
                    m_oOpVec.nItems());
-    Op* pOp = (aOpDefn->m_fpNew)(sLabel,this,aOpDefn,bAppR,
+    Op* pOp = (aOpDefn->m_fpNew)(sLabel,this,aOpDefn,bAppendRight,
                                  pTknVec,i_Tkn);
     
     m_oOpVec.vAdd(pOp);
@@ -129,7 +129,7 @@ void Digest::vParseCommand(TokenVec* pTknVec)
     
     Op* pOp = m_oOpVec.pGet(i_Op);
     Op* pOpNext = (pOp->m_bAppendRight) ? m_oOpVec.pGet(i_Op + 2)
-                                          : m_oOpVec.pGet(i_Op + 1);
+                                        : m_oOpVec.pGet(i_Op + 1);
     
     pOp->vNextLabel(pOpNext->szLabel());
     pOp->vOpOut(pOpNext);
