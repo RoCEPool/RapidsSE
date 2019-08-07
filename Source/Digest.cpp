@@ -128,7 +128,8 @@ void Digest::vParseCommand(TokenVec* pTknVec)
   for (i8 i_Op = 0; i_Op < m_oOpVec.nItems() - 1; i_Op++) {
     
     Op* pOp = m_oOpVec.pGet(i_Op);
-    Op* pOpNext = m_oOpVec.pGet(i_Op + 1);
+    Op* pOpNext = (pOp->m_bOutQueueB) ? m_oOpVec.pGet(i_Op + 2)
+                                      : m_oOpVec.pGet(i_Op + 1);
     
     pOp->vNextLabel(pOpNext->szLabel());
     pOp->vOpOut(pOpNext);
@@ -143,12 +144,14 @@ void Digest::vParseCommand(TokenVec* pTknVec)
     
     Op* pOp = m_oOpVec.pGet(i_Op);
     
-    vTrace("  [%02lld] { %6s: %8s(%s) :%-6s }\n"_Stz,
+    vTrace("  [%02lld] { %6s: %8s(%s) :%-6s %s }\n"_Stz,
            i_Op,
            pOp->szLabel(),
            aCN[pOp->eClass()],
            pOp->szArgs(),
-           pOp->szNextLabel());
+           pOp->szNextLabel(),
+           pOp->m_bOutQueueB ? "outB"_Stz : "outA"_Stz
+           );
   }
   
   vDebugPoint();

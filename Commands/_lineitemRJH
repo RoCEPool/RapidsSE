@@ -70,7 +70,7 @@ time fetch lineitem noPrint;
 
 query lineitem;
 
-dynamic scan lineitem | limit 2 || output | zed;
+dynamic scan lineitem || limit 2 | output | zed;
 
 logWrite;
 
