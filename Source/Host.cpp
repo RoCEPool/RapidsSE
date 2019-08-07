@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* Library.cpp -- Library namespace functions                                 */
+/* Host.cpp -- Host namespace functions                                       */
 /*============================================================================*/
 
-#include "Library.h"
+#include "Host.h"
 
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
-void Library::vCheckAssumptions(void)
+void Host::vCheckAssumptions(void)
 {
 }
 

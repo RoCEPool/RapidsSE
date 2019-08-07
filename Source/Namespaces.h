@@ -16,6 +16,7 @@ namespace Enums         {                                                     }
 namespace Forth         { class Cell; class Dic; class ForthWord;             }
 namespace Gadgets       {                                                     }
 namespace Grids         { class Grid; class Node;                             }
+namespace Host          {                                                     }
 namespace Indexes       { class IndexTree;                                    }
 namespace Interface     { class ApiState;                                     }
 namespace Jobs          { class Job; struct JobClass;  class JobList;
@@ -62,6 +63,7 @@ using namespace Enums;
 using namespace Forth;
 using namespace Gadgets;
 using namespace Grids;
+using namespace Host;
 using namespace Indexes;
 using namespace Interface;
 using namespace Jobs;

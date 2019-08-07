@@ -18,8 +18,9 @@ void StorageEngine::vCheckAllAssumptions(void)
   Assembler::vCheckAssumptions();
   // third party??
   Correctness::vCheckAssumptions();
-  Enums::vCheckAssumptions();
   ClassData::vCheckAssumptions();
+  Enums::vCheckAssumptions();
+  Host::vCheckAssumptions();
   Locking::vCheckAssumptions();
   Alignment::vCheckAssumptions();
   Pool::vCheckAssumptions();
