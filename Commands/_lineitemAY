@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _lineitemRJH - create and load TPC-H LineItem table                        */
+/* _lineitemAY - create and load TPC-H LineItem table                         */
 /*============================================================================*/
 
 markact all on;
