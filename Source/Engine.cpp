@@ -757,7 +757,7 @@ void Engine::vSignalHandler(int iSignal)
 void Engine::vSpawnJobStart(void)
 {
   if (gxArguments.m_bVerbose)
-    vInfo("\n*\n* Start System Tasks\n*\n"_Stz);
+    vInfo("\n*\n* Start Library Tasks\n*\n"_Stz);
   
   Pthread::vMarkNonSeThread();
   
@@ -781,7 +781,7 @@ void Engine::vSpawnJobStart(void)
 void Engine::vStartSystem(void)
 {
   if (gxArguments.m_bVerbose)
-    vInfo("\n*\n* System Init\n*\n"_Stz);
+    vInfo("\n*\n* Library Init\n*\n"_Stz);
   
   ASSERT( ! AM::pRootDic()->bHasWords() );
     

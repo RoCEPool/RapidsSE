@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* LimitsFormats.h -- System Limits and Standard Formats                      */
+/* LimitsFormats.h -- Library Limits and Standard Formats                      */
 /*============================================================================*/
 #pragma once
 

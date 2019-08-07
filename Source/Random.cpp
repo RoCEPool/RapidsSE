@@ -2,7 +2,7 @@
 /* Random.cpp -- generate random number/string                                */
 /*============================================================================*/
 
-#include "System.h"
+#include "Library.h"
 
 /*----------------------------------------------------------------------------*/
 /* generate a random number                                                   */

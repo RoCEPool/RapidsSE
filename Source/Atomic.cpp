@@ -45,7 +45,7 @@ u8 Atomic::uAtomicAdd(i8* pWord, i8 iValue)
   u8 uResult = __sync_add_and_fetch((u8*)pWord, iValue);
   
 #else
-#error "Unknown Operating System"
+#error "Unknown Operating Library"
 #endif
   
   return uResult;

@@ -194,7 +194,7 @@ rassert      - Generate an assert
 .br 
 ready        - Tasks in ready queue
 .br 
-resources    - System level resources
+resources    - Library level resources
 .br 
 rmpipe       - Remove a named pipe
 .br 

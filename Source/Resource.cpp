@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Resource.cpp -- Operating System Resource                                  */
+/* Resource.cpp -- Operating Library Resource                                  */
 /*============================================================================*/
 
 #include "Resources.h"

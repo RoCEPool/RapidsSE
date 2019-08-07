@@ -11065,7 +11065,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "\""
     "\\\"munged job_Start.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
-    "/* job_Start.sen -- Start System                                              */\n"
+    "/* job_Start.sen -- Start Library                                              */\n"
     "/*============================================================================*/\n"
     "\n"
     "\\\" job_Start.sen\\\" .verbose\n"

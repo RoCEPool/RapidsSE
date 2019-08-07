@@ -23,6 +23,7 @@ namespace Jobs          { class Job; struct JobClass;  class JobList;
                                      class Job_CreateTable;
                                      class Job_CreateIndex;
                                      class Job_Dynamic;                       }
+namespace Library       {                                                     }
 namespace Locking       { class Lock; class LockTracker;                      }
 namespace Logging       { class LogEntry;                                     }
 namespace MetaData      { class Table; class Index;                           }
@@ -41,7 +42,6 @@ namespace Sessions      { class Session; class SessionState;                  }
 namespace Steps         { class Step;                                         }
 namespace StorageEngine { class AM; class Engine;                             }
 namespace Structures    {                                                     }
-namespace System        {                                                     }
 namespace Tasks         { class Task;                                         }
 namespace Threads       { class Thread;                                       }
 namespace Transactions  { class Tx; class TxSet;                              }
@@ -67,6 +67,7 @@ using namespace Host;
 using namespace Indexes;
 using namespace Interface;
 using namespace Jobs;
+using namespace Library;
 using namespace Locking;
 using namespace Logging;
 using namespace MetaData;
@@ -85,7 +86,6 @@ using namespace Sessions;
 using namespace Steps;
 using namespace StorageEngine;
 using namespace Structures;
-using namespace System;
 using namespace Tasks;
 using namespace Threads;
 using namespace Transactions;

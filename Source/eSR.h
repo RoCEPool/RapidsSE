@@ -1,9 +1,9 @@
 /*============================================================================*/
-/* eSR.h -- System Resource                                                   */
+/* eSR.h -- Library Resource                                                   */
 /*============================================================================*/
 #pragma once
 
-enum eSR // System resource
+enum eSR // Library resource
 {
   SR_NONE,
   
