@@ -3,13 +3,8 @@
 /*============================================================================*/
 #pragma once
 
-/*
- 
- Description:
- 
- */
 
-namespace Library
+namespace Alignment
 {
   template<int LENGTH>
   class Wsp_t
@@ -39,8 +34,6 @@ namespace Library
     void  vZero(eCN eClassNo);
   };
 }
-
-using namespace Correctness;
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
