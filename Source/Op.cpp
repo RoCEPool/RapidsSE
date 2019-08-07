@@ -35,7 +35,7 @@ void Op::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Op::Op(eCN eClassNo, Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn)
+Op::Op(eCN eClassNo, Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn, bool bOutB)
 : Object(eClassNo)
 {
   _precondition_(_MAGIC_,eClassNo);
@@ -58,7 +58,7 @@ Op::Op(eCN eClassNo, Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn)
   m_pOperandQueueB = new OperandQueue;
   
   m_pOpOut         = nullptr;
-  m_bOutQueueA         = true;
+  m_bOutQueueB     = bOutB;
 
   m_fpCall         = m_aOpDefn ? m_aOpDefn->m_fpCall  : nullptr;
   m_fpDrain        = m_aOpDefn ? m_aOpDefn->m_fpDrain : nullptr;
@@ -183,6 +183,8 @@ void Op::vAppendOperandA(Operand* pOperandA)
 void Op::vAppendOperandB(Operand* pOperandB)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
+  
+  RASSERT(0);
   
   //  vTrace("%s::vAppendOperand : %p %s\n"_Stz,
   //         m_sLabel.aStz(),
@@ -313,12 +315,12 @@ void Op::vNextLabel(Stz* szNextLabel)
 /*----------------------------------------------------------------------------*/
 /* set out operator                                                           */
 /*----------------------------------------------------------------------------*/
-void Op::vOpOut(Op* pOpOut, bool bOutQueueA)
+void Op::vOpOut(Op* pOpOut, bool bOutQueueB)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
   m_pOpOut = pOpOut;
-  m_bOutQueueA = bOutQueueA;
+  m_bOutQueueB = false; // bOutQueueB;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -349,10 +351,12 @@ void Op::vPipeOut(Operand* pOperand)
          aCN[pOperand->eClass()],
          pOperand);
 
-  if (m_bOutQueueA)
-    m_pOpOut->vAppendOperandA(pOperand);
-  else
+  if (m_bOutQueueB) {
+    RASSERT(0);
     m_pOpOut->vAppendOperandB(pOperand);
+  }
+  else
+    m_pOpOut->vAppendOperandA(pOperand);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -430,6 +434,7 @@ Operand* Op::pPopOperandB(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
+  RASSERT(0);
   Operand* pOperandB = nullptr;
   
   vGrabTaskLock();

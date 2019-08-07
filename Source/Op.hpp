@@ -28,7 +28,7 @@ namespace PushDown
     OperandQueue*  m_pOperandQueueB; // the input queue being processed
   
     Op*            m_pOpOut;         // where results get piped
-    bool           m_bOutQueueA;     //
+    bool           m_bOutQueueB;     //
   
     eOR (*m_fpCall) (void* aThisOp);  // function which calls the op loop
     eOR (*m_fpDrain)(void* aThisOp);  // function which calls the drain loop
@@ -36,7 +36,7 @@ namespace PushDown
   public:
     void  operator delete(void*);
   
-    Op(eCN eClass, Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn);
+    Op(eCN eClass, Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bOutQueueB);
    ~Op(void) noexcept(false);
   
     static Op* pThisTLSOp(void);

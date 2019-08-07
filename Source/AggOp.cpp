@@ -22,7 +22,7 @@ AggOp* PushDown::_pAggOp(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 AggOp::AggOp(Stz* szOpLabel, Digest* pDigest)
-: Op(CN_AGGOP,szOpLabel,pDigest,nullptr)
+: Op(CN_AGGOP,szOpLabel,pDigest,nullptr,false)
 {
   _precondition_(_MAGIC_,CN_AGGOP);
 }

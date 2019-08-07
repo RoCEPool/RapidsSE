@@ -43,7 +43,7 @@ void SortOp::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SortOp::SortOp(Stz* szOpLabel, Digest* pDigest)
-: Op(CN_SORTOP,szOpLabel,pDigest,nullptr)
+: Op(CN_SORTOP,szOpLabel,pDigest,nullptr,false)
 {
   _precondition_(_MAGIC_,CN_SORTOP);
   

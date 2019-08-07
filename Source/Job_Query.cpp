@@ -109,9 +109,9 @@ Job_Query::Job_Query(Session* pSession)
   
   m_pDigest = new Digest(this);
   
-  m_pScanOp  = new ScanOp ("S_0"_Stz,m_pDigest,nullptr);
-  m_pOutputOp = new OutputOp("O_0"_Stz,m_pDigest,nullptr);
-  m_pZedOp    = new ZedOp   ("Z_0"_Stz,m_pDigest,nullptr);
+  m_pScanOp  = new ScanOp ("S_0"_Stz,m_pDigest,nullptr,false);
+  m_pOutputOp = new OutputOp("O_0"_Stz,m_pDigest,nullptr,false);
+  m_pZedOp    = new ZedOp   ("Z_0"_Stz,m_pDigest,nullptr,false);
 
   _checkInitialised_(CN_JOB_QUERY);
 

@@ -55,8 +55,8 @@ void ScanOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ScanOp::ScanOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn)
-: Op(CN_SCANOP,szOpLabel,pDigest,aOpDefn)
+ScanOp::ScanOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bOutB)
+: Op(CN_SCANOP,szOpLabel,pDigest,aOpDefn,bOutB)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANOP,_FOOTER_);
   
@@ -86,12 +86,13 @@ ScanOp::~ScanOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* ScanOp::pNew(Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn,
-                  TokenVec* pTknVec, i8& i_Tkn_)
+Op* ScanOp::pNew(Stz* szLabel,
+                 Digest* pDigest, OpDefn* aOpDefn, bool bOutB,
+                 TokenVec* pTknVec, i8& i_Tkn_)
 {
   i_Tkn_++;
   
-  ScanOp* pScanOp = new ScanOp(szLabel,pDigest,aOpDefn);
+  ScanOp* pScanOp = new ScanOp(szLabel,pDigest,aOpDefn,bOutB);
   
   s32 sTableNm = pTknVec->pGet(i_Tkn_++)->aText();
   AM::vTableName((Job_Dynamic*)pDigest->m_pJob,sTableNm);

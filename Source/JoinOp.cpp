@@ -13,7 +13,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 JoinOp::JoinOp(Stz* szOpLabel, Digest* pDigest)
-: Op(CN_JOINOP,szOpLabel,pDigest,nullptr)
+: Op(CN_JOINOP,szOpLabel,pDigest,nullptr,false)
 {
   _precondition_(_MAGIC_,CN_JOINOP);
 }

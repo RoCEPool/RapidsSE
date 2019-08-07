@@ -280,8 +280,8 @@ Job* Jobs::pJob_SortExp_pre(Session* pSession)
   pJob_SortExp->m_pGenerateOp = new GenerateOp("G_0"_Stz,pJob_SortExp->m_pDigest, pJob_SortExp->m_iBuffers);
   pJob_SortExp->m_pSortOp     = new SortOp    ("S_0"_Stz,pJob_SortExp->m_pDigest);
   pJob_SortExp->m_pMergeOp    = new MergeOp   ("M_0"_Stz,pJob_SortExp->m_pDigest);
-  pJob_SortExp->m_pOutputOp   = new OutputOp  ("O_0"_Stz,pJob_SortExp->m_pDigest,nullptr);
-  pJob_SortExp->m_pZedOp      = new ZedOp     ("Z_0"_Stz,pJob_SortExp->m_pDigest,nullptr);
+  pJob_SortExp->m_pOutputOp   = new OutputOp  ("O_0"_Stz,pJob_SortExp->m_pDigest,nullptr,false);
+  pJob_SortExp->m_pZedOp      = new ZedOp     ("Z_0"_Stz,pJob_SortExp->m_pDigest,nullptr,false);
   
   return pJob_SortExp;
 }

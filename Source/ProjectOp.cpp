@@ -23,7 +23,7 @@ ProjectOp* PushDown::_pProjectOp(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ProjectOp::ProjectOp(Stz* szOpLabel, Digest* pDigest)
-: Op(CN_PROJECTOP,szOpLabel,pDigest,nullptr)
+: Op(CN_PROJECTOP,szOpLabel,pDigest,nullptr,false)
 {
   _precondition_(_MAGIC_,CN_PROJECTOP);
 }
