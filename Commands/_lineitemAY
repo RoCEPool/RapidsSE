@@ -59,6 +59,23 @@ sztbl lineitem;
 fetch lineitem limit 10;
 time fetch lineitem noPrint;
 
+create table orders (
+O_ORDERKEY        INTEGER NOT NULL,
+O_CUSTKEY         INTEGER NOT NULL,
+O_ORDERSTATUS     CHAR(1) NOT NULL,
+O_TOTALPRICE      DECIMAL(15,2) NOT NULL,
+O_ORDERDATE       TIMESTAMP NOT NULL,
+O_ORDERPRIORITY   CHAR(15) NOT NULL,
+O_CLERK           CHAR(15) NOT NULL,
+O_SHIPPRIORITY    INTEGER NOT NULL,
+O_COMMENT         VARCHAR(79) NOT NULL
+);
+CREATE INDEX orders_idx1 ON orders(O_ORDERKEY);
+
+print "loading orders..." ;
+time ld orders "/DATA/tpch/orders10.csv" max_errors 100;
+
+
 //fileCat "/tpch/SF0/lineitem_1.csv" 1;
 //fileCat "/tpch/SF0/lineitem_10.csv" 10;
 //fileCat "/tpch/SF0/lineitem_100.csv" 10;
@@ -73,7 +90,8 @@ time fetch lineitem noPrint;
 
 //dynamic scan lineitem | limit 2 | output | zed;
 
-dynamic fetch lineitem LineItem_Idx1 | output | zed;
+dynamic fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join | output | zed;
+//dynamic fetch lineitem LineItem_Idx1 | output | zed;
 
 //dynamic fetch LT LI , fetch RT RI | join  | output | zed;
 logWrite;
