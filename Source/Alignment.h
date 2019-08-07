@@ -14,7 +14,6 @@ namespace Alignment
 
 //------------------------------------------------------------------------------
 
-#include "Dtm.hpp"
 #include "Word.hpp"
 #include "AlignedObject.hpp"
 

@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Alignment
+namespace System
 {
   class Dtm
   {

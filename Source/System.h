@@ -14,6 +14,8 @@ namespace System
 
 //-----------------------------------------------------------------------------
 
+#include "Dtm.hpp"
+
 #include "Compress.hpp"
 #include "Env.hpp"
 #include "Hardware.hpp"
