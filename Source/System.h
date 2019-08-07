@@ -15,7 +15,6 @@ namespace System
 //-----------------------------------------------------------------------------
 
 #include "Compress.hpp"
-#include "DecaCnt.hpp"
 #include "Env.hpp"
 #include "Hardware.hpp"
 #include "HwCounters.hpp"
