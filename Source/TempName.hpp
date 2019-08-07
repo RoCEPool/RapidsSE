@@ -1,9 +1,9 @@
 /*============================================================================*/
-/* TempName.hpp - temporary name generator                                    */
+/* TempName.hpp -- Temporary Name generator                                   */
 /*============================================================================*/
 #pragma once
 
-namespace System
+namespace Gadgets
 {
   class TempName : public Object
   {

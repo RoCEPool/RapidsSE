@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace System
+namespace Gadgets
 {
   class Birth : public Object
   {

@@ -14,7 +14,6 @@ namespace System
 
 //-----------------------------------------------------------------------------
 
-#include "Birth.hpp"
 #include "Compress.hpp"
 #include "DecaCnt.hpp"
 #include "Env.hpp"
@@ -27,7 +26,6 @@ namespace System
 #include "Random.hpp"
 #include "Shell.hpp"
 #include "Sleep.hpp"
-#include "TempName.hpp"
 #include "TspLib.hpp"
 
 
