@@ -5,6 +5,8 @@
 #include "Library.h"
 #include "AM.hpp"
 
+#include "Timer.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -16,7 +18,7 @@ Lock* Library::_pLock(void* aAddr)
 {
   Lock* pLock = reinterpret_cast<Lock*>(aAddr);
   
-  RASSERT_TYPE(pLock,CN_LOCK);
+  RASSERT_TYPE(pLock, CN_LOCK);
   
   return pLock;
 }

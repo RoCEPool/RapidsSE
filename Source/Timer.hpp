@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Library
+namespace Gadgets
 {
   class Timer : public Object
   {
@@ -20,8 +20,9 @@ namespace Library
     void* operator new(size_t);
     void* operator new(size_t, Timer* pTimer);
     void operator delete(void* pTimerAddress);
+  
     Timer(void);
-    ~Timer() noexcept(false);
+   ~Timer() noexcept(false);
     
     void vReset(void);
     void vSet(i8 iStart, i8 iUpdate);

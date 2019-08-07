@@ -16,7 +16,6 @@ namespace Library
 
 #include "AM.hpp"
 
-#include "Timer.hpp"
 
 #include "IntLib.hpp"
 #include "Lock.hpp"

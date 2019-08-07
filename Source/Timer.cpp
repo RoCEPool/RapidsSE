@@ -2,7 +2,7 @@
 /* Timer.cpp -- timer                                                         */
 /*============================================================================*/
 
-#include "Library.h"
+#include "Gadgets.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -11,11 +11,11 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Timer* Library::_pTimer(void* aAddr)
+Timer* Gadgets::_pTimer(void* aAddr)
 {
   Timer* pTimer = reinterpret_cast<Timer*>(aAddr);
   
-  RASSERT_TYPE(pTimer,CN_TIMER);
+  RASSERT_TYPE(pTimer, CN_TIMER);
   
   return pTimer;
 }
