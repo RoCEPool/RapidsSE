@@ -40,6 +40,8 @@ Op::Op(eCN eClassNo, Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
 {
   _precondition_(_MAGIC_,eClassNo);
   
+  m_iOpId         = AM::iNextOpId();
+  
   m_sLabel        = szLabel;
   m_sArgs         = ""_Stz;
   m_sNextLabel    = "<nil>"_Stz;

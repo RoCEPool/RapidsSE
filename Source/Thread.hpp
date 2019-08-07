@@ -12,6 +12,7 @@ namespace Threads
 
   public:
     i8       m_iThreadNo;     // our thread no
+    i8       m_iThreadId;     // thread id
     void*    m_aStackBase;    // stack base address
     i8       m_iStackSize;    // stack size
   

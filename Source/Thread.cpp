@@ -63,6 +63,7 @@ Thread::Thread(void)
   static Atomic ixThreadNo;
   
   m_iThreadNo    = ++ixThreadNo;
+  m_iThreadId    = AM::iNextThreadId();
   m_aStackBase   = nullptr;
   m_iStackSize   = 0;
   

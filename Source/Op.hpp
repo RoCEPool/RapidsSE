@@ -10,6 +10,8 @@ namespace PushDown
   friend class Digest;
   
   protected:
+    i8             m_iOpId;          // operator id
+  
     s32            m_sLabel;         // label of this op
     s256           m_sArgs;          // args of this op   (initial dev only)
     s32            m_sNextLabel;     // label of this op

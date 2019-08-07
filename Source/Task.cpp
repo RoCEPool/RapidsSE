@@ -122,6 +122,8 @@ void Task::vInit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+  m_iTaskId      = AM::iNextTaskId();
+  
   m_okLock.vInitLock(LK_TASK);
   m_eKind        = TK_NONE;
   m_pJob         = nullptr;
