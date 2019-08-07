@@ -24,8 +24,8 @@ namespace PushDown
     i8             m_iWorkQuanta;    // quanta of work between pulses
     i8             m_iWorkDone;      // work done
 
-    OperandQueue*  m_pOperandQueueA; // the input queue being processed
-    OperandQueue*  m_pOperandQueueB; // the input queue being processed
+    OperandQueue*  m_pQueueLeft;     // the input queue being processed
+    OperandQueue*  m_pQueueRight;    // the input queue being processed
   
     Op*            m_pOpOut;         // where results get piped
     bool           m_bOutQueueB;     //

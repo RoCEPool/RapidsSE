@@ -54,8 +54,8 @@ Op::Op(eCN eClassNo, Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn, bool bOutB)
   m_iWorkQuanta   = 1;
   m_iWorkDone     = 0;
 
-  m_pOperandQueueA = new OperandQueue;
-  m_pOperandQueueB = new OperandQueue;
+  m_pQueueLeft     = new OperandQueue;
+  m_pQueueRight    = new OperandQueue;
   
   m_pOpOut         = nullptr;
   m_bOutQueueB     = bOutB;
@@ -71,8 +71,8 @@ Op::~Op(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  delete m_pOperandQueueA;
-  delete m_pOperandQueueB;
+  delete m_pQueueLeft;
+  delete m_pQueueRight;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -164,7 +164,7 @@ void Op::vAppendOperandA(Operand* pOperandA)
   
   vGrabTaskLock();
   
-  m_pOperandQueueA->vAppendOperand(pOperandA);
+  m_pQueueLeft->vAppendOperand(pOperandA);
 
   if (TS_BIDING != (eTS)AM::iTaskState(m_pTask)) {
     vDropTaskLock();
@@ -191,7 +191,7 @@ void Op::vAppendOperandB(Operand* pOperandB)
   
   vGrabTaskLock();
   
-  m_pOperandQueueB->vAppendOperand(pOperandB);
+  m_pQueueRight->vAppendOperand(pOperandB);
   
   if (TS_BIDING != (eTS)AM::iTaskState(m_pTask)) {
     vDropTaskLock();
@@ -374,7 +374,7 @@ Operand* Op::pPopOperand(void)
   
   vGrabTaskLock();
   
-  pOperand = m_pOperandQueueA->pPopOperand();
+  pOperand = m_pQueueLeft->pPopOperand();
   
   if (pOperand)
     vDropTaskLock();
@@ -402,7 +402,7 @@ Operand* Op::pPopOperandA(void)
   
   vGrabTaskLock();
   
-  pOperandA = m_pOperandQueueA->pPopOperand();
+  pOperandA = m_pQueueLeft->pPopOperand();
   
   if (pOperandA)
     vDropTaskLock();
@@ -430,7 +430,7 @@ Operand* Op::pPopOperandB(void)
   
   vGrabTaskLock();
   
-  pOperandB = m_pOperandQueueB->pPopOperand();
+  pOperandB = m_pQueueRight->pPopOperand();
   
   if (pOperandB)
     vDropTaskLock();
