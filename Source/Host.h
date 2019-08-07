@@ -18,6 +18,7 @@ namespace Host
 #include "Hardware.hpp"
 #include "HwCounters.hpp"
 #include "OpSys.hpp"
+#include "Process.hpp"
 #include "Shell.hpp"
 
 /*============================================================================*/
