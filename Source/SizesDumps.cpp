@@ -573,7 +573,7 @@ i8 giClassSize[]
   /*    */ sizeof(MergeOp),            // CN_MERGEOP
   /*114 */ sizeof(Mutex),              // CN_MUTEX
 
-  /*    */ 0,//sizeof(NextId),             // CN_NEXTID
+  /*    */ sizeof(NextId),             // CN_NEXTID
   /*    */ sizeof(NmVal),              // CN_NMVAL
   /* 75 */ sizeof(Node),               // CN_NODE
   /*    */ sizeof(Now),                // CN_NOW
