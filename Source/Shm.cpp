@@ -2,7 +2,7 @@
 /* Shm.cpp -- shared memory                                                   */
 /*============================================================================*/
 
-#include "Correctness.h"
+#include "Pool.h"
 #include "AM.hpp"
 
 

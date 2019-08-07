@@ -58,7 +58,6 @@ typedef String_t<C_MAX_VCH> sVCH;
 #include "EnumFlags.hpp"
 
 #include "SysCall.hpp"
-#include "Shm.hpp"
 
 
 #define IGNORE_RETURN(call) call
