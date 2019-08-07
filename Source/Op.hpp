@@ -62,9 +62,9 @@ namespace PushDown
     bool bPause(void);
     void vPipeOut(Operand* pOperand);
     void vPipeOut_endMarker(void);
-    Operand* pPopOperand(void);
-    Operand* pPopOperandA(void);
-    Operand* pPopOperandB(void);
+    Operand* pPopQueue(void);
+    Operand* pPopQueueLeft(void);
+    Operand* pPopQueueRight(void);
     bool bIsCancelling(void);
     Task* pTask(void);
     void vTask(Task* pTask);

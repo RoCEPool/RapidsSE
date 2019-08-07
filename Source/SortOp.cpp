@@ -189,7 +189,7 @@ eOR SortOp::eSortLoop(void)
   
   for (;;) {
     
-    Operand* pOperand = pPopOperand();
+    Operand* pOperand = pPopQueue();
     
     if (! pOperand) {
       ASSERT(bIsLocked());

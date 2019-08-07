@@ -21,7 +21,7 @@ namespace PushDown
     
     void vAppendOperand(Operand* pOperand);
     Operand*  pPeekOperand(void);
-    Operand*  pPopOperand(void);
+    Operand*  pPopQueue(void);
     i8   nQueuedOperands(void);
       
     Footer* aFooter(void);

@@ -82,7 +82,7 @@ Operand* OperandQueue::pPeekOperand(void)
 /*----------------------------------------------------------------------------*/
 /* pop first thread from top of queue                                         */
 /*----------------------------------------------------------------------------*/
-Operand* OperandQueue::pPopOperand(void)
+Operand* OperandQueue::pPopQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
   

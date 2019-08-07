@@ -126,7 +126,7 @@ eOR OutputOp::eOpLoop(void)
   
   for (;;) {
     
-    Operand* pOperand = pPopOperand();
+    Operand* pOperand = pPopQueue();
     
     if (! pOperand) {
       ASSERT(bIsLocked());
@@ -178,7 +178,7 @@ eOR OutputOp::eDrainLoop(void)
   
   for (;;) {
     
-    Operand* pOperand = pPopOperand();
+    Operand* pOperand = pPopQueue();
     
     if (! pOperand) {
       ASSERT(bIsLocked());

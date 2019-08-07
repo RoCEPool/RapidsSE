@@ -125,7 +125,7 @@ eOR MergeOp::eMergeLoop(void)
   
   for (;;) {
     
-    Operand* pOperand = pPopOperand();
+    Operand* pOperand = pPopQueue();
     
     if (! pOperand) {
       ASSERT(bIsLocked());

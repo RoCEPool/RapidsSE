@@ -366,7 +366,7 @@ void Op::vPipeOut_endMarker(void)
 /*----------------------------------------------------------------------------*/
 /* pop operand queue                                                          */
 /*----------------------------------------------------------------------------*/
-Operand* Op::pPopOperand(void)
+Operand* Op::pPopQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -374,7 +374,7 @@ Operand* Op::pPopOperand(void)
   
   vGrabTaskLock();
   
-  pOperand = m_pQueueLeft->pPopOperand();
+  pOperand = m_pQueueLeft->pPopQueue();
   
   if (pOperand)
     vDropTaskLock();
@@ -382,7 +382,7 @@ Operand* Op::pPopOperand(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (pOperand) {
-    vTrace("%s::pPopOperand : %s %p\n"_Stz,
+    vTrace("%s::pPopQueue : %s %p\n"_Stz,
            m_sLabel.aStz(),
            aCN[pOperand->eClass()],
            pOperand);
@@ -394,7 +394,7 @@ Operand* Op::pPopOperand(void)
 /*----------------------------------------------------------------------------*/
 /* pop operand queue A                                                        */
 /*----------------------------------------------------------------------------*/
-Operand* Op::pPopOperandA(void)
+Operand* Op::pPopQueueLeft(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -402,7 +402,7 @@ Operand* Op::pPopOperandA(void)
   
   vGrabTaskLock();
   
-  pOperandA = m_pQueueLeft->pPopOperand();
+  pOperandA = m_pQueueLeft->pPopQueue();
   
   if (pOperandA)
     vDropTaskLock();
@@ -410,7 +410,7 @@ Operand* Op::pPopOperandA(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (pOperandA) {
-    vTrace("%s::pPopOperandA : %s %p\n"_Stz,
+    vTrace("%s::pPopQueueLeft : %s %p\n"_Stz,
            m_sLabel.aStz(),
            aCN[pOperandA->eClass()],
            pOperandA);
@@ -422,7 +422,7 @@ Operand* Op::pPopOperandA(void)
 /*----------------------------------------------------------------------------*/
 /* pop operand queue B                                                        */
 /*----------------------------------------------------------------------------*/
-Operand* Op::pPopOperandB(void)
+Operand* Op::pPopQueueRight(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -430,7 +430,7 @@ Operand* Op::pPopOperandB(void)
   
   vGrabTaskLock();
   
-  pOperandB = m_pQueueRight->pPopOperand();
+  pOperandB = m_pQueueRight->pPopQueue();
   
   if (pOperandB)
     vDropTaskLock();
@@ -438,7 +438,7 @@ Operand* Op::pPopOperandB(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (pOperandB) {
-    vTrace("%s::pPopOperandB : %s %p\n"_Stz,
+    vTrace("%s::pPopQueueRight : %s %p\n"_Stz,
            m_sLabel.aStz(),
            aCN[pOperandB->eClass()],
            pOperandB);
