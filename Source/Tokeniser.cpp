@@ -649,6 +649,30 @@ eTN Tokeniser::eParseNormalOther(char* wToken)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // gather || as a string
+  if (bIsPipe()) {
+    
+    vGetNextStripped();
+    
+    if (bIsPipe()) {
+      *z++ = '|';
+      *z++ = '|';
+      
+      // terminate the string token
+      *z = '\0';
+      
+      return TN_STRING;
+    }
+    else {
+      // push back the unconsumed char
+      vUngetStrippedChar();
+      
+      // set last single character as .
+      m_cParsedChar = '|';
+    }
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // gather == as a token
   if (bIsEqual()) {
     vGetNextStripped();
