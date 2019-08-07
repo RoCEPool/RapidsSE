@@ -63,7 +63,7 @@ i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
 void AM::vProcessExit(void)   { Process::vExit(EXIT_FAILURE);                 }
 bool AM::bProgress(void)      { return gpAttachMap->m_bProgress;              }
 bool AM::bMetadata(void)      { return gpAttachMap->m_bMetadata;              }
-i8   AM::iNextDiagram(void)   { return ++ gpAttachMap->m_ixNextDiagram;       }
+i8   AM::iNextDiagram(void)   { return ++ gpAttachMap->m_inNextDiagram;       }
 i8   AM::iNextJobId(void)     { return ++ gpAttachMap->m_inNextJobId;         }
 i8   AM::iNextPlanId(void)    { return ++ gpAttachMap->m_inNextPlanId;        }
 i8   AM::iNextStreamId(void)  { return ++ gpAttachMap->m_inNextStreamId;      }

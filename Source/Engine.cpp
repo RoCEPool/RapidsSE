@@ -428,7 +428,7 @@ void Engine::vMonitorPortrait(s48K& sRapidsPortrait)
   AM::pApiState()->vMonitorPortrait(sPortrait);
   sRapidsPortrait.vConcat(sPortrait.aStz());
   
-  if (1 == *gpAttachMap->m_ixNextMonitor)
+  if (1 == ++ gpAttachMap->m_inNextMonitor)
     BPA::vEpochTake();
   else {
     BPA::vEpochDump(sRapidsPortrait);
