@@ -5,7 +5,7 @@
 
 namespace Alignment
 {
-   class Dtm
+  class Dtm
   {
   public:
     union {

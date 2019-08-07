@@ -13,8 +13,6 @@ namespace Alignment
       
       b8    m_bB8;
 
-      Dtm   m_wDtm;
-
       d8    m_dD8;
       
       i1    m_iaI1[8];
