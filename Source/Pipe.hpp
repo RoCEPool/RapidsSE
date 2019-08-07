@@ -5,7 +5,7 @@
 
 namespace Resources
 {
-  class Pipe : public Object
+  class Pipe : public Resource
   {
   private:
     s256    m_sPipePath;   // the path of the file (relative or absolute)

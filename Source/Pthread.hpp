@@ -7,7 +7,7 @@ namespace Resources
 {
   static const i8 C_THREAD_BOOST = 8;
   
-  class Pthread : public Object
+  class Pthread : public Resource
   {
   public:
     i8        m_iOpSysThreadId; // thread id as known by os

@@ -34,7 +34,7 @@ namespace Resources
   static Stz* C_OPEN_READ_APPEND = "a+"_Stz;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class File : public Object
+  class File : public Resource
   {
   private:
     s256    m_sFilePath;   // the path of the file (relative or absolute)

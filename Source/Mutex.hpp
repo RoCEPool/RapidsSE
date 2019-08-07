@@ -5,7 +5,7 @@
 
 namespace Resources
 {
-  class Mutex : public Object
+  class Mutex : public Resource
   {
   public:
     bool                m_bLocked;    // true if mutex is locked (debugging)

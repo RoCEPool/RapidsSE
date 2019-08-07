@@ -5,7 +5,7 @@
 
 namespace Resources
 {
-  class Dir : public Object
+  class Dir : public Resource
   {
   private:
     s256    m_sDirPath;   // the path of the directory

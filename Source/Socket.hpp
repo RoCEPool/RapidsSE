@@ -5,7 +5,7 @@
 
 namespace Resources
 {
-  class Socket : public Object
+  class Socket : public Resource
   {
   public:
     int   m_iSocketId;

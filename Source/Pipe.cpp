@@ -9,7 +9,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Pipe::Pipe(void)
-: Object(CN_PIPE)
+: Resource(CN_PIPE)
 {
   _precondition_(_MAGIC_,CN_PIPE,_FOOTER_);
   
@@ -25,7 +25,7 @@ Pipe::Pipe(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Pipe::Pipe(Stz* sPipePath)
-: Object(CN_PIPE)
+: Resource(CN_PIPE)
 {
   _precondition_(_MAGIC_,CN_PIPE,_FOOTER_);
   
