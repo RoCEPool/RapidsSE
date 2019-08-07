@@ -55,8 +55,8 @@ void LimitOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-LimitOp::LimitOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bOutB)
-: Op(CN_LIMITOP,szOpLabel,pDigest,aOpDefn,bOutB)
+LimitOp::LimitOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
+: Op(CN_LIMITOP,szOpLabel,pDigest,aOpDefn,bAppR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LIMITOP,_FOOTER_);
   
@@ -85,12 +85,12 @@ LimitOp::~LimitOp(void) noexcept(false)
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
 Op* LimitOp::pNew(Stz* szLabel,
-                  Digest* pDigest, OpDefn* aOpDefn, bool bOutB,
+                  Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
                   TokenVec* pTknVec, i8& i_Tkn_)
 {
   i_Tkn_++;
   
-  LimitOp* pLimitOp = new LimitOp(szLabel,pDigest,aOpDefn,bOutB);
+  LimitOp* pLimitOp = new LimitOp(szLabel,pDigest,aOpDefn,bAppR);
   
   pLimitOp->m_sArgs = pTknVec->pGet(i_Tkn_)->aText();
   

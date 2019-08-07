@@ -16,7 +16,7 @@ namespace PushDown
            Stz* szPrefix,   // prefix
 
            Op*  (*fpNew)(Stz* szLabel,
-                         Digest* pDigest, OpDefn* aOpDefn, bool bOutB,
+                         Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
                          TokenVec* pTknVec, i8& i_Tkn_),
            
            eOR  (*fpCall)(void* aThisOp),  // function which calls the op loop

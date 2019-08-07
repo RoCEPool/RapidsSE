@@ -16,11 +16,11 @@ namespace PushDown
     void* operator new(size_t);
     void  operator delete(void*);
   
-    ZedOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bOutB);
+    ZedOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR);
    ~ZedOp(void) noexcept(false);
   
     static Op* pNew(Stz* szLabel,
-                    Digest* pDigest, OpDefn* aOpDefn, bool bOutB,
+                    Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
                     TokenVec* pTknVec, i8& i_Tkn_);
     static eOR eCall(void* aThis);
   

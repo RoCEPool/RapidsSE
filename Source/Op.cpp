@@ -35,7 +35,7 @@ void Op::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Op::Op(eCN eClassNo, Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn, bool bOutB)
+Op::Op(eCN eClassNo, Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
 : Object(eClassNo)
 {
   _precondition_(_MAGIC_,eClassNo);
@@ -54,14 +54,14 @@ Op::Op(eCN eClassNo, Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn, bool bOutB)
   m_iWorkQuanta   = 1;
   m_iWorkDone     = 0;
 
-  m_pQueueLeft     = new OperandQueue;
-  m_pQueueRight    = new OperandQueue;
+  m_pQueueLeft    = new OperandQueue;
+  m_pQueueRight   = new OperandQueue;
   
-  m_pOpOut         = nullptr;
-  m_bOutQueueB     = bOutB;
+  m_pOpOut        = nullptr;
+  m_bAppendRight  = bAppR;
 
-  m_fpCall         = m_aOpDefn ? m_aOpDefn->m_fpCall  : nullptr;
-  m_fpDrain        = m_aOpDefn ? m_aOpDefn->m_fpDrain : nullptr;
+  m_fpCall        = m_aOpDefn ? m_aOpDefn->m_fpCall  : nullptr;
+  m_fpDrain       = m_aOpDefn ? m_aOpDefn->m_fpDrain : nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -153,18 +153,18 @@ void Op::vAckJobEnd(bool bAckJobEnd)
 /*----------------------------------------------------------------------------*/
 /* append operand to this op's operand queue                                  */
 /*----------------------------------------------------------------------------*/
-void Op::vAppendOperandA(Operand* pOperandA)
+void Op::vAppendLeft(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-//  vTrace("%s::vAppendOperandA : %p %s\n"_Stz,
+//  vTrace("%s::vAppendLeft : %p %s\n"_Stz,
 //         m_sLabel.aStz(),
 //         pOperand,
 //         aCN[pOperand->eClass()]);
   
   vGrabTaskLock();
   
-  m_pQueueLeft->vAppendOperand(pOperandA);
+  m_pQueueLeft->vAppendOperand(pOperand);
 
   if (TS_BIDING != (eTS)AM::iTaskState(m_pTask)) {
     vDropTaskLock();
@@ -180,7 +180,7 @@ void Op::vAppendOperandA(Operand* pOperandA)
 /*----------------------------------------------------------------------------*/
 /* append operand to this op's operand queue                                  */
 /*----------------------------------------------------------------------------*/
-void Op::vAppendOperandB(Operand* pOperandB)
+void Op::vAppendRight(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
@@ -191,7 +191,7 @@ void Op::vAppendOperandB(Operand* pOperandB)
   
   vGrabTaskLock();
   
-  m_pQueueRight->vAppendOperand(pOperandB);
+  m_pQueueRight->vAppendOperand(pOperand);
   
   if (TS_BIDING != (eTS)AM::iTaskState(m_pTask)) {
     vDropTaskLock();
@@ -309,12 +309,12 @@ void Op::vNextLabel(Stz* szNextLabel)
 /*----------------------------------------------------------------------------*/
 /* set out operator                                                           */
 /*----------------------------------------------------------------------------*/
-void Op::vOpOut(Op* pOpOut, bool bOutQueueB)
+void Op::vOpOut(Op* pOpOut, bool bAppRight)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
   m_pOpOut = pOpOut;
-  m_bOutQueueB = false; // bOutQueueB;
+  m_bAppendRight = false; // bAppRight;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -345,10 +345,10 @@ void Op::vPipeOut(Operand* pOperand)
          aCN[pOperand->eClass()],
          pOperand);
 
-  if (m_bOutQueueB)
-    m_pOpOut->vAppendOperandB(pOperand);
+  if (m_bAppendRight)
+    m_pOpOut->vAppendRight(pOperand);
   else
-    m_pOpOut->vAppendOperandA(pOperand);
+    m_pOpOut->vAppendLeft(pOperand);
 }
 
 /*----------------------------------------------------------------------------*/

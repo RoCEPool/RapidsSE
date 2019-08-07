@@ -27,8 +27,8 @@ namespace PushDown
     OperandQueue*  m_pQueueLeft;     // the input queue being processed
     OperandQueue*  m_pQueueRight;    // the input queue being processed
   
-    Op*            m_pOpOut;         // where results get piped
-    bool           m_bOutQueueB;     //
+    Op*            m_pOpOut;         // to which op the results get piped
+    bool           m_bAppendRight;   // append to right queue?
   
     eOR (*m_fpCall) (void* aThisOp);  // function which calls the op loop
     eOR (*m_fpDrain)(void* aThisOp);  // function which calls the drain loop
@@ -36,7 +36,7 @@ namespace PushDown
   public:
     void  operator delete(void*);
   
-    Op(eCN eClass, Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bOutQueueB);
+    Op(eCN eClass, Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR);
    ~Op(void) noexcept(false);
   
     static Op* pThisTLSOp(void);
@@ -47,8 +47,8 @@ namespace PushDown
     // - - - - - - - - - - - - - - - -
     void vAckJob(void);
     void vAckJobEnd(bool m_bAckJobEnd);
-    void vAppendOperandA(Operand* pOperandA);
-    void vAppendOperandB(Operand* pOperandB);
+    void vAppendLeft(Operand* pOperand);
+    void vAppendRight(Operand* pOperand);
     Stz* szArgs(void);
     void vDropTaskLock(void);
     void vGrabTaskLock(void);
@@ -58,7 +58,7 @@ namespace PushDown
     void vLabel(Stz* szLabel);
     Stz* szNextLabel(void);
     void vNextLabel(Stz* szNextLabel);
-    void vOpOut(Op* pOpOut, bool bOutQueueA=true);
+    void vOpOut(Op* pOpOut, bool bOutRight=false);
     bool bPause(void);
     void vPipeOut(Operand* pOperand);
     void vPipeOut_endMarker(void);

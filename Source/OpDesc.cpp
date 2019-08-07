@@ -14,7 +14,7 @@ OpDesc::OpDesc(eCN  eClass,     // class number
                Stz* szCommand,  // first word of prompt command
                Stz* szPrefix,   // prefix
                Op*  (*fpNew)(Stz* szLabel,
-                             Digest* pDigest, OpDefn* aOpDefn, bool bOutB,
+                             Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
                              TokenVec* pTknVec, i8& i_Tkn),
                eOR  (*fpCall) (void* aThisOp),  // fun which calls the op loop
                eOR  (*fpDrain)(void* aThisOp),  // fun which calls the drain loop
