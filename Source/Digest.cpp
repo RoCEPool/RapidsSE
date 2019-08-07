@@ -101,7 +101,7 @@ void Digest::vParseCommand(TokenVec* pTknVec)
     }
 
     //! temp
-    bAppendRight = false;
+    //bAppendRight = false;
 
     OpDefn* aOpDefn = gxOpCatalog.aFindOp(sTknStr);
     
@@ -128,8 +128,11 @@ void Digest::vParseCommand(TokenVec* pTknVec)
   for (i8 i_Op = 0; i_Op < m_oOpVec.nItems() - 1; i_Op++) {
     
     Op* pOp = m_oOpVec.pGet(i_Op);
-    Op* pOpNext = (pOp->m_bAppendRight) ? m_oOpVec.pGet(i_Op + 2)
-                                        : m_oOpVec.pGet(i_Op + 1);
+//    Op* pOpNext = (pOp->m_bAppendRight) ? m_oOpVec.pGet(i_Op + 2)
+//                                        : m_oOpVec.pGet(i_Op + 1);
+    Op* pOpNext = m_oOpVec.pGet(i_Op + 1);
+    if (pOpNext->m_bAppendRight)
+      pOpNext = m_oOpVec.pGet(i_Op + 2);
     
     pOp->vNextLabel(pOpNext->szLabel());
     pOp->vOpOut(pOpNext);
@@ -144,13 +147,16 @@ void Digest::vParseCommand(TokenVec* pTknVec)
     
     Op* pOp = m_oOpVec.pGet(i_Op);
     
-    vTrace("  [%02lld] { %6s: %8s(%s) :%-6s %s }\n"_Stz,
+    s32 sArgs;
+    sArgs.vSprint("(%s)"_Stz,pOp->szArgs());
+    
+    vTrace("  [%02lld] { %6s: %8s%-12s :%-6s %s }\n"_Stz,
            i_Op,
            pOp->szLabel(),
            aCN[pOp->eClass()],
-           pOp->szArgs(),
+           sArgs.aStz(),
            pOp->szNextLabel(),
-           pOp->m_bAppendRight ? "outRight"_Stz : "outLeft"_Stz
+           pOp->m_bAppendRight ? "appendRight"_Stz : "appendLeft "_Stz
            );
   }
   

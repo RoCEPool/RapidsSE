@@ -59,7 +59,7 @@ namespace PushDown
     void vLabel(Stz* szLabel);
     Stz* szNextLabel(void);
     void vNextLabel(Stz* szNextLabel);
-    void vOpOut(Op* pOpOut, bool bAppendRight=false);
+    void vOpOut(Op* pOpOut);
     bool bPause(void);
     void vPipeOut(Operand* pOperand);
     void vPipeOut_endMarker(void);

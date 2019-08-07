@@ -309,12 +309,11 @@ void Op::vNextLabel(Stz* szNextLabel)
 /*----------------------------------------------------------------------------*/
 /* set out operator                                                           */
 /*----------------------------------------------------------------------------*/
-void Op::vOpOut(Op* pOpOut, bool bAppendRight)
+void Op::vOpOut(Op* pOpOut)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
   m_pOpOut = pOpOut;
-  m_bAppendRight = false; // bAppendRight;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -345,9 +344,9 @@ void Op::vPipeOut(Operand* pOperand)
          aCN[pOperand->eClass()],
          pOperand);
 
-  if (m_bAppendRight)
-    m_pOpOut->vAppendRight(pOperand);
-  else
+//  if (m_bAppendRight)
+//    m_pOpOut->vAppendRight(pOperand);
+//  else
     m_pOpOut->vAppendLeft(pOperand);
 }
 
