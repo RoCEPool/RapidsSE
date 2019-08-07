@@ -99,7 +99,10 @@ void Digest::vParseCommand(TokenVec* pTknVec)
       bOutB = true;
       continue;
     }
-    
+
+    //! temp
+    bOutB = false;
+
     OpDefn* aOpDefn = gxOpCatalog.aFindOp(sTknStr);
     
     // unknown

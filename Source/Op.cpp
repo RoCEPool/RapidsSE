@@ -157,7 +157,7 @@ void Op::vAppendOperandA(Operand* pOperandA)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-//  vTrace("%s::vAppendOperand : %p %s\n"_Stz,
+//  vTrace("%s::vAppendOperandA : %p %s\n"_Stz,
 //         m_sLabel.aStz(),
 //         pOperand,
 //         aCN[pOperand->eClass()]);
@@ -183,9 +183,7 @@ void Op::vAppendOperandA(Operand* pOperandA)
 void Op::vAppendOperandB(Operand* pOperandB)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  
-  RASSERT(0);
-  
+    
   //  vTrace("%s::vAppendOperand : %p %s\n"_Stz,
   //         m_sLabel.aStz(),
   //         pOperand,
@@ -253,8 +251,6 @@ bool Op::bIsCancelling(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  //  bool bLocked = m_okLock.bIsLocked();
-  
   return m_pDigest->m_bCancelling;
 }
 
@@ -265,8 +261,6 @@ bool Op::bIsLocked(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-//  bool bLocked = m_okLock.bIsLocked();
-
   bool bLocked = AM::bTaskIsLocked(m_pTask);
 
   return bLocked;
@@ -351,10 +345,8 @@ void Op::vPipeOut(Operand* pOperand)
          aCN[pOperand->eClass()],
          pOperand);
 
-  if (m_bOutQueueB) {
-    RASSERT(0);
+  if (m_bOutQueueB)
     m_pOpOut->vAppendOperandB(pOperand);
-  }
   else
     m_pOpOut->vAppendOperandA(pOperand);
 }
@@ -428,13 +420,12 @@ Operand* Op::pPopOperandA(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop operand queue                                                          */
+/* pop operand queue B                                                        */
 /*----------------------------------------------------------------------------*/
 Operand* Op::pPopOperandB(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  RASSERT(0);
   Operand* pOperandB = nullptr;
   
   vGrabTaskLock();
