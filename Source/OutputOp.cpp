@@ -82,7 +82,7 @@ OutputOp::~OutputOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* OutputOp::pNew(Stz* szLabel,
+Op* OutputOp::pNew(Session* pSession, Stz* szLabel,
                    Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
                    TokenVec* pTknVec, i8& i_Tkn_)
 {
@@ -142,13 +142,6 @@ eOR OutputOp::eOpLoop(void)
         goto L_EXIT;
         
       // -- -- -- -- -- --
-        
-      case CN_INTBUFFER: {
-        IntBuffer* pIntBuffer = _pIntBuffer(pOperand) ;
-        pIntBuffer->vShow();
-        vPipeOut(pOperand);
-        break;
-      }
        
       case CN_ENTBUFFER: {
         EntBuffer* pEntBuffer = _pEntBuffer(pOperand) ;
@@ -157,6 +150,19 @@ eOR OutputOp::eOpLoop(void)
         break;
       }
         
+      case CN_INTBUFFER: {
+        IntBuffer* pIntBuffer = _pIntBuffer(pOperand) ;
+        pIntBuffer->vShow();
+        vPipeOut(pOperand);
+        break;
+      }
+      
+      case CN_REFBUFFER: {
+        RefBuffer* pRefBuffer = _pRefBuffer(pOperand) ;
+        pRefBuffer->vShow();
+        vPipeOut(pOperand);
+        break;
+      }
       default:
         vPipeOut(pOperand);
         break;

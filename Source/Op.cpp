@@ -344,9 +344,9 @@ void Op::vPipeOut(Operand* pOperand)
          aCN[pOperand->eClass()],
          pOperand);
 
-//  if (m_bAppendRight)
-//    m_pOpOut->vAppendRight(pOperand);
-//  else
+  if (m_bAppendRight)
+    m_pOpOut->vAppendRight(pOperand);
+  else
     m_pOpOut->vAppendLeft(pOperand);
 }
 

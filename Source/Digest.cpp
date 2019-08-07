@@ -72,7 +72,7 @@ Digest::~Digest(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* process dynamic command                                                    */
 /*----------------------------------------------------------------------------*/
-void Digest::vParseCommand(TokenVec* pTknVec)
+void Digest::vParseCommand(Session* pSession, TokenVec* pTknVec)
 {
   s256 sTknStr;
   s32  sLabel;
@@ -116,7 +116,7 @@ void Digest::vParseCommand(TokenVec* pTknVec)
     sLabel.vSprint("%s_%02lld"_Stz,
                    aOpDefn->m_szPrefix,
                    m_oOpVec.nItems());
-    Op* pOp = (aOpDefn->m_fpNew)(sLabel,this,aOpDefn,bAppendRight,
+    Op* pOp = (aOpDefn->m_fpNew)(pSession, sLabel,this,aOpDefn,bAppendRight,
                                  pTknVec,i_Tkn);
     
     m_oOpVec.vAdd(pOp);

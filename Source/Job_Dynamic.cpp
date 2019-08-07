@@ -148,7 +148,7 @@ void Job_Dynamic::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* populate the job                                                           */
 /*----------------------------------------------------------------------------*/
-bool Job_Dynamic::bPopulateJob(TokenVec* pTokenVec)
+bool Job_Dynamic::bPopulateJob(Session* pSession, TokenVec* pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
   
@@ -166,7 +166,7 @@ bool Job_Dynamic::bPopulateJob(TokenVec* pTokenVec)
 //    return nullptr;
 //  }
 
-  m_pDigest->vParseCommand(pTokenVec);
+  m_pDigest->vParseCommand(pSession, pTokenVec);
   m_pDigest->vSetupJob();
   
   return true;
@@ -245,7 +245,7 @@ Job* Jobs::pJob_Dynamic_pre(Session* pSession)
   
   TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
   
-  bool bResult = pJob_Dynamic->bPopulateJob(pTokenVec);
+  bool bResult = pJob_Dynamic->bPopulateJob(pSession, pTokenVec);
   
   if ( !bResult) {
     pJob_Dynamic->vAddError(EC_INVALID_COMMAND);

@@ -4,6 +4,19 @@
 
 #include "PushDown.h"
 
+OpDesc __Op_Join (
+   CN_JOINOP,          // class number
+   OK_SIMPLE,          // op kind
+   "Join"_Stz,         // first word of prompt command
+   "Joi"_Stz,          // prefix
+   
+   JoinOp::pNew,       // function which parses the command and new's an op
+   JoinOp::eCall,      // function which calls the op loop
+   nullptr,            // function which calls the drain loop
+   
+   "<help>"_Stz
+);
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -33,8 +46,8 @@ void JoinOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-JoinOp::JoinOp(Stz* szOpLabel, Digest* pDigest)
-: Op(CN_JOINOP,szOpLabel,pDigest,nullptr,false)
+JoinOp::JoinOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
+: Op(CN_JOINOP,szOpLabel,pDigest,aOpDefn,bAppR)
 {
   _precondition_(_MAGIC_,CN_JOINOP);
   
@@ -61,13 +74,31 @@ JoinOp::~JoinOp(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* parse & new                                                                */
+/*----------------------------------------------------------------------------*/
+Op* JoinOp::pNew(Session* pSession, Stz* szLabel,
+                 Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
+                 TokenVec* pTknVec, i8& i_Tkn_)
+{
+  i_Tkn_++;
+  
+  JoinOp* pJoinOp = new JoinOp(szLabel,pDigest,aOpDefn,bAppR);
+  
+  return pJoinOp;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* call the join loop function                                                */
 /*----------------------------------------------------------------------------*/
-eOR JoinOp::eCallLoop(void* aThis)
+eOR JoinOp::eCall(void* aThis)
 {
   eOR eCallAgain = ((JoinOp*)aThis)->eJoinLoop();
   
@@ -77,6 +108,44 @@ eOR JoinOp::eCallLoop(void* aThis)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add row refs                                                               */
+/*----------------------------------------------------------------------------*/
+void JoinOp::vAddRowRefs(Ent* aLeftEntry, Ent* aRightEntry)
+{
+  
+  // allot a refSet
+  RefSet* pRefSet = m_pRefBuffer->aAllotRefSet(2);
+  
+  if ( ! pRefSet )  {
+    // Reference Buffer is full
+    
+    // pipe outt the refBuffer
+    vPipeOut(m_pRefBuffer);
+    
+    // create another refBuffer for the refEnt's
+    m_pRefBuffer = new RefBuffer;
+    
+    // insert row from entry in temporary buffer
+    pRefSet = m_pRefBuffer->aAllotRefSet(2);
+    RASSERT(pRefSet);
+  }
+  
+  // get the row buffers
+  CrwBuffer* pLeftCrwBuffer = aLeftEntry ? CrwBuffer::pRefdCrwBuffer(aLeftEntry->xRef()) : nullptr;
+  CrwBuffer* pRightCrwBuffer = aRightEntry ? CrwBuffer::pRefdCrwBuffer(aRightEntry->xRef()) : nullptr;
+  
+  // set the rowRefs
+  Crw* aLeftRowData = aLeftEntry ? pLeftCrwBuffer->pCrw(aLeftEntry->xRef().iItem()) : nullptr;
+  Crw* aRightRowData = aRightEntry ? pRightCrwBuffer->pCrw(aRightEntry->xRef().iItem()) : nullptr;
+  
+  // set the rowData in the refSet
+  pRefSet->vRowRef(0, (i8)aLeftRowData);
+  pRefSet->vRowRef(1, (i8)aRightRowData);
+}
+
+#define TRACE_JOIN
 
 /*----------------------------------------------------------------------------*/
 /* the join operator loop function                                            */
@@ -103,14 +172,12 @@ eOR JoinOp::eJoinLoop(void)
     switch (m_eNextEntry) {
         
       case NE_NEXT_LEFT: // get next left entry
-        if (m_pLeftBuffer) {
-          m_aLeftEntry  = m_pLeftBuffer->aNextEntry(m_aLeftEntry, 0);
-        }
+        m_aLeftEntry  = m_pLeftBuffer ? m_pLeftBuffer->aNextEntry(m_aLeftEntry, 0) : NULL;
         
         while ( ! m_aLeftEntry && ! m_bEndLeftOperands) {
           if (OR_BIDE == ePopLeftOperand())
             return OR_BIDE;
-          m_aLeftEntry  = m_pLeftBuffer->aLeadEntry();
+          m_aLeftEntry  = m_pLeftBuffer ? m_pLeftBuffer->aLeadEntry() : NULL;
         }
       
         // check if it matches a first left
@@ -130,37 +197,35 @@ eOR JoinOp::eJoinLoop(void)
         break;
         
       case NE_NEXT_RIGHT: // get next right entry
-        if (m_pRightBuffer) {
-          m_aRightEntry  = m_pRightBuffer->aNextEntry(m_aRightEntry, 0);
-        }
+        m_aRightEntry  = m_pRightBuffer ? m_pRightBuffer->aNextEntry(m_aRightEntry, 0) : NULL;
         
-        while ( ! m_aLeftEntry && ! m_bEndLeftOperands) {
-          if (OR_BIDE == ePopLeftOperand())
+        while ( ! m_aRightEntry && ! m_bEndRightOperands) {
+          if (OR_BIDE == ePopRightOperand())
             return OR_BIDE;
-          m_aRightEntry  = m_pRightBuffer->aLeadEntry();
+          m_aRightEntry  = m_pRightBuffer ? m_pRightBuffer->aLeadEntry() : NULL;
         }
         break;
         
       case NE_NEXT_LEFT_RIGHT: // get next left and right entry
         
         if (m_pLeftBuffer) {
-          m_aLeftEntry  = m_pLeftBuffer->aNextEntry(m_aLeftEntry, 0);
+          m_aLeftEntry = m_pLeftBuffer->aNextEntry(m_aLeftEntry, 0);
         }
           
         while ( ! m_aLeftEntry && ! m_bEndLeftOperands) {
           if (OR_BIDE == ePopLeftOperand())
             return OR_BIDE;
-          m_aLeftEntry  = m_pLeftBuffer->aLeadEntry();
+          m_aLeftEntry = m_pLeftBuffer ? m_pLeftBuffer->aLeadEntry() : NULL;
         }
           
         if (m_pRightBuffer) {
           m_aRightEntry  = m_pRightBuffer->aNextEntry(m_aRightEntry, 0);
         }
         
-        while ( ! m_aLeftEntry && ! m_bEndLeftOperands) {
-          if (OR_BIDE == ePopLeftOperand())
+        while ( ! m_aRightEntry && ! m_bEndRightOperands) {
+          if (OR_BIDE == ePopRightOperand())
             return OR_BIDE;
-          m_aRightEntry  = m_pRightBuffer->aLeadEntry();
+          m_aRightEntry  = m_pRightBuffer ? m_pRightBuffer->aLeadEntry() : NULL;
         }
         
         break;
@@ -206,7 +271,7 @@ eOR JoinOp::eJoinLoop(void)
         case KC_BEFORE: // leftKey < rightKey
           if ( ! aFirstRightMatch ) {
 #ifdef TRACE_JOIN
-            vTrace("Joining: L(%p) ⋈ R(NULL)\n"_Stz,aLeftEntry);
+            vTrace("Joining: L(%p) ⋈ R(NULL)\n"_Stz,m_aLeftEntry);
 #endif
             vAddRowRefs(m_aLeftEntry, nullptr);
           }
@@ -215,7 +280,7 @@ eOR JoinOp::eJoinLoop(void)
           
         case KC_AFTER:  // leftKey > rightKey
 #ifdef TRACE_JOIN
-          vTrace("Joining: L(NULL) ⋈ R(%p)\n"_Stz,aRightEntry);
+          vTrace("Joining: L(NULL) ⋈ R(%p)\n"_Stz,m_aRightEntry);
 #endif
           vAddRowRefs(m_aLeftEntry, m_aRightEntry);
           m_eNextEntry = NE_NEXT_RIGHT;
@@ -277,7 +342,7 @@ eOR JoinOp::eJoinLoop(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop left operand                                                          */
+/* pop left operand                                                           */
 /*----------------------------------------------------------------------------*/
 eOR JoinOp::ePopLeftOperand()
 {
@@ -294,12 +359,19 @@ eOR JoinOp::ePopLeftOperand()
       return OR_BIDE;
     }
     
+    if (CN_STREAMDEF == pLeftOperand->eClass()) {
+      continue;
+    }
+    
     if (CN_ENDMARKER == pLeftOperand->eClass()) {
       EndMarker* pEndMarker = _pEndMarker(pLeftOperand);
       m_bEndLeftOperands = true;
       delete pEndMarker;
-      break;
+      m_pLeftBuffer = nullptr;
+      return OR_NONE;
     }
+    
+    break;
   }
   
   m_pLeftBuffer = _pEntBuffer(pLeftOperand);
@@ -325,56 +397,25 @@ eOR JoinOp::ePopRightOperand()
       return OR_BIDE;
     }
     
+    if (CN_STREAMDEF == pRightOperand->eClass()) {
+      continue;
+    }
+    
     if (CN_ENDMARKER == pRightOperand->eClass()) {
       EndMarker* pEndMarker = _pEndMarker(pRightOperand);
       m_bEndRightOperands = true;
       delete pEndMarker;
-      break;
+      m_pRightBuffer = nullptr;
+      return OR_NONE;
     }
+    
+    break;
   }
   
   m_pRightBuffer = _pEntBuffer(pRightOperand);
   
   return OR_NONE;
 }
-
-/*----------------------------------------------------------------------------*/
-/* add row refs                                                               */
-/*----------------------------------------------------------------------------*/
-void JoinOp::vAddRowRefs(Ent* aLeftEntry, Ent* aRightEntry)
-{
-  
-  // allot a refSet
-  RefSet* pRefSet = m_pRefBuffer->aAllotRefSet(2);
-  
-  if ( ! pRefSet )  {
-    // Reference Buffer is full
-    
-    // pipe outt the refBuffer
-    vPipeOut(m_pRefBuffer);
-    
-    // create another refBuffer for the refEnt's
-    m_pRefBuffer = new RefBuffer;
-    
-    // insert row from entry in temporary buffer
-    pRefSet = m_pRefBuffer->aAllotRefSet(2);
-    RASSERT(pRefSet);
-  }
-  
-  // get the row buffers
-  CrwBuffer* pLeftCrwBuffer = aLeftEntry ? CrwBuffer::pRefdCrwBuffer(aLeftEntry->xRef()) : nullptr;
-  CrwBuffer* pRightCrwBuffer = aRightEntry ? CrwBuffer::pRefdCrwBuffer(aRightEntry->xRef()) : nullptr;
-  
-  // set the rowRefs
-  Crw* aLeftRowData = aLeftEntry ? pLeftCrwBuffer->pCrw(aLeftEntry->xRef().iItem()) : nullptr;
-  Crw* aRightRowData = aRightEntry ? pRightCrwBuffer->pCrw(aRightEntry->xRef().iItem()) : nullptr;
-  
-  // set the rowData in the refSet
-  pRefSet->vRowRef(0, (i8)aLeftRowData);
-  pRefSet->vRowRef(1, (i8)aRightRowData);
-}
-
-//#define TRACE_JOIN
 
 /*----------------------------------------------------------------------------*/
 /* index join                                                                 */

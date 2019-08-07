@@ -82,7 +82,7 @@ ZedOp::~ZedOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* ZedOp::pNew(Stz* szLabel,
+Op* ZedOp::pNew(Session* pSession, Stz* szLabel,
                 Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
                 TokenVec* pTknVec, i8& i_Tkn_)
 {

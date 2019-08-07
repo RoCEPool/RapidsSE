@@ -21,7 +21,7 @@ namespace PushDown
     LimitOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR);
    ~LimitOp(void) noexcept(false);
   
-    static Op* pNew(Stz* szLabel,
+    static Op* pNew(Session* pSession, Stz* szLabel,
                     Digest* pDigest,  OpDefn* aOpDefn, bool bAppR,
                     TokenVec* pTknVec, i8& i_Tkn_);
     static eOR eCall(void* aThis);

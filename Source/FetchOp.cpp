@@ -60,6 +60,8 @@ FetchOp::FetchOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
   
+  m_pTable     = nullptr;
+  m_pIndex     = nullptr;
   m_pTablePtn  = nullptr;
   m_pEntBuffer = nullptr;
   m_bRunPrelim = true;
@@ -86,7 +88,7 @@ FetchOp::~FetchOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* FetchOp::pNew(Stz* szLabel,
+Op* FetchOp::pNew(Session* pSession, Stz* szLabel,
                   Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
                   TokenVec* pTknVec, i8& i_Tkn_)
 {
@@ -101,6 +103,15 @@ Op* FetchOp::pNew(Stz* szLabel,
   AM::vIndexName((Job_Dynamic*)pDigest->m_pJob,sIndexNm);
   
   pFetchOp->m_sArgs = sTableNm;
+  
+  // find the table in the session dictionary stack
+  pFetchOp->m_pTable = Table::pFindTable(pSession->pPathStack(), sTableNm);
+  
+  // find the index in the session dictionary stack
+  pFetchOp->m_pIndex = Table::pFindIndex(pSession->pPathStack(), sTableNm, sIndexNm);
+  
+  // get table ptn
+  pFetchOp->m_pTablePtn = pFetchOp->m_pTable->pSlots()->pPartition(0);
   
   return pFetchOp;
 }
@@ -178,17 +189,17 @@ void FetchOp::vPreliminary(void)
   m_bRunPrelim = false;
   
   // temp
-  if (! m_pTablePtn) {
-    m_pTablePtn = AM::pTable((Job_Dynamic*)m_pJob)->pSlots()->pPartition(0);
-  }
+  //  if (! m_pTablePtn) {
+  //    m_pTablePtn = AM::pTable((Job_Dynamic*)m_pJob)->pSlots()->pPartition(0);
+  //  }
   
   // pipe StreamDef
-  StreamDef* pStreamDef = AM::pTable((Job_Dynamic*)m_pJob)->pStreamDef();
+  StreamDef* pStreamDef = m_pTable->pStreamDef();
   vPipeOut(pStreamDef);
   
   // get first buffer
-  Index* pIndex = AM::pIndex((Job_Dynamic*)m_pJob);
-  IndexTree* pIndexTree = m_pTablePtn->pIndexTree(pIndex->iIndexNo());
+  IndexTree* pIndexTree = m_pTablePtn->pIndexTree(m_pIndex->iIndexNo());
+  
   m_pEntBuffer = pIndexTree->pFirstH0Buffer();
 }
 

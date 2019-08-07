@@ -8,6 +8,8 @@ namespace PushDown
   class FetchOp : public Op
   {
   private:
+    Table*     m_pTable;
+    Index*     m_pIndex;
     TablePtn*  m_pTablePtn;
     EntBuffer* m_pEntBuffer;
   
@@ -23,7 +25,7 @@ namespace PushDown
     FetchOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR);
    ~FetchOp(void) noexcept(false);
 
-    static Op* pNew(Stz* szLabel,
+    static Op* pNew(Session* pSession, Stz* szLabel,
                     Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
                     TokenVec* pTknVec, i8& i_Tkn_);
     static eOR eCall(void* aThis);

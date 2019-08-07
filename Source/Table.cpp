@@ -134,6 +134,28 @@ void Table::vFinalize(eCN eClass, Object* pObject)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find index                                                                 */
+/*----------------------------------------------------------------------------*/
+Index* Table::pFindIndex(DicStack* pDicStack, Stz* aTableNm, Stz* aIndexNm)
+{
+  Dic* pDic = pDicStack->pTop();
+  
+  ForthWord* pTableDicWord = pDic->pFindWord(aTableNm);
+  
+  Dic* pTableDic = _pDic(pTableDicWord->aWspArea());
+
+  ForthWord* pIndexesDicWord = pTableDic->pFindWord("Indexes"_Stz);
+  
+  Dic* pIndexesDic = _pDic(pIndexesDicWord->aWspArea());
+  
+  ForthWord* pIndexDicWord = pIndexesDic->pFindWord(aIndexNm);
+  
+  Index* pIndex = _pIndex(pIndexDicWord->aWspArea());
+  
+  return pIndex;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find table                                                                 */
 /*----------------------------------------------------------------------------*/
 Table* Table::pFindTable(DicStack* pDicStack, Stz* aTableNm)
@@ -143,7 +165,7 @@ Table* Table::pFindTable(DicStack* pDicStack, Stz* aTableNm)
   ForthWord* pTableDicWord = pDic->pFindWord(aTableNm);
   
   Dic* pTableDic = _pDic(pTableDicWord->aWspArea());
-
+  
   ForthWord* pTableWord = pTableDic->pFindWord(aTableNm);
   
   Table* pTable = _pTable(pTableWord->aWspArea());

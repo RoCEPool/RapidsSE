@@ -29,10 +29,13 @@ namespace PushDown
     void* operator new(size_t);
     void  operator delete(void*);
     
-    JoinOp(Stz* szOpLabel, Digest* pDigest);
+    JoinOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR);
    ~JoinOp(void) noexcept(false);
   
-    static eOR  eCallLoop(void* aThis);
+    static Op* pNew(Session* pSession, Stz* szLabel,
+                    Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
+                    TokenVec* pTknVec, i8& i_Tkn_);
+    static eOR  eCall(void* aThis);
     
   private:
     void vAddRowRefs(Ent* aLeftEntry, Ent* aRightEntry);

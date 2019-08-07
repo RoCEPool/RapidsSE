@@ -13,7 +13,8 @@ OpDesc::OpDesc(eCN  eClass,     // class number
                eOK  eKind,      // op kind
                Stz* szCommand,  // first word of prompt command
                Stz* szPrefix,   // prefix
-               Op*  (*fpNew)(Stz* szLabel,
+               Op*  (*fpNew)(Session* pSession,
+                             Stz* szLabel,
                              Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
                              TokenVec* pTknVec, i8& i_Tkn),
                eOR  (*fpCall) (void* aThisOp),  // fun which calls the op loop
