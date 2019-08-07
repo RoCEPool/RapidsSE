@@ -847,7 +847,7 @@ void Engine::vStartSystem(void)
   
   // initialize the plan number
   gpAttachMap->m_inNextPlanId.vNodeNo(AM::pGrid()->iThisNode());
-  gpAttachMap->m_ixNextStreamId = AM::pGrid()->iThisNode() << 48;
+  gpAttachMap->m_inNextStreamId.vNodeNo(AM::pGrid()->iThisNode());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
