@@ -22,7 +22,7 @@ namespace Jobs          { class Job; struct JobClass;  class JobList;
                                      class Job_CreateTable;
                                      class Job_CreateIndex;
                                      class Job_Dynamic;                       }
-namespace Library       { class Lock; class LockTracker;                      }
+namespace Locking       { class Lock; class LockTracker;                      }
 namespace Logging       { class LogEntry;                                     }
 namespace MetaData      { class Table; class Index;                           }
 namespace Measurement   { class StepTiming;                                   }
@@ -65,7 +65,7 @@ using namespace Grids;
 using namespace Indexes;
 using namespace Interface;
 using namespace Jobs;
-using namespace Library;
+using namespace Locking;
 using namespace Logging;
 using namespace MetaData;
 using namespace Measurement;

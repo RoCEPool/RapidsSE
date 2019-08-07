@@ -3,9 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-#include "Library.h"
+#include "Locking.h"
 
-namespace Library
+namespace Locking
 {
   class LockTracker
   {

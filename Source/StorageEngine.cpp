@@ -20,7 +20,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   Correctness::vCheckAssumptions();
   Enums::vCheckAssumptions();
   ClassData::vCheckAssumptions();
-  Library::vCheckAssumptions();
+  Locking::vCheckAssumptions();
   Alignment::vCheckAssumptions();
   Pool::vCheckAssumptions();
   System::vCheckAssumptions();

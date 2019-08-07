@@ -2,7 +2,7 @@
 /* Lock.cpp -- Shared Read / Exclusive Write Lock                             */
 /*============================================================================*/
 
-#include "Library.h"
+#include "Locking.h"
 #include "AM.hpp"
 
 #include "Timer.hpp"
@@ -14,7 +14,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Lock* Library::_pLock(void* aAddr)
+Lock* Locking::_pLock(void* aAddr)
 {
   Lock* pLock = reinterpret_cast<Lock*>(aAddr);
   
