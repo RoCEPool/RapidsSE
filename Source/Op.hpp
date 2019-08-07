@@ -24,10 +24,12 @@ namespace PushDown
     i8             m_iWorkQuanta;    // quanta of work between pulses
     i8             m_iWorkDone;      // work done
 
-    OperandQueue*  m_pOperandQueue;  // the input queue being processed
-    OperandQueue*  m_pOperandQueue2; // the input queue being processed
-    Op*            m_pOpOut;         // where results get piped (queued)
-
+    OperandQueue*  m_pOperandQueueA; // the input queue being processed
+    OperandQueue*  m_pOperandQueueB; // the input queue being processed
+  
+    Op*            m_pOpOut;         // where results get piped
+    bool           m_bOutQueueA;     //
+  
     eOR (*m_fpCall) (void* aThisOp);  // function which calls the op loop
     eOR (*m_fpDrain)(void* aThisOp);  // function which calls the drain loop
 
@@ -45,7 +47,8 @@ namespace PushDown
     // - - - - - - - - - - - - - - - -
     void vAckJob(void);
     void vAckJobEnd(bool m_bAckJobEnd);
-    void vAppendOperand(Operand* pOperand);
+    void vAppendOperandA(Operand* pOperandA);
+    void vAppendOperandB(Operand* pOperandB);
     Stz* szArgs(void);
     void vDropTaskLock(void);
     void vGrabTaskLock(void);
@@ -55,11 +58,13 @@ namespace PushDown
     void vLabel(Stz* szLabel);
     Stz* szNextLabel(void);
     void vNextLabel(Stz* szNextLabel);
-    void vOpOut(Op* pOpOut);
+    void vOpOut(Op* pOpOut, bool bOutQueueA=true);
     bool bPause(void);
     void vPipeOut(Operand* pOperand);
     void vPipeOut_endMarker(void);
     Operand* pPopOperand(void);
+    Operand* pPopOperandA(void);
+    Operand* pPopOperandB(void);
     bool bIsCancelling(void);
     Task* pTask(void);
     void vTask(Task* pTask);

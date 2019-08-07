@@ -54,9 +54,11 @@ Op::Op(eCN eClassNo, Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn)
   m_iWorkQuanta   = 1;
   m_iWorkDone     = 0;
 
-  m_pOperandQueue  = new OperandQueue;
-  m_pOperandQueue2 = nullptr;
+  m_pOperandQueueA = new OperandQueue;
+  m_pOperandQueueB = new OperandQueue;
+  
   m_pOpOut         = nullptr;
+  m_bOutQueueA         = true;
 
   m_fpCall         = m_aOpDefn ? m_aOpDefn->m_fpCall  : nullptr;
   m_fpDrain        = m_aOpDefn ? m_aOpDefn->m_fpDrain : nullptr;
@@ -69,7 +71,8 @@ Op::~Op(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  delete m_pOperandQueue;
+  delete m_pOperandQueueA;
+  delete m_pOperandQueueB;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -150,7 +153,7 @@ void Op::vAckJobEnd(bool bAckJobEnd)
 /*----------------------------------------------------------------------------*/
 /* append operand to this op's operand queue                                  */
 /*----------------------------------------------------------------------------*/
-void Op::vAppendOperand(Operand* pOperand)
+void Op::vAppendOperandA(Operand* pOperandA)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -161,7 +164,34 @@ void Op::vAppendOperand(Operand* pOperand)
   
   vGrabTaskLock();
   
-  m_pOperandQueue->vAppendOperand(pOperand);
+  m_pOperandQueueA->vAppendOperand(pOperandA);
+
+  if (TS_BIDING != (eTS)AM::iTaskState(m_pTask)) {
+    vDropTaskLock();
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // trigger this biding op
+  AM::vTriggerBidingTask(m_pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append operand to this op's operand queue                                  */
+/*----------------------------------------------------------------------------*/
+void Op::vAppendOperandB(Operand* pOperandB)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  //  vTrace("%s::vAppendOperand : %p %s\n"_Stz,
+  //         m_sLabel.aStz(),
+  //         pOperand,
+  //         aCN[pOperand->eClass()]);
+  
+  vGrabTaskLock();
+  
+  m_pOperandQueueB->vAppendOperand(pOperandB);
   
   if (TS_BIDING != (eTS)AM::iTaskState(m_pTask)) {
     vDropTaskLock();
@@ -283,11 +313,12 @@ void Op::vNextLabel(Stz* szNextLabel)
 /*----------------------------------------------------------------------------*/
 /* set out operator                                                           */
 /*----------------------------------------------------------------------------*/
-void Op::vOpOut(Op* pOpOut)
+void Op::vOpOut(Op* pOpOut, bool bOutQueueA)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
   m_pOpOut = pOpOut;
+  m_bOutQueueA = bOutQueueA;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -318,7 +349,10 @@ void Op::vPipeOut(Operand* pOperand)
          aCN[pOperand->eClass()],
          pOperand);
 
-  m_pOpOut->vAppendOperand(pOperand);
+  if (m_bOutQueueA)
+    m_pOpOut->vAppendOperandA(pOperand);
+  else
+    m_pOpOut->vAppendOperandB(pOperand);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -344,7 +378,7 @@ Operand* Op::pPopOperand(void)
   
   vGrabTaskLock();
   
-  pOperand = m_pOperandQueue->pPopOperand();
+  pOperand = m_pOperandQueueA->pPopOperand();
   
   if (pOperand)
     vDropTaskLock();
@@ -359,6 +393,62 @@ Operand* Op::pPopOperand(void)
   }
   
   return pOperand;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop operand queue A                                                        */
+/*----------------------------------------------------------------------------*/
+Operand* Op::pPopOperandA(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  Operand* pOperandA = nullptr;
+  
+  vGrabTaskLock();
+  
+  pOperandA = m_pOperandQueueA->pPopOperand();
+  
+  if (pOperandA)
+    vDropTaskLock();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (pOperandA) {
+    vTrace("%s::pPopOperandA : %s %p\n"_Stz,
+           m_sLabel.aStz(),
+           aCN[pOperandA->eClass()],
+           pOperandA);
+  }
+  
+  return pOperandA;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop operand queue                                                          */
+/*----------------------------------------------------------------------------*/
+Operand* Op::pPopOperandB(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  Operand* pOperandB = nullptr;
+  
+  vGrabTaskLock();
+  
+  pOperandB = m_pOperandQueueB->pPopOperand();
+  
+  if (pOperandB)
+    vDropTaskLock();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (pOperandB) {
+    vTrace("%s::pPopOperandB : %s %p\n"_Stz,
+           m_sLabel.aStz(),
+           aCN[pOperandB->eClass()],
+           pOperandB);
+  }
+  
+  return pOperandB;
 }
 
 /*----------------------------------------------------------------------------*/
