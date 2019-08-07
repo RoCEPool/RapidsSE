@@ -108,6 +108,7 @@ void Digest::vParseCommand(TokenVec* pTknVec)
     // unknown
     if (! aOpDefn) {
       vTrace(" ? %s\n"_Stz,sTknStr.aStz());
+      ASSERT(0);
       i_Tkn++;
       continue;
     }
