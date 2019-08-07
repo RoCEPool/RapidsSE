@@ -8,10 +8,11 @@ namespace Resources
   class Resource : public Object
   {
   private:
+    i8 m_iResId; // resource id
 
   public:
-     Resource(eCN eClass);
-    ~Resource(void) noexcept(false);
+    Resource(eCN eClass);
+   ~Resource(void) noexcept(false);
   };
   
   Resource* _pResource(void* aAddr);

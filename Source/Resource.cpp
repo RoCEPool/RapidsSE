@@ -27,6 +27,8 @@ Resource::Resource(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
+  m_iResId = AM::iNextResourceId();
+  
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);  
 }
 
