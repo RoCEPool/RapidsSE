@@ -72,6 +72,8 @@ query lineitem;
 
 dynamic scan lineitem | limit 2 | output | zed;
 
+//dynamic fetch lineitem idx || fetch orders idx | output | zed;
+
 logWrite;
 
 /*
