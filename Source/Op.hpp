@@ -53,6 +53,7 @@ namespace PushDown
     void vDropTaskLock(void);
     void vGrabTaskLock(void);
     void vIncWorkDone(void);
+    bool bIsCancelling(void);
     bool bIsLocked(void);
     Stz* szLabel(void);
     void vLabel(Stz* szLabel);
@@ -65,7 +66,6 @@ namespace PushDown
     Operand* pPopQueue(void);
     Operand* pPopQueueLeft(void);
     Operand* pPopQueueRight(void);
-    bool bIsCancelling(void);
     Task* pTask(void);
     void vTask(Task* pTask);
     void vWorkQuanta(i8 iWorkQuanta);

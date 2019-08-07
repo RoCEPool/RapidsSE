@@ -398,25 +398,25 @@ Operand* Op::pPopQueueLeft(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Operand* pOperandA = nullptr;
+  Operand* pOperand = nullptr;
   
   vGrabTaskLock();
   
-  pOperandA = m_pQueueLeft->pPopQueue();
+  pOperand = m_pQueueLeft->pPopQueue();
   
-  if (pOperandA)
+  if (pOperand)
     vDropTaskLock();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (pOperandA) {
+  if (pOperand) {
     vTrace("%s::pPopQueueLeft : %s %p\n"_Stz,
            m_sLabel.aStz(),
-           aCN[pOperandA->eClass()],
-           pOperandA);
+           aCN[pOperand->eClass()],
+           pOperand);
   }
   
-  return pOperandA;
+  return pOperand;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -426,25 +426,25 @@ Operand* Op::pPopQueueRight(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Operand* pOperandB = nullptr;
+  Operand* pOperand = nullptr;
   
   vGrabTaskLock();
   
-  pOperandB = m_pQueueRight->pPopQueue();
+  pOperand = m_pQueueRight->pPopQueue();
   
-  if (pOperandB)
+  if (pOperand)
     vDropTaskLock();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (pOperandB) {
+  if (pOperand) {
     vTrace("%s::pPopQueueRight : %s %p\n"_Stz,
            m_sLabel.aStz(),
-           aCN[pOperandB->eClass()],
-           pOperandB);
+           aCN[pOperand->eClass()],
+           pOperand);
   }
   
-  return pOperandB;
+  return pOperand;
 }
 
 /*----------------------------------------------------------------------------*/
