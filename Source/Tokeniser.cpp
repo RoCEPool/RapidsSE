@@ -1194,13 +1194,13 @@ bool Tokeniser::bIsMinus(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test for an 'x' or 'X'                                                     */
+/* test for a pipe sign                                                       */
 /*----------------------------------------------------------------------------*/
-bool Tokeniser::bIsX(void)
+bool Tokeniser::bIsPipe(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if ('x' == m_cParsedChar || 'X' == m_cParsedChar)
+  if ('|' == m_cParsedChar)
     return true;
   
   return false;
@@ -1214,6 +1214,19 @@ bool Tokeniser::bIsWhite(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   if (StrLib::bIsWhite(m_cParsedChar))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for an 'x' or 'X'                                                     */
+/*----------------------------------------------------------------------------*/
+bool Tokeniser::bIsX(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  if ('x' == m_cParsedChar || 'X' == m_cParsedChar)
     return true;
   
   return false;

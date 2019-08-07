@@ -91,6 +91,11 @@ void Digest::vParseCommand(TokenVec* pTknVec)
       continue;
     }
     
+    if (sTknStr.bSame("||"_Stz)) {
+      i_Tkn++;
+      continue;
+    }
+    
     OpDefn* aOpDefn = gxOpCatalog.aFindOp(sTknStr);
     
     // unknown

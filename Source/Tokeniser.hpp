@@ -93,8 +93,9 @@ namespace Commands
     bool bIsLessThan(void);
     bool bIsGreaterThan(void);
     bool bIsMinus(void);
-    bool bIsX(void);
+    bool bIsPipe(void);
     bool bIsWhite(void);
+    bool bIsX(void);
 
     void vGetNext(void);
     void vGetNextStripped(void);
