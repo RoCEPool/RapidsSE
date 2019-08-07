@@ -56,7 +56,7 @@ namespace StorageEngine
     Atomic        m_ixNextDiagram;
     NextId        m_inNextJobId;
     Atomic        m_ixNextMonitor;
-    Atomic        m_ixNextPlanId;
+    NextId        m_inNextPlanId;
     Atomic        m_ixNextStreamId;
     Queues*       m_pQueues;
     i8            m_iQuit;
