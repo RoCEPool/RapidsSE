@@ -3,10 +3,8 @@
 /*============================================================================*/
 #pragma once
 
-namespace System
+namespace Tasks
 {
-  class Time;
-  
   class Sleep : public Object
   {
   public:
