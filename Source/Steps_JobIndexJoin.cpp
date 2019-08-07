@@ -246,7 +246,7 @@ void Step::vJob_SubIndexJoinIndexJoin(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // execute the index join on the two tables
-  JoinOp::vIndexJoin(pQueue, pLeftIndexTree, pRightIndexTree);
+  //JoinOp::vIndexJoin(pQueue, pLeftIndexTree, pRightIndexTree);
   
   EXIT();
 }
