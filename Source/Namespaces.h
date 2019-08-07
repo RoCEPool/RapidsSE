@@ -14,6 +14,7 @@ namespace Correctness   {                                                     }
 namespace Debugging     {                                                     }
 namespace Enums         {                                                     }
 namespace Forth         { class Cell; class Dic; class ForthWord;             }
+namespace Gadgets       {                                                     }
 namespace Grids         { class Grid; class Node;                             }
 namespace Indexes       { class IndexTree;                                    }
 namespace Interface     { class ApiState;                                     }
@@ -59,6 +60,7 @@ using namespace Correctness;
 using namespace Debugging;
 using namespace Enums;
 using namespace Forth;
+using namespace Gadgets;
 using namespace Grids;
 using namespace Indexes;
 using namespace Interface;

@@ -24,6 +24,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   Alignment::vCheckAssumptions();
   Pool::vCheckAssumptions();
   System::vCheckAssumptions();
+  Gadgets::vCheckAssumptions();
   Resources::vCheckAssumptions();
   Persistence::vCheckAssumptions();
   Structures::vCheckAssumptions();

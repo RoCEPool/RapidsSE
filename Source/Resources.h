@@ -3,9 +3,10 @@
 /*============================================================================*/
 #pragma once
 
-#include "System.h"
+#include "Gadgets.h"
 
 //------------------------------------------------------------------------------
+
 namespace Resources
 {
   void vCheckAssumptions(void);
