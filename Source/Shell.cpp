@@ -2,7 +2,7 @@
 /* Shell.cpp -- shell commands                                                */
 /*============================================================================*/
 
-#include "System.h"
+#include "Host.h"
 
 /*----------------------------------------------------------------------------*/
 /* iExecute: execute shell command (returns exit code)                        */
