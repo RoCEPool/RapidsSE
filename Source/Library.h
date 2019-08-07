@@ -17,7 +17,6 @@ namespace Library
 #include "AM.hpp"
 
 
-#include "IntLib.hpp"
 #include "Lock.hpp"
 #include "LockTracker.hpp"
 

@@ -14,6 +14,7 @@ namespace System
 
 //-----------------------------------------------------------------------------
 
+#include "IntLib.hpp"
 #include "Dtm.hpp"
 
 #include "Compress.hpp"
