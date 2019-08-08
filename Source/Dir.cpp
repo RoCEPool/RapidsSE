@@ -180,9 +180,11 @@ void Dir::vClose(void)
     return;
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   if (AM::bAttached()) AM::pResourceTracker()->vDecDirOpen();
   
-  AM::vLogRes(m_iResId,RK_DIR,RA_NONE,
+  AM::vLogRes(m_iResId,RK_DIR,RA_DIR_CLOSE,
               "Dir closed : %s"_Stz,m_sDirPath.aStz());
 
   m_aDir = nullptr;
@@ -255,10 +257,12 @@ bool Dir::bOpen(Stz* aDirPath)
     vWarn("Dir::bOpen: opendir() error; errno=%d"_Stz,errno);
     return false;
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (AM::bAttached()) AM::pResourceTracker()->vIncDirOpen();
   
-  AM::vLogRes(m_iResId,RK_DIR,RA_NONE,
+  AM::vLogRes(m_iResId,RK_DIR,RA_DIR_OPEN,
               "Dir opened : %s"_Stz,aDirPath);
 
   ASSERT(bIsOpen());
