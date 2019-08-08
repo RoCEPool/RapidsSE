@@ -68,7 +68,7 @@ time fetch lineitem noPrint;
 
 //compactidx LineItem LineItem_Idx1;
 
-query lineitem;
+//query lineitem;
 
 dynamic scan lineitem | limit 2 | output | zed;
 

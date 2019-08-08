@@ -151,7 +151,7 @@ void Log::vNote(Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  gpLog->iAddNoteTxt(szFormat,xVaArgs);
+  gpLog->iAddNoteInf(szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif
@@ -377,20 +377,46 @@ i8 Log::iAddNoteArg(i8 iJobId, i8 iForeign, Stz* aFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
+  LogEntry* pLogEntry = pNewEntry();
+  
+  if (! pLogEntry)
+    return C_UNKNOWN;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   char caMark[1024];
   
   vsnprintf(caMark,sizeof(caMark)-1,aFormat->aChar(),xVaArgs);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  pLogEntry->m_xJob.vSet(pLogEntry,iJobId,iForeign,caMark);
+
+  return pLogEntry->m_i_Entry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a information log entry                                                */
+/*----------------------------------------------------------------------------*/
+i8 Log::iAddNoteInf(Stz* szFormat, va_list xVaArgs)
+{
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
+  
   LogEntry* pLogEntry = pNewEntry();
   
   if (! pLogEntry)
     return C_UNKNOWN;
   
-  //pLogEntry->vSet(C_JOB_GROUP,iJobId,iForeign,caMark);
-  pLogEntry->m_xJob.vSet(pLogEntry,iJobId,iForeign,caMark);
-
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  char caMark[1024];
+  
+  vsnprintf(caMark,sizeof(caMark)-1,szFormat->aChar(),xVaArgs);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  pLogEntry->m_xInf.vSet(pLogEntry,caMark);
+  
   return pLogEntry->m_i_Entry;
 }
 
@@ -417,16 +443,20 @@ i8 Log::iAddNoteRes(eSR eSysRes, Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
+  LogEntry* pLogEntry = pNewEntry();
+  
+  if (! pLogEntry)
+    return C_UNKNOWN;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   char caMark[1024];
   
   vsnprintf(caMark,sizeof(caMark)-1,szFormat->aChar(),xVaArgs);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  LogEntry* pLogEntry = pNewEntry();
-  
-  if (! pLogEntry)
-    return C_UNKNOWN;
+  StrLib::vCopyLen(pLogEntry->m_caText,caMark,C_LOG_TEXT - 1);
   
   pLogEntry->m_xRes.vSet(pLogEntry,eSysRes,caMark);
   
@@ -434,27 +464,7 @@ i8 Log::iAddNoteRes(eSR eSysRes, Stz* szFormat, va_list xVaArgs)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add a text log entry                                                       */
 /*----------------------------------------------------------------------------*/
-i8 Log::iAddNoteTxt(Stz* szFormat, va_list xVaArgs)
-{
-  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
-  
-  char caMark[1024];
-  
-  vsnprintf(caMark,sizeof(caMark)-1,szFormat->aChar(),xVaArgs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  LogEntry* pLogEntry = pNewEntry();
-  
-  if (! pLogEntry)
-    return C_UNKNOWN;
-  
-  pLogEntry->m_xInf.vSet(pLogEntry,caMark);
-  
-  return pLogEntry->m_i_Entry;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get a new mark in Log                                                      */

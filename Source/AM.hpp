@@ -137,8 +137,8 @@ namespace StorageEngine
     static bool bSpawnJob(Session* pSession, Job* pJob, i8 iSeed);
     static bool bSpawnOp(Session* pSession, Op* pOp);
     static void vStateDiagram(s256& sDiagram, eCN eJobClass);
+    static void vNoteInf(Stz* szFormat, ...);
     static void vNoteRes(eSR eSysRes,Stz* szFormat, ...);
-    static void vNoteTxt(Stz* szFormat, ...);
     static void vWriteTrace(Stz* aFormat, va_list xArgs);
   };
 }

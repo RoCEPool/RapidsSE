@@ -350,7 +350,7 @@ void AM::vNoteRes(eSR eSysRes,Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a text log entry                                                       */
 /*----------------------------------------------------------------------------*/
-void AM::vNoteTxt(Stz* szFormat, ...)
+void AM::vNoteInf(Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -360,7 +360,7 @@ void AM::vNoteTxt(Stz* szFormat, ...)
   
   va_start(xArgs,szFormat);
   
-  gpLog->iAddNoteTxt(szFormat,xArgs);
+  gpLog->iAddNoteInf(szFormat,xArgs);
   
   va_end(xArgs);
 #endif

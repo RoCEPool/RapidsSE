@@ -52,7 +52,7 @@ namespace Logging
     i8   iAddNoteJob(i8 iJobId, i8 iForeign,
                      Stz* aFormat, ...);
     i8   iAddNoteRes(eSR eSysRes, Stz* szFormat, va_list xArgs);
-    i8   iAddNoteTxt(Stz* szFormat, va_list xArgs);
+    i8   iAddNoteInf(Stz* szFormat, va_list xArgs);
     LogEntry* pNewEntry(void);
     LogEntry* pNewEntry_NL(void);
     void vFindRange_NL(i8& i_MinEntry, i8& i_MaxEntry);
