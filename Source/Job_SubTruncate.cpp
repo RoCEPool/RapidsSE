@@ -8,7 +8,7 @@ JobClass xJobClass_SubTruncate =
 {
   CN_JOB_SUBTRUNCATE,        // class number
   JK_CHILD,                  // job kind
-  RK_NODE_ERRORS,            // response kind
+  RS_NODE_ERRORS,            // response kind
   "table sub-truncate"_Stz,  // comment about the job
   nullptr,                   // the prompt command
   nullptr,                   // the second word

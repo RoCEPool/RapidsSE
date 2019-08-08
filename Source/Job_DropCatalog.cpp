@@ -9,7 +9,7 @@ JobClass xJobClass_DropCatalog =
 {
   CN_JOB_DROPCATALOG,      // class number
   JK_DIST2PC,              // job kind
-  RK_NODE_ZERO,            // response kind
+  RS_NODE_ZERO,            // response kind
   "drop catalog"_Stz,      // comment about the job
   "drop"_Stz,              // the prompt command
   "catalog"_Stz,           // the second word

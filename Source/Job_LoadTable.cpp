@@ -8,7 +8,7 @@ JobClass xJobClass_LoadTable =
 {
   CN_JOB_LOADTABLE,       // class number
   JK_DIST2PC,             // job kind
-  RK_LOAD_ROWS,           // response kind
+  RS_LOAD_ROWS,           // response kind
   "load table"_Stz,       // comment about the job
   "ld"_Stz,               // the prompt command
   nullptr,                // the second word

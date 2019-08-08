@@ -8,7 +8,7 @@ JobClass xJobClass_Start =
 {
   CN_JOB_START,       // class number
   JK_SERVICE,          // job kind
-  RK_NONE,            // response kind
+  RS_NONE,            // response kind
   "system start"_Stz, // comment about the job
   nullptr,            // the prompt command
   nullptr,            // the second word

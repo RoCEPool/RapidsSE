@@ -8,7 +8,7 @@ JobClass xJobClass_SizeIndex =
 {
   CN_JOB_SIZEINDEX,      // class number
   JK_DIST2PC,            // job kind
-  RK_NODE_ROWS,          // response kind
+  RS_NODE_ROWS,          // response kind
   "size of index"_Stz,   // comment about the job
   "szidx"_Stz,           // the prompt command
   nullptr,               // the second word

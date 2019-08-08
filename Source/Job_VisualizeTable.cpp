@@ -8,7 +8,7 @@ JobClass xJobClass_VisualizeTable =
 {
   CN_JOB_VISUALIZETABLE,      // class number
   JK_LOCAL,                   // job kind
-  RK_LOCAL_ERRORS,            // response kind
+  RS_LOCAL_ERRORS,            // response kind
   "visualize table"_Stz,      // comment about the job
   "vistbl"_Stz,               // the prompt command
   nullptr,                    // the second word

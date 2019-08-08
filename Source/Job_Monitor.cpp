@@ -8,7 +8,7 @@ JobClass xJobClass_Monitor =
 {
   CN_JOB_MONITOR,       // class number
   JK_LOCAL,             // job kind
-  RK_NONE,              // response kind
+  RS_NONE,              // response kind
   "monitor system"_Stz, // comment about the job
   "monitor"_Stz,        // the prompt command
   nullptr,              // the second word

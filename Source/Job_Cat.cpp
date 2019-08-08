@@ -8,7 +8,7 @@ JobClass xJobClass_Cat =
 {
   CN_JOB_CAT,         // class number
   JK_LOCAL,           // job kind
-  RK_NONE,            // response kind
+  RS_NONE,            // response kind
   "cat data"_Stz,     // comment about the job
   "cat"_Stz,          // the prompt command
   nullptr,            // the second word

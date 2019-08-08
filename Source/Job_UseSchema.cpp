@@ -8,7 +8,7 @@ JobClass xJobClass_UseSchema =
 {
   CN_JOB_USESCHEMA,      // class number
   JK_LOCAL,              // job kind
-  RK_LOCAL_ERRORS,       // response kind
+  RS_LOCAL_ERRORS,       // response kind
   "use schema"_Stz,      // comment about the job
   "use"_Stz,             // the prompt command
   "schema"_Stz,          // the second word

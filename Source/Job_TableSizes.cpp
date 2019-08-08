@@ -8,7 +8,7 @@ JobClass xJobClass_TableSizes =
 {
   CN_JOB_TABLESIZES,     // class number
   JK_DIST2PC,            // job kind
-  RK_NODE_ROWS,          // response kind
+  RS_NODE_ROWS,          // response kind
   "table sizes"_Stz,     // comment about the job
   "tableSizes"_Stz,      // the prompt command
   nullptr,               // the second word

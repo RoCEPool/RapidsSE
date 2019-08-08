@@ -8,7 +8,7 @@ JobClass xJobClass_SubPurger =
 {
   CN_JOB_SUBPURGER,       // class number
   JK_CHILD,               // job kind
-  RK_NODE_ERRORS,         // response kind
+  RS_NODE_ERRORS,         // response kind
   "table sub-purger"_Stz, // comment about the job
   "_SUBPURGER"_Stz,       // the prompt command
   nullptr,                // the second word

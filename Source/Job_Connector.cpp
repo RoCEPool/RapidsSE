@@ -8,7 +8,7 @@ JobClass xJobClass_Connector =
 {
   CN_JOB_CONNECTOR,       // class number
   JK_SERVICE,              // job kind
-  RK_NONE,                // response kind
+  RS_NONE,                // response kind
   "socket connector"_Stz, // comment about the job
   nullptr,                // the prompt command
   nullptr,                // the second word

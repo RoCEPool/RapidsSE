@@ -514,15 +514,15 @@ void Jobs::vJob_post(Session* pSession, Job* pJob)
   
   switch (pJob->m_pJobClass->m_eResponse) {
       
-    case RK_NONE         : /* do nothing */            break;
-    case RK_DATA_ROWS    : RASSERT(0);                 break;
-    case RK_LOAD_ROWS    : pJob->vPrintLoadRows();     break;
-    case RK_LOCAL_ERRORS : pJob->vPrintLocalErrors();  break;
-    case RK_LOCAL_ROWS   : pJob->vPrintLocalRows();    break;
-    case RK_LOCAL_ZERO   : pJob->vPrintLocalZero();    break;
-    case RK_NODE_ERRORS  : pJob->vPrintNodeErrors();   break;
-    case RK_NODE_ROWS    : pJob->vPrintNodeRows();     break;
-    case RK_NODE_ZERO    : pJob->vPrintNodeZero();     break;
+    case RS_NONE         : /* do nothing */            break;
+    case RS_DATA_ROWS    : RASSERT(0);                 break;
+    case RS_LOAD_ROWS    : pJob->vPrintLoadRows();     break;
+    case RS_LOCAL_ERRORS : pJob->vPrintLocalErrors();  break;
+    case RS_LOCAL_ROWS   : pJob->vPrintLocalRows();    break;
+    case RS_LOCAL_ZERO   : pJob->vPrintLocalZero();    break;
+    case RS_NODE_ERRORS  : pJob->vPrintNodeErrors();   break;
+    case RS_NODE_ROWS    : pJob->vPrintNodeRows();     break;
+    case RS_NODE_ZERO    : pJob->vPrintNodeZero();     break;
       
     default:
       vTrace("Invalid response in job %s : %s\n"_Stz,

@@ -8,7 +8,7 @@ JobClass xJobClass_AnalyzeTable =
 {
   CN_JOB_ANALYZETABLE,       // class number
   JK_DIST2PC,                // job kind
-  RK_NODE_ROWS,              // response kind
+  RS_NODE_ROWS,              // response kind
   "analyze table"_Stz,       // comment about the job
   "antbl"_Stz,               // the prompt command
   nullptr,                   // the second word

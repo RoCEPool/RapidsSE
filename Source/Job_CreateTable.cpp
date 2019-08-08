@@ -8,7 +8,7 @@ JobClass xJobClass_CreateTable =
 {
   CN_JOB_CREATETABLE,     // class number
   JK_DIST2PC,             // job kind
-  RK_NODE_ZERO,           // response kind
+  RS_NODE_ZERO,           // response kind
   "create table"_Stz,     // comment about the job
   "create"_Stz,           // the prompt command
   "table"_Stz,            // the second word

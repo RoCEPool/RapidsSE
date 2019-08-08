@@ -8,7 +8,7 @@ JobClass xJobClass_InsertRow =
 {
   CN_JOB_INSERTROW,       // class number
   JK_DIST2PC,             // job kind
-  RK_NODE_ERRORS,         // response kind
+  RS_NODE_ERRORS,         // response kind
   "insert into tableNm"_Stz, // comment about the job
   "insert"_Stz,           // the prompt command
   "into"_Stz,             // the second word

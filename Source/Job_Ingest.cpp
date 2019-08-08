@@ -8,7 +8,7 @@ JobClass xJobClass_Ingest =
 {
   CN_JOB_INGEST,         // class number
   JK_LOCAL,              // job kind
-  RK_NONE,               // response kind
+  RS_NONE,               // response kind
   "ingest data"_Stz,     // comment about the job
   "ingest"_Stz,          // the prompt command
   nullptr,               // the second word
