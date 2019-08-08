@@ -19,7 +19,7 @@ enum eRS // response kind
   /* 9 */ RS_ENUMS_
 };
 
-static Stz* aRK[]
+static Stz* aRS[]
 {
   /* 0 */ "NONE"_Stz,
   

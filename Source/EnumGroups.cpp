@@ -40,9 +40,9 @@ Stz* EnumGroups::szEnumText(i8 iEnumGroup, i8 i_Enum)
     case _EG_PY: return aPY[i_Enum];
     case _EG_QK: return aQK[i_Enum];
     case _EG_RE: return aRE[i_Enum];
+    case _EG_RK: return aRK_Short[i_Enum];
     case _EG_RO: return aRO[i_Enum];
     case _EG_SC: return aSC[i_Enum];
-    case _EG_SR: return aSR_Short[i_Enum];
     case _EG_SS: return aSS[i_Enum];
     case _EG_TD: return aHS[i_Enum];
     case _EG_TK: return aTK[i_Enum];

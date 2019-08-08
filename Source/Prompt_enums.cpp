@@ -51,7 +51,7 @@ bool Prompt::bPrompt_enums(SePrompt* pPrompt)
   vTrace("  eRE: record end\n"_Stz);
   vTrace("  eRO: relational op\n"_Stz);
   vTrace("  eSC: system call\n"_Stz);
-  vTrace("  eSR: system resource\n"_Stz);
+  vTrace("  eRK: system resource\n"_Stz);
   vTrace("  eSS: seed string\n"_Stz);
   vTrace("  eHS: thread state\n"_Stz);
   vTrace("  eTS: task state\n"_Stz);

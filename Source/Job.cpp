@@ -527,7 +527,7 @@ void Jobs::vJob_post(Session* pSession, Job* pJob)
     default:
       vTrace("Invalid response in job %s : %s\n"_Stz,
              aCN[pJob->m_pJobClass->m_eClass],
-             aRK[pJob->m_pJobClass->m_eResponse]);
+             aRS[pJob->m_pJobClass->m_eResponse]);
   }
 }
 

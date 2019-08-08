@@ -275,11 +275,11 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     return;
   }
   
-  if (AM::pMarkResource()->bEnum(SR_SOCKET) ||
+  if (AM::pMarkResource()->bEnum(RK_SOCKET) ||
       AM::pMarkResource()->bAll()) {
     s256 sHeader;
     ((Header*)caObjectHeader)->vSprint(sHeader);
-    AM::vLogRes(pSocket->iResId(),SR_SOCKET,
+    AM::vLogRes(pSocket->iResId(),RK_SOCKET,
                  "Recv header: %s"_Stz,sHeader.aStz());
   }
   
@@ -317,12 +317,12 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
     //       pJob,eClass,aCN[eClass],nObjectSize);
     
-    if (AM::pMarkResource()->bEnum(SR_SOCKET) ||
+    if (AM::pMarkResource()->bEnum(RK_SOCKET) ||
         AM::pMarkResource()->bAll()) {
       s256 sFooter;
       Footer* pFooter = aAdd<Footer*>(pJob,nObjectSize-sizeof(Footer));
       pFooter->vSprint(sFooter);
-      AM::vLogRes(pSocket->iResId(),SR_SOCKET,
+      AM::vLogRes(pSocket->iResId(),RK_SOCKET,
                   "Recv footer: %s"_Stz,
                   sFooter.aStz());
     }
@@ -369,9 +369,9 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     // restore the entryBuffer pointets (m_pHeadEntry etc)
     pCrwBuffer->vRestore();
     
-    if (AM::pMarkResource()->bEnum(SR_SOCKET) ||
+    if (AM::pMarkResource()->bEnum(RK_SOCKET) ||
         AM::pMarkResource()->bAll()) {
-      AM::vLogRes(pSocket->iResId(),SR_SOCKET,
+      AM::vLogRes(pSocket->iResId(),RK_SOCKET,
                     "Recv CrwBuffer: %p"_Stz,
                     pCrwBuffer);
     }
@@ -409,9 +409,9 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     // restore the entryBuffer pointets (m_pHeadEntry etc)
     pExportBuffer->vRecvPostCorrection();
     
-    if (AM::pMarkResource()->bEnum(SR_SOCKET) ||
+    if (AM::pMarkResource()->bEnum(RK_SOCKET) ||
         AM::pMarkResource()->bAll()) {
-      AM::vLogRes(pSocket->iResId(),SR_SOCKET,
+      AM::vLogRes(pSocket->iResId(),RK_SOCKET,
                   "Recv ExportBuffer: %p"_Stz,
                   pExportBuffer);
     }

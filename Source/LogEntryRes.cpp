@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* set resource entry                                                         */
 /*----------------------------------------------------------------------------*/
-void _LogEntryRes::vSet(LogEntry* pLogEntry, eSR eSysRes, i8 iResId)
+void _LogEntryRes::vSet(LogEntry* pLogEntry, eRK eSysRes, i8 iResId)
 {
   pLogEntry->m_eKind = EK_RES;
   
@@ -33,7 +33,7 @@ void _LogEntryRes::vWrite(File* pFile, LogEntry* pLogEntry,
                 
                 pLogEntry->m_caNode,
                 aEK[pLogEntry->m_eKind],
-                aSR_Short[m_eSysRes],
+                aRK_Short[m_eSysRes],
                 
                 pLogEntry->m_caText,
                 m_iResId);

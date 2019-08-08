@@ -45,9 +45,9 @@ void Engine::vMainEntry(void)
   
   vOpenPool();
   
-//  gpAttachMap->m_bMarkResource[SR_SOCKET] = true;
-//  gpAttachMap->m_bMarkResource[SR_FILE] = true;
-//  gpAttachMap->m_bMarkResource[SR_DIR] = true;
+//  gpAttachMap->m_bMarkResource[RK_SOCKET] = true;
+//  gpAttachMap->m_bMarkResource[RK_FILE] = true;
+//  gpAttachMap->m_bMarkResource[RK_DIR] = true;
 
   vOpenTrace();
   

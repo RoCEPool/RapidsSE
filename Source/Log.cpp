@@ -447,7 +447,7 @@ i8 Log::iAddNoteJob(i8 iJobId, i8 iForeign, Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a resource log entry                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Log::iAddNoteRes(i8 iResId, eSR eSysRes, Stz* szFormat, va_list xVaArgs)
+i8 Log::iAddNoteRes(i8 iResId, eRK eSysRes, Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
