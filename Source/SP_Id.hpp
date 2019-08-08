@@ -5,7 +5,7 @@
 
 namespace Gadgets
 {
-  class SP_Id
+  class SP_Id : public Object
   {
   public:
     char m_caResult[32];
