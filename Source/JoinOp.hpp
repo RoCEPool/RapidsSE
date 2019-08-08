@@ -32,7 +32,7 @@ namespace PushDown
     JoinOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR);
    ~JoinOp(void) noexcept(false);
   
-    static Op* pNew(Session* pSession, Stz* szLabel,
+    static Op* pNew(Stz* szLabel,
                     Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
                     TokenVec* pTknVec, i8& i_Tkn_);
     static eOR  eCall(void* aThis);
