@@ -5,6 +5,7 @@
 
 //!                    ** Do not include StorageEngine.hpp **
 
+#include "eRA.h"
 #include "eRK.h"
 
 namespace StorageEngine
@@ -138,7 +139,7 @@ namespace StorageEngine
     static bool bSpawnOp(Session* pSession, Op* pOp);
     static void vStateDiagram(s256& sDiagram, eCN eJobClass);
     static void vLogInf(Stz* szFormat, ...);
-    static void vLogRes(i8 iResId, eRK eSysRes, Stz* szFormat, ...);
+    static void vLogRes(i8 iResId, eRK eSysRes, eRA eResAct, Stz* szFormat, ...);
     static void vWriteTrace(Stz* aFormat, va_list xArgs);
   };
 }
