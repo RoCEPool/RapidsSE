@@ -60,6 +60,8 @@ FetchOp::FetchOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
   
+  m_sTableNm   = ""_Stz;
+  m_sIndexNm   = ""_Stz;
   m_pTable     = nullptr;
   m_pIndex     = nullptr;
   m_pTablePtn  = nullptr;
@@ -96,19 +98,18 @@ Op* FetchOp::pNew(Session* pSession, Stz* szLabel,
   
   FetchOp* pFetchOp = new FetchOp(szLabel,pDigest,aOpDefn,bAppR);
   
-  s32 sTableNm = pTknVec->pGet(i_Tkn_++)->aText();
-  s32 sIndexNm = pTknVec->pGet(i_Tkn_++)->aText();
+  pFetchOp->m_sTableNm = pTknVec->pGet(i_Tkn_++)->aText();
+  pFetchOp->m_sIndexNm = pTknVec->pGet(i_Tkn_++)->aText();
   
-  AM::vTableName((Job_Dynamic*)pDigest->m_pJob,sTableNm);
-  AM::vIndexName((Job_Dynamic*)pDigest->m_pJob,sIndexNm);
-  
-  pFetchOp->m_sArgs = sTableNm;
+  pFetchOp->m_sArgs = pFetchOp->m_sTableNm;
+  pFetchOp->m_sArgs.vConcat(" "_Stz);
+  pFetchOp->m_sArgs.vConcat(pFetchOp->m_sIndexNm);
   
   // find the table in the session dictionary stack
-  pFetchOp->m_pTable = Table::pFindTable(pSession->pPathStack(), sTableNm);
+  pFetchOp->m_pTable = Table::pFindTable(pSession->pPathStack(), pFetchOp->m_sTableNm);
   
   // find the index in the session dictionary stack
-  pFetchOp->m_pIndex = Table::pFindIndex(pSession->pPathStack(), sTableNm, sIndexNm);
+  pFetchOp->m_pIndex = Table::pFindIndex(pSession->pPathStack(), pFetchOp->m_sTableNm, pFetchOp->m_sIndexNm);
   
   // get table ptn
   pFetchOp->m_pTablePtn = pFetchOp->m_pTable->pSlots()->pPartition(0);
