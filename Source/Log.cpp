@@ -447,7 +447,7 @@ i8 Log::iAddNoteJob(i8 iJobId, i8 iForeign, Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a resource log entry                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Log::iAddNoteRes(i8 iResId, eRK eSysRes, Stz* szFormat, va_list xVaArgs)
+i8 Log::iAddNoteRes(i8 iResId, eRK eSysRes, eRA eResAct, Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
@@ -466,7 +466,7 @@ i8 Log::iAddNoteRes(i8 iResId, eRK eSysRes, Stz* szFormat, va_list xVaArgs)
   
   StrLib::vCopyLen(pLogEntry->m_caText,caMark,C_LOG_TEXT - 1);
   
-  pLogEntry->m_xRes.vSet(pLogEntry,iResId,eSysRes,RA_NONE);
+  pLogEntry->m_xRes.vSet(pLogEntry,iResId,eSysRes,eResAct);
   
   return pLogEntry->m_i_Entry;
 }

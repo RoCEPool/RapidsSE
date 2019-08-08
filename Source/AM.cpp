@@ -341,7 +341,7 @@ void AM::vLogRes(i8 iResId, eRK eSysRes, eRA eResAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  gpLog->iAddNoteRes(iResId,eSysRes,szFormat,xVaArgs);
+  gpLog->iAddNoteRes(iResId,eSysRes,eResAct,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif
