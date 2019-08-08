@@ -75,6 +75,8 @@ void LogEntry::vInit(void)
   m_iTick = Tick::iRdClock();
   
   StrLib::vCopyLen(m_caNode,AM::szNodeName()->aChar(),sizeof(m_caNode) - 1);
+  
+  m_caText[0] = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
