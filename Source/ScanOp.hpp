@@ -8,6 +8,7 @@ namespace PushDown
   class ScanOp : public Op
   {
   private:
+    Table*     m_pTable;
     TablePtn*  m_pTablePtn;
     CrwBuffer* m_pCrwBuffer;
   
