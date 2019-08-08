@@ -262,9 +262,8 @@ bool Socket::bAcceptClient(int& iSocketId, SysCall& SysCall)
   }
   
   if (AM::bAttached()) AM::pResourceTracker()->vIncSocketOpen();
-  if (AM::pMarkResource()->bEnum(SR_SOCKET) ||
-      AM::pMarkResource()->bAll())
-    AM::vLogRes(m_iResId,SR_SOCKET,"Socket accepted cient"_Stz);
+  
+  AM::vLogRes(m_iResId,SR_SOCKET,"Socket accepted : client"_Stz);
 
   SysCall.vSuccess();
   return true;
@@ -299,9 +298,8 @@ bool Socket::bClose(SysCall& SysCall)
   m_iSocketId = -1;
   
   if (AM::bAttached()) AM::pResourceTracker()->vDecSocketOpen();
-  if (AM::pMarkResource()->bEnum(SR_SOCKET) ||
-      AM::pMarkResource()->bAll())
-    AM::vLogRes(m_iResId,SR_SOCKET,"Socket closed"_Stz);
+  
+  AM::vLogRes(m_iResId,SR_SOCKET,"Socket closed : "_Stz);
 
   SysCall.vSuccess();
   return true;
@@ -368,9 +366,8 @@ bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
   }
   
   if (AM::bAttached()) AM::pResourceTracker()->vIncSocketOpen();
-  if (AM::pMarkResource()->bEnum(SR_SOCKET) ||
-      AM::pMarkResource()->bAll())
-    AM::vLogRes(m_iResId,SR_SOCKET,"Socket connected to server %s %d"_Stz,
+  
+  AM::vLogRes(m_iResId,SR_SOCKET,"Socket connected : to server %s %d"_Stz,
                        sAddr,iPort);
 
   SysCall.vSuccess();
@@ -433,9 +430,8 @@ bool Socket::bCreateServer(int iPort, SysCall& SysCall)
   }
   
   if (AM::bAttached()) AM::pResourceTracker()->vIncSocketOpen();
-  if (AM::pMarkResource()->bEnum(SR_SOCKET) ||
-      AM::pMarkResource()->bAll())
-    AM::vLogRes(m_iResId,SR_SOCKET,"Socket created listening socket : %d"_Stz,
+  
+  AM::vLogRes(m_iResId,SR_SOCKET,"Socket created : listening socket : %d"_Stz,
                        iPort);
 
   SysCall.vSuccess();
@@ -510,9 +506,7 @@ bool Socket::bRecvBytes(void* pWS, i8 nBytes, SysCall& SysCall)
     gpAttachMap->m_oStatistics.Socket.m_nRecvBytes += nRecvBytes;
 #endif
     
-    if (AM::pMarkResource()->bEnum(SR_SOCKET) ||
-        AM::pMarkResource()->bAll())
-      AM::vLogRes(m_iResId,SR_SOCKET,"Socket received %lld bytes"_Stz,
+  AM::vLogRes(m_iResId,SR_SOCKET,"Socket received : %lld bytes"_Stz,
                          nRecvBytes);
 
     //vTrace("Bytes received: (%lld) %lld\n"_Stz, nBytes, nSoFar);
@@ -545,9 +539,7 @@ bool Socket::bSendBytes(void* pBuffer, i8 nBytes, SysCall& SysCall)
   gpAttachMap->m_oStatistics.Socket.m_nSendBytes += nSentBytes;
 #endif
   
-  if (AM::pMarkResource()->bEnum(SR_SOCKET) ||
-      AM::pMarkResource()->bAll())
-    AM::vLogRes(m_iResId,SR_SOCKET,"Socket set %lld bytes"_Stz,
+  AM::vLogRes(m_iResId,SR_SOCKET,"Socket sent : %lld bytes"_Stz,
                       nSentBytes);
 
   if (nSentBytes == nBytes) {

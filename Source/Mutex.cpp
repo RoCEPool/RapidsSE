@@ -100,9 +100,7 @@ Mutex::Mutex()
   gpAttachMap->m_oStatistics.Mutex.m_nInits++;
 #endif
   
-  if (AM::pMarkResource()->bEnum(SR_MUTEX) ||
-      AM::pMarkResource()->bAll())
-    AM::vLogRes(m_iResId,SR_MUTEX,"Mutex created : %p"_Stz,this);
+  AM::vLogRes(m_iResId,SR_MUTEX,"Mutex created : %p"_Stz,this);
 
   _checkInitialised_(CN_MUTEX);
 
@@ -134,9 +132,7 @@ Mutex::~Mutex(void) noexcept(false)
   gpAttachMap->m_oStatistics.Mutex.m_nDestroys++;
 #endif
   
-  if (AM::pMarkResource()->bEnum(SR_MUTEX) ||
-      AM::pMarkResource()->bAll())
-    AM::vLogRes(m_iResId,SR_MUTEX,"Mutex destroyed : %p"_Stz,this);
+  AM::vLogRes(m_iResId,SR_MUTEX,"Mutex destroyed : %p"_Stz,this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -212,9 +208,7 @@ void Mutex::vCondSignal(void)
   gpAttachMap->m_oStatistics.Mutex.m_nSignals++;
 #endif
   
-  if (AM::pMarkResource()->bEnum(SR_MUTEX) ||
-      AM::pMarkResource()->bAll())
-    AM::vLogRes(m_iResId,SR_MUTEX,"Mutex signaled : %p"_Stz,this);
+  AM::vLogRes(m_iResId,SR_MUTEX,"Mutex signaled : %p"_Stz,this);
   
   //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
   i8 rCode = pthread_cond_signal(&m_xCond);                      // non-blocking
@@ -256,9 +250,7 @@ void Mutex::vCondWaitIndefinite(void)
   gpAttachMap->m_oStatistics.Mutex.m_nWaits++;
 #endif
   
-  if (AM::pMarkResource()->bEnum(SR_MUTEX) ||
-      AM::pMarkResource()->bAll())
-    AM::vLogRes(m_iResId,SR_MUTEX,"Mutex wait : %p"_Stz,this);
+  AM::vLogRes(m_iResId,SR_MUTEX,"Mutex wait : %p"_Stz,this);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -273,9 +265,7 @@ void Mutex::vCondWaitIndefinite(void)
   gpAttachMap->m_oStatistics.Mutex.m_nUnblocks++;
 #endif
   
-  if (AM::pMarkResource()->bEnum(SR_MUTEX) ||
-      AM::pMarkResource()->bAll())
-    AM::vLogRes(m_iResId,SR_MUTEX,"Mutex unblocked : %p"_Stz,this);
+  AM::vLogRes(m_iResId,SR_MUTEX,"Mutex unblocked : %p"_Stz,this);
 
   // success
 
@@ -323,10 +313,8 @@ void Mutex::vCondWaitUsec(i8 iMicroSeconds)
   gpAttachMap->m_oStatistics.Mutex.m_nTimedWaits++;
 #endif
   
-  if (AM::pMarkResource()->bEnum(SR_MUTEX) ||
-      AM::pMarkResource()->bAll())
-    AM::vLogRes(m_iResId,SR_MUTEX,"Mutex timedwait : %p %lldus"_Stz,
-                       this,iMicroSeconds);
+  AM::vLogRes(m_iResId,SR_MUTEX,"Mutex timedwait : %p %lldus"_Stz,
+                    this,iMicroSeconds);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -346,9 +334,7 @@ void Mutex::vCondWaitUsec(i8 iMicroSeconds)
     gpAttachMap->m_oStatistics.Mutex.m_nUnblocks++;
 #endif
     
-    if (AM::pMarkResource()->bEnum(SR_MUTEX) ||
-        AM::pMarkResource()->bAll())
-      AM::vLogRes(m_iResId,SR_MUTEX,"Mutex timed unblock : %p %lldus"_Stz,
+    AM::vLogRes(m_iResId,SR_MUTEX,"Mutex timed unblock : %p %lldus"_Stz,
                          this,iMicroSeconds);
     m_bLocked = true;
     return;
@@ -364,9 +350,7 @@ void Mutex::vCondWaitUsec(i8 iMicroSeconds)
     gpAttachMap->m_oStatistics.Mutex.m_nTimeOuts++;
 #endif
     
-    if (AM::pMarkResource()->bEnum(SR_MUTEX) ||
-        AM::pMarkResource()->bAll())
-      AM::vLogRes(m_iResId,SR_MUTEX,"Mutex timeout : %p %lldus"_Stz,
+   AM::vLogRes(m_iResId,SR_MUTEX,"Mutex timeout : %p %lldus"_Stz,
                          this,iMicroSeconds);
    m_bLocked = true;
     return;

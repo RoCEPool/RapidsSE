@@ -23,7 +23,8 @@ void _LogEntryRes::vWrite(File* pFile, LogEntry* pLogEntry,
 {
   pFile->vPrint("%lld,%lld,%lld,%lld,"
                 "%s,%s,%s,"
-                "%s\n"_Stz,
+                "%s,"
+                "%lld\n"_Stz,
 
                 pLogEntry->m_i_Entry,
                 pLogEntry->m_iTick,
@@ -34,7 +35,8 @@ void _LogEntryRes::vWrite(File* pFile, LogEntry* pLogEntry,
                 aEK[pLogEntry->m_eKind],
                 aSR_Short[m_eSysRes],
                 
-                pLogEntry->m_caText);
+                pLogEntry->m_caText,
+                m_iResId);
 }
 
 /*============================================================================*/
