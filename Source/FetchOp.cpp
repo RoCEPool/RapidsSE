@@ -66,7 +66,6 @@ FetchOp::FetchOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   m_pIndex     = nullptr;
   m_pTablePtn  = nullptr;
   m_pEntBuffer = nullptr;
-  m_nSlot      = -1;
   m_bRunPrelim = true;
   
   _checkInitialised_(CN_FETCHOP);
@@ -192,8 +191,10 @@ void FetchOp::vPreliminary(void)
   m_pTablePtn = m_pTable->pSlots()->pPartition(m_nSlot);
   
   // pipe StreamDef
-  StreamDef* pStreamDef = m_pTable->pStreamDef();
-  vPipeOut(pStreamDef);
+  if (m_nSlot == 0) {
+    StreamDef* pStreamDef = m_pTable->pStreamDef();
+    vPipeOut(pStreamDef);
+  }
   
   // get first buffer
   IndexTree* pIndexTree = m_pTablePtn->pIndexTree(m_pIndex->iIndexNo());

@@ -8,8 +8,6 @@ namespace PushDown
   class JoinOp : public Op
   {
   private:
-  
-    i8 m_nSlot;
     
     bool m_bEndLeftOperands;
     bool m_bEndRightOperands;

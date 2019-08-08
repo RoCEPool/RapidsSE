@@ -61,7 +61,6 @@ JoinOp::JoinOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   m_bEndRightOperands = false;
   
   m_pRefBuffer = new RefBuffer;
-  m_nSlot      = -1;
   
   m_eNextEntry = NE_NEXT_LEFT_RIGHT;
 }

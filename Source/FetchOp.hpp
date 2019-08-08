@@ -14,7 +14,6 @@ namespace PushDown
     Index*     m_pIndex;
     TablePtn*  m_pTablePtn;
     EntBuffer* m_pEntBuffer;
-    i8         m_nSlot;
     
     bool       m_bRunPrelim;
   

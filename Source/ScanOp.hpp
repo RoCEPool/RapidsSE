@@ -12,7 +12,6 @@ namespace PushDown
     Table*     m_pTable;
     TablePtn*  m_pTablePtn;
     CrwBuffer* m_pCrwBuffer;
-    i8         m_nSlot;
     
     bool       m_bRunPrelim;
   

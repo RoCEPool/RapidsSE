@@ -64,7 +64,6 @@ ScanOp::ScanOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   m_pTable     = nullptr;
   m_pTablePtn  = nullptr;
   m_pCrwBuffer = nullptr;
-  m_nSlot      = -1;
   m_bRunPrelim = true;
   
   _checkInitialised_(CN_SCANOP);
@@ -185,8 +184,10 @@ void ScanOp::vPreliminary(void)
   m_pTablePtn = m_pTable->pSlots()->pPartition(m_nSlot);
   
   // pipe StreamDef
-  StreamDef* pStreamDef = m_pTable->pStreamDef();
-  vPipeOut(pStreamDef);
+  if (m_nSlot == 0) {
+    StreamDef* pStreamDef = m_pTable->pStreamDef();
+    vPipeOut(pStreamDef);
+  }
   
   // get first buffer
   m_pCrwBuffer = m_pTablePtn->pRootCrwBuffer();

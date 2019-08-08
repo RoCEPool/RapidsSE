@@ -85,6 +85,9 @@ void Digest::vParseCommand(TokenVec* pTknVec)
   // create
   
   i8 i_Tkn = 1;
+  i8 i_Op = 0;
+  i8 i_SlotsPerNode = AM::pGrid()->m_nSlotsPerNode;
+  
   while (i_Tkn < nTokens) {
     
     sTknStr = pTknVec->pGet(i_Tkn)->aText();
@@ -116,12 +119,15 @@ void Digest::vParseCommand(TokenVec* pTknVec)
     
     if (aOpDefn->m_bIsPartitioned) {
       
-      for (i8 i_Slot = 0; i_Slot < AM::pGrid()->m_nSlotsPerNode; i_Slot++) {
+      i8 i_Tkn_Save = i_Tkn;
+      
+      for (i8 i_Slot = 0; i_Slot < i_SlotsPerNode; i_Slot++) {
         // new an op
         sLabel.vSprint("%s_%02lld_%02lld"_Stz,
                        aOpDefn->m_szPrefix,
-                       m_oOpVec.nItems(),
+                       i_Op,
                        i_Slot);
+        i_Tkn = i_Tkn_Save;
         Op* pOp = (aOpDefn->m_fpNew)(sLabel,this,aOpDefn,bAppendRight,
                                      pTknVec,i_Tkn,i_Slot);
         m_oOpVec.vAdd(pOp);
@@ -131,12 +137,12 @@ void Digest::vParseCommand(TokenVec* pTknVec)
       // new an op
       sLabel.vSprint("%s_%02lld"_Stz,
                      aOpDefn->m_szPrefix,
-                     m_oOpVec.nItems());
+                     i_Op);
       Op* pOp = (aOpDefn->m_fpNew)(sLabel,this,aOpDefn,bAppendRight,
                                    pTknVec,i_Tkn,-1);
       m_oOpVec.vAdd(pOp);
     }
-    
+    i_Op++;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -147,9 +153,23 @@ void Digest::vParseCommand(TokenVec* pTknVec)
     Op* pOp = m_oOpVec.pGet(i_Op);
 //    Op* pOpNext = (pOp->m_bAppendRight) ? m_oOpVec.pGet(i_Op + 2)
 //                                        : m_oOpVec.pGet(i_Op + 1);
-    Op* pOpNext = m_oOpVec.pGet(i_Op + 1);
-    if (pOpNext->m_bAppendRight)
-      pOpNext = m_oOpVec.pGet(i_Op + 2);
+    Op* pOpNext;
+    i8 i_OpNext;
+    if (pOp->m_aOpDefn->m_bIsPartitioned)
+      i_OpNext = i_Op + i_SlotsPerNode - pOp->m_nSlot;
+    else
+      i_OpNext = i_Op + 1;
+    
+    pOpNext = m_oOpVec.pGet(i_OpNext);
+    if (pOpNext->m_bAppendRight) {
+      if (pOp->m_aOpDefn->m_bIsPartitioned)
+        i_OpNext = i_Op + i_SlotsPerNode - pOp->m_nSlot + 2;
+      else
+        i_OpNext = i_Op + 2;
+    }
+    pOpNext = m_oOpVec.pGet(i_OpNext);
+    if (pOpNext->m_aOpDefn->m_bIsPartitioned)
+      pOpNext = m_oOpVec.pGet(i_OpNext + pOp->m_nSlot);
     
     pOp->vNextLabel(pOpNext->szLabel());
     pOp->vOpOut(pOpNext);
