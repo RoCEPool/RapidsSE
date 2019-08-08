@@ -9,7 +9,6 @@ namespace Logging
   {
   public:
     i8   m_iOpId;              // opid
-    char m_caText[C_LOG_TEXT]; // comment
 
   public:
    void vSet(LogEntry* pLogEntry, i8 iJobId, char* aText);

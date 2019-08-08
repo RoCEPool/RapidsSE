@@ -9,7 +9,6 @@ namespace Logging
   {
   public:
     eSR  m_eSysRes;            // enum/jobid
-    char m_caText[C_LOG_TEXT]; // comment
 
   public:
    void vSet(LogEntry* pLogEntry, eSR eSysRes, char* aText);

@@ -13,7 +13,7 @@ void _LogEntryInf::vSet(LogEntry* pLogEntry, char* aText)
 
   m_eLogNote = LN_TEXT;
   
-  StrLib::vCopyLen(m_caText,aText,sizeof(m_caText) - 1);
+  StrLib::vCopyLen(pLogEntry->m_caText,aText,C_LOG_TEXT - 1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,7 +35,7 @@ void _LogEntryInf::vWrite(File* pFile, LogEntry* pLogEntry,
                 aEK[pLogEntry->m_eKind],
                 aLN[m_eLogNote],
                 
-                m_caText);
+                pLogEntry->m_caText);
 }
 
 /*============================================================================*/

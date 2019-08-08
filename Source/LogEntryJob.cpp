@@ -16,7 +16,7 @@ void _LogEntryJob::vSet(LogEntry* pLogEntry, i8 iJobId, i8 iForeign, char* aText
   m_iJobId   = iJobId;
   m_iForeign = iForeign;
   
-  StrLib::vCopyLen(m_caText,aText,sizeof(m_caText) - 1);
+  StrLib::vCopyLen(pLogEntry->m_caText,aText,C_LOG_TEXT - 1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -42,7 +42,7 @@ void _LogEntryJob::vWrite(File* pFile, LogEntry* pLogEntry,
                 m_iJobId,
                 m_iForeign,
                 
-                m_caText);
+                pLogEntry->m_caText);
 }
 
 /*============================================================================*/

@@ -13,8 +13,7 @@ namespace Logging
     i8   m_iForeign;    // foreign job id
   
     eLN  m_eLogNote;           //
-    char m_caText[C_LOG_TEXT]; // comment
-  
+   
   public:
     void vSet(LogEntry* pLogEntry, char* aText);
   

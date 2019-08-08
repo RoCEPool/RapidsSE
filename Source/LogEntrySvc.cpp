@@ -13,7 +13,7 @@ void _LogEntrySvc::vSet(LogEntry* pLogEntry, i8 iSvcId, char* aText)
   
   m_iSvcId = iSvcId;
   
-  StrLib::vCopyLen(m_caText,aText,sizeof(m_caText) - 1);
+  StrLib::vCopyLen(pLogEntry->m_caText,aText,C_LOG_TEXT - 1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,7 +35,7 @@ void _LogEntrySvc::vWrite(File* pFile, LogEntry* pLogEntry,
                 aEK[pLogEntry->m_eKind],
                 
                 m_iSvcId,
-                m_caText);
+                pLogEntry->m_caText);
 }
 
 /*============================================================================*/

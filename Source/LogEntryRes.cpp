@@ -13,7 +13,7 @@ void _LogEntryRes::vSet(LogEntry* pLogEntry, eSR eSysRes, char* aText)
   
   m_eSysRes = eSysRes;
   
-  StrLib::vCopyLen(m_caText,aText,sizeof(m_caText) - 1);
+  StrLib::vCopyLen(pLogEntry->m_caText,aText,C_LOG_TEXT - 1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,7 +35,7 @@ void _LogEntryRes::vWrite(File* pFile, LogEntry* pLogEntry,
                 aEK[pLogEntry->m_eKind],
                 aSR_Short[m_eSysRes],
                 
-                m_caText);
+                pLogEntry->m_caText);
 }
 
 /*============================================================================*/
