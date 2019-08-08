@@ -15,8 +15,7 @@ namespace Logging
   public:
    void vSet(LogEntry* pLogEntry, i8 iResId, eRK eResKnd, eRA eResAct);
   
-  void vWriteCsv(File* pFile, LogEntry* pLogEntry,
-                 i8 iTickDeltaUsec, i8& iTotalDelta);
+  void vWriteCsv(File* pFile);
   };
 }
 

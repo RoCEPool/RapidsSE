@@ -117,7 +117,9 @@ void LogEntry::vWrite(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
       break;
       
     case EK_RES:
-      m_xRes.vWriteCsv(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
+      vWriteCsv(pFile,iEntryDeltaUsec,iTotalDeltaUsec);
+      m_xRes.vWriteCsv(pFile);
+      pFile->vPrint(",%s\n"_Stz,m_caText);
       break;
 
     case EK_SVC:
@@ -139,6 +141,25 @@ void LogEntry::vWrite(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
     default:
       NEVER_REACH;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* write to csv file                                                          */
+/*----------------------------------------------------------------------------*/
+void LogEntry::vWriteCsv(File* pFile, i8 iTickDeltaUsec, i8& iTotalDelta)
+{
+  pFile->vPrint("%lld,%lld,%lld,%lld,"
+                "%lld,%s,%s"_Stz,
+                
+                m_i_Entry,
+                m_iTick,
+                iTickDeltaUsec,
+                iTotalDelta,
+                
+                m_iNodeNo,
+                m_caNode,
+                aEK[m_eKind]
+                );
 }
 
 /*----------------------------------------------------------------------------*/
