@@ -466,7 +466,7 @@ i8 Log::iAddNoteRes(i8 iResId, eRK eSysRes, Stz* szFormat, va_list xVaArgs)
   
   StrLib::vCopyLen(pLogEntry->m_caText,caMark,C_LOG_TEXT - 1);
   
-  pLogEntry->m_xRes.vSet(pLogEntry,eSysRes,iResId);
+  pLogEntry->m_xRes.vSet(pLogEntry,iResId,eSysRes,RA_NONE);
   
   return pLogEntry->m_i_Entry;
 }
