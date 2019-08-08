@@ -19,40 +19,9 @@
   pTask task.job@ locals| pJob |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/*
-  0 locals| sTableNm |
-  0 locals| pTable |
-
-  0 locals| sIndexNm |
-  0 locals| pIndex |
-
-  // set dic stack
-  pJob job.pushPath task::dicStack.set
-
   // grab a ddl lock
   ddlLock::grabRead
 
-  // get table name
-  pJob job.objectName@ to sTableNm
-
-  // find table
-  sTableNm pushTable assert
-  sTableNm find execute to pTable
-  pTable pJob jobMark2.table!
-
-  // get index name
-  pJob job.indexName@ to sIndexNm
-
-  // find index
-  sIndexNm '' str.equal not if
-    pushIndexes assert
-    sIndexNm find execute to pIndex
-    pIndex pJob jobMark2.index!
-    popIndexes
-  then
-
-  popTable
-*/
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pTask task.grabLock
