@@ -8,7 +8,7 @@ JobClass xJobClass_ShowCluster =
 {
   CN_JOB_SHOWCLUSTER,    // class number
   JK_LOCAL,              // job kind
-  RK_NONE,               // response kind
+  RS_NONE,               // response kind
   "show cluster"_Stz,    // comment about the job
   "showCluster"_Stz,     // the prompt command
   nullptr,               // the second word

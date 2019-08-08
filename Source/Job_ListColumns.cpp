@@ -8,7 +8,7 @@ JobClass xJobClass_ListColumns =
 {
   CN_JOB_LISTCOLUMNS,     // class number
   JK_LOCAL,               // job kind
-  RK_LOCAL_ROWS,          // response kind
+  RS_LOCAL_ROWS,          // response kind
   "list table columns"_Stz, // comment about the job
   "lscol"_Stz,            // the prompt command
   nullptr,                // the second word

@@ -8,7 +8,7 @@ JobClass xJobClass_Periodic =
 {
   CN_JOB_PERIODIC,       // class number
   JK_SERVICE,             // job kind
-  RK_NONE,               // response kind
+  RS_NONE,               // response kind
   "periodic"_Stz,        // comment about the job
   nullptr,               // the prompt command
   nullptr,               // the second word

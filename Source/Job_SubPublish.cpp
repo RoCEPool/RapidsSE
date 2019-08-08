@@ -8,7 +8,7 @@ JobClass xJobClass_SubPublish =
 {
   CN_JOB_SUBPUBLISH,      // class number
   JK_CHILD,               // job kind
-  RK_NODE_ERRORS,         // response kind
+  RS_NODE_ERRORS,         // response kind
   "table sub-publish"_Stz,// comment about the job
   "_SUBPUBLISH"_Stz,      // the prompt command
   nullptr,                // the second word

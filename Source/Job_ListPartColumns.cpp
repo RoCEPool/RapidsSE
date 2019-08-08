@@ -8,7 +8,7 @@ JobClass xJobClass_ListPartColumns =
 {
   CN_JOB_LISTPARTCOLUMNS,           // class number
   JK_LOCAL,                         // job kind
-  RK_LOCAL_ROWS,                    // response kind
+  RS_LOCAL_ROWS,                    // response kind
   "list partition key"_Stz,         // comment about the job
   "lspartcol"_Stz,                  // the prompt command
   nullptr,                          // the second word

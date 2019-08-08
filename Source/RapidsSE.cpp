@@ -836,14 +836,14 @@ eEC RapidsSE_GetRow(i8 iTrace, Session* pSession, void* aJob,
   eCN eClass = pJob->eClass();
   JobClass* pJobClass = JobClass::pFind(eClass);
   pJob->m_pJobClass = pJobClass;
-  eRK eResponseKind = pJob->m_pJobClass->m_eResponse;
+  eRS eResponseKind = pJob->m_pJobClass->m_eResponse;
   Response* pResponse = nullptr;
   
-  if (eResponseKind == RK_LOCAL_ROWS) {
+  if (eResponseKind == RS_LOCAL_ROWS) {
     pResponse = &pJob->m_xResponse;
   }
   else {
-    RASSERT(eResponseKind == RK_NODE_ROWS);
+    RASSERT(eResponseKind == RS_NODE_ROWS);
   
     i8 iResponses = pJob->m_pResponseVec->nItems();
     
@@ -915,15 +915,15 @@ eEC RapidsSE_GetRowCount(i8 iTrace, Session* pSession, void* aJob,
   eCN eClass = pJob->eClass();
   JobClass* pJobClass = JobClass::pFind(eClass);
   pJob->m_pJobClass = pJobClass;
-  eRK eResponseKind = pJob->m_pJobClass->m_eResponse;
+  eRS eResponseKind = pJob->m_pJobClass->m_eResponse;
   
   i8 iRowsProcessed= 0;
   
-  if (eResponseKind == RK_LOCAL_ROWS) {
+  if (eResponseKind == RS_LOCAL_ROWS) {
     iRowsProcessed = *pJob->m_xResponse.m_ixRowsProcessed;
   }
   else {
-    RASSERT(eResponseKind == RK_NODE_ROWS);
+    RASSERT(eResponseKind == RS_NODE_ROWS);
     
     i8 iResponses = pJob->m_pResponseVec->nItems();
     

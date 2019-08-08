@@ -8,7 +8,7 @@ JobClass xJobClass_ListPartitions =
 {
   CN_JOB_LISTPARTITIONS,    // class number
   JK_DIST2PC,               // job kind
-  RK_NODE_ROWS,             // response kind
+  RS_NODE_ROWS,             // response kind
   "list partitions"_Stz,    // comment about the job
   "lspart"_Stz,             // the prompt command
   nullptr,                  // the second word

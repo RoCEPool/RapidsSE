@@ -8,7 +8,7 @@ JobClass xJobClass_DumpTable =
 {
   CN_JOB_DUMPTABLE,      // class number
   JK_LOCAL,              // job kind
-  RK_LOCAL_ZERO,         // response kind
+  RS_LOCAL_ZERO,         // response kind
   "dump table"_Stz,      // comment about the job
   "dumptbl"_Stz,         // the prompt command
   nullptr,               // the second word

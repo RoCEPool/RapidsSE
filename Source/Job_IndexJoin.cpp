@@ -8,7 +8,7 @@ JobClass xJobClass_IndexJoin =
 {
   CN_JOB_INDEXJOIN,          // class number
   JK_LOCAL,                  // job kind
-  RK_DATA_ROWS,              // response kind
+  RS_DATA_ROWS,              // response kind
   "join tables"_Stz,         // comment about the job
   "join"_Stz,                // the prompt command
   nullptr,                   // the second word

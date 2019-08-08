@@ -8,7 +8,7 @@ JobClass xJobClass_WriteRecord =
 {
   CN_JOB_KIDEXPORT,       // class number
   JK_GRANDKID,            // job kind
-  RK_NONE,                // response kind
+  RS_NONE,                // response kind
   "kid export"_Stz,       // comment about the job
   nullptr,                // the prompt command
   nullptr,                // the second word

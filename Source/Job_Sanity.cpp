@@ -8,7 +8,7 @@ JobClass xJobClass_Sanity =
 {
   CN_JOB_SANITY,     // class number
   JK_DIST2PC,        // job kind
-  RK_NODE_ROWS,      // response kind
+  RS_NODE_ROWS,      // response kind
   "sanity check"_Stz,// comment about the job
   "sanity"_Stz,      // the prompt command
   nullptr,           // the second word

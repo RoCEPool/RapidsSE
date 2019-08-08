@@ -8,7 +8,7 @@ JobClass xJobClass_ListTables =
 {
   CN_JOB_LISTTABLES,      // class number
   JK_LOCAL,               // job kind
-  RK_LOCAL_ROWS,          // response kind
+  RS_LOCAL_ROWS,          // response kind
   "list tables"_Stz,      // comment about the job
   "lstbl"_Stz,            // the prompt command
   nullptr,                // the second word

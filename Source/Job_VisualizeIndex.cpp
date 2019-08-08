@@ -8,7 +8,7 @@ JobClass xJobClass_VisualizeIndex =
 {
   CN_JOB_VISUALIZEINDEX,      // class number
   JK_LOCAL,                   // job kind
-  RK_LOCAL_ERRORS,            // response kind
+  RS_LOCAL_ERRORS,            // response kind
   "visualize index"_Stz,      // comment about the job
   "visidx"_Stz,               // the prompt command
   nullptr,                    // the second word

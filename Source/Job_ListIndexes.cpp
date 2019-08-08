@@ -8,7 +8,7 @@ JobClass xJobClass_ListIndexes =
 {
   CN_JOB_LISTINDEXES,     // class number
   JK_LOCAL,               // job kind
-  RK_LOCAL_ROWS,          // response kind
+  RS_LOCAL_ROWS,          // response kind
   "list table indexes"_Stz, // comment about the job
   "lsidx"_Stz,            // the prompt command
   nullptr,                // the second word

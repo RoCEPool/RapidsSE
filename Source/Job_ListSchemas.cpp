@@ -8,7 +8,7 @@ JobClass xJobClass_ListSchemas =
 {
   CN_JOB_LISTSCHEMAS,     // class number
   JK_LOCAL,               // job kind
-  RK_LOCAL_ROWS,          // response kind
+  RS_LOCAL_ROWS,          // response kind
   "list schemas"_Stz,     // comment about the job
   "lssch"_Stz,            // the prompt command
   nullptr,                // the second word

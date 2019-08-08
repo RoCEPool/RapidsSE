@@ -8,7 +8,7 @@ JobClass xJobClass_NetHog =
 {
   CN_JOB_NETHOG,         // class number
   JK_OTHER,              // job kind
-  RK_NONE,               // response kind
+  RS_NONE,               // response kind
   "network hog"_Stz,     // comment about the job
   "nethog"_Stz,          // the prompt command
   nullptr,               // the second word

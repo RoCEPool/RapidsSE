@@ -8,7 +8,7 @@ JobClass xJobClass_Supervisor =
 {
   CN_JOB_SUPERVISOR,     // class number
   JK_SERVICE,             // job kind
-  RK_NONE,               // response kind
+  RS_NONE,               // response kind
   "supervisor"_Stz,      // comment about the job
   nullptr,               // the prompt command
   nullptr,               // the second word

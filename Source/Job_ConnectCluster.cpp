@@ -8,7 +8,7 @@ JobClass xJobClass_ConnectCluster =
 {
   CN_JOB_CONNECTCLUSTER,     // class number
   JK_DIST2PC,                // job kind
-  RK_NONE,                  // response kind
+  RS_NONE,                  // response kind
   "connect cluster"_Stz,     // comment about the job
   "connectCluster"_Stz,      // the prompt command
   nullptr,                   // the second word

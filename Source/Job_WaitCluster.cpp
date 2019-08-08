@@ -8,7 +8,7 @@ JobClass xJobClass_WaitCluster =
 {
   CN_JOB_WAITCLUSTER,     // class number
   JK_DIST2PC,             // job kind
-  RK_NONE,                // response kind
+  RS_NONE,                // response kind
   "wait cluster"_Stz,     // comment about the job
   "waitCluster"_Stz,      // the prompt command
   nullptr,                // the second word

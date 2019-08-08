@@ -8,7 +8,7 @@ JobClass xJobClass_ListTenants =
 {
   CN_JOB_LISTTENANTS,     // class number
   JK_LOCAL,               // job kind
-  RK_LOCAL_ROWS,          // response kind
+  RS_LOCAL_ROWS,          // response kind
   "list tenants"_Stz,     // comment about the job
   "lsten"_Stz,            // the prompt command
   nullptr,                // the second word

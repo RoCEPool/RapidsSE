@@ -8,7 +8,7 @@ JobClass xJobClass_Status =
 {
   CN_JOB_STATUS,     // class number
   JK_DIST2PC,        // job kind
-  RK_NODE_ROWS,      // response kind
+  RS_NODE_ROWS,      // response kind
   "status"_Stz,      // comment about the job
   "status"_Stz,      // the prompt command
   nullptr,           // the second word

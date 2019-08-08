@@ -8,7 +8,7 @@ JobClass xJobClass_ListCatalogs =
 {
   CN_JOB_LISTCATALOGS,     // class number
   JK_LOCAL,                // job kind
-  RK_LOCAL_ROWS,           // response kind
+  RS_LOCAL_ROWS,           // response kind
   "list catalogs"_Stz,     // comment about the job
   "lscat"_Stz,             // the prompt command
   nullptr,                 // the second word

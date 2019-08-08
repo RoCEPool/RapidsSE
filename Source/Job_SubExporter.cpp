@@ -8,7 +8,7 @@ JobClass xJobClass_SubExporter =
 {
   CN_JOB_SUBEXPORTER,        // class number
   JK_CHILD,                  // job kind
-  RK_NODE_ERRORS,            // response kind
+  RS_NODE_ERRORS,            // response kind
   "sub-export rows"_Stz,     // comment about the job
   "subExporter"_Stz,         // the prompt command
   nullptr,                   // the second word

@@ -51,7 +51,7 @@ namespace Logging
                      Stz* szFormat, va_list xArgs);
     i8   iAddNoteJob(i8 iJobId, i8 iForeign,
                      Stz* aFormat, ...);
-    i8   iAddNoteRes(i8 iResId, eSR eSysRes, Stz* szFormat, va_list xArgs);
+    i8   iAddNoteRes(i8 iResId, eRK eSysRes, Stz* szFormat, va_list xArgs);
     i8   iAddNoteInf(Stz* szFormat, va_list xArgs);
     LogEntry* pNewEntry(void);
     LogEntry* pNewEntry_NL(void);

@@ -8,7 +8,7 @@ JobClass xJobClass_Dynamic =
 {
   CN_JOB_DYNAMIC,        // class number
   JK_LOCAL,              // job kind
-  RK_LOCAL_ROWS,         // response kind
+  RS_LOCAL_ROWS,         // response kind
   "dynamic"_Stz,         // comment about the job
   "dynamic"_Stz,         // the prompt command
   nullptr,               // the second word

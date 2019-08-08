@@ -8,7 +8,7 @@ JobClass xJobClass_Pwf =
 {
   CN_JOB_PWF,            // class number
   JK_LOCAL,              // job kind
-  RK_LOCAL_ROWS,         // response kind
+  RS_LOCAL_ROWS,         // response kind
   "working folder"_Stz,  // comment about the job
   "pwf"_Stz,             // the prompt command
   nullptr,               // the second word

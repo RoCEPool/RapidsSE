@@ -8,7 +8,7 @@ JobClass xJobClass__Begun =
 {
   CN_JOB__BEGUN,           // class number
   JK_GENERIC,              // job kind
-  RK_NONE,                 // response kind
+  RS_NONE,                 // response kind
   "job was begun"_Stz,     // comment about the job
   nullptr,                 // the prompt command
   nullptr,                 // the second word

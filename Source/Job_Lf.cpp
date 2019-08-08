@@ -8,7 +8,7 @@ JobClass xJobClass_Lf =
 {
   CN_JOB_LF,         // class number
   JK_LOCAL,          // job kind
-  RK_LOCAL_ROWS,     // response kind
+  RS_LOCAL_ROWS,     // response kind
   "list folder"_Stz, // comment about the job
   "lf"_Stz,          // the prompt command
   nullptr,           // the second word

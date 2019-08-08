@@ -8,7 +8,7 @@ JobClass xJobClass_VerifyIndex =
 {
   CN_JOB_VERIFYINDEX,         // class number
   JK_DIST2PC,                 // job kind
-  RK_NODE_ROWS,               // response kind
+  RS_NODE_ROWS,               // response kind
   "verify index"_Stz,         // comment about the job
   "vfyidx"_Stz,               // the prompt command
   nullptr,                    // the second word

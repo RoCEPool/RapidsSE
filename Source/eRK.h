@@ -1,43 +1,53 @@
 /*============================================================================*/
-/* eRK.h -- Response Kind                                                     */
+/* eRK.h -- Resource                                                          */
 /*============================================================================*/
 #pragma once
 
-enum eRK // response kind
+enum eRK // Resource kind
 {
-  /* 0 */ RK_NONE=0,
+  RK_NONE,
   
-  /* 1 */ RK_DATA_ROWS,
-  /* 2 */ RK_LOAD_ROWS,
-  /* 3 */ RK_LOCAL_ERRORS,
-  /* 4 */ RK_LOCAL_ROWS,
-  /* 5 */ RK_LOCAL_ZERO,
-  /* 6 */ RK_NODE_ERRORS,
-  /* 7 */ RK_NODE_ROWS,
-  /* 8 */ RK_NODE_ZERO,
+  RK_DIR,
+  RK_FILE,
+  RK_MALLOC,
+  RK_MUTEX,
+  RK_PTHREAD,
+  RK_SHM,
+  RK_SOCKET,
   
-  /* 9 */ RK_ENUMS_
+  RK_ENUMS
 };
-
+  
 static Stz* aRK[]
 {
-  /* 0 */ "NONE"_Stz,
+  "NONE"_Stz,
   
-  /* 1 */ "DATA_ROWS"_Stz,
-  /* 2 */ "LOAD_ROWS"_Stz,
-  /* 3 */ "LOCAL_ERRORS"_Stz,
-  /* 4 */ "LOCAL_ROWS"_Stz,
-  /* 5 */ "LOCAL_ZERO"_Stz,
-  /* 6 */ "NODE_ERRORS"_Stz,
-  /* 7 */ "NODE_ROWS"_Stz,
-  /* 8 */ "NODE_ZERO"_Stz,
+  "DIR"_Stz,
+  "FILE"_Stz,
+  "MALLOC"_Stz,
+  "MUTEX"_Stz,
+  "PTHREAD"_Stz,
+  "SHM"_Stz,
+  "SOCKET"_Stz,
   
-  /* 9 */ "ENUMS_"_Stz
+  "ENUMS"_Stz,
 };
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+static Stz* aRK_Short[]
+{
+  "NONE"_Stz,
 
+  "DIR"_Stz,
+  "FIL"_Stz,
+  "MEM"_Stz,
+  "MTX"_Stz,
+  "SHM"_Stz,
+  "SKT"_Stz,
+  "THD"_Stz,
 
+  "ENUMS"_Stz,
+};
+  
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

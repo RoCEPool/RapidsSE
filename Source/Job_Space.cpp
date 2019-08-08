@@ -8,7 +8,7 @@ JobClass xJobClass_Space =
 {
   CN_JOB_SPACE,     // class number
   JK_DIST2PC,       // job kind
-  RK_NODE_ROWS,     // response kind
+  RS_NODE_ROWS,     // response kind
   "space"_Stz,      // comment about the job
   "space"_Stz,      // the prompt command
   nullptr,          // the second word

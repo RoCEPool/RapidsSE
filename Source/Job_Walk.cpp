@@ -8,7 +8,7 @@ JobClass xJobClass_Walk =
 {
   CN_JOB_WALK,               // class number
   JK_DIST2PC,                // job kind
-  RK_NODE_ZERO,              // response kind
+  RS_NODE_ZERO,              // response kind
   "walk"_Stz,                // comment about the job
   "walk"_Stz,                // the prompt command
   nullptr,                   // the second word

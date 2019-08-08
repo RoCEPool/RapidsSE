@@ -8,7 +8,7 @@ JobClass xJobClass_Answer =
 {
   CN_JOB_ANSWER,       // class number
   JK_SERVICE,           // job kind
-  RK_NONE,             // response kind
+  RS_NONE,             // response kind
   "socket answer"_Stz, // comment about the job
   nullptr,             // the prompt command
   nullptr,             // the second word
