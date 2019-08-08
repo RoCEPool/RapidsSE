@@ -46,6 +46,7 @@ Digest::Digest(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIGEST,_FOOTER_);
   
+  m_pSession   = nullptr;
   m_pJob       = pJob;
   m_bPulsed    = false;
   m_pOpToPulse = nullptr;
@@ -72,7 +73,7 @@ Digest::~Digest(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* process dynamic command                                                    */
 /*----------------------------------------------------------------------------*/
-void Digest::vParseCommand(Session* pSession, TokenVec* pTknVec)
+void Digest::vParseCommand(TokenVec* pTknVec)
 {
   s256 sTknStr;
   s32  sLabel;
@@ -117,7 +118,7 @@ void Digest::vParseCommand(Session* pSession, TokenVec* pTknVec)
     sLabel.vSprint("%s_%02lld"_Stz,
                    aOpDefn->m_szPrefix,
                    m_oOpVec.nItems());
-    Op* pOp = (aOpDefn->m_fpNew)(pSession, sLabel,this,aOpDefn,bAppendRight,
+    Op* pOp = (aOpDefn->m_fpNew)(sLabel,this,aOpDefn,bAppendRight,
                                  pTknVec,i_Tkn);
     
     m_oOpVec.vAdd(pOp);

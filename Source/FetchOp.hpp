@@ -27,7 +27,7 @@ namespace PushDown
     FetchOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR);
    ~FetchOp(void) noexcept(false);
 
-    static Op* pNew(Session* pSession, Stz* szLabel,
+    static Op* pNew(Stz* szLabel,
                     Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
                     TokenVec* pTknVec, i8& i_Tkn_);
     static eOR eCall(void* aThis);

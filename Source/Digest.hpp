@@ -9,13 +9,14 @@ namespace PushDown
   {
   public:
   
-    Job*  m_pJob;
-    bool  m_bPulsed;
-    Op*   m_pOpToPulse;
+    Session* m_pSession;
+    Job*     m_pJob;
+    bool     m_bPulsed;
+    Op*      m_pOpToPulse;
   
-    bool  m_bCancelling;
+    bool     m_bCancelling;
   
-    OpVec m_oOpVec;  // set of operators
+    OpVec    m_oOpVec;  // set of operators
   
   private:
   
@@ -29,7 +30,7 @@ namespace PushDown
     Digest(Job* pJob);
    ~Digest(void) noexcept(false);
   
-    void vParseCommand(Session* pSession, TokenVec* pTknVec);
+    void vParseCommand(TokenVec* pTknVec);
     void vSetupJob(void);
 
     Footer* aFooter(void);

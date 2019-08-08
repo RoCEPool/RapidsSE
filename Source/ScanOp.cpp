@@ -60,6 +60,7 @@ ScanOp::ScanOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANOP,_FOOTER_);
   
+  m_sTableNm   = ""_Stz;
   m_pTable     = nullptr;
   m_pTablePtn  = nullptr;
   m_pCrwBuffer = nullptr;
@@ -87,7 +88,7 @@ ScanOp::~ScanOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* ScanOp::pNew(Session* pSession, Stz* szLabel,
+Op* ScanOp::pNew(Stz* szLabel,
                  Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
                  TokenVec* pTknVec, i8& i_Tkn_)
 {
@@ -95,16 +96,10 @@ Op* ScanOp::pNew(Session* pSession, Stz* szLabel,
   
   ScanOp* pScanOp = new ScanOp(szLabel,pDigest,aOpDefn,bAppR);
   
-  s32 sTableNm = pTknVec->pGet(i_Tkn_++)->aText();
-  AM::vTableName((Job_Dynamic*)pDigest->m_pJob,sTableNm);
+  pScanOp->m_sTableNm = pTknVec->pGet(i_Tkn_++)->aText();
+  //AM::vTableName((Job_Dynamic*)pDigest->m_pJob,sTableNm);
   
-  pScanOp->m_sArgs = sTableNm;
-  
-  // find the table in the session dictionary stack
-  pScanOp->m_pTable = Table::pFindTable(pSession->pPathStack(), sTableNm);
-  
-  // get table ptn
-  pScanOp->m_pTablePtn = pScanOp->m_pTable->pSlots()->pPartition(0);
+  pScanOp->m_sArgs = pScanOp->m_sTableNm;
   
   return pScanOp;
 }
@@ -181,10 +176,11 @@ void ScanOp::vPreliminary(void)
   
   m_bRunPrelim = false;
   
-  // temp
-//  if (! m_pTablePtn) {
-//    m_pTablePtn = AM::pTable((Job_Dynamic*)m_pJob)->pSlots()->pPartition(0);
-//  }
+  // find the table in the session dictionary stack
+  m_pTable = Table::pFindTable(m_pDigest->m_pSession->pPathStack(), m_sTableNm);
+  
+  // get table ptn
+  m_pTablePtn = m_pTable->pSlots()->pPartition(0);
   
   // pipe StreamDef
   StreamDef* pStreamDef = m_pTable->pStreamDef();

@@ -8,6 +8,7 @@ namespace PushDown
   class ScanOp : public Op
   {
   private:
+    s256       m_sTableNm;
     Table*     m_pTable;
     TablePtn*  m_pTablePtn;
     CrwBuffer* m_pCrwBuffer;
@@ -24,7 +25,7 @@ namespace PushDown
     ScanOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR);
    ~ScanOp(void) noexcept(false);
 
-    static Op* pNew(Session* pSession, Stz* szLabel,
+    static Op* pNew(Stz* szLabel,
                     Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
                     TokenVec* pTknVec, i8& i_Tkn_);
     static eOR eCall(void* aThis);
