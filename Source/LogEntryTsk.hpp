@@ -11,7 +11,7 @@ namespace Logging
     i8   m_iTskId;             // task id
 
   public:
-   void vSet(LogEntry* pLogEntry, i8 iTskId, char* aText);
+   void vSet(LogEntry* pLogEntry, i8 iTskId);
   
    void vWrite(File* pFile, LogEntry* pLogEntry,
                 i8 iTickDeltaUsec, i8& iTotalDelta);

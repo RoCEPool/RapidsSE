@@ -11,7 +11,7 @@ namespace Logging
     i8   m_iItfId;             // interface id
 
   public:
-   void vSet(LogEntry* pLogEntry, i8 iItfId, char* aText);
+   void vSet(LogEntry* pLogEntry, i8 iItfId);
   
    void vWrite(File* pFile, LogEntry* pLogEntry,
                 i8 iTickDeltaUsec, i8& iTotalDelta);

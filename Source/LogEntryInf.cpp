@@ -7,13 +7,11 @@
 /*----------------------------------------------------------------------------*/
 /* set entry                                                                  */
 /*----------------------------------------------------------------------------*/
-void _LogEntryInf::vSet(LogEntry* pLogEntry, char* aText)
+void _LogEntryInf::vSet(LogEntry* pLogEntry)
 {  
   pLogEntry->m_eKind = EK_INF;
 
   m_eLogNote = LN_TEXT;
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,aText,C_LOG_TEXT - 1);
 }
 
 /*----------------------------------------------------------------------------*/

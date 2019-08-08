@@ -11,7 +11,7 @@ namespace Logging
     i8   m_iSvcId;             // service id
 
   public:
-   void vSet(LogEntry* pLogEntry, i8 iSvcId, char* aText);
+   void vSet(LogEntry* pLogEntry, i8 iSvcId);
   
    void vWrite(File* pFile, LogEntry* pLogEntry,
                 i8 iTickDeltaUsec, i8& iTotalDelta);

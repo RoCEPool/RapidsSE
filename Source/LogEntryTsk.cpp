@@ -7,13 +7,11 @@
 /*----------------------------------------------------------------------------*/
 /* set resource entry                                                         */
 /*----------------------------------------------------------------------------*/
-void _LogEntryTsk::vSet(LogEntry* pLogEntry, i8 iTskId, char* aText)
+void _LogEntryTsk::vSet(LogEntry* pLogEntry, i8 iTskId)
 {
   pLogEntry->m_eKind = EK_THD;
   
   m_iTskId = iTskId;
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,aText,C_LOG_TEXT - 1);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -7,13 +7,11 @@
 /*----------------------------------------------------------------------------*/
 /* set entry                                                                  */
 /*----------------------------------------------------------------------------*/
-void _LogEntryPrm::vSet(LogEntry* pLogEntry, i8 iPrmId, char* aText)
+void _LogEntryPrm::vSet(LogEntry* pLogEntry, i8 iPrmId)
 {
   pLogEntry->m_eKind = EK_PRM;
   
   m_iPrmId = iPrmId;
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,aText,C_LOG_TEXT - 1);
 }
 
 /*----------------------------------------------------------------------------*/

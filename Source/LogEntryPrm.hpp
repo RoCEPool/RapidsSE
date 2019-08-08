@@ -11,7 +11,7 @@ namespace Logging
     i8   m_iPrmId;             // prompt id
 
   public:
-   void vSet(LogEntry* pLogEntry, i8 iPrmId, char* aText);
+   void vSet(LogEntry* pLogEntry, i8 iPrmId);
   
    void vWrite(File* pFile, LogEntry* pLogEntry,
                 i8 iTickDeltaUsec, i8& iTotalDelta);

@@ -15,7 +15,7 @@ namespace Logging
     eLN  m_eLogNote;           //
    
   public:
-    void vSet(LogEntry* pLogEntry, char* aText);
+    void vSet(LogEntry* pLogEntry);
   
     void vWrite(File* pFile, LogEntry* pLogEntry, i8 iTickDeltaUsec, i8& iTotalDelta);
   };

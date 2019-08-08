@@ -7,13 +7,11 @@
 /*----------------------------------------------------------------------------*/
 /* set resource entry                                                         */
 /*----------------------------------------------------------------------------*/
-void _LogEntryRes::vSet(LogEntry* pLogEntry, eSR eSysRes, char* aText)
+void _LogEntryRes::vSet(LogEntry* pLogEntry, eSR eSysRes)
 {
   pLogEntry->m_eKind = EK_RES;
   
   m_eSysRes = eSysRes;
-  
-//  StrLib::vCopyLen(pLogEntry->m_caText,aText,C_LOG_TEXT - 1);
 }
 
 /*----------------------------------------------------------------------------*/

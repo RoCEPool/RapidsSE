@@ -11,7 +11,7 @@ namespace Logging
     i8   m_iThdId;             // thread id
 
   public:
-   void vSet(LogEntry* pLogEntry, i8 iThdId, char* aText);
+   void vSet(LogEntry* pLogEntry, i8 iThdId);
   
    void vWrite(File* pFile, LogEntry* pLogEntry,
                 i8 iTickDeltaUsec, i8& iTotalDelta);

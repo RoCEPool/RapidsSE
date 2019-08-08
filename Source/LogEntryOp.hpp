@@ -11,7 +11,7 @@ namespace Logging
     i8   m_iOpId;              // opid
 
   public:
-   void vSet(LogEntry* pLogEntry, i8 iJobId, char* aText);
+   void vSet(LogEntry* pLogEntry, i8 iJobId);
   
    void vWrite(File* pFile, LogEntry* pLogEntry,
                 i8 iTickDeltaUsec, i8& iTotalDelta);

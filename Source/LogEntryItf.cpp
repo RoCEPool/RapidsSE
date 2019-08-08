@@ -7,13 +7,11 @@
 /*----------------------------------------------------------------------------*/
 /* set entry                                                                  */
 /*----------------------------------------------------------------------------*/
-void _LogEntryItf::vSet(LogEntry* pLogEntry, i8 iItfId, char* aText)
+void _LogEntryItf::vSet(LogEntry* pLogEntry, i8 iItfId)
 {
   pLogEntry->m_eKind = EK_ITF;
   
   m_iItfId = iItfId;
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,aText,C_LOG_TEXT - 1);
 }
 
 /*----------------------------------------------------------------------------*/

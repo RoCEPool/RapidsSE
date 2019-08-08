@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* set variable entry                                                         */
 /*----------------------------------------------------------------------------*/
-void _LogEntryJob::vSet(LogEntry* pLogEntry, i8 iJobId, i8 iForeign, char* aText)
+void _LogEntryJob::vSet(LogEntry* pLogEntry, i8 iJobId, i8 iForeign)
 {  
   pLogEntry->m_eKind = EK_JOB;
 
@@ -15,8 +15,6 @@ void _LogEntryJob::vSet(LogEntry* pLogEntry, i8 iJobId, i8 iForeign, char* aText
   
   m_iJobId   = iJobId;
   m_iForeign = iForeign;
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,aText,C_LOG_TEXT - 1);
 }
 
 /*----------------------------------------------------------------------------*/

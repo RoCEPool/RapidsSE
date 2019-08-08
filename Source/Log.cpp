@@ -200,10 +200,14 @@ void Log::vNoteString(i8 iJobId, s48K& sString)
   gpLog->vGrabLock();
   
   while (StrLib::bEachLine(&aCharAdr,sLine.aChar())) {
+    
     //vTrace("Line: ]]%s[[\n"_Stz,sLine.aChar());
     LogEntry* pLogEntry = gpLog->pNewEntry_NL();
     pLogEntry->vInit();
-    pLogEntry->m_xJob.vSet(pLogEntry,iJobId,bForeign,sLine.aChar());
+    
+    StrLib::vCopyLen(pLogEntry->m_caText,sLine.aChar(),C_LOG_TEXT - 1);
+
+    pLogEntry->m_xJob.vSet(pLogEntry,iJobId,bForeign);
   }
   
   gpLog->vDropLock();
@@ -390,7 +394,9 @@ i8 Log::iAddNoteArg(i8 iJobId, i8 iForeign, Stz* aFormat, va_list xVaArgs)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pLogEntry->m_xJob.vSet(pLogEntry,iJobId,iForeign,caMark);
+  StrLib::vCopyLen(pLogEntry->m_caText,caMark,C_LOG_TEXT - 1);
+  
+  pLogEntry->m_xJob.vSet(pLogEntry,iJobId,iForeign);
 
   return pLogEntry->m_i_Entry;
 }
@@ -415,7 +421,9 @@ i8 Log::iAddNoteInf(Stz* szFormat, va_list xVaArgs)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pLogEntry->m_xInf.vSet(pLogEntry,caMark);
+  StrLib::vCopyLen(pLogEntry->m_caText,caMark,C_LOG_TEXT - 1);
+  
+  pLogEntry->m_xInf.vSet(pLogEntry);
   
   return pLogEntry->m_i_Entry;
 }
@@ -458,7 +466,7 @@ i8 Log::iAddNoteRes(eSR eSysRes, Stz* szFormat, va_list xVaArgs)
   
   StrLib::vCopyLen(pLogEntry->m_caText,caMark,C_LOG_TEXT - 1);
   
-  pLogEntry->m_xRes.vSet(pLogEntry,eSysRes,caMark);
+  pLogEntry->m_xRes.vSet(pLogEntry,eSysRes);
   
   return pLogEntry->m_i_Entry;
 }
