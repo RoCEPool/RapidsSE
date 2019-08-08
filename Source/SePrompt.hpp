@@ -69,6 +69,8 @@ namespace Prompt
     bool bPassesLowMem(void);
     void vPostJob(void);
     void vPreJob(void);
+    void vReformatCommand(void);
+    void vRestateCommand(void);
     void vReportTime(void);
     Session* pSession(void);
     void vSetJob(void);

@@ -123,6 +123,10 @@ void SePrompt::vPromptLoop(void)
 
     vMarkCommand();
     
+    vRestateCommand();
+    
+    vReformatCommand();
+    
     if (bExecuteFile())
       continue;
     
@@ -672,6 +676,38 @@ void SePrompt::vPreJob(void)
   
 //  if (m_pJob && m_pJob->m_bMarkTrace)
 //    m_pJob->m_pJobClass->vShowJob(m_pJob);
+}
+
+/*----------------------------------------------------------------------------*/
+/* reformat command                                                           */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vReformatCommand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  TokenVec* pTknVec = this->pTknVec();
+  
+  if (Sql::bReformat(pTknVec))
+    return;
+
+  // -- -- -- -- -- --
+  return;
+}
+
+/*----------------------------------------------------------------------------*/
+/* restate command                                                            */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vRestateCommand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  TokenVec* pTknVec = this->pTknVec();
+  
+  if (Sql::bRestate(pTknVec))
+    return;
+  
+  // -- -- -- -- -- --
+  return;
 }
 
 /*----------------------------------------------------------------------------*/
