@@ -19,7 +19,7 @@
   pTask task.job@ locals| pJob |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+/*
   0 locals| sTableNm |
   0 locals| pTable |
 
@@ -52,7 +52,7 @@
   then
 
   popTable
-
+*/
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pTask task.grabLock
