@@ -191,7 +191,7 @@ bool AM::bJobIsForeign(i8 iJobId) {
   bool bForeign = Job::bIsForeign(iJobId);
   return bForeign;
 }
-void AM::vNoteArguments(void) {
+void AM::vLogArguments(void) {
   gxArguments.vMark();
 }
 void AM::vPrintArguments(void) {
@@ -327,7 +327,7 @@ void AM::vStateDiagram(s256& sDiagram, eCN eJobClass)
 /*----------------------------------------------------------------------------*/
 /* add a resource log entry                                                   */
 /*----------------------------------------------------------------------------*/
-void AM::vNoteRes(i8 iResId, eSR eSysRes, Stz* szFormat, ...)
+void AM::vLogRes(i8 iResId, eSR eSysRes, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -350,7 +350,7 @@ void AM::vNoteRes(i8 iResId, eSR eSysRes, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a text log entry                                                       */
 /*----------------------------------------------------------------------------*/
-void AM::vNoteInf(Stz* szFormat, ...)
+void AM::vLogInf(Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())

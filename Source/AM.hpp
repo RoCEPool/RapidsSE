@@ -118,7 +118,7 @@ namespace StorageEngine
     static void vDumpApi(void);
     static Task* pExecutingTask(Job* pJob);
     static bool bJobIsForeign(i8 iJobId);
-    static void vNoteArguments(void);
+    static void vLogArguments(void);
     static void vPrintArguments(void);
     static void vPrintAttachMap(void);
     static void vPrintStartupInfo(void);
@@ -137,8 +137,8 @@ namespace StorageEngine
     static bool bSpawnJob(Session* pSession, Job* pJob, i8 iSeed);
     static bool bSpawnOp(Session* pSession, Op* pOp);
     static void vStateDiagram(s256& sDiagram, eCN eJobClass);
-    static void vNoteInf(Stz* szFormat, ...);
-    static void vNoteRes(i8 iResId, eSR eSysRes, Stz* szFormat, ...);
+    static void vLogInf(Stz* szFormat, ...);
+    static void vLogRes(i8 iResId, eSR eSysRes, Stz* szFormat, ...);
     static void vWriteTrace(Stz* aFormat, va_list xArgs);
   };
 }

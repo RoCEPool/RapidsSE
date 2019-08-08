@@ -102,7 +102,7 @@ Mutex::Mutex()
   
   if (AM::pMarkResource()->bEnum(SR_MUTEX) ||
       AM::pMarkResource()->bAll())
-    AM::vNoteRes(m_iResId,SR_MUTEX,"SysRes: Mutex created : %p"_Stz,this);
+    AM::vLogRes(m_iResId,SR_MUTEX,"SysRes: Mutex created : %p"_Stz,this);
 
   _checkInitialised_(CN_MUTEX);
 
@@ -136,7 +136,7 @@ Mutex::~Mutex(void) noexcept(false)
   
   if (AM::pMarkResource()->bEnum(SR_MUTEX) ||
       AM::pMarkResource()->bAll())
-    AM::vNoteRes(m_iResId,SR_MUTEX,"SysRes: Mutex destroyed : %p"_Stz,this);
+    AM::vLogRes(m_iResId,SR_MUTEX,"SysRes: Mutex destroyed : %p"_Stz,this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -214,7 +214,7 @@ void Mutex::vCondSignal(void)
   
   if (AM::pMarkResource()->bEnum(SR_MUTEX) ||
       AM::pMarkResource()->bAll())
-    AM::vNoteRes(m_iResId,SR_MUTEX,"SysRes: Mutex signaled : %p"_Stz,this);
+    AM::vLogRes(m_iResId,SR_MUTEX,"SysRes: Mutex signaled : %p"_Stz,this);
   
   //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
   i8 rCode = pthread_cond_signal(&m_xCond);                      // non-blocking
@@ -258,7 +258,7 @@ void Mutex::vCondWaitIndefinite(void)
   
   if (AM::pMarkResource()->bEnum(SR_MUTEX) ||
       AM::pMarkResource()->bAll())
-    AM::vNoteRes(m_iResId,SR_MUTEX,"SysRes: Mutex wait : %p"_Stz,this);
+    AM::vLogRes(m_iResId,SR_MUTEX,"SysRes: Mutex wait : %p"_Stz,this);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -275,7 +275,7 @@ void Mutex::vCondWaitIndefinite(void)
   
   if (AM::pMarkResource()->bEnum(SR_MUTEX) ||
       AM::pMarkResource()->bAll())
-    AM::vNoteRes(m_iResId,SR_MUTEX,"SysRes: Mutex unblocked : %p"_Stz,this);
+    AM::vLogRes(m_iResId,SR_MUTEX,"SysRes: Mutex unblocked : %p"_Stz,this);
 
   // success
 
@@ -325,7 +325,7 @@ void Mutex::vCondWaitUsec(i8 iMicroSeconds)
   
   if (AM::pMarkResource()->bEnum(SR_MUTEX) ||
       AM::pMarkResource()->bAll())
-    AM::vNoteRes(m_iResId,SR_MUTEX,"SysRes: Mutex timedwait : %p %lldus"_Stz,
+    AM::vLogRes(m_iResId,SR_MUTEX,"SysRes: Mutex timedwait : %p %lldus"_Stz,
                        this,iMicroSeconds);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -348,7 +348,7 @@ void Mutex::vCondWaitUsec(i8 iMicroSeconds)
     
     if (AM::pMarkResource()->bEnum(SR_MUTEX) ||
         AM::pMarkResource()->bAll())
-      AM::vNoteRes(m_iResId,SR_MUTEX,"SysRes: Mutex timed unblock : %p %lldus"_Stz,
+      AM::vLogRes(m_iResId,SR_MUTEX,"SysRes: Mutex timed unblock : %p %lldus"_Stz,
                          this,iMicroSeconds);
     m_bLocked = true;
     return;
@@ -366,7 +366,7 @@ void Mutex::vCondWaitUsec(i8 iMicroSeconds)
     
     if (AM::pMarkResource()->bEnum(SR_MUTEX) ||
         AM::pMarkResource()->bAll())
-      AM::vNoteRes(m_iResId,SR_MUTEX,"SysRes: Mutex timeout : %p %lldus"_Stz,
+      AM::vLogRes(m_iResId,SR_MUTEX,"SysRes: Mutex timeout : %p %lldus"_Stz,
                          this,iMicroSeconds);
    m_bLocked = true;
     return;
