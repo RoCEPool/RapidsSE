@@ -200,6 +200,10 @@ void File::vClose(void)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
+#ifdef WITH_STATISTICS_COUNTERS
+  if (gpAttachMap) gpAttachMap->m_oStatistics.File.m_nCloses++;
+#endif
+  
   m_oSysCall.vClear();
 
   // never close stdin or stdout
@@ -208,18 +212,17 @@ void File::vClose(void)
     return;
   }
   
-  if ( ! m_aFile ) {
+  if (! m_aFile) {
     m_oSysCall.vFailure(0);
     vWarn("File::vClose: file not open: %s"_Stz,m_sFilePath.aChar());
     return;
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  
-#ifdef WITH_STATISTICS_COUNTERS
-  if (gpAttachMap) gpAttachMap->m_oStatistics.File.m_nCloses++;
-#endif
-  
   i8 iResult = fclose(m_aFile);
-  
+  m_aFile = nullptr;
+
   if ((char)EOF == iResult) {
     m_oSysCall.vError(errno);
     vWarn("File::vClose: fclose(%p) error; errno=%d : %s %s"_Stz,
@@ -227,12 +230,12 @@ void File::vClose(void)
     return;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   if (AM::bAttached()) AM::pResourceTracker()->vDecFileOpen();
   
-  AM::vLogRes(m_iResId,RK_FILE,RA_NONE,
+  AM::vLogRes(m_iResId,RK_FILE,RA_FIL_CLOSE,
               "File closed : %s"_Stz,m_sFilePath.aStz());
-
-  m_aFile = nullptr;
 
   vReset();
   
@@ -377,6 +380,10 @@ bool File::bOpenMode(Stz* aFilePath, Stz* aOpenMode)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
+#ifdef WITH_STATISTICS_COUNTERS
+  if (gpAttachMap) gpAttachMap->m_oStatistics.File.m_nOpens++;
+#endif
+  
   if (aFilePath->bSame("stdin"_Stz)) {
     vUseStdin();
     return true;
@@ -394,25 +401,25 @@ bool File::bOpenMode(Stz* aFilePath, Stz* aOpenMode)
   
   m_oSysCall.vClear();
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   m_sFilePath   = aFilePath;
   m_sOpenMode   = aOpenMode;
 
-#ifdef WITH_STATISTICS_COUNTERS
-  if (gpAttachMap) gpAttachMap->m_oStatistics.File.m_nOpens++;
-#endif
-  
   m_aFile = fopen(m_sFilePath.aChar(),m_sOpenMode.aChar());
   
-  if ( ! m_aFile ) {
+  if (! m_aFile) {
     m_oSysCall.vError(errno);
     vWarn("File::bOpen: fopen(%s,%s) error; errno=%d\n"_Stz,
           m_sFilePath.aChar(),m_sOpenMode.aChar(),errno);
     return false;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   if (AM::bAttached()) AM::pResourceTracker()->vIncFileOpen();
   
-  AM::vLogRes(m_iResId,RK_FILE,RA_NONE,
+  AM::vLogRes(m_iResId,RK_FILE,RA_FIL_OPEN,
               "File opened : %s %s"_Stz,aFilePath,aOpenMode);
 
   return true;
