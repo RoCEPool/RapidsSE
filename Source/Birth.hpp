@@ -15,8 +15,8 @@ namespace Gadgets
     Footer m_xFooter;
     
   public:
-    Birth();
-    ~Birth() noexcept(false);
+    Birth(void);
+   ~Birth(void) noexcept(false);
     
     void vClear(void);
     void vNow(void);

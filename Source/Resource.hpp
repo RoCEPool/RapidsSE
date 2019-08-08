@@ -8,7 +8,9 @@ namespace Resources
   class Resource : public Object
   {
   protected:
-    i8 m_iResId; // resource id
+    i8    m_iResId; // resource id
+  
+    Birth m_oBirth; // birth certificate
 
   public:
     Resource(eCN eClass);

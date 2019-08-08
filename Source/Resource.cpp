@@ -29,6 +29,8 @@ Resource::Resource(eCN eClassNo)
   
   m_iResId = AM::iNextResourceId();
   
+  m_oBirth.vNow();
+  
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);  
 }
 
