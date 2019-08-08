@@ -263,7 +263,8 @@ bool Socket::bAcceptClient(int& iSocketId, SysCall& SysCall)
   
   if (AM::bAttached()) AM::pResourceTracker()->vIncSocketOpen();
   
-  AM::vLogRes(m_iResId,RK_SOCKET,"Socket accepted : client"_Stz);
+  AM::vLogRes(m_iResId,RK_SOCKET,RA_NONE,
+              "Socket accepted : client"_Stz);
 
   SysCall.vSuccess();
   return true;
@@ -299,7 +300,8 @@ bool Socket::bClose(SysCall& SysCall)
   
   if (AM::bAttached()) AM::pResourceTracker()->vDecSocketOpen();
   
-  AM::vLogRes(m_iResId,RK_SOCKET,"Socket closed : "_Stz);
+  AM::vLogRes(m_iResId,RK_SOCKET,RA_NONE,
+              "Socket closed : "_Stz);
 
   SysCall.vSuccess();
   return true;
@@ -367,8 +369,8 @@ bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
   
   if (AM::bAttached()) AM::pResourceTracker()->vIncSocketOpen();
   
-  AM::vLogRes(m_iResId,RK_SOCKET,"Socket connected : to server %s %d"_Stz,
-                       sAddr,iPort);
+  AM::vLogRes(m_iResId,RK_SOCKET,RA_NONE,
+              "Socket connected : to server %s %d"_Stz,sAddr,iPort);
 
   SysCall.vSuccess();
   return true;
@@ -431,8 +433,8 @@ bool Socket::bCreateServer(int iPort, SysCall& SysCall)
   
   if (AM::bAttached()) AM::pResourceTracker()->vIncSocketOpen();
   
-  AM::vLogRes(m_iResId,RK_SOCKET,"Socket created : listening socket : %d"_Stz,
-                       iPort);
+  AM::vLogRes(m_iResId,RK_SOCKET,RA_NONE,
+              "Socket created : listening socket : %d"_Stz,iPort);
 
   SysCall.vSuccess();
   return true;
@@ -506,8 +508,8 @@ bool Socket::bRecvBytes(void* pWS, i8 nBytes, SysCall& SysCall)
     gpAttachMap->m_oStatistics.Socket.m_nRecvBytes += nRecvBytes;
 #endif
     
-  AM::vLogRes(m_iResId,RK_SOCKET,"Socket received : %lld bytes"_Stz,
-                         nRecvBytes);
+  AM::vLogRes(m_iResId,RK_SOCKET,RA_NONE,
+              "Socket received : %lld bytes"_Stz,nRecvBytes);
 
     //vTrace("Bytes received: (%lld) %lld\n"_Stz, nBytes, nSoFar);
   }
@@ -539,8 +541,8 @@ bool Socket::bSendBytes(void* pBuffer, i8 nBytes, SysCall& SysCall)
   gpAttachMap->m_oStatistics.Socket.m_nSendBytes += nSentBytes;
 #endif
   
-  AM::vLogRes(m_iResId,RK_SOCKET,"Socket sent : %lld bytes"_Stz,
-                      nSentBytes);
+  AM::vLogRes(m_iResId,RK_SOCKET,RA_NONE,
+              "Socket sent : %lld bytes"_Stz,nSentBytes);
 
   if (nSentBytes == nBytes) {
     SysCall.vSuccess();

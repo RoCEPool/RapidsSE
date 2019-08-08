@@ -455,7 +455,8 @@ bool Pthread::bSpawnThread(void* pFun(void*), void* pArg)
   
   if (AM::pMarkResource()->bEnum(RK_PTHREAD) ||
       AM::pMarkResource()->bAll())
-    AM::vLogRes(m_iResId,RK_PTHREAD,"Thread spawned : %lld"_Stz,m_iPthreadId);
+    AM::vLogRes(m_iResId,RK_PTHREAD,RA_NONE,
+                "Thread spawned : %lld"_Stz,m_iPthreadId);
 
   // this is important otherwise resources are not released
   pthread_detach(m_iPthreadId);

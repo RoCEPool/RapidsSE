@@ -327,7 +327,7 @@ void AM::vStateDiagram(s256& sDiagram, eCN eJobClass)
 /*----------------------------------------------------------------------------*/
 /* add a resource log entry                                                   */
 /*----------------------------------------------------------------------------*/
-void AM::vLogRes(i8 iResId, eRK eSysRes, Stz* szFormat, ...)
+void AM::vLogRes(i8 iResId, eRK eSysRes, eRA eResAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
