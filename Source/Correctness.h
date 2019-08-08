@@ -51,7 +51,6 @@ typedef String_t<C_1M>   s1M;   // note this is 1M not 1MB
 typedef String_t<C_MAX_VCH> sVCH;
 
 
-#include "Atomic.hpp"
 #include "MagLib.hpp"
 #include "Statistics.hpp"
 #include "EnumFlags.hpp"

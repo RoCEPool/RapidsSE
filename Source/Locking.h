@@ -17,6 +17,7 @@ namespace Locking
 #include "AM.hpp"
 
 
+#include "Atomic.hpp"
 #include "Lock.hpp"
 #include "LockTracker.hpp"
 
