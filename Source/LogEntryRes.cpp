@@ -21,10 +21,12 @@ void _LogEntryRes::vSet(LogEntry* pLogEntry, i8 iResId, eRK eResKnd, eRA eResAct
 /*----------------------------------------------------------------------------*/
 void _LogEntryRes::vWriteCsv(File* pFile)
 {
-  pFile->vPrint("%lld,%s,%s"_Stz,
+  SP_Id spId;
+  
+  pFile->vPrint(",%s,%s,%s"_Stz,
               
-                m_iResId,
                 aRK_Short[m_eResKnd],
+                spId.sz(m_iResId),
                 aRA[m_eResAct]);
 }
 
