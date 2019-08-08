@@ -12,7 +12,8 @@ namespace PushDown
     Table*     m_pTable;
     TablePtn*  m_pTablePtn;
     CrwBuffer* m_pCrwBuffer;
-  
+    i8         m_nSlot;
+    
     bool       m_bRunPrelim;
   
     // must be last
@@ -27,7 +28,7 @@ namespace PushDown
 
     static Op* pNew(Stz* szLabel,
                     Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
-                    TokenVec* pTknVec, i8& i_Tkn_);
+                    TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot);
     static eOR eCall(void* aThis);
   
     eOR eOpLoop(void);

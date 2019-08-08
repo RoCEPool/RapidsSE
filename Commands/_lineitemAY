@@ -87,13 +87,13 @@ time ld orders "/DATA/tpch/orders10.csv" max_errors 100;
 //compactidx LineItem LineItem_Idx1;
 
 //query lineitem;
+//dynamic fetch lineitem LineItem_Idx1 | output | zed;
 
 //dynamic scan lineitem | limit 2 | output | zed;
 
 dynamic fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join | output | zed;
 //dynamic fetch lineitem LineItem_Idx1 | output | zed;
 
-//dynamic fetch LT LI , fetch RT RI | join  | output | zed;
 logWrite;
 
 /*

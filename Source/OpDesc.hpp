@@ -17,7 +17,7 @@ namespace PushDown
            bool bIsPartitioned, // is operator partitioned
            Op*  (*fpNew)(Stz* szLabel,
                          Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
-                         TokenVec* pTknVec, i8& i_Tkn_),
+                         TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot),
            
            eOR  (*fpCall)(void* aThisOp),  // function which calls the op loop
            eOR  (*fpDrain)(void* aThisOp), // function which drains the drain loop

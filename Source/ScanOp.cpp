@@ -64,6 +64,7 @@ ScanOp::ScanOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   m_pTable     = nullptr;
   m_pTablePtn  = nullptr;
   m_pCrwBuffer = nullptr;
+  m_nSlot      = -1;
   m_bRunPrelim = true;
   
   _checkInitialised_(CN_SCANOP);
@@ -90,7 +91,7 @@ ScanOp::~ScanOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Op* ScanOp::pNew(Stz* szLabel,
                  Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
-                 TokenVec* pTknVec, i8& i_Tkn_)
+                 TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   
@@ -98,6 +99,7 @@ Op* ScanOp::pNew(Stz* szLabel,
   
   pScanOp->m_sTableNm = pTknVec->pGet(i_Tkn_++)->aText();
   //AM::vTableName((Job_Dynamic*)pDigest->m_pJob,sTableNm);
+  pScanOp->m_nSlot = i_Slot;
   
   pScanOp->m_sArgs = pScanOp->m_sTableNm;
   
@@ -180,7 +182,7 @@ void ScanOp::vPreliminary(void)
   m_pTable = Table::pFindTable(m_pDigest->m_pSession->pPathStack(), m_sTableNm);
   
   // get table ptn
-  m_pTablePtn = m_pTable->pSlots()->pPartition(0);
+  m_pTablePtn = m_pTable->pSlots()->pPartition(m_nSlot);
   
   // pipe StreamDef
   StreamDef* pStreamDef = m_pTable->pStreamDef();

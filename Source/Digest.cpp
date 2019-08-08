@@ -114,14 +114,29 @@ void Digest::vParseCommand(TokenVec* pTknVec)
       continue;
     }
     
-    // new an op
-    sLabel.vSprint("%s_%02lld"_Stz,
-                   aOpDefn->m_szPrefix,
-                   m_oOpVec.nItems());
-    Op* pOp = (aOpDefn->m_fpNew)(sLabel,this,aOpDefn,bAppendRight,
-                                 pTknVec,i_Tkn);
+    if (aOpDefn->m_bIsPartitioned) {
+      
+      for (i8 i_Slot = 0; i_Slot < AM::pGrid()->m_nSlotsPerNode; i_Slot++) {
+        // new an op
+        sLabel.vSprint("%s_%02lld_%02lld"_Stz,
+                       aOpDefn->m_szPrefix,
+                       m_oOpVec.nItems(),
+                       i_Slot);
+        Op* pOp = (aOpDefn->m_fpNew)(sLabel,this,aOpDefn,bAppendRight,
+                                     pTknVec,i_Tkn,i_Slot);
+        m_oOpVec.vAdd(pOp);
+      }
+    }
+    else {
+      // new an op
+      sLabel.vSprint("%s_%02lld"_Stz,
+                     aOpDefn->m_szPrefix,
+                     m_oOpVec.nItems());
+      Op* pOp = (aOpDefn->m_fpNew)(sLabel,this,aOpDefn,bAppendRight,
+                                   pTknVec,i_Tkn,-1);
+      m_oOpVec.vAdd(pOp);
+    }
     
-    m_oOpVec.vAdd(pOp);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -152,7 +167,7 @@ void Digest::vParseCommand(TokenVec* pTknVec)
     s32 sArgs;
     sArgs.vSprint("(%s)"_Stz,pOp->szArgs());
     
-    vTrace("  [%02lld] { %6s: %8s%-24s :%-6s %s }\n"_Stz,
+    vTrace("  [%02lld] { %9s: %8s%-24s :%-6s %s }\n"_Stz,
            i_Op,
            pOp->szLabel(),
            aCN[pOp->eClass()],

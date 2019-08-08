@@ -66,6 +66,7 @@ FetchOp::FetchOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   m_pIndex     = nullptr;
   m_pTablePtn  = nullptr;
   m_pEntBuffer = nullptr;
+  m_nSlot      = -1;
   m_bRunPrelim = true;
   
   _checkInitialised_(CN_FETCHOP);
@@ -92,7 +93,7 @@ FetchOp::~FetchOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Op* FetchOp::pNew(Stz* szLabel,
                   Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
-                  TokenVec* pTknVec, i8& i_Tkn_)
+                  TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   
@@ -100,6 +101,7 @@ Op* FetchOp::pNew(Stz* szLabel,
   
   pFetchOp->m_sTableNm = pTknVec->pGet(i_Tkn_++)->aText();
   pFetchOp->m_sIndexNm = pTknVec->pGet(i_Tkn_++)->aText();
+  pFetchOp->m_nSlot = i_Slot;
   
   pFetchOp->m_sArgs = pFetchOp->m_sTableNm;
   pFetchOp->m_sArgs.vConcat(" "_Stz);
@@ -187,7 +189,7 @@ void FetchOp::vPreliminary(void)
   m_pIndex = Table::pFindIndex(m_pDigest->m_pSession->pPathStack(), m_sTableNm, m_sIndexNm);
   
   // get table ptn
-  m_pTablePtn = m_pTable->pSlots()->pPartition(0);
+  m_pTablePtn = m_pTable->pSlots()->pPartition(m_nSlot);
   
   // pipe StreamDef
   StreamDef* pStreamDef = m_pTable->pStreamDef();

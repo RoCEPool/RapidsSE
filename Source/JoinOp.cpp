@@ -61,6 +61,7 @@ JoinOp::JoinOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   m_bEndRightOperands = false;
   
   m_pRefBuffer = new RefBuffer;
+  m_nSlot      = -1;
   
   m_eNextEntry = NE_NEXT_LEFT_RIGHT;
 }
@@ -82,11 +83,12 @@ JoinOp::~JoinOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Op* JoinOp::pNew(Stz* szLabel,
                  Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
-                 TokenVec* pTknVec, i8& i_Tkn_)
+                 TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   
   JoinOp* pJoinOp = new JoinOp(szLabel,pDigest,aOpDefn,bAppR);
+  pJoinOp->m_nSlot = i_Slot;
   
   return pJoinOp;
 }

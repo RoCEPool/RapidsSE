@@ -16,7 +16,7 @@ OpDesc::OpDesc(eCN  eClass,     // class number
                bool bIsPartitioned, // is partitioned
                Op*  (*fpNew)(Stz* szLabel,
                              Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
-                             TokenVec* pTknVec, i8& i_Tkn),
+                             TokenVec* pTknVec, i8& i_Tkn, i8 i_Slot),
                eOR  (*fpCall) (void* aThisOp),  // fun which calls the op loop
                eOR  (*fpDrain)(void* aThisOp),  // fun which calls the drain loop
                Stz* szHelp      // help text

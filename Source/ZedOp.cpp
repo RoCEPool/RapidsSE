@@ -84,9 +84,10 @@ ZedOp::~ZedOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Op* ZedOp::pNew(Stz* szLabel,
                 Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
-                TokenVec* pTknVec, i8& i_Tkn_)
+                TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
+  ASSERT(i_Slot == -1);
   
   ZedOp* pZedOp = new ZedOp(szLabel,pDigest,aOpDefn,bAppR);
   
