@@ -31,7 +31,7 @@ namespace PushDown
    ~Digest(void) noexcept(false);
   
     void vParseCommand(TokenVec* pTknVec);
-    void vSetupJob(Session* pSession);
+    void vSetupJob(void);
 
     Footer* aFooter(void);
   };

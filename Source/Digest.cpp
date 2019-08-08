@@ -168,11 +168,9 @@ void Digest::vParseCommand(TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /* set up the job                                                             */
 /*----------------------------------------------------------------------------*/
-void Digest::vSetupJob(Session* pSession)
+void Digest::vSetupJob(void)
 {
   vDebugPoint();
-  
-  m_pSession = pSession;
   
   i8 nOps = m_oOpVec.nItems();
   
