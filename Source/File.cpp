@@ -232,7 +232,7 @@ void File::vClose(void)
   if (AM::bAttached() &&
       (AM::pMarkResource()->bEnum(SR_FILE) ||
        AM::pMarkResource()->bAll()))
-    AM::vLogRes(m_iResId,SR_FILE,"SysRes: File closed %s"_Stz,m_sFilePath.aStz());
+    AM::vLogRes(m_iResId,SR_FILE,"File closed %s"_Stz,m_sFilePath.aStz());
 
   m_aFile = nullptr;
 
@@ -416,7 +416,7 @@ bool File::bOpenMode(Stz* aFilePath, Stz* aOpenMode)
   if (AM::bAttached() &&
       (AM::pMarkResource()->bEnum(SR_FILE) ||
        AM::pMarkResource()->bAll()))
-    AM::vLogRes(m_iResId,SR_FILE,"SysRes: File opened %s %s"_Stz,aFilePath,aOpenMode);
+    AM::vLogRes(m_iResId,SR_FILE,"File opened %s %s"_Stz,aFilePath,aOpenMode);
 
   return true;
 }
