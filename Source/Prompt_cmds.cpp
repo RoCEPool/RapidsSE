@@ -50,7 +50,6 @@ bool Prompt::bPrompt_cmds(SePrompt* pPrompt)
   JobClass::vCmds(CN_JOB_MONITOR);
   JobClass::vCmds(CN_JOB_PING);
   JobClass::vCmds(CN_JOB_PWF);
-  JobClass::vCmds(CN_JOB_QUERY);
   JobClass::vCmds(CN_JOB_REPEATER);
   JobClass::vCmds(CN_JOB_REPORT);
   JobClass::vCmds(CN_JOB_SELECTTABLE);

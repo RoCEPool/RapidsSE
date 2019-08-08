@@ -107,13 +107,11 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobNodeInfo();
   Step::vAddSteps_JobPublish();
   Step::vAddSteps_JobPurge();
-  Step::vAddSteps_JobQuery();
   Step::vAddSteps_JobReceiver();
   Step::vAddSteps_JobRepeater();
   Step::vAddSteps_JobReport();
   Step::vAddSteps_JobSelectTable();
   Step::vAddSteps_JobSink();
-  Step::vAddSteps_JobSortExp();
   Step::vAddSteps_JobSubExporter();
   Step::vAddSteps_JobSubIngester();
   Step::vAddSteps_JobSubLoader();

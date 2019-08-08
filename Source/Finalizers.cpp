@@ -159,7 +159,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_PUBLISH
   /*    */ &Finalize::vUndefined,         // CN_JOB_PURGE
   /*    */ &Finalize::vUndefined,         // CN_JOB_PWF
-  /*    */ &Finalize::vUndefined,         // CN_JOB_QUERY
   /*    */ &Finalize::vUndefined,         // CN_JOB_RECEIVER
   /*    */ &Finalize::vUndefined,         // CN_JOB_REPEATER
   /*    */ &Finalize::vUndefined,         // CN_JOB_REPORT
@@ -169,7 +168,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_SINK
   /*    */ &Finalize::vUndefined,         // CN_JOB_SIZEINDEX
   /*    */ &Finalize::vUndefined,         // CN_JOB_SIZETABLE
-  /*    */ &Finalize::vUndefined,         // CN_JOB_SORTEXP
   /*    */ &Finalize::vUndefined,         // CN_JOB_SPACE
   /*    */ &Finalize::vUndefined,         // CN_JOB_START
   /*    */ &Finalize::vUndefined,         // CN_JOB_STARTCLUSTER

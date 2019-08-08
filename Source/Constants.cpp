@@ -272,7 +272,6 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_PUBLISH"_Stz,        CN_JOB_PUBLISH);
   /*    */ vAddConstant("CN_JOB_PURGE"_Stz,          CN_JOB_PURGE);
   /*    */ vAddConstant("CN_JOB_PWF"_Stz,            CN_JOB_PWF);
-  /*    */ vAddConstant("CN_JOB_QUERY"_Stz,          CN_JOB_QUERY);
   /*    */ vAddConstant("CN_JOB_RECEIVER"_Stz,       CN_JOB_RECEIVER);
   /*    */ vAddConstant("CN_JOB_REPEATER"_Stz,       CN_JOB_REPEATER);
   /*    */ vAddConstant("CN_JOB_REPORT"_Stz,         CN_JOB_REPORT);
@@ -282,7 +281,6 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_SINK"_Stz,           CN_JOB_SINK);
   /*    */ vAddConstant("CN_JOB_SIZEINDEX"_Stz,      CN_JOB_SIZEINDEX);
   /*    */ vAddConstant("CN_JOB_SIZETABLE"_Stz,      CN_JOB_SIZETABLE);
-  /*    */ vAddConstant("CN_JOB_SORTEXP"_Stz,        CN_JOB_SORTEXP);
   /*    */ vAddConstant("CN_JOB_SPACE"_Stz,          CN_JOB_SPACE);
   /*    */ vAddConstant("CN_JOB_START"_Stz,          CN_JOB_START);
   /*    */ vAddConstant("CN_JOB_STARTCLUSTER"_Stz,   CN_JOB_STARTCLUSTER);

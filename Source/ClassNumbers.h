@@ -162,7 +162,6 @@ enum eCN : u2 // Class Number
   /* 108 0x6C    71000B Heap:L */ CN_JOB_PUBLISH,
   /* 109 0x6D    70880B Heap:L */ CN_JOB_PURGE,
   /* 110 0x6E    70592B Heap:L */ CN_JOB_PWF,
-  /* 110 0x6E    70592B Heap:L */ CN_JOB_QUERY,
   /* 111 0x6F    70608B Heap:L */ CN_JOB_RECEIVER,
   /* 112 0x70    71168B Heap:L */ CN_JOB_REPEATER,
   /* 113 0x71    71168B Heap:L */ CN_JOB_REPORT,
@@ -172,7 +171,6 @@ enum eCN : u2 // Class Number
   /* 117 0x75    70880B Heap:L */ CN_JOB_SINK,
   /* 118 0x76    70592B Heap:L */ CN_JOB_SIZEINDEX,
   /* 119 0x77    70592B Heap:L */ CN_JOB_SIZETABLE,
-  /*                           */ CN_JOB_SORTEXP,
   /* 120 0x78    70592B Heap:L */ CN_JOB_SPACE,
   /* 121 0x79    70592B Heap:L */ CN_JOB_START,
   /* 122 0x7A    70592B Heap:L */ CN_JOB_STARTCLUSTER,
@@ -503,7 +501,6 @@ static Stz* aCN[]
   /* 108 0x6C */ "JOB_PUBLISH"_Stz,         // CN_JOB_PUBLISH
   /* 109 0x6D */ "JOB_PURGE"_Stz,           // CN_JOB_PURGE
   /* 110 0x6E */ "JOB_PWF"_Stz,             // CN_JOB_PWF
-  /* 110 0x6E */ "JOB_QUERY"_Stz,           // CN_JOB_QUERY
   /* 111 0x6F */ "JOB_RECEIVER"_Stz,        // CN_JOB_RECEIVER
   /* 112 0x70 */ "JOB_REPEATER"_Stz,        // CN_JOB_REPEATER
   /* 113 0x71 */ "JOB_REPORT"_Stz,          // CN_JOB_REPORT
@@ -513,7 +510,6 @@ static Stz* aCN[]
   /* 117 0x75 */ "JOB_SINK"_Stz,            // CN_JOB_SINK
   /* 118 0x76 */ "JOB_SIZEINDEX"_Stz,       // CN_JOB_SIZEINDEX
   /* 119 0x77 */ "JOB_SIZETABLE"_Stz,       // CN_JOB_SIZETABLE
-  /*          */ "JOB_SORTEXP"_Stz,         // CN_JOB_SORTEXP
   /* 120 0x78 */ "JOB_SPACE"_Stz,           // CN_JOB_SPACE
   /* 121 0x79 */ "JOB_START"_Stz,           // CN_JOB_START
   /* 122 0x7A */ "JOB_STARTCLUSTER"_Stz,    // CN_JOB_STARTCLUSTER

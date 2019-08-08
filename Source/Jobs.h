@@ -117,8 +117,6 @@ namespace Jobs
 #include "Job_Purge.hpp"
 #include "Job_Pwf.hpp"
 
-#include "Job_Query.hpp"
-
 #include "Job_Receiver.hpp"
 #include "Job_Repeater.hpp"
 #include "Job_Report.hpp"
@@ -130,7 +128,6 @@ namespace Jobs
 #include "Job_SizeTable.hpp"
 #include "Job_Space.hpp"
 #include "Job_ShowCluster.hpp"
-#include "Job_SortExp.hpp"
 #include "Job_Start.hpp"
 #include "Job_StartCluster.hpp"
 #include "Job_Status.hpp"

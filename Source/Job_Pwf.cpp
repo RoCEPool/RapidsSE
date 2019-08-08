@@ -48,7 +48,7 @@ JobClass xJobClass_Pwf =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_Pwf_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_Query_class;
+  *pNextFun = (pFUN*)pJob_Receiver_class;
   
   return &xJobClass_Pwf;
 }
