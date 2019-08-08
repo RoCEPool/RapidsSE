@@ -279,7 +279,8 @@ void Step::vSocketRecvObject(MP_Task mpTask)
       AM::pMarkResource()->bAll()) {
     s256 sHeader;
     ((Header*)caObjectHeader)->vSprint(sHeader);
-    AM::vNoteRes(SR_SOCKET,"Recv header: %s"_Stz,sHeader.aStz());
+    AM::vNoteRes(pSocket->iResId(),SR_SOCKET,
+                 "Recv header: %s"_Stz,sHeader.aStz());
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -321,9 +322,9 @@ void Step::vSocketRecvObject(MP_Task mpTask)
       s256 sFooter;
       Footer* pFooter = aAdd<Footer*>(pJob,nObjectSize-sizeof(Footer));
       pFooter->vSprint(sFooter);
-      AM::vNoteRes(SR_SOCKET,
-                            "Recv footer: %s"_Stz,
-                            sFooter.aStz());
+      AM::vNoteRes(pSocket->iResId(),SR_SOCKET,
+                  "Recv footer: %s"_Stz,
+                  sFooter.aStz());
     }
     if (pJob->m_bMarkActivity) {
       JobLog::vNote(pJob,
@@ -370,9 +371,9 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     
     if (AM::pMarkResource()->bEnum(SR_SOCKET) ||
         AM::pMarkResource()->bAll()) {
-      AM::vNoteRes(SR_SOCKET,
-                            "Recv CrwBuffer: %p"_Stz,
-                            pCrwBuffer);
+      AM::vNoteRes(pSocket->iResId(),SR_SOCKET,
+                    "Recv CrwBuffer: %p"_Stz,
+                    pCrwBuffer);
     }
 
     mpTask->m_pDataStack->vPushPointer(pCrwBuffer);
@@ -410,9 +411,9 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     
     if (AM::pMarkResource()->bEnum(SR_SOCKET) ||
         AM::pMarkResource()->bAll()) {
-      AM::vNoteRes(SR_SOCKET,
-                            "Recv ExportBuffer: %p"_Stz,
-                            pExportBuffer);
+      AM::vNoteRes(pSocket->iResId(),SR_SOCKET,
+                  "Recv ExportBuffer: %p"_Stz,
+                  pExportBuffer);
     }
     
     mpTask->m_pDataStack->vPushPointer(pExportBuffer);

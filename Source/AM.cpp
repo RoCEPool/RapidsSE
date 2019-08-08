@@ -327,7 +327,7 @@ void AM::vStateDiagram(s256& sDiagram, eCN eJobClass)
 /*----------------------------------------------------------------------------*/
 /* add a resource log entry                                                   */
 /*----------------------------------------------------------------------------*/
-void AM::vNoteRes(eSR eSysRes,Stz* szFormat, ...)
+void AM::vNoteRes(i8 iResId, eSR eSysRes, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -341,7 +341,7 @@ void AM::vNoteRes(eSR eSysRes,Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  gpLog->iAddNoteRes(eSysRes,szFormat,xVaArgs);
+  gpLog->iAddNoteRes(iResId,eSysRes,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif
