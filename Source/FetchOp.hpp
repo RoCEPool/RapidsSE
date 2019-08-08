@@ -8,6 +8,8 @@ namespace PushDown
   class FetchOp : public Op
   {
   private:
+    s256       m_sTableNm;
+    s256       m_sIndexNm;
     Table*     m_pTable;
     Index*     m_pIndex;
     TablePtn*  m_pTablePtn;

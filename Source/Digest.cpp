@@ -151,7 +151,7 @@ void Digest::vParseCommand(Session* pSession, TokenVec* pTknVec)
     s32 sArgs;
     sArgs.vSprint("(%s)"_Stz,pOp->szArgs());
     
-    vTrace("  [%02lld] { %6s: %8s%-12s :%-6s %s }\n"_Stz,
+    vTrace("  [%02lld] { %6s: %8s%-24s :%-6s %s }\n"_Stz,
            i_Op,
            pOp->szLabel(),
            aCN[pOp->eClass()],
