@@ -25,6 +25,8 @@ namespace Logging
     i8   m_iTick;       // tick when entry added
     char m_caNode[32];  // which node
   
+    char m_caText[C_LOG_TEXT]; // comment
+  
     eEK  m_eKind;       // log entry kind.  one of the following
     union {
       _LogEntryInf m_xInf;  // when m_eKind == EK_INF
