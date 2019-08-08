@@ -47,6 +47,7 @@ namespace Enums
 #include "ePK.h"
 #include "ePY.h"
 #include "eQK.h"
+#include "eRA.h"
 #include "eRE.h"
 #include "eRO.h"
 #include "eRS.h"
