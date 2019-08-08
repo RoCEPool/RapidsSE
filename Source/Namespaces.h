@@ -47,6 +47,7 @@ namespace Threads       { class Thread;                                       }
 namespace Transactions  { class Tx; class TxSet;                              }
 namespace Transform     {                                                     }
 namespace Utilities     { class BPA;                                          }
+namespace Verbs         {                                                     }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -91,6 +92,7 @@ using namespace Threads;
 using namespace Transactions;
 using namespace Transform;
 using namespace Utilities;
+using namespace Verbs;
 
 /*============================================================================*/
 /* end                                                                        */
