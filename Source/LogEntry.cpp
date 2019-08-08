@@ -73,7 +73,7 @@ void LogEntry::vInit(void)
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
   m_iTick = Tick::iRdClock();
-  
+  m_iNodeNo = AM::iThisNodeNo();
   StrLib::vCopyLen(m_caNode,AM::szNodeName()->aChar(),sizeof(m_caNode) - 1);
   
   m_caText[0] = '\0';
@@ -97,43 +97,43 @@ void LogEntry::vWrite(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
   switch (m_eKind) {
       
     case EK_INF:
-      m_xInf.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
+      m_xInf.vWriteCsv(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
       break;
       
     case EK_ITF:
-      m_xItf.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
+      m_xItf.vWriteCsv(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
       break;
       
     case EK_JOB:
-      m_xJob.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
+      m_xJob.vWriteCsv(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
       break;
       
     case EK_OP:
-      m_xOp.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
+      m_xOp.vWriteCsv(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
       break;
       
     case EK_PRM:
-      m_xPrm.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
+      m_xPrm.vWriteCsv(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
       break;
       
     case EK_RES:
-      m_xRes.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
+      m_xRes.vWriteCsv(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
       break;
 
     case EK_SVC:
-      m_xSvc.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
+      m_xSvc.vWriteCsv(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
       break;
       
     case EK_TSK:
-      m_xTsk.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
+      m_xTsk.vWriteCsv(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
       break;
       
     case EK_THD:
-      m_xThd.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
+      m_xThd.vWriteCsv(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
       break;
       
     case EK_TXN:
-      m_xTxn.vWrite(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
+      m_xTxn.vWriteCsv(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
       break;
       
     default:

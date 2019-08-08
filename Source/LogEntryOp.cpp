@@ -17,8 +17,8 @@ void _LogEntryOp::vSet(LogEntry* pLogEntry, i8 iOpId)
 /*----------------------------------------------------------------------------*/
 /* write to csv file                                                          */
 /*----------------------------------------------------------------------------*/
-void _LogEntryOp::vWrite(File* pFile, LogEntry* pLogEntry,
-                          i8 iTickDeltaUsec, i8& iTotalDelta)
+void _LogEntryOp::vWriteCsv(File* pFile, LogEntry* pLogEntry,
+                            i8 iTickDeltaUsec, i8& iTotalDelta)
 {
   pFile->vPrint("%lld,%lld,%lld,%lld,"
                 "%s,%s,"

@@ -20,8 +20,8 @@ void _LogEntryJob::vSet(LogEntry* pLogEntry, i8 iJobId, i8 iForeign)
 /*----------------------------------------------------------------------------*/
 /* write to csv file                                                          */
 /*----------------------------------------------------------------------------*/
-void _LogEntryJob::vWrite(File* pFile, LogEntry* pLogEntry,
-                           i8 iTickDeltaUsec, i8& iTotalDelta)
+void _LogEntryJob::vWriteCsv(File* pFile, LogEntry* pLogEntry,
+                             i8 iTickDeltaUsec, i8& iTotalDelta)
 {
   pFile->vPrint("%lld,%lld,%lld,%lld,"
                 "%s,%s,%s,"

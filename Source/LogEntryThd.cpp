@@ -17,8 +17,8 @@ void _LogEntryThd::vSet(LogEntry* pLogEntry, i8 iThdId)
 /*----------------------------------------------------------------------------*/
 /* write to csv file                                                          */
 /*----------------------------------------------------------------------------*/
-void _LogEntryThd::vWrite(File* pFile, LogEntry* pLogEntry,
-                          i8 iTickDeltaUsec, i8& iTotalDelta)
+void _LogEntryThd::vWriteCsv(File* pFile, LogEntry* pLogEntry,
+                             i8 iTickDeltaUsec, i8& iTotalDelta)
 {
   pFile->vPrint("%lld,%lld,%lld,%lld,"
                 "%s,%s,"

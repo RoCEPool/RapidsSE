@@ -11,10 +11,10 @@ namespace Logging
     i8   m_iTxnId;             // transaction id
 
   public:
-   void vSet(LogEntry* pLogEntry, i8 iTxnId);
+    void vSet(LogEntry* pLogEntry, i8 iTxnId);
   
-   void vWrite(File* pFile, LogEntry* pLogEntry,
-                i8 iTickDeltaUsec, i8& iTotalDelta);
+    void vWriteCsv(File* pFile, LogEntry* pLogEntry,
+                  i8 iTickDeltaUsec, i8& iTotalDelta);
   };
 }
 

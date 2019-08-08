@@ -20,9 +20,10 @@ namespace Logging
   friend class _LogEntryTxn;
 
   private:
-    i8   m_i_Entry;     // entry no
+    i8   m_i_Entry;     // this entry no
   
     i8   m_iTick;       // tick when entry added
+    i8   m_iNodeNo;     // which node
     char m_caNode[32];  // which node
   
     char m_caText[C_LOG_TEXT]; // comment

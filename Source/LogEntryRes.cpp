@@ -19,25 +19,28 @@ void _LogEntryRes::vSet(LogEntry* pLogEntry, i8 iResId, eRK eResKnd, eRA eResAct
 /*----------------------------------------------------------------------------*/
 /* write to csv file                                                          */
 /*----------------------------------------------------------------------------*/
-void _LogEntryRes::vWrite(File* pFile, LogEntry* pLogEntry,
-                          i8 iTickDeltaUsec, i8& iTotalDelta)
+void _LogEntryRes::vWriteCsv(File* pFile, LogEntry* pLogEntry,
+                             i8 iTickDeltaUsec, i8& iTotalDelta)
 {
   pFile->vPrint("%lld,%lld,%lld,%lld,"
-                "%s,%s,%s,"
-                "%s,"
-                "%lld\n"_Stz,
+                "%lld,%s,"
+                "%s,%lld,%s,%s,"
+                "%s\n"_Stz,
 
                 pLogEntry->m_i_Entry,
                 pLogEntry->m_iTick,
                 iTickDeltaUsec,
                 iTotalDelta,
                 
+                pLogEntry->m_iNodeNo,
                 pLogEntry->m_caNode,
-                aEK[pLogEntry->m_eKind],
-                aRK_Short[m_eResKnd],
                 
-                pLogEntry->m_caText,
-                m_iResId);
+                aEK[pLogEntry->m_eKind],
+                m_iResId,
+                aRK_Short[m_eResKnd],
+                aRA[m_eResAct],
+
+                pLogEntry->m_caText);
 }
 
 /*============================================================================*/
