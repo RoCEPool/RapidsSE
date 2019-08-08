@@ -9,7 +9,7 @@ OpDesc __Op_Limit (
   OK_SIMPLE,          // op kind
   "Limit"_Stz,        // first word of prompt command
   "Lim"_Stz,          // prefix
-
+  false,              // not partitioned
   LimitOp::pNew,      // function which parses the command and new's an op
   LimitOp::eCall,     // function which calls the op loop
   LimitOp::eDrain,    // function which calls the drain loop

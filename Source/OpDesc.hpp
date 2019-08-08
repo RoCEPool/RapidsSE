@@ -14,7 +14,7 @@ namespace PushDown
            eOK  eKind,      // op kind
            Stz* szCommand,  // first word of prompt command
            Stz* szPrefix,   // prefix
-
+           bool bIsPartitioned, // is operator partitioned
            Op*  (*fpNew)(Stz* szLabel,
                          Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
                          TokenVec* pTknVec, i8& i_Tkn_),

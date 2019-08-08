@@ -9,7 +9,7 @@ OpDesc __Op_Join (
    OK_SIMPLE,          // op kind
    "Join"_Stz,         // first word of prompt command
    "Joi"_Stz,          // prefix
-   
+   true,               // partitioned
    JoinOp::pNew,       // function which parses the command and new's an op
    JoinOp::eCall,      // function which calls the op loop
    nullptr,            // function which calls the drain loop

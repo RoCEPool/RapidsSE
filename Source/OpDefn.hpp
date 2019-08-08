@@ -13,7 +13,9 @@ namespace PushDown
   
       Stz* m_szCommand;  // first word of prompt command
       Stz* m_szPrefix;   // prefix
-
+    
+      bool m_bIsPartitioned; // is partitioned
+    
       Op*  (*m_fpNew)(Stz* szLabel,      // new op fun
                       Digest* pDigest,  OpDefn* aOpDefn, bool bAppR,
                       TokenVec* pTknVec, i8& i_Tkn);

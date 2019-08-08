@@ -13,6 +13,7 @@ OpDesc::OpDesc(eCN  eClass,     // class number
                eOK  eKind,      // op kind
                Stz* szCommand,  // first word of prompt command
                Stz* szPrefix,   // prefix
+               bool bIsPartitioned, // is partitioned
                Op*  (*fpNew)(Stz* szLabel,
                              Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
                              TokenVec* pTknVec, i8& i_Tkn),
@@ -27,6 +28,7 @@ OpDesc::OpDesc(eCN  eClass,     // class number
   gxOpCatalog.m_xOpDefn[i_OpDefn].m_eKind     = eKind;
   gxOpCatalog.m_xOpDefn[i_OpDefn].m_szCommand = szCommand;
   gxOpCatalog.m_xOpDefn[i_OpDefn].m_szPrefix  = szPrefix;
+  gxOpCatalog.m_xOpDefn[i_OpDefn].m_bIsPartitioned = bIsPartitioned;
   gxOpCatalog.m_xOpDefn[i_OpDefn].m_fpNew     = fpNew;
   gxOpCatalog.m_xOpDefn[i_OpDefn].m_fpCall    = fpCall;
   gxOpCatalog.m_xOpDefn[i_OpDefn].m_fpDrain   = fpDrain;

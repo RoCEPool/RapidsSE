@@ -9,7 +9,7 @@ OpDesc __Op_Output (
    OK_SIMPLE,           // op kind
    "Output"_Stz,        // first word of prompt command
    "Out"_Stz,           // prefix
-
+   false,               // not partitioned
    OutputOp::pNew,      // function which parses the command and new's an op
    OutputOp::eCall,     // function which calls the op loop
    OutputOp::eDrain,    // function which calls the drain loop
