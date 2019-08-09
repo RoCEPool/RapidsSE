@@ -41,6 +41,7 @@ namespace Scheduling    { class Queues; class Scheduler;                      }
 namespace Sessions      { class Session; class SessionState;                  }
 namespace Steps         { class Step;                                         }
 namespace StorageEngine { class AM; class Engine;                             }
+namespace Strings       {                                                     }
 namespace Structures    {                                                     }
 namespace Tasks         { class Task;                                         }
 namespace Threads       { class Thread;                                       }
@@ -86,6 +87,7 @@ using namespace Scheduling;
 using namespace Sessions;
 using namespace Steps;
 using namespace StorageEngine;
+using namespace Strings;
 using namespace Structures;
 using namespace Tasks;
 using namespace Threads;

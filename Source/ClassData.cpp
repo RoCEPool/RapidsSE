@@ -2,7 +2,7 @@
 /* ClassData.cpp - ClassData namespace functions                              */
 /*============================================================================*/
 
-#include "Enums.h"
+#include "ClassData.h"
 
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
