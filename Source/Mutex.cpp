@@ -100,7 +100,7 @@ Mutex::Mutex()
   gpAttachMap->m_oStatistics.Mutex.m_nInits++;
 #endif
   
-  AM::vLogRes(m_iResId,RK_MUTEX,RA_NONE,
+  AM::vLogRes(m_iResId,RK_MUTEX,RA_MTX_CREATE,
               "Mutex created : %p"_Stz,this);
 
   _checkInitialised_(CN_MUTEX);
@@ -133,7 +133,7 @@ Mutex::~Mutex(void) noexcept(false)
   gpAttachMap->m_oStatistics.Mutex.m_nDestroys++;
 #endif
   
-  AM::vLogRes(m_iResId,RK_MUTEX,RA_NONE,
+  AM::vLogRes(m_iResId,RK_MUTEX,RA_MTX_DESTROY,
               "Mutex destroyed : %p"_Stz,this);
 }
 
@@ -210,7 +210,7 @@ void Mutex::vCondSignal(void)
   gpAttachMap->m_oStatistics.Mutex.m_nSignals++;
 #endif
   
-  AM::vLogRes(m_iResId,RK_MUTEX,RA_NONE,
+  AM::vLogRes(m_iResId,RK_MUTEX,RA_MTX_SIGNAL,
               "Mutex signaled : %p"_Stz,this);
   
   //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
@@ -253,7 +253,7 @@ void Mutex::vCondWaitIndefinite(void)
   gpAttachMap->m_oStatistics.Mutex.m_nWaits++;
 #endif
   
-  AM::vLogRes(m_iResId,RK_MUTEX,RA_NONE,
+  AM::vLogRes(m_iResId,RK_MUTEX,RA_MTX_WAIT_INDEFINITE,
               "Mutex wait : %p"_Stz,this);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -318,7 +318,7 @@ void Mutex::vCondWaitUsec(i8 iMicroSeconds)
   gpAttachMap->m_oStatistics.Mutex.m_nTimedWaits++;
 #endif
   
-  AM::vLogRes(m_iResId,RK_MUTEX,RA_NONE,
+  AM::vLogRes(m_iResId,RK_MUTEX,RA_MTX_WAIT_TIMED,
               "Mutex timedwait : %p %lldus"_Stz,this,iMicroSeconds);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -339,7 +339,7 @@ void Mutex::vCondWaitUsec(i8 iMicroSeconds)
     gpAttachMap->m_oStatistics.Mutex.m_nUnblocks++;
 #endif
     
-    AM::vLogRes(m_iResId,RK_MUTEX,RA_NONE,
+    AM::vLogRes(m_iResId,RK_MUTEX,RA_MTX_SIGNALED,
                 "Mutex timed unblock : %p %lldus"_Stz,this,iMicroSeconds);
     m_bLocked = true;
     return;
@@ -355,7 +355,7 @@ void Mutex::vCondWaitUsec(i8 iMicroSeconds)
     gpAttachMap->m_oStatistics.Mutex.m_nTimeOuts++;
 #endif
     
-   AM::vLogRes(m_iResId,RK_MUTEX,RA_NONE,
+   AM::vLogRes(m_iResId,RK_MUTEX,RA_MTX_TIMEOUT,
                "Mutex timeout : %p %lldus"_Stz,this,iMicroSeconds);
    m_bLocked = true;
     return;
@@ -410,6 +410,8 @@ bool Mutex::bMutexLock(void)
   if (0 == rCode) {
     RASSERT(! m_bLocked);
     m_bLocked = true;
+    AM::vLogRes(m_iResId,RK_MUTEX,RA_MTX_LOCKED,
+                "Mutex locked : %p "_Stz,this);
     return true;
   }
   
@@ -446,6 +448,8 @@ void Mutex::vMutexLock(void)
   if (0 == rCode) {
     RASSERT(! m_bLocked);
     m_bLocked = true;
+    AM::vLogRes(m_iResId,RK_MUTEX,RA_MTX_UNLOCKED,
+                "Mutex locked : %p "_Stz,this);
     return;
   }
   

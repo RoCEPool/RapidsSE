@@ -13,8 +13,16 @@ enum eRA // resource actions
   /*    */ RA_FIL_CLOSE,
   /*    */ RA_FIL_OPEN,
 
-  /*    */ RA_MTX_,
-  
+  /*    */ RA_MTX_CREATE,
+  /*    */ RA_MTX_DESTROY,
+  /*    */ RA_MTX_LOCKED,
+  /*    */ RA_MTX_SIGNAL,
+  /*    */ RA_MTX_SIGNALED,
+  /*    */ RA_MTX_TIMEOUT,
+  /*    */ RA_MTX_UNLOCKED,
+  /*    */ RA_MTX_WAIT_INDEFINITE,
+  /*    */ RA_MTX_WAIT_TIMED,
+
   /*    */ RA_PIP_,
 
   /*    */ RA_SKT_,
@@ -34,8 +42,16 @@ static Stz* aRA[]
   /*    */ "FIL_CLOSE"_Stz,
   /*    */ "FIL_OPEN"_Stz,
 
-  /*    */ "MTX_"_Stz,
-  
+  /*    */ "MTX_CREATE"_Stz,
+  /*    */ "MTX_DESTROY"_Stz,
+  /*    */ "MTX_LOCK"_Stz,
+  /*    */ "MTX_SIGNAL"_Stz,
+  /*    */ "MTX_SIGNALED"_Stz,
+  /*    */ "MTX_TIMEOUT"_Stz,
+  /*    */ "MTX_UNLOCK"_Stz,
+  /*    */ "MTX_WAIT_INDEFINITE"_Stz,
+  /*    */ "MTX_WAIT_TIMED"_Stz,
+
   /*    */ "PIP_"_Stz,
   
   /*    */ "SKT_"_Stz,
