@@ -27,7 +27,7 @@ namespace Library       {                                                     }
 namespace Locking       { class Lock; class LockTracker;                      }
 namespace Logging       { class LogEntry;                                     }
 namespace MetaData      { class Table; class Index;                           }
-namespace Measurement   { class StepTiming;                                   }
+namespace Measurement   {                                    }
 namespace Partitioning  { class TablePtn;                                     }
 namespace Persistence   { class CarryOver;                                    }
 namespace Plans         {                                                     }
@@ -39,7 +39,7 @@ namespace Rows          { class CrwBuffer;                                    }
 namespace ScanSprint    {                                                     }
 namespace Scheduling    { class Queues; class Scheduler;                      }
 namespace Sessions      { class Session; class SessionState;                  }
-namespace Steps         { class Step;                                         }
+namespace Steps         { class Step; class StepTiming;                       }
 namespace StorageEngine { class AM; class Engine;                             }
 namespace Strings       {                                                     }
 namespace Structures    {                                                     }

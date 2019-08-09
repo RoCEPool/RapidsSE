@@ -2,7 +2,7 @@
 /* StepTiming.cpp -- Step Tracker                                            */
 /*============================================================================*/
 
-#include "Measurement.h"
+#include "Steps.h"
 #include "AM.hpp"
 
 
@@ -11,7 +11,7 @@ const Stz* C_StepTiming_FILE = "../StepTimings/StepTiming %s.csv"_Stz;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-StepTiming* Measurement::_pStepTiming(void* aAddr)
+StepTiming* Steps::_pStepTiming(void* aAddr)
 {
   StepTiming* pStepTiming = reinterpret_cast<StepTiming*>(aAddr);
   

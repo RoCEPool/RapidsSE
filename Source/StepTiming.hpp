@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Measurement
+namespace Steps
 {
   static const i8 C_STEPS = 2048;
   

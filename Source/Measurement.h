@@ -17,8 +17,6 @@ namespace Measurement
 #include "FreqDist.hpp"
 #include "Now.hpp"
 #include "Peruse.hpp"
-#include "StepAccum.hpp"
-#include "StepTiming.hpp"
 
 #include "Numbat.hpp"
 
