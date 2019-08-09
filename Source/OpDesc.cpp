@@ -2,7 +2,7 @@
 /* OpDesc.cpp -- the class which populates the op catalog                     */
 /*============================================================================*/
 
-#include "PushDown.h"
+#include "Operators.h"
 
 extern OpCatalog gxOpCatalog;
 

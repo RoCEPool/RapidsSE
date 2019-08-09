@@ -2,7 +2,7 @@
 /* IntersectOp.cpp -- Intersect                                               */
 /*============================================================================*/
 
-#include "PushDown.h"
+#include "Operators.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-IntersectOp* PushDown::_pIntersectOp(void* aAddr)
+IntersectOp* Operators::_pIntersectOp(void* aAddr)
 {
   IntersectOp* pIntersectOp = reinterpret_cast<IntersectOp*>(aAddr);
   

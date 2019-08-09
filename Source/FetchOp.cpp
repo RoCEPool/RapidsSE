@@ -2,7 +2,7 @@
 /* FetchOp.cpp -- Fetch                                                       */
 /*============================================================================*/
 
-#include "PushDown.h"
+#include "Operators.h"
 
 OpDesc __Op_Fetch (
   CN_FETCHOP,         // class number
@@ -24,7 +24,7 @@ OpDesc __Op_Fetch (
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-FetchOp* PushDown::_pFetchOp(void* aAddr)
+FetchOp* Operators::_pFetchOp(void* aAddr)
 {
   FetchOp* pFetchOp = reinterpret_cast<FetchOp*>(aAddr);
   

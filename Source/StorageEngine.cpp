@@ -48,7 +48,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   Sessions::vCheckAssumptions();
   Transactions::vCheckAssumptions();
   Plans::vCheckAssumptions();
-  PushDown::vCheckAssumptions();
+  Operators::vCheckAssumptions();
   CompilerOperators::vCheckAssumptions();
   DataOperators::vCheckAssumptions();
   Jobs::vCheckAssumptions();

@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace PushDown
+namespace Operators
 {
   class OpVec : public VectorNL_t<CN_OPVEC,Op,C_MAX_OPS>
   {

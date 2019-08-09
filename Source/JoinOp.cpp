@@ -2,7 +2,7 @@
 /* JoinOp.cpp -- Join                                                         */
 /*============================================================================*/
 
-#include "PushDown.h"
+#include "Operators.h"
 
 OpDesc __Op_Join (
    CN_JOINOP,          // class number
@@ -424,7 +424,7 @@ eOR JoinOp::ePopRightOperand()
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-JoinOp* PushDown::_pJoinOp(void* aAddr)
+JoinOp* Operators::_pJoinOp(void* aAddr)
 {
   JoinOp* pJoinOp = reinterpret_cast<JoinOp*>(aAddr);
   

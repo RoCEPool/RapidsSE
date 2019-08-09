@@ -2,7 +2,7 @@
 /* OpVec.cpp -- Operator Set                                                  */
 /*============================================================================*/
 
-#include "PushDown.h"
+#include "Operators.h"
 
 #include "AM.hpp"
 
@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-OpVec* PushDown::_pOpSet(void* aAddr)
+OpVec* Operators::_pOpSet(void* aAddr)
 {
   OpVec* pOpSet = reinterpret_cast<OpVec*>(aAddr);
   

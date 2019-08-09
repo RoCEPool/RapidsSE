@@ -35,7 +35,7 @@ namespace Persistence   { class CarryOver;                                    }
 namespace Plans         {                                                     }
 namespace Pool          { class BufferPool; class HeapMem; class PoolBuffer;  }
 namespace Prompt        { class SePrompt;                                     }
-namespace PushDown      { class Op; class Digest;                             }
+namespace Operators      { class Op; class Digest;                             }
 namespace Resources     { class ResourceTracker;                              }
 namespace Rows          { class CrwBuffer;                                    }
 namespace ScanSprint    {                                                     }
@@ -84,7 +84,7 @@ using namespace Persistence;
 using namespace Plans;
 using namespace Pool;
 using namespace Prompt;
-using namespace PushDown;
+using namespace Operators;
 using namespace Resources;
 using namespace Rows;
 using namespace ScanSprint;

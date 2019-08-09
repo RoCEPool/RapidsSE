@@ -2,7 +2,7 @@
 /* ProjectOp.cpp -- Project                                                   */
 /*============================================================================*/
 
-#include "PushDown.h"
+#include "Operators.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ProjectOp* PushDown::_pProjectOp(void* aAddr)
+ProjectOp* Operators::_pProjectOp(void* aAddr)
 {
   ProjectOp* pProjectOp = reinterpret_cast<ProjectOp*>(aAddr);
   

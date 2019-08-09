@@ -2,7 +2,7 @@
 /* ReduceOp.cpp -- Reduce                                                     */
 /*============================================================================*/
 
-#include "PushDown.h"
+#include "Operators.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ReduceOp* PushDown::_pReduceOp(void* aAddr)
+ReduceOp* Operators::_pReduceOp(void* aAddr)
 {
   ReduceOp* pReduceOp = reinterpret_cast<ReduceOp*>(aAddr);
   

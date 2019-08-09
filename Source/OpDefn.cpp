@@ -2,14 +2,14 @@
 /* OpDefn.cpp -- a definition of an op class                                  */
 /*============================================================================*/
 
-#include "PushDown.h"
+#include "Operators.h"
 
 extern i8 giClassSize[];
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-OpDefn* PushDown::_pOpDefn(void* aAddr)
+OpDefn* Operators::_pOpDefn(void* aAddr)
 {
   OpDefn* pOpDefn = reinterpret_cast<OpDefn*>(aAddr);
   

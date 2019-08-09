@@ -2,14 +2,14 @@
 /* Digest.cpp -- Operator Set Digest                                          */
 /*============================================================================*/
 
-#include "PushDown.h"
+#include "Operators.h"
 
 extern OpCatalog gxOpCatalog;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Digest* PushDown::_pDigest(void* aAddr)
+Digest* Operators::_pDigest(void* aAddr)
 {
   Digest* pDigest = reinterpret_cast<Digest*>(aAddr);
   

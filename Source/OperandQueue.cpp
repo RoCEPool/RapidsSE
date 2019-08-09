@@ -2,12 +2,12 @@
 /* OperandQueue.cpp -- queue of buffers to be processed by an op              */
 /*============================================================================*/
 
-#include "PushDown.h"
+#include "Operators.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-OperandQueue* PushDown::_pOperandQueue(void* aAddr)
+OperandQueue* Operators::_pOperandQueue(void* aAddr)
 {
   OperandQueue* pOperandQueue = reinterpret_cast<OperandQueue*>(aAddr);
   

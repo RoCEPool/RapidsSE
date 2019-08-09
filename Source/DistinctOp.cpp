@@ -2,7 +2,7 @@
 /* DistinctOp.cpp -- Distinct                                                 */
 /*============================================================================*/
 
-#include "PushDown.h"
+#include "Operators.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-DistinctOp* PushDown::_pDistinctOp(void* aAddr)
+DistinctOp* Operators::_pDistinctOp(void* aAddr)
 {
   DistinctOp* pDistinctOp = reinterpret_cast<DistinctOp*>(aAddr);
   

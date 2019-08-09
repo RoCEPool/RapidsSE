@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace PushDown
+namespace Operators
 {
   const i8 C_OPERANDS = 32;
   

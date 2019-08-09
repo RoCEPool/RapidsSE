@@ -2,7 +2,7 @@
 /* Op.cpp -- Operator                                                         */
 /*============================================================================*/
 
-#include "PushDown.h"
+#include "Operators.h"
 
 #include "AM.hpp"
 #include "eTR.h"
@@ -15,7 +15,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Op* PushDown::_pOp(void* aAddr)
+Op* Operators::_pOp(void* aAddr)
 {
   Op* pOp = reinterpret_cast<Op*>(aAddr);
   

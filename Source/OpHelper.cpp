@@ -2,7 +2,7 @@
 /* OpHelper.cpp -- a set of op helper functions                               */
 /*============================================================================*/
 
-#include "PushDown.h"
+#include "Operators.h"
 
 extern OpCatalog gxOpCatalog;
 

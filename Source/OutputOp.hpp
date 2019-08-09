@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace PushDown
+namespace Operators
 {
   class OutputOp : public Op
   {

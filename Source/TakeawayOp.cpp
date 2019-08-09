@@ -2,7 +2,7 @@
 /* TakeawayOp.cpp -- Takeaway                                                 */
 /*============================================================================*/
 
-#include "PushDown.h"
+#include "Operators.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TakeawayOp* PushDown::_pTakeawayOp(void* aAddr)
+TakeawayOp* Operators::_pTakeawayOp(void* aAddr)
 {
   TakeawayOp* pTakeawayOp = reinterpret_cast<TakeawayOp*>(aAddr);
   
