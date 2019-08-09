@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Correctness
+namespace Gadgets
 {
   template <class OBJECT, eCN eClassNo>
   class MP

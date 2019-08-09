@@ -31,7 +31,6 @@ namespace Correctness
 #include "SeeMe.hpp"
 
 #include "Addressing.hpp"
-#include "MP.hpp"
 #include "SizedHeader.hpp"
 #include "Report.hpp"
 #include "IntLib.hpp"
@@ -63,8 +62,6 @@ extern pDUMPFUN *gpDump[];
 typedef void (pFINALIZE(eCN eClass, Object* pObject));
 extern pFINALIZE *gpFinalize[];
 
-namespace Tasks { typedef MP<Task,CN_TASK> MP_Task;
-                  typedef void (*StepFp)(Tasks::MP_Task); }
 
 /*============================================================================*/
 /* end                                                                        */
