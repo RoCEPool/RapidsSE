@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Definition* Operands::_pDefinition(void* aAddr)
+Definition* Streams::_pDefinition(void* aAddr)
 {
   Definition* pDefinition = reinterpret_cast<Definition*>(aAddr);
   

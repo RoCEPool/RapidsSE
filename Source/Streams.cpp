@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Operands.cpp - Operands namespace functions                                */
+/* Streams.cpp - Streams namespace functions                                  */
 /*============================================================================*/
 
 #include "Streams.h"
@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
-void Operands::vCheckAssumptions(void)
+void Streams::vCheckAssumptions(void)
 {
 }
 

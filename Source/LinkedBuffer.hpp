@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Operands
+namespace Streams
 {
   class LinkedBuffer : public Operand
   {

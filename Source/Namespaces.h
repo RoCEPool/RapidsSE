@@ -27,7 +27,6 @@ namespace Library       {                                                     }
 namespace Locking       { class Lock; class LockTracker;                      }
 namespace Logging       { class LogEntry;                                     }
 namespace MetaData      { class Table; class Index;                           }
-namespace Operands      {                                                     }
 namespace Partitioning  { class TablePtn;                                     }
 namespace Persistence   { class CarryOver;                                    }
 namespace Plans         {                                                     }
@@ -41,6 +40,7 @@ namespace Scheduling    { class Queues; class Scheduler;                      }
 namespace Sessions      { class Session; class SessionState;                  }
 namespace Steps         { class Step; class StepTiming;                       }
 namespace StorageEngine { class AM; class Engine;                             }
+namespace Streams       {                                                     }
 namespace Strings       {                                                     }
 namespace Structures    {                                                     }
 namespace Tasks         { class Task;                                         }
@@ -73,7 +73,6 @@ using namespace Library;
 using namespace Locking;
 using namespace Logging;
 using namespace MetaData;
-using namespace Operands;
 using namespace Partitioning;
 using namespace Persistence;
 using namespace Plans;
@@ -87,6 +86,7 @@ using namespace Scheduling;
 using namespace Sessions;
 using namespace Steps;
 using namespace StorageEngine;
+using namespace Streams;
 using namespace Strings;
 using namespace Structures;
 using namespace Tasks;

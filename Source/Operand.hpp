@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Operands
+namespace Streams
 {
   class Operand : public AlignedObject,
                   public ListNode_t<Operand>

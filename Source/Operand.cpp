@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Operand* Operands::_pOperand(void* aAddress)
+Operand* Streams::_pOperand(void* aAddress)
 {
   Operand* pOperand = reinterpret_cast<Operand*>(aAddress);
   

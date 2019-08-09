@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-LinkedBuffer* Operands::_pLinkedBuffer(void* aAddress)
+LinkedBuffer* Streams::_pLinkedBuffer(void* aAddress)
 {
   LinkedBuffer* pLinkedBuffer = reinterpret_cast<LinkedBuffer*>(aAddress);
   

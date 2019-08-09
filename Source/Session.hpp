@@ -7,7 +7,6 @@
 
 namespace Sessions
 {
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Session : public Object
   {
   public:
