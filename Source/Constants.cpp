@@ -343,6 +343,8 @@ void Constants::vAddConstants(void)
   /* 57 */ vAddConstant("CN_SESSION"_Stz,      CN_SESSION);
   /* 57 */ vAddConstant("CN_SESSIONSTATE"_Stz, CN_SESSIONSTATE);
   /* 60 */ vAddConstant("CN_SEPROMPT"_Stz,     CN_SEPROMPT);
+  /* 61 */ vAddConstant("CN_SHORTCUT"_Stz,     CN_SHORTCUT);
+  /* 61 */ vAddConstant("CN_SHORTCUTVEC"_Stz,  CN_SHORTCUTVEC);
   /* 61 */ vAddConstant("CN_SINCE"_Stz,        CN_SINCE);
   /* 63 */ vAddConstant("CN_SKIPLIST"_Stz,     CN_SKIPLIST);
   /* 64 */ vAddConstant("CN_SKIPNODE"_Stz,     CN_SKIPNODE);

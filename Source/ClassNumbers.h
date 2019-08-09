@@ -273,6 +273,8 @@ enum eCN : u2 // Class Number
   /* 177 0xB1       88B Heap:L */ CN_SEPROMPT,
   /* 178 0xB2    48248B Heap:M */ CN_SESSION,
   /* 179 0xB3      208B Heap:S */ CN_SESSIONSTATE,
+  /* 180 0xB4       80B Heap:I */ CN_SHORTCUT,
+  /* 180 0xB4       80B Heap:I */ CN_SHORTCUTVEC,
   /* 180 0xB4       80B Heap:I */ CN_SINCE,
   /* 181 0xB5       64B Heap:S */ CN_SKIPLIST,
   /* 182 0xB6       32B Heap:S */ CN_SKIPNODE,
@@ -613,6 +615,8 @@ static Stz* aCN[]
   /* 177 0xB1 */ "SEPROMPT"_Stz,            // CN_SEPROMPT
   /* 178 0xB2 */ "SESSION"_Stz,             // CN_SESSION
   /* 179 0xB3 */ "SESSIONSTATE"_Stz,        // CN_SESSIONSTATE
+  /* 180 0xB4 */ "SHORTCUT"_Stz,            // CN_SHORTCUT
+  /* 180 0xB4 */ "SHORTCUTVEC"_Stz,         // CN_SHORTCUTVEC
   /* 180 0xB4 */ "SINCE"_Stz,               // CN_SINCE
   /* 181 0xB5 */ "SKIPLIST"_Stz,            // CN_SKIPLIST
   /* 182 0xB6 */ "SKIPNODE"_Stz,            // CN_SKIPNODE
