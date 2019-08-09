@@ -14,12 +14,15 @@ namespace Prompt
 
 //------------------------------------------------------------------------------
 
+#include "ShortCut.hpp"
 #include "SePrompt.hpp"
 
 #include "PromptDefn.hpp"
-#include "PromptCatalog.hpp"
 #include "PromptDesc.hpp"
+#include "PromptCatalog.hpp"
 #include "PromptHelper.hpp"
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 #include "Prompt_apiState.hpp"
 #include "Prompt_args.hpp"
