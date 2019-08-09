@@ -58,6 +58,36 @@ StreamDef::StreamDef(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+StreamDef::StreamDef(StreamDef* pStreamDef)
+: Definition(CN_STREAMDEF)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+  
+  m_sName = pStreamDef->m_sName;
+  m_sPath = pStreamDef->m_sPath;
+  
+  m_iStreamId = AM::iNextStreamId();
+  
+  // get no of columns
+  i8 nColumns = pStreamDef->m_oColAry.nItems();
+  
+  // add columns to streamdef
+  m_oColAry.vItems(nColumns);
+  
+  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+    m_oColAry.pGet(i_Col)->vCopy(pStreamDef->m_oColAry.pGet(i_Col));
+  }
+  
+  m_bTemp = true;
+  
+  _checkInitialised_(CN_STREAMDEF);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 StreamDef::~StreamDef(void) noexcept(false)

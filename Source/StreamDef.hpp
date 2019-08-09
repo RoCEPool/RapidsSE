@@ -24,6 +24,7 @@ namespace MetaData
     void  operator delete(void*);
     
     StreamDef(void);
+    StreamDef(StreamDef* pStreamDef);
    ~StreamDef(void) noexcept(false);
     
     Footer* aFooter(void);
