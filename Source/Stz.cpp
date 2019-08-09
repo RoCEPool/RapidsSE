@@ -305,7 +305,7 @@ void Stz::vToLower(void)
 /*----------------------------------------------------------------------------*/
 /* _Stz literal suffix (which converts const char* to Stz*)                   */
 /*----------------------------------------------------------------------------*/
-Stz* Correctness::operator "" _Stz(const char* aArg, size_t nSize)
+Stz* Strings::operator "" _Stz(const char* aArg, size_t nSize)
 {
   return (Stz*)(aArg);
 }

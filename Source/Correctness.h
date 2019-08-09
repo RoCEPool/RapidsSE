@@ -15,7 +15,6 @@ namespace Correctness
 
 //------------------------------------------------------------------------------
 
-#include "Stz.hpp"
 
 #include "LimitsFormats.h"
 #include "ClassNumbers.h"
@@ -24,7 +23,6 @@ namespace Correctness
 #include "FreeChunk.hpp"
 #include "Debug.hpp"
 
-#include "StrLib.hpp"
 #include "MemLib.hpp"
 
 #include "AssertMacros.hpp"
