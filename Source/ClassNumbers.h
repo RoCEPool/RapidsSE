@@ -3,9 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-#include "Correctness.h"
+#include "ClassData.h"
 
-namespace Correctness
+namespace ClassData
 {
 
 /*----------------------------------------------------------------------------*/

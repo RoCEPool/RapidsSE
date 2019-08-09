@@ -42,7 +42,7 @@ Job* Jobs::_pJob(i8 iAddr)
 /*----------------------------------------------------------------------------*/
 /* is given class a valid job?                                                */
 /*----------------------------------------------------------------------------*/
-bool Jobs::_bIsValidJob(Correctness::eCN eClass)
+bool Jobs::_bIsValidJob(eCN eClass)
 {
   if (eClass >= CN_JOB__BEGUN && eClass <= CN_JOB_WRITEROW)
     return true;
