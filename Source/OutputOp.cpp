@@ -141,7 +141,7 @@ eOR OutputOp::eOpLoop(void)
       case CN_ENDMARKER:
         vPipeOut(pOperand);
         goto L_EXIT;
-        
+        break;
       // -- -- -- -- -- --
        
       case CN_ENTBUFFER: {

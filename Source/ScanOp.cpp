@@ -184,10 +184,8 @@ void ScanOp::vPreliminary(void)
   m_pTablePtn = m_pTable->pSlots()->pPartition(m_nSlot);
   
   // pipe StreamDef
-  if (m_nSlot == 0) {
-    StreamDef* pStreamDef = m_pTable->pStreamDef();
-    vPipeOut(pStreamDef);
-  }
+  StreamDef* pStreamDef = new StreamDef(m_pTable->pStreamDef());
+  vPipeOut(pStreamDef);
   
   // get first buffer
   m_pCrwBuffer = m_pTablePtn->pRootCrwBuffer();
