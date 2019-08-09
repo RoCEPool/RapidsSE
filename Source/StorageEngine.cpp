@@ -17,6 +17,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   Base::vCheckAssumptions();
   Assembler::vCheckAssumptions();
   // third party??
+  Strings::vCheckAssumptions();
   Correctness::vCheckAssumptions();
   ClassData::vCheckAssumptions();
   Enums::vCheckAssumptions();
@@ -30,7 +31,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   Persistence::vCheckAssumptions();
   Structures::vCheckAssumptions();
   Chunks::vCheckAssumptions();
-  Measurement::vCheckAssumptions();
   Logging::vCheckAssumptions();
   Transactions::vCheckAssumptions();
   Commands::vCheckAssumptions();

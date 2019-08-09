@@ -27,7 +27,6 @@ namespace Library       {                                                     }
 namespace Locking       { class Lock; class LockTracker;                      }
 namespace Logging       { class LogEntry;                                     }
 namespace MetaData      { class Table; class Index;                           }
-namespace Measurement   {                                    }
 namespace Partitioning  { class TablePtn;                                     }
 namespace Persistence   { class CarryOver;                                    }
 namespace Plans         {                                                     }
@@ -73,7 +72,6 @@ using namespace Library;
 using namespace Locking;
 using namespace Logging;
 using namespace MetaData;
-using namespace Measurement;
 using namespace Partitioning;
 using namespace Persistence;
 using namespace Plans;
