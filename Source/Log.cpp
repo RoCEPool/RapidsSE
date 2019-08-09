@@ -70,8 +70,9 @@ Log* Log::pAttachCreate(void)
   bool bResult;
   SysCall oSysCall;
 
-  // unlink the name of any previous segment
   s32 sLogRegionNm((Stz*)C_LOG_REGION);
+  
+  // unlink the name of any previous segment
   IGNORE_RETURN( Shm::bUnlink(sLogRegionNm,oSysCall) );
   
   // open a new shm region
@@ -107,15 +108,14 @@ Log* Log::pAttachExisting(void)
 {
   int iFD;
   SysCall oSysCall;
-  s32 sRegionName;
-  
-  sRegionName = *C_LOG_REGION;
-  
+
+  s32 sLogRegionNm((Stz*)C_LOG_REGION);
+
   // open existing shm region
-  bool bResult = Shm::bOpenExisting(iFD,sRegionName,oSysCall);
+  bool bResult = Shm::bOpenExisting(iFD,sLogRegionNm,oSysCall);
   if (! bResult)
     vFatal("Log::bOpenExisting: failed to open region: %s\n"_Stz,
-           sRegionName.aChar());
+           sLogRegionNm.aChar());
   
   // map the shm region into a vm segment within this process address space
   void* aSegment = Shm::aMap(iFD,

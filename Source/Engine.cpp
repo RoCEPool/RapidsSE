@@ -180,7 +180,7 @@ void Engine::vCheckPort(void)
              iPort, oSysCall.iError());
     }
     //Engine::vStopSystem();
-    Process::vExit(EXIT_FAILURE);
+    Process::vExitFailure();
   }
   
   pSocket->bClose(oSysCall);
@@ -505,7 +505,7 @@ void Engine::vOpenPool(void)
     
     if (! gxArguments.m_bRestart && Region::bTest(gxArguments.m_sRegionName)) {
       vTrace("Error: Instance %s already started\n"_Stz,gxArguments.m_sRegionName.aChar());
-      Process::vExit(EXIT_FAILURE);
+      Process::vExitFailure();
       return;
     }
     
@@ -539,7 +539,7 @@ void Engine::vOpenPool(void)
     if (! Region::bTest(gxArguments.m_sRegionName)) {
       vTrace("Error: Instance %s was not started\n"_Stz,
              gxArguments.m_sRegionName.aChar());
-      Process::vExit(EXIT_FAILURE);
+      Process::vExitFailure();
       return;
     }
     if (gxArguments.m_bVerbose)
@@ -555,7 +555,7 @@ void Engine::vOpenPool(void)
   if (gxArguments.m_bPrompt || gxArguments.m_bSethScript) {
     if (! Region::bTest(gxArguments.m_sRegionName)) {
       vTrace("Error: Instance %s was not started\n"_Stz,gxArguments.m_sRegionName.aChar());
-      Process::vExit(EXIT_FAILURE);
+      Process::vExitFailure();
       return;
     }
     if (gxArguments.m_bVerbose)
@@ -565,7 +565,7 @@ void Engine::vOpenPool(void)
                               gxArguments.m_aRegionAddr);
     if ( ! bResult ) {
       vTrace("Error: Unable to attach to instance %s\n"_Stz,gxArguments.m_sRegionName.aChar());
-      Process::vExit(EXIT_FAILURE);
+      Process::vExitFailure();
       return;
       
     }
@@ -581,7 +581,7 @@ void Engine::vOpenPool(void)
   ASSERT(bResult);
   vAttachRegion();
   //vFatal("Error: Engine missing arguments\n"_Stz);
-  //Process::vExit(EXIT_FAILURE);
+  //Process::vExitFailure();
 }
 
 /*----------------------------------------------------------------------------*/

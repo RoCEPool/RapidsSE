@@ -22,6 +22,26 @@ __attribute__((noreturn)) void Process::vExit(i8 iExitStatus)
 }
 
 /*----------------------------------------------------------------------------*/
+/* process exit failure                                                       */
+/*----------------------------------------------------------------------------*/
+__attribute__((noreturn)) void Process::vExitFailure(void)
+{
+  fprintf(stderr,"Calling exit(%lld)\n",(u8)EXIT_FAILURE);
+  
+  exit((int)EXIT_FAILURE);
+}
+
+/*----------------------------------------------------------------------------*/
+/* process exit success                                                       */
+/*----------------------------------------------------------------------------*/
+__attribute__((noreturn)) void Process::vExitSuccess(void)
+{
+  fprintf(stderr,"Calling exit(%lld)\n",(i8)EXIT_SUCCESS);
+  
+  exit((int)EXIT_SUCCESS);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get process id                                                             */
 /*----------------------------------------------------------------------------*/
 i8 Process::iGetPid(void)
