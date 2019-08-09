@@ -70,12 +70,12 @@ void Correctness::vAssertType(void* aObject, eCN eExpectingClass)
            eExpectingClass, aCN[eExpectingClass]->aChar(),
            eGotClass);
 
-  if (CN_FREECHUNK == eGotClass) {
-    FreeChunk* aFreeChunk = static_cast<FreeChunk*>(aObject);
-    eCN eWasClass = aFreeChunk->eWasClass();
-    
-    printf("  FreeChunk was %d\n",eWasClass);
-  }
+//  if (CN_FREECHUNK == eGotClass) {
+//    FreeChunk* aFreeChunk = static_cast<FreeChunk*>(aObject);
+//    eCN eWasClass = aFreeChunk->eWasClass();
+//    
+//    printf("  FreeChunk was %d\n",eWasClass);
+//  }
   
   vAssertTrap();
 }

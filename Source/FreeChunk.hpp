@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Correctness
+namespace Pool
 {
   class FreeChunk : public Header
   {
