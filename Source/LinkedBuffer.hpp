@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace MetaData
+namespace Operands
 {
   class LinkedBuffer : public Operand
   {

@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace MetaData
+namespace Operands
 {
   class Operand : public AlignedObject,
                   public ListNode_t<Operand>

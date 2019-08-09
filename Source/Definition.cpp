@@ -2,7 +2,7 @@
 /* Definition.cpp -- Definition                                               */
 /*============================================================================*/
 
-#include "MetaData.h"
+#include "Operands.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Definition* MetaData::_pDefinition(void* aAddr)
+Definition* Operands::_pDefinition(void* aAddr)
 {
   Definition* pDefinition = reinterpret_cast<Definition*>(aAddr);
   

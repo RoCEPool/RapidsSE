@@ -2,7 +2,7 @@
 /* LinkedBuffer.cpp -- Linked Buffer                                          */
 /*============================================================================*/
 
-#include "MetaData.h"
+#include "Operands.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-LinkedBuffer* MetaData::_pLinkedBuffer(void* aAddress)
+LinkedBuffer* Operands::_pLinkedBuffer(void* aAddress)
 {
   LinkedBuffer* pLinkedBuffer = reinterpret_cast<LinkedBuffer*>(aAddress);
   

@@ -2,7 +2,7 @@
 /* Operand.cpp -- Operand Buffer                                              */
 /*============================================================================*/
 
-#include "MetaData.h"
+#include "Operands.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Operand* MetaData::_pOperand(void* aAddress)
+Operand* Operands::_pOperand(void* aAddress)
 {
   Operand* pOperand = reinterpret_cast<Operand*>(aAddress);
   
