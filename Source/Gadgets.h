@@ -20,9 +20,12 @@ namespace Gadgets
 #include "HV.hpp"
 #include "MP.hpp"
 #include "NextId.hpp"
+#include "Now.hpp"
 #include "SeeMe.hpp"
 #include "TempName.hpp"
 #include "Timer.hpp"
+
+#include "ByteRate.hpp"
 
 #include "SP_Id.hpp"
 

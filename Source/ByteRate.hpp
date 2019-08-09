@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Measurement
+namespace Gadgets
 {
   class ByteRate : public Object
   {
