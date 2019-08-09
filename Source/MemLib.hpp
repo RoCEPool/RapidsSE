@@ -6,6 +6,8 @@
 namespace Correctness
 {
   static const u8 C_SCRIBBLE_PATTERN = 0x21454D54494E4921; // !INITME!
+  static const u8 C_SEEME            = 0x23654D5F65655323; // #See_Me#
+                                     //   # e M _ e e S #
   static const u8 C_MEMORY_MARKER0   = 0x0706050403020100;
   static const u8 C_MEMORY_MARKER1   = 0x0706050403020101;
   static const u8 C_MEMORY_MARKER2   = 0x0706050403020102;

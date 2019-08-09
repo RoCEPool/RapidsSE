@@ -3,10 +3,8 @@
 /*============================================================================*/
 #pragma once
 
-namespace Correctness
+namespace Gadgets
 {
-  static const u8 C_SEEME = 0x23654D5F65655323; // #See_Me#
-                          //   # e M _ e e S #
   class SeeMe
   {
   private:
