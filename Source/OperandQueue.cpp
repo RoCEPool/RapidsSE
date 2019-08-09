@@ -2,12 +2,12 @@
 /* OperandQueue.cpp -- queue of buffers to be processed by an op              */
 /*============================================================================*/
 
-#include "Operators.h"
+#include "Streams.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-OperandQueue* Operators::_pOperandQueue(void* aAddr)
+OperandQueue* Streams::_pOperandQueue(void* aAddr)
 {
   OperandQueue* pOperandQueue = reinterpret_cast<OperandQueue*>(aAddr);
   

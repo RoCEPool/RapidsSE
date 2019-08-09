@@ -14,7 +14,6 @@ namespace Operators
 
 //------------------------------------------------------------------------------
 
-#include "OperandQueue.hpp"
 #include "OpDefn.hpp"
 #include "OpDesc.hpp"
 
