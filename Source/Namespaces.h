@@ -14,7 +14,7 @@ namespace Correctness   {                                                     }
 namespace Debugging     {                                                     }
 namespace Enums         {                                                     }
 namespace Forth         { class Cell; class Dic; class ForthWord;             }
-namespace Gadgets       {                                                     }
+namespace Gadgets       { class EnumFlags;                                    }
 namespace Grids         { class Grid; class Node;                             }
 namespace Host          {                                                     }
 namespace Indexes       { class IndexTree;                                    }

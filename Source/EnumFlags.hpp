@@ -1,9 +1,9 @@
 /*============================================================================*/
-/* EnumFlags.hpp -- Class Flags                                              */
+/* EnumFlags.hpp -- Class Flags                                               */
 /*============================================================================*/
 #pragma once
 
-namespace Correctness
+namespace Gadgets
 {
   class EnumFlags : public Object
   {
