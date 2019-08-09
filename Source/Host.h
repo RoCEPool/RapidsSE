@@ -14,6 +14,8 @@ namespace Host
 
 //------------------------------------------------------------------------------
 
+#include "SysCall.hpp"
+
 #include "Env.hpp"
 #include "Hardware.hpp"
 #include "HwCounters.hpp"

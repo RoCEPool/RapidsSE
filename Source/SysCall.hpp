@@ -5,7 +5,7 @@
 
 #include "eSC.h"
 
-namespace Correctness
+namespace Host
 {
   class SysCall : public Object
   {
