@@ -28,6 +28,7 @@ namespace MetaData
     private:
     i8    m_iColumnNo;
     s32   m_sColumnName;
+  //s32   m_sAlias;
     eCT   m_eColumnType;
     i8    m_iColumnLength;
     i8    m_iColumnScale;

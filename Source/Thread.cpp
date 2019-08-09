@@ -112,6 +112,9 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
     vTrace("Thread::aEntryPoint_dedicated %p %lld\n"_Stz,
            pThread,pThread->iThreadNo());
   
+  AM::vLogRes(pThread->m_iThreadId,RK_PTHREAD,RA_THD_ENTRY,
+              "Thead entry (dedicated) : %p"_Stz,pThread);
+
   //pThread->vBindCore();
   
   try {
@@ -165,6 +168,9 @@ void* Thread::aEntryPoint_general(void* pArg)
   if (AM::bVerbose())
     vTrace("Thread::aEntryPoint_general %p %lld\n"_Stz,
            pThread,pThread->iThreadNo());
+  
+  AM::vLogRes(pThread->m_iThreadId,RK_PTHREAD,RA_THD_ENTRY,
+              "Thead entry (general) : %p"_Stz,pThread);
   
   //pThread->vBindCore();
     
