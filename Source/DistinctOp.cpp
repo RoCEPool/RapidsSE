@@ -2,7 +2,7 @@
 /* DistinctOp.cpp -- Distinct                                                 */
 /*============================================================================*/
 
-#include "Operators.h"
+#include "DataOperators.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-DistinctOp* Operators::_pDistinctOp(void* aAddr)
+DistinctOp* DataOperators::_pDistinctOp(void* aAddr)
 {
   DistinctOp* pDistinctOp = reinterpret_cast<DistinctOp*>(aAddr);
   

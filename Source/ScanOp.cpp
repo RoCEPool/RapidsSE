@@ -2,7 +2,7 @@
 /* ScanOp.cpp -- Fetch                                                       */
 /*============================================================================*/
 
-#include "Operators.h"
+#include "DataOperators.h"
 
 OpDesc __Op_Scan (
   CN_SCANOP,          // class number
@@ -24,7 +24,7 @@ OpDesc __Op_Scan (
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ScanOp* Operators::_pScanOp(void* aAddr)
+ScanOp* DataOperators::_pScanOp(void* aAddr)
 {
   ScanOp* pScanOp = reinterpret_cast<ScanOp*>(aAddr);
   

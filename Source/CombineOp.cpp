@@ -2,7 +2,7 @@
 /* CombineOp.cpp -- Combine                                                   */
 /*============================================================================*/
 
-#include "Operators.h"
+#include "DataOperators.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-CombineOp* Operators::_pCombineOp(void* aAddr)
+CombineOp* DataOperators::_pCombineOp(void* aAddr)
 {
   CombineOp* pCombineOp = reinterpret_cast<CombineOp*>(aAddr);
   

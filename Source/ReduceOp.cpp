@@ -2,7 +2,7 @@
 /* ReduceOp.cpp -- Reduce                                                     */
 /*============================================================================*/
 
-#include "Operators.h"
+#include "DataOperators.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ReduceOp* Operators::_pReduceOp(void* aAddr)
+ReduceOp* DataOperators::_pReduceOp(void* aAddr)
 {
   ReduceOp* pReduceOp = reinterpret_cast<ReduceOp*>(aAddr);
   

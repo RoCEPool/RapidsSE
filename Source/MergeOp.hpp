@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Operators
+namespace DataOperators
 {
   const i8 C_OPERANDS = 32;
   

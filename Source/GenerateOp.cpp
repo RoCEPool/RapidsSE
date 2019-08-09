@@ -2,7 +2,7 @@
 /* GenerateOp.cpp -- Generate data                                            */
 /*============================================================================*/
 
-#include "Operators.h"
+#include "DataOperators.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-GenerateOp* Operators::_pGenerateOp(void* aAddr)
+GenerateOp* DataOperators::_pGenerateOp(void* aAddr)
 {
   GenerateOp* pGenerateOp = reinterpret_cast<GenerateOp*>(aAddr);
   

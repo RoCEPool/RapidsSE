@@ -2,7 +2,7 @@
 /* LimitOp.cpp -- Limit                                                       */
 /*============================================================================*/
 
-#include "Operators.h"
+#include "DataOperators.h"
 
 OpDesc __Op_Limit (
   CN_LIMITOP,         // class number
@@ -25,7 +25,7 @@ OpDesc __Op_Limit (
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-LimitOp* Operators::_pLimitOp(void* aAddr)
+LimitOp* DataOperators::_pLimitOp(void* aAddr)
 {
   LimitOp* pLimitOp = reinterpret_cast<LimitOp*>(aAddr);
   

@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Operators
+namespace DataOperators
 {
   class TakeawayOp : public Op
   {

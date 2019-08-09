@@ -2,7 +2,7 @@
 /* ProjectOp.cpp -- Project                                                   */
 /*============================================================================*/
 
-#include "Operators.h"
+#include "DataOperators.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ProjectOp* Operators::_pProjectOp(void* aAddr)
+ProjectOp* DataOperators::_pProjectOp(void* aAddr)
 {
   ProjectOp* pProjectOp = reinterpret_cast<ProjectOp*>(aAddr);
   

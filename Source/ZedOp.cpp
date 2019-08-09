@@ -2,7 +2,7 @@
 /* ZedOp.cpp -- Zed Sink                                                      */
 /*============================================================================*/
 
-#include "Operators.h"
+#include "DataOperators.h"
 
 OpDesc __Op_Zed (
   CN_ZEDOP,         // class number
@@ -24,7 +24,7 @@ OpDesc __Op_Zed (
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ZedOp* Operators::_pZedOp(void* aAddr)
+ZedOp* DataOperators::_pZedOp(void* aAddr)
 {
   ZedOp* pZedOp = reinterpret_cast<ZedOp*>(aAddr);
   

@@ -2,7 +2,7 @@
 /* IntersectOp.cpp -- Intersect                                               */
 /*============================================================================*/
 
-#include "Operators.h"
+#include "DataOperators.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-IntersectOp* Operators::_pIntersectOp(void* aAddr)
+IntersectOp* DataOperators::_pIntersectOp(void* aAddr)
 {
   IntersectOp* pIntersectOp = reinterpret_cast<IntersectOp*>(aAddr);
   

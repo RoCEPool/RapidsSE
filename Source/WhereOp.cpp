@@ -2,7 +2,7 @@
 /* WhereOp.cpp -- Where                                                       */
 /*============================================================================*/
 
-#include "Operators.h"
+#include "DataOperators.h"
 
 
 /*----------------------------------------------------------------------------*/
@@ -12,7 +12,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-WhereOp* Operators::_pWhereOp(void* aAddr)
+WhereOp* DataOperators::_pWhereOp(void* aAddr)
 {
   WhereOp* pWhereOp = reinterpret_cast<WhereOp*>(aAddr);
   

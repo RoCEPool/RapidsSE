@@ -2,7 +2,7 @@
 /* OutputOp.cpp -- Output                                                     */
 /*============================================================================*/
 
-#include "Operators.h"
+#include "DataOperators.h"
 
 OpDesc __Op_Output (
    CN_OUTPUTOP,         // class number
@@ -24,7 +24,7 @@ OpDesc __Op_Output (
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-OutputOp* Operators::_pOutputOp(void* aAddr)
+OutputOp* DataOperators::_pOutputOp(void* aAddr)
 {
   OutputOp* pOutputOp = reinterpret_cast<OutputOp*>(aAddr);
   
