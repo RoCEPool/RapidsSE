@@ -5,9 +5,7 @@
 
 namespace Partitioning
 {
-  
-  typedef VectorNL_t  <CN_INDEXTREEVEC, IndexTree,
-                       C_MAX_INDEXES>                             IndexTreeVec;
+  typedef VectorNL_t<CN_INDEXTREEVEC, IndexTree, C_MAX_INDEXES> IndexTreeVec;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
