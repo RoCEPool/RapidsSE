@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ControlData.cpp - ControlData namespace functions                                */
+/* ControlData.cpp - ControlData namespace functions                          */
 /*============================================================================*/
 
 #include "ControlData.h"
