@@ -7,11 +7,11 @@ enum eRA // resource actions
 {
   /*  0 */ RA_NONE=0,
 
-  /*    */ RA_DIR_CLOSE,
-  /*    */ RA_DIR_OPEN,
+  /*    */ RA_DIR_CLOSED,
+  /*    */ RA_DIR_OPENED,
 
-  /*    */ RA_FIL_CLOSE,
-  /*    */ RA_FIL_OPEN,
+  /*    */ RA_FIL_CLOSED,
+  /*    */ RA_FIL_OPENED,
 
   /*    */ RA_MTX_CREATE,
   /*    */ RA_MTX_DESTROY,
@@ -23,11 +23,16 @@ enum eRA // resource actions
   /*    */ RA_MTX_WAIT_INDEFINITE,
   /*    */ RA_MTX_WAIT_TIMED,
 
-  /*    */ RA_PIP_MAKE,
-  /*    */ RA_PIP_REMOVE,
+  /*    */ RA_PIP_MADE,
+  /*    */ RA_PIP_REMOVED,
 
-  /*    */ RA_SKT_,
-  
+  /*    */ RA_SKT_ACCEPTED,
+  /*    */ RA_SKT_CLOSED,
+  /*    */ RA_SKT_CONNECTED,
+  /*    */ RA_SKT_CREATED,
+  /*    */ RA_SKT_RECEIVED,
+  /*    */ RA_SKT_SENT,
+
   /*    */ RA_PTH_AWAKE,
   /*    */ RA_PTH_SLEEP,
   /*    */ RA_PTH_SLEEP_INDEFINITE,
@@ -40,11 +45,11 @@ static Stz* aRA[]
 {
   /*  0 */ "NONE"_Stz,
 
-  /*    */ "DIR_CLOSE"_Stz,
-  /*    */ "DIR_OPEN"_Stz,
+  /*    */ "DIR_CLOSED"_Stz,
+  /*    */ "DIR_OPENED"_Stz,
 
-  /*    */ "FIL_CLOSE"_Stz,
-  /*    */ "FIL_OPEN"_Stz,
+  /*    */ "FIL_CLOSED"_Stz,
+  /*    */ "FIL_OPENED"_Stz,
 
   /*    */ "MTX_CREATE"_Stz,
   /*    */ "MTX_DESTROY"_Stz,
@@ -56,11 +61,16 @@ static Stz* aRA[]
   /*    */ "MTX_WAIT_INDEFINITE"_Stz,
   /*    */ "MTX_WAIT_TIMED"_Stz,
 
-  /*    */ "PIP_MAKE"_Stz,
-  /*    */ "PIP_REMOVE"_Stz,
+  /*    */ "PIP_MADE"_Stz,
+  /*    */ "PIP_REMOVED"_Stz,
 
-  /*    */ "SKT_"_Stz,
-  
+  /*    */ "SKT_ACCEPTED"_Stz,
+  /*    */ "SKT_CLOSED"_Stz,
+  /*    */ "SKT_CONNECTED"_Stz,
+  /*    */ "SKT_CREATED"_Stz,
+  /*    */ "SKT_RECEIVED"_Stz,
+  /*    */ "SKT_SENT"_Stz,
+
   /*    */ "PTH_AWAKE"_Stz,
   /*    */ "PTH_SLEEP"_Stz,
   /*    */ "PTH_SLEEP_INDEFINITE"_Stz,
