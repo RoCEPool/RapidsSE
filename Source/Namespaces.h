@@ -12,6 +12,7 @@ namespace Commands      { class Command; class Parser; class Tokeniser;       }
 namespace CompilerStream{                                                     }
 namespace ControlData   {                                                     }
 namespace Correctness   {                                                     }
+namespace DataOperators {                                                     }
 namespace Debugging     {                                                     }
 namespace Enums         {                                                     }
 namespace Forth         { class Cell; class Dic; class ForthWord;             }
@@ -62,6 +63,7 @@ using namespace Commands;
 using namespace CompilerStream;
 using namespace ControlData;
 using namespace Correctness;
+using namespace DataOperators;
 using namespace Debugging;
 using namespace Enums;
 using namespace Forth;
