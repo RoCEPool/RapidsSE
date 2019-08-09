@@ -33,10 +33,11 @@ enum eRA // resource actions
   /*    */ RA_SKT_RECEIVED,
   /*    */ RA_SKT_SENT,
 
-  /*    */ RA_PTH_AWAKE,
-  /*    */ RA_PTH_SLEEP,
-  /*    */ RA_PTH_SLEEP_INDEFINITE,
-  /*    */ RA_PTH_SPAWNED,
+  /*    */ RA_THD_AWAKE,
+  /*    */ RA_THD_ENTRY,
+  /*    */ RA_THD_SLEEP,
+  /*    */ RA_THD_SLEEP_INDEFINITE,
+  /*    */ RA_THD_SPAWNED,
   
   /*    */ RA_ENUMS,
 };
@@ -71,10 +72,11 @@ static Stz* aRA[]
   /*    */ "SKT_RECEIVED"_Stz,
   /*    */ "SKT_SENT"_Stz,
 
-  /*    */ "PTH_AWAKE"_Stz,
-  /*    */ "PTH_SLEEP"_Stz,
-  /*    */ "PTH_SLEEP_INDEFINITE"_Stz,
-  /*    */ "PTH_SPAWNED"_Stz,
+  /*    */ "THD_AWAKE"_Stz,
+  /*    */ "THD_ENTRY"_Stz,
+  /*    */ "THD_SLEEP"_Stz,
+  /*    */ "THD_SLEEP_INDEFINITE"_Stz,
+  /*    */ "THD_SPAWNED"_Stz,
   
   /*    */ "ENUMS"_Stz,
 };
