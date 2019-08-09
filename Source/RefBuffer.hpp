@@ -19,7 +19,7 @@ namespace Rows
     void* operator new(size_t);
     void  operator delete(void*);
   
-    RefBuffer(void);
+    RefBuffer(i8 iPartition);
     ~RefBuffer(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

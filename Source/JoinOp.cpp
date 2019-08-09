@@ -60,7 +60,7 @@ JoinOp::JoinOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   m_bEndLeftOperands  = false;
   m_bEndRightOperands = false;
   
-  m_pRefBuffer = new RefBuffer;
+  m_pRefBuffer = nullptr;
   
   m_eNextEntry = NE_NEXT_LEFT_RIGHT;
 }
@@ -117,6 +117,9 @@ void JoinOp::vAddRowRefs(Ent* aLeftEntry, Ent* aRightEntry)
 {
   
   // allot a refSet
+  if ( ! m_pRefBuffer )
+    m_pRefBuffer = new RefBuffer(m_nSlot);
+  
   RefSet* pRefSet = m_pRefBuffer->aAllotRefSet(2);
   
   if ( ! pRefSet )  {
@@ -126,7 +129,7 @@ void JoinOp::vAddRowRefs(Ent* aLeftEntry, Ent* aRightEntry)
     vPipeOut(m_pRefBuffer);
     
     // create another refBuffer for the refEnt's
-    m_pRefBuffer = new RefBuffer;
+    m_pRefBuffer = new RefBuffer(m_nSlot);
     
     // insert row from entry in temporary buffer
     pRefSet = m_pRefBuffer->aAllotRefSet(2);

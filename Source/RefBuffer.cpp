@@ -43,12 +43,13 @@ void RefBuffer::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-RefBuffer::RefBuffer(void)
+RefBuffer::RefBuffer(i8 iPartition)
 : DataBuffer(CN_REFBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_REFBUFFER,_FOOTER_);
   
   m_bIsLast = false;
+  m_iPartitionNo = iPartition;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_REFBUFFER,_FOOTER_);
   
