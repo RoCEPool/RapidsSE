@@ -9,6 +9,7 @@ namespace Base          {                                                     }
 namespace Chunks        { class Formatters;                                   }
 namespace ClassData     {                                                     }
 namespace Commands      { class Command; class Parser; class Tokeniser;       }
+namespace CompilerStream{                                                     }
 namespace ControlData   {                                                     }
 namespace Correctness   {                                                     }
 namespace Debugging     {                                                     }
@@ -58,6 +59,7 @@ using namespace Base;
 using namespace Chunks;
 using namespace ClassData;
 using namespace Commands;
+using namespace CompilerStream;
 using namespace ControlData;
 using namespace Correctness;
 using namespace Debugging;

@@ -35,8 +35,10 @@ void StorageEngine::vCheckAllAssumptions(void)
   Transactions::vCheckAssumptions();
   Commands::vCheckAssumptions();
   Forth::vCheckAssumptions();
-  ControlData::vCheckAssumptions();
+  Streams::vCheckAssumptions();
   MetaData::vCheckAssumptions();
+  ControlData::vCheckAssumptions();
+  CompilerStream::vCheckAssumptions();
   Transform::vCheckAssumptions();
   ScanSprint::vCheckAssumptions();
   Rows::vCheckAssumptions();
