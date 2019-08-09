@@ -23,7 +23,8 @@ enum eRA // resource actions
   /*    */ RA_MTX_WAIT_INDEFINITE,
   /*    */ RA_MTX_WAIT_TIMED,
 
-  /*    */ RA_PIP_,
+  /*    */ RA_PIP_MAKE,
+  /*    */ RA_PIP_REMOVE,
 
   /*    */ RA_SKT_,
   
@@ -52,8 +53,9 @@ static Stz* aRA[]
   /*    */ "MTX_WAIT_INDEFINITE"_Stz,
   /*    */ "MTX_WAIT_TIMED"_Stz,
 
-  /*    */ "PIP_"_Stz,
-  
+  /*    */ "PIP_MAKE"_Stz,
+  /*    */ "PIP_REMOVE"_Stz,
+
   /*    */ "SKT_"_Stz,
   
   /*    */ "PTH_"_Stz,
