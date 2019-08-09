@@ -90,6 +90,7 @@ bool Prompt::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_RND);
   gxPromptCatalog.vFuns(PF_SE);
   gxPromptCatalog.vFuns(PF_SHELL);
+  gxPromptCatalog.vFuns(PF_SHORTCUT);
   gxPromptCatalog.vFuns(PF_SINCE);
   gxPromptCatalog.vFuns(PF_SIZES);
   gxPromptCatalog.vFuns(PF_SLEEP);
