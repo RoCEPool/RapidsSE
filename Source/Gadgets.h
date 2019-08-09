@@ -17,6 +17,7 @@ namespace Gadgets
 #include "Birth.hpp"
 #include "DecaCnt.hpp"
 #include "EnumFlags.hpp"
+#include "FreqDist.hpp"
 #include "HV.hpp"
 #include "MP.hpp"
 #include "NextId.hpp"
@@ -26,6 +27,8 @@ namespace Gadgets
 #include "Timer.hpp"
 
 #include "ByteRate.hpp"
+#include "Peruse.hpp"
+#include "Numbat.hpp"
 
 #include "SP_Id.hpp"
 

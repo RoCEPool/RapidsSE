@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Measurement
+namespace Gadgets
 {
   class FreqDist : public Object
   {

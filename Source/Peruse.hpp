@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Measurment
+namespace Gadgets
 {
   // variables for Welford's Online Algorithm for computing variance
   // refer: https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance
@@ -57,8 +57,6 @@ namespace Measurment
     Footer* aFooter(void);
   };
 }
-
-using namespace Measurment;
 
 /*============================================================================*/
 /* end                                                                        */

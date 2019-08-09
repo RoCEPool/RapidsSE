@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Measurment
+namespace Gadgets
 {
   struct NumSet
   {
@@ -31,8 +31,6 @@ namespace Measurment
     Footer* aFooter(void);
   };
 }
-
-using namespace Measurment;
 
 /*============================================================================*/
 /* end                                                                        */
