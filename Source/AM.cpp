@@ -60,7 +60,7 @@ JobList* AM::pOriginatingJobs(void) {
 JobList* AM::pParticipatingJobs(void) {
   return gpAttachMap->m_pQueues->m_pParticipatingJobs; }
 i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
-void AM::vProcessExit(void)   { Process::vExit(EXIT_FAILURE);                 }
+void AM::vProcessExit(void)   { Process::vExitFailure();                 }
 bool AM::bProgress(void)      { return gpAttachMap->m_bProgress;              }
 bool AM::bMetadata(void)      { return gpAttachMap->m_bMetadata;              }
 i8   AM::iNextDiagram(void)   { return ++ gpAttachMap->m_inNextDiagram;       }

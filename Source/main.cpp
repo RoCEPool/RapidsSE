@@ -16,12 +16,12 @@ int main(int argc, const char* argv[])
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // parse the command line arguments
-  if ( ! gxArguments.bParse(argc,(Stz**)argv) )
-    Process::vExit(EXIT_FAILURE);
+  if (! gxArguments.bParse(argc,(Stz**)argv))
+    Process::vExitFailure();
   
   // potentially run utilities
   if (Engine::bRunUtilities(argc,(Stz**)argv))
-    Process::vExit(EXIT_SUCCESS);
+    Process::vExitSuccess();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
