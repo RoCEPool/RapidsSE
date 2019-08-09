@@ -16,6 +16,7 @@ namespace Gadgets
 
 #include "Birth.hpp"
 #include "DecaCnt.hpp"
+#include "HeapVar.hpp"
 #include "NextId.hpp"
 #include "TempName.hpp"
 #include "Timer.hpp"

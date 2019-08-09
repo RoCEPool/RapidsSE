@@ -32,7 +32,6 @@ namespace Correctness
 
 #include "Addressing.hpp"
 #include "MP.hpp"
-#include "HeapVar.hpp"
 #include "SizedHeader.hpp"
 #include "Report.hpp"
 #include "IntLib.hpp"

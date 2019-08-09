@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Correctness
+namespace Gadgets
 {
   template <class CLASS, class PARAMETER>
   class HV
