@@ -39,6 +39,14 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_CANCELMARKER
   /* 30 */ &Finalize::vUndefined,         // CN_CARRYOVER
   /*    */ &Finalize::vUndefined,         // CN_CATALOG
+  /*    */ &Finalize::vUndefined,         // CN_CLAUSE_FROM
+  /*    */ &Finalize::vUndefined,         // CN_CLAUSE_GROUPBY
+  /*    */ &Finalize::vUndefined,         // CN_CLAUSE_JOIN
+  /*    */ &Finalize::vUndefined,         // CN_CLAUSE_LIMIT
+  /*    */ &Finalize::vUndefined,         // CN_CLAUSE_ORDERBY
+  /*    */ &Finalize::vUndefined,         // CN_CLAUSE_SELECT
+  /*    */ &Finalize::vUndefined,         // CN_CLAUSE_SUBQRY
+  /*    */ &Finalize::vUndefined,         // CN_CLAUSE_WHERE
   /*    */ &Finalize::vUndefined,         // CN_COLUMN
   /* 32 */ &Finalize::vUndefined,         // CN_COLUMNVEC
   /*    */ &Finalize::vUndefined,         // CN_COMBINEOP
@@ -228,6 +236,10 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_NOW
   /*    */ &Finalize::vUndefined,         // CN_NUMBAT
 
+  /* 28 */ &Finalize::vUndefined,         // CN_OP_TOCLAUSE
+  /* 28 */ &Finalize::vUndefined,         // CN_OP_TOCCOMMAND
+  /* 28 */ &Finalize::vUndefined,         // CN_OP_TODATA
+  /* 28 */ &Finalize::vUndefined,         // CN_OP_TODO
   /* 28 */ &Finalize::vUndefined,         // CN_OPERANDQUEUE
   /* 28 */ &Finalize::vUndefined,         // CN_OPVEC
   /*    */ &Finalize::vUndefined,         // CN_OUTPUTOP

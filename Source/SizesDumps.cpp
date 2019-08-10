@@ -43,7 +43,15 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vUndefined,       // CN_CANCELMARKER
   /* 30 */ &Dump::vDummy,           // CN_CARRYOVER
   /*    */ &Dump::vDummy,           // CN_CATALOG
-  /* 31 */ &Dump::vDummy,           // CN_COLUMN
+  /*    */ &Dump::vDummy,           // CN_CATALOG
+  /* 31 */ &Dump::vDummy,           // CN_CLAUSE_FROM
+  /* 31 */ &Dump::vDummy,           // CN_CLAUSE_GROUPBY
+  /* 31 */ &Dump::vDummy,           // CN_CLAUSE_JOIN
+  /* 31 */ &Dump::vDummy,           // CN_CLAUSE_LIMIT
+  /* 31 */ &Dump::vDummy,           // CN_CLAUSE_ORDERBY
+  /* 31 */ &Dump::vDummy,           // CN_CLAUSE_SELECT
+  /* 31 */ &Dump::vDummy,           // CN_CLAUSE_SUBQRY
+  /* 31 */ &Dump::vDummy,           // CN_CLAUSE_WHERE
   /* 32 */ &Dump::vDummy,           // CN_COLUMNVEC
   /* 32 */ &Dump::vDummy,           // CN_COMBINEOP
   /*    */ &Dump::vDummy,           // CN_COMMAND
@@ -393,6 +401,14 @@ i8 giClassSize[]
   /*    */ sizeof(CancelMarker),       // CN_CANCELMARKER
   /* 30 */ sizeof(CarryOver),          // CN_CARRYOVER
   /*    */ sizeof(Catalog),            // CN_CATALOG
+  /*    */ sizeof(Clause_From),        // CN_CLAUSE_FROM
+  /*    */ sizeof(Clause_GroupBy),     // CN_CLAUSE_GROUPBY
+  /*    */ sizeof(Clause_Join),        // CN_CLAUSE_JOIN
+  /*    */ sizeof(Clause_Limit),       // CN_CLAUSE_LIMIT
+  /*    */ sizeof(Clause_OrderBy),     // CN_CLAUSE_ORDERBY
+  /*    */ sizeof(Clause_Select),      // CN_CLAUSE_SELECT
+  /*    */ sizeof(Clause_SubQry),      // CN_CLAUSE_SUBQRY
+  /*    */ sizeof(Clause_Where),       // CN_CLAUSE_WHERE
   /* 31 */ sizeof(Column),             // CN_COLUMN
   /* 32 */ sizeof(ColumnVec),          // CN_COLUMNVEC
   /* 32 */ sizeof(CombineOp),          // CN_COMBINEOP
@@ -741,6 +757,14 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_SMALL,   // CN_CANCELMARKER
   /* 30 */ HT_INVALID,           // CN_CARRYOVER
   /*    */ HT_INVALID,           // CN_CATALOG
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_CLAUSE_FROM
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_CLAUSE_GROUPBY
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_CLAUSE_JOIN
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_CLAUSE_LIMIT
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_CLAUSE_ORDERBY
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_CLAUSE_SELECT
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_CLAUSE_SUBQRY
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_CLAUSE_WHERE
   /*    */ HT_TRANSIENT_SMALL,   // CN_COLUMN
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_COLUMNVEC
   /*    */ HT_TRANSIENT_SMALL,   // CN_COMBINEOP
