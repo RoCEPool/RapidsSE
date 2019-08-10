@@ -23,6 +23,8 @@ namespace Prompt
   
     bool     m_bOneCommand; // run one command only
   
+    ShortCutVec m_oShortCutVec; // vector of short cuts
+  
     // must be last
     Footer m_xFooter;
   
