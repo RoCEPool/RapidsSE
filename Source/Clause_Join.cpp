@@ -24,7 +24,7 @@ Clause_Join* CompilerStream::_pClause_Join(void* aAddr)
 void* Clause_Join::operator new(size_t)
 {
   Clause_Join* pClause_Join =
-    static_cast<Clause_Join*>(HeapMem::pAllocate(CN_CANCELMARKER));
+    static_cast<Clause_Join*>(HeapMem::pAllocate(CN_CLAUSE_JOIN));
   
   return pClause_Join;
 }
@@ -43,13 +43,13 @@ void Clause_Join::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Clause_Join::Clause_Join(void)
-: Operand(CN_CANCELMARKER)
+: Operand(CN_CLAUSE_JOIN)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CANCELMARKER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_JOIN,_FOOTER_);
 
-  _checkInitialised_(CN_CANCELMARKER);
+  _checkInitialised_(CN_CLAUSE_JOIN);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CANCELMARKER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_JOIN,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,7 +57,7 @@ Clause_Join::Clause_Join(void)
 /*----------------------------------------------------------------------------*/
 Clause_Join::~Clause_Join(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CANCELMARKER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_JOIN,_FOOTER_);
 }
 
 

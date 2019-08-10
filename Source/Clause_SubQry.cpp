@@ -24,7 +24,7 @@ Clause_SubQry* CompilerStream::_pClause_SubQry(void* aAddr)
 void* Clause_SubQry::operator new(size_t)
 {
   Clause_SubQry* pClause_SubQry =
-    static_cast<Clause_SubQry*>(HeapMem::pAllocate(CN_CANCELMARKER));
+    static_cast<Clause_SubQry*>(HeapMem::pAllocate(CN_CLAUSE_SUBQRY));
   
   return pClause_SubQry;
 }
@@ -43,13 +43,13 @@ void Clause_SubQry::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Clause_SubQry::Clause_SubQry(void)
-: Operand(CN_CANCELMARKER)
+: Operand(CN_CLAUSE_SUBQRY)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CANCELMARKER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
 
-  _checkInitialised_(CN_CANCELMARKER);
+  _checkInitialised_(CN_CLAUSE_SUBQRY);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CANCELMARKER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,7 +57,7 @@ Clause_SubQry::Clause_SubQry(void)
 /*----------------------------------------------------------------------------*/
 Clause_SubQry::~Clause_SubQry(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CANCELMARKER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SUBQRY,_FOOTER_);
 }
 
 

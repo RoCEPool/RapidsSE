@@ -24,7 +24,7 @@ Clause_Limit* CompilerStream::_pClause_Limit(void* aAddr)
 void* Clause_Limit::operator new(size_t)
 {
   Clause_Limit* pClause_Limit =
-    static_cast<Clause_Limit*>(HeapMem::pAllocate(CN_CANCELMARKER));
+    static_cast<Clause_Limit*>(HeapMem::pAllocate(CN_CLAUSE_LIMIT));
   
   return pClause_Limit;
 }
@@ -43,13 +43,13 @@ void Clause_Limit::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Clause_Limit::Clause_Limit(void)
-: Operand(CN_CANCELMARKER)
+: Operand(CN_CLAUSE_LIMIT)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CANCELMARKER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_LIMIT,_FOOTER_);
 
-  _checkInitialised_(CN_CANCELMARKER);
+  _checkInitialised_(CN_CLAUSE_LIMIT);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CANCELMARKER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_LIMIT,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,7 +57,7 @@ Clause_Limit::Clause_Limit(void)
 /*----------------------------------------------------------------------------*/
 Clause_Limit::~Clause_Limit(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CANCELMARKER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_LIMIT,_FOOTER_);
 }
 
 

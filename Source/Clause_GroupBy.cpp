@@ -24,7 +24,7 @@ Clause_GroupBy* CompilerStream::_pClause_GroupBy(void* aAddr)
 void* Clause_GroupBy::operator new(size_t)
 {
   Clause_GroupBy* pClause_GroupBy =
-    static_cast<Clause_GroupBy*>(HeapMem::pAllocate(CN_CANCELMARKER));
+    static_cast<Clause_GroupBy*>(HeapMem::pAllocate(CN_CLAUSE_GROUPBY));
   
   return pClause_GroupBy;
 }
@@ -43,13 +43,13 @@ void Clause_GroupBy::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Clause_GroupBy::Clause_GroupBy(void)
-: Operand(CN_CANCELMARKER)
+: Operand(CN_CLAUSE_GROUPBY)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CANCELMARKER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_GROUPBY,_FOOTER_);
 
-  _checkInitialised_(CN_CANCELMARKER);
+  _checkInitialised_(CN_CLAUSE_GROUPBY);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CANCELMARKER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_GROUPBY,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,7 +57,7 @@ Clause_GroupBy::Clause_GroupBy(void)
 /*----------------------------------------------------------------------------*/
 Clause_GroupBy::~Clause_GroupBy(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CANCELMARKER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_GROUPBY,_FOOTER_);
 }
 
 

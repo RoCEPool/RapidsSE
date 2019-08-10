@@ -24,7 +24,7 @@ Clause_Select* CompilerStream::_pClause_Select(void* aAddr)
 void* Clause_Select::operator new(size_t)
 {
   Clause_Select* pClause_Select =
-    static_cast<Clause_Select*>(HeapMem::pAllocate(CN_CANCELMARKER));
+    static_cast<Clause_Select*>(HeapMem::pAllocate(CN_CLAUSE_SELECT));
   
   return pClause_Select;
 }
@@ -43,13 +43,13 @@ void Clause_Select::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Clause_Select::Clause_Select(void)
-: Operand(CN_CANCELMARKER)
+: Operand(CN_CLAUSE_SELECT)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CANCELMARKER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SELECT,_FOOTER_);
 
-  _checkInitialised_(CN_CANCELMARKER);
+  _checkInitialised_(CN_CLAUSE_SELECT);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CANCELMARKER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SELECT,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,7 +57,7 @@ Clause_Select::Clause_Select(void)
 /*----------------------------------------------------------------------------*/
 Clause_Select::~Clause_Select(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CANCELMARKER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SELECT,_FOOTER_);
 }
 
 

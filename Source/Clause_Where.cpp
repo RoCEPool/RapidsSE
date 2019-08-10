@@ -24,7 +24,7 @@ Clause_Where* CompilerStream::_pClause_Where(void* aAddr)
 void* Clause_Where::operator new(size_t)
 {
   Clause_Where* pClause_Where =
-    static_cast<Clause_Where*>(HeapMem::pAllocate(CN_CANCELMARKER));
+    static_cast<Clause_Where*>(HeapMem::pAllocate(CN_CLAUSE_WHERE));
   
   return pClause_Where;
 }
@@ -43,13 +43,13 @@ void Clause_Where::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Clause_Where::Clause_Where(void)
-: Operand(CN_CANCELMARKER)
+: Operand(CN_CLAUSE_WHERE)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CANCELMARKER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_WHERE,_FOOTER_);
 
-  _checkInitialised_(CN_CANCELMARKER);
+  _checkInitialised_(CN_CLAUSE_WHERE);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CANCELMARKER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_WHERE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,7 +57,7 @@ Clause_Where::Clause_Where(void)
 /*----------------------------------------------------------------------------*/
 Clause_Where::~Clause_Where(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CANCELMARKER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_WHERE,_FOOTER_);
 }
 
 

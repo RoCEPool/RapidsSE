@@ -24,7 +24,7 @@ Clause_From* CompilerStream::_pClause_From(void* aAddr)
 void* Clause_From::operator new(size_t)
 {
   Clause_From* pClause_From =
-    static_cast<Clause_From*>(HeapMem::pAllocate(CN_CANCELMARKER));
+    static_cast<Clause_From*>(HeapMem::pAllocate(CN_CLAUSE_FROM));
   
   return pClause_From;
 }
@@ -43,13 +43,13 @@ void Clause_From::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Clause_From::Clause_From(void)
-: Operand(CN_CANCELMARKER)
+: Operand(CN_CLAUSE_FROM)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CANCELMARKER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_FROM,_FOOTER_);
 
-  _checkInitialised_(CN_CANCELMARKER);
+  _checkInitialised_(CN_CLAUSE_FROM);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CANCELMARKER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_FROM,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,7 +57,7 @@ Clause_From::Clause_From(void)
 /*----------------------------------------------------------------------------*/
 Clause_From::~Clause_From(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CANCELMARKER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_FROM,_FOOTER_);
 }
 
 

@@ -24,7 +24,7 @@ Clause_OrderBy* CompilerStream::_pClause_OrderBy(void* aAddr)
 void* Clause_OrderBy::operator new(size_t)
 {
   Clause_OrderBy* pClause_OrderBy =
-    static_cast<Clause_OrderBy*>(HeapMem::pAllocate(CN_CANCELMARKER));
+    static_cast<Clause_OrderBy*>(HeapMem::pAllocate(CN_CLAUSE_ORDERBY));
   
   return pClause_OrderBy;
 }
@@ -43,13 +43,13 @@ void Clause_OrderBy::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Clause_OrderBy::Clause_OrderBy(void)
-: Operand(CN_CANCELMARKER)
+: Operand(CN_CLAUSE_ORDERBY)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CANCELMARKER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_ORDERBY,_FOOTER_);
 
-  _checkInitialised_(CN_CANCELMARKER);
+  _checkInitialised_(CN_CLAUSE_ORDERBY);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CANCELMARKER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_ORDERBY,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,7 +57,7 @@ Clause_OrderBy::Clause_OrderBy(void)
 /*----------------------------------------------------------------------------*/
 Clause_OrderBy::~Clause_OrderBy(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CANCELMARKER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_ORDERBY,_FOOTER_);
 }
 
 
