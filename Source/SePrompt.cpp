@@ -116,6 +116,9 @@ void SePrompt::vPromptLoop(void)
       continue;
     }
     
+    if (bShortCut())
+      continue;
+    
     vCheckTimed();
     vCheckMarked();
     vCheckTraced();
@@ -442,6 +445,14 @@ void SePrompt::vGetCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
+  if (* m_pSession->m_sToDo.aChar()) {
+    Tokeniser::vTokenise(pTknVec(),m_pSession->m_sToDo);
+    m_pSession->m_sToDo = ""_Stz;
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   Command* pCommand = this->pCommand();
   
   pCommand->vGetCommand();
@@ -759,6 +770,16 @@ void SePrompt::vSetJob(void)
 
   if (m_bMarked)
     m_pJob->m_bMarkActivity = true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* possible shortcut?                                                         */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bShortCut(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
