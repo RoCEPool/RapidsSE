@@ -48,7 +48,7 @@ JobClass xJobClass_Select =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_Select_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_ShowCluster_class;
+  *pNextFun = (pFUN*)pJob_SelectTable_class;
   
   return &xJobClass_Select;
 }
@@ -106,10 +106,7 @@ Job_Select::Job_Select(Session* pSession)
 : Job(CN_JOB_SELECT, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SELECT,_FOOTER_);
-    
-  m_pTable       = nullptr;
-  m_iPartition   = -1;
-  
+      
   _checkInitialised_(CN_JOB_SELECT);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_SELECT,_FOOTER_);
@@ -157,18 +154,7 @@ bool Job_Select::bPopulateJob(TokenVec* pTokenVec)
   iNumTokens = pTokenVec->nItems();
   
   // - - - - - - - - - - - - - - - - - - - - -
-  // there should be 3 tokens
-  if (iNumTokens < 3)
-    return false;
-  
-  // - - - - - - - - - - - - - - - - - - - - -
-  // set the table name
-  m_sObjectName = pTokenVec->pGet(1)->aText();
-  
-  // - - - - - - - - - - - - - - - - - - - - -
-  // set the partition number
-  m_iPartition = pTokenVec->pGet(2)->iToI8();
-  
+
   return true;
 }
 

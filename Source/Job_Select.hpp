@@ -8,10 +8,7 @@ namespace Jobs
   class Job_Select : public Job
   {
   public:
-    
-    Table*       m_pTable;              // table rows being fetched from
-    i8           m_iPartition;          // partition this fetch task to fetch from
-    
+        
     // must be last
     Footer m_xFooter;
   

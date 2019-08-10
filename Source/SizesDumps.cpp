@@ -535,7 +535,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_Repeater),       // CN_JOB_REPEATER
   /*    */ sizeof(Job_Repeater),       // CN_JOB_REPORT
   /*    */ sizeof(Job_Sanity),         // CN_JOB_SANITY
-  /*    */ 0,//sizeof(Job_Select),    // CN_JOB_SELECT
+  /*    */ sizeof(Job_Select),         // CN_JOB_SELECT
   /*    */ sizeof(Job_SelectTable),    // CN_JOB_SELECTTABLE
   /*    */ sizeof(Job_ShowCluster),    // CN_JOB_SHOWCLUSTER
   /*    */ sizeof(Job_Sink),           // CN_JOB_SINK
