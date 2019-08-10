@@ -237,7 +237,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_NUMBAT
 
   /* 28 */ &Finalize::vUndefined,         // CN_OP_TOCLAUSE
-  /* 28 */ &Finalize::vUndefined,         // CN_OP_TOCCOMMAND
+  /* 28 */ &Finalize::vUndefined,         // CN_OP_TOCOMMAND
   /* 28 */ &Finalize::vUndefined,         // CN_OP_TODATA
   /* 28 */ &Finalize::vUndefined,         // CN_OP_TODO
   /* 28 */ &Finalize::vUndefined,         // CN_OPERANDQUEUE

@@ -5,7 +5,7 @@
 #include "CompilerOperators.h"
 
 OpDesc __Op_ToDo (
-   CN_OUTPUTOP,         // class number
+   CN_OP_TODO,         // class number
    OK_SIMPLE,           // op kind
    "ToClause"_Stz,      // first word of prompt command
    "Dta"_Stz,           // prefix
@@ -37,7 +37,7 @@ Op_ToDo* CompilerOperators::_pOp_ToDo(void* aAddr)
 void* Op_ToDo::operator new(size_t)
 {
   Op_ToDo* pToDataOp =
-    static_cast<Op_ToDo*>(HeapMem::pAllocate(CN_OUTPUTOP));
+    static_cast<Op_ToDo*>(HeapMem::pAllocate(CN_OP_TODO));
   
   return pToDataOp;
 }
@@ -56,15 +56,15 @@ void Op_ToDo::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Op_ToDo::Op_ToDo(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
-: Op(CN_OUTPUTOP,szOpLabel,pDigest,aOpDefn,bAppR)
+: Op(CN_OP_TODO,szOpLabel,pDigest,aOpDefn,bAppR)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TODO,_FOOTER_);
   
   m_fpCall = Op_ToDo::eCall;
   
-  _checkInitialised_(CN_OUTPUTOP);
+  _checkInitialised_(CN_OP_TODO);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_OP_TODO,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -72,7 +72,7 @@ Op_ToDo::Op_ToDo(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
 /*----------------------------------------------------------------------------*/
 Op_ToDo::~Op_ToDo(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TODO,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -123,7 +123,7 @@ eOR Op_ToDo::eDrain(void* aThisOp)
 /*----------------------------------------------------------------------------*/
 eOR Op_ToDo::eOpLoop(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TODO,_FOOTER_);
   
   for (;;) {
     
@@ -181,7 +181,7 @@ L_EXIT:
 /*----------------------------------------------------------------------------*/
 eOR Op_ToDo::eDrainLoop(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TODO,_FOOTER_);
   
   for (;;) {
     

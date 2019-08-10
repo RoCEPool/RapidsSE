@@ -5,7 +5,7 @@
 #include "CompilerOperators.h"
 
 OpDesc __Op_ToClause (
-   CN_OUTPUTOP,         // class number
+   CN_OP_TOCLAUSE,         // class number
    OK_SIMPLE,           // op kind
    "ToClause"_Stz,      // first word of prompt command
    "Clu"_Stz,           // prefix
@@ -37,7 +37,7 @@ Op_ToClause* CompilerOperators::_pOp_ToClause(void* aAddr)
 void* Op_ToClause::operator new(size_t)
 {
   Op_ToClause* pToClauseOp =
-    static_cast<Op_ToClause*>(HeapMem::pAllocate(CN_OUTPUTOP));
+    static_cast<Op_ToClause*>(HeapMem::pAllocate(CN_OP_TOCLAUSE));
   
   return pToClauseOp;
 }
@@ -56,15 +56,15 @@ void Op_ToClause::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Op_ToClause::Op_ToClause(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
-: Op(CN_OUTPUTOP,szOpLabel,pDigest,aOpDefn,bAppR)
+: Op(CN_OP_TOCLAUSE,szOpLabel,pDigest,aOpDefn,bAppR)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TOCLAUSE,_FOOTER_);
   
   m_fpCall = Op_ToClause::eCall;
   
-  _checkInitialised_(CN_OUTPUTOP);
+  _checkInitialised_(CN_OP_TOCLAUSE);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_OP_TOCLAUSE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -72,7 +72,7 @@ Op_ToClause::Op_ToClause(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool 
 /*----------------------------------------------------------------------------*/
 Op_ToClause::~Op_ToClause(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TOCLAUSE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -123,7 +123,7 @@ eOR Op_ToClause::eDrain(void* aThisOp)
 /*----------------------------------------------------------------------------*/
 eOR Op_ToClause::eOpLoop(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TOCLAUSE,_FOOTER_);
   
   for (;;) {
     
@@ -181,7 +181,7 @@ L_EXIT:
 /*----------------------------------------------------------------------------*/
 eOR Op_ToClause::eDrainLoop(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TOCLAUSE,_FOOTER_);
   
   for (;;) {
     

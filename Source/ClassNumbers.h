@@ -239,7 +239,7 @@ enum eCN : u2 // Class Number
   /*                           */ CN_NUMBAT,
 
   /*  21 0x15      312B Heap:I */ CN_OP_TOCLAUSE,
-  /*  21 0x15      312B Heap:I */ CN_OP_TOCCOMMAND,
+  /*  21 0x15      312B Heap:I */ CN_OP_TOCOMMAND,
   /*  21 0x15      312B Heap:I */ CN_OP_TODATA,
   /*  21 0x15      312B Heap:I */ CN_OP_TODO,
   /*  21 0x15      312B Heap:I */ CN_OPERANDQUEUE,
