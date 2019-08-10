@@ -122,6 +122,7 @@ namespace Jobs
 #include "Job_Report.hpp"
 
 #include "Job_Sanity.hpp"
+#include "Job_Select.hpp"
 #include "Job_SelectTable.hpp"
 #include "Job_Sink.hpp"
 #include "Job_SizeIndex.hpp"
