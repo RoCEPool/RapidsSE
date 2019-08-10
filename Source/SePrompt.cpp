@@ -63,6 +63,9 @@ SePrompt::SePrompt(bool bOneCommand)
   
   m_bOneCommand = bOneCommand;
 
+  
+  m_pSession->m_sToDo = "_shortcuts"_Stz;
+  
   _checkInitialised_(CN_SEPROMPT);
 }
 
