@@ -1,0 +1,30 @@
+/*============================================================================*/
+/* Clause_SubQry.hpp -- Sub-Query Clause operand                              */
+/*============================================================================*/
+#pragma once
+
+namespace CompilerStream
+{
+  class Clause_SubQry : public Operand
+  {
+  private:
+  
+    // must be last
+    Footer m_xFooter;
+
+  public:
+    void* operator new(size_t);
+    void  operator delete(void*);
+  
+    Clause_SubQry(void);
+   ~Clause_SubQry(void) noexcept(false);
+
+    Footer* aFooter(void);
+  };
+
+  Clause_SubQry* _pClause_SubQry(void* aAddr);
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

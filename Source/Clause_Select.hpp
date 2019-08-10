@@ -1,0 +1,30 @@
+/*============================================================================*/
+/* Clause_Select.hpp -- Select Clause operand                                 */
+/*============================================================================*/
+#pragma once
+
+namespace CompilerStream
+{
+  class Clause_Select : public Operand
+  {
+  private:
+  
+    // must be last
+    Footer m_xFooter;
+
+  public:
+    void* operator new(size_t);
+    void  operator delete(void*);
+  
+    Clause_Select(void);
+   ~Clause_Select(void) noexcept(false);
+
+    Footer* aFooter(void);
+  };
+
+  Clause_Select* _pClause_Select(void* aAddr);
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

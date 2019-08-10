@@ -27,6 +27,20 @@ bool Prompt::bPrompt_shortcut(SePrompt* pPrompt)
 
   ASSERT((*pTknVec)[0]->bSame("shortcut"_Stz));
 
+  if (1 == pTknVec->nItems()) {
+    ShortCutVec* pShortCutVec = pPrompt->pShortCutVec();
+    i8 nShortCuts = pShortCutVec->nItems();
+    for (i8 i_ShortCut = 0; i_ShortCut < nShortCuts; i_ShortCut++) {
+      ShortCut* pShortCut = pShortCutVec->pGet(i_ShortCut);
+      vTrace("  %s : %s \n"_Stz,
+             pShortCut->m_sName.aChar(),
+             pShortCut->m_sCmd.aChar());
+    }
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   s32 sNm;
   s4K sCmd;
   

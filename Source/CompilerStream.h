@@ -14,6 +14,17 @@ namespace CompilerStream
 
 //------------------------------------------------------------------------------
 
+#include "Clause.hpp"
+
+#include "Clause_From.hpp"
+#include "Clause_GroupBy.hpp"
+#include "Clause_Join.hpp"
+#include "Clause_Limit.hpp"
+#include "Clause_OrderBy.hpp"
+#include "Clause_Select.hpp"
+#include "Clause_SubQry.hpp"
+#include "Clause_Where.hpp"
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
