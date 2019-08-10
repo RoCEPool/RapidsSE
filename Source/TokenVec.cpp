@@ -310,7 +310,7 @@ void TokenVec::vStripSemicolon(void)
     Token* pToken = m_pItem[i_Token];
     if (TN_OTHER == pToken->eToken() && pToken->bSame(";"_Stz)) {
       pToken->vReset();
-      break;
+      //break;
     }
   }
 }
@@ -361,7 +361,8 @@ void TokenVec::vToString(Stz* szBuff, i8 iFromTkn)
   }
   
   // concat a terminating semicolon (needed??)
-  StrLib::vConcat(szBuff->aChar(),";");
+  if (! iFromTkn)                                         //! this is a hack RAY
+    StrLib::vConcat(szBuff->aChar(),";");
 }
 
 /*----------------------------------------------------------------------------*/

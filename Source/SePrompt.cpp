@@ -119,6 +119,8 @@ void SePrompt::vPromptLoop(void)
     if (bShortCut())
       continue;
     
+    vDumpTokenVec();
+
     vCheckTimed();
     vCheckMarked();
     vCheckTraced();
@@ -355,11 +357,11 @@ void SePrompt::vDumpTokenVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-//  s256 sCommand;
-//  TokenVec* pTknVec = this->pTknVec();
-//
-//  pTknVec->vToString(sCommand);
-//  vTrace("Command %lld tokens: %s\n"_Stz,pTknVec->nTokens(),sCommand.aStz());
+  s48K sCommand;
+  TokenVec* pTknVec = this->pTknVec();
+
+  pTknVec->vToString(sCommand);
+  vTrace("Command %lld tokens: %s\n"_Stz,pTknVec->nTokens(),sCommand.aStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -447,6 +449,9 @@ void SePrompt::vGetCommand(void)
   
   if (* m_pSession->m_sToDo.aChar()) {
     Tokeniser::vTokenise(pTknVec(),m_pSession->m_sToDo);
+    pTknVec()->vStripSemicolon();
+    pTknVec()->vSetTokens();
+
     m_pSession->m_sToDo = ""_Stz;
     return;
   }
@@ -778,6 +783,20 @@ void SePrompt::vSetJob(void)
 bool SePrompt::bShortCut(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  Token* pTkn = pTknVec()->pGet(0);
+  
+  i8 nShortCuts = m_oShortCutVec.nItems();
+  for (i8 i_ShortCut = 0; i_ShortCut < nShortCuts; i_ShortCut++) {
+    ShortCut* pShortCut = m_oShortCutVec.pGet(i_ShortCut);
+    
+    if (! pShortCut->m_sName.bSame(pTkn->aText()))
+      continue;
+    
+    m_pSession->m_sToDo = pShortCut->m_sCmd;
+    
+    return true;
+  }
   
   return false;
 }

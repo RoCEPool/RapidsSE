@@ -32,6 +32,10 @@ bool Prompt::bPrompt_shortcut(SePrompt* pPrompt)
   
   sNm = pTknVec->pGet(1)->aText();
   
+  pTknVec->vStripSemicolon();
+  pTknVec->vSetTokens();
+
+  
   pTknVec->vToString(sCmd.aStz(),2);
   
   ShortCut* pShortCut = new ShortCut(sNm,sCmd);
