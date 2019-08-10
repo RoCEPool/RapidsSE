@@ -41,7 +41,7 @@ namespace Commands
     void vStripAmpersand(void);
     void vStripSingleQuotes(void);
     void vStripSemicolon(void);
-    void vToString(Stz* aBuff);
+    void vToString(Stz* szStr, i8 iFromTkn=0);
 
     Footer* aFooter(void);
   };

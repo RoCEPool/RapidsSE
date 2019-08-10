@@ -318,16 +318,16 @@ void TokenVec::vStripSemicolon(void)
 /*----------------------------------------------------------------------------*/
 /* concat all tokens into one string                                          */
 /*----------------------------------------------------------------------------*/
-void TokenVec::vToString(Stz* aBuff)
+void TokenVec::vToString(Stz* szBuff, i8 iFromTkn)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  StrLib::vCopy(aBuff->aChar(),"");
+  StrLib::vCopy(szBuff->aChar(),"");
   
   i8 nTokens = this->nTokens();
   
   // concat all the tokens together
-  for (i8 i_Token = 0; i_Token < nTokens; i_Token++) {
+  for (i8 i_Token = iFromTkn; i_Token < nTokens; i_Token++) {
     
     Token* pToken = pGet(i_Token);
     
@@ -336,32 +336,32 @@ void TokenVec::vToString(Stz* aBuff)
     switch (eToken) {
         
       case TN_INTEGER:
-        StrLib::vConcat(aBuff->aChar(),pToken->aText()->aChar());
+        StrLib::vConcat(szBuff->aChar(),pToken->aText()->aChar());
         break;
         
       case TN_NAME:
-        StrLib::vConcat(aBuff->aChar(),pToken->aText()->aChar());
+        StrLib::vConcat(szBuff->aChar(),pToken->aText()->aChar());
         break;
         
       case TN_OTHER:
-        StrLib::vConcat(aBuff->aChar(),pToken->aText()->aChar());
+        StrLib::vConcat(szBuff->aChar(),pToken->aText()->aChar());
         break;
         
       case TN_STRING:
-        StrLib::vConcat(aBuff->aChar(),"\"");
-        StrLib::vConcat(aBuff->aChar(),pToken->aText()->aChar());
-        StrLib::vConcat(aBuff->aChar(),"\"");
+        StrLib::vConcat(szBuff->aChar(),"\"");
+        StrLib::vConcat(szBuff->aChar(),pToken->aText()->aChar());
+        StrLib::vConcat(szBuff->aChar(),"\"");
         break;
         
       default:
         NEVER_REACH;
     }
     
-    StrLib::vConcat(aBuff->aChar()," ");
+    StrLib::vConcat(szBuff->aChar()," ");
   }
   
   // concat a terminating semicolon (needed??)
-  StrLib::vConcat(aBuff->aChar(),";");
+  StrLib::vConcat(szBuff->aChar(),";");
 }
 
 /*----------------------------------------------------------------------------*/
