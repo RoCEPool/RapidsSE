@@ -20,7 +20,10 @@ namespace Sessions
 
     Job*     m_pJob;             // job session currently executing
     Tx*      m_pTx;              // current transaction
-    SessionState*     m_pSessionState; // session state
+  
+    s4K      m_sToDo;            // prompt to do
+  
+    SessionState* m_pSessionState; // session state
 
     // must be last
     Footer m_xFooter;

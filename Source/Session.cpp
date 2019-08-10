@@ -73,7 +73,7 @@ Session::Session(i8 iPartition)
   // pid
   m_iPid = Process::iGetPid();
 
-  m_iPartition  = iPartition;
+  m_iPartition      = iPartition;
   
   //m_oDicStack;
   m_sResponse       = ""_Stz;
@@ -84,6 +84,8 @@ Session::Session(i8 iPartition)
 
   m_pSessionState   = AM::pApiState()->pAllocState(this);
   m_pCommand        = new Command;
+  
+  m_sToDo           = ""_Stz;
 
   _checkInitialised_(CN_SESSION);
   
