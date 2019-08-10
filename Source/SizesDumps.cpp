@@ -622,8 +622,8 @@ i8 giClassSize[]
   /*115 */ sizeof(SePrompt),           // CN_SEPROMPT
   /*    */ sizeof(Session),            // CN_SESSION
   /*    */ sizeof(SessionState),       // CN_SESSIONSTATE
-  /*116 */ 0,//sizeof(ShortCut),  // CN_SHORTCUT
-  /*116 */ 0,//sizeof(ShortCutVEc),  // CN_SHORTCUTVEC
+  /*116 */ sizeof(ShortCut),           // CN_SHORTCUT
+  /*116 */ sizeof(ShortCutVec),        // CN_SHORTCUTVEC
   /*116 */ sizeof(Birth),              // CN_SINCE
   /*118 */ sizeof(SkipListNL),         // CN_SKIPLIST
   /*119 */ sizeof(SkipNode),           // CN_SKIPNODE

@@ -76,6 +76,7 @@ namespace Prompt
     void vReportTime(void);
     Session* pSession(void);
     void vSetJob(void);
+    ShortCutVec* pShortCutVec(void);
     void vSpawnJob(void);
     TokenVec* pTknVec(void);
     void vUnknownCommand(void);

@@ -23,10 +23,20 @@ PromptDesc __Prompt_shortcut (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_shortcut(SePrompt* pPrompt)
 {
-  TokenVec* pTokenVec = pPrompt->pTknVec();
+  TokenVec* pTknVec = pPrompt->pTknVec();
 
-  ASSERT((*pTokenVec)[0]->bSame("shortcut"_Stz));
+  ASSERT((*pTknVec)[0]->bSame("shortcut"_Stz));
+
+  s32 sNm;
+  s4K sCmd;
   
+  sNm = pTknVec->pGet(1)->aText();
+  
+  pTknVec->vToString(sCmd.aStz(),2);
+  
+  ShortCut* pShortCut = new ShortCut(sNm,sCmd);
+  
+  pPrompt->pShortCutVec()->vAdd(pShortCut);
 
   return true;
 }
