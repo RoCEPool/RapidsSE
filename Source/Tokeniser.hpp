@@ -34,6 +34,7 @@ namespace Commands
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static TokenVec* pTokenise(s4K& sString);
     static TokenVec* pTokenise(s48K& sString);
+    static void vTokenise(TokenVec* pTokenVec, s4K& sString);
 
     void vCollectStatement(void);
     i8   iDepth(void);
