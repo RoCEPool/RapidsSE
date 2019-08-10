@@ -13,7 +13,7 @@ JobClass xJobClass_Select =
   "select"_Stz,              // the prompt command
   nullptr,                   // the second word
   nullptr,                   // the _run task seed
-  "selectTable_req"_Stz,     // the _req task seed
+  "select_req"_Stz,          // the _req task seed
   nullptr,                   // the _rcv task seed
   nullptr,                   // the _exe task seed
   nullptr,                   // the _end task seed

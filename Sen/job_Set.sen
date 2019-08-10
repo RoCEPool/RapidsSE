@@ -81,6 +81,7 @@
 "Job_Report.sen" include
 
 "Job_Sanity.sen" include
+"Job_Select.sen" include
 "Job_SelectTable.sen" include
 "Job_ShowCluster.sen" include
 "Job_Sink.sen" include

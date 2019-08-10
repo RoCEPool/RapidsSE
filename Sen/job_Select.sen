@@ -1,0 +1,49 @@
+/*============================================================================*/
+/* job_Select.sen -- Job Select Table                                         */
+/*============================================================================*/
+
+" job_Select.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* select request (on originating node)                                       */
+/*----------------------------------------------------------------------------*/
+: select_req ( -- <R> )
+
+  >>logEntry <SEED_REQ>
+
+  100 apiState::senLoc
+
+  0 0 locals| sTableNm  iPartition |
+  0 0 0 locals| pJob_Select pTask pTable |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob_Select
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // assert correct job
+  CN_JOB_SELECT pJob_Select object.assertClass
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set task's dictionary stack from path in job
+  pJob_Select job.pushPath
+  task::dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  ddlLock::grabRead
+
+  pJob_Select job.notice
+
+  900 apiState::senLoc
+
+  <<logExit <DONE_REQ>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
