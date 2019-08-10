@@ -11,7 +11,7 @@ JobClass xJobClass_SelectTable =
   RS_NONE,                   // response kind
   "select table"_Stz,        // comment about the job
   "select"_Stz,              // the prompt command
-  nullptr,                   // the second word
+  "table"_Stz,               // the second word
   nullptr,                   // the _run task seed
   "selectTable_req"_Stz,     // the _req task seed
   nullptr,                   // the _rcv task seed
