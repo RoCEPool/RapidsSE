@@ -226,10 +226,10 @@ void Job_Select::vExecute(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SELECT,_FOOTER_);
   
-  EndMarker* pEndMarker = new EndMarker;
+  Stmt_Select* pStmt_Select = new Stmt_Select;
+  m_pToClause->vAppendLeft(pStmt_Select);
   
-  vTrace("Job_Select : vPipeOut(pEndMarker)\n"_Stz);
-
+  EndMarker* pEndMarker = new EndMarker;
   m_pToClause->vAppendLeft(pEndMarker);
 }
 

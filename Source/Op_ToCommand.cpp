@@ -178,7 +178,6 @@ eOR Op_ToCommand::eDrainLoop(void)
     switch (pOperand->eClass()) {
         
       case CN_ENDMARKER:
-        vTrace("Op_ToCommand : vPipeOut(pEndMarker)\n"_Stz);
         vPipeOut(pOperand);
         goto L_EXIT;
         break;
