@@ -39,13 +39,16 @@ void TokenVec::operator delete(void* pAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TokenVec::TokenVec(void)
+TokenVec::TokenVec(bool bNewTokens)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
   for (i8 i_Token = 0; i_Token < C_MAX_TOKENS; i_Token++)
-    m_pItem[i_Token] = new Token;
-  
+    if (bNewTokens)
+      m_pItem[i_Token] = new Token;
+    else
+      m_pItem[i_Token] = nullptr;
+
   vReset();
   
   _checkInitialised_(CN_TOKENVEC);
