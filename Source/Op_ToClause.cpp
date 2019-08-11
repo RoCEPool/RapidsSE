@@ -142,28 +142,9 @@ eOR Op_ToClause::eOpLoop(void)
         vPipeOut(pOperand);
         goto L_EXIT;
         break;
+        
       // -- -- -- -- -- --
        
-      case CN_ENTBUFFER: {
-        EntBuffer* pEntBuffer = _pEntBuffer(pOperand) ;
-        pEntBuffer->vShow();
-        vPipeOut(pOperand);
-        break;
-      }
-        
-      case CN_INTBUFFER: {
-        IntBuffer* pIntBuffer = _pIntBuffer(pOperand) ;
-        pIntBuffer->vShow();
-        vPipeOut(pOperand);
-        break;
-      }
-      
-      case CN_REFBUFFER: {
-        RefBuffer* pRefBuffer = _pRefBuffer(pOperand) ;
-        pRefBuffer->vShow();
-        vPipeOut(pOperand);
-        break;
-      }
       default:
         vPipeOut(pOperand);
         break;
@@ -197,25 +178,18 @@ eOR Op_ToClause::eDrainLoop(void)
     switch (pOperand->eClass()) {
         
       case CN_ENDMARKER:
+        vTrace("Op_ToClause : vPipeOut(pEndMarker)\n"_Stz);
         vPipeOut(pOperand);
         goto L_EXIT;
-        
-      // -- -- -- -- -- --
-        
-      case CN_PAUSEMARKER:
-        vPipeOut(pOperand);
         break;
         
-      // -- -- -- -- -- --
-        
-      case CN_INTBUFFER:
-        //vPipeOut(pOperand);
-        break;
+        // -- -- -- -- -- --
         
       default:
+        vPipeOut(pOperand);
         break;
     }
-    
+
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

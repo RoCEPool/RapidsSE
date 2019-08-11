@@ -200,6 +200,15 @@ void Job_Select::vBegin(void)
   
   AM::vSetAcksRmg(m_pExecutingTask,5);
   
+  Session* pSession = AM::pThisTLSSession();
+  
+  bool bSpawned;
+  
+  bSpawned = AM::bSpawnOp(pSession,m_pZed);        ASSERT(bSpawned);
+  bSpawned = AM::bSpawnOp(pSession,m_pToDo);       ASSERT(bSpawned);
+  bSpawned = AM::bSpawnOp(pSession,m_pToCommand);  ASSERT(bSpawned);
+  bSpawned = AM::bSpawnOp(pSession,m_pToData);     ASSERT(bSpawned);
+  bSpawned = AM::bSpawnOp(pSession,m_pToClause);   ASSERT(bSpawned);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -217,15 +226,11 @@ void Job_Select::vExecute(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SELECT,_FOOTER_);
   
-  Session* pSession = AM::pThisTLSSession();
+  EndMarker* pEndMarker = new EndMarker;
   
-  bool bSpawned;
-  
-  bSpawned = AM::bSpawnOp(pSession,m_pZed);        ASSERT(bSpawned);
-  bSpawned = AM::bSpawnOp(pSession,m_pToDo);       ASSERT(bSpawned);
-  bSpawned = AM::bSpawnOp(pSession,m_pToCommand);  ASSERT(bSpawned);
-  bSpawned = AM::bSpawnOp(pSession,m_pToDo);       ASSERT(bSpawned);
-  bSpawned = AM::bSpawnOp(pSession,m_pToClause);   ASSERT(bSpawned);
+  vTrace("Job_Select : vPipeOut(pEndMarker)\n"_Stz);
+
+  m_pToClause->vAppendLeft(pEndMarker);
 }
 
 /*----------------------------------------------------------------------------*/

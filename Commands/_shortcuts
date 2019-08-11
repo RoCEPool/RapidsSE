@@ -8,7 +8,10 @@ shortcut a _lineitemay ;
 
 // ray's - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-shortcut r _lineitemrjh ;
+shortcut r  _lineitemrjh ;
+shortcut sc startCluster ;
+
+shortcut;
 
 /*============================================================================*/
 /* end                                                                        */
