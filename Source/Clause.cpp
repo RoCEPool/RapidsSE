@@ -20,7 +20,7 @@ Clause* CompilerStream::_pClause(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* free back to the heap                                                      */
+/* delete                                                                     */
 /*----------------------------------------------------------------------------*/
 void Clause::operator delete(void* aAddress)
 {
@@ -36,6 +36,8 @@ Clause::Clause(eCN eClassNo)
 : Operand(eClassNo)
 {
   _precondition_(_MAGIC_,eClassNo);
+  
+  m_pTokenVec = new TokenVec(false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -44,6 +46,8 @@ Clause::Clause(eCN eClassNo)
 Clause::~Clause(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
+  
+  delete m_pTokenVec;
 }
 
 /*============================================================================*/

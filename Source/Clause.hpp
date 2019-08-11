@@ -8,6 +8,7 @@ namespace CompilerStream
   class Clause : public Operand
   {
   protected:
+    TokenVec* m_pTokenVec;
   
   public:
     void operator delete(void*);
