@@ -13,7 +13,7 @@ namespace CompilerStream
   public:
     void operator delete(void*);
   
-    Clause(eCN eClass);
+    Clause(eCN eClass, TokenVec* pTknVec, i8& i_Tkn_);
    ~Clause(void) noexcept(false);
   };
 
