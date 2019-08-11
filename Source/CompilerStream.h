@@ -14,6 +14,8 @@ namespace CompilerStream
 
 //------------------------------------------------------------------------------
 
+#include "Stmt.hpp"
+
 #include "Clause.hpp"
 
 #include "Clause_From.hpp"

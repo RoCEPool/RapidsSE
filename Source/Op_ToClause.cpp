@@ -183,8 +183,8 @@ eOR Op_ToClause::eDrainLoop(void)
         goto L_EXIT;
         break;
         
-        // -- -- -- -- -- --
-        
+      // -- -- -- -- -- --
+                
       default:
         vPipeOut(pOperand);
         break;
