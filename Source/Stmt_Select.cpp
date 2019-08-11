@@ -19,7 +19,7 @@ Stmt_Select* CompilerStream::_pStmt_Select(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allocate from heap                                                         */
+/* new                                                                        */
 /*----------------------------------------------------------------------------*/
 void* Stmt_Select::operator new(size_t)
 {
@@ -30,7 +30,7 @@ void* Stmt_Select::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
-/* free back to the heap                                                      */
+/* delete                                                                     */
 /*----------------------------------------------------------------------------*/
 void Stmt_Select::operator delete(void* aAddress)
 {
@@ -46,6 +46,8 @@ Stmt_Select::Stmt_Select(void)
 : Operand(CN_STMT_SELECT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SELECT,_FOOTER_);
+  
+  m_pTokenVec = new TokenVec(false);
 
   _checkInitialised_(CN_STMT_SELECT);
 
@@ -58,6 +60,23 @@ Stmt_Select::Stmt_Select(void)
 Stmt_Select::~Stmt_Select(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SELECT,_FOOTER_);
+  
+  delete m_pTokenVec;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get token vector                                                           */
+/*----------------------------------------------------------------------------*/
+TokenVec* Stmt_Select::pTokenVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STMT_SELECT,_FOOTER_);
+  
+  return m_pTokenVec;
 }
 
 

@@ -9,6 +9,8 @@ namespace CompilerStream
   {
   private:
   
+    TokenVec* m_pTokenVec;
+  
     // must be last
     Footer m_xFooter;
 
@@ -18,6 +20,8 @@ namespace CompilerStream
   
     Stmt_Select(void);
    ~Stmt_Select(void) noexcept(false);
+  
+    TokenVec* pTokenVec(void);
 
     Footer* aFooter(void);
   };
