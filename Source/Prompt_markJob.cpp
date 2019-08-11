@@ -50,7 +50,7 @@ bool Prompt::bPrompt_markJob(SePrompt* pPrompt)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (nTokens == 2) {
-    aTkn1 = pPrompt->pTknVec()->pGet(1)->aText();
+    aTkn1 = pPrompt->pTknVec()->pGet(1)->szText();
     
     if (aTkn1->bSame("?"_Stz)) {
       for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++)
@@ -75,8 +75,8 @@ bool Prompt::bPrompt_markJob(SePrompt* pPrompt)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (nTokens == 3) {
-    aTkn1 = pPrompt->pTknVec()->pGet(1)->aText();
-    aTkn2 = pPrompt->pTknVec()->pGet(2)->aText();
+    aTkn1 = pPrompt->pTknVec()->pGet(1)->szText();
+    aTkn2 = pPrompt->pTknVec()->pGet(2)->szText();
     
     if (aTkn1->bSame("all"_Stz)) {
       if (aTkn2->bIsSomeTrue())
@@ -111,9 +111,9 @@ bool Prompt::bPrompt_markJob(SePrompt* pPrompt)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (nTokens == 4) {
-    aTkn1 = pPrompt->pTknVec()->pGet(1)->aText();
-    aTkn2 = pPrompt->pTknVec()->pGet(2)->aText();
-    aTkn3 = pPrompt->pTknVec()->pGet(3)->aText();
+    aTkn1 = pPrompt->pTknVec()->pGet(1)->szText();
+    aTkn2 = pPrompt->pTknVec()->pGet(2)->szText();
+    aTkn3 = pPrompt->pTknVec()->pGet(3)->szText();
     
     pJobClass = JobClass::pFind(aTkn1, aTkn2);
     if (! pJobClass)

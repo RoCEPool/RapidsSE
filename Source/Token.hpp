@@ -34,7 +34,7 @@ namespace Commands
     void  vReset(void);
     bool  bSame(Stz*);
     void  vStripSingleQuotes(void);
-    Stz*  aText(void);
+    Stz*  szText(void);
     s256& sText(void);
     void  vText(s256& sText);
     i8    iToI8(void);

@@ -159,11 +159,11 @@ bool Job_VerifyIndex::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the index name
-  m_sIndexName = pTokenVec->pGet(2)->aText();
+  m_sIndexName = pTokenVec->pGet(2)->szText();
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the table name
-  m_sObjectName = pTokenVec->pGet(1)->aText();
+  m_sObjectName = pTokenVec->pGet(1)->szText();
   
   return true;
 }

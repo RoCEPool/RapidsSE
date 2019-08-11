@@ -29,7 +29,7 @@ bool Prompt::bPrompt_mkpipe(SePrompt* pPrompt)
 
   ASSERT((*pTokenVec)[0]->bSame("mkpipe"_Stz));
   
-  sPipePath = (*pTokenVec)[1]->aText();
+  sPipePath = (*pTokenVec)[1]->szText();
   
   if (! Pipe::bMake(sPipePath)) {
     vTrace("Failed to make pipe: %s\n"_Stz,sPipePath.aChar());

@@ -45,7 +45,7 @@ void PromptHelper::vCommandFlags(EnumFlags& oFlags,
   // mark<Group> <command>
   
   if (nTokens == 2) {
-    aTkn1 = pTknVec->pGet(1)->aText();
+    aTkn1 = pTknVec->pGet(1)->szText();
     
     if (aTkn1->bSame("?"_Stz)) {
       for (i8 i_Class = 1; i_Class < CN_ENUMS; i_Class++)
@@ -76,8 +76,8 @@ void PromptHelper::vCommandFlags(EnumFlags& oFlags,
   // mark<Group> <command> off
   
   if (nTokens == 3) {
-    aTkn1 = pTknVec->pGet(1)->aText();
-    aTkn2 = pTknVec->pGet(2)->aText();
+    aTkn1 = pTknVec->pGet(1)->szText();
+    aTkn2 = pTknVec->pGet(2)->szText();
     
     if (aTkn1->bSame("all"_Stz)) {
       if (aTkn2->bIsSomeTrue())
@@ -115,9 +115,9 @@ void PromptHelper::vCommandFlags(EnumFlags& oFlags,
   // mark<Group> <command1> <command2> off
   
   if (nTokens == 4) {
-    aTkn1 = pTknVec->pGet(1)->aText();
-    aTkn2 = pTknVec->pGet(2)->aText();
-    aTkn3 = pTknVec->pGet(3)->aText();
+    aTkn1 = pTknVec->pGet(1)->szText();
+    aTkn2 = pTknVec->pGet(2)->szText();
+    aTkn3 = pTknVec->pGet(3)->szText();
     
     pJobClass = JobClass::pFind(aTkn1, aTkn2);
     if (! pJobClass)
@@ -176,7 +176,7 @@ void PromptHelper::vEnumFlags(EnumFlags* pFlags,
   // mark<Group> <name>
 
   if (nTokens == 2) {
-    aTkn1 = pTknVec->pGet(1)->aText();
+    aTkn1 = pTknVec->pGet(1)->szText();
     
     if (aTkn1->bSame("?"_Stz)) {
       for (i8 i_Enum = 1; i_Enum < iEnumLimit; i_Enum++)
@@ -205,8 +205,8 @@ void PromptHelper::vEnumFlags(EnumFlags* pFlags,
   // mark<Group> <name> off
 
   if (nTokens == 3) {
-    aTkn1 = pTknVec->pGet(1)->aText();
-    aTkn2 = pTknVec->pGet(2)->aText();
+    aTkn1 = pTknVec->pGet(1)->szText();
+    aTkn2 = pTknVec->pGet(2)->szText();
     
     if (aTkn1->bSame("all"_Stz)) {
       if (aTkn2->bIsSomeTrue())

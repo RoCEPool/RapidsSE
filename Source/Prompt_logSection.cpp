@@ -27,7 +27,7 @@ bool Prompt::bPrompt_logSection(SePrompt* pPrompt)
 
   if (pTokenVec->nTokens() > 1) {
 
-    Stz* szSectionNm = pTokenVec->pGet(1)->aText();
+    Stz* szSectionNm = pTokenVec->pGet(1)->szText();
     Log::vNoteSection(szSectionNm);
   }
   

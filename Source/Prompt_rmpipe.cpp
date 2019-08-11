@@ -29,7 +29,7 @@ bool Prompt::bPrompt_rmpipe(SePrompt* pPrompt)
 
   ASSERT((*pTokenVec)[0]->bSame("rmpipe"_Stz));
   
-  sPipePath = (*pTokenVec)[1]->aText();
+  sPipePath = (*pTokenVec)[1]->szText();
   
   if (! Pipe::bRemove(sPipePath)) {
     vTrace("Failed to remove pipe: %s\n"_Stz,sPipePath.aChar());

@@ -197,10 +197,10 @@ Job* Jobs::pJob_Ingest_pre(Session* pSession)
     return pJob_Ingest;
 
   // set the table name
-  pJob_Ingest->m_sObjectName = pTknVec->pGet(1)->aText();
+  pJob_Ingest->m_sObjectName = pTknVec->pGet(1)->szText();
 
   // set the file name
-  pJob_Ingest->m_sFilePath = pTknVec->pGet(2)->aText();
+  pJob_Ingest->m_sFilePath = pTknVec->pGet(2)->szText();
   
   // is the last token the stats option?
   i8 i_Last = nTokens - 1;

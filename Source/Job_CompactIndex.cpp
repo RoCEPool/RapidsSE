@@ -159,11 +159,11 @@ bool Job_CompactIndex::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the table name
-  m_sObjectName = pTokenVec->pGet(1)->aText();
+  m_sObjectName = pTokenVec->pGet(1)->szText();
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the index name
-  m_sIndexName = pTokenVec->pGet(2)->aText();
+  m_sIndexName = pTokenVec->pGet(2)->szText();
   
   return true;
 }

@@ -161,7 +161,7 @@ bool Job_Cf::bPopulateJob(TokenVec* pTokenVec)
   }
   
   // set the docol command name
-  m_sObjectName = pTokenVec->pGet(1)->aText();
+  m_sObjectName = pTokenVec->pGet(1)->szText();
   
   return true;
 }

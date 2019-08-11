@@ -305,15 +305,15 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
     
     // - - - - - - - - - - - - - - - - - - - - -
     // set the table name
-    m_sObjectName = pTokenVec->pGet(2)->aText();
+    m_sObjectName = pTokenVec->pGet(2)->szText();
     
     // - - - - - - - - - - - - - - - - - - - - -
     // fetch retrieve j10 column;
     if (pTokenVec->pGet(3)->eToken() == TN_NAME) {
-      m_sColumnName = pTokenVec->pGet(3)->aText();
+      m_sColumnName = pTokenVec->pGet(3)->szText();
       
       if (iNumTokens == 5) {
-        if (pTokenVec->pGet(4)->aText()->bSame("print"_Stz))
+        if (pTokenVec->pGet(4)->szText()->bSame("print"_Stz))
           m_bPrint = true;
         else
           return false;
@@ -331,7 +331,7 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the table name
-  m_sObjectName = pTokenVec->pGet(1)->aText();
+  m_sObjectName = pTokenVec->pGet(1)->szText();
   
   // - - - - - - - - - - - - - - - - - - - - -
   // 2 tokens
@@ -346,7 +346,7 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
   //fetch j10 displayOff|noPrint;
   if (iNumTokens == 3) {
     if (pTokenVec->pGet(2)->eToken() == TN_STRING) {
-      m_sWhere = pTokenVec->pGet(2)->aText();
+      m_sWhere = pTokenVec->pGet(2)->szText();
       return true;
     }
     
@@ -357,15 +357,15 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
     
     if (pTokenVec->pGet(2)->eToken() == TN_NAME) {
     
-      if ( ! pTokenVec->pGet(2)->aText()->bSame("displayOff"_Stz) &&
-           ! pTokenVec->pGet(2)->aText()->bSame("noPrint"_Stz))
+      if ( ! pTokenVec->pGet(2)->szText()->bSame("displayOff"_Stz) &&
+           ! pTokenVec->pGet(2)->szText()->bSame("noPrint"_Stz))
         return false;
     
       // set display off
-      if (pTokenVec->pGet(2)->aText()->bSame("displayOff"_Stz))
+      if (pTokenVec->pGet(2)->szText()->bSame("displayOff"_Stz))
         m_bDisplay = false;
       else {
-        ASSERT(pTokenVec->pGet(2)->aText()->bSame("noPrint"_Stz));
+        ASSERT(pTokenVec->pGet(2)->szText()->bSame("noPrint"_Stz));
         m_bPrint = false;
       }
       return true;
@@ -383,7 +383,7 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
   if (iNumTokens == 4) {
     if (pTokenVec->pGet(2)->eToken() == TN_STRING) {
       
-      m_sWhere = pTokenVec->pGet(2)->aText();
+      m_sWhere = pTokenVec->pGet(2)->szText();
       
       if (pTokenVec->pGet(3)->eToken() == TN_INTEGER) {
         m_iPartition = pTokenVec->pGet(3)->iToI8();
@@ -393,15 +393,15 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
       if (pTokenVec->pGet(3)->eToken() != TN_NAME)
         return false;
       
-      if ( ! pTokenVec->pGet(3)->aText()->bSame("displayOff"_Stz) &&
-           ! pTokenVec->pGet(3)->aText()->bSame("noPrint"_Stz) &&
-           ! pTokenVec->pGet(3)->aText()->bSame("noPrint"_Stz))
+      if ( ! pTokenVec->pGet(3)->szText()->bSame("displayOff"_Stz) &&
+           ! pTokenVec->pGet(3)->szText()->bSame("noPrint"_Stz) &&
+           ! pTokenVec->pGet(3)->szText()->bSame("noPrint"_Stz))
         return false;
       
-      if (pTokenVec->pGet(3)->aText()->bSame("displayOff"_Stz))
+      if (pTokenVec->pGet(3)->szText()->bSame("displayOff"_Stz))
         m_bDisplay = false;
       else {
-        ASSERT(pTokenVec->pGet(3)->aText()->bSame("noPrint"_Stz));
+        ASSERT(pTokenVec->pGet(3)->szText()->bSame("noPrint"_Stz));
         m_bPrint = false;
       }
       return true;
@@ -414,14 +414,14 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
       if (pTokenVec->pGet(3)->eToken() != TN_NAME)
         return false;
       
-      if ( ! pTokenVec->pGet(3)->aText()->bSame("displayOff"_Stz) &&
-          ! pTokenVec->pGet(3)->aText()->bSame("noPrint"_Stz))
+      if ( ! pTokenVec->pGet(3)->szText()->bSame("displayOff"_Stz) &&
+          ! pTokenVec->pGet(3)->szText()->bSame("noPrint"_Stz))
         return false;
       
-      if (pTokenVec->pGet(3)->aText()->bSame("displayOff"_Stz))
+      if (pTokenVec->pGet(3)->szText()->bSame("displayOff"_Stz))
         m_bDisplay = false;
       else {
-        ASSERT(pTokenVec->pGet(3)->aText()->bSame("noPrint"_Stz));
+        ASSERT(pTokenVec->pGet(3)->szText()->bSame("noPrint"_Stz));
         m_bPrint = false;
       }
       return true;
@@ -430,11 +430,11 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
     //fetch j10 |limit 10|first 10|random 10|;
     if (pTokenVec->pGet(2)->eToken() == TN_NAME) {
       
-      if (pTokenVec->pGet(2)->aText()->bSame("limit"_Stz))
+      if (pTokenVec->pGet(2)->szText()->bSame("limit"_Stz))
         m_bLimit = true;
-      else if (pTokenVec->pGet(2)->aText()->bSame("first"_Stz))
+      else if (pTokenVec->pGet(2)->szText()->bSame("first"_Stz))
         m_bFirst = true;
-      else if (pTokenVec->pGet(2)->aText()->bSame("random"_Stz))
+      else if (pTokenVec->pGet(2)->szText()->bSame("random"_Stz))
         m_bRandom = true;
       else
         return false;
@@ -459,7 +459,7 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
     
     // get where
     if (pTokenVec->pGet(2)->eToken() == TN_STRING) {
-      m_sWhere = pTokenVec->pGet(2)->aText();
+      m_sWhere = pTokenVec->pGet(2)->szText();
     
     // get partition
     if (pTokenVec->pGet(3)->eToken() == TN_INTEGER) {
@@ -467,11 +467,11 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
     }
     else if (pTokenVec->pGet(3)->eToken() == TN_NAME) {
       
-      if (pTokenVec->pGet(3)->aText()->bSame("limit"_Stz))
+      if (pTokenVec->pGet(3)->szText()->bSame("limit"_Stz))
         m_bLimit = true;
-      else if (pTokenVec->pGet(3)->aText()->bSame("first"_Stz))
+      else if (pTokenVec->pGet(3)->szText()->bSame("first"_Stz))
         m_bFirst = true;
-      else if (pTokenVec->pGet(3)->aText()->bSame("random"_Stz))
+      else if (pTokenVec->pGet(3)->szText()->bSame("random"_Stz))
         m_bRandom = true;
       else
         return false;
@@ -485,12 +485,12 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
     
     // get displayOff
     if (pTokenVec->pGet(4)->eToken() == TN_NAME) {
-      if ( pTokenVec->pGet(4)->aText()->bSame("displayOff"_Stz) ) {
+      if ( pTokenVec->pGet(4)->szText()->bSame("displayOff"_Stz) ) {
         // set display off
         m_bDisplay = false;
         return true;
       }
-      if ( pTokenVec->pGet(4)->aText()->bSame("noPrint"_Stz) ) {
+      if ( pTokenVec->pGet(4)->szText()->bSame("noPrint"_Stz) ) {
         // set print off
         m_bPrint = false;
         return true;
@@ -506,11 +506,11 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
     
     if (pTokenVec->pGet(3)->eToken() == TN_NAME) {
         
-      if (pTokenVec->pGet(3)->aText()->bSame("limit"_Stz))
+      if (pTokenVec->pGet(3)->szText()->bSame("limit"_Stz))
         m_bLimit = true;
-      else if (pTokenVec->pGet(3)->aText()->bSame("first"_Stz))
+      else if (pTokenVec->pGet(3)->szText()->bSame("first"_Stz))
         m_bFirst = true;
-      else if (pTokenVec->pGet(3)->aText()->bSame("random"_Stz))
+      else if (pTokenVec->pGet(3)->szText()->bSame("random"_Stz))
         m_bRandom = true;
       else
         return false;
@@ -537,7 +537,7 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
     
     // get where
     if (pTokenVec->pGet(2)->eToken() == TN_STRING) {
-      m_sWhere = pTokenVec->pGet(2)->aText();
+      m_sWhere = pTokenVec->pGet(2)->szText();
       
       // get partition
       if (pTokenVec->pGet(3)->eToken() == TN_INTEGER) {
@@ -548,11 +548,11 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
       
       if (pTokenVec->pGet(4)->eToken() == TN_NAME) {
         
-        if (pTokenVec->pGet(4)->aText()->bSame("limit"_Stz))
+        if (pTokenVec->pGet(4)->szText()->bSame("limit"_Stz))
           m_bLimit = true;
-        else if (pTokenVec->pGet(4)->aText()->bSame("first"_Stz))
+        else if (pTokenVec->pGet(4)->szText()->bSame("first"_Stz))
           m_bFirst = true;
-        else if (pTokenVec->pGet(4)->aText()->bSame("random"_Stz))
+        else if (pTokenVec->pGet(4)->szText()->bSame("random"_Stz))
           m_bRandom = true;
         else
           return false;

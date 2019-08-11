@@ -200,7 +200,7 @@ Job* Jobs::pJob_Report_pre(Session* pSession)
     return pJob_Report;
 
   // set the table name
-  pJob_Report->m_sObjectName = pTknVec->pGet(1)->aText();
+  pJob_Report->m_sObjectName = pTknVec->pGet(1)->szText();
 
   // set the input file name
   pJob_Report->m_sFilePath = pTknVec->pGet(2)->sText();

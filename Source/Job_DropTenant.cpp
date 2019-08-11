@@ -162,7 +162,7 @@ bool Job_DropTenant::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the table name
-  m_sObjectName = pTokenVec->pGet(2)->aText();
+  m_sObjectName = pTokenVec->pGet(2)->szText();
   
   return true;
 }

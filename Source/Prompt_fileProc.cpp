@@ -30,8 +30,8 @@ bool Prompt::bPrompt_fileProc(SePrompt* pPrompt)
   
   ASSERT((*pTknVec)[0]->bSame("fileProc"_Stz));
   
-  sFileInp = (*pTknVec)[1]->aText();
-  sFileOut = (*pTknVec)[2]->aText();
+  sFileInp = (*pTknVec)[1]->szText();
+  sFileOut = (*pTknVec)[2]->szText();
   i8 nLines = pTknVec->nItems() > 3 ? pTknVec->pGet(3)->iToI8() : 0;
 
   File oFileInp;

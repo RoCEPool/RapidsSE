@@ -39,20 +39,20 @@ bool Prompt::bPrompt_shell(SePrompt* pPrompt)
     switch (eToken) {
       
       case TN_INTEGER:
-        sCommand.vConcat(pToken->aText());
+        sCommand.vConcat(pToken->szText());
         break;
         
       case TN_NAME:
-        sCommand.vConcat(pToken->aText());
+        sCommand.vConcat(pToken->szText());
         break;
         
       case TN_OTHER:
-        sCommand.vConcat(pToken->aText());
+        sCommand.vConcat(pToken->szText());
         break;
 
       case TN_STRING:
         //sCommand.vConcat("\""_Stz);
-        sCommand.vConcat(pToken->aText());
+        sCommand.vConcat(pToken->szText());
         //sCommand.vConcat("\""_Stz);
         break;
         

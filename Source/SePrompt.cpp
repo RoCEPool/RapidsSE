@@ -399,7 +399,7 @@ bool SePrompt::bExecuteFunction(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   PromptDefn* pPromptFun =
-    gxPromptCatalog.pFindFun(pTkn(0)->aText(), pTkn(1)->aText());
+    gxPromptCatalog.pFindFun(pTkn(0)->szText(), pTkn(1)->szText());
   
   if (! pPromptFun)
     return false;
@@ -416,8 +416,8 @@ bool SePrompt::bFindJobClass(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  Stz* aCommand1 = pTkn(0)->aText();
-  Stz* aCommand2 = pTkn(1)->aText();
+  Stz* aCommand1 = pTkn(0)->szText();
+  Stz* aCommand2 = pTkn(1)->szText();
   
   m_pJobClass = JobClass::pFind(aCommand1, aCommand2);
 
@@ -478,7 +478,7 @@ bool SePrompt::bIsPromptWord(void)
   Token* pTkn0 = pTknVec->pGet(0);
 
   s32 sWordNm;
-  sWordNm = pTkn0->aText();
+  sWordNm = pTkn0->szText();
   
   Dic* pRootDic = AM::pRootDic();
 
@@ -793,7 +793,7 @@ bool SePrompt::bShortCut(void)
   for (i8 i_ShortCut = 0; i_ShortCut < nShortCuts; i_ShortCut++) {
     ShortCut* pShortCut = m_oShortCutVec.pGet(i_ShortCut);
     
-    if (! pShortCut->m_sName.bSame(pTkn->aText()))
+    if (! pShortCut->m_sName.bSame(pTkn->szText()))
       continue;
     
     m_pSession->m_sToDo = pShortCut->m_sCmd;
@@ -859,7 +859,7 @@ void SePrompt::vUnknownCommand(void)
   
   Token* pTkn = pTknVec()->pGet(0);
   
-  vTrace("error: Unknown command '%s'\n"_Stz,pTkn->aText());
+  vTrace("error: Unknown command '%s'\n"_Stz,pTkn->szText());
 }
 
 /*----------------------------------------------------------------------------*/

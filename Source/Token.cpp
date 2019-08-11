@@ -121,7 +121,7 @@ void Token::vCopy(Token* pGivenToken)
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
   m_eToken = pGivenToken->m_eToken;
-  m_sText.vCopy(pGivenToken->aText());
+  m_sText.vCopy(pGivenToken->szText());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -196,7 +196,7 @@ s256& Token::sText(void)
 /*----------------------------------------------------------------------------*/
 /* reset this token set                                                       */
 /*----------------------------------------------------------------------------*/
-Stz* Token::aText(void)
+Stz* Token::szText(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   

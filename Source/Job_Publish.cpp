@@ -190,7 +190,7 @@ Job* Jobs::pJob_Publish_pre(Session* pSession)
     return pJob_Publish;
 
   // set the table name
-  pJob_Publish->m_sObjectName = pTknVec->pGet(1)->aText();
+  pJob_Publish->m_sObjectName = pTknVec->pGet(1)->szText();
 
   // set the output file name
   pJob_Publish->m_sFilePath = pTknVec->pGet(2)->sText();

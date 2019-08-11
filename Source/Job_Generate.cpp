@@ -205,17 +205,17 @@ Job* Jobs::pJob_Generate_pre(Session* pSession)
     return pJob_Generate;
 
   // set the table name
-  pJob_Generate->m_sObjectName = pTknVec->pGet(1)->aText();
+  pJob_Generate->m_sObjectName = pTknVec->pGet(1)->szText();
   
   // set the file name
   if (pTknVec->pGet(2)->sText().bSame("file"_Stz)) {
     pJob_Generate->m_bIndefinite = false;
-    pJob_Generate->m_sFilePath = pTknVec->pGet(3)->aText();
+    pJob_Generate->m_sFilePath = pTknVec->pGet(3)->szText();
   }
   else
   if (pTknVec->pGet(2)->sText().bSame("pipe"_Stz)) {
     pJob_Generate->m_bIndefinite = true;
-    pJob_Generate->m_sFilePath = pTknVec->pGet(3)->aText();
+    pJob_Generate->m_sFilePath = pTknVec->pGet(3)->szText();
   }
   
   if (5 == nTokens) {

@@ -98,8 +98,8 @@ Op* FetchOp::pNew(Stz* szLabel,
   
   FetchOp* pFetchOp = new FetchOp(szLabel,pDigest,aOpDefn,bAppR);
   
-  pFetchOp->m_sTableNm = pTknVec->pGet(i_Tkn_++)->aText();
-  pFetchOp->m_sIndexNm = pTknVec->pGet(i_Tkn_++)->aText();
+  pFetchOp->m_sTableNm = pTknVec->pGet(i_Tkn_++)->szText();
+  pFetchOp->m_sIndexNm = pTknVec->pGet(i_Tkn_++)->szText();
   pFetchOp->m_nSlot = i_Slot;
   
   pFetchOp->m_sArgs = pFetchOp->m_sTableNm;

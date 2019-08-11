@@ -90,7 +90,7 @@ bool Command::bExecuteFile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMAND,_FOOTER_);
   
-  if (! bTestFile(pTkn(0)->aText()))
+  if (! bTestFile(pTkn(0)->szText()))
     return false;
   
   bool b = bRunFile();
@@ -110,7 +110,7 @@ bool Command::bRunFile(void)
 //    if (! pTkn(1)->bSame(";"_Stz))
 //      return false;
   
-  vPushFile(pTkn(0)->aText());
+  vPushFile(pTkn(0)->szText());
   m_pTokeniser->vLineMode(true);
   
   return true;
@@ -180,7 +180,7 @@ void Command::vGetCommand(void)
     return;
   
   // if its a command file just return
-  if (bTestFile(pTkn(0)->aText()))
+  if (bTestFile(pTkn(0)->szText()))
     return;
   
   // collect till ;
@@ -216,7 +216,7 @@ void Command::vGetCommand(void)
 //
 //    Token* pToken = pTkn(pTknVec()->nTokens());
 //
-//    eTN eToken = m_pTokeniser->eNextToken((char*)pToken->aText());
+//    eTN eToken = m_pTokeniser->eNextToken((char*)pToken->szText());
 //
 //    if (TN_NONE == eToken)
 //      break;
@@ -245,7 +245,7 @@ void Command::vGetCommandInput(void)
       
       Token* pToken = pTkn(pTknVec()->nTokens());
       
-      eTN eToken = m_pTokeniser->eNextToken((char*)pToken->aText());
+      eTN eToken = m_pTokeniser->eNextToken((char*)pToken->szText());
       
       if (TN_NONE == eToken)
         break;

@@ -30,7 +30,7 @@ bool Prompt::bPrompt_lvl(SePrompt* pPrompt)
   
   if (2 == iNumTokens) {
     Token* pTkn0 = pTokenVec->pGet(1);
-    if (pTkn0->aText()->bIsSomeTrue())
+    if (pTkn0->szText()->bIsSomeTrue())
       i_Next = C_UNKNOWN;
   }
   

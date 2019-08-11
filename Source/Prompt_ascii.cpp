@@ -46,13 +46,13 @@ bool Prompt::bPrompt_ascii(SePrompt* pPrompt)
   
   Token* pTkn1 = pTokenVec->pGet(1);
 
-  char* aChar = (char*)pTkn1->aText();
+  char* aChar = (char*)pTkn1->szText();
   vTrace("Ascii: "_Stz);
   while (*aChar)
     vTrace("%02x "_Stz,*aChar++);
   vTrace("\n"_Stz);
 
-  aChar = (char*)pTkn1->aText();
+  aChar = (char*)pTkn1->szText();
   vTrace("     : "_Stz);
   while (*aChar)
     vTrace(" %c "_Stz,*aChar++);

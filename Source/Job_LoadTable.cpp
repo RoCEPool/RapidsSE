@@ -219,10 +219,10 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
     return nullptr;
   
   // set the table name
-  m_sObjectName = pTokenVec->pGet(1)->aText();
+  m_sObjectName = pTokenVec->pGet(1)->szText();
   
   // set the file name
-  m_sFilePath = pTokenVec->pGet(2)->aText();
+  m_sFilePath = pTokenVec->pGet(2)->szText();
   
   i8 i_Token = 3;
   

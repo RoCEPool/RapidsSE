@@ -225,7 +225,7 @@ bool Job_CreateIndex::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the index name
-  m_sIndexName = pTokenVec->pGet(2 + iIfUnique)->aText();
+  m_sIndexName = pTokenVec->pGet(2 + iIfUnique)->szText();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // uniqueness
@@ -235,7 +235,7 @@ bool Job_CreateIndex::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the table name
-  m_sObjectName = pTokenVec->pGet(4 + iIfUnique)->aText();
+  m_sObjectName = pTokenVec->pGet(4 + iIfUnique)->szText();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the index columns
@@ -248,7 +248,7 @@ bool Job_CreateIndex::bPopulateJob(TokenVec* pTokenVec)
     if (iCurrentToken != 6 + iIfUnique && !pTokenVec->pGet(iCurrentToken++)->bSame(","_Stz)) {
       return false;
     }
-    m_sColumnName[iColumn++] = pTokenVec->pGet(iCurrentToken++)->aText();
+    m_sColumnName[iColumn++] = pTokenVec->pGet(iCurrentToken++)->szText();
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

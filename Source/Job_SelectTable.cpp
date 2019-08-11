@@ -163,7 +163,7 @@ bool Job_SelectTable::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the table name
-  m_sObjectName = pTokenVec->pGet(1)->aText();
+  m_sObjectName = pTokenVec->pGet(1)->szText();
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the partition number

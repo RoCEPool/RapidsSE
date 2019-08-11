@@ -175,23 +175,23 @@ bool Job_IndexJoin::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the left table name
-  m_sObjectName = pTokenVec->pGet(1)->aText();
+  m_sObjectName = pTokenVec->pGet(1)->szText();
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the left index name
-  m_sIndexName = pTokenVec->pGet(2)->aText();
+  m_sIndexName = pTokenVec->pGet(2)->szText();
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the right table name
-  m_sRightTable = pTokenVec->pGet(3)->aText();
+  m_sRightTable = pTokenVec->pGet(3)->szText();
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the right index name
-  m_sRightIndex = pTokenVec->pGet(4)->aText();
+  m_sRightIndex = pTokenVec->pGet(4)->szText();
 
   if (iNumTokens == 6) {
     if (pTokenVec->pGet(5)->eToken() == TN_NAME) {
-      if (pTokenVec->pGet(5)->aText()->bSame("print"_Stz)) {
+      if (pTokenVec->pGet(5)->szText()->bSame("print"_Stz)) {
         m_bPrint = true;
         return true;
       }

@@ -171,7 +171,7 @@ bool Job_InflateRows::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the table name
-  m_sObjectName = pTokenVec->pGet(1)->aText();
+  m_sObjectName = pTokenVec->pGet(1)->szText();
   
   // - - - - - - - - - - - - - - - - - - - - -
   // inflate j10;
@@ -185,12 +185,12 @@ bool Job_InflateRows::bPopulateJob(TokenVec* pTokenVec)
   if ( iNumTokens == 3) {
     if (pTokenVec->pGet(2)->eToken() == TN_NAME) {
       
-      if (pTokenVec->pGet(2)->aText()->bSame("print"_Stz)) {
+      if (pTokenVec->pGet(2)->szText()->bSame("print"_Stz)) {
         m_bPrint = true;
         return true;
       }
       
-      m_sColumnName = pTokenVec->pGet(2)->aText();
+      m_sColumnName = pTokenVec->pGet(2)->szText();
       return true;
     }
     
@@ -209,7 +209,7 @@ bool Job_InflateRows::bPopulateJob(TokenVec* pTokenVec)
     if (pTokenVec->pGet(2)->eToken() == TN_NAME) {
       
       // inflate j10 print threads;
-      if (pTokenVec->pGet(2)->aText()->bSame("print"_Stz)) {
+      if (pTokenVec->pGet(2)->szText()->bSame("print"_Stz)) {
         m_bPrint = true;
         
         if (pTokenVec->pGet(3)->eToken() == TN_INTEGER) {
@@ -221,11 +221,11 @@ bool Job_InflateRows::bPopulateJob(TokenVec* pTokenVec)
       
       // inflate j10 column print;
       // inflate j10 column threads;
-      m_sColumnName = pTokenVec->pGet(2)->aText();
+      m_sColumnName = pTokenVec->pGet(2)->szText();
       
       // inflate j10 column print;
       if (pTokenVec->pGet(3)->eToken() == TN_NAME) {
-        if (pTokenVec->pGet(3)->aText()->bSame("print"_Stz)) {
+        if (pTokenVec->pGet(3)->szText()->bSame("print"_Stz)) {
           m_bPrint = true;
           return true;
         }

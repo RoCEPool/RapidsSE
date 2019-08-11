@@ -53,7 +53,7 @@ bool Prompt::bPrompt_markRes(SePrompt* pPrompt)
 //
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  if (nTokens == 2) {
-//    aTkn1 = pTknVec->pGet(1)->aText();
+//    aTkn1 = pTknVec->pGet(1)->szText();
 //
 //    if (aTkn1->bSame("?"_Stz)) {
 //      for (i8 i_Resource = RK_NONE+1; i_Resource < RK_ENUMS; i_Resource++)
@@ -78,8 +78,8 @@ bool Prompt::bPrompt_markRes(SePrompt* pPrompt)
 //
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  if (nTokens == 3) {
-//    aTkn1 = pTknVec->pGet(1)->aText();
-//    aTkn2 = pTknVec->pGet(2)->aText();
+//    aTkn1 = pTknVec->pGet(1)->szText();
+//    aTkn2 = pTknVec->pGet(2)->szText();
 //
 //    if (aTkn1->bSame("all"_Stz)) {
 //      if (aTkn2->bIsSomeTrue())

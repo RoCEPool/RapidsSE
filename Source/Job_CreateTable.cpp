@@ -178,7 +178,7 @@ eEC Job_CreateTable::ePopulateJob(TokenVec* pTokenVec)
   }
   
   // set the table name
-  m_sObjectName = pTokenVec->pGet(2)->aText();
+  m_sObjectName = pTokenVec->pGet(2)->szText();
   
   // mark current token
   i8 iCurrentToken = 4;
@@ -269,7 +269,7 @@ eEC Job_CreateTable::eAddTableColumns(TokenVec* pTokenVec, i8& iCurrentToken)
     
     // set column name
     Token* pTkn = pTokenVec->pGet(iCurrentToken++);
-    m_xColumns[iColumn].vColumnName(pTkn->aText());
+    m_xColumns[iColumn].vColumnName(pTkn->szText());
     
     // check if column name already added
     for (i8 i_Column = 0; i_Column < iColumn; i_Column++) {
@@ -541,7 +541,7 @@ bool Job_CreateTable::bPartitionTable(TokenVec* pTokenVec, i8 iCurrentToken)
     
     // find column and set as partition column
     for (i8 i_Column=0; i_Column< m_iColumns; i_Column++) {
-      if (m_xColumns[i_Column].sColumnName().bSame(pTokenVec->pGet(iCurrentToken)->aText())) {
+      if (m_xColumns[i_Column].sColumnName().bSame(pTokenVec->pGet(iCurrentToken)->szText())) {
         m_xColumns[i_Column].vIsPtnKey(true);
         iCurrentToken++;
         bFound = true;

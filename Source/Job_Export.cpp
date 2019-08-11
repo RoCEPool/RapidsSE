@@ -221,10 +221,10 @@ bool Job_Export::bPopulateJob(TokenVec* pTokenVec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // set the table name
-  m_sObjectName = pTokenVec->pGet(1)->aText();
+  m_sObjectName = pTokenVec->pGet(1)->szText();
 
   // set the file name
-  m_sFilePath = pTokenVec->pGet(2)->aText();
+  m_sFilePath = pTokenVec->pGet(2)->szText();
 
   return true;
 }

@@ -94,7 +94,7 @@ Op* LimitOp::pNew(Stz* szLabel,
   
   LimitOp* pLimitOp = new LimitOp(szLabel,pDigest,aOpDefn,bAppR);
   
-  pLimitOp->m_sArgs = pTknVec->pGet(i_Tkn_)->aText();
+  pLimitOp->m_sArgs = pTknVec->pGet(i_Tkn_)->szText();
   
   pLimitOp->m_nLimit = pTknVec->pGet(i_Tkn_++)->iToI8();
   

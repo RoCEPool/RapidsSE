@@ -479,7 +479,7 @@ void Planner::vMatchPredicates(i8 i_Phrase, PredicateVec* mpPathPredVec, eAT eAc
       
       // get the associated op token
       mpOpTkn_Where = pPhraseTknVec->pGet(i_ColumnTkn_Where+2);
-      sOpDtmVal_Where = mpOpTkn_Where->aText();
+      sOpDtmVal_Where = mpOpTkn_Where->szText();
       eRelOp_Where = RelOp::eDecode(sOpDtmVal_Where.aStz());
       
       // have we found a bound where predicate?
@@ -492,7 +492,7 @@ void Planner::vMatchPredicates(i8 i_Phrase, PredicateVec* mpPathPredVec, eAT eAc
     // we have found a bound where predicate
     
     // set the access path bound predicate value
-    s256 sLitDatum_Where = mpLitTkn_Where->aText();
+    s256 sLitDatum_Where = mpLitTkn_Where->szText();
     mpPathPred->vNewLitArg(sLitDatum_Where);
     mpPathPred->vNewRelOp(eRelOp_Where);
     
@@ -553,9 +553,9 @@ void Planner::vParsePhrases(void)
 
     // add token to phrase1 or phrase2
     if (bAdd1)
-      pPhrase1->vAddToken(pToken->aText());
+      pPhrase1->vAddToken(pToken->szText());
     else
-      pPhrase2->vAddToken(pToken->aText());
+      pPhrase2->vAddToken(pToken->szText());
 
     // if we see <, <=, >=, > then switch to phrase2
     if (bIsRelationalOp(pToken)) {
@@ -708,7 +708,7 @@ void Planner::vShowPhrases(void)
          i_Token < m_pPhraseTknVec[i_Phrase]->nTokens();
          i_Token++) {
       Token* pToken = m_pPhraseTknVec[i_Phrase]->pGet(i_Token);
-      vTrace("%s "_Stz,pToken->aText());
+      vTrace("%s "_Stz,pToken->szText());
     }
     vTrace("\n"_Stz);
   }

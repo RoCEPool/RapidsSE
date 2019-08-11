@@ -90,7 +90,7 @@ void Digest::vParseCommand(TokenVec* pTknVec)
   
   while (i_Tkn < nTokens) {
     
-    sTknStr = pTknVec->pGet(i_Tkn)->aText();
+    sTknStr = pTknVec->pGet(i_Tkn)->szText();
     
     if (sTknStr.bSame("|"_Stz)) {
       i_Tkn++;

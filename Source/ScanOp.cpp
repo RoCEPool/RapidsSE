@@ -96,7 +96,7 @@ Op* ScanOp::pNew(Stz* szLabel,
   
   ScanOp* pScanOp = new ScanOp(szLabel,pDigest,aOpDefn,bAppR);
   
-  pScanOp->m_sTableNm = pTknVec->pGet(i_Tkn_++)->aText();
+  pScanOp->m_sTableNm = pTknVec->pGet(i_Tkn_++)->szText();
   //AM::vTableName((Job_Dynamic*)pDigest->m_pJob,sTableNm);
   pScanOp->m_nSlot = i_Slot;
   

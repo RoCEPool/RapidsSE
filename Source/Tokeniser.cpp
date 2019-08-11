@@ -248,7 +248,7 @@ void Tokeniser::vCollectStatement(void)
   for ( ; i_Token < C_MAX_TOKENS; i_Token++) {
     
     Token* pToken = m_xTokenVec[i_Token];
-    eTN eToken = eNextToken((char*)pToken->aText());
+    eTN eToken = eNextToken((char*)pToken->szText());
     ASSERT(TN_NONE != eToken);
     pToken->vToken(eToken);
     
