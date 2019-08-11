@@ -20,6 +20,21 @@ namespace CompilerStream
   Clause* _pClause(void* aAddr);
 }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+static Stz* szaClauseWords[]
+{
+  "from"_Stz,
+  "group"_Stz,
+  "join"_Stz,
+  "limit"_Stz,
+  "order"_Stz,
+  "select"_Stz,
+  "where"_Stz,
+
+  nullptr
+};
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
