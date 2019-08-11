@@ -9,8 +9,6 @@ namespace Commands
   {
   private:
   
-    bool m_bDetachedRequest; // is this a detached request
-  
     // must be last
     Footer m_xFooter;    
     
@@ -27,8 +25,6 @@ namespace Commands
     void vAppendVector(TokenVec* pTokenVec);
     i8   iCountTokens(void);
     void vCutToken(i8 i_Tkn);
-    bool bDetachedRequest(void);
-    void vDetachedRequest(bool bDetachedRequest);
     void vDumpTokens(Stz* pTitle, i8 nTokens);
     i8   iFindToken(Stz* pLookFor);
     Token* pFindToken(Stz* aText, i8& i_Token);
