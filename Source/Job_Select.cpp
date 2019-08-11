@@ -115,7 +115,8 @@ Job_Select::Job_Select(Session* pSession)
   m_pToDo      = new Op_ToDo      ("ToDo"_Stz,      m_pDigest,nullptr,false);
   m_pZed       = new ZedOp        ("Zed"_Stz,       m_pDigest,nullptr,false);
   
-  
+  m_pStmt_Select = new Stmt_Select;
+
   m_pToClause->vOpOut(m_pToData);
   m_pToData->vOpOut(m_pToCommand);
   m_pToCommand->vOpOut(m_pToDo);
@@ -226,8 +227,8 @@ void Job_Select::vExecute(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SELECT,_FOOTER_);
   
-  Stmt_Select* pStmt_Select = new Stmt_Select;
-  m_pToClause->vAppendLeft(pStmt_Select);
+  m_pToClause->vAppendLeft(m_pStmt_Select);
+  m_pStmt_Select = nullptr;
   
   EndMarker* pEndMarker = new EndMarker;
   m_pToClause->vAppendLeft(pEndMarker);

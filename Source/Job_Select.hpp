@@ -15,6 +15,9 @@ namespace Jobs
     Op_ToCommand*  m_pToCommand; // back to string form
     Op_ToDo*       m_pToDo;      // give back to prompt
     ZedOp*         m_pZed;       // sink
+  
+    Stmt_Select*   m_pStmt_Select;
+
 
     // must be last
     Footer m_xFooter;
