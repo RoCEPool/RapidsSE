@@ -2295,6 +2295,19 @@ char* StrLib::sNew(const char* sFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bOneOf: is given word one of the words in the given set?                   */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bOneOf(char* saSet, char* sWord)
+{
+  for (char* sTest = saSet; sTest; sTest++) {
+    if (bSame(sTest,sWord))
+      return true;
+  }
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* vPad: pad string to given length with char                                 */
 /*----------------------------------------------------------------------------*/
 void StrLib::vPad(char* w, i8 iToLength, const char cWith)

@@ -140,6 +140,8 @@ namespace Strings
     
     static char* sNew(const char* sFormat, ...);
 
+    static bool  bOneOf(char* saSet, char* sWord);
+  
     static void  vPad(char* w, i8 iToLength, const char cWith);
     
     static void  vRemove(char* w, const char cLeading);
