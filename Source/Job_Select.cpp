@@ -59,7 +59,7 @@ JobClass* Jobs::pJob_Select_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
+/* new                                                                        */
 /*----------------------------------------------------------------------------*/
 Job_Select* Jobs::_pJob_Select(void* aAddress)
 {
@@ -82,7 +82,7 @@ void* Job_Select::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
-/* perform new of entry buffer for given address                              */
+/* new                                                                        */
 /*----------------------------------------------------------------------------*/
 void* Job_Select::operator new(size_t, void* aAddress)
 {
@@ -90,7 +90,7 @@ void* Job_Select::operator new(size_t, void* aAddress)
 }
 
 /*----------------------------------------------------------------------------*/
-/* free an entry buffer back to the heap                                      */
+/* delete                                                                     */
 /*----------------------------------------------------------------------------*/
 void Job_Select::operator delete(void* aAddress)
 {
@@ -103,10 +103,25 @@ void Job_Select::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_Select::Job_Select(Session* pSession)
-: Job(CN_JOB_SELECT, pSession)
+: JobMark2(CN_JOB_SELECT, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SELECT,_FOOTER_);
-      
+  
+  m_pDigest = new Digest(this);
+  
+  m_pToClause  = new Op_ToClause  ("ToClause"_Stz,  m_pDigest,nullptr,false);
+  m_pToData    = new Op_ToData    ("ToData"_Stz,    m_pDigest,nullptr,false);
+  m_pToCommand = new Op_ToCommand ("ToCommand"_Stz, m_pDigest,nullptr,false);
+  m_pToDo      = new Op_ToDo      ("ToDo"_Stz,      m_pDigest,nullptr,false);
+  m_pZed       = new ZedOp        ("Zed"_Stz,       m_pDigest,nullptr,false);
+  
+  
+  m_pToClause->vOpOut(m_pToData);
+  m_pToData->vOpOut(m_pToCommand);
+  m_pToCommand->vOpOut(m_pToDo);
+  m_pToDo->vOpOut(m_pZed);
+  m_pZed->vOpOut(nullptr);
+
   _checkInitialised_(CN_JOB_SELECT);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_SELECT,_FOOTER_);
@@ -118,7 +133,14 @@ Job_Select::Job_Select(Session* pSession)
 Job_Select::~Job_Select(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SELECT,_FOOTER_);
+ 
+  delete m_pZed;
+  delete m_pToDo;
+  delete m_pToCommand;
+  delete m_pToData;
+  delete m_pToClause;
   
+  delete m_pDigest;
 }
 
 /*----------------------------------------------------------------------------*/
