@@ -189,6 +189,46 @@ void Job_Select::vShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* query begin                                                                */
+/*----------------------------------------------------------------------------*/
+void Job_Select::vBegin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SELECT,_FOOTER_);
+  
+  AM::vSetAcksRmg(m_pExecutingTask,5);
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* query end                                                                  */
+/*----------------------------------------------------------------------------*/
+void Job_Select::vEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SELECT,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* query execute                                                               */
+/*----------------------------------------------------------------------------*/
+void Job_Select::vExecute(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SELECT,_FOOTER_);
+  
+  Session* pSession = AM::pThisTLSSession();
+  
+  bool bSpawned;
+  
+  bSpawned = AM::bSpawnOp(pSession,m_pZed);        ASSERT(bSpawned);
+  bSpawned = AM::bSpawnOp(pSession,m_pToDo);       ASSERT(bSpawned);
+  bSpawned = AM::bSpawnOp(pSession,m_pToCommand);  ASSERT(bSpawned);
+  bSpawned = AM::bSpawnOp(pSession,m_pToDo);       ASSERT(bSpawned);
+  bSpawned = AM::bSpawnOp(pSession,m_pToClause);   ASSERT(bSpawned);
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

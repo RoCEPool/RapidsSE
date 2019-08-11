@@ -650,6 +650,11 @@ private:
   static void vJob_ReportTake(Tasks::MP_Task mpTask);
   static void vJob_ReportEnd(Tasks::MP_Task mpTask);
 
+  // job Select
+  static void vJob_SelectBegin(Tasks::MP_Task mpTask);
+  static void vJob_SelectEnd(Tasks::MP_Task mpTask);
+  static void vJob_SelectExecute(Tasks::MP_Task mpTask);
+
   // job SelectTable
   static void vJob_SelectTablePartitionFetch(Tasks::MP_Task mpTask);
   static void vJob_SelectTableTableStore(Tasks::MP_Task mpTask);

@@ -110,6 +110,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobReceiver();
   Step::vAddSteps_JobRepeater();
   Step::vAddSteps_JobReport();
+  Step::vAddSteps_JobSelect();
   Step::vAddSteps_JobSelectTable();
   Step::vAddSteps_JobSink();
   Step::vAddSteps_JobSubExporter();
