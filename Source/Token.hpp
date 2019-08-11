@@ -19,7 +19,8 @@ namespace Commands
     void  operator delete(void*);
     
     Token(void);
-    ~Token(void) noexcept(false);
+    Token(Token* pToCopy);
+   ~Token(void) noexcept(false);
   
     static Token* _pToken(void* aAddr);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

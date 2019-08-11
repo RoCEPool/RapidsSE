@@ -52,6 +52,23 @@ Token::Token(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Token::Token(Token* pToCopy)
+: Object(CN_TOKEN)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  vReset();
+  
+  vCopy(pToCopy);
+  
+  _checkInitialised_(CN_TOKEN);
+  
+  _postcondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Token::~Token(void) noexcept(false)
@@ -189,7 +206,7 @@ Stz* Token::aText(void)
 /*----------------------------------------------------------------------------*/
 /* reset this token set                                                       */
 /*----------------------------------------------------------------------------*/
-i8 Token::iToI8()
+i8 Token::iToI8(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
