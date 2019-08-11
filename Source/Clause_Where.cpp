@@ -42,7 +42,7 @@ void Clause_Where::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Clause_Where::Clause_Where(void)
+Clause_Where::Clause_Where(TokenVec* pTknVec, i8& i_Tkn_)
 : Operand(CN_CLAUSE_WHERE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_WHERE,_FOOTER_);

@@ -42,7 +42,7 @@ void Clause_OrderBy::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Clause_OrderBy::Clause_OrderBy(void)
+Clause_OrderBy::Clause_OrderBy(TokenVec* pTknVec, i8& i_Tkn_)
 : Operand(CN_CLAUSE_ORDERBY)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_ORDERBY,_FOOTER_);

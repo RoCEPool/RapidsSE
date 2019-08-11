@@ -29,7 +29,11 @@ namespace CompilerOperators
     eOR eDrainLoop(void);
 
   private:
+    void vAsClauses(Stmt_Select* pStmt_Select);
+  
+  private:
     Footer* aFooter(void);
+  
   };
 
   Op_ToClause* _pOp_ToClause(void* aAddr);

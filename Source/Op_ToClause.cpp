@@ -183,7 +183,12 @@ eOR Op_ToClause::eDrainLoop(void)
         break;
         
       // -- -- -- -- -- --
-                
+        
+      case CN_STMT_SELECT:
+        //vAsClauses(_pStmt_Select(pOperand));
+        vPipeOut(pOperand);
+        break;
+
       default:
         vPipeOut(pOperand);
         break;
@@ -194,6 +199,54 @@ eOR Op_ToClause::eDrainLoop(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_EXIT:
   return OR_EXIT;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* drain loop                                                                 */
+/*----------------------------------------------------------------------------*/
+void Op_ToClause::vAsClauses(Stmt_Select* pStmt_Select)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TOCLAUSE,_FOOTER_);
+  
+  TokenVec* pStmtTknVec = pStmt_Select->pTokenVec();
+  i8 nStmtTkn = pStmtTknVec->nTokens();
+  
+  for (i8 i_StmtTkn = 0; i_StmtTkn < nStmtTkn; ) {
+    
+    Token* pStmtTkn = pStmtTknVec->pGet(i_StmtTkn++);
+    
+    if (pStmtTkn->bSame("from"_Stz)) {
+      Clause_From* pClauseFrom = new Clause_From(pStmtTknVec,i_StmtTkn);
+      vPipeOut(pClauseFrom);
+    }
+    else
+    if (pStmtTkn->bSame("group"_Stz)) {
+    }
+    else
+    if (pStmtTkn->bSame("join"_Stz)) {
+    }
+    else
+    if (pStmtTkn->bSame("limit"_Stz)) {
+    }
+    else
+    if (pStmtTkn->bSame("order"_Stz)) {
+    }
+    else
+    if (pStmtTkn->bSame("select"_Stz)) {
+    }
+    else
+    if (pStmtTkn->bSame("where"_Stz)) {
+    }
+    else {
+      i_StmtTkn++;
+    }
+    
+  }
 }
 
 /*----------------------------------------------------------------------------*/

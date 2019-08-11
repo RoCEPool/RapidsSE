@@ -42,7 +42,7 @@ void Clause_Limit::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Clause_Limit::Clause_Limit(void)
+Clause_Limit::Clause_Limit(TokenVec* pTknVec, i8& i_Tkn_)
 : Operand(CN_CLAUSE_LIMIT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_LIMIT,_FOOTER_);

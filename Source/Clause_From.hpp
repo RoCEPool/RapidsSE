@@ -5,7 +5,7 @@
 
 namespace CompilerStream
 {
-  class Clause_From : public Operand
+  class Clause_From : public Clause
   {
   private:
   
@@ -16,7 +16,7 @@ namespace CompilerStream
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Clause_From(void);
+    Clause_From(TokenVec* pTknVec, i8& i_Tkn_);
    ~Clause_From(void) noexcept(false);
 
     Footer* aFooter(void);
