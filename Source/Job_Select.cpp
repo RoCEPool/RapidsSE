@@ -7,7 +7,7 @@
 JobClass xJobClass_Select =
 {
   CN_JOB_SELECT,             // class number
-  JK_LOCAL,                  // job kind
+  JK_META,                   // job kind
   RS_NONE,                   // response kind
   "select"_Stz,              // comment about the job
   "select"_Stz,              // the prompt command
