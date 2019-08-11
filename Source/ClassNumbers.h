@@ -322,6 +322,7 @@ enum eCN : u2 // Class Number
   /* 190 0xBE    12824B Heap:I */ CN_STATISTICS,
   /* 191 0xBF       64B Heap:S */ CN_STEPACCUM,
   /* 192 0xC0   131224B Heap:L */ CN_STEPTIMING,
+  /*                           */ CN_STMT_SELECT,
   /* 193 0xC1       48B Heap:I */ CN_STREAMDEF,
   /* 193 0xC1       48B Heap:I */ CN_STRING_T,
   /* 194 0xC2       32B Heap:I */ CN_SYSCALL,
@@ -677,6 +678,7 @@ static Stz* aCN[]
   /* 190 0xBE */ "STATISTICS"_Stz,          // CN_STATISTICS
   /* 191 0xBF */ "STEPACCUM"_Stz,           // CN_STEPACCUM
   /* 192 0xC0 */ "STEPTIMING"_Stz,          // CN_STEPTIMING
+  /* 192 0xC0 */ "STMT_SELECT"_Stz,         // CN_STMT_SELECT
   /* 193 0xC1 */ "STREAMDEF"_Stz,           // CN_STREAMDEF
   /* 193 0xC1 */ "STRING_T"_Stz,            // CN_STRING_T
   /* 194 0xC2 */ "SYSCALL"_Stz,             // CN_SYSCALL
