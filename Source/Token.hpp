@@ -23,26 +23,22 @@ namespace Commands
   
     static Token* _pToken(void* aAddr);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    
+  
+    void  vConcat(Stz*);
+    void  vCopy(Stz*);
+    void  vCopy(Token*);
+    bool  bHasText(void);
+    bool  bIsNumeric(void);
+    i8    iLength(void);
+    void  vReset(void);
+    bool  bSame(Stz*);
+    void  vStripSingleQuotes(void);
+    Stz*  aText(void);
     s256& sText(void);
-    void vText(s256& sText);
-
-    eTN eToken(void);
-    void vToken(eTN eToken);
-  
-    void vReset(void);
-  
-    i8 iLength(void);
-    bool bSame(Stz*);
-    bool bHasText(void);
-    Stz* aText(void);
-    i8 iToI8(void);
-    void vConcat(Stz*);
-    void vCopy(Stz*);
-    void vCopy(Token*);
-    bool bIsNumeric(void);
-  
-    void vStripSingleQuotes(void);
+    void  vText(s256& sText);
+    i8    iToI8(void);
+    eTN   eToken(void);
+    void  vToken(eTN eToken);
   
     Footer* aFooter(void);
   };
