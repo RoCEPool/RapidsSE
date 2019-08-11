@@ -109,6 +109,22 @@ i8 TokenVec::iCountTokens(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* copy given token vector to this token vector                               */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vCopyVector(TokenVec* pTokenVec)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  for (i8 i_Token = 0; i_Token < pTokenVec->nTokens(); i_Token++) {
+    Token* pToken = pTokenVec->pGet(i_Token);
+
+    Token* pNewToken = new Token(pToken);
+    
+    vAdd(pNewToken);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* cut a token from token vector                                              */
 /*----------------------------------------------------------------------------*/
 void TokenVec::vCutToken(i8 i_Tkn)
@@ -131,20 +147,20 @@ void TokenVec::vCutToken(i8 i_Tkn)
 /*----------------------------------------------------------------------------*/
 /* dump token array                                                           */
 /*----------------------------------------------------------------------------*/
-void TokenVec::vDumpTokens(Stz* pTitle, i8 nTokens)
+void TokenVec::vDumpTokens(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  vTrace("%s\n"_Stz,pTitle);
-  
-  for (i8 i_Token = 0; i_Token < nTokens; i_Token++) {
+  for (i8 i_Token = 0; i_Token < nItems(); i_Token++) {
     
     Token* pToken = m_pItem[i_Token];
 
     if (! pToken->szText())
       break;
     
-    vTrace("%s\n"_Stz, pToken->szText());
+    vTrace("  %s %s\n"_Stz,
+           aTN[pToken->eToken()],
+           pToken->szText());
   }
   vTrace("\n"_Stz);
 }

@@ -169,15 +169,17 @@ bool Job_Select::bPopulateJob(TokenVec* pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SELECT,_FOOTER_);
   
-  i8 iNumTokens;
-  
   ASSERT(pTokenVec->pGet(0)->bSame("select"_Stz));
   
   // get number of items in token vector
-  iNumTokens = pTokenVec->nItems();
+  //i8 iNumTokens = pTokenVec->nItems();
   
-  // - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  m_pStmt_Select->pTokenVec()->vCopyVector(pTokenVec);
+  
+  m_pStmt_Select->pTokenVec()->vDumpTokens();
+  
   return true;
 }
 
