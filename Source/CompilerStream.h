@@ -29,6 +29,7 @@ namespace CompilerStream
 #include "Clause_Where.hpp"
 
 #include "Filter.hpp"
+#include "Filter_Where.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
