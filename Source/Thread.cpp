@@ -144,6 +144,9 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
     vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
            pThread,pThread->iThreadNo());
   
+  AM::vLogRes(pThread->m_iThreadId,RK_PTHREAD,RA_THD_EXIT,
+              "Thead exit (dedicated) : %p"_Stz,pThread);
+  
   Scheduler::vRemoveDedicatedThread(pThread);
   
   pThread->m_pPthread->vThreadExit();
@@ -200,6 +203,9 @@ void* Thread::aEntryPoint_general(void* pArg)
   if (AM::bVerbose())
     vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
            pThread,pThread->iThreadNo());
+  
+  AM::vLogRes(pThread->m_iThreadId,RK_PTHREAD,RA_THD_EXIT,
+              "Thead exit (general) : %p"_Stz,pThread);
   
   Scheduler::vRemoveGeneralThread(pThread);
   

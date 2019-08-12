@@ -35,6 +35,7 @@ enum eRA // resource actions
 
   /*    */ RA_THD_AWAKE,
   /*    */ RA_THD_ENTRY,
+  /*    */ RA_THD_EXIT,
   /*    */ RA_THD_SLEEP,
   /*    */ RA_THD_SLEEP_INDEFINITE,
   /*    */ RA_THD_SPAWNED,
@@ -74,6 +75,7 @@ static Stz* aRA[]
 
   /*    */ "THD_AWAKE"_Stz,
   /*    */ "THD_ENTRY"_Stz,
+  /*    */ "THD_EXIT"_Stz,
   /*    */ "THD_SLEEP"_Stz,
   /*    */ "THD_SLEEP_INDEFINITE"_Stz,
   /*    */ "THD_SPAWNED"_Stz,
