@@ -41,6 +41,7 @@ namespace Structures
     bool  bInsert(void* pObject);
     SkipNode* pNext(SkipNode* pPrev, i8 iLevel);
     i8    nObjects(void);
+    void* pPop(void);
     i8    nRecount(void);
     bool  bRemove(void* pObject);
   

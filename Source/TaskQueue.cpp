@@ -190,21 +190,21 @@ Task* TaskQueue::pPopTask(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
   //RJH vTrace("pPopTask\n"_Stz);
-  
-  bool bRemoved;
-  Task* pTask = nullptr;
+
+  Task* pFirstTask = nullptr;
+  Task* pPoppedTask = nullptr;
   
   ASSERT(m_okLock.bIsLocked());
   
   SkipNode* pNode = m_pTaskSkipList->pFirst(0);
   if (pNode) {
-    pTask = _pTask(pNode->m_pObject);
-    RASSERT(pTask);
-    bRemoved = m_pTaskSkipList->bRemove(pTask);
-    RASSERT(bRemoved);
+    pFirstTask = _pTask(pNode->m_pObject);
+    RASSERT(pFirstTask);
+    pPoppedTask = _pTask(m_pTaskSkipList->pPop());
+    RASSERT(pPoppedTask == pFirstTask);
   }
 
-  return pTask;
+  return pFirstTask;
 }
 
 /*----------------------------------------------------------------------------*/

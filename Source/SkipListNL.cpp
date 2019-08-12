@@ -261,6 +261,32 @@ i8 SkipListNL::nObjects(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop first object from list                                                 */
+/*----------------------------------------------------------------------------*/
+void* SkipListNL::pPop(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+
+  SkipNode* pPopNode = nullptr;
+  void* pObject = nullptr;
+  
+  if ( m_pHead->m_pRight[0]) {
+    pPopNode = m_pHead->m_pRight[0];
+    
+    for (i8 i_Level = 0; i_Level <= m_iHeight; i_Level++) {
+      if (m_pHead->m_pRight[i_Level] == pPopNode)
+        m_pHead->m_pRight[i_Level] = pPopNode->m_pRight[i_Level];
+    }
+    pObject = pPopNode->m_pObject;
+    delete pPopNode;
+    
+    m_nObjects--;
+  }
+  
+  return pObject;
+}
+
+/*----------------------------------------------------------------------------*/
 /* recount number of objects in list                                          */
 /*----------------------------------------------------------------------------*/
 i8 SkipListNL::nRecount(void)
@@ -285,6 +311,9 @@ bool SkipListNL::bRemove(void* pObjectRemove)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 
+  // Remove iff UNIQUE KEY
+  RASSERT(m_bUniqueKey);
+  
   bool bEqualTo;
   SkipNode* aPriorVec[C_SKIPLIST_LEVELS];
   SkipNode* aPrior;
@@ -294,6 +323,8 @@ bool SkipListNL::bRemove(void* pObjectRemove)
   
   if ( ! bEqualTo ) {
     vTrace("SkipListNL::bRemove: failed to match\n"_Stz);
+    vSkipListDump(this);
+    SkipNode* pNodePrev = pPosition(pObjectRemove,bEqualTo,aPriorVec);
     return false;
   }
   
@@ -486,7 +517,7 @@ bool bI8Compare(void* pObjectInsert, void* pObjectScan, bool& bMatch)
 void Structures::vSkipListDump(SkipListNL* pSkipList)
 {
   vTrace("----------------------------\n"_Stz);
-
+  
   vTrace("HEIGHT %lld HEAD 0x%llx\n"_Stz,pSkipList->m_iHeight,pSkipList->m_pHead);
   i8 iLevel = pSkipList->m_iHeight;
   do {
@@ -497,6 +528,7 @@ void Structures::vSkipListDump(SkipListNL* pSkipList)
       i8 i = (i8)pNode->m_pObject;
       vTrace("Node %p : %p (L%lld)\n"_Stz,pNode,(i8)pNode->m_pObject, pNode->m_nRight);
       pNode = pSkipList->pNext(pNode, iLevel);
+      
     }
   } while (--iLevel >= 0);
   vTrace("============================\n"_Stz);

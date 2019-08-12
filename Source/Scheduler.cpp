@@ -549,6 +549,21 @@ void Scheduler::vTask_Pause(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop a task from the ready/readyLP queue                                    */
+/*----------------------------------------------------------------------------*/
+Task* Scheduler::pTask_Pop(void)
+{
+  
+  Queues* pQueues = AM::pQueues();
+
+  Task* pTask = pQueues->pPopReadyQueue();
+  if ( ! pTask )
+    pTask = pQueues->pPopReadyQueueLP();
+  
+  return pTask;
+}
+
+/*----------------------------------------------------------------------------*/
 /* locked paused op-task is removed from paused set,                          */
 /*   transitions to TS_ABLE state, unlocked and scheduled                     */
 /*----------------------------------------------------------------------------*/
@@ -1036,8 +1051,21 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
   RASSERT(pThread->m_pMutexThread->bMutexIsLocked());
   
   while (! pThread->m_pTask) {
-    vThread_AppendIdle(pThread);
-    pThread->m_pMutexThread->vCondWaitIndefinite();
+    
+    // pop a ready task
+    // RAY TO LOOK AT ????????????
+    Task* pTask = pTask_Pop();
+    if (pTask) {
+      pThread->m_pTask = pTask;
+      pThread->m_nAssignedTasks++;
+      
+      pThread->m_eThreadState = HS_ASSIGNED;
+      pTask->vState(TS_ABLE);
+    }
+    else {
+      vThread_AppendIdle(pThread);
+      pThread->m_pMutexThread->vCondWaitIndefinite();
+    }
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
