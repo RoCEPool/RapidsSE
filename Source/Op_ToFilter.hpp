@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Op_ToData.hpp -- To Data Op's operator                                     */
+/* Op_ToFilter.hpp -- To Data Op's operator                                     */
 /*============================================================================*/
 #pragma once
 
 namespace CompilerOperators
 {
-  class Op_ToData : public Op
+  class Op_ToFilter : public Op
   {
   private:
   
@@ -16,8 +16,8 @@ namespace CompilerOperators
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Op_ToData(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR);
-   ~Op_ToData(void) noexcept(false);
+    Op_ToFilter(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR);
+   ~Op_ToFilter(void) noexcept(false);
   
     static Op* pNew(Stz* szLabel,
                     Digest* pDigest,  OpDefn* aOpDefn, bool bAppR,
@@ -32,7 +32,7 @@ namespace CompilerOperators
     Footer* aFooter(void);
   };
 
-  Op_ToData* _pOp_ToData(void* aAddr);
+  Op_ToFilter* _pOp_ToFilter(void* aAddr);
 }
 
 /*============================================================================*/

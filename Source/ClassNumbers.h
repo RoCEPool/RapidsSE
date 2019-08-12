@@ -597,7 +597,7 @@ static Stz* aCN[]
 
   /*  21 0x15 */ "OP_TOCLAUSE"_Stz,         // CN_OP_TOCLAUSE
   /*  21 0x15 */ "OP_TOCOMMAND"_Stz,        // CN_OP_TOCOMMAND
-  /*  21 0x15 */ "OP_TODATA"_Stz,           // CN_OP_TOFILTER
+  /*  21 0x15 */ "Op_ToFilter"_Stz,           // CN_OP_TOFILTER
   /*  21 0x15 */ "OP_TODO"_Stz,             // CN_OP_TODO
   /*  21 0x15 */ "OPERANDQUEUE"_Stz,        // CN_OPERANDQUEUE
   /*  21 0x15 */ "OPVEC"_Stz,               // CN_OPVEC

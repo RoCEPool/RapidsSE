@@ -1,18 +1,18 @@
 /*============================================================================*/
-/* Op_ToData.cpp -- To Data Op's operator                                     */
+/* Op_ToFilter.cpp -- To Data Op's operator                                     */
 /*============================================================================*/
 
 #include "CompilerOperators.h"
 
-OpDesc __Op_ToData (
+OpDesc __Op_ToFilter (
    CN_OP_TOFILTER,         // class number
    OK_SIMPLE,           // op kind
    "ToClause"_Stz,      // first word of prompt command
    "Dta"_Stz,           // prefix
    false,               // not partitioned
-   Op_ToData::pNew,      // function which parses the command and new's an op
-   Op_ToData::eCall,     // function which calls the op loop
-   Op_ToData::eDrain,    // function which calls the drain loop
+   Op_ToFilter::pNew,      // function which parses the command and new's an op
+   Op_ToFilter::eCall,     // function which calls the op loop
+   Op_ToFilter::eDrain,    // function which calls the drain loop
    
    "<help>"_Stz
 );
@@ -24,9 +24,9 @@ OpDesc __Op_ToData (
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Op_ToData* CompilerOperators::_pOp_ToData(void* aAddr)
+Op_ToFilter* CompilerOperators::_pOp_ToFilter(void* aAddr)
 {
-  Op_ToData* pToDataOp = reinterpret_cast<Op_ToData*>(aAddr);
+  Op_ToFilter* pToDataOp = reinterpret_cast<Op_ToFilter*>(aAddr);
   
   return pToDataOp;
 }
@@ -34,10 +34,10 @@ Op_ToData* CompilerOperators::_pOp_ToData(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* new                                                                        */
 /*----------------------------------------------------------------------------*/
-void* Op_ToData::operator new(size_t)
+void* Op_ToFilter::operator new(size_t)
 {
-  Op_ToData* pToDataOp =
-    static_cast<Op_ToData*>(HeapMem::pAllocate(CN_OP_TOFILTER));
+  Op_ToFilter* pToDataOp =
+    static_cast<Op_ToFilter*>(HeapMem::pAllocate(CN_OP_TOFILTER));
   
   return pToDataOp;
 }
@@ -45,9 +45,9 @@ void* Op_ToData::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* delete                                                                     */
 /*----------------------------------------------------------------------------*/
-void Op_ToData::operator delete(void* aAddress)
+void Op_ToFilter::operator delete(void* aAddress)
 {
-  Op_ToData* pToDataOp = static_cast<Op_ToData*>(aAddress);
+  Op_ToFilter* pToDataOp = static_cast<Op_ToFilter*>(aAddress);
   
   HeapMem::vFree(pToDataOp);
 }
@@ -55,12 +55,12 @@ void Op_ToData::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Op_ToData::Op_ToData(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
+Op_ToFilter::Op_ToFilter(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
 : Op(CN_OP_TOFILTER,szOpLabel,pDigest,aOpDefn,bAppR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TOFILTER,_FOOTER_);
   
-  m_fpCall = Op_ToData::eCall;
+  m_fpCall = Op_ToFilter::eCall;
   
   _checkInitialised_(CN_OP_TOFILTER);
 
@@ -70,7 +70,7 @@ Op_ToData::Op_ToData(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bApp
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Op_ToData::~Op_ToData(void) noexcept(false)
+Op_ToFilter::~Op_ToFilter(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TOFILTER,_FOOTER_);
 }
@@ -82,14 +82,14 @@ Op_ToData::~Op_ToData(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* Op_ToData::pNew(Stz* szLabel,
+Op* Op_ToFilter::pNew(Stz* szLabel,
                    Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
                    TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   ASSERT(i_Slot == -1);
   
-  Op_ToData* pToDataOp = new Op_ToData(szLabel,pDigest,aOpDefn,bAppR);
+  Op_ToFilter* pToDataOp = new Op_ToFilter(szLabel,pDigest,aOpDefn,bAppR);
   
   return pToDataOp;
 }
@@ -97,9 +97,9 @@ Op* Op_ToData::pNew(Stz* szLabel,
 /*----------------------------------------------------------------------------*/
 /* call loop                                                                  */
 /*----------------------------------------------------------------------------*/
-eOR Op_ToData::eCall(void* aThisOp)
+eOR Op_ToFilter::eCall(void* aThisOp)
 {
-  eOR eCallAgain = ((Op_ToData*)aThisOp)->eOpLoop();
+  eOR eCallAgain = ((Op_ToFilter*)aThisOp)->eOpLoop();
   
   return eCallAgain;
 }
@@ -107,9 +107,9 @@ eOR Op_ToData::eCall(void* aThisOp)
 /*----------------------------------------------------------------------------*/
 /* call drain loop                                                            */
 /*----------------------------------------------------------------------------*/
-eOR Op_ToData::eDrain(void* aThisOp)
+eOR Op_ToFilter::eDrain(void* aThisOp)
 {
-  eOR eCallAgain = ((Op_ToData*)aThisOp)->eDrainLoop();
+  eOR eCallAgain = ((Op_ToFilter*)aThisOp)->eDrainLoop();
   
   return eCallAgain;
 }
@@ -121,7 +121,7 @@ eOR Op_ToData::eDrain(void* aThisOp)
 /*----------------------------------------------------------------------------*/
 /* op loop                                                                    */
 /*----------------------------------------------------------------------------*/
-eOR Op_ToData::eOpLoop(void)
+eOR Op_ToFilter::eOpLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TOFILTER,_FOOTER_);
   
@@ -160,7 +160,7 @@ L_EXIT:
 /*----------------------------------------------------------------------------*/
 /* drain loop                                                                 */
 /*----------------------------------------------------------------------------*/
-eOR Op_ToData::eDrainLoop(void)
+eOR Op_ToFilter::eDrainLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TOFILTER,_FOOTER_);
   
@@ -200,7 +200,7 @@ L_EXIT:
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__aFooterFunction(Op_ToData);
+__aFooterFunction(Op_ToFilter);
 
 /*============================================================================*/
 /* end                                                                        */

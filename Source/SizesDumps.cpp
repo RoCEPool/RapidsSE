@@ -604,7 +604,7 @@ i8 giClassSize[]
 
   /* 28 */ sizeof(Op_ToClause),        // CN_OP_TOCLAUSE
   /* 28 */ sizeof(Op_ToCommand),       // CN_OP_TOCOMMAND
-  /* 28 */ sizeof(Op_ToData),          // CN_OP_TOFILTER
+  /* 28 */ sizeof(Op_ToFilter),          // CN_OP_TOFILTER
   /* 28 */ sizeof(Op_ToDo),            // CN_OP_TODO
   /* 28 */ sizeof(OperandQueue),       // CN_OPERANDQUEUE
   /* 28 */ sizeof(OpVec),              // CN_OPVEC
