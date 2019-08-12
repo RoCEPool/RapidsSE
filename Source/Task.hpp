@@ -33,6 +33,7 @@ namespace Tasks
   
     Thread*   m_pThread;    // current thread
     Session*  m_pSession;   // session for this task
+    DicStack  m_oDicStack;    // dictionary stack
 
     eTS     m_eState;       // state (running, sleeping, ...)
     eTR     m_eTransition;  // state transition request
@@ -49,13 +50,14 @@ namespace Tasks
     Compiler* m_pCompiler;  // forth word compiler (Job boot, create table etc)
     Node*     m_pSendNode;  // node to send to
   
+    ForthClump* m_pForthClump;
+  
     Cell*     m_aFipCell;     // points to cell inside a word
     LocalSet* m_pLocalsFrame; // local register frame chain
     Stack*    m_pDataStack;   // data stack
     Stack*    m_pReturnStack; // return stack
     Stack*    m_pAuxStack;    // auxiliary stack
-    DicStack  m_oDicStack;    // dictionary stack
-      
+  
     // exception
     s256  m_sFile;
     s256  m_sException;

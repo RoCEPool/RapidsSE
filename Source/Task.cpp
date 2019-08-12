@@ -130,7 +130,8 @@ void Task::vInit(void)
   
   m_pThread      = nullptr;
   m_pSession     = nullptr;
-  
+  // m_oDicStack
+
   m_eState       = TS_NONE;
   m_eTransition  = TR_NONE;
   m_eQueue       = QK_NONE;
@@ -143,12 +144,13 @@ void Task::vInit(void)
   m_i_ActionRoot = C_UNKNOWN;
   m_i_NextRnd    = AM::bDeveloper() ? 0 : C_UNKNOWN;
   
+  m_pForthClump  = nullptr;
+  
   m_aFipCell     = nullptr;
   m_pLocalsFrame = nullptr;
   m_pDataStack   = nullptr;
   m_pReturnStack = nullptr;
   m_pAuxStack    = nullptr;
-  // m_oDicStack
   
   m_pCompiler    = nullptr;
   m_pSendNode    = nullptr;
