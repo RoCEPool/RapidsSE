@@ -5,7 +5,7 @@
 #include "CompilerOperators.h"
 
 OpDesc __Op_ToData (
-   CN_OP_TODATA,         // class number
+   CN_OP_TOFILTER,         // class number
    OK_SIMPLE,           // op kind
    "ToClause"_Stz,      // first word of prompt command
    "Dta"_Stz,           // prefix
@@ -37,7 +37,7 @@ Op_ToData* CompilerOperators::_pOp_ToData(void* aAddr)
 void* Op_ToData::operator new(size_t)
 {
   Op_ToData* pToDataOp =
-    static_cast<Op_ToData*>(HeapMem::pAllocate(CN_OP_TODATA));
+    static_cast<Op_ToData*>(HeapMem::pAllocate(CN_OP_TOFILTER));
   
   return pToDataOp;
 }
@@ -56,15 +56,15 @@ void Op_ToData::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Op_ToData::Op_ToData(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
-: Op(CN_OP_TODATA,szOpLabel,pDigest,aOpDefn,bAppR)
+: Op(CN_OP_TOFILTER,szOpLabel,pDigest,aOpDefn,bAppR)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TODATA,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TOFILTER,_FOOTER_);
   
   m_fpCall = Op_ToData::eCall;
   
-  _checkInitialised_(CN_OP_TODATA);
+  _checkInitialised_(CN_OP_TOFILTER);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_OP_TODATA,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_OP_TOFILTER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -72,7 +72,7 @@ Op_ToData::Op_ToData(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bApp
 /*----------------------------------------------------------------------------*/
 Op_ToData::~Op_ToData(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TODATA,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TOFILTER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -123,7 +123,7 @@ eOR Op_ToData::eDrain(void* aThisOp)
 /*----------------------------------------------------------------------------*/
 eOR Op_ToData::eOpLoop(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TODATA,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TOFILTER,_FOOTER_);
   
   for (;;) {
     
@@ -162,7 +162,7 @@ L_EXIT:
 /*----------------------------------------------------------------------------*/
 eOR Op_ToData::eDrainLoop(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TODATA,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TOFILTER,_FOOTER_);
   
   for (;;) {
     

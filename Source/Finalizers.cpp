@@ -239,7 +239,7 @@ pFINALIZE *gpFinalize[]
 
   /* 28 */ &Finalize::vUndefined,         // CN_OP_TOCLAUSE
   /* 28 */ &Finalize::vUndefined,         // CN_OP_TOCOMMAND
-  /* 28 */ &Finalize::vUndefined,         // CN_OP_TODATA
+  /* 28 */ &Finalize::vUndefined,         // CN_OP_TOFILTER
   /* 28 */ &Finalize::vUndefined,         // CN_OP_TODO
   /* 28 */ &Finalize::vUndefined,         // CN_OPERANDQUEUE
   /* 28 */ &Finalize::vUndefined,         // CN_OPVEC
