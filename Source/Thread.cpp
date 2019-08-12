@@ -353,30 +353,6 @@ void Thread::vContentDump(void) const
 }
 
 /*----------------------------------------------------------------------------*/
-/* signal thread to execute given task                                        */
-/*----------------------------------------------------------------------------*/
-void Thread::vExecuteTask(Task* pTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-    
-  // task should be ready
-  RASSERT(TS_READY == pTask->eState());
-  
-  // thread should be idle
-  RASSERT(HS_ASSIGNED == m_eThreadState);
-  
-  // thread should have no task
-  RASSERT(! m_pTask);
-  
-  // set task to be executed
-  m_pTask = pTask;
-  
-  // signal the thread
-  m_pMutexThread->vCondSignal();
-  m_pMutexThread->vMutexUnlock();
-}
-
-/*----------------------------------------------------------------------------*/
 /* spawn the os/posix pthread associated with this thread                     */
 /*----------------------------------------------------------------------------*/
 void Thread::vSpawnPthread_dedicated(void)

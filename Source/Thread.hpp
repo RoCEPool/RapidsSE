@@ -46,7 +46,6 @@ namespace Threads
     void vBindCore(void);
     i8   iCpu(void);
     void vContentDump(void) const;
-    void vExecuteTask(Task* pTask);
     void vLoop_dedicated(void);
     void vLoop_general(void);
     void vSpawnPthread_dedicated(void);
