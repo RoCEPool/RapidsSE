@@ -8,13 +8,13 @@ namespace Logging
   class _LogEntryItf
   {
   public:
-    i8   m_iItfId;             // interface id
-
-  public:
-   void vSet(LogEntry* pLogEntry, i8 iItfId);
+    i8   m_iItfId;  // interface id
+    eIA  m_eItfAct; // interface action
   
-  void vWriteCsv(File* pFile, LogEntry* pLogEntry,
-                 i8 iTickDeltaUsec, i8& iTotalDelta);
+  public:
+    void vSet(LogEntry* pLogEntry, i8 iItfId, eIA eItfAct);
+  
+    void vWriteCsv(File* pFile);
   };
 }
 

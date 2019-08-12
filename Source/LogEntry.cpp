@@ -101,7 +101,9 @@ void LogEntry::vWrite(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
       break;
       
     case EK_ITF:
-      m_xItf.vWriteCsv(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
+      vWriteCsv(pFile,iEntryDeltaUsec,iTotalDeltaUsec);
+      m_xItf.vWriteCsv(pFile);
+      pFile->vPrint(",%s\n"_Stz,m_caText);
       break;
       
     case EK_JOB:
@@ -110,7 +112,7 @@ void LogEntry::vWrite(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
       
     case EK_OP:
       vWriteCsv(pFile,iEntryDeltaUsec,iTotalDeltaUsec);
-      m_xOp .vWriteCsv(pFile);
+      m_xOp.vWriteCsv(pFile);
       pFile->vPrint(",%s\n"_Stz,m_caText);
       break;
       
