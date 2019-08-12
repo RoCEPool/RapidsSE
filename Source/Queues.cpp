@@ -672,9 +672,9 @@ void Queues::vThreadAppendIdle(Thread* pThread)
   
   RASSERT(HS_IDLE == pThread->eThreadState());
   
-  //m_pIdleThreadQueue->vGrabLock();
+  m_pIdleThreadQueue->vGrabLock();
   m_pIdleThreadQueue->vAppendThread(pThread);
-  //m_pIdleThreadQueue->vDropLock();
+  m_pIdleThreadQueue->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
