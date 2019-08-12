@@ -699,10 +699,10 @@ void Scheduler::vTask_Sleep(Task* pTask)
   pTask->vWakeupClear();
   
   Thread* pThread = Thread::pThisTLSThread();
-  vThread_ContinueSame(pThread,pTask);
-  
   vTask_Able(pTask);
   vTask_Execute(pTask);
+  vThread_ContinueSame(pThread,pTask);
+
   // **do not touch task**
 }
 
