@@ -65,7 +65,9 @@ namespace Enums
 #include "eTR.h"
 #include "eTS.h"
 #include "eTT.h"
+#include "eVA.h"
 #include "eWT.h"
+#include "eXA.h"
 #include "eXP.h"
 
 #include "EnumGroups.hpp"

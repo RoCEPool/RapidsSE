@@ -5,35 +5,27 @@
 #include "Logging.h"
 
 /*----------------------------------------------------------------------------*/
-/* set resource entry                                                         */
+/* set transaction entry                                                      */
 /*----------------------------------------------------------------------------*/
-void _LogEntryTxn::vSet(LogEntry* pLogEntry, i8 iTxnId)
+void _LogEntryTxn::vSet(LogEntry* pLogEntry, i8 iTxnId, eXA eTxnAct)
 {
   pLogEntry->m_eKind = EK_TXN;
   
-  m_iTxnId = iTxnId;
+  m_iTxnId  = iTxnId;
+  m_eTxnAct = eTxnAct;
 }
 
 /*----------------------------------------------------------------------------*/
 /* write to csv file                                                          */
 /*----------------------------------------------------------------------------*/
-void _LogEntryTxn::vWriteCsv(File* pFile, LogEntry* pLogEntry,
-                             i8 iTickDeltaUsec, i8& iTotalDelta)
+void _LogEntryTxn::vWriteCsv(File* pFile)
 {
-  pFile->vPrint("%lld,%lld,%lld,%lld,"
-                "%s,%s,"
-                "%lld,%s\n"_Stz,
-
-                pLogEntry->m_i_Entry,
-                pLogEntry->m_iTick,
-                iTickDeltaUsec,
-                iTotalDelta,
+  SP_Id spId;
+  
+  pFile->vPrint(",%s,%s"_Stz,
                 
-                pLogEntry->m_caNode,
-                aEK[pLogEntry->m_eKind],
-                
-                m_iTxnId,
-                pLogEntry->m_caText);
+                spId.sz(m_iTxnId),
+                aXA[m_eTxnAct]);
 }
 
 /*============================================================================*/

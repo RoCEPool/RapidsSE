@@ -16,6 +16,10 @@
 
 #include "eTA.h"
 
+#include "eVA.h"
+
+#include "eXA.h"
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 namespace StorageEngine
@@ -148,13 +152,16 @@ namespace StorageEngine
     static bool bSpawnJob(Session* pSession, Job* pJob, i8 iSeed);
     static bool bSpawnOp(Session* pSession, Op* pOp);
     static void vStateDiagram(s256& sDiagram, eCN eJobClass);
+    static void vWriteTrace(Stz* aFormat, va_list xArgs);
+
     static void vLogInf(Stz* szFormat, ...);
     static void vLogItf(i8 iItfId, eIA eItfAct, Stz* szFormat, ...);
     static void vLogOp(i8 iOpId,   eOA eOpAct,  Stz* szFormat, ...);
     static void vLogRes(i8 iResId, eRK eSysRes, eRA eResAct, Stz* szFormat, ...);
-    static void vLogTsk(i8 iTskId, eHA eTskAct, Stz* szFormat, ...);
+    static void vLogSvc(i8 iSvcId, eVA eSvcAct, Stz* szFormat, ...);
+    static void vLogTsk(i8 iTskId, eTA eTskAct, Stz* szFormat, ...);
     static void vLogThd(i8 iThdId, eHA eThdAct, Stz* szFormat, ...);
-    static void vWriteTrace(Stz* aFormat, va_list xArgs);
+    static void vLogTxn(i8 iTxnId, eXA eTxnAct, Stz* szFormat, ...);
   };
 }
 

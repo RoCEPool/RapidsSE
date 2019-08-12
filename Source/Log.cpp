@@ -151,7 +151,7 @@ void Log::vNote(Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  gpLog->iAddNoteInf(szFormat,xVaArgs);
+  gpLog->iEntryInf(szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif
@@ -377,7 +377,7 @@ void Log::vWriteCsv(bool bShortForm)
 /*----------------------------------------------------------------------------*/
 /* write an LogEntry                                                          */
 /*----------------------------------------------------------------------------*/
-i8 Log::iAddNoteArg(i8 iJobId, i8 iForeign, Stz* aFormat, va_list xVaArgs)
+i8 Log::iEntryJob_arg(i8 iJobId, i8 iForeign, Stz* aFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
@@ -404,7 +404,7 @@ i8 Log::iAddNoteArg(i8 iJobId, i8 iForeign, Stz* aFormat, va_list xVaArgs)
 /*----------------------------------------------------------------------------*/
 /* add a information log entry                                                */
 /*----------------------------------------------------------------------------*/
-i8 Log::iAddNoteInf(Stz* szFormat, va_list xVaArgs)
+i8 Log::iEntryInf(Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
@@ -431,14 +431,14 @@ i8 Log::iAddNoteInf(Stz* szFormat, va_list xVaArgs)
 /*----------------------------------------------------------------------------*/
 /* write an LogEntry                                                          */
 /*----------------------------------------------------------------------------*/
-i8 Log::iAddNoteJob(i8 iJobId, i8 iForeign, Stz* aFormat, ...)
+i8 Log::iEntryJob(i8 iJobId, i8 iForeign, Stz* aFormat, ...)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   va_list xVaArgs;
   
   va_start(xVaArgs,aFormat);
-  iAddNoteArg(iJobId,iForeign,aFormat,xVaArgs);
+  iEntryJob_arg(iJobId,iForeign,aFormat,xVaArgs);
   va_end(xVaArgs);
   
   return C_UNKNOWN;
@@ -447,7 +447,7 @@ i8 Log::iAddNoteJob(i8 iJobId, i8 iForeign, Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a resource log entry                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Log::iAddNoteRes(i8 iResId, eRK eResKnd, eRA eResAct, Stz* szFormat, va_list xVaArgs)
+i8 Log::iEntryRes(i8 iResId, eRK eResKnd, eRA eResAct, Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
@@ -467,6 +467,33 @@ i8 Log::iAddNoteRes(i8 iResId, eRK eResKnd, eRA eResAct, Stz* szFormat, va_list 
   StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
   
   pLogEntry->m_xRes.vSet(pLogEntry,iResId,eResKnd,eResAct);
+  
+  return pLogEntry->m_i_Entry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a thread log entry                                                     */
+/*----------------------------------------------------------------------------*/
+i8 Log::iEntryThd(i8 iThdId, eHA eThdAct, Stz* szFormat, va_list xVaArgs)
+{
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
+  
+  LogEntry* pLogEntry = pNewEntry();
+  
+  if (! pLogEntry)
+    return C_UNKNOWN;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  char caText[1024];
+  
+  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
+  
+  pLogEntry->m_xThd.vSet(pLogEntry,iThdId,eThdAct);
   
   return pLogEntry->m_i_Entry;
 }

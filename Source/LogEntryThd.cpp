@@ -1,39 +1,31 @@
 /*============================================================================*/
-/* LogEntryThd.cpp - Log Entry for Operator                                    */
+/* LogEntryThd.cpp - Log Entry for Thread                                     */
 /*============================================================================*/
 
 #include "Logging.h"
 
 /*----------------------------------------------------------------------------*/
-/* set resource entry                                                         */
+/* set thread entry                                                           */
 /*----------------------------------------------------------------------------*/
-void _LogEntryThd::vSet(LogEntry* pLogEntry, i8 iThdId)
+void _LogEntryThd::vSet(LogEntry* pLogEntry, i8 iThdId, eHA eThdAct)
 {
   pLogEntry->m_eKind = EK_THD;
   
-  m_iThdId = iThdId;
+  m_iThdId  = iThdId;
+  m_eThdAct = eThdAct;
 }
 
 /*----------------------------------------------------------------------------*/
 /* write to csv file                                                          */
 /*----------------------------------------------------------------------------*/
-void _LogEntryThd::vWriteCsv(File* pFile, LogEntry* pLogEntry,
-                             i8 iTickDeltaUsec, i8& iTotalDelta)
+void _LogEntryThd::vWriteCsv(File* pFile)
 {
-  pFile->vPrint("%lld,%lld,%lld,%lld,"
-                "%s,%s,"
-                "%lld,%s\n"_Stz,
-
-                pLogEntry->m_i_Entry,
-                pLogEntry->m_iTick,
-                iTickDeltaUsec,
-                iTotalDelta,
+  SP_Id spId;
+  
+  pFile->vPrint(",%s,%s"_Stz,
                 
-                pLogEntry->m_caNode,
-                aEK[pLogEntry->m_eKind],
-                
-                m_iThdId,
-                pLogEntry->m_caText);
+                spId.sz(m_iThdId),
+                aHA[m_eThdAct]);
 }
 
 /*============================================================================*/

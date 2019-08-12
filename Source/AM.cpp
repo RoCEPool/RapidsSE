@@ -325,48 +325,6 @@ void AM::vStateDiagram(s256& sDiagram, eCN eJobClass)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add a resource log entry                                                   */
-/*----------------------------------------------------------------------------*/
-void AM::vLogRes(i8 iResId, eRK eSysRes, eRA eResAct, Stz* szFormat, ...)
-{
-#ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
-    return;
-  
-  if (! (AM::pMarkResource()->bEnum(eSysRes) ||
-         AM::pMarkResource()->bAll()) )
-    return;
-  
-  va_list xVaArgs;
-  
-  va_start(xVaArgs,szFormat);
-  
-  gpLog->iAddNoteRes(iResId,eSysRes,eResAct,szFormat,xVaArgs);
-  
-  va_end(xVaArgs);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* add a text log entry                                                       */
-/*----------------------------------------------------------------------------*/
-void AM::vLogInf(Stz* szFormat, ...)
-{
-#ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
-    return;
-  
-  va_list xArgs;
-  
-  va_start(xArgs,szFormat);
-  
-  gpLog->iAddNoteInf(szFormat,xArgs);
-  
-  va_end(xArgs);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
 /* write to trace file etc                                                    */
 /*----------------------------------------------------------------------------*/
 void AM::vWriteTrace(Stz* aFormat, va_list xArgs)
@@ -394,6 +352,73 @@ void AM::vWriteTrace(Stz* aFormat, va_list xArgs)
   
   if (bUseLock)
     oLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add a text log entry                                                       */
+/*----------------------------------------------------------------------------*/
+void AM::vLogInf(Stz* szFormat, ...)
+{
+#ifdef WITH_SHARED_LOG
+  if (! AM::bLogging())
+    return;
+  
+  va_list xArgs;
+  
+  va_start(xArgs,szFormat);
+  
+  gpLog->iEntryInf(szFormat,xArgs);
+  
+  va_end(xArgs);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a resource log entry                                                   */
+/*----------------------------------------------------------------------------*/
+void AM::vLogRes(i8 iResId, eRK eSysRes, eRA eResAct, Stz* szFormat, ...)
+{
+#ifdef WITH_SHARED_LOG
+  if (! AM::bLogging())
+    return;
+  
+  if (! (AM::pMarkResource()->bEnum(eSysRes) ||
+         AM::pMarkResource()->bAll()) )
+    return;
+  
+  va_list xVaArgs;
+  
+  va_start(xVaArgs,szFormat);
+  
+  gpLog->iEntryRes(iResId,eSysRes,eResAct,szFormat,xVaArgs);
+  
+  va_end(xVaArgs);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a thread log entry                                                     */
+/*----------------------------------------------------------------------------*/
+void AM::vLogThd(i8 iThdId, eHA eThdAct, Stz* szFormat, ...)
+{
+#ifdef WITH_SHARED_LOG
+  if (! AM::bLogging())
+    return;
+  
+  if (! (AM::pMarkAction()->bEnum(eThdAct) ||
+         AM::pMarkAction()->bAll()) )
+    return;
+  
+  va_list xVaArgs;
+  
+  va_start(xVaArgs,szFormat);
+  
+  
+  va_end(xVaArgs);
+#endif
 }
 
 

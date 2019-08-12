@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* LogEntryThd.hpp - Log Entry for Operator                                    */
+/* LogEntryThd.hpp - Log Entry for Thread                                     */
 /*============================================================================*/
 #pragma once
 
@@ -8,13 +8,13 @@ namespace Logging
   class _LogEntryThd
   {
   public:
-    i8   m_iThdId;             // thread id
+    i8  m_iThdId;  // thread id
+    eHA m_eThdAct; // thread action
 
   public:
-   void vSet(LogEntry* pLogEntry, i8 iThdId);
+   void vSet(LogEntry* pLogEntry, i8 iThdId, eHA eThdAct);
   
-  void vWriteCsv(File* pFile, LogEntry* pLogEntry,
-                 i8 iTickDeltaUsec, i8& iTotalDelta);
+  void vWriteCsv(File* pFile);
   };
 }
 
