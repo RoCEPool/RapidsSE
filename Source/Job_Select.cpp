@@ -110,15 +110,15 @@ Job_Select::Job_Select(Session* pSession)
   m_pDigest = new Digest(this);
   
   m_pToClause  = new Op_ToClause  ("ToClause"_Stz,  m_pDigest,nullptr,false);
-  m_pToData    = new Op_ToFilter    ("ToData"_Stz,    m_pDigest,nullptr,false);
+  m_pToFilter    = new Op_ToFilter    ("ToData"_Stz,    m_pDigest,nullptr,false);
   m_pToCommand = new Op_ToCommand ("ToCommand"_Stz, m_pDigest,nullptr,false);
   m_pToDo      = new Op_ToDo      ("ToDo"_Stz,      m_pDigest,nullptr,false);
   m_pZed       = new ZedOp        ("Zed"_Stz,       m_pDigest,nullptr,false);
   
   m_pStmt_Select = new Stmt_Select;
 
-  m_pToClause->vOpOut(m_pToData);
-  m_pToData->vOpOut(m_pToCommand);
+  m_pToClause->vOpOut(m_pToFilter);
+  m_pToFilter->vOpOut(m_pToCommand);
   m_pToCommand->vOpOut(m_pToDo);
   m_pToDo->vOpOut(m_pZed);
   m_pZed->vOpOut(nullptr);
@@ -138,7 +138,7 @@ Job_Select::~Job_Select(void) noexcept(false)
   delete m_pZed;
   delete m_pToDo;
   delete m_pToCommand;
-  delete m_pToData;
+  delete m_pToFilter;
   delete m_pToClause;
   
   delete m_pDigest;
@@ -210,7 +210,7 @@ void Job_Select::vBegin(void)
   bSpawned = AM::bSpawnOp(pSession,m_pZed);        ASSERT(bSpawned);
   bSpawned = AM::bSpawnOp(pSession,m_pToDo);       ASSERT(bSpawned);
   bSpawned = AM::bSpawnOp(pSession,m_pToCommand);  ASSERT(bSpawned);
-  bSpawned = AM::bSpawnOp(pSession,m_pToData);     ASSERT(bSpawned);
+  bSpawned = AM::bSpawnOp(pSession,m_pToFilter);   ASSERT(bSpawned);
   bSpawned = AM::bSpawnOp(pSession,m_pToClause);   ASSERT(bSpawned);
 }
 
@@ -223,7 +223,7 @@ void Job_Select::vEnd(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* query execute                                                               */
+/* query execute                                                              */
 /*----------------------------------------------------------------------------*/
 void Job_Select::vExecute(void)
 {

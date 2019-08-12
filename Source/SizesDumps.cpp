@@ -81,6 +81,14 @@ pDUMPFUN *gpDump[]
   /* 38 */ &Dump::vInvalid,         // CN_FETCHBUFFER
   /* 38 */ &Dump::vInvalid,         // CN_FETCHOP
   /* 39 */ &Dump::vInvalid,         // CN_FILE
+  /* 31 */ &Dump::vDummy,           // CN_FILTER_FROM
+  /* 31 */ &Dump::vDummy,           // CN_FILTER_GROUPBY
+  /* 31 */ &Dump::vDummy,           // CN_FILTER_JOIN
+  /* 31 */ &Dump::vDummy,           // CN_FILTER_LIMIT
+  /* 31 */ &Dump::vDummy,           // CN_FILTER_ORDERBY
+  /* 31 */ &Dump::vDummy,           // CN_FILTER_SELECT
+  /* 31 */ &Dump::vDummy,           // CN_FILTER_SUBQRY
+  /* 31 */ &Dump::vDummy,           // CN_FILTER_WHERE
   /* 40 */ &Dump::vDummy,           // CN_FORMATTERS
   /* 41 */ &Dump::vDummy,           // CN_FREEBUFFER
   /* 42 */ &Dump::vDummy,           // CN_FREECHUNK
@@ -246,8 +254,8 @@ pDUMPFUN *gpDump[]
 
   /* 28 */ &Dump::vInvalid,         // CN_OP_TOCLAUSE
   /* 28 */ &Dump::vInvalid,         // CN_OP_TOCOMMAND
-  /* 28 */ &Dump::vInvalid,         // CN_OP_TOFILTER
   /* 28 */ &Dump::vInvalid,         // CN_OP_TODO
+  /* 28 */ &Dump::vInvalid,         // CN_OP_TOFILTER
   /* 28 */ &Dump::vInvalid,         // CN_OPERANDQUEUE
   /* 28 */ &Dump::vInvalid,         // CN_OPVEC
   /*    */ &Dump::vUndefined,       // CN_OUTPUTOP
@@ -441,6 +449,14 @@ i8 giClassSize[]
   /*    */ sizeof(FetchBuffer),        // CN_FETCHBUFFER
   /*    */ sizeof(FetchOp),            // CN_FETCHOP
   /* 39 */ sizeof(File),               // CN_FILE
+  /*    */ 0,//sizeof(Filter_From),        // CN_FILTER_FROM
+  /*    */ 0,//sizeof(Filter_GroupBy),     // CN_FILTER_GROUPBY
+  /*    */ 0,//sizeof(Filter_Join),        // CN_FILTER_JOIN
+  /*    */ 0,//sizeof(Filter_Limit),       // CN_FILTER_LIMIT
+  /*    */ 0,//sizeof(Filter_OrderBy),     // CN_FILTER_ORDERBY
+  /*    */ 0,//sizeof(Filter_Select),      // CN_FILTER_SELECT
+  /*    */ 0,//sizeof(Filter_SubQry),      // CN_FILTER_SUBQRY
+  /*    */ 0,//sizeof(Filter_Where),       // CN_FILTERE_WHERE
   /* 40 */ sizeof(Formatters),         // CN_FORMATTERS
   /* 41 */ sizeof(PoolBuffer),         // CN_FREEBUFFER
   /* 42 */ sizeof(FreeChunk),          // CN_FREECHUNK
@@ -604,8 +620,8 @@ i8 giClassSize[]
 
   /* 28 */ sizeof(Op_ToClause),        // CN_OP_TOCLAUSE
   /* 28 */ sizeof(Op_ToCommand),       // CN_OP_TOCOMMAND
-  /* 28 */ sizeof(Op_ToFilter),          // CN_OP_TOFILTER
   /* 28 */ sizeof(Op_ToDo),            // CN_OP_TODO
+  /* 28 */ sizeof(Op_ToFilter),        // CN_OP_TOFILTER
   /* 28 */ sizeof(OperandQueue),       // CN_OPERANDQUEUE
   /* 28 */ sizeof(OpVec),              // CN_OPVEC
   /* 77 */ sizeof(OutputOp),           // CN_OUTPUTOP
@@ -799,6 +815,14 @@ eHT geWhichHeap[]
   /* 38 */ HT_TRANSIENT_LARGE,   // CN_FETCHBUFFER
   /* 38 */ HT_TRANSIENT_SMALL,   // CN_FETCHOP
   /* 39 */ HT_TRANSIENT_SMALL,   // CN_FILE
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_FROM
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_GROUPBY
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_JOIN
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_LIMIT
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_ORDERBY
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_SELECT
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_SUBQRY
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_WHERE
   /* 40 */ HT_TRANSIENT_SMALL,   // CN_FORMATTERS
   /* 41 */ HT_INVALID,           // CN_FREEBUFFER
   /* 42 */ HT_INVALID,           // CN_FREECHUNK
@@ -962,8 +986,8 @@ eHT geWhichHeap[]
 
   /* 29 */ HT_TRANSIENT_MEDIUM,  // CN_OP_TOCLAUSE
   /* 29 */ HT_TRANSIENT_MEDIUM,  // CN_OP_TOCOMMAND
-  /* 29 */ HT_TRANSIENT_MEDIUM,  // CN_OP_TOFILTER
   /* 29 */ HT_TRANSIENT_MEDIUM,  // CN_OP_TODO
+  /* 29 */ HT_TRANSIENT_MEDIUM,  // CN_OP_TOFILTER
   /* 29 */ HT_TRANSIENT_SMALL,   // CN_OPERANDQUEUE
   /* 29 */ HT_TRANSIENT_SMALL,   // CN_OPVEC
   /*    */ HT_TRANSIENT_SMALL,   // CN_OUTPUTOP

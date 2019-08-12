@@ -11,7 +11,7 @@ namespace Jobs
     Digest* m_pDigest;
 
     Op_ToClause*   m_pToClause;  // convert to clauses
-    Op_ToFilter*     m_pToData;    // convert to data op's
+    Op_ToFilter*   m_pToFilter;  // convert to filters
     Op_ToCommand*  m_pToCommand; // back to string form
     Op_ToDo*       m_pToDo;      // give back to prompt
     ZedOp*         m_pZed;       // sink
