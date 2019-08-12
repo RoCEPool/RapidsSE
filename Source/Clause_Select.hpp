@@ -5,7 +5,7 @@
 
 namespace CompilerStream
 {
-  class Clause_Select : public Operand
+  class Clause_Select : public Clause
   {
   private:
   

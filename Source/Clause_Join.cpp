@@ -43,7 +43,7 @@ void Clause_Join::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Clause_Join::Clause_Join(TokenVec* pTknVec, i8& i_Tkn_)
-: Operand(CN_CLAUSE_JOIN)
+: Clause(CN_CLAUSE_JOIN,pTknVec,i_Tkn_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_JOIN,_FOOTER_);
 

@@ -43,7 +43,7 @@ void Clause_Select::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Clause_Select::Clause_Select(TokenVec* pTknVec, i8& i_Tkn_)
-: Operand(CN_CLAUSE_SELECT)
+: Clause(CN_CLAUSE_SELECT,pTknVec,i_Tkn_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_SELECT,_FOOTER_);
 

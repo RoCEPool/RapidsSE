@@ -5,7 +5,7 @@
 
 namespace CompilerStream
 {
-  class Clause_Join : public Operand
+  class Clause_Join : public Clause
   {
   private:
   

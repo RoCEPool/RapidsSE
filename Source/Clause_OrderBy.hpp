@@ -5,7 +5,7 @@
 
 namespace CompilerStream
 {
-  class Clause_OrderBy : public Operand
+  class Clause_OrderBy : public Clause
   {
   private:
   

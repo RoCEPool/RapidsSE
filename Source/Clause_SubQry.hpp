@@ -5,7 +5,7 @@
 
 namespace CompilerStream
 {
-  class Clause_SubQry : public Operand
+  class Clause_SubQry : public Clause
   {
   private:
   

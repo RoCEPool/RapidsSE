@@ -43,7 +43,7 @@ void Clause_GroupBy::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Clause_GroupBy::Clause_GroupBy(TokenVec* pTknVec, i8& i_Tkn_)
-: Operand(CN_CLAUSE_GROUPBY)
+: Clause(CN_CLAUSE_GROUPBY,pTknVec,i_Tkn_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_GROUPBY,_FOOTER_);
 

@@ -140,7 +140,7 @@ namespace Strings
     
     static char* sNew(const char* sFormat, ...);
 
-    static bool  bOneOf(char* saSet, char* sWord);
+    static bool  bOneOf(char** asaSet, char* sWord);
   
     static void  vPad(char* w, i8 iToLength, const char cWith);
     

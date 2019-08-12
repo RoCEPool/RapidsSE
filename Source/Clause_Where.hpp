@@ -5,7 +5,7 @@
 
 namespace CompilerStream
 {
-  class Clause_Where : public Operand
+  class Clause_Where : public Clause
   {
   private:
   

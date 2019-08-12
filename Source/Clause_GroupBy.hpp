@@ -5,7 +5,7 @@
 
 namespace CompilerStream
 {
-  class Clause_GroupBy : public Operand
+  class Clause_GroupBy : public Clause
   {
   private:
   

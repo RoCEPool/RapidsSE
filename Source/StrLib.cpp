@@ -2297,10 +2297,10 @@ char* StrLib::sNew(const char* sFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* bOneOf: is given word one of the words in the given set?                   */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bOneOf(char* saSet, char* sWord)
+bool StrLib::bOneOf(char** asaSet, char* sWord)
 {
-  for (char* sTest = saSet; sTest; sTest++) {
-    if (bSame(sTest,sWord))
+  for (char** saTest = asaSet; *saTest; saTest++) {
+    if (bSame(*saTest,sWord))
       return true;
   }
   
