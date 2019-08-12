@@ -28,6 +28,8 @@ namespace CompilerStream
 #include "Clause_SubQry.hpp"
 #include "Clause_Where.hpp"
 
+#include "Filter.hpp"
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
