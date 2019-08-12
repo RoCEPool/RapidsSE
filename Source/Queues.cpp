@@ -497,7 +497,7 @@ Task* Queues::pPopSleepingQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
-  Task* pTask;
+  Task* pPeekTask;
   
   if (! m_pSleepingQueue->bGrabLock()) {
     // unable to lock queue (another thread must be processing it)
@@ -508,10 +508,10 @@ Task* Queues::pPopSleepingQueue(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // peek at the first task in the sleeping queue
-  pTask = m_pSleepingQueue->pPeekTask();
+  pPeekTask = m_pSleepingQueue->pPeekTask();
   
   // check if peeked task's wakeup time is after now
-  if (! pTask || ! pTask->bWakeupNow()) {
+  if (! pPeekTask || ! pPeekTask->bWakeupNow()) {
     
     // - peeked task is to be woken up in the future
     
@@ -523,25 +523,30 @@ Task* Queues::pPopSleepingQueue(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // peeked task can be be woken up
   
+  Task* pPopTask;
+  
   // pop the task off the sleeping queue
   i8 nPriorItems = m_pSleepingQueue->nTasks();
   m_pSleepingQueue->vAssertItems(nPriorItems);
-  pTask = m_pSleepingQueue->pPopTask();
+  pPopTask = m_pSleepingQueue->pPopTask();
+  
+  RASSERT(pPeekTask == pPopTask);
+  
   m_pSleepingQueue->vAssertItems(nPriorItems - 1);
   
   m_pSleepingQueue->vDropLock();
   
-  pTask->vQueue(QK_NONE);
+  pPopTask->vQueue(QK_NONE);
   
-  pTask->vWakeupClear();
+  pPopTask->vWakeupClear();
   
-  if (pTask->pJob()->m_bMarkActivity)
+  if (pPopTask->pJob()->m_bMarkActivity)
     Log::vNote(
                            "Popped SleepingQueue: %s %p"_Stz,
-                           aCN[pTask->pJob()->eClass()],
-                           pTask->pJob());
+                           aCN[pPopTask->pJob()->eClass()],
+                           pPopTask->pJob());
   
-  return pTask;
+  return pPopTask;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -667,9 +672,9 @@ void Queues::vThreadAppendIdle(Thread* pThread)
   
   RASSERT(HS_IDLE == pThread->eThreadState());
   
-  m_pIdleThreadQueue->vGrabLock();
+  //m_pIdleThreadQueue->vGrabLock();
   m_pIdleThreadQueue->vAppendThread(pThread);
-  m_pIdleThreadQueue->vDropLock();
+  //m_pIdleThreadQueue->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
