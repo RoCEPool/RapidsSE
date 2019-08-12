@@ -7,33 +7,25 @@
 /*----------------------------------------------------------------------------*/
 /* set resource entry                                                         */
 /*----------------------------------------------------------------------------*/
-void _LogEntryOp::vSet(LogEntry* pLogEntry, i8 iOpId)
+void _LogEntryOp::vSet(LogEntry* pLogEntry, i8 iOpId, eOA eOpAct)
 {
   pLogEntry->m_eKind = EK_OP;
   
-  m_iOpId = iOpId;
+  m_iOpId  = iOpId;
+  m_eOpAct = eOpAct;
 }
 
 /*----------------------------------------------------------------------------*/
 /* write to csv file                                                          */
 /*----------------------------------------------------------------------------*/
-void _LogEntryOp::vWriteCsv(File* pFile, LogEntry* pLogEntry,
-                            i8 iTickDeltaUsec, i8& iTotalDelta)
+void _LogEntryOp::vWriteCsv(File* pFile)
 {
-  pFile->vPrint("%lld,%lld,%lld,%lld,"
-                "%s,%s,"
-                "%lld,%s\n"_Stz,
-
-                pLogEntry->m_i_Entry,
-                pLogEntry->m_iTick,
-                iTickDeltaUsec,
-                iTotalDelta,
+  SP_Id spId;
+  
+  pFile->vPrint(",%s,%s"_Stz,
                 
-                pLogEntry->m_caNode,
-                aEK[pLogEntry->m_eKind],
-                
-                m_iOpId,
-                pLogEntry->m_caText);
+                spId.sz(m_iOpId),
+                aOA[m_eOpAct]);
 }
 
 /*============================================================================*/

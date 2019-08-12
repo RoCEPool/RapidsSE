@@ -8,13 +8,13 @@ namespace Logging
   class _LogEntryOp
   {
   public:
-    i8   m_iOpId;              // opid
-
-  public:
-   void vSet(LogEntry* pLogEntry, i8 iJobId);
+    i8  m_iOpId;  // operator id
+    eOA m_eOpAct; // operator action
   
-  void vWriteCsv(File* pFile, LogEntry* pLogEntry,
-                 i8 iTickDeltaUsec, i8& iTotalDelta);
+  public:
+    void vSet(LogEntry* pLogEntry, i8 iOpId, eOA eOpAct);
+  
+    void vWriteCsv(File* pFile);
   };
 }
 

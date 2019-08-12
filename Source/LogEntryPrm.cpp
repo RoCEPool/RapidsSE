@@ -7,33 +7,25 @@
 /*----------------------------------------------------------------------------*/
 /* set entry                                                                  */
 /*----------------------------------------------------------------------------*/
-void _LogEntryPrm::vSet(LogEntry* pLogEntry, i8 iPrmId)
+void _LogEntryPrm::vSet(LogEntry* pLogEntry, i8 iPrmId, ePA ePrmAct)
 {
   pLogEntry->m_eKind = EK_PRM;
   
-  m_iPrmId = iPrmId;
+  m_iPrmId  = iPrmId;
+  m_ePrmAct = ePrmAct;
 }
 
 /*----------------------------------------------------------------------------*/
 /* write to csv file                                                          */
 /*----------------------------------------------------------------------------*/
-void _LogEntryPrm::vWriteCsv(File* pFile, LogEntry* pLogEntry,
-                             i8 iTickDeltaUsec, i8& iTotalDelta)
+void _LogEntryPrm::vWriteCsv(File* pFile)
 {
-  pFile->vPrint("%lld,%lld,%lld,%lld,"
-                "%s,%s,"
-                "%lld,%s\n"_Stz,
-
-                pLogEntry->m_i_Entry,
-                pLogEntry->m_iTick,
-                iTickDeltaUsec,
-                iTotalDelta,
+  SP_Id spId;
+  
+  pFile->vPrint(",%s,%s"_Stz,
                 
-                pLogEntry->m_caNode,
-                aEK[pLogEntry->m_eKind],
-                
-                m_iPrmId,
-                pLogEntry->m_caText);
+                spId.sz(m_iPrmId),
+                aPA[m_ePrmAct]);
 }
 
 /*============================================================================*/
