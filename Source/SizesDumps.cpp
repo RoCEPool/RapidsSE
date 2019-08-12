@@ -246,8 +246,8 @@ pDUMPFUN *gpDump[]
 
   /* 28 */ &Dump::vInvalid,         // CN_OP_TOCLAUSE
   /* 28 */ &Dump::vInvalid,         // CN_OP_TOCOMMAND
-  /* 28 */ &Dump::vInvalid,         // CN_OP_TOFILTER
   /* 28 */ &Dump::vInvalid,         // CN_OP_TODO
+  /* 28 */ &Dump::vInvalid,         // CN_OP_TOFILTER
   /* 28 */ &Dump::vInvalid,         // CN_OPERANDQUEUE
   /* 28 */ &Dump::vInvalid,         // CN_OPVEC
   /*    */ &Dump::vUndefined,       // CN_OUTPUTOP
@@ -604,8 +604,8 @@ i8 giClassSize[]
 
   /* 28 */ sizeof(Op_ToClause),        // CN_OP_TOCLAUSE
   /* 28 */ sizeof(Op_ToCommand),       // CN_OP_TOCOMMAND
-  /* 28 */ sizeof(Op_ToFilter),          // CN_OP_TOFILTER
   /* 28 */ sizeof(Op_ToDo),            // CN_OP_TODO
+  /* 28 */ sizeof(Op_ToFilter),        // CN_OP_TOFILTER
   /* 28 */ sizeof(OperandQueue),       // CN_OPERANDQUEUE
   /* 28 */ sizeof(OpVec),              // CN_OPVEC
   /* 77 */ sizeof(OutputOp),           // CN_OUTPUTOP
@@ -962,8 +962,8 @@ eHT geWhichHeap[]
 
   /* 29 */ HT_TRANSIENT_MEDIUM,  // CN_OP_TOCLAUSE
   /* 29 */ HT_TRANSIENT_MEDIUM,  // CN_OP_TOCOMMAND
-  /* 29 */ HT_TRANSIENT_MEDIUM,  // CN_OP_TOFILTER
   /* 29 */ HT_TRANSIENT_MEDIUM,  // CN_OP_TODO
+  /* 29 */ HT_TRANSIENT_MEDIUM,  // CN_OP_TOFILTER
   /* 29 */ HT_TRANSIENT_SMALL,   // CN_OPERANDQUEUE
   /* 29 */ HT_TRANSIENT_SMALL,   // CN_OPVEC
   /*    */ HT_TRANSIENT_SMALL,   // CN_OUTPUTOP
