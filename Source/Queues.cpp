@@ -675,13 +675,13 @@ void Queues::vThreadAppendIdle(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* pop idle thread                                                            */
 /*----------------------------------------------------------------------------*/
-Thread* Queues::pThreadPopIdle(void)
+Thread* Queues::pThreadPopIdleNL(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
-  m_pIdleThreadQueue->vGrabLock();
+  //m_pIdleThreadQueue->vGrabLock();
   Thread* pThread = m_pIdleThreadQueue->pPopThread();
-  m_pIdleThreadQueue->vDropLock();
+  //m_pIdleThreadQueue->vDropLock();
   
   RASSERT(!pThread || HS_IDLE == pThread->eThreadState());
   
@@ -716,6 +716,16 @@ void Queues::vRemoveGeneralThread(Thread* pThread)
 ////////////////////////////////////////////////////////////////////////////////
 //                                 misc                                       //
 ////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* drop idle queue lock                                                       */
+/*----------------------------------------------------------------------------*/
+void Queues::vDropThreadIdleQueue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
+  
+  m_pIdleThreadQueue->vDropLock();
+}
 
 /*----------------------------------------------------------------------------*/
 /* dump the biding set                                                        */
@@ -823,6 +833,16 @@ void Queues::vDumpWaitingSet(void)
   vTrace("====================================\n"_Stz);
   vTrace("\n"_Stz);
   vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab idle queue lock                                                       */
+/*----------------------------------------------------------------------------*/
+void Queues::vGrabThreadIdleQueue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
+  
+  m_pIdleThreadQueue->vGrabLock();
 }
 
 /*----------------------------------------------------------------------------*/

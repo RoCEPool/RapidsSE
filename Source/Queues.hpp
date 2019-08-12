@@ -80,19 +80,21 @@ namespace Scheduling
     void vAddDedicatedThread(Thread* pThread);
     void vAddGeneralThread(Thread* pThread);
     void vThreadAppendIdle(Thread* pThread);
-    Thread* pThreadPopIdle(void);
+    Thread* pThreadPopIdleNL(void);
     void vRemoveDedicatedThread(Thread* pThread);
     void vRemoveGeneralThread(Thread* pThread);
   
   // - - - - - - - - - - - - - - - - - - - - - - -
   // misc
   public:
+    void vDropThreadIdleQueue(void);
     void vDumpBidingSet(void);
     void vDumpExecutingSet(void);
     void vDumpReadyQueue(void);
     void vDumpReadyQueueLP(void);
     void vDumpSleepingQueue(void);
     void vDumpWaitingSet(void);
+    void vGrabThreadIdleQueue(void);
   
     void vMonitorPortrait(s48K& sPortrait);
     void vMonitorThread(s48K& sPortrait);

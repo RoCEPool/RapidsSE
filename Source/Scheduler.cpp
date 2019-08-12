@@ -639,12 +639,19 @@ void Scheduler::vTask_Schedule(Task* pTask)
 
   JobLog::vNoteState(pTask->pJob(),"Schedule"_Stz);
   
-  if (bThread_AssignIdle(pTask))
+  Queues* pQueues = AM::pQueues();
+  
+  pQueues->vGrabThreadIdleQueue();
+  
+  if (bThread_AssignIdle(pTask)) {
+    pQueues->vDropThreadIdleQueue();
     return;
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   vTask_Ready(pTask);
+  pQueues->vDropThreadIdleQueue();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -859,7 +866,7 @@ bool Scheduler::bThread_AssignIdle(Task* pTask)
   
   Queues* pQueues = AM::pQueues();
   
-  Thread* pThread = pQueues->pThreadPopIdle();
+  Thread* pThread = pQueues->pThreadPopIdleNL();
   
   if (! pThread)
     return false;
