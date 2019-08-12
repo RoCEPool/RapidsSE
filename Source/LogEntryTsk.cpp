@@ -7,33 +7,25 @@
 /*----------------------------------------------------------------------------*/
 /* set resource entry                                                         */
 /*----------------------------------------------------------------------------*/
-void _LogEntryTsk::vSet(LogEntry* pLogEntry, i8 iTskId)
+void _LogEntryTsk::vSet(LogEntry* pLogEntry, i8 iTskId, eTA eTskAct)
 {
   pLogEntry->m_eKind = EK_THD;
   
-  m_iTskId = iTskId;
+  m_iTskId  = iTskId;
+  m_eTskAct = eTskAct;
 }
 
 /*----------------------------------------------------------------------------*/
 /* write to csv file                                                          */
 /*----------------------------------------------------------------------------*/
-void _LogEntryTsk::vWriteCsv(File* pFile, LogEntry* pLogEntry,
-                             i8 iTickDeltaUsec, i8& iTotalDelta)
+void _LogEntryTsk::vWriteCsv(File* pFile)
 {
-  pFile->vPrint("%lld,%lld,%lld,%lld,"
-                "%s,%s,"
-                "%lld,%s\n"_Stz,
-
-                pLogEntry->m_i_Entry,
-                pLogEntry->m_iTick,
-                iTickDeltaUsec,
-                iTotalDelta,
+  SP_Id spId;
+  
+  pFile->vPrint(",%s,%s"_Stz,
                 
-                pLogEntry->m_caNode,
-                aEK[pLogEntry->m_eKind],
-                
-                m_iTskId,
-                pLogEntry->m_caText);
+                spId.sz(m_iTskId),
+                aTA[m_eTskAct]);
 }
 
 /*============================================================================*/

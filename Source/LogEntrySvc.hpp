@@ -8,13 +8,13 @@ namespace Logging
   class _LogEntrySvc
   {
   public:
-    i8   m_iSvcId;             // service id
+    i8   m_iSvcId;   // service id
+    eVA  m_eSvcAct;  // service action
 
   public:
-   void vSet(LogEntry* pLogEntry, i8 iSvcId);
+   void vSet(LogEntry* pLogEntry, i8 iSvcId, eVA  eSvcAct);
   
-  void vWriteCsv(File* pFile, LogEntry* pLogEntry,
-                 i8 iTickDeltaUsec, i8& iTotalDelta);
+  void vWriteCsv(File* pFile);
   };
 }
 

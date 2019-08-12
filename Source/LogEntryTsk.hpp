@@ -8,13 +8,13 @@ namespace Logging
   class _LogEntryTsk
   {
   public:
-    i8   m_iTskId;             // task id
+    i8   m_iTskId;  // task id
+    eTA  m_eTskAct; // task action
 
   public:
-   void vSet(LogEntry* pLogEntry, i8 iTskId);
+   void vSet(LogEntry* pLogEntry, i8 iTskId, eTA eTskAct);
   
-  void vWriteCsv(File* pFile, LogEntry* pLogEntry,
-                 i8 iTickDeltaUsec, i8& iTotalDelta);
+  void vWriteCsv(File* pFile);
   };
 }
 
