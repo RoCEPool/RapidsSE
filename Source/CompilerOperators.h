@@ -16,8 +16,8 @@ namespace CompilerOperators
 
 #include "Op_ToClause.hpp"
 #include "Op_ToCommand.hpp"
-#include "Op_ToData.hpp"
 #include "Op_ToDo.hpp"
+#include "Op_ToFilter.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
