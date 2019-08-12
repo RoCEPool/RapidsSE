@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Filter_SubQry.cpp -- Where Filter operand                                   */
+/* Filter_SubQry.cpp -- SubQry Filter operand                                 */
 /*============================================================================*/
 
 #include "CompilerStream.h"

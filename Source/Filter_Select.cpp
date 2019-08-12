@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Filter_Select.cpp -- Where Filter operand                                   */
+/* Filter_Select.cpp -- Select Filter operand                                 */
 /*============================================================================*/
 
 #include "CompilerStream.h"

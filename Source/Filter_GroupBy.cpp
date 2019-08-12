@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Filter_GroupBy.cpp -- Where Filter operand                                   */
+/* Filter_GroupBy.cpp -- GroupBy Filter operand                               */
 /*============================================================================*/
 
 #include "CompilerStream.h"

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Filter_Limit.cpp -- Where Filter operand                                   */
+/* Filter_Limit.cpp -- Limit Filter operand                                   */
 /*============================================================================*/
 
 #include "CompilerStream.h"

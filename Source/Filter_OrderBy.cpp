@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Filter_OrderBy.cpp -- Where Filter operand                                   */
+/* Filter_OrderBy.cpp -- OrderBy Filter operand                               */
 /*============================================================================*/
 
 #include "CompilerStream.h"
