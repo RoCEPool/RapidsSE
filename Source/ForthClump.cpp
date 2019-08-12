@@ -44,6 +44,8 @@ ForthClump::ForthClump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORTHCLUMP,_FOOTER_);
   
+  m_pTask        = nullptr;
+  
   m_aFipCell     = nullptr;
   m_pLocalsFrame = nullptr;
   m_pDataStack   = nullptr;

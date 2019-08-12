@@ -9,6 +9,7 @@ namespace Forth
   {
   
   private:
+    Task*     m_pTask;        // which task
   
     Cell*     m_aFipCell;     // points to cell inside a word
     LocalSet* m_pLocalsFrame; // local register frame chain
