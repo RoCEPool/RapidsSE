@@ -80,6 +80,14 @@ enum eCN : u2 // Class Number
   /*  35 0x23  1040440B Heap:L */ CN_FETCHBUFFER,
   /*                           */ CN_FETCHOP,
   /*  36 0x24      376B Heap:S */ CN_FILE,
+  /*                           */ CN_FILTER_FROM,
+  /*                           */ CN_FILTER_GROUPBY,
+  /*                           */ CN_FILTER_JOIN,
+  /*                           */ CN_FILTER_LIMIT,
+  /*                           */ CN_FILTER_ORDERBY,
+  /*                           */ CN_FILTER_SELECT,
+  /*                           */ CN_FILTER_SUBQRY,
+  /*                           */ CN_FILTER_WHERE,
   /*  37 0x25       48B Heap:S */ CN_FORMATTERS,
   /*  38 0x26       32B Heap:I */ CN_FREEBUFFER,
   /*  39 0x27       24B Heap:I */ CN_FREECHUNK,
@@ -436,6 +444,14 @@ static Stz* aCN[]
   /*  35 0x23 */ "FETCHBUFFER"_Stz,         // CN_FETCHBUFFER
   /*  35 0x23 */ "FETCHOP"_Stz,             // CN_FETCHOP
   /*  36 0x24 */ "FILE"_Stz,                // CN_FILE
+  /*          */ "FILTER_FROM"_Stz,         // CN_FILTER_FROM
+  /*          */ "FILTER_GROUPBY"_Stz,      // CN_FILTER_GROUPBY
+  /*          */ "FILTER_JOIN"_Stz,         // CN_FILTER_JOIN
+  /*          */ "FILTER_LIMIT"_Stz,        // CN_FILTER_LIMIT
+  /*          */ "FILTER_ORDERBY"_Stz,      // CN_FILTER_ORDERBY
+  /*          */ "FILTER_SELECT"_Stz,       // CN_FILTER_SELECT
+  /*          */ "FILTER_SUBQRY"_Stz,       // CN_FILTER_SUBQRY
+  /*          */ "FILTER_WHERE"_Stz,        // CN_FILTER_WHERE
   /*  37 0x25 */ "FORMATTERS"_Stz,          // CN_FORMATTERS
   /*  38 0x26 */ "FREEBUFFER"_Stz,          // CN_FREEBUFFER
   /*  39 0x27 */ "FREECHUNK"_Stz,           // CN_FREECHUNK

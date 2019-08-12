@@ -77,7 +77,15 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_FETCHBUFFER
   /*    */ &Finalize::vUndefined,         // CN_FETCHOP
   /*    */ &Finalize::vUndefined,         // CN_FILE
-  /* 39 */ &Finalize::vUndefined,         // CN_FILTEROP
+  /*    */ &Finalize::vUndefined,         // CN_FILTER_FROM
+  /*    */ &Finalize::vUndefined,         // CN_FILTER_GROUPBY
+  /*    */ &Finalize::vUndefined,         // CN_FILTER_JOIN
+  /*    */ &Finalize::vUndefined,         // CN_FILTER_LIMIT
+  /*    */ &Finalize::vUndefined,         // CN_FILTER_ORDERBY
+  /*    */ &Finalize::vUndefined,         // CN_FILTER_SELECT
+  /*    */ &Finalize::vUndefined,         // CN_FILTER_SUBQRY
+  /*    */ &Finalize::vUndefined,         // CN_FILTER_WHERE
+  /* 39 */ &Finalize::vUndefined,         // CN_FORMATTERS
   /* 41 */ &Finalize::vUndefined,         // CN_FREEBUFFER
   /* 42 */ &Finalize::vUndefined,         // CN_FREECHUNK
   /* 43 */ &Finalize::vUndefined,         // CN_FREEDNOT
