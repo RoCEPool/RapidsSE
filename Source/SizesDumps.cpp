@@ -89,6 +89,7 @@ pDUMPFUN *gpDump[]
   /* 31 */ &Dump::vDummy,           // CN_FILTER_SELECT
   /* 31 */ &Dump::vDummy,           // CN_FILTER_SUBQRY
   /* 31 */ &Dump::vDummy,           // CN_FILTER_WHERE
+  /* 31 */ &Dump::vDummy,           // CN_FORTHCLUMP
   /* 40 */ &Dump::vDummy,           // CN_FORMATTERS
   /* 41 */ &Dump::vDummy,           // CN_FREEBUFFER
   /* 42 */ &Dump::vDummy,           // CN_FREECHUNK
@@ -449,14 +450,15 @@ i8 giClassSize[]
   /*    */ sizeof(FetchBuffer),        // CN_FETCHBUFFER
   /*    */ sizeof(FetchOp),            // CN_FETCHOP
   /* 39 */ sizeof(File),               // CN_FILE
-  /*    */ 0,//sizeof(Filter_From),        // CN_FILTER_FROM
-  /*    */ 0,//sizeof(Filter_GroupBy),     // CN_FILTER_GROUPBY
-  /*    */ 0,//sizeof(Filter_Join),        // CN_FILTER_JOIN
-  /*    */ 0,//sizeof(Filter_Limit),       // CN_FILTER_LIMIT
-  /*    */ 0,//sizeof(Filter_OrderBy),     // CN_FILTER_ORDERBY
-  /*    */ 0,//sizeof(Filter_Select),      // CN_FILTER_SELECT
-  /*    */ 0,//sizeof(Filter_SubQry),      // CN_FILTER_SUBQRY
-  /*    */ 0,//sizeof(Filter_Where),       // CN_FILTERE_WHERE
+  /*    */ sizeof(Filter_From),        // CN_FILTER_FROM
+  /*    */ sizeof(Filter_GroupBy),     // CN_FILTER_GROUPBY
+  /*    */ sizeof(Filter_Join),        // CN_FILTER_JOIN
+  /*    */ sizeof(Filter_Limit),       // CN_FILTER_LIMIT
+  /*    */ sizeof(Filter_OrderBy),     // CN_FILTER_ORDERBY
+  /*    */ sizeof(Filter_Select),      // CN_FILTER_SELECT
+  /*    */ sizeof(Filter_SubQry),      // CN_FILTER_SUBQRY
+  /*    */ sizeof(Filter_Where),       // CN_FILTER_WHERE
+  /*    */ sizeof(Filter_Where),       // CN_FORTHCLUMP
   /* 40 */ sizeof(Formatters),         // CN_FORMATTERS
   /* 41 */ sizeof(PoolBuffer),         // CN_FREEBUFFER
   /* 42 */ sizeof(FreeChunk),          // CN_FREECHUNK
@@ -823,6 +825,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_SELECT
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_SUBQRY
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_WHERE
+  /* 40 */ HT_TRANSIENT_SMALL,   // CN_FORTHCLUMP
   /* 40 */ HT_TRANSIENT_SMALL,   // CN_FORMATTERS
   /* 41 */ HT_INVALID,           // CN_FREEBUFFER
   /* 42 */ HT_INVALID,           // CN_FREECHUNK
