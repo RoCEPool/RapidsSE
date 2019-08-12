@@ -88,6 +88,7 @@ enum eCN : u2 // Class Number
   /*                           */ CN_FILTER_SELECT,
   /*                           */ CN_FILTER_SUBQRY,
   /*                           */ CN_FILTER_WHERE,
+  /*                           */ CN_FORTHCLUMP,
   /*  37 0x25       48B Heap:S */ CN_FORMATTERS,
   /*  38 0x26       32B Heap:I */ CN_FREEBUFFER,
   /*  39 0x27       24B Heap:I */ CN_FREECHUNK,
@@ -452,6 +453,7 @@ static Stz* aCN[]
   /*          */ "FILTER_SELECT"_Stz,       // CN_FILTER_SELECT
   /*          */ "FILTER_SUBQRY"_Stz,       // CN_FILTER_SUBQRY
   /*          */ "FILTER_WHERE"_Stz,        // CN_FILTER_WHERE
+  /*          */ "FORTHCLUMP"_Stz,          // CN_FORTHCLUMP
   /*  37 0x25 */ "FORMATTERS"_Stz,          // CN_FORMATTERS
   /*  38 0x26 */ "FREEBUFFER"_Stz,          // CN_FREEBUFFER
   /*  39 0x27 */ "FREECHUNK"_Stz,           // CN_FREECHUNK
