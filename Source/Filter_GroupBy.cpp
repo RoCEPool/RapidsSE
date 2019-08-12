@@ -24,7 +24,7 @@ Filter_GroupBy* CompilerStream::_pFilter_GroupBy(void* aAddr)
 void* Filter_GroupBy::operator new(size_t)
 {
   Filter_GroupBy* pFilter_GroupBy =
-    static_cast<Filter_GroupBy*>(HeapMem::pAllocate(CN_FILTER_WHERE));
+    static_cast<Filter_GroupBy*>(HeapMem::pAllocate(CN_FILTER_GROUPBY));
   
   return pFilter_GroupBy;
 }
@@ -43,13 +43,13 @@ void Filter_GroupBy::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Filter_GroupBy::Filter_GroupBy(void)
-: Filter(CN_FILTER_WHERE)
+: Filter(CN_FILTER_GROUPBY)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_WHERE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_GROUPBY,_FOOTER_);
 
-  _checkInitialised_(CN_FILTER_WHERE);
+  _checkInitialised_(CN_FILTER_GROUPBY);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_FILTER_WHERE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_FILTER_GROUPBY,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,7 +57,7 @@ Filter_GroupBy::Filter_GroupBy(void)
 /*----------------------------------------------------------------------------*/
 Filter_GroupBy::~Filter_GroupBy(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_WHERE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_GROUPBY,_FOOTER_);
 }
 
 

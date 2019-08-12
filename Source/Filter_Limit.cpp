@@ -24,7 +24,7 @@ Filter_Limit* CompilerStream::_pFilter_Limit(void* aAddr)
 void* Filter_Limit::operator new(size_t)
 {
   Filter_Limit* pFilter_Limit =
-    static_cast<Filter_Limit*>(HeapMem::pAllocate(CN_FILTER_WHERE));
+    static_cast<Filter_Limit*>(HeapMem::pAllocate(CN_FILTER_LIMIT));
   
   return pFilter_Limit;
 }
@@ -43,13 +43,13 @@ void Filter_Limit::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Filter_Limit::Filter_Limit(void)
-: Filter(CN_FILTER_WHERE)
+: Filter(CN_FILTER_LIMIT)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_WHERE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_LIMIT,_FOOTER_);
 
-  _checkInitialised_(CN_FILTER_WHERE);
+  _checkInitialised_(CN_FILTER_LIMIT);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_FILTER_WHERE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_FILTER_LIMIT,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,7 +57,7 @@ Filter_Limit::Filter_Limit(void)
 /*----------------------------------------------------------------------------*/
 Filter_Limit::~Filter_Limit(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_WHERE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_LIMIT,_FOOTER_);
 }
 
 

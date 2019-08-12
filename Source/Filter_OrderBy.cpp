@@ -24,7 +24,7 @@ Filter_OrderBy* CompilerStream::_pFilter_OrderBy(void* aAddr)
 void* Filter_OrderBy::operator new(size_t)
 {
   Filter_OrderBy* pFilter_OrderBy =
-    static_cast<Filter_OrderBy*>(HeapMem::pAllocate(CN_FILTER_WHERE));
+    static_cast<Filter_OrderBy*>(HeapMem::pAllocate(CN_FILTER_ORDERBY));
   
   return pFilter_OrderBy;
 }
@@ -43,13 +43,13 @@ void Filter_OrderBy::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Filter_OrderBy::Filter_OrderBy(void)
-: Filter(CN_FILTER_WHERE)
+: Filter(CN_FILTER_ORDERBY)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_WHERE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_ORDERBY,_FOOTER_);
 
-  _checkInitialised_(CN_FILTER_WHERE);
+  _checkInitialised_(CN_FILTER_ORDERBY);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_FILTER_WHERE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_FILTER_ORDERBY,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,7 +57,7 @@ Filter_OrderBy::Filter_OrderBy(void)
 /*----------------------------------------------------------------------------*/
 Filter_OrderBy::~Filter_OrderBy(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_WHERE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_ORDERBY,_FOOTER_);
 }
 
 

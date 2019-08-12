@@ -24,7 +24,7 @@ Filter_SubQry* CompilerStream::_pFilter_SubQry(void* aAddr)
 void* Filter_SubQry::operator new(size_t)
 {
   Filter_SubQry* pFilter_SubQry =
-    static_cast<Filter_SubQry*>(HeapMem::pAllocate(CN_FILTER_WHERE));
+    static_cast<Filter_SubQry*>(HeapMem::pAllocate(CN_FILTER_SUBQRY));
   
   return pFilter_SubQry;
 }
@@ -43,13 +43,13 @@ void Filter_SubQry::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Filter_SubQry::Filter_SubQry(void)
-: Filter(CN_FILTER_WHERE)
+: Filter(CN_FILTER_SUBQRY)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_WHERE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_SUBQRY,_FOOTER_);
 
-  _checkInitialised_(CN_FILTER_WHERE);
+  _checkInitialised_(CN_FILTER_SUBQRY);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_FILTER_WHERE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_FILTER_SUBQRY,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,7 +57,7 @@ Filter_SubQry::Filter_SubQry(void)
 /*----------------------------------------------------------------------------*/
 Filter_SubQry::~Filter_SubQry(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_WHERE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_SUBQRY,_FOOTER_);
 }
 
 

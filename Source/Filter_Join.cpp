@@ -24,7 +24,7 @@ Filter_Join* CompilerStream::_pFilter_Join(void* aAddr)
 void* Filter_Join::operator new(size_t)
 {
   Filter_Join* pFilter_Join =
-    static_cast<Filter_Join*>(HeapMem::pAllocate(CN_FILTER_WHERE));
+    static_cast<Filter_Join*>(HeapMem::pAllocate(CN_FILTER_JOIN));
   
   return pFilter_Join;
 }
@@ -43,13 +43,13 @@ void Filter_Join::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Filter_Join::Filter_Join(void)
-: Filter(CN_FILTER_WHERE)
+: Filter(CN_FILTER_JOIN)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_WHERE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_JOIN,_FOOTER_);
 
-  _checkInitialised_(CN_FILTER_WHERE);
+  _checkInitialised_(CN_FILTER_JOIN);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_FILTER_WHERE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_FILTER_JOIN,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,7 +57,7 @@ Filter_Join::Filter_Join(void)
 /*----------------------------------------------------------------------------*/
 Filter_Join::~Filter_Join(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_WHERE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_JOIN,_FOOTER_);
 }
 
 

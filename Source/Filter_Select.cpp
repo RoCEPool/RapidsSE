@@ -24,7 +24,7 @@ Filter_Select* CompilerStream::_pFilter_Select(void* aAddr)
 void* Filter_Select::operator new(size_t)
 {
   Filter_Select* pFilter_Select =
-    static_cast<Filter_Select*>(HeapMem::pAllocate(CN_FILTER_WHERE));
+    static_cast<Filter_Select*>(HeapMem::pAllocate(CN_FILTER_SELECT));
   
   return pFilter_Select;
 }
@@ -43,13 +43,13 @@ void Filter_Select::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Filter_Select::Filter_Select(void)
-: Filter(CN_FILTER_WHERE)
+: Filter(CN_FILTER_SELECT)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_WHERE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_SELECT,_FOOTER_);
 
-  _checkInitialised_(CN_FILTER_WHERE);
+  _checkInitialised_(CN_FILTER_SELECT);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_FILTER_WHERE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_FILTER_SELECT,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,7 +57,7 @@ Filter_Select::Filter_Select(void)
 /*----------------------------------------------------------------------------*/
 Filter_Select::~Filter_Select(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_WHERE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_SELECT,_FOOTER_);
 }
 
 
