@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Library.h"
+#include "Pool.h"
 
 //------------------------------------------------------------------------------
 
@@ -24,6 +24,7 @@ namespace Gadgets
 #include "Now.hpp"
 #include "SeeMe.hpp"
 #include "TempName.hpp"
+#include "Tick.hpp"
 #include "Timer.hpp"
 
 #include "ByteRate.hpp"

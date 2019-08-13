@@ -22,6 +22,7 @@ namespace StorageEngine
 #include "SizesDumps.hpp"
 #include "Finalizers.hpp"
 #include "Globals.hpp"
+#include "Portrait.hpp"
 
 #include "Engine.hpp"
 

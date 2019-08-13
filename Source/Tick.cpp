@@ -2,7 +2,7 @@
 /* Tick.cpp -- Tick reader (Hardward Clock or Time Stamp Counter              */
 /*============================================================================*/
 
-#include "Base.h"
+#include "Gadgets.h"
 
 #include "Asm.h"
 
