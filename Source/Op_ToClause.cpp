@@ -233,37 +233,28 @@ void Op_ToClause::vAsClauses(Stmt_Select* pStmt_Select)
     
     Token* pStmtTkn = pStmtTknVec->pGet(i_StmtTkn++);
     
-    if (pStmtTkn->bSame("from"_Stz)) {
+    if (pStmtTkn->bSame("from"_Stz))
       m_pClause_From = new Clause_From(pStmtTknVec,i_StmtTkn);
-    }
     else
-    if (pStmtTkn->bSame("group"_Stz)) {
+    if (pStmtTkn->bSame("group"_Stz))
       m_pClause_GroupBy = new Clause_GroupBy(pStmtTknVec,i_StmtTkn);
-    }
     else
-    if (pStmtTkn->bSame("join"_Stz)) {
+    if (pStmtTkn->bSame("join"_Stz))
       m_pClause_Join = new Clause_Join(pStmtTknVec,i_StmtTkn);
-    }
     else
-    if (pStmtTkn->bSame("limit"_Stz)) {
+    if (pStmtTkn->bSame("limit"_Stz))
       m_pClause_Limit = new Clause_Limit(pStmtTknVec,i_StmtTkn);
-    }
     else
-    if (pStmtTkn->bSame("order"_Stz)) {
+    if (pStmtTkn->bSame("order"_Stz))
       m_pClause_OrderBy = new Clause_OrderBy(pStmtTknVec,i_StmtTkn);
-    }
     else
-    if (pStmtTkn->bSame("select"_Stz)) {
+    if (pStmtTkn->bSame("select"_Stz))
       m_pClause_Select = new Clause_Select(pStmtTknVec,i_StmtTkn);
-    }
     else
-    if (pStmtTkn->bSame("where"_Stz)) {
+    if (pStmtTkn->bSame("where"_Stz))
       m_pClause_Where = new Clause_Where(pStmtTknVec,i_StmtTkn);
-    }
-    else {
-      i_StmtTkn++;
-    }
-    
+    else
+      i_StmtTkn++;    
   }
 }
 
