@@ -5,6 +5,8 @@
 
 namespace Transform
 {
+  typedef       HV <Record,ColumnVec>                            HV_Rec;
+  
   class IrwBuffer : public DataBuffer,
                     public MiniHeap_t<Row>
   {
@@ -26,7 +28,7 @@ namespace Transform
   
     Row* aFirstRow(void);
     Row* aNextRow(Row* aPriorRow);
-    void vShow(void);
+    void vShow(ColumnVec* pColVec);
     
   private:
     Footer* aFooter(void);

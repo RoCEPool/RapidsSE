@@ -61,6 +61,7 @@ OutputOp::OutputOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
   
   m_fpCall = OutputOp::eCall;
+  m_pStreamDef = nullptr;
   
   _checkInitialised_(CN_OUTPUTOP);
 
@@ -139,11 +140,16 @@ eOR OutputOp::eOpLoop(void)
     switch (pOperand->eClass()) {
         
       case CN_ENDMARKER:
-        vPipeOut(pOperand);
-        goto L_EXIT;
+        if (--m_nLeftEndMarkers == 0) {
+          vPipeOut(pOperand);
+          goto L_EXIT;
+        }
+        else
+          delete (EndMarker*)pOperand;
         break;
+        
       // -- -- -- -- -- --
-       
+        
       case CN_ENTBUFFER: {
         EntBuffer* pEntBuffer = _pEntBuffer(pOperand) ;
         pEntBuffer->vShow();
@@ -158,12 +164,30 @@ eOR OutputOp::eOpLoop(void)
         break;
       }
       
+      case CN_IRWBUFFER: {
+        IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
+        ColumnVec* pColumnVec = new ColumnVec;
+        for (i8 i_Col = 0; i_Col < m_pStreamDef->m_oColAry.nItems(); i_Col++)
+          pColumnVec->vAdd(m_pStreamDef->m_oColAry.pGet(i_Col));
+        pIrwBuffer->vShow(pColumnVec);
+        vPipeOut(pOperand);
+        break;
+      }
+        
       case CN_REFBUFFER: {
         RefBuffer* pRefBuffer = _pRefBuffer(pOperand) ;
         pRefBuffer->vShow();
         vPipeOut(pOperand);
         break;
       }
+        
+      case CN_STREAMDEF: {
+        StreamDef* pStreamDef = _pStreamDef(pOperand) ;
+        m_pStreamDef = new StreamDef(pStreamDef);
+        vPipeOut(pOperand);
+        break;
+      }
+        
       default:
         vPipeOut(pOperand);
         break;

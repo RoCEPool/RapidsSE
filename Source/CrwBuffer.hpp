@@ -47,6 +47,7 @@ namespace Rows
     void        vNextBuffer(CrwBuffer* pNextBuffer);
     CrwBuffer*  pPrevBuffer(void);
     void        vPrevBuffer(CrwBuffer* pPrevBuffer);
+    IrwBuffer*  pToIrwBuffer(void);
     void        vTruncate(void);
     
     ////////////////////////////////////////////////////////////////////////////

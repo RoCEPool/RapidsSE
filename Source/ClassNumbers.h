@@ -108,6 +108,7 @@ enum eCN : u2 // Class Number
   /*  45 0x2D      368B Heap:I */ CN_INDEX,
   /*  46 0x2E      184B Heap:S */ CN_INDEXTREE,
   /*  47 0x2F     8224B Heap:M */ CN_INDEXTREEVEC,
+  /*                           */ CN_INFLATEOP,
   /*  48 0x30     8216B Heap:M */ CN_IDXCOLVEC,
   /*  49 0x31     8224B Heap:M */ CN_IDXVEC,
   /*  50 0x32  1000096B Heap:L */ CN_INGESTCHUNK,
@@ -473,6 +474,7 @@ static Stz* aCN[]
   /*  45 0x2D */ "INDEX"_Stz,               // CN_INDEX
   /*  46 0x2E */ "INDEXTREE"_Stz,           // CN_INDEXTREE
   /*  47 0x2F */ "INDEXTREEVEC"_Stz,        // CN_INDEXTREEVEC
+  /*          */ "INFLATEOP"_Stz,           // CN_INFLATEOP
   /*  48 0x30 */ "IDXCOLVEC"_Stz,           // CN_IDXCOLVEC
   /*  49 0x31 */ "IDXVEC"_Stz,              // CN_IDXVEC
   /*  50 0x32 */ "INGESTCHUNK"_Stz,         // CN_INGESTCHUNK

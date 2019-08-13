@@ -62,7 +62,9 @@ Op::Op(eCN eClassNo, Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   m_pOpOut        = nullptr;
   m_bAppendRight  = bAppR;
 
-  m_nSlot         = -1;
+  m_nSlot            = -1;
+  m_nLeftEndMarkers  = 1;
+  m_nRightEndMarkers = 0;
   
   m_fpCall        = m_aOpDefn ? m_aOpDefn->m_fpCall  : nullptr;
   m_fpDrain       = m_aOpDefn ? m_aOpDefn->m_fpDrain : nullptr;

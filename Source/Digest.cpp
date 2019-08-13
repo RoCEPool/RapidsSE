@@ -190,6 +190,12 @@ void Digest::vParseCommand(TokenVec* pTknVec)
         pOp->vNextLabel(pOpNext->szLabel());
         pOp->vOpOut(pOpNext);
         
+        if (pOp->m_aOpDefn->m_bIsPartitioned && ! pOpNext->m_aOpDefn->m_bIsPartitioned)
+          pOpNext->m_nLeftEndMarkers = i_SlotsPerNode;
+        
+        if (pOp->m_bAppendRight)
+          pOpNext->m_nRightEndMarkers = pOpNext->m_nLeftEndMarkers;
+        
         // move to next partition of this operator
         i_Op++;
         pOp = m_oOpVec.pGet(i_Op);
@@ -211,8 +217,10 @@ void Digest::vParseCommand(TokenVec* pTknVec)
       if (pOpNext->m_bAppendRight) {
         
         // skip this appendRight operator
-        if (pOpNext->m_aOpDefn->m_bIsPartitioned)
+        if (pOpNext->m_aOpDefn->m_bIsPartitioned) {
+          
           i_OpNext = i_OpNext + i_SlotsPerNode - pOp->m_nSlot;
+        }
         else
           i_OpNext = i_OpNext + 1;
       }
@@ -220,6 +228,11 @@ void Digest::vParseCommand(TokenVec* pTknVec)
       // link the two operators
       pOp->vNextLabel(pOpNext->szLabel());
       pOp->vOpOut(pOpNext);
+      if (pOp->m_aOpDefn->m_bIsPartitioned && ! pOpNext->m_aOpDefn->m_bIsPartitioned)
+        pOpNext->m_nLeftEndMarkers = i_SlotsPerNode;
+      
+      if (pOp->m_bAppendRight)
+        pOpNext->m_nRightEndMarkers = pOpNext->m_nLeftEndMarkers;
       
       //move to next operator to be linked
       i_Op++;
@@ -242,11 +255,13 @@ void Digest::vParseCommand(TokenVec* pTknVec)
     s32 sArgs;
     sArgs.vSprint("(%s)"_Stz,pOp->szArgs());
     
-    vTrace("  [%02lld] { %9s: %8s%-24s :%-6s %s }\n"_Stz,
+    vTrace("  [%02lld] { %9s: %8s%-24s endMarkers(L%lld R%lld) :%-6s %s }\n"_Stz,
            i_Op,
            pOp->szLabel(),
            aCN[pOp->eClass()],
            sArgs.aStz(),
+           pOp->m_nLeftEndMarkers,
+           pOp->m_nRightEndMarkers,
            pOp->szNextLabel(),
            pOp->m_bAppendRight ? "appendRight"_Stz : "appendLeft "_Stz
            );

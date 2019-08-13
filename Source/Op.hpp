@@ -33,6 +33,8 @@ namespace Operators
     bool           m_bAppendRight;   // append to right queue?
   
     i8             m_nSlot;          // slot no
+    i8             m_nLeftEndMarkers;     // expected left end markers
+    i8             m_nRightEndMarkers;    // expected left end markers
     
     eOR (*m_fpCall) (void* aThisOp);  // function which calls the op loop
     eOR (*m_fpDrain)(void* aThisOp);  // function which calls the drain loop

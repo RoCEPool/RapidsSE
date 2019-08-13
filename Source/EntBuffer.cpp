@@ -1085,6 +1085,16 @@ void EntBuffer::vSpliceAfter(EntBuffer* pSplicedBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* generate an IrwBuffer from entry buffer                                    */
+/*----------------------------------------------------------------------------*/
+IrwBuffer* EntBuffer::pToIrwBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  
+  return new IrwBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* truncate this buffer by removing all entries                               */
 /*----------------------------------------------------------------------------*/
 void EntBuffer::vTruncate(void)

@@ -139,8 +139,12 @@ eOR Op_ToFilter::eOpLoop(void)
     switch (pOperand->eClass()) {
         
       case CN_ENDMARKER:
-        vPipeOut(pOperand);
-        goto L_EXIT;
+        if (--m_nLeftEndMarkers == 0) {
+          vPipeOut(pOperand);
+          goto L_EXIT;
+        }
+        else
+          delete (EndMarker*)pOperand;
         break;
         
         // -- -- -- -- -- --

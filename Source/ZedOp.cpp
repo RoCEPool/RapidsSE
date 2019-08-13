@@ -130,7 +130,10 @@ eOR ZedOp::eOpLoop(void)
         
       case CN_ENDMARKER:
         delete (EndMarker*)pOperand;
-        goto L_EXIT;
+        if (--m_nLeftEndMarkers == 0) {
+          goto L_EXIT;
+        }
+        break;
         
       // -- -- -- -- -- --
   

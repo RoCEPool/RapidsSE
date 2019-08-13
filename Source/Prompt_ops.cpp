@@ -26,6 +26,8 @@ PromptDesc __Prompt_ops (
 bool Prompt::bPrompt_ops(SePrompt* pPrompt)
 {
   gxOpCatalog.vHelp(CN_FETCHOP);
+  gxOpCatalog.vHelp(CN_INFLATEOP);
+  gxOpCatalog.vHelp(CN_JOINOP);
   gxOpCatalog.vHelp(CN_OUTPUTOP);
   gxOpCatalog.vHelp(CN_SCANOP);
   gxOpCatalog.vHelp(CN_ZEDOP);
