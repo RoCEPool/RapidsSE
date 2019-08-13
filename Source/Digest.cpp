@@ -146,33 +146,70 @@ void Digest::vParseCommand(TokenVec* pTknVec)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // link
-  
-  for (i8 i_Op = 0; i_Op < m_oOpVec.nItems() - 1; i_Op++) {
+  // link  
+  i_Op = 0;
+  Op* pOp = m_oOpVec.pGet(i_Op);
+  bool bNextIsPartition;
+  while (true) {
     
-    Op* pOp = m_oOpVec.pGet(i_Op);
-//    Op* pOpNext = (pOp->m_bAppendRight) ? m_oOpVec.pGet(i_Op + 2)
-//                                        : m_oOpVec.pGet(i_Op + 1);
     Op* pOpNext;
     i8 i_OpNext;
-    if (pOp->m_aOpDefn->m_bIsPartitioned)
-      i_OpNext = i_Op + i_SlotsPerNode - pOp->m_nSlot;
-    else
-      i_OpNext = i_Op + 1;
     
-    pOpNext = m_oOpVec.pGet(i_OpNext);
-    if (pOpNext->m_bAppendRight) {
-      if (pOp->m_aOpDefn->m_bIsPartitioned)
-        i_OpNext = i_Op + i_SlotsPerNode - pOp->m_nSlot + 2;
-      else
-        i_OpNext = i_Op + 2;
+    // get next operator
+    if (pOp->m_aOpDefn->m_bIsPartitioned) {
+      i_OpNext = i_Op + i_SlotsPerNode;
+    
+      pOpNext = m_oOpVec.pGet(i_OpNext);
+      
+      // is the next operator an appendRight ? skip it
+      if (pOpNext->m_bAppendRight) {
+        if (pOpNext->m_aOpDefn->m_bIsPartitioned) {
+          i_OpNext = i_OpNext + i_SlotsPerNode ;
+          bNextIsPartition = true;
+        }
+        else {
+          i_OpNext = i_OpNext + 1;
+          bNextIsPartition = false;
+        }
+      } else {
+        if (pOpNext->m_aOpDefn->m_bIsPartitioned) {
+          bNextIsPartition = true;
+        }
+        else {
+          bNextIsPartition = false;
+        }
+      }
+      
+      // now line this operator with the next
+      for (i8 i_Slot = 0; i_Slot < i_SlotsPerNode; i_Slot++) {
+        pOpNext = m_oOpVec.pGet(i_OpNext);
+        pOp->vNextLabel(pOpNext->szLabel());
+        pOp->vOpOut(pOpNext);
+        vTrace("Linking %s %s\n"_Stz, pOp->m_sLabel.aChar(), pOpNext->m_sLabel.aChar());
+        i_Op++;
+        pOp = m_oOpVec.pGet(i_Op);
+        if (pOpNext->m_aOpDefn->m_bIsPartitioned)
+          i_OpNext++;
+      }
     }
-    pOpNext = m_oOpVec.pGet(i_OpNext);
-    if (pOpNext->m_aOpDefn->m_bIsPartitioned)
-      pOpNext = m_oOpVec.pGet(i_OpNext + pOp->m_nSlot);
+    else {
+      i_OpNext = i_Op + 1;
+      pOpNext = m_oOpVec.pGet(i_OpNext);
+      if (pOpNext->m_bAppendRight) {
+        if (pOpNext->m_aOpDefn->m_bIsPartitioned)
+          i_OpNext = i_OpNext + i_SlotsPerNode - pOp->m_nSlot;
+        else
+          i_OpNext = i_OpNext + 1;
+      }
+      pOp->vNextLabel(pOpNext->szLabel());
+      pOp->vOpOut(pOpNext);
+      i_Op++;
+    }
+
+    if (i_Op == m_oOpVec.nItems() - 1)
+      break;
     
-    pOp->vNextLabel(pOpNext->szLabel());
-    pOp->vOpOut(pOpNext);
+    pOp = m_oOpVec.pGet(i_Op);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
