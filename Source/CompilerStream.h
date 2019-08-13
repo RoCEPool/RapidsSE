@@ -28,6 +28,7 @@ namespace CompilerStream
 #include "Clause_Where.hpp"
 
 #include "Cmd.hpp"
+#include "Cmd_Select.hpp"
 
 #include "Filter.hpp"
 #include "Filter_From.hpp"
