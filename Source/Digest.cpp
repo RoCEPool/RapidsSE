@@ -146,70 +146,88 @@ void Digest::vParseCommand(TokenVec* pTknVec)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // link  
+  // link the operators
+
   i_Op = 0;
-  Op* pOp = m_oOpVec.pGet(i_Op);
-  bool bNextIsPartition;
+  
   while (true) {
     
+    Op* pOp;
     Op* pOpNext;
     i8 i_OpNext;
     
+    // get operator to be linked
+    pOp = m_oOpVec.pGet(i_Op);
+    
     // get next operator
     if (pOp->m_aOpDefn->m_bIsPartitioned) {
+      
+      // figure out next operator
       i_OpNext = i_Op + i_SlotsPerNode;
     
+      // get the next operator
       pOpNext = m_oOpVec.pGet(i_OpNext);
       
-      // is the next operator an appendRight ? skip it
+      // is the next operator an appendRight ?
       if (pOpNext->m_bAppendRight) {
+        
+        // skip this appendRight operator
         if (pOpNext->m_aOpDefn->m_bIsPartitioned) {
           i_OpNext = i_OpNext + i_SlotsPerNode ;
-          bNextIsPartition = true;
         }
         else {
           i_OpNext = i_OpNext + 1;
-          bNextIsPartition = false;
-        }
-      } else {
-        if (pOpNext->m_aOpDefn->m_bIsPartitioned) {
-          bNextIsPartition = true;
-        }
-        else {
-          bNextIsPartition = false;
         }
       }
       
-      // now line this operator with the next
+      // now link this operator with the next we figured out
       for (i8 i_Slot = 0; i_Slot < i_SlotsPerNode; i_Slot++) {
+        
+        // get the next operator
         pOpNext = m_oOpVec.pGet(i_OpNext);
+        
+        // link the two operators
         pOp->vNextLabel(pOpNext->szLabel());
         pOp->vOpOut(pOpNext);
-        vTrace("Linking %s %s\n"_Stz, pOp->m_sLabel.aChar(), pOpNext->m_sLabel.aChar());
+        
+        // move to next partition of this operator
         i_Op++;
         pOp = m_oOpVec.pGet(i_Op);
+        
+        // move to next partition of next operator
         if (pOpNext->m_aOpDefn->m_bIsPartitioned)
           i_OpNext++;
       }
     }
     else {
+      
+      // not partitioned, figure out next operator
       i_OpNext = i_Op + 1;
+      
+      // get next operator
       pOpNext = m_oOpVec.pGet(i_OpNext);
+      
+      // is the next operator an appendRight ?
       if (pOpNext->m_bAppendRight) {
+        
+        // skip this appendRight operator
         if (pOpNext->m_aOpDefn->m_bIsPartitioned)
           i_OpNext = i_OpNext + i_SlotsPerNode - pOp->m_nSlot;
         else
           i_OpNext = i_OpNext + 1;
       }
+      
+      // link the two operators
       pOp->vNextLabel(pOpNext->szLabel());
       pOp->vOpOut(pOpNext);
+      
+      //move to next operator to be linked
       i_Op++;
     }
 
+    // are we done ?
     if (i_Op == m_oOpVec.nItems() - 1)
       break;
-    
-    pOp = m_oOpVec.pGet(i_Op);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
