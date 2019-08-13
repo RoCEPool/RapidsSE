@@ -62,6 +62,14 @@ Op_ToClause::Op_ToClause(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool 
   
   m_fpCall = Op_ToClause::eCall;
   
+  m_pClause_From    = nullptr;
+  m_pClause_GroupBy = nullptr;
+  m_pClause_Join    = nullptr;
+  m_pClause_Limit   = nullptr;
+  m_pClause_OrderBy = nullptr;
+  m_pClause_Select  = nullptr;
+  m_pClause_Where   = nullptr;
+  
   _checkInitialised_(CN_OP_TOCLAUSE);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OP_TOCLAUSE,_FOOTER_);
@@ -140,6 +148,7 @@ eOR Op_ToClause::eOpLoop(void)
         
       case CN_ENDMARKER:
         if (--m_nLeftEndMarkers == 0) {
+          vPipeClauses();
           vPipeOut(pOperand);
           goto L_EXIT;
         }
@@ -211,7 +220,7 @@ L_EXIT:
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* drain loop                                                                 */
+/* convert select statement into clauses                                      */
 /*----------------------------------------------------------------------------*/
 void Op_ToClause::vAsClauses(Stmt_Select* pStmt_Select)
 {
@@ -225,44 +234,61 @@ void Op_ToClause::vAsClauses(Stmt_Select* pStmt_Select)
     Token* pStmtTkn = pStmtTknVec->pGet(i_StmtTkn++);
     
     if (pStmtTkn->bSame("from"_Stz)) {
-      Clause_From* pClause_From = new Clause_From(pStmtTknVec,i_StmtTkn);
-      vPipeOut(pClause_From);
+      m_pClause_From = new Clause_From(pStmtTknVec,i_StmtTkn);
     }
     else
     if (pStmtTkn->bSame("group"_Stz)) {
-      Clause_GroupBy* pClause_GroupBy = new Clause_GroupBy(pStmtTknVec,i_StmtTkn);
-      vPipeOut(pClause_GroupBy);
+      m_pClause_GroupBy = new Clause_GroupBy(pStmtTknVec,i_StmtTkn);
     }
     else
     if (pStmtTkn->bSame("join"_Stz)) {
-      Clause_Join* pClause_Join = new Clause_Join(pStmtTknVec,i_StmtTkn);
-      vPipeOut(pClause_Join);
+      m_pClause_Join = new Clause_Join(pStmtTknVec,i_StmtTkn);
     }
     else
     if (pStmtTkn->bSame("limit"_Stz)) {
-      Clause_Limit* pClause_Limit = new Clause_Limit(pStmtTknVec,i_StmtTkn);
-      vPipeOut(pClause_Limit);
+      m_pClause_Limit = new Clause_Limit(pStmtTknVec,i_StmtTkn);
     }
     else
     if (pStmtTkn->bSame("order"_Stz)) {
-      Clause_OrderBy* pClause_OrderBy = new Clause_OrderBy(pStmtTknVec,i_StmtTkn);
-      vPipeOut(pClause_OrderBy);
+      m_pClause_OrderBy = new Clause_OrderBy(pStmtTknVec,i_StmtTkn);
     }
     else
     if (pStmtTkn->bSame("select"_Stz)) {
-      Clause_Select* pClause_Select = new Clause_Select(pStmtTknVec,i_StmtTkn);
-      vPipeOut(pClause_Select);
+      m_pClause_Select = new Clause_Select(pStmtTknVec,i_StmtTkn);
     }
     else
     if (pStmtTkn->bSame("where"_Stz)) {
-      Clause_Where* pClause_Where = new Clause_Where(pStmtTknVec,i_StmtTkn);
-      vPipeOut(pClause_Where);
+      m_pClause_Where = new Clause_Where(pStmtTknVec,i_StmtTkn);
     }
     else {
       i_StmtTkn++;
     }
     
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* pipe out the clauses                                                       */
+/*----------------------------------------------------------------------------*/
+void Op_ToClause::vPipeClauses(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TOCLAUSE,_FOOTER_);
+  
+  if (m_pClause_From)    vPipeOut(m_pClause_From);
+  if (m_pClause_Join)    vPipeOut(m_pClause_Join);
+  if (m_pClause_Select)  vPipeOut(m_pClause_Select);
+  if (m_pClause_GroupBy) vPipeOut(m_pClause_GroupBy);
+  if (m_pClause_Where)   vPipeOut(m_pClause_Where);
+  if (m_pClause_OrderBy) vPipeOut(m_pClause_OrderBy);
+  if (m_pClause_Limit)   vPipeOut(m_pClause_Limit);
+  
+  m_pClause_From    = nullptr;
+  m_pClause_GroupBy = nullptr;
+  m_pClause_Join    = nullptr;
+  m_pClause_Limit   = nullptr;
+  m_pClause_OrderBy = nullptr;
+  m_pClause_Select  = nullptr;
+  m_pClause_Where   = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

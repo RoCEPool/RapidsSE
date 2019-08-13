@@ -9,6 +9,14 @@ namespace CompilerOperators
   {
   private:
   
+    Clause_From*    m_pClause_From;
+    Clause_GroupBy* m_pClause_GroupBy;
+    Clause_Join*    m_pClause_Join;
+    Clause_Limit*   m_pClause_Limit;
+    Clause_OrderBy* m_pClause_OrderBy;
+    Clause_Select*  m_pClause_Select;
+    Clause_Where*   m_pClause_Where;
+
     // must be last
     Footer m_xFooter;
   
@@ -30,7 +38,8 @@ namespace CompilerOperators
 
   private:
     void vAsClauses(Stmt_Select* pStmt_Select);
-  
+    void vPipeClauses(void);
+
   private:
     Footer* aFooter(void);
   
