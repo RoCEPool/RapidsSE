@@ -97,7 +97,7 @@ void LogEntry::vWrite(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
   vWriteCsv(pFile,iEntryDeltaUsec,iTotalDeltaUsec);
   
   switch (m_eKind) {
-    case EK_INF: m_xItf.vWriteCsv(pFile); break;
+    case EK_INF: m_xInf.vWriteCsv(pFile); break;
     case EK_ITF: m_xItf.vWriteCsv(pFile); break;
     case EK_JOB: m_xJob.vWriteCsv(pFile); break;
     case EK_OP:  m_xOp.vWriteCsv(pFile);  break;

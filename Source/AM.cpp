@@ -416,7 +416,31 @@ void AM::vLogThd(i8 iThdId, eHA eThdAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
+  gpLog->iEntryThd(iThdId,eThdAct,szFormat,xVaArgs);
+
+  va_end(xVaArgs);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a transaction log entry                                                */
+/*----------------------------------------------------------------------------*/
+void AM::vLogTxn(i8 iTxnId, eXA eTxnAct, Stz* szFormat, ...)
+{
+#ifdef WITH_SHARED_LOG
+  if (! AM::bLogging())
+    return;
   
+  if (! (AM::pMarkAction()->bEnum(eTxnAct) ||
+         AM::pMarkAction()->bAll()) )
+    return;
+  
+  va_list xVaArgs;
+  
+  va_start(xVaArgs,szFormat);
+  
+  gpLog->iEntryTxn(iTxnId,eTxnAct,szFormat,xVaArgs);
+
   va_end(xVaArgs);
 #endif
 }
