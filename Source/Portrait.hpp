@@ -10,8 +10,6 @@ namespace StorageEngine
   public:
   
     static void vMemoryPortrait(s48K& sPortrait);
-    static void vMemoryStatistics(void);
-
   };
 }
 

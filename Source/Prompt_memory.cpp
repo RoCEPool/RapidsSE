@@ -30,7 +30,7 @@ bool Prompt::bPrompt_memory(SePrompt* pPrompt)
   if (3 == iNumTokens)
     bReset = pTokenVec->pGet(2)->bSame("reset"_Stz);
 
-  MemLib::vStatistics();
+  PromptHelper::vMemoryStatistics();
   
   if (bReset)
     MemLib::vReset();

@@ -56,7 +56,6 @@ namespace Correctness
     static i8    nRoundUp(i8 nBytes, i8 nSizeQuanta);
     static void  vScribble(void* aAddress, i8 nBytes, eCN eClassNo);
     static void  vSet(void* pDst, char bByte, i8 iTimes, eCN eClassNo);
-    static void  vStatistics(void);
     static void* aToBoundary(void* aAddress, i8 nByteBoundary);
     static void  vWordDump(void *aAddress, i8 iSize, i8 iHighlightWord=-1);
     static void  vWordFlip(w8* aWord);

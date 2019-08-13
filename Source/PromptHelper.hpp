@@ -17,6 +17,8 @@ namespace Prompt
                            Stz* szaEnumNm[],
                            i8   iEnumLimit,
                            TokenVec* pTknVec);
+  
+    static void vMemoryStatistics(void);
   };
 }
 

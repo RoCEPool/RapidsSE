@@ -56,7 +56,6 @@ void Step::vMemoryStatistics(MP_Task mpTask)
 {
   ENTRY("vMemoryStatistics"_Stz);
 
-  MemLib::vStatistics();
   
   EXIT();
 }
