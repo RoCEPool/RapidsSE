@@ -57,7 +57,7 @@ bool Pipe::bMake(Stz* sPipePath)
     return false;
   }
   
-  AM::vLogRes(0,RK_PIPE,RA_PIP_MADE,
+  AM::vLogRes(0,RA_PIP_MADE,RK_PIPE,
               "Pipe made : %s"_Stz,sPipePath->aChar());
 
   return true;
@@ -75,7 +75,7 @@ bool Pipe::bRemove(Stz* sPipePath)
     return false;
   }
   
-  AM::vLogRes(0,RK_PIPE,RA_PIP_REMOVED,
+  AM::vLogRes(0,RA_PIP_REMOVED,RK_PIPE,
               "Pipe removed : %s"_Stz,sPipePath->aChar());
   
   return true;

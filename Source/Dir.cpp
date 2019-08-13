@@ -184,7 +184,7 @@ void Dir::vClose(void)
   
   if (AM::bAttached()) AM::pResourceTracker()->vDecDirOpen();
   
-  AM::vLogRes(m_iResId,RK_DIR,RA_DIR_CLOSED,
+  AM::vLogRes(m_iResId,RA_DIR_CLOSED,RK_DIR,
               "Dir closed : %s"_Stz,m_sDirPath.aStz());
 
   m_aDir = nullptr;
@@ -262,7 +262,7 @@ bool Dir::bOpen(Stz* aDirPath)
 
   if (AM::bAttached()) AM::pResourceTracker()->vIncDirOpen();
   
-  AM::vLogRes(m_iResId,RK_DIR,RA_DIR_OPENED,
+  AM::vLogRes(m_iResId,RA_DIR_OPENED,RK_DIR,
               "Dir opened : %s"_Stz,aDirPath);
 
   ASSERT(bIsOpen());

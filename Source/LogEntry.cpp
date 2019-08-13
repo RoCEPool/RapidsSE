@@ -94,69 +94,24 @@ void LogEntry::vWrite(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
   //if (StrLib::bSame(m_xInf.m_caText,"delta reset"))
   //  iTotalDeltaUsec = 0;
   
+  vWriteCsv(pFile,iEntryDeltaUsec,iTotalDeltaUsec);
+  
   switch (m_eKind) {
-      
-    case EK_INF:
-      vWriteCsv(pFile,iEntryDeltaUsec,iTotalDeltaUsec);
-      m_xItf.vWriteCsv(pFile);
-      pFile->vPrint(",%s\n"_Stz,m_caText);
-      break;
-      
-    case EK_ITF:
-      vWriteCsv(pFile,iEntryDeltaUsec,iTotalDeltaUsec);
-      m_xItf.vWriteCsv(pFile);
-      pFile->vPrint(",%s\n"_Stz,m_caText);
-      break;
-      
-    case EK_JOB:
-      m_xJob.vWriteCsv(pFile,this,iEntryDeltaUsec,iTotalDeltaUsec);
-      break;
-      
-    case EK_OP:
-      vWriteCsv(pFile,iEntryDeltaUsec,iTotalDeltaUsec);
-      m_xOp.vWriteCsv(pFile);
-      pFile->vPrint(",%s\n"_Stz,m_caText);
-      break;
-      
-    case EK_PRM:
-      vWriteCsv(pFile,iEntryDeltaUsec,iTotalDeltaUsec);
-      m_xPrm.vWriteCsv(pFile);
-      pFile->vPrint(",%s\n"_Stz,m_caText);
-      break;
-      
-    case EK_RES:
-      vWriteCsv(pFile,iEntryDeltaUsec,iTotalDeltaUsec);
-      m_xRes.vWriteCsv(pFile);
-      pFile->vPrint(",%s\n"_Stz,m_caText);
-      break;
-
-    case EK_SVC:
-      vWriteCsv(pFile,iEntryDeltaUsec,iTotalDeltaUsec);
-      m_xSvc.vWriteCsv(pFile);
-      pFile->vPrint(",%s\n"_Stz,m_caText);
-      break;
-      
-    case EK_TSK:
-      vWriteCsv(pFile,iEntryDeltaUsec,iTotalDeltaUsec);
-      m_xTsk.vWriteCsv(pFile);
-      pFile->vPrint(",%s\n"_Stz,m_caText);
-      break;
-      
-    case EK_THD:
-      vWriteCsv(pFile,iEntryDeltaUsec,iTotalDeltaUsec);
-      m_xThd.vWriteCsv(pFile);
-      pFile->vPrint(",%s\n"_Stz,m_caText);
-      break;
-      
-    case EK_TXN:
-      vWriteCsv(pFile,iEntryDeltaUsec,iTotalDeltaUsec);
-      m_xTxn.vWriteCsv(pFile);
-      pFile->vPrint(",%s\n"_Stz,m_caText);
-      break;
-      
+    case EK_INF: m_xInf.vWriteCsv(pFile); break;
+    case EK_ITF: m_xItf.vWriteCsv(pFile); break;
+    case EK_JOB: m_xJob.vWriteCsv(pFile); break;
+    case EK_OP:  m_xOp.vWriteCsv(pFile);  break;
+    case EK_PRM: m_xPrm.vWriteCsv(pFile); break;
+    case EK_RES: m_xRes.vWriteCsv(pFile); break;
+    case EK_SVC: m_xSvc.vWriteCsv(pFile); break;
+    case EK_TSK: m_xTsk.vWriteCsv(pFile); break;
+    case EK_THD: m_xThd.vWriteCsv(pFile); break;
+    case EK_TXN: m_xTxn.vWriteCsv(pFile); break;
     default:
       NEVER_REACH;
   }
+  
+  pFile->vPrint(",%s\n"_Stz,m_caText);
 }
 
 /*----------------------------------------------------------------------------*/

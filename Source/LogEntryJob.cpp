@@ -7,40 +7,25 @@
 /*----------------------------------------------------------------------------*/
 /* set variable entry                                                         */
 /*----------------------------------------------------------------------------*/
-void _LogEntryJob::vSet(LogEntry* pLogEntry, i8 iJobId, i8 iForeign)
+void _LogEntryJob::vSet(LogEntry* pLogEntry, i8 iJobId, eJA eJobAct)
 {  
   pLogEntry->m_eKind = EK_JOB;
-
-  m_eLogNote = LN_TEXT;
   
-  m_iJobId   = iJobId;
-  m_iForeign = iForeign;
+  m_iJobId  = iJobId;
+  m_eJobAct = eJobAct;
 }
 
 /*----------------------------------------------------------------------------*/
 /* write to csv file                                                          */
 /*----------------------------------------------------------------------------*/
-void _LogEntryJob::vWriteCsv(File* pFile, LogEntry* pLogEntry,
-                             i8 iTickDeltaUsec, i8& iTotalDelta)
+void _LogEntryJob::vWriteCsv(File* pFile)
 {
-  pFile->vPrint("%lld,%lld,%lld,%lld,"
-                "%s,%s,%s,"
-                "%lld,%lld,"
-                "%s\n"_Stz,
+  SP_Id spId;
+  
+  pFile->vPrint(",%s,%s"_Stz,
                 
-                pLogEntry->m_i_Entry,
-                pLogEntry->m_iTick,
-                iTickDeltaUsec,
-                iTotalDelta,
-              
-                pLogEntry->m_caNode,
-                aEK[pLogEntry->m_eKind],
-                aLN[m_eLogNote],
-                
-                m_iJobId,
-                m_iForeign,
-                
-                pLogEntry->m_caText);
+                spId.sz(m_iJobId),
+                aJA[m_eJobAct]);
 }
 
 /*============================================================================*/

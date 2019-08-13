@@ -6,18 +6,14 @@
 //!                    ** Do not include StorageEngine.hpp **
 
 #include "eHA.h"
-
 #include "eIA.h"
-
+#include "eJA.h"
 #include "eOA.h"
-
+#include "ePA.h"
 #include "eRA.h"
 #include "eRK.h"
-
 #include "eTA.h"
-
 #include "eVA.h"
-
 #include "eXA.h"
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -156,11 +152,13 @@ namespace StorageEngine
 
     static void vLogInf(Stz* szFormat, ...);
     static void vLogItf(i8 iItfId, eIA eItfAct, Stz* szFormat, ...);
-    static void vLogOp(i8 iOpId,   eOA eOpAct,  Stz* szFormat, ...);
-    static void vLogRes(i8 iResId, eRK eSysRes, eRA eResAct, Stz* szFormat, ...);
+    static void vLogJob(i8 iJobId, eJA eJobAct, Stz* szFormat, ...);
+    static void vLogOp (i8 iOpId,  eOA eOpAct,  Stz* szFormat, ...);
+    static void vLogPrm(i8 iPrmId, ePA ePrmAct, Stz* szFormat, ...);
+    static void vLogRes(i8 iResId, eRA eResAct, eRK eSysRes, Stz* szFormat, ...);
     static void vLogSvc(i8 iSvcId, eVA eSvcAct, Stz* szFormat, ...);
-    static void vLogTsk(i8 iTskId, eTA eTskAct, Stz* szFormat, ...);
     static void vLogThd(i8 iThdId, eHA eThdAct, Stz* szFormat, ...);
+    static void vLogTsk(i8 iTskId, eTA eTskAct, Stz* szFormat, ...);
     static void vLogTxn(i8 iTxnId, eXA eTxnAct, Stz* szFormat, ...);
   };
 }

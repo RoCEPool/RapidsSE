@@ -263,7 +263,7 @@ bool Socket::bAcceptClient(int& iSocketId, SysCall& SysCall)
   
   if (AM::bAttached()) AM::pResourceTracker()->vIncSocketOpen();
   
-  AM::vLogRes(m_iResId,RK_SOCKET,RA_SKT_ACCEPTED,
+  AM::vLogRes(m_iResId,RA_SKT_ACCEPTED,RK_SOCKET,
               "Socket accepted : client"_Stz);
 
   SysCall.vSuccess();
@@ -300,7 +300,7 @@ bool Socket::bClose(SysCall& SysCall)
   
   if (AM::bAttached()) AM::pResourceTracker()->vDecSocketOpen();
   
-  AM::vLogRes(m_iResId,RK_SOCKET,RA_SKT_CLOSED,
+  AM::vLogRes(m_iResId,RA_SKT_CLOSED,RK_SOCKET,
               "Socket closed : "_Stz);
 
   SysCall.vSuccess();
@@ -369,7 +369,7 @@ bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
   
   if (AM::bAttached()) AM::pResourceTracker()->vIncSocketOpen();
   
-  AM::vLogRes(m_iResId,RK_SOCKET,RA_SKT_CONNECTED,
+  AM::vLogRes(m_iResId,RA_SKT_CONNECTED,RK_SOCKET,
               "Socket connected : to server %s %d"_Stz,sAddr,iPort);
 
   SysCall.vSuccess();
@@ -433,7 +433,7 @@ bool Socket::bCreateServer(int iPort, SysCall& SysCall)
   
   if (AM::bAttached()) AM::pResourceTracker()->vIncSocketOpen();
   
-  AM::vLogRes(m_iResId,RK_SOCKET,RA_SKT_CREATED,
+  AM::vLogRes(m_iResId,RA_SKT_CREATED,RK_SOCKET,
               "Socket created : listening socket : %d"_Stz,iPort);
 
   SysCall.vSuccess();
@@ -508,7 +508,7 @@ bool Socket::bRecvBytes(void* pWS, i8 nBytes, SysCall& SysCall)
     gpAttachMap->m_oStatistics.Socket.m_nRecvBytes += nRecvBytes;
 #endif
     
-  AM::vLogRes(m_iResId,RK_SOCKET,RA_SKT_RECEIVED,
+  AM::vLogRes(m_iResId,RA_SKT_RECEIVED,RK_SOCKET,
               "Socket received : %lld bytes"_Stz,nRecvBytes);
 
     //vTrace("Bytes received: (%lld) %lld\n"_Stz, nBytes, nSoFar);
@@ -541,7 +541,7 @@ bool Socket::bSendBytes(void* pBuffer, i8 nBytes, SysCall& SysCall)
   gpAttachMap->m_oStatistics.Socket.m_nSendBytes += nSentBytes;
 #endif
   
-  AM::vLogRes(m_iResId,RK_SOCKET,RA_SKT_SENT,
+  AM::vLogRes(m_iResId,RA_SKT_SENT,RK_SOCKET,
               "Socket sent : %lld bytes"_Stz,nSentBytes);
 
   if (nSentBytes == nBytes) {
