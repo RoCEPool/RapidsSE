@@ -25,7 +25,7 @@ namespace Rows
 
 static const i8 C_TRAY_ROWS = (C_SIZE_LARGE_OBJECT - C_1KB) / sizeof(HeadLine);
 
-typedef       HV <Record,ColumnVec>                            HV_Rec;
+//typedef       HV <Record,ColumnVec>                            HV_Rec;
 typedef       HV <Row,   ColumnVec>                            HV_Row;
 
 typedef    Nub_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,Table> RowNub;

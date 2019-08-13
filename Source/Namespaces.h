@@ -45,6 +45,7 @@ namespace Persistence   { class CarryOver;                                    }
 namespace Plans         {                                                     }
 namespace Pool          { class BufferPool; class HeapMem; class PoolBuffer;  }
 namespace Prompt        { class SePrompt;                                     }
+namespace Oblique       {                                                     }
 namespace Operators     { class Op; class Digest;                             }
 namespace Resources     { class ResourceTracker;                              }
 namespace Rows          { class CrwBuffer;                                    }
@@ -90,12 +91,13 @@ using namespace Library;
 using namespace Locking;
 using namespace Logging;
 using namespace MetaData;
+using namespace Oblique;
+using namespace Operators;
 using namespace Partitioning;
 using namespace Persistence;
 using namespace Plans;
 using namespace Pool;
 using namespace Prompt;
-using namespace Operators;
 using namespace Resources;
 using namespace Rows;
 using namespace ScanSprint;

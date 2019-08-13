@@ -2,7 +2,7 @@
 /* AM.cpp -- AttachMap helper                                                 */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "Oblique.h"
 
 extern AttachMap*  gpAttachMap;
 

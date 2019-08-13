@@ -705,7 +705,7 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::iToUnit(TAIL* aTail)
   i8 nBytes = nSub(aTail,m_axaUnits);
   
   // how far (in units) into m_axaUnits
-  i8 i_Unit = nBytes / (u8)sizeof(SpaceUnit);
+  i8 i_Unit = nBytes / (i8)sizeof(SpaceUnit);
   
   return i_Unit;
 }
