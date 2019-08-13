@@ -16,7 +16,6 @@ namespace Correctness
 //------------------------------------------------------------------------------
 
 
-#include "LimitsFormats.h"
 #include "Footer.hpp"
 #include "Header.hpp"
 #include "Debug.hpp"
