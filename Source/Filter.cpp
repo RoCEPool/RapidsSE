@@ -70,8 +70,11 @@ void Filter::vAsString(s4K& sFilterStr)
   
   sFilterStr = m_sName;
   
-  for (i8 i_Tkn = 1; m_pTokenVec->nTokens(); i_Tkn++)
+  for (i8 i_Tkn = 1; m_pTokenVec->nTokens(); i_Tkn++) {
+    if (i_Tkn > 1)
+      sFilterStr.vConcat(" "_Stz);
     sFilterStr.vConcat(m_pTokenVec->pGet(i_Tkn)->szText());
+  }
 }
 
 /*============================================================================*/

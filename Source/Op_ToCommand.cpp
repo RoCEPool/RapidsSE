@@ -147,8 +147,19 @@ eOR Op_ToCommand::eOpLoop(void)
           delete (EndMarker*)pOperand;
         break;
         
-        // -- -- -- -- -- --
+      // -- -- -- -- -- --
         
+      case CN_FILTER_FROM:
+      case CN_FILTER_GROUPBY:
+      case CN_FILTER_JOIN:
+      case CN_FILTER_LIMIT:
+      case CN_FILTER_ORDERBY:
+      case CN_FILTER_SELECT:
+      case CN_FILTER_WHERE:
+        vAppendFilter((Filter*)pOperand);
+        vPipeOut(pOperand);
+        break;
+
       default:
         vPipeOut(pOperand);
         break;
@@ -198,6 +209,28 @@ eOR Op_ToCommand::eDrainLoop(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_EXIT:
   return OR_EXIT;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+void Op_ToCommand::vAppendFilter(Filter* pFilter)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TOCOMMAND,_FOOTER_);
+  
+  if (! *m_sCommand.aChar()) {
+    pFilter->vAsString(m_sCommand);
+    return;
+  }
+  
+  s4K sFilter;
+  pFilter->vAsString(sFilter);
+  
+  m_sCommand.vConcat(" | "_Stz);
+  m_sCommand.vConcat(sFilter);
+
+  
 }
 
 /*----------------------------------------------------------------------------*/

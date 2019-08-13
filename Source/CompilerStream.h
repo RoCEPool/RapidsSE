@@ -27,6 +27,8 @@ namespace CompilerStream
 #include "Clause_SubQry.hpp"
 #include "Clause_Where.hpp"
 
+#include "Cmd.hpp"
+
 #include "Filter.hpp"
 #include "Filter_From.hpp"
 #include "Filter_GroupBy.hpp"
