@@ -189,6 +189,7 @@ void Digest::vParseCommand(TokenVec* pTknVec)
         // link the two operators
         pOp->vNextLabel(pOpNext->szLabel());
         pOp->vOpOut(pOpNext);
+        
         if (pOp->m_aOpDefn->m_bIsPartitioned && ! pOpNext->m_aOpDefn->m_bIsPartitioned)
           pOpNext->m_nLeftEndMarkers = i_SlotsPerNode;
         

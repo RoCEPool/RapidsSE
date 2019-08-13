@@ -72,7 +72,7 @@ void IrwBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   IrwBuffer* pIrwBuffer = _pIrwBuffer(pObject);
   
-  pIrwBuffer->vShow();
+  //pIrwBuffer->vShow();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -129,7 +129,7 @@ Row* IrwBuffer::aNextRow(Row* aPriorRow)
 /*----------------------------------------------------------------------------*/
 /* show contents of buffer                                                    */
 /*----------------------------------------------------------------------------*/
-void IrwBuffer::vShow(void)
+void IrwBuffer::vShow(ColumnVec* pColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_IRWBUFFER,_FOOTER_);
   
@@ -143,6 +143,13 @@ void IrwBuffer::vShow(void)
   
   vTrace("  partition: %lld \n"_Stz, m_iPartitionNo);
   
+  Row* pRow = aFirstRow();
+  HV_Rec hvRec(pColVec);
+  while (pRow) {
+    hvRec->vAppend(pRow);
+    pRow = aNextRow(pRow);
+    hvRec->vPrintRow();
+  }
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
 }

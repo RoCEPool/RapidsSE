@@ -21,6 +21,7 @@ namespace DataOperators
 #include "FetchOp.hpp"
 #include "GenerateOp.hpp"
 #include "HashOp.hpp"
+#include "InflateOp.hpp"
 #include "IntersectOp.hpp"
 #include "JoinOp.hpp"
 #include "LimitOp.hpp"

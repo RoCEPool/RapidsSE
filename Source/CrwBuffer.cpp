@@ -489,6 +489,41 @@ void CrwBuffer::vShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* generate an IrwBuffer from entry buffer                                    */
+/*----------------------------------------------------------------------------*/
+IrwBuffer* CrwBuffer::pToIrwBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
+  ColumnVec* pColVec = pTable()->pColumnVec();
+  
+  IrwBuffer* pIrwBuffer = new IrwBuffer;
+  Row* pRow;
+  
+  i8 nRows = nRowCount();
+  
+  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+    // get compact row
+    Crw* aCompactRow = (Crw*)m_oRowTray.pNub()->aGetHead(i_Row);
+    
+    pRow = pIrwBuffer->aAllotRow(pColVec);
+    if (! pRow) {
+      IrwBuffer* pNewIrwBuffer = new IrwBuffer;
+      pIrwBuffer->vNextBuffer(pNewIrwBuffer);
+      pNewIrwBuffer->vPrevBuffer(pIrwBuffer);
+      
+      pIrwBuffer = pNewIrwBuffer;
+      pRow = pIrwBuffer->aAllotRow(pColVec);
+    }
+    
+    // inflate compact row into row
+    RowInflator::vInflateRow(pRow,aCompactRow);
+  }
+  
+  return pIrwBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* truncate this buffer by removing all entries                               */
 /*----------------------------------------------------------------------------*/
 void CrwBuffer::vTruncate(void)

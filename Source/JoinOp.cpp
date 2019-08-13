@@ -125,7 +125,7 @@ void JoinOp::vAddRowRefs(Ent* aLeftEntry, Ent* aRightEntry)
   if ( ! pRefSet )  {
     // Reference Buffer is full
     
-    // pipe outt the refBuffer
+    // pipe out the refBuffer
     vPipeOut(m_pRefBuffer);
     
     // create another refBuffer for the refEnt's

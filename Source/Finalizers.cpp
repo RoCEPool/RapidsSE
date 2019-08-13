@@ -105,6 +105,7 @@ pFINALIZE *gpFinalize[]
   /* 51 */ &Index::vFinalize,             // CN_INDEX
   /* 52 */ &Finalize::vUndefined,         // CN_INDEXTREE
   /* 53 */ &Finalize::vUndefined,         // CN_INDEXTREEVEC
+  /*    */ &Finalize::vUndefined,         // CN_INFLATEOP
   /* 54 */ &Finalize::vUndefined,         // CN_IDXCOLVEC
   /* 55 */ &Finalize::vUndefined,         // CN_IDXVEC
   /*    */ &Finalize::vUndefined,         // CN_INGESTCHUNK

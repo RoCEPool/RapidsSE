@@ -118,6 +118,7 @@ namespace MetaData
     void        vShowSubList(void);
     void        vShowTree(bool bDumpBuffer=false);
     void        vSpliceAfter(EntBuffer* pSplicedBuffer);
+    IrwBuffer*  pToIrwBuffer(void);
     void        vTruncate(void);
     EntBuffer*  pUnlinkSubList(void);
     bool        bVerify(void);
