@@ -16,7 +16,7 @@ namespace CompilerStream
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Filter_SubQry(void);
+    Filter_SubQry(TokenVec* pTokenVec=nullptr);
    ~Filter_SubQry(void) noexcept(false);
 
     Footer* aFooter(void);

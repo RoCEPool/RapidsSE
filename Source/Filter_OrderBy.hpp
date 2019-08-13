@@ -16,7 +16,7 @@ namespace CompilerStream
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Filter_OrderBy(void);
+    Filter_OrderBy(TokenVec* pTokenVec=nullptr);
    ~Filter_OrderBy(void) noexcept(false);
 
     Footer* aFooter(void);

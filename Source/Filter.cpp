@@ -32,7 +32,7 @@ void Filter::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Filter::Filter(eCN eClassNo)
+Filter::Filter(eCN eClassNo, TokenVec* pTokenVec)
 : Operand(eClassNo)
 {
   _precondition_(_MAGIC_,eClassNo);
@@ -41,6 +41,8 @@ Filter::Filter(eCN eClassNo)
   
   // -- -- -- -- -- -- -- -- -- --
   
+  if (pTokenVec)
+    m_pTokenVec->vCopyVector(pTokenVec);
 }
 
 /*----------------------------------------------------------------------------*/

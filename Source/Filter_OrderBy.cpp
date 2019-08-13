@@ -42,8 +42,8 @@ void Filter_OrderBy::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Filter_OrderBy::Filter_OrderBy(void)
-: Filter(CN_FILTER_ORDERBY)
+Filter_OrderBy::Filter_OrderBy(TokenVec* pTokenVec)
+: Filter(CN_FILTER_ORDERBY,pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_ORDERBY,_FOOTER_);
 

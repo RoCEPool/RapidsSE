@@ -42,8 +42,8 @@ void Filter_SubQry::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Filter_SubQry::Filter_SubQry(void)
-: Filter(CN_FILTER_SUBQRY)
+Filter_SubQry::Filter_SubQry(TokenVec* pTokenVec)
+: Filter(CN_FILTER_SUBQRY,pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_SUBQRY,_FOOTER_);
 

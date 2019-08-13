@@ -16,7 +16,7 @@ namespace CompilerStream
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Filter_Where(void);
+    Filter_Where(TokenVec* pTokenVec=nullptr);
    ~Filter_Where(void) noexcept(false);
 
     Footer* aFooter(void);

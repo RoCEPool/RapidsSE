@@ -42,8 +42,8 @@ void Filter_GroupBy::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Filter_GroupBy::Filter_GroupBy(void)
-: Filter(CN_FILTER_GROUPBY)
+Filter_GroupBy::Filter_GroupBy(TokenVec* pTokenVec)
+: Filter(CN_FILTER_GROUPBY,pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_GROUPBY,_FOOTER_);
 

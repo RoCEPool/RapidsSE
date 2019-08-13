@@ -42,8 +42,8 @@ void Filter_Limit::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Filter_Limit::Filter_Limit(void)
-: Filter(CN_FILTER_LIMIT)
+Filter_Limit::Filter_Limit(TokenVec* pTokenVec)
+: Filter(CN_FILTER_LIMIT,pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_LIMIT,_FOOTER_);
 

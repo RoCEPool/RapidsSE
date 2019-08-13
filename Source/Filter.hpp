@@ -13,7 +13,7 @@ namespace CompilerStream
   public:
     void operator delete(void*);
   
-    Filter(eCN eClass);
+    Filter(eCN eClass, TokenVec* pTokenVec=nullptr);
    ~Filter(void) noexcept(false);
   };
 
