@@ -50,6 +50,7 @@ enum eCN : u2 // Class Number
   /*                           */ CN_CLAUSE_SELECT,
   /*                           */ CN_CLAUSE_SUBQRY,
   /*                           */ CN_CLAUSE_WHERE,
+  /*                           */ CN_CMD_SELECT,
   /*  24 0x18      120B Heap:S */ CN_COLUMN,
   /*  25 0x19     8216B Heap:M */ CN_COLUMNVEC,
   /*                           */ CN_COMBINEOP,
@@ -416,6 +417,7 @@ static Stz* aCN[]
   /*          */ "CLAUSE_SELECT"_Stz,       // CN_CLAUSE_SELECT
   /*          */ "CLAUSE_SUBQRY"_Stz,       // CN_CLAUSE_SUBQRY
   /*          */ "CLAUSE_WHERE"_Stz,        // CN_CLAUSE_WHERE
+  /*          */ "CMD_SELECT"_Stz,          // CN_CMD_SELECT
   /*  24 0x18 */ "COLUMN"_Stz,              // CN_COLUMN
   /*  25 0x19 */ "COLUMNVEC"_Stz,           // CN_COLUMNVEC
   /*          */ "COMBINEOP"_Stz,           // CN_COMBINEOP

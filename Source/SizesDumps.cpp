@@ -52,6 +52,7 @@ pDUMPFUN *gpDump[]
   /* 31 */ &Dump::vDummy,           // CN_CLAUSE_SELECT
   /* 31 */ &Dump::vDummy,           // CN_CLAUSE_SUBQRY
   /* 31 */ &Dump::vDummy,           // CN_CLAUSE_WHERE
+  /* 31 */ &Dump::vDummy,           // CN_CMD_SELECT
   /* 32 */ &Dump::vDummy,           // CN_COLUMNVEC
   /* 32 */ &Dump::vDummy,           // CN_COMBINEOP
   /*    */ &Dump::vDummy,           // CN_COMMAND
@@ -421,6 +422,7 @@ i8 giClassSize[]
   /*    */ sizeof(Clause_Select),      // CN_CLAUSE_SELECT
   /*    */ sizeof(Clause_SubQry),      // CN_CLAUSE_SUBQRY
   /*    */ sizeof(Clause_Where),       // CN_CLAUSE_WHERE
+  /*    */ 0,//sizeof(Cmd_Select),       // CN_CMD_SELECT
   /* 31 */ sizeof(Column),             // CN_COLUMN
   /* 32 */ sizeof(ColumnVec),          // CN_COLUMNVEC
   /* 32 */ sizeof(CombineOp),          // CN_COMBINEOP
@@ -789,6 +791,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_CLAUSE_SELECT
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_CLAUSE_SUBQRY
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_CLAUSE_WHERE
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_CMD_SELECT
   /*    */ HT_TRANSIENT_SMALL,   // CN_COLUMN
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_COLUMNVEC
   /*    */ HT_TRANSIENT_SMALL,   // CN_COMBINEOP
