@@ -334,7 +334,8 @@ eOR JoinOp::eJoinLoop(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pipe out the joined buffer
-  vPipeOut(m_pRefBuffer);
+  if (m_pRefBuffer)
+    vPipeOut(m_pRefBuffer);
   
   vTrace("JOIN COMPLETE\n"_Stz);
   
@@ -368,11 +369,19 @@ eOR JoinOp::ePopLeftOperand()
     }
     
     if (CN_ENDMARKER == pLeftOperand->eClass()) {
+      
       EndMarker* pEndMarker = _pEndMarker(pLeftOperand);
-      m_bEndLeftOperands = true;
-      delete pEndMarker;
-      m_pLeftBuffer = nullptr;
-      return OR_NONE;
+      
+      if (--m_nLeftEndMarkers == 0) {
+        m_bEndLeftOperands = true;
+        delete pEndMarker;
+        m_pLeftBuffer = nullptr;
+        return OR_NONE;
+      }
+      else {
+        delete pEndMarker;
+        continue;
+      }
     }
     
     break;
@@ -407,10 +416,17 @@ eOR JoinOp::ePopRightOperand()
     
     if (CN_ENDMARKER == pRightOperand->eClass()) {
       EndMarker* pEndMarker = _pEndMarker(pRightOperand);
-      m_bEndRightOperands = true;
-      delete pEndMarker;
-      m_pRightBuffer = nullptr;
-      return OR_NONE;
+      
+      if (--m_nRightEndMarkers == 0) {
+        m_bEndRightOperands = true;
+        delete pEndMarker;
+        m_pLeftBuffer = nullptr;
+        return OR_NONE;
+      }
+      else {
+        delete pEndMarker;
+        continue;
+      }
     }
     
     break;
