@@ -377,6 +377,29 @@ void AM::vLogInf(Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add a prompt log entry                                                     */
+/*----------------------------------------------------------------------------*/
+void AM::vLogPrm(i8 iPrmId, ePA ePrmAct, Stz* szFormat, ...)
+{
+#ifdef WITH_SHARED_LOG
+  if (! AM::bLogging())
+    return;
+  
+  if (! (AM::pMarkAction()->bEnum(ePrmAct) ||
+         AM::pMarkAction()->bAll()) )
+    return;
+  
+  va_list xVaArgs;
+  
+  va_start(xVaArgs,szFormat);
+  
+  gpLog->iEntryPrm(iPrmId,ePrmAct,szFormat,xVaArgs);
+  
+  va_end(xVaArgs);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
 /* add a resource log entry                                                   */
 /*----------------------------------------------------------------------------*/
 void AM::vLogRes(i8 iResId, eRA eResAct, eRK eSysRes, Stz* szFormat, ...)
