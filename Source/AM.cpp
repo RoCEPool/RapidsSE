@@ -400,6 +400,29 @@ void AM::vLogItf(i8 iItfId, eIA eItfAct, Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add a interface log entry                                                  */
+/*----------------------------------------------------------------------------*/
+void AM::vLogJob(i8 iJobId, eJA eJobAct, Stz* szFormat, ...)
+{
+#ifdef WITH_SHARED_LOG
+  if (! AM::bLogging())
+    return;
+  
+  if (! (AM::pMarkAction()->bEnum(eJobAct) ||
+         AM::pMarkAction()->bAll()) )
+    return;
+  
+  va_list xVaArgs;
+  
+  va_start(xVaArgs,szFormat);
+  
+  gpLog->iEntryJob(iJobId,eJobAct,szFormat,xVaArgs);
+  
+  va_end(xVaArgs);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
 /* add a operator log entry                                                   */
 /*----------------------------------------------------------------------------*/
 void AM::vLogOp(i8 iOpId, eOA eOpAct, Stz* szFormat, ...)
