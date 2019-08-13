@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Op_ToFilter.cpp -- To Data Op's operator                                     */
+/* Op_ToFilter.cpp -- To Filter Op's operator                                 */
 /*============================================================================*/
 
 #include "CompilerOperators.h"

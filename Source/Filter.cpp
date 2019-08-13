@@ -37,6 +37,7 @@ Filter::Filter(eCN eClassNo, TokenVec* pTokenVec)
 {
   _precondition_(_MAGIC_,eClassNo);
   
+  m_sName = "<none>"_Stz;
   m_pTokenVec = new TokenVec(false);
   
   // -- -- -- -- -- -- -- -- -- --
@@ -53,6 +54,24 @@ Filter::~Filter(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   delete m_pTokenVec;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Filter::vAsString(s4K& sFilterStr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  sFilterStr = m_sName;
+  
+  for (i8 i_Tkn = 1; m_pTokenVec->nTokens(); i_Tkn++)
+    sFilterStr.vConcat(m_pTokenVec->pGet(i_Tkn)->szText());
 }
 
 /*============================================================================*/
