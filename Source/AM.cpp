@@ -358,7 +358,7 @@ void AM::vWriteTrace(Stz* aFormat, va_list xArgs)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add a text log entry                                                       */
+/* add a info log entry                                                       */
 /*----------------------------------------------------------------------------*/
 void AM::vLogInf(Stz* szFormat, ...)
 {
@@ -373,6 +373,52 @@ void AM::vLogInf(Stz* szFormat, ...)
   gpLog->iEntryInf(szFormat,xArgs);
   
   va_end(xArgs);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a interface log entry                                                  */
+/*----------------------------------------------------------------------------*/
+void AM::vLogItf(i8 iItfId, eIA eItfAct, Stz* szFormat, ...)
+{
+#ifdef WITH_SHARED_LOG
+  if (! AM::bLogging())
+    return;
+  
+  if (! (AM::pMarkAction()->bEnum(eItfAct) ||
+         AM::pMarkAction()->bAll()) )
+    return;
+  
+  va_list xVaArgs;
+  
+  va_start(xVaArgs,szFormat);
+  
+  gpLog->iEntryItf(iItfId,eItfAct,szFormat,xVaArgs);
+  
+  va_end(xVaArgs);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a operator log entry                                                   */
+/*----------------------------------------------------------------------------*/
+void AM::vLogOp(i8 iOpId, eOA eOpAct, Stz* szFormat, ...)
+{
+#ifdef WITH_SHARED_LOG
+  if (! AM::bLogging())
+    return;
+  
+  if (! (AM::pMarkAction()->bEnum(eOpAct) ||
+         AM::pMarkAction()->bAll()) )
+    return;
+  
+  va_list xVaArgs;
+  
+  va_start(xVaArgs,szFormat);
+  
+  gpLog->iEntryOp(iOpId,eOpAct,szFormat,xVaArgs);
+  
+  va_end(xVaArgs);
 #endif
 }
 
@@ -417,6 +463,29 @@ void AM::vLogRes(i8 iResId, eRA eResAct, eRK eSysRes, Stz* szFormat, ...)
   va_start(xVaArgs,szFormat);
   
   gpLog->iEntryRes(iResId,eResAct,eSysRes,szFormat,xVaArgs);
+  
+  va_end(xVaArgs);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a service log entry                                                    */
+/*----------------------------------------------------------------------------*/
+void AM::vLogSvc(i8 iSvcId, eVA eSvcAct, Stz* szFormat, ...)
+{
+#ifdef WITH_SHARED_LOG
+  if (! AM::bLogging())
+    return;
+  
+  if (! (AM::pMarkAction()->bEnum(eSvcAct) ||
+         AM::pMarkAction()->bAll()) )
+    return;
+  
+  va_list xVaArgs;
+  
+  va_start(xVaArgs,szFormat);
+  
+  gpLog->iEntrySvc(iSvcId,eSvcAct,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif
