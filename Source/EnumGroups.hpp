@@ -38,7 +38,6 @@ enum e_EG // enum groups
   _EG_JT,
   _EG_KC,
   _EG_LK,
-  _EG_LN,
   _EG_OK,
   _EG_PF,
   _EG_PK,

@@ -207,7 +207,7 @@ void Log::vNoteString(i8 iJobId, s48K& sString)
     
     StrLib::vCopyLen(pLogEntry->m_caText,sLine.aChar(),C_LOG_TEXT - 1);
 
-    pLogEntry->m_xJob.vSet(pLogEntry,iJobId,bForeign);
+    pLogEntry->m_xJob.vSet(pLogEntry,iJobId,JA_NONE);
   }
   
   gpLog->vDropLock();
@@ -396,7 +396,7 @@ i8 Log::iEntryJob_arg(i8 iJobId, i8 iForeign, Stz* aFormat, va_list xVaArgs)
   
   StrLib::vCopyLen(pLogEntry->m_caText,caMark,C_LOG_TEXT - 1);
   
-  pLogEntry->m_xJob.vSet(pLogEntry,iJobId,iForeign);
+  pLogEntry->m_xJob.vSet(pLogEntry,iJobId,JA_NONE);
 
   return pLogEntry->m_i_Entry;
 }
