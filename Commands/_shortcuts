@@ -9,6 +9,7 @@ shortcut a _lineitemay ;
 // ray's - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 shortcut r  _lineitemrjh ;
+shortcut s  _select ;
 shortcut sc startCluster ;
 
 shortcut;
