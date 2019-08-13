@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+using namespace Base;
+
 static const i8 C_0B = 0;
 static const i8 C_1B = 1;
 static const i8 C_2B = 2;

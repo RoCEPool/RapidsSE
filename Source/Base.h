@@ -9,6 +9,7 @@
 #include "CompiledWith.h"
 #include "MachineTypes.h"
 #include "SystemIncludes.h"
+#include "UsefulConstants.h"
 #include "Namespaces.h"
 
 //------------------------------------------------------------------------------
@@ -26,7 +27,6 @@ namespace Base
 #include "i3.hpp"
 #include "Null.hpp"
 #include "Structs.h"
-#include "UsefulConstants.h"
 #include "WordAsBytes.h"
 
 /*============================================================================*/
