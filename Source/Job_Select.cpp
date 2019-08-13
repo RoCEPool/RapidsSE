@@ -110,7 +110,7 @@ Job_Select::Job_Select(Session* pSession)
   m_pDigest = new Digest(this);
   
   m_pToClause  = new Op_ToClause  ("ToClause"_Stz,  m_pDigest,nullptr,false);
-  m_pToFilter    = new Op_ToFilter    ("ToData"_Stz,    m_pDigest,nullptr,false);
+  m_pToFilter  = new Op_ToFilter  ("ToFilter"_Stz,  m_pDigest,nullptr,false);
   m_pToCommand = new Op_ToCommand ("ToCommand"_Stz, m_pDigest,nullptr,false);
   m_pToDo      = new Op_ToDo      ("ToDo"_Stz,      m_pDigest,nullptr,false);
   m_pZed       = new ZedOp        ("Zed"_Stz,       m_pDigest,nullptr,false);

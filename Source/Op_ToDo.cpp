@@ -5,14 +5,14 @@
 #include "CompilerOperators.h"
 
 OpDesc __Op_ToDo (
-   CN_OP_TODO,         // class number
-   OK_SIMPLE,           // op kind
-   "ToClause"_Stz,      // first word of prompt command
-   "Dta"_Stz,           // prefix
-   false,               // not partitioned
-   Op_ToDo::pNew,      // function which parses the command and new's an op
-   Op_ToDo::eCall,     // function which calls the op loop
-   Op_ToDo::eDrain,    // function which calls the drain loop
+   CN_OP_TODO,      // class number
+   OK_SIMPLE,       // op kind
+   "ToDo"_Stz,      // first word of prompt command
+   "ToDo"_Stz,      // prefix
+   false,           // not partitioned
+   Op_ToDo::pNew,   // function which parses the command and new's an op
+   Op_ToDo::eCall,  // function which calls the op loop
+   Op_ToDo::eDrain, // function which calls the drain loop
    
    "<help>"_Stz
 );

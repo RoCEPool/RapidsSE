@@ -5,14 +5,14 @@
 #include "CompilerOperators.h"
 
 OpDesc __Op_ToFilter (
-   CN_OP_TOFILTER,         // class number
+   CN_OP_TOFILTER,      // class number
    OK_SIMPLE,           // op kind
-   "ToClause"_Stz,      // first word of prompt command
-   "Dta"_Stz,           // prefix
+   "ToFilter"_Stz,      // first word of prompt command
+   "ToFilter"_Stz,      // prefix
    false,               // not partitioned
-   Op_ToFilter::pNew,      // function which parses the command and new's an op
-   Op_ToFilter::eCall,     // function which calls the op loop
-   Op_ToFilter::eDrain,    // function which calls the drain loop
+   Op_ToFilter::pNew,   // function which parses the command and new's an op
+   Op_ToFilter::eCall,  // function which calls the op loop
+   Op_ToFilter::eDrain, // function which calls the drain loop
    
    "<help>"_Stz
 );
