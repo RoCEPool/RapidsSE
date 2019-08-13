@@ -16,6 +16,7 @@ namespace Correctness   {                                                     }
 namespace DataOperators {                                                     }
 namespace Debugging     {                                                     }
 namespace Enums         {                                                     }
+namespace Esses         {                                                     }
 namespace Forth         { class Cell; class Dic; class ForthWord;             }
 namespace Gadgets       { class EnumFlags;                                    }
 namespace Grids         { class Grid; class Node;                             }
@@ -68,6 +69,7 @@ using namespace Correctness;
 using namespace DataOperators;
 using namespace Debugging;
 using namespace Enums;
+using namespace Esses;
 using namespace Forth;
 using namespace Gadgets;
 using namespace Grids;

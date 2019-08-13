@@ -21,6 +21,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   Correctness::vCheckAssumptions();
   ClassData::vCheckAssumptions();
   Enums::vCheckAssumptions();
+  Esses::vCheckAssumptions();
   Host::vCheckAssumptions();
   Locking::vCheckAssumptions();
   Alignment::vCheckAssumptions();
