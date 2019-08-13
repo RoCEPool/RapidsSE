@@ -379,7 +379,7 @@ void AM::vLogInf(Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a resource log entry                                                   */
 /*----------------------------------------------------------------------------*/
-void AM::vLogRes(i8 iResId, eRK eSysRes, eRA eResAct, Stz* szFormat, ...)
+void AM::vLogRes(i8 iResId, eRA eResAct, eRK eSysRes, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -393,7 +393,7 @@ void AM::vLogRes(i8 iResId, eRK eSysRes, eRA eResAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  gpLog->iEntryRes(iResId,eSysRes,eResAct,szFormat,xVaArgs);
+  gpLog->iEntryRes(iResId,eResAct,eSysRes,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif

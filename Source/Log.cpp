@@ -431,7 +431,7 @@ i8 Log::iEntryJob(i8 iJobId, eJA eJobAct, Stz* szFormat, va_list xVaArgs)
 /*----------------------------------------------------------------------------*/
 /* add a resource log entry                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryRes(i8 iResId, eRK eResKnd, eRA eResAct, Stz* szFormat, va_list xVaArgs)
+i8 Log::iEntryRes(i8 iResId, eRA eResAct, eRK eResKnd, Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   

@@ -234,7 +234,7 @@ void File::vClose(void)
   
   if (AM::bAttached()) AM::pResourceTracker()->vDecFileOpen();
   
-  AM::vLogRes(m_iResId,RK_FILE,RA_FIL_CLOSED,
+  AM::vLogRes(m_iResId,RA_FIL_CLOSED,RK_FILE,
               "File closed : %s"_Stz,m_sFilePath.aStz());
 
   vReset();
@@ -419,7 +419,7 @@ bool File::bOpenMode(Stz* aFilePath, Stz* aOpenMode)
   
   if (AM::bAttached()) AM::pResourceTracker()->vIncFileOpen();
   
-  AM::vLogRes(m_iResId,RK_FILE,RA_FIL_OPENED,
+  AM::vLogRes(m_iResId,RA_FIL_OPENED,RK_FILE,
               "File opened : %s %s"_Stz,aFilePath,aOpenMode);
 
   return true;

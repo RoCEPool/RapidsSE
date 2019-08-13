@@ -153,9 +153,9 @@ namespace StorageEngine
     static void vLogInf(Stz* szFormat, ...);
     static void vLogItf(i8 iItfId, eIA eItfAct, Stz* szFormat, ...);
     static void vLogJob(i8 iJobId, eJA eJobAct, Stz* szFormat, ...);
-    static void vLogOp(i8 iOpId,   eOA eOpAct,  Stz* szFormat, ...);
+    static void vLogOp (i8 iOpId,  eOA eOpAct,  Stz* szFormat, ...);
     static void vLogPrm(i8 iPrmId, ePA ePrmAct, Stz* szFormat, ...);
-    static void vLogRes(i8 iResId, eRK eSysRes, eRA eResAct, Stz* szFormat, ...);
+    static void vLogRes(i8 iResId, eRA eResAct, eRK eSysRes, Stz* szFormat, ...);
     static void vLogThd(i8 iThdId, eHA eThdAct, Stz* szFormat, ...);
     static void vLogSvc(i8 iSvcId, eVA eSvcAct, Stz* szFormat, ...);
     static void vLogTsk(i8 iTskId, eTA eTskAct, Stz* szFormat, ...);
