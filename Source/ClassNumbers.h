@@ -335,6 +335,8 @@ enum eCN : u2 // Class Number
   /*                           */ CN_SPTME,
   /*                           */ CN_SPTSP,
   /*                           */ CN_SPVCH,
+  /*                           */ CN_SRTBUFFER,
+  /*                           */ CN_SRTSET,
   /* 189 0xBD  1043520B Heap:L */ CN_STACK,
   /* 190 0xBE    12824B Heap:I */ CN_STATISTICS,
   /* 191 0xBF       64B Heap:S */ CN_STEPACCUM,
@@ -695,7 +697,7 @@ static Stz* aCN[]
   /* 188 0xBC */ "SNIVL"_Stz,               // CN_SNIVL
   /* 188 0xBC */ "SNTME"_Stz,               // CN_SNTME
   /* 188 0xBC */ "SMTSP"_Stz,               // CN_SNTSP
-  /* 188 0xBC */ "SNVCH"_Stz,               // CN_SPVCH
+  /* 188 0xBC */ "SNVCH"_Stz,               // CN_SNVCH
   /* 188 0xBC */ "SOCKET"_Stz,              // CN_SOCKET
   /* 188 0xBC */ "SORTOP"_Stz,              // CN_SORTOP
   /* 188 0xBC */ "SPBCD"_Stz,               // CN_SPBCD
@@ -708,6 +710,8 @@ static Stz* aCN[]
   /* 188 0xBC */ "SPTME"_Stz,               // CN_SPTME
   /* 188 0xBC */ "SPTSP"_Stz,               // CN_SPTSP
   /* 188 0xBC */ "SPVCH"_Stz,               // CN_SPVCH
+  /*          */ "SRTBUFFER"_Stz,           // CN_SRTBUFFER
+  /*          */ "SRTSET"_Stz,              // CN_SRTSET
   /* 189 0xBD */ "STACK"_Stz,               // CN_STACK
   /* 190 0xBE */ "STATISTICS"_Stz,          // CN_STATISTICS
   /* 191 0xBF */ "STEPACCUM"_Stz,           // CN_STEPACCUM

@@ -333,6 +333,8 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_SPTME
   /*    */ &Finalize::vUndefined,         // CN_SPTSP
   /*    */ &Finalize::vUndefined,         // CN_SPVCH
+  /*    */ &Finalize::vUndefined,         // CN_SRTBUFFER
+  /*    */ &Finalize::vUndefined,         // CN_SRTSET
   /*126 */ &Finalize::vUndefined,         // CN_STACK
   /*    */ &Finalize::vUndefined,         // CN_STATISTICS
   /*127 */ &Finalize::vUndefined,         // CN_STEPACCUM
