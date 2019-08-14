@@ -4,11 +4,11 @@
 
 #include "DataOperators.h"
 
-OpDesc __Op_Output (
+OpDesc __Op_GetKeyOp (
    CN_GETKEYOP,         // class number
    OK_SIMPLE,           // op kind
-   "Output"_Stz,        // first word of prompt command
-   "Out"_Stz,           // prefix
+   "GetKeyOp"_Stz,      // first word of prompt command
+   "gky"_Stz,           // prefix
    false,               // not partitioned
    GetKeyOp::pNew,      // function which parses the command and new's an op
    GetKeyOp::eCall,     // function which calls the op loop
