@@ -459,7 +459,7 @@ i8 giClassSize[]
   /*    */ sizeof(FetchBuffer),        // CN_FETCHBUFFER
   /*    */ sizeof(FetchOp),            // CN_FETCHOP
   /* 39 */ sizeof(File),               // CN_FILE
-  /*    */ 0,//sizeof(Filter_Fetch),        // CN_FILTER_FETCH
+  /*    */ sizeof(Filter_Fetch),       // CN_FILTER_FETCH
   /*    */ sizeof(Filter_From),        // CN_FILTER_FROM
   /*    */ sizeof(Filter_GroupBy),     // CN_FILTER_GROUPBY
   /*    */ sizeof(Filter_Inflate),     // CN_FILTER_INFLATE
@@ -468,11 +468,11 @@ i8 giClassSize[]
   /*    */ sizeof(Filter_OrderBy),     // CN_FILTER_ORDERBY
   /*    */ sizeof(Filter_Output),      // CN_FILTER_OUTPUT
   /*    */ sizeof(Filter_Project),     // CN_FILTER_PROJECT
-  /*    */ 0,//sizeof(Filter_Scan),     // CN_FILTER_SCAN
+  /*    */ sizeof(Filter_Scan),        // CN_FILTER_SCAN
   /*    */ sizeof(Filter_Select),      // CN_FILTER_SELECT
   /*    */ sizeof(Filter_SubQry),      // CN_FILTER_SUBQRY
   /*    */ sizeof(Filter_Where),       // CN_FILTER_WHERE
-  /*    */ 0,//sizeof(Filter_Zed),       // CN_FILTER_ZED
+  /*    */ sizeof(Filter_Zed),         // CN_FILTER_ZED
   /*    */ sizeof(ForthClump),         // CN_FORTHCLUMP
   /* 40 */ sizeof(Formatters),         // CN_FORMATTERS
   /* 41 */ sizeof(PoolBuffer),         // CN_FREEBUFFER
