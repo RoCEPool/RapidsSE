@@ -47,6 +47,7 @@ typedef TrayNL_t <CN_ROWTRAY,HeadLine,OverLine,TailLine,Table,
 #include "RefSet.hpp"
 #include "RefBuffer.hpp"
 
+#include "SrtSet.hpp"
 
 #include "BufferCursor.hpp"
 #include "IntBuffer.hpp"

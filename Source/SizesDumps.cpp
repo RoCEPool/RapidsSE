@@ -718,7 +718,7 @@ i8 giClassSize[]
   /*    */ sizeof(SP_Tsp),             // CN_SPTSP
   /*    */ sizeof(SP_Vch),             // CN_SPVCH
   /*    */ sizeof(SP_Vch),             // CN_SRTBUFFER
-  /*    */ sizeof(SP_Vch),             // CN_SRTSET
+  /*    */ sizeof(SrtSet),             // CN_SRTSET
   /*126 */ sizeof(Stack),              // CN_STACK
   /*    */ sizeof(Statistics),         // CN_STATISTICS
   /*127 */ sizeof(StepAccum),          // CN_STEPACCUM
