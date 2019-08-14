@@ -155,8 +155,10 @@ eOR Op_ToCommand::eOpLoop(void)
       case CN_FILTER_JOIN:
       case CN_FILTER_LIMIT:
       case CN_FILTER_ORDERBY:
+      case CN_FILTER_OUTPUT:
       case CN_FILTER_SELECT:
       case CN_FILTER_WHERE:
+      case CN_FILTER_ZED:
         vCollectFilter((Filter*)pOperand);
         //vPipeOut(pOperand);
         break;
