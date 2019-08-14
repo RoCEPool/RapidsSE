@@ -147,7 +147,12 @@ eOR Op_ToDo::eOpLoop(void)
           delete (EndMarker*)pOperand;
         break;
         
-        // -- -- -- -- -- --
+      // -- -- -- -- -- --
+        
+      case CN_CMD_SELECT:
+        vTrace("  cmd: %\n"_Stz,((Cmd_Select*)pOperand)->szCmd());
+        vPipeOut(pOperand);
+        break;
         
       default:
         vPipeOut(pOperand);

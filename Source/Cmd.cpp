@@ -57,7 +57,7 @@ Cmd::~Cmd(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Stz* Cmd::szCmd(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CMD_SELECT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   return m_sCmd.aStz();
 }
