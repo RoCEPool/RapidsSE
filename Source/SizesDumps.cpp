@@ -82,6 +82,7 @@ pDUMPFUN *gpDump[]
   /* 38 */ &Dump::vInvalid,         // CN_FETCHBUFFER
   /* 38 */ &Dump::vInvalid,         // CN_FETCHOP
   /* 39 */ &Dump::vInvalid,         // CN_FILE
+  /* 31 */ &Dump::vDummy,           // CN_FILTER_FETCH
   /* 31 */ &Dump::vDummy,           // CN_FILTER_FROM
   /* 31 */ &Dump::vDummy,           // CN_FILTER_GROUPBY
   /* 31 */ &Dump::vDummy,           // CN_FILTER_INFLATE
@@ -90,6 +91,7 @@ pDUMPFUN *gpDump[]
   /* 31 */ &Dump::vDummy,           // CN_FILTER_ORDERBY
   /* 31 */ &Dump::vDummy,           // CN_FILTER_OUTPUT
   /* 31 */ &Dump::vDummy,           // CN_FILTER_PROJECT
+  /* 31 */ &Dump::vDummy,           // CN_FILTER_SCAN
   /* 31 */ &Dump::vDummy,           // CN_FILTER_SELECT
   /* 31 */ &Dump::vDummy,           // CN_FILTER_SUBQRY
   /* 31 */ &Dump::vDummy,           // CN_FILTER_WHERE
@@ -457,15 +459,17 @@ i8 giClassSize[]
   /*    */ sizeof(FetchBuffer),        // CN_FETCHBUFFER
   /*    */ sizeof(FetchOp),            // CN_FETCHOP
   /* 39 */ sizeof(File),               // CN_FILE
+  /*    */ 0,//sizeof(Filter_Fetch),        // CN_FILTER_FETCH
   /*    */ sizeof(Filter_From),        // CN_FILTER_FROM
   /*    */ sizeof(Filter_GroupBy),     // CN_FILTER_GROUPBY
-  /*    */ 0,//sizeof(Filter_Inflate),     // CN_FILTER_INFLATE
+  /*    */ sizeof(Filter_Inflate),     // CN_FILTER_INFLATE
   /*    */ sizeof(Filter_Join),        // CN_FILTER_JOIN
   /*    */ sizeof(Filter_Limit),       // CN_FILTER_LIMIT
   /*    */ sizeof(Filter_OrderBy),     // CN_FILTER_ORDERBY
-  /*    */ 0,//sizeof(Filter_Output),     // CN_FILTER_OUTPUT
-  /*    */ 0,//sizeof(Filter_Project),     // CN_FILTER_PROJECT
+  /*    */ sizeof(Filter_Output),      // CN_FILTER_OUTPUT
+  /*    */ sizeof(Filter_Project),     // CN_FILTER_PROJECT
   /*    */ sizeof(Filter_Select),      // CN_FILTER_SELECT
+  /*    */ 0,//sizeof(Filter_Scan),     // CN_FILTER_SCAN
   /*    */ sizeof(Filter_SubQry),      // CN_FILTER_SUBQRY
   /*    */ sizeof(Filter_Where),       // CN_FILTER_WHERE
   /*    */ 0,//sizeof(Filter_Zed),       // CN_FILTER_ZED
@@ -830,6 +834,7 @@ eHT geWhichHeap[]
   /* 38 */ HT_TRANSIENT_LARGE,   // CN_FETCHBUFFER
   /* 38 */ HT_TRANSIENT_SMALL,   // CN_FETCHOP
   /* 39 */ HT_TRANSIENT_SMALL,   // CN_FILE
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_FETCH
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_FROM
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_GROUPBY
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_INFLATE
@@ -838,6 +843,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_ORDERBY
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_OUTPUT
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_PROJECT
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_SCAN
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_SELECT
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_SUBQRY
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_WHERE
