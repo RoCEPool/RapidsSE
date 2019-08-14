@@ -468,8 +468,8 @@ i8 giClassSize[]
   /*    */ sizeof(Filter_OrderBy),     // CN_FILTER_ORDERBY
   /*    */ sizeof(Filter_Output),      // CN_FILTER_OUTPUT
   /*    */ sizeof(Filter_Project),     // CN_FILTER_PROJECT
-  /*    */ sizeof(Filter_Select),      // CN_FILTER_SELECT
   /*    */ 0,//sizeof(Filter_Scan),     // CN_FILTER_SCAN
+  /*    */ sizeof(Filter_Select),      // CN_FILTER_SELECT
   /*    */ sizeof(Filter_SubQry),      // CN_FILTER_SUBQRY
   /*    */ sizeof(Filter_Where),       // CN_FILTER_WHERE
   /*    */ 0,//sizeof(Filter_Zed),       // CN_FILTER_ZED
