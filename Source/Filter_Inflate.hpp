@@ -1,0 +1,30 @@
+/*============================================================================*/
+/* Filter_Inflate.hpp -- Inflate Filter operand                               */
+/*============================================================================*/
+#pragma once
+
+namespace CompilerStream
+{
+  class Filter_Inflate : public Filter
+  {
+  private:
+  
+    // must be last
+    Footer m_xFooter;
+
+  public:
+    void* operator new(size_t);
+    void  operator delete(void*);
+  
+    Filter_Inflate(TokenVec* pTokenVec=nullptr);
+   ~Filter_Inflate(void) noexcept(false);
+
+    Footer* aFooter(void);
+  };
+
+  Filter_Inflate* _pFilter_Inflate(void* aAddr);
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
