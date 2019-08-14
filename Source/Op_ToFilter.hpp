@@ -14,8 +14,10 @@ namespace CompilerOperators
     Filter_Join*    m_pFilter_Join;
     Filter_Limit*   m_pFilter_Limit;
     Filter_OrderBy* m_pFilter_OrderBy;
+    Filter_Output*  m_pFilter_Output;
     Filter_Select*  m_pFilter_Select;
     Filter_Where*   m_pFilter_Where;
+    Filter_Zed*     m_pFilter_Zed;
 
     // must be last
     Footer m_xFooter;

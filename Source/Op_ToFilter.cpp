@@ -69,7 +69,9 @@ Op_ToFilter::Op_ToFilter(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool 
   m_pFilter_OrderBy = nullptr;
   m_pFilter_Select  = nullptr;
   m_pFilter_Where   = nullptr;
-  
+  m_pFilter_Output  = nullptr;
+  m_pFilter_Zed     = nullptr;
+
   _checkInitialised_(CN_OP_TOFILTER);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OP_TOFILTER,_FOOTER_);
@@ -148,6 +150,13 @@ eOR Op_ToFilter::eOpLoop(void)
         
       case CN_ENDMARKER:
         if (--m_nLeftEndMarkers == 0) {
+          
+          m_pFilter_Output = new Filter_Output(nullptr);
+          vPipeOut(m_pFilter_Output);
+
+          m_pFilter_Zed = new Filter_Zed(nullptr);
+          vPipeOut(m_pFilter_Zed);
+          
           vPipeOut(pOperand);
           goto L_EXIT;
         }
