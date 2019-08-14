@@ -4,6 +4,20 @@
 
 #include "DataOperators.h"
 
+OpDesc __Op_Sort (
+  CN_SORTOP,          // class number
+  OK_SIMPLE,          // op kind
+  "Sort"_Stz,         // first word of prompt command
+  "Srt"_Stz,          // prefix
+  true,               // partitioned
+  SortOp::pNew,       // function which parses the command and new's an op
+  SortOp::eCall,      // function which calls the op loop
+  nullptr,            // function which calls the drain loop
+
+  "<help>"_Stz
+  );
+
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -42,12 +56,13 @@ void SortOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SortOp::SortOp(Stz* szOpLabel, Digest* pDigest)
+SortOp::SortOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
 : Op(CN_SORTOP,szOpLabel,pDigest,nullptr,false)
 {
   _precondition_(_MAGIC_,CN_SORTOP);
   
-  m_fpCall = SortOp::eCallLoop;
+  m_sSortKey = ""_Stz;
+  m_fpCall = SortOp::eCall;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SORTOP,_FOOTER_);
 }
@@ -65,9 +80,27 @@ SortOp::~SortOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* parse & new                                                                */
+/*----------------------------------------------------------------------------*/
+Op* SortOp::pNew(Stz* szLabel,
+                 Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
+                 TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
+{
+  i_Tkn_++;
+  
+  SortOp* pScanOp = new SortOp(szLabel,pDigest,aOpDefn,bAppR);
+  
+  pScanOp->m_sSortKey = pTknVec->pGet(i_Tkn_++)->szText();
+
+  pScanOp->m_nSlot = i_Slot;
+  
+  return pScanOp;
+}
+
+/*----------------------------------------------------------------------------*/
 /* call the sort loop function                                               */
 /*----------------------------------------------------------------------------*/
-eOR SortOp::eCallLoop(void* aThis)
+eOR SortOp::eCall(void* aThis)
 {
   eOR eCallAgain = ((SortOp*)aThis)->eSortLoop();
   
