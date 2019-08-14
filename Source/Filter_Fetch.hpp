@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Filter_Output.hpp -- Output Filter operand                                 */
+/* Filter_Fetch.hpp -- Fetch Filter operand                                   */
 /*============================================================================*/
 #pragma once
 
 namespace CompilerStream
 {
-  class Filter_Output : public Filter
+  class Filter_Fetch : public Filter
   {
   private:
   
@@ -16,13 +16,13 @@ namespace CompilerStream
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Filter_Output(TokenVec* pTokenVec=nullptr);
-   ~Filter_Output(void) noexcept(false);
+    Filter_Fetch(TokenVec* pTokenVec=nullptr);
+   ~Filter_Fetch(void) noexcept(false);
 
     Footer* aFooter(void);
   };
 
-  Filter_Output* _pFilter_Output(void* aAddr);
+  Filter_Fetch* _pFilter_Fetch(void* aAddr);
 }
 
 /*============================================================================*/

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Filter_Output.cpp -- Output Filter operand                                 */
+/* Filter_Fetch.cpp -- Fetch Filter operand                                   */
 /*============================================================================*/
 
 #include "CompilerStream.h"
@@ -11,9 +11,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Filter_Output* CompilerStream::_pFilter_Output(void* aAddr)
+Filter_Fetch* CompilerStream::_pFilter_Fetch(void* aAddr)
 {
-  Filter_Output* pOp = reinterpret_cast<Filter_Output*>(aAddr);
+  Filter_Fetch* pOp = reinterpret_cast<Filter_Fetch*>(aAddr);
   
   return pOp;
 }
@@ -21,18 +21,18 @@ Filter_Output* CompilerStream::_pFilter_Output(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* allocate from heap                                                         */
 /*----------------------------------------------------------------------------*/
-void* Filter_Output::operator new(size_t)
+void* Filter_Fetch::operator new(size_t)
 {
-  Filter_Output* pFilter_Output =
-    static_cast<Filter_Output*>(HeapMem::pAllocate(CN_FILTER_OUTPUT));
+  Filter_Fetch* pFilter_Fetch =
+    static_cast<Filter_Fetch*>(HeapMem::pAllocate(CN_FILTER_FETCH));
   
-  return pFilter_Output;
+  return pFilter_Fetch;
 }
 
 /*----------------------------------------------------------------------------*/
 /* free back to the heap                                                      */
 /*----------------------------------------------------------------------------*/
-void Filter_Output::operator delete(void* aAddress)
+void Filter_Fetch::operator delete(void* aAddress)
 {
   Object* pObject = static_cast<Object*>(aAddress);
   
@@ -42,24 +42,24 @@ void Filter_Output::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Filter_Output::Filter_Output(TokenVec* pTokenVec)
-: Filter(CN_FILTER_OUTPUT,pTokenVec)
+Filter_Fetch::Filter_Fetch(TokenVec* pTokenVec)
+: Filter(CN_FILTER_FETCH,pTokenVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_OUTPUT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_FETCH,_FOOTER_);
 
-  m_sName = "output"_Stz;
+  m_sName = "fetch"_Stz;
   
-  _checkInitialised_(CN_FILTER_OUTPUT);
+  _checkInitialised_(CN_FILTER_FETCH);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_FILTER_OUTPUT,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_FILTER_FETCH,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Filter_Output::~Filter_Output(void) noexcept(false)
+Filter_Fetch::~Filter_Fetch(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_OUTPUT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_FETCH,_FOOTER_);
 }
 
 
@@ -67,7 +67,7 @@ Filter_Output::~Filter_Output(void) noexcept(false)
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__aFooterFunction(Filter_Output);
+__aFooterFunction(Filter_Fetch);
 
 
 /*============================================================================*/

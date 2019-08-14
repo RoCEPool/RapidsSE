@@ -31,6 +31,7 @@ namespace CompilerStream
 #include "Cmd_Select.hpp"
 
 #include "Filter.hpp"
+#include "Filter_Fetch.hpp"
 #include "Filter_From.hpp"
 #include "Filter_GroupBy.hpp"
 #include "Filter_Inflate.hpp"
@@ -39,6 +40,7 @@ namespace CompilerStream
 #include "Filter_OrderBy.hpp"
 #include "Filter_Output.hpp"
 #include "Filter_Project.hpp"
+#include "Filter_Scan.hpp"
 #include "Filter_Select.hpp"
 #include "Filter_SubQry.hpp"
 #include "Filter_Where.hpp"
