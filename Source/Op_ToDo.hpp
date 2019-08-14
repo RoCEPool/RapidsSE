@@ -29,6 +29,7 @@ namespace CompilerOperators
     eOR eDrainLoop(void);
 
   private:
+    void vPromptHandOff(Cmd_Select* pCmd_Select);
     Footer* aFooter(void);
   };
 

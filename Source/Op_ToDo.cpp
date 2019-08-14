@@ -150,7 +150,7 @@ eOR Op_ToDo::eOpLoop(void)
       // -- -- -- -- -- --
         
       case CN_CMD_SELECT:
-        vTrace("  cmd: %s\n"_Stz,((Cmd_Select*)pOperand)->szCmd());
+        vPromptHandOff((Cmd_Select*)pOperand);
         vPipeOut(pOperand);
         break;
         
@@ -203,6 +203,21 @@ eOR Op_ToDo::eDrainLoop(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_EXIT:
   return OR_EXIT;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* give command to prompt to execute                                          */
+/*----------------------------------------------------------------------------*/
+void Op_ToDo::vPromptHandOff(Cmd_Select* pCmd_Select)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TODO,_FOOTER_);
+  
+  vTrace("  cmd: %s\n"_Stz,pCmd_Select->szCmd());
 }
 
 /*----------------------------------------------------------------------------*/
