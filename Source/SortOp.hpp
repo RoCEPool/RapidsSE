@@ -29,9 +29,6 @@ namespace DataOperators
     static eOR eCall(void* aThis);
     
   private:
-    BufferCursor* pPartitionBuffer(IntBuffer* pIntBuffer, BufferCursor* pLowCursor,
-                                           BufferCursor* pHighCursor);
-    void vQuickSortBuffer(IntBuffer* pIntBuffer, BufferCursor* pLowCursor, BufferCursor* pHighCursor);
     eOR eSortLoop(void);
     Footer* aFooter(void);
   };
