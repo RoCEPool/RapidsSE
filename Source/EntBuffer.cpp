@@ -1097,7 +1097,7 @@ IrwBuffer* EntBuffer::pToIrwBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* set prev buffer                                                            */
 /*----------------------------------------------------------------------------*/
-SrtBuffer* EntBuffer::pToSrtBuffer(void)
+SrtBuffer* EntBuffer::pToSrtBuffer(i8 iKeyCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -1120,10 +1120,10 @@ SrtBuffer* EntBuffer::pToSrtBuffer(void)
     pSrtSet->vRowRef(0, (i8)aCrw);
     
     // get the key from the row
-    RowInflator::vInflateColumn(hRow, aCrw, 0);
+    RowInflator::vInflateColumn(hRow, aCrw, iKeyCol);
     
     // set the key in the srtSet
-    pSrtSet->vKey(hRow->m_waColVal[0].m_iI8);
+    pSrtSet->vKey(hRow->m_waColVal[iKeyCol].m_iI8);
     
     aEntry = aNextEntry(aEntry,0);
   }

@@ -96,13 +96,13 @@ Op* SortOp::pNew(Stz* szLabel,
 {
   i_Tkn_++;
   
-  SortOp* pScanOp = new SortOp(szLabel,pDigest,aOpDefn,bAppR);
+  SortOp* pSortOp = new SortOp(szLabel,pDigest,aOpDefn,bAppR);
   
-  pScanOp->m_sSortKey = pTknVec->pGet(i_Tkn_++)->szText();
+  pSortOp->m_sSortKey = pTknVec->pGet(i_Tkn_++)->szText();
 
-  pScanOp->m_nSlot = i_Slot;
+  pSortOp->m_nSlot = i_Slot;
   
-  return pScanOp;
+  return pSortOp;
 }
 
 /*----------------------------------------------------------------------------*/
