@@ -1095,6 +1095,43 @@ IrwBuffer* EntBuffer::pToIrwBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set prev buffer                                                            */
+/*----------------------------------------------------------------------------*/
+SrtBuffer* EntBuffer::pToSrtBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  
+  HV_Row hRow(m_pIndex->pTable()->pColumnVec());
+  SrtBuffer* pSrtBuffer = new SrtBuffer(m_iPartitionNo);
+  
+  Ent* aEntry = aLeadEntry();
+  while (aEntry) {
+    
+    SrtSet* pSrtSet = pSrtBuffer->aAllotSrtSet(1);
+    RASSERT(pSrtSet);
+    
+    // get the rowBuffer
+    CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(aEntry->xRef());
+    
+    // get the dataRow
+    Crw* aCrw = pCrwBuffer->pCrw(aEntry->iItem());
+    
+    // set the rowData in the srtSet
+    pSrtSet->vRowRef(0, (i8)aCrw);
+    
+    // get the key from the row
+    RowInflator::vInflateColumn(hRow, aCrw, 0);
+    
+    // set the key in the srtSet
+    pSrtSet->vKey(hRow->m_waColVal[0].m_iI8);
+    
+    aEntry = aNextEntry(aEntry,0);
+  }
+  
+  return pSrtBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* truncate this buffer by removing all entries                               */
 /*----------------------------------------------------------------------------*/
 void EntBuffer::vTruncate(void)
