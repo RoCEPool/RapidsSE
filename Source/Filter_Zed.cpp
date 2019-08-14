@@ -24,7 +24,7 @@ Filter_Zed* CompilerStream::_pFilter_Zed(void* aAddr)
 void* Filter_Zed::operator new(size_t)
 {
   Filter_Zed* pFilter_Zed =
-    static_cast<Filter_Zed*>(HeapMem::pAllocate(CN_FILTER_FROM));
+    static_cast<Filter_Zed*>(HeapMem::pAllocate(CN_FILTER_ZED));
   
   return pFilter_Zed;
 }
@@ -43,15 +43,15 @@ void Filter_Zed::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Filter_Zed::Filter_Zed(TokenVec* pTokenVec)
-: Filter(CN_FILTER_FROM,pTokenVec)
+: Filter(CN_FILTER_ZED,pTokenVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_FROM,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_ZED,_FOOTER_);
 
   m_sName = "zed"_Stz;
   
-  _checkInitialised_(CN_FILTER_FROM);
+  _checkInitialised_(CN_FILTER_ZED);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_FILTER_FROM,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_FILTER_ZED,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -59,7 +59,7 @@ Filter_Zed::Filter_Zed(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 Filter_Zed::~Filter_Zed(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_FROM,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_ZED,_FOOTER_);
 }
 
 

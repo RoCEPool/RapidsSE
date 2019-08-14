@@ -24,7 +24,7 @@ Filter_Output* CompilerStream::_pFilter_Output(void* aAddr)
 void* Filter_Output::operator new(size_t)
 {
   Filter_Output* pFilter_Output =
-    static_cast<Filter_Output*>(HeapMem::pAllocate(CN_FILTER_FROM));
+    static_cast<Filter_Output*>(HeapMem::pAllocate(CN_FILTER_OUTPUT));
   
   return pFilter_Output;
 }
@@ -43,15 +43,15 @@ void Filter_Output::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Filter_Output::Filter_Output(TokenVec* pTokenVec)
-: Filter(CN_FILTER_FROM,pTokenVec)
+: Filter(CN_FILTER_OUTPUT,pTokenVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_FROM,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_OUTPUT,_FOOTER_);
 
   m_sName = "output"_Stz;
   
-  _checkInitialised_(CN_FILTER_FROM);
+  _checkInitialised_(CN_FILTER_OUTPUT);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_FILTER_FROM,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_FILTER_OUTPUT,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -59,7 +59,7 @@ Filter_Output::Filter_Output(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 Filter_Output::~Filter_Output(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_FROM,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_OUTPUT,_FOOTER_);
 }
 
 
