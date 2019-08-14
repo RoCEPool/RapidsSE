@@ -105,6 +105,7 @@ pDUMPFUN *gpDump[]
   
   /*    */ &Dump::vInvalid,         // CN_GENERATEOP
   /*    */ &Dump::vInvalid,         // CN_GENVAR
+  /*    */ &Dump::vInvalid,         // CN_GETKEYOP
   /* 48 */ &Grid::vDump,            // CN_GRID
   
   /*    */ &Dump::vDummy,           // CN_HASHBUFFER
@@ -484,6 +485,7 @@ i8 giClassSize[]
   
   /*    */ sizeof(GenerateOp),         // CN_GENERATEOP
   /*    */ sizeof(GenVar),             // CN_GENVAR
+  /*    */ sizeof(GenVar),             // CN_GETKEYOP
   /* 48 */ sizeof(Grid),               // CN_GRID
   
   /*    */ sizeof(HashBuffer),         // CN_HASHBUFFER
@@ -717,7 +719,7 @@ i8 giClassSize[]
   /*    */ sizeof(SP_Tme),             // CN_SPTME
   /*    */ sizeof(SP_Tsp),             // CN_SPTSP
   /*    */ sizeof(SP_Vch),             // CN_SPVCH
-  /*    */ sizeof(SP_Vch),             // CN_SRTBUFFER
+  /*    */ sizeof(SrtBuffer),          // CN_SRTBUFFER
   /*    */ sizeof(SrtSet),             // CN_SRTSET
   /*126 */ sizeof(Stack),              // CN_STACK
   /*    */ sizeof(Statistics),         // CN_STATISTICS
@@ -861,6 +863,7 @@ eHT geWhichHeap[]
   
   /*    */ HT_TRANSIENT_SMALL,   // CN_GENERATEOP
   /*    */ HT_INVALID,           // CN_GENVAR
+  /*    */ HT_INVALID,           // CN_GETKEYOP
   /* 48 */ HT_TRANSIENT_LARGE,   // CN_GRID
 
   /*    */ HT_TRANSIENT_LARGE,   // CN_HASHBUFFER

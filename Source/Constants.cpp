@@ -205,6 +205,7 @@ void Constants::vAddConstants(void)
   /* 22 */ vAddConstant("CN_FREECHUNK"_Stz,    CN_FREECHUNK);
   
   /*    */ vAddConstant("CN_GENVAR"_Stz,       CN_GENVAR);
+  /*    */ vAddConstant("CN_GETKEYOP"_Stz,     CN_GETKEYOP);
   /* 26 */ vAddConstant("CN_GRID"_Stz,         CN_GRID);
   
   /* 27 */ vAddConstant("CN_HASHBUFFER"_Stz,   CN_HASHBUFFER);

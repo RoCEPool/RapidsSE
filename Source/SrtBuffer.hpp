@@ -26,10 +26,10 @@ namespace Rows
     
     RefSet* aAllotRefSet(i8 nRowRefs);
   
-    RefSet* aFirstRefSet(void);
+    SrtSet* aFirstRefSet(void);
     void    vIsLast(bool bIsLast);
     bool    bIsLast(void);
-    RefSet* aNextRefSet(RefSet* aPriorRefSet);
+    SrtSet* aNextRefSet(SrtSet* aPriorSrtSet);
     void    vShow(void);
     
   private:

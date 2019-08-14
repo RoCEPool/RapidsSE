@@ -101,6 +101,7 @@ pFINALIZE *gpFinalize[]
   
   /*    */ &Finalize::vUndefined,         // CN_GENERATEOP
   /*    */ &Finalize::vUndefined,         // CN_GENVAR
+  /*    */ &Finalize::vUndefined,         // CN_GETKEYOP
   /* 48 */ &Finalize::vUndefined,         // CN_GRID
   
   /*    */ &Finalize::vUndefined,         // CN_HASHBUFFER

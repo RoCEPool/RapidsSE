@@ -104,6 +104,7 @@ enum eCN : u2 // Class Number
   
   /*                           */ CN_GENERATEOP,
   /*  42 0x2A    64024B Heap:I */ CN_GENVAR,
+  /*                           */ CN_GETKEYOP,
   /*  43 0x2B     1224B Heap:L */ CN_GRID,
   
   /*                           */ CN_HASHBUFFER,
@@ -479,6 +480,7 @@ static Stz* aCN[]
   
   /*          */ "GENERATEOP"_Stz,          // CN_GENERATEOP
   /*  42 0x2A */ "GENVAR"_Stz,              // CN_GENVAR
+  /*          */ "GETKEYOP"_Stz,            // CN_GETKEYOP
   /*  43 0x2B */ "GRID"_Stz,                // CN_GRID
   
   /*          */ "HASHBUFFER"_Stz,          // CN_HASHBUFFER

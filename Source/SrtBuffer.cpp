@@ -105,13 +105,13 @@ RefSet* SrtBuffer::aAllotRefSet(i8 nRowRefs)
 /*----------------------------------------------------------------------------*/
 /* return first ref set in this buffer                                        */
 /*----------------------------------------------------------------------------*/
-RefSet* SrtBuffer::aFirstRefSet(void)
+SrtSet* SrtBuffer::aFirstRefSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
   
-  RefSet* aRefSet = aFirstItem();
+  SrtSet* aSrtSet = aFirstItem();
   
-  return aRefSet;
+  return aSrtSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -137,14 +137,14 @@ bool SrtBuffer::bIsLast(void)
 /*----------------------------------------------------------------------------*/
 /* return next ref set in this buffer                                         */
 /*----------------------------------------------------------------------------*/
-RefSet* SrtBuffer::aNextRefSet(RefSet* aPriorRefSet)
+SrtSet* SrtBuffer::aNextRefSet(SrtSet* aPriorSrtSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
 
-  RefSet* aRefSet = aAdjacentItem(aPriorRefSet);
+  SrtSet* aSrtSet = aAdjacentItem(aPriorSrtSet);
   
-  if (aRefSet && CN_REFSET == aRefSet->eClass())
-    return aRefSet;
+  if (aSrtSet && CN_SRTSET == aSrtSet->eClass())
+    return aSrtSet;
 
   return nullptr;
 }
