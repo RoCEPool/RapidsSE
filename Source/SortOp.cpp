@@ -78,6 +78,9 @@ SortOp::SortOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
 SortOp::~SortOp(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_SORTOP);
+  
+  // delete the streamDef
+  delete m_pStreamDef;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -260,7 +263,7 @@ eOR SortOp::eSortLoop(void)
       continue;
     }
     
-    RASSERT(CN_INTBUFFER == pOperand->eClass());
+    RASSERT(CN_IRWBUFFER == pOperand->eClass());
     
     IntBuffer* pIntBuffer = _pIntBuffer(pOperand);
     

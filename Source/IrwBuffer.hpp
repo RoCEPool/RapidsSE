@@ -27,6 +27,7 @@ namespace Transform
     Row* aAllotRow(ColumnVec* pColVec);
   
     Row* aFirstRow(void);
+    Row* aLastRow(void);
     Row* aNextRow(Row* aPriorRow);
     void vShow(ColumnVec* pColVec);
     
