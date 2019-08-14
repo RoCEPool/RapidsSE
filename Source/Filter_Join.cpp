@@ -47,6 +47,8 @@ Filter_Join::Filter_Join(TokenVec* pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_JOIN,_FOOTER_);
 
+  m_sName = "join"_Stz;
+  
   _checkInitialised_(CN_FILTER_JOIN);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_FILTER_JOIN,_FOOTER_);

@@ -47,6 +47,8 @@ Filter_Limit::Filter_Limit(TokenVec* pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_LIMIT,_FOOTER_);
 
+  m_sName = "limit"_Stz;
+  
   _checkInitialised_(CN_FILTER_LIMIT);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_FILTER_LIMIT,_FOOTER_);

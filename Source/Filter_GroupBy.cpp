@@ -47,6 +47,8 @@ Filter_GroupBy::Filter_GroupBy(TokenVec* pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_GROUPBY,_FOOTER_);
 
+  m_sName = "groupBy"_Stz;
+  
   _checkInitialised_(CN_FILTER_GROUPBY);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_FILTER_GROUPBY,_FOOTER_);

@@ -47,6 +47,8 @@ Clause_From::Clause_From(TokenVec* pTknVec, i8& i_Tkn_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_FROM,_FOOTER_);
   
+  m_sName = "from"_Stz;
+    
   _checkInitialised_(CN_CLAUSE_FROM);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_FROM,_FOOTER_);

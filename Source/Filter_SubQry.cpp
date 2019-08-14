@@ -47,6 +47,8 @@ Filter_SubQry::Filter_SubQry(TokenVec* pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_SUBQRY,_FOOTER_);
 
+  m_sName = "subqry"_Stz;
+  
   _checkInitialised_(CN_FILTER_SUBQRY);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_FILTER_SUBQRY,_FOOTER_);

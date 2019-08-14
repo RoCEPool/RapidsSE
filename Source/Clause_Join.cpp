@@ -47,6 +47,8 @@ Clause_Join::Clause_Join(TokenVec* pTknVec, i8& i_Tkn_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_JOIN,_FOOTER_);
 
+  m_sName = "join"_Stz;
+  
   _checkInitialised_(CN_CLAUSE_JOIN);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_JOIN,_FOOTER_);

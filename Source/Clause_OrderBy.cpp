@@ -47,6 +47,8 @@ Clause_OrderBy::Clause_OrderBy(TokenVec* pTknVec, i8& i_Tkn_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_ORDERBY,_FOOTER_);
 
+  m_sName = "orderBy"_Stz;
+  
   _checkInitialised_(CN_CLAUSE_ORDERBY);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_ORDERBY,_FOOTER_);

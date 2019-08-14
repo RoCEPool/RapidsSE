@@ -47,6 +47,8 @@ Filter_Select::Filter_Select(TokenVec* pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_SELECT,_FOOTER_);
 
+  m_sName = "select"_Stz;
+  
   _checkInitialised_(CN_FILTER_SELECT);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_FILTER_SELECT,_FOOTER_);

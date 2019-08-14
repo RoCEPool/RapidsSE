@@ -47,6 +47,8 @@ Filter_Where::Filter_Where(TokenVec* pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_WHERE,_FOOTER_);
 
+  m_sName = "where"_Stz;
+  
   _checkInitialised_(CN_FILTER_WHERE);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_FILTER_WHERE,_FOOTER_);

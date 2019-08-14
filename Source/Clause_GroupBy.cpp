@@ -47,6 +47,8 @@ Clause_GroupBy::Clause_GroupBy(TokenVec* pTknVec, i8& i_Tkn_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_GROUPBY,_FOOTER_);
 
+  m_sName = "groupBy"_Stz;
+  
   _checkInitialised_(CN_CLAUSE_GROUPBY);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CLAUSE_GROUPBY,_FOOTER_);

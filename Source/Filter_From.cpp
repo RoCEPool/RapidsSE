@@ -47,6 +47,8 @@ Filter_From::Filter_From(TokenVec* pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_FROM,_FOOTER_);
 
+  m_sName = "from"_Stz;
+  
   _checkInitialised_(CN_FILTER_FROM);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_FILTER_FROM,_FOOTER_);

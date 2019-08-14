@@ -8,6 +8,7 @@ namespace CompilerStream
   class Clause : public Operand
   {
   protected:
+    s32       m_sName;
     TokenVec* m_pTokenVec;
   
   public:
