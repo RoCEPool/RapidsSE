@@ -181,6 +181,16 @@ eOR OutputOp::eOpLoop(void)
         break;
       }
         
+      case CN_SRTBUFFER: {
+        SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
+        ColumnVec* pColumnVec = new ColumnVec;
+        for (i8 i_Col = 0; i_Col < m_pStreamDef->m_oColAry.nItems(); i_Col++)
+          pColumnVec->vAdd(m_pStreamDef->m_oColAry.pGet(i_Col));
+        pSrtBuffer->vShow();
+        vPipeOut(pOperand);
+        break;
+      }
+        
       case CN_STREAMDEF: {
         StreamDef* pStreamDef = _pStreamDef(pOperand) ;
         m_pStreamDef = new StreamDef(pStreamDef);
