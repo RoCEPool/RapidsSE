@@ -24,7 +24,7 @@ Filter_Project* CompilerStream::_pFilter_Project(void* aAddr)
 void* Filter_Project::operator new(size_t)
 {
   Filter_Project* pFilter_Project =
-    static_cast<Filter_Project*>(HeapMem::pAllocate(CN_FILTER_FROM));
+    static_cast<Filter_Project*>(HeapMem::pAllocate(CN_FILTER_PROJECT));
   
   return pFilter_Project;
 }
@@ -43,15 +43,15 @@ void Filter_Project::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Filter_Project::Filter_Project(TokenVec* pTokenVec)
-: Filter(CN_FILTER_FROM,pTokenVec)
+: Filter(CN_FILTER_PROJECT,pTokenVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_FROM,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_PROJECT,_FOOTER_);
 
   m_sName = "project"_Stz;
   
-  _checkInitialised_(CN_FILTER_FROM);
+  _checkInitialised_(CN_FILTER_PROJECT);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_FILTER_FROM,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_FILTER_PROJECT,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -59,7 +59,7 @@ Filter_Project::Filter_Project(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 Filter_Project::~Filter_Project(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_FROM,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILTER_PROJECT,_FOOTER_);
 }
 
 
