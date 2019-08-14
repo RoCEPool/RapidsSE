@@ -57,12 +57,17 @@ void SortOp::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SortOp::SortOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
-: Op(CN_SORTOP,szOpLabel,pDigest,nullptr,false)
+: Op(CN_SORTOP,szOpLabel,pDigest,aOpDefn,bAppR)
 {
   _precondition_(_MAGIC_,CN_SORTOP);
   
-  m_sSortKey = ""_Stz;
+  m_pStreamDef = nullptr;
+  m_sSortKey   = ""_Stz;
+  m_iSortCol   = -1;
+  
   m_fpCall = SortOp::eCall;
+  
+  _checkInitialised_(CN_SORTOP);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SORTOP,_FOOTER_);
 }
@@ -237,8 +242,25 @@ eOR SortOp::eSortLoop(void)
     
     // (ray added this)
     if (CN_STREAMDEF == pOperand->eClass()) {
+      
+      m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
+      
+      // figure out the key idx
+      for (i8 i_Col = 0; i_Col < m_pStreamDef->m_oColAry.nItems(); i_Col++) {
+        Column* pCol = m_pStreamDef->m_oColAry.pGet(i_Col);
+        if (StrLib::bEqualTo(m_sSortKey.aChar(),pCol->sColumnName().aChar(),C_NO_CASE)) {
+          m_iSortCol = i_Col;
+          break;
+        }
+        RASSERT(m_iSortCol != -1);
+      }
+      
+      delete _pStreamDef(pOperand);
+      
       continue;
     }
+    
+    RASSERT(CN_INTBUFFER == pOperand->eClass());
     
     IntBuffer* pIntBuffer = _pIntBuffer(pOperand);
     
