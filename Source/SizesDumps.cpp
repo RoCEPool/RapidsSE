@@ -422,7 +422,7 @@ i8 giClassSize[]
   /*    */ sizeof(Clause_Select),      // CN_CLAUSE_SELECT
   /*    */ sizeof(Clause_SubQry),      // CN_CLAUSE_SUBQRY
   /*    */ sizeof(Clause_Where),       // CN_CLAUSE_WHERE
-  /*    */ 0,//sizeof(Cmd_Select),       // CN_CMD_SELECT
+  /*    */ sizeof(Cmd_Select),         // CN_CMD_SELECT
   /* 31 */ sizeof(Column),             // CN_COLUMN
   /* 32 */ sizeof(ColumnVec),          // CN_COLUMNVEC
   /* 32 */ sizeof(CombineOp),          // CN_COMBINEOP

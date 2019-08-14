@@ -9,6 +9,14 @@ namespace CompilerOperators
   {
   private:
   
+    Filter_From*    m_pFilter_From;
+    Filter_GroupBy* m_pFilter_GroupBy;
+    Filter_Join*    m_pFilter_Join;
+    Filter_Limit*   m_pFilter_Limit;
+    Filter_OrderBy* m_pFilter_OrderBy;
+    Filter_Select*  m_pFilter_Select;
+    Filter_Where*   m_pFilter_Where;
+
     // must be last
     Footer m_xFooter;
   

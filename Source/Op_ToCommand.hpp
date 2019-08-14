@@ -8,7 +8,7 @@ namespace CompilerOperators
   class Op_ToCommand : public Op
   {
   private:
-    s4K m_sCommand;
+    s4K m_sCmd;
   
     // must be last
     Footer m_xFooter;
@@ -30,8 +30,9 @@ namespace CompilerOperators
     eOR eDrainLoop(void);
 
   private:
-    void vAppendFilter(Filter* pFilter);
-  
+    void vCollectFilter(Filter* pFilter);
+    void vPipeCmd(void);
+
     Footer* aFooter(void);
   };
 

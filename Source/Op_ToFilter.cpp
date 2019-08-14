@@ -62,6 +62,14 @@ Op_ToFilter::Op_ToFilter(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool 
   
   m_fpCall = Op_ToFilter::eCall;
   
+  m_pFilter_From    = nullptr;
+  m_pFilter_GroupBy = nullptr;
+  m_pFilter_Join    = nullptr;
+  m_pFilter_Limit   = nullptr;
+  m_pFilter_OrderBy = nullptr;
+  m_pFilter_Select  = nullptr;
+  m_pFilter_Where   = nullptr;
+  
   _checkInitialised_(CN_OP_TOFILTER);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OP_TOFILTER,_FOOTER_);
@@ -148,6 +156,41 @@ eOR Op_ToFilter::eOpLoop(void)
         break;
         
         // -- -- -- -- -- --
+        
+      case CN_CLAUSE_FROM:
+        m_pFilter_From = new Filter_From(((Clause*)pOperand)->pTokenVec());
+        vPipeOut(m_pFilter_From);
+        break;
+
+      case CN_CLAUSE_GROUPBY:
+        m_pFilter_GroupBy = new Filter_GroupBy(((Clause*)pOperand)->pTokenVec());
+        vPipeOut(m_pFilter_From);
+        break;
+        
+      case CN_CLAUSE_JOIN:
+        m_pFilter_Join = new Filter_Join(((Clause*)pOperand)->pTokenVec());
+        vPipeOut(m_pFilter_Join);
+        break;
+        
+      case CN_CLAUSE_LIMIT:
+        m_pFilter_Limit = new Filter_Limit(((Clause*)pOperand)->pTokenVec());
+        vPipeOut(m_pFilter_Limit);
+        break;
+        
+      case CN_CLAUSE_ORDERBY:
+        m_pFilter_OrderBy = new Filter_OrderBy(((Clause*)pOperand)->pTokenVec());
+        vPipeOut(m_pFilter_OrderBy);
+        break;
+        
+      case CN_CLAUSE_SELECT:
+        m_pFilter_Select = new Filter_Select(((Clause*)pOperand)->pTokenVec());
+        vPipeOut(m_pFilter_Select);
+        break;
+        
+     case CN_CLAUSE_WHERE:
+        m_pFilter_Where = new Filter_Where(((Clause*)pOperand)->pTokenVec());
+        vPipeOut(m_pFilter_From);
+        break;
         
       default:
         vPipeOut(pOperand);

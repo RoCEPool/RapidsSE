@@ -140,6 +140,7 @@ eOR Op_ToCommand::eOpLoop(void)
         
       case CN_ENDMARKER:
         if (--m_nLeftEndMarkers == 0) {
+          vPipeCmd();
           vPipeOut(pOperand);
           goto L_EXIT;
         }
@@ -156,8 +157,8 @@ eOR Op_ToCommand::eOpLoop(void)
       case CN_FILTER_ORDERBY:
       case CN_FILTER_SELECT:
       case CN_FILTER_WHERE:
-        vAppendFilter((Filter*)pOperand);
-        vPipeOut(pOperand);
+        vCollectFilter((Filter*)pOperand);
+        //vPipeOut(pOperand);
         break;
 
       default:
@@ -215,22 +216,35 @@ L_EXIT:
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-void Op_ToCommand::vAppendFilter(Filter* pFilter)
+/*----------------------------------------------------------------------------*/
+/* collect filters                                                            */
+/*----------------------------------------------------------------------------*/
+void Op_ToCommand::vCollectFilter(Filter* pFilter)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TOCOMMAND,_FOOTER_);
   
-  if (! *m_sCommand.aChar()) {
-    pFilter->vAsString(m_sCommand);
+  if (! *m_sCmd.aChar()) {
+    pFilter->vAsString(m_sCmd);
     return;
   }
   
   s4K sFilter;
   pFilter->vAsString(sFilter);
   
-  m_sCommand.vConcat(" | "_Stz);
-  m_sCommand.vConcat(sFilter);
+  m_sCmd.vConcat(" | "_Stz);
+  m_sCmd.vConcat(sFilter);
+}
 
+/*----------------------------------------------------------------------------*/
+/* pipe command (collected from filters)                                      */
+/*----------------------------------------------------------------------------*/
+void Op_ToCommand::vPipeCmd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TOCOMMAND,_FOOTER_);
   
+  Cmd_Select* pCmd_Select = new Cmd_Select(m_sCmd.aStz());
+  
+  vPipeOut(pCmd_Select);
 }
 
 /*----------------------------------------------------------------------------*/

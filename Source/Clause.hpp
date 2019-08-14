@@ -15,6 +15,8 @@ namespace CompilerStream
   
     Clause(eCN eClass, TokenVec* pTknVec, i8& i_Tkn_);
    ~Clause(void) noexcept(false);
+  
+    TokenVec* pTokenVec(void);
   };
 
   Clause* _pClause(void* aAddr);

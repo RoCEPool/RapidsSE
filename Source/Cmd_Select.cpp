@@ -42,13 +42,11 @@ void Cmd_Select::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Cmd_Select::Cmd_Select(void)
-: Cmd(CN_CMD_SELECT)
+Cmd_Select::Cmd_Select(Stz* szCmd)
+: Cmd(CN_CMD_SELECT,szCmd)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CMD_SELECT,_FOOTER_);
   
-  m_pTokenVec = new TokenVec(false);
-
   _checkInitialised_(CN_CMD_SELECT);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CMD_SELECT,_FOOTER_);
@@ -60,24 +58,12 @@ Cmd_Select::Cmd_Select(void)
 Cmd_Select::~Cmd_Select(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CMD_SELECT,_FOOTER_);
-  
-  delete m_pTokenVec;
 }
 
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get token vector                                                           */
-/*----------------------------------------------------------------------------*/
-TokenVec* Cmd_Select::pTokenVec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CMD_SELECT,_FOOTER_);
-  
-  return m_pTokenVec;
-}
 
 
 /*----------------------------------------------------------------------------*/
