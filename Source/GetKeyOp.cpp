@@ -7,7 +7,7 @@
 OpDesc __Op_GetKeyOp (
    CN_GETKEYOP,         // class number
    OK_SIMPLE,           // op kind
-   "GetKeyOp"_Stz,      // first word of prompt command
+   "GetKey"_Stz,        // first word of prompt command
    "gky"_Stz,           // prefix
    false,               // not partitioned
    GetKeyOp::pNew,      // function which parses the command and new's an op
@@ -153,31 +153,8 @@ eOR GetKeyOp::eOpLoop(void)
       case CN_ENTBUFFER: {
         EntBuffer* pEntBuffer = _pEntBuffer(pOperand) ;
         pEntBuffer->vShow();
-        vPipeOut(pOperand);
-        break;
-      }
-        
-      case CN_INTBUFFER: {
-        IntBuffer* pIntBuffer = _pIntBuffer(pOperand) ;
-        pIntBuffer->vShow();
-        vPipeOut(pOperand);
-        break;
-      }
-      
-      case CN_IRWBUFFER: {
-        IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
-        ColumnVec* pColumnVec = new ColumnVec;
-        for (i8 i_Col = 0; i_Col < m_pStreamDef->m_oColAry.nItems(); i_Col++)
-          pColumnVec->vAdd(m_pStreamDef->m_oColAry.pGet(i_Col));
-        pIrwBuffer->vShow(pColumnVec);
-        vPipeOut(pOperand);
-        break;
-      }
-        
-      case CN_REFBUFFER: {
-        RefBuffer* pRefBuffer = _pRefBuffer(pOperand) ;
-        pRefBuffer->vShow();
-        vPipeOut(pOperand);
+        SrtBuffer* pSrtBuffer = pEntBuffer->pToSrtBuffer();
+        vPipeOut(pSrtBuffer);
         break;
       }
         
@@ -189,7 +166,7 @@ eOR GetKeyOp::eOpLoop(void)
       }
         
       default:
-        vPipeOut(pOperand);
+        RASSERT(0);
         break;
     }
     
