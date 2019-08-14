@@ -71,8 +71,7 @@ void Filter::vAsString(s4K& sFilterStr)
   sFilterStr = m_sName;
   
   for (i8 i_Tkn = 0; i_Tkn < m_pTokenVec->nTokens(); i_Tkn++) {
-    if (i_Tkn > 0)
-      sFilterStr.vConcat(" "_Stz);
+    sFilterStr.vConcat(" "_Stz);
     sFilterStr.vConcat(m_pTokenVec->pGet(i_Tkn)->szText());
   }
 }

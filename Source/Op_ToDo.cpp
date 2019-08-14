@@ -150,7 +150,7 @@ eOR Op_ToDo::eOpLoop(void)
       // -- -- -- -- -- --
         
       case CN_CMD_SELECT:
-        vTrace("  cmd: %\n"_Stz,((Cmd_Select*)pOperand)->szCmd());
+        vTrace("  cmd: %s\n"_Stz,((Cmd_Select*)pOperand)->szCmd());
         vPipeOut(pOperand);
         break;
         
