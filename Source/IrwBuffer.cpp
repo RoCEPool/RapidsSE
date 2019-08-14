@@ -112,6 +112,24 @@ Row* IrwBuffer::aFirstRow(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return last ref set in this buffer                                         */
+/*----------------------------------------------------------------------------*/
+Row* IrwBuffer::aLastRow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_IRWBUFFER,_FOOTER_);
+  
+  Row* aRow = aFirstItem();
+  Row* aLastRow = nullptr;
+  
+  while (aRow) {
+    aLastRow = aRow;
+    aRow = aNextRow(aRow);
+  };
+  
+  return aLastRow;
+}
+
+/*----------------------------------------------------------------------------*/
 /* return next ref set in this buffer                                         */
 /*----------------------------------------------------------------------------*/
 Row* IrwBuffer::aNextRow(Row* aPriorRow)
