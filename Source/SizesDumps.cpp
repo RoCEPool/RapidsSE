@@ -84,12 +84,16 @@ pDUMPFUN *gpDump[]
   /* 39 */ &Dump::vInvalid,         // CN_FILE
   /* 31 */ &Dump::vDummy,           // CN_FILTER_FROM
   /* 31 */ &Dump::vDummy,           // CN_FILTER_GROUPBY
+  /* 31 */ &Dump::vDummy,           // CN_FILTER_INFLATE
   /* 31 */ &Dump::vDummy,           // CN_FILTER_JOIN
   /* 31 */ &Dump::vDummy,           // CN_FILTER_LIMIT
   /* 31 */ &Dump::vDummy,           // CN_FILTER_ORDERBY
+  /* 31 */ &Dump::vDummy,           // CN_FILTER_OUTPUT
+  /* 31 */ &Dump::vDummy,           // CN_FILTER_PROJECT
   /* 31 */ &Dump::vDummy,           // CN_FILTER_SELECT
   /* 31 */ &Dump::vDummy,           // CN_FILTER_SUBQRY
   /* 31 */ &Dump::vDummy,           // CN_FILTER_WHERE
+  /* 31 */ &Dump::vDummy,           // CN_FILTER_ZED
   /* 31 */ &Dump::vDummy,           // CN_FORTHCLUMP
   /* 40 */ &Dump::vDummy,           // CN_FORMATTERS
   /* 41 */ &Dump::vDummy,           // CN_FREEBUFFER
@@ -455,12 +459,16 @@ i8 giClassSize[]
   /* 39 */ sizeof(File),               // CN_FILE
   /*    */ sizeof(Filter_From),        // CN_FILTER_FROM
   /*    */ sizeof(Filter_GroupBy),     // CN_FILTER_GROUPBY
+  /*    */ 0,//sizeof(Filter_Inflate),     // CN_FILTER_INFLATE
   /*    */ sizeof(Filter_Join),        // CN_FILTER_JOIN
   /*    */ sizeof(Filter_Limit),       // CN_FILTER_LIMIT
   /*    */ sizeof(Filter_OrderBy),     // CN_FILTER_ORDERBY
+  /*    */ 0,//sizeof(Filter_Output),     // CN_FILTER_OUTPUT
+  /*    */ 0,//sizeof(Filter_Project),     // CN_FILTER_PROJECT
   /*    */ sizeof(Filter_Select),      // CN_FILTER_SELECT
   /*    */ sizeof(Filter_SubQry),      // CN_FILTER_SUBQRY
   /*    */ sizeof(Filter_Where),       // CN_FILTER_WHERE
+  /*    */ 0,//sizeof(Filter_Zed),       // CN_FILTER_ZED
   /*    */ sizeof(ForthClump),         // CN_FORTHCLUMP
   /* 40 */ sizeof(Formatters),         // CN_FORMATTERS
   /* 41 */ sizeof(PoolBuffer),         // CN_FREEBUFFER
@@ -824,12 +832,16 @@ eHT geWhichHeap[]
   /* 39 */ HT_TRANSIENT_SMALL,   // CN_FILE
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_FROM
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_GROUPBY
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_INFLATE
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_JOIN
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_LIMIT
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_ORDERBY
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_OUTPUT
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_PROJECT
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_SELECT
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_SUBQRY
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_WHERE
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_ZED
   /* 40 */ HT_TRANSIENT_SMALL,   // CN_FORTHCLUMP
   /* 40 */ HT_TRANSIENT_SMALL,   // CN_FORMATTERS
   /* 41 */ HT_INVALID,           // CN_FREEBUFFER

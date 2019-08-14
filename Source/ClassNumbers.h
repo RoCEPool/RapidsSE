@@ -83,12 +83,16 @@ enum eCN : u2 // Class Number
   /*  36 0x24      376B Heap:S */ CN_FILE,
   /*                           */ CN_FILTER_FROM,
   /*                           */ CN_FILTER_GROUPBY,
+  /*                           */ CN_FILTER_INFLATE,
   /*                           */ CN_FILTER_JOIN,
   /*                           */ CN_FILTER_LIMIT,
   /*                           */ CN_FILTER_ORDERBY,
+  /*                           */ CN_FILTER_OUTPUT,
+  /*                           */ CN_FILTER_PROJECT,
   /*                           */ CN_FILTER_SELECT,
   /*                           */ CN_FILTER_SUBQRY,
   /*                           */ CN_FILTER_WHERE,
+  /*                           */ CN_FILTER_ZED,
   /*                           */ CN_FORTHCLUMP,
   /*  37 0x25       48B Heap:S */ CN_FORMATTERS,
   /*  38 0x26       32B Heap:I */ CN_FREEBUFFER,
@@ -450,12 +454,16 @@ static Stz* aCN[]
   /*  36 0x24 */ "FILE"_Stz,                // CN_FILE
   /*          */ "FILTER_FROM"_Stz,         // CN_FILTER_FROM
   /*          */ "FILTER_GROUPBY"_Stz,      // CN_FILTER_GROUPBY
+  /*          */ "FILTER_INFLATE"_Stz,      // CN_FILTER_INFLATE
   /*          */ "FILTER_JOIN"_Stz,         // CN_FILTER_JOIN
   /*          */ "FILTER_LIMIT"_Stz,        // CN_FILTER_LIMIT
   /*          */ "FILTER_ORDERBY"_Stz,      // CN_FILTER_ORDERBY
+  /*          */ "FILTER_OUTPUT"_Stz,       // CN_FILTER_OUTPUT
+  /*          */ "FILTER_PROJECT"_Stz,      // CN_FILTER_PROJECT
   /*          */ "FILTER_SELECT"_Stz,       // CN_FILTER_SELECT
   /*          */ "FILTER_SUBQRY"_Stz,       // CN_FILTER_SUBQRY
   /*          */ "FILTER_WHERE"_Stz,        // CN_FILTER_WHERE
+  /*          */ "FILTER_ZED"_Stz,          // CN_FILTER_ZED
   /*          */ "FORTHCLUMP"_Stz,          // CN_FORTHCLUMP
   /*  37 0x25 */ "FORMATTERS"_Stz,          // CN_FORMATTERS
   /*  38 0x26 */ "FREEBUFFER"_Stz,          // CN_FREEBUFFER

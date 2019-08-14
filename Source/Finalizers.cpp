@@ -80,12 +80,16 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_FILE
   /*    */ &Finalize::vUndefined,         // CN_FILTER_FROM
   /*    */ &Finalize::vUndefined,         // CN_FILTER_GROUPBY
+  /*    */ &Finalize::vUndefined,         // CN_FILTER_INFLATE
   /*    */ &Finalize::vUndefined,         // CN_FILTER_JOIN
   /*    */ &Finalize::vUndefined,         // CN_FILTER_LIMIT
   /*    */ &Finalize::vUndefined,         // CN_FILTER_ORDERBY
+  /*    */ &Finalize::vUndefined,         // CN_FILTER_OUTPUT
+  /*    */ &Finalize::vUndefined,         // CN_FILTER_PROJECT
   /*    */ &Finalize::vUndefined,         // CN_FILTER_SELECT
   /*    */ &Finalize::vUndefined,         // CN_FILTER_SUBQRY
   /*    */ &Finalize::vUndefined,         // CN_FILTER_WHERE
+  /*    */ &Finalize::vUndefined,         // CN_FILTER_ZED
   /*    */ &Finalize::vUndefined,         // CN_FORTHCLUMP
   /* 39 */ &Finalize::vUndefined,         // CN_FORMATTERS
   /* 41 */ &Finalize::vUndefined,         // CN_FREEBUFFER
