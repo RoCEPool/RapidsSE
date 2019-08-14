@@ -485,7 +485,7 @@ i8 giClassSize[]
   
   /*    */ sizeof(GenerateOp),         // CN_GENERATEOP
   /*    */ sizeof(GenVar),             // CN_GENVAR
-  /*    */ sizeof(GenVar),             // CN_GETKEYOP
+  /*    */ sizeof(GetKeyOp),           // CN_GETKEYOP
   /* 48 */ sizeof(Grid),               // CN_GRID
   
   /*    */ sizeof(HashBuffer),         // CN_HASHBUFFER

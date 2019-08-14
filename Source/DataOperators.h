@@ -20,6 +20,7 @@ namespace DataOperators
 #include "DistinctOp.hpp"
 #include "FetchOp.hpp"
 #include "GenerateOp.hpp"
+#include "GetKeyOp.hpp"
 #include "HashOp.hpp"
 #include "InflateOp.hpp"
 #include "IntersectOp.hpp"
