@@ -225,13 +225,15 @@ void Op_ToCommand::vCollectFilter(Filter* pFilter)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TOCOMMAND,_FOOTER_);
   
+  s4K sFilter;
+  pFilter->vAsString(sFilter);
+  
   if (! *m_sCmd.aChar()) {
-    pFilter->vAsString(m_sCmd);
+    m_sCmd = "dynamic "_Stz;
+    m_sCmd.vConcat(sFilter);
     return;
   }
   
-  s4K sFilter;
-  pFilter->vAsString(sFilter);
   
   m_sCmd.vConcat(" | "_Stz);
   m_sCmd.vConcat(sFilter);
