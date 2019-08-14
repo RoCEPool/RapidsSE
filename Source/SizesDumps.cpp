@@ -863,7 +863,7 @@ eHT geWhichHeap[]
   
   /*    */ HT_TRANSIENT_SMALL,   // CN_GENERATEOP
   /*    */ HT_INVALID,           // CN_GENVAR
-  /*    */ HT_INVALID,           // CN_GETKEYOP
+  /*    */ HT_TRANSIENT_SMALL,   // CN_GETKEYOP
   /* 48 */ HT_TRANSIENT_LARGE,   // CN_GRID
 
   /*    */ HT_TRANSIENT_LARGE,   // CN_HASHBUFFER
@@ -1097,7 +1097,7 @@ eHT geWhichHeap[]
   /*125 */ HT_INVALID,           // CN_SPTME
   /*125 */ HT_INVALID,           // CN_SPTSP
   /*125 */ HT_INVALID,           // CN_SPVCH
-  /*125 */ HT_INVALID,           // CN_SRTBUFFER
+  /*125 */ HT_TRANSIENT_LARGE,   // CN_SRTBUFFER
   /*125 */ HT_INVALID,           // CN_SRTSET
   /*126 */ HT_TRANSIENT_LARGE,   // CN_STACK
   /*127 */ HT_INVALID,           // CN_STEPACCUM

@@ -83,29 +83,29 @@ void SrtBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* allot a ref set in this buffer (may return nulltpr)                        */
+/* allot a srt set in this buffer (may return nulltpr)                        */
 /*----------------------------------------------------------------------------*/
-RefSet* SrtBuffer::aAllotRefSet(i8 nRowRefs)
+SrtSet* SrtBuffer::aAllotSrtSet(i8 nRowRefs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
   
   // allot using bytes as we don't know the size of the item
-  byte* ayRefSet = ayAllotBytes(RefSet::nBytesReq(nRowRefs));
+  byte* aySrtSet = ayAllotBytes(SrtSet::nBytesReq(nRowRefs));
   
-  if (! ayRefSet)
+  if (! aySrtSet)
     return nullptr;
   
   vIncItems();
   
-  RefSet* aRefSet = new(ayRefSet) RefSet(nRowRefs);
+  SrtSet* aSrtSet = new(aySrtSet) SrtSet(nRowRefs);
   
-  return aRefSet;
+  return aSrtSet;
 }
 
 /*----------------------------------------------------------------------------*/
-/* return first ref set in this buffer                                        */
+/* return first srt set in this buffer                                        */
 /*----------------------------------------------------------------------------*/
-SrtSet* SrtBuffer::aFirstRefSet(void)
+SrtSet* SrtBuffer::aFirstSrtSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
   
@@ -135,9 +135,9 @@ bool SrtBuffer::bIsLast(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* return next ref set in this buffer                                         */
+/* return next srt set in this buffer                                         */
 /*----------------------------------------------------------------------------*/
-SrtSet* SrtBuffer::aNextRefSet(SrtSet* aPriorSrtSet)
+SrtSet* SrtBuffer::aNextSrtSet(SrtSet* aPriorSrtSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
 
@@ -156,16 +156,23 @@ void SrtBuffer::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
   
-  i8 nRefSets = nItems();
+  i8 nSrtSets = nItems();
   
   vTrace("SrtBuffer: %p (buffer %lld): rows: %lld\n"_Stz,
-         this,m_iBufferNo,nRefSets);
+         this,m_iBufferNo,nSrtSets);
   
   vTrace("  prevBuffer %p nextBuffer %p\n"_Stz,
          m_pPrevBuffer,m_pNextBuffer);
   
   vTrace("  partition: %lld \n"_Stz, m_iPartitionNo);
   
+  SrtSet* aSrtSet = aFirstSrtSet();
+  while (aSrtSet) {
+    
+    vTrace("Key:%lld %p\n"_Stz, aSrtSet->iKey(), aSrtSet->iRowRef(0));
+    aSrtSet = aNextSrtSet(aSrtSet);
+  }
+    
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
 }

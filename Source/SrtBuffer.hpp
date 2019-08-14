@@ -24,12 +24,12 @@ namespace Rows
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    RefSet* aAllotRefSet(i8 nRowRefs);
+    SrtSet* aAllotSrtSet(i8 nRowRefs);
   
-    SrtSet* aFirstRefSet(void);
+    SrtSet* aFirstSrtSet(void);
     void    vIsLast(bool bIsLast);
     bool    bIsLast(void);
-    SrtSet* aNextRefSet(SrtSet* aPriorSrtSet);
+    SrtSet* aNextSrtSet(SrtSet* aPriorSrtSet);
     void    vShow(void);
     
   private:
