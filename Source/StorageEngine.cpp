@@ -57,6 +57,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   Threads::vCheckAssumptions();
   Scheduling::vCheckAssumptions();
   Interface::vCheckAssumptions();
+  Services::vCheckAssumptions();
   Utilities::vCheckAssumptions();
   Steps::vCheckAssumptions();
   Prompt::vCheckAssumptions();
