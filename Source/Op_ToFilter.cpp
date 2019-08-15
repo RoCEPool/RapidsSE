@@ -64,6 +64,7 @@ Op_ToFilter::Op_ToFilter(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool 
   
   m_pFilter_From    = nullptr;
   m_pFilter_GroupBy = nullptr;
+  m_pFilter_Inflate = nullptr;
   m_pFilter_Join    = nullptr;
   m_pFilter_Limit   = nullptr;
   m_pFilter_OrderBy = nullptr;
@@ -152,6 +153,9 @@ eOR Op_ToFilter::eOpLoop(void)
         
       case CN_ENDMARKER:
         if (--m_nLeftEndMarkers == 0) {
+          
+          m_pFilter_Inflate = new Filter_Inflate(nullptr);
+          vPipeOut(m_pFilter_Inflate);
           
           m_pFilter_Output = new Filter_Output(nullptr);
           vPipeOut(m_pFilter_Output);

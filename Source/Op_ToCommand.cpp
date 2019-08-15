@@ -153,6 +153,7 @@ eOR Op_ToCommand::eOpLoop(void)
         
       case CN_FILTER_FROM:
       case CN_FILTER_GROUPBY:
+      case CN_FILTER_INFLATE:
       case CN_FILTER_JOIN:
       case CN_FILTER_LIMIT:
       case CN_FILTER_ORDERBY:

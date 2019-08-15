@@ -11,6 +11,7 @@ namespace CompilerOperators
   
     Filter_From*    m_pFilter_From;
     Filter_GroupBy* m_pFilter_GroupBy;
+    Filter_Inflate* m_pFilter_Inflate;
     Filter_Join*    m_pFilter_Join;
     Filter_Limit*   m_pFilter_Limit;
     Filter_OrderBy* m_pFilter_OrderBy;
