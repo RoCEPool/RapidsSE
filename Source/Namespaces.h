@@ -51,6 +51,7 @@ namespace Resources     { class ResourceTracker;                              }
 namespace Rows          { class CrwBuffer;                                    }
 namespace ScanSprint    {                                                     }
 namespace Scheduling    { class Queues; class Scheduler;                      }
+namespace Services      {                                                     }
 namespace Sessions      { class Session; class SessionState;                  }
 namespace Steps         { class Step; class StepTiming;                       }
 namespace StorageEngine { class AM; class Engine;                             }
@@ -102,6 +103,7 @@ using namespace Resources;
 using namespace Rows;
 using namespace ScanSprint;
 using namespace Scheduling;
+using namespace Services;
 using namespace Sessions;
 using namespace Steps;
 using namespace StorageEngine;
