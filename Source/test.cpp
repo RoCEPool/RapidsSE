@@ -903,6 +903,7 @@ void vTest15(void)
 /*----------------------------------------------------------------------------*/
 /* Partition                                                                  */
 /*----------------------------------------------------------------------------*/
+/*
 BufferCursor* pPartitionBuffer(IntBuffer* pIntBuffer, BufferCursor* pLowCursor,
                       BufferCursor* pHighCursor)
 {
@@ -970,10 +971,11 @@ BufferCursor* pPartitionBuffer(IntBuffer* pIntBuffer, BufferCursor* pLowCursor,
     pRight->vMoveLeft();
   }
 }
-
+*/
 /*----------------------------------------------------------------------------*/
 /* QuickSort                                                                  */
 /*----------------------------------------------------------------------------*/
+/*
 void vQuickSortBuffer(IntBuffer* pIntBuffer, BufferCursor* pLowCursor, BufferCursor* pHighCursor)
 {
   
@@ -992,13 +994,13 @@ void vQuickSortBuffer(IntBuffer* pIntBuffer, BufferCursor* pLowCursor, BufferCur
   }
   
 }
-
+*/
 /*----------------------------------------------------------------------------*/
 /* test16                                                                     */
 /*----------------------------------------------------------------------------*/
 void vTest16(void)
 {
-  
+/*
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // EXPERIMENT 5: SORTING BUFFER OF INTEGERS USING A BUFFER CURSOR
   vTrace("\n\n**************************************************"_Stz);
@@ -1052,6 +1054,7 @@ void vTest16(void)
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete the intBuffer
   delete pIntBuffer;
+ */
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1059,6 +1062,7 @@ void vTest16(void)
 /*----------------------------------------------------------------------------*/
 void vTest17(void)
 {
+ /*
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // EXPERIMENT 5: SORTING BUFFER OF INTEGERS USING A BUFFER CURSOR
   vTrace("\n\n**************************************************"_Stz);
@@ -1138,6 +1142,7 @@ void vTest17(void)
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete the intBuffer
   delete pIntBuffer;
+ */
 }
 
 /*----------------------------------------------------------------------------*/

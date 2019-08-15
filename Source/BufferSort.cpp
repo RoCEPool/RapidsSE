@@ -11,8 +11,8 @@
 /*----------------------------------------------------------------------------*/
 /* Partition                                                                  */
 /*----------------------------------------------------------------------------*/
-BufferCursor* BufferSort::pPartitionBuffer(IntBuffer* pIntBuffer, BufferCursor* pLowCursor,
-                                       BufferCursor* pHighCursor)
+BufferCursor* BufferSort::pPartitionBuffer(SrtBuffer* pSrtBuffer,
+                                           BufferCursor* pLowCursor, BufferCursor* pHighCursor)
 {
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -31,7 +31,7 @@ BufferCursor* BufferSort::pPartitionBuffer(IntBuffer* pIntBuffer, BufferCursor* 
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the pivot element value
-  i8 iPivotValue = *pPivotCursor->m_aElement;
+  i8 iPivotValue = pPivotCursor->m_pSrtBuffer->aSrtSet(pPivotCursor->m_iElement)->iKey();
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Move start and end toward each other, until they detect an inversion:
@@ -88,21 +88,21 @@ BufferCursor* BufferSort::pPartitionBuffer(IntBuffer* pIntBuffer, BufferCursor* 
 /*----------------------------------------------------------------------------*/
 /* QuickSort                                                                  */
 /*----------------------------------------------------------------------------*/
-void BufferSort::vQuickSortBuffer(IntBuffer* pIntBuffer, BufferCursor* pLowCursor, BufferCursor* pHighCursor)
+void BufferSort::vQuickSortBuffer(SrtBuffer* pSrtBuffer, BufferCursor* pLowCursor, BufferCursor* pHighCursor)
 {
   
   if (pLowCursor->bIsBefore(pHighCursor)) {
-    BufferCursor* pPartitionCursor = pPartitionBuffer(pIntBuffer, pLowCursor, pHighCursor);
+    BufferCursor* pPartitionCursor = pPartitionBuffer(pSrtBuffer, pLowCursor, pHighCursor);
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // quick sort from low to partition
-    vQuickSortBuffer(pIntBuffer, pLowCursor, pPartitionCursor);
+    vQuickSortBuffer(pSrtBuffer, pLowCursor, pPartitionCursor);
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // quick sort from partition+1 to high
     pPartitionCursor->vMoveRight();
     BufferCursor* pPartitionNext = new BufferCursor(pPartitionCursor);
-    vQuickSortBuffer(pIntBuffer, pPartitionNext, pHighCursor);
+    vQuickSortBuffer(pSrtBuffer, pPartitionNext, pHighCursor);
     
     delete pPartitionCursor;
     delete pPartitionNext;

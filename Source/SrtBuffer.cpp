@@ -75,7 +75,7 @@ void SrtBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   SrtBuffer* pSrtBuffer = _pSrtBuffer(pObject);
   
-  pSrtBuffer->vShow();
+  //pSrtBuffer->vShow();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -135,6 +135,16 @@ bool SrtBuffer::bIsLast(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get next buffer                                                            */
+/*----------------------------------------------------------------------------*/
+SrtBuffer* SrtBuffer::pNextBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTBUFFER,_FOOTER_);
+  
+  return _pSrtBuffer(m_pNextBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
 /* return next srt set in this buffer                                         */
 /*----------------------------------------------------------------------------*/
 SrtSet* SrtBuffer::aNextSrtSet(SrtSet* aPriorSrtSet)
@@ -150,9 +160,19 @@ SrtSet* SrtBuffer::aNextSrtSet(SrtSet* aPriorSrtSet)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get prev buffer                                                            */
+/*----------------------------------------------------------------------------*/
+SrtBuffer* SrtBuffer::pPrevBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTBUFFER,_FOOTER_);
+  
+  return _pSrtBuffer(m_pPrevBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
 /* show contents of buffer                                                    */
 /*----------------------------------------------------------------------------*/
-void SrtBuffer::vShow(void)
+void SrtBuffer::vShow(ColumnVec* pColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
   
@@ -166,15 +186,69 @@ void SrtBuffer::vShow(void)
   
   vTrace("  partition: %lld \n"_Stz, m_iPartitionNo);
   
+  HV_Rec hvRec(pColVec);
+  HV_Row hRow(pColVec);
+  
   SrtSet* aSrtSet = aFirstSrtSet();
+  
   while (aSrtSet) {
     
-    vTrace("Key:%lld %p\n"_Stz, aSrtSet->iKey(), aSrtSet->iRowRef(0));
+    // get the dataRow
+    Crw* aCrw = (Crw*)(aSrtSet->iRowRef(0));
+    
+    // inflate the row
+    RowInflator::vInflateRow(hRow, aCrw);
+    hvRec->vAppend(hRow);
+    
+    vTrace("%p: Key:%lld %p %s\n"_Stz, aSrtSet, aSrtSet->iKey(), aSrtSet->iRowRef(0), hvRec->szRecStr());
     aSrtSet = aNextSrtSet(aSrtSet);
   }
     
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* return next srt set in this buffer                                         */
+/*----------------------------------------------------------------------------*/
+SrtSet* SrtBuffer::aSrtSet(i8 iSrtSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
+  
+  if (iSrtSet >= m_nItems)
+    return nullptr;
+  
+  SrtSet* aSrtSet = aItemArea();
+  
+  aSrtSet = aAdd<SrtSet*>(aSrtSet, sizeof(SrtSet)*iSrtSet);
+  
+  if (aSrtSet && CN_SRTSET == aSrtSet->eClass()) {
+    return aSrtSet;
+  }
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return next srt set in this buffer                                         */
+/*----------------------------------------------------------------------------*/
+void SrtBuffer::vSwap(i8 iSrtSet1, i8 iSrtSet2)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
+  
+  SrtSet* aSrtSet = aItemArea();
+  
+  SrtSet* aSrtSet1 = aAdd<SrtSet*>(aSrtSet, sizeof(SrtSet)*iSrtSet1);
+  SrtSet* aSrtSet2 = aAdd<SrtSet*>(aSrtSet, sizeof(SrtSet)*iSrtSet2);
+  
+  i8 iKey = aSrtSet1->m_xKey;
+  i8 iaRowRef = aSrtSet1->m_iaRowRef[0];
+  
+  aSrtSet1->m_xKey = aSrtSet2->m_xKey;
+  aSrtSet1->m_iaRowRef[0] = aSrtSet2->m_iaRowRef[0];
+  
+  aSrtSet2->m_xKey = iKey;
+  aSrtSet2->m_iaRowRef[0] = iaRowRef;
 }
 
 /*----------------------------------------------------------------------------*/
