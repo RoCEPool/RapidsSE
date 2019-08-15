@@ -25,9 +25,9 @@ namespace Scheduling
     // task interface
   
     static bool bAckWaitingTask(Task* pTaskWaiting, Task* pTaskAcking);
+    static void vAddTaskDedicated(Task* pTask);
+    static void vAddTaskGeneral(Task* pTask);
     static void vExecuteDedicatedTask(Task* pTask, Thread* pThread);
-    static void vNewTaskDedicated(Task* pTask);
-    static void vNewTaskGeneral(Task* pTask);
     static void vPulsePausedTask(Task* pTask);
     static void vTaskLoopTransition(Thread* pThread);
     static void vTriggerBidingTask(Task* pTask);

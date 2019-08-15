@@ -147,6 +147,31 @@ bool Scheduler::bAckWaitingTask(Task* pTaskWaiting, Task* pTaskAcking)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add new dedicated task into system (spawn a dedicated thread for it)       */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vAddTaskDedicated(Task* pTask)
+{
+  //
+  // called from Api::bSpawnJobDedicated()
+  //
+  
+  vThread_SpawnDedicated(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add new general task into system (start scheduling it as per normal)       */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vAddTaskGeneral(Task* pTask)
+{
+  //
+  // called from Api::bSpawnJob()
+  //
+  
+  //AM::vLogTsk(pTask->iTaskId(), <#eTA eTskAct#>, <#Strings::Stz *szFormat, ...#>)
+  vTask_Schedule(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
 /* set dedicated task to be executed by dedicated thread                      */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vExecuteDedicatedTask(Task* pTask, Thread* pThread)
@@ -168,30 +193,6 @@ void Scheduler::vPulsePausedTask(Task* pTask)
   //
   
   vTask_Pulse(pTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add new dedicated task into system (spawn a dedicated thread for it)       */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vNewTaskDedicated(Task* pTask)
-{
-  //
-  // called from Api::bSpawnJobDedicated()
-  //
-  
-  vThread_SpawnDedicated(pTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add new general task into system (start scheduling it as per normal)       */
-/*----------------------------------------------------------------------------*/
-void Scheduler::vNewTaskGeneral(Task* pTask)
-{
-  //
-  // called from Api::bSpawnJob()
-  //
-  
-  vTask_Schedule(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
