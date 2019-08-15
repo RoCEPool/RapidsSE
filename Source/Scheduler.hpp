@@ -59,6 +59,7 @@ namespace Scheduling
   
     static void vTask_Able(Task* pTask);
     static bool bTask_Ack(Task* pTaskWaiting, Task* pTaskAcking);
+    static void vTask_Add(Task* pTask);
     static void vTask_Bide(Task* pTask);
     static void vTask_Desist(Task* pTask);
     static void vTask_Execute(Task* pTask);
@@ -67,6 +68,7 @@ namespace Scheduling
     static Task* pTask_Pop(void);
     static void vTask_Pulse(Task* pTask);
     static void vTask_Ready(Task* pTask);
+    static void vTask_Remove(Task* pTask);
     static void vTask_Resume(Task* pTask);
     static void vTask_Schedule(Task* pTask);
     static void vTask_Sleep(Task* pTask);
