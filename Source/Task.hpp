@@ -117,6 +117,7 @@ namespace Tasks
     void vStackContents(Stack* pStack, s48K& sStackContents);
     eTS  eState(void);
     void vState(eTS eState);
+    i8   iTaskId(void);
     void vTaskLoop_job(void);
     void vTaskLoop_op(void);
     Threads::Thread* pThread(void);
