@@ -249,7 +249,7 @@ void Op_ToCommand::vConcludeCmd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TOCOMMAND,_FOOTER_);
   
-  m_sCmd.vConcat(" ;"_Stz);
+  //m_sCmd.vConcat(" ;"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

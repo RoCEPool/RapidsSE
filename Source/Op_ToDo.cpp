@@ -217,7 +217,11 @@ void Op_ToDo::vPromptHandOff(Cmd_Select* pCmd_Select)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TODO,_FOOTER_);
   
-  vTrace("  cmd: %s\n"_Stz,pCmd_Select->szCmd());
+  vTrace("  vPromptHandOff: %s\n"_Stz,pCmd_Select->szCmd());
+  
+  Session* pSession = AM::pThisTLSSession();
+  
+  pSession->m_sToDo = pCmd_Select->szCmd();
 }
 
 /*----------------------------------------------------------------------------*/
