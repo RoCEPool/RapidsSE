@@ -194,8 +194,8 @@ eOR Op_ToFilter::eOpLoop(void)
         break;
         
       case CN_CLAUSE_SELECT:
-        m_pFilter_Project = new Filter_Project(((Clause*)pOperand)->pTokenVec());
-        vPipeOut(m_pFilter_Project);
+        //m_pFilter_Project = new Filter_Project(((Clause*)pOperand)->pTokenVec());
+        //vPipeOut(m_pFilter_Project);
         break;
         
      case CN_CLAUSE_WHERE:

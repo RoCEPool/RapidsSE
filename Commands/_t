@@ -8,6 +8,8 @@ _t_create
 
 _t_load
 
+dynamic scan T | inflate | output | zed ;
+
 select * from T ;
 
 /*============================================================================*/
