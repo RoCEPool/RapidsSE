@@ -93,10 +93,10 @@ time ld orders "/DATA/tpch/orders10.csv" max_errors 100;
 
 //dynamic scan lineitem | inflate | output | zed;
 fetch lineitem;
-dynamic fetch lineitem lineitem_idx1 | getKey L_ORDERKEY | sort L_ORDERKEY | output | zed;
-//dynamic fetch lineitem lineitem_idx1 | getKey L_PARTKEY | sort L_PARTKEY | output | zed;
-//dynamic fetch lineitem lineitem_idx1 | getKey L_SUPPKEY | sort L_SUPPKEY | output | zed;
-//dynamic fetch lineitem lineitem_idx1 | getKey L_SHIPDATE | sort L_SHIPDATE | output | zed;
+dynamic fetch lineitem lineitem_idx1 | getKey L_ORDERKEY | sort | output | zed;
+//dynamic fetch lineitem lineitem_idx1 | getKey L_PARTKEY | sort | output | zed;
+//dynamic fetch lineitem lineitem_idx1 | getKey L_SUPPKEY | sort | output | zed;
+//dynamic fetch lineitem lineitem_idx1 | getKey L_SHIPDATE | sort | output | zed;
 
 //dynamic fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join | output | zed;
 //dynamic fetch lineitem LineItem_Idx1 | output | zed;

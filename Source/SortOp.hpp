@@ -9,8 +9,6 @@ namespace DataOperators
   {
   private:
     StreamDef* m_pStreamDef;
-    s256       m_sSortKey;
-    i8         m_iSortCol;
     
     // must be last
     Footer m_xFooter;

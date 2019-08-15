@@ -62,8 +62,6 @@ SortOp::SortOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   _precondition_(_MAGIC_,CN_SORTOP);
   
   m_pStreamDef = nullptr;
-  m_sSortKey   = ""_Stz;
-  m_iSortCol   = -1;
   
   m_fpCall = SortOp::eCall;
   
@@ -97,8 +95,6 @@ Op* SortOp::pNew(Stz* szLabel,
   i_Tkn_++;
   
   SortOp* pSortOp = new SortOp(szLabel,pDigest,aOpDefn,bAppR);
-  
-  pSortOp->m_sSortKey = pTknVec->pGet(i_Tkn_++)->szText();
 
   pSortOp->m_nSlot = i_Slot;
   
@@ -143,21 +139,8 @@ eOR SortOp::eSortLoop(void)
     
     // (ray added this)
     if (CN_STREAMDEF == pOperand->eClass()) {
-      
       m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
-      
-      // figure out the key idx
-      for (i8 i_Col = 0; i_Col < m_pStreamDef->m_oColAry.nItems(); i_Col++) {
-        Column* pCol = m_pStreamDef->m_oColAry.pGet(i_Col);
-        if (StrLib::bEqualTo(m_sSortKey.aChar(),pCol->sColumnName().aChar(),C_NO_CASE)) {
-          m_iSortCol = i_Col;
-          break;
-        }
-      }
-      RASSERT(m_iSortCol != -1);
-      
       vPipeOut(pOperand);
-      
       continue;
     }
     
