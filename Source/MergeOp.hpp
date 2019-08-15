@@ -31,9 +31,9 @@ namespace DataOperators
     eOR  eMergeLoop(void);
     void vMergeOperands(Operand* pOperand1, Operand* pOperand2);
     
-    BufferCursor* pPartitionBuffer(IntBuffer* pIntBuffer, BufferCursor* pLowCursor,
+    BufferCursor* pPartitionBuffer(SrtBuffer* pSrtBuffer, BufferCursor* pLowCursor,
                                    BufferCursor* pHighCursor);
-    void vQuickSortBuffer(IntBuffer* pIntBuffer, BufferCursor* pLowCursor, BufferCursor* pHighCursor);
+    void vQuickSortBuffer(SrtBuffer* pSrtBuffer, BufferCursor* pLowCursor, BufferCursor* pHighCursor);
     Footer* aFooter(void);
   };
 

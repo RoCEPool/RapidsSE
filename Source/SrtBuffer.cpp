@@ -139,9 +139,49 @@ bool SrtBuffer::bIsLast(void)
 /*----------------------------------------------------------------------------*/
 SrtBuffer* SrtBuffer::pNextBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INTBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
   
   return _pSrtBuffer(m_pNextBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get last buffer and count of buffers                                       */
+/*----------------------------------------------------------------------------*/
+SrtBuffer* SrtBuffer::pLastBuffer(i8& iCount)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
+  
+  SrtBuffer* pBuffer = this;
+  SrtBuffer* pLastBuffer = this;
+  
+  iCount = 0;
+  while (pBuffer) {
+    iCount++;
+    pLastBuffer = pBuffer;
+    pBuffer = pBuffer->pNextBuffer();
+  }
+  
+  return pLastBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* link this buffer to another                                                */
+/*----------------------------------------------------------------------------*/
+void SrtBuffer::vLinkBuffer(SrtBuffer* pSrtBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INTBUFFER,_FOOTER_);
+  
+  // count no. of linked buffers received
+  SrtBuffer* pLastBuffer = this;
+  SrtBuffer* pBuffer = this;
+  
+  while (pBuffer) {
+    pLastBuffer = pBuffer;
+    pBuffer = pBuffer->pNextBuffer();
+  }
+  
+  pLastBuffer->vNextBuffer(pSrtBuffer);
+  pSrtBuffer->vPrevBuffer(pLastBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -164,7 +204,7 @@ SrtSet* SrtBuffer::aNextSrtSet(SrtSet* aPriorSrtSet)
 /*----------------------------------------------------------------------------*/
 SrtBuffer* SrtBuffer::pPrevBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INTBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
   
   return _pSrtBuffer(m_pPrevBuffer);
 }
@@ -249,6 +289,59 @@ void SrtBuffer::vSwap(i8 iSrtSet1, i8 iSrtSet2)
   
   aSrtSet2->m_xKey = iKey;
   aSrtSet2->m_iaRowRef[0] = iaRowRef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify the next, previous pointers                                         */
+/*----------------------------------------------------------------------------*/
+bool SrtBuffer::bVerifyNextPrev(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
+  
+  /*
+   Any buffer should have a next whose prev point back to it; any prev should
+   point forward to it; a child buffer should point back to its parent
+   */
+  
+  SrtBuffer* pSrtBuffer = this;
+  while (pSrtBuffer) {
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+    if (pSrtBuffer->pPrevBuffer()) {
+      SrtBuffer* pPrevBuffer = _pSrtBuffer(pSrtBuffer->pPrevBuffer());
+      if (pPrevBuffer->pNextBuffer() != pSrtBuffer) {
+        return false;
+      }
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+    if (pSrtBuffer->pNextBuffer()) {
+      SrtBuffer* pNextBuffer = _pSrtBuffer(pSrtBuffer->pNextBuffer());
+      if (pNextBuffer->pPrevBuffer() != pSrtBuffer) {
+        return false;
+      }
+    }
+    pSrtBuffer = pSrtBuffer->pNextBuffer();
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* verify the order of the integers in this buffer                            */
+/*----------------------------------------------------------------------------*/
+bool SrtBuffer::bVerifyOrder(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
+  
+//  for (i8 i_Index = 0; i_Index < m_nInts; i_Index++) {
+//    if (i_Index)
+//      if (m_iIntArray[i_Index] < m_iIntArray[i_Index-1])
+//        return false;
+//  }
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

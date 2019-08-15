@@ -201,35 +201,35 @@ void MergeOp::vMergeOperands(Operand* pOperand1, Operand* pOperand2)
   _precondition_(_ADDRESS_,_MAGIC_,CN_MERGEOP,_FOOTER_);
 
   vTrace("Merging operands %p %p\n"_Stz, pOperand1, pOperand2);
-/*
-  IntBuffer* pIntBuffer1 = _pIntBuffer(pOperand1);
-  RASSERT(pIntBuffer1->bVerifyNextPrev());
+
+  SrtBuffer* pSrtBuffer1 = _pSrtBuffer(pOperand1);
+  RASSERT(pSrtBuffer1->bVerifyNextPrev());
   
-  IntBuffer* pIntBuffer2 = _pIntBuffer(pOperand2);
-  RASSERT(pIntBuffer2->bVerifyNextPrev());
+  SrtBuffer* pSrtBuffer2 = _pSrtBuffer(pOperand2);
+  RASSERT(pSrtBuffer2->bVerifyNextPrev());
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // link the buffers
-  pIntBuffer1->vLinkBuffer(pIntBuffer2);
-  RASSERT(pIntBuffer1->bVerifyNextPrev());
+  pSrtBuffer1->vLinkBuffer(pSrtBuffer2);
+  RASSERT(pSrtBuffer1->bVerifyNextPrev());
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get count and last buffer
   i8 iCount = 0;
-  IntBuffer* pLastBuffer = pIntBuffer1->pLastBuffer(iCount);
+  SrtBuffer* pLastBuffer = pSrtBuffer1->pLastBuffer(iCount);
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a Low cursor pointing to the first element in the array
-  BufferCursor* pLowCursor = new BufferCursor(pIntBuffer1, 0, pIntBuffer1->aGetElement(0));
+  BufferCursor* pLowCursor = new BufferCursor(pSrtBuffer1, 0, 0);
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a High cursor pointing to the last element in the array
   
-  BufferCursor* pHighCursor = new BufferCursor(pLastBuffer, iCount-1, pLastBuffer->aGetElement(pLastBuffer->nCount() - 1));
+  BufferCursor* pHighCursor = new BufferCursor(pLastBuffer, iCount-1, pLastBuffer->nItems());
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // call quick sort (recursive call)
-  vQuickSortBuffer(pIntBuffer1, pLowCursor, pHighCursor);
+  BufferSort::vQuickSortBuffer(pSrtBuffer1, pLowCursor, pHighCursor);
   
   //vTrace("\nSorted buffer:\n"_Stz);
   //pIntBuffer->vDump();
@@ -241,7 +241,7 @@ void MergeOp::vMergeOperands(Operand* pOperand1, Operand* pOperand2)
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify that the data is sorted
-  RASSERT(pIntBuffer1->bVerifyOrder());
+  RASSERT(pSrtBuffer1->bVerifyOrder());
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // calculate the magnitude of this sorted buffer
@@ -253,7 +253,7 @@ void MergeOp::vMergeOperands(Operand* pOperand1, Operand* pOperand2)
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // save this buffer set
-    m_pOperand[iMagnitude] = pIntBuffer1;
+    m_pOperand[iMagnitude] = pSrtBuffer1;
     m_iOperands++;
   }
   else {
@@ -263,9 +263,9 @@ void MergeOp::vMergeOperands(Operand* pOperand1, Operand* pOperand2)
     Operand* pOperand = m_pOperand[iMagnitude];
     m_pOperand[iMagnitude] = nullptr;
     m_iOperands--;
-    vMergeOperands(pIntBuffer1, pOperand);
+    vMergeOperands(pSrtBuffer1, pOperand);
   }
- */
+
 }
 
 /*----------------------------------------------------------------------------*/

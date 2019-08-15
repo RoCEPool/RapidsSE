@@ -194,7 +194,7 @@ IntBuffer* IntBuffer::pLastBuffer(i8& iCount)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next buffer                                                            */
+/* link the buffers                                                           */
 /*----------------------------------------------------------------------------*/
 void IntBuffer::vLinkBuffer(IntBuffer* pIntBuffer)
 {

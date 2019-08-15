@@ -29,12 +29,16 @@ namespace Rows
     SrtSet*    aFirstSrtSet(void);
     void       vIsLast(bool bIsLast);
     bool       bIsLast(void);
+    SrtBuffer* pLastBuffer(i8& iCount);
+    void       vLinkBuffer(SrtBuffer* pSrtBuffer);
     SrtBuffer* pNextBuffer(void);
     SrtSet*    aNextSrtSet(SrtSet* aPriorSrtSet);
     SrtBuffer* pPrevBuffer(void);
     void       vShow(ColumnVec* pColVec);
     SrtSet*    aSrtSet(i8 iSrtSet);
     void       vSwap(i8 iSrtSet1, i8 iSrtSet2);
+    bool       bVerifyNextPrev(void);
+    bool       bVerifyOrder(void);
     
   private:
     Footer* aFooter(void);
