@@ -178,7 +178,7 @@ bool Job_Select::bPopulateJob(TokenVec* pTokenVec)
 
   m_pStmt_Select->pTokenVec()->vCopyVector(pTokenVec);
   
-  m_pStmt_Select->pTokenVec()->vDumpTokens();
+  //m_pStmt_Select->pTokenVec()->vDumpTokens();
   
   return true;
 }

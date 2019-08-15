@@ -246,25 +246,27 @@ void Digest::vParseCommand(TokenVec* pTknVec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump
   
-  vTrace("Dynamic Job:\n"_Stz);
-  
-  for (i8 i_Op = 0; i_Op < m_oOpVec.nItems(); i_Op++) {
+  if (AM::bVerbose()) {
+    vTrace("Dynamic Job:\n"_Stz);
     
-    Op* pOp = m_oOpVec.pGet(i_Op);
-    
-    s32 sArgs;
-    sArgs.vSprint("(%s)"_Stz,pOp->szArgs());
-    
-    vTrace("  [%02lld] { %9s: %8s%-24s endMarkers(L%lld R%lld) :%-6s %s }\n"_Stz,
-           i_Op,
-           pOp->szLabel(),
-           aCN[pOp->eClass()],
-           sArgs.aStz(),
-           pOp->m_nLeftEndMarkers,
-           pOp->m_nRightEndMarkers,
-           pOp->szNextLabel(),
-           pOp->m_bAppendRight ? "appendRight"_Stz : "appendLeft "_Stz
-           );
+    for (i8 i_Op = 0; i_Op < m_oOpVec.nItems(); i_Op++) {
+      
+      Op* pOp = m_oOpVec.pGet(i_Op);
+      
+      s32 sArgs;
+      sArgs.vSprint("(%s)"_Stz,pOp->szArgs());
+      
+      vTrace("  [%02lld] { %9s: %8s%-24s endMarkers(L%lld R%lld) :%-6s %s }\n"_Stz,
+             i_Op,
+             pOp->szLabel(),
+             aCN[pOp->eClass()],
+             sArgs.aStz(),
+             pOp->m_nLeftEndMarkers,
+             pOp->m_nRightEndMarkers,
+             pOp->szNextLabel(),
+             pOp->m_bAppendRight ? "appendRight"_Stz : "appendLeft "_Stz
+             );
+    }
   }
   
   vDebugPoint();

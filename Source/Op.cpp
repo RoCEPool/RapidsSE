@@ -345,10 +345,11 @@ void Op::vPipeOut(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  vTrace("%s::vPipeOut :    %s %p\n"_Stz,
-         m_sLabel.aStz(),
-         aCN[pOperand->eClass()],
-         pOperand);
+  if (AM::bVerbose())
+    vTrace("%s::vPipeOut :    %s %p\n"_Stz,
+           m_sLabel.aStz(),
+           aCN[pOperand->eClass()],
+           pOperand);
 
   if (m_bAppendRight)
     m_pOpOut->vAppendRight(pOperand);
@@ -386,7 +387,7 @@ Operand* Op::pPopQueue(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (pOperand) {
+  if (AM::bVerbose() && pOperand) {
     vTrace("%s::pPopQueue : %s %p\n"_Stz,
            m_sLabel.aStz(),
            aCN[pOperand->eClass()],
