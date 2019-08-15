@@ -417,6 +417,9 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Able(Task* pTask)
 {
+  AM::vLogTsk(pTask->iTaskId(),TA_NONE,
+              ""_Stz);
+  
   // note: task can be in any current state
   
   RASSERT(QK_NONE == pTask->eQueue());
@@ -432,6 +435,9 @@ void Scheduler::vTask_Able(Task* pTask)
 /*----------------------------------------------------------------------------*/
 bool Scheduler::bTask_Ack(Task* pTaskWaiting, Task* pTaskAcking)
 {
+  AM::vLogTsk(pTaskWaiting->iTaskId(),TA_NONE,
+              ""_Stz);
+  
   // note: the 'waiting' task may not yet be waiting.  there is an indefinite
   //       period between when the task grabs its lock + sets the number of
   //       acks and when it enters the waiting state and drops the lock
@@ -500,6 +506,9 @@ bool Scheduler::bTask_Ack(Task* pTaskWaiting, Task* pTaskAcking)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Bide(Task* pTask)
 {
+  AM::vLogTsk(pTask->iTaskId(),TA_NONE,
+              ""_Stz);
+  
   RASSERT(pTask->bIsLocked());
   RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
@@ -523,6 +532,9 @@ void Scheduler::vTask_Bide(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Desist(Task* pTask)
 {
+  AM::vLogTsk(pTask->iTaskId(),TA_NONE,
+              ""_Stz);
+  
   RASSERT(TS_EXECUTING == pTask->eState());
   RASSERT(QK_EXECUTING_SET == pTask->eQueue());
   RASSERT(TR_NONE != pTask->eTransition());
@@ -541,6 +553,9 @@ void Scheduler::vTask_Desist(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Execute(Task* pTask)
 {
+  AM::vLogTsk(pTask->iTaskId(),TA_NONE,
+              ""_Stz);
+  
   RASSERT(TS_ABLE == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
   RASSERT(TR_NONE == pTask->eTransition());
@@ -560,6 +575,9 @@ void Scheduler::vTask_Execute(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Exit(Task* pTask)
 {
+  AM::vLogTsk(pTask->iTaskId(),TA_NONE,
+              ""_Stz);
+  
   RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
   RASSERT(TR_EXIT == pTask->eTransition());
@@ -579,6 +597,9 @@ void Scheduler::vTask_Exit(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Pause(Task* pTask)
 {
+  AM::vLogTsk(pTask->iTaskId(),TA_NONE,
+              ""_Stz);
+  
   RASSERT(pTask->bIsLocked());
   RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
@@ -602,7 +623,10 @@ void Scheduler::vTask_Pause(Task* pTask)
 /*----------------------------------------------------------------------------*/
 Task* Scheduler::pTask_Pop(void)
 {
+//  AM::vLogTsk(pTask->iTaskId(),TA_NONE,
+//              ""_Stz);
   
+
   Queues* pQueues = AM::pQueues();
 
   Task* pTask = pQueues->pPopReadyQueue();
@@ -618,6 +642,9 @@ Task* Scheduler::pTask_Pop(void)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Pulse(Task* pTask)
 {
+  AM::vLogTsk(pTask->iTaskId(),TA_NONE,
+              ""_Stz);
+  
   RASSERT(pTask->bIsLocked());
   RASSERT(TS_PAUSED == pTask->eState());
   RASSERT(QK_PAUSED_SET == pTask->eQueue());
@@ -641,6 +668,9 @@ void Scheduler::vTask_Pulse(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Ready(Task* pTask)
 {
+  AM::vLogTsk(pTask->iTaskId(),TA_NONE,
+              ""_Stz);
+  
   RASSERT(TS_ABLE == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
   RASSERT(TR_NONE == pTask->eTransition());
@@ -664,6 +694,9 @@ void Scheduler::vTask_Ready(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Resume(Task* pTask)
 {
+  AM::vLogTsk(pTask->iTaskId(),TA_NONE,
+              ""_Stz);
+  
   // note: the 'waiting' task may not yet be waiting.  there is an indefinite
   //       period between when the task grabs its lock + sets the number of
   //       acks and when it enters the waiting state and drops the lock
@@ -697,6 +730,9 @@ void Scheduler::vTask_Resume(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Schedule(Task* pTask)
 {
+  AM::vLogTsk(pTask->iTaskId(),TA_NONE,
+              ""_Stz);
+  
   RASSERT(TS_ABLE == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
   RASSERT(TR_NONE == pTask->eTransition());
@@ -724,6 +760,9 @@ void Scheduler::vTask_Schedule(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Sleep(Task* pTask)
 {
+  AM::vLogTsk(pTask->iTaskId(),TA_NONE,
+              ""_Stz);
+  
   RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
   RASSERT(TR_SLEEP == pTask->eTransition());
@@ -760,6 +799,9 @@ void Scheduler::vTask_Sleep(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Thread(Task* pTask, Thread* pThread)
 {
+  AM::vLogTsk(pTask->iTaskId(),TA_NONE,
+              ""_Stz);
+  
   RASSERT(TS_ABLE == pTask->eState());
   
   RASSERT(HS_ASSIGNED == pThread->m_eThreadState);
@@ -777,6 +819,9 @@ void Scheduler::vTask_Thread(Task* pTask, Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Trigger(Task* pTask)
 {
+  AM::vLogTsk(pTask->iTaskId(),TA_NONE,
+              ""_Stz);
+  
   RASSERT(pTask->bIsLocked());
   RASSERT(TS_BIDING == pTask->eState());
   RASSERT(QK_BIDING_SET == pTask->eQueue());
@@ -800,6 +845,9 @@ void Scheduler::vTask_Trigger(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Wait(Task* pTask)
 {
+  AM::vLogTsk(pTask->iTaskId(),TA_NONE,
+              ""_Stz);
+  
   RASSERT(pTask->bIsLocked());
   RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
@@ -825,6 +873,9 @@ void Scheduler::vTask_Wait(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Wakeup(void)
 {
+//  AM::vLogTsk(pTask->iTaskId(),TA_NONE,
+//              ""_Stz);
+  
   Queues* pQueues = AM::pQueues();
   
   while (Task* pTask = pQueues->pPopSleepingQueue()) {
@@ -840,7 +891,9 @@ void Scheduler::vTask_Wakeup(void)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Yield(Task* pTask)
 {
-  
+  AM::vLogTsk(pTask->iTaskId(),TA_NONE,
+              ""_Stz);
+
   RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
   RASSERT(TR_YIELD == pTask->eTransition());
