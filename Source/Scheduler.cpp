@@ -840,6 +840,7 @@ void Scheduler::vTask_Wakeup(void)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Yield(Task* pTask)
 {
+  
   RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
   RASSERT(TR_YIELD == pTask->eTransition());
@@ -884,6 +885,9 @@ void Scheduler::vTask_Yield(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_AddDedicated(Thread* pThread)
 {
+  AM::vLogThd(pThread->m_iThreadId, HA_NONE,
+              ""_Stz);
+  
   RASSERT(CN_NONE != pThread->m_eDedicated);
   
   Queues* pQueues = AM::pQueues();
@@ -897,6 +901,9 @@ void Scheduler::vThread_AddDedicated(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_AddGeneral(Thread* pThread)
 {
+  AM::vLogThd(pThread->m_iThreadId, HA_NONE,
+              ""_Stz);
+  
   RASSERT(CN_NONE == pThread->m_eDedicated);
   
   Queues* pQueues = AM::pQueues();
@@ -910,6 +917,9 @@ void Scheduler::vThread_AddGeneral(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_AppendIdle(Thread* pThread)
 {
+  AM::vLogThd(pThread->m_iThreadId, HA_NONE,
+              ""_Stz);
+  
   RASSERT(! pThread->m_pTask);
   ASSERT(HS_UNASSIGNED == pThread->m_eThreadState);
   RASSERT(CN_NONE == pThread->m_eDedicated);
@@ -926,6 +936,9 @@ void Scheduler::vThread_AppendIdle(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 bool Scheduler::bThread_AssignIdle(Task* pTask)
 {
+//  AM::vLogThd(pThread->m_iThreadId, HA_NONE,
+//              ""_Stz);
+  
   RASSERT(TS_ABLE == pTask->eState());
   
   Queues* pQueues = AM::pQueues();
@@ -962,6 +975,9 @@ bool Scheduler::bThread_AssignIdle(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_BeginLoop(Thread* pThread)
 {
+  AM::vLogThd(pThread->m_iThreadId, HA_NONE,
+              ""_Stz);
+  
   pThread->vThisTLSThread();
   
   // thread has mutex while it is running
@@ -977,6 +993,9 @@ void Scheduler::vThread_BeginLoop(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_ContinueSame(Thread* pThread, Task* pTask)
 {
+  AM::vLogThd(pThread->m_iThreadId, HA_NONE,
+              ""_Stz);
+  
   RASSERT(TS_EXECUTING == pTask->eState());
   
   RASSERT(HS_UNASSIGNED == pThread->m_eThreadState);
@@ -991,6 +1010,9 @@ void Scheduler::vThread_ContinueSame(Thread* pThread, Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_EndLoop(Thread* pThread)
 {
+  AM::vLogThd(pThread->m_iThreadId, HA_NONE,
+              ""_Stz);
+  
   pThread->m_pMutexThread->vMutexUnlock();
 }
 
@@ -999,6 +1021,9 @@ void Scheduler::vThread_EndLoop(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_ExecuteDedicated(Thread* pThread)
 {
+  AM::vLogThd(pThread->m_iThreadId, HA_NONE,
+              ""_Stz);
+  
   ASSERT(HS_UNASSIGNED == pThread->m_eThreadState);
   ASSERT(pThread->m_pMutexThread->bMutexIsLocked());
   
@@ -1018,6 +1043,9 @@ void Scheduler::vThread_ExecuteDedicated(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_PauseGeneral(void)
 {
+//  AM::vLogThd(pThread->m_iThreadId, HA_NONE,
+//              ""_Stz);
+  
   Queues* pQueues = AM::pQueues();
   
   // pause till all general threads have all begun
@@ -1044,6 +1072,9 @@ void Scheduler::vThread_PauseGeneral(void)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_RemoveDedicated(Thread* pThread)
 {
+  AM::vLogThd(pThread->m_iThreadId, HA_NONE,
+              ""_Stz);
+  
   //
   // called from Thread::aEntryPoint_dedicated()
   //
@@ -1058,6 +1089,9 @@ void Scheduler::vThread_RemoveDedicated(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_RemoveGeneral(Thread* pThread)
 {
+  AM::vLogThd(pThread->m_iThreadId, HA_NONE,
+              ""_Stz);
+  
   //
   // called from Thread::aEntryPoint_general()
   //
@@ -1072,6 +1106,9 @@ void Scheduler::vThread_RemoveGeneral(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_SpawnDedicated(Task* pTask)
 {
+//  AM::vLogThd(pThread->m_iThreadId, HA_NONE,
+//              ""_Stz);
+  
   RASSERT(TS_ABLE == pTask->eState());
   
   Thread* pThread = new Thread;
@@ -1087,6 +1124,9 @@ void Scheduler::vThread_SpawnDedicated(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_UnassignTask(Thread* pThread)
 {
+  AM::vLogThd(pThread->m_iThreadId, HA_NONE,
+              ""_Stz);
+  
   pThread->m_pTask = nullptr;
   pThread->m_eThreadState = HS_UNASSIGNED;
 }
@@ -1096,6 +1136,9 @@ void Scheduler::vThread_UnassignTask(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_WaitAssignment(Thread* pThread)
 {
+  AM::vLogThd(pThread->m_iThreadId, HA_NONE,
+              ""_Stz);
+  
   ASSERT(HS_UNASSIGNED == pThread->m_eThreadState);
   RASSERT(pThread->m_pMutexThread->bMutexIsLocked());
   
