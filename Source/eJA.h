@@ -7,12 +7,18 @@ enum eJA // job actions
 {
   /*  0 */ JA_NONE=0,
   
+  /*    */ JA_ADD_JOB,
+  /*    */ JA_REMOVE_JOB,
+
   /*    */ JA_ENUMS,
 };
 
 static Stz* aJA[]
 {
   /*  0 */ "NONE"_Stz,
+  
+  /*    */ "JA_ADD_JOB"_Stz,
+  /*    */ "JA_REMOVE_JOB"_Stz,
   
   /*    */ "ENUMS"_Stz,
 };
