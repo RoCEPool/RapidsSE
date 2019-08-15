@@ -11,16 +11,16 @@ namespace Rows
   class BufferCursor : public Object
   {
   public:
-    IntBuffer*  m_pIntBuffer;
+    SrtBuffer*  m_pSrtBuffer;
     i8          m_iBufferNo;
-    i8*         m_aElement;
+    i8          m_iElement;
 
   public:
     void* operator new(size_t);
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
     
-    BufferCursor(IntBuffer* pIntBuffer, i8 iBufferNo, i8* aElement);
+    BufferCursor(SrtBuffer* m_pSrtBuffer, i8 iBufferNo, i8 iElement);
     BufferCursor(BufferCursor* pBufferCursor);
     BufferCursor(BufferCursor* pLowCursor, BufferCursor* pHighCursor);
     
@@ -40,7 +40,7 @@ namespace Rows
       if (m_iBufferNo > pBufferCursor->m_iBufferNo)
         return false;
 
-      if (m_aElement < pBufferCursor->m_aElement)
+      if (m_iElement < pBufferCursor->m_iElement)
         return true;
       else
         return false;
@@ -55,7 +55,7 @@ namespace Rows
       if (m_iBufferNo < pBufferCursor->m_iBufferNo)
         return false;
       
-      if (m_aElement >= pBufferCursor->m_aElement)
+      if (m_iElement >= pBufferCursor->m_iElement)
         return true;
       else
         return false;
@@ -64,7 +64,7 @@ namespace Rows
     // less than
     bool bIsLessThan(i8 iValue)
     {
-      if (*m_aElement < iValue)
+      if (m_pSrtBuffer->aSrtSet(m_iElement)->iKey() < iValue)
         return true;
       else
         return false;
@@ -73,7 +73,7 @@ namespace Rows
     // greater than
     bool bIsGreaterThan(i8 iValue)
     {
-      if (*m_aElement > iValue)
+      if (m_pSrtBuffer->aSrtSet(m_iElement)->iKey() > iValue)
         return true;
       else
         return false;

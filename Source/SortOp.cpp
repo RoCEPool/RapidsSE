@@ -62,8 +62,6 @@ SortOp::SortOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   _precondition_(_MAGIC_,CN_SORTOP);
   
   m_pStreamDef = nullptr;
-  m_sSortKey   = ""_Stz;
-  m_iSortCol   = -1;
   
   m_fpCall = SortOp::eCall;
   
@@ -97,8 +95,6 @@ Op* SortOp::pNew(Stz* szLabel,
   i_Tkn_++;
   
   SortOp* pSortOp = new SortOp(szLabel,pDigest,aOpDefn,bAppR);
-  
-  pSortOp->m_sSortKey = pTknVec->pGet(i_Tkn_++)->szText();
 
   pSortOp->m_nSlot = i_Slot;
   
@@ -143,47 +139,35 @@ eOR SortOp::eSortLoop(void)
     
     // (ray added this)
     if (CN_STREAMDEF == pOperand->eClass()) {
-      
       m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
-      
-      // figure out the key idx
-      for (i8 i_Col = 0; i_Col < m_pStreamDef->m_oColAry.nItems(); i_Col++) {
-        Column* pCol = m_pStreamDef->m_oColAry.pGet(i_Col);
-        if (StrLib::bEqualTo(m_sSortKey.aChar(),pCol->sColumnName().aChar(),C_NO_CASE)) {
-          m_iSortCol = i_Col;
-          break;
-        }
-        RASSERT(m_iSortCol != -1);
-      }
-      
-      delete _pStreamDef(pOperand);
-      
+      vPipeOut(pOperand);
       continue;
     }
     
-    RASSERT(CN_IRWBUFFER == pOperand->eClass());
+    RASSERT(CN_SRTBUFFER == pOperand->eClass());
     
-    IntBuffer* pIntBuffer = _pIntBuffer(pOperand);
+    SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
+    //pSrtBuffer->vShow();
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // create a Low cursor pointing to the first element in the array
-    BufferCursor* pLowCursor = new BufferCursor(pIntBuffer, 0, pIntBuffer->aGetElement(0));
+    BufferCursor* pLowCursor = new BufferCursor(pSrtBuffer, 0,0);
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // create a High cursor pointing to the last element in the array
-    BufferCursor* pHighCursor = new BufferCursor(pIntBuffer, 0, pIntBuffer->aGetElement(pIntBuffer->nCount() - 1));
+    BufferCursor* pHighCursor = new BufferCursor(pSrtBuffer, 0, pSrtBuffer->nItems() - 1);
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // call quick sort (recursive call)
-    BufferSort::vQuickSortBuffer(pIntBuffer, pLowCursor, pHighCursor);
+    BufferSort::vQuickSortBuffer(pSrtBuffer, pLowCursor, pHighCursor);
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // verify that the data is sorted
-    RASSERT(pIntBuffer->bVerifyOrder());
+    //RASSERT(pSrtBuffer->bVerifyOrder());
     
     // before feeding to mergeOp, delink the buffer first
-    pIntBuffer->vNextBuffer(nullptr);
-    pIntBuffer->vPrevBuffer(nullptr);
+    pSrtBuffer->vNextBuffer(nullptr);
+    pSrtBuffer->vPrevBuffer(nullptr);
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // delete the bufferCursors

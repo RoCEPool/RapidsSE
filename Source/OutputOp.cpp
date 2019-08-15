@@ -186,7 +186,7 @@ eOR OutputOp::eOpLoop(void)
         ColumnVec* pColumnVec = new ColumnVec;
         for (i8 i_Col = 0; i_Col < m_pStreamDef->m_oColAry.nItems(); i_Col++)
           pColumnVec->vAdd(m_pStreamDef->m_oColAry.pGet(i_Col));
-        pSrtBuffer->vShow();
+        pSrtBuffer->vShow(pColumnVec);
         vPipeOut(pOperand);
         break;
       }

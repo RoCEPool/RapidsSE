@@ -52,12 +52,12 @@ void BufferCursor::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-BufferCursor::BufferCursor(IntBuffer* pIntBuffer, i8 iBufferNo, i8* aElement)
+BufferCursor::BufferCursor(SrtBuffer* pSrtBuffer, i8 iBufferNo, i8 iElement)
 : Object(CN_BUFFERCURSOR)
 {
-  m_pIntBuffer = pIntBuffer;
+  m_pSrtBuffer = pSrtBuffer;
   m_iBufferNo  = iBufferNo;
-  m_aElement   = aElement;
+  m_iElement   = iElement;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -66,9 +66,9 @@ BufferCursor::BufferCursor(IntBuffer* pIntBuffer, i8 iBufferNo, i8* aElement)
 BufferCursor::BufferCursor(BufferCursor* pBufferCursor)
 : Object(CN_BUFFERCURSOR)
 {
-  m_pIntBuffer = pBufferCursor->m_pIntBuffer;
+  m_pSrtBuffer = pBufferCursor->m_pSrtBuffer;
   m_iBufferNo  = pBufferCursor->m_iBufferNo;
-  m_aElement   = pBufferCursor->m_aElement;
+  m_iElement   = pBufferCursor->m_iElement;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -78,16 +78,16 @@ BufferCursor::BufferCursor(BufferCursor* pLowCursor, BufferCursor* pHighCursor)
 : Object(CN_BUFFERCURSOR)
 {
   
-  if (pLowCursor->m_pIntBuffer == pHighCursor->m_pIntBuffer) {
-    m_pIntBuffer = pLowCursor->m_pIntBuffer;
+  if (pLowCursor->m_pSrtBuffer == pHighCursor->m_pSrtBuffer) {
+    m_pSrtBuffer = pLowCursor->m_pSrtBuffer;
     m_iBufferNo = pLowCursor->m_iBufferNo;
-    m_aElement   = pLowCursor->m_aElement + (pHighCursor->m_aElement - pLowCursor->m_aElement) / 2;
+    m_iElement   = pLowCursor->m_iElement + (pHighCursor->m_iElement - pLowCursor->m_iElement) / 2;
     return;
   }
   
   vTrace("Low %lld High %lld\n"_Stz,
-         *pLowCursor->m_aElement,
-         *pHighCursor->m_aElement);
+         pLowCursor->m_iElement,
+         pHighCursor->m_iElement);
   
   RASSERT(0);
 }
@@ -108,16 +108,16 @@ BufferCursor::~BufferCursor(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void BufferCursor::vMoveLeft(void)
 {
-  if (m_aElement == m_pIntBuffer->aGetElement(0)) {
+  if (m_iElement == 0) {
     // move to a previous buffer
-    m_pIntBuffer = m_pIntBuffer->pPrevBuffer();
+    m_pSrtBuffer = m_pSrtBuffer->pPrevBuffer();
     m_iBufferNo--;
-    m_aElement = m_pIntBuffer->aGetElement(m_pIntBuffer->nCount() -1);
+    m_iElement = m_pSrtBuffer->nItems() -1;
     return;
   }
   
   // move left
-  m_aElement--;
+  m_iElement--;
   
 }
 
@@ -126,16 +126,16 @@ void BufferCursor::vMoveLeft(void)
 /*----------------------------------------------------------------------------*/
 void BufferCursor::vMoveRight(void)
 {
-  if (m_aElement == m_pIntBuffer->aGetElement(m_pIntBuffer->nCount() -1)) {
+  if (m_iElement == m_pSrtBuffer->nItems() -1) {
     // move to a next buffer
-    m_pIntBuffer = m_pIntBuffer->pNextBuffer();
+    m_pSrtBuffer = m_pSrtBuffer->pNextBuffer();
     m_iBufferNo++;
-    m_aElement = m_pIntBuffer->aGetElement(0);
+    m_iElement = 0;
     return;
   }
   
   // move right
-  m_aElement++;
+  m_iElement++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -143,9 +143,7 @@ void BufferCursor::vMoveRight(void)
 /*----------------------------------------------------------------------------*/
 void BufferCursor::vSwap(BufferCursor* pBufferCursor)
 {
-  i8 iTemp = *pBufferCursor->m_aElement;
-  *pBufferCursor->m_aElement = *m_aElement;
-  *m_aElement = iTemp;
+  m_pSrtBuffer->vSwap(m_iElement, pBufferCursor->m_iElement);
 }
 
 /*============================================================================*/
