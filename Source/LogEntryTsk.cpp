@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void _LogEntryTsk::vSet(LogEntry* pLogEntry, i8 iTskId, eTA eTskAct)
 {
-  pLogEntry->m_eKind = EK_THD;
+  pLogEntry->m_eKind = EK_TSK;
   
   m_iTskId  = iTskId;
   m_eTskAct = eTskAct;
