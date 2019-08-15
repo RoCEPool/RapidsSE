@@ -7,10 +7,20 @@ enum eHA // thread actions
 {
   /*  0 */ HA_NONE=0,
   
-  /*    */ HA_ADD_DEDICATED_THREAD,
-  /*    */ HA_ADD_GENERAL_THREAD,
-  /*    */ HA_REMOVE_DEDICATED_THREAD,
-  /*    */ HA_REMOVE_GENERAL_THREAD,
+  /*    */ HA_THREAD_ADD_DEDICATED,
+  /*    */ HA_THREAD_ADD_GENERAL,
+  /*    */ HA_THREAD_APPEND_IDLE,
+  /*    */ HA_THREAD_ASSIGN_IDLE,
+  /*    */ HA_THREAD_BEGIN_LOOP,
+  /*    */ HA_THREAD_CONTINUE_SAME,
+  /*    */ HA_THREAD_END_LOOP,
+  /*    */ HA_THREAD_EXECUTE_DEDICATED,
+  /*    */ HA_THREAD_PAUSE_GENERAL,
+  /*    */ HA_THREAD_REMOVE_DEDICATED,
+  /*    */ HA_THREAD_REMOVE_GENERAL,
+  /*    */ HA_THREAD_SPAWN_DEDICATED,
+  /*    */ HA_THREAD_UNASSIGN_TASK,
+  /*    */ HA_THREAD_WAIT_ASSIGN,
 
   /*    */ HA_ENUMS,
 };
@@ -19,11 +29,21 @@ static Stz* aHA[]
 {
   /*  0 */ "NONE"_Stz,
   
-  /*    */ "HA_ADD_DEDICATED_THREAD"_Stz,
-  /*    */ "HA_ADD_GENERAL_THREAD"_Stz,
-  /*    */ "HA_REMOVE_DEDICATED_THREAD"_Stz,
-  /*    */ "HA_REMOVE_GENERAL_THREAD"_Stz,
-  
+  /*  0 */ "HA_THREAD_ADD_DEDICATED"_Stz,
+  /*  0 */ "HA_THREAD_ADD_GENERAL"_Stz,
+  /*  0 */ "HA_THREAD_APPEND_IDLE"_Stz,
+  /*  0 */ "HA_THREAD_ASSIGN_IDLE"_Stz,
+  /*  0 */ "HA_THREAD_BEGIN_LOOP"_Stz,
+  /*  0 */ "HA_THREAD_CONTINUE_SAME"_Stz,
+  /*  0 */ "HA_THREAD_END_LOOP"_Stz,
+  /*  0 */ "HA_THREAD_EXECUTE_DEDICATED"_Stz,
+  /*  0 */ "HA_THREAD_PAUSE_GENERAL"_Stz,
+  /*  0 */ "HA_THREAD_REMOVE_DEDICATED"_Stz,
+  /*  0 */ "HA_THREAD_REMOVE_GENERAL"_Stz,
+  /*  0 */ "HA_THREAD_SPAWN_DEDICATED"_Stz,
+  /*  0 */ "HA_THREAD_UNASSIGN_TASK"_Stz,
+  /*  0 */ "HA_THREAD_WAIT_ASSIGN"_Stz,
+
   /*    */ "ENUMS"_Stz,
 };
 
