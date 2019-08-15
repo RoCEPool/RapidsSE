@@ -16,7 +16,7 @@
 void Scheduler::vAddOriginatingJob(Job* pJob)
 {
   AM::vLogJob(pJob->iJobId(),JA_JOB_ADD_ORIGINATING,
-              "Add job to originating list"_Stz);
+              "Add job to OriginatingJobs list"_Stz);
   
   Queues* pQueues = AM::pQueues();
   
@@ -31,7 +31,7 @@ void Scheduler::vAddOriginatingJob(Job* pJob)
 void Scheduler::vAddParticipatingJob(Job* pJob)
 {
   AM::vLogJob(pJob->iJobId(),JA_JOB_ADD_PARTICIPATING,
-              "Add job to participating list"_Stz);
+              "Add job to ParticipatingJobs list"_Stz);
   
   Queues* pQueues = AM::pQueues();
   
@@ -46,7 +46,7 @@ void Scheduler::vAddParticipatingJob(Job* pJob)
 void Scheduler::vDumpOriginatingJobs(void)
 {
   AM::vLogJob(C_UNKNOWN,JA_JOB_DUMP_ORIGINATING,
-              "Dump originating job list "_Stz);
+              "Dump OriginatingJobs lisy"_Stz);
   
   Queues* pQueues = AM::pQueues();
   
@@ -61,7 +61,7 @@ void Scheduler::vDumpOriginatingJobs(void)
 void Scheduler::vDumpParticipatingJobs(void)
 {
   AM::vLogJob(C_UNKNOWN,JA_JOB_DUMP_PARTICIPATING,
-              "Dump participating job list"_Stz);
+              "Dump ParticipatingJobs list"_Stz);
   
   Queues* pQueues = AM::pQueues();
   
@@ -76,7 +76,7 @@ void Scheduler::vDumpParticipatingJobs(void)
 Job* Scheduler::pFindOriginatingJob(i8 iJobId)
 {
   AM::vLogJob(iJobId,JA_JOB_FIND_ORIGINATING,
-              "Find job in originating list"_Stz);
+              "Find job in OriginatingJobs list"_Stz);
   
   Queues* pQueues = AM::pQueues();
   
@@ -91,7 +91,7 @@ Job* Scheduler::pFindOriginatingJob(i8 iJobId)
 Job* Scheduler::pFindParticipatingJob(i8 iJobId)
 {
   AM::vLogJob(iJobId,JA_JOB_FIND_PARTICIPATING,
-              "Find job in participating list"_Stz);
+              "Find job in ParticipatingJobs list"_Stz);
   
   Queues* pQueues = AM::pQueues();
 
@@ -106,7 +106,7 @@ Job* Scheduler::pFindParticipatingJob(i8 iJobId)
 bool Scheduler::bRemoveOriginatingJob(Job* pJob, bool bDump)
 {
   AM::vLogJob(pJob->iJobId(),JA_JOB_REMOVE_ORIGINATING,
-              "Remove job from originating list"_Stz);
+              "Remove job from OriginatingJobs list"_Stz);
   
   Queues* pQueues = AM::pQueues();
   
@@ -128,7 +128,7 @@ bool Scheduler::bRemoveOriginatingJob(Job* pJob, bool bDump)
 bool Scheduler::bRemoveParticipatingJob(Job* pJob, bool bDump)
 {
   AM::vLogJob(pJob->iJobId(),JA_JOB_REMOVE_PARTICIPATING,
-              "Remove job from participating list"_Stz);
+              "Remove job from ParticipatingJobs list"_Stz);
   
   Queues* pQueues = AM::pQueues();
   
@@ -221,7 +221,6 @@ void Scheduler::vAddTaskGeneral(Task* pTask)
   // called from Api::bSpawnJob()
   //
   
-  //AM::vLogTsk(pTask->iTaskId(), <#eTA eTskAct#>, <#Strings::Stz *szFormat, ...#>)
   vTask_Schedule(pTask);
 }
 
@@ -446,7 +445,7 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
 void Scheduler::vTask_Able(Task* pTask)
 {
   AM::vLogTsk(pTask->iTaskId(),TA_TASK_ABLE,
-              ""_Stz);
+              "Transition task to TS_ABLE"_Stz);
   
   // note: task can be in any current state
   
@@ -464,7 +463,7 @@ void Scheduler::vTask_Able(Task* pTask)
 bool Scheduler::bTask_Ack(Task* pTaskWaiting, Task* pTaskAcking)
 {
   AM::vLogTsk(pTaskWaiting->iTaskId(),TA_TASK_ACK,
-              ""_Stz);
+              "Ack a waiting job-task"_Stz);
   
   // note: the 'waiting' task may not yet be waiting.  there is an indefinite
   //       period between when the task grabs its lock + sets the number of
@@ -535,7 +534,7 @@ bool Scheduler::bTask_Ack(Task* pTaskWaiting, Task* pTaskAcking)
 void Scheduler::vTask_Bide(Task* pTask)
 {
   AM::vLogTsk(pTask->iTaskId(),TA_TASK_BIDE,
-              ""_Stz);
+              "Transition task to TS_BIDING; add to BidingSet"_Stz);
   
   RASSERT(pTask->bIsLocked());
   RASSERT(TS_DESISTED == pTask->eState());
@@ -561,7 +560,7 @@ void Scheduler::vTask_Bide(Task* pTask)
 void Scheduler::vTask_Desist(Task* pTask)
 {
   AM::vLogTsk(pTask->iTaskId(),TA_TASK_DESIST,
-              ""_Stz);
+              "Remove task from ExecutingSet; transition to TS_DESISTED"_Stz);
   
   RASSERT(TS_EXECUTING == pTask->eState());
   RASSERT(QK_EXECUTING_SET == pTask->eQueue());
@@ -582,7 +581,7 @@ void Scheduler::vTask_Desist(Task* pTask)
 void Scheduler::vTask_Execute(Task* pTask)
 {
   AM::vLogTsk(pTask->iTaskId(),TA_TASK_EXECUTE,
-              ""_Stz);
+              "Transition able task to TS_EXECUTING; add to ExecutingSet"_Stz);
   
   RASSERT(TS_ABLE == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
@@ -604,7 +603,7 @@ void Scheduler::vTask_Execute(Task* pTask)
 void Scheduler::vTask_Exit(Task* pTask)
 {
   AM::vLogTsk(pTask->iTaskId(),TA_TASK_EXIT,
-              ""_Stz);
+              "Transition desisted task to TS_EXITED (and delete)"_Stz);
   
   RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
@@ -626,7 +625,7 @@ void Scheduler::vTask_Exit(Task* pTask)
 void Scheduler::vTask_Pause(Task* pTask)
 {
   AM::vLogTsk(pTask->iTaskId(),TA_TASK_PAUSE,
-              ""_Stz);
+              "Transition desisted task to TS_PAUSED"_Stz);
   
   RASSERT(pTask->bIsLocked());
   RASSERT(TS_DESISTED == pTask->eState());
@@ -652,15 +651,15 @@ void Scheduler::vTask_Pause(Task* pTask)
 Task* Scheduler::pTask_Pop(void)
 {
   AM::vLogTsk(C_UNKNOWN,TA_TASK_POP,
-              ""_Stz);
+              "Pop ready task from ReadyQueue/ReadyQueueLP"_Stz);
   
-
   Queues* pQueues = AM::pQueues();
 
   Task* pTask = pQueues->pPopReadyQueue();
   if ( ! pTask )
     pTask = pQueues->pPopReadyQueueLP();
   
+  RASSERT(! pTask || TS_READY == pTask->eState());
   return pTask;
 }
 
@@ -671,7 +670,7 @@ Task* Scheduler::pTask_Pop(void)
 void Scheduler::vTask_Pulse(Task* pTask)
 {
   AM::vLogTsk(pTask->iTaskId(),TA_TASK_PULSE,
-              ""_Stz);
+              "Transition a paused op-task to TS_ABLE and schedule"_Stz);
   
   RASSERT(pTask->bIsLocked());
   RASSERT(TS_PAUSED == pTask->eState());
@@ -697,7 +696,7 @@ void Scheduler::vTask_Pulse(Task* pTask)
 void Scheduler::vTask_Ready(Task* pTask)
 {
   AM::vLogTsk(pTask->iTaskId(),TA_TASK_READY,
-              ""_Stz);
+              "Append ready task to ReadyQueue/ReadyQueueLP"_Stz);
   
   RASSERT(TS_ABLE == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
@@ -717,13 +716,12 @@ void Scheduler::vTask_Ready(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* fully acked task is removed from waiting set,                              */
-/*   transitions to TS_ABLE and scheduled                                     */
+/* resume a fully ack'd waiting task                                          */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Resume(Task* pTask)
 {
   AM::vLogTsk(pTask->iTaskId(),TA_TASK_RESUME,
-              ""_Stz);
+              "Remove waiting task from WaitingSet and schedule it"_Stz);
   
   // note: the 'waiting' task may not yet be waiting.  there is an indefinite
   //       period between when the task grabs its lock + sets the number of
@@ -759,7 +757,7 @@ void Scheduler::vTask_Resume(Task* pTask)
 void Scheduler::vTask_Schedule(Task* pTask)
 {
   AM::vLogTsk(pTask->iTaskId(),TA_TASK_SCHEDULE,
-              ""_Stz);
+              "Assign a thread to able-to-run task or add to ReadyQueue"_Stz);
   
   RASSERT(TS_ABLE == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
@@ -789,7 +787,7 @@ void Scheduler::vTask_Schedule(Task* pTask)
 void Scheduler::vTask_Sleep(Task* pTask)
 {
   AM::vLogTsk(pTask->iTaskId(),TA_TASK_SLEEP,
-              ""_Stz);
+              "Add desisted task to SleepingQueue"_Stz);
   
   RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
@@ -828,7 +826,7 @@ void Scheduler::vTask_Sleep(Task* pTask)
 void Scheduler::vTask_Thread(Task* pTask, Thread* pThread)
 {
   AM::vLogTsk(pTask->iTaskId(),TA_TASK_THREAD,
-              ""_Stz);
+              "Task has been assigned the given thread"_Stz);
   
   RASSERT(TS_ABLE == pTask->eState());
   
@@ -842,13 +840,12 @@ void Scheduler::vTask_Thread(Task* pTask, Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* locked biding op-task is removed from biding set,                          */
-/*   transitions to TS_ABLE state, unlocked and scheduled                     */
+/* trigger biding task                                                        */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Trigger(Task* pTask)
 {
   AM::vLogTsk(pTask->iTaskId(),TA_TASK_TRIGGER,
-              ""_Stz);
+              "Remove biding task from BidingSet and schedule it"_Stz);
   
   RASSERT(pTask->bIsLocked());
   RASSERT(TS_BIDING == pTask->eState());
@@ -869,12 +866,12 @@ void Scheduler::vTask_Trigger(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* transition locked desisted task to TS_WAITING state and add to waiting set */
+/* add task to waiting set                                                    */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Wait(Task* pTask)
 {
   AM::vLogTsk(pTask->iTaskId(),TA_TASK_WAIT,
-              ""_Stz);
+              "Add desisted task to WaitingSet"_Stz);
   
   RASSERT(pTask->bIsLocked());
   RASSERT(TS_DESISTED == pTask->eState());
@@ -902,7 +899,7 @@ void Scheduler::vTask_Wait(Task* pTask)
 void Scheduler::vTask_Wakeup(void)
 {
   AM::vLogTsk(C_UNKNOWN,TA_TASK_WAKEUP,
-              ""_Stz);
+              "Wakeup any sleeping tasks whose wakeup time has arrived"_Stz);
   
   Queues* pQueues = AM::pQueues();
   
@@ -920,7 +917,7 @@ void Scheduler::vTask_Wakeup(void)
 void Scheduler::vTask_Yield(Task* pTask)
 {
   AM::vLogTsk(pTask->iTaskId(),TA_TASK_YIELD,
-              ""_Stz);
+              "Yield desisted task; continue executing or schedule it"_Stz);
 
   RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
@@ -967,7 +964,7 @@ void Scheduler::vTask_Yield(Task* pTask)
 void Scheduler::vThread_AddDedicated(Thread* pThread)
 {
   AM::vLogThd(pThread->m_iThreadId, HA_THREAD_ADD_DEDICATED,
-              "Add dedicated thread to dedicated thread vector"_Stz);
+              "Add dedicated thread to DedicatedThreadVec"_Stz);
   
   RASSERT(CN_NONE != pThread->m_eDedicated);
   
@@ -983,7 +980,7 @@ void Scheduler::vThread_AddDedicated(Thread* pThread)
 void Scheduler::vThread_AddGeneral(Thread* pThread)
 {
   AM::vLogThd(pThread->m_iThreadId, HA_THREAD_ADD_GENERAL,
-              "Add general thread to general thread vector"_Stz);
+              "Add general thread to GeneralThreadVec"_Stz);
   
   RASSERT(CN_NONE == pThread->m_eDedicated);
   
@@ -999,7 +996,7 @@ void Scheduler::vThread_AddGeneral(Thread* pThread)
 void Scheduler::vThread_AppendIdle(Thread* pThread)
 {
   AM::vLogThd(pThread->m_iThreadId, HA_THREAD_APPEND_IDLE,
-              "Append unassigned general thread onto idle thread queue"_Stz);
+              "Append unassigned general thread onto IdleThreadQueue"_Stz);
   
   RASSERT(! pThread->m_pTask);
   ASSERT(HS_UNASSIGNED == pThread->m_eThreadState);
@@ -1018,7 +1015,7 @@ void Scheduler::vThread_AppendIdle(Thread* pThread)
 bool Scheduler::bThread_AssignIdle(Task* pTask)
 {
   AM::vLogThd(C_UNKNOWN, HA_THREAD_ASSIGN_IDLE,
-              "Attempt to pop an idle general thread and assign task to it "_Stz);
+              "Attempt to pop an idle general thread and assign task to it"_Stz);
   
   RASSERT(TS_ABLE == pTask->eState());
   
@@ -1070,12 +1067,12 @@ void Scheduler::vThread_BeginLoop(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* continue executing same task (tried to sleep or yield but could continue)  */
+/* Thread continues executing same task (tried sleep or yield but continued)  */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_ContinueSame(Thread* pThread, Task* pTask)
 {
   AM::vLogThd(pThread->m_iThreadId, HA_THREAD_CONTINUE_SAME,
-              "Continue executing same task"_Stz);
+              "Thread continues executing same task"_Stz);
   
   RASSERT(TS_EXECUTING == pTask->eState());
   
@@ -1087,12 +1084,12 @@ void Scheduler::vThread_ContinueSame(Thread* pThread, Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dedicated thread executes its task                                         */
+/* dedicated thread ends it's thread loop                                     */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_EndLoop(Thread* pThread)
 {
   AM::vLogThd(pThread->m_iThreadId, HA_THREAD_END_LOOP,
-              "Dedicated thread executes its task"_Stz);
+              "Dedicated thread has ended it's thread loop"_Stz);
   
   pThread->m_pMutexThread->vMutexUnlock();
 }
@@ -1125,7 +1122,7 @@ void Scheduler::vThread_ExecuteDedicated(Thread* pThread)
 void Scheduler::vThread_PauseGeneral(void)
 {
   AM::vLogThd(C_UNKNOWN, HA_THREAD_PAUSE_GENERAL,
-              "Pause till general threads are all idle"_Stz);
+              "Pause till all general threads are all idle"_Stz);
   
   Queues* pQueues = AM::pQueues();
   
@@ -1154,7 +1151,7 @@ void Scheduler::vThread_PauseGeneral(void)
 void Scheduler::vThread_RemoveDedicated(Thread* pThread)
 {
   AM::vLogThd(pThread->m_iThreadId, HA_THREAD_REMOVE_DEDICATED,
-              "Remove dedicated thread from dedicated thread vector"_Stz);
+              "Remove dedicated thread from DedicatedThreadVec"_Stz);
   
   //
   // called from Thread::aEntryPoint_dedicated()
@@ -1171,7 +1168,7 @@ void Scheduler::vThread_RemoveDedicated(Thread* pThread)
 void Scheduler::vThread_RemoveGeneral(Thread* pThread)
 {
   AM::vLogThd(pThread->m_iThreadId, HA_THREAD_REMOVE_GENERAL,
-              "Remove general thread from general thread vector"_Stz);
+              "Remove general thread from GeneralThreadVec"_Stz);
   
   //
   // called from Thread::aEntryPoint_general()
@@ -1201,12 +1198,12 @@ void Scheduler::vThread_SpawnDedicated(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* deassign task from thread                                                  */
+/* unassign task from thread                                                  */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_UnassignTask(Thread* pThread)
 {
   AM::vLogThd(pThread->m_iThreadId, HA_THREAD_UNASSIGN_TASK,
-              "Deassign task from thread"_Stz);
+              "Unassign task from thread"_Stz);
   
   pThread->m_pTask = nullptr;
   pThread->m_eThreadState = HS_UNASSIGNED;
@@ -1218,7 +1215,7 @@ void Scheduler::vThread_UnassignTask(Thread* pThread)
 void Scheduler::vThread_WaitAssignment(Thread* pThread)
 {
   AM::vLogThd(pThread->m_iThreadId, HA_THREAD_WAIT_ASSIGN,
-              "Append general thread onto idle queue; wait for task assignment"_Stz);
+              "Unassigned general thread waits for task assignment"_Stz);
   
   ASSERT(HS_UNASSIGNED == pThread->m_eThreadState);
   RASSERT(pThread->m_pMutexThread->bMutexIsLocked());
