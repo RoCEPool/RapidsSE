@@ -4,6 +4,19 @@
 
 #include "DataOperators.h"
 
+OpDesc __Op_Merge (
+  CN_MERGEOP,         // class number
+  OK_SIMPLE,          // op kind
+  "Merge"_Stz,        // first word of prompt command
+  "Mrg"_Stz,          // prefix
+  true,               // partitioned
+  MergeOp::pNew,      // function which parses the command and new's an op
+  MergeOp::eCall,     // function which calls the op loop
+  nullptr,            // function which calls the drain loop
+  
+  "<help>"_Stz
+  );
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -42,8 +55,8 @@ void MergeOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MergeOp::MergeOp(Stz* szOpLabel, Digest* pDigest)
-: Op(CN_MERGEOP,szOpLabel,pDigest,nullptr,false)
+MergeOp::MergeOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
+: Op(CN_MERGEOP,szOpLabel,pDigest,aOpDefn,false)
 {
   _precondition_(_MAGIC_,CN_MERGEOP);
   
@@ -52,7 +65,7 @@ MergeOp::MergeOp(Stz* szOpLabel, Digest* pDigest)
   
   m_iOperands = 0;
   
-  m_fpCall = MergeOp::eCallLoop;
+  m_fpCall = MergeOp::eCall;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -68,9 +81,25 @@ MergeOp::~MergeOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* parse & new                                                                */
+/*----------------------------------------------------------------------------*/
+Op* MergeOp::pNew(Stz* szLabel,
+                 Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
+                 TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
+{
+  i_Tkn_++;
+  
+  MergeOp* pMergeOp = new MergeOp(szLabel,pDigest,aOpDefn,bAppR);
+  
+  pMergeOp->m_nSlot = i_Slot;
+  
+  return pMergeOp;
+}
+
+/*----------------------------------------------------------------------------*/
 /* call the merge loop function                                               */
 /*----------------------------------------------------------------------------*/
-eOR MergeOp::eCallLoop(void* aThis)
+eOR MergeOp::eCall(void* aThis)
 {
   eOR eCallAgain = ((MergeOp*)aThis)->eMergeLoop();
   
