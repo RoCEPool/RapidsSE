@@ -167,6 +167,12 @@ eOR MergeOp::eMergeLoop(void)
       break;
     }
     
+    if (CN_STREAMDEF == pOperand->eClass()) {
+      //m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
+      vPipeOut(pOperand);
+      continue;
+    }
+    
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // check if we have another buffer binary magnitude 0
     if (m_pOperand[0]) {
@@ -202,15 +208,15 @@ eOR MergeOp::eMergeLoop(void)
     if (m_pOperand[i_Index])
       break;
 
-  IntBuffer* pIntBuffer = _pIntBuffer(m_pOperand[i_Index]);
+  SrtBuffer* pSrtBuffer = _pSrtBuffer(m_pOperand[i_Index]);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pipe out merge-sorted buffers
   i8 iCount = 0;
-  while (pIntBuffer) {
-    vPipeOut(pIntBuffer);
+  while (pSrtBuffer) {
+    vPipeOut(pSrtBuffer);
     iCount++;
-    pIntBuffer = pIntBuffer->pNextBuffer();
+    pSrtBuffer = pSrtBuffer->pNextBuffer();
   }
   
   vTrace("MERGE PIPED OUT %lld buffer\n"_Stz, iCount);
