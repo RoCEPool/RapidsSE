@@ -7,12 +7,18 @@ enum eOA // operator actions
 {
   /*  0 */ OA_NONE=0,
   
+  /*    */ OA_ADD_OP,
+  /*    */ OA_REMOVE_OP,
+  
   /*    */ OA_ENUMS,
 };
 
 static Stz* aOA[]
 {
   /*  0 */ "NONE"_Stz,
+  
+  /*    */ "OA_ADD_OP"_Stz,
+  /*    */ "OA_REMOVE_OP"_Stz,
   
   /*    */ "ENUMS"_Stz,
 };

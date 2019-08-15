@@ -1,18 +1,16 @@
 /*============================================================================*/
-/* _t -- create table t                                                       */
+/* _t -- the t test                                                           */
 /*============================================================================*/
 
 startCluster;
 
-time create table t
-(
-  t_int  INTEGER NOT NULL,
-  t_str  VARCHAR(32) NOT NULL
-);
+_t_create
 
-lscol t;
+_t_load
 
-//time drop table t;
+// dynamic scan T | inflate | output | zed ;
+
+select * from T ;
 
 /*============================================================================*/
 /* end                                                                        */

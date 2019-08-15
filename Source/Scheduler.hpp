@@ -22,13 +22,21 @@ namespace Scheduling
     static bool bRemoveParticipatingJob(Job* pJob, bool bDump=false);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // operator interface
+  
+    static void vAddOp(Op* pOp);
+    static void vRemoveOp(Op* pOp);
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // task interface
   
     static bool bAckWaitingTask(Task* pTaskWaiting, Task* pTaskAcking);
+    static void vAddTaskDedicated(Task* pTask);
+    static void vAddTaskGeneral(Task* pTask);
     static void vExecuteDedicatedTask(Task* pTask, Thread* pThread);
-    static void vNewTaskDedicated(Task* pTask);
-    static void vNewTaskGeneral(Task* pTask);
     static void vPulsePausedTask(Task* pTask);
+    static void vRemoveTaskDedicated(Task* pTask);
+    static void vRemoveTaskGeneral(Task* pTask);
     static void vTaskLoopTransition(Thread* pThread);
     static void vTriggerBidingTask(Task* pTask);
     static void vWakeSleepingTasks(void);

@@ -64,12 +64,15 @@ Op_ToFilter::Op_ToFilter(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool 
   
   m_pFilter_From    = nullptr;
   m_pFilter_GroupBy = nullptr;
+  m_pFilter_Inflate = nullptr;
   m_pFilter_Join    = nullptr;
   m_pFilter_Limit   = nullptr;
   m_pFilter_OrderBy = nullptr;
+  m_pFilter_Output  = nullptr;
+  m_pFilter_Project = nullptr;
+  m_pFilter_Scan    = nullptr;
   m_pFilter_Select  = nullptr;
   m_pFilter_Where   = nullptr;
-  m_pFilter_Output  = nullptr;
   m_pFilter_Zed     = nullptr;
 
   _checkInitialised_(CN_OP_TOFILTER);
@@ -151,6 +154,9 @@ eOR Op_ToFilter::eOpLoop(void)
       case CN_ENDMARKER:
         if (--m_nLeftEndMarkers == 0) {
           
+          m_pFilter_Inflate = new Filter_Inflate(nullptr);
+          vPipeOut(m_pFilter_Inflate);
+          
           m_pFilter_Output = new Filter_Output(nullptr);
           vPipeOut(m_pFilter_Output);
 
@@ -167,13 +173,13 @@ eOR Op_ToFilter::eOpLoop(void)
         // -- -- -- -- -- --
         
       case CN_CLAUSE_FROM:
-        m_pFilter_From = new Filter_From(((Clause*)pOperand)->pTokenVec());
-        vPipeOut(m_pFilter_From);
+        m_pFilter_Scan = new Filter_Scan(((Clause*)pOperand)->pTokenVec());
+        vPipeOut(m_pFilter_Scan);
         break;
 
       case CN_CLAUSE_GROUPBY:
         m_pFilter_GroupBy = new Filter_GroupBy(((Clause*)pOperand)->pTokenVec());
-        vPipeOut(m_pFilter_From);
+        vPipeOut(m_pFilter_GroupBy);
         break;
         
       case CN_CLAUSE_JOIN:
@@ -192,13 +198,13 @@ eOR Op_ToFilter::eOpLoop(void)
         break;
         
       case CN_CLAUSE_SELECT:
-        m_pFilter_Select = new Filter_Select(((Clause*)pOperand)->pTokenVec());
-        vPipeOut(m_pFilter_Select);
+        //m_pFilter_Project = new Filter_Project(((Clause*)pOperand)->pTokenVec());
+        //vPipeOut(m_pFilter_Project);
         break;
         
      case CN_CLAUSE_WHERE:
         m_pFilter_Where = new Filter_Where(((Clause*)pOperand)->pTokenVec());
-        vPipeOut(m_pFilter_From);
+        vPipeOut(m_pFilter_Where);
         break;
         
       default:

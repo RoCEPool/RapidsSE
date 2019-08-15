@@ -7,12 +7,19 @@ enum eTA // task actions
 {
   /*  0 */ TA_NONE=0,
   
+  /*    */ TA_ADD_TASK,
+  /*    */ TA_REMOVE_TASK,
+  
   /*    */ TA_ENUMS,
+  
 };
 
 static Stz* aTA[]
 {
   /*  0 */ "NONE"_Stz,
+  
+  /*    */ "TA_ADD_TASK"_Stz,
+  /*    */ "TA_REMOVE_TASK"_Stz,
   
   /*    */ "ENUMS"_Stz,
 };

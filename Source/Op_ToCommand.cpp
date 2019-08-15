@@ -140,6 +140,7 @@ eOR Op_ToCommand::eOpLoop(void)
         
       case CN_ENDMARKER:
         if (--m_nLeftEndMarkers == 0) {
+          vConcludeCmd();
           vPipeCmd();
           vPipeOut(pOperand);
           goto L_EXIT;
@@ -152,10 +153,13 @@ eOR Op_ToCommand::eOpLoop(void)
         
       case CN_FILTER_FROM:
       case CN_FILTER_GROUPBY:
+      case CN_FILTER_INFLATE:
       case CN_FILTER_JOIN:
       case CN_FILTER_LIMIT:
       case CN_FILTER_ORDERBY:
       case CN_FILTER_OUTPUT:
+      case CN_FILTER_PROJECT:
+      case CN_FILTER_SCAN:
       case CN_FILTER_SELECT:
       case CN_FILTER_WHERE:
       case CN_FILTER_ZED:
@@ -225,16 +229,27 @@ void Op_ToCommand::vCollectFilter(Filter* pFilter)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TOCOMMAND,_FOOTER_);
   
-  if (! *m_sCmd.aChar()) {
-    pFilter->vAsString(m_sCmd);
-    return;
-  }
-  
   s4K sFilter;
   pFilter->vAsString(sFilter);
   
+  if (! *m_sCmd.aChar()) {
+    m_sCmd = "dynamic "_Stz;
+    m_sCmd.vConcat(sFilter);
+    return;
+  }
+  
   m_sCmd.vConcat(" | "_Stz);
   m_sCmd.vConcat(sFilter);
+}
+
+/*----------------------------------------------------------------------------*/
+/* conclude command                                                           */
+/*----------------------------------------------------------------------------*/
+void Op_ToCommand::vConcludeCmd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TOCOMMAND,_FOOTER_);
+  
+  //m_sCmd.vConcat(" ;"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

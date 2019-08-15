@@ -31,6 +31,7 @@ namespace CompilerOperators
 
   private:
     void vCollectFilter(Filter* pFilter);
+    void vConcludeCmd(void);
     void vPipeCmd(void);
 
     Footer* aFooter(void);

@@ -122,6 +122,32 @@ bool Scheduler::bRemoveParticipatingJob(Job* pJob, bool bDump)
 
 
 ////////////////////////////////////////////////////////////////////////////////
+//                           operator interface                               //
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add operator into system                                                   */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vAddOp(Op *pOp)
+{
+  //
+  // called from ???
+  //
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove operator from system                                                */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vRemoveOp(Op *pOp)
+{
+  //
+  // called from ???
+  //
+  
+}
+
+////////////////////////////////////////////////////////////////////////////////
 //                             task interface                                 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -144,6 +170,31 @@ bool Scheduler::bAckWaitingTask(Task* pTaskWaiting, Task* pTaskAcking)
   vTask_Resume(pTaskWaiting);
 
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add new dedicated task into system (spawn a dedicated thread for it)       */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vAddTaskDedicated(Task* pTask)
+{
+  //
+  // called from Api::bSpawnJobDedicated()
+  //
+  
+  vThread_SpawnDedicated(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add new general task into system (start scheduling it as per normal)       */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vAddTaskGeneral(Task* pTask)
+{
+  //
+  // called from Api::bSpawnJob()
+  //
+  
+  //AM::vLogTsk(pTask->iTaskId(), <#eTA eTskAct#>, <#Strings::Stz *szFormat, ...#>)
+  vTask_Schedule(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -171,27 +222,25 @@ void Scheduler::vPulsePausedTask(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add new dedicated task into system (spawn a dedicated thread for it)       */
+/* remove dedicated task from system                                          */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vNewTaskDedicated(Task* pTask)
+void Scheduler::vRemoveTaskDedicated(Task* pTask)
 {
   //
-  // called from Api::bSpawnJobDedicated()
+  // called from ???
   //
   
-  vThread_SpawnDedicated(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
-/* add new general task into system (start scheduling it as per normal)       */
+/* remove general task from system                                            */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vNewTaskGeneral(Task* pTask)
+void Scheduler::vRemoveTaskGeneral(Task* pTask)
 {
   //
-  // called from Api::bSpawnJob()
+  // called from ???
   //
   
-  vTask_Schedule(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
