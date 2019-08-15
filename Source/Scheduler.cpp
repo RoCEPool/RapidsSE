@@ -225,6 +225,54 @@ void Scheduler::vAddTaskGeneral(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vDdlDropRead(Task* pTask)
+{
+  //
+  // called from
+  //
+  
+  vTask_DdlDropRead(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vDdlDropWrite(Task* pTask)
+{
+  //
+  // called from
+  //
+  
+  vTask_DdlDropWrite(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vDdlGrabRead(Task* pTask)
+{
+  //
+  // called from
+  //
+  
+  vTask_DdlGrabRead(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vDdlGrabWrite(Task* pTask)
+{
+  //
+  // called from
+  //
+  
+  vTask_DdlGrabWrite(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
 /* set dedicated task to be executed by dedicated thread                      */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vExecuteDedicatedTask(Task* pTask, Thread* pThread)
@@ -552,6 +600,42 @@ void Scheduler::vTask_Bide(Task* pTask)
   // **do not touch task** (other than to drop lock)
   
   pTask->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTask_DdlDropRead(Task* pTask)
+{
+  AM::vLogTsk(pTask->iTaskId(),TA_DDL_DROP_READ,
+              "Drop DDL read"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTask_DdlDropWrite(Task* pTask)
+{
+  AM::vLogTsk(pTask->iTaskId(),TA_DDL_DROP_WRITE,
+              "Drop DDL write"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTask_DdlGrabRead(Task* pTask)
+{
+  AM::vLogTsk(pTask->iTaskId(),TA_DDL_GRAB_READ,
+              "Grab DDL read"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTask_DdlGrabWrite(Task* pTask)
+{
+  AM::vLogTsk(pTask->iTaskId(),TA_DDL_GRAB_WRITE,
+              "Grab DDL write"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

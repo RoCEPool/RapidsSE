@@ -7,6 +7,11 @@ enum eTA // task actions
 {
   /*  0 */ TA_NONE=0,
   
+  /*    */ TA_DDL_DROP_READ,
+  /*    */ TA_DDL_DROP_WRITE,
+  /*    */ TA_DDL_GRAB_READ,
+  /*    */ TA_DDL_GRAB_WRITE,
+
   /*    */ TA_TASK_ABLE,
   /*    */ TA_TASK_ACK,
   /*    */ TA_TASK_ADD,
@@ -37,6 +42,11 @@ static Stz* aTA[]
 {
   /*  0 */ "NONE"_Stz,
   
+  /*    */ "TA_DDL_DROP_READ"_Stz,
+  /*    */ "TA_DDL_DROP_WRITE"_Stz,
+  /*    */ "TA_DDL_GRAB_READ"_Stz,
+  /*    */ "TA_DDL_GRAB_WRITE"_Stz,
+
   /*    */ "TA_TASK_ABLE"_Stz,
   /*    */ "TA_TASK_ACK"_Stz,
   /*    */ "TA_TASK_ADD"_Stz,

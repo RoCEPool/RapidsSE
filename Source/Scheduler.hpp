@@ -33,6 +33,10 @@ namespace Scheduling
     static bool bAckWaitingTask(Task* pTaskWaiting, Task* pTaskAcking);
     static void vAddTaskDedicated(Task* pTask);
     static void vAddTaskGeneral(Task* pTask);
+    static void vDdlDropRead(Task* pTask);
+    static void vDdlDropWrite(Task* pTask);
+    static void vDdlGrabRead(Task* pTask);
+    static void vDdlGrabWrite(Task* pTask);
     static void vExecuteDedicatedTask(Task* pTask, Thread* pThread);
     static void vPulsePausedTask(Task* pTask);
     static void vRemoveTaskDedicated(Task* pTask);
@@ -62,6 +66,10 @@ namespace Scheduling
     static void vTask_Add(Task* pTask);
     static void vTask_Bide(Task* pTask);
     static void vTask_Desist(Task* pTask);
+    static void vTask_DdlDropRead(Task* pTask);
+    static void vTask_DdlDropWrite(Task* pTask);
+    static void vTask_DdlGrabRead(Task* pTask);
+    static void vTask_DdlGrabWrite(Task* pTask);
     static void vTask_Execute(Task* pTask);
     static void vTask_Exit(Task* pTask);
     static void vTask_Pause(Task* pTask);

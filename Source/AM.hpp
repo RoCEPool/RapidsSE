@@ -145,6 +145,13 @@ namespace StorageEngine
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     //
+    static void vDdlDropReadLock(Task* pTask);
+    static void vDdlDropWriteLock(Task* pTask);
+    static void vDdlGrabReadLock(Task* pTask);
+    static void vDdlGrabWriteLock(Task* pTask);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    //
     static bool bSpawnJob(Session* pSession, Job* pJob, i8 iSeed);
     static bool bSpawnOp(Session* pSession, Op* pOp);
     static void vStateDiagram(s256& sDiagram, eCN eJobClass);
