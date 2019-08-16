@@ -489,6 +489,42 @@ void CrwBuffer::vShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* generate a SrtBuffer from entry buffer                                     */
+/*----------------------------------------------------------------------------*/
+SrtBuffer* CrwBuffer::pToSrtBuffer(i8 iKeyCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
+  ColumnVec* pColVec = pTable()->pColumnVec();
+  
+  HV_Row hRow(pTable()->pColumnVec());
+  SrtBuffer* pSrtBuffer = new SrtBuffer(m_iPartitionNo);
+  
+  i8 nRows = nRowCount();
+  
+  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+    
+    SrtSet* pSrtSet = pSrtBuffer->aAllotSrtSet(1);
+    RASSERT(pSrtSet);
+    
+    // get compact row
+    Crw* aCrw = (Crw*)m_oRowTray.pNub()->aGetHead(i_Row);
+    
+    // set the rowData in the srtSet
+    pSrtSet->vRowRef(0, (i8)aCrw);
+    
+    // get the key from the row
+    RowInflator::vInflateColumn(hRow, aCrw, iKeyCol);
+    
+    // set the key in the srtSet
+    pSrtSet->vKey(hRow->m_waColVal[iKeyCol].m_iI8);
+  }
+  
+  return pSrtBuffer;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* generate an IrwBuffer from entry buffer                                    */
 /*----------------------------------------------------------------------------*/
 IrwBuffer* CrwBuffer::pToIrwBuffer(void)
