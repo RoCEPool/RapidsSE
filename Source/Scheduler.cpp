@@ -528,7 +528,7 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Able(Task* pTask)
 {
-  AM::vLogTsk(pTask,pTask->iTaskId(),TA_TASK_ABLE,
+  AM::vLogTsk(pTask,TA_TASK_ABLE,
               "Transition task to TS_ABLE"_Stz);
   
   // note: task can be in any current state
@@ -546,7 +546,7 @@ void Scheduler::vTask_Able(Task* pTask)
 /*----------------------------------------------------------------------------*/
 bool Scheduler::bTask_Ack(Task* pTaskWaiting, Task* pTaskAcking)
 {
-  AM::vLogTsk(pTaskWaiting,pTaskWaiting->iTaskId(),TA_TASK_ACK,
+  AM::vLogTsk(pTaskWaiting,TA_TASK_ACK,
               "Ack a waiting job-task"_Stz);
   
   // note: the 'waiting' task may not yet be waiting.  there is an indefinite
@@ -573,7 +573,7 @@ bool Scheduler::bTask_Ack(Task* pTaskWaiting, Task* pTaskAcking)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Bide(Task* pTask)
 {
-  AM::vLogTsk(pTask,pTask->iTaskId(),TA_TASK_BIDE,
+  AM::vLogTsk(pTask,TA_TASK_BIDE,
               "Transition task to TS_BIDING; add to BidingSet"_Stz);
   
   RASSERT(pTask->bIsLocked());
@@ -599,7 +599,7 @@ void Scheduler::vTask_Bide(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_DdlDropRead(Task* pTask)
 {
-  AM::vLogTsk(pTask,pTask->iTaskId(),TA_DDL_DROP_READ,
+  AM::vLogTsk(pTask,TA_DDL_DROP_READ,
               "Drop DDL read"_Stz);
   
   AM::pDdlLock()->vDropRead();
@@ -611,7 +611,7 @@ void Scheduler::vTask_DdlDropRead(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_DdlDropWrite(Task* pTask)
 {
-  AM::vLogTsk(pTask,pTask->iTaskId(),TA_DDL_DROP_WRITE,
+  AM::vLogTsk(pTask,TA_DDL_DROP_WRITE,
               "Drop DDL write"_Stz);
   
   AM::pDdlLock()->vDropWrite();
@@ -623,7 +623,7 @@ void Scheduler::vTask_DdlDropWrite(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_DdlGrabRead(Task* pTask)
 {
-  AM::vLogTsk(pTask,pTask->iTaskId(),TA_DDL_GRAB_READ,
+  AM::vLogTsk(pTask,TA_DDL_GRAB_READ,
               "Grab DDL read"_Stz);
   
   AM::pDdlLock()->vGrabRead();
@@ -635,7 +635,7 @@ void Scheduler::vTask_DdlGrabRead(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_DdlGrabWrite(Task* pTask)
 {
-  AM::vLogTsk(pTask,pTask->iTaskId(),TA_DDL_GRAB_WRITE,
+  AM::vLogTsk(pTask,TA_DDL_GRAB_WRITE,
               "Grab DDL write"_Stz);
   
   AM::pDdlLock()->vGrabWrite();
@@ -647,7 +647,7 @@ void Scheduler::vTask_DdlGrabWrite(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Desist(Task* pTask)
 {
-  AM::vLogTsk(pTask,pTask->iTaskId(),TA_TASK_DESIST,
+  AM::vLogTsk(pTask,TA_TASK_DESIST,
               "Remove task from ExecutingSet; transition to TS_DESISTED"_Stz);
   
   RASSERT(TS_EXECUTING == pTask->eState());
@@ -668,7 +668,7 @@ void Scheduler::vTask_Desist(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Drop(Task* pTask)
 {
-  AM::vLogTsk(pTask,pTask->iTaskId(),TA_TASK_DROP,
+  AM::vLogTsk(pTask,TA_TASK_DROP,
               "Dropping task lock"_Stz);
   
   pTask->vDropTaskLock();
@@ -679,7 +679,7 @@ void Scheduler::vTask_Drop(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Execute(Task* pTask)
 {
-  AM::vLogTsk(pTask,pTask->iTaskId(),TA_TASK_EXECUTE,
+  AM::vLogTsk(pTask,TA_TASK_EXECUTE,
               "Transition able task to TS_EXECUTING; add to ExecutingSet"_Stz);
   
   RASSERT(TS_ABLE == pTask->eState());
@@ -701,7 +701,7 @@ void Scheduler::vTask_Execute(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Exit(Task* pTask)
 {
-  AM::vLogTsk(pTask,pTask->iTaskId(),TA_TASK_EXIT,
+  AM::vLogTsk(pTask,TA_TASK_EXIT,
               "Transition desisted task to TS_EXITED (and delete)"_Stz);
   
   RASSERT(TS_DESISTED == pTask->eState());
@@ -722,7 +722,7 @@ void Scheduler::vTask_Exit(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Grab(Task* pTask)
 {
-  AM::vLogTsk(pTask,pTask->iTaskId(),TA_TASK_GRAB,
+  AM::vLogTsk(pTask,TA_TASK_GRAB,
               "Grabbing task lock"_Stz);
   
   pTask->vGrabTaskLock();
@@ -734,7 +734,7 @@ void Scheduler::vTask_Grab(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Pause(Task* pTask)
 {
-  AM::vLogTsk(pTask,pTask->iTaskId(),TA_TASK_PAUSE,
+  AM::vLogTsk(pTask,TA_TASK_PAUSE,
               "Transition desisted task to TS_PAUSED"_Stz);
   
   RASSERT(pTask->bIsLocked());
@@ -760,7 +760,7 @@ void Scheduler::vTask_Pause(Task* pTask)
 /*----------------------------------------------------------------------------*/
 Task* Scheduler::pTask_Pop(void)
 {
-  AM::vLogTsk(nullptr,C_UNKNOWN,TA_TASK_POP,
+  AM::vLogTsk(nullptr,TA_TASK_POP,
               "Pop ready task from ReadyQueue/ReadyQueueLP"_Stz);
   
   Queues* pQueues = AM::pQueues();
@@ -779,7 +779,7 @@ Task* Scheduler::pTask_Pop(void)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Pulse(Task* pTask)
 {
-  AM::vLogTsk(pTask,pTask->iTaskId(),TA_TASK_PULSE,
+  AM::vLogTsk(pTask,TA_TASK_PULSE,
               "Transition a paused op-task to TS_ABLE and schedule"_Stz);
   
   RASSERT(pTask->bIsLocked());
@@ -805,7 +805,7 @@ void Scheduler::vTask_Pulse(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Ready(Task* pTask)
 {
-  AM::vLogTsk(pTask,pTask->iTaskId(),TA_TASK_READY,
+  AM::vLogTsk(pTask,TA_TASK_READY,
               "Append ready task to ReadyQueue/ReadyQueueLP"_Stz);
   
   RASSERT(TS_ABLE == pTask->eState());
@@ -830,7 +830,7 @@ void Scheduler::vTask_Ready(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Resume(Task* pTask)
 {
-  AM::vLogTsk(pTask,pTask->iTaskId(),TA_TASK_RESUME,
+  AM::vLogTsk(pTask,TA_TASK_RESUME,
               "Remove waiting task from WaitingSet and schedule it"_Stz);
   
   // note: the 'waiting' task may not yet be waiting.  there is an indefinite
@@ -866,7 +866,7 @@ void Scheduler::vTask_Resume(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Requires(Task* pTask, i8 nAcksRequired)
 {
-  AM::vLogTsk(pTask,pTask->iTaskId(),TA_TASK_REQUIRES,
+  AM::vLogTsk(pTask,TA_TASK_REQUIRES,
               "Set number of acks required by (soon to be) waiting task"_Stz);
 
   pTask->m_oAcksRmg.vSetRemaining(nAcksRequired);
@@ -877,7 +877,7 @@ void Scheduler::vTask_Requires(Task* pTask, i8 nAcksRequired)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Schedule(Task* pTask)
 {
-  AM::vLogTsk(pTask,pTask->iTaskId(),TA_TASK_SCHEDULE,
+  AM::vLogTsk(pTask,TA_TASK_SCHEDULE,
               "Assign a thread to able-to-run task or add to ReadyQueue"_Stz);
   
   RASSERT(TS_ABLE == pTask->eState());
@@ -907,7 +907,7 @@ void Scheduler::vTask_Schedule(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Sleep(Task* pTask)
 {
-  AM::vLogTsk(pTask,pTask->iTaskId(),TA_TASK_SLEEP,
+  AM::vLogTsk(pTask,TA_TASK_SLEEP,
               "Add desisted task to SleepingQueue"_Stz);
   
   RASSERT(TS_DESISTED == pTask->eState());
@@ -946,7 +946,7 @@ void Scheduler::vTask_Sleep(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Thread(Task* pTask, Thread* pThread)
 {
-  AM::vLogTsk(pTask,pTask->iTaskId(),TA_TASK_THREAD,
+  AM::vLogTsk(pTask,TA_TASK_THREAD,
               "Task has been assigned the given thread"_Stz);
   
   RASSERT(TS_ABLE == pTask->eState());
@@ -965,7 +965,7 @@ void Scheduler::vTask_Thread(Task* pTask, Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Trigger(Task* pTask)
 {
-  AM::vLogTsk(pTask,pTask->iTaskId(),TA_TASK_TRIGGER,
+  AM::vLogTsk(pTask,TA_TASK_TRIGGER,
               "Remove biding task from BidingSet and schedule it"_Stz);
   
   RASSERT(pTask->bIsLocked());
@@ -991,7 +991,7 @@ void Scheduler::vTask_Trigger(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Wait(Task* pTask)
 {
-  AM::vLogTsk(pTask,pTask->iTaskId(),TA_TASK_WAIT,
+  AM::vLogTsk(pTask,TA_TASK_WAIT,
               "Add desisted task to WaitingSet"_Stz);
   
   RASSERT(pTask->bIsLocked());
@@ -1019,7 +1019,7 @@ void Scheduler::vTask_Wait(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Wakeup(void)
 {
-  AM::vLogTsk(nullptr,C_UNKNOWN,TA_TASK_WAKEUP,
+  AM::vLogTsk(nullptr,TA_TASK_WAKEUP,
               "Wakeup any sleeping tasks whose wakeup time has arrived"_Stz);
   
   Queues* pQueues = AM::pQueues();
@@ -1037,7 +1037,7 @@ void Scheduler::vTask_Wakeup(void)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Yield(Task* pTask)
 {
-  AM::vLogTsk(pTask,pTask->iTaskId(),TA_TASK_YIELD,
+  AM::vLogTsk(pTask,TA_TASK_YIELD,
               "Yield desisted task; continue executing or schedule it"_Stz);
 
   RASSERT(TS_DESISTED == pTask->eState());

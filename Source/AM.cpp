@@ -550,7 +550,7 @@ void AM::vLogThd(Thread* pThread, i8 , eHA eThdAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a rask log entry                                                       */
 /*----------------------------------------------------------------------------*/
-void AM::vLogTsk(Task* pTask, i8 , eTA eTskAct, Stz* szFormat, ...)
+void AM::vLogTsk(Task* pTask, eTA eTskAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
