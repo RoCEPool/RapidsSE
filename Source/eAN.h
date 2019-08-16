@@ -42,7 +42,6 @@ enum eAN // action numbers
 /*    */ AN_SEED_RUN,
 /*    */ AN_SEND_JOB,
 /*    */ AN_SPAWN_JOB,
-/*    */ AN_TABLE_USE,
 /*    */ AN_TASK_LOCKED,
 
 /*    */ AN_ENUMS,

@@ -93,9 +93,7 @@ void Step::vJob_WalkTableStore(MP_Task mpTask)
   Table* pTable = _pTable(pTablePtr);
   
   pJob_Walk->m_pTable = pTable;
-  
-  ActLog::vAdd(pJob_Walk,AN_TABLE_USE,pTable->aTableName());
-  
+    
   EXIT();
 }
 
