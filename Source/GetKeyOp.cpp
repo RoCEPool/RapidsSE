@@ -152,6 +152,13 @@ eOR GetKeyOp::eOpLoop(void)
         break;
         
       // -- -- -- -- -- --
+     
+      case CN_CRWBUFFER: {
+        CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand) ;
+        SrtBuffer* pSrtBuffer = pCrwBuffer->pToSrtBuffer(m_iKeyCol);
+        vPipeOut(pSrtBuffer);
+        break;
+      }
         
       case CN_ENTBUFFER: {
         EntBuffer* pEntBuffer = _pEntBuffer(pOperand) ;

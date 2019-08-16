@@ -6,6 +6,7 @@
 namespace Rows
 {
   class RowCompactor;
+  class SrtBuffer;
 
   class CrwBuffer : public DataBuffer
   {
@@ -47,6 +48,7 @@ namespace Rows
     void        vNextBuffer(CrwBuffer* pNextBuffer);
     CrwBuffer*  pPrevBuffer(void);
     void        vPrevBuffer(CrwBuffer* pPrevBuffer);
+    SrtBuffer*  pToSrtBuffer(i8 iKeyCol);
     IrwBuffer*  pToIrwBuffer(void);
     void        vTruncate(void);
     
