@@ -172,7 +172,7 @@ masks        - Show important masks
 .br 
 memory       - Show memory report
 .br 
-mkpipe       - Make a named pipe
+mkfifo       - Make a named pipe
 .br 
 mon          - Show a snapshot of the system
 .br 
@@ -196,7 +196,7 @@ ready        - Tasks in ready queue
 .br 
 resources    - Library level resources
 .br 
-rmpipe       - Remove a named pipe
+rmfifo       - Remove a named pipe
 .br 
 se           - Run command thru the RapidsSE Api
 .br 

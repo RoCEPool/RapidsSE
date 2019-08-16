@@ -20,15 +20,15 @@ print "";
 print "---------------------------------------------------------------------";
 print "removing the pipes...";
 print "---------------------------------------------------------------------";
-rmpipe "/tmp/sensorEvents.toKafka";
-rmpipe "/tmp/sensorEvents.toSE";
+rmfifo "/tmp/sensorEvents.toKafka";
+rmfifo "/tmp/sensorEvents.toSE";
 
 print "";
 print "---------------------------------------------------------------------";
 print "making the pipe...";
 print "---------------------------------------------------------------------";
-mkpipe "/tmp/sensorEvents.toKafka";
-mkpipe "/tmp/sensorEvents.toSE";
+mkfifo "/tmp/sensorEvents.toKafka";
+mkfifo "/tmp/sensorEvents.toSE";
 
 print "";
 print "---------------------------------------------------------------------";

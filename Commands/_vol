@@ -20,15 +20,15 @@ print "";
 print "---------------------------------------------------------------------";
 print "removing pipes...";
 print "---------------------------------------------------------------------";
-rmpipe "/tmp/sensorEvents.rowAgg";
-rmpipe "/tmp/sensorEvents.pipe";
+rmfifo "/tmp/sensorEvents.rowAgg";
+rmfifo "/tmp/sensorEvents.pipe";
 
 print "";
 print "---------------------------------------------------------------------";
 print "making pipes...";
 print "---------------------------------------------------------------------";
-mkpipe "/tmp/sensorEvents.rowAgg";
-mkpipe "/tmp/sensorEvents.pipe";
+mkfifo "/tmp/sensorEvents.rowAgg";
+mkfifo "/tmp/sensorEvents.pipe";
 
 print "";
 print "---------------------------------------------------------------------";

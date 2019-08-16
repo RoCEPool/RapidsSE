@@ -8,17 +8,17 @@ print "";
 print "=====================================================================";
 print "removing the pipe...";
 print "=====================================================================";
-rmpipe "/tmp/a.pipe";
-rmpipe "/tmp/b.pipe";
-rmpipe "/tmp/c.pipe";
+rmfifo "/tmp/a.pipe";
+rmfifo "/tmp/b.pipe";
+rmfifo "/tmp/c.pipe";
 
 print "";
 print "=====================================================================";
 print "making the pipe...";
 print "=====================================================================";
-mkpipe "/tmp/a.pipe";
-mkpipe "/tmp/b.pipe";
-mkpipe "/tmp/c.pipe";
+mkfifo "/tmp/a.pipe";
+mkfifo "/tmp/b.pipe";
+mkfifo "/tmp/c.pipe";
 
 print "";
 print "=====================================================================";
