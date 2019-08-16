@@ -47,7 +47,7 @@ namespace Pool          { class BufferPool; class HeapMem; class PoolBuffer;  }
 namespace Prompt        { class SePrompt;                                     }
 namespace Oblique       {                                                     }
 namespace Operators     { class Op; class Digest;                             }
-namespace Resources     { class ResourceTracker;                              }
+namespace Resources     { class Resource; class ResourceTracker;              }
 namespace Rows          { class CrwBuffer;                                    }
 namespace ScanSprint    {                                                     }
 namespace Scheduling    { class Queues; class Scheduler;                      }

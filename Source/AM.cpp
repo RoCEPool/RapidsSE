@@ -471,7 +471,7 @@ void AM::vLogPrm(i8 iPrmId, ePA ePrmAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a resource log entry                                                   */
 /*----------------------------------------------------------------------------*/
-void AM::vLogRes(i8 iResId, eRA eResAct, eRK eSysRes, Stz* szFormat, ...)
+void AM::vLogRes(Resource* pRes, i8 iResId, eRA eResAct, eRK eSysRes, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -485,7 +485,7 @@ void AM::vLogRes(i8 iResId, eRA eResAct, eRK eSysRes, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  gpLog->iEntryRes(iResId,eResAct,eSysRes,szFormat,xVaArgs);
+  gpLog->iEntryRes(pRes,iResId,eResAct,eSysRes,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif

@@ -512,7 +512,8 @@ i8 Log::iEntryPrm(i8 iPrmId, ePA ePrmAct, Stz* szFormat, va_list xVaArgs)
 /*----------------------------------------------------------------------------*/
 /* add a resource log entry                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryRes(i8 iResId, eRA eResAct, eRK eResKnd, Stz* szFormat, va_list xVaArgs)
+i8 Log::iEntryRes(Resource* pRes, i8 iResId, eRA eResAct, eRK eResKnd,
+                  Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
