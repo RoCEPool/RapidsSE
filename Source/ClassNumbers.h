@@ -80,6 +80,7 @@ enum eCN : u2 // Class Number
 
   /*  35 0x23  1040440B Heap:L */ CN_FETCHBUFFER,
   /*                           */ CN_FETCHOP,
+  /*  36 0x24      376B Heap:S */ CN_FIFO,
   /*  36 0x24      376B Heap:S */ CN_FILE,
   /*                           */ CN_FILTER_FETCH,
   /*                           */ CN_FILTER_FROM,
@@ -456,6 +457,7 @@ static Stz* aCN[]
 
   /*  35 0x23 */ "FETCHBUFFER"_Stz,         // CN_FETCHBUFFER
   /*  35 0x23 */ "FETCHOP"_Stz,             // CN_FETCHOP
+  /*  36 0x24 */ "FIFO"_Stz,                // CN_FIFO
   /*  36 0x24 */ "FILE"_Stz,                // CN_FILE
   /*          */ "FILTER_FETCH"_Stz,        // CN_FILTER_FETCH
   /*          */ "FILTER_FROM"_Stz,         // CN_FILTER_FROM

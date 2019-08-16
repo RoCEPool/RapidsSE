@@ -9,32 +9,32 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Fifo::Fifo(void)
-: Resource(CN_PIPE,RK_PIPE)
+: Resource(CN_FIFO,RK_PIPE)
 {
-  _precondition_(_MAGIC_,CN_PIPE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_FIFO,_FOOTER_);
   
   m_sFifoPath = "<none>"_Stz;
   //m_oSysCall;
   
-  _checkInitialised_(CN_PIPE);
+  _checkInitialised_(CN_FIFO);
   
-  _postcondition_(_MAGIC_,CN_PIPE,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_FIFO,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Fifo::Fifo(Stz* sFifoPath)
-: Resource(CN_PIPE,RK_PIPE)
+: Resource(CN_FIFO,RK_PIPE)
 {
-  _precondition_(_MAGIC_,CN_PIPE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_FIFO,_FOOTER_);
   
   m_sFifoPath = sFifoPath;
   //m_oSysCall;
 
-  _checkInitialised_(CN_PIPE);
+  _checkInitialised_(CN_FIFO);
   
-  _postcondition_(_MAGIC_,CN_PIPE,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_FIFO,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -42,7 +42,7 @@ Fifo::Fifo(Stz* sFifoPath)
 /*----------------------------------------------------------------------------*/
 Fifo::~Fifo(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_PIPE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_FIFO,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -90,7 +90,7 @@ bool Fifo::bRemove(Stz* sFifoPath)
 /*----------------------------------------------------------------------------*/
 Footer* Fifo::aFooter(void)
 {
-  _precondition_(_MAGIC_,CN_PIPE);
+  _precondition_(_MAGIC_,CN_FIFO);
   
   return &m_xFooter;
 }

@@ -77,6 +77,7 @@ pFINALIZE *gpFinalize[]
 
   /*    */ &Finalize::vUndefined,         // CN_FETCHBUFFER
   /*    */ &Finalize::vUndefined,         // CN_FETCHOP
+  /*    */ &Finalize::vUndefined,         // CN_FIFO
   /*    */ &Finalize::vUndefined,         // CN_FILE
   /*    */ &Finalize::vUndefined,         // CN_FILTER_FETCH
   /*    */ &Finalize::vUndefined,         // CN_FILTER_FROM
