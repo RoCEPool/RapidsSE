@@ -379,7 +379,7 @@ void AM::vLogInf(Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a interface log entry                                                  */
 /*----------------------------------------------------------------------------*/
-void AM::vLogItf(i8 iItfId, eIA eItfAct, Stz* szFormat, ...)
+void AM::vLogItf(Session* pSsn, i8 iItfId, eIA eItfAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -393,7 +393,7 @@ void AM::vLogItf(i8 iItfId, eIA eItfAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  gpLog->iEntryItf(iItfId,eItfAct,szFormat,xVaArgs);
+  gpLog->iEntryItf(pSsn,iItfId,eItfAct,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif
