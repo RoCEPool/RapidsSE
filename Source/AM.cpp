@@ -404,7 +404,7 @@ void AM::vLogItf(Session* pSsn, eIA eItfAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a interface log entry                                                  */
 /*----------------------------------------------------------------------------*/
-void AM::vLogJob(Job* pJob, i8 , eJA eJobAct, Stz* szFormat, ...)
+void AM::vLogJob(Job* pJob, eJA eJobAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
