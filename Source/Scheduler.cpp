@@ -273,6 +273,18 @@ void Scheduler::vDdlGrabWrite(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vDropTaskLock(Task* pTask)
+{
+  //
+  // called from
+  //
+  
+  vTask_Drop(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
 /* set dedicated task to be executed by dedicated thread                      */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vExecuteDedicatedTask(Task* pTask, Thread* pThread)
@@ -282,6 +294,18 @@ void Scheduler::vExecuteDedicatedTask(Task* pTask, Thread* pThread)
   //
   
   vThread_ExecuteDedicated(pThread);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vGrabTaskLock(Task* pTask)
+{
+  //
+  // called from
+  //
+  
+  vTask_Grab(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -350,6 +374,18 @@ void Scheduler::vTaskLoopTransition(Thread* pThread)
     default:
       NEVER_REACH;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* set number of acks required by (soon to be) waiting task                   */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTaskRequiresAcks(Task* pTask, i8 nAcksRequired)
+{
+  //
+  // called from ???
+  //
+  
+  vTask_Requires(pTask,nAcksRequired);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -521,26 +557,6 @@ bool Scheduler::bTask_Ack(Task* pTaskWaiting, Task* pTaskAcking)
   
   RASSERT(TS_EXECUTING == pTaskAcking->eState());
   
-//  Job* pJobBeingAcked = pTaskBeingAcked->pJob();
-//  Job* pJobAcking     = pTaskAcking->pJob();
-//
-//  if (pJobAcking->m_bMarkActivity || pJobBeingAcked->m_bMarkActivity) {
-//    JobLog::vNote(pJobBeingAcked,
-//                          "pTaskBeingAcked:%p Job %s "_Stz,
-//                          pTaskBeingAcked,
-//                          aCN[pJobBeingAcked->eClass()]
-//                          );
-//    JobLog::vNote(pJobAcking,
-//                          "pTaskAcking:%p Job %s "_Stz,
-//                          pTaskAcking,
-//                          aCN[pJobAcking->eClass()]
-//                          );
-//  }
-//
-//  ActLog::vAdd(pTaskAcking->pJob(),
-//                       AN_ACK_TASK,
-//                       pTaskBeingAcked->pJob());
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // decrement the acks remaining
@@ -548,30 +564,6 @@ bool Scheduler::bTask_Ack(Task* pTaskWaiting, Task* pTaskAcking)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-//  if (bAmDecider)
-//    ActLog::vAdd(pTaskAcking->pJob(),
-//                         AN_AM_DECIDER,
-//                         pTaskBeingAcked->pJob());
-//
-//  if (bAmDecider) {
-//    if (pJobBeingAcked->m_bMarkActivity || pJobAcking->m_bMarkActivity)
-//      JobLog::vNote(pJobAcking,
-//                            "Decider %s acks %s"_Stz,
-//                            aCN[pJobAcking->eClass()],
-//                            aCN[pJobBeingAcked->eClass()]
-//                            );
-//  }
-//  
-//  if ( (pJobBeingAcked && JT_NONE != pJobBeingAcked->eJobTrace()) ||
-//      (pJobAcking && JT_NONE != pJobAcking->eJobTrace())  ) {
-//    vTrace("Ack of %s task %p by %s task %p ; %s\n"_Stz,
-//           pJobBeingAcked ? aCN[pJobBeingAcked->m_pJobClass->m_eClass] : "<no job>"_Stz,
-//           pTaskBeingAcked,
-//           pJobAcking ? aCN[pJobAcking->m_pJobClass->m_eClass] : "<no job>"_Stz,
-//           pJobAcking,
-//           bAmDecider ? "decider" : "not decider");
-//  }
-
   return bAmDecider;
 }
 
@@ -599,7 +591,7 @@ void Scheduler::vTask_Bide(Task* pTask)
   pQueues->vAddBidingSet(pTask);
   // **do not touch task** (other than to drop lock)
   
-  pTask->vDropLock();
+  pTask->vDropTaskLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -672,6 +664,17 @@ void Scheduler::vTask_Desist(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTask_Drop(Task* pTask)
+{
+  AM::vLogTsk(pTask->iTaskId(),TA_TASK_DROP,
+              "Dropping task lock"_Stz);
+  
+  pTask->vDropTaskLock();
+}
+
+/*----------------------------------------------------------------------------*/
 /* change able-to-run task to TS_EXECUTING state and add to executing set     */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Execute(Task* pTask)
@@ -715,6 +718,17 @@ void Scheduler::vTask_Exit(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTask_Grab(Task* pTask)
+{
+  AM::vLogTsk(pTask->iTaskId(),TA_TASK_GRAB,
+              "Grabbing task lock"_Stz);
+  
+  pTask->vGrabTaskLock();
+}
+
+/*----------------------------------------------------------------------------*/
 /* op-task which has perform its work quanta transitions to TS_PAUSED and     */
 /*   is added to paused set                                                   */
 /*----------------------------------------------------------------------------*/
@@ -738,7 +752,7 @@ void Scheduler::vTask_Pause(Task* pTask)
   pQueues->vAddPausedSet(pTask);
   // **do not touch task** (other than to drop lock)
   
-  pTask->vDropLock();
+  pTask->vDropTaskLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -779,7 +793,7 @@ void Scheduler::vTask_Pulse(Task* pTask)
   
   JobLog::vNoteState(pTask->pJob(),"Pulse"_Stz);
   
-  pTask->vDropLock();
+  pTask->vDropTaskLock();
   
   vTask_Able(pTask);
   vTask_Schedule(pTask);
@@ -828,8 +842,8 @@ void Scheduler::vTask_Resume(Task* pTask)
   JobLog::vNoteState(pTask->pJob(),"Resume"_Stz);
   
   // cycle the task lock to ensure task has fully entered wait state
-  pTask->vGrabLock();
-  pTask->vDropLock();
+  pTask->vGrabTaskLock();
+  pTask->vDropTaskLock();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -845,6 +859,17 @@ void Scheduler::vTask_Resume(Task* pTask)
   vTask_Able(pTask);
   vTask_Schedule(pTask);
   // **do not touch task**
+}
+
+/*----------------------------------------------------------------------------*/
+/* set number of acks required by (soon to be) waiting task                   */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTask_Requires(Task* pTask, i8 nAcksRequired)
+{
+  AM::vLogTsk(pTask->iTaskId(),TA_TASK_REQUIRES,
+              "Set number of acks required by (soon to be) waiting task"_Stz);
+
+  pTask->m_oAcksRmg.vSetRemaining(nAcksRequired);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -954,7 +979,7 @@ void Scheduler::vTask_Trigger(Task* pTask)
   
   JobLog::vNoteState(pTask->pJob(),"Trigger"_Stz);
   
-  pTask->vDropLock();
+  pTask->vDropTaskLock();
   
   vTask_Able(pTask);
   vTask_Schedule(pTask);
@@ -986,7 +1011,7 @@ void Scheduler::vTask_Wait(Task* pTask)
   pQueues->vAddWaitingSet(pTask);
   // **do not touch task** (other than to drop lock)
 
-  pTask->vDropLock();
+  pTask->vDropTaskLock();
 }
 
 /*----------------------------------------------------------------------------*/

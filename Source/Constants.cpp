@@ -110,17 +110,9 @@ void Constants::vAddConstants(void)
   
   // AN_ : action numbers
   /*  0 */ vAddConstant("AN_NONE"_Stz,               AN_NONE);
-  /*  0 */ vAddConstant("AN_ACK_TASK"_Stz,           AN_ACK_TASK);
-  /*  0 */ vAddConstant("AN_ACKS_REQUIRED"_Stz,      AN_ACKS_REQUIRED);
-  /*  0 */ vAddConstant("AN_ADDED_ORIGINATOR"_Stz,   AN_ADDED_ORIGINATOR);
-  /*  0 */ vAddConstant("AN_ADDED_PARTICIPANT"_Stz,  AN_ADDED_PARTICIPANT);
-  /*  0 */ vAddConstant("AN_AM_DECIDER"_Stz,         AN_AM_DECIDER);
   /*  0 */ vAddConstant("AN_CONSTRUCTOR"_Stz,        AN_CONSTRUCTOR);
   /*  0 */ vAddConstant("AN_DESTRUCTOR"_Stz,         AN_DESTRUCTOR);
-  /*  0 */ vAddConstant("AN_END"_Stz,                AN_END);
   /*  0 */ vAddConstant("AN_ERROR_CODE"_Stz,         AN_ERROR_CODE);
-  /*  0 */ vAddConstant("AN_FIND_ORIGINATOR"_Stz,    AN_FIND_ORIGINATOR);
-  /*  0 */ vAddConstant("AN_FIND_PARTICIPANT"_Stz,   AN_FIND_PARTICIPANT);
   /*  0 */ vAddConstant("AN_JOB_BEGIN"_Stz,          AN_JOB_BEGIN);
   /*  0 */ vAddConstant("AN_JOB_CHUNK"_Stz,          AN_JOB_CHUNK);
   /*  0 */ vAddConstant("AN_JOB_END"_Stz,            AN_JOB_END);
@@ -132,11 +124,8 @@ void Constants::vAddConstants(void)
   /*  0 */ vAddConstant("AN_PRE_SEND"_Stz,           AN_PRE_SEND);
   /*  0 */ vAddConstant("AN_RECV_JOB"_Stz,           AN_RECV_JOB);
   /*  0 */ vAddConstant("AN_RECV_JOB_LOW_MEMORY"_Stz,AN_RECV_JOB_LOW_MEMORY);
-  /*  0 */ vAddConstant("AN_REMOVED_ORIGINATOR"_Stz, AN_REMOVED_ORIGINATOR);
-  /*  0 */ vAddConstant("AN_REMOVED_PARTICIPANT"_Stz,AN_REMOVED_PARTICIPANT);
   /*  0 */ vAddConstant("AN_RESOURCES_CHECKED"_Stz,  AN_RESOURCES_CHECKED);
   /*  0 */ vAddConstant("AN_RESOURCES_RELEASED"_Stz, AN_RESOURCES_RELEASED);
-  /*  0 */ vAddConstant("AN_ROOT"_Stz,               AN_ROOT);
   /*  0 */ vAddConstant("AN_SEED_CAN"_Stz,           AN_SEED_CAN);
   /*  0 */ vAddConstant("AN_SEED_END"_Stz,           AN_SEED_END);
   /*  0 */ vAddConstant("AN_SEED_EXE"_Stz,           AN_SEED_EXE);
@@ -145,7 +134,6 @@ void Constants::vAddConstants(void)
   /*  0 */ vAddConstant("AN_SEED_RUN"_Stz,           AN_SEED_RUN);
   /*  0 */ vAddConstant("AN_SEND_JOB"_Stz,           AN_SEND_JOB);
   /*  0 */ vAddConstant("AN_SPAWN_JOB"_Stz,          AN_SPAWN_JOB);
-  /*  0 */ vAddConstant("AN_TABLE_USE"_Stz,          AN_TABLE_USE);
   /*  0 */ vAddConstant("AN_ENUMS"_Stz,              AN_ENUMS);
   
   // AT_ : fetch techniques

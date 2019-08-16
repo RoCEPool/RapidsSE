@@ -89,10 +89,9 @@ void Step::vTaskAcksStore(MP_Task mpTask)
     AM::pOriginatingJobs()->vMarkContents(pJob->m_iJobId);
   }
   
-  ActLog::vAdd(pJob,AN_ACKS_REQUIRED,nAcksRequired);
+  //pGivenTask->m_oAcksRmg.vSetRemaining(nAcksRequired);
+  Scheduler::vTaskRequiresAcks(pGivenTask,nAcksRequired);
   
-  pGivenTask->m_oAcksRmg.vSetRemaining(nAcksRequired);
-
   EXIT();
 }
 
@@ -139,7 +138,8 @@ void Step::vTaskDropLock(MP_Task mpTask)
     THROW_INVALID_DSTACK("task.dump"_Stz);
   Task* pThatTask = _pTask(pObject);
   
-  pThatTask->vDropLock();
+  Scheduler::vDropTaskLock(pThatTask);
+  //pThatTask->vDropLock();
   
   EXIT();
 }
@@ -185,10 +185,8 @@ void Step::vTaskGrabLock(MP_Task mpTask)
     THROW_INVALID_DSTACK("task.grabLock"_Stz);
   Task* pThatTask = _pTask(pObject);
   
-  pThatTask->vGrabLock();
-  ActLog::vAdd(mpTask->m_pJob,AN_TASK_LOCKED);
+  Scheduler::vGrabTaskLock(pThatTask);
 
-  
   EXIT();
 }
 

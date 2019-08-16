@@ -85,8 +85,6 @@ StreamDef::StreamDef(StreamDef* pStreamDef)
   
   m_bTemp = true;
   
-  vTrace("StreamDef temp %p\n"_Stz, this);
-  
   _checkInitialised_(CN_STREAMDEF);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
@@ -98,8 +96,6 @@ StreamDef::StreamDef(StreamDef* pStreamDef)
 StreamDef::~StreamDef(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
-  
-  vTrace("StreamDef deleting %s %p\n"_Stz, m_bTemp ? "temp"_Stz : "permanent"_Stz, this);
   
   delete m_pColumnVec;
 }

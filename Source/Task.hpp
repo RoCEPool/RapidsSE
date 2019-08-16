@@ -87,9 +87,9 @@ namespace Tasks
     Object* pArgObject(void);
     static void vDebug(void);
     void vContentDump(void);
-    void vDropLock(void);
+    void vDropTaskLock(void);
     void vException(s256& sFile, s256& eException);
-    void vGrabLock(void);
+    void vGrabTaskLock(void);
     bool bIsLocked(void);
     Job* pJob(void);
     void vJob(Job* pJob);
