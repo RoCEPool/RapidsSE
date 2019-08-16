@@ -9,11 +9,6 @@ enum eAN // action numbers
 
 /*    */ AN_ACK_TASK,
 /*    */ AN_ACKS_REQUIRED,
-/*    */ AN_ADD_EXECUTING_SET,
-/*    */ AN_ADD_SEND_QUEUE,
-/*    */ AN_ADD_SLEEPING_QUEUE,
-/*    */ AN_ADD_SLOT_QUEUE,
-/*    */ AN_ADD_WAITING_SET,
 /*    */ AN_ADDED_ORIGINATOR,
 /*    */ AN_ADDED_PARTICIPANT,
 /*    */ AN_AM_DECIDER,
@@ -48,13 +43,7 @@ enum eAN // action numbers
 /*    */ AN_SEND_JOB,
 /*    */ AN_SPAWN_JOB,
 /*    */ AN_TABLE_USE,
-/*    */ AN_TASK_ACKED,
 /*    */ AN_TASK_LOCKED,
-/*    */ AN_TASK_SLEEP,
-/*    */ AN_TASK_STATE,
-/*    */ AN_TASK_STATE_SET,
-/*    */ AN_TASK_WAIT,
-/*    */ AN_TASK_YIELD,
 
 /*    */ AN_ENUMS,
 };

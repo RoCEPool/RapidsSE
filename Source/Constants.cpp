@@ -146,13 +146,6 @@ void Constants::vAddConstants(void)
   /*  0 */ vAddConstant("AN_SEND_JOB"_Stz,           AN_SEND_JOB);
   /*  0 */ vAddConstant("AN_SPAWN_JOB"_Stz,          AN_SPAWN_JOB);
   /*  0 */ vAddConstant("AN_TABLE_USE"_Stz,          AN_TABLE_USE);
-  /*  0 */ vAddConstant("AN_TASK_ACKED"_Stz,         AN_TASK_ACKED);
-  /*  0 */ vAddConstant("AN_TASK_LOCKED"_Stz,        AN_TASK_LOCKED);
-  /*  0 */ vAddConstant("AN_TASK_SLEEP"_Stz,         AN_TASK_SLEEP);
-  /*  0 */ vAddConstant("AN_TASK_STATE"_Stz,         AN_TASK_STATE);
-  /*  0 */ vAddConstant("AN_TASK_STATE_SET"_Stz,     AN_TASK_STATE_SET);
-  /*  0 */ vAddConstant("AN_TASK_WAIT"_Stz,          AN_TASK_WAIT);
-  /*  0 */ vAddConstant("AN_TASK_YIELD"_Stz,         AN_TASK_YIELD);
   /*  0 */ vAddConstant("AN_ENUMS"_Stz,              AN_ENUMS);
   
   // AT_ : fetch techniques
