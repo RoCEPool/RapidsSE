@@ -395,7 +395,7 @@ void AM::vLogItf(Session* pSsn, eIA eItfAct, Stz* szFormat, ...)
   
   i8 iSsnId = C_UNKNOWN; //pSsn->iSsnId();
   
-  gpLog->iEntryItf(pSsn,iSsnId,eItfAct,szFormat,xVaArgs);
+  gpLog->iEntryItf(iSsnId,eItfAct,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif
@@ -444,7 +444,7 @@ void AM::vLogOp(Op* pOp, eOA eOpAct, Stz* szFormat, ...)
   
   i8 iOpId = pOp->iOpId();
   
-  gpLog->iEntryOp(pOp,iOpId,eOpAct,szFormat,xVaArgs);
+  gpLog->iEntryOp(iOpId,eOpAct,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif
@@ -468,7 +468,7 @@ void AM::vLogPrm(SePrompt* pPrm, ePA ePrmAct, Stz* szFormat, ...)
   va_start(xVaArgs,szFormat);
   
   i8 iPrmId = C_UNKNOWN; //pPrm->iPrmId();
-  gpLog->iEntryPrm(pPrm,iPrmId,ePrmAct,szFormat,xVaArgs);
+  gpLog->iEntryPrm(iPrmId,ePrmAct,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif
@@ -495,7 +495,7 @@ void AM::vLogRes(Resource* pRes, eRA eResAct, Stz* szFormat, ...)
   
   i8  iResId = pRes ? pRes->iResId() : C_UNKNOWN;
   
-  gpLog->iEntryRes(pRes,iResId,eResAct,eKind,szFormat,xVaArgs);
+  gpLog->iEntryRes(iResId,eResAct,eKind,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif
@@ -520,7 +520,7 @@ void AM::vLogSvc(Job* pJob, eVA eSvcAct, Stz* szFormat, ...)
   
   i8 iSvcId = pJob->m_iJobId;
   
-  gpLog->iEntrySvc(pJob,iSvcId,eSvcAct,szFormat,xVaArgs);
+  gpLog->iEntrySvc(iSvcId,eSvcAct,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif
@@ -544,7 +544,7 @@ void AM::vLogThd(Thread* pThread, eHA eThdAct, Stz* szFormat, ...)
   va_start(xVaArgs,szFormat);
   
   i8 iThdId = pThread ? pThread->m_iThreadId : C_UNKNOWN;
-  gpLog->iEntryThd(pThread,iThdId,eThdAct,szFormat,xVaArgs);
+  gpLog->iEntryThd(iThdId,eThdAct,szFormat,xVaArgs);
 
   va_end(xVaArgs);
 #endif
@@ -568,7 +568,7 @@ void AM::vLogTsk(Task* pTask, eTA eTskAct, Stz* szFormat, ...)
   va_start(xVaArgs,szFormat);
   
   i8 iTskId = pTask ? pTask->iTaskId() : C_UNKNOWN;
-  gpLog->iEntryTsk(pTask,iTskId,eTskAct,szFormat,xVaArgs);
+  gpLog->iEntryTsk(iTskId,eTskAct,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif
@@ -592,7 +592,7 @@ void AM::vLogTxn(Tx* pTx, eXA eTxnAct, Stz* szFormat, ...)
   va_start(xVaArgs,szFormat);
   
   i8 iTxnId = pTx->iDistTxId();
-  gpLog->iEntryTxn(pTx,iTxnId,eTxnAct,szFormat,xVaArgs);
+  gpLog->iEntryTxn(iTxnId,eTxnAct,szFormat,xVaArgs);
 
   va_end(xVaArgs);
 #endif
