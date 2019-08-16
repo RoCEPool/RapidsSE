@@ -402,7 +402,7 @@ void AM::vLogItf(i8 iItfId, eIA eItfAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a interface log entry                                                  */
 /*----------------------------------------------------------------------------*/
-void AM::vLogJob(i8 iJobId, eJA eJobAct, Stz* szFormat, ...)
+void AM::vLogJob(Job* pJob, i8 iJobId, eJA eJobAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -425,7 +425,7 @@ void AM::vLogJob(i8 iJobId, eJA eJobAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a operator log entry                                                   */
 /*----------------------------------------------------------------------------*/
-void AM::vLogOp(i8 iOpId, eOA eOpAct, Stz* szFormat, ...)
+void AM::vLogOp(Op* pOp, i8 iOpId, eOA eOpAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -439,7 +439,7 @@ void AM::vLogOp(i8 iOpId, eOA eOpAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  gpLog->iEntryOp(iOpId,eOpAct,szFormat,xVaArgs);
+  gpLog->iEntryOp(pOp,iOpId,eOpAct,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif
