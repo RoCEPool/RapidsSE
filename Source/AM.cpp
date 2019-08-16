@@ -379,7 +379,7 @@ void AM::vLogInf(Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a interface log entry                                                  */
 /*----------------------------------------------------------------------------*/
-void AM::vLogItf(Session* pSsn, i8 , eIA eItfAct, Stz* szFormat, ...)
+void AM::vLogItf(Session* pSsn, eIA eItfAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -428,7 +428,7 @@ void AM::vLogJob(Job* pJob, i8 , eJA eJobAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a operator log entry                                                   */
 /*----------------------------------------------------------------------------*/
-void AM::vLogOp(Op* pOp, i8 , eOA eOpAct, Stz* szFormat, ...)
+void AM::vLogOp(Op* pOp, eOA eOpAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
