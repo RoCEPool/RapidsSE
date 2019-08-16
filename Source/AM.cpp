@@ -526,7 +526,7 @@ void AM::vLogSvc(Job* pJob, i8 , eVA eSvcAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a thread log entry                                                     */
 /*----------------------------------------------------------------------------*/
-void AM::vLogThd(Thread* pThread, i8 , eHA eThdAct, Stz* szFormat, ...)
+void AM::vLogThd(Thread* pThread, eHA eThdAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
