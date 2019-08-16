@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* Partition                                                                  */
 /*----------------------------------------------------------------------------*/
-BufferCursor* BufferSort::pPartitionBuffer(SrtBuffer* pSrtBuffer,
+BufferCursor* BufferSort::pPartitionBuffer(ColumnVec* pColumnVec, SrtBuffer* pSrtBuffer,
                                            BufferCursor* pLowCursor, BufferCursor* pHighCursor)
 {
   
@@ -45,13 +45,15 @@ BufferCursor* BufferSort::pPartitionBuffer(SrtBuffer* pSrtBuffer,
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -- - - - - -
     // move start cursor forward till we go beyond the pivot value
     while (pLeft->bIsLessThan(iPivotValue)) {
-      pLeft->vMoveRight();
+      if ( ! pLeft->bMoveRight() )
+        break;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // move end cursor backward till pivot value is beyond it
     while (pRight->bIsGreaterThan(iPivotValue)) {
-      pRight->vMoveLeft();
+      if ( ! pRight->bMoveLeft() )
+        break;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -72,37 +74,42 @@ BufferCursor* BufferSort::pPartitionBuffer(SrtBuffer* pSrtBuffer,
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -- - - - - - -
     // swap the inverted eIright and left) lements
     //vTrace("Swapping %lld %lld\n"_Stz, *pLeft->m_aElement, *pRight->m_aElement);
+    //pLeft->m_pSrtBuffer->vShow(pColumnVec);
+    //pRight->m_pSrtBuffer->vShow(pColumnVec);
     pLeft->vSwap(pRight);
-    //pIntBuffer->vDump();
+    //pLeft->m_pSrtBuffer->vShow(pColumnVec);
+    //pRight->m_pSrtBuffer->vShow(pColumnVec);
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // move start cursor forward
-    pLeft->vMoveRight();
+    pLeft->bMoveRight();
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // move end cursor backward
-    pRight->vMoveLeft();
+    pRight->bMoveLeft();
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* QuickSort                                                                  */
 /*----------------------------------------------------------------------------*/
-void BufferSort::vQuickSortBuffer(SrtBuffer* pSrtBuffer, BufferCursor* pLowCursor, BufferCursor* pHighCursor)
+void BufferSort::vQuickSortBuffer(ColumnVec* pColumnVec, SrtBuffer* pSrtBuffer, BufferCursor* pLowCursor, BufferCursor* pHighCursor)
 {
   
   if (pLowCursor->bIsBefore(pHighCursor)) {
-    BufferCursor* pPartitionCursor = pPartitionBuffer(pSrtBuffer, pLowCursor, pHighCursor);
+    BufferCursor* pPartitionCursor = pPartitionBuffer(pColumnVec, pSrtBuffer, pLowCursor, pHighCursor);
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // quick sort from low to partition
-    vQuickSortBuffer(pSrtBuffer, pLowCursor, pPartitionCursor);
+    vQuickSortBuffer(pColumnVec, pSrtBuffer, pLowCursor, pPartitionCursor);
+    
+    //pSrtBuffer->vShow(pColumnVec);
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // quick sort from partition+1 to high
-    pPartitionCursor->vMoveRight();
+    pPartitionCursor->bMoveRight();
     BufferCursor* pPartitionNext = new BufferCursor(pPartitionCursor);
-    vQuickSortBuffer(pSrtBuffer, pPartitionNext, pHighCursor);
+    vQuickSortBuffer(pColumnVec, pSrtBuffer, pPartitionNext, pHighCursor);
     
     delete pPartitionCursor;
     delete pPartitionNext;

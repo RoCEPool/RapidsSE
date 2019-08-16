@@ -8,7 +8,7 @@ OpDesc __Op_GetKeyOp (
    CN_GETKEYOP,         // class number
    OK_SIMPLE,           // op kind
    "GetKey"_Stz,        // first word of prompt command
-   "gky"_Stz,           // prefix
+   "Gky"_Stz,           // prefix
    false,               // not partitioned
    GetKeyOp::pNew,      // function which parses the command and new's an op
    GetKeyOp::eCall,     // function which calls the op loop
@@ -157,8 +157,12 @@ eOR GetKeyOp::eOpLoop(void)
         
       case CN_ENTBUFFER: {
         EntBuffer* pEntBuffer = _pEntBuffer(pOperand) ;
-        pEntBuffer->vShow();
+        //pEntBuffer->vShow();
         SrtBuffer* pSrtBuffer = pEntBuffer->pToSrtBuffer(m_iKeyCol);
+        //ColumnVec* pColumnVec = new ColumnVec;
+        //for (i8 i_Col = 0; i_Col < m_pStreamDef->m_oColAry.nItems(); i_Col++)
+        //  pColumnVec->vAdd(m_pStreamDef->m_oColAry.pGet(i_Col));
+        //pSrtBuffer->vShow(pColumnVec);
         vPipeOut(pSrtBuffer);
         break;
       }

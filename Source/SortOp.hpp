@@ -9,6 +9,7 @@ namespace DataOperators
   {
   private:
     StreamDef* m_pStreamDef;
+    ColumnVec* m_pColumnVec;
     
     // must be last
     Footer m_xFooter;

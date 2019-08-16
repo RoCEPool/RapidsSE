@@ -169,7 +169,7 @@ SrtBuffer* SrtBuffer::pLastBuffer(i8& iCount)
 /*----------------------------------------------------------------------------*/
 void SrtBuffer::vLinkBuffer(SrtBuffer* pSrtBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INTBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
   
   // count no. of linked buffers received
   SrtBuffer* pLastBuffer = this;
@@ -272,14 +272,15 @@ SrtSet* SrtBuffer::aSrtSet(i8 iSrtSet)
 /*----------------------------------------------------------------------------*/
 /* return next srt set in this buffer                                         */
 /*----------------------------------------------------------------------------*/
-void SrtBuffer::vSwap(i8 iSrtSet1, i8 iSrtSet2)
+void SrtBuffer::vSwap(i8 iSrtSet1, SrtBuffer* pSrtBuffer2, i8 iSrtSet2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
   
-  SrtSet* aSrtSet = aItemArea();
+  SrtSet* aSrtSet1 = aItemArea();
+  SrtSet* aSrtSet2 = pSrtBuffer2->aItemArea();
   
-  SrtSet* aSrtSet1 = aAdd<SrtSet*>(aSrtSet, sizeof(SrtSet)*iSrtSet1);
-  SrtSet* aSrtSet2 = aAdd<SrtSet*>(aSrtSet, sizeof(SrtSet)*iSrtSet2);
+  aSrtSet1 = aAdd<SrtSet*>(aSrtSet1, sizeof(SrtSet)*iSrtSet1);
+  aSrtSet2 = aAdd<SrtSet*>(aSrtSet2, sizeof(SrtSet)*iSrtSet2);
   
   i8 iKey = aSrtSet1->m_xKey;
   i8 iaRowRef = aSrtSet1->m_iaRowRef[0];

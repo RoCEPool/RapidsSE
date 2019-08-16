@@ -106,36 +106,46 @@ BufferCursor::~BufferCursor(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* Move to the previous entry                                                 */
 /*----------------------------------------------------------------------------*/
-void BufferCursor::vMoveLeft(void)
+bool BufferCursor::bMoveLeft(void)
 {
   if (m_iElement == 0) {
     // move to a previous buffer
-    m_pSrtBuffer = m_pSrtBuffer->pPrevBuffer();
-    m_iBufferNo--;
-    m_iElement = m_pSrtBuffer->nItems() -1;
-    return;
+      if (m_pSrtBuffer->pPrevBuffer()) {
+      m_pSrtBuffer = m_pSrtBuffer->pPrevBuffer();
+      m_iBufferNo--;
+      m_iElement = m_pSrtBuffer->nItems() -1;
+      return true;
+      }
+    else
+      return false;
   }
   
   // move left
   m_iElement--;
-  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* Move to the next entry                                                     */
 /*----------------------------------------------------------------------------*/
-void BufferCursor::vMoveRight(void)
+bool BufferCursor::bMoveRight(void)
 {
   if (m_iElement == m_pSrtBuffer->nItems() -1) {
-    // move to a next buffer
-    m_pSrtBuffer = m_pSrtBuffer->pNextBuffer();
-    m_iBufferNo++;
-    m_iElement = 0;
-    return;
+    
+    if (m_pSrtBuffer->pNextBuffer()) {
+      // move to a next buffer
+      m_pSrtBuffer = m_pSrtBuffer->pNextBuffer();
+      m_iBufferNo++;
+      m_iElement = 0;
+      return true;
+    }
+    else
+      return false;
   }
   
   // move right
   m_iElement++;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -143,7 +153,7 @@ void BufferCursor::vMoveRight(void)
 /*----------------------------------------------------------------------------*/
 void BufferCursor::vSwap(BufferCursor* pBufferCursor)
 {
-  m_pSrtBuffer->vSwap(m_iElement, pBufferCursor->m_iElement);
+  m_pSrtBuffer->vSwap(m_iElement, pBufferCursor->m_pSrtBuffer, pBufferCursor->m_iElement);
 }
 
 /*============================================================================*/

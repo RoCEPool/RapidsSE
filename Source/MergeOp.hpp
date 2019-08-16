@@ -13,6 +13,8 @@ namespace DataOperators
   
     Operand* m_pOperand[C_OPERANDS];
     i8       m_iOperands;
+    StreamDef*  m_pStreamDef;
+    ColumnVec*  m_pColumnVec;
     
     // must be last
     Footer m_xFooter;
@@ -34,10 +36,7 @@ namespace DataOperators
     void vMergeDangling(void);
     eOR  eMergeLoop(void);
     void vMergeOperands(Operand* pOperand1, Operand* pOperand2);
-    
-    BufferCursor* pPartitionBuffer(SrtBuffer* pSrtBuffer, BufferCursor* pLowCursor,
-                                   BufferCursor* pHighCursor);
-    void vQuickSortBuffer(SrtBuffer* pSrtBuffer, BufferCursor* pLowCursor, BufferCursor* pHighCursor);
+  
     Footer* aFooter(void);
   };
 

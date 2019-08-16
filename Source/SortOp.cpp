@@ -62,6 +62,7 @@ SortOp::SortOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   _precondition_(_MAGIC_,CN_SORTOP);
   
   m_pStreamDef = nullptr;
+  m_pColumnVec = nullptr;
   
   m_fpCall = SortOp::eCall;
   
@@ -140,6 +141,9 @@ eOR SortOp::eSortLoop(void)
     // (ray added this)
     if (CN_STREAMDEF == pOperand->eClass()) {
       m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
+      m_pColumnVec = new ColumnVec;
+      for (i8 i_Col = 0; i_Col < m_pStreamDef->m_oColAry.nItems(); i_Col++)
+        m_pColumnVec->vAdd(m_pStreamDef->m_oColAry.pGet(i_Col));
       vPipeOut(pOperand);
       continue;
     }
@@ -147,7 +151,6 @@ eOR SortOp::eSortLoop(void)
     RASSERT(CN_SRTBUFFER == pOperand->eClass());
     
     SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
-    //pSrtBuffer->vShow();
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // create a Low cursor pointing to the first element in the array
@@ -159,7 +162,7 @@ eOR SortOp::eSortLoop(void)
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // call quick sort (recursive call)
-    BufferSort::vQuickSortBuffer(pSrtBuffer, pLowCursor, pHighCursor);
+    BufferSort::vQuickSortBuffer(m_pColumnVec, pSrtBuffer, pLowCursor, pHighCursor);
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // verify that the data is sorted

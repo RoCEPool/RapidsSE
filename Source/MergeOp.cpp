@@ -65,6 +65,9 @@ MergeOp::MergeOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   
   m_iOperands = 0;
   
+  m_pStreamDef = nullptr;
+  m_pColumnVec = nullptr;
+  
   m_fpCall = MergeOp::eCall;
 }
 
@@ -168,8 +171,12 @@ eOR MergeOp::eMergeLoop(void)
     }
     
     if (CN_STREAMDEF == pOperand->eClass()) {
-      //m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
+      m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
+      m_pColumnVec = new ColumnVec;
+      for (i8 i_Col = 0; i_Col < m_pStreamDef->m_oColAry.nItems(); i_Col++)
+        m_pColumnVec->vAdd(m_pStreamDef->m_oColAry.pGet(i_Col));
       vPipeOut(pOperand);
+      Pthread::vSleepUsec(25000,CN_MERGEOP);
       continue;
     }
     
@@ -248,6 +255,10 @@ void MergeOp::vMergeOperands(Operand* pOperand1, Operand* pOperand2)
   pSrtBuffer1->vLinkBuffer(pSrtBuffer2);
   RASSERT(pSrtBuffer1->bVerifyNextPrev());
   
+  //vTrace("\nUnSorted buffer:\n"_Stz);
+  //pSrtBuffer1->vShow(m_pColumnVec);
+  //pSrtBuffer2->vShow(m_pColumnVec);
+  
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get count and last buffer
   i8 iCount = 0;
@@ -260,14 +271,15 @@ void MergeOp::vMergeOperands(Operand* pOperand1, Operand* pOperand2)
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a High cursor pointing to the last element in the array
   
-  BufferCursor* pHighCursor = new BufferCursor(pLastBuffer, iCount-1, pLastBuffer->nItems());
+  BufferCursor* pHighCursor = new BufferCursor(pLastBuffer, iCount-1, pLastBuffer->nItems() - 1);
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // call quick sort (recursive call)
-  BufferSort::vQuickSortBuffer(pSrtBuffer1, pLowCursor, pHighCursor);
+  BufferSort::vQuickSortBuffer(m_pColumnVec, pSrtBuffer1, pLowCursor, pHighCursor);
   
   //vTrace("\nSorted buffer:\n"_Stz);
-  //pIntBuffer->vDump();
+  //pSrtBuffer1->vShow(m_pColumnVec);
+  //pSrtBuffer2->vShow(m_pColumnVec);
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete the bufferCursors
