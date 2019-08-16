@@ -162,7 +162,7 @@ namespace StorageEngine
     static void vLogJob(Job*      pJob, eJA eJobAct, Stz* szFormat, ...);
     static void vLogOp (Op*       pOp,  eOA eOpAct,  Stz* szFormat, ...);
     static void vLogPrm(SePrompt* pPrm, ePA ePrmAct, Stz* szFormat, ...);
-    static void vLogRes(Resource* pRes, eRA eResAct, eRK eSysRes, Stz* szFormat, ...);
+    static void vLogRes(Resource* pRes, eRA eResAct, Stz* szFormat, ...);
     static void vLogSvc(Job*      pJob, eVA eSvcAct, Stz* szFormat, ...);
     static void vLogThd(Thread*   pThd, eHA eThdAct, Stz* szFormat, ...);
     static void vLogTsk(Task*     pTsk, eTA eTskAct, Stz* szFormat, ...);

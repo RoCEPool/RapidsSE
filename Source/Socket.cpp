@@ -263,7 +263,7 @@ bool Socket::bAcceptClient(int& iSocketId, SysCall& SysCall)
   
   if (AM::bAttached()) AM::pResourceTracker()->vIncSocketOpen();
   
-  AM::vLogRes(this,RA_SKT_ACCEPTED,RK_SOCKET,
+  AM::vLogRes(this,RA_SKT_ACCEPTED,
               "Socket accepted : client"_Stz);
 
   SysCall.vSuccess();
@@ -300,7 +300,7 @@ bool Socket::bClose(SysCall& SysCall)
   
   if (AM::bAttached()) AM::pResourceTracker()->vDecSocketOpen();
   
-  AM::vLogRes(this,RA_SKT_CLOSED,RK_SOCKET,
+  AM::vLogRes(this,RA_SKT_CLOSED,
               "Socket closed : "_Stz);
 
   SysCall.vSuccess();
@@ -369,7 +369,7 @@ bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
   
   if (AM::bAttached()) AM::pResourceTracker()->vIncSocketOpen();
   
-  AM::vLogRes(this,RA_SKT_CONNECTED,RK_SOCKET,
+  AM::vLogRes(this,RA_SKT_CONNECTED,
               "Socket connected : to server %s %d"_Stz,sAddr,iPort);
 
   SysCall.vSuccess();
@@ -433,7 +433,7 @@ bool Socket::bCreateServer(int iPort, SysCall& SysCall)
   
   if (AM::bAttached()) AM::pResourceTracker()->vIncSocketOpen();
   
-  AM::vLogRes(this,RA_SKT_CREATED,RK_SOCKET,
+  AM::vLogRes(this,RA_SKT_CREATED,
               "Socket created : listening socket : %d"_Stz,iPort);
 
   SysCall.vSuccess();
@@ -508,7 +508,7 @@ bool Socket::bRecvBytes(void* pWS, i8 nBytes, SysCall& SysCall)
     gpAttachMap->m_oStatistics.Socket.m_nRecvBytes += nRecvBytes;
 #endif
     
-  AM::vLogRes(this,RA_SKT_RECEIVED,RK_SOCKET,
+  AM::vLogRes(this,RA_SKT_RECEIVED,
               "Socket received : %lld bytes"_Stz,nRecvBytes);
 
     //vTrace("Bytes received: (%lld) %lld\n"_Stz, nBytes, nSoFar);
@@ -541,7 +541,7 @@ bool Socket::bSendBytes(void* pBuffer, i8 nBytes, SysCall& SysCall)
   gpAttachMap->m_oStatistics.Socket.m_nSendBytes += nSentBytes;
 #endif
   
-  AM::vLogRes(this,RA_SKT_SENT,RK_SOCKET,
+  AM::vLogRes(this,RA_SKT_SENT,
               "Socket sent : %lld bytes"_Stz,nSentBytes);
 
   if (nSentBytes == nBytes) {

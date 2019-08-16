@@ -477,13 +477,15 @@ void AM::vLogPrm(SePrompt* pPrm, ePA ePrmAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a resource log entry                                                   */
 /*----------------------------------------------------------------------------*/
-void AM::vLogRes(Resource* pRes, eRA eResAct, eRK eSysRes, Stz* szFormat, ...)
+void AM::vLogRes(Resource* pRes, eRA eResAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
     return;
   
-  if (! (AM::pMarkResource()->bEnum(eSysRes) ||
+  eRK eKind  = pRes ? pRes->eKind()  : RK_NONE;
+  
+  if (! (AM::pMarkResource()->bEnum(eKind) ||
          AM::pMarkResource()->bAll()) )
     return;
   
@@ -491,8 +493,9 @@ void AM::vLogRes(Resource* pRes, eRA eResAct, eRK eSysRes, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 iResId = pRes ? pRes->iResId() : C_UNKNOWN;
-  gpLog->iEntryRes(pRes,iResId,eResAct,eSysRes,szFormat,xVaArgs);
+  i8  iResId = pRes ? pRes->iResId() : C_UNKNOWN;
+  
+  gpLog->iEntryRes(pRes,iResId,eResAct,eKind,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif
