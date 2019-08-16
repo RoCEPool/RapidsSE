@@ -698,10 +698,8 @@ void Step::vJobFindOriginator(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iJobId) )
     THROW_INVALID_DSTACK("job::findOriginator"_Stz);
   
-  Job* pJobFound = AM::pOriginatingJobs()->pFindJob(iJobId);
+  Job* pJobFound = Scheduler::pFindOriginatingJob(iJobId);
   RASSERT(pJobFound);
-  
-  ActLog::vAdd(pJobFound,AN_FIND_ORIGINATOR,mpTask->pJob());
   
   mpTask->m_pDataStack->vPushPointer(pJobFound);
   
@@ -719,10 +717,8 @@ void Step::vJobFindParticipant(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iJobId) )
     THROW_INVALID_DSTACK("job::findPartcipant"_Stz);
     
-  Job* pJobFound = AM::pParticipatingJobs()->pFindJob(iJobId);
+  Job* pJobFound = Scheduler::pFindParticipatingJob(iJobId);
   RASSERT(pJobFound);
-  
-  ActLog::vAdd(pJobFound,AN_FIND_PARTICIPANT,mpTask->pJob());
   
   mpTask->m_pDataStack->vPushPointer(pJobFound);
   

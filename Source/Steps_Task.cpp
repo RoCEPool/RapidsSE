@@ -187,8 +187,6 @@ void Step::vTaskGrabLock(MP_Task mpTask)
   Task* pThatTask = _pTask(pObject);
   
   Scheduler::vGrabTaskLock(pThatTask);
-  //pThatTask->vGrabLock();
-  ActLog::vAdd(mpTask->m_pJob,AN_TASK_LOCKED);
 
   EXIT();
 }

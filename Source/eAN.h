@@ -14,7 +14,6 @@ enum eAN // action numbers
 /*    */ AN_CONSTRUCTOR,
 /*    */ AN_DESTRUCTOR,
 /*    */ AN_ERROR_CODE,
-/*    */ AN_FIND_ORIGINATOR,
 /*    */ AN_FIND_PARTICIPANT,
 /*    */ AN_JOB_BEGIN,
 /*    */ AN_JOB_CHUNK,
@@ -39,7 +38,6 @@ enum eAN // action numbers
 /*    */ AN_SEED_RUN,
 /*    */ AN_SEND_JOB,
 /*    */ AN_SPAWN_JOB,
-/*    */ AN_TASK_LOCKED,
 
 /*    */ AN_ENUMS,
 };
