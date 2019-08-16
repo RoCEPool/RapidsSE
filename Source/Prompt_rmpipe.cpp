@@ -23,16 +23,16 @@ PromptDesc __Prompt_rmpipe (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_rmpipe(SePrompt* pPrompt)
 {
-  s256 sPipePath;
+  s256 sFifoPath;
   
   TokenVec* pTokenVec = pPrompt->pTknVec();
 
   ASSERT((*pTokenVec)[0]->bSame("rmpipe"_Stz));
   
-  sPipePath = (*pTokenVec)[1]->szText();
+  sFifoPath = (*pTokenVec)[1]->szText();
   
-  if (! Pipe::bRemove(sPipePath)) {
-    vTrace("Failed to remove pipe: %s\n"_Stz,sPipePath.aChar());
+  if (! Fifo::bRemove(sFifoPath)) {
+    vTrace("Failed to remove pipe: %s\n"_Stz,sFifoPath.aChar());
     return false;
   }
   

@@ -23,16 +23,16 @@ PromptDesc __Prompt_mkpipe (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_mkpipe(SePrompt* pPrompt)
 {
-  s256 sPipePath;
+  s256 sFifoPath;
   
   TokenVec* pTokenVec = pPrompt->pTknVec();
 
   ASSERT((*pTokenVec)[0]->bSame("mkpipe"_Stz));
   
-  sPipePath = (*pTokenVec)[1]->szText();
+  sFifoPath = (*pTokenVec)[1]->szText();
   
-  if (! Pipe::bMake(sPipePath)) {
-    vTrace("Failed to make pipe: %s\n"_Stz,sPipePath.aChar());
+  if (! Fifo::bMake(sFifoPath)) {
+    vTrace("Failed to make fifo: %s\n"_Stz,sFifoPath.aChar());
     return false;
   }
   

@@ -18,9 +18,9 @@ namespace Resources
 #include "ResourceTracker.hpp"
 
 #include "Dir.hpp"
+#include "Fifo.hpp"
 #include "File.hpp"
 #include "Mutex.hpp"
-#include "Pipe.hpp"
 #include "Pthread.hpp"
 #include "Socket.hpp"
 

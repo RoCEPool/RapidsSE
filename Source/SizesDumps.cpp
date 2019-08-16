@@ -652,7 +652,7 @@ i8 giClassSize[]
   /* 82 */ sizeof(PathVec),            // CN_PATHVEC
   /*    */ sizeof(PauseMarker),        // CN_PAUSEMARKER
   /*    */ sizeof(Peruse),             // CN_PERUSE
-  /*    */ sizeof(Pipe),               // CN_PIPE
+  /*    */ sizeof(Fifo),               // CN_PIPE
   /* 86 */ sizeof(Plan),               // CN_PLAN
   /* 87 */ sizeof(Planner),            // CN_PLANNER
   /* 90 */ sizeof(Predicate),          // CN_PREDICATE
