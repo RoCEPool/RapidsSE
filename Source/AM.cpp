@@ -379,7 +379,7 @@ void AM::vLogInf(Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a interface log entry                                                  */
 /*----------------------------------------------------------------------------*/
-void AM::vLogItf(Session* pSsn, i8 iItfId, eIA eItfAct, Stz* szFormat, ...)
+void AM::vLogItf(Session* pSsn, i8 , eIA eItfAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -393,7 +393,9 @@ void AM::vLogItf(Session* pSsn, i8 iItfId, eIA eItfAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  gpLog->iEntryItf(pSsn,iItfId,eItfAct,szFormat,xVaArgs);
+  i8 iSsnId = C_UNKNOWN; //pSsn->iSsnId();
+  
+  gpLog->iEntryItf(pSsn,iSsnId,eItfAct,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif
@@ -402,7 +404,7 @@ void AM::vLogItf(Session* pSsn, i8 iItfId, eIA eItfAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a interface log entry                                                  */
 /*----------------------------------------------------------------------------*/
-void AM::vLogJob(Job* pJob, i8 iJobId, eJA eJobAct, Stz* szFormat, ...)
+void AM::vLogJob(Job* pJob, i8 , eJA eJobAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -416,6 +418,7 @@ void AM::vLogJob(Job* pJob, i8 iJobId, eJA eJobAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
+  i8 iJobId = pJob->iJobId();
   gpLog->iEntryJob(iJobId,eJobAct,szFormat,xVaArgs);
   
   va_end(xVaArgs);
@@ -425,7 +428,7 @@ void AM::vLogJob(Job* pJob, i8 iJobId, eJA eJobAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a operator log entry                                                   */
 /*----------------------------------------------------------------------------*/
-void AM::vLogOp(Op* pOp, i8 iOpId, eOA eOpAct, Stz* szFormat, ...)
+void AM::vLogOp(Op* pOp, i8 , eOA eOpAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -439,6 +442,8 @@ void AM::vLogOp(Op* pOp, i8 iOpId, eOA eOpAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
+  i8 iOpId = pOp->iOpId();
+  
   gpLog->iEntryOp(pOp,iOpId,eOpAct,szFormat,xVaArgs);
   
   va_end(xVaArgs);
@@ -448,7 +453,7 @@ void AM::vLogOp(Op* pOp, i8 iOpId, eOA eOpAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a prompt log entry                                                     */
 /*----------------------------------------------------------------------------*/
-void AM::vLogPrm(SePrompt* pPrm, i8 iPrmId, ePA ePrmAct, Stz* szFormat, ...)
+void AM::vLogPrm(SePrompt* pPrm, i8 , ePA ePrmAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -462,6 +467,7 @@ void AM::vLogPrm(SePrompt* pPrm, i8 iPrmId, ePA ePrmAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
+  i8 iPrmId = C_UNKNOWN; //pPrm->iPrmId();
   gpLog->iEntryPrm(pPrm,iPrmId,ePrmAct,szFormat,xVaArgs);
   
   va_end(xVaArgs);
@@ -471,7 +477,7 @@ void AM::vLogPrm(SePrompt* pPrm, i8 iPrmId, ePA ePrmAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a resource log entry                                                   */
 /*----------------------------------------------------------------------------*/
-void AM::vLogRes(Resource* pRes, i8 iResId, eRA eResAct, eRK eSysRes, Stz* szFormat, ...)
+void AM::vLogRes(Resource* pRes, i8 , eRA eResAct, eRK eSysRes, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -485,6 +491,7 @@ void AM::vLogRes(Resource* pRes, i8 iResId, eRA eResAct, eRK eSysRes, Stz* szFor
   
   va_start(xVaArgs,szFormat);
   
+  i8 iResId = pRes ? pRes->iResId() : C_UNKNOWN;
   gpLog->iEntryRes(pRes,iResId,eResAct,eSysRes,szFormat,xVaArgs);
   
   va_end(xVaArgs);
@@ -494,7 +501,7 @@ void AM::vLogRes(Resource* pRes, i8 iResId, eRA eResAct, eRK eSysRes, Stz* szFor
 /*----------------------------------------------------------------------------*/
 /* add a service log entry                                                    */
 /*----------------------------------------------------------------------------*/
-void AM::vLogSvc(Job* pJob, i8 iSvcId, eVA eSvcAct, Stz* szFormat, ...)
+void AM::vLogSvc(Job* pJob, i8 , eVA eSvcAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -508,6 +515,8 @@ void AM::vLogSvc(Job* pJob, i8 iSvcId, eVA eSvcAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
+  i8 iSvcId = pJob->m_iJobId;
+  
   gpLog->iEntrySvc(pJob,iSvcId,eSvcAct,szFormat,xVaArgs);
   
   va_end(xVaArgs);
@@ -517,7 +526,7 @@ void AM::vLogSvc(Job* pJob, i8 iSvcId, eVA eSvcAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a thread log entry                                                     */
 /*----------------------------------------------------------------------------*/
-void AM::vLogThd(Thread* pThread, i8 iThdId, eHA eThdAct, Stz* szFormat, ...)
+void AM::vLogThd(Thread* pThread, i8 , eHA eThdAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -531,6 +540,7 @@ void AM::vLogThd(Thread* pThread, i8 iThdId, eHA eThdAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
+  i8 iThdId = pThread ? pThread->m_iThreadId : C_UNKNOWN;
   gpLog->iEntryThd(pThread,iThdId,eThdAct,szFormat,xVaArgs);
 
   va_end(xVaArgs);
@@ -540,7 +550,7 @@ void AM::vLogThd(Thread* pThread, i8 iThdId, eHA eThdAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a rask log entry                                                       */
 /*----------------------------------------------------------------------------*/
-void AM::vLogTsk(Task* pTask, i8 iTskId, eTA eTskAct, Stz* szFormat, ...)
+void AM::vLogTsk(Task* pTask, i8 , eTA eTskAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -554,6 +564,7 @@ void AM::vLogTsk(Task* pTask, i8 iTskId, eTA eTskAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
+  i8 iTskId = pTask->iTaskId();
   gpLog->iEntryTsk(pTask,iTskId,eTskAct,szFormat,xVaArgs);
   
   va_end(xVaArgs);
@@ -563,7 +574,7 @@ void AM::vLogTsk(Task* pTask, i8 iTskId, eTA eTskAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a transaction log entry                                                */
 /*----------------------------------------------------------------------------*/
-void AM::vLogTxn(Tx* pTx, i8 iTxnId, eXA eTxnAct, Stz* szFormat, ...)
+void AM::vLogTxn(Tx* pTx, eXA eTxnAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -577,7 +588,8 @@ void AM::vLogTxn(Tx* pTx, i8 iTxnId, eXA eTxnAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  gpLog->iEntryTxn(pTx, iTxnId,eTxnAct,szFormat,xVaArgs);
+  i8 iTxnId = pTx->iDistTxId();
+  gpLog->iEntryTxn(pTx,iTxnId,eTxnAct,szFormat,xVaArgs);
 
   va_end(xVaArgs);
 #endif
