@@ -46,11 +46,13 @@ create index LineItem_Idx1 ON LineItem(L_ORDERKEY);
 //nowait monitor 3;
 
 space;
+//IndexEntries 200;
+
 //fileCat "/tpch/SF0/lineitem_1.csv" 1;
 //time ld lineitem "/tpch/SF0/lineitem_1.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem_10.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem_100.csv" max_errors 100;
-time ld lineitem "/DATA/tpch/lineitem10.csv" max_errors 100;
+time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem_10k.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem_100k.csv" max_errors 100;
 //time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
@@ -92,8 +94,11 @@ time ld orders "/DATA/tpch/orders10.csv" max_errors 100;
 //dynamic scan lineitem | limit 2 | output | zed;
 
 //dynamic scan lineitem | inflate | output | zed;
-fetch lineitem;
-dynamic fetch lineitem lineitem_idx1 | getKey L_ORDERKEY | sort | output | zed;
+//fetch lineitem;
+time dynamic fetch lineitem lineitem_idx1 | getKey L_PARTKEY | sort  | merge | output | zed;
+
+//dynamic fetch lineitem lineitem_idx1 | getKey L_ORDERKEY | sort | merge | output | zed;
+
 //dynamic fetch lineitem lineitem_idx1 | getKey L_PARTKEY | sort | output | zed;
 //dynamic fetch lineitem lineitem_idx1 | getKey L_SUPPKEY | sort | output | zed;
 //dynamic fetch lineitem lineitem_idx1 | getKey L_SHIPDATE | sort | output | zed;

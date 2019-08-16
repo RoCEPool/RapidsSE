@@ -65,6 +65,9 @@ MergeOp::MergeOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   
   m_iOperands = 0;
   
+  m_pStreamDef = nullptr;
+  m_pColumnVec = nullptr;
+  
   m_fpCall = MergeOp::eCall;
 }
 
@@ -121,6 +124,8 @@ void MergeOp::vMergeDangling(void)
   i8 j_Index;
   Operand* pOperandPair[2];
   
+  i8 iOperandMag[2];
+  
   // merge remaining operand set pairs till we are left with one single set
   while (m_iOperands != 1) {
     
@@ -130,6 +135,7 @@ void MergeOp::vMergeDangling(void)
     for (i_Index = 0; i_Index < C_OPERANDS; i_Index++) {
       
       if (m_pOperand[i_Index]) {
+        iOperandMag[j_Index] = i_Index;
         pOperandPair[j_Index++] = m_pOperand[i_Index];
         m_pOperand[i_Index] = nullptr;
         m_iOperands--;
@@ -139,6 +145,10 @@ void MergeOp::vMergeDangling(void)
           break;
       }
     }
+    
+    if (AM::bVerbose())
+      vTrace("P:%lld MERGING DANGLING OF MAGNITUDES %lld %lld\n"_Stz,
+             m_nSlot, iOperandMag[0], iOperandMag[1]);
     
     // merge the operand set pair
     vMergeOperands(pOperandPair[0], pOperandPair[1]);
@@ -168,8 +178,12 @@ eOR MergeOp::eMergeLoop(void)
     }
     
     if (CN_STREAMDEF == pOperand->eClass()) {
-      //m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
+      m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
+      m_pColumnVec = new ColumnVec;
+      for (i8 i_Col = 0; i_Col < m_pStreamDef->m_oColAry.nItems(); i_Col++)
+        m_pColumnVec->vAdd(m_pStreamDef->m_oColAry.pGet(i_Col));
       vPipeOut(pOperand);
+      Pthread::vSleepUsec(25000,CN_MERGEOP);
       continue;
     }
     
@@ -219,7 +233,8 @@ eOR MergeOp::eMergeLoop(void)
     pSrtBuffer = pSrtBuffer->pNextBuffer();
   }
   
-  vTrace("MERGE PIPED OUT %lld buffer\n"_Stz, iCount);
+  if (AM::bVerbose())
+    vTrace("MERGE PIPED OUT %lld buffer\n"_Stz, iCount);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pipe out an end marker
@@ -235,7 +250,8 @@ void MergeOp::vMergeOperands(Operand* pOperand1, Operand* pOperand2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MERGEOP,_FOOTER_);
 
-  vTrace("Merging operands %p %p\n"_Stz, pOperand1, pOperand2);
+  if (AM::bVerbose())
+    vTrace("Merging operands %p %p\n"_Stz, pOperand1, pOperand2);
 
   SrtBuffer* pSrtBuffer1 = _pSrtBuffer(pOperand1);
   RASSERT(pSrtBuffer1->bVerifyNextPrev());
@@ -247,6 +263,10 @@ void MergeOp::vMergeOperands(Operand* pOperand1, Operand* pOperand2)
   // link the buffers
   pSrtBuffer1->vLinkBuffer(pSrtBuffer2);
   RASSERT(pSrtBuffer1->bVerifyNextPrev());
+  
+  //vTrace("\nUnSorted buffer:\n"_Stz);
+  //pSrtBuffer1->vShow(m_pColumnVec);
+  //pSrtBuffer2->vShow(m_pColumnVec);
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get count and last buffer
@@ -260,14 +280,15 @@ void MergeOp::vMergeOperands(Operand* pOperand1, Operand* pOperand2)
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a High cursor pointing to the last element in the array
   
-  BufferCursor* pHighCursor = new BufferCursor(pLastBuffer, iCount-1, pLastBuffer->nItems());
+  BufferCursor* pHighCursor = new BufferCursor(pLastBuffer, iCount-1, pLastBuffer->nItems() - 1);
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // call quick sort (recursive call)
-  BufferSort::vQuickSortBuffer(pSrtBuffer1, pLowCursor, pHighCursor);
+  BufferSort::vQuickSortBuffer(m_pColumnVec, pSrtBuffer1, pLowCursor, pHighCursor);
   
   //vTrace("\nSorted buffer:\n"_Stz);
-  //pIntBuffer->vDump();
+  //pSrtBuffer1->vShow(m_pColumnVec);
+  //pSrtBuffer2->vShow(m_pColumnVec);
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete the bufferCursors

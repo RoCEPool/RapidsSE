@@ -10,10 +10,12 @@ namespace Rows
   class BufferSort 
   {
   public:
-    static BufferCursor* pPartitionBuffer(SrtBuffer* pSrtBuffer,
+    static BufferCursor* pPartitionBuffer(ColumnVec* pColumnVec,
+                                          SrtBuffer* pSrtBuffer,
                                           BufferCursor* pLowCursor,
                                           BufferCursor* pHighCursor);
-    static void vQuickSortBuffer(SrtBuffer* pSrtBuffer,
+    static void vQuickSortBuffer(ColumnVec* pColumnVec,
+                                 SrtBuffer* pSrtBuffer,
                                  BufferCursor* pLowCursor,
                                  BufferCursor* pHighCursor);
   };

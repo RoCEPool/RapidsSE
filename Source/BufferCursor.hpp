@@ -26,8 +26,8 @@ namespace Rows
     
     ~BufferCursor(void) noexcept(false);
   
-    void vMoveLeft(void);
-    void vMoveRight(void);
+    bool bMoveLeft(void);
+    bool bMoveRight(void);
     
     void vSwap(BufferCursor* pBufferCursor);
     
