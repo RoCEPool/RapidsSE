@@ -22,12 +22,13 @@ Resource* Resources::_pResource(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Resource::Resource(eCN eClassNo)
+Resource::Resource(eCN eClassNo, eRK eKind)
 : Object(eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
   m_iResId = AM::iNextResourceId();
+  m_eKind  = eKind;
   
   m_oBirth.vNow();
   

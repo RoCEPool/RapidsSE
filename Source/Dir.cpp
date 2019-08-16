@@ -46,7 +46,7 @@ void Dir::operator delete(void* pDirAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Dir::Dir(void)
-: Resource(CN_DIR)
+: Resource(CN_DIR,RK_DIR)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   

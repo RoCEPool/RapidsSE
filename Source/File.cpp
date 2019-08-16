@@ -42,7 +42,7 @@ void File::operator delete(void* pFileAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 File::File(void)
-: Resource(CN_FILE)
+: Resource(CN_FILE,RK_FILE)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   

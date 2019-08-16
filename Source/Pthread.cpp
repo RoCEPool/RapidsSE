@@ -47,7 +47,7 @@ void Pthread::operator delete(void* pPthreadAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Pthread::Pthread()
-: Resource(CN_PTHREAD)
+: Resource(CN_PTHREAD,RK_PTHREAD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
   
