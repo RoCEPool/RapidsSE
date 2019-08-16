@@ -453,7 +453,7 @@ void AM::vLogOp(Op* pOp, i8 , eOA eOpAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a prompt log entry                                                     */
 /*----------------------------------------------------------------------------*/
-void AM::vLogPrm(SePrompt* pPrm, i8 , ePA ePrmAct, Stz* szFormat, ...)
+void AM::vLogPrm(SePrompt* pPrm, ePA ePrmAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
