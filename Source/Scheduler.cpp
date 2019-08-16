@@ -521,26 +521,6 @@ bool Scheduler::bTask_Ack(Task* pTaskWaiting, Task* pTaskAcking)
   
   RASSERT(TS_EXECUTING == pTaskAcking->eState());
   
-//  Job* pJobBeingAcked = pTaskBeingAcked->pJob();
-//  Job* pJobAcking     = pTaskAcking->pJob();
-//
-//  if (pJobAcking->m_bMarkActivity || pJobBeingAcked->m_bMarkActivity) {
-//    JobLog::vNote(pJobBeingAcked,
-//                          "pTaskBeingAcked:%p Job %s "_Stz,
-//                          pTaskBeingAcked,
-//                          aCN[pJobBeingAcked->eClass()]
-//                          );
-//    JobLog::vNote(pJobAcking,
-//                          "pTaskAcking:%p Job %s "_Stz,
-//                          pTaskAcking,
-//                          aCN[pJobAcking->eClass()]
-//                          );
-//  }
-//
-//  ActLog::vAdd(pTaskAcking->pJob(),
-//                       AN_ACK_TASK,
-//                       pTaskBeingAcked->pJob());
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // decrement the acks remaining
@@ -548,30 +528,6 @@ bool Scheduler::bTask_Ack(Task* pTaskWaiting, Task* pTaskAcking)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-//  if (bAmDecider)
-//    ActLog::vAdd(pTaskAcking->pJob(),
-//                         AN_AM_DECIDER,
-//                         pTaskBeingAcked->pJob());
-//
-//  if (bAmDecider) {
-//    if (pJobBeingAcked->m_bMarkActivity || pJobAcking->m_bMarkActivity)
-//      JobLog::vNote(pJobAcking,
-//                            "Decider %s acks %s"_Stz,
-//                            aCN[pJobAcking->eClass()],
-//                            aCN[pJobBeingAcked->eClass()]
-//                            );
-//  }
-//  
-//  if ( (pJobBeingAcked && JT_NONE != pJobBeingAcked->eJobTrace()) ||
-//      (pJobAcking && JT_NONE != pJobAcking->eJobTrace())  ) {
-//    vTrace("Ack of %s task %p by %s task %p ; %s\n"_Stz,
-//           pJobBeingAcked ? aCN[pJobBeingAcked->m_pJobClass->m_eClass] : "<no job>"_Stz,
-//           pTaskBeingAcked,
-//           pJobAcking ? aCN[pJobAcking->m_pJobClass->m_eClass] : "<no job>"_Stz,
-//           pJobAcking,
-//           bAmDecider ? "decider" : "not decider");
-//  }
-
   return bAmDecider;
 }
 

@@ -7,14 +7,12 @@ enum eAN // action numbers
 {
 /*  0 */ AN_NONE=0,
 
-/*    */ AN_ACK_TASK,
 /*    */ AN_ACKS_REQUIRED,
 /*    */ AN_ADDED_ORIGINATOR,
 /*    */ AN_ADDED_PARTICIPANT,
 /*    */ AN_AM_DECIDER,
 /*    */ AN_CONSTRUCTOR,
 /*    */ AN_DESTRUCTOR,
-/*    */ AN_END,
 /*    */ AN_ERROR_CODE,
 /*    */ AN_FIND_ORIGINATOR,
 /*    */ AN_FIND_PARTICIPANT,
@@ -33,7 +31,6 @@ enum eAN // action numbers
 /*    */ AN_REMOVED_PARTICIPANT,
 /*    */ AN_RESOURCES_CHECKED,
 /*    */ AN_RESOURCES_RELEASED,
-/*    */ AN_ROOT,
 /*    */ AN_SEED_CAN,
 /*    */ AN_SEED_END,
 /*    */ AN_SEED_EXE,

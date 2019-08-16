@@ -110,14 +110,12 @@ void Constants::vAddConstants(void)
   
   // AN_ : action numbers
   /*  0 */ vAddConstant("AN_NONE"_Stz,               AN_NONE);
-  /*  0 */ vAddConstant("AN_ACK_TASK"_Stz,           AN_ACK_TASK);
   /*  0 */ vAddConstant("AN_ACKS_REQUIRED"_Stz,      AN_ACKS_REQUIRED);
   /*  0 */ vAddConstant("AN_ADDED_ORIGINATOR"_Stz,   AN_ADDED_ORIGINATOR);
   /*  0 */ vAddConstant("AN_ADDED_PARTICIPANT"_Stz,  AN_ADDED_PARTICIPANT);
   /*  0 */ vAddConstant("AN_AM_DECIDER"_Stz,         AN_AM_DECIDER);
   /*  0 */ vAddConstant("AN_CONSTRUCTOR"_Stz,        AN_CONSTRUCTOR);
   /*  0 */ vAddConstant("AN_DESTRUCTOR"_Stz,         AN_DESTRUCTOR);
-  /*  0 */ vAddConstant("AN_END"_Stz,                AN_END);
   /*  0 */ vAddConstant("AN_ERROR_CODE"_Stz,         AN_ERROR_CODE);
   /*  0 */ vAddConstant("AN_FIND_ORIGINATOR"_Stz,    AN_FIND_ORIGINATOR);
   /*  0 */ vAddConstant("AN_FIND_PARTICIPANT"_Stz,   AN_FIND_PARTICIPANT);
@@ -136,7 +134,6 @@ void Constants::vAddConstants(void)
   /*  0 */ vAddConstant("AN_REMOVED_PARTICIPANT"_Stz,AN_REMOVED_PARTICIPANT);
   /*  0 */ vAddConstant("AN_RESOURCES_CHECKED"_Stz,  AN_RESOURCES_CHECKED);
   /*  0 */ vAddConstant("AN_RESOURCES_RELEASED"_Stz, AN_RESOURCES_RELEASED);
-  /*  0 */ vAddConstant("AN_ROOT"_Stz,               AN_ROOT);
   /*  0 */ vAddConstant("AN_SEED_CAN"_Stz,           AN_SEED_CAN);
   /*  0 */ vAddConstant("AN_SEED_END"_Stz,           AN_SEED_END);
   /*  0 */ vAddConstant("AN_SEED_EXE"_Stz,           AN_SEED_EXE);
