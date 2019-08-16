@@ -1084,7 +1084,7 @@ void Scheduler::vTask_Yield(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_AddDedicated(Thread* pThread)
 {
-  AM::vLogThd(pThread->m_iThreadId, HA_THREAD_ADD_DEDICATED,
+  AM::vLogThd(pThread,pThread->m_iThreadId, HA_THREAD_ADD_DEDICATED,
               "Add dedicated thread to DedicatedThreadVec"_Stz);
   
   RASSERT(CN_NONE != pThread->m_eDedicated);
@@ -1100,7 +1100,7 @@ void Scheduler::vThread_AddDedicated(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_AddGeneral(Thread* pThread)
 {
-  AM::vLogThd(pThread->m_iThreadId, HA_THREAD_ADD_GENERAL,
+  AM::vLogThd(pThread,pThread->m_iThreadId, HA_THREAD_ADD_GENERAL,
               "Add general thread to GeneralThreadVec"_Stz);
   
   RASSERT(CN_NONE == pThread->m_eDedicated);
@@ -1116,7 +1116,7 @@ void Scheduler::vThread_AddGeneral(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_AppendIdle(Thread* pThread)
 {
-  AM::vLogThd(pThread->m_iThreadId, HA_THREAD_APPEND_IDLE,
+  AM::vLogThd(pThread,pThread->m_iThreadId, HA_THREAD_APPEND_IDLE,
               "Append unassigned general thread onto IdleThreadQueue"_Stz);
   
   RASSERT(! pThread->m_pTask);
@@ -1135,7 +1135,7 @@ void Scheduler::vThread_AppendIdle(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 bool Scheduler::bThread_AssignIdle(Task* pTask)
 {
-  AM::vLogThd(C_UNKNOWN, HA_THREAD_ASSIGN_IDLE,
+  AM::vLogThd(nullptr,C_UNKNOWN, HA_THREAD_ASSIGN_IDLE,
               "Attempt to pop an idle general thread and assign task to it"_Stz);
   
   RASSERT(TS_ABLE == pTask->eState());
@@ -1172,7 +1172,7 @@ bool Scheduler::bThread_AssignIdle(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_BeginLoop(Thread* pThread)
 {
-  AM::vLogThd(pThread->m_iThreadId, HA_THREAD_BEGIN_LOOP,
+  AM::vLogThd(pThread,pThread->m_iThreadId, HA_THREAD_BEGIN_LOOP,
               "Thread is at beginning of it's thread loop"_Stz);
   
   pThread->vThisTLSThread();
@@ -1190,7 +1190,7 @@ void Scheduler::vThread_BeginLoop(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_ContinueSame(Thread* pThread, Task* pTask)
 {
-  AM::vLogThd(pThread->m_iThreadId, HA_THREAD_CONTINUE_SAME,
+  AM::vLogThd(pThread,pThread->m_iThreadId, HA_THREAD_CONTINUE_SAME,
               "Thread continues executing same task"_Stz);
   
   RASSERT(TS_EXECUTING == pTask->eState());
@@ -1207,7 +1207,7 @@ void Scheduler::vThread_ContinueSame(Thread* pThread, Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_EndLoop(Thread* pThread)
 {
-  AM::vLogThd(pThread->m_iThreadId, HA_THREAD_END_LOOP,
+  AM::vLogThd(pThread,pThread->m_iThreadId, HA_THREAD_END_LOOP,
               "Dedicated thread has ended it's thread loop"_Stz);
   
   pThread->m_pMutexThread->vMutexUnlock();
@@ -1218,7 +1218,7 @@ void Scheduler::vThread_EndLoop(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_ExecuteDedicated(Thread* pThread)
 {
-  AM::vLogThd(pThread->m_iThreadId, HA_THREAD_EXECUTE_DEDICATED,
+  AM::vLogThd(pThread,pThread->m_iThreadId, HA_THREAD_EXECUTE_DEDICATED,
               "Dedicated thread executes its task"_Stz);
   
   ASSERT(HS_UNASSIGNED == pThread->m_eThreadState);
@@ -1240,7 +1240,7 @@ void Scheduler::vThread_ExecuteDedicated(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_PauseGeneral(void)
 {
-  AM::vLogThd(C_UNKNOWN, HA_THREAD_PAUSE_GENERAL,
+  AM::vLogThd(nullptr,C_UNKNOWN, HA_THREAD_PAUSE_GENERAL,
               "Pause till all general threads are all idle"_Stz);
   
   Queues* pQueues = AM::pQueues();
@@ -1269,7 +1269,7 @@ void Scheduler::vThread_PauseGeneral(void)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_RemoveDedicated(Thread* pThread)
 {
-  AM::vLogThd(pThread->m_iThreadId, HA_THREAD_REMOVE_DEDICATED,
+  AM::vLogThd(pThread,pThread->m_iThreadId, HA_THREAD_REMOVE_DEDICATED,
               "Remove dedicated thread from DedicatedThreadVec"_Stz);
   
   //
@@ -1286,7 +1286,7 @@ void Scheduler::vThread_RemoveDedicated(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_RemoveGeneral(Thread* pThread)
 {
-  AM::vLogThd(pThread->m_iThreadId, HA_THREAD_REMOVE_GENERAL,
+  AM::vLogThd(pThread,pThread->m_iThreadId, HA_THREAD_REMOVE_GENERAL,
               "Remove general thread from GeneralThreadVec"_Stz);
   
   //
@@ -1303,7 +1303,7 @@ void Scheduler::vThread_RemoveGeneral(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_SpawnDedicated(Task* pTask)
 {
-  AM::vLogThd(C_UNKNOWN, HA_THREAD_SPAWN_DEDICATED,
+  AM::vLogThd(nullptr,C_UNKNOWN, HA_THREAD_SPAWN_DEDICATED,
               "Spawn dedicated thread for task"_Stz);
   
   RASSERT(TS_ABLE == pTask->eState());
@@ -1321,7 +1321,7 @@ void Scheduler::vThread_SpawnDedicated(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_UnassignTask(Thread* pThread)
 {
-  AM::vLogThd(pThread->m_iThreadId, HA_THREAD_UNASSIGN_TASK,
+  AM::vLogThd(pThread,pThread->m_iThreadId, HA_THREAD_UNASSIGN_TASK,
               "Unassign task from thread"_Stz);
   
   pThread->m_pTask = nullptr;
@@ -1333,7 +1333,7 @@ void Scheduler::vThread_UnassignTask(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_WaitAssignment(Thread* pThread)
 {
-  AM::vLogThd(pThread->m_iThreadId, HA_THREAD_WAIT_ASSIGN,
+  AM::vLogThd(pThread,pThread->m_iThreadId, HA_THREAD_WAIT_ASSIGN,
               "Unassigned general thread waits for task assignment"_Stz);
   
   ASSERT(HS_UNASSIGNED == pThread->m_eThreadState);

@@ -566,7 +566,8 @@ i8 Log::iEntrySvc(i8 iSvcId, eVA eSvcAct, Stz* szFormat, va_list xVaArgs)
 /*----------------------------------------------------------------------------*/
 /* add a thread log entry                                                     */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryThd(i8 iThdId, eHA eThdAct, Stz* szFormat, va_list xVaArgs)
+i8 Log::iEntryThd(Thread* pThread, i8 iThdId, eHA eThdAct,
+                  Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
@@ -593,7 +594,8 @@ i8 Log::iEntryThd(i8 iThdId, eHA eThdAct, Stz* szFormat, va_list xVaArgs)
 /*----------------------------------------------------------------------------*/
 /* add a task log entry                                                       */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryTsk(Task* pTask, i8 iTskId, eTA eTskAct, Stz* szFormat, va_list xVaArgs)
+i8 Log::iEntryTsk(Task* pTask, i8 iTskId, eTA eTskAct,
+                  Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
