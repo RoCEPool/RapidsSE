@@ -12,7 +12,7 @@ namespace MetaData
     s256 m_sPath;   // full name
     i8   m_iStreamId; // unique stream identifier
 
-    ArrayNL_t<Column,C_MAX_COLUMNS> m_oColAry;
+    ColumnVec* m_pColumnVec;
   
     bool m_bTemp;   // is this a temporary definition?
 

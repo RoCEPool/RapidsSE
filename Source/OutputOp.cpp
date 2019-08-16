@@ -61,7 +61,6 @@ OutputOp::OutputOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
   
   m_fpCall = OutputOp::eCall;
-  m_pStreamDef = nullptr;
   
   _checkInitialised_(CN_OUTPUTOP);
 
@@ -166,10 +165,7 @@ eOR OutputOp::eOpLoop(void)
       
       case CN_IRWBUFFER: {
         IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
-        ColumnVec* pColumnVec = new ColumnVec;
-        for (i8 i_Col = 0; i_Col < m_pStreamDef->m_oColAry.nItems(); i_Col++)
-          pColumnVec->vAdd(m_pStreamDef->m_oColAry.pGet(i_Col));
-        pIrwBuffer->vShow(pColumnVec);
+        pIrwBuffer->vShow(m_pStreamDef->m_pColumnVec);
         vPipeOut(pOperand);
         break;
       }
@@ -183,10 +179,7 @@ eOR OutputOp::eOpLoop(void)
         
       case CN_SRTBUFFER: {
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
-        ColumnVec* pColumnVec = new ColumnVec;
-        for (i8 i_Col = 0; i_Col < m_pStreamDef->m_oColAry.nItems(); i_Col++)
-          pColumnVec->vAdd(m_pStreamDef->m_oColAry.pGet(i_Col));
-        pSrtBuffer->vShow(pColumnVec);
+        pSrtBuffer->vShow(m_pStreamDef->m_pColumnVec);
         vPipeOut(pOperand);
         break;
       }

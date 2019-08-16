@@ -8,8 +8,6 @@ namespace DataOperators
   class OutputOp : public Op
   {
   private:
-  
-    StreamDef* m_pStreamDef;
     
     // must be last
     Footer m_xFooter;

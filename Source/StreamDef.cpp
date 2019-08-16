@@ -48,9 +48,10 @@ StreamDef::StreamDef(void)
   //m_sPath;
   
   m_iStreamId = AM::iNextStreamId();
-  //m_oColAry;
+  m_pColumnVec = new ColumnVec;
   
   m_bTemp = false;
+  vTrace("StreamDef permanent %p\n"_Stz, this);
   
   _checkInitialised_(CN_STREAMDEF);
 
@@ -70,14 +71,16 @@ StreamDef::StreamDef(StreamDef* pStreamDef)
   
   m_iStreamId = AM::iNextStreamId();
   
+  m_pColumnVec = new ColumnVec;
+  
   // get no of columns
-  i8 nColumns = pStreamDef->m_oColAry.nItems();
+  i8 nColumns = pStreamDef->m_pColumnVec->nItems();
   
   // add columns to streamdef
-  m_oColAry.vItems(nColumns);
-  
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-    m_oColAry.pGet(i_Col)->vCopy(pStreamDef->m_oColAry.pGet(i_Col));
+    Column* pColumn = new Column;
+    pColumn->vCopy(pStreamDef->m_pColumnVec->pGet(i_Col));
+    m_pColumnVec->vAdd(pColumn);
   }
   
   m_bTemp = true;
@@ -93,6 +96,8 @@ StreamDef::StreamDef(StreamDef* pStreamDef)
 StreamDef::~StreamDef(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+  
+  delete m_pColumnVec;
 }
 
 

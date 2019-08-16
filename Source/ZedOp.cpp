@@ -145,8 +145,8 @@ eOR ZedOp::eOpLoop(void)
         
       case CN_STREAMDEF: {
         StreamDef* pStreamDef = _pStreamDef(pOperand);
-        if (pStreamDef->m_bTemp)
-          delete pStreamDef;
+        ASSERT(pStreamDef->m_bTemp);
+        delete pStreamDef;
         break;
       }
         

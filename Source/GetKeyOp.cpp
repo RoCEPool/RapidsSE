@@ -61,7 +61,6 @@ GetKeyOp::GetKeyOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GETKEYOP,_FOOTER_);
   
   m_fpCall = GetKeyOp::eCall;
-  m_pStreamDef = nullptr;
   m_sKey       = ""_Stz;
   m_iKeyCol    = -1;
   
@@ -90,7 +89,6 @@ Op* GetKeyOp::pNew(Stz* szLabel,
                    TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
-  ASSERT(i_Slot == -1);
   
   GetKeyOp* pGetKeyOp = new GetKeyOp(szLabel,pDigest,aOpDefn,bAppR);
   
@@ -159,10 +157,6 @@ eOR GetKeyOp::eOpLoop(void)
         EntBuffer* pEntBuffer = _pEntBuffer(pOperand) ;
         //pEntBuffer->vShow();
         SrtBuffer* pSrtBuffer = pEntBuffer->pToSrtBuffer(m_iKeyCol);
-        //ColumnVec* pColumnVec = new ColumnVec;
-        //for (i8 i_Col = 0; i_Col < m_pStreamDef->m_oColAry.nItems(); i_Col++)
-        //  pColumnVec->vAdd(m_pStreamDef->m_oColAry.pGet(i_Col));
-        //pSrtBuffer->vShow(pColumnVec);
         vPipeOut(pSrtBuffer);
         break;
       }
@@ -170,17 +164,17 @@ eOR GetKeyOp::eOpLoop(void)
       case CN_STREAMDEF: {
         StreamDef* pStreamDef = _pStreamDef(pOperand) ;
         m_pStreamDef = new StreamDef(pStreamDef);
+        
         // figure out the key idx
-        for (i8 i_Col = 0; i_Col < m_pStreamDef->m_oColAry.nItems(); i_Col++) {
-          Column* pCol = m_pStreamDef->m_oColAry.pGet(i_Col);
+        i8 nColumns = m_pStreamDef->m_pColumnVec->nItems();
+        for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+          Column* pCol = m_pStreamDef->m_pColumnVec->pGet(i_Col);
           if (StrLib::bEqualTo(m_sKey.aChar(),pCol->sColumnName().aChar(),C_NO_CASE)) {
             m_iKeyCol = i_Col;
             break;
           }
         }
         RASSERT(m_iKeyCol != -1);
-        
-        //delete _pStreamDef(pOperand);
         
         vPipeOut(pOperand);
         

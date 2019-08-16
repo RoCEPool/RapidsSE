@@ -61,9 +61,6 @@ SortOp::SortOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
 {
   _precondition_(_MAGIC_,CN_SORTOP);
   
-  m_pStreamDef = nullptr;
-  m_pColumnVec = nullptr;
-  
   m_fpCall = SortOp::eCall;
   
   _checkInitialised_(CN_SORTOP);
@@ -77,9 +74,6 @@ SortOp::SortOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
 SortOp::~SortOp(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_SORTOP);
-  
-  // delete the streamDef
-  delete m_pStreamDef;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -138,12 +132,8 @@ eOR SortOp::eSortLoop(void)
       break;
     }
     
-    // (ray added this)
     if (CN_STREAMDEF == pOperand->eClass()) {
       m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
-      m_pColumnVec = new ColumnVec;
-      for (i8 i_Col = 0; i_Col < m_pStreamDef->m_oColAry.nItems(); i_Col++)
-        m_pColumnVec->vAdd(m_pStreamDef->m_oColAry.pGet(i_Col));
       vPipeOut(pOperand);
       continue;
     }
@@ -162,7 +152,7 @@ eOR SortOp::eSortLoop(void)
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // call quick sort (recursive call)
-    BufferSort::vQuickSortBuffer(m_pColumnVec, pSrtBuffer, pLowCursor, pHighCursor);
+    BufferSort::vQuickSortBuffer(m_pStreamDef->m_pColumnVec, pSrtBuffer, pLowCursor, pHighCursor);
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // verify that the data is sorted
