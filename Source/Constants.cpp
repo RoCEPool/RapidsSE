@@ -110,7 +110,6 @@ void Constants::vAddConstants(void)
   
   // AN_ : action numbers
   /*  0 */ vAddConstant("AN_NONE"_Stz,               AN_NONE);
-  /*  0 */ vAddConstant("AN_AM_DECIDER"_Stz,         AN_AM_DECIDER);
   /*  0 */ vAddConstant("AN_CONSTRUCTOR"_Stz,        AN_CONSTRUCTOR);
   /*  0 */ vAddConstant("AN_DESTRUCTOR"_Stz,         AN_DESTRUCTOR);
   /*  0 */ vAddConstant("AN_ERROR_CODE"_Stz,         AN_ERROR_CODE);

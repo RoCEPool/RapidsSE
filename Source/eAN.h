@@ -7,8 +7,6 @@ enum eAN // action numbers
 {
 /*  0 */ AN_NONE=0,
 
-/*    */ AN_ACKS_REQUIRED,
-/*    */ AN_AM_DECIDER,
 /*    */ AN_CONSTRUCTOR,
 /*    */ AN_DESTRUCTOR,
 /*    */ AN_ERROR_CODE,
