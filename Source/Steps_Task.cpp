@@ -168,8 +168,6 @@ void Step::vTaskExit(MP_Task mpTask)
 {
   ENTRY("vTaskExit"_Stz);
   
-  //ActLog::vAdd(mpTask->m_pJob,AN_TASK_WAIT);
-  
   mpTask->vTransition(TR_EXIT);
 
   EXIT();
@@ -426,8 +424,6 @@ void Step::vTaskSleepMsec(MP_Task mpTask)
   
   i8 nMicroSeconds = nMilliSeconds * C_1K;
   
-  ActLog::vAdd(mpTask->m_pJob,AN_TASK_SLEEP,nMicroSeconds);
-  
   mpTask->vSleepUsec(nMicroSeconds);
   mpTask->vTransition(TR_SLEEP);
 
@@ -448,8 +444,6 @@ void Step::vTaskSleepSsec(MP_Task mpTask)
   
   i8 nMicroSeconds = nSeconds * C_1M;
   
-  ActLog::vAdd(mpTask->m_pJob,AN_TASK_SLEEP,nMicroSeconds);
-  
   mpTask->vSleepUsec(nMicroSeconds);
   mpTask->vTransition(TR_SLEEP);
 
@@ -467,8 +461,6 @@ void Step::vTaskSleepUsec(MP_Task mpTask)
   
   if ( ! mpTask->m_pDataStack->bPop(nMicroSeconds) )
     THROW_INVALID_DSTACK("task::sleepUsec"_Stz);
-  
-  ActLog::vAdd(mpTask->m_pJob,AN_TASK_SLEEP,nMicroSeconds);
   
   mpTask->vSleepUsec(nMicroSeconds);
   mpTask->vTransition(TR_SLEEP);
@@ -535,8 +527,6 @@ void Step::vTaskWait(MP_Task mpTask)
 {
   ENTRY("vTaskWait"_Stz);
   
-  ActLog::vAdd(mpTask->m_pJob,AN_TASK_WAIT);
-  
   mpTask->vTransition(TR_WAIT);
 
   EXIT();
@@ -548,9 +538,7 @@ void Step::vTaskWait(MP_Task mpTask)
 void Step::vTaskYield(MP_Task mpTask)
 {
   ENTRY("vTaskYield"_Stz);
-  
-  ActLog::vAdd(mpTask->m_pJob,AN_TASK_YIELD);
-  
+    
   mpTask->vTransition(TR_YIELD);
 
   EXIT();

@@ -17,7 +17,6 @@ enum e_EG // enum groups
   
   _EG_AC,
   _EG_AK,
-  _EG_AN,
   _EG_AT,
   _EG_CN,
   _EG_CT,

@@ -538,6 +538,29 @@ void AM::vLogThd(i8 iThdId, eHA eThdAct, Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add a rask log entry                                                       */
+/*----------------------------------------------------------------------------*/
+void AM::vLogTsk(i8 iTskId, eTA eTskAct, Stz* szFormat, ...)
+{
+#ifdef WITH_SHARED_LOG
+  if (! AM::bLogging())
+  return;
+  
+  if (! (AM::pMarkAction()->bEnum(eTskAct) ||
+         AM::pMarkAction()->bAll()) )
+    return;
+  
+  va_list xVaArgs;
+  
+  va_start(xVaArgs,szFormat);
+  
+  gpLog->iEntryTsk(iTskId,eTskAct,szFormat,xVaArgs);
+  
+  va_end(xVaArgs);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
 /* add a transaction log entry                                                */
 /*----------------------------------------------------------------------------*/
 void AM::vLogTxn(i8 iTxnId, eXA eTxnAct, Stz* szFormat, ...)
@@ -560,6 +583,13 @@ void AM::vLogTxn(i8 iTxnId, eXA eTxnAct, Stz* szFormat, ...)
 #endif
 }
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+void AM::vDdlDropRead (Task* pTask)  { Scheduler::vDdlDropRead (pTask);        }
+void AM::vDdlDropWrite(Task* pTask)  { Scheduler::vDdlDropWrite(pTask);        }
+void AM::vDdlGrabRead (Task* pTask)  { Scheduler::vDdlGrabRead (pTask);        }
+void AM::vDdlGrabWrite(Task* pTask)  { Scheduler::vDdlGrabWrite(pTask);        }
 
 /*============================================================================*/
 /* end                                                                        */

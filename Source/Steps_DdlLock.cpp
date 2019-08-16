@@ -27,11 +27,7 @@ void Step::vDdlLockDropRead(MP_Task mpTask)
   
   RASSERT(DL_NONE != mpTask->pJob()->m_pJobClass->m_eDdlLock);
 
-  AM::pDdlLock()->vDropRead();
-  
-  mpTask->m_iDdlLocked = 0;
-  
-  ActLog::vAdd(mpTask->pJob(),AN_DDL_DROPPED_READ);
+  AM::vDdlDropRead(* mpTask);
   
   EXIT();
 }
@@ -47,11 +43,7 @@ void Step::vDdlLockDropWrite(MP_Task mpTask)
   
   RASSERT(DL_GRAB_WRITE == mpTask->pJob()->m_pJobClass->m_eDdlLock);
   
-  AM::pDdlLock()->vDropWrite();
-  
-  mpTask->m_iDdlLocked = 0;
-
-  ActLog::vAdd(mpTask->pJob(),AN_DDL_DROPPED_WRITE);
+  AM::vDdlDropWrite(* mpTask);
 
   EXIT();
 }
@@ -66,11 +58,8 @@ void Step::vDdlLockGrabRead(MP_Task mpTask)
   ASSERT(! mpTask->m_iDdlLocked);
   
   RASSERT(DL_NONE != mpTask->pJob()->m_pJobClass->m_eDdlLock);
-
-  ActLog::vAdd(mpTask->pJob(),AN_DDL_GRAB_READ);
-  AM::pDdlLock()->vGrabRead();
-  mpTask->m_iDdlLocked = C_HAVE_READ_LOCK;
-  ActLog::vAdd(mpTask->pJob(),AN_DDL_GRABBED_READ);
+  
+  AM::vDdlGrabRead(* mpTask);
 
   EXIT();
 }
@@ -86,10 +75,7 @@ void Step::vDdlLockGrabWrite(MP_Task mpTask)
 
   RASSERT(DL_GRAB_WRITE == mpTask->pJob()->m_pJobClass->m_eDdlLock);
   
-  ActLog::vAdd(mpTask->pJob(),AN_DDL_GRAB_WRITE);
-  AM::pDdlLock()->vGrabWrite();
-  mpTask->m_iDdlLocked = C_HAVE_WRITE_LOCK;
-  ActLog::vAdd(mpTask->pJob(),AN_DDL_GRABBED_WRITE);
+  AM::vDdlGrabWrite(* mpTask);
 
   EXIT();
 }
@@ -102,15 +88,15 @@ void Step::vDdlLockTestDrop(MP_Task mpTask)
   ENTRY("vDdlLockTestDrop"_Stz);
   
   if (C_HAVE_READ_LOCK == mpTask->m_iDdlLocked) {
-    AM::pDdlLock()->vDropRead();
-    mpTask->m_iDdlLocked = 0;
-    ActLog::vAdd(mpTask->pJob(),AN_DDL_DROPPED_READ);
+    
+    AM::vDdlDropRead(* mpTask);
+
   }
   else
   if (C_HAVE_WRITE_LOCK == mpTask->m_iDdlLocked) {
-    AM::pDdlLock()->vDropWrite();
-    mpTask->m_iDdlLocked = 0;
-    ActLog::vAdd(mpTask->pJob(),AN_DDL_DROPPED_WRITE);
+    
+    AM::vDdlDropWrite(* mpTask);
+
   }
   
   EXIT();

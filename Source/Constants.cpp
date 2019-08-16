@@ -115,14 +115,7 @@ void Constants::vAddConstants(void)
   /*  0 */ vAddConstant("AN_ADDED_ORIGINATOR"_Stz,   AN_ADDED_ORIGINATOR);
   /*  0 */ vAddConstant("AN_ADDED_PARTICIPANT"_Stz,  AN_ADDED_PARTICIPANT);
   /*  0 */ vAddConstant("AN_AM_DECIDER"_Stz,         AN_AM_DECIDER);
-  /*  0 */ vAddConstant("AN_CLOSE_FILE"_Stz,         AN_CLOSE_FILE);
   /*  0 */ vAddConstant("AN_CONSTRUCTOR"_Stz,        AN_CONSTRUCTOR);
-  /*  0 */ vAddConstant("AN_DDL_DROPPED_READ"_Stz,   AN_DDL_DROPPED_READ);
-  /*  0 */ vAddConstant("AN_DDL_DROPPED_WRITE"_Stz,  AN_DDL_DROPPED_WRITE);
-  /*  0 */ vAddConstant("AN_DDL_GRAB_READ"_Stz,      AN_DDL_GRAB_READ);
-  /*  0 */ vAddConstant("AN_DDL_GRAB_WRITE"_Stz,     AN_DDL_GRAB_WRITE);
-  /*  0 */ vAddConstant("AN_DDL_GRABBED_READ"_Stz,   AN_DDL_GRABBED_READ);
-  /*  0 */ vAddConstant("AN_DDL_GRABBED_WRITE"_Stz,  AN_DDL_GRABBED_WRITE);
   /*  0 */ vAddConstant("AN_DESTRUCTOR"_Stz,         AN_DESTRUCTOR);
   /*  0 */ vAddConstant("AN_END"_Stz,                AN_END);
   /*  0 */ vAddConstant("AN_ERROR_CODE"_Stz,         AN_ERROR_CODE);
@@ -153,14 +146,6 @@ void Constants::vAddConstants(void)
   /*  0 */ vAddConstant("AN_SEND_JOB"_Stz,           AN_SEND_JOB);
   /*  0 */ vAddConstant("AN_SPAWN_JOB"_Stz,          AN_SPAWN_JOB);
   /*  0 */ vAddConstant("AN_TABLE_USE"_Stz,          AN_TABLE_USE);
-  /*  0 */ vAddConstant("AN_TASK_ACKED"_Stz,         AN_TASK_ACKED);
-  /*  0 */ vAddConstant("AN_TASK_LOCKED"_Stz,        AN_TASK_LOCKED);
-  /*  0 */ vAddConstant("AN_TASK_SLEEP"_Stz,         AN_TASK_SLEEP);
-  /*  0 */ vAddConstant("AN_TASK_STATE"_Stz,         AN_TASK_STATE);
-  /*  0 */ vAddConstant("AN_TASK_STATE_SET"_Stz,     AN_TASK_STATE_SET);
-  /*  0 */ vAddConstant("AN_TASK_WAIT"_Stz,          AN_TASK_WAIT);
-  /*  0 */ vAddConstant("AN_TASK_YIELD"_Stz,         AN_TASK_YIELD);
-  /*  0 */ vAddConstant("AN_THREAD_EXECUTE"_Stz,     AN_THREAD_EXECUTE);
   /*  0 */ vAddConstant("AN_ENUMS"_Stz,              AN_ENUMS);
   
   // AT_ : fetch techniques

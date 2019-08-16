@@ -222,8 +222,6 @@ void Queues::vAddBidingSet(Task* pTask)
   
   m_pBidingSet->vAddTask(pTask);
   
-  //  ActLog::vAdd(pTask->pJob(),AN_ADD_EXECUTING_SET);
-  
   m_pBidingSet->vDropLock();
   
   // **do not touch task** (other than to drop lock)
@@ -251,8 +249,6 @@ void Queues::vAddExecutingSet(Task* pTask)
 //                          pTask->pJob());
   
   m_pExecutingSet->vAddTask(pTask);
-  
-//  ActLog::vAdd(pTask->pJob(),AN_ADD_EXECUTING_SET);
   
   m_pExecutingSet->vDropLock();
   
@@ -286,8 +282,6 @@ void Queues::vAddPausedSet(Task* pTask)
   
   m_pPausedSet->vAddTask(pTask);
   
-  //  ActLog::vAdd(pTask->pJob(),AN_ADD_EXECUTING_SET);
-  
   m_pPausedSet->vDropLock();
   
   // **do not touch task** (other than to drop lock)
@@ -317,8 +311,6 @@ void Queues::vAddSleepingQueue(Task* pTask)
   m_pSleepingQueue->vAssertItems(nPriorItems);
   m_pSleepingQueue->vAddTask(pTask);
   m_pSleepingQueue->vAssertItems(nPriorItems + 1);
-  
-  ActLog::vAdd(pTask->pJob(),AN_ADD_SLEEPING_QUEUE);
   
   m_pSleepingQueue->vDropLock();
   
@@ -352,9 +344,7 @@ void Queues::vAddWaitingSet(Task* pTask)
                           pTask->pJob());
   
   m_pWaitingSet->vAddTask(pTask);
-  
-  ActLog::vAdd(pTask->pJob(),AN_ADD_WAITING_SET);
-  
+    
   m_pWaitingSet->vDropLock();
   
   // **do not touch task**
@@ -383,8 +373,6 @@ void Queues::vAppendReadyQueue(Task* pTask)
   
   m_pReadyQueue->vAddTask(pTask);
   
-  ActLog::vAdd(pTask->pJob(),AN_ADD_READY_QUEUE);
-  
   m_pReadyQueue->vDropLock();
   
   // **do not touch task**
@@ -412,9 +400,7 @@ void Queues::vAppendReadyQueueLP(Task* pTask)
                           pTask->pJob());
   
   m_pReadyQueueLP->vAddTask(pTask);
-  
-  ActLog::vAdd(pTask->pJob(),AN_ADD_READY_QUEUE_LP);
-  
+    
   m_pReadyQueueLP->vDropLock();
   
   // **do not touch task**
