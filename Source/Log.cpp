@@ -485,7 +485,7 @@ i8 Log::iEntryOp(i8 iOpId, eOA eOpAct, Stz* szFormat, va_list xVaArgs)
 /*----------------------------------------------------------------------------*/
 /* add a prompt log entry                                                     */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryPrm(i8 iPrmId, ePA ePrmAct, Stz* szFormat, va_list xVaArgs)
+i8 Log::iEntryPrm(SePrompt* pPrm, i8 iPrmId, ePA ePrmAct, Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
