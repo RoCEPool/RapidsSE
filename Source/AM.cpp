@@ -563,7 +563,7 @@ void AM::vLogTsk(Task* pTask, i8 iTskId, eTA eTskAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a transaction log entry                                                */
 /*----------------------------------------------------------------------------*/
-void AM::vLogTxn(i8 iTxnId, eXA eTxnAct, Stz* szFormat, ...)
+void AM::vLogTxn(Tx* pTx, i8 iTxnId, eXA eTxnAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -577,7 +577,7 @@ void AM::vLogTxn(i8 iTxnId, eXA eTxnAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  gpLog->iEntryTxn(iTxnId,eTxnAct,szFormat,xVaArgs);
+  gpLog->iEntryTxn(pTx, iTxnId,eTxnAct,szFormat,xVaArgs);
 
   va_end(xVaArgs);
 #endif

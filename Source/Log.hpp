@@ -56,7 +56,7 @@ namespace Logging
     i8 iEntrySvc(i8 iThdId, eVA eSvcAct, Stz* szFormat, va_list xArgs);
     i8 iEntryThd(Thread* pThread, i8 iThdId, eHA eThdAct, Stz* szFormat, va_list xArgs);
     i8 iEntryTsk(Task*   pTask,   i8 iTskId, eTA eTskAct, Stz* szFormat, va_list xArgs);
-    i8 iEntryTxn(i8 iTxnId, eXA eTxnAct, Stz* szFormat, va_list xArgs);
+    i8 iEntryTxn(Tx*     pTx,     i8 iTxnId, eXA eTxnAct, Stz* szFormat, va_list xArgs);
 
     i8 iEntryJob(i8 iJobId, i8 iForeign, Stz* aFormat, ...);
     i8 iEntryJob_arg(i8 iJobId, i8 iForeign, Stz* szFormat, va_list xArgs);

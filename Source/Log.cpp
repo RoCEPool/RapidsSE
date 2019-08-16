@@ -622,7 +622,7 @@ i8 Log::iEntryTsk(Task* pTask, i8 iTskId, eTA eTskAct,
 /*----------------------------------------------------------------------------*/
 /* add a thread log entry                                                     */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryTxn(i8 iTxnId, eXA eTxnAct, Stz* szFormat, va_list xVaArgs)
+i8 Log::iEntryTxn(Tx* pTx, i8 iTxnId, eXA eTxnAct, Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
