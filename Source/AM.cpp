@@ -471,7 +471,7 @@ void AM::vLogPrm(i8 iPrmId, ePA ePrmAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a resource log entry                                                   */
 /*----------------------------------------------------------------------------*/
-void AM::vLogRes(i8 iResId, eRA eResAct, eRK eSysRes, Stz* szFormat, ...)
+void AM::vLogRes(Resource* pRes, i8 iResId, eRA eResAct, eRK eSysRes, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -485,7 +485,7 @@ void AM::vLogRes(i8 iResId, eRA eResAct, eRK eSysRes, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  gpLog->iEntryRes(iResId,eResAct,eSysRes,szFormat,xVaArgs);
+  gpLog->iEntryRes(pRes,iResId,eResAct,eSysRes,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif
@@ -517,7 +517,7 @@ void AM::vLogSvc(i8 iSvcId, eVA eSvcAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a thread log entry                                                     */
 /*----------------------------------------------------------------------------*/
-void AM::vLogThd(i8 iThdId, eHA eThdAct, Stz* szFormat, ...)
+void AM::vLogThd(Thread* pThread, i8 iThdId, eHA eThdAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -531,7 +531,7 @@ void AM::vLogThd(i8 iThdId, eHA eThdAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  gpLog->iEntryThd(iThdId,eThdAct,szFormat,xVaArgs);
+  gpLog->iEntryThd(pThread,iThdId,eThdAct,szFormat,xVaArgs);
 
   va_end(xVaArgs);
 #endif
@@ -563,7 +563,7 @@ void AM::vLogTsk(Task* pTask, i8 iTskId, eTA eTskAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a transaction log entry                                                */
 /*----------------------------------------------------------------------------*/
-void AM::vLogTxn(i8 iTxnId, eXA eTxnAct, Stz* szFormat, ...)
+void AM::vLogTxn(Tx* pTx, i8 iTxnId, eXA eTxnAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -577,7 +577,7 @@ void AM::vLogTxn(i8 iTxnId, eXA eTxnAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  gpLog->iEntryTxn(iTxnId,eTxnAct,szFormat,xVaArgs);
+  gpLog->iEntryTxn(pTx, iTxnId,eTxnAct,szFormat,xVaArgs);
 
   va_end(xVaArgs);
 #endif

@@ -512,7 +512,8 @@ i8 Log::iEntryPrm(i8 iPrmId, ePA ePrmAct, Stz* szFormat, va_list xVaArgs)
 /*----------------------------------------------------------------------------*/
 /* add a resource log entry                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryRes(i8 iResId, eRA eResAct, eRK eResKnd, Stz* szFormat, va_list xVaArgs)
+i8 Log::iEntryRes(Resource* pRes, i8 iResId, eRA eResAct, eRK eResKnd,
+                  Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
@@ -566,7 +567,8 @@ i8 Log::iEntrySvc(i8 iSvcId, eVA eSvcAct, Stz* szFormat, va_list xVaArgs)
 /*----------------------------------------------------------------------------*/
 /* add a thread log entry                                                     */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryThd(i8 iThdId, eHA eThdAct, Stz* szFormat, va_list xVaArgs)
+i8 Log::iEntryThd(Thread* pThread, i8 iThdId, eHA eThdAct,
+                  Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
@@ -593,7 +595,8 @@ i8 Log::iEntryThd(i8 iThdId, eHA eThdAct, Stz* szFormat, va_list xVaArgs)
 /*----------------------------------------------------------------------------*/
 /* add a task log entry                                                       */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryTsk(Task* pTask, i8 iTskId, eTA eTskAct, Stz* szFormat, va_list xVaArgs)
+i8 Log::iEntryTsk(Task* pTask, i8 iTskId, eTA eTskAct,
+                  Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
@@ -620,7 +623,7 @@ i8 Log::iEntryTsk(Task* pTask, i8 iTskId, eTA eTskAct, Stz* szFormat, va_list xV
 /*----------------------------------------------------------------------------*/
 /* add a thread log entry                                                     */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryTxn(i8 iTxnId, eXA eTxnAct, Stz* szFormat, va_list xVaArgs)
+i8 Log::iEntryTxn(Tx* pTx, i8 iTxnId, eXA eTxnAct, Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
