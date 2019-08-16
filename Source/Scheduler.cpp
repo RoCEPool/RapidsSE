@@ -1127,9 +1127,7 @@ bool Scheduler::bThread_AssignIdle(Task* pTask)
   JobLog::vNoteState(pTask->pJob(),"AssignIdle"_Stz);
   
   RASSERT(HS_IDLE == pThread->m_eThreadState);
-  
-  //ActLog::vAdd(pTask->pJob(),AN_THREAD_EXECUTE,pIdleThread->iThreadNo());
-  
+    
   pThread->m_pTask = pTask;
   pThread->m_nAssignedTasks++;
   

@@ -383,8 +383,6 @@ void Queues::vAppendReadyQueue(Task* pTask)
   
   m_pReadyQueue->vAddTask(pTask);
   
-  ActLog::vAdd(pTask->pJob(),AN_ADD_READY_QUEUE);
-  
   m_pReadyQueue->vDropLock();
   
   // **do not touch task**
@@ -412,9 +410,7 @@ void Queues::vAppendReadyQueueLP(Task* pTask)
                           pTask->pJob());
   
   m_pReadyQueueLP->vAddTask(pTask);
-  
-  ActLog::vAdd(pTask->pJob(),AN_ADD_READY_QUEUE_LP);
-  
+    
   m_pReadyQueueLP->vDropLock();
   
   // **do not touch task**

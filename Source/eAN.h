@@ -10,8 +10,6 @@ enum eAN // action numbers
 /*    */ AN_ACK_TASK,
 /*    */ AN_ACKS_REQUIRED,
 /*    */ AN_ADD_EXECUTING_SET,
-/*    */ AN_ADD_READY_QUEUE,
-/*    */ AN_ADD_READY_QUEUE_LP,
 /*    */ AN_ADD_SEND_QUEUE,
 /*    */ AN_ADD_SLEEPING_QUEUE,
 /*    */ AN_ADD_SLOT_QUEUE,
@@ -57,7 +55,6 @@ enum eAN // action numbers
 /*    */ AN_TASK_STATE_SET,
 /*    */ AN_TASK_WAIT,
 /*    */ AN_TASK_YIELD,
-/*    */ AN_THREAD_EXECUTE,
 
 /*    */ AN_ENUMS,
 };
