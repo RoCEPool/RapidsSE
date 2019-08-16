@@ -44,6 +44,7 @@ namespace Scheduling
     static void vRemoveTaskDedicated(Task* pTask);
     static void vRemoveTaskGeneral(Task* pTask);
     static void vTaskLoopTransition(Thread* pThread);
+    static void vTaskRequiresAcks(Task* pTask, i8 nAcksRequired);
     static void vTriggerBidingTask(Task* pTask);
     static void vWakeSleepingTasks(void);
 
@@ -81,6 +82,7 @@ namespace Scheduling
     static void vTask_Pulse(Task* pTask);
     static void vTask_Ready(Task* pTask);
     static void vTask_Remove(Task* pTask);
+    static void vTask_Requires(Task* pTask, i8 nAcksRequired);
     static void vTask_Resume(Task* pTask);
     static void vTask_Schedule(Task* pTask);
     static void vTask_Sleep(Task* pTask);

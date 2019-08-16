@@ -377,6 +377,18 @@ void Scheduler::vTaskLoopTransition(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set number of acks required by (soon to be) waiting task                   */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTaskRequiresAcks(Task* pTask, i8 nAcksRequired)
+{
+  //
+  // called from ???
+  //
+  
+  vTask_Requires(pTask,nAcksRequired);
+}
+
+/*----------------------------------------------------------------------------*/
 /* trigger op-task that operand has arrived while it is biding                */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTriggerBidingTask(Task* pTask)
@@ -847,6 +859,17 @@ void Scheduler::vTask_Resume(Task* pTask)
   vTask_Able(pTask);
   vTask_Schedule(pTask);
   // **do not touch task**
+}
+
+/*----------------------------------------------------------------------------*/
+/* set number of acks required by (soon to be) waiting task                   */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTask_Requires(Task* pTask, i8 nAcksRequired)
+{
+  AM::vLogTsk(pTask->iTaskId(),TA_TASK_REQUIRES,
+              "Set number of acks required by (soon to be) waiting task"_Stz);
+
+  pTask->m_oAcksRmg.vSetRemaining(nAcksRequired);
 }
 
 /*----------------------------------------------------------------------------*/

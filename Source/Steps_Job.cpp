@@ -143,9 +143,11 @@ void Step::vJobAddOriginator(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
     
   // add the job to the originating jobs
-  AM::pOriginatingJobs()->vGrabLock();
-  AM::pOriginatingJobs()->vAddJob(pJob);
-  AM::pOriginatingJobs()->vDropLock();
+//  AM::pOriginatingJobs()->vGrabLock();
+//  AM::pOriginatingJobs()->vAddJob(pJob);
+//  AM::pOriginatingJobs()->vDropLock();
+  
+  Scheduler::vAddOriginatingJob(pJob);
 
   if (pJob->m_bMarkActivity) {
     JobLog::vNote(pJob,"Added to Originator List: %s %p"_Stz,
@@ -153,10 +155,7 @@ void Step::vJobAddOriginator(MP_Task mpTask)
                        pJob);
     AM::pOriginatingJobs()->vMarkContents(pJob->m_iJobId);
   }
-  
-  ActLog::vAdd(mpTask->m_pJob,
-                       AN_ADDED_ORIGINATOR);
-  
+    
   EXIT();
 }
 
@@ -172,19 +171,18 @@ void Step::vJobAddParticipant(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.addParticipant"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  AM::pParticipatingJobs()->vGrabLock();
-  AM::pParticipatingJobs()->vAddJob(pJob);
-  AM::pParticipatingJobs()->vDropLock();
+//  AM::pParticipatingJobs()->vGrabLock();
+//  AM::pParticipatingJobs()->vAddJob(pJob);
+//  AM::pParticipatingJobs()->vDropLock();
   
+  Scheduler::vAddParticipatingJob(pJob);
+
   if (pJob->m_bMarkActivity) {
     JobLog::vNote(pJob,"Added to ParticipantList: %s %p "_Stz,
                           aCN[pJob->eClass()],
                           pJob);
     AM::pParticipatingJobs()->vMarkContents(pJob->m_iJobId);
   }
-  
-  ActLog::vAdd(mpTask->m_pJob,
-                       AN_ADDED_PARTICIPANT);
   
   EXIT();
 }
@@ -1380,9 +1378,6 @@ void Step::vJobRemoveOriginator(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.id@"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-//  AM::pOriginatingJobs()->vGrabLock();
-//  bool bRemove = AM::pOriginatingJobs()->bRemoveJob(pJob);
-//  AM::pOriginatingJobs()->vDropLock();
   bool bRemove = Scheduler::bRemoveOriginatingJob(pJob);
 
   if (! bRemove) {
@@ -1391,10 +1386,6 @@ void Step::vJobRemoveOriginator(MP_Task mpTask)
            aCN[pJob->eClass()],pJob->m_iJobId);
     vTrace("------------------------------------\n"_Stz);
     
-//    AM::pOriginatingJobs()->vGrabLock();
-//    AM::pOriginatingJobs()->vContentDump();
-//    bRemove = AM::pOriginatingJobs()->bRemoveJob(pJob);
-//    AM::pOriginatingJobs()->vDropLock();
     bRemove = Scheduler::bRemoveOriginatingJob(pJob,true);
   }
   
@@ -1421,9 +1412,6 @@ void Step::vJobRemoveParticipant(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.id@"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-//  AM::pParticipatingJobs()->vGrabLock();
-//  bool bRemove = AM::pParticipatingJobs()->bRemoveJob(pJob);
-//  AM::pParticipatingJobs()->vDropLock();
   bool bRemove = Scheduler::bRemoveParticipatingJob(pJob);
 
   if (! bRemove) {
@@ -1432,10 +1420,6 @@ void Step::vJobRemoveParticipant(MP_Task mpTask)
            aCN[pJob->eClass()],pJob->m_iJobId);
     vTrace("------------------------------------\n"_Stz);
     
-//    AM::pParticipatingJobs()->vGrabLock();
-//    AM::pParticipatingJobs()->vContentDump();
-//    bRemove = AM::pParticipatingJobs()->bRemoveJob(pJob);
-//    AM::pParticipatingJobs()->vDropLock();
     bRemove = Scheduler::bRemoveParticipatingJob(pJob,true);
   }
   

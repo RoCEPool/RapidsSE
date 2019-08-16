@@ -89,10 +89,9 @@ void Step::vTaskAcksStore(MP_Task mpTask)
     AM::pOriginatingJobs()->vMarkContents(pJob->m_iJobId);
   }
   
-  ActLog::vAdd(pJob,AN_ACKS_REQUIRED,nAcksRequired);
+  //pGivenTask->m_oAcksRmg.vSetRemaining(nAcksRequired);
+  Scheduler::vTaskRequiresAcks(pGivenTask,nAcksRequired);
   
-  pGivenTask->m_oAcksRmg.vSetRemaining(nAcksRequired);
-
   EXIT();
 }
 
