@@ -517,7 +517,7 @@ void AM::vLogSvc(i8 iSvcId, eVA eSvcAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a thread log entry                                                     */
 /*----------------------------------------------------------------------------*/
-void AM::vLogThd(i8 iThdId, eHA eThdAct, Stz* szFormat, ...)
+void AM::vLogThd(Thread* pThread, i8 iThdId, eHA eThdAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -531,7 +531,7 @@ void AM::vLogThd(i8 iThdId, eHA eThdAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  gpLog->iEntryThd(iThdId,eThdAct,szFormat,xVaArgs);
+  gpLog->iEntryThd(pThread,iThdId,eThdAct,szFormat,xVaArgs);
 
   va_end(xVaArgs);
 #endif
