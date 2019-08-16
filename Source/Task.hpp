@@ -20,6 +20,7 @@ namespace Tasks
   {
   friend class Steps::Step;
   friend class ForthWord;
+  friend Scheduler;
 
   private:
     i8      m_iTaskId;      // task id

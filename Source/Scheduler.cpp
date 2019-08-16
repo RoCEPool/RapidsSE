@@ -609,6 +609,9 @@ void Scheduler::vTask_DdlDropRead(Task* pTask)
 {
   AM::vLogTsk(pTask->iTaskId(),TA_DDL_DROP_READ,
               "Drop DDL read"_Stz);
+  
+  AM::pDdlLock()->vDropRead();
+  pTask->m_iDdlLocked = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -618,6 +621,9 @@ void Scheduler::vTask_DdlDropWrite(Task* pTask)
 {
   AM::vLogTsk(pTask->iTaskId(),TA_DDL_DROP_WRITE,
               "Drop DDL write"_Stz);
+  
+  AM::pDdlLock()->vDropWrite();
+  pTask->m_iDdlLocked = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -627,6 +633,9 @@ void Scheduler::vTask_DdlGrabRead(Task* pTask)
 {
   AM::vLogTsk(pTask->iTaskId(),TA_DDL_GRAB_READ,
               "Grab DDL read"_Stz);
+  
+  AM::pDdlLock()->vGrabRead();
+  pTask->m_iDdlLocked = C_HAVE_READ_LOCK;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -636,6 +645,9 @@ void Scheduler::vTask_DdlGrabWrite(Task* pTask)
 {
   AM::vLogTsk(pTask->iTaskId(),TA_DDL_GRAB_WRITE,
               "Grab DDL write"_Stz);
+  
+  AM::pDdlLock()->vGrabWrite();
+  pTask->m_iDdlLocked = C_HAVE_WRITE_LOCK;
 }
 
 /*----------------------------------------------------------------------------*/

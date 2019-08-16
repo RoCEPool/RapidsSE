@@ -145,10 +145,10 @@ namespace StorageEngine
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     //
-    static void vDdlDropReadLock(Task* pTask);
-    static void vDdlDropWriteLock(Task* pTask);
-    static void vDdlGrabReadLock(Task* pTask);
-    static void vDdlGrabWriteLock(Task* pTask);
+    static void vDdlDropRead(Task* pTask);
+    static void vDdlDropWrite(Task* pTask);
+    static void vDdlGrabRead(Task* pTask);
+    static void vDdlGrabWrite(Task* pTask);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     //
