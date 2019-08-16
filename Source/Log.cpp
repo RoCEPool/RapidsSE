@@ -593,7 +593,7 @@ i8 Log::iEntryThd(i8 iThdId, eHA eThdAct, Stz* szFormat, va_list xVaArgs)
 /*----------------------------------------------------------------------------*/
 /* add a task log entry                                                       */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryTsk(i8 iTskId, eTA eTskAct, Stz* szFormat, va_list xVaArgs)
+i8 Log::iEntryTsk(Task* pTask, i8 iTskId, eTA eTskAct, Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   

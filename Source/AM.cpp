@@ -540,7 +540,7 @@ void AM::vLogThd(i8 iThdId, eHA eThdAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a rask log entry                                                       */
 /*----------------------------------------------------------------------------*/
-void AM::vLogTsk(i8 iTskId, eTA eTskAct, Stz* szFormat, ...)
+void AM::vLogTsk(Task* pTask, i8 iTskId, eTA eTskAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -554,7 +554,7 @@ void AM::vLogTsk(i8 iTskId, eTA eTskAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  gpLog->iEntryTsk(iTskId,eTskAct,szFormat,xVaArgs);
+  gpLog->iEntryTsk(pTask,iTskId,eTskAct,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif
