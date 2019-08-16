@@ -579,7 +579,7 @@ void Scheduler::vTask_Bide(Task* pTask)
   pQueues->vAddBidingSet(pTask);
   // **do not touch task** (other than to drop lock)
   
-  pTask->vDropLock();
+  pTask->vDropTaskLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -659,7 +659,7 @@ void Scheduler::vTask_Drop(Task* pTask)
   AM::vLogTsk(pTask->iTaskId(),TA_TASK_DROP,
               "Dropping task lock"_Stz);
   
-  pTask->vDropLock();
+  pTask->vDropTaskLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -713,7 +713,7 @@ void Scheduler::vTask_Grab(Task* pTask)
   AM::vLogTsk(pTask->iTaskId(),TA_TASK_GRAB,
               "Grabbing task lock"_Stz);
   
-  pTask->vGrabLock();
+  pTask->vGrabTaskLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -740,7 +740,7 @@ void Scheduler::vTask_Pause(Task* pTask)
   pQueues->vAddPausedSet(pTask);
   // **do not touch task** (other than to drop lock)
   
-  pTask->vDropLock();
+  pTask->vDropTaskLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -781,7 +781,7 @@ void Scheduler::vTask_Pulse(Task* pTask)
   
   JobLog::vNoteState(pTask->pJob(),"Pulse"_Stz);
   
-  pTask->vDropLock();
+  pTask->vDropTaskLock();
   
   vTask_Able(pTask);
   vTask_Schedule(pTask);
@@ -830,8 +830,8 @@ void Scheduler::vTask_Resume(Task* pTask)
   JobLog::vNoteState(pTask->pJob(),"Resume"_Stz);
   
   // cycle the task lock to ensure task has fully entered wait state
-  pTask->vGrabLock();
-  pTask->vDropLock();
+  pTask->vGrabTaskLock();
+  pTask->vDropTaskLock();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -956,7 +956,7 @@ void Scheduler::vTask_Trigger(Task* pTask)
   
   JobLog::vNoteState(pTask->pJob(),"Trigger"_Stz);
   
-  pTask->vDropLock();
+  pTask->vDropTaskLock();
   
   vTask_Able(pTask);
   vTask_Schedule(pTask);
@@ -988,7 +988,7 @@ void Scheduler::vTask_Wait(Task* pTask)
   pQueues->vAddWaitingSet(pTask);
   // **do not touch task** (other than to drop lock)
 
-  pTask->vDropLock();
+  pTask->vDropTaskLock();
 }
 
 /*----------------------------------------------------------------------------*/

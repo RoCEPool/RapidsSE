@@ -108,13 +108,13 @@ void AM::vBootError(bool bBootError) {
   gpAttachMap->m_bBootError = bBootError;
 }
 void AM::vDropTaskLock(Task* pTask) {
-  pTask->vDropLock();
+  Scheduler::vDropTaskLock(pTask);
 }
 void AM::vForthWord(ForthWord *pWord) {
   gpAttachMap->m_pForthWord = pWord;
 }
 void AM::vGrabTaskLock(Task* pTask) {
-  pTask->vGrabLock();
+  Scheduler::vGrabTaskLock(pTask);
 }
 void AM::vIndexEntries(i8 nIndexEntries) {
   gpAttachMap->m_nIndexEntries = nIndexEntries;
@@ -132,7 +132,7 @@ void AM::vNextTempName(s32& sName) {
   gpAttachMap->m_oTempName.vNextName(sName);
 }
 void AM::vPulseTask(Task* pTask) {
-  pTask->vGrabLock();
+  Scheduler::vGrabTaskLock(pTask);
   Scheduler::vPulsePausedTask(pTask);
 }
 void AM::vSetAcksRmg(Task* pTask, i8 nAcks) {

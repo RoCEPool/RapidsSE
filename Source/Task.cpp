@@ -430,7 +430,7 @@ void Task::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /* drop lock                                                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vDropLock(void)
+void Task::vDropTaskLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -451,7 +451,7 @@ void Task::vException(s256& sFile, s256& eException)
 /*----------------------------------------------------------------------------*/
 /* grab lock                                                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vGrabLock(void)
+void Task::vGrabTaskLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
