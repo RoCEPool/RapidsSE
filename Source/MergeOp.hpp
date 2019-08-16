@@ -13,8 +13,6 @@ namespace DataOperators
   
     Operand* m_pOperand[C_OPERANDS];
     i8       m_iOperands;
-    StreamDef*  m_pStreamDef;
-    ColumnVec*  m_pColumnVec;
     
     // must be last
     Footer m_xFooter;

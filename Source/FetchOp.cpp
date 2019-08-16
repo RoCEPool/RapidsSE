@@ -191,6 +191,7 @@ void FetchOp::vPreliminary(void)
   m_pTablePtn = m_pTable->pSlots()->pPartition(m_nSlot);
   
   // pipe StreamDef
+  m_pStreamDef = new StreamDef(m_pTable->pStreamDef());
   StreamDef* pStreamDef = new StreamDef(m_pTable->pStreamDef());
   vPipeOut(pStreamDef);
   

@@ -65,6 +65,7 @@ Op::Op(eCN eClassNo, Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   m_nSlot            = -1;
   m_nLeftEndMarkers  = 1;
   m_nRightEndMarkers = 0;
+  m_pStreamDef       = nullptr;
   
   m_fpCall        = m_aOpDefn ? m_aOpDefn->m_fpCall  : nullptr;
   m_fpDrain       = m_aOpDefn ? m_aOpDefn->m_fpDrain : nullptr;
@@ -79,6 +80,9 @@ Op::~Op(void) noexcept(false)
   
   delete m_pQueueLeft;
   delete m_pQueueRight;
+  
+  if (m_pStreamDef)
+    delete m_pStreamDef;
 }
 
 /*----------------------------------------------------------------------------*/
