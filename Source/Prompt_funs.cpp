@@ -70,7 +70,7 @@ bool Prompt::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_MASKS);
   gxPromptCatalog.vFuns(PF_MEMORY);
   gxPromptCatalog.vFuns(PF_MEMTEST);
-  gxPromptCatalog.vFuns(PF_MKPIPE);
+  gxPromptCatalog.vFuns(PF_MKFIFO);
   gxPromptCatalog.vFuns(PF_MON);
   gxPromptCatalog.vFuns(PF_NOW);
   gxPromptCatalog.vFuns(PF_NUMBERS);
@@ -86,7 +86,7 @@ bool Prompt::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_RASSERT);
   gxPromptCatalog.vFuns(PF_READY);
   gxPromptCatalog.vFuns(PF_RESOURCES);
-  gxPromptCatalog.vFuns(PF_RMPIPE);
+  gxPromptCatalog.vFuns(PF_RMFIFO);
   gxPromptCatalog.vFuns(PF_RND);
   gxPromptCatalog.vFuns(PF_SE);
   gxPromptCatalog.vFuns(PF_SHELL);

@@ -5,7 +5,7 @@
 #include "Prompt.h"
 
 PromptDesc __Prompt_mkfifo (
-  PF_MKPIPE,             // prompt function
+  PF_MKFIFO,             // prompt function
   "Prompt_mkfifo"_Stz,   // name of the prompt function
   "comment"_Stz,         // comment about the function
   "mkfifo"_Stz,          // the prompt command
