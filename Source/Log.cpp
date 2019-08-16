@@ -540,7 +540,7 @@ i8 Log::iEntryRes(Resource* pRes, i8 iResId, eRA eResAct, eRK eResKnd,
 /*----------------------------------------------------------------------------*/
 /* add a service log entry                                                    */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntrySvc(i8 iSvcId, eVA eSvcAct, Stz* szFormat, va_list xVaArgs)
+i8 Log::iEntrySvc(Job* pJob, i8 iSvcId, eVA eSvcAct, Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   

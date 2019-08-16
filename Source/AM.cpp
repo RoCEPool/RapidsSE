@@ -494,7 +494,7 @@ void AM::vLogRes(Resource* pRes, i8 iResId, eRA eResAct, eRK eSysRes, Stz* szFor
 /*----------------------------------------------------------------------------*/
 /* add a service log entry                                                    */
 /*----------------------------------------------------------------------------*/
-void AM::vLogSvc(i8 iSvcId, eVA eSvcAct, Stz* szFormat, ...)
+void AM::vLogSvc(Job* pJob, i8 iSvcId, eVA eSvcAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -508,7 +508,7 @@ void AM::vLogSvc(i8 iSvcId, eVA eSvcAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  gpLog->iEntrySvc(iSvcId,eSvcAct,szFormat,xVaArgs);
+  gpLog->iEntrySvc(pJob,iSvcId,eSvcAct,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif
