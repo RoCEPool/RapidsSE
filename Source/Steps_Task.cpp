@@ -139,7 +139,8 @@ void Step::vTaskDropLock(MP_Task mpTask)
     THROW_INVALID_DSTACK("task.dump"_Stz);
   Task* pThatTask = _pTask(pObject);
   
-  pThatTask->vDropLock();
+  Scheduler::vDropTaskLock(pThatTask);
+  //pThatTask->vDropLock();
   
   EXIT();
 }
@@ -185,10 +186,10 @@ void Step::vTaskGrabLock(MP_Task mpTask)
     THROW_INVALID_DSTACK("task.grabLock"_Stz);
   Task* pThatTask = _pTask(pObject);
   
-  pThatTask->vGrabLock();
+  Scheduler::vGrabTaskLock(pThatTask);
+  //pThatTask->vGrabLock();
   ActLog::vAdd(mpTask->m_pJob,AN_TASK_LOCKED);
 
-  
   EXIT();
 }
 

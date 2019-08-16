@@ -273,6 +273,18 @@ void Scheduler::vDdlGrabWrite(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vDropTaskLock(Task* pTask)
+{
+  //
+  // called from
+  //
+  
+  vTask_Drop(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
 /* set dedicated task to be executed by dedicated thread                      */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vExecuteDedicatedTask(Task* pTask, Thread* pThread)
@@ -282,6 +294,18 @@ void Scheduler::vExecuteDedicatedTask(Task* pTask, Thread* pThread)
   //
   
   vThread_ExecuteDedicated(pThread);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vGrabTaskLock(Task* pTask)
+{
+  //
+  // called from
+  //
+  
+  vTask_Grab(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -628,6 +652,17 @@ void Scheduler::vTask_Desist(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTask_Drop(Task* pTask)
+{
+  AM::vLogTsk(pTask->iTaskId(),TA_TASK_DROP,
+              "Dropping task lock"_Stz);
+  
+  pTask->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
 /* change able-to-run task to TS_EXECUTING state and add to executing set     */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Execute(Task* pTask)
@@ -668,6 +703,17 @@ void Scheduler::vTask_Exit(Task* pTask)
   
   delete pTask;
   // **do not touch task**
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Scheduler::vTask_Grab(Task* pTask)
+{
+  AM::vLogTsk(pTask->iTaskId(),TA_TASK_GRAB,
+              "Grabbing task lock"_Stz);
+  
+  pTask->vGrabLock();
 }
 
 /*----------------------------------------------------------------------------*/
