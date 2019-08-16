@@ -124,6 +124,8 @@ void MergeOp::vMergeDangling(void)
   i8 j_Index;
   Operand* pOperandPair[2];
   
+  i8 iOperandMag[2];
+  
   // merge remaining operand set pairs till we are left with one single set
   while (m_iOperands != 1) {
     
@@ -133,6 +135,7 @@ void MergeOp::vMergeDangling(void)
     for (i_Index = 0; i_Index < C_OPERANDS; i_Index++) {
       
       if (m_pOperand[i_Index]) {
+        iOperandMag[j_Index] = i_Index;
         pOperandPair[j_Index++] = m_pOperand[i_Index];
         m_pOperand[i_Index] = nullptr;
         m_iOperands--;
@@ -142,6 +145,10 @@ void MergeOp::vMergeDangling(void)
           break;
       }
     }
+    
+    if (AM::bVerbose())
+      vTrace("P:%lld MERGING DANGLING OF MAGNITUDES %lld %lld\n"_Stz,
+             m_nSlot, iOperandMag[0], iOperandMag[1]);
     
     // merge the operand set pair
     vMergeOperands(pOperandPair[0], pOperandPair[1]);
@@ -226,7 +233,8 @@ eOR MergeOp::eMergeLoop(void)
     pSrtBuffer = pSrtBuffer->pNextBuffer();
   }
   
-  vTrace("MERGE PIPED OUT %lld buffer\n"_Stz, iCount);
+  if (AM::bVerbose())
+    vTrace("MERGE PIPED OUT %lld buffer\n"_Stz, iCount);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pipe out an end marker
@@ -242,7 +250,8 @@ void MergeOp::vMergeOperands(Operand* pOperand1, Operand* pOperand2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MERGEOP,_FOOTER_);
 
-  vTrace("Merging operands %p %p\n"_Stz, pOperand1, pOperand2);
+  if (AM::bVerbose())
+    vTrace("Merging operands %p %p\n"_Stz, pOperand1, pOperand2);
 
   SrtBuffer* pSrtBuffer1 = _pSrtBuffer(pOperand1);
   RASSERT(pSrtBuffer1->bVerifyNextPrev());
