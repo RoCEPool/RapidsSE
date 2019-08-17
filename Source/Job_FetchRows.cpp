@@ -705,7 +705,7 @@ void Jobs::vJob_FetchRows_post(Session* pSession, Job* pJob)
     pFetchBuffer = _pFetchBuffer(pJob_FetchRows->m_pBufferQueue->pPop());
     if (! pFetchBuffer) {
       //Pthread::vSleepMilli(1,CN_JOB_FETCHROWS);
-      AM::pThisTLSPthread()->vSleepUsec(250,CN_JOB_FETCHROWS);
+      Pthread::vSleepMsec_(1,CN_JOB_FETCHROWS);
       continue;
     }
     

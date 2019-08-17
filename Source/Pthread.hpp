@@ -55,8 +55,6 @@ namespace Resources
     static void  vMonitorPortrait(s48K& sPortrait);
 
     static void  vSleepMsec_(i8 nMilliSeconds, eCN eCallingClass);
-    static void  vSleepNsec_(i8 nNanoSeconds, eCN eCallingClass);
-    static void  vSleepSsec_(i8 nSeconds, eCN eCallingClass);
     static void  vSleepers(void);
     static void* aStackBase(void);
     static void* aStackPointer(void);
