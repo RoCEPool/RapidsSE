@@ -37,7 +37,7 @@ namespace Logging
       _LogEntryJob m_xJob;  // when m_eKind == EK_JOB
       _LogEntryLck m_xLck;  // when m_eKind == EK_LCK
       _LogEntryObj m_xObj;  // when m_eKind == EK_OBJ
-      _LogEntryOp  m_xOp;   // when m_eKind == EK_OP
+      _LogEntryOp  m_xOpr;  // when m_eKind == EK_OPR
       _LogEntryPrm m_xPrm;  // when m_eKind == EK_PRM
       _LogEntryRes m_xRes;  // when m_eKind == EK_RES
       _LogEntrySvc m_xSvc;  // when m_eKind == EK_SVC

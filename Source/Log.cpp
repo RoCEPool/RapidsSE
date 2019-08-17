@@ -529,7 +529,7 @@ i8 Log::iEntryOp(i8 iOpId, eOA eOpAct, Stz* szFormat, va_list xVaArgs)
   
   StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
   
-  pLogEntry->m_xOp.vSet(pLogEntry,iOpId,eOpAct);
+  pLogEntry->m_xOpr.vSet(pLogEntry,iOpId,eOpAct);
   
   return pLogEntry->m_i_Entry;
 }

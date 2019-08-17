@@ -102,7 +102,7 @@ void LogEntry::vWrite(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
     case EK_JOB: m_xJob.vWriteCsv(pFile); break;
     case EK_LCK: m_xLck.vWriteCsv(pFile); break;
     case EK_OBJ: m_xObj.vWriteCsv(pFile); break;
-    case EK_OP:  m_xOp.vWriteCsv(pFile);  break;
+    case EK_OPR: m_xOpr.vWriteCsv(pFile); break;
     case EK_PRM: m_xPrm.vWriteCsv(pFile); break;
     case EK_RES: m_xRes.vWriteCsv(pFile); break;
     case EK_SVC: m_xSvc.vWriteCsv(pFile); break;

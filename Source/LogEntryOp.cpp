@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void _LogEntryOp::vSet(LogEntry* pLogEntry, i8 iOpId, eOA eOpAct)
 {
-  pLogEntry->m_eKind = EK_OP;
+  pLogEntry->m_eKind = EK_OPR;
   
   m_iOpId  = iOpId;
   m_eOpAct = eOpAct;
