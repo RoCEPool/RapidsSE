@@ -12,6 +12,7 @@ namespace Logging
   friend class _LogEntryFyi;
   friend class _LogEntryJob;
   friend class _LogEntryLck;
+  friend class _LogEntryObj;
   friend class _LogEntryOp;
   friend class _LogEntryPrm;
   friend class _LogEntryRes;
@@ -35,6 +36,7 @@ namespace Logging
       _LogEntryFyi m_xFyi;  // when m_eKind == EK_FYI
       _LogEntryJob m_xJob;  // when m_eKind == EK_JOB
       _LogEntryLck m_xLck;  // when m_eKind == EK_LCK
+      _LogEntryObj m_xObj;  // when m_eKind == EK_OBJ
       _LogEntryOp  m_xOp;   // when m_eKind == EK_OP
       _LogEntryPrm m_xPrm;  // when m_eKind == EK_PRM
       _LogEntryRes m_xRes;  // when m_eKind == EK_RES
