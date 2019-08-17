@@ -20,12 +20,6 @@ namespace Scheduling
     static Job* pFindParticipatingJob(i8 iJobId);
     static bool bRemoveOriginatingJob(Job* pJob, bool bDump=false);
     static bool bRemoveParticipatingJob(Job* pJob, bool bDump=false);
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // operator interface
-  
-    static void vAddOp(Op* pOp);
-    static void vRemoveOp(Op* pOp);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // task interface
