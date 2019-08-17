@@ -369,7 +369,7 @@ void AM::vWriteTrace(Stz* aFormat, va_list xArgs)
 /*----------------------------------------------------------------------------*/
 /* add a info log entry                                                       */
 /*----------------------------------------------------------------------------*/
-void AM::vLogInf(Stz* szFormat, ...)
+void AM::vLogFyi(Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -379,7 +379,7 @@ void AM::vLogInf(Stz* szFormat, ...)
   
   va_start(xArgs,szFormat);
   
-  gpLog->iEntryInf(szFormat,xArgs);
+  gpLog->iEntryFyi(szFormat,xArgs);
   
   va_end(xArgs);
 #endif
@@ -647,7 +647,7 @@ void AM::vDdlGrabWrite(Task* pTask)  { Scheduler::vDdlGrabWrite(pTask);        }
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* nap for given number of milliseconds                                       */
+/* nap for given number of milliseconds (no known calling thread)             */
 /*----------------------------------------------------------------------------*/
 void AM::vNap(i8 nMilliSeconds, eCN eCallingClass)
 {
@@ -670,7 +670,7 @@ void AM::vNap(i8 nMilliSeconds, eCN eCallingClass)
   pStats->Thread.m_iaDuration[eCallingClass] += nMilliSeconds * C_1K;
 #endif
   
-  AM::vLogInf("%s naps for %lldms"_Stz,aCN[eCallingClass],nMilliSeconds);
+  AM::vLogFyi("%s naps for %lldms"_Stz,aCN[eCallingClass],nMilliSeconds);
   
   i8 rCode = nanosleep(&xReq,&xRem);
   
@@ -678,7 +678,7 @@ void AM::vNap(i8 nMilliSeconds, eCN eCallingClass)
     vWarn("AM::vNap error; errno=%lld\n"_Stz,errno);
   }
   
-  AM::vLogInf("%s woken from nap"_Stz,aCN[eCallingClass]);
+  AM::vLogFyi("%s woken from nap"_Stz,aCN[eCallingClass]);
 }
 
 

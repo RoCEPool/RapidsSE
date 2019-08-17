@@ -151,7 +151,7 @@ void Log::vNote(Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  gpLog->iEntryInf(szFormat,xVaArgs);
+  gpLog->iEntryFyi(szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif
@@ -193,8 +193,6 @@ void Log::vNoteString(i8 iJobId, s48K& sString)
   
   s4K sLine;
   char* aCharAdr = sString.aChar();
-
-  bool bForeign = AM::bJobIsForeign(iJobId);
 
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
   gpLog->vGrabLock();
@@ -377,7 +375,7 @@ void Log::vWriteCsv(bool bShortForm)
 /*----------------------------------------------------------------------------*/
 /* add a information log entry                                                */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryInf(Stz* szFormat, va_list xVaArgs)
+i8 Log::iEntryFyi(Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
