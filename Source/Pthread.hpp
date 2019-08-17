@@ -54,7 +54,6 @@ namespace Resources
     static void  vMarkNonSeThread(void);
     static void  vMonitorPortrait(s48K& sPortrait);
 
-    static void  vSleepMsec_(i8 nMilliSeconds, eCN eCallingClass);
     static void  vSleepers(void);
     static void* aStackBase(void);
     static void* aStackPointer(void);
