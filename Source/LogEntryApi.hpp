@@ -5,7 +5,7 @@
 
 namespace Logging
 {
-  class _LogEntryItf
+  class _LogEntryApi
   {
   public:
     i8   m_iItfId;  // interface id

@@ -9,7 +9,7 @@ namespace Logging
   {
   friend class Log;
   friend class _LogEntryInf;
-  friend class _LogEntryItf;
+  friend class _LogEntryApi;
   friend class _LogEntryJob;
   friend class _LogEntryLck;
   friend class _LogEntryOp;
@@ -31,8 +31,8 @@ namespace Logging
   
     eEK  m_eKind;       // log entry kind.  one of the following
     union {
+      _LogEntryApi m_xApi;  // when m_eKind == EK_ITF
       _LogEntryInf m_xInf;  // when m_eKind == EK_INF
-      _LogEntryItf m_xItf;  // when m_eKind == EK_ITF
       _LogEntryJob m_xJob;  // when m_eKind == EK_JOB
       _LogEntryLck m_xLck;  // when m_eKind == EK_LCK
       _LogEntryOp  m_xOp;   // when m_eKind == EK_OP

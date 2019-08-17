@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* LogEntryItf.cpp - Log Entry for Interface                                  */
+/* LogEntryItf.cpp - Log Entry for Api                                        */
 /*============================================================================*/
 
 #include "Logging.h"
@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* set entry                                                                  */
 /*----------------------------------------------------------------------------*/
-void _LogEntryItf::vSet(LogEntry* pLogEntry, i8 iItfId, eAA eApiAct)
+void _LogEntryApi::vSet(LogEntry* pLogEntry, i8 iItfId, eAA eApiAct)
 {
   pLogEntry->m_eKind = EK_ITF;
   
@@ -18,7 +18,7 @@ void _LogEntryItf::vSet(LogEntry* pLogEntry, i8 iItfId, eAA eApiAct)
 /*----------------------------------------------------------------------------*/
 /* write to csv file                                                          */
 /*----------------------------------------------------------------------------*/
-void _LogEntryItf::vWriteCsv(File* pFile)
+void _LogEntryApi::vWriteCsv(File* pFile)
 {
   SP_Id spId;
   

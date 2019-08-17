@@ -423,7 +423,7 @@ i8 Log::iEntryItf(i8 iItfId, eAA eApiAct, Stz* szFormat, va_list xVaArgs)
   
   StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
   
-  pLogEntry->m_xItf.vSet(pLogEntry,iItfId,eApiAct);
+  pLogEntry->m_xApi.vSet(pLogEntry,iItfId,eApiAct);
   
   return pLogEntry->m_i_Entry;
 }
