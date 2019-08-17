@@ -6,8 +6,9 @@
 enum eEK // entry kind
 {
   /* 0 */ EK_NONE=0,
-  /* 1 */ EK_INF,
-  /* 2 */ EK_ITF,
+  
+  /* 1 */ EK_API,
+  /* 2 */ EK_INF,
   /* 3 */ EK_JOB,
   /* 4 */ EK_LCK,
   /* 5 */ EK_OP,
@@ -17,14 +18,16 @@ enum eEK // entry kind
   /* 9 */ EK_THD,
   /*10 */ EK_TSK,
   /*11 */ EK_TXN,
+  
   /*12 */ EK_ENUMS
 };
 
 static Stz* aEK[]
 {
   /* 0 */ "NONE"_Stz,
-  /* 1 */ "INF"_Stz,
-  /* 2 */ "ITF"_Stz,
+  
+  /* 1 */ "API"_Stz,
+  /* 2 */ "INF"_Stz,
   /* 3 */ "JOB"_Stz,
   /* 4 */ "LCK"_Stz,
   /* 5 */ "OP"_Stz,
@@ -34,6 +37,7 @@ static Stz* aEK[]
   /* 9 */ "THD"_Stz,
   /*10 */ "TSK"_Stz,
   /*11 */ "TXN"_Stz,
+  
   /*12 */ "ENUMS"_Stz
 };
 

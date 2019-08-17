@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void _LogEntryApi::vSet(LogEntry* pLogEntry, i8 iItfId, eAA eApiAct)
 {
-  pLogEntry->m_eKind = EK_ITF;
+  pLogEntry->m_eKind = EK_API;
   
   m_iItfId  = iItfId;
   m_eItfAct = eApiAct;
