@@ -461,7 +461,7 @@ void AM::vLogLck(Lock* pLock, eLA eLckAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 iLckId =  0; //pLock ? pLock->iJobId() : C_UNKNOWN;
+  i8 iLckId =  pLock ? pLock->iLockId() : C_UNKNOWN;
   gpLog->iEntryLck(iLckId,eLckAct,szFormat,xVaArgs);
   
   va_end(xVaArgs);

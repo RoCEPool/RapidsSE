@@ -35,12 +35,14 @@ namespace Locking
     Lock(eLK eLockKind);
     ~Lock(void) noexcept(false);
   
+  private:
     static u8 iLockDropRead(u8*);
     static u8 iLockGrabRead(u8*);
     static u8 iLockDropWrite(u8*);
     static u8 iLockGrabWrite(u8*);
     static u8 iLockIsLocked(u8*);
 
+  public:
     void vInitLock(eLK eLockKind);
     bool bIsLocked(void);
     i8   iLockId(void);
@@ -62,6 +64,7 @@ namespace Locking
     i8   iWriteGrabs(void);
     i8   iWriteCollisions(void);
     
+  private:
     Footer* aFooter(void);
   };
   
