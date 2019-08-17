@@ -489,13 +489,13 @@ void AM::vLogObj(Object* pObject, eCA eObjAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a operator log entry                                                   */
 /*----------------------------------------------------------------------------*/
-void AM::vLogOpr(Op* pOpr, eOA eOpAct, Stz* szFormat, ...)
+void AM::vLogOpr(Op* pOpr, eOA eOprAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
     return;
   
-  if (! (AM::pMarkAction()->bEnum(eOpAct) ||
+  if (! (AM::pMarkAction()->bEnum(eOprAct) ||
          AM::pMarkAction()->bAll()) )
     return;
   
@@ -505,7 +505,7 @@ void AM::vLogOpr(Op* pOpr, eOA eOpAct, Stz* szFormat, ...)
   
   i8 iOprId = pOpr->iOpId();
   
-  gpLog->iEntryOp(iOprId,eOpAct,szFormat,xVaArgs);
+  gpLog->iEntryOpr(iOprId,eOprAct,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif

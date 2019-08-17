@@ -510,7 +510,7 @@ i8 Log::iEntryObj(Object* pObj, eCA eObjAct, Stz* szFormat, va_list xVaArgs)
 /*----------------------------------------------------------------------------*/
 /* add a operator log entry                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryOp(i8 iOpId, eOA eOpAct, Stz* szFormat, va_list xVaArgs)
+i8 Log::iEntryOpr(i8 iOprId, eOA eOprAct, Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
@@ -529,7 +529,7 @@ i8 Log::iEntryOp(i8 iOpId, eOA eOpAct, Stz* szFormat, va_list xVaArgs)
   
   StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
   
-  pLogEntry->m_xOpr.vSet(pLogEntry,iOpId,eOpAct);
+  pLogEntry->m_xOpr.vSet(pLogEntry,iOprId,eOprAct);
   
   return pLogEntry->m_i_Entry;
 }
