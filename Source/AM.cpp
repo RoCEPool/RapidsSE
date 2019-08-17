@@ -615,6 +615,47 @@ void AM::vDdlDropWrite(Task* pTask)  { Scheduler::vDdlDropWrite(pTask);        }
 void AM::vDdlGrabRead (Task* pTask)  { Scheduler::vDdlGrabRead (pTask);        }
 void AM::vDdlGrabWrite(Task* pTask)  { Scheduler::vDdlGrabWrite(pTask);        }
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* nap for given number of milliseconds                                       */
+/*----------------------------------------------------------------------------*/
+void AM::vNap(i8 nMilliSeconds, eCN eCallingClass)
+{
+  struct timespec xReq;
+  struct timespec xRem;
+  
+  if (nMilliSeconds >= C_1K) {
+    xReq.tv_nsec = (nMilliSeconds % C_1K) * C_1M;
+    xReq.tv_sec  = DIV(nMilliSeconds,C_1K);
+  }
+  else {
+    xReq.tv_nsec = nMilliSeconds * C_1M;
+    xReq.tv_sec  = 0;
+  }
+  
+#ifdef WITH_STATISTICS_COUNTERS
+  Statistics* pStats = &gpAttachMap->m_oStatistics;
+  pStats->Thread.m_nSleeps++;
+  pStats->Thread.m_iaSleeps[eCallingClass]++;
+  pStats->Thread.m_iaDuration[eCallingClass] += nMilliSeconds * C_1K;
+#endif
+  
+  AM::vLogRes(nullptr,RA_THD_SLEEP,
+              "Pthread nanosleeps for %lldms"_Stz,nMilliSeconds);
+  
+  i8 rCode = nanosleep(&xReq,&xRem);
+  
+  if (rCode && errno != EINTR) {
+    vWarn("AM::vNap error; errno=%lld\n"_Stz,errno);
+  }
+  
+  AM::vLogRes(nullptr,RA_THD_AWAKE,
+              "Thead is awake"_Stz);
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
