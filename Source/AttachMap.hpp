@@ -55,6 +55,7 @@ namespace StorageEngine
     LockTracker   m_oLockTracker;
     NextId        m_inNextDiagram;
     NextId        m_inNextJobId;
+    NextId        m_inNextLockId;
     NextId        m_inNextMonitor;
     NextId        m_inNextOpId;
     NextId        m_inNextPlanId;

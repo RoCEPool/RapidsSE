@@ -9,7 +9,7 @@ namespace Logging
   {
   public:
     Object* m_pObject; // object address
-    eCA     m_eObjAct; // thread action
+    eCA     m_eObjAct; // object action
 
   public:
    void vSet(LogEntry* pLogEntry, Object* pObject, eCA eObjAct);
