@@ -41,6 +41,7 @@ namespace Locking
 
     void vInitLock(eLK eLockKind);
     bool bIsLocked(void);
+    eLK  eLockKind(void);
     u8   uLockWord(void);
   
     void vAssertRead(void);

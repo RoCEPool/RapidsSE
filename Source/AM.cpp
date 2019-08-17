@@ -440,12 +440,16 @@ void AM::vLogJob(Job* pJob, eJA eJobAct, Stz* szFormat, ...)
 void AM::vLogLck(Lock* pLock, eLA eLckAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
+  
+  if (LK_ACTION_LOG == pLock->eLockKind())
+    return;
+  
   if (! AM::bLogging())
-  return;
+    return;
   
   if (! (AM::pMarkAction()->bEnum(eLckAct) ||
          AM::pMarkAction()->bAll()) )
-  return;
+    return;
   
   va_list xVaArgs;
   

@@ -249,6 +249,16 @@ bool Lock::bIsLocked(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the kind of lock                                                       */
+/*----------------------------------------------------------------------------*/
+eLK Lock::eLockKind(void)
+{
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
+  return m_eLockKind;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the value of the lock word                                             */
 /*----------------------------------------------------------------------------*/
 u8 Lock::uLockWord(void)
@@ -341,18 +351,20 @@ void Lock::vGrabRead(void)
     oTimer.vUpdate();
     if (oTimer.iMilliseconds() > 100 && ! bReported) {
       bReported = true;
-      vWarn("Lock::vGrabRead -- Unable to grab read lock %p %s %p\n"_Stz,
-             this,
-             aLK[m_eLockKind],
-             m_uLockWord);
+      AM::vLogLck(this,LA_READ_UNABLE,"Unable to grab read lock %p %s %p"_Stz,
+                  this,
+                  aLK[m_eLockKind],
+                  m_uLockWord);
     }
     
     iResult = Lock::iLockGrabRead(&m_uLockWord);
   } while ( ! iResult );
   
   if (bReported) {
-    vWarn("Lock::vGrabRead -- Able to grab read lock %p %p\n"_Stz,
-           this, m_uLockWord);
+    AM::vLogLck(this,LA_READ_ABLE,"Able to grab read lock %p %s %p"_Stz,
+                this,
+                aLK[m_eLockKind],
+                m_uLockWord);
   }
   
   vAssertRead();
@@ -442,10 +454,6 @@ void Lock::vGrabWrite(void)
   
   ASSERT(m_eLockKind);
   
-//  vTrace("Lock::vGrabWrite -- Grabbing write lock %p %s\n"_Stz,
-//         this,
-//         m_aName ? m_aName : "<noName>"_Stz);
-
   ++m_ixWriteGrabs;
   ++AM::pLockTracker()->m_ixWriteGrabs[m_eLockKind];
   
@@ -460,32 +468,27 @@ void Lock::vGrabWrite(void)
   
   Timer oTimer;
   oTimer.vStart();
+  
   bool bReported = false;
   
   do {
     oTimer.vUpdate();
     if (oTimer.iMilliseconds() > 100 && ! bReported) {
       bReported = true;
-      AM::vLogInf("Lock::vGrabWrite -- Unable to grab write lock %p %s %p"_Stz,
+      AM::vLogLck(this,LA_WRITE_UNABLE,"Unable to grab write lock %p %s %p"_Stz,
                          this,
                          aLK[m_eLockKind],
                          m_uLockWord);
-      //vWarn("Lock::vGrabWrite -- Unable to grab write lock %p %s %p\n"_Stz,
-      //       this,
-      //        aLK[m_eLockKind],
-      //       m_uLockWord);
     }
     
     iResult = Lock::iLockGrabWrite(&m_uLockWord);
   } while ( ! iResult );
   
   if (bReported) {
-    AM::vLogInf("Lock::vGrabWrite -- Able to grab write lock %p %s %p"_Stz,
+    AM::vLogLck(this,LA_WRITE_ABLE,"Able to grab write lock %p %s %p"_Stz,
                        this,
                        aLK[m_eLockKind],
                        m_uLockWord);
-    //vWarn("Lock::vGrabWrite -- Able to grab write lock %p %p\n"_Stz,
-    //       this, m_uLockWord);
   }
 
   vAssertWrite();
