@@ -69,6 +69,8 @@ Op::Op(eCN eClassNo, Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   
   m_fpCall        = m_aOpDefn ? m_aOpDefn->m_fpCall  : nullptr;
   m_fpDrain       = m_aOpDefn ? m_aOpDefn->m_fpDrain : nullptr;
+  
+  AM::vLogOp(this,OA_OP_CONSTRUCTOR,"::Op"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -83,6 +85,8 @@ Op::~Op(void) noexcept(false)
   
   if (m_pStreamDef)
     delete m_pStreamDef;
+  
+  AM::vLogOp(this,OA_OP_DESTRUCTOR,"::~Op"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -111,8 +115,17 @@ void Op::vOpLoop(void)
 //  if (bIsCancelling() && m_fpDrain)
 //    eCallAgain = (*m_fpDrain)(this);
 //  else
-    eCallAgain = (*m_fpCall)(this);
 
+  
+  AM::vLogOp(this,OA_OP_CALL,"Calling operator"_Stz);
+  
+  eCallAgain = (*m_fpCall)(this);
+
+  AM::vLogOp(this,OA_OP_RETURNED,"Returned from operator with %s"_Stz,
+             aOR[eCallAgain]);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   switch (eCallAgain) {
    
     case OR_BIDE:
@@ -145,9 +158,11 @@ void Op::vAckJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Task* pTask_JobQuery = AM::pExecutingTask(m_pJob);
-    
-  AM::vAckWaitingTask(pTask_JobQuery,m_pTask);
+  Task* pTask = AM::pExecutingTask(m_pJob);
+  
+  AM::vLogOp(this,OA_OP_ACK,"Acking job task"_Stz);
+
+  AM::vAckWaitingTask(pTask,m_pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -365,10 +380,18 @@ void Op::vPipeOut(Operand* pOperand)
            aCN[pOperand->eClass()],
            pOperand);
 
-  if (m_bAppendRight)
+  if (m_bAppendRight) {
+    AM::vLogOp(this,OA_OP_APPEND,"PipeOut operand %s to right queue of %s"_Stz,
+               aCN[pOperand->eClass()],
+               aCN[m_pOpOut->eClass()]);
     m_pOpOut->vAppendRight(pOperand);
-  else
+  }
+  else {
+    AM::vLogOp(this,OA_OP_APPEND,"PipeOut operand %s to left queue of %s"_Stz,
+               aCN[pOperand->eClass()],
+               aCN[m_pOpOut->eClass()]);
     m_pOpOut->vAppendLeft(pOperand);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -396,6 +419,12 @@ Operand* Op::pPopQueue(void)
   
   pOperand = m_pQueueLeft->pPopQueue();
   
+  if (pOperand)
+    AM::vLogOp(this,OA_OP_POP,"PopQueue operand %s from left queue"_Stz,
+               aCN[pOperand->eClass()]);
+  else
+    AM::vLogOp(this,OA_OP_POP,"PopQueue no operand on left queue"_Stz);
+
   if (pOperand)
     vDropTaskLock();
   
@@ -427,6 +456,12 @@ Operand* Op::pPopQueueLeft(void)
   if (pOperand)
     vDropTaskLock();
   
+  if (pOperand)
+    AM::vLogOp(this,OA_OP_POP,"PopQueueLeft operand %s from left queue"_Stz,
+               aCN[pOperand->eClass()]);
+  else
+    AM::vLogOp(this,OA_OP_POP,"PopQueueLeft no operand on left queue"_Stz);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (pOperand) {
@@ -454,6 +489,12 @@ Operand* Op::pPopQueueRight(void)
   
   if (pOperand)
     vDropTaskLock();
+  
+  if (pOperand)
+    AM::vLogOp(this,OA_OP_POP,"PopQueueRight operand %s from right queue"_Stz,
+               aCN[pOperand->eClass()]);
+  else
+    AM::vLogOp(this,OA_OP_POP,"PopQueueRight no operand on right queue"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

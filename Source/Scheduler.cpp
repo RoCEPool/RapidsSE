@@ -157,9 +157,7 @@ void Scheduler::vAddOp(Op *pOp)
   //
   // called from ???
   //
-  AM::vLogOp(pOp,OA_OP_ADD,
-              "Add operator into system"_Stz);
-
+ 
 }
 
 /*----------------------------------------------------------------------------*/
@@ -170,8 +168,6 @@ void Scheduler::vRemoveOp(Op *pOp)
   //
   // called from ???
   //
-  AM::vLogOp(pOp,OA_OP_REMOVE,
-              "Remove operator from system"_Stz);
 
 }
 
