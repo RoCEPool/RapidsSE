@@ -8,7 +8,7 @@ enum eEK // entry kind
   /* 0 */ EK_NONE=0,
   
   /* 1 */ EK_API,
-  /* 2 */ EK_INF,
+  /* 2 */ EK_FYI,
   /* 3 */ EK_JOB,
   /* 4 */ EK_LCK,
   /* 5 */ EK_OP,

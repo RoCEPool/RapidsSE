@@ -396,7 +396,7 @@ i8 Log::iEntryInf(Stz* szFormat, va_list xVaArgs)
   
   StrLib::vCopyLen(pLogEntry->m_caText,caMark,C_LOG_TEXT - 1);
   
-  pLogEntry->m_xInf.vSet(pLogEntry);
+  pLogEntry->m_xFyi.vSet(pLogEntry);
   
   return pLogEntry->m_i_Entry;
 }
