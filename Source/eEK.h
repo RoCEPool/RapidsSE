@@ -28,7 +28,7 @@ static Stz* aEK[]
   /* 0 */ "NONE"_Stz,
   
   /* 1 */ "API"_Stz,
-  /* 2 */ "INF"_Stz,
+  /* 2 */ "FYI"_Stz,
   /* 3 */ "JOB"_Stz,
   /* 4 */ "LCK"_Stz,
   /* 5 */ "OBJ"_Stz,

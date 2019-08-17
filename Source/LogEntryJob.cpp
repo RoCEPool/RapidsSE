@@ -24,7 +24,7 @@ void _LogEntryJob::vWriteCsv(File* pFile)
   
   pFile->vPrint(",%s,%s"_Stz,
                 
-                spId.sz(m_iJobId),
+                spId.sz("J"_Stz,m_iJobId),
                 aJA[m_eJobAct]);
 }
 

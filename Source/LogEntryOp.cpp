@@ -24,7 +24,7 @@ void _LogEntryOp::vWriteCsv(File* pFile)
   
   pFile->vPrint(",%s,%s"_Stz,
                 
-                spId.sz(m_iOpId),
+                spId.sz("O"_Stz,m_iOpId),
                 aOA[m_eOpAct]);
 }
 

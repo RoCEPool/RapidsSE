@@ -26,7 +26,7 @@ void _LogEntryRes::vWriteCsv(File* pFile)
   pFile->vPrint(",%s,%s,%s"_Stz,
               
                 aRK_Short[m_eResKnd],
-                spId.sz(m_iResId),
+                spId.sz("R"_Stz,m_iResId),
                 aRA[m_eResAct]);
 }
 

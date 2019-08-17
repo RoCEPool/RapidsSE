@@ -24,7 +24,7 @@ void _LogEntryTsk::vWriteCsv(File* pFile)
   
   pFile->vPrint(",%s,%s"_Stz,
                 
-                spId.sz(m_iTskId),
+                spId.sz("T"_Stz,m_iTskId),
                 aTA[m_eTskAct]);
 }
 

@@ -24,7 +24,7 @@ void _LogEntryTxn::vWriteCsv(File* pFile)
   
   pFile->vPrint(",%s,%s"_Stz,
                 
-                spId.sz(m_iTxnId),
+                spId.sz("X"_Stz,m_iTxnId),
                 aXA[m_eTxnAct]);
 }
 

@@ -36,7 +36,7 @@ SP_Id::~SP_Id(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* sprint SP_Id and return Stz* to result                                     */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Id::sz(i8 iId)
+Stz* SP_Id::sz(Stz* szPrefix, i8 iId)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
@@ -48,7 +48,9 @@ Stz* SP_Id::sz(i8 iId)
   U.iId = iId;
   
   StrLib::vSprint(m_caResult,
-                  "%lld.%lld"_Stz,
+                  "%s%lld.%lld"_Stz,
+                  
+                  szPrefix,
                   U.wId.m_uNodeNo,
                   U.wId.m_uIdNo);
 

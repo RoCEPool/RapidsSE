@@ -24,7 +24,7 @@ void _LogEntryThd::vWriteCsv(File* pFile)
   
   pFile->vPrint(",%s,%s"_Stz,
                 
-                spId.sz(m_iThdId),
+                spId.sz("H"_Stz,m_iThdId),
                 aHA[m_eThdAct]);
 }
 

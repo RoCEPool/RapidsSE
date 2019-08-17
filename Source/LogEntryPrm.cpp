@@ -24,7 +24,7 @@ void _LogEntryPrm::vWriteCsv(File* pFile)
   
   pFile->vPrint(",%s,%s"_Stz,
                 
-                spId.sz(m_iPrmId),
+                spId.sz("P"_Stz,m_iPrmId),
                 aPA[m_ePrmAct]);
 }
 

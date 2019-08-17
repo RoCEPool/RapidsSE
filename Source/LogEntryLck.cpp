@@ -24,7 +24,7 @@ void _LogEntryLck::vWriteCsv(File* pFile)
   
   pFile->vPrint(",%s,%s"_Stz,
                 
-                spId.sz(m_iLckId),
+                spId.sz("L"_Stz,m_iLckId),
                 aLA[m_eLckAct]);
 }
 

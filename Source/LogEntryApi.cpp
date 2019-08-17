@@ -24,7 +24,7 @@ void _LogEntryApi::vWriteCsv(File* pFile)
   
   pFile->vPrint(",%s,%s"_Stz,
                 
-                spId.sz(m_iSsnId),
+                spId.sz("A"_Stz,m_iSsnId),
                 aAA[m_eItfAct]);
 }
 

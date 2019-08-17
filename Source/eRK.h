@@ -22,8 +22,8 @@ static Stz* aRK[]
   "NONE"_Stz,
   
   "DIR"_Stz,
-  "FILE"_Stz,
   "FIFO"_Stz,
+  "FILE"_Stz,
   "MUTEX"_Stz,
   "PTHREAD"_Stz,
   "SOCKET"_Stz,
@@ -36,8 +36,8 @@ static Stz* aRK_Short[]
   "NONE"_Stz,
 
   "DIR"_Stz,
-  "FIL"_Stz,
   "FIO"_Stz,
+  "FIL"_Stz,
   "MTX"_Stz,
   "PTH"_Stz,
   "SKT"_Stz,
