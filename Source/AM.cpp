@@ -642,8 +642,7 @@ void AM::vNap(i8 nMilliSeconds, eCN eCallingClass)
   pStats->Thread.m_iaDuration[eCallingClass] += nMilliSeconds * C_1K;
 #endif
   
-  AM::vLogRes(nullptr,RA_THD_SLEEP,
-              "Pthread nanosleeps for %lldms"_Stz,nMilliSeconds);
+  AM::vLogInf("%s naps for %lldms"_Stz,aCN[eCallingClass],nMilliSeconds);
   
   i8 rCode = nanosleep(&xReq,&xRem);
   
@@ -651,8 +650,7 @@ void AM::vNap(i8 nMilliSeconds, eCN eCallingClass)
     vWarn("AM::vNap error; errno=%lld\n"_Stz,errno);
   }
   
-  AM::vLogRes(nullptr,RA_THD_AWAKE,
-              "Thead is awake"_Stz);
+  AM::vLogInf("%s woken from nap"_Stz,aCN[eCallingClass]);
 }
 
 
