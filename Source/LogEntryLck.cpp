@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* set entry                                                                  */
 /*----------------------------------------------------------------------------*/
-void _LogEntryLck::vSet(LogEntry* pLogEntry, i8 iLckId, eIA eLckAct)
+void _LogEntryLck::vSet(LogEntry* pLogEntry, i8 iLckId, eLA eLckAct)
 {
-  pLogEntry->m_eKind = EK_ITF;
+  pLogEntry->m_eKind = EK_LCK;
   
   m_iLckId  = iLckId;
   m_eLckAct = eLckAct;

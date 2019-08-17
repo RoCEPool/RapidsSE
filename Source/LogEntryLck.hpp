@@ -9,10 +9,10 @@ namespace Logging
   {
   public:
     i8   m_iLckId;  // interface id
-    eIA  m_eLckAct; // interface action
+    eLA  m_eLckAct; // interface action
   
   public:
-    void vSet(LogEntry* pLogEntry, i8 iLckId, eIA eLckAct);
+    void vSet(LogEntry* pLogEntry, i8 iLckId, eLA eLckAct);
   
     void vWriteCsv(File* pFile);
   };
