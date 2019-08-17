@@ -6,7 +6,7 @@
 //!                    ** Do not include StorageEngine.hpp **
 
 #include "eHA.h"
-#include "eIA.h"
+#include "eAA.h"
 #include "eJA.h"
 #include "eLA.h"
 #include "eOA.h"
@@ -161,7 +161,7 @@ namespace StorageEngine
     static void vWriteTrace(Stz* aFormat, va_list xArgs);
 
     static void vLogInf(Stz* szFormat, ...);
-    static void vLogItf(Session*  pSsn, eIA eItfAct, Stz* szFormat, ...);
+    static void vLogItf(Session*  pSsn, eAA eApifAct, Stz* szFormat, ...);
     static void vLogJob(Job*      pJob, eJA eJobAct, Stz* szFormat, ...);
     static void vLogLck(Lock*     pLck, eLA eLckAct, Stz* szFormat, ...);
     static void vLogOp (Op*       pOp,  eOA eOpAct,  Stz* szFormat, ...);

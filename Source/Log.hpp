@@ -48,7 +48,8 @@ namespace Logging
 
   //private:
     i8 iEntryInf(Stz* szFormat, va_list xArgs);
-    i8 iEntryItf(i8 iItfId, eIA eItfAct, Stz* szFormat, va_list xArgs);
+  
+    i8 iEntryItf(i8 iItfId, eAA eApiAct, Stz* szFormat, va_list xArgs);
     i8 iEntryJob(i8 iJobId, eJA eJobAct, Stz* szFormat, va_list xArgs);
     i8 iEntryLck(i8 iJckId, eLA eLckAct, Stz* szFormat, va_list xArgs);
     i8 iEntryOp (i8 iOpId,  eOA eOpAct,  Stz* szFormat, va_list xArgs);

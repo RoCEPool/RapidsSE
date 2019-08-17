@@ -14,6 +14,7 @@ namespace Enums
 
 //------------------------------------------------------------------------------
 
+#include "eAA.h"
 #include "eAC.h"
 #include "eAK.h"
 #include "eAN.h"
@@ -29,7 +30,6 @@ namespace Enums
 #include "eEK.h"
 #include "eHA.h"
 #include "eHT.h"
-#include "eIA.h"
 #include "eIS.h"
 #include "eIT.h"
 #include "eJA.h"

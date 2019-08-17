@@ -7,12 +7,12 @@
 /*----------------------------------------------------------------------------*/
 /* set entry                                                                  */
 /*----------------------------------------------------------------------------*/
-void _LogEntryItf::vSet(LogEntry* pLogEntry, i8 iItfId, eIA eItfAct)
+void _LogEntryItf::vSet(LogEntry* pLogEntry, i8 iItfId, eAA eApiAct)
 {
   pLogEntry->m_eKind = EK_ITF;
   
   m_iItfId  = iItfId;
-  m_eItfAct = eItfAct;
+  m_eItfAct = eApiAct;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -25,7 +25,7 @@ void _LogEntryItf::vWriteCsv(File* pFile)
   pFile->vPrint(",%s,%s"_Stz,
                 
                 spId.sz(m_iItfId),
-                aIA[m_eItfAct]);
+                aAA[m_eItfAct]);
 }
 
 /*============================================================================*/

@@ -1,22 +1,21 @@
 /*============================================================================*/
-/* LogEntryItf.hpp - Log Entry for Interface                                  */
+/* eAA.h -- Api Actions                                                       */
 /*============================================================================*/
 #pragma once
 
-namespace Logging
+enum eAA // api actions
 {
-  class _LogEntryItf
-  {
-  public:
-    i8   m_iItfId;  // interface id
-    eIA  m_eItfAct; // interface action
+  /*  0 */ AA_NONE=0,
   
-  public:
-    void vSet(LogEntry* pLogEntry, i8 iItfId, eIA eItfAct);
+  /*    */ AA_ENUMS,
+};
+
+static Stz* aAA[]
+{
+  /*  0 */ "NONE"_Stz,
   
-    void vWriteCsv(File* pFile);
-  };
-}
+  /*    */ "ENUMS"_Stz,
+};
 
 /*============================================================================*/
 /* end                                                                        */

@@ -388,13 +388,13 @@ void AM::vLogInf(Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a interface log entry                                                  */
 /*----------------------------------------------------------------------------*/
-void AM::vLogItf(Session* pSsn, eIA eItfAct, Stz* szFormat, ...)
+void AM::vLogItf(Session* pSsn, eAA eApiAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
     return;
   
-  if (! (AM::pMarkAction()->bEnum(eItfAct) ||
+  if (! (AM::pMarkAction()->bEnum(eApiAct) ||
          AM::pMarkAction()->bAll()) )
     return;
   
@@ -404,7 +404,7 @@ void AM::vLogItf(Session* pSsn, eIA eItfAct, Stz* szFormat, ...)
   
   i8 iSsnId = C_UNKNOWN; //pSsn->iSsnId();
   
-  gpLog->iEntryItf(iSsnId,eItfAct,szFormat,xVaArgs);
+  gpLog->iEntryItf(iSsnId,eApiAct,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif
