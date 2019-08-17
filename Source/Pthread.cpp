@@ -429,6 +429,22 @@ void Pthread::vSetOSThreadId(void)
   else
     m_iOpSysThreadId = iOpSysThreadId;
 }
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* sleep indefinite                                                           */
+/*----------------------------------------------------------------------------*/
+void Pthread::vSleepInfinite(void)
+{
+  AM::vLogRes(this,RA_THD_SLEEP_INDEFINITE,
+              "Thead sleeps indefinitely"_Stz);
+  for (;;)
+    sleep(C_1B);
+}
+
+
   
 /*----------------------------------------------------------------------------*/
 /* create thread, passing it function to execute                              */
@@ -621,18 +637,6 @@ bool Pthread::bIsJavaThread(void)
     return true;
   else
     return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* sleep indefinite                                                           */
-/*----------------------------------------------------------------------------*/
-void Pthread::vSleepInfinite(void)
-{
-  AM::vLogRes(nullptr,RA_THD_SLEEP_INDEFINITE,
-              "Thead sleeps indefinitely"_Stz);
-  
-  for (;;)
-    sleep(C_1B);
 }
 
 /*----------------------------------------------------------------------------*/
