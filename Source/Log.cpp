@@ -481,6 +481,33 @@ i8 Log::iEntryLck(i8 iLckId, eLA eLckAct, Stz* szFormat, va_list xVaArgs)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add a object log entry                                                     */
+/*----------------------------------------------------------------------------*/
+i8 Log::iEntryObj(Object* pObj, eCA eObjAct, Stz* szFormat, va_list xVaArgs)
+{
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
+  
+  LogEntry* pLogEntry = pNewEntry();
+  
+  if (! pLogEntry)
+  return C_UNKNOWN;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  char caText[1024];
+  
+  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
+  
+  pLogEntry->m_xObj.vSet(pLogEntry,pObj,eObjAct);
+  
+  return pLogEntry->m_i_Entry;
+}
+
+/*----------------------------------------------------------------------------*/
 /* add a operator log entry                                                   */
 /*----------------------------------------------------------------------------*/
 i8 Log::iEntryOp(i8 iOpId, eOA eOpAct, Stz* szFormat, va_list xVaArgs)

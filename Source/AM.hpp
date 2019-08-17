@@ -5,6 +5,7 @@
 
 //!                    ** Do not include StorageEngine.hpp **
 
+#include "eCA.h"
 #include "eHA.h"
 #include "eAA.h"
 #include "eJA.h"
@@ -165,6 +166,7 @@ namespace StorageEngine
     static void vLogApi(Session*  pSsn, eAA eApiAct, Stz* szFormat, ...);
     static void vLogJob(Job*      pJob, eJA eJobAct, Stz* szFormat, ...);
     static void vLogLck(Lock*     pLck, eLA eLckAct, Stz* szFormat, ...);
+    static void vLogObj(Object*   pObj, eCA eObjAct, Stz* szFormat, ...);
     static void vLogOp (Op*       pOp,  eOA eOpAct,  Stz* szFormat, ...);
     static void vLogPrm(SePrompt* pPrm, ePA ePrmAct, Stz* szFormat, ...);
     static void vLogRes(Resource* pRes, eRA eResAct, Stz* szFormat, ...);

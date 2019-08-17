@@ -5,11 +5,11 @@
 #include "Logging.h"
 
 /*----------------------------------------------------------------------------*/
-/* set thread entry                                                           */
+/* set object entry                                                           */
 /*----------------------------------------------------------------------------*/
 void _LogEntryObj::vSet(LogEntry* pLogEntry, Object* pObject, eCA eObjAct)
 {
-  pLogEntry->m_eKind = EK_THD;
+  pLogEntry->m_eKind = EK_OBJ;
   
   m_pObject = pObject;
   m_eObjAct = eObjAct;

@@ -52,6 +52,7 @@ namespace Logging
     i8 iEntryApi(i8 iApiId, eAA eApiAct, Stz* szFormat, va_list xArgs);
     i8 iEntryJob(i8 iJobId, eJA eJobAct, Stz* szFormat, va_list xArgs);
     i8 iEntryLck(i8 iJckId, eLA eLckAct, Stz* szFormat, va_list xArgs);
+    i8 iEntryObj(Object* pObject, eCA eObjAct, Stz* szFormat, va_list xArgs);
     i8 iEntryOp (i8 iOpId,  eOA eOpAct,  Stz* szFormat, va_list xArgs);
     i8 iEntryPrm(i8 iPrmId, ePA ePrmAct, Stz* szFormat, va_list xArgs);
     i8 iEntryRes(i8 iResId, eRA eResAct, eRK eResKnd,   Stz* szFormat, va_list xArgs);
