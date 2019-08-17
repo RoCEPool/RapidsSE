@@ -402,9 +402,9 @@ i8 Log::iEntryInf(Stz* szFormat, va_list xVaArgs)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add a interface log entry                                                  */
+/* add a api log entry                                                        */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryItf(i8 iItfId, eAA eApiAct, Stz* szFormat, va_list xVaArgs)
+i8 Log::iEntryApi(i8 iSsnId, eAA eApiAct, Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
@@ -423,7 +423,7 @@ i8 Log::iEntryItf(i8 iItfId, eAA eApiAct, Stz* szFormat, va_list xVaArgs)
   
   StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
   
-  pLogEntry->m_xApi.vSet(pLogEntry,iItfId,eApiAct);
+  pLogEntry->m_xApi.vSet(pLogEntry,iSsnId,eApiAct);
   
   return pLogEntry->m_i_Entry;
 }

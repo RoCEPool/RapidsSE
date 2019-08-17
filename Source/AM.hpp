@@ -161,7 +161,8 @@ namespace StorageEngine
     static void vWriteTrace(Stz* aFormat, va_list xArgs);
 
     static void vLogInf(Stz* szFormat, ...);
-    static void vLogItf(Session*  pSsn, eAA eApifAct, Stz* szFormat, ...);
+  
+    static void vLogApi(Session*  pSsn, eAA eApiAct, Stz* szFormat, ...);
     static void vLogJob(Job*      pJob, eJA eJobAct, Stz* szFormat, ...);
     static void vLogLck(Lock*     pLck, eLA eLckAct, Stz* szFormat, ...);
     static void vLogOp (Op*       pOp,  eOA eOpAct,  Stz* szFormat, ...);

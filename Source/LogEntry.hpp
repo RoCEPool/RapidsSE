@@ -8,8 +8,8 @@ namespace Logging
   class LogEntry : public Object
   {
   friend class Log;
-  friend class _LogEntryInf;
   friend class _LogEntryApi;
+  friend class _LogEntryInf;
   friend class _LogEntryJob;
   friend class _LogEntryLck;
   friend class _LogEntryOp;

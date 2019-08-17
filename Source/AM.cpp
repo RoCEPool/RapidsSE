@@ -388,7 +388,7 @@ void AM::vLogInf(Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a interface log entry                                                  */
 /*----------------------------------------------------------------------------*/
-void AM::vLogItf(Session* pSsn, eAA eApiAct, Stz* szFormat, ...)
+void AM::vLogApi(Session* pSsn, eAA eApiAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -404,7 +404,7 @@ void AM::vLogItf(Session* pSsn, eAA eApiAct, Stz* szFormat, ...)
   
   i8 iSsnId = C_UNKNOWN; //pSsn->iSsnId();
   
-  gpLog->iEntryItf(iSsnId,eApiAct,szFormat,xVaArgs);
+  gpLog->iEntryApi(iSsnId,eApiAct,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif
