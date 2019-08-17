@@ -16,8 +16,8 @@ namespace Logging
 
 #include "ShmLog.hpp"
 
+#include "LogEntryApi.hpp"
 #include "LogEntryInf.hpp"
-#include "LogEntryItf.hpp"
 #include "LogEntryJob.hpp"
 #include "LogEntryLck.hpp"
 #include "LogEntryOp.hpp"
