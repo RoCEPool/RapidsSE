@@ -48,6 +48,8 @@ Lock::Lock(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
+  m_iLockId   = AM::iNextLockId();
+  
   m_uLockWord = 0;
   m_eLockKind = LK_NONE;
 
@@ -69,6 +71,8 @@ Lock::Lock(eLK eLockKind)
 : Object(CN_LOCK)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
+  m_iLockId   = AM::iNextLockId();
   
   m_uLockWord = 0;
   m_eLockKind = eLockKind;
@@ -246,6 +250,16 @@ bool Lock::bIsLocked(void)
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
   return Lock::iLockIsLocked(&m_uLockWord);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get lock id                                                                */
+/*----------------------------------------------------------------------------*/
+i8 Lock::iLockId(void)
+{
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
+  return m_iLockId;
 }
 
 /*----------------------------------------------------------------------------*/

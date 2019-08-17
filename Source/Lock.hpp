@@ -13,6 +13,8 @@ namespace Locking
   class Lock : public Object
   {
   private:
+    i8     m_iLockId;          // lock id
+  
     u8     m_uLockWord;        // lock word
     eLK    m_eLockKind;        // lock kind
   
@@ -41,6 +43,7 @@ namespace Locking
 
     void vInitLock(eLK eLockKind);
     bool bIsLocked(void);
+    i8   iLockId(void);
     eLK  eLockKind(void);
     u8   uLockWord(void);
   
