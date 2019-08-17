@@ -234,7 +234,7 @@ void* Thread::aEntryPoint_dummy(void* pArg)
   while (true) {
     
     // sleep for a bit to generate a context switch
-    Pthread::vSleepUsec(AM::nDummySleep(),CN_THREAD);
+    pThread->m_pPthread->vSleepUsec(AM::nDummySleep(),CN_THREAD);
     
     // burn some cpu
     i8 iSum = 0;

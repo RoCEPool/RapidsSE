@@ -836,10 +836,7 @@ void Parser::vReadLineStdin(void)
   ASSERT(! m_bEOF);
   
   m_pRawChar = m_sRawLine.aChar();
-  
-  if (AM::bTracepoint())
-    Pthread::vSleepMsec(300,CN_PARSER);
-  
+    
   bool bHasStarted = AM::bHasStarted();
 
   bool bLowMem = gpBufferPool->bLowMemory();

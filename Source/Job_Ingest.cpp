@@ -316,8 +316,10 @@ bool Job_Ingest::bChunk(void)
   
   if (nIngestChunks() > 32) {
     m_nWaits++;
-    while (nIngestChunks() > 32)
-      Pthread::vSleepMsec(1,CN_JOB_INGEST);
+    while (nIngestChunks() > 32) {
+      Pthread* pPthread = AM::pThisTLSPthread();
+      pPthread->vSleepMsec(1,CN_JOB_INGEST);
+    }
   }
   
   m_pQuantaChunk->m_iChunkNo = ++m_nChunksSoFar;

@@ -277,7 +277,7 @@ void Jobs::vJob_IndexJoin_post(Session* pSession, Job* pJob)
     pRefBuffer = _pRefBuffer(pJob_IndexJoin->m_pBufferQueue->pPop());
     if (! pRefBuffer) {
       //Pthread::vSleepMilli(1,CN_JOB_FETCHROWS);
-      Pthread::vSleepUsec(250,CN_JOB_FETCHROWS);
+      AM::pThisTLSPthread()->vSleepUsec(250,CN_JOB_FETCHROWS);
       continue;
     }
     

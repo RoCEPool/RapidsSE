@@ -444,6 +444,101 @@ void Pthread::vSleepInfinite(void)
     sleep(C_1B);
 }
 
+/*----------------------------------------------------------------------------*/
+/* sleep for given number of milliseconds                                     */
+/*----------------------------------------------------------------------------*/
+void Pthread::vSleepMsec(i8 nMilliSeconds, eCN eCallingClass)
+{
+  struct timespec xReq;
+  struct timespec xRem;
+  
+  if (nMilliSeconds >= C_1K) {
+    xReq.tv_nsec = (nMilliSeconds % C_1K) * C_1M;
+    xReq.tv_sec  = DIV(nMilliSeconds,C_1K);
+  }
+  else {
+    xReq.tv_nsec = nMilliSeconds * C_1M;
+    xReq.tv_sec  = 0;
+  }
+  
+#ifdef WITH_STATISTICS_COUNTERS
+  Statistics* pStats = &gpAttachMap->m_oStatistics;
+  pStats->Thread.m_nSleeps++;
+  pStats->Thread.m_iaSleeps[eCallingClass]++;
+  pStats->Thread.m_iaDuration[eCallingClass] += nMilliSeconds * C_1M;
+#endif
+  
+  AM::vLogRes(this,RA_THD_SLEEP,
+              "Pthread nanosleeps for %lldms"_Stz,nMilliSeconds);
+  
+  i8 rCode = nanosleep(&xReq,&xRem);
+  
+  if (rCode && errno != EINTR) {
+    vWarn("Pthread::vSleepMsec error; errno=%lld\n"_Stz,errno);
+  }
+  
+  AM::vLogRes(this,RA_THD_AWAKE,
+              "Thead is awake"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* sleep for given number of nanoseconds                                      */
+/*----------------------------------------------------------------------------*/
+void Pthread::vSleepNsec(i8 nNanoSeconds, eCN eCallingClass)
+{
+  struct timespec xReq;
+  struct timespec xRem;
+  
+  if (nNanoSeconds >= C_1G) {
+    xReq.tv_nsec = nNanoSeconds % C_1G;
+    xReq.tv_sec  = DIV(nNanoSeconds,C_1G);
+  }
+  else {
+    xReq.tv_nsec = nNanoSeconds;
+    xReq.tv_sec  = 0;
+  }
+  
+#ifdef WITH_STATISTICS_COUNTERS
+  Statistics* pStats = &gpAttachMap->m_oStatistics;
+  pStats->Thread.m_nSleeps++;
+  pStats->Thread.m_iaSleeps[eCallingClass]++;
+  pStats->Thread.m_iaDuration[eCallingClass] += nNanoSeconds;
+#endif
+  
+  AM::vLogRes(nullptr,RA_THD_SLEEP,
+              "Pthread nanosleeps for %lldns"_Stz,nNanoSeconds);
+  
+  i8 rCode = nanosleep(&xReq,&xRem);
+  
+  if (rCode && errno != EINTR) {
+    vWarn("Pthread::vSleepNsec error; errno=%lld\n"_Stz,errno);
+  }
+  AM::vLogRes(nullptr,RA_THD_AWAKE,
+              "Thead is awake"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* sleep for given number of seconds                                          */
+/*----------------------------------------------------------------------------*/
+void Pthread::vSleepSsec(i8 nSeconds, eCN eCallingClass)
+{
+  
+#ifdef WITH_STATISTICS_COUNTERS
+  Statistics* pStats = &gpAttachMap->m_oStatistics;
+  pStats->Thread.m_nSleeps++;
+  pStats->Thread.m_iaSleeps[eCallingClass]++;
+  pStats->Thread.m_iaDuration[eCallingClass] += nSeconds * C_1G;
+#endif
+  
+  AM::vLogRes(nullptr,RA_THD_SLEEP,
+              "Pthead sleeps for %llds"_Stz,nSeconds);
+  
+  sleep((unsigned)nSeconds);
+  
+  AM::vLogRes(nullptr,RA_THD_AWAKE,
+              "Thead is awake"_Stz);
+}
+
 
   
 /*----------------------------------------------------------------------------*/
@@ -642,7 +737,7 @@ bool Pthread::bIsJavaThread(void)
 /*----------------------------------------------------------------------------*/
 /* sleep for given number of milliseconds                                     */
 /*----------------------------------------------------------------------------*/
-void Pthread::vSleepMsec(i8 nMilliSeconds, eCN eCallingClass)
+void Pthread::vSleepMsec_(i8 nMilliSeconds, eCN eCallingClass)
 {
   struct timespec xReq;
   struct timespec xRem;
@@ -676,63 +771,6 @@ void Pthread::vSleepMsec(i8 nMilliSeconds, eCN eCallingClass)
               "Thead is awake"_Stz);
 }
 
-/*----------------------------------------------------------------------------*/
-/* sleep for given number of nanoseconds                                      */
-/*----------------------------------------------------------------------------*/
-void Pthread::vSleepNsec(i8 nNanoSeconds, eCN eCallingClass)
-{
-  struct timespec xReq;
-  struct timespec xRem;
-  
-  if (nNanoSeconds >= C_1G) {
-    xReq.tv_nsec = nNanoSeconds % C_1G;
-    xReq.tv_sec  = DIV(nNanoSeconds,C_1G);
-  }
-  else {
-    xReq.tv_nsec = nNanoSeconds;
-    xReq.tv_sec  = 0;
-  }
-
-#ifdef WITH_STATISTICS_COUNTERS
-  Statistics* pStats = &gpAttachMap->m_oStatistics;
-  pStats->Thread.m_nSleeps++;
-  pStats->Thread.m_iaSleeps[eCallingClass]++;
-  pStats->Thread.m_iaDuration[eCallingClass] += nNanoSeconds;
-#endif
-  
-  AM::vLogRes(nullptr,RA_THD_SLEEP,
-              "Pthread nanosleeps for %lldns"_Stz,nNanoSeconds);
-
-  i8 rCode = nanosleep(&xReq,&xRem);
-  
-  if (rCode && errno != EINTR) {
-    vWarn("Pthread::vSleepNsec error; errno=%lld\n"_Stz,errno);
-  }
-  AM::vLogRes(nullptr,RA_THD_AWAKE,
-              "Thead is awake"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* sleep for given number of seconds                                          */
-/*----------------------------------------------------------------------------*/
-void Pthread::vSleepSsec(i8 nSeconds, eCN eCallingClass)
-{
-  
-#ifdef WITH_STATISTICS_COUNTERS
-  Statistics* pStats = &gpAttachMap->m_oStatistics;
-  pStats->Thread.m_nSleeps++;
-  pStats->Thread.m_iaSleeps[eCallingClass]++;
-  pStats->Thread.m_iaDuration[eCallingClass] += nSeconds * C_1G;
-#endif
-  
-  AM::vLogRes(nullptr,RA_THD_SLEEP,
-              "Pthead sleeps for %llds"_Stz,nSeconds);
-  
-  sleep((unsigned)nSeconds);
-  
-  AM::vLogRes(nullptr,RA_THD_AWAKE,
-              "Thead is awake"_Stz);
-}
 
 /*----------------------------------------------------------------------------*/
 /* sleep for given number of microseconds                                     */

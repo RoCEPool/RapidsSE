@@ -239,6 +239,15 @@ Tasks::Task* AM::pThisTLSTask(void) {
   Task* pTask = pThread->pTask();
   return pTask;
 }
+Thread* AM::pThisTLSThread(void) {
+  Thread* pThread = Thread::pThisTLSThread();
+  return pThread;
+}
+Pthread* AM::pThisTLSPthread(void) {
+  Thread* pThread = Thread::pThisTLSThread();
+  Pthread* pPthread =pThread->m_pPthread;
+  return pPthread;
+}
 void AM::vWelcomeText(s256& sWelcome) {
   Engine::vGetWelcome(sWelcome);
 }

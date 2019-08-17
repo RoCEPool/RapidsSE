@@ -924,10 +924,10 @@ void Task::vThread(Threads::Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Task::vTracePoint(Stz* aMark)
 {
-  if (AM::nNodes() > 1) {
-    i8 iPause = Random::iInteger(999,99999);
-    Pthread::vSleepUsec(iPause,CN_TASK);
-  }
+//  if (AM::nNodes() > 1) {
+//    i8 iPause = Random::iInteger(999,99999);
+//    Pthread::vSleepUsec(iPause,CN_TASK);
+//  }
   
   s256 sRoutine;
   

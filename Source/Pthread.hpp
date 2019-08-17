@@ -34,10 +34,10 @@ namespace Resources
     bool bSpawnThread(void* pFun(void*), void* pArg);
   
     void vSleepInfinite(void);
-//    void vSleepMsec(i8 nMilliSeconds, eCN eCallingClass);
-//    void vSleepNsec(i8 nNanoSeconds, eCN eCallingClass);
-//    void vSleepSsec(i8 nSeconds, eCN eCallingClass);
-//    void vSleepUsec(i8 nMicroSeconds, eCN eCallingClass);
+    void vSleepMsec(i8 nMilliSeconds, eCN eCallingClass);
+    void vSleepNsec(i8 nNanoSeconds, eCN eCallingClass);
+    void vSleepSsec(i8 nSeconds, eCN eCallingClass);
+    void vSleepUsec(i8 nMicroSeconds, eCN eCallingClass);
 
     i8   iThreadCpu(void);
     void vThreadEntry(void);
@@ -54,10 +54,9 @@ namespace Resources
     static void  vMarkNonSeThread(void);
     static void  vMonitorPortrait(s48K& sPortrait);
 
-    static void  vSleepMsec(i8 nMilliSeconds, eCN eCallingClass);
-    static void  vSleepNsec(i8 nNanoSeconds, eCN eCallingClass);
-    static void  vSleepSsec(i8 nSeconds, eCN eCallingClass);
-    static void  vSleepUsec(i8 nMicroSeconds, eCN eCallingClass);
+    static void  vSleepMsec_(i8 nMilliSeconds, eCN eCallingClass);
+    static void  vSleepNsec_(i8 nNanoSeconds, eCN eCallingClass);
+    static void  vSleepSsec_(i8 nSeconds, eCN eCallingClass);
     static void  vSleepers(void);
     static void* aStackBase(void);
     static void* aStackPointer(void);
