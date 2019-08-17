@@ -24,6 +24,7 @@ namespace Operators
 #include "Digest.hpp"
 #include "OpHelper.hpp"
 
+#include "Pipe.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

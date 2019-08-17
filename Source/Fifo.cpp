@@ -9,7 +9,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Fifo::Fifo(void)
-: Resource(CN_FIFO,RK_PIPE)
+: Resource(CN_FIFO,RK_FIFO)
 {
   _precondition_(_MAGIC_,CN_FIFO,_FOOTER_);
   
@@ -25,7 +25,7 @@ Fifo::Fifo(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Fifo::Fifo(Stz* sFifoPath)
-: Resource(CN_FIFO,RK_PIPE)
+: Resource(CN_FIFO,RK_FIFO)
 {
   _precondition_(_MAGIC_,CN_FIFO,_FOOTER_);
   

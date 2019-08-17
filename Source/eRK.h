@@ -8,9 +8,9 @@ enum eRK // Resource kind
   RK_NONE,
   
   RK_DIR,
+  RK_FIFO,
   RK_FILE,
   RK_MUTEX,
-  RK_PIPE,
   RK_PTHREAD,
   RK_SOCKET,
   
@@ -23,8 +23,8 @@ static Stz* aRK[]
   
   "DIR"_Stz,
   "FILE"_Stz,
+  "FIFO"_Stz,
   "MUTEX"_Stz,
-  "PIPE"_Stz,
   "PTHREAD"_Stz,
   "SOCKET"_Stz,
   
@@ -37,8 +37,8 @@ static Stz* aRK_Short[]
 
   "DIR"_Stz,
   "FIL"_Stz,
+  "FIO"_Stz,
   "MTX"_Stz,
-  "PIP"_Stz,
   "PTH"_Stz,
   "SKT"_Stz,
 
