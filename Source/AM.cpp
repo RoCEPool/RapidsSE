@@ -411,7 +411,7 @@ void AM::vLogItf(Session* pSsn, eIA eItfAct, Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add a interface log entry                                                  */
+/* add a job log entry                                                        */
 /*----------------------------------------------------------------------------*/
 void AM::vLogJob(Job* pJob, eJA eJobAct, Stz* szFormat, ...)
 {
@@ -429,6 +429,30 @@ void AM::vLogJob(Job* pJob, eJA eJobAct, Stz* szFormat, ...)
   
   i8 iJobId = pJob ? pJob->iJobId() : C_UNKNOWN;
   gpLog->iEntryJob(iJobId,eJobAct,szFormat,xVaArgs);
+  
+  va_end(xVaArgs);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a lock log entry                                                       */
+/*----------------------------------------------------------------------------*/
+void AM::vLogLck(Lock* pLock, eLA eLckAct, Stz* szFormat, ...)
+{
+#ifdef WITH_SHARED_LOG
+  if (! AM::bLogging())
+  return;
+  
+  if (! (AM::pMarkAction()->bEnum(eLckAct) ||
+         AM::pMarkAction()->bAll()) )
+  return;
+  
+  va_list xVaArgs;
+  
+  va_start(xVaArgs,szFormat);
+  
+  i8 iLckId =  0; //pLock ? pLock->iJobId() : C_UNKNOWN;
+  gpLog->iEntryLck(iLckId,eLckAct,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif
