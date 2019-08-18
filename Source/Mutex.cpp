@@ -5,6 +5,7 @@
 #include "Resources.h"
 #include "AM.hpp"
 
+Atomic gixMutex;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -100,8 +101,9 @@ Mutex::Mutex()
   gpAttachMap->m_oStatistics.Mutex.m_nInits++;
 #endif
   
-  AM::vLogRes(this,RA_MTX_CREATE,
-              "Mutex created : %p"_Stz,this);
+  ++ gixMutex;
+  AM::vLogRes(this,RA_MTX_CONSTRUCTOR,
+              "Mutex constructor : %p (%lld exist)"_Stz,this,* gixMutex);
 
   _checkInitialised_(CN_MUTEX);
 
@@ -133,8 +135,9 @@ Mutex::~Mutex(void) noexcept(false)
   gpAttachMap->m_oStatistics.Mutex.m_nDestroys++;
 #endif
   
-  AM::vLogRes(this,RA_MTX_DESTROY,
-              "Mutex destroyed : %p"_Stz,this);
+  -- gixMutex;
+  AM::vLogRes(this,RA_MTX_DESTRUCTOR,
+              "Mutex destructor : %p (%lld exist)"_Stz,this,* gixMutex);
 }
 
 /*----------------------------------------------------------------------------*/

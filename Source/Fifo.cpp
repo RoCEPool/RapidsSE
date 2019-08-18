@@ -4,6 +4,7 @@
 
 #include "Resources.h"
 
+Atomic gixFifo;
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -57,7 +58,7 @@ bool Fifo::bMake(Stz* sFifoPath)
     return false;
   }
   
-  AM::vLogRes(nullptr,RA_PIP_MADE,
+  AM::vLogRes(nullptr,RA_FIO_MADE,
               "Fifo made : %s"_Stz,sFifoPath->aChar());
 
   return true;
@@ -75,7 +76,7 @@ bool Fifo::bRemove(Stz* sFifoPath)
     return false;
   }
   
-  AM::vLogRes(nullptr,RA_PIP_REMOVED,
+  AM::vLogRes(nullptr,RA_FIO_REMOVED,
               "Fifo removed : %s"_Stz,sFifoPath->aChar());
   
   return true;

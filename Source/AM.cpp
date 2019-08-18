@@ -366,6 +366,8 @@ void AM::vWriteTrace(eYA eSysAct, Stz* aFormat, va_list xArgs)
     gpTraceFile->vFlush();
   }
   
+  StrLib::vStrip(caFormatted,'\n');
+  
   AM::vLogSys(nullptr,eSysAct,"%s"_Stz,caFormatted);
   
   if (bUseLock)

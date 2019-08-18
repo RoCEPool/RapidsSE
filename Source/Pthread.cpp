@@ -5,6 +5,8 @@
 #include "Resources.h"
 #include "AM.hpp"
 
+Atomic gixPthread;
+
 extern pthread_key_t giTLS_ThreadKey;
 
 /*----------------------------------------------------------------------------*/

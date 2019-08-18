@@ -5,6 +5,7 @@
 #include "Resources.h"
 #include "AM.hpp"
 
+Atomic gixFile;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
