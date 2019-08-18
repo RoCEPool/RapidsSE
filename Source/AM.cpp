@@ -479,9 +479,9 @@ void AM::vLogLog(Log* pLog, eGA eLogAct, Stz* szFormat, ...)
   if (! AM::bLogging())
     return;
   
-  if (! (AM::pMarkAction()->bEnum(eLogAct) ||
-         AM::pMarkAction()->bAll()) )
-  return;
+//  if (! (AM::pMarkAction()->bEnum(eLogAct) ||
+//         AM::pMarkAction()->bAll()) )
+//  return;
   
   va_list xVaArgs;
   
@@ -552,9 +552,9 @@ void AM::vLogPrm(SePrompt* pPrm, ePA ePrmAct, Stz* szFormat, ...)
   if (! AM::bLogging())
     return;
   
-  if (! (AM::pMarkAction()->bEnum(ePrmAct) ||
-         AM::pMarkAction()->bAll()) )
-    return;
+//  if (! (AM::pMarkAction()->bEnum(ePrmAct) ||
+//         AM::pMarkAction()->bAll()) )
+//    return;
   
   va_list xVaArgs;
   

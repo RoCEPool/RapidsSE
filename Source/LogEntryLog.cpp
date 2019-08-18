@@ -25,7 +25,7 @@ void _LogEntryLog::vWriteCsv(File* pFile)
   pFile->vPrint(",%s,%s"_Stz,
                 
                 spId.sz("G"_Stz,m_iLogId),
-                aLA[m_eLogAct]);
+                aGA[m_eLogAct]);
 }
 
 /*============================================================================*/
