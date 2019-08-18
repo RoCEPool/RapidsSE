@@ -55,6 +55,10 @@ File::File(void)
 
   _checkInitialised_(CN_FILE);
   
+  ++ gixFile;
+  AM::vLogRes(this,RA_FIL_CONSTRUCTOR,
+              "File constructed : %p (%lld exist)"_Stz,this,* gixFile);
+  
   _postcondition_(_MAGIC_,CN_FILE,_FOOTER_);
 }
 
@@ -73,6 +77,10 @@ File::~File(void) noexcept(false)
     if (m_oSysCall.bHadError())
       vWarn("File::~File: file could not be closed: %s"_Stz,m_sFilePath.aChar());
   }
+  
+  -- gixFile;
+  AM::vLogRes(this,RA_MTX_DESTRUCTOR,
+              "File destructed : %p (%lld exist)"_Stz,this,* gixFile);
 }
 
 /*----------------------------------------------------------------------------*/

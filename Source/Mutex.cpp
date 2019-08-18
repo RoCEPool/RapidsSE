@@ -101,11 +101,11 @@ Mutex::Mutex()
   gpAttachMap->m_oStatistics.Mutex.m_nInits++;
 #endif
   
+  _checkInitialised_(CN_MUTEX);
+  
   ++ gixMutex;
   AM::vLogRes(this,RA_MTX_CONSTRUCTOR,
-              "Mutex constructor : %p (%lld exist)"_Stz,this,* gixMutex);
-
-  _checkInitialised_(CN_MUTEX);
+              "Mutex constructed : %p (%lld exist)"_Stz,this,* gixMutex);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
 }
@@ -137,7 +137,7 @@ Mutex::~Mutex(void) noexcept(false)
   
   -- gixMutex;
   AM::vLogRes(this,RA_MTX_DESTRUCTOR,
-              "Mutex destructor : %p (%lld exist)"_Stz,this,* gixMutex);
+              "Mutex destructed : %p (%lld exist)"_Stz,this,* gixMutex);
 }
 
 /*----------------------------------------------------------------------------*/

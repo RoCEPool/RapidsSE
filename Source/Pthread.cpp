@@ -58,6 +58,10 @@ Pthread::Pthread()
   
   _checkInitialised_(CN_PTHREAD);
 
+  ++ gixPthread;
+  AM::vLogRes(this,RA_THD_CONSTRUCTOR,
+              "Pthread constructed : %p (%lld exist)"_Stz,this,* gixPthread);
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
 }
 
@@ -66,6 +70,11 @@ Pthread::Pthread()
 /*----------------------------------------------------------------------------*/
 Pthread::~Pthread(void) noexcept(false)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
+  
+  -- gixPthread;
+  AM::vLogRes(this,RA_THD_DESTRUCTOR,
+              "Pthread destructed : %p (%lld exist)"_Stz,this,* gixPthread);
 }
 
 /*----------------------------------------------------------------------------*/

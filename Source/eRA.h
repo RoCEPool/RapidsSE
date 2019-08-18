@@ -17,6 +17,11 @@ enum eRA // resource actions
   /*    */ RA_FIL_DESTRUCTOR,
   /*    */ RA_FIL_OPENED,
 
+  /*    */ RA_FIO_CONSTRUCTOR,
+  /*    */ RA_FIO_DESTRUCTOR,
+  /*    */ RA_FIO_MADE,
+  /*    */ RA_FIO_REMOVED,
+  
   /*    */ RA_MTX_CONSTRUCTOR,
   /*    */ RA_MTX_DESTRUCTOR,
   /*    */ RA_MTX_LOCKED,
@@ -26,9 +31,6 @@ enum eRA // resource actions
   /*    */ RA_MTX_UNLOCKED,
   /*    */ RA_MTX_WAIT_INDEFINITE,
   /*    */ RA_MTX_WAIT_TIMED,
-
-  /*    */ RA_FIO_MADE,
-  /*    */ RA_FIO_REMOVED,
 
   /*    */ RA_SKT_ACCEPTED,
   /*    */ RA_SKT_CLOSED,
@@ -65,6 +67,11 @@ static Stz* aRA[]
   /*    */ "RA_FIL_DESTRUCTOR"_Stz,
   /*    */ "RA_FIL_OPENED"_Stz,
 
+  /*    */ "RA_FIO_CONSTRUCTOR"_Stz,
+  /*    */ "RA_FIO_DESTRUCTOR"_Stz,
+  /*    */ "RA_FIO_MADE"_Stz,
+  /*    */ "RA_FIO_REMOVED"_Stz,
+  
   /*    */ "RA_MTX_CONSTRUCTOR"_Stz,
   /*    */ "RA_MTX_CREATE"_Stz,
   /*    */ "RA_MTX_DESTROY"_Stz,
@@ -76,9 +83,6 @@ static Stz* aRA[]
   /*    */ "RA_MTX_UNLOCK"_Stz,
   /*    */ "RA_MTX_WAIT_INDEFINITE"_Stz,
   /*    */ "RA_MTX_WAIT_TIMED"_Stz,
-
-  /*    */ "RA_FIO_MADE"_Stz,
-  /*    */ "RA_FIO_REMOVED"_Stz,
 
   /*    */ "RA_SKT_ACCEPTED"_Stz,
   /*    */ "RA_SKT_CLOSED"_Stz,

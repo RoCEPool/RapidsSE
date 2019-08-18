@@ -66,6 +66,10 @@ Socket::Socket(void)
   
   _checkInitialised_(CN_SOCKET);
   
+  ++ gixSocket;
+  AM::vLogRes(this,RA_SKT_CONSTRUCTOR,
+              "Socket constructed : %p (%lld exist)"_Stz,this,* gixSocket);
+
   _postcondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
 }
 
@@ -82,6 +86,12 @@ Socket::Socket(int iSocketId)
   m_okLock.vInitLock(LK_SOCKET);
   
   m_aLowBuff = MemLib::aMallocBlock(C_SIZE_POOL_BUFFER);
+  
+  ++ gixSocket;
+  AM::vLogRes(this,RA_SKT_CONSTRUCTOR,
+              "Socket constructed : %p (%lld exist)"_Stz,this,* gixSocket);
+  
+  _postcondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -96,6 +106,10 @@ Socket::~Socket(void) noexcept(false)
   }
   
   MemLib::vFreeBlock(m_aLowBuff,C_SIZE_POOL_BUFFER);
+  
+  -- gixSocket;
+  AM::vLogRes(this,RA_SKT_DESTRUCTOR,
+              "Socket destructed : %p (%lld exist)"_Stz,this,* gixSocket);
 }
 
 /*----------------------------------------------------------------------------*/
