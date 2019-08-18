@@ -5,6 +5,7 @@
 #include "Tasks.h"
 #include "AM.hpp"
 
+Atomic gixTask;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -78,9 +79,9 @@ Task::Task(Job* pJob, Session* pSession)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  ActLog::vAdd(m_i_ActionRoot,0,
-                       CN_TASK,AN_CONSTRUCTOR,
-                       m_pJob->eClass(),_EG_CN);
+  ++ gixTask;
+  AM::vLogTsk(this,TA_TASK_CONSTRUCTOR,
+              "Task constructed : %p (%lld exist)"_Stz,this,* gixTask);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }
@@ -108,9 +109,9 @@ Task::Task(Op* pOp, Session* pSession)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  ActLog::vAdd(m_i_ActionRoot,0,
-                       CN_TASK,AN_CONSTRUCTOR,
-                       m_pOp->eClass(),_EG_CN);
+  ++ gixTask;
+  AM::vLogTsk(this,TA_TASK_CONSTRUCTOR,
+              "Task constructed : %p (%lld exist)"_Stz,this,* gixTask);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }
@@ -183,8 +184,9 @@ Task::~Task(void) noexcept(false)
     delete pLocalsFrame;
   }
   
-  ActLog::vAdd(m_i_ActionRoot,0,CN_TASK,AN_DESTRUCTOR,CN_TASK);
-
+  -- gixTask;
+  AM::vLogTsk(this,TA_TASK_DESTRUCTOR,
+              "Task destructed : %p (%lld exist)"_Stz,this,* gixTask);
 }
 
 /*----------------------------------------------------------------------------*/
