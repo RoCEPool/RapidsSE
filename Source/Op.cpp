@@ -8,6 +8,8 @@
 #include "eTR.h"
 #include "eTS.h"
 
+Atomic gixOp;
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -70,7 +72,9 @@ Op::Op(eCN eClassNo, Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   m_fpCall        = m_aOpDefn ? m_aOpDefn->m_fpCall  : nullptr;
   m_fpDrain       = m_aOpDefn ? m_aOpDefn->m_fpDrain : nullptr;
   
-  AM::vLogOpr(this,OA_OP_CONSTRUCTOR,"::Op"_Stz);
+  ++ gixOp;
+  AM::vLogOpr(this,OA_OP_CONSTRUCTOR,
+              "Op constructed : %p (%lld exist)"_Stz,this,* gixOp);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -86,7 +90,9 @@ Op::~Op(void) noexcept(false)
   if (m_pStreamDef)
     delete m_pStreamDef;
   
-  AM::vLogOpr(this,OA_OP_DESTRUCTOR,"::~Op"_Stz);
+  -- gixOp;
+  AM::vLogOpr(this,OA_OP_DESTRUCTOR,
+              "Op destructed : %p (%lld exist)"_Stz,this,* gixOp);
 }
 
 /*----------------------------------------------------------------------------*/

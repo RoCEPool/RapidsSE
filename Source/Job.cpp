@@ -5,6 +5,8 @@
 #include "Jobs.h"
 #include "AM.hpp"
 
+Atomic gixJob;
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -115,6 +117,12 @@ Job::Job(eCN eClassNo, Session* pSession)
   if (m_bMarkActivity)
     Log::vNote("::Job"_Stz,""_Stz);
   
+  // -- -- -- -- -- --
+  
+  ++ gixJob;
+  AM::vLogJob(this,JA_JOB_CONSTRUCTOR,
+              "Job constructed : %p (%lld exist)"_Stz,this,* gixJob);
+  
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
 }
 
@@ -133,6 +141,10 @@ Job::~Job(void) noexcept(false)
     Log::vNote("~Job %s"_Stz,aCN[eClass()]);
     Job::vMarkJob();
   }
+  
+  -- gixJob;
+  AM::vLogJob(this,JA_JOB_DESTRUCTOR,
+              "Job destructed : %p (%lld exist)"_Stz,this,* gixJob);
 }
 
 /*----------------------------------------------------------------------------*/
