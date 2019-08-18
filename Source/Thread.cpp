@@ -6,6 +6,8 @@
 #include "Scheduler.hpp"
 #include "AM.hpp"
 
+Atomic gixThread;
+
 extern pthread_key_t giTLS_ThreadKey;
 
 /*----------------------------------------------------------------------------*/
@@ -78,6 +80,10 @@ Thread::Thread(void)
 
   _checkInitialised_(CN_THREAD);
   
+  ++ gixThread;
+  AM::vLogThd(this,HA_THREAD_CONSTRUCTOR,
+              "Thread constructed : %p (%lld exist)"_Stz,this,* gixThread);
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
 }
 
@@ -90,6 +96,10 @@ Thread::~Thread(void) noexcept(false)
   
   delete m_pMutexThread;
   delete m_pPthread;
+  
+  -- gixThread;
+  AM::vLogThd(this,HA_THREAD_DESTRUCTOR,
+              "Thread destructed : %p (%lld exist)"_Stz,this,* gixThread);
 }
 
 /*----------------------------------------------------------------------------*/
