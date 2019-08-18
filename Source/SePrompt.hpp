@@ -10,8 +10,10 @@ namespace Prompt
   class SePrompt : public Object
   {
   private:
-    bool     m_bContinue;  // continue processing commands?
+    i8       m_iPromptId;  // the prompt id
     Session* m_pSession;   // rapidsse session
+
+    bool     m_bContinue;  // continue processing commands?
     Timer    m_oTimer;     // the timer
     bool     m_bTimed;     // command is being timed
     bool     m_bTraced;    // command is being traced
@@ -71,6 +73,7 @@ namespace Prompt
     bool bPassesLowMem(void);
     void vPostJob(void);
     void vPreJob(void);
+    i8   iPromptId(void);
     void vReformatCommand(void);
     void vRestateCommand(void);
     void vReportTime(void);

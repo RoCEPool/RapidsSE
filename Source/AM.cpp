@@ -73,6 +73,7 @@ i8   AM::iNextLockId(void)    {
 }
 i8   AM::iNextOpId(void)      { return ++ gpAttachMap->m_inNextOpId;          }
 i8   AM::iNextPlanId(void)    { return ++ gpAttachMap->m_inNextPlanId;        }
+i8   AM::iNextPromptId(void)  { return ++ gpAttachMap->m_inNextPromptId;      }
 i8   AM::iNextResourceId(void){
   if (gpAttachMap)
     return ++ gpAttachMap->m_inNextResourceId;
@@ -534,7 +535,7 @@ void AM::vLogPrm(SePrompt* pPrm, ePA ePrmAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 iPrmId = C_UNKNOWN; //pPrm->iPrmId();
+  i8 iPrmId = pPrm->iPromptId();
   gpLog->iEntryPrm(pPrm->eClass(),iPrmId,ePrmAct,szFormat,xVaArgs);
   
   va_end(xVaArgs);

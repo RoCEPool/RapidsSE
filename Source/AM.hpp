@@ -73,6 +73,7 @@ namespace StorageEngine
     static i8   iNextLockId(void);
     static i8   iNextOpId(void);
     static i8   iNextPlanId(void);
+    static i8   iNextPromptId(void);
     static i8   iNextResourceId(void);
     static i8   iNextStreamId(void);
     static i8   iNextTaskId(void);

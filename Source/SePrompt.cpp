@@ -39,10 +39,9 @@ SePrompt::SePrompt(bool bOneCommand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  i8 iPartition = 0;
+  m_iPromptId = AM::iNextPromptId();
   
-  m_bContinue = true;
-
+  i8 iPartition = 0;
   eEC eResult = RapidsSE_NewSession(0,
                                   "rapidsse"_Stz,
                                   "public"_Stz,
@@ -51,6 +50,7 @@ SePrompt::SePrompt(bool bOneCommand)
 
   ASSERT(EC_NONE == eResult);
 
+  m_bContinue = true;
   m_pJobClass = nullptr;
   m_pJob = nullptr;
 
@@ -696,6 +696,16 @@ void SePrompt::vPreJob(void)
   
 //  if (m_pJob && m_pJob->m_bMarkTrace)
 //    m_pJob->m_pJobClass->vShowJob(m_pJob);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get prompt id                                                              */
+/*----------------------------------------------------------------------------*/
+i8 SePrompt::iPromptId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_iPromptId;
 }
 
 /*----------------------------------------------------------------------------*/
