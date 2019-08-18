@@ -47,7 +47,7 @@ void DecaCnt::vInc(Stz* szFormat,...)
     vTrace("%s %lld:"_Stz,m_sName.aStz(),m_iCount);
     va_list xArgs;
     va_start(xArgs,szFormat);
-    AM::vWriteTrace(szFormat,xArgs);
+    AM::vWriteTrace(YA_SYS_INFO,szFormat,xArgs);
     va_end(xArgs);
   }
 }

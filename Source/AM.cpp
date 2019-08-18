@@ -343,7 +343,7 @@ void AM::vStateDiagram(s256& sDiagram, eCN eJobClass)
 /*----------------------------------------------------------------------------*/
 /* write to trace file etc                                                    */
 /*----------------------------------------------------------------------------*/
-void AM::vWriteTrace(Stz* aFormat, va_list xArgs)
+void AM::vWriteTrace(eYA eSysAct, Stz* aFormat, va_list xArgs)
 {
   static Lock oLock(LK_TRACE);
   static char caFormatted[C_1MB] = {'\0'};
@@ -365,6 +365,8 @@ void AM::vWriteTrace(Stz* aFormat, va_list xArgs)
     gpTraceFile->vPrint("%s%s"_Stz,bLowMem ? "LOW-MEMORY! " : "",caFormatted);
     gpTraceFile->vFlush();
   }
+  
+  AM::vLogSys(nullptr,eSysAct,"%s"_Stz,caFormatted);
   
   if (bUseLock)
     oLock.vDropWrite();
