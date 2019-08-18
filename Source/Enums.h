@@ -73,6 +73,7 @@ namespace Enums
 #include "eWT.h"
 #include "eXA.h"
 #include "eXP.h"
+#include "eYA.h"
 
 #include "EnumGroups.hpp"
 

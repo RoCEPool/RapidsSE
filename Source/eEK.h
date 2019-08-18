@@ -17,11 +17,12 @@ enum eEK // entry kind
   /* 8 */ EK_PRM,
   /* 9 */ EK_RES,
   /*10 */ EK_SVC,
-  /*11 */ EK_THD,
-  /*12 */ EK_TSK,
-  /*13 */ EK_TXN,
+  /*11 */ EK_SYS,
+  /*12 */ EK_THD,
+  /*13 */ EK_TSK,
+  /*14 */ EK_TXN,
   
-  /*14 */ EK_ENUMS
+  /*15 */ EK_ENUMS
 };
 
 static Stz* aEK[]
@@ -38,9 +39,10 @@ static Stz* aEK[]
   /* 8 */ "PRM"_Stz,
   /* 9 */ "RES"_Stz,
   /*10 */ "SVC"_Stz,
-  /*11 */ "THD"_Stz,
-  /*12 */ "TSK"_Stz,
-  /*13 */ "TXN"_Stz,
+  /*11 */ "SYS"_Stz,
+  /*12 */ "THD"_Stz,
+  /*13 */ "TSK"_Stz,
+  /*14 */ "TXN"_Stz,
   
   /*15 */ "ENUMS"_Stz
 };

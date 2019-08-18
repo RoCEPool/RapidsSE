@@ -18,6 +18,7 @@ namespace Logging
   friend class _LogEntryPrm;
   friend class _LogEntryRes;
   friend class _LogEntrySvc;
+  friend class _LogEntrySys;
   friend class _LogEntryThd;
   friend class _LogEntryTsk;
   friend class _LogEntryTxn;
@@ -45,6 +46,7 @@ namespace Logging
       _LogEntryPrm m_xPrm;  // when m_eKind == EK_PRM
       _LogEntryRes m_xRes;  // when m_eKind == EK_RES
       _LogEntrySvc m_xSvc;  // when m_eKind == EK_SVC
+      _LogEntrySys m_xSys;  // when m_eKind == EK_SYS
       _LogEntryTsk m_xTsk;  // when m_eKind == EK_TSK
       _LogEntryThd m_xThd;  // when m_eKind == EK_THD
       _LogEntryTxn m_xTxn;  // when m_eKind == EK_TXN
