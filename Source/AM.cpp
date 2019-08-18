@@ -470,6 +470,31 @@ void AM::vLogLck(Lock* pLock, eLA eLckAct, Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add a log log entry                                                        */
+/*----------------------------------------------------------------------------*/
+void AM::vLogLog(Log* pLog, eGA eLogAct, Stz* szFormat, ...)
+{
+#ifdef WITH_SHARED_LOG
+  
+  if (! AM::bLogging())
+    return;
+  
+  if (! (AM::pMarkAction()->bEnum(eLogAct) ||
+         AM::pMarkAction()->bAll()) )
+  return;
+  
+  va_list xVaArgs;
+  
+  va_start(xVaArgs,szFormat);
+  
+  i8 iLogId = 0;
+  gpLog->iEntryLog(pLog->eClass(),iLogId,eLogAct,szFormat,xVaArgs);
+  
+  va_end(xVaArgs);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
 /* add a object log entry                                                     */
 /*----------------------------------------------------------------------------*/
 void AM::vLogObj(Object* pObject, eCA eObjAct, Stz* szFormat, ...)

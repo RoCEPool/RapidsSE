@@ -11,16 +11,17 @@ enum eEK // entry kind
   /* 2 */ EK_FYI,
   /* 3 */ EK_JOB,
   /* 4 */ EK_LCK,
-  /* 5 */ EK_OBJ,
-  /* 6 */ EK_OPR,
-  /* 7 */ EK_PRM,
-  /* 8 */ EK_RES,
-  /* 9 */ EK_SVC,
-  /*10 */ EK_THD,
-  /*11 */ EK_TSK,
-  /*12 */ EK_TXN,
+  /* 5 */ EK_LOG,
+  /* 6 */ EK_OBJ,
+  /* 7 */ EK_OPR,
+  /* 8 */ EK_PRM,
+  /* 9 */ EK_RES,
+  /*10 */ EK_SVC,
+  /*11 */ EK_THD,
+  /*12 */ EK_TSK,
+  /*13 */ EK_TXN,
   
-  /*13 */ EK_ENUMS
+  /*14 */ EK_ENUMS
 };
 
 static Stz* aEK[]
@@ -31,16 +32,17 @@ static Stz* aEK[]
   /* 2 */ "FYI"_Stz,
   /* 3 */ "JOB"_Stz,
   /* 4 */ "LCK"_Stz,
-  /* 5 */ "OBJ"_Stz,
-  /* 6 */ "OPR"_Stz,
-  /* 7 */ "PRM"_Stz,
-  /* 8 */ "RES"_Stz,
-  /* 9 */ "SVC"_Stz,
-  /*10 */ "THD"_Stz,
-  /*11 */ "TSK"_Stz,
-  /*12 */ "TXN"_Stz,
+  /* 5 */ "LOG"_Stz,
+  /* 6 */ "OBJ"_Stz,
+  /* 7 */ "OPR"_Stz,
+  /* 8 */ "PRM"_Stz,
+  /* 9 */ "RES"_Stz,
+  /*10 */ "SVC"_Stz,
+  /*11 */ "THD"_Stz,
+  /*12 */ "TSK"_Stz,
+  /*13 */ "TXN"_Stz,
   
-  /*13 */ "ENUMS"_Stz
+  /*15 */ "ENUMS"_Stz
 };
 
 /*============================================================================*/

@@ -276,10 +276,10 @@ void Log::vOpenByApi(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Log::vNote("Opened by API"_Stz);
+  AM::vLogLog(gpLog,GA_LOG_OPENED_API,"Opened by API"_Stz);
   
   Now oNow;
-  Log::vNote("Time is: "_Stz,oNow.sz());
+  AM::vLogLog(gpLog,GA_LOG_TIME,"Time is: "_Stz,oNow.sz());
 #endif
 }
 
@@ -326,10 +326,10 @@ void Log::vOpenBySE(bool bStarting)
   
   s256 sWelcome;
   AM::vWelcomeText(sWelcome);
-  Log::vNote(sWelcome);
+  AM::vLogLog(gpLog,GA_LOG_WELCOME,sWelcome);
   
   Now oNow;
-  Log::vNote("Time is: %s"_Stz,oNow.sz());
+  AM::vLogLog(gpLog,GA_LOG_TIME,"Time is: %s"_Stz,oNow.sz());
 
   s32 sMem;
   MagLib::vByteMag(Hardware::iPhysicalMemory(),sMem);
@@ -342,9 +342,12 @@ void Log::vOpenBySE(bool bStarting)
   Hardware::vHostName(sHost);
   Hardware::vLoginName(sUser);
 
-  Log::vNote("hw: host %s user %s; %lld cores; %s memory; %s clock frequency"_Stz,
+  AM::vLogLog(gpLog,GA_LOG_HOST,
+              "hw: host %s user %s; "
+              "%lld cores; %s memory; %s clock frequency"_Stz,
              sHost.aChar(),
              sUser.aChar(),
+              
              Hardware::iCoreCount(),
              sMem.aStz(),
              sClock.aStz()
@@ -480,6 +483,34 @@ i8 Log::iEntryLck(eCN eClassNo, i8 iLckId, eLA eLckAct,
   StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
   
   pLogEntry->m_xLck.vSet(pLogEntry,iLckId,eLckAct);
+  
+  return pLogEntry->m_i_Entry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a log log entry                                                        */
+/*----------------------------------------------------------------------------*/
+i8 Log::iEntryLog(eCN eClassNo, i8 iLogId, eGA eLogAct,
+                  Stz* szFormat, va_list xVaArgs)
+{
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
+  
+  LogEntry* pLogEntry = pNewEntry(eClassNo);
+  
+  if (! pLogEntry)
+  return C_UNKNOWN;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  char caText[1024];
+  
+  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
+  
+  pLogEntry->m_xLog.vSet(pLogEntry,iLogId,eLogAct);
   
   return pLogEntry->m_i_Entry;
 }
@@ -898,14 +929,14 @@ void Log::vWriteToFile(bool bShortForm)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Now oNow;
-  Log::vNote("Writing Log at: %s"_Stz,oNow.sz());
+  AM::vLogLog(gpLog,GA_LOG_HOST,"Writing Log at: %s"_Stz,oNow.sz());
   
   s256 sWelcome;
   AM::vWelcomeText(sWelcome);
-  Log::vNote(sWelcome);
+  AM::vLogLog(gpLog,GA_LOG_WELCOME,sWelcome);
   
   i8 iUpTimeSsec = AM::iElapsedSsec();
-  Log::vNote("Uptime %llds Requests %lld"_Stz,iUpTimeSsec,C_UNKNOWN);
+  AM::vLogLog(gpLog,GA_LOG_UPTIME,"Uptime %llds Requests %lld"_Stz,iUpTimeSsec,C_UNKNOWN);
 
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
   vGrabLock();
