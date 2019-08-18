@@ -656,6 +656,34 @@ i8 Log::iEntrySvc(eCN eClassNo, i8 iSvcId, eVA eSvcAct,
 }
 
 /*----------------------------------------------------------------------------*/
+/* add a system log entry                                                     */
+/*----------------------------------------------------------------------------*/
+i8 Log::iEntrySys(eCN eClassNo, i8 iSysId, eYA eSysAct,
+                  Stz* szFormat, va_list xVaArgs)
+{
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
+  
+  LogEntry* pLogEntry = pNewEntry(eClassNo);
+  
+  if (! pLogEntry)
+  return C_UNKNOWN;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  char caText[1024];
+  
+  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
+  
+  pLogEntry->m_xSys.vSet(pLogEntry,iSysId,eSysAct);
+  
+  return pLogEntry->m_i_Entry;
+}
+
+/*----------------------------------------------------------------------------*/
 /* add a thread log entry                                                     */
 /*----------------------------------------------------------------------------*/
 i8 Log::iEntryThd(eCN eClassNo, i8 iThdId, eHA eThdAct,

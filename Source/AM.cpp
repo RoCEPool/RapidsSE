@@ -620,6 +620,31 @@ void AM::vLogSvc(Job* pJob, eVA eSvcAct, Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add a system log entry                                                     */
+/*----------------------------------------------------------------------------*/
+void AM::vLogSys(AttachMap* pSys, eYA eSysAct, Stz* szFormat, ...)
+{
+#ifdef WITH_SHARED_LOG
+  if (! AM::bLogging())
+    return;
+  
+//  if (! (AM::pMarkAction()->bEnum(eSysAct) ||
+//         AM::pMarkAction()->bAll()) )
+//  return;
+  
+  va_list xVaArgs;
+  
+  va_start(xVaArgs,szFormat);
+  
+  i8 iSysId = 0;
+  
+  gpLog->iEntrySys(CN_ATTACHMAP,iSysId,eSysAct,szFormat,xVaArgs);
+  
+  va_end(xVaArgs);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
 /* add a thread log entry                                                     */
 /*----------------------------------------------------------------------------*/
 void AM::vLogThd(Thread* pThread, eHA eThdAct, Stz* szFormat, ...)

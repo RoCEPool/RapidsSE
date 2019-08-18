@@ -55,7 +55,7 @@ namespace Scheduling    { class Queues; class Scheduler;                      }
 namespace Services      {                                                     }
 namespace Sessions      { class Session; class SessionState;                  }
 namespace Steps         { class Step; class StepTiming;                       }
-namespace StorageEngine { class AM; class Engine;                             }
+namespace StorageEngine { class AttachMap; class AM; class Engine;            }
 namespace Streams       {                                                     }
 namespace Strings       {                                                     }
 namespace Structures    {                                                     }
