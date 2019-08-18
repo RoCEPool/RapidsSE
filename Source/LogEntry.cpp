@@ -77,6 +77,8 @@ void LogEntry::vInit(void)
   StrLib::vCopyLen(m_caNode,AM::szNodeName()->aChar(),sizeof(m_caNode) - 1);
   
   m_caText[0] = '\0';
+  
+  m_eClass = CN_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -113,7 +115,7 @@ void LogEntry::vWrite(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
       NEVER_REACH;
   }
   
-  pFile->vPrint(",%s\n"_Stz,m_caText);
+  pFile->vPrint("}, %s\n"_Stz,m_caText);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -121,8 +123,9 @@ void LogEntry::vWrite(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
 /*----------------------------------------------------------------------------*/
 void LogEntry::vWriteCsv(File* pFile, i8 iTickDeltaUsec, i8& iTotalDelta)
 {
-  pFile->vPrint("%lld,%lld,%lld,%lld,"
-                "%lld,%s,%s"_Stz,
+  pFile->vPrint("[%lld,%lld,%lld,%lld], "
+                "<%lld,%s,%s>, "_Stz
+                "{%s"_Stz,
                 
                 m_i_Entry,
                 m_iTick,
@@ -131,6 +134,8 @@ void LogEntry::vWriteCsv(File* pFile, i8 iTickDeltaUsec, i8& iTotalDelta)
                 
                 m_iNodeNo,
                 m_caNode,
+                aCN[m_eClass],
+
                 aEK[m_eKind]
                 );
 }

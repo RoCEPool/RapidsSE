@@ -129,7 +129,7 @@ void SePrompt::vPromptLoop(void)
     vCheckTraced();
     vCheckNoWait();
 
-    vMarkCommand();
+    vLogCommand();
     
     vRestateCommand();
     
@@ -192,7 +192,7 @@ void SePrompt::vPromptLoop(void)
     
     vDeleteJob();
     
-    vFreeSpace();
+    vLogFreeSpace();
 
     if (m_bOneCommand)
       break;
@@ -428,22 +428,6 @@ bool SePrompt::bFindJobClass(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* mark free space                                                            */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vFreeSpace(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-
-  i8 iFreeSpace = gpBufferPool->iFreeSpace();
-  i8 iFreeSpaceInPool = BPA::iPoolFree();
-
-  s32 sFreeSpaceMag;
-  MagLib::vByteMag(iFreeSpace + iFreeSpaceInPool,1,sFreeSpaceMag);
-  Log::vNote("Command completed (free space: %s)"_Stz,
-                         sFreeSpaceMag.aStz());
-}
-
-/*----------------------------------------------------------------------------*/
 /* get command                                                                */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vGetCommand(void)
@@ -548,6 +532,43 @@ void SePrompt::vJobWaitCond(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* log command                                                                */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vLogCommand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  s16KB sCommand;
+  
+  TokenVec* pTknVec = this->pTknVec();
+  
+  Token* pTkn0 = pTknVec->pGet(0);
+  if (pTkn0->bSame("logNote"_Stz))
+  return;
+  
+  pTknVec->vToString(sCommand);
+  
+  AM::vLogPrm(this,PA_COMMAND,"Command: %s"_Stz,sCommand.aStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* log free space                                                             */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vLogFreeSpace(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  i8 iFreeSpace = gpBufferPool->iFreeSpace();
+  i8 iFreeSpaceInPool = BPA::iPoolFree();
+  
+  s32 sFreeSpaceMag;
+  MagLib::vByteMag(iFreeSpace + iFreeSpaceInPool,1,sFreeSpaceMag);
+  
+  AM::vLogPrm(this,PA_FREE_SPACE,"Command completed (free space %s)"_Stz,
+              sFreeSpaceMag.aStz());
+}
+
+/*----------------------------------------------------------------------------*/
 /* get markall                                                                */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bMarkAll(void)
@@ -565,26 +586,6 @@ void SePrompt::vMarkAll(bool bMarkAll)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   AM::pMarkJob()->vAll(bMarkAll);
-}
-
-/*----------------------------------------------------------------------------*/
-/* mark command                                                               */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vMarkCommand(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  s16KB sCommand;
-
-  TokenVec* pTknVec = this->pTknVec();
-  
-  Token* pTkn0 = pTknVec->pGet(0);
-  if (pTkn0->bSame("logNote"_Stz))
-    return;
-
-  pTknVec->vToString(sCommand);
-  
-  Log::vNote("Prompt command: %s"_Stz,sCommand.aStz());
 }
 
 /*----------------------------------------------------------------------------*/

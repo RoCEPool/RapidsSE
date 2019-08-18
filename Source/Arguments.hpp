@@ -90,7 +90,7 @@ namespace StorageEngine
     Arguments(void);
     ~Arguments(void) noexcept(false);
     
-    static void vMark(void);
+    static void vLog(void);
   
     void vAddConstants(void);
     void vEnvironmentVariables(void);

@@ -47,24 +47,24 @@ namespace Logging
   
 
   //private:
-    i8 iEntryFyi(Stz* szFormat, va_list xArgs);
+    i8 iEntryFyi(eCN eClass, Stz* szFormat, va_list xArgs);
   
-    i8 iEntryApi(i8 iApiId, eAA eApiAct, Stz* szFormat, va_list xArgs);
-    i8 iEntryJob(i8 iJobId, eJA eJobAct, Stz* szFormat, va_list xArgs);
-    i8 iEntryLck(i8 iJckId, eLA eLckAct, Stz* szFormat, va_list xArgs);
+    i8 iEntryApi(eCN eClass, i8 iApiId, eAA eApiAct, Stz* szFormat, va_list xArgs);
+    i8 iEntryJob(eCN eClass, i8 iJobId, eJA eJobAct, Stz* szFormat, va_list xArgs);
+    i8 iEntryLck(eCN eClass, i8 iJckId, eLA eLckAct, Stz* szFormat, va_list xArgs);
     i8 iEntryObj(Object* pObject, eCA eObjAct, Stz* szFormat, va_list xArgs);
-    i8 iEntryOpr(i8 iOprId, eOA eOprAct, Stz* szFormat, va_list xArgs);
-    i8 iEntryPrm(i8 iPrmId, ePA ePrmAct, Stz* szFormat, va_list xArgs);
-    i8 iEntryRes(i8 iResId, eRA eResAct, eRK eResKnd,   Stz* szFormat, va_list xArgs);
-    i8 iEntrySvc(i8 iThdId, eVA eSvcAct, Stz* szFormat, va_list xArgs);
-    i8 iEntryThd(i8 iThdId, eHA eThdAct, Stz* szFormat, va_list xArgs);
-    i8 iEntryTsk(i8 iTskId, eTA eTskAct, Stz* szFormat, va_list xArgs);
-    i8 iEntryTxn(i8 iTxnId, eXA eTxnAct, Stz* szFormat, va_list xArgs);
+    i8 iEntryOpr(eCN eClass, i8 iOprId, eOA eOprAct, Stz* szFormat, va_list xArgs);
+    i8 iEntryPrm(eCN eClass, i8 iPrmId, ePA ePrmAct, Stz* szFormat, va_list xArgs);
+    i8 iEntryRes(eCN eClass, i8 iResId, eRA eResAct, eRK eResKnd,   Stz* szFormat, va_list xArgs);
+    i8 iEntrySvc(eCN eClass, i8 iThdId, eVA eSvcAct, Stz* szFormat, va_list xArgs);
+    i8 iEntryThd(eCN eClass, i8 iThdId, eHA eThdAct, Stz* szFormat, va_list xArgs);
+    i8 iEntryTsk(eCN eClass, i8 iTskId, eTA eTskAct, Stz* szFormat, va_list xArgs);
+    i8 iEntryTxn(eCN eClass, i8 iTxnId, eXA eTxnAct, Stz* szFormat, va_list xArgs);
 
     i8 iEntryJob(i8 iJobId, i8 iForeign, Stz* aFormat, ...);
     i8 iEntryJob_arg(i8 iJobId, i8 iForeign, Stz* szFormat, va_list xArgs);
 
-    LogEntry* pNewEntry(void);
+    LogEntry* pNewEntry(eCN eClass);
     LogEntry* pNewEntry_NL(void);
     void vFindRange_NL(i8& i_MinEntry, i8& i_MaxEntry);
     i8   iPercentFull_NL(void);

@@ -177,11 +177,11 @@ void Arguments::vAddConstants(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* mark the arguments                                                         */
+/* log the command line arguments                                             */
 /*----------------------------------------------------------------------------*/
-void Arguments::vMark(void)
+void Arguments::vLog(void)
 {
-  Log::vNote("Args:"_Stz);
+  AM::vLogFyi("Args:"_Stz);
   
   s256 sArg;
   
@@ -194,7 +194,7 @@ void Arguments::vMark(void)
       StrLib::vConcat(sArg.aChar(),gi_argv[i_Arg ++]);
     }
     
-    Log::vNote("  %s"_Stz,sArg.aChar());
+    AM::vLogFyi("  %s"_Stz,sArg.aChar());
   }
 }
 

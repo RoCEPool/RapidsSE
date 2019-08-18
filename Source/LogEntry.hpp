@@ -28,6 +28,8 @@ namespace Logging
     i8   m_iNodeNo;     // which node
     char m_caNode[32];  // which node
   
+    eCN  m_eClass;      // class of caller
+  
     char m_caText[C_LOG_TEXT]; // comment
   
     eEK  m_eKind;       // log entry kind.  one of the following

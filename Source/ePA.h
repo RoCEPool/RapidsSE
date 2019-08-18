@@ -6,7 +6,10 @@
 enum ePA // prompt actions
 {
   /*  0 */ PA_NONE=0,
-  
+
+  /*    */ PA_COMMAND,
+  /*    */ PA_FREE_SPACE,
+
   /*    */ PA_ENUMS,
 };
 
@@ -14,6 +17,9 @@ static Stz* aPA[]
 {
   /*  0 */ "NONE"_Stz,
   
+  /*    */ "PA_COMMAND"_Stz,
+  /*    */ "PA_FREE_SPACE"_Stz,
+
   /*    */ "ENUMS"_Stz,
 };
 

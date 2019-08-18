@@ -55,15 +55,15 @@ namespace Prompt
     bool bExecuteFile(void);
     bool bExecuteFunction(void);
     bool bFindJobClass(void);
-    void vFreeSpace(void);
     void vGetCommand(void);
     bool bIsPromptWord(void);
     void vJobLockMutex(void);
     void vJobUnlockMutex(void);
     void vJobWaitCond(void);
+    void vLogCommand(void);
+    void vLogFreeSpace(void);
     bool bMarkAll(void);
     void vMarkAll(bool bMarkAll);
-    void vMarkCommand(void);
     bool bMarkJob(eCN eClass);
     void vMarkJob(eCN eClass, bool bMarkJob);
     bool bNoWait(void);
