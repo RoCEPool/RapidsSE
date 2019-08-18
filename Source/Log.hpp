@@ -10,7 +10,17 @@ namespace Logging
 
   static const i8    C_JOB_GROUP = 0;
   static const i8    C_INF_GROUP = -1;
-  static const i8    C_MARGIN = 143;
+  static const i8    C_MARGIN = 150;
+  
+  static const char* C_LOG_LINE =
+    "-------------------------"
+    "-------------------------"
+    "-------------------------"
+    "-------------------------"
+    "-------------------------"
+    "-------------------------";
+
+
   
   class Log : public ShmLog
   {

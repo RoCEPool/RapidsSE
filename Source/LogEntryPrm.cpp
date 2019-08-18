@@ -13,6 +13,9 @@ void _LogEntryPrm::vSet(LogEntry* pLogEntry, i8 iPrmId, ePA ePrmAct)
   
   m_iPrmId  = iPrmId;
   m_ePrmAct = ePrmAct;
+  
+  if (PA_COMMAND == ePrmAct)
+    pLogEntry->m_bLine = true;
 }
 
 /*----------------------------------------------------------------------------*/

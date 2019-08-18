@@ -79,6 +79,7 @@ void LogEntry::vInit(void)
   m_caText[0] = '\0';
   
   m_eClass = CN_NONE;
+  m_bLine = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -125,6 +126,9 @@ void LogEntry::vWrite(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
 /*----------------------------------------------------------------------------*/
 void LogEntry::vWriteCsv(File* pFile, i8 iTickDeltaUsec, i8& iTotalDelta)
 {
+  if (m_bLine)
+    pFile->vPrint("%s\n"_Stz,C_LOG_LINE);
+
   pFile->vPrint("[%lld,%lld,%lld,%lld], "
                 "<%lld,%s,%s>, "_Stz
                 "{%s"_Stz,

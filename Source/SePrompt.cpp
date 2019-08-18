@@ -47,8 +47,9 @@ SePrompt::SePrompt(bool bOneCommand)
                                   "public"_Stz,
                                   iPartition,
                                   (void**)&m_pSession);
-
   ASSERT(EC_NONE == eResult);
+  
+  m_iCmdNo = 0;
 
   m_bContinue = true;
   m_pJobClass = nullptr;
@@ -548,7 +549,8 @@ void SePrompt::vLogCommand(void)
   
   pTknVec->vToString(sCommand);
   
-  AM::vLogPrm(this,PA_COMMAND,"Command: %s"_Stz,sCommand.aStz());
+  AM::vLogPrm(this,PA_COMMAND,"Command %lld: %s"_Stz,
+              m_iCmdNo++,sCommand.aStz());
 }
 
 /*----------------------------------------------------------------------------*/

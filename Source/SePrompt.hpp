@@ -12,6 +12,7 @@ namespace Prompt
   private:
     i8       m_iPromptId;  // the prompt id
     Session* m_pSession;   // rapidsse session
+    i8       m_iCmdNo;     // command no
 
     bool     m_bContinue;  // continue processing commands?
     Timer    m_oTimer;     // the timer

@@ -52,6 +52,8 @@ namespace Logging
       _LogEntryTxn m_xTxn;  // when m_eKind == EK_TXN
     };
   
+    bool m_bLine;
+  
     // must be last
     Footer m_xFooter;
     
