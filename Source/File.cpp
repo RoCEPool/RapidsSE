@@ -57,7 +57,7 @@ File::File(void)
   
   ++ gixFile;
   AM::vLogRes(this,RA_FIL_CONSTRUCTOR,
-              "File constructed : %p (%lld exist)"_Stz,this,* gixFile);
+              "File constructed : %p (%lld files exist)"_Stz,this,* gixFile);
   
   _postcondition_(_MAGIC_,CN_FILE,_FOOTER_);
 }
@@ -80,7 +80,7 @@ File::~File(void) noexcept(false)
   
   -- gixFile;
   AM::vLogRes(this,RA_MTX_DESTRUCTOR,
-              "File destructed : %p (%lld exist)"_Stz,this,* gixFile);
+              "File destructed : %p (%lld files exist)"_Stz,this,* gixFile);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -105,7 +105,7 @@ Mutex::Mutex()
   
   ++ gixMutex;
   AM::vLogRes(this,RA_MTX_CONSTRUCTOR,
-              "Mutex constructed : %p (%lld exist)"_Stz,this,* gixMutex);
+              "Mutex constructed : %p (%lld mutexes exist)"_Stz,this,* gixMutex);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
 }
@@ -137,7 +137,7 @@ Mutex::~Mutex(void) noexcept(false)
   
   -- gixMutex;
   AM::vLogRes(this,RA_MTX_DESTRUCTOR,
-              "Mutex destructed : %p (%lld exist)"_Stz,this,* gixMutex);
+              "Mutex destructed : %p (%lld mutexes exist)"_Stz,this,* gixMutex);
 }
 
 /*----------------------------------------------------------------------------*/

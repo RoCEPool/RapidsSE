@@ -82,7 +82,7 @@ Thread::Thread(void)
   
   ++ gixThread;
   AM::vLogThd(this,HA_THREAD_CONSTRUCTOR,
-              "Thread constructed : %p (%lld exist)"_Stz,this,* gixThread);
+              "Thread constructed : %p (%lld threads exist)"_Stz,this,* gixThread);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
 }
@@ -99,7 +99,7 @@ Thread::~Thread(void) noexcept(false)
   
   -- gixThread;
   AM::vLogThd(this,HA_THREAD_DESTRUCTOR,
-              "Thread destructed : %p (%lld exist)"_Stz,this,* gixThread);
+              "Thread destructed : %p (%lld threads exist)"_Stz,this,* gixThread);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -74,7 +74,7 @@ Op::Op(eCN eClassNo, Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   
   ++ gixOp;
   AM::vLogOpr(this,OA_OP_CONSTRUCTOR,
-              "Op constructed : %p (%lld exist)"_Stz,this,* gixOp);
+              "Op constructed : %p (%lld ops exist)"_Stz,this,* gixOp);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -92,7 +92,7 @@ Op::~Op(void) noexcept(false)
   
   -- gixOp;
   AM::vLogOpr(this,OA_OP_DESTRUCTOR,
-              "Op destructed : %p (%lld exist)"_Stz,this,* gixOp);
+              "Op destructed : %p (%lld ops exist)"_Stz,this,* gixOp);
 }
 
 /*----------------------------------------------------------------------------*/

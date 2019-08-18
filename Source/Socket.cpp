@@ -68,7 +68,7 @@ Socket::Socket(void)
   
   ++ gixSocket;
   AM::vLogRes(this,RA_SKT_CONSTRUCTOR,
-              "Socket constructed : %p (%lld exist)"_Stz,this,* gixSocket);
+              "Socket constructed : %p (%lld sockets exist)"_Stz,this,* gixSocket);
 
   _postcondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
 }
@@ -89,7 +89,7 @@ Socket::Socket(int iSocketId)
   
   ++ gixSocket;
   AM::vLogRes(this,RA_SKT_CONSTRUCTOR,
-              "Socket constructed : %p (%lld exist)"_Stz,this,* gixSocket);
+              "Socket constructed : %p (%lld sockets exist)"_Stz,this,* gixSocket);
   
   _postcondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
 }
@@ -109,7 +109,7 @@ Socket::~Socket(void) noexcept(false)
   
   -- gixSocket;
   AM::vLogRes(this,RA_SKT_DESTRUCTOR,
-              "Socket destructed : %p (%lld exist)"_Stz,this,* gixSocket);
+              "Socket destructed : %p (%lld sockets exist)"_Stz,this,* gixSocket);
 }
 
 /*----------------------------------------------------------------------------*/

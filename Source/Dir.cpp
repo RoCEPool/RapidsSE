@@ -65,7 +65,7 @@ Dir::Dir(void)
   
   ++ gixDir;
   AM::vLogRes(this,RA_DIR_CONSTRUCTOR,
-              "Dir constructed : %p (%lld exist)"_Stz,this,* gixDir);
+              "Dir constructed : %p (%lld dirs exist)"_Stz,this,* gixDir);
   
   _postcondition_(_MAGIC_,CN_DIR,_FOOTER_);
 };
@@ -79,7 +79,7 @@ Dir::~Dir(void) noexcept(false)
   
   -- gixDir;
   AM::vLogRes(this,RA_DIR_DESTRUCTOR,
-              "Dir destructed : %p (%lld exist)"_Stz,this,* gixDir);
+              "Dir destructed : %p (%lld dirs exist)"_Stz,this,* gixDir);
 }
 
 /*----------------------------------------------------------------------------*/
