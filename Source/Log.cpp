@@ -279,7 +279,7 @@ void Log::vOpenByApi(void)
   AM::vLogLog(gpLog,GA_LOG_OPENED_API,"Opened by API"_Stz);
   
   Now oNow;
-  AM::vLogLog(gpLog,GA_LOG_TIME,"Time is: "_Stz,oNow.sz());
+  AM::vLogSys(nullptr,YA_SYS_TIME,"Time is: "_Stz,oNow.sz());
 #endif
 }
 
@@ -326,10 +326,10 @@ void Log::vOpenBySE(bool bStarting)
   
   s256 sWelcome;
   AM::vWelcomeText(sWelcome);
-  AM::vLogLog(gpLog,GA_LOG_WELCOME,sWelcome);
+  AM::vLogSys(nullptr,YA_SYS_WELCOME,sWelcome);
   
   Now oNow;
-  AM::vLogLog(gpLog,GA_LOG_TIME,"Time is: %s"_Stz,oNow.sz());
+  AM::vLogSys(nullptr,YA_SYS_TIME,"Time is: %s"_Stz,oNow.sz());
 
   s32 sMem;
   MagLib::vByteMag(Hardware::iPhysicalMemory(),sMem);
@@ -342,7 +342,7 @@ void Log::vOpenBySE(bool bStarting)
   Hardware::vHostName(sHost);
   Hardware::vLoginName(sUser);
 
-  AM::vLogLog(gpLog,GA_LOG_HOST,
+  AM::vLogSys(nullptr,YA_SYS_HOST,
               "hw: host %s user %s; "
               "%lld cores; %s memory; %s clock frequency"_Stz,
              sHost.aChar(),
@@ -957,14 +957,14 @@ void Log::vWriteToFile(bool bShortForm)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Now oNow;
-  AM::vLogLog(gpLog,GA_LOG_HOST,"Writing Log at: %s"_Stz,oNow.sz());
+  AM::vLogLog(gpLog,GA_LOG_WRITING,"Writing Log at: %s"_Stz,oNow.sz());
   
   s256 sWelcome;
   AM::vWelcomeText(sWelcome);
-  AM::vLogLog(gpLog,GA_LOG_WELCOME,sWelcome);
+  AM::vLogSys(nullptr,YA_SYS_WELCOME,sWelcome);
   
   i8 iUpTimeSsec = AM::iElapsedSsec();
-  AM::vLogLog(gpLog,GA_LOG_UPTIME,"Uptime %llds Requests %lld"_Stz,iUpTimeSsec,C_UNKNOWN);
+  AM::vLogSys(nullptr,YA_SYS_UPTIME,"Uptime: %llds; Requests: %lld"_Stz,iUpTimeSsec,C_UNKNOWN);
 
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
   vGrabLock();
