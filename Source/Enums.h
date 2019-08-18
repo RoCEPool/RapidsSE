@@ -28,6 +28,7 @@ namespace Enums
 #include "eDS.h"
 #include "eEC.h"
 #include "eEK.h"
+#include "eGA.h"
 #include "eHA.h"
 #include "eHT.h"
 #include "eIS.h"
