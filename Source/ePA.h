@@ -9,6 +9,7 @@ enum ePA // prompt actions
 
   /*    */ PA_COMMAND,
   /*    */ PA_FREE_SPACE,
+  /*    */ PA_LOG_NOTE,
 
   /*    */ PA_ENUMS,
 };
@@ -19,6 +20,7 @@ static Stz* aPA[]
   
   /*    */ "PA_COMMAND"_Stz,
   /*    */ "PA_FREE_SPACE"_Stz,
+  /*    */ "PA_LOG_NOTE"_Stz,
 
   /*    */ "ENUMS"_Stz,
 };
