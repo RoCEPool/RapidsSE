@@ -7,6 +7,7 @@ enum eYA // system actions
 {
   /*  0 */ YA_NONE=0,
   
+  /*    */ YA_SYS_ARGS,
   /*    */ YA_SYS_HOST,
   /*    */ YA_SYS_TIME,
   /*    */ YA_SYS_UPTIME,
@@ -19,6 +20,7 @@ static Stz* aYA[]
 {
   /*  0 */ "NONE"_Stz,
   
+  /*  0 */ "YA_SYS_ARGS"_Stz,
   /*  0 */ "YA_SYS_HOST"_Stz,
   /*  0 */ "YA_SYS_TIME"_Stz,
   /*  0 */ "YA_SYS_UPTIME"_Stz,

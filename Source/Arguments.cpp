@@ -181,7 +181,7 @@ void Arguments::vAddConstants(void)
 /*----------------------------------------------------------------------------*/
 void Arguments::vLog(void)
 {
-  AM::vLogFyi("Args:"_Stz);
+  AM::vLogSys(nullptr,YA_SYS_ARGS,"Args:"_Stz);
   
   s256 sArg;
   
@@ -194,7 +194,7 @@ void Arguments::vLog(void)
       StrLib::vConcat(sArg.aChar(),gi_argv[i_Arg ++]);
     }
     
-    AM::vLogFyi("  %s"_Stz,sArg.aChar());
+    AM::vLogSys(nullptr,YA_SYS_ARGS,"  %s"_Stz,sArg.aChar());
   }
 }
 
