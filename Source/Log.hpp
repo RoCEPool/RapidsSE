@@ -64,6 +64,7 @@ namespace Logging
     i8 iEntryObj(Object* pObject, eCA eObjAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
     i8 iEntryOpr(eCN eClass, i8 iOprId, eOA eOprAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
     i8 iEntryPrm(eCN eClass, i8 iPrmId, ePA ePrmAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
+    i8 iEntryQue(eCN eClass, i8 iQueId, eQA eQueAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
     i8 iEntryRes(eCN eClass, i8 iResId, eRA eResAct, eRK eResKnd,   i8 i_Prev, Stz* szFormat, va_list xArgs);
     i8 iEntrySvc(eCN eClass, i8 iSvcId, eVA eSvcAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
     i8 iEntrySys(eCN eClass, i8 iSysId, eYA eSysAct, i8 i_Prev, Stz* szFormat, va_list xArgs);

@@ -488,6 +488,26 @@ i8 Log::iEntryPrm(eCN eClassNo, i8 iPrmId, ePA ePrmAct, i8 i_Prev,
 }
 
 /*----------------------------------------------------------------------------*/
+/* add a queues log entry                                                     */
+/*----------------------------------------------------------------------------*/
+i8 Log::iEntryQue(eCN eClassNo, i8 iQueId, eQA eQueAct, i8 i_Prev,
+                  Stz* szFormat, va_list xVaArgs)
+{
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
+  
+  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
+  
+  if (! pLogEntry)
+    return C_UNKNOWN;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  pLogEntry->m_xQue.vSet(pLogEntry,iQueId,eQueAct);
+  
+  return pLogEntry->m_i_Entry;
+}
+
+/*----------------------------------------------------------------------------*/
 /* add a resource log entry                                                   */
 /*----------------------------------------------------------------------------*/
 i8 Log::iEntryRes(eCN eClassNo, i8 iResId, eRA eResAct, eRK eResKnd, i8 i_Prev,
