@@ -453,8 +453,6 @@ private:
   static void vJobJobClass(Tasks::MP_Task mpTask);
   static void vJobJobListFetch(Tasks::MP_Task mpTask);
 
-  static void vJobMarkActionFetch(Tasks::MP_Task mpTask);
-  static void vJobMarkActionStore(Tasks::MP_Task mpTask);
   static void vJobMarkActivityFetch(Tasks::MP_Task mpTask);
   static void vJobMarkActivityStore(Tasks::MP_Task mpTask);
   static void vJobMarkTraceFetch(Tasks::MP_Task mpTask);

@@ -50,8 +50,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.jobClass"_Stz,         &Step::vJobJobClass);
   vAddStep("job.jobList@"_Stz,         &Step::vJobJobListFetch);
   
-  vAddStep("job.markAction@"_Stz,      &Step::vJobMarkActionFetch);
-  vAddStep("job.markAction!"_Stz,      &Step::vJobMarkActionStore);
   vAddStep("job.markActivity@"_Stz,    &Step::vJobMarkActivityFetch);
   vAddStep("job.markActivity!"_Stz,    &Step::vJobMarkActivityStore);
   vAddStep("job.markTrace@"_Stz,       &Step::vJobMarkTraceFetch);
@@ -153,7 +151,7 @@ void Step::vJobAddOriginator(MP_Task mpTask)
     JobLog::vNote(pJob,"Added to Originator List: %s %p"_Stz,
                        aCN[pJob->eClass()],
                        pJob);
-    AM::pOriginatingJobs()->vMarkContents(pJob->m_iJobId);
+    AM::pOriginatingJobs()->vLogJobs(pJob->m_iJobId);
   }
     
   EXIT();
@@ -181,7 +179,7 @@ void Step::vJobAddParticipant(MP_Task mpTask)
     JobLog::vNote(pJob,"Added to ParticipantList: %s %p "_Stz,
                           aCN[pJob->eClass()],
                           pJob);
-    AM::pParticipatingJobs()->vMarkContents(pJob->m_iJobId);
+    AM::pParticipatingJobs()->vLogJobs(pJob->m_iJobId);
   }
   
   EXIT();
@@ -890,46 +888,6 @@ void Step::vJobMetadataStore(MP_Task mpTask)
   EXIT();
 }
 
-
-
-/*----------------------------------------------------------------------------*/
-/* job.markAction@ -- fetch job mark action                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vJobMarkActionFetch(MP_Task mpTask)
-{
-  ENTRY("vJobMarkActionFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.markAction@"_Stz);
-  Job* pJob = _pJob(pJobPtr);
-  
-  mpTask->m_pDataStack->vPushI8(pJob->m_bMarkAction);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.markAction! -- store job mark action                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vJobMarkActionStore(MP_Task mpTask)
-{
-  ENTRY("vJobMarkActionStore"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.markAction!"_Stz);
-  Job* pJob = _pJob(pJobPtr);
-  
-  i8 iMarkAction;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(iMarkAction) )
-    THROW_INVALID_DSTACK("job.markAction!"_Stz);
-  
-  pJob->m_bMarkAction = (bool)iMarkAction;
-  
-  EXIT();
-}
-
 /*----------------------------------------------------------------------------*/
 /* job.markActivity@ -- fetch job mark activity                               */
 /*----------------------------------------------------------------------------*/
@@ -1394,7 +1352,7 @@ void Step::vJobRemoveOriginator(MP_Task mpTask)
                        "Removed from Originator List: %s %p"_Stz,
                        aCN[pJob->eClass()],
                        pJob);
-    AM::pOriginatingJobs()->vMarkContents(pJob->m_iJobId);
+    AM::pOriginatingJobs()->vLogJobs(pJob->m_iJobId);
   }
   
   EXIT();
@@ -1427,7 +1385,7 @@ void Step::vJobRemoveParticipant(MP_Task mpTask)
     JobLog::vNote(pJob,"Removed from Participant List: "_Stz,
                        aCN[pJob->eClass()],
                        pJob);
-    AM::pParticipatingJobs()->vMarkContents(pJob->m_iJobId);
+    AM::pParticipatingJobs()->vLogJobs(pJob->m_iJobId);
   }
     
   EXIT();

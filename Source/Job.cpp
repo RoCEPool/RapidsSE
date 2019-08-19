@@ -114,9 +114,6 @@ Job::Job(eCN eClassNo, Session* pSession)
   else
     m_pMutexJob = new Mutex;
 
-  if (m_bMarkActivity)
-    Log::vNote("::Job"_Stz,""_Stz);
-  
   // -- -- -- -- -- --
   
   ++ gixJob;
@@ -136,12 +133,7 @@ Job::~Job(void) noexcept(false)
   ActLog::vAdd(this,AN_DESTRUCTOR);
   
   delete m_pMutexJob;
-  
-  if (m_bMarkActivity) {
-    Log::vNote("~Job %s"_Stz,aCN[eClass()]);
-    Job::vMarkJob();
-  }
-  
+    
   -- gixJob;
   AM::vLogJob(this,JA_JOB_DESTRUCTOR,
               "Job destructed : %p (%lld jobs exist)"_Stz,this,* gixJob);

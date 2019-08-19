@@ -86,7 +86,7 @@ void Step::vTaskAcksStore(MP_Task mpTask)
                        aCN[pJob->eClass()],
                        pJob,
                        nAcksRequired);
-    AM::pOriginatingJobs()->vMarkContents(pJob->m_iJobId);
+    AM::pOriginatingJobs()->vLogJobs(pJob->m_iJobId);
   }
   
   //pGivenTask->m_oAcksRmg.vSetRemaining(nAcksRequired);

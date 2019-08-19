@@ -32,14 +32,14 @@ namespace Jobs
     bool   bGrabLock(void);
     bool   bHasJobClass(eCN eJobClass);
     bool   bIsLocked(void);
+    void   vLogJobs(i8 iJobId);
     bool   bRemoveJob(Job* pJob);
     i8     nJobs(void);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     void vContentDump(void);
-    void vMarkContents(i8 iJobId);
-    
+  
     Footer* aFooter(void);
   };
   
