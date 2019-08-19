@@ -171,6 +171,67 @@ void RefBuffer::vShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set prev buffer                                                            */
+/*----------------------------------------------------------------------------*/
+SrtBuffer* RefBuffer::pToSrtBuffer(i8 iKeyCol, bool bKeyIsLeft,
+                                   ColumnVec* pLeftColVec, ColumnVec* pRightColVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  
+  SrtBuffer* pSrtBuffer = new SrtBuffer(m_iPartitionNo);
+  
+  SrtSet* pSrtSet;
+  
+  CrwBuffer* pLeftCrwBuffer;
+  CrwBuffer* pRightCrwBuffer;
+  
+  Crw* aLeftCrw;
+  Crw* aRightCrw;
+  
+  RefSet* aRefSet = aFirstRefSet();
+  while (aRefSet) {
+    
+    pSrtSet = pSrtBuffer->aAllotSrtSet(2);
+    RASSERT(pSrtSet);
+    
+    // get the left data row
+    aLeftCrw = (Crw*)aRefSet->iRowRef(0);
+    
+    // set the rowData in the srtSet
+    pSrtSet->vRowRef(0, (i8)aLeftCrw);
+    
+    // get the right dataRow
+    aRightCrw = (Crw*)aRefSet->iRowRef(1);
+      
+    // set the rowData in the srtSet
+    pSrtSet->vRowRef(1, (i8)aRightCrw);
+    
+    if ( bKeyIsLeft) {
+      HV_Row hRow(pLeftColVec);
+      
+      // get the key from the left buffer row
+      RowInflator::vInflateColumn(hRow, aLeftCrw, iKeyCol);
+      
+      // set the key in the srtSet
+      pSrtSet->vKey(hRow->m_waColVal[iKeyCol].m_iI8);
+    }
+    else {
+      HV_Row hRow(pRightColVec);
+      
+      // get the key from the right buffer row
+      RowInflator::vInflateColumn(hRow, aRightCrw, iKeyCol);
+      
+      // set the key in the srtSet
+      pSrtSet->vKey(hRow->m_waColVal[iKeyCol].m_iI8);
+    }
+    
+    aRefSet = aNextRefSet(aRefSet);
+  }
+  
+  return pSrtBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

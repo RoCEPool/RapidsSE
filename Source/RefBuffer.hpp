@@ -32,6 +32,10 @@ namespace Rows
     RefSet* aNextRefSet(RefSet* aPriorRefSet);
     void    vShow(void);
     
+    SrtBuffer* pToSrtBuffer(i8 iKeyCol, bool bKeyIsLeft,
+                            ColumnVec* pLeftColVec,
+                            ColumnVec* pRightColVec);
+    
   private:
     Footer* aFooter(void);
   };

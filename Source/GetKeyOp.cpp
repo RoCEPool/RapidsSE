@@ -170,7 +170,17 @@ eOR GetKeyOp::eOpLoop(void)
         RASSERT(-1 != m_iKeyCol);
         EntBuffer* pEntBuffer = _pEntBuffer(pOperand) ;
         //pEntBuffer->vShow();
-        SrtBuffer* pSrtBuffer = pEntBuffer->pToSrtBuffer(nullptr, m_iKeyCol, m_bKeyIsLeft);
+        SrtBuffer* pSrtBuffer = pEntBuffer->pToSrtBuffer(m_iKeyCol);
+        vPipeOut(pSrtBuffer);
+        break;
+      }
+       
+      case CN_REFBUFFER: {
+        RASSERT(-1 != m_iKeyCol);
+        RefBuffer* pRefBuffer = _pRefBuffer(pOperand) ;
+        SrtBuffer* pSrtBuffer = pRefBuffer->pToSrtBuffer(m_iKeyCol, m_bKeyIsLeft,
+                                                         m_pStreamDef->m_pColumnVec,
+                                                         m_pRightStreamDef->m_pColumnVec);
         vPipeOut(pSrtBuffer);
         break;
       }

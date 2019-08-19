@@ -56,7 +56,7 @@ namespace MetaData
     EntBuffer* pPrevBuffer(void);
     void         vPrevBuffer(EntBuffer* pPrevBuffer);
 
-    SrtBuffer*   pToSrtBuffer(EntBuffer* pRightBuffer, i8 iKeyCol, bool bKeyIsLeft);
+    SrtBuffer*   pToSrtBuffer(i8 iKeyCol);
     
     ////////////////////////////////////////////////////////////////////////////
     // entry functions
