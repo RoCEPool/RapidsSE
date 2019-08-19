@@ -441,14 +441,12 @@ void AM::vLogJob(Job* pJob, eJA eJobAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 iJobId = pJob ? pJob->iJobId() : C_UNKNOWN;
-  i8 i_Prev = pJob ? pJob->m_i_LogPrev : C_UNKNOWN;
-  i8 i_Entry = gpLog->iEntryJob(pJob->eClass(),iJobId,eJobAct,i_Prev,szFormat,xVaArgs);
+  i8 i_Entry = gpLog->iEntryJob(pJob->eClass(),pJob->iJobId(),eJobAct,
+                                pJob->m_i_LogPrev,szFormat,xVaArgs);
   
   va_end(xVaArgs);
   
-  if (pJob)
-    pJob->m_i_LogPrev = i_Entry;
+  pJob->m_i_LogPrev = i_Entry;
 #endif
 }
 
