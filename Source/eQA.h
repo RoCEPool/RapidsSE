@@ -7,6 +7,9 @@ enum eQA // operator actions
 {
   /*  0 */ QA_NONE=0,
   
+  /*    */ QA_QUE_FIND_ORIGINATOR,
+  /*    */ QA_QUE_FIND_PARTICPANT,
+
   /*    */ QA_QUE_ORIGINATORS,
   /*    */ QA_QUE_PARTICPANTS,
 
@@ -16,6 +19,9 @@ enum eQA // operator actions
 static Stz* aQA[]
 {
   /*  0 */ "NONE"_Stz,
+  
+  /*    */ "QA_QUE_FIND_ORIGINATOR"_Stz,
+  /*    */ "QA_QUE_FIND_PARTICPANT"_Stz,
   
   /*    */ "QA_QUE_ORIGINATORS"_Stz,
   /*    */ "QA_QUE_PARTICPANTS"_Stz,

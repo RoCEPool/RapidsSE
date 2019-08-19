@@ -45,11 +45,11 @@ void Scheduler::vAddParticipatingJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vDumpOriginatingJobs(void)
 {
-  AM::vLogJob(nullptr,JA_JOB_DUMP_ORIGINATING,
-              "Dump OriginatingJobs lisy"_Stz);
-  
   Queues* pQueues = AM::pQueues();
   
+  AM::vLogQue(pQueues,QA_QUE_ORIGINATORS,
+              "OriginatingJobs list:"_Stz);
+
   pQueues->m_pOriginatingJobs->vGrabLock();
   pQueues->m_pOriginatingJobs->vContentDump();
   pQueues->m_pOriginatingJobs->vDropLock();
@@ -60,10 +60,10 @@ void Scheduler::vDumpOriginatingJobs(void)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vDumpParticipatingJobs(void)
 {
-  AM::vLogJob(nullptr,JA_JOB_DUMP_PARTICIPATING,
-              "Dump ParticipatingJobs list"_Stz);
-  
   Queues* pQueues = AM::pQueues();
+  
+  AM::vLogQue(pQueues,QA_QUE_PARTICPANTS,
+              "ParticipatingJobs list:"_Stz);
   
   pQueues->m_pParticipatingJobs->vGrabLock();
   pQueues->m_pParticipatingJobs->vContentDump();
@@ -75,10 +75,10 @@ void Scheduler::vDumpParticipatingJobs(void)
 /*----------------------------------------------------------------------------*/
 Job* Scheduler::pFindOriginatingJob(i8 iJobId)
 {
-//  AM::vLogJob(nullptr,iJobId,JA_JOB_FIND_ORIGINATING,
-//              "Find job in OriginatingJobs list"_Stz);
-  
   Queues* pQueues = AM::pQueues();
+  
+  AM::vLogQue(pQueues,QA_QUE_FIND_ORIGINATOR,
+              "Find job %lld in OriginatingJobs list"_Stz,iJobId);
   
   Job* pJob = pQueues->m_pOriginatingJobs->pFindJob(iJobId);
   
@@ -90,11 +90,11 @@ Job* Scheduler::pFindOriginatingJob(i8 iJobId)
 /*----------------------------------------------------------------------------*/
 Job* Scheduler::pFindParticipatingJob(i8 iJobId)
 {
-//  AM::vLogJob(nullptr,iJobId,JA_JOB_FIND_PARTICIPATING,
-//              "Find job in ParticipatingJobs list"_Stz);
-  
   Queues* pQueues = AM::pQueues();
 
+  AM::vLogQue(pQueues,QA_QUE_FIND_PARTICPANT,
+              "Find job %lld in ParticipatingJobs list"_Stz,iJobId);
+  
   Job* pJob = pQueues->m_pParticipatingJobs->pFindJob(iJobId);
   
   return pJob;
