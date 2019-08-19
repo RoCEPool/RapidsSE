@@ -5,7 +5,9 @@
 #include "StorageEngine.h"
 
 extern Arguments  gxArguments;
+extern AttachMap* gpAttachMap;
 extern bool       gbSHM;
+extern Log*       gpLog;
 
 int    gi_argc;
 char** gi_argv;
@@ -181,7 +183,7 @@ void Arguments::vAddConstants(void)
 /*----------------------------------------------------------------------------*/
 void Arguments::vLog(void)
 {
-  AM::vLogSys(nullptr,YA_SYS_ARGS,"Args:"_Stz);
+  AM::vLogSys(gpAttachMap,YA_SYS_ARGS,"Args:"_Stz);
   
   s256 sArg;
   
@@ -194,7 +196,7 @@ void Arguments::vLog(void)
       StrLib::vConcat(sArg.aChar(),gi_argv[i_Arg ++]);
     }
     
-    AM::vLogSys(nullptr,YA_SYS_ARGS,"  %s"_Stz,sArg.aChar());
+    AM::vLogSys(gpAttachMap,YA_SYS_ARGS,"  %s"_Stz,sArg.aChar());
   }
 }
 
