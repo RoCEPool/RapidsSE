@@ -5,7 +5,8 @@
 
 namespace Scheduling
 {
-  class Queues : public Object
+  class Queues : public Object,
+                 public _Loggable
   {
   friend Scheduler;
   

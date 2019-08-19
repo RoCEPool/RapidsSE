@@ -587,6 +587,32 @@ void AM::vLogPrm(SePrompt* pPrm, ePA ePrmAct, Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add a operator log entry                                                   */
+/*----------------------------------------------------------------------------*/
+//void AM::vLogQue(Queues* pQue, eQA eQueAct, Stz* szFormat, ...)
+//{
+//#ifdef WITH_SHARED_LOG
+//  if (! AM::bLogging())
+//    return;
+//
+//  if (! (AM::pMarkAction()->bEnum(eQueAct) ||
+//         AM::pMarkAction()->bAll()) )
+//    return;
+//
+//  va_list xVaArgs;
+//
+//  va_start(xVaArgs,szFormat);
+//
+//  i8 i_Entry = gpLog->iEntryQue(pQue->eClass(),pQue->m_iUniqueId,eQueAct,
+//                                pQue->m_i_LogPrev,szFormat,xVaArgs);
+//  
+//  va_end(xVaArgs);
+//
+//  pQue->m_i_LogPrev = i_Entry;
+//#endif
+//}
+
+/*----------------------------------------------------------------------------*/
 /* add a resource log entry                                                   */
 /*----------------------------------------------------------------------------*/
 void AM::vLogRes(Resource* pRes, eRA eResAct, Stz* szFormat, ...)
