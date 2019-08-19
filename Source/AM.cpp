@@ -84,6 +84,7 @@ i8   AM::iNextSessionId(void) { return ++ gpAttachMap->m_inNextSessionId;     }
 i8   AM::iNextStreamId(void)  { return ++ gpAttachMap->m_inNextStreamId;      }
 i8   AM::iNextTaskId(void)    { return ++ gpAttachMap->m_inNextTaskId;        }
 i8   AM::iNextThreadId(void)  { return ++ gpAttachMap->m_inNextThreadId;      }
+i8   AM::iNextTxId(void)      { return ++ gpAttachMap->m_inNextTxId;          }
 i8*  AM::iaObjectsInPool(void){ return gpAttachMap->m_nObjectsInPool;         }
 i8   AM::nPartitions(void)    { return gpAttachMap->m_pGrid->m_nPartitions;   }
 Queues* AM::pQueues(void)     { return gpAttachMap->m_pQueues;                }

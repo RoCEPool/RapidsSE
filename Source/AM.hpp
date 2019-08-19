@@ -81,6 +81,7 @@ namespace StorageEngine
     static i8   iNextStreamId(void);
     static i8   iNextTaskId(void);
     static i8   iNextThreadId(void);
+    static i8   iNextTxId(void);
     static Stz* szNodeName(void);
     static i8*   iaObjectsInPool(void);
     static JobList* pOriginatingJobs(void);
