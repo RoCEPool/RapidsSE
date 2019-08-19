@@ -195,9 +195,10 @@ eOR LimitOp::eOpLoop(void)
         vPipeOut(pOperand);
         
         if (m_iWorkDone == m_nLimit) {
-          vTrace("%s::!CANCELLING : after popping %lld buffers\n"_Stz,
-                 m_sLabel.aStz(),
-                 m_iWorkDone);
+          if (AM::bVerbose())
+            vTrace("%s::!CANCELLING : after popping %lld buffers\n"_Stz,
+                   m_sLabel.aStz(),
+                   m_iWorkDone);
           m_pDigest->m_bCancelling = true;
         }
         

@@ -460,19 +460,24 @@ Operand* Op::pPopQueueLeft(void)
   if (pOperand)
     vDropTaskLock();
   
-  if (pOperand)
-    AM::vLogOpr(this,OA_OP_POP,"PopQueueLeft operand %s from left queue"_Stz,
-               aCN[pOperand->eClass()]);
-  else
-    AM::vLogOpr(this,OA_OP_POP,"PopQueueLeft no operand on left queue"_Stz);
+  if (pOperand) {
+    if (AM::bVerbose())
+      AM::vLogOpr(this,OA_OP_POP,"PopQueueLeft operand %s from left queue"_Stz,
+                 aCN[pOperand->eClass()]);
+  }
+  else {
+    if (AM::bVerbose())
+      AM::vLogOpr(this,OA_OP_POP,"PopQueueLeft no operand on left queue"_Stz);
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (pOperand) {
-    vTrace("%s::pPopQueueLeft : %s %p\n"_Stz,
-           m_sLabel.aStz(),
-           aCN[pOperand->eClass()],
-           pOperand);
+    if (AM::bVerbose())
+      vTrace("%s::pPopQueueLeft : %s %p\n"_Stz,
+             m_sLabel.aStz(),
+             aCN[pOperand->eClass()],
+             pOperand);
   }
   
   return pOperand;
@@ -503,10 +508,11 @@ Operand* Op::pPopQueueRight(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (pOperand) {
-    vTrace("%s::pPopQueueRight : %s %p\n"_Stz,
-           m_sLabel.aStz(),
-           aCN[pOperand->eClass()],
-           pOperand);
+    if (AM::bVerbose())
+      vTrace("%s::pPopQueueRight : %s %p\n"_Stz,
+             m_sLabel.aStz(),
+             aCN[pOperand->eClass()],
+             pOperand);
   }
   
   return pOperand;

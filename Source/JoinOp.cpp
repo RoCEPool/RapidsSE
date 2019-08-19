@@ -264,7 +264,8 @@ eOR JoinOp::eJoinLoop(void)
       switch (eCompare) {
         case KC_SAME:   // leftKey == rightKey
 #ifdef TRACE_JOIN
-          vTrace("Joining: L(%p) ⋈ R(%p)\n"_Stz,m_aLeftEntry,m_aRightEntry);
+          if (AM::bVerbose())
+            vTrace("Joining: L(%p) ⋈ R(%p)\n"_Stz,m_aLeftEntry,m_aRightEntry);
 #endif
           vAddRowRefs(m_aLeftEntry, m_aRightEntry);
           m_eNextEntry = NE_NEXT_RIGHT;
@@ -284,7 +285,8 @@ eOR JoinOp::eJoinLoop(void)
         case KC_BEFORE: // leftKey < rightKey
           if ( ! aFirstRightMatch ) {
 #ifdef TRACE_JOIN
-            vTrace("Joining: L(%p) ⋈ R(NULL)\n"_Stz,m_aLeftEntry);
+            if (AM::bVerbose())
+              vTrace("Joining: L(%p) ⋈ R(NULL)\n"_Stz,m_aLeftEntry);
 #endif
             vAddRowRefs(m_aLeftEntry, nullptr);
           }
@@ -293,7 +295,8 @@ eOR JoinOp::eJoinLoop(void)
           
         case KC_AFTER:  // leftKey > rightKey
 #ifdef TRACE_JOIN
-          vTrace("Joining: L(NULL) ⋈ R(%p)\n"_Stz,m_aRightEntry);
+          if (AM::bVerbose())
+            vTrace("Joining: L(NULL) ⋈ R(%p)\n"_Stz,m_aRightEntry);
 #endif
           vAddRowRefs(nullptr, m_aRightEntry);
           m_eNextEntry = NE_NEXT_RIGHT;
@@ -325,7 +328,8 @@ eOR JoinOp::eJoinLoop(void)
     // (c) right entry only
     if (m_aRightEntry) {
 #ifdef TRACE_JOIN
-      vTrace("Joining: L(NULL) ⋈ R(%p)\n"_Stz,m_aRightEntry);
+      if (AM::bVerbose())
+        vTrace("Joining: L(NULL) ⋈ R(%p)\n"_Stz,m_aRightEntry);
 #endif
       vAddRowRefs(nullptr, m_aRightEntry);
       
@@ -346,7 +350,8 @@ eOR JoinOp::eJoinLoop(void)
   if (m_pRefBuffer)
     vPipeOut(m_pRefBuffer);
   
-  vTrace("JOIN COMPLETE\n"_Stz);
+  if (AM::bVerbose())
+    vTrace("JOIN COMPLETE\n"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pipe out an end marker
