@@ -139,50 +139,6 @@ Log* Log::pAttachExisting(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add a log entry                                                            */
-/*----------------------------------------------------------------------------*/
-void Log::vNote(Stz* szFormat, ...)
-{
-#ifdef WITH_SHARED_LOG
-  if ( ! gpLog )
-    return;
-  
-  va_list xVaArgs;
-  
-  va_start(xVaArgs,szFormat);
-  
-  gpLog->iEntryFyi(CN_NONE,szFormat,xVaArgs);
-  
-  va_end(xVaArgs);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* add a section line log entry                                               */
-/*----------------------------------------------------------------------------*/
-void Log::vNoteSection(Stz* szSectionNm)
-{
-#ifdef WITH_SHARED_LOG
-  if ( ! gpLog )
-    return;
-
-  char caSection[256];
-  
-  i8 iSectNmLen = szSectionNm->iLength();
-    
-  StrLib::vPad(caSection,127-iSectNmLen-4,'#');
-    
-  StrLib::vConcat(caSection,' ');
-  StrLib::vConcat(caSection,szSectionNm->aChar());
-  StrLib::vConcat(caSection,' ');
-  StrLib::vConcat(caSection,'#');
-  StrLib::vConcat(caSection,'#');
-    
-  vNote((Stz*)caSection);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
 /* add a multi-line string entry                                              */
 /*----------------------------------------------------------------------------*/
 void Log::vNoteString(i8 iJobId, s48K& sString)

@@ -44,8 +44,6 @@ namespace Logging
     static Log* pAttachExisting(void);
 
   public:
-    static void vNote(Stz* aFormat, ...);
-    static void vNoteSection(Stz* szSectionNm);
     static void vNoteString(i8 iJobId, s48K& sString);
   
     static void vMonitorPortrait(s48K& sPortrait);
