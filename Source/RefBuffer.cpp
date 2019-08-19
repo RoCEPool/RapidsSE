@@ -75,7 +75,7 @@ void RefBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   RefBuffer* pRefBuffer = _pRefBuffer(pObject);
   
-  pRefBuffer->vShow();
+  //pRefBuffer->vShow();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -152,7 +152,7 @@ RefSet* RefBuffer::aNextRefSet(RefSet* aPriorRefSet)
 /*----------------------------------------------------------------------------*/
 /* show contents of buffer                                                    */
 /*----------------------------------------------------------------------------*/
-void RefBuffer::vShow(void)
+void RefBuffer::vShow(ColumnVec* pLeftColVec, ColumnVec* pRightColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_REFBUFFER,_FOOTER_);
   
@@ -165,6 +165,63 @@ void RefBuffer::vShow(void)
          m_pPrevBuffer,m_pNextBuffer);
   
   vTrace("  partition: %lld \n"_Stz, m_iPartitionNo);
+  
+  HV_Rec hvRecLeft(pLeftColVec);
+  HV_Row hRowLeft(pLeftColVec);
+    
+  HV_Rec hvRecRight(pRightColVec);
+  HV_Row hRowRight(pRightColVec);
+    
+  RefSet* aRefSet = aFirstRefSet();
+    
+  i8 nRows = nItems();
+  while (nRows--) {
+    
+    // get the left dataRow
+    Crw* aLeftCrw = (Crw*)(aRefSet->iRowRef(0));
+    
+    // get the right dataRow
+    Crw* aRightCrw = (Crw*)(aRefSet->iRowRef(1));
+    
+    
+    vTrace("RowRefs %p %p\n"_Stz, aLeftCrw, aRightCrw);
+    
+    // inflate the left row
+    if (aLeftCrw) {
+      RowInflator::vInflateRow(hRowLeft, aLeftCrw);
+    } else {
+      // get no of columns
+      i8 nColumns = pLeftColVec->nItems();
+      
+      // for each column
+      for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+        hRowLeft->m_waColVal[i_Col].m_iI8 = C_DATUM_NULL;
+      }
+    }
+    hvRecLeft->vAppend(hRowLeft);
+    
+    
+    
+    if (aRightCrw) {
+      // inflate the right row
+      RowInflator::vInflateRow(hRowRight, aRightCrw);
+    }
+    else {
+      // get no of columns
+      i8 nColumns = pRightColVec->nItems();
+      
+      // for each column
+      for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+        hRowRight->m_waColVal[i_Col].m_iI8 = C_DATUM_NULL;
+      }
+    }
+    hvRecRight->vAppend(hRowRight);
+    
+    vTrace("%p: %p %s %s\n"_Stz, aRefSet, aRefSet->iRowRef(0),
+           hvRecLeft->szRecStr(), hvRecRight->szRecStr());
+    
+    aRefSet = aNextRefSet(aRefSet);
+  }
   
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
@@ -210,10 +267,14 @@ SrtBuffer* RefBuffer::pToSrtBuffer(i8 iKeyCol, bool bKeyIsLeft,
       HV_Row hRow(pLeftColVec);
       
       // get the key from the left buffer row
-      RowInflator::vInflateColumn(hRow, aLeftCrw, iKeyCol);
+      if (aLeftCrw) {
+        RowInflator::vInflateColumn(hRow, aLeftCrw, iKeyCol);
       
-      // set the key in the srtSet
-      pSrtSet->vKey(hRow->m_waColVal[iKeyCol].m_iI8);
+        // set the key in the srtSet
+        pSrtSet->vKey(hRow->m_waColVal[iKeyCol].m_iI8);
+      }
+      else
+        pSrtSet->vKey(C_DATUM_NULL);
     }
     else {
       HV_Row hRow(pRightColVec);
@@ -221,8 +282,15 @@ SrtBuffer* RefBuffer::pToSrtBuffer(i8 iKeyCol, bool bKeyIsLeft,
       // get the key from the right buffer row
       RowInflator::vInflateColumn(hRow, aRightCrw, iKeyCol);
       
-      // set the key in the srtSet
-      pSrtSet->vKey(hRow->m_waColVal[iKeyCol].m_iI8);
+      // get the key from the left buffer row
+      if (aRightCrw) {
+        RowInflator::vInflateColumn(hRow, aRightCrw, iKeyCol);
+        
+        // set the key in the srtSet
+        pSrtSet->vKey(hRow->m_waColVal[iKeyCol].m_iI8);
+      }
+      else
+        pSrtSet->vKey(C_DATUM_NULL);
     }
     
     aRefSet = aNextRefSet(aRefSet);
