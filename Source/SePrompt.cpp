@@ -35,11 +35,9 @@ void SePrompt::operator delete(void* pSePromptAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SePrompt::SePrompt(bool bOneCommand)
-: Object(CN_SEPROMPT)
+: Object(CN_SEPROMPT), _Loggable(AM::iNextPromptId())
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  m_iPromptId = AM::iNextPromptId();
   
   i8 iPartition = 0;
   eEC eResult = RapidsSE_NewSession(0,
@@ -707,7 +705,7 @@ i8 SePrompt::iPromptId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_iPromptId;
+  return m_iUniqueId;
 }
 
 /*----------------------------------------------------------------------------*/

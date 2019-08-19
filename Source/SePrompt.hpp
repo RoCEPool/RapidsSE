@@ -7,10 +7,10 @@
 
 namespace Prompt
 {
-  class SePrompt : public Object
+  class SePrompt : public Object,
+                   public _Loggable
   {
   private:
-    i8       m_iPromptId;  // the prompt id
     Session* m_pSession;   // rapidsse session
     i8       m_iCmdNo;     // command no
 
