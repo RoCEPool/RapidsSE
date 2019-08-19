@@ -28,7 +28,7 @@ void ShmLog::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ShmLog::ShmLog(eCN eClassNo)
-: Object(eClassNo)
+: Object(eClassNo), _Loggable(0)
 {
   _precondition_(_MAGIC_,eClassNo);
   

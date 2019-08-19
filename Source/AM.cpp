@@ -634,8 +634,7 @@ void AM::vLogRes(Resource* pRes, eRA eResAct, Stz* szFormat, ...)
   
   va_end(xVaArgs);
   
-  if (pRes)
-    pRes->m_i_LogPrev = i_Entry;
+  pRes->m_i_LogPrev = i_Entry;
 #endif
 }
 
@@ -656,9 +655,7 @@ void AM::vLogSvc(Job* pJob, eVA eSvcAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 iSvcId = pJob->m_iUniqueId;
-  
-  i8 i_Entry = gpLog->iEntrySvc(pJob->eClass(),iSvcId,eSvcAct,
+  i8 i_Entry = gpLog->iEntrySvc(pJob->eClass(),pJob->m_iUniqueId,eSvcAct,
                                 pJob->m_iUniqueId,szFormat,xVaArgs);
   
   va_end(xVaArgs);
