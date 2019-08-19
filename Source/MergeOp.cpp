@@ -124,7 +124,7 @@ void MergeOp::vMergeDangling(void)
   i8 iOperandMag[2];
   
   // merge remaining operand set pairs till we are left with one single set
-  while (m_iOperands != 1) {
+  while (m_iOperands > 1) {
     
     j_Index = 0;
     
@@ -206,7 +206,7 @@ eOR MergeOp::eMergeLoop(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // merge all remaining operand sets into a single operand set
   vMergeDangling();
-  RASSERT(m_iOperands == 1);
+  RASSERT(m_iOperands <=1);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the one remaining operand set

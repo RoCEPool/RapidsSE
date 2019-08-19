@@ -431,7 +431,7 @@ eOR JoinOp::ePopRightOperand()
       if (--m_nRightEndMarkers == 0) {
         m_bEndRightOperands = true;
         delete pEndMarker;
-        m_pLeftBuffer = nullptr;
+        m_pRightBuffer = nullptr;
         return OR_NONE;
       }
       else {
