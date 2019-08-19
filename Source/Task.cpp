@@ -59,7 +59,7 @@ void Task::operator delete(void* pTaskAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Task::Task(Job* pJob, Session* pSession)
-: Object(CN_TASK)
+: Object(CN_TASK), _Loggable(AM::iNextTaskId())
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -90,7 +90,7 @@ Task::Task(Job* pJob, Session* pSession)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Task::Task(Op* pOp, Session* pSession)
-: Object(CN_TASK)
+: Object(CN_TASK), _Loggable(AM::iNextTaskId())
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
