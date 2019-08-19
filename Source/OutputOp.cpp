@@ -61,6 +61,7 @@ OutputOp::OutputOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
   
   m_fpCall = OutputOp::eCall;
+  m_pRightStreamDef = nullptr;
   
   _checkInitialised_(CN_OUTPUTOP);
 
@@ -179,15 +180,20 @@ eOR OutputOp::eOpLoop(void)
         
       case CN_SRTBUFFER: {
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
-        pSrtBuffer->vShow(m_pStreamDef->m_pColumnVec);
+        pSrtBuffer->vShow(m_pStreamDef->m_pColumnVec, m_pRightStreamDef->m_pColumnVec);
         vPipeOut(pOperand);
         break;
       }
         
       case CN_STREAMDEF: {
-        StreamDef* pStreamDef = _pStreamDef(pOperand) ;
-        m_pStreamDef = new StreamDef(pStreamDef);
-        vPipeOut(pOperand);
+        if ( ! m_pStreamDef ) {
+          m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
+          vPipeOut(pOperand);
+        }
+        else {
+          m_pRightStreamDef = new StreamDef(_pStreamDef(pOperand));
+          vPipeOut(pOperand);
+        }
         break;
       }
         

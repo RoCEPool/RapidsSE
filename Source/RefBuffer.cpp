@@ -176,7 +176,7 @@ void RefBuffer::vShow(void)
 SrtBuffer* RefBuffer::pToSrtBuffer(i8 iKeyCol, bool bKeyIsLeft,
                                    ColumnVec* pLeftColVec, ColumnVec* pRightColVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_REFBUFFER,_FOOTER_);
   
   SrtBuffer* pSrtBuffer = new SrtBuffer(m_iPartitionNo);
   

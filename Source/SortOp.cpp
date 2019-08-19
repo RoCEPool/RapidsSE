@@ -62,6 +62,7 @@ SortOp::SortOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   _precondition_(_MAGIC_,CN_SORTOP);
   
   m_fpCall = SortOp::eCall;
+  m_pRightStreamDef = nullptr;
   
   _checkInitialised_(CN_SORTOP);
   
@@ -133,8 +134,14 @@ eOR SortOp::eSortLoop(void)
     }
     
     if (CN_STREAMDEF == pOperand->eClass()) {
-      m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
-      vPipeOut(pOperand);
+      if ( ! m_pStreamDef ) {
+        m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
+        vPipeOut(pOperand);
+      }
+      else {
+        m_pRightStreamDef = new StreamDef(_pStreamDef(pOperand));
+        vPipeOut(pOperand);
+      }
       continue;
     }
     

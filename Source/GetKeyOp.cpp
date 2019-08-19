@@ -181,6 +181,7 @@ eOR GetKeyOp::eOpLoop(void)
         SrtBuffer* pSrtBuffer = pRefBuffer->pToSrtBuffer(m_iKeyCol, m_bKeyIsLeft,
                                                          m_pStreamDef->m_pColumnVec,
                                                          m_pRightStreamDef->m_pColumnVec);
+        pSrtBuffer->vShow(m_pStreamDef->m_pColumnVec, m_pRightStreamDef->m_pColumnVec);
         vPipeOut(pSrtBuffer);
         break;
       }
@@ -201,14 +202,14 @@ eOR GetKeyOp::eOpLoop(void)
             break;
           }
         }
-        if (m_iKeyCol != -1) {
+        if (m_iKeyCol == -1) {
           // this must be the left streamDef coming from a join
           // do we have a right def ?
           if (m_pRightStreamDef) {
             // figure out the key idx
             i8 nColumns = m_pStreamDef->m_pColumnVec->nItems();
             for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-              Column* pCol = m_pStreamDef->m_pColumnVec->pGet(i_Col);
+              Column* pCol = m_pRightStreamDef->m_pColumnVec->pGet(i_Col);
               if (StrLib::bEqualTo(m_sKey.aChar(),pCol->sColumnName().aChar(),C_NO_CASE)) {
                 m_iKeyCol = i_Col;
                 m_bKeyIsLeft = false;

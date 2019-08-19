@@ -34,7 +34,7 @@ namespace Rows
     SrtBuffer* pNextBuffer(void);
     SrtSet*    aNextSrtSet(SrtSet* aPriorSrtSet);
     SrtBuffer* pPrevBuffer(void);
-    void       vShow(ColumnVec* pColVec);
+    void       vShow(ColumnVec* pLeftColVec, ColumnVec* pRightColVec);
     SrtSet*    aSrtSet(i8 iSrtSet);
     void       vSwap(i8 iSrtSet1, SrtBuffer* aSrtBuffer2, i8 iSrtSet2);
     bool       bVerifyNextPrev(void);

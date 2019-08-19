@@ -118,20 +118,22 @@ void JoinOp::vAddRowRefs(Ent* aLeftEntry, Ent* aRightEntry)
 {
   
   // allot a refSet
-  if ( ! m_pRefBuffer )
+  if ( ! m_pRefBuffer ) {
     m_pRefBuffer = new RefBuffer(m_nSlot);
+    
+    // pipe out the stream def's
+    RASSERT(m_pStreamDef);
+    RASSERT(m_pRightStreamDef);
+    vPipeOut(m_pStreamDef);
+    vPipeOut(m_pRightStreamDef);
+    m_pStreamDef = nullptr;
+    m_pRightStreamDef = nullptr;
+  }
   
   RefSet* pRefSet = m_pRefBuffer->aAllotRefSet(2);
   
   if ( ! pRefSet )  {
     // Reference Buffer is full
-    // have we piped out the stream def's
-    if ( ! m_pStreamDef) {
-      vPipeOut(m_pStreamDef);
-      vPipeOut(m_pRightStreamDef);
-      m_pStreamDef = nullptr;
-      m_pRightStreamDef = nullptr;
-    }
     // pipe out the refBuffer
     vPipeOut(m_pRefBuffer);
     
