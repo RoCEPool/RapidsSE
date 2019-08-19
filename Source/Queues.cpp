@@ -214,12 +214,6 @@ void Queues::vAddBidingSet(Task* pTask)
   
   m_pBidingSet->vGrabLock();
   
-  //  if (pTask->pJob()->m_bLogJob)
-  //    JobLog::vNote(pTask->pJob(),
-  //                          "Add to ExecutingSet: %s %p"_Stz,
-  //                          aCN[pTask->pJob()->eClass()],
-  //                          pTask->pJob());
-  
   m_pBidingSet->vAddTask(pTask);
   
   m_pBidingSet->vDropLock();
@@ -241,12 +235,6 @@ void Queues::vAddExecutingSet(Task* pTask)
   pTask->vQueueOrder(++m_ixTaskArrival);
   
   m_pExecutingSet->vGrabLock();
-  
-//  if (pTask->pJob()->m_bLogJob)
-//    JobLog::vNote(pTask->pJob(),
-//                          "Add to ExecutingSet: %s %p"_Stz,
-//                          aCN[pTask->pJob()->eClass()],
-//                          pTask->pJob());
   
   m_pExecutingSet->vAddTask(pTask);
   
@@ -273,13 +261,7 @@ void Queues::vAddPausedSet(Task* pTask)
   pTask->vQueueOrder(++m_ixTaskArrival);
   
   m_pPausedSet->vGrabLock();
-  
-  //  if (pTask->pJob()->m_bLogJob)
-  //    JobLog::vNote(pTask->pJob(),
-  //                          "Add to ExecutingSet: %s %p"_Stz,
-  //                          aCN[pTask->pJob()->eClass()],
-  //                          pTask->pJob());
-  
+    
   m_pPausedSet->vAddTask(pTask);
   
   m_pPausedSet->vDropLock();
@@ -300,12 +282,6 @@ void Queues::vAddSleepingQueue(Task* pTask)
   pTask->vQueue(QK_SLEEPING_QUEUE);
 
   m_pSleepingQueue->vGrabLock();
-  
-  if (pTask->pJob()->m_bLogJob)
-    JobLog::vNote(pTask->pJob(),
-                          "Add to SleepingQueue: %s %p"_Stz,
-                          aCN[pTask->pJob()->eClass()],
-                          pTask->pJob());
   
   i8 nPriorItems = m_pSleepingQueue->nTasks();
   m_pSleepingQueue->vAssertItems(nPriorItems);
@@ -336,12 +312,6 @@ void Queues::vAddWaitingSet(Task* pTask)
   pTask->vQueueOrder(++m_ixTaskArrival);
   
   m_pWaitingSet->vGrabLock();
-
-  if (pTask->pJob()->m_bLogJob)
-    JobLog::vNote(pTask->pJob(),
-                          "Add to WaitingSet: %s %p"_Stz,
-                          aCN[pTask->pJob()->eClass()],
-                          pTask->pJob());
   
   m_pWaitingSet->vAddTask(pTask);
     
@@ -365,12 +335,6 @@ void Queues::vAppendReadyQueue(Task* pTask)
   
   m_pReadyQueue->vGrabLock();
   
-  if (pTask->pJob()->m_bLogJob)
-    JobLog::vNote(pTask->pJob(),
-                          "Add to ReadyQueue: %s %p"_Stz,
-                          aCN[pTask->pJob()->eClass()],
-                          pTask->pJob());
-  
   m_pReadyQueue->vAddTask(pTask);
   
   m_pReadyQueue->vDropLock();
@@ -392,12 +356,6 @@ void Queues::vAppendReadyQueueLP(Task* pTask)
   pTask->vQueueOrder(++m_ixTaskArrival);
   
   m_pReadyQueueLP->vGrabLock();
-  
-  if (pTask->pJob()->m_bLogJob)
-    JobLog::vNote(pTask->pJob(),
-                          "Add to ReadyQueueLP: %s %p"_Stz,
-                          aCN[pTask->pJob()->eClass()],
-                          pTask->pJob());
   
   m_pReadyQueueLP->vAddTask(pTask);
     
@@ -434,9 +392,6 @@ Task* Queues::pPopReadyQueue(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pTask->vQueue(QK_NONE);
-
-  if (pTask->pJob()->m_bLogJob)
-    JobLog::vNote(pTask->pJob(),"pPopReadyQueue()"_Stz);
   
   return pTask;
 }
@@ -469,9 +424,6 @@ Task* Queues::pPopReadyQueueLP(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   pTask->vQueue(QK_NONE);
-  
-  if (pTask->pJob()->m_bLogJob)
-    JobLog::vNote(pTask->pJob(),"pPopReadyQueueLP()"_Stz);
   
   return pTask;
 }
@@ -559,12 +511,6 @@ void Queues::vRemoveExecutingSet(Task* pTask)
   m_pExecutingSet->vDropLock();
   
   pTask->vQueue(QK_NONE);
-  
-//  if (pTask->pJob() && pTask->pJob()->m_bLogJob)
-//    JobLog::vNote(pTask->pJob(),
-//                          "Removed from ExecutingSet: %s %p"_Stz,
-//                          aCN[pTask->pJob()->eClass()],
-//                          pTask->pJob());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -603,11 +549,6 @@ void Queues::vRemoveWaitingSet(Task* pTask)
   
   pTask->vQueue(QK_NONE);
   
-  if (pTask->pJob()->m_bLogJob)
-    JobLog::vNote(pTask->pJob(),
-                          "Removed from WaitingSet: %s %p"_Stz,
-                          aCN[pTask->pJob()->eClass()],
-                          pTask->pJob());
 }
 
 

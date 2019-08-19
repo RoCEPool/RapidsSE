@@ -50,8 +50,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.jobClass"_Stz,         &Step::vJobJobClass);
   vAddStep("job.jobList@"_Stz,         &Step::vJobJobListFetch);
   
-  vAddStep("job.markActivity@"_Stz,    &Step::vJobMarkActivityFetch);
-  vAddStep("job.markActivity!"_Stz,    &Step::vJobMarkActivityStore);
   vAddStep("job.markTrace@"_Stz,       &Step::vJobMarkTraceFetch);
   vAddStep("job.markTrace!"_Stz,       &Step::vJobMarkTraceStore);
   vAddStep("job.metadata!"_Stz,        &Step::vJobMetadataStore);
@@ -884,44 +882,6 @@ void Step::vJobMetadataStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.metadata!"_Stz);
   
   pJob->m_sMetadata = sMetadata;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.markActivity@ -- fetch job mark activity                               */
-/*----------------------------------------------------------------------------*/
-void Step::vJobMarkActivityFetch(MP_Task mpTask)
-{
-  ENTRY("vJobMarkActivityFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.markActivity@"_Stz);
-  Job* pJob = _pJob(pJobPtr);
-  
-  mpTask->m_pDataStack->vPushI8(pJob->m_bLogJob);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.markActivity! -- store job mark activity                               */
-/*----------------------------------------------------------------------------*/
-void Step::vJobMarkActivityStore(MP_Task mpTask)
-{
-  ENTRY("vJobMarkActivityStore"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.markAction!"_Stz);
-  Job* pJob = _pJob(pJobPtr);
-  
-  i8 iMarkActivity;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(iMarkActivity) )
-    THROW_INVALID_DSTACK("job.markAction!"_Stz);
-  
-  pJob->m_bLogJob = (bool)iMarkActivity;
   
   EXIT();
 }
