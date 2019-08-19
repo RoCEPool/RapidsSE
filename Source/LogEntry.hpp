@@ -65,7 +65,7 @@ namespace Logging
     LogEntry(void);
    ~LogEntry(void) noexcept(false);
 
-    void vInit(eCN eClass);
+    void vInit(eCN eClass, Stz* szText);
     void vWrite(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec);
     void vWriteCsv(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec);
     void vZero(void);

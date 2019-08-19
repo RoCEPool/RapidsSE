@@ -155,12 +155,9 @@ void Log::vNoteString(i8 iJobId, s48K& sString)
   
   while (StrLib::bEachLine(&aCharAdr,sLine.aChar())) {
     
-    //vTrace("Line: ]]%s[[\n"_Stz,sLine.aChar());
     LogEntry* pLogEntry = gpLog->pNewEntry_NL();
-    pLogEntry->vInit(CN_NONE);
+    pLogEntry->vInit(CN_NONE,sLine);
     
-    StrLib::vCopyLen(pLogEntry->m_caText,sLine.aChar(),C_LOG_TEXT - 1);
-
     pLogEntry->m_xJob.vSet(pLogEntry,iJobId,JA_NONE);
   }
   
@@ -679,10 +676,9 @@ LogEntry* Log::pNewEntry(eCN eClassNo, Stz* szFormat, va_list xVaArgs)
   vDropLock();
   // ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲
   
-  pLogEntry->vInit(eClassNo);
+  pLogEntry->vInit(eClassNo,(Stz*)caText);
   
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
+  //StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
 
   return pLogEntry;
 }
