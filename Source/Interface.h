@@ -14,10 +14,9 @@ namespace Interface
 
 //------------------------------------------------------------------------------
 
-#include "ApiMacros.hpp"
+#include "ApiMacros.h"
 
 #include "Api.hpp"
-#include "ApiLog.hpp"
 #include "ApiState.hpp"
 #include "RapidsSE.hpp"
 
