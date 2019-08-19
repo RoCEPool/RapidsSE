@@ -127,7 +127,7 @@ void Queues::vThreadsReport(void)
            " user %lld system %lld usage %lld%% sleep %llds"
            " %7s %s"
            " assigned %lld\n"_Stz,
-           pThread->m_iThreadNo,
+           pThread->iThreadNo(),
            pThread,
            
            pThread->m_aStackBase,
@@ -164,7 +164,7 @@ void Queues::vThreadsReport(void)
            " user %lld system %lld usage %lld%% sleep %llds"
            " %7s %s"
            " assigned %lld\n"_Stz,
-           pThread->m_iThreadNo,
+           pThread->iThreadNo(),
            pThread,
            
            pThread->m_aStackBase,
