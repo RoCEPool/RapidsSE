@@ -80,6 +80,7 @@ i8   AM::iNextResourceId(void){
   else
     return C_UNKNOWN;
 }
+i8   AM::iNextSessionId(void) { return ++ gpAttachMap->m_inNextSessionId;     }
 i8   AM::iNextStreamId(void)  { return ++ gpAttachMap->m_inNextStreamId;      }
 i8   AM::iNextTaskId(void)    { return ++ gpAttachMap->m_inNextTaskId;        }
 i8   AM::iNextThreadId(void)  { return ++ gpAttachMap->m_inNextThreadId;      }
@@ -390,7 +391,7 @@ void AM::vLogFyi(Stz* szFormat, ...)
   
   va_start(xArgs,szFormat);
   
-  gpLog->iEntryFyi(CN_NONE,szFormat,xArgs);
+  i8 i_Entry = gpLog->iEntryFyi(CN_NONE,szFormat,xArgs);
   
   va_end(xArgs);
 #endif
@@ -415,7 +416,7 @@ void AM::vLogApi(Session* pSsn, eAA eApiAct, Stz* szFormat, ...)
   
   i8 iSsnId = C_UNKNOWN; //pSsn->iSsnId();
   
-  gpLog->iEntryApi(pSsn->eClass(),iSsnId,eApiAct,szFormat,xVaArgs);
+  i8 i_Entry = gpLog->iEntryApi(pSsn->eClass(),iSsnId,eApiAct,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif
@@ -439,7 +440,7 @@ void AM::vLogJob(Job* pJob, eJA eJobAct, Stz* szFormat, ...)
   va_start(xVaArgs,szFormat);
   
   i8 iJobId = pJob ? pJob->iJobId() : C_UNKNOWN;
-  gpLog->iEntryJob(iJobId,eJobAct,szFormat,xVaArgs);
+  i8 i_Entry = gpLog->iEntryJob(iJobId,eJobAct,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif
@@ -467,7 +468,7 @@ void AM::vLogLck(Lock* pLock, eLA eLckAct, Stz* szFormat, ...)
   va_start(xVaArgs,szFormat);
   
   i8 iLckId =  pLock ? pLock->iLockId() : C_UNKNOWN;
-  gpLog->iEntryLck(pLock->eClass(),iLckId,eLckAct,szFormat,xVaArgs);
+  i8 i_Entry = gpLog->iEntryLck(pLock->eClass(),iLckId,eLckAct,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif
@@ -492,7 +493,7 @@ void AM::vLogLog(Log* pLog, eGA eLogAct, Stz* szFormat, ...)
   va_start(xVaArgs,szFormat);
   
   i8 iLogId = 0;
-  gpLog->iEntryLog(pLog->eClass(),iLogId,eLogAct,szFormat,xVaArgs);
+  i8 i_Entry = gpLog->iEntryLog(pLog->eClass(),iLogId,eLogAct,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif
@@ -516,7 +517,7 @@ void AM::vLogObj(Object* pObject, eCA eObjAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  gpLog->iEntryObj(pObject,eObjAct,szFormat,xVaArgs);
+  i8 i_Entry = gpLog->iEntryObj(pObject,eObjAct,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif
@@ -541,7 +542,7 @@ void AM::vLogOpr(Op* pOpr, eOA eOprAct, Stz* szFormat, ...)
   
   i8 iOprId = pOpr->iOpId();
   
-  gpLog->iEntryOpr(pOpr->eClass(),iOprId,eOprAct,szFormat,xVaArgs);
+  i8 i_Entry = gpLog->iEntryOpr(pOpr->eClass(),iOprId,eOprAct,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif
@@ -565,7 +566,7 @@ void AM::vLogPrm(SePrompt* pPrm, ePA ePrmAct, Stz* szFormat, ...)
   va_start(xVaArgs,szFormat);
   
   i8 iPrmId = pPrm->iPromptId();
-  gpLog->iEntryPrm(pPrm->eClass(),iPrmId,ePrmAct,szFormat,xVaArgs);
+  i8 i_Entry = gpLog->iEntryPrm(pPrm->eClass(),iPrmId,ePrmAct,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif
@@ -592,7 +593,7 @@ void AM::vLogRes(Resource* pRes, eRA eResAct, Stz* szFormat, ...)
   
   i8  iResId   = pRes ? pRes->iResId() : C_UNKNOWN;
   eCN eClassNo = pRes ? pRes->eClass() : CN_NONE;
-  gpLog->iEntryRes(eClassNo,iResId,eResAct,eKind,szFormat,xVaArgs);
+  i8 i_Entry = gpLog->iEntryRes(eClassNo,iResId,eResAct,eKind,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif
@@ -617,7 +618,7 @@ void AM::vLogSvc(Job* pJob, eVA eSvcAct, Stz* szFormat, ...)
   
   i8 iSvcId = pJob->m_iJobId;
   
-  gpLog->iEntrySvc(pJob->eClass(),iSvcId,eSvcAct,szFormat,xVaArgs);
+  i8 i_Entry = gpLog->iEntrySvc(pJob->eClass(),iSvcId,eSvcAct,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif
@@ -642,7 +643,7 @@ void AM::vLogSys(AttachMap* pSys, eYA eSysAct, Stz* szFormat, ...)
   
   i8 iSysId = 0;
   
-  gpLog->iEntrySys(CN_ATTACHMAP,iSysId,eSysAct,szFormat,xVaArgs);
+  i8 i_Entry = gpLog->iEntrySys(CN_ATTACHMAP,iSysId,eSysAct,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif
@@ -667,7 +668,7 @@ void AM::vLogThd(Thread* pThread, eHA eThdAct, Stz* szFormat, ...)
   
   i8 iThdId    = pThread ? pThread->m_iThreadId : C_UNKNOWN;
   eCN eClassNo = pThread ? pThread->eClass()    : CN_NONE;
-  gpLog->iEntryThd(eClassNo,iThdId,eThdAct,szFormat,xVaArgs);
+  i8 i_Entry = gpLog->iEntryThd(eClassNo,iThdId,eThdAct,szFormat,xVaArgs);
 
   va_end(xVaArgs);
 #endif
@@ -692,7 +693,7 @@ void AM::vLogTsk(Task* pTask, eTA eTskAct, Stz* szFormat, ...)
   
   i8 iTskId    = pTask ? pTask->iTaskId() : C_UNKNOWN;
   eCN eClassNo = pTask ? pTask->eClass()  : CN_NONE;
-  gpLog->iEntryTsk(eClassNo,iTskId,eTskAct,szFormat,xVaArgs);
+  i8 i_Entry = gpLog->iEntryTsk(eClassNo,iTskId,eTskAct,szFormat,xVaArgs);
   
   va_end(xVaArgs);
 #endif
@@ -716,7 +717,7 @@ void AM::vLogTxn(Tx* pTx, eXA eTxnAct, Stz* szFormat, ...)
   va_start(xVaArgs,szFormat);
   
   i8 iTxnId = pTx->iDistTxId();
-  gpLog->iEntryTxn(pTx->eClass(),iTxnId,eTxnAct,szFormat,xVaArgs);
+  i8 i_Entry = gpLog->iEntryTxn(pTx->eClass(),iTxnId,eTxnAct,szFormat,xVaArgs);
 
   va_end(xVaArgs);
 #endif

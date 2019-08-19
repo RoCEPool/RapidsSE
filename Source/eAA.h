@@ -11,6 +11,9 @@ enum eAA // api actions
   /*    */ AA_API_ENTRY,
   /*    */ AA_API_EXIT,
 
+  /*    */ AA_SSN_CONSTRUCTOR,
+  /*    */ AA_SSN_DESTRUCTOR,
+
   /*    */ AA_ENUMS,
 };
 
@@ -22,6 +25,9 @@ static Stz* aAA[]
   /*    */ "AA_API_ENTRY"_Stz,
   /*    */ "AA_API_EXIT"_Stz,
 
+  /*    */ "AA_SSN_CONSTRUCTOR"_Stz,
+  /*    */ "AA_SSN_DESTRUCTOR"_Stz,
+  
   /*    */ "ENUMS"_Stz,
 };
 
