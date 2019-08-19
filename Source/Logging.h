@@ -24,6 +24,7 @@ namespace Logging
 #include "LogEntryObj.hpp"
 #include "LogEntryOp.hpp"
 #include "LogEntryPrm.hpp"
+#include "LogEntryQue.hpp"
 #include "LogEntryRes.hpp"
 #include "LogEntrySvc.hpp"
 #include "LogEntrySys.hpp"

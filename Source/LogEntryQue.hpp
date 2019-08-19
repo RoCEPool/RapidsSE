@@ -1,0 +1,23 @@
+/*============================================================================*/
+/* LogEntryQue.hpp - Log Entry for Queues                                     */
+/*============================================================================*/
+#pragma once
+
+namespace Logging
+{
+  class _LogEntryQue
+  {
+  public:
+    i8   m_iQueId;  // queues id
+    eQA  m_eQueAct; // queues action
+  
+  public:
+    void vSet(LogEntry* pLogEntry, i8 iQueId, eQA eQueAct);
+  
+    void vWriteCsv(File* pFile);
+  };
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
