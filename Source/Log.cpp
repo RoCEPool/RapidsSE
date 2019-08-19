@@ -339,7 +339,7 @@ i8 Log::iEntryFyi(eCN eClassNo,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo);
+  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -367,7 +367,7 @@ i8 Log::iEntryApi(eCN eClassNo, i8 iSsnId, eAA eApiAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo);
+  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -395,7 +395,7 @@ i8 Log::iEntryJob(eCN eClassNo, i8 iJobId, eJA eJobAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo);
+  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -423,7 +423,7 @@ i8 Log::iEntryLck(eCN eClassNo, i8 iLckId, eLA eLckAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo);
+  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -451,7 +451,7 @@ i8 Log::iEntryLog(eCN eClassNo, i8 iLogId, eGA eLogAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo);
+  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
   
   if (! pLogEntry)
   return C_UNKNOWN;
@@ -479,7 +479,7 @@ i8 Log::iEntryObj(Object* pObj, eCA eObjAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(pObj->eClass());
+  LogEntry* pLogEntry = pNewEntry(pObj->eClass(),szFormat,xVaArgs);
   
   if (! pLogEntry)
   return C_UNKNOWN;
@@ -507,7 +507,7 @@ i8 Log::iEntryOpr(eCN eClassNo, i8 iOprId, eOA eOprAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo);
+  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -535,7 +535,7 @@ i8 Log::iEntryPrm(eCN eClassNo, i8 iPrmId, ePA ePrmAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo);
+  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -563,7 +563,7 @@ i8 Log::iEntryRes(eCN eClassNo, i8 iResId, eRA eResAct, eRK eResKnd,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo);
+  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -591,7 +591,7 @@ i8 Log::iEntrySvc(eCN eClassNo, i8 iSvcId, eVA eSvcAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo);
+  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -619,7 +619,7 @@ i8 Log::iEntrySys(eCN eClassNo, i8 iSysId, eYA eSysAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo);
+  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
   
   if (! pLogEntry)
   return C_UNKNOWN;
@@ -647,7 +647,7 @@ i8 Log::iEntryThd(eCN eClassNo, i8 iThdId, eHA eThdAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo);
+  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -675,7 +675,7 @@ i8 Log::iEntryTsk(eCN eClassNo, i8 iTskId, eTA eTskAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo);
+  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -703,7 +703,7 @@ i8 Log::iEntryTxn(eCN eClassNo, i8 iTxnId, eXA eTxnAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo);
+  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -729,11 +729,11 @@ i8 Log::iEntryTxn(eCN eClassNo, i8 iTxnId, eXA eTxnAct,
 /* write an LogEntry                                                          */
 /*----------------------------------------------------------------------------*/
 i8 Log::iEntryJob_arg(i8 iJobId, i8 iForeign,
-                      Stz* aFormat, va_list xVaArgs)
+                      Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(CN_NONE);
+  LogEntry* pLogEntry = pNewEntry(CN_NONE,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -742,7 +742,7 @@ i8 Log::iEntryJob_arg(i8 iJobId, i8 iForeign,
   
   char caMark[1024];
   
-  vsnprintf(caMark,sizeof(caMark)-1,aFormat->aChar(),xVaArgs);
+  vsnprintf(caMark,sizeof(caMark)-1,szFormat->aChar(),xVaArgs);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -776,7 +776,7 @@ i8 Log::iEntryJob(i8 iJobId, i8 iForeign, Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* get a new mark in Log                                                      */
 /*----------------------------------------------------------------------------*/
-LogEntry* Log::pNewEntry(eCN eClassNo)
+LogEntry* Log::pNewEntry(eCN eClassNo, Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
