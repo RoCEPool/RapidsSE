@@ -30,7 +30,7 @@ void Step::vJob_PublishSpawnSub(MP_Task mpTask)
     THROW_INVALID_DSTACK("Job_publish.spawnSub"_Stz);
   
   Session* pSession = pJob_Publish->m_pSession;
-  i8 iPublishJobId = pJob_Publish->m_iJobId;
+  i8 iPublishJobId = pJob_Publish->m_iUniqueId;
 
   JobClass* pJobClass_SubPublish = JobClass::pFind(CN_JOB_SUBPUBLISH);
 
@@ -39,7 +39,7 @@ void Step::vJob_PublishSpawnSub(MP_Task mpTask)
 
   pJob_SubPublish->vSeed(SS_SEED_RUN);
 
-  pJob_SubPublish->m_iParentId     = pJob_Publish->m_iJobId;
+  pJob_SubPublish->m_iParentId     = pJob_Publish->m_iUniqueId;
   pJob_SubPublish->m_iPublishJobId = iPublishJobId;
   pJob_SubPublish->m_sObjectName   = pJob_Publish->m_sObjectName;
   pJob_SubPublish->m_i_Slot        = iSlot;

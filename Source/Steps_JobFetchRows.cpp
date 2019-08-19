@@ -176,7 +176,7 @@ void Step::vJob_FetchRowsSpawnSub(MP_Task mpTask)
   
   pJob_SubFetch->vSeed(SS_SEED_RUN);
   
-  pJob_SubFetch->m_iParentId    = pJob_FetchRows->m_iJobId;
+  pJob_SubFetch->m_iParentId    = pJob_FetchRows->m_iUniqueId;
   pJob_SubFetch->m_pParentJob   = pJob_FetchRows;
   pJob_SubFetch->m_sObjectName  = pJob_FetchRows->m_sObjectName;
   pJob_SubFetch->m_pPlanner     = pPlanner;
@@ -294,7 +294,7 @@ void Step::vJob_InflateRowsSpawnSub(MP_Task mpTask)
   
   pJob_SubScan->vSeed(SS_SEED_RUN);
   
-  pJob_SubScan->m_iParentId    = pJob_InflateRows->m_iJobId;
+  pJob_SubScan->m_iParentId    = pJob_InflateRows->m_iUniqueId;
   pJob_SubScan->m_pParentJob   = pJob_InflateRows;
   pJob_SubScan->m_sObjectName  = pJob_InflateRows->m_sObjectName;
   pJob_SubScan->m_i_Slot       = iSlot;

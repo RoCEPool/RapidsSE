@@ -45,7 +45,7 @@ void Step::vJob_SubExporterSpawn(MP_Task mpTask)
     static_cast<Job_SubExporter*>(pJobClass_SubExporter->pPreJob(pSession));
   
   pJob_SubExporter->m_i_ActionRoot = pJob_Export->m_i_ActionRoot;
-  pJob_SubExporter->m_iParentId    = pJob_Export->m_iJobId;
+  pJob_SubExporter->m_iParentId    = pJob_Export->m_iUniqueId;
   pJob_SubExporter->m_pJobExport   = pJob_Export;
   pJob_SubExporter->m_i_Slot       = i_Slot;
 

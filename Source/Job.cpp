@@ -56,14 +56,13 @@ bool Jobs::_bIsValidJob(eCN eClass)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job::Job(eCN eClassNo, Session* pSession)
-: Object(eClassNo), JobDicPath(pSession)
+: Object(eClassNo), _Loggable(AM::iNextJobId()), JobDicPath(pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
   //vTrace("%s: CREATING JOB %p %s\n"_Stz,
   //       AM::pGrid()->pThisNode()->aNodeName(), this, aCN[eClass()]);
   
-  m_iJobId    = AM::iNextJobId();
   m_iParentId = C_UNKNOWN;
   m_eSeed     = SS_ENUMS;
   m_i_State   = C_UNKNOWN;
@@ -85,7 +84,7 @@ Job::Job(eCN eClassNo, Session* pSession)
   
   if ( AM::pMarkAction()->bAll() ||
        AM::pMarkAction()->bFlagged(eClass()) ) {
-    m_i_ActionRoot = ActLog::iBegin(m_iJobId,eClassNo);
+    m_i_ActionRoot = ActLog::iBegin(m_iUniqueId,eClassNo);
   }
   else {
     m_i_ActionRoot = C_UNKNOWN;
@@ -235,7 +234,7 @@ i8 Job::iJobId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_iJobId;
+  return m_iUniqueId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -245,7 +244,7 @@ void Job::vJobId(i8 iJobId)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_iJobId = iJobId;
+  m_iUniqueId = iJobId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -276,7 +275,7 @@ void Job::vMarkJob(void)
   s48K sJobMark;
   
   sJobMark.vSprintCat("Job %03lld %s state %lld slot %lld\n"_Stz,
-                      m_iJobId,
+                      m_iUniqueId,
                       aCN[eClass()],
                       m_i_State,
                       m_i_Slot);
@@ -290,7 +289,7 @@ void Job::vMarkJob(void)
 
   sJobMark.vConcat("\n"_Stz);
 
-  Log::vNoteString(m_iJobId,sJobMark);
+  Log::vNoteString(m_iUniqueId,sJobMark);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -398,7 +397,7 @@ i8 Job::iOriginatorNode(void)
   
   i8 iMaskOffLower48Bits = 0xFFFF000000000000;
   
-  i8 iOriginatorNode = m_iJobId & iMaskOffLower48Bits;
+  i8 iOriginatorNode = m_iUniqueId & iMaskOffLower48Bits;
   iOriginatorNode >>= 48;
   
   return iOriginatorNode;
@@ -433,7 +432,7 @@ void Job::vReport(void)
   
   vTrace("Job %llx id %lls ackRemaining %lld\n"_Stz,
          this,
-         m_iJobId,
+         m_iUniqueId,
          m_oAcksRmg.iPrintOnlyValue());
 }
 

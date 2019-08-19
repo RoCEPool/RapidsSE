@@ -192,7 +192,7 @@ bool Job_WriteBuffer::bInsertRows(void)
   // Loading ?
   if (m_eDataSource == DS_LOAD) {
 //    Job__Find* pFindJob = new Job__Find;
-//    pFindJob->m_iJobId = m_iParentJobId;
+//    pFindJob->m_iUniqueId = m_iParentJobId;
 //
 //    gpAttachMap->m_pParticipatingJobs->vGrabLock();
 //    Job* pJob = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
@@ -276,7 +276,7 @@ bool Job_WriteBuffer::bInsertRows_LowMem(void)
   // find the load table job
   if (m_eDataSource == DS_LOAD) {
 //    Job__Find* pFindJob = new Job__Find;
-//    pFindJob->m_iJobId = m_iParentJobId;
+//    pFindJob->m_iUniqueId = m_iParentJobId;
 //
 //    gpAttachMap->m_pParticipatingJobs->vGrabLock();
 //    Job* pJob = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);

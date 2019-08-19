@@ -41,7 +41,7 @@ void Step::vJob_SubLoaderSpawn(MP_Task mpTask)
   
   pJob_SubLoader->vSeed(SS_SEED_RUN);
   
-  pJob_SubLoader->m_iParentId  = pJob_LoadTable->m_iJobId;
+  pJob_SubLoader->m_iParentId  = pJob_LoadTable->m_iUniqueId;
 
   pJob_SubLoader->m_sObjectName = pJob_LoadTable->m_sObjectName;
   pJob_SubLoader->vJob_LoadTable(pJob_LoadTable);

@@ -617,7 +617,7 @@ void AM::vLogSvc(Job* pJob, eVA eSvcAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 iSvcId = pJob->m_iJobId;
+  i8 iSvcId = pJob->m_iUniqueId;
   
   i8 i_Entry = gpLog->iEntrySvc(pJob->eClass(),iSvcId,eSvcAct,szFormat,xVaArgs);
   

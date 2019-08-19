@@ -249,7 +249,7 @@ void Job_Export::vShow(void)
   vTrace("  Job_Export %03lld: "
          "Table %s File %s \n"_Stz,
          
-         m_iJobId,
+         m_iUniqueId,
          m_sObjectName.aStz(),
          m_sFilePath.aStz()
          );

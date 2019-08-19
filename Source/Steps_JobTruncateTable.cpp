@@ -66,7 +66,7 @@ void Step::vJob_TruncateTableSpawnSub(MP_Task mpTask)
     THROW_INVALID_DSTACK("Job_truncateTable.spawnSub"_Stz);
   
   Session* pSession = pJob_TruncateTable->m_pSession;
-  i8 iTruncateJobId = pJob_TruncateTable->m_iJobId;
+  i8 iTruncateJobId = pJob_TruncateTable->m_iUniqueId;
   
   JobClass* pJobClass_SubTruncate = JobClass::pFind(CN_JOB_SUBTRUNCATE);
   
@@ -75,7 +75,7 @@ void Step::vJob_TruncateTableSpawnSub(MP_Task mpTask)
   
   pJob_SubTruncate->vSeed(SS_SEED_RUN);
   
-  pJob_SubTruncate->m_iParentId  = pJob_TruncateTable->m_iJobId;
+  pJob_SubTruncate->m_iParentId  = pJob_TruncateTable->m_iUniqueId;
   pJob_SubTruncate->m_iTruncateJobId = iTruncateJobId;
   pJob_SubTruncate->m_sObjectName = pJob_TruncateTable->m_sObjectName;
   pJob_SubTruncate->m_i_Slot = iSlot;
