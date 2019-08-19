@@ -61,6 +61,7 @@ JoinOp::JoinOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   m_bEndRightOperands = false;
   
   m_pRefBuffer = nullptr;
+  m_pRightStreamDef = nullptr;
   
   m_eNextEntry = NE_NEXT_LEFT_RIGHT;
 }
@@ -124,7 +125,13 @@ void JoinOp::vAddRowRefs(Ent* aLeftEntry, Ent* aRightEntry)
   
   if ( ! pRefSet )  {
     // Reference Buffer is full
-    
+    // have we piped out the stream def's
+    if ( ! m_pStreamDef) {
+      vPipeOut(m_pStreamDef);
+      vPipeOut(m_pRightStreamDef);
+      m_pStreamDef = nullptr;
+      m_pRightStreamDef = nullptr;
+    }
     // pipe out the refBuffer
     vPipeOut(m_pRefBuffer);
     
@@ -365,6 +372,7 @@ eOR JoinOp::ePopLeftOperand()
     }
     
     if (CN_STREAMDEF == pLeftOperand->eClass()) {
+      m_pStreamDef = _pStreamDef(pLeftOperand);
       continue;
     }
     
@@ -411,6 +419,7 @@ eOR JoinOp::ePopRightOperand()
     }
     
     if (CN_STREAMDEF == pRightOperand->eClass()) {
+      m_pRightStreamDef = _pStreamDef(pRightOperand);
       continue;
     }
     
