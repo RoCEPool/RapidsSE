@@ -18,6 +18,8 @@ PromptDesc __Prompt_logSection (
   ""_Stz                   // description
 );
 
+extern Log* gpLog;
+
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
@@ -25,11 +27,23 @@ bool Prompt::bPrompt_logSection(SePrompt* pPrompt)
 {
   TokenVec* pTokenVec = pPrompt->pTknVec();
 
-  if (pTokenVec->nTokens() > 1) {
+  if (pTokenVec->nTokens() < 1)
+    return true;
+  
+  Stz* szSectionNm = pTokenVec->pGet(1)->szText();
+  i8 iSectNmLen = szSectionNm->iLength();
 
-    Stz* szSectionNm = pTokenVec->pGet(1)->szText();
-    Log::vNoteSection(szSectionNm);
-  }
+  char caSection[256] = { '\0' };
+  
+  StrLib::vPad(caSection,127-iSectNmLen-4,'#');
+  
+  StrLib::vConcat(caSection,' ');
+  StrLib::vConcat(caSection,szSectionNm->aChar());
+  StrLib::vConcat(caSection,' ');
+  StrLib::vConcat(caSection,'#');
+  StrLib::vConcat(caSection,'#');
+
+  AM::vLogLog(gpLog,GA_LOG_SECTION,"%s"_Stz,(Stz*)caSection);
   
   return true;
 }
