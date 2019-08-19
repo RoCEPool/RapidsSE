@@ -180,7 +180,8 @@ eOR OutputOp::eOpLoop(void)
         
       case CN_SRTBUFFER: {
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
-        pSrtBuffer->vShow(m_pStreamDef->m_pColumnVec, m_pRightStreamDef->m_pColumnVec);
+        pSrtBuffer->vShow(m_pStreamDef->m_pColumnVec,
+                          m_pRightStreamDef ? m_pRightStreamDef->m_pColumnVec : nullptr);
         vPipeOut(pOperand);
         break;
       }

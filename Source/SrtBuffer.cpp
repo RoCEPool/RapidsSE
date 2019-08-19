@@ -229,38 +229,64 @@ void SrtBuffer::vShow(ColumnVec* pLeftColVec, ColumnVec* pRightColVec)
   HV_Rec hvRecLeft(pLeftColVec);
   HV_Row hRowLeft(pLeftColVec);
   
-  HV_Rec hvRecRight(pRightColVec);
-  HV_Row hRowRight(pRightColVec);
-  
-  SrtSet* aSrtSet = aFirstSrtSet();
-  
-  i8 nRows = nItems();
-  while (nRows--) {
+  if (pRightColVec) {
     
-    // get the left dataRow
-    Crw* aLeftCrw = (Crw*)(aSrtSet->iRowRef(0));
+    HV_Rec hvRecRight(pRightColVec);
+    HV_Row hRowRight(pRightColVec);
     
-    // inflate the left row
-    if (aLeftCrw) {
-      RowInflator::vInflateRow(hRowLeft, aLeftCrw);
-      hvRecLeft->vAppend(hRowLeft);
+    SrtSet* aSrtSet = aFirstSrtSet();
+    
+    i8 nRows = nItems();
+    while (nRows--) {
+      
+      // get the left dataRow
+      Crw* aLeftCrw = (Crw*)(aSrtSet->iRowRef(0));
+      
+      // inflate the left row
+      if (aLeftCrw) {
+        RowInflator::vInflateRow(hRowLeft, aLeftCrw);
+        hvRecLeft->vAppend(hRowLeft);
+      }
+      
+      // get the right dataRow
+      Crw* aRightCrw = (Crw*)(aSrtSet->iRowRef(0));
+      
+      if (aRightCrw) {
+        // inflate the right row
+        RowInflator::vInflateRow(hRowRight, aRightCrw);
+        hvRecLeft->vAppend(hRowLeft);
+      }
+      
+      vTrace("%p: Key:%lld %p %s %s\n"_Stz, aSrtSet, aSrtSet->iKey(), aSrtSet->iRowRef(0),
+             hvRecLeft->szRecStr(), hvRecRight->szRecStr());
+      
+      aSrtSet = aNextSrtSet(aSrtSet);
     }
     
-    // get the right dataRow
-    Crw* aRightCrw = (Crw*)(aSrtSet->iRowRef(0));
-  
-    if (aRightCrw) {
-      // inflate the right row
-      RowInflator::vInflateRow(hRowRight, aRightCrw);
-      hvRecLeft->vAppend(hRowLeft);
-    }
-    
-    vTrace("%p: Key:%lld %p %s %s\n"_Stz, aSrtSet, aSrtSet->iKey(), aSrtSet->iRowRef(0),
-           hvRecLeft->szRecStr(), hvRecRight->szRecStr());
-    
-    aSrtSet = aNextSrtSet(aSrtSet);
   }
+  else {
+    SrtSet* aSrtSet = aFirstSrtSet();
     
+    i8 nRows = nItems();
+    while (nRows--) {
+      
+      // get the left dataRow
+      Crw* aLeftCrw = (Crw*)(aSrtSet->iRowRef(0));
+      
+      // inflate the left row
+      if (aLeftCrw) {
+        RowInflator::vInflateRow(hRowLeft, aLeftCrw);
+        hvRecLeft->vAppend(hRowLeft);
+      }
+      
+      vTrace("%p: Key:%lld %p %s\n"_Stz, aSrtSet, aSrtSet->iKey(), aSrtSet->iRowRef(0),
+             hvRecLeft->szRecStr());
+      
+      aSrtSet = aNextSrtSet(aSrtSet);
+    }
+    
+  }
+  
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
 }
