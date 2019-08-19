@@ -58,14 +58,13 @@ void Thread::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Thread::Thread(void)
-: Object(CN_THREAD)
+: Object(CN_THREAD), _Loggable(AM::iNextThreadId())
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   static Atomic ixThreadNo;
   
   m_iThreadNo    = ++ixThreadNo;
-  m_iThreadId    = AM::iNextThreadId();
   m_aStackBase   = nullptr;
   m_iStackSize   = 0;
   

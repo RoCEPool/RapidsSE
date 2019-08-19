@@ -666,7 +666,7 @@ void AM::vLogThd(Thread* pThread, eHA eThdAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 iThdId    = pThread ? pThread->m_iThreadId : C_UNKNOWN;
+  i8 iThdId    = pThread ? pThread->m_iUniqueId : C_UNKNOWN;
   eCN eClassNo = pThread ? pThread->eClass()    : CN_NONE;
   i8 i_Entry = gpLog->iEntryThd(eClassNo,iThdId,eThdAct,szFormat,xVaArgs);
 

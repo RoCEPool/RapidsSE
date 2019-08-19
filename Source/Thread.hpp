@@ -6,13 +6,13 @@
 namespace Threads
 {
   class Thread : public Object,
-                 public ListNode_t<Thread>
+                 public ListNode_t<Thread>,
+                 public _Loggable
   {
   private:
 
   public:
     i8       m_iThreadNo;     // our thread no
-    i8       m_iThreadId;     // thread id
     void*    m_aStackBase;    // stack base address
     i8       m_iStackSize;    // stack size
   
