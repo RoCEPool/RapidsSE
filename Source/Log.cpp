@@ -157,7 +157,7 @@ void Log::vNoteString(i8 iJobId, s48K& sString)
     
     //vTrace("Line: ]]%s[[\n"_Stz,sLine.aChar());
     LogEntry* pLogEntry = gpLog->pNewEntry_NL();
-    pLogEntry->vInit();
+    pLogEntry->vInit(CN_NONE);
     
     StrLib::vCopyLen(pLogEntry->m_caText,sLine.aChar(),C_LOG_TEXT - 1);
 
@@ -605,7 +605,7 @@ i8 Log::iEntryTxn(eCN eClassNo, i8 iTxnId, eXA eTxnAct,
     return C_UNKNOWN;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
+  
   pLogEntry->m_xTxn.vSet(pLogEntry,iTxnId,eTxnAct);
   
   return pLogEntry->m_i_Entry;
@@ -669,7 +669,7 @@ LogEntry* Log::pNewEntry(eCN eClassNo, Stz* szFormat, va_list xVaArgs)
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
 
   char caText[1024];
-  
+  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
 
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
   vGrabLock();
@@ -679,11 +679,8 @@ LogEntry* Log::pNewEntry(eCN eClassNo, Stz* szFormat, va_list xVaArgs)
   vDropLock();
   // ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲
   
-  pLogEntry->vInit();
+  pLogEntry->vInit(eClassNo);
   
-  pLogEntry->m_eClass = eClassNo;
-  
-  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
   
   StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
 

@@ -66,9 +66,9 @@ LogEntry::~LogEntry(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* init                                                                        */
+/* init                                                                       */
 /*----------------------------------------------------------------------------*/
-void LogEntry::vInit(void)
+void LogEntry::vInit(eCN eClassNo)
 {
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
@@ -78,7 +78,7 @@ void LogEntry::vInit(void)
   
   m_caText[0] = '\0';
   
-  m_eClass = CN_NONE;
+  m_eClass = eClassNo;
   m_bLine = false;
 }
 
