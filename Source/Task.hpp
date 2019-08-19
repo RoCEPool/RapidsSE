@@ -23,9 +23,7 @@ namespace Tasks
   friend class ForthWord;
   friend Scheduler;
 
-  private:
-    i8      m_iTaskId;      // task id
-  
+  private:  
     Lock    m_okLock;       // lock for this task
     eTK     m_eKind;        // task kind
     union {

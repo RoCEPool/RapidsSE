@@ -123,8 +123,6 @@ void Task::vInit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_iTaskId      = AM::iNextTaskId();
-  
   m_okLock.vInitLock(LK_TASK);
   m_eKind        = TK_NONE;
   m_pJob         = nullptr;
@@ -898,7 +896,7 @@ i8 Task::iTaskId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  return m_iTaskId;
+  return m_iUniqueId;
 }
 
 /*----------------------------------------------------------------------------*/
