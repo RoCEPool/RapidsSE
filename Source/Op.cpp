@@ -38,11 +38,9 @@ void Op::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Op::Op(eCN eClassNo, Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
-: Object(eClassNo)
+: Object(eClassNo), _Loggable(AM::iNextOpId())
 {
   _precondition_(_MAGIC_,eClassNo);
-  
-  m_iOpId         = AM::iNextOpId();
   
   m_sLabel        = szLabel;
   m_sArgs         = ""_Stz;
@@ -344,7 +342,7 @@ i8 Op::iOpId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_iOpId;
+  return m_iUniqueId;
 }
 
 /*----------------------------------------------------------------------------*/
