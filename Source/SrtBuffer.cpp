@@ -237,7 +237,10 @@ void SrtBuffer::vShow(ColumnVec* pLeftColVec, ColumnVec* pRightColVec)
     SrtSet* aSrtSet = aFirstSrtSet();
     
     i8 nRows = nItems();
+    i8 iElement = 0;
     while (nRows--) {
+      
+      RASSERT(aSrtSet == this->aSrtSet(iElement));
       
       // get the left dataRow
       Crw* aLeftCrw = (Crw*)(aSrtSet->iRowRef(0));
@@ -274,10 +277,12 @@ void SrtBuffer::vShow(ColumnVec* pLeftColVec, ColumnVec* pRightColVec)
       }
       hvRecRight->vAppend(hRowRight);
       
-      vTrace("%p: Key:%lld %p %s %s\n"_Stz, aSrtSet, aSrtSet->iKey(), aSrtSet->iRowRef(0),
+      vTrace("%lld: %p; Key:%lld RowRef:%p %p; row:%s %s\n"_Stz, iElement, aSrtSet, aSrtSet->iKey(), aSrtSet->iRowRef(0),
+             aSrtSet->iRowRef(1),
              hvRecLeft->szRecStr(), hvRecRight->szRecStr());
       
       aSrtSet = aNextSrtSet(aSrtSet);
+      iElement++;
     }
     
   }
@@ -285,7 +290,10 @@ void SrtBuffer::vShow(ColumnVec* pLeftColVec, ColumnVec* pRightColVec)
     SrtSet* aSrtSet = aFirstSrtSet();
     
     i8 nRows = nItems();
+    i8 iElement = 0;
     while (nRows--) {
+      
+      RASSERT(aSrtSet == this->aSrtSet(iElement));
       
       // get the left dataRow
       Crw* aLeftCrw = (Crw*)(aSrtSet->iRowRef(1));
@@ -296,13 +304,16 @@ void SrtBuffer::vShow(ColumnVec* pLeftColVec, ColumnVec* pRightColVec)
         hvRecLeft->vAppend(hRowLeft);
       }
       
-      vTrace("%p: Key:%lld %p %s\n"_Stz, aSrtSet, aSrtSet->iKey(), aSrtSet->iRowRef(0),
+      vTrace("%lld: %p; Key:%lld rowRef:%p;iElement,  row:%s\n"_Stz, aSrtSet, aSrtSet->iKey(), aSrtSet->iRowRef(0),
              hvRecLeft->szRecStr());
       
       aSrtSet = aNextSrtSet(aSrtSet);
+      iElement++;
     }
     
   }
+  
+
   
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
@@ -318,12 +329,13 @@ SrtSet* SrtBuffer::aSrtSet(i8 iSrtSet)
   if (iSrtSet >= m_nItems)
     return nullptr;
   
-  SrtSet* aSrtSet = aItemArea();
+  SrtSet* aSrtSetPtr = aItemArea();
+  i8 iSize = sizeof(SrtSet) + sizeof(i8)*(aSrtSetPtr->m_nRowRefs - 1);
   
-  aSrtSet = aAdd<SrtSet*>(aSrtSet, sizeof(SrtSet)*iSrtSet);
+  aSrtSetPtr = aAdd<SrtSet*>(aSrtSetPtr, iSize*iSrtSet);
   
-  if (aSrtSet && CN_SRTSET == aSrtSet->eClass()) {
-    return aSrtSet;
+  if (aSrtSetPtr && CN_SRTSET == aSrtSetPtr->eClass()) {
+    return aSrtSetPtr;
   }
   
   return nullptr;
@@ -336,20 +348,20 @@ void SrtBuffer::vSwap(i8 iSrtSet1, SrtBuffer* pSrtBuffer2, i8 iSrtSet2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
   
-  SrtSet* aSrtSet1 = aItemArea();
-  SrtSet* aSrtSet2 = pSrtBuffer2->aItemArea();
-  
-  aSrtSet1 = aAdd<SrtSet*>(aSrtSet1, sizeof(SrtSet)*iSrtSet1);
-  aSrtSet2 = aAdd<SrtSet*>(aSrtSet2, sizeof(SrtSet)*iSrtSet2);
+  SrtSet* aSrtSet1 = aSrtSet(iSrtSet1);
+  SrtSet* aSrtSet2 = pSrtBuffer2->aSrtSet(iSrtSet2);
   
   i8 iKey = aSrtSet1->m_xKey;
-  i8 iaRowRef = aSrtSet1->m_iaRowRef[0];
+  i8 iaRowRef0 = aSrtSet1->m_iaRowRef[0];
+  i8 iaRowRef1 = aSrtSet1->m_iaRowRef[1];
   
   aSrtSet1->m_xKey = aSrtSet2->m_xKey;
   aSrtSet1->m_iaRowRef[0] = aSrtSet2->m_iaRowRef[0];
+  aSrtSet1->m_iaRowRef[1] = aSrtSet2->m_iaRowRef[1];
   
   aSrtSet2->m_xKey = iKey;
-  aSrtSet2->m_iaRowRef[0] = iaRowRef;
+  aSrtSet2->m_iaRowRef[0] = iaRowRef0;
+  aSrtSet2->m_iaRowRef[1] = iaRowRef1;
 }
 
 /*----------------------------------------------------------------------------*/

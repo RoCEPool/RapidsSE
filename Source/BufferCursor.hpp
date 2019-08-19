@@ -64,7 +64,8 @@ namespace Rows
     // less than
     bool bIsLessThan(i8 iValue)
     {
-      if (m_pSrtBuffer->aSrtSet(m_iElement)->iKey() < iValue)
+      SrtSet* aSrtSet = m_pSrtBuffer->aSrtSet(m_iElement);
+      if (aSrtSet->iKey() < iValue)
         return true;
       else
         return false;
@@ -73,7 +74,8 @@ namespace Rows
     // greater than
     bool bIsGreaterThan(i8 iValue)
     {
-      if (m_pSrtBuffer->aSrtSet(m_iElement)->iKey() > iValue)
+      SrtSet* aSrtSet = m_pSrtBuffer->aSrtSet(m_iElement);
+      if (aSrtSet->iKey() > iValue)
         return true;
       else
         return false;

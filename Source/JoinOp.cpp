@@ -295,7 +295,7 @@ eOR JoinOp::eJoinLoop(void)
 #ifdef TRACE_JOIN
           vTrace("Joining: L(NULL) ⋈ R(%p)\n"_Stz,m_aRightEntry);
 #endif
-          vAddRowRefs(m_aLeftEntry, m_aRightEntry);
+          vAddRowRefs(nullptr, m_aRightEntry);
           m_eNextEntry = NE_NEXT_RIGHT;
           break;
           

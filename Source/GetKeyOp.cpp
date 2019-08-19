@@ -181,7 +181,7 @@ eOR GetKeyOp::eOpLoop(void)
         SrtBuffer* pSrtBuffer = pRefBuffer->pToSrtBuffer(m_iKeyCol, m_bKeyIsLeft,
                                                          m_pStreamDef->m_pColumnVec,
                                                          m_pRightStreamDef->m_pColumnVec);
-        pSrtBuffer->vShow(m_pStreamDef->m_pColumnVec, m_pRightStreamDef->m_pColumnVec);
+        //pSrtBuffer->vShow(m_pStreamDef->m_pColumnVec, m_pRightStreamDef->m_pColumnVec);
         vPipeOut(pSrtBuffer);
         break;
       }
