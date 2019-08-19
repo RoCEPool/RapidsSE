@@ -245,17 +245,34 @@ void SrtBuffer::vShow(ColumnVec* pLeftColVec, ColumnVec* pRightColVec)
       // inflate the left row
       if (aLeftCrw) {
         RowInflator::vInflateRow(hRowLeft, aLeftCrw);
-        hvRecLeft->vAppend(hRowLeft);
+      } else {
+        // get no of columns
+        i8 nColumns = pLeftColVec->nItems();
+        
+        // for each column
+        for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+          hRowLeft->m_waColVal[i_Col].m_iI8 = C_DATUM_NULL;
+        }
       }
+      hvRecLeft->vAppend(hRowLeft);
       
       // get the right dataRow
-      Crw* aRightCrw = (Crw*)(aSrtSet->iRowRef(0));
+      Crw* aRightCrw = (Crw*)(aSrtSet->iRowRef(1));
       
       if (aRightCrw) {
         // inflate the right row
         RowInflator::vInflateRow(hRowRight, aRightCrw);
-        hvRecLeft->vAppend(hRowLeft);
       }
+      else {
+        // get no of columns
+        i8 nColumns = pRightColVec->nItems();
+        
+        // for each column
+        for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+          hRowRight->m_waColVal[i_Col].m_iI8 = C_DATUM_NULL;
+        }
+      }
+      hvRecRight->vAppend(hRowRight);
       
       vTrace("%p: Key:%lld %p %s %s\n"_Stz, aSrtSet, aSrtSet->iKey(), aSrtSet->iRowRef(0),
              hvRecLeft->szRecStr(), hvRecRight->szRecStr());
@@ -271,7 +288,7 @@ void SrtBuffer::vShow(ColumnVec* pLeftColVec, ColumnVec* pRightColVec)
     while (nRows--) {
       
       // get the left dataRow
-      Crw* aLeftCrw = (Crw*)(aSrtSet->iRowRef(0));
+      Crw* aLeftCrw = (Crw*)(aSrtSet->iRowRef(1));
       
       // inflate the left row
       if (aLeftCrw) {

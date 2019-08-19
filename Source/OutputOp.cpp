@@ -173,7 +173,8 @@ eOR OutputOp::eOpLoop(void)
         
       case CN_REFBUFFER: {
         RefBuffer* pRefBuffer = _pRefBuffer(pOperand) ;
-        pRefBuffer->vShow();
+        pRefBuffer->vShow(m_pStreamDef->m_pColumnVec,
+                          m_pRightStreamDef ? m_pRightStreamDef->m_pColumnVec : nullptr);
         vPipeOut(pOperand);
         break;
       }

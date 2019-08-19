@@ -30,7 +30,7 @@ namespace Rows
     void    vIsLast(bool bIsLast);
     bool    bIsLast(void);
     RefSet* aNextRefSet(RefSet* aPriorRefSet);
-    void    vShow(void);
+    void    vShow(ColumnVec* pLeftColVec, ColumnVec* pRightColVec);
     
     SrtBuffer* pToSrtBuffer(i8 iKeyCol, bool bKeyIsLeft,
                             ColumnVec* pLeftColVec,

@@ -174,7 +174,7 @@ eOR InflateOp::eOpLoop(void)
       
       case CN_REFBUFFER: {
         RefBuffer* pRefBuffer = _pRefBuffer(pOperand) ;
-        pRefBuffer->vShow();
+        //pRefBuffer->vShow();
         vPipeOut(pOperand);
         break;
       }
