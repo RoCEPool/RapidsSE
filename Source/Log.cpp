@@ -346,14 +346,6 @@ i8 Log::iEntryFyi(eCN eClassNo,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  char caMark[1024];
-  
-  vsnprintf(caMark,sizeof(caMark)-1,szFormat->aChar(),xVaArgs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,caMark,C_LOG_TEXT - 1);
-  
   pLogEntry->m_xFyi.vSet(pLogEntry);
   
   return pLogEntry->m_i_Entry;
@@ -373,14 +365,6 @@ i8 Log::iEntryApi(eCN eClassNo, i8 iSsnId, eAA eApiAct,
     return C_UNKNOWN;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  char caText[1024];
-  
-  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
   
   pLogEntry->m_xApi.vSet(pLogEntry,iSsnId,eApiAct);
   
@@ -402,14 +386,6 @@ i8 Log::iEntryJob(eCN eClassNo, i8 iJobId, eJA eJobAct,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  char caText[1024];
-  
-  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
-  
   pLogEntry->m_xJob.vSet(pLogEntry,iJobId,eJobAct);
   
   return pLogEntry->m_i_Entry;
@@ -430,14 +406,6 @@ i8 Log::iEntryLck(eCN eClassNo, i8 iLckId, eLA eLckAct,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  char caText[1024];
-  
-  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
-  
   pLogEntry->m_xLck.vSet(pLogEntry,iLckId,eLckAct);
   
   return pLogEntry->m_i_Entry;
@@ -454,17 +422,9 @@ i8 Log::iEntryLog(eCN eClassNo, i8 iLogId, eGA eLogAct,
   LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
   
   if (! pLogEntry)
-  return C_UNKNOWN;
+    return C_UNKNOWN;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  char caText[1024];
-  
-  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
   
   pLogEntry->m_xLog.vSet(pLogEntry,iLogId,eLogAct);
   
@@ -482,17 +442,9 @@ i8 Log::iEntryObj(Object* pObj, eCA eObjAct,
   LogEntry* pLogEntry = pNewEntry(pObj->eClass(),szFormat,xVaArgs);
   
   if (! pLogEntry)
-  return C_UNKNOWN;
+    return C_UNKNOWN;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  char caText[1024];
-  
-  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
   
   pLogEntry->m_xObj.vSet(pLogEntry,pObj,eObjAct);
   
@@ -514,14 +466,6 @@ i8 Log::iEntryOpr(eCN eClassNo, i8 iOprId, eOA eOprAct,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  char caText[1024];
-  
-  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
-  
   pLogEntry->m_xOpr.vSet(pLogEntry,iOprId,eOprAct);
   
   return pLogEntry->m_i_Entry;
@@ -542,14 +486,6 @@ i8 Log::iEntryPrm(eCN eClassNo, i8 iPrmId, ePA ePrmAct,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  char caText[1024];
-  
-  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
-  
   pLogEntry->m_xPrm.vSet(pLogEntry,iPrmId,ePrmAct);
   
   return pLogEntry->m_i_Entry;
@@ -569,14 +505,6 @@ i8 Log::iEntryRes(eCN eClassNo, i8 iResId, eRA eResAct, eRK eResKnd,
     return C_UNKNOWN;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  char caText[1024];
-  
-  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
   
   pLogEntry->m_xRes.vSet(pLogEntry,iResId,eResKnd,eResAct);
   
@@ -598,14 +526,6 @@ i8 Log::iEntrySvc(eCN eClassNo, i8 iSvcId, eVA eSvcAct,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  char caText[1024];
-  
-  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
-  
   pLogEntry->m_xSvc.vSet(pLogEntry,iSvcId,eSvcAct);
   
   return pLogEntry->m_i_Entry;
@@ -622,17 +542,9 @@ i8 Log::iEntrySys(eCN eClassNo, i8 iSysId, eYA eSysAct,
   LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
   
   if (! pLogEntry)
-  return C_UNKNOWN;
+    return C_UNKNOWN;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  char caText[1024];
-  
-  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
   
   pLogEntry->m_xSys.vSet(pLogEntry,iSysId,eSysAct);
   
@@ -654,14 +566,6 @@ i8 Log::iEntryThd(eCN eClassNo, i8 iThdId, eHA eThdAct,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  char caText[1024];
-  
-  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
-  
   pLogEntry->m_xThd.vSet(pLogEntry,iThdId,eThdAct);
   
   return pLogEntry->m_i_Entry;
@@ -682,14 +586,6 @@ i8 Log::iEntryTsk(eCN eClassNo, i8 iTskId, eTA eTskAct,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  char caText[1024];
-  
-  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
-  
   pLogEntry->m_xTsk.vSet(pLogEntry,iTskId,eTskAct);
   
   return pLogEntry->m_i_Entry;
@@ -709,15 +605,7 @@ i8 Log::iEntryTxn(eCN eClassNo, i8 iTxnId, eXA eTxnAct,
     return C_UNKNOWN;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  char caText[1024];
-  
-  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
-  
+    
   pLogEntry->m_xTxn.vSet(pLogEntry,iTxnId,eTxnAct);
   
   return pLogEntry->m_i_Entry;
@@ -779,7 +667,10 @@ i8 Log::iEntryJob(i8 iJobId, i8 iForeign, Stz* aFormat, ...)
 LogEntry* Log::pNewEntry(eCN eClassNo, Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
+
+  char caText[1024];
   
+
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
   vGrabLock();
   
@@ -791,6 +682,10 @@ LogEntry* Log::pNewEntry(eCN eClassNo, Stz* szFormat, va_list xVaArgs)
   pLogEntry->vInit();
   
   pLogEntry->m_eClass = eClassNo;
+  
+  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
+  
+  StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
 
   return pLogEntry;
 }
