@@ -516,7 +516,7 @@ void Pthread::vSleepNsec(i8 nNanoSeconds, eCN eCallingClass)
   pStats->Thread.m_iaDuration[eCallingClass] += nNanoSeconds;
 #endif
   
-  AM::vLogRes(nullptr,RA_THD_SLEEP,
+  AM::vLogRes(this,RA_THD_SLEEP,
               "Pthread nanosleeps for %lldns"_Stz,nNanoSeconds);
   
   i8 rCode = nanosleep(&xReq,&xRem);
@@ -524,7 +524,7 @@ void Pthread::vSleepNsec(i8 nNanoSeconds, eCN eCallingClass)
   if (rCode && errno != EINTR) {
     vWarn("Pthread::vSleepNsec error; errno=%lld\n"_Stz,errno);
   }
-  AM::vLogRes(nullptr,RA_THD_AWAKE,
+  AM::vLogRes(this,RA_THD_AWAKE,
               "Thead is awake"_Stz);
 }
 
@@ -541,12 +541,12 @@ void Pthread::vSleepSsec(i8 nSeconds, eCN eCallingClass)
   pStats->Thread.m_iaDuration[eCallingClass] += nSeconds * C_1G;
 #endif
   
-  AM::vLogRes(nullptr,RA_THD_SLEEP,
+  AM::vLogRes(this,RA_THD_SLEEP,
               "Pthead sleeps for %llds"_Stz,nSeconds);
   
   sleep((unsigned)nSeconds);
   
-  AM::vLogRes(nullptr,RA_THD_AWAKE,
+  AM::vLogRes(this,RA_THD_AWAKE,
               "Thead is awake"_Stz);
 }
 
@@ -574,7 +574,7 @@ void Pthread::vSleepUsec(i8 nMicroSeconds, eCN eCallingClass)
   pStats->Thread.m_iaDuration[eCallingClass] += nMicroSeconds * C_1K;
 #endif
   
-  AM::vLogRes(nullptr,RA_THD_SLEEP,
+  AM::vLogRes(this,RA_THD_SLEEP,
               "Pthread nanosleeps for %lldus"_Stz,nMicroSeconds);
   
   i8 rCode = nanosleep(&xReq,&xRem);
