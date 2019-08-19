@@ -44,11 +44,9 @@ void Lock::operator delete(void*)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Lock::Lock(void)
-: Object(CN_LOCK)
+: Object(CN_LOCK), _Loggable(AM::iNextLockId())
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
-  
-  m_iLockId   = AM::iNextLockId();
   
   m_uLockWord = 0;
   m_eLockKind = LK_NONE;
@@ -68,11 +66,9 @@ Lock::Lock(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Lock::Lock(eLK eLockKind)
-: Object(CN_LOCK)
+: Object(CN_LOCK), _Loggable(AM::iNextLockId())
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
-  
-  m_iLockId   = AM::iNextLockId();
   
   m_uLockWord = 0;
   m_eLockKind = eLockKind;
@@ -259,7 +255,7 @@ i8 Lock::iLockId(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  return m_iLockId;
+  return m_iUniqueId;
 }
 
 /*----------------------------------------------------------------------------*/
