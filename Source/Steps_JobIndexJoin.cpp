@@ -190,7 +190,7 @@ void Step::vJob_IndexJoinSpawnSub(MP_Task mpTask)
   
   pJob_SubIndexJoin->vSeed(SS_SEED_RUN);
   
-  pJob_SubIndexJoin->m_iParentId    = pJob_IndexJoin->m_iJobId;
+  pJob_SubIndexJoin->m_iParentId    = pJob_IndexJoin->m_iUniqueId;
   pJob_SubIndexJoin->m_pParentJob   = pJob_IndexJoin;
   pJob_SubIndexJoin->m_sObjectName  = pJob_IndexJoin->m_sObjectName;
   pJob_SubIndexJoin->m_i_Slot       = iSlot;

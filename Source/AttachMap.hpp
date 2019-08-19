@@ -5,7 +5,8 @@
 
 namespace StorageEngine
 {
-  class AttachMap : public PoolBuffer
+  class AttachMap : public PoolBuffer,
+                    public _Loggable
   {
   friend class AM;
   friend class Engine;
@@ -65,6 +66,7 @@ namespace StorageEngine
     NextId        m_inNextStreamId;
     NextId        m_inNextTaskId;
     NextId        m_inNextThreadId;
+    NextId        m_inNextTxId;
     Queues*       m_pQueues;
     i8            m_iQuit;
     ResourceTracker m_oResourceTracker;

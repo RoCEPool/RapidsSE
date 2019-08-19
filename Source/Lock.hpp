@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "Loggable.hpp"
+
 namespace Locking
 {
   const u8 C_WRITELOCK = 0x8000000000000000;
@@ -10,11 +12,10 @@ namespace Locking
   static const i8 C_HAVE_READ_LOCK  = 1;
   static const i8 C_HAVE_WRITE_LOCK = 2;
   
-  class Lock : public Object
+  class Lock : public Object,
+               public _Loggable
   {
   private:
-    i8     m_iLockId;          // lock id
-  
     u8     m_uLockWord;        // lock word
     eLK    m_eLockKind;        // lock kind
   

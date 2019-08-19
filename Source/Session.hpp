@@ -7,10 +7,10 @@
 
 namespace Sessions
 {
-  class Session : public Object
+  class Session : public Object,
+                  public _Loggable
   {
   public:
-    i8       m_iSessionId;       // session id
     i8       m_iPid;             // process which created this session
   
     i8       m_iPartition;       // which partition this session connects to

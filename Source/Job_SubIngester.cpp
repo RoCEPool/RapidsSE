@@ -252,7 +252,7 @@ bool Job_SubIngester::bChunk(void)
 //
 //    // process that record into write behind
 //    eEC eError = eProcessRecord(m_pJob_Ingest->m_pSession,
-//                                m_pJob_Ingest->m_iJobId,
+//                                m_pJob_Ingest->m_iUniqueId,
 //                                m_pJob_Ingest->m_pTable,
 //                                &gpAttachMap->m_oFormatters,
 //                                aRecord, nRecordBytes, DS_INGEST);

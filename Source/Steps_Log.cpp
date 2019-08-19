@@ -42,7 +42,7 @@ void Step::vLogMark(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(sMark) )
     THROW_INVALID_DSTACK("log::mark"_Stz);
 
-  //i8 iJobId = mpTask->m_pJob->m_iJobId;
+  //i8 iJobId = mpTask->m_pJob->m_iUniqueId;
   JobLog::vNote(mpTask->m_pJob,sMark);
   
   EXIT();

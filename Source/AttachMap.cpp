@@ -47,7 +47,7 @@ void AttachMap::operator delete(void* pAttachMapAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 AttachMap::AttachMap(void)
-: PoolBuffer(CN_ATTACHMAP)
+: PoolBuffer(CN_ATTACHMAP), _Loggable(0)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP);
   

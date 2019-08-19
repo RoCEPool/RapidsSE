@@ -16,15 +16,14 @@ namespace Tasks
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   class Task : public Object,
-               public ListNode_t<Task>
+               public ListNode_t<Task>,
+               public _Loggable
   {
   friend class Steps::Step;
   friend class ForthWord;
   friend Scheduler;
 
-  private:
-    i8      m_iTaskId;      // task id
-  
+  private:  
     Lock    m_okLock;       // lock for this task
     eTK     m_eKind;        // task kind
     union {

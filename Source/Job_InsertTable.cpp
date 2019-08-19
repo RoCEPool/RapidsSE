@@ -181,7 +181,7 @@ Job* Jobs::pJob_InsertTable_pre(Session* pSession)
   
   // get a jobId for the insertTable job
 //  i8 iJobId = gpAttachMap->m_pOriginatingJobs->iNextJobId();
-//  pJob_InsertTable->m_iJobId = iJobId;
+//  pJob_InsertTable->m_iUniqueId = iJobId;
   
   return pJob_InsertTable;
 }

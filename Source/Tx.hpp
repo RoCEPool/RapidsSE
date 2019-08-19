@@ -5,14 +5,15 @@
 
 namespace Transactions
 {    
-  class Tx : public Object
+  class Tx : public Object,
+             public _Loggable
   {
   private:
-    Lock   m_okLock;      // lock
+    Lock   m_okLock;     // lock
     i8     m_iLocalTxId; // local transaction id
     i8     m_iDistTxId;  // distributed transaction id
     eXP    m_ePhase;     // phase (executing, committing, ...)
-    Atomic m_ixCounter;   // general counter
+    Atomic m_ixCounter;  // general counter
 
     struct {
       bool m_bDistMember; // true if part of distributed tx

@@ -84,6 +84,7 @@ i8   AM::iNextSessionId(void) { return ++ gpAttachMap->m_inNextSessionId;     }
 i8   AM::iNextStreamId(void)  { return ++ gpAttachMap->m_inNextStreamId;      }
 i8   AM::iNextTaskId(void)    { return ++ gpAttachMap->m_inNextTaskId;        }
 i8   AM::iNextThreadId(void)  { return ++ gpAttachMap->m_inNextThreadId;      }
+i8   AM::iNextTxId(void)      { return ++ gpAttachMap->m_inNextTxId;          }
 i8*  AM::iaObjectsInPool(void){ return gpAttachMap->m_nObjectsInPool;         }
 i8   AM::nPartitions(void)    { return gpAttachMap->m_pGrid->m_nPartitions;   }
 Queues* AM::pQueues(void)     { return gpAttachMap->m_pQueues;                }
@@ -616,7 +617,7 @@ void AM::vLogSvc(Job* pJob, eVA eSvcAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 iSvcId = pJob->m_iJobId;
+  i8 iSvcId = pJob->m_iUniqueId;
   
   i8 i_Entry = gpLog->iEntrySvc(pJob->eClass(),iSvcId,eSvcAct,szFormat,xVaArgs);
   
@@ -666,7 +667,7 @@ void AM::vLogThd(Thread* pThread, eHA eThdAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 iThdId    = pThread ? pThread->m_iThreadId : C_UNKNOWN;
+  i8 iThdId    = pThread ? pThread->m_iUniqueId : C_UNKNOWN;
   eCN eClassNo = pThread ? pThread->eClass()    : CN_NONE;
   i8 i_Entry = gpLog->iEntryThd(eClassNo,iThdId,eThdAct,szFormat,xVaArgs);
 

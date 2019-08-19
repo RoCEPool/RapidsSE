@@ -58,14 +58,10 @@ void Thread::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Thread::Thread(void)
-: Object(CN_THREAD)
+: Object(CN_THREAD), _Loggable(AM::iNextThreadId())
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  static Atomic ixThreadNo;
-  
-  m_iThreadNo    = ++ixThreadNo;
-  m_iThreadId    = AM::iNextThreadId();
   m_aStackBase   = nullptr;
   m_iStackSize   = 0;
   
@@ -340,9 +336,9 @@ void Thread::vBindCore(void)
   
   i8 nCores = Hardware::iCoreCount();
   
-  i8 iBindToCore = nCores - m_iThreadNo;
+  i8 iBindToCore = nCores - iThreadNo();
   
-  vTrace("Thread %lld binding to core %lld\n"_Stz,m_iThreadNo,iBindToCore);
+  vTrace("Thread %lld binding to core %lld\n"_Stz,iThreadNo(),iBindToCore);
   
   vBind(iBindToCore);
 }
@@ -442,7 +438,7 @@ i8 Thread::iThreadNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
  
-  return m_iThreadNo;
+  return BitLib::uMaskOffUpper16(m_iUniqueId);
 }
 
 /*----------------------------------------------------------------------------*/

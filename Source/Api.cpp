@@ -33,7 +33,7 @@ void Api::vDeleteJobs(Session* pSession)
     
     ApiState::vMarkApiLoc(pSession,200);
     
-    //vTrace("API deleting job %p jobId %lld %s\n"_Stz, aJob, aJob->m_iJobId, aCN[eClass]);
+    //vTrace("API deleting job %p jobId %lld %s\n"_Stz, aJob, aJob->m_iUniqueId, aCN[eClass]);
     
     // If we come across a JOB_FETCHROWS then we need to empty its queues
     if (eClass == CN_JOB_FETCHROWS) {

@@ -59,7 +59,7 @@ void Task::operator delete(void* pTaskAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Task::Task(Job* pJob, Session* pSession)
-: Object(CN_TASK)
+: Object(CN_TASK), _Loggable(AM::iNextTaskId())
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -90,7 +90,7 @@ Task::Task(Job* pJob, Session* pSession)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Task::Task(Op* pOp, Session* pSession)
-: Object(CN_TASK)
+: Object(CN_TASK), _Loggable(AM::iNextTaskId())
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -122,8 +122,6 @@ Task::Task(Op* pOp, Session* pSession)
 void Task::vInit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  m_iTaskId      = AM::iNextTaskId();
   
   m_okLock.vInitLock(LK_TASK);
   m_eKind        = TK_NONE;
@@ -898,7 +896,7 @@ i8 Task::iTaskId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  return m_iTaskId;
+  return m_iUniqueId;
 }
 
 /*----------------------------------------------------------------------------*/

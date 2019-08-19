@@ -6,12 +6,12 @@
 namespace Jobs
 {
   class Job : public Object,
+              public _Loggable,
               public JobDicPath,
               public JobObjectName,
               public JobResult
   {
   public:
-    i8  m_iJobId;     // job id
     i8  m_iParentId;  // job id of parent job which spawned this JK_CHILD job
     eSS m_eSeed;      // task seed
     i8  m_i_State;    // which session state
