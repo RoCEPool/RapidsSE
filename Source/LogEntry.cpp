@@ -82,6 +82,8 @@ void LogEntry::vInit(eCN eClassNo, Stz* szText)
   StrLib::vCopyLen(m_caText,szText->aChar(),C_LOG_TEXT - 1);
 
   m_eClass = eClassNo;
+  m_pObject = nullptr;
+  
   m_bLine = false;
 }
 
@@ -134,7 +136,7 @@ void LogEntry::vWriteCsv(File* pFile, i8 iTickDeltaUsec, i8& iTotalDelta)
 
   pFile->vPrint("[%lld,%lld], "
                 "(%lld,%lld,%lld), "
-                "<%lld,%s,%s>, "_Stz
+                "<%s,%lld,%s,%p>, "_Stz
                 "{%s"_Stz,
                 
                 m_i_Entry,
@@ -144,10 +146,11 @@ void LogEntry::vWriteCsv(File* pFile, i8 iTickDeltaUsec, i8& iTotalDelta)
                 iTotalDelta,
                 iTickDeltaUsec,
                 
-                m_iNodeNo,
                 m_caNode,
+                m_iNodeNo,
                 aCN[m_eClass],
-
+                m_pObject,
+                
                 aEK[m_eKind]
                 );
 }

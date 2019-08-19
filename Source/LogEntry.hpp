@@ -33,6 +33,8 @@ namespace Logging
   
     eCN  m_eClass;      // class of caller
   
+    Object* m_pObject;  // object
+  
     char m_caText[C_LOG_TEXT]; // comment
   
     eEK  m_eKind;       // log entry kind.  one of the following
