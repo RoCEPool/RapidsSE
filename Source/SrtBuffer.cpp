@@ -231,7 +231,8 @@ void SrtBuffer::vShow(ColumnVec* pColVec)
   
   SrtSet* aSrtSet = aFirstSrtSet();
   
-  while (aSrtSet) {
+  i8 nRows = nItems();
+  while (nRows--) {
     
     // get the dataRow
     Crw* aCrw = (Crw*)(aSrtSet->iRowRef(0));

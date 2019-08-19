@@ -1097,7 +1097,7 @@ IrwBuffer* EntBuffer::pToIrwBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* set prev buffer                                                            */
 /*----------------------------------------------------------------------------*/
-SrtBuffer* EntBuffer::pToSrtBuffer(i8 iKeyCol)
+SrtBuffer* EntBuffer::pToSrtBuffer(EntBuffer* pRightBuffer, i8 iKeyCol, bool bKeyIsLeft)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -1105,22 +1105,54 @@ SrtBuffer* EntBuffer::pToSrtBuffer(i8 iKeyCol)
   SrtBuffer* pSrtBuffer = new SrtBuffer(m_iPartitionNo);
   
   Ent* aEntry = aLeadEntry();
+  SrtSet* pSrtSet;
+  
+  CrwBuffer* pLeftCrwBuffer;
+  CrwBuffer* pRightCrwBuffer;
+  
+  Crw* aLeftCrw;
+  Crw* aRightCrw;
+  
   while (aEntry) {
     
-    SrtSet* pSrtSet = pSrtBuffer->aAllotSrtSet(1);
+    if ( pRightBuffer) {
+      pSrtSet = pSrtBuffer->aAllotSrtSet(2);
+    }
+    else {
+      pSrtSet = pSrtBuffer->aAllotSrtSet(1);
+    }
     RASSERT(pSrtSet);
     
-    // get the rowBuffer
-    CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(aEntry->xRef());
+    // get the left (this) rowBuffer
+    pLeftCrwBuffer = CrwBuffer::pRefdCrwBuffer(aEntry->xRef());
     
     // get the dataRow
-    Crw* aCrw = pCrwBuffer->pCrw(aEntry->iItem());
+    aLeftCrw = pLeftCrwBuffer->pCrw(aEntry->iItem());
     
     // set the rowData in the srtSet
-    pSrtSet->vRowRef(0, (i8)aCrw);
+    pSrtSet->vRowRef(0, (i8)aLeftCrw);
     
-    // get the key from the row
-    RowInflator::vInflateColumn(hRow, aCrw, iKeyCol);
+    if (pRightBuffer) {
+      
+      // get the left (this) rowBuffer
+      pRightCrwBuffer = CrwBuffer::pRefdCrwBuffer(aEntry->xRef());
+      
+      // get the dataRow
+      aRightCrw = pRightCrwBuffer->pCrw(aEntry->iItem());
+      
+      // set the rowData in the srtSet
+      pSrtSet->vRowRef(0, (i8)aRightCrw);
+      
+    }
+    
+    if ( bKeyIsLeft) {
+      // get the key from the left buffer row
+      RowInflator::vInflateColumn(hRow, aLeftCrw, iKeyCol);
+    }
+    else {
+      // get the key from the right buffer row
+      RowInflator::vInflateColumn(hRow, aRightCrw, iKeyCol);
+    }
     
     // set the key in the srtSet
     pSrtSet->vKey(hRow->m_waColVal[iKeyCol].m_iI8);

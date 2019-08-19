@@ -155,6 +155,10 @@ eOR LimitOp::eOpLoop(void)
           delete (EndMarker*)pOperand;
         break;
 
+      case CN_STREAMDEF:
+        vPipeOut(pOperand);
+        break;
+        
       // -- -- -- -- -- -- 
         
       case CN_PAUSEMARKER:
@@ -165,8 +169,30 @@ eOR LimitOp::eOpLoop(void)
       // -- -- -- -- -- --
         
       case CN_CRWBUFFER:
+//        vPipeOut(pOperand);
+//        vIncWorkDone();
+//
+//        if (m_iWorkDone == m_nLimit) {
+//          vTrace("%s::!CANCELLING : after popping %lld buffers\n"_Stz,
+//                 m_sLabel.aStz(),
+//                 m_iWorkDone);
+//          m_pDigest->m_bCancelling = true;
+//        }
+        RASSERT(0);
+        break;
+        
+      case CN_SRTBUFFER: {
+        SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
+        i8 nItems = pSrtBuffer->nItems();
+        
+        if (nItems >= m_nLimit - m_iWorkDone) {
+          pSrtBuffer->vItems(m_nLimit - m_iWorkDone);
+          m_iWorkDone = m_nLimit;
+        }
+        else
+          m_iWorkDone += nItems;
+        
         vPipeOut(pOperand);
-        vIncWorkDone();
         
         if (m_iWorkDone == m_nLimit) {
           vTrace("%s::!CANCELLING : after popping %lld buffers\n"_Stz,
@@ -176,6 +202,7 @@ eOR LimitOp::eOpLoop(void)
         }
         
         break;
+      }
         
       default:
         vPipeOut(pOperand);

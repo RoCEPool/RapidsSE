@@ -64,6 +64,9 @@ GetKeyOp::GetKeyOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   m_sKey       = ""_Stz;
   m_iKeyCol    = -1;
   
+  m_pRightStreamDef = nullptr;
+  m_bKeyIsLeft = true;
+  
   _checkInitialised_(CN_GETKEYOP);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_GETKEYOP,_FOOTER_);
@@ -75,6 +78,9 @@ GetKeyOp::GetKeyOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
 GetKeyOp::~GetKeyOp(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GETKEYOP,_FOOTER_);
+  
+  if (m_pRightStreamDef)
+    delete m_pRightStreamDef;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -161,16 +167,20 @@ eOR GetKeyOp::eOpLoop(void)
       }
         
       case CN_ENTBUFFER: {
+        RASSERT(-1 != m_iKeyCol);
         EntBuffer* pEntBuffer = _pEntBuffer(pOperand) ;
         //pEntBuffer->vShow();
-        SrtBuffer* pSrtBuffer = pEntBuffer->pToSrtBuffer(m_iKeyCol);
+        SrtBuffer* pSrtBuffer = pEntBuffer->pToSrtBuffer(nullptr, m_iKeyCol, m_bKeyIsLeft);
         vPipeOut(pSrtBuffer);
         break;
       }
         
       case CN_STREAMDEF: {
         StreamDef* pStreamDef = _pStreamDef(pOperand) ;
-        m_pStreamDef = new StreamDef(pStreamDef);
+        if ( ! m_pStreamDef )
+          m_pStreamDef = new StreamDef(pStreamDef);
+        else
+          m_pRightStreamDef = new StreamDef(pStreamDef);
         
         // figure out the key idx
         i8 nColumns = m_pStreamDef->m_pColumnVec->nItems();
@@ -181,7 +191,22 @@ eOR GetKeyOp::eOpLoop(void)
             break;
           }
         }
-        RASSERT(m_iKeyCol != -1);
+        if (m_iKeyCol != -1) {
+          // this must be the left streamDef coming from a join
+          // do we have a right def ?
+          if (m_pRightStreamDef) {
+            // figure out the key idx
+            i8 nColumns = m_pStreamDef->m_pColumnVec->nItems();
+            for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+              Column* pCol = m_pStreamDef->m_pColumnVec->pGet(i_Col);
+              if (StrLib::bEqualTo(m_sKey.aChar(),pCol->sColumnName().aChar(),C_NO_CASE)) {
+                m_iKeyCol = i_Col;
+                m_bKeyIsLeft = false;
+                break;
+              }
+            }
+          }
+        }
         
         vPipeOut(pOperand);
         
