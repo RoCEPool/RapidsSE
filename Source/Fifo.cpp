@@ -69,8 +69,7 @@ bool Fifo::bMake(Stz* sFifoPath)
     return false;
   }
   
-  AM::vLogRes(nullptr,RA_FIO_MADE,
-              "Fifo made : %s"_Stz,sFifoPath->aChar());
+  AM::vLogFyi("Fifo made : %s"_Stz,sFifoPath->aChar());
 
   return true;
 }
@@ -87,8 +86,7 @@ bool Fifo::bRemove(Stz* sFifoPath)
     return false;
   }
   
-  AM::vLogRes(nullptr,RA_FIO_REMOVED,
-              "Fifo removed : %s"_Stz,sFifoPath->aChar());
+  AM::vLogFyi("Fifo removed : %s"_Stz,sFifoPath->aChar());
   
   return true;
 }
