@@ -790,7 +790,7 @@ void SePrompt::vSetJob(void)
     m_pJob->m_eJobTrace = JT_ALL;
 
   if (m_bMarked)
-    m_pJob->m_bMarkActivity = true;
+    m_pJob->m_bLogJob = true;
 }
 
 /*----------------------------------------------------------------------------*/

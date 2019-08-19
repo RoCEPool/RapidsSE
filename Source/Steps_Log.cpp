@@ -60,7 +60,7 @@ void Step::vLogMarkEntry(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(sWordNm) )
     THROW_INVALID_DSTACK("log::markEntry"_Stz);
     
-  if (mpTask->m_pJob->m_bMarkActivity)
+  if (mpTask->m_pJob->m_bLogJob)
     JobLog::vNote(mpTask->m_pJob,
                           "%s %s %p"_Stz,
                           sWordNm.aStz(),
@@ -83,7 +83,7 @@ void Step::vLogMarkExit(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(sWordNm) )
     THROW_INVALID_DSTACK("log::markExit"_Stz);
   
-  if (mpTask->m_pJob->m_bMarkActivity)
+  if (mpTask->m_pJob->m_bLogJob)
     JobLog::vNote(mpTask->m_pJob,
                           "%s %s %p"_Stz,
                           sWordNm.aStz(),

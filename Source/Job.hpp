@@ -25,7 +25,7 @@ namespace Jobs
     Decider m_oAcksRmg;  // acks remaining
 
     bool m_bMarkTrace;    // trace (mark version)
-    bool m_bMarkActivity; // mark activity
+    bool m_bLogJob; // mark activity
     i8   m_i_Activity;    // activity
   
     i8   m_i_ActionRoot;  // action

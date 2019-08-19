@@ -78,9 +78,9 @@ Job::Job(eCN eClassNo, Session* pSession)
   
   m_eJobTrace = JT_NONE;
   if (AM::pMarkJob()->bAll() || AM::pMarkJob()->bEnum(eClass()))
-    m_bMarkActivity = true;
+    m_bLogJob = true;
   else
-    m_bMarkActivity = false;
+    m_bLogJob = false;
   m_i_Activity   = C_UNKNOWN;
   
   if ( AM::pMarkAction()->bAll() ||
