@@ -64,6 +64,7 @@ JoinOp::JoinOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   m_pRightStreamDef = nullptr;
   
   m_eNextEntry = NE_NEXT_LEFT_RIGHT;
+  m_bGotLeft = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -221,16 +222,21 @@ eOR JoinOp::eJoinLoop(void)
         
       case NE_NEXT_LEFT_RIGHT: // get next left and right entry
         
-        if (m_pLeftBuffer) {
-          m_aLeftEntry = m_pLeftBuffer->aNextEntry(m_aLeftEntry, 0);
-        }
+        if ( ! m_bGotLeft) {
           
-        while ( ! m_aLeftEntry && ! m_bEndLeftOperands) {
-          if (OR_BIDE == ePopLeftOperand())
-            return OR_BIDE;
-          m_aLeftEntry = m_pLeftBuffer ? m_pLeftBuffer->aLeadEntry() : NULL;
-        }
+          if (m_pLeftBuffer) {
+            m_aLeftEntry = m_pLeftBuffer->aNextEntry(m_aLeftEntry, 0);
+          }
           
+          while ( ! m_aLeftEntry && ! m_bEndLeftOperands) {
+            if (OR_BIDE == ePopLeftOperand())
+              return OR_BIDE;
+            m_aLeftEntry = m_pLeftBuffer ? m_pLeftBuffer->aLeadEntry() : NULL;
+          }
+        }
+        
+        m_bGotLeft = true;
+        
         if (m_pRightBuffer) {
           m_aRightEntry  = m_pRightBuffer->aNextEntry(m_aRightEntry, 0);
         }
@@ -240,6 +246,8 @@ eOR JoinOp::eJoinLoop(void)
             return OR_BIDE;
           m_aRightEntry  = m_pRightBuffer ? m_pRightBuffer->aLeadEntry() : NULL;
         }
+  
+        m_bGotLeft = false;
         
         break;
         

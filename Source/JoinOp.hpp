@@ -24,6 +24,8 @@ namespace DataOperators
     
     StreamDef* m_pRightStreamDef;
     
+    bool m_bGotLeft;
+    
     // must be last
     Footer m_xFooter;
 
