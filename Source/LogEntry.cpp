@@ -72,6 +72,8 @@ void LogEntry::vInit(eCN eClassNo, Stz* szText)
 {
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
+  m_i_Prev = C_UNKNOWN;
+  
   m_iTick = Tick::iRdClock();
   m_iNodeNo = AM::iThisNodeNo();
   StrLib::vCopyLen(m_caNode,AM::szNodeName()->aChar(),sizeof(m_caNode) - 1);
@@ -130,14 +132,17 @@ void LogEntry::vWriteCsv(File* pFile, i8 iTickDeltaUsec, i8& iTotalDelta)
   if (m_bLine)
     pFile->vPrint("%s\n"_Stz,C_LOG_LINE);
 
-  pFile->vPrint("[%lld,%lld,%lld,%lld], "
+  pFile->vPrint("[%lld,%lld], "
+                "(%lld,%lld,%lld), "
                 "<%lld,%s,%s>, "_Stz
                 "{%s"_Stz,
                 
                 m_i_Entry,
+                m_i_Prev,
+
                 m_iTick,
-                iTickDeltaUsec,
                 iTotalDelta,
+                iTickDeltaUsec,
                 
                 m_iNodeNo,
                 m_caNode,

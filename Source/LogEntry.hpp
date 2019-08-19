@@ -25,6 +25,7 @@ namespace Logging
 
   private:
     i8   m_i_Entry;     // this entry no
+    i8   m_i_Prev;      // previous entry
   
     i8   m_iTick;       // tick when entry added
     i8   m_iNodeNo;     // which node

@@ -57,19 +57,19 @@ namespace Logging
   //private:
     i8 iEntryFyi(eCN eClass, Stz* szFormat, va_list xArgs);
   
-    i8 iEntryApi(eCN eClass, i8 iApiId, eAA eApiAct, Stz* szFormat, va_list xArgs);
-    i8 iEntryJob(eCN eClass, i8 iJobId, eJA eJobAct, Stz* szFormat, va_list xArgs);
-    i8 iEntryLck(eCN eClass, i8 iLckId, eLA eLckAct, Stz* szFormat, va_list xArgs);
-    i8 iEntryLog(eCN eClass, i8 iLogId, eGA eLogAct, Stz* szFormat, va_list xArgs);
-    i8 iEntryObj(Object* pObject, eCA eObjAct, Stz* szFormat, va_list xArgs);
-    i8 iEntryOpr(eCN eClass, i8 iOprId, eOA eOprAct, Stz* szFormat, va_list xArgs);
-    i8 iEntryPrm(eCN eClass, i8 iPrmId, ePA ePrmAct, Stz* szFormat, va_list xArgs);
-    i8 iEntryRes(eCN eClass, i8 iResId, eRA eResAct, eRK eResKnd,   Stz* szFormat, va_list xArgs);
-    i8 iEntrySvc(eCN eClass, i8 iSvcId, eVA eSvcAct, Stz* szFormat, va_list xArgs);
-    i8 iEntrySys(eCN eClass, i8 iSysId, eYA eSysAct, Stz* szFormat, va_list xArgs);
-    i8 iEntryThd(eCN eClass, i8 iThdId, eHA eThdAct, Stz* szFormat, va_list xArgs);
-    i8 iEntryTsk(eCN eClass, i8 iTskId, eTA eTskAct, Stz* szFormat, va_list xArgs);
-    i8 iEntryTxn(eCN eClass, i8 iTxnId, eXA eTxnAct, Stz* szFormat, va_list xArgs);
+    i8 iEntryApi(eCN eClass, i8 iApiId, eAA eApiAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
+    i8 iEntryJob(eCN eClass, i8 iJobId, eJA eJobAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
+    i8 iEntryLck(eCN eClass, i8 iLckId, eLA eLckAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
+    i8 iEntryLog(eCN eClass, i8 iLogId, eGA eLogAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
+    i8 iEntryObj(Object* pObject, eCA eObjAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
+    i8 iEntryOpr(eCN eClass, i8 iOprId, eOA eOprAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
+    i8 iEntryPrm(eCN eClass, i8 iPrmId, ePA ePrmAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
+    i8 iEntryRes(eCN eClass, i8 iResId, eRA eResAct, eRK eResKnd,   i8 i_Prev, Stz* szFormat, va_list xArgs);
+    i8 iEntrySvc(eCN eClass, i8 iSvcId, eVA eSvcAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
+    i8 iEntrySys(eCN eClass, i8 iSysId, eYA eSysAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
+    i8 iEntryThd(eCN eClass, i8 iThdId, eHA eThdAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
+    i8 iEntryTsk(eCN eClass, i8 iTskId, eTA eTskAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
+    i8 iEntryTxn(eCN eClass, i8 iTxnId, eXA eTxnAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
 
     i8 iEntryJob(i8 iJobId, i8 iForeign, Stz* aFormat, ...);
     i8 iEntryJob_arg(i8 iJobId, i8 iForeign, Stz* szFormat, va_list xArgs);
