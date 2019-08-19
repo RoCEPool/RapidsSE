@@ -23,11 +23,10 @@ Resource* Resources::_pResource(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Resource::Resource(eCN eClassNo, eRK eKind)
-: Object(eClassNo)
+: Object(eClassNo), _Loggable(AM::iNextResourceId())
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
-  m_iResId = AM::iNextResourceId();
   m_eKind  = eKind;
   
   m_oBirth.vNow();
@@ -55,7 +54,7 @@ i8 Resource::iResId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_iResId;
+  return m_iUniqueId;
 }
 
 /*----------------------------------------------------------------------------*/

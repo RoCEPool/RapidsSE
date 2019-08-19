@@ -5,12 +5,11 @@
 
 namespace Resources
 {
-  class Resource : public Object
+  class Resource : public Object,
+                   public _Loggable
   {
   protected:
-    i8    m_iResId; // resource id
     eRK   m_eKind;  // kind of resource
-  
     Birth m_oBirth; // birth certificate
 
   public:

@@ -25,12 +25,15 @@ namespace Logging
 
   private:
     i8   m_i_Entry;     // this entry no
+    i8   m_i_Prev;      // previous entry
   
     i8   m_iTick;       // tick when entry added
     i8   m_iNodeNo;     // which node
     char m_caNode[32];  // which node
   
     eCN  m_eClass;      // class of caller
+  
+    Object* m_pObject;  // object
   
     char m_caText[C_LOG_TEXT]; // comment
   
