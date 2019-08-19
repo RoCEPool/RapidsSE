@@ -10,7 +10,9 @@ namespace Sessions
   class Session : public Object
   {
   public:
+    i8       m_iSessionId;       // session id
     i8       m_iPid;             // process which created this session
+  
     i8       m_iPartition;       // which partition this session connects to
     DicStack m_oDicStack;        // dictionary stack
     s48K     m_sResponse;        // response

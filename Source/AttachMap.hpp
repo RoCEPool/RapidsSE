@@ -61,6 +61,7 @@ namespace StorageEngine
     NextId        m_inNextPlanId;
     NextId        m_inNextPromptId;
     NextId        m_inNextResourceId;
+    NextId        m_inNextSessionId;
     NextId        m_inNextStreamId;
     NextId        m_inNextTaskId;
     NextId        m_inNextThreadId;

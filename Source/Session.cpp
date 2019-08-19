@@ -4,6 +4,8 @@
 
 #include "Interface.h"
 
+Atomic gixSession;
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -70,7 +72,8 @@ Session::Session(i8 iPartition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
-  // pid
+  m_iSessionId = AM::iNextSessionId();
+  
   m_iPid = Process::iGetPid();
 
   m_iPartition      = iPartition;
@@ -89,6 +92,10 @@ Session::Session(i8 iPartition)
 
   _checkInitialised_(CN_SESSION);
   
+  ++ gixSession;
+  AM::vLogApi(this,AA_SSN_CONSTRUCTOR,
+              "Session constructed : %p (%lld tasks exist)"_Stz,this,* gixSession);
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
 }
 
@@ -105,6 +112,10 @@ Session::~Session(void) noexcept(false)
   delete m_pJobStack;
   
   delete m_pCommand;
+  
+  -- gixSession;
+  AM::vLogApi(this,AA_SSN_DESTRUCTOR,
+              "Session destructed : %p (%lld tasks exist)"_Stz,this,* gixSession);
 }
 
 /*----------------------------------------------------------------------------*/
