@@ -68,7 +68,7 @@ LogEntry::~LogEntry(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* init                                                                       */
 /*----------------------------------------------------------------------------*/
-void LogEntry::vInit(eCN eClassNo)
+void LogEntry::vInit(eCN eClassNo, Stz* szText)
 {
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
@@ -77,7 +77,8 @@ void LogEntry::vInit(eCN eClassNo)
   StrLib::vCopyLen(m_caNode,AM::szNodeName()->aChar(),sizeof(m_caNode) - 1);
   
   m_caText[0] = '\0';
-  
+  StrLib::vCopyLen(m_caText,szText->aChar(),C_LOG_TEXT - 1);
+
   m_eClass = eClassNo;
   m_bLine = false;
 }
