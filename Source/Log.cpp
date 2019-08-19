@@ -139,50 +139,6 @@ Log* Log::pAttachExisting(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add a log entry                                                            */
-/*----------------------------------------------------------------------------*/
-void Log::vNote(Stz* szFormat, ...)
-{
-#ifdef WITH_SHARED_LOG
-  if ( ! gpLog )
-    return;
-  
-  va_list xVaArgs;
-  
-  va_start(xVaArgs,szFormat);
-  
-  gpLog->iEntryFyi(CN_NONE,szFormat,xVaArgs);
-  
-  va_end(xVaArgs);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* add a section line log entry                                               */
-/*----------------------------------------------------------------------------*/
-void Log::vNoteSection(Stz* szSectionNm)
-{
-#ifdef WITH_SHARED_LOG
-  if ( ! gpLog )
-    return;
-
-  char caSection[256];
-  
-  i8 iSectNmLen = szSectionNm->iLength();
-    
-  StrLib::vPad(caSection,127-iSectNmLen-4,'#');
-    
-  StrLib::vConcat(caSection,' ');
-  StrLib::vConcat(caSection,szSectionNm->aChar());
-  StrLib::vConcat(caSection,' ');
-  StrLib::vConcat(caSection,'#');
-  StrLib::vConcat(caSection,'#');
-    
-  vNote((Stz*)caSection);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
 /* add a multi-line string entry                                              */
 /*----------------------------------------------------------------------------*/
 void Log::vNoteString(i8 iJobId, s48K& sString)
@@ -201,7 +157,7 @@ void Log::vNoteString(i8 iJobId, s48K& sString)
     
     //vTrace("Line: ]]%s[[\n"_Stz,sLine.aChar());
     LogEntry* pLogEntry = gpLog->pNewEntry_NL();
-    pLogEntry->vInit();
+    pLogEntry->vInit(CN_NONE);
     
     StrLib::vCopyLen(pLogEntry->m_caText,sLine.aChar(),C_LOG_TEXT - 1);
 
@@ -383,20 +339,12 @@ i8 Log::iEntryFyi(eCN eClassNo,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo);
+  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  char caMark[1024];
-  
-  vsnprintf(caMark,sizeof(caMark)-1,szFormat->aChar(),xVaArgs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,caMark,C_LOG_TEXT - 1);
   
   pLogEntry->m_xFyi.vSet(pLogEntry);
   
@@ -411,20 +359,12 @@ i8 Log::iEntryApi(eCN eClassNo, i8 iSsnId, eAA eApiAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo);
+  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  char caText[1024];
-  
-  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
   
   pLogEntry->m_xApi.vSet(pLogEntry,iSsnId,eApiAct);
   
@@ -439,20 +379,12 @@ i8 Log::iEntryJob(eCN eClassNo, i8 iJobId, eJA eJobAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo);
+  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  char caText[1024];
-  
-  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
   
   pLogEntry->m_xJob.vSet(pLogEntry,iJobId,eJobAct);
   
@@ -467,20 +399,12 @@ i8 Log::iEntryLck(eCN eClassNo, i8 iLckId, eLA eLckAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo);
+  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  char caText[1024];
-  
-  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
   
   pLogEntry->m_xLck.vSet(pLogEntry,iLckId,eLckAct);
   
@@ -495,20 +419,12 @@ i8 Log::iEntryLog(eCN eClassNo, i8 iLogId, eGA eLogAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo);
+  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
   
   if (! pLogEntry)
-  return C_UNKNOWN;
+    return C_UNKNOWN;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  char caText[1024];
-  
-  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
   
   pLogEntry->m_xLog.vSet(pLogEntry,iLogId,eLogAct);
   
@@ -523,20 +439,12 @@ i8 Log::iEntryObj(Object* pObj, eCA eObjAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(pObj->eClass());
+  LogEntry* pLogEntry = pNewEntry(pObj->eClass(),szFormat,xVaArgs);
   
   if (! pLogEntry)
-  return C_UNKNOWN;
+    return C_UNKNOWN;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  char caText[1024];
-  
-  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
   
   pLogEntry->m_xObj.vSet(pLogEntry,pObj,eObjAct);
   
@@ -551,20 +459,12 @@ i8 Log::iEntryOpr(eCN eClassNo, i8 iOprId, eOA eOprAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo);
+  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  char caText[1024];
-  
-  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
   
   pLogEntry->m_xOpr.vSet(pLogEntry,iOprId,eOprAct);
   
@@ -579,20 +479,12 @@ i8 Log::iEntryPrm(eCN eClassNo, i8 iPrmId, ePA ePrmAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo);
+  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  char caText[1024];
-  
-  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
   
   pLogEntry->m_xPrm.vSet(pLogEntry,iPrmId,ePrmAct);
   
@@ -607,20 +499,12 @@ i8 Log::iEntryRes(eCN eClassNo, i8 iResId, eRA eResAct, eRK eResKnd,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo);
+  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  char caText[1024];
-  
-  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
   
   pLogEntry->m_xRes.vSet(pLogEntry,iResId,eResKnd,eResAct);
   
@@ -635,20 +519,12 @@ i8 Log::iEntrySvc(eCN eClassNo, i8 iSvcId, eVA eSvcAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo);
+  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  char caText[1024];
-  
-  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
   
   pLogEntry->m_xSvc.vSet(pLogEntry,iSvcId,eSvcAct);
   
@@ -663,20 +539,12 @@ i8 Log::iEntrySys(eCN eClassNo, i8 iSysId, eYA eSysAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo);
+  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
   
   if (! pLogEntry)
-  return C_UNKNOWN;
+    return C_UNKNOWN;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  char caText[1024];
-  
-  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
   
   pLogEntry->m_xSys.vSet(pLogEntry,iSysId,eSysAct);
   
@@ -691,20 +559,12 @@ i8 Log::iEntryThd(eCN eClassNo, i8 iThdId, eHA eThdAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo);
+  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  char caText[1024];
-  
-  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
   
   pLogEntry->m_xThd.vSet(pLogEntry,iThdId,eThdAct);
   
@@ -719,20 +579,12 @@ i8 Log::iEntryTsk(eCN eClassNo, i8 iTskId, eTA eTskAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo);
+  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  char caText[1024];
-  
-  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
   
   pLogEntry->m_xTsk.vSet(pLogEntry,iTskId,eTskAct);
   
@@ -747,20 +599,12 @@ i8 Log::iEntryTxn(eCN eClassNo, i8 iTxnId, eXA eTxnAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo);
+  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  char caText[1024];
-  
-  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
   
   pLogEntry->m_xTxn.vSet(pLogEntry,iTxnId,eTxnAct);
   
@@ -773,11 +617,11 @@ i8 Log::iEntryTxn(eCN eClassNo, i8 iTxnId, eXA eTxnAct,
 /* write an LogEntry                                                          */
 /*----------------------------------------------------------------------------*/
 i8 Log::iEntryJob_arg(i8 iJobId, i8 iForeign,
-                      Stz* aFormat, va_list xVaArgs)
+                      Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(CN_NONE);
+  LogEntry* pLogEntry = pNewEntry(CN_NONE,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -786,7 +630,7 @@ i8 Log::iEntryJob_arg(i8 iJobId, i8 iForeign,
   
   char caMark[1024];
   
-  vsnprintf(caMark,sizeof(caMark)-1,aFormat->aChar(),xVaArgs);
+  vsnprintf(caMark,sizeof(caMark)-1,szFormat->aChar(),xVaArgs);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -820,10 +664,13 @@ i8 Log::iEntryJob(i8 iJobId, i8 iForeign, Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* get a new mark in Log                                                      */
 /*----------------------------------------------------------------------------*/
-LogEntry* Log::pNewEntry(eCN eClassNo)
+LogEntry* Log::pNewEntry(eCN eClassNo, Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
-  
+
+  char caText[1024];
+  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
+
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
   vGrabLock();
   
@@ -832,9 +679,10 @@ LogEntry* Log::pNewEntry(eCN eClassNo)
   vDropLock();
   // ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲
   
-  pLogEntry->vInit();
+  pLogEntry->vInit(eClassNo);
   
-  pLogEntry->m_eClass = eClassNo;
+  
+  StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
 
   return pLogEntry;
 }

@@ -44,8 +44,6 @@ namespace Logging
     static Log* pAttachExisting(void);
 
   public:
-    static void vNote(Stz* aFormat, ...);
-    static void vNoteSection(Stz* szSectionNm);
     static void vNoteString(i8 iJobId, s48K& sString);
   
     static void vMonitorPortrait(s48K& sPortrait);
@@ -76,7 +74,7 @@ namespace Logging
     i8 iEntryJob(i8 iJobId, i8 iForeign, Stz* aFormat, ...);
     i8 iEntryJob_arg(i8 iJobId, i8 iForeign, Stz* szFormat, va_list xArgs);
 
-    LogEntry* pNewEntry(eCN eClass);
+    LogEntry* pNewEntry(eCN eClass, Stz* szFormat, va_list xVaArgs);
     LogEntry* pNewEntry_NL(void);
     void vFindRange_NL(i8& i_MinEntry, i8& i_MaxEntry);
     i8   iPercentFull_NL(void);

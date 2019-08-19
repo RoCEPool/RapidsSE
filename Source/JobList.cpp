@@ -210,32 +210,30 @@ void JobList::vLogJobs(i8 iJobId)
   
   if (0 == m_pJobsSkipList->nObjects()) {
     vDropLock();
-    Log::vNote("%s List is empty"_Stz,
-               aJL[m_eJobsList]);
+    AM::vLogFyi("%s List is empty"_Stz,aJL[m_eJobsList]);
     return;
   }
   
   SkipNode* pNode = m_pJobsSkipList->pFirst(iLevel);
   
-  Log::vNote("Contents of %s List:"_Stz,
-             aJL[m_eJobsList]);
+  AM::vLogFyi("Contents of %s List:"_Stz,aJL[m_eJobsList]);
   
   while (pNode) {
     Job* pJob = _pJob(pNode->m_pObject);
-    Log::vNote("  %s %p %03lld parent %03lld slot[%lld] "
-               "phase %s state %s acksRmg %lld/%lld partNode %lld"_Stz,
+    AM::vLogFyi("  %s %p %03lld parent %03lld slot[%lld] "
+                "phase %s state %s acksRmg %lld/%lld partNode %lld"_Stz,
                
-               aCN[pJob->eClass()],
-               pJob,
-               pJob->m_iJobId,
-               pJob->m_iParentId,
-               pJob->m_i_Slot,
-               
-               aJP[pJob->m_eJobPhase],
-               aJS[pJob->m_eJobState],
-               pJob->m_oAcksRmg.iPrintOnlyValue(),
-               pJob->m_oAcksRmg.nOriginalAcks(),
-               pJob->m_iParticipantNode);
+                 aCN[pJob->eClass()],
+                 pJob,
+                 pJob->m_iJobId,
+                 pJob->m_iParentId,
+                 pJob->m_i_Slot,
+                
+                 aJP[pJob->m_eJobPhase],
+                 aJS[pJob->m_eJobState],
+                 pJob->m_oAcksRmg.iPrintOnlyValue(),
+                 pJob->m_oAcksRmg.nOriginalAcks(),
+                 pJob->m_iParticipantNode);
     
     pNode = m_pJobsSkipList->pNext(pNode, iLevel);
   }
