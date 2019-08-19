@@ -257,7 +257,7 @@ void SrtBuffer::vShow(ColumnVec* pLeftColVec, ColumnVec* pRightColVec)
       hvRecLeft->vAppend(hRowLeft);
       
       // get the right dataRow
-      Crw* aRightCrw = (Crw*)(aSrtSet->iRowRef(0));
+      Crw* aRightCrw = (Crw*)(aSrtSet->iRowRef(1));
       
       if (aRightCrw) {
         // inflate the right row
@@ -288,7 +288,7 @@ void SrtBuffer::vShow(ColumnVec* pLeftColVec, ColumnVec* pRightColVec)
     while (nRows--) {
       
       // get the left dataRow
-      Crw* aLeftCrw = (Crw*)(aSrtSet->iRowRef(0));
+      Crw* aLeftCrw = (Crw*)(aSrtSet->iRowRef(1));
       
       // inflate the left row
       if (aLeftCrw) {
