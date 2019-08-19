@@ -85,11 +85,9 @@ Job::Job(eCN eClassNo, Session* pSession)
   
   if ( AM::pMarkAction()->bAll() ||
        AM::pMarkAction()->bFlagged(eClass()) ) {
-    m_bMarkAction  = true;
     m_i_ActionRoot = ActLog::iBegin(m_iJobId,eClassNo);
   }
   else {
-    m_bMarkAction  = false;
     m_i_ActionRoot = C_UNKNOWN;
   }
   
@@ -133,7 +131,7 @@ Job::~Job(void) noexcept(false)
   ActLog::vAdd(this,AN_DESTRUCTOR);
   
   delete m_pMutexJob;
-    
+  
   -- gixJob;
   AM::vLogJob(this,JA_JOB_DESTRUCTOR,
               "Job destructed : %p (%lld jobs exist)"_Stz,this,* gixJob);

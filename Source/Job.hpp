@@ -28,7 +28,6 @@ namespace Jobs
     bool m_bMarkActivity; // mark activity
     i8   m_i_Activity;    // activity
   
-    bool m_bMarkAction;   // mark actions
     i8   m_i_ActionRoot;  // action
 
     JobClass*    m_pJobClass;        // job class

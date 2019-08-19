@@ -66,10 +66,7 @@ void JobLog::vNoteState(Jobs::Job* pJob, Stz* szPoint)
 
   if (! Jobs::_bIsValidJob(pJob->eClass()))
     return;
-  
-  if (! pJob->m_bMarkAction)
-    return;
-  
+    
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   s4K szEntryText;
   
