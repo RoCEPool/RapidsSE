@@ -33,7 +33,6 @@ namespace Logging
 #include "LogEntryTxn.hpp"
 #include "LogEntry.hpp"
 #include "Log.hpp"
-#include "ActLog.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

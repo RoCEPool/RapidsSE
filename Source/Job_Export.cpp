@@ -117,8 +117,8 @@ Job_Export::Job_Export(Session* pSession)
 
   _checkInitialised_(CN_JOB_EXPORT);
   
-  ActLog::vRoot(this);
-  ActLog::vAdd(this,AN_CONSTRUCTOR,CN_JOB_EXPORT,_EG_CN);
+  //ActLog::vRoot(this);
+  //ActLog::vAdd(this,AN_CONSTRUCTOR,CN_JOB_EXPORT,_EG_CN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
 }
@@ -160,7 +160,7 @@ bool Job_Export::bBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
   
-  ActLog::vAdd(this,AN_JOB_BEGIN);
+  //ActLog::vAdd(this,AN_JOB_BEGIN);
 
   m_pTable->vMarkTable();
   
@@ -179,7 +179,7 @@ void Job_Export::vEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
 
-  ActLog::vAdd(this,AN_JOB_END);
+  //ActLog::vAdd(this,AN_JOB_END);
   
   m_oCsvFile.vClose();
   vTrace("CLOSING EXPORT FILE\n"_Stz);
@@ -298,7 +298,7 @@ void Jobs::vJob_Export_post(Session* pSession, Job* pJob)
 {
   Job_Export* pJob_Export = _pJob_Export(pJob);
 
-  ActLog::vAdd(pJob_Export,AN_POST_PROMPT,pJob_Export->m_bHasError);
+  //ActLog::vAdd(pJob_Export,AN_POST_PROMPT,pJob_Export->m_bHasError);
 }
 
 /*----------------------------------------------------------------------------*/

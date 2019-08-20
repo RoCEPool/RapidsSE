@@ -346,7 +346,7 @@ void SePrompt::vDeleteJob(void)
   //Command* pCommand = this->pCommand();
   //JobClass* pJobClass = pCommand->pJobClass();
   
-  ActLog::vEnd(m_pJob);
+  //ActLog::vEnd(m_pJob);
 
   // call the job delete function
   m_pJobClass->vDeleteJob(m_pSession,m_pJob);
@@ -831,7 +831,7 @@ void SePrompt::vSpawnJob(void)
   
   pCommand->pTknVec()->vSetTokens();
   
-  ActLog::vAdd(m_pJob,AN_SPAWN_JOB,SS_SEED_REQ,_EG_SS);
+  //ActLog::vAdd(m_pJob,AN_SPAWN_JOB,SS_SEED_REQ,_EG_SS);
 
   bool bSpawned = Api::bSpawnJob(m_pSession,m_pJob,SS_SEED_REQ);
   RASSERT(bSpawned);

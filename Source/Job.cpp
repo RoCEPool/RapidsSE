@@ -84,7 +84,8 @@ Job::Job(eCN eClassNo, Session* pSession)
   
   if ( AM::pMarkAction()->bAll() ||
        AM::pMarkAction()->bFlagged(eClass()) ) {
-    m_i_ActionRoot = ActLog::iBegin(m_iUniqueId,eClassNo);
+    //m_i_ActionRoot = ActLog::iBegin(m_iUniqueId,eClassNo);
+    m_i_ActionRoot = 0;
   }
   else {
     m_i_ActionRoot = C_UNKNOWN;
@@ -127,7 +128,7 @@ Job::~Job(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  ActLog::vAdd(this,AN_DESTRUCTOR);
+  //ActLog::vAdd(this,AN_DESTRUCTOR);
   
   delete m_pMutexJob;
   

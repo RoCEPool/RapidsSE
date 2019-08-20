@@ -335,7 +335,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
       pJob->vMarkJob();
     }
     
-    ActLog::vAdd(pJob,AN_RECV_JOB,mpTask->pJob(),nObjectSize);
+    //ActLog::vAdd(pJob,AN_RECV_JOB,mpTask->pJob(),nObjectSize);
 
                          
     mpTask->m_pDataStack->vPushPointer(pJob);
@@ -551,8 +551,8 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
     //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
     //       pJob,eClass,aCN[eClass],nObjectSize);
     
-    ActLog::vAdd(pJob,AN_RECV_JOB,mpTask->pJob(),nObjectSize);
-    ActLog::vAdd(pJob,AN_RECV_JOB_LOW_MEMORY);
+    //ActLog::vAdd(pJob,AN_RECV_JOB,mpTask->pJob(),nObjectSize);
+    //ActLog::vAdd(pJob,AN_RECV_JOB_LOW_MEMORY);
     
     mpTask->m_pDataStack->vPushPointer(pJob);
     mpTask->m_pDataStack->vPushBool(true);
@@ -627,7 +627,7 @@ void Step::vSocketSendObject(MP_Task mpTask)
                          pJob,
                          pSocket);
     
-    ActLog::vAdd(pJob,AN_SEND_JOB,mpTask->pJob(),nObjectSize);
+    //ActLog::vAdd(pJob,AN_SEND_JOB,mpTask->pJob(),nObjectSize);
   }
 
   RASSERT(_bIsValidJob(eClass) ||

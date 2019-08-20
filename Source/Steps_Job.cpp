@@ -622,7 +622,7 @@ void Step::vJobErrorStore(MP_Task mpTask)
   pJob->m_bHasError = true;
   pJob->m_xResponse.m_eErrorCode = (eEC)iJobError;
   
-  ActLog::vAdd(pJob,AN_ERROR_CODE,iJobError);
+  //ActLog::vAdd(pJob,AN_ERROR_CODE,iJobError);
   
   EXIT();
 }
@@ -1137,7 +1137,7 @@ void Step::vJobParticipantResponseStore(MP_Task mpTask)
   pJob->m_pResponseVec->vAdd(pResponse);
   
   if (pResponse->m_eErrorCode != EC_NONE)
-    ActLog::vAdd(pJob,AN_ERROR_CODE,pResponse->m_eErrorCode);
+    //ActLog::vAdd(pJob,AN_ERROR_CODE,pResponse->m_eErrorCode);
   
   EXIT();
 }
@@ -1194,7 +1194,7 @@ void Step::vJobPhaseStore(MP_Task mpTask)
   
   pJob->m_eJobPhase = (eJP)iJobPhase;
   
-  ActLog::vAdd(pJob,AN_JOB_PHASE,iJobPhase,_EG_JP);
+  //ActLog::vAdd(pJob,AN_JOB_PHASE,iJobPhase,_EG_JP);
   
   EXIT();
 }
@@ -1230,7 +1230,7 @@ void Step::vJobPostRecv(MP_Task mpTask)
     pJob->vMarkJob();
   }
   
-  ActLog::vAdd(pJob,AN_POST_RECV,mpTask->pJob());
+  //ActLog::vAdd(pJob,AN_POST_RECV,mpTask->pJob());
 
   EXIT();
 }
@@ -1249,7 +1249,7 @@ void Step::vJobPreSend(MP_Task mpTask)
   
   JobClass* pJobClass = pJob->m_pJobClass;
   
-  ActLog::vAdd(pJob,AN_PRE_SEND,mpTask->pJob());
+  //ActLog::vAdd(pJob,AN_PRE_SEND,mpTask->pJob());
   if (pJobClass->m_fpSend)
     (*pJobClass->m_fpSend)(pJob);
   
@@ -1746,7 +1746,7 @@ void Step::vJobSpawn(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.spawn"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  ActLog::vAdd(pJob,AN_SPAWN_JOB,mpTask->pJob(),i_Seed,_EG_SS);
+  //ActLog::vAdd(pJob,AN_SPAWN_JOB,mpTask->pJob(),i_Seed,_EG_SS);
   
   IGNORE_RETURN(Api::bSpawnJob(nullptr,pJob,(eSS)i_Seed));
   
@@ -1769,7 +1769,7 @@ void Step::vJobSpawnDedicated(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.spawn_dedicated"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  ActLog::vAdd(pJob,AN_SPAWN_JOB,mpTask->pJob(),i_Seed,_EG_SS);
+  //ActLog::vAdd(pJob,AN_SPAWN_JOB,mpTask->pJob(),i_Seed,_EG_SS);
   
   IGNORE_RETURN(Api::bSpawnJobDedicated(nullptr,pJob,(eSS)i_Seed));
   

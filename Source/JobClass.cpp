@@ -133,8 +133,8 @@ Job* JobClass::pPreJob(Session* pSession)
   pJob->m_eJobTrace = m_eTrace;
   pJob->m_i_State   = pSession ? pSession->m_pSessionState->m_i_State : -1;
   
-  ActLog::vAdd(pJob,AN_PRE_PROMPT,
-                       pJob->m_pJobClass->m_eKind,_EG_JK);
+//  //ActLog::vAdd(pJob,AN_PRE_PROMPT,
+//                       pJob->m_pJobClass->m_eKind,_EG_JK);
   
   return pJob;
 }

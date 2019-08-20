@@ -37,7 +37,7 @@ void Step::vJob__BegunNew(MP_Task mpTask)
   JobClass* pJobClass__Begun = JobClass::pFind(CN_JOB__BEGUN);
   pJobBegun->m_pJobClass = pJobClass__Begun;
   
-  ActLog::vAdd(mpTask->pJob(),AN_NEW_JOB,pJobBegun);
+  //ActLog::vAdd(mpTask->pJob(),AN_NEW_JOB,pJobBegun);
   
   mpTask->m_pDataStack->vPushPointer(pJobBegun);
   
@@ -63,7 +63,7 @@ void Step::vJob__CancelNew(MP_Task mpTask)
   JobClass* pJobClass__Cancel = JobClass::pFind(CN_JOB__CANCEL);
   pJobCancel->m_pJobClass = pJobClass__Cancel;
   
-  ActLog::vAdd(mpTask->pJob(),AN_NEW_JOB,pJobCancel);
+  //ActLog::vAdd(mpTask->pJob(),AN_NEW_JOB,pJobCancel);
   
   mpTask->m_pDataStack->vPushPointer(pJobCancel);
   
@@ -89,7 +89,7 @@ void Step::vJob__CancelledNew(MP_Task mpTask)
   JobClass* pJobClass__Cancelled = JobClass::pFind(CN_JOB__CANCELLED);
   pJobCancelled->m_pJobClass = pJobClass__Cancelled;
   
-  ActLog::vAdd(mpTask->pJob(),AN_NEW_JOB,pJobCancelled);
+  //ActLog::vAdd(mpTask->pJob(),AN_NEW_JOB,pJobCancelled);
   
   mpTask->m_pDataStack->vPushPointer(pJobCancelled);
   
@@ -115,7 +115,7 @@ void Step::vJob__EndNew(MP_Task mpTask)
   JobClass* pJobClass__End = JobClass::pFind(CN_JOB__END);
   pJobEnd->m_pJobClass = pJobClass__End;
   
-  ActLog::vAdd(mpTask->pJob(),AN_NEW_JOB,pJobEnd);
+  //ActLog::vAdd(mpTask->pJob(),AN_NEW_JOB,pJobEnd);
   
   mpTask->m_pDataStack->vPushPointer(pJobEnd);
   
@@ -141,7 +141,7 @@ void Step::vJob__EndedNew(MP_Task mpTask)
   JobClass* pJobClass__Ended = JobClass::pFind(CN_JOB__ENDED);
   pJobEnded->m_pJobClass = pJobClass__Ended;
   
-  ActLog::vAdd(mpTask->pJob(),AN_NEW_JOB,pJobEnded);
+  //ActLog::vAdd(mpTask->pJob(),AN_NEW_JOB,pJobEnded);
   
   mpTask->m_pDataStack->vPushPointer(pJobEnded);
   
@@ -167,7 +167,7 @@ void Step::vJob__ExecuteNew(MP_Task mpTask)
   JobClass* pJobClass__Execute = JobClass::pFind(CN_JOB__EXECUTE);
   pJobExecute->m_pJobClass = pJobClass__Execute;
   
-  ActLog::vAdd(mpTask->pJob(),AN_NEW_JOB,pJobExecute);
+  //ActLog::vAdd(mpTask->pJob(),AN_NEW_JOB,pJobExecute);
   
   mpTask->m_pDataStack->vPushPointer(pJobExecute);
   
@@ -193,7 +193,7 @@ void Step::vJob__ExecutedNew(MP_Task mpTask)
   JobClass* pJobClass__Executed = JobClass::pFind(CN_JOB__EXECUTED);
   pJobExecuted->m_pJobClass = pJobClass__Executed;
   
-  ActLog::vAdd(mpTask->pJob(),AN_NEW_JOB,pJobExecuted);
+  //ActLog::vAdd(mpTask->pJob(),AN_NEW_JOB,pJobExecuted);
   
   mpTask->m_pDataStack->vPushPointer(pJobExecuted);
   

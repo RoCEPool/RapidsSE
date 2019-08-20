@@ -150,7 +150,7 @@ bool Job_Walk::bBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WALK,_FOOTER_);
   
-  ActLog::vAdd(this,AN_JOB_BEGIN);
+  //ActLog::vAdd(this,AN_JOB_BEGIN);
   
   m_pTable->vMarkTable();
   
@@ -164,7 +164,7 @@ void Job_Walk::vEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WALK,_FOOTER_);
   
-  ActLog::vAdd(this,AN_JOB_END);
+  //ActLog::vAdd(this,AN_JOB_END);
 }
 
 /*----------------------------------------------------------------------------*/

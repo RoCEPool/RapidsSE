@@ -70,7 +70,7 @@ void Step::vJob_WalkIndexStore(MP_Task mpTask)
   
   pJob_Walk->m_pIndex = pIndex;
   
-  //ActLog::vAdd(pJob_Walk,AN_INDEX_USE,pIndex->aIndexName());
+  ////ActLog::vAdd(pJob_Walk,AN_INDEX_USE,pIndex->aIndexName());
   
   EXIT();
 }
