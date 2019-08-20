@@ -249,6 +249,15 @@ SrtBuffer* RefBuffer::pToSrtBuffer(i8 iKeyCol, bool bKeyIsLeft,
   while (aRefSet) {
     
     pSrtSet = pSrtBuffer->aAllotSrtSet(2);
+    if ( ! pSrtSet ) {
+      
+      // create a new SrtBuffer
+      SrtBuffer* pNewSrtBuffer = new SrtBuffer(m_iPartitionNo);
+      pNewSrtBuffer->vNextBuffer(pSrtBuffer);
+      pSrtBuffer = pNewSrtBuffer;
+      pSrtSet = pSrtBuffer->aAllotSrtSet(2);
+      
+    }
     RASSERT(pSrtSet);
     
     // get the left data row
@@ -278,9 +287,6 @@ SrtBuffer* RefBuffer::pToSrtBuffer(i8 iKeyCol, bool bKeyIsLeft,
     }
     else {
       HV_Row hRow(pRightColVec);
-      
-      // get the key from the right buffer row
-      RowInflator::vInflateColumn(hRow, aRightCrw, iKeyCol);
       
       // get the key from the left buffer row
       if (aRightCrw) {

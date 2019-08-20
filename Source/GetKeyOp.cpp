@@ -182,7 +182,13 @@ eOR GetKeyOp::eOpLoop(void)
                                                          m_pStreamDef->m_pColumnVec,
                                                          m_pRightStreamDef->m_pColumnVec);
         //pSrtBuffer->vShow(m_pStreamDef->m_pColumnVec, m_pRightStreamDef->m_pColumnVec);
-        vPipeOut(pSrtBuffer);
+        SrtBuffer* pBuffer = pSrtBuffer;
+        while (pBuffer) {
+          SrtBuffer* pPipeOut = pBuffer;
+          pBuffer = pBuffer->pNextBuffer();
+          pPipeOut->vNextBuffer(nullptr);
+          vPipeOut(pPipeOut);
+        }          
         break;
       }
         
