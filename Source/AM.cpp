@@ -400,9 +400,9 @@ void AM::vLogFyi(Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add a interface log entry                                                  */
+/* add a session log entry                                                    */
 /*----------------------------------------------------------------------------*/
-void AM::vLogApi(Session* pSsn, eAA eApiAct, Stz* szFormat, ...)
+void AM::vLogSsn(Session* pSsn, eAA eApiAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -416,7 +416,7 @@ void AM::vLogApi(Session* pSsn, eAA eApiAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 i_Entry = gpLog->iEntryApi(pSsn->eClass(),pSsn->m_iUniqueId,eApiAct,
+  i8 i_Entry = gpLog->iEntrySsn(pSsn->eClass(),pSsn->m_iUniqueId,eApiAct,
                                 pSsn->m_i_LogPrev,szFormat,xVaArgs);
   
   va_end(xVaArgs);

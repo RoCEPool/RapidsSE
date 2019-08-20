@@ -57,7 +57,7 @@ namespace Logging
   //private:
     i8 iEntryFyi(eCN eClass, Stz* szFormat, va_list xArgs);
   
-    i8 iEntryApi(eCN eClass, i8 iApiId, eAA eApiAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
+    i8 iEntrySsn(eCN eClass, i8 iApiId, eAA eApiAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
     i8 iEntryJob(eCN eClass, i8 iJobId, eJA eJobAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
     i8 iEntryLck(eCN eClass, i8 iLckId, eLA eLckAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
     i8 iEntryLog(eCN eClass, i8 iLogId, eGA eLogAct, i8 i_Prev, Stz* szFormat, va_list xArgs);

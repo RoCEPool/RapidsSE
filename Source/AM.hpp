@@ -170,7 +170,7 @@ namespace StorageEngine
 
     static void vLogFyi(Stz* szFormat, ...);
   
-    static void vLogApi(Session*   pSsn, eAA eApiAct, Stz* szFormat, ...);
+    static void vLogSsn(Session*   pSsn, eAA eApiAct, Stz* szFormat, ...);
     static void vLogJob(Job*       pJob, eJA eJobAct, Stz* szFormat, ...);
     static void vLogLck(Lock*      pLck, eLA eLckAct, Stz* szFormat, ...);
     static void vLogLog(Log*       pLog, eGA eLogAct, Stz* szFormat, ...);

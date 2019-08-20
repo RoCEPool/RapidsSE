@@ -350,7 +350,7 @@ i8 Log::iEntryFyi(eCN eClassNo,
 /*----------------------------------------------------------------------------*/
 /* add a api log entry                                                        */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryApi(eCN eClassNo, i8 iSsnId, eAA eApiAct, i8 i_Prev,
+i8 Log::iEntrySsn(eCN eClassNo, i8 iSsnId, eAA eApiAct, i8 i_Prev,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);

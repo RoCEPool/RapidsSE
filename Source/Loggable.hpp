@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Logging
+namespace Correctness
 {
   class _Loggable
   {
