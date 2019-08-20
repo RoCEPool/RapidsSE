@@ -509,31 +509,6 @@ void AM::vLogLog(Log* pLog, eGA eLogAct, Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add a object log entry                                                     */
-/*----------------------------------------------------------------------------*/
-void AM::vLogObj(Object* pObject, eCA eObjAct, Stz* szFormat, ...)
-{
-#ifdef WITH_SHARED_LOG
-  
-  if (! AM::bLogging())
-    return;
-  
-  if (! (AM::pMarkAction()->bEnum(eObjAct) ||
-         AM::pMarkAction()->bAll()) )
-    return;
-  
-  va_list xVaArgs;
-  
-  va_start(xVaArgs,szFormat);
-  
-  i8 i_Entry = gpLog->iEntryObj(pObject,eObjAct,C_UNKNOWN,szFormat,xVaArgs);
-  IGNORE_RETURN(i_Entry);
-  
-  va_end(xVaArgs);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
 /* add a operator log entry                                                   */
 /*----------------------------------------------------------------------------*/
 void AM::vLogOpr(Op* pOpr, eOA eOprAct, Stz* szFormat, ...)
