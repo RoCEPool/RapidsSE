@@ -12,8 +12,7 @@ namespace Locking
   static const i8 C_HAVE_READ_LOCK  = 1;
   static const i8 C_HAVE_WRITE_LOCK = 2;
   
-  class Lock : public Object,
-               public _Loggable
+  class Lock : public _Loggable
   {
   private:
     u8     m_uLockWord;        // lock word

@@ -38,7 +38,7 @@ void Op::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Op::Op(eCN eClassNo, Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
-: Object(eClassNo), _Loggable(AM::iNextOpId())
+: _Loggable(eClassNo,AM::iNextOpId())
 {
   _precondition_(_MAGIC_,eClassNo);
   

@@ -5,8 +5,7 @@
 
 namespace Resources
 {
-  class Resource : public Object,
-                   public _Loggable
+  class Resource : public _Loggable
   {
   protected:
     eRK   m_eKind;  // kind of resource

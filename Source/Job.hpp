@@ -5,8 +5,7 @@
 
 namespace Jobs
 {
-  class Job : public Object,
-              public _Loggable,
+  class Job : public _Loggable,
               public JobDicPath,
               public JobObjectName,
               public JobResult

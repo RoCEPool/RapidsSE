@@ -5,8 +5,7 @@
 
 namespace Threads
 {
-  class Thread : public Object,
-                 public _Loggable,
+  class Thread : public _Loggable,
                  public ListNode_t<Thread>
   {
   private:

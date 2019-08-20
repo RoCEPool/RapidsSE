@@ -49,7 +49,7 @@ void Tx::operator delete(void* pTxAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Tx::Tx(bool bAddToSet)
-: Object(CN_TX), _Loggable(AM::iNextTxId())
+: _Loggable(CN_TX,AM::iNextTxId())
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
 
@@ -73,7 +73,7 @@ Tx::Tx(bool bAddToSet)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Tx::Tx(i8 iDistTxId)
-: Object(CN_TX), _Loggable(AM::iNextTxId())
+: _Loggable(CN_TX,AM::iNextTxId())
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
   

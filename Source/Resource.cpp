@@ -23,7 +23,7 @@ Resource* Resources::_pResource(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Resource::Resource(eCN eClassNo, eRK eKind)
-: Object(eClassNo), _Loggable(AM::iNextResourceId())
+: _Loggable(eClassNo,AM::iNextResourceId())
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   

@@ -7,7 +7,8 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-_Loggable::_Loggable(i8 iUniqueId)
+_Loggable::_Loggable(eCN eClassNo, i8 iUniqueId)
+: Object(eClassNo)
 {
   m_iUniqueId = iUniqueId;
   m_i_LogPrev = C_UNKNOWN;

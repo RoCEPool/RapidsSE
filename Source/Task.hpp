@@ -15,8 +15,7 @@ namespace Tasks
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  class Task : public Object,
-               public _Loggable,
+  class Task : public _Loggable,
                public ListNode_t<Task>
   {
   friend class Steps::Step;

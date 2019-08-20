@@ -5,8 +5,7 @@
 
 namespace Logging
 {
-  class ShmLog : public Object,
-                 public _Loggable
+  class ShmLog : public _Loggable
   {
   protected:
     Lock m_okLock;

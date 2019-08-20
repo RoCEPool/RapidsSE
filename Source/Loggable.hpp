@@ -5,14 +5,14 @@
 
 namespace Correctness
 {
-  class _Loggable
+  class _Loggable : public Object
   {
   public:
     i8 m_iUniqueId; // id
     i8 m_i_LogPrev; // previous log entry
   
   public:
-    _Loggable(i8 iUniqueId);
+    _Loggable(eCN eClassNo, i8 iUniqueId);
   };
 }
 

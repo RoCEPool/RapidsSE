@@ -5,8 +5,7 @@
 
 namespace Operators
 {
-  class Op : public Object,
-             public _Loggable
+  class Op : public _Loggable
   {
   friend class Digest;
   

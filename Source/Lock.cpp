@@ -44,7 +44,7 @@ void Lock::operator delete(void*)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Lock::Lock(void)
-: Object(CN_LOCK), _Loggable(AM::iNextLockId())
+: _Loggable(CN_LOCK,AM::iNextLockId())
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
@@ -66,7 +66,7 @@ Lock::Lock(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Lock::Lock(eLK eLockKind)
-: Object(CN_LOCK), _Loggable(AM::iNextLockId())
+:_Loggable(CN_LOCK,AM::iNextLockId())
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   

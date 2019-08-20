@@ -48,7 +48,7 @@ void PoolBuffer::operator delete(void* pBufferAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 PoolBuffer::PoolBuffer(eCN eClassNo)
-: Object(eClassNo), _Loggable(0)
+: _Loggable(eClassNo,0)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
