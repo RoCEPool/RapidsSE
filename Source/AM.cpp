@@ -527,6 +527,7 @@ void AM::vLogObj(Object* pObject, eCA eObjAct, Stz* szFormat, ...)
   va_start(xVaArgs,szFormat);
   
   i8 i_Entry = gpLog->iEntryObj(pObject,eObjAct,C_UNKNOWN,szFormat,xVaArgs);
+  IGNORE_RETURN(i_Entry);
   
   va_end(xVaArgs);
 #endif
@@ -708,16 +709,12 @@ void AM::vLogThd(Thread* pThread, eHA eThdAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 iThdId    = pThread ? pThread->m_iUniqueId : C_UNKNOWN;
-  eCN eClassNo = pThread ? pThread->eClass()    : CN_NONE;
-  i8 i_Prev    = pThread ? pThread->m_iUniqueId : C_UNKNOWN;
-  
-  i8 i_Entry = gpLog->iEntryThd(eClassNo,iThdId,eThdAct,i_Prev,szFormat,xVaArgs);
+  i8 i_Entry = gpLog->iEntryThd(pThread->eClass(),pThread->m_iUniqueId,eThdAct,
+                                pThread->m_i_LogPrev,szFormat,xVaArgs);
 
   va_end(xVaArgs);
   
-  if (pThread)
-    pThread->m_i_LogPrev = i_Entry;
+  pThread->m_i_LogPrev = i_Entry;
 #endif
 }
 
