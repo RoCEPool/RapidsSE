@@ -1210,7 +1210,7 @@ void Scheduler::vThread_ExecuteDedicated(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_PauseGeneral(void)
 {
-  AM::vLogThd(nullptr,HA_THREAD_PAUSE_GENERAL,
+  AM::vLogSys(nullptr,YA_SYS_PAUSE_GENERAL,
               "Pause till all general threads are all idle"_Stz);
   
   Queues* pQueues = AM::pQueues();

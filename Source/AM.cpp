@@ -667,7 +667,7 @@ void AM::vLogSvc(Job* pJob, eVA eSvcAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a system log entry                                                     */
 /*----------------------------------------------------------------------------*/
-void AM::vLogSys(AttachMap* pSys, eYA eSysAct, Stz* szFormat, ...)
+void AM::vLogSys(AttachMap* , eYA eSysAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -681,15 +681,12 @@ void AM::vLogSys(AttachMap* pSys, eYA eSysAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 iSysId  = 0;
-  i8 i_Prev  = pSys ? pSys->m_iUniqueId : C_UNKNOWN;
-  
-  i8 i_Entry = gpLog->iEntrySys(CN_ATTACHMAP,pSys->m_iUniqueId,eSysAct,
-                                pSys->m_i_LogPrev,szFormat,xVaArgs);
+  i8 i_Entry = gpLog->iEntrySys(CN_ATTACHMAP,gpAttachMap->m_iUniqueId,eSysAct,
+                                gpAttachMap->m_i_LogPrev,szFormat,xVaArgs);
   
   va_end(xVaArgs);
   
-  pSys->m_i_LogPrev = i_Entry;
+  gpAttachMap->m_i_LogPrev = i_Entry;
 
 #endif
 }

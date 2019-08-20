@@ -16,6 +16,8 @@ enum eYA // system actions
   /*    */ YA_SYS_UPTIME,
   /*    */ YA_SYS_WARN,
   /*    */ YA_SYS_WELCOME,
+  
+  /*    */ YA_SYS_PAUSE_GENERAL,
 
   /*    */ YA_ENUMS,
 };
@@ -33,6 +35,8 @@ static Stz* aYA[]
   /*  0 */ "YA_SYS_UPTIME"_Stz,
   /*  0 */ "YA_SYS_WARN"_Stz,
   /*  0 */ "YA_SYS_WELCOME"_Stz,
+
+  /*  0 */ "YA_SYS_PAUSE_GENERAL"_Stz,
 
   /*    */ "ENUMS"_Stz,
 };
