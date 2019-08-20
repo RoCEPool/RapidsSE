@@ -73,6 +73,9 @@ JoinOp::JoinOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
 JoinOp::~JoinOp(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_JOINOP);
+  
+  if (m_pRightStreamDef)
+    delete m_pRightStreamDef;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -323,7 +326,8 @@ eOR JoinOp::eJoinLoop(void)
       // no previous first right ?
       if ( ! aFirstRightMatch ) {
 #ifdef TRACE_JOIN
-        vTrace("Joining: L(%p) ⋈ R(NULL)\n"_Stz,m_aLeftEntry);
+        if (AM::bVerbose())
+          vTrace("Joining: L(%p) ⋈ R(NULL)\n"_Stz,m_aLeftEntry);
 #endif
         vAddRowRefs(m_aLeftEntry, nullptr);
       }

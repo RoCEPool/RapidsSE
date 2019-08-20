@@ -75,6 +75,9 @@ SortOp::SortOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
 SortOp::~SortOp(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_SORTOP);
+  
+  if (m_pRightStreamDef)
+    delete m_pRightStreamDef;
 }
 
 /*----------------------------------------------------------------------------*/

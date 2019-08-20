@@ -74,6 +74,9 @@ OutputOp::OutputOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
 OutputOp::~OutputOp(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
+  
+  if (m_pRightStreamDef)
+    delete m_pRightStreamDef;
 }
 
 /*----------------------------------------------------------------------------*/
