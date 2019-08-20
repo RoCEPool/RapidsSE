@@ -25,7 +25,6 @@ enum eTA // task actions
   /*    */ TA_TASK_GRAB,
   /*    */ TA_TASK_INF,
   /*    */ TA_TASK_PAUSE,
-  /*    */ TA_TASK_POP,
   /*    */ TA_TASK_PULSE,
   /*    */ TA_TASK_READY,
   /*    */ TA_TASK_REMOVE,
@@ -38,6 +37,9 @@ enum eTA // task actions
   /*    */ TA_TASK_WAIT,
   /*    */ TA_TASK_WAKEUP,
   /*    */ TA_TASK_YIELD,
+  
+  /*    */ TA_TASK_ASSIGN_IDLE,
+  /*    */ TA_TASK_SPAWN_DEDICATED,
 
   /*    */ TA_ENUMS,
   
@@ -65,7 +67,6 @@ static Stz* aTA[]
   /*    */ "TA_TASK_GRAB"_Stz,
   /*    */ "TA_TASK_INF"_Stz,
   /*    */ "TA_TASK_PAUSE"_Stz,
-  /*    */ "TA_TASK_POP"_Stz,
   /*    */ "TA_TASK_PULSE"_Stz,
   /*    */ "TA_TASK_READY"_Stz,
   /*    */ "TA_TASK_REQUIRES"_Stz,
@@ -78,6 +79,10 @@ static Stz* aTA[]
   /*    */ "TA_TASK_WAIT"_Stz,
   /*    */ "TA_TASK_WAKEUP"_Stz,
   /*    */ "TA_TASK_YIELD"_Stz,
+  
+  /*  0 */ "TA_TASK_ASSIGN_IDLE"_Stz,
+  /*  0 */ "TA_TASK_SPAWN_DEDICATED"_Stz,
+
   
   /*    */ "ENUMS"_Stz,
 };

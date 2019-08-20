@@ -728,7 +728,7 @@ void AM::vLogTsk(Task* pTask, eTA eTskAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
-  return;
+    return;
   
   if (! (AM::pMarkAction()->bEnum(eTskAct) ||
          AM::pMarkAction()->bAll()) )
@@ -737,17 +737,13 @@ void AM::vLogTsk(Task* pTask, eTA eTskAct, Stz* szFormat, ...)
   va_list xVaArgs;
   
   va_start(xVaArgs,szFormat);
-  
-  i8 iTskId    = pTask ? pTask->iTaskId() : C_UNKNOWN;
-  eCN eClassNo = pTask ? pTask->eClass()  : CN_NONE;
-  i8 i_Prev    = pTask ? pTask->m_iUniqueId : C_UNKNOWN;
-  
-  i8 i_Entry = gpLog->iEntryTsk(eClassNo,iTskId,eTskAct,i_Prev,szFormat,xVaArgs);
+    
+  i8 i_Entry = gpLog->iEntryTsk(pTask->eClass(),pTask->iTaskId(),eTskAct,
+                                pTask->m_i_LogPrev,szFormat,xVaArgs);
   
   va_end(xVaArgs);
   
-  if (pTask)
-    pTask->m_i_LogPrev = i_Entry;
+  pTask->m_i_LogPrev = i_Entry;
 #endif
 }
 

@@ -40,7 +40,7 @@ namespace Scheduling
     static void vTaskLoopTransition(Thread* pThread);
     static void vTaskRequiresAcks(Task* pTask, i8 nAcksRequired);
     static void vTriggerBidingTask(Task* pTask);
-    static void vWakeSleepingTasks(void);
+    static void vWakeSleepingTasks(Task* pTask);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // thread interface
@@ -72,7 +72,7 @@ namespace Scheduling
     static void vTask_Exit(Task* pTask);
     static void vTask_Grab(Task* pTask);
     static void vTask_Pause(Task* pTask);
-    static Task* pTask_Pop(void);
+    static Task* pTask_Pop(Thread* pThread);
     static void vTask_Pulse(Task* pTask);
     static void vTask_Ready(Task* pTask);
     static void vTask_Remove(Task* pTask);
@@ -83,7 +83,7 @@ namespace Scheduling
     static void vTask_Thread(Task* pTask, Thread* pThread);
     static void vTask_Trigger(Task* pTask);
     static void vTask_Wait(Task* pTask);
-    static void vTask_Wakeup(void);
+    static void vTask_Wakeup(Task* pTask);
     static void vTask_Yield(Task* pTask);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

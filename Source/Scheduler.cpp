@@ -373,13 +373,13 @@ void Scheduler::vTriggerBidingTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* check to see if any tasks in the sleeping queue can be woken               */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vWakeSleepingTasks(void)
+void Scheduler::vWakeSleepingTasks(Task* pTask)
 {
   //
   // called from Step::vQueuesCheckSleeping()
   //
   
-  vTask_Wakeup();
+  vTask_Wakeup(pTask);
 }
 
 
@@ -728,9 +728,9 @@ void Scheduler::vTask_Pause(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* pop a task from the ready/readyLP queue                                    */
 /*----------------------------------------------------------------------------*/
-Task* Scheduler::pTask_Pop(void)
+Task* Scheduler::pTask_Pop(Thread* pThread)
 {
-  AM::vLogTsk(nullptr,TA_TASK_POP,
+  AM::vLogThd(pThread,HA_THREAD_POP,
               "Pop ready task from ReadyQueue/ReadyQueueLP"_Stz);
   
   Queues* pQueues = AM::pQueues();
@@ -987,9 +987,9 @@ void Scheduler::vTask_Wait(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* wakeup any sleeping tasks whose wakeup time has arrived                    */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTask_Wakeup(void)
+void Scheduler::vTask_Wakeup(Task* pTask)
 {
-  AM::vLogTsk(nullptr,TA_TASK_WAKEUP,
+  AM::vLogTsk(pTask,TA_TASK_WAKEUP,
               "Wakeup any sleeping tasks whose wakeup time has arrived"_Stz);
   
   Queues* pQueues = AM::pQueues();
@@ -1105,7 +1105,7 @@ void Scheduler::vThread_AppendIdle(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 bool Scheduler::bThread_AssignIdle(Task* pTask)
 {
-  AM::vLogThd(nullptr,HA_THREAD_ASSIGN_IDLE,
+  AM::vLogTsk(pTask,TA_TASK_ASSIGN_IDLE,
               "Attempt to pop an idle general thread and assign task to it"_Stz);
   
   RASSERT(TS_ABLE == pTask->eState());
@@ -1273,7 +1273,7 @@ void Scheduler::vThread_RemoveGeneral(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_SpawnDedicated(Task* pTask)
 {
-  AM::vLogThd(nullptr,HA_THREAD_SPAWN_DEDICATED,
+  AM::vLogTsk(pTask,TA_TASK_SPAWN_DEDICATED,
               "Spawn dedicated thread for task"_Stz);
   
   RASSERT(TS_ABLE == pTask->eState());
@@ -1313,7 +1313,7 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
     
     // pop a ready task
     // RAY TO LOOK AT ????????????
-    Task* pTask = pTask_Pop();
+    Task* pTask = pTask_Pop(pThread);
     if (pTask) {
       pThread->m_pTask = pTask;
       pThread->m_nAssignedTasks++;
