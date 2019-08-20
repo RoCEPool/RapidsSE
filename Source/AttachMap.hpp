@@ -5,8 +5,7 @@
 
 namespace StorageEngine
 {
-  class AttachMap : public PoolBuffer,
-                    public _Loggable
+  class AttachMap : public PoolBuffer
   {
   friend class AM;
   friend class Engine;
