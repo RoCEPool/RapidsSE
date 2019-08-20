@@ -188,7 +188,8 @@ eOR GetKeyOp::eOpLoop(void)
           pBuffer = pBuffer->pNextBuffer();
           pPipeOut->vNextBuffer(nullptr);
           vPipeOut(pPipeOut);
-        }          
+        }
+        delete pRefBuffer;
         break;
       }
         
@@ -196,8 +197,10 @@ eOR GetKeyOp::eOpLoop(void)
         StreamDef* pStreamDef = _pStreamDef(pOperand) ;
         if ( ! m_pStreamDef )
           m_pStreamDef = new StreamDef(pStreamDef);
-        else
+        else {
+          RASSERT ( ! m_pRightStreamDef );
           m_pRightStreamDef = new StreamDef(pStreamDef);
+        }
         
         // figure out the key idx
         i8 nColumns = m_pStreamDef->m_pColumnVec->nItems();
