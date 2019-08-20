@@ -370,7 +370,8 @@ void AM::vWriteTrace(eYA eSysAct, Stz* aFormat, va_list xArgs)
   
   StrLib::vStrip(caFormatted,'\n');
   
-  AM::vLogSys(nullptr,eSysAct,"%s"_Stz,caFormatted);
+  if (gpAttachMap)
+    AM::vLogSys(gpAttachMap,eSysAct,"%s"_Stz,caFormatted);
   
   if (bUseLock)
     oLock.vDropWrite();
@@ -498,13 +499,12 @@ void AM::vLogLog(Log* pLog, eGA eLogAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 iLogId = 0;
-  i8 i_Entry = gpLog->iEntryLog(pLog->eClass(),iLogId,eLogAct,
-                                C_UNKNOWN,szFormat,xVaArgs);
+  i8 i_Entry = gpLog->iEntryLog(pLog->eClass(),pLog->m_iUniqueId,eLogAct,
+                                pLog->m_i_LogPrev,szFormat,xVaArgs);
   
   va_end(xVaArgs);
   
-  //pLog->m_i_LogPrev = i_Entry;
+  pLog->m_i_LogPrev = i_Entry;
 #endif
 }
 
@@ -656,7 +656,7 @@ void AM::vLogSvc(Job* pJob, eVA eSvcAct, Stz* szFormat, ...)
   va_start(xVaArgs,szFormat);
   
   i8 i_Entry = gpLog->iEntrySvc(pJob->eClass(),pJob->m_iUniqueId,eSvcAct,
-                                pJob->m_iUniqueId,szFormat,xVaArgs);
+                                pJob->m_i_LogPrev,szFormat,xVaArgs);
   
   va_end(xVaArgs);
   
@@ -684,12 +684,12 @@ void AM::vLogSys(AttachMap* pSys, eYA eSysAct, Stz* szFormat, ...)
   i8 iSysId  = 0;
   i8 i_Prev  = pSys ? pSys->m_iUniqueId : C_UNKNOWN;
   
-  i8 i_Entry = gpLog->iEntrySys(CN_ATTACHMAP,iSysId,eSysAct,i_Prev,szFormat,xVaArgs);
+  i8 i_Entry = gpLog->iEntrySys(CN_ATTACHMAP,pSys->m_iUniqueId,eSysAct,
+                                pSys->m_i_LogPrev,szFormat,xVaArgs);
   
   va_end(xVaArgs);
   
-  if (pSys)
-    pSys->m_i_LogPrev = i_Entry;
+  pSys->m_i_LogPrev = i_Entry;
 
 #endif
 }
