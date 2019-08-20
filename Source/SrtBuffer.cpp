@@ -212,11 +212,49 @@ SrtBuffer* SrtBuffer::pPrevBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* show contents of buffer                                                    */
 /*----------------------------------------------------------------------------*/
+void SrtBuffer::vShow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
+  
+  i8 nSrtSets = nItems();
+  //vTrace ("Rows: %lld\n"_Stz, nSrtSets);
+  
+  vTrace("SrtBuffer: %p (buffer %lld): rows: %lld\n"_Stz,
+         this,m_iBufferNo,nSrtSets);
+  
+  vTrace("  prevBuffer %p nextBuffer %p\n"_Stz,
+         m_pPrevBuffer,m_pNextBuffer);
+  
+  vTrace("  partition: %lld \n"_Stz, m_iPartitionNo);
+    
+  SrtSet* aSrtSet = aFirstSrtSet();
+    
+  i8 nRows = nItems();
+  i8 iElement = 0;
+  
+  while (aSrtSet) {
+      
+    RASSERT(aSrtSet == this->aSrtSet(iElement));
+    vTrace("SrtSet %lld: %p\n"_Stz, iElement, aSrtSet);
+    aSrtSet = aNextSrtSet(aSrtSet);
+    iElement++;
+    
+  }
+  
+  vTrace("--------------------------------------------------"
+         "--------------------------------------------------\n"_Stz);
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* show contents of buffer                                                    */
+/*----------------------------------------------------------------------------*/
 void SrtBuffer::vShow(ColumnVec* pLeftColVec, ColumnVec* pRightColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
   
   i8 nSrtSets = nItems();
+  //vTrace ("Rows: %lld\n"_Stz, nSrtSets);
   
   vTrace("SrtBuffer: %p (buffer %lld): rows: %lld\n"_Stz,
          this,m_iBufferNo,nSrtSets);
@@ -296,15 +334,24 @@ void SrtBuffer::vShow(ColumnVec* pLeftColVec, ColumnVec* pRightColVec)
       RASSERT(aSrtSet == this->aSrtSet(iElement));
       
       // get the left dataRow
-      Crw* aLeftCrw = (Crw*)(aSrtSet->iRowRef(1));
+      Crw* aLeftCrw = (Crw*)(aSrtSet->iRowRef(0));
       
       // inflate the left row
       if (aLeftCrw) {
         RowInflator::vInflateRow(hRowLeft, aLeftCrw);
         hvRecLeft->vAppend(hRowLeft);
       }
-      
-      vTrace("%lld: %p; Key:%lld rowRef:%p;iElement,  row:%s\n"_Stz, aSrtSet, aSrtSet->iKey(), aSrtSet->iRowRef(0),
+      else {
+        
+        // get no of columns
+        i8 nColumns = pLeftColVec->nItems();
+        
+        // for each column
+        for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+          hRowLeft->m_waColVal[i_Col].m_iI8 = C_DATUM_NULL;
+        }
+      }
+      vTrace("%lld: %p; Key:%lld RowRef:%p; row:%s\n"_Stz, iElement, aSrtSet, aSrtSet->iKey(), aSrtSet->iRowRef(0),
              hvRecLeft->szRecStr());
       
       aSrtSet = aNextSrtSet(aSrtSet);
@@ -317,6 +364,7 @@ void SrtBuffer::vShow(ColumnVec* pLeftColVec, ColumnVec* pRightColVec)
   
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -351,17 +399,34 @@ void SrtBuffer::vSwap(i8 iSrtSet1, SrtBuffer* pSrtBuffer2, i8 iSrtSet2)
   SrtSet* aSrtSet1 = aSrtSet(iSrtSet1);
   SrtSet* aSrtSet2 = pSrtBuffer2->aSrtSet(iSrtSet2);
   
-  i8 iKey = aSrtSet1->m_xKey;
-  i8 iaRowRef0 = aSrtSet1->m_iaRowRef[0];
-  i8 iaRowRef1 = aSrtSet1->m_iaRowRef[1];
-  
-  aSrtSet1->m_xKey = aSrtSet2->m_xKey;
-  aSrtSet1->m_iaRowRef[0] = aSrtSet2->m_iaRowRef[0];
-  aSrtSet1->m_iaRowRef[1] = aSrtSet2->m_iaRowRef[1];
-  
-  aSrtSet2->m_xKey = iKey;
-  aSrtSet2->m_iaRowRef[0] = iaRowRef0;
-  aSrtSet2->m_iaRowRef[1] = iaRowRef1;
+  if ( aSrtSet1->m_nRowRefs == 1) {
+    RASSERT(aSrtSet2->m_nRowRefs == 1);
+    
+    i8 iKey = aSrtSet1->m_xKey;
+    i8 iaRowRef0 = aSrtSet1->m_iaRowRef[0];
+    
+    aSrtSet1->m_xKey = aSrtSet2->m_xKey;
+    aSrtSet1->m_iaRowRef[0] = aSrtSet2->m_iaRowRef[0];
+    
+    aSrtSet2->m_xKey = iKey;
+    aSrtSet2->m_iaRowRef[0] = iaRowRef0;
+  }
+  else {
+    RASSERT(aSrtSet1->m_nRowRefs == 2);
+    RASSERT(aSrtSet2->m_nRowRefs == 2);
+    
+    i8 iKey = aSrtSet1->m_xKey;
+    i8 iaRowRef0 = aSrtSet1->m_iaRowRef[0];
+    i8 iaRowRef1 = aSrtSet1->m_iaRowRef[1];
+    
+    aSrtSet1->m_xKey = aSrtSet2->m_xKey;
+    aSrtSet1->m_iaRowRef[0] = aSrtSet2->m_iaRowRef[0];
+    aSrtSet1->m_iaRowRef[1] = aSrtSet2->m_iaRowRef[1];
+    
+    aSrtSet2->m_xKey = iKey;
+    aSrtSet2->m_iaRowRef[0] = iaRowRef0;
+    aSrtSet2->m_iaRowRef[1] = iaRowRef1;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
