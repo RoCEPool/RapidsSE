@@ -637,6 +637,31 @@ LogEntry* Log::pNewEntry(eCN eClassNo, Stz* szFormat, va_list xVaArgs)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get a new mark in Log                                                      */
+/*----------------------------------------------------------------------------*/
+LogEntry* Log::pNewEntry(_Loggable* pLoggable, Stz* szFormat, va_list xVaArgs)
+{
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
+  
+  char caText[1024];
+  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
+  
+  // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
+  vGrabLock();
+  
+  LogEntry* pLogEntry = pNewEntry_NL();
+  
+  vDropLock();
+  // ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲
+  
+  pLogEntry->vInit(pLoggable,(Stz*)caText);
+  
+  //StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
+  
+  return pLogEntry;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get a new mark in Log (non-locking)                                        */
 /*----------------------------------------------------------------------------*/
 LogEntry* Log::pNewEntry_NL(void)
