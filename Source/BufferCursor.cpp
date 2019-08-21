@@ -149,6 +149,14 @@ bool BufferCursor::bMoveRight(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get sort set                                                               */
+/*----------------------------------------------------------------------------*/
+SrtSet* BufferCursor::aSrtSet(void)
+{
+  return m_pSrtBuffer->aSrtSet(m_iElement);
+}
+
+/*----------------------------------------------------------------------------*/
 /* swap elements of the cursor                                                */
 /*----------------------------------------------------------------------------*/
 void BufferCursor::vSwap(BufferCursor* pBufferCursor)

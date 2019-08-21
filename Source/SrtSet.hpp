@@ -21,6 +21,7 @@ namespace Rows
   
     static i8 nBytesReq(i8 nRowRefs);
     
+    void vCopy(SrtSet* aSrtSet);
     i8   iKey(void);
     void vKey(i8 xKey);
     i8   nRowRefs(void);

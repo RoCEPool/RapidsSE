@@ -75,6 +75,21 @@ i8 SrtSet::nBytesReq(i8 nRowRefs)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* copy from srtSet to this srtSet                                            */
+/*----------------------------------------------------------------------------*/
+void SrtSet::vCopy(SrtSet* pSrtSet)
+{
+  RASSERT(m_nRowRefs == pSrtSet->m_nRowRefs);
+  
+  m_xKey     = pSrtSet->iKey();
+  m_nRowRefs = pSrtSet->m_nRowRefs;
+  
+  for (i8 i_RowRef = 0; i_RowRef < m_nRowRefs; i_RowRef++)
+    m_iaRowRef[i_RowRef] = pSrtSet->m_iaRowRef[i_RowRef];
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* get key from this srt set                                                  */
 /*----------------------------------------------------------------------------*/
 i8 SrtSet::iKey(void)

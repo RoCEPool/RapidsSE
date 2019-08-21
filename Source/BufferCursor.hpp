@@ -29,6 +29,8 @@ namespace Rows
     bool bMoveLeft(void);
     bool bMoveRight(void);
     
+    SrtSet* aSrtSet(void);
+    
     void vSwap(BufferCursor* pBufferCursor);
     
     // is before
@@ -71,11 +73,33 @@ namespace Rows
         return false;
     }
     
+    // less than
+    bool bIsLessThan(BufferCursor* pBufferCursor)
+    {
+      SrtSet* aThisSrtSet = m_pSrtBuffer->aSrtSet(m_iElement);
+      SrtSet* aOtherSrtSet = pBufferCursor->aSrtSet();
+      if (aThisSrtSet->iKey() < aOtherSrtSet->iKey())
+        return true;
+      else
+        return false;
+    }
+    
     // greater than
     bool bIsGreaterThan(i8 iValue)
     {
       SrtSet* aSrtSet = m_pSrtBuffer->aSrtSet(m_iElement);
       if (aSrtSet->iKey() > iValue)
+        return true;
+      else
+        return false;
+    }
+    
+    // greater than
+    bool bIsGreaterThan(BufferCursor* pBufferCursor)
+    {
+      SrtSet* aThisSrtSet = m_pSrtBuffer->aSrtSet(m_iElement);
+      SrtSet* aOtherSrtSet = pBufferCursor->aSrtSet();
+      if (aThisSrtSet->iKey() > aOtherSrtSet->iKey())
         return true;
       else
         return false;
