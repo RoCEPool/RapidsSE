@@ -597,10 +597,8 @@ void AM::vLogRes(Resource* pRes, eRA eResAct, Stz* szFormat, ...)
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
     return;
-  
-  eRK eKind  = pRes ? pRes->eKind()  : RK_NONE;
-  
-  if (! (AM::pMarkResource()->bEnum(eKind) ||
+    
+  if (! (AM::pMarkResource()->bEnum(pRes->eClass()) ||
          AM::pMarkResource()->bAll()) )
     return;
   
