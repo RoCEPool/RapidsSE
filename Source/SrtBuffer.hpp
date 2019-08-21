@@ -24,12 +24,14 @@ namespace Rows
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    SrtSet* aAllotSrtSet(i8 nRowRefs);
-  
-    i8         nCount(void);
+    SrtSet*    aAllotSrtSet(i8 nRowRefs);
+    SrtBuffer* aCopySrtSet(SrtSet* aSrtSet);
+    
+    i8         nBufferCount(void);
     SrtSet*    aFirstSrtSet(void);
     void       vIsLast(bool bIsLast);
     bool       bIsLast(void);
+    i8         nItemCount(void);
     void       vLinkBuffer(SrtBuffer* pSrtBuffer);
     SrtBuffer* pNextBuffer(void);
     SrtSet*    aNextSrtSet(SrtSet* aPriorSrtSet);

@@ -108,9 +108,46 @@ SrtSet* SrtBuffer::aAllotSrtSet(i8 nRowRefs)
 }
 
 /*----------------------------------------------------------------------------*/
+/* allot a srt set in this buffer (may return nulltpr)                        */
+/*----------------------------------------------------------------------------*/
+SrtBuffer* SrtBuffer::aCopySrtSet(SrtSet* aSrtSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
+  
+  i8 nRowRefs = aSrtSet->m_nRowRefs;
+  
+  // allot using bytes as we don't know the size of the item
+  SrtSet* aNewSrtSet = aAllotSrtSet(nRowRefs);
+  
+  if (! aNewSrtSet) {
+    
+    // create a new merge SrtBuffer
+    SrtBuffer* pSrtBuffer = new SrtBuffer(m_iPartitionNo);
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // link this buffer to the new buffer
+    this->vNextBuffer(pSrtBuffer);
+    pSrtBuffer->vPrevBuffer(this);
+    
+    aNewSrtSet = pSrtBuffer->aAllotSrtSet(nRowRefs);
+    
+    // copy left value to new buffer
+    aNewSrtSet->vCopy(aSrtSet);
+    
+    // return the new buffer
+    return pSrtBuffer;
+  }
+  
+  // copy left value to new buffer
+  aNewSrtSet->vCopy(aSrtSet);
+  
+  return this;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get no of items in the srtBuffer and linked buffers                        */
 /*----------------------------------------------------------------------------*/
-i8 SrtBuffer::nCount(void)
+i8 SrtBuffer::nItemCount(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
   
@@ -155,6 +192,24 @@ bool SrtBuffer::bIsLast(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
   
   return m_bIsLast;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get no of items in the srtBuffer and linked buffers                        */
+/*----------------------------------------------------------------------------*/
+i8 SrtBuffer::nBufferCount(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
+  
+  SrtBuffer* pSrtBuffer = this;
+  
+  i8 iCount = 0;
+  while (pSrtBuffer) {
+    iCount ++;
+    pSrtBuffer = pSrtBuffer->pNextBuffer();
+  }
+  
+  return iCount;
 }
 
 /*----------------------------------------------------------------------------*/
