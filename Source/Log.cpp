@@ -362,7 +362,7 @@ i8 Log::iEntrySsn(eCN eClassNo, i8 iSsnId, eAA eApiAct, i8 i_Prev,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pLogEntry->m_xApi.vSet(pLogEntry,iSsnId,eApiAct);
+  pLogEntry->m_xSsn.vSet(pLogEntry,iSsnId,eApiAct);
   
   return pLogEntry->m_i_Entry;
 }
