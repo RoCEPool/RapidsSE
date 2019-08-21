@@ -608,52 +608,6 @@ i8 Log::iEntryTxn(Tx*        pTxn, eCN eClassNo, i8 iTxnId, eXA eTxnAct, i8 i_Pr
 }
 
 
-
-/*----------------------------------------------------------------------------*/
-/* write an LogEntry                                                          */
-/*----------------------------------------------------------------------------*/
-i8 Log::iEntryJob_arg(i8 iJobId, i8 iForeign,
-                      Stz* szFormat, va_list xVaArgs)
-{
-  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
-  
-  LogEntry* pLogEntry = pNewEntry(CN_NONE,szFormat,xVaArgs);
-  
-  if (! pLogEntry)
-    return C_UNKNOWN;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  char caMark[1024];
-  
-  vsnprintf(caMark,sizeof(caMark)-1,szFormat->aChar(),xVaArgs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,caMark,C_LOG_TEXT - 1);
-  
-  //pLogEntry->m_xJob.vSet(pLogEntry,iJobId,JA_NONE);
-  
-  return pLogEntry->m_i_Entry;
-}
-
-/*----------------------------------------------------------------------------*/
-/* write an LogEntry                                                          */
-/*----------------------------------------------------------------------------*/
-i8 Log::iEntryJob(i8 iJobId, i8 iForeign, Stz* aFormat, ...)
-{
-  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
-  
-  va_list xVaArgs;
-  
-  va_start(xVaArgs,aFormat);
-  iEntryJob_arg(iJobId,iForeign,aFormat,xVaArgs);
-  va_end(xVaArgs);
-  
-  return C_UNKNOWN;
-}
-
-
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

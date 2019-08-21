@@ -71,9 +71,6 @@ namespace Logging
     i8 iEntryTsk(Task*      pTsk, eCN eClass, i8 iTskId, eTA eTskAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
     i8 iEntryTxn(Tx*        pTxn, eCN eClass, i8 iTxnId, eXA eTxnAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
 
-    i8 iEntryJob(i8 iJobId, i8 iForeign, Stz* aFormat, ...);
-    i8 iEntryJob_arg(i8 iJobId, i8 iForeign, Stz* szFormat, va_list xArgs);
-
     LogEntry* pNewEntry(eCN eClass, Stz* szFormat, va_list xVaArgs);
     LogEntry* pNewEntry_NL(void);
     void vFindRange_NL(i8& i_MinEntry, i8& i_MaxEntry);
