@@ -88,6 +88,28 @@ void LogEntry::vInit(eCN eClassNo, Stz* szText)
 }
 
 /*----------------------------------------------------------------------------*/
+/* init                                                                       */
+/*----------------------------------------------------------------------------*/
+void LogEntry::vInit(_Loggable *pLoggable, Stz* szText)
+{
+  _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
+  
+  m_i_Prev = C_UNKNOWN;
+  
+  m_iTick = Tick::iRdClock();
+  m_iNodeNo = AM::iThisNodeNo();
+  StrLib::vCopyLen(m_caNode,AM::szNodeName()->aChar(),sizeof(m_caNode) - 1);
+  
+  m_caText[0] = '\0';
+  StrLib::vCopyLen(m_caText,szText->aChar(),C_LOG_TEXT - 1);
+  
+  m_eClass  = pLoggable->eClass();
+  m_pObject = pLoggable;
+  
+  m_bLine = false;
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
