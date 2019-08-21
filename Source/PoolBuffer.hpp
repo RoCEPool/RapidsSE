@@ -5,7 +5,7 @@
 
 namespace Pool
 {
-  class PoolBuffer : public _Loggable
+  class PoolBuffer : public Focal
   {
   protected:
     bn   m_nBufferNo;        // this buffer number

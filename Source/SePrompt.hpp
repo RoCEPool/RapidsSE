@@ -7,7 +7,7 @@
 
 namespace Prompt
 {
-  class SePrompt : public _Loggable
+  class SePrompt : public Focal
   {
   private:
     Session* m_pSession;   // rapidsse session

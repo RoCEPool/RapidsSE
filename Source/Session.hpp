@@ -7,7 +7,7 @@
 
 namespace Sessions
 {
-  class Session : public _Loggable
+  class Session : public Focal
   {
   public:
     i8       m_iPid;             // process which created this session

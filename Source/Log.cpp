@@ -639,7 +639,7 @@ LogEntry* Log::pNewEntry(eCN eClassNo, Stz* szFormat, va_list xVaArgs)
 /*----------------------------------------------------------------------------*/
 /* get a new mark in Log                                                      */
 /*----------------------------------------------------------------------------*/
-LogEntry* Log::pNewEntry(_Loggable* pLoggable, Stz* szFormat, va_list xVaArgs)
+LogEntry* Log::pNewEntry(Focal* pFocal, Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
@@ -654,7 +654,7 @@ LogEntry* Log::pNewEntry(_Loggable* pLoggable, Stz* szFormat, va_list xVaArgs)
   vDropLock();
   // ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲
   
-  pLogEntry->vInit(pLoggable,(Stz*)caText);
+  pLogEntry->vInit(pFocal,(Stz*)caText);
   
   //StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
   

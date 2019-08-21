@@ -35,7 +35,7 @@ void SePrompt::operator delete(void* pSePromptAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SePrompt::SePrompt(bool bOneCommand)
-: _Loggable(CN_SEPROMPT,AM::iNextPromptId())
+: Focal(CN_SEPROMPT,AM::iNextPromptId())
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   

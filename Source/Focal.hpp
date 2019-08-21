@@ -5,7 +5,7 @@
 
 namespace Correctness
 {
-  class _Loggable : public Object
+  class Focal : public Object
   {
   public:
     i8 m_i_Focal;   // focal subscript
@@ -13,7 +13,7 @@ namespace Correctness
     i8 m_i_LogPrev; // previous log entry
   
   public:
-    _Loggable(eCN eClassNo, i8 iUniqueId);
+    Focal(eCN eClassNo, i8 iUniqueId);
   };
 }
 

@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-_Loggable::_Loggable(eCN eClassNo, i8 iUniqueId)
+Focal::Focal(eCN eClassNo, i8 iUniqueId)
 : Object(eClassNo)
 {
   m_i_Focal   = iUniqueId;
