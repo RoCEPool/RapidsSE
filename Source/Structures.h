@@ -26,6 +26,7 @@ namespace Structures
 #include "HashMap.hpp"
 #include "HashCursor.hpp"
 
+#include "LatticeNL_t.hpp"
 #include "Link_t.hpp"
 #include "ListNode_t.hpp"
 #include "List_t.hpp"

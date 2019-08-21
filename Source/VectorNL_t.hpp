@@ -8,8 +8,6 @@ namespace Structures
   template <eCN VEC_CN, class ITEM, i8 MAX_ITEMS>
   class VectorNL_t : public Object
   {
-  //friend class TokenVec;
-  
   protected:
     u8     m_nItems;           // number of items currently in the vector
     ITEM*  m_pItem[MAX_ITEMS]; // vector of items (proper objects)
