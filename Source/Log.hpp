@@ -57,19 +57,19 @@ namespace Logging
   //private:
     i8 iEntryFyi(eCN eClass, Stz* szFormat, va_list xArgs);
   
-    i8 iEntryJob(Job*       pJob, eCN eClass, i8 iJobId, eJA eJobAct, Stz* szFormat, va_list xArgs);
-    i8 iEntryLck(Lock*      pLck, eCN eClass, i8 iLckId, eLA eLckAct, Stz* szFormat, va_list xArgs);
-    i8 iEntryLog(Log*       pLog, eCN eClass, i8 iLogId, eGA eLogAct, Stz* szFormat, va_list xArgs);
-    i8 iEntryOpr(Op*        pOpr, eCN eClass, i8 iOprId, eOA eOprAct, Stz* szFormat, va_list xArgs);
-    i8 iEntryPrm(SePrompt*  pPrm, eCN eClass, i8 iPrmId, ePA ePrmAct, Stz* szFormat, va_list xArgs);
-    i8 iEntryQue(Queues*    pQue, eCN eClass, i8 iQueId, eQA eQueAct, Stz* szFormat, va_list xArgs);
-    i8 iEntryRes(Resource*  pRes, eCN eClass, i8 iResId, eRA eResAct, Stz* szFormat, va_list xArgs);
-    i8 iEntrySsn(Session*   pSsn, eCN eClass, i8 iApiId, eAA eApiAct, Stz* szFormat, va_list xArgs);
-    i8 iEntrySvc(Job*       pJob, eCN eClass, i8 iSvcId, eVA eSvcAct, Stz* szFormat, va_list xArgs);
-    i8 iEntrySys(AttachMap* pSys, eCN eClass, i8 iSysId, eYA eSysAct, Stz* szFormat, va_list xArgs);
-    i8 iEntryThd(Thread*    pThd, eCN eClass, i8 iThdId, eHA eThdAct, Stz* szFormat, va_list xArgs);
-    i8 iEntryTsk(Task*      pTsk, eCN eClass, i8 iTskId, eTA eTskAct, Stz* szFormat, va_list xArgs);
-    i8 iEntryTxn(Tx*        pTxn, eCN eClass, i8 iTxnId, eXA eTxnAct, Stz* szFormat, va_list xArgs);
+    i8 iEntryJob(Job*       pJob, i8 iJobId, eJA eJobAct, Stz* szFormat, va_list xArgs);
+    i8 iEntryLck(Lock*      pLck, i8 iLckId, eLA eLckAct, Stz* szFormat, va_list xArgs);
+    i8 iEntryLog(Log*       pLog, i8 iLogId, eGA eLogAct, Stz* szFormat, va_list xArgs);
+    i8 iEntryOpr(Op*        pOpr, i8 iOprId, eOA eOprAct, Stz* szFormat, va_list xArgs);
+    i8 iEntryPrm(SePrompt*  pPrm, i8 iPrmId, ePA ePrmAct, Stz* szFormat, va_list xArgs);
+    i8 iEntryQue(Queues*    pQue, i8 iQueId, eQA eQueAct, Stz* szFormat, va_list xArgs);
+    i8 iEntryRes(Resource*  pRes, i8 iResId, eRA eResAct, Stz* szFormat, va_list xArgs);
+    i8 iEntrySsn(Session*   pSsn, i8 iApiId, eAA eApiAct, Stz* szFormat, va_list xArgs);
+    i8 iEntrySvc(Job*       pJob, i8 iSvcId, eVA eSvcAct, Stz* szFormat, va_list xArgs);
+    i8 iEntrySys(AttachMap* pSys, i8 iSysId, eYA eSysAct, Stz* szFormat, va_list xArgs);
+    i8 iEntryThd(Thread*    pThd, i8 iThdId, eHA eThdAct, Stz* szFormat, va_list xArgs);
+    i8 iEntryTsk(Task*      pTsk, i8 iTskId, eTA eTskAct, Stz* szFormat, va_list xArgs);
+    i8 iEntryTxn(Tx*        pTxn, i8 iTxnId, eXA eTxnAct, Stz* szFormat, va_list xArgs);
 
     LogEntry* pNewEntry(eCN eClass, Stz* szFormat, va_list xVaArgs);
     LogEntry* pNewEntry(_Loggable* pLoggable, Stz* szFormat, va_list xVaArgs);
