@@ -183,7 +183,7 @@ namespace StorageEngine
     static void vLogSys(AttachMap* pSys, eYA eSysAct, Stz* szFormat, ...);
     static void vLogThd(Thread*    pThd, eHA eThdAct, Stz* szFormat, ...);
     static void vLogTsk(Task*      pTsk, eTA eTskAct, Stz* szFormat, ...);
-    static void vLogTxn(Tx*        pTx,  eXA eTxnAct, Stz* szFormat, ...);
+    static void vLogTxn(Tx*        pTxn, eXA eTxnAct, Stz* szFormat, ...);
   
     static void vNap(i8 nMilliSeconds, eCN eCallingClass);
   
