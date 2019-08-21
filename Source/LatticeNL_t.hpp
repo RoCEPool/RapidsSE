@@ -32,11 +32,11 @@ namespace Structures
 
     i8    iAdd(ITEM* pItem);
     void  vClear(void);
+    ITEM* pGet(i8 i_Item);
     bool  bIsItem(i8 i_Item);
     i8    nItems(void);
-    ITEM* pGet(i8 i_Item);
+    i8    iNext(i8 i_Item);
     void  vRemoveItem(i8 i_Item);
-    
     
   private:
   
@@ -191,6 +191,21 @@ void LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::vClear(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get a specific item                                                        */
+/*----------------------------------------------------------------------------*/
+template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
+ITEM* LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::pGet(i8 i_Item)
+{
+  _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
+  
+  ASSERT(i_Item >= 0 && i_Item < MAX_ITEMS);
+  
+  ITEM* pItem = m_pItem[i_Item];
+  
+  return pItem;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is elememt an item (or free)                                               */
 /*----------------------------------------------------------------------------*/
 template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
@@ -218,18 +233,21 @@ i8 LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::nItems(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get a specific item                                                        */
+/* get next i_item                                                            */
 /*----------------------------------------------------------------------------*/
 template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
-ITEM* LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::pGet(i8 i_Item)
+i8 LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::iNext(i8 i_Item)
 {
   _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
   
-  ASSERT(i_Item >= 0 && i_Item < MAX_ITEMS);
+  i8 i_Next = i_Item + 1;
+  if (i_Next >= MAX_ITEMS)
+    return C_UNKNOWN;
   
-  ITEM* pItem = m_pItem[i_Item];
+  if (! bIsItem(i_Next))
+    return C_UNKNOWN;
   
-  return pItem;
+  return i_Next;
 }
 
 /*----------------------------------------------------------------------------*/

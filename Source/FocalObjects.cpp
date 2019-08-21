@@ -91,7 +91,6 @@ void FocalObjects::vRemove(Focal* pFocal)
   vRemoveItem(pFocal->m_i_Focal);
   pFocal->m_i_Focal = C_UNKNOWN;
   m_okLock.vDropWrite();
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -106,6 +105,9 @@ void FocalObjects::vMri(TokenVec* pTknVec)
   
   i8 iNumTokens = pTknVec->nItems();
 
+  m_okLock.vGrabWrite();
+
+  m_okLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
