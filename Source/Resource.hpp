@@ -15,7 +15,6 @@ namespace Resources
    ~Resource(void) noexcept(false);
   
     i8  iResId(void);
-    eRK eKind(void);
   };
   
   Resource* _pResource(void* aAddr);

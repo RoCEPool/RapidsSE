@@ -26,8 +26,8 @@ bool Prompt::bPrompt_markRes(SePrompt* pPrompt)
 {
   PromptHelper::vEnumFlags(AM::pMarkResource(),
                            "Res"_Stz,
-                           aRK,
-                           RK_ENUMS,
+                           aCN,
+                           CN_ENUMS,
                            pPrompt->pTknVec());
 
 //  Stz* aTkn1 = nullptr;

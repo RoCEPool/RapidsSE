@@ -609,7 +609,7 @@ bool Pthread::bSpawnThread(void* pFun(void*), void* pArg)
   
   if (AM::bAttached()) AM::pResourceTracker()->vIncThreadOpen();
   
-  if (AM::pMarkResource()->bEnum(RK_PTHREAD) ||
+  if (AM::pMarkResource()->bEnum(CN_PTHREAD) ||
       AM::pMarkResource()->bAll())
     AM::vLogRes(this,RA_THD_SPAWNED,
                 "Thread spawned : %lld"_Stz,m_iPthreadId);
