@@ -103,19 +103,24 @@ void FocalObjects::vMri(TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FOCALOBJECTS);
   
-  i8 iNumTokens = pTknVec->nItems();
+  //i8 iNumTokens = pTknVec->nItems();
 
+  s4K sString;
+  
   m_okLock.vGrabWrite();
   
   i8 i_Item = C_UNKNOWN;
   while ( (i_Item = iNext(i_Item)) != C_UNKNOWN) {
     Focal* pFocal = pGet(i_Item);
     
-    vTrace("  [%04lld] %p %04lld %s\n"_Stz,
+    AM::vLogEntrySprint(sString,pFocal->m_i_Log);
+    
+    vTrace("  [%04lld] %p %04lld %16s %s\n"_Stz,
            i_Item,
            pFocal,
            pFocal->m_i_Log,
-           aCN[pFocal->eClass()]);
+           aCN[pFocal->eClass()],
+           sString.aChar());
   }
 
   m_okLock.vDropWrite();

@@ -171,6 +171,27 @@ void Log::vNoteString(i8 iJobId, s48K& sString)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* entry sprint                                                               */
+/*----------------------------------------------------------------------------*/
+void Log::vEntrySprint(s4K& sString, i8 i_Entry)
+{
+#ifdef WITH_SHARED_LOG
+  if (! AM::bLog())
+    return;
+
+  LogEntry* pLogEntry = gpLog->pGetEntry(i_Entry);
+  if (!pLogEntry) {
+    sString = ""_Stz;
+    return;
+  }
+  
+  i8 iTotalDeltaUsec = 0;
+  pLogEntry->vSprint(sString,0,iTotalDeltaUsec);
+  
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
 /* monitor profile                                                            */
 /*----------------------------------------------------------------------------*/
 void Log::vMonitorPortrait(s48K& sPortrait)
@@ -610,6 +631,21 @@ i8 Log::iEntryTxn(Tx* pTxn, eXA eTxnAct,
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get an entry                                                               */
+/*----------------------------------------------------------------------------*/
+LogEntry* Log::pGetEntry(i8 i_Entry)
+{
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
+
+  LogEntry* pLogEntry = &m_oaEntry[i_Entry];
+  
+  if (i_Entry == pLogEntry->m_i_Entry)
+    return pLogEntry;
+  
+  return nullptr;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get a new mark in Log                                                      */

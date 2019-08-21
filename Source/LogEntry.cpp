@@ -146,7 +146,7 @@ void LogEntry::vSprint(s4K& sString, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
       NEVER_REACH;
   }
   
-  sString.vCatSprint("}, %s\n"_Stz,m_caText);
+  sString.vCatSprint("}, %s"_Stz,m_caText);
 }
 
 /*----------------------------------------------------------------------------*/
