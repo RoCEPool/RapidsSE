@@ -103,6 +103,24 @@ SrtSet* SrtBuffer::aAllotSrtSet(i8 nRowRefs)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get no of items in the srtBuffer and linked buffers                        */
+/*----------------------------------------------------------------------------*/
+i8 SrtBuffer::nCount(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
+  
+  SrtBuffer* pSrtBuffer = this;
+  
+  i8 iCount = 0;
+  while (pSrtBuffer) {
+    iCount += pSrtBuffer->nItems();
+    pSrtBuffer = pSrtBuffer->pNextBuffer();
+  }
+  
+  return iCount;
+}
+
+/*----------------------------------------------------------------------------*/
 /* return first srt set in this buffer                                        */
 /*----------------------------------------------------------------------------*/
 SrtSet* SrtBuffer::aFirstSrtSet(void)
@@ -142,26 +160,6 @@ SrtBuffer* SrtBuffer::pNextBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
   
   return _pSrtBuffer(m_pNextBuffer);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get last buffer and count of buffers                                       */
-/*----------------------------------------------------------------------------*/
-SrtBuffer* SrtBuffer::pLastBuffer(i8& iCount)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
-  
-  SrtBuffer* pBuffer = this;
-  SrtBuffer* pLastBuffer = this;
-  
-  iCount = 0;
-  while (pBuffer) {
-    iCount++;
-    pLastBuffer = pBuffer;
-    pBuffer = pBuffer->pNextBuffer();
-  }
-  
-  return pLastBuffer;
 }
 
 /*----------------------------------------------------------------------------*/

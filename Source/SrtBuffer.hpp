@@ -26,10 +26,10 @@ namespace Rows
     
     SrtSet* aAllotSrtSet(i8 nRowRefs);
   
+    i8         nCount(void);
     SrtSet*    aFirstSrtSet(void);
     void       vIsLast(bool bIsLast);
     bool       bIsLast(void);
-    SrtBuffer* pLastBuffer(i8& iCount);
     void       vLinkBuffer(SrtBuffer* pSrtBuffer);
     SrtBuffer* pNextBuffer(void);
     SrtSet*    aNextSrtSet(SrtSet* aPriorSrtSet);

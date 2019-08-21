@@ -261,8 +261,8 @@ void MergeOp::vMergeOperands(Operand* pOperand1, Operand* pOperand2)
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get count of left buffer
-  i8 iLeftCount = pLeftBuffer->nItems();
-  i8 iRightCount = pRightBuffer->nItems();
+  i8 iLeftCount = pLeftBuffer->nCount();
+  i8 iRightCount = pRightBuffer->nCount();
   
   i8 iRowRefs = 1; // ALKA ??
   
@@ -279,7 +279,6 @@ void MergeOp::vMergeOperands(Operand* pOperand1, Operand* pOperand2)
   SrtBuffer* pMergeBuffer  = new SrtBuffer(pLeftBuffer->iPartitionNo());
   
   i8 iScan = iLeftCount < iRightCount ? iLeftCount : iRightCount;
-  i8 iElement = 0;
   i8 iLeftRemaining = iLeftCount;
   i8 iRightRemaining = iRightCount;
   SrtSet* pSrtSet = nullptr;
