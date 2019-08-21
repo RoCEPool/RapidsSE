@@ -7,11 +7,11 @@
 /*----------------------------------------------------------------------------*/
 /* set resource entry                                                         */
 /*----------------------------------------------------------------------------*/
-void _LogEntryTsk::vSet(LogEntry* pLogEntry, Task* pTask, i8 iTskId, eTA eTskAct)
+void _LogEntryTsk::vSet(LogEntry* pLogEntry, Task* pTask, eTA eTskAct)
 {
   pLogEntry->m_eKind = EK_TSK;
   
-  m_iTskId  = iTskId;
+  m_iTskId  = pTask->m_iUniqueId;
   m_eTskAct = eTskAct;
 }
 

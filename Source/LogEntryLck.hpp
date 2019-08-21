@@ -12,7 +12,7 @@ namespace Logging
     eLA  m_eLckAct; // interface action
   
   public:
-    void vSet(LogEntry* pLogEntry, Lock* pLock, i8 iLckId, eLA eLckAct);
+    void vSet(LogEntry* pLogEntry, Lock* pLock, eLA eLckAct);
   
     void vWriteCsv(File* pFile);
   };

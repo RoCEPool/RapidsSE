@@ -12,7 +12,7 @@ namespace Logging
     eAA  m_eSsnAct; // session action
   
   public:
-    void vSet(LogEntry* pLogEntry, Session* pSession, i8 iSsnId, eAA eSsnAct);
+    void vSet(LogEntry* pLogEntry, Session* pSession, eAA eSsnAct);
   
     void vWriteCsv(File* pFile);
   };

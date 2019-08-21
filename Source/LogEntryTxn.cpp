@@ -7,11 +7,11 @@
 /*----------------------------------------------------------------------------*/
 /* set transaction entry                                                      */
 /*----------------------------------------------------------------------------*/
-void _LogEntryTxn::vSet(LogEntry* pLogEntry, Tx* pTxn, i8 iTxnId, eXA eTxnAct)
+void _LogEntryTxn::vSet(LogEntry* pLogEntry, Tx* pTxn, eXA eTxnAct)
 {
   pLogEntry->m_eKind = EK_TXN;
   
-  m_iTxnId  = iTxnId;
+  m_iTxnId  = pTxn->m_iUniqueId;
   m_eTxnAct = eTxnAct;
 }
 

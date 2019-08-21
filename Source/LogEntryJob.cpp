@@ -7,11 +7,11 @@
 /*----------------------------------------------------------------------------*/
 /* set variable entry                                                         */
 /*----------------------------------------------------------------------------*/
-void _LogEntryJob::vSet(LogEntry* pLogEntry, Job* pJob, i8 iJobId, eJA eJobAct)
+void _LogEntryJob::vSet(LogEntry* pLogEntry, Job* pJob, eJA eJobAct)
 {  
   pLogEntry->m_eKind = EK_JOB;
   
-  m_iJobId  = iJobId;
+  m_iJobId  = pJob->m_iUniqueId;
   m_eJobAct = eJobAct;
 }
 

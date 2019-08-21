@@ -12,7 +12,7 @@ namespace Logging
     eQA  m_eQueAct; // queues action
   
   public:
-    void vSet(LogEntry* pLogEntry, Queues* pQueues, i8 iQueId, eQA eQueAct);
+    void vSet(LogEntry* pLogEntry, Queues* pQueues, eQA eQueAct);
   
     void vWriteCsv(File* pFile);
   };

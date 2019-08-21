@@ -12,7 +12,7 @@ namespace Logging
     eTA  m_eTskAct; // task action
 
   public:
-   void vSet(LogEntry* pLogEntry, Task* pTask, i8 iTskId, eTA eTskAct);
+   void vSet(LogEntry* pLogEntry, Task* pTask, eTA eTskAct);
   
   void vWriteCsv(File* pFile);
   };
