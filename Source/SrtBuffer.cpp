@@ -89,6 +89,9 @@ SrtSet* SrtBuffer::aAllotSrtSet(i8 nRowRefs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
   
+  if (nItems() == AM::nIndexEntries())
+    return nullptr;
+  
   // allot using bytes as we don't know the size of the item
   byte* aySrtSet = ayAllotBytes(SrtSet::nBytesReq(nRowRefs));
   
