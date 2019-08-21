@@ -2,12 +2,12 @@
 /* FocalObjects.cpp -- Lattice of Focal Objects                               */
 /*============================================================================*/
 
-#include "Logging.h"
+#include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-FocalObjects* Logging::_pFocalObjects(void* aAddr)
+FocalObjects* StorageEngine::_pFocalObjects(void* aAddr)
 {
   FocalObjects* pFocalObjects = reinterpret_cast<FocalObjects*>(aAddr);
   

@@ -14,7 +14,6 @@ namespace Logging
 
 //------------------------------------------------------------------------------
 
-#include "FocalObjects.hpp"
 
 #include "ShmLog.hpp"
 

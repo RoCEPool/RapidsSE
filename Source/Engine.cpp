@@ -812,6 +812,7 @@ void Engine::vStartSystem(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move
   
+  gpAttachMap->m_pFocalObjects = new FocalObjects;
   gpAttachMap->m_pQueues = new Queues;
     
   gpAttachMap->m_okDdlLock.vInitLock(LK_DDL);

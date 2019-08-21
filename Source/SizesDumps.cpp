@@ -479,7 +479,7 @@ i8 giClassSize[]
   /*    */ sizeof(Filter_SubQry),      // CN_FILTER_SUBQRY
   /*    */ sizeof(Filter_Where),       // CN_FILTER_WHERE
   /*    */ sizeof(Filter_Zed),         // CN_FILTER_ZED
-  /*    */ 0,//sizeof(FocalObjects),         // CN_FOCALOBJECTS
+  /*    */ sizeof(FocalObjects),       // CN_FOCALOBJECTS
   /*    */ sizeof(ForthClump),         // CN_FORTHCLUMP
   /* 40 */ sizeof(Formatters),         // CN_FORMATTERS
   /* 41 */ sizeof(PoolBuffer),         // CN_FREEBUFFER

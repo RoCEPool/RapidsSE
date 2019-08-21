@@ -17,6 +17,7 @@ namespace StorageEngine
 //------------------------------------------------------------------------------
 
 #include "Arguments.hpp"
+#include "FocalObjects.hpp"
 #include "AttachMap.hpp"
 #include "Constants.hpp"
 #include "Globals.hpp"

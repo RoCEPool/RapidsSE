@@ -41,6 +41,7 @@ namespace StorageEngine
     EnumFlags     m_oMarkResource;
     EnumFlags     m_oMarkTrace;
     i8            m_nObjectsInPool[CN_ENUMS];
+  
     ApiState*     m_pApiState;
     bool          m_bBootError;
     BufferPool*   m_pBufferPool;
@@ -48,6 +49,7 @@ namespace StorageEngine
     Lock          m_okDdlLock;
     Lock          m_okDicLock;
     i8            m_iEpoch;
+    FocalObjects* m_pFocalObjects;
     Formatters    m_oFormatters;
     ForthWord*    m_pForthWord;
     Grid*         m_pGrid;
