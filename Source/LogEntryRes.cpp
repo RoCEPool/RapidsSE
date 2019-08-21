@@ -17,6 +17,13 @@ void _LogEntryRes::vSet(LogEntry* pLogEntry, Resource* pResource, eRA eResAct)
 }
 
 /*----------------------------------------------------------------------------*/
+/* cat sprint to given string                                                 */
+/*----------------------------------------------------------------------------*/
+void _LogEntryRes::vSprint(s4K& sString)
+{
+}
+
+/*----------------------------------------------------------------------------*/
 /* write to csv file                                                          */
 /*----------------------------------------------------------------------------*/
 void _LogEntryRes::vWriteCsv(File* pFile)

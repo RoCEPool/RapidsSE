@@ -16,6 +16,13 @@ void _LogEntrySys::vSet(LogEntry* pLogEntry, AttachMap* pAttachMap, eYA eSysAct)
 }
 
 /*----------------------------------------------------------------------------*/
+/* cat sprint to given string                                                 */
+/*----------------------------------------------------------------------------*/
+void _LogEntrySys::vSprint(s4K& sString)
+{
+}
+
+/*----------------------------------------------------------------------------*/
 /* write to csv file                                                          */
 /*----------------------------------------------------------------------------*/
 void _LogEntrySys::vWriteCsv(File* pFile)
