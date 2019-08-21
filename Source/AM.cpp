@@ -608,7 +608,7 @@ void AM::vLogRes(Resource* pRes, eRA eResAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 i_Entry = gpLog->iEntryRes(pRes,pRes->eClass(),pRes->iResId(),eResAct,eKind,
+  i8 i_Entry = gpLog->iEntryRes(pRes,pRes->eClass(),pRes->iResId(),eResAct,
                                 pRes->m_i_LogPrev,szFormat,xVaArgs);
   
   va_end(xVaArgs);

@@ -63,7 +63,7 @@ namespace Logging
     i8 iEntryOpr(Op*        pOpr, eCN eClass, i8 iOprId, eOA eOprAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
     i8 iEntryPrm(SePrompt*  pPrm, eCN eClass, i8 iPrmId, ePA ePrmAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
     i8 iEntryQue(Queues*    pQue, eCN eClass, i8 iQueId, eQA eQueAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
-    i8 iEntryRes(Resource*  pRes, eCN eClass, i8 iResId, eRA eResAct, eRK eResKnd,   i8 i_Prev, Stz* szFormat, va_list xArgs);
+    i8 iEntryRes(Resource*  pRes, eCN eClass, i8 iResId, eRA eResAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
     i8 iEntrySsn(Session*   pSsn, eCN eClass, i8 iApiId, eAA eApiAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
     i8 iEntrySvc(Job*       pJob, eCN eClass, i8 iSvcId, eVA eSvcAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
     i8 iEntrySys(AttachMap* pSys, eCN eClass, i8 iSysId, eYA eSysAct, i8 i_Prev, Stz* szFormat, va_list xArgs);

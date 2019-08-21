@@ -470,7 +470,7 @@ i8 Log::iEntryQue(Queues* pQue, eCN eClassNo, i8 iQueId, eQA eQueAct, i8 i_Prev,
 /*----------------------------------------------------------------------------*/
 /* add a resource log entry                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryRes(Resource* pRes, eCN eClassNo, i8 iResId, eRA eResAct, eRK eResKnd, i8 i_Prev,
+i8 Log::iEntryRes(Resource* pRes, eCN eClassNo, i8 iResId, eRA eResAct, i8 i_Prev,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
