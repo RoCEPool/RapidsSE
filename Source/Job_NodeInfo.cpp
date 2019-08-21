@@ -32,7 +32,7 @@ JobClass xJobClass_NodeInfo =
   pJob_NodeInfo_new,     // job new function
   vJob_NodeInfo_delete,  // job delete function
   nullptr,           // job pre-send function
-  nullptr,           // job post-receive function
+  vJob_recv,         // job post-receive function
   vJob_NodeInfo_show,    // job show function
   
   // help and example

@@ -43,7 +43,7 @@ FocalObjects::FocalObjects(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FOCALOBJECTS,_FOOTER_);
   
-  m_okLock.vInitLock(LK_TASK_QUEUE);
+  m_okLock.vInitLock(LK_FOCAL_OBJECTS);
   
   _checkInitialised_(CN_FOCALOBJECTS);
 
@@ -62,6 +62,37 @@ FocalObjects::~FocalObjects(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add focal object                                                           */
+/*----------------------------------------------------------------------------*/
+void FocalObjects::vAdd(Focal* pFocal)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FOCALOBJECTS);
+  
+  m_okLock.vGrabWrite();
+  pFocal->m_i_Focal = iAdd(pFocal);
+  m_okLock.vDropWrite();
+
+  vTrace("vFocalAdd: %lld %p\n"_Stz,pFocal->m_i_Focal,pFocal);
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove focal object                                                        */
+/*----------------------------------------------------------------------------*/
+void FocalObjects::vRemove(Focal* pFocal)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FOCALOBJECTS);
+  
+  vTrace("vFocalRemove: %lld %p\n"_Stz,pFocal->m_i_Focal,pFocal);
+  
+  m_okLock.vGrabWrite();
+  ASSERT(pGet(pFocal->m_i_Focal) == pFocal);
+  vRemoveItem(pFocal->m_i_Focal);
+  pFocal->m_i_Focal = C_UNKNOWN;
+  m_okLock.vDropWrite();
+
+}
 
 
 /*----------------------------------------------------------------------------*/
