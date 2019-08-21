@@ -927,15 +927,16 @@ void AM::vLogWriteCsv(bool bShortForm) { Log::vWriteCsv(bShortForm); }
 void AM::vLogText(i8 iId, Stz* szText) {;}
 
 void AM::vFocalAdd(Focal* pFocal)      {
-//  if (! gpAttachMap || !gpAttachMap->m_pFocalObjects)
-//    return;
-//  gpAttachMap->m_pFocalObjects->vAdd(pFocal);
+  if (! gpAttachMap || !gpAttachMap->m_pFocalObjects)
+    return;
+  gpAttachMap->m_pFocalObjects->vAdd(pFocal);
 }
 void AM::vFocalRemove(Focal* pFocal)   {
-//  if (C_UNKNOWN == pFocal->m_i_Focal)
-//    return;
-//  gpAttachMap->m_pFocalObjects->vRemove(pFocal);
+  if (C_UNKNOWN == pFocal->m_i_Focal)
+    return;
+  gpAttachMap->m_pFocalObjects->vRemove(pFocal);
 }
+void AM::vMri(TokenVec *pTknVec) { gpAttachMap->m_pFocalObjects->vMri(pTknVec); }
 
 /*============================================================================*/
 /* end                                                                        */

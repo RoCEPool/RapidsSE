@@ -8,7 +8,8 @@ namespace Assembler     {                                                     }
 namespace Base          {                                                     }
 namespace Chunks        { class Formatters;                                   }
 namespace ClassData     {                                                     }
-namespace Commands      { class Command; class Parser; class Tokeniser;       }
+namespace Commands      { class Command; class Parser; class Tokeniser;
+                          class TokenVec;                                     }
 namespace CompilerOperators {                                                 }
 namespace CompilerStream{                                                     }
 namespace ControlData   {                                                     }

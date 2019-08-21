@@ -194,6 +194,8 @@ namespace StorageEngine
   
     static void vFocalAdd(Focal* pFocal);
     static void vFocalRemove(Focal* pFocal);
+  
+    static void vMri(TokenVec* pTknVec);
   };
 }
 

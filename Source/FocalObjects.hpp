@@ -22,6 +22,10 @@ namespace StorageEngine
   
     void vAdd(Focal* pFocal);
     void vRemove(Focal* pFocal);
+  
+    // -- -- -- -- -- --
+  
+    void vMri(TokenVec* pTknVec);
 
   private:
     

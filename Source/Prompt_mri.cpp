@@ -24,7 +24,8 @@ PromptDesc __Prompt_mri (
 bool Prompt::bPrompt_mri(SePrompt* pPrompt)
 {
   TokenVec* pTokenVec = pPrompt->pTknVec();
-  i8 iNumTokens = pTokenVec->nItems();
+  
+  AM::vMri(pTokenVec);
   
   return true;
 }
