@@ -151,7 +151,7 @@ eOR SortOp::eSortLoop(void)
     RASSERT(CN_SRTBUFFER == pOperand->eClass());
     
     SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
-    //pSrtBuffer->vShow(m_pStreamDef->m_pColumnVec, m_pRightStreamDef->m_pColumnVec);
+    //pSrtBuffer->vShow(m_pStreamDef->m_pColumnVec, m_pRightStreamDef ? m_pRightStreamDef->m_pColumnVec : nullptr);
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // create a Low cursor pointing to the first element in the array

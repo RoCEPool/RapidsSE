@@ -129,6 +129,8 @@ eOR OutputOp::eOpLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
   
+  static i8 iCount = 0;
+  
   for (;;) {
     
     Operand* pOperand = pPopQueue();
@@ -149,6 +151,7 @@ eOR OutputOp::eOpLoop(void)
         }
         else
           delete (EndMarker*)pOperand;
+        
         break;
         
       // -- -- -- -- -- --
@@ -176,16 +179,18 @@ eOR OutputOp::eOpLoop(void)
         
       case CN_REFBUFFER: {
         RefBuffer* pRefBuffer = _pRefBuffer(pOperand) ;
-        pRefBuffer->vShow(m_pStreamDef->m_pColumnVec,
-                          m_pRightStreamDef ? m_pRightStreamDef->m_pColumnVec : nullptr);
+//        pRefBuffer->vShow(m_pStreamDef->m_pColumnVec,
+//                          m_pRightStreamDef ? m_pRightStreamDef->m_pColumnVec : nullptr);
+        iCount += pRefBuffer->nItems();
         vPipeOut(pOperand);
         break;
       }
         
       case CN_SRTBUFFER: {
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
-        pSrtBuffer->vShow(m_pStreamDef->m_pColumnVec,
-                          m_pRightStreamDef ? m_pRightStreamDef->m_pColumnVec : nullptr);
+        iCount += pSrtBuffer->nItems();
+//        pSrtBuffer->vShow(m_pStreamDef->m_pColumnVec,
+//                          m_pRightStreamDef ? m_pRightStreamDef->m_pColumnVec : nullptr);
         vPipeOut(pOperand);
         break;
       }
@@ -211,6 +216,8 @@ eOR OutputOp::eOpLoop(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_EXIT:
+  vTrace("Output: %lld rows\n"_Stz, iCount);
+  iCount = 0;
   return OR_EXIT;
 }
 

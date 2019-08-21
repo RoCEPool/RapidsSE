@@ -132,6 +132,13 @@ void JoinOp::vAddRowRefs(Ent* aLeftEntry, Ent* aRightEntry)
     vPipeOut(m_pRightStreamDef);
     m_pStreamDef = nullptr;
     m_pRightStreamDef = nullptr;
+    
+//    StreamDef* pRightStreamDef = _pStreamDef(pRightOperand);
+//    for (i8 i_Col = 0; i_Col < pRightStreamDef->m_pColumnVec->nItems(); i_Col++) {
+//      Column* pCol = new Column();
+//      pCol->vCopy(pRightStreamDef->m_pColumnVec->pGet(i_Col));
+//      m_pStreamDef->m_pColumnVec->vAdd(pCol);
+//    }
   }
   
   RefSet* pRefSet = m_pRefBuffer->aAllotRefSet(2);
