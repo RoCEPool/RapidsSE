@@ -8,12 +8,12 @@ namespace Logging
   class _LogEntryRes
   {
   public:
+  eCN  m_eClass;     // class
   i8   m_iResId;     // resource identifier
-  eRK  m_eResKnd;    // resource kind
   eRA  m_eResAct;    // resource action
 
   public:
-   void vSet(LogEntry* pLogEntry, Resource*  pResource, i8 iResId, eRK eResKnd, eRA eResAct);
+   void vSet(LogEntry* pLogEntry, Resource*  pResource, i8 iResId, eRA eResAct);
   
   void vWriteCsv(File* pFile);
   };
