@@ -925,6 +925,9 @@ void AM::vLogOpenBySE(bool bStarting)  { Log::vOpenBySE(bStarting);  }
 void AM::vLogWriteCsv(bool bShortForm) { Log::vWriteCsv(bShortForm); }
 void AM::vLogText(i8 iId, Stz* szText) {;}
 
+void AM::vFocalAdd(Focal* pFocal)      {           }
+void AM::vFocalRemove(Focal* pFocal)   {           }
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

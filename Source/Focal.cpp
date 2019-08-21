@@ -4,15 +4,27 @@
 
 #include "Correctness.h"
 
+#include "AM.hpp"
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Focal::Focal(eCN eClassNo, i8 iUniqueId)
 : Object(eClassNo)
 {
-  m_i_Focal   = iUniqueId;
+  m_i_Focal   = C_UNKNOWN;
   m_iUniqueId = iUniqueId;
   m_i_LogPrev = C_UNKNOWN;
+  
+  AM::vFocalAdd(this);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+Focal::~Focal(void) noexcept(false)
+{
+  AM::vFocalRemove(this);
 }
 
 /*============================================================================*/

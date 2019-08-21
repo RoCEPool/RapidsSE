@@ -191,6 +191,9 @@ namespace StorageEngine
     static void vLogOpenByApi(void);
     static void vLogOpenBySE(bool bStarting);
     static void vLogWriteCsv(bool bShortForm);
+  
+    static void vFocalAdd(Focal* pFocal);
+    static void vFocalRemove(Focal* pFocal);
   };
 }
 

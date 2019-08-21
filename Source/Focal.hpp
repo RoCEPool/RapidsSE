@@ -14,6 +14,7 @@ namespace Correctness
   
   public:
     Focal(eCN eClassNo, i8 iUniqueId);
+   ~Focal(void) noexcept(false);
   };
 }
 
