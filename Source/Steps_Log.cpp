@@ -25,7 +25,7 @@ void Step::vLogDump(MP_Task mpTask)
 {
   ENTRY("vActivityLogDump"_Stz);
   
-  Log::vWriteCsv(false);
+  AM::vLogWriteCsv(false);
   
   EXIT();
 }

@@ -28,12 +28,12 @@ bool Prompt::bPrompt_logWrite(SePrompt* pPrompt)
   
   if (iNumTokens > 1 && pTokenVec->pGet(1)->eToken() == TN_NAME) {
     if (pTokenVec->pGet(1)->bSame("short"_Stz))
-      Log::vWriteCsv(true);
+      AM::vLogWriteCsv(true);
     else
-      Log::vWriteCsv(false);
+      AM::vLogWriteCsv(false);
   }
   else
-    Log::vWriteCsv(false);
+    AM::vLogWriteCsv(false);
 
   return true;
 }

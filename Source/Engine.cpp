@@ -394,9 +394,9 @@ void Engine::vMonitorPortrait(s48K& sRapidsPortrait)
   Portrait::vMemoryPortrait(sPortrait);
   sRapidsPortrait.vConcat(sPortrait.aStz());
   
-  sPortrait = ""_Stz;
-  Log::vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
+//  sPortrait = ""_Stz;
+//  Log::vMonitorPortrait(sPortrait);
+//  sRapidsPortrait.vConcat(sPortrait.aStz());
   
   sPortrait = ""_Stz;
   Mutex::vMonitorPortrait(sPortrait);
@@ -482,10 +482,9 @@ void Engine::vOpenLog(void)
   if (0 == AM::pGrid()->m_iThisNode && gxArguments.m_bStart)
     bStarting = true;
   
-  Log::vOpenBySE(bStarting);
+  AM::vLogOpenBySE(bStarting);
   
   gpAttachMap->m_oMarkResource.vAll(true);
-  
 }
 
 /*----------------------------------------------------------------------------*/

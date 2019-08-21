@@ -169,7 +169,8 @@ namespace StorageEngine
     static void vWriteTrace(eYA eSysAct, Stz* aFormat, va_list xArgs);
 
     static void vLogFyi(Stz* szFormat, ...);
-  
+    static void vLogText(i8 iId, Stz* szText);
+
     static void vLogSsn(Session*   pSsn, eAA eApiAct, Stz* szFormat, ...);
     static void vLogJob(Job*       pJob, eJA eJobAct, Stz* szFormat, ...);
     static void vLogLck(Lock*      pLck, eLA eLckAct, Stz* szFormat, ...);
@@ -187,6 +188,10 @@ namespace StorageEngine
     static void vNap(i8 nMilliSeconds, eCN eCallingClass);
   
     static void vBootCheck(void);
+  
+    static void vLogOpenByApi(void);
+    static void vLogOpenBySE(bool bStarting);
+    static void vLogWriteCsv(bool bShortForm);
   };
 }
 

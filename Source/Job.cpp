@@ -290,7 +290,7 @@ void Job::vMarkJob(void)
 
   sJobMark.vConcat("\n"_Stz);
 
-  Log::vNoteString(m_iUniqueId,sJobMark);
+  AM::vLogText(m_iUniqueId,sJobMark);
 }
 
 /*----------------------------------------------------------------------------*/

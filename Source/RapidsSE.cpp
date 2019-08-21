@@ -151,7 +151,7 @@ eEC RapidsSE_OpenPool(i8 iTrace, Stz* szRegion, void** aaAttachMap)
     
     *aaAttachMap = gpAttachMap;
     
-    Log::vOpenByApi();
+    AM::vLogOpenByApi();
     
 #ifdef WITH_STATISTICS_COUNTERS
     if (gpAttachMap)

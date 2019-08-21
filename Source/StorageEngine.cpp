@@ -33,7 +33,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   Persistence::vCheckAssumptions();
   Structures::vCheckAssumptions();
   Chunks::vCheckAssumptions();
-  Logging::vCheckAssumptions();
   Transactions::vCheckAssumptions();
   Commands::vCheckAssumptions();
   Forth::vCheckAssumptions();
