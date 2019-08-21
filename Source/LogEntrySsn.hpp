@@ -1,18 +1,18 @@
 /*============================================================================*/
-/* LogEntryItf.hpp - Log Entry for Api                                        */
+/* LogEntrySsn.hpp - Log Entry for Session                                     */
 /*============================================================================*/
 #pragma once
 
 namespace Logging
 {
-  class _LogEntryApi
+  class _LogEntrySsn
   {
   public:
     i8   m_iSsnId;  // session id
-    eAA  m_eItfAct; // interface action
+    eAA  m_eSsnAct; // session action
   
   public:
-    void vSet(LogEntry* pLogEntry, i8 iSsnId, eAA eApiAct);
+    void vSet(LogEntry* pLogEntry, i8 iSsnId, eAA eSsnAct);
   
     void vWriteCsv(File* pFile);
   };

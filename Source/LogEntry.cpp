@@ -105,7 +105,6 @@ void LogEntry::vWrite(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
   vWriteCsv(pFile,iEntryDeltaUsec,iTotalDeltaUsec);
   
   switch (m_eKind) {
-    case EK_API: m_xApi.vWriteCsv(pFile); break;
     case EK_FYI: m_xFyi.vWriteCsv(pFile); break;
     case EK_JOB: m_xJob.vWriteCsv(pFile); break;
     case EK_LCK: m_xLck.vWriteCsv(pFile); break;
@@ -115,6 +114,7 @@ void LogEntry::vWrite(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
     case EK_PRM: m_xPrm.vWriteCsv(pFile); break;
     case EK_QUE: m_xQue.vWriteCsv(pFile); break;
     case EK_RES: m_xRes.vWriteCsv(pFile); break;
+    case EK_SSN: m_xSsn.vWriteCsv(pFile); break;
     case EK_SVC: m_xSvc.vWriteCsv(pFile); break;
     case EK_SYS: m_xSys.vWriteCsv(pFile); break;
     case EK_TSK: m_xTsk.vWriteCsv(pFile); break;

@@ -7,25 +7,25 @@
 /*----------------------------------------------------------------------------*/
 /* set entry                                                                  */
 /*----------------------------------------------------------------------------*/
-void _LogEntryApi::vSet(LogEntry* pLogEntry, i8 iSsnId, eAA eApiAct)
+void _LogEntrySsn::vSet(LogEntry* pLogEntry, i8 iSsnId, eAA eSsnAct)
 {
-  pLogEntry->m_eKind = EK_API;
+  pLogEntry->m_eKind = EK_SSN;
   
   m_iSsnId  = iSsnId;
-  m_eItfAct = eApiAct;
+  m_eSsnAct = eSsnAct;
 }
 
 /*----------------------------------------------------------------------------*/
 /* write to csv file                                                          */
 /*----------------------------------------------------------------------------*/
-void _LogEntryApi::vWriteCsv(File* pFile)
+void _LogEntrySsn::vWriteCsv(File* pFile)
 {
   SP_Id spId;
   
   pFile->vPrint(",%s,%s"_Stz,
                 
                 spId.sz("A"_Stz,m_iSsnId),
-                aAA[m_eItfAct]);
+                aAA[m_eSsnAct]);
 }
 
 /*============================================================================*/
