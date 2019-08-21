@@ -2,7 +2,7 @@
 /* Dump.cpp -- Class Dumps                                                    */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "Oblique.h"
 
 // Object's : Class::vDump
 // Object's with no vDump defined : Dump::vUndefined

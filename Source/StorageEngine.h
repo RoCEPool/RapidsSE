@@ -19,7 +19,6 @@ namespace StorageEngine
 #include "Arguments.hpp"
 #include "AttachMap.hpp"
 #include "Constants.hpp"
-#include "SizesDumps.hpp"
 #include "Globals.hpp"
 #include "Portrait.hpp"
 
