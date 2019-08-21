@@ -10,7 +10,7 @@
 _Loggable::_Loggable(eCN eClassNo, i8 iUniqueId)
 : Object(eClassNo)
 {
-  m_i_Track   = iUniqueId;
+  m_i_Focal   = iUniqueId;
   m_iUniqueId = iUniqueId;
   m_i_LogPrev = C_UNKNOWN;
 }
