@@ -8,6 +8,7 @@ namespace Correctness
   class _Loggable : public Object
   {
   public:
+    i8 m_i_Track;   // id
     i8 m_iUniqueId; // id
     i8 m_i_LogPrev; // previous log entry
   

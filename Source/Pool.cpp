@@ -12,7 +12,7 @@ void Pool::vCheckAssumptions(void)
   //ASSERT(sizeof(Object) + sizeof(bn)*2 + sizeof(void*) == sizeof(PoolBuffer));
   //ASSERT(sizeof(PoolBuffer) + sizeof(void*)*2          == sizeof(HeapBuffer));
   
-  ASSERT(sizeof(HeapBuffer) == sizeof(CacheLine));
+  ASSERT(sizeof(HeapBuffer) == 2 * sizeof(CacheLine));
   
   HeapMem::vValidateEnums();
 }
