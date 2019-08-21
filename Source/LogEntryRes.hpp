@@ -13,9 +13,11 @@ namespace Logging
   eRA  m_eResAct;    // resource action
 
   public:
-   void vSet(LogEntry* pLogEntry, Resource*  pResource, eRA eResAct);
+    void vSet(LogEntry* pLogEntry, Resource*  pResource, eRA eResAct);
   
-  void vWriteCsv(File* pFile);
+    void vSprint(s4K& sString);
+  
+    void vWriteCsv(File* pFile);
   };
 }
 

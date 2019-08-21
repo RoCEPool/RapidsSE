@@ -72,6 +72,8 @@ namespace Logging
 
     void vInit(eCN eClass, Stz* szText);
     void vInit(Focal* pFocal, Stz* szText);
+    void vSprint(s4K& sString,i8 iEntryDeltaUsec, i8& iTotalDeltaUsec);
+    void vSprintCsv(s4K& sString, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec);
     void vWrite(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec);
     void vWriteCsv(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec);
     void vZero(void);

@@ -14,6 +14,8 @@ namespace Logging
   public:
     void vSet(LogEntry* pLogEntry, Job* pJob, eJA eJobAct);
   
+    void vSprint(s4K& sString);
+  
     void vWriteCsv(File* pFile);
   };
 }

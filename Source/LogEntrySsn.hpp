@@ -14,6 +14,8 @@ namespace Logging
   public:
     void vSet(LogEntry* pLogEntry, Session* pSession, eAA eSsnAct);
   
+    void vSprint(s4K& sString);
+  
     void vWriteCsv(File* pFile);
   };
 }
