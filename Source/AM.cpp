@@ -419,7 +419,7 @@ void AM::vLogJob(Job* pJob, eJA eJobAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 i_Entry = gpLog->iEntryJob(pJob,pJob->iJobId(),eJobAct,
+  i8 i_Entry = gpLog->iEntryJob(pJob,eJobAct,
                                 szFormat,xVaArgs);
   
   va_end(xVaArgs);
@@ -449,7 +449,7 @@ void AM::vLogLck(Lock* pLock, eLA eLckAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 i_Entry = gpLog->iEntryLck(pLock,pLock->iLockId(),eLckAct,
+  i8 i_Entry = gpLog->iEntryLck(pLock,eLckAct,
                                 szFormat,xVaArgs);
   
   va_end(xVaArgs);
@@ -476,7 +476,7 @@ void AM::vLogLog(Log* pLog, eGA eLogAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 i_Entry = gpLog->iEntryLog(pLog,pLog->m_iUniqueId,eLogAct,
+  i8 i_Entry = gpLog->iEntryLog(pLog,eLogAct,
                                 szFormat,xVaArgs);
   
   va_end(xVaArgs);
@@ -502,7 +502,7 @@ void AM::vLogOpr(Op* pOpr, eOA eOprAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 i_Entry = gpLog->iEntryOpr(pOpr,pOpr->iOpId(),eOprAct,
+  i8 i_Entry = gpLog->iEntryOpr(pOpr,eOprAct,
                                 szFormat,xVaArgs);
   
   va_end(xVaArgs);
@@ -528,7 +528,7 @@ void AM::vLogPrm(SePrompt* pPrm, ePA ePrmAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 i_Entry = gpLog->iEntryPrm(pPrm,pPrm->iPromptId(),ePrmAct,
+  i8 i_Entry = gpLog->iEntryPrm(pPrm,ePrmAct,
                                 szFormat,xVaArgs);
   
   va_end(xVaArgs);
@@ -554,7 +554,7 @@ void AM::vLogQue(Queues* pQue, eQA eQueAct, Stz* szFormat, ...)
 
   va_start(xVaArgs,szFormat);
 
-  i8 i_Entry = gpLog->iEntryQue(pQue,pQue->m_iUniqueId,eQueAct,
+  i8 i_Entry = gpLog->iEntryQue(pQue,eQueAct,
                                 szFormat,xVaArgs);
   
   va_end(xVaArgs);
@@ -580,7 +580,7 @@ void AM::vLogRes(Resource* pRes, eRA eResAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 i_Entry = gpLog->iEntryRes(pRes,pRes->iResId(),eResAct,
+  i8 i_Entry = gpLog->iEntryRes(pRes,eResAct,
                                 szFormat,xVaArgs);
   
   va_end(xVaArgs);
@@ -606,7 +606,7 @@ void AM::vLogSsn(Session* pSsn, eAA eApiAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 i_Entry = gpLog->iEntrySsn(pSsn,pSsn->m_iUniqueId,eApiAct,
+  i8 i_Entry = gpLog->iEntrySsn(pSsn,eApiAct,
                                 szFormat,xVaArgs);
   
   va_end(xVaArgs);
@@ -632,7 +632,7 @@ void AM::vLogSvc(Job* pJob, eVA eSvcAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 i_Entry = gpLog->iEntrySvc(pJob,pJob->m_iUniqueId,eSvcAct,
+  i8 i_Entry = gpLog->iEntrySvc(pJob,eSvcAct,
                                 szFormat,xVaArgs);
   
   va_end(xVaArgs);
@@ -658,7 +658,7 @@ void AM::vLogSys(AttachMap* , eYA eSysAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 i_Entry = gpLog->iEntrySys(gpAttachMap,gpAttachMap->m_iUniqueId,eSysAct,
+  i8 i_Entry = gpLog->iEntrySys(gpAttachMap,eSysAct,
                                 szFormat,xVaArgs);
   
   va_end(xVaArgs);
@@ -685,7 +685,7 @@ void AM::vLogThd(Thread* pThread, eHA eThdAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 i_Entry = gpLog->iEntryThd(pThread,pThread->m_iUniqueId,eThdAct,
+  i8 i_Entry = gpLog->iEntryThd(pThread,eThdAct,
                                 szFormat,xVaArgs);
 
   va_end(xVaArgs);
@@ -711,7 +711,7 @@ void AM::vLogTsk(Task* pTask, eTA eTskAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
     
-  i8 i_Entry = gpLog->iEntryTsk(pTask,pTask->iTaskId(),eTskAct,
+  i8 i_Entry = gpLog->iEntryTsk(pTask,eTskAct,
                                 szFormat,xVaArgs);
   
   va_end(xVaArgs);
@@ -737,7 +737,7 @@ void AM::vLogTxn(Tx* pTxn, eXA eTxnAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 i_Entry = gpLog->iEntryTxn(pTxn,pTxn->m_iUniqueId,eTxnAct,
+  i8 i_Entry = gpLog->iEntryTxn(pTxn,eTxnAct,
                                 szFormat,xVaArgs);
 
   va_end(xVaArgs);
