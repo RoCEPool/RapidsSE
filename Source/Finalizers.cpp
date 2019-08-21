@@ -93,6 +93,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_FILTER_SUBQRY
   /*    */ &Finalize::vUndefined,         // CN_FILTER_WHERE
   /*    */ &Finalize::vUndefined,         // CN_FILTER_ZED
+  /*    */ &Finalize::vUndefined,         // CN_FOCALOBJECTS
   /*    */ &Finalize::vUndefined,         // CN_FORTHCLUMP
   /* 39 */ &Finalize::vUndefined,         // CN_FORMATTERS
   /* 41 */ &Finalize::vUndefined,         // CN_FREEBUFFER
