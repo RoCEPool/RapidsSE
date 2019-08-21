@@ -275,7 +275,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     return;
   }
   
-  if (AM::pMarkResource()->bEnum(RK_SOCKET) ||
+  if (AM::pMarkResource()->bEnum(CN_SOCKET) ||
       AM::pMarkResource()->bAll()) {
     s256 sHeader;
     ((Header*)caObjectHeader)->vSprint(sHeader);
@@ -317,7 +317,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
     //       pJob,eClass,aCN[eClass],nObjectSize);
     
-    if (AM::pMarkResource()->bEnum(RK_SOCKET) ||
+    if (AM::pMarkResource()->bEnum(CN_SOCKET) ||
         AM::pMarkResource()->bAll()) {
       s256 sFooter;
       Footer* pFooter = aAdd<Footer*>(pJob,nObjectSize-sizeof(Footer));
@@ -369,7 +369,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     // restore the entryBuffer pointets (m_pHeadEntry etc)
     pCrwBuffer->vRestore();
     
-    if (AM::pMarkResource()->bEnum(RK_SOCKET) ||
+    if (AM::pMarkResource()->bEnum(CN_SOCKET) ||
         AM::pMarkResource()->bAll()) {
       AM::vLogRes(pSocket,RA_SKT_RECEIVED,
                     "Recv CrwBuffer: %p"_Stz,
@@ -409,7 +409,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     // restore the entryBuffer pointets (m_pHeadEntry etc)
     pExportBuffer->vRecvPostCorrection();
     
-    if (AM::pMarkResource()->bEnum(RK_SOCKET) ||
+    if (AM::pMarkResource()->bEnum(CN_SOCKET) ||
         AM::pMarkResource()->bAll()) {
       AM::vLogRes(pSocket,RA_SKT_RECEIVED,
                   "Recv ExportBuffer: %p"_Stz,

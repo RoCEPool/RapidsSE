@@ -12,7 +12,7 @@ namespace Logging
     eGA  m_eLogAct; // log action
   
   public:
-    void vSet(LogEntry* pLogEntry, i8 iLogId, eGA eLogAct);
+    void vSet(LogEntry* pLogEntry, Log* pLog, i8 iLogId, eGA eLogAct);
   
     void vWriteCsv(File* pFile);
   };

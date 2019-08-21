@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* set resource entry                                                         */
 /*----------------------------------------------------------------------------*/
-void _LogEntrySvc::vSet(LogEntry* pLogEntry, i8 iSvcId, eVA eSvcAct)
+void _LogEntrySvc::vSet(LogEntry* pLogEntry, Job* pJob, i8 iSvcId, eVA eSvcAct)
 {
   pLogEntry->m_eKind = EK_SVC;
   

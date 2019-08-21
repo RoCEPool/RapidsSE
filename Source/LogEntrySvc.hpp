@@ -12,7 +12,7 @@ namespace Logging
     eVA  m_eSvcAct;  // service action
 
   public:
-   void vSet(LogEntry* pLogEntry, i8 iSvcId, eVA  eSvcAct);
+   void vSet(LogEntry* pLogEntry, Job* pJob, i8 iSvcId, eVA  eSvcAct);
   
   void vWriteCsv(File* pFile);
   };

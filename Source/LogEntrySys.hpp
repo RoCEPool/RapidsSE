@@ -12,7 +12,7 @@ namespace Logging
     eYA  m_eSysAct; // system action
   
   public:
-    void vSet(LogEntry* pLogEntry, i8 iSysId, eYA eSysAct);
+    void vSet(LogEntry* pLogEntry, AttachMap* pAttachMap, i8 iSysId, eYA eSysAct);
   
     void vWriteCsv(File* pFile);
   };

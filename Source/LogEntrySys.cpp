@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* set entry                                                                  */
 /*----------------------------------------------------------------------------*/
-void _LogEntrySys::vSet(LogEntry* pLogEntry, i8 iSysId, eYA eSysAct)
+void _LogEntrySys::vSet(LogEntry* pLogEntry, AttachMap* pAttachMap, i8 iSysId, eYA eSysAct)
 {
   pLogEntry->m_eKind = EK_SYS;
   

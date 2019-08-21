@@ -158,7 +158,7 @@ void Log::vNoteString(i8 iJobId, s48K& sString)
     LogEntry* pLogEntry = gpLog->pNewEntry_NL();
     pLogEntry->vInit(CN_NONE,sLine);
     
-    pLogEntry->m_xJob.vSet(pLogEntry,iJobId,JA_NONE);
+    //pLogEntry->m_xJob.vSet(pLogEntry,iJobId,JA_NONE);
   }
   
   gpLog->vDropLock();
@@ -348,29 +348,9 @@ i8 Log::iEntryFyi(eCN eClassNo,
 }
 
 /*----------------------------------------------------------------------------*/
-/* add a api log entry                                                        */
-/*----------------------------------------------------------------------------*/
-i8 Log::iEntrySsn(eCN eClassNo, i8 iSsnId, eAA eApiAct, i8 i_Prev,
-                  Stz* szFormat, va_list xVaArgs)
-{
-  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
-  
-  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
-  
-  if (! pLogEntry)
-    return C_UNKNOWN;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  pLogEntry->m_xSsn.vSet(pLogEntry,iSsnId,eApiAct);
-  
-  return pLogEntry->m_i_Entry;
-}
-
-/*----------------------------------------------------------------------------*/
 /* add a job log entry                                                        */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryJob(eCN eClassNo, i8 iJobId, eJA eJobAct, i8 i_Prev,
+i8 Log::iEntryJob(Job* pJob,eCN eClassNo, i8 iJobId, eJA eJobAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
@@ -382,7 +362,7 @@ i8 Log::iEntryJob(eCN eClassNo, i8 iJobId, eJA eJobAct, i8 i_Prev,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pLogEntry->m_xJob.vSet(pLogEntry,iJobId,eJobAct);
+  pLogEntry->m_xJob.vSet(pLogEntry,pJob,iJobId,eJobAct);
   
   return pLogEntry->m_i_Entry;
 }
@@ -390,7 +370,7 @@ i8 Log::iEntryJob(eCN eClassNo, i8 iJobId, eJA eJobAct, i8 i_Prev,
 /*----------------------------------------------------------------------------*/
 /* add a lock log entry                                                       */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryLck(eCN eClassNo, i8 iLckId, eLA eLckAct, i8 i_Prev,
+i8 Log::iEntryLck(Lock* pLck, eCN eClassNo, i8 iLckId, eLA eLckAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
@@ -402,7 +382,7 @@ i8 Log::iEntryLck(eCN eClassNo, i8 iLckId, eLA eLckAct, i8 i_Prev,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pLogEntry->m_xLck.vSet(pLogEntry,iLckId,eLckAct);
+  pLogEntry->m_xLck.vSet(pLogEntry,pLck,iLckId,eLckAct);
   
   return pLogEntry->m_i_Entry;
 }
@@ -410,7 +390,7 @@ i8 Log::iEntryLck(eCN eClassNo, i8 iLckId, eLA eLckAct, i8 i_Prev,
 /*----------------------------------------------------------------------------*/
 /* add a log log entry                                                        */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryLog(eCN eClassNo, i8 iLogId, eGA eLogAct, i8 i_Prev,
+i8 Log::iEntryLog(Log* pLog, eCN eClassNo, i8 iLogId, eGA eLogAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
@@ -422,27 +402,7 @@ i8 Log::iEntryLog(eCN eClassNo, i8 iLogId, eGA eLogAct, i8 i_Prev,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pLogEntry->m_xLog.vSet(pLogEntry,iLogId,eLogAct);
-  
-  return pLogEntry->m_i_Entry;
-}
-
-/*----------------------------------------------------------------------------*/
-/* add a object log entry                                                     */
-/*----------------------------------------------------------------------------*/
-i8 Log::iEntryObj(Object* pObj, eCA eObjAct, i8 i_Prev,
-                  Stz* szFormat, va_list xVaArgs)
-{
-  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
-  
-  LogEntry* pLogEntry = pNewEntry(pObj->eClass(),szFormat,xVaArgs);
-  
-  if (! pLogEntry)
-    return C_UNKNOWN;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  pLogEntry->m_xObj.vSet(pLogEntry,pObj,eObjAct);
+  pLogEntry->m_xLog.vSet(pLogEntry,pLog,iLogId,eLogAct);
   
   return pLogEntry->m_i_Entry;
 }
@@ -450,7 +410,7 @@ i8 Log::iEntryObj(Object* pObj, eCA eObjAct, i8 i_Prev,
 /*----------------------------------------------------------------------------*/
 /* add a operator log entry                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryOpr(eCN eClassNo, i8 iOprId, eOA eOprAct, i8 i_Prev,
+i8 Log::iEntryOpr(Op* pOpr, eCN eClassNo, i8 iOprId, eOA eOprAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
@@ -462,7 +422,7 @@ i8 Log::iEntryOpr(eCN eClassNo, i8 iOprId, eOA eOprAct, i8 i_Prev,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pLogEntry->m_xOpr.vSet(pLogEntry,iOprId,eOprAct);
+  pLogEntry->m_xOpr.vSet(pLogEntry,pOpr,iOprId,eOprAct);
   
   return pLogEntry->m_i_Entry;
 }
@@ -470,7 +430,7 @@ i8 Log::iEntryOpr(eCN eClassNo, i8 iOprId, eOA eOprAct, i8 i_Prev,
 /*----------------------------------------------------------------------------*/
 /* add a prompt log entry                                                     */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryPrm(eCN eClassNo, i8 iPrmId, ePA ePrmAct, i8 i_Prev,
+i8 Log::iEntryPrm(SePrompt* pPrm, eCN eClassNo, i8 iPrmId, ePA ePrmAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
@@ -482,7 +442,7 @@ i8 Log::iEntryPrm(eCN eClassNo, i8 iPrmId, ePA ePrmAct, i8 i_Prev,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pLogEntry->m_xPrm.vSet(pLogEntry,iPrmId,ePrmAct);
+  pLogEntry->m_xPrm.vSet(pLogEntry,pPrm,iPrmId,ePrmAct);
   
   return pLogEntry->m_i_Entry;
 }
@@ -490,7 +450,7 @@ i8 Log::iEntryPrm(eCN eClassNo, i8 iPrmId, ePA ePrmAct, i8 i_Prev,
 /*----------------------------------------------------------------------------*/
 /* add a queues log entry                                                     */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryQue(eCN eClassNo, i8 iQueId, eQA eQueAct, i8 i_Prev,
+i8 Log::iEntryQue(Queues* pQue, eCN eClassNo, i8 iQueId, eQA eQueAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
@@ -502,7 +462,7 @@ i8 Log::iEntryQue(eCN eClassNo, i8 iQueId, eQA eQueAct, i8 i_Prev,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pLogEntry->m_xQue.vSet(pLogEntry,iQueId,eQueAct);
+  pLogEntry->m_xQue.vSet(pLogEntry,pQue,iQueId,eQueAct);
   
   return pLogEntry->m_i_Entry;
 }
@@ -510,7 +470,7 @@ i8 Log::iEntryQue(eCN eClassNo, i8 iQueId, eQA eQueAct, i8 i_Prev,
 /*----------------------------------------------------------------------------*/
 /* add a resource log entry                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryRes(eCN eClassNo, i8 iResId, eRA eResAct, eRK eResKnd, i8 i_Prev,
+i8 Log::iEntryRes(Resource* pRes, eCN eClassNo, i8 iResId, eRA eResAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
@@ -522,7 +482,27 @@ i8 Log::iEntryRes(eCN eClassNo, i8 iResId, eRA eResAct, eRK eResKnd, i8 i_Prev,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pLogEntry->m_xRes.vSet(pLogEntry,iResId,eResKnd,eResAct);
+  pLogEntry->m_xRes.vSet(pLogEntry,pRes,iResId,eResAct);
+  
+  return pLogEntry->m_i_Entry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a api log entry                                                        */
+/*----------------------------------------------------------------------------*/
+i8 Log::iEntrySsn(Session* pSsn, eCN eClassNo, i8 iSsnId, eAA eApiAct,
+                  Stz* szFormat, va_list xVaArgs)
+{
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
+  
+  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
+  
+  if (! pLogEntry)
+    return C_UNKNOWN;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  pLogEntry->m_xSsn.vSet(pLogEntry,pSsn,iSsnId,eApiAct);
   
   return pLogEntry->m_i_Entry;
 }
@@ -530,7 +510,7 @@ i8 Log::iEntryRes(eCN eClassNo, i8 iResId, eRA eResAct, eRK eResKnd, i8 i_Prev,
 /*----------------------------------------------------------------------------*/
 /* add a service log entry                                                    */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntrySvc(eCN eClassNo, i8 iSvcId, eVA eSvcAct, i8 i_Prev,
+i8 Log::iEntrySvc(Job* pJob, eCN eClassNo, i8 iSvcId, eVA eSvcAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
@@ -542,7 +522,7 @@ i8 Log::iEntrySvc(eCN eClassNo, i8 iSvcId, eVA eSvcAct, i8 i_Prev,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pLogEntry->m_xSvc.vSet(pLogEntry,iSvcId,eSvcAct);
+  pLogEntry->m_xSvc.vSet(pLogEntry,pJob,iSvcId,eSvcAct);
   
   return pLogEntry->m_i_Entry;
 }
@@ -550,7 +530,7 @@ i8 Log::iEntrySvc(eCN eClassNo, i8 iSvcId, eVA eSvcAct, i8 i_Prev,
 /*----------------------------------------------------------------------------*/
 /* add a system log entry                                                     */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntrySys(eCN eClassNo, i8 iSysId, eYA eSysAct, i8 i_Prev,
+i8 Log::iEntrySys(AttachMap* pSys,eCN eClassNo, i8 iSysId, eYA eSysAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
@@ -562,7 +542,7 @@ i8 Log::iEntrySys(eCN eClassNo, i8 iSysId, eYA eSysAct, i8 i_Prev,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pLogEntry->m_xSys.vSet(pLogEntry,iSysId,eSysAct);
+  pLogEntry->m_xSys.vSet(pLogEntry,pSys,iSysId,eSysAct);
   
   return pLogEntry->m_i_Entry;
 }
@@ -570,7 +550,7 @@ i8 Log::iEntrySys(eCN eClassNo, i8 iSysId, eYA eSysAct, i8 i_Prev,
 /*----------------------------------------------------------------------------*/
 /* add a thread log entry                                                     */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryThd(eCN eClassNo, i8 iThdId, eHA eThdAct, i8 i_Prev,
+i8 Log::iEntryThd(Thread* pThd, eCN eClassNo, i8 iThdId, eHA eThdAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
@@ -582,7 +562,7 @@ i8 Log::iEntryThd(eCN eClassNo, i8 iThdId, eHA eThdAct, i8 i_Prev,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pLogEntry->m_xThd.vSet(pLogEntry,iThdId,eThdAct);
+  pLogEntry->m_xThd.vSet(pLogEntry,pThd,iThdId,eThdAct);
   
   return pLogEntry->m_i_Entry;
 }
@@ -590,7 +570,7 @@ i8 Log::iEntryThd(eCN eClassNo, i8 iThdId, eHA eThdAct, i8 i_Prev,
 /*----------------------------------------------------------------------------*/
 /* add a task log entry                                                       */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryTsk(eCN eClassNo, i8 iTskId, eTA eTskAct, i8 i_Prev,
+i8 Log::iEntryTsk(Task* pTsk, eCN eClassNo, i8 iTskId, eTA eTskAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
@@ -602,7 +582,7 @@ i8 Log::iEntryTsk(eCN eClassNo, i8 iTskId, eTA eTskAct, i8 i_Prev,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pLogEntry->m_xTsk.vSet(pLogEntry,iTskId,eTskAct);
+  pLogEntry->m_xTsk.vSet(pLogEntry,pTsk,iTskId,eTskAct);
   
   return pLogEntry->m_i_Entry;
 }
@@ -610,7 +590,7 @@ i8 Log::iEntryTsk(eCN eClassNo, i8 iTskId, eTA eTskAct, i8 i_Prev,
 /*----------------------------------------------------------------------------*/
 /* add a thread log entry                                                     */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryTxn(eCN eClassNo, i8 iTxnId, eXA eTxnAct, i8 i_Prev, 
+i8 Log::iEntryTxn(Tx* pTxn, eCN eClassNo, i8 iTxnId, eXA eTxnAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
@@ -622,55 +602,9 @@ i8 Log::iEntryTxn(eCN eClassNo, i8 iTxnId, eXA eTxnAct, i8 i_Prev,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pLogEntry->m_xTxn.vSet(pLogEntry,iTxnId,eTxnAct);
+  pLogEntry->m_xTxn.vSet(pLogEntry,pTxn,iTxnId,eTxnAct);
   
   return pLogEntry->m_i_Entry;
-}
-
-
-
-/*----------------------------------------------------------------------------*/
-/* write an LogEntry                                                          */
-/*----------------------------------------------------------------------------*/
-i8 Log::iEntryJob_arg(i8 iJobId, i8 iForeign,
-                      Stz* szFormat, va_list xVaArgs)
-{
-  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
-  
-  LogEntry* pLogEntry = pNewEntry(CN_NONE,szFormat,xVaArgs);
-  
-  if (! pLogEntry)
-    return C_UNKNOWN;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  char caMark[1024];
-  
-  vsnprintf(caMark,sizeof(caMark)-1,szFormat->aChar(),xVaArgs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  StrLib::vCopyLen(pLogEntry->m_caText,caMark,C_LOG_TEXT - 1);
-  
-  pLogEntry->m_xJob.vSet(pLogEntry,iJobId,JA_NONE);
-  
-  return pLogEntry->m_i_Entry;
-}
-
-/*----------------------------------------------------------------------------*/
-/* write an LogEntry                                                          */
-/*----------------------------------------------------------------------------*/
-i8 Log::iEntryJob(i8 iJobId, i8 iForeign, Stz* aFormat, ...)
-{
-  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
-  
-  va_list xVaArgs;
-  
-  va_start(xVaArgs,aFormat);
-  iEntryJob_arg(iJobId,iForeign,aFormat,xVaArgs);
-  va_end(xVaArgs);
-  
-  return C_UNKNOWN;
 }
 
 
@@ -699,6 +633,31 @@ LogEntry* Log::pNewEntry(eCN eClassNo, Stz* szFormat, va_list xVaArgs)
   
   //StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
 
+  return pLogEntry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get a new mark in Log                                                      */
+/*----------------------------------------------------------------------------*/
+LogEntry* Log::pNewEntry(_Loggable* pLoggable, Stz* szFormat, va_list xVaArgs)
+{
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
+  
+  char caText[1024];
+  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
+  
+  // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
+  vGrabLock();
+  
+  LogEntry* pLogEntry = pNewEntry_NL();
+  
+  vDropLock();
+  // ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲
+  
+  pLogEntry->vInit(pLoggable,(Stz*)caText);
+  
+  //StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
+  
   return pLogEntry;
 }
 

@@ -55,7 +55,7 @@ void Mutex::operator delete(void* pMutexAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Mutex::Mutex()
-: Resource(CN_MUTEX,RK_MUTEX)
+: Resource(CN_MUTEX)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   

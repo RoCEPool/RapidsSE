@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* set resource entry                                                         */
 /*----------------------------------------------------------------------------*/
-void _LogEntryOp::vSet(LogEntry* pLogEntry, i8 iOpId, eOA eOpAct)
+void _LogEntryOp::vSet(LogEntry* pLogEntry, Op* pOp, i8 iOpId, eOA eOpAct)
 {
   pLogEntry->m_eKind = EK_OPR;
   

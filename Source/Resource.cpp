@@ -22,12 +22,10 @@ Resource* Resources::_pResource(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Resource::Resource(eCN eClassNo, eRK eKind)
+Resource::Resource(eCN eClassNo)
 : _Loggable(eClassNo,AM::iNextResourceId())
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
-  
-  m_eKind  = eKind;
   
   m_oBirth.vNow();
   
@@ -57,15 +55,6 @@ i8 Resource::iResId(void)
   return m_iUniqueId;
 }
 
-/*----------------------------------------------------------------------------*/
-/* get resource kind                                                          */
-/*----------------------------------------------------------------------------*/
-eRK Resource::eKind(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_eKind;
-}
 
 /*============================================================================*/
 /* end                                                                        */
