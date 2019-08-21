@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* set resource entry                                                         */
 /*----------------------------------------------------------------------------*/
-void _LogEntryRes::vSet(LogEntry* pLogEntry, i8 iResId, eRK eResKnd, eRA eResAct)
+void _LogEntryRes::vSet(LogEntry* pLogEntry, Resource* pResource, i8 iResId, eRK eResKnd, eRA eResAct)
 {
   pLogEntry->m_eKind = EK_RES;
   

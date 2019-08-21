@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* set entry                                                                  */
 /*----------------------------------------------------------------------------*/
-void _LogEntrySsn::vSet(LogEntry* pLogEntry, i8 iSsnId, eAA eSsnAct)
+void _LogEntrySsn::vSet(LogEntry* pLogEntry, Session* pSession, i8 iSsnId, eAA eSsnAct)
 {
   pLogEntry->m_eKind = EK_SSN;
   

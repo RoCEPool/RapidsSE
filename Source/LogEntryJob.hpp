@@ -12,7 +12,7 @@ namespace Logging
     eJA  m_eJobAct; // job action
   
   public:
-    void vSet(LogEntry* pLogEntry, i8 iJobId, eJA eJobAct);
+    void vSet(LogEntry* pLogEntry, Job* pJob, i8 iJobId, eJA eJobAct);
   
     void vWriteCsv(File* pFile);
   };

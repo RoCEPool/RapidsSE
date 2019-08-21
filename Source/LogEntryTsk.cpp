@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* set resource entry                                                         */
 /*----------------------------------------------------------------------------*/
-void _LogEntryTsk::vSet(LogEntry* pLogEntry, i8 iTskId, eTA eTskAct)
+void _LogEntryTsk::vSet(LogEntry* pLogEntry, Task* pTask, i8 iTskId, eTA eTskAct)
 {
   pLogEntry->m_eKind = EK_TSK;
   

@@ -158,7 +158,7 @@ void Log::vNoteString(i8 iJobId, s48K& sString)
     LogEntry* pLogEntry = gpLog->pNewEntry_NL();
     pLogEntry->vInit(CN_NONE,sLine);
     
-    pLogEntry->m_xJob.vSet(pLogEntry,iJobId,JA_NONE);
+    //pLogEntry->m_xJob.vSet(pLogEntry,iJobId,JA_NONE);
   }
   
   gpLog->vDropLock();
@@ -362,7 +362,7 @@ i8 Log::iEntrySsn(Session*   pSsn, eCN eClassNo, i8 iSsnId, eAA eApiAct, i8 i_Pr
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pLogEntry->m_xSsn.vSet(pLogEntry,iSsnId,eApiAct);
+  pLogEntry->m_xSsn.vSet(pLogEntry,pSsn,iSsnId,eApiAct);
   
   return pLogEntry->m_i_Entry;
 }
@@ -382,7 +382,7 @@ i8 Log::iEntryJob(Job*       pJob,eCN eClassNo, i8 iJobId, eJA eJobAct, i8 i_Pre
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pLogEntry->m_xJob.vSet(pLogEntry,iJobId,eJobAct);
+  pLogEntry->m_xJob.vSet(pLogEntry,pJob,iJobId,eJobAct);
   
   return pLogEntry->m_i_Entry;
 }
@@ -402,7 +402,7 @@ i8 Log::iEntryLck(Lock*      pLck,eCN eClassNo, i8 iLckId, eLA eLckAct, i8 i_Pre
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pLogEntry->m_xLck.vSet(pLogEntry,iLckId,eLckAct);
+  pLogEntry->m_xLck.vSet(pLogEntry,pLck,iLckId,eLckAct);
   
   return pLogEntry->m_i_Entry;
 }
@@ -422,7 +422,7 @@ i8 Log::iEntryLog(Log*       pLog, eCN eClassNo, i8 iLogId, eGA eLogAct, i8 i_Pr
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pLogEntry->m_xLog.vSet(pLogEntry,iLogId,eLogAct);
+  pLogEntry->m_xLog.vSet(pLogEntry,pLog,iLogId,eLogAct);
   
   return pLogEntry->m_i_Entry;
 }
@@ -442,7 +442,7 @@ i8 Log::iEntryOpr(Op*        pOpr,eCN eClassNo, i8 iOprId, eOA eOprAct, i8 i_Pre
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pLogEntry->m_xOpr.vSet(pLogEntry,iOprId,eOprAct);
+  pLogEntry->m_xOpr.vSet(pLogEntry,pOpr,iOprId,eOprAct);
   
   return pLogEntry->m_i_Entry;
 }
@@ -462,7 +462,7 @@ i8 Log::iEntryPrm(SePrompt*  pPrm,eCN eClassNo, i8 iPrmId, ePA ePrmAct, i8 i_Pre
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pLogEntry->m_xPrm.vSet(pLogEntry,iPrmId,ePrmAct);
+  pLogEntry->m_xPrm.vSet(pLogEntry,pPrm,iPrmId,ePrmAct);
   
   return pLogEntry->m_i_Entry;
 }
@@ -482,7 +482,7 @@ i8 Log::iEntryQue(Queues*    pQue, eCN eClassNo, i8 iQueId, eQA eQueAct, i8 i_Pr
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pLogEntry->m_xQue.vSet(pLogEntry,iQueId,eQueAct);
+  pLogEntry->m_xQue.vSet(pLogEntry,pQue,iQueId,eQueAct);
   
   return pLogEntry->m_i_Entry;
 }
@@ -502,7 +502,7 @@ i8 Log::iEntryRes(Resource*  pRes, eCN eClassNo, i8 iResId, eRA eResAct, eRK eRe
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pLogEntry->m_xRes.vSet(pLogEntry,iResId,eResKnd,eResAct);
+  pLogEntry->m_xRes.vSet(pLogEntry,pRes,iResId,eResKnd,eResAct);
   
   return pLogEntry->m_i_Entry;
 }
@@ -522,7 +522,7 @@ i8 Log::iEntrySvc(Job*       pJob,eCN eClassNo, i8 iSvcId, eVA eSvcAct, i8 i_Pre
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pLogEntry->m_xSvc.vSet(pLogEntry,iSvcId,eSvcAct);
+  pLogEntry->m_xSvc.vSet(pLogEntry,pJob,iSvcId,eSvcAct);
   
   return pLogEntry->m_i_Entry;
 }
@@ -542,7 +542,7 @@ i8 Log::iEntrySys(AttachMap* pSys,eCN eClassNo, i8 iSysId, eYA eSysAct, i8 i_Pre
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pLogEntry->m_xSys.vSet(pLogEntry,iSysId,eSysAct);
+  pLogEntry->m_xSys.vSet(pLogEntry,pSys,iSysId,eSysAct);
   
   return pLogEntry->m_i_Entry;
 }
@@ -562,7 +562,7 @@ i8 Log::iEntryThd(Thread*    pThd, eCN eClassNo, i8 iThdId, eHA eThdAct, i8 i_Pr
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pLogEntry->m_xThd.vSet(pLogEntry,iThdId,eThdAct);
+  pLogEntry->m_xThd.vSet(pLogEntry,pThd,iThdId,eThdAct);
   
   return pLogEntry->m_i_Entry;
 }
@@ -582,7 +582,7 @@ i8 Log::iEntryTsk(Task*      pTsk,eCN eClassNo, i8 iTskId, eTA eTskAct, i8 i_Pre
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pLogEntry->m_xTsk.vSet(pLogEntry,iTskId,eTskAct);
+  pLogEntry->m_xTsk.vSet(pLogEntry,pTsk,iTskId,eTskAct);
   
   return pLogEntry->m_i_Entry;
 }
@@ -602,7 +602,7 @@ i8 Log::iEntryTxn(Tx*        pTxn, eCN eClassNo, i8 iTxnId, eXA eTxnAct, i8 i_Pr
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pLogEntry->m_xTxn.vSet(pLogEntry,iTxnId,eTxnAct);
+  pLogEntry->m_xTxn.vSet(pLogEntry,pTxn,iTxnId,eTxnAct);
   
   return pLogEntry->m_i_Entry;
 }
@@ -632,7 +632,7 @@ i8 Log::iEntryJob_arg(i8 iJobId, i8 iForeign,
   
   StrLib::vCopyLen(pLogEntry->m_caText,caMark,C_LOG_TEXT - 1);
   
-  pLogEntry->m_xJob.vSet(pLogEntry,iJobId,JA_NONE);
+  //pLogEntry->m_xJob.vSet(pLogEntry,iJobId,JA_NONE);
   
   return pLogEntry->m_i_Entry;
 }

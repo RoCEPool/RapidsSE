@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* set entry                                                                  */
 /*----------------------------------------------------------------------------*/
-void _LogEntryLog::vSet(LogEntry* pLogEntry, i8 iLogId, eGA eLogAct)
+void _LogEntryLog::vSet(LogEntry* pLogEntry, Log* pLog, i8 iLogId, eGA eLogAct)
 {
   pLogEntry->m_eKind = EK_LOG;
   

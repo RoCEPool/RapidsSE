@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* set thread entry                                                           */
 /*----------------------------------------------------------------------------*/
-void _LogEntryThd::vSet(LogEntry* pLogEntry, i8 iThdId, eHA eThdAct)
+void _LogEntryThd::vSet(LogEntry* pLogEntry, Thread* pThread, i8 iThdId, eHA eThdAct)
 {
   pLogEntry->m_eKind = EK_THD;
   

@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* set entry                                                                  */
 /*----------------------------------------------------------------------------*/
-void _LogEntryLck::vSet(LogEntry* pLogEntry, i8 iLckId, eLA eLckAct)
+void _LogEntryLck::vSet(LogEntry* pLogEntry, Lock* pLock, i8 iLckId, eLA eLckAct)
 {
   pLogEntry->m_eKind = EK_LCK;
   

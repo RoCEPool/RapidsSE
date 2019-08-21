@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* set entry                                                                  */
 /*----------------------------------------------------------------------------*/
-void _LogEntryPrm::vSet(LogEntry* pLogEntry, i8 iPrmId, ePA ePrmAct)
+void _LogEntryPrm::vSet(LogEntry* pLogEntry, SePrompt*  pPrompt, i8 iPrmId, ePA ePrmAct)
 {
   pLogEntry->m_eKind = EK_PRM;
   

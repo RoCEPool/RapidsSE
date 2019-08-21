@@ -12,7 +12,7 @@ namespace Logging
     eOA m_eOpAct; // operator action
   
   public:
-    void vSet(LogEntry* pLogEntry, i8 iOpId, eOA eOpAct);
+    void vSet(LogEntry* pLogEntry, Op* pOpr, i8 iOpId, eOA eOpAct);
   
     void vWriteCsv(File* pFile);
   };
