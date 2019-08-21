@@ -102,7 +102,7 @@ LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::LatticeNL_t(void)
   _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
   
   m_nItems = 0;
-  m_i_NextFree = 0;
+  m_i_Free = 0;
   
   for (i8 i_Item = 0; i_Item < MAX_ITEMS; i_Item++)
     m_i_NextFree[i_Item] = i_Item + 1;
