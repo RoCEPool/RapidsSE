@@ -74,7 +74,7 @@ void FocalObjects::vAdd(Focal* pFocal)
   pFocal->m_i_Focal = iAdd(pFocal);
   m_okLock.vDropWrite();
 
-  vTrace("vFocalAdd: %lld %p\n"_Stz,pFocal->m_i_Focal,pFocal);
+  //vTrace("vFocalAdd: %lld %p\n"_Stz,pFocal->m_i_Focal,pFocal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -84,7 +84,7 @@ void FocalObjects::vRemove(Focal* pFocal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FOCALOBJECTS);
   
-  vTrace("vFocalRemove: %lld %p\n"_Stz,pFocal->m_i_Focal,pFocal);
+  //vTrace("vFocalRemove: %lld %p\n"_Stz,pFocal->m_i_Focal,pFocal);
   
   m_okLock.vGrabWrite();
   ASSERT(pGet(pFocal->m_i_Focal) == pFocal);
@@ -106,6 +106,17 @@ void FocalObjects::vMri(TokenVec* pTknVec)
   i8 iNumTokens = pTknVec->nItems();
 
   m_okLock.vGrabWrite();
+  
+  i8 i_Item = C_UNKNOWN;
+  while ( (i_Item = iNext(i_Item)) != C_UNKNOWN) {
+    Focal* pFocal = pGet(i_Item);
+    
+    vTrace("  [%04lld] %p %04lld %s\n"_Stz,
+           i_Item,
+           pFocal,
+           pFocal->m_i_LogPrev,
+           aCN[pFocal->eClass()]);
+  }
 
   m_okLock.vDropWrite();
 }

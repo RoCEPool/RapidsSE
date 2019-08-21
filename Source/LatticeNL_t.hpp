@@ -241,13 +241,17 @@ i8 LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::iNext(i8 i_Item)
   _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
   
   i8 i_Next = i_Item + 1;
-  if (i_Next >= MAX_ITEMS)
-    return C_UNKNOWN;
   
-  if (! bIsItem(i_Next))
-    return C_UNKNOWN;
+  for (;;) {
   
-  return i_Next;
+    if (i_Next >= MAX_ITEMS)
+      return C_UNKNOWN;
+  
+    if (bIsItem(i_Next))
+      return i_Next;
+    
+    i_Next++;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
