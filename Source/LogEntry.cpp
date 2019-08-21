@@ -94,7 +94,8 @@ void LogEntry::vInit(_Loggable *pLoggable, Stz* szText)
 {
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
-  m_i_Prev = C_UNKNOWN;
+  m_i_Prev = pLoggable->m_i_LogPrev;
+  pLoggable->m_i_LogPrev = m_i_Entry;
   
   m_iTick = Tick::iRdClock();
   m_iNodeNo = AM::iThisNodeNo();
