@@ -2,7 +2,7 @@
 /* Finalize.cpp -- Embedded Class Finalizers                                  */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "Oblique.h"
 
 // Object's : Class::vFinalize
 // Object's with no vUndefined defined :Finalize::vUndefined

@@ -35,6 +35,8 @@ void Engine::vMainEntry(void)
   
   StorageEngine::vCheckAllAssumptions();
 
+  AM::vBootCheck();
+  
   vSanityCheck();
   
   vWriteRegionName();

@@ -185,6 +185,8 @@ namespace StorageEngine
     static void vLogTxn(Tx*        pTx,  eXA eTxnAct, Stz* szFormat, ...);
   
     static void vNap(i8 nMilliSeconds, eCN eCallingClass);
+  
+    static void vBootCheck(void);
   };
 }
 
