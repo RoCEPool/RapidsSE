@@ -12,7 +12,7 @@ namespace Logging
     eHA m_eThdAct; // thread action
 
   public:
-   void vSet(LogEntry* pLogEntry, Thread* pThread, i8 iThdId, eHA eThdAct);
+   void vSet(LogEntry* pLogEntry, Thread* pThread, eHA eThdAct);
   
   void vWriteCsv(File* pFile);
   };

@@ -12,7 +12,7 @@ namespace Logging
     eXA  m_eTxnAct;  // transaction action
 
   public:
-    void vSet(LogEntry* pLogEntry, Tx* pTxn, i8 iTxnId, eXA  eTxnAct);
+    void vSet(LogEntry* pLogEntry, Tx* pTxn, eXA eTxnAct);
   
     void vWriteCsv(File* pFile);
   };

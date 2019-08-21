@@ -7,11 +7,11 @@
 /*----------------------------------------------------------------------------*/
 /* set resource entry                                                         */
 /*----------------------------------------------------------------------------*/
-void _LogEntrySvc::vSet(LogEntry* pLogEntry, Job* pJob, i8 iSvcId, eVA eSvcAct)
+void _LogEntrySvc::vSet(LogEntry* pLogEntry, Job* pJob, eVA eSvcAct)
 {
   pLogEntry->m_eKind = EK_SVC;
   
-  m_iSvcId  = iSvcId;
+  m_iSvcId  = pJob->m_iUniqueId;
   m_eSvcAct = eSvcAct;
 }
 

@@ -7,11 +7,11 @@
 /*----------------------------------------------------------------------------*/
 /* set entry                                                                  */
 /*----------------------------------------------------------------------------*/
-void _LogEntryPrm::vSet(LogEntry* pLogEntry, SePrompt*  pPrompt, i8 iPrmId, ePA ePrmAct)
+void _LogEntryPrm::vSet(LogEntry* pLogEntry, SePrompt*  pPrompt, ePA ePrmAct)
 {
   pLogEntry->m_eKind = EK_PRM;
   
-  m_iPrmId  = iPrmId;
+  m_iPrmId  = pPrompt->m_iUniqueId;
   m_ePrmAct = ePrmAct;
   
   if (PA_COMMAND == ePrmAct)

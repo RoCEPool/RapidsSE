@@ -56,7 +56,7 @@ bool Jobs::_bIsValidJob(eCN eClass)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job::Job(eCN eClassNo, Session* pSession)
-: _Loggable(eClassNo,AM::iNextJobId()), JobDicPath(pSession)
+: Focal(eClassNo,AM::iNextJobId()), JobDicPath(pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   

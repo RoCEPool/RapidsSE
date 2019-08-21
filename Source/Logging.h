@@ -14,6 +14,7 @@ namespace Logging
 
 //------------------------------------------------------------------------------
 
+
 #include "ShmLog.hpp"
 
 #include "LogEntryFyi.hpp"

@@ -7,11 +7,11 @@
 /*----------------------------------------------------------------------------*/
 /* set entry                                                                  */
 /*----------------------------------------------------------------------------*/
-void _LogEntryQue::vSet(LogEntry* pLogEntry, Queues* pQueues, i8 iQueId, eQA eQueAct)
+void _LogEntryQue::vSet(LogEntry* pLogEntry, Queues* pQueues, eQA eQueAct)
 {
   pLogEntry->m_eKind = EK_QUE;
   
-  m_iQueId  = iQueId;
+  m_iQueId  = pQueues->m_iUniqueId;
   m_eQueAct = eQueAct;
 }
 

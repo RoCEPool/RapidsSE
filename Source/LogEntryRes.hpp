@@ -13,7 +13,7 @@ namespace Logging
   eRA  m_eResAct;    // resource action
 
   public:
-   void vSet(LogEntry* pLogEntry, Resource*  pResource, i8 iResId, eRA eResAct);
+   void vSet(LogEntry* pLogEntry, Resource*  pResource, eRA eResAct);
   
   void vWriteCsv(File* pFile);
   };

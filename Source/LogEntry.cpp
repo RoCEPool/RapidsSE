@@ -90,11 +90,12 @@ void LogEntry::vInit(eCN eClassNo, Stz* szText)
 /*----------------------------------------------------------------------------*/
 /* init                                                                       */
 /*----------------------------------------------------------------------------*/
-void LogEntry::vInit(_Loggable *pLoggable, Stz* szText)
+void LogEntry::vInit(Focal *pFocal, Stz* szText)
 {
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
-  m_i_Prev = C_UNKNOWN;
+  m_i_Prev = pFocal->m_i_LogPrev;
+  pFocal->m_i_LogPrev = m_i_Entry;
   
   m_iTick = Tick::iRdClock();
   m_iNodeNo = AM::iThisNodeNo();
@@ -103,8 +104,8 @@ void LogEntry::vInit(_Loggable *pLoggable, Stz* szText)
   m_caText[0] = '\0';
   StrLib::vCopyLen(m_caText,szText->aChar(),C_LOG_TEXT - 1);
   
-  m_eClass  = pLoggable->eClass();
-  m_pObject = pLoggable;
+  m_eClass  = pFocal->eClass();
+  m_pObject = pFocal;
   
   m_bLine = false;
 }

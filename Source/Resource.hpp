@@ -5,7 +5,7 @@
 
 namespace Resources
 {
-  class Resource : public _Loggable
+  class Resource : public Focal
   {
   protected:
     Birth m_oBirth; // birth certificate

@@ -68,7 +68,7 @@ void Session::operator delete(void* pSEinterfaceAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Session::Session(i8 iPartition)
-: _Loggable(CN_SESSION, AM::iNextSessionId())
+: Focal(CN_SESSION, AM::iNextSessionId())
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   

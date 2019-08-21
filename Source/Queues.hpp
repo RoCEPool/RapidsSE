@@ -5,7 +5,7 @@
 
 namespace Scheduling
 {
-  class Queues : public _Loggable
+  class Queues : public Focal
   {
   friend Scheduler;
   

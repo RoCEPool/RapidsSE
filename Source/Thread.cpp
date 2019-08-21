@@ -58,7 +58,7 @@ void Thread::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Thread::Thread(void)
-: _Loggable(CN_THREAD,AM::iNextThreadId())
+: Focal(CN_THREAD,AM::iNextThreadId())
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   

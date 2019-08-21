@@ -44,7 +44,7 @@ void Queues::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Queues::Queues(void)
-: _Loggable(CN_QUEUES,0)
+: Focal(CN_QUEUES,0)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   

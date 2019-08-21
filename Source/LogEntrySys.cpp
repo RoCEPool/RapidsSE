@@ -7,11 +7,11 @@
 /*----------------------------------------------------------------------------*/
 /* set entry                                                                  */
 /*----------------------------------------------------------------------------*/
-void _LogEntrySys::vSet(LogEntry* pLogEntry, AttachMap* pAttachMap, i8 iSysId, eYA eSysAct)
+void _LogEntrySys::vSet(LogEntry* pLogEntry, AttachMap* pAttachMap, eYA eSysAct)
 {
   pLogEntry->m_eKind = EK_SYS;
   
-  m_iSysId  = iSysId;
+  m_iSysId  = pAttachMap->m_iUniqueId;
   m_eSysAct = eSysAct;
 }
 

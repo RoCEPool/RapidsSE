@@ -5,7 +5,7 @@
 
 namespace Transactions
 {    
-  class Tx : public _Loggable
+  class Tx : public Focal
   {
   private:
     Lock   m_okLock;     // lock
