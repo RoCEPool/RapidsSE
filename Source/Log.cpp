@@ -355,7 +355,7 @@ i8 Log::iEntryJob(Job* pJob,eCN eClassNo, i8 iJobId, eJA eJobAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
+  LogEntry* pLogEntry = pNewEntry(pJob,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -375,7 +375,7 @@ i8 Log::iEntryLck(Lock* pLck, eCN eClassNo, i8 iLckId, eLA eLckAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
+  LogEntry* pLogEntry = pNewEntry(pLck,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -395,7 +395,7 @@ i8 Log::iEntryLog(Log* pLog, eCN eClassNo, i8 iLogId, eGA eLogAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
+  LogEntry* pLogEntry = pNewEntry(pLog,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -415,7 +415,7 @@ i8 Log::iEntryOpr(Op* pOpr, eCN eClassNo, i8 iOprId, eOA eOprAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
+  LogEntry* pLogEntry = pNewEntry(pOpr,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -435,7 +435,7 @@ i8 Log::iEntryPrm(SePrompt* pPrm, eCN eClassNo, i8 iPrmId, ePA ePrmAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
+  LogEntry* pLogEntry = pNewEntry(pPrm,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -455,7 +455,7 @@ i8 Log::iEntryQue(Queues* pQue, eCN eClassNo, i8 iQueId, eQA eQueAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
+  LogEntry* pLogEntry = pNewEntry(pQue,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -475,7 +475,7 @@ i8 Log::iEntryRes(Resource* pRes, eCN eClassNo, i8 iResId, eRA eResAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
+  LogEntry* pLogEntry = pNewEntry(pRes,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -495,7 +495,7 @@ i8 Log::iEntrySsn(Session* pSsn, eCN eClassNo, i8 iSsnId, eAA eApiAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
+  LogEntry* pLogEntry = pNewEntry(pSsn,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -515,7 +515,7 @@ i8 Log::iEntrySvc(Job* pJob, eCN eClassNo, i8 iSvcId, eVA eSvcAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
+  LogEntry* pLogEntry = pNewEntry(pJob,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -535,7 +535,7 @@ i8 Log::iEntrySys(AttachMap* pSys,eCN eClassNo, i8 iSysId, eYA eSysAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
+  LogEntry* pLogEntry = pNewEntry(pSys,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -555,7 +555,7 @@ i8 Log::iEntryThd(Thread* pThd, eCN eClassNo, i8 iThdId, eHA eThdAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
+  LogEntry* pLogEntry = pNewEntry(pThd,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -575,7 +575,7 @@ i8 Log::iEntryTsk(Task* pTsk, eCN eClassNo, i8 iTskId, eTA eTskAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
+  LogEntry* pLogEntry = pNewEntry(pTsk,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
@@ -595,7 +595,7 @@ i8 Log::iEntryTxn(Tx* pTxn, eCN eClassNo, i8 iTxnId, eXA eTxnAct,
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  LogEntry* pLogEntry = pNewEntry(eClassNo,szFormat,xVaArgs);
+  LogEntry* pLogEntry = pNewEntry(pTxn,szFormat,xVaArgs);
   
   if (! pLogEntry)
     return C_UNKNOWN;
