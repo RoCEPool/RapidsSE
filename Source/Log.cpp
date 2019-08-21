@@ -350,7 +350,7 @@ i8 Log::iEntryFyi(eCN eClassNo,
 /*----------------------------------------------------------------------------*/
 /* add a job log entry                                                        */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryJob(Job* pJob,eCN eClassNo, i8 iJobId, eJA eJobAct,
+i8 Log::iEntryJob(Job* pJob, i8 iJobId, eJA eJobAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
@@ -370,7 +370,7 @@ i8 Log::iEntryJob(Job* pJob,eCN eClassNo, i8 iJobId, eJA eJobAct,
 /*----------------------------------------------------------------------------*/
 /* add a lock log entry                                                       */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryLck(Lock* pLck, eCN eClassNo, i8 iLckId, eLA eLckAct,
+i8 Log::iEntryLck(Lock* pLck, i8 iLckId, eLA eLckAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
@@ -390,7 +390,7 @@ i8 Log::iEntryLck(Lock* pLck, eCN eClassNo, i8 iLckId, eLA eLckAct,
 /*----------------------------------------------------------------------------*/
 /* add a log log entry                                                        */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryLog(Log* pLog, eCN eClassNo, i8 iLogId, eGA eLogAct,
+i8 Log::iEntryLog(Log* pLog, i8 iLogId, eGA eLogAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
@@ -410,7 +410,7 @@ i8 Log::iEntryLog(Log* pLog, eCN eClassNo, i8 iLogId, eGA eLogAct,
 /*----------------------------------------------------------------------------*/
 /* add a operator log entry                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryOpr(Op* pOpr, eCN eClassNo, i8 iOprId, eOA eOprAct,
+i8 Log::iEntryOpr(Op* pOpr, i8 iOprId, eOA eOprAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
@@ -430,7 +430,7 @@ i8 Log::iEntryOpr(Op* pOpr, eCN eClassNo, i8 iOprId, eOA eOprAct,
 /*----------------------------------------------------------------------------*/
 /* add a prompt log entry                                                     */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryPrm(SePrompt* pPrm, eCN eClassNo, i8 iPrmId, ePA ePrmAct,
+i8 Log::iEntryPrm(SePrompt* pPrm, i8 iPrmId, ePA ePrmAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
@@ -450,7 +450,7 @@ i8 Log::iEntryPrm(SePrompt* pPrm, eCN eClassNo, i8 iPrmId, ePA ePrmAct,
 /*----------------------------------------------------------------------------*/
 /* add a queues log entry                                                     */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryQue(Queues* pQue, eCN eClassNo, i8 iQueId, eQA eQueAct,
+i8 Log::iEntryQue(Queues* pQue, i8 iQueId, eQA eQueAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
@@ -470,7 +470,7 @@ i8 Log::iEntryQue(Queues* pQue, eCN eClassNo, i8 iQueId, eQA eQueAct,
 /*----------------------------------------------------------------------------*/
 /* add a resource log entry                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryRes(Resource* pRes, eCN eClassNo, i8 iResId, eRA eResAct,
+i8 Log::iEntryRes(Resource* pRes, i8 iResId, eRA eResAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
@@ -490,7 +490,7 @@ i8 Log::iEntryRes(Resource* pRes, eCN eClassNo, i8 iResId, eRA eResAct,
 /*----------------------------------------------------------------------------*/
 /* add a api log entry                                                        */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntrySsn(Session* pSsn, eCN eClassNo, i8 iSsnId, eAA eApiAct,
+i8 Log::iEntrySsn(Session* pSsn, i8 iSsnId, eAA eApiAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
@@ -510,7 +510,7 @@ i8 Log::iEntrySsn(Session* pSsn, eCN eClassNo, i8 iSsnId, eAA eApiAct,
 /*----------------------------------------------------------------------------*/
 /* add a service log entry                                                    */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntrySvc(Job* pJob, eCN eClassNo, i8 iSvcId, eVA eSvcAct,
+i8 Log::iEntrySvc(Job* pJob, i8 iSvcId, eVA eSvcAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
@@ -530,7 +530,7 @@ i8 Log::iEntrySvc(Job* pJob, eCN eClassNo, i8 iSvcId, eVA eSvcAct,
 /*----------------------------------------------------------------------------*/
 /* add a system log entry                                                     */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntrySys(AttachMap* pSys,eCN eClassNo, i8 iSysId, eYA eSysAct,
+i8 Log::iEntrySys(AttachMap* pSys, i8 iSysId, eYA eSysAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
@@ -550,7 +550,7 @@ i8 Log::iEntrySys(AttachMap* pSys,eCN eClassNo, i8 iSysId, eYA eSysAct,
 /*----------------------------------------------------------------------------*/
 /* add a thread log entry                                                     */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryThd(Thread* pThd, eCN eClassNo, i8 iThdId, eHA eThdAct,
+i8 Log::iEntryThd(Thread* pThd, i8 iThdId, eHA eThdAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
@@ -570,7 +570,7 @@ i8 Log::iEntryThd(Thread* pThd, eCN eClassNo, i8 iThdId, eHA eThdAct,
 /*----------------------------------------------------------------------------*/
 /* add a task log entry                                                       */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryTsk(Task* pTsk, eCN eClassNo, i8 iTskId, eTA eTskAct,
+i8 Log::iEntryTsk(Task* pTsk, i8 iTskId, eTA eTskAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
@@ -590,7 +590,7 @@ i8 Log::iEntryTsk(Task* pTsk, eCN eClassNo, i8 iTskId, eTA eTskAct,
 /*----------------------------------------------------------------------------*/
 /* add a thread log entry                                                     */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryTxn(Tx* pTxn, eCN eClassNo, i8 iTxnId, eXA eTxnAct,
+i8 Log::iEntryTxn(Tx* pTxn, i8 iTxnId, eXA eTxnAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
