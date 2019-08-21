@@ -57,15 +57,14 @@ namespace Logging
   //private:
     i8 iEntryFyi(eCN eClass, Stz* szFormat, va_list xArgs);
   
-    i8 iEntrySsn(Session*   pSsn, eCN eClass, i8 iApiId, eAA eApiAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
     i8 iEntryJob(Job*       pJob, eCN eClass, i8 iJobId, eJA eJobAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
     i8 iEntryLck(Lock*      pLck, eCN eClass, i8 iLckId, eLA eLckAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
     i8 iEntryLog(Log*       pLog, eCN eClass, i8 iLogId, eGA eLogAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
-    i8 iEntryObj(Object* pObject, eCA eObjAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
     i8 iEntryOpr(Op*        pOpr, eCN eClass, i8 iOprId, eOA eOprAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
     i8 iEntryPrm(SePrompt*  pPrm, eCN eClass, i8 iPrmId, ePA ePrmAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
     i8 iEntryQue(Queues*    pQue, eCN eClass, i8 iQueId, eQA eQueAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
     i8 iEntryRes(Resource*  pRes, eCN eClass, i8 iResId, eRA eResAct, eRK eResKnd,   i8 i_Prev, Stz* szFormat, va_list xArgs);
+    i8 iEntrySsn(Session*   pSsn, eCN eClass, i8 iApiId, eAA eApiAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
     i8 iEntrySvc(Job*       pJob, eCN eClass, i8 iSvcId, eVA eSvcAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
     i8 iEntrySys(AttachMap* pSys, eCN eClass, i8 iSysId, eYA eSysAct, i8 i_Prev, Stz* szFormat, va_list xArgs);
     i8 iEntryThd(Thread*    pThd, eCN eClass, i8 iThdId, eHA eThdAct, i8 i_Prev, Stz* szFormat, va_list xArgs);

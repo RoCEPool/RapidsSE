@@ -428,26 +428,6 @@ i8 Log::iEntryLog(Log*       pLog, eCN eClassNo, i8 iLogId, eGA eLogAct, i8 i_Pr
 }
 
 /*----------------------------------------------------------------------------*/
-/* add a object log entry                                                     */
-/*----------------------------------------------------------------------------*/
-i8 Log::iEntryObj(Object* pObj, eCA eObjAct, i8 i_Prev,
-                  Stz* szFormat, va_list xVaArgs)
-{
-  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
-  
-  LogEntry* pLogEntry = pNewEntry(pObj->eClass(),szFormat,xVaArgs);
-  
-  if (! pLogEntry)
-    return C_UNKNOWN;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  pLogEntry->m_xObj.vSet(pLogEntry,pObj,eObjAct);
-  
-  return pLogEntry->m_i_Entry;
-}
-
-/*----------------------------------------------------------------------------*/
 /* add a operator log entry                                                   */
 /*----------------------------------------------------------------------------*/
 i8 Log::iEntryOpr(Op*        pOpr,eCN eClassNo, i8 iOprId, eOA eOprAct, i8 i_Prev,
