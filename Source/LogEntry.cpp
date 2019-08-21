@@ -114,6 +114,42 @@ void LogEntry::vInit(Focal *pFocal, Stz* szText)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* write to csv file                                                          */
+/*----------------------------------------------------------------------------*/
+void LogEntry::vSprint(s4K& sString, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
+{
+  _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
+  
+  iTotalDeltaUsec += iEntryDeltaUsec;
+  
+  //if (StrLib::bSame(m_xFyi.m_caText,"delta reset"))
+  //  iTotalDeltaUsec = 0;
+  
+  vSprintCsv(sString,iEntryDeltaUsec,iTotalDeltaUsec);
+  
+  switch (m_eKind) {
+    case EK_FYI: m_xFyi.vSprint(sString); break;
+    case EK_JOB: m_xJob.vSprint(sString); break;
+    case EK_LCK: m_xLck.vSprint(sString); break;
+    case EK_LOG: m_xLog.vSprint(sString); break;
+    case EK_OPR: m_xOpr.vSprint(sString); break;
+    case EK_PRM: m_xPrm.vSprint(sString); break;
+    case EK_QUE: m_xQue.vSprint(sString); break;
+    case EK_RES: m_xRes.vSprint(sString); break;
+    case EK_SSN: m_xSsn.vSprint(sString); break;
+    case EK_SVC: m_xSvc.vSprint(sString); break;
+    case EK_SYS: m_xSys.vSprint(sString); break;
+    case EK_TSK: m_xTsk.vSprint(sString); break;
+    case EK_THD: m_xThd.vSprint(sString); break;
+    case EK_TXN: m_xTxn.vSprint(sString); break;
+    default:
+      NEVER_REACH;
+  }
+  
+  sString.vCatSprint("}, %s\n"_Stz,m_caText);
+}
+
+/*----------------------------------------------------------------------------*/
 /* sprint                                                                     */
 /*----------------------------------------------------------------------------*/
 void LogEntry::vSprintCsv(s4K& sString, i8 iTickDeltaUsec, i8& iTotalDelta)
