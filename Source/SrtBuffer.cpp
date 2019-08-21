@@ -235,7 +235,7 @@ void SrtBuffer::vShow(void)
   while (aSrtSet) {
       
     RASSERT(aSrtSet == this->aSrtSet(iElement));
-    vTrace("SrtSet %lld: %p\n"_Stz, iElement, aSrtSet);
+    vTrace("SrtSet %lld: iKey: %lld %p\n"_Stz, iElement, aSrtSet->iKey(), aSrtSet);
     aSrtSet = aNextSrtSet(aSrtSet);
     iElement++;
     

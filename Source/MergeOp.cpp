@@ -246,55 +246,148 @@ void MergeOp::vMergeOperands(Operand* pOperand1, Operand* pOperand2)
   if (AM::bVerbose())
     vTrace("Merging operands %p %p\n"_Stz, pOperand1, pOperand2);
 
-  SrtBuffer* pSrtBuffer1 = _pSrtBuffer(pOperand1);
-  RASSERT(pSrtBuffer1->bVerifyNextPrev());
+  SrtBuffer* pLeftBuffer = _pSrtBuffer(pOperand1);
+  RASSERT(pLeftBuffer->bVerifyNextPrev());
   
-  SrtBuffer* pSrtBuffer2 = _pSrtBuffer(pOperand2);
-  RASSERT(pSrtBuffer2->bVerifyNextPrev());
+  SrtBuffer* pRightBuffer = _pSrtBuffer(pOperand2);
+  RASSERT(pRightBuffer->bVerifyNextPrev());
   
-  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // link the buffers
-  pSrtBuffer1->vLinkBuffer(pSrtBuffer2);
-  RASSERT(pSrtBuffer1->bVerifyNextPrev());
+  // left and right buffers should belong to the same partition
+  RASSERT(pLeftBuffer->iPartitionNo() == pRightBuffer->iPartitionNo());
   
-  //vTrace("\nUnSorted buffer:\n"_Stz);
-  //pSrtBuffer1->vShow(m_pColumnVec);
-  //pSrtBuffer2->vShow(m_pColumnVec);
+  vTrace("\nUnSorted buffer:\n"_Stz);
+  pLeftBuffer->vShow();
+  pRightBuffer->vShow();
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get count and last buffer
-  i8 iCount = 0;
-  SrtBuffer* pLastBuffer = pSrtBuffer1->pLastBuffer(iCount);
+  // get count of left buffer
+  i8 iLeftCount = pLeftBuffer->nItems();
+  i8 iRightCount = pRightBuffer->nItems();
+  
+  i8 iRowRefs = 1; // ALKA ??
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create a Low cursor pointing to the first element in the array
-  BufferCursor* pLowCursor = new BufferCursor(pSrtBuffer1, 0, 0);
+  // create a left cursor pointing to the first element in the left buffer list
+  BufferCursor* pLeftCursor = new BufferCursor(pLeftBuffer, 0, 0);
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create a High cursor pointing to the last element in the array
-  
-  BufferCursor* pHighCursor = new BufferCursor(pLastBuffer, iCount-1, pLastBuffer->nItems() - 1);
+  // create a right cursor pointing to the first element in the right buffer list
+  BufferCursor* pRightCursor = new BufferCursor(pRightBuffer, 0, 0);
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // call quick sort (recursive call)
-  BufferSort::vQuickSortBuffer(m_pStreamDef->m_pColumnVec, pSrtBuffer1, pLowCursor, pHighCursor);
+  // create a new srtBuffer to copy elements after merging
+  SrtBuffer* pMergeBuffer  = new SrtBuffer(pLeftBuffer->iPartitionNo());
   
-  //vTrace("\nSorted buffer:\n"_Stz);
-  //pSrtBuffer1->vShow(m_pColumnVec);
-  //pSrtBuffer2->vShow(m_pColumnVec);
+  i8 iScan = iLeftCount < iRightCount ? iLeftCount : iRightCount;
+  i8 iElement = 0;
+  i8 iLeftRemaining = iLeftCount;
+  i8 iRightRemaining = iRightCount;
+  SrtSet* pSrtSet = nullptr;
+  
+  while (iScan--) {
+    
+    // allot a srtSet
+    pSrtSet = pMergeBuffer->aAllotSrtSet(iRowRefs);
+    if ( ! pSrtSet ) {
+      // create a new merge SrtBuffer
+      pMergeBuffer = new SrtBuffer(pMergeBuffer->iPartitionNo());
+      pSrtSet = pMergeBuffer->aAllotSrtSet(iRowRefs);
+    }
+    
+    if (pLeftCursor->bIsLessThan(pRightCursor)) {
+      
+      // copy left value to new buffer
+      pSrtSet->vCopy(pLeftCursor->aSrtSet());
+      
+      // move left cursor to the right
+      pLeftCursor->bMoveRight();
+      iLeftRemaining--;
+    }
+    else if (pLeftCursor->bIsGreaterThan(pRightCursor))
+    {
+      
+      // copy right value to new buffer
+      pSrtSet->vCopy(pRightCursor->aSrtSet());
+      
+      // move right cursor to the right
+      pRightCursor->bMoveRight();
+      iRightRemaining--;
+    }
+    else {
+      // copy both
+      pSrtSet->vCopy(pLeftCursor->aSrtSet());
+      pSrtSet->vCopy(pRightCursor->aSrtSet());
+      
+      // move both
+      pLeftCursor->bMoveRight();
+      pRightCursor->bMoveRight();
+      iLeftRemaining--;
+      iRightRemaining--;
+    }
+    
+    vTrace("\nMerged merged buffers:\n"_Stz);
+    pMergeBuffer->vShow();
+  }
+  
+  // now copy the remaining
+  
+  
+  if (iLeftRemaining) {
+    RASSERT(iRightRemaining == 0);
+    
+    while (iLeftRemaining--) {
+      // allot a srtSet
+      pSrtSet = pMergeBuffer->aAllotSrtSet(iRowRefs);
+      if ( ! pSrtSet ) {
+        // create a new merge SrtBuffer
+        pMergeBuffer = new SrtBuffer(pMergeBuffer->iPartitionNo());
+        pSrtSet = pMergeBuffer->aAllotSrtSet(iRowRefs);
+      }
+      // copy left value to new buffer
+      pSrtSet->vCopy(pLeftCursor->aSrtSet());
+      
+      // move left cursor to the right
+      pLeftCursor->bMoveRight();
+    }
+  }
+  else {
+    RASSERT(iLeftRemaining == 0);
+    
+    while (iRightRemaining--) {
+      // allot a srtSet
+      pSrtSet = pMergeBuffer->aAllotSrtSet(iRowRefs);
+      if ( ! pSrtSet ) {
+        // create a new merge SrtBuffer
+        pMergeBuffer = new SrtBuffer(pMergeBuffer->iPartitionNo());
+        pSrtSet = pMergeBuffer->aAllotSrtSet(iRowRefs);
+      }
+      // copy left value to new buffer
+      pSrtSet->vCopy(pLeftCursor->aSrtSet());
+      
+      // move left cursor to the right
+      pLeftCursor->bMoveRight();
+    }
+  }
+  vTrace("\nSorted merged buffers:\n"_Stz);
+  pMergeBuffer->vShow();;
+  
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // link the sorted buffers
+  pLeftBuffer->vLinkBuffer(pRightBuffer);
+  RASSERT(pLeftBuffer->bVerifyNextPrev());
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete the bufferCursors
-  delete pLowCursor;
-  delete pHighCursor;
+  delete pLeftCursor;
+  delete pRightCursor;
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify that the data is sorted
-  RASSERT(pSrtBuffer1->bVerifyOrder());
+  RASSERT(pLeftBuffer->bVerifyOrder());
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // calculate the magnitude of this sorted buffer
-  i8 iMagnitude = (i8)log2(iCount);
+  i8 iMagnitude = (i8)log2(iLeftCount + iRightCount);
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // do we have another buffer set of the same magnitude ?
@@ -302,7 +395,7 @@ void MergeOp::vMergeOperands(Operand* pOperand1, Operand* pOperand2)
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // save this buffer set
-    m_pOperand[iMagnitude] = pSrtBuffer1;
+    m_pOperand[iMagnitude] = pLeftBuffer;
     m_iOperands++;
   }
   else {
@@ -312,7 +405,7 @@ void MergeOp::vMergeOperands(Operand* pOperand1, Operand* pOperand2)
     Operand* pOperand = m_pOperand[iMagnitude];
     m_pOperand[iMagnitude] = nullptr;
     m_iOperands--;
-    vMergeOperands(pSrtBuffer1, pOperand);
+    vMergeOperands(pLeftBuffer, pOperand);
   }
 
 }
