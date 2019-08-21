@@ -114,7 +114,7 @@ void FocalObjects::vMri(TokenVec* pTknVec)
     vTrace("  [%04lld] %p %04lld %s\n"_Stz,
            i_Item,
            pFocal,
-           pFocal->m_i_LogPrev,
+           pFocal->m_i_Log,
            aCN[pFocal->eClass()]);
   }
 

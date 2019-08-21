@@ -94,8 +94,8 @@ void LogEntry::vInit(Focal *pFocal, Stz* szText)
 {
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
-  m_i_Prev = pFocal->m_i_LogPrev;
-  pFocal->m_i_LogPrev = m_i_Entry;
+  m_i_Prev = pFocal->m_i_Log;
+  pFocal->m_i_Log = m_i_Entry;
   
   m_iTick = Tick::iRdClock();
   m_iNodeNo = AM::iThisNodeNo();

@@ -424,7 +424,7 @@ void AM::vLogJob(Job* pJob, eJA eJobAct, Stz* szFormat, ...)
   
   va_end(xVaArgs);
   
-  pJob->m_i_LogPrev = i_Entry;
+  pJob->m_i_Log = i_Entry;
 #endif
 }
 
@@ -455,7 +455,7 @@ void AM::vLogLck(Lock* pLock, eLA eLckAct, Stz* szFormat, ...)
   
   va_end(xVaArgs);
   
-  pLock->m_i_LogPrev = i_Entry;
+  pLock->m_i_Log = i_Entry;
 #endif
 }
 
@@ -482,7 +482,7 @@ void AM::vLogLog(Log* pLog, eGA eLogAct, Stz* szFormat, ...)
   
   va_end(xVaArgs);
   
-  pLog->m_i_LogPrev = i_Entry;
+  pLog->m_i_Log = i_Entry;
 #endif
 }
 
@@ -508,7 +508,7 @@ void AM::vLogOpr(Op* pOpr, eOA eOprAct, Stz* szFormat, ...)
   
   va_end(xVaArgs);
   
-  pOpr->m_i_LogPrev = i_Entry;
+  pOpr->m_i_Log = i_Entry;
 #endif
 }
 
@@ -534,7 +534,7 @@ void AM::vLogPrm(SePrompt* pPrm, ePA ePrmAct, Stz* szFormat, ...)
   
   va_end(xVaArgs);
   
-  pPrm->m_i_LogPrev = i_Entry;
+  pPrm->m_i_Log = i_Entry;
 #endif
 }
 
@@ -560,7 +560,7 @@ void AM::vLogQue(Queues* pQue, eQA eQueAct, Stz* szFormat, ...)
   
   va_end(xVaArgs);
 
-  pQue->m_i_LogPrev = i_Entry;
+  pQue->m_i_Log = i_Entry;
 #endif
 }
 
@@ -586,7 +586,7 @@ void AM::vLogRes(Resource* pRes, eRA eResAct, Stz* szFormat, ...)
   
   va_end(xVaArgs);
   
-  pRes->m_i_LogPrev = i_Entry;
+  pRes->m_i_Log = i_Entry;
 #endif
 }
 
@@ -612,7 +612,7 @@ void AM::vLogSsn(Session* pSsn, eAA eApiAct, Stz* szFormat, ...)
   
   va_end(xVaArgs);
   
-  pSsn->m_i_LogPrev = i_Entry;
+  pSsn->m_i_Log = i_Entry;
 #endif
 }
 
@@ -638,7 +638,7 @@ void AM::vLogSvc(Job* pJob, eVA eSvcAct, Stz* szFormat, ...)
   
   va_end(xVaArgs);
   
-  pJob->m_i_LogPrev = i_Entry;
+  pJob->m_i_Log = i_Entry;
 #endif
 }
 
@@ -664,7 +664,7 @@ void AM::vLogSys(AttachMap* , eYA eSysAct, Stz* szFormat, ...)
   
   va_end(xVaArgs);
   
-  gpAttachMap->m_i_LogPrev = i_Entry;
+  gpAttachMap->m_i_Log = i_Entry;
 
 #endif
 }
@@ -691,7 +691,7 @@ void AM::vLogThd(Thread* pThread, eHA eThdAct, Stz* szFormat, ...)
 
   va_end(xVaArgs);
   
-  pThread->m_i_LogPrev = i_Entry;
+  pThread->m_i_Log = i_Entry;
 #endif
 }
 
@@ -717,7 +717,7 @@ void AM::vLogTsk(Task* pTask, eTA eTskAct, Stz* szFormat, ...)
   
   va_end(xVaArgs);
   
-  pTask->m_i_LogPrev = i_Entry;
+  pTask->m_i_Log = i_Entry;
 #endif
 }
 
@@ -743,7 +743,7 @@ void AM::vLogTxn(Tx* pTxn, eXA eTxnAct, Stz* szFormat, ...)
 
   va_end(xVaArgs);
   
-  pTxn->m_i_LogPrev = i_Entry;
+  pTxn->m_i_Log = i_Entry;
 #endif
 }
 

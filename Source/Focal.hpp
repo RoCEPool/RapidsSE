@@ -10,7 +10,7 @@ namespace Correctness
   public:
     i8 m_i_Focal;   // focal subscript
     i8 m_iUniqueId; // id
-    i8 m_i_LogPrev; // previous log entry
+    i8 m_i_Log;     // log entry
   
   public:
     Focal(eCN eClassNo, i8 iUniqueId);
