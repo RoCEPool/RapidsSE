@@ -20,6 +20,12 @@ void _LogEntryLog::vSet(LogEntry* pLogEntry, Log* pLog, eGA eLogAct)
 /*----------------------------------------------------------------------------*/
 void _LogEntryLog::vSprint(s4K& sString)
 {
+  SP_Id spId;
+  
+  sString.vCatSprint(",%s,%s"_Stz,
+                
+                spId.sz("G"_Stz,m_iLogId),
+                aGA[m_eLogAct]);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -20,6 +20,12 @@ void _LogEntryTsk::vSet(LogEntry* pLogEntry, Task* pTask, eTA eTskAct)
 /*----------------------------------------------------------------------------*/
 void _LogEntryTsk::vSprint(s4K& sString)
 {
+  SP_Id spId;
+  
+  sString.vCatSprint(",%s,%s"_Stz,
+                
+                spId.sz("T"_Stz,m_iTskId),
+                aTA[m_eTskAct]);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -20,6 +20,12 @@ void _LogEntryOp::vSet(LogEntry* pLogEntry, Op* pOp, eOA eOpAct)
 /*----------------------------------------------------------------------------*/
 void _LogEntryOp::vSprint(s4K& sString)
 {
+  SP_Id spId;
+  
+  sString.vCatSprint(",%s,%s"_Stz,
+                
+                spId.sz("O"_Stz,m_iOpId),
+                aOA[m_eOpAct]);
 }
 
 /*----------------------------------------------------------------------------*/

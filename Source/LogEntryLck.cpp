@@ -20,6 +20,12 @@ void _LogEntryLck::vSet(LogEntry* pLogEntry, Lock* pLock, eLA eLckAct)
 /*----------------------------------------------------------------------------*/
 void _LogEntryLck::vSprint(s4K& sString)
 {
+  SP_Id spId;
+  
+  sString.vCatSprint(",%s,%s"_Stz,
+                
+                spId.sz("L"_Stz,m_iLckId),
+                aLA[m_eLckAct]);
 }
 
 /*----------------------------------------------------------------------------*/

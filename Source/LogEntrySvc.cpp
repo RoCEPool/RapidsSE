@@ -20,6 +20,12 @@ void _LogEntrySvc::vSet(LogEntry* pLogEntry, Job* pJob, eVA eSvcAct)
 /*----------------------------------------------------------------------------*/
 void _LogEntrySvc::vSprint(s4K& sString)
 {
+  SP_Id spId;
+  
+  sString.vCatSprint(",%s,%s"_Stz,
+                
+                spId.sz("S"_Stz,m_iSvcId),
+                aVA[m_eSvcAct]);
 }
 
 /*----------------------------------------------------------------------------*/
