@@ -550,6 +550,8 @@ void Jobs::vJob_recv(Job* pJob)
   pJob->m_eJobList       = JL_NONE;
   pJob->m_pMutexJob      = nullptr;
   pJob->m_bWasReceived   = true;
+  
+  pJob->m_i_Focal = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/

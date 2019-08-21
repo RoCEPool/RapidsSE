@@ -435,7 +435,8 @@ void AM::vLogLck(Lock* pLock, eLA eLckAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   
-  if (LK_ACTION_LOG == pLock->eLockKind())
+  if (LK_ACTION_LOG == pLock->eLockKind() ||
+      LK_FOCAL_OBJECTS == pLock->eLockKind())
     return;
   
   if (! AM::bLogging())
@@ -925,8 +926,16 @@ void AM::vLogOpenBySE(bool bStarting)  { Log::vOpenBySE(bStarting);  }
 void AM::vLogWriteCsv(bool bShortForm) { Log::vWriteCsv(bShortForm); }
 void AM::vLogText(i8 iId, Stz* szText) {;}
 
-void AM::vFocalAdd(Focal* pFocal)      {           }
-void AM::vFocalRemove(Focal* pFocal)   {           }
+void AM::vFocalAdd(Focal* pFocal)      {
+//  if (! gpAttachMap || !gpAttachMap->m_pFocalObjects)
+//    return;
+//  gpAttachMap->m_pFocalObjects->vAdd(pFocal);
+}
+void AM::vFocalRemove(Focal* pFocal)   {
+//  if (C_UNKNOWN == pFocal->m_i_Focal)
+//    return;
+//  gpAttachMap->m_pFocalObjects->vRemove(pFocal);
+}
 
 /*============================================================================*/
 /* end                                                                        */

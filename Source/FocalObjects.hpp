@@ -19,6 +19,11 @@ namespace StorageEngine
     
     FocalObjects(void);
    ~FocalObjects(void) noexcept(false);
+  
+    void vAdd(Focal* pFocal);
+    void vRemove(Focal* pFocal);
+
+  private:
     
     Footer* aFooter(void);
   };

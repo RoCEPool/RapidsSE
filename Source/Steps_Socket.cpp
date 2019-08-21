@@ -337,6 +337,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     
     //ActLog::vAdd(pJob,AN_RECV_JOB,mpTask->pJob(),nObjectSize);
 
+    pJob->m_i_Focal = C_UNKNOWN;
                          
     mpTask->m_pDataStack->vPushPointer(pJob);
     mpTask->m_pDataStack->vPushBool(true);
@@ -495,6 +496,8 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
     Job_WriteBuffer* pJob_WriteBuffer =
       static_cast<Job_WriteBuffer*>(aLowBuff);
 
+    pJob_WriteBuffer->m_i_Focal = C_UNKNOWN;
+
     bDiscardEntBuffer = pJob_WriteBuffer->m_pCurrentBuffer ? true : false;
 
     pJob_WriteBuffer->m_bLowMem = true;
@@ -554,6 +557,8 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
     //ActLog::vAdd(pJob,AN_RECV_JOB,mpTask->pJob(),nObjectSize);
     //ActLog::vAdd(pJob,AN_RECV_JOB_LOW_MEMORY);
     
+    pJob->m_i_Focal = C_UNKNOWN;
+
     mpTask->m_pDataStack->vPushPointer(pJob);
     mpTask->m_pDataStack->vPushBool(true);
     EXIT();

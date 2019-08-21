@@ -35,7 +35,7 @@ namespace Structures
     bool  bIsItem(i8 i_Item);
     i8    nItems(void);
     ITEM* pGet(i8 i_Item);
-    void  vRemove(i8 i_Item);
+    void  vRemoveItem(i8 i_Item);
     
     
   private:
@@ -156,16 +156,22 @@ i8 LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::iAdd(ITEM* pItem)
 {
   _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
   
+  ASSERT(m_i_Free >= 0 && m_i_Free < MAX_ITEMS);
+  
   // get item number
   i8 i_Item = m_i_Free;
-  
+
   if (C_UNKNOWN == i_Item)
     return C_UNKNOWN;
   
   m_i_Free = m_i_NextFree[i_Item];
+  ASSERT(m_i_Free >= 0 && m_i_Free < MAX_ITEMS);
+  
   m_pItem[i_Item] = pItem;
   
   m_nItems++;
+  
+  return i_Item;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -219,7 +225,7 @@ ITEM* LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::pGet(i8 i_Item)
 {
   _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
   
-  ASSERT(i_Item >= 0 && i_Item < m_nItems);
+  ASSERT(i_Item >= 0 && i_Item < MAX_ITEMS);
   
   ITEM* pItem = m_pItem[i_Item];
   
@@ -230,13 +236,20 @@ ITEM* LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::pGet(i8 i_Item)
 /* remove the given item                                                      */
 /*----------------------------------------------------------------------------*/
 template <eCN LAT_CN, class ITEM, i8 MAX_ITEMS>
-void LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::vRemove(i8 i_Item)
+void LatticeNL_t<LAT_CN,ITEM,MAX_ITEMS>::vRemoveItem(i8 i_Item)
 {
   _precondition_(_MAGIC_,LAT_CN,_FOOTER_);
   
+  if (871 == i_Item)
+    vDebugPoint();
+  
+  ASSERT(i_Item >= 0 && i_Item < MAX_ITEMS);
+  ASSERT(m_i_Free >= 0 && m_i_Free < MAX_ITEMS);
+
   m_i_NextFree[i_Item] = m_i_Free;
   m_i_Free = i_Item;
-  
+  ASSERT(m_i_Free >= 0 && m_i_Free < MAX_ITEMS);
+
   m_nItems--;
 }
 
