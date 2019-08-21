@@ -570,7 +570,7 @@ void Table::vMarkTable(void)
 
   }
   
-  //Log::vNoteString(-1,sTableMark);
+  AM::vLogText(-1,sTableMark);
   
 }
 
