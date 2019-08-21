@@ -173,6 +173,23 @@ void Log::vNoteString(i8 iJobId, s48K& sString)
 /*----------------------------------------------------------------------------*/
 /* entry sprint                                                               */
 /*----------------------------------------------------------------------------*/
+bool Log::bEntryExists(i8 i_Entry)
+{
+#ifdef WITH_SHARED_LOG
+  if (! AM::bLog())
+    return false;
+  
+  LogEntry* pLogEntry = gpLog->pGetEntry(i_Entry);
+  if (! pLogEntry)
+    return false;
+  
+  return true;
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* entry sprint                                                               */
+/*----------------------------------------------------------------------------*/
 void Log::vEntrySprint(s4K& sString, i8 i_Entry)
 {
 #ifdef WITH_SHARED_LOG

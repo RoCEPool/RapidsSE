@@ -925,6 +925,7 @@ void AM::vLogOpenByApi(void)           { Log::vOpenByApi();          }
 void AM::vLogOpenBySE(bool bStarting)  { Log::vOpenBySE(bStarting);  }
 void AM::vLogWriteCsv(bool bShortForm) { Log::vWriteCsv(bShortForm); }
 void AM::vLogText(i8 iId, Stz* szText) {;}
+bool AM::bLogEntryExists(i8 i_Entry) {  return Log::bEntryExists(i_Entry); }
 void AM::vLogEntrySprint(s4K& sString, i8 i_Entry) {
   Log::vEntrySprint(sString,i_Entry);
 }
