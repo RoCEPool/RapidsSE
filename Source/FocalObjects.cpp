@@ -105,6 +105,16 @@ void FocalObjects::vMri(TokenVec* pTknVec)
   
   //i8 iNumTokens = pTknVec->nItems();
 
+  vMriAll();
+}
+
+/*----------------------------------------------------------------------------*/
+/* mri                                                                        */
+/*----------------------------------------------------------------------------*/
+void FocalObjects::vMriAll(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FOCALOBJECTS);
+  
   s4K sString;
   
   m_okLock.vGrabWrite();
@@ -122,8 +132,16 @@ void FocalObjects::vMri(TokenVec* pTknVec)
            aCN[pFocal->eClass()],
            sString.aChar());
   }
-
+  
   m_okLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* mri                                                                        */
+/*----------------------------------------------------------------------------*/
+void FocalObjects::vMriItem(i8 i_Item)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FOCALOBJECTS);
 }
 
 /*----------------------------------------------------------------------------*/

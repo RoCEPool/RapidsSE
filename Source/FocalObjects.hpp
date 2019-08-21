@@ -26,6 +26,8 @@ namespace StorageEngine
     // -- -- -- -- -- --
   
     void vMri(TokenVec* pTknVec);
+    void vMriAll(void);
+    void vMriItem(i8 i_Item);
 
   private:
     
