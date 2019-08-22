@@ -156,23 +156,27 @@ void FocalObjects::vMriFocal(i8 i_Focal)
   m_okLock.vGrabWrite();
   
   Focal* pFocal = pGet(i_Focal);
-
+  
   if (! pFocal) {
     m_okLock.vDropWrite();
-    vTrace("Unknown\n"_Stz);
+    vTrace("Unknown focal object\n"_Stz);
     return;
   }
-  
-  AM::vLogEntrySprint(sString,pFocal->m_i_Log);
+
+  i8 i_Log = pFocal->m_i_Log;
+  while (C_UNKNOWN != i_Log) {
     
-  vTrace("  [%04lld] %p %04lld %16s %s\n"_Stz,
-         i_Focal,
-         pFocal,
-         pFocal->m_i_Log,
-         aCN[pFocal->eClass()],
-         sString.aChar());
+    AM::vLogEntrySprint(sString,i_Log);
+    
+    vTrace("  [%04lld] %p %04lld %16s %s\n"_Stz,
+           i_Focal,
+           pFocal,
+           i_Log,
+           aCN[pFocal->eClass()],
+           sString.aChar());
   
-  m_okLock.vDropWrite();
+    i_Log = AM::iLogEntryPrev(i_Log);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
