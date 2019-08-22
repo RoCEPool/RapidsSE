@@ -148,6 +148,9 @@ void MergeOp::vMergeDangling(void)
              m_nSlot, iOperandMag[0], iOperandMag[1]);
     
     // merge the operand set pair
+    AM::vLogOpr(this,OA_OP_INF,"P:%lld Merging Dangling of Mags %lld %lld"_Stz,
+                m_nSlot, iOperandMag[0], iOperandMag[1]);
+    
     vMergeOperands(pOperandPair[0], pOperandPair[1]);
   }
 }
@@ -193,6 +196,8 @@ eOR MergeOp::eMergeLoop(void)
       m_iOperands--;
       
       // merge the two operands
+      AM::vLogOpr(this,OA_OP_INF,"P:%lld Merging Operands of Mag %lld"_Stz,
+                  m_nSlot, 0);
       vMergeOperands(pOperand, pOperand2);
     }
     else {
@@ -265,8 +270,6 @@ void MergeOp::vMergeOperands(Operand* pOperand1, Operand* pOperand2)
   // get count of left and right buffers
   i8 iLeftCount = pLeftBuffer->nItemCount();
   i8 iRightCount = pRightBuffer->nItemCount();
-  
-  i8 iRowRefs = 2;
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a left cursor pointing to the first element in the left buffer
@@ -378,6 +381,9 @@ void MergeOp::vMergeOperands(Operand* pOperand1, Operand* pOperand2)
   iMergeBufferCount = pFirstMergeBuffer->nBufferCount();
   i8 iMagnitude = (i8)log2(iMergeBufferCount);
   
+  AM::vLogOpr(this,OA_OP_INF,"P:%lld Merged Operands generated Mag %lld"_Stz,
+              m_nSlot, iMagnitude);
+  
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // do we have another buffer set of the same magnitude ?
   if ( ! m_pOperand[iMagnitude]) {
@@ -394,7 +400,11 @@ void MergeOp::vMergeOperands(Operand* pOperand1, Operand* pOperand2)
     Operand* pOperand = m_pOperand[iMagnitude];
     m_pOperand[iMagnitude] = nullptr;
     m_iOperands--;
-    vMergeOperands(pMergeBuffer, pOperand);
+
+    
+    AM::vLogOpr(this,OA_OP_INF,"P:%lld Merging Operands of Mag %lld"_Stz,
+                m_nSlot, iMagnitude);
+    vMergeOperands(pFirstMergeBuffer, pOperand);
   }
 
 }
