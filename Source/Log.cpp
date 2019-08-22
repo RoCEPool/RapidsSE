@@ -185,6 +185,8 @@ bool Log::bEntryExists(i8 i_Entry)
   
   return true;
 #endif
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
