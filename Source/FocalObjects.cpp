@@ -133,7 +133,7 @@ void FocalObjects::vMriAll(void)
     
     AM::vLogEntrySprint(sString,pFocal->m_i_Log);
     
-    vTrace("  [%04lld] %p %04lld %16s %s\n"_Stz,
+    vTrace("  [%04lld] %p %04lld %16s :: %s\n"_Stz,
            i_Focal,
            pFocal,
            pFocal->m_i_Log,
@@ -168,7 +168,7 @@ void FocalObjects::vMriFocal(i8 i_Focal)
     
     AM::vLogEntrySprint(sString,i_Log);
     
-    vTrace("  [%04lld] %p %04lld %16s %s\n"_Stz,
+    vTrace("  [%04lld] %p %04lld %16s :: %s\n"_Stz,
            i_Focal,
            pFocal,
            i_Log,
@@ -177,6 +177,8 @@ void FocalObjects::vMriFocal(i8 i_Focal)
   
     i_Log = AM::iLogEntryPrev(i_Log);
   }
+  
+  m_okLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
