@@ -83,6 +83,7 @@ void TxSet::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 TxSet::TxSet(i8 iNodeNo)
 : Object(CN_TXSET)
+, m_okLock(LK_TX_SET)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
   

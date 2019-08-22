@@ -26,6 +26,7 @@ void Completer::operator delete(void* )
 /*----------------------------------------------------------------------------*/
 Completer::Completer(void)
 : Object(CN_COMPLETER)
+, m_okLock(LK_COMPLETER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPLETER,_FOOTER_);
   

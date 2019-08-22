@@ -104,6 +104,7 @@ void Job_SubInserter::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 Job_SubInserter::Job_SubInserter(Session* pSession)
 : Job(CN_JOB_SUBINSERTER, pSession), JobWriteBehind(DS_INSERT)
+, m_okLock(LK_SUBINSERTER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINSERTER,_FOOTER_);
   

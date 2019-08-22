@@ -45,33 +45,6 @@ void Lock::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Lock::Lock(void)
-: Focal(CN_LOCK,AM::iNextLockId())
-{
-  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
-  
-  m_uLockWord = 0;
-  m_eLockKind = LK_NONE;
-
-  m_ixReadGrabs.vCheckInit();
-  m_ixReadCollisions.vCheckInit();
-  
-  m_ixWriteGrabs.vCheckInit();
-  m_ixWriteCollisions.vCheckInit();
-  
-  _checkInitialised_(CN_LOCK);
-  
-  ++ gixLock;
-  AM::vLogLck(this,LA_CONSTRUCTOR,
-              "Lock constructed %s : %p (%lld locks exist)"_Stz,
-                aLK[m_eLockKind],this,* gixLock);
-
-  _postcondition_(_MAGIC_,CN_LOCK,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
 Lock::Lock(eLK eLockKind)
 :Focal(CN_LOCK,AM::iNextLockId())
 {

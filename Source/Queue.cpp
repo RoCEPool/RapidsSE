@@ -49,6 +49,7 @@ void Queue::operator delete(void* pQueueAddress)
 /*----------------------------------------------------------------------------*/
 Queue::Queue(void)
 : Object(CN_QUEUE)
+, m_okLock(LK_QUEUE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   

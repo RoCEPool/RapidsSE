@@ -34,6 +34,7 @@ BufferPool::BufferPool(Stz* aRegionName, i8 iRegionSize, i8 iJumboTook,
                        bool bTouch, bool bProgress,
                        bool bDontFree, bool bFreeCB)
 : Object(CN_BUFFERPOOL)
+, m_okFreeLock(LK_BUFFER_POOL)
 {
   gpBufferPool = this;
   
@@ -49,7 +50,7 @@ BufferPool::BufferPool(Stz* aRegionName, i8 iRegionSize, i8 iJumboTook,
   m_sShmName = aRegionName;
   m_iShmFD   = 0;
   
-  m_oFreeLock.vInitLock(LK_BUFFER_POOL);
+  m_okFreeLock.vInitLock(LK_BUFFER_POOL);
   
   m_nAllocCount  = 0;
   m_nFreeCount   = 0;
@@ -297,7 +298,7 @@ void BufferPool::vFree(PoolBuffer* pBuffer)
   
   FreeBuffer* pFreeBuffer = pToFreeBuffer(pBuffer);
   
-  m_oFreeLock.vGrabWrite();
+  m_okFreeLock.vGrabWrite();
   
   //vVerifyPool();
   
@@ -320,7 +321,7 @@ void BufferPool::vFree(PoolBuffer* pBuffer)
   
   //vVerifyPool();
   
-  m_oFreeLock.vDropWrite();
+  m_okFreeLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -655,7 +656,7 @@ FreeBuffer* BufferPool::pPopFreeBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
-  m_oFreeLock.vGrabWrite();
+  m_okFreeLock.vGrabWrite();
 
   //vVerifyPool();
   
@@ -664,7 +665,7 @@ FreeBuffer* BufferPool::pPopFreeBuffer(void)
     ASSERT( ! m_nFreeCount );
     vTrace("NODE%lld: RUNNING OUT OF MEMORY!!!\n"_Stz, AM::iThisNodeNo());
     vWarn("BufferPool::pAllocBuffer: zero free buffers\n"_Stz);
-    m_oFreeLock.vDropWrite();
+    m_okFreeLock.vDropWrite();
     return nullptr;
   }
 
@@ -678,7 +679,7 @@ FreeBuffer* BufferPool::pPopFreeBuffer(void)
   
   //vVerifyPool();
   
-  m_oFreeLock.vDropWrite();
+  m_okFreeLock.vDropWrite();
   
   return pPoolCheck<FreeBuffer*>(pAllocatedBuffer);
 }
@@ -713,7 +714,7 @@ void BufferPool::vPrintProgress(void)
   static s32 sMagLarge;  MagLib::vByteMag(C_SIZE_LARGE_OBJECT, sMagLarge);
   static s32 sMagJumbo;  MagLib::vByteMag(C_SIZE_JUMBO_OBJECT, sMagJumbo);
   
-  m_oFreeLock.vGrabWrite();
+  m_okFreeLock.vGrabWrite();
   
   vTrace("BufferPool::nAllocs: %lld; nBuffers: %lld; AllocCount: %lld; nFreeHead: %p; iFreeCount: %lld\n"_Stz,
         m_nAllocCount, m_nBuffers, m_nAllocCount, *m_nFreeHead, m_nFreeCount);
@@ -778,7 +779,7 @@ void BufferPool::vPrintProgress(void)
   
   //vVerifyPool();
   
-  m_oFreeLock.vDropWrite();
+  m_okFreeLock.vDropWrite();
 }
 
 

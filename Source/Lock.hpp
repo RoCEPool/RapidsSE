@@ -29,9 +29,8 @@ namespace Locking
     void* operator new(size_t, Lock* pLock);
     void  operator delete(void* pLockAddress);
     
-    Lock(void);
     Lock(eLK eLockKind);
-    ~Lock(void) noexcept(false);
+   ~Lock(void) noexcept(false);
   
   private:
     static u8 iLockDropRead(u8*);

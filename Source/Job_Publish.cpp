@@ -104,6 +104,7 @@ void Job_Publish::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 Job_Publish::Job_Publish(Session* pSession)
 : Job(CN_JOB_PUBLISH, pSession)
+, m_okLock(LK_PIPE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PUBLISH,_FOOTER_);
   

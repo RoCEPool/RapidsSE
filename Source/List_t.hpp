@@ -60,6 +60,7 @@ void* List_t<ITEM>::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 List_t<ITEM>::List_t(void)
+: m_okLock(LK_LIST)
 {
   m_okLock.vInitLock(LK_LIST);
   m_nCount = 0;
