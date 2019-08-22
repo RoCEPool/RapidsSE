@@ -654,7 +654,7 @@ FreeBuffer* BufferPool::pPopFreeBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
-  m_okLock.vGrabWrite();
+  m_okLock.vGrabWrite();                                                  // 🔴
 
   //vVerifyPool();
   
@@ -663,7 +663,7 @@ FreeBuffer* BufferPool::pPopFreeBuffer(void)
     ASSERT( ! m_nFreeCount );
     vTrace("NODE%lld: RUNNING OUT OF MEMORY!!!\n"_Stz, AM::iThisNodeNo());
     vWarn("BufferPool::pAllocBuffer: zero free buffers\n"_Stz);
-    m_okLock.vDropWrite();
+    m_okLock.vDropWrite();                                                // 🔵
     return nullptr;
   }
 
@@ -677,7 +677,7 @@ FreeBuffer* BufferPool::pPopFreeBuffer(void)
   
   //vVerifyPool();
   
-  m_okLock.vDropWrite();
+  m_okLock.vDropWrite();                                                  // 🔵
   
   return pPoolCheck<FreeBuffer*>(pAllocatedBuffer);
 }
