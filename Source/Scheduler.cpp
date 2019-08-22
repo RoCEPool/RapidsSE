@@ -949,9 +949,9 @@ void Scheduler::vTask_Trigger(Task* pTask)
   
   JobLog::vNoteState(pTask->pJob(),"Trigger"_Stz);
   
+  vTask_Able(pTask);
   pTask->vDropTaskLock();
   
-  vTask_Able(pTask);
   vTask_Schedule(pTask);
   // **do not touch task**
 }
