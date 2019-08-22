@@ -74,8 +74,6 @@ static Stz* aRA[]
   
   /*    */ "RA_MTX_CONSTRUCTOR"_Stz,
   /*    */ "RA_MTX_CREATE"_Stz,
-  /*    */ "RA_MTX_DESTROY"_Stz,
-  /*    */ "RA_MTX_DESTRUCTOR"_Stz,
   /*    */ "RA_MTX_LOCK"_Stz,
   /*    */ "RA_MTX_SIGNAL"_Stz,
   /*    */ "RA_MTX_SIGNALED"_Stz,

@@ -452,7 +452,7 @@ void Mutex::vMutexLock(void)
     RASSERT(! m_bLocked);
     m_bLocked = true;
     AM::vLogRes(this,RA_MTX_UNLOCKED,
-                "Mutex locked : %p "_Stz,this);
+                "Mutex unlocked : %p "_Stz,this);
     return;
   }
   
