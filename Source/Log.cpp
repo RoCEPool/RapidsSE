@@ -171,7 +171,7 @@ void Log::vNoteString(i8 iJobId, s48K& sString)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* entry sprint                                                               */
+/* entry exists?                                                               */
 /*----------------------------------------------------------------------------*/
 bool Log::bEntryExists(i8 i_Entry)
 {
@@ -185,6 +185,26 @@ bool Log::bEntryExists(i8 i_Entry)
   
   return true;
 #endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* previous entry                                                             */
+/*----------------------------------------------------------------------------*/
+i8 Log::iEntryPrev(i8 i_Entry)
+{
+#ifdef WITH_SHARED_LOG
+  if (! AM::bLog())
+    return C_UNKNOWN;
+  
+  LogEntry* pLogEntry = gpLog->pGetEntry(i_Entry);
+  if (! pLogEntry)
+    return false;
+  
+  return pLogEntry->m_i_Prev;
+#else
+  return C_UNKNOWN;
+#endif
+  
 }
 
 /*----------------------------------------------------------------------------*/

@@ -47,6 +47,7 @@ namespace Logging
     static void vNoteString(i8 iJobId, s48K& sString);
   
     static bool bEntryExists(i8 i_Entry);
+    static i8   iEntryPrev(i8 i_Entry);
     static void vEntrySprint(s4K& sString, i8 i_Entry);
     static void vMonitorPortrait(s48K& sPortrait);
     static void vOpenByApi(void);
