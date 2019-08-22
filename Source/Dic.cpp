@@ -49,7 +49,7 @@ void Dic::operator delete(void* pDicAddress)
 /*----------------------------------------------------------------------------*/
 Dic::Dic(void)
 : Object(CN_DIC)
-, m_okLock(LK_DIC)
+, m_okLock(LK_DIC,C_NONFOCAL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   

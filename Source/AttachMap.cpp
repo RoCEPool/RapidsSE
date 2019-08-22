@@ -47,7 +47,7 @@ void AttachMap::operator delete(void* pAttachMapAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 AttachMap::AttachMap(void)
-: PoolBuffer(CN_ATTACHMAP)
+: Focal(CN_ATTACHMAP,0)
 , m_okDdlLock(LK_DDL)
 , m_okDicLock(LK_DIC)
 {
@@ -56,7 +56,7 @@ AttachMap::AttachMap(void)
   gpAttachMap = this;
   
   // the attach map must always be the first buffer in the buffer pool
-  ASSERT(nPoolBufferNo() == 1_bn);
+  //ASSERT(nPoolBufferNo() == 1_bn);
   
   m_oRootDic.vName("<root>"_Stz);
   

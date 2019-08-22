@@ -11,8 +11,8 @@ extern Arguments  gxArguments;
 /*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
 {
-  printf("sizeof(LinkedBuffer) %lld\n",sizeof(LinkedBuffer));
-  
+  printf("sizeof(LinkedBuffer) %lld\n", (i8)sizeof(LinkedBuffer));
+  printf("sizeof(HeapBuffer)   %lld\n", (i8)sizeof(HeapBuffer));
   
   
   Process::vEntry();

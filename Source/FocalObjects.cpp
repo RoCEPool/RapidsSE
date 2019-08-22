@@ -72,8 +72,6 @@ void FocalObjects::vAdd(Focal* pFocal)
   m_okLock.vGrabWrite();
   pFocal->m_i_Focal = iAdd(pFocal);
   m_okLock.vDropWrite();
-
-  //vTrace("vFocalAdd: %lld %p\n"_Stz,pFocal->m_i_Focal,pFocal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -82,8 +80,6 @@ void FocalObjects::vAdd(Focal* pFocal)
 void FocalObjects::vRemove(Focal* pFocal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FOCALOBJECTS);
-  
-  //vTrace("vFocalRemove: %lld %p\n"_Stz,pFocal->m_i_Focal,pFocal);
   
   m_okLock.vGrabWrite();
   ASSERT(pGet(pFocal->m_i_Focal) == pFocal);

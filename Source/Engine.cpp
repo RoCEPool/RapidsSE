@@ -313,7 +313,7 @@ void Engine::vKillPrev(void)
     if (! (aRegion = Region::aOpen(sRegionNm,gxArguments.m_aRegionAddr,iFD)))
       continue;
     
-    AttachMap* pAttachMap = (AttachMap*)ahAdd<AttachMap*>((Object*)aRegion,C_SIZE_POOL_BUFFER);
+    AttachMap* pAttachMap = (AttachMap*)aAdd<AttachMap*>((Object*)aRegion,C_SIZE_POOL_BUFFER);
     
     i8 iPid = pAttachMap->iPid();
     if (gxArguments.m_bDeveloper)

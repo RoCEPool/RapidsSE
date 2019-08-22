@@ -5,7 +5,7 @@
 
 namespace StorageEngine
 {
-  class AttachMap : public PoolBuffer
+  class AttachMap : public Focal
   {
   friend class AM;
   friend class Engine;

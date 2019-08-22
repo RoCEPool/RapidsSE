@@ -13,6 +13,7 @@ namespace Correctness
     i8 m_i_Log;     // log entry subscript
   
   public:
+    Focal(eCN eClassNo);
     Focal(eCN eClassNo, i8 iUniqueId);
    ~Focal(void) noexcept(false);
   };
