@@ -7,6 +7,8 @@
 
 #include "Timer.hpp"
 
+Atomic gixLock;
+
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -59,6 +61,10 @@ Lock::Lock(void)
   
   _checkInitialised_(CN_LOCK);
   
+  ++ gixLock;
+  AM::vLogLck(this,LA_CONSTRUCTOR,
+              "Lock constructed : %p (%lld locks exist)"_Stz,this,* gixLock);
+
   _postcondition_(_MAGIC_,CN_LOCK,_FOOTER_);
 }
 
@@ -81,6 +87,10 @@ Lock::Lock(eLK eLockKind)
   
   _checkInitialised_(CN_LOCK);
   
+  ++ gixLock;
+  AM::vLogLck(this,LA_CONSTRUCTOR,
+              "Lock constructed : %p (%lld locks exist)"_Stz,this,* gixLock);
+  
   _postcondition_(_MAGIC_,CN_LOCK,_FOOTER_);
 }
 
@@ -90,6 +100,10 @@ Lock::Lock(eLK eLockKind)
 Lock::~Lock(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
+  -- gixLock;
+  AM::vLogLck(this,LA_DESTRUCTOR,
+              "Lock destructed : %p (%lld locks exist)"_Stz,this,* gixLock);
 }
 
 /*----------------------------------------------------------------------------*/

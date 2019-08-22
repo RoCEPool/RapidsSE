@@ -7,6 +7,9 @@ enum eLA // lock actions
 {
   /*  0 */ LA_NONE=0,
   
+  /*    */ LA_CONSTRUCTOR,
+  /*    */ LA_DESTRUCTOR,
+  
   /*    */ LA_READ_ABLE,
   /*    */ LA_WRITE_ABLE,
   /*    */ LA_READ_UNABLE,
@@ -19,10 +22,13 @@ static Stz* aLA[]
 {
   /*  0 */ "NONE"_Stz,
   
-  /*    */ "READ_ABLE"_Stz,
-  /*    */ "WRITE_ABLE"_Stz,
-  /*    */ "READ_UNABLE"_Stz,
-  /*    */ "WRITE_UNABLE"_Stz,
+  /*    */ "LA_CONSTRUCTOR"_Stz,
+  /*    */ "LA_DESTRUCTOR"_Stz,
+  
+  /*    */ "LA_READ_ABLE"_Stz,
+  /*    */ "LA_WRITE_ABLE"_Stz,
+  /*    */ "LA_READ_UNABLE"_Stz,
+  /*    */ "LA_WRITE_UNABLE"_Stz,
 
   /*    */ "ENUMS"_Stz,
 };
