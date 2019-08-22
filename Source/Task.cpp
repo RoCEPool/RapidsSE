@@ -60,6 +60,7 @@ void Task::operator delete(void* pTaskAddress)
 /*----------------------------------------------------------------------------*/
 Task::Task(Job* pJob, Session* pSession)
 : Focal(CN_TASK,AM::iNextTaskId())
+, m_okLock(LK_TASK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -91,6 +92,7 @@ Task::Task(Job* pJob, Session* pSession)
 /*----------------------------------------------------------------------------*/
 Task::Task(Op* pOp, Session* pSession)
 : Focal(CN_TASK,AM::iNextTaskId())
+, m_okLock(LK_TASK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -123,7 +125,6 @@ void Task::vInit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_okLock.vInitLock(LK_TASK);
   m_eKind        = TK_NONE;
   m_pJob         = nullptr;
   

@@ -83,10 +83,10 @@ void TxSet::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 TxSet::TxSet(i8 iNodeNo)
 : Object(CN_TXSET)
+, m_okLock(LK_TX_SET)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
   
-  m_okLock.vInitLock(LK_TX_SET);
   m_iNodeNo = iNodeNo;
   m_iNextTxId = iNodeNo << 48;
   m_pLocalTxList = new SkipListNL(C_UNQIUE_KEY,bTxSetCompareLocal);

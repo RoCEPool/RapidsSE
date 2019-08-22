@@ -48,6 +48,8 @@ void AttachMap::operator delete(void* pAttachMapAddress)
 /*----------------------------------------------------------------------------*/
 AttachMap::AttachMap(void)
 : PoolBuffer(CN_ATTACHMAP)
+, m_okDdlLock(LK_DDL)
+, m_okDicLock(LK_DIC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP);
   

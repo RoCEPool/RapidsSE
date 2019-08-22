@@ -104,13 +104,12 @@ void Job_Export::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 Job_Export::Job_Export(Session* pSession)
 : Job(CN_JOB_EXPORT, pSession)
+, m_okLock(LK_EXPORT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
   
   m_pTable = nullptr;
-  
-  m_okLock.vInitLock(LK_EXPORT);
-    
+      
   //m_oCsvFile;
   //m_oCompleter
   m_bAuxAckDecided = false;

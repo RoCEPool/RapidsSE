@@ -9,10 +9,9 @@
 /*----------------------------------------------------------------------------*/
 TempName::TempName(void)
 : Object(CN_SINCE)
+, m_okLock(LK_TEMP_NAME)
 {
   _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
-  
-  m_okLock.vInitLock(LK_TEMP_NAME);
   
   m_oBirth.vNow();
   

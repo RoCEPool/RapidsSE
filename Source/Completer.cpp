@@ -26,10 +26,9 @@ void Completer::operator delete(void* )
 /*----------------------------------------------------------------------------*/
 Completer::Completer(void)
 : Object(CN_COMPLETER)
+, m_okLock(LK_COMPLETER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPLETER,_FOOTER_);
-  
-  m_okLock.vInitLock(LK_COMPLETER);
   
   m_nPartitionsComplete = 0;
   m_nUnitsExpected  = C_UNKNOWN;

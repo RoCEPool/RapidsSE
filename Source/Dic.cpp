@@ -49,6 +49,7 @@ void Dic::operator delete(void* pDicAddress)
 /*----------------------------------------------------------------------------*/
 Dic::Dic(void)
 : Object(CN_DIC)
+, m_okLock(LK_DIC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
@@ -56,8 +57,6 @@ Dic::Dic(void)
   m_pDicKind = nullptr;
   m_bFrozen  = false;
   m_ixRefCount.vCheckInit();
-
-  m_okLock.vInitLock(LK_DIC);
   
   m_pLastWord = nullptr;
   m_nWords = 0;
