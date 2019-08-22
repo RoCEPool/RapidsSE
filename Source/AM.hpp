@@ -196,8 +196,9 @@ namespace StorageEngine
     static void vLogEntrySprint(s4K& sString, i8 i_Entry);
   
     static void vFocalAdd(Focal* pFocal);
+    static void vFocalOutline(s4K& sString, Focal* pFocal);
     static void vFocalRemove(Focal* pFocal);
-  
+
     static void vMri(TokenVec* pTknVec);
   };
 }

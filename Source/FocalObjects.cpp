@@ -118,22 +118,27 @@ void FocalObjects::vMriAll(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FOCALOBJECTS);
   
-  s4K sString;
-  
+  s4K sLogEntry;
+  s4K sFocalOutline;
+
   m_okLock.vGrabWrite();
   
   i8 i_Focal = C_UNKNOWN;
   while ( (i_Focal = iNext(i_Focal)) != C_UNKNOWN) {
     Focal* pFocal = pGet(i_Focal);
     
-    AM::vLogEntrySprint(sString,pFocal->m_i_Log);
-    
-    vTrace("  [%04lld] %p %04lld %16s :: %s\n"_Stz,
+    AM::vLogEntrySprint(sLogEntry,pFocal->m_i_Log);
+    AM::vFocalOutline(sFocalOutline,pFocal);
+
+    vTrace("  [%04lld] %p %s :: "
+           "%16s :: %s\n"_Stz,
            i_Focal,
            pFocal,
-           pFocal->m_i_Log,
+           sFocalOutline.aChar(),
+
            aCN[pFocal->eClass()],
-           sString.aChar());
+           sLogEntry.aChar()
+           );
   }
   
   m_okLock.vDropWrite();
