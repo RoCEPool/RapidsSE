@@ -103,9 +103,17 @@ void FocalObjects::vMri(TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FOCALOBJECTS);
   
-  //i8 iNumTokens = pTknVec->nItems();
-
-  vMriAll();
+  i8 nTokens = pTknVec->nItems();
+  
+  if (1 == nTokens) {
+    vMriAll();
+    return;
+  }
+  
+  Token* pTkn = pTknVec->pGet(1);
+  i8 i_Focal = pTkn->iToI8();
+  
+  vMriFocal(i_Focal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -119,14 +127,14 @@ void FocalObjects::vMriAll(void)
   
   m_okLock.vGrabWrite();
   
-  i8 i_Item = C_UNKNOWN;
-  while ( (i_Item = iNext(i_Item)) != C_UNKNOWN) {
-    Focal* pFocal = pGet(i_Item);
+  i8 i_Focal = C_UNKNOWN;
+  while ( (i_Focal = iNext(i_Focal)) != C_UNKNOWN) {
+    Focal* pFocal = pGet(i_Focal);
     
     AM::vLogEntrySprint(sString,pFocal->m_i_Log);
     
     vTrace("  [%04lld] %p %04lld %16s %s\n"_Stz,
-           i_Item,
+           i_Focal,
            pFocal,
            pFocal->m_i_Log,
            aCN[pFocal->eClass()],
@@ -139,9 +147,32 @@ void FocalObjects::vMriAll(void)
 /*----------------------------------------------------------------------------*/
 /* mri                                                                        */
 /*----------------------------------------------------------------------------*/
-void FocalObjects::vMriItem(i8 i_Item)
+void FocalObjects::vMriFocal(i8 i_Focal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FOCALOBJECTS);
+  
+  s4K sString;
+  
+  m_okLock.vGrabWrite();
+  
+  Focal* pFocal = pGet(i_Focal);
+
+  if (! pFocal) {
+    m_okLock.vDropWrite();
+    vTrace("Unknown\n"_Stz);
+    return;
+  }
+  
+  AM::vLogEntrySprint(sString,pFocal->m_i_Log);
+    
+  vTrace("  [%04lld] %p %04lld %16s %s\n"_Stz,
+         i_Focal,
+         pFocal,
+         pFocal->m_i_Log,
+         aCN[pFocal->eClass()],
+         sString.aChar());
+  
+  m_okLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
