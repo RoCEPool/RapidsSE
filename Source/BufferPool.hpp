@@ -27,7 +27,7 @@ namespace Pool
     int  m_iShmFD;        // shared memory file descriptor
     
     // free chain
-    Lock m_okFreeLock;     // lock over free chain
+    Lock m_okLock;     // lock over free chain
     i8   m_nAllocCount;   //   number of buffers currently in use
     i8   m_nFreeCount;    //   number of buffers in free chain
     bn   m_nFreeHead;     //   head of free chain
