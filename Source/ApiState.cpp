@@ -51,7 +51,6 @@ ApiState::ApiState(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
   
-  m_okLock.vInitLock(LK_API_STATE);
   m_nSessionsSoFar = 0;
   m_iFirstFree = 0;
 

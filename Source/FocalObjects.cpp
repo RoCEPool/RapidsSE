@@ -43,9 +43,7 @@ FocalObjects::FocalObjects(void)
 : m_okLock(LK_FOCAL_OBJECTS)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FOCALOBJECTS,_FOOTER_);
-  
-  m_okLock.vInitLock(LK_FOCAL_OBJECTS);
-  
+    
   _checkInitialised_(CN_FOCALOBJECTS);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_FOCALOBJECTS,_FOOTER_);

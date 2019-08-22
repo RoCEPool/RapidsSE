@@ -50,8 +50,6 @@ LoadMap::LoadMap(void)
   m_i_EofLoc = 0;
   m_i_ChunkLoc = 0;
   m_bMappingDone = false;
-
-  m_okLock.vInitLock(LK_LOAD_MAP);
   
   for (i8 i_Entry = 0; i_Entry < C_LOADMAP_ENTRIES; i_Entry++)
     m_xMap.iaEndLoc[i_Entry] = -1;

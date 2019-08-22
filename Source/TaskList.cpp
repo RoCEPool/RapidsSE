@@ -55,8 +55,6 @@ TaskList::TaskList(eQK eKind)
   
   m_eKind = eKind;
   
-  m_okLock.vInitLock(LK_TASK_QUEUE);
-  
   _checkInitialised_(CN_TASKLIST);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);

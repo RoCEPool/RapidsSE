@@ -13,8 +13,6 @@ TempName::TempName(void)
 {
   _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
   
-  m_okLock.vInitLock(LK_TEMP_NAME);
-  
   m_oBirth.vNow();
   
   m_sClicker = "aaaaaaaa"_Stz;

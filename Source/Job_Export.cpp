@@ -109,9 +109,7 @@ Job_Export::Job_Export(Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
   
   m_pTable = nullptr;
-  
-  m_okLock.vInitLock(LK_EXPORT);
-    
+      
   //m_oCsvFile;
   //m_oCompleter
   m_bAuxAckDecided = false;

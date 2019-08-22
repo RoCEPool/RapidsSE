@@ -48,7 +48,6 @@ JobList::JobList(CompareFp fpCompare, eJL eJobsList)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
   
   m_eJobsList = eJobsList;
-  m_okLock.vInitLock(LK_JOBS);
   m_pJobsSkipList = new SkipListNL(C_UNQIUE_KEY, fpCompare);
   
   _checkInitialised_(CN_JOBLIST);

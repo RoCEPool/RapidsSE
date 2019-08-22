@@ -57,8 +57,6 @@ Dic::Dic(void)
   m_pDicKind = nullptr;
   m_bFrozen  = false;
   m_ixRefCount.vCheckInit();
-
-  m_okLock.vInitLock(LK_DIC);
   
   m_pLastWord = nullptr;
   m_nWords = 0;

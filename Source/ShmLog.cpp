@@ -33,7 +33,6 @@ ShmLog::ShmLog(eCN eClassNo)
 {
   _precondition_(_MAGIC_,eClassNo);
   
-  m_okLock.vInitLock(LK_ACTION_LOG);
   m_i_Entry = 0;
   m_nEntries = C_LOG_ENTRIES;
   

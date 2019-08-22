@@ -53,8 +53,6 @@ Queue::Queue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
-  m_okLock.vInitLock(LK_QUEUE);
-  
   m_iCount = 0;
   m_pTopBuffer = nullptr;
   m_pEndBuffer = nullptr;

@@ -50,8 +50,6 @@ BufferPool::BufferPool(Stz* aRegionName, i8 iRegionSize, i8 iJumboTook,
   m_sShmName = aRegionName;
   m_iShmFD   = 0;
   
-  m_okFreeLock.vInitLock(LK_BUFFER_POOL);
-  
   m_nAllocCount  = 0;
   m_nFreeCount   = 0;
   m_nFreeHead    = bn::nNil();

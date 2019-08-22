@@ -41,7 +41,6 @@ StepTiming::StepTiming(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STEPTIMING,_FOOTER_);
   
-  m_okLock.vInitLock(LK_STEP_ARRAY);
   m_iNext = 0;
   //m_xStepAccum[]
   

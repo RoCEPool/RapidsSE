@@ -97,7 +97,6 @@ TablePtn::TablePtn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  m_okLock.vInitLock(LK_PARTITION);
   m_iPartitionId = -1;
   m_pTable = nullptr;
   

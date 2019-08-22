@@ -44,8 +44,6 @@ ThreadVec::ThreadVec(void)
 {
   _precondition_(_MAGIC_,CN_THREADVEC,_FOOTER_);
   
-  m_okLock.vInitLock(LK_THREAD_VECTOR);
-  
   _checkInitialised_(CN_THREADVEC);
   
   _postcondition_(_MAGIC_,CN_THREADVEC,_FOOTER_);

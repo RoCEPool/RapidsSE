@@ -59,7 +59,6 @@ Socket::Socket(void)
   
   m_iSocketId = -1;
   m_bBlocking = true;
-  m_okLock.vInitLock(LK_SOCKET);
   
   m_aLowBuff = MemLib::aMallocBlock(C_SIZE_POOL_BUFFER);
   
@@ -85,7 +84,6 @@ Socket::Socket(int iSocketId)
   
   m_iSocketId = iSocketId;
   m_bBlocking = true;
-  m_okLock.vInitLock(LK_SOCKET);
   
   m_aLowBuff = MemLib::aMallocBlock(C_SIZE_POOL_BUFFER);
   

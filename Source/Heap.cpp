@@ -44,7 +44,6 @@ Heap::Heap(eCN eClassNo, i8 iObjectSize)
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
   m_iObjectSize  = iObjectSize;
-  m_okLock.vInitLock(LK_HEAP);
   m_iAllocCount  = 0;
   m_iBufferCount = 0;
   m_pFirstBuffer = nullptr;

@@ -40,7 +40,6 @@ namespace Locking
     static u8 iLockIsLocked(u8*);
 
   public:
-    void vInitLock(eLK eLockKind);
     bool bIsLocked(void);
     i8   iLockId(void);
     eLK  eLockKind(void);

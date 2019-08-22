@@ -116,8 +116,6 @@ ENTRY("vLockInit"_Stz);
   
   ForthWord* pLockWord = ForthWord::pToWord(pLock);
   
-  pLock->vInitLock(LK_UNKNOWN);
-  
   EXIT();
 }
 
