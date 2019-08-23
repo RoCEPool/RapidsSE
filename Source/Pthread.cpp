@@ -331,10 +331,7 @@ void Pthread::vFocalOutline(s4K& sOutline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
 
-  sOutline.vSprint("<Pthread %p>"_Stz,
-                   
-                   this
-                   );
+  sOutline.vSprint("<%s focal>"_Stz,aCN[eClass()]);
 }
 
 /*----------------------------------------------------------------------------*/

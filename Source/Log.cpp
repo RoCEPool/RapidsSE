@@ -690,10 +690,7 @@ void Log::vFocalOutline(s4K& sOutline)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
 
-  sOutline.vSprint("<Log %p>"_Stz,
-                   
-                   this
-                   );
+  sOutline.vSprint("<%s focal>"_Stz,aCN[eClass()]);
 }
 
 

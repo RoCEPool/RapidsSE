@@ -371,10 +371,7 @@ void Thread::vFocalOutline(s4K& sOutline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  sOutline.vSprint("<Thread %p>"_Stz,
-                   
-                   this
-                   );
+  sOutline.vSprint("<%s focal>"_Stz,aCN[eClass()]);
 }
 
 /*----------------------------------------------------------------------------*/

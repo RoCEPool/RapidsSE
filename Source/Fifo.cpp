@@ -114,10 +114,7 @@ void Fifo::vFocalOutline(s4K& sOutline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FIFO,_FOOTER_);
   
-  sOutline.vSprint("<Fifo %p>"_Stz,
-                   
-                   this
-                   );
+  sOutline.vSprint("<%s focal>"_Stz,aCN[eClass()]);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -304,10 +304,7 @@ void File::vFocalOutline(s4K& sOutline)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
-  sOutline.vSprint("<File %p>"_Stz,
-                   
-                   this
-                   );
+  sOutline.vSprint("<%s focal>"_Stz,aCN[eClass()]);
 }
 
 /*----------------------------------------------------------------------------*/

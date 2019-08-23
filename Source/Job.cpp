@@ -223,10 +223,7 @@ void Job::vFocalOutline(s4K& sOutline)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  sOutline.vSprint("<Job %p>"_Stz,
-                   
-                   this
-                   );
+  sOutline.vSprint("<%s focal>"_Stz,aCN[eClass()]);
 }
 
 /*----------------------------------------------------------------------------*/
