@@ -22,7 +22,7 @@ void _LogEntryLck::vSprint(s4K& sString)
 {
   SP_Id spId;
   
-  sString.vCatSprint("{,%s,%s}"_Stz,
+  sString.vCatSprint("{%s,%s}"_Stz,
                 
                 spId.sz("L"_Stz,m_iLckId),
                 aLA[m_eLckAct]);

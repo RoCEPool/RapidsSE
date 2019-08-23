@@ -146,7 +146,7 @@ void LogEntry::vSprint(s4K& sString, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
       NEVER_REACH;
   }
   
-  sString.vCatSprint("}, %s"_Stz,m_caText);
+  sString.vCatSprint(" %s"_Stz,m_caText);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -154,9 +154,9 @@ void LogEntry::vSprint(s4K& sString, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
 /*----------------------------------------------------------------------------*/
 void LogEntry::vSprintCsv(s4K& sString, i8 iTickDeltaUsec, i8& iTotalDelta)
 {
-   sString.vSprint("[%06lld,%06lld],"
+   sString.vSprint("[%06lld,%06lld] "
                    "%s,%lld,%lld,%lld, "
-                    "{%s"_Stz,
+                    "%s"_Stz,
                 
                 m_i_Entry,
                 m_i_Prev,

@@ -22,7 +22,7 @@ void _LogEntryThd::vSprint(s4K& sString)
 {
   SP_Id spId;
   
-  sString.vCatSprint("{,%s,%s}"_Stz,
+  sString.vCatSprint("{%s,%s}"_Stz,
                 
                 spId.sz("H"_Stz,m_iThdId),
                 aHA[m_eThdAct]);
