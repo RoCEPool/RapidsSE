@@ -440,7 +440,7 @@ i8 giClassSize[]
   /* 31 */ sizeof(Column),             // CN_COLUMN
   /* 32 */ sizeof(ColumnVec),          // CN_COLUMNVEC
   /* 32 */ sizeof(CombineOp),          // CN_COMBINEOP
-  /* 32 */ sizeof(Input),            // CN_COMMAND
+  /* 32 */ sizeof(Command),            // CN_COMMAND
   /* 32 */ sizeof(Compiler),           // CN_COMPILER
   /* 32 */ sizeof(Completer),          // CN_COMPLETER
   /*    */ sizeof(CrwBuffer),          // CN_CRWBUFFER

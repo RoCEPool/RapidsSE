@@ -46,7 +46,7 @@ namespace Commands
     Footer* aFooter(void);
   };
   
-  Input* _pCommand(void* aAddr);
+  Input* _pInput(void* aAddr);
 }
 
 /*============================================================================*/
