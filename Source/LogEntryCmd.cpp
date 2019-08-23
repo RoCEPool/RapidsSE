@@ -11,7 +11,7 @@ void _LogEntryCmd::vSet(LogEntry* pLogEntry, void* aCommand, eMA eCmdAct)
 {
   pLogEntry->m_eKind = EK_LCK;
   
-  m_iCmdId  = C_UNKNOWN; //pCommand->m_iUniqueId;
+  m_iCmdId  = C_UNKNOWN; //pInput->m_iUniqueId;
   m_eCmdAct = eCmdAct;
 }
 

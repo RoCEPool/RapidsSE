@@ -261,7 +261,7 @@ Job* Jobs::pJob_Select_pre(Session* pSession)
 {
   Job_Select* pJob_Select = new Job_Select(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_Select->bPopulateJob(pTokenVec);
   

@@ -17,7 +17,7 @@ namespace Sessions
     s48K     m_sResponse;        // response
     bool     m_bSessionExiting;  // is session exiting ?
     Stack*   m_pJobStack;        // stack of jobs
-    Input* m_pCommand;         // command processor
+    Input*   m_pInput;           // input command processor
 
     Job*     m_pJob;             // job session currently executing
     Tx*      m_pTx;              // current transaction

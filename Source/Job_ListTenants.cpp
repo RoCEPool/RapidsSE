@@ -196,7 +196,7 @@ Job* Jobs::pJob_ListTenants_pre(Session* pSession)
 {
   Job_ListTenants* pJob_ListTenants = new Job_ListTenants(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_ListTenants->bPopulateJob(pTokenVec);
   

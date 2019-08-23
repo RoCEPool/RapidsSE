@@ -235,7 +235,7 @@ Job* Jobs::pJob_IndexJoin_pre(Session* pSession)
 {
   Job_IndexJoin* pJob_IndexJoin = new Job_IndexJoin(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_IndexJoin->bPopulateJob(pTokenVec);
   

@@ -199,7 +199,7 @@ Job* Jobs::pJob_CreateSchema_pre(Session* pSession)
 {
   Job_CreateSchema* pJob_CreateSchema = new Job_CreateSchema(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_CreateSchema->bPopulateJob(pTokenVec);
   

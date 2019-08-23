@@ -190,7 +190,7 @@ Job* Jobs::pJob_Report_pre(Session* pSession)
 
   Job_Report* pJob_Report = new Job_Report(pSession);
 
-  TokenVec* pTknVec = pSession->m_pCommand->pTknVec();
+  TokenVec* pTknVec = pSession->m_pInput->pTknVec();
 
   // get no of tokens in token vector
   nTokens = pTknVec->nTokens();

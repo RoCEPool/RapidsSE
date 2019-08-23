@@ -195,7 +195,7 @@ Job* Jobs::pJob_Generate_pre(Session* pSession)
 
   Job_Generate* pJob_Generate = new Job_Generate(pSession);
 
-  TokenVec* pTknVec = pSession->m_pCommand->pTknVec();
+  TokenVec* pTknVec = pSession->m_pInput->pTknVec();
 
   // get no of tokens in token vector
   nTokens = pTknVec->nTokens();

@@ -197,7 +197,7 @@ Job* Jobs::pJob_VerifyTable_pre(Session* pSession)
 {
   Job_VerifyTable* pJob_VerifyTable = new Job_VerifyTable(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_VerifyTable->bPopulateJob(pTokenVec);
   

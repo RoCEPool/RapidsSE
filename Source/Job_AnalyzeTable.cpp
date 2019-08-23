@@ -201,7 +201,7 @@ Job* Jobs::pJob_AnalyzeTable_pre(Session* pSession)
 {
   Job_AnalyzeTable* pJob_AnalyzeTable = new Job_AnalyzeTable(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_AnalyzeTable->bPopulateJob(pTokenVec);
   

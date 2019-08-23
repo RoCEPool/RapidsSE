@@ -33,7 +33,7 @@ void Step::vSessionCommand(MP_Task mpTask)
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
   
-  mpTask->m_pDataStack->vPushPointer(pSession->m_pCommand);
+  mpTask->m_pDataStack->vPushPointer(pSession->m_pInput);
   
   EXIT();
 }

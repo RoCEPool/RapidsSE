@@ -202,7 +202,7 @@ Job* Jobs::pJob_UseSchema_pre(Session* pSession)
 {
   Job_UseSchema* pJob_UseSchema = new Job_UseSchema(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_UseSchema->bPopulateJob(pTokenVec);
   

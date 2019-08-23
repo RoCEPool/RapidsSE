@@ -257,7 +257,7 @@ Job* Jobs::pJob_SubInserter_pre(Session* pSession)
 {
   Job_SubInserter* pJob_SubInserter = new Job_SubInserter(pSession);
   
-//  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
+//  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
 //  
 //  bool bResult = pJob_SubInserter->bPopulateJob(pTokenVec);
 //  

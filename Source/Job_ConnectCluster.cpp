@@ -194,7 +194,7 @@ Job* Jobs::pJob_ConnectCluster_pre(Session* pSession)
 {
   Job_ConnectCluster* pJob_ConnectCluster = new Job_ConnectCluster(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_ConnectCluster->bPopulateJob(pTokenVec);
   

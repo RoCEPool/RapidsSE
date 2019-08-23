@@ -231,7 +231,7 @@ Job* Jobs::pJob_Walk_pre(Session* pSession)
 {
   Job_Walk* pJob_Walk = new Job_Walk(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_Walk->bPopulateJob(pTokenVec);
   

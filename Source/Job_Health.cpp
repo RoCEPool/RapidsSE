@@ -176,7 +176,7 @@ Job* Jobs::pJob_Health_pre(Session* pSession)
 {
   Job_Health* pJob_Health = new Job_Health(pSession);
   
-  TokenVec* pTknVec = pSession->m_pCommand->pTknVec();
+  TokenVec* pTknVec = pSession->m_pInput->pTknVec();
   
   Token* pHogCount = pTknVec->pGet(1);
   i8 nHogs = pHogCount->iToI8();

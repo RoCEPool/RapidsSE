@@ -198,7 +198,7 @@ Job* Jobs::pJob_CreateCatalog_pre(Session* pSession)
 {
   Job_CreateCatalog* pJob_CreateCatalog = new Job_CreateCatalog(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_CreateCatalog->bPopulateJob(pTokenVec);
   

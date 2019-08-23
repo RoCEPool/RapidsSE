@@ -179,7 +179,7 @@ Job* Jobs::pJob_Publish_pre(Session* pSession)
 
   Job_Publish* pJob_Publish = new Job_Publish(pSession);
 
-  TokenVec* pTknVec = pSession->m_pCommand->pTknVec();
+  TokenVec* pTknVec = pSession->m_pInput->pTknVec();
 
   // get no of tokens in token vector
   nTokens = pTknVec->nTokens();

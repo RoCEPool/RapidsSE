@@ -200,7 +200,7 @@ Job* Jobs::pJob_DropTenant_pre(Session* pSession)
 {
   Job_DropTenant* pJob_DropTenant = new Job_DropTenant(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_DropTenant->bPopulateJob(pTokenVec);
   

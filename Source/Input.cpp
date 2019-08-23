@@ -15,11 +15,11 @@
 /*----------------------------------------------------------------------------*/
 Input* Commands::_pCommand(void* aAddr)
 {
-  Input* pCommand = reinterpret_cast<Input*>(aAddr);
+  Input* pInput = reinterpret_cast<Input*>(aAddr);
   
-  RASSERT_TYPE(pCommand,CN_INPUT);
+  RASSERT_TYPE(pInput,CN_INPUT);
   
-  return pCommand;
+  return pInput;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -37,9 +37,9 @@ void* Input::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void Input::operator delete(void* aAddr)
 {
-  Input* pCommand = reinterpret_cast<Input*>(aAddr);
+  Input* pInput = reinterpret_cast<Input*>(aAddr);
   
-  HeapMem::vFree(pCommand);
+  HeapMem::vFree(pInput);
 }
 
 /*----------------------------------------------------------------------------*/

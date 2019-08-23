@@ -278,7 +278,7 @@ Job* Jobs::pJob_InflateRows_pre(Session* pSession)
 {
   Job_InflateRows* pJob_InflateRows = new Job_InflateRows(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_InflateRows->bPopulateJob(pTokenVec);
   

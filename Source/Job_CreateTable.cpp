@@ -615,7 +615,7 @@ Job* Jobs::pJob_CreateTable_pre(Session* pSession)
 {
   Job_CreateTable* pJob_CreateTable = new Job_CreateTable(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
 
   eEC eError = pJob_CreateTable->ePopulateJob(pTokenVec);
   

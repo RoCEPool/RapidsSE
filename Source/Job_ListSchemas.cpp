@@ -196,7 +196,7 @@ Job* Jobs::pJob_ListSchemas_pre(Session* pSession)
 {
   Job_ListSchemas* pJob_ListSchemas = new Job_ListSchemas(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_ListSchemas->bPopulateJob(pTokenVec);
   

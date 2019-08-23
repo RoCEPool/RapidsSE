@@ -197,7 +197,7 @@ Job* Jobs::pJob_DropTable_pre(Session* pSession)
 {
   Job_DropTable* pJob_DropTable = new Job_DropTable(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_DropTable->bPopulateJob(pTokenVec);
   

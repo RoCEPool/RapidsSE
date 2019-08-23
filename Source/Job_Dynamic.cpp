@@ -244,7 +244,7 @@ Job* Jobs::pJob_Dynamic_pre(Session* pSession)
 {
   Job_Dynamic* pJob_Dynamic = new Job_Dynamic(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_Dynamic->bPopulateJob(pSession, pTokenVec);
   

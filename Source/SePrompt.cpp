@@ -223,9 +223,9 @@ bool SePrompt::bBlankLine(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  Input* pCommand = this->pCommand();
+  Input* pInput = this->pInput();
   
-  bool bBlankLine = pCommand->bBlankLine();
+  bool bBlankLine = pInput->bBlankLine();
 
   return bBlankLine;
 }
@@ -305,11 +305,11 @@ void SePrompt::vCheckNoWait(void)
 /*----------------------------------------------------------------------------*/
 /* get command processor                                                      */
 /*----------------------------------------------------------------------------*/
-Input* SePrompt::pCommand(void)
+Input* SePrompt::pInput(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_pSession->m_pCommand;
+  return m_pSession->m_pInput;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -339,7 +339,7 @@ void SePrompt::vCutToken(i8 i_Tkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  TokenVec* pTknVec = m_pSession->m_pCommand->pTknVec();
+  TokenVec* pTknVec = m_pSession->m_pInput->pTknVec();
   
   //pTknVec->vPrint();
   
@@ -355,8 +355,8 @@ void SePrompt::vDeleteJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  //Input* pCommand = this->pCommand();
-  //JobClass* pJobClass = pCommand->pJobClass();
+  //Input* pInput = this->pInput();
+  //JobClass* pJobClass = pInput->pJobClass();
   
   //ActLog::vEnd(m_pJob);
 
@@ -395,9 +395,9 @@ bool SePrompt::bExecuteFile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  Input* pCommand = this->pCommand();
+  Input* pInput = this->pInput();
   
-  bool bExecuteFile = pCommand->bExecuteFile();
+  bool bExecuteFile = pInput->bExecuteFile();
   
   return bExecuteFile;
 }
@@ -466,9 +466,9 @@ void SePrompt::vGetCommand(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Input* pCommand = this->pCommand();
+  Input* pInput = this->pInput();
   
-  pCommand->vGetCommand();
+  pInput->vGetCommand();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -692,11 +692,11 @@ void SePrompt::vPostJob(void)
 
   RASSERT(JS_RUNNING == m_pJob->m_eJobState);
   
-  //Input* pCommand = this->pCommand();
+  //Input* pInput = this->pInput();
   
-  //pCommand->vPostJob(m_pSession);
+  //pInput->vPostJob(m_pSession);
  
-  //JobClass* pJobClass = pCommand->pJobClass();
+  //JobClass* pJobClass = pInput->pJobClass();
 
   m_pJobClass->vPostJob(m_pSession,m_pJob);
 }
@@ -708,11 +708,11 @@ void SePrompt::vPreJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  //Input* pCommand = this->pCommand();
+  //Input* pInput = this->pInput();
 
-  //JobClass* pJobClass = pCommand->pJobClass();
+  //JobClass* pJobClass = pInput->pJobClass();
 
-  //pCommand->vPreJob(m_pSession);
+  //pInput->vPreJob(m_pSession);
   
   m_pJob = m_pJobClass->pPreJob(m_pSession);
   
@@ -849,9 +849,9 @@ void SePrompt::vSpawnJob(void)
   if (m_bNoWait)
     m_pJob->m_bNoWait = true;
   
-  Input* pCommand = this->pCommand();
+  Input* pInput = this->pInput();
   
-  pCommand->pTknVec()->vSetTokens();
+  pInput->pTknVec()->vSetTokens();
   
   //ActLog::vAdd(m_pJob,AN_SPAWN_JOB,SS_SEED_REQ,_EG_SS);
 
@@ -866,7 +866,7 @@ TokenVec* SePrompt::pTknVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_pSession->m_pCommand->pTknVec();
+  return m_pSession->m_pInput->pTknVec();
 }
 
 /*----------------------------------------------------------------------------*/

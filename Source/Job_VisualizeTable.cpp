@@ -197,7 +197,7 @@ Job* Jobs::pJob_VisualizeTable_pre(Session* pSession)
 {
   Job_VisualizeTable* pJob_VisualizeTable = new Job_VisualizeTable(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_VisualizeTable->bPopulateJob(pTokenVec);
   

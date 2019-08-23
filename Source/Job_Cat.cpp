@@ -181,7 +181,7 @@ Job* Jobs::pJob_Cat_pre(Session* pSession)
 
   Job_Cat* pJob_Cat = new Job_Cat(pSession);
 
-  TokenVec* pTknVec = pSession->m_pCommand->pTknVec();
+  TokenVec* pTknVec = pSession->m_pInput->pTknVec();
 
   // get no of tokens in token vector
   nTokens = pTknVec->nTokens();

@@ -180,7 +180,7 @@ Job* Jobs::pJob_Monitor_pre(Session* pSession)
 
   Job_Monitor* pJob_Monitor = new Job_Monitor(pSession);
 
-  TokenVec* pTknVec = pSession->m_pCommand->pTknVec();
+  TokenVec* pTknVec = pSession->m_pInput->pTknVec();
 
   // get no of tokens in token vector
   nTokens = pTknVec->nTokens();

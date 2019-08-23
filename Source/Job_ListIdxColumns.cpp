@@ -204,7 +204,7 @@ Job* Jobs::pJob_ListIdxColumns_pre(Session* pSession)
 {
   Job_ListIdxColumns* pJob_ListIdxColumns = new Job_ListIdxColumns(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_ListIdxColumns->bPopulateJob(pTokenVec);
   

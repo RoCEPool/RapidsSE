@@ -279,7 +279,7 @@ Job* Jobs::pJob_Export_pre(Session* pSession)
 {
   Job_Export* pJob_Export = new Job_Export(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
 
   bool bResult = pJob_Export->bPopulateJob(pTokenVec);
 

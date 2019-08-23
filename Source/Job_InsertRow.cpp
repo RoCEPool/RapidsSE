@@ -230,7 +230,7 @@ Job* Jobs::pJob_InsertRow_pre(Session* pSession)
 {
   Job_InsertRow* pJob_InsertRow = new Job_InsertRow(pSession);
   
-//  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
+//  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
 //  bool bResult = pJob_InsertRow->bPopulateJob(pTokenVec);
 //

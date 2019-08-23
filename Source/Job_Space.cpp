@@ -195,7 +195,7 @@ Job* Jobs::pJob_Space_pre(Session* pSession)
 {
   Job_Space* pJob_Space = new Job_Space(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_Space->bPopulateJob(pTokenVec);
   

@@ -84,7 +84,7 @@ Session::Session(i8 iPartition)
   m_pJobStack       = new Stack;
 
   m_pSessionState   = AM::pApiState()->pAllocState(this);
-  m_pCommand        = new Input;
+  m_pInput        = new Input;
   
   m_sToDo           = ""_Stz;
 
@@ -109,7 +109,7 @@ Session::~Session(void) noexcept(false)
   RASSERT(0 == m_pJobStack->nValues());
   delete m_pJobStack;
   
-  delete m_pCommand;
+  delete m_pInput;
   
   -- gixSession;
   AM::vLogSsn(SL_INF,this,AA_SSN_DESTRUCTOR,

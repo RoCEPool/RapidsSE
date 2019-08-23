@@ -201,7 +201,7 @@ Job* Jobs::pJob_SizeIndex_pre(Session* pSession)
 {
   Job_SizeIndex* pJob_SizeIndex = new Job_SizeIndex(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_SizeIndex->bPopulateJob(pTokenVec);
   

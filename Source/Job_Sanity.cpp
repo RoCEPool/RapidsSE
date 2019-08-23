@@ -198,7 +198,7 @@ Job* Jobs::pJob_Sanity_pre(Session* pSession)
 {
   Job_Sanity* pJob_Sanity = new Job_Sanity(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_Sanity->bPopulateJob(pTokenVec);
   

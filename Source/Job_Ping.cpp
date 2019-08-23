@@ -196,7 +196,7 @@ Job* Jobs::pJob_Ping_pre(Session* pSession)
 {
   Job_Ping* pJob_Ping = new Job_Ping(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_Ping->bPopulateJob(pTokenVec);
   
