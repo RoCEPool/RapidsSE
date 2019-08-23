@@ -25,6 +25,20 @@ Op* Operators::_pOp(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is given class a valid op?                                                 */
+/*----------------------------------------------------------------------------*/
+bool Operators::_bIsValidOp(eCN eClass)
+{
+  if (eClass >= CN_OP_TOCLAUSE && eClass <= CN_OP_TOFILTER)
+    return true;
+//  else
+//  if (eClass >= CN_OP_TOCLAUSE && eClass <= CN_OP_TOFILTER)
+//    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* free back to the heap                                                      */
 /*----------------------------------------------------------------------------*/
 void Op::operator delete(void* aAddress)

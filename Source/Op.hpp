@@ -79,7 +79,10 @@ namespace Operators
     void vWorkQuanta(i8 iWorkQuanta);
   };
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   Op* _pOp(void* aAddr);
+  bool _bIsValidOp(eCN eClass);
 }
 
 /*============================================================================*/

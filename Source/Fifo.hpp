@@ -28,6 +28,8 @@ namespace Resources
   
     Footer* aFooter(void);
   };
+  
+  Fifo* _pFifo(void* aAddr);
 }
 
 /*============================================================================*/

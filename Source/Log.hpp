@@ -89,6 +89,7 @@ namespace Logging
     Footer* aFooter(void);
   };
   
+  Log* _pLog(void* aAddr);
 }
 
 /*============================================================================*/

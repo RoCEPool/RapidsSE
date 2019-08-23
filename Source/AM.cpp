@@ -952,12 +952,61 @@ void AM::vMri(TokenVec *pTknVec) { gpAttachMap->m_pFocalObjects->vMri(pTknVec); 
 /*----------------------------------------------------------------------------*/
 void AM::vFocalOutline(s4K& sOutline, Focal* pFocal) {
 
-  if (CN_TASK == pFocal->eClass()) {
+  eCN eClassNo = pFocal->eClass();
+  
+  if (CN_ATTACHMAP == eClassNo)
+    _pAttachMap(pFocal)->vFocalOutline(sOutline);
+  
+  else if (CN_LOG == eClassNo)
+    _pLog(pFocal)->vFocalOutline(sOutline);
+  
+  else if (CN_SEPROMPT == eClassNo)
+    _pSePrompt(pFocal)->vFocalOutline(sOutline);
+  
+  else if (CN_QUEUES == eClassNo)
+    _pQueues(pFocal)->vFocalOutline(sOutline);
+  
+  else if (CN_TASK == eClassNo)
     _pTask(pFocal)->vFocalOutline(sOutline);
-    return;
+  
+  else if (CN_THREAD == eClassNo)
+    _pThread(pFocal)->vFocalOutline(sOutline);
+  
+  else if (CN_TX == eClassNo)
+    _pTx(pFocal)->vFocalOutline(sOutline);
+  
+  else if (CN_SESSION == eClassNo)
+    _pSession(pFocal)->vFocalOutline(sOutline);
+  
+  else if (CN_DIR == eClassNo)
+    _pDir(pFocal)->vFocalOutline(sOutline);
+  
+  else if (CN_FILE == eClassNo)
+    _pFile(pFocal)->vFocalOutline(sOutline);
+  
+  else if (CN_FIFO == eClassNo)
+    _pFifo(pFocal)->vFocalOutline(sOutline);
+  
+  else if (CN_MUTEX == eClassNo)
+    _pMutex(pFocal)->vFocalOutline(sOutline);
+  
+  else if (CN_PTHREAD == eClassNo)
+    _pPthread(pFocal)->vFocalOutline(sOutline);
+  
+  else if (CN_SOCKET == eClassNo)
+    _pSocket(pFocal)->vFocalOutline(sOutline);
+  
+  else if (CN_LOCK == eClassNo)
+    _pLock(pFocal)->vFocalOutline(sOutline);
     
-  }
-  sOutline = "<focal>"_Stz;
+  else if (Jobs::_bIsValidJob(eClassNo))
+    _pJob(pFocal)->vFocalOutline(sOutline);
+  
+  else if (Operators::_bIsValidOp(eClassNo))
+    _pOp(pFocal)->vFocalOutline(sOutline);
+  
+  else
+    sOutline.vSprint("<focal of %s>"_Stz,aCN[eClassNo]);
 }
 
 /*============================================================================*/
