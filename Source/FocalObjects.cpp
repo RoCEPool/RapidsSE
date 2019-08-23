@@ -130,13 +130,14 @@ void FocalObjects::vMriAll(void)
     AM::vLogEntrySprint(sLogEntry,pFocal->m_i_Log);
     AM::vFocalOutline(sFocalOutline,pFocal);
 
-    vTrace("  [%04lld] %p %16s :: "
+    vTrace("  [%04lld] %p %16s %s :: "
            "%32s :: "
            "%s\n"_Stz,
            
            i_Focal,
            pFocal,
            aCN[pFocal->eClass()],
+           pFocal->bValidMagic() ? "M" : "?",
 
            sFocalOutline.aChar(),
 
