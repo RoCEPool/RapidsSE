@@ -12,7 +12,7 @@ namespace Logging
     eMA  m_eCmdAct; // command action
   
   public:
-    void vSet(LogEntry* pLogEntry, void* aCommand, eMA eCmdAct);
+    void vSet(LogEntry* pLogEntry, Command* pCommand, eMA eCmdAct);
   
     void vOutline(s4K& sOutline);
 

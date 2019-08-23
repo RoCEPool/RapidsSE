@@ -11,6 +11,7 @@
 #include "eHA.h"
 #include "eJA.h"
 #include "eLA.h"
+#include "eMA.h"
 #include "eOA.h"
 #include "ePA.h"
 #include "eQA.h"
@@ -172,7 +173,7 @@ namespace StorageEngine
     static void vLogFyi(Stz* szFormat, ...);
     static void vLogText(i8 iId, Stz* szText);
 
-    static void vLogSsn(eSL, Session*   pSsn, eAA eApiAct, Stz* szFormat, ...);
+    static void vLogCmd(eSL, Command*   pCmd, eMA eCmdAct, Stz* szFormat, ...);
     static void vLogJob(eSL, Job*       pJob, eJA eJobAct, Stz* szFormat, ...);
     static void vLogLck(eSL, Lock*      pLck, eLA eLckAct, Stz* szFormat, ...);
     static void vLogLog(eSL, Log*       pLog, eGA eLogAct, Stz* szFormat, ...);
@@ -181,6 +182,7 @@ namespace StorageEngine
     static void vLogQue(eSL, Queues*    pQue, eQA eQueAct, Stz* szFormat, ...);
     static void vLogRes(eSL, Resource*  pRes, eRA eResAct, Stz* szFormat, ...);
     static void vLogSvc(eSL, Job*       pJob, eVA eSvcAct, Stz* szFormat, ...);
+    static void vLogSsn(eSL, Session*   pSsn, eAA eApiAct, Stz* szFormat, ...);
     static void vLogSys(eSL, AttachMap* pSys, eYA eSysAct, Stz* szFormat, ...);
     static void vLogThd(eSL, Thread*    pThd, eHA eThdAct, Stz* szFormat, ...);
     static void vLogTsk(eSL, Task*      pTsk, eTA eTskAct, Stz* szFormat, ...);

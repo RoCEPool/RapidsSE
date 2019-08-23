@@ -420,6 +420,26 @@ i8 Log::iEntryFyi(eCN eClassNo,
 }
 
 /*----------------------------------------------------------------------------*/
+/* add a command log entry                                                    */
+/*----------------------------------------------------------------------------*/
+i8 Log::iEntryCmd(eSL eSeverity, Command* pCommand, eMA eCmdAct,
+                  Stz* szFormat, va_list xVaArgs)
+{
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
+  
+  LogEntry* pLogEntry = pNewEntry(eSeverity,pCommand,szFormat,xVaArgs);
+  
+  if (! pLogEntry)
+    return C_UNKNOWN;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  pLogEntry->m_xCmd.vSet(pLogEntry,pCommand,eCmdAct);
+  
+  return pLogEntry->m_i_Entry;
+}
+
+/*----------------------------------------------------------------------------*/
 /* add a job log entry                                                        */
 /*----------------------------------------------------------------------------*/
 i8 Log::iEntryJob(eSL eSeverity, Job* pJob, eJA eJobAct,

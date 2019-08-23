@@ -404,6 +404,32 @@ void AM::vLogFyi(Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add a command log entry                                                    */
+/*----------------------------------------------------------------------------*/
+void AM::vLogCmd(eSL eSeverity, Command* pCmd, eMA eCmdAct, Stz* szFormat, ...)
+{
+#ifdef WITH_SHARED_LOG
+  if (! AM::bLogging())
+    return;
+  
+  if (! (AM::pMarkAction()->bEnum(eCmdAct) ||
+         AM::pMarkAction()->bAll()) )
+    return;
+  
+  va_list xVaArgs;
+  
+  va_start(xVaArgs,szFormat);
+  
+  i8 i_Entry = gpLog->iEntryCmd(eSeverity,pCmd,eCmdAct,
+                                szFormat,xVaArgs);
+  
+  va_end(xVaArgs);
+  
+  pCmd->m_i_Log = i_Entry;
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
 /* add a job log entry                                                        */
 /*----------------------------------------------------------------------------*/
 void AM::vLogJob(eSL eSeverity, Job* pJob, eJA eJobAct, Stz* szFormat, ...)

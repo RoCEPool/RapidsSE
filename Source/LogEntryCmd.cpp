@@ -7,11 +7,11 @@
 /*----------------------------------------------------------------------------*/
 /* set entry                                                                  */
 /*----------------------------------------------------------------------------*/
-void _LogEntryCmd::vSet(LogEntry* pLogEntry, void* aCommand, eMA eCmdAct)
+void _LogEntryCmd::vSet(LogEntry* pLogEntry, Command* pCommand, eMA eCmdAct)
 {
   pLogEntry->m_eKind = EK_LCK;
   
-  m_iCmdId  = C_UNKNOWN; //pInput->m_iUniqueId;
+  m_iCmdId  = pCommand->m_iUniqueId;
   m_eCmdAct = eCmdAct;
 }
 
