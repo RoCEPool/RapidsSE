@@ -37,6 +37,8 @@ namespace Logging
     Focal* m_pFocal;    // object
     i8     m_i_Focal;   // focal lattice subscript
   
+    eSL    m_eSeverity; // severity level
+  
     char m_caText[C_LOG_TEXT]; // comment
   
     eEK  m_eKind;       // log entry kind.  one of the following

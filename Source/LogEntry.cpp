@@ -85,6 +85,8 @@ void LogEntry::vInit(eCN eClassNo, Stz* szText)
   m_eClass = eClassNo;
   m_pFocal = nullptr;
   
+  m_eSeverity = SL_LOW;
+  
   m_bLine = false;
 }
 
