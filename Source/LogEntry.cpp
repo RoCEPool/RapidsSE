@@ -167,7 +167,7 @@ void LogEntry::vSprintCsv(s4K& sString, i8 iTickDeltaUsec, i8& iTotalDelta)
                 m_caNode,
                 m_iTick,
                 
-                spString.szRight(aEK[m_eKind],24)
+                aEK[m_eKind]
                 );
 }
 

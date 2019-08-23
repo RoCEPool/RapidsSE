@@ -8,7 +8,7 @@ namespace Gadgets
   class SP_String : public Object
   {
   public:
-    char m_caResult[32];
+    char m_caResult[4096];
 
     // must be last
     Footer m_xFooter;

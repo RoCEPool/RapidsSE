@@ -21,11 +21,13 @@ void _LogEntryQue::vSet(LogEntry* pLogEntry, Queues* pQueues, eQA eQueAct)
 void _LogEntryQue::vOutline(s4K& sOutline)
 {
   SP_Id spId;
-  
+  SP_String spString;
+
   sOutline.vCatSprint(".%s,%24s"_Stz,
                 
-                spId.sz("Q"_Stz,m_iQueId),
-                aQA[m_eQueAct]);
+                      spId.sz("Q"_Stz,m_iQueId),
+                      spString.szRight(aQA[m_eQueAct],24)
+                      );
 }
 
 /*----------------------------------------------------------------------------*/

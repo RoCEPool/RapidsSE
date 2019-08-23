@@ -21,11 +21,13 @@ void _LogEntryThd::vSet(LogEntry* pLogEntry, Thread* pThread, eHA eThdAct)
 void _LogEntryThd::vOutline(s4K& sOutline)
 {
   SP_Id spId;
-  
+  SP_String spString;
+
   sOutline.vCatSprint(".%s,%24s"_Stz,
                 
-                spId.sz("H"_Stz,m_iThdId),
-                aHA[m_eThdAct]);
+                      spId.sz("H"_Stz,m_iThdId),
+                      spString.szRight(aHA[m_eThdAct],24)
+                      );
 }
 
 /*----------------------------------------------------------------------------*/

@@ -21,11 +21,13 @@ void _LogEntryTsk::vSet(LogEntry* pLogEntry, Task* pTask, eTA eTskAct)
 void _LogEntryTsk::vOutline(s4K& sOutline)
 {
   SP_Id spId;
-  
+  SP_String spString;
+
   sOutline.vCatSprint(".%s,%24s"_Stz,
                 
-                spId.sz("T"_Stz,m_iTskId),
-                aTA[m_eTskAct]);
+                      spId.sz("T"_Stz,m_iTskId),
+                      spString.szRight(aTA[m_eTskAct],24)
+                      );
 }
 
 /*----------------------------------------------------------------------------*/

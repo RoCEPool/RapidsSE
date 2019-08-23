@@ -24,11 +24,13 @@ void _LogEntryPrm::vSet(LogEntry* pLogEntry, SePrompt*  pPrompt, ePA ePrmAct)
 void _LogEntryPrm::vOutline(s4K& sOutline)
 {
   SP_Id spId;
-  
+  SP_String spString;
+
   sOutline.vCatSprint(".%s,%24s"_Stz,
                 
-                spId.sz("P"_Stz,m_iPrmId),
-                aPA[m_ePrmAct]);
+                      spId.sz("P"_Stz,m_iPrmId),
+                      spString.szRight(aPA[m_ePrmAct],24)
+                      );
 }
 
 /*----------------------------------------------------------------------------*/

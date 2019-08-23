@@ -40,8 +40,16 @@ Stz* SP_String::szRight(Stz* szString, i8 iLength)
 {
   _precondition_(_MAGIC_,CN_SPSTRING,_FOOTER_);
   
+  char caFormat[4096];
+
+  
+  StrLib::vSprint(caFormat,
+                  "%%%llds"_Stz,
+                  
+                  iLength);
+
   StrLib::vSprint(m_caResult,
-                  "%s"_Stz,
+                  (Stz*)caFormat,
                   
                   szString);
 

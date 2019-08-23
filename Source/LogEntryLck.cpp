@@ -21,11 +21,13 @@ void _LogEntryLck::vSet(LogEntry* pLogEntry, Lock* pLock, eLA eLckAct)
 void _LogEntryLck::vOutline(s4K& sOutline)
 {
   SP_Id spId;
-  
-  sOutline.vCatSprint(".%s,%24s"_Stz,
+  SP_String spString;
+
+  sOutline.vCatSprint(".%s,%s"_Stz,
                 
-                spId.sz("L"_Stz,m_iLckId),
-                aLA[m_eLckAct]);
+                      spId.sz("L"_Stz,m_iLckId),
+                      spString.szRight(aLA[m_eLckAct],24)
+                      );
 }
 
 /*----------------------------------------------------------------------------*/
