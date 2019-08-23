@@ -333,6 +333,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_SPID
   /*    */ &Finalize::vUndefined,         // CN_SPINT
   /*    */ &Finalize::vUndefined,         // CN_SPIVL
+  /*    */ &Finalize::vUndefined,         // CN_SPSTRING
   /*    */ &Finalize::vUndefined,         // CN_SPTME
   /*    */ &Finalize::vUndefined,         // CN_SPTSP
   /*    */ &Finalize::vUndefined,         // CN_SPVCH

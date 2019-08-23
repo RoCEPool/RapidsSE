@@ -155,6 +155,8 @@ void LogEntry::vSprint(s4K& sString, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
 /*----------------------------------------------------------------------------*/
 void LogEntry::vSprintCsv(s4K& sString, i8 iTickDeltaUsec, i8& iTotalDelta)
 {
+   SP_String spString;
+  
    sString.vSprint("[%06lld,%06lld] "
                    "%s,%lld,"
                     "%s"_Stz,
@@ -165,7 +167,7 @@ void LogEntry::vSprintCsv(s4K& sString, i8 iTickDeltaUsec, i8& iTotalDelta)
                 m_caNode,
                 m_iTick,
                 
-                aEK[m_eKind]
+                spString.szRight(aEK[m_eKind],24)
                 );
 }
 
