@@ -7,7 +7,7 @@ namespace StorageEngine
 {
   class Arguments : public Object
   {
-    friend class      Commands::Command;
+    friend class      Commands::Input;
     friend class StorageEngine::Engine;
     friend class      Commands::Parser;
     friend class      Commands::Tokeniser;

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Command.hpp -- Command Processor                                           */
+/* Input.hpp -- Input Processor                                           */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace Commands
 {
-  class Command : public Object
+  class Input : public Object
   {
   private:
     Tokeniser* m_pTokeniser; // input stream tokeniser
@@ -19,8 +19,8 @@ namespace Commands
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Command(void);
-    ~Command(void) noexcept(false);
+    Input(void);
+    ~Input(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
@@ -46,7 +46,7 @@ namespace Commands
     Footer* aFooter(void);
   };
   
-  Command* _pCommand(void* aAddr);
+  Input* _pCommand(void* aAddr);
 }
 
 /*============================================================================*/

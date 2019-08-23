@@ -84,7 +84,7 @@ Session::Session(i8 iPartition)
   m_pJobStack       = new Stack;
 
   m_pSessionState   = AM::pApiState()->pAllocState(this);
-  m_pCommand        = new Command;
+  m_pCommand        = new Input;
   
   m_sToDo           = ""_Stz;
 

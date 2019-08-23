@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Command.cpp - Command Processor                                            */
+/* Input.cpp - Input Processor                                            */
 /*============================================================================*/
 
 #include "Commands.h"
@@ -13,9 +13,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Command* Commands::_pCommand(void* aAddr)
+Input* Commands::_pCommand(void* aAddr)
 {
-  Command* pCommand = reinterpret_cast<Command*>(aAddr);
+  Input* pCommand = reinterpret_cast<Input*>(aAddr);
   
   RASSERT_TYPE(pCommand,CN_INPUT);
   
@@ -25,7 +25,7 @@ Command* Commands::_pCommand(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Command::operator new(size_t)
+void* Input::operator new(size_t)
 {
   Object* pObject = HeapMem::pAllocate(CN_INPUT);
   
@@ -35,9 +35,9 @@ void* Command::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Command::operator delete(void* aAddr)
+void Input::operator delete(void* aAddr)
 {
-  Command* pCommand = reinterpret_cast<Command*>(aAddr);
+  Input* pCommand = reinterpret_cast<Input*>(aAddr);
   
   HeapMem::vFree(pCommand);
 }
@@ -45,7 +45,7 @@ void Command::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Command::Command(void)
+Input::Input(void)
 : Object(CN_INPUT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
@@ -71,7 +71,7 @@ Command::Command(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Command::~Command(void) noexcept(false)
+Input::~Input(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
@@ -86,7 +86,7 @@ Command::~Command(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* potentially execute a command file                                         */
 /*----------------------------------------------------------------------------*/
-bool Command::bExecuteFile(void)
+bool Input::bExecuteFile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
@@ -102,7 +102,7 @@ bool Command::bExecuteFile(void)
 /*----------------------------------------------------------------------------*/
 /* set file to run                                                            */
 /*----------------------------------------------------------------------------*/
-bool Command::bRunFile(void)
+bool Input::bRunFile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
@@ -120,7 +120,7 @@ bool Command::bRunFile(void)
 /*----------------------------------------------------------------------------*/
 /* push command file                                                          */
 /*----------------------------------------------------------------------------*/
-void Command::vPushFile(Stz* aFileName)
+void Input::vPushFile(Stz* aFileName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
@@ -137,7 +137,7 @@ void Command::vPushFile(Stz* aFileName)
 /*----------------------------------------------------------------------------*/
 /* check for a specific number of tokens                                      */
 /*----------------------------------------------------------------------------*/
-bool Command::bTokenCheck(i8 nTokens)
+bool Input::bTokenCheck(i8 nTokens)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
@@ -151,7 +151,7 @@ bool Command::bTokenCheck(i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* test for blank line                                                        */
 /*----------------------------------------------------------------------------*/
-bool Command::bBlankLine(void)
+bool Input::bBlankLine(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
@@ -164,7 +164,7 @@ bool Command::bBlankLine(void)
 /*----------------------------------------------------------------------------*/
 /* get command                                                                */
 /*----------------------------------------------------------------------------*/
-void Command::vGetCommand(void)
+void Input::vGetCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
@@ -194,7 +194,7 @@ void Command::vGetCommand(void)
 /*----------------------------------------------------------------------------*/
 /* get command tokens from input                                              */
 /*----------------------------------------------------------------------------*/
-void Command::vGetTokens(void)
+void Input::vGetTokens(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
@@ -236,7 +236,7 @@ void Command::vGetTokens(void)
 /*----------------------------------------------------------------------------*/
 /* test for command file                                                      */
 /*----------------------------------------------------------------------------*/
-bool Command::bTestFile(Stz* aFileName)
+bool Input::bTestFile(Stz* aFileName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
@@ -249,7 +249,7 @@ bool Command::bTestFile(Stz* aFileName)
 /*----------------------------------------------------------------------------*/
 /* get token from token vector                                                */
 /*----------------------------------------------------------------------------*/
-Token* Command::pTkn(i8 i_Token)
+Token* Input::pTkn(i8 i_Token)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
@@ -263,7 +263,7 @@ Token* Command::pTkn(i8 i_Token)
 /*----------------------------------------------------------------------------*/
 /* get token vector                                                           */
 /*----------------------------------------------------------------------------*/
-TokenVec* Command::pTknVec(void)
+TokenVec* Input::pTknVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
@@ -273,7 +273,7 @@ TokenVec* Command::pTknVec(void)
 /*----------------------------------------------------------------------------*/
 /* tokenize string                                                            */
 /*----------------------------------------------------------------------------*/
-void Command::vTokenise(Stz* aCommand)
+void Input::vTokenise(Stz* aCommand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
@@ -290,7 +290,7 @@ void Command::vTokenise(Stz* aCommand)
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__aFooterFunction(Command);
+__aFooterFunction(Input);
 
 /*============================================================================*/
 /* end                                                                        */

@@ -90,7 +90,7 @@ void Api::vDeleteJobs(Session* pSession)
 Job* Api::pExecuteCommand(Session* pSession, Stz* sCommand,
                           bool bPostJob, bool bFromPrompt)
 {
-  Command* pCommand = pSession->m_pCommand;
+  Input* pCommand = pSession->m_pCommand;
   
   ApiState::vMarkApiLoc(pSession,101);
   

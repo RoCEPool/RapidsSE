@@ -440,7 +440,7 @@ i8 giClassSize[]
   /* 31 */ sizeof(Column),             // CN_COLUMN
   /* 32 */ sizeof(ColumnVec),          // CN_COLUMNVEC
   /* 32 */ sizeof(CombineOp),          // CN_COMBINEOP
-  /* 32 */ sizeof(Command),            // CN_COMMAND
+  /* 32 */ sizeof(Input),            // CN_COMMAND
   /* 32 */ sizeof(Compiler),           // CN_COMPILER
   /* 32 */ sizeof(Completer),          // CN_COMPLETER
   /*    */ sizeof(CrwBuffer),          // CN_CRWBUFFER
@@ -505,7 +505,7 @@ i8 giClassSize[]
   /* 52 */ sizeof(IndexTree),          // CN_INDEXTREE
   /* 53 */ sizeof(IndexTreeVec),       // CN_INDEXTREEVEC
   /*    */ sizeof(InflateOp),          // CN_INFLATEOP
-  /*    */ sizeof(Command),            // CN_INPUT
+  /*    */ sizeof(Input),            // CN_INPUT
   /* 54 */ sizeof(IdxColVec),          // CN_IDXCOLVEC
   /* 55 */ sizeof(IdxVec),             // CN_IDXVEC
   /*    */ sizeof(IngestChunk),        // CN_INGESTCHUNK

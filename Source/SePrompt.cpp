@@ -223,7 +223,7 @@ bool SePrompt::bBlankLine(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  Command* pCommand = this->pCommand();
+  Input* pCommand = this->pCommand();
   
   bool bBlankLine = pCommand->bBlankLine();
 
@@ -305,7 +305,7 @@ void SePrompt::vCheckNoWait(void)
 /*----------------------------------------------------------------------------*/
 /* get command processor                                                      */
 /*----------------------------------------------------------------------------*/
-Command* SePrompt::pCommand(void)
+Input* SePrompt::pCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -355,7 +355,7 @@ void SePrompt::vDeleteJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  //Command* pCommand = this->pCommand();
+  //Input* pCommand = this->pCommand();
   //JobClass* pJobClass = pCommand->pJobClass();
   
   //ActLog::vEnd(m_pJob);
@@ -395,7 +395,7 @@ bool SePrompt::bExecuteFile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  Command* pCommand = this->pCommand();
+  Input* pCommand = this->pCommand();
   
   bool bExecuteFile = pCommand->bExecuteFile();
   
@@ -466,7 +466,7 @@ void SePrompt::vGetCommand(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Command* pCommand = this->pCommand();
+  Input* pCommand = this->pCommand();
   
   pCommand->vGetCommand();
 }
@@ -692,7 +692,7 @@ void SePrompt::vPostJob(void)
 
   RASSERT(JS_RUNNING == m_pJob->m_eJobState);
   
-  //Command* pCommand = this->pCommand();
+  //Input* pCommand = this->pCommand();
   
   //pCommand->vPostJob(m_pSession);
  
@@ -708,7 +708,7 @@ void SePrompt::vPreJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  //Command* pCommand = this->pCommand();
+  //Input* pCommand = this->pCommand();
 
   //JobClass* pJobClass = pCommand->pJobClass();
 
@@ -849,7 +849,7 @@ void SePrompt::vSpawnJob(void)
   if (m_bNoWait)
     m_pJob->m_bNoWait = true;
   
-  Command* pCommand = this->pCommand();
+  Input* pCommand = this->pCommand();
   
   pCommand->pTknVec()->vSetTokens();
   
