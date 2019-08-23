@@ -1006,7 +1006,10 @@ void AM::vFocalOutline(s4K& sOutline, Focal* pFocal) {
     _pOp(pFocal)->vFocalOutline(sOutline);
   
   else
-    sOutline.vSprint("<focal of %s>"_Stz,aCN[eClassNo]);
+    sOutline.vSprint("<%s %p> -focal-"_Stz,
+                     
+                     aCN[eClassNo],
+                     pFocal);
 }
 
 /*============================================================================*/

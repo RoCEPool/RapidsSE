@@ -458,7 +458,11 @@ void Task::vFocalOutline(s4K& sOutline)
   
   vGrabTaskLock();
   
-  sOutline.vSprint("%s %s %s %s"_Stz,
+  sOutline.vSprint("<%s %p> "
+                   "%s %s %s %s"_Stz,
+                   
+                   aCN[eClass()],
+                   this,
                    
                    aTK[m_eKind],
                    aTS[m_eState],
