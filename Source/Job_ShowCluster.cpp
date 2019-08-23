@@ -102,7 +102,7 @@ void Job_ShowCluster::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_ShowCluster::Job_ShowCluster(Session* pSession)
+Job_ShowCluster::Job_ShowCluster(Session* pSession, i8 iCommandId)
 : Job(CN_JOB_SHOWCLUSTER, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SHOWCLUSTER,_FOOTER_);

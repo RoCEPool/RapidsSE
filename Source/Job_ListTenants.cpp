@@ -102,7 +102,7 @@ void Job_ListTenants::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_ListTenants::Job_ListTenants(Session* pSession)
+Job_ListTenants::Job_ListTenants(Session* pSession, i8 iCommandId)
 : Job(CN_JOB_LISTTENANTS, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTTENANTS,_FOOTER_);

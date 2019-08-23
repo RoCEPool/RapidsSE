@@ -102,7 +102,7 @@ void Job_Alarm::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Alarm::Job_Alarm(Session* pSession)
+Job_Alarm::Job_Alarm(Session* pSession, i8 iCommandId)
 : Job(CN_JOB_ALARM, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_ALARM,_FOOTER_);

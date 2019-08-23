@@ -102,7 +102,7 @@ void Job_KidExport::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_KidExport::Job_KidExport(Session* pSession)
+Job_KidExport::Job_KidExport(Session* pSession, i8 iCommandId)
 : Job(CN_JOB_KIDEXPORT, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_KIDEXPORT,_FOOTER_);

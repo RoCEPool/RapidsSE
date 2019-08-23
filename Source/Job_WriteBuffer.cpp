@@ -102,7 +102,7 @@ void Job_WriteBuffer::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_WriteBuffer::Job_WriteBuffer(Session* pSession)
+Job_WriteBuffer::Job_WriteBuffer(Session* pSession, i8 iCommandId)
 : Job(CN_JOB_WRITEBUFFER, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEBUFFER,_FOOTER_);

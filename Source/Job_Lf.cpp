@@ -102,7 +102,7 @@ void Job_Lf::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Lf::Job_Lf(Session* pSession)
+Job_Lf::Job_Lf(Session* pSession, i8 iCommandId)
 : Job(CN_JOB_LF, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LF,_FOOTER_);

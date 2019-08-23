@@ -18,7 +18,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Start(Session* pSession);
+    Job_Start(Session* pSession, i8 iCommandId=C_UNKNOWN);
     ~Job_Start(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

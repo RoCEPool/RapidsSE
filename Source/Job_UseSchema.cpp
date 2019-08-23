@@ -102,7 +102,7 @@ void Job_UseSchema::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_UseSchema::Job_UseSchema(Session* pSession)
+Job_UseSchema::Job_UseSchema(Session* pSession, i8 iCommandId)
 : Job(CN_JOB_USESCHEMA, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_USESCHEMA,_FOOTER_);

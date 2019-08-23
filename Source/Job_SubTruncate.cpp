@@ -102,7 +102,7 @@ void Job_SubTruncate::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SubTruncate::Job_SubTruncate(Session* pSession)
+Job_SubTruncate::Job_SubTruncate(Session* pSession, i8 iCommandId)
 : Job(CN_JOB_SUBTRUNCATE, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBTRUNCATE,_FOOTER_);

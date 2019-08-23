@@ -102,7 +102,7 @@ void Job_DumpTable::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_DumpTable::Job_DumpTable(Session* pSession)
+Job_DumpTable::Job_DumpTable(Session* pSession, i8 iCommandId)
 : Job(CN_JOB_DUMPTABLE, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DUMPTABLE,_FOOTER_);

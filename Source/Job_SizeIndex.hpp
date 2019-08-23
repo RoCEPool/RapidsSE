@@ -18,7 +18,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_SizeIndex(Session* pSession);
+    Job_SizeIndex(Session* pSession, i8 iCommandId=C_UNKNOWN);
     ~Job_SizeIndex(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

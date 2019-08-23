@@ -102,7 +102,7 @@ void Job_Export::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Export::Job_Export(Session* pSession)
+Job_Export::Job_Export(Session* pSession, i8 iCommandId)
 : Job(CN_JOB_EXPORT, pSession)
 , m_okLock(LK_EXPORT)
 {

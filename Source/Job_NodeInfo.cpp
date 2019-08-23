@@ -102,7 +102,7 @@ void Job_NodeInfo::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_NodeInfo::Job_NodeInfo(Session* pSession)
+Job_NodeInfo::Job_NodeInfo(Session* pSession, i8 iCommandId)
 : Job(CN_JOB_NODEINFO, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_NODEINFO,_FOOTER_);

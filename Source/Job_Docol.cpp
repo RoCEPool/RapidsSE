@@ -102,7 +102,7 @@ void Job_Docol::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Docol::Job_Docol(Session* pSession)
+Job_Docol::Job_Docol(Session* pSession, i8 iCommandId)
 : Job(CN_JOB_DOCOL, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DOCOL,_FOOTER_);

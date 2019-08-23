@@ -102,7 +102,7 @@ void Job_SubFetch::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SubFetch::Job_SubFetch(Session* pSession)
+Job_SubFetch::Job_SubFetch(Session* pSession, i8 iCommandId)
 : Job(CN_JOB_SUBFETCH, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBFETCH,_FOOTER_);

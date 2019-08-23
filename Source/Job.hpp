@@ -49,7 +49,9 @@ namespace Jobs
     eJT  m_eJobTrace;     // job trace (to be removed)
 
   public:
-    Job(eCN eClassNo, Session* pSession, i8 iCommandId=C_UNKNOWN);
+    Job(eCN eClassNo, Session* pSession, i8 iCommandId
+        =C_UNKNOWN
+        );
    ~Job(void) noexcept(false);
   
     static Job* pThisTLSJob(void);

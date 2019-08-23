@@ -102,7 +102,7 @@ void Job_Pwf::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Pwf::Job_Pwf(Session* pSession)
+Job_Pwf::Job_Pwf(Session* pSession, i8 iCommandId)
 : Job(CN_JOB_PWF, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PWF,_FOOTER_);

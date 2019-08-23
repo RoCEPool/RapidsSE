@@ -102,7 +102,7 @@ void Job_InsertRow::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_InsertRow::Job_InsertRow(Session* pSession)
+Job_InsertRow::Job_InsertRow(Session* pSession, i8 iCommandId)
 : Job(CN_JOB_INSERTROW, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROW,_FOOTER_);

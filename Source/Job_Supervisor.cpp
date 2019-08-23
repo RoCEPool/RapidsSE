@@ -102,7 +102,7 @@ void Job_Supervisor::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Supervisor::Job_Supervisor(Session* pSession)
+Job_Supervisor::Job_Supervisor(Session* pSession, i8 iCommandId)
 : Job(CN_JOB_SUPERVISOR, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUPERVISOR,_FOOTER_);

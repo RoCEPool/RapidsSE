@@ -102,7 +102,7 @@ void Job_WriteRow::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_WriteRow::Job_WriteRow(Session* pSession)
+Job_WriteRow::Job_WriteRow(Session* pSession, i8 iCommandId)
 : Job(CN_JOB_WRITEROW, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEROW,_FOOTER_);

@@ -102,7 +102,7 @@ void Job_DropTenant::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_DropTenant::Job_DropTenant(Session* pSession)
+Job_DropTenant::Job_DropTenant(Session* pSession, i8 iCommandId)
 : Job(CN_JOB_DROPTENANT, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPTENANT,_FOOTER_);

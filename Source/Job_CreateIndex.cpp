@@ -151,7 +151,7 @@ void Job_CreateIndex::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_CreateIndex::Job_CreateIndex(Session* pSession)
+Job_CreateIndex::Job_CreateIndex(Session* pSession, i8 iCommandId)
 : Job(CN_JOB_CREATEINDEX, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATEINDEX,_FOOTER_);

@@ -102,7 +102,7 @@ void Job_VerifyIndex::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_VerifyIndex::Job_VerifyIndex(Session* pSession)
+Job_VerifyIndex::Job_VerifyIndex(Session* pSession, i8 iCommandId)
 : Job(CN_JOB_VERIFYINDEX, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_VERIFYINDEX,_FOOTER_);

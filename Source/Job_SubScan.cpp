@@ -102,7 +102,7 @@ void Job_SubScan::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SubScan::Job_SubScan(Session* pSession)
+Job_SubScan::Job_SubScan(Session* pSession, i8 iCommandId)
 : Job(CN_JOB_SUBSCAN, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBSCAN,_FOOTER_);

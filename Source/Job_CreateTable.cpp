@@ -111,7 +111,7 @@ void Job_CreateTable::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_CreateTable::Job_CreateTable(Session* pSession)
+Job_CreateTable::Job_CreateTable(Session* pSession, i8 iCommandId)
 : Job(CN_JOB_CREATETABLE, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);

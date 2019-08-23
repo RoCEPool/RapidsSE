@@ -102,7 +102,7 @@ void Job_Connector::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Connector::Job_Connector(Session* pSession)
+Job_Connector::Job_Connector(Session* pSession, i8 iCommandId)
 : Job(CN_JOB_CONNECTOR, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CONNECTOR,_FOOTER_);
