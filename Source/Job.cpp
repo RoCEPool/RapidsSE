@@ -55,7 +55,7 @@ bool Jobs::_bIsValidJob(eCN eClass)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(eCN eClassNo, Session* pSession)
+Job::Job(eCN eClassNo, Session* pSession, i8 iCommandId)
 : Focal(eClassNo,AM::iNextJobId()), JobDicPath(pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
@@ -63,7 +63,7 @@ Job::Job(eCN eClassNo, Session* pSession)
   //vTrace("%s: CREATING JOB %p %s\n"_Stz,
   //       AM::pGrid()->pThisNode()->aNodeName(), this, aCN[eClass()]);
   
-  m_iCommandId = C_UNKNOWN;
+  m_iCommandId = iCommandId;
   
   m_iParentId = C_UNKNOWN;
   m_eSeed     = SS_ENUMS;
