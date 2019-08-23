@@ -8,13 +8,13 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SP_TknVecStr::SP_TknVecStr(void)
-: SP(CN_SPSTRING)
+: SP(CN_SPTKNVECSTR)
 {
-  _precondition_(_MAGIC_,CN_SPSTRING,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPTKNVECSTR,_FOOTER_);
   
-  _checkInitialised_(CN_SPSTRING);
+  _checkInitialised_(CN_SPTKNVECSTR);
   
-  _postcondition_(_MAGIC_,CN_SPSTRING,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_SPTKNVECSTR,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -22,7 +22,7 @@ SP_TknVecStr::SP_TknVecStr(void)
 /*----------------------------------------------------------------------------*/
 SP_TknVecStr::~SP_TknVecStr(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_SPSTRING,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPTKNVECSTR,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,7 +34,7 @@ SP_TknVecStr::~SP_TknVecStr(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Stz* SP_TknVecStr::sz(TokenVec* pTknVec)
 {
-  _precondition_(_MAGIC_,CN_SPSTRING,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SPTKNVECSTR,_FOOTER_);
   
   StrLib::vCopy(m_caResult,"");
   
