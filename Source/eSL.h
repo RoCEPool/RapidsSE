@@ -5,17 +5,19 @@
 
 enum eSL // seed string
 {
-  /*  0 */ SL_LOW=0,
-  /*  1 */ SL_MED,
-  /*  2 */ SL_HIG,
+  /*  0 */ SL_INF=0,
+  /*  1 */ SL_LOW,
+  /*  2 */ SL_MED,
+  /*  3 */ SL_HIG,
   /*  4 */ SL_ENUMS
 };
 
 static Stz* aSL[]
 {
-  /*  0 */ "SL_LOW"_Stz,
-  /*  1 */ "SL_MED"_Stz,
-  /*  2 */ "SL_HIG"_Stz,
+  /*  0 */ "SL_INF"_Stz,
+  /*  1 */ "SL_LOW"_Stz,
+  /*  2 */ "SL_MED"_Stz,
+  /*  3 */ "SL_HIG"_Stz,
   /*  4 */ "SL_ENUMS"_Stz,
 };
 

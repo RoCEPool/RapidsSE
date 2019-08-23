@@ -85,7 +85,7 @@ void LogEntry::vInit(eCN eClassNo, Stz* szText)
   m_eClass = eClassNo;
   m_pFocal = nullptr;
   
-  m_eSeverity = SL_LOW;
+  m_eSeverity = SL_INF;
   
   m_bLine = false;
 }
@@ -110,6 +110,8 @@ void LogEntry::vInit(Focal *pFocal, Stz* szText)
   m_eClass  = pFocal->eClass();
   m_pFocal  = pFocal;
   m_i_Focal = pFocal->m_i_Focal;
+  
+  m_eSeverity = SL_INF;
   
   m_bLine = false;
 }
@@ -161,17 +163,18 @@ void LogEntry::vSprintCsv(s4K& sString, i8 iTickDeltaUsec, i8& iTotalDelta)
    SP_Elapsed spElapsed;
 
    sString.vSprint("[%06lld,%06lld] "
-                   "%s+%s-"
-                    "%s"_Stz,
+                   "%s %s+%s-"
+                   "%s"_Stz,
                 
-                m_i_Entry,
-                m_i_Prev,
-                
-                m_caNode,
-                spElapsed.szNsec(m_iTick - gpAttachMap->m_iTick),
+                    m_i_Entry,
+                    m_i_Prev,
 
-                aEK[m_eKind]
-                );
+                    aSL[m_eSeverity],
+                    m_caNode,
+                    spElapsed.szNsec(m_iTick - gpAttachMap->m_iTick),
+
+                    aEK[m_eKind]
+                  );
 }
 
 
