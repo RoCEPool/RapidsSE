@@ -14,7 +14,8 @@ namespace Resources
     Resource(eCN eClass);
    ~Resource(void) noexcept(false);
   
-    i8  iResId(void);
+    void vFocalOutline(s4K& sOutline);
+    i8   iResId(void);
   };
   
   Resource* _pResource(void* aAddr);

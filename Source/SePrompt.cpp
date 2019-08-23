@@ -427,6 +427,19 @@ bool SePrompt::bFindJobClass(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* focal outline                                                              */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vFocalOutline(s4K& sOutline)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  sOutline.vSprint("<SePrompt %p"_Stz,
+                   
+                   this
+                   );
+}
+
+/*----------------------------------------------------------------------------*/
 /* get command                                                                */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vGetCommand(void)

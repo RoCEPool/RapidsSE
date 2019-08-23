@@ -42,6 +42,7 @@ namespace Sessions
     void      vCommitTx(void);
     void      vContentDump(void);
     void      vEndTx(void);
+    void      vFocalOutline(s4K& sOutline);
     eEC       eInit(Stz* pCatalogName, Stz* pSchemaName);
     i8        iPartition(void);
     DicStack* pPathStack(void);

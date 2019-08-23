@@ -57,6 +57,7 @@ namespace Jobs
     static i8   iOriginatorNode(i8 iJobId);
     static i8   iAsNodeNo_Bits(i8 iNodeNo);
 
+    void vFocalOutline(s4K& sOutline);
     Stz* sJobSeed(void);
     i8   iJobId(void);
     void vJobId(i8 iJobId);

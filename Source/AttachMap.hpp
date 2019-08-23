@@ -107,6 +107,7 @@ namespace StorageEngine
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
     eAC  eFindApi(Stz* aApiNm);
+    void vFocalOutline(s4K& sOutline);
     void vGetGlobals(void);
     void vIndexEntries(i8 nIndexEntries);
     void vNextTempName(s32& sName);

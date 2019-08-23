@@ -53,6 +53,8 @@ namespace Scheduling
   
     static void vThreadsReport(void);
   
+    void vFocalOutline(s4K& sOutline);
+
   // - - - - - - - - - - - - - - - - - - - - - - -
   // task
   private:

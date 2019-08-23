@@ -36,6 +36,8 @@ namespace Transactions
     static i8 iTxNo(i8 iTxId);
     static i8 iTxNode(i8 iTxId);
 
+    void vFocalOutline(s4K& sOutline);
+  
     i8 iLocalTxId(void);
     i8 iLocalTxNo(void);
     i8 iLocalTxNode(void);

@@ -41,6 +41,8 @@ namespace Locking
     static u8 iLockIsLocked(u8*);
 
   public:
+    void vFocalOutline(s4K& sOutline);
+  
     bool bIsLocked(void);
     i8   iLockId(void);
     eLK  eLockKind(void);

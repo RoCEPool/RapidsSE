@@ -57,6 +57,7 @@ namespace Operators
     void vAppendRight(Operand* pOperand);
     Stz* szArgs(void);
     void vDropTaskLock(void);
+    void vFocalOutline(s4K& sOutline);
     void vGrabTaskLock(void);
     void vIncWorkDone(void);
     bool bIsCancelling(void);

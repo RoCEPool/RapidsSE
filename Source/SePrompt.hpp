@@ -57,6 +57,7 @@ namespace Prompt
     bool bExecuteFile(void);
     bool bExecuteFunction(void);
     bool bFindJobClass(void);
+    void vFocalOutline(s4K& sOutline);
     void vGetCommand(void);
     bool bIsPromptWord(void);
     void vJobLockMutex(void);

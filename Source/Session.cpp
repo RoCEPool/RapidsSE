@@ -179,6 +179,19 @@ void Session::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
+/* focal outline                                                              */
+/*----------------------------------------------------------------------------*/
+void Session::vFocalOutline(s4K& sOutline)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+  
+  sOutline.vSprint("<Session %p"_Stz,
+                   
+                   this
+                   );
+}
+
+/*----------------------------------------------------------------------------*/
 /* initialise this session                                                    */
 /*----------------------------------------------------------------------------*/
 eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
