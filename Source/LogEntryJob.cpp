@@ -18,11 +18,11 @@ void _LogEntryJob::vSet(LogEntry* pLogEntry, Job* pJob, eJA eJobAct)
 /*----------------------------------------------------------------------------*/
 /* cat sprint to given string                                                 */
 /*----------------------------------------------------------------------------*/
-void _LogEntryJob::vSprint(s4K& sString)
+void _LogEntryJob::vOutline(s4K& sOutline)
 {
   SP_Id spId;
   
-  sString.vCatSprint("{%s,%s}"_Stz,
+  sOutline.vCatSprint(".%s,%24s"_Stz,
                 
                       spId.sz("J"_Stz,m_iJobId),
                       aJA[m_eJobAct]);

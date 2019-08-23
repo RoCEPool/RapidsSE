@@ -18,11 +18,11 @@ void _LogEntryOp::vSet(LogEntry* pLogEntry, Op* pOp, eOA eOpAct)
 /*----------------------------------------------------------------------------*/
 /* cat sprint to given string                                                 */
 /*----------------------------------------------------------------------------*/
-void _LogEntryOp::vSprint(s4K& sString)
+void _LogEntryOp::vOutline(s4K& sOutline)
 {
   SP_Id spId;
   
-  sString.vCatSprint("{%s,%s}"_Stz,
+  sOutline.vCatSprint(".%s,%24s"_Stz,
                 
                 spId.sz("O"_Stz,m_iOpId),
                 aOA[m_eOpAct]);

@@ -15,7 +15,7 @@ void _LogEntryFyi::vSet(LogEntry* pLogEntry)
 /*----------------------------------------------------------------------------*/
 /* cat sprint to given string                                                 */
 /*----------------------------------------------------------------------------*/
-void _LogEntryFyi::vSprint(s4K& sString)
+void _LogEntryFyi::vOutline(s4K& sOutline)
 {
 }
 

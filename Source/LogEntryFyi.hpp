@@ -12,7 +12,7 @@ namespace Logging
   public:
     void vSet(LogEntry* pLogEntry);
 
-    void vSprint(s4K& sString);
+    void vOutline(s4K& sOutline);
 
     void vWriteCsv(File* pFile);
   };

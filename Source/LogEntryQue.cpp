@@ -18,11 +18,11 @@ void _LogEntryQue::vSet(LogEntry* pLogEntry, Queues* pQueues, eQA eQueAct)
 /*----------------------------------------------------------------------------*/
 /* cat sprint to given string                                                 */
 /*----------------------------------------------------------------------------*/
-void _LogEntryQue::vSprint(s4K& sString)
+void _LogEntryQue::vOutline(s4K& sOutline)
 {
   SP_Id spId;
   
-  sString.vCatSprint("{%s,%s}"_Stz,
+  sOutline.vCatSprint(".%s,%24s"_Stz,
                 
                 spId.sz("Q"_Stz,m_iQueId),
                 aQA[m_eQueAct]);

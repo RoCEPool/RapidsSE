@@ -18,11 +18,11 @@ void _LogEntryThd::vSet(LogEntry* pLogEntry, Thread* pThread, eHA eThdAct)
 /*----------------------------------------------------------------------------*/
 /* cat sprint to given string                                                 */
 /*----------------------------------------------------------------------------*/
-void _LogEntryThd::vSprint(s4K& sString)
+void _LogEntryThd::vOutline(s4K& sOutline)
 {
   SP_Id spId;
   
-  sString.vCatSprint("{%s,%s}"_Stz,
+  sOutline.vCatSprint(".%s,%24s"_Stz,
                 
                 spId.sz("H"_Stz,m_iThdId),
                 aHA[m_eThdAct]);

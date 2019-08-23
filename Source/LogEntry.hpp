@@ -34,7 +34,8 @@ namespace Logging
   
     eCN  m_eClass;      // class of caller
   
-    Object* m_pObject;  // object
+    Focal* m_pFocal;    // object
+    i8     m_i_Focal;   // focal lattice subscript
   
     char m_caText[C_LOG_TEXT]; // comment
   

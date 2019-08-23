@@ -14,8 +14,8 @@ namespace Logging
   public:
     void vSet(LogEntry* pLogEntry, Task* pTask, eTA eTskAct);
  
-    void vSprint(s4K& sString);
-  
+    void vOutline(s4K& sOutline);
+
     void vWriteCsv(File* pFile);
   };
 }

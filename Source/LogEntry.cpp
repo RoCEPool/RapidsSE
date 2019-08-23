@@ -82,7 +82,7 @@ void LogEntry::vInit(eCN eClassNo, Stz* szText)
   StrLib::vCopyLen(m_caText,szText->aChar(),C_LOG_TEXT - 1);
 
   m_eClass = eClassNo;
-  m_pObject = nullptr;
+  m_pFocal = nullptr;
   
   m_bLine = false;
 }
@@ -105,7 +105,8 @@ void LogEntry::vInit(Focal *pFocal, Stz* szText)
   StrLib::vCopyLen(m_caText,szText->aChar(),C_LOG_TEXT - 1);
   
   m_eClass  = pFocal->eClass();
-  m_pObject = pFocal;
+  m_pFocal  = pFocal;
+  m_i_Focal = pFocal->m_i_Focal;
   
   m_bLine = false;
 }
@@ -128,20 +129,20 @@ void LogEntry::vSprint(s4K& sString, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
   vSprintCsv(sString,iEntryDeltaUsec,iTotalDeltaUsec);
   
   switch (m_eKind) {
-    case EK_FYI: m_xFyi.vSprint(sString); break;
-    case EK_JOB: m_xJob.vSprint(sString); break;
-    case EK_LCK: m_xLck.vSprint(sString); break;
-    case EK_LOG: m_xLog.vSprint(sString); break;
-    case EK_OPR: m_xOpr.vSprint(sString); break;
-    case EK_PRM: m_xPrm.vSprint(sString); break;
-    case EK_QUE: m_xQue.vSprint(sString); break;
-    case EK_RES: m_xRes.vSprint(sString); break;
-    case EK_SSN: m_xSsn.vSprint(sString); break;
-    case EK_SVC: m_xSvc.vSprint(sString); break;
-    case EK_SYS: m_xSys.vSprint(sString); break;
-    case EK_TSK: m_xTsk.vSprint(sString); break;
-    case EK_THD: m_xThd.vSprint(sString); break;
-    case EK_TXN: m_xTxn.vSprint(sString); break;
+    case EK_FYI: m_xFyi.vOutline(sString); break;
+    case EK_JOB: m_xJob.vOutline(sString); break;
+    case EK_LCK: m_xLck.vOutline(sString); break;
+    case EK_LOG: m_xLog.vOutline(sString); break;
+    case EK_OPR: m_xOpr.vOutline(sString); break;
+    case EK_PRM: m_xPrm.vOutline(sString); break;
+    case EK_QUE: m_xQue.vOutline(sString); break;
+    case EK_RES: m_xRes.vOutline(sString); break;
+    case EK_SSN: m_xSsn.vOutline(sString); break;
+    case EK_SVC: m_xSvc.vOutline(sString); break;
+    case EK_SYS: m_xSys.vOutline(sString); break;
+    case EK_TSK: m_xTsk.vOutline(sString); break;
+    case EK_THD: m_xThd.vOutline(sString); break;
+    case EK_TXN: m_xTxn.vOutline(sString); break;
     default:
       NEVER_REACH;
   }
@@ -155,7 +156,7 @@ void LogEntry::vSprint(s4K& sString, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
 void LogEntry::vSprintCsv(s4K& sString, i8 iTickDeltaUsec, i8& iTotalDelta)
 {
    sString.vSprint("[%06lld,%06lld] "
-                   "%s,%lld,%lld,%lld, "
+                   "%s,%lld,"
                     "%s"_Stz,
                 
                 m_i_Entry,
@@ -163,8 +164,6 @@ void LogEntry::vSprintCsv(s4K& sString, i8 iTickDeltaUsec, i8& iTotalDelta)
                 
                 m_caNode,
                 m_iTick,
-                iTotalDelta,
-                iTickDeltaUsec,
                 
                 aEK[m_eKind]
                 );
@@ -233,7 +232,7 @@ void LogEntry::vWriteCsv(File* pFile, i8 iTickDeltaUsec, i8& iTotalDelta)
                 m_caNode,
                 m_iNodeNo,
                 aCN[m_eClass],
-                m_pObject,
+                m_pFocal,
                 
                 aEK[m_eKind]
                 );

@@ -18,11 +18,11 @@ void _LogEntrySsn::vSet(LogEntry* pLogEntry, Session* pSession, eAA eSsnAct)
 /*----------------------------------------------------------------------------*/
 /* cat sprint to given string                                                 */
 /*----------------------------------------------------------------------------*/
-void _LogEntrySsn::vSprint(s4K& sString)
+void _LogEntrySsn::vOutline(s4K& sOutline)
 {
   SP_Id spId;
   
-  sString.vCatSprint("{%s,%s}"_Stz,
+  sOutline.vCatSprint(".%s,%24s"_Stz,
                 
                 spId.sz("A"_Stz,m_iSsnId),
                 aAA[m_eSsnAct]);

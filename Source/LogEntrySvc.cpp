@@ -18,11 +18,11 @@ void _LogEntrySvc::vSet(LogEntry* pLogEntry, Job* pJob, eVA eSvcAct)
 /*----------------------------------------------------------------------------*/
 /* cat sprint to given string                                                 */
 /*----------------------------------------------------------------------------*/
-void _LogEntrySvc::vSprint(s4K& sString)
+void _LogEntrySvc::vOutline(s4K& sOutline)
 {
   SP_Id spId;
   
-  sString.vCatSprint("{%s,%s}"_Stz,
+  sOutline.vCatSprint(".%s,%24s"_Stz,
                 
                 spId.sz("S"_Stz,m_iSvcId),
                 aVA[m_eSvcAct]);
