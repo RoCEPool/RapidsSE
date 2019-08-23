@@ -52,6 +52,9 @@ Stz* SP_String::szRight(Stz* szString, i8 iLength)
                   (Stz*)caFormat,
                   
                   szString);
+  
+  if (StrLib::bClip(m_caResult,iLength))
+    {;}
 
   return (Stz*) &m_caResult[0];
 }

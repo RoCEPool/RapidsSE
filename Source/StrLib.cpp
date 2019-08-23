@@ -238,6 +238,20 @@ void StrLib::vClick(char* aArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* clip arg to given maxiumum length                                          */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bClip(char* aArg, i8 iMaxLen)
+{
+  i8 iCurLen = StrLib::iLength(aArg);
+  
+  if (iCurLen <= iMaxLen)
+    return false;
+  
+  aArg[iMaxLen] = '\0';
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* comma seperate the integer argument                                        */
 /*----------------------------------------------------------------------------*/
 void StrLib::vComma(char* azDst, i8 iArg)

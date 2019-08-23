@@ -32,6 +32,7 @@ namespace Strings
     static bool  bBackward(const char** ps, char* pBegin, const char c);
 
     static void  vClick(char* aArg);
+    static bool  bClip(char* aArg, i8 iLen);
     static void  vComma(char* psDst, i8 iArg);
     static i8    iCompare(const char* pArg1, const char* pArg2);
     static bool  iCompare(const char* pArg1, const char* pArg2, i8 iCase);
