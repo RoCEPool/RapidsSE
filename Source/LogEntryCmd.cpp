@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void _LogEntryCmd::vSet(LogEntry* pLogEntry, Command* pCommand, eMA eCmdAct)
 {
-  pLogEntry->m_eKind = EK_LCK;
+  pLogEntry->m_eKind = EK_CMD;
   
   m_iCmdId  = pCommand->m_iUniqueId;
   m_eCmdAct = eCmdAct;
@@ -39,7 +39,7 @@ void _LogEntryCmd::vWriteCsv(File* pFile)
   
   pFile->vPrint(",%s,%s"_Stz,
                 
-                spId.sz("L"_Stz,m_iCmdId),
+                spId.sz("M"_Stz,m_iCmdId),
                 aMA[m_eCmdAct]);
 }
 

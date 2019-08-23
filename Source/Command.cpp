@@ -50,6 +50,12 @@ Command::Command(TokenVec* p_TknVec)
   
   m_p_TknVec = p_TknVec;
   
+  _checkInitialised_(CN_COMMAND);
+
+  AM::vLogCmd(SL_INF,this,MA_BEGIN,
+              "Command begin : %s"_Stz,
+              m_p_TknVec->pGet(0)->szText());
+
   _postcondition_(_MAGIC_,CN_COMMAND,_FOOTER_);
 }
 
@@ -61,6 +67,9 @@ Command::~Command(void) noexcept(false)
   _precondition_(_MAGIC_,CN_COMMAND,_FOOTER_);
   
   // do not delete: m_p_TknVec
+  
+  AM::vLogCmd(SL_INF,this,MA_END,
+              "Command end"_Stz);
 }
 
 

@@ -62,7 +62,7 @@ Lock::Lock(eLK eLockKind, i8 NonFocal)
   _checkInitialised_(CN_LOCK);
   
   ++ gixLock;
- AM::vLogLck(SL_INF,this,LA_CONSTRUCTOR,
+  AM::vLogLck(SL_INF,this,LA_CONSTRUCTOR,
               "Lock constructed %s : %p (%lld locks exist)"_Stz,
               aLK[m_eLockKind],this,* gixLock);
   
