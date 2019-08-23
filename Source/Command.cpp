@@ -17,7 +17,7 @@ Command* Commands::_pCommand(void* aAddr)
 {
   Command* pCommand = reinterpret_cast<Command*>(aAddr);
   
-  RASSERT_TYPE(pCommand,CN_COMMAND);
+  RASSERT_TYPE(pCommand,CN_INPUT);
   
   return pCommand;
 }
@@ -27,7 +27,7 @@ Command* Commands::_pCommand(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Command::operator new(size_t)
 {
-  Object* pObject = HeapMem::pAllocate(CN_COMMAND);
+  Object* pObject = HeapMem::pAllocate(CN_INPUT);
   
   return pObject;
 }
@@ -46,9 +46,9 @@ void Command::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Command::Command(void)
-: Object(CN_COMMAND)
+: Object(CN_INPUT)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMAND,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
 
   m_pTokeniser = new Tokeniser;
@@ -63,9 +63,9 @@ Command::Command(void)
   m_pTokeniser->vNormal(true);
 
     
-  _checkInitialised_(CN_COMMAND);
+  _checkInitialised_(CN_INPUT);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_COMMAND,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -73,7 +73,7 @@ Command::Command(void)
 /*----------------------------------------------------------------------------*/
 Command::~Command(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMAND,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   delete m_pTokeniser;
 }
@@ -88,7 +88,7 @@ Command::~Command(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 bool Command::bExecuteFile(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMAND,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   if (! bTestFile(pTkn(0)->szText()))
     return false;
@@ -104,7 +104,7 @@ bool Command::bExecuteFile(void)
 /*----------------------------------------------------------------------------*/
 bool Command::bRunFile(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMAND,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
 //  if ( ! bTokenCheck(1) )
 //    if (! pTkn(1)->bSame(";"_Stz))
@@ -122,7 +122,7 @@ bool Command::bRunFile(void)
 /*----------------------------------------------------------------------------*/
 void Command::vPushFile(Stz* aFileName)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMAND,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   s256 sPath;
   
@@ -139,7 +139,7 @@ void Command::vPushFile(Stz* aFileName)
 /*----------------------------------------------------------------------------*/
 bool Command::bTokenCheck(i8 nTokens)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMAND,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   if (pTkn(nTokens)->bHasText()) {
     return false;
@@ -153,7 +153,7 @@ bool Command::bTokenCheck(i8 nTokens)
 /*----------------------------------------------------------------------------*/
 bool Command::bBlankLine(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMAND,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   if (0 != pTkn(0)->iLength())
     return false;
@@ -166,7 +166,7 @@ bool Command::bBlankLine(void)
 /*----------------------------------------------------------------------------*/
 void Command::vGetCommand(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMAND,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   vGetTokens();
     
@@ -196,7 +196,7 @@ void Command::vGetCommand(void)
 /*----------------------------------------------------------------------------*/
 void Command::vGetTokens(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMAND,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   while (true) {
     
@@ -238,7 +238,7 @@ void Command::vGetTokens(void)
 /*----------------------------------------------------------------------------*/
 bool Command::bTestFile(Stz* aFileName)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMAND,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   if (File::bExists(aFileName))
     return true;
@@ -251,7 +251,7 @@ bool Command::bTestFile(Stz* aFileName)
 /*----------------------------------------------------------------------------*/
 Token* Command::pTkn(i8 i_Token)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMAND,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   TokenVec* pTknVec = this->pTknVec();
   
@@ -265,7 +265,7 @@ Token* Command::pTkn(i8 i_Token)
 /*----------------------------------------------------------------------------*/
 TokenVec* Command::pTknVec(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMAND,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   return m_pTokeniser->pTknVec();
 }
@@ -275,7 +275,7 @@ TokenVec* Command::pTknVec(void)
 /*----------------------------------------------------------------------------*/
 void Command::vTokenise(Stz* aCommand)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMAND,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
   s48K sCommand(aCommand);
   
