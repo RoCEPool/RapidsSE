@@ -8,6 +8,7 @@ namespace Logging
   class LogEntry : public Object
   {
   friend class Log;
+  friend class _LogEntryCmd;
   friend class _LogEntryFyi;
   friend class _LogEntryJob;
   friend class _LogEntryLck;
@@ -43,6 +44,7 @@ namespace Logging
   
     eEK  m_eKind;       // log entry kind.  one of the following
     union {
+      _LogEntryCmd m_xCmd;  // when m_eKind == EK_CMD
       _LogEntryFyi m_xFyi;  // when m_eKind == EK_FYI
       _LogEntryJob m_xJob;  // when m_eKind == EK_JOB
       _LogEntryLck m_xLck;  // when m_eKind == EK_LCK

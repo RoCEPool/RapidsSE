@@ -134,6 +134,7 @@ void LogEntry::vSprint(s4K& sString, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
   vSprintCsv(sString,iEntryDeltaUsec,iTotalDeltaUsec);
   
   switch (m_eKind) {
+    case EK_CMD: m_xCmd.vOutline(sString); break;
     case EK_FYI: m_xFyi.vOutline(sString); break;
     case EK_JOB: m_xJob.vOutline(sString); break;
     case EK_LCK: m_xLck.vOutline(sString); break;
@@ -196,6 +197,7 @@ void LogEntry::vWrite(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
   vWriteCsv(pFile,iEntryDeltaUsec,iTotalDeltaUsec);
   
   switch (m_eKind) {
+    case EK_CMD: m_xCmd.vWriteCsv(pFile); break;
     case EK_FYI: m_xFyi.vWriteCsv(pFile); break;
     case EK_JOB: m_xJob.vWriteCsv(pFile); break;
     case EK_LCK: m_xLck.vWriteCsv(pFile); break;
