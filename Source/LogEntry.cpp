@@ -154,7 +154,7 @@ void LogEntry::vSprint(s4K& sString, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
 /*----------------------------------------------------------------------------*/
 void LogEntry::vSprintCsv(s4K& sString, i8 iTickDeltaUsec, i8& iTotalDelta)
 {
-   sString.vSprint("[%06lld,%06lld], "
+   sString.vSprint("[%06lld,%06lld],"
                    "%s,%lld,%lld,%lld, "
                     "{%s"_Stz,
                 

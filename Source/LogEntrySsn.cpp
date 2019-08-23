@@ -22,7 +22,7 @@ void _LogEntrySsn::vSprint(s4K& sString)
 {
   SP_Id spId;
   
-  sString.vCatSprint(",%s,%s"_Stz,
+  sString.vCatSprint("{,%s,%s}"_Stz,
                 
                 spId.sz("A"_Stz,m_iSsnId),
                 aAA[m_eSsnAct]);

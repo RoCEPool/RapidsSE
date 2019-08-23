@@ -48,7 +48,7 @@ Stz* SP_Id::sz(Stz* szPrefix, i8 iId)
   U.iId = iId;
   
   StrLib::vSprint(m_caResult,
-                  "%s%lld.%lld"_Stz,
+                  "%s%lld.%03lld"_Stz,
                   
                   szPrefix,
                   U.wId.m_uNodeNo,
