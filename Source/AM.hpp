@@ -200,6 +200,8 @@ namespace StorageEngine
     static void vFocalRemove(Focal* pFocal);
 
     static void vMri(TokenVec* pTknVec);
+  
+    static i8   iTimePoint(void);
   };
 }
 

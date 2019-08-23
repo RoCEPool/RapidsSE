@@ -32,6 +32,7 @@ namespace Gadgets
 #include "Numbat.hpp"
 
 #include "SP_Id.hpp"
+#include "SP_Elapsed.hpp"
 #include "SP_String.hpp"
 
 namespace Tasks { typedef MP<Task,CN_TASK> MP_Task;

@@ -8,7 +8,7 @@ namespace Gadgets
   class Tick
   {
   public:
-    static i8 iClockRes(void);
+    static i8 iClockResNsec(void);
   
     static i8 iRdClock(void);
     static i8 iRdTscp(void);

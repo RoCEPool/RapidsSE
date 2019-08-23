@@ -40,7 +40,7 @@ Stz* SP_String::szRight(Stz* szString, i8 iLength)
 {
   _precondition_(_MAGIC_,CN_SPSTRING,_FOOTER_);
   
-  char caDynFormat[4096];
+  char caDynFormat[32];
 
   StrLib::vSprint(caDynFormat,"%%%llds"_Stz,iLength);
 

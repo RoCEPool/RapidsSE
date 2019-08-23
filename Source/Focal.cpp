@@ -15,6 +15,7 @@ Focal::Focal(eCN eClassNo)
   m_i_Focal   = C_UNKNOWN;
   m_iUniqueId = C_UNKNOWN;
   m_i_Log     = C_UNKNOWN;
+  m_iTick     = AM::iTimePoint();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -26,7 +27,8 @@ Focal::Focal(eCN eClassNo, i8 iUniqueId)
   m_i_Focal   = C_UNKNOWN;
   m_iUniqueId = iUniqueId;
   m_i_Log     = C_UNKNOWN;
-  
+  m_iTick     = AM::iTimePoint();
+
   AM::vFocalAdd(this);
 }
 

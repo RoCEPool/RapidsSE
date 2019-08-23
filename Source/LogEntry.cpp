@@ -5,6 +5,7 @@
 #include "Logging.h"
 #include "AM.hpp"
 
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -155,18 +156,18 @@ void LogEntry::vSprint(s4K& sString, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
 /*----------------------------------------------------------------------------*/
 void LogEntry::vSprintCsv(s4K& sString, i8 iTickDeltaUsec, i8& iTotalDelta)
 {
-   SP_String spString;
-  
+   SP_Elapsed spElapsed;
+
    sString.vSprint("[%06lld,%06lld] "
-                   "%s,%lld,"
+                   "%s+%s-"
                     "%s"_Stz,
                 
                 m_i_Entry,
                 m_i_Prev,
                 
                 m_caNode,
-                m_iTick,
-                
+                spElapsed.szNsec(m_iTick - gpAttachMap->m_iTick),
+
                 aEK[m_eKind]
                 );
 }
