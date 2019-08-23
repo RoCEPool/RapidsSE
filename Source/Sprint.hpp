@@ -5,16 +5,10 @@
 
 namespace ScanSprint
 {
-  static const i8 C_SPRINT_SIZE = 64;
-  
-  class Sprint : public Object
+  class Sprint : public SP
   {
   public:
   
-    // defult buffers
-    char m_caFormat[C_SPRINT_SIZE];
-    char m_caResult[C_SPRINT_SIZE];
-
     // must be last
     Footer m_xFooter;
     

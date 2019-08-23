@@ -8,17 +8,10 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Sprint::Sprint(eCN eClass)
-: Object(eClass)
+: SP(eClass)
 {
-#ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caFormat,sizeof(m_caFormat),CN_SPDTE);
-  MemLib::vZero(m_caResult,sizeof(m_caResult),CN_SPDTE);
-#else
-  m_caFormat[0] = '\0';
-  m_caResult[0] = '\0';
-#endif
 
- }
+}
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
