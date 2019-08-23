@@ -67,7 +67,7 @@ Socket::Socket(void)
   _checkInitialised_(CN_SOCKET);
   
   ++ gixSocket;
-  AM::vLogRes(this,RA_SKT_CONSTRUCTOR,
+  AM::vLogRes(SL_INF,this,RA_SKT_CONSTRUCTOR,
               "Socket constructed : %p (%lld sockets exist)"_Stz,this,* gixSocket);
 
   _postcondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
@@ -88,7 +88,7 @@ Socket::Socket(int iSocketId)
   m_aLowBuff = MemLib::aMallocBlock(C_SIZE_POOL_BUFFER);
   
   ++ gixSocket;
-  AM::vLogRes(this,RA_SKT_CONSTRUCTOR,
+  AM::vLogRes(SL_INF,this,RA_SKT_CONSTRUCTOR,
               "Socket constructed : %p (%lld sockets exist)"_Stz,this,* gixSocket);
   
   _postcondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
@@ -108,7 +108,7 @@ Socket::~Socket(void) noexcept(false)
   MemLib::vFreeBlock(m_aLowBuff,C_SIZE_POOL_BUFFER);
   
   -- gixSocket;
-  AM::vLogRes(this,RA_SKT_DESTRUCTOR,
+  AM::vLogRes(SL_INF,this,RA_SKT_DESTRUCTOR,
               "Socket destructed : %p (%lld sockets exist)"_Stz,this,* gixSocket);
 }
 
@@ -289,7 +289,7 @@ bool Socket::bAcceptClient(int& iSocketId, SysCall& SysCall)
   
   if (AM::bAttached()) AM::pResourceTracker()->vIncSocketOpen();
   
-  AM::vLogRes(this,RA_SKT_ACCEPTED,
+  AM::vLogRes(SL_INF,this,RA_SKT_ACCEPTED,
               "Socket accepted : client"_Stz);
 
   SysCall.vSuccess();
@@ -326,7 +326,7 @@ bool Socket::bClose(SysCall& SysCall)
   
   if (AM::bAttached()) AM::pResourceTracker()->vDecSocketOpen();
   
-  AM::vLogRes(this,RA_SKT_CLOSED,
+  AM::vLogRes(SL_INF,this,RA_SKT_CLOSED,
               "Socket closed : "_Stz);
 
   SysCall.vSuccess();
@@ -395,7 +395,7 @@ bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
   
   if (AM::bAttached()) AM::pResourceTracker()->vIncSocketOpen();
   
-  AM::vLogRes(this,RA_SKT_CONNECTED,
+  AM::vLogRes(SL_INF,this,RA_SKT_CONNECTED,
               "Socket connected : to server %s %d"_Stz,sAddr,iPort);
 
   SysCall.vSuccess();
@@ -459,7 +459,7 @@ bool Socket::bCreateServer(int iPort, SysCall& SysCall)
   
   if (AM::bAttached()) AM::pResourceTracker()->vIncSocketOpen();
   
-  AM::vLogRes(this,RA_SKT_CREATED,
+  AM::vLogRes(SL_INF,this,RA_SKT_CREATED,
               "Socket created : listening socket : %d"_Stz,iPort);
 
   SysCall.vSuccess();
@@ -534,7 +534,7 @@ bool Socket::bRecvBytes(void* pWS, i8 nBytes, SysCall& SysCall)
     gpAttachMap->m_oStatistics.Socket.m_nRecvBytes += nRecvBytes;
 #endif
     
-  AM::vLogRes(this,RA_SKT_RECEIVED,
+  AM::vLogRes(SL_INF,this,RA_SKT_RECEIVED,
               "Socket received : %lld bytes"_Stz,nRecvBytes);
 
     //vTrace("Bytes received: (%lld) %lld\n"_Stz, nBytes, nSoFar);
@@ -567,7 +567,7 @@ bool Socket::bSendBytes(void* pBuffer, i8 nBytes, SysCall& SysCall)
   gpAttachMap->m_oStatistics.Socket.m_nSendBytes += nSentBytes;
 #endif
   
-  AM::vLogRes(this,RA_SKT_SENT,
+  AM::vLogRes(SL_INF,this,RA_SKT_SENT,
               "Socket sent : %lld bytes"_Stz,nSentBytes);
 
   if (nSentBytes == nBytes) {

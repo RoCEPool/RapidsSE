@@ -104,7 +104,7 @@ Mutex::Mutex()
   _checkInitialised_(CN_MUTEX);
   
   ++ gixMutex;
-  AM::vLogRes(this,RA_MTX_CONSTRUCTOR,
+  AM::vLogRes(SL_INF,this,RA_MTX_CONSTRUCTOR,
               "Mutex constructed : %p (%lld mutexes exist)"_Stz,this,* gixMutex);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
@@ -136,7 +136,7 @@ Mutex::~Mutex(void) noexcept(false)
 #endif
   
   -- gixMutex;
-  AM::vLogRes(this,RA_MTX_DESTRUCTOR,
+  AM::vLogRes(SL_INF,this,RA_MTX_DESTRUCTOR,
               "Mutex destructed : %p (%lld mutexes exist)"_Stz,this,* gixMutex);
 }
 
@@ -213,7 +213,7 @@ void Mutex::vCondSignal(void)
   gpAttachMap->m_oStatistics.Mutex.m_nSignals++;
 #endif
   
-  AM::vLogRes(this,RA_MTX_SIGNAL,
+  AM::vLogRes(SL_INF,this,RA_MTX_SIGNAL,
               "Mutex signaled : %p"_Stz,this);
   
   //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
@@ -256,7 +256,7 @@ void Mutex::vCondWaitIndefinite(void)
   gpAttachMap->m_oStatistics.Mutex.m_nWaits++;
 #endif
   
-  AM::vLogRes(this,RA_MTX_WAIT_INDEFINITE,
+  AM::vLogRes(SL_INF,this,RA_MTX_WAIT_INDEFINITE,
               "Mutex wait : %p"_Stz,this);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -272,7 +272,7 @@ void Mutex::vCondWaitIndefinite(void)
   gpAttachMap->m_oStatistics.Mutex.m_nUnblocks++;
 #endif
   
-  AM::vLogRes(this,RA_NONE,
+  AM::vLogRes(SL_INF,this,RA_NONE,
               "Mutex unblocked : %p"_Stz,this);
 
   // success
@@ -321,7 +321,7 @@ void Mutex::vCondWaitUsec(i8 iMicroSeconds)
   gpAttachMap->m_oStatistics.Mutex.m_nTimedWaits++;
 #endif
   
-  AM::vLogRes(this,RA_MTX_WAIT_TIMED,
+  AM::vLogRes(SL_INF,this,RA_MTX_WAIT_TIMED,
               "Mutex timedwait : %p %lldus"_Stz,this,iMicroSeconds);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -342,7 +342,7 @@ void Mutex::vCondWaitUsec(i8 iMicroSeconds)
     gpAttachMap->m_oStatistics.Mutex.m_nUnblocks++;
 #endif
     
-    AM::vLogRes(this,RA_MTX_SIGNALED,
+    AM::vLogRes(SL_INF,this,RA_MTX_SIGNALED,
                 "Mutex timed unblock : %p %lldus"_Stz,this,iMicroSeconds);
     m_bLocked = true;
     return;
@@ -358,7 +358,7 @@ void Mutex::vCondWaitUsec(i8 iMicroSeconds)
     gpAttachMap->m_oStatistics.Mutex.m_nTimeOuts++;
 #endif
     
-   AM::vLogRes(this,RA_MTX_TIMEOUT,
+   AM::vLogRes(SL_INF,this,RA_MTX_TIMEOUT,
                "Mutex timeout : %p %lldus"_Stz,this,iMicroSeconds);
    m_bLocked = true;
     return;
@@ -424,7 +424,7 @@ bool Mutex::bMutexLock(void)
   if (0 == rCode) {
     RASSERT(! m_bLocked);
     m_bLocked = true;
-    AM::vLogRes(this,RA_MTX_LOCKED,
+    AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
                 "Mutex locked : %p "_Stz,this);
     return true;
   }
@@ -462,7 +462,7 @@ void Mutex::vMutexLock(void)
   if (0 == rCode) {
     RASSERT(! m_bLocked);
     m_bLocked = true;
-    AM::vLogRes(this,RA_MTX_UNLOCKED,
+    AM::vLogRes(SL_INF,this,RA_MTX_UNLOCKED,
                 "Mutex unlocked : %p "_Stz,this);
     return;
   }

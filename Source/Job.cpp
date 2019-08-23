@@ -115,7 +115,7 @@ Job::Job(eCN eClassNo, Session* pSession)
   // -- -- -- -- -- --
   
   ++ gixJob;
-  AM::vLogJob(this,JA_JOB_CONSTRUCTOR,
+  AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCTOR,
               "Job constructed : %p (%lld jobs exist)"_Stz,this,* gixJob);
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
@@ -133,7 +133,7 @@ Job::~Job(void) noexcept(false)
   delete m_pMutexJob;
   
   -- gixJob;
-  AM::vLogJob(this,JA_JOB_DESTRUCTOR,
+  AM::vLogJob(SL_INF,this,JA_JOB_DESTRUCTOR,
               "Job destructed : %p (%lld jobs exist)"_Stz,this,* gixJob);
 }
 

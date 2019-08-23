@@ -183,7 +183,7 @@ void Arguments::vAddConstants(void)
 /*----------------------------------------------------------------------------*/
 void Arguments::vLog(void)
 {
-  AM::vLogSys(gpAttachMap,YA_SYS_ARGS,"Args:"_Stz);
+  AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_ARGS,"Args:"_Stz);
   
   s256 sArg;
   
@@ -196,7 +196,7 @@ void Arguments::vLog(void)
       StrLib::vConcat(sArg.aChar(),gi_argv[i_Arg ++]);
     }
     
-    AM::vLogSys(gpAttachMap,YA_SYS_ARGS,"  %s"_Stz,sArg.aChar());
+    AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_ARGS,"  %s"_Stz,sArg.aChar());
   }
 }
 

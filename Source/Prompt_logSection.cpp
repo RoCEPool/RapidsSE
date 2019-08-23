@@ -43,7 +43,7 @@ bool Prompt::bPrompt_logSection(SePrompt* pPrompt)
   StrLib::vConcat(caSection,'#');
   StrLib::vConcat(caSection,'#');
 
-  AM::vLogLog(gpLog,GA_LOG_SECTION,"%s"_Stz,(Stz*)caSection);
+  AM::vLogLog(SL_INF,gpLog,GA_LOG_SECTION,"%s"_Stz,(Stz*)caSection);
   
   return true;
 }

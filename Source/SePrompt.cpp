@@ -569,7 +569,7 @@ void SePrompt::vLogCommand(void)
   
   pTknVec->vToString(sCommand);
   
-  AM::vLogPrm(this,PA_COMMAND,"Command %lld: %s"_Stz,
+  AM::vLogPrm(SL_INF,this,PA_COMMAND,"Command %lld: %s"_Stz,
               m_iCmdNo++,sCommand.aStz());
 }
 
@@ -586,7 +586,7 @@ void SePrompt::vLogFreeSpace(void)
   s32 sFreeSpaceMag;
   MagLib::vByteMag(iFreeSpace + iFreeSpaceInPool,1,sFreeSpaceMag);
   
-  AM::vLogPrm(this,PA_FREE_SPACE,"Command completed (free space %s)"_Stz,
+  AM::vLogPrm(SL_INF,this,PA_FREE_SPACE,"Command completed (free space %s)"_Stz,
               sFreeSpaceMag.aStz());
 }
 

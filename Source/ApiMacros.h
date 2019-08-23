@@ -52,7 +52,7 @@ const u8 API_TL_POOL   = C_BIT_4; // 16
   \
   ApiState::vMarkError(pSession,eErrorCode); \
   ApiState::vMarkApiLoc(pSession,888); \
-  AM::vLogSsn(pSession,AA_API_ERROR,"Api %s Error %lld"_Stz,eApiCall,eErrorCode); \
+  AM::vLogSsn(SL_INF,pSession,AA_API_ERROR,"Api %s Error %lld"_Stz,eApiCall,eErrorCode); \
   \
   TRACE_API_ERROR("catch"_Stz,eErrorCode); \
   \
@@ -81,7 +81,7 @@ const u8 API_TL_POOL   = C_BIT_4; // 16
   \
   eAC  eApiCall = _eApiCall; \
   \
-  AM::vLogSsn(pSession,AA_API_ENTRY,"Api %s entry"_Stz,eApiCall); \
+  AM::vLogSsn(SL_INF,pSession,AA_API_ENTRY,"Api %s entry"_Stz,eApiCall); \
   Api::vIncStatistics(eApiCall);\
   \
   if (pSession) { \
@@ -105,7 +105,7 @@ const u8 API_TL_POOL   = C_BIT_4; // 16
     ApiState::vMarkApiLoc(pSession,990); \
   } \
   \
-  AM::vLogSsn(pSession,AA_API_EXIT,"Api %s exit"_Stz,eApiCall); \
+  AM::vLogSsn(SL_INF,pSession,AA_API_EXIT,"Api %s exit"_Stz,eApiCall); \
   \
   TRACE_API("exiting"_Stz); \
 }
@@ -149,7 +149,7 @@ const u8 API_TL_POOL   = C_BIT_4; // 16
     ApiState::vMarkApiLoc(pSession,999); \
   } \
   \
-  AM::vLogSsn(pSession,AA_API_EXIT,"Api %s exit"_Stz,eApiCall); \
+  AM::vLogSsn(SL_INF,pSession,AA_API_EXIT,"Api %s exit"_Stz,eApiCall); \
   \
   TRACE_API("return"_Stz); \
   \
@@ -163,7 +163,7 @@ const u8 API_TL_POOL   = C_BIT_4; // 16
 { \
   ApiState::vMarkError(pSession,eErrorCode); \
   ApiState::vMarkApiLoc(pSession,880); \
-  AM::vLogSsn(pSession,AA_API_ERROR,"Api %s Error %lld"_Stz,eApiCall,eErrorCode); \
+  AM::vLogSsn(SL_INF,pSession,AA_API_ERROR,"Api %s Error %lld"_Stz,eApiCall,eErrorCode); \
   \
   TRACE_API_ERROR("return error"_Stz,eErrorCode); \
   \

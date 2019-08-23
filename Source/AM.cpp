@@ -374,7 +374,7 @@ void AM::vWriteTrace(eYA eSysAct, Stz* aFormat, va_list xArgs)
   StrLib::vStrip(caFormatted,'\n');
   
   if (gpAttachMap)
-    AM::vLogSys(gpAttachMap,eSysAct,"%s"_Stz,caFormatted);
+    AM::vLogSys(SL_INF,gpAttachMap,eSysAct,"%s"_Stz,caFormatted);
   
   if (bUseLock)
     oLock.vDropWrite();
@@ -405,7 +405,7 @@ void AM::vLogFyi(Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a job log entry                                                        */
 /*----------------------------------------------------------------------------*/
-void AM::vLogJob(Job* pJob, eJA eJobAct, Stz* szFormat, ...)
+void AM::vLogJob(eSL eSeverity, Job* pJob, eJA eJobAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -431,7 +431,7 @@ void AM::vLogJob(Job* pJob, eJA eJobAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a lock log entry                                                       */
 /*----------------------------------------------------------------------------*/
-void AM::vLogLck(Lock* pLock, eLA eLckAct, Stz* szFormat, ...)
+void AM::vLogLck(eSL eSeverity, Lock* pLock, eLA eLckAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   
@@ -462,7 +462,7 @@ void AM::vLogLck(Lock* pLock, eLA eLckAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a log log entry                                                        */
 /*----------------------------------------------------------------------------*/
-void AM::vLogLog(Log* pLog, eGA eLogAct, Stz* szFormat, ...)
+void AM::vLogLog(eSL eSeverity, Log* pLog, eGA eLogAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   
@@ -489,7 +489,7 @@ void AM::vLogLog(Log* pLog, eGA eLogAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a operator log entry                                                   */
 /*----------------------------------------------------------------------------*/
-void AM::vLogOpr(Op* pOpr, eOA eOprAct, Stz* szFormat, ...)
+void AM::vLogOpr(eSL eSeverity, Op* pOpr, eOA eOprAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -515,7 +515,7 @@ void AM::vLogOpr(Op* pOpr, eOA eOprAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a prompt log entry                                                     */
 /*----------------------------------------------------------------------------*/
-void AM::vLogPrm(SePrompt* pPrm, ePA ePrmAct, Stz* szFormat, ...)
+void AM::vLogPrm(eSL eSeverity, SePrompt* pPrm, ePA ePrmAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -541,7 +541,7 @@ void AM::vLogPrm(SePrompt* pPrm, ePA ePrmAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a operator log entry                                                   */
 /*----------------------------------------------------------------------------*/
-void AM::vLogQue(Queues* pQue, eQA eQueAct, Stz* szFormat, ...)
+void AM::vLogQue(eSL eSeverity, Queues* pQue, eQA eQueAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -567,7 +567,7 @@ void AM::vLogQue(Queues* pQue, eQA eQueAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a resource log entry                                                   */
 /*----------------------------------------------------------------------------*/
-void AM::vLogRes(Resource* pRes, eRA eResAct, Stz* szFormat, ...)
+void AM::vLogRes(eSL eSeverity, Resource* pRes, eRA eResAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -593,7 +593,7 @@ void AM::vLogRes(Resource* pRes, eRA eResAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a session log entry                                                    */
 /*----------------------------------------------------------------------------*/
-void AM::vLogSsn(Session* pSsn, eAA eApiAct, Stz* szFormat, ...)
+void AM::vLogSsn(eSL eSeverity, Session* pSsn, eAA eApiAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -619,7 +619,7 @@ void AM::vLogSsn(Session* pSsn, eAA eApiAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a service log entry                                                    */
 /*----------------------------------------------------------------------------*/
-void AM::vLogSvc(Job* pJob, eVA eSvcAct, Stz* szFormat, ...)
+void AM::vLogSvc(eSL eSeverity, Job* pJob, eVA eSvcAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -645,7 +645,7 @@ void AM::vLogSvc(Job* pJob, eVA eSvcAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a system log entry                                                     */
 /*----------------------------------------------------------------------------*/
-void AM::vLogSys(AttachMap* , eYA eSysAct, Stz* szFormat, ...)
+void AM::vLogSys(eSL eSeverity, AttachMap* , eYA eSysAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -672,7 +672,7 @@ void AM::vLogSys(AttachMap* , eYA eSysAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a thread log entry                                                     */
 /*----------------------------------------------------------------------------*/
-void AM::vLogThd(Thread* pThread, eHA eThdAct, Stz* szFormat, ...)
+void AM::vLogThd(eSL eSeverity, Thread* pThread, eHA eThdAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -698,7 +698,7 @@ void AM::vLogThd(Thread* pThread, eHA eThdAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a rask log entry                                                       */
 /*----------------------------------------------------------------------------*/
-void AM::vLogTsk(Task* pTask, eTA eTskAct, Stz* szFormat, ...)
+void AM::vLogTsk(eSL eSeverity, Task* pTask, eTA eTskAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -724,7 +724,7 @@ void AM::vLogTsk(Task* pTask, eTA eTskAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a transaction log entry                                                */
 /*----------------------------------------------------------------------------*/
-void AM::vLogTxn(Tx* pTxn, eXA eTxnAct, Stz* szFormat, ...)
+void AM::vLogTxn(eSL eSeverity, Tx* pTxn, eXA eTxnAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
