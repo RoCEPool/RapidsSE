@@ -8,13 +8,9 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SP_String::SP_String(void)
-: Object(CN_SPSTRING)
+: SP(CN_SPSTRING)
 {
   _precondition_(_MAGIC_,CN_SPSTRING,_FOOTER_);
-  
-#ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caResult,sizeof(m_caResult),CN_SPSTRING);
-#endif
   
   _checkInitialised_(CN_SPSTRING);
   
@@ -40,11 +36,9 @@ Stz* SP_String::szRight(Stz* szString, i8 iLength)
 {
   _precondition_(_MAGIC_,CN_SPSTRING,_FOOTER_);
   
-  char caDynFormat[32];
+  StrLib::vSprint(m_caFormat,"%%%llds"_Stz,iLength);
 
-  StrLib::vSprint(caDynFormat,"%%%llds"_Stz,iLength);
-
-  StrLib::vSprint(m_caResult,(Stz*)caDynFormat,szString);
+  StrLib::vSprint(m_caResult,(Stz*)m_caFormat,szString);
   
   if (StrLib::bClip(m_caResult,iLength))
     StrLib::vReplaceTail(m_caResult,(char*)"..."_Stz);

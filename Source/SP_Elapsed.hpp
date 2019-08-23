@@ -1,14 +1,13 @@
 /*============================================================================*/
-/* SP_Elapsed.hpp - Elapsed sprint helper                                     */
+/* SP_Elapsed.hpp - Elapsed sprint helper                       (on c stack)  */
 /*============================================================================*/
 #pragma once
 
 namespace Gadgets
 {
-  class SP_Elapsed : public Object
+  class SP_Elapsed : public SP
   {
   public:
-    char m_caResult[32];
 
     // must be last
     Footer m_xFooter;

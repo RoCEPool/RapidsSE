@@ -8,13 +8,9 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SP_Elapsed::SP_Elapsed(void)
-: Object(CN_SPELAPSED)
+: SP(CN_SPELAPSED)
 {
   _precondition_(_MAGIC_,CN_SPELAPSED,_FOOTER_);
-  
-#ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caResult,sizeof(m_caResult),CN_SPELAPSED);
-#endif
   
   _checkInitialised_(CN_SPELAPSED);
   
@@ -87,8 +83,7 @@ Stz* SP_Elapsed::szNsec(i8 iNsec)
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-__aFooterFunction(SP_Elapsed);
+__aFooterFunction(SP_Elapsed)
 
 /*============================================================================*/
 /* end                                                                        */

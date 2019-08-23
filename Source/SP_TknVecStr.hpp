@@ -5,10 +5,9 @@
 
 namespace Commands
 {
-  class SP_TknVecStr : public Object
+  class SP_TknVecStr : public SP
   {
   public:
-    char m_caResult[4096];
 
     // must be last
     Footer m_xFooter;

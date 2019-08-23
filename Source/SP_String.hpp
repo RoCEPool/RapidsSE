@@ -5,10 +5,9 @@
 
 namespace Gadgets
 {
-  class SP_String : public Object
+  class SP_String : public SP
   {
   public:
-    char m_caResult[4096];
 
     // must be last
     Footer m_xFooter;

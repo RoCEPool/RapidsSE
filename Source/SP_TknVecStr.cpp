@@ -8,13 +8,9 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SP_TknVecStr::SP_TknVecStr(void)
-: Object(CN_SPSTRING)
+: SP(CN_SPSTRING)
 {
   _precondition_(_MAGIC_,CN_SPSTRING,_FOOTER_);
-  
-#ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caResult,sizeof(m_caResult),CN_SPSTRING);
-#endif
   
   _checkInitialised_(CN_SPSTRING);
   
@@ -86,8 +82,7 @@ Stz* SP_TknVecStr::sz(TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-__aFooterFunction(SP_TknVecStr);
+__aFooterFunction(SP_TknVecStr)
 
 /*============================================================================*/
 /* end                                                                        */

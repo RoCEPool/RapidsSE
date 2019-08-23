@@ -8,13 +8,9 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SP_Id::SP_Id(void)
-: Object(CN_SPID)
+: SP(CN_SPID)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
-  
-#ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caResult,sizeof(m_caResult),CN_SPID);
-#endif
   
   _checkInitialised_(CN_SPID);
   
@@ -61,8 +57,7 @@ Stz* SP_Id::sz(Stz* szPrefix, i8 iId)
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-__aFooterFunction(SP_Id);
+__aFooterFunction(SP_Id)
 
 /*============================================================================*/
 /* end                                                                        */
