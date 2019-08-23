@@ -104,7 +104,7 @@ void Job_NetHog::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_NetHog::Job_NetHog(Session* pSession, i8 iCommandId)
-: Job(CN_JOB_NETHOG, pSession)
+: Job(CN_JOB_NETHOG, pSession, iCommandId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_NETHOG,_FOOTER_);
   

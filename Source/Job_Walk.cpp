@@ -103,7 +103,7 @@ void Job_Walk::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_Walk::Job_Walk(Session* pSession, i8 iCommandId)
-: Job(CN_JOB_WALK, pSession)
+: Job(CN_JOB_WALK, pSession, iCommandId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WALK,_FOOTER_);
   

@@ -103,7 +103,7 @@ void Job_Ping::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_Ping::Job_Ping(Session* pSession, i8 iCommandId)
-: Job(CN_JOB_PING, pSession)
+: Job(CN_JOB_PING, pSession, iCommandId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PING,_FOOTER_);
   

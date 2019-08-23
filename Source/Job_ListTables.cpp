@@ -103,7 +103,7 @@ void Job_ListTables::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_ListTables::Job_ListTables(Session* pSession, i8 iCommandId)
-: Job(CN_JOB_LISTTABLES, pSession)
+: Job(CN_JOB_LISTTABLES, pSession, iCommandId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTTABLES,_FOOTER_);
   

@@ -103,7 +103,7 @@ void Job_StartCluster::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_StartCluster::Job_StartCluster(Session* pSession, i8 iCommandId)
-: Job(CN_JOB_STARTCLUSTER, pSession)
+: Job(CN_JOB_STARTCLUSTER, pSession, iCommandId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_STARTCLUSTER,_FOOTER_);
   

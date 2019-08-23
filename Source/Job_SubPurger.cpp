@@ -103,7 +103,7 @@ void Job_SubPurger::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_SubPurger::Job_SubPurger(Session* pSession, i8 iCommandId)
-: Job(CN_JOB_SUBPURGER, pSession)
+: Job(CN_JOB_SUBPURGER, pSession, iCommandId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBPURGER,_FOOTER_);
     

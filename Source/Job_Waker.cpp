@@ -103,7 +103,7 @@ void Job_Waker::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_Waker::Job_Waker(Session* pSession, i8 iCommandId)
-: Job(CN_JOB_WAKER, pSession)
+: Job(CN_JOB_WAKER, pSession, iCommandId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WAKER,_FOOTER_);
   

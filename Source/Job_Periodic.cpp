@@ -103,7 +103,7 @@ void Job_Periodic::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_Periodic::Job_Periodic(Session* pSession, i8 iCommandId)
-: Job(CN_JOB_PERIODIC, pSession)
+: Job(CN_JOB_PERIODIC, pSession, iCommandId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PERIODIC,_FOOTER_);
   

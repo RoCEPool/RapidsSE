@@ -106,7 +106,7 @@ void Job_SubWalker::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_SubWalker::Job_SubWalker(Session* pSession, i8 iCommandId)
-: Job(CN_JOB_SUBWALKER, pSession)
+: Job(CN_JOB_SUBWALKER, pSession, iCommandId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBWALKER,_FOOTER_);
     

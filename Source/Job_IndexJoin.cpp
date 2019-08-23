@@ -103,7 +103,7 @@ void Job_IndexJoin::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_IndexJoin::Job_IndexJoin(Session* pSession, i8 iCommandId)
-: Job(CN_JOB_INDEXJOIN, pSession)
+: Job(CN_JOB_INDEXJOIN, pSession, iCommandId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INDEXJOIN,_FOOTER_);
   

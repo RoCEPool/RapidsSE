@@ -103,7 +103,7 @@ void Job_VerifyTable::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_VerifyTable::Job_VerifyTable(Session* pSession, i8 iCommandId)
-: Job(CN_JOB_VERIFYTABLE, pSession)
+: Job(CN_JOB_VERIFYTABLE, pSession, iCommandId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_VERIFYTABLE,_FOOTER_);
     

@@ -103,7 +103,7 @@ void Job_Space::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_Space::Job_Space(Session* pSession, i8 iCommandId)
-: Job(CN_JOB_SPACE, pSession)
+: Job(CN_JOB_SPACE, pSession, iCommandId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SPACE,_FOOTER_);
   
