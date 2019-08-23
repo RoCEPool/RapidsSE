@@ -25,6 +25,10 @@ namespace Prompt
   
     bool     m_bOneCommand; // run one command only
   
+    Command* m_pCommand;   // current command being executed by SE
+  
+    i8       m_i_CommandFocal;  // focal subsript of last command
+  
     ShortCutVec m_oShortCutVec; // vector of short cuts
   
     // must be last
@@ -42,23 +46,25 @@ namespace Prompt
     void vPromptLoop(void);
 
     // these are the prompt.xyz task primitives
+    void vBeginCommand(void);
     bool bBlankLine(void);
     void vCheckMarked(void);
     void vCheckTimed(void);
     void vCheckTraced(void);
     void vCheckNoWait(void);
-    Input* pInput(void);
     bool bContinue(void);
     void vContinue(bool bContinue);
     void vCutToken(i8 i_Tkn);
     void vDeleteJob(void);
     void vDumpTokenVec(void);
+    void vEndCommand(void);
     bool bExecuteDynamic(void);
     bool bExecuteFile(void);
     bool bExecuteFunction(void);
     bool bFindJobClass(void);
     void vFocalOutline(s4K& sOutline);
     void vGetCommand(void);
+    Input* pInput(void);
     bool bIsPromptWord(void);
     void vJobLockMutex(void);
     void vJobUnlockMutex(void);

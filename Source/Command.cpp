@@ -43,11 +43,12 @@ void Command::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Command::Command(void)
-:Focal(CN_COMMAND)
+Command::Command(TokenVec* p_TknVec)
+:Focal(CN_COMMAND,AM::iNextCommand())
 {
   _precondition_(_MAGIC_,CN_COMMAND,_FOOTER_);
   
+  m_p_TknVec = p_TknVec;
   
   _postcondition_(_MAGIC_,CN_COMMAND,_FOOTER_);
 }
@@ -58,6 +59,8 @@ Command::Command(void)
 Command::~Command(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_COMMAND,_FOOTER_);
+  
+  // do not delete: m_p_TknVec
 }
 
 

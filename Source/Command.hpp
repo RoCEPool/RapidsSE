@@ -8,6 +8,7 @@ namespace Commands
   class Command : public Focal
   {
   private:
+    TokenVec* m_p_TknVec;
   
     // must be last
     Footer m_xFooter;
@@ -16,7 +17,7 @@ namespace Commands
     void* operator new(size_t);
     void  operator delete(void* aAddr);
     
-    Command(void);
+    Command(TokenVec* p_TknVec);
    ~Command(void) noexcept(false);
   
   public:

@@ -73,9 +73,11 @@ SePrompt::SePrompt(bool bOneCommand)
   m_bMarked  = false;
   
   m_bOneCommand = bOneCommand;
-
   
   m_pSession->m_sToDo = "_shortcuts"_Stz;
+  
+  m_pCommand = nullptr;
+  m_i_CommandFocal = C_UNKNOWN;
   
   _checkInitialised_(CN_SEPROMPT);
 }
@@ -184,6 +186,7 @@ void SePrompt::vPromptLoop(void)
         
     vJobLockMutex();
     
+    vBeginCommand();
     vSpawnJob();
     
     if (bNoWait()) {
@@ -202,7 +205,8 @@ void SePrompt::vPromptLoop(void)
     }
     
     vDeleteJob();
-    
+    vEndCommand();
+
     vLogFreeSpace();
 
     if (m_bOneCommand)
@@ -215,6 +219,18 @@ void SePrompt::vPromptLoop(void)
 /*----------------------------------------------------------------------------*/
 
 
+
+/*----------------------------------------------------------------------------*/
+/* begin command                                                              */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vBeginCommand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_pCommand = new Command(pTknVec());
+  
+  m_i_CommandFocal = m_pCommand->m_i_Focal;
+}
 
 /*----------------------------------------------------------------------------*/
 /* test for blank line                                                        */
@@ -303,16 +319,6 @@ void SePrompt::vCheckNoWait(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get command processor                                                      */
-/*----------------------------------------------------------------------------*/
-Input* SePrompt::pInput(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return m_pSession->m_pInput;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get continue                                                               */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bContinue(void)
@@ -376,6 +382,16 @@ void SePrompt::vDumpTokenVec(void)
 //
 //  pTknVec->vToString(sCommand);
 //  vTrace("Command %lld tokens: %s\n"_Stz,pTknVec->nTokens(),sCommand.aStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* end command                                                                */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vEndCommand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  delete m_pCommand;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -469,6 +485,16 @@ void SePrompt::vGetCommand(void)
   Input* pInput = this->pInput();
   
   pInput->vGetCommand();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get command input processor                                                */
+/*----------------------------------------------------------------------------*/
+Input* SePrompt::pInput(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_pSession->m_pInput;
 }
 
 /*----------------------------------------------------------------------------*/
