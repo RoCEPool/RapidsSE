@@ -5,7 +5,7 @@
 #include "Prompt.h"
 
 PromptDesc __Prompt_so (
-  PF_QUESTION,     // prompt function
+  PF_SO,           // prompt function
   "Prompt_so"_Stz, // name of the prompt function
   "comment"_Stz,   // comment about the function
   "so"_Stz,        // the prompt command
