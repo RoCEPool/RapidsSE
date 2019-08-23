@@ -950,9 +950,14 @@ void AM::vMri(TokenVec *pTknVec) { gpAttachMap->m_pFocalObjects->vMri(pTknVec); 
 /*----------------------------------------------------------------------------*/
 /* focal outline                                                              */
 /*----------------------------------------------------------------------------*/
-void AM::vFocalOutline(s4K& sString, Focal* pFocal) {
+void AM::vFocalOutline(s4K& sOutline, Focal* pFocal) {
 
-  sString = "<focal>"_Stz;
+  if (CN_TASK == pFocal->eClass()) {
+    _pTask(pFocal)->vFocalOutline(sOutline);
+    return;
+    
+  }
+  sOutline = "<focal>"_Stz;
 }
 
 /*============================================================================*/

@@ -450,6 +450,26 @@ void Task::vException(s256& sFile, s256& eException)
 }
 
 /*----------------------------------------------------------------------------*/
+/* focal outline                                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vFocalOutline(s4K& sOutline)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  vGrabTaskLock();
+  
+  sOutline.vSprint("%s %s %s %s"_Stz,
+                   
+                   aTK[m_eKind],
+                   aTS[m_eState],
+                   aQK[m_eQueue],
+                   m_iDdlLocked ? "DdlLocked"_Stz : ""_Stz
+                   );
+  
+  vDropTaskLock();
+}
+
+/*----------------------------------------------------------------------------*/
 /* grab lock                                                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vGrabTaskLock(void)

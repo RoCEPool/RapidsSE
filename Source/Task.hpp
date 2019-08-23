@@ -87,6 +87,7 @@ namespace Tasks
     void vContentDump(void);
     void vDropTaskLock(void);
     void vException(s256& sFile, s256& eException);
+    void vFocalOutline(s4K& sOutline);
     void vGrabTaskLock(void);
     bool bIsLocked(void);
     Job* pJob(void);

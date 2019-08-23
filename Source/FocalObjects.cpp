@@ -132,6 +132,7 @@ void FocalObjects::vMriAll(void)
 
     vTrace("  [%04lld] %p %s :: "
            "%16s :: %s\n"_Stz,
+           
            i_Focal,
            pFocal,
            sFocalOutline.aChar(),
