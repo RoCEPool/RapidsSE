@@ -17,7 +17,7 @@ namespace Commands
     void  operator delete(void*);
     
     TokenVec(bool bNewTokens=true);
-    ~TokenVec(void) noexcept(false);
+   ~TokenVec(void) noexcept(false);
   
     static TokenVec* _pTokenSet(void* aAddr);
   
