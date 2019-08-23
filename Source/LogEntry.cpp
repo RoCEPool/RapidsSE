@@ -69,7 +69,7 @@ LogEntry::~LogEntry(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* init                                                                       */
 /*----------------------------------------------------------------------------*/
-void LogEntry::vInit(eCN eClassNo, Stz* szText)
+void LogEntry::vInit(eSL eSverity, eCN eClassNo, Stz* szText)
 {
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
@@ -85,7 +85,7 @@ void LogEntry::vInit(eCN eClassNo, Stz* szText)
   m_eClass = eClassNo;
   m_pFocal = nullptr;
   
-  m_eSeverity = SL_INF;
+  m_eSeverity = eSverity;
   
   m_bLine = false;
 }
@@ -93,7 +93,7 @@ void LogEntry::vInit(eCN eClassNo, Stz* szText)
 /*----------------------------------------------------------------------------*/
 /* init                                                                       */
 /*----------------------------------------------------------------------------*/
-void LogEntry::vInit(Focal *pFocal, Stz* szText)
+void LogEntry::vInit(eSL eSverity, Focal *pFocal, Stz* szText)
 {
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
@@ -111,7 +111,7 @@ void LogEntry::vInit(Focal *pFocal, Stz* szText)
   m_pFocal  = pFocal;
   m_i_Focal = pFocal->m_i_Focal;
   
-  m_eSeverity = SL_INF;
+  m_eSeverity = eSverity;
   
   m_bLine = false;
 }

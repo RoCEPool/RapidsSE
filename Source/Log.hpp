@@ -78,8 +78,8 @@ namespace Logging
 
     LogEntry* pGetEntry(i8 i_Entry);
   
-    LogEntry* pNewEntry(eCN eClass, Stz* szFormat, va_list xVaArgs);
-    LogEntry* pNewEntry(Focal* pFocal, Stz* szFormat, va_list xVaArgs);
+    LogEntry* pNewEntry(eSL, eCN eClass, Stz* szFormat, va_list xVaArgs);
+    LogEntry* pNewEntry(eSL, Focal* pFocal, Stz* szFormat, va_list xVaArgs);
     LogEntry* pNewEntry_NL(void);
     void vFindRange_NL(i8& i_MinEntry, i8& i_MaxEntry);
     i8   iPercentFull_NL(void);
