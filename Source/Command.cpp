@@ -52,10 +52,16 @@ Command::Command(TokenVec* p_TknVec)
   
   _checkInitialised_(CN_COMMAND);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  SP_TknVecStr spTknVecStr;
+  
   AM::vLogCmd(SL_INF,this,MA_BEGIN,
               "Command begin : %s"_Stz,
-              m_p_TknVec->pGet(0)->szText());
+              spTknVecStr.sz(m_p_TknVec));
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   _postcondition_(_MAGIC_,CN_COMMAND,_FOOTER_);
 }
 
