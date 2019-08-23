@@ -419,7 +419,7 @@ void AM::vLogJob(eSL eSeverity, Job* pJob, eJA eJobAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 i_Entry = gpLog->iEntryJob(pJob,eJobAct,
+  i8 i_Entry = gpLog->iEntryJob(eSeverity,pJob,eJobAct,
                                 szFormat,xVaArgs);
   
   va_end(xVaArgs);
@@ -450,7 +450,7 @@ void AM::vLogLck(eSL eSeverity, Lock* pLock, eLA eLckAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 i_Entry = gpLog->iEntryLck(pLock,eLckAct,
+  i8 i_Entry = gpLog->iEntryLck(eSeverity,pLock,eLckAct,
                                 szFormat,xVaArgs);
   
   va_end(xVaArgs);
@@ -477,7 +477,7 @@ void AM::vLogLog(eSL eSeverity, Log* pLog, eGA eLogAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 i_Entry = gpLog->iEntryLog(pLog,eLogAct,
+  i8 i_Entry = gpLog->iEntryLog(eSeverity,pLog,eLogAct,
                                 szFormat,xVaArgs);
   
   va_end(xVaArgs);
@@ -503,7 +503,7 @@ void AM::vLogOpr(eSL eSeverity, Op* pOpr, eOA eOprAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 i_Entry = gpLog->iEntryOpr(pOpr,eOprAct,
+  i8 i_Entry = gpLog->iEntryOpr(eSeverity,pOpr,eOprAct,
                                 szFormat,xVaArgs);
   
   va_end(xVaArgs);
@@ -529,7 +529,7 @@ void AM::vLogPrm(eSL eSeverity, SePrompt* pPrm, ePA ePrmAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 i_Entry = gpLog->iEntryPrm(pPrm,ePrmAct,
+  i8 i_Entry = gpLog->iEntryPrm(eSeverity,pPrm,ePrmAct,
                                 szFormat,xVaArgs);
   
   va_end(xVaArgs);
@@ -555,7 +555,7 @@ void AM::vLogQue(eSL eSeverity, Queues* pQue, eQA eQueAct, Stz* szFormat, ...)
 
   va_start(xVaArgs,szFormat);
 
-  i8 i_Entry = gpLog->iEntryQue(pQue,eQueAct,
+  i8 i_Entry = gpLog->iEntryQue(eSeverity,pQue,eQueAct,
                                 szFormat,xVaArgs);
   
   va_end(xVaArgs);
@@ -581,7 +581,7 @@ void AM::vLogRes(eSL eSeverity, Resource* pRes, eRA eResAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 i_Entry = gpLog->iEntryRes(pRes,eResAct,
+  i8 i_Entry = gpLog->iEntryRes(eSeverity,pRes,eResAct,
                                 szFormat,xVaArgs);
   
   va_end(xVaArgs);
@@ -607,7 +607,7 @@ void AM::vLogSsn(eSL eSeverity, Session* pSsn, eAA eApiAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 i_Entry = gpLog->iEntrySsn(pSsn,eApiAct,
+  i8 i_Entry = gpLog->iEntrySsn(eSeverity,pSsn,eApiAct,
                                 szFormat,xVaArgs);
   
   va_end(xVaArgs);
@@ -633,7 +633,7 @@ void AM::vLogSvc(eSL eSeverity, Job* pJob, eVA eSvcAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 i_Entry = gpLog->iEntrySvc(pJob,eSvcAct,
+  i8 i_Entry = gpLog->iEntrySvc(eSeverity,pJob,eSvcAct,
                                 szFormat,xVaArgs);
   
   va_end(xVaArgs);
@@ -659,7 +659,7 @@ void AM::vLogSys(eSL eSeverity, AttachMap* , eYA eSysAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 i_Entry = gpLog->iEntrySys(gpAttachMap,eSysAct,
+  i8 i_Entry = gpLog->iEntrySys(eSeverity,gpAttachMap,eSysAct,
                                 szFormat,xVaArgs);
   
   va_end(xVaArgs);
@@ -686,7 +686,7 @@ void AM::vLogThd(eSL eSeverity, Thread* pThread, eHA eThdAct, Stz* szFormat, ...
   
   va_start(xVaArgs,szFormat);
   
-  i8 i_Entry = gpLog->iEntryThd(pThread,eThdAct,
+  i8 i_Entry = gpLog->iEntryThd(eSeverity,pThread,eThdAct,
                                 szFormat,xVaArgs);
 
   va_end(xVaArgs);
@@ -712,7 +712,7 @@ void AM::vLogTsk(eSL eSeverity, Task* pTask, eTA eTskAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
     
-  i8 i_Entry = gpLog->iEntryTsk(pTask,eTskAct,
+  i8 i_Entry = gpLog->iEntryTsk(eSeverity,pTask,eTskAct,
                                 szFormat,xVaArgs);
   
   va_end(xVaArgs);
@@ -738,7 +738,7 @@ void AM::vLogTxn(eSL eSeverity, Tx* pTxn, eXA eTxnAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 i_Entry = gpLog->iEntryTxn(pTxn,eTxnAct,
+  i8 i_Entry = gpLog->iEntryTxn(eSeverity,pTxn,eTxnAct,
                                 szFormat,xVaArgs);
 
   va_end(xVaArgs);
