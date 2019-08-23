@@ -24,6 +24,8 @@ namespace Resources
 
     SysCall& oSysCall(void);
   
+    void vFocalOutline(s4K& sOutline);
+  
     Footer* aFooter(void);
   };
 }

@@ -325,6 +325,19 @@ void Pthread::vEnableRealtime_2(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* focal outline                                                              */
+/*----------------------------------------------------------------------------*/
+void Pthread::vFocalOutline(s4K& sOutline)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
+
+  sOutline.vSprint("<Pthread %p>"_Stz,
+                   
+                   this
+                   );
+}
+
+/*----------------------------------------------------------------------------*/
 /* get cpu and sleep info                                                     */
 /*----------------------------------------------------------------------------*/
 bool Pthread::bGetCpu(i8& iUser, i8& iSystem, i8& iUsage, i8& iSleep)

@@ -74,6 +74,8 @@ namespace Logging
     i8 iEntryTsk(Task*      pTsk, eTA eTskAct, Stz* szFormat, va_list xArgs);
     i8 iEntryTxn(Tx*        pTxn, eXA eTxnAct, Stz* szFormat, va_list xArgs);
 
+    void vFocalOutline(s4K& sOutline);
+
     LogEntry* pGetEntry(i8 i_Entry);
   
     LogEntry* pNewEntry(eCN eClass, Stz* szFormat, va_list xVaArgs);

@@ -32,6 +32,7 @@ namespace Resources
     void vCondSignal(void);
     void vCondWaitIndefinite(void);
     void vCondWaitUsec(i8 iMicroSeconds);
+    void vFocalOutline(s4K& sOutline);
     bool bMutexIsLocked(void);
     bool bMutexLock(void);
     void vMutexLock(void);

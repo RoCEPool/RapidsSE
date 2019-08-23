@@ -185,7 +185,7 @@ void Session::vFocalOutline(s4K& sOutline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
-  sOutline.vSprint("<Session %p"_Stz,
+  sOutline.vSprint("<Session %p>"_Stz,
                    
                    this
                    );

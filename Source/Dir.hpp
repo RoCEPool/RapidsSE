@@ -35,6 +35,7 @@ namespace Resources
     void vClose(void);
     s256& sEntryName(void);
     i8   iEntryType(void);
+    void vFocalOutline(s4K& sOutline);
     bool bIsClosed(void);
     bool bIsOpen(void);
     bool bOpen(Stz* aDirPath);

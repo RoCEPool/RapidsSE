@@ -260,7 +260,7 @@ void Op::vFocalOutline(s4K& sOutline)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  sOutline.vSprint("<Op %p"_Stz,
+  sOutline.vSprint("<Op %p>"_Stz,
                    
                    this
                    );

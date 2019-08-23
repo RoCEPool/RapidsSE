@@ -371,6 +371,20 @@ void Mutex::vCondWaitUsec(i8 iMicroSeconds)
 }
 
 /*----------------------------------------------------------------------------*/
+/* focal outline                                                              */
+/*----------------------------------------------------------------------------*/
+void Mutex::vFocalOutline(s4K& sOutline)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
+  
+  sOutline.vSprint("<Mutex %p>"_Stz,
+                   
+                   this
+                   );
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* test if a mutex is locked (non-blocking)                                   */
 /*----------------------------------------------------------------------------*/
 bool Mutex::bMutexIsLocked(void)

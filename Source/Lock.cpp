@@ -250,7 +250,7 @@ void Lock::vFocalOutline(s4K& sOutline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCK,_FOOTER_);
   
-  sOutline.vSprint("<Lock %p"_Stz,
+  sOutline.vSprint("<Lock %p>"_Stz,
                    
                    this
                    );
