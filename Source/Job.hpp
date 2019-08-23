@@ -11,6 +11,9 @@ namespace Jobs
               public JobResult
   {
   public:
+  
+    i8  m_iCommandId; // the command which trigger the job
+  
     i8  m_iParentId;  // job id of parent job which spawned this JK_CHILD job
     eSS m_eSeed;      // task seed
     i8  m_i_State;    // which session state
