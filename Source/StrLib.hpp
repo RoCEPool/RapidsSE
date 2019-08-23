@@ -149,6 +149,7 @@ namespace Strings
     static bool  bReplace(char* pString, const char* pThis, const char* pThat);
     static bool  bReplace(char* pDst, const char* pSrc,
                           const char* pThis, const char* pThat);
+    static void  vReplaceTail(char* azArg, char* azTail);
     static void  vReverse(char* azDst, char* azSrc);
     static void  vRotate(char* zArg, i8 nby);
 

@@ -40,21 +40,14 @@ Stz* SP_String::szRight(Stz* szString, i8 iLength)
 {
   _precondition_(_MAGIC_,CN_SPSTRING,_FOOTER_);
   
-  char caFormat[4096];
+  char caDynFormat[4096];
 
-  
-  StrLib::vSprint(caFormat,
-                  "%%%llds"_Stz,
-                  
-                  iLength);
+  StrLib::vSprint(caDynFormat,"%%%llds"_Stz,iLength);
 
-  StrLib::vSprint(m_caResult,
-                  (Stz*)caFormat,
-                  
-                  szString);
+  StrLib::vSprint(m_caResult,(Stz*)caDynFormat,szString);
   
   if (StrLib::bClip(m_caResult,iLength))
-    {;}
+    StrLib::vReplaceTail(m_caResult,(char*)"..."_Stz);
 
   return (Stz*) &m_caResult[0];
 }

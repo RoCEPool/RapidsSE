@@ -2474,6 +2474,21 @@ NextIteration:
 }
 
 /*----------------------------------------------------------------------------*/
+/* replace tail of string                                                     */
+/*----------------------------------------------------------------------------*/
+void StrLib::vReplaceTail(char* azArg, char* azTail)
+{
+  i8 iLen_arg  = StrLib::iLength(azArg);
+  i8 iLen_tail = StrLib::iLength(azTail);
+  
+  //            01234567
+  //            abcdefgh
+  //                 ...
+  //            8 - 3 = 5
+  StrLib::vCopy(azArg + iLen_arg - iLen_tail,azTail);
+}
+
+/*----------------------------------------------------------------------------*/
 /* vReverse: reverse a string                                                 */
 /*----------------------------------------------------------------------------*/
 void StrLib::vReverse(char* azDst, char* azSrc)
