@@ -154,22 +154,17 @@ void LogEntry::vSprint(s4K& sString, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
 /*----------------------------------------------------------------------------*/
 void LogEntry::vSprintCsv(s4K& sString, i8 iTickDeltaUsec, i8& iTotalDelta)
 {
-   sString.vSprint("[%lld,%lld], "
-                   "(%lld,%lld,%lld), "
-                   "<%s,%lld,%s,%p>, "_Stz
-                   "{%s"_Stz,
+   sString.vSprint("[%06lld,%06lld], "
+                   "%s,%lld,%lld,%lld, "
+                    "{%s"_Stz,
                 
                 m_i_Entry,
                 m_i_Prev,
                 
+                m_caNode,
                 m_iTick,
                 iTotalDelta,
                 iTickDeltaUsec,
-                
-                m_caNode,
-                m_iNodeNo,
-                aCN[m_eClass],
-                m_pObject,
                 
                 aEK[m_eKind]
                 );

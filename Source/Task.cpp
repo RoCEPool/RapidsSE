@@ -458,12 +458,12 @@ void Task::vFocalOutline(s4K& sOutline)
   
   vGrabTaskLock();
   
-  sOutline.vSprint("%s %s %s %s"_Stz,
+  sOutline.vSprint("%s %s %s%s"_Stz,
                                       
                    aTK[m_eKind],
                    aTS[m_eState],
                    aQK[m_eQueue],
-                   m_iDdlLocked ? "DdlLocked"_Stz : ""_Stz
+                   m_iDdlLocked ? " DdlLocked"_Stz : ""_Stz
                    );
   
   vDropTaskLock();
