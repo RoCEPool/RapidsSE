@@ -35,7 +35,7 @@ namespace Commands
     bool bBlankLine(void);
     void vGetCommand(void);
     void vGetCommandArgument(void);
-    void vGetCommandInput(void);
+    void vGetTokens(void);
     bool bTestFile(Stz* aPath);
 
     Token* pTkn(i8 i_Token);

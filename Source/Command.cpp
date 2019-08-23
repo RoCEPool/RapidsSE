@@ -168,12 +168,7 @@ void Command::vGetCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMAND,_FOOTER_);
   
-//  if (gxArguments.m_bCommand) {
-//    vGetCommandArgument();
-//    return;
-//  }
-//  else
-    vGetCommandInput();
+  vGetTokens();
     
   // if empty line just return
   if ( ! pTkn(0)->bHasText() )
@@ -197,43 +192,9 @@ void Command::vGetCommand(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get command from arguments                                                 */
+/* get command tokens from input                                              */
 /*----------------------------------------------------------------------------*/
-//void Command::vGetCommandArgument(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMAND,_FOOTER_);
-//
-//  s48K sCommand(gxArguments.m_sCommand);
-//
-//  m_pTokeniser->vUseString(sCommand);
-//
-//  pTknVec()->vReset();
-//
-//  //while (TN_NONE !=
-//  //       m_pTokeniser->eNextToken((char*)pTkn(pTknVec()->nTokens())->aText())) {
-//
-//  while (true) {
-//
-//    Token* pToken = pTkn(pTknVec()->nTokens());
-//
-//    eTN eToken = m_pTokeniser->eNextToken((char*)pToken->szText());
-//
-//    if (TN_NONE == eToken)
-//      break;
-//
-//    pToken->vToken(eToken);
-//
-//   //vTrace("vGetCommand : [%lld] %s\n"_Stz,i_Token,pTkn(i_Token));
-//
-//    pTknVec()->vIncTokens();
-//    ASSERT(pTknVec()->nTokens() < C_MAX_TOKENS);
-//  }
-//}
-
-/*----------------------------------------------------------------------------*/
-/* get command from input                                                     */
-/*----------------------------------------------------------------------------*/
-void Command::vGetCommandInput(void)
+void Command::vGetTokens(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMAND,_FOOTER_);
   
