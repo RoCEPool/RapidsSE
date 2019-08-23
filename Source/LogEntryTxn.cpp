@@ -23,7 +23,7 @@ void _LogEntryTxn::vOutline(s4K& sOutline)
   SP_Id spId;
   SP_String spString;
 
-  sOutline.vCatSprint(".%s,%24s"_Stz,
+  sOutline.vCatSprint(".%s %24s"_Stz,
                 
                       spId.sz("X"_Stz,m_iTxnId),
                       spString.szRight(aXA[m_eTxnAct],24)

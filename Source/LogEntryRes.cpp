@@ -24,7 +24,7 @@ void _LogEntryRes::vOutline(s4K& sOutline)
   SP_Id spId;
   SP_String spString;
 
-  sOutline.vCatSprint(".%s,%24s"_Stz,
+  sOutline.vCatSprint(".%s %24s"_Stz,
                 
                       spId.sz("R"_Stz,m_iResId),
                       spString.szRight(aRA[m_eResAct],24)

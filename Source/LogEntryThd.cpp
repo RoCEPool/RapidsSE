@@ -23,7 +23,7 @@ void _LogEntryThd::vOutline(s4K& sOutline)
   SP_Id spId;
   SP_String spString;
 
-  sOutline.vCatSprint(".%s,%24s"_Stz,
+  sOutline.vCatSprint(".%s %24s"_Stz,
                 
                       spId.sz("H"_Stz,m_iThdId),
                       spString.szRight(aHA[m_eThdAct],24)

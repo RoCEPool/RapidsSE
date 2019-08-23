@@ -23,7 +23,7 @@ void _LogEntryJob::vOutline(s4K& sOutline)
   SP_Id spId;
   SP_String spString;
 
-  sOutline.vCatSprint(".%s,%24s"_Stz,
+  sOutline.vCatSprint(".%s %24s"_Stz,
                 
                       spId.sz("J"_Stz,m_iJobId),
                       spString.szRight(aJA[m_eJobAct],24)
