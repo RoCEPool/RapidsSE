@@ -115,6 +115,7 @@ typedef VectorNL_t<CN_SHORTCUTVEC, ShortCut, C_MAX_SHORTCUTS> ShortCutVec;
 #include "Prompt_sleep.hpp"
 #include "Prompt_sleepers.hpp"
 #include "Prompt_sleeping.hpp"
+#include "Prompt_so.hpp"
 #include "Prompt_socket.hpp"
 #include "Prompt_ssn.hpp"
 #include "Prompt_st.hpp"

@@ -78,6 +78,7 @@ SePrompt::SePrompt(bool bOneCommand)
   
   m_pCommand = nullptr;
   m_i_CommandFocal = C_UNKNOWN;
+  m_iCommandId = C_UNKNOWN;
   
   _checkInitialised_(CN_SEPROMPT);
 }
@@ -230,6 +231,8 @@ void SePrompt::vBeginCommand(void)
   m_pCommand = new Command(pTknVec());
   
   m_i_CommandFocal = m_pCommand->m_i_Focal;
+  
+  m_iCommandId = m_pCommand->m_iUniqueId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -316,6 +319,26 @@ void SePrompt::vCheckNoWait(void)
   
   m_bNoWait = true;
   vCutToken(0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get command focal                                                          */
+/*----------------------------------------------------------------------------*/
+i8 SePrompt::iCommandFocal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_i_CommandFocal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get command id                                                             */
+/*----------------------------------------------------------------------------*/
+i8 SePrompt::iCommandId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_iCommandId;
 }
 
 /*----------------------------------------------------------------------------*/
