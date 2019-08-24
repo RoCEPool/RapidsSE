@@ -61,7 +61,6 @@ OutputOp::OutputOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
   
   m_fpCall = OutputOp::eCall;
-  m_pRightStreamDef = nullptr;
   
   _checkInitialised_(CN_OUTPUTOP);
 
@@ -75,8 +74,6 @@ OutputOp::~OutputOp(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
   
-  if (m_pRightStreamDef)
-    delete m_pRightStreamDef;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -179,8 +176,6 @@ eOR OutputOp::eOpLoop(void)
         
       case CN_REFBUFFER: {
         RefBuffer* pRefBuffer = _pRefBuffer(pOperand) ;
-//        pRefBuffer->vShow(m_pStreamDef->m_pColumnVec,
-//                          m_pRightStreamDef ? m_pRightStreamDef->m_pColumnVec : nullptr);
         iCount += pRefBuffer->nItems();
         vPipeOut(pOperand);
         break;
@@ -189,21 +184,14 @@ eOR OutputOp::eOpLoop(void)
       case CN_SRTBUFFER: {
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
         iCount += pSrtBuffer->nItems();
-//        pSrtBuffer->vShow(m_pStreamDef->m_pColumnVec,
-//                          m_pRightStreamDef ? m_pRightStreamDef->m_pColumnVec : nullptr);
+        pSrtBuffer->vShow(m_pStreamDef);
         vPipeOut(pOperand);
         break;
       }
         
       case CN_STREAMDEF: {
-        if ( ! m_pStreamDef ) {
-          m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
-          vPipeOut(pOperand);
-        }
-        else {
-          m_pRightStreamDef = new StreamDef(_pStreamDef(pOperand));
-          vPipeOut(pOperand);
-        }
+        m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
+        vPipeOut(pOperand);        
         break;
       }
         

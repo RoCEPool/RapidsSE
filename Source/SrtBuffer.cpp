@@ -307,7 +307,7 @@ void SrtBuffer::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* show contents of buffer                                                    */
 /*----------------------------------------------------------------------------*/
-void SrtBuffer::vShow(ColumnVec* pLeftColVec, ColumnVec* pRightColVec)
+void SrtBuffer::vShow(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
   
@@ -322,103 +322,58 @@ void SrtBuffer::vShow(ColumnVec* pLeftColVec, ColumnVec* pRightColVec)
   
   vTrace("  partition: %lld \n"_Stz, m_iPartitionNo);
   
-  HV_Rec hvRecLeft(pLeftColVec);
-  HV_Row hRowLeft(pLeftColVec);
+  SrtSet* aSrtSet = aFirstSrtSet();
   
-  if (pRightColVec) {
+  i8 nRows = nItems();
+  i8 iElement = 0;
+  while (nRows--) {
     
-    HV_Rec hvRecRight(pRightColVec);
-    HV_Row hRowRight(pRightColVec);
+    RASSERT(aSrtSet == this->aSrtSet(iElement));
     
-    SrtSet* aSrtSet = aFirstSrtSet();
+    i8 nColVecs = pStreamDef->m_oColVecAry.nItems();
+    RASSERT(nColVecs == aSrtSet->nRowRefs());
     
-    i8 nRows = nItems();
-    i8 iElement = 0;
-    while (nRows--) {
+    vTrace("%lld: %p; Key:%lld; RowRef:"_Stz, iElement, aSrtSet, aSrtSet->iKey());
+    
+    for (i8 iRowRefs = 0; iRowRefs < aSrtSet->nRowRefs(); iRowRefs++) {
+      vTrace("%p "_Stz, aSrtSet->iRowRef(iRowRefs));
+    }
+    
+    vTrace("; row: "_Stz);
+    
+    for (i8 iRowRefs = 0; iRowRefs < aSrtSet->nRowRefs(); iRowRefs++) {
       
-      RASSERT(aSrtSet == this->aSrtSet(iElement));
+      // get the srtSet dataRow
+      Crw* aCrw = (Crw*)(aSrtSet->iRowRef(iRowRefs));
       
-      // get the left dataRow
-      Crw* aLeftCrw = (Crw*)(aSrtSet->iRowRef(0));
+      // get the columnVec defining the srtSet
+      ColumnVec* pStreamColVec = pStreamDef->m_oColVecAry.pGet(iRowRefs);
       
-      // inflate the left row
-      if (aLeftCrw) {
-        RowInflator::vInflateRow(hRowLeft, aLeftCrw);
+      HV_Rec hvRec(pStreamColVec);
+      HV_Row hRow(pStreamColVec);
+
+      // inflate the row
+      if (aCrw) {
+        RowInflator::vInflateRow(hRow, aCrw);
       } else {
         // get no of columns
-        i8 nColumns = pLeftColVec->nItems();
+        i8 nColumns = pStreamColVec->nItems();
         
         // for each column
         for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-          hRowLeft->m_waColVal[i_Col].m_iI8 = C_DATUM_NULL;
+          hRow->m_waColVal[i_Col].m_iI8 = C_DATUM_NULL;
         }
       }
-      hvRecLeft->vAppend(hRowLeft);
+      hvRec->vAppend(hRow);
       
-      // get the right dataRow
-      Crw* aRightCrw = (Crw*)(aSrtSet->iRowRef(1));
-      
-      if (aRightCrw) {
-        // inflate the right row
-        RowInflator::vInflateRow(hRowRight, aRightCrw);
-      }
-      else {
-        // get no of columns
-        i8 nColumns = pRightColVec->nItems();
-        
-        // for each column
-        for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-          hRowRight->m_waColVal[i_Col].m_iI8 = C_DATUM_NULL;
-        }
-      }
-      hvRecRight->vAppend(hRowRight);
-      
-      vTrace("%lld: %p; Key:%lld RowRef:%p %p; row:%s %s\n"_Stz, iElement, aSrtSet, aSrtSet->iKey(), aSrtSet->iRowRef(0),
-             aSrtSet->iRowRef(1),
-             hvRecLeft->szRecStr(), hvRecRight->szRecStr());
-      
-      aSrtSet = aNextSrtSet(aSrtSet);
-      iElement++;
+      vTrace("%s"_Stz,hvRec->szRecStr());
     }
     
-  }
-  else {
-    SrtSet* aSrtSet = aFirstSrtSet();
+    vTrace("\n"_Stz);
     
-    i8 nRows = nItems();
-    i8 iElement = 0;
-    while (nRows--) {
-      
-      RASSERT(aSrtSet == this->aSrtSet(iElement));
-      
-      // get the left dataRow
-      Crw* aLeftCrw = (Crw*)(aSrtSet->iRowRef(0));
-      
-      // inflate the left row
-      if (aLeftCrw) {
-        RowInflator::vInflateRow(hRowLeft, aLeftCrw);
-        hvRecLeft->vAppend(hRowLeft);
-      }
-      else {
-        
-        // get no of columns
-        i8 nColumns = pLeftColVec->nItems();
-        
-        // for each column
-        for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-          hRowLeft->m_waColVal[i_Col].m_iI8 = C_DATUM_NULL;
-        }
-      }
-      vTrace("%lld: %p; Key:%lld RowRef:%p; row:%s\n"_Stz, iElement, aSrtSet, aSrtSet->iKey(), aSrtSet->iRowRef(0),
-             hvRecLeft->szRecStr());
-      
-      aSrtSet = aNextSrtSet(aSrtSet);
-      iElement++;
-    }
-    
+    aSrtSet = aNextSrtSet(aSrtSet);
+    iElement++;
   }
-  
-
   
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);

@@ -9,8 +9,6 @@ namespace DataOperators
   {
   private:
     
-    StreamDef* m_pRightStreamDef;
-    
     // must be last
     Footer m_xFooter;
   
