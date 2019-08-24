@@ -12,6 +12,8 @@ namespace Jobs
   {
   public:
   
+    JobClass* m_pJobClass; // job class
+
     struct {
       i8   m_iRequestId; // the command which trigger the job
       i8   m_i_State;    // which session state
@@ -19,20 +21,18 @@ namespace Jobs
       bool m_bLogJob;    // mark activity
     };
   
-    i8  m_iParentId;  // job id of parent job which spawned this JK_CHILD job
-    eSS m_eSeed;      // task seed
-    i8  m_i_Slot;     // slot this sub truncate truncates
-    eJP m_eJobPhase;  // which phase the job is in
-    eJS m_eJobState;  // job state
-    eJL m_eJobList;   // which job list is job currently in?
+    i8   m_iParentId;    // job id of parent job which spawned this JK_CHILD job
+    eSS  m_eSeed;        // task seed
+    i8   m_i_Slot;       // slot this sub truncate truncates
     bool m_bNoWait;      // no wait
     bool m_bWasReceived; // job was received over a socket
 
+    eJP  m_eJobPhase;    // which phase the job is in
+    eJS  m_eJobState;    // job state
+    eJL  m_eJobList;     // which job list is job currently in?
+
     Decider m_oAcksRmg;  // acks remaining
   
-    i8   m_i_ActionRoot;  // action
-
-    JobClass*    m_pJobClass;        // job class
     Tasks::Task* m_pExecutingTask;   // task executing the job
     Tasks::Task* m_pOriginatingTask; // originating task of the request
   

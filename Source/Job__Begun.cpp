@@ -106,7 +106,6 @@ Job__Begun::Job__Begun(Job* pDistJob)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__BEGUN,_FOOTER_);
   
   m_iParentId = pDistJob->m_iUniqueId;
-  m_i_ActionRoot = pDistJob->m_i_ActionRoot;
 
   m_eErrorCode = EC_NONE;
   

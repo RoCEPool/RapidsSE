@@ -56,7 +56,8 @@ bool Jobs::_bIsValidJob(eCN eClass)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job::Job(eCN eClassNo, Session* pSession, i8 iRequestId)
-: Focal(eClassNo,AM::iNextJobId()), JobDicPath(pSession)
+: Focal(eClassNo,AM::iNextJobId())
+, JobDicPath(pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
@@ -82,15 +83,6 @@ Job::Job(eCN eClassNo, Session* pSession, i8 iRequestId)
     m_bLogJob = true;
   else
     m_bLogJob = false;
-  
-  if ( AM::pMarkAction()->bAll() ||
-       AM::pMarkAction()->bFlagged(eClass()) ) {
-    //m_i_ActionRoot = ActLog::iBegin(m_iUniqueId,eClassNo);
-    m_i_ActionRoot = 0;
-  }
-  else {
-    m_i_ActionRoot = C_UNKNOWN;
-  }
   
   if ( AM::pMarkTrace()->bAll() ||
        AM::pMarkTrace()->bFlagged(eClass()) )

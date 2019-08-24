@@ -106,7 +106,6 @@ Job__Executed::Job__Executed(Job* pDistJob)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__EXECUTED,_FOOTER_);
   
   m_iParentId = pDistJob->m_iUniqueId;
-  m_i_ActionRoot = pDistJob->m_i_ActionRoot;
 
 //  m_sResponse      = ""_Stz;
 //  m_iRowsProcessed = 0;

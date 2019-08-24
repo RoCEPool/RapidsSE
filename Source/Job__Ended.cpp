@@ -105,8 +105,6 @@ Job__Ended::Job__Ended(Job* pDistJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__ENDED,_FOOTER_);
   
-  m_iParentId = pDistJob->m_iUniqueId;
-  m_i_ActionRoot = pDistJob->m_i_ActionRoot;
 
   _checkInitialised_(CN_JOB__ENDED);
   
