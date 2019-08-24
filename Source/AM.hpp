@@ -71,7 +71,6 @@ namespace StorageEngine
     static EnumFlags* pMarkResource(void);
     static EnumFlags* pMarkTrace(void);
     static bool bMetadata(void);
-    static i8   iNextCommand(void);
     static i8   iNextDiagram(void);
     static i8   iNextEpoch(void);
     static i8   iNextJobId(void);
@@ -79,6 +78,7 @@ namespace StorageEngine
     static i8   iNextOpId(void);
     static i8   iNextPlanId(void);
     static i8   iNextPromptId(void);
+    static i8   iNextRequest(void);
     static i8   iNextResourceId(void);
     static i8   iNextSessionId(void);
     static i8   iNextStreamId(void);

@@ -55,7 +55,6 @@ namespace StorageEngine
     Grid*         m_pGrid;
     HeapMem       m_xHeapMem;
     LockTracker   m_oLockTracker;
-    NextId        m_inNextCommand;
     NextId        m_inNextDiagram;
     NextId        m_inNextJobId;
     NextId        m_inNextLockId;
@@ -63,6 +62,7 @@ namespace StorageEngine
     NextId        m_inNextOpId;
     NextId        m_inNextPlanId;
     NextId        m_inNextPromptId;
+    NextId        m_inNextRequest;
     NextId        m_inNextResourceId;
     NextId        m_inNextSessionId;
     NextId        m_inNextStreamId;

@@ -44,7 +44,7 @@ void Command::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Command::Command(TokenVec* p_TknVec)
-:Focal(CN_COMMAND,AM::iNextCommand())
+:Focal(CN_COMMAND,AM::iNextRequest())
 {
   _precondition_(_MAGIC_,CN_COMMAND,_FOOTER_);
   

@@ -66,7 +66,6 @@ i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
 void AM::vProcessExit(void)   { Process::vExitFailure();                      }
 bool AM::bProgress(void)      { return gpAttachMap->m_bProgress;              }
 bool AM::bMetadata(void)      { return gpAttachMap->m_bMetadata;              }
-i8   AM::iNextCommand(void)   { return ++ gpAttachMap->m_inNextCommand;       }
 i8   AM::iNextDiagram(void)   { return ++ gpAttachMap->m_inNextDiagram;       }
 i8   AM::iNextJobId(void)     { return ++ gpAttachMap->m_inNextJobId;         }
 i8   AM::iNextLockId(void)    {
@@ -78,6 +77,7 @@ i8   AM::iNextLockId(void)    {
 i8   AM::iNextOpId(void)      { return ++ gpAttachMap->m_inNextOpId;          }
 i8   AM::iNextPlanId(void)    { return ++ gpAttachMap->m_inNextPlanId;        }
 i8   AM::iNextPromptId(void)  { return ++ gpAttachMap->m_inNextPromptId;      }
+i8   AM::iNextRequest(void)   { return ++ gpAttachMap->m_inNextRequest;       }
 i8   AM::iNextResourceId(void){
   if (gpAttachMap)
     return ++ gpAttachMap->m_inNextResourceId;
