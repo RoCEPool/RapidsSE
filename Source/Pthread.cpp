@@ -490,7 +490,8 @@ void Pthread::vSleepMsec(i8 nMilliSeconds, eCN eCallingClass)
 #endif
   
   AM::vLogRes(SL_INF,this,RA_THD_SLEEP,
-              "Pthread nanosleeps for %lldms"_Stz,nMilliSeconds);
+              "Pthread sleeps for %lldms via nanosleep()"_Stz,
+              nMilliSeconds);
   
   i8 rCode = nanosleep(&xReq,&xRem);
   
@@ -527,7 +528,8 @@ void Pthread::vSleepNsec(i8 nNanoSeconds, eCN eCallingClass)
 #endif
   
   AM::vLogRes(SL_INF,this,RA_THD_SLEEP,
-              "Pthread nanosleeps for %lldns"_Stz,nNanoSeconds);
+              "Pthread sleeps for %lldns via nanosleep()"_Stz,
+              nNanoSeconds);
   
   i8 rCode = nanosleep(&xReq,&xRem);
   
@@ -552,7 +554,8 @@ void Pthread::vSleepSsec(i8 nSeconds, eCN eCallingClass)
 #endif
   
   AM::vLogRes(SL_INF,this,RA_THD_SLEEP,
-              "Pthead sleeps for %llds"_Stz,nSeconds);
+              "Pthead sleeps for %llds via sleep()"_Stz,
+              nSeconds);
   
   sleep((unsigned)nSeconds);
   
@@ -585,7 +588,7 @@ void Pthread::vSleepUsec(i8 nMicroSeconds, eCN eCallingClass)
 #endif
   
   AM::vLogRes(SL_INF,this,RA_THD_SLEEP,
-              "Pthread nanosleeps for %lldus"_Stz,nMicroSeconds);
+              "Pthread sleeps for %lldus via nanosleep()"_Stz,nMicroSeconds);
   
   i8 rCode = nanosleep(&xReq,&xRem);
   
