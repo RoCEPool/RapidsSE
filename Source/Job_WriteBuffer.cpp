@@ -21,7 +21,6 @@ JobClass xJobClass_WriteBuffer =
   false,                  // check resources?
   false,                  // detached job?
   true,                   // buffer attached?
-  JT_NONE,                // job trace
   DL_NONE,                // ddl lock model
   PY_LOW,                 // priority
   JF_NONE,                // flags

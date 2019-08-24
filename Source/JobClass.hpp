@@ -25,7 +25,6 @@ namespace Jobs
       bool m_bDetached;  // is this job detached?
       bool m_bResources; // check resources?
       bool m_bBuffer;    // buffer attached?
-      eJT  m_eTrace;     // job trace?
       eDL  m_eDdlLock;   // ddl lock model
       ePY  m_ePriority;  // job priority
       eJF  m_eFlags;     // job flags

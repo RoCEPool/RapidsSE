@@ -22,7 +22,6 @@ JobClass xJobClass_DropCatalog =
   true,                    // check resources?
   false,                   // detached job?
   false,                   // buffer attached?
-  JT_NONE,                 // job trace
   DL_GRAB_WRITE,           // ddl lock model
   PY_NORMAL,               // priority
   JF_NONE,                 // flags
