@@ -453,8 +453,6 @@ private:
   static void vJobJobClass(Tasks::MP_Task mpTask);
   static void vJobJobListFetch(Tasks::MP_Task mpTask);
 
-  static void vJobMarkTraceFetch(Tasks::MP_Task mpTask);
-  static void vJobMarkTraceStore(Tasks::MP_Task mpTask);
   static void vJobMetadataStore(Tasks::MP_Task mpTask);
 
   static void vJobNoWaitFetch(Tasks::MP_Task mpTask);

@@ -86,11 +86,11 @@ Job::Job(eCN eClassNo, Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
 //  else
 //    m_xReqTuple.m_bLogJob = false;
   
-  if ( AM::pMarkTrace()->bAll() ||
-       AM::pMarkTrace()->bFlagged(eClass()) )
-    m_bMarkTrace  = true;
-  else
-    m_bMarkTrace  = false;
+//  if ( AM::pMarkTrace()->bAll() ||
+//       AM::pMarkTrace()->bFlagged(eClass()) )
+//    m_bMarkTrace  = true;
+//  else
+//    m_bMarkTrace  = false;
 
   m_pJobClass        = nullptr;
   m_pExecutingTask   = nullptr;
