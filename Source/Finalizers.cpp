@@ -289,6 +289,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_REFBUFFER
   /*    */ &Finalize::vUndefined,         // CN_REFSET
   /* 77 */ &Finalize::vUndefined,         // CN_RELOP
+  /* 77 */ &Finalize::vUndefined,         // CN_REQUEST
   /*    */ &Finalize::vUndefined,         // CN_RESOURCETRACKER
   /*    */ &Finalize::vUndefined,         // CN_RESPONSE
   /*    */ &Finalize::vUndefined,         // CN_RESPONSEVEC

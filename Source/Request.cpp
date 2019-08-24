@@ -15,7 +15,7 @@ Command* Sessions::_pCommand(void* aAddr)
 {
   Command* pCommand = reinterpret_cast<Command*>(aAddr);
   
-  RASSERT_TYPE(pCommand, CN_COMMAND);
+  RASSERT_TYPE(pCommand, CN_REQUEST);
   
   return pCommand;
 }
@@ -25,7 +25,7 @@ Command* Sessions::_pCommand(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Command::operator new(size_t)
 {
-  Object* pObject = HeapMem::pAllocate(CN_COMMAND);
+  Object* pObject = HeapMem::pAllocate(CN_REQUEST);
   
   return pObject;
 }
@@ -44,13 +44,13 @@ void Command::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Command::Command(TokenVec* p_TknVec)
-:Focal(CN_COMMAND,AM::iNextRequest())
+:Focal(CN_REQUEST,AM::iNextRequest())
 {
-  _precondition_(_MAGIC_,CN_COMMAND,_FOOTER_);
+  _precondition_(_MAGIC_,CN_REQUEST,_FOOTER_);
   
   m_p_TknVec = p_TknVec;
   
-  _checkInitialised_(CN_COMMAND);
+  _checkInitialised_(CN_REQUEST);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -62,7 +62,7 @@ Command::Command(TokenVec* p_TknVec)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  _postcondition_(_MAGIC_,CN_COMMAND,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_REQUEST,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -70,7 +70,7 @@ Command::Command(TokenVec* p_TknVec)
 /*----------------------------------------------------------------------------*/
 Command::~Command(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_COMMAND,_FOOTER_);
+  _precondition_(_MAGIC_,CN_REQUEST,_FOOTER_);
   
   // do not delete: m_p_TknVec
   
