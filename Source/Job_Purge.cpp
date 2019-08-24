@@ -102,7 +102,7 @@ void Job_Purge::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_Purge::Job_Purge(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
-: Job(CN_JOB_PURGE, pSession, iRequestId, aReqTuple)
+: Job(CN_JOB_PURGE, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PURGE,_FOOTER_);
   

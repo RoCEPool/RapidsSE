@@ -102,7 +102,7 @@ void Job_SubIndexJoin::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_SubIndexJoin::Job_SubIndexJoin(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
-: Job(CN_JOB_SUBINDEXJOIN, pSession, iRequestId, aReqTuple)
+: Job(CN_JOB_SUBINDEXJOIN, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINDEXJOIN,_FOOTER_);
   

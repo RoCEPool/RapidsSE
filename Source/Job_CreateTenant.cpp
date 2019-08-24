@@ -102,7 +102,7 @@ void Job_CreateTenant::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_CreateTenant::Job_CreateTenant(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
-: Job(CN_JOB_CREATETENANT, pSession, iRequestId, aReqTuple)
+: Job(CN_JOB_CREATETENANT, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETENANT,_FOOTER_);
     

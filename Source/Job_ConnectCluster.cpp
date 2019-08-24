@@ -102,7 +102,7 @@ void Job_ConnectCluster::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_ConnectCluster::Job_ConnectCluster(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
-: Job(CN_JOB_CONNECTCLUSTER, pSession, iRequestId, aReqTuple)
+: Job(CN_JOB_CONNECTCLUSTER, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CONNECTCLUSTER,_FOOTER_);
   

@@ -102,7 +102,7 @@ void Job_Ingest::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_Ingest::Job_Ingest(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
-: Job(CN_JOB_INGEST, pSession, iRequestId, aReqTuple)
+: Job(CN_JOB_INGEST, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   

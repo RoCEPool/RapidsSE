@@ -102,7 +102,7 @@ void Job_Report::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_Report::Job_Report(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
-: Job(CN_JOB_REPORT, pSession, iRequestId, aReqTuple)
+: Job(CN_JOB_REPORT, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPORT,_FOOTER_);
   

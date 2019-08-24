@@ -102,7 +102,7 @@ void Job_InsertTable::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_InsertTable::Job_InsertTable(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
-: Job(CN_JOB_INSERTTABLE, pSession, iRequestId, aReqTuple)
+: Job(CN_JOB_INSERTTABLE, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTTABLE,_FOOTER_);
   

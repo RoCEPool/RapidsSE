@@ -28,8 +28,10 @@ namespace Jobs
 #include "JobObjectName.hpp"
 #include "JobResult.hpp"
 #include "JobTable.hpp"
+
 #include "Job.hpp"
 #include "JobMark2.hpp"
+
 #include "JobLog.hpp"
 
 #include "JobWriteBehind.hpp"

@@ -102,7 +102,7 @@ void Job_TableSizes::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_TableSizes::Job_TableSizes(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
-: Job(CN_JOB_TABLESIZES, pSession, iRequestId, aReqTuple)
+: Job(CN_JOB_TABLESIZES, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_TABLESIZES,_FOOTER_);
     

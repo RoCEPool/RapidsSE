@@ -102,7 +102,7 @@ void Job_ListIdxColumns::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_ListIdxColumns::Job_ListIdxColumns(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
-: Job(CN_JOB_LISTIDXCOLUMNS, pSession, iRequestId, aReqTuple)
+: Job(CN_JOB_LISTIDXCOLUMNS, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTIDXCOLUMNS,_FOOTER_);
   

@@ -150,7 +150,7 @@ void Job_CreateIndex::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_CreateIndex::Job_CreateIndex(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
-: Job(CN_JOB_CREATEINDEX, pSession, iRequestId, aReqTuple)
+: Job(CN_JOB_CREATEINDEX, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATEINDEX,_FOOTER_);
   

@@ -102,7 +102,7 @@ void Job_Walk::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_Walk::Job_Walk(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
-: Job(CN_JOB_WALK, pSession, iRequestId, aReqTuple)
+: Job(CN_JOB_WALK, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WALK,_FOOTER_);
   

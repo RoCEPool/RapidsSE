@@ -102,7 +102,7 @@ void Job_Dynamic::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_Dynamic::Job_Dynamic(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
-: JobMark2(CN_JOB_DYNAMIC, pSession, iRequestId, aReqTuple)
+: JobMark2(CN_JOB_DYNAMIC, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
   

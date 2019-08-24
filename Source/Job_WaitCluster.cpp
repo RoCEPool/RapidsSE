@@ -102,7 +102,7 @@ void Job_WaitCluster::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_WaitCluster::Job_WaitCluster(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
-: Job(CN_JOB_WAITCLUSTER, pSession, iRequestId, aReqTuple)
+: Job(CN_JOB_WAITCLUSTER, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WAITCLUSTER,_FOOTER_);
     

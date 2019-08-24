@@ -102,7 +102,7 @@ void Job_CompactIndex::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_CompactIndex::Job_CompactIndex(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
-: Job(CN_JOB_COMPACTINDEX, pSession, iRequestId, aReqTuple)
+: Job(CN_JOB_COMPACTINDEX, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_COMPACTINDEX,_FOOTER_);
     

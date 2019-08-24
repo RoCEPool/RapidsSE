@@ -102,7 +102,7 @@ void Job_DropSchema::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_DropSchema::Job_DropSchema(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
-: Job(CN_JOB_DROPSCHEMA, pSession, iRequestId, aReqTuple)
+: Job(CN_JOB_DROPSCHEMA, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPSCHEMA,_FOOTER_);
     
