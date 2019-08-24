@@ -16,7 +16,6 @@ namespace Commands
 
 #include "Token.hpp"
 #include "TokenVec.hpp"
-#include "Command.hpp"
 
 #include "Parser.hpp"
 #include "Tokeniser.hpp"

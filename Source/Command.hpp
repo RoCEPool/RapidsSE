@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Commands
+namespace Sessions
 {
   class Command : public Focal
   {
