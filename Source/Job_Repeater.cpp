@@ -217,7 +217,7 @@ Job* Jobs::pJob_Repeater_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTup
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Repeater_new(Job* pArg)
 {
-  Job_Repeater* pJob_Repeater = new Job_Repeater(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
+  Job_Repeater* pJob_Repeater = new Job_Repeater(nullptr,pArg ? pArg->m_xReqTuple.m_iReqId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
   
   return pJob_Repeater;
 }

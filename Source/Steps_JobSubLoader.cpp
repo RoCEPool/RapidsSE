@@ -31,7 +31,7 @@ void Step::vJob_SubLoaderSpawn(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 iRequestId = pJob_LoadTable->m_iRequestId;
+  i8 iRequestId = pJob_LoadTable->m_xReqTuple.m_iReqId;
   Session* pSession = pJob_LoadTable->m_pSession;
   ReqTuple* aReqTuple = &pJob_LoadTable->m_xReqTuple;
 

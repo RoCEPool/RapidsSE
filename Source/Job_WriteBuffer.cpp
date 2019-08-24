@@ -435,7 +435,7 @@ Job* Jobs::pJob_WriteBuffer_pre(Session* pSession, i8 iRequestId, ReqTuple* aReq
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_WriteBuffer_new(Job* pArg)
 {
-  Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
+  Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(nullptr,pArg ? pArg->m_xReqTuple.m_iReqId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
   
   return pJob_WriteBuffer;
 }

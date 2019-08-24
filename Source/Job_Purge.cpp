@@ -205,7 +205,7 @@ void Jobs::vJob_Purge_post(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Purge_new(Job* pArg)
 {
-  Job_Purge* pJob_Purge = new Job_Purge(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
+  Job_Purge* pJob_Purge = new Job_Purge(nullptr,pArg ? pArg->m_xReqTuple.m_iReqId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
   
   return pJob_Purge;
 }

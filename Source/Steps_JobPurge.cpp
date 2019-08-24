@@ -29,7 +29,7 @@ void Step::vJob_PurgeSpawnSub(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iSlot) )
     THROW_INVALID_DSTACK("Job_purge.spawnSub"_Stz);
   
-  i8 iRequestId = pJob_Purge->m_iRequestId;
+  i8 iRequestId = pJob_Purge->m_xReqTuple.m_iReqId;
   i8 iPurgeJobId = pJob_Purge->m_iUniqueId;
   ReqTuple* aReqTuple = &pJob_Purge->m_xReqTuple;
   

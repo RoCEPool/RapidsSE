@@ -167,7 +167,7 @@ void Step::vJob_FetchRowsSpawnSub(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iSlot) )
     THROW_INVALID_DSTACK("Job_fetchRows.spawnSub"_Stz);
   
-  i8 iRequestId = pJob_FetchRows->m_iRequestId;
+  i8 iRequestId = pJob_FetchRows->m_xReqTuple.m_iReqId;
   Session* pSession = pJob_FetchRows->m_pSession;
   ReqTuple* aReqTuple = &pJob_FetchRows->m_xReqTuple;
 
@@ -287,7 +287,7 @@ void Step::vJob_InflateRowsSpawnSub(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iSlot) )
     THROW_INVALID_DSTACK("Job_inflateRows.spawnSub"_Stz);
   
-  i8 iRequestId = pJob_InflateRows->m_iRequestId;
+  i8 iRequestId = pJob_InflateRows->m_xReqTuple.m_iReqId;
   Session* pSession = pJob_InflateRows->m_pSession;
   ReqTuple* aReqTuple = &pJob_InflateRows->m_xReqTuple;
 

@@ -36,7 +36,7 @@ void Step::vJob_SubWalkerSpawn(MP_Task mpTask)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 iRequestId = pJob_Walk->m_iRequestId;
+  i8 iRequestId = pJob_Walk->m_xReqTuple.m_iReqId;
   Session* pSession = pJob_Walk->m_pSession;
   ReqTuple* aReqTuple = &pJob_Walk->m_xReqTuple;
 

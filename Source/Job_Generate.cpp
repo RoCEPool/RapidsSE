@@ -233,7 +233,7 @@ Job* Jobs::pJob_Generate_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTup
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Generate_new(Job* pArg)
 {
-  Job_Generate* pJob_Generate = new Job_Generate(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
+  Job_Generate* pJob_Generate = new Job_Generate(nullptr,pArg ? pArg->m_xReqTuple.m_iReqId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
   
   return pJob_Generate;
 }

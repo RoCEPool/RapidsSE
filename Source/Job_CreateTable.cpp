@@ -651,7 +651,7 @@ void Jobs::vJob_CreateTable_post(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_CreateTable_new(Job* pArg)
 {
-  Job_CreateTable* pJob_CreateTable = new Job_CreateTable(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
+  Job_CreateTable* pJob_CreateTable = new Job_CreateTable(nullptr,pArg ? pArg->m_xReqTuple.m_iReqId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
   
   return pJob_CreateTable;
 }

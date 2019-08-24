@@ -170,7 +170,7 @@ Footer* Job_Waker::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Waker_new(Job* pArg)
 {
-  Job_Waker* pJob_Waker = new Job_Waker(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
+  Job_Waker* pJob_Waker = new Job_Waker(nullptr,pArg ? pArg->m_xReqTuple.m_iReqId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
   
   return pJob_Waker;
 }

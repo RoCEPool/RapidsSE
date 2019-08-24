@@ -190,7 +190,7 @@ Job* Jobs::pJob_InsertTable_pre(Session* pSession, i8 iRequestId, ReqTuple* aReq
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_InsertTable_new(Job* pArg)
 {
-  Job_InsertTable* pJob_InsertTable = new Job_InsertTable(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
+  Job_InsertTable* pJob_InsertTable = new Job_InsertTable(nullptr,pArg ? pArg->m_xReqTuple.m_iReqId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
   
   return pJob_InsertTable;
 }

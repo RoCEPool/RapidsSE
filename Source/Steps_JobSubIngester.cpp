@@ -31,7 +31,7 @@ void Step::vJob_SubIngesterSpawn(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 iRequestId = pJob_Ingest->m_iRequestId;
+  i8 iRequestId = pJob_Ingest->m_xReqTuple.m_iReqId;
   Session* pSession = pJob_Ingest->m_pSession;
   ReqTuple* aReqTuple = &pJob_Ingest->m_xReqTuple;
   

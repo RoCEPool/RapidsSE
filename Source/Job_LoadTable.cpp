@@ -640,7 +640,7 @@ Job* Jobs::pJob_LoadTable_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTu
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_LoadTable_new(Job* pArg)
 {
-  Job_LoadTable* pJob_LoadTable = new Job_LoadTable(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
+  Job_LoadTable* pJob_LoadTable = new Job_LoadTable(nullptr,pArg ? pArg->m_xReqTuple.m_iReqId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
   
   return pJob_LoadTable;
 }

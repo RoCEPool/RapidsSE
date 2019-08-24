@@ -181,7 +181,7 @@ void Step::vJob_IndexJoinSpawnSub(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iSlot) )
     THROW_INVALID_DSTACK("Job_IndexJoin.spawnSub"_Stz);
   
-  i8 iRequestId = pJob_IndexJoin->m_iRequestId;
+  i8 iRequestId = pJob_IndexJoin->m_xReqTuple.m_iReqId;
   Session* pSession = pJob_IndexJoin->m_pSession;
   ReqTuple* aReqTuple = &pJob_IndexJoin->m_xReqTuple;
 

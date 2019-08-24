@@ -64,9 +64,7 @@ Job::Job(eCN eClassNo, Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
   
   //vTrace("%s: CREATING JOB %p %s\n"_Stz,
   //       AM::pGrid()->pThisNode()->aNodeName(), this, aCN[eClass()]);
-  
-  m_iRequestId = iRequestId;
-  
+    
   // m_xReqTuple
   
   m_iParentId = C_UNKNOWN;

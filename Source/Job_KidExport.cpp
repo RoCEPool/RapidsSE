@@ -222,7 +222,7 @@ Job* Jobs::pJob_KidExport_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTu
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_KidExport_new(Job* pArg)
 {
-  Job_KidExport* pJob_KidExport = new Job_KidExport(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
+  Job_KidExport* pJob_KidExport = new Job_KidExport(nullptr,pArg ? pArg->m_xReqTuple.m_iReqId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
   
   return pJob_KidExport;
 }

@@ -209,7 +209,7 @@ void Jobs::vJob_Health_post(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Health_new(Job* pArg)
 {
-  Job_Health* pJob_Health = new Job_Health(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
+  Job_Health* pJob_Health = new Job_Health(nullptr,pArg ? pArg->m_xReqTuple.m_iReqId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
   
   return pJob_Health;
 }

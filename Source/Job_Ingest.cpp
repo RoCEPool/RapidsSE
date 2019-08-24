@@ -215,7 +215,7 @@ Job* Jobs::pJob_Ingest_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Ingest_new(Job* pArg)
 {
-  Job_Ingest* pJob_Ingest = new Job_Ingest(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
+  Job_Ingest* pJob_Ingest = new Job_Ingest(nullptr,pArg ? pArg->m_xReqTuple.m_iReqId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
   
   return pJob_Ingest;
 }

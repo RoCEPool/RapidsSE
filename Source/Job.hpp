@@ -17,7 +17,6 @@ namespace Jobs
     ReqTuple  m_xReqTuple; // the request tuple
 
     struct {
-      i8   m_iRequestId; // the command which trigger the job
       i8   m_i_State;    // which session state
     };
   

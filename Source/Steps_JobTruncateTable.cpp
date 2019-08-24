@@ -65,7 +65,7 @@ void Step::vJob_TruncateTableSpawnSub(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iSlot) )
     THROW_INVALID_DSTACK("Job_truncateTable.spawnSub"_Stz);
   
-  i8 iRequestId = pJob_TruncateTable->m_iRequestId;
+  i8 iRequestId = pJob_TruncateTable->m_xReqTuple.m_iReqId;
   Session* pSession = pJob_TruncateTable->m_pSession;
   i8 iTruncateJobId = pJob_TruncateTable->m_iUniqueId;
   ReqTuple* aReqTuple = &pJob_TruncateTable->m_xReqTuple;

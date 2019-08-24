@@ -14,7 +14,7 @@ void _LogEntryJob::vSet(LogEntry* pLogEntry, Job* pJob, eJA eJobAct)
   m_iJobId  = pJob->m_iUniqueId;
   m_eJobAct = eJobAct;
   
-  m_iReqId  = pJob->m_iRequestId;
+  m_iReqId  = pJob->m_xReqTuple.m_iReqId;
 }
 
 /*----------------------------------------------------------------------------*/
