@@ -11,6 +11,8 @@ namespace Logging
     i8   m_iJobId;  // job id
     eJA  m_eJobAct; // job action
   
+    i8   m_iReqId;  // request id
+  
   public:
     void vSet(LogEntry* pLogEntry, Job* pJob, eJA eJobAct);
   

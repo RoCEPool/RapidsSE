@@ -13,6 +13,8 @@ void _LogEntryJob::vSet(LogEntry* pLogEntry, Job* pJob, eJA eJobAct)
   
   m_iJobId  = pJob->m_iUniqueId;
   m_eJobAct = eJobAct;
+  
+  m_iReqId  = pJob->m_iRequestId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -21,12 +23,14 @@ void _LogEntryJob::vSet(LogEntry* pLogEntry, Job* pJob, eJA eJobAct)
 void _LogEntryJob::vOutline(s4K& sOutline)
 {
   SP_Id spId;
+  SP_Id spReqId;
   SP_String spString;
 
-  sOutline.vCatSprint(".%s %24s"_Stz,
+  sOutline.vCatSprint(".%s %24s %s"_Stz,
                 
                       spId.sz("J"_Stz,m_iJobId),
-                      spString.szRight(aJA[m_eJobAct],24)
+                      spString.szRight(aJA[m_eJobAct],24),
+                      spReqId.sz("M"_Stz,m_iReqId)
                       );
 }
 
@@ -36,11 +40,14 @@ void _LogEntryJob::vOutline(s4K& sOutline)
 void _LogEntryJob::vWriteCsv(File* pFile)
 {
   SP_Id spId;
-  
-  pFile->vPrint(",%s,%s"_Stz,
+  SP_Id spReqId;
+
+  pFile->vPrint(",%s,%s,%s"_Stz,
                 
                 spId.sz("J"_Stz,m_iJobId),
-                aJA[m_eJobAct]);
+                aJA[m_eJobAct],
+                spReqId.sz("M"_Stz,m_iReqId)
+                );
 }
 
 /*============================================================================*/
