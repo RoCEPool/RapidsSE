@@ -102,8 +102,8 @@ void Job_Health::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Health::Job_Health(Session* pSession, i8 iRequestId)
-: Job(CN_JOB_NETHOG, pSession, iRequestId)
+Job_Health::Job_Health(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+: Job(CN_JOB_NETHOG, pSession, iRequestId, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_NETHOG,_FOOTER_);
   
@@ -171,9 +171,9 @@ Footer* Job_Health::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Health_pre(Session* pSession, i8 iRequestId)
+Job* Jobs::pJob_Health_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
 {
-  Job_Health* pJob_Health = new Job_Health(pSession,iRequestId);
+  Job_Health* pJob_Health = new Job_Health(pSession,iRequestId,aReqTuple);
   
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
   
@@ -209,7 +209,7 @@ void Jobs::vJob_Health_post(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Health_new(Job* pArg)
 {
-  Job_Health* pJob_Health = new Job_Health(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN);
+  Job_Health* pJob_Health = new Job_Health(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
   
   return pJob_Health;
 }

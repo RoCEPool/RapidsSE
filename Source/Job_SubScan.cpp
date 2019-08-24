@@ -101,8 +101,8 @@ void Job_SubScan::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SubScan::Job_SubScan(Session* pSession, i8 iRequestId)
-: Job(CN_JOB_SUBSCAN, pSession, iRequestId)
+Job_SubScan::Job_SubScan(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+: Job(CN_JOB_SUBSCAN, pSession, iRequestId, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBSCAN,_FOOTER_);
   
@@ -169,9 +169,9 @@ Footer* Job_SubScan::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubScan_pre(Session* pSession, i8 iRequestId)
+Job* Jobs::pJob_SubScan_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
 {
-  Job_SubScan* pJob_SubScan = new Job_SubScan(pSession,iRequestId);
+  Job_SubScan* pJob_SubScan = new Job_SubScan(pSession,iRequestId,aReqTuple);
   
   return pJob_SubScan;
 }

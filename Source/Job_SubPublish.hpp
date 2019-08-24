@@ -28,7 +28,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_SubPublish(Session* pSession, i8 iRequestId);//=C_UNKNOWN);
+    Job_SubPublish(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);//=C_UNKNOWN);
     ~Job_SubPublish(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -50,7 +50,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_SubPublish* _pJob_SubPublish(void* aAddr);
   
-  Job* pJob_SubPublish_pre(Session* pSession, i8 iRequestId);
+  Job* pJob_SubPublish_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
   void vJob_SubPublish_delete(Session* pSession, Job* pJob);
   void vJob_SubPublish_show(Job* pJob);
   

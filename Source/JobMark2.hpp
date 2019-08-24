@@ -16,7 +16,7 @@ namespace Jobs
     eRU    m_eResUsage;     // resource usage
   
   public:
-    JobMark2(eCN eClassNo, Session* pSession, i8 iRequestId);
+    JobMark2(eCN eClassNo, Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
    ~JobMark2(void) noexcept(false);
   };
   

@@ -20,7 +20,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_SubScan(Session* pSession, i8 iRequestId);//=C_UNKNOWN);
+    Job_SubScan(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);//=C_UNKNOWN);
     ~Job_SubScan(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -36,7 +36,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_SubScan* _pJob_SubScan(void* aAddr);
   
-  Job* pJob_SubScan_pre(Session* pSession, i8 iRequestId);
+  Job* pJob_SubScan_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
   void vJob_SubScan_delete(Session* pSession, Job* pJob);
   void vJob_SubScan_show(Job* pJob);
   

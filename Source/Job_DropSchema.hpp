@@ -19,7 +19,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_DropSchema(Session* pSession, i8 iRequestId);//=C_UNKNOWN);
+    Job_DropSchema(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);//=C_UNKNOWN);
     ~Job_DropSchema(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -35,7 +35,7 @@ namespace Jobs
   
   Job_DropSchema* _pJob_DropSchema(void* aAddr);
   
-  Job* pJob_DropSchema_pre(Session* pSession, i8 iRequestId);
+  Job* pJob_DropSchema_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
   void vJob_DropSchema_delete(Session* pSession, Job* pJob);
   void vJob_DropSchema_show(Job* pJob);
   

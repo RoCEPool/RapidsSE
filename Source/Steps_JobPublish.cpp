@@ -32,11 +32,12 @@ void Step::vJob_PublishSpawnSub(MP_Task mpTask)
   i8 iRequestId = pJob_Publish->m_iRequestId;
   Session* pSession = pJob_Publish->m_pSession;
   i8 iPublishJobId = pJob_Publish->m_iUniqueId;
+  ReqTuple* aReqTuple = &pJob_Publish->m_xReqTuple;
 
   JobClass* pJobClass_SubPublish = JobClass::pFind(CN_JOB_SUBPUBLISH);
 
   Job_SubPublish* pJob_SubPublish =
-  static_cast<Job_SubPublish*>(pJobClass_SubPublish->pPreJob(nullptr,iRequestId));
+  static_cast<Job_SubPublish*>(pJobClass_SubPublish->pPreJob(nullptr,iRequestId,aReqTuple));
 
   pJob_SubPublish->vSeed(SS_SEED_RUN);
 

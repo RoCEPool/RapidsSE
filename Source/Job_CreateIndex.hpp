@@ -22,7 +22,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_CreateIndex(Session* pSession, i8 iRequestId);//=C_UNKNOWN);
+    Job_CreateIndex(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);//=C_UNKNOWN);
     ~Job_CreateIndex(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -42,7 +42,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_CreateIndex* _pJob_CreateIndex(void* aAddr);
   
-  Job* pJob_CreateIndex_pre(Session* pSession, i8 iRequestId);
+  Job* pJob_CreateIndex_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
   void vJob_CreateIndex_delete(Session* pSession, Job* pJob);
   void vJob_CreateIndex_show(Job* pJob);
   

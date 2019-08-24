@@ -55,10 +55,10 @@ bool Jobs::_bIsValidJob(eCN eClass)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(eCN eClassNo, Session* pSession, i8 iRequestId)
+Job::Job(eCN eClassNo, Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
 : Focal(eClassNo,AM::iNextJobId())
 , JobDicPath(pSession)
-, m_xReqTuple(nullptr)
+, m_xReqTuple(aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   

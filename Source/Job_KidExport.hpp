@@ -21,7 +21,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_KidExport(Session* pSession, i8 iRequestId);//=C_UNKNOWN);
+    Job_KidExport(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);//=C_UNKNOWN);
     ~Job_KidExport(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -40,7 +40,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_KidExport* _pJob_KidExport(void* aAddr);
   
-  Job* pJob_KidExport_pre(Session* pSession, i8 iRequestId);
+  Job* pJob_KidExport_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
   Job* pJob_KidExport_new(Job* pArg);
   void vJob_KidExport_delete(Session* pSession, Job* pJob);
   void vJob_KidExport_show(Job* pJob);

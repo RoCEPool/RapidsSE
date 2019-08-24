@@ -33,7 +33,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Ingest(Session* pSession, i8 iRequestId);//=C_UNKNOWN);
+    Job_Ingest(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);//=C_UNKNOWN);
     ~Job_Ingest(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -59,7 +59,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Ingest* _pJob_Ingest(void* aAddr);
   
-  Job* pJob_Ingest_pre(Session* pSession, i8 iRequestId);
+  Job* pJob_Ingest_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
   Job* pJob_Ingest_new(Job* pArg);
   void vJob_Ingest_delete(Session* pSession, Job* pJob);
   void vJob_Ingest_show(Job* pJob);

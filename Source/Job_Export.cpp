@@ -101,8 +101,8 @@ void Job_Export::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Export::Job_Export(Session* pSession, i8 iRequestId)
-: Job(CN_JOB_EXPORT, pSession, iRequestId)
+Job_Export::Job_Export(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+: Job(CN_JOB_EXPORT, pSession, iRequestId, aReqTuple)
 , m_okLock(LK_EXPORT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
@@ -274,9 +274,9 @@ Footer* Job_Export::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Export_pre(Session* pSession, i8 iRequestId)
+Job* Jobs::pJob_Export_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
 {
-  Job_Export* pJob_Export = new Job_Export(pSession,iRequestId);
+  Job_Export* pJob_Export = new Job_Export(pSession,iRequestId,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
 
@@ -304,7 +304,7 @@ void Jobs::vJob_Export_post(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Export_new(Job* pArg)
 {
-  Job_Export* pJob_Export = new Job_Export(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN);
+  Job_Export* pJob_Export = new Job_Export(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
   
   return pJob_Export;
 }

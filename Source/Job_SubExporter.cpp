@@ -101,8 +101,8 @@ void Job_SubExporter::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SubExporter::Job_SubExporter(Session* pSession, i8 iRequestId)
-: Job(CN_JOB_SUBEXPORTER, pSession, iRequestId)
+Job_SubExporter::Job_SubExporter(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+: Job(CN_JOB_SUBEXPORTER, pSession, iRequestId, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
     
@@ -329,9 +329,9 @@ Footer* Job_SubExporter::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubExporter_pre(Session* pSession, i8 iRequestId)
+Job* Jobs::pJob_SubExporter_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
 {
-  Job_SubExporter* pJob_SubExporter = new Job_SubExporter(pSession,iRequestId);
+  Job_SubExporter* pJob_SubExporter = new Job_SubExporter(pSession,iRequestId,aReqTuple);
   
   return pJob_SubExporter;
 }

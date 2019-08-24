@@ -18,7 +18,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_StartCluster(Session* pSession, i8 iRequestId);//=C_UNKNOWN);
+    Job_StartCluster(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);//=C_UNKNOWN);
     ~Job_StartCluster(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -34,7 +34,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_StartCluster* _pJob_StartCluster(void* aAddr);
   
-  Job* pJob_StartCluster_pre(Session* pSession, i8 iRequestId);
+  Job* pJob_StartCluster_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
   void vJob_StartCluster_post(Session* pSession, Job* pJob);
   void vJob_StartCluster_delete(Session* pSession, Job* pJob);
   void vJob_StartCluster_show(Job* pJob);

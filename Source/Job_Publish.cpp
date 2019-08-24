@@ -101,8 +101,8 @@ void Job_Publish::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Publish::Job_Publish(Session* pSession, i8 iRequestId)
-: Job(CN_JOB_PUBLISH, pSession, iRequestId)
+Job_Publish::Job_Publish(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+: Job(CN_JOB_PUBLISH, pSession, iRequestId, aReqTuple)
 , m_okLock(LK_PIPE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PUBLISH,_FOOTER_);
@@ -172,11 +172,11 @@ Footer* Job_Publish::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Publish_pre(Session* pSession, i8 iRequestId)
+Job* Jobs::pJob_Publish_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
 {
   i8 nTokens;
 
-  Job_Publish* pJob_Publish = new Job_Publish(pSession,iRequestId);
+  Job_Publish* pJob_Publish = new Job_Publish(pSession,iRequestId,aReqTuple);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
 
@@ -208,7 +208,7 @@ void Jobs::vJob_Publish_post(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Publish_new(Job* pArg)
 {
-  Job_Publish* pJob_Publish = new Job_Publish(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN);
+  Job_Publish* pJob_Publish = new Job_Publish(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
   
   return pJob_Publish;
 }

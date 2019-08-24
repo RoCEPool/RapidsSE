@@ -101,8 +101,8 @@ void Job_CreateCatalog::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_CreateCatalog::Job_CreateCatalog(Session* pSession, i8 iRequestId)
-: Job(CN_JOB_CREATECATALOG, pSession, iRequestId)
+Job_CreateCatalog::Job_CreateCatalog(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+: Job(CN_JOB_CREATECATALOG, pSession, iRequestId, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATECATALOG,_FOOTER_);
     
@@ -193,9 +193,9 @@ Footer* Job_CreateCatalog::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_CreateCatalog_pre(Session* pSession, i8 iRequestId)
+Job* Jobs::pJob_CreateCatalog_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
 {
-  Job_CreateCatalog* pJob_CreateCatalog = new Job_CreateCatalog(pSession,iRequestId);
+  Job_CreateCatalog* pJob_CreateCatalog = new Job_CreateCatalog(pSession,iRequestId,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

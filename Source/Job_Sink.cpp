@@ -101,8 +101,8 @@ void Job_Sink::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Sink::Job_Sink(Session* pSession, i8 iRequestId)
-: Job(CN_JOB_SINK, pSession, iRequestId)
+Job_Sink::Job_Sink(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+: Job(CN_JOB_SINK, pSession, iRequestId, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SINK,_FOOTER_);
   
@@ -173,11 +173,11 @@ Footer* Job_Sink::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Sink_pre(Session* pSession, i8 iRequestId)
+Job* Jobs::pJob_Sink_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
 {
   i8 nTokens;
 
-  Job_Sink* pJob_Sink = new Job_Sink(pSession,iRequestId);
+  Job_Sink* pJob_Sink = new Job_Sink(pSession,iRequestId,aReqTuple);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
 
@@ -205,7 +205,7 @@ Job* Jobs::pJob_Sink_pre(Session* pSession, i8 iRequestId)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Sink_new(Job* pArg)
 {
-  Job_Sink* pJob_Sink = new Job_Sink(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN);
+  Job_Sink* pJob_Sink = new Job_Sink(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
   
   return pJob_Sink;
 }

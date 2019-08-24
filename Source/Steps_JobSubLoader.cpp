@@ -33,12 +33,13 @@ void Step::vJob_SubLoaderSpawn(MP_Task mpTask)
   
   i8 iRequestId = pJob_LoadTable->m_iRequestId;
   Session* pSession = pJob_LoadTable->m_pSession;
-  
+  ReqTuple* aReqTuple = &pJob_LoadTable->m_xReqTuple;
+
   //! this needs to be optimised
   JobClass* pJobClass_SubLoader = JobClass::pFind(CN_JOB_SUBLOADER);
   
   Job_SubLoader* pJob_SubLoader =
-  static_cast<Job_SubLoader*>(pJobClass_SubLoader->pPreJob(pSession,iRequestId));
+  static_cast<Job_SubLoader*>(pJobClass_SubLoader->pPreJob(pSession,iRequestId,aReqTuple));
   
   pJob_SubLoader->vSeed(SS_SEED_RUN);
   

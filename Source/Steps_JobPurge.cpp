@@ -31,11 +31,12 @@ void Step::vJob_PurgeSpawnSub(MP_Task mpTask)
   
   i8 iRequestId = pJob_Purge->m_iRequestId;
   i8 iPurgeJobId = pJob_Purge->m_iUniqueId;
+  ReqTuple* aReqTuple = &pJob_Purge->m_xReqTuple;
   
   JobClass* pJobClass_SubPurger = JobClass::pFind(CN_JOB_SUBPURGER);
   
   Job_SubPurger* pJob_SubPurger =
-  static_cast<Job_SubPurger*>(pJobClass_SubPurger->pPreJob(nullptr,iRequestId));
+  static_cast<Job_SubPurger*>(pJobClass_SubPurger->pPreJob(nullptr,iRequestId,aReqTuple));
   
   pJob_SubPurger->vSeed(SS_SEED_RUN);
   

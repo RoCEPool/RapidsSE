@@ -101,8 +101,8 @@ void Job_WriteBuffer::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_WriteBuffer::Job_WriteBuffer(Session* pSession, i8 iRequestId)
-: Job(CN_JOB_WRITEBUFFER, pSession, iRequestId)
+Job_WriteBuffer::Job_WriteBuffer(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+: Job(CN_JOB_WRITEBUFFER, pSession, iRequestId, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEBUFFER,_FOOTER_);
   
@@ -360,7 +360,7 @@ void Job_WriteBuffer::vSpawnJobWriteBuffer(Session* pSession,
   JobClass* pJobClass_WriteBuffer = JobClass::pFind(CN_JOB_WRITEBUFFER);
   
   Job_WriteBuffer* pJob_WriteBuffer =
-  static_cast<Job_WriteBuffer*>(pJobClass_WriteBuffer->pPreJob(pSession,C_UNKNOWN));
+  static_cast<Job_WriteBuffer*>(pJobClass_WriteBuffer->pPreJob(pSession,C_UNKNOWN,nullptr));
   
   pJob_WriteBuffer->vSeed(SS_SEED_RUN);
   
@@ -423,9 +423,9 @@ Footer* Job_WriteBuffer::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_WriteBuffer_pre(Session* pSession, i8 iRequestId)
+Job* Jobs::pJob_WriteBuffer_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
 {
-  Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(pSession,iRequestId);
+  Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(pSession,iRequestId,aReqTuple);
   
   return pJob_WriteBuffer;
 }
@@ -435,7 +435,7 @@ Job* Jobs::pJob_WriteBuffer_pre(Session* pSession, i8 iRequestId)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_WriteBuffer_new(Job* pArg)
 {
-  Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN);
+  Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
   
   return pJob_WriteBuffer;
 }

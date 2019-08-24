@@ -101,8 +101,8 @@ void Job_KidExport::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_KidExport::Job_KidExport(Session* pSession, i8 iRequestId)
-: Job(CN_JOB_KIDEXPORT, pSession, iRequestId)
+Job_KidExport::Job_KidExport(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+: Job(CN_JOB_KIDEXPORT, pSession, iRequestId, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_KIDEXPORT,_FOOTER_);
   
@@ -145,7 +145,7 @@ void Job_KidExport::vDump(eCN eClass, Object* pObject, Stz* aTab)
 void Job_KidExport::vSpawn(i8 iExportJobId,
                           ExportBuffer* pExportBuffer)
 {
-  Job_KidExport* pJob_KidExport = new Job_KidExport(nullptr,C_UNKNOWN);
+  Job_KidExport* pJob_KidExport = new Job_KidExport(nullptr,C_UNKNOWN,nullptr);
   
   pJob_KidExport->m_iExportJobId = iExportJobId;
   pJob_KidExport->m_pSendWith = pExportBuffer;
@@ -210,9 +210,9 @@ Footer* Job_KidExport::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_KidExport_pre(Session* pSession, i8 iRequestId)
+Job* Jobs::pJob_KidExport_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
 {
-  Job_KidExport* pJob_KidExport = new Job_KidExport(pSession,iRequestId);
+  Job_KidExport* pJob_KidExport = new Job_KidExport(pSession,iRequestId,aReqTuple);
   
   return pJob_KidExport;
 }
@@ -222,7 +222,7 @@ Job* Jobs::pJob_KidExport_pre(Session* pSession, i8 iRequestId)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_KidExport_new(Job* pArg)
 {
-  Job_KidExport* pJob_KidExport = new Job_KidExport(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN);
+  Job_KidExport* pJob_KidExport = new Job_KidExport(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
   
   return pJob_KidExport;
 }

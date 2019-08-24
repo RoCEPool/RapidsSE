@@ -18,7 +18,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_TruncateTable(Session* pSession, i8 iRequestId);//=C_UNKNOWN);
+    Job_TruncateTable(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);//=C_UNKNOWN);
     ~Job_TruncateTable(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_TruncateTable* _pJob_TruncateTable(void* aAddr);
   
-  Job* pJob_TruncateTable_pre(Session* pSession, i8 iRequestId);
+  Job* pJob_TruncateTable_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
   void vJob_TruncateTable_delete(Session* pSession, Job* pJob);
   void vJob_TruncateTable_show(Job* pJob);
   

@@ -101,8 +101,8 @@ void Job_Alarm::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Alarm::Job_Alarm(Session* pSession, i8 iRequestId)
-: Job(CN_JOB_ALARM, pSession, iRequestId)
+Job_Alarm::Job_Alarm(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+: Job(CN_JOB_ALARM, pSession, iRequestId, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_ALARM,_FOOTER_);
   
@@ -170,7 +170,7 @@ Footer* Job_Alarm::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Alarm_new(Job* pArg)
 {
-  Job_Alarm* pJob_Alarm = new Job_Alarm(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN);
+  Job_Alarm* pJob_Alarm = new Job_Alarm(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
   
   return pJob_Alarm;
 }

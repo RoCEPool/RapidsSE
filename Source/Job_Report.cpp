@@ -101,8 +101,8 @@ void Job_Report::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Report::Job_Report(Session* pSession, i8 iRequestId)
-: Job(CN_JOB_REPORT, pSession, iRequestId)
+Job_Report::Job_Report(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+: Job(CN_JOB_REPORT, pSession, iRequestId, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPORT,_FOOTER_);
   
@@ -183,11 +183,11 @@ Footer* Job_Report::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Report_pre(Session* pSession, i8 iRequestId)
+Job* Jobs::pJob_Report_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
 {
   i8 nTokens;
 
-  Job_Report* pJob_Report = new Job_Report(pSession,iRequestId);
+  Job_Report* pJob_Report = new Job_Report(pSession,iRequestId,aReqTuple);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
 
@@ -218,7 +218,7 @@ Job* Jobs::pJob_Report_pre(Session* pSession, i8 iRequestId)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Report_new(Job* pArg)
 {
-  Job_Report* pJob_Report = new Job_Report(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN);
+  Job_Report* pJob_Report = new Job_Report(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
   
   return pJob_Report;
 }

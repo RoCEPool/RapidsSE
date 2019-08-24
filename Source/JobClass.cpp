@@ -124,9 +124,9 @@ void JobClass::vPostJob(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* create a new job by running the pre-function                                */
 /*----------------------------------------------------------------------------*/
-Job* JobClass::pPreJob(Session* pSession, i8 iRequestId)
+Job* JobClass::pPreJob(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
 {
-  Job* pJob = (*m_fpPre)(pSession,iRequestId);
+  Job* pJob = (*m_fpPre)(pSession,iRequestId,aReqTuple);
   
   pJob->m_pJobClass = this;
   pJob->m_i_State   = pSession ? pSession->m_pSessionState->m_i_State : -1;

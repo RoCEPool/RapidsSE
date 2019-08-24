@@ -18,7 +18,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_CreateTenant(Session* pSession, i8 iRequestId);//=C_UNKNOWN);
+    Job_CreateTenant(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);//=C_UNKNOWN);
     ~Job_CreateTenant(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_CreateTenant* _pJob_CreateTenant(void* aAddr);
   
-  Job* pJob_CreateTenant_pre(Session* pSession, i8 iRequestId);
+  Job* pJob_CreateTenant_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
   void vJob_CreateTenant_delete(Session* pSession, Job* pJob);
   void vJob_CreateTenant_show(Job* pJob);
   

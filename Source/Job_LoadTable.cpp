@@ -101,8 +101,8 @@ void Job_LoadTable::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_LoadTable::Job_LoadTable(Session* pSession, i8 iRequestId)
-: Job(CN_JOB_LOADTABLE, pSession, iRequestId)
+Job_LoadTable::Job_LoadTable(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+: Job(CN_JOB_LOADTABLE, pSession, iRequestId, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
   
@@ -620,9 +620,9 @@ bool Job_LoadTable::bExtractDateFormat(Stz* dateFormat)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_LoadTable_pre(Session* pSession, i8 iRequestId)
+Job* Jobs::pJob_LoadTable_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
 {
-  Job_LoadTable* pJob_LoadTable = new Job_LoadTable(pSession,iRequestId);
+  Job_LoadTable* pJob_LoadTable = new Job_LoadTable(pSession,iRequestId,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
@@ -640,7 +640,7 @@ Job* Jobs::pJob_LoadTable_pre(Session* pSession, i8 iRequestId)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_LoadTable_new(Job* pArg)
 {
-  Job_LoadTable* pJob_LoadTable = new Job_LoadTable(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN);
+  Job_LoadTable* pJob_LoadTable = new Job_LoadTable(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
   
   return pJob_LoadTable;
 }

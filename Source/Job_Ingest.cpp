@@ -101,8 +101,8 @@ void Job_Ingest::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Ingest::Job_Ingest(Session* pSession, i8 iRequestId)
-: Job(CN_JOB_INGEST, pSession, iRequestId)
+Job_Ingest::Job_Ingest(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+: Job(CN_JOB_INGEST, pSession, iRequestId, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   
@@ -180,11 +180,11 @@ Footer* Job_Ingest::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Ingest_pre(Session* pSession, i8 iRequestId)
+Job* Jobs::pJob_Ingest_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
 {
   i8 nTokens;
 
-  Job_Ingest* pJob_Ingest = new Job_Ingest(pSession,iRequestId);
+  Job_Ingest* pJob_Ingest = new Job_Ingest(pSession,iRequestId,aReqTuple);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
 
@@ -215,7 +215,7 @@ Job* Jobs::pJob_Ingest_pre(Session* pSession, i8 iRequestId)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Ingest_new(Job* pArg)
 {
-  Job_Ingest* pJob_Ingest = new Job_Ingest(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN);
+  Job_Ingest* pJob_Ingest = new Job_Ingest(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
   
   return pJob_Ingest;
 }

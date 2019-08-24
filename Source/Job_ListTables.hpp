@@ -18,7 +18,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_ListTables(Session* pSession, i8 iRequestId);//=C_UNKNOWN);
+    Job_ListTables(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);//=C_UNKNOWN);
     ~Job_ListTables(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_ListTables* _pJob_ListTables(void* aAddr);
   
-  Job* pJob_ListTables_pre(Session* pSession, i8 iRequestId);
+  Job* pJob_ListTables_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
   void vJob_ListTables_delete(Session* pSession, Job* pJob);
   void vJob_ListTables_show(Job* pJob);
   

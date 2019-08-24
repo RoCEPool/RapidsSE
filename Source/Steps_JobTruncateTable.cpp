@@ -68,11 +68,12 @@ void Step::vJob_TruncateTableSpawnSub(MP_Task mpTask)
   i8 iRequestId = pJob_TruncateTable->m_iRequestId;
   Session* pSession = pJob_TruncateTable->m_pSession;
   i8 iTruncateJobId = pJob_TruncateTable->m_iUniqueId;
+  ReqTuple* aReqTuple = &pJob_TruncateTable->m_xReqTuple;
   
   JobClass* pJobClass_SubTruncate = JobClass::pFind(CN_JOB_SUBTRUNCATE);
   
   Job_SubTruncate* pJob_SubTruncate =
-  static_cast<Job_SubTruncate*>(pJobClass_SubTruncate->pPreJob(nullptr,iRequestId));
+  static_cast<Job_SubTruncate*>(pJobClass_SubTruncate->pPreJob(nullptr,iRequestId,aReqTuple));
   
   pJob_SubTruncate->vSeed(SS_SEED_RUN);
   

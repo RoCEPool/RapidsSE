@@ -24,7 +24,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Cat(Session* pSession, i8 iRequestId);//=C_UNKNOWN);
+    Job_Cat(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);//=C_UNKNOWN);
     ~Job_Cat(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -44,7 +44,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Cat* _pJob_Cat(void* aAddr);
   
-  Job* pJob_Cat_pre(Session* pSession, i8 iRequestId);
+  Job* pJob_Cat_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
   Job* pJob_Cat_new(Job* pArg);
   void vJob_Cat_delete(Session* pSession, Job* pJob);
   void vJob_Cat_show(Job* pJob);

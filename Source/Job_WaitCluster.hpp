@@ -18,7 +18,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_WaitCluster(Session* pSession, i8 iRequestId);//=C_UNKNOWN);
+    Job_WaitCluster(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);//=C_UNKNOWN);
     ~Job_WaitCluster(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_WaitCluster* _pJob_WaitCluster(void* aAddr);
   
-  Job* pJob_WaitCluster_pre(Session* pSession, i8 iRequestId);
+  Job* pJob_WaitCluster_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
   void vJob_WaitCluster_post(Session* pSession, Job* pJob);
   void vJob_WaitCluster_delete(Session* pSession, Job* pJob);
   void vJob_WaitCluster_show(Job* pJob);

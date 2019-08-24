@@ -101,8 +101,8 @@ void Job_ConnectCluster::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_ConnectCluster::Job_ConnectCluster(Session* pSession, i8 iRequestId)
-: Job(CN_JOB_CONNECTCLUSTER, pSession, iRequestId)
+Job_ConnectCluster::Job_ConnectCluster(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+: Job(CN_JOB_CONNECTCLUSTER, pSession, iRequestId, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CONNECTCLUSTER,_FOOTER_);
   
@@ -189,9 +189,9 @@ Footer* Job_ConnectCluster::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_ConnectCluster_pre(Session* pSession, i8 iRequestId)
+Job* Jobs::pJob_ConnectCluster_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
 {
-  Job_ConnectCluster* pJob_ConnectCluster = new Job_ConnectCluster(pSession,iRequestId);
+  Job_ConnectCluster* pJob_ConnectCluster = new Job_ConnectCluster(pSession,iRequestId,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

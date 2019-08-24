@@ -169,11 +169,12 @@ void Step::vJob_FetchRowsSpawnSub(MP_Task mpTask)
   
   i8 iRequestId = pJob_FetchRows->m_iRequestId;
   Session* pSession = pJob_FetchRows->m_pSession;
-  
+  ReqTuple* aReqTuple = &pJob_FetchRows->m_xReqTuple;
+
   JobClass* pJobClass_SubFetch = JobClass::pFind(CN_JOB_SUBFETCH);
   
   Job_SubFetch* pJob_SubFetch =
-  static_cast<Job_SubFetch*>(pJobClass_SubFetch->pPreJob(pSession,iRequestId));
+  static_cast<Job_SubFetch*>(pJobClass_SubFetch->pPreJob(pSession,iRequestId,aReqTuple));
   
   pJob_SubFetch->vSeed(SS_SEED_RUN);
   
@@ -288,11 +289,12 @@ void Step::vJob_InflateRowsSpawnSub(MP_Task mpTask)
   
   i8 iRequestId = pJob_InflateRows->m_iRequestId;
   Session* pSession = pJob_InflateRows->m_pSession;
-  
+  ReqTuple* aReqTuple = &pJob_InflateRows->m_xReqTuple;
+
   JobClass* pJobClass_SubScan = JobClass::pFind(CN_JOB_SUBSCAN);
   
   Job_SubScan* pJob_SubScan =
-  static_cast<Job_SubScan*>(pJobClass_SubScan->pPreJob(pSession,iRequestId));
+  static_cast<Job_SubScan*>(pJobClass_SubScan->pPreJob(pSession,iRequestId,aReqTuple));
   
   pJob_SubScan->vSeed(SS_SEED_RUN);
   
@@ -320,11 +322,12 @@ void Step::vJob_InflateRowsSpawnSubInflate(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("Job_inflateRows.spawnSubInflate"_Stz);
   Job_InflateRows* pJob_InflateRows = _pJob_InflateRows(pJobPtr);
-  
+  ReqTuple* aReqTuple = &pJob_InflateRows->m_xReqTuple;
+
   JobClass* pJobClass_SubInflate = JobClass::pFind(CN_JOB_SUBINFLATE);
   
   Job_SubInflate* pJob_SubInflate =
-  static_cast<Job_SubInflate*>(pJobClass_SubInflate->pPreJob(nullptr,C_UNKNOWN));
+  static_cast<Job_SubInflate*>(pJobClass_SubInflate->pPreJob(nullptr,C_UNKNOWN,aReqTuple));
   
   pJob_SubInflate->vSeed(SS_SEED_RUN);
   

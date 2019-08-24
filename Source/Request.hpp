@@ -7,6 +7,8 @@ namespace Sessions
 {
   class Request : public Focal
   {
+  friend SePrompt;
+  
   private:
     ReqTuple  m_xReqTuple;
   

@@ -101,8 +101,8 @@ void Job_SubIngester::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SubIngester::Job_SubIngester(Session* pSession, i8 iRequestId)
-: Job(CN_JOB_SUBINGESTER, pSession, iRequestId)
+Job_SubIngester::Job_SubIngester(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+: Job(CN_JOB_SUBINGESTER, pSession, iRequestId, aReqTuple)
 , JobWriteBehind(DS_INGEST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINGESTER,_FOOTER_);
@@ -313,9 +313,9 @@ Footer* Job_SubIngester::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::vJob_SubIngester_pre(Session* pSession, i8 iRequestId)
+Job* Jobs::vJob_SubIngester_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
 {
-  Job_SubIngester* pJob_SubIngester = new Job_SubIngester(pSession,iRequestId);
+  Job_SubIngester* pJob_SubIngester = new Job_SubIngester(pSession,iRequestId,aReqTuple);
   
   return pJob_SubIngester;
 }
@@ -325,7 +325,7 @@ Job* Jobs::vJob_SubIngester_pre(Session* pSession, i8 iRequestId)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubIngester_new(Job* pArg)
 {
-  Job_SubIngester* pJob_SubIngester = new Job_SubIngester(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN);
+  Job_SubIngester* pJob_SubIngester = new Job_SubIngester(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
   
   return pJob_SubIngester;
 }

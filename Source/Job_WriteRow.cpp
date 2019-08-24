@@ -101,8 +101,8 @@ void Job_WriteRow::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_WriteRow::Job_WriteRow(Session* pSession, i8 iRequestId)
-: Job(CN_JOB_WRITEROW, pSession, iRequestId)
+Job_WriteRow::Job_WriteRow(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+: Job(CN_JOB_WRITEROW, pSession, iRequestId, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEROW,_FOOTER_);
   
@@ -188,7 +188,7 @@ Job_WriteRow* Job_WriteRow::pNewJobWriteRow(Session* pSession,
   JobClass* pJobClass_WriteRow = JobClass::pFind(CN_JOB_WRITEROW);
 
   Job_WriteRow* pJob_WriteRow =
-  static_cast<Job_WriteRow*>(pJobClass_WriteRow->pPreJob(pSession,C_UNKNOWN));
+  static_cast<Job_WriteRow*>(pJobClass_WriteRow->pPreJob(pSession,C_UNKNOWN,nullptr));
 
   pJob_WriteRow->vSeed(SS_SEED_RUN);
 
@@ -238,9 +238,9 @@ Footer* Job_WriteRow::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_WriteRow_pre(Session* pSession, i8 iRequestId)
+Job* Jobs::pJob_WriteRow_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
 {
-  Job_WriteRow* pJob_WriteRow = new Job_WriteRow(pSession,iRequestId);
+  Job_WriteRow* pJob_WriteRow = new Job_WriteRow(pSession,iRequestId,aReqTuple);
   
   return pJob_WriteRow;
 }
@@ -250,7 +250,7 @@ Job* Jobs::pJob_WriteRow_pre(Session* pSession, i8 iRequestId)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_WriteRow_new(Job* pArg)
 {
-  Job_WriteRow* pJob_WriteRow = new Job_WriteRow(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN);
+  Job_WriteRow* pJob_WriteRow = new Job_WriteRow(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
   
   return pJob_WriteRow;
 }

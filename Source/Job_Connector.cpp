@@ -101,8 +101,8 @@ void Job_Connector::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Connector::Job_Connector(Session* pSession, i8 iRequestId)
-: Job(CN_JOB_CONNECTOR, pSession, iRequestId)
+Job_Connector::Job_Connector(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+: Job(CN_JOB_CONNECTOR, pSession, iRequestId, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CONNECTOR,_FOOTER_);
   
@@ -169,7 +169,7 @@ Footer* Job_Connector::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Connector_new(Job* pArg)
 {
-  Job_Connector* pJob_Connector = new Job_Connector(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN);
+  Job_Connector* pJob_Connector = new Job_Connector(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
   
   return pJob_Connector;
 }

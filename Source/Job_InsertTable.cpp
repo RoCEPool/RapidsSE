@@ -101,8 +101,8 @@ void Job_InsertTable::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_InsertTable::Job_InsertTable(Session* pSession, i8 iRequestId)
-: Job(CN_JOB_INSERTTABLE, pSession, iRequestId)
+Job_InsertTable::Job_InsertTable(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+: Job(CN_JOB_INSERTTABLE, pSession, iRequestId, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTTABLE,_FOOTER_);
   
@@ -174,9 +174,9 @@ Footer* Job_InsertTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_InsertTable_pre(Session* pSession, i8 iRequestId)
+Job* Jobs::pJob_InsertTable_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
 {
-  Job_InsertTable* pJob_InsertTable = new Job_InsertTable(pSession,iRequestId);
+  Job_InsertTable* pJob_InsertTable = new Job_InsertTable(pSession,iRequestId,aReqTuple);
   
   // get a jobId for the insertTable job
 //  i8 iJobId = gpAttachMap->m_pOriginatingJobs->iNextJobId();
@@ -190,7 +190,7 @@ Job* Jobs::pJob_InsertTable_pre(Session* pSession, i8 iRequestId)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_InsertTable_new(Job* pArg)
 {
-  Job_InsertTable* pJob_InsertTable = new Job_InsertTable(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN);
+  Job_InsertTable* pJob_InsertTable = new Job_InsertTable(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
   
   return pJob_InsertTable;
 }

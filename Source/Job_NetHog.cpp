@@ -102,8 +102,8 @@ void Job_NetHog::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_NetHog::Job_NetHog(Session* pSession, i8 iRequestId)
-: Job(CN_JOB_NETHOG, pSession, iRequestId)
+Job_NetHog::Job_NetHog(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+: Job(CN_JOB_NETHOG, pSession, iRequestId, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_NETHOG,_FOOTER_);
   
@@ -171,9 +171,9 @@ Footer* Job_NetHog::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_NetHog_pre(Session* pSession, i8 iRequestId)
+Job* Jobs::pJob_NetHog_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
 {
-  Job_NetHog* pJob_NetHog = new Job_NetHog(pSession,iRequestId);
+  Job_NetHog* pJob_NetHog = new Job_NetHog(pSession,iRequestId,aReqTuple);
   
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
   
@@ -209,7 +209,7 @@ void Jobs::vJob_NetHog_post(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_NetHog_new(Job* pArg)
 {
-  Job_NetHog* pJob_NetHog = new Job_NetHog(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN);
+  Job_NetHog* pJob_NetHog = new Job_NetHog(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
   
   return pJob_NetHog;
 }

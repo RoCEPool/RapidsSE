@@ -38,12 +38,13 @@ void Step::vJob_SubExporterSpawn(MP_Task mpTask)
   
   i8 iRequestId = pJob_Export->m_iRequestId;
   Session* pSession = pJob_Export->m_pSession;
-  
+  ReqTuple* aReqTuple = &pJob_Export->m_xReqTuple;
+
   //! this needs to be optimised
   JobClass* pJobClass_SubExporter = JobClass::pFind(CN_JOB_SUBEXPORTER);
   
   Job_SubExporter* pJob_SubExporter =
-    static_cast<Job_SubExporter*>(pJobClass_SubExporter->pPreJob(pSession,iRequestId));
+    static_cast<Job_SubExporter*>(pJobClass_SubExporter->pPreJob(pSession,iRequestId,aReqTuple));
   
   pJob_SubExporter->m_iParentId    = pJob_Export->m_iUniqueId;
   pJob_SubExporter->m_pJobExport   = pJob_Export;

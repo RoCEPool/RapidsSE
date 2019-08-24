@@ -101,8 +101,8 @@ void Job_Repeater::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Repeater::Job_Repeater(Session* pSession, i8 iRequestId)
-: Job(CN_JOB_REPEATER, pSession, iRequestId)
+Job_Repeater::Job_Repeater(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+: Job(CN_JOB_REPEATER, pSession, iRequestId, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPEATER,_FOOTER_);
   
@@ -178,11 +178,11 @@ Footer* Job_Repeater::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Repeater_pre(Session* pSession, i8 iRequestId)
+Job* Jobs::pJob_Repeater_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
 {
   i8 nTokens;
 
-  Job_Repeater* pJob_Repeater = new Job_Repeater(pSession,iRequestId);
+  Job_Repeater* pJob_Repeater = new Job_Repeater(pSession,iRequestId,aReqTuple);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
 
@@ -217,7 +217,7 @@ Job* Jobs::pJob_Repeater_pre(Session* pSession, i8 iRequestId)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Repeater_new(Job* pArg)
 {
-  Job_Repeater* pJob_Repeater = new Job_Repeater(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN);
+  Job_Repeater* pJob_Repeater = new Job_Repeater(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
   
   return pJob_Repeater;
 }
