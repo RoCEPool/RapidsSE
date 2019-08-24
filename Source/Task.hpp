@@ -43,7 +43,6 @@ namespace Tasks
     Sleep   m_oWakeup;      // wakeup time from sleeping
 
     i8      m_iTracing;     // tracing mask
-    i8      m_i_ActionRoot; // action root
     i8      m_i_NextRnd;    // which next repeatable random nummber?
 
     Compiler* m_pCompiler;  // forth word compiler (Job boot, create table etc)

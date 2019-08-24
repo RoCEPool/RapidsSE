@@ -149,7 +149,33 @@ i8 Token::iLength()
 }
 
 /*----------------------------------------------------------------------------*/
-/* reset this token set                                                       */
+/* is this token an integer?                                                  */
+/*----------------------------------------------------------------------------*/
+bool Token::bIsInteger(void)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  if (TN_INTEGER == m_eToken)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this token a name?                                                      */
+/*----------------------------------------------------------------------------*/
+bool Token::bIsName(void)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+  
+  if (TN_NAME == m_eToken)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this token numeric?                                                     */
 /*----------------------------------------------------------------------------*/
 bool Token::bIsNumeric(void)
 {

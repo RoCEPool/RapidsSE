@@ -98,8 +98,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job::stateDiagram"_Stz,    &Step::vJobStateDiagram);
 
   vAddStep("job::this"_Stz,            &Step::vJobThis);
-  vAddStep("job.trace!"_Stz,           &Step::vJobTraceStore);
-  vAddStep("job.trace@"_Stz,           &Step::vJobTraceFetch);
 
   vAddStep("job::waitParticipant"_Stz, &Step::vJobWaitParticipant);
 }
@@ -493,7 +491,7 @@ void Step::vJobCrwBufferFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.crwBuffer@"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  mpTask->m_pDataStack->vPushPointer(pJob->m_pCurrentBuffer);
+  mpTask->m_pDataStack->vPushPointer(pJob->m_pCrwBuffer);
   
   EXIT();
 }
@@ -515,7 +513,7 @@ void Step::vJobCrwBufferStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.crwBuffer!"_Stz);
   CrwBuffer* pCrwBuffer = _pCrwBuffer(pCrwBufferPtr);
   
-  pJob->m_pCurrentBuffer = pCrwBuffer;
+  pJob->m_pCrwBuffer = pCrwBuffer;
   
   EXIT();
 }
@@ -749,7 +747,7 @@ void Step::vJobHasEntBuffer(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
   
   
-  i8 bHas = pJob->m_pCurrentBuffer ? true : false;
+  i8 bHas = pJob->m_pCrwBuffer ? true : false;
   if (pJob->m_pJobClass->m_eClass == CN_JOB_WRITEBUFFER)
     int iDebug = 1;
   
@@ -1807,46 +1805,6 @@ void Step::vJobThis(MP_Task mpTask)
   
   mpTask->m_pDataStack->vPushPointer(pJob);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.trace@ -- fetch the job trace                                          */
-/*----------------------------------------------------------------------------*/
-void Step::vJobTraceFetch(MP_Task mpTask)
-{
-  ENTRY("vJobTraceFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.trace@"_Stz);
-  Job_Space* pJob = _pJob_Space(pJobPtr);
-  
-  eJT eJobTrace = pJob->eJobTrace();
-  
-  mpTask->m_pDataStack->vPushI8(eJobTrace);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.trace! -- store the job trace                                          */
-/*----------------------------------------------------------------------------*/
-void Step::vJobTraceStore(MP_Task mpTask)
-{
-  ENTRY("vJobTraceStore"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.trace!"_Stz);
-  Job_Space* pJob = _pJob_Space(pJobPtr);
-  
-  i8 iJobTrace;
-  if ( ! mpTask->m_pDataStack->bPop(iJobTrace) )
-    THROW_INVALID_DSTACK("job.trace!"_Stz);
-  
-  pJob->vJobTrace((eJT)iJobTrace);
-  
   EXIT();
 }
 

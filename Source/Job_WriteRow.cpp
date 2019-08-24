@@ -21,7 +21,6 @@ JobClass xJobClass_WriteRow =
   false,               // check resources?
   false,               // detached job?
   true,                // buffer attached?
-  JT_NONE,             // job trace
   DL_NONE,             // ddl lock model
   PY_NORMAL,           // priority
   JF_NONE,             // flags
@@ -129,8 +128,8 @@ Job_WriteRow::~Job_WriteRow(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEROW,_FOOTER_);
   
-  delete m_pCurrentBuffer;
-  m_pCurrentBuffer = nullptr;
+  delete m_pCrwBuffer;
+  m_pCrwBuffer = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

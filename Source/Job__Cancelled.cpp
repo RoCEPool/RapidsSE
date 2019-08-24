@@ -21,7 +21,6 @@ JobClass xJobClass__Cancelled =
   false,                   // check resources?
   false,                   // detached job?
   false,                   // buffer attached?
-  JT_NONE,                 // job trace
   DL_NONE,                 // ddl lock model
   PY_NORMAL,               // priority
   JF_NONE,                 // flags
@@ -106,7 +105,6 @@ Job__Cancelled::Job__Cancelled(Job* pDistJob)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__CANCELLED,_FOOTER_);
   
   m_iParentId = pDistJob->m_iUniqueId;
-  m_i_ActionRoot = pDistJob->m_i_ActionRoot;
 
   m_eErrorCode = EC_NONE;
   

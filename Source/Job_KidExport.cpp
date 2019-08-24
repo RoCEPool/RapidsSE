@@ -21,7 +21,6 @@ JobClass xJobClass_WriteRecord =
   false,                  // check resources?
   false,                  // detached job?
   true,                   // buffer attached?
-  JT_NONE,                // job trace
   DL_NONE,                // ddl lock model
   PY_NORMAL,              // priority
   JF_NONE,                // flags
@@ -122,8 +121,8 @@ Job_KidExport::~Job_KidExport(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_KIDEXPORT,_FOOTER_);
   
-  delete m_pCurrentBuffer;
-  m_pCurrentBuffer = nullptr;
+  delete m_pCrwBuffer;
+  m_pCrwBuffer = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

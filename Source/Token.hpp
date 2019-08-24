@@ -29,6 +29,8 @@ namespace Commands
     void  vCopy(Stz*);
     void  vCopy(Token*);
     bool  bHasText(void);
+    bool  bIsInteger(void);
+    bool  bIsName(void);
     bool  bIsNumeric(void);
     i8    iLength(void);
     void  vReset(void);

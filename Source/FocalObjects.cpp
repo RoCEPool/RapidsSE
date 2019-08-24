@@ -92,7 +92,7 @@ void FocalObjects::vRemove(Focal* pFocal)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* mri                                                                        */
+/* process mri command                                                        */
 /*----------------------------------------------------------------------------*/
 void FocalObjects::vMri(TokenVec* pTknVec)
 {
@@ -104,15 +104,24 @@ void FocalObjects::vMri(TokenVec* pTknVec)
     vMriAll();
     return;
   }
+ 
+  if (2 == nTokens && pTknVec->pGet(1)->bIsInteger()) {
+    i8 i_Focal = pTknVec->pGet(1)->iToI8();
+    vMriFocal(i_Focal);
+    return;
+  }
+
+  if (3 == nTokens && pTknVec->pGet(1)->bSame("class"_Stz)
+                   && pTknVec->pGet(2)->bIsName()) {
+    vMriClass(pTknVec->pGet(2)->szText());
+    return;
+  }
   
-  Token* pTkn = pTknVec->pGet(1);
-  i8 i_Focal = pTkn->iToI8();
-  
-  vMriFocal(i_Focal);
+  vTrace("Unknown Mri\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* mri                                                                        */
+/* list all focal objects                                                     */
 /*----------------------------------------------------------------------------*/
 void FocalObjects::vMriAll(void)
 {
@@ -120,12 +129,56 @@ void FocalObjects::vMriAll(void)
   
   s4K sLogEntry;
   s4K sFocalOutline;
-
+  
   m_okLock.vGrabWrite();
   
   i8 i_Focal = C_UNKNOWN;
   while ( (i_Focal = iNext(i_Focal)) != C_UNKNOWN) {
     Focal* pFocal = pGet(i_Focal);
+    
+    AM::vLogEntrySprint(sLogEntry,pFocal->m_i_Log);
+    AM::vFocalOutline(sFocalOutline,pFocal);
+    
+    vTrace("  [%04lld] %p %16s %s :: "
+           "%32s :: "
+           "%s\n"_Stz,
+           
+           i_Focal,
+           pFocal,
+           aCN[pFocal->eClass()],
+           pFocal->bValidMagic() ? "M" : "?",
+           
+           sFocalOutline.aChar(),
+           
+           sLogEntry.aChar()
+           );
+  }
+  
+  m_okLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* list all focal objects of given class name                                 */
+/*----------------------------------------------------------------------------*/
+void FocalObjects::vMriClass(Stz* szClassNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FOCALOBJECTS);
+  
+  s4K sLogEntry;
+  s4K sFocalOutline;
+
+  eCN eClassNo = ClassNumbers::eFind(szClassNm);
+  if (CN_NONE == eClassNo)
+    return;
+  
+  m_okLock.vGrabWrite();
+  
+  i8 i_Focal = C_UNKNOWN;
+  while ( (i_Focal = iNext(i_Focal)) != C_UNKNOWN) {
+    Focal* pFocal = pGet(i_Focal);
+    
+    if (pFocal->eClass() != eClassNo)
+      continue;
     
     AM::vLogEntrySprint(sLogEntry,pFocal->m_i_Log);
     AM::vFocalOutline(sFocalOutline,pFocal);
@@ -149,7 +202,7 @@ void FocalObjects::vMriAll(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* mri                                                                        */
+/* list given focal object                                                    */
 /*----------------------------------------------------------------------------*/
 void FocalObjects::vMriFocal(i8 i_Focal)
 {

@@ -21,7 +21,6 @@ JobClass xJobClass_Dynamic =
   false,                 // check resources?
   false,                 // detached job?
   false,                 // buffer attached?
-  JT_NONE,               // job trace
   DL_GRAB_READ,          // ddl lock model
   PY_NORMAL,             // priority
   JF_NONE,               // flags
@@ -103,7 +102,7 @@ void Job_Dynamic::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_Dynamic::Job_Dynamic(Session* pSession, i8 iRequestId)
-: JobMark2(CN_JOB_DYNAMIC, pSession)
+: JobMark2(CN_JOB_DYNAMIC, pSession, iRequestId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
   

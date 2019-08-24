@@ -57,7 +57,6 @@ Job* JobClass::pNewJob(Job* pArg)
   Job* pNewJob = (*m_fpNew)(pArg);
   
   pNewJob->m_pJobClass = this;
-  pNewJob->m_eJobTrace = m_eTrace;
   
   return pNewJob;
 }
@@ -130,7 +129,6 @@ Job* JobClass::pPreJob(Session* pSession, i8 iRequestId)
   Job* pJob = (*m_fpPre)(pSession,iRequestId);
   
   pJob->m_pJobClass = this;
-  pJob->m_eJobTrace = m_eTrace;
   pJob->m_i_State   = pSession ? pSession->m_pSessionState->m_i_State : -1;
   
 //  //ActLog::vAdd(pJob,AN_PRE_PROMPT,

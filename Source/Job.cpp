@@ -56,7 +56,8 @@ bool Jobs::_bIsValidJob(eCN eClass)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job::Job(eCN eClassNo, Session* pSession, i8 iRequestId)
-: Focal(eClassNo,AM::iNextJobId()), JobDicPath(pSession)
+: Focal(eClassNo,AM::iNextJobId())
+, JobDicPath(pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
@@ -77,21 +78,10 @@ Job::Job(eCN eClassNo, Session* pSession, i8 iRequestId)
   
   //m_oAcksRmg
   
-  m_eJobTrace = JT_NONE;
   if (AM::pMarkJob()->bAll() || AM::pMarkJob()->bEnum(eClass()))
     m_bLogJob = true;
   else
     m_bLogJob = false;
-  m_i_Activity   = C_UNKNOWN;
-  
-  if ( AM::pMarkAction()->bAll() ||
-       AM::pMarkAction()->bFlagged(eClass()) ) {
-    //m_i_ActionRoot = ActLog::iBegin(m_iUniqueId,eClassNo);
-    m_i_ActionRoot = 0;
-  }
-  else {
-    m_i_ActionRoot = C_UNKNOWN;
-  }
   
   if ( AM::pMarkTrace()->bAll() ||
        AM::pMarkTrace()->bFlagged(eClass()) )
@@ -106,7 +96,7 @@ Job::Job(eCN eClassNo, Session* pSession, i8 iRequestId)
   m_iParticipantNode  = C_UNKNOWN;
   m_oAcksRmg.vCheckInit();
   
-  m_pCurrentBuffer = nullptr;
+  m_pCrwBuffer = nullptr;
   m_pSendWith = nullptr;
   
   if (CN_JOB_NODEINFO == eClass())
@@ -260,26 +250,6 @@ void Job::vJobId(i8 iJobId)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_iUniqueId = iJobId;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the job trace                                                          */
-/*----------------------------------------------------------------------------*/
-eJT Job::eJobTrace(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_eJobTrace;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the job trace                                                          */
-/*----------------------------------------------------------------------------*/
-void Job::vJobTrace(eJT eJobTrace)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_eJobTrace = eJobTrace;
 }
 
 /*----------------------------------------------------------------------------*/

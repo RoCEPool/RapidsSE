@@ -21,7 +21,6 @@ JobClass xJobClass_Export =
   false,                // check resources?
   false,                // detached job?
   false,                // buffer attached?
-  JT_NONE,              // job trace
   DL_GRAB_READ,         // ddl lock model
   PY_NORMAL,            // priority
   JF_LOWMEM,            // flags

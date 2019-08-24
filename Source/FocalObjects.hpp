@@ -27,6 +27,7 @@ namespace StorageEngine
   
     void vMri(TokenVec* pTknVec);
     void vMriAll(void);
+    void vMriClass(Stz* szClassNm);
     void vMriFocal(i8 i_Focal);
 
   private:

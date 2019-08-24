@@ -21,7 +21,6 @@ JobClass xJobClass_EndInsert =
   false,                    // check resources?
   false,                    // detached job?
   false,                    // buffer attached?
-  JT_NONE,                  // job trace
   DL_NONE,                  // ddl lock model
   PY_NORMAL,                // priority
   JF_NONE,                  // flags

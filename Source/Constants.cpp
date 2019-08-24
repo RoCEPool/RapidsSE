@@ -498,12 +498,6 @@ void Constants::vAddConstants(void)
   /*  0 */ vAddConstant("JP_CANCELED"_Stz,  JP_CANCELED);
   /*  0 */ vAddConstant("JP_ENUMS"_Stz,     JP_ENUMS);
 
-  // JT_ : job trace
-  /*  0 */ vAddConstant("JT_NONE"_Stz,    JT_NONE);
-  /*  1 */ vAddConstant("JT_ALL"_Stz,     JT_ALL);
-  /*  2 */ vAddConstant("JT_JOB"_Stz,     JT_JOB);
-  /*  3 */ vAddConstant("JT_TASK"_Stz,    JT_TASK);
-
   // TN_ : token types
   /*  0 */ vAddConstant("TN_NONE"_Stz,    TN_NONE);
   /*  1 */ vAddConstant("TN_NAME"_Stz,    TN_NAME);
