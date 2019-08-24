@@ -67,6 +67,7 @@ typedef VectorNL_t<CN_SHORTCUTVEC, ShortCut, C_MAX_SHORTCUTS> ShortCutVec;
 
 #include "Prompt_limits.hpp"
 #include "Prompt_locks.hpp"
+#include "Prompt_log.hpp"
 #include "Prompt_logNote.hpp"
 #include "Prompt_logSection.hpp"
 #include "Prompt_logWrite.hpp"
