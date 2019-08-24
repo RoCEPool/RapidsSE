@@ -43,12 +43,14 @@ void Request::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Request::Request(TokenVec* p_TknVec)
-:Focal(CN_REQUEST,AM::iNextRequest())
+Request::Request(Session* p_Session, TokenVec* p_TknVec)
+: Focal(CN_REQUEST,AM::iNextRequest())
+, ReqTuple(nullptr)
 {
   _precondition_(_MAGIC_,CN_REQUEST,_FOOTER_);
   
-  m_p_TknVec = p_TknVec;
+  m_p_Session = p_Session;
+  m_p_TknVec  = p_TknVec;
   
   _checkInitialised_(CN_REQUEST);
 
@@ -72,6 +74,7 @@ Request::~Request(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_REQUEST,_FOOTER_);
   
+  // do not delete: m_p_Session
   // do not delete: m_p_TknVec
   
   AM::vLogReq(SL_INF,this,MA_END,

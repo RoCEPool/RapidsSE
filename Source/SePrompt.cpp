@@ -228,7 +228,7 @@ void SePrompt::vBeginRequest(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_pRequest = new Request(pTknVec());
+  m_pRequest = new Request(m_pSession,pTknVec());
   
   m_i_RequestFocal = m_pRequest->m_i_Focal;
   

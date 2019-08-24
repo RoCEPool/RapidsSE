@@ -5,9 +5,11 @@
 
 namespace Sessions
 {
-  class Request : public Focal
+  class Request : public Focal,
+                  public ReqTuple
   {
   private:
+    Session*  m_p_Session;
     TokenVec* m_p_TknVec;
   
     // must be last
@@ -17,7 +19,7 @@ namespace Sessions
     void* operator new(size_t);
     void  operator delete(void* aAddr);
     
-    Request(TokenVec* p_TknVec);
+    Request(Session* p_Session, TokenVec* p_TknVec);
    ~Request(void) noexcept(false);
   
   public:
