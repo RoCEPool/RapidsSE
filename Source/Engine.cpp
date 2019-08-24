@@ -685,7 +685,7 @@ void Engine::vPrintWelcome(void)
 void Engine::vRunCmdLine(void)
 {
   if (gxArguments.m_bVerbose)
-    vInfo("\n*\n* Execute Command Line\n*\n"_Stz);
+    vInfo("\n*\n* Execute Request Line\n*\n"_Stz);
   
   try {
     

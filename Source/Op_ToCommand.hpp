@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Op_ToCommand.hpp -- To Command String operator                             */
+/* Op_ToCommand.hpp -- To Request String operator                             */
 /*============================================================================*/
 #pragma once
 

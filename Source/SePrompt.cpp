@@ -76,8 +76,8 @@ SePrompt::SePrompt(bool bOneCommand)
   
   m_pSession->m_sToDo = "_shortcuts"_Stz;
   
-  m_pCommand = nullptr;
-  m_i_CommandFocal = C_UNKNOWN;
+  m_pRequest = nullptr;
+  m_i_RequestFocal = C_UNKNOWN;
   m_iRequestId = C_UNKNOWN;
   
   _checkInitialised_(CN_SEPROMPT);
@@ -228,11 +228,11 @@ void SePrompt::vBeginRequest(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_pCommand = new Command(pTknVec());
+  m_pRequest = new Request(pTknVec());
   
-  m_i_CommandFocal = m_pCommand->m_i_Focal;
+  m_i_RequestFocal = m_pRequest->m_i_Focal;
   
-  m_iRequestId = m_pCommand->m_iUniqueId;
+  m_iRequestId = m_pRequest->m_iUniqueId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -328,7 +328,7 @@ i8 SePrompt::iCommandFocal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_i_CommandFocal;
+  return m_i_RequestFocal;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -404,7 +404,7 @@ void SePrompt::vDumpTokenVec(void)
 //  TokenVec* pTknVec = this->pTknVec();
 //
 //  pTknVec->vToString(sCommand);
-//  vTrace("Command %lld tokens: %s\n"_Stz,pTknVec->nTokens(),sCommand.aStz());
+//  vTrace("Request %lld tokens: %s\n"_Stz,pTknVec->nTokens(),sCommand.aStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -414,7 +414,7 @@ void SePrompt::vEndRequest(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  delete m_pCommand;
+  delete m_pRequest;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -619,7 +619,7 @@ void SePrompt::vLogCommand(void)
   pTknVec->vToString(sCommand);
   
   AM::vLogPrm(SL_INF,this,PA_COMMAND,
-              "Command %lld: %s"_Stz, //!format-LogPrm
+              "Request %lld: %s"_Stz, //!format-LogPrm
               m_iCmdNo++,sCommand.aStz());
 }
 
@@ -637,7 +637,7 @@ void SePrompt::vLogFreeSpace(void)
   MagLib::vByteMag(iFreeSpace + iFreeSpaceInPool,1,sFreeSpaceMag);
   
   AM::vLogPrm(SL_INF,this,PA_FREE_SPACE,
-              "Command completed (free space %s)"_Stz, //!format-LogPrm
+              "Request completed (free space %s)"_Stz, //!format-LogPrm
               sFreeSpaceMag.aStz());
 }
 

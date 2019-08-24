@@ -54,7 +54,7 @@ namespace Rows          { class CrwBuffer;                                    }
 namespace ScanSprint    {                                                     }
 namespace Scheduling    { class Queues; class Scheduler;                      }
 namespace Services      {                                                     }
-namespace Sessions      { class Command; class Session; class SessionState;   }
+namespace Sessions      { class Request; class Session; class SessionState;   }
 namespace Steps         { class Step; class StepTiming;                       }
 namespace StorageEngine { class AttachMap; class AM; class Engine;            }
 namespace Streams       {                                                     }

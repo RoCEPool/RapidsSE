@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* LogEntryReq.hpp - Log Entry for Command                                    */
+/* LogEntryReq.hpp - Log Entry for Request                                    */
 /*============================================================================*/
 #pragma once
 
@@ -12,7 +12,7 @@ namespace Logging
     eMA  m_eReqAct; // command action
   
   public:
-    void vSet(LogEntry* pLogEntry, Command* pCommand, eMA eReqAct);
+    void vSet(LogEntry* pLogEntry, Request* pRequest, eMA eReqAct);
   
     void vOutline(s4K& sOutline);
 

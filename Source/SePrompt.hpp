@@ -25,9 +25,9 @@ namespace Prompt
   
     bool     m_bOneCommand; // run one command only
   
-    Command* m_pCommand;   // current command being executed by SE
+    Request* m_pRequest;    // current request being executed by SE
   
-    i8       m_i_CommandFocal;  // focal subsript of last command
+    i8       m_i_RequestFocal;  // focal subscript of last request
     i8       m_iRequestId;      // id of last command
 
     ShortCutVec m_oShortCutVec; // vector of short cuts

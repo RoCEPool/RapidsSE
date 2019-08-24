@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Op_ToCommand.cpp -- To Command Operator                                     */
+/* Op_ToCommand.cpp -- To Request Operator                                     */
 /*============================================================================*/
 
 #include "CompilerOperators.h"

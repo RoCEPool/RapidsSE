@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Command.hpp -- Command                                                     */
+/* Request.hpp -- Request                                                     */
 /*============================================================================*/
 #pragma once
 
 namespace Sessions
 {
-  class Command : public Focal
+  class Request : public Focal
   {
   private:
     TokenVec* m_p_TknVec;
@@ -17,8 +17,8 @@ namespace Sessions
     void* operator new(size_t);
     void  operator delete(void* aAddr);
     
-    Command(TokenVec* p_TknVec);
-   ~Command(void) noexcept(false);
+    Request(TokenVec* p_TknVec);
+   ~Request(void) noexcept(false);
   
   public:
   
@@ -26,7 +26,7 @@ namespace Sessions
     Footer* aFooter(void);
   };
   
-  Command* _pCommand(void* aAddr);
+  Request* _pCommand(void* aAddr);
 }
 
 /*============================================================================*/

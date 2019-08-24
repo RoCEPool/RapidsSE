@@ -179,7 +179,7 @@ namespace StorageEngine
     static void vLogOpr(eSL, Op*        pOpr, eOA eOpAct,  Stz* szFormat, ...);
     static void vLogPrm(eSL, SePrompt*  pPrm, ePA ePrmAct, Stz* szFormat, ...);
     static void vLogQue(eSL, Queues*    pQue, eQA eQueAct, Stz* szFormat, ...);
-    static void vLogReq(eSL, Command*   pCmd, eMA eReqAct, Stz* szFormat, ...);
+    static void vLogReq(eSL, Request*   pCmd, eMA eReqAct, Stz* szFormat, ...);
     static void vLogRes(eSL, Resource*  pRes, eRA eResAct, Stz* szFormat, ...);
     static void vLogSvc(eSL, Job*       pJob, eVA eSvcAct, Stz* szFormat, ...);
     static void vLogSsn(eSL, Session*   pSsn, eAA eApiAct, Stz* szFormat, ...);

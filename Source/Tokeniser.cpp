@@ -261,7 +261,7 @@ void Tokeniser::vCollectStatement(void)
   vLineMode(true);
   vPrompt(m_sPrompt);
   
-  //m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_MAX_TOKENS);
+  //m_pTokeniser->vDumpTokens("Request : "_Stz,m_xTokenVec,C_MAX_TOKENS);
 }
 
 /*----------------------------------------------------------------------------*/

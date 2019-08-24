@@ -570,7 +570,7 @@ void AM::vLogQue(eSL eSeverity, Queues* pQue, eQA eQueAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a request log entry                                                    */
 /*----------------------------------------------------------------------------*/
-void AM::vLogReq(eSL eSeverity, Command* pCmd, eMA eReqAct, Stz* szFormat, ...)
+void AM::vLogReq(eSL eSeverity, Request* pCmd, eMA eReqAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())

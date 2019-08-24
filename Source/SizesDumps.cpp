@@ -442,7 +442,7 @@ i8 giClassSize[]
   /* 31 */ sizeof(Column),             // CN_COLUMN
   /* 32 */ sizeof(ColumnVec),          // CN_COLUMNVEC
   /* 32 */ sizeof(CombineOp),          // CN_COMBINEOP
-  /* 32 */ sizeof(Command),            // CN_COMMAND
+  /* 32 */ sizeof(Request),            // CN_COMMAND
   /* 32 */ sizeof(Compiler),           // CN_COMPILER
   /* 32 */ sizeof(Completer),          // CN_COMPLETER
   /*    */ sizeof(CrwBuffer),          // CN_CRWBUFFER
@@ -681,7 +681,7 @@ i8 giClassSize[]
   /*    */ sizeof(RefBuffer),          // CN_REFBUFFER
   /*    */ sizeof(RefSet),             // CN_REFSET
   /* 77 */ sizeof(RelOp),              // CN_RELOP
-  /* 77 */ sizeof(Command),            // CN_REQUEST
+  /* 77 */ sizeof(Request),            // CN_REQUEST
   /*    */ sizeof(ResourceTracker),    // CN_RESOURCETRACKER
   /*    */ sizeof(Response),           // CN_RESPONSE
   /*    */ sizeof(ResponseVec),        // CN_RESPONSEVEC

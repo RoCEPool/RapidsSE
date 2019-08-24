@@ -25,7 +25,7 @@ bool Prompt::bPrompt_so(SePrompt* pPrompt)
 {
   SP_Id spId;
   
-  vTrace(" Command Id : %s\n"_Stz,spId.sz("M"_Stz,pPrompt->iRequestId()));
+  vTrace(" Request Id : %s\n"_Stz,spId.sz("M"_Stz,pPrompt->iRequestId()));
          
   return true;
 }

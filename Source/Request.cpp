@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Command.cpp -- Command                                                     */
+/* Request.cpp -- Request                                                     */
 /*============================================================================*/
 
 #include "Sessions.h"
@@ -11,19 +11,19 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Command* Sessions::_pCommand(void* aAddr)
+Request* Sessions::_pCommand(void* aAddr)
 {
-  Command* pCommand = reinterpret_cast<Command*>(aAddr);
+  Request* pRequest = reinterpret_cast<Request*>(aAddr);
   
-  RASSERT_TYPE(pCommand, CN_REQUEST);
+  RASSERT_TYPE(pRequest, CN_REQUEST);
   
-  return pCommand;
+  return pRequest;
 }
 
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* Command::operator new(size_t)
+void* Request::operator new(size_t)
 {
   Object* pObject = HeapMem::pAllocate(CN_REQUEST);
   
@@ -33,17 +33,17 @@ void* Command::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* delete operator                                                            */
 /*----------------------------------------------------------------------------*/
-void Command::operator delete(void* aAddr)
+void Request::operator delete(void* aAddr)
 {
-  Command* pCommand = reinterpret_cast<Command*>(aAddr);
+  Request* pRequest = reinterpret_cast<Request*>(aAddr);
   
-  HeapMem::vFree(pCommand);
+  HeapMem::vFree(pRequest);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Command::Command(TokenVec* p_TknVec)
+Request::Request(TokenVec* p_TknVec)
 :Focal(CN_REQUEST,AM::iNextRequest())
 {
   _precondition_(_MAGIC_,CN_REQUEST,_FOOTER_);
@@ -68,7 +68,7 @@ Command::Command(TokenVec* p_TknVec)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Command::~Command(void) noexcept(false)
+Request::~Request(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_REQUEST,_FOOTER_);
   
@@ -91,7 +91,7 @@ Command::~Command(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-__aFooterFunction(Command)
+__aFooterFunction(Request)
 
 /*============================================================================*/
 /* end                                                                        */

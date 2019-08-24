@@ -7,11 +7,11 @@
 /*----------------------------------------------------------------------------*/
 /* set entry                                                                  */
 /*----------------------------------------------------------------------------*/
-void _LogEntryReq::vSet(LogEntry* pLogEntry, Command* pCommand, eMA eReqAct)
+void _LogEntryReq::vSet(LogEntry* pLogEntry, Request* pRequest, eMA eReqAct)
 {
   pLogEntry->m_eKind = EK_REQ;
   
-  m_iReqId  = pCommand->m_iUniqueId;
+  m_iReqId  = pRequest->m_iUniqueId;
   m_eReqAct = eReqAct;
 }
 
