@@ -301,10 +301,13 @@ void Log::vOpenByApi(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  AM::vLogLog(SL_INF,gpLog,GA_LOG_OPENED_API,"Opened by API"_Stz);
+  AM::vLogLog(SL_INF,gpLog,GA_LOG_OPENED_API,
+              "Opened by API"_Stz); //!format-LogLog
   
   Now oNow;
-  AM::vLogLog(SL_INF,gpLog,GA_LOG_TIME,"Time is: "_Stz,oNow.sz());
+  AM::vLogLog(SL_INF,gpLog,GA_LOG_TIME,
+              "Time is: "_Stz, //!format-LogLog
+              oNow.sz());
 #endif
 }
 
@@ -350,10 +353,13 @@ void Log::vOpenBySE(bool bStarting)
   
   s256 sWelcome;
   AM::vWelcomeText(sWelcome);
-  AM::vLogLog(SL_INF,gpLog,GA_LOG_WELCOME,sWelcome);
+  AM::vLogLog(SL_INF,gpLog,GA_LOG_WELCOME,
+              sWelcome); //!format-LogLog
   
   Now oNow;
-  AM::vLogLog(SL_INF,gpLog,GA_LOG_TIME,"Time is: %s"_Stz,oNow.sz());
+  AM::vLogLog(SL_INF,gpLog,GA_LOG_TIME,
+              "Time is: %s"_Stz, //!format-LogLog
+              oNow.sz());
 
   s32 sMem;
   MagLib::vByteMag(Hardware::iPhysicalMemory(),sMem);
@@ -368,7 +374,7 @@ void Log::vOpenBySE(bool bStarting)
 
   AM::vLogLog(SL_INF,gpLog,GA_LOG_HOST,
               "hw: host %s user %s; "
-              "%lld cores; %s memory; %s clock frequency"_Stz,
+              "%lld cores; %s memory; %s clock frequency"_Stz, //!format-LogLog
              sHost.aChar(),
              sUser.aChar(),
               
@@ -899,14 +905,19 @@ void Log::vWriteToFile(bool bShortForm)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Now oNow;
-  AM::vLogLog(SL_INF,gpLog,GA_LOG_WRITING,"Writing Log at: %s"_Stz,oNow.sz());
+  AM::vLogLog(SL_INF,gpLog,GA_LOG_WRITING,
+              "Writing Log at: %s"_Stz, //!format-LogLog
+              oNow.sz());
   
   s256 sWelcome;
   AM::vWelcomeText(sWelcome);
-  AM::vLogLog(SL_INF,gpLog,GA_LOG_WELCOME,sWelcome);
+  AM::vLogLog(SL_INF,gpLog,GA_LOG_WELCOME,
+              sWelcome); //!format-LogLog
   
   i8 iUpTimeSsec = AM::iElapsedSsec();
-  AM::vLogLog(SL_INF,gpLog,GA_LOG_UPTIME,"Uptime: %llds; Requests: %lld"_Stz,iUpTimeSsec,C_UNKNOWN);
+  AM::vLogLog(SL_INF,gpLog,GA_LOG_UPTIME,
+              "Uptime: %llds; Requests: %lld"_Stz, //!format-LogLog
+              iUpTimeSsec,C_UNKNOWN);
 
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
   vGrabLock();

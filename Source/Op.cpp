@@ -86,7 +86,8 @@ Op::Op(eCN eClassNo, Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   
   ++ gixOp;
   AM::vLogOpr(SL_INF,this,OA_OP_CONSTRUCTOR,
-              "Op constructed : %p (%lld ops exist)"_Stz,this,* gixOp);
+              "Op constructed : %p (%lld ops exist)"_Stz, //!format-LogOpr
+              this,* gixOp);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -104,7 +105,8 @@ Op::~Op(void) noexcept(false)
   
   -- gixOp;
   AM::vLogOpr(SL_INF,this,OA_OP_DESTRUCTOR,
-              "Op destructed : %p (%lld ops exist)"_Stz,this,* gixOp);
+              "Op destructed : %p (%lld ops exist)"_Stz, //!format-LogOpr
+              this,* gixOp);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -135,11 +137,13 @@ void Op::vOpLoop(void)
 //  else
 
   
-  AM::vLogOpr(SL_INF,this,OA_OP_CALL,"Calling operator"_Stz);
+  AM::vLogOpr(SL_INF,this,OA_OP_CALL,
+              "Calling operator"_Stz); //!format-LogOpr
   
   eCallAgain = (*m_fpCall)(this);
 
-  AM::vLogOpr(SL_INF,this,OA_OP_RETURNED,"Returned from operator with %s"_Stz,
+  AM::vLogOpr(SL_INF,this,OA_OP_RETURNED,
+              "Returned from operator with %s"_Stz, //!format-LogOpr
              aOR[eCallAgain]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -178,7 +182,8 @@ void Op::vAckJob(void)
   
   Task* pTask = AM::pExecutingTask(m_pJob);
   
-  AM::vLogOpr(SL_INF,this,OA_OP_ACK,"Acking job task"_Stz);
+  AM::vLogOpr(SL_INF,this,OA_OP_ACK,
+              "Acking job task"_Stz); //!format-LogOpr
 
   AM::vAckWaitingTask(pTask,m_pTask);
 }
@@ -409,13 +414,15 @@ void Op::vPipeOut(Operand* pOperand)
            pOperand);
 
   if (m_bAppendRight) {
-    AM::vLogOpr(SL_INF,this,OA_OP_APPEND,"PipeOut operand %s to right queue of %s"_Stz,
+    AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
+                "PipeOut operand %s to right queue of %s"_Stz, //!format-LogOpr
                aCN[pOperand->eClass()],
                aCN[m_pOpOut->eClass()]);
     m_pOpOut->vAppendRight(pOperand);
   }
   else {
-    AM::vLogOpr(SL_INF,this,OA_OP_APPEND,"PipeOut operand %s to left queue of %s"_Stz,
+    AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
+                "PipeOut operand %s to left queue of %s"_Stz, //!format-LogOpr
                aCN[pOperand->eClass()],
                aCN[m_pOpOut->eClass()]);
     m_pOpOut->vAppendLeft(pOperand);
@@ -448,10 +455,12 @@ Operand* Op::pPopQueue(void)
   pOperand = m_pQueueLeft->pPopQueue();
   
   if (pOperand)
-    AM::vLogOpr(SL_INF,this,OA_OP_POP,"PopQueue operand %s from left queue"_Stz,
+    AM::vLogOpr(SL_INF,this,OA_OP_POP,
+                "PopQueue operand %s from left queue"_Stz, //!format-LogOpr
                aCN[pOperand->eClass()]);
   else
-    AM::vLogOpr(SL_INF,this,OA_OP_POP,"PopQueue no operand on left queue"_Stz);
+    AM::vLogOpr(SL_INF,this,OA_OP_POP,
+                "PopQueue no operand on left queue"_Stz); //!format-LogOpr
 
   if (pOperand)
     vDropTaskLock();
@@ -486,12 +495,14 @@ Operand* Op::pPopQueueLeft(void)
   
   if (pOperand) {
     if (AM::bVerbose())
-      AM::vLogOpr(SL_INF,this,OA_OP_POP,"PopQueueLeft operand %s from left queue"_Stz,
+      AM::vLogOpr(SL_INF,this,OA_OP_POP,
+                  "PopQueueLeft operand %s from left queue"_Stz, //!format-LogOpr
                  aCN[pOperand->eClass()]);
   }
   else {
     if (AM::bVerbose())
-      AM::vLogOpr(SL_INF,this,OA_OP_POP,"PopQueueLeft no operand on left queue"_Stz);
+      AM::vLogOpr(SL_INF,this,OA_OP_POP,
+                  "PopQueueLeft no operand on left queue"_Stz); //!format-LogOpr
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -524,10 +535,12 @@ Operand* Op::pPopQueueRight(void)
     vDropTaskLock();
   
   if (pOperand)
-    AM::vLogOpr(SL_INF,this,OA_OP_POP,"PopQueueRight operand %s from right queue"_Stz,
+    AM::vLogOpr(SL_INF,this,OA_OP_POP,
+                "PopQueueRight operand %s from right queue"_Stz, //!format-LogOpr
                aCN[pOperand->eClass()]);
   else
-    AM::vLogOpr(SL_INF,this,OA_OP_POP,"PopQueueRight no operand on right queue"_Stz);
+    AM::vLogOpr(SL_INF,this,OA_OP_POP,
+                "PopQueueRight no operand on right queue"_Stz); //!format-LogOpr
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
