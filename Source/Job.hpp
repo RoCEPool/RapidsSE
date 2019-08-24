@@ -47,7 +47,7 @@ namespace Jobs
     Mutex* m_pMutexJob;
 
   public:
-    Job(eCN eClassNo, Session* pSession, i8 iRequestId);
+  Job(eCN eClassNo, Session* pSession, i8 iRequestId);//, ReqTuple* aReqTuple
    ~Job(void) noexcept(false);
   
     static Job* pThisTLSJob(void);

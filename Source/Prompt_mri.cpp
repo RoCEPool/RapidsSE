@@ -5,7 +5,7 @@
 #include "Prompt.h"
 
 PromptDesc __Prompt_mri (
-  PF_MEMORY,           // prompt function
+  PF_MRI,              // prompt function
   "Prompt_mri"_Stz,    // name of the prompt function
   "comment"_Stz,       // comment about the function
   "mri"_Stz,           // the prompt command

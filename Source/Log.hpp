@@ -86,6 +86,11 @@ namespace Logging
     i8   iPercentFull_NL(void);
     i8   iSize(void);
     void vWriteToFile(bool bShortForm);
+  
+    // -- -- -- -- -- --
+  
+    void vLog(TokenVec* pTknVec);
+    void vLogAll(void);
 
     Footer* aFooter(void);
   };
