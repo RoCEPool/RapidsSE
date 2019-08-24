@@ -69,7 +69,6 @@ Job::Job(eCN eClassNo, Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
   
   m_iParentId = C_UNKNOWN;
   m_eSeed     = SS_ENUMS;
-  m_i_State   = C_UNKNOWN;
   m_i_Slot    = C_UNKNOWN;
   m_eJobPhase = JP_NONE;
   m_eJobList  = JL_NONE;
@@ -263,7 +262,7 @@ void Job::vMarkJob(void)
   sJobMark.vSprintCat("Job %03lld %s state %lld slot %lld\n"_Stz,
                       m_iUniqueId,
                       aCN[eClass()],
-                      m_i_State,
+                      m_xReqTuple.m_i_State,
                       m_i_Slot);
   sJobMark.vSprintCat("  phase %s state %s list %s"_Stz,
                       aJP[m_eJobPhase],
@@ -466,7 +465,9 @@ void Job::vShow(void)
          m_iParentId,
          aSS[m_eSeed],
          
-         m_i_State, m_i_Slot, (i8)m_bWasReceived
+         m_xReqTuple.m_i_State,
+         m_i_Slot,
+         (i8)m_bWasReceived
          );
 }
 

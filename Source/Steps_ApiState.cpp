@@ -30,7 +30,7 @@ void Step::vApiStateIncBegun(MP_Task mpTask)
   
   Job* pJob = _pJob(pJobPtr);
   
-  i8 i_State = pJob->m_i_State;
+  i8 i_State = pJob->m_xReqTuple.m_i_State;
   
   SessionState* pState = AM::pApiState()->pGetState(i_State);
   Session* pSession = pState->m_pSession;
@@ -53,7 +53,7 @@ void Step::vApiStateIncCancelled(MP_Task mpTask)
   
   Job* pJob = _pJob(pJobPtr);
   
-  i8 i_State = pJob->m_i_State;
+  i8 i_State = pJob->m_xReqTuple.m_i_State;
   
   SessionState* pState = AM::pApiState()->pGetState(i_State);
   Session* pSession = pState->m_pSession;
@@ -76,7 +76,7 @@ void Step::vApiStateIncEnded(MP_Task mpTask)
   
   Job* pJob = _pJob(pJobPtr);
   
-  i8 i_State = pJob->m_i_State;
+  i8 i_State = pJob->m_xReqTuple.m_i_State;
   
   SessionState* pState = AM::pApiState()->pGetState(i_State);
   Session* pSession = pState->m_pSession;
@@ -99,7 +99,7 @@ void Step::vApiStateIncExecuted(MP_Task mpTask)
   
   Job* pJob = _pJob(pJobPtr);
   
-  i8 i_State = pJob->m_i_State;
+  i8 i_State = pJob->m_xReqTuple.m_i_State;
   
   SessionState* pState = AM::pApiState()->pGetState(i_State);
   Session* pSession = pState->m_pSession;
@@ -140,7 +140,7 @@ void Step::vApiStateTraceSession(MP_Task mpTask)
   
   Job* pJob = _pJob(pJobPtr);
   
-  i8 i_State = pJob->m_i_State;
+  i8 i_State = pJob->m_xReqTuple.m_i_State;
   
   SessionState* pState = AM::pApiState()->pGetState(i_State);
   

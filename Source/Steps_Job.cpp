@@ -1578,7 +1578,7 @@ void Step::vJobSessionStateFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.sessionState@"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  mpTask->m_pDataStack->vPushI8(pJob->m_i_State);
+  mpTask->m_pDataStack->vPushI8(pJob->m_xReqTuple.m_i_State);
   
   EXIT();
 }
@@ -1645,7 +1645,7 @@ void Step::vJobSignalConnector(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   RASSERT( _bIsValidJob(pJob->eClass()) );
-  i8 i_State = pJob->m_i_State;
+  i8 i_State = pJob->m_xReqTuple.m_i_State;
   
   SessionState* pState = AM::pApiState()->pGetState(i_State);
   ApiState::vMarkSignalled(pState->m_pSession);

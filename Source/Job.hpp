@@ -15,14 +15,10 @@ namespace Jobs
     JobClass* m_pJobClass; // job class
   
     ReqTuple  m_xReqTuple; // the request tuple
-
-    struct {
-      i8   m_i_State;    // which session state
-    };
   
     i8   m_iParentId;    // job id of parent job which spawned this JK_CHILD job
     eSS  m_eSeed;        // task seed
-    i8   m_i_Slot;       // slot this job processed
+    i8   m_i_Slot;       // slot this job processes
     bool m_bNoWait;      // no wait
     bool m_bWasReceived; // job was received over a socket
 

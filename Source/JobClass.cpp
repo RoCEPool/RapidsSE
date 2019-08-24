@@ -129,7 +129,7 @@ Job* JobClass::pPreJob(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
   Job* pJob = (*m_fpPre)(pSession,iRequestId,aReqTuple);
   
   pJob->m_pJobClass = this;
-  pJob->m_i_State   = pSession ? pSession->m_pSessionState->m_i_State : -1;
+  pJob->m_xReqTuple.m_i_State = pSession ? pSession->m_pSessionState->m_i_State : -1;
   
 //  //ActLog::vAdd(pJob,AN_PRE_PROMPT,
 //                       pJob->m_pJobClass->m_eKind,_EG_JK);

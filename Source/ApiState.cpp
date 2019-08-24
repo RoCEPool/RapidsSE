@@ -369,7 +369,7 @@ void ApiState::vApiJob(Session* pSession, Job* pJob)
 
   pState->m_nJobNew++;
   
-  pJob->m_i_State = pState->m_i_State;
+  pJob->m_xReqTuple.m_i_State = pState->m_i_State;
 }
 
 /*----------------------------------------------------------------------------*/
