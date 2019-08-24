@@ -152,8 +152,8 @@ void Step::vJob_WriteBufferTableStore(MP_Task mpTask)
   
   pJob_WriteBuffer->m_pTable = pTable;
   
-  if (pJob_WriteBuffer->m_pCurrentBuffer)
-    pJob_WriteBuffer->m_pCurrentBuffer->vRestoreTable(pTable);
+  if (pJob_WriteBuffer->m_pCrwBuffer)
+    pJob_WriteBuffer->m_pCrwBuffer->vRestoreTable(pTable);
   
   EXIT();
 }

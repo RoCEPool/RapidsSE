@@ -493,7 +493,7 @@ void Step::vJobCrwBufferFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.crwBuffer@"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  mpTask->m_pDataStack->vPushPointer(pJob->m_pCurrentBuffer);
+  mpTask->m_pDataStack->vPushPointer(pJob->m_pCrwBuffer);
   
   EXIT();
 }
@@ -515,7 +515,7 @@ void Step::vJobCrwBufferStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.crwBuffer!"_Stz);
   CrwBuffer* pCrwBuffer = _pCrwBuffer(pCrwBufferPtr);
   
-  pJob->m_pCurrentBuffer = pCrwBuffer;
+  pJob->m_pCrwBuffer = pCrwBuffer;
   
   EXIT();
 }
@@ -749,7 +749,7 @@ void Step::vJobHasEntBuffer(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
   
   
-  i8 bHas = pJob->m_pCurrentBuffer ? true : false;
+  i8 bHas = pJob->m_pCrwBuffer ? true : false;
   if (pJob->m_pJobClass->m_eClass == CN_JOB_WRITEBUFFER)
     int iDebug = 1;
   

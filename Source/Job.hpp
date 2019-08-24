@@ -23,13 +23,13 @@ namespace Jobs
   
     i8   m_iParentId;    // job id of parent job which spawned this JK_CHILD job
     eSS  m_eSeed;        // task seed
-    i8   m_i_Slot;       // slot this sub truncate truncates
+    i8   m_i_Slot;       // slot this job processed
     bool m_bNoWait;      // no wait
     bool m_bWasReceived; // job was received over a socket
 
-    eJP  m_eJobPhase;    // which phase the job is in
-    eJS  m_eJobState;    // job state
-    eJL  m_eJobList;     // which job list is job currently in?
+    eJL  m_eJobList;     // which job list the job is currently in
+    eJP  m_eJobPhase;    // which job phase the job is currently in
+    eJS  m_eJobState;    // current job state
 
     Decider m_oAcksRmg;  // acks remaining
   
@@ -38,7 +38,7 @@ namespace Jobs
   
     i8  m_iParticipantNode;    // participant node no (FromNodeNo?)
   
-    CrwBuffer* m_pCurrentBuffer;   // row buffer
+    CrwBuffer* m_pCrwBuffer;   // row buffer          //! should this be in Job?
   
     Object* m_pSendWith; // object which is to be sent with this job
   

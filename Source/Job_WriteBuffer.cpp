@@ -128,9 +128,9 @@ Job_WriteBuffer::~Job_WriteBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEBUFFER,_FOOTER_);
   
-  if ( m_pCurrentBuffer ) {
-    delete m_pCurrentBuffer;
-    m_pCurrentBuffer = nullptr;
+  if ( m_pCrwBuffer ) {
+    delete m_pCrwBuffer;
+    m_pCrwBuffer = nullptr;
   }
   
 }
@@ -144,7 +144,7 @@ bool Job_WriteBuffer::bInsertRows(void)
 
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
   
-  if (! m_pCurrentBuffer) {
+  if (! m_pCrwBuffer) {
     bool bAllBuffersWritten = bInsertRows_LowMem();
     return bAllBuffersWritten;
   }
@@ -161,13 +161,13 @@ bool Job_WriteBuffer::bInsertRows(void)
 
   TablePtn* pPartition = m_pTable->pPartition(iSlot);
   RASSERT_TYPE(pPartition,CN_TABLEPTN);
-  RASSERT_TYPE(m_pCurrentBuffer,CN_CRWBUFFER);
+  RASSERT_TYPE(m_pCrwBuffer,CN_CRWBUFFER);
 
 //  if (AM::bVerbose())
 //    vTrace("Job_WriteBuffer %lld %lld %s\n"_Stz,
-//           m_pCurrentBuffer->nWorkingRows(),
+//           m_pCrwBuffer->nWorkingRows(),
 //           m_nRows,
-//           m_pCurrentBuffer->bIsLast() ? "IsLast" : "");
+//           m_pCrwBuffer->bIsLast() ? "IsLast" : "");
   i8 iTxId = 0;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -175,13 +175,13 @@ bool Job_WriteBuffer::bInsertRows(void)
   
   if (! gpBufferPool->bLowMemory()) {
     // insert the working buffer
-    m_pTable->vInsertEntries(iTxId, iSlot, m_pCurrentBuffer);
+    m_pTable->vInsertEntries(iTxId, iSlot, m_pCrwBuffer);
     // null the current buffer as its been appended to the table
-    m_pCurrentBuffer = nullptr;
+    m_pCrwBuffer = nullptr;
   }
   else {
-    delete m_pCurrentBuffer;
-    m_pCurrentBuffer = nullptr;
+    delete m_pCrwBuffer;
+    m_pCrwBuffer = nullptr;
   }
   
   // we inserted one additional buffer
@@ -373,8 +373,8 @@ void Job_WriteBuffer::vSpawnJobWriteBuffer(Session* pSession,
   pJob_WriteBuffer->m_iParentJobId  = iParentJobId;
   pJob_WriteBuffer->m_sObjectName   = sTableName;
   pJob_WriteBuffer->m_iPartitionId  = iPartition;
-  pJob_WriteBuffer->m_pCurrentBuffer = pCrwBuffer;
-  pJob_WriteBuffer->m_nRows = pCrwBuffer->nRowCount();
+  pJob_WriteBuffer->m_pCrwBuffer    = pCrwBuffer;
+  pJob_WriteBuffer->m_nRows         = pCrwBuffer->nRowCount();
   
   if (bFinal) {
     ASSERT(C_UNKNOWN != nWriteBehindBuffers);

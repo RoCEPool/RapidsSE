@@ -97,7 +97,7 @@ Job::Job(eCN eClassNo, Session* pSession, i8 iRequestId)
   m_iParticipantNode  = C_UNKNOWN;
   m_oAcksRmg.vCheckInit();
   
-  m_pCurrentBuffer = nullptr;
+  m_pCrwBuffer = nullptr;
   m_pSendWith = nullptr;
   
   if (CN_JOB_NODEINFO == eClass())

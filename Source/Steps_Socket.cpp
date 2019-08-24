@@ -499,7 +499,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
 
     pJob_WriteBuffer->m_i_Focal = C_UNKNOWN;
 
-    bDiscardEntBuffer = pJob_WriteBuffer->m_pCurrentBuffer ? true : false;
+    bDiscardEntBuffer = pJob_WriteBuffer->m_pCrwBuffer ? true : false;
 
     pJob_WriteBuffer->m_bLowMem = true;
     
@@ -510,12 +510,12 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
     
     if (-1 != pJob_WriteBuffer->m_nWriteBehindBuffers) {
       
-      pJob_WriteBuffer->m_pCurrentBuffer = nullptr;
+      pJob_WriteBuffer->m_pCrwBuffer = nullptr;
     }
     else {
       //pJob_WriteBuffer = nullptr;
       //vTrace("Discarded Job_WriteBuffer under low mem\n"_Stz);
-      pJob_WriteBuffer->m_pCurrentBuffer = nullptr;
+      pJob_WriteBuffer->m_pCrwBuffer = nullptr;
     }
 
     if (bDiscardEntBuffer) {
