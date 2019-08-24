@@ -208,26 +208,8 @@ eOR GetKeyOp::eOpLoop(void)
           }
         }
 
+        // we should have the key column now
         RASSERT(m_iKeyCol != -1);
-//          // this must be the left streamDef coming from a join
-//          // do we have a right def ?
-//          if (m_pStreamDef->m_oColVecAry.nItems() == 2) {
-//            pColumnVec = m_pStreamDef->m_oColVecAry.pGet(1);
-//            if (pColumnVec) {
-//              // figure out the key idx
-//              i8 nColumns = pColumnVec->nItems();
-//              for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-//                Column* pCol = pColumnVec->pGet(i_Col);
-//                if (StrLib::bEqualTo(m_sKey.aChar(),pCol->sColumnName().aChar(),C_NO_CASE)) {
-//                  m_iKeyCol = i_Col;
-//                  m_bKeyIsLeft = false;
-//                  break;
-//                }
-//              }
-//            }
-//          }
-//        }
-        
         vPipeOut(pOperand);
         
         break;
