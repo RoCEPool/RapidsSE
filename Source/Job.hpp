@@ -50,7 +50,7 @@ namespace Jobs
 
   public:
     Job(eCN eClassNo, Session* pSession, i8 iCommandId
-        =C_UNKNOWN
+        //=C_UNKNOWN
         );
    ~Job(void) noexcept(false);
   

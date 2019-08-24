@@ -101,7 +101,7 @@ void Job__Cancelled::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job__Cancelled::Job__Cancelled(Job* pDistJob)
-: Job(CN_JOB__CANCELLED,nullptr)
+: Job(CN_JOB__CANCELLED,nullptr,pDistJob->m_iCommandId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__CANCELLED,_FOOTER_);
   
