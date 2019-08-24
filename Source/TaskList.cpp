@@ -113,7 +113,7 @@ bool TaskList::bGrabLock(void)
 /*----------------------------------------------------------------------------*/
 bool TaskList::bHasJobClass(eCN eJobClass, bool bWasReceived)
 {
-  //vDump(CN_TASKLIST, this, Stz::aTab(1));
+  //vDump(CN_TASKLIST, this, Stz::szTab(1));
   
   bool bHasJob = false;
   
@@ -265,7 +265,7 @@ i8 TaskList::nTasks(void)
 /*----------------------------------------------------------------------------*/
 void TaskList::vContentDump(void)
 {
-  //vDump(CN_TASKLIST, this, Stz::aTab(1));
+  //vDump(CN_TASKLIST, this, Stz::szTab(1));
   
   ASSERT(m_okLock.bIsLocked());
 

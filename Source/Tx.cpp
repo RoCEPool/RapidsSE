@@ -329,7 +329,7 @@ void Tx::vContentDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
   
-  vDump(CN_TX, this, Stz::aTab(1));
+  vDump(CN_TX, this, Stz::szTab(1));
 }
 
 /*----------------------------------------------------------------------------*/

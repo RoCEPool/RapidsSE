@@ -153,7 +153,7 @@ i8 ThreadQueue::nQueuedThreads(void)
 /*----------------------------------------------------------------------------*/
 void ThreadQueue::vContentDump(void)
 {
-  //vDump(CN_THREADQUEUE, this, Stz::aTab(1));
+  //vDump(CN_THREADQUEUE, this, Stz::szTab(1));
   
   ASSERT(m_okLock.bIsLocked());
 

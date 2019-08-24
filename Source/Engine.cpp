@@ -82,7 +82,7 @@ void Engine::vAttachRegion(void)
   pAttachMap->vGetGlobals();
   
   if (AM::bVerbose())
-    AttachMap::vDump(CN_ATTACHMAP, pAttachMap, Stz::aTab(1));
+    AttachMap::vDump(CN_ATTACHMAP, pAttachMap, Stz::szTab(1));
 }
 
 /*----------------------------------------------------------------------------*/
