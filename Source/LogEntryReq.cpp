@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* LogEntryReq.cpp - Log Entry for Command                                    */
+/* LogEntryReq.cpp - Log Entry for Request                                    */
 /*============================================================================*/
 
 #include "Logging.h"
@@ -7,12 +7,12 @@
 /*----------------------------------------------------------------------------*/
 /* set entry                                                                  */
 /*----------------------------------------------------------------------------*/
-void _LogEntryReq::vSet(LogEntry* pLogEntry, Command* pCommand, eMA eCmdAct)
+void _LogEntryReq::vSet(LogEntry* pLogEntry, Command* pCommand, eMA eReqAct)
 {
-  pLogEntry->m_eKind = EK_CMD;
+  pLogEntry->m_eKind = EK_REQ;
   
-  m_iCmdId  = pCommand->m_iUniqueId;
-  m_eCmdAct = eCmdAct;
+  m_iReqId  = pCommand->m_iUniqueId;
+  m_eReqAct = eReqAct;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -25,8 +25,8 @@ void _LogEntryReq::vOutline(s4K& sOutline)
 
   sOutline.vCatSprint(".%s %s"_Stz,
                 
-                      spId.sz("M"_Stz,m_iCmdId),
-                      spString.szRight(aMA[m_eCmdAct],24)
+                      spId.sz("M"_Stz,m_iReqId),
+                      spString.szRight(aMA[m_eReqAct],24)
                       );
 }
 
@@ -39,8 +39,8 @@ void _LogEntryReq::vWriteCsv(File* pFile)
   
   pFile->vPrint(",%s,%s"_Stz,
                 
-                spId.sz("M"_Stz,m_iCmdId),
-                aMA[m_eCmdAct]);
+                spId.sz("M"_Stz,m_iReqId),
+                aMA[m_eReqAct]);
 }
 
 /*============================================================================*/

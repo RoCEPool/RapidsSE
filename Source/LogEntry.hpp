@@ -44,7 +44,6 @@ namespace Logging
   
     eEK  m_eKind;       // log entry kind.  one of the following
     union {
-      _LogEntryReq m_xCmd;  // when m_eKind == EK_CMD
       _LogEntryFyi m_xFyi;  // when m_eKind == EK_FYI
       _LogEntryJob m_xJob;  // when m_eKind == EK_JOB
       _LogEntryLck m_xLck;  // when m_eKind == EK_LCK
@@ -52,6 +51,7 @@ namespace Logging
       _LogEntryOp  m_xOpr;  // when m_eKind == EK_OPR
       _LogEntryPrm m_xPrm;  // when m_eKind == EK_PRM
       _LogEntryQue m_xQue;  // when m_eKind == EK_QUE
+      _LogEntryReq m_xReq;  // when m_eKind == EK_REQ
       _LogEntryRes m_xRes;  // when m_eKind == EK_RES
       _LogEntrySsn m_xSsn;  // when m_eKind == EK_SSN
       _LogEntrySvc m_xSvc;  // when m_eKind == EK_SVC

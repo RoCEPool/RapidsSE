@@ -404,32 +404,6 @@ void AM::vLogFyi(Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add a command log entry                                                    */
-/*----------------------------------------------------------------------------*/
-void AM::vLogCmd(eSL eSeverity, Command* pCmd, eMA eCmdAct, Stz* szFormat, ...)
-{
-#ifdef WITH_SHARED_LOG
-  if (! AM::bLogging())
-    return;
-  
-  if (! (AM::pMarkAction()->bEnum(eCmdAct) ||
-         AM::pMarkAction()->bAll()) )
-    return;
-  
-  va_list xVaArgs;
-  
-  va_start(xVaArgs,szFormat);
-  
-  i8 i_Entry = gpLog->iEntryCmd(eSeverity,pCmd,eCmdAct,
-                                szFormat,xVaArgs);
-  
-  va_end(xVaArgs);
-  
-  pCmd->m_i_Log = i_Entry;
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
 /* add a job log entry                                                        */
 /*----------------------------------------------------------------------------*/
 void AM::vLogJob(eSL eSeverity, Job* pJob, eJA eJobAct, Stz* szFormat, ...)
@@ -588,6 +562,32 @@ void AM::vLogQue(eSL eSeverity, Queues* pQue, eQA eQueAct, Stz* szFormat, ...)
   va_end(xVaArgs);
 
   pQue->m_i_Log = i_Entry;
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a request log entry                                                    */
+/*----------------------------------------------------------------------------*/
+void AM::vLogReq(eSL eSeverity, Command* pCmd, eMA eReqAct, Stz* szFormat, ...)
+{
+#ifdef WITH_SHARED_LOG
+  if (! AM::bLogging())
+    return;
+  
+  if (! (AM::pMarkAction()->bEnum(eReqAct) ||
+         AM::pMarkAction()->bAll()) )
+    return;
+  
+  va_list xVaArgs;
+  
+  va_start(xVaArgs,szFormat);
+  
+  i8 i_Entry = gpLog->iEntryReq(eSeverity,pCmd,eReqAct,
+                                szFormat,xVaArgs);
+  
+  va_end(xVaArgs);
+  
+  pCmd->m_i_Log = i_Entry;
 #endif
 }
 
