@@ -62,7 +62,6 @@ SortOp::SortOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   _precondition_(_MAGIC_,CN_SORTOP);
   
   m_fpCall = SortOp::eCall;
-  m_pRightStreamDef = nullptr;
   
   _checkInitialised_(CN_SORTOP);
   
@@ -76,8 +75,6 @@ SortOp::~SortOp(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_SORTOP);
   
-  if (m_pRightStreamDef)
-    delete m_pRightStreamDef;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -137,21 +134,14 @@ eOR SortOp::eSortLoop(void)
     }
     
     if (CN_STREAMDEF == pOperand->eClass()) {
-      if ( ! m_pStreamDef ) {
-        m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
-        vPipeOut(pOperand);
-      }
-      else {
-        m_pRightStreamDef = new StreamDef(_pStreamDef(pOperand));
-        vPipeOut(pOperand);
-      }
+      m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
+      vPipeOut(pOperand);
       continue;
     }
     
     RASSERT(CN_SRTBUFFER == pOperand->eClass());
     
     SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
-    //pSrtBuffer->vShow(m_pStreamDef->m_pColumnVec, m_pRightStreamDef ? m_pRightStreamDef->m_pColumnVec : nullptr);
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // create a Low cursor pointing to the first element in the array
