@@ -47,7 +47,7 @@ namespace Prompt
     void vPromptLoop(void);
 
     // these are the prompt.xyz task primitives
-    void vBeginCommand(void);
+    void vBeginRequest(void);
     bool bBlankLine(void);
     void vCheckMarked(void);
     void vCheckTimed(void);
@@ -60,7 +60,7 @@ namespace Prompt
     void vCutToken(i8 i_Tkn);
     void vDeleteJob(void);
     void vDumpTokenVec(void);
-    void vEndCommand(void);
+    void vEndRequest(void);
     bool bExecuteDynamic(void);
     bool bExecuteFile(void);
     bool bExecuteFunction(void);

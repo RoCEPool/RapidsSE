@@ -57,7 +57,7 @@ Command::Command(TokenVec* p_TknVec)
   SP_TknVecStr spTknVecStr;
   
   AM::vLogReq(SL_INF,this,MA_BEGIN,
-              "Command begin : %s"_Stz, //!format-LogReq
+              "Request begin : %s"_Stz, //!format-LogReq
               spTknVecStr.sz(m_p_TknVec));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -75,7 +75,7 @@ Command::~Command(void) noexcept(false)
   // do not delete: m_p_TknVec
   
   AM::vLogReq(SL_INF,this,MA_END,
-              "Command end"_Stz); //!format-LogReq
+              "Request end"_Stz); //!format-LogReq
 }
 
 

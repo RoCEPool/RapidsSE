@@ -173,7 +173,7 @@ void SePrompt::vPromptLoop(void)
     if (! bPassesCheck())
       continue;
     
-    vBeginCommand();
+    vBeginRequest();
     vPreJob();
     
     if (m_pJob->m_bHasError) {
@@ -206,7 +206,7 @@ void SePrompt::vPromptLoop(void)
     }
     
     vDeleteJob();
-    vEndCommand();
+    vEndRequest();
 
     vLogFreeSpace();
 
@@ -222,9 +222,9 @@ void SePrompt::vPromptLoop(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* begin command                                                              */
+/* begin request                                                              */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vBeginCommand(void)
+void SePrompt::vBeginRequest(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -410,7 +410,7 @@ void SePrompt::vDumpTokenVec(void)
 /*----------------------------------------------------------------------------*/
 /* end command                                                                */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vEndCommand(void)
+void SePrompt::vEndRequest(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
