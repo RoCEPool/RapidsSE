@@ -775,7 +775,7 @@ static Stz* aCN[]
   class ClassNumbers
   {
   public:
-    eCN eFind(Stz* szszClassNm);
+    static eCN eFind(Stz* szszClassNm);
 
   };
 }
