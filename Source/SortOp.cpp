@@ -163,7 +163,7 @@ eOR SortOp::eSortLoop(void)
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // call quick sort (recursive call)
-    BufferSort::vQuickSortBuffer(m_pStreamDef->m_pColumnVec, pSrtBuffer, pLowCursor, pHighCursor);
+    BufferSort::vQuickSortBuffer(m_pStreamDef->m_oColVecAry.pGet(0), pSrtBuffer, pLowCursor, pHighCursor);
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // verify that the data is sorted

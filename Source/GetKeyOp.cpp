@@ -179,8 +179,8 @@ eOR GetKeyOp::eOpLoop(void)
         RASSERT(-1 != m_iKeyCol);
         RefBuffer* pRefBuffer = _pRefBuffer(pOperand) ;
         SrtBuffer* pSrtBuffer = pRefBuffer->pToSrtBuffer(m_iKeyCol, m_bKeyIsLeft,
-                                                         m_pStreamDef->m_pColumnVec,
-                                                         m_pRightStreamDef->m_pColumnVec);
+                                                         m_pStreamDef->m_oColVecAry.pGet(0),
+                                                         m_pStreamDef->m_oColVecAry.pGet(1));
         //pSrtBuffer->vShow(m_pStreamDef->m_pColumnVec, m_pRightStreamDef->m_pColumnVec);
         SrtBuffer* pBuffer = pSrtBuffer;
         while (pBuffer) {
@@ -198,14 +198,14 @@ eOR GetKeyOp::eOpLoop(void)
         if ( ! m_pStreamDef )
           m_pStreamDef = new StreamDef(pStreamDef);
         else {
-          RASSERT ( ! m_pRightStreamDef );
-          m_pRightStreamDef = new StreamDef(pStreamDef);
+          m_pStreamDef->vAdd(pStreamDef);
         }
         
         // figure out the key idx
-        i8 nColumns = m_pStreamDef->m_pColumnVec->nItems();
+        ColumnVec* pColumnVec = m_pStreamDef->m_oColVecAry.pGet(0);
+        i8 nColumns = pColumnVec->nItems();
         for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-          Column* pCol = m_pStreamDef->m_pColumnVec->pGet(i_Col);
+          Column* pCol = pColumnVec->pGet(i_Col);
           if (StrLib::bEqualTo(m_sKey.aChar(),pCol->sColumnName().aChar(),C_NO_CASE)) {
             m_iKeyCol = i_Col;
             break;
@@ -214,15 +214,18 @@ eOR GetKeyOp::eOpLoop(void)
         if (m_iKeyCol == -1) {
           // this must be the left streamDef coming from a join
           // do we have a right def ?
-          if (m_pRightStreamDef) {
-            // figure out the key idx
-            i8 nColumns = m_pStreamDef->m_pColumnVec->nItems();
-            for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-              Column* pCol = m_pRightStreamDef->m_pColumnVec->pGet(i_Col);
-              if (StrLib::bEqualTo(m_sKey.aChar(),pCol->sColumnName().aChar(),C_NO_CASE)) {
-                m_iKeyCol = i_Col;
-                m_bKeyIsLeft = false;
-                break;
+          if (m_pStreamDef->m_oColVecAry.nItems() == 2) {
+            pColumnVec = m_pStreamDef->m_oColVecAry.pGet(1);
+            if (pColumnVec) {
+              // figure out the key idx
+              i8 nColumns = pColumnVec->nItems();
+              for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+                Column* pCol = pColumnVec->pGet(i_Col);
+                if (StrLib::bEqualTo(m_sKey.aChar(),pCol->sColumnName().aChar(),C_NO_CASE)) {
+                  m_iKeyCol = i_Col;
+                  m_bKeyIsLeft = false;
+                  break;
+                }
               }
             }
           }

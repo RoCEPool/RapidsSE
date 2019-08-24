@@ -48,7 +48,7 @@ StreamDef::StreamDef(void)
   //m_sPath;
   
   m_iStreamId = AM::iNextStreamId();
-  m_pColumnVec = new ColumnVec;
+  //m_oColVecAry
   
   m_bTemp = false;
   vTrace("StreamDef permanent %p\n"_Stz, this);
@@ -71,16 +71,46 @@ StreamDef::StreamDef(StreamDef* pStreamDef)
   
   m_iStreamId = AM::iNextStreamId();
   
-  m_pColumnVec = new ColumnVec;
+  m_oColVecAry.vItems(1);
+  ColumnVec* pThisColumnVec = m_oColVecAry.pGet(0);
+  ColumnVec* pStreamColVec = pStreamDef->m_oColVecAry.pGet(0);
   
   // get no of columns
-  i8 nColumns = pStreamDef->m_pColumnVec->nItems();
+  i8 nColumns = pStreamColVec->nItems();
   
   // add columns to streamdef
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
     Column* pColumn = new Column;
-    pColumn->vCopy(pStreamDef->m_pColumnVec->pGet(i_Col));
-    m_pColumnVec->vAdd(pColumn);
+    pColumn->vCopy(pStreamColVec->pGet(i_Col));
+    pThisColumnVec->vAdd(pColumn);
+  }
+  
+  m_bTemp = true;
+  
+  _checkInitialised_(CN_STREAMDEF);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add column vec from stream def                                                                */
+/*----------------------------------------------------------------------------*/
+void StreamDef::vAdd(StreamDef* pStreamDef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+  
+  m_oColVecAry.vItems(m_oColVecAry.nItems() + 1);
+  ColumnVec* pThisColumnVec = m_oColVecAry.pGet(m_oColVecAry.nItems() - 1);
+  ColumnVec* pStreamColVec = pStreamDef->m_oColVecAry.pGet(0);
+  
+  // get no of columns
+  i8 nColumns = pStreamColVec->nItems();
+  
+  // add columns to streamdef
+  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+    Column* pColumn = new Column;
+    pColumn->vCopy(pStreamColVec->pGet(i_Col));
+    pThisColumnVec->vAdd(pColumn);
   }
   
   m_bTemp = true;
@@ -97,7 +127,14 @@ StreamDef::~StreamDef(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
-  delete m_pColumnVec;
+//  for (i8 i_ColumnVec = 0; i_ColumnVec < m_oColVecAry.nItems(); i_ColumnVec++) {
+//   ColumnVec* pColumnVec =  m_oColVecAry.pGet(i_ColumnVec);
+//    for (i8 i_Col = 0; i_Col < pColumnVec->nItems(); i_Col++) {
+//      Column* pColumn = pColumnVec->pGet(i_Col);
+//      delete pColumn;
+//    }
+//  }
+//  m_oColVecAry.vItems(0);
 }
 
 

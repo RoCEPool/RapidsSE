@@ -12,8 +12,8 @@ namespace MetaData
     s256 m_sPath;   // full name
     i8   m_iStreamId; // unique stream identifier
 
-    ColumnVec* m_pColumnVec;
-  
+    ArrayNL_t<ColumnVec,C_MAX_COLUMNVECS> m_oColVecAry;
+
     bool m_bTemp;   // is this a temporary definition?
 
     // must be last
@@ -26,6 +26,8 @@ namespace MetaData
     StreamDef(void);
     StreamDef(StreamDef* pStreamDef);
    ~StreamDef(void) noexcept(false);
+    
+    void vAdd(StreamDef* pStreamDef);
     
     Footer* aFooter(void);
   };
