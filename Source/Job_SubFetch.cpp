@@ -174,7 +174,7 @@ Footer* Job_SubFetch::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubFetch_pre(Session* pSession, i8 iCommandId)
 {
-  Job_SubFetch* pJob_SubFetch = new Job_SubFetch(pSession);
+  Job_SubFetch* pJob_SubFetch = new Job_SubFetch(pSession,iCommandId);
   
   return pJob_SubFetch;
 }

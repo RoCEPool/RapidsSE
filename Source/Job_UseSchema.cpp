@@ -200,7 +200,7 @@ Footer* Job_UseSchema::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_UseSchema_pre(Session* pSession, i8 iCommandId)
 {
-  Job_UseSchema* pJob_UseSchema = new Job_UseSchema(pSession);
+  Job_UseSchema* pJob_UseSchema = new Job_UseSchema(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

@@ -193,7 +193,7 @@ Footer* Job_Space::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Space_pre(Session* pSession, i8 iCommandId)
 {
-  Job_Space* pJob_Space = new Job_Space(pSession);
+  Job_Space* pJob_Space = new Job_Space(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

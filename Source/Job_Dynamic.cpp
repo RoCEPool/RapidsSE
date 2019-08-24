@@ -242,7 +242,7 @@ Footer* Job_Dynamic::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Dynamic_pre(Session* pSession, i8 iCommandId)
 {
-  Job_Dynamic* pJob_Dynamic = new Job_Dynamic(pSession);
+  Job_Dynamic* pJob_Dynamic = new Job_Dynamic(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

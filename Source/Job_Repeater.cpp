@@ -183,7 +183,7 @@ Job* Jobs::pJob_Repeater_pre(Session* pSession, i8 iCommandId)
 {
   i8 nTokens;
 
-  Job_Repeater* pJob_Repeater = new Job_Repeater(pSession);
+  Job_Repeater* pJob_Repeater = new Job_Repeater(pSession,iCommandId);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
 
@@ -218,7 +218,7 @@ Job* Jobs::pJob_Repeater_pre(Session* pSession, i8 iCommandId)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Repeater_new(Job* pArg)
 {
-  Job_Repeater* pJob_Repeater = new Job_Repeater(nullptr);
+  Job_Repeater* pJob_Repeater = new Job_Repeater(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
   
   return pJob_Repeater;
 }

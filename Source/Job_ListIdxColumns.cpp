@@ -202,7 +202,7 @@ Footer* Job_ListIdxColumns::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_ListIdxColumns_pre(Session* pSession, i8 iCommandId)
 {
-  Job_ListIdxColumns* pJob_ListIdxColumns = new Job_ListIdxColumns(pSession);
+  Job_ListIdxColumns* pJob_ListIdxColumns = new Job_ListIdxColumns(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

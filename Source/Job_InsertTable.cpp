@@ -177,7 +177,7 @@ Footer* Job_InsertTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_InsertTable_pre(Session* pSession, i8 iCommandId)
 {
-  Job_InsertTable* pJob_InsertTable = new Job_InsertTable(pSession);
+  Job_InsertTable* pJob_InsertTable = new Job_InsertTable(pSession,iCommandId);
   
   // get a jobId for the insertTable job
 //  i8 iJobId = gpAttachMap->m_pOriginatingJobs->iNextJobId();
@@ -191,7 +191,7 @@ Job* Jobs::pJob_InsertTable_pre(Session* pSession, i8 iCommandId)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_InsertTable_new(Job* pArg)
 {
-  Job_InsertTable* pJob_InsertTable = new Job_InsertTable(nullptr);
+  Job_InsertTable* pJob_InsertTable = new Job_InsertTable(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
   
   return pJob_InsertTable;
 }

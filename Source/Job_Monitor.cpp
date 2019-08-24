@@ -178,7 +178,7 @@ Job* Jobs::pJob_Monitor_pre(Session* pSession, i8 iCommandId)
 {
   i8 nTokens;
 
-  Job_Monitor* pJob_Monitor = new Job_Monitor(pSession);
+  Job_Monitor* pJob_Monitor = new Job_Monitor(pSession,iCommandId);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
 
@@ -202,7 +202,7 @@ Job* Jobs::pJob_Monitor_pre(Session* pSession, i8 iCommandId)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Monitor_new(Job* pArg)
 {
-  Job_Monitor* pJob_Monitor = new Job_Monitor(nullptr);
+  Job_Monitor* pJob_Monitor = new Job_Monitor(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
   
   return pJob_Monitor;
 }

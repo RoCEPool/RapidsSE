@@ -207,7 +207,7 @@ Footer* Job_DropIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_DropIndex_pre(Session* pSession, i8 iCommandId)
 {
-  Job_DropIndex* pJob_DropIndex = new Job_DropIndex(pSession);
+  Job_DropIndex* pJob_DropIndex = new Job_DropIndex(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

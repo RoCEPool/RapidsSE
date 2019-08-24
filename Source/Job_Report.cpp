@@ -188,7 +188,7 @@ Job* Jobs::pJob_Report_pre(Session* pSession, i8 iCommandId)
 {
   i8 nTokens;
 
-  Job_Report* pJob_Report = new Job_Report(pSession);
+  Job_Report* pJob_Report = new Job_Report(pSession,iCommandId);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
 
@@ -219,7 +219,7 @@ Job* Jobs::pJob_Report_pre(Session* pSession, i8 iCommandId)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Report_new(Job* pArg)
 {
-  Job_Report* pJob_Report = new Job_Report(nullptr);
+  Job_Report* pJob_Report = new Job_Report(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
   
   return pJob_Report;
 }

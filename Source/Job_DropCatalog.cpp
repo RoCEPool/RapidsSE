@@ -199,7 +199,7 @@ Footer* Job_DropCatalog::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_DropCatalog_pre(Session* pSession, i8 iCommandId)
 {
-  Job_DropCatalog* pJob_DropCatalog = new Job_DropCatalog(pSession);
+  Job_DropCatalog* pJob_DropCatalog = new Job_DropCatalog(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

@@ -241,7 +241,7 @@ Footer* Job_WriteRow::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_WriteRow_pre(Session* pSession, i8 iCommandId)
 {
-  Job_WriteRow* pJob_WriteRow = new Job_WriteRow(pSession);
+  Job_WriteRow* pJob_WriteRow = new Job_WriteRow(pSession,iCommandId);
   
   return pJob_WriteRow;
 }
@@ -251,7 +251,7 @@ Job* Jobs::pJob_WriteRow_pre(Session* pSession, i8 iCommandId)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_WriteRow_new(Job* pArg)
 {
-  Job_WriteRow* pJob_WriteRow = new Job_WriteRow(nullptr);
+  Job_WriteRow* pJob_WriteRow = new Job_WriteRow(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
   
   return pJob_WriteRow;
 }

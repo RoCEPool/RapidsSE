@@ -175,7 +175,7 @@ Job* Jobs::pJob_Purge_pre(Session* pSession, i8 iCommandId)
 {
   i8 nTokens;
 
-  Job_Purge* pJob_Purge = new Job_Purge(pSession);
+  Job_Purge* pJob_Purge = new Job_Purge(pSession,iCommandId);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
 
@@ -206,7 +206,7 @@ void Jobs::vJob_Purge_post(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Purge_new(Job* pArg)
 {
-  Job_Purge* pJob_Purge = new Job_Purge(nullptr);
+  Job_Purge* pJob_Purge = new Job_Purge(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
   
   return pJob_Purge;
 }

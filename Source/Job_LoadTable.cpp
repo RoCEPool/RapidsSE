@@ -623,7 +623,7 @@ bool Job_LoadTable::bExtractDateFormat(Stz* dateFormat)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_LoadTable_pre(Session* pSession, i8 iCommandId)
 {
-  Job_LoadTable* pJob_LoadTable = new Job_LoadTable(pSession);
+  Job_LoadTable* pJob_LoadTable = new Job_LoadTable(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
@@ -641,7 +641,7 @@ Job* Jobs::pJob_LoadTable_pre(Session* pSession, i8 iCommandId)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_LoadTable_new(Job* pArg)
 {
-  Job_LoadTable* pJob_LoadTable = new Job_LoadTable(nullptr);
+  Job_LoadTable* pJob_LoadTable = new Job_LoadTable(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
   
   return pJob_LoadTable;
 }

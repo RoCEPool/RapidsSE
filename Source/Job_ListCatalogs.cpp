@@ -194,7 +194,7 @@ Footer* Job_ListCatalogs::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_ListCatalogs_pre(Session* pSession, i8 iCommandId)
 {
-  Job_ListCatalogs* pJob_ListCatalogs = new Job_ListCatalogs(pSession);
+  Job_ListCatalogs* pJob_ListCatalogs = new Job_ListCatalogs(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

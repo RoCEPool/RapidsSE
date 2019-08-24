@@ -199,7 +199,7 @@ Footer* Job_VerifyIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_VerifyIndex_pre(Session* pSession, i8 iCommandId)
 {
-  Job_VerifyIndex* pJob_VerifyIndex = new Job_VerifyIndex(pSession);
+  Job_VerifyIndex* pJob_VerifyIndex = new Job_VerifyIndex(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

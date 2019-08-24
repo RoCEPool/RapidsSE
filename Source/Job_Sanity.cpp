@@ -196,7 +196,7 @@ Footer* Job_Sanity::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Sanity_pre(Session* pSession, i8 iCommandId)
 {
-  Job_Sanity* pJob_Sanity = new Job_Sanity(pSession);
+  Job_Sanity* pJob_Sanity = new Job_Sanity(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

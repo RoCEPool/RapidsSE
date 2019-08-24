@@ -171,7 +171,7 @@ Footer* Job_Supervisor::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Supervisor_new(Job* pArg)
 {
-  Job_Supervisor* pJob_Supervisor = new Job_Supervisor(nullptr);
+  Job_Supervisor* pJob_Supervisor = new Job_Supervisor(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
   
   return pJob_Supervisor;
 }

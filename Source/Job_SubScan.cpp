@@ -172,7 +172,7 @@ Footer* Job_SubScan::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubScan_pre(Session* pSession, i8 iCommandId)
 {
-  Job_SubScan* pJob_SubScan = new Job_SubScan(pSession);
+  Job_SubScan* pJob_SubScan = new Job_SubScan(pSession,iCommandId);
   
   return pJob_SubScan;
 }

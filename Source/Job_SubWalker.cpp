@@ -461,7 +461,7 @@ Footer* Job_SubWalker::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubWalker_pre(Session* pSession, i8 iCommandId)
 {
-  Job_SubWalker* pJob_SubWalker = new Job_SubWalker(pSession);
+  Job_SubWalker* pJob_SubWalker = new Job_SubWalker(pSession,iCommandId);
   
   return pJob_SubWalker;
 }

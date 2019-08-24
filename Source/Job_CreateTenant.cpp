@@ -196,7 +196,7 @@ Footer* Job_CreateTenant::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_CreateTenant_pre(Session* pSession, i8 iCommandId)
 {
-  Job_CreateTenant* pJob_CreateTenant = new Job_CreateTenant(pSession);
+  Job_CreateTenant* pJob_CreateTenant = new Job_CreateTenant(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

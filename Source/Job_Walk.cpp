@@ -229,7 +229,7 @@ Footer* Job_Walk::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Walk_pre(Session* pSession, i8 iCommandId)
 {
-  Job_Walk* pJob_Walk = new Job_Walk(pSession);
+  Job_Walk* pJob_Walk = new Job_Walk(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

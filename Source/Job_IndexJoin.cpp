@@ -233,7 +233,7 @@ Footer* Job_IndexJoin::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_IndexJoin_pre(Session* pSession, i8 iCommandId)
 {
-  Job_IndexJoin* pJob_IndexJoin = new Job_IndexJoin(pSession);
+  Job_IndexJoin* pJob_IndexJoin = new Job_IndexJoin(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

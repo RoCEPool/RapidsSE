@@ -229,7 +229,7 @@ Footer* Job_SubPurger::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubPurger_pre(Session* pSession, i8 iCommandId)
 {
-  Job_SubPurger* pJob_SubPurger = new Job_SubPurger(pSession);
+  Job_SubPurger* pJob_SubPurger = new Job_SubPurger(pSession,iCommandId);
   
   return pJob_SubPurger;
 }

@@ -193,7 +193,7 @@ Footer* Job_Cf::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Cf_pre(Session* pSession, i8 iCommandId)
 {
-  Job_Cf* pJob_Cf = new Job_Cf(pSession);
+  Job_Cf* pJob_Cf = new Job_Cf(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

@@ -277,7 +277,7 @@ Footer* Job_Export::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Export_pre(Session* pSession, i8 iCommandId)
 {
-  Job_Export* pJob_Export = new Job_Export(pSession);
+  Job_Export* pJob_Export = new Job_Export(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
 
@@ -305,7 +305,7 @@ void Jobs::vJob_Export_post(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Export_new(Job* pArg)
 {
-  Job_Export* pJob_Export = new Job_Export(nullptr);
+  Job_Export* pJob_Export = new Job_Export(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
   
   return pJob_Export;
 }

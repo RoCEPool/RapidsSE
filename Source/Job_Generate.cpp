@@ -193,7 +193,7 @@ Job* Jobs::pJob_Generate_pre(Session* pSession, i8 iCommandId)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   i8 nTokens;
 
-  Job_Generate* pJob_Generate = new Job_Generate(pSession);
+  Job_Generate* pJob_Generate = new Job_Generate(pSession,iCommandId);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
 
@@ -234,7 +234,7 @@ Job* Jobs::pJob_Generate_pre(Session* pSession, i8 iCommandId)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Generate_new(Job* pArg)
 {
-  Job_Generate* pJob_Generate = new Job_Generate(nullptr);
+  Job_Generate* pJob_Generate = new Job_Generate(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
   
   return pJob_Generate;
 }

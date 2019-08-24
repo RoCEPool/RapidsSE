@@ -259,7 +259,7 @@ Footer* Job_Select::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Select_pre(Session* pSession, i8 iCommandId)
 {
-  Job_Select* pJob_Select = new Job_Select(pSession);
+  Job_Select* pJob_Select = new Job_Select(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

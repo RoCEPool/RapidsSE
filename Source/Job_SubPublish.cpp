@@ -258,7 +258,7 @@ Footer* Job_SubPublish::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubPublish_pre(Session* pSession, i8 iCommandId)
 {
-  Job_SubPublish* pJob_SubPublish = new Job_SubPublish(pSession);
+  Job_SubPublish* pJob_SubPublish = new Job_SubPublish(pSession,iCommandId);
   
   return pJob_SubPublish;
 }

@@ -171,7 +171,7 @@ Footer* Job_Periodic::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Periodic_new(Job* pArg)
 {
-  Job_Periodic* pJob_Periodic = new Job_Periodic(nullptr);
+  Job_Periodic* pJob_Periodic = new Job_Periodic(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
   
   return pJob_Periodic;
 }

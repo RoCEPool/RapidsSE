@@ -195,7 +195,7 @@ Footer* Job_DumpTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_DumpTable_pre(Session* pSession, i8 iCommandId)
 {
-  Job_DumpTable* pJob_DumpTable = new Job_DumpTable(pSession);
+  Job_DumpTable* pJob_DumpTable = new Job_DumpTable(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

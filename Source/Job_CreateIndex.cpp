@@ -345,7 +345,7 @@ Footer* Job_CreateIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_CreateIndex_pre(Session* pSession, i8 iCommandId)
 {
-  Job_CreateIndex* pJob_CreateIndex = new Job_CreateIndex(pSession);
+  Job_CreateIndex* pJob_CreateIndex = new Job_CreateIndex(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

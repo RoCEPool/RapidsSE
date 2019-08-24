@@ -249,7 +249,7 @@ Footer* Job_CopyBuffer::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_CopyBuffer_pre(Session* pSession, i8 iCommandId)
 {
-  Job_CopyBuffer* pJob_CopyBuffer = new Job_CopyBuffer(pSession);
+  Job_CopyBuffer* pJob_CopyBuffer = new Job_CopyBuffer(pSession,iCommandId);
   
   return pJob_CopyBuffer;
 }
@@ -259,7 +259,7 @@ Job* Jobs::pJob_CopyBuffer_pre(Session* pSession, i8 iCommandId)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_CopyBuffer_new(Job* pArg)
 {
-  Job_CopyBuffer* pJob_CopyBuffer = new Job_CopyBuffer(nullptr);
+  Job_CopyBuffer* pJob_CopyBuffer = new Job_CopyBuffer(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
   
   return pJob_CopyBuffer;
 }

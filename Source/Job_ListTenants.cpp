@@ -194,7 +194,7 @@ Footer* Job_ListTenants::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_ListTenants_pre(Session* pSession, i8 iCommandId)
 {
-  Job_ListTenants* pJob_ListTenants = new Job_ListTenants(pSession);
+  Job_ListTenants* pJob_ListTenants = new Job_ListTenants(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

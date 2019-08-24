@@ -171,7 +171,7 @@ Footer* Job_Waker::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Waker_new(Job* pArg)
 {
-  Job_Waker* pJob_Waker = new Job_Waker(nullptr);
+  Job_Waker* pJob_Waker = new Job_Waker(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
   
   return pJob_Waker;
 }

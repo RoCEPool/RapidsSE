@@ -178,7 +178,7 @@ Job* Jobs::pJob_Sink_pre(Session* pSession, i8 iCommandId)
 {
   i8 nTokens;
 
-  Job_Sink* pJob_Sink = new Job_Sink(pSession);
+  Job_Sink* pJob_Sink = new Job_Sink(pSession,iCommandId);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
 
@@ -206,7 +206,7 @@ Job* Jobs::pJob_Sink_pre(Session* pSession, i8 iCommandId)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Sink_new(Job* pArg)
 {
-  Job_Sink* pJob_Sink = new Job_Sink(nullptr);
+  Job_Sink* pJob_Sink = new Job_Sink(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
   
   return pJob_Sink;
 }

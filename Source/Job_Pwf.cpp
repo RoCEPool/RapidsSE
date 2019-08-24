@@ -194,7 +194,7 @@ Footer* Job_Pwf::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Pwf_pre(Session* pSession, i8 iCommandId)
 {
-  Job_Pwf* pJob_Pwf = new Job_Pwf(pSession);
+  Job_Pwf* pJob_Pwf = new Job_Pwf(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

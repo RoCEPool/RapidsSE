@@ -199,7 +199,7 @@ Footer* Job_VisualizeIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_VisualizeIndex_pre(Session* pSession, i8 iCommandId)
 {
-  Job_VisualizeIndex* pJob_VisualizeIndex = new Job_VisualizeIndex(pSession);
+  Job_VisualizeIndex* pJob_VisualizeIndex = new Job_VisualizeIndex(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

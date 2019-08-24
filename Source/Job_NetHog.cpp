@@ -174,7 +174,7 @@ Footer* Job_NetHog::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_NetHog_pre(Session* pSession, i8 iCommandId)
 {
-  Job_NetHog* pJob_NetHog = new Job_NetHog(pSession);
+  Job_NetHog* pJob_NetHog = new Job_NetHog(pSession,iCommandId);
   
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
   
@@ -210,7 +210,7 @@ void Jobs::vJob_NetHog_post(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_NetHog_new(Job* pArg)
 {
-  Job_NetHog* pJob_NetHog = new Job_NetHog(nullptr);
+  Job_NetHog* pJob_NetHog = new Job_NetHog(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
   
   return pJob_NetHog;
 }

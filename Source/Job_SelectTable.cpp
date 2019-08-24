@@ -203,7 +203,7 @@ Footer* Job_SelectTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SelectTable_pre(Session* pSession, i8 iCommandId)
 {
-  Job_SelectTable* pJob_SelectTable = new Job_SelectTable(pSession);
+  Job_SelectTable* pJob_SelectTable = new Job_SelectTable(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

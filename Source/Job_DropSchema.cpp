@@ -198,7 +198,7 @@ Footer* Job_DropSchema::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_DropSchema_pre(Session* pSession, i8 iCommandId)
 {
-  Job_DropSchema* pJob_DropSchema = new Job_DropSchema(pSession);
+  Job_DropSchema* pJob_DropSchema = new Job_DropSchema(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

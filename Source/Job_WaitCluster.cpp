@@ -193,7 +193,7 @@ Footer* Job_WaitCluster::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_WaitCluster_pre(Session* pSession, i8 iCommandId)
 {
-  Job_WaitCluster* pJob_WaitCluster = new Job_WaitCluster(pSession);
+  Job_WaitCluster* pJob_WaitCluster = new Job_WaitCluster(pSession,iCommandId);
   
   return pJob_WaitCluster;
 }

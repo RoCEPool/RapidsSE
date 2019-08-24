@@ -197,7 +197,7 @@ Footer* Job_Docol::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Docol_pre(Session* pSession, i8 iCommandId)
 {
-  Job_Docol* pJob_Docol = new Job_Docol(pSession);
+  Job_Docol* pJob_Docol = new Job_Docol(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

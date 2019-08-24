@@ -316,7 +316,7 @@ Footer* Job_SubIngester::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::vJob_SubIngester_pre(Session* pSession, i8 iCommandId)
 {
-  Job_SubIngester* pJob_SubIngester = new Job_SubIngester(pSession);
+  Job_SubIngester* pJob_SubIngester = new Job_SubIngester(pSession,iCommandId);
   
   return pJob_SubIngester;
 }
@@ -326,7 +326,7 @@ Job* Jobs::vJob_SubIngester_pre(Session* pSession, i8 iCommandId)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubIngester_new(Job* pArg)
 {
-  Job_SubIngester* pJob_SubIngester = new Job_SubIngester(nullptr);
+  Job_SubIngester* pJob_SubIngester = new Job_SubIngester(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
   
   return pJob_SubIngester;
 }

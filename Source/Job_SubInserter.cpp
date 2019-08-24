@@ -256,7 +256,7 @@ Footer* Job_SubInserter::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubInserter_pre(Session* pSession, i8 iCommandId)
 {
-  Job_SubInserter* pJob_SubInserter = new Job_SubInserter(pSession);
+  Job_SubInserter* pJob_SubInserter = new Job_SubInserter(pSession,iCommandId);
   
 //  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
 //  
@@ -276,7 +276,7 @@ Job* Jobs::pJob_SubInserter_pre(Session* pSession, i8 iCommandId)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubInserter_new(Job* pArg)
 {
-  Job_SubInserter* pJob_SubInserter = new Job_SubInserter(nullptr);
+  Job_SubInserter* pJob_SubInserter = new Job_SubInserter(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
   
   return pJob_SubInserter;
 }

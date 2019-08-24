@@ -199,7 +199,7 @@ Footer* Job_AnalyzeTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_AnalyzeTable_pre(Session* pSession, i8 iCommandId)
 {
-  Job_AnalyzeTable* pJob_AnalyzeTable = new Job_AnalyzeTable(pSession);
+  Job_AnalyzeTable* pJob_AnalyzeTable = new Job_AnalyzeTable(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

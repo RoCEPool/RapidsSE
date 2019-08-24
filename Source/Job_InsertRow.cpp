@@ -228,7 +228,7 @@ Footer* Job_InsertRow::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_InsertRow_pre(Session* pSession, i8 iCommandId)
 {
-  Job_InsertRow* pJob_InsertRow = new Job_InsertRow(pSession);
+  Job_InsertRow* pJob_InsertRow = new Job_InsertRow(pSession,iCommandId);
   
 //  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
@@ -253,7 +253,7 @@ Job* Jobs::pJob_InsertRow_pre(Session* pSession, i8 iCommandId)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_InsertRow_new(Job* pArg)
 {
-  Job_InsertRow* pJob_InsertRow = new Job_InsertRow(nullptr);
+  Job_InsertRow* pJob_InsertRow = new Job_InsertRow(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
   
   return pJob_InsertRow;
 }

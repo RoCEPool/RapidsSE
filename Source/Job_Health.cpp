@@ -174,7 +174,7 @@ Footer* Job_Health::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Health_pre(Session* pSession, i8 iCommandId)
 {
-  Job_Health* pJob_Health = new Job_Health(pSession);
+  Job_Health* pJob_Health = new Job_Health(pSession,iCommandId);
   
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
   
@@ -210,7 +210,7 @@ void Jobs::vJob_Health_post(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Health_new(Job* pArg)
 {
-  Job_Health* pJob_Health = new Job_Health(nullptr);
+  Job_Health* pJob_Health = new Job_Health(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
   
   return pJob_Health;
 }

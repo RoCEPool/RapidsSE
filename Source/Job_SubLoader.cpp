@@ -340,7 +340,7 @@ Footer* Job_SubLoader::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::vJob_SubLoader_pre(Session* pSession, i8 iCommandId)
 {
-  Job_SubLoader* pJob_SubLoader = new Job_SubLoader(pSession);
+  Job_SubLoader* pJob_SubLoader = new Job_SubLoader(pSession,iCommandId);
   
   return pJob_SubLoader;
 }
@@ -350,7 +350,7 @@ Job* Jobs::vJob_SubLoader_pre(Session* pSession, i8 iCommandId)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubLoader_new(Job* pArg)
 {
-  Job_SubLoader* pJob_SubLoader = new Job_SubLoader(nullptr);
+  Job_SubLoader* pJob_SubLoader = new Job_SubLoader(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
   
   return pJob_SubLoader;
 }

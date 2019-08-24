@@ -199,7 +199,7 @@ Footer* Job_SizeIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SizeIndex_pre(Session* pSession, i8 iCommandId)
 {
-  Job_SizeIndex* pJob_SizeIndex = new Job_SizeIndex(pSession);
+  Job_SizeIndex* pJob_SizeIndex = new Job_SizeIndex(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

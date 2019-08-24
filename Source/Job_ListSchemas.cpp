@@ -194,7 +194,7 @@ Footer* Job_ListSchemas::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_ListSchemas_pre(Session* pSession, i8 iCommandId)
 {
-  Job_ListSchemas* pJob_ListSchemas = new Job_ListSchemas(pSession);
+  Job_ListSchemas* pJob_ListSchemas = new Job_ListSchemas(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

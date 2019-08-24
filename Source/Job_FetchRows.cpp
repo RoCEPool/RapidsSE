@@ -618,7 +618,7 @@ Footer* Job_FetchRows::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_FetchRows_pre(Session* pSession, i8 iCommandId)
 {
-  Job_FetchRows* pJob_FetchRows = new Job_FetchRows(pSession);
+  Job_FetchRows* pJob_FetchRows = new Job_FetchRows(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

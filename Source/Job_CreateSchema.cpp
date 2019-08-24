@@ -197,7 +197,7 @@ Footer* Job_CreateSchema::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_CreateSchema_pre(Session* pSession, i8 iCommandId)
 {
-  Job_CreateSchema* pJob_CreateSchema = new Job_CreateSchema(pSession);
+  Job_CreateSchema* pJob_CreateSchema = new Job_CreateSchema(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

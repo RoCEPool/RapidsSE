@@ -20,7 +20,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Walk(Session* pSession, i8 iCommandId=C_UNKNOWN);
+    Job_Walk(Session* pSession, i8 iCommandId);//=C_UNKNOWN);
     ~Job_Walk(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

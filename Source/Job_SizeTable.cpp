@@ -194,7 +194,7 @@ Footer* Job_SizeTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SizeTable_pre(Session* pSession, i8 iCommandId)
 {
-  Job_SizeTable* pJob_SizeTable = new Job_SizeTable(pSession);
+  Job_SizeTable* pJob_SizeTable = new Job_SizeTable(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

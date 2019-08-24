@@ -170,7 +170,7 @@ Footer* Job_Connector::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Connector_new(Job* pArg)
 {
-  Job_Connector* pJob_Connector = new Job_Connector(nullptr);
+  Job_Connector* pJob_Connector = new Job_Connector(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
   
   return pJob_Connector;
 }

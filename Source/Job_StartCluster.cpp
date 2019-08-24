@@ -192,7 +192,7 @@ Footer* Job_StartCluster::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_StartCluster_pre(Session* pSession, i8 iCommandId)
 {
-  Job_StartCluster* pJob_StartCluster = new Job_StartCluster(pSession);
+  Job_StartCluster* pJob_StartCluster = new Job_StartCluster(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

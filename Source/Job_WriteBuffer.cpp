@@ -426,7 +426,7 @@ Footer* Job_WriteBuffer::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_WriteBuffer_pre(Session* pSession, i8 iCommandId)
 {
-  Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(pSession);
+  Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(pSession,iCommandId);
   
   return pJob_WriteBuffer;
 }
@@ -436,7 +436,7 @@ Job* Jobs::pJob_WriteBuffer_pre(Session* pSession, i8 iCommandId)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_WriteBuffer_new(Job* pArg)
 {
-  Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(nullptr);
+  Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
   
   return pJob_WriteBuffer;
 }

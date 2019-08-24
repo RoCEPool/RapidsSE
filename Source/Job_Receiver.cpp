@@ -212,7 +212,7 @@ Footer* Job_Receiver::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Receiver_new(Job* pArg)
 {
-  Job_Receiver* pJob_Receiver = new Job_Receiver(nullptr);
+  Job_Receiver* pJob_Receiver = new Job_Receiver(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
   
   return pJob_Receiver;
 }

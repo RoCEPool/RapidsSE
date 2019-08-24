@@ -175,7 +175,7 @@ Footer* Job_SubInflate::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubInflate_pre(Session* pSession, i8 iCommandId)
 {
-  Job_SubInflate* pJob_SubInflate = new Job_SubInflate(pSession);
+  Job_SubInflate* pJob_SubInflate = new Job_SubInflate(pSession,iCommandId);
   
   return pJob_SubInflate;
 }

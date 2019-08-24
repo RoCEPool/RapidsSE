@@ -179,7 +179,7 @@ Job* Jobs::pJob_Cat_pre(Session* pSession, i8 iCommandId)
 {
   i8 nTokens;
 
-  Job_Cat* pJob_Cat = new Job_Cat(pSession);
+  Job_Cat* pJob_Cat = new Job_Cat(pSession,iCommandId);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
 
@@ -210,7 +210,7 @@ Job* Jobs::pJob_Cat_pre(Session* pSession, i8 iCommandId)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Cat_new(Job* pArg)
 {
-  Job_Cat* pJob_Cat = new Job_Cat(nullptr);
+  Job_Cat* pJob_Cat = new Job_Cat(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
   
   return pJob_Cat;
 }

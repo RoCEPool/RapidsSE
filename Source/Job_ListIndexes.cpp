@@ -198,7 +198,7 @@ Footer* Job_ListIndexes::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_ListIndexes_pre(Session* pSession, i8 iCommandId)
 {
-  Job_ListIndexes* pJob_ListIndexes = new Job_ListIndexes(pSession);
+  Job_ListIndexes* pJob_ListIndexes = new Job_ListIndexes(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

@@ -199,7 +199,7 @@ Footer* Job_DumpIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_DumpIndex_pre(Session* pSession, i8 iCommandId)
 {
-  Job_DumpIndex* pJob_DumpIndex = new Job_DumpIndex(pSession);
+  Job_DumpIndex* pJob_DumpIndex = new Job_DumpIndex(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

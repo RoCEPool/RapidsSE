@@ -613,7 +613,7 @@ Footer* Job_CreateTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_CreateTable_pre(Session* pSession, i8 iCommandId)
 {
-  Job_CreateTable* pJob_CreateTable = new Job_CreateTable(pSession);
+  Job_CreateTable* pJob_CreateTable = new Job_CreateTable(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
 
@@ -652,7 +652,7 @@ void Jobs::vJob_CreateTable_post(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_CreateTable_new(Job* pArg)
 {
-  Job_CreateTable* pJob_CreateTable = new Job_CreateTable(nullptr);
+  Job_CreateTable* pJob_CreateTable = new Job_CreateTable(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
   
   return pJob_CreateTable;
 }

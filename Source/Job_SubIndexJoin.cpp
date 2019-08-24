@@ -172,7 +172,7 @@ Footer* Job_SubIndexJoin::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubIndexJoin_pre(Session* pSession, i8 iCommandId)
 {
-  Job_SubIndexJoin* pJob_SubIndexJoin = new Job_SubIndexJoin(pSession);
+  Job_SubIndexJoin* pJob_SubIndexJoin = new Job_SubIndexJoin(pSession,iCommandId);
   
   return pJob_SubIndexJoin;
 }

@@ -185,7 +185,7 @@ Job* Jobs::pJob_Ingest_pre(Session* pSession, i8 iCommandId)
 {
   i8 nTokens;
 
-  Job_Ingest* pJob_Ingest = new Job_Ingest(pSession);
+  Job_Ingest* pJob_Ingest = new Job_Ingest(pSession,iCommandId);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
 
@@ -216,7 +216,7 @@ Job* Jobs::pJob_Ingest_pre(Session* pSession, i8 iCommandId)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Ingest_new(Job* pArg)
 {
-  Job_Ingest* pJob_Ingest = new Job_Ingest(nullptr);
+  Job_Ingest* pJob_Ingest = new Job_Ingest(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
   
   return pJob_Ingest;
 }

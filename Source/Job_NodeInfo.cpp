@@ -172,7 +172,7 @@ Footer* Job_NodeInfo::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_NodeInfo_new(Job* pArg)
 {
-  Job_NodeInfo* pJob_NodeInfo = new Job_NodeInfo(nullptr);
+  Job_NodeInfo* pJob_NodeInfo = new Job_NodeInfo(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
   
   return pJob_NodeInfo;
 }

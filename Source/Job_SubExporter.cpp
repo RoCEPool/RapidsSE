@@ -332,7 +332,7 @@ Footer* Job_SubExporter::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubExporter_pre(Session* pSession, i8 iCommandId)
 {
-  Job_SubExporter* pJob_SubExporter = new Job_SubExporter(pSession);
+  Job_SubExporter* pJob_SubExporter = new Job_SubExporter(pSession,iCommandId);
   
   return pJob_SubExporter;
 }

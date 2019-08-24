@@ -276,7 +276,7 @@ Footer* Job_InflateRows::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_InflateRows_pre(Session* pSession, i8 iCommandId)
 {
-  Job_InflateRows* pJob_InflateRows = new Job_InflateRows(pSession);
+  Job_InflateRows* pJob_InflateRows = new Job_InflateRows(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

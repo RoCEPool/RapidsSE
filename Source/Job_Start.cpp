@@ -170,7 +170,7 @@ Footer* Job_Start::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Start_new(Job* pArg)
 {
-  Job_Start* pJob_Start = new Job_Start(nullptr);
+  Job_Start* pJob_Start = new Job_Start(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
   
   return pJob_Start;
 }

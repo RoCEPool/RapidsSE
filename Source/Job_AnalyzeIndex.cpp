@@ -203,7 +203,7 @@ Footer* Job_AnalyzeIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_AnalyzeIndex_pre(Session* pSession, i8 iCommandId)
 {
-  Job_AnalyzeIndex* pJob_AnalyzeIndex = new Job_AnalyzeIndex(pSession);
+  Job_AnalyzeIndex* pJob_AnalyzeIndex = new Job_AnalyzeIndex(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
@@ -221,7 +221,7 @@ Job* Jobs::pJob_AnalyzeIndex_pre(Session* pSession, i8 iCommandId)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_AnalyzeIndex_new(Job* pArg)
 {
-  Job_AnalyzeIndex* pJob_AnalyzeIndex = new Job_AnalyzeIndex(nullptr);
+  Job_AnalyzeIndex* pJob_AnalyzeIndex = new Job_AnalyzeIndex(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
   
   return pJob_AnalyzeIndex;
 }

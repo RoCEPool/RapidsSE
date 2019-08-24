@@ -194,7 +194,7 @@ Footer* Job_Ping::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Ping_pre(Session* pSession, i8 iCommandId)
 {
-  Job_Ping* pJob_Ping = new Job_Ping(pSession);
+  Job_Ping* pJob_Ping = new Job_Ping(pSession,iCommandId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
