@@ -172,7 +172,7 @@ Footer* Job_Health::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Health_pre(Session* pSession)
+Job* Jobs::pJob_Health_pre(Session* pSession, i8 iCommandId)
 {
   Job_Health* pJob_Health = new Job_Health(pSession);
   

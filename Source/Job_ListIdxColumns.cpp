@@ -200,7 +200,7 @@ Footer* Job_ListIdxColumns::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_ListIdxColumns_pre(Session* pSession)
+Job* Jobs::pJob_ListIdxColumns_pre(Session* pSession, i8 iCommandId)
 {
   Job_ListIdxColumns* pJob_ListIdxColumns = new Job_ListIdxColumns(pSession);
   

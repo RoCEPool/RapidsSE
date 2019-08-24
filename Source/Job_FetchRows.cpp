@@ -616,7 +616,7 @@ Footer* Job_FetchRows::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_FetchRows_pre(Session* pSession)
+Job* Jobs::pJob_FetchRows_pre(Session* pSession, i8 iCommandId)
 {
   Job_FetchRows* pJob_FetchRows = new Job_FetchRows(pSession);
   

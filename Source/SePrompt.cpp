@@ -173,6 +173,7 @@ void SePrompt::vPromptLoop(void)
     if (! bPassesCheck())
       continue;
     
+    vBeginCommand();
     vPreJob();
     
     if (m_pJob->m_bHasError) {
@@ -187,7 +188,6 @@ void SePrompt::vPromptLoop(void)
         
     vJobLockMutex();
     
-    vBeginCommand();
     vSpawnJob();
     
     if (bNoWait()) {
@@ -763,7 +763,7 @@ void SePrompt::vPreJob(void)
 
   //pInput->vPreJob(m_pSession);
   
-  m_pJob = m_pJobClass->pPreJob(m_pSession);
+  m_pJob = m_pJobClass->pPreJob(m_pSession,m_iCommandId);
   
 //  if (m_pJob && m_pJob->m_bMarkTrace)
 //    m_pJob->m_pJobClass->vShowJob(m_pJob);

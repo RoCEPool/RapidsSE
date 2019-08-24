@@ -192,7 +192,7 @@ Footer* Job_ShowCluster::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_ShowCluster_pre(Session* pSession)
+Job* Jobs::pJob_ShowCluster_pre(Session* pSession, i8 iCommandId)
 {
   Job_ShowCluster* pJob_ShowCluster = new Job_ShowCluster(pSession);
   

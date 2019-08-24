@@ -196,7 +196,7 @@ Footer* Job_DropTenant::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_DropTenant_pre(Session* pSession)
+Job* Jobs::pJob_DropTenant_pre(Session* pSession, i8 iCommandId)
 {
   Job_DropTenant* pJob_DropTenant = new Job_DropTenant(pSession);
   

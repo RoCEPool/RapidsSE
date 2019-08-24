@@ -36,7 +36,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_NetHog* _pJob_NetHog(void* aAddr);
   
-  Job* pJob_NetHog_pre(Session* pSession);
+  Job* pJob_NetHog_pre(Session* pSession, i8 iCommandId);
   void vJob_NetHog_post(Session* pSession, Job* pJob);
   Job* pJob_NetHog_new(Job* pArg);
   void vJob_NetHog_delete(Session* pSession, Job* pJob);

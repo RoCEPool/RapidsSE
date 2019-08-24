@@ -314,7 +314,7 @@ Footer* Job_SubIngester::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::vJob_SubIngester_pre(Session* pSession)
+Job* Jobs::vJob_SubIngester_pre(Session* pSession, i8 iCommandId)
 {
   Job_SubIngester* pJob_SubIngester = new Job_SubIngester(pSession);
   

@@ -194,7 +194,7 @@ Footer* Job_CreateCatalog::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_CreateCatalog_pre(Session* pSession)
+Job* Jobs::pJob_CreateCatalog_pre(Session* pSession, i8 iCommandId)
 {
   Job_CreateCatalog* pJob_CreateCatalog = new Job_CreateCatalog(pSession);
   

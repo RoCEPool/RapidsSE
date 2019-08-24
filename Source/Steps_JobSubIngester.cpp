@@ -31,13 +31,14 @@ void Step::vJob_SubIngesterSpawn(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  i8 iCommandId = pJob_Ingest->m_iCommandId;
   Session* pSession = pJob_Ingest->m_pSession;
   
   //! this needs to be optimised
   JobClass* pJobClass_SubIngester = JobClass::pFind(CN_JOB_SUBINGESTER);
   
   Job_SubIngester* pJob_SubIngester =
-  static_cast<Job_SubIngester*>(pJobClass_SubIngester->pPreJob(pSession));
+    static_cast<Job_SubIngester*>(pJobClass_SubIngester->pPreJob(pSession,iCommandId));
   
   pJob_SubIngester->m_iParentId  = pJob_Ingest->m_iUniqueId;
   

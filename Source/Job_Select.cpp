@@ -257,7 +257,7 @@ Footer* Job_Select::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Select_pre(Session* pSession)
+Job* Jobs::pJob_Select_pre(Session* pSession, i8 iCommandId)
 {
   Job_Select* pJob_Select = new Job_Select(pSession);
   

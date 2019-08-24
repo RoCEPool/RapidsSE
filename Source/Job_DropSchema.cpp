@@ -196,7 +196,7 @@ Footer* Job_DropSchema::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_DropSchema_pre(Session* pSession)
+Job* Jobs::pJob_DropSchema_pre(Session* pSession, i8 iCommandId)
 {
   Job_DropSchema* pJob_DropSchema = new Job_DropSchema(pSession);
   

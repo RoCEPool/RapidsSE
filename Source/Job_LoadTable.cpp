@@ -621,7 +621,7 @@ bool Job_LoadTable::bExtractDateFormat(Stz* dateFormat)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_LoadTable_pre(Session* pSession)
+Job* Jobs::pJob_LoadTable_pre(Session* pSession, i8 iCommandId)
 {
   Job_LoadTable* pJob_LoadTable = new Job_LoadTable(pSession);
   

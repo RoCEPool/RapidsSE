@@ -231,7 +231,7 @@ Footer* Job_IndexJoin::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_IndexJoin_pre(Session* pSession)
+Job* Jobs::pJob_IndexJoin_pre(Session* pSession, i8 iCommandId)
 {
   Job_IndexJoin* pJob_IndexJoin = new Job_IndexJoin(pSession);
   

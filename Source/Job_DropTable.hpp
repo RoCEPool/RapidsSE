@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_DropTable* _pJob_DropTable(void* aAddr);
   
-  Job* pJob_DropTable_pre(Session* pSession);
+  Job* pJob_DropTable_pre(Session* pSession, i8 iCommandId);
   void vJob_DropTable_delete(Session* pSession, Job* pJob);
   void vJob_DropTable_show(Job* pJob);
   

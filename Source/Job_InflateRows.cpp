@@ -274,7 +274,7 @@ Footer* Job_InflateRows::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_InflateRows_pre(Session* pSession)
+Job* Jobs::pJob_InflateRows_pre(Session* pSession, i8 iCommandId)
 {
   Job_InflateRows* pJob_InflateRows = new Job_InflateRows(pSession);
   

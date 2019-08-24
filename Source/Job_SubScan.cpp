@@ -170,7 +170,7 @@ Footer* Job_SubScan::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubScan_pre(Session* pSession)
+Job* Jobs::pJob_SubScan_pre(Session* pSession, i8 iCommandId)
 {
   Job_SubScan* pJob_SubScan = new Job_SubScan(pSession);
   

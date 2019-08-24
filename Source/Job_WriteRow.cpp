@@ -189,7 +189,7 @@ Job_WriteRow* Job_WriteRow::pNewJobWriteRow(Session* pSession,
   JobClass* pJobClass_WriteRow = JobClass::pFind(CN_JOB_WRITEROW);
 
   Job_WriteRow* pJob_WriteRow =
-  static_cast<Job_WriteRow*>(pJobClass_WriteRow->pPreJob(pSession));
+  static_cast<Job_WriteRow*>(pJobClass_WriteRow->pPreJob(pSession,C_UNKNOWN));
 
   pJob_WriteRow->vSeed(SS_SEED_RUN);
 
@@ -239,7 +239,7 @@ Footer* Job_WriteRow::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_WriteRow_pre(Session* pSession)
+Job* Jobs::pJob_WriteRow_pre(Session* pSession, i8 iCommandId)
 {
   Job_WriteRow* pJob_WriteRow = new Job_WriteRow(pSession);
   

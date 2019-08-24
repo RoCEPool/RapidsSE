@@ -191,7 +191,7 @@ Footer* Job_Space::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Space_pre(Session* pSession)
+Job* Jobs::pJob_Space_pre(Session* pSession, i8 iCommandId)
 {
   Job_Space* pJob_Space = new Job_Space(pSession);
   

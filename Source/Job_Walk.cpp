@@ -227,7 +227,7 @@ Footer* Job_Walk::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Walk_pre(Session* pSession)
+Job* Jobs::pJob_Walk_pre(Session* pSession, i8 iCommandId)
 {
   Job_Walk* pJob_Walk = new Job_Walk(pSession);
   

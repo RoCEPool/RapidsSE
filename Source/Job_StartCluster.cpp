@@ -190,7 +190,7 @@ Footer* Job_StartCluster::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_StartCluster_pre(Session* pSession)
+Job* Jobs::pJob_StartCluster_pre(Session* pSession, i8 iCommandId)
 {
   Job_StartCluster* pJob_StartCluster = new Job_StartCluster(pSession);
   

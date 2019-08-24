@@ -191,7 +191,7 @@ Footer* Job_Cf::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Cf_pre(Session* pSession)
+Job* Jobs::pJob_Cf_pre(Session* pSession, i8 iCommandId)
 {
   Job_Cf* pJob_Cf = new Job_Cf(pSession);
   

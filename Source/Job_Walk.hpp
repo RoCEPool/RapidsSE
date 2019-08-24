@@ -39,7 +39,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Walk* _pJob_Walk(void* aAddr);
   
-  Job* pJob_Walk_pre(Session* pSession);
+  Job* pJob_Walk_pre(Session* pSession, i8 iCommandId);
   void vJob_Walk_delete(Session* pSession, Job* pJob);
   void vJob_Walk_show(Job* pJob);
   

@@ -275,7 +275,7 @@ Footer* Job_Export::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Export_pre(Session* pSession)
+Job* Jobs::pJob_Export_pre(Session* pSession, i8 iCommandId)
 {
   Job_Export* pJob_Export = new Job_Export(pSession);
   

@@ -193,7 +193,7 @@ Footer* Job_DumpTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_DumpTable_pre(Session* pSession)
+Job* Jobs::pJob_DumpTable_pre(Session* pSession, i8 iCommandId)
 {
   Job_DumpTable* pJob_DumpTable = new Job_DumpTable(pSession);
   

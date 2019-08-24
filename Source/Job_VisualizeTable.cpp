@@ -193,7 +193,7 @@ Footer* Job_VisualizeTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_VisualizeTable_pre(Session* pSession)
+Job* Jobs::pJob_VisualizeTable_pre(Session* pSession, i8 iCommandId)
 {
   Job_VisualizeTable* pJob_VisualizeTable = new Job_VisualizeTable(pSession);
   

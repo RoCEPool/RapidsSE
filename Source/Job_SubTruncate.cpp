@@ -169,7 +169,7 @@ Footer* Job_SubTruncate::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubTruncate_pre(Session* pSession)
+Job* Jobs::pJob_SubTruncate_pre(Session* pSession, i8 iCommandId)
 {
   Job_SubTruncate* pJob_SubTruncate = new Job_SubTruncate(pSession);
   

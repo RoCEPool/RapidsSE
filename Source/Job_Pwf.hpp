@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Pwf* _pJob_Pwf(void* aAddr);
   
-  Job* pJob_Pwf_pre(Session* pSession);
+  Job* pJob_Pwf_pre(Session* pSession, i8 iCommandId);
   void vJob_Pwf_delete(Session* pSession, Job* pJob);
   void vJob_Pwf_show(Job* pJob);
   

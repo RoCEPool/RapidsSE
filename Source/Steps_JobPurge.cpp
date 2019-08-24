@@ -29,12 +29,13 @@ void Step::vJob_PurgeSpawnSub(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iSlot) )
     THROW_INVALID_DSTACK("Job_purge.spawnSub"_Stz);
   
+  i8 iCommandId = pJob_Purge->m_iCommandId;
   i8 iPurgeJobId = pJob_Purge->m_iUniqueId;
   
   JobClass* pJobClass_SubPurger = JobClass::pFind(CN_JOB_SUBPURGER);
   
   Job_SubPurger* pJob_SubPurger =
-  static_cast<Job_SubPurger*>(pJobClass_SubPurger->pPreJob(nullptr));
+  static_cast<Job_SubPurger*>(pJobClass_SubPurger->pPreJob(nullptr,iCommandId));
   
   pJob_SubPurger->vSeed(SS_SEED_RUN);
   

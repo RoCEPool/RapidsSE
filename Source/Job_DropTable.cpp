@@ -193,7 +193,7 @@ Footer* Job_DropTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_DropTable_pre(Session* pSession)
+Job* Jobs::pJob_DropTable_pre(Session* pSession, i8 iCommandId)
 {
   Job_DropTable* pJob_DropTable = new Job_DropTable(pSession);
   

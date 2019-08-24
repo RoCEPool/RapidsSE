@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_CreateTenant* _pJob_CreateTenant(void* aAddr);
   
-  Job* pJob_CreateTenant_pre(Session* pSession);
+  Job* pJob_CreateTenant_pre(Session* pSession, i8 iCommandId);
   void vJob_CreateTenant_delete(Session* pSession, Job* pJob);
   void vJob_CreateTenant_show(Job* pJob);
   

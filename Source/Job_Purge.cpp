@@ -171,7 +171,7 @@ Footer* Job_Purge::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Purge_pre(Session* pSession)
+Job* Jobs::pJob_Purge_pre(Session* pSession, i8 iCommandId)
 {
   i8 nTokens;
 

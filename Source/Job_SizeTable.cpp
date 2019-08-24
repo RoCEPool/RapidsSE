@@ -192,7 +192,7 @@ Footer* Job_SizeTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SizeTable_pre(Session* pSession)
+Job* Jobs::pJob_SizeTable_pre(Session* pSession, i8 iCommandId)
 {
   Job_SizeTable* pJob_SizeTable = new Job_SizeTable(pSession);
   

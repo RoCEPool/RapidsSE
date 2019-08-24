@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Status* _pJob_Status(void* aAddr);
   
-  Job* pJob_Status_pre(Session* pSession);
+  Job* pJob_Status_pre(Session* pSession, i8 iCommandId);
   void vJob_Status_delete(Session* pSession, Job* pJob);
   void vJob_Status_show(Job* pJob);
   

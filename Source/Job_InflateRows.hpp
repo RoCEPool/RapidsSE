@@ -46,7 +46,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_InflateRows* _pJob_InflateRows(void* aAddr);
   
-  Job* pJob_InflateRows_pre(Session* pSession);
+  Job* pJob_InflateRows_pre(Session* pSession, i8 iCommandId);
   void vJob_InflateRows_post(Session* pSession, Job* pJob);
   void vJob_InflateRows_delete(Session* pSession, Job* pJob);
   void vRetrieveRows(Job_InflateRows* pJob_InflateRows, CrwBuffer* pCrwBuffer, Row* pRow);

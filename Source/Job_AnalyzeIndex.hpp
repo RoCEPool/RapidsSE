@@ -37,7 +37,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_AnalyzeIndex* _pJob_AnalyzeIndex(void* aAddr);
   
-  Job* pJob_AnalyzeIndex_pre(Session* pSession);
+  Job* pJob_AnalyzeIndex_pre(Session* pSession, i8 iCommandId);
   Job* pJob_AnalyzeIndex_new(Job* pArg);
   void vJob_AnalyzeIndex_delete(Session* pSession, Job* pJob);
   void vJob_AnalyzeIndex_show(Job* pJob);

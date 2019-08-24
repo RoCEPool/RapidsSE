@@ -197,7 +197,7 @@ Footer* Job_SizeIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SizeIndex_pre(Session* pSession)
+Job* Jobs::pJob_SizeIndex_pre(Session* pSession, i8 iCommandId)
 {
   Job_SizeIndex* pJob_SizeIndex = new Job_SizeIndex(pSession);
   

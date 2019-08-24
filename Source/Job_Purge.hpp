@@ -40,7 +40,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Purge* _pJob_Purge(void* aAddr);
   
-  Job* pJob_Purge_pre(Session* pSession);
+  Job* pJob_Purge_pre(Session* pSession, i8 iCommandId);
   void vJob_Purge_post(Session* pSession, Job* pJob);
   Job* pJob_Purge_new(Job* pArg);
   void vJob_Purge_delete(Session* pSession, Job* pJob);

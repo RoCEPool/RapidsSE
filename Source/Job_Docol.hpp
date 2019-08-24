@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Docol* _pJob_Docol(void* aAddr);
   
-  Job* pJob_Docol_pre(Session* pSession);
+  Job* pJob_Docol_pre(Session* pSession, i8 iCommandId);
   void vJob_Docol_delete(Session* pSession, Job* pJob);
   void vJob_Docol_show(Job* pJob);
   

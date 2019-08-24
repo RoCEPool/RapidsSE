@@ -343,7 +343,7 @@ Footer* Job_CreateIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_CreateIndex_pre(Session* pSession)
+Job* Jobs::pJob_CreateIndex_pre(Session* pSession, i8 iCommandId)
 {
   Job_CreateIndex* pJob_CreateIndex = new Job_CreateIndex(pSession);
   

@@ -197,7 +197,7 @@ Footer* Job_DumpIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_DumpIndex_pre(Session* pSession)
+Job* Jobs::pJob_DumpIndex_pre(Session* pSession, i8 iCommandId)
 {
   Job_DumpIndex* pJob_DumpIndex = new Job_DumpIndex(pSession);
   

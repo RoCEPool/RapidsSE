@@ -330,7 +330,7 @@ Footer* Job_SubExporter::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubExporter_pre(Session* pSession)
+Job* Jobs::pJob_SubExporter_pre(Session* pSession, i8 iCommandId)
 {
   Job_SubExporter* pJob_SubExporter = new Job_SubExporter(pSession);
   

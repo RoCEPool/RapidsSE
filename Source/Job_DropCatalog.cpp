@@ -197,7 +197,7 @@ Footer* Job_DropCatalog::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_DropCatalog_pre(Session* pSession)
+Job* Jobs::pJob_DropCatalog_pre(Session* pSession, i8 iCommandId)
 {
   Job_DropCatalog* pJob_DropCatalog = new Job_DropCatalog(pSession);
   

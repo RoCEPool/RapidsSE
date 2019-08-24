@@ -108,7 +108,7 @@ Job* Api::pExecuteCommand(Session* pSession, Stz* sCommand,
   if (! pJobClass)
     return nullptr;
   
-  Job* pJob = pJobClass->pPreJob(pSession);
+  Job* pJob = pJobClass->pPreJob(pSession,C_UNKNOWN);
   if (! pJob) {
     return nullptr;
   }

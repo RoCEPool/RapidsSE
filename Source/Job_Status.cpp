@@ -190,7 +190,7 @@ Footer* Job_Status::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Status_pre(Session* pSession)
+Job* Jobs::pJob_Status_pre(Session* pSession, i8 iCommandId)
 {
   Job_Status* pJob_Status = new Job_Status(pSession);
   

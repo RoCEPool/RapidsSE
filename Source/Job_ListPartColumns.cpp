@@ -196,7 +196,7 @@ Footer* Job_ListPartColumns::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_ListPartColumns_pre(Session* pSession)
+Job* Jobs::pJob_ListPartColumns_pre(Session* pSession, i8 iCommandId)
 {
   Job_ListPartColumns* pJob_ListPartColumns = new Job_ListPartColumns(pSession);
   

@@ -36,7 +36,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_SubInflate* _pJob_SubInflate(void* aAddr);
   
-  Job* pJob_SubInflate_pre(Session* pSession);
+  Job* pJob_SubInflate_pre(Session* pSession, i8 iCommandId);
   void vJob_SubInflate_delete(Session* pSession, Job* pJob);
   void vJob_SubInflate_show(Job* pJob);
   

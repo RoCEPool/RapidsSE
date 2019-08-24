@@ -256,7 +256,7 @@ Footer* Job_SubPublish::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubPublish_pre(Session* pSession)
+Job* Jobs::pJob_SubPublish_pre(Session* pSession, i8 iCommandId)
 {
   Job_SubPublish* pJob_SubPublish = new Job_SubPublish(pSession);
   

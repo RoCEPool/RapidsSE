@@ -254,7 +254,7 @@ Footer* Job_SubInserter::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubInserter_pre(Session* pSession)
+Job* Jobs::pJob_SubInserter_pre(Session* pSession, i8 iCommandId)
 {
   Job_SubInserter* pJob_SubInserter = new Job_SubInserter(pSession);
   

@@ -459,7 +459,7 @@ Footer* Job_SubWalker::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubWalker_pre(Session* pSession)
+Job* Jobs::pJob_SubWalker_pre(Session* pSession, i8 iCommandId)
 {
   Job_SubWalker* pJob_SubWalker = new Job_SubWalker(pSession);
   

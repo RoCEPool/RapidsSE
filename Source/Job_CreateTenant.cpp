@@ -194,7 +194,7 @@ Footer* Job_CreateTenant::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_CreateTenant_pre(Session* pSession)
+Job* Jobs::pJob_CreateTenant_pre(Session* pSession, i8 iCommandId)
 {
   Job_CreateTenant* pJob_CreateTenant = new Job_CreateTenant(pSession);
   

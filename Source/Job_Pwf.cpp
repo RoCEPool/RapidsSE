@@ -192,7 +192,7 @@ Footer* Job_Pwf::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Pwf_pre(Session* pSession)
+Job* Jobs::pJob_Pwf_pre(Session* pSession, i8 iCommandId)
 {
   Job_Pwf* pJob_Pwf = new Job_Pwf(pSession);
   

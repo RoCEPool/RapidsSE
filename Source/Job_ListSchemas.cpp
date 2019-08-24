@@ -192,7 +192,7 @@ Footer* Job_ListSchemas::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_ListSchemas_pre(Session* pSession)
+Job* Jobs::pJob_ListSchemas_pre(Session* pSession, i8 iCommandId)
 {
   Job_ListSchemas* pJob_ListSchemas = new Job_ListSchemas(pSession);
   

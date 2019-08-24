@@ -192,7 +192,7 @@ Footer* Job_ListTables::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_ListTables_pre(Session* pSession)
+Job* Jobs::pJob_ListTables_pre(Session* pSession, i8 iCommandId)
 {
   Job_ListTables* pJob_ListTables = new Job_ListTables(pSession);
   

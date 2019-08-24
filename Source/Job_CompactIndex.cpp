@@ -197,7 +197,7 @@ Footer* Job_CompactIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_CompactIndex_pre(Session* pSession)
+Job* Jobs::pJob_CompactIndex_pre(Session* pSession, i8 iCommandId)
 {
   Job_CompactIndex* pJob_CompactIndex = new Job_CompactIndex(pSession);
   

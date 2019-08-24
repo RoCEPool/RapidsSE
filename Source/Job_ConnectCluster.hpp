@@ -34,7 +34,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_ConnectCluster* _pJob_ConnectCluster(void* aAddr);
   
-  Job* pJob_ConnectCluster_pre(Session* pSession);
+  Job* pJob_ConnectCluster_pre(Session* pSession, i8 iCommandId);
   void vJob_ConnectCluster_post(Session* pSession, Job* pJob);
   void vJob_ConnectCluster_delete(Session* pSession, Job* pJob);
   void vJob_ConnectCluster_show(Job* pJob);

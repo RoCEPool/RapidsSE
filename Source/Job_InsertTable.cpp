@@ -175,7 +175,7 @@ Footer* Job_InsertTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_InsertTable_pre(Session* pSession)
+Job* Jobs::pJob_InsertTable_pre(Session* pSession, i8 iCommandId)
 {
   Job_InsertTable* pJob_InsertTable = new Job_InsertTable(pSession);
   

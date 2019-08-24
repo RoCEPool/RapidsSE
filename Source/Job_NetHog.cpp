@@ -172,7 +172,7 @@ Footer* Job_NetHog::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_NetHog_pre(Session* pSession)
+Job* Jobs::pJob_NetHog_pre(Session* pSession, i8 iCommandId)
 {
   Job_NetHog* pJob_NetHog = new Job_NetHog(pSession);
   

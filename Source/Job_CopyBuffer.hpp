@@ -40,7 +40,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_CopyBuffer* _pJob_CopyBuffer(void* aAddr);
   
-  Job* pJob_CopyBuffer_pre(Session* pSession);
+  Job* pJob_CopyBuffer_pre(Session* pSession, i8 iCommandId);
   Job* pJob_CopyBuffer_new(Job* pArg);
   void vJob_CopyBuffer_delete(Session* pSession, Job* pJob);
   void vJob_CopyBuffer_show(Job* pJob);

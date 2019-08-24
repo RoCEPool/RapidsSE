@@ -205,7 +205,7 @@ Footer* Job_DropIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_DropIndex_pre(Session* pSession)
+Job* Jobs::pJob_DropIndex_pre(Session* pSession, i8 iCommandId)
 {
   Job_DropIndex* pJob_DropIndex = new Job_DropIndex(pSession);
   

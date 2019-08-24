@@ -338,7 +338,7 @@ Footer* Job_SubLoader::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::vJob_SubLoader_pre(Session* pSession)
+Job* Jobs::vJob_SubLoader_pre(Session* pSession, i8 iCommandId)
 {
   Job_SubLoader* pJob_SubLoader = new Job_SubLoader(pSession);
   

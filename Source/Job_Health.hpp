@@ -36,7 +36,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Health* _pJob_Health(void* aAddr);
   
-  Job* pJob_Health_pre(Session* pSession);
+  Job* pJob_Health_pre(Session* pSession, i8 iCommandId);
   void vJob_Health_post(Session* pSession, Job* pJob);
   Job* pJob_Health_new(Job* pArg);
   void vJob_Health_delete(Session* pSession, Job* pJob);

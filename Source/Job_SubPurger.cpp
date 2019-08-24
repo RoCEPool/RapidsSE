@@ -227,7 +227,7 @@ Footer* Job_SubPurger::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubPurger_pre(Session* pSession)
+Job* Jobs::pJob_SubPurger_pre(Session* pSession, i8 iCommandId)
 {
   Job_SubPurger* pJob_SubPurger = new Job_SubPurger(pSession);
   

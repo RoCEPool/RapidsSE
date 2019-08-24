@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_ListTables* _pJob_ListTables(void* aAddr);
   
-  Job* pJob_ListTables_pre(Session* pSession);
+  Job* pJob_ListTables_pre(Session* pSession, i8 iCommandId);
   void vJob_ListTables_delete(Session* pSession, Job* pJob);
   void vJob_ListTables_show(Job* pJob);
   

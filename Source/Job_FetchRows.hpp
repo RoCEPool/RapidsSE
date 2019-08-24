@@ -62,7 +62,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_FetchRows* _pJob_FetchRows(void* aAddr);
   
-  Job* pJob_FetchRows_pre(Session* pSession);
+  Job* pJob_FetchRows_pre(Session* pSession, i8 iCommandId);
   void vJob_FetchRows_post(Session* pSession, Job* pJob);
   void vJob_FetchRows_delete(Session* pSession, Job* pJob);
   void vIterateBuffer(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetchBuffer, i8& iRowsPrinted);

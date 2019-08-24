@@ -41,7 +41,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Publish* _pJob_Publish(void* aAddr);
   
-  Job* pJob_Publish_pre(Session* pSession);
+  Job* pJob_Publish_pre(Session* pSession, i8 iCommandId);
   void vJob_Publish_post(Session* pSession, Job* pJob);
   Job* pJob_Publish_new(Job* pArg);
   void vJob_Publish_delete(Session* pSession, Job* pJob);

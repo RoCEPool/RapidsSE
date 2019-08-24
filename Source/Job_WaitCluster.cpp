@@ -191,7 +191,7 @@ Footer* Job_WaitCluster::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_WaitCluster_pre(Session* pSession)
+Job* Jobs::pJob_WaitCluster_pre(Session* pSession, i8 iCommandId)
 {
   Job_WaitCluster* pJob_WaitCluster = new Job_WaitCluster(pSession);
   

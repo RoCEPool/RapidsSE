@@ -201,7 +201,7 @@ Footer* Job_AnalyzeIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_AnalyzeIndex_pre(Session* pSession)
+Job* Jobs::pJob_AnalyzeIndex_pre(Session* pSession, i8 iCommandId)
 {
   Job_AnalyzeIndex* pJob_AnalyzeIndex = new Job_AnalyzeIndex(pSession);
   

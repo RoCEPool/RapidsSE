@@ -36,13 +36,14 @@ void Step::vJob_SubWalkerSpawn(MP_Task mpTask)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  i8 iCommandId = pJob_Walk->m_iCommandId;
   Session* pSession = pJob_Walk->m_pSession;
   
   //! this needs to be optimised
   JobClass* pJobClass_SubWalker = JobClass::pFind(CN_JOB_SUBWALKER);
   
   Job_SubWalker* pJob_SubWalker =
-    static_cast<Job_SubWalker*>(pJobClass_SubWalker->pPreJob(pSession));
+    static_cast<Job_SubWalker*>(pJobClass_SubWalker->pPreJob(pSession,iCommandId));
   
   pJob_SubWalker->m_i_ActionRoot = pJob_Walk->m_i_ActionRoot;
   pJob_SubWalker->m_iParentId    = pJob_Walk->m_iUniqueId;

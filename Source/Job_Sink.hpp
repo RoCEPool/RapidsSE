@@ -40,7 +40,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Sink* _pJob_Sink(void* aAddr);
   
-  Job* pJob_Sink_pre(Session* pSession);
+  Job* pJob_Sink_pre(Session* pSession, i8 iCommandId);
   Job* pJob_Sink_new(Job* pArg);
   void vJob_Sink_delete(Session* pSession, Job* pJob);
   void vJob_Sink_show(Job* pJob);

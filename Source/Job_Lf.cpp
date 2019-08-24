@@ -192,7 +192,7 @@ Footer* Job_Lf::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Lf_pre(Session* pSession)
+Job* Jobs::pJob_Lf_pre(Session* pSession, i8 iCommandId)
 {
   Job_Lf* pJob_Lf = new Job_Lf(pSession);
   
