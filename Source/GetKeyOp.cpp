@@ -64,7 +64,6 @@ GetKeyOp::GetKeyOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   m_sKey       = ""_Stz;
   m_iKeyCol    = -1;
   
-  m_pRightStreamDef = nullptr;
   m_bKeyIsLeft = true;
   
   _checkInitialised_(CN_GETKEYOP);
@@ -79,8 +78,6 @@ GetKeyOp::~GetKeyOp(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GETKEYOP,_FOOTER_);
   
-  if (m_pRightStreamDef)
-    delete m_pRightStreamDef;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -181,7 +178,7 @@ eOR GetKeyOp::eOpLoop(void)
         SrtBuffer* pSrtBuffer = pRefBuffer->pToSrtBuffer(m_iKeyCol, m_bKeyIsLeft,
                                                          m_pStreamDef->m_oColVecAry.pGet(0),
                                                          m_pStreamDef->m_oColVecAry.pGet(1));
-        //pSrtBuffer->vShow(m_pStreamDef->m_pColumnVec, m_pRightStreamDef->m_pColumnVec);
+        
         SrtBuffer* pBuffer = pSrtBuffer;
         while (pBuffer) {
           SrtBuffer* pPipeOut = pBuffer;
@@ -195,41 +192,41 @@ eOR GetKeyOp::eOpLoop(void)
         
       case CN_STREAMDEF: {
         StreamDef* pStreamDef = _pStreamDef(pOperand) ;
-        if ( ! m_pStreamDef )
-          m_pStreamDef = new StreamDef(pStreamDef);
-        else {
-          m_pStreamDef->vAdd(pStreamDef);
-        }
-        
+        m_pStreamDef = new StreamDef(pStreamDef);
+     
         // figure out the key idx
-        ColumnVec* pColumnVec = m_pStreamDef->m_oColVecAry.pGet(0);
-        i8 nColumns = pColumnVec->nItems();
-        for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-          Column* pCol = pColumnVec->pGet(i_Col);
-          if (StrLib::bEqualTo(m_sKey.aChar(),pCol->sColumnName().aChar(),C_NO_CASE)) {
-            m_iKeyCol = i_Col;
-            break;
-          }
-        }
-        if (m_iKeyCol == -1) {
-          // this must be the left streamDef coming from a join
-          // do we have a right def ?
-          if (m_pStreamDef->m_oColVecAry.nItems() == 2) {
-            pColumnVec = m_pStreamDef->m_oColVecAry.pGet(1);
-            if (pColumnVec) {
-              // figure out the key idx
-              i8 nColumns = pColumnVec->nItems();
-              for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-                Column* pCol = pColumnVec->pGet(i_Col);
-                if (StrLib::bEqualTo(m_sKey.aChar(),pCol->sColumnName().aChar(),C_NO_CASE)) {
-                  m_iKeyCol = i_Col;
-                  m_bKeyIsLeft = false;
-                  break;
-                }
-              }
+
+        for (i8 i_ColVec = 0; i_ColVec < m_pStreamDef->m_oColVecAry.nItems(); i_ColVec++) {
+          ColumnVec* pColumnVec = m_pStreamDef->m_oColVecAry.pGet(i_ColVec);
+          i8 nColumns = pColumnVec->nItems();
+          for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+            Column* pCol = pColumnVec->pGet(i_Col);
+            if (StrLib::bEqualTo(m_sKey.aChar(),pCol->sColumnName().aChar(),C_NO_CASE)) {
+              m_iKeyCol = i_Col;
+              break;
             }
           }
         }
+
+        RASSERT(m_iKeyCol != -1);
+//          // this must be the left streamDef coming from a join
+//          // do we have a right def ?
+//          if (m_pStreamDef->m_oColVecAry.nItems() == 2) {
+//            pColumnVec = m_pStreamDef->m_oColVecAry.pGet(1);
+//            if (pColumnVec) {
+//              // figure out the key idx
+//              i8 nColumns = pColumnVec->nItems();
+//              for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+//                Column* pCol = pColumnVec->pGet(i_Col);
+//                if (StrLib::bEqualTo(m_sKey.aChar(),pCol->sColumnName().aChar(),C_NO_CASE)) {
+//                  m_iKeyCol = i_Col;
+//                  m_bKeyIsLeft = false;
+//                  break;
+//                }
+//              }
+//            }
+//          }
+//        }
         
         vPipeOut(pOperand);
         

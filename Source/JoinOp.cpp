@@ -61,10 +61,11 @@ JoinOp::JoinOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   m_bEndRightOperands = false;
   
   m_pRefBuffer = nullptr;
-  m_pRightStreamDef = nullptr;
   
   m_eNextEntry = NE_NEXT_LEFT_RIGHT;
   m_bGotLeft = false;
+  
+  m_pStreamDef = new StreamDef;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -73,9 +74,7 @@ JoinOp::JoinOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
 JoinOp::~JoinOp(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_JOINOP);
-  
-  if (m_pRightStreamDef)
-    delete m_pRightStreamDef;
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -127,18 +126,8 @@ void JoinOp::vAddRowRefs(Ent* aLeftEntry, Ent* aRightEntry)
     
     // pipe out the stream def's
     RASSERT(m_pStreamDef);
-    RASSERT(m_pRightStreamDef);
     vPipeOut(m_pStreamDef);
-    vPipeOut(m_pRightStreamDef);
     m_pStreamDef = nullptr;
-    m_pRightStreamDef = nullptr;
-    
-//    StreamDef* pRightStreamDef = _pStreamDef(pRightOperand);
-//    for (i8 i_Col = 0; i_Col < pRightStreamDef->m_pColumnVec->nItems(); i_Col++) {
-//      Column* pCol = new Column();
-//      pCol->vCopy(pRightStreamDef->m_pColumnVec->pGet(i_Col));
-//      m_pStreamDef->m_pColumnVec->vAdd(pCol);
-//    }
   }
   
   RefSet* pRefSet = m_pRefBuffer->aAllotRefSet(2);
@@ -398,7 +387,9 @@ eOR JoinOp::ePopLeftOperand()
     }
     
     if (CN_STREAMDEF == pLeftOperand->eClass()) {
-      m_pStreamDef = _pStreamDef(pLeftOperand);
+      StreamDef* pStreamDef = _pStreamDef(pLeftOperand);
+      m_pStreamDef->vAdd(pStreamDef);
+      delete pStreamDef;
       continue;
     }
     
@@ -445,7 +436,9 @@ eOR JoinOp::ePopRightOperand()
     }
     
     if (CN_STREAMDEF == pRightOperand->eClass()) {
-      m_pRightStreamDef = _pStreamDef(pRightOperand);
+      StreamDef* pStreamDef = _pStreamDef(pRightOperand);
+      m_pStreamDef->vAdd(pStreamDef);
+      delete pStreamDef;
       continue;
     }
     

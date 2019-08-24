@@ -71,18 +71,22 @@ StreamDef::StreamDef(StreamDef* pStreamDef)
   
   m_iStreamId = AM::iNextStreamId();
   
-  m_oColVecAry.vItems(1);
-  ColumnVec* pThisColumnVec = m_oColVecAry.pGet(0);
-  ColumnVec* pStreamColVec = pStreamDef->m_oColVecAry.pGet(0);
+  i8 nColVecs = pStreamDef->m_oColVecAry.nItems();
+  m_oColVecAry.vItems(nColVecs);
   
-  // get no of columns
-  i8 nColumns = pStreamColVec->nItems();
-  
-  // add columns to streamdef
-  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-    Column* pColumn = new Column;
-    pColumn->vCopy(pStreamColVec->pGet(i_Col));
-    pThisColumnVec->vAdd(pColumn);
+  for (i8 i_ColVec = 0; i_ColVec < nColVecs; i_ColVec++) {
+    ColumnVec* pThisColumnVec = m_oColVecAry.pGet(i_ColVec);
+    ColumnVec* pStreamColVec = pStreamDef->m_oColVecAry.pGet(i_ColVec);
+    
+    // get no of columns
+    i8 nColumns = pStreamColVec->nItems();
+    
+    // add columns to streamdef
+    for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+      Column* pColumn = new Column;
+      pColumn->vCopy(pStreamColVec->pGet(i_Col));
+      pThisColumnVec->vAdd(pColumn);
+    }
   }
   
   m_bTemp = true;
@@ -93,7 +97,7 @@ StreamDef::StreamDef(StreamDef* pStreamDef)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add column vec from stream def                                                                */
+/* add column vec from stream def                                             */
 /*----------------------------------------------------------------------------*/
 void StreamDef::vAdd(StreamDef* pStreamDef)
 {

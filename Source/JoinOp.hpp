@@ -22,8 +22,6 @@ namespace DataOperators
     
     RefBuffer* m_pRefBuffer;
     
-    StreamDef* m_pRightStreamDef;
-    
     bool m_bGotLeft;
     
     // must be last

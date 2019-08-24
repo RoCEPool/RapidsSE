@@ -11,7 +11,6 @@ namespace DataOperators
   
     s256 m_sKey;
     i8   m_iKeyCol;
-    StreamDef* m_pRightStreamDef;
     bool m_bKeyIsLeft;
     
     // must be last
