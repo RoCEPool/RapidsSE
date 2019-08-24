@@ -81,10 +81,10 @@ Job::Job(eCN eClassNo, Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
   
   //m_oAcksRmg
   
-  if (AM::pMarkJob()->bAll() || AM::pMarkJob()->bEnum(eClass()))
-    m_bLogJob = true;
-  else
-    m_bLogJob = false;
+//  if (AM::pMarkJob()->bAll() || AM::pMarkJob()->bEnum(eClass()))
+//    m_xReqTuple.m_bLogJob = true;
+//  else
+//    m_xReqTuple.m_bLogJob = false;
   
   if ( AM::pMarkTrace()->bAll() ||
        AM::pMarkTrace()->bFlagged(eClass()) )

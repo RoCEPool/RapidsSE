@@ -20,7 +20,6 @@ namespace Jobs
       i8   m_iRequestId; // the command which trigger the job
       i8   m_i_State;    // which session state
       bool m_bMarkTrace; // trace (mark version)
-      bool m_bLogJob;    // mark activity
     };
   
     i8   m_iParentId;    // job id of parent job which spawned this JK_CHILD job
