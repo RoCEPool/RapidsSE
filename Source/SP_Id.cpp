@@ -41,6 +41,15 @@ Stz* SP_Id::sz(Stz* szPrefix, i8 iId)
     _Id wId;
   } U;
   
+  
+  if (C_UNKNOWN == iId) {
+    StrLib::vSprint(m_caResult,"%s-.---"_Stz,szPrefix);
+    return (Stz*) &m_caResult[0];
+ }
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   U.iId = iId;
   
   StrLib::vSprint(m_caResult,
