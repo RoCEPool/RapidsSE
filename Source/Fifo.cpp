@@ -81,7 +81,8 @@ bool Fifo::bMake(Stz* sFifoPath)
     return false;
   }
   
-  AM::vLogFyi("Fifo made : %s"_Stz,sFifoPath->aChar());
+  AM::vLogFyi("Fifo made : %s"_Stz, //!format-LogFyi
+              sFifoPath->aChar());
 
   return true;
 }
@@ -98,7 +99,8 @@ bool Fifo::bRemove(Stz* sFifoPath)
     return false;
   }
   
-  AM::vLogFyi("Fifo removed : %s"_Stz,sFifoPath->aChar());
+  AM::vLogFyi("Fifo removed : %s"_Stz, //!format-LogFyi
+              sFifoPath->aChar());
   
   return true;
 }

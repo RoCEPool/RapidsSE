@@ -809,7 +809,8 @@ void AM::vNap(i8 nMilliSeconds, eCN eCallingClass)
   pStats->Thread.m_iaDuration[eCallingClass] += nMilliSeconds * C_1K;
 #endif
   
-  AM::vLogFyi("%s naps for %lldms"_Stz,aCN[eCallingClass],nMilliSeconds);
+  AM::vLogFyi("%s naps for %lldms"_Stz, //!format-LogFyi
+              aCN[eCallingClass],nMilliSeconds);
   
   i8 rCode = nanosleep(&xReq,&xRem);
   
@@ -817,7 +818,8 @@ void AM::vNap(i8 nMilliSeconds, eCN eCallingClass)
     vWarn("AM::vNap error; errno=%lld\n"_Stz,errno);
   }
   
-  AM::vLogFyi("%s woken from nap"_Stz,aCN[eCallingClass]);
+  AM::vLogFyi("%s woken from nap"_Stz, //!format-LogFyi
+              aCN[eCallingClass]);
 }
 
 /*----------------------------------------------------------------------------*/

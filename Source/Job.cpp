@@ -118,7 +118,8 @@ Job::Job(eCN eClassNo, Session* pSession, i8 iRequestId)
   
   ++ gixJob;
   AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCTOR,
-              "Job constructed : %p (%lld jobs exist)"_Stz,this,* gixJob);
+              "Job constructed : %p (%lld jobs exist)"_Stz, //!format-LogJob
+              this,* gixJob);
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
 }
@@ -136,7 +137,8 @@ Job::~Job(void) noexcept(false)
   
   -- gixJob;
   AM::vLogJob(SL_INF,this,JA_JOB_DESTRUCTOR,
-              "Job destructed : %p (%lld jobs exist)"_Stz,this,* gixJob);
+              "Job destructed : %p (%lld jobs exist)"_Stz, //!format-LogJob
+              this,* gixJob);
 }
 
 /*----------------------------------------------------------------------------*/
