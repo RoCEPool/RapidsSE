@@ -570,7 +570,7 @@ void AM::vLogQue(eSL eSeverity, Queues* pQue, eQA eQueAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a request log entry                                                    */
 /*----------------------------------------------------------------------------*/
-void AM::vLogReq(eSL eSeverity, Request* pCmd, eMA eReqAct, Stz* szFormat, ...)
+void AM::vLogReq(eSL eSeverity, Request* pReq, eMA eReqAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())
@@ -584,12 +584,12 @@ void AM::vLogReq(eSL eSeverity, Request* pCmd, eMA eReqAct, Stz* szFormat, ...)
   
   va_start(xVaArgs,szFormat);
   
-  i8 i_Entry = gpLog->iEntryReq(eSeverity,pCmd,eReqAct,
+  i8 i_Entry = gpLog->iEntryReq(eSeverity,pReq,eReqAct,
                                 szFormat,xVaArgs);
   
   va_end(xVaArgs);
   
-  pCmd->m_i_Log = i_Entry;
+  pReq->m_i_Log = i_Entry;
 #endif
 }
 
