@@ -45,7 +45,7 @@ void Request::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 Request::Request(Session* p_Session, TokenVec* p_TknVec)
 : Focal(CN_REQUEST,AM::iNextRequest())
-, ReqTuple(nullptr)
+, m_xReqTuple(nullptr)
 {
   _precondition_(_MAGIC_,CN_REQUEST,_FOOTER_);
   

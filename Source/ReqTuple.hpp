@@ -8,6 +8,7 @@ namespace Sessions
   class ReqTuple
   {
   public:
+    i8 m__iDummy;
   
   public:
     void* operator new(size_t);

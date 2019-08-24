@@ -58,6 +58,7 @@ bool Jobs::_bIsValidJob(eCN eClass)
 Job::Job(eCN eClassNo, Session* pSession, i8 iRequestId)
 : Focal(eClassNo,AM::iNextJobId())
 , JobDicPath(pSession)
+, m_xReqTuple(nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
@@ -65,6 +66,8 @@ Job::Job(eCN eClassNo, Session* pSession, i8 iRequestId)
   //       AM::pGrid()->pThisNode()->aNodeName(), this, aCN[eClass()]);
   
   m_iRequestId = iRequestId;
+  
+  // m_xReqTuple
   
   m_iParentId = C_UNKNOWN;
   m_eSeed     = SS_ENUMS;

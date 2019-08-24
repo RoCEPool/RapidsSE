@@ -5,10 +5,11 @@
 
 namespace Sessions
 {
-  class Request : public Focal,
-                  public ReqTuple
+  class Request : public Focal
   {
   private:
+    ReqTuple  m_xReqTuple;
+  
     Session*  m_p_Session;
     TokenVec* m_p_TknVec;
   

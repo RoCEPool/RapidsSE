@@ -13,6 +13,8 @@ namespace Jobs
   public:
   
     JobClass* m_pJobClass; // job class
+  
+    ReqTuple  m_xReqTuple; // the request tuple
 
     struct {
       i8   m_iRequestId; // the command which trigger the job
