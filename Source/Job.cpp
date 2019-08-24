@@ -82,7 +82,6 @@ Job::Job(eCN eClassNo, Session* pSession, i8 iRequestId)
     m_bLogJob = true;
   else
     m_bLogJob = false;
-  m_i_Activity   = C_UNKNOWN;
   
   if ( AM::pMarkAction()->bAll() ||
        AM::pMarkAction()->bFlagged(eClass()) ) {

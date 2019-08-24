@@ -12,11 +12,15 @@ namespace Jobs
   {
   public:
   
-    i8  m_iRequestId; // the command which trigger the job
+    struct {
+      i8   m_iRequestId; // the command which trigger the job
+      i8   m_i_State;    // which session state
+      bool m_bMarkTrace; // trace (mark version)
+      bool m_bLogJob;    // mark activity
+    };
   
     i8  m_iParentId;  // job id of parent job which spawned this JK_CHILD job
     eSS m_eSeed;      // task seed
-    i8  m_i_State;    // which session state
     i8  m_i_Slot;     // slot this sub truncate truncates
     eJP m_eJobPhase;  // which phase the job is in
     eJS m_eJobState;  // job state
@@ -25,10 +29,6 @@ namespace Jobs
     bool m_bWasReceived; // job was received over a socket
 
     Decider m_oAcksRmg;  // acks remaining
-
-    bool m_bMarkTrace;    // trace (mark version)
-    bool m_bLogJob; // mark activity
-    i8   m_i_Activity;    // activity
   
     i8   m_i_ActionRoot;  // action
 

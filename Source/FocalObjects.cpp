@@ -109,7 +109,7 @@ void FocalObjects::vMri(TokenVec* pTknVec)
     i8 i_Focal = pTknVec->pGet(1)->iToI8();
     vMriFocal(i_Focal);
     return;
- }
+  }
 
   if (3 == nTokens && pTknVec->pGet(1)->bSame("class"_Stz)
                    && pTknVec->pGet(2)->bIsName()) {
