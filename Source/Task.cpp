@@ -143,7 +143,6 @@ void Task::vInit(void)
   // m_oWakeup
   
   m_iTracing     = C_TRACE_NONE;
-  m_i_ActionRoot = C_UNKNOWN;
   m_i_NextRnd    = AM::bDeveloper() ? 0 : C_UNKNOWN;
   
   m_pForthClump  = nullptr;
