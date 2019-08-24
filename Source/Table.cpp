@@ -422,7 +422,7 @@ void Table::vContentDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  vDump(CN_TABLE, this, Stz::aTab(1));
+  vDump(CN_TABLE, this, Stz::szTab(1));
 }
 
 /*----------------------------------------------------------------------------*/

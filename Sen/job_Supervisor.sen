@@ -42,7 +42,7 @@
 
   begin
 
-    args.supervisorSleep thread::sleepMsec
+    args.supervisorSleep thread::sleepSsec
 
   again
 

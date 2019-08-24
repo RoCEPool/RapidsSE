@@ -60,7 +60,8 @@ Pthread::Pthread()
 
   ++ gixPthread;
   AM::vLogRes(SL_INF,this,RA_THD_CONSTRUCTOR,
-              "Pthread constructed : %p (%lld pthreads exist)"_Stz,this,* gixPthread);
+              "Pthread constructed : %p (%lld pthreads exist)"_Stz, //!format-LogRes
+              this,* gixPthread);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
 }
@@ -74,7 +75,8 @@ Pthread::~Pthread(void) noexcept(false)
   
   -- gixPthread;
   AM::vLogRes(SL_INF,this,RA_THD_DESTRUCTOR,
-              "Pthread destructed : %p (%lld pthreads exist)"_Stz,this,* gixPthread);
+              "Pthread destructed : %p (%lld pthreads exist)"_Stz, //!format-LogRes
+              this,* gixPthread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -460,7 +462,7 @@ void Pthread::vSetOSThreadId(void)
 void Pthread::vSleepInfinite(void)
 {
   AM::vLogRes(SL_INF,this,RA_THD_SLEEP_INDEFINITE,
-              "Thead sleeps indefinitely"_Stz);
+              "Thead sleeps indefinitely"_Stz); //!format-LogRes
   for (;;)
     sleep(C_1B);
 }
@@ -490,7 +492,8 @@ void Pthread::vSleepMsec(i8 nMilliSeconds, eCN eCallingClass)
 #endif
   
   AM::vLogRes(SL_INF,this,RA_THD_SLEEP,
-              "Pthread nanosleeps for %lldms"_Stz,nMilliSeconds);
+              "Pthread sleeps for %lldms via nanosleep()"_Stz, //!format-LogRes
+              nMilliSeconds);
   
   i8 rCode = nanosleep(&xReq,&xRem);
   
@@ -499,7 +502,7 @@ void Pthread::vSleepMsec(i8 nMilliSeconds, eCN eCallingClass)
   }
   
   AM::vLogRes(SL_INF,this,RA_THD_AWAKE,
-              "Thead is awake"_Stz);
+              "Thead is awake"_Stz); //!format-LogRes
 }
 
 /*----------------------------------------------------------------------------*/
@@ -527,7 +530,8 @@ void Pthread::vSleepNsec(i8 nNanoSeconds, eCN eCallingClass)
 #endif
   
   AM::vLogRes(SL_INF,this,RA_THD_SLEEP,
-              "Pthread nanosleeps for %lldns"_Stz,nNanoSeconds);
+              "Pthread sleeps for %lldns via nanosleep()"_Stz, //!format-LogRes
+              nNanoSeconds);
   
   i8 rCode = nanosleep(&xReq,&xRem);
   
@@ -535,7 +539,7 @@ void Pthread::vSleepNsec(i8 nNanoSeconds, eCN eCallingClass)
     vWarn("Pthread::vSleepNsec error; errno=%lld\n"_Stz,errno);
   }
   AM::vLogRes(SL_INF,this,RA_THD_AWAKE,
-              "Thead is awake"_Stz);
+              "Thead is awake"_Stz); //!format-LogRes
 }
 
 /*----------------------------------------------------------------------------*/
@@ -552,12 +556,13 @@ void Pthread::vSleepSsec(i8 nSeconds, eCN eCallingClass)
 #endif
   
   AM::vLogRes(SL_INF,this,RA_THD_SLEEP,
-              "Pthead sleeps for %llds"_Stz,nSeconds);
+              "Pthead sleeps for %llds via sleep()"_Stz, //!format-LogRes
+              nSeconds);
   
   sleep((unsigned)nSeconds);
   
   AM::vLogRes(SL_INF,this,RA_THD_AWAKE,
-              "Thead is awake"_Stz);
+              "Thead is awake"_Stz); //!format-LogRes
 }
 
 /*----------------------------------------------------------------------------*/
@@ -585,13 +590,17 @@ void Pthread::vSleepUsec(i8 nMicroSeconds, eCN eCallingClass)
 #endif
   
   AM::vLogRes(SL_INF,this,RA_THD_SLEEP,
-              "Pthread nanosleeps for %lldus"_Stz,nMicroSeconds);
+              "Pthread sleeps for %lldus via nanosleep()"_Stz, //!format-LogRes
+              nMicroSeconds);
   
   i8 rCode = nanosleep(&xReq,&xRem);
   
   if (rCode && errno != EINTR) {
     vWarn("Pthread::vSleepMicro error; errno=%lld\n"_Stz,errno);
   }
+  
+  AM::vLogRes(SL_INF,this,RA_THD_AWAKE,
+              "Thead is awake"_Stz); //!format-LogRes
 }
 
 
@@ -622,7 +631,8 @@ bool Pthread::bSpawnThread(void* pFun(void*), void* pArg)
   if (AM::pMarkResource()->bEnum(CN_PTHREAD) ||
       AM::pMarkResource()->bAll())
     AM::vLogRes(SL_INF,this,RA_THD_SPAWNED,
-                "Thread spawned : %lld"_Stz,m_iPthreadId);
+                "Thread spawned : %lld"_Stz, //!format-LogRes
+                m_iPthreadId);
 
   // this is important otherwise resources are not released
   pthread_detach(m_iPthreadId);

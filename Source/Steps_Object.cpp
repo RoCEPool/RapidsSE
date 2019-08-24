@@ -71,7 +71,7 @@ void Step::vObjectDump(MP_Task mpTask)
   
   pDUMPFUN* pDumpFun =gpDump[eClass];
   
-  (pDumpFun)(pObject->eClass(), pObject, Stz::aTab(1));
+  (pDumpFun)(pObject->eClass(), pObject, Stz::szTab(1));
   
   EXIT();
 }

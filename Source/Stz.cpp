@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Stz.cpp -- str datum                                                       */
+/* Stz.cpp -- null terminated str                                             */
 /*============================================================================*/
 
 #include "Correctness.h"
@@ -28,9 +28,9 @@ Stz::Stz(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Stz::Stz(Stz* aArg)
+Stz::Stz(Stz* szArg)
 {
-  StrLib::vCopy(aChar(),aArg->aChar());
+  StrLib::vCopy(aChar(),szArg->aChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -55,7 +55,7 @@ char* Stz::aChar(void)
 /*----------------------------------------------------------------------------*/
 /* get tab                                                                    */
 /*----------------------------------------------------------------------------*/
-Stz* Stz::aTab(i8 iDepth)
+Stz* Stz::szTab(i8 iDepth)
 {
   switch(iDepth) {
     case  0:  return ""_Stz;
@@ -103,63 +103,63 @@ void Stz::operator =(i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* = operator                                                                 */
 /*----------------------------------------------------------------------------*/
-void Stz::operator =(Stz* aArg)
+void Stz::operator =(Stz* szArg)
 {
-  StrLib::vCopy(aChar(),aArg->aChar());
+  StrLib::vCopy(aChar(),szArg->aChar());
 }
 
 /*----------------------------------------------------------------------------*/
 /* = operator                                                                 */
 /*----------------------------------------------------------------------------*/
-void Stz::operator =(void* aArg)
+void Stz::operator =(void* szArg)
 {
-  StrLib::wToPointer(aArg,aChar());
+  StrLib::wToPointer(szArg,aChar());
 }
 
 /*----------------------------------------------------------------------------*/
 /* formatted concatenated sprint                                              */
 /*----------------------------------------------------------------------------*/
-void Stz::vCatSprint(Stz* aFormat, ...)
+void Stz::vCatSprint(Stz* szFormat, ...)
 {
   va_list args;
   
   char* aEnd = aChar() + iLength();
 
-  va_start(args,aFormat);
-  vsprintf(aEnd,aFormat->aChar(),args);
+  va_start(args,szFormat);
+  vsprintf(aEnd,szFormat->aChar(),args);
   va_end(args);
 }
 
 /*----------------------------------------------------------------------------*/
 /* concat argument                                                            */
 /*----------------------------------------------------------------------------*/
-void Stz::vConcat(Stz* aArg)
+void Stz::vConcat(Stz* szArg)
 {
-  StrLib::vConcat(aChar(),aArg->aChar());
+  StrLib::vConcat(aChar(),szArg->aChar());
 }
 
 /*----------------------------------------------------------------------------*/
 /* copy argument                                                              */
 /*----------------------------------------------------------------------------*/
-void Stz::vCopy(Stz* aArg)
+void Stz::vCopy(Stz* szArg)
 {
-  StrLib::vCopy(aChar(),aArg->aChar());
+  StrLib::vCopy(aChar(),szArg->aChar());
 }
 
 /*----------------------------------------------------------------------------*/
 /* copy argument                                                              */
 /*----------------------------------------------------------------------------*/
-void Stz::vCopyLen(Stz* aArg, i8 nChars)
+void Stz::vCopyLen(Stz* szArg, i8 nChars)
 {
-  StrLib::vCopyLen(aChar(),aArg->aChar(),nChars);
+  StrLib::vCopyLen(aChar(),szArg->aChar(),nChars);
 }
 
 /*----------------------------------------------------------------------------*/
 /* bEqual: test if this Stz is equal to arg (same case)                       */
 /*----------------------------------------------------------------------------*/
-bool Stz::bEqual(Stz* aArg)
+bool Stz::bEqual(Stz* szArg)
 {
-  i8 iDiff = strcmp(aChar(),aArg->aChar());
+  i8 iDiff = strcmp(aChar(),szArg->aChar());
   
   if (0 == iDiff)
     return true;
@@ -224,9 +224,9 @@ bool Stz::bIsNumeric(void)
 /*----------------------------------------------------------------------------*/
 /* bSame: test if this Stz is same as arg (ignores case)                      */
 /*----------------------------------------------------------------------------*/
-bool Stz::bSame(Stz* aArg)
+bool Stz::bSame(Stz* szArg)
 {
-  i8 iDiff = strcasecmp(aChar(),aArg->aChar());
+  i8 iDiff = strcasecmp(aChar(),szArg->aChar());
   
   if (0 == iDiff)
     return true;
@@ -247,12 +247,12 @@ i8 Stz::nSize(void)
 /*----------------------------------------------------------------------------*/
 /* vSprint: formatted sprint                                                  */
 /*----------------------------------------------------------------------------*/
-void Stz::vSprint(Stz* aFormat, ...)
+void Stz::vSprint(Stz* szFormat, ...)
 {
   va_list args;
-  va_start(args,aFormat);
+  va_start(args,szFormat);
   
-  vsprintf(aChar(),aFormat->aChar(),args);
+  vsprintf(aChar(),szFormat->aChar(),args);
   
   va_end(args);
 }
@@ -305,9 +305,9 @@ void Stz::vToLower(void)
 /*----------------------------------------------------------------------------*/
 /* _Stz literal suffix (which converts const char* to Stz*)                   */
 /*----------------------------------------------------------------------------*/
-Stz* Strings::operator "" _Stz(const char* aArg, size_t nSize)
+Stz* Strings::operator "" _Stz(const char* szArg, size_t nSize)
 {
-  return (Stz*)(aArg);
+  return (Stz*)(szArg);
 }
 
 /*============================================================================*/
