@@ -18,7 +18,7 @@ namespace Sessions
 #include "SessionState.hpp"
 
 #include "ReqTuple.hpp"
-#include "Command.hpp"
+#include "Request.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
