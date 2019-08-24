@@ -92,7 +92,8 @@ Session::Session(i8 iPartition)
   
   ++ gixSession;
   AM::vLogSsn(SL_INF,this,AA_SSN_CONSTRUCTOR,
-              "Session constructed : %p (%lld tasks exist)"_Stz,this,* gixSession);
+              "Session constructed : %p (%lld tasks exist)"_Stz, //!format-LogSsn
+              this,* gixSession);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
 }
@@ -113,7 +114,8 @@ Session::~Session(void) noexcept(false)
   
   -- gixSession;
   AM::vLogSsn(SL_INF,this,AA_SSN_DESTRUCTOR,
-              "Session destructed : %p (%lld tasks exist)"_Stz,this,* gixSession);
+              "Session destructed : %p (%lld tasks exist)"_Stz, //!format-LogSsn
+              this,* gixSession);
 }
 
 /*----------------------------------------------------------------------------*/

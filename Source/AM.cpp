@@ -375,7 +375,9 @@ void AM::vWriteTrace(eYA eSysAct, Stz* aFormat, va_list xArgs)
   StrLib::vStrip(caFormatted,'\n');
   
   if (gpAttachMap)
-    AM::vLogSys(SL_INF,gpAttachMap,eSysAct,"%s"_Stz,caFormatted);
+    AM::vLogSys(SL_INF,gpAttachMap,eSysAct,
+                "%s"_Stz, //!format-LogSys
+                caFormatted);
   
   if (bUseLock)
     oLock.vDropWrite();

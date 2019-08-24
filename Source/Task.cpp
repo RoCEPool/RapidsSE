@@ -82,7 +82,8 @@ Task::Task(Job* pJob, Session* pSession)
   
   ++ gixTask;
   AM::vLogTsk(SL_INF,this,TA_TASK_CONSTRUCTOR,
-              "Task constructed : %p (%lld tasks exist)"_Stz,this,* gixTask);
+              "Task constructed : %p (%lld tasks exist)"_Stz, //!format-LogTsk
+              this,* gixTask);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }
@@ -113,7 +114,8 @@ Task::Task(Op* pOp, Session* pSession)
   
   ++ gixTask;
   AM::vLogTsk(SL_INF,this,TA_TASK_CONSTRUCTOR,
-              "Task constructed : %p (%lld tasks exist)"_Stz,this,* gixTask);
+              "Task constructed : %p (%lld tasks exist)"_Stz, //!format-LogTsk
+              this,* gixTask);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }
@@ -185,7 +187,8 @@ Task::~Task(void) noexcept(false)
   
   -- gixTask;
   AM::vLogTsk(SL_INF,this,TA_TASK_DESTRUCTOR,
-              "Task destructed : %p (%lld tasks exist)"_Stz,this,* gixTask);
+              "Task destructed : %p (%lld tasks exist)"_Stz, //!format-LogTsk
+              this,* gixTask);
 }
 
 /*----------------------------------------------------------------------------*/
