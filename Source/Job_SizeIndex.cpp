@@ -102,8 +102,8 @@ void Job_SizeIndex::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SizeIndex::Job_SizeIndex(Session* pSession, i8 iCommandId)
-: Job(CN_JOB_SIZEINDEX, pSession, iCommandId)
+Job_SizeIndex::Job_SizeIndex(Session* pSession, i8 iRequestId)
+: Job(CN_JOB_SIZEINDEX, pSession, iRequestId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SIZEINDEX,_FOOTER_);
     
@@ -197,9 +197,9 @@ Footer* Job_SizeIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SizeIndex_pre(Session* pSession, i8 iCommandId)
+Job* Jobs::pJob_SizeIndex_pre(Session* pSession, i8 iRequestId)
 {
-  Job_SizeIndex* pJob_SizeIndex = new Job_SizeIndex(pSession,iCommandId);
+  Job_SizeIndex* pJob_SizeIndex = new Job_SizeIndex(pSession,iRequestId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

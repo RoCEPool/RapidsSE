@@ -101,7 +101,7 @@ void Job__Execute::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job__Execute::Job__Execute(Job* pDistJob)
-: Job(CN_JOB__EXECUTE,nullptr,pDistJob->m_iCommandId)
+: Job(CN_JOB__EXECUTE,nullptr,pDistJob->m_iRequestId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__EXECUTE,_FOOTER_);
   

@@ -26,8 +26,8 @@ JobMark2* Jobs::_pJobMark2(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-JobMark2::JobMark2(eCN eClassNo, Session* pSession, i8 iCommandId)
-: Job(eClassNo,pSession,iCommandId)
+JobMark2::JobMark2(eCN eClassNo, Session* pSession, i8 iRequestId)
+: Job(eClassNo,pSession,iRequestId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   

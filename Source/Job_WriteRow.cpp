@@ -102,8 +102,8 @@ void Job_WriteRow::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_WriteRow::Job_WriteRow(Session* pSession, i8 iCommandId)
-: Job(CN_JOB_WRITEROW, pSession, iCommandId)
+Job_WriteRow::Job_WriteRow(Session* pSession, i8 iRequestId)
+: Job(CN_JOB_WRITEROW, pSession, iRequestId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEROW,_FOOTER_);
   
@@ -239,9 +239,9 @@ Footer* Job_WriteRow::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_WriteRow_pre(Session* pSession, i8 iCommandId)
+Job* Jobs::pJob_WriteRow_pre(Session* pSession, i8 iRequestId)
 {
-  Job_WriteRow* pJob_WriteRow = new Job_WriteRow(pSession,iCommandId);
+  Job_WriteRow* pJob_WriteRow = new Job_WriteRow(pSession,iRequestId);
   
   return pJob_WriteRow;
 }
@@ -251,7 +251,7 @@ Job* Jobs::pJob_WriteRow_pre(Session* pSession, i8 iCommandId)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_WriteRow_new(Job* pArg)
 {
-  Job_WriteRow* pJob_WriteRow = new Job_WriteRow(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
+  Job_WriteRow* pJob_WriteRow = new Job_WriteRow(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN);
   
   return pJob_WriteRow;
 }

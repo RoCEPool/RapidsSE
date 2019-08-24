@@ -39,7 +39,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_FetchRows(Session* pSession, i8 iCommandId);//=C_UNKNOWN);
+    Job_FetchRows(Session* pSession, i8 iRequestId);//=C_UNKNOWN);
     ~Job_FetchRows(void) noexcept(false);
   
     static bool   bAppendRow(FetchBuffer* pFetchBuffer, Ent* aItem,
@@ -62,7 +62,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_FetchRows* _pJob_FetchRows(void* aAddr);
   
-  Job* pJob_FetchRows_pre(Session* pSession, i8 iCommandId);
+  Job* pJob_FetchRows_pre(Session* pSession, i8 iRequestId);
   void vJob_FetchRows_post(Session* pSession, Job* pJob);
   void vJob_FetchRows_delete(Session* pSession, Job* pJob);
   void vIterateBuffer(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetchBuffer, i8& iRowsPrinted);

@@ -102,8 +102,8 @@ void Job_Status::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Status::Job_Status(Session* pSession, i8 iCommandId)
-: Job(CN_JOB_STATUS, pSession, iCommandId)
+Job_Status::Job_Status(Session* pSession, i8 iRequestId)
+: Job(CN_JOB_STATUS, pSession, iRequestId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_STATUS,_FOOTER_);
     
@@ -190,9 +190,9 @@ Footer* Job_Status::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Status_pre(Session* pSession, i8 iCommandId)
+Job* Jobs::pJob_Status_pre(Session* pSession, i8 iRequestId)
 {
-  Job_Status* pJob_Status = new Job_Status(pSession,iCommandId);
+  Job_Status* pJob_Status = new Job_Status(pSession,iRequestId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

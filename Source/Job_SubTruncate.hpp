@@ -20,7 +20,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_SubTruncate(Session* pSession, i8 iCommandId);//=C_UNKNOWN);
+    Job_SubTruncate(Session* pSession, i8 iRequestId);//=C_UNKNOWN);
     ~Job_SubTruncate(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -36,7 +36,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_SubTruncate* _pJob_SubTruncate(void* aAddr);
   
-  Job* pJob_SubTruncate_pre(Session* pSession, i8 iCommandId);
+  Job* pJob_SubTruncate_pre(Session* pSession, i8 iRequestId);
   void vJob_SubTruncate_delete(Session* pSession, Job* pJob);
   void vJob_SubTruncate_show(Job* pJob);
   

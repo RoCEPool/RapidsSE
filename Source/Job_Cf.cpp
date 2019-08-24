@@ -102,8 +102,8 @@ void Job_Cf::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Cf::Job_Cf(Session* pSession, i8 iCommandId)
-: Job(CN_JOB_CF, pSession, iCommandId)
+Job_Cf::Job_Cf(Session* pSession, i8 iRequestId)
+: Job(CN_JOB_CF, pSession, iRequestId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CF,_FOOTER_);
   
@@ -191,9 +191,9 @@ Footer* Job_Cf::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Cf_pre(Session* pSession, i8 iCommandId)
+Job* Jobs::pJob_Cf_pre(Session* pSession, i8 iRequestId)
 {
-  Job_Cf* pJob_Cf = new Job_Cf(pSession,iCommandId);
+  Job_Cf* pJob_Cf = new Job_Cf(pSession,iRequestId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

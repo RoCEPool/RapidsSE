@@ -102,8 +102,8 @@ void Job_SubLoader::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SubLoader::Job_SubLoader(Session* pSession, i8 iCommandId)
-: Job(CN_JOB_SUBLOADER, pSession, iCommandId)
+Job_SubLoader::Job_SubLoader(Session* pSession, i8 iRequestId)
+: Job(CN_JOB_SUBLOADER, pSession, iRequestId)
 , JobWriteBehind(DS_LOAD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
@@ -338,9 +338,9 @@ Footer* Job_SubLoader::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::vJob_SubLoader_pre(Session* pSession, i8 iCommandId)
+Job* Jobs::vJob_SubLoader_pre(Session* pSession, i8 iRequestId)
 {
-  Job_SubLoader* pJob_SubLoader = new Job_SubLoader(pSession,iCommandId);
+  Job_SubLoader* pJob_SubLoader = new Job_SubLoader(pSession,iRequestId);
   
   return pJob_SubLoader;
 }
@@ -350,7 +350,7 @@ Job* Jobs::vJob_SubLoader_pre(Session* pSession, i8 iCommandId)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubLoader_new(Job* pArg)
 {
-  Job_SubLoader* pJob_SubLoader = new Job_SubLoader(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
+  Job_SubLoader* pJob_SubLoader = new Job_SubLoader(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN);
   
   return pJob_SubLoader;
 }

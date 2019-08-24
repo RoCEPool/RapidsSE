@@ -28,7 +28,7 @@ namespace Prompt
     Command* m_pCommand;   // current command being executed by SE
   
     i8       m_i_CommandFocal;  // focal subsript of last command
-    i8       m_iCommandId;      // id of last command
+    i8       m_iRequestId;      // id of last command
 
     ShortCutVec m_oShortCutVec; // vector of short cuts
   
@@ -54,7 +54,7 @@ namespace Prompt
     void vCheckTraced(void);
     void vCheckNoWait(void);
     i8   iCommandFocal(void);
-    i8   iCommandId(void);
+    i8   iRequestId(void);
     bool bContinue(void);
     void vContinue(bool bContinue);
     void vCutToken(i8 i_Tkn);

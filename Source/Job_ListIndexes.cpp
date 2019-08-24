@@ -102,8 +102,8 @@ void Job_ListIndexes::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_ListIndexes::Job_ListIndexes(Session* pSession, i8 iCommandId)
-: Job(CN_JOB_LISTINDEXES, pSession, iCommandId)
+Job_ListIndexes::Job_ListIndexes(Session* pSession, i8 iRequestId)
+: Job(CN_JOB_LISTINDEXES, pSession, iRequestId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTINDEXES,_FOOTER_);
   
@@ -196,9 +196,9 @@ Footer* Job_ListIndexes::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_ListIndexes_pre(Session* pSession, i8 iCommandId)
+Job* Jobs::pJob_ListIndexes_pre(Session* pSession, i8 iRequestId)
 {
-  Job_ListIndexes* pJob_ListIndexes = new Job_ListIndexes(pSession,iCommandId);
+  Job_ListIndexes* pJob_ListIndexes = new Job_ListIndexes(pSession,iRequestId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

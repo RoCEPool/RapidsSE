@@ -12,7 +12,7 @@ namespace Jobs
   {
   public:
   
-    i8  m_iCommandId; // the command which trigger the job
+    i8  m_iRequestId; // the command which trigger the job
   
     i8  m_iParentId;  // job id of parent job which spawned this JK_CHILD job
     eSS m_eSeed;      // task seed
@@ -49,7 +49,7 @@ namespace Jobs
     eJT  m_eJobTrace;     // job trace (to be removed)
 
   public:
-    Job(eCN eClassNo, Session* pSession, i8 iCommandId);
+    Job(eCN eClassNo, Session* pSession, i8 iRequestId);
    ~Job(void) noexcept(false);
   
     static Job* pThisTLSJob(void);

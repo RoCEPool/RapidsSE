@@ -21,7 +21,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Sink(Session* pSession, i8 iCommandId);//=C_UNKNOWN);
+    Job_Sink(Session* pSession, i8 iRequestId);//=C_UNKNOWN);
     ~Job_Sink(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -40,7 +40,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Sink* _pJob_Sink(void* aAddr);
   
-  Job* pJob_Sink_pre(Session* pSession, i8 iCommandId);
+  Job* pJob_Sink_pre(Session* pSession, i8 iRequestId);
   Job* pJob_Sink_new(Job* pArg);
   void vJob_Sink_delete(Session* pSession, Job* pJob);
   void vJob_Sink_show(Job* pJob);

@@ -102,8 +102,8 @@ void Job_SubPublish::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SubPublish::Job_SubPublish(Session* pSession, i8 iCommandId)
-: Job(CN_JOB_SUBPUBLISH, pSession, iCommandId)
+Job_SubPublish::Job_SubPublish(Session* pSession, i8 iRequestId)
+: Job(CN_JOB_SUBPUBLISH, pSession, iRequestId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBPUBLISH,_FOOTER_);
     
@@ -256,9 +256,9 @@ Footer* Job_SubPublish::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubPublish_pre(Session* pSession, i8 iCommandId)
+Job* Jobs::pJob_SubPublish_pre(Session* pSession, i8 iRequestId)
 {
-  Job_SubPublish* pJob_SubPublish = new Job_SubPublish(pSession,iCommandId);
+  Job_SubPublish* pJob_SubPublish = new Job_SubPublish(pSession,iRequestId);
   
   return pJob_SubPublish;
 }

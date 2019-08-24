@@ -78,7 +78,7 @@ SePrompt::SePrompt(bool bOneCommand)
   
   m_pCommand = nullptr;
   m_i_CommandFocal = C_UNKNOWN;
-  m_iCommandId = C_UNKNOWN;
+  m_iRequestId = C_UNKNOWN;
   
   _checkInitialised_(CN_SEPROMPT);
 }
@@ -232,7 +232,7 @@ void SePrompt::vBeginCommand(void)
   
   m_i_CommandFocal = m_pCommand->m_i_Focal;
   
-  m_iCommandId = m_pCommand->m_iUniqueId;
+  m_iRequestId = m_pCommand->m_iUniqueId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -334,11 +334,11 @@ i8 SePrompt::iCommandFocal(void)
 /*----------------------------------------------------------------------------*/
 /* get command id                                                             */
 /*----------------------------------------------------------------------------*/
-i8 SePrompt::iCommandId(void)
+i8 SePrompt::iRequestId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_iCommandId;
+  return m_iRequestId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -763,7 +763,7 @@ void SePrompt::vPreJob(void)
 
   //pInput->vPreJob(m_pSession);
   
-  m_pJob = m_pJobClass->pPreJob(m_pSession,m_iCommandId);
+  m_pJob = m_pJobClass->pPreJob(m_pSession,m_iRequestId);
   
 //  if (m_pJob && m_pJob->m_bMarkTrace)
 //    m_pJob->m_pJobClass->vShowJob(m_pJob);

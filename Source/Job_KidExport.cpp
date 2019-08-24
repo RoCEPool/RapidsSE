@@ -102,8 +102,8 @@ void Job_KidExport::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_KidExport::Job_KidExport(Session* pSession, i8 iCommandId)
-: Job(CN_JOB_KIDEXPORT, pSession, iCommandId)
+Job_KidExport::Job_KidExport(Session* pSession, i8 iRequestId)
+: Job(CN_JOB_KIDEXPORT, pSession, iRequestId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_KIDEXPORT,_FOOTER_);
   
@@ -211,9 +211,9 @@ Footer* Job_KidExport::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_KidExport_pre(Session* pSession, i8 iCommandId)
+Job* Jobs::pJob_KidExport_pre(Session* pSession, i8 iRequestId)
 {
-  Job_KidExport* pJob_KidExport = new Job_KidExport(pSession,iCommandId);
+  Job_KidExport* pJob_KidExport = new Job_KidExport(pSession,iRequestId);
   
   return pJob_KidExport;
 }
@@ -223,7 +223,7 @@ Job* Jobs::pJob_KidExport_pre(Session* pSession, i8 iCommandId)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_KidExport_new(Job* pArg)
 {
-  Job_KidExport* pJob_KidExport = new Job_KidExport(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
+  Job_KidExport* pJob_KidExport = new Job_KidExport(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN);
   
   return pJob_KidExport;
 }

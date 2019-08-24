@@ -102,8 +102,8 @@ void Job_Supervisor::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Supervisor::Job_Supervisor(Session* pSession, i8 iCommandId)
-: Job(CN_JOB_SUPERVISOR, pSession, iCommandId)
+Job_Supervisor::Job_Supervisor(Session* pSession, i8 iRequestId)
+: Job(CN_JOB_SUPERVISOR, pSession, iRequestId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUPERVISOR,_FOOTER_);
   
@@ -171,7 +171,7 @@ Footer* Job_Supervisor::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Supervisor_new(Job* pArg)
 {
-  Job_Supervisor* pJob_Supervisor = new Job_Supervisor(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
+  Job_Supervisor* pJob_Supervisor = new Job_Supervisor(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN);
   
   return pJob_Supervisor;
 }

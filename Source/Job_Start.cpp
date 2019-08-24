@@ -102,8 +102,8 @@ void Job_Start::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Start::Job_Start(Session* pSession, i8 iCommandId)
-: Job(CN_JOB_START, pSession, iCommandId)
+Job_Start::Job_Start(Session* pSession, i8 iRequestId)
+: Job(CN_JOB_START, pSession, iRequestId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_START,_FOOTER_);
   
@@ -170,7 +170,7 @@ Footer* Job_Start::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Start_new(Job* pArg)
 {
-  Job_Start* pJob_Start = new Job_Start(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
+  Job_Start* pJob_Start = new Job_Start(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN);
   
   return pJob_Start;
 }

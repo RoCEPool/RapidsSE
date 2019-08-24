@@ -26,7 +26,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_SubInserter(Session* pSession, i8 iCommandId);//=C_UNKNOWN);
+    Job_SubInserter(Session* pSession, i8 iRequestId);//=C_UNKNOWN);
     ~Job_SubInserter(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -51,7 +51,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_SubInserter* _pJob_SubInserter(void* aAddr);
   
-  Job* pJob_SubInserter_pre(Session* pSession, i8 iCommandId);
+  Job* pJob_SubInserter_pre(Session* pSession, i8 iRequestId);
   Job* pJob_SubInserter_new(Job* pArg);
   void vJob_SubInserter_delete(Session* pSession, Job* pJob);
   void vJob_SubInserter_show(Job* pJob);

@@ -102,8 +102,8 @@ void Job_Periodic::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Periodic::Job_Periodic(Session* pSession, i8 iCommandId)
-: Job(CN_JOB_PERIODIC, pSession, iCommandId)
+Job_Periodic::Job_Periodic(Session* pSession, i8 iRequestId)
+: Job(CN_JOB_PERIODIC, pSession, iRequestId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PERIODIC,_FOOTER_);
   
@@ -171,7 +171,7 @@ Footer* Job_Periodic::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Periodic_new(Job* pArg)
 {
-  Job_Periodic* pJob_Periodic = new Job_Periodic(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
+  Job_Periodic* pJob_Periodic = new Job_Periodic(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN);
   
   return pJob_Periodic;
 }

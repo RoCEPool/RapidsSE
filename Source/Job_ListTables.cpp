@@ -102,8 +102,8 @@ void Job_ListTables::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_ListTables::Job_ListTables(Session* pSession, i8 iCommandId)
-: Job(CN_JOB_LISTTABLES, pSession, iCommandId)
+Job_ListTables::Job_ListTables(Session* pSession, i8 iRequestId)
+: Job(CN_JOB_LISTTABLES, pSession, iRequestId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTTABLES,_FOOTER_);
   
@@ -192,9 +192,9 @@ Footer* Job_ListTables::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_ListTables_pre(Session* pSession, i8 iCommandId)
+Job* Jobs::pJob_ListTables_pre(Session* pSession, i8 iRequestId)
 {
-  Job_ListTables* pJob_ListTables = new Job_ListTables(pSession,iCommandId);
+  Job_ListTables* pJob_ListTables = new Job_ListTables(pSession,iRequestId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

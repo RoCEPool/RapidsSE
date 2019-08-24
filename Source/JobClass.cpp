@@ -125,9 +125,9 @@ void JobClass::vPostJob(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* create a new job by running the pre-function                                */
 /*----------------------------------------------------------------------------*/
-Job* JobClass::pPreJob(Session* pSession, i8 iCommandId)
+Job* JobClass::pPreJob(Session* pSession, i8 iRequestId)
 {
-  Job* pJob = (*m_fpPre)(pSession,iCommandId);
+  Job* pJob = (*m_fpPre)(pSession,iRequestId);
   
   pJob->m_pJobClass = this;
   pJob->m_eJobTrace = m_eTrace;

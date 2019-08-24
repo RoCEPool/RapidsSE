@@ -102,8 +102,8 @@ void Job_SizeTable::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SizeTable::Job_SizeTable(Session* pSession, i8 iCommandId)
-: Job(CN_JOB_SIZETABLE, pSession, iCommandId)
+Job_SizeTable::Job_SizeTable(Session* pSession, i8 iRequestId)
+: Job(CN_JOB_SIZETABLE, pSession, iRequestId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SIZETABLE,_FOOTER_);
     
@@ -192,9 +192,9 @@ Footer* Job_SizeTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SizeTable_pre(Session* pSession, i8 iCommandId)
+Job* Jobs::pJob_SizeTable_pre(Session* pSession, i8 iRequestId)
 {
-  Job_SizeTable* pJob_SizeTable = new Job_SizeTable(pSession,iCommandId);
+  Job_SizeTable* pJob_SizeTable = new Job_SizeTable(pSession,iRequestId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

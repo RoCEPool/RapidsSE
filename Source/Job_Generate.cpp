@@ -102,8 +102,8 @@ void Job_Generate::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Generate::Job_Generate(Session* pSession, i8 iCommandId)
-: Job(CN_JOB_GENERATE, pSession, iCommandId)
+Job_Generate::Job_Generate(Session* pSession, i8 iRequestId)
+: Job(CN_JOB_GENERATE, pSession, iRequestId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
   
@@ -187,13 +187,13 @@ Footer* Job_Generate::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Generate_pre(Session* pSession, i8 iCommandId)
+Job* Jobs::pJob_Generate_pre(Session* pSession, i8 iRequestId)
 {
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   i8 nTokens;
 
-  Job_Generate* pJob_Generate = new Job_Generate(pSession,iCommandId);
+  Job_Generate* pJob_Generate = new Job_Generate(pSession,iRequestId);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
 
@@ -234,7 +234,7 @@ Job* Jobs::pJob_Generate_pre(Session* pSession, i8 iCommandId)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Generate_new(Job* pArg)
 {
-  Job_Generate* pJob_Generate = new Job_Generate(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
+  Job_Generate* pJob_Generate = new Job_Generate(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN);
   
   return pJob_Generate;
 }

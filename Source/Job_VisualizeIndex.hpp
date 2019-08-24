@@ -18,7 +18,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_VisualizeIndex(Session* pSession, i8 iCommandId);//=C_UNKNOWN);
+    Job_VisualizeIndex(Session* pSession, i8 iRequestId);//=C_UNKNOWN);
     ~Job_VisualizeIndex(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_VisualizeIndex* _pJob_VisualizeIndex(void* aAddr);
   
-  Job* pJob_VisualizeIndex_pre(Session* pSession, i8 iCommandId);
+  Job* pJob_VisualizeIndex_pre(Session* pSession, i8 iRequestId);
   void vJob_VisualizeIndex_delete(Session* pSession, Job* pJob);
   void vJob_VisualizeIndex_show(Job* pJob);
   

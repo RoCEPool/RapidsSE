@@ -23,7 +23,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_CopyBuffer(Session* pSession, i8 iCommandId);//=C_UNKNOWN);
+    Job_CopyBuffer(Session* pSession, i8 iRequestId);//=C_UNKNOWN);
     ~Job_CopyBuffer(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -40,7 +40,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_CopyBuffer* _pJob_CopyBuffer(void* aAddr);
   
-  Job* pJob_CopyBuffer_pre(Session* pSession, i8 iCommandId);
+  Job* pJob_CopyBuffer_pre(Session* pSession, i8 iRequestId);
   Job* pJob_CopyBuffer_new(Job* pArg);
   void vJob_CopyBuffer_delete(Session* pSession, Job* pJob);
   void vJob_CopyBuffer_show(Job* pJob);

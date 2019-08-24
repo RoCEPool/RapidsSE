@@ -102,8 +102,8 @@ void Job_Sanity::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Sanity::Job_Sanity(Session* pSession, i8 iCommandId)
-: Job(CN_JOB_SANITY, pSession, iCommandId)
+Job_Sanity::Job_Sanity(Session* pSession, i8 iRequestId)
+: Job(CN_JOB_SANITY, pSession, iRequestId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SANITY,_FOOTER_);
       
@@ -194,9 +194,9 @@ Footer* Job_Sanity::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Sanity_pre(Session* pSession, i8 iCommandId)
+Job* Jobs::pJob_Sanity_pre(Session* pSession, i8 iRequestId)
 {
-  Job_Sanity* pJob_Sanity = new Job_Sanity(pSession,iCommandId);
+  Job_Sanity* pJob_Sanity = new Job_Sanity(pSession,iRequestId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

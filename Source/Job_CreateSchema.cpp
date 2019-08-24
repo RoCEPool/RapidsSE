@@ -102,8 +102,8 @@ void Job_CreateSchema::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_CreateSchema::Job_CreateSchema(Session* pSession, i8 iCommandId)
-: Job(CN_JOB_CREATESCHEMA, pSession, iCommandId)
+Job_CreateSchema::Job_CreateSchema(Session* pSession, i8 iRequestId)
+: Job(CN_JOB_CREATESCHEMA, pSession, iRequestId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATESCHEMA,_FOOTER_);
     
@@ -195,9 +195,9 @@ Footer* Job_CreateSchema::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_CreateSchema_pre(Session* pSession, i8 iCommandId)
+Job* Jobs::pJob_CreateSchema_pre(Session* pSession, i8 iRequestId)
 {
-  Job_CreateSchema* pJob_CreateSchema = new Job_CreateSchema(pSession,iCommandId);
+  Job_CreateSchema* pJob_CreateSchema = new Job_CreateSchema(pSession,iRequestId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

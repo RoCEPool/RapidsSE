@@ -102,8 +102,8 @@ void Job_ListPartColumns::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_ListPartColumns::Job_ListPartColumns(Session* pSession, i8 iCommandId)
-: Job(CN_JOB_LISTPARTCOLUMNS, pSession, iCommandId)
+Job_ListPartColumns::Job_ListPartColumns(Session* pSession, i8 iRequestId)
+: Job(CN_JOB_LISTPARTCOLUMNS, pSession, iRequestId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTPARTCOLUMNS,_FOOTER_);
   
@@ -196,9 +196,9 @@ Footer* Job_ListPartColumns::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_ListPartColumns_pre(Session* pSession, i8 iCommandId)
+Job* Jobs::pJob_ListPartColumns_pre(Session* pSession, i8 iRequestId)
 {
-  Job_ListPartColumns* pJob_ListPartColumns = new Job_ListPartColumns(pSession,iCommandId);
+  Job_ListPartColumns* pJob_ListPartColumns = new Job_ListPartColumns(pSession,iRequestId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

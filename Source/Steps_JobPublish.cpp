@@ -29,14 +29,14 @@ void Step::vJob_PublishSpawnSub(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iSlot) )
     THROW_INVALID_DSTACK("Job_publish.spawnSub"_Stz);
   
-  i8 iCommandId = pJob_Publish->m_iCommandId;
+  i8 iRequestId = pJob_Publish->m_iRequestId;
   Session* pSession = pJob_Publish->m_pSession;
   i8 iPublishJobId = pJob_Publish->m_iUniqueId;
 
   JobClass* pJobClass_SubPublish = JobClass::pFind(CN_JOB_SUBPUBLISH);
 
   Job_SubPublish* pJob_SubPublish =
-  static_cast<Job_SubPublish*>(pJobClass_SubPublish->pPreJob(nullptr,iCommandId));
+  static_cast<Job_SubPublish*>(pJobClass_SubPublish->pPreJob(nullptr,iRequestId));
 
   pJob_SubPublish->vSeed(SS_SEED_RUN);
 

@@ -102,8 +102,8 @@ void Job_InsertRow::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_InsertRow::Job_InsertRow(Session* pSession, i8 iCommandId)
-: Job(CN_JOB_INSERTROW, pSession, iCommandId)
+Job_InsertRow::Job_InsertRow(Session* pSession, i8 iRequestId)
+: Job(CN_JOB_INSERTROW, pSession, iRequestId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROW,_FOOTER_);
   m_pTable = nullptr;
@@ -226,9 +226,9 @@ Footer* Job_InsertRow::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_InsertRow_pre(Session* pSession, i8 iCommandId)
+Job* Jobs::pJob_InsertRow_pre(Session* pSession, i8 iRequestId)
 {
-  Job_InsertRow* pJob_InsertRow = new Job_InsertRow(pSession,iCommandId);
+  Job_InsertRow* pJob_InsertRow = new Job_InsertRow(pSession,iRequestId);
   
 //  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
@@ -253,7 +253,7 @@ Job* Jobs::pJob_InsertRow_pre(Session* pSession, i8 iCommandId)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_InsertRow_new(Job* pArg)
 {
-  Job_InsertRow* pJob_InsertRow = new Job_InsertRow(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
+  Job_InsertRow* pJob_InsertRow = new Job_InsertRow(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN);
   
   return pJob_InsertRow;
 }

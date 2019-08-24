@@ -181,13 +181,13 @@ void Step::vJob_IndexJoinSpawnSub(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iSlot) )
     THROW_INVALID_DSTACK("Job_IndexJoin.spawnSub"_Stz);
   
-  i8 iCommandId = pJob_IndexJoin->m_iCommandId;
+  i8 iRequestId = pJob_IndexJoin->m_iRequestId;
   Session* pSession = pJob_IndexJoin->m_pSession;
 
   JobClass* pJobClass_SubIndexJoin = JobClass::pFind(CN_JOB_SUBINDEXJOIN);
   
   Job_SubIndexJoin* pJob_SubIndexJoin =
-  static_cast<Job_SubIndexJoin*>(pJobClass_SubIndexJoin->pPreJob(pSession,iCommandId));
+  static_cast<Job_SubIndexJoin*>(pJobClass_SubIndexJoin->pPreJob(pSession,iRequestId));
   
   pJob_SubIndexJoin->vSeed(SS_SEED_RUN);
   

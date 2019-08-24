@@ -103,8 +103,8 @@ void Job_DropCatalog::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_DropCatalog::Job_DropCatalog(Session* pSession, i8 iCommandId)
-: Job(CN_JOB_DROPCATALOG, pSession, iCommandId)
+Job_DropCatalog::Job_DropCatalog(Session* pSession, i8 iRequestId)
+: Job(CN_JOB_DROPCATALOG, pSession, iRequestId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPCATALOG,_FOOTER_);
     
@@ -197,9 +197,9 @@ Footer* Job_DropCatalog::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_DropCatalog_pre(Session* pSession, i8 iCommandId)
+Job* Jobs::pJob_DropCatalog_pre(Session* pSession, i8 iRequestId)
 {
-  Job_DropCatalog* pJob_DropCatalog = new Job_DropCatalog(pSession,iCommandId);
+  Job_DropCatalog* pJob_DropCatalog = new Job_DropCatalog(pSession,iRequestId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

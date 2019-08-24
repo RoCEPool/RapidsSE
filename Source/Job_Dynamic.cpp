@@ -102,7 +102,7 @@ void Job_Dynamic::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Dynamic::Job_Dynamic(Session* pSession, i8 iCommandId)
+Job_Dynamic::Job_Dynamic(Session* pSession, i8 iRequestId)
 : JobMark2(CN_JOB_DYNAMIC, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
@@ -240,9 +240,9 @@ Footer* Job_Dynamic::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Dynamic_pre(Session* pSession, i8 iCommandId)
+Job* Jobs::pJob_Dynamic_pre(Session* pSession, i8 iRequestId)
 {
-  Job_Dynamic* pJob_Dynamic = new Job_Dynamic(pSession,iCommandId);
+  Job_Dynamic* pJob_Dynamic = new Job_Dynamic(pSession,iRequestId);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

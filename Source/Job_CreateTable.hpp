@@ -22,7 +22,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_CreateTable(Session* pSession, i8 iCommandId);//=C_UNKNOWN);
+    Job_CreateTable(Session* pSession, i8 iRequestId);//=C_UNKNOWN);
     ~Job_CreateTable(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -46,7 +46,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_CreateTable* _pJob_CreateTable(void* aAddr);
   
-  Job* pJob_CreateTable_pre(Session* pSession, i8 iCommandId);
+  Job* pJob_CreateTable_pre(Session* pSession, i8 iRequestId);
   void vJob_CreateTable_post(Session* pSession, Job* pJob);
   Job* pJob_CreateTable_new(Job* pArg);
   void vJob_CreateTable_delete(Session* pSession, Job* pJob);

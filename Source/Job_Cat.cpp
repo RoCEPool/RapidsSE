@@ -102,8 +102,8 @@ void Job_Cat::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Cat::Job_Cat(Session* pSession, i8 iCommandId)
-: Job(CN_JOB_CAT, pSession, iCommandId)
+Job_Cat::Job_Cat(Session* pSession, i8 iRequestId)
+: Job(CN_JOB_CAT, pSession, iRequestId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CAT,_FOOTER_);
   
@@ -175,11 +175,11 @@ Footer* Job_Cat::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Cat_pre(Session* pSession, i8 iCommandId)
+Job* Jobs::pJob_Cat_pre(Session* pSession, i8 iRequestId)
 {
   i8 nTokens;
 
-  Job_Cat* pJob_Cat = new Job_Cat(pSession,iCommandId);
+  Job_Cat* pJob_Cat = new Job_Cat(pSession,iRequestId);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
 
@@ -210,7 +210,7 @@ Job* Jobs::pJob_Cat_pre(Session* pSession, i8 iCommandId)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Cat_new(Job* pArg)
 {
-  Job_Cat* pJob_Cat = new Job_Cat(nullptr,pArg ? pArg->m_iCommandId : C_UNKNOWN);
+  Job_Cat* pJob_Cat = new Job_Cat(nullptr,pArg ? pArg->m_iRequestId : C_UNKNOWN);
   
   return pJob_Cat;
 }
