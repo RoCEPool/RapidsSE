@@ -30,7 +30,6 @@ Stz* EnumGroups::szEnumText(i8 iEnumGroup, i8 i_Enum)
     case _EG_JL: return aJL[i_Enum];
     case _EG_JP: return aJP[i_Enum];
     case _EG_JS: return aJS[i_Enum];
-    case _EG_JT: return aJT[i_Enum];
     case _EG_KC: return aKC[i_Enum];
     case _EG_LK: return aLK[i_Enum];
     case _EG_OK: return aOK[i_Enum];

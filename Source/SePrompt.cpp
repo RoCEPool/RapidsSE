@@ -857,9 +857,6 @@ void SePrompt::vSetJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  if (m_bTraced)
-    m_pJob->m_eJobTrace = JT_ALL;
-
   if (m_bMarked)
     m_pJob->m_bLogJob = true;
 }

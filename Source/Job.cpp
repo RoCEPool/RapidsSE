@@ -78,7 +78,6 @@ Job::Job(eCN eClassNo, Session* pSession, i8 iRequestId)
   
   //m_oAcksRmg
   
-  m_eJobTrace = JT_NONE;
   if (AM::pMarkJob()->bAll() || AM::pMarkJob()->bEnum(eClass()))
     m_bLogJob = true;
   else
@@ -251,26 +250,6 @@ void Job::vJobId(i8 iJobId)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_iUniqueId = iJobId;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the job trace                                                          */
-/*----------------------------------------------------------------------------*/
-eJT Job::eJobTrace(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_eJobTrace;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the job trace                                                          */
-/*----------------------------------------------------------------------------*/
-void Job::vJobTrace(eJT eJobTrace)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_eJobTrace = eJobTrace;
 }
 
 /*----------------------------------------------------------------------------*/

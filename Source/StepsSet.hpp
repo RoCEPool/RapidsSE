@@ -501,8 +501,6 @@ private:
   static void vJobStateDiagram(Tasks::MP_Task mpTask);
 
   static void vJobThis(Tasks::MP_Task mpTask);
-  static void vJobTraceStore(Tasks::MP_Task mpTask);
-  static void vJobTraceFetch(Tasks::MP_Task mpTask);
 
   static void vJobWaitParticipant(Tasks::MP_Task mpTask);
 

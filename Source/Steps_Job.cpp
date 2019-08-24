@@ -98,8 +98,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job::stateDiagram"_Stz,    &Step::vJobStateDiagram);
 
   vAddStep("job::this"_Stz,            &Step::vJobThis);
-  vAddStep("job.trace!"_Stz,           &Step::vJobTraceStore);
-  vAddStep("job.trace@"_Stz,           &Step::vJobTraceFetch);
 
   vAddStep("job::waitParticipant"_Stz, &Step::vJobWaitParticipant);
 }
@@ -1807,46 +1805,6 @@ void Step::vJobThis(MP_Task mpTask)
   
   mpTask->m_pDataStack->vPushPointer(pJob);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.trace@ -- fetch the job trace                                          */
-/*----------------------------------------------------------------------------*/
-void Step::vJobTraceFetch(MP_Task mpTask)
-{
-  ENTRY("vJobTraceFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.trace@"_Stz);
-  Job_Space* pJob = _pJob_Space(pJobPtr);
-  
-  eJT eJobTrace = pJob->eJobTrace();
-  
-  mpTask->m_pDataStack->vPushI8(eJobTrace);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.trace! -- store the job trace                                          */
-/*----------------------------------------------------------------------------*/
-void Step::vJobTraceStore(MP_Task mpTask)
-{
-  ENTRY("vJobTraceStore"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.trace!"_Stz);
-  Job_Space* pJob = _pJob_Space(pJobPtr);
-  
-  i8 iJobTrace;
-  if ( ! mpTask->m_pDataStack->bPop(iJobTrace) )
-    THROW_INVALID_DSTACK("job.trace!"_Stz);
-  
-  pJob->vJobTrace((eJT)iJobTrace);
-  
   EXIT();
 }
 

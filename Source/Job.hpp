@@ -46,8 +46,6 @@ namespace Jobs
 
     Mutex* m_pMutexJob;
 
-    eJT  m_eJobTrace;     // job trace (to be removed)
-
   public:
     Job(eCN eClassNo, Session* pSession, i8 iRequestId);
    ~Job(void) noexcept(false);
@@ -64,8 +62,6 @@ namespace Jobs
     Stz* sJobSeed(void);
     i8   iJobId(void);
     void vJobId(i8 iJobId);
-    eJT  eJobTrace(void);
-    void vJobTrace(eJT eJobTrace);
     void vMarkJob(void);
     void vMarkJob(Stz* szFormat, ...);
     void vMutexLock(void);
