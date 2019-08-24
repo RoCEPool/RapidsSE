@@ -973,6 +973,7 @@ void AM::vFocalRemove(Focal* pFocal)   {
   gpAttachMap->m_pFocalObjects->vRemove(pFocal);
 }
 void AM::vMri(TokenVec *pTknVec) { gpAttachMap->m_pFocalObjects->vMri(pTknVec); }
+void AM::vLog(TokenVec *pTknVec) { gpLog->vLog(pTknVec);                        }
 
 
 /*----------------------------------------------------------------------------*/

@@ -25,7 +25,7 @@ bool Prompt::bPrompt_log(SePrompt* pPrompt)
 {
   TokenVec* pTokenVec = pPrompt->pTknVec();
   
-  AM::vMri(pTokenVec);
+  AM::vLog(pTokenVec);
   
   return true;
 }
