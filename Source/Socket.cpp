@@ -68,7 +68,8 @@ Socket::Socket(void)
   
   ++ gixSocket;
   AM::vLogRes(SL_INF,this,RA_SKT_CONSTRUCTOR,
-              "Socket constructed : %p (%lld sockets exist)"_Stz,this,* gixSocket);
+              "Socket constructed : %p (%lld sockets exist)"_Stz, //!format-LogRes
+              this,* gixSocket);
 
   _postcondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
 }
@@ -89,7 +90,8 @@ Socket::Socket(int iSocketId)
   
   ++ gixSocket;
   AM::vLogRes(SL_INF,this,RA_SKT_CONSTRUCTOR,
-              "Socket constructed : %p (%lld sockets exist)"_Stz,this,* gixSocket);
+              "Socket constructed : %p (%lld sockets exist)"_Stz, //!format-LogRes
+              this,* gixSocket);
   
   _postcondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
 }
@@ -109,7 +111,8 @@ Socket::~Socket(void) noexcept(false)
   
   -- gixSocket;
   AM::vLogRes(SL_INF,this,RA_SKT_DESTRUCTOR,
-              "Socket destructed : %p (%lld sockets exist)"_Stz,this,* gixSocket);
+              "Socket destructed : %p (%lld sockets exist)"_Stz, //!format-LogRes
+              this,* gixSocket);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -290,7 +293,7 @@ bool Socket::bAcceptClient(int& iSocketId, SysCall& SysCall)
   if (AM::bAttached()) AM::pResourceTracker()->vIncSocketOpen();
   
   AM::vLogRes(SL_INF,this,RA_SKT_ACCEPTED,
-              "Socket accepted : client"_Stz);
+              "Socket accepted : client"_Stz); //!format-LogRes
 
   SysCall.vSuccess();
   return true;
@@ -327,7 +330,7 @@ bool Socket::bClose(SysCall& SysCall)
   if (AM::bAttached()) AM::pResourceTracker()->vDecSocketOpen();
   
   AM::vLogRes(SL_INF,this,RA_SKT_CLOSED,
-              "Socket closed : "_Stz);
+              "Socket closed : "_Stz); //!format-LogRes
 
   SysCall.vSuccess();
   return true;
@@ -396,7 +399,8 @@ bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
   if (AM::bAttached()) AM::pResourceTracker()->vIncSocketOpen();
   
   AM::vLogRes(SL_INF,this,RA_SKT_CONNECTED,
-              "Socket connected : to server %s %d"_Stz,sAddr,iPort);
+              "Socket connected : to server %s %d"_Stz, //!format-LogRes
+              sAddr,iPort);
 
   SysCall.vSuccess();
   return true;
@@ -460,7 +464,8 @@ bool Socket::bCreateServer(int iPort, SysCall& SysCall)
   if (AM::bAttached()) AM::pResourceTracker()->vIncSocketOpen();
   
   AM::vLogRes(SL_INF,this,RA_SKT_CREATED,
-              "Socket created : listening socket : %d"_Stz,iPort);
+              "Socket created : listening socket : %d"_Stz, //!format-LogRes
+              iPort);
 
   SysCall.vSuccess();
   return true;
@@ -535,7 +540,8 @@ bool Socket::bRecvBytes(void* pWS, i8 nBytes, SysCall& SysCall)
 #endif
     
   AM::vLogRes(SL_INF,this,RA_SKT_RECEIVED,
-              "Socket received : %lld bytes"_Stz,nRecvBytes);
+              "Socket received : %lld bytes"_Stz, //!format-LogRes
+              nRecvBytes);
 
     //vTrace("Bytes received: (%lld) %lld\n"_Stz, nBytes, nSoFar);
   }
@@ -568,7 +574,8 @@ bool Socket::bSendBytes(void* pBuffer, i8 nBytes, SysCall& SysCall)
 #endif
   
   AM::vLogRes(SL_INF,this,RA_SKT_SENT,
-              "Socket sent : %lld bytes"_Stz,nSentBytes);
+              "Socket sent : %lld bytes"_Stz, //!format-LogRes
+              nSentBytes);
 
   if (nSentBytes == nBytes) {
     SysCall.vSuccess();

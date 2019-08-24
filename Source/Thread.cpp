@@ -121,7 +121,8 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
            pThread,pThread->iThreadNo());
   
   AM::vLogRes(SL_INF,pThread->m_pPthread,RA_THD_ENTRY,
-              "Thead entry (dedicated) : %p"_Stz,pThread);
+              "Thead entry (dedicated) : %p"_Stz, //!format-LogRes
+              pThread);
 
   //pThread->vBindCore();
   
@@ -153,7 +154,8 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
            pThread,pThread->iThreadNo());
   
   AM::vLogRes(SL_INF,pThread->m_pPthread,RA_THD_EXIT,
-              "Thead exit (dedicated) : %p"_Stz,pThread);
+              "Thead exit (dedicated) : %p"_Stz, //!format-LogRes
+              pThread);
   
   Scheduler::vRemoveDedicatedThread(pThread);
   
@@ -181,7 +183,8 @@ void* Thread::aEntryPoint_general(void* pArg)
            pThread,pThread->iThreadNo());
   
   AM::vLogRes(SL_INF,pThread->m_pPthread,RA_THD_ENTRY,
-              "Thead entry (general) : %p"_Stz,pThread);
+              "Thead entry (general) : %p"_Stz, //!format-LogRes
+              pThread);
   
   //pThread->vBindCore();
     
@@ -213,7 +216,8 @@ void* Thread::aEntryPoint_general(void* pArg)
            pThread,pThread->iThreadNo());
   
   AM::vLogRes(SL_INF,pThread->m_pPthread,RA_THD_EXIT,
-              "Thead exit (general) : %p"_Stz,pThread);
+              "Thead exit (general) : %p"_Stz, //!format-LogRes
+              pThread);
   
   Scheduler::vRemoveGeneralThread(pThread);
   

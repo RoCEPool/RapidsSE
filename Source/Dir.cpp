@@ -65,7 +65,8 @@ Dir::Dir(void)
   
   ++ gixDir;
   AM::vLogRes(SL_INF,this,RA_DIR_CONSTRUCTOR,
-              "Dir constructed : %p (%lld dirs exist)"_Stz,this,* gixDir);
+              "Dir constructed : %p (%lld dirs exist)"_Stz, //!format-LogRes
+              this,* gixDir);
   
   _postcondition_(_MAGIC_,CN_DIR,_FOOTER_);
 };
@@ -79,7 +80,8 @@ Dir::~Dir(void) noexcept(false)
   
   -- gixDir;
   AM::vLogRes(SL_INF,this,RA_DIR_DESTRUCTOR,
-              "Dir destructed : %p (%lld dirs exist)"_Stz,this,* gixDir);
+              "Dir destructed : %p (%lld dirs exist)"_Stz, //!format-LogRes
+              this,* gixDir);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -194,7 +196,8 @@ void Dir::vClose(void)
   if (AM::bAttached()) AM::pResourceTracker()->vDecDirOpen();
   
   AM::vLogRes(SL_INF,this,RA_DIR_CLOSED,
-              "Dir closed : %s"_Stz,m_sDirPath.aStz());
+              "Dir closed : %s"_Stz, //!format-LogRes
+              m_sDirPath.aStz());
 
   m_aDir = nullptr;
   
@@ -282,7 +285,8 @@ bool Dir::bOpen(Stz* aDirPath)
   if (AM::bAttached()) AM::pResourceTracker()->vIncDirOpen();
   
   AM::vLogRes(SL_INF,this,RA_DIR_OPENED,
-              "Dir opened : %s"_Stz,aDirPath);
+              "Dir opened : %s"_Stz, //!format-LogRes
+              aDirPath);
 
   ASSERT(bIsOpen());
   return true;

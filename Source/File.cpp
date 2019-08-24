@@ -57,7 +57,8 @@ File::File(void)
   
   ++ gixFile;
   AM::vLogRes(SL_INF,this,RA_FIL_CONSTRUCTOR,
-              "File constructed : %p (%lld files exist)"_Stz,this,* gixFile);
+              "File constructed : %p (%lld files exist)"_Stz, //!format-LogRes
+              this,* gixFile);
   
   _postcondition_(_MAGIC_,CN_FILE,_FOOTER_);
 }
@@ -80,7 +81,8 @@ File::~File(void) noexcept(false)
   
   -- gixFile;
   AM::vLogRes(SL_INF,this,RA_MTX_DESTRUCTOR,
-              "File destructed : %p (%lld files exist)"_Stz,this,* gixFile);
+              "File destructed : %p (%lld files exist)"_Stz, //!format-LogRes
+              this,* gixFile);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -244,7 +246,8 @@ void File::vClose(void)
   if (AM::bAttached()) AM::pResourceTracker()->vDecFileOpen();
   
   AM::vLogRes(SL_INF,this,RA_FIL_CLOSED,
-              "File closed : %s"_Stz,m_sFilePath.aStz());
+              "File closed : %s"_Stz, //!format-LogRes
+              m_sFilePath.aStz());
 
   vReset();
   
@@ -439,7 +442,8 @@ bool File::bOpenMode(Stz* aFilePath, Stz* aOpenMode)
   if (AM::bAttached()) AM::pResourceTracker()->vIncFileOpen();
   
   AM::vLogRes(SL_INF,this,RA_FIL_OPENED,
-              "File opened : %s %s"_Stz,aFilePath,aOpenMode);
+              "File opened : %s %s"_Stz, //!format-LogRes
+              aFilePath,aOpenMode);
 
   return true;
 }
