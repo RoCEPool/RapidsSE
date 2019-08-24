@@ -172,7 +172,7 @@ eOR OutputOp::eOpLoop(void)
       
       case CN_IRWBUFFER: {
         IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
-        pIrwBuffer->vShow(m_pStreamDef->m_pColumnVec);
+        pIrwBuffer->vShow(m_pStreamDef->m_oColVecAry.pGet(0));
         vPipeOut(pOperand);
         break;
       }
@@ -189,8 +189,8 @@ eOR OutputOp::eOpLoop(void)
       case CN_SRTBUFFER: {
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
         iCount += pSrtBuffer->nItems();
-        pSrtBuffer->vShow(m_pStreamDef->m_pColumnVec,
-                          m_pRightStreamDef ? m_pRightStreamDef->m_pColumnVec : nullptr);
+//        pSrtBuffer->vShow(m_pStreamDef->m_pColumnVec,
+//                          m_pRightStreamDef ? m_pRightStreamDef->m_pColumnVec : nullptr);
         vPipeOut(pOperand);
         break;
       }

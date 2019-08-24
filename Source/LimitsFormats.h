@@ -4,6 +4,7 @@
 #pragma once
 
 static const i8 C_MAX_COLUMNS    = 150;    // max columns per table
+static const i8 C_MAX_COLUMNVECS = 25;     // max column vectors per streamDef
 static const i8 C_MAX_INDEXES    = 1025;   // max indexes per table
 static const i8 C_MAX_KEY        = 256;    // max length of index entry key
 static const i8 C_MAX_NODES      = 128;    // max nodes in a grid
