@@ -322,12 +322,13 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     
     if (AM::pMarkResource()->bEnum(CN_SOCKET) ||
         AM::pMarkResource()->bAll()) {
-      s256 sFooter;
-      Footer* pFooter = aAdd<Footer*>(pJob,nObjectSize-sizeof(Footer));
-      pFooter->vSprint(sFooter);
+      Footer* aFooter = aAdd<Footer*>(pJob,nObjectSize-sizeof(Footer));
+      //s256 sFooter;
+      //pFooter->vSprint(sFooter);
+      SP_Footer spFooter;
       AM::vLogRes(SL_INF,pSocket,RA_SKT_RECEIVED,
-                  "vSocketRecvObject: Recv footer: %s"_Stz, //!format-LogRes
-                  sFooter.aStz());
+                  "vSocketRecvObject: recv: %s"_Stz, //!format-LogRes
+                  spFooter.sz(aFooter));
     }
     if (pJob->m_xReqTuple.m_bLogJob) {
       JobLog::vNote(pJob,

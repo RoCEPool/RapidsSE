@@ -31,6 +31,7 @@ namespace Gadgets
 #include "Peruse.hpp"
 #include "Numbat.hpp"
 
+#include "SP_Footer.hpp"
 #include "SP_Header.hpp"
 #include "SP_Id.hpp"
 #include "SP_Elapsed.hpp"
