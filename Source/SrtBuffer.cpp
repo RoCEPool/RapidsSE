@@ -185,29 +185,17 @@ void SrtBuffer::vGetKeys(i8 iKeyCol, bool bKeyIsLeft,
   
   SrtSet* pSrtSet;
   
-  CrwBuffer* pLeftCrwBuffer;
-  CrwBuffer* pRightCrwBuffer;
-  
   Crw* aLeftCrw;
   Crw* aRightCrw;
   
   SrtSet* aSrtSet = aFirstSrtSet();
   while (aSrtSet) {
     
-    // get the left data row
-    aLeftCrw = (Crw*)aSrtSet->iRowRef(0);
-    
-    // set the rowData in the srtSet
-    aSrtSet->vRowRef(0, (i8)aLeftCrw);
-    
-    // get the right dataRow
-    aRightCrw = (Crw*)aSrtSet->iRowRef(1);
-    
-    // set the rowData in the srtSet
-    aSrtSet->vRowRef(1, (i8)aRightCrw);
-    
     if ( bKeyIsLeft) {
       HV_Row hRow(pLeftColVec);
+      
+      // get the left data row
+      aLeftCrw = (Crw*)aSrtSet->iRowRef(0);
       
       // get the key from the left buffer row
       if (aLeftCrw) {
@@ -216,11 +204,12 @@ void SrtBuffer::vGetKeys(i8 iKeyCol, bool bKeyIsLeft,
         // set the key in the srtSet
         aSrtSet->vKey(hRow->m_waColVal[iKeyCol].m_iI8);
       }
-      else
-        aSrtSet->vKey(C_DATUM_NULL);
     }
     else {
       HV_Row hRow(pRightColVec);
+      
+      // get the right dataRow
+      aRightCrw = (Crw*)aSrtSet->iRowRef(1);
       
       // get the key from the left buffer row
       if (aRightCrw) {
@@ -229,8 +218,6 @@ void SrtBuffer::vGetKeys(i8 iKeyCol, bool bKeyIsLeft,
         // set the key in the srtSet
         aSrtSet->vKey(hRow->m_waColVal[iKeyCol].m_iI8);
       }
-      else
-        aSrtSet->vKey(C_DATUM_NULL);
     }
     
     aSrtSet = aNextSrtSet(aSrtSet);

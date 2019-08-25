@@ -40,7 +40,7 @@ void SrtSet::operator delete(void* aAddr)
 SrtSet::SrtSet(i8 nRowRefs)
 : Header(CN_SRTSET)
 {
-  m_xKey     = C_UNKNOWN;
+  m_xKey     = C_DATUM_NULL;
   m_nRowRefs = nRowRefs;
   
   for (i8 i_RowRef = 0; i_RowRef < nRowRefs; i_RowRef++)
