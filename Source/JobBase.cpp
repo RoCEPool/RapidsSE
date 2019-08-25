@@ -12,8 +12,9 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-JobBase::JobBase(eCN eClassNo, i8 iJobId)
+JobBase::JobBase(eCN eClassNo, ReqTuple* aReqTuple, i8 iJobId)
 : Focal(eClassNo,iJobId)
+, m_xReqTuple(aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
