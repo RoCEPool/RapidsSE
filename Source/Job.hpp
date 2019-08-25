@@ -5,7 +5,7 @@
 
 namespace Jobs
 {
-  class Job : public Focal,
+  class Job : public JobBase,
               public JobDicPath,
               public JobObjectName,
               public JobResult
