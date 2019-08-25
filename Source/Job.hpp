@@ -7,6 +7,7 @@ namespace Jobs
 {
   class Job : public JobBase,
               public JobBody,
+              public JobLite,
               public JobDicPath,
               public JobObjectName,
               public JobResult
