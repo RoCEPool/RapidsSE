@@ -60,7 +60,7 @@ JoinOp::JoinOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   m_bEndLeftOperands  = false;
   m_bEndRightOperands = false;
   
-  m_pRefBuffer = nullptr;
+  m_pSrtBuffer = nullptr;
   
   m_eNextEntry = NE_NEXT_LEFT_RIGHT;
   m_bGotLeft = false;
@@ -121,8 +121,8 @@ void JoinOp::vAddRowRefs(Ent* aLeftEntry, Ent* aRightEntry)
 {
   
   // allot a refSet
-  if ( ! m_pRefBuffer ) {
-    m_pRefBuffer = new RefBuffer(m_nSlot);
+  if ( ! m_pSrtBuffer ) {
+    m_pSrtBuffer = new SrtBuffer(m_nSlot);
     
     // pipe out the stream def's
     RASSERT(m_pStreamDef);
@@ -130,19 +130,19 @@ void JoinOp::vAddRowRefs(Ent* aLeftEntry, Ent* aRightEntry)
     m_pStreamDef = nullptr;
   }
   
-  RefSet* pRefSet = m_pRefBuffer->aAllotRefSet(2);
+  SrtSet* pSrtSet = m_pSrtBuffer->aAllotSrtSet(2);
   
-  if ( ! pRefSet )  {
-    // Reference Buffer is full
-    // pipe out the refBuffer
-    vPipeOut(m_pRefBuffer);
+  if ( ! pSrtSet )  {
+    // Sort Buffer is full
+    // pipe out the SrtBuffer
+    vPipeOut(m_pSrtBuffer);
     
-    // create another refBuffer for the refEnt's
-    m_pRefBuffer = new RefBuffer(m_nSlot);
+    // create another SrtBuffer for the refEnt's
+    m_pSrtBuffer = new SrtBuffer(m_nSlot);
     
     // insert row from entry in temporary buffer
-    pRefSet = m_pRefBuffer->aAllotRefSet(2);
-    RASSERT(pRefSet);
+    pSrtSet = m_pSrtBuffer->aAllotSrtSet(2);
+    RASSERT(pSrtSet);
   }
   
   // get the row buffers
@@ -154,8 +154,8 @@ void JoinOp::vAddRowRefs(Ent* aLeftEntry, Ent* aRightEntry)
   Crw* aRightRowData = aRightEntry ? pRightCrwBuffer->pCrw(aRightEntry->xRef().iItem()) : nullptr;
   
   // set the rowData in the refSet
-  pRefSet->vRowRef(0, (i8)aLeftRowData);
-  pRefSet->vRowRef(1, (i8)aRightRowData);
+  pSrtSet->vRowRef(0, (i8)aLeftRowData);
+  pSrtSet->vRowRef(1, (i8)aRightRowData);
 }
 
 #define TRACE_JOIN
@@ -355,8 +355,8 @@ eOR JoinOp::eJoinLoop(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pipe out the joined buffer
-  if (m_pRefBuffer)
-    vPipeOut(m_pRefBuffer);
+  if (m_pSrtBuffer)
+    vPipeOut(m_pSrtBuffer);
   
   if (AM::bVerbose())
     vTrace("JOIN COMPLETE\n"_Stz);

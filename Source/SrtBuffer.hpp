@@ -29,6 +29,7 @@ namespace Rows
     
     i8         nBufferCount(void);
     SrtSet*    aFirstSrtSet(void);
+    void       vGetKeys(i8 iKeyCol, bool bKeyIsLeft, ColumnVec* pLeftColVec, ColumnVec* pRightColVec);
     void       vIsLast(bool bIsLast);
     bool       bIsLast(void);
     i8         nItemCount(void);

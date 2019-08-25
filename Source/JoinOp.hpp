@@ -20,7 +20,7 @@ namespace DataOperators
     
     eNE  m_eNextEntry;
     
-    RefBuffer* m_pRefBuffer;
+    SrtBuffer* m_pSrtBuffer;
     
     bool m_bGotLeft;
     
