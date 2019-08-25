@@ -58,7 +58,6 @@ namespace Jobs
     void vFocalOutline(s4K& sOutline);
     Stz* sJobSeed(void);
     i8   iJobId(void);
-    void vJobId(i8 iJobId);
     void vMarkJob(void);
     void vMarkJob(Stz* szFormat, ...);
     void vMutexLock(void);
