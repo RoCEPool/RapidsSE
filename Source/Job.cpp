@@ -56,9 +56,8 @@ bool Jobs::_bIsValidJob(eCN eClass)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job::Job(eCN eClassNo, Session* pSession, ReqTuple* aReqTuple)
-: JobBase(eClassNo,AM::iNextJobId())
+: JobBase(eClassNo,aReqTuple,AM::iNextJobId())
 , JobDicPath(pSession)
-, m_xReqTuple(aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
@@ -240,16 +239,6 @@ i8 Job::iJobId(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   return m_iUniqueId;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the job id                                                             */
-/*----------------------------------------------------------------------------*/
-void Job::vJobId(i8 iJobId)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_iUniqueId = iJobId;
 }
 
 /*----------------------------------------------------------------------------*/

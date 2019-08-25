@@ -17,8 +17,7 @@ namespace Jobs
   
     JobClass* m_pJobClass; // job class
   
-    ReqTuple  m_xReqTuple; // the request tuple
-  
+
     i8   m_iParentId;    // job id of parent job which spawned this JK_CHILD job
     eSS  m_eSeed;        // task seed
     i8   m_i_Slot;       // slot this job processes
@@ -59,7 +58,6 @@ namespace Jobs
     void vFocalOutline(s4K& sOutline);
     Stz* sJobSeed(void);
     i8   iJobId(void);
-    void vJobId(i8 iJobId);
     void vMarkJob(void);
     void vMarkJob(Stz* szFormat, ...);
     void vMutexLock(void);
