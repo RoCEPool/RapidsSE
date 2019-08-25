@@ -99,9 +99,9 @@ Job::Job(eCN eClassNo, Session* pSession, ReqTuple* aReqTuple)
   m_pSendWith = nullptr;
   
   if (CN_JOB_NODEINFO == eClass())
-    m_pMutexJob = nullptr;
+    m_pJobMutex = nullptr;
   else
-    m_pMutexJob = new Mutex;
+    m_pJobMutex = new Mutex;
 
   // -- -- -- -- -- --
   
@@ -122,7 +122,7 @@ Job::~Job(void) noexcept(false)
   
   //ActLog::vAdd(this,AN_DESTRUCTOR);
   
-  delete m_pMutexJob;
+  delete m_pJobMutex;
   
   -- gixJob;
   AM::vLogJob(SL_INF,this,JA_JOB_DESTRUCTOR,
@@ -289,13 +289,13 @@ void Job::vMarkJob(Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* lock the mutex                                                             */
+/* lock the job mutex                                                         */
 /*----------------------------------------------------------------------------*/
-void Job::vMutexLock(void)
+void Job::vLockJobMutex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_pMutexJob->vMutexLock();
+  m_pJobMutex->vMutexLock();
   
 //  i8 rCode = pthread_mutex_lock(&m_xThreadMutex);
 //
@@ -304,13 +304,13 @@ void Job::vMutexLock(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* signal the mutex condition variable                                        */
+/* signal the job mutex                                                       */
 /*----------------------------------------------------------------------------*/
-void Job::vMutexSignal(void)
+void Job::vSignalJobMutex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_pMutexJob->vCondSignal();
+  m_pJobMutex->vCondSignal();
 
 //  i8 rCode = pthread_cond_signal(&m_xThreadCond);
 //
@@ -319,13 +319,13 @@ void Job::vMutexSignal(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* unlock the mutex                                                           */
+/* unlock the job mutex                                                       */
 /*----------------------------------------------------------------------------*/
-void Job::vMutexUnlock(void)
+void Job::vUnlockJobMutex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  m_pMutexJob->vMutexUnlock();
+  m_pJobMutex->vMutexUnlock();
 
 //  i8 rCode = pthread_mutex_unlock(&m_xThreadMutex);
 //
@@ -334,13 +334,13 @@ void Job::vMutexUnlock(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* wait for mutex condition variable to be signalled                          */
+/* wait for job mutex to be signalled                                         */
 /*----------------------------------------------------------------------------*/
-void Job::vMutexWait(void)
+void Job::vWaitJobMutex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
  
-  m_pMutexJob->vCondWaitIndefinite();
+  m_pJobMutex->vCondWaitIndefinite();
   
 //  i8 rCode = pthread_cond_wait(&m_xThreadCond,&m_xThreadMutex);
 //
@@ -523,7 +523,7 @@ void Jobs::vJob_recv(Job* pJob)
 {
   pJob->m_pExecutingTask = nullptr;
   pJob->m_eJobList       = JL_NONE;
-  pJob->m_pMutexJob      = nullptr;
+  pJob->m_pJobMutex      = nullptr;
   pJob->m_bWasReceived   = true;
   
   pJob->m_i_Focal = C_UNKNOWN;

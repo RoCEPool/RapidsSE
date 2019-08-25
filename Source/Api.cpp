@@ -339,7 +339,7 @@ bool Api::bSpawnJob(Session* pSession, Job* pJob, eSS eSeed)
 void Api::vSpawnJobAndWait(Session* pSession, Job* pJob)
 {
   // lock this job's mutex
-  pJob->vMutexLock();
+  pJob->vLockJobMutex();
   //  i8 rCode = pthread_mutex_lock(&pJob->m_xThreadMutex);
   //  if (0 != rCode)
   //    vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
@@ -370,7 +370,7 @@ void Api::vSpawnJobAndWait(Session* pSession, Job* pJob)
     //    vTrace("ThreadMutex:\n"_Stz);
     //    MemLib::vHexDump(&pJob->m_xThreadMutex, sizeof(pthread_mutex_t));
     
-    pJob->vMutexWait();
+    pJob->vWaitJobMutex();
     //    rCode = pthread_cond_wait(&pJob->m_xThreadCond,
     //                              &pJob->m_xThreadMutex);
     //    if (0 != rCode)
@@ -391,7 +391,7 @@ void Api::vSpawnJobAndWait(Session* pSession, Job* pJob)
   pJob->m_eJobState = JS_RUNNING;
   
   // unlock this job's mutex
-  pJob->vMutexUnlock();
+  pJob->vUnlockJobMutex();
   //  rCode = pthread_mutex_unlock(&pJob->m_xThreadMutex);
   //  if (0 != rCode)
   //    vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);

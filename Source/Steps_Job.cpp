@@ -1633,7 +1633,7 @@ void Step::vJobSignalConnector(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // lock & unlock this job's mutex to ensure the connector has entered wait
   //if (! gxArguments.m_nDummyThreads) {
-  pJob->vMutexLock();
+  pJob->vLockJobMutex();
 //    rCode = pthread_mutex_lock(&pJob->m_xThreadMutex);
 //    if (0 != rCode)
 //      vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
@@ -1654,7 +1654,7 @@ void Step::vJobSignalConnector(MP_Task mpTask)
   // trash the cond variable
   //MemLib::vSet(&pJob->m_xThreadCond, 0xEB, sizeof(pthread_cond_t),CN_MUTEX);
 
-  pJob->vMutexSignal();
+  pJob->vSignalJobMutex();
 //  rCode = pthread_cond_signal(&pJob->m_xThreadCond);
 //  if (0 != rCode)
 //    vWarn("pthread_cond_signal() error; rCode=%lld\n"_Stz,rCode);
@@ -1662,7 +1662,7 @@ void Step::vJobSignalConnector(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //if (! gxArguments.m_nDummyThreads) {
   
-  pJob->vMutexUnlock();
+  pJob->vUnlockJobMutex();
 //    rCode = pthread_mutex_unlock(&pJob->m_xThreadMutex);
 //    if (0 != rCode)
 //      vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);

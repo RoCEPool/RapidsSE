@@ -24,9 +24,9 @@ namespace Resources
     void* operator new(size_t, Socket* pSocket);
     void  operator delete(void*);
     
-    Socket();
+    Socket(void);
     Socket(int iSocketId);
-    ~Socket() noexcept(false);
+   ~Socket(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static void vMonitorPortrait(s48K& sPortrait);

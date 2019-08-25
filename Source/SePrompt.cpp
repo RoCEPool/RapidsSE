@@ -561,7 +561,7 @@ void SePrompt::vJobLockMutex(void)
   
   RASSERT(JS_RUNNING == m_pJob->m_eJobState);
   
-  m_pJob->vMutexLock();
+  m_pJob->vLockJobMutex();
 //  i8 rCode = pthread_mutex_lock(&m_pJob->m_xThreadMutex);
 //  if (0 != rCode)
 //    vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
@@ -579,7 +579,7 @@ void SePrompt::vJobUnlockMutex(void)
   // have to be locked, waiting or signalled
   RASSERT(JS_RUNNING != m_pJob->m_eJobState);
   
-  m_pJob->vMutexUnlock();
+  m_pJob->vUnlockJobMutex();
   
   m_pJob->m_eJobState = JS_RUNNING;
 }
@@ -596,7 +596,7 @@ void SePrompt::vJobWaitCond(void)
   
   do {
     
-    m_pJob->vMutexWait();
+    m_pJob->vWaitJobMutex();
     
   } while (m_pJob->m_eJobState != JS_SIGNALLED);
 }

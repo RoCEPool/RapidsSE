@@ -6,13 +6,13 @@
 namespace Jobs
 {
   class Job : public JobBase,        // ⋗ socket
-              public JobLite,        // ⋗ recv
+              public JobLite,        // ⋗ scheduler  ⋗ recv  ⋗ post_ recv
               public JobBody,
               public JobFull,
               public JobDicPath,
               public JobObjectName,
               public JobResult
-  {
+  {                                  // ⋗ parent ⋗ child ⋗ prompt ⋗ api
   public:
   
     JobClass* m_pJobClass; // job class
@@ -41,7 +41,7 @@ namespace Jobs
   
     Atomic m_ixErrors;
 
-    Mutex* m_pMutexJob;
+    Mutex* m_pJobMutex;
 
   public:
     Job(eCN eClassNo, Session* pSession, ReqTuple* aReqTuple);
@@ -60,10 +60,10 @@ namespace Jobs
     i8   iJobId(void);
     void vMarkJob(void);
     void vMarkJob(Stz* szFormat, ...);
-    void vMutexLock(void);
-    void vMutexSignal(void);
-    void vMutexUnlock(void);
-    void vMutexWait(void);
+    void vLockJobMutex(void);
+    void vSignalJobMutex(void);
+    void vUnlockJobMutex(void);
+    void vWaitJobMutex(void);
     Stz* szNodeNm(void);
     i8   iOriginatorNode(void);
     i8   iParticipantNode(void);
