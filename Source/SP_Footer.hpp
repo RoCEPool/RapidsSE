@@ -17,6 +17,7 @@ namespace Gadgets
    ~SP_Footer(void) noexcept(false);
   
     Stz* sz(Footer* aFoot);
+    Stz* sz(Object* pObject);
 
     Footer* aFooter(void);
   };

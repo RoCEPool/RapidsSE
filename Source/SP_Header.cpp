@@ -4,6 +4,8 @@
 
 #include "Gadgets.h"
 
+extern i8  giClassSize[];
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
@@ -36,13 +38,15 @@ Stz* SP_Header::sz(Header* aHeader)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
-  eCN eClassNo = aHeader->eClass();
-  
+  eCN eClassNo  = aHeader->eClass();
+  i8 nClassSize = giClassSize[eClassNo];
+
   StrLib::vSprint(m_caResult,
-                  "<cn%03d %s(%s)>"_Stz,
+                  "<cn%03d %s %lldB %s>"_Stz,
                   
                   eClassNo,
                   aCN[eClassNo],
+                  nClassSize,
                   aHeader->bValidMagic() ? "valid-magic" : "invalid-magic"
                   );
 

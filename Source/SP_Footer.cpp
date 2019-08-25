@@ -4,6 +4,8 @@
 
 #include "Gadgets.h"
 
+extern i8  giClassSize[];
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
@@ -44,6 +46,21 @@ Stz* SP_Footer::sz(Footer* aFoot)
 
   
   return (Stz*) &m_caResult[0];
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint Header and return Stz* to result                                    */
+/*----------------------------------------------------------------------------*/
+Stz* SP_Footer::sz(Object* pObject)
+{
+  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  
+  eCN eClass = pObject->eClass();
+  i8 nObjectSize = giClassSize[eClass];
+
+  Footer* aFoot = aAdd<Footer*>(pObject,nObjectSize-sizeof(Footer));
+
+  return sz(aFoot);
 }
 
 
