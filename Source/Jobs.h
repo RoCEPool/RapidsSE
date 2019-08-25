@@ -29,6 +29,7 @@ namespace Jobs
 #include "JobResult.hpp"
 #include "JobTable.hpp"
 
+#include "JobBase.hpp"
 #include "Job.hpp"
 #include "JobMark2.hpp"
 
