@@ -37,9 +37,9 @@ Stz* SP_Footer::sz(Footer* aFoot)
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
   StrLib::vSprint(m_caResult,
-                  "Footer (%s)"_Stz,
+                  "<(%s)>"_Stz,
                   
-                  aFoot->bValidFooter() ? "valid footer" : "invalid footer"
+                  aFoot->bValidFooter() ? "valid-footer" : "invalid-footer"
                   );
 
   

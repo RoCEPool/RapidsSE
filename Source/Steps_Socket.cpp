@@ -266,10 +266,12 @@ void Step::vSocketRecvObject(MP_Task mpTask)
   
   char caObjectHeader[sizeof(Object) + C_1K];
   
+  Header* aHeader = (Header*) & caObjectHeader[0];
+  
   i8 nObjectBytes = sizeof(Object);
   SysCall oSysCall;
 
-  bool bResult = pSocket->bRecvBytes(caObjectHeader,nObjectBytes,oSysCall);
+  bool bResult = pSocket->bRecvBytes(aHeader,nObjectBytes,oSysCall);
   if (! bResult) {
     mpTask->m_pDataStack->vPushBool(false);
     EXIT();
@@ -278,12 +280,10 @@ void Step::vSocketRecvObject(MP_Task mpTask)
   
   if (AM::pMarkResource()->bEnum(CN_SOCKET) ||
       AM::pMarkResource()->bAll()) {
-    //s256 sHeader;
-    //((Header*)caObjectHeader)->vSprint(sHeader);
     SP_Header spHeader;
     AM::vLogRes(SL_INF,pSocket,RA_SKT_RECEIVED,
-                "vSocketRecvObject: recv %s"_Stz, //!format-LogRes
-                spHeader.sz((Header*)caObjectHeader));
+                "vSocketRecvObject: Header %s"_Stz, //!format-LogRes
+                spHeader.sz(aHeader));
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -322,12 +322,18 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     
     if (AM::pMarkResource()->bEnum(CN_SOCKET) ||
         AM::pMarkResource()->bAll()) {
+      
+      SP_Header   spHeader;
+      SP_ReqTuple spReqTuple;
+      SP_Footer   spFooter;
+
       Footer* aFooter = aAdd<Footer*>(pJob,nObjectSize-sizeof(Footer));
       //s256 sFooter;
       //pFooter->vSprint(sFooter);
-      SP_Footer spFooter;
       AM::vLogRes(SL_INF,pSocket,RA_SKT_RECEIVED,
-                  "vSocketRecvObject: recv: %s"_Stz, //!format-LogRes
+                  "vSocketRecvObject: Header %s ReqTuple %s ... Footer %s"_Stz, //!format-LogRes
+                  spHeader.sz(aHeader),
+                  spReqTuple.sz(&pJob->m_xReqTuple),
                   spFooter.sz(aFooter));
     }
     if (pJob->m_xReqTuple.m_bLogJob) {

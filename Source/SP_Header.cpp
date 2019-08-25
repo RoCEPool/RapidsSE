@@ -39,11 +39,11 @@ Stz* SP_Header::sz(Header* aHeader)
   eCN eClassNo = aHeader->eClass();
   
   StrLib::vSprint(m_caResult,
-                  "Header: Class %03d %s (%s)"_Stz,
+                  "<cn%03d %s(%s)>"_Stz,
                   
                   eClassNo,
                   aCN[eClassNo],
-                  aHeader->bValidMagic() ? "valid magic" : "invalid magic"
+                  aHeader->bValidMagic() ? "valid-magic" : "invalid-magic"
                   );
 
   return (Stz*) &m_caResult[0];
