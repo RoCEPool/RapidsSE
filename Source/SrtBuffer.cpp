@@ -188,35 +188,36 @@ void SrtBuffer::vGetKeys(i8 iKeyCol, bool bKeyIsLeft,
   Crw* aLeftCrw;
   Crw* aRightCrw;
   
+  HV_Row hLeftRow(pLeftColVec);
+  HV_Row hRightRow(pRightColVec);
+  
   SrtSet* aSrtSet = aFirstSrtSet();
   while (aSrtSet) {
     
     if ( bKeyIsLeft) {
-      HV_Row hRow(pLeftColVec);
       
       // get the left data row
       aLeftCrw = (Crw*)aSrtSet->iRowRef(0);
       
       // get the key from the left buffer row
       if (aLeftCrw) {
-        RowInflator::vInflateColumn(hRow, aLeftCrw, iKeyCol);
+        RowInflator::vInflateColumn(hLeftRow, aLeftCrw, iKeyCol);
         
         // set the key in the srtSet
-        aSrtSet->vKey(hRow->m_waColVal[iKeyCol].m_iI8);
+        aSrtSet->vKey(hLeftRow->m_waColVal[iKeyCol].m_iI8);
       }
     }
     else {
-      HV_Row hRow(pRightColVec);
-      
+    
       // get the right dataRow
       aRightCrw = (Crw*)aSrtSet->iRowRef(1);
       
       // get the key from the left buffer row
       if (aRightCrw) {
-        RowInflator::vInflateColumn(hRow, aRightCrw, iKeyCol);
+        RowInflator::vInflateColumn(hRightRow, aRightCrw, iKeyCol);
         
         // set the key in the srtSet
-        aSrtSet->vKey(hRow->m_waColVal[iKeyCol].m_iI8);
+        aSrtSet->vKey(hRightRow->m_waColVal[iKeyCol].m_iI8);
       }
     }
     
