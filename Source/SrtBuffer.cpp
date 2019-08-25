@@ -175,6 +175,69 @@ SrtSet* SrtBuffer::aFirstSrtSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get keys into the srtBuffer                                                */
+/*----------------------------------------------------------------------------*/
+void SrtBuffer::vGetKeys(i8 iKeyCol, bool bKeyIsLeft,
+                         ColumnVec* pLeftColVec,
+                         ColumnVec* pRightColVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
+  
+  SrtSet* pSrtSet;
+  
+  CrwBuffer* pLeftCrwBuffer;
+  CrwBuffer* pRightCrwBuffer;
+  
+  Crw* aLeftCrw;
+  Crw* aRightCrw;
+  
+  SrtSet* aSrtSet = aFirstSrtSet();
+  while (aSrtSet) {
+    
+    // get the left data row
+    aLeftCrw = (Crw*)aSrtSet->iRowRef(0);
+    
+    // set the rowData in the srtSet
+    aSrtSet->vRowRef(0, (i8)aLeftCrw);
+    
+    // get the right dataRow
+    aRightCrw = (Crw*)aSrtSet->iRowRef(1);
+    
+    // set the rowData in the srtSet
+    aSrtSet->vRowRef(1, (i8)aRightCrw);
+    
+    if ( bKeyIsLeft) {
+      HV_Row hRow(pLeftColVec);
+      
+      // get the key from the left buffer row
+      if (aLeftCrw) {
+        RowInflator::vInflateColumn(hRow, aLeftCrw, iKeyCol);
+        
+        // set the key in the srtSet
+        aSrtSet->vKey(hRow->m_waColVal[iKeyCol].m_iI8);
+      }
+      else
+        aSrtSet->vKey(C_DATUM_NULL);
+    }
+    else {
+      HV_Row hRow(pRightColVec);
+      
+      // get the key from the left buffer row
+      if (aRightCrw) {
+        RowInflator::vInflateColumn(hRow, aRightCrw, iKeyCol);
+        
+        // set the key in the srtSet
+        aSrtSet->vKey(hRow->m_waColVal[iKeyCol].m_iI8);
+      }
+      else
+        aSrtSet->vKey(C_DATUM_NULL);
+    }
+    
+    aSrtSet = aNextSrtSet(aSrtSet);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* set buffer is last                                                         */
 /*----------------------------------------------------------------------------*/
 void SrtBuffer::vIsLast(bool bIsLast)
