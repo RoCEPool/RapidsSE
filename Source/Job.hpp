@@ -8,6 +8,7 @@ namespace Jobs
   class Job : public JobBase,
               public JobBody,
               public JobLite,
+              public JobFull,
               public JobDicPath,
               public JobObjectName,
               public JobResult
