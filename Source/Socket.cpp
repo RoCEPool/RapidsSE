@@ -494,13 +494,13 @@ void Socket::vDropWrite(void)
 /*----------------------------------------------------------------------------*/
 /* recv n bytes from this socket into given buffer                            */
 /*----------------------------------------------------------------------------*/
-bool Socket::bRecvBytes(void* pWS, i8 nBytes, SysCall& SysCall)
+bool Socket::bRecvBytes(void* aBytes, i8 nBytes, SysCall& SysCall)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
   int nSoFar = 0;
   i8 nMore = nBytes;
-  char* pSoFar = (char*)pWS;
+  char* pSoFar = (char*)aBytes;
   
   SysCall.vClear();
   
@@ -511,7 +511,7 @@ bool Socket::bRecvBytes(void* pWS, i8 nBytes, SysCall& SysCall)
   
   while (nSoFar != nBytes)
   {
-    pSoFar = (char*)pWS + nSoFar;
+    pSoFar = (char*)aBytes + nSoFar;
  
 #ifdef WITH_STATISTICS_COUNTERS
     gpAttachMap->m_oStatistics.Socket.m_nRecvs++;
@@ -850,7 +850,7 @@ bool Socket::bServer(Stz* sAddr, int iPort, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 /* send a message via a UDP socket                                            */
 /*----------------------------------------------------------------------------*/
-bool Socket::bSendTo(void* pBuffer, i8 nBytes, SysCall& SysCall)
+bool Socket::bSendTo(void* aBytes, i8 nBytes, SysCall& SysCall)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
@@ -866,12 +866,12 @@ bool Socket::bSendTo(void* pBuffer, i8 nBytes, SysCall& SysCall)
 #endif
   
   i8 nBytesSent = sendto(m_iSocketId
-                       ,pBuffer
-                       ,nBytes
-                       ,0
-                       ,(struct sockaddr*)&m_xServAddr
-                       ,sizeof(m_xServAddr)
-                       );
+                         ,aBytes
+                         ,nBytes
+                         ,0
+                         ,(struct sockaddr*)&m_xServAddr
+                         ,sizeof(m_xServAddr)
+                         );
   
   if (-1 == nBytesSent)
   {

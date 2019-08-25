@@ -5,9 +5,9 @@
 
 namespace Jobs
 {
-  class Job : public JobBase,
+  class Job : public JobBase,        // ⋗ socket
+              public JobLite,        // ⋗ recv
               public JobBody,
-              public JobLite,
               public JobFull,
               public JobDicPath,
               public JobObjectName,

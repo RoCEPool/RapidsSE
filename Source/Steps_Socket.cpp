@@ -619,6 +619,8 @@ void Step::vSocketSendObject(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
   THROW_INVALID_DSTACK("socket.sendObject"_Stz);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   eCN eClass = pObject->eClass();
   i8 nObjectSize = giClassSize[eClass];
   
@@ -627,6 +629,10 @@ void Step::vSocketSendObject(MP_Task mpTask)
   
   if (_bIsValidJob(eClass)) {
     Job* pJob = _pJob(pObject);
+    
+    // ray added 25 Aug 2019
+    ASSERT(pJob->m_pJobClass->m_fpSend && pJob->m_pJobClass->m_fpRecv);
+    
     if (pJob->m_xReqTuple.m_bLogJob)
       JobLog::vNote(pJob,"Send: %s %p socket %llx"_Stz,
                          aCN[eClass],
@@ -639,6 +645,8 @@ void Step::vSocketSendObject(MP_Task mpTask)
   RASSERT(_bIsValidJob(eClass) ||
           CN_CRWBUFFER  == eClass ||
           CN_EXPORTBUFFER == eClass);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
   SysCall oSysCall;
   bool bResult = pSocket->bSendTo(pObject, nObjectSize, oSysCall);

@@ -30,7 +30,7 @@ JobClass xJobClass_NodeInfo =
   nullptr,           // prompt post-process function
   pJob_NodeInfo_new,     // job new function
   vJob_NodeInfo_delete,  // job delete function
-  nullptr,           // job pre-send function
+  vJob_send,         // job pre-send function
   vJob_recv,         // job post-receive function
   vJob_NodeInfo_show,    // job show function
   
