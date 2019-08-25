@@ -30,7 +30,7 @@ SP_String::~SP_String(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* sprint SP_String and return Stz* to result                                 */
+/* sprint String and return Stz* to result                                    */
 /*----------------------------------------------------------------------------*/
 Stz* SP_String::szRight(Stz* szString, i8 iLength)
 {

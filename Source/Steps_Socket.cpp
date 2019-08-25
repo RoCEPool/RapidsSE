@@ -264,11 +264,12 @@ void Step::vSocketRecvObject(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receiver the object header
   
-  char caObjectHeader[sizeof(Object)+C_1K];
+  char caObjectHeader[sizeof(Object) + C_1K];
+  
   i8 nObjectBytes = sizeof(Object);
   SysCall oSysCall;
 
-  bool bResult = pSocket->bRecvBytes(caObjectHeader,nObjectBytes, oSysCall);
+  bool bResult = pSocket->bRecvBytes(caObjectHeader,nObjectBytes,oSysCall);
   if (! bResult) {
     mpTask->m_pDataStack->vPushBool(false);
     EXIT();
@@ -277,11 +278,12 @@ void Step::vSocketRecvObject(MP_Task mpTask)
   
   if (AM::pMarkResource()->bEnum(CN_SOCKET) ||
       AM::pMarkResource()->bAll()) {
-    s256 sHeader;
-    ((Header*)caObjectHeader)->vSprint(sHeader);
+    //s256 sHeader;
+    //((Header*)caObjectHeader)->vSprint(sHeader);
+    SP_Header spHeader;
     AM::vLogRes(SL_INF,pSocket,RA_SKT_RECEIVED,
-                 "Recv header: %s"_Stz, //!format-LogRes
-                sHeader.aStz());
+                "vSocketRecvObject: recv %s"_Stz, //!format-LogRes
+                spHeader.sz((Header*)caObjectHeader));
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -296,7 +298,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
           CN_EXPORTBUFFER == eClass);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // receive rest of job
+  // receive rest of a job
   
   if ( _bIsValidJob(eClass) ) {
         
@@ -324,7 +326,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
       Footer* pFooter = aAdd<Footer*>(pJob,nObjectSize-sizeof(Footer));
       pFooter->vSprint(sFooter);
       AM::vLogRes(SL_INF,pSocket,RA_SKT_RECEIVED,
-                  "Recv footer: %s"_Stz, //!format-LogRes
+                  "vSocketRecvObject: Recv footer: %s"_Stz, //!format-LogRes
                   sFooter.aStz());
     }
     if (pJob->m_xReqTuple.m_bLogJob) {
@@ -347,7 +349,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // receive rest of row buffer
+  // receive rest of a row buffer
   
   if (eClass == CN_CRWBUFFER) {
     

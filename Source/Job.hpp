@@ -6,7 +6,7 @@
 namespace Jobs
 {
   class Job : public JobBase,        // ⋗ socket
-              public JobLite,        // ⋗ scheduler  ⋗ recv  ⋗ post_ recv
+              public JobLite,        // ⋗ scheduler  ⋗ recv  ⋗ post_recv
               public JobBody,
               public JobFull,
               public JobDicPath,
@@ -17,7 +17,6 @@ namespace Jobs
   
     JobClass* m_pJobClass; // job class
   
-
     i8   m_iParentId;    // job id of parent job which spawned this JK_CHILD job
     eSS  m_eSeed;        // task seed
     i8   m_i_Slot;       // slot this job processes
@@ -26,7 +25,8 @@ namespace Jobs
 
     eJL  m_eJobList;     // which job list the job is currently in
     eJP  m_eJobPhase;    // which job phase the job is currently in
-    eJS  m_eJobState;    // current job state
+    eJS  m_eJobState;    // current state of the job
+    Mutex* m_pJobMutex;
 
     Decider m_oAcksRmg;  // acks remaining
   
@@ -41,7 +41,6 @@ namespace Jobs
   
     Atomic m_ixErrors;
 
-    Mutex* m_pJobMutex;
 
   public:
     Job(eCN eClassNo, Session* pSession, ReqTuple* aReqTuple);
