@@ -390,6 +390,19 @@ void AM::vWriteTrace(eYA eSysAct, Stz* aFormat, va_list xArgs)
 /*----------------------------------------------------------------------------*/
 /* add a info log entry                                                       */
 /*----------------------------------------------------------------------------*/
+void AM::vLogAll(void)
+{
+#ifdef WITH_SHARED_LOG
+  if (! AM::bLogging())
+    return;
+  
+  gpLog->vMarkAll(true);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a info log entry                                                       */
+/*----------------------------------------------------------------------------*/
 void AM::vLogFyi(Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG

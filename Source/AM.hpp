@@ -171,6 +171,8 @@ namespace StorageEngine
     static void vStateDiagram(s256& sDiagram, eCN eJobClass);
     static void vWriteTrace(eYA eSysAct, Stz* aFormat, va_list xArgs);
 
+    static void vLogAll(void);
+  
     static void vLogFyi(Stz* szFormat, ...);
     static void vLogText(i8 iId, Stz* szText);
 

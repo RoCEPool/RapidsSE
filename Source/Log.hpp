@@ -92,6 +92,8 @@ namespace Logging
     void vLog(TokenVec* pTknVec);
     void vLogList(TokenVec* pTknVec);
     void vLogMark(TokenVec* pTknVec);
+  
+    void vMarkAll(bool bAll);
 
     Footer* aFooter(void);
   };

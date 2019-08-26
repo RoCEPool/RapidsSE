@@ -347,6 +347,8 @@ void Log::vOpenBySE(bool bStarting)
              C_LOG_ENTRIES);
     
     gpLog = pLog;
+     
+    gpLog->vMarkAll(true);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1005,6 +1007,18 @@ void Log::vLogMark(TokenVec* pTknVec)
   }
   
   vTrace(" Log mark ???\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* mark all                                                                   */
+/*----------------------------------------------------------------------------*/
+void Log::vMarkAll(bool bAll)
+{
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
+  
+  EnumFlags* pClassFlags = AM::pClassFlags();
+  
+  pClassFlags->vAll(bAll);
 }
 
 
