@@ -45,7 +45,7 @@ Stz* SP_Id::sz(Stz* szPrefix, i8 iId)
   if (C_UNKNOWN == iId) {
     StrLib::vSprint(m_caResult,"%s-.---"_Stz,szPrefix);
     return (Stz*) &m_caResult[0];
- }
+  }
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -56,6 +56,38 @@ Stz* SP_Id::sz(Stz* szPrefix, i8 iId)
                   "%s%lld.%03lld"_Stz,
                   
                   szPrefix,
+                  U.wId.m_uNodeNo,
+                  U.wId.m_uIdNo);
+  
+  return (Stz*) &m_caResult[0];
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint Id and return Stz* to result                                        */
+/*----------------------------------------------------------------------------*/
+Stz* SP_Id::sz(i8 iId)
+{
+  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  
+  union {
+    i8  iId;
+    _Id wId;
+  } U;
+  
+  
+  if (C_UNKNOWN == iId) {
+    StrLib::vSprint(m_caResult,"-.---"_Stz);
+    return (Stz*) &m_caResult[0];
+ }
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  U.iId = iId;
+  
+  StrLib::vSprint(m_caResult,
+                  "%lld.%03lld"_Stz,
+                  
                   U.wId.m_uNodeNo,
                   U.wId.m_uIdNo);
 

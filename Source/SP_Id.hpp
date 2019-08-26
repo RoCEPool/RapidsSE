@@ -16,6 +16,7 @@ namespace Gadgets
     SP_Id(void);
     ~SP_Id(void) noexcept(false);
   
+    Stz* sz(i8 iId);
     Stz* sz(Stz* szPrefix, i8 iId);
 
     Footer* aFooter(void);

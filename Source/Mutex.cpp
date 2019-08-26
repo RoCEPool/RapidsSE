@@ -54,12 +54,15 @@ void Mutex::operator delete(void* pMutexAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Mutex::Mutex()
+Mutex::Mutex(eMK eDadKind, i8 i_DadId)
 : Resource(CN_MUTEX)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
-  m_bLocked = false;
+  m_eDadKind = eDadKind;
+  m_iDadId  = i_DadId;
+  
+  m_bLocked  = false;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -104,9 +107,12 @@ Mutex::Mutex()
   _checkInitialised_(CN_MUTEX);
   
   ++ gixMutex;
+  SP_Id spId;
   AM::vLogRes(SL_INF,this,RA_MTX_CONSTRUCTOR,
-              "Mutex constructed : %p (%lld mutexes exist)"_Stz, //!format-LogRes
-              this,* gixMutex);
+              "Mutex constructed : Dad %s %s (%lld mutexs exist)"_Stz, //!format-LogRes
+              aMK[m_eDadKind],
+              spId.sz(m_iDadId),
+              * gixMutex);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
 }
@@ -137,9 +143,12 @@ Mutex::~Mutex(void) noexcept(false)
 #endif
   
   -- gixMutex;
+  SP_Id spId;
   AM::vLogRes(SL_INF,this,RA_MTX_DESTRUCTOR,
-              "Mutex destructed : %p (%lld mutexes exist)"_Stz, //!format-LogRes
-              this,* gixMutex);
+              "Mutex destructed : Dad %s %s (%lld mutexs exist)"_Stz, //!format-LogRes
+              aMK[m_eDadKind],
+              spId.sz(m_iDadId),
+              * gixMutex);
 }
 
 /*----------------------------------------------------------------------------*/

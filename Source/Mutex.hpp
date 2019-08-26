@@ -8,7 +8,10 @@ namespace Resources
   class Mutex : public Resource
   {
   public:
-    bool                m_bLocked;    // true if mutex is locked (debugging)
+    eMK  m_eDadKind;
+    i8   m_iDadId;
+  
+    bool m_bLocked;    // true if mutex is locked (debugging)
   
     pthread_mutex_t     m_xMutex;     // mutex variable
     pthread_mutexattr_t m_xMutexAttr; // mutex shared attribute
@@ -23,7 +26,7 @@ namespace Resources
     void* operator new(size_t, Mutex* pMutex);
     void operator delete(void* pMutexAddress);
 
-    Mutex(void);
+    Mutex(eMK eDadKind, i8 i_DadId);
    ~Mutex(void) noexcept(false);
   
     static void vMonitorPortrait(s48K& sPortrait);
