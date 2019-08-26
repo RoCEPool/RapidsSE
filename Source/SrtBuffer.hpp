@@ -10,6 +10,7 @@ namespace Rows
   {
   protected:
   
+    i8     m_nRowRefs;
     bool   m_bIsLast;      // is this the last buffer in its sequence?
   
     // must be last
@@ -19,7 +20,7 @@ namespace Rows
     void* operator new(size_t);
     void  operator delete(void*);
   
-    SrtBuffer(i8 iPartition);
+    SrtBuffer(i8 nRowRefs, i8 iPartition);
     ~SrtBuffer(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -37,6 +38,7 @@ namespace Rows
     SrtBuffer* pNextBuffer(void);
     SrtSet*    aNextSrtSet(SrtSet* aPriorSrtSet);
     SrtBuffer* pPrevBuffer(void);
+    i8         nRowRefs(void);
     void       vShow(void);
     void       vShow(StreamDef* pStreamDef);
     SrtSet*    aSrtSet(i8 iSrtSet);

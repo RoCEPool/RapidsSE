@@ -283,7 +283,7 @@ void MergeOp::vMergeOperands(Operand* pOperand1, Operand* pOperand2)
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a new srtBuffer to copy elements after merging
-  SrtBuffer* pFirstMergeBuffer  = new SrtBuffer(pLeftBuffer->iPartitionNo());
+  SrtBuffer* pFirstMergeBuffer  = new SrtBuffer(pLeftBuffer->nRowRefs(), pLeftBuffer->iPartitionNo());
   i8 iMergeBufferCount = 1;
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

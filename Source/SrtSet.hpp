@@ -9,7 +9,6 @@ namespace Rows
   {
   public:
     i8 m_xKey;        // 1 word key
-    i8 m_nRowRefs;    // the number of row refs in this ref set
     i8 m_iaRowRef[1]; // array of row refs
   
   public:
@@ -21,10 +20,9 @@ namespace Rows
   
     static i8 nBytesReq(i8 nRowRefs);
     
-    void vCopy(SrtSet* aSrtSet);
+    void vCopy(SrtSet* aSrtSet, i8 nRowRefs);
     i8   iKey(void);
     void vKey(i8 xKey);
-    i8   nRowRefs(void);
   
     i8   iRowRef(i8 i_RowRef);
     void vRowRef(i8 i_RowRef, i8 iRowRef);

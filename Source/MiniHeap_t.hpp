@@ -21,6 +21,7 @@ namespace Structures
    ~MiniHeap_t(void) noexcept(false);
   
     ITEM*  aAdjacentItem(ITEM* aItem);
+    ITEM*  aAdjacentItem(ITEM* aItem, i8 nSizeBytes);
     byte*  ayAllotBytes(i8 nBytes);
     ITEM*  aAllotItem(eCN eClassNo, i8 nBytes);
     i8     iDecile(void);
@@ -105,6 +106,26 @@ ITEM* MiniHeap_t<ITEM>::aAdjacentItem(ITEM* aItem)
   i8 nItemBytes = (CN_FREEITEM == aItem->eClass())
                     ? ((FreeItem*)aItem)->nSizeBytes()
                     : aItem->nSizeBytes();
+  
+  aAdjacent = aAdd<ITEM*>(aItem,nItemBytes);
+  
+  if ((char*)aAdjacent >= (char*)m_xWsp.ayLatter())
+    return nullptr;
+  
+  return aAdjacent;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get item which is memory-wise the next item in the item area               */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+ITEM* MiniHeap_t<ITEM>::aAdjacentItem(ITEM* aItem, i8 nSizeItem)
+{
+  ITEM* aAdjacent = nullptr;
+  
+  i8 nItemBytes = (CN_FREEITEM == aItem->eClass())
+  ? ((FreeItem*)aItem)->nSizeBytes()
+  : nSizeItem;
   
   aAdjacent = aAdd<ITEM*>(aItem,nItemBytes);
   

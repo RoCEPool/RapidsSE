@@ -41,7 +41,6 @@ SrtSet::SrtSet(i8 nRowRefs)
 : Header(CN_SRTSET)
 {
   m_xKey     = C_DATUM_NULL;
-  m_nRowRefs = nRowRefs;
   
   for (i8 i_RowRef = 0; i_RowRef < nRowRefs; i_RowRef++)
     m_iaRowRef[i_RowRef] = C_UNKNOWN;
@@ -77,14 +76,12 @@ i8 SrtSet::nBytesReq(i8 nRowRefs)
 /*----------------------------------------------------------------------------*/
 /* copy from srtSet to this srtSet                                            */
 /*----------------------------------------------------------------------------*/
-void SrtSet::vCopy(SrtSet* pSrtSet)
+void SrtSet::vCopy(SrtSet* pSrtSet, i8 nRowRefs)
 {
-  RASSERT(m_nRowRefs == pSrtSet->m_nRowRefs);
   
   m_xKey     = pSrtSet->iKey();
-  m_nRowRefs = pSrtSet->m_nRowRefs;
   
-  for (i8 i_RowRef = 0; i_RowRef < m_nRowRefs; i_RowRef++)
+  for (i8 i_RowRef = 0; i_RowRef < nRowRefs; i_RowRef++)
     m_iaRowRef[i_RowRef] = pSrtSet->m_iaRowRef[i_RowRef];
   
 }
@@ -106,14 +103,6 @@ void SrtSet::vKey(i8 xKey)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the number of row refs in this srt set                                 */
-/*----------------------------------------------------------------------------*/
-i8 SrtSet::nRowRefs(void)
-{
-  return m_nRowRefs;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get a row ref from this srt set                                            */
 /*----------------------------------------------------------------------------*/
 i8 SrtSet::iRowRef(i8 i_RowRef)
@@ -131,16 +120,6 @@ void SrtSet::vRowRef(i8 i_RowRef, i8 iRowRef)
   ASSERT(i_RowRef < m_nRowRefs);
   
   m_iaRowRef[i_RowRef] = iRowRef;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get size of this SrtSet                                                    */
-/*----------------------------------------------------------------------------*/
-i8 SrtSet::nSizeBytes(void)
-{
-  i8 nBytes = sizeof(SrtSet) - sizeof(i8) + (m_nRowRefs * sizeof(i8));
-
-  return nBytes;
 }
 
 /*============================================================================*/

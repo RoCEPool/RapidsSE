@@ -43,11 +43,12 @@ void SrtBuffer::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SrtBuffer::SrtBuffer(i8 iPartition)
+SrtBuffer::SrtBuffer(i8 nRowRefs, i8 iPartition)
 : DataBuffer(CN_SRTBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
   
+  m_nRowRefs = nRowRefs;
   m_bIsLast = false;
   m_iPartitionNo = iPartition;
   
@@ -94,8 +95,10 @@ SrtSet* SrtBuffer::aAllotSrtSet(i8 nRowRefs)
       return nullptr;
   }
   
+  i8 nBytes = sizeof(SrtSet) - sizeof(i8) + (m_nRowRefs * sizeof(i8));
+  
   // allot using bytes as we don't know the size of the item
-  byte* aySrtSet = ayAllotBytes(SrtSet::nBytesReq(nRowRefs));
+  byte* aySrtSet = ayAllotBytes(nBytes);
   
   if (! aySrtSet)
     return nullptr;
@@ -114,32 +117,30 @@ SrtBuffer* SrtBuffer::aCopySrtSet(SrtSet* aSrtSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
   
-  i8 nRowRefs = aSrtSet->m_nRowRefs;
-  
   // allot using bytes as we don't know the size of the item
-  SrtSet* aNewSrtSet = aAllotSrtSet(nRowRefs);
+  SrtSet* aNewSrtSet = aAllotSrtSet(m_nRowRefs);
   
   if (! aNewSrtSet) {
     
     // create a new merge SrtBuffer
-    SrtBuffer* pSrtBuffer = new SrtBuffer(m_iPartitionNo);
+    SrtBuffer* pSrtBuffer = new SrtBuffer(m_nRowRefs, m_iPartitionNo);
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // link this buffer to the new buffer
     this->vNextBuffer(pSrtBuffer);
     pSrtBuffer->vPrevBuffer(this);
     
-    aNewSrtSet = pSrtBuffer->aAllotSrtSet(nRowRefs);
+    aNewSrtSet = pSrtBuffer->aAllotSrtSet(m_nRowRefs);
     
     // copy left value to new buffer
-    aNewSrtSet->vCopy(aSrtSet);
+    aNewSrtSet->vCopy(aSrtSet, m_nRowRefs);
     
     // return the new buffer
     return pSrtBuffer;
   }
   
   // copy left value to new buffer
-  aNewSrtSet->vCopy(aSrtSet);
+  aNewSrtSet->vCopy(aSrtSet, m_nRowRefs);
   
   return this;
 }
@@ -300,7 +301,9 @@ SrtSet* SrtBuffer::aNextSrtSet(SrtSet* aPriorSrtSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
 
-  SrtSet* aSrtSet = aAdjacentItem(aPriorSrtSet);
+  i8 nBytes = sizeof(SrtSet) - sizeof(i8) + (m_nRowRefs * sizeof(i8));
+  
+  SrtSet* aSrtSet = aAdjacentItem(aPriorSrtSet, nBytes);
   
   if (aSrtSet && CN_SRTSET == aSrtSet->eClass())
     return aSrtSet;
@@ -316,6 +319,14 @@ SrtBuffer* SrtBuffer::pPrevBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
   
   return _pSrtBuffer(m_pPrevBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the number of row refs in this srt set                                 */
+/*----------------------------------------------------------------------------*/
+i8 SrtBuffer::nRowRefs(void)
+{
+  return m_nRowRefs;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -382,17 +393,17 @@ void SrtBuffer::vShow(StreamDef* pStreamDef)
     RASSERT(aSrtSet == this->aSrtSet(iElement));
     
     i8 nColVecs = pStreamDef->m_oColVecAry.nItems();
-    RASSERT(nColVecs == aSrtSet->nRowRefs());
+    RASSERT(nColVecs == m_nRowRefs);
     
     vTrace("%lld: %p; Key:%lld; RowRef:"_Stz, iElement, aSrtSet, aSrtSet->iKey());
     
-    for (i8 iRowRefs = 0; iRowRefs < aSrtSet->nRowRefs(); iRowRefs++) {
+    for (i8 iRowRefs = 0; iRowRefs < m_nRowRefs; iRowRefs++) {
       vTrace("%p "_Stz, aSrtSet->iRowRef(iRowRefs));
     }
     
     vTrace("; row: "_Stz);
     
-    for (i8 iRowRefs = 0; iRowRefs < aSrtSet->nRowRefs(); iRowRefs++) {
+    for (i8 iRowRefs = 0; iRowRefs < m_nRowRefs; iRowRefs++) {
       
       // get the srtSet dataRow
       Crw* aCrw = (Crw*)(aSrtSet->iRowRef(iRowRefs));
@@ -442,7 +453,7 @@ SrtSet* SrtBuffer::aSrtSet(i8 iSrtSet)
     return nullptr;
   
   SrtSet* aSrtSetPtr = aItemArea();
-  i8 iSize = sizeof(SrtSet) + sizeof(i8)*(aSrtSetPtr->m_nRowRefs - 1);
+  i8 iSize = sizeof(SrtSet) + sizeof(i8)*(m_nRowRefs - 1);
   
   aSrtSetPtr = aAdd<SrtSet*>(aSrtSetPtr, iSize*iSrtSet);
   
@@ -463,8 +474,8 @@ void SrtBuffer::vSwap(i8 iSrtSet1, SrtBuffer* pSrtBuffer2, i8 iSrtSet2)
   SrtSet* aSrtSet1 = aSrtSet(iSrtSet1);
   SrtSet* aSrtSet2 = pSrtBuffer2->aSrtSet(iSrtSet2);
   
-  if ( aSrtSet1->m_nRowRefs == 1) {
-    RASSERT(aSrtSet2->m_nRowRefs == 1);
+  if ( m_nRowRefs == 1) {
+    RASSERT(m_nRowRefs == 1);
     
     i8 iKey = aSrtSet1->m_xKey;
     i8 iaRowRef0 = aSrtSet1->m_iaRowRef[0];
@@ -476,8 +487,8 @@ void SrtBuffer::vSwap(i8 iSrtSet1, SrtBuffer* pSrtBuffer2, i8 iSrtSet2)
     aSrtSet2->m_iaRowRef[0] = iaRowRef0;
   }
   else {
-    RASSERT(aSrtSet1->m_nRowRefs == 2);
-    RASSERT(aSrtSet2->m_nRowRefs == 2);
+    RASSERT(m_nRowRefs == 2);
+    RASSERT(m_nRowRefs == 2);
     
     i8 iKey = aSrtSet1->m_xKey;
     i8 iaRowRef0 = aSrtSet1->m_iaRowRef[0];
@@ -503,8 +514,8 @@ void SrtBuffer::vSwap(i8 iSrtSet1, i8 iSrtSet2)
   SrtSet* aSrtSet1 = aSrtSet(iSrtSet1);
   SrtSet* aSrtSet2 = aSrtSet(iSrtSet2);
   
-  if ( aSrtSet1->m_nRowRefs == 1) {
-    RASSERT(aSrtSet2->m_nRowRefs == 1);
+  if ( m_nRowRefs == 1) {
+    RASSERT(m_nRowRefs == 1);
     
     i8 iKey = aSrtSet1->m_xKey;
     i8 iaRowRef0 = aSrtSet1->m_iaRowRef[0];
@@ -516,8 +527,8 @@ void SrtBuffer::vSwap(i8 iSrtSet1, i8 iSrtSet2)
     aSrtSet2->m_iaRowRef[0] = iaRowRef0;
   }
   else {
-    RASSERT(aSrtSet1->m_nRowRefs == 2);
-    RASSERT(aSrtSet2->m_nRowRefs == 2);
+    RASSERT(m_nRowRefs == 2);
+    RASSERT(m_nRowRefs == 2);
     
     i8 iKey = aSrtSet1->m_xKey;
     i8 iaRowRef0 = aSrtSet1->m_iaRowRef[0];
