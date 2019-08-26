@@ -43,11 +43,12 @@ void SrtBuffer::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SrtBuffer::SrtBuffer(i8 iPartition)
+SrtBuffer::SrtBuffer(i8 nRowRefs, i8 iPartition)
 : DataBuffer(CN_SRTBUFFER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
   
+  m_nRowRefs = nRowRefs;
   m_bIsLast = false;
   m_iPartitionNo = iPartition;
   
@@ -122,7 +123,7 @@ SrtBuffer* SrtBuffer::aCopySrtSet(SrtSet* aSrtSet)
   if (! aNewSrtSet) {
     
     // create a new merge SrtBuffer
-    SrtBuffer* pSrtBuffer = new SrtBuffer(m_iPartitionNo);
+    SrtBuffer* pSrtBuffer = new SrtBuffer(m_nRowRefs, m_iPartitionNo);
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // link this buffer to the new buffer
@@ -316,6 +317,14 @@ SrtBuffer* SrtBuffer::pPrevBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
   
   return _pSrtBuffer(m_pPrevBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the number of row refs in this srt set                                 */
+/*----------------------------------------------------------------------------*/
+i8 SrtBuffer::nRowRefs(void)
+{
+  return m_nRowRefs;
 }
 
 /*----------------------------------------------------------------------------*/

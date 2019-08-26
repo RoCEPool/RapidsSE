@@ -235,7 +235,9 @@ SrtBuffer* RefBuffer::pToSrtBuffer(i8 iKeyCol, bool bKeyIsLeft,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_REFBUFFER,_FOOTER_);
   
-  SrtBuffer* pSrtBuffer = new SrtBuffer(m_iPartitionNo);
+  i8 nRowRefs = 2;
+  
+  SrtBuffer* pSrtBuffer = new SrtBuffer(nRowRefs, m_iPartitionNo);
   
   SrtSet* pSrtSet;
   
@@ -252,7 +254,7 @@ SrtBuffer* RefBuffer::pToSrtBuffer(i8 iKeyCol, bool bKeyIsLeft,
     if ( ! pSrtSet ) {
       
       // create a new SrtBuffer
-      SrtBuffer* pNewSrtBuffer = new SrtBuffer(m_iPartitionNo);
+      SrtBuffer* pNewSrtBuffer = new SrtBuffer(nRowRefs, m_iPartitionNo);
       pNewSrtBuffer->vNextBuffer(pSrtBuffer);
       pSrtBuffer = pNewSrtBuffer;
       pSrtSet = pSrtBuffer->aAllotSrtSet(2);

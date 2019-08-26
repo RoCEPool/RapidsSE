@@ -120,9 +120,11 @@ eOR JoinOp::eCall(void* aThis)
 void JoinOp::vAddRowRefs(Ent* aLeftEntry, Ent* aRightEntry)
 {
   
+  i8 nRowRefs = 2;
+  
   // allot a refSet
   if ( ! m_pSrtBuffer ) {
-    m_pSrtBuffer = new SrtBuffer(m_nSlot);
+    m_pSrtBuffer = new SrtBuffer(nRowRefs, m_nSlot);
     
     // pipe out the stream def's
     RASSERT(m_pStreamDef);
@@ -138,7 +140,7 @@ void JoinOp::vAddRowRefs(Ent* aLeftEntry, Ent* aRightEntry)
     vPipeOut(m_pSrtBuffer);
     
     // create another SrtBuffer for the refEnt's
-    m_pSrtBuffer = new SrtBuffer(m_nSlot);
+    m_pSrtBuffer = new SrtBuffer(nRowRefs, m_nSlot);
     
     // insert row from entry in temporary buffer
     pSrtSet = m_pSrtBuffer->aAllotSrtSet(2);

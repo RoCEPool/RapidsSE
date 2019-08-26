@@ -1101,15 +1101,17 @@ SrtBuffer* EntBuffer::pToSrtBuffer(i8 iKeyCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
+  i8 nRowRefs = 1;
+  
   HV_Row hRow(m_pIndex->pTable()->pColumnVec());
-  SrtBuffer* pSrtBuffer = new SrtBuffer(m_iPartitionNo);
+  SrtBuffer* pSrtBuffer = new SrtBuffer(nRowRefs, m_iPartitionNo);
   
   Ent* aEntry = aLeadEntry();
   SrtSet* pSrtSet;
   
   while (aEntry) {
     
-    pSrtSet = pSrtBuffer->aAllotSrtSet(1);
+    pSrtSet = pSrtBuffer->aAllotSrtSet(nRowRefs);
     
     // get the left (this) rowBuffer
     CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(aEntry->xRef());

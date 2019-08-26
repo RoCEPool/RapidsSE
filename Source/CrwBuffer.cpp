@@ -496,9 +496,10 @@ SrtBuffer* CrwBuffer::pToSrtBuffer(i8 iKeyCol)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   ColumnVec* pColVec = pTable()->pColumnVec();
+  i8 nRowRefs = 1;
   
   HV_Row hRow(pTable()->pColumnVec());
-  SrtBuffer* pSrtBuffer = new SrtBuffer(m_iPartitionNo);
+  SrtBuffer* pSrtBuffer = new SrtBuffer(nRowRefs, m_iPartitionNo);
   
   i8 nRows = nRowCount();
   
