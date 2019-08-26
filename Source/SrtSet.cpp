@@ -107,8 +107,6 @@ void SrtSet::vKey(i8 xKey)
 /*----------------------------------------------------------------------------*/
 i8 SrtSet::iRowRef(i8 i_RowRef)
 {
-  ASSERT(i_RowRef < m_nRowRefs);
-  
   return m_iaRowRef[i_RowRef];
 }
 
@@ -117,8 +115,6 @@ i8 SrtSet::iRowRef(i8 i_RowRef)
 /*----------------------------------------------------------------------------*/
 void SrtSet::vRowRef(i8 i_RowRef, i8 iRowRef)
 {
-  ASSERT(i_RowRef < m_nRowRefs);
-  
   m_iaRowRef[i_RowRef] = iRowRef;
 }
 
