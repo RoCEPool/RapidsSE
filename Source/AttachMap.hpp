@@ -35,9 +35,7 @@ namespace StorageEngine
       i8   m_nThreads;      // number of general threads
     } Arg;
   
-    EnumFlags     m_oMarkAction;
     EnumFlags     m_oMarkApi;
-    EnumFlags     m_oMarkJob;
     EnumFlags     m_oMarkResource;
     EnumFlags     m_oMarkTrace;
   

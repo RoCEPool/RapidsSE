@@ -2,7 +2,6 @@
 /* _lineitemRJH - create and load TPC-H LineItem table                        */
 /*============================================================================*/
 
-markact all on;
 markres all on;
 
 log mark all;
