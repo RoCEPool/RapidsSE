@@ -31,6 +31,7 @@ namespace Enums
 #include "eGA.h"
 #include "eHA.h"
 #include "eHT.h"
+#include "eIK.h"
 #include "eIS.h"
 #include "eIT.h"
 #include "eJA.h"
