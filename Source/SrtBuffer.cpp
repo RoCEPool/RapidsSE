@@ -494,6 +494,46 @@ void SrtBuffer::vSwap(i8 iSrtSet1, SrtBuffer* pSrtBuffer2, i8 iSrtSet2)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return next srt set in this buffer                                         */
+/*----------------------------------------------------------------------------*/
+void SrtBuffer::vSwap(i8 iSrtSet1, i8 iSrtSet2)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
+  
+  SrtSet* aSrtSet1 = aSrtSet(iSrtSet1);
+  SrtSet* aSrtSet2 = aSrtSet(iSrtSet2);
+  
+  if ( aSrtSet1->m_nRowRefs == 1) {
+    RASSERT(aSrtSet2->m_nRowRefs == 1);
+    
+    i8 iKey = aSrtSet1->m_xKey;
+    i8 iaRowRef0 = aSrtSet1->m_iaRowRef[0];
+    
+    aSrtSet1->m_xKey = aSrtSet2->m_xKey;
+    aSrtSet1->m_iaRowRef[0] = aSrtSet2->m_iaRowRef[0];
+    
+    aSrtSet2->m_xKey = iKey;
+    aSrtSet2->m_iaRowRef[0] = iaRowRef0;
+  }
+  else {
+    RASSERT(aSrtSet1->m_nRowRefs == 2);
+    RASSERT(aSrtSet2->m_nRowRefs == 2);
+    
+    i8 iKey = aSrtSet1->m_xKey;
+    i8 iaRowRef0 = aSrtSet1->m_iaRowRef[0];
+    i8 iaRowRef1 = aSrtSet1->m_iaRowRef[1];
+    
+    aSrtSet1->m_xKey = aSrtSet2->m_xKey;
+    aSrtSet1->m_iaRowRef[0] = aSrtSet2->m_iaRowRef[0];
+    aSrtSet1->m_iaRowRef[1] = aSrtSet2->m_iaRowRef[1];
+    
+    aSrtSet2->m_xKey = iKey;
+    aSrtSet2->m_iaRowRef[0] = iaRowRef0;
+    aSrtSet2->m_iaRowRef[1] = iaRowRef1;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* verify the next, previous pointers                                         */
 /*----------------------------------------------------------------------------*/
 bool SrtBuffer::bVerifyNextPrev(void)
@@ -537,11 +577,13 @@ bool SrtBuffer::bVerifyOrder(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
   
-//  for (i8 i_Index = 0; i_Index < m_nInts; i_Index++) {
-//    if (i_Index)
-//      if (m_iIntArray[i_Index] < m_iIntArray[i_Index-1])
-//        return false;
-//  }
+  i8 iItems = nItems();
+  for (i8 i_Index = 0; i_Index < iItems-1; i_Index++) {
+    SrtSet* aSrtSet1 = aSrtSet(i_Index);
+    SrtSet* aSrtSet2 = aSrtSet(i_Index+1);
+    if (aSrtSet1->iKey() > aSrtSet2->iKey())
+      return false;
+  }
   
   return true;
 }

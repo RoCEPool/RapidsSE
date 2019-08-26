@@ -51,7 +51,7 @@ StreamDef::StreamDef(void)
   //m_oColVecAry
   
   m_bTemp = false;
-  vTrace("StreamDef permanent %p\n"_Stz, this);
+  //vTrace("StreamDef permanent %p\n"_Stz, this);
   
   _checkInitialised_(CN_STREAMDEF);
 

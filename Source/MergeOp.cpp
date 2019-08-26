@@ -387,6 +387,21 @@ void MergeOp::vMergeOperands(Operand* pOperand1, Operand* pOperand2)
               "P:%lld Merged Operands generated Mag %lld"_Stz, //!format-LogOpr
               m_nSlot, iMagnitude);
   
+  // delete all left buffers
+  SrtBuffer* pBuffer;
+  while (pLeftBuffer) {
+    pBuffer = pLeftBuffer;
+    pLeftBuffer = pLeftBuffer->pNextBuffer();
+    delete pBuffer;
+  }
+  
+  // delete all right buffers
+  while (pRightBuffer) {
+    pBuffer = pRightBuffer;
+    pRightBuffer = pRightBuffer->pNextBuffer();
+    delete pBuffer;
+  }
+  
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // do we have another buffer set of the same magnitude ?
   if ( ! m_pOperand[iMagnitude]) {
@@ -411,6 +426,7 @@ void MergeOp::vMergeOperands(Operand* pOperand1, Operand* pOperand2)
     vMergeOperands(pFirstMergeBuffer, pOperand);
   }
 
+  
 }
 
 /*----------------------------------------------------------------------------*/

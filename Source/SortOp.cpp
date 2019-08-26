@@ -142,31 +142,20 @@ eOR SortOp::eSortLoop(void)
     RASSERT(CN_SRTBUFFER == pOperand->eClass());
     
     SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
-    
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // create a Low cursor pointing to the first element in the array
-    BufferCursor* pLowCursor = new BufferCursor(pSrtBuffer, 0,0);
-    
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // create a High cursor pointing to the last element in the array
-    BufferCursor* pHighCursor = new BufferCursor(pSrtBuffer, 0, pSrtBuffer->nItems() - 1);
+    //pSrtBuffer->vShow(m_pStreamDef);
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // call quick sort (recursive call)
-    BufferSort::vQuickSortBuffer(m_pStreamDef->m_oColVecAry.pGet(0), pSrtBuffer, pLowCursor, pHighCursor);
+    QuickSort::vQuickSortBuffer(m_pStreamDef->m_oColVecAry.pGet(0), pSrtBuffer, 0, pSrtBuffer->nItems() - 1);
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // verify that the data is sorted
+    //pSrtBuffer->vShow(m_pStreamDef);
     //RASSERT(pSrtBuffer->bVerifyOrder());
     
     // before feeding to mergeOp, delink the buffer first
     pSrtBuffer->vNextBuffer(nullptr);
     pSrtBuffer->vPrevBuffer(nullptr);
-    
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // delete the bufferCursors
-    delete pLowCursor;
-    delete pHighCursor;
     
     vPipeOut(pOperand);
   }

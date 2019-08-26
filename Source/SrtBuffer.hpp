@@ -40,6 +40,7 @@ namespace Rows
     void       vShow(void);
     void       vShow(StreamDef* pStreamDef);
     SrtSet*    aSrtSet(i8 iSrtSet);
+    void       vSwap(i8 iSrtSet1, i8 iSrtSet2);
     void       vSwap(i8 iSrtSet1, SrtBuffer* aSrtBuffer2, i8 iSrtSet2);
     bool       bVerifyNextPrev(void);
     bool       bVerifyOrder(void);
