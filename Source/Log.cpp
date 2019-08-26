@@ -336,6 +336,8 @@ void Log::vOpenBySE(bool bStarting)
              sizeof(Log),
              C_LOG_ENTRIES);
     gpLog = new(pLog) Log;
+    
+    gpLog->vMarkAll(true);
    }
    else {
     pLog = Log::pAttachExisting();
@@ -347,8 +349,6 @@ void Log::vOpenBySE(bool bStarting)
              C_LOG_ENTRIES);
     
     gpLog = pLog;
-     
-    gpLog->vMarkAll(true);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1019,6 +1019,26 @@ void Log::vMarkAll(bool bAll)
   EnumFlags* pClassFlags = AM::pClassFlags();
   
   pClassFlags->vAll(bAll);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is loggable ?                                                              */
+/*----------------------------------------------------------------------------*/
+bool Log::bIsLoggable(Object* pObject)
+{
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
+  
+  if (! pObject)
+    return false;
+  
+  EnumFlags* pClassFlags = AM::pClassFlags();
+  
+  eCN eClassNo = pObject->eClass();
+  
+  if (pClassFlags->bFlagged(eClassNo))
+    return true;
+  
+  return false;
 }
 
 

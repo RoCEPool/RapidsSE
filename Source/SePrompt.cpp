@@ -647,7 +647,7 @@ void SePrompt::vLogFreeSpace(void)
 bool SePrompt::bMarkAll(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
+
   return AM::pMarkJob()->bAll();
 }
 
