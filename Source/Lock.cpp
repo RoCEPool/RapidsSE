@@ -46,7 +46,7 @@ void Lock::operator delete(void*)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Lock::Lock(eLK eLockKind, i8 NonFocal)
-:Focal(CN_LOCK)
+: Focal(CN_LOCK)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
@@ -73,7 +73,7 @@ Lock::Lock(eLK eLockKind, i8 NonFocal)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Lock::Lock(eLK eLockKind)
-:Focal(CN_LOCK,AM::iNextLockId())
+: Focal(CN_LOCK,AM::iNextLockId())
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   

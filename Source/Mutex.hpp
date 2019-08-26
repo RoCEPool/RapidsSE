@@ -24,7 +24,7 @@ namespace Resources
     void operator delete(void* pMutexAddress);
 
     Mutex(void);
-    ~Mutex(void) noexcept(false);
+   ~Mutex(void) noexcept(false);
   
     static void vMonitorPortrait(s48K& sPortrait);
   
