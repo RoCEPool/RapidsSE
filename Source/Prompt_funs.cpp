@@ -62,7 +62,6 @@ bool Prompt::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_LOGWRITE);
   gxPromptCatalog.vFuns(PF_LS);
   gxPromptCatalog.vFuns(PF_LVL);
-  gxPromptCatalog.vFuns(PF_MARKAPI);
   gxPromptCatalog.vFuns(PF_MARKRES);
   gxPromptCatalog.vFuns(PF_MASKS);
   gxPromptCatalog.vFuns(PF_MEMORY);
