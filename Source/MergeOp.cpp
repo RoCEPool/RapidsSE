@@ -373,7 +373,7 @@ void MergeOp::vMergeOperands(Operand* pOperand1, Operand* pOperand2)
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify that the data is sorted
-  RASSERT(pFirstMergeBuffer->bVerifyOrder());
+  //RASSERT(pFirstMergeBuffer->bVerifyOrder());
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // calculate the magnitude of this sorted buffer
