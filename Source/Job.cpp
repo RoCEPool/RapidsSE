@@ -77,13 +77,6 @@ Job::Job(eCN eClassNo, Session* pSession, ReqTuple* aReqTuple)
   
   //m_oAcksRmg
   
-  
-//  if ( AM::pMarkTrace()->bAll() ||
-//       AM::pMarkTrace()->bFlagged(eClass()) )
-//    m_bMarkTrace  = true;
-//  else
-//    m_bMarkTrace  = false;
-
   m_pJobClass        = nullptr;
   m_pExecutingTask   = nullptr;
   m_pOriginatingTask = nullptr;

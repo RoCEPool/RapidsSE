@@ -53,7 +53,6 @@ LockTracker* AM::pLockTracker(void) { return & gpAttachMap->m_oLockTracker;   }
 bool AM::bLogging(void)       { return gpLog ? true : false;                  }
 EnumFlags* AM::pMarkApi(void) { return & gpAttachMap->m_oMarkApi;             }
 EnumFlags* AM::pMarkResource(void) { return & gpAttachMap->m_oMarkResource;   }
-EnumFlags* AM::pMarkTrace(void)    { return & gpAttachMap->m_oMarkTrace;      }
 i8   AM::iNextEpoch(void)     { return ++ gpAttachMap->m_iEpoch;              }
 Stz* AM::szNodeName(void)     {
   return gpAttachMap->m_pGrid->m_pThisNode->aNodeName();  }
