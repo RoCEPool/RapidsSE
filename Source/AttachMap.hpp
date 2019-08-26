@@ -40,12 +40,14 @@ namespace StorageEngine
     EnumFlags     m_oMarkJob;
     EnumFlags     m_oMarkResource;
     EnumFlags     m_oMarkTrace;
+  
     i8            m_nObjectsInPool[CN_ENUMS];
   
     ApiState*     m_pApiState;
     bool          m_bBootError;
     BufferPool*   m_pBufferPool;
     CarryOver*    m_pCarryOver;
+    EnumFlags     m_oClassFlags;
     Lock          m_okDdlLock;
     Lock          m_okDicLock;
     i8            m_iEpoch;

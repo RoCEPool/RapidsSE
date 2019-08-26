@@ -37,13 +37,14 @@ i8   AM::nThreads(void)       { return gpAttachMap->Arg.m_nThreads;           }
 ApiState* AM::pApiState(void) { return gpAttachMap->m_pApiState;              }
 bool AM::bBootError(void)     { return gpAttachMap->m_bBootError;             }
 BufferPool* AM::pBufferPool(void) { return gpAttachMap->m_pBufferPool;        }
-CarryOver* AM::pCarryOver(void) { return gpAttachMap->m_pCarryOver;           }
+CarryOver* AM::pCarryOver(void)   { return gpAttachMap->m_pCarryOver;         }
+EnumFlags* AM::pClassFlags(void)  { return & gpAttachMap->m_oClassFlags;      }
 Lock* AM::pDdlLock(void)      { return & gpAttachMap->m_okDdlLock;            }
 Lock* AM::pDicLock(void)      { return & gpAttachMap->m_okDicLock;            }
 i8   AM::iElapsedSsec(void)   { return gpAttachMap->m_oBirth.iElapsedSsec();  }
 i8   AM::iEpoch(void)         { return gpAttachMap->m_iEpoch;                 }
 Formatters* AM::pFormatters(void) { return & gpAttachMap->m_oFormatters;      }
-ForthWord* AM::pForthWord(void) { return gpAttachMap->m_pForthWord;           }
+ForthWord* AM::pForthWord(void)   { return gpAttachMap->m_pForthWord;         }
 Grid* AM::pGrid(void)         { return gpAttachMap->m_pGrid;                  }
 bool AM::bHasStarted(void)    { return gpAttachMap->m_pGrid->m_bHasStarted;   }
 HeapMem* AM::pHeapMem(void)   { return & gpAttachMap->m_xHeapMem;             }
@@ -54,7 +55,7 @@ EnumFlags* AM::pMarkAction(void) { return & gpAttachMap->m_oMarkAction;       }
 EnumFlags* AM::pMarkApi(void) { return & gpAttachMap->m_oMarkApi;             }
 EnumFlags* AM::pMarkJob(void) { return & gpAttachMap->m_oMarkJob;             }
 EnumFlags* AM::pMarkResource(void) { return & gpAttachMap->m_oMarkResource;   }
-EnumFlags* AM::pMarkTrace(void) { return & gpAttachMap->m_oMarkTrace;         }
+EnumFlags* AM::pMarkTrace(void)    { return & gpAttachMap->m_oMarkTrace;      }
 i8   AM::iNextEpoch(void)     { return ++ gpAttachMap->m_iEpoch;              }
 Stz* AM::szNodeName(void)     {
   return gpAttachMap->m_pGrid->m_pThisNode->aNodeName();  }
@@ -385,6 +386,19 @@ void AM::vWriteTrace(eYA eSysAct, Stz* aFormat, va_list xArgs)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add a info log entry                                                       */
+/*----------------------------------------------------------------------------*/
+void AM::vLogAll(void)
+{
+#ifdef WITH_SHARED_LOG
+  if (! AM::bLogging())
+    return;
+  
+  gpLog->vMarkAll(true);
+#endif
+}
 
 /*----------------------------------------------------------------------------*/
 /* add a info log entry                                                       */

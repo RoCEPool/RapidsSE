@@ -5,6 +5,8 @@
 markact all on;
 markres all on;
 
+log mark all;
+
 print "Starting cluster..." ;
 
 startCluster;

@@ -347,6 +347,8 @@ void Log::vOpenBySE(bool bStarting)
              C_LOG_ENTRIES);
     
     gpLog = pLog;
+     
+    gpLog->vMarkAll(true);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -967,22 +969,56 @@ void Log::vLog(TokenVec* pTknVec)
   i8 nTokens = pTknVec->nItems();
   
   if (1 == nTokens) {
-    vLogAll();
+    vLogList(pTknVec);
     return;
   }
   
-  
+  if (3 == nTokens && pTknVec->pGet(1)->bSame("mark"_Stz)) {
+    vLogMark(pTknVec);
+    return;
+  }
+
   vTrace("Unknown Log\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /* list all focal objects                                                     */
 /*----------------------------------------------------------------------------*/
-void Log::vLogAll(void)
+void Log::vLogList(TokenVec* pTknVec)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
 
-  vTrace(" Log all\n"_Stz);
+  vTrace(" Log list ???\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* mark classes                                                               */
+/*----------------------------------------------------------------------------*/
+void Log::vLogMark(TokenVec* pTknVec)
+{
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
+  
+  i8 nTokens = pTknVec->nItems();
+  
+  if (3 == nTokens && pTknVec->pGet(2)->bSame("all"_Stz)) {
+    EnumFlags* pClassFlags = AM::pClassFlags();
+    pClassFlags->vAll(true);
+    return;
+  }
+  
+  vTrace(" Log mark ???\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* mark all                                                                   */
+/*----------------------------------------------------------------------------*/
+void Log::vMarkAll(bool bAll)
+{
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
+  
+  EnumFlags* pClassFlags = AM::pClassFlags();
+  
+  pClassFlags->vAll(bAll);
 }
 
 
