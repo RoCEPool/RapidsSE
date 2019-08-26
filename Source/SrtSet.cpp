@@ -44,7 +44,7 @@ SrtSet::SrtSet(i8 nRowRefs)
   m_nRowRefs = nRowRefs;
   
   for (i8 i_RowRef = 0; i_RowRef < nRowRefs; i_RowRef++)
-    m_iaRowRef[i_RowRef] = C_DATUM_NULL;
+    m_iaRowRef[i_RowRef] = C_UNKNOWN;
   
   _checkInitialised_(CN_SRTSET);
 }
