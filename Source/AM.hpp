@@ -204,7 +204,8 @@ namespace StorageEngine
     static void vMri(TokenVec* pTknVec);
     static void vLog(TokenVec* pTknVec);
 
-    static i8   iTimePoint(void);
+    static i8   iRdTimePoint(void);
+    static i8   iAMTimePoint(void);
   };
 }
 

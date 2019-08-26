@@ -15,6 +15,7 @@ namespace StorageEngine
     i8    m_iPid;
     Birth m_oBirth;
     Now   m_oNow;
+    i8    m_iTimePoint;
   
     struct {
       bool m_bDeveloper;

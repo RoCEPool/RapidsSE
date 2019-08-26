@@ -9,9 +9,9 @@ namespace Correctness
   {
   public:
     i8 m_i_Focal;   // focal lattice subscript
-    i8 m_iUniqueId; // id
+    i8 m_iUniqueId; // AM next id of this focal
     i8 m_i_Log;     // log entry subscript
-    i8 m_iTick;     //
+    i8 m_iTick_;    //
   
   public:
     Focal(eCN eClassNo);

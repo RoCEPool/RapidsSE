@@ -172,7 +172,7 @@ void LogEntry::vSprintCsv(s4K& sString, i8 iTickDeltaUsec, i8& iTotalDelta)
 
                     aSL[m_eSeverity],
                     m_caNode,
-                    spElapsed.szNsec(m_iTick - gpAttachMap->m_iTick),
+                   spElapsed.szNsec(m_iTick - AM::iAMTimePoint()),
 
                     aEK[m_eKind]
                   );
