@@ -51,6 +51,7 @@ SrtBuffer::SrtBuffer(i8 nRowRefs, i8 iPartition)
   m_nRowRefs = nRowRefs;
   m_bIsLast = false;
   m_iPartitionNo = iPartition;
+  m_nSrtSetBytes = sizeof(SrtSet) - sizeof(i8) + (m_nRowRefs * sizeof(i8));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
   
@@ -90,15 +91,13 @@ SrtSet* SrtBuffer::aAllotSrtSet(i8 nRowRefs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
   
-  if (AM::nIndexEntries() > 0) {
-    if (nItems() == AM::nIndexEntries())
-      return nullptr;
-  }
-  
-  i8 nBytes = sizeof(SrtSet) - sizeof(i8) + (m_nRowRefs * sizeof(i8));
+//  if (AM::nIndexEntries() > 0) {
+//    if (nItems() == AM::nIndexEntries())
+//      return nullptr;
+//  }
   
   // allot using bytes as we don't know the size of the item
-  byte* aySrtSet = ayAllotBytes(nBytes);
+  byte* aySrtSet = ayAllotBytes(m_nSrtSetBytes);
   
   if (! aySrtSet)
     return nullptr;
@@ -300,10 +299,8 @@ void SrtBuffer::vLinkBuffer(SrtBuffer* pSrtBuffer)
 SrtSet* SrtBuffer::aNextSrtSet(SrtSet* aPriorSrtSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
-
-  i8 nBytes = sizeof(SrtSet) - sizeof(i8) + (m_nRowRefs * sizeof(i8));
   
-  SrtSet* aSrtSet = aAdjacentItem(aPriorSrtSet, nBytes);
+  SrtSet* aSrtSet = aAdjacentItem(aPriorSrtSet, m_nSrtSetBytes);
   
   if (aSrtSet && CN_SRTSET == aSrtSet->eClass())
     return aSrtSet;

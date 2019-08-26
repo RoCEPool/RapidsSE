@@ -10,8 +10,9 @@ namespace Rows
   {
   protected:
   
-    i8     m_nRowRefs;
-    bool   m_bIsLast;      // is this the last buffer in its sequence?
+    i8    m_nRowRefs;
+    i8    m_nSrtSetBytes;
+    bool  m_bIsLast;      // is this the last buffer in its sequence?
   
     // must be last
     Footer m_xFooter;
