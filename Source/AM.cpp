@@ -51,7 +51,6 @@ HeapMem* AM::pHeapMem(void)   { return & gpAttachMap->m_xHeapMem;             }
 i8   AM::nIndexEntries(void)  { return gpAttachMap->m_nIndexEntries;          }
 LockTracker* AM::pLockTracker(void) { return & gpAttachMap->m_oLockTracker;   }
 bool AM::bLogging(void)       { return gpLog ? true : false;                  }
-EnumFlags* AM::pMarkApi(void) { return & gpAttachMap->m_oMarkApi;             }
 EnumFlags* AM::pMarkResource(void) { return & gpAttachMap->m_oMarkResource;   }
 i8   AM::iNextEpoch(void)     { return ++ gpAttachMap->m_iEpoch;              }
 Stz* AM::szNodeName(void)     {
@@ -64,6 +63,7 @@ i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
 void AM::vProcessExit(void)   { Process::vExitFailure();                      }
 bool AM::bProgress(void)      { return gpAttachMap->m_bProgress;              }
 bool AM::bMetadata(void)      { return gpAttachMap->m_bMetadata;              }
+
 i8   AM::iNextDiagram(void)   { return ++ gpAttachMap->m_inNextDiagram;       }
 i8   AM::iNextJobId(void)     { return ++ gpAttachMap->m_inNextJobId;         }
 i8   AM::iNextLockId(void)    {
@@ -87,6 +87,7 @@ i8   AM::iNextStreamId(void)  { return ++ gpAttachMap->m_inNextStreamId;      }
 i8   AM::iNextTaskId(void)    { return ++ gpAttachMap->m_inNextTaskId;        }
 i8   AM::iNextThreadId(void)  { return ++ gpAttachMap->m_inNextThreadId;      }
 i8   AM::iNextTxId(void)      { return ++ gpAttachMap->m_inNextTxId;          }
+
 i8*  AM::iaObjectsInPool(void){ return gpAttachMap->m_nObjectsInPool;         }
 i8   AM::nPartitions(void)    { return gpAttachMap->m_pGrid->m_nPartitions;   }
 Queues* AM::pQueues(void)     { return gpAttachMap->m_pQueues;                }

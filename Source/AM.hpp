@@ -66,7 +66,6 @@ namespace StorageEngine
     static i8   nIndexEntries(void);
     static LockTracker* pLockTracker(void);
     static bool bLogging(void);
-    static EnumFlags* pMarkApi(void);
     static EnumFlags* pMarkResource(void);
     static bool bMetadata(void);
     static i8   iNextDiagram(void);
