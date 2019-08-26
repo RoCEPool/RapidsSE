@@ -628,11 +628,9 @@ bool Pthread::bSpawnThread(void* pFun(void*), void* pArg)
   
   if (AM::bAttached()) AM::pResourceTracker()->vIncThreadOpen();
   
-  if (AM::pMarkResource()->bEnum(CN_PTHREAD) ||
-      AM::pMarkResource()->bAll())
-    AM::vLogRes(SL_INF,this,RA_THD_SPAWNED,
-                "Thread spawned : %lld"_Stz, //!format-LogRes
-                m_iPthreadId);
+  AM::vLogRes(SL_INF,this,RA_THD_SPAWNED,
+              "Thread spawned : %lld"_Stz, //!format-LogRes
+              m_iPthreadId);
 
   // this is important otherwise resources are not released
   pthread_detach(m_iPthreadId);

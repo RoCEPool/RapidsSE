@@ -278,13 +278,10 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     return;
   }
   
-  if (AM::pMarkResource()->bEnum(CN_SOCKET) ||
-      AM::pMarkResource()->bAll()) {
-    SP_Header spHeader;
-    AM::vLogRes(SL_INF,pSocket,RA_SKT_RECEIVED,
-                "Received: Header %s"_Stz, //!format-LogRes
-                spHeader.sz(aHeader));
-  }
+  SP_Header spHeader;
+  AM::vLogRes(SL_INF,pSocket,RA_SKT_RECEIVED,
+              "Received: Header %s"_Stz, //!format-LogRes
+              spHeader.sz(aHeader));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the details about the received object
@@ -320,27 +317,11 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
     //       pJob,eClass,aCN[eClass],nObjectSize);
     
-    if (AM::pMarkResource()->bEnum(CN_SOCKET) ||
-        AM::pMarkResource()->bAll()) {
-      
-//      SP_Header   spHeader;
-//      SP_ReqTuple spReqTuple;
-//      SP_Footer   spFooter;
-//
-//      Footer* aFooter = aAdd<Footer*>(pJob,nObjectSize-sizeof(Footer));
-//      //s256 sFooter;
-//      //pFooter->vSprint(sFooter);
-//      AM::vLogRes(SL_INF,pSocket,RA_SKT_RECEIVED,
-//                  "Received %lldB Job: Header %s ReqTuple %s ... Footer %s"_Stz, //!format-LogRes
-//                  nObjectSize,
-//                  spHeader.sz(aHeader),
-//                  spReqTuple.sz(&pJob->m_xReqTuple),
-//                  spFooter.sz(aFooter));
-      SP_Job spJob;
-      AM::vLogRes(SL_INF,pSocket,RA_SKT_RECEIVED,
-                  "Received Job: %s"_Stz, //!format-LogRes
-                   spJob.sz(pJob));
-    }
+    SP_Job spJob;
+    AM::vLogRes(SL_INF,pSocket,RA_SKT_RECEIVED,
+                "Received Job: %s"_Stz, //!format-LogRes
+                 spJob.sz(pJob));
+
     if (pJob->m_xReqTuple.m_bLogJob) {
       JobLog::vNote(pJob,
                          "Recv: %s %p socket %llx"_Stz,
@@ -385,13 +366,10 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     // restore the entryBuffer pointets (m_pHeadEntry etc)
     pCrwBuffer->vRestore();
     
-    if (AM::pMarkResource()->bEnum(CN_SOCKET) ||
-        AM::pMarkResource()->bAll()) {
-      AM::vLogRes(SL_INF,pSocket,RA_SKT_RECEIVED,
-                    "Received %lldB CrwBuffer: %p"_Stz, //!format-LogRes
-                    nObjectSize,
-                    pCrwBuffer);
-    }
+    AM::vLogRes(SL_INF,pSocket,RA_SKT_RECEIVED,
+                  "Received %lldB CrwBuffer: %p"_Stz, //!format-LogRes
+                  nObjectSize,
+                  pCrwBuffer);
 
     mpTask->m_pDataStack->vPushPointer(pCrwBuffer);
     mpTask->m_pDataStack->vPushBool(true);
@@ -426,13 +404,10 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     // restore the entryBuffer pointets (m_pHeadEntry etc)
     pExportBuffer->vRecvPostCorrection();
     
-    if (AM::pMarkResource()->bEnum(CN_SOCKET) ||
-        AM::pMarkResource()->bAll()) {
-      AM::vLogRes(SL_INF,pSocket,RA_SKT_RECEIVED,
-                  "Received %lldB ExportBuffer: %p"_Stz, //!format-LogRes
-                  nObjectSize,
-                  pExportBuffer);
-    }
+    AM::vLogRes(SL_INF,pSocket,RA_SKT_RECEIVED,
+                "Received %lldB ExportBuffer: %p"_Stz, //!format-LogRes
+                nObjectSize,
+                pExportBuffer);
     
     mpTask->m_pDataStack->vPushPointer(pExportBuffer);
     mpTask->m_pDataStack->vPushBool(true);
