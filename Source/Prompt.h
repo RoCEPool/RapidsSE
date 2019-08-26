@@ -74,7 +74,6 @@ typedef VectorNL_t<CN_SHORTCUTVEC, ShortCut, C_MAX_SHORTCUTS> ShortCutVec;
 #include "Prompt_ls.hpp"
 #include "Prompt_lvl.hpp"
 
-#include "Prompt_markRes.hpp"
 #include "Prompt_masks.hpp"
 #include "Prompt_memory.hpp"
 #include "Prompt_memTest.hpp"
