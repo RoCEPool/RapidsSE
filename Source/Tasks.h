@@ -23,6 +23,8 @@ namespace Tasks
 
 #include "EnterExit.h"
 
+#include "SP_Task.hpp"
+
 
 /*============================================================================*/
 /* end                                                                        */
