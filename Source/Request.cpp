@@ -52,6 +52,8 @@ Request::Request(Session* p_Session, TokenVec* p_TknVec)
   m_p_Session = p_Session;
   m_p_TknVec  = p_TknVec;
   
+  m_xReqTuple.m_iReqId = m_iUniqueId;
+  
   _checkInitialised_(CN_REQUEST);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
