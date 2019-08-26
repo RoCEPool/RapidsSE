@@ -428,8 +428,7 @@ void AM::vLogJob(eSL eSeverity, Job* pJob, eJA eJobAct, Stz* szFormat, ...)
   if (! AM::bLogging())
     return;
   
-  if (! (AM::pMarkAction()->bEnum(eJobAct) ||
-         AM::pMarkAction()->bAll()) )
+  if (! gpLog->bIsLoggable(pJob))
     return;
   
   va_list xVaArgs;
@@ -451,16 +450,10 @@ void AM::vLogJob(eSL eSeverity, Job* pJob, eJA eJobAct, Stz* szFormat, ...)
 void AM::vLogLck(eSL eSeverity, Lock* pLock, eLA eLckAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  
-  if (LK_ACTION_LOG == pLock->eLockKind() ||
-      LK_FOCAL_OBJECTS == pLock->eLockKind())
-    return;
-  
   if (! AM::bLogging())
     return;
   
-  if (! (AM::pMarkAction()->bEnum(eLckAct) ||
-         AM::pMarkAction()->bAll()) )
+  if (! gpLog->bIsLoggable(pLock))
     return;
   
   va_list xVaArgs;
@@ -482,13 +475,11 @@ void AM::vLogLck(eSL eSeverity, Lock* pLock, eLA eLckAct, Stz* szFormat, ...)
 void AM::vLogLog(eSL eSeverity, Log* pLog, eGA eLogAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
-  
   if (! AM::bLogging())
     return;
   
-//  if (! (AM::pMarkAction()->bEnum(eLogAct) ||
-//         AM::pMarkAction()->bAll()) )
-//  return;
+  if (! gpLog->bIsLoggable(pLog))
+    return;
   
   va_list xVaArgs;
   
@@ -512,8 +503,7 @@ void AM::vLogOpr(eSL eSeverity, Op* pOpr, eOA eOprAct, Stz* szFormat, ...)
   if (! AM::bLogging())
     return;
   
-  if (! (AM::pMarkAction()->bEnum(eOprAct) ||
-         AM::pMarkAction()->bAll()) )
+  if (! gpLog->bIsLoggable(pOpr))
     return;
   
   va_list xVaArgs;
@@ -538,9 +528,8 @@ void AM::vLogPrm(eSL eSeverity, SePrompt* pPrm, ePA ePrmAct, Stz* szFormat, ...)
   if (! AM::bLogging())
     return;
   
-//  if (! (AM::pMarkAction()->bEnum(ePrmAct) ||
-//         AM::pMarkAction()->bAll()) )
-//    return;
+  if (! gpLog->bIsLoggable(pPrm))
+    return;
   
   va_list xVaArgs;
   
@@ -564,10 +553,9 @@ void AM::vLogQue(eSL eSeverity, Queues* pQue, eQA eQueAct, Stz* szFormat, ...)
   if (! AM::bLogging())
     return;
 
-  if (! (AM::pMarkAction()->bEnum(eQueAct) ||
-         AM::pMarkAction()->bAll()) )
+  if (! gpLog->bIsLoggable(pQue))
     return;
-
+  
   va_list xVaArgs;
 
   va_start(xVaArgs,szFormat);
@@ -590,8 +578,7 @@ void AM::vLogReq(eSL eSeverity, Request* pReq, eMA eReqAct, Stz* szFormat, ...)
   if (! AM::bLogging())
     return;
   
-  if (! (AM::pMarkAction()->bEnum(eReqAct) ||
-         AM::pMarkAction()->bAll()) )
+  if (! gpLog->bIsLoggable(pReq))
     return;
   
   va_list xVaArgs;
@@ -616,8 +603,7 @@ void AM::vLogRes(eSL eSeverity, Resource* pRes, eRA eResAct, Stz* szFormat, ...)
   if (! AM::bLogging())
     return;
     
-  if (! (AM::pMarkResource()->bEnum(pRes->eClass()) ||
-         AM::pMarkResource()->bAll()) )
+  if (! gpLog->bIsLoggable(pRes))
     return;
   
   va_list xVaArgs;
@@ -642,8 +628,7 @@ void AM::vLogSsn(eSL eSeverity, Session* pSsn, eAA eApiAct, Stz* szFormat, ...)
   if (! AM::bLogging())
     return;
   
-  if (! (AM::pMarkAction()->bEnum(eApiAct) ||
-         AM::pMarkAction()->bAll()) )
+  if (! gpLog->bIsLoggable(pSsn))
     return;
   
   va_list xVaArgs;
@@ -668,8 +653,7 @@ void AM::vLogSvc(eSL eSeverity, Job* pJob, eVA eSvcAct, Stz* szFormat, ...)
   if (! AM::bLogging())
     return;
   
-  if (! (AM::pMarkAction()->bEnum(eSvcAct) ||
-         AM::pMarkAction()->bAll()) )
+  if (! gpLog->bIsLoggable(pJob))
     return;
   
   va_list xVaArgs;
@@ -694,9 +678,8 @@ void AM::vLogSys(eSL eSeverity, AttachMap* , eYA eSysAct, Stz* szFormat, ...)
   if (! AM::bLogging())
     return;
   
-//  if (! (AM::pMarkAction()->bEnum(eSysAct) ||
-//         AM::pMarkAction()->bAll()) )
-//  return;
+  if (! gpLog->bIsLoggable(gpAttachMap))
+    return;
   
   va_list xVaArgs;
   
@@ -721,8 +704,7 @@ void AM::vLogThd(eSL eSeverity, Thread* pThread, eHA eThdAct, Stz* szFormat, ...
   if (! AM::bLogging())
     return;
   
-  if (! (AM::pMarkAction()->bEnum(eThdAct) ||
-         AM::pMarkAction()->bAll()) )
+  if (! gpLog->bIsLoggable(pThread))
     return;
   
   va_list xVaArgs;
@@ -747,8 +729,7 @@ void AM::vLogTsk(eSL eSeverity, Task* pTask, eTA eTskAct, Stz* szFormat, ...)
   if (! AM::bLogging())
     return;
   
-  if (! (AM::pMarkAction()->bEnum(eTskAct) ||
-         AM::pMarkAction()->bAll()) )
+  if (! gpLog->bIsLoggable(pTask))
     return;
   
   va_list xVaArgs;
@@ -773,10 +754,9 @@ void AM::vLogTxn(eSL eSeverity, Tx* pTxn, eXA eTxnAct, Stz* szFormat, ...)
   if (! AM::bLogging())
     return;
   
-  if (! (AM::pMarkAction()->bEnum(eTxnAct) ||
-         AM::pMarkAction()->bAll()) )
+  if (! gpLog->bIsLoggable(pTxn))
     return;
-  
+
   va_list xVaArgs;
   
   va_start(xVaArgs,szFormat);

@@ -94,6 +94,8 @@ namespace Logging
     void vLogMark(TokenVec* pTknVec);
   
     void vMarkAll(bool bAll);
+  
+    bool bIsLoggable(Object* pObject);
 
     Footer* aFooter(void);
   };
