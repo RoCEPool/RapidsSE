@@ -1111,7 +1111,7 @@ SrtBuffer* EntBuffer::pToSrtBuffer(i8 iKeyCol)
   
   while (aEntry) {
     
-    pSrtSet = pSrtBuffer->aAllotSrtSet(nRowRefs);
+    pSrtSet = pSrtBuffer->aAllotSrtSet();
     
     // get the left (this) rowBuffer
     CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(aEntry->xRef());
