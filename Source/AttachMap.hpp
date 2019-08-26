@@ -37,7 +37,6 @@ namespace StorageEngine
   
     EnumFlags     m_oMarkApi;
     EnumFlags     m_oMarkResource;
-    EnumFlags     m_oMarkTrace;
   
     i8            m_nObjectsInPool[CN_ENUMS];
   
