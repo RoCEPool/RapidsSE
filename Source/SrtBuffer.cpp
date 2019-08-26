@@ -87,7 +87,7 @@ void SrtBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* allot a srt set in this buffer (may return nulltpr)                        */
 /*----------------------------------------------------------------------------*/
-SrtSet* SrtBuffer::aAllotSrtSet(i8 nRowRefs)
+SrtSet* SrtBuffer::aAllotSrtSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
   
@@ -104,7 +104,7 @@ SrtSet* SrtBuffer::aAllotSrtSet(i8 nRowRefs)
   
   vIncItems();
   
-  SrtSet* aSrtSet = new(aySrtSet) SrtSet(nRowRefs);
+  SrtSet* aSrtSet = new(aySrtSet) SrtSet(m_nRowRefs);
   
   return aSrtSet;
 }
@@ -117,7 +117,7 @@ SrtBuffer* SrtBuffer::aCopySrtSet(SrtSet* aSrtSet)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
   
   // allot using bytes as we don't know the size of the item
-  SrtSet* aNewSrtSet = aAllotSrtSet(m_nRowRefs);
+  SrtSet* aNewSrtSet = aAllotSrtSet();
   
   if (! aNewSrtSet) {
     
@@ -129,7 +129,7 @@ SrtBuffer* SrtBuffer::aCopySrtSet(SrtSet* aSrtSet)
     this->vNextBuffer(pSrtBuffer);
     pSrtBuffer->vPrevBuffer(this);
     
-    aNewSrtSet = pSrtBuffer->aAllotSrtSet(m_nRowRefs);
+    aNewSrtSet = pSrtBuffer->aAllotSrtSet();
     
     // copy left value to new buffer
     aNewSrtSet->vCopy(aSrtSet, m_nRowRefs);

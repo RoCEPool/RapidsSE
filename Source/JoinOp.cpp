@@ -132,7 +132,7 @@ void JoinOp::vAddRowRefs(Ent* aLeftEntry, Ent* aRightEntry)
     m_pStreamDef = nullptr;
   }
   
-  SrtSet* pSrtSet = m_pSrtBuffer->aAllotSrtSet(2);
+  SrtSet* pSrtSet = m_pSrtBuffer->aAllotSrtSet();
   
   if ( ! pSrtSet )  {
     // Sort Buffer is full
@@ -143,7 +143,7 @@ void JoinOp::vAddRowRefs(Ent* aLeftEntry, Ent* aRightEntry)
     m_pSrtBuffer = new SrtBuffer(nRowRefs, m_nSlot);
     
     // insert row from entry in temporary buffer
-    pSrtSet = m_pSrtBuffer->aAllotSrtSet(2);
+    pSrtSet = m_pSrtBuffer->aAllotSrtSet();
     RASSERT(pSrtSet);
   }
   

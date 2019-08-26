@@ -26,7 +26,7 @@ namespace Rows
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    SrtSet*    aAllotSrtSet(i8 nRowRefs);
+    SrtSet*    aAllotSrtSet(void);
     SrtBuffer* aCopySrtSet(SrtSet* aSrtSet);
     
     i8         nBufferCount(void);
