@@ -51,7 +51,6 @@ HeapMem* AM::pHeapMem(void)   { return & gpAttachMap->m_xHeapMem;             }
 i8   AM::nIndexEntries(void)  { return gpAttachMap->m_nIndexEntries;          }
 LockTracker* AM::pLockTracker(void) { return & gpAttachMap->m_oLockTracker;   }
 bool AM::bLogging(void)       { return gpLog ? true : false;                  }
-EnumFlags* AM::pMarkResource(void) { return & gpAttachMap->m_oMarkResource;   }
 i8   AM::iNextEpoch(void)     { return ++ gpAttachMap->m_iEpoch;              }
 Stz* AM::szNodeName(void)     {
   return gpAttachMap->m_pGrid->m_pThisNode->aNodeName();  }
