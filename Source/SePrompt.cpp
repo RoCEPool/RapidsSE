@@ -642,46 +642,6 @@ void SePrompt::vLogFreeSpace(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get markall                                                                */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bMarkAll(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-
-  return AM::pMarkJob()->bAll();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set markall                                                                */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vMarkAll(bool bMarkAll)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  AM::pMarkJob()->vAll(bMarkAll);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get markJob                                                                */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bMarkJob(eCN e_Class)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  return AM::pMarkJob()->bEnum(e_Class);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set markall                                                                */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vMarkJob(eCN e_Class, bool bMarkJob)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  AM::pMarkJob()->vEnum(e_Class,bMarkJob);
-}
-
-/*----------------------------------------------------------------------------*/
 /* no wait                                                                    */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bNoWait(void)

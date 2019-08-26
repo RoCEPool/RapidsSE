@@ -74,10 +74,6 @@ namespace Prompt
     void vJobWaitCond(void);
     void vLogCommand(void);
     void vLogFreeSpace(void);
-    bool bMarkAll(void);
-    void vMarkAll(bool bMarkAll);
-    bool bMarkJob(eCN eClass);
-    void vMarkJob(eCN eClass, bool bMarkJob);
     bool bNoWait(void);
     bool bPassesCheck(void);
     bool bPassesLowMem(void);
