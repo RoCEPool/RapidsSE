@@ -250,14 +250,14 @@ SrtBuffer* RefBuffer::pToSrtBuffer(i8 iKeyCol, bool bKeyIsLeft,
   RefSet* aRefSet = aFirstRefSet();
   while (aRefSet) {
     
-    pSrtSet = pSrtBuffer->aAllotSrtSet(2);
+    pSrtSet = pSrtBuffer->aAllotSrtSet();
     if ( ! pSrtSet ) {
       
       // create a new SrtBuffer
       SrtBuffer* pNewSrtBuffer = new SrtBuffer(nRowRefs, m_iPartitionNo);
       pNewSrtBuffer->vNextBuffer(pSrtBuffer);
       pSrtBuffer = pNewSrtBuffer;
-      pSrtSet = pSrtBuffer->aAllotSrtSet(2);
+      pSrtSet = pSrtBuffer->aAllotSrtSet();
       
     }
     RASSERT(pSrtSet);

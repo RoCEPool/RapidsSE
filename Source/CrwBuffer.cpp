@@ -495,7 +495,6 @@ SrtBuffer* CrwBuffer::pToSrtBuffer(i8 iKeyCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  ColumnVec* pColVec = pTable()->pColumnVec();
   i8 nRowRefs = 1;
   
   HV_Row hRow(pTable()->pColumnVec());
@@ -505,7 +504,7 @@ SrtBuffer* CrwBuffer::pToSrtBuffer(i8 iKeyCol)
   
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
-    SrtSet* pSrtSet = pSrtBuffer->aAllotSrtSet(1);
+    SrtSet* pSrtSet = pSrtBuffer->aAllotSrtSet();
     RASSERT(pSrtSet);
     
     // get compact row
