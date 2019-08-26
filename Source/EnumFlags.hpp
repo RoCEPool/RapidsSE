@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EnumFlags.hpp -- Class Flags                                               */
+/* EnumFlags.hpp -- Enum Flags                                                */
 /*============================================================================*/
 #pragma once
 
@@ -9,7 +9,7 @@ namespace Gadgets
   {
   private:
     bool m_bAll;
-    bool m_bEnum[256];
+    bool m_bEnum[CN_ENUMS];
 
     // must be last
     Footer m_xFooter;

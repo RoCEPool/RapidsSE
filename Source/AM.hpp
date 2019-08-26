@@ -53,6 +53,7 @@ namespace StorageEngine
     static bool bBootError(void);
     static BufferPool* pBufferPool(void);
     static CarryOver* pCarryOver(void);
+    static EnumFlags* pClassFlags(void);
     static Lock* pDdlLock(void);
     static Lock* pDicLock(void);
     static i8   iElapsedSsec(void);
