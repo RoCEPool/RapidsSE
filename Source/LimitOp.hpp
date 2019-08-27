@@ -9,7 +9,8 @@ namespace DataOperators
   {
   private:
   
-    i8 m_nLimit;    // what is the limit?
+    i8         m_nLimit;     // what is the limit?
+    SrtBuffer* m_pSrtBuffer; // sort buffer
   
     // must be last
     Footer m_xFooter;

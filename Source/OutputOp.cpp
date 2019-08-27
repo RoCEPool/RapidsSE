@@ -162,7 +162,7 @@ eOR OutputOp::eOpLoop(void)
         
       case CN_INTBUFFER: {
         IntBuffer* pIntBuffer = _pIntBuffer(pOperand) ;
-        pIntBuffer->vShow();
+        //pIntBuffer->vShow();
         vPipeOut(pOperand);
         break;
       }
@@ -184,7 +184,7 @@ eOR OutputOp::eOpLoop(void)
       case CN_SRTBUFFER: {
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
         iCount += pSrtBuffer->nItems();
-        //pSrtBuffer->vShow(m_pStreamDef);
+        pSrtBuffer->vShow(m_pStreamDef);
         vPipeOut(pOperand);
         break;
       }

@@ -62,7 +62,8 @@ LimitOp::LimitOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   
   m_fpCall = LimitOp::eCall;
 
-  m_nLimit = 0;
+  m_nLimit     = 0;
+  m_pSrtBuffer = nullptr;
   
   _checkInitialised_(CN_LIMITOP);
 
@@ -185,25 +186,39 @@ eOR LimitOp::eOpLoop(void)
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
         i8 nItems = pSrtBuffer->nItems();
         
-        if (nItems >= m_nLimit - m_iWorkDone) {
-          pSrtBuffer->vItems(m_nLimit - m_iWorkDone);
-          m_iWorkDone = m_nLimit;
-        }
-        else
-          m_iWorkDone += nItems;
-        
-        // pipeOut the buffer if any rows to output
-        if (pSrtBuffer->nItems())
-          vPipeOut(pOperand);
-        
+        // are we done ?
         if (m_iWorkDone == m_nLimit) {
           if (AM::bVerbose())
             vTrace("%s::!CANCELLING : after popping %lld buffers\n"_Stz,
                    m_sLabel.aStz(),
                    m_iWorkDone);
           m_pDigest->m_bCancelling = true;
+          delete pSrtBuffer;
+          
+          if (m_pSrtBuffer) {
+            vPipeOut(m_pSrtBuffer);
+            m_pSrtBuffer = nullptr;
+          }
+          break;          
         }
         
+        if ( ! m_pSrtBuffer ) {
+          m_pSrtBuffer = new SrtBuffer(pSrtBuffer->nRowRefs(), -1);
+        }
+        SrtSet* aSrtSet = pSrtBuffer->aFirstSrtSet();
+        while (aSrtSet && m_iWorkDone < m_nLimit) {
+          m_pSrtBuffer = m_pSrtBuffer->aCopySrtSet(aSrtSet);
+          
+          // if bufferr was full and a next was created, pipe it out
+          if (m_pSrtBuffer->pNextBuffer()) {
+            vPipeOut(m_pSrtBuffer->pNextBuffer());
+            m_pSrtBuffer->vNextBuffer(nullptr);
+          }
+            
+          aSrtSet = pSrtBuffer->aNextSrtSet(aSrtSet);
+          m_iWorkDone++;
+        }
+        delete pSrtBuffer;
         break;
       }
         
