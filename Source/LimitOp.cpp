@@ -192,7 +192,9 @@ eOR LimitOp::eOpLoop(void)
         else
           m_iWorkDone += nItems;
         
-        vPipeOut(pOperand);
+        // pipeOut the buffer if any rows to output
+        if (pSrtBuffer->nItems())
+          vPipeOut(pOperand);
         
         if (m_iWorkDone == m_nLimit) {
           if (AM::bVerbose())
