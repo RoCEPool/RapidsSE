@@ -184,27 +184,19 @@ eOR LimitOp::eOpLoop(void)
         
       case CN_SRTBUFFER: {
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
-        i8 nItems = pSrtBuffer->nItems();
         
         // are we done ?
-        if (m_iWorkDone == m_nLimit) {
-          if (AM::bVerbose())
-            vTrace("%s::!CANCELLING : after popping %lld buffers\n"_Stz,
-                   m_sLabel.aStz(),
-                   m_iWorkDone);
-          m_pDigest->m_bCancelling = true;
+        if (bLimitDone()) {
           delete pSrtBuffer;
-          
-          if (m_pSrtBuffer) {
-            vPipeOut(m_pSrtBuffer);
-            m_pSrtBuffer = nullptr;
-          }
           break;          
         }
         
+        // do we have a buffer ?
         if ( ! m_pSrtBuffer ) {
           m_pSrtBuffer = new SrtBuffer(pSrtBuffer->nRowRefs(), -1);
         }
+        
+        //copy limit no of rows from srtBuffer
         SrtSet* aSrtSet = pSrtBuffer->aFirstSrtSet();
         while (aSrtSet && m_iWorkDone < m_nLimit) {
           m_pSrtBuffer = m_pSrtBuffer->aCopySrtSet(aSrtSet);
@@ -218,6 +210,8 @@ eOR LimitOp::eOpLoop(void)
           aSrtSet = pSrtBuffer->aNextSrtSet(aSrtSet);
           m_iWorkDone++;
         }
+        
+        // deete the received buffer
         delete pSrtBuffer;
         break;
       }
@@ -232,6 +226,28 @@ eOR LimitOp::eOpLoop(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_EXIT:
   return OR_EXIT;
+}
+
+/*----------------------------------------------------------------------------*/
+/* has the limit been reached ?                                               */
+/*----------------------------------------------------------------------------*/
+bool LimitOp::bLimitDone(void)
+{
+  if (m_iWorkDone == m_nLimit) {
+    if (AM::bVerbose())
+      vTrace("%s::!CANCELLING : after popping %lld buffers\n"_Stz,
+             m_sLabel.aStz(),
+             m_iWorkDone);
+      m_pDigest->m_bCancelling = true;
+    
+    if (m_pSrtBuffer) {
+      vPipeOut(m_pSrtBuffer);
+      m_pSrtBuffer = nullptr;
+    }
+    return true;
+  }
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

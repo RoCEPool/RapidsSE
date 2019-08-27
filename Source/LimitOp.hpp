@@ -28,8 +28,9 @@ namespace DataOperators
     static eOR eCall(void* aThis);
     static eOR eDrain(void* aThis);
 
-    eOR eOpLoop(void);
-    eOR eDrainLoop(void);
+    eOR  eOpLoop(void);
+    bool bLimitDone(void);
+    eOR  eDrainLoop(void);
 
   private:
     Footer* aFooter(void);
