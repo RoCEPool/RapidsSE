@@ -335,6 +335,7 @@ void Constants::vAddConstants(void)
   /* 69 */ vAddConstant("CN_STMT_SELECT"_Stz,  CN_STMT_SELECT);
   /*  1 */ vAddConstant("CN_STREAMDEF"_Stz,    CN_STREAMDEF);
   /*  1 */ vAddConstant("CN_STRING_T"_Stz,     CN_STRING_T);
+  /*    */ vAddConstant("CN_SUPERMERGEOP"_Stz, CN_SUPERMERGEOP);
   /* 70 */ vAddConstant("CN_SYSCALL"_Stz,      CN_SYSCALL);
 
   /* 71 */ vAddConstant("CN_TABLE"_Stz,        CN_TABLE);

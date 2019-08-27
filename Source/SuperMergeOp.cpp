@@ -5,7 +5,7 @@
 #include "DataOperators.h"
 
 OpDesc __Op_SuperMerge (
-  CN_MERGEOP,         // class number
+  CN_SUPERMERGEOP,         // class number
   OK_SIMPLE,          // op kind
   "SuperMerge"_Stz,   // first word of prompt command
   "Smg"_Stz,          // prefix
@@ -56,9 +56,9 @@ void SuperMergeOp::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SuperMergeOp::SuperMergeOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
-: Op(CN_MERGEOP,szOpLabel,pDigest,aOpDefn,false)
+: Op(CN_SUPERMERGEOP,szOpLabel,pDigest,aOpDefn,false)
 {
-  _precondition_(_MAGIC_,CN_MERGEOP);
+  _precondition_(_MAGIC_,CN_SUPERMERGEOP);
   
   for (i8 i_Index = 0; i_Index < C_OPERANDS; i_Index++)
     m_pOperand[i_Index] = nullptr;
@@ -73,7 +73,7 @@ SuperMergeOp::SuperMergeOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, boo
 /*----------------------------------------------------------------------------*/
 SuperMergeOp::~SuperMergeOp(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_MERGEOP);
+  _precondition_(_MAGIC_,CN_SUPERMERGEOP);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -115,7 +115,7 @@ eOR SuperMergeOp::eCall(void* aThis)
 /*----------------------------------------------------------------------------*/
 void SuperMergeOp::vMergeDangling(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_MERGEOP,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUPERMERGEOP,_FOOTER_);
   
   i8 i_Index;
   i8 j_Index;
@@ -161,7 +161,7 @@ void SuperMergeOp::vMergeDangling(void)
 /*----------------------------------------------------------------------------*/
 eOR SuperMergeOp::eMergeLoop(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_MERGEOP,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUPERMERGEOP,_FOOTER_);
   
   for (;;) {
     
@@ -249,7 +249,7 @@ eOR SuperMergeOp::eMergeLoop(void)
 /*----------------------------------------------------------------------------*/
 void SuperMergeOp::vSuperMergeOperands(Operand* pOperand1, Operand* pOperand2)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_MERGEOP,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUPERMERGEOP,_FOOTER_);
 
   if (AM::bVerbose())
     vTrace("Merging operands %p %p\n"_Stz, pOperand1, pOperand2);
