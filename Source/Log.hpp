@@ -5,8 +5,9 @@
 
 namespace Logging
 {
-  static const char* C_LOG_REGION = "/SE_Log";
-  static const char* C_LOG_FILE   = "/tmp/SE_Log.csv";
+  static const char* C_LOG_REGION   = "/SE_Log";
+  static const char* C_LOG_FILE_CSV = "/tmp/SE_Log.csv";
+  static const char* C_LOG_FILE_TXT = "/tmp/SE_Log.txt";
 
   static const i8    C_JOB_GROUP = 0;
   static const i8    C_INF_GROUP = -1;

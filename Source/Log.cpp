@@ -893,8 +893,9 @@ void Log::vWriteToFile(bool bCsv, bool bShortForm)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
-  s256 sLogPath((Stz*)C_LOG_FILE);
-  
+  s256 sLogPath;
+  sLogPath = bCsv ? (Stz*)C_LOG_FILE_CSV : (Stz*)C_LOG_FILE_TXT;
+
   File* pLogFile = new File;
   
   bool bOpened = pLogFile->bOpenWrite(sLogPath);
@@ -951,6 +952,8 @@ void Log::vWriteToFile(bool bCsv, bool bShortForm)
   
   pLogFile->vClose();
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   vTrace("Log written to: %s\n"_Stz,sLogPath.aChar());
   
   delete pLogFile;
