@@ -183,9 +183,9 @@ void LogEntry::vSprintCsv(s4K& sString, i8 iTickDeltaUsec, i8& iTotalDelta)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* write to csv file                                                          */
+/* write log to csv file                                                      */
 /*----------------------------------------------------------------------------*/
-void LogEntry::vWrite(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
+void LogEntry::vWriteCsv(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
 {
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
@@ -194,7 +194,7 @@ void LogEntry::vWrite(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
   //if (StrLib::bSame(m_xFyi.m_caNote,"delta reset"))
   //  iTotalDeltaUsec = 0;
   
-  vWriteCsv(pFile,iEntryDeltaUsec,iTotalDeltaUsec);
+  vWriteCsvEntry(pFile,iEntryDeltaUsec,iTotalDeltaUsec);
   
   switch (m_eKind) {
     case EK_FYI: m_xFyi.vWriteCsv(pFile); break;
@@ -220,9 +220,9 @@ void LogEntry::vWrite(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write to csv file                                                          */
+/* write entry to csv file                                                    */
 /*----------------------------------------------------------------------------*/
-void LogEntry::vWriteCsv(File* pFile, i8 iTickDeltaUsec, i8& iTotalDelta)
+void LogEntry::vWriteCsvEntry(File* pFile, i8 iTickDeltaUsec, i8& iTotalDelta)
 {
   if (m_bLine)
     pFile->vPrint("%s\n"_Stz,C_LOG_LINE);

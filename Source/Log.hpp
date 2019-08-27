@@ -85,7 +85,7 @@ namespace Logging
     void vFindRange_NL(i8& i_MinEntry, i8& i_MaxEntry);
     i8   iPercentFull_NL(void);
     i8   iSize(void);
-    void vWriteToFile(bool bShortForm);
+    void vWriteToFile(bool bCsvFile, bool bShortForm);
   
     // -- -- -- -- -- --
   

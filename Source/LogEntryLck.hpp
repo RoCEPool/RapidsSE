@@ -14,9 +14,10 @@ namespace Logging
   public:
     void vSet(LogEntry* pLogEntry, Lock* pLock, eLA eLckAct);
   
-  void vOutline(s4K& sOutline);
+    void vOutline(s4K& sOutline);
 
     void vWriteCsv(File* pFile);
+    void vWriteTxt(File* pFile);
   };
 }
 

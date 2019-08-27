@@ -12,11 +12,12 @@ namespace Logging
     ePA m_ePrmAct; // prompt action
   
   public:
-   void vSet(LogEntry* pLogEntry, SePrompt* pSePrompt, ePA ePrmAct);
+    void vSet(LogEntry* pLogEntry, SePrompt* pSePrompt, ePA ePrmAct);
   
-  void vOutline(s4K& sOutline);
+    void vOutline(s4K& sOutline);
 
-   void vWriteCsv(File* pFile);
+    void vWriteCsv(File* pFile);
+    void vWriteTxt(File* pFile);
   };
 }
 
