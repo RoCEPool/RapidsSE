@@ -20,6 +20,7 @@ namespace StorageEngine
     static void vDeleteImmmediate(Task** ppTask);
     static void vDeleteSession(Session* pSession);
     static void vErrorHandler(Error* pError);
+    static void vGetCopyright(s256& sCopyright);
     static void vGetWelcome(s256& sWelcome);
     static void vKillPrev(void);
     static void vMainEntry(void);

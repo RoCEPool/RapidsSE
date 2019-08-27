@@ -262,6 +262,9 @@ Pthread* AM::pThisTLSPthread(void) {
 void AM::vWelcomeText(s256& sWelcome) {
   Engine::vGetWelcome(sWelcome);
 }
+void AM::vCopyrightText(s256& sCopyright) {
+  Engine::vGetCopyright(sCopyright);
+}
 void AM::vWriteLog(void) {
   Log::vWriteCsv(false);
 }

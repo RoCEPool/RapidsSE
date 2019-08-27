@@ -358,6 +358,11 @@ void Log::vOpenBySE(bool bStarting)
   AM::vLogLog(SL_INF,gpLog,GA_LOG_WELCOME,
               sWelcome); //!format-LogLog
   
+  s256 sCopyright;
+  AM::vCopyrightText(sCopyright);
+  AM::vLogLog(SL_INF,gpLog,GA_LOG_COPYRIGHT,
+              sCopyright); //!format-LogLog
+  
   Now oNow;
   AM::vLogLog(SL_INF,gpLog,GA_LOG_TIME,
               "Time is: %s"_Stz, //!format-LogLog
@@ -918,6 +923,11 @@ void Log::vWriteToFile(bool bCsv, bool bShortForm)
   AM::vLogLog(SL_INF,gpLog,GA_LOG_WELCOME,
               sWelcome); //!format-LogLog
   
+  s256 sCopyright;
+  AM::vWelcomeText(sCopyright);
+  AM::vLogLog(SL_INF,gpLog,GA_LOG_COPYRIGHT,
+              sCopyright); //!format-LogLog
+
   i8 iUpTimeSsec = AM::iElapsedSsec();
   AM::vLogLog(SL_INF,gpLog,GA_LOG_UPTIME,
               "Uptime: %llds; Requests: %lld"_Stz, //!format-LogLog

@@ -260,7 +260,15 @@ void Engine::vErrorHandler(Error* pError)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print welcome                                                              */
+/* get copyright                                                              */
+/*----------------------------------------------------------------------------*/
+void Engine::vGetCopyright(s256& sCopyright)
+{
+  sCopyright = "Copyright (c) Borrui Data 2019"_Stz;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get welcome                                                                */
 /*----------------------------------------------------------------------------*/
 void Engine::vGetWelcome(s256& sWelcome)
 {
@@ -271,8 +279,7 @@ void Engine::vGetWelcome(s256& sWelcome)
   aRelDbg = "release"_Stz;
 #endif
   
-  sWelcome.vSprint("RapidsSE v%s (Compiled %s %s -- %s) pid %lld\n"
-                   "Copyright (c) Borrui Data 2019"_Stz,
+  sWelcome.vSprint("RapidsSE v%s (Compiled %s %s -- %s) pid %lld"_Stz,
                      RAPIDSSE_VERSION_STRING,
                      __DATE__,
                      __TIME__,
@@ -658,11 +665,15 @@ void Engine::vPrintStatus(void)
 void Engine::vPrintWelcome(void)
 {
   s256 sWelcome;
-  
+  s256 sCopyright;
+
   vGetWelcome(sWelcome);
-  
-  if (gxArguments.m_bWelcome && ! gxArguments.m_bStatus)
+  vGetCopyright(sCopyright);
+
+  if (gxArguments.m_bWelcome && ! gxArguments.m_bStatus) {
     vInfo("%s\n"_Stz,sWelcome.aStz());
+    vInfo("%s\n"_Stz,sCopyright.aStz());
+  }
   
   if (gxArguments.m_bVerbose) {
 #ifdef MUNGE

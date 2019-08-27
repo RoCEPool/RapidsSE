@@ -16,6 +16,7 @@ enum eGA // log actions
   /*    */ GA_LOG_WELCOME,
   /*    */ GA_LOG_HOST,
   /*    */ GA_LOG_UPTIME,
+  /*    */ GA_LOG_COPYRIGHT,
 
   /*    */ GA_ENUMS,
 };
@@ -33,6 +34,7 @@ static Stz* aGA[]
   /*  0 */ "GA_LOG_WELCOME"_Stz,
   /*  0 */ "GA_LOG_HOST"_Stz,
   /*  0 */ "GA_LOG_UPTIME"_Stz,
+  /*  0 */ "GA_LOG_COPYRIGHT"_Stz,
 
   /*    */ "ENUMS"_Stz,
 };

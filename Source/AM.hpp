@@ -150,6 +150,7 @@ namespace StorageEngine
     static Thread* pThisTLSThread(void);
     static Pthread* pThisTLSPthread(void);
     static void vWelcomeText(s256& sWelcome);
+    static void vCopyrightText(s256& sCopyRight);
     static void vWriteLog(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
