@@ -714,7 +714,7 @@ Ent* EntBuffer::aNextEntry(Ent* aCurrent, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  RASSERT(aCurrent->bValidEnt());
+  ASSERT(aCurrent->bValidEnt());
   
   i4 i_Offset = aCurrent->iNEO(iLevel);
   
@@ -723,7 +723,7 @@ Ent* EntBuffer::aNextEntry(Ent* aCurrent, i8 iLevel)
   
   Ent* aEnt = aAdd<Ent*>(aItemArea(), i_Offset);
   
-  RASSERT(! aEnt || aEnt->bValidEnt());
+  ASSERT(! aEnt || aEnt->bValidEnt());
   
   return aEnt;
 }
