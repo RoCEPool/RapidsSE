@@ -37,7 +37,7 @@ void _LogEntrySvc::vWriteCsv(File* pFile)
 {
   SP_Id spId;
   
-  pFile->vPrint(",%s,%s"_Stz,
+  pFile->vPrint("%s,%s"_Stz,
                 
                 spId.sz(IK_SERVICE,m_iSvcId),
                 aVA[m_eSvcAct]);

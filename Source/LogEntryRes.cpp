@@ -38,7 +38,7 @@ void _LogEntryRes::vWriteCsv(File* pFile)
 {
   SP_Id spId;
   
-  pFile->vPrint(",%s,%s"_Stz,
+  pFile->vPrint("%s,%s"_Stz,
               
                  spId.sz(IK_RESOURCE,m_iResId),
                 aRA[m_eResAct]);

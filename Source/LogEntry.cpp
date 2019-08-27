@@ -172,7 +172,7 @@ void LogEntry::vSprintCsv(s4K& sString, i8 iTickDeltaUsec, i8& iTotalDelta)
 
                     aSL[m_eSeverity],
                     m_caNode,
-                   spElapsed.szNsec(m_iTick - AM::iAMTimePoint()),
+                    spElapsed.szNsec(m_iTick - AM::iAMTimePoint()),
 
                     aEK[m_eKind]
                   );
@@ -216,7 +216,7 @@ void LogEntry::vWriteCsv(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
       NEVER_REACH;
   }
   
-  pFile->vPrint("}, %s\n"_Stz,m_caNote);
+  pFile->vPrint(",  %s\n"_Stz,m_caNote);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -224,9 +224,79 @@ void LogEntry::vWriteCsv(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
 /*----------------------------------------------------------------------------*/
 void LogEntry::vWriteCsvEntry(File* pFile, i8 iTickDeltaUsec, i8& iTotalDelta)
 {
+  _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
+  
+  SP_Elapsed spElapsed;
+
   if (m_bLine)
     pFile->vPrint("%s\n"_Stz,C_LOG_LINE);
+  
 
+  pFile->vPrint(
+                
+                "%lld,%lld,  "
+                "%lld,+%s,  "
+                "%s,%s,%p,  "
+                ""_Stz,
+                
+                m_i_Entry,
+                m_i_Prev,
+
+                m_iTick,
+                spElapsed.szNsec(m_iTick - AM::iAMTimePoint()),
+
+                m_caNode,
+                aCN[m_eClass],
+                m_pFocal
+                
+                );
+}
+
+/*----------------------------------------------------------------------------*/
+/* write log to csv file                                                      */
+/*----------------------------------------------------------------------------*/
+void LogEntry::vWriteTxt(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
+{
+  _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
+  
+  iTotalDeltaUsec += iEntryDeltaUsec;
+  
+  //if (StrLib::bSame(m_xFyi.m_caNote,"delta reset"))
+  //  iTotalDeltaUsec = 0;
+  
+  vWriteCsvEntry(pFile,iEntryDeltaUsec,iTotalDeltaUsec);
+  
+  switch (m_eKind) {
+    case EK_FYI: m_xFyi.vWriteTxt(pFile); break;
+    case EK_JOB: m_xJob.vWriteTxt(pFile); break;
+    case EK_LCK: m_xLck.vWriteTxt(pFile); break;
+    case EK_LOG: m_xLog.vWriteTxt(pFile); break;
+    case EK_OPR: m_xOpr.vWriteTxt(pFile); break;
+    case EK_PRM: m_xPrm.vWriteTxt(pFile); break;
+    case EK_QUE: m_xQue.vWriteTxt(pFile); break;
+    case EK_REQ: m_xReq.vWriteTxt(pFile); break;
+    case EK_RES: m_xRes.vWriteTxt(pFile); break;
+    case EK_SSN: m_xSsn.vWriteTxt(pFile); break;
+    case EK_SVC: m_xSvc.vWriteTxt(pFile); break;
+    case EK_SYS: m_xSys.vWriteTxt(pFile); break;
+    case EK_TSK: m_xTsk.vWriteTxt(pFile); break;
+    case EK_THD: m_xThd.vWriteTxt(pFile); break;
+    case EK_TXN: m_xTxn.vWriteTxt(pFile); break;
+    default:
+      NEVER_REACH;
+  }
+  
+  pFile->vPrint("}, %s\n"_Stz,m_caNote);
+}
+
+/*----------------------------------------------------------------------------*/
+/* write entry to csv file                                                    */
+/*----------------------------------------------------------------------------*/
+void LogEntry::vWriteTxtEntry(File* pFile, i8 iTickDeltaUsec, i8& iTotalDelta)
+{
+  if (m_bLine)
+    pFile->vPrint("%s\n"_Stz,C_LOG_LINE);
+  
   pFile->vPrint("[%lld,%lld], "
                 "(%lld,%lld,%lld), "
                 "<%s,%lld,%s,%p>, "_Stz
@@ -234,7 +304,7 @@ void LogEntry::vWriteCsvEntry(File* pFile, i8 iTickDeltaUsec, i8& iTotalDelta)
                 
                 m_i_Entry,
                 m_i_Prev,
-
+                
                 m_iTick,
                 iTotalDelta,
                 iTickDeltaUsec,

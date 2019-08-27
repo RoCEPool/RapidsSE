@@ -399,6 +399,7 @@ void Log::vWriteCsv(bool bShortForm)
     return;
   
   gpLog->vWriteToFile(true,bShortForm);
+  gpLog->vWriteToFile(false,bShortForm);
 #endif
 }
 
@@ -932,8 +933,12 @@ void Log::vWriteToFile(bool bCsv, bool bShortForm)
   vFindRange_NL(i_MinEntry,i_MaxEntry);
   
   LogEntry* pLogEntry = &m_oaEntry[i_MinEntry % m_nEntries];
-  pLogEntry->vWriteCsv(pLogFile,0,iTotalDeltaUsec);
   
+  if (bCsv)
+    pLogEntry->vWriteCsv(pLogFile,0,iTotalDeltaUsec);
+  else
+    pLogEntry->vWriteTxt(pLogFile,0,iTotalDeltaUsec);
+
   for (i8 i_Entry = i_MinEntry + 1; i_Entry <= i_MaxEntry; i_Entry++) {
     
     pLogEntry = &m_oaEntry[i_Entry % m_nEntries];
@@ -944,7 +949,10 @@ void Log::vWriteToFile(bool bCsv, bool bShortForm)
     LogEntry* pPrevEntry = &m_oaEntry[(i_Entry - 1) % m_nEntries];
     i8 iEntryDeltaUsec = Tick::iToUsec(pLogEntry->m_iTick - pPrevEntry->m_iTick);
 
-    pLogEntry->vWriteCsv(pLogFile,iEntryDeltaUsec,iTotalDeltaUsec);
+    if (bCsv)
+      pLogEntry->vWriteCsv(pLogFile,iEntryDeltaUsec,iTotalDeltaUsec);
+    else
+      pLogEntry->vWriteCsv(pLogFile,iEntryDeltaUsec,iTotalDeltaUsec);
   }
   
   vDropLock();

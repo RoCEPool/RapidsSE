@@ -81,6 +81,8 @@ namespace Logging
     void vSprintCsv(s4K& sString, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec);
     void vWriteCsv(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec);
     void vWriteCsvEntry(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec);
+    void vWriteTxt(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec);
+    void vWriteTxtEntry(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec);
     void vZero(void);
 
     Footer* aFooter(void);

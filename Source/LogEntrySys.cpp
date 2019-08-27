@@ -37,7 +37,7 @@ void _LogEntrySys::vWriteCsv(File* pFile)
 {
   SP_Id spId;
   
-  pFile->vPrint(",%s,%s"_Stz,
+  pFile->vPrint("%s,%s"_Stz,
                 
                 spId.sz(IK_SYSTEM,m_iSysId),
                 aYA[m_eSysAct]);

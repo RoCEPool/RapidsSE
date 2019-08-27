@@ -40,7 +40,7 @@ void _LogEntryPrm::vWriteCsv(File* pFile)
 {
   SP_Id spId;
   
-  pFile->vPrint(",%s,%s"_Stz,
+  pFile->vPrint("%s,%s"_Stz,
                 
                 spId.sz(IK_PROMPT,m_iPrmId),
                 aPA[m_ePrmAct]);
