@@ -758,7 +758,7 @@ LogEntry* Log::pNewEntry(eSL eSeverity, eCN eClassNo,
   
   pLogEntry->vInit(eSeverity,eClassNo,(Stz*)caText);
   
-  //StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
+  //StrLib::vCopyLen(pLogEntry->m_caNote,caText,C_LOG_NOTE - 1);
 
   return pLogEntry;
 }
@@ -784,7 +784,7 @@ LogEntry* Log::pNewEntry(eSL eSeverity, Focal* pFocal,
   
   pLogEntry->vInit(eSeverity,pFocal,(Stz*)caText);
   
-  //StrLib::vCopyLen(pLogEntry->m_caText,caText,C_LOG_TEXT - 1);
+  //StrLib::vCopyLen(pLogEntry->m_caNote,caText,C_LOG_NOTE - 1);
   
   return pLogEntry;
 }

@@ -26,23 +26,25 @@ namespace Logging
   friend class _LogEntryTxn;
 
   private:
-    i8   m_i_Entry;     // this entry no
-    i8   m_i_Prev;      // previous entry
+    i8   m_i_Entry;    // this entry no
+    i8   m_i_Prev;     // previous entry
   
-    i8   m_iTick;       // tick when entry added
-    i8   m_iNodeNo;     // which node
-    char m_caNode[32];  // which node
+    i8   m_iTick;      // tick when entry added
+    i8   m_iNodeNo;    // which node
+    char m_caNode[32]; // which node
   
-    eCN  m_eClass;      // class of caller
+    eCN  m_eClass;     // class of caller
   
-    Focal* m_pFocal;    // object
-    i8     m_i_Focal;   // focal lattice subscript
+    Focal* m_pFocal;   // object
+    i8   m_i_Focal;    // focal lattice subscript
   
-    eSL    m_eSeverity; // severity level
+    eSL  m_eSeverity;  // severity level
   
-    char m_caText[C_LOG_TEXT]; // comment
+    bool m_bLine;      // draw line before?
   
-    eEK  m_eKind;       // log entry kind.  one of the following
+    char m_caNote[C_LOG_NOTE]; // comment
+  
+    eEK  m_eKind;      // log entry kind.  one of the following
     union {
       _LogEntryFyi m_xFyi;  // when m_eKind == EK_FYI
       _LogEntryJob m_xJob;  // when m_eKind == EK_JOB
@@ -61,7 +63,6 @@ namespace Logging
       _LogEntryTxn m_xTxn;  // when m_eKind == EK_TXN
     };
   
-    bool m_bLine;
   
     // must be last
     Footer m_xFooter;

@@ -79,8 +79,8 @@ void LogEntry::vInit(eSL eSverity, eCN eClassNo, Stz* szText)
   m_iNodeNo = AM::iThisNodeNo();
   StrLib::vCopyLen(m_caNode,AM::szNodeName()->aChar(),sizeof(m_caNode) - 1);
   
-  m_caText[0] = '\0';
-  StrLib::vCopyLen(m_caText,szText->aChar(),C_LOG_TEXT - 1);
+  m_caNote[0] = '\0';
+  StrLib::vCopyLen(m_caNote,szText->aChar(),C_LOG_NOTE - 1);
 
   m_eClass = eClassNo;
   m_pFocal = nullptr;
@@ -104,8 +104,8 @@ void LogEntry::vInit(eSL eSverity, Focal *pFocal, Stz* szText)
   m_iNodeNo = AM::iThisNodeNo();
   StrLib::vCopyLen(m_caNode,AM::szNodeName()->aChar(),sizeof(m_caNode) - 1);
   
-  m_caText[0] = '\0';
-  StrLib::vCopyLen(m_caText,szText->aChar(),C_LOG_TEXT - 1);
+  m_caNote[0] = '\0';
+  StrLib::vCopyLen(m_caNote,szText->aChar(),C_LOG_NOTE - 1);
   
   m_eClass  = pFocal->eClass();
   m_pFocal  = pFocal;
@@ -128,7 +128,7 @@ void LogEntry::vSprint(s4K& sString, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
   
   iTotalDeltaUsec += iEntryDeltaUsec;
   
-  //if (StrLib::bSame(m_xFyi.m_caText,"delta reset"))
+  //if (StrLib::bSame(m_xFyi.m_caNote,"delta reset"))
   //  iTotalDeltaUsec = 0;
   
   vSprintCsv(sString,iEntryDeltaUsec,iTotalDeltaUsec);
@@ -153,7 +153,7 @@ void LogEntry::vSprint(s4K& sString, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
       NEVER_REACH;
   }
   
-  sString.vCatSprint(" %s"_Stz,m_caText);
+  sString.vCatSprint(" %s"_Stz,m_caNote);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -191,7 +191,7 @@ void LogEntry::vWrite(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
   
   iTotalDeltaUsec += iEntryDeltaUsec;
   
-  //if (StrLib::bSame(m_xFyi.m_caText,"delta reset"))
+  //if (StrLib::bSame(m_xFyi.m_caNote,"delta reset"))
   //  iTotalDeltaUsec = 0;
   
   vWriteCsv(pFile,iEntryDeltaUsec,iTotalDeltaUsec);
@@ -216,7 +216,7 @@ void LogEntry::vWrite(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
       NEVER_REACH;
   }
   
-  pFile->vPrint("}, %s\n"_Stz,m_caText);
+  pFile->vPrint("}, %s\n"_Stz,m_caNote);
 }
 
 /*----------------------------------------------------------------------------*/
