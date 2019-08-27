@@ -25,7 +25,7 @@ void _LogEntryQue::vOutline(s4K& sOutline)
 
   sOutline.vCatSprint(".%s %24s"_Stz,
                 
-                      spId.sz("Q"_Stz,m_iQueId),
+                      spId.sz(IK_QUEUE,m_iQueId),
                       spString.szRight(aQA[m_eQueAct],24)
                       );
 }
@@ -39,7 +39,7 @@ void _LogEntryQue::vWriteCsv(File* pFile)
   
   pFile->vPrint(",%s,%s"_Stz,
                 
-                spId.sz("Q"_Stz,m_iQueId),
+                spId.sz(IK_QUEUE,m_iQueId),
                 aQA[m_eQueAct]);
 }
 

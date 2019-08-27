@@ -25,7 +25,7 @@ void _LogEntryReq::vOutline(s4K& sOutline)
 
   sOutline.vCatSprint(".%s %s"_Stz,
                 
-                      spId.sz("M"_Stz,m_iReqId),
+                      spId.sz(IK_REQUEST,m_iReqId),
                       spString.szRight(aMA[m_eReqAct],24)
                       );
 }
@@ -39,7 +39,7 @@ void _LogEntryReq::vWriteCsv(File* pFile)
   
   pFile->vPrint(",%s,%s"_Stz,
                 
-                spId.sz("M"_Stz,m_iReqId),
+                spId.sz(IK_REQUEST,m_iReqId),
                 aMA[m_eReqAct]);
 }
 

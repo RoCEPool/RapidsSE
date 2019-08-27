@@ -25,7 +25,7 @@ void _LogEntrySsn::vOutline(s4K& sOutline)
 
   sOutline.vCatSprint(".%s %24s"_Stz,
                 
-                      spId.sz("A"_Stz,m_iSsnId),
+                      spId.sz(IK_SESSION,m_iSsnId),
                       spString.szRight(aAA[m_eSsnAct],24)
                       );
 }
@@ -39,7 +39,7 @@ void _LogEntrySsn::vWriteCsv(File* pFile)
   
   pFile->vPrint(",%s,%s"_Stz,
                 
-                spId.sz("A"_Stz,m_iSsnId),
+                spId.sz(IK_SESSION,m_iSsnId),
                 aAA[m_eSsnAct]);
 }
 

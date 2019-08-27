@@ -25,7 +25,7 @@ void _LogEntryTsk::vOutline(s4K& sOutline)
 
   sOutline.vCatSprint(".%s %24s"_Stz,
                 
-                      spId.sz("T"_Stz,m_iTskId),
+                      spId.sz(IK_TASK,m_iTskId),
                       spString.szRight(aTA[m_eTskAct],24)
                       );
 }
@@ -39,7 +39,7 @@ void _LogEntryTsk::vWriteCsv(File* pFile)
   
   pFile->vPrint(",%s,%s"_Stz,
                 
-                spId.sz("T"_Stz,m_iTskId),
+                spId.sz(IK_TASK,m_iTskId),
                 aTA[m_eTskAct]);
 }
 

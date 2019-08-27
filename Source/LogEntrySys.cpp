@@ -25,7 +25,7 @@ void _LogEntrySys::vOutline(s4K& sOutline)
 
   sOutline.vCatSprint(".%s %24s"_Stz,
                 
-                      spId.sz("Y"_Stz,m_iSysId),
+                      spId.sz(IK_SYSTEM,m_iSysId),
                       spString.szRight(aYA[m_eSysAct],24)
                       );
 }
@@ -39,7 +39,7 @@ void _LogEntrySys::vWriteCsv(File* pFile)
   
   pFile->vPrint(",%s,%s"_Stz,
                 
-                spId.sz("Y"_Stz,m_iSysId),
+                spId.sz(IK_SYSTEM,m_iSysId),
                 aYA[m_eSysAct]);
 }
 

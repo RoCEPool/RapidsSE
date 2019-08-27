@@ -25,7 +25,7 @@ void _LogEntrySvc::vOutline(s4K& sOutline)
 
   sOutline.vCatSprint(".%s %24s"_Stz,
                 
-                      spId.sz("S"_Stz,m_iSvcId),
+                      spId.sz(IK_SERVICE,m_iSvcId),
                       spString.szRight(aVA[m_eSvcAct],24)
                       );
 }
@@ -39,7 +39,7 @@ void _LogEntrySvc::vWriteCsv(File* pFile)
   
   pFile->vPrint(",%s,%s"_Stz,
                 
-                spId.sz("S"_Stz,m_iSvcId),
+                spId.sz(IK_SERVICE,m_iSvcId),
                 aVA[m_eSvcAct]);
 }
 

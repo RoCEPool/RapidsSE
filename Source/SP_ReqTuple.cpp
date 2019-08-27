@@ -42,7 +42,7 @@ Stz* SP_ReqTuple::sz(ReqTuple* aReqTuple)
                   "<%lld=%s=%s=%s>"_Stz,
                   
                   aReqTuple->m_i_State,
-                  spId.sz("M"_Stz,aReqTuple->m_iReqId),
+                  spId.sz(IK_REQUEST,aReqTuple->m_iReqId),
                   aReqTuple->m_bMarkTrace ? "Trace"_Stz : "NoTrace"_Stz,
                   aReqTuple->m_bLogJob    ? "Log"_Stz   : "NoLog"_Stz
                   );

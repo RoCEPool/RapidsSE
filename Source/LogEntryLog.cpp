@@ -25,7 +25,7 @@ void _LogEntryLog::vOutline(s4K& sOutline)
 
   sOutline.vCatSprint(".%s %24s"_Stz,
                 
-                      spId.sz("G"_Stz,m_iLogId),
+                      spId.sz(IK_LOG,m_iLogId),
                       spString.szRight(aGA[m_eLogAct],24)
                       );
 }
@@ -39,7 +39,7 @@ void _LogEntryLog::vWriteCsv(File* pFile)
   
   pFile->vPrint(",%s,%s"_Stz,
                 
-                spId.sz("G"_Stz,m_iLogId),
+                spId.sz(IK_LOG,m_iLogId),
                 aGA[m_eLogAct]);
 }
 

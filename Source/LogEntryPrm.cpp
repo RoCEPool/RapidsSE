@@ -28,7 +28,7 @@ void _LogEntryPrm::vOutline(s4K& sOutline)
 
   sOutline.vCatSprint(".%s %24s"_Stz,
                 
-                      spId.sz("P"_Stz,m_iPrmId),
+                      spId.sz(IK_PROMPT,m_iPrmId),
                       spString.szRight(aPA[m_ePrmAct],24)
                       );
 }
@@ -42,7 +42,7 @@ void _LogEntryPrm::vWriteCsv(File* pFile)
   
   pFile->vPrint(",%s,%s"_Stz,
                 
-                spId.sz("P"_Stz,m_iPrmId),
+                spId.sz(IK_PROMPT,m_iPrmId),
                 aPA[m_ePrmAct]);
 }
 

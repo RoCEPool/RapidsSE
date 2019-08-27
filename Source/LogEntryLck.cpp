@@ -25,7 +25,7 @@ void _LogEntryLck::vOutline(s4K& sOutline)
 
   sOutline.vCatSprint(".%s %s"_Stz,
                 
-                      spId.sz("L"_Stz,m_iLckId),
+                      spId.sz(IK_LOCK,m_iLckId),
                       spString.szRight(aLA[m_eLckAct],24)
                       );
 }
@@ -39,7 +39,7 @@ void _LogEntryLck::vWriteCsv(File* pFile)
   
   pFile->vPrint(",%s,%s"_Stz,
                 
-                spId.sz("L"_Stz,m_iLckId),
+                spId.sz(IK_LOCK,m_iLckId),
                 aLA[m_eLckAct]);
 }
 

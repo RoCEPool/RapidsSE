@@ -26,7 +26,7 @@ void _LogEntryRes::vOutline(s4K& sOutline)
 
   sOutline.vCatSprint(".%s %24s"_Stz,
                 
-                      spId.sz("R"_Stz,m_iResId),
+                      spId.sz(IK_RESOURCE,m_iResId),
                       spString.szRight(aRA[m_eResAct],24)
                       );
 }
@@ -40,7 +40,7 @@ void _LogEntryRes::vWriteCsv(File* pFile)
   
   pFile->vPrint(",%s,%s"_Stz,
               
-                 spId.sz("R"_Stz,m_iResId),
+                 spId.sz(IK_RESOURCE,m_iResId),
                 aRA[m_eResAct]);
 }
 
