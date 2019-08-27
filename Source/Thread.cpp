@@ -77,7 +77,7 @@ Thread::Thread(void)
   _checkInitialised_(CN_THREAD);
   
   ++ gixThread;
-  AM::vLogThd(SL_INF,this,HA_THREAD_CONSTRUCTOR,
+  AM::vLogThd(SL_INF,this,HA_THD_CONSTRUCTOR,
               "Thread constructed : %p (%lld threads exist)"_Stz, //!format-LogThd
               this,* gixThread);
   
@@ -95,7 +95,7 @@ Thread::~Thread(void) noexcept(false)
   delete m_pPthread;
   
   -- gixThread;
-  AM::vLogThd(SL_INF,this,HA_THREAD_DESTRUCTOR,
+  AM::vLogThd(SL_INF,this,HA_THD_DESTRUCTOR,
               "Thread destructed : %p (%lld threads exist)"_Stz, //!format-LogThd
               this,* gixThread);
 }

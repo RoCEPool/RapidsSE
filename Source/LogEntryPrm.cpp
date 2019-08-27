@@ -14,7 +14,7 @@ void _LogEntryPrm::vSet(LogEntry* pLogEntry, SePrompt*  pPrompt, ePA ePrmAct)
   m_iPrmId  = pPrompt->m_iUniqueId;
   m_ePrmAct = ePrmAct;
   
-  if (PA_COMMAND == ePrmAct)
+  if (PA_PRM_COMMAND == ePrmAct)
     pLogEntry->m_bLine = true;
 }
 

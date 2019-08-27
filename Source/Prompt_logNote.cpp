@@ -28,7 +28,7 @@ bool Prompt::bPrompt_logNote(SePrompt* pPrompt)
   ASSERT((*pTokenVec)[0]->bSame("logNote"_Stz));
   
   if (pTokenVec->nTokens() > 1)
-    AM::vLogPrm(SL_INF,pPrompt,PA_LOG_NOTE,
+    AM::vLogPrm(SL_INF,pPrompt,PA_PRM_LOG_NOTE,
                 "%s"_Stz, //!format-LogPrm
                 pTokenVec->pGet(1)->szText());
 
