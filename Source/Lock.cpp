@@ -62,7 +62,7 @@ Lock::Lock(eLK eLockKind, i8 NonFocal)
   _checkInitialised_(CN_LOCK);
   
   ++ gixLock;
-  AM::vLogLck(SL_INF,this,LA_CONSTRUCTOR,
+  AM::vLogLck(SL_INF,this,LA_LCK_CONSTRUCTOR,
               "Lock constructed %s : %p (%lld locks exist)"_Stz, //!format-LogLck
               aLK[m_eLockKind],this,* gixLock);
   
@@ -89,7 +89,7 @@ Lock::Lock(eLK eLockKind)
   _checkInitialised_(CN_LOCK);
   
   ++ gixLock;
- AM::vLogLck(SL_INF,this,LA_CONSTRUCTOR,
+ AM::vLogLck(SL_INF,this,LA_LCK_CONSTRUCTOR,
               "Lock constructed %s : %p (%lld locks exist)"_Stz, //!format-LogLck
               aLK[m_eLockKind],this,* gixLock);
 
@@ -104,7 +104,7 @@ Lock::~Lock(void) noexcept(false)
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
   -- gixLock;
- AM::vLogLck(SL_INF,this,LA_DESTRUCTOR,
+ AM::vLogLck(SL_INF,this,LA_LCK_DESTRUCTOR,
               "Lock destructed %s : %p (%lld locks exist)"_Stz, //!format-LogLck
               aLK[m_eLockKind],this,* gixLock);
 }
@@ -376,7 +376,7 @@ void Lock::vGrabRead(void)
     oTimer.vUpdate();
     if (oTimer.iMilliseconds() > 100 && ! bReported) {
       bReported = true;
-     AM::vLogLck(SL_INF,this,LA_READ_UNABLE,
+     AM::vLogLck(SL_INF,this,LA_LCK_READ_UNABLE,
                  "Unable to grab read lock %p %s %p"_Stz, //!format-LogLck
                   this,
                   aLK[m_eLockKind],
@@ -387,7 +387,7 @@ void Lock::vGrabRead(void)
   } while ( ! iResult );
   
   if (bReported) {
-   AM::vLogLck(SL_INF,this,LA_READ_ABLE,
+   AM::vLogLck(SL_INF,this,LA_LCK_READ_ABLE,
                "Able to grab read lock %p %s %p"_Stz, //!format-LogLck
                 this,
                 aLK[m_eLockKind],
@@ -503,7 +503,7 @@ void Lock::vGrabWrite(void)
     oTimer.vUpdate();
     if (oTimer.iMilliseconds() > 100 && ! bReported) {
       bReported = true;
-     AM::vLogLck(SL_INF,this,LA_WRITE_UNABLE,
+     AM::vLogLck(SL_INF,this,LA_LCK_WRITE_UNABLE,
                  "Unable to grab write lock %p %s %p"_Stz, //!format-LogLck
                          this,
                          aLK[m_eLockKind],
@@ -514,7 +514,7 @@ void Lock::vGrabWrite(void)
   } while ( ! iResult );
   
   if (bReported) {
-   AM::vLogLck(SL_INF,this,LA_WRITE_ABLE,
+   AM::vLogLck(SL_INF,this,LA_LCK_WRITE_ABLE,
                "Able to grab write lock %p %s %p"_Stz, //!format-LogLck
                        this,
                        aLK[m_eLockKind],

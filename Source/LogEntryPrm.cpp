@@ -14,7 +14,7 @@ void _LogEntryPrm::vSet(LogEntry* pLogEntry, SePrompt*  pPrompt, ePA ePrmAct)
   m_iPrmId  = pPrompt->m_iUniqueId;
   m_ePrmAct = ePrmAct;
   
-  if (PA_COMMAND == ePrmAct)
+  if (PA_PRM_COMMAND == ePrmAct)
     pLogEntry->m_bLine = true;
 }
 
@@ -28,7 +28,7 @@ void _LogEntryPrm::vOutline(s4K& sOutline)
 
   sOutline.vCatSprint(".%s %24s"_Stz,
                 
-                      spId.sz("P"_Stz,m_iPrmId),
+                      spId.sz(IK_PROMPT,m_iPrmId),
                       spString.szRight(aPA[m_ePrmAct],24)
                       );
 }
@@ -42,7 +42,7 @@ void _LogEntryPrm::vWriteCsv(File* pFile)
   
   pFile->vPrint(",%s,%s"_Stz,
                 
-                spId.sz("P"_Stz,m_iPrmId),
+                spId.sz(IK_PROMPT,m_iPrmId),
                 aPA[m_ePrmAct]);
 }
 

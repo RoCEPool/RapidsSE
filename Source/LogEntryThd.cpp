@@ -25,7 +25,7 @@ void _LogEntryThd::vOutline(s4K& sOutline)
 
   sOutline.vCatSprint(".%s %24s"_Stz,
                 
-                      spId.sz("H"_Stz,m_iThdId),
+                      spId.sz(IK_THREAD,m_iThdId),
                       spString.szRight(aHA[m_eThdAct],24)
                       );
 }
@@ -39,7 +39,7 @@ void _LogEntryThd::vWriteCsv(File* pFile)
   
   pFile->vPrint(",%s,%s"_Stz,
                 
-                spId.sz("H"_Stz,m_iThdId),
+                spId.sz(IK_THREAD,m_iThdId),
                 aHA[m_eThdAct]);
 }
 

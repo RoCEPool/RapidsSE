@@ -25,7 +25,7 @@ void _LogEntryTxn::vOutline(s4K& sOutline)
 
   sOutline.vCatSprint(".%s %24s"_Stz,
                 
-                      spId.sz("X"_Stz,m_iTxnId),
+                      spId.sz(IK_TX,m_iTxnId),
                       spString.szRight(aXA[m_eTxnAct],24)
                       );
 }
@@ -39,7 +39,7 @@ void _LogEntryTxn::vWriteCsv(File* pFile)
   
   pFile->vPrint(",%s,%s"_Stz,
                 
-                spId.sz("X"_Stz,m_iTxnId),
+                spId.sz(IK_TX,m_iTxnId),
                 aXA[m_eTxnAct]);
 }
 

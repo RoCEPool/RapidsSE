@@ -5,22 +5,22 @@
 
 enum ePA // prompt actions
 {
-  /*  0 */ PA_NONE=0,
+  /*  0 */ PA_PRM_NONE=0,
 
-  /*    */ PA_COMMAND,
-  /*    */ PA_FREE_SPACE,
-  /*    */ PA_LOG_NOTE,
+  /*    */ PA_PRM_COMMAND,
+  /*    */ PA_PRM_FREE_SPACE,
+  /*    */ PA_PRM_LOG_NOTE,
 
-  /*    */ PA_ENUMS,
+  /*    */ PA_PRM_ENUMS,
 };
 
 static Stz* aPA[]
 {
   /*  0 */ "NONE"_Stz,
   
-  /*    */ "PA_COMMAND"_Stz,
-  /*    */ "PA_FREE_SPACE"_Stz,
-  /*    */ "PA_LOG_NOTE"_Stz,
+  /*    */ "PA_PRM_COMMAND"_Stz,
+  /*    */ "PA_PRM_FREE_SPACE"_Stz,
+  /*    */ "PA_PRM_LOG_NOTE"_Stz,
 
   /*    */ "ENUMS"_Stz,
 };

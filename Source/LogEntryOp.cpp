@@ -25,7 +25,7 @@ void _LogEntryOp::vOutline(s4K& sOutline)
 
   sOutline.vCatSprint(".%s %24s"_Stz,
                 
-                      spId.sz("O"_Stz,m_iOpId),
+                      spId.sz(IK_OP,m_iOpId),
                       spString.szRight(aOA[m_eOpAct],24)
                       );
 }
@@ -39,7 +39,7 @@ void _LogEntryOp::vWriteCsv(File* pFile)
   
   pFile->vPrint(",%s,%s"_Stz,
                 
-                spId.sz("O"_Stz,m_iOpId),
+                spId.sz(IK_OP,m_iOpId),
                 aOA[m_eOpAct]);
 }
 

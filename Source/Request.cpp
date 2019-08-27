@@ -60,7 +60,7 @@ Request::Request(Session* p_Session, TokenVec* p_TknVec)
   
   SP_TknVecStr spTknVecStr;
   
-  AM::vLogReq(SL_INF,this,MA_BEGIN,
+  AM::vLogReq(SL_INF,this,MA_REQ_BEGIN,
               "Request begin : %s"_Stz, //!format-LogReq
               spTknVecStr.sz(m_p_TknVec));
 
@@ -79,7 +79,7 @@ Request::~Request(void) noexcept(false)
   // do not delete: m_p_Session
   // do not delete: m_p_TknVec
   
-  AM::vLogReq(SL_INF,this,MA_END,
+  AM::vLogReq(SL_INF,this,MA_REQ_END,
               "Request end"_Stz); //!format-LogReq
 }
 

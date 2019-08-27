@@ -5,9 +5,9 @@
 
 enum eXA // transaction actions
 {
-  /*  0 */ XA_NONE=0,
+  /*  0 */ XA_TSK_NONE=0,
   
-  /*    */ XA_ENUMS,
+  /*    */ XA_TSK_ENUMS,
 };
 
 static Stz* aXA[]

@@ -28,9 +28,9 @@ void _LogEntryJob::vOutline(s4K& sOutline)
 
   sOutline.vCatSprint(".%s %24s %s"_Stz,
                 
-                      spId.sz("J"_Stz,m_iJobId),
+                      spId.sz(IK_JOB,m_iJobId),
                       spString.szRight(aJA[m_eJobAct],24),
-                      spReqId.sz("M"_Stz,m_iReqId)
+                      spReqId.sz(IK_REQUEST,m_iReqId)
                       );
 }
 
@@ -44,9 +44,9 @@ void _LogEntryJob::vWriteCsv(File* pFile)
 
   pFile->vPrint(",%s,%s,%s"_Stz,
                 
-                spId.sz("J"_Stz,m_iJobId),
+                spId.sz(IK_JOB,m_iJobId),
                 aJA[m_eJobAct],
-                spReqId.sz("M"_Stz,m_iReqId)
+                spReqId.sz(IK_REQUEST,m_iReqId)
                 );
 }
 

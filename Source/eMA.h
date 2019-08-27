@@ -5,20 +5,20 @@
 
 enum eMA // command instance actions
 {
-  /*  0 */ MA_NONE=0,
+  /*  0 */ MA_REQ_NONE=0,
   
-  /*    */ MA_BEGIN,
-  /*    */ MA_END,
+  /*    */ MA_REQ_BEGIN,
+  /*    */ MA_REQ_END,
 
-  /*    */ MA_ENUMS,
+  /*    */ MA_REQ_ENUMS,
 };
 
 static Stz* aMA[]
 {
   /*  0 */ "NONE"_Stz,
   
-  /*  0 */ "MA_BEGIN"_Stz,
-  /*  0 */ "MA_END"_Stz,
+  /*  0 */ "MA_REQ_BEGIN"_Stz,
+  /*  0 */ "MA_REQ_END"_Stz,
 
   /*    */ "ENUMS"_Stz,
 };
