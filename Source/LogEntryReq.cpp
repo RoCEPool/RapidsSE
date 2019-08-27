@@ -50,7 +50,7 @@ void _LogEntryReq::vWriteTxt(File* pFile)
 {
   SP_Id spId;
   
-  pFile->vPrint(",%s,%s"_Stz,
+  pFile->vPrint("%s,%s"_Stz,
                 
                 spId.sz(IK_REQUEST,m_iReqId),
                 aMA[m_eReqAct]);

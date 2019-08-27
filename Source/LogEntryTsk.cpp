@@ -50,7 +50,7 @@ void _LogEntryTsk::vWriteTxt(File* pFile)
 {
   SP_Id spId;
   
-  pFile->vPrint(",%s,%s"_Stz,
+  pFile->vPrint("%s,%s"_Stz,
                 
                 spId.sz(IK_TASK,m_iTskId),
                 aTA[m_eTskAct]);

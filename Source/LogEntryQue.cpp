@@ -50,7 +50,7 @@ void _LogEntryQue::vWriteTxt(File* pFile)
 {
   SP_Id spId;
   
-  pFile->vPrint(",%s,%s"_Stz,
+  pFile->vPrint("%s,%s"_Stz,
                 
                 spId.sz(IK_QUEUE,m_iQueId),
                 aQA[m_eQueAct]);

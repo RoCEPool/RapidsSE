@@ -947,7 +947,7 @@ void Log::vWriteToFile(bool bCsv, bool bShortForm)
   if (bCsv)
     pLogEntry->vWriteCsv(pLogFile,0,iTotalDeltaUsec);
   else
-    pLogEntry->vWriteTxt(pLogFile,0,iTotalDeltaUsec);
+    pLogEntry->vWriteTxt(pLogFile);
 
   for (i8 i_Entry = i_MinEntry + 1; i_Entry <= i_MaxEntry; i_Entry++) {
     
@@ -962,7 +962,7 @@ void Log::vWriteToFile(bool bCsv, bool bShortForm)
     if (bCsv)
       pLogEntry->vWriteCsv(pLogFile,iEntryDeltaUsec,iTotalDeltaUsec);
     else
-      pLogEntry->vWriteCsv(pLogFile,iEntryDeltaUsec,iTotalDeltaUsec);
+      pLogEntry->vWriteTxt(pLogFile);
   }
   
   vDropLock();
