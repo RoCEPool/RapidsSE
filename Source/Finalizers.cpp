@@ -54,6 +54,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_COMMAND
   /*    */ &Finalize::vUndefined,         // CN_COMPILER
   /*    */ &Finalize::vUndefined,         // CN_COMPLETER
+  /*    */ &Finalize::vUndefined,         // CN_COUNTOP
   /*    */ &Finalize::vUndefined,         // CN_CRWBUFFER
   
   /*    */ &Finalize::vUndefined,         // CN_DECACNT
