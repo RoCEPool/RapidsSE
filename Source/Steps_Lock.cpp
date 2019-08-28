@@ -109,7 +109,7 @@ ENTRY("vLockInit"_Stz);
   
   Lock* pLock = _pLock(pPtrLock);
   
-  new(pLock) Lock(LK_UNKNOWN);
+  new(pLock) Lock(LK_UNKNOWN,nullptr);
   
   ASSERT(pLock);
   ASSERT(CN_LOCK == pLock->eClass());

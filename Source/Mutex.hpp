@@ -8,8 +8,8 @@ namespace Resources
   class Mutex : public Resource
   {
   public:
-    eMK  m_eDadKind;
-    i8   m_iDadId;
+    eMK  m_eSuperKind;
+    i8   m_iSuperId;
   
     bool m_bLocked;    // true if mutex is locked (debugging)
   
@@ -26,7 +26,7 @@ namespace Resources
     void* operator new(size_t, Mutex* pMutex);
     void operator delete(void* pMutexAddress);
 
-    Mutex(eMK eDadKind, i8 i_DadId);
+    Mutex(eMK eSuperKind, i8 i_SuperId);
    ~Mutex(void) noexcept(false);
   
     static void vMonitorPortrait(s48K& sPortrait);

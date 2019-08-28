@@ -45,10 +45,12 @@ void Lock::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Lock::Lock(eLK eLockKind, bool bNonFocal)
-: Focal(CN_LOCK)
+Lock::Lock(eLK eLockKind, Object* pSuper)
+: Focal(CN_LOCK,AM::iNextLockId())
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
+  m_pSuper = pSuper;
   
   m_uLockWord = 0;
   m_eLockKind = eLockKind;
@@ -63,8 +65,9 @@ Lock::Lock(eLK eLockKind, bool bNonFocal)
   
   ++ gixLock;
   AM::vLogLck(SL_INF,this,LA_LCK_CONSTRUCTOR,
-              "Lock constructed: kind=%s |gixLock=%lld|"_Stz, //!format-LogLck
+              "Lock constructed {super=%s %p} |gixLock=%lld|"_Stz, //!format-LogLck
               aLK[m_eLockKind],
+              m_pSuper,
               * gixLock);
   
   _postcondition_(_MAGIC_,CN_LOCK,_FOOTER_);
@@ -73,11 +76,13 @@ Lock::Lock(eLK eLockKind, bool bNonFocal)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Lock::Lock(eLK eLockKind)
-: Focal(CN_LOCK,AM::iNextLockId())
+Lock::Lock(eLK eLockKind, Object* pSuper, bool bNonFocal)
+: Focal(CN_LOCK)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
+  m_pSuper = pSuper;
+
   m_uLockWord = 0;
   m_eLockKind = eLockKind;
   
@@ -90,11 +95,12 @@ Lock::Lock(eLK eLockKind)
   _checkInitialised_(CN_LOCK);
   
   ++ gixLock;
- AM::vLogLck(SL_INF,this,LA_LCK_CONSTRUCTOR,
-             "Lock constructed: kind=%s |gixLock=%lld|"_Stz, //!format-LogLck
+  AM::vLogLck(SL_INF,this,LA_LCK_CONSTRUCTOR,
+              "Lock constructed {super=%s %p} |gixLock=%lld|"_Stz, //!format-LogLck
               aLK[m_eLockKind],
-             * gixLock);
-
+              m_pSuper,
+              * gixLock);
+  
   _postcondition_(_MAGIC_,CN_LOCK,_FOOTER_);
 }
 
@@ -107,8 +113,10 @@ Lock::~Lock(void) noexcept(false)
   
   -- gixLock;
  AM::vLogLck(SL_INF,this,LA_LCK_DESTRUCTOR,
-              "Lock destructed %s: %p |gixLock=%lld|"_Stz, //!format-LogLck
-              aLK[m_eLockKind],this,* gixLock);
+             "Lock destructed {super=%s %p} |gixLock=%lld|"_Stz, //!format-LogLck
+             aLK[m_eLockKind],
+             m_pSuper,
+             * gixLock);
 }
 
 /*----------------------------------------------------------------------------*/

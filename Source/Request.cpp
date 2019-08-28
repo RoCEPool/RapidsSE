@@ -61,7 +61,7 @@ Request::Request(Session* p_Session, TokenVec* p_TknVec)
   SP_TknVecStr spTknVecStr;
   
   AM::vLogReq(SL_INF,this,MA_REQ_BEGIN,
-              "Request begin : %s"_Stz, //!format-LogReq
+              "Request begin: %s"_Stz, //!format-LogReq
               spTknVecStr.sz(m_p_TknVec));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
