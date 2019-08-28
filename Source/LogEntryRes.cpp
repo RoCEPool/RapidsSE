@@ -12,6 +12,8 @@ void _LogEntryRes::vSet(LogEntry* pLogEntry, Resource* pResource, eRA eResAct)
   pLogEntry->m_eKind = EK_RES;
   
   m_eClass  = pResource->eClass();
+  pLogEntry->m_xReqTuple.vSet(pResource->aReqTuple());
+
   m_iResId  = pResource->m_iUniqueId;
   m_eResAct = eResAct;
 }
