@@ -5,6 +5,11 @@
 
 namespace Logging
 {
+  static Stz* C_ENTRY_FMT_2s = "%s,%20s :: "_Stz;
+  static Stz* C_ENTRY_FMT_3s = "%s,%20s %s :: "_Stz;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   class LogEntry : public Object
   {
   friend class Log;

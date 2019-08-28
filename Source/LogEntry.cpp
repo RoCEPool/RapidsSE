@@ -281,7 +281,7 @@ void LogEntry::vWriteTxt(File* pFile)
       NEVER_REACH;
   }
   
-  pFile->vPrint("}, %s\n"_Stz,m_caNote);
+  pFile->vPrint("%s\n"_Stz,m_caNote);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -289,21 +289,20 @@ void LogEntry::vWriteTxt(File* pFile)
 /*----------------------------------------------------------------------------*/
 void LogEntry::vWriteTxtEntry(File* pFile)
 {
+  SP_Elapsed spElapsed;
+
   if (m_bLine)
     pFile->vPrint("%s\n"_Stz,C_LOG_LINE);
   
-  pFile->vPrint("[%04lld,%04lld], "
-                "(%lld), "
-                "<%s,%lld,%16s,%p>, {"
+  pFile->vPrint("[%04lld,%04lld,%s+%s] "
+                "%16s,%014p,"
                 ""_Stz,
                 
                 m_i_Entry,
                 m_i_Prev,
-                
-                m_iTick,
-                
                 m_caNode,
-                m_iNodeNo,
+                spElapsed.szNsec(m_iTick - AM::iAMTimePoint()),
+
                 aCN[m_eClass],
                 m_pFocal
                 

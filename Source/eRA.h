@@ -29,7 +29,7 @@ enum eRA // resource actions
   /*    */ RA_MTX_SIGNALED,
   /*    */ RA_MTX_TIMEOUT,
   /*    */ RA_MTX_UNLOCKED,
-  /*    */ RA_MTX_WAIT_INDEFINITE,
+  /*    */ RA_MTX_WAIT_INDEF,
   /*    */ RA_MTX_WAIT_TIMED,
 
   /*    */ RA_SKT_ACCEPTED,
@@ -79,7 +79,7 @@ static Stz* aRA[]
   /*    */ "RA_MTX_SIGNALED"_Stz,
   /*    */ "RA_MTX_TIMEOUT"_Stz,
   /*    */ "RA_MTX_UNLOCK"_Stz,
-  /*    */ "RA_MTX_WAIT_INDEFINITE"_Stz,
+  /*    */ "RA_MTX_WAIT_INDEF"_Stz,
   /*    */ "RA_MTX_WAIT_TIMED"_Stz,
 
   /*    */ "RA_SKT_ACCEPTED"_Stz,

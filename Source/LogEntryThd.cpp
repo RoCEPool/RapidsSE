@@ -50,7 +50,7 @@ void _LogEntryThd::vWriteTxt(File* pFile)
 {
   SP_Id spId;
   
-  pFile->vPrint("%s,%s"_Stz,
+  pFile->vPrint(C_ENTRY_FMT_2s,
                 
                 spId.sz(IK_THREAD,m_iThdId),
                 aHA[m_eThdAct]);

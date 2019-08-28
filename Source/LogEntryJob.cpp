@@ -58,7 +58,7 @@ void _LogEntryJob::vWriteTxt(File* pFile)
   SP_Id spId;
   SP_Id spReqId;
   
-  pFile->vPrint("%s,%s,%s"_Stz,
+  pFile->vPrint(C_ENTRY_FMT_3s,
                 
                 spId.sz(IK_JOB,m_iJobId),
                 aJA[m_eJobAct],

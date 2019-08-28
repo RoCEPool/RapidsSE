@@ -268,9 +268,8 @@ void Mutex::vCondWaitIndefinite(void)
   gpAttachMap->m_oStatistics.Mutex.m_nWaits++;
 #endif
   
-  AM::vLogRes(SL_INF,this,RA_MTX_WAIT_INDEFINITE,
-              "Mutex wait : %p"_Stz, //!format-LogRes
-              this);
+  AM::vLogRes(SL_INF,this,RA_MTX_WAIT_INDEF,
+              "Mutex wait indefinite"_Stz); //!format-LogRes
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
