@@ -153,7 +153,7 @@ eOR FetchOp::eOpLoop(void)
       break;
     }
     
-    if ( m_iWorkDone < m_nLimit) {
+    if ( m_nLimit == C_UNKNOWN || m_iWorkDone < m_nLimit) {
       m_iWorkDone += m_pEntBuffer->nItems();
       vPipeOut(m_pEntBuffer);
       m_pEntBuffer = m_pEntBuffer->pNextBuffer();
