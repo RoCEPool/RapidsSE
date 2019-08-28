@@ -54,8 +54,8 @@ void Mutex::operator delete(void* pMutexAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Mutex::Mutex(eMK eDadKind, i8 i_DadId)
-: Resource(CN_MUTEX)
+Mutex::Mutex(eMK eDadKind, i8 i_DadId, ReqTuple* aReqTuple)
+: Resource(CN_MUTEX,aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   

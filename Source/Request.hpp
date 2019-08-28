@@ -25,8 +25,8 @@ namespace Sessions
     Request(Session* p_Session, TokenVec* p_TknVec);
    ~Request(void) noexcept(false);
   
-  public:
-  
+    ReqTuple* aReqTuple(void);
+
   private:
     Footer* aFooter(void);
   };

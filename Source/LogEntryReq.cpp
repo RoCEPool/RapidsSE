@@ -10,7 +10,8 @@
 void _LogEntryReq::vSet(LogEntry* pLogEntry, Request* pRequest, eMA eReqAct)
 {
   pLogEntry->m_eKind = EK_REQ;
-  
+  pLogEntry->m_xReqTuple.vSet(pRequest->aReqTuple());
+
   m_iReqId  = pRequest->m_iUniqueId;
   m_eReqAct = eReqAct;
 }

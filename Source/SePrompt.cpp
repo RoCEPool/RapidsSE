@@ -619,7 +619,7 @@ void SePrompt::vLogCommand(void)
   pTknVec->vToString(sCommand);
   
   AM::vLogPrm(SL_INF,this,PA_PRM_COMMAND,
-              "Request %lld: %s"_Stz, //!format-LogPrm
+              "Command %lld: %s"_Stz, //!format-LogPrm
               m_iCmdNo++,sCommand.aStz());
 }
 

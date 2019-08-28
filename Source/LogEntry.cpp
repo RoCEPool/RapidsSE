@@ -296,7 +296,7 @@ void LogEntry::vWriteTxtEntry(File* pFile)
     pFile->vPrint("%s\n"_Stz,C_LOG_LINE);
   
   pFile->vPrint("[%04lld,%04lld,%s+%s] "
-                "%014p %16s:%3s:"
+                "%014p %16s:%03lld:"
                 ""_Stz,
                 
                 m_i_Entry,
@@ -306,9 +306,9 @@ void LogEntry::vWriteTxtEntry(File* pFile)
 
                 m_pFocal,
                 aCN[m_eClass],
-                "000"_Stz
-
-                );
+                m_xReqTuple.m_iReqId,
+                
+                C_ENDARGS);
 }
 
 /*----------------------------------------------------------------------------*/

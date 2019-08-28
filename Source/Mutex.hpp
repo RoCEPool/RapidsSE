@@ -26,7 +26,7 @@ namespace Resources
     void* operator new(size_t, Mutex* pMutex);
     void operator delete(void* pMutexAddress);
 
-    Mutex(eMK eSuperKind, i8 i_SuperId);
+    Mutex(eMK eSuperKind, i8 i_SuperId, ReqTuple* pReqTuple);
    ~Mutex(void) noexcept(false);
   
     static void vMonitorPortrait(s48K& sPortrait);
