@@ -10,6 +10,7 @@ namespace DataOperators
   {
   private:
   
+    i8       m_nLimit;     
     Operand* m_pOperand[C_MAX_SLOTS];
     i8       m_iOperands;
     

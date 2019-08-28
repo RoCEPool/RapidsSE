@@ -64,6 +64,7 @@ SuperMergeOp::SuperMergeOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, boo
     m_pOperand[i_Index] = nullptr;
   
   m_iOperands = 0;
+  m_nLimit    = C_UNKNOWN;
   
   m_fpCall = SuperMergeOp::eCall;
 }
@@ -92,6 +93,8 @@ Op* SuperMergeOp::pNew(Stz* szLabel,
   SuperMergeOp* pSuperMergeOp = new SuperMergeOp(szLabel,pDigest,aOpDefn,bAppR);
   
   pSuperMergeOp->m_nSlot = i_Slot;
+  if (pTknVec->pGet(i_Tkn_)->bIsInteger())
+    pSuperMergeOp->m_nLimit = pTknVec->pGet(i_Tkn_++)->iToI8();
   
   return pSuperMergeOp;
 }
@@ -258,6 +261,11 @@ SrtBuffer* SuperMergeOp::pSuperMergeOperands(Operand* pOperand1, Operand* pOpera
   i8 iLeftCount = pLeftBuffer->nItemCount();
   i8 iRightCount = pRightBuffer->nItemCount();
   
+  if (m_nLimit != C_UNKNOWN) {
+    iLeftCount  = m_nLimit < iLeftCount  ? m_nLimit : iLeftCount;
+    iRightCount = m_nLimit < iRightCount ? m_nLimit : iRightCount;
+  }
+  
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a left cursor pointing to the first element in the left buffer
   BufferCursor* pLeftCursor = new BufferCursor(pLeftBuffer, 0, 0);
@@ -269,7 +277,6 @@ SrtBuffer* SuperMergeOp::pSuperMergeOperands(Operand* pOperand1, Operand* pOpera
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a new srtBuffer to copy elements after merging
   SrtBuffer* pFirstMergeBuffer  = new SrtBuffer(pLeftBuffer->nRowRefs(), pLeftBuffer->iPartitionNo());
-  i8 iMergeBufferCount = 1;
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // save left and right remaining row refs
@@ -363,12 +370,13 @@ SrtBuffer* SuperMergeOp::pSuperMergeOperands(Operand* pOperand1, Operand* pOpera
   i8 iMergedCount = pFirstMergeBuffer->nItemCount();
   RASSERT(iLeftCount + iRightCount == iMergedCount);
   
-  iMergeBufferCount = pFirstMergeBuffer->nBufferCount();
-  i8 iMagnitude = (i8)log2(iMergeBufferCount);
+  if (AM::bVerbose())
+    vTrace("Super Merged %lld rows\n"_Stz,
+           iMergedCount);
   
   AM::vLogOpr(SL_INF,this,OA_OP_INF,
-              "P:%lld Super Merged Operands generated Mag %lld"_Stz, //!format-LogOpr
-              m_nSlot, iMagnitude);
+              "Super Merged %lld rows"_Stz, //!format-LogOpr
+              iMergedCount);
   
   // delete all left buffers
   SrtBuffer* pBuffer;
