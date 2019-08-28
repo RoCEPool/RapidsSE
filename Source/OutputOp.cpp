@@ -126,8 +126,6 @@ eOR OutputOp::eOpLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
   
-  static i8 iCount = 0;
-  
   for (;;) {
     
     Operand* pOperand = pPopQueue();
@@ -154,7 +152,8 @@ eOR OutputOp::eOpLoop(void)
       // -- -- -- -- -- --
         
       case CN_ENTBUFFER: {
-        EntBuffer* pEntBuffer = _pEntBuffer(pOperand) ;
+        EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
+        m_iWorkDone += pEntBuffer->nItems();
         pEntBuffer->vShow();
         vPipeOut(pOperand);
         break;
@@ -162,6 +161,7 @@ eOR OutputOp::eOpLoop(void)
         
       case CN_INTBUFFER: {
         IntBuffer* pIntBuffer = _pIntBuffer(pOperand) ;
+        m_iWorkDone += pIntBuffer->nCount();
         pIntBuffer->vShow();
         vPipeOut(pOperand);
         break;
@@ -169,7 +169,7 @@ eOR OutputOp::eOpLoop(void)
       
       case CN_IRWBUFFER: {
         IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
-        iCount += pIrwBuffer->nItems();
+        m_iWorkDone += pIrwBuffer->nItems();
         pIrwBuffer->vShow(m_pStreamDef->pColumnVec(0));
         vPipeOut(pOperand);
         break;
@@ -177,14 +177,14 @@ eOR OutputOp::eOpLoop(void)
         
       case CN_REFBUFFER: {
         RefBuffer* pRefBuffer = _pRefBuffer(pOperand) ;
-        iCount += pRefBuffer->nItems();
+        m_iWorkDone += pRefBuffer->nItems();
         vPipeOut(pOperand);
         break;
       }
         
       case CN_SRTBUFFER: {
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
-        iCount += pSrtBuffer->nItems();
+        m_iWorkDone += pSrtBuffer->nItems();
         pSrtBuffer->vShow(m_pStreamDef);
         vPipeOut(pOperand);
         break;
@@ -205,8 +205,7 @@ eOR OutputOp::eOpLoop(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_EXIT:
-  vTrace("Output: %lld rows\n"_Stz, iCount);
-  iCount = 0;
+  vTrace("Output: %lld rows\n"_Stz, m_iWorkDone);
   return OR_EXIT;
 }
 
