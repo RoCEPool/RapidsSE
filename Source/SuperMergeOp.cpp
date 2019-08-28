@@ -145,12 +145,12 @@ SrtBuffer* SuperMergeOp::pMergeAll(void)
     }
     
     if (AM::bVerbose())
-      vTrace("P:%lld MERGING %p %p\n"_Stz,
+      vTrace("P:%lld SUPER MERGING %p %p\n"_Stz,
              m_nSlot, pOperandPair[0], pOperandPair[1]);
     
     // merge the operand set pair
     AM::vLogOpr(SL_INF,this,OA_OP_INF,
-                "P:%lld Merging %p %p"_Stz, //!format-LogOpr
+                "P:%lld Super Merging %p %p"_Stz, //!format-LogOpr
                 m_nSlot, pOperandPair[0], pOperandPair[1]);
     
     pMergedSrtBuffer = pSuperMergeOperands(pOperandPair[0], pOperandPair[1]);
@@ -210,7 +210,7 @@ eOR SuperMergeOp::eMergeLoop(void)
   RASSERT(m_iOperands <=1);
   
   if (AM::bVerbose())
-    vTrace("MERGE PIPING OUT %lld buffer\n"_Stz, pMergedBuffer->nItemCount());
+    vTrace("SUPER MERGE PIPING OUT %lld buffer\n"_Stz, pMergedBuffer->nItemCount());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pipe out merge-sorted buffers
@@ -237,7 +237,7 @@ SrtBuffer* SuperMergeOp::pSuperMergeOperands(Operand* pOperand1, Operand* pOpera
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUPERMERGEOP,_FOOTER_);
 
   if (AM::bVerbose())
-    vTrace("Merging operands %p %p\n"_Stz, pOperand1, pOperand2);
+    vTrace("Super Merging operands %p %p\n"_Stz, pOperand1, pOperand2);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the left buffer
@@ -367,7 +367,7 @@ SrtBuffer* SuperMergeOp::pSuperMergeOperands(Operand* pOperand1, Operand* pOpera
   i8 iMagnitude = (i8)log2(iMergeBufferCount);
   
   AM::vLogOpr(SL_INF,this,OA_OP_INF,
-              "P:%lld Merged Operands generated Mag %lld"_Stz, //!format-LogOpr
+              "P:%lld Super Merged Operands generated Mag %lld"_Stz, //!format-LogOpr
               m_nSlot, iMagnitude);
   
   // delete all left buffers
