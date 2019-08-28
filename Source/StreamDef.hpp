@@ -28,6 +28,7 @@ namespace MetaData
    ~StreamDef(void) noexcept(false);
     
     void vAdd(StreamDef* pStreamDef);
+    ColumnVec* pColumnVec(i8 iIndex);
     
     Footer* aFooter(void);
   };

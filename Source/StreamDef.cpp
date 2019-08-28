@@ -97,6 +97,15 @@ StreamDef::StreamDef(StreamDef* pStreamDef)
 }
 
 /*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+StreamDef::~StreamDef(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* add column vec from stream def                                             */
 /*----------------------------------------------------------------------------*/
 void StreamDef::vAdd(StreamDef* pStreamDef)
@@ -125,22 +134,14 @@ void StreamDef::vAdd(StreamDef* pStreamDef)
 }
 
 /*----------------------------------------------------------------------------*/
-/* destructor                                                                 */
+/* get column vector at index                                                 */
 /*----------------------------------------------------------------------------*/
-StreamDef::~StreamDef(void) noexcept(false)
+ColumnVec* StreamDef::pColumnVec(i8 iIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
-//  for (i8 i_ColumnVec = 0; i_ColumnVec < m_oColVecAry.nItems(); i_ColumnVec++) {
-//   ColumnVec* pColumnVec =  m_oColVecAry.pGet(i_ColumnVec);
-//    for (i8 i_Col = 0; i_Col < pColumnVec->nItems(); i_Col++) {
-//      Column* pColumn = pColumnVec->pGet(i_Col);
-//      delete pColumn;
-//    }
-//  }
-//  m_oColVecAry.vItems(0);
+  return m_oColVecAry.pGet(iIndex);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

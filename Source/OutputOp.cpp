@@ -162,14 +162,15 @@ eOR OutputOp::eOpLoop(void)
         
       case CN_INTBUFFER: {
         IntBuffer* pIntBuffer = _pIntBuffer(pOperand) ;
-        //pIntBuffer->vShow();
+        pIntBuffer->vShow();
         vPipeOut(pOperand);
         break;
       }
       
       case CN_IRWBUFFER: {
         IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
-        pIrwBuffer->vShow(m_pStreamDef->m_oColVecAry.pGet(0));
+        iCount += pIrwBuffer->nItems();
+        pIrwBuffer->vShow(m_pStreamDef->pColumnVec(0));
         vPipeOut(pOperand);
         break;
       }

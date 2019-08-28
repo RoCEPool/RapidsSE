@@ -2,11 +2,14 @@
 /* _lineitemAY - create and load TPC-H LineItem table                         */
 /*============================================================================*/
 
+//markact all on;
+//markres all on;
+
 print "Starting cluster..." ;
 
 startCluster;
 
-//docol epoch take;
+docol epochtake;
 
 print "Cluster started" ;
 
@@ -43,19 +46,21 @@ create index LineItem_Idx1 ON LineItem(L_ORDERKEY);
 //nowait monitor 3;
 
 space;
-//IndexEntries 5;
+IndexEntries 4000;
 
 //fileCat "/tpch/SF0/lineitem_1.csv" 1;
 //time ld lineitem "/tpch/SF0/lineitem_1.csv" max_errors 100;
+time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
+//time ld lineitem "/DATA/TPCH/lineitem10.csv" max_errors 100;
 //time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
-time ld lineitem "/DATA/TPCH/lineitem10.csv" max_errors 100;
-//time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
-//time ld lineitem "/tpch/SF0/lineitem_10k.csv" max_errors 100;
+//time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem_100k.csv" max_errors 100;
 //time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
 space;
 sztbl lineitem;
-fetch lineitem limit 10;
+
+//fetch lineitem limit 10;
+//dumpidx lineitem LineItem_Idx1;
 
 create table orders (
 O_ORDERKEY        INTEGER NOT NULL,
@@ -71,12 +76,47 @@ O_COMMENT         VARCHAR(79) NOT NULL
 CREATE INDEX orders_idx1 ON orders(O_ORDERKEY);
 
 print "loading orders..." ;
-time ld orders "/DATA/tpch/orders10.csv" max_errors 100;
+//time ld orders "/DATA/tpch/orders10.csv" max_errors 100;
+//time ld orders "/DATA/tpch/orders10k.csv" max_errors 100;
+time ld orders "/tpch/SF1/orders.tbl" field_delimiter "|" max_errors 100;
 
-dynamic fetch lineitem LineItem_Idx1 | getKey L_PARTKEY | sort | merge | limit 2 | output | zed;
-//dynamic fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join | getKey L_CUSTKEY | sort | merge | output | zed;
+//time dynamic fetch lineitem LineItem_Idx1 | limit 1 | output | zed;
+//time dynamic fetch lineitem LineItem_Idx1 | getkey L_PARTKEY | sort | merge | limit 1 | output | zed;
+
+//time dynamic fetch orders orders_idx1 | output | zed;
 
 
+//time dynamic fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join | limit 1 | output | zed;
+
+
+
+//time dynamic fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join | getKey O_CUSTKEY | output | zed;
+//time dynamic fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join | getKey O_CUSTKEY | sort | output | zed;
+//time dynamic fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join | getKey O_CUSTKEY | sort | merge | output | zed;
+//time dynamic fetch orders orders_idx1 || fetch lineitem LineItem_Idx1 | join | getKey O_CUSTKEY | sort | merge | limit 1 | output | zed;
+
+
+
+//time dynamic fetch orders orders_idx1 || fetch lineitem LineItem_Idx1 | join | getKey O_CUSTKEY | sort | merge | superMerge 20 | limit 20 | output | zed;
+
+time dynamic fetch orders orders_idx1 | count | output | zed;
+time dynamic fetch lineitem LineItem_Idx1 | count | output | zed;
+//time dynamic fetch orders orders_idx1 1 || fetch lineitem LineItem_Idx1 1 | join | limit 1 | output | zed;
+
+//time dynamic fetch orders orders_idx1 | getKey O_CUSTKEY | sort | merge | superMerge 1 | limit 1 | output | zed;
+
+
+//time dynamic fetch orders orders_idx1 || fetch lineitem LineItem_Idx1 | join  | output | zed;
+//time dynamic fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join  | output | zed;
+
+//time dynamic fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join | getKey O_CUSTKEY | sort | merge | output | zed;
+
+//time dynamic fetch lineitem LineItem_Idx1 | getKey L_PARTKEY | sort | merge | limit 1 | output | zed;
+//logWrite;
+
+//time dynamic fetch lineitem LineItem_Idx1 | getKey L_PARTKEY | sort | merge | limit 2 | output | zed;
+
+/*
 //fileCat "/tpch/SF0/lineitem_1.csv" 1;
 //fileCat "/tpch/SF0/lineitem_10.csv" 10;
 //fileCat "/tpch/SF0/lineitem_100.csv" 10;
@@ -105,12 +145,12 @@ dynamic fetch lineitem LineItem_Idx1 | getKey L_PARTKEY | sort | merge | limit 2
 
 //dynamic fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join | output | zed;
 //dynamic fetch lineitem LineItem_Idx1 | output | zed;
-/*
-logWrite;
 
-drop table lineitem;
-drop table orders;
-docol epochDump;
+//logWrite;
+
+//drop table lineitem;
+//drop table orders;
+//docol epochDump;
 
 time fetch lineitem
   "l_orderKey 2341987 > l_orderKey 443873129 < and"
@@ -121,6 +161,60 @@ time fetch lineitem
   displayOff;
 */
 
+
+/*
+ create table moxe.lineitem (
+ L_ORDERKEY      INTEGER,
+ L_PARTKEY       INTEGER,
+ L_SUPPKEY       INTEGER,
+ L_LINENUMBER    INTEGER,
+ L_QUANTITY      DECIMAL(15,2),
+ L_EXTENDEDPRICE DECIMAL(15,2),
+ L_DISCOUNT      DECIMAL(15,2),
+ L_TAX           DECIMAL(15,2),
+ L_RETURNFLAG    VARCHAR(1),
+ L_LINESTATUS    VARCHAR(1),
+ L_SHIPDATE      TIMESTAMP,
+ L_COMMITDATE    TIMESTAMP,
+ L_RECEIPTDATE   TIMESTAMP,
+ L_SHIPINSTRUCT  VARCHAR(25),
+ L_SHIPMODE      VARCHAR(10),
+ L_COMMENT       VARCHAR(44),
+ index lineitem_idx2 on l_shipdate
+ );
+
+ insert into moxe.lineitem select * from SF1.lineitem;
+ 
+ create table moxe.orders (
+ O_ORDERKEY        INTEGER,
+ O_CUSTKEY         INTEGER,
+ O_ORDERSTATUS     VARCHAR(1),
+ O_TOTALPRICE      DECIMAL(15,2),
+ O_ORDERDATE       TIMESTAMP,
+ O_ORDERPRIORITY   VARCHAR(15),
+ O_CLERK           VARCHAR(15),
+ O_SHIPPRIORITY    INTEGER,
+ O_COMMENT         VARCHAR(79),
+ index orders_idx1 on o_orderdate
+ );
+ 
+insert into moxe.orders select * from SF1.orders;
+ 
+escape connector moxe unload;
+ 
+ 
+ 
+ 
+escape connector moxe reload;
+ 
+select * from moxe.lineitem join moxe.orders on L_ORDERKEY = O_ORDERKEY order by O_CUSTKEY limit 1;
+ 
+ select * from moxe.lineitem join moxe.orders on L_ORDERKEY = O_ORDERKEY order by O_CUSTKEY limit 1;
+ 
+ 
+ select * from moxe.orders join moxe.lineitem on L_ORDERKEY = O_ORDERKEY order by O_CUSTKEY limit 1;
+ select * from moxe.orders join moxe.lineitem on L_ORDERKEY = O_ORDERKEY limit 1;
+ */
 
 /*============================================================================*/
 /* end                                                                        */
