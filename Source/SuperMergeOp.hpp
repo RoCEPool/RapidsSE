@@ -30,8 +30,8 @@ namespace DataOperators
     static eOR eCall(void* aThis);
     
   private:
-    void vMergeDangling(void);
-    eOR  eMergeLoop(void);
+    SrtBuffer* pMergeAll(void);
+    eOR        eMergeLoop(void);
     SrtBuffer* pSuperMergeOperands(Operand* pOperand1, Operand* pOperand2);
   
     Footer* aFooter(void);
