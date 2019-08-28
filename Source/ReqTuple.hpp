@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Sessions
+namespace Focals
 {
   class ReqTuple
   {

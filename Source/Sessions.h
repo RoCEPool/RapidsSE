@@ -17,10 +17,7 @@ namespace Sessions
 #include "Session.hpp"
 #include "SessionState.hpp"
 
-#include "ReqTuple.hpp"
 #include "Request.hpp"
-
-#include "SP_ReqTuple.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

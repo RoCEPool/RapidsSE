@@ -27,6 +27,7 @@ namespace Esses         { template <int SPACE> class String_t;
                           typedef String_t<C_1M>   s1M;   // note this is 1M not 1MB
                           typedef String_t<C_4K>   sVCH;
                                                                               }
+namespace Focals        {                                                     }
 namespace Forth         { class Cell; class Dic; class ForthWord;             }
 namespace Gadgets       { class EnumFlags;                                    }
 namespace Grids         { class Grid; class Node;                             }
@@ -83,6 +84,7 @@ using namespace DataOperators;
 using namespace Debugging;
 using namespace Enums;
 using namespace Esses;
+using namespace Focals;
 using namespace Forth;
 using namespace Gadgets;
 using namespace Grids;
