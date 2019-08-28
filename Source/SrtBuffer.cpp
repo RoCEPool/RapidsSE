@@ -91,10 +91,10 @@ SrtSet* SrtBuffer::aAllotSrtSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
   
-//  if (AM::nIndexEntries() > 0) {
-//    if (nItems() == AM::nIndexEntries())
-//      return nullptr;
-//  }
+  if (AM::nIndexEntries() > 0) {
+    if (nItems() == AM::nIndexEntries())
+      return nullptr;
+  }
   
   // allot using bytes as we don't know the size of the item
   byte* aySrtSet = ayAllotBytes(m_nSrtSetBytes);

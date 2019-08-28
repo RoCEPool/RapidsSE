@@ -226,16 +226,17 @@ eOR MergeOp::eMergeLoop(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pipe out merge-sorted buffers
-  if (pMergedBuffer) {
-    SrtBuffer* pSrtBuffer = pMergedBuffer;
-    while (pSrtBuffer) {
-      vPipeOut(pSrtBuffer);
-      pSrtBuffer = pSrtBuffer->pNextBuffer();
-    }
-    
-    if (AM::bVerbose())
-      vTrace("MERGE PIPED OUT %lld buffer\n"_Stz, pMergedBuffer->nItemCount());
-  }
+  //  if (pMergedBuffer) {
+  //    SrtBuffer* pSrtBuffer = pMergedBuffer;
+  //    while (pSrtBuffer) {
+  //      vPipeOut(pSrtBuffer);
+  //      pSrtBuffer = pSrtBuffer->pNextBuffer();
+  //    }
+  //
+  //    if (AM::bVerbose())
+  //      vTrace("MERGE PIPED OUT %lld buffer\n"_Stz, pMergedBuffer->nItemCount());
+  //  }
+  vPipeOut(pMergedBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pipe out an end marker
