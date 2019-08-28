@@ -37,7 +37,7 @@ void _LogEntryJob::vOutline(s4K& sOutline)
 /*----------------------------------------------------------------------------*/
 /* write to csv file                                                          */
 /*----------------------------------------------------------------------------*/
-void _LogEntryJob::vWriteCsv(File* pFile)
+void _LogEntryJob::vWriteCsv(File* pFile, LogEntry* pEntry)
 {
   SP_Id spId;
   SP_Id spReqId;
@@ -53,7 +53,7 @@ void _LogEntryJob::vWriteCsv(File* pFile)
 /*----------------------------------------------------------------------------*/
 /* write to text file                                                         */
 /*----------------------------------------------------------------------------*/
-void _LogEntryJob::vWriteTxt(File* pFile)
+void _LogEntryJob::vWriteTxt(File* pFile, LogEntry* pEntry)
 {
   SP_Id spId;
   SP_Id spReqId;

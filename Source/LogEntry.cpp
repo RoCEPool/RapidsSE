@@ -197,21 +197,21 @@ void LogEntry::vWriteCsv(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
   vWriteCsvEntry(pFile,iEntryDeltaUsec,iTotalDeltaUsec);
   
   switch (m_eKind) {
-    case EK_FYI: m_xFyi.vWriteCsv(pFile); break;
-    case EK_JOB: m_xJob.vWriteCsv(pFile); break;
-    case EK_LCK: m_xLck.vWriteCsv(pFile); break;
-    case EK_LOG: m_xLog.vWriteCsv(pFile); break;
-    case EK_OPR: m_xOpr.vWriteCsv(pFile); break;
-    case EK_PRM: m_xPrm.vWriteCsv(pFile); break;
-    case EK_QUE: m_xQue.vWriteCsv(pFile); break;
-    case EK_REQ: m_xReq.vWriteCsv(pFile); break;
-    case EK_RES: m_xRes.vWriteCsv(pFile); break;
-    case EK_SSN: m_xSsn.vWriteCsv(pFile); break;
-    case EK_SVC: m_xSvc.vWriteCsv(pFile); break;
-    case EK_SYS: m_xSys.vWriteCsv(pFile); break;
-    case EK_TSK: m_xTsk.vWriteCsv(pFile); break;
-    case EK_THD: m_xThd.vWriteCsv(pFile); break;
-    case EK_TXN: m_xTxn.vWriteCsv(pFile); break;
+    case EK_FYI: m_xFyi.vWriteCsv(pFile,this); break;
+    case EK_JOB: m_xJob.vWriteCsv(pFile,this); break;
+    case EK_LCK: m_xLck.vWriteCsv(pFile,this); break;
+    case EK_LOG: m_xLog.vWriteCsv(pFile,this); break;
+    case EK_OPR: m_xOpr.vWriteCsv(pFile,this); break;
+    case EK_PRM: m_xPrm.vWriteCsv(pFile,this); break;
+    case EK_QUE: m_xQue.vWriteCsv(pFile,this); break;
+    case EK_REQ: m_xReq.vWriteCsv(pFile,this); break;
+    case EK_RES: m_xRes.vWriteCsv(pFile,this); break;
+    case EK_SSN: m_xSsn.vWriteCsv(pFile,this); break;
+    case EK_SVC: m_xSvc.vWriteCsv(pFile,this); break;
+    case EK_SYS: m_xSys.vWriteCsv(pFile,this); break;
+    case EK_TSK: m_xTsk.vWriteCsv(pFile,this); break;
+    case EK_THD: m_xThd.vWriteCsv(pFile,this); break;
+    case EK_TXN: m_xTxn.vWriteCsv(pFile,this); break;
     default:
       NEVER_REACH;
   }
@@ -262,21 +262,21 @@ void LogEntry::vWriteTxt(File* pFile)
   vWriteTxtEntry(pFile);
   
   switch (m_eKind) {
-    case EK_FYI: m_xFyi.vWriteTxt(pFile); break;
-    case EK_JOB: m_xJob.vWriteTxt(pFile); break;
-    case EK_LCK: m_xLck.vWriteTxt(pFile); break;
-    case EK_LOG: m_xLog.vWriteTxt(pFile); break;
-    case EK_OPR: m_xOpr.vWriteTxt(pFile); break;
-    case EK_PRM: m_xPrm.vWriteTxt(pFile); break;
-    case EK_QUE: m_xQue.vWriteTxt(pFile); break;
-    case EK_REQ: m_xReq.vWriteTxt(pFile); break;
-    case EK_RES: m_xRes.vWriteTxt(pFile); break;
-    case EK_SSN: m_xSsn.vWriteTxt(pFile); break;
-    case EK_SVC: m_xSvc.vWriteTxt(pFile); break;
-    case EK_SYS: m_xSys.vWriteTxt(pFile); break;
-    case EK_TSK: m_xTsk.vWriteTxt(pFile); break;
-    case EK_THD: m_xThd.vWriteTxt(pFile); break;
-    case EK_TXN: m_xTxn.vWriteTxt(pFile); break;
+    case EK_FYI: m_xFyi.vWriteTxt(pFile,this); break;
+    case EK_JOB: m_xJob.vWriteTxt(pFile,this); break;
+    case EK_LCK: m_xLck.vWriteTxt(pFile,this); break;
+    case EK_LOG: m_xLog.vWriteTxt(pFile,this); break;
+    case EK_OPR: m_xOpr.vWriteTxt(pFile,this); break;
+    case EK_PRM: m_xPrm.vWriteTxt(pFile,this); break;
+    case EK_QUE: m_xQue.vWriteTxt(pFile,this); break;
+    case EK_REQ: m_xReq.vWriteTxt(pFile,this); break;
+    case EK_RES: m_xRes.vWriteTxt(pFile,this); break;
+    case EK_SSN: m_xSsn.vWriteTxt(pFile,this); break;
+    case EK_SVC: m_xSvc.vWriteTxt(pFile,this); break;
+    case EK_SYS: m_xSys.vWriteTxt(pFile,this); break;
+    case EK_TSK: m_xTsk.vWriteTxt(pFile,this); break;
+    case EK_THD: m_xThd.vWriteTxt(pFile,this); break;
+    case EK_TXN: m_xTxn.vWriteTxt(pFile,this); break;
     default:
       NEVER_REACH;
   }

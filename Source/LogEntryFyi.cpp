@@ -22,14 +22,14 @@ void _LogEntryFyi::vOutline(s4K& sOutline)
 /*----------------------------------------------------------------------------*/
 /* write to csv file                                                          */
 /*----------------------------------------------------------------------------*/
-void _LogEntryFyi::vWriteCsv(File* pFile)
+void _LogEntryFyi::vWriteCsv(File* pFile, LogEntry* pEntry)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /* write to text file                                                         */
 /*----------------------------------------------------------------------------*/
-void _LogEntryFyi::vWriteTxt(File* pFile)
+void _LogEntryFyi::vWriteTxt(File* pFile, LogEntry* pEntry)
 {
 }
 

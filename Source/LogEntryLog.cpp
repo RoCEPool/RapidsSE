@@ -33,7 +33,7 @@ void _LogEntryLog::vOutline(s4K& sOutline)
 /*----------------------------------------------------------------------------*/
 /* write to csv file                                                          */
 /*----------------------------------------------------------------------------*/
-void _LogEntryLog::vWriteCsv(File* pFile)
+void _LogEntryLog::vWriteCsv(File* pFile, LogEntry* pEntry)
 {
   SP_Id spId;
   
@@ -46,7 +46,7 @@ void _LogEntryLog::vWriteCsv(File* pFile)
 /*----------------------------------------------------------------------------*/
 /* write to text file                                                         */
 /*----------------------------------------------------------------------------*/
-void _LogEntryLog::vWriteTxt(File* pFile)
+void _LogEntryLog::vWriteTxt(File* pFile, LogEntry* pEntry)
 {
   SP_Id spId;
   
