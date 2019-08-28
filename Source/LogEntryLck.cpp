@@ -52,8 +52,9 @@ void _LogEntryLck::vWriteTxt(File* pFile, LogEntry* pEntry)
   
   pFile->vPrint(C_ENTRY_FMT_2s,
                 
-                spId.sz(IK_LOCK,m_iLckId),
-                aLA[m_eLckAct]);
+                aLA[m_eLckAct],
+                spId.sz(IK_LOCK,m_iLckId)
+                );
 }
 
 /*============================================================================*/

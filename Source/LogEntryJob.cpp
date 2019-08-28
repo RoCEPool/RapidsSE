@@ -60,8 +60,8 @@ void _LogEntryJob::vWriteTxt(File* pFile, LogEntry* pEntry)
   
   pFile->vPrint(C_ENTRY_FMT_3s,
                 
-                spId.sz(IK_JOB,m_iJobId),
                 aJA[m_eJobAct],
+                spId.sz(IK_JOB,m_iJobId),
                 spReqId.sz(IK_REQUEST,m_iReqId)
                 );
 }

@@ -52,8 +52,9 @@ void _LogEntrySys::vWriteTxt(File* pFile, LogEntry* pEntry)
   
   pFile->vPrint(C_ENTRY_FMT_2s,
                 
-                spId.sz(IK_SYSTEM,m_iSysId),
-                aYA[m_eSysAct]);
+                aYA[m_eSysAct],
+                spId.sz(IK_SYSTEM,m_iSysId)
+                );
 }
 
 /*============================================================================*/

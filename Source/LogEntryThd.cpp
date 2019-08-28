@@ -52,8 +52,9 @@ void _LogEntryThd::vWriteTxt(File* pFile, LogEntry* pEntry)
   
   pFile->vPrint(C_ENTRY_FMT_2s,
                 
-                spId.sz(IK_THREAD,m_iThdId),
-                aHA[m_eThdAct]);
+                aHA[m_eThdAct],
+                spId.sz(IK_THREAD,m_iThdId)
+                );
 }
 
 /*============================================================================*/

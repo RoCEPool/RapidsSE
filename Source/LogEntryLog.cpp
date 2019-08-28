@@ -52,8 +52,9 @@ void _LogEntryLog::vWriteTxt(File* pFile, LogEntry* pEntry)
   
   pFile->vPrint(C_ENTRY_FMT_2s,
                 
-                spId.sz(IK_LOG,m_iLogId),
-                aGA[m_eLogAct]);
+                aGA[m_eLogAct],
+                spId.sz(IK_LOG,m_iLogId)
+                );
 }
 
 /*============================================================================*/

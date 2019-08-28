@@ -53,8 +53,9 @@ void _LogEntryRes::vWriteTxt(File* pFile, LogEntry* pEntry)
   
   pFile->vPrint(C_ENTRY_FMT_2s,
                 
-                spId.sz(IK_RESOURCE,m_iResId),
-                aRA[m_eResAct]);
+                aRA[m_eResAct],
+                spId.sz(IK_RESOURCE,m_iResId)
+                );
 }
 
 /*============================================================================*/

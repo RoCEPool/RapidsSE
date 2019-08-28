@@ -52,8 +52,9 @@ void _LogEntryTsk::vWriteTxt(File* pFile, LogEntry* pEntry)
   
   pFile->vPrint(C_ENTRY_FMT_2s,
                 
-                spId.sz(IK_TASK,m_iTskId),
-                aTA[m_eTskAct]);
+                aTA[m_eTskAct],
+                spId.sz(IK_TASK,m_iTskId)
+                );
 }
 
 /*============================================================================*/

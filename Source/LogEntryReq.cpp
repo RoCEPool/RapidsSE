@@ -52,8 +52,9 @@ void _LogEntryReq::vWriteTxt(File* pFile, LogEntry* pEntry)
   
   pFile->vPrint(C_ENTRY_FMT_2s,
                 
-                spId.sz(IK_REQUEST,m_iReqId),
-                aMA[m_eReqAct]);
+                aMA[m_eReqAct],
+                spId.sz(IK_REQUEST,m_iReqId)
+                );
 }
 
 /*============================================================================*/
