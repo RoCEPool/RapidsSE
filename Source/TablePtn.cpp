@@ -93,7 +93,7 @@ void TablePtn::operator delete(void* pBufferAddress)
 /*----------------------------------------------------------------------------*/
 TablePtn::TablePtn(void)
 : Object(CN_TABLEPTN)
-, m_okLock(LK_PARTITION)
+, m_okLock(LK_PARTITION,0)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   

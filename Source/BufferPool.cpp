@@ -34,7 +34,7 @@ BufferPool::BufferPool(Stz* aRegionName, i8 iRegionSize, i8 iJumboTook,
                        bool bTouch, bool bProgress,
                        bool bDontFree, bool bFreeCB)
 : Object(CN_BUFFERPOOL)
-, m_okLock(LK_BUFFER_POOL,C_NONFOCAL)
+, m_okLock(LK_BUFFER_POOL,0,C_NONFOCAL)
 {
   gpBufferPool = this;
   

@@ -48,8 +48,8 @@ void AttachMap::operator delete(void* pAttachMapAddress)
 /*----------------------------------------------------------------------------*/
 AttachMap::AttachMap(void)
 : Focal(CN_ATTACHMAP,0)
-, m_okDdlLock(LK_DDL)
-, m_okDicLock(LK_DIC)
+, m_okDdlLock(LK_DDL,0)
+, m_okDicLock(LK_DIC,0)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP);
   

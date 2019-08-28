@@ -13,6 +13,8 @@ namespace Locking
   class Lock : public Focal
   {
   private:
+    Object* m_pSuper;
+  
     u8     m_uLockWord;        // lock word
     eLK    m_eLockKind;        // lock kind
   
@@ -29,8 +31,8 @@ namespace Locking
     void* operator new(size_t, Lock* pLock);
     void  operator delete(void* pLockAddress);
     
-    Lock(eLK eLockKind);
-    Lock(eLK eLockKind, bool bNonFocal);
+    Lock(eLK eLockKind, Object* pSuper);
+    Lock(eLK eLockKind, Object* pSuper, bool bNonFocal);
    ~Lock(void) noexcept(false);
   
   private:

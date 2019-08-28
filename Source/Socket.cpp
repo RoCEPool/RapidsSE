@@ -53,7 +53,7 @@ void Socket::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 Socket::Socket(void)
 : Resource(CN_SOCKET)
-, m_okLock(LK_SOCKET)
+, m_okLock(LK_SOCKET,0)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
@@ -68,7 +68,7 @@ Socket::Socket(void)
   
   ++ gixSocket;
   AM::vLogRes(SL_INF,this,RA_SKT_CONSTRUCTOR,
-              "Socket constructed : %p (%lld sockets exist)"_Stz, //!format-LogRes
+              "Socket constructed : %p |gixSocket=%lld|"_Stz, //!format-LogRes
               this,* gixSocket);
 
   _postcondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
@@ -79,7 +79,7 @@ Socket::Socket(void)
 /*----------------------------------------------------------------------------*/
 Socket::Socket(int iSocketId)
 : Resource(CN_SOCKET)
-, m_okLock(LK_SOCKET)
+, m_okLock(LK_SOCKET,0)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
@@ -90,7 +90,7 @@ Socket::Socket(int iSocketId)
   
   ++ gixSocket;
   AM::vLogRes(SL_INF,this,RA_SKT_CONSTRUCTOR,
-              "Socket constructed : %p (%lld sockets exist)"_Stz, //!format-LogRes
+              "Socket constructed : %p |gixSocket=%lld|"_Stz, //!format-LogRes
               this,* gixSocket);
   
   _postcondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
@@ -111,7 +111,7 @@ Socket::~Socket(void) noexcept(false)
   
   -- gixSocket;
   AM::vLogRes(SL_INF,this,RA_SKT_DESTRUCTOR,
-              "Socket destructed : %p (%lld sockets exist)"_Stz, //!format-LogRes
+              "Socket destructed : %p |gixSocket=%lld|"_Stz, //!format-LogRes
               this,* gixSocket);
 }
 

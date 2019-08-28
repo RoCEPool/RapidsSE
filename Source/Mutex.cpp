@@ -59,8 +59,8 @@ Mutex::Mutex(eMK eDadKind, i8 i_DadId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
-  m_eDadKind = eDadKind;
-  m_iDadId  = i_DadId;
+  m_eSuperKind = eDadKind;
+  m_iSuperId  = i_DadId;
   
   m_bLocked  = false;
 
@@ -109,9 +109,9 @@ Mutex::Mutex(eMK eDadKind, i8 i_DadId)
   ++ gixMutex;
   SP_Id spId;
   AM::vLogRes(SL_INF,this,RA_MTX_CONSTRUCTOR,
-              "Mutex constructed {dad %s %s} |gixMutex=%lld|"_Stz, //!format-LogRes
-              aMK[m_eDadKind],
-              spId.sz(m_iDadId),
+              "Mutex constructed {super: %s %s} |gixMutex=%lld|"_Stz, //!format-LogRes
+              aMK[m_eSuperKind],
+              spId.sz(m_iSuperId),
               * gixMutex);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
@@ -145,9 +145,9 @@ Mutex::~Mutex(void) noexcept(false)
   -- gixMutex;
   SP_Id spId;
   AM::vLogRes(SL_INF,this,RA_MTX_DESTRUCTOR,
-              "Mutex destructed {dad %s %s} |gixMutex=%lld|"_Stz, //!format-LogRes
-              aMK[m_eDadKind],
-              spId.sz(m_iDadId),
+              "Mutex destructed {super: %s %s} |gixMutex=%lld|"_Stz, //!format-LogRes
+              aMK[m_eSuperKind],
+              spId.sz(m_iSuperId),
               * gixMutex);
 }
 
