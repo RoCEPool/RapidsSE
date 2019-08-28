@@ -57,7 +57,7 @@ void Now::vSetNow(void)
   m_wTsp.xTsp.m_uMicro     = 0;
   
   StrLib::vSprint(m_caResult,
-                  (Stz*)F_TSP,
+                  (Stz*)F_NOW,
                   
                   (i8)m_wTsp.xTsp.m_uYearDelta + C_YEAR_BASE,
                   (i8)m_wTsp.xTsp.m_uMonth,
@@ -98,7 +98,7 @@ void Now::vSetNowUTC(void)
   m_wTsp.xTsp.m_uMicro     = 0;
   
   StrLib::vSprint(m_caResult,
-                  (Stz*)F_TSP,
+                  (Stz*)F_NOW,
                   
                   (i8)m_wTsp.xTsp.m_uYearDelta + C_YEAR_BASE,
                   (i8)m_wTsp.xTsp.m_uMonth,
@@ -133,7 +133,7 @@ Stz* Now::sz(Dtm* pTsp)
   _precondition_(_MAGIC_,CN_NOW,_FOOTER_);
   
   StrLib::vSprint(m_caResult,
-                  (Stz*)F_TSP,
+                  (Stz*)F_NOW,
                   
                   (i8)pTsp->xTsp.m_uYearDelta + C_YEAR_BASE,
                   (i8)pTsp->xTsp.m_uMonth,
@@ -159,16 +159,7 @@ i8 Now::iTsp(void)
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* Now::aFooter(void)
-{
-  _precondition_(_MAGIC_,CN_NOW);
-  
-  return &m_xFooter;
-}
+__aFooterFunction(Now)
 
 /*============================================================================*/
 /* end                                                                        */

@@ -109,7 +109,7 @@ Mutex::Mutex(eMK eDadKind, i8 i_DadId)
   ++ gixMutex;
   SP_Id spId;
   AM::vLogRes(SL_INF,this,RA_MTX_CONSTRUCTOR,
-              "Mutex constructed : Dad %s %s (%lld mutexs exist)"_Stz, //!format-LogRes
+              "Mutex constructed {dad %s %s} |gixMutex=%lld|"_Stz, //!format-LogRes
               aMK[m_eDadKind],
               spId.sz(m_iDadId),
               * gixMutex);
@@ -145,7 +145,7 @@ Mutex::~Mutex(void) noexcept(false)
   -- gixMutex;
   SP_Id spId;
   AM::vLogRes(SL_INF,this,RA_MTX_DESTRUCTOR,
-              "Mutex destructed : Dad %s %s (%lld mutexs exist)"_Stz, //!format-LogRes
+              "Mutex destructed {dad %s %s} |gixMutex=%lld|"_Stz, //!format-LogRes
               aMK[m_eDadKind],
               spId.sz(m_iDadId),
               * gixMutex);

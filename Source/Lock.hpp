@@ -30,7 +30,7 @@ namespace Locking
     void  operator delete(void* pLockAddress);
     
     Lock(eLK eLockKind);
-    Lock(eLK eLockKind, i8 iNonFocal);
+    Lock(eLK eLockKind, bool bNonFocal);
    ~Lock(void) noexcept(false);
   
   private:

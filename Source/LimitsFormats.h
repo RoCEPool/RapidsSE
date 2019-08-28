@@ -50,6 +50,9 @@ static const Stz* F_TSP_frac  = "TIMESTAMP '%02lld-%02lld-%02lld %02lld:%02lld:%
 
 static const Stz* F_VCH_enclose = "'"_Stz;
 
+static const Stz* F_NOW       = "%02lld-%02lld-%02lld %02lld:%02lld:%02lld"_Stz;
+
+
 static Stz* C_DATE_FORMAT          = "date_format"_Stz;
 static Stz* C_ENCLOSED_BY_LEADING  = "enclosed_by_leading"_Stz;
 static Stz* C_ENCLOSED_BY_TRAILING = "enclosed_by_trailing"_Stz;
