@@ -149,6 +149,10 @@ eOR LimitOp::eOpLoop(void)
         
       case CN_ENDMARKER:
         if (--m_nLeftEndMarkers == 0) {
+          if (m_pSrtBuffer) {
+            vPipeOut(m_pSrtBuffer);
+            m_pSrtBuffer = nullptr;
+          }
           vPipeOut(pOperand);
           goto L_EXIT;
         }
