@@ -62,7 +62,7 @@ LimitOp::LimitOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   
   m_fpCall = LimitOp::eCall;
 
-  m_nLimit     = 0;
+  m_nLimit     = C_UNKNOWN;
   m_pSrtBuffer = nullptr;
   
   _checkInitialised_(CN_LIMITOP);
