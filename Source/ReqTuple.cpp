@@ -23,19 +23,7 @@ void* ReqTuple::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 ReqTuple::ReqTuple(ReqTuple* aReqTuple)
 {
-  if (aReqTuple) {
-    m_iReqId     = aReqTuple->m_iReqId;
-    m_i_State    = aReqTuple->m_i_State;
-    m_bMarkTrace = aReqTuple->m_bMarkTrace;
-    m_bLogJob    = aReqTuple->m_bLogJob;
-    
-    return;
-  }
-
-  m_iReqId     = C_UNKNOWN;
-  m_i_State    = C_UNKNOWN;
-  m_bMarkTrace = false;
-  m_bLogJob    = false;
+  vSet(aReqTuple);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -44,6 +32,27 @@ ReqTuple::ReqTuple(ReqTuple* aReqTuple)
 ReqTuple::~ReqTuple(void) noexcept(false)
 {
 }
+
+/*----------------------------------------------------------------------------*/
+/* set                                                                        */
+/*----------------------------------------------------------------------------*/
+void ReqTuple::vSet(ReqTuple* aReqTuple)
+{
+  if (aReqTuple) {
+    m_iReqId     = aReqTuple->m_iReqId;
+    m_i_State    = aReqTuple->m_i_State;
+    m_bMarkTrace = aReqTuple->m_bMarkTrace;
+    m_bLogJob    = aReqTuple->m_bLogJob;
+    
+    return;
+  }
+  
+  m_iReqId     = C_UNKNOWN;
+  m_i_State    = C_UNKNOWN;
+  m_bMarkTrace = false;
+  m_bLogJob    = false;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

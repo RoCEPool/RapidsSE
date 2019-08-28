@@ -45,6 +45,7 @@ void LogEntry::operator delete(void* pDataAddress)
 /*----------------------------------------------------------------------------*/
 LogEntry::LogEntry(void)
 : Object(CN_LOGENTRY)
+, m_xReqTuple(nullptr)
 {
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   

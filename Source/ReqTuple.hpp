@@ -18,6 +18,8 @@ namespace Sessions
   
     ReqTuple(ReqTuple* aReqTuple);
    ~ReqTuple(void) noexcept(false);
+
+    void vSet(ReqTuple* aReqTuple);
   };
 }
 

@@ -43,6 +43,8 @@ namespace Logging
     Focal* m_pFocal;   // object
     i8   m_i_Focal;    // focal lattice subscript
   
+    ReqTuple m_xReqTuple;
+  
     eSL  m_eSeverity;  // severity level
   
     bool m_bLine;      // draw line before?
