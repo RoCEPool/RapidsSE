@@ -185,6 +185,39 @@ eOR LimitOp::eOpLoop(void)
 //        }
         RASSERT(0);
         break;
+      
+      case CN_ENTBUFFER: {
+        EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
+        
+        // are we done ?
+        if (bLimitDone()) {
+          break;
+        }
+        
+        // do we have a buffer ?
+        if ( ! m_pSrtBuffer ) {
+          m_pSrtBuffer = new SrtBuffer(1, -1);
+        }
+        
+        //copy limit no of rows from srtBuffer
+        Ent* pEnt = pEntBuffer->aLeadEntry();
+        while (pEnt && m_iWorkDone < m_nLimit) {
+          SrtSet* aSrt = m_pSrtBuffer->aAllotSrtSet();
+          
+          if ( ! aSrt ) {
+            vPipeOut(m_pSrtBuffer);
+            m_pSrtBuffer = new SrtBuffer(1, -1);
+            aSrt = m_pSrtBuffer->aAllotSrtSet();
+          }
+          CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(pEnt->xRef());
+          Crw* aRowData = pCrwBuffer->pCrw(pEnt->xRef().iItem());
+          aSrt->vRowRef(0, (i8)aRowData);
+          pEnt = pEntBuffer->aGetNextEntry(&pEntBuffer, pEnt);
+          m_iWorkDone++;
+        }
+      
+        break;
+      }
         
       case CN_SRTBUFFER: {
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
