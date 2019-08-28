@@ -45,7 +45,7 @@ void Lock::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Lock::Lock(eLK eLockKind, i8 NonFocal)
+Lock::Lock(eLK eLockKind, bool bNonFocal)
 : Focal(CN_LOCK)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
@@ -63,8 +63,9 @@ Lock::Lock(eLK eLockKind, i8 NonFocal)
   
   ++ gixLock;
   AM::vLogLck(SL_INF,this,LA_LCK_CONSTRUCTOR,
-              "Lock constructed %s : %p |gixLock=%lld|"_Stz, //!format-LogLck
-              aLK[m_eLockKind],this,* gixLock);
+              "Lock constructed: kind=%s |gixLock=%lld|"_Stz, //!format-LogLck
+              aLK[m_eLockKind],
+              * gixLock);
   
   _postcondition_(_MAGIC_,CN_LOCK,_FOOTER_);
 }
@@ -90,8 +91,9 @@ Lock::Lock(eLK eLockKind)
   
   ++ gixLock;
  AM::vLogLck(SL_INF,this,LA_LCK_CONSTRUCTOR,
-              "Lock constructed %s: %p |gixLock=%lld|"_Stz, //!format-LogLck
-              aLK[m_eLockKind],this,* gixLock);
+             "Lock constructed: kind=%s |gixLock=%lld|"_Stz, //!format-LogLck
+              aLK[m_eLockKind],
+             * gixLock);
 
   _postcondition_(_MAGIC_,CN_LOCK,_FOOTER_);
 }
