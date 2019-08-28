@@ -67,6 +67,7 @@ FetchOp::FetchOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   m_pTablePtn  = nullptr;
   m_pEntBuffer = nullptr;
   m_bRunPrelim = true;
+  m_nLimit     = C_UNKNOWN;
   
   _checkInitialised_(CN_FETCHOP);
 
@@ -105,6 +106,9 @@ Op* FetchOp::pNew(Stz* szLabel,
   pFetchOp->m_sArgs = pFetchOp->m_sTableNm;
   pFetchOp->m_sArgs.vConcat(" "_Stz);
   pFetchOp->m_sArgs.vConcat(pFetchOp->m_sIndexNm);
+  
+  if (pTknVec->pGet(i_Tkn_)->bIsInteger())
+    pFetchOp->m_nLimit = pTknVec->pGet(i_Tkn_++)->iToI8();
   
   return pFetchOp;
 }
@@ -149,11 +153,14 @@ eOR FetchOp::eOpLoop(void)
       break;
     }
     
-    vPipeOut(m_pEntBuffer);
-    
-    vIncWorkDone();
-    
-    m_pEntBuffer = m_pEntBuffer->pNextBuffer();
+    if ( m_iWorkDone < m_nLimit) {
+      m_iWorkDone += m_pEntBuffer->nItems();
+      vPipeOut(m_pEntBuffer);
+      m_pEntBuffer = m_pEntBuffer->pNextBuffer();
+    }
+    else {
+      m_pEntBuffer = nullptr;
+    }
     
 #ifdef WITH_PULSING
     if (bPause()) {

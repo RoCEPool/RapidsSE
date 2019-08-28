@@ -14,6 +14,7 @@ namespace DataOperators
     Index*     m_pIndex;
     TablePtn*  m_pTablePtn;
     EntBuffer* m_pEntBuffer;
+    i8         m_nLimit;     
     
     bool       m_bRunPrelim;
   
