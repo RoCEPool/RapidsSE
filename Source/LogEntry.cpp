@@ -295,7 +295,7 @@ void LogEntry::vWriteTxtEntry(File* pFile)
     pFile->vPrint("%s\n"_Stz,C_LOG_LINE);
   
   pFile->vPrint("[%04lld,%04lld,%s+%s] "
-                "%16s,%014p,"
+                "%014p %16s:%3s:"
                 ""_Stz,
                 
                 m_i_Entry,
@@ -303,9 +303,10 @@ void LogEntry::vWriteTxtEntry(File* pFile)
                 m_caNode,
                 spElapsed.szNsec(m_iTick - AM::iAMTimePoint()),
 
+                m_pFocal,
                 aCN[m_eClass],
-                m_pFocal
-                
+                "000"_Stz
+
                 );
 }
 
