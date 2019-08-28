@@ -96,8 +96,8 @@ Job::Job(eCN eClassNo, Session* pSession, ReqTuple* aReqTuple)
   
   ++ gixJob;
   AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCTOR,
-              "Job constructed : %p (%lld jobs exist)"_Stz, //!format-LogJob
-              this,* gixJob);
+              "Job constructed |gixJob=%lld|"_Stz, //!format-LogJob
+              * gixJob);
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
 }
@@ -113,10 +113,17 @@ Job::~Job(void) noexcept(false)
   
   delete m_pJobMutex;
   
-  -- gixJob;
-  AM::vLogJob(SL_INF,this,JA_JOB_DESTRUCTOR,
-              "Job destructed : %p (%lld jobs exist)"_Stz, //!format-LogJob
-              this,* gixJob);
+  if (m_bWasReceived) {
+    AM::vLogJob(SL_INF,this,JA_JOB_DESTRUCTOR,
+                "Job destructed (was-received) |gixJob=%lld|"_Stz, //!format-LogJob
+                * gixJob);
+  }
+  else {
+    -- gixJob;
+    AM::vLogJob(SL_INF,this,JA_JOB_DESTRUCTOR,
+                "Job destructed |gixJob=%lld|"_Stz, //!format-LogJob
+                * gixJob);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
