@@ -62,7 +62,7 @@ LimitOp::LimitOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   
   m_fpCall = LimitOp::eCall;
 
-  m_nLimit     = 0;
+  m_nLimit     = C_UNKNOWN;
   m_pSrtBuffer = nullptr;
   
   _checkInitialised_(CN_LIMITOP);
@@ -149,6 +149,10 @@ eOR LimitOp::eOpLoop(void)
         
       case CN_ENDMARKER:
         if (--m_nLeftEndMarkers == 0) {
+          if (m_pSrtBuffer) {
+            vPipeOut(m_pSrtBuffer);
+            m_pSrtBuffer = nullptr;
+          }
           vPipeOut(pOperand);
           goto L_EXIT;
         }

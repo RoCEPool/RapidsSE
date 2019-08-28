@@ -10,7 +10,8 @@ namespace DataOperators
   {
   private:
   
-    Operand* m_pOperand[C_OPERANDS];
+    i8       m_nLimit;     
+    Operand* m_pOperand[C_MAX_SLOTS];
     i8       m_iOperands;
     
     // must be last
@@ -30,9 +31,9 @@ namespace DataOperators
     static eOR eCall(void* aThis);
     
   private:
-    void vMergeDangling(void);
-    eOR  eMergeLoop(void);
-    void vSuperMergeOperands(Operand* pOperand1, Operand* pOperand2);
+    SrtBuffer* pMergeAll(void);
+    eOR        eMergeLoop(void);
+    SrtBuffer* pSuperMergeOperands(Operand* pOperand1, Operand* pOperand2);
   
     Footer* aFooter(void);
   };

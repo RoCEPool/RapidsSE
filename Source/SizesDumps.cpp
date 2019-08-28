@@ -1129,7 +1129,7 @@ eHT geWhichHeap[]
   /*128 */ HT_TRANSIENT_LARGE,   // CN_STMT_SELECT
   /*128 */ HT_TRANSIENT_LARGE,   // CN_STREAMDEF
   /* 13 */ HT_INVALID,           // CN_STRING_T
-  /*    */ HT_INVALID,           // CN_SUPERMERGEOP
+  /*    */ HT_TRANSIENT_SMALL,   // CN_SUPERMERGEOP
   /*129 */ HT_INVALID,           // CN_SYSCALL
   
   /*130 */ HT_INVALID,           // CN_TABLE

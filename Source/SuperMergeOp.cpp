@@ -60,10 +60,11 @@ SuperMergeOp::SuperMergeOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, boo
 {
   _precondition_(_MAGIC_,CN_SUPERMERGEOP);
   
-  for (i8 i_Index = 0; i_Index < C_OPERANDS; i_Index++)
+  for (i8 i_Index = 0; i_Index < C_MAX_SLOTS; i_Index++)
     m_pOperand[i_Index] = nullptr;
   
   m_iOperands = 0;
+  m_nLimit    = C_UNKNOWN;
   
   m_fpCall = SuperMergeOp::eCall;
 }
@@ -84,14 +85,16 @@ SuperMergeOp::~SuperMergeOp(void) noexcept(false)
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
 Op* SuperMergeOp::pNew(Stz* szLabel,
-                 Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
-                 TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
+                       Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
+                       TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   
   SuperMergeOp* pSuperMergeOp = new SuperMergeOp(szLabel,pDigest,aOpDefn,bAppR);
   
   pSuperMergeOp->m_nSlot = i_Slot;
+  if (pTknVec->pGet(i_Tkn_)->bIsInteger())
+    pSuperMergeOp->m_nLimit = pTknVec->pGet(i_Tkn_++)->iToI8();
   
   return pSuperMergeOp;
 }
@@ -111,28 +114,29 @@ eOR SuperMergeOp::eCall(void* aThis)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* merge dangling operand sets into a single operand set                      */
+/* merge all operand set buffers into a single operand set                    */
 /*----------------------------------------------------------------------------*/
-void SuperMergeOp::vMergeDangling(void)
+SrtBuffer* SuperMergeOp::pMergeAll(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUPERMERGEOP,_FOOTER_);
   
   i8 i_Index;
   i8 j_Index;
   Operand* pOperandPair[2];
+  SrtBuffer* pMergedSrtBuffer = nullptr;
   
-  i8 iOperandMag[2];
-  
-  // merge remaining operand set pairs till we are left with one single set
-  while (m_iOperands > 1) {
+  // merge all operand set pairs till we are left with one single set
+  while (true) {
     
     j_Index = 0;
     
+    if (pMergedSrtBuffer) {
+      pOperandPair[j_Index++] = pMergedSrtBuffer;
+    }
     // find a buffer set
-    for (i_Index = 0; i_Index < C_OPERANDS; i_Index++) {
+    for (i_Index = 0; i_Index < AM::nSlotsPerNode(); i_Index++) {
       
       if (m_pOperand[i_Index]) {
-        iOperandMag[j_Index] = i_Index;
         pOperandPair[j_Index++] = m_pOperand[i_Index];
         m_pOperand[i_Index] = nullptr;
         m_iOperands--;
@@ -144,15 +148,19 @@ void SuperMergeOp::vMergeDangling(void)
     }
     
     if (AM::bVerbose())
-      vTrace("P:%lld MERGING DANGLING OF MAGNITUDES %lld %lld\n"_Stz,
-             m_nSlot, iOperandMag[0], iOperandMag[1]);
+      vTrace("P:%lld SUPER MERGING %p %p\n"_Stz,
+             m_nSlot, pOperandPair[0], pOperandPair[1]);
     
     // merge the operand set pair
     AM::vLogOpr(SL_INF,this,OA_OP_INF,
-                "P:%lld Merging Dangling of Mags %lld %lld"_Stz, //!format-LogOpr
-                m_nSlot, iOperandMag[0], iOperandMag[1]);
+                "P:%lld Super Merging %p %p"_Stz, //!format-LogOpr
+                m_nSlot, pOperandPair[0], pOperandPair[1]);
     
-    vSuperMergeOperands(pOperandPair[0], pOperandPair[1]);
+    pMergedSrtBuffer = pSuperMergeOperands(pOperandPair[0], pOperandPair[1]);
+    
+    // are we done ?
+    if (m_iOperands == 0)
+      return pMergedSrtBuffer;
   }
 }
 
@@ -173,56 +181,39 @@ eOR SuperMergeOp::eMergeLoop(void)
     }
     
     if (CN_ENDMARKER == pOperand->eClass()) {
-      EndMarker* pEndMarker = _pEndMarker(pOperand);
-      delete pEndMarker;
-      break;
-    }
-    
-    if (CN_STREAMDEF == pOperand->eClass()) {
-      m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
-      vPipeOut(pOperand);
+      delete (EndMarker*)pOperand;
+      if (--m_nLeftEndMarkers == 0) {
+        break;
+      }
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // check if we have another buffer binary magnitude 0
-    if (m_pOperand[0]) {
-      
-      //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // get the operand of same magnitude
-      Operand* pOperand2 = m_pOperand[0];
-      
-      // remove the operand from the m_pOperands array
-      m_pOperand[0] = nullptr;
-      m_iOperands--;
-      
-      // merge the two operands
-      AM::vLogOpr(SL_INF,this,OA_OP_INF,
-                  "P:%lld Merging Operands of Mag %lld"_Stz, //!format-LogOpr
-                  m_nSlot, 0);
-      vSuperMergeOperands(pOperand, pOperand2);
-    }
-    else {
-      // save the buffer set till we have a similar magnitude buffer set to merge with
-      m_pOperand[0] = pOperand;
-      m_iOperands++;
+    if (CN_STREAMDEF == pOperand->eClass()) {
+      if ( ! m_pStreamDef ) {
+        m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
+        vPipeOut(pOperand);
+      }
+      else
+        delete _pStreamDef(pOperand);
+      continue;
     }
     
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // save the buffer
+    m_pOperand[m_iOperands++] = _pSrtBuffer(pOperand);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // merge all remaining operand sets into a single operand set
-  vMergeDangling();
-  RASSERT(m_iOperands <=1);
+  // should have reacieved a buffer set from each partition
+  RASSERT(m_iOperands == AM::nSlotsPerNode());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // find the one remaining operand set
-  i8 i_Index;
-  for (i_Index = 0; i_Index < C_OPERANDS; i_Index++)
-    if (m_pOperand[i_Index])
-      break;
-
-  SrtBuffer* pMergedBuffer = _pSrtBuffer(m_pOperand[i_Index]);
+  // merge all operand sets into a single operand set
+  SrtBuffer* pMergedBuffer = pMergeAll();
+  RASSERT(m_iOperands <=1);
+  
+  if (AM::bVerbose())
+    vTrace("SUPER MERGE PIPING OUT %lld buffer\n"_Stz, pMergedBuffer->nItemCount());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pipe out merge-sorted buffers
@@ -232,9 +223,6 @@ eOR SuperMergeOp::eMergeLoop(void)
       vPipeOut(pSrtBuffer);
       pSrtBuffer = pSrtBuffer->pNextBuffer();
     }
-    
-    if (AM::bVerbose())
-      vTrace("MERGE PIPED OUT %lld buffer\n"_Stz, pMergedBuffer->nItemCount());
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -247,12 +235,12 @@ eOR SuperMergeOp::eMergeLoop(void)
 /*----------------------------------------------------------------------------*/
 /* mergeSelf                                                                  */
 /*----------------------------------------------------------------------------*/
-void SuperMergeOp::vSuperMergeOperands(Operand* pOperand1, Operand* pOperand2)
+SrtBuffer* SuperMergeOp::pSuperMergeOperands(Operand* pOperand1, Operand* pOperand2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUPERMERGEOP,_FOOTER_);
 
   if (AM::bVerbose())
-    vTrace("Merging operands %p %p\n"_Stz, pOperand1, pOperand2);
+    vTrace("Super Merging operands %p %p\n"_Stz, pOperand1, pOperand2);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the left buffer
@@ -265,13 +253,18 @@ void SuperMergeOp::vSuperMergeOperands(Operand* pOperand1, Operand* pOperand2)
   RASSERT(pRightBuffer->bVerifyNextPrev());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // left and right buffers should belong to the same partition
-  RASSERT(pLeftBuffer->iPartitionNo() == pRightBuffer->iPartitionNo());
+  // left and right buffers should not belong to the same partition
+  //RASSERT(pLeftBuffer->iPartitionNo() != pRightBuffer->iPartitionNo());
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get count of left and right buffers
   i8 iLeftCount = pLeftBuffer->nItemCount();
   i8 iRightCount = pRightBuffer->nItemCount();
+  
+  if (m_nLimit != C_UNKNOWN) {
+    iLeftCount  = m_nLimit < iLeftCount  ? m_nLimit : iLeftCount;
+    iRightCount = m_nLimit < iRightCount ? m_nLimit : iRightCount;
+  }
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a left cursor pointing to the first element in the left buffer
@@ -284,7 +277,6 @@ void SuperMergeOp::vSuperMergeOperands(Operand* pOperand1, Operand* pOperand2)
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a new srtBuffer to copy elements after merging
   SrtBuffer* pFirstMergeBuffer  = new SrtBuffer(pLeftBuffer->nRowRefs(), pLeftBuffer->iPartitionNo());
-  i8 iMergeBufferCount = 1;
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // save left and right remaining row refs
@@ -378,12 +370,13 @@ void SuperMergeOp::vSuperMergeOperands(Operand* pOperand1, Operand* pOperand2)
   i8 iMergedCount = pFirstMergeBuffer->nItemCount();
   RASSERT(iLeftCount + iRightCount == iMergedCount);
   
-  iMergeBufferCount = pFirstMergeBuffer->nBufferCount();
-  i8 iMagnitude = (i8)log2(iMergeBufferCount);
+  if (AM::bVerbose())
+    vTrace("Super Merged %lld rows\n"_Stz,
+           iMergedCount);
   
   AM::vLogOpr(SL_INF,this,OA_OP_INF,
-              "P:%lld Merged Operands generated Mag %lld"_Stz, //!format-LogOpr
-              m_nSlot, iMagnitude);
+              "Super Merged %lld rows"_Stz, //!format-LogOpr
+              iMergedCount);
   
   // delete all left buffers
   SrtBuffer* pBuffer;
@@ -400,31 +393,7 @@ void SuperMergeOp::vSuperMergeOperands(Operand* pOperand1, Operand* pOperand2)
     delete pBuffer;
   }
   
-  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // do we have another buffer set of the same magnitude ?
-  if ( ! m_pOperand[iMagnitude]) {
-    
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // save this buffer set
-    m_pOperand[iMagnitude] = pFirstMergeBuffer;
-    m_iOperands++;
-  }
-  else {
-    
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // merge this buffer set with another of same magnitude
-    Operand* pOperand = m_pOperand[iMagnitude];
-    m_pOperand[iMagnitude] = nullptr;
-    m_iOperands--;
-
-    
-    AM::vLogOpr(SL_INF,this,OA_OP_INF,
-                "P:%lld Merging Operands of Mag %lld"_Stz, //!format-LogOpr
-                m_nSlot, iMagnitude);
-    vSuperMergeOperands(pFirstMergeBuffer, pOperand);
-  }
-
-  
+  return pFirstMergeBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
