@@ -63,7 +63,7 @@ Lock::Lock(eLK eLockKind, i8 NonFocal)
   
   ++ gixLock;
   AM::vLogLck(SL_INF,this,LA_LCK_CONSTRUCTOR,
-              "Lock constructed %s : %p (%lld locks exist)"_Stz, //!format-LogLck
+              "Lock constructed %s : %p |gixLock=%lld|"_Stz, //!format-LogLck
               aLK[m_eLockKind],this,* gixLock);
   
   _postcondition_(_MAGIC_,CN_LOCK,_FOOTER_);
@@ -90,7 +90,7 @@ Lock::Lock(eLK eLockKind)
   
   ++ gixLock;
  AM::vLogLck(SL_INF,this,LA_LCK_CONSTRUCTOR,
-              "Lock constructed %s : %p (%lld locks exist)"_Stz, //!format-LogLck
+              "Lock constructed %s: %p |gixLock=%lld|"_Stz, //!format-LogLck
               aLK[m_eLockKind],this,* gixLock);
 
   _postcondition_(_MAGIC_,CN_LOCK,_FOOTER_);
@@ -105,7 +105,7 @@ Lock::~Lock(void) noexcept(false)
   
   -- gixLock;
  AM::vLogLck(SL_INF,this,LA_LCK_DESTRUCTOR,
-              "Lock destructed %s : %p (%lld locks exist)"_Stz, //!format-LogLck
+              "Lock destructed %s: %p |gixLock=%lld|"_Stz, //!format-LogLck
               aLK[m_eLockKind],this,* gixLock);
 }
 
