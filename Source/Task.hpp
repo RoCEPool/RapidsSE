@@ -22,7 +22,9 @@ namespace Tasks
   friend class ForthWord;
   friend Scheduler;
 
-  private:  
+  private:
+    ReqTuple m_xReqTuple;   // request tuple
+  
     Lock    m_okLock;       // lock for this task
     eTK     m_eKind;        // task kind
     union {
@@ -104,6 +106,7 @@ namespace Tasks
     void vQueueOrder(i8 iTaskOrder);
     i8   iQueueOrder(void);
     void vRefindJobClass(void);
+    ReqTuple* aReqTuple(void);
     void vRenderPortrait(s256& sTaskPortrait);
     void vRetry(void);
     bool bSeeded(void);

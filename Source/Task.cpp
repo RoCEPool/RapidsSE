@@ -60,6 +60,7 @@ void Task::operator delete(void* pTaskAddress)
 /*----------------------------------------------------------------------------*/
 Task::Task(Job* pJob, Session* pSession)
 : Focal(CN_TASK,AM::iNextTaskId())
+, m_xReqTuple(&pJob->m_xReqTuple)
 , m_okLock(LK_TASK,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
@@ -93,6 +94,7 @@ Task::Task(Job* pJob, Session* pSession)
 /*----------------------------------------------------------------------------*/
 Task::Task(Op* pOp, Session* pSession)
 : Focal(CN_TASK,AM::iNextTaskId())
+, m_xReqTuple(nullptr)
 , m_okLock(LK_TASK,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
@@ -679,6 +681,16 @@ void Task::vRefindJobClass(void)
   m_pJob->m_pJobClass = pJobClass;
   
   //m_pJob->m_pJobClass->vJobCat();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get request tuple                                                          */
+/*----------------------------------------------------------------------------*/
+ReqTuple* Task::aReqTuple(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  return & m_xReqTuple;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -475,7 +475,7 @@ void Mutex::vMutexLock(void)
   if (0 == rCode) {
     RASSERT(! m_bLocked);
     m_bLocked = true;
-    AM::vLogRes(SL_INF,this,RA_MTX_UNLOCKED,
+    AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
                 "Mutex locked"_Stz); //!format-LogRes
     return;
   }
