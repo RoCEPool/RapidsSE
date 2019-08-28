@@ -370,7 +370,7 @@ SrtBuffer* SuperMergeOp::pSuperMergeOperands(Operand* pOperand1, Operand* pOpera
   i8 iMergedCount = pFirstMergeBuffer->nItemCount();
   RASSERT(iLeftCount + iRightCount == iMergedCount);
   
-  if (AM::bVerbose())
+  //if (AM::bVerbose())
     vTrace("Super Merged %lld rows\n"_Stz,
            iMergedCount);
   
