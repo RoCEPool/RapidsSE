@@ -24,7 +24,7 @@ DataBuffer* MetaData::_pDataBuffer(void* aAddress)
 /*----------------------------------------------------------------------------*/
 DataBuffer::DataBuffer(eCN eClassNo)
 : LinkedBuffer(eClassNo)
-, m_okLock(LK_CRWBUFFER,0)
+, m_okLock(LK_CRWBUFFER,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   

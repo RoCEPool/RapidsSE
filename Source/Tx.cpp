@@ -50,7 +50,7 @@ void Tx::operator delete(void* pTxAddress)
 /*----------------------------------------------------------------------------*/
 Tx::Tx(bool bAddToSet)
 : Focal(CN_TX,AM::iNextTxId())
-, m_okLock(LK_TX_SET,0)
+, m_okLock(LK_TX_SET,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
 
@@ -75,7 +75,7 @@ Tx::Tx(bool bAddToSet)
 /*----------------------------------------------------------------------------*/
 Tx::Tx(i8 iDistTxId)
 : Focal(CN_TX,AM::iNextTxId())
-, m_okLock(LK_TX_SET,0)
+, m_okLock(LK_TX_SET,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
   
