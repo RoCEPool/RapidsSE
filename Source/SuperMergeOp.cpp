@@ -60,7 +60,7 @@ SuperMergeOp::SuperMergeOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, boo
 {
   _precondition_(_MAGIC_,CN_SUPERMERGEOP);
   
-  for (i8 i_Index = 0; i_Index < C_OPERANDS; i_Index++)
+  for (i8 i_Index = 0; i_Index < C_MAX_SLOTS; i_Index++)
     m_pOperand[i_Index] = nullptr;
   
   m_iOperands = 0;
@@ -84,8 +84,8 @@ SuperMergeOp::~SuperMergeOp(void) noexcept(false)
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
 Op* SuperMergeOp::pNew(Stz* szLabel,
-                 Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
-                 TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
+                       Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
+                       TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   
@@ -188,8 +188,12 @@ eOR SuperMergeOp::eMergeLoop(void)
     }
     
     if (CN_STREAMDEF == pOperand->eClass()) {
-      m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
-      vPipeOut(pOperand);
+      if ( ! m_pStreamDef ) {
+        m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
+        vPipeOut(pOperand);
+      }
+      else
+        delete _pStreamDef(pOperand);
       continue;
     }
     
