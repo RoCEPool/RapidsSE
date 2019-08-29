@@ -16,6 +16,9 @@ Focal::Focal(eCN eClassNo)
   m_iUniqueId = C_UNKNOWN;
   m_i_Log     = C_UNKNOWN;
   m_iTick_    = AM::iRdTimePoint();
+  
+  m_iActNo    = C_UNKNOWN;
+  m_iForId    = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -28,6 +31,9 @@ Focal::Focal(eCN eClassNo, i8 iUniqueId)
   m_iUniqueId = iUniqueId;
   m_i_Log     = C_UNKNOWN;
   m_iTick_    = AM::iRdTimePoint();
+  
+  m_iActNo    = C_UNKNOWN;
+  m_iForId    = C_UNKNOWN;
 
   AM::vFocalAdd(this);
 }
@@ -40,6 +46,20 @@ Focal::~Focal(void) noexcept(false)
   if (C_UNKNOWN != m_i_Focal)
     AM::vFocalRemove(this);
 }
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* inc action sequence number                                                 */
+/*----------------------------------------------------------------------------*/
+void Focal::vIncActNo(void)
+{
+  m_iActNo++;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

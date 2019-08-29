@@ -13,10 +13,15 @@ namespace Correctness
     i8 m_i_Log;     // log entry subscript
     i8 m_iTick_;    //
   
+    i8 m_iActNo;
+    i8 m_iForId;
+  
   public:
     Focal(eCN eClassNo);
     Focal(eCN eClassNo, i8 iUniqueId);
    ~Focal(void) noexcept(false);
+  
+    void vIncActNo(void);
   };
 }
 

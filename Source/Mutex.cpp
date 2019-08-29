@@ -323,7 +323,7 @@ void Mutex::vCondWaitIndefinite(void)
     m_bLocked = true;
     ++ m_ixAct; ++ m_ixSignaled;
     AM::vLogRes(SL_INF,this,RA_MTX_SIGNALED,
-                "Mutex -%s owner was signaled; locked reacquired |m_ixSignaled=%lld|"_Stz, //!format-LogRes
+                "Mutex -%s owner was signaled; lock reacquired |m_ixSignaled=%lld|"_Stz, //!format-LogRes
                 aMK[m_eKind],
                 * m_ixSignaled,
                 C_ENDARGS);
