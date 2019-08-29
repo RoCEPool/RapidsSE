@@ -540,7 +540,7 @@ bool Socket::bRecvBytes(void* aBytes, i8 nBytes, SysCall& SysCall)
 #endif
     
   AM::vLogRes(SL_INF,this,RA_SKT_RECEIVED,
-              "Socket received : %lld bytes"_Stz, //!format-LogRes
+              "Socket received %lldB"_Stz, //!format-LogRes
               nRecvBytes);
 
     //vTrace("Bytes received: (%lld) %lld\n"_Stz, nBytes, nSoFar);

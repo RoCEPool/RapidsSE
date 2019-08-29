@@ -74,6 +74,8 @@ dynamic scan lineitem | output | zed;
 
 ping;
 
+status;
+
 logWrite;
 
 /*
