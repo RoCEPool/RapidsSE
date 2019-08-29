@@ -60,7 +60,8 @@ void Task::operator delete(void* pTaskAddress)
 /*----------------------------------------------------------------------------*/
 Task::Task(Job* pJob, Session* pSession)
 : Focal(CN_TASK,AM::iNextTaskId())
-, m_okLock(LK_TASK,this)
+, m_xReqTuple(&pJob->m_xReqTuple)
+, m_okLock(LK_TASK,&pJob->m_xReqTuple,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -81,8 +82,9 @@ Task::Task(Job* pJob, Session* pSession)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   ++ gixTask;
-  AM::vLogTsk(SL_INF,this,TA_TSK_CONSTRUCTOR,
-              "Task constructed |gixTask=%lld|"_Stz, //!format-LogTsk
+  AM::vLogTsk(SL_INF,this,TA_TSK_CONSTRUCT,
+              "Task construct (job=%s) |gixTask=%lld|"_Stz, //!format-LogTsk
+              aCN[m_pJob->eClass()],
               * gixTask);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
@@ -93,7 +95,8 @@ Task::Task(Job* pJob, Session* pSession)
 /*----------------------------------------------------------------------------*/
 Task::Task(Op* pOp, Session* pSession)
 : Focal(CN_TASK,AM::iNextTaskId())
-, m_okLock(LK_TASK,this)
+, m_xReqTuple(C_NO_REQTUPLE)
+, m_okLock(LK_TASK,C_NO_REQTUPLE,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -113,8 +116,8 @@ Task::Task(Op* pOp, Session* pSession)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   ++ gixTask;
-  AM::vLogTsk(SL_INF,this,TA_TSK_CONSTRUCTOR,
-              "Task constructed |gixTask=%lld|"_Stz, //!format-LogTsk
+  AM::vLogTsk(SL_INF,this,TA_TSK_CONSTRUCT,
+              "Task construct (op) |gixTask=%lld|"_Stz, //!format-LogTsk
               * gixTask);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
@@ -185,9 +188,14 @@ Task::~Task(void) noexcept(false)
   }
   
   -- gixTask;
-  AM::vLogTsk(SL_INF,this,TA_TSK_DESTRUCTOR,
-              "Task destructed |gixTask=%lld|"_Stz, //!format-LogTsk
-              * gixTask);
+  if (TK_OPERATOR == m_eKind)
+    AM::vLogTsk(SL_INF,this,TA_TSK_DESTRUCT,
+                "Task destruct (op) |gixTask=%lld|"_Stz, //!format-LogTsk
+                * gixTask);
+  else
+    AM::vLogTsk(SL_INF,this,TA_TSK_DESTRUCT,
+                "Task destruct (job) |gixTask=%lld|"_Stz, //!format-LogTsk
+                * gixTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -674,6 +682,16 @@ void Task::vRefindJobClass(void)
   m_pJob->m_pJobClass = pJobClass;
   
   //m_pJob->m_pJobClass->vJobCat();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get request tuple                                                          */
+/*----------------------------------------------------------------------------*/
+ReqTuple* Task::aReqTuple(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  return & m_xReqTuple;
 }
 
 /*----------------------------------------------------------------------------*/

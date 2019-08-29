@@ -26,7 +26,7 @@ namespace Resources
     void* operator new(size_t, Mutex* pMutex);
     void operator delete(void* pMutexAddress);
 
-    Mutex(eMK eSuperKind, i8 i_SuperId);
+    Mutex(eMK eSuperKind, i8 i_SuperId, ReqTuple* pReqTuple);
    ~Mutex(void) noexcept(false);
   
     static void vMonitorPortrait(s48K& sPortrait);
@@ -38,7 +38,7 @@ namespace Resources
     void vFocalOutline(s4K& sOutline);
     bool bMutexIsLocked(void);
     bool bMutexLock(void);
-    void vMutexLock(void);
+    void vMutexLock(Object* pByWhom);
     void vMutexUnlock(void);
   
     Footer* aFooter(void);

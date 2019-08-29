@@ -52,8 +52,9 @@ void _LogEntryTxn::vWriteTxt(File* pFile, LogEntry* pEntry)
   
   pFile->vPrint(C_ENTRY_FMT_2s,
                 
-                spId.sz(IK_TX,m_iTxnId),
-                aXA[m_eTxnAct]);
+                aXA[m_eTxnAct],
+                spId.sz(IK_TX,m_iTxnId)
+                );
 }
 
 /*============================================================================*/

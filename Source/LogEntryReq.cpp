@@ -10,7 +10,8 @@
 void _LogEntryReq::vSet(LogEntry* pLogEntry, Request* pRequest, eMA eReqAct)
 {
   pLogEntry->m_eKind = EK_REQ;
-  
+  pLogEntry->m_xReqTuple.vSet(pRequest->aReqTuple());
+
   m_iReqId  = pRequest->m_iUniqueId;
   m_eReqAct = eReqAct;
 }
@@ -52,8 +53,9 @@ void _LogEntryReq::vWriteTxt(File* pFile, LogEntry* pEntry)
   
   pFile->vPrint(C_ENTRY_FMT_2s,
                 
-                spId.sz(IK_REQUEST,m_iReqId),
-                aMA[m_eReqAct]);
+                aMA[m_eReqAct],
+                spId.sz(IK_REQUEST,m_iReqId)
+                );
 }
 
 /*============================================================================*/

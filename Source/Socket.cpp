@@ -52,8 +52,8 @@ void Socket::operator delete(void*)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Socket::Socket(void)
-: Resource(CN_SOCKET)
-, m_okLock(LK_SOCKET,this)
+: Resource(CN_SOCKET,C_NO_REQTUPLE)
+, m_okLock(LK_SOCKET,C_NO_REQTUPLE,this)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
@@ -67,8 +67,8 @@ Socket::Socket(void)
   _checkInitialised_(CN_SOCKET);
   
   ++ gixSocket;
-  AM::vLogRes(SL_INF,this,RA_SKT_CONSTRUCTOR,
-              "Socket constructed : %p |gixSocket=%lld|"_Stz, //!format-LogRes
+  AM::vLogRes(SL_INF,this,RA_SKT_CONSTRUCT,
+              "Socket construct : %p |gixSocket=%lld|"_Stz, //!format-LogRes
               this,* gixSocket);
 
   _postcondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
@@ -78,8 +78,8 @@ Socket::Socket(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Socket::Socket(int iSocketId)
-: Resource(CN_SOCKET)
-, m_okLock(LK_SOCKET,this)
+: Resource(CN_SOCKET,C_NO_REQTUPLE)
+, m_okLock(LK_SOCKET,C_NO_REQTUPLE,this)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
@@ -89,8 +89,8 @@ Socket::Socket(int iSocketId)
   m_aLowBuff = MemLib::aMallocBlock(C_SIZE_POOL_BUFFER);
   
   ++ gixSocket;
-  AM::vLogRes(SL_INF,this,RA_SKT_CONSTRUCTOR,
-              "Socket constructed : %p |gixSocket=%lld|"_Stz, //!format-LogRes
+  AM::vLogRes(SL_INF,this,RA_SKT_CONSTRUCT,
+              "Socket construct : %p |gixSocket=%lld|"_Stz, //!format-LogRes
               this,* gixSocket);
   
   _postcondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
@@ -110,8 +110,8 @@ Socket::~Socket(void) noexcept(false)
   MemLib::vFreeBlock(m_aLowBuff,C_SIZE_POOL_BUFFER);
   
   -- gixSocket;
-  AM::vLogRes(SL_INF,this,RA_SKT_DESTRUCTOR,
-              "Socket destructed : %p |gixSocket=%lld|"_Stz, //!format-LogRes
+  AM::vLogRes(SL_INF,this,RA_SKT_DESTRUCT,
+              "Socket destruct : %p |gixSocket=%lld|"_Stz, //!format-LogRes
               this,* gixSocket);
 }
 
@@ -540,7 +540,7 @@ bool Socket::bRecvBytes(void* aBytes, i8 nBytes, SysCall& SysCall)
 #endif
     
   AM::vLogRes(SL_INF,this,RA_SKT_RECEIVED,
-              "Socket received : %lld bytes"_Stz, //!format-LogRes
+              "Socket received %lldB"_Stz, //!format-LogRes
               nRecvBytes);
 
     //vTrace("Bytes received: (%lld) %lld\n"_Stz, nBytes, nSoFar);

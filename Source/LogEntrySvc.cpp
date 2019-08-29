@@ -52,8 +52,9 @@ void _LogEntrySvc::vWriteTxt(File* pFile, LogEntry* pEntry)
   
   pFile->vPrint(C_ENTRY_FMT_2s,
                 
-                spId.sz(IK_SERVICE,m_iSvcId),
-                aVA[m_eSvcAct]);
+                aVA[m_eSvcAct],
+                spId.sz(IK_SERVICE,m_iSvcId)
+                );
 }
 
 /*============================================================================*/

@@ -52,8 +52,9 @@ void _LogEntrySsn::vWriteTxt(File* pFile, LogEntry* pEntry)
   
   pFile->vPrint(C_ENTRY_FMT_2s,
                 
-                spId.sz(IK_SESSION,m_iSsnId),
-                aAA[m_eSsnAct]);
+                aAA[m_eSsnAct],
+                spId.sz(IK_SESSION,m_iSsnId)
+                );
 }
 
 /*============================================================================*/

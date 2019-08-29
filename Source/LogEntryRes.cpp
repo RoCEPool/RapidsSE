@@ -12,6 +12,8 @@ void _LogEntryRes::vSet(LogEntry* pLogEntry, Resource* pResource, eRA eResAct)
   pLogEntry->m_eKind = EK_RES;
   
   m_eClass  = pResource->eClass();
+  pLogEntry->m_xReqTuple.vSet(pResource->aReqTuple());
+
   m_iResId  = pResource->m_iUniqueId;
   m_eResAct = eResAct;
 }
@@ -53,8 +55,9 @@ void _LogEntryRes::vWriteTxt(File* pFile, LogEntry* pEntry)
   
   pFile->vPrint(C_ENTRY_FMT_2s,
                 
-                spId.sz(IK_RESOURCE,m_iResId),
-                aRA[m_eResAct]);
+                aRA[m_eResAct],
+                spId.sz(IK_RESOURCE,m_iResId)
+                );
 }
 
 /*============================================================================*/

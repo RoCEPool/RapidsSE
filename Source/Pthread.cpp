@@ -49,7 +49,7 @@ void Pthread::operator delete(void* pPthreadAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Pthread::Pthread()
-: Resource(CN_PTHREAD)
+: Resource(CN_PTHREAD,nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
   
@@ -59,8 +59,8 @@ Pthread::Pthread()
   _checkInitialised_(CN_PTHREAD);
 
   ++ gixPthread;
-  AM::vLogRes(SL_INF,this,RA_THD_CONSTRUCTOR,
-              "Pthread constructed : %p (%lld pthreads exist)"_Stz, //!format-LogRes
+  AM::vLogRes(SL_INF,this,RA_THD_CONSTRUCT,
+              "Pthread construct : %p (%lld pthreads exist)"_Stz, //!format-LogRes
               this,* gixPthread);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
@@ -74,8 +74,8 @@ Pthread::~Pthread(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
   
   -- gixPthread;
-  AM::vLogRes(SL_INF,this,RA_THD_DESTRUCTOR,
-              "Pthread destructed : %p (%lld pthreads exist)"_Stz, //!format-LogRes
+  AM::vLogRes(SL_INF,this,RA_THD_DESTRUCT,
+              "Pthread destruct : %p (%lld pthreads exist)"_Stz, //!format-LogRes
               this,* gixPthread);
 }
 
@@ -461,7 +461,7 @@ void Pthread::vSetOSThreadId(void)
 /*----------------------------------------------------------------------------*/
 void Pthread::vSleepInfinite(void)
 {
-  AM::vLogRes(SL_INF,this,RA_THD_SLEEP_INDEFINITE,
+  AM::vLogRes(SL_INF,this,RA_THD_SLEEP_INDEF,
               "Thead sleeps indefinitely"_Stz); //!format-LogRes
   for (;;)
     sleep(C_1B);

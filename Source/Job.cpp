@@ -90,14 +90,15 @@ Job::Job(eCN eClassNo, Session* pSession, ReqTuple* aReqTuple)
   if (CN_JOB_NODEINFO == eClass())
     m_pJobMutex = nullptr;
   else
-    m_pJobMutex = new Mutex(MK_JOB,this->m_iUniqueId);
+    m_pJobMutex = new Mutex(MK_JOB,this->m_iUniqueId,aReqTuple);
 
   // -- -- -- -- -- --
   
   ++ gixJob;
-  AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCTOR,
-              "Job constructed : %p (%lld jobs exist)"_Stz, //!format-LogJob
-              this,* gixJob);
+  AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCT,
+              "Job construct %s |gixJob=%lld|"_Stz, //!format-LogJob
+              aCN[eClass()],
+              * gixJob);
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
 }
@@ -109,14 +110,23 @@ Job::~Job(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  //ActLog::vAdd(this,AN_DESTRUCTOR);
+  //ActLog::vAdd(this,AN_DESTRUCT);
   
   delete m_pJobMutex;
   
-  -- gixJob;
-  AM::vLogJob(SL_INF,this,JA_JOB_DESTRUCTOR,
-              "Job destructed : %p (%lld jobs exist)"_Stz, //!format-LogJob
-              this,* gixJob);
+  if (m_bWasReceived) {
+    AM::vLogJob(SL_INF,this,JA_JOB_DESTRUCT,
+                "Job destruct %s (was-received) |gixJob=%lld|"_Stz, //!format-LogJob
+                aCN[eClass()],
+               * gixJob);
+  }
+  else {
+    -- gixJob;
+    AM::vLogJob(SL_INF,this,JA_JOB_DESTRUCT,
+                "Job destruct %s |gixJob=%lld|"_Stz, //!format-LogJob
+                aCN[eClass()],
+                * gixJob);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -284,7 +294,7 @@ void Job::vLockJobMutex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_pJobMutex->vMutexLock();
+  m_pJobMutex->vMutexLock(this);
   
 //  i8 rCode = pthread_mutex_lock(&m_xThreadMutex);
 //
@@ -315,11 +325,6 @@ void Job::vUnlockJobMutex(void)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   m_pJobMutex->vMutexUnlock();
-
-//  i8 rCode = pthread_mutex_unlock(&m_xThreadMutex);
-//
-//  if (0 != rCode)
-//    vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -330,11 +335,6 @@ void Job::vWaitJobMutex(void)
   _precondition_(_ADDRESS_,_MAGIC_);
  
   m_pJobMutex->vCondWaitIndefinite();
-  
-//  i8 rCode = pthread_cond_wait(&m_xThreadCond,&m_xThreadMutex);
-//
-//  if (0 != rCode)
-//    vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
 }
 
 /*----------------------------------------------------------------------------*/

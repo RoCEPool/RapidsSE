@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Sessions
+namespace Focals
 {
   class ReqTuple
   {
@@ -18,7 +18,11 @@ namespace Sessions
   
     ReqTuple(ReqTuple* aReqTuple);
    ~ReqTuple(void) noexcept(false);
+
+    void vSet(ReqTuple* aReqTuple);
   };
+  
+  static ReqTuple* C_NO_REQTUPLE = nullptr;
 }
 
 /*============================================================================*/

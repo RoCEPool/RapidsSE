@@ -10,7 +10,8 @@
 void _LogEntryTsk::vSet(LogEntry* pLogEntry, Task* pTask, eTA eTskAct)
 {
   pLogEntry->m_eKind = EK_TSK;
-  
+  pLogEntry->m_xReqTuple.vSet(pTask->aReqTuple());
+
   m_iTskId  = pTask->m_iUniqueId;
   m_eTskAct = eTskAct;
 }
@@ -52,8 +53,9 @@ void _LogEntryTsk::vWriteTxt(File* pFile, LogEntry* pEntry)
   
   pFile->vPrint(C_ENTRY_FMT_2s,
                 
-                spId.sz(IK_TASK,m_iTskId),
-                aTA[m_eTskAct]);
+                aTA[m_eTskAct],
+                spId.sz(IK_TASK,m_iTskId)
+                );
 }
 
 /*============================================================================*/

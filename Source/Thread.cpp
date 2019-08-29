@@ -70,15 +70,15 @@ Thread::Thread(void)
   m_eDedicated   = CN_NONE;
 
   m_pPthread     = new Pthread;
-  m_pMutexThread = new Mutex(MK_THREAD,this->m_iUniqueId);
+  m_pMutexThread = new Mutex(MK_THREAD,this->m_iUniqueId,nullptr);
     
   m_nAssignedTasks = 0;
 
   _checkInitialised_(CN_THREAD);
   
   ++ gixThread;
-  AM::vLogThd(SL_INF,this,HA_THD_CONSTRUCTOR,
-              "Thread constructed : %p (%lld threads exist)"_Stz, //!format-LogThd
+  AM::vLogThd(SL_INF,this,HA_THD_CONSTRUCT,
+              "Thread construct : %p (%lld threads exist)"_Stz, //!format-LogThd
               this,* gixThread);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
@@ -95,8 +95,8 @@ Thread::~Thread(void) noexcept(false)
   delete m_pPthread;
   
   -- gixThread;
-  AM::vLogThd(SL_INF,this,HA_THD_DESTRUCTOR,
-              "Thread destructed : %p (%lld threads exist)"_Stz, //!format-LogThd
+  AM::vLogThd(SL_INF,this,HA_THD_DESTRUCT,
+              "Thread destruct : %p (%lld threads exist)"_Stz, //!format-LogThd
               this,* gixThread);
 }
 

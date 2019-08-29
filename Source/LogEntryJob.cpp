@@ -10,7 +10,8 @@
 void _LogEntryJob::vSet(LogEntry* pLogEntry, Job* pJob, eJA eJobAct)
 {  
   pLogEntry->m_eKind = EK_JOB;
-  
+  pLogEntry->m_xReqTuple.vSet(&pJob->m_xReqTuple);
+
   m_iJobId  = pJob->m_iUniqueId;
   m_eJobAct = eJobAct;
   
@@ -58,12 +59,12 @@ void _LogEntryJob::vWriteTxt(File* pFile, LogEntry* pEntry)
   SP_Id spId;
   SP_Id spReqId;
   
-  pFile->vPrint(C_ENTRY_FMT_3s,
+  pFile->vPrint(C_ENTRY_FMT_2s,
                 
-                spId.sz(IK_JOB,m_iJobId),
                 aJA[m_eJobAct],
-                spReqId.sz(IK_REQUEST,m_iReqId)
-                );
+                spId.sz(IK_JOB,m_iJobId),
+                //spReqId.sz(IK_REQUEST,m_iReqId)
+                C_ENDARGS);
 }
 
 /*============================================================================*/

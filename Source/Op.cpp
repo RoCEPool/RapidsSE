@@ -85,8 +85,8 @@ Op::Op(eCN eClassNo, Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   m_fpDrain       = m_aOpDefn ? m_aOpDefn->m_fpDrain : nullptr;
   
   ++ gixOp;
-  AM::vLogOpr(SL_INF,this,OA_OP_CONSTRUCTOR,
-              "Op constructed : %p (%lld ops exist)"_Stz, //!format-LogOpr
+  AM::vLogOpr(SL_INF,this,OA_OP_CONSTRUCT,
+              "Op construct : %p (%lld ops exist)"_Stz, //!format-LogOpr
               this,* gixOp);
 }
 
@@ -104,8 +104,8 @@ Op::~Op(void) noexcept(false)
     delete m_pStreamDef;
   
   -- gixOp;
-  AM::vLogOpr(SL_INF,this,OA_OP_DESTRUCTOR,
-              "Op destructed : %p (%lld ops exist)"_Stz, //!format-LogOpr
+  AM::vLogOpr(SL_INF,this,OA_OP_DESTRUCT,
+              "Op destruct : %p (%lld ops exist)"_Stz, //!format-LogOpr
               this,* gixOp);
 }
 

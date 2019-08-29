@@ -55,8 +55,9 @@ void _LogEntryPrm::vWriteTxt(File* pFile, LogEntry* pEntry)
   
   pFile->vPrint(C_ENTRY_FMT_2s,
                 
-                spId.sz(IK_PROMPT,m_iPrmId),
-                aPA[m_ePrmAct]);
+                aPA[m_ePrmAct],
+                spId.sz(IK_PROMPT,m_iPrmId)
+                );
 }
 
 /*============================================================================*/

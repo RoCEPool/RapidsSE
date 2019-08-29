@@ -5,6 +5,7 @@
 
 static const i8 C_UNKNOWN  = -1;
 static const b8 C_NONFOCAL = true;
+static const i8 C_ENDARGS  = -3;
 
 static const i8 C_DATUM_NULL           = LLONG_MIN + 1;
 static const i8 C_DATUM_MINUS_INFINITY = LLONG_MIN;

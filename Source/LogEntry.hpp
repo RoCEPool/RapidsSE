@@ -5,8 +5,8 @@
 
 namespace Logging
 {
-  static Stz* C_ENTRY_FMT_2s = "%s,%20s ## "_Stz;
-  static Stz* C_ENTRY_FMT_3s = "%s,%20s %s ## "_Stz;
+  static Stz* C_ENTRY_FMT_2s = "%-20s %s "_Stz;
+  static Stz* C_ENTRY_FMT_3s = "%-20s %s %s"_Stz;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -42,6 +42,8 @@ namespace Logging
   
     Focal* m_pFocal;   // object
     i8   m_i_Focal;    // focal lattice subscript
+  
+    ReqTuple m_xReqTuple;
   
     eSL  m_eSeverity;  // severity level
   

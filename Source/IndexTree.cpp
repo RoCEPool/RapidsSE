@@ -41,7 +41,7 @@ void IndexTree::operator delete(void* pDataAddress)
 /*----------------------------------------------------------------------------*/
 IndexTree::IndexTree(Index* pIndex, i8 iPartitionNo)
 : Object(CN_INDEXTREE)
-, m_okLock(LK_INDEX_TREE,this)
+, m_okLock(LK_INDEX_TREE,C_NO_REQTUPLE,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
