@@ -139,7 +139,7 @@ eOR OutputOp::eOpLoop(void)
 
     switch (pOperand->eClass()) {
         
-      case CN_ENDMARKER:
+      case CN_ENDMARKER: {
         if (--m_nLeftEndMarkers == 0) {
           vPipeOut(pOperand);
           goto L_EXIT;
@@ -148,25 +148,20 @@ eOR OutputOp::eOpLoop(void)
           delete (EndMarker*)pOperand;
         
         break;
+      }
         
       // -- -- -- -- -- --
         
       case CN_ENTBUFFER: {
         EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
         m_iWorkDone += pEntBuffer->nItems();
-        pEntBuffer->vShow();
+        pEntBuffer->vPrintRows();
         vPipeOut(pOperand);
         break;
       }
         
-      case CN_INTBUFFER: {
-        IntBuffer* pIntBuffer = _pIntBuffer(pOperand) ;
-        m_iWorkDone += pIntBuffer->nCount();
-        pIntBuffer->vShow();
-        vPipeOut(pOperand);
-        break;
-      }
-      
+      // -- -- -- -- -- --
+        
       case CN_IRWBUFFER: {
         IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
         m_iWorkDone += pIrwBuffer->nItems();
@@ -174,13 +169,8 @@ eOR OutputOp::eOpLoop(void)
         vPipeOut(pOperand);
         break;
       }
-        
-      case CN_REFBUFFER: {
-        RefBuffer* pRefBuffer = _pRefBuffer(pOperand) ;
-        m_iWorkDone += pRefBuffer->nItems();
-        vPipeOut(pOperand);
-        break;
-      }
+      
+      // -- -- -- -- -- --
         
       case CN_SRTBUFFER: {
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
@@ -189,12 +179,16 @@ eOR OutputOp::eOpLoop(void)
         vPipeOut(pOperand);
         break;
       }
+       
+      // -- -- -- -- -- --
         
       case CN_STREAMDEF: {
         m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
         vPipeOut(pOperand);        
         break;
       }
+        
+      // -- -- -- -- -- --
         
       default:
         vPipeOut(pOperand);

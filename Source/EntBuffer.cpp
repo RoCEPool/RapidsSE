@@ -771,6 +771,42 @@ void EntBuffer::vPrevBuffer(EntBuffer* pPrevBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print rows of the buffer                                                   */
+/*----------------------------------------------------------------------------*/
+void EntBuffer::vPrintRows(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+  
+  ColumnVec* pColVec = m_pIndex->pTable()->pColumnVec();
+  
+  HV_Row hRow(pColVec);
+  HV_Rec hvRec(pColVec);
+  
+  Ent* aEnt = aLeadEntry();
+  
+  while (aEnt) {
+    
+    // get the crw buffer of the row
+    CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(aEnt->xRef());
+    
+    // get the compact row
+    Crw* aCrw = pCrwBuffer->pCrw(aEnt->xRef().iItem());
+    
+    // inflate compact row into row
+    RowInflator::vInflateRow(hRow,aCrw);
+    
+    // append row to record
+    hvRec->vAppend(hRow);
+    
+    // print the record
+    hvRec->vPrintRow();
+    
+    aEnt = aNextEntry(aEnt, 0);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* reset/empty the buffer                                                     */
 /*----------------------------------------------------------------------------*/
 void EntBuffer::vReset(void)

@@ -44,6 +44,7 @@ namespace MetaData
     void    vGrabWrite(void);
     void    vIndex(Index* pIndex);
     Index*  pIndex(void);
+    void    vPrintRows(void);
 
     ////////////////////////////////////////////////////////////////////////////
     // buffer functions
