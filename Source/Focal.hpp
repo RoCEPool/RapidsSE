@@ -21,6 +21,7 @@ namespace Correctness
     Focal(eCN eClassNo, i8 iUniqueId);
    ~Focal(void) noexcept(false);
   
+    i8   iActNo(void);
     void vIncActNo(void);
   };
 }

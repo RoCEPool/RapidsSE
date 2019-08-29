@@ -10,8 +10,6 @@ namespace Resources
   protected:
     ReqTuple m_xReqTuple;
   
-    Atomic m_ixAct;
-  
   public:
     Resource(eCN eClass, ReqTuple* aReqTuple);
    ~Resource(void) noexcept(false);
@@ -20,7 +18,6 @@ namespace Resources
     i8   iResId(void);
   
     ReqTuple* aReqTuple(void);
-    i8 iAct(void);
   };
   
   Resource* _pResource(void* aAddr);

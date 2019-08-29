@@ -150,7 +150,7 @@ Mutex::~Mutex(void) noexcept(false)
   gpAttachMap->m_oStatistics.Mutex.m_nDestroys++;
 #endif
   
-  ++ m_ixAct; -- gixMutex;
+  vIncActNo(); -- gixMutex;
   SP_Id spId;
   AM::vLogRes(SL_INF,this,RA_MTX_DESTRUCT,
               "Mutex -%s destruct(for=%s) |gixMutex=%lld/%lld|"_Stz, //!format-LogRes
@@ -199,7 +199,7 @@ void Mutex::vCondBroadcast(void)
   gpAttachMap->m_oStatistics.Mutex.m_nBroadcasts++;
 #endif
   
-  ++ m_ixAct; ++ m_ixBroadcast;
+  vIncActNo(); ++ m_ixBroadcast;
   AM::vLogRes(SL_INF,this,RA_MTX_BROADCAST,
               "Mutex -%s broadcast() |m_ixBroadcast=%lld|"_Stz, //!format-LogRes
               aMK[m_eKind],
@@ -244,7 +244,7 @@ void Mutex::vCondSignal(void)
   gpAttachMap->m_oStatistics.Mutex.m_nSignals++;
 #endif
   
-  ++ m_ixAct; ++ m_ixSignal;
+  vIncActNo(); ++ m_ixSignal;
   AM::vLogRes(SL_INF,this,RA_MTX_SIGNAL,
               "Mutex -%s signal() |m_ixSignal=%lld|"_Stz, //!format-LogRes
               aMK[m_eKind],
@@ -298,7 +298,7 @@ void Mutex::vCondWaitIndefinite(void)
   gpAttachMap->m_oStatistics.Mutex.m_nWaits++;
 #endif
   
-  ++ m_ixAct; ++ m_ixWaitIndef;
+  vIncActNo(); ++ m_ixWaitIndef;
   AM::vLogRes(SL_INF,this,RA_MTX_WAIT_INDEF,
               "Mutex -%s wait(indefinite) |m_ixWaitIndef=%lld|"_Stz, //!format-LogRes
               aMK[m_eKind],
@@ -321,7 +321,7 @@ void Mutex::vCondWaitIndefinite(void)
   if (0 == iRetVal) {
     RASSERT(! m_bLocked);
     m_bLocked = true;
-    ++ m_ixAct; ++ m_ixSignaled;
+    vIncActNo(); ++ m_ixSignaled;
     AM::vLogRes(SL_INF,this,RA_MTX_SIGNALED,
                 "Mutex -%s owner was signaled; lock reacquired |m_ixSignaled=%lld|"_Stz, //!format-LogRes
                 aMK[m_eKind],
@@ -373,7 +373,7 @@ void Mutex::vCondWaitUsec(i8 iMicroSeconds)
   gpAttachMap->m_oStatistics.Mutex.m_nTimedWaits++;
 #endif
   
-  ++ m_ixAct; ++ m_ixWaitTimed;
+  vIncActNo(); ++ m_ixWaitTimed;
   AM::vLogRes(SL_INF,this,RA_MTX_WAIT_TIMED,
               "Mutex -%s wait(timed=%lldus) |m_ixWaitTimed=%lld|"_Stz, //!format-LogRes
               aMK[m_eKind],
@@ -402,7 +402,7 @@ void Mutex::vCondWaitUsec(i8 iMicroSeconds)
     gpAttachMap->m_oStatistics.Mutex.m_nUnblocks++;
 #endif
     
-    ++ m_ixAct; ++ m_ixSignaled;
+    vIncActNo(); ++ m_ixSignaled;
     AM::vLogRes(SL_INF,this,RA_MTX_SIGNALED,
                 "Mutex -%s owner was signaled; locked reacquired |m_ixSignaled=%lld|"_Stz, //!format-LogRes
                 aMK[m_eKind],
@@ -423,7 +423,7 @@ void Mutex::vCondWaitUsec(i8 iMicroSeconds)
     gpAttachMap->m_oStatistics.Mutex.m_nTimeOuts++;
 #endif
     
-    ++ m_ixAct; ++ m_ixTimedout;
+    vIncActNo(); ++ m_ixTimedout;
     AM::vLogRes(SL_INF,this,RA_MTX_TIMEDOUT,
                 "Mutex -%s owner wait has timedout; locked reacquired |m_ixTimedout=%lld|"_Stz, //!format-LogRes
                 aMK[m_eKind],
@@ -511,7 +511,7 @@ bool Mutex::bMutexLock(void)
   if (0 == iRetVal) {
     RASSERT(! m_bLocked);
     m_bLocked = true;
-    ++ m_ixAct; ++ m_ixLock;
+    vIncActNo(); ++ m_ixLock;
     AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
                 "Mutex -%s locked |m_ixLock=%lld|"_Stz, //!format-LogRes
                 aMK[m_eKind],
@@ -524,7 +524,7 @@ bool Mutex::bMutexLock(void)
   // success: busy -- mutex has not been locked by calling thread
   
   if (EBUSY == iRetVal) {
-    ++ m_ixAct; ++ m_ixBusy;
+    vIncActNo(); ++ m_ixBusy;
     AM::vLogRes(SL_INF,this,RA_MTX_BUSY,
                 "Mutex -%s busy |m_ixBusy=%lld|"_Stz, //!format-LogRes
                 aMK[m_eKind],
@@ -554,7 +554,7 @@ void Mutex::vMutexLock(Object* pByWhom)
   //! The calling thread cannot already have the mutex
   //!
   
-  ++ m_ixAct; ++ m_ixLock;
+  vIncActNo(); ++ m_ixLock;
   AM::vLogRes(SL_INF,this,RA_MTX_LOCK,
               "Mutex -%s lock(p) |m_ixLock=%lld|"_Stz, //!format-LogRes
               aMK[m_eKind],
@@ -574,7 +574,7 @@ void Mutex::vMutexLock(Object* pByWhom)
     RASSERT(! m_bLocked);
     
     m_bLocked = true;
-    ++ m_ixAct; ++ m_ixLocked;
+    vIncActNo(); ++ m_ixLocked;
 
     SP_Id spId;
     if (m_pFor == pByWhom) {
@@ -635,7 +635,7 @@ void Mutex::vMutexUnlock(void)
   // success -- mutex has been unlocked by calling thread
   
   if (0 == iRetVal) {
-    ++ m_ixAct; ++ m_ixUnlock;
+    vIncActNo(); ++ m_ixUnlock;
     AM::vLogRes(SL_INF,this,RA_MTX_UNLOCKED,
                 "Mutex -%s now unlocked |m_ixUnlock=%lld|"_Stz, //!format-LogRes
                 aMK[m_eKind],
