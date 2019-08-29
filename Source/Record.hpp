@@ -40,6 +40,7 @@ namespace Transform
     void vAppendVch(Column* pCol, DtmVal* pDtmVal);
 
     void vPrintRow(void);
+    void vPrintPartialRow(void);
   
     void vRecStr(Stz* szRecStr);
     Stz* szRecStr(void);

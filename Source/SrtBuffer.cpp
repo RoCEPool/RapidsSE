@@ -319,6 +319,60 @@ SrtBuffer* SrtBuffer::pPrevBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print rows                                                                 */
+/*----------------------------------------------------------------------------*/
+void SrtBuffer::vPrintRows(StreamDef* pStreamDef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
+  
+  SrtSet* aSrtSet = aFirstSrtSet();
+  
+  while (aSrtSet) {
+    
+    i8 nColVecs = pStreamDef->m_oColVecAry.nItems();
+    RASSERT(nColVecs == m_nRowRefs);
+    
+    vTrace("row: ("_Stz);
+    
+    for (i8 iRowRef = 0; iRowRef < m_nRowRefs; iRowRef++) {
+      
+      if (iRowRef != 0)
+        vTrace(" "_Stz);
+      
+      // get the columnVec defining the rowref
+      ColumnVec* pStreamColVec = pStreamDef->m_oColVecAry.pGet(iRowRef);
+      
+      // get the dataRow of rowref
+      Crw* aCrw = (Crw*)(aSrtSet->iRowRef(iRowRef));
+      
+      HV_Rec hvRec(pStreamColVec);
+      HV_Row hRow(pStreamColVec);
+      
+      // inflate the row
+      if (aCrw) {
+        RowInflator::vInflateRow(hRow, aCrw);
+      } else {
+        // get no of columns
+        i8 nColumns = pStreamColVec->nItems();
+        
+        // for each column
+        for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+          hRow->m_waColVal[i_Col].m_iI8 = C_DATUM_NULL;
+        }
+      }
+      hvRec->vAppend(hRow);
+      
+      hvRec->vPrintPartialRow();
+    }
+    
+    vTrace(")\n"_Stz);
+    
+    aSrtSet = aNextSrtSet(aSrtSet);
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the number of row refs in this srt set                                 */
 /*----------------------------------------------------------------------------*/
 i8 SrtBuffer::nRowRefs(void)

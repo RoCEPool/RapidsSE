@@ -175,7 +175,7 @@ eOR OutputOp::eOpLoop(void)
       case CN_SRTBUFFER: {
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
         m_iWorkDone += pSrtBuffer->nItems();
-        pSrtBuffer->vShow(m_pStreamDef);
+        pSrtBuffer->vPrintRows(m_pStreamDef);
         vPipeOut(pOperand);
         break;
       }

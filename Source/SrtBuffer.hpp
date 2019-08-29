@@ -40,6 +40,7 @@ namespace Rows
     SrtSet*    aNextSrtSet(SrtSet* aPriorSrtSet);
     SrtBuffer* pPrevBuffer(void);
     i8         nRowRefs(void);
+    void       vPrintRows(StreamDef* pStreamDef);
     void       vShow(void);
     void       vShow(StreamDef* pStreamDef);
     SrtSet*    aSrtSet(i8 iSrtSet);
