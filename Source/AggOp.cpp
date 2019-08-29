@@ -9,7 +9,7 @@ OpDesc __Op_Agg (
    OK_SIMPLE,          // op kind
    "Agg"_Stz,          // first word of prompt command
    "Agg"_Stz,          // prefix
-   false,              // not partitioned
+   false,              // partitioned
    AggOp::pNew,        // function which parses the command and new's an op
    AggOp::eCall,       // function which calls the op loop
    AggOp::eDrain,      // function which calls the drain loop

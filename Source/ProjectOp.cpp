@@ -210,12 +210,6 @@ eOR ProjectOp::eOpLoop(void)
         break;
       }
         
-      case CN_REFBUFFER: {
-        RefBuffer* pRefBuffer = _pRefBuffer(pOperand) ;
-        delete pRefBuffer;
-        break;
-      }
-        
       case CN_SRTBUFFER: {
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
         delete pSrtBuffer;

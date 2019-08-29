@@ -9,7 +9,7 @@ OpDesc __Op_Count (
    OK_SIMPLE,          // op kind
    "Count"_Stz,        // first word of prompt command
    "Cnt"_Stz,          // prefix
-   false,              // not partitioned
+   false,              // partitioned
    CountOp::pNew,      // function which parses the command and new's an op
    CountOp::eCall,     // function which calls the op loop
    CountOp::eDrain,    // function which calls the drain loop

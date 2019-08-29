@@ -9,7 +9,7 @@ OpDesc __Op_GetKeyOp (
    OK_SIMPLE,           // op kind
    "GetKey"_Stz,        // first word of prompt command
    "Gky"_Stz,           // prefix
-   true,                // not partitioned
+   true,                // partitioned
    GetKeyOp::pNew,      // function which parses the command and new's an op
    GetKeyOp::eCall,     // function which calls the op loop
    GetKeyOp::eDrain,    // function which calls the drain loop

@@ -9,7 +9,7 @@ OpDesc __Op_Inflate (
    OK_SIMPLE,            // op kind
    "Inflate"_Stz,        // first word of prompt command
    "Inf"_Stz,            // prefix
-   false,                // not partitioned
+   false,                // paritioned
    InflateOp::pNew,      // function which parses the command and new's an op
    InflateOp::eCall,     // function which calls the op loop
    InflateOp::eDrain,    // function which calls the drain loop
