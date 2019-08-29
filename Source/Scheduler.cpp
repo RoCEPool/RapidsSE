@@ -1137,7 +1137,7 @@ bool Scheduler::bThread_AssignIdle(Task* pTask)
 
   pThread->m_pMutexThread->vMutexLock(pTask);
   pThread->m_pMutexThread->vCondSignal();
-  pThread->m_pMutexThread->vMutexUnlock();
+  pThread->m_pMutexThread->vMutexUnlock(pTask);
   
   // mutex can now be acquired by the m_pPthread of pThread
   
@@ -1187,7 +1187,7 @@ void Scheduler::vThread_EndLoop(Thread* pThread)
   AM::vLogThd(SL_INF,pThread,HA_THD_END_LOOP,
               "Dedicated thread has ended it's thread loop"_Stz); //!format-LogThd
   
-  pThread->m_pMutexThread->vMutexUnlock();
+  pThread->m_pMutexThread->vMutexUnlock(pThread);
 }
 
 /*----------------------------------------------------------------------------*/

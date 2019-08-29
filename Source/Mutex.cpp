@@ -472,7 +472,7 @@ bool Mutex::bMutexIsLocked(void)
   // success: was not busy -- mutex was not already locked, now locked by caller
   if (0 == iRetVal) {
     m_bLocked = true;
-    vMutexUnlock();
+    vMutexUnlock(nullptr);
     return false;
   }
   
@@ -577,25 +577,14 @@ void Mutex::vMutexLock(Object* pByWhom)
     vIncActNo(); ++ m_ixLocked;
 
     SP_Id spId;
-    if (m_pFor == pByWhom) {
-      AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
-                  "Mutex -%s %s now locked by owner (%p) |m_ixLocked=%lld|"_Stz, //!format-LogRes
-                  aMK[m_eKind],
-                  spId.sz(m_pFor->m_iUniqueId),
-                  pByWhom,
-                  * m_ixLocked,
-                  C_ENDARGS);
+    AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
+                "Mutex -%s %s now locked by %s |m_ixLocked=%lld|"_Stz, //!format-LogRes
+                aMK[m_eKind],
+                spId.sz(m_pFor->m_iUniqueId),
+                (m_pFor == pByWhom) ? "owner"_Stz : "non-owner"_Stz,
+                * m_ixLocked,
+                C_ENDARGS);
 
-    }
-    else {
-      AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
-                  "Mutex -%s %s now locked by non-owner %p |m_ixLock=%lld|"_Stz, //!format-LogRes
-                  aMK[m_eKind],
-                  spId.sz(m_pFor->m_iUniqueId),
-                  pByWhom,
-                  * m_ixLock,
-                  C_ENDARGS);
-    }
     return;
   }
   
@@ -611,7 +600,7 @@ void Mutex::vMutexLock(Object* pByWhom)
 /*----------------------------------------------------------------------------*/
 /* unlock this mutex currently locked by calling thread                       */
 /*----------------------------------------------------------------------------*/
-void Mutex::vMutexUnlock(void)
+void Mutex::vMutexUnlock(Object* pByWhom)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -636,9 +625,11 @@ void Mutex::vMutexUnlock(void)
   
   if (0 == iRetVal) {
     vIncActNo(); ++ m_ixUnlock;
+    
     AM::vLogRes(SL_INF,this,RA_MTX_UNLOCKED,
-                "Mutex -%s now unlocked |m_ixUnlock=%lld|"_Stz, //!format-LogRes
+                "Mutex -%s now unlocked by %s |m_ixUnlock=%lld|"_Stz, //!format-LogRes
                 aMK[m_eKind],
+                (m_pFor == pByWhom) ? "owner"_Stz : "non-owner"_Stz,
                 * m_ixUnlock,
                 C_ENDARGS);
     

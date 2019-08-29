@@ -324,7 +324,7 @@ void Job::vUnlockJobMutex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  m_pJobMutex->vMutexUnlock();
+  m_pJobMutex->vMutexUnlock(this);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -50,7 +50,7 @@ namespace Resources
     bool bMutexIsLocked(void);
     bool bMutexLock(void);
     void vMutexLock(Object* pByWhom);
-    void vMutexUnlock(void);
+    void vMutexUnlock(Object* pByWhom);
   
     Footer* aFooter(void);
   };
