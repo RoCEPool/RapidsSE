@@ -204,7 +204,9 @@ void Mutex::vCondBroadcast(void)
   // failure
   
   ++ gixMutex_err;
-  vWarn("pthread_cond_broadcast() error; rCode=%lld\n"_Stz,rCode);
+  AM::vLogRes(SL_INF,this,RA_MTX_ERROR,
+              "pthread_cond_broadcast() error; rCode=%lld"_Stz, //!format-LogRes
+              rCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -246,7 +248,9 @@ void Mutex::vCondSignal(void)
   // failure
 
   ++ gixMutex_err;
-  vWarn("pthread_cond_signal() error; rCode=%lld\n"_Stz,rCode);
+  AM::vLogRes(SL_INF,this,RA_MTX_ERROR,
+              "pthread_cond_signal() error; rCode=%lld"_Stz, //!format-LogRes
+              rCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -281,7 +285,7 @@ void Mutex::vCondWaitIndefinite(void)
   m_bLocked = false;
   
   //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-  i8 rCode = pthread_cond_wait(&m_xCond,&m_xMutex);                  // blocking
+  i8 rCode = pthread_cond_wait(&m_xCond,&m_xMutex);                  // BLOCKING
   //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 #ifdef WITH_STATISTICS_COUNTERS
@@ -303,7 +307,9 @@ void Mutex::vCondWaitIndefinite(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   ++ gixMutex_err;
-  vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
+  AM::vLogRes(SL_INF,this,RA_MTX_ERROR,
+              "pthread_cond_wait() error; rCode=%lld"_Stz, //!format-LogRes
+              rCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -350,7 +356,7 @@ void Mutex::vCondWaitUsec(i8 iMicroSeconds)
   m_bLocked = false;
   
   //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-  i8 rCode = pthread_cond_timedwait(&m_xCond,&m_xMutex,&xTimeSpec);  // blocking
+  i8 rCode = pthread_cond_timedwait(&m_xCond,&m_xMutex,&xTimeSpec);  // BLOCKING
   //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
   // success
@@ -393,7 +399,9 @@ void Mutex::vCondWaitUsec(i8 iMicroSeconds)
   // failure
   
   ++ gixMutex_err;
-  vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
+  AM::vLogRes(SL_INF,this,RA_MTX_ERROR,
+              "pthread_cond_wait() error; rCode=%lld"_Stz, //!format-LogRes
+              rCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -482,7 +490,7 @@ void Mutex::vMutexLock(Object* pByWhom)
   // DO NOT TOUCH m_bLocked
   
   //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-  i8 rCode = pthread_mutex_lock(&m_xMutex);                     // blocking call
+  i8 rCode = pthread_mutex_lock(&m_xMutex);                          // BLOCKING
   //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
   // success -- mutex is now locked by calling thread
@@ -516,7 +524,9 @@ void Mutex::vMutexLock(Object* pByWhom)
   // failure -- mutex has not been locked by calling thread
   
   ++ gixMutex_err;
-  vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
+  AM::vLogRes(SL_INF,this,RA_MTX_ERROR,
+              "pthread_mutex_lock() error; rCode=%lld"_Stz, //!format-LogRes
+              rCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -556,7 +566,9 @@ void Mutex::vMutexUnlock(void)
   // failure -- mutex has not been unlocked by calling thread
   
   ++ gixMutex_err;
-  vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
+  AM::vLogRes(SL_INF,this,RA_MTX_ERROR,
+              "pthread_mutex_unlock() error; rCode=%lld"_Stz, //!format-LogRes
+              rCode);
 }
 
 
