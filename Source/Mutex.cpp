@@ -54,13 +54,14 @@ void Mutex::operator delete(void* pMutexAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Mutex::Mutex(eMK eDadKind, i8 i_DadId, ReqTuple* aReqTuple)
+Mutex::Mutex(eMK eDadKind, Object* pFor, i8 i_DadId, ReqTuple* aReqTuple)
 : Resource(CN_MUTEX,aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
   m_eSuperKind = eDadKind;
   m_iSuperId  = i_DadId;
+  m_pFor     = pFor;
   
   m_bLocked  = false;
 

@@ -8,8 +8,9 @@ namespace Resources
   class Mutex : public Resource
   {
   public:
-    eMK  m_eSuperKind;
-    i8   m_iSuperId;
+    eMK     m_eSuperKind;
+    i8      m_iSuperId;
+    Object* m_pFor;    // mutex is for a task or a threadx
   
     bool m_bLocked;    // true if mutex is locked (debugging)
   
@@ -26,7 +27,7 @@ namespace Resources
     void* operator new(size_t, Mutex* pMutex);
     void operator delete(void* pMutexAddress);
 
-    Mutex(eMK eSuperKind, i8 i_SuperId, ReqTuple* pReqTuple);
+    Mutex(eMK eSuperKind, Object* pFor, i8 i_SuperId, ReqTuple* pReqTuple);
    ~Mutex(void) noexcept(false);
   
     static void vMonitorPortrait(s48K& sPortrait);

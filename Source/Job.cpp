@@ -90,7 +90,7 @@ Job::Job(eCN eClassNo, Session* pSession, ReqTuple* aReqTuple)
   if (CN_JOB_NODEINFO == eClass())
     m_pJobMutex = nullptr;
   else
-    m_pJobMutex = new Mutex(MK_JOB,this->m_iUniqueId,aReqTuple);
+    m_pJobMutex = new Mutex(MK_JOB,this,this->m_iUniqueId,aReqTuple);
 
   // -- -- -- -- -- --
   
