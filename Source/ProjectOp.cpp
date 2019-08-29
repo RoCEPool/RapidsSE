@@ -193,14 +193,11 @@ eOR ProjectOp::eOpLoop(void)
           CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(aEnt->xRef());
           Crw* aRowData = pCrwBuffer->pCrw(aEnt->xRef().iItem());
           
-          HV_Row hRow(m_pOriginalStreamDef->m_oColVecAry.pGet(0));
-          for (i8 i_Col = 0; i_Col < pColumnVec->nItems(); i_Col++) {
-            RASSERT(m_iWhichVec[i_Col] == 0);
-            RowInflator::vInflateColumn(hRow, aRowData, m_iWhichCol[i_Col]);
+          for (i8 i_IntoCol = 0; i_IntoCol < pColumnVec->nItems(); i_IntoCol++) {
+            RowInflator::vInflateColumn(pRow, i_IntoCol, aRowData, m_iWhichCol[i_IntoCol],
+                                        m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[i_IntoCol]));
           }
-          for (i8 i_Col = 0; i_Col < pColumnVec->nItems(); i_Col++) {
-            pRow->m_waColVal[i_Col] = hRow->m_waColVal[m_iWhichCol[i_Col]];
-          }
+          
           aEnt = pEntBuffer->aGetNextEntry(&pEntBuffer, aEnt);
         }
         
@@ -251,33 +248,6 @@ eOR ProjectOp::eOpLoop(void)
           }
         }
         
-        /*
-        ColumnVec* pColumnVec = pStreamDef->m_oColVecAry.pGet(0);
-        i8 nColumns = pColumnVec->nItems();
-        
-        for (i8 i_ColVec = 0; i_ColVec < m_pStreamDef->m_oColVecAry.nItems(); i_ColVec++) {
-          ColumnVec* pProjColumnVec = m_pStreamDef->m_oColVecAry.pGet(i_ColVec);
-          i8 nProjColumns = pProjColumnVec->nItems();
-          
-          // for each column in the project stream def
-          for (i8 i_ProjCol = 0; i_ProjCol < nProjColumns; i_ProjCol++) {
-            Column* pProjCol = pProjColumnVec->pGet(i_ProjCol);
-            
-            Column* pCol = nullptr;
-            
-            for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-              pCol = pColumnVec->pGet(i_Col);
-              if (pProjCol->sColumnName().bEqual(pCol->sColumnName())) {
-                m_iWhichVec[i_ProjCol] = i_ColVec;
-                m_iWhichCol[i_ProjCol] = i_Col;
-                pProjCol->vColumnType(pCol->eColumnType());
-                pProjCol->vDatumType(pCol->eDatumType());
-                break;
-              }
-            }
-          }
-        }
-        */
         // pipe out the streamdef
         vPipeOut(new StreamDef(m_pStreamDef));
         

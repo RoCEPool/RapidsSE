@@ -14,6 +14,7 @@ namespace Rows
     //! Highly performance-critical functions
   
     static void vInflateColumn(Row* pRow, HeadLine* aHeadLine, i8 i_ColToRetrieve);
+    static void vInflateColumn(Row* pRow, i8 iColumnInto, HeadLine* aHeadLine, i8 i_ColToRetrieve, ColumnVec* pColVec);
   
     static void vInflateColumns(Row* pRow, HeadLine* aHeadLine);
   
