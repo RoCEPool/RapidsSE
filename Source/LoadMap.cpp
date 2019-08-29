@@ -43,7 +43,7 @@ void LoadMap::operator delete(void* pLoadMapAddress)
 /*----------------------------------------------------------------------------*/
 LoadMap::LoadMap(void)
 : FileChunk(CN_LOADMAP,AM::pFormatters())
-, m_okLock(LK_LOAD_MAP,nullptr,this)
+, m_okLock(LK_LOAD_MAP,C_NO_REQTUPLE,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
   
