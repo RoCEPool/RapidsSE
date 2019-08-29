@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Mutex.cpp -- Pthread Mutex (& cond variable)                               */
+/* Mutex.cpp -- Mutex (posix pthread mutex and condition variable)            */
 /*============================================================================*/
 
 #include "Resources.h"
@@ -54,13 +54,12 @@ void Mutex::operator delete(void* pMutexAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Mutex::Mutex(eMK eKind, Object* pFor, i8 i_DadId, ReqTuple* aReqTuple)
+Mutex::Mutex(eMK eKind, Focal* pFor, ReqTuple* aReqTuple)
 : Resource(CN_MUTEX,aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
   m_eKind    = eKind;
-  m_iSuperId = i_DadId;
   m_pFor     = pFor;
   
   m_bLocked  = false;
@@ -110,9 +109,9 @@ Mutex::Mutex(eMK eKind, Object* pFor, i8 i_DadId, ReqTuple* aReqTuple)
   ++ gixMutex;
   SP_Id spId;
   AM::vLogRes(SL_INF,this,RA_MTX_CONSTRUCT,
-              "%s-Mutex construct: super=%s |gixMutex=%lld|"_Stz, //!format-LogRes
+              "%s-Mutex construct: for=%s |gixMutex=%lld|"_Stz, //!format-LogRes
               aMK[m_eKind],
-              spId.sz(m_iSuperId),
+              spId.sz(m_pFor->m_iUniqueId),
               * gixMutex);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
@@ -146,9 +145,9 @@ Mutex::~Mutex(void) noexcept(false)
   -- gixMutex;
   SP_Id spId;
   AM::vLogRes(SL_INF,this,RA_MTX_DESTRUCT,
-              "%s-Mutex destruct: super=%s |gixMutex=%lld|"_Stz, //!format-LogRes
+              "%s-Mutex destruct: for=%s |gixMutex=%lld|"_Stz, //!format-LogRes
               aMK[m_eKind],
-              spId.sz(m_iSuperId),
+              spId.sz(m_pFor->m_iUniqueId),
               * gixMutex);
 }
 
@@ -487,11 +486,11 @@ void Mutex::vMutexLock(Object* pByWhom)
     m_bLocked = true;
     
     SP_Id spId;
-    if (this == pByWhom) { //! NOT COMPLETE
+    if (m_pFor == pByWhom) { //! NOT COMPLETE
       AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
-                  "Mutex of %s %s locked by self (%p)"_Stz, //!format-LogRes
+                  "Mutex of %s %s locked by owner (%p)"_Stz, //!format-LogRes
                   MK_JOB == m_eKind ? "Job"_Stz : "Thread"_Stz,
-                  spId.sz(m_iSuperId),
+                  spId.sz(m_pFor->m_iUniqueId),
                   pByWhom,
                   C_ENDARGS);
 
@@ -500,7 +499,7 @@ void Mutex::vMutexLock(Object* pByWhom)
       AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
                   "Mutex of %s %s locked by %p"_Stz, //!format-LogRes
                   MK_JOB == m_eKind ? "Job"_Stz : "Thread"_Stz,
-                  spId.sz(m_iSuperId),
+                  spId.sz(m_pFor->m_iUniqueId),
                   pByWhom,
                   C_ENDARGS);
     }

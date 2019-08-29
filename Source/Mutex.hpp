@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Mutex.hpp -- Pthread Mutex (& cond variable)                               */
+/* Mutex.hpp -- Mutex (posix pthread mutex and condition variable)            */
 /*============================================================================*/
 #pragma once
 
@@ -8,11 +8,10 @@ namespace Resources
   class Mutex : public Resource
   {
   public:
-    eMK     m_eKind;  // kind of mutex
-    i8      m_iSuperId;
-    Object* m_pFor;    // mutex is for a task or a threadx
+    eMK     m_eKind;   // kind of mutex
+    Focal*  m_pFor;    // mutex is for a task or a thread
   
-    bool m_bLocked;    // true if mutex is currently locked (debugging)
+    bool    m_bLocked; // true if mutex is currently locked (debugging)
   
     pthread_mutex_t     m_xMutex;     // posix mutex variable
     pthread_mutexattr_t m_xMutexAttr; // posix mutex attribute
@@ -27,7 +26,7 @@ namespace Resources
     void* operator new(size_t, Mutex* pMutex);
     void operator delete(void* pMutexAddress);
 
-    Mutex(eMK eSuperKind, Object* pFor, i8 i_SuperId, ReqTuple* pReqTuple);
+    Mutex(eMK eSuperKind, Focal* pFor, ReqTuple* pReqTuple);
    ~Mutex(void) noexcept(false);
   
     static void vMonitorPortrait(s48K& sPortrait);
