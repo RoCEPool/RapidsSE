@@ -323,7 +323,7 @@ void Mutex::vCondWaitIndefinite(void)
     m_bLocked = true;
     ++ m_ixAct; ++ m_ixSignaled;
     AM::vLogRes(SL_INF,this,RA_MTX_SIGNALED,
-                "Mutex -%s now signaled |m_ixSignaled=%lld|"_Stz, //!format-LogRes
+                "Mutex -%s owner was signaled; locked reacquired |m_ixSignaled=%lld|"_Stz, //!format-LogRes
                 aMK[m_eKind],
                 * m_ixSignaled,
                 C_ENDARGS);
@@ -404,7 +404,7 @@ void Mutex::vCondWaitUsec(i8 iMicroSeconds)
     
     ++ m_ixAct; ++ m_ixSignaled;
     AM::vLogRes(SL_INF,this,RA_MTX_SIGNALED,
-                "Mutex -%s now signaled |m_ixSignaled=%lld|"_Stz, //!format-LogRes
+                "Mutex -%s owner was signaled; locked reacquired |m_ixSignaled=%lld|"_Stz, //!format-LogRes
                 aMK[m_eKind],
                 * m_ixSignaled,
                 C_ENDARGS);
@@ -413,7 +413,7 @@ void Mutex::vCondWaitUsec(i8 iMicroSeconds)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // success: timeout -- call has timed-out; thread does not have mutex lock
+  // success: timedout -- call has timed-out; thread has reacquired mutex lock
 
   if (ETIMEDOUT == iRetVal) {
     RASSERT(! m_bLocked);
@@ -423,11 +423,11 @@ void Mutex::vCondWaitUsec(i8 iMicroSeconds)
     gpAttachMap->m_oStatistics.Mutex.m_nTimeOuts++;
 #endif
     
-    ++ m_ixAct; ++ m_ixTimeout;
-    AM::vLogRes(SL_INF,this,RA_MTX_TIMEOUT,
-                "Mutex -%s has timedout |m_ixTimeout=%lld|"_Stz, //!format-LogRes
+    ++ m_ixAct; ++ m_ixTimedout;
+    AM::vLogRes(SL_INF,this,RA_MTX_TIMEDOUT,
+                "Mutex -%s owner wait has timedout; locked reacquired |m_ixTimedout=%lld|"_Stz, //!format-LogRes
                 aMK[m_eKind],
-                * m_ixTimeout,
+                * m_ixTimedout,
                 C_ENDARGS);
     return;
   }
@@ -554,6 +554,14 @@ void Mutex::vMutexLock(Object* pByWhom)
   //! The calling thread cannot already have the mutex
   //!
   
+  ++ m_ixAct; ++ m_ixLock;
+  AM::vLogRes(SL_INF,this,RA_MTX_LOCK,
+              "Mutex -%s lock(p) |m_ixLock=%lld|"_Stz, //!format-LogRes
+              aMK[m_eKind],
+              * m_ixLock,
+              C_ENDARGS);
+
+  
   // DO NOT TOUCH m_bLocked
   
   //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
@@ -566,16 +574,16 @@ void Mutex::vMutexLock(Object* pByWhom)
     RASSERT(! m_bLocked);
     
     m_bLocked = true;
-    ++ m_ixAct; ++ m_ixLock;
+    ++ m_ixAct; ++ m_ixLocked;
 
     SP_Id spId;
     if (m_pFor == pByWhom) {
       AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
-                  "Mutex -%s %s now locked by owner (%p) |m_ixLock=%lld|"_Stz, //!format-LogRes
+                  "Mutex -%s %s now locked by owner (%p) |m_ixLocked=%lld|"_Stz, //!format-LogRes
                   aMK[m_eKind],
                   spId.sz(m_pFor->m_iUniqueId),
                   pByWhom,
-                  * m_ixLock,
+                  * m_ixLocked,
                   C_ENDARGS);
 
     }

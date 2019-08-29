@@ -238,7 +238,7 @@ u8 Lock::iLockGrabWrite(u8* pWord)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is the lock currentl locked?                                               */
+/* is the lock currently locked?                                              */
 /*----------------------------------------------------------------------------*/
 u8 Lock::iLockIsLocked(u8* pWord)
 {

@@ -21,13 +21,14 @@ namespace Resources
   
     Atomic m_ixBroadcast;
     Atomic m_ixBusy;
+    Atomic m_ixLock;
+    Atomic m_ixLocked;
     Atomic m_ixSignal;
     Atomic m_ixSignaled;
     Atomic m_ixWaitIndef;
     Atomic m_ixWaitTimed;
-    Atomic m_ixLock;
     Atomic m_ixUnlock;
-    Atomic m_ixTimeout;
+    Atomic m_ixTimedout;
 
     // must be last
     Footer m_xFooter;
