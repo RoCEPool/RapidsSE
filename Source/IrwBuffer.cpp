@@ -145,6 +145,27 @@ Row* IrwBuffer::aNextRow(Row* aPriorRow)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print rows                                                                 */
+/*----------------------------------------------------------------------------*/
+void IrwBuffer::vPrintRows(ColumnVec* pColVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_IRWBUFFER,_FOOTER_);
+
+  HV_Rec hvRec(pColVec);
+  
+  // get the first row
+  Row* pRow = aFirstRow();
+  
+  while (pRow) {
+    hvRec->vAppend(pRow);
+    hvRec->vPrintRow();
+    
+    // get the next row
+    pRow = aNextRow(pRow);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* show contents of buffer                                                    */
 /*----------------------------------------------------------------------------*/
 void IrwBuffer::vShow(ColumnVec* pColVec)

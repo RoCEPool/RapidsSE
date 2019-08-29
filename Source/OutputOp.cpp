@@ -165,7 +165,7 @@ eOR OutputOp::eOpLoop(void)
       case CN_IRWBUFFER: {
         IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
         m_iWorkDone += pIrwBuffer->nItems();
-        pIrwBuffer->vShow(m_pStreamDef->pColumnVec(0));
+        pIrwBuffer->vPrintRows(m_pStreamDef->pColumnVec(0));
         vPipeOut(pOperand);
         break;
       }

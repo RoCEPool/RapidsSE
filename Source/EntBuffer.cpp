@@ -795,10 +795,7 @@ void EntBuffer::vPrintRows(void)
     // inflate compact row into row
     RowInflator::vInflateRow(hRow,aCrw);
     
-    // append row to record
     hvRec->vAppend(hRow);
-    
-    // print the record
     hvRec->vPrintRow();
     
     aEnt = aNextEntry(aEnt, 0);
