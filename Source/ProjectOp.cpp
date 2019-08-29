@@ -195,6 +195,7 @@ eOR ProjectOp::eOpLoop(void)
           
           HV_Row hRow(m_pOriginalStreamDef->m_oColVecAry.pGet(0));
           for (i8 i_Col = 0; i_Col < pColumnVec->nItems(); i_Col++) {
+            RASSERT(m_iWhichVec[i_Col] == 0);
             RowInflator::vInflateColumn(hRow, aRowData, m_iWhichCol[i_Col]);
           }
           for (i8 i_Col = 0; i_Col < pColumnVec->nItems(); i_Col++) {
@@ -224,6 +225,33 @@ eOR ProjectOp::eOpLoop(void)
         StreamDef* pStreamDef = _pStreamDef(pOperand);
         m_pOriginalStreamDef = new StreamDef(pStreamDef);
         
+        RASSERT(m_pStreamDef->m_oColVecAry.nItems() == 1);
+        ColumnVec* pProjColumnVec = m_pStreamDef->m_oColVecAry.pGet(0);
+        i8 nProjColumns = pProjColumnVec->nItems();
+
+        // Find the project col in the streamDef's that came in
+        for (i8 i_ProjCol = 0; i_ProjCol < nProjColumns; i_ProjCol++) {
+          Column* pProjCol = pProjColumnVec->pGet(i_ProjCol);
+          Column* pCol = nullptr;
+          
+          for (i8 i_ColVec = 0; i_ColVec < m_pOriginalStreamDef->m_oColVecAry.nItems(); i_ColVec++) {
+            ColumnVec* pColumnVec = m_pOriginalStreamDef->m_oColVecAry.pGet(i_ColVec);
+            i8 nColumns = pColumnVec->nItems();
+            
+            for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+              pCol = pColumnVec->pGet(i_Col);
+              if (pProjCol->sColumnName().bEqual(pCol->sColumnName())) {
+                m_iWhichVec[i_ProjCol] = i_ColVec;
+                m_iWhichCol[i_ProjCol] = i_Col;
+                pProjCol->vColumnType(pCol->eColumnType());
+                pProjCol->vDatumType(pCol->eDatumType());
+                break;
+              }
+            }
+          }
+        }
+        
+        /*
         ColumnVec* pColumnVec = pStreamDef->m_oColVecAry.pGet(0);
         i8 nColumns = pColumnVec->nItems();
         
@@ -249,6 +277,7 @@ eOR ProjectOp::eOpLoop(void)
             }
           }
         }
+        */
         // pipe out the streamdef
         vPipeOut(new StreamDef(m_pStreamDef));
         
