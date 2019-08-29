@@ -45,8 +45,9 @@ void Lock::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Lock::Lock(eLK eLockKind, Object* pSuper)
+Lock::Lock(eLK eLockKind, ReqTuple* aReqTuple, Object* pSuper)
 : Focal(CN_LOCK,AM::iNextLockId())
+, m_xReqTuple(aReqTuple)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
@@ -76,8 +77,9 @@ Lock::Lock(eLK eLockKind, Object* pSuper)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Lock::Lock(eLK eLockKind, Object* pSuper, bool bNonFocal)
+Lock::Lock(eLK eLockKind, ReqTuple* aReqTuple, Object* pSuper, bool bNonFocal)
 : Focal(CN_LOCK)
+, m_xReqTuple(aReqTuple)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   

@@ -13,16 +13,17 @@ namespace Locking
   class Lock : public Focal
   {
   private:
-    Object* m_pSuper;
+    eLK      m_eLockKind;         // lock kind
+    ReqTuple m_xReqTuple;
+    Object*  m_pSuper;
   
-    u8     m_uLockWord;        // lock word
-    eLK    m_eLockKind;        // lock kind
+    u8       m_uLockWord;         // lock word
   
-    Atomic m_ixReadGrabs;       // number of read grabs
-    Atomic m_ixReadCollisions;  // number of read collisions
+    Atomic   m_ixReadGrabs;       // number of read grabs
+    Atomic   m_ixReadCollisions;  // number of read collisions
     
-    Atomic m_ixWriteGrabs;      // number of write grabs
-    Atomic m_ixWriteCollisions; // number of write collisions
+    Atomic   m_ixWriteGrabs;      // number of write grabs
+    Atomic   m_ixWriteCollisions; // number of write collisions
     
     // must be last
     Footer m_xFooter;
@@ -31,8 +32,8 @@ namespace Locking
     void* operator new(size_t, Lock* pLock);
     void  operator delete(void* pLockAddress);
     
-    Lock(eLK eLockKind, Object* pSuper);
-    Lock(eLK eLockKind, Object* pSuper, bool bNonFocal);
+    Lock(eLK eLockKind, ReqTuple* aReqTuple, Object* pSuper);
+    Lock(eLK eLockKind, ReqTuple* aReqTuple, Object* pSuper, bool bNonFocal);
    ~Lock(void) noexcept(false);
   
   private:

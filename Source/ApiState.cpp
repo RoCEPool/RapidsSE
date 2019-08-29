@@ -47,7 +47,7 @@ void ApiState::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 ApiState::ApiState(void)
 : Object(CN_APISTATE)
-, m_okLock(LK_API_STATE,this)
+, m_okLock(LK_API_STATE,nullptr,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
   

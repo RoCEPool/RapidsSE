@@ -40,7 +40,7 @@ void FocalObjects::operator delete(void* pTaskQueueAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 FocalObjects::FocalObjects(void)
-: m_okLock(LK_FOCAL_OBJECTS,this)
+: m_okLock(LK_FOCAL_OBJECTS,nullptr,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FOCALOBJECTS,_FOOTER_);
     
