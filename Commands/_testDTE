@@ -2,6 +2,10 @@
 /* _testDTE -- test for date                                                  */
 /*============================================================================*/
 
+startCluster;
+indexEntries 20;
+docol epochTake;
+
 create table jidxDte (
   jidx_key   INTEGER     NOT NULL,
   jidx_name  VARCHAR(32) NOT NULL,
@@ -23,7 +27,16 @@ create index idx_dte on jidxDte (jidx_dte);
 ld jidxDte "../JTEST/jidxDte.csv" ;
 
 //anidx jidxDte idx_dte ;
-dumpidx jidxDte idx_dte ;
+//dumpidx jidxDte idx_dte ;
+
+//time dynamic fetch jidxDte idx_dte | getKey jidx_100 | sort | merge | superMerge | limit 4 | output | zed;
+
+//time dynamic fetch jidxDte idx_dte | getKey jidx_100 | sort | merge | superMerge 4 | limit 4 | output | zed;
+
+//time dynamic fetch jidxDte idx_dte 1 | limit 1 | output | zed;
+
+ time dynamic fetch jidxDte idx_dte | project jidx_tsp | output | zed;
+ time dynamic fetch jidxDte idx_dte | project jidx_tsp, jidx_100 | output | zed;
 
 /*
 print "\nSelecting rows with key >= 3 using idx1 ...\n" ;
