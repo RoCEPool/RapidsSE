@@ -1135,7 +1135,7 @@ bool Scheduler::bThread_AssignIdle(Task* pTask)
   
   pThread->m_eThreadState = HS_ASSIGNED;
 
-  pThread->m_pMutexThread->vMutexLock();
+  pThread->m_pMutexThread->vMutexLock(pTask);
   pThread->m_pMutexThread->vCondSignal();
   pThread->m_pMutexThread->vMutexUnlock();
   
@@ -1156,7 +1156,7 @@ void Scheduler::vThread_BeginLoop(Thread* pThread)
   
   // thread has mutex while it is running
   pThread->m_eThreadState = HS_UNASSIGNED;
-  pThread->m_pMutexThread->vMutexLock();
+  pThread->m_pMutexThread->vMutexLock(pThread);
   
   // increment m_ixThreads to indicate thread is running
   AM::vThreadBegins();

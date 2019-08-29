@@ -582,6 +582,12 @@ void SePrompt::vJobUnlockMutex(void)
   m_pJob->vUnlockJobMutex();
   
   m_pJob->m_eJobState = JS_RUNNING;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  AM::vLogPrm(SL_INF,this,PA_PRM_RESUMES,
+              "Prompt resumes running"_Stz, //!format-LogPrm
+              C_ENDARGS);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -591,6 +597,12 @@ void SePrompt::vJobWaitCond(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
+  AM::vLogPrm(SL_INF,this,PA_PRM_WAITS,
+              "Prompt waits for job"_Stz, //!format-LogPrm
+              C_ENDARGS);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   RASSERT(JS_LOCKED == m_pJob->m_eJobState);
   m_pJob->m_eJobState = JS_WAITING;
   
@@ -637,7 +649,7 @@ void SePrompt::vLogFreeSpace(void)
   MagLib::vByteMag(iFreeSpace + iFreeSpaceInPool,1,sFreeSpaceMag);
   
   AM::vLogPrm(SL_INF,this,PA_PRM_FREE_SPACE,
-              "Request completed (free space %s)"_Stz, //!format-LogPrm
+              "Free space %s"_Stz, //!format-LogPrm
               sFreeSpaceMag.aStz());
 }
 

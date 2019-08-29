@@ -25,8 +25,6 @@ void Step::vAddSteps_Thread(void)
   vAddStep("thread.dedicated!"_Stz,       &Step::vThreadDedicatedStore);
   vAddStep("thread.dump"_Stz,             &Step::vThreadDump);
   vAddStep("thread.id"_Stz,               &Step::vThreadId);
-  vAddStep("thread.mutexLock"_Stz,        &Step::vThreadMutexLock);
-  vAddStep("thread.mutexUnlock"_Stz,      &Step::vThreadMutexUnlock);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -221,43 +219,6 @@ ENTRY("vThreadId"_Stz);
   EXIT();
 }
 
-/*----------------------------------------------------------------------------*/
-/* thread.mutexLock -- acquire a threads mutex lock                           */
-/*----------------------------------------------------------------------------*/
-void Step::vThreadMutexLock(MP_Task mpTask)
-{
-ENTRY("vThreadoLockMutexLock"_Stz);
-  
-  Object* pThreadObject;
-  if ( ! mpTask->m_pDataStack->bPop(pThreadObject) )
-    THROW_INVALID_DSTACK("thread.mutexLock"_Stz);
-  
-  Thread* pThread = _pThread(pThreadObject);
-  ASSERT(CN_THREAD == pThread->eClass());
-  
-  pThread->m_pMutexThread->vMutexLock();
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* thread.mutexUnlock -- release a threads mutex lock                         */
-/*----------------------------------------------------------------------------*/
-void Step::vThreadMutexUnlock(MP_Task mpTask)
-{
-ENTRY("vThreadMutexUnlock"_Stz);
-
-  Object* pThreadObject;
-  if ( ! mpTask->m_pDataStack->bPop(pThreadObject) )
-    THROW_INVALID_DSTACK("thread.mutexUnlock"_Stz);
-  
-  Thread* pThread = _pThread(pThreadObject);
-  ASSERT(CN_THREAD == pThread->eClass());
-  
-  pThread->m_pMutexThread->vMutexUnlock();
-  
-  EXIT();
-}
 
 /*----------------------------------------------------------------------------*/
 /* thread::sleepMsec -- sleep for n milliseconds                                */

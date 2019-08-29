@@ -78,7 +78,7 @@ static Stz* aRA[]
   /*    */ "RA_MTX_SIGNAL"_Stz,
   /*    */ "RA_MTX_SIGNALED"_Stz,
   /*    */ "RA_MTX_TIMEOUT"_Stz,
-  /*    */ "RA_MTX_UNLOCK"_Stz,
+  /*    */ "RA_MTX_UNLOCKED"_Stz,
   /*    */ "RA_MTX_WAIT_INDEF"_Stz,
   /*    */ "RA_MTX_WAIT_TIMED"_Stz,
 

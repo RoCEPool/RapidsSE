@@ -38,7 +38,7 @@ namespace Resources
     void vFocalOutline(s4K& sOutline);
     bool bMutexIsLocked(void);
     bool bMutexLock(void);
-    void vMutexLock(void);
+    void vMutexLock(Object* pByWhom);
     void vMutexUnlock(void);
   
     Footer* aFooter(void);

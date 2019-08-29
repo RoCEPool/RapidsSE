@@ -83,7 +83,8 @@ Task::Task(Job* pJob, Session* pSession)
   
   ++ gixTask;
   AM::vLogTsk(SL_INF,this,TA_TSK_CONSTRUCT,
-              "Task construct (job) |gixTask=%lld|"_Stz, //!format-LogTsk
+              "Task construct (job=%s) |gixTask=%lld|"_Stz, //!format-LogTsk
+              aCN[m_pJob->eClass()],
               * gixTask);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);

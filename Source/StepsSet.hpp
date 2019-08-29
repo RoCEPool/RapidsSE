@@ -1116,8 +1116,6 @@ private:
   static void vThreadDump(Tasks::MP_Task mpTask);
   static void vThreadEnableRealtime(Tasks::MP_Task mpTask);
   static void vThreadId(Tasks::MP_Task mpTask);
-  static void vThreadMutexLock(Tasks::MP_Task mpTask);
-  static void vThreadMutexUnlock(Tasks::MP_Task mpTask);
   static void vThreadSleepMsec(Tasks::MP_Task mpTask);
   static void vThreadSleepNsec(Tasks::MP_Task mpTask);
   static void vThreadSleepSsec(Tasks::MP_Task mpTask);

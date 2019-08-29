@@ -225,7 +225,7 @@ void Mutex::vCondSignal(void)
 #endif
   
   AM::vLogRes(SL_INF,this,RA_MTX_SIGNAL,
-              "%s-mutex signal"_Stz, //!format-LogRes
+              "%s-Mutex signal"_Stz, //!format-LogRes
               MK_JOB == m_eSuperKind ? "Job"_Stz : "Thread"_Stz);
 
   //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
@@ -466,7 +466,7 @@ bool Mutex::bMutexLock(void)
 /*----------------------------------------------------------------------------*/
 /* lock this mutex by calling thread (blocking)                               */
 /*----------------------------------------------------------------------------*/
-void Mutex::vMutexLock(void)
+void Mutex::vMutexLock(Object* pByWhom)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -484,9 +484,25 @@ void Mutex::vMutexLock(void)
   if (0 == rCode) {
     RASSERT(! m_bLocked);
     m_bLocked = true;
-    AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
-                "%s-Mutex locked"_Stz, //!format-LogRes
-                MK_JOB == m_eSuperKind ? "Job"_Stz : "Thread"_Stz);
+    
+    SP_Id spId;
+    if (this == pByWhom) { //! NOT COMPLETE
+      AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
+                  "Mutex of %s %s locked by self (%p)"_Stz, //!format-LogRes
+                  MK_JOB == m_eSuperKind ? "Job"_Stz : "Thread"_Stz,
+                  spId.sz(m_iSuperId),
+                  pByWhom,
+                  C_ENDARGS);
+
+    }
+    else {
+      AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
+                  "Mutex of %s %s locked by %p"_Stz, //!format-LogRes
+                  MK_JOB == m_eSuperKind ? "Job"_Stz : "Thread"_Stz,
+                  spId.sz(m_iSuperId),
+                  pByWhom,
+                  C_ENDARGS);
+    }
     return;
   }
   

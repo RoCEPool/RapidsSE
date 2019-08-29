@@ -72,9 +72,9 @@ dynamic scan lineitem | output | zed;
 
 //dynamic fetch lineitem idx || fetch orders idx | output | zed;
 
-ping;
-
 status;
+
+ping;
 
 logWrite;
 
