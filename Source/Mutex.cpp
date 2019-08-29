@@ -6,6 +6,7 @@
 #include "AM.hpp"
 
 Atomic gixMutex;
+Atomic gixMutex_err;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -109,10 +110,10 @@ Mutex::Mutex(eMK eKind, Focal* pFor, ReqTuple* aReqTuple)
   ++ gixMutex;
   SP_Id spId;
   AM::vLogRes(SL_INF,this,RA_MTX_CONSTRUCT,
-              "%s-Mutex construct: for=%s |gixMutex=%lld|"_Stz, //!format-LogRes
+              "%s-Mutex construct: for=%s |gixMutex=%lld/%lld|"_Stz, //!format-LogRes
               aMK[m_eKind],
               spId.sz(m_pFor->m_iUniqueId),
-              * gixMutex);
+              * gixMutex, * gixMutex_err);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
 }
@@ -145,10 +146,10 @@ Mutex::~Mutex(void) noexcept(false)
   -- gixMutex;
   SP_Id spId;
   AM::vLogRes(SL_INF,this,RA_MTX_DESTRUCT,
-              "%s-Mutex destruct: for=%s |gixMutex=%lld|"_Stz, //!format-LogRes
+              "%s-Mutex destruct: for=%s |gixMutex=%lld/%lld|"_Stz, //!format-LogRes
               aMK[m_eKind],
               spId.sz(m_pFor->m_iUniqueId),
-              * gixMutex);
+              * gixMutex, * gixMutex_err);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -202,6 +203,7 @@ void Mutex::vCondBroadcast(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // failure
   
+  ++ gixMutex_err;
   vWarn("pthread_cond_broadcast() error; rCode=%lld\n"_Stz,rCode);
 }
 
@@ -243,6 +245,7 @@ void Mutex::vCondSignal(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // failure
 
+  ++ gixMutex_err;
   vWarn("pthread_cond_signal() error; rCode=%lld\n"_Stz,rCode);
 }
 
@@ -299,6 +302,7 @@ void Mutex::vCondWaitIndefinite(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  ++ gixMutex_err;
   vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
 }
 
@@ -388,6 +392,7 @@ void Mutex::vCondWaitUsec(i8 iMicroSeconds)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // failure
   
+  ++ gixMutex_err;
   vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
 }
 
@@ -460,6 +465,7 @@ bool Mutex::bMutexLock(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // failure -- mutex has not been locked by calling thread
   
+  ++ gixMutex_err;
   return false;
 }
 
@@ -509,6 +515,7 @@ void Mutex::vMutexLock(Object* pByWhom)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // failure -- mutex has not been locked by calling thread
   
+  ++ gixMutex_err;
   vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
 }
 
@@ -548,6 +555,7 @@ void Mutex::vMutexUnlock(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // failure -- mutex has not been unlocked by calling thread
   
+  ++ gixMutex_err;
   vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
 }
 
