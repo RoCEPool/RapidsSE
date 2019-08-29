@@ -18,6 +18,16 @@ namespace Resources
   
     pthread_cond_t      m_xCond;      // posix condition variable
     pthread_condattr_t  m_xCondAttr;  // posix condition attribute
+  
+    Atomic m_ixBroadcast;
+    Atomic m_ixBusy;
+    Atomic m_ixSignal;
+    Atomic m_ixSignaled;
+    Atomic m_ixWaitIndef;
+    Atomic m_ixWaitTimed;
+    Atomic m_ixLock;
+    Atomic m_ixUnlock;
+    Atomic m_ixTimeout;
 
     // must be last
     Footer m_xFooter;

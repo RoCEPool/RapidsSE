@@ -12,25 +12,31 @@ enum eRA // resource actions
   /*    */ RA_DIR_DESTRUCT,
   /*    */ RA_DIR_ERROR,
   /*    */ RA_DIR_OPENED,
+  /*    */ RA_DIR_STATS,
 
   /*    */ RA_FIL_CLOSED,
   /*    */ RA_FIL_CONSTRUCT,
   /*    */ RA_FIL_DESTRUCT,
   /*    */ RA_FIL_ERROR,
   /*    */ RA_FIL_OPENED,
+  /*    */ RA_FIL_STATS,
 
   /*    */ RA_FIO_CONSTRUCT,
   /*    */ RA_FIO_DESTRUCT,
   /*    */ RA_FIO_ERROR,
   /*    */ RA_FIO_MADE,
   /*    */ RA_FIO_REMOVED,
-  
+  /*    */ RA_FIO_STATS,
+
+  /*    */ RA_MTX_BROADCAST,
+  /*    */ RA_MTX_BUSY,
   /*    */ RA_MTX_CONSTRUCT,
   /*    */ RA_MTX_DESTRUCT,
   /*    */ RA_MTX_ERROR,
   /*    */ RA_MTX_LOCKED,
   /*    */ RA_MTX_SIGNAL,
   /*    */ RA_MTX_SIGNALED,
+  /*    */ RA_MTX_STATS,
   /*    */ RA_MTX_TIMEOUT,
   /*    */ RA_MTX_UNLOCKED,
   /*    */ RA_MTX_WAIT_INDEF,
@@ -45,6 +51,7 @@ enum eRA // resource actions
   /*    */ RA_SKT_ERROR,
   /*    */ RA_SKT_RECEIVED,
   /*    */ RA_SKT_SENT,
+  /*    */ RA_SKT_STATS,
 
   /*    */ RA_THD_AWAKE,
   /*    */ RA_THD_CONSTRUCT,
@@ -55,7 +62,8 @@ enum eRA // resource actions
   /*    */ RA_THD_SLEEP,
   /*    */ RA_THD_SLEEP_INDEF,
   /*    */ RA_THD_SPAWNED,
-  
+  /*    */ RA_THD_STATS,
+
   /*    */ RA_ENUMS,
 };
 
@@ -68,25 +76,31 @@ static Stz* aRA[]
   /*    */ "RA_DIR_DESTRUCT"_Stz,
   /*    */ "RA_DIR_ERROR"_Stz,
   /*    */ "RA_DIR_OPENED"_Stz,
+  /*    */ "RA_DIR_STATS"_Stz,
 
   /*    */ "RA_FIL_CLOSED"_Stz,
   /*    */ "RA_FIL_CONSTRUCT"_Stz,
   /*    */ "RA_FIL_DESTRUCT"_Stz,
   /*    */ "RA_FIL_ERROR"_Stz,
   /*    */ "RA_FIL_OPENED"_Stz,
+  /*    */ "RA_FIL_STATS"_Stz,
 
   /*    */ "RA_FIO_CONSTRUCT"_Stz,
   /*    */ "RA_FIO_DESTRUCT"_Stz,
   /*    */ "RA_FIO_ERROR"_Stz,
   /*    */ "RA_FIO_MADE"_Stz,
   /*    */ "RA_FIO_REMOVED"_Stz,
-  
+  /*    */ "RA_FIO_STATS"_Stz,
+
+  /*    */ "RA_MTX_BROADCAST"_Stz,
+  /*    */ "RA_MTX_BUSY"_Stz,
   /*    */ "RA_MTX_CONSTRUCT"_Stz,
   /*    */ "RA_MTX_DESTRUCT"_Stz,
   /*    */ "RA_MTX_ERROR"_Stz,
   /*    */ "RA_MTX_LOCKED"_Stz,
   /*    */ "RA_MTX_SIGNAL"_Stz,
   /*    */ "RA_MTX_SIGNALED"_Stz,
+  /*    */ "RA_MTX_STATS"_Stz,
   /*    */ "RA_MTX_TIMEOUT"_Stz,
   /*    */ "RA_MTX_UNLOCKED"_Stz,
   /*    */ "RA_MTX_WAIT_INDEF"_Stz,
@@ -101,6 +115,7 @@ static Stz* aRA[]
   /*    */ "RA_SKT_ERROR"_Stz,
   /*    */ "RA_SKT_RECEIVED"_Stz,
   /*    */ "RA_SKT_SENT"_Stz,
+  /*    */ "RA_SKT_STATS"_Stz,
 
   /*    */ "RA_THD_AWAKE"_Stz,
   /*    */ "RA_THD_CONSTRUCT"_Stz,
@@ -111,7 +126,8 @@ static Stz* aRA[]
   /*    */ "RA_THD_SLEEP"_Stz,
   /*    */ "RA_THD_SLEEP_INDEF"_Stz,
   /*    */ "RA_THD_SPAWNED"_Stz,
-  
+  /*    */ "RA_THD_STATS"_Stz,
+
   /*    */ "ENUMS"_Stz,
 };
 
