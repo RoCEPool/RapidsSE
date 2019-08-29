@@ -45,6 +45,7 @@ namespace Logging
   
     ReqTuple m_xReqTuple;
   
+    i8   m_iAct;
     eSL  m_eSeverity;  // severity level
   
     bool m_bLine;      // draw line before?

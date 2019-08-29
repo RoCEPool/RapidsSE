@@ -27,9 +27,7 @@ Resource::Resource(eCN eClassNo, ReqTuple* aReqTuple)
 , m_xReqTuple(aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
-  
-  m_oBirth.vNow();
-  
+    
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);  
 }
 
@@ -64,6 +62,16 @@ ReqTuple* Resource::aReqTuple(void)
   _precondition_(_ADDRESS_,_MAGIC_);
 
   return & m_xReqTuple;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get action number                                                          */
+/*----------------------------------------------------------------------------*/
+i8 Resource::iAct(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return * m_ixAct;
 }
 
 

@@ -260,7 +260,7 @@ u8 Lock::iLockIsLocked(u8* pWord)
 /*----------------------------------------------------------------------------*/
 void Lock::vFocalOutline(s4K& sOutline)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCK,_FOOTER_);
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
   sOutline.vSprint("<%s focal>"_Stz,aCN[eClass()]);
 }
@@ -270,7 +270,7 @@ void Lock::vFocalOutline(s4K& sOutline)
 /*----------------------------------------------------------------------------*/
 ReqTuple* Lock::aReqTuple(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCK,_FOOTER_);
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
   return & m_xReqTuple;
 }

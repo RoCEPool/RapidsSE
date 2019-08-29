@@ -13,6 +13,7 @@ void _LogEntryRes::vSet(LogEntry* pLogEntry, Resource* pResource, eRA eResAct)
   
   m_eClass  = pResource->eClass();
   pLogEntry->m_xReqTuple.vSet(pResource->aReqTuple());
+  pLogEntry->m_iAct = pResource->iAct();
 
   m_iResId  = pResource->m_iUniqueId;
   m_eResAct = eResAct;
@@ -53,10 +54,14 @@ void _LogEntryRes::vWriteTxt(File* pFile, LogEntry* pEntry)
 {
   SP_Id spId;
   
-  pFile->vPrint(C_ENTRY_FMT_2s,
+  pFile->vPrint("%-20s %s:%03lld "_Stz, //C_ENTRY_FMT_2s,
                 
                 aRA[m_eResAct],
-                spId.sz(IK_RESOURCE,m_iResId)
+                spId.sz(IK_RESOURCE,m_iResId),
+                
+                pEntry->m_iAct,
+                
+                C_ENDARGS
                 );
 }
 
