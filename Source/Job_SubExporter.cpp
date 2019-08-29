@@ -117,7 +117,7 @@ Job_SubExporter::Job_SubExporter(Session* pSession, i8 iRequestId, ReqTuple* aRe
   
   _checkInitialised_(CN_JOB_SUBEXPORTER);
   
-  //ActLog::vAdd(this,AN_CONSTRUCTOR,CN_JOB_SUBEXPORTER,_EG_CN);
+  //ActLog::vAdd(this,AN_CONSTRUCT,CN_JOB_SUBEXPORTER,_EG_CN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBEXPORTER,_FOOTER_);
 }

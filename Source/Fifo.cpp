@@ -32,8 +32,8 @@ Fifo::Fifo(void)
   _checkInitialised_(CN_FIFO);
   
   ++ gixFifo;
-  AM::vLogRes(SL_INF,this,RA_FIO_CONSTRUCTOR,
-              "Fifo constructed : %p (%lld fifos exist)"_Stz, //!format-LogRes
+  AM::vLogRes(SL_INF,this,RA_FIO_CONSTRUCT,
+              "Fifo construct : %p (%lld fifos exist)"_Stz, //!format-LogRes
               this,* gixFifo);
   
   _postcondition_(_MAGIC_,CN_FIFO,_FOOTER_);
@@ -52,8 +52,8 @@ Fifo::Fifo(Stz* sFifoPath)
 
   _checkInitialised_(CN_FIFO);
   
-  AM::vLogRes(SL_INF,this,RA_FIO_CONSTRUCTOR,
-              "Fifo constructed : %p (%lld fifos exist)"_Stz, //!format-LogRes
+  AM::vLogRes(SL_INF,this,RA_FIO_CONSTRUCT,
+              "Fifo construct : %p (%lld fifos exist)"_Stz, //!format-LogRes
               this,* gixFifo);
   
   _postcondition_(_MAGIC_,CN_FIFO,_FOOTER_);
@@ -67,8 +67,8 @@ Fifo::~Fifo(void) noexcept(false)
   _precondition_(_MAGIC_,CN_FIFO,_FOOTER_);
   
   -- gixFifo;
-  AM::vLogRes(SL_INF,this,RA_MTX_DESTRUCTOR,
-              "Fifo destructed : %p (%lld fifos exist)"_Stz, //!format-LogRes
+  AM::vLogRes(SL_INF,this,RA_MTX_DESTRUCT,
+              "Fifo destruct : %p (%lld fifos exist)"_Stz, //!format-LogRes
               this,* gixFifo);
 }
 

@@ -110,7 +110,7 @@ Job__Cancelled::Job__Cancelled(Job* pDistJob)
   
   _checkInitialised_(CN_JOB__CANCELLED);
   
-  //ActLog::vAdd(this,AN_CONSTRUCTOR,CN_JOB__CANCELLED,_EG_CN);
+  //ActLog::vAdd(this,AN_CONSTRUCT,CN_JOB__CANCELLED,_EG_CN);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB__CANCELLED,_FOOTER_);
 }

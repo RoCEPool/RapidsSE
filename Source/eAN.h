@@ -7,8 +7,8 @@ enum eAN // action numbers
 {
 /*  0 */ AN_NONE=0,
 
-/*    */ AN_CONSTRUCTOR,
-/*    */ AN_DESTRUCTOR,
+/*    */ AN_CONSTRUCT,
+/*    */ AN_DESTRUCT,
 /*    */ AN_ERROR_CODE,
 /*    */ AN_JOB_BEGIN,
 /*    */ AN_JOB_CHUNK,

@@ -64,8 +64,8 @@ Dir::Dir(void)
   _checkInitialised_(CN_DIR);
   
   ++ gixDir;
-  AM::vLogRes(SL_INF,this,RA_DIR_CONSTRUCTOR,
-              "Dir constructed : %p (%lld dirs exist)"_Stz, //!format-LogRes
+  AM::vLogRes(SL_INF,this,RA_DIR_CONSTRUCT,
+              "Dir construct : %p (%lld dirs exist)"_Stz, //!format-LogRes
               this,* gixDir);
   
   _postcondition_(_MAGIC_,CN_DIR,_FOOTER_);
@@ -79,8 +79,8 @@ Dir::~Dir(void) noexcept(false)
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
   -- gixDir;
-  AM::vLogRes(SL_INF,this,RA_DIR_DESTRUCTOR,
-              "Dir destructed : %p (%lld dirs exist)"_Stz, //!format-LogRes
+  AM::vLogRes(SL_INF,this,RA_DIR_DESTRUCT,
+              "Dir destruct : %p (%lld dirs exist)"_Stz, //!format-LogRes
               this,* gixDir);
 }
 

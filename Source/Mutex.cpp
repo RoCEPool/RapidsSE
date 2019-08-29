@@ -108,8 +108,8 @@ Mutex::Mutex(eMK eDadKind, i8 i_DadId, ReqTuple* aReqTuple)
   
   ++ gixMutex;
   SP_Id spId;
-  AM::vLogRes(SL_INF,this,RA_MTX_CONSTRUCTOR,
-              "Mutex constructed {super: %s %s} |gixMutex=%lld|"_Stz, //!format-LogRes
+  AM::vLogRes(SL_INF,this,RA_MTX_CONSTRUCT,
+              "Mutex construct {super: %s %s} |gixMutex=%lld|"_Stz, //!format-LogRes
               aMK[m_eSuperKind],
               spId.sz(m_iSuperId),
               * gixMutex);
@@ -144,8 +144,8 @@ Mutex::~Mutex(void) noexcept(false)
   
   -- gixMutex;
   SP_Id spId;
-  AM::vLogRes(SL_INF,this,RA_MTX_DESTRUCTOR,
-              "Mutex destructed {super: %s %s} |gixMutex=%lld|"_Stz, //!format-LogRes
+  AM::vLogRes(SL_INF,this,RA_MTX_DESTRUCT,
+              "Mutex destruct {super: %s %s} |gixMutex=%lld|"_Stz, //!format-LogRes
               aMK[m_eSuperKind],
               spId.sz(m_iSuperId),
               * gixMutex);

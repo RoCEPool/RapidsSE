@@ -45,6 +45,7 @@ namespace Locking
 
   public:
     void vFocalOutline(s4K& sOutline);
+    ReqTuple* aReqTuple(void);
   
     bool bIsLocked(void);
     i8   iLockId(void);

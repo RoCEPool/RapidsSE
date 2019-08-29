@@ -56,8 +56,8 @@ File::File(void)
   _checkInitialised_(CN_FILE);
   
   ++ gixFile;
-  AM::vLogRes(SL_INF,this,RA_FIL_CONSTRUCTOR,
-              "File constructed |gixFile=%lld|"_Stz, //!format-LogRes
+  AM::vLogRes(SL_INF,this,RA_FIL_CONSTRUCT,
+              "File construct |gixFile=%lld|"_Stz, //!format-LogRes
               * gixFile);
   
   _postcondition_(_MAGIC_,CN_FILE,_FOOTER_);
@@ -80,8 +80,8 @@ File::~File(void) noexcept(false)
   }
   
   -- gixFile;
-  AM::vLogRes(SL_INF,this,RA_MTX_DESTRUCTOR,
-              "File destructed |gixFile=%lld|"_Stz, //!format-LogRes
+  AM::vLogRes(SL_INF,this,RA_MTX_DESTRUCT,
+              "File destruct |gixFile=%lld|"_Stz, //!format-LogRes
               * gixFile);
 }
 
