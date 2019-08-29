@@ -447,7 +447,7 @@ i8 giClassSize[]
   /* 32 */ sizeof(Request),            // CN_COMMAND
   /* 32 */ sizeof(Compiler),           // CN_COMPILER
   /* 32 */ sizeof(Completer),          // CN_COMPLETER
-  /* 32 */ sizeof(Completer),          // CN_COUNTOP
+  /* 32 */ sizeof(CountOp),            // CN_COUNTOP
   /*    */ sizeof(CrwBuffer),          // CN_CRWBUFFER
 
   /*    */ sizeof(DecaCnt),            // CN_DECACNT
