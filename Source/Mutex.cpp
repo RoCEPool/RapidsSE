@@ -54,13 +54,13 @@ void Mutex::operator delete(void* pMutexAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Mutex::Mutex(eMK eDadKind, Object* pFor, i8 i_DadId, ReqTuple* aReqTuple)
+Mutex::Mutex(eMK eKind, Object* pFor, i8 i_DadId, ReqTuple* aReqTuple)
 : Resource(CN_MUTEX,aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
-  m_eSuperKind = eDadKind;
-  m_iSuperId  = i_DadId;
+  m_eKind    = eKind;
+  m_iSuperId = i_DadId;
   m_pFor     = pFor;
   
   m_bLocked  = false;
@@ -111,7 +111,7 @@ Mutex::Mutex(eMK eDadKind, Object* pFor, i8 i_DadId, ReqTuple* aReqTuple)
   SP_Id spId;
   AM::vLogRes(SL_INF,this,RA_MTX_CONSTRUCT,
               "%s-Mutex construct: super=%s |gixMutex=%lld|"_Stz, //!format-LogRes
-              aMK[m_eSuperKind],
+              aMK[m_eKind],
               spId.sz(m_iSuperId),
               * gixMutex);
 
@@ -147,7 +147,7 @@ Mutex::~Mutex(void) noexcept(false)
   SP_Id spId;
   AM::vLogRes(SL_INF,this,RA_MTX_DESTRUCT,
               "%s-Mutex destruct: super=%s |gixMutex=%lld|"_Stz, //!format-LogRes
-              aMK[m_eSuperKind],
+              aMK[m_eKind],
               spId.sz(m_iSuperId),
               * gixMutex);
 }
@@ -227,7 +227,7 @@ void Mutex::vCondSignal(void)
   
   AM::vLogRes(SL_INF,this,RA_MTX_SIGNAL,
               "%s-Mutex signal"_Stz, //!format-LogRes
-              MK_JOB == m_eSuperKind ? "Job"_Stz : "Thread"_Stz);
+              MK_JOB == m_eKind ? "Job"_Stz : "Thread"_Stz);
 
   //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
   i8 rCode = pthread_cond_signal(&m_xCond);                      // non-blocking
@@ -271,7 +271,7 @@ void Mutex::vCondWaitIndefinite(void)
   
   AM::vLogRes(SL_INF,this,RA_MTX_WAIT_INDEF,
               "%s-Mutex wait (indefinite)"_Stz, //!format-LogRes
-              MK_JOB == m_eSuperKind ? "Job"_Stz : "Thread"_Stz);
+              MK_JOB == m_eKind ? "Job"_Stz : "Thread"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -288,7 +288,7 @@ void Mutex::vCondWaitIndefinite(void)
   
   AM::vLogRes(SL_INF,this,RA_MTX_SIGNALED,
               "%s-Mutex signaled (indefinite wait)"_Stz, //!format-LogRes
-              MK_JOB == m_eSuperKind ? "Job"_Stz : "Thread"_Stz);
+              MK_JOB == m_eKind ? "Job"_Stz : "Thread"_Stz);
 
   // success
 
@@ -338,7 +338,7 @@ void Mutex::vCondWaitUsec(i8 iMicroSeconds)
   
   AM::vLogRes(SL_INF,this,RA_MTX_WAIT_TIMED,
               "%s-Mutex wait (timed=%lldus)"_Stz, //!format-LogRes
-              MK_JOB == m_eSuperKind ? "Job"_Stz : "Thread"_Stz,
+              MK_JOB == m_eKind ? "Job"_Stz : "Thread"_Stz,
               iMicroSeconds);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -361,7 +361,7 @@ void Mutex::vCondWaitUsec(i8 iMicroSeconds)
     
     AM::vLogRes(SL_INF,this,RA_MTX_SIGNALED,
                 "%s-Mutex signaled (timed=%lldus)"_Stz, //!format-LogRes
-                MK_JOB == m_eSuperKind ? "Job"_Stz : "Thread"_Stz,
+                MK_JOB == m_eKind ? "Job"_Stz : "Thread"_Stz,
                 iMicroSeconds);
 
     m_bLocked = true;
@@ -380,7 +380,7 @@ void Mutex::vCondWaitUsec(i8 iMicroSeconds)
     
    AM::vLogRes(SL_INF,this,RA_MTX_TIMEOUT,
                "%s-Mutex timeout (timed=%lldus)"_Stz, //!format-LogRes
-               MK_JOB == m_eSuperKind ? "Job"_Stz : "Thread"_Stz,
+               MK_JOB == m_eKind ? "Job"_Stz : "Thread"_Stz,
                iMicroSeconds);
    m_bLocked = true;
     return;
@@ -448,7 +448,7 @@ bool Mutex::bMutexLock(void)
     m_bLocked = true;
     AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
                 "%s mutex locked"_Stz, //!format-LogRes
-                MK_JOB == m_eSuperKind ? "Job"_Stz : "Thread"_Stz);
+                MK_JOB == m_eKind ? "Job"_Stz : "Thread"_Stz);
     return true;
   }
   
@@ -490,7 +490,7 @@ void Mutex::vMutexLock(Object* pByWhom)
     if (this == pByWhom) { //! NOT COMPLETE
       AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
                   "Mutex of %s %s locked by self (%p)"_Stz, //!format-LogRes
-                  MK_JOB == m_eSuperKind ? "Job"_Stz : "Thread"_Stz,
+                  MK_JOB == m_eKind ? "Job"_Stz : "Thread"_Stz,
                   spId.sz(m_iSuperId),
                   pByWhom,
                   C_ENDARGS);
@@ -499,7 +499,7 @@ void Mutex::vMutexLock(Object* pByWhom)
     else {
       AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
                   "Mutex of %s %s locked by %p"_Stz, //!format-LogRes
-                  MK_JOB == m_eSuperKind ? "Job"_Stz : "Thread"_Stz,
+                  MK_JOB == m_eKind ? "Job"_Stz : "Thread"_Stz,
                   spId.sz(m_iSuperId),
                   pByWhom,
                   C_ENDARGS);
@@ -533,7 +533,7 @@ void Mutex::vMutexUnlock(void)
   
   AM::vLogRes(SL_INF,this,RA_MTX_UNLOCKED,
               "%s-Mutex unlocked"_Stz, //!format-LogRes
-              MK_JOB == m_eSuperKind ? "Job"_Stz : "Thread"_Stz);
+              MK_JOB == m_eKind ? "Job"_Stz : "Thread"_Stz);
 
   //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
   i8 rCode = pthread_mutex_unlock(&m_xMutex);                    // non-blocking
