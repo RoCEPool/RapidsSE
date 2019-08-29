@@ -70,7 +70,7 @@ Thread::Thread(void)
   m_eDedicated   = CN_NONE;
 
   m_pPthread     = new Pthread;
-  m_pMutexThread = new Mutex(MK_THREAD,this,this->m_iUniqueId,nullptr);
+  m_pMutexThread = new Mutex(MK_THREAD,this,nullptr);
     
   m_nAssignedTasks = 0;
 
