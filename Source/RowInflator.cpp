@@ -421,7 +421,7 @@ void RowInflator::vInflateColumn(Row* pRow, HeadLine* aHeadLine, i8 i_ColToRetri
 /* inflate headline into row                                                  */
 /*----------------------------------------------------------------------------*/
 void RowInflator::vInflateColumn(Row* pRow, i8 iColumnInto, HeadLine* aHeadLine,
-                                 i8 i_ColToRetrieve, ColumnVec* pColVec)
+                                 i8 iBaseOffset, i8 i_ColToRetrieve, ColumnVec* pColVec)
 {
   eMC  eMetaCode;
   Word wWord;
@@ -446,7 +446,7 @@ void RowInflator::vInflateColumn(Row* pRow, i8 iColumnInto, HeadLine* aHeadLine,
   i8 nCols = pColVec->nItems();
   
   eMC*  aeMetaCode = aAdd<eMC*>(aHeadLine,C_W_1B);
-  byte* ayDataByte = (byte*)aHeadLine + pRow->m_iBaseOffset;
+  byte* ayDataByte = (byte*)aHeadLine + iBaseOffset;
   i8*   aiColVal   = &pRow->m_waColVal[iColumnInto].m_iInt;
   
   RASSERT(pRow->m_pColVec->pGet(iColumnInto)->eColumnType() ==

@@ -35,8 +35,10 @@ ld jidxDte "../JTEST/jidxDte.csv" ;
 
 //time dynamic fetch jidxDte idx_dte 1 | limit 1 | output | zed;
 
- time dynamic fetch jidxDte idx_dte | project jidx_tsp | output | zed;
- time dynamic fetch jidxDte idx_dte | project jidx_tsp, jidx_100 | output | zed;
+ //time dynamic fetch jidxDte idx_dte | project jidx_tsp | output | zed;
+ //time dynamic fetch jidxDte idx_dte | project jidx_tsp, jidx_100 | output | zed;
+time dynamic fetch jidxDte idx_dte | agg jidx_100 | output | zed;
+time dynamic fetch jidxDte idx_dte | project jidx_100 | agg jidx_100 | output | zed;
 
 /*
 print "\nSelecting rows with key >= 3 using idx1 ...\n" ;

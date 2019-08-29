@@ -60,6 +60,7 @@ ProjectOp::ProjectOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bApp
 {
   _precondition_(_MAGIC_,CN_PROJECTOP);
   
+  m_fpCall = ProjectOp::eCall;
   m_pStreamDef = new StreamDef;
   m_pOriginalStreamDef = nullptr;
   m_pIrwBuffer = new IrwBuffer;
@@ -184,6 +185,7 @@ eOR ProjectOp::eOpLoop(void)
           
           if ( ! pRow ) {
             vPipeOut(m_pIrwBuffer);
+            //m_pIrwBuffer->vShow(m_pStreamDef->pColumnVec(0));
             m_pIrwBuffer = new IrwBuffer;
             pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
           }
@@ -194,8 +196,12 @@ eOR ProjectOp::eOpLoop(void)
           Crw* aRowData = pCrwBuffer->pCrw(aEnt->xRef().iItem());
           
           for (i8 i_IntoCol = 0; i_IntoCol < pColumnVec->nItems(); i_IntoCol++) {
-            RowInflator::vInflateColumn(pRow, i_IntoCol, aRowData, m_iWhichCol[i_IntoCol],
+            i8 iBaseOffset = RowCoder::iBaseOffset(m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[i_IntoCol]));
+                                                   
+            RowInflator::vInflateColumn(pRow, i_IntoCol, aRowData, iBaseOffset, m_iWhichCol[i_IntoCol],
                                         m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[i_IntoCol]));
+            
+            
           }
           
           aEnt = pEntBuffer->aGetNextEntry(&pEntBuffer, aEnt);
