@@ -23,6 +23,7 @@ namespace Sessions
     void  operator delete(void* aAddr);
     
     Request(Session* p_Session, TokenVec* p_TknVec);
+    Request(Session* p_Session, Stz* szPurpose);
    ~Request(void) noexcept(false);
   
     ReqTuple* aReqTuple(void);

@@ -304,7 +304,7 @@ void LogEntry::vWriteTxtEntry(File* pFile)
   SP_Id spId;
   
   pFile->vPrint("[%04lld,%04lld,%s+%s] %014p "
-                "%16s:%03lld:%c%s:%03lld "
+                "%16s:%03lld:%c%s:%03lld:%-16s "
                 ""_Stz,
                 
                 m_i_Entry,
@@ -312,12 +312,13 @@ void LogEntry::vWriteTxtEntry(File* pFile)
                 m_caNode,
                 spElapsed.szNsec(m_iTick - AM::iAMTimePoint()),
                 m_pFocal,
-                
-                aCN[m_eClass],
+
+                m_xReqTuple.m_sPurpose.aStz(),
                 m_xReqTuple.m_iReqId,
                 m_cPrefix, spId.sz(m_iUniqueId),
                 m_iAct,
-                
+                aCN[m_eClass],
+
                 C_ENDARGS);
 }
 
