@@ -16,11 +16,11 @@ enum eHA // thread actions
   /*    */ HA_THD_DESTRUCT,
   /*    */ HA_THD_END_LOOP,
   /*    */ HA_THD_EXECUTE_DEDICATED,
+  /*    */ HA_THD_GET_ASSIGN,
   /*    */ HA_THD_INF,
   /*    */ HA_THD_REMOVE_DEDICATED,
   /*    */ HA_THD_REMOVE_GENERAL,
   /*    */ HA_THD_UNASSIGN_TASK,
-  /*    */ HA_THD_WAIT_ASSIGN,
   
   /*    */ HA_THD_POP,
 
@@ -40,11 +40,11 @@ static Stz* aHA[]
   /*  0 */ "HA_THD_DESTRUCT"_Stz,
   /*  0 */ "HA_THD_END_LOOP"_Stz,
   /*  0 */ "HA_THD_EXECUTE_DEDICATED"_Stz,
+  /*  0 */ "HA_THD_GET_ASSIGN"_Stz,
   /*  0 */ "HA_THD_INF"_Stz,
   /*  0 */ "HA_THD_REMOVE_DEDICATED"_Stz,
   /*  0 */ "HA_THD_REMOVE_GENERAL"_Stz,
   /*  0 */ "HA_THD_UNASSIGN_TASK"_Stz,
-  /*  0 */ "HA_THD_WAIT_ASSIGN"_Stz,
 
   /*  0 */ "HA_THD_POP"_Stz,
   

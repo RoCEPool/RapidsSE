@@ -749,6 +749,7 @@ void Scheduler::vTask_Pause(Task* pTask)
 /*----------------------------------------------------------------------------*/
 Task* Scheduler::pTask_Pop(Thread* pThread)
 {
+  pThread->vIncActNo();
   AM::vLogThd(SL_INF,pThread,HA_THD_POP,
               "Thread attempts pop of task from ReadyQueue/ReadyQueueLP"_Stz); //!format-LogThd
   
@@ -1090,6 +1091,7 @@ void Scheduler::vTask_Yield(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_AddDedicated(Thread* pThread)
 {
+  pThread->vIncActNo();
   AM::vLogThd(SL_INF,pThread,HA_THD_ADD_DEDICATED,
               "Thread added to DedicatedThreadVec"_Stz); //!format-LogThd
   
@@ -1106,6 +1108,7 @@ void Scheduler::vThread_AddDedicated(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_AddGeneral(Thread* pThread)
 {
+  pThread->vIncActNo();
   AM::vLogThd(SL_INF,pThread,HA_THD_ADD_GENERAL,
               "Thread added to GeneralThreadVec"_Stz); //!format-LogThd
   
@@ -1122,8 +1125,9 @@ void Scheduler::vThread_AddGeneral(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_AppendIdle(Thread* pThread)
 {
+  pThread->vIncActNo();
   AM::vLogThd(SL_INF,pThread,HA_THD_APPEND_IDLE,
-              "Thread moves onto IdleThreadQueue"_Stz); //!format-LogThd
+              "Thread moves onto IdleThreadQueue (no ready task available)"_Stz); //!format-LogThd
   
   RASSERT(! pThread->m_pTask);
   ASSERT(HS_UNASSIGNED == pThread->m_eThreadState);
@@ -1179,6 +1183,7 @@ bool Scheduler::bThread_AssignIdle(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_BeginLoop(Thread* pThread)
 {
+  pThread->vIncActNo();
   AM::vLogThd(SL_INF,pThread,HA_THD_BEGIN_LOOP,
               "Thread is at beginning of it's thread loop"_Stz); //!format-LogThd
   
@@ -1197,6 +1202,7 @@ void Scheduler::vThread_BeginLoop(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_ContinueSame(Thread* pThread, Task* pTask)
 {
+  pThread->vIncActNo();
   AM::vLogThd(SL_INF,pThread,HA_THD_CONTINUE_SAME,
               "Thread continues executing same task"_Stz); //!format-LogThd
   
@@ -1214,6 +1220,7 @@ void Scheduler::vThread_ContinueSame(Thread* pThread, Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_EndLoop(Thread* pThread)
 {
+  pThread->vIncActNo();
   AM::vLogThd(SL_INF,pThread,HA_THD_END_LOOP,
               "Thread has ended it's thread loop"_Stz); //!format-LogThd
   
@@ -1225,6 +1232,7 @@ void Scheduler::vThread_EndLoop(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_ExecuteDedicated(Thread* pThread)
 {
+  pThread->vIncActNo();
   AM::vLogThd(SL_INF,pThread,HA_THD_EXECUTE_DEDICATED, //!format-LogThd
               "Thread executes dedicated task"_Stz);
   
@@ -1276,6 +1284,7 @@ void Scheduler::vThread_PauseGeneral(void)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_RemoveDedicated(Thread* pThread)
 {
+  pThread->vIncActNo();
   AM::vLogThd(SL_INF,pThread,HA_THD_REMOVE_DEDICATED,
               "Thread removed from DedicatedThreadVec"_Stz); //!format-LogThd
   
@@ -1293,6 +1302,7 @@ void Scheduler::vThread_RemoveDedicated(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_RemoveGeneral(Thread* pThread)
 {
+  pThread->vIncActNo();
   AM::vLogThd(SL_INF,pThread,HA_THD_REMOVE_GENERAL,
               "Thread from from GeneralThreadVec"_Stz); //!format-LogThd
   
@@ -1329,6 +1339,7 @@ void Scheduler::vThread_SpawnDedicated(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_UnassignTask(Thread* pThread)
 {
+  pThread->vIncActNo();
   AM::vLogThd(SL_INF,pThread,HA_THD_UNASSIGN_TASK,
               "Thread unassigns its task"_Stz); //!format-LogThd
   
@@ -1341,8 +1352,9 @@ void Scheduler::vThread_UnassignTask(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vThread_WaitAssignment(Thread* pThread)
 {
-  AM::vLogThd(SL_INF,pThread,HA_THD_WAIT_ASSIGN,
-              "Thread waits for task assignment"_Stz); //!format-LogThd
+  pThread->vIncActNo();
+  AM::vLogThd(SL_INF,pThread,HA_THD_GET_ASSIGN,
+              "Thread attempts task assignment"_Stz); //!format-LogThd
   
   ASSERT(HS_UNASSIGNED == pThread->m_eThreadState);
   RASSERT(pThread->m_pMutexThread->bMutexIsLocked());
