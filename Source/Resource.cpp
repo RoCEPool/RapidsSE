@@ -23,7 +23,7 @@ Resource* Resources::_pResource(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Resource::Resource(eCN eClassNo, ReqTuple* aReqTuple)
-: Focal(eClassNo,AM::iNextResourceId())
+: Focal(eClassNo,AM::iNextResourceId(),nullptr)
 , m_xReqTuple(aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);

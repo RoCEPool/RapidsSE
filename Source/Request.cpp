@@ -44,7 +44,7 @@ void Request::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Request::Request(Session* p_Session, TokenVec* p_TknVec)
-: Focal(CN_REQUEST,AM::iNextRequest())
+: Focal(CN_REQUEST,AM::iNextRequest(),p_Session)
 , m_xReqTuple(nullptr)
 {
   _precondition_(_MAGIC_,CN_REQUEST,_FOOTER_);
@@ -73,7 +73,7 @@ Request::Request(Session* p_Session, TokenVec* p_TknVec)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Request::Request(Session* p_Session, Stz* szPurpose)
-: Focal(CN_REQUEST,AM::iNextRequest())
+: Focal(CN_REQUEST,AM::iNextRequest(),p_Session)
 , m_xReqTuple(nullptr)
 {
   _precondition_(_MAGIC_,CN_REQUEST,_FOOTER_);
