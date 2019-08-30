@@ -302,9 +302,10 @@ void LogEntry::vWriteTxtEntry(File* pFile)
     pFile->vPrint("%s\n"_Stz,C_LOG_LINE);
   
   SP_Id spId;
-  
+  SP_Id spReqId;
+
   pFile->vPrint("[%04lld,%04lld,%s+%s] %014p "
-                "%16s:%03lld:%c%s:%03lld:%-16s "
+                "%16s:%s:%s:%03lld:%-16s "
                 ""_Stz,
                 
                 m_i_Entry,
@@ -314,8 +315,8 @@ void LogEntry::vWriteTxtEntry(File* pFile)
                 m_pFocal,
 
                 m_xReqTuple.m_sPurpose.aStz(),
-                m_xReqTuple.m_iReqId,
-                m_cPrefix, spId.sz(m_iUniqueId),
+                spReqId.sz(EK_REQ,m_xReqTuple.m_iReqId),
+                spId.sz(m_eKind,m_iUniqueId),
                 m_iAct,
                 aCN[m_eClass],
 

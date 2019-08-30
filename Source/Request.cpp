@@ -91,9 +91,11 @@ Request::Request(Session* p_Session, Stz* szPurpose)
   
   SP_TknVecStr spTknVecStr;
   
+  Now oNow;
   AM::vLogReq(SL_INF,this,MA_REQ_BEGIN,
-              "Request begin: %s"_Stz, //!format-LogReq
-              m_xReqTuple.m_sPurpose.aStz());
+              "Request begin: %s (%s)"_Stz, //!format-LogReq
+              m_xReqTuple.m_sPurpose.aStz(),
+              oNow.sz());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -110,8 +112,10 @@ Request::~Request(void) noexcept(false)
   // do not delete: m_p_Session
   // do not delete: m_p_TknVec
   
+  Now oNow;
   AM::vLogReq(SL_INF,this,MA_REQ_END,
-              "Request end"_Stz); //!format-LogReq
+              "Request end (%s)"_Stz, //!format-LogReq
+              oNow.sz());
 }
 
 

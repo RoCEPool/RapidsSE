@@ -18,6 +18,7 @@ namespace Gadgets
   
     Stz* sz(i8 iId);
     Stz* sz(eIK eKind, i8 iId);
+    Stz* sz(eEK eKind, i8 iId);
 
     Footer* aFooter(void);
   };
