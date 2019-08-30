@@ -15,6 +15,7 @@
 /*----------------------------------------------------------------------------*/
 void Scheduler::vAddOriginatingJob(Job* pJob)
 {
+  pJob->vIncActNo();
   AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_ORIGINATING,
               "Job added to OriginatingJobs"_Stz); //!format-LogJob
   
@@ -30,6 +31,7 @@ void Scheduler::vAddOriginatingJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vAddParticipatingJob(Job* pJob)
 {
+  pJob->vIncActNo();
   AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_PARTICIPATING,
               "Job added to ParticipatingJobs"_Stz); //!format-LogJob
   
@@ -107,6 +109,7 @@ Job* Scheduler::pFindParticipatingJob(i8 iJobId)
 /*----------------------------------------------------------------------------*/
 bool Scheduler::bRemoveOriginatingJob(Job* pJob, bool bDump)
 {
+  pJob->vIncActNo();
   AM::vLogJob(SL_INF,pJob,JA_JOB_REMOVE_ORIGINATING,
               "Job removed from OriginatingJobs"_Stz); //!format-LogJob
   
@@ -129,6 +132,7 @@ bool Scheduler::bRemoveOriginatingJob(Job* pJob, bool bDump)
 /*----------------------------------------------------------------------------*/
 bool Scheduler::bRemoveParticipatingJob(Job* pJob, bool bDump)
 {
+  pJob->vIncActNo();
   AM::vLogJob(SL_INF,pJob,JA_JOB_REMOVE_PARTICIPATING,
               "Job fremoved from ParticipatingJobs"_Stz); //!format-LogJob
   

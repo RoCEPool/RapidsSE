@@ -9,9 +9,9 @@
 /*----------------------------------------------------------------------------*/
 void _LogEntryJob::vSet(LogEntry* pLogEntry, Job* pJob, eJA eJobAct)
 {  
-  pLogEntry->m_eKind = EK_JOB;
+  pLogEntry->m_eKind   = EK_JOB;
   pLogEntry->m_cPrefix = 'J';
-  
+  pLogEntry->m_iAct    = pJob->iActNo();
   pLogEntry->m_xReqTuple.vSet(&pJob->m_xReqTuple);
 
   m_iJobId  = pJob->m_iUniqueId;
