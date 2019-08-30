@@ -55,10 +55,9 @@ void _LogEntryRes::vWriteTxt(File* pFile, LogEntry* pEntry)
 {
   SP_Id spId;
   
-  pFile->vPrint(C_ENTRY_FMT_2s,
+  pFile->vPrint(C_ENTRY_FMT_1s,
                 
                 aRA[m_eResAct],
-                spId.sz(IK_RESOURCE,m_iResId),
                 
                 C_ENDARGS
                 );
