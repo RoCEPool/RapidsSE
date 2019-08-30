@@ -45,6 +45,10 @@ Calculator::Calculator(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
   
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_baExpr,sizeof(m_baExpr),CN_CALCULATOR);
+#endif
+  
   _checkInitialised_(CN_CALCULATOR);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
@@ -61,6 +65,30 @@ Calculator::~Calculator(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* compile                                                                    */
+/*----------------------------------------------------------------------------*/
+bool Calculator::bCompile(TokenVec* pTknVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
+  
+  m_baExpr[0] = EO_RETURN;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute                                                                    */
+/*----------------------------------------------------------------------------*/
+i8 Calculator::iCompute(Row *pRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
+  
+  m_iaStack[0] = C_UNKNOWN;
+  
+  return m_iaStack[0];
+}
 
 
 /*----------------------------------------------------------------------------*/

@@ -818,7 +818,7 @@ eHT geWhichHeap[]
   /* 28 */ HT_INVALID,           // CN_BUFFERPOOL
   /* 29 */ HT_TRANSIENT_SMALL,   // CN_BYTERATE
 
-  /*    */ HT_TRANSIENT_SMALL,   // CN_CALCULATOR
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_CALCULATOR
   /*    */ HT_TRANSIENT_SMALL,   // CN_CANCELMARKER
   /* 30 */ HT_INVALID,           // CN_CARRYOVER
   /*    */ HT_INVALID,           // CN_CATALOG
