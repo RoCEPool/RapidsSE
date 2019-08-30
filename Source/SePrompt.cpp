@@ -5,6 +5,7 @@
 #include "Prompt.h"
 #include "AM.hpp"
 
+extern AttachMap*    gpAttachMap;
 extern PromptCatalog gxPromptCatalog;
 
 /*----------------------------------------------------------------------------*/
@@ -47,7 +48,7 @@ void SePrompt::operator delete(void* pSePromptAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SePrompt::SePrompt(bool bOneCommand)
-: Focal(CN_SEPROMPT,AM::iNextPromptId(),nullptr)
+: Focal(CN_SEPROMPT,AM::iNextPromptId(),(Focal*)gpAttachMap)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   

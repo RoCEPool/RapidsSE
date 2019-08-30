@@ -56,7 +56,7 @@ bool Jobs::_bIsValidJob(eCN eClass)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job::Job(eCN eClassNo, Session* pSession, ReqTuple* aReqTuple)
-: JobBase(eClassNo,aReqTuple,AM::iNextJobId())
+: JobBase(eClassNo,aReqTuple,AM::iNextJobId(),pSession)
 , JobDicPath(pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
