@@ -11,8 +11,8 @@ namespace Operators
   class Calculator : public Object
   {
   private:
-    byte m_baExpr[C_CALC_PROGRAM];
-    i8   m_iaStack[C_CALC_STACK];
+    eEO  m_eaCode[C_CALC_PROGRAM];
+    i8   m_iaData[C_CALC_STACK];
 
   private:
   

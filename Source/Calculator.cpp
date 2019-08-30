@@ -46,8 +46,8 @@ Calculator::Calculator(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
   
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_baExpr, sizeof(m_baExpr), CN_CALCULATOR);
-  MemLib::vZero(m_iaStack,sizeof(m_iaStack),CN_CALCULATOR);
+  MemLib::vZero(m_eaCode, sizeof(m_eaCode), CN_CALCULATOR);
+  MemLib::vZero(m_iaData,sizeof(m_iaData),CN_CALCULATOR);
 #endif
   
   _checkInitialised_(CN_CALCULATOR);
@@ -74,7 +74,10 @@ bool Calculator::bCompile(TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
   
-  m_baExpr[0] = EO_RETURN;
+  m_eaCode[0] = EO_PUSH1;
+  m_eaCode[1] = EO_PUSH1;
+  m_eaCode[2] = EO_ADD;
+  m_eaCode[3] = EO_RETURN;
   
   return true;
 }
@@ -86,9 +89,76 @@ i8 Calculator::iCompute(Row *pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
   
-  m_iaStack[0] = C_UNKNOWN;
+  m_iaData[0] = C_DATUM_NULL;
   
-  return m_iaStack[0];
+  i8 iArgA;
+  i8 iArgB;
+  i8 iRes;
+
+  eEO  eCode;
+  i8   i_TopVal = 0;
+  eEO* peCode = & m_eaCode[0];
+  
+  for (;;) {
+  
+    eCode = *peCode++;
+    
+    switch (eCode) {
+        
+      case EO_ADD:
+        iArgB = m_iaData[i_TopVal--];
+        iArgA = m_iaData[i_TopVal--];
+        iRes  = iArgA + iArgB;
+        m_iaData[++i_TopVal] = iRes;
+        break;
+        
+      case EO_COLUMN:
+        break;
+        
+      case EO_DIVIDE:
+        iArgB = m_iaData[i_TopVal--];
+        iArgA = m_iaData[i_TopVal--];
+        iRes  = iArgA / iArgB;
+        m_iaData[++i_TopVal] = iRes;
+        break;
+        
+      case EO_INTEGER:
+        break;
+        
+      case EO_MULTIPLY:
+        iArgB = m_iaData[i_TopVal--];
+        iArgA = m_iaData[i_TopVal--];
+        iRes  = iArgA * iArgB;
+        m_iaData[++i_TopVal] = iRes;
+        break;
+        
+      case EO_NEGATE:
+        iArgA = m_iaData[i_TopVal--];
+        iRes  = - iArgA;
+        m_iaData[++i_TopVal] = iRes;
+        break;
+        
+      case EO_PUSH1:
+        m_iaData[++i_TopVal] = 1;
+        break;
+        
+      case EO_RETURN:
+        return m_iaData[i_TopVal];
+        
+      case EO_SUBTRACT:
+        iArgB = m_iaData[i_TopVal--];
+        iArgA = m_iaData[i_TopVal--];
+        iRes  = iArgA - iArgB;
+        m_iaData[++i_TopVal] = iRes;
+        break;
+
+      default:
+        vTrace(" unknown opcode in calculator\n"_Stz);
+        return C_DATUM_NULL;
+    }
+  }
+  
+  return m_iaData[0];
 }
 
 
