@@ -64,7 +64,7 @@ Lock::Lock(eLK eLockKind, ReqTuple* aReqTuple, Focal* pSuper)
   
   _checkInitialised_(CN_LOCK);
   
-  ++ gixLock;
+  vIncActNo(); ++ gixLock;
   AM::vLogLck(SL_INF,this,LA_LCK_CONSTRUCT,
               "Lock -%s construct |gixLock=%lld|"_Stz, //!format-LogLck
               aLK[m_eLockKind],
@@ -95,7 +95,7 @@ Lock::Lock(eLK eLockKind, ReqTuple* aReqTuple, Object* pSuper, bool bNonFocal)
   
   _checkInitialised_(CN_LOCK);
   
-  ++ gixLock;
+  vIncActNo(); ++ gixLock;
   AM::vLogLck(SL_INF,this,LA_LCK_CONSTRUCT,
               "Lock -%s construct |gixLock=%lld|"_Stz, //!format-LogLck
               aLK[m_eLockKind],
@@ -111,11 +111,11 @@ Lock::~Lock(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  -- gixLock;
- AM::vLogLck(SL_INF,this,LA_LCK_DESTRUCT,
-             "Lock -%s destruct |gixLock=%lld|"_Stz, //!format-LogLck
-             aLK[m_eLockKind],
-             * gixLock);
+  vIncActNo(); -- gixLock;
+  AM::vLogLck(SL_INF,this,LA_LCK_DESTRUCT,
+              "Lock -%s destruct |gixLock=%lld|"_Stz, //!format-LogLck
+              aLK[m_eLockKind],
+              * gixLock);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -395,7 +395,8 @@ void Lock::vGrabRead(void)
     oTimer.vUpdate();
     if (oTimer.iMilliseconds() > 100 && ! bReported) {
       bReported = true;
-     AM::vLogLck(SL_INF,this,LA_LCK_READ_UNABLE,
+      vIncActNo();
+      AM::vLogLck(SL_INF,this,LA_LCK_READ_UNABLE,
                  "Unable to grab read lock %p %s %p"_Stz, //!format-LogLck
                   this,
                   aLK[m_eLockKind],
@@ -406,7 +407,8 @@ void Lock::vGrabRead(void)
   } while ( ! iResult );
   
   if (bReported) {
-   AM::vLogLck(SL_INF,this,LA_LCK_READ_ABLE,
+    vIncActNo();
+    AM::vLogLck(SL_INF,this,LA_LCK_READ_ABLE,
                "Able to grab read lock %p %s %p"_Stz, //!format-LogLck
                 this,
                 aLK[m_eLockKind],
@@ -522,7 +524,8 @@ void Lock::vGrabWrite(void)
     oTimer.vUpdate();
     if (oTimer.iMilliseconds() > 100 && ! bReported) {
       bReported = true;
-     AM::vLogLck(SL_INF,this,LA_LCK_WRITE_UNABLE,
+      vIncActNo();
+      AM::vLogLck(SL_INF,this,LA_LCK_WRITE_UNABLE,
                  "Unable to grab write lock %p %s %p"_Stz, //!format-LogLck
                          this,
                          aLK[m_eLockKind],
@@ -533,7 +536,8 @@ void Lock::vGrabWrite(void)
   } while ( ! iResult );
   
   if (bReported) {
-   AM::vLogLck(SL_INF,this,LA_LCK_WRITE_ABLE,
+    vIncActNo();
+    AM::vLogLck(SL_INF,this,LA_LCK_WRITE_ABLE,
                "Able to grab write lock %p %s %p"_Stz, //!format-LogLck
                        this,
                        aLK[m_eLockKind],
@@ -578,16 +582,7 @@ i8 Lock::iWriteCollisions(void)
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* Lock::aFooter(void)
-{
-  _precondition_(_MAGIC_,CN_LOCK);
-  
-  return &m_xFooter;
-}
+__aFooterFunction(Lock)
 
 /*============================================================================*/
 /* end                                                                        */

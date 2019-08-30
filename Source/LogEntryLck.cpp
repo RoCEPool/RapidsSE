@@ -9,9 +9,9 @@
 /*----------------------------------------------------------------------------*/
 void _LogEntryLck::vSet(LogEntry* pLogEntry, Lock* pLock, eLA eLckAct)
 {
-  pLogEntry->m_eKind = EK_LCK;
+  pLogEntry->m_eKind   = EK_LCK;
   pLogEntry->m_cPrefix = 'L';
-  
+  pLogEntry->m_iAct    = pLock->iActNo();
   pLogEntry->m_xReqTuple.vSet(pLock->aReqTuple());
 
   m_iLckId  = pLock->m_iUniqueId;

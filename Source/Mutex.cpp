@@ -114,8 +114,9 @@ Mutex::Mutex(eMK eKind, Focal* pFor, ReqTuple* aReqTuple)
   
   _checkInitialised_(CN_MUTEX);
   
-  ++ gixMutex;
   SP_Id spId;
+  
+  vIncActNo(); ++ gixMutex;
   AM::vLogRes(SL_INF,this,RA_MTX_CONSTRUCT,
               "Mutex -%s construct(for=%s) |gixMutex=%lld/%lld|"_Stz, //!format-LogRes
               aMK[m_eKind],
