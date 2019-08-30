@@ -26,9 +26,12 @@ enum eEO : i1 // expression operators
   /*    */ EO_GREATEREQUAL,
   /*    */ EO_GREATERTHAN,
 
+  /*    */ EO_AND,
+  /*    */ EO_OR,
+  /*    */ EO_NOT,
+  
   /*    */ EO_ISNULL,
   /*    */ EO_ISNOTNULL,
-  /*    */ EO_NOT,
   
   /*    */ EO_RETURN,
 
@@ -58,10 +61,13 @@ static Stz* aEO[]
   /*    */ "EO_GREATEREQUAL"_Stz,
   /*    */ "EO_GREATERTHAN"_Stz,
 
-  /*    */ "EO_ISNULL"_Stz,
-  /*    */ "EO_ISNOTNULL"_Stz,
+  /*    */ "EO_AND"_Stz,
+  /*    */ "EO_OR"_Stz,
   /*    */ "EO_NOT"_Stz,
 
+  /*    */ "EO_ISNULL"_Stz,
+  /*    */ "EO_ISNOTNULL"_Stz,
+  
   /*    */ "EO_RETURN"_Stz,
   
   /*    */ "ENUMS"_Stz

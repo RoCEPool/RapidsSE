@@ -88,6 +88,33 @@ bool Calculator::bCompile(TokenVec* pTknVec)
     vTrace(" >%s<"_Stz,pTkn->szText());
     
     // -- -- -- -- -- -- -- -- -- -- --
+
+    if (pTkn->bSame("+"_Stz)) { m_eaCode[i_Code++] = EO_ADD;      continue; }
+    if (pTkn->bSame("/"_Stz)) { m_eaCode[i_Code++] = EO_DIVIDE;   continue; }
+    if (pTkn->bSame("*"_Stz)) { m_eaCode[i_Code++] = EO_MULTIPLY; continue; }
+    if (pTkn->bSame("-"_Stz)) { m_eaCode[i_Code++] = EO_SUBTRACT; continue; }
+
+    // -- -- -- -- -- -- -- -- -- -- --
+
+    if (pTkn->bSame("<"_Stz))  { m_eaCode[i_Code++] = EO_LESSTHAN;     continue; }
+    if (pTkn->bSame("<="_Stz)) { m_eaCode[i_Code++] = EO_LESSEQUAL;    continue; }
+    if (pTkn->bSame("=="_Stz)) { m_eaCode[i_Code++] = EO_EQUAL;        continue; }
+    if (pTkn->bSame("!="_Stz)) { m_eaCode[i_Code++] = EO_NOTEQUAL;     continue; }
+    if (pTkn->bSame(">="_Stz)) { m_eaCode[i_Code++] = EO_GREATEREQUAL; continue; }
+    if (pTkn->bSame(">"_Stz))  { m_eaCode[i_Code++] = EO_GREATERTHAN;  continue; }
+    
+    // -- -- -- -- -- -- -- -- -- -- --
+    
+    if (pTkn->bSame("and"_Stz)) { m_eaCode[i_Code++] = EO_AND; continue; }
+    if (pTkn->bSame("or"_Stz))  { m_eaCode[i_Code++] = EO_OR;  continue; }
+    if (pTkn->bSame("not"_Stz)) { m_eaCode[i_Code++] = EO_NOT; continue; }
+
+    // -- -- -- -- -- -- -- -- -- -- --
+    
+    if (pTkn->bSame("isNull"_Stz))    { m_eaCode[i_Code++] = EO_ISNULL;    continue; }
+    if (pTkn->bSame("isNotNull"_Stz)) { m_eaCode[i_Code++] = EO_ISNOTNULL; continue; }
+    
+    // -- -- -- -- -- -- -- -- -- -- --
     
     if (pTkn->bIsName()) {
       m_eaCode[i_Code++] = EO_COLUMN;
@@ -128,29 +155,7 @@ bool Calculator::bCompile(TokenVec* pTknVec)
       i_Code += sizeof(i8);
       continue;
     }
-
-    // -- -- -- -- -- -- -- -- -- -- --
-
-    if (pTkn->bSame("+"_Stz)) { m_eaCode[i_Code++] = EO_ADD;      continue; }
-    if (pTkn->bSame("/"_Stz)) { m_eaCode[i_Code++] = EO_DIVIDE;   continue; }
-    if (pTkn->bSame("*"_Stz)) { m_eaCode[i_Code++] = EO_MULTIPLY; continue; }
-    if (pTkn->bSame("-"_Stz)) { m_eaCode[i_Code++] = EO_SUBTRACT; continue; }
-
-    // -- -- -- -- -- -- -- -- -- -- --
-
-    if (pTkn->bSame("<"_Stz))  { m_eaCode[i_Code++] = EO_LESSTHAN;     continue; }
-    if (pTkn->bSame("<="_Stz)) { m_eaCode[i_Code++] = EO_LESSEQUAL;    continue; }
-    if (pTkn->bSame("=="_Stz)) { m_eaCode[i_Code++] = EO_EQUAL;        continue; }
-    if (pTkn->bSame("!="_Stz)) { m_eaCode[i_Code++] = EO_NOTEQUAL;     continue; }
-    if (pTkn->bSame(">="_Stz)) { m_eaCode[i_Code++] = EO_GREATEREQUAL; continue; }
-    if (pTkn->bSame(">"_Stz))  { m_eaCode[i_Code++] = EO_GREATERTHAN;  continue; }
     
-    // -- -- -- -- -- -- -- -- -- -- --
-    
-    if (pTkn->bSame("isNull"_Stz))    { m_eaCode[i_Code++] = EO_ISNULL;    continue; }
-    if (pTkn->bSame("isNotNull"_Stz)) { m_eaCode[i_Code++] = EO_ISNOTNULL; continue; }
-    if (pTkn->bSame("!"_Stz))         { m_eaCode[i_Code++] = EO_NOT;       continue; }
-
     // -- -- -- -- -- -- -- -- -- -- --
     
     m_eaCode[i_Code++] = EO_RETURN;
@@ -328,6 +333,27 @@ i8 Calculator::iEvaluate(i8* paColValues)
         
       // -- -- -- -- -- -- -- -- -- -- --
         
+      case EO_AND:
+        iArgB = m_iaData[i_TopVal--];
+        iArgA = m_iaData[i_TopVal--];
+        iRes  = iArgA && iArgB;
+        m_iaData[++i_TopVal] = iRes;
+        break;
+        
+      case EO_OR:
+        iArgB = m_iaData[i_TopVal--];
+        iArgA = m_iaData[i_TopVal--];
+        iRes  = iArgA || iArgB;
+        m_iaData[++i_TopVal] = iRes;
+        break;
+        
+      case EO_NOT:
+        iArgA = m_iaData[i_TopVal--];
+        iRes  = ! iArgA;
+        m_iaData[++i_TopVal] = iRes;
+        break;
+        
+      // -- -- -- -- -- -- -- -- -- -- --
       case EO_ISNULL:
         iArgA = m_iaData[i_TopVal--];
         iRes  = (C_DATUM_NULL == iArgA) ? 1 : 0;
@@ -337,12 +363,6 @@ i8 Calculator::iEvaluate(i8* paColValues)
       case EO_ISNOTNULL:
         iArgA = m_iaData[i_TopVal--];
         iRes  = (C_DATUM_NULL != iArgA) ? 1 : 0;
-        m_iaData[++i_TopVal] = iRes;
-        break;
-        
-      case EO_NOT:
-        iArgA = m_iaData[i_TopVal--];
-        iRes  = (! iArgA) ? 1 : 0;
         m_iaData[++i_TopVal] = iRes;
         break;
         
