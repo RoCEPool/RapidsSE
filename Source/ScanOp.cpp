@@ -183,24 +183,15 @@ void ScanOp::vPreliminary(void)
   // get table ptn
   m_pTablePtn = m_pTable->pSlots()->pPartition(m_nSlot);
   
+  // create a streamDef from teh table streamDef
+  m_pStreamDef = new StreamDef(m_pTable->pStreamDef());
+  
   // pipe StreamDef
-  StreamDef* pStreamDef = new StreamDef(m_pTable->pStreamDef());
-  vPipeOut(pStreamDef);
+  vPipeOut(new StreamDef(m_pStreamDef));
   
   // get first buffer
   m_pCrwBuffer = m_pTablePtn->pRootCrwBuffer();
 }
-
-/*----------------------------------------------------------------------------*/
-/* set table partition                                                        */
-/*----------------------------------------------------------------------------*/
-void ScanOp::vTablePtn(TablePtn* pTablePtn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SCANOP,_FOOTER_);
-
-  m_pTablePtn = pTablePtn;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

@@ -33,8 +33,6 @@ namespace DataOperators
     eOR eOpLoop(void);
   
     void vPreliminary(void);
-
-    void vTablePtn(TablePtn* pTablePtn);
   
   private:
     Footer* aFooter(void);
