@@ -159,7 +159,7 @@ eOR AggOp::eOpLoop(void)
           pRow->m_waColVal[0] = m_nSum;
           
           // pipe out the streamdef
-          vPipeOut(new StreamDef(m_pStreamDef));
+          //vPipeOut(new StreamDef(m_pStreamDef));
           
           // pipe out the buffer with the count
           vPipeOut(pIrwBuffer);
@@ -173,30 +173,56 @@ eOR AggOp::eOpLoop(void)
         
         break;
         
-        // -- -- -- -- -- --
+      // -- -- -- -- -- --
+      case CN_CRWBUFFER: {
+        CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand) ;
+        
+        HV_Row hRow(m_pOriginalStreamDef->m_oColVecAry.pGet(0));
+        i8 nRows = pCrwBuffer->nRowCount();
+        
+        for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+          
+          // get compact row
+          Crw* aCrw = (Crw*)pCrwBuffer->m_oRowTray.pNub()->aGetHead(i_Row);
+          
+          // get the key from the row
+          RowInflator::vInflateColumn(hRow, aCrw, m_iWhichCol[0]);
+          //vTrace("Summing %lld\n"_Stz, hRow->m_waColVal[m_iWhichCol[0]].m_iI8);
+          m_nSum += hRow->m_waColVal[m_iWhichCol[0]].m_iI8;
+        }
+        
+        break;
+      }
         
       case CN_ENTBUFFER: {
         EntBuffer* pEntBuffer = _pEntBuffer(pOperand) ;
-        ColumnVec* pColumnVec = m_pStreamDef->m_oColVecAry.pGet(0);
+        
+        HV_Row hRow(m_pOriginalStreamDef->m_oColVecAry.pGet(0));
+        
+        CrwBuffer* pCrwBuffer = nullptr;
         
         Ent* aEnt = pEntBuffer->aLeadEntry();
+        
+        i8 iBaseOffset = RowCoder::iBaseOffset(m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[0]));
+        
         while (aEnt) {
           
           DtmVal oDtmVal;
           
-          CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(aEnt->xRef());
+          //if ( ! pCrwBuffer || (pCrwBuffer->iPoolBufferNo() != aEnt->xRef().iBuffer()))
+            pCrwBuffer = CrwBuffer::pRefdCrwBuffer(aEnt->xRef());
+          
           Crw* aRowData = pCrwBuffer->pCrw(aEnt->xRef().iItem());
           
-          HV_Row hRow(m_pOriginalStreamDef->m_oColVecAry.pGet(0));
           //for (i8 i_IntoCol = 0; i_IntoCol < pColumnVec->nItems(); i_IntoCol++) {
-            i8 iBaseOffset = RowCoder::iBaseOffset(m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[0]));
           
             RowInflator::vInflateColumn(hRow, 0, aRowData, iBaseOffset, m_iWhichCol[0],
                                         m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[0]));
           //}
+          //vTrace("Summing %lld\n"_Stz, hRow->m_waColVal[0].m_iI8);
           m_nSum += hRow->m_waColVal[0].m_iI8;
           
-          aEnt = pEntBuffer->aGetNextEntry(&pEntBuffer, aEnt);
+          aEnt = pEntBuffer->aNextEntry(aEnt,0);
         }
         
         break;
@@ -204,32 +230,37 @@ eOR AggOp::eOpLoop(void)
         
       case CN_IRWBUFFER: {
         IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand) ;
-        ColumnVec* pColumnVec = m_pStreamDef->m_oColVecAry.pGet(0);
         
         Row* pRow = pIrwBuffer->aFirstRow();
         while (pRow) {
-          m_nSum += pRow->m_waColVal[0].m_iI8;
+          m_nSum += pRow->m_waColVal[m_iWhichCol[0]].m_iI8;
           pRow = pIrwBuffer->aNextRow(pRow);
         }
-        
+        delete pIrwBuffer;
         break;
       }
-      case CN_INTBUFFER: {
-        IntBuffer* pIntBuffer = _pIntBuffer(pOperand) ;
-        m_nSum += pIntBuffer->nCount();
-        break;
-      }
-        
-      case CN_REFBUFFER: {
-        RefBuffer* pRefBuffer = _pRefBuffer(pOperand) ;
-        m_nSum += pRefBuffer->nItems();
-        delete pRefBuffer;
-        break;
-      }
+
         
       case CN_SRTBUFFER: {
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
-        m_nSum += pSrtBuffer->nItems();
+        SrtSet* aSrtSet = pSrtBuffer->aFirstSrtSet();
+        
+        // get the columnVec defining the rowref
+        ColumnVec* pStreamColVec = m_pOriginalStreamDef->m_oColVecAry.pGet(0);
+        HV_Row hRow(pStreamColVec);
+        
+        while (aSrtSet) {
+            
+          
+          // get the dataRow of rowref
+          Crw* aCrw = (Crw*)(aSrtSet->iRowRef(0));
+          
+          // inflate the column
+          RowInflator::vInflateColumn(hRow, aCrw, m_iWhichCol[0]);
+          m_nSum += hRow->m_waColVal[m_iWhichCol[0]].m_iI8;
+          
+          aSrtSet = pSrtBuffer->aNextSrtSet(aSrtSet);
+        }
         delete pSrtBuffer;
         break;
       }

@@ -13,7 +13,7 @@ namespace Rows
   friend class IndexTree;
   friend class RowCompactor;
 
-  protected:
+  public:
     RowTray m_oRowTray;  // tray of rows
     SeeMe   m_xSeeMe;
   

@@ -142,6 +142,12 @@ eOR ZedOp::eOpLoop(void)
         break;
 
       // -- -- -- -- -- --
+      
+      case CN_IRWBUFFER: {
+        IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
+        delete pIrwBuffer;
+        break;
+      }
         
       case CN_SRTBUFFER: {
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
@@ -151,6 +157,7 @@ eOR ZedOp::eOpLoop(void)
        
       case CN_STREAMDEF: {
         StreamDef* pStreamDef = _pStreamDef(pOperand);
+        m_pStreamDef = new StreamDef(pStreamDef);
         ASSERT(pStreamDef->m_bTemp);
         delete pStreamDef;
         break;
