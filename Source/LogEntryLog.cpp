@@ -55,6 +55,8 @@ void _LogEntryLog::vWriteTxt(File* pFile, LogEntry* pEntry)
                 aGA[m_eLogAct],
                 spId.sz(IK_LOG,m_iLogId)
                 );
+  
+  pFile->vPrint("%s"_Stz,pEntry->m_caNote);
 }
 
 /*============================================================================*/

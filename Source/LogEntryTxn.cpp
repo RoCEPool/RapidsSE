@@ -55,6 +55,8 @@ void _LogEntryTxn::vWriteTxt(File* pFile, LogEntry* pEntry)
                 aXA[m_eTxnAct],
                 spId.sz(IK_TX,m_iTxnId)
                 );
+  
+  pFile->vPrint("%s"_Stz,pEntry->m_caNote);
 }
 
 /*============================================================================*/

@@ -55,6 +55,8 @@ void _LogEntryThd::vWriteTxt(File* pFile, LogEntry* pEntry)
                 aHA[m_eThdAct],
                 spId.sz(IK_THREAD,m_iThdId)
                 );
+  
+  pFile->vPrint("%s"_Stz,pEntry->m_caNote);
 }
 
 /*============================================================================*/

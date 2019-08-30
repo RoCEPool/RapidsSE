@@ -70,7 +70,7 @@ LogEntry::~LogEntry(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* init                                                                       */
 /*----------------------------------------------------------------------------*/
-void LogEntry::vInit(eSL eSverity, eCN eClassNo, Stz* szText)
+void LogEntry::vInit(eSL eSeverity, eCN eClassNo, Stz* szText)
 {
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
@@ -87,7 +87,7 @@ void LogEntry::vInit(eSL eSverity, eCN eClassNo, Stz* szText)
   m_eClass = eClassNo;
   m_pFocal = nullptr;
   
-  m_eSeverity = eSverity;
+  m_eSeverity = eSeverity;
   
   m_bLine = false;
 }
@@ -95,7 +95,7 @@ void LogEntry::vInit(eSL eSverity, eCN eClassNo, Stz* szText)
 /*----------------------------------------------------------------------------*/
 /* init                                                                       */
 /*----------------------------------------------------------------------------*/
-void LogEntry::vInit(eSL eSverity, Focal *pFocal, Stz* szText)
+void LogEntry::vInit(eSL eSeverity, Focal *pFocal, Stz* szText)
 {
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
@@ -109,12 +109,12 @@ void LogEntry::vInit(eSL eSverity, Focal *pFocal, Stz* szText)
   m_caNote[0] = '\0';
   StrLib::vCopyLen(m_caNote,szText->aChar(),C_LOG_NOTE - 1);
   
-  m_iAct    = C_UNKNOWN;
+  m_iAct    = pFocal->iActNo();
   m_eClass  = pFocal->eClass();
   m_pFocal  = pFocal;
   m_i_Focal = pFocal->m_i_Focal;
   
-  m_eSeverity = eSverity;
+  m_eSeverity = eSeverity;
   
   m_bLine = false;
 }
@@ -284,7 +284,7 @@ void LogEntry::vWriteTxt(File* pFile)
       NEVER_REACH;
   }
   
-  pFile->vPrint("%s\n"_Stz,m_caNote);
+  pFile->vPrint("\n"_Stz,m_caNote);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -298,7 +298,7 @@ void LogEntry::vWriteTxtEntry(File* pFile)
     pFile->vPrint("%s\n"_Stz,C_LOG_LINE);
   
   pFile->vPrint("[%04lld,%04lld,%s+%s] "
-                "%014p %16s:%03lld:"
+                "%014p %16s:%03lld:%03lld:"
                 ""_Stz,
                 
                 m_i_Entry,
@@ -309,6 +309,7 @@ void LogEntry::vWriteTxtEntry(File* pFile)
                 m_pFocal,
                 aCN[m_eClass],
                 m_xReqTuple.m_iReqId,
+                m_iAct,
                 
                 C_ENDARGS);
 }

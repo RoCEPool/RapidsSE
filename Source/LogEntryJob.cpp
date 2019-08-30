@@ -65,6 +65,8 @@ void _LogEntryJob::vWriteTxt(File* pFile, LogEntry* pEntry)
                 spId.sz(IK_JOB,m_iJobId),
                 //spReqId.sz(IK_REQUEST,m_iReqId)
                 C_ENDARGS);
+  
+  pFile->vPrint("%s"_Stz,pEntry->m_caNote);
 }
 
 /*============================================================================*/

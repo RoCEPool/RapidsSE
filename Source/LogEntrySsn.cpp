@@ -55,6 +55,8 @@ void _LogEntrySsn::vWriteTxt(File* pFile, LogEntry* pEntry)
                 aAA[m_eSsnAct],
                 spId.sz(IK_SESSION,m_iSsnId)
                 );
+  
+  pFile->vPrint("%s"_Stz,pEntry->m_caNote);
 }
 
 /*============================================================================*/

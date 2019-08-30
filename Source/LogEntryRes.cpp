@@ -54,15 +54,15 @@ void _LogEntryRes::vWriteTxt(File* pFile, LogEntry* pEntry)
 {
   SP_Id spId;
   
-  pFile->vPrint("%-20s %s:%03lld "_Stz, //C_ENTRY_FMT_2s,
+  pFile->vPrint(C_ENTRY_FMT_2s,
                 
                 aRA[m_eResAct],
                 spId.sz(IK_RESOURCE,m_iResId),
                 
-                pEntry->m_iAct,
-                
                 C_ENDARGS
                 );
+  
+  pFile->vPrint("%s"_Stz,pEntry->m_caNote);
 }
 
 /*============================================================================*/

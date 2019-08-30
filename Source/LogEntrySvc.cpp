@@ -55,6 +55,8 @@ void _LogEntrySvc::vWriteTxt(File* pFile, LogEntry* pEntry)
                 aVA[m_eSvcAct],
                 spId.sz(IK_SERVICE,m_iSvcId)
                 );
+  
+  pFile->vPrint("%s"_Stz,pEntry->m_caNote);
 }
 
 /*============================================================================*/

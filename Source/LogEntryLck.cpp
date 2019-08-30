@@ -56,6 +56,8 @@ void _LogEntryLck::vWriteTxt(File* pFile, LogEntry* pEntry)
                 aLA[m_eLckAct],
                 spId.sz(IK_LOCK,m_iLckId)
                 );
+  
+  pFile->vPrint("%s"_Stz,pEntry->m_caNote);
 }
 
 /*============================================================================*/

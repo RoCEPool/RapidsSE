@@ -56,6 +56,8 @@ void _LogEntryReq::vWriteTxt(File* pFile, LogEntry* pEntry)
                 aMA[m_eReqAct],
                 spId.sz(IK_REQUEST,m_iReqId)
                 );
+  
+  pFile->vPrint("%s"_Stz,pEntry->m_caNote);
 }
 
 /*============================================================================*/

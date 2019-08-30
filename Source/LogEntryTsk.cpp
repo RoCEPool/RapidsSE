@@ -56,6 +56,8 @@ void _LogEntryTsk::vWriteTxt(File* pFile, LogEntry* pEntry)
                 aTA[m_eTskAct],
                 spId.sz(IK_TASK,m_iTskId)
                 );
+  
+  pFile->vPrint("%s"_Stz,pEntry->m_caNote);
 }
 
 /*============================================================================*/
