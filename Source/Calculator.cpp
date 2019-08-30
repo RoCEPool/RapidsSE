@@ -74,10 +74,17 @@ bool Calculator::bCompile(TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
   
-  m_eaCode[0] = EO_PUSH1;
-  m_eaCode[1] = EO_PUSH1;
-  m_eaCode[2] = EO_ADD;
-  m_eaCode[3] = EO_RETURN;
+  i8 i_Code = 0;
+  m_eaCode[i_Code++] = EO_INTEGER;
+  
+  i8* piInt = (i8*) & m_eaCode[i_Code];
+  * piInt = 41;
+  i_Code += sizeof(i8);
+
+  m_eaCode[i_Code++] = EO_PUSH1;
+  m_eaCode[i_Code++] = EO_ADD;
+  m_eaCode[i_Code++] = EO_NEGATE;
+  m_eaCode[i_Code++] = EO_RETURN;
   
   return true;
 }
@@ -123,6 +130,9 @@ i8 Calculator::iCompute(Row *pRow)
         break;
         
       case EO_INTEGER:
+        iArgA = * (i8*)peCode;
+        peCode += 8;
+        m_iaData[++i_TopVal] = iArgA;
         break;
         
       case EO_MULTIPLY:
