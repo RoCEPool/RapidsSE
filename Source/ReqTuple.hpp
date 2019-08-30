@@ -11,7 +11,7 @@ namespace Focals
     i8   m_i_State;    // which session state
     i8   m_iReqId;     // the command which trigger the job
     //bool m_bMarkTrace; // trace (mark version)
-    bool m_bLogJob;    // mark activity
+    i8   m_iLogLevel;  // level of logging
   
     s32  m_sPurpose;   // purpose of request
 

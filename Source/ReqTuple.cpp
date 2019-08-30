@@ -42,7 +42,7 @@ void ReqTuple::vSet(ReqTuple* aReqTuple)
     m_iReqId     = aReqTuple->m_iReqId;
     m_i_State    = aReqTuple->m_i_State;
     //m_bMarkTrace = aReqTuple->m_bMarkTrace;
-    m_bLogJob    = aReqTuple->m_bLogJob;
+    m_iLogLevel  = aReqTuple->m_iLogLevel;
     
     m_sPurpose   = aReqTuple->m_sPurpose;
     
@@ -52,7 +52,7 @@ void ReqTuple::vSet(ReqTuple* aReqTuple)
   m_iReqId     = C_UNKNOWN;
   m_i_State    = C_UNKNOWN;
   //m_bMarkTrace = false;
-  m_bLogJob    = false;
+  m_iLogLevel  = 0;
   
   //m_sPurpose   = "?"_Stz;
 }

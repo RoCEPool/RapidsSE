@@ -43,7 +43,7 @@ Stz* SP_ReqTuple::sz(ReqTuple* aReqTuple)
                   
                   aReqTuple->m_i_State,
                   spId.sz(IK_REQUEST,aReqTuple->m_iReqId),
-                  aReqTuple->m_bLogJob    ? "Log"_Stz   : "NoLog"_Stz
+                  aReqTuple->m_iLogLevel    ? "Log"_Stz   : "NoLog"_Stz
                   );
   
   return (Stz*) &m_caResult[0];
