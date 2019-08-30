@@ -32,6 +32,18 @@ Resource::Resource(eCN eClassNo, ReqTuple* aReqTuple)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Resource::Resource(eCN eClassNo, ReqTuple* aReqTuple, Focal* pFor)
+: Focal(eClassNo,AM::iNextResourceId(),pFor)
+, m_xReqTuple(aReqTuple)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Resource::~Resource(void) noexcept(false)

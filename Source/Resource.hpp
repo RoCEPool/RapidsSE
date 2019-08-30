@@ -12,6 +12,7 @@ namespace Resources
   
   public:
     Resource(eCN eClass, ReqTuple* aReqTuple);
+    Resource(eCN eClass, ReqTuple* aReqTuple, Focal* pFor);
    ~Resource(void) noexcept(false);
   
     void vFocalOutline(s4K& sOutline);
