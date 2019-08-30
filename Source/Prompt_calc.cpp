@@ -32,7 +32,9 @@ bool Prompt::bPrompt_calc(SePrompt* pPrompt)
     return true;
   }
   
-  i8 iResult = pCalculator->iCompute(nullptr);
+  i8 aiColValues[] = { 0, 100, 200, 300, 400, 500, 600, 700, 800, 900 };
+  
+  i8 iResult = pCalculator->iCompute(aiColValues);
   
   vTrace("  %lld\n"_Stz,iResult);
   

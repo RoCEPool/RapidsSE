@@ -74,13 +74,21 @@ bool Calculator::bCompile(TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
   
-  i8 i_Code = 0;
-  m_eaCode[i_Code++] = EO_INTEGER;
+  i8* piArg;
   
-  i8* piInt = (i8*) & m_eaCode[i_Code];
-  * piInt = 41;
+  i8 i_Code = 0;
+  
+  m_eaCode[i_Code++] = EO_COLUMN;
+  piArg = (i8*) & m_eaCode[i_Code];
+  * piArg = 1;
   i_Code += sizeof(i8);
 
+  m_eaCode[i_Code++] = EO_INTEGER;
+  piArg = (i8*) & m_eaCode[i_Code];
+  * piArg = 41;
+  i_Code += sizeof(i8);
+
+  m_eaCode[i_Code++] = EO_ADD;
   m_eaCode[i_Code++] = EO_PUSH1;
   m_eaCode[i_Code++] = EO_ADD;
   m_eaCode[i_Code++] = EO_NEGATE;
@@ -116,6 +124,7 @@ i8 Calculator::iCompute(i8* paColValues)
         
       case EO_COLUMN:
         iArgA = * (i8*)peCode;
+        peCode += 8;
         iRes  = paColValues[iArgA];
         m_iaData[++i_TopVal] = iRes;
         break;
