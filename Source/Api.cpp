@@ -321,8 +321,8 @@ bool Api::bSpawnJob(Session* pSession, Job* pJob, eSS eSeed)
   // form the word to execute for the request
   pJob->vSeed(eSeed);
   
-  if (pJob->m_xReqTuple.m_bMarkTrace)
-    pJob->m_pJobClass->vShowJob(pJob);
+  //if (pJob->m_xReqTuple.m_bMarkTrace)
+  //  pJob->m_pJobClass->vShowJob(pJob);
   
   Task* pNewTask = new Task(pJob,pSession);
   pNewTask->vState(TS_ABLE);
@@ -423,8 +423,8 @@ bool Api::bSpawnJobDedicated(Session* pSession, Job* pJob, eSS eSeed)
   pJob->vSeed(eSeed);
   
   
-  if (pJob->m_xReqTuple.m_bMarkTrace)
-    pJob->m_pJobClass->vShowJob(pJob);
+  //if (pJob->m_xReqTuple.m_bMarkTrace)
+  //  pJob->m_pJobClass->vShowJob(pJob);
   
   Task* pNewTask = new Task(pJob,pSession);
   pNewTask->vState(TS_ABLE);

@@ -39,11 +39,10 @@ Stz* SP_ReqTuple::sz(ReqTuple* aReqTuple)
   SP_Id spId;
   
   StrLib::vSprint(m_caResult,
-                  "<%lld=%s=%s=%s>"_Stz,
+                  "<%lld=%s=%s>"_Stz,
                   
                   aReqTuple->m_i_State,
                   spId.sz(IK_REQUEST,aReqTuple->m_iReqId),
-                  aReqTuple->m_bMarkTrace ? "Trace"_Stz : "NoTrace"_Stz,
                   aReqTuple->m_bLogJob    ? "Log"_Stz   : "NoLog"_Stz
                   );
   
