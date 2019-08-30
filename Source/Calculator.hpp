@@ -27,8 +27,9 @@ namespace Operators
    ~Calculator(void) noexcept(false);
   
     bool bCompile(TokenVec* pTknVec);
+    bool bCompileTest(TokenVec* pTknVec);
 
-    i8   iCompute(i8* paColValues);
+    i8   iEvaluate(i8* paColValues);
 
     Footer* aFooter(void);
   };
