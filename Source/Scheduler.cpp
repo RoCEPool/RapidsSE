@@ -501,7 +501,7 @@ void Scheduler::vWaitForTaskAssignment(Thread* pThread)
 void Scheduler::vTask_Able(Task* pTask)
 {
   AM::vLogTsk(SL_INF,pTask,TA_TSK_ABLE,
-              "Transition task to TS_ABLE"_Stz); //!format-LogTsk
+              "Task transitions to TS_ABLE"_Stz); //!format-LogTsk
   
   // note: task can be in any current state
   
@@ -519,7 +519,7 @@ void Scheduler::vTask_Able(Task* pTask)
 bool Scheduler::bTask_Ack(Task* pTaskWaiting, Task* pTaskAcking)
 {
   AM::vLogTsk(SL_INF,pTaskWaiting,TA_TSK_ACK,
-              "Ack a waiting job-task"_Stz); //!format-LogTsk
+              "Task is ack'd"_Stz); //!format-LogTsk
   
   // note: the 'waiting' task may not yet be waiting.  there is an indefinite
   //       period between when the task grabs its lock + sets the number of
@@ -572,7 +572,7 @@ void Scheduler::vTask_Bide(Task* pTask)
 void Scheduler::vTask_DdlDropRead(Task* pTask)
 {
   AM::vLogTsk(SL_INF,pTask,TA_DDL_DROP_READ,
-              "Drop DDL read"_Stz); //!format-LogTsk
+              "DdlLock drop read"_Stz); //!format-LogTsk
   
   AM::pDdlLock()->vDropRead();
   pTask->m_iDdlLocked = 0;
@@ -584,7 +584,7 @@ void Scheduler::vTask_DdlDropRead(Task* pTask)
 void Scheduler::vTask_DdlDropWrite(Task* pTask)
 {
   AM::vLogTsk(SL_INF,pTask,TA_DDL_DROP_WRITE,
-              "Drop DDL write"_Stz); //!format-LogTsk
+              "DdlLock drop write"_Stz); //!format-LogTsk
   
   AM::pDdlLock()->vDropWrite();
   pTask->m_iDdlLocked = 0;
@@ -596,7 +596,7 @@ void Scheduler::vTask_DdlDropWrite(Task* pTask)
 void Scheduler::vTask_DdlGrabRead(Task* pTask)
 {
   AM::vLogTsk(SL_INF,pTask,TA_DDL_GRAB_READ,
-              "Grab DDL read"_Stz); //!format-LogTsk
+              "DdlLock grab read"_Stz); //!format-LogTsk
   
   AM::pDdlLock()->vGrabRead();
   pTask->m_iDdlLocked = C_HAVE_READ_LOCK;
@@ -608,7 +608,7 @@ void Scheduler::vTask_DdlGrabRead(Task* pTask)
 void Scheduler::vTask_DdlGrabWrite(Task* pTask)
 {
   AM::vLogTsk(SL_INF,pTask,TA_DDL_GRAB_WRITE,
-              "Grab DDL write"_Stz); //!format-LogTsk
+              "DdlLock grab write"_Stz); //!format-LogTsk
   
   AM::pDdlLock()->vGrabWrite();
   pTask->m_iDdlLocked = C_HAVE_WRITE_LOCK;
@@ -620,7 +620,7 @@ void Scheduler::vTask_DdlGrabWrite(Task* pTask)
 void Scheduler::vTask_Desist(Task* pTask)
 {
   AM::vLogTsk(SL_INF,pTask,TA_TSK_DESIST,
-              "Remove task from ExecutingSet; transition to TS_DESISTED"_Stz); //!format-LogTsk
+              "Task removed from ExecutingSet; transition to TS_DESISTED"_Stz); //!format-LogTsk
   
   RASSERT(TS_EXECUTING == pTask->eState());
   RASSERT(QK_EXECUTING_SET == pTask->eQueue());
@@ -641,7 +641,7 @@ void Scheduler::vTask_Desist(Task* pTask)
 void Scheduler::vTask_Drop(Task* pTask)
 {
   AM::vLogTsk(SL_INF,pTask,TA_TSK_DROP,
-              "Dropping task lock"_Stz); //!format-LogTsk
+              "Task drop task lock"_Stz); //!format-LogTsk
   
   pTask->vDropTaskLock();
 }
@@ -652,7 +652,7 @@ void Scheduler::vTask_Drop(Task* pTask)
 void Scheduler::vTask_Execute(Task* pTask)
 {
   AM::vLogTsk(SL_INF,pTask,TA_TSK_EXECUTE,
-              "Transition able task to TS_EXECUTING; add to ExecutingSet"_Stz); //!format-LogTsk
+              "Task to TS_EXECUTING; add ExecutingSet"_Stz); //!format-LogTsk
   
   RASSERT(TS_ABLE == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
@@ -674,7 +674,7 @@ void Scheduler::vTask_Execute(Task* pTask)
 void Scheduler::vTask_Exit(Task* pTask)
 {
   AM::vLogTsk(SL_INF,pTask,TA_TSK_EXIT,
-              "Transition desisted task to TS_EXITED (and delete)"_Stz); //!format-LogTsk
+              "Task to TS_EXITED; and deleted"_Stz); //!format-LogTsk
   
   RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
@@ -733,7 +733,7 @@ void Scheduler::vTask_Pause(Task* pTask)
 Task* Scheduler::pTask_Pop(Thread* pThread)
 {
   AM::vLogThd(SL_INF,pThread,HA_THD_POP,
-              "Pop ready task from ReadyQueue/ReadyQueueLP"_Stz); //!format-LogThd
+              "Thread pop task from ReadyQueue/ReadyQueueLP"_Stz); //!format-LogThd
   
   Queues* pQueues = AM::pQueues();
 
@@ -778,7 +778,7 @@ void Scheduler::vTask_Pulse(Task* pTask)
 void Scheduler::vTask_Ready(Task* pTask)
 {
   AM::vLogTsk(SL_INF,pTask,TA_TSK_READY,
-              "Append ready task to ReadyQueue/ReadyQueueLP"_Stz); //!format-LogTsk
+              "Task appends to ReadyQueue/ReadyQueueLP"_Stz); //!format-LogTsk
   
   RASSERT(TS_ABLE == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
@@ -808,7 +808,7 @@ void Scheduler::vTask_Ready(Task* pTask)
 void Scheduler::vTask_Resume(Task* pTask)
 {
   AM::vLogTsk(SL_INF,pTask,TA_TSK_RESUME,
-              "Remove waiting task from WaitingSet and schedule it"_Stz); //!format-LogTsk
+              "Task removed from WaitingSet; and scheduled"_Stz); //!format-LogTsk
   
   // note: the 'waiting' task may not yet be waiting.  there is an indefinite
   //       period between when the task grabs its lock + sets the number of
@@ -855,7 +855,7 @@ void Scheduler::vTask_Requires(Task* pTask, i8 nAcksRequired)
 void Scheduler::vTask_Schedule(Task* pTask)
 {
   AM::vLogTsk(SL_INF,pTask,TA_TSK_SCHEDULE,
-              "Assign a thread to able-to-run task or add to ReadyQueue"_Stz); //!format-LogTsk
+              "Task schedule"_Stz); //!format-LogTsk
   
   RASSERT(TS_ABLE == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
@@ -1062,7 +1062,7 @@ void Scheduler::vTask_Yield(Task* pTask)
 void Scheduler::vThread_AddDedicated(Thread* pThread)
 {
   AM::vLogThd(SL_INF,pThread,HA_THD_ADD_DEDICATED,
-              "Add dedicated thread to DedicatedThreadVec"_Stz); //!format-LogThd
+              "Thread added to DedicatedThreadVec"_Stz); //!format-LogThd
   
   RASSERT(CN_NONE != pThread->m_eDedicated);
   
@@ -1078,7 +1078,7 @@ void Scheduler::vThread_AddDedicated(Thread* pThread)
 void Scheduler::vThread_AddGeneral(Thread* pThread)
 {
   AM::vLogThd(SL_INF,pThread,HA_THD_ADD_GENERAL,
-              "Add general thread to GeneralThreadVec"_Stz); //!format-LogThd
+              "Thread added to GeneralThreadVec"_Stz); //!format-LogThd
   
   RASSERT(CN_NONE == pThread->m_eDedicated);
   
@@ -1094,7 +1094,7 @@ void Scheduler::vThread_AddGeneral(Thread* pThread)
 void Scheduler::vThread_AppendIdle(Thread* pThread)
 {
   AM::vLogThd(SL_INF,pThread,HA_THD_APPEND_IDLE,
-              "Append unassigned general thread onto IdleThreadQueue"_Stz); //!format-LogThd
+              "Thread onto IdleThreadQueue"_Stz); //!format-LogThd
   
   RASSERT(! pThread->m_pTask);
   ASSERT(HS_UNASSIGNED == pThread->m_eThreadState);
@@ -1113,7 +1113,7 @@ void Scheduler::vThread_AppendIdle(Thread* pThread)
 bool Scheduler::bThread_AssignIdle(Task* pTask)
 {
   AM::vLogTsk(SL_INF,pTask,TA_TSK_ASSIGN_IDLE,
-              "Attempt to pop an idle general thread and assign task to it"_Stz); //!format-LogTsk
+              "Task attempt assign idle thread"_Stz); //!format-LogTsk
   
   RASSERT(TS_ABLE == pTask->eState());
   
@@ -1185,7 +1185,7 @@ void Scheduler::vThread_ContinueSame(Thread* pThread, Task* pTask)
 void Scheduler::vThread_EndLoop(Thread* pThread)
 {
   AM::vLogThd(SL_INF,pThread,HA_THD_END_LOOP,
-              "Dedicated thread has ended it's thread loop"_Stz); //!format-LogThd
+              "Thread has ended it's thread loop"_Stz); //!format-LogThd
   
   pThread->m_pMutexThread->vMutexUnlock(pThread);
 }
@@ -1196,7 +1196,7 @@ void Scheduler::vThread_EndLoop(Thread* pThread)
 void Scheduler::vThread_ExecuteDedicated(Thread* pThread)
 {
   AM::vLogThd(SL_INF,pThread,HA_THD_EXECUTE_DEDICATED, //!format-LogThd
-              "Dedicated thread executes its task"_Stz);
+              "Thread executes dedicated task"_Stz);
   
   ASSERT(HS_UNASSIGNED == pThread->m_eThreadState);
   ASSERT(pThread->m_pMutexThread->bMutexIsLocked());
@@ -1247,7 +1247,7 @@ void Scheduler::vThread_PauseGeneral(void)
 void Scheduler::vThread_RemoveDedicated(Thread* pThread)
 {
   AM::vLogThd(SL_INF,pThread,HA_THD_REMOVE_DEDICATED,
-              "Remove dedicated thread from DedicatedThreadVec"_Stz); //!format-LogThd
+              "Thread removed from DedicatedThreadVec"_Stz); //!format-LogThd
   
   //
   // called from Thread::aEntryPoint_dedicated()
@@ -1264,7 +1264,7 @@ void Scheduler::vThread_RemoveDedicated(Thread* pThread)
 void Scheduler::vThread_RemoveGeneral(Thread* pThread)
 {
   AM::vLogThd(SL_INF,pThread,HA_THD_REMOVE_GENERAL,
-              "Remove general thread from GeneralThreadVec"_Stz); //!format-LogThd
+              "Thread from from GeneralThreadVec"_Stz); //!format-LogThd
   
   //
   // called from Thread::aEntryPoint_general()
@@ -1281,7 +1281,7 @@ void Scheduler::vThread_RemoveGeneral(Thread* pThread)
 void Scheduler::vThread_SpawnDedicated(Task* pTask)
 {
   AM::vLogTsk(SL_INF,pTask,TA_TSK_SPAWN_DEDICATED,
-              "Spawn dedicated thread for task"_Stz); //!format-LogTsk
+              "Thread spawned for dedicated task"_Stz); //!format-LogTsk
   
   RASSERT(TS_ABLE == pTask->eState());
   
@@ -1299,7 +1299,7 @@ void Scheduler::vThread_SpawnDedicated(Task* pTask)
 void Scheduler::vThread_UnassignTask(Thread* pThread)
 {
   AM::vLogThd(SL_INF,pThread,HA_THD_UNASSIGN_TASK,
-              "Unassign task from thread"_Stz); //!format-LogThd
+              "Thread unassigns task"_Stz); //!format-LogThd
   
   pThread->m_pTask = nullptr;
   pThread->m_eThreadState = HS_UNASSIGNED;
@@ -1311,7 +1311,7 @@ void Scheduler::vThread_UnassignTask(Thread* pThread)
 void Scheduler::vThread_WaitAssignment(Thread* pThread)
 {
   AM::vLogThd(SL_INF,pThread,HA_THD_WAIT_ASSIGN,
-              "Unassigned general thread waits for task assignment"_Stz); //!format-LogThd
+              "Thread waits for task assignment"_Stz); //!format-LogThd
   
   ASSERT(HS_UNASSIGNED == pThread->m_eThreadState);
   RASSERT(pThread->m_pMutexThread->bMutexIsLocked());

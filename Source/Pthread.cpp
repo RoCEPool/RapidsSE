@@ -502,7 +502,7 @@ void Pthread::vSleepMsec(i8 nMilliSeconds, eCN eCallingClass)
   }
   
   AM::vLogRes(SL_INF,this,RA_THD_AWAKE,
-              "Thead is awake"_Stz); //!format-LogRes
+              "Pthread is awake"_Stz); //!format-LogRes
 }
 
 /*----------------------------------------------------------------------------*/
@@ -539,7 +539,7 @@ void Pthread::vSleepNsec(i8 nNanoSeconds, eCN eCallingClass)
     vWarn("Pthread::vSleepNsec error; errno=%lld\n"_Stz,errno);
   }
   AM::vLogRes(SL_INF,this,RA_THD_AWAKE,
-              "Thead is awake"_Stz); //!format-LogRes
+              "Pthread is awake"_Stz); //!format-LogRes
 }
 
 /*----------------------------------------------------------------------------*/
@@ -562,7 +562,7 @@ void Pthread::vSleepSsec(i8 nSeconds, eCN eCallingClass)
   sleep((unsigned)nSeconds);
   
   AM::vLogRes(SL_INF,this,RA_THD_AWAKE,
-              "Thead is awake"_Stz); //!format-LogRes
+              "Pthread is awake"_Stz); //!format-LogRes
 }
 
 /*----------------------------------------------------------------------------*/
@@ -600,7 +600,7 @@ void Pthread::vSleepUsec(i8 nMicroSeconds, eCN eCallingClass)
   }
   
   AM::vLogRes(SL_INF,this,RA_THD_AWAKE,
-              "Thead is awake"_Stz); //!format-LogRes
+              "Pthread is awake"_Stz); //!format-LogRes
 }
 
 

@@ -308,7 +308,7 @@ void LogEntry::vWriteTxtEntry(File* pFile)
   SP_Id spReqId;
 
   pFile->vPrint("[%04lld,%04lld,%s+%s] %014p "
-                "%16s:%s[%s:%s]%03lld:%-16s "
+                "%16s:%s:%s:%s#%03lld %-16s "
                 ""_Stz,
                 
                 m_i_Entry,
