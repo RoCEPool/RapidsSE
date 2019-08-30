@@ -76,7 +76,7 @@ Thread::Thread(void)
 
   _checkInitialised_(CN_THREAD);
   
-  ++ gixThread;
+  vIncActNo(); ++ gixThread;
   AM::vLogThd(SL_INF,this,HA_THD_CONSTRUCT,
               "Thread construct : %p (%lld threads exist)"_Stz, //!format-LogThd
               this,* gixThread);
@@ -94,7 +94,7 @@ Thread::~Thread(void) noexcept(false)
   delete m_pMutexThread;
   delete m_pPthread;
   
-  -- gixThread;
+  vIncActNo(); -- gixThread;
   AM::vLogThd(SL_INF,this,HA_THD_DESTRUCT,
               "Thread destruct : %p (%lld threads exist)"_Stz, //!format-LogThd
               this,* gixThread);
@@ -120,6 +120,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
     vTrace("Thread::aEntryPoint_dedicated %p %lld\n"_Stz,
            pThread,pThread->iThreadNo());
   
+  pThread->m_pPthread->vIncActNo();
   AM::vLogRes(SL_INF,pThread->m_pPthread,RA_THD_ENTRY,
               "Thead entry (dedicated) : %p"_Stz, //!format-LogRes
               pThread);
@@ -153,6 +154,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
     vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
            pThread,pThread->iThreadNo());
   
+  pThread->m_pPthread->vIncActNo();
   AM::vLogRes(SL_INF,pThread->m_pPthread,RA_THD_EXIT,
               "Thead exit (dedicated) : %p"_Stz, //!format-LogRes
               pThread);
@@ -182,6 +184,7 @@ void* Thread::aEntryPoint_general(void* pArg)
     vTrace("Thread::aEntryPoint_general %p %lld\n"_Stz,
            pThread,pThread->iThreadNo());
   
+  pThread->m_pPthread->vIncActNo();
   AM::vLogRes(SL_INF,pThread->m_pPthread,RA_THD_ENTRY,
               "Thead entry (general) : %p"_Stz, //!format-LogRes
               pThread);
@@ -215,6 +218,7 @@ void* Thread::aEntryPoint_general(void* pArg)
     vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
            pThread,pThread->iThreadNo());
   
+  pThread->m_pPthread->vIncActNo();
   AM::vLogRes(SL_INF,pThread->m_pPthread,RA_THD_EXIT,
               "Thead exit (general) : %p"_Stz, //!format-LogRes
               pThread);
