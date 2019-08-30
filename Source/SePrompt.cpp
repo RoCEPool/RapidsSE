@@ -599,6 +599,7 @@ void SePrompt::vJobWaitCond(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
+  vIncActNo();
   AM::vLogPrm(SL_INF,this,PA_PRM_WAITS,
               "Prompt waits for job"_Stz, //!format-LogPrm
               C_ENDARGS);
@@ -632,6 +633,7 @@ void SePrompt::vLogCommand(void)
   
   pTknVec->vToString(sCommand);
   
+  vIncActNo();
   AM::vLogPrm(SL_INF,this,PA_PRM_COMMAND,
               "Prompt command %lld: %s"_Stz, //!format-LogPrm
               m_iCmdNo++,sCommand.aStz());
@@ -650,6 +652,7 @@ void SePrompt::vLogFreeSpace(void)
   s32 sFreeSpaceMag;
   MagLib::vByteMag(iFreeSpace + iFreeSpaceInPool,1,sFreeSpaceMag);
   
+  vIncActNo();
   AM::vLogPrm(SL_INF,this,PA_PRM_FREE_SPACE,
               "Prompt free space %s"_Stz, //!format-LogPrm
               sFreeSpaceMag.aStz());

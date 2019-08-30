@@ -280,7 +280,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
   
   SP_Header spHeader;
   AM::vLogRes(SL_INF,pSocket,RA_SKT_RECEIVED,
-              "Received: Header %s"_Stz, //!format-LogRes
+              "Socket received: Header %s"_Stz, //!format-LogRes
               spHeader.sz(aHeader));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -319,7 +319,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     
     SP_Job spJob;
     AM::vLogRes(SL_INF,pSocket,RA_SKT_RECEIVED,
-                "Received Job: %s"_Stz, //!format-LogRes
+                "Socket received Job: %s"_Stz, //!format-LogRes
                  spJob.sz(pJob));
 
     if (pJob->m_xReqTuple.m_bLogJob) {

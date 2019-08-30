@@ -68,8 +68,8 @@ Socket::Socket(void)
   
   ++ gixSocket;
   AM::vLogRes(SL_INF,this,RA_SKT_CONSTRUCT,
-              "Socket construct : %p |gixSocket=%lld|"_Stz, //!format-LogRes
-              this,* gixSocket);
+              "Socket construct |gixSocket=%lld|"_Stz, //!format-LogRes
+              * gixSocket);
 
   _postcondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
 }
@@ -90,8 +90,8 @@ Socket::Socket(int iSocketId)
   
   ++ gixSocket;
   AM::vLogRes(SL_INF,this,RA_SKT_CONSTRUCT,
-              "Socket construct : %p |gixSocket=%lld|"_Stz, //!format-LogRes
-              this,* gixSocket);
+              "Socket construct |gixSocket=%lld|"_Stz, //!format-LogRes
+              * gixSocket);
   
   _postcondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
 }
@@ -574,7 +574,7 @@ bool Socket::bSendBytes(void* pBuffer, i8 nBytes, SysCall& SysCall)
 #endif
   
   AM::vLogRes(SL_INF,this,RA_SKT_SENT,
-              "Socket sent : %lld bytes"_Stz, //!format-LogRes
+              "Socket sent %lldB"_Stz, //!format-LogRes
               nSentBytes);
 
   if (nSentBytes == nBytes) {

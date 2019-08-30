@@ -83,7 +83,7 @@ Task::Task(Job* pJob, Session* pSession)
   
   ++ gixTask;
   AM::vLogTsk(SL_INF,this,TA_TSK_CONSTRUCT,
-              "Task construct (job=%s) |gixTask=%lld|"_Stz, //!format-LogTsk
+              "Task -%s construct |gixTask=%lld|"_Stz, //!format-LogTsk
               aCN[m_pJob->eClass()],
               * gixTask);
 
@@ -117,7 +117,7 @@ Task::Task(Op* pOp, Session* pSession)
   
   ++ gixTask;
   AM::vLogTsk(SL_INF,this,TA_TSK_CONSTRUCT,
-              "Task construct (op) |gixTask=%lld|"_Stz, //!format-LogTsk
+              "Task (op) construct |gixTask=%lld|"_Stz, //!format-LogTsk
               * gixTask);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
@@ -190,11 +190,11 @@ Task::~Task(void) noexcept(false)
   -- gixTask;
   if (TK_OPERATOR == m_eKind)
     AM::vLogTsk(SL_INF,this,TA_TSK_DESTRUCT,
-                "Task destruct (op) |gixTask=%lld|"_Stz, //!format-LogTsk
+                "Task destruct |gixTask=%lld|"_Stz, //!format-LogTsk
                 * gixTask);
   else
     AM::vLogTsk(SL_INF,this,TA_TSK_DESTRUCT,
-                "Task destruct (job) |gixTask=%lld|"_Stz, //!format-LogTsk
+                "Task destruct |gixTask=%lld|"_Stz, //!format-LogTsk
                 * gixTask);
 }
 

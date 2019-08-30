@@ -16,7 +16,7 @@
 void Scheduler::vAddOriginatingJob(Job* pJob)
 {
   AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_ORIGINATING,
-              "Add job to OriginatingJobs list"_Stz); //!format-LogJob
+              "Job added to OriginatingJobs"_Stz); //!format-LogJob
   
   Queues* pQueues = AM::pQueues();
   
@@ -31,7 +31,7 @@ void Scheduler::vAddOriginatingJob(Job* pJob)
 void Scheduler::vAddParticipatingJob(Job* pJob)
 {
   AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_PARTICIPATING,
-              "Add job to ParticipatingJobs list"_Stz); //!format-LogJob
+              "Job added to ParticipatingJobs"_Stz); //!format-LogJob
   
   Queues* pQueues = AM::pQueues();
   
@@ -78,7 +78,7 @@ Job* Scheduler::pFindOriginatingJob(i8 iJobId)
   Queues* pQueues = AM::pQueues();
   
   AM::vLogQue(SL_INF,pQueues,QA_QUE_FIND_ORIGINATOR,
-              "Find job %lld in OriginatingJobs list"_Stz, //!format-LogQue
+              "Find job %lld in OriginatingJobs"_Stz, //!format-LogQue
               iJobId);
   
   Job* pJob = pQueues->m_pOriginatingJobs->pFindJob(iJobId);
@@ -94,7 +94,7 @@ Job* Scheduler::pFindParticipatingJob(i8 iJobId)
   Queues* pQueues = AM::pQueues();
 
   AM::vLogQue(SL_INF,pQueues,QA_QUE_FIND_PARTICPANT,
-              "Find job %lld in ParticipatingJobs list"_Stz, //!format-LogQue
+              "Find job %lld in ParticipatingJobs"_Stz, //!format-LogQue
               iJobId);
   
   Job* pJob = pQueues->m_pParticipatingJobs->pFindJob(iJobId);
@@ -108,7 +108,7 @@ Job* Scheduler::pFindParticipatingJob(i8 iJobId)
 bool Scheduler::bRemoveOriginatingJob(Job* pJob, bool bDump)
 {
   AM::vLogJob(SL_INF,pJob,JA_JOB_REMOVE_ORIGINATING,
-              "Remove job from OriginatingJobs list"_Stz); //!format-LogJob
+              "Job removed from OriginatingJobs"_Stz); //!format-LogJob
   
   Queues* pQueues = AM::pQueues();
   
@@ -130,7 +130,7 @@ bool Scheduler::bRemoveOriginatingJob(Job* pJob, bool bDump)
 bool Scheduler::bRemoveParticipatingJob(Job* pJob, bool bDump)
 {
   AM::vLogJob(SL_INF,pJob,JA_JOB_REMOVE_PARTICIPATING,
-              "Remove job from ParticipatingJobs list"_Stz); //!format-LogJob
+              "Job fremoved from ParticipatingJobs"_Stz); //!format-LogJob
   
   Queues* pQueues = AM::pQueues();
   
@@ -620,7 +620,7 @@ void Scheduler::vTask_DdlGrabWrite(Task* pTask)
 void Scheduler::vTask_Desist(Task* pTask)
 {
   AM::vLogTsk(SL_INF,pTask,TA_TSK_DESIST,
-              "Task removed from ExecutingSet; transition to TS_DESISTED"_Stz); //!format-LogTsk
+              "Task removed from ExecutingSet; transitions to TS_DESISTED"_Stz); //!format-LogTsk
   
   RASSERT(TS_EXECUTING == pTask->eState());
   RASSERT(QK_EXECUTING_SET == pTask->eQueue());
@@ -652,7 +652,7 @@ void Scheduler::vTask_Drop(Task* pTask)
 void Scheduler::vTask_Execute(Task* pTask)
 {
   AM::vLogTsk(SL_INF,pTask,TA_TSK_EXECUTE,
-              "Task to TS_EXECUTING; add ExecutingSet"_Stz); //!format-LogTsk
+              "Task to TS_EXECUTING state; added to ExecutingSet"_Stz); //!format-LogTsk
   
   RASSERT(TS_ABLE == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
@@ -674,7 +674,7 @@ void Scheduler::vTask_Execute(Task* pTask)
 void Scheduler::vTask_Exit(Task* pTask)
 {
   AM::vLogTsk(SL_INF,pTask,TA_TSK_EXIT,
-              "Task to TS_EXITED; and deleted"_Stz); //!format-LogTsk
+              "Task to TS_EXITED state; and deleted"_Stz); //!format-LogTsk
   
   RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
@@ -695,7 +695,7 @@ void Scheduler::vTask_Exit(Task* pTask)
 void Scheduler::vTask_Grab(Task* pTask)
 {
   AM::vLogTsk(SL_INF,pTask,TA_TSK_GRAB,
-              "Grabbing task lock"_Stz); //!format-LogTsk
+              "Task grab lock"_Stz); //!format-LogTsk
   
   pTask->vGrabTaskLock();
 }
@@ -707,7 +707,7 @@ void Scheduler::vTask_Grab(Task* pTask)
 void Scheduler::vTask_Pause(Task* pTask)
 {
   AM::vLogTsk(SL_INF,pTask,TA_TSK_PAUSE,
-              "Transition desisted task to TS_PAUSED"_Stz); //!format-LogTsk
+              "Task to TS_PAUSED state"_Stz); //!format-LogTsk
   
   RASSERT(pTask->bIsLocked());
   RASSERT(TS_DESISTED == pTask->eState());
@@ -733,7 +733,7 @@ void Scheduler::vTask_Pause(Task* pTask)
 Task* Scheduler::pTask_Pop(Thread* pThread)
 {
   AM::vLogThd(SL_INF,pThread,HA_THD_POP,
-              "Thread pop task from ReadyQueue/ReadyQueueLP"_Stz); //!format-LogThd
+              "Thread pops task from ReadyQueue/ReadyQueueLP"_Stz); //!format-LogThd
   
   Queues* pQueues = AM::pQueues();
 
@@ -778,7 +778,7 @@ void Scheduler::vTask_Pulse(Task* pTask)
 void Scheduler::vTask_Ready(Task* pTask)
 {
   AM::vLogTsk(SL_INF,pTask,TA_TSK_READY,
-              "Task appends to ReadyQueue/ReadyQueueLP"_Stz); //!format-LogTsk
+              "Task to TS_READY state; appended to ReadyQueue[LP]"_Stz); //!format-LogTsk
   
   RASSERT(TS_ABLE == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
@@ -844,7 +844,8 @@ void Scheduler::vTask_Resume(Task* pTask)
 void Scheduler::vTask_Requires(Task* pTask, i8 nAcksRequired)
 {
   AM::vLogTsk(SL_INF,pTask,TA_TSK_REQUIRES,
-              "Set number of acks required by (soon to be) waiting task"_Stz); //!format-LogTsk
+              "Tasks sets number of acks required (nAcks=%lld)"_Stz, //!format-LogTsk
+              nAcksRequired);
 
   pTask->m_oAcksRmg.vSetRemaining(nAcksRequired);
 }
@@ -855,7 +856,7 @@ void Scheduler::vTask_Requires(Task* pTask, i8 nAcksRequired)
 void Scheduler::vTask_Schedule(Task* pTask)
 {
   AM::vLogTsk(SL_INF,pTask,TA_TSK_SCHEDULE,
-              "Task schedule"_Stz); //!format-LogTsk
+              "Task is scheduled"_Stz); //!format-LogTsk
   
   RASSERT(TS_ABLE == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
@@ -924,7 +925,7 @@ void Scheduler::vTask_Sleep(Task* pTask)
 void Scheduler::vTask_Thread(Task* pTask, Thread* pThread)
 {
   AM::vLogTsk(SL_INF,pTask,TA_TSK_THREAD,
-              "Task has been assigned the given thread"_Stz); //!format-LogTsk
+              "Task assigned to given thread"_Stz); //!format-LogTsk
   
   RASSERT(TS_ABLE == pTask->eState());
   
@@ -969,7 +970,7 @@ void Scheduler::vTask_Trigger(Task* pTask)
 void Scheduler::vTask_Wait(Task* pTask)
 {
   AM::vLogTsk(SL_INF,pTask,TA_TSK_WAIT,
-              "Add desisted task to WaitingSet"_Stz); //!format-LogTsk
+              "Task added to WaitingSet"_Stz); //!format-LogTsk
   
   RASSERT(pTask->bIsLocked());
   RASSERT(TS_DESISTED == pTask->eState());
@@ -1094,7 +1095,7 @@ void Scheduler::vThread_AddGeneral(Thread* pThread)
 void Scheduler::vThread_AppendIdle(Thread* pThread)
 {
   AM::vLogThd(SL_INF,pThread,HA_THD_APPEND_IDLE,
-              "Thread onto IdleThreadQueue"_Stz); //!format-LogThd
+              "Thread moves onto IdleThreadQueue"_Stz); //!format-LogThd
   
   RASSERT(! pThread->m_pTask);
   ASSERT(HS_UNASSIGNED == pThread->m_eThreadState);
@@ -1113,7 +1114,7 @@ void Scheduler::vThread_AppendIdle(Thread* pThread)
 bool Scheduler::bThread_AssignIdle(Task* pTask)
 {
   AM::vLogTsk(SL_INF,pTask,TA_TSK_ASSIGN_IDLE,
-              "Task attempt assign idle thread"_Stz); //!format-LogTsk
+              "Task attempts to assign an idle thread"_Stz); //!format-LogTsk
   
   RASSERT(TS_ABLE == pTask->eState());
   
@@ -1299,7 +1300,7 @@ void Scheduler::vThread_SpawnDedicated(Task* pTask)
 void Scheduler::vThread_UnassignTask(Thread* pThread)
 {
   AM::vLogThd(SL_INF,pThread,HA_THD_UNASSIGN_TASK,
-              "Thread unassigns task"_Stz); //!format-LogThd
+              "Thread unassigns its task"_Stz); //!format-LogThd
   
   pThread->m_pTask = nullptr;
   pThread->m_eThreadState = HS_UNASSIGNED;
