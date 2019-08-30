@@ -28,7 +28,7 @@ void ShmLog::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ShmLog::ShmLog(eCN eClassNo)
-: Focal(eClassNo,0)
+: Focal(eClassNo,0,nullptr)
 , m_okLock(LK_LOG,C_NO_REQTUPLE,this)
 {
   _precondition_(_MAGIC_,eClassNo);

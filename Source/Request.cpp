@@ -44,7 +44,7 @@ void Request::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Request::Request(Session* p_Session, TokenVec* p_TknVec)
-: Focal(CN_REQUEST,AM::iNextRequest())
+: Focal(CN_REQUEST,AM::iNextRequest(),p_Session)
 , m_xReqTuple(nullptr)
 {
   _precondition_(_MAGIC_,CN_REQUEST,_FOOTER_);
@@ -70,6 +70,39 @@ Request::Request(Session* p_Session, TokenVec* p_TknVec)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Request::Request(Session* p_Session, Stz* szPurpose)
+: Focal(CN_REQUEST,AM::iNextRequest(),p_Session)
+, m_xReqTuple(nullptr)
+{
+  _precondition_(_MAGIC_,CN_REQUEST,_FOOTER_);
+  
+  m_p_Session = p_Session;
+  m_p_TknVec  = nullptr;
+  
+  m_xReqTuple.m_sPurpose = szPurpose;
+  
+  m_xReqTuple.m_iReqId = m_iUniqueId;
+  
+  _checkInitialised_(CN_REQUEST);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  SP_TknVecStr spTknVecStr;
+  
+  Now oNow;
+  AM::vLogReq(SL_INF,this,MA_REQ_BEGIN,
+              "Request begin: %s (%s)"_Stz, //!format-LogReq
+              m_xReqTuple.m_sPurpose.aStz(),
+              oNow.sz());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  _postcondition_(_MAGIC_,CN_REQUEST,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Request::~Request(void) noexcept(false)
@@ -79,8 +112,10 @@ Request::~Request(void) noexcept(false)
   // do not delete: m_p_Session
   // do not delete: m_p_TknVec
   
+  Now oNow;
   AM::vLogReq(SL_INF,this,MA_REQ_END,
-              "Request end"_Stz); //!format-LogReq
+              "Request end (%s)"_Stz, //!format-LogReq
+              oNow.sz());
 }
 
 

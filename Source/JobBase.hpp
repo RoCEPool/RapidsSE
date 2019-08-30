@@ -11,7 +11,7 @@ namespace Jobs
     ReqTuple  m_xReqTuple; // the request tuple
 
   public:
-    JobBase(eCN eClassNo, ReqTuple* aReqTuple, i8 iJobId);
+    JobBase(eCN eClassNo, ReqTuple* aReqTuple, i8 iJobId, Focal* pFor);
    ~JobBase(void) noexcept(false);
   
   };

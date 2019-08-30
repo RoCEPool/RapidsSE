@@ -15,10 +15,10 @@ namespace Correctness
   
     i8 m_iActNo;
     i8 m_iForId;
-  
+
   public:
     Focal(eCN eClassNo);
-    Focal(eCN eClassNo, i8 iUniqueId);
+    Focal(eCN eClassNo, i8 iUniqueId, Focal* pFor);
    ~Focal(void) noexcept(false);
   
     i8   iActNo(void);

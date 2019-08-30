@@ -61,12 +61,7 @@ void _LogEntryJob::vWriteTxt(File* pFile, LogEntry* pEntry)
   SP_Id spId;
   SP_Id spReqId;
   
-  pFile->vPrint(C_ENTRY_FMT_2s,
-                
-                aJA[m_eJobAct],
-                spId.sz(IK_JOB,m_iJobId),
-                //spReqId.sz(IK_REQUEST,m_iReqId)
-                C_ENDARGS);
+  pFile->vPrint(C_ENTRY_FMT_1s,aJA[m_eJobAct]);
   
   pFile->vPrint("%s"_Stz,pEntry->m_caNote);
 }

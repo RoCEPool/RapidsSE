@@ -53,11 +53,7 @@ void _LogEntryReq::vWriteTxt(File* pFile, LogEntry* pEntry)
 {
   SP_Id spId;
   
-  pFile->vPrint(C_ENTRY_FMT_2s,
-                
-                aMA[m_eReqAct],
-                spId.sz(IK_REQUEST,m_iReqId)
-                );
+  pFile->vPrint(C_ENTRY_FMT_1s,aMA[m_eReqAct]);
   
   pFile->vPrint("%s"_Stz,pEntry->m_caNote);
 }

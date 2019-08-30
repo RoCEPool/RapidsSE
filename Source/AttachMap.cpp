@@ -47,7 +47,7 @@ void AttachMap::operator delete(void* pAttachMapAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 AttachMap::AttachMap(void)
-: Focal(CN_ATTACHMAP,0)
+: Focal(CN_ATTACHMAP,0,nullptr)
 , m_okDdlLock(LK_DDL,C_NO_REQTUPLE,this)
 , m_okDicLock(LK_DIC,C_NO_REQTUPLE,this)
 {

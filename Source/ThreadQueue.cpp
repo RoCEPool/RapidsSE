@@ -41,7 +41,7 @@ void ThreadQueue::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 ThreadQueue::ThreadQueue(void)
 : ListNL_t<Thread>(CN_THREADQUEUE)
-, m_okLock(LK_THREAD_QUEUE,C_NO_REQTUPLE,this)
+, m_okLock(LK_THREAD_QUEUE,C_NO_REQTUPLE,this,C_NONFOCAL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREADQUEUE,_FOOTER_);
   

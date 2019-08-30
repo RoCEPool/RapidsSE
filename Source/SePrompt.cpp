@@ -5,6 +5,7 @@
 #include "Prompt.h"
 #include "AM.hpp"
 
+extern AttachMap*    gpAttachMap;
 extern PromptCatalog gxPromptCatalog;
 
 /*----------------------------------------------------------------------------*/
@@ -47,7 +48,7 @@ void SePrompt::operator delete(void* pSePromptAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SePrompt::SePrompt(bool bOneCommand)
-: Focal(CN_SEPROMPT,AM::iNextPromptId())
+: Focal(CN_SEPROMPT,AM::iNextPromptId(),(Focal*)gpAttachMap)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -228,8 +229,9 @@ void SePrompt::vBeginRequest(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_pRequest = new Request(m_pSession,pTknVec());
-  
+  //m_pRequest = new Request(m_pSession,pTknVec());
+  m_pRequest = new Request(m_pSession,m_pJobClass->m_aComment);
+
   m_i_RequestFocal = m_pRequest->m_i_Focal;
   
   m_iRequestId = m_pRequest->m_iUniqueId;
@@ -631,7 +633,7 @@ void SePrompt::vLogCommand(void)
   pTknVec->vToString(sCommand);
   
   AM::vLogPrm(SL_INF,this,PA_PRM_COMMAND,
-              "Command %lld: %s"_Stz, //!format-LogPrm
+              "Prompt command %lld: %s"_Stz, //!format-LogPrm
               m_iCmdNo++,sCommand.aStz());
 }
 
@@ -649,7 +651,7 @@ void SePrompt::vLogFreeSpace(void)
   MagLib::vByteMag(iFreeSpace + iFreeSpaceInPool,1,sFreeSpaceMag);
   
   AM::vLogPrm(SL_INF,this,PA_PRM_FREE_SPACE,
-              "Free space %s"_Stz, //!format-LogPrm
+              "Prompt free space %s"_Stz, //!format-LogPrm
               sFreeSpaceMag.aStz());
 }
 

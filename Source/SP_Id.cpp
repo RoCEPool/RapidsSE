@@ -94,6 +94,39 @@ Stz* SP_Id::sz(eIK eKind, i8 iId)
   return (Stz*) &m_caResult[0];
 }
 
+/*----------------------------------------------------------------------------*/
+/* sprint Id and return Stz* to result                                        */
+/*----------------------------------------------------------------------------*/
+Stz* SP_Id::sz(eEK eKind, i8 iId)
+{
+  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  
+  union {
+    i8  iId;
+    _Id wId;
+  } U;
+  
+  
+  if (C_UNKNOWN == iId) {
+    StrLib::vSprint(m_caResult,"%s-.---"_Stz,aEK[eKind]);
+    return (Stz*) &m_caResult[0];
+  }
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  U.iId = iId;
+  
+  StrLib::vSprint(m_caResult,
+                  "%s%lld.%03lld"_Stz,
+                  
+                  aEK[eKind],
+                  U.wId.m_uNodeNo,
+                  U.wId.m_uIdNo);
+  
+  return (Stz*) &m_caResult[0];
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
