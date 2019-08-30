@@ -15,7 +15,7 @@ namespace Correctness
   
     i8 m_iActNo;
     i8 m_iForId;
-  
+
   public:
     Focal(eCN eClassNo);
     Focal(eCN eClassNo, i8 iUniqueId);
