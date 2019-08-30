@@ -138,7 +138,7 @@ eOR FetchOp::eOpLoop(void)
     vPreliminary();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pipe the crw buffers
+  // pipe the entry buffers
   
   if (m_pDigest->m_bPulsed) {
     vDebugPoint();
@@ -153,6 +153,8 @@ eOR FetchOp::eOpLoop(void)
       break;
     }
     
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // exit early if limit
     if ( m_nLimit == C_UNKNOWN || m_iWorkDone < m_nLimit) {
       m_iWorkDone += m_pEntBuffer->nItems();
       vPipeOut(m_pEntBuffer);
@@ -186,6 +188,7 @@ void FetchOp::vPreliminary(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
   
+  // reset runPreliminary
   m_bRunPrelim = false;
   
   // find the table in the session dictionary stack
@@ -197,27 +200,16 @@ void FetchOp::vPreliminary(void)
   // get table ptn
   m_pTablePtn = m_pTable->pSlots()->pPartition(m_nSlot);
   
-  // pipe StreamDef
+  // create the stream def from teh table
   m_pStreamDef = new StreamDef(m_pTable->pStreamDef());
-  StreamDef* pStreamDef = new StreamDef(m_pTable->pStreamDef());
-  vPipeOut(pStreamDef);
+  
+  // pipe StreamDef
+  vPipeOut(new StreamDef(m_pStreamDef));
   
   // get first buffer
   IndexTree* pIndexTree = m_pTablePtn->pIndexTree(m_pIndex->iIndexNo());
-  
   m_pEntBuffer = pIndexTree->pFirstH0Buffer();
 }
-
-/*----------------------------------------------------------------------------*/
-/* set table partition                                                        */
-/*----------------------------------------------------------------------------*/
-void FetchOp::vTablePtn(TablePtn* pTablePtn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
-
-  m_pTablePtn = pTablePtn;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
