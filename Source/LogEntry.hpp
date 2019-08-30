@@ -50,6 +50,9 @@ namespace Logging
   
     bool m_bLine;      // draw line before?
   
+    char m_cPrefix;
+    i8   m_iUniqueId;
+  
     char m_caNote[C_LOG_NOTE]; // comment
   
     eEK  m_eKind;      // log entry kind.  one of the following

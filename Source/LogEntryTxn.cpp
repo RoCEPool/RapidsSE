@@ -10,7 +10,8 @@
 void _LogEntryTxn::vSet(LogEntry* pLogEntry, Tx* pTxn, eXA eTxnAct)
 {
   pLogEntry->m_eKind = EK_TXN;
-  
+  pLogEntry->m_cPrefix = 'X';
+
   m_iTxnId  = pTxn->m_iUniqueId;
   m_eTxnAct = eTxnAct;
 }

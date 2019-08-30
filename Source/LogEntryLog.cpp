@@ -10,7 +10,8 @@
 void _LogEntryLog::vSet(LogEntry* pLogEntry, Log* pLog, eGA eLogAct)
 {
   pLogEntry->m_eKind = EK_LOG;
-  
+  pLogEntry->m_cPrefix = 'G';
+
   m_iLogId  = pLog->m_iUniqueId;
   m_eLogAct = eLogAct;
 }

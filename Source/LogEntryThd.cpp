@@ -10,7 +10,8 @@
 void _LogEntryThd::vSet(LogEntry* pLogEntry, Thread* pThread, eHA eThdAct)
 {
   pLogEntry->m_eKind = EK_THD;
-  
+  pLogEntry->m_cPrefix = 'H';
+
   m_iThdId  = pThread->m_iUniqueId;
   m_eThdAct = eThdAct;
 }

@@ -10,7 +10,8 @@
 void _LogEntrySys::vSet(LogEntry* pLogEntry, AttachMap* pAttachMap, eYA eSysAct)
 {
   pLogEntry->m_eKind = EK_SYS;
-  
+  pLogEntry->m_cPrefix = 'Y';
+
   m_iSysId  = pAttachMap->m_iUniqueId;
   m_eSysAct = eSysAct;
 }

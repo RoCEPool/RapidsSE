@@ -90,6 +90,8 @@ void LogEntry::vInit(eSL eSeverity, eCN eClassNo, Stz* szText)
   m_eSeverity = eSeverity;
   
   m_bLine = false;
+  m_cPrefix = '?';
+  m_iUniqueId = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -117,6 +119,8 @@ void LogEntry::vInit(eSL eSeverity, Focal *pFocal, Stz* szText)
   m_eSeverity = eSeverity;
   
   m_bLine = false;
+  m_cPrefix = '?';
+  m_iUniqueId = pFocal->m_iUniqueId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -297,18 +301,21 @@ void LogEntry::vWriteTxtEntry(File* pFile)
   if (m_bLine)
     pFile->vPrint("%s\n"_Stz,C_LOG_LINE);
   
-  pFile->vPrint("[%04lld,%04lld,%s+%s] "
-                "%014p %16s:%03lld:%03lld:"
+  SP_Id spId;
+  
+  pFile->vPrint("[%04lld,%04lld,%s+%s] %014p "
+                "%16s:%03lld:%c%s:%03lld:"
                 ""_Stz,
                 
                 m_i_Entry,
                 m_i_Prev,
                 m_caNode,
                 spElapsed.szNsec(m_iTick - AM::iAMTimePoint()),
-
                 m_pFocal,
+                
                 aCN[m_eClass],
                 m_xReqTuple.m_iReqId,
+                m_cPrefix, spId.sz(m_iUniqueId),
                 m_iAct,
                 
                 C_ENDARGS);

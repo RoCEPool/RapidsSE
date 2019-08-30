@@ -10,7 +10,8 @@
 void _LogEntrySsn::vSet(LogEntry* pLogEntry, Session* pSession, eAA eSsnAct)
 {
   pLogEntry->m_eKind = EK_SSN;
-  
+  pLogEntry->m_cPrefix = 'S';
+
   m_iSsnId  = pSession->m_iUniqueId;
   m_eSsnAct = eSsnAct;
 }
