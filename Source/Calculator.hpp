@@ -23,7 +23,7 @@ namespace Operators
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Calculator(Job* pJob);
+    Calculator(void);
    ~Calculator(void) noexcept(false);
   
     bool bCompile(TokenVec* pTknVec);

@@ -40,13 +40,14 @@ void Calculator::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Calculator::Calculator(Job* pJob)
+Calculator::Calculator(void)
 : Object(CN_CALCULATOR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
   
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_baExpr,sizeof(m_baExpr),CN_CALCULATOR);
+  MemLib::vZero(m_baExpr, sizeof(m_baExpr), CN_CALCULATOR);
+  MemLib::vZero(m_iaStack,sizeof(m_iaStack),CN_CALCULATOR);
 #endif
   
   _checkInitialised_(CN_CALCULATOR);

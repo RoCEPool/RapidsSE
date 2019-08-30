@@ -23,7 +23,20 @@ PromptDesc __Prompt_calc (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_calc(SePrompt* pPrompt)
 {
+  TokenVec* pTknVec = pPrompt->pTknVec();
 
+  Calculator* pCalculator = new Calculator;
+ 
+  if (! pCalculator->bCompile(pTknVec)) {
+    delete pCalculator;
+    return true;
+  }
+  
+  i8 iResult = pCalculator->iCompute(nullptr);
+  
+  vTrace("  %lld\n"_Stz,iResult);
+  
+  delete pCalculator;
   
   return true;
 }
