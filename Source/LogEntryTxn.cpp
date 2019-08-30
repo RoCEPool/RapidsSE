@@ -51,11 +51,7 @@ void _LogEntryTxn::vWriteTxt(File* pFile, LogEntry* pEntry)
 {
   SP_Id spId;
   
-  pFile->vPrint(C_ENTRY_FMT_2s,
-                
-                aXA[m_eTxnAct],
-                spId.sz(IK_TX,m_iTxnId)
-                );
+  pFile->vPrint(C_ENTRY_FMT_1s,aXA[m_eTxnAct]);
   
   pFile->vPrint("%s"_Stz,pEntry->m_caNote);
 }

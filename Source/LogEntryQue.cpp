@@ -51,11 +51,7 @@ void _LogEntryQue::vWriteTxt(File* pFile, LogEntry* pEntry)
 {
   SP_Id spId;
   
-  pFile->vPrint(C_ENTRY_FMT_2s,
-                
-                aQA[m_eQueAct],
-                spId.sz(IK_QUEUE,m_iQueId)
-                );
+  pFile->vPrint(C_ENTRY_FMT_1s,aQA[m_eQueAct]);
   
   pFile->vPrint("%s"_Stz,pEntry->m_caNote);
 }
