@@ -35,6 +35,7 @@ typedef VectorNL_t<CN_SHORTCUTVEC, ShortCut, C_MAX_SHORTCUTS> ShortCutVec;
 #include "Prompt_bye.hpp"
 
 #include "Prompt_cache.hpp"
+#include "Prompt_calc.hpp"
 #include "Prompt_cd.hpp"
 #include "Prompt_classes.hpp"
 #include "Prompt_cmds.hpp"
