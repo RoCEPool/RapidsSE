@@ -92,25 +92,53 @@ bool Calculator::bCompile(TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /* compute                                                                    */
 /*----------------------------------------------------------------------------*/
-i8 Calculator::iCompute(Row *pRow)
+i8 Calculator::iCompute(i8* paColValues)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
-  
-  m_iaData[0] = C_DATUM_NULL;
   
   i8 iArgA;
   i8 iArgB;
   i8 iRes;
 
   eEO  eCode;
-  i8   i_TopVal = 0;
   eEO* peCode = & m_eaCode[0];
-  
+ 
+  i8 i_TopVal = 0;
+  m_iaData[i_TopVal] = C_DATUM_NULL;
+
   for (;;) {
   
     eCode = *peCode++;
     
     switch (eCode) {
+        
+      // -- -- -- -- -- -- -- -- -- -- --
+        
+      case EO_COLUMN:
+        iArgA = * (i8*)peCode;
+        iRes  = paColValues[iArgA];
+        m_iaData[++i_TopVal] = iRes;
+        break;
+        
+      case EO_INTEGER:
+        iRes = * (i8*)peCode;
+        peCode += 8;
+        m_iaData[++i_TopVal] = iRes;
+        break;
+        
+      case EO_PUSHNULL:
+        m_iaData[++i_TopVal] = C_DATUM_NULL;
+        break;
+        
+      case EO_PUSH0:
+        m_iaData[++i_TopVal] = 0;
+        break;
+        
+      case EO_PUSH1:
+        m_iaData[++i_TopVal] = 1;
+        break;
+        
+      // -- -- -- -- -- -- -- -- -- -- --
         
       case EO_ADD:
         iArgB = m_iaData[i_TopVal--];
@@ -119,20 +147,11 @@ i8 Calculator::iCompute(Row *pRow)
         m_iaData[++i_TopVal] = iRes;
         break;
         
-      case EO_COLUMN:
-        break;
-        
       case EO_DIVIDE:
         iArgB = m_iaData[i_TopVal--];
         iArgA = m_iaData[i_TopVal--];
         iRes  = iArgA / iArgB;
         m_iaData[++i_TopVal] = iRes;
-        break;
-        
-      case EO_INTEGER:
-        iArgA = * (i8*)peCode;
-        peCode += 8;
-        m_iaData[++i_TopVal] = iArgA;
         break;
         
       case EO_MULTIPLY:
@@ -148,13 +167,6 @@ i8 Calculator::iCompute(Row *pRow)
         m_iaData[++i_TopVal] = iRes;
         break;
         
-      case EO_PUSH1:
-        m_iaData[++i_TopVal] = 1;
-        break;
-        
-      case EO_RETURN:
-        return m_iaData[i_TopVal];
-        
       case EO_SUBTRACT:
         iArgB = m_iaData[i_TopVal--];
         iArgA = m_iaData[i_TopVal--];
@@ -162,6 +174,78 @@ i8 Calculator::iCompute(Row *pRow)
         m_iaData[++i_TopVal] = iRes;
         break;
 
+      // -- -- -- -- -- -- -- -- -- -- --
+        
+      case EO_LESSTHAN:
+        iArgB = m_iaData[i_TopVal--];
+        iArgA = m_iaData[i_TopVal--];
+        iRes  = iArgA < iArgB;
+        m_iaData[++i_TopVal] = iRes;
+        break;
+
+      case EO_LESSEQUAL:
+        iArgB = m_iaData[i_TopVal--];
+        iArgA = m_iaData[i_TopVal--];
+        iRes  = iArgA <= iArgB;
+        m_iaData[++i_TopVal] = iRes;
+        break;
+        
+      case EO_EQUAL:
+        iArgB = m_iaData[i_TopVal--];
+        iArgA = m_iaData[i_TopVal--];
+        iRes  = iArgA == iArgB;
+        m_iaData[++i_TopVal] = iRes;
+        break;
+        
+      case EO_NOTEQUAL:
+        iArgB = m_iaData[i_TopVal--];
+        iArgA = m_iaData[i_TopVal--];
+        iRes  = iArgA != iArgB;
+        m_iaData[++i_TopVal] = iRes;
+        break;
+        
+      case EO_GREATEREQUAL:
+        iArgB = m_iaData[i_TopVal--];
+        iArgA = m_iaData[i_TopVal--];
+        iRes  = iArgA >= iArgB;
+        m_iaData[++i_TopVal] = iRes;
+        break;
+        
+      case EO_GREATERTHAN:
+        iArgB = m_iaData[i_TopVal--];
+        iArgA = m_iaData[i_TopVal--];
+        iRes  = iArgA > iArgB;
+        m_iaData[++i_TopVal] = iRes;
+        break;
+        
+      // -- -- -- -- -- -- -- -- -- -- --
+        
+      case EO_ISNULL:
+        iArgA = m_iaData[i_TopVal--];
+        iRes  = (C_DATUM_NULL == iArgA) ? 1 : 0;
+        m_iaData[++i_TopVal] = iRes;
+        break;
+
+      case EO_ISNOTNULL:
+        iArgA = m_iaData[i_TopVal--];
+        iRes  = (C_DATUM_NULL != iArgA) ? 1 : 0;
+        m_iaData[++i_TopVal] = iRes;
+        break;
+        
+      case EO_NOT:
+        iArgA = m_iaData[i_TopVal--];
+        iRes  = (! iArgA) ? 1 : 0;
+        m_iaData[++i_TopVal] = iRes;
+        break;
+        
+      // -- -- -- -- -- -- -- -- -- -- --
+        
+      case EO_RETURN:
+        iRes = m_iaData[i_TopVal];
+        return iRes;
+        
+      // -- -- -- -- -- -- -- -- -- -- --
+        
       default:
         vTrace(" unknown opcode in calculator\n"_Stz);
         return C_DATUM_NULL;

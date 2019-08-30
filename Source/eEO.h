@@ -7,34 +7,64 @@ enum eEO : i1 // expression operators
 {
   /*  0 */ EO_NONE=0,
   
-  /*  1 */ EO_ADD,
-  /*  2 */ EO_COLUMN,
-  /*  3 */ EO_DIVIDE,
-  /*  4 */ EO_INTEGER,
-  /*  5 */ EO_MULTIPLY,
-  /*  6 */ EO_NEGATE,
-  /*  7 */ EO_PUSH1,
-  /*  8 */ EO_RETURN,
-  /*  9 */ EO_SUBTRACT,
+  /*    */ EO_COLUMN,
+  /*    */ EO_INTEGER,
+  /*    */ EO_PUSHNULL,
+  /*    */ EO_PUSH0,
+  /*    */ EO_PUSH1,
+
+  /*    */ EO_ADD,
+  /*    */ EO_DIVIDE,
+  /*    */ EO_MULTIPLY,
+  /*    */ EO_NEGATE,
+  /*    */ EO_SUBTRACT,
+
+  /*    */ EO_LESSTHAN,
+  /*    */ EO_LESSEQUAL,
+  /*    */ EO_EQUAL,
+  /*    */ EO_NOTEQUAL,
+  /*    */ EO_GREATEREQUAL,
+  /*    */ EO_GREATERTHAN,
+
+  /*    */ EO_ISNULL,
+  /*    */ EO_ISNOTNULL,
+  /*    */ EO_NOT,
   
-  /* 10 */ EO_ENUMS
+  /*    */ EO_RETURN,
+
+  /*    */ EO_ENUMS
 };
 
 static Stz* aEO[]
 {
   /*  0 */ "NONE"_Stz,
   
-  /*  1 */ "EO_ADD"_Stz,
-  /*  2 */ "EO_COLUMN"_Stz,
-  /*  3 */ "EO_DIVIDE"_Stz,
-  /*  4 */ "EO_INTEGER"_Stz,
-  /*  5 */ "EO_MULTIPLY"_Stz,
-  /*  6 */ "EO_NEGATE"_Stz,
-  /*  7 */ "EO_PUSH1"_Stz,
-  /*  8 */ "EO_RETURN"_Stz,
-  /*  9 */ "EO_SUBTRACT"_Stz,
+  /*    */ "EO_COLUMN"_Stz,
+  /*    */ "EO_INTEGER"_Stz,
+  /*    */ "EO_PUSHNULL"_Stz,
+  /*    */ "EO_PUSH0"_Stz,
+  /*    */ "EO_PUSH1"_Stz,
 
-  /* 10 */ "ENUMS"_Stz
+  /*    */ "EO_ADD"_Stz,
+  /*    */ "EO_DIVIDE"_Stz,
+  /*    */ "EO_MULTIPLY"_Stz,
+  /*    */ "EO_NEGATE"_Stz,
+  /*    */ "EO_SUBTRACT"_Stz,
+
+  /*    */ "EO_LESSTHAN"_Stz,
+  /*    */ "EO_LESSEQUAL"_Stz,
+  /*    */ "EO_EQUAL"_Stz,
+  /*    */ "EO_NOTEQUAL"_Stz,
+  /*    */ "EO_GREATEREQUAL"_Stz,
+  /*    */ "EO_GREATERTHAN"_Stz,
+
+  /*    */ "EO_ISNULL"_Stz,
+  /*    */ "EO_ISNOTNULL"_Stz,
+  /*    */ "EO_NOT"_Stz,
+
+  /*    */ "EO_RETURN"_Stz,
+  
+  /*    */ "ENUMS"_Stz
 };
 
 /*============================================================================*/
