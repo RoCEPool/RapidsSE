@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 TempName::TempName(void)
 : Object(CN_SINCE)
-, m_okLock(LK_TEMP_NAME,C_NO_REQTUPLE,this)
+, m_okLock(LK_TEMP_NAME,C_NO_REQTUPLE,this,C_NONFOCAL)
 {
   _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
   

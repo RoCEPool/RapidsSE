@@ -32,7 +32,7 @@ namespace Locking
     void* operator new(size_t, Lock* pLock);
     void  operator delete(void* pLockAddress);
     
-    Lock(eLK eLockKind, ReqTuple* aReqTuple, Object* pSuper);
+    Lock(eLK eLockKind, ReqTuple* aReqTuple, Focal* pSuper);
     Lock(eLK eLockKind, ReqTuple* aReqTuple, Object* pSuper, bool bNonFocal);
    ~Lock(void) noexcept(false);
   

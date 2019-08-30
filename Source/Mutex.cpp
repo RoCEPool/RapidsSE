@@ -556,7 +556,7 @@ void Mutex::vMutexLock(Object* pByWhom)
   
   vIncActNo(); ++ m_ixLock;
   AM::vLogRes(SL_INF,this,RA_MTX_LOCK,
-              "Mutex -%s lock(p) |m_ixLock=%lld|"_Stz, //!format-LogRes
+              "Mutex -%s lock() |m_ixLock=%lld|"_Stz, //!format-LogRes
               aMK[m_eKind],
               * m_ixLock,
               C_ENDARGS);

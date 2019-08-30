@@ -45,8 +45,8 @@ void Lock::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Lock::Lock(eLK eLockKind, ReqTuple* aReqTuple, Object* pSuper)
-: Focal(CN_LOCK,AM::iNextLockId(),nullptr)
+Lock::Lock(eLK eLockKind, ReqTuple* aReqTuple, Focal* pSuper)
+: Focal(CN_LOCK,AM::iNextLockId(),pSuper)
 , m_xReqTuple(aReqTuple)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
@@ -66,9 +66,8 @@ Lock::Lock(eLK eLockKind, ReqTuple* aReqTuple, Object* pSuper)
   
   ++ gixLock;
   AM::vLogLck(SL_INF,this,LA_LCK_CONSTRUCT,
-              "Lock construct {super=%s %p} |gixLock=%lld|"_Stz, //!format-LogLck
+              "Lock -%s construct |gixLock=%lld|"_Stz, //!format-LogLck
               aLK[m_eLockKind],
-              m_pSuper,
               * gixLock);
   
   _postcondition_(_MAGIC_,CN_LOCK,_FOOTER_);
@@ -98,9 +97,8 @@ Lock::Lock(eLK eLockKind, ReqTuple* aReqTuple, Object* pSuper, bool bNonFocal)
   
   ++ gixLock;
   AM::vLogLck(SL_INF,this,LA_LCK_CONSTRUCT,
-              "Lock construct {super=%s %p} |gixLock=%lld|"_Stz, //!format-LogLck
+              "Lock -%s construct |gixLock=%lld|"_Stz, //!format-LogLck
               aLK[m_eLockKind],
-              m_pSuper,
               * gixLock);
   
   _postcondition_(_MAGIC_,CN_LOCK,_FOOTER_);
@@ -115,9 +113,8 @@ Lock::~Lock(void) noexcept(false)
   
   -- gixLock;
  AM::vLogLck(SL_INF,this,LA_LCK_DESTRUCT,
-             "Lock destruct {super=%s %p} |gixLock=%lld|"_Stz, //!format-LogLck
+             "Lock -%s destruct |gixLock=%lld|"_Stz, //!format-LogLck
              aLK[m_eLockKind],
-             m_pSuper,
              * gixLock);
 }
 

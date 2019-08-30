@@ -96,7 +96,7 @@ Job::Job(eCN eClassNo, Session* pSession, ReqTuple* aReqTuple)
   
   ++ gixJob;
   AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCT,
-              "Job construct %s |gixJob=%lld|"_Stz, //!format-LogJob
+              "Job -%s construct |gixJob=%lld|"_Stz, //!format-LogJob
               aCN[eClass()],
               * gixJob);
   
@@ -116,14 +116,14 @@ Job::~Job(void) noexcept(false)
   
   if (m_bWasReceived) {
     AM::vLogJob(SL_INF,this,JA_JOB_DESTRUCT,
-                "Job destruct %s (was-received) |gixJob=%lld|"_Stz, //!format-LogJob
+                "Job -%s destruct (was-received) |gixJob=%lld|"_Stz, //!format-LogJob
                 aCN[eClass()],
                * gixJob);
   }
   else {
     -- gixJob;
     AM::vLogJob(SL_INF,this,JA_JOB_DESTRUCT,
-                "Job destruct %s |gixJob=%lld|"_Stz, //!format-LogJob
+                "Job -%s destruct |gixJob=%lld|"_Stz, //!format-LogJob
                 aCN[eClass()],
                 * gixJob);
   }
