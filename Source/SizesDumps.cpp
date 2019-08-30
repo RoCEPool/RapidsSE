@@ -430,7 +430,7 @@ i8 giClassSize[]
   /* 28 */ sizeof(BufferPool),         // CN_BUFFERPOOL
   /* 28 */ sizeof(ByteRate),           // CN_BYTERATE
 
-  /*    */ 0,//sizeof(Calculator),         // CN_CALCULATOR
+  /*    */ sizeof(Calculator),         // CN_CALCULATOR
   /*    */ sizeof(CancelMarker),       // CN_CANCELMARKER
   /* 30 */ sizeof(CarryOver),          // CN_CARRYOVER
   /*    */ sizeof(Catalog),            // CN_CATALOG
