@@ -22,8 +22,8 @@ namespace Sessions
     void* operator new(size_t);
     void  operator delete(void* aAddr);
     
-    Request(Session* p_Session, TokenVec* p_TknVec);
-    Request(Session* p_Session, Stz* szPurpose);
+    //Request(Session* p_Session, TokenVec* p_TknVec);
+    Request(Session* p_Session, Stz* szPurpose, i8 iClassSeq);
    ~Request(void) noexcept(false);
   
     ReqTuple* aReqTuple(void);

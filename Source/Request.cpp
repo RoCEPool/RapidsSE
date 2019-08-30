@@ -43,36 +43,7 @@ void Request::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Request::Request(Session* p_Session, TokenVec* p_TknVec)
-: Focal(CN_REQUEST,AM::iNextRequest(),p_Session)
-, m_xReqTuple(nullptr)
-{
-  _precondition_(_MAGIC_,CN_REQUEST,_FOOTER_);
-  
-  m_p_Session = p_Session;
-  m_p_TknVec  = p_TknVec;
-  
-  m_xReqTuple.m_iReqId = m_iUniqueId;
-  
-  _checkInitialised_(CN_REQUEST);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  SP_TknVecStr spTknVecStr;
-  
-  AM::vLogReq(SL_INF,this,MA_REQ_BEGIN,
-              "Request begin: %s"_Stz, //!format-LogReq
-              spTknVecStr.sz(m_p_TknVec));
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  _postcondition_(_MAGIC_,CN_REQUEST,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Request::Request(Session* p_Session, Stz* szPurpose)
+Request::Request(Session* p_Session, Stz* szPurpose, i8 iClassSeq)
 : Focal(CN_REQUEST,AM::iNextRequest(),p_Session)
 , m_xReqTuple(nullptr)
 {
@@ -81,7 +52,7 @@ Request::Request(Session* p_Session, Stz* szPurpose)
   m_p_Session = p_Session;
   m_p_TknVec  = nullptr;
   
-  m_xReqTuple.m_sPurpose = szPurpose;
+  m_xReqTuple.m_sPurpose.vSprint("%s-%03lld"_Stz,szPurpose,iClassSeq);
   
   m_xReqTuple.m_iReqId = m_iUniqueId;
   
@@ -92,6 +63,8 @@ Request::Request(Session* p_Session, Stz* szPurpose)
   SP_TknVecStr spTknVecStr;
   
   Now oNow;
+  
+  vIncActNo();
   AM::vLogReq(SL_INF,this,MA_REQ_BEGIN,
               "Request begin: %s (%s)"_Stz, //!format-LogReq
               m_xReqTuple.m_sPurpose.aStz(),
@@ -113,6 +86,7 @@ Request::~Request(void) noexcept(false)
   // do not delete: m_p_TknVec
   
   Now oNow;
+  vIncActNo();
   AM::vLogReq(SL_INF,this,MA_REQ_END,
               "Request end (%s)"_Stz, //!format-LogReq
               oNow.sz());
