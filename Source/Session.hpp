@@ -24,6 +24,8 @@ namespace Sessions
   
     s4K      m_sToDo;            // prompt to do
   
+    NmStrList* m_pNmStrLst;      // name-string list
+  
     SessionState* m_pSessionState; // session state
 
     // must be last

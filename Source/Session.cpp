@@ -84,9 +84,11 @@ Session::Session(i8 iPartition)
   m_pJobStack       = new Stack;
 
   m_pSessionState   = AM::pApiState()->pAllocState(this);
-  m_pInput        = new Input;
+  m_pInput          = new Input;
   
   m_sToDo           = ""_Stz;
+  
+  m_pNmStrLst       = nullptr;
 
   _checkInitialised_(CN_SESSION);
   
@@ -111,6 +113,8 @@ Session::~Session(void) noexcept(false)
   delete m_pJobStack;
   
   delete m_pInput;
+  
+  delete m_pNmStrLst;
   
   -- gixSession;
   AM::vLogSsn(SL_INF,this,AA_SSN_DESTRUCT,
