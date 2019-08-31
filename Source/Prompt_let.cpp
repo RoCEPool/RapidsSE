@@ -87,6 +87,23 @@ bool Prompt::bPrompt_let(SePrompt* pPrompt)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // delete one
+  
+  if (nTokens == 4 && pTknVec->pGet(1)->bIsName()
+                   && pTknVec->pGet(2)->bSame("/"_Stz)
+                   && pTknVec->pGet(3)->bSame("delete"_Stz)) {
+    
+    if (! pNmStrList)
+      return true;
+    
+    sName = pTknVec->pGet(1)->szText();
+    
+    pNmStrList->vDelete(sName);
+    
+    return true;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add / update
   
   if (nTokens > 2 && pTknVec->pGet(1)->bIsName()) {
