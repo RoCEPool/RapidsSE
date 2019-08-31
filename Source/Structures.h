@@ -33,7 +33,6 @@ namespace Structures
 #include "ListNL_t.hpp"
 
 #include "NamedItem_t.hpp"
-#include "NmVal.hpp"
 
 #include "QueueBuffer.hpp"
 #include "Queue.hpp"

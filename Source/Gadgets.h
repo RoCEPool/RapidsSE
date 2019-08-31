@@ -20,6 +20,7 @@ namespace Gadgets
 #include "FreqDist.hpp"
 #include "HV.hpp"
 #include "MP.hpp"
+#include "NmVal.hpp"
 #include "NextId.hpp"
 #include "Now.hpp"
 #include "SeeMe.hpp"
