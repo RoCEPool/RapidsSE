@@ -57,6 +57,8 @@ namespace Strings
     static char* sDupeStripped(const char* s);
   
     static bool  bEachLine(char** ps, char* caLine);
+    static bool  bEqualTo(const char* s1, const char* s2);
+    static bool  bEqualTo(const char* s1, const char* s2, i8 iCase);
     static bool  bEnds(const char* sArg, const char cEnd);
     static bool  bEnds(const char* sArg, const char* sEnd);
     static void  vEscape(const char* sArg, char* sEscaped);
@@ -136,9 +138,6 @@ namespace Strings
     static i8    iLength(const char* s);
     static i8    iLength(const char* s, const char cTerm, i8 iMax);
     
-    static bool  bEqualTo(const char* s1, const char* s2);
-    static bool  bEqualTo(const char* s1, const char* s2, i8 iCase);
-    
     static char* sNew(const char* sFormat, ...);
 
     static bool  bOneOf(char** asaSet, char* sWord);
@@ -172,6 +171,7 @@ namespace Strings
     static void  vSprintCat(char* sDst, va_list args, const char* sFormat);
     static void  vStrip(char* s, char cTrailing);
 
+    static char* zTerminator(char* s);
     static bool  bToBool(const char* s);
     static char  cToHex(i8 i);
     static i8    iToI8(const char* s);
@@ -181,8 +181,6 @@ namespace Strings
     static char* wToString(d8 dArg, char* w);
     static char* wToString(i8 iArg, char* w);
     
-    static char* zTerminator(char* s);
-  
     static bool  bValidateMonth(i8 iDay, i8 iMonth, i8 iYear);
 
     static i8    iWordFlip(char* aDst, char* aSrc);
