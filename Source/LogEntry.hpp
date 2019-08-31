@@ -5,11 +5,7 @@
 
 namespace Logging
 {
-  static Stz* C_ENTRY_FMT_TXT  = "%20s :: %s"_Stz;
-  static Stz* C_ENTRY_FMT_TXT2 = "%-16s %20s :: %s"_Stz;
-  static Stz* C_ENTRY_FMT_1s = "%20s :: "_Stz;
-  static Stz* C_ENTRY_FMT_2s = "%-20s %s "_Stz;
-  static Stz* C_ENTRY_FMT_3s = "%-20s %s %s"_Stz;
+  static Stz* C_ENTRY_FMT_TXT = "%-16s %20s :: %s"_Stz;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

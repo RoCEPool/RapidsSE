@@ -584,15 +584,15 @@ void SePrompt::vJobUnlockMutex(void)
   // have to be locked, waiting or signalled
   RASSERT(JS_RUNNING != m_pJob->m_eJobState);
   
+  AM::vLogPrm(SL_INF,this,PA_PRM_RESUMES,
+              "Prompt unlocks job mutex and resumes running"_Stz, //!format-LogPrm
+              C_ENDARGS);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   m_pJob->vUnlockJobMutex();
   
   m_pJob->m_eJobState = JS_RUNNING;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  AM::vLogPrm(SL_INF,this,PA_PRM_RESUMES,
-              "Prompt resumes running"_Stz, //!format-LogPrm
-              C_ENDARGS);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -604,7 +604,7 @@ void SePrompt::vJobWaitCond(void)
   
   vIncActNo();
   AM::vLogPrm(SL_INF,this,PA_PRM_WAITS,
-              "Prompt waits for job"_Stz, //!format-LogPrm
+              "Prompt waits on job mutex"_Stz, //!format-LogPrm
               C_ENDARGS);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
