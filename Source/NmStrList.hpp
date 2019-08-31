@@ -18,9 +18,13 @@ namespace Transform
     void  operator delete(void*);
     
     NmStrList(void);
-    ~NmStrList(void) noexcept(false);
+   ~NmStrList(void) noexcept(false);
     
-  
+    void   vAdd(Stz* szName, Stz* szString);
+    void   vAddUpdate(Stz* szName, Stz* szString);
+    NmStr* pFind(Stz* szName);
+    void   vUpdate(NmStr* pNmStr, Stz* szString);
+
     Footer* aFooter(void);
   };
   

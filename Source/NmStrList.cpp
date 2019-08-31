@@ -58,6 +58,59 @@ NmStrList::~NmStrList(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_NMSTRLIST,_FOOTER_);
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add name-string                                                            */
+/*----------------------------------------------------------------------------*/
+void NmStrList::vAdd(Stz* szName, Stz* szString)
+{
+  NmStr* pNmStr = new NmStr(szName,szString);
+  
+  vAppend(pNmStr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add or update name-string                                                  */
+/*----------------------------------------------------------------------------*/
+void NmStrList::vAddUpdate(Stz* szName, Stz* szString)
+{
+  NmStr* pNmStr = pFind(szName);
+  
+  if (pNmStr)
+    vUpdate(pNmStr,szString);
+  else
+    vAdd(szName,szString);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add or update name-string                                                  */
+/*----------------------------------------------------------------------------*/
+NmStr* NmStrList::pFind(Stz* szName)
+{
+  for (NmStr* pNmStr = pHead(); pNmStr; pNmStr = pNmStr->pNextNode()) {
+    
+//    vTrace("  %s = %s\n"_Stz,
+//           pNmStr->m_sName.aStz(),
+//           pNmStr->m_sValue.aStz());
+    
+    if (pNmStr->m_sName.bSame(szName))
+      return pNmStr;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add or update name-string                                                  */
+/*----------------------------------------------------------------------------*/
+void NmStrList::vUpdate(NmStr* pNmStr, Stz* szString)
+{
+  pNmStr->m_sValue = szString;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

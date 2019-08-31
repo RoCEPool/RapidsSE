@@ -49,8 +49,12 @@ bool Prompt::bPrompt_let(SePrompt* pPrompt)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  s32 sName;
+  SP_TknVecStr spTknVecStr;
+
   if (nTokens > 2 && pTknVec->pGet(1)->bIsName()) {
-    SP_TknVecStr spTknVecStr;
+
+    sName = pTknVec->pGet(1)->szText();
     
     if (! pPrompt->pSession()->m_pNmStrLst)
       pPrompt->pSession()->m_pNmStrLst = new NmStrList;
@@ -61,10 +65,7 @@ bool Prompt::bPrompt_let(SePrompt* pPrompt)
     
     vTrace("  >%s<\n"_Stz,spTknVecStr.sz(pTknVec,i_From));
     
-    NmStr* pNmStr = new NmStr(pTknVec->pGet(1)->szText(),
-                              spTknVecStr.sz(pTknVec,i_From));
-    
-    pNmStrList->vAppend(pNmStr);
+    pNmStrList->vAddUpdate(sName,spTknVecStr.sz(pTknVec,i_From));
   }
   
   return true;
