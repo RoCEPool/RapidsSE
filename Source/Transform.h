@@ -29,6 +29,7 @@ namespace Transform
 #include "RecordBuffer.hpp"
 #include "IrwBuffer.hpp"
 
+#include "NmStr.hpp"
 #include "NmStrList.hpp"
 
 /*============================================================================*/
