@@ -255,6 +255,7 @@ pFINALIZE *gpFinalize[]
   /*114 */ &Finalize::vUndefined,         // CN_MUTEX
   
   /*    */ &Finalize::vUndefined,         // CN_NEXTID
+  /*    */ &Finalize::vUndefined,         // CN_NMSTR
   /*    */ &Finalize::vUndefined,         // CN_NMVAL
   /* 75 */ &Finalize::vUndefined,         // CN_NODE
   /*    */ &Finalize::vUndefined,         // CN_NOW

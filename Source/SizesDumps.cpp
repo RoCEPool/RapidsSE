@@ -262,6 +262,7 @@ pDUMPFUN *gpDump[]
   /*114 */ &Dump::vUndefined,       // CN_MUTEX
 
   /*    */ &Dump::vUndefined,       // CN_NEXTID
+  /*    */ &Dump::vUndefined,       // CN_NMSTR
   /*    */ &Dump::vUndefined,       // CN_NMVAL
   /* 75 */ &Node::vDump,            // CN_NODE
   /*    */ &Dump::vUndefined,       // CN_NOW
@@ -650,6 +651,7 @@ i8 giClassSize[]
   /*114 */ sizeof(Mutex),              // CN_MUTEX
 
   /*    */ sizeof(NextId),             // CN_NEXTID
+  /*    */ sizeof(NmStr),              // CN_NMSTR
   /*    */ sizeof(NmVal),              // CN_NMVAL
   /* 75 */ sizeof(Node),               // CN_NODE
   /*    */ sizeof(Now),                // CN_NOW
@@ -1038,6 +1040,7 @@ eHT geWhichHeap[]
   /*114 */ HT_TRANSIENT_SMALL,   // CN_MUTEX
 
   /* 73 */ HT_INVALID,           // CN_NEXTID
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_NMSTR
   /*    */ HT_TRANSIENT_SMALL,   // CN_NMVAL
   /* 75 */ HT_TRANSIENT_SMALL,   // CN_NODE
   /*    */ HT_TRANSIENT_SMALL,   // CN_NOW
