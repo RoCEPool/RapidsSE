@@ -86,6 +86,15 @@ void NmStrList::vAddUpdate(Stz* szName, Stz* szString)
 }
 
 /*----------------------------------------------------------------------------*/
+/* delete all name-string                                                     */
+/*----------------------------------------------------------------------------*/
+void NmStrList::vDeleteAll(void)
+{
+  while (NmStr* pNmStr = pPop())
+    delete pNmStr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* add or update name-string                                                  */
 /*----------------------------------------------------------------------------*/
 NmStr* NmStrList::pFind(Stz* szName)

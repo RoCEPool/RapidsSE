@@ -56,6 +56,7 @@ bool Prompt::bPrompt_let(SePrompt* pPrompt)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // list one
+  
   if (2 == nTokens) {
     
     if (! pNmStrList)
@@ -68,6 +69,20 @@ bool Prompt::bPrompt_let(SePrompt* pPrompt)
              pNmStr->m_sName.aStz(),
              pNmStr->m_sValue.aStz());
 
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // delete all
+  
+  if (nTokens == 3 && pTknVec->pGet(1)->bSame("/"_Stz)
+                   && pTknVec->pGet(2)->bSame("delete"_Stz)) {
+
+    if (! pNmStrList)
+      return true;
+    
+    pNmStrList->vDeleteAll();
+    
     return true;
   }
   

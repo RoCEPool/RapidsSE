@@ -22,6 +22,7 @@ namespace Transform
     
     void   vAdd(Stz* szName, Stz* szString);
     void   vAddUpdate(Stz* szName, Stz* szString);
+    void   vDeleteAll(void);
     NmStr* pFind(Stz* szName);
     void   vUpdate(NmStr* pNmStr, Stz* szString);
 
