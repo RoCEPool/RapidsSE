@@ -56,7 +56,7 @@ void _LogEntryJob::vWriteCsv(File* pFile, LogEntry* pEntry)
 /*----------------------------------------------------------------------------*/
 /* write to text file                                                         */
 /*----------------------------------------------------------------------------*/
-void _LogEntryJob::vWriteTxt(File* pFile, LogEntry* pEntry)
+void _LogEntryJob::vWriteTxt(s256& sInf, File* pFile, LogEntry* pEntry)
 {
   SP_Id spId;
   SP_Id spReqId;

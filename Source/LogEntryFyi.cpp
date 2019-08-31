@@ -31,7 +31,7 @@ void _LogEntryFyi::vWriteCsv(File* pFile, LogEntry* pEntry)
 /*----------------------------------------------------------------------------*/
 /* write to text file                                                         */
 /*----------------------------------------------------------------------------*/
-void _LogEntryFyi::vWriteTxt(File* pFile, LogEntry* pEntry)
+void _LogEntryFyi::vWriteTxt(s256& sInf, File* pFile, LogEntry* pEntry)
 {
   
   pFile->vPrint("%s"_Stz,pEntry->m_caNote);

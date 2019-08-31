@@ -51,7 +51,7 @@ void _LogEntryPrm::vWriteCsv(File* pFile, LogEntry* pEntry)
 /*----------------------------------------------------------------------------*/
 /* write to text file                                                         */
 /*----------------------------------------------------------------------------*/
-void _LogEntryPrm::vWriteTxt(File* pFile, LogEntry* pEntry)
+void _LogEntryPrm::vWriteTxt(s256& sInf, File* pFile, LogEntry* pEntry)
 {
   SP_Id spId;
   

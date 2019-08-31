@@ -268,29 +268,31 @@ void LogEntry::vWriteTxt(File* pFile)
 {
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
+  s256 sInf;
+  
   vWriteTxtEntry(pFile);
   
   switch (m_eKind) {
-    case EK_FYI: m_xFyi.vWriteTxt(pFile,this); break;
-    case EK_JOB: m_xJob.vWriteTxt(pFile,this); break;
-    case EK_LCK: m_xLck.vWriteTxt(pFile,this); break;
-    case EK_LOG: m_xLog.vWriteTxt(pFile,this); break;
-    case EK_OPR: m_xOpr.vWriteTxt(pFile,this); break;
-    case EK_PRM: m_xPrm.vWriteTxt(pFile,this); break;
-    case EK_QUE: m_xQue.vWriteTxt(pFile,this); break;
-    case EK_REQ: m_xReq.vWriteTxt(pFile,this); break;
-    case EK_RES: m_xRes.vWriteTxt(pFile,this); break;
-    case EK_SSN: m_xSsn.vWriteTxt(pFile,this); break;
-    case EK_SVC: m_xSvc.vWriteTxt(pFile,this); break;
-    case EK_SYS: m_xSys.vWriteTxt(pFile,this); break;
-    case EK_TSK: m_xTsk.vWriteTxt(pFile,this); break;
-    case EK_THD: m_xThd.vWriteTxt(pFile,this); break;
-    case EK_TXN: m_xTxn.vWriteTxt(pFile,this); break;
+    case EK_FYI: m_xFyi.vWriteTxt(sInf,pFile,this); break;
+    case EK_JOB: m_xJob.vWriteTxt(sInf,pFile,this); break;
+    case EK_LCK: m_xLck.vWriteTxt(sInf,pFile,this); break;
+    case EK_LOG: m_xLog.vWriteTxt(sInf,pFile,this); break;
+    case EK_OPR: m_xOpr.vWriteTxt(sInf,pFile,this); break;
+    case EK_PRM: m_xPrm.vWriteTxt(sInf,pFile,this); break;
+    case EK_QUE: m_xQue.vWriteTxt(sInf,pFile,this); break;
+    case EK_REQ: m_xReq.vWriteTxt(sInf,pFile,this); break;
+    case EK_RES: m_xRes.vWriteTxt(sInf,pFile,this); break;
+    case EK_SSN: m_xSsn.vWriteTxt(sInf,pFile,this); break;
+    case EK_SVC: m_xSvc.vWriteTxt(sInf,pFile,this); break;
+    case EK_SYS: m_xSys.vWriteTxt(sInf,pFile,this); break;
+    case EK_TSK: m_xTsk.vWriteTxt(sInf,pFile,this); break;
+    case EK_THD: m_xThd.vWriteTxt(sInf,pFile,this); break;
+    case EK_TXN: m_xTxn.vWriteTxt(sInf,pFile,this); break;
     default:
       NEVER_REACH;
   }
   
-  pFile->vPrint("\n"_Stz,m_caNote);
+  pFile->vPrint("%s\n"_Stz,sInf.aStz());
 }
 
 /*----------------------------------------------------------------------------*/

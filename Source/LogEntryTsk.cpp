@@ -49,7 +49,7 @@ void _LogEntryTsk::vWriteCsv(File* pFile, LogEntry* pEntry)
 /*----------------------------------------------------------------------------*/
 /* write to text file                                                         */
 /*----------------------------------------------------------------------------*/
-void _LogEntryTsk::vWriteTxt(File* pFile, LogEntry* pEntry)
+void _LogEntryTsk::vWriteTxt(s256& sInf, File* pFile, LogEntry* pEntry)
 {
   SP_Id spId;
   
