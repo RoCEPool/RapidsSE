@@ -333,7 +333,7 @@ void LogEntry::vWriteTxtEntry(File* pFile)
                aCN[m_eClass]
                );
   
-  pFile->vPrint("%s %s %s"_Stz,sSub.aStz(),sMid.aStz(),sInf.aStz());
+  pFile->vPrint("%s🔵 %s🔴 "_Stz,sSub.aStz(),sMid.aStz());
 }
 
 /*----------------------------------------------------------------------------*/
