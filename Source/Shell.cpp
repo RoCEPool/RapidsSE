@@ -5,7 +5,7 @@
 #include "Host.h"
 
 /*----------------------------------------------------------------------------*/
-/* iExecute: execute shell command (returns exit code)                        */
+/* execute shell command (returns exit code)                                  */
 /*----------------------------------------------------------------------------*/
 i8 Shell::iExecute(Stz* sCommand, SysCall& oSysCall)
 {
