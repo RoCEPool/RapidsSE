@@ -54,7 +54,7 @@ void _LogEntryJob::vWriteCsv(File* pFile, LogEntry* pEntry)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write to text file                                                         */
+/* convert entry into text                                                    */
 /*----------------------------------------------------------------------------*/
 void _LogEntryJob::vToTxt(s256& sInf, LogEntry* pEntry)
 {

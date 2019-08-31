@@ -45,7 +45,7 @@ void _LogEntryLog::vWriteCsv(File* pFile, LogEntry* pEntry)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write to text file                                                         */
+/* convert entry into text                                                    */
 /*----------------------------------------------------------------------------*/
 void _LogEntryLog::vToTxt(s256& sInf, LogEntry* pEntry)
 {
