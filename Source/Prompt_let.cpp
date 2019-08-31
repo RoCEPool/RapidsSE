@@ -29,12 +29,19 @@ bool Prompt::bPrompt_let(SePrompt* pPrompt)
   
   i8 nTokens = pTknVec->nItems();
 
-  if (1 == nTokens) {
-    if (! pPrompt->pSession()->m_pNmStrLst)
-      return true;
-    
-    NmStrList* pNmStrList = pPrompt->pSession()->m_pNmStrLst;
+  s32 sName;
+  NmStr* pNmStr;
+  SP_TknVecStr spTknVecStr;
+  
+  NmStrList* pNmStrList = pPrompt->pSession()->m_pNmStrLst;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // list all
+  
+  if (1 == nTokens) {
+    if (! pNmStrList)
+      return true;
+  
     for (NmStr* pNmStr = pNmStrList->pHead();
          pNmStr;
          pNmStr = pNmStr->pNextNode()) {
@@ -48,18 +55,33 @@ bool Prompt::bPrompt_let(SePrompt* pPrompt)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  s32 sName;
-  SP_TknVecStr spTknVecStr;
+  // list one
+  if (2 == nTokens) {
+    
+    if (! pNmStrList)
+      return true;
+    
+    sName = pTknVec->pGet(1)->szText();
+    pNmStr = pNmStrList->pFind(sName);
+    if (pNmStr)
+      vTrace("  %s = %s\n"_Stz,
+             pNmStr->m_sName.aStz(),
+             pNmStr->m_sValue.aStz());
 
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add / update
+  
   if (nTokens > 2 && pTknVec->pGet(1)->bIsName()) {
 
     sName = pTknVec->pGet(1)->szText();
     
-    if (! pPrompt->pSession()->m_pNmStrLst)
+    if (! pNmStrList) {
       pPrompt->pSession()->m_pNmStrLst = new NmStrList;
-    
-    NmStrList* pNmStrList = pPrompt->pSession()->m_pNmStrLst;
+      pNmStrList = pPrompt->pSession()->m_pNmStrLst;
+    }
     
     i8 i_From = (pTknVec->pGet(2)->bSame("="_Stz)) ? 3 : 2;
     
