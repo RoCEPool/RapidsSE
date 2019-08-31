@@ -306,25 +306,32 @@ void LogEntry::vWriteTxtEntry(File* pFile)
   SP_Id spId;
   SP_Id spForId;
   SP_Id spReqId;
+  
+  s256 sSub;
+  s256 sMid;
+  s256 sInf;
+  
+  sSub.vSprint("[%04lld,%04lld,%s+%s] %014p"_Stz,
+               m_i_Entry,
+               m_i_Prev,
+               m_caNode,
+               spElapsed.szNsec(m_iTick - AM::iAMTimePoint()),
+               m_pFocal
+               );
 
-  pFile->vPrint("[%04lld,%04lld,%s+%s] %014p "
-                "%16s:%s:%s:%s#%03lld %-16s "
-                ""_Stz,
-                
-                m_i_Entry,
-                m_i_Prev,
-                m_caNode,
-                spElapsed.szNsec(m_iTick - AM::iAMTimePoint()),
-                m_pFocal,
-
-                m_xReqTuple.m_sPurpose.aStz(),
-                spReqId.sz(EK_REQ,m_xReqTuple.m_iReqId),
-                spForId.sz(m_iForId),
-                spId.sz(m_eKind,m_iUniqueId),
-                m_iAct,
-                aCN[m_eClass],
-
-                C_ENDARGS);
+  sMid.vSprint("%16s:%s:%s:%s#%03lld"_Stz,
+               m_xReqTuple.m_sPurpose.aStz(),
+               spReqId.sz(EK_REQ,m_xReqTuple.m_iReqId),
+               spForId.sz(m_iForId),
+               spId.sz(m_eKind,m_iUniqueId),
+               m_iAct
+               );
+  
+  sInf.vSprint("%-16s"_Stz,
+               aCN[m_eClass]
+               );
+  
+  pFile->vPrint("%s %s %s"_Stz,sSub.aStz(),sMid.aStz(),sInf.aStz());
 }
 
 /*----------------------------------------------------------------------------*/
