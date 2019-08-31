@@ -31,7 +31,7 @@ void _LogEntryFyi::vWriteCsv(File* pFile, LogEntry* pEntry)
 /*----------------------------------------------------------------------------*/
 /* write to text file                                                         */
 /*----------------------------------------------------------------------------*/
-void _LogEntryFyi::vWriteTxt(s256& sInf, LogEntry* pEntry)
+void _LogEntryFyi::vToTxt(s256& sInf, LogEntry* pEntry)
 {
   sInf.vSprint("%s"_Stz,pEntry->m_caNote);
 }

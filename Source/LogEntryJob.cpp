@@ -56,7 +56,7 @@ void _LogEntryJob::vWriteCsv(File* pFile, LogEntry* pEntry)
 /*----------------------------------------------------------------------------*/
 /* write to text file                                                         */
 /*----------------------------------------------------------------------------*/
-void _LogEntryJob::vWriteTxt(s256& sInf, LogEntry* pEntry)
+void _LogEntryJob::vToTxt(s256& sInf, LogEntry* pEntry)
 {
   sInf.vSprint(C_ENTRY_FMT_N,aJA[m_eJobAct],pEntry->m_caNote);
 }

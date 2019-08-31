@@ -262,7 +262,7 @@ void LogEntry::vWriteCsvEntry(File* pFile, i8 iTickDeltaUsec, i8& iTotalDelta)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write log to csv file                                                      */
+/* write log entry to text file                                               */
 /*----------------------------------------------------------------------------*/
 void LogEntry::vWriteTxt(File* pFile)
 {
@@ -273,21 +273,21 @@ void LogEntry::vWriteTxt(File* pFile)
   vWriteTxtEntry(pFile);
   
   switch (m_eKind) {
-    case EK_FYI: m_xFyi.vWriteTxt(sInf,this); break;
-    case EK_JOB: m_xJob.vWriteTxt(sInf,this); break;
-    case EK_LCK: m_xLck.vWriteTxt(sInf,this); break;
-    case EK_LOG: m_xLog.vWriteTxt(sInf,this); break;
-    case EK_OPR: m_xOpr.vWriteTxt(sInf,this); break;
-    case EK_PRM: m_xPrm.vWriteTxt(sInf,this); break;
-    case EK_QUE: m_xQue.vWriteTxt(sInf,this); break;
-    case EK_REQ: m_xReq.vWriteTxt(sInf,this); break;
-    case EK_RES: m_xRes.vWriteTxt(sInf,this); break;
-    case EK_SSN: m_xSsn.vWriteTxt(sInf,this); break;
-    case EK_SVC: m_xSvc.vWriteTxt(sInf,this); break;
-    case EK_SYS: m_xSys.vWriteTxt(sInf,this); break;
-    case EK_TSK: m_xTsk.vWriteTxt(sInf,this); break;
-    case EK_THD: m_xThd.vWriteTxt(sInf,this); break;
-    case EK_TXN: m_xTxn.vWriteTxt(sInf,this); break;
+    case EK_FYI: m_xFyi.vToTxt(sInf,this); break;
+    case EK_JOB: m_xJob.vToTxt(sInf,this); break;
+    case EK_LCK: m_xLck.vToTxt(sInf,this); break;
+    case EK_LOG: m_xLog.vToTxt(sInf,this); break;
+    case EK_OPR: m_xOpr.vToTxt(sInf,this); break;
+    case EK_PRM: m_xPrm.vToTxt(sInf,this); break;
+    case EK_QUE: m_xQue.vToTxt(sInf,this); break;
+    case EK_REQ: m_xReq.vToTxt(sInf,this); break;
+    case EK_RES: m_xRes.vToTxt(sInf,this); break;
+    case EK_SSN: m_xSsn.vToTxt(sInf,this); break;
+    case EK_SVC: m_xSvc.vToTxt(sInf,this); break;
+    case EK_SYS: m_xSys.vToTxt(sInf,this); break;
+    case EK_TSK: m_xTsk.vToTxt(sInf,this); break;
+    case EK_THD: m_xThd.vToTxt(sInf,this); break;
+    case EK_TXN: m_xTxn.vToTxt(sInf,this); break;
     default:
       NEVER_REACH;
   }
@@ -296,7 +296,7 @@ void LogEntry::vWriteTxt(File* pFile)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write entry to csv file                                                    */
+/* write log entry to text file                                               */
 /*----------------------------------------------------------------------------*/
 void LogEntry::vWriteTxtEntry(File* pFile)
 {

@@ -49,7 +49,7 @@ void _LogEntryLck::vWriteCsv(File* pFile, LogEntry* pEntry)
 /*----------------------------------------------------------------------------*/
 /* write to text file                                                         */
 /*----------------------------------------------------------------------------*/
-void _LogEntryLck::vWriteTxt(s256& sInf, LogEntry* pEntry)
+void _LogEntryLck::vToTxt(s256& sInf, LogEntry* pEntry)
 {
   sInf.vSprint(C_ENTRY_FMT_N,aLA[m_eLckAct],pEntry->m_caNote);
 }
