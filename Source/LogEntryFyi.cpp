@@ -33,8 +33,7 @@ void _LogEntryFyi::vWriteCsv(File* pFile, LogEntry* pEntry)
 /*----------------------------------------------------------------------------*/
 void _LogEntryFyi::vWriteTxt(s256& sInf, File* pFile, LogEntry* pEntry)
 {
-  
-  pFile->vPrint("%s"_Stz,pEntry->m_caNote);
+  sInf.vSprint("%s"_Stz,pEntry->m_caNote);
 }
 
 /*============================================================================*/

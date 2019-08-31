@@ -53,11 +53,7 @@ void _LogEntryPrm::vWriteCsv(File* pFile, LogEntry* pEntry)
 /*----------------------------------------------------------------------------*/
 void _LogEntryPrm::vWriteTxt(s256& sInf, File* pFile, LogEntry* pEntry)
 {
-  SP_Id spId;
-  
-  pFile->vPrint(C_ENTRY_FMT_1s,aPA[m_ePrmAct]);
-  
-  pFile->vPrint("%s"_Stz,pEntry->m_caNote);
+  sInf.vSprint(C_ENTRY_FMT_N,aPA[m_ePrmAct],pEntry->m_caNote);
 }
 
 /*============================================================================*/

@@ -58,12 +58,7 @@ void _LogEntryJob::vWriteCsv(File* pFile, LogEntry* pEntry)
 /*----------------------------------------------------------------------------*/
 void _LogEntryJob::vWriteTxt(s256& sInf, File* pFile, LogEntry* pEntry)
 {
-  SP_Id spId;
-  SP_Id spReqId;
-  
-  pFile->vPrint(C_ENTRY_FMT_1s,aJA[m_eJobAct]);
-  
-  pFile->vPrint("%s"_Stz,pEntry->m_caNote);
+  sInf.vSprint(C_ENTRY_FMT_N,aJA[m_eJobAct],pEntry->m_caNote);
 }
 
 /*============================================================================*/
