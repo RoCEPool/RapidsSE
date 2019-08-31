@@ -68,10 +68,20 @@ time fetch lineitem noPrint;
 //query lineitem;
 
 //dynamic scan lineitem | limit 2 | output | zed;
-dynamic scan lineitem | output | zed;
+//dynamic scan lineitem | output | zed;
+
+//dynamic scan lineitem | project L_PARTKEY | agg L_PARTKEY | output | zed;
+//time dynamic scan lineitem | zed;
+time dynamic scan lineitem | agg L_PARTKEY | output | zed;
+//time dynamic scan lineitem | getKey L_PARTKEY | sort | agg L_PARTKEY | output | zed;
+//time dynamic scan lineitem | getKey L_PARTKEY | agg L_PARTKEY | output | zed;
+//time dynamic scan lineitem | getKey L_PARTKEY | sort | merge | agg L_PARTKEY | output | zed;
+
 
 //dynamic fetch lineitem idx || fetch orders idx | output | zed;
 
+//time dynamic fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join | count | output | zed;
+//time dynamic fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join | project L_PARTKEY | count | output | zed;
 status;
 
 ping;
