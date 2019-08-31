@@ -47,7 +47,7 @@ void _LogEntryQue::vWriteCsv(File* pFile, LogEntry* pEntry)
 /*----------------------------------------------------------------------------*/
 /* write to text file                                                         */
 /*----------------------------------------------------------------------------*/
-void _LogEntryQue::vWriteTxt(s256& sInf, File* pFile, LogEntry* pEntry)
+void _LogEntryQue::vWriteTxt(s256& sInf, LogEntry* pEntry)
 {
   sInf.vSprint(C_ENTRY_FMT_N,aQA[m_eQueAct],pEntry->m_caNote);
 }

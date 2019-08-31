@@ -50,7 +50,7 @@ void _LogEntryReq::vWriteCsv(File* pFile, LogEntry* pEntry)
 /*----------------------------------------------------------------------------*/
 /* write to text file                                                         */
 /*----------------------------------------------------------------------------*/
-void _LogEntryReq::vWriteTxt(s256& sInf, File* pFile, LogEntry* pEntry)
+void _LogEntryReq::vWriteTxt(s256& sInf, LogEntry* pEntry)
 {
   sInf.vSprint(C_ENTRY_FMT_N,aMA[m_eReqAct],pEntry->m_caNote);
 }
