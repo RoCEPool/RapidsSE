@@ -44,7 +44,9 @@ bool Prompt::bPrompt_let(SePrompt* pPrompt)
     if (! pPrompt->pSession()->m_pNmStrLst)
       pPrompt->pSession()->m_pNmStrLst = new NmStrList;
     
-    vTrace("  >%s<\n"_Stz,spTknVecStr.sz(pTknVec,2));
+    i8 i_From = (pTknVec->pGet(2)->bSame("="_Stz)) ? 3 : 2;
+    
+    vTrace("  >%s<\n"_Stz,spTknVecStr.sz(pTknVec,i_From));
   }
   
   return true;

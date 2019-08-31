@@ -35,46 +35,7 @@ SP_TknVecStr::~SP_TknVecStr(void) noexcept(false)
 Stz* SP_TknVecStr::sz(TokenVec* pTknVec)
 {
   _precondition_(_MAGIC_,CN_SPTKNVECSTR,_FOOTER_);
-  
-//  StrLib::vCopy(m_caResult,"");
-//
-//  i8 nTokens = pTknVec->nTokens();
-//
-//  // concat all the tokens together
-//  for (i8 i_Token = 0; i_Token < nTokens; i_Token++) {
-//
-//    Token* pToken = pTknVec->pGet(i_Token);
-//
-//    eTN eToken = pToken->eToken();
-//
-//    switch (eToken) {
-//
-//      case TN_INTEGER:
-//        StrLib::vConcat(m_caResult,pToken->szText()->aChar());
-//        break;
-//
-//      case TN_NAME:
-//        StrLib::vConcat(m_caResult,pToken->szText()->aChar());
-//        break;
-//
-//      case TN_OTHER:
-//        StrLib::vConcat(m_caResult,pToken->szText()->aChar());
-//        break;
-//
-//      case TN_STRING:
-//        StrLib::vConcat(m_caResult,"\"");
-//        StrLib::vConcat(m_caResult,pToken->szText()->aChar());
-//        StrLib::vConcat(m_caResult,"\"");
-//        break;
-//
-//      default:
-//        NEVER_REACH;
-//    }
-//
-//    StrLib::vConcat(m_caResult," ");
-//  }
-//
-  
+    
   return sz(pTknVec,0);
 }
 
