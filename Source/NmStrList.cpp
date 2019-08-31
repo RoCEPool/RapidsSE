@@ -11,7 +11,7 @@ NmStrList* Transform::_pNmStrList(void* aAddr)
 {
   NmStrList* pNmStrList = reinterpret_cast<NmStrList*>(aAddr);
   
-  RASSERT_TYPE(pNmStrList,CN_TASKLIST);
+  RASSERT_TYPE(pNmStrList,CN_NMSTRLIST);
   
   return pNmStrList;
 }
@@ -21,7 +21,7 @@ NmStrList* Transform::_pNmStrList(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* NmStrList::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_TASKLIST);
+  void* pObject = HeapMem::pAllocate(CN_NMSTRLIST);
   
   return pObject;
 }
@@ -40,14 +40,14 @@ void NmStrList::operator delete(void* pTaskQueueAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 NmStrList::NmStrList(void)
-: ListNL_t<NmStr>(CN_TASKLIST)
+: ListNL_t<NmStr>(CN_NMSTRLIST)
 , m_okLock(LK_TASK_QUEUE,C_NO_REQTUPLE,this,C_NONFOCAL)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NMSTRLIST,_FOOTER_);
   
-  _checkInitialised_(CN_TASKLIST);
+  _checkInitialised_(CN_NMSTRLIST);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_NMSTRLIST,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -55,7 +55,7 @@ NmStrList::NmStrList(void)
 /*----------------------------------------------------------------------------*/
 NmStrList::~NmStrList(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NMSTRLIST,_FOOTER_);
 }
 
 
