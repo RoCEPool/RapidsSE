@@ -5,6 +5,26 @@
 #include "Transform.h"
 
 /*----------------------------------------------------------------------------*/
+/* new operator                                                               */
+/*----------------------------------------------------------------------------*/
+void* NmStr::operator new(size_t)
+{
+  void* pObject = HeapMem::pAllocate(CN_NMSTR);
+  
+  return pObject;
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete operator                                                            */
+/*----------------------------------------------------------------------------*/
+void NmStr::operator delete(void* aAddr)
+{
+  Object* pObject = reinterpret_cast<Object*>(aAddr);
+  
+  HeapMem::vFree(pObject);
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 NmStr::NmStr(void)
@@ -13,7 +33,7 @@ NmStr::NmStr(void)
   _precondition_(_MAGIC_,CN_NMSTR,_FOOTER_);
   
   m_sName  = "<none>"_Stz;
-  m_sValue = "<none>"_Stz;
+  m_sValue = ""_Stz;
   
   _checkInitialised_(CN_NMSTR);
   
@@ -29,7 +49,7 @@ NmStr::NmStr(Stz* szName)
   _precondition_(_MAGIC_,CN_NMSTR,_FOOTER_);
   
   m_sName  = szName;
-  m_sValue = "<none>"_Stz;
+  m_sValue = ""_Stz;
 
   _checkInitialised_(CN_NMSTR);
   

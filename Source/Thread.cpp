@@ -27,7 +27,7 @@ Thread* Threads::_pThread(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new a thread from existing memory                                          */
+/* new operator                                                               */
 /*----------------------------------------------------------------------------*/
 void* Thread::operator new(size_t)
 {
@@ -45,7 +45,7 @@ void* Thread::operator new(size_t, Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete a thread                                                            */
+/* delete operator                                                            */
 /*----------------------------------------------------------------------------*/
 void Thread::operator delete(void* aAddr)
 {

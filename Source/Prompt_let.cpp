@@ -33,6 +33,17 @@ bool Prompt::bPrompt_let(SePrompt* pPrompt)
     if (! pPrompt->pSession()->m_pNmStrLst)
       return true;
     
+    NmStrList* pNmStrList = pPrompt->pSession()->m_pNmStrLst;
+
+    for (NmStr* pNmStr = pNmStrList->pHead();
+         pNmStr;
+         pNmStr = pNmStr->pNextNode()) {
+      
+      vTrace("  %s = %s\n"_Stz,
+             pNmStr->m_sName.aStz(),
+             pNmStr->m_sValue.aStz());
+    }
+    
     return true;
   }
 
@@ -44,9 +55,16 @@ bool Prompt::bPrompt_let(SePrompt* pPrompt)
     if (! pPrompt->pSession()->m_pNmStrLst)
       pPrompt->pSession()->m_pNmStrLst = new NmStrList;
     
+    NmStrList* pNmStrList = pPrompt->pSession()->m_pNmStrLst;
+    
     i8 i_From = (pTknVec->pGet(2)->bSame("="_Stz)) ? 3 : 2;
     
     vTrace("  >%s<\n"_Stz,spTknVecStr.sz(pTknVec,i_From));
+    
+    NmStr* pNmStr = new NmStr(pTknVec->pGet(1)->szText(),
+                              spTknVecStr.sz(pTknVec,i_From));
+    
+    pNmStrList->vAppend(pNmStr);
   }
   
   return true;

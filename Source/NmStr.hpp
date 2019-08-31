@@ -5,7 +5,8 @@
 
 namespace Transform
 {
-  class NmStr : public Object
+  class NmStr : public Object,
+                public ListNode_t<NmStr>
   {
   public:
   
@@ -16,6 +17,9 @@ namespace Transform
     Footer m_xFooter;
     
   public:
+    void* operator new(size_t);
+    void  operator delete(void*);
+
     NmStr(void);
     NmStr(Stz* szName);
     NmStr(Stz* szName, Stz* szValue);

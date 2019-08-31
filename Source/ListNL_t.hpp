@@ -22,12 +22,12 @@ namespace Structures
 
     ListNL_t(eCN eClassNo);
     
-    void    vAppend(ITEM* pNode);
+    void  vAppend(ITEM* pNode);
     ITEM* pHead(void);
-    i8      nObjects(void);
+    i8    nObjects(void);
     ITEM* pPop(void);
-    void    vPush(ITEM* pNode);
-    void    vRemove(ITEM* pNode);
+    void  vPush(ITEM* pNode);
+    void  vRemove(ITEM* pNode);
     ITEM* pTail(void);
     
     Footer* aFooter(void);
