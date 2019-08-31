@@ -17,6 +17,7 @@ namespace Commands
    ~SP_TknVecStr(void) noexcept(false);
   
     Stz* sz(TokenVec* pTknVec);
+    Stz* sz(TokenVec* pTknVec, i8 i_From, i8 i_Till=C_UNKNOWN);
 
   private:
     Footer* aFooter(void);

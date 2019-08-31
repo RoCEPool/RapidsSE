@@ -26,8 +26,27 @@ bool Prompt::bPrompt_let(SePrompt* pPrompt)
   TokenVec* pTknVec = pPrompt->pTknVec();
 
   ASSERT((*pTknVec)[0]->bSame("let"_Stz));
+  
+  i8 nTokens = pTknVec->nItems();
 
+  if (1 == nTokens) {
+    if (! pPrompt->pSession()->m_pNmStrLst)
+      return true;
+    
+    return true;
+  }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (nTokens > 2 && pTknVec->pGet(1)->bIsName()) {
+    SP_TknVecStr spTknVecStr;
+    
+    if (! pPrompt->pSession()->m_pNmStrLst)
+      pPrompt->pSession()->m_pNmStrLst = new NmStrList;
+    
+    vTrace("  >%s<\n"_Stz,spTknVecStr.sz(pTknVec,2));
+  }
+  
   return true;
 }
 
