@@ -88,6 +88,7 @@ namespace Prompt
     bool bShortCut(void);
     ShortCutVec* pShortCutVec(void);
     void vSpawnJob(void);
+    bool bSubLet(void);
     TokenVec* pTknVec(void);
     void vUnknownCommand(void);
     void vVerifyJobSeeds(void);

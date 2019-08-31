@@ -8,13 +8,13 @@ PromptDesc __Prompt_shell (
   PF_SHELL,           // prompt function
   "Prompt_shell"_Stz, // name of the prompt function
   "comment"_Stz,      // comment about the function
-  "$"_Stz,            // the prompt command
+  "shell"_Stz,        // the prompt command
   nullptr,            // the second word
   bPrompt_shell,      // prompt function
   true,               // enabled
 
   true,               // visible
-  "$"_Stz,            // help
+  "shell"_Stz,        // help
   ""_Stz              // description
 );
 

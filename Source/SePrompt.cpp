@@ -138,6 +138,9 @@ void SePrompt::vPromptLoop(void)
       continue;
     
     vDumpTokenVec();
+    
+    while (bSubLet())
+      {;}
 
     vCheckTimed();
     vCheckMarked();
@@ -885,6 +888,64 @@ void SePrompt::vSpawnJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* subsititute lets                                                           */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bSubLet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  NmStrList* pNmStrList = m_pSession->m_pNmStrLst;
+  if (! pNmStrList)
+    return false;
+  
+  TokenVec* pTknVec = this->pTknVec();
+  i8 nTokens = pTknVec->nTokens();
+  
+  // concat all the tokens together
+  for (i8 i_Token = 0; i_Token < nTokens - 1; i_Token++) { //! note the - 1
+    
+    Token* pToken = pTknVec->pGet(i_Token);
+    
+    if (! pToken->bSame("$"_Stz))
+      continue;
+    
+    pToken = pTknVec->pGet(++ i_Token);
+    
+    if (! pToken->bIsName())
+      continue;
+    
+    s32 sName = pToken->szText();
+    
+    NmStr* pNmStr = pNmStrList->pFind(sName);
+    if (! pNmStr)
+      continue;
+    
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    
+    s4K sPartA;
+    s4K sPartB;
+    s4K sSubstituted;
+    
+    SP_TknVecStr spTknVecStr;
+    
+    if (i_Token > 1)
+      sPartA = spTknVecStr.sz(pTknVec,0,i_Token - 2);
+    sPartB = spTknVecStr.sz(pTknVec,i_Token + 1);
+
+    sSubstituted.vSprint("%s %s %s"_Stz,
+                         sPartA.aStz(),
+                         pNmStr->m_sValue.aStz(),
+                         sPartB.aStz());
+    
+    Tokeniser::vTokenise(pTknVec,sSubstituted);
+    
+    return true;
+  }
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get token vector                                                           */
 /*----------------------------------------------------------------------------*/
 TokenVec* SePrompt::pTknVec(void)
@@ -933,20 +994,7 @@ void SePrompt::vVerifyJobSeeds(void)
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* SePrompt::aFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT);
-  
-  return &m_xFooter;
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+__aFooterFunction(SePrompt)
 
 /*============================================================================*/
 /* end                                                                        */
