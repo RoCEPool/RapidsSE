@@ -66,6 +66,7 @@ typedef VectorNL_t<CN_SHORTCUTVEC, ShortCut, C_MAX_SHORTCUTS> ShortCutVec;
 #include "Prompt_jobcat.hpp"
 #include "Prompt_jobClass.hpp"
 
+#include "Prompt_let.hpp"
 #include "Prompt_limits.hpp"
 #include "Prompt_locks.hpp"
 #include "Prompt_log.hpp"
