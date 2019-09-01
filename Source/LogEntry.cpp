@@ -351,10 +351,9 @@ void LogEntry::vWriteTxtEntry(File* pFile)
                aCN[m_eClass]
                );
   
-  pFile->vPrint("%s %s %s "_Stz,
+  pFile->vPrint("%s %s ⬜️ "_Stz,
                 sSub.aStz(),
-                sMid.aStz(),
-                szIndicator());
+                sMid.aStz());
 }
 
 /*----------------------------------------------------------------------------*/

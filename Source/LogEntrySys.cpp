@@ -15,11 +15,6 @@ void _LogEntrySys::vSet(LogEntry* pLogEntry, AttachMap* pAttachMap, eYA eSysAct)
   m_iSysId  = pAttachMap->m_iUniqueId;
   m_eSysAct = eSysAct;
   
-  if (JA_JOB_CONSTRUCT == eSysAct)
-    pLogEntry->m_iIndicator = OC_CONSTRUCT;
-  else
-    if (JA_JOB_DESTRUCT == eSysAct)
-      pLogEntry->m_iIndicator = OC_DESTRUCT;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -58,6 +53,7 @@ void _LogEntrySys::vToTxt(s256& sInf, LogEntry* pEntry)
   sInf.vSprint(C_ENTRY_FMT_TXT,
                aCN[pEntry->m_eClass],
                aYA[m_eSysAct],
+               pEntry->szIndicator(),
                pEntry->m_caNote);
 }
 

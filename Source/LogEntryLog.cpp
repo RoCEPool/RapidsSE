@@ -53,6 +53,7 @@ void _LogEntryLog::vToTxt(s256& sInf, LogEntry* pEntry)
   sInf.vSprint(C_ENTRY_FMT_TXT,
                aCN[pEntry->m_eClass],
                aGA[m_eLogAct],
+               pEntry->szIndicator(),
                pEntry->m_caNote);
 }
 
