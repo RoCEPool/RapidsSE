@@ -37,12 +37,14 @@ Stz* SP_ReqTuple::sz(ReqTuple* aReqTuple)
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
   SP_Id spId;
-  
+  SP_Id spIdFor;
+
   StrLib::vSprint(m_caResult,
-                  "<i_State=%lld ReqId=%s LogLevel=%lld, Purpose=%s>"_Stz,
+                  "<i_State=%lld ReqId=%s For=%s LogLevel=%lld, Purpose=%s>"_Stz,
                   
                   aReqTuple->m_i_State,
                   spId.sz(IK_REQUEST,aReqTuple->m_iReqId),
+                  spIdFor.sz(aReqTuple->m_iForId),
                   aReqTuple->m_iLogLevel,
                   aReqTuple->m_sPurpose.aChar()
                   );

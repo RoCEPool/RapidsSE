@@ -9,10 +9,10 @@ namespace Focals
   {
   public:
     i8   m_i_State;    // which session state
-    i8   m_iReqId;     // the command which trigger the job
-    //bool m_bMarkTrace; // trace (mark version)
-    i8   m_iLogLevel;  // level of logging
+    i8   m_iReqId;     // the id of the request
+    i8   m_iForId;     // id of prompt or api
   
+    i8   m_iLogLevel;  // level of logging  
     s32  m_sPurpose;   // purpose of request
 
   public:

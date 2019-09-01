@@ -40,18 +40,19 @@ void ReqTuple::vSet(ReqTuple* aReqTuple)
 {
   if (aReqTuple) {
     m_iReqId     = aReqTuple->m_iReqId;
+    m_iForId     = aReqTuple->m_iForId;
     m_i_State    = aReqTuple->m_i_State;
-    //m_bMarkTrace = aReqTuple->m_bMarkTrace;
+
     m_iLogLevel  = aReqTuple->m_iLogLevel;
-    
     m_sPurpose   = aReqTuple->m_sPurpose;
     
     return;
   }
   
   m_iReqId     = C_UNKNOWN;
+  m_iForId     = C_UNKNOWN;
   m_i_State    = C_UNKNOWN;
-  //m_bMarkTrace = false;
+
   m_iLogLevel  = 0;
   
   //m_sPurpose   = "?"_Stz;
