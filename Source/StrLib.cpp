@@ -2531,6 +2531,21 @@ void StrLib::vRotate(char* zArg, i8 nBy)
 }
 
 /*----------------------------------------------------------------------------*/
+/* ruler                                                                      */
+/*----------------------------------------------------------------------------*/
+void StrLib::vRuler(char* azDst, i8 iLength)
+{
+  char* azPut = azDst;
+  char  cDigit;
+  
+  for (i8 i_Char = 0; i_Char < iLength; i_Char++) {
+    cDigit = '0' + (i_Char % 10);
+    *azPut++ = cDigit;
+  }
+  *azPut = '\0';
+}
+
+/*----------------------------------------------------------------------------*/
 /* bSame: are two arguments equal (no case)                                   */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bSame(const char* pArg1, const char* pArg2)

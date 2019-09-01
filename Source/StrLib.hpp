@@ -152,6 +152,7 @@ namespace Strings
     static void  vReverse(char* azDst, char* azSrc);
     static void  vRight(char* azDst, char* azSrc, i8 i_At);
     static void  vRotate(char* zArg, i8 nby);
+    static void  vRuler(char* azDst, i8 iLength);
 
     static bool  bSame(const char* s1, const char* s2);
     static i8    iSize(const char* s);
