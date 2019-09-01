@@ -14,12 +14,6 @@ void _LogEntrySvc::vSet(LogEntry* pLogEntry, Job* pJob, eVA eSvcAct)
 
   m_iSvcId  = pJob->m_iUniqueId;
   m_eSvcAct = eSvcAct;
-  
-  if (JA_JOB_CONSTRUCT == eSvcAct)
-    pLogEntry->m_iIndicator = OC_CONSTRUCT;
-  else
-    if (JA_JOB_DESTRUCT == eSvcAct)
-      pLogEntry->m_iIndicator = OC_DESTRUCT;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -55,7 +49,10 @@ void _LogEntrySvc::vWriteCsv(File* pFile, LogEntry* pEntry)
 /*----------------------------------------------------------------------------*/
 void _LogEntrySvc::vToTxt(s256& sInf, LogEntry* pEntry)
 {
-  sInf.vSprint(C_ENTRY_FMT_TXT,aCN[pEntry->m_eClass],aVA[m_eSvcAct],pEntry->m_caNote);
+  sInf.vSprint(C_ENTRY_FMT_TXT,
+               aCN[pEntry->m_eClass],
+               aVA[m_eSvcAct],
+               pEntry->m_caNote);
 }
 
 /*============================================================================*/

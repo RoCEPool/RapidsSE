@@ -68,12 +68,25 @@ LogEntry::~LogEntry(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get indicator                                                              */
+/*----------------------------------------------------------------------------*/
+Stz* LogEntry::szIndicator(void)
+{
+  _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
+  
+  if (m_iIndicator == C_UNKNOWN)
+    return aOC[0];
+  else
+    return aOC[m_iIndicator];
+}
+
+/*----------------------------------------------------------------------------*/
 /* init                                                                       */
 /*----------------------------------------------------------------------------*/
 void LogEntry::vInit(eSL eSeverity, eCN eClassNo, Stz* szText)
 {
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
-  
+
   m_i_Prev = C_UNKNOWN;
   
   m_iTick = Tick::iRdClock();
@@ -311,38 +324,37 @@ void LogEntry::vWriteTxtEntry(File* pFile)
   
   SP_Id spId;
   SP_Id spForId;
-  SP_Id spReqId;
   
   s256 sSub;
   s256 sMid;
   s256 sInf;
   
-  sSub.vSprint("[%04lld,%04lld,%s+%s] %014p"_Stz,
+  sSub.vSprint("[%04lld,%04lld,%s+%s] %014p⬜️"_Stz,
                m_i_Entry,
                m_i_Prev,
                m_caNode,
                spElapsed.szNsec(m_iTick - AM::iAMTimePoint()),
-               m_pFocal
+               m_pFocal,
+               C_ENDARGS
                );
 
-  sMid.vSprint("%16s:%s ⬜️ %s:%s#%03lld"_Stz,
+  sMid.vSprint("%16s ⬜️ %s:%s#%03lld"_Stz,
                m_xReqTuple.m_sPurpose.aStz(),
-               spReqId.sz(EK_REQ,m_xReqTuple.m_iReqId),
                
                spForId.sz(m_iForId),
                spId.sz(m_eKind,m_iUniqueId),
-               m_iAct
+               m_iAct,
+               C_ENDARGS
                );
   
   sInf.vSprint("%-16s"_Stz,
                aCN[m_eClass]
                );
   
-  pFile->vPrint("%s%s %s %s "_Stz,
+  pFile->vPrint("%s %s %s "_Stz,
                 sSub.aStz(),
-                aOC[0],
                 sMid.aStz(),
-                m_iIndicator == C_UNKNOWN ? aOC[0] : aOC[m_iIndicator]);
+                szIndicator());
 }
 
 /*----------------------------------------------------------------------------*/

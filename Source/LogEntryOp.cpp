@@ -55,7 +55,10 @@ void _LogEntryOp::vWriteCsv(File* pFile, LogEntry* pEntry)
 /*----------------------------------------------------------------------------*/
 void _LogEntryOp::vToTxt(s256& sInf, LogEntry* pEntry)
 {
-  sInf.vSprint(C_ENTRY_FMT_TXT,aCN[pEntry->m_eClass],aOA[m_eOpAct],pEntry->m_caNote);
+  sInf.vSprint(C_ENTRY_FMT_TXT,
+               aCN[pEntry->m_eClass],
+               aOA[m_eOpAct],
+               pEntry->m_caNote);
 }
 
 /*============================================================================*/
