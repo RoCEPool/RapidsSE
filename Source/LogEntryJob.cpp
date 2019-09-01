@@ -18,6 +18,12 @@ void _LogEntryJob::vSet(LogEntry* pLogEntry, Job* pJob, eJA eJobAct)
   m_eJobAct = eJobAct;
   
   m_iReqId  = pJob->m_xReqTuple.m_iReqId;
+  
+  if (JA_JOB_CONSTRUCT == eJobAct)
+    pLogEntry->m_iIndicator = OC_CONSTRUCT;
+  else
+  if (JA_JOB_DESTRUCT == eJobAct)
+    pLogEntry->m_iIndicator = OC_DESTRUCT;
 }
 
 /*----------------------------------------------------------------------------*/

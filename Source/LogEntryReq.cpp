@@ -17,6 +17,7 @@ void _LogEntryReq::vSet(LogEntry* pLogEntry, Request* pRequest, eMA eReqAct)
 
   m_iReqId  = pRequest->m_iUniqueId;
   m_eReqAct = eReqAct;
+  
 }
 
 /*----------------------------------------------------------------------------*/

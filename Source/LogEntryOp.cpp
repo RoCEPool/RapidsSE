@@ -14,6 +14,12 @@ void _LogEntryOp::vSet(LogEntry* pLogEntry, Op* pOp, eOA eOpAct)
 
   m_iOpId  = pOp->m_iUniqueId;
   m_eOpAct = eOpAct;
+  
+  if (OA_OP_CONSTRUCT == eOpAct)
+    pLogEntry->m_iIndicator = OC_CONSTRUCT;
+  else
+    if (OA_OP_DESTRUCT == eOpAct)
+      pLogEntry->m_iIndicator = OC_DESTRUCT;
 }
 
 /*----------------------------------------------------------------------------*/

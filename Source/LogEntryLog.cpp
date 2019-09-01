@@ -14,6 +14,7 @@ void _LogEntryLog::vSet(LogEntry* pLogEntry, Log* pLog, eGA eLogAct)
 
   m_iLogId  = pLog->m_iUniqueId;
   m_eLogAct = eLogAct;
+  
 }
 
 /*----------------------------------------------------------------------------*/

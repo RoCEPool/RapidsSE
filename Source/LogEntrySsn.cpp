@@ -14,6 +14,12 @@ void _LogEntrySsn::vSet(LogEntry* pLogEntry, Session* pSession, eAA eSsnAct)
 
   m_iSsnId  = pSession->m_iUniqueId;
   m_eSsnAct = eSsnAct;
+  
+  if (AA_SSN_CONSTRUCT == eSsnAct)
+    pLogEntry->m_iIndicator = OC_CONSTRUCT;
+  else
+    if (AA_SSN_DESTRUCT == eSsnAct)
+      pLogEntry->m_iIndicator = OC_DESTRUCT;
 }
 
 /*----------------------------------------------------------------------------*/

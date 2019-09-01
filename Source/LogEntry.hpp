@@ -5,7 +5,7 @@
 
 namespace Logging
 {
-  static Stz* C_ENTRY_FMT_TXT = "%-16s %20s :: %s"_Stz;
+  static Stz* C_ENTRY_FMT_TXT = "%-16s %20s ⬜️ %s"_Stz;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -52,6 +52,8 @@ namespace Logging
     char m_cPrefix;
     i8   m_iUniqueId;
     i8   m_iForId;
+  
+    i8   m_iIndicator;
   
     char m_caNote[C_LOG_NOTE]; // comment
   

@@ -14,6 +14,7 @@ void _LogEntryQue::vSet(LogEntry* pLogEntry, Queues* pQueues, eQA eQueAct)
 
   m_iQueId  = pQueues->m_iUniqueId;
   m_eQueAct = eQueAct;
+  
 }
 
 /*----------------------------------------------------------------------------*/

@@ -14,6 +14,12 @@ void _LogEntrySvc::vSet(LogEntry* pLogEntry, Job* pJob, eVA eSvcAct)
 
   m_iSvcId  = pJob->m_iUniqueId;
   m_eSvcAct = eSvcAct;
+  
+  if (JA_JOB_CONSTRUCT == eSvcAct)
+    pLogEntry->m_iIndicator = OC_CONSTRUCT;
+  else
+    if (JA_JOB_DESTRUCT == eSvcAct)
+      pLogEntry->m_iIndicator = OC_DESTRUCT;
 }
 
 /*----------------------------------------------------------------------------*/

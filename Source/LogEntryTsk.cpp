@@ -16,6 +16,12 @@ void _LogEntryTsk::vSet(LogEntry* pLogEntry, Task* pTask, eTA eTskAct)
 
   m_iTskId  = pTask->m_iUniqueId;
   m_eTskAct = eTskAct;
+  
+  if (TA_TSK_CONSTRUCT == eTskAct)
+    pLogEntry->m_iIndicator = OC_CONSTRUCT;
+  else
+    if (TA_TSK_DESTRUCT == eTskAct)
+      pLogEntry->m_iIndicator = OC_DESTRUCT;
 }
 
 /*----------------------------------------------------------------------------*/

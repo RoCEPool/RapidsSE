@@ -93,6 +93,8 @@ void LogEntry::vInit(eSL eSeverity, eCN eClassNo, Stz* szText)
   m_cPrefix = '?';
   m_iUniqueId = C_UNKNOWN;
   m_iForId = C_UNKNOWN;
+  
+  m_iIndicator = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -123,6 +125,8 @@ void LogEntry::vInit(eSL eSeverity, Focal *pFocal, Stz* szText)
   m_cPrefix = '?';
   m_iUniqueId = pFocal->m_iUniqueId;
   m_iForId = pFocal->m_iForId;
+  
+  m_iIndicator = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -321,9 +325,10 @@ void LogEntry::vWriteTxtEntry(File* pFile)
                m_pFocal
                );
 
-  sMid.vSprint("%16s:%s:%s:%s#%03lld"_Stz,
+  sMid.vSprint("%16s:%s ⬜️ %s:%s#%03lld"_Stz,
                m_xReqTuple.m_sPurpose.aStz(),
                spReqId.sz(EK_REQ,m_xReqTuple.m_iReqId),
+               
                spForId.sz(m_iForId),
                spId.sz(m_eKind,m_iUniqueId),
                m_iAct
@@ -333,7 +338,11 @@ void LogEntry::vWriteTxtEntry(File* pFile)
                aCN[m_eClass]
                );
   
-  pFile->vPrint("%s🔵 %s🔴 "_Stz,sSub.aStz(),sMid.aStz());
+  pFile->vPrint("%s%s %s %s "_Stz,
+                sSub.aStz(),
+                aOC[0],
+                sMid.aStz(),
+                m_iIndicator == C_UNKNOWN ? aOC[0] : aOC[m_iIndicator]);
 }
 
 /*----------------------------------------------------------------------------*/

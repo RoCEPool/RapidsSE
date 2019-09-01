@@ -18,6 +18,12 @@ void _LogEntryRes::vSet(LogEntry* pLogEntry, Resource* pResource, eRA eResAct)
 
   m_iResId  = pResource->m_iUniqueId;
   m_eResAct = eResAct;
+  
+  if (RA_MTX_CONSTRUCT == eResAct)
+    pLogEntry->m_iIndicator = OC_CONSTRUCT;
+  else
+    if (RA_MTX_DESTRUCT == eResAct)
+      pLogEntry->m_iIndicator = OC_DESTRUCT;
 }
 
 /*----------------------------------------------------------------------------*/

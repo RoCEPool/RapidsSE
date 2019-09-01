@@ -14,6 +14,7 @@ void _LogEntryTxn::vSet(LogEntry* pLogEntry, Tx* pTxn, eXA eTxnAct)
 
   m_iTxnId  = pTxn->m_iUniqueId;
   m_eTxnAct = eTxnAct;
+  
 }
 
 /*----------------------------------------------------------------------------*/

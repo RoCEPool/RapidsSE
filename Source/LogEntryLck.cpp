@@ -16,6 +16,12 @@ void _LogEntryLck::vSet(LogEntry* pLogEntry, Lock* pLock, eLA eLckAct)
 
   m_iLckId  = pLock->m_iUniqueId;
   m_eLckAct = eLckAct;
+  
+  if (LA_LCK_CONSTRUCT == eLckAct)
+    pLogEntry->m_iIndicator = OC_CONSTRUCT;
+  else
+    if (LA_LCK_DESTRUCT == eLckAct)
+      pLogEntry->m_iIndicator = OC_DESTRUCT;
 }
 
 /*----------------------------------------------------------------------------*/
