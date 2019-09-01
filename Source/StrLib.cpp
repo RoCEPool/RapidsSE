@@ -2503,6 +2503,17 @@ void StrLib::vReverse(char* azDst, char* azSrc)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add src substr to right side of destination                                */
+/*----------------------------------------------------------------------------*/
+void StrLib::vRight(char* azDst, char* azSrc, i8 i_At)
+{
+  vPad(azDst, i_At,' ');
+  
+  char* azDst_into = azDst + i_At - strlen(azSrc) + 1;
+  nCopy_nonull(azDst_into,azSrc);
+}
+
+/*----------------------------------------------------------------------------*/
 /* vRotate: rotate a string by given number of characters                     */
 /*----------------------------------------------------------------------------*/
 void StrLib::vRotate(char* zArg, i8 nBy)

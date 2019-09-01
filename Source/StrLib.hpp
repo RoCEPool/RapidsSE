@@ -150,6 +150,7 @@ namespace Strings
                           const char* pThis, const char* pThat);
     static void  vReplaceTail(char* azArg, char* azTail);
     static void  vReverse(char* azDst, char* azSrc);
+    static void  vRight(char* azDst, char* azSrc, i8 i_At);
     static void  vRotate(char* zArg, i8 nby);
 
     static bool  bSame(const char* s1, const char* s2);

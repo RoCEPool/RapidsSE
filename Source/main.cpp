@@ -14,6 +14,9 @@ int main(int argc, const char* argv[])
   printf("sizeof(LinkedBuffer) %lld\n", (i8)sizeof(LinkedBuffer));
   printf("sizeof(HeapBuffer)   %lld\n", (i8)sizeof(HeapBuffer));
   
+  s32 sRightTest("A123456789B123456789C123456789"_Stz);
+  StrLib::vRight(sRightTest.aChar(),(char*)"abcde"_Stz,29);
+  vTrace("%s\n"_Stz,sRightTest.aChar());
   
   Process::vEntry();
   
