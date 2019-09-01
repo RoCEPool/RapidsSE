@@ -39,11 +39,12 @@ Stz* SP_ReqTuple::sz(ReqTuple* aReqTuple)
   SP_Id spId;
   
   StrLib::vSprint(m_caResult,
-                  "<%lld=%s=%s>"_Stz,
+                  "<i_State=%lld ReqId=%s LogLevel=%lld, Purpose=%s>"_Stz,
                   
                   aReqTuple->m_i_State,
                   spId.sz(IK_REQUEST,aReqTuple->m_iReqId),
-                  aReqTuple->m_iLogLevel    ? "Log"_Stz   : "NoLog"_Stz
+                  aReqTuple->m_iLogLevel,
+                  aReqTuple->m_sPurpose.aChar()
                   );
   
   return (Stz*) &m_caResult[0];

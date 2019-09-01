@@ -118,7 +118,7 @@ Mutex::Mutex(eMK eKind, Focal* pFor, ReqTuple* aReqTuple)
   
   vIncActNo(); ++ gixMutex;
   AM::vLogRes(SL_INF,this,RA_MTX_CONSTRUCT,
-              "Mutex -%s construct(for=%s) |gixMutex=%lld/%lld|"_Stz, //!format-LogRes
+              "Mutex -%s construct ^for=%s |gixMutex=%lld/%lld|"_Stz, //!format-LogRes
               aMK[m_eKind],
               spId.sz(m_pFor->m_iUniqueId),
               * gixMutex, * gixMutex_err);
@@ -154,7 +154,7 @@ Mutex::~Mutex(void) noexcept(false)
   vIncActNo(); -- gixMutex;
   SP_Id spId;
   AM::vLogRes(SL_INF,this,RA_MTX_DESTRUCT,
-              "Mutex -%s destruct(for=%s) |gixMutex=%lld/%lld|"_Stz, //!format-LogRes
+              "Mutex -%s destruct ^for=%s |gixMutex=%lld/%lld|"_Stz, //!format-LogRes
               aMK[m_eKind],
               spId.sz(m_pFor->m_iUniqueId),
               * gixMutex, * gixMutex_err);
@@ -578,13 +578,22 @@ void Mutex::vMutexLock(Object* pByWhom)
     vIncActNo(); ++ m_ixLocked;
 
     SP_Id spId;
-    AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
-                "Mutex -%s %s now locked by %s |m_ixLocked=%lld|"_Stz, //!format-LogRes
-                aMK[m_eKind],
-                spId.sz(m_pFor->m_iUniqueId),
-                (m_pFor == pByWhom) ? "owner"_Stz : "non-owner"_Stz,
-                * m_ixLocked,
-                C_ENDARGS);
+    
+    if (m_pFor == pByWhom)
+      AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
+                  "Mutex -%s %s locked by owner |m_ixLocked=%lld|"_Stz, //!format-LogRes
+                  aMK[m_eKind],
+                  spId.sz(m_pFor->m_iUniqueId),
+                  * m_ixLocked,
+                  C_ENDARGS);
+    else
+      AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
+                  "Mutex -%s %s locked by %p |m_ixLocked=%lld|"_Stz, //!format-LogRes
+                  aMK[m_eKind],
+                  spId.sz(m_pFor->m_iUniqueId),
+                  pByWhom,
+                  * m_ixLocked,
+                  C_ENDARGS);
 
     return;
   }
@@ -628,7 +637,7 @@ void Mutex::vMutexUnlock(Object* pByWhom)
     vIncActNo(); ++ m_ixUnlock;
     
     AM::vLogRes(SL_INF,this,RA_MTX_UNLOCKED,
-                "Mutex -%s now unlocked by %s |m_ixUnlock=%lld|"_Stz, //!format-LogRes
+                "Mutex -%s unlocked by %s |m_ixUnlock=%lld|"_Stz, //!format-LogRes
                 aMK[m_eKind],
                 (m_pFor == pByWhom) ? "owner"_Stz : "non-owner"_Stz,
                 * m_ixUnlock,

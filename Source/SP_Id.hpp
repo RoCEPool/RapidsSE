@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Gadgets
+namespace Focals
 {
   class SP_Id : public SP
   {

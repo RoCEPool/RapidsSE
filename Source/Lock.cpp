@@ -45,13 +45,13 @@ void Lock::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Lock::Lock(eLK eLockKind, ReqTuple* aReqTuple, Focal* pSuper)
-: Focal(CN_LOCK,AM::iNextLockId(),pSuper)
+Lock::Lock(eLK eLockKind, ReqTuple* aReqTuple, Focal* pFor)
+: Focal(CN_LOCK,AM::iNextLockId(),pFor)
 , m_xReqTuple(aReqTuple)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  m_pSuper = pSuper;
+  m_pSuper = pFor;
   
   m_uLockWord = 0;
   m_eLockKind = eLockKind;
@@ -64,10 +64,13 @@ Lock::Lock(eLK eLockKind, ReqTuple* aReqTuple, Focal* pSuper)
   
   _checkInitialised_(CN_LOCK);
   
+  SP_Id spId;
+  
   vIncActNo(); ++ gixLock;
   AM::vLogLck(SL_INF,this,LA_LCK_CONSTRUCT,
-              "Lock -%s construct |gixLock=%lld|"_Stz, //!format-LogLck
+              "Lock -%s construct ^For=%s |gixLock=%lld|"_Stz, //!format-LogLck
               aLK[m_eLockKind],
+              spId.sz(((Focal*)m_pSuper)->m_iUniqueId),
               * gixLock);
   
   _postcondition_(_MAGIC_,CN_LOCK,_FOOTER_);
@@ -95,10 +98,13 @@ Lock::Lock(eLK eLockKind, ReqTuple* aReqTuple, Object* pSuper, bool bNonFocal)
   
   _checkInitialised_(CN_LOCK);
   
+  SP_Id spId;
+  
   vIncActNo(); ++ gixLock;
   AM::vLogLck(SL_INF,this,LA_LCK_CONSTRUCT,
-              "Lock -%s construct |gixLock=%lld|"_Stz, //!format-LogLck
+              "Lock -%s construct ^For=%s |gixLock=%lld|"_Stz, //!format-LogLck
               aLK[m_eLockKind],
+              spId.sz(m_pSuper?((Focal*)m_pSuper)->m_iUniqueId:C_UNKNOWN),
               * gixLock);
   
   _postcondition_(_MAGIC_,CN_LOCK,_FOOTER_);
@@ -111,10 +117,13 @@ Lock::~Lock(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
+  SP_Id spId;
+  
   vIncActNo(); -- gixLock;
   AM::vLogLck(SL_INF,this,LA_LCK_DESTRUCT,
-              "Lock -%s destruct |gixLock=%lld|"_Stz, //!format-LogLck
+              "Lock -%s destruct ^For=%s |gixLock=%lld|"_Stz, //!format-LogLck
               aLK[m_eLockKind],
+              spId.sz(m_pSuper?((Focal*)m_pSuper)->m_iUniqueId:C_UNKNOWN),
               * gixLock);
 }
 

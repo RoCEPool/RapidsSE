@@ -94,10 +94,13 @@ Job::Job(eCN eClassNo, Session* pSession, ReqTuple* aReqTuple)
 
   // -- -- -- -- -- --
   
+  SP_Id spId;
+  
   vIncActNo(); ++ gixJob;
   AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCT,
-              "Job -%s construct |gixJob=%lld|"_Stz, //!format-LogJob
+              "Job -%s construct ^for=%s |gixJob=%lld|"_Stz, //!format-LogJob
               aCN[eClass()],
+              m_pSession ? spId.sz(m_pSession->m_iUniqueId) : "boot"_Stz,
               * gixJob);
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
@@ -114,8 +117,13 @@ Job::~Job(void) noexcept(false)
   
   delete m_pJobMutex;
   
+  SP_Id spId;
+  
+  // -- -- -- -- -- --
+  
   vIncActNo();
   if (m_bWasReceived) {
+    // do not decrement gixJob
     AM::vLogJob(SL_INF,this,JA_JOB_DESTRUCT,
                 "Job -%s destruct (was-received) |gixJob=%lld|"_Stz, //!format-LogJob
                 aCN[eClass()],
@@ -124,8 +132,9 @@ Job::~Job(void) noexcept(false)
   else {
     -- gixJob;
     AM::vLogJob(SL_INF,this,JA_JOB_DESTRUCT,
-                "Job -%s destruct |gixJob=%lld|"_Stz, //!format-LogJob
+                "Job -%s destruct ^for=%s |gixJob=%lld|"_Stz, //!format-LogJob
                 aCN[eClass()],
+                m_pSession ? spId.sz(m_pSession->m_iUniqueId) : "boot"_Stz,
                 * gixJob);
   }
 }
