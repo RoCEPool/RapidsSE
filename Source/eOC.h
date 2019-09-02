@@ -30,12 +30,22 @@ enum eOC // other characters
   /*    */ OC_RECEIVE,
   /*    */ OC_EXIT,
   /*    */ OC_INDEFINITE,
+  /*    */ OC_NOTE,
+  /*    */ OC_SPACE,
+  /*    */ OC_APPEND,
+  /*    */ OC_IDLE,
+  /*    */ OC_AWAKE,
+  /*    */ OC_INFINITE,
+  /*    */ OC_LOWPRIORITY,
+  /*    */ OC_SERVICE,
+  /*    */ OC_ADD,
 
   /*    */ OC_JOB,
   /*    */ OC_LOCK,
   /*    */ OC_REQUEST,
   /*    */ OC_MUTEX,
   /*    */ OC_SESSION,
+  /*    */ OC_SOCKET,
   /*    */ OC_PROMPT,
   /*    */ OC_TASK,
   /*    */ OC_THREAD,
@@ -70,12 +80,22 @@ static Stz* aOC[]
    /*    */ "📥"_Stz, // recv
    /*    */ "🚪"_Stz, // exit
    /*    */ "🛑"_Stz, // indefinite
+   /*    */ "🎵"_Stz, // note
+   /*    */ "🍭"_Stz, // space
+   /*    */ "👯‍♂️"_Stz, // append
+   /*    */ "🎣"_Stz, // idle
+   /*    */ "😳"_Stz, // awake
+   /*    */ "♾"_Stz, // infinite
+   /*    */ "🐢"_Stz, // lowprority
+   /*    */ "👻"_Stz, // service
+   /*    */ "➕"_Stz, // add
 
    /*    */ "💈"_Stz, // job
    /*    */ "🔒"_Stz, // lock
    /*    */ "🛎"_Stz, // request
    /*    */ "🚥"_Stz, // mutex
    /*    */ "🎤"_Stz, // session
+   /*    */ "🔌"_Stz, // socket
    /*    */ "❓"_Stz, // prompt
    /*    */ "📎"_Stz, // task
    /*    */ "〰️"_Stz, // thread
@@ -161,6 +181,7 @@ static Stz* aOC[]
 //  /*    */ "〰️"_Stz,
 //  /*    */ "➰"_Stz,
 //  /*    */ "▫️"_Stz,
+//  /*    */ "✏️"_Stz,
 //
 //  /*    */ "ENUMS"_Stz,
 //};

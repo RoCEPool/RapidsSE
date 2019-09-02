@@ -52,6 +52,10 @@ void _LogEntryTsk::vSet(LogEntry* pLogEntry, Task* pTask, eTA eTskAct)
   else
     if (TA_TSK_SCHEDULE == eTskAct)
       pLogEntry->m_iIndicator = OC_SCHEDULE;
+
+  else
+    if (TA_TSK_WAKEUP == eTskAct)
+      pLogEntry->m_iIndicator = OC_SERVICE;
 }
 
 /*----------------------------------------------------------------------------*/

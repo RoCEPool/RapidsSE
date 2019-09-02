@@ -19,14 +19,10 @@ void _LogEntryPrm::vSet(LogEntry* pLogEntry, SePrompt*  pPrompt, ePA ePrmAct)
   if (PA_PRM_COMMAND == ePrmAct)
     pLogEntry->m_bLine = true;
   
-  if (PA_PRM_WAITS == ePrmAct)
-    pLogEntry->m_iIndicator = OC_WAIT;
-  else
-  if (PA_PRM_RESUMES == ePrmAct)
-    pLogEntry->m_iIndicator = OC_RESUME;
-  else
-  if (PA_PRM_COMMAND == ePrmAct)
-    pLogEntry->m_iIndicator = OC_COMMAND;
+       if (PA_PRM_WAITS      == ePrmAct)  pLogEntry->m_iIndicator = OC_WAIT;
+  else if (PA_PRM_RESUMES    == ePrmAct)  pLogEntry->m_iIndicator = OC_RESUME;
+  else if (PA_PRM_COMMAND    == ePrmAct)  pLogEntry->m_iIndicator = OC_COMMAND;
+  else if (PA_PRM_FREE_SPACE == ePrmAct)  pLogEntry->m_iIndicator = OC_SPACE;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -22,7 +22,7 @@ enum eHA // thread actions
   /*    */ HA_THD_REMOVE_GENERAL,
   /*    */ HA_THD_UNASSIGN_TASK,
   
-  /*    */ HA_THD_POPREADY,
+  /*    */ HA_THD_POP_READY,
 
   /*    */ HA_ENUMS,
 };
@@ -46,7 +46,7 @@ static Stz* aHA[]
   /*  0 */ "HA_THD_REMOVE_GENERAL"_Stz,
   /*  0 */ "HA_THD_UNASSIGN_TASK"_Stz,
 
-  /*  0 */ "HA_THD_POPREADY"_Stz,
+  /*  0 */ "HA_THD_POP_READY"_Stz,
   
   /*    */ "ENUMS"_Stz,
 };

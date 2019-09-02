@@ -27,6 +27,8 @@ void _LogEntryRes::vSet(LogEntry* pLogEntry, Resource* pResource, eRA eResAct)
   else if (RA_MTX_SIGNALED   == eResAct) pLogEntry->m_iIndicator = OC_SIGNALED;
   else if (RA_MTX_UNLOCKED   == eResAct) pLogEntry->m_iIndicator = OC_UNBLOCKED;
   else if (RA_MTX_WAIT_INDEF == eResAct) pLogEntry->m_iIndicator = OC_INDEFINITE;
+  
+  else if (RA_SKT_RECEIVED   == eResAct) pLogEntry->m_iIndicator = OC_RECEIVE;
 }
 
 /*----------------------------------------------------------------------------*/

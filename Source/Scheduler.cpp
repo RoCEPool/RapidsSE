@@ -750,7 +750,7 @@ void Scheduler::vTask_Pause(Task* pTask)
 Task* Scheduler::pTask_Pop(Thread* pThread)
 {
   pThread->vIncActNo();
-  AM::vLogThd(SL_INF,pThread,HA_THD_POPREADY,
+  AM::vLogThd(SL_INF,pThread,HA_THD_POP_READY,
               "Thread attempts pop of task from ReadyQueue/ReadyQueueLP"_Stz); //!format-LogThd
   
   Queues* pQueues = AM::pQueues();

@@ -15,11 +15,9 @@ void _LogEntryThd::vSet(LogEntry* pLogEntry, Thread* pThread, eHA eThdAct)
   m_iThdId  = pThread->m_iUniqueId;
   m_eThdAct = eThdAct;
   
-  if (HA_THD_CONSTRUCT == eThdAct)
-    pLogEntry->m_iIndicator = OC_CONSTRUCT;
-  else
-    if (HA_THD_DESTRUCT == eThdAct)
-      pLogEntry->m_iIndicator = OC_DESTRUCT;
+       if (HA_THD_CONSTRUCT   == eThdAct) pLogEntry->m_iIndicator = OC_CONSTRUCT;
+  else if (HA_THD_DESTRUCT    == eThdAct) pLogEntry->m_iIndicator = OC_DESTRUCT;
+  else if (HA_THD_APPEND_IDLE == eThdAct) pLogEntry->m_iIndicator = OC_IDLE;
 }
 
 /*----------------------------------------------------------------------------*/
