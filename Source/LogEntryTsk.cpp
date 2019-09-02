@@ -20,8 +20,38 @@ void _LogEntryTsk::vSet(LogEntry* pLogEntry, Task* pTask, eTA eTskAct)
   if (TA_TSK_CONSTRUCT == eTskAct)
     pLogEntry->m_iIndicator = OC_CONSTRUCT;
   else
-    if (TA_TSK_DESTRUCT == eTskAct)
-      pLogEntry->m_iIndicator = OC_DESTRUCT;
+  if (TA_TSK_DESTRUCT == eTskAct)
+    pLogEntry->m_iIndicator = OC_DESTRUCT;
+  else
+    if (TA_TSK_ASSIGN_IDLE == eTskAct)
+      pLogEntry->m_iIndicator = OC_ASSIGN;
+  else
+    if (TA_TSK_THREAD == eTskAct)
+      pLogEntry->m_iIndicator = OC_ASSIGNED;
+  else
+  if (TA_TSK_EXECUTE == eTskAct)
+    pLogEntry->m_iIndicator = OC_RESUME;
+  else
+    if (TA_TSK_ABLE == eTskAct)
+      pLogEntry->m_iIndicator = OC_TRANSITION;
+  else
+    if (TA_TSK_YIELD == eTskAct)
+      pLogEntry->m_iIndicator = OC_TRANSITION;
+  else
+    if (TA_TSK_DESIST == eTskAct)
+      pLogEntry->m_iIndicator = OC_TRANSITION;
+  else
+    if (TA_TSK_SLEEP == eTskAct)
+      pLogEntry->m_iIndicator = OC_TRANSITION;
+  else
+  if (TA_TSK_ASSIGNED_IDLE == eTskAct)
+    pLogEntry->m_iIndicator = OC_ASSIGNED;
+  else
+    if (TA_TSK_EXIT == eTskAct)
+      pLogEntry->m_iIndicator = OC_EXIT;
+  else
+    if (TA_TSK_SCHEDULE == eTskAct)
+      pLogEntry->m_iIndicator = OC_SCHEDULE;
 }
 
 /*----------------------------------------------------------------------------*/

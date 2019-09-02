@@ -18,8 +18,11 @@ void _LogEntrySsn::vSet(LogEntry* pLogEntry, Session* pSession, eAA eSsnAct)
   if (AA_SSN_CONSTRUCT == eSsnAct)
     pLogEntry->m_iIndicator = OC_CONSTRUCT;
   else
-    if (AA_SSN_DESTRUCT == eSsnAct)
-      pLogEntry->m_iIndicator = OC_DESTRUCT;
+  if (AA_SSN_DESTRUCT == eSsnAct)
+    pLogEntry->m_iIndicator = OC_DESTRUCT;
+  else
+  if (AA_API_SPAWN_JOB == eSsnAct)
+    pLogEntry->m_iIndicator = OC_SPAWN;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -19,11 +19,14 @@ void _LogEntryRes::vSet(LogEntry* pLogEntry, Resource* pResource, eRA eResAct)
   m_iResId  = pResource->m_iUniqueId;
   m_eResAct = eResAct;
   
-  if (RA_MTX_CONSTRUCT == eResAct)
-    pLogEntry->m_iIndicator = OC_CONSTRUCT;
-  else
-    if (RA_MTX_DESTRUCT == eResAct)
-      pLogEntry->m_iIndicator = OC_DESTRUCT;
+       if (RA_MTX_CONSTRUCT  == eResAct) pLogEntry->m_iIndicator = OC_CONSTRUCT;
+  else if (RA_MTX_DESTRUCT   == eResAct) pLogEntry->m_iIndicator = OC_DESTRUCT;
+  else if (RA_MTX_LOCK       == eResAct) pLogEntry->m_iIndicator = OC_BLOCKED;
+  else if (RA_MTX_LOCKED     == eResAct) pLogEntry->m_iIndicator = OC_BLOCKED;
+  else if (RA_MTX_SIGNAL     == eResAct) pLogEntry->m_iIndicator = OC_SIGNAL;
+  else if (RA_MTX_SIGNALED   == eResAct) pLogEntry->m_iIndicator = OC_SIGNALED;
+  else if (RA_MTX_UNLOCKED   == eResAct) pLogEntry->m_iIndicator = OC_UNBLOCKED;
+  else if (RA_MTX_WAIT_INDEF == eResAct) pLogEntry->m_iIndicator = OC_INDEFINITE;
 }
 
 /*----------------------------------------------------------------------------*/

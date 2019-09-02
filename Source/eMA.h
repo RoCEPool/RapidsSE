@@ -7,8 +7,8 @@ enum eMA // command instance actions
 {
   /*  0 */ MA_REQ_NONE=0,
   
-  /*    */ MA_REQ_BEGIN,
-  /*    */ MA_REQ_END,
+  /*    */ MA_REQ_CONSTRUCT,
+  /*    */ MA_REQ_DESTRUCT,
 
   /*    */ MA_REQ_ENUMS,
 };

@@ -327,6 +327,12 @@ bool Api::bSpawnJob(Session* pSession, Job* pJob, eSS eSeed)
   Task* pNewTask = new Task(pJob,pSession);
   pNewTask->vState(TS_ABLE);
   //pNewTask->vSession(pSession);
+  
+  AM::vLogSsn(SL_INF,pSession,AA_API_SPAWN_JOB,
+              "pJob=%p"_Stz, //!format-LogPrm
+              pJob,
+              C_ENDARGS);
+
 
   Scheduler::vAddTaskGeneral(pNewTask);
   

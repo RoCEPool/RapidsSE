@@ -1163,7 +1163,10 @@ bool Scheduler::bThread_AssignIdle(Task* pTask)
   JobLog::vNoteState(pTask->pJob(),"AssignIdle"_Stz);
   
   RASSERT(HS_IDLE == pThread->m_eThreadState);
-    
+
+  AM::vLogTsk(SL_INF,pTask,TA_TSK_ASSIGNED_IDLE,
+              "Task attempts to assign an idle thread to itself"_Stz); //!format-LogTsk
+
   pThread->m_pTask = pTask;
   pThread->m_nAssignedTasks++;
   
@@ -1175,6 +1178,7 @@ bool Scheduler::bThread_AssignIdle(Task* pTask)
   
   // mutex can now be acquired by the m_pPthread of pThread
   
+  // DO NOT TOUCH TASK
   return true;
 }
 

@@ -18,6 +18,11 @@ void _LogEntryReq::vSet(LogEntry* pLogEntry, Request* pRequest, eMA eReqAct)
   m_iReqId  = pRequest->m_iUniqueId;
   m_eReqAct = eReqAct;
   
+  if (MA_REQ_CONSTRUCT == eReqAct)
+    pLogEntry->m_iIndicator = OC_CONSTRUCT;
+  else
+    if (MA_REQ_DESTRUCT == eReqAct)
+    pLogEntry->m_iIndicator = OC_DESTRUCT;
 }
 
 /*----------------------------------------------------------------------------*/
