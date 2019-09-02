@@ -31,14 +31,14 @@ bool Prompt::bPrompt_calc(SePrompt* pPrompt)
     delete pCalculator;
     return true;
   }
-  
+
   //                     a    b    c    d    e    f    g    h    i
   i8 aiColValues[] = { 100, 200, 300, 400, 500, 600, 700, 800, 900 };
   
   i8 iResult = 0;
   
   //for (i8 i = 0; i < C_10M; i++)
-    iResult += pCalculator->iEvaluate(aiColValues);
+    iResult = pCalculator->iEvaluate(aiColValues);
   
   vTrace("  %lld\n"_Stz,iResult);
   

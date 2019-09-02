@@ -100,7 +100,7 @@ time ld orders "/tpch/SF1/orders.tbl" field_delimiter "|" max_errors 100;
 //time dynamic fetch orders orders_idx1 || fetch lineitem LineItem_Idx1 | join | getKey O_CUSTKEY | sort | merge | superMerge 20 | limit 20 | output | zed;
 
 time dynamic fetch orders orders_idx1 | count | output | zed;
-time dynamic fetch lineitem LineItem_Idx1 | count | output | zed;
+time dynamic fetch lineitem LineItem_Idx1 | filter L_PARTKEY 10 < | count | output | zed;
 //time dynamic fetch orders orders_idx1 1 || fetch lineitem LineItem_Idx1 1 | join | limit 1 | output | zed;
 
 //time dynamic fetch orders orders_idx1 | getKey O_CUSTKEY | sort | merge | superMerge 1 | limit 1 | output | zed;

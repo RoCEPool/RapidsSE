@@ -46,7 +46,8 @@ static Stz* aGA_short[]
   /*    */ "Log section"_Stz,
   /*    */ "Log opened by api"_Stz,
   /*    */ "Log opened by se"_Stz,
-  
+  /*    */ "Log writing"_Stz,
+
   /*    */ "Log time"_Stz,
   /*    */ "Log welcome"_Stz,
   /*    */ "Log host"_Stz,

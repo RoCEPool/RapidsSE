@@ -9,7 +9,10 @@ enum eOC // other characters
   
   /*    */ OC_CONSTRUCT,
   /*    */ OC_DESTRUCT,
-  
+  /*    */ OC_LOCKED,
+  /*    */ OC_WAITS,
+  /*    */ OC_RESUMES,
+
   /*    */ OC_ENUMS,
 };
 
@@ -19,6 +22,9 @@ static Stz* aOC[]
   
    /*    */ "🌻"_Stz,
    /*    */ "🗑"_Stz,
+   /*    */ "🔒"_Stz,
+   /*    */ "🧘‍♀️"_Stz,
+   /*    */ "🏃‍♀️"_Stz,
 
    /*    */ "ENUMS"_Stz,
 };
@@ -51,6 +57,7 @@ static Stz* aOC[]
 //  /*    */ "9️⃣"_Stz,
 //  /*    */ "#️⃣"_Stz,
 //  /*    */ "*️⃣"_Stz,
+//  /*    */ "📊"_Stz,
 //  /*    */ "📈"_Stz,
 //  /*    */ "📉"_Stz,
 //  /*    */ "✅"_Stz,
@@ -75,6 +82,17 @@ static Stz* aOC[]
 //  /*    */ "☮️"_Stz,
 //  /*    */ "⏹"_Stz,
 //  /*    */ "▶️"_Stz,
+//  /*    */ "☂️"_Stz,
+//  /*    */ "🌂"_Stz,
+//  /*    */ "🗝"_Stz,
+//  /*    */ "🧘‍♀️"_Stz,
+//  /*    */ "🏃‍♀️"_Stz,
+//  /*    */ "🤹‍♂️"_Stz,
+//  /*    */ "🤹‍♂️"_Stz,
+//  /*    */ "⚡️"_Stz,
+//  /*    */ "🌪"_Stz,
+//  /*    */ "🌈"_Stz,
+//  /*    */ "🌤"_Stz,
 //
 //  /*    */ "ENUMS"_Stz,
 //};
