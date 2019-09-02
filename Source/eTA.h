@@ -7,10 +7,12 @@ enum eTA // task actions
 {
   /*  0 */ TA_NONE=0,
   
-  /*    */ TA_DDL_DROP_READ,
-  /*    */ TA_DDL_DROP_WRITE,
-  /*    */ TA_DDL_GRAB_READ,
-  /*    */ TA_DDL_GRAB_WRITE,
+  /*    */ TA_DDL_READ_DROPPED,
+  /*    */ TA_DDL_READ_GRAB,
+  /*    */ TA_DDL_READ_GRABBED,
+  /*    */ TA_DDL_WRITE_DROPPED,
+  /*    */ TA_DDL_WRITE_GRAB,
+  /*    */ TA_DDL_WRITE_GRABBED,
 
   /*    */ TA_TSK_ABLE,
   /*    */ TA_TSK_ACK,
@@ -51,10 +53,12 @@ static Stz* aTA[]
 {
   /*  0 */ "NONE"_Stz,
   
-  /*    */ "TA_DDL_DROP_READ"_Stz,
-  /*    */ "TA_DDL_DROP_WRITE"_Stz,
-  /*    */ "TA_DDL_GRAB_READ"_Stz,
-  /*    */ "TA_DDL_GRAB_WRITE"_Stz,
+  /*    */ "TA_DDL_READ_DROPPED"_Stz,
+  /*    */ "TA_DDL_READ_GRAB"_Stz,
+  /*    */ "TA_DDL_READ_GRABBED"_Stz,
+  /*    */ "TA_DDL_WRITE_DROPPED"_Stz,
+  /*    */ "TA_DDL_WRITE_GRAB"_Stz,
+  /*    */ "TA_DDL_WRITE_GRABBED"_Stz,
 
   /*    */ "TA_TSK_ABLE"_Stz,
   /*    */ "TA_TSK_ACK"_Stz,
@@ -95,11 +99,13 @@ static Stz* aTA_short[]
 {
   /*  0 */ "NONE"_Stz,
   
-  /*    */ "Ddl drop read"_Stz,
-  /*    */ "Ddl drop write"_Stz,
-  /*    */ "Ddl grab read"_Stz,
-  /*    */ "Ddl grab write"_Stz,
-  
+  /*    */ "Ddl read dropped"_Stz,
+  /*    */ "Ddl read grab"_Stz,
+  /*    */ "Ddl read grabbed"_Stz,
+  /*    */ "Ddl write dropped"_Stz,
+  /*    */ "Ddl write grab"_Stz,
+  /*    */ "Ddl write grabbed"_Stz,
+
   /*    */ "Task able"_Stz,
   /*    */ "Task ack"_Stz,
   /*    */ "Task add"_Stz,

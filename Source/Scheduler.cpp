@@ -32,7 +32,7 @@ void Scheduler::vAddOriginatingJob(Job* pJob)
 void Scheduler::vAddParticipatingJob(Job* pJob)
 {
   pJob->vIncActNo();
-  AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_PARTICIPATING,
+  AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_PARTG,
               "Job added to ParticipatingJobs"_Stz); //!format-LogJob
   
   Queues* pQueues = AM::pQueues();
@@ -578,12 +578,16 @@ void Scheduler::vTask_Bide(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_DdlDropRead(Task* pTask)
 {
-  pTask->vIncActNo();
-  AM::vLogTsk(SL_INF,pTask,TA_DDL_DROP_READ,
-              "DdlLock drop read"_Stz); //!format-LogTsk
+  SP_Id spId;
   
   AM::pDdlLock()->vDropRead();
   pTask->m_iDdlLocked = 0;
+  
+  pTask->vIncActNo();
+  AM::vLogTsk(SL_INF,pTask,TA_DDL_READ_DROPPED,
+              "success by %s"_Stz, //!format-LogTsk
+              spId.sz(IK_JOB,pTask->pJob()->m_iUniqueId)
+              );
 }
 
 /*----------------------------------------------------------------------------*/
@@ -591,12 +595,16 @@ void Scheduler::vTask_DdlDropRead(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_DdlDropWrite(Task* pTask)
 {
-  pTask->vIncActNo();
-  AM::vLogTsk(SL_INF,pTask,TA_DDL_DROP_WRITE,
-              "DdlLock drop write"_Stz); //!format-LogTsk
+  SP_Id spId;
   
   AM::pDdlLock()->vDropWrite();
   pTask->m_iDdlLocked = 0;
+  
+  pTask->vIncActNo();
+  AM::vLogTsk(SL_INF,pTask,TA_DDL_WRITE_DROPPED,
+              "success by %s"_Stz, //!format-LogTsk
+              spId.sz(IK_JOB,pTask->pJob()->m_iUniqueId)
+              );
 }
 
 /*----------------------------------------------------------------------------*/
@@ -604,12 +612,21 @@ void Scheduler::vTask_DdlDropWrite(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_DdlGrabRead(Task* pTask)
 {
+  SP_Id spId;
+  
   pTask->vIncActNo();
-  AM::vLogTsk(SL_INF,pTask,TA_DDL_GRAB_READ,
-              "DdlLock grab read"_Stz); //!format-LogTsk
+  AM::vLogTsk(SL_INF,pTask,TA_DDL_READ_GRAB,
+              "attempt by %s (blocking call)"_Stz,//!format-LogTsk
+              spId.sz(IK_JOB,pTask->pJob()->m_iUniqueId)
+              );
   
   AM::pDdlLock()->vGrabRead();
   pTask->m_iDdlLocked = C_HAVE_READ_LOCK;
+  
+  AM::vLogTsk(SL_INF,pTask,TA_DDL_READ_GRABBED,
+              "success by %s"_Stz, //!format-LogTsk
+              spId.sz(IK_JOB,pTask->pJob()->m_iUniqueId)
+              );
 }
 
 /*----------------------------------------------------------------------------*/
@@ -617,12 +634,21 @@ void Scheduler::vTask_DdlGrabRead(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_DdlGrabWrite(Task* pTask)
 {
-  pTask->vIncActNo();
-  AM::vLogTsk(SL_INF,pTask,TA_DDL_GRAB_WRITE,
-              "DdlLock grab write"_Stz); //!format-LogTsk
+  SP_Id spId;
   
+  pTask->vIncActNo();
+  AM::vLogTsk(SL_INF,pTask,TA_DDL_WRITE_GRAB,
+              "attempt by %s (blocking call)"_Stz, //!format-LogTsk
+              spId.sz(IK_JOB,pTask->pJob()->m_iUniqueId)
+              );
+
   AM::pDdlLock()->vGrabWrite();
   pTask->m_iDdlLocked = C_HAVE_WRITE_LOCK;
+  
+  AM::vLogTsk(SL_INF,pTask,TA_DDL_WRITE_GRABBED,
+              "success by %s"_Stz, //!format-LogTsk
+              spId.sz(IK_JOB,pTask->pJob()->m_iUniqueId)
+              );
 }
 
 /*----------------------------------------------------------------------------*/

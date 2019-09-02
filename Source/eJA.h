@@ -8,7 +8,7 @@ enum eJA // job actions
   /*  0 */ JA_NONE=0,
   
   /*    */ JA_JOB_ADD_ORIGIN,
-  /*    */ JA_JOB_ADD_PARTICIPATING,
+  /*    */ JA_JOB_ADD_PARTG,
   /*    */ JA_JOB_CONSTRUCT,
   /*    */ JA_JOB_DESTRUCT,
   /*    */ JA_JOB_DUMP_ORIGINATING,
@@ -27,7 +27,7 @@ static Stz* aJA[]
   /*  0 */ "NONE"_Stz,
   
   /*  0 */ "JA_JOB_ADD_ORIGIN"_Stz,
-  /*  0 */ "JA_JOB_ADD_PARTICIPATING"_Stz,
+  /*  0 */ "JA_JOB_ADD_PARTG"_Stz,
   /*  0 */ "JA_JOB_CONSTRUCT"_Stz,
   /*  0 */ "JA_JOB_DESTRUCT"_Stz,
   /*  0 */ "JA_JOB_DUMP_ORIGINATING"_Stz,
