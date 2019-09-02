@@ -70,19 +70,17 @@ Calculator::~Calculator(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* compile                                                                    */
 /*----------------------------------------------------------------------------*/
-bool Calculator::bCompile(TokenVec* pTknVec)
+bool Calculator::bCompile(TokenVec* pTknVec, StreamDef* pStreamDef, i8 iStartTkn, i8 iEndTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
   
   //bCompileTest(pTknVec);
   
-  i8 nTokens = pTknVec->nTokens();
-  
   i8* piArg;
   i8  iArg = 0;
 
   i8 i_Code = 0;
-  for (i8 i_Tkn = 1; i_Tkn < nTokens; i_Tkn++) {
+  for (i8 i_Tkn = iStartTkn; i_Tkn <= iEndTkn; i_Tkn++) {
     Token* pTkn = pTknVec->pGet(i_Tkn);
     
     vTrace(" >%s<"_Stz,pTkn->szText());
@@ -115,12 +113,25 @@ bool Calculator::bCompile(TokenVec* pTknVec)
     if (pTkn->bSame("isNotNull"_Stz)) { m_eaCode[i_Code++] = EO_ISNOTNULL; continue; }
     
     // -- -- -- -- -- -- -- -- -- -- --
-    
+
     if (pTkn->bIsName()) {
       m_eaCode[i_Code++] = EO_COLUMN;
-      iArg = tolower(* pTkn->szText()->aChar()) - 'a';
-      piArg = (i8*) & m_eaCode[i_Code];
-      * piArg = iArg;
+      //iArg = tolower(* pTkn->szText()->aChar()) - 'a';
+      //piArg = (i8*) & m_eaCode[i_Code];
+      //* piArg = iArg;
+      for (i8 i_ColVec = 0; i_ColVec < pStreamDef->m_oColVecAry.nItems(); i_ColVec++) {
+        ColumnVec* pColumnVec = pStreamDef->m_oColVecAry.pGet(i_ColVec);
+        i8 nColumns = pColumnVec->nItems();
+        for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+          Column* pCol = pColumnVec->pGet(i_Col);
+          if (StrLib::bEqualTo(pTkn->szText()->aChar(),pCol->sColumnName().aChar(),C_NO_CASE)) {
+            piArg = (i8*) & m_eaCode[i_Code];
+            * piArg = i_Col;
+            break;
+          }
+        }
+      }
+
       i_Code += sizeof(i8);
       continue;
     }
@@ -155,7 +166,7 @@ bool Calculator::bCompile(TokenVec* pTknVec)
       i_Code += sizeof(i8);
       continue;
     }
-    
+
     // -- -- -- -- -- -- -- -- -- -- --
     
     m_eaCode[i_Code++] = EO_RETURN;
@@ -204,7 +215,7 @@ bool Calculator::bCompileTest(TokenVec* pTknVec)
 /*----------------------------------------------------------------------------*/
 /* compute                                                                    */
 /*----------------------------------------------------------------------------*/
-i8 Calculator::iEvaluate(i8* paColValues)
+i8 Calculator::iEvaluate(Row* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CALCULATOR,_FOOTER_);
   
@@ -229,7 +240,7 @@ i8 Calculator::iEvaluate(i8* paColValues)
       case EO_COLUMN:
         iArgA = * (i8*)peCode;
         peCode += 8;
-        iRes  = paColValues[iArgA];
+        iRes = pRow->m_waColVal[iArgA].m_iI8;
         m_iaStack[++i_TopVal] = iRes;
         break;
         
@@ -382,7 +393,6 @@ i8 Calculator::iEvaluate(i8* paColValues)
   
   return m_iaStack[0];
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

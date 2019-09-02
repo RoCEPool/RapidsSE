@@ -27,10 +27,10 @@ namespace Operators
     Calculator(void);
    ~Calculator(void) noexcept(false);
   
-    bool bCompile(TokenVec* pTknVec);
+    bool bCompile(TokenVec* pTknVec, StreamDef* pStreamDef, i8 iStartTkn, i8 iEndTkn);
     bool bCompileTest(TokenVec* pTknVec);
 
-    i8   iEvaluate(i8* paColValues);
+    i8   iEvaluate(Row* pRow);
 
     Footer* aFooter(void);
   };

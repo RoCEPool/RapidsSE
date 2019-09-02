@@ -166,6 +166,48 @@ void Row::vAppendValue(DtmVal* pDtmVal, Column* pCol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append column value to row                                                 */
+/*----------------------------------------------------------------------------*/
+void Row::vCopy(Row* pRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  
+  for (i8 i_Col = 0; i_Col < m_pColVec->nItems(); i_Col++) {
+  
+    Column* pCol = m_pColVec->pGet(i_Col);
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // vch
+    
+    if (DM_VCH == pCol->eDatumType()) {
+      
+      if (pRow->m_waColVal[i_Col].bIsNull()) {
+        m_waColVal[i_Col].vSetNull();
+        return;
+      }
+      
+      char* acDstString = (char*)m_xWsp.ayLatter();
+      char* acSrcString = (char*)pRow->m_waColVal[i_Col].m_szVch;
+      
+      i8 nSrcLength = StrLib::nCopy(acDstString,acSrcString);
+      
+      m_waColVal[i_Col].m_iInt = (i8)acDstString;
+      
+      m_xWsp.vTake(nSrcLength + 1);
+      
+      if (pCol->bIsPtnKey())
+        m_iHash += iHashColumn(pCol);
+      
+      return;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // all others
+    
+    m_waColVal[i_Col].m_iInt = pRow->m_waColVal[i_Col].m_iI8;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* don't decode vch                                                           */
 /*----------------------------------------------------------------------------*/
 void Row::vDontDecodeVch(void)

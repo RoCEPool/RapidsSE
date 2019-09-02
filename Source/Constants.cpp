@@ -175,6 +175,7 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("CN_FETCHBUFFER"_Stz,  CN_FETCHBUFFER);
   /* 21 */ vAddConstant("CN_FIFO"_Stz,         CN_FIFO);
   /* 21 */ vAddConstant("CN_FILE"_Stz,         CN_FILE);
+  /*    */ vAddConstant("CN_FILTEROP"_Stz,     CN_FILTEROP);
   /* 15 */ vAddConstant("CN_FREEBUFFER"_Stz,   CN_FREEBUFFER);
   /* 22 */ vAddConstant("CN_FREECHUNK"_Stz,    CN_FREECHUNK);
   

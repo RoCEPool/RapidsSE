@@ -35,6 +35,7 @@ namespace Transform
   
     void vAdjustAddresses(Row* pCopiedFromRow);
     void vAppendValue(DtmVal* pDtmVal, Column* pCol);
+    void vCopy(Row* pRow);
     void vDontDecodeVch(void);
     i8   iHashColumn(Column* pCol);
     void vResetValues(void);
