@@ -181,9 +181,9 @@ eOR CountOp::eOpLoop(void)
         break;
       }
         
-      case CN_INTBUFFER: {
-        IntBuffer* pIntBuffer = _pIntBuffer(pOperand) ;
-        m_nCount += pIntBuffer->nCount();
+      case CN_IRWBUFFER: {
+        IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand) ;
+        m_nCount += pIrwBuffer->nItems();
         break;
       }
         
