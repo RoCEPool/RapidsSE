@@ -145,7 +145,7 @@ eOR GetKeyOp::eOpLoop(void)
 
     switch (pOperand->eClass()) {
         
-      case CN_ENDMARKER:
+      case CN_ENDMARKER: {
         if (--m_nLeftEndMarkers == 0) {
           vPipeOut(pOperand);
           goto L_EXIT;
@@ -153,6 +153,7 @@ eOR GetKeyOp::eOpLoop(void)
         else
           delete (EndMarker*)pOperand;
         break;
+      }
         
       // -- -- -- -- -- --
      
@@ -163,6 +164,8 @@ eOR GetKeyOp::eOpLoop(void)
         break;
       }
         
+      // -- -- -- -- -- --
+        
       case CN_ENTBUFFER: {
         RASSERT(-1 != m_iKeyCol);
         EntBuffer* pEntBuffer = _pEntBuffer(pOperand) ;
@@ -171,7 +174,9 @@ eOR GetKeyOp::eOpLoop(void)
         vPipeOut(pSrtBuffer);
         break;
       }
-       
+      
+      // -- -- -- -- -- --
+        
       case CN_SRTBUFFER: {
         RASSERT(-1 != m_iKeyCol);
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand) ;
@@ -188,6 +193,8 @@ eOR GetKeyOp::eOpLoop(void)
         }
         break;
       }
+        
+      // -- -- -- -- -- --
         
       case CN_STREAMDEF: {
         StreamDef* pStreamDef = _pStreamDef(pOperand) ;
@@ -213,6 +220,8 @@ eOR GetKeyOp::eOpLoop(void)
         
         break;
       }
+      
+      // -- -- -- -- -- --
         
       default:
         RASSERT(0);

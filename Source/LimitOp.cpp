@@ -199,7 +199,7 @@ eOR LimitOp::eOpLoop(void)
           m_pSrtBuffer = new SrtBuffer(1, -1);
         }
         
-        //copy limit no of rows from srtBuffer
+        //copy limit no of rows from entryBuffer
         Ent* pEnt = pEntBuffer->aLeadEntry();
         while (pEnt && m_iWorkDone < m_nLimit) {
           SrtSet* aSrt = m_pSrtBuffer->aAllotSrtSet();
