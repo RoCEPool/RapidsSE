@@ -13,6 +13,7 @@ docol epochtake;
 
 print "Cluster started" ;
 
+
 time create table LineItem                 // SF * 6,000,000 rows
 (
   L_ORDERKEY      INTEGER       NOT NULL,  //  0)  8B   3B  O_ORDERKEY 1+
@@ -46,16 +47,16 @@ create index LineItem_Idx1 ON LineItem(L_ORDERKEY);
 //nowait monitor 3;
 
 space;
-IndexEntries 4000;
+//IndexEntries 4000;
 
 //fileCat "/tpch/SF0/lineitem_1.csv" 1;
 //time ld lineitem "/tpch/SF0/lineitem_1.csv" max_errors 100;
-time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
+//time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
 //time ld lineitem "/DATA/TPCH/lineitem10.csv" max_errors 100;
 //time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
 //time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem_100k.csv" max_errors 100;
-//time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
+time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
 space;
 sztbl lineitem;
 
@@ -78,7 +79,7 @@ CREATE INDEX orders_idx1 ON orders(O_ORDERKEY);
 print "loading orders..." ;
 //time ld orders "/DATA/tpch/orders10.csv" max_errors 100;
 //time ld orders "/DATA/tpch/orders10k.csv" max_errors 100;
-time ld orders "/tpch/SF1/orders.tbl" field_delimiter "|" max_errors 100;
+//time ld orders "/tpch/SF1/orders.tbl" field_delimiter "|" max_errors 100;
 
 //time dynamic fetch lineitem LineItem_Idx1 | limit 1 | output | zed;
 //time dynamic fetch lineitem LineItem_Idx1 | getkey L_PARTKEY | sort | merge | limit 1 | output | zed;
@@ -87,9 +88,6 @@ time ld orders "/tpch/SF1/orders.tbl" field_delimiter "|" max_errors 100;
 
 
 //time dynamic fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join | limit 1 | output | zed;
-
-
-
 //time dynamic fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join | getKey O_CUSTKEY | output | zed;
 //time dynamic fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join | getKey O_CUSTKEY | sort | output | zed;
 //time dynamic fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join | getKey O_CUSTKEY | sort | merge | output | zed;
@@ -97,10 +95,20 @@ time ld orders "/tpch/SF1/orders.tbl" field_delimiter "|" max_errors 100;
 
 
 
-//time dynamic fetch orders orders_idx1 || fetch lineitem LineItem_Idx1 | join | getKey O_CUSTKEY | sort | merge | superMerge 20 | limit 20 | output | zed;
 
-time dynamic fetch orders orders_idx1 | count | output | zed;
-time dynamic fetch lineitem LineItem_Idx1 | count | output | zed;
+
+//time dynamic scan lineitem | agg L_PARTKEY | output | zed;
+//time dynamic scan lineitem | project L_PARTKEY | agg L_PARTKEY | output | zed;
+
+//time dynamic fetch lineitem LineItem_Idx1 | agg L_PARTKEY | output | zed;
+//time dynamic fetch lineitem LineItem_Idx1 | project L_PARTKEY | agg L_PARTKEY | output | zed;
+
+
+
+
+
+//time dynamic fetch orders orders_idx1 | count | output | zed;
+//time dynamic fetch lineitem LineItem_Idx1 | count | output | zed;
 //time dynamic fetch orders orders_idx1 1 || fetch lineitem LineItem_Idx1 1 | join | limit 1 | output | zed;
 
 //time dynamic fetch orders orders_idx1 | getKey O_CUSTKEY | sort | merge | superMerge 1 | limit 1 | output | zed;

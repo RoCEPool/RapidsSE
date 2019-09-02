@@ -115,6 +115,7 @@ namespace StorageEngine
     static void vIndexEntries(i8 nIndexEntries);
     static void vIndexName(Job_Dynamic* pJob, Stz* szIndexNm);
     static Index* pIndex(Job_Dynamic* pJob);
+    static Stz* sMetaData(Job_Dynamic* pJob);
     static void vMonitorPortrait(s48K& sRapidsPortrait);
     static void vNextTempName(s32& sName);
     static void vPulseTask(Task* pTask);

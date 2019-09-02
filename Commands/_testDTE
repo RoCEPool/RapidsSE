@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 startCluster;
-indexEntries 20;
+indexEntries 50;
 docol epochTake;
 
 create table jidxDte (
@@ -37,9 +37,16 @@ ld jidxDte "../JTEST/jidxDte.csv" ;
 
  //time dynamic fetch jidxDte idx_dte | project jidx_tsp | output | zed;
  //time dynamic fetch jidxDte idx_dte | project jidx_tsp, jidx_100 | output | zed;
-time dynamic fetch jidxDte idx_dte | agg jidx_100 | output | zed;
-time dynamic fetch jidxDte idx_dte | project jidx_100 | agg jidx_100 | output | zed;
 
+
+//time dynamic scan jidxDte | agg jidx_100 | output | zed;
+//time dynamic scan jidxDte | project jidx_100 | agg jidx_100 | output | zed;
+time dynamic fetch jidxDte idx_dte | agg jidx_100 | output | zed;
+//time dynamic fetch jidxDte idx_dte | project jidx_100 | agg jidx_100 | output | zed;
+
+//time dynamic fetch jidxDte idx_dte | project jidx_100 | agg jidx_100 | output | zed;
+//time dynamic fetch jidxDte idx_dte | project jidx_name | output | zed;
+//time dynamic fetch jidxDte idx_dte | getKey jidx_100 | sort | output | zed;
 /*
 print "\nSelecting rows with key >= 3 using idx1 ...\n" ;
 lwrselidx jidx idx1 3 ;
