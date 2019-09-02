@@ -81,10 +81,14 @@ Task::Task(Job* pJob, Session* pSession)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  if (pJob->m_bWasReceived)
+    vDebugPoint();
+  
   vIncActNo(); ++ gixTask;
   AM::vLogTsk(SL_INF,this,TA_TSK_CONSTRUCT,
-              "Task -%s construct |gixTask=%lld|"_Stz, //!format-LogTsk
+              "Task -%s%s |gixTask=%lld|"_Stz, //!format-LogTsk
               aCN[m_pJob->eClass()],
+              pJob->m_bWasReceived ? " was-received"_Stz : ""_Stz,
               * gixTask);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
@@ -117,7 +121,7 @@ Task::Task(Op* pOp, Session* pSession)
   
   vIncActNo(); ++ gixTask;
   AM::vLogTsk(SL_INF,this,TA_TSK_CONSTRUCT,
-              "Task (op) construct |gixTask=%lld|"_Stz, //!format-LogTsk
+              "Task (op) |gixTask=%lld|"_Stz, //!format-LogTsk
               * gixTask);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);

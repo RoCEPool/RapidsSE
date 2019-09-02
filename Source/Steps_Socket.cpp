@@ -618,6 +618,8 @@ void Step::vSocketSendObject(MP_Task mpTask)
   //vTrace("vSocketSendObject: send %p %lld %s %lld bytes\n"_Stz,
   //       pObject,eClass,aCN[eClass],nObjectSize);
   
+  
+  
   if (_bIsValidJob(eClass)) {
     Job* pJob = _pJob(pObject);
     
@@ -638,9 +640,30 @@ void Step::vSocketSendObject(MP_Task mpTask)
           CN_EXPORTBUFFER == eClass);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  
+  AM::vLogRes(SL_INF,pSocket,RA_SKT_SEND,
+              "Object %s %lldB"_Stz, //!format-LogRes
+              aCN[eClass],
+              nObjectSize,
+              C_ENDARGS);
+
     
   SysCall oSysCall;
   bool bResult = pSocket->bSendTo(pObject, nObjectSize, oSysCall);
+  
+  if (bResult)
+    AM::vLogRes(SL_INF,pSocket,RA_SKT_SENT,
+                "Object %s %lldB"_Stz, //!format-LogRes
+                aCN[eClass],
+                nObjectSize,
+                C_ENDARGS);
+  else
+    AM::vLogRes(SL_INF,pSocket,RA_SKT_ERROR,
+                "Error while sending object %s %lldB"_Stz, //!format-LogRes
+                aCN[eClass],
+                nObjectSize,
+                C_ENDARGS);
 
   mpTask->m_pDataStack->vPushBool(bResult);
 

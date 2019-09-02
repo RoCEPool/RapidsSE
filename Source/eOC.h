@@ -39,6 +39,11 @@ enum eOC // other characters
   /*    */ OC_LOWPRIORITY,
   /*    */ OC_SERVICE,
   /*    */ OC_ADD,
+  /*    */ OC_OPEN,
+  /*    */ OC_CLOSE,
+  /*    */ OC_READ,
+  /*    */ OC_WRITE,
+  /*    */ OC_REQUIRES,
 
   /*    */ OC_JOB,
   /*    */ OC_LOCK,
@@ -89,6 +94,11 @@ static Stz* aOC[]
    /*    */ "🐢"_Stz, // lowprority
    /*    */ "👻"_Stz, // service
    /*    */ "➕"_Stz, // add
+   /*    */ "📂"_Stz, // open
+   /*    */ "🗄"_Stz, // close
+   /*    */ "🦉"_Stz, // read
+   /*    */ "📝"_Stz, // write
+   /*    */ "🧮"_Stz, // requires
 
    /*    */ "💈"_Stz, // job
    /*    */ "🔒"_Stz, // lock

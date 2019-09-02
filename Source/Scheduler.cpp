@@ -16,7 +16,7 @@
 void Scheduler::vAddOriginatingJob(Job* pJob)
 {
   pJob->vIncActNo();
-  AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_ORIGINATING,
+  AM::vLogJob(SL_INF,pJob,JA_JOB_ADD_ORIGIN,
               "Job added to OriginatingJobs"_Stz); //!format-LogJob
   
   Queues* pQueues = AM::pQueues();
@@ -711,9 +711,12 @@ void Scheduler::vTask_Grab(Task* pTask)
 {
   pTask->vIncActNo();
   AM::vLogTsk(SL_INF,pTask,TA_TSK_GRAB,
-              "Task grab lock"_Stz); //!format-LogTsk
+              "attempt"_Stz); //!format-LogTsk
   
   pTask->vGrabTaskLock();
+  
+  AM::vLogTsk(SL_INF,pTask,TA_TSK_GRABBED,
+              "grabbed"_Stz); //!format-LogTsk
 }
 
 /*----------------------------------------------------------------------------*/
@@ -866,7 +869,7 @@ void Scheduler::vTask_Requires(Task* pTask, i8 nAcksRequired)
 {
   pTask->vIncActNo();
   AM::vLogTsk(SL_INF,pTask,TA_TSK_REQUIRES,
-              "Tasks sets number of acks required (nAcks=%lld)"_Stz, //!format-LogTsk
+              "%lld acks"_Stz, //!format-LogTsk
               nAcksRequired);
 
   pTask->m_oAcksRmg.vSetRemaining(nAcksRequired);
@@ -1368,6 +1371,7 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
     // pop a ready task
     // RAY TO LOOK AT ????????????
     Task* pTask = pTask_Pop(pThread);
+    
     if (pTask) {
       pThread->m_pTask = pTask;
       pThread->m_nAssignedTasks++;

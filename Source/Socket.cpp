@@ -478,7 +478,13 @@ void Socket::vGrabWrite(void)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
+  AM::vLogRes(SL_INF,this,RA_SKT_GRAB,
+              "attempt"_Stz); //!format-LogRes
+ 
   m_okLock.vGrabWrite();
+  
+  AM::vLogRes(SL_INF,this,RA_SKT_GRABBED,
+              "successful"_Stz); //!format-LogRes
 }
 
 /*----------------------------------------------------------------------------*/
@@ -489,6 +495,9 @@ void Socket::vDropWrite(void)
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
   m_okLock.vDropWrite();
+  
+  AM::vLogRes(SL_INF,this,RA_SKT_DROPPED,
+              "successful"_Stz); //!format-LogRes
 }
 
 /*----------------------------------------------------------------------------*/
@@ -865,6 +874,10 @@ bool Socket::bSendTo(void* aBytes, i8 nBytes, SysCall& SysCall)
   gpAttachMap->m_oStatistics.Socket.m_nSendTos++;
 #endif
   
+  AM::vLogRes(SL_INF,this,RA_SKT_SEND,
+              "Socket send %lldB"_Stz, //!format-LogRes
+              nBytes);
+  
   i8 nBytesSent = sendto(m_iSocketId
                          ,aBytes
                          ,nBytes
@@ -946,16 +959,7 @@ bool Socket::bRecvFrom(void* pBuffer, i8 nBytes, i8* pRecv, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* Socket::aFooter(void)
-{
-  _precondition_(_MAGIC_,CN_SOCKET);
-  
-  return &m_xFooter;
-}
+__aFooterFunction(Socket)
 
 /*============================================================================*/
 /* end                                                                        */

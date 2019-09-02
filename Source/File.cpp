@@ -80,7 +80,7 @@ File::~File(void) noexcept(false)
   }
   
   -- gixFile;
-  AM::vLogRes(SL_INF,this,RA_MTX_DESTRUCT,
+  AM::vLogRes(SL_INF,this,RA_FIL_DESTRUCT,
               "File destruct |gixFile=%lld|"_Stz, //!format-LogRes
               * gixFile);
 }
