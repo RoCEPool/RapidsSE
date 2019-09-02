@@ -16,8 +16,8 @@ enum eJA // job actions
   /*    */ JA_JOB_FIND_ORIGINATING,
   /*    */ JA_JOB_FIND_PARTICIPATING,
   /*    */ JA_JOB_INF,
-  /*    */ JA_JOB_REMOVE_ORIGINATING,
-  /*    */ JA_JOB_REMOVE_PARTICIPATING,
+  /*    */ JA_JOB_REMOVE_ORIGIN,
+  /*    */ JA_JOB_REMOVE_PARTG,
 
   /*    */ JA_ENUMS,
 };
@@ -35,8 +35,8 @@ static Stz* aJA[]
   /*  0 */ "JA_JOB_FIND_ORIGINATING"_Stz,
   /*  0 */ "JA_JOB_FIND_PARTICIPATING"_Stz,
   /*  0 */ "JA_JOB_INF"_Stz,
-  /*  0 */ "JA_JOB_REMOVE_ORIGINATING"_Stz,
-  /*  0 */ "JA_JOB_REMOVE_PARTICIPATING"_Stz,
+  /*  0 */ "JA_JOB_REMOVE_ORIGIN"_Stz,
+  /*  0 */ "JA_JOB_REMOVE_PARTG"_Stz,
 
   /*    */ "ENUMS"_Stz,
 };

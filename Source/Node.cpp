@@ -101,7 +101,7 @@ void Node::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* get node IP                                                                */
 /*----------------------------------------------------------------------------*/
-Stz* Node::aNodeIP(void)
+Stz* Node::szNodeIP(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   
@@ -111,7 +111,7 @@ Stz* Node::aNodeIP(void)
 /*----------------------------------------------------------------------------*/
 /* get node name                                                              */
 /*----------------------------------------------------------------------------*/
-Stz* Node::aNodeName(void)
+Stz* Node::szNodeName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   

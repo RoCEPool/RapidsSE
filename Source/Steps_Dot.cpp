@@ -27,7 +27,7 @@ void Step::vDot(MP_Task mpTask)
     THROW_INVALID_DSTACK("."_Stz);
   
   vTrace("[%s %s] %s\n"_Stz,
-         AM::pGrid()->pThisNode()->aNodeName(),
+         AM::pGrid()->pThisNode()->szNodeName(),
          mpTask->m_pJob ? (Stz*)mpTask->aJobName() : "<no job>"_Stz,
          xVariable.szStz());
 

@@ -38,7 +38,7 @@ void Step::vNodeIP(MP_Task mpTask)
   ASSERT(CN_NODE == pNode->eClass());
   
   s256 sIP;
-  sIP = pNode->aNodeIP();
+  sIP = pNode->szNodeIP();
   mpTask->m_pDataStack->vPushS256(sIP);
   
   EXIT();
@@ -60,7 +60,7 @@ void Step::vNodeName(MP_Task mpTask)
   ASSERT(CN_NODE == pNode->eClass());
   
   s256 sName;
-  sName = pNode->aNodeName();
+  sName = pNode->szNodeName();
   mpTask->m_pDataStack->vPushS256(sName);
   
   EXIT();
@@ -224,11 +224,11 @@ void Step::vNodeStatus(MP_Task mpTask)
   
   if (Region::bTest(sRegionNm))
     s.vSprint("row: ('%s', '%s', 'running')"_Stz,
-            pGrid->pThisNode()->aNodeName(),
+            pGrid->pThisNode()->szNodeName(),
             sRegionNm.aChar());
   else
     s.vSprint("row: ('%s', '%s', 'not running')"_Stz,
-            pGrid->pThisNode()->aNodeName(),
+            pGrid->pThisNode()->szNodeName(),
             sRegionNm.aChar());
   
   mpTask->m_pDataStack->vPushS256(s);

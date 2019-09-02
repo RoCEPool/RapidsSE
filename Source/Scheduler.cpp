@@ -79,11 +79,20 @@ Job* Scheduler::pFindOriginatingJob(i8 iJobId)
 {
   Queues* pQueues = AM::pQueues();
   
-  AM::vLogQue(SL_INF,pQueues,QA_QUE_FIND_ORIGINATOR,
+  AM::vLogQue(SL_INF,pQueues,QA_QUE_FIND_ORIG,
               "Find job %lld in OriginatingJobs"_Stz, //!format-LogQue
               iJobId);
   
   Job* pJob = pQueues->m_pOriginatingJobs->pFindJob(iJobId);
+  
+  if (pJob)
+    AM::vLogQue(SL_INF,pQueues,QA_QUE_FOUND_ORIG,
+                "found job %lld in OriginatingJobs"_Stz, //!format-LogQue
+                iJobId);
+  else
+    AM::vLogQue(SL_INF,pQueues,QA_QUE_NOT_ORIG,
+                "did not find job %lld in OriginatingJobs"_Stz, //!format-LogQue
+                iJobId);
   
   return pJob;
 }
@@ -95,12 +104,21 @@ Job* Scheduler::pFindParticipatingJob(i8 iJobId)
 {
   Queues* pQueues = AM::pQueues();
 
-  AM::vLogQue(SL_INF,pQueues,QA_QUE_FIND_PARTICPANT,
-              "Find job %lld in ParticipatingJobs"_Stz, //!format-LogQue
+  AM::vLogQue(SL_INF,pQueues,QA_QUE_FIND_PARTG,
+              "find job %lld in ParticipatingJobs"_Stz, //!format-LogQue
               iJobId);
   
   Job* pJob = pQueues->m_pParticipatingJobs->pFindJob(iJobId);
   
+  if (pJob)
+    AM::vLogQue(SL_INF,pQueues,QA_QUE_FOUND_PARTG,
+                "found job %lld in ParticipatingJobs"_Stz, //!format-LogQue
+                iJobId);
+  else
+    AM::vLogQue(SL_INF,pQueues,QA_QUE_NOT_PARTG,
+                "did not find job %lld in ParticipatingJobs"_Stz, //!format-LogQue
+                iJobId);
+
   return pJob;
 }
 
@@ -110,7 +128,7 @@ Job* Scheduler::pFindParticipatingJob(i8 iJobId)
 bool Scheduler::bRemoveOriginatingJob(Job* pJob, bool bDump)
 {
   pJob->vIncActNo();
-  AM::vLogJob(SL_INF,pJob,JA_JOB_REMOVE_ORIGINATING,
+  AM::vLogJob(SL_INF,pJob,JA_JOB_REMOVE_ORIGIN,
               "Job removed from OriginatingJobs"_Stz); //!format-LogJob
   
   Queues* pQueues = AM::pQueues();
@@ -133,7 +151,7 @@ bool Scheduler::bRemoveOriginatingJob(Job* pJob, bool bDump)
 bool Scheduler::bRemoveParticipatingJob(Job* pJob, bool bDump)
 {
   pJob->vIncActNo();
-  AM::vLogJob(SL_INF,pJob,JA_JOB_REMOVE_PARTICIPATING,
+  AM::vLogJob(SL_INF,pJob,JA_JOB_REMOVE_PARTG,
               "Job fremoved from ParticipatingJobs"_Stz); //!format-LogJob
   
   Queues* pQueues = AM::pQueues();
@@ -1175,7 +1193,7 @@ void Scheduler::vThread_AppendIdle(Thread* pThread)
 bool Scheduler::bThread_AssignIdle(Task* pTask)
 {
   pTask->vIncActNo();
-  AM::vLogTsk(SL_INF,pTask,TA_TSK_ASSIGN_IDLE,
+  AM::vLogTsk(SL_INF,pTask,TA_TSK_ASSIGN_THREAD,
               "Task attempts to assign an idle thread to itself"_Stz); //!format-LogTsk
   
   RASSERT(TS_ABLE == pTask->eState());
@@ -1193,7 +1211,7 @@ bool Scheduler::bThread_AssignIdle(Task* pTask)
   
   RASSERT(HS_IDLE == pThread->m_eThreadState);
 
-  AM::vLogTsk(SL_INF,pTask,TA_TSK_ASSIGNED_IDLE,
+  AM::vLogTsk(SL_INF,pTask,TA_TSK_ASSIGNED_THREAD,
               "Task attempts to assign an idle thread to itself"_Stz); //!format-LogTsk
 
   pThread->m_pTask = pTask;
@@ -1236,7 +1254,7 @@ void Scheduler::vThread_BeginLoop(Thread* pThread)
 void Scheduler::vThread_ContinueSame(Thread* pThread, Task* pTask)
 {
   pThread->vIncActNo();
-  AM::vLogThd(SL_INF,pThread,HA_THD_CONTINUE_SAME,
+  AM::vLogThd(SL_INF,pThread,HA_THD_CONTINUE_TASK,
               "Thread continues executing same task"_Stz); //!format-LogThd
   
   RASSERT(TS_EXECUTING == pTask->eState());
@@ -1386,7 +1404,7 @@ void Scheduler::vThread_UnassignTask(Thread* pThread)
 void Scheduler::vThread_WaitAssignment(Thread* pThread)
 {
   pThread->vIncActNo();
-  AM::vLogThd(SL_INF,pThread,HA_THD_GET_ASSIGN,
+  AM::vLogThd(SL_INF,pThread,HA_THD_GET_TASK,
               "Thread attempts task assignment"_Stz); //!format-LogThd
   
   ASSERT(HS_UNASSIGNED == pThread->m_eThreadState);

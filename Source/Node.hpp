@@ -35,8 +35,8 @@ namespace Grids
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     void vInit(void);
-    Stz* aNodeIP(void);
-    Stz* aNodeName(void);
+    Stz* szNodeIP(void);
+    Stz* szNodeName(void);
     i8   iNodeNo(void);
     void vNodeNo(i8 iNodeNo);
     i8   iNodePortNo(void);

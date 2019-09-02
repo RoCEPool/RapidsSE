@@ -643,9 +643,10 @@ void Step::vSocketSendObject(MP_Task mpTask)
   
   
   AM::vLogRes(SL_INF,pSocket,RA_SKT_SEND,
-              "Object %s %lldB"_Stz, //!format-LogRes
+              "Object %s %lldB to node %s"_Stz, //!format-LogRes
               aCN[eClass],
               nObjectSize,
+              mpTask->m_pSendNode ? mpTask->m_pSendNode->szNodeName() : "<unknown>"_Stz,
               C_ENDARGS);
 
     

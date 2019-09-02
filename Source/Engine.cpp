@@ -457,7 +457,7 @@ void Engine::vMonitorProfile(s48K& sPortrait)
   MagLib::vByteMag(AM::iRegionSize(),sRegionMag);
 
   i8 iPercentFree = AM::pBufferPool()->iFreePercent();
-  Stz* aNodeName  = AM::pGrid()->pGetNode(gxArguments.m_iThisNode)->aNodeName();
+  Stz* aNodeName  = AM::pGrid()->pGetNode(gxArguments.m_iThisNode)->szNodeName();
   bool bStarted   = AM::pGrid()->bHasStarted();
   bool bDdlLocked = AM::pDdlLock()->bIsWriteLocked();
   

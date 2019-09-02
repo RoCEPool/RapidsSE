@@ -102,8 +102,8 @@ void Step::vGridShow(MP_Task mpTask)
     Node* pNode = AM::pGrid()->m_pNodes[i_Node];
     vTrace("  Node %lld : %s IP %s port %lld rcvSkt %p sndSkt %p [%s]\n"_Stz,
            pNode->iNodeNo(),
-           pNode->aNodeName(),
-           pNode->aNodeIP(),
+           pNode->szNodeName(),
+           pNode->szNodeIP(),
            pNode->iNodePortNo(),
            pNode->pRecvSocket(),
            pNode->pSendSocket(),
@@ -152,7 +152,7 @@ void Step::vGridThisNodeNameFetch(MP_Task mpTask)
   ENTRY("vGridThisNodeNameFetch"_Stz);
   
   s256 sName;
-  sName = AM::pGrid()->pThisNode()->aNodeName();
+  sName = AM::pGrid()->pThisNode()->szNodeName();
   
   mpTask->m_pDataStack->vPushS256(sName);
   

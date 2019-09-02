@@ -316,7 +316,7 @@ void AttachMap::vPrintStartupInfo(void)
   
   vTrace("Args:\n"_Stz);
   
-  vTrace("  --name %s\n"_Stz,m_pGrid->pThisNode()->aNodeName()->aChar());
+  vTrace("  --name %s\n"_Stz,m_pGrid->pThisNode()->szNodeName()->aChar());
   vTrace("  --region %s\n"_Stz,Arg.m_sRegionName.aChar());
   vTrace("  --size %lld\n"_Stz,Arg.m_iRegionSize);
   vTrace("  --partitionsPerNode %lld\n"_Stz,m_pGrid->m_nSlotsPerNode);

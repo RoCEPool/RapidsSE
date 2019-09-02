@@ -41,8 +41,8 @@ enum eTA // task actions
   /*    */ TA_TSK_WAKEUP,
   /*    */ TA_TSK_YIELD,
   
-  /*    */ TA_TSK_ASSIGN_IDLE,
-  /*    */ TA_TSK_ASSIGNED_IDLE,
+  /*    */ TA_TSK_ASSIGN_THREAD,
+  /*    */ TA_TSK_ASSIGNED_THREAD,
   /*    */ TA_TSK_SPAWN_DEDICATED,
 
   /*    */ TA_ENUMS,
@@ -87,8 +87,8 @@ static Stz* aTA[]
   /*    */ "TA_TSK_WAKEUP"_Stz,
   /*    */ "TA_TSK_YIELD"_Stz,
   
-  /*  0 */ "TA_TSK_ASSIGN_IDLE"_Stz,
-  /*  0 */ "TA_TSK_ASSIGNED_IDLE"_Stz,
+  /*  0 */ "TA_TSK_ASSIGN_THREAD"_Stz,
+  /*  0 */ "TA_TSK_ASSIGNED_THREAD"_Stz,
   /*  0 */ "TA_TSK_SPAWN_DEDICATED"_Stz,
 
   
@@ -133,8 +133,8 @@ static Stz* aTA_short[]
   /*    */ "Task wakeup"_Stz,
   /*    */ "Task yield"_Stz,
   
-  /*  0 */ "Task assign idle"_Stz,
-  /*  0 */ "Task assigned idle"_Stz,
+  /*  0 */ "Task assign thread"_Stz,
+  /*  0 */ "Task assigned thread"_Stz,
   /*  0 */ "Task spawn dedicated"_Stz,
   
   /*    */ "ENUMS"_Stz,

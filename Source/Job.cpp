@@ -356,7 +356,7 @@ Stz* Job::szNodeNm(void)
   
   i8 i_Node = iOriginatorNode();
   
-  Stz* szNodeNm = AM::pGrid()->pGetNode(i_Node)->aNodeName();
+  Stz* szNodeNm = AM::pGrid()->pGetNode(i_Node)->szNodeName();
   
   return szNodeNm;
 }
