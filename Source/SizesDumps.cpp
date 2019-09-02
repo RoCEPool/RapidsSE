@@ -85,6 +85,7 @@ pDUMPFUN *gpDump[]
   /* 38 */ &Dump::vInvalid,         // CN_FETCHOP
   /* 39 */ &Dump::vInvalid,         // CN_FIFO
   /* 39 */ &Dump::vInvalid,         // CN_FILE
+  /*    */ &Dump::vInvalid,         // CN_FILTEROP
   /* 31 */ &Dump::vDummy,           // CN_FILTER_FETCH
   /* 31 */ &Dump::vDummy,           // CN_FILTER_FROM
   /* 31 */ &Dump::vDummy,           // CN_FILTER_GROUPBY
@@ -477,6 +478,7 @@ i8 giClassSize[]
   /*    */ sizeof(FetchOp),            // CN_FETCHOP
   /* 39 */ sizeof(Fifo),               // CN_FIFO
   /* 39 */ sizeof(File),               // CN_FILE
+  /*    */ sizeof(FilterOp),           // CN_FILTEROP
   /*    */ sizeof(Filter_Fetch),       // CN_FILTER_FETCH
   /*    */ sizeof(Filter_From),        // CN_FILTER_FROM
   /*    */ sizeof(Filter_GroupBy),     // CN_FILTER_GROUPBY
@@ -867,6 +869,7 @@ eHT geWhichHeap[]
   /* 38 */ HT_TRANSIENT_SMALL,   // CN_FETCHOP
   /* 39 */ HT_TRANSIENT_SMALL,   // CN_FIFO
   /* 39 */ HT_TRANSIENT_SMALL,   // CN_FILE
+  /*    */ HT_TRANSIENT_SMALL,   // CN_FILTEROP
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_FETCH
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_FROM
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_GROUPBY

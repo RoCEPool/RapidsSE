@@ -41,7 +41,10 @@ ld jidxDte "../JTEST/jidxDte.csv" ;
 
 //time dynamic scan jidxDte | agg jidx_100 | output | zed;
 //time dynamic scan jidxDte | project jidx_100 | agg jidx_100 | output | zed;
-time dynamic fetch jidxDte idx_dte | agg jidx_100 | output | zed;
+time dynamic scan jidxDte | project jidx_100,jidx_10 | filter jidx_100 120 <  | output | zed;
+time dynamic scan jidxDte | project jidx_100,jidx_10 | filter jidx_100 120 < jidx_10 5 > and | output | zed;
+time dynamic scan jidxDte | project jidx_100,jidx_10 | filter jidx_100 120 < jidx_10 2 5 + > and | output | zed;
+
 //time dynamic fetch jidxDte idx_dte | project jidx_100 | agg jidx_100 | output | zed;
 
 //time dynamic fetch jidxDte idx_dte | project jidx_100 | agg jidx_100 | output | zed;

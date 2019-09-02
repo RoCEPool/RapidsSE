@@ -175,24 +175,29 @@ eOR CountOp::eOpLoop(void)
         
       // -- -- -- -- -- --
         
+      case CN_CRWBUFFER: {
+        CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand) ;
+        m_nCount += pCrwBuffer->nRowCount();
+        break;
+      }
+      
+      // -- -- -- -- -- --
+        
       case CN_ENTBUFFER: {
         EntBuffer* pEntBuffer = _pEntBuffer(pOperand) ;
         m_nCount += pEntBuffer->nItems();
         break;
       }
+      
+      // -- -- -- -- -- --
         
-      case CN_INTBUFFER: {
-        IntBuffer* pIntBuffer = _pIntBuffer(pOperand) ;
-        m_nCount += pIntBuffer->nCount();
+      case CN_IRWBUFFER: {
+        IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand) ;
+        m_nCount += pIrwBuffer->nItems();
         break;
       }
-        
-      case CN_REFBUFFER: {
-        RefBuffer* pRefBuffer = _pRefBuffer(pOperand) ;
-        m_nCount += pRefBuffer->nItems();
-        delete pRefBuffer;
-        break;
-      }
+       
+      // -- -- -- -- -- --
         
       case CN_SRTBUFFER: {
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
@@ -200,11 +205,15 @@ eOR CountOp::eOpLoop(void)
         delete pSrtBuffer;
         break;
       }
+      
+      // -- -- -- -- -- --
         
       case CN_STREAMDEF: {
         delete _pStreamDef(pOperand);
         break;
       }
+      
+      // -- -- -- -- -- --
         
       default:
         vPipeOut(pOperand);

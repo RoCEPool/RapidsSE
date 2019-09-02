@@ -125,6 +125,7 @@ eOR OutputOp::eDrain(void* aThisOp)
 eOR OutputOp::eOpLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
+  s4K sMetaData;
   
   for (;;) {
     
@@ -141,6 +142,8 @@ eOR OutputOp::eOpLoop(void)
         
       case CN_ENDMARKER: {
         if (--m_nLeftEndMarkers == 0) {
+          // set the responses received
+          AM::vLocalResponse(m_pJob, m_iWorkDone);
           vPipeOut(pOperand);
           goto L_EXIT;
         }
@@ -185,7 +188,23 @@ eOR OutputOp::eOpLoop(void)
       case CN_STREAMDEF: {
         m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
         if (AM::bMetadata()) {
-          vSetMetaData();
+          //vSetMetaData();
+          sMetaData = AM::sMetaData(m_pJob);
+          
+          ColumnVec* pColVec = m_pStreamDef->m_oColVecAry.pGet(0);
+          sMetaData.vCopy(""_Stz);
+          
+          vTrace("metadata: ("_Stz);
+
+          for (i8 i_Col = 0; i_Col < pColVec->nItems(); i_Col++) {
+            if (i_Col != 0)
+              sMetaData.vConcat(","_Stz);
+            Column* pCol = pColVec->pGet(i_Col);
+            sMetaData.vCatSprint("%s %s"_Stz, pCol->sColumnName().aChar(),
+                                  aCT[pCol->eColumnType()]);
+            vTrace("%s"_Stz, sMetaData.aChar());
+          }
+          vTrace(")\n"_Stz);
         }
         vPipeOut(pOperand);        
         break;
@@ -202,7 +221,6 @@ eOR OutputOp::eOpLoop(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_EXIT:
-  vTrace("Output: %lld rows\n"_Stz, m_iWorkDone);
   return OR_EXIT;
 }
 

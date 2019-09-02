@@ -8,7 +8,7 @@ JobClass xJobClass_Dynamic =
 {
   CN_JOB_DYNAMIC,        // class number
   JK_LOCAL,              // job kind
-  RS_LOCAL_ROWS,         // response kind
+  RS_DATA_ROWS,          // response kind
   "dynamic"_Stz,         // comment about the job
   "dynamic"_Stz,         // the prompt command
   nullptr,               // the second word
@@ -27,7 +27,7 @@ JobClass xJobClass_Dynamic =
 
   nullptr,               // prompt check function
   pJob_Dynamic_pre,      // prompt pre-process function
-  vJob_post,             // prompt post-process function
+  vJob_Dynamic_post,     // prompt post-process function
   nullptr,               // job new function
   vJob_Dynamic_delete,   // job delete function
   nullptr,               // job pre-send function
@@ -252,6 +252,60 @@ Job* Jobs::pJob_Dynamic_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTupl
   }
   
   return pJob_Dynamic;
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt post execute function                                               */
+/*----------------------------------------------------------------------------*/
+void Jobs::vJob_Dynamic_post(Session* pSession, Job* pJob)
+{
+  Job_Dynamic* pJob_Dynamic = _pJob_Dynamic(pJob);
+  
+//  if ( pJob_Dynamic->m_bHasError ) {
+//
+//    vTrace("error: (node%lld) %s\n"_Stz, AM::pGrid()->iThisNode(),
+//           aEC[pJob_FetchRows->m_xResponse.m_eErrorCode]);
+//
+//    return;
+//  }
+
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // fetch
+//  if (AM::bMetadata()) {
+//    vTrace("metadata: %s\n"_Stz, pJob_FetchRows->m_sMetadata.aStz());
+//  }
+//
+//  // create a row for retrieval
+//  pJob_FetchRows->m_pRow = new Row(pJob_FetchRows->m_pTable->pColumnVec());
+//
+//  while ( nLastBuffersScanned != pJob_FetchRows->m_nLastBuffers ) {
+//
+//    pFetchBuffer = _pFetchBuffer(pJob_FetchRows->m_pBufferQueue->pPop());
+//    if (! pFetchBuffer) {
+//      //Pthread::vSleepMilli(1,CN_JOB_FETCHROWS);
+//      AM::vNap(1,CN_JOB_FETCHROWS);
+//      continue;
+//    }
+//
+//    if (pJob_FetchRows->m_bDisplay) {
+//      if (pJob_FetchRows->m_bLimit && iRowsPrinted != pJob_FetchRows->m_iRows)
+//        vIterateBuffer(pJob_FetchRows, pFetchBuffer, iRowsPrinted);
+//      else
+//        vIterateBuffer(pJob_FetchRows, pFetchBuffer, iRowsPrinted);
+//    }
+//
+//    nRowsProcessed += pFetchBuffer->nFetchedRows();
+//
+//    if (pFetchBuffer->bIsLast()) {
+//      nLastBuffersScanned++;
+//    }
+//    delete pFetchBuffer;
+//    pFetchBuffer = nullptr;
+//  }
+
+  vTrace("success: %lld rows fetched\n"_Stz, *pJob_Dynamic->m_xResponse.m_ixRowsProcessed);
+  
 }
 
 /*----------------------------------------------------------------------------*/
