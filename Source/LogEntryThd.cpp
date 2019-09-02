@@ -59,6 +59,7 @@ void _LogEntryThd::vToTxt(s256& sInf, LogEntry* pEntry)
                aCN[pEntry->m_eClass],
                aHA[m_eThdAct],
                pEntry->szIndicator(),
+               aHA_short[m_eThdAct],
                pEntry->m_caNote);
 }
 

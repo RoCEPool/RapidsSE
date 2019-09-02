@@ -54,6 +54,7 @@ void _LogEntryLog::vToTxt(s256& sInf, LogEntry* pEntry)
                aCN[pEntry->m_eClass],
                aGA[m_eLogAct],
                pEntry->szIndicator(),
+               aGA_short[m_eLogAct],
                pEntry->m_caNote);
 }
 

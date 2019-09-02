@@ -57,6 +57,7 @@ void _LogEntryReq::vToTxt(s256& sInf, LogEntry* pEntry)
                aCN[pEntry->m_eClass],
                aMA[m_eReqAct],
                pEntry->szIndicator(),
+               aMA_short[m_eReqAct],
                pEntry->m_caNote);
 }
 

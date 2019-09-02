@@ -53,6 +53,7 @@ void _LogEntrySvc::vToTxt(s256& sInf, LogEntry* pEntry)
                aCN[pEntry->m_eClass],
                aVA[m_eSvcAct],
                pEntry->szIndicator(),
+               aVA_short[m_eSvcAct],
                pEntry->m_caNote);
 }
 

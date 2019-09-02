@@ -54,6 +54,7 @@ void _LogEntryQue::vToTxt(s256& sInf, LogEntry* pEntry)
                aCN[pEntry->m_eClass],
                aQA[m_eQueAct],
                pEntry->szIndicator(),
+               aQA_short[m_eQueAct],
                pEntry->m_caNote);
 }
 

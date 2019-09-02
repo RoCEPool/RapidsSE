@@ -54,6 +54,7 @@ void _LogEntryTxn::vToTxt(s256& sInf, LogEntry* pEntry)
                aCN[pEntry->m_eClass],
                aXA[m_eTxnAct],
                pEntry->szIndicator(),
+               aXA_short[m_eTxnAct],
                pEntry->m_caNote);
 }
 

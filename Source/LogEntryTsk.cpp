@@ -61,6 +61,7 @@ void _LogEntryTsk::vToTxt(s256& sInf, LogEntry* pEntry)
                aCN[pEntry->m_eClass],
                aTA[m_eTskAct],
                pEntry->szIndicator(),
+               aTA_short[m_eTskAct],
                pEntry->m_caNote);
 }
 

@@ -54,6 +54,7 @@ void _LogEntrySys::vToTxt(s256& sInf, LogEntry* pEntry)
                aCN[pEntry->m_eClass],
                aYA[m_eSysAct],
                pEntry->szIndicator(),
+               aYA_short[m_eSysAct],
                pEntry->m_caNote);
 }
 

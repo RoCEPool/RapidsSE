@@ -68,6 +68,7 @@ void _LogEntryJob::vToTxt(s256& sInf, LogEntry* pEntry)
                aCN[pEntry->m_eClass],
                aJA[m_eJobAct],
                pEntry->szIndicator(),
+               aJA_short[m_eJobAct],
                pEntry->m_caNote);
 }
 

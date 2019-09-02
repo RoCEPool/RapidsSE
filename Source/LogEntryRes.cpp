@@ -63,6 +63,7 @@ void _LogEntryRes::vToTxt(s256& sInf, LogEntry* pEntry)
                aCN[pEntry->m_eClass],
                aRA[m_eResAct],
                pEntry->szIndicator(),
+               aRA_short[m_eResAct],
                pEntry->m_caNote);
 }
 
