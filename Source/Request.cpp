@@ -65,8 +65,8 @@ Request::Request(Session* p_Session, Stz* szPurpose, i8 iClassSeq)
   SP_ReqTuple spReqTuple;
   
   vIncActNo();
-  AM::vLogReq(SL_INF,this,MA_REQ_BEGIN,
-              "Request begin @%s %s"_Stz, //!format-LogReq
+  AM::vLogReq(SL_INF,this,MA_REQ_CONSTRUCT,
+              "@%s %s"_Stz, //!format-LogReq
               oNow.sz(),
               spReqTuple.sz(&m_xReqTuple),
               C_ENDARGS);
@@ -90,8 +90,8 @@ Request::~Request(void) noexcept(false)
   SP_ReqTuple spReqTuple;
 
   vIncActNo();
-  AM::vLogReq(SL_INF,this,MA_REQ_END,
-              "Request end @%s %s"_Stz, //!format-LogReq
+  AM::vLogReq(SL_INF,this,MA_REQ_DESTRUCT,
+              "@%s %s"_Stz, //!format-LogReq
               oNow.sz(),
               spReqTuple.sz(&m_xReqTuple),
               C_ENDARGS);

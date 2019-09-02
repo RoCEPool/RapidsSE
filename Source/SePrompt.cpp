@@ -585,7 +585,7 @@ void SePrompt::vJobUnlockMutex(void)
   RASSERT(JS_RUNNING != m_pJob->m_eJobState);
   
   AM::vLogPrm(SL_INF,this,PA_PRM_RESUMES,
-              "Prompt unlocks job mutex and resumes running"_Stz, //!format-LogPrm
+              "unlocks job mutex and resumes running"_Stz, //!format-LogPrm
               C_ENDARGS);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -602,9 +602,12 @@ void SePrompt::vJobWaitCond(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
+  SP_Id spId;
+  
   vIncActNo();
   AM::vLogPrm(SL_INF,this,PA_PRM_WAITS,
-              "Prompt waits on job mutex"_Stz, //!format-LogPrm
+              "for job mutex %s to be signaled (mutex is unlocked)"_Stz, //!format-LogPrm
+              spId.sz(IK_JOB,m_pJob->m_iUniqueId),
               C_ENDARGS);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -638,7 +641,7 @@ void SePrompt::vLogCommand(void)
   
   vIncActNo();
   AM::vLogPrm(SL_INF,this,PA_PRM_COMMAND,
-              "Prompt command %lld: %s"_Stz, //!format-LogPrm
+              "%lld %s"_Stz, //!format-LogPrm
               m_iCmdNo++,sCommand.aStz());
 }
 
@@ -657,7 +660,7 @@ void SePrompt::vLogFreeSpace(void)
   
   vIncActNo();
   AM::vLogPrm(SL_INF,this,PA_PRM_FREE_SPACE,
-              "Prompt free space %s"_Stz, //!format-LogPrm
+              "%s"_Stz, //!format-LogPrm
               sFreeSpaceMag.aStz());
 }
 

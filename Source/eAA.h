@@ -10,6 +10,7 @@ enum eAA // api actions
   /*    */ AA_API_ERROR,
   /*    */ AA_API_ENTRY,
   /*    */ AA_API_EXIT,
+  /*    */ AA_API_SPAWN_JOB,
 
   /*    */ AA_SSN_CONSTRUCT,
   /*    */ AA_SSN_DESTRUCT,
@@ -24,6 +25,7 @@ static Stz* aAA[]
   /*    */ "AA_API_ERROR"_Stz,
   /*    */ "AA_API_ENTRY"_Stz,
   /*    */ "AA_API_EXIT"_Stz,
+  /*    */ "AA_API_SPAWN_JOB"_Stz,
 
   /*    */ "AA_SSN_CONSTRUCT"_Stz,
   /*    */ "AA_SSN_DESTRUCT"_Stz,
@@ -38,7 +40,8 @@ static Stz* aAA_short[]
   /*    */ "Api error"_Stz,
   /*    */ "Api entry"_Stz,
   /*    */ "Api exit"_Stz,
-  
+  /*    */ "Api new job"_Stz,
+
   /*    */ "Session construct"_Stz,
   /*    */ "Session destruct"_Stz,
   
