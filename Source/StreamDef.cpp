@@ -144,6 +144,26 @@ ColumnVec* StreamDef::pColumnVec(i8 iIndex)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get column vector at index                                                 */
+/*----------------------------------------------------------------------------*/
+i8 StreamDef::iFindColumn(char* sColumnNm, i8& i_ColVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+  
+  for (i_ColVec = 0; i_ColVec < m_oColVecAry.nItems(); i_ColVec++) {
+    ColumnVec* pColumnVec = m_oColVecAry.pGet(i_ColVec);
+    i8 nColumns = pColumnVec->nItems();
+    for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+      Column* pCol = pColumnVec->pGet(i_Col);
+      if (StrLib::bEqualTo(sColumnNm,pCol->sColumnName().aChar(),C_NO_CASE)) {
+        return i_Col;
+      }
+    }
+  }
+  
+  return C_UNKNOWN;
+}
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 __aFooterFunction(StreamDef);

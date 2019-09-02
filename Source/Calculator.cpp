@@ -116,22 +116,9 @@ bool Calculator::bCompile(TokenVec* pTknVec, StreamDef* pStreamDef, i8 iStartTkn
 
     if (pTkn->bIsName()) {
       m_eaCode[i_Code++] = EO_COLUMN;
-      //iArg = tolower(* pTkn->szText()->aChar()) - 'a';
-      //piArg = (i8*) & m_eaCode[i_Code];
-      //* piArg = iArg;
-      for (i8 i_ColVec = 0; i_ColVec < pStreamDef->m_oColVecAry.nItems(); i_ColVec++) {
-        ColumnVec* pColumnVec = pStreamDef->m_oColVecAry.pGet(i_ColVec);
-        i8 nColumns = pColumnVec->nItems();
-        for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-          Column* pCol = pColumnVec->pGet(i_Col);
-          if (StrLib::bEqualTo(pTkn->szText()->aChar(),pCol->sColumnName().aChar(),C_NO_CASE)) {
-            piArg = (i8*) & m_eaCode[i_Code];
-            * piArg = i_Col;
-            break;
-          }
-        }
-      }
-
+      i8 iColVec;
+      piArg = (i8*) & m_eaCode[i_Code];
+      * piArg = pStreamDef->iFindColumn(pTkn->szText()->aChar(), iColVec);
       i_Code += sizeof(i8);
       continue;
     }

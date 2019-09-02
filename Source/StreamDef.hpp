@@ -29,6 +29,7 @@ namespace MetaData
     
     void vAdd(StreamDef* pStreamDef);
     ColumnVec* pColumnVec(i8 iIndex);
+    i8 iFindColumn(char* sColumnNm, i8& iColVec);
     
     Footer* aFooter(void);
   };
