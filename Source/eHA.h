@@ -51,6 +51,29 @@ static Stz* aHA[]
   /*    */ "ENUMS"_Stz,
 };
 
+static Stz* aHA_short[]
+{
+  /*  0 */ "NONE"_Stz,
+  
+  /*    */ "Thread add dedicated"_Stz,
+  /*    */ "Thread add general"_Stz,
+  /*    */ "Thread append idle queue"_Stz,
+  /*    */ "Thread begin loop"_Stz,
+  /*    */ "Thread construct"_Stz,
+  /*    */ "Thread continue same task"_Stz,
+  /*    */ "Thread destruct"_Stz,
+  /*    */ "Thread end loop"_Stz,
+  /*    */ "Thread execute dedicated task"_Stz,
+  /*    */ "Thread get task assignment"_Stz,
+  /*    */ "Thread information"_Stz,
+  /*    */ "Thread remove dedicated"_Stz,
+  /*    */ "Thread remove general"_Stz,
+  /*    */ "Thread unassign task"_Stz,
+
+  /*    */ "ENUMS"_Stz,
+};
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

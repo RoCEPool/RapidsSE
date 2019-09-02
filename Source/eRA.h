@@ -133,6 +133,72 @@ static Stz* aRA[]
   /*    */ "ENUMS"_Stz,
 };
 
+static Stz* aRA_short[]
+{
+  /*  0 */ "NONE"_Stz,
+  
+  /*    */ "RA_DIR_CLOSED"_Stz,
+  /*    */ "RA_DIR_CONSTRUCT"_Stz,
+  /*    */ "RA_DIR_DESTRUCT"_Stz,
+  /*    */ "RA_DIR_ERROR"_Stz,
+  /*    */ "RA_DIR_OPENED"_Stz,
+  /*    */ "RA_DIR_STATS"_Stz,
+  
+  /*    */ "RA_FIL_CLOSED"_Stz,
+  /*    */ "RA_FIL_CONSTRUCT"_Stz,
+  /*    */ "RA_FIL_DESTRUCT"_Stz,
+  /*    */ "RA_FIL_ERROR"_Stz,
+  /*    */ "RA_FIL_OPENED"_Stz,
+  /*    */ "RA_FIL_STATS"_Stz,
+  
+  /*    */ "RA_FIO_CONSTRUCT"_Stz,
+  /*    */ "RA_FIO_DESTRUCT"_Stz,
+  /*    */ "RA_FIO_ERROR"_Stz,
+  /*    */ "RA_FIO_MADE"_Stz,
+  /*    */ "RA_FIO_REMOVED"_Stz,
+  /*    */ "RA_FIO_STATS"_Stz,
+  
+  /*    */ "RA_MTX_BROADCAST"_Stz,
+  /*    */ "RA_MTX_BUSY"_Stz,
+  /*    */ "RA_MTX_CONSTRUCT"_Stz,
+  /*    */ "RA_MTX_DESTRUCT"_Stz,
+  /*    */ "RA_MTX_ERROR"_Stz,
+  /*    */ "RA_MTX_LOCK"_Stz,
+  /*    */ "RA_MTX_LOCKED"_Stz,
+  /*    */ "RA_MTX_SIGNAL"_Stz,
+  /*    */ "RA_MTX_SIGNALED"_Stz,
+  /*    */ "RA_MTX_STATS"_Stz,
+  /*    */ "RA_MTX_TIMEDOUT"_Stz,
+  /*    */ "RA_MTX_UNLOCKED"_Stz,
+  /*    */ "RA_MTX_WAIT_INDEF"_Stz,
+  /*    */ "RA_MTX_WAIT_TIMED"_Stz,
+  
+  /*    */ "RA_SKT_ACCEPTED"_Stz,
+  /*    */ "RA_SKT_CLOSED"_Stz,
+  /*    */ "RA_SKT_CONNECTED"_Stz,
+  /*    */ "RA_SKT_CONSTRUCT"_Stz,
+  /*    */ "RA_SKT_CREATED"_Stz,
+  /*    */ "RA_SKT_DESTRUCT"_Stz,
+  /*    */ "RA_SKT_ERROR"_Stz,
+  /*    */ "RA_SKT_RECEIVED"_Stz,
+  /*    */ "RA_SKT_SENT"_Stz,
+  /*    */ "RA_SKT_STATS"_Stz,
+  
+  /*    */ "RA_THD_AWAKE"_Stz,
+  /*    */ "RA_THD_CONSTRUCT"_Stz,
+  /*    */ "RA_THD_DESTRUCT"_Stz,
+  /*    */ "RA_THD_ENTRY"_Stz,
+  /*    */ "RA_THD_ERROR"_Stz,
+  /*    */ "RA_THD_EXIT"_Stz,
+  /*    */ "RA_THD_SLEEP"_Stz,
+  /*    */ "RA_THD_SLEEP_INDEF"_Stz,
+  /*    */ "RA_THD_SPAWNED"_Stz,
+  /*    */ "RA_THD_STATS"_Stz,
+
+  /*    */ "ENUMS"_Stz,
+};
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

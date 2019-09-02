@@ -39,6 +39,25 @@ static Stz* aOA[]
   /*    */ "ENUMS"_Stz,
 };
 
+static Stz* aOA_short[]
+{
+  /*  0 */ "NONE"_Stz,
+  
+  /*    */ "Op ack"_Stz,
+  /*    */ "Op append"_Stz,
+  /*    */ "Op call"_Stz,
+  /*    */ "Op construct"_Stz,
+  /*    */ "Op destruct"_Stz,
+  /*    */ "Op drain"_Stz,
+  /*    */ "Op drained"_Stz,
+  /*    */ "Op information"_Stz,
+  /*    */ "Op pop"_Stz,
+  /*    */ "Op returned"_Stz,
+
+  /*    */ "ENUMS"_Stz,
+};
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

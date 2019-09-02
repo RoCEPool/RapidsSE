@@ -33,6 +33,21 @@ static Stz* aLA[]
   /*    */ "ENUMS"_Stz,
 };
 
+static Stz* aLA_short[]
+{
+  /*  0 */ "NONE"_Stz,
+  
+  /*    */ "Lock construct"_Stz,
+  /*    */ "Lock destruct"_Stz,
+  
+  /*    */ "Lock read able"_Stz,
+  /*    */ "Lock write able"_Stz,
+  /*    */ "Lock read unable"_Stz,
+  /*    */ "Lock write unable"_Stz,
+
+  /*    */ "ENUMS"_Stz,
+};
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

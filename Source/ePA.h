@@ -29,6 +29,19 @@ static Stz* aPA[]
   /*    */ "ENUMS"_Stz,
 };
 
+static Stz* aPA_short[]
+{
+  /*  0 */ "NONE"_Stz,
+  
+  /*    */ "Prompt command"_Stz,
+  /*    */ "Prompt free space"_Stz,
+  /*    */ "Prompt log note"_Stz,
+  /*    */ "Prompt resumes"_Stz,
+  /*    */ "Prompt waits"_Stz,
+
+  /*    */ "ENUMS"_Stz,
+};
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -39,6 +39,23 @@ static Stz* aGA[]
   /*    */ "ENUMS"_Stz,
 };
 
+static Stz* aGA_short[]
+{
+  /*  0 */ "NONE"_Stz,
+  
+  /*    */ "Log section"_Stz,
+  /*    */ "Log opened by api"_Stz,
+  /*    */ "Log opened by se"_Stz,
+  
+  /*    */ "Log time"_Stz,
+  /*    */ "Log welcome"_Stz,
+  /*    */ "Log host"_Stz,
+  /*    */ "Log uptime"_Stz,
+  /*    */ "Log copyright"_Stz,
+
+  /*    */ "ENUMS"_Stz,
+};
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

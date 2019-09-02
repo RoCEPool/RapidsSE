@@ -31,6 +31,20 @@ static Stz* aAA[]
   /*    */ "ENUMS"_Stz,
 };
 
+static Stz* aAA_short[]
+{
+  /*  0 */ "NONE"_Stz,
+  
+  /*    */ "Api error"_Stz,
+  /*    */ "Api entry"_Stz,
+  /*    */ "Api exit"_Stz,
+  
+  /*    */ "Session construct"_Stz,
+  /*    */ "Session destruct"_Stz,
+  
+  /*    */ "ENUMS"_Stz,
+};
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

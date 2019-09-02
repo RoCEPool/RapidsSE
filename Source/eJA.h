@@ -41,6 +41,26 @@ static Stz* aJA[]
   /*    */ "ENUMS"_Stz,
 };
 
+static Stz* aJA_short[]
+{
+  /*  0 */ "NONE"_Stz,
+  
+  /*    */ "Job add originating"_Stz,
+  /*    */ "Job add participating"_Stz,
+  /*    */ "Job construct"_Stz,
+  /*    */ "Job destruct"_Stz,
+  /*    */ "Job dump originating"_Stz,
+  /*    */ "Job dump participating"_Stz,
+  /*    */ "Job find originating"_Stz,
+  /*    */ "Job find participating"_Stz,
+  /*    */ "Job information"_Stz,
+  /*    */ "Job remove originating"_Stz,
+  /*    */ "Job remove participating"_Stz,
+
+  /*    */ "ENUMS"_Stz,
+};
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

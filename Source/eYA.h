@@ -41,6 +41,26 @@ static Stz* aYA[]
   /*    */ "ENUMS"_Stz,
 };
 
+static Stz* aYA_short[]
+{
+  /*  0 */ "NONE"_Stz,
+  
+  /*  0 */ "YA_SYS_ARGS"_Stz,
+  /*  0 */ "YA_SYS_FATAL"_Stz,
+  /*  0 */ "YA_SYS_HOST"_Stz,
+  /*  0 */ "YA_SYS_INFO"_Stz,
+  /*  0 */ "YA_SYS_TIME"_Stz,
+  /*  0 */ "YA_SYS_TRACE"_Stz,
+  /*  0 */ "YA_SYS_UPTIME"_Stz,
+  /*  0 */ "YA_SYS_WARN"_Stz,
+  /*  0 */ "YA_SYS_WELCOME"_Stz,
+  
+  /*  0 */ "YA_SYS_PAUSE_GENERAL"_Stz,
+
+  /*    */ "ENUMS"_Stz,
+};
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

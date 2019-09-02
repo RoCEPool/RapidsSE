@@ -29,6 +29,18 @@ static Stz* aQA[]
   /*    */ "ENUMS"_Stz,
 };
 
+static Stz* aQA_short[]
+{
+  /*  0 */ "NONE"_Stz,
+  
+  /*    */ "Queue find originiator"_Stz,
+  /*    */ "Queue find participant"_Stz,
+  /*    */ "Queue originiators"_Stz,
+  /*    */ "Queue participants"_Stz,
+
+  /*    */ "ENUMS"_Stz,
+};
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
