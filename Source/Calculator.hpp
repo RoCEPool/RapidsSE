@@ -5,14 +5,15 @@
 
 namespace Operators
 {
-  static const i8 C_CALC_PROGRAM = C_4KB;
-  static const i8 C_CALC_STACK   = C_4KB;
+  static const i8 C_CALC_CODE  = C_4KB;
+  static const i8 C_CALC_STACK = C_4KB;
 
   class Calculator : public Object
   {
   private:
-    eEO  m_eaCode[C_CALC_PROGRAM];
-    i8   m_iaData[C_CALC_STACK];
+    eEO  m_eaCode[C_CALC_CODE];   // { EO_code [<bytes>] }
+                                  // EO_COLUMN <colNo> ...
+    i8   m_iaStack[C_CALC_STACK];
 
   private:
   
