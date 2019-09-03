@@ -145,7 +145,6 @@ eOR OutputOp::eOpLoop(void)
       case CN_CRWBUFFER: {
         CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
         m_iWorkDone += pCrwBuffer->nRowCount();
-        //pCrwBuffer->vPrintRows();
         vPipeToJob(pOperand);
         break;
       }
@@ -169,7 +168,6 @@ eOR OutputOp::eOpLoop(void)
       case CN_ENTBUFFER: {
         EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
         m_iWorkDone += pEntBuffer->nItems();
-        //pEntBuffer->vPrintRows();
         vPipeToJob(pOperand);
         break;
       }
@@ -179,7 +177,6 @@ eOR OutputOp::eOpLoop(void)
       case CN_IRWBUFFER: {
         IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
         m_iWorkDone += pIrwBuffer->nItems();
-        //pIrwBuffer->vPrintRows(m_pStreamDef->pColumnVec(0));
         vPipeToJob(pOperand);
         break;
       }
@@ -189,7 +186,6 @@ eOR OutputOp::eOpLoop(void)
       case CN_SRTBUFFER: {
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
         m_iWorkDone += pSrtBuffer->nItems();
-        //pSrtBuffer->vPrintRows(m_pStreamDef);
         vPipeToJob(pOperand);
         break;
       }
