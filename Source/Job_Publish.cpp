@@ -208,7 +208,7 @@ void Jobs::vJob_Publish_post(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Publish_new(Job* pArg)
 {
-  Job_Publish* pJob_Publish = new Job_Publish(nullptr,pArg ? pArg->m_xReqTuple.m_iReqId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
+  Job_Publish* pJob_Publish = new Job_Publish(nullptr,C_UNKNOWN,nullptr);
   
   return pJob_Publish;
 }

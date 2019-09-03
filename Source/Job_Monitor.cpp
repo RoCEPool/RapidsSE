@@ -201,7 +201,7 @@ Job* Jobs::pJob_Monitor_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTupl
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Monitor_new(Job* pArg)
 {
-  Job_Monitor* pJob_Monitor = new Job_Monitor(nullptr,pArg ? pArg->m_xReqTuple.m_iReqId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
+  Job_Monitor* pJob_Monitor = new Job_Monitor(nullptr,C_UNKNOWN,nullptr);
   
   return pJob_Monitor;
 }

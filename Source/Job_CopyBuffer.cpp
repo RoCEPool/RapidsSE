@@ -258,7 +258,7 @@ Job* Jobs::pJob_CopyBuffer_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqT
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_CopyBuffer_new(Job* pArg)
 {
-  Job_CopyBuffer* pJob_CopyBuffer = new Job_CopyBuffer(nullptr,pArg ? pArg->m_xReqTuple.m_iReqId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
+  Job_CopyBuffer* pJob_CopyBuffer = new Job_CopyBuffer(nullptr,C_UNKNOWN,nullptr);
   
   return pJob_CopyBuffer;
 }

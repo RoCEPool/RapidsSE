@@ -205,7 +205,7 @@ Job* Jobs::pJob_Sink_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Sink_new(Job* pArg)
 {
-  Job_Sink* pJob_Sink = new Job_Sink(nullptr,pArg ? pArg->m_xReqTuple.m_iReqId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
+  Job_Sink* pJob_Sink = new Job_Sink(nullptr,C_UNKNOWN,nullptr);
   
   return pJob_Sink;
 }

@@ -304,7 +304,7 @@ void Jobs::vJob_Export_post(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Export_new(Job* pArg)
 {
-  Job_Export* pJob_Export = new Job_Export(nullptr,pArg ? pArg->m_xReqTuple.m_iReqId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
+  Job_Export* pJob_Export = new Job_Export(nullptr,C_UNKNOWN,nullptr);
   
   return pJob_Export;
 }

@@ -220,7 +220,7 @@ Job* Jobs::pJob_AnalyzeIndex_pre(Session* pSession, i8 iRequestId, ReqTuple* aRe
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_AnalyzeIndex_new(Job* pArg)
 {
-  Job_AnalyzeIndex* pJob_AnalyzeIndex = new Job_AnalyzeIndex(nullptr,pArg ? pArg->m_xReqTuple.m_iReqId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
+  Job_AnalyzeIndex* pJob_AnalyzeIndex = new Job_AnalyzeIndex(nullptr,C_UNKNOWN,nullptr);
   
   return pJob_AnalyzeIndex;
 }

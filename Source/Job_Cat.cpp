@@ -209,7 +209,7 @@ Job* Jobs::pJob_Cat_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Cat_new(Job* pArg)
 {
-  Job_Cat* pJob_Cat = new Job_Cat(nullptr,pArg ? pArg->m_xReqTuple.m_iReqId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
+  Job_Cat* pJob_Cat = new Job_Cat(nullptr,C_UNKNOWN,nullptr);
   
   return pJob_Cat;
 }

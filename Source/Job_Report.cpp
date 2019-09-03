@@ -218,7 +218,7 @@ Job* Jobs::pJob_Report_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Report_new(Job* pArg)
 {
-  Job_Report* pJob_Report = new Job_Report(nullptr,pArg ? pArg->m_xReqTuple.m_iReqId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
+  Job_Report* pJob_Report = new Job_Report(nullptr,C_UNKNOWN,nullptr);
   
   return pJob_Report;
 }

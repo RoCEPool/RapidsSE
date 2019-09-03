@@ -326,7 +326,7 @@ Job* Jobs::vJob_SubIngester_pre(Session* pSession, i8 iRequestId, ReqTuple* aReq
 Job* Jobs::pJob_SubIngester_new(Job* pArg)
 {
   Job_SubIngester* pJob_SubIngester =
-    new Job_SubIngester(nullptr,pArg ? pArg->m_xReqTuple.m_iReqId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
+    new Job_SubIngester(nullptr,C_UNKNOWN,nullptr);
   
   return pJob_SubIngester;
 }

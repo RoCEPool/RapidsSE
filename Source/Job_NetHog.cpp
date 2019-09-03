@@ -209,7 +209,7 @@ void Jobs::vJob_NetHog_post(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_NetHog_new(Job* pArg)
 {
-  Job_NetHog* pJob_NetHog = new Job_NetHog(nullptr,pArg ? pArg->m_xReqTuple.m_iReqId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
+  Job_NetHog* pJob_NetHog = new Job_NetHog(nullptr,C_UNKNOWN,nullptr);
   
   return pJob_NetHog;
 }
