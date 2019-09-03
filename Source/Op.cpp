@@ -9,6 +9,7 @@
 #include "eTS.h"
 
 Atomic gixOp;
+extern OpCatalog gxOpCatalog;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -56,6 +57,10 @@ Op::Op(eCN eClassNo, Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
 {
   _precondition_(_MAGIC_,eClassNo);
   
+  RASSERT(aOpDefn);
+  m_sName = aOpDefn->m_szCommand;
+    
+  
   m_sLabel        = szLabel;
   m_sArgs         = ""_Stz;
   m_sNextLabel    = "<nil>"_Stz;
@@ -80,6 +85,8 @@ Op::Op(eCN eClassNo, Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   m_nLeftEndMarkers  = 1;
   m_nRightEndMarkers = 0;
   m_pStreamDef       = nullptr;
+  
+  m_bFirstCall    = true;
   
   m_fpCall        = m_aOpDefn ? m_aOpDefn->m_fpCall  : nullptr;
   m_fpDrain       = m_aOpDefn ? m_aOpDefn->m_fpDrain : nullptr;
@@ -136,6 +143,14 @@ void Op::vOpLoop(void)
 //    eCallAgain = (*m_fpDrain)(this);
 //  else
 
+  if (m_bFirstCall) {
+    m_bFirstCall = false;
+    
+    m_aOpDefn = gxOpCatalog.aFindOp(m_sName);
+    
+    m_fpCall  = m_aOpDefn ? m_aOpDefn->m_fpCall  : nullptr;
+    m_fpDrain = m_aOpDefn ? m_aOpDefn->m_fpDrain : nullptr;
+  }
   
   AM::vLogOpr(SL_INF,this,OA_OP_CALL,
               "Calling operator"_Stz); //!format-LogOpr

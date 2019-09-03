@@ -10,6 +10,8 @@ namespace Operators
   friend class Digest;
   
   protected:  
+    s32            m_sName;          // first word of prompt command
+  
     s32            m_sLabel;         // label of this op
     s256           m_sArgs;          // args of this op   (initial dev only)
     s32            m_sNextLabel;     // label of this op
@@ -35,6 +37,8 @@ namespace Operators
     i8             m_nRightEndMarkers;    // expected left end markers
     
     StreamDef*     m_pStreamDef;
+  
+    bool           m_bFirstCall;      // first time being called?
     
     eOR (*m_fpCall) (void* aThisOp);  // function which calls the op loop
     eOR (*m_fpDrain)(void* aThisOp);  // function which calls the drain loop
