@@ -169,7 +169,11 @@ Footer* Job_Answer::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Answer_new(Job* pArg)
 {
-  Job_Answer* pJob_Answer = new Job_Answer(nullptr,pArg ? pArg->m_xReqTuple.m_iReqId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
+  RASSERT(! pArg);
+  
+  ReqTuple xReqTuple("**ANSWER"_Stz,false);
+  
+  Job_Answer* pJob_Answer = new Job_Answer(nullptr,C_UNKNOWN,&xReqTuple);
   
   return pJob_Answer;
 }

@@ -170,7 +170,11 @@ Footer* Job_Periodic::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Periodic_new(Job* pArg)
 {
-  Job_Periodic* pJob_Periodic = new Job_Periodic(nullptr,pArg ? pArg->m_xReqTuple.m_iReqId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
+  RASSERT(! pArg);
+  
+  ReqTuple xReqTuple("**PERIODIC"_Stz,false);
+  
+  Job_Periodic* pJob_Periodic = new Job_Periodic(nullptr,C_UNKNOWN,&xReqTuple);
   
   return pJob_Periodic;
 }

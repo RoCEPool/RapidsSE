@@ -184,11 +184,11 @@ void Arguments::vAddConstants(void)
 void Arguments::vLog(void)
 {
   AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_ARGS,
-              "Args:"_Stz); //!format-LogSys
+              "Command line args:"_Stz); //!format-LogSys
   
   s256 sArg;
   
-  for (i8 i_Arg = 1; i_Arg < gi_argc; ) {
+  for (i8 i_Arg = 0; i_Arg < gi_argc; ) {
     
     sArg = (Stz*)(gi_argv[i_Arg ++]);
     

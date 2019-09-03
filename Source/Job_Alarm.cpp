@@ -170,7 +170,11 @@ Footer* Job_Alarm::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Alarm_new(Job* pArg)
 {
-  Job_Alarm* pJob_Alarm = new Job_Alarm(nullptr,pArg ? pArg->m_xReqTuple.m_iReqId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
+  RASSERT(! pArg);
+  
+  ReqTuple xReqTuple("**ALARM"_Stz,false);
+  
+  Job_Alarm* pJob_Alarm = new Job_Alarm(nullptr,C_UNKNOWN,&xReqTuple);
   
   return pJob_Alarm;
 }
