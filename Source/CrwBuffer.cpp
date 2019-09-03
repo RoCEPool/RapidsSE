@@ -379,6 +379,33 @@ void CrwBuffer::vPrevBuffer(CrwBuffer* pPrevBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print rows of the buffer                                                   */
+/*----------------------------------------------------------------------------*/
+void CrwBuffer::vPrintRows(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
+  ColumnVec* pColVec = pTable()->pColumnVec();
+  
+  HV_Row hRow(pColVec);
+  HV_Rec hvRec(pColVec);
+  
+  i8 nRows = nRowCount();
+  
+  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+    
+    // get the compact row
+    Crw* aCrw = (Crw*)m_oRowTray.pNub()->aGetHead(i_Row);
+    
+    // inflate compact row into row
+    RowInflator::vInflateRow(hRow,aCrw);
+    
+    hvRec->vAppend(hRow);
+    hvRec->vPrintRow();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get compact row                                                            */
 /*----------------------------------------------------------------------------*/
 Crw* CrwBuffer::pCrw(i8 i_Row)

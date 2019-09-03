@@ -145,7 +145,7 @@ eOR OutputOp::eOpLoop(void)
       case CN_CRWBUFFER: {
         CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
         m_iWorkDone += pCrwBuffer->nRowCount();
-        //pCrwBuffer->vPrintRows();
+        pCrwBuffer->vPrintRows();
         vPipeOut(pOperand);
         break;
       }
