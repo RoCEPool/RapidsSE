@@ -16,6 +16,9 @@ void _LogEntryThd::vSet(LogEntry* pLogEntry, Thread* pThread, eHA eThdAct)
                        && pThread->pTask()->pJob())
     pLogEntry->m_xReqTuple.vSet(&pThread->pTask()->pJob()->m_xReqTuple);
   
+  if (! pThread->m_pTask)
+    pLogEntry->m_xReqTuple.m_sPurpose.vSprint("~~THREAD~~"_Stz);
+  
   m_iThdId  = pThread->m_iUniqueId;
   m_eThdAct = eThdAct;
   
