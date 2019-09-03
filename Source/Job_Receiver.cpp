@@ -213,14 +213,9 @@ Job* Jobs::pJob_Receiver_new(Job* pArg)
 {
   RASSERT(! pArg);
   
-  ReqTuple xReqTuple_receiver(nullptr);
+  ReqTuple xReqTuple("**RECEIVER"_Stz,false);
   
-  xReqTuple_receiver.m_sPurpose = "**RECEIVER"_Stz;
-  
-  Job_Receiver* pJob_Receiver =
-    new Job_Receiver(nullptr,
-                     C_UNKNOWN,
-                     &xReqTuple_receiver);
+  Job_Receiver* pJob_Receiver = new Job_Receiver(nullptr,C_UNKNOWN,&xReqTuple);
   
   return pJob_Receiver;
 }

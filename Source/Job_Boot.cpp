@@ -169,7 +169,9 @@ Footer* Job_Boot::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Boot_new(Job* pArg)
 {
-  Job_Boot* pJob_Boot = new Job_Boot(nullptr,pArg ? pArg->m_xReqTuple.m_iReqId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
+  ReqTuple xReqTuple("**BOOT"_Stz,false);
+
+  Job_Boot* pJob_Boot = new Job_Boot(nullptr,C_UNKNOWN,&xReqTuple);
   
   return pJob_Boot;
 }

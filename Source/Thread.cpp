@@ -122,7 +122,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
   
   pThread->m_pPthread->vIncActNo();
   AM::vLogRes(SL_INF,pThread->m_pPthread,RA_THD_ENTRY,
-              "Thead entry (dedicated) : %p"_Stz, //!format-LogRes
+              "dedicated thead entry: %p"_Stz, //!format-LogRes
               pThread);
 
   //pThread->vBindCore();
@@ -186,7 +186,7 @@ void* Thread::aEntryPoint_general(void* pArg)
   
   pThread->m_pPthread->vIncActNo();
   AM::vLogRes(SL_INF,pThread->m_pPthread,RA_THD_ENTRY,
-              "Thead entry (general) : %p"_Stz, //!format-LogRes
+              "general thead entry: %p"_Stz, //!format-LogRes
               pThread);
   
   //pThread->vBindCore();

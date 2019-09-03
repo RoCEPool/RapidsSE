@@ -863,17 +863,27 @@ void Engine::vStartSystem(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vOpenLog();
+  
+  AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
+              "adding steps"_Stz); //!format-LogSys
 
   Step::vAddSteps();
+  
+  AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
+              "adding constants"_Stz); //!format-LogSys
   
   gxArguments.vAddConstants();
   
   Constants::vAddConstants();
 
+  AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
+              "running boot job"_Stz); //!format-LogSys
   vCallBoot();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
+              "spawning threads"_Stz); //!format-LogSys
   // spawn general threads
   for (i8 iThreads = 0; iThreads < gxArguments.m_nThreads; iThreads++) {
     Thread* pThread = new Thread;
@@ -891,7 +901,15 @@ void Engine::vStartSystem(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
+              "running boot job"_Stz); //!format-LogSys
+  
   vSpawnJobStart();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
+              "instance %s started"_Stz,
+              gxArguments.m_sRegionName.aChar()); //!format-LogSys
   
   if (gxArguments.m_bVerbose) {
     vInfo("Engine instance %s started\n"_Stz,gxArguments.m_sRegionName.aChar());
