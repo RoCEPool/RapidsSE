@@ -338,7 +338,7 @@ void LogEntry::vWriteTxtEntry(File* pFile)
                C_ENDARGS
                );
 
-  sMid.vSprint("%16s ⬜️ %s:%s#%03lld"_Stz,
+  sMid.vSprint("%20s ⬜️ %s:%s#%03lld"_Stz,
                m_xReqTuple.m_sPurpose.aStz(),
                
                spForId.sz(m_iForId),

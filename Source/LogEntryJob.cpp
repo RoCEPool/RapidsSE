@@ -19,11 +19,12 @@ void _LogEntryJob::vSet(LogEntry* pLogEntry, Job* pJob, eJA eJobAct)
   
   m_iReqId  = pJob->m_xReqTuple.m_iReqId;
   
-  if (JA_JOB_CONSTRUCT == eJobAct)
-    pLogEntry->m_iIndicator = OC_CONSTRUCT;
-  else
-  if (JA_JOB_DESTRUCT == eJobAct)
-    pLogEntry->m_iIndicator = OC_DESTRUCT;
+       if (JA_JOB_CONSTRUCT == eJobAct)     pLogEntry->m_iIndicator = OC_CONSTRUCT;
+  else if (JA_JOB_DESTRUCT == eJobAct)      pLogEntry->m_iIndicator = OC_DESTRUCT;
+  else if (JA_JOB_ADD_ORIGIN == eJobAct)    pLogEntry->m_iIndicator = OC_ADD;
+  else if (JA_JOB_ADD_PARTG == eJobAct)     pLogEntry->m_iIndicator = OC_ADD;
+  else if (JA_JOB_REMOVE_ORIGIN == eJobAct) pLogEntry->m_iIndicator = OC_REMOVE;
+  else if (JA_JOB_REMOVE_PARTG == eJobAct)  pLogEntry->m_iIndicator = OC_REMOVE;
 }
 
 /*----------------------------------------------------------------------------*/

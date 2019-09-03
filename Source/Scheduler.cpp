@@ -1044,7 +1044,7 @@ void Scheduler::vTask_Wait(Task* pTask)
 {
   pTask->vIncActNo();
   AM::vLogTsk(SL_INF,pTask,TA_TSK_WAIT,
-              "Task added to WaitingSet"_Stz); //!format-LogTsk
+              "Task moved to WaitingSet"_Stz); //!format-LogTsk
   
   RASSERT(pTask->bIsLocked());
   RASSERT(TS_DESISTED == pTask->eState());

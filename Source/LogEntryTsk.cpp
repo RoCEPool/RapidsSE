@@ -19,17 +19,34 @@ void _LogEntryTsk::vSet(LogEntry* pLogEntry, Task* pTask, eTA eTskAct)
   
        if (TA_TSK_CONSTRUCT == eTskAct)     pLogEntry->m_iIndicator = OC_CONSTRUCT;
   else if (TA_TSK_DESTRUCT == eTskAct)      pLogEntry->m_iIndicator = OC_DESTRUCT;
-  else if (TA_TSK_ASSIGN_THREAD == eTskAct)   pLogEntry->m_iIndicator = OC_ASSIGN;
-  else if (TA_TSK_THREAD == eTskAct)        pLogEntry->m_iIndicator = OC_ASSIGNED;
-  else if (TA_TSK_EXECUTE == eTskAct)       pLogEntry->m_iIndicator = OC_RESUME;
+  else if (TA_TSK_ASSIGN_THREAD == eTskAct)   pLogEntry->m_iIndicator = OC_PAIR;
+  else if (TA_TSK_ASSIGNED_THREAD == eTskAct) pLogEntry->m_iIndicator = OC_PAIR;
+  else if (TA_TSK_ASSIGNED_THREAD == eTskAct) pLogEntry->m_iIndicator = OC_PAIR;
+  else if (TA_TSK_THREAD == eTskAct)        pLogEntry->m_iIndicator = OC_PAIR;
+  else if (TA_TSK_EXECUTE == eTskAct)       pLogEntry->m_iIndicator = OC_RUN;
+  else if (TA_TSK_RESUME == eTskAct)        pLogEntry->m_iIndicator = OC_RESUME;
   else if (TA_TSK_ABLE == eTskAct)          pLogEntry->m_iIndicator = OC_TRANSITION;
   else if (TA_TSK_YIELD == eTskAct)         pLogEntry->m_iIndicator = OC_TRANSITION;
   else if (TA_TSK_DESIST == eTskAct)        pLogEntry->m_iIndicator = OC_TRANSITION;
   else if (TA_TSK_SLEEP == eTskAct)         pLogEntry->m_iIndicator = OC_TRANSITION;
-  else if (TA_TSK_ASSIGNED_THREAD == eTskAct) pLogEntry->m_iIndicator = OC_ASSIGNED;
   else if (TA_TSK_EXIT == eTskAct)          pLogEntry->m_iIndicator = OC_EXIT;
   else if (TA_TSK_SCHEDULE == eTskAct)      pLogEntry->m_iIndicator = OC_SCHEDULE;
   else if (TA_TSK_REQUIRES == eTskAct)      pLogEntry->m_iIndicator = OC_REQUIRES;
+  else if (TA_TSK_GRAB == eTskAct)          pLogEntry->m_iIndicator = OC_SECURE;
+  else if (TA_TSK_GRABBED == eTskAct)       pLogEntry->m_iIndicator = OC_SECURE;
+  else if (TA_TSK_DROP == eTskAct)          pLogEntry->m_iIndicator = OC_UNSECURE;
+  else if (TA_TSK_ACK == eTskAct)           pLogEntry->m_iIndicator = OC_ACK;
+  else if (TA_TSK_WAIT == eTskAct)          pLogEntry->m_iIndicator = OC_MOVE;
+  else if (TA_TSK_TRIGGER == eTskAct)       pLogEntry->m_iIndicator = OC_TRIGGER;
+  else if (TA_TSK_BIDE == eTskAct)          pLogEntry->m_iIndicator = OC_BIDE;
+  else if (TA_TSK_SPAWN_DEDICATED == eTskAct) pLogEntry->m_iIndicator = OC_SPAWN;
+
+  else if (TA_DDL_READ_GRAB == eTskAct)     pLogEntry->m_iIndicator = OC_CLARITY;
+  else if (TA_DDL_READ_GRABBED == eTskAct)  pLogEntry->m_iIndicator = OC_CLARITY;
+  else if (TA_DDL_WRITE_GRAB == eTskAct)    pLogEntry->m_iIndicator = OC_SOLIDITY;
+  else if (TA_DDL_WRITE_GRABBED == eTskAct) pLogEntry->m_iIndicator = OC_SOLIDITY;
+  else if (TA_DDL_READ_DROPPED == eTskAct)  pLogEntry->m_iIndicator = OC_CONFUSION;
+  else if (TA_DDL_WRITE_DROPPED == eTskAct) pLogEntry->m_iIndicator = OC_TRIGGER;
 
   else
     if (TA_TSK_WAKEUP == eTskAct)

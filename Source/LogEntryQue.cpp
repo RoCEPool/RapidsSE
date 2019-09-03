@@ -15,6 +15,13 @@ void _LogEntryQue::vSet(LogEntry* pLogEntry, Queues* pQueues, eQA eQueAct)
   m_iQueId  = pQueues->m_iUniqueId;
   m_eQueAct = eQueAct;
   
+       if (QA_QUE_FIND_ORIG  == eQueAct)     pLogEntry->m_iIndicator = OC_FIND;
+  else if (QA_QUE_FOUND_ORIG  == eQueAct)    pLogEntry->m_iIndicator = OC_FOUND;
+  else if (QA_QUE_NOT_ORIG  == eQueAct)      pLogEntry->m_iIndicator = OC_NOTFOUND;
+  
+  else if (QA_QUE_FIND_PARTG  == eQueAct)    pLogEntry->m_iIndicator = OC_FIND;
+  else if (QA_QUE_FOUND_PARTG  == eQueAct)   pLogEntry->m_iIndicator = OC_FOUND;
+  else if (QA_QUE_NOT_PARTG  == eQueAct)     pLogEntry->m_iIndicator = OC_NOTFOUND;
 }
 
 /*----------------------------------------------------------------------------*/

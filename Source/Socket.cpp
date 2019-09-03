@@ -293,7 +293,7 @@ bool Socket::bAcceptClient(int& iSocketId, SysCall& SysCall)
   if (AM::bAttached()) AM::pResourceTracker()->vIncSocketOpen();
   
   AM::vLogRes(SL_INF,this,RA_SKT_ACCEPTED,
-              "Socket accepted : client"_Stz); //!format-LogRes
+              "this server has accepted new client"_Stz); //!format-LogRes
 
   SysCall.vSuccess();
   return true;
@@ -389,6 +389,10 @@ bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
   gpAttachMap->m_oStatistics.Socket.m_nConnects++;
 #endif
   
+  AM::vLogRes(SL_INF,this,RA_SKT_CONNECT,
+              "this client attempting connection to server %s %d"_Stz, //!format-LogRes
+              sAddr,iPort);
+  
   iResult = connect(m_iSocketId,(struct sockaddr*)pAddrInfo->ai_addr,sizeof(struct sockaddr));
   
   if (iResult != 0) {
@@ -399,7 +403,7 @@ bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
   if (AM::bAttached()) AM::pResourceTracker()->vIncSocketOpen();
   
   AM::vLogRes(SL_INF,this,RA_SKT_CONNECTED,
-              "Socket connected : to server %s %d"_Stz, //!format-LogRes
+              "this client now connected to server %s %d"_Stz, //!format-LogRes
               sAddr,iPort);
 
   SysCall.vSuccess();
@@ -421,6 +425,8 @@ bool Socket::bCreateServer(int iPort, SysCall& SysCall)
   
   vAddrInit(&xServerAddr,iPort);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   m_iSocketId = socket(AF_INET
                     ,SOCK_STREAM
                     ,0
@@ -429,6 +435,8 @@ bool Socket::bCreateServer(int iPort, SysCall& SysCall)
     SysCall.vError(errno);
     return false;
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   iResult = setsockopt(m_iSocketId
                        ,SOL_SOCKET
@@ -440,6 +448,8 @@ bool Socket::bCreateServer(int iPort, SysCall& SysCall)
     SysCall.vError(errno);
     return false;
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   iResult = bind(m_iSocketId
                  ,(struct sockaddr*)&xServerAddr
@@ -455,16 +465,20 @@ bool Socket::bCreateServer(int iPort, SysCall& SysCall)
   gpAttachMap->m_oStatistics.Socket.m_nListens++;
 #endif
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   iResult = listen(m_iSocketId,4);
   if (iResult != 0) {
     SysCall.vError(errno);
     return false;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   if (AM::bAttached()) AM::pResourceTracker()->vIncSocketOpen();
   
-  AM::vLogRes(SL_INF,this,RA_SKT_CREATED,
-              "Socket created : listening socket : %d"_Stz, //!format-LogRes
+  AM::vLogRes(SL_INF,this,RA_SKT_LISTENER,
+              "listening socket created port=%d"_Stz, //!format-LogRes
               iPort);
 
   SysCall.vSuccess();

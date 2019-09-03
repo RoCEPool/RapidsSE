@@ -15,9 +15,18 @@ void _LogEntryThd::vSet(LogEntry* pLogEntry, Thread* pThread, eHA eThdAct)
   m_iThdId  = pThread->m_iUniqueId;
   m_eThdAct = eThdAct;
   
-       if (HA_THD_CONSTRUCT   == eThdAct) pLogEntry->m_iIndicator = OC_CONSTRUCT;
-  else if (HA_THD_DESTRUCT    == eThdAct) pLogEntry->m_iIndicator = OC_DESTRUCT;
-  else if (HA_THD_APPEND_IDLE == eThdAct) pLogEntry->m_iIndicator = OC_IDLE;
+       if (HA_THD_CONSTRUCT   == eThdAct)   pLogEntry->m_iIndicator = OC_CONSTRUCT;
+  else if (HA_THD_DESTRUCT    == eThdAct)   pLogEntry->m_iIndicator = OC_DESTRUCT;
+  else if (HA_THD_ADD_DEDICATED == eThdAct) pLogEntry->m_iIndicator = OC_ADD;
+  else if (HA_THD_ADD_GENERAL == eThdAct)   pLogEntry->m_iIndicator = OC_ADD;
+  else if (HA_THD_APPEND_IDLE == eThdAct)   pLogEntry->m_iIndicator = OC_IDLE;
+  else if (HA_THD_UNASSIGN_TASK == eThdAct) pLogEntry->m_iIndicator = OC_UNASSIGN;
+  else if (HA_THD_GET_TASK == eThdAct)      pLogEntry->m_iIndicator = OC_GET;
+  else if (HA_THD_POP_READY == eThdAct)     pLogEntry->m_iIndicator = OC_POP;
+  else if (HA_THD_END_LOOP == eThdAct)      pLogEntry->m_iIndicator = OC_END;
+  else if (HA_THD_BEGIN_LOOP == eThdAct)    pLogEntry->m_iIndicator = OC_BEGIN;
+  else if (HA_THD_EXECUTE_DEDICATED == eThdAct) pLogEntry->m_iIndicator = OC_RUN;
+  else if (HA_THD_REMOVE_DEDICATED == eThdAct)  pLogEntry->m_iIndicator = OC_REMOVE;
 }
 
 /*----------------------------------------------------------------------------*/
