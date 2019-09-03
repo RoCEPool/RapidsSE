@@ -169,7 +169,6 @@ eOR GetKeyOp::eOpLoop(void)
       case CN_ENTBUFFER: {
         RASSERT(-1 != m_iKeyCol);
         EntBuffer* pEntBuffer = _pEntBuffer(pOperand) ;
-        //pEntBuffer->vShow();
         SrtBuffer* pSrtBuffer = pEntBuffer->pToSrtBuffer(m_iKeyCol);
         vPipeOut(pSrtBuffer);
         break;
@@ -200,19 +199,9 @@ eOR GetKeyOp::eOpLoop(void)
         StreamDef* pStreamDef = _pStreamDef(pOperand) ;
         m_pStreamDef = new StreamDef(pStreamDef);
      
-        // figure out the key idx
-
-        for (i8 i_ColVec = 0; i_ColVec < m_pStreamDef->m_oColVecAry.nItems(); i_ColVec++) {
-          ColumnVec* pColumnVec = m_pStreamDef->m_oColVecAry.pGet(i_ColVec);
-          i8 nColumns = pColumnVec->nItems();
-          for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-            Column* pCol = pColumnVec->pGet(i_Col);
-            if (StrLib::bEqualTo(m_sKey.aChar(),pCol->sColumnName().aChar(),C_NO_CASE)) {
-              m_iKeyCol = i_Col;
-              break;
-            }
-          }
-        }
+        // figure out the key column
+        i8 iColVec;
+        m_iKeyCol = m_pStreamDef->iFindColumn(m_sKey.aChar(), iColVec);
 
         // we should have the key column now
         RASSERT(m_iKeyCol != -1);

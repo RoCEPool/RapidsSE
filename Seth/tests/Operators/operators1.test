@@ -3,7 +3,7 @@
 /*----------------------------------------------------------------------------*/
 
 // (1) create a table
-create table OpTable (
+create table OpTable1 (
   jidx_key   INTEGER     NOT NULL,
   jidx_name  VARCHAR(32) NOT NULL,
   jidx_100   INTEGER     NOT NULL,
@@ -16,22 +16,51 @@ create table OpTable (
 success
 
 // create indexes
-create index OpTable_idx1 on OpTable (jidx_key);
+create index OpTable1_idx1 on OpTable1 (jidx_key);
 success
 
 // check existence of index
-lsidx OpTable;
+lsidx OpTable1;
 rows:
-('OpTable_idx1', false, false)
+('OpTable1_idx1', false, false)
 
-ld OpTable "/DATA/Operators/operators1.csv" ;
+ld OpTable1 "/DATA/Operators/operators1_1.csv" ;
 success
 
 // check no of rows
-fetch OpTable;
-rows: 25
+fetch OpTable1;
+rows: 26
 
-dynamic scan OpTable | output;
+// (1) create a table
+create table OpTable2 (
+jidx_key   INTEGER     NOT NULL,
+jidx_name  VARCHAR(32) NOT NULL,
+jidx_100   INTEGER     NOT NULL,
+jidx_10    INTEGER     NOT NULL,
+jidx_int   INTEGER     NOT NULL,
+jidx_flt   FLOAT       NOT NULL,
+jidx_tsp   TIMESTAMP   NOT NULL,
+jidx_dte   DATE        NOT NULL
+);
+success
+
+// create indexes
+create index OpTable2_idx1 on OpTable2 (jidx_key);
+success
+
+// check existence of index
+lsidx OpTable2;
+rows:
+('OpTable2_idx1', false, false)
+
+ld OpTable2 "/DATA/Operators/operators1_2.csv" ;
+success
+
+// check no of rows
+fetch OpTable2;
+rows: 21
+
+dynamic scan OpTable1 | output;
 rows:
   (  0, 'zero'    , 100, 0,  0, 1.000000e+03, TIMESTAMP '1900-01-01 00:00:00.0', DATE '1900-01-01' )
   (  1, 'one'     , 101, 1,  1, 1.001000e+03, TIMESTAMP '1901-01-01 00:00:00.0', DATE '1901-01-01' )
@@ -60,10 +89,10 @@ rows:
   ( 24, 'twofour' , 124, 4, 24, 1.024020e+03, TIMESTAMP '1924-01-01 00:00:00.0', DATE '1924-01-01' )
   ( 25, 'twofive' , 125, 5, 25, 1.025030e+03, TIMESTAMP '1925-01-01 00:00:00.0', DATE '1925-01-01' )
 
-dynamic scan OpTable | limit 1 | output;
+dynamic scan OpTable1 | limit 1 | output;
 rows : 1
 
-dynamic fetch OpTable OpTable_idx1 | output;
+dynamic fetch OpTable1 OpTable1_idx1 | output;
 rows:
   (  0, 'zero'    , 100, 0,  0, 1.000000e+03, TIMESTAMP '1900-01-01 00:00:00.0', DATE '1900-01-01' )
   (  1, 'one'     , 101, 1,  1, 1.001000e+03, TIMESTAMP '1901-01-01 00:00:00.0', DATE '1901-01-01' )
@@ -92,11 +121,15 @@ rows:
   ( 24, 'twofour' , 124, 4, 24, 1.024020e+03, TIMESTAMP '1924-01-01 00:00:00.0', DATE '1924-01-01' )
   ( 25, 'twofive' , 125, 5, 25, 1.025030e+03, TIMESTAMP '1925-01-01 00:00:00.0', DATE '1925-01-01' )
 
-dynamic fetch OpTable OpTable_idx1 | limit 10 | output;
+dynamic fetch OpTable1 OpTable1_idx1 | limit 10 | output;
 rows: 10
 
 // drop the table
-drop table OpTable;
+drop table OpTable1;
+success
+
+// drop the table
+drop table OpTable2;
 success
 
 // check existence of table
@@ -106,7 +139,11 @@ rows: 0
 CLEANUP {
 
   // drop the table
-  drop table OpTable;
+  drop table OpTable1;
+  mute
+
+  // drop the table
+  drop table OpTable2;
   mute
 
   bye;
