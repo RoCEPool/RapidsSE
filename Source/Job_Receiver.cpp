@@ -211,7 +211,16 @@ Footer* Job_Receiver::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Receiver_new(Job* pArg)
 {
-  Job_Receiver* pJob_Receiver = new Job_Receiver(nullptr,pArg ? pArg->m_xReqTuple.m_iReqId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
+  RASSERT(! pArg);
+  
+  ReqTuple xReqTuple_receiver(nullptr);
+  
+  xReqTuple_receiver.m_sPurpose = "**RECEIVER"_Stz;
+  
+  Job_Receiver* pJob_Receiver =
+    new Job_Receiver(nullptr,
+                     C_UNKNOWN,
+                     &xReqTuple_receiver);
   
   return pJob_Receiver;
 }
