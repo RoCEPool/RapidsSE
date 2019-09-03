@@ -170,7 +170,11 @@ Footer* Job_Supervisor::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Supervisor_new(Job* pArg)
 {
-  Job_Supervisor* pJob_Supervisor = new Job_Supervisor(nullptr,pArg ? pArg->m_xReqTuple.m_iReqId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
+  RASSERT(! pArg);
+  
+  ReqTuple xReqTuple("**SUPERVISOR"_Stz,false);
+  
+  Job_Supervisor* pJob_Supervisor = new Job_Supervisor(nullptr,C_UNKNOWN,&xReqTuple);
   
   return pJob_Supervisor;
 }

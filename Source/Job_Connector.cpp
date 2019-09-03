@@ -169,7 +169,11 @@ Footer* Job_Connector::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Connector_new(Job* pArg)
 {
-  Job_Connector* pJob_Connector = new Job_Connector(nullptr,pArg ? pArg->m_xReqTuple.m_iReqId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
+  RASSERT(! pArg);
+  
+  ReqTuple xReqTuple("**CONNECTOR"_Stz,false);
+  
+  Job_Connector* pJob_Connector = new Job_Connector(nullptr,C_UNKNOWN,&xReqTuple);
   
   return pJob_Connector;
 }

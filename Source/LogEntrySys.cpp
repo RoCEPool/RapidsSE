@@ -15,8 +15,11 @@ void _LogEntrySys::vSet(LogEntry* pLogEntry, AttachMap* pAttachMap, eYA eSysAct)
   m_iSysId  = pAttachMap->m_iUniqueId;
   m_eSysAct = eSysAct;
   
-  if (YA_SYS_TRACE  == eSysAct) pLogEntry->m_iIndicator = OC_NOTE;
+  if (YA_SYS_BOOT == eSysAct)
+    pLogEntry->m_bLine = true;
 
+       if (YA_SYS_BOOT  == eSysAct)  pLogEntry->m_iIndicator = OC_TRACE;
+  else if (YA_SYS_TRACE  == eSysAct) pLogEntry->m_iIndicator = OC_TRACE;
 }
 
 /*----------------------------------------------------------------------------*/

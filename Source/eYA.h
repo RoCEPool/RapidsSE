@@ -8,6 +8,7 @@ enum eYA // system actions
   /*  0 */ YA_NONE=0,
   
   /*    */ YA_SYS_ARGS,
+  /*    */ YA_SYS_BOOT,
   /*    */ YA_SYS_FATAL,
   /*    */ YA_SYS_HOST,
   /*    */ YA_SYS_INFO,
@@ -27,6 +28,7 @@ static Stz* aYA[]
   /*  0 */ "NONE"_Stz,
   
   /*  0 */ "YA_SYS_ARGS"_Stz,
+  /*    */ "YA_SYS_BOOT"_Stz,
   /*  0 */ "YA_SYS_FATAL"_Stz,
   /*  0 */ "YA_SYS_HOST"_Stz,
   /*  0 */ "YA_SYS_INFO"_Stz,
@@ -46,6 +48,7 @@ static Stz* aYA_short[]
   /*  0 */ "NONE"_Stz,
   
   /*  0 */ "System args"_Stz,
+  /*  0 */ "System boot"_Stz,
   /*  0 */ "System fatal"_Stz,
   /*  0 */ "System host"_Stz,
   /*  0 */ "System info"_Stz,

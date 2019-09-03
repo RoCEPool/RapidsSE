@@ -19,6 +19,7 @@ namespace Focals
     void* operator new(size_t);
   
     ReqTuple(ReqTuple* aReqTuple);
+    ReqTuple(Stz* szService, bool bFlag);
    ~ReqTuple(void) noexcept(false);
 
     void vSet(ReqTuple* aReqTuple);

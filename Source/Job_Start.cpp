@@ -169,7 +169,11 @@ Footer* Job_Start::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Start_new(Job* pArg)
 {
-  Job_Start* pJob_Start = new Job_Start(nullptr,pArg ? pArg->m_xReqTuple.m_iReqId : C_UNKNOWN, pArg ? &pArg->m_xReqTuple : nullptr);
+  RASSERT(! pArg);
+  
+  ReqTuple xReqTuple("**START"_Stz,false);
+  
+  Job_Start* pJob_Start = new Job_Start(nullptr,C_UNKNOWN,&xReqTuple);
   
   return pJob_Start;
 }
