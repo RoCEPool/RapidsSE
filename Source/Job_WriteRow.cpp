@@ -188,7 +188,7 @@ Job_WriteRow* Job_WriteRow::pNewJobWriteRow(Session* pSession,
   JobClass* pJobClass_WriteRow = JobClass::pFind(CN_JOB_WRITEROW);
 
   Job_WriteRow* pJob_WriteRow =
-  static_cast<Job_WriteRow*>(pJobClass_WriteRow->pPreJob(pSession,C_UNKNOWN,nullptr));
+  static_cast<Job_WriteRow*>(pJobClass_WriteRow->pPreJob(pSession,nullptr));
 
   pJob_WriteRow->vSeed(SS_SEED_RUN);
 

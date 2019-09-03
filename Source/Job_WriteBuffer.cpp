@@ -360,7 +360,7 @@ void Job_WriteBuffer::vSpawnJobWriteBuffer(Session* pSession,
   JobClass* pJobClass_WriteBuffer = JobClass::pFind(CN_JOB_WRITEBUFFER);
   
   Job_WriteBuffer* pJob_WriteBuffer =
-  static_cast<Job_WriteBuffer*>(pJobClass_WriteBuffer->pPreJob(pSession,C_UNKNOWN,nullptr));
+  static_cast<Job_WriteBuffer*>(pJobClass_WriteBuffer->pPreJob(pSession,nullptr));
   
   pJob_WriteBuffer->vSeed(SS_SEED_RUN);
   
