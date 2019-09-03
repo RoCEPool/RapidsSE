@@ -161,6 +161,9 @@ ordered rows:
   (  4, 'four'    ,  104, 4,  4, 1.004000e+03, TIMESTAMP '1904-01-01 00:00:00.0', DATE '1904-01-01' )
   (  5, 'five'    ,  105, 5,  5, 1.005000e+03, TIMESTAMP '1905-01-01 00:00:00.0', DATE '1905-01-01' )
 
+dynamic fetch OpTable1 OpTable1_idx | project jidx_100, jidx_key | limit 5 | output;
+rows: 5
+
 // drop the table
 drop table OpTable1;
 success

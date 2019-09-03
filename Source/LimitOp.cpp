@@ -238,6 +238,31 @@ eOR LimitOp::eOpLoop(void)
       
         break;
       }
+      
+      // -- -- -- -- -- --
+        
+      case CN_IRWBUFFER: {
+        IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
+        
+        // are we done ?
+        if (bLimitDone()) {
+          delete pIrwBuffer;
+          break;
+        }
+        
+        // are rows in SrtBuffer lessthan what we need ?
+        if (pIrwBuffer->nItems() <  m_nLimit - m_iWorkDone) {
+          m_iWorkDone += pIrwBuffer->nItems();
+          vPipeOut(pIrwBuffer);
+        }
+        else {
+          // almost done - just trim the srtBuffer
+          pIrwBuffer->vItems(m_nLimit - m_iWorkDone);
+          vPipeOut(pIrwBuffer);
+        }
+        
+        break;
+      }
         
       // -- -- -- -- -- --
         
@@ -245,6 +270,8 @@ eOR LimitOp::eOpLoop(void)
         AM::vPulseTask(m_pDigest->m_pOpToPulse->pTask());
         vPipeOut(pOperand);
         break;
+     
+      // -- -- -- -- -- --
         
       case CN_SRTBUFFER: {
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
@@ -252,7 +279,7 @@ eOR LimitOp::eOpLoop(void)
         // are we done ?
         if (bLimitDone()) {
           delete pSrtBuffer;
-          break;          
+          break;
         }
         
         // are rows in SrtBuffer lessthan what we need ?
@@ -268,7 +295,7 @@ eOR LimitOp::eOpLoop(void)
         
         break;
       }
-     
+        
       // -- -- -- -- -- --
         
       case CN_STREAMDEF:

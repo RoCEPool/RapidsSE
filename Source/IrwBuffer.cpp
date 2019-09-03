@@ -153,10 +153,13 @@ void IrwBuffer::vPrintRows(ColumnVec* pColVec)
 
   HV_Rec hvRec(pColVec);
   
+  // NOTE: We need to print only nItem no of rows
+  // as the limitOp may have truncated the rows via setting the nItems()
+  
   // get the first row
   Row* pRow = aFirstRow();
   
-  while (pRow) {
+  for (i8 i_Row = 0; i_Row < nItems(); i_Row++) {
     hvRec->vAppend(pRow);
     hvRec->vPrintRow();
     
