@@ -18,7 +18,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Docol(Session* pSession, ReqTuple* aReqTuple);//=C_UNKNOWN);
+    Job_Docol(ReqTuple* aReqTuple, Session* pSession);//=C_UNKNOWN);
     ~Job_Docol(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Docol* _pJob_Docol(void* aAddr);
   
-  Job* pJob_Docol_pre(Session* pSession, ReqTuple* aReqTuple);
+  Job* pJob_Docol_pre(ReqTuple* aReqTuple, Session* pSession);
   void vJob_Docol_delete(Session* pSession, Job* pJob);
   void vJob_Docol_show(Job* pJob);
   

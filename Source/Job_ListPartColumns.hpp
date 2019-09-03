@@ -18,7 +18,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_ListPartColumns(Session* pSession, ReqTuple* aReqTuple);//=C_UNKNOWN);
+    Job_ListPartColumns(ReqTuple* aReqTuple, Session* pSession);//=C_UNKNOWN);
     ~Job_ListPartColumns(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_ListPartColumns* _pJob_ListPartColumns(void* aAddr);
   
-  Job* pJob_ListPartColumns_pre(Session* pSession, ReqTuple* aReqTuple);
+  Job* pJob_ListPartColumns_pre(ReqTuple* aReqTuple, Session* pSession);
   void vJob_ListPartColumns_delete(Session* pSession, Job* pJob);
   void vJob_ListPartColumns_show(Job* pJob);
   

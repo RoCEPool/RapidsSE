@@ -101,7 +101,7 @@ void Job_SubIngester::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SubIngester::Job_SubIngester(Session* pSession, ReqTuple* aReqTuple)
+Job_SubIngester::Job_SubIngester(ReqTuple* aReqTuple, Session* pSession)
 : Job(CN_JOB_SUBINGESTER, pSession, aReqTuple)
 , JobWriteBehind(DS_INGEST)
 {
@@ -313,9 +313,9 @@ Footer* Job_SubIngester::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::vJob_SubIngester_pre(Session* pSession, ReqTuple* aReqTuple)
+Job* Jobs::vJob_SubIngester_pre(ReqTuple* aReqTuple, Session* pSession)
 {
-  Job_SubIngester* pJob_SubIngester = new Job_SubIngester(pSession,aReqTuple);
+  Job_SubIngester* pJob_SubIngester = new Job_SubIngester(aReqTuple,pSession);
   //pJob->vDicPath(pSession);
 
   return pJob_SubIngester;

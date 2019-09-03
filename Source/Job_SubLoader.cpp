@@ -101,7 +101,7 @@ void Job_SubLoader::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SubLoader::Job_SubLoader(Session* pSession, ReqTuple* aReqTuple)
+Job_SubLoader::Job_SubLoader(ReqTuple* aReqTuple, Session* pSession)
 : Job(CN_JOB_SUBLOADER, pSession, aReqTuple)
 , JobWriteBehind(DS_LOAD)
 {
@@ -337,9 +337,9 @@ Footer* Job_SubLoader::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::vJob_SubLoader_pre(Session* pSession, ReqTuple* aReqTuple)
+Job* Jobs::vJob_SubLoader_pre(ReqTuple* aReqTuple, Session* pSession)
 {
-  Job_SubLoader* pJob_SubLoader = new Job_SubLoader(pSession,aReqTuple);
+  Job_SubLoader* pJob_SubLoader = new Job_SubLoader(aReqTuple,pSession);
   //pJob->vDicPath(pSession);
 
   return pJob_SubLoader;

@@ -101,7 +101,7 @@ void Job_Repeater::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Repeater::Job_Repeater(Session* pSession, ReqTuple* aReqTuple)
+Job_Repeater::Job_Repeater(ReqTuple* aReqTuple, Session* pSession)
 : Job(CN_JOB_REPEATER, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPEATER,_FOOTER_);
@@ -178,11 +178,11 @@ Footer* Job_Repeater::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Repeater_pre(Session* pSession, ReqTuple* aReqTuple)
+Job* Jobs::pJob_Repeater_pre(ReqTuple* aReqTuple, Session* pSession)
 {
   i8 nTokens;
 
-  Job_Repeater* pJob_Repeater = new Job_Repeater(pSession,aReqTuple);
+  Job_Repeater* pJob_Repeater = new Job_Repeater(aReqTuple,pSession);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();

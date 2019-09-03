@@ -101,7 +101,7 @@ void Job_Space::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Space::Job_Space(Session* pSession, ReqTuple* aReqTuple)
+Job_Space::Job_Space(ReqTuple* aReqTuple, Session* pSession)
 : Job(CN_JOB_SPACE, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SPACE,_FOOTER_);
@@ -190,9 +190,9 @@ Footer* Job_Space::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Space_pre(Session* pSession, ReqTuple* aReqTuple)
+Job* Jobs::pJob_Space_pre(ReqTuple* aReqTuple, Session* pSession)
 {
-  Job_Space* pJob_Space = new Job_Space(pSession,aReqTuple);
+  Job_Space* pJob_Space = new Job_Space(aReqTuple,pSession);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

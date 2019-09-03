@@ -101,7 +101,7 @@ void Job_SubIndexJoin::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SubIndexJoin::Job_SubIndexJoin(Session* pSession, ReqTuple* aReqTuple)
+Job_SubIndexJoin::Job_SubIndexJoin(ReqTuple* aReqTuple, Session* pSession)
 : Job(CN_JOB_SUBINDEXJOIN, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINDEXJOIN,_FOOTER_);
@@ -169,9 +169,9 @@ Footer* Job_SubIndexJoin::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubIndexJoin_pre(Session* pSession, ReqTuple* aReqTuple)
+Job* Jobs::pJob_SubIndexJoin_pre(ReqTuple* aReqTuple, Session* pSession)
 {
-  Job_SubIndexJoin* pJob_SubIndexJoin = new Job_SubIndexJoin(pSession,aReqTuple);
+  Job_SubIndexJoin* pJob_SubIndexJoin = new Job_SubIndexJoin(aReqTuple,pSession);
   //pJob->vDicPath(pSession);
 
   return pJob_SubIndexJoin;

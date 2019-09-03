@@ -101,7 +101,7 @@ void Job_KidExport::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_KidExport::Job_KidExport(Session* pSession, ReqTuple* aReqTuple)
+Job_KidExport::Job_KidExport(ReqTuple* aReqTuple, Session* pSession)
 : Job(CN_JOB_KIDEXPORT, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_KIDEXPORT,_FOOTER_);
@@ -210,9 +210,9 @@ Footer* Job_KidExport::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_KidExport_pre(Session* pSession, ReqTuple* aReqTuple)
+Job* Jobs::pJob_KidExport_pre(ReqTuple* aReqTuple, Session* pSession)
 {
-  Job_KidExport* pJob_KidExport = new Job_KidExport(pSession,aReqTuple);
+  Job_KidExport* pJob_KidExport = new Job_KidExport(aReqTuple,pSession);
   //pJob->vDicPath(pSession);
 
   return pJob_KidExport;

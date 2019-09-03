@@ -18,7 +18,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_DumpIndex(Session* pSession, ReqTuple* aReqTuple);//=C_UNKNOWN);
+    Job_DumpIndex(ReqTuple* aReqTuple, Session* pSession);//=C_UNKNOWN);
     ~Job_DumpIndex(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_DumpIndex* _pJob_DumpIndex(void* aAddr);
   
-  Job* pJob_DumpIndex_pre(Session* pSession, ReqTuple* aReqTuple);
+  Job* pJob_DumpIndex_pre(ReqTuple* aReqTuple, Session* pSession);
   void vJob_DumpIndex_delete(Session* pSession, Job* pJob);
   void vJob_DumpIndex_show(Job* pJob);
   

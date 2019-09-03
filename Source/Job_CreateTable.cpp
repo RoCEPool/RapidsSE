@@ -110,7 +110,7 @@ void Job_CreateTable::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_CreateTable::Job_CreateTable(Session* pSession, ReqTuple* aReqTuple)
+Job_CreateTable::Job_CreateTable(ReqTuple* aReqTuple, Session* pSession)
 : Job(CN_JOB_CREATETABLE, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
@@ -610,9 +610,9 @@ Footer* Job_CreateTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_CreateTable_pre(Session* pSession, ReqTuple* aReqTuple)
+Job* Jobs::pJob_CreateTable_pre(ReqTuple* aReqTuple, Session* pSession)
 {
-  Job_CreateTable* pJob_CreateTable = new Job_CreateTable(pSession,aReqTuple);
+  Job_CreateTable* pJob_CreateTable = new Job_CreateTable(aReqTuple,pSession);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

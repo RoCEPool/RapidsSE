@@ -18,7 +18,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_ListPartitions(Session* pSession, ReqTuple* aReqTuple);//=C_UNKNOWN);
+    Job_ListPartitions(ReqTuple* aReqTuple, Session* pSession);//=C_UNKNOWN);
     ~Job_ListPartitions(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_ListPartitions* _pJob_ListPartitions(void* aAddr);
   
-  Job* pJob_ListPartitions_pre(Session* pSession, ReqTuple* aReqTuple);
+  Job* pJob_ListPartitions_pre(ReqTuple* aReqTuple, Session* pSession);
   void vJob_ListPartitions_delete(Session* pSession, Job* pJob);
   void vJob_ListPartitions_show(Job* pJob);
   

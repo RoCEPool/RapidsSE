@@ -101,7 +101,7 @@ void Job_CreateTenant::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_CreateTenant::Job_CreateTenant(Session* pSession, ReqTuple* aReqTuple)
+Job_CreateTenant::Job_CreateTenant(ReqTuple* aReqTuple, Session* pSession)
 : Job(CN_JOB_CREATETENANT, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETENANT,_FOOTER_);
@@ -193,9 +193,9 @@ Footer* Job_CreateTenant::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_CreateTenant_pre(Session* pSession, ReqTuple* aReqTuple)
+Job* Jobs::pJob_CreateTenant_pre(ReqTuple* aReqTuple, Session* pSession)
 {
-  Job_CreateTenant* pJob_CreateTenant = new Job_CreateTenant(pSession,aReqTuple);
+  Job_CreateTenant* pJob_CreateTenant = new Job_CreateTenant(aReqTuple,pSession);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

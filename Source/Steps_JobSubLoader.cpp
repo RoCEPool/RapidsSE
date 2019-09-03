@@ -38,7 +38,7 @@ void Step::vJob_SubLoaderSpawn(MP_Task mpTask)
   JobClass* pJobClass_SubLoader = JobClass::pFind(CN_JOB_SUBLOADER);
   
   Job_SubLoader* pJob_SubLoader =
-    static_cast<Job_SubLoader*>(pJobClass_SubLoader->pPreJob(pSession,aReqTuple));
+    static_cast<Job_SubLoader*>(pJobClass_SubLoader->pPreJob(aReqTuple,pSession));
   
   pJob_SubLoader->vSeed(SS_SEED_RUN);
   

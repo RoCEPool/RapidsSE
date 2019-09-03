@@ -38,7 +38,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Report(Session* pSession, ReqTuple* aReqTuple);//=C_UNKNOWN);
+    Job_Report(ReqTuple* aReqTuple, Session* pSession);//=C_UNKNOWN);
     ~Job_Report(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -58,7 +58,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Report* _pJob_Report(void* aAddr);
   
-  Job* pJob_Report_pre(Session* pSession, ReqTuple* aReqTuple);
+  Job* pJob_Report_pre(ReqTuple* aReqTuple, Session* pSession);
   Job* pJob_Report_new(JobClass* aJobClass);
   void vJob_Report_delete(Session* pSession, Job* pJob);
   void vJob_Report_show(Job* pJob);

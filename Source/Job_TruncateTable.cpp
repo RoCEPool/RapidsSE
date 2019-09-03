@@ -101,7 +101,7 @@ void Job_TruncateTable::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_TruncateTable::Job_TruncateTable(Session* pSession, ReqTuple* aReqTuple)
+Job_TruncateTable::Job_TruncateTable(ReqTuple* aReqTuple, Session* pSession)
 : Job(CN_JOB_TRUNCATETABLE, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_TRUNCATETABLE,_FOOTER_);
@@ -192,9 +192,9 @@ Footer* Job_TruncateTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_TruncateTable_pre(Session* pSession, ReqTuple* aReqTuple)
+Job* Jobs::pJob_TruncateTable_pre(ReqTuple* aReqTuple, Session* pSession)
 {
-  Job_TruncateTable* pJob_TruncateTable = new Job_TruncateTable(pSession,aReqTuple);
+  Job_TruncateTable* pJob_TruncateTable = new Job_TruncateTable(aReqTuple,pSession);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

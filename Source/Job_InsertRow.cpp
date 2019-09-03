@@ -101,7 +101,7 @@ void Job_InsertRow::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_InsertRow::Job_InsertRow(Session* pSession, ReqTuple* aReqTuple)
+Job_InsertRow::Job_InsertRow(ReqTuple* aReqTuple, Session* pSession)
 : Job(CN_JOB_INSERTROW, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROW,_FOOTER_);
@@ -225,9 +225,9 @@ Footer* Job_InsertRow::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_InsertRow_pre(Session* pSession, ReqTuple* aReqTuple)
+Job* Jobs::pJob_InsertRow_pre(ReqTuple* aReqTuple, Session* pSession)
 {
-  Job_InsertRow* pJob_InsertRow = new Job_InsertRow(pSession,aReqTuple);
+  Job_InsertRow* pJob_InsertRow = new Job_InsertRow(aReqTuple,pSession);
   //pJob->vDicPath(pSession);
 
 //  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

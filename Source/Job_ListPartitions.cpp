@@ -101,7 +101,7 @@ void Job_ListPartitions::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_ListPartitions::Job_ListPartitions(Session* pSession, ReqTuple* aReqTuple)
+Job_ListPartitions::Job_ListPartitions(ReqTuple* aReqTuple, Session* pSession)
 : Job(CN_JOB_LISTPARTITIONS, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTPARTITIONS,_FOOTER_);
@@ -191,9 +191,9 @@ Footer* Job_ListPartitions::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_ListPartitions_pre(Session* pSession, ReqTuple* aReqTuple)
+Job* Jobs::pJob_ListPartitions_pre(ReqTuple* aReqTuple, Session* pSession)
 {
-  Job_ListPartitions* pJob_ListPartitions = new Job_ListPartitions(pSession,aReqTuple);
+  Job_ListPartitions* pJob_ListPartitions = new Job_ListPartitions(aReqTuple,pSession);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

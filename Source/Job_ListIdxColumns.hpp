@@ -18,7 +18,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_ListIdxColumns(Session* pSession, ReqTuple* aReqTuple);//=C_UNKNOWN);
+    Job_ListIdxColumns(ReqTuple* aReqTuple, Session* pSession);//=C_UNKNOWN);
     ~Job_ListIdxColumns(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_ListIdxColumns* _pJob_ListIdxColumns(void* aAddr);
   
-  Job* pJob_ListIdxColumns_pre(Session* pSession, ReqTuple* aReqTuple);
+  Job* pJob_ListIdxColumns_pre(ReqTuple* aReqTuple, Session* pSession);
   void vJob_ListIdxColumns_delete(Session* pSession, Job* pJob);
   void vJob_ListIdxColumns_show(Job* pJob);
   

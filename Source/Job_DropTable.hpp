@@ -18,7 +18,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_DropTable(Session* pSession, ReqTuple* aReqTuple);//=C_UNKNOWN);
+    Job_DropTable(ReqTuple* aReqTuple, Session* pSession);//=C_UNKNOWN);
     ~Job_DropTable(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_DropTable* _pJob_DropTable(void* aAddr);
   
-  Job* pJob_DropTable_pre(Session* pSession, ReqTuple* aReqTuple);
+  Job* pJob_DropTable_pre(ReqTuple* aReqTuple, Session* pSession);
   void vJob_DropTable_delete(Session* pSession, Job* pJob);
   void vJob_DropTable_show(Job* pJob);
   

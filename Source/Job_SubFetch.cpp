@@ -101,7 +101,7 @@ void Job_SubFetch::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SubFetch::Job_SubFetch(Session* pSession, ReqTuple* aReqTuple)
+Job_SubFetch::Job_SubFetch(ReqTuple* aReqTuple, Session* pSession)
 : Job(CN_JOB_SUBFETCH, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBFETCH,_FOOTER_);
@@ -171,9 +171,9 @@ Footer* Job_SubFetch::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubFetch_pre(Session* pSession, ReqTuple* aReqTuple)
+Job* Jobs::pJob_SubFetch_pre(ReqTuple* aReqTuple, Session* pSession)
 {
-  Job_SubFetch* pJob_SubFetch = new Job_SubFetch(pSession,aReqTuple);
+  Job_SubFetch* pJob_SubFetch = new Job_SubFetch(aReqTuple,pSession);
   //pJob->vDicPath(pSession);
 
   return pJob_SubFetch;

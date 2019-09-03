@@ -101,7 +101,7 @@ void Job_Alarm::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Alarm::Job_Alarm(Session* pSession, ReqTuple* aReqTuple)
+Job_Alarm::Job_Alarm(ReqTuple* aReqTuple, Session* pSession)
 : Job(CN_JOB_ALARM, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_ALARM,_FOOTER_);
@@ -172,7 +172,7 @@ Job* Jobs::pJob_Alarm_new(JobClass* aJobClass)
 {
   ReqTuple xReqTuple("**ALARM"_Stz,false);
   
-  Job_Alarm* pJob_Alarm = new Job_Alarm(nullptr,&xReqTuple);
+  Job_Alarm* pJob_Alarm = new Job_Alarm(&xReqTuple,nullptr);
   
   return pJob_Alarm;
 }

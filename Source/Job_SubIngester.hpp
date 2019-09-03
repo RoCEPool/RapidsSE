@@ -20,7 +20,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_SubIngester(Session* pSession, ReqTuple* aReqTuple);//=C_UNKNOWN);
+    Job_SubIngester(ReqTuple* aReqTuple, Session* pSession);//=C_UNKNOWN);
     ~Job_SubIngester(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -42,7 +42,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_SubIngester* _pJob_SubIngester(void* aAddr);
   
-  Job* vJob_SubIngester_pre(Session* pSession, ReqTuple* aReqTuple);
+  Job* vJob_SubIngester_pre(ReqTuple* aReqTuple, Session* pSession);
   Job* pJob_SubIngester_new(JobClass* aJobClass);
   void vJob_SubIngester_delete(Session* pSession, Job* pJob);
   void vJob_SubIngester_show(Job* pJob);

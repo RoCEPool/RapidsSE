@@ -20,7 +20,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_AnalyzeTable(Session* pSession, ReqTuple* aReqTuple);//=C_UNKNOWN);
+    Job_AnalyzeTable(ReqTuple* aReqTuple, Session* pSession);//=C_UNKNOWN);
     ~Job_AnalyzeTable(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -37,7 +37,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_AnalyzeTable* _pJob_AnalyzeTable(void* aAddr);
   
-  Job* pJob_AnalyzeTable_pre(Session* pSession, ReqTuple* aReqTuple);
+  Job* pJob_AnalyzeTable_pre(ReqTuple* aReqTuple, Session* pSession);
   void vJob_AnalyzeTable_delete(Session* pSession, Job* pJob);
   void vJob_AnalyzeTable_show(Job* pJob);
   

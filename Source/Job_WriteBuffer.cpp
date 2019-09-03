@@ -101,7 +101,7 @@ void Job_WriteBuffer::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_WriteBuffer::Job_WriteBuffer(Session* pSession, ReqTuple* aReqTuple)
+Job_WriteBuffer::Job_WriteBuffer(ReqTuple* aReqTuple, Session* pSession)
 : Job(CN_JOB_WRITEBUFFER, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEBUFFER,_FOOTER_);
@@ -360,7 +360,7 @@ void Job_WriteBuffer::vSpawnJobWriteBuffer(Session* pSession,
   JobClass* pJobClass_WriteBuffer = JobClass::pFind(CN_JOB_WRITEBUFFER);
   
   Job_WriteBuffer* pJob_WriteBuffer =
-    static_cast<Job_WriteBuffer*>(pJobClass_WriteBuffer->pPreJob(pSession,nullptr));
+    static_cast<Job_WriteBuffer*>(pJobClass_WriteBuffer->pPreJob(nullptr,pSession));
   
   pJob_WriteBuffer->vSeed(SS_SEED_RUN);
   
@@ -423,9 +423,9 @@ Footer* Job_WriteBuffer::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_WriteBuffer_pre(Session* pSession, ReqTuple* aReqTuple)
+Job* Jobs::pJob_WriteBuffer_pre(ReqTuple* aReqTuple, Session* pSession)
 {
-  Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(pSession,aReqTuple);
+  Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(aReqTuple,pSession);
   //pJob->vDicPath(pSession);
 
   return pJob_WriteBuffer;

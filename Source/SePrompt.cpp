@@ -755,7 +755,7 @@ void SePrompt::vPreJob(void)
 
   //pInput->vPreJob(m_pSession);
   
-  m_pJob = m_pJobClass->pPreJob(m_pSession,&m_pRequest->m_xReqTuple);
+  m_pJob = m_pJobClass->pPreJob(&m_pRequest->m_xReqTuple,m_pSession);
   
 //  if (m_pJob && m_pJob->m_bMarkTrace)
 //    m_pJob->m_pJobClass->vShowJob(m_pJob);
