@@ -140,6 +140,18 @@ eOR OutputOp::eOpLoop(void)
 
     switch (pOperand->eClass()) {
         
+      // -- -- -- -- -- --
+        
+      case CN_CRWBUFFER: {
+        CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
+        m_iWorkDone += pCrwBuffer->nRowCount();
+        //pCrwBuffer->vPrintRows();
+        vPipeOut(pOperand);
+        break;
+      }
+        
+      // -- -- -- -- -- --
+        
       case CN_ENDMARKER: {
         if (--m_nLeftEndMarkers == 0) {
           // set the responses received
@@ -202,9 +214,10 @@ eOR OutputOp::eOpLoop(void)
             Column* pCol = pColVec->pGet(i_Col);
             sMetaData.vCatSprint("%s %s"_Stz, pCol->sColumnName().aChar(),
                                   aCT[pCol->eColumnType()]);
-            vTrace("%s"_Stz, sMetaData.aChar());
           }
-          vTrace(")\n"_Stz);
+          sMetaData.vConcat(")\n"_Stz);
+          
+          vTrace("%s"_Stz, sMetaData.aChar());
         }
         vPipeOut(pOperand);        
         break;

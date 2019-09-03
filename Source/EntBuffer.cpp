@@ -1128,7 +1128,7 @@ IrwBuffer* EntBuffer::pToIrwBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set prev buffer                                                            */
+/* convert entBuffer to srtBuffer                                             */
 /*----------------------------------------------------------------------------*/
 SrtBuffer* EntBuffer::pToSrtBuffer(i8 iKeyCol)
 {
@@ -1145,6 +1145,16 @@ SrtBuffer* EntBuffer::pToSrtBuffer(i8 iKeyCol)
   while (aEntry) {
     
     pSrtSet = pSrtBuffer->aAllotSrtSet();
+    if ( ! pSrtSet ) {
+      
+      // create a new SrtBuffer
+      SrtBuffer* pNewSrtBuffer = new SrtBuffer(nRowRefs, m_iPartitionNo);
+      pNewSrtBuffer->vNextBuffer(pSrtBuffer);
+      pSrtBuffer = pNewSrtBuffer;
+      pSrtSet = pSrtBuffer->aAllotSrtSet();
+      
+    }
+    RASSERT(pSrtSet);
     
     // get the left (this) rowBuffer
     CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(aEntry->xRef());

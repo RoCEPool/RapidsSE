@@ -505,6 +505,16 @@ SrtBuffer* CrwBuffer::pToSrtBuffer(i8 iKeyCol)
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
     SrtSet* pSrtSet = pSrtBuffer->aAllotSrtSet();
+    
+    if ( ! pSrtSet ) {
+      
+      // create a new SrtBuffer
+      SrtBuffer* pNewSrtBuffer = new SrtBuffer(nRowRefs, m_iPartitionNo);
+      pNewSrtBuffer->vNextBuffer(pSrtBuffer);
+      pSrtBuffer = pNewSrtBuffer;
+      pSrtSet = pSrtBuffer->aAllotSrtSet();
+      
+    }
     RASSERT(pSrtSet);
     
     // get compact row
