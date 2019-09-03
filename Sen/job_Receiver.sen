@@ -17,7 +17,7 @@
 
   CN_JOB_RECEIVER jobClass::find to pJobClass_Receiver
 
-  nullptr pJobClass_Receiver jobClass.new to pJob_Receiver
+  pJobClass_Receiver jobClass.new to pJob_Receiver
 
   iConnNo       pJob_Receiver job_receiver.connNo!
   pAnsweredNode pJob_Receiver job_receiver.node!

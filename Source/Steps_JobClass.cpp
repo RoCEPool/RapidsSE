@@ -93,11 +93,6 @@ void Step::vJobClassNew(MP_Task mpTask)
     THROW_INVALID_DSTACK("jobClass.new"_Stz);
   JobClass* pJobClass = _pJobClass(iJobClass_p);
 
-  Object* pArgPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pArgPtr) )
-    THROW_INVALID_DSTACK("jobClass.new"_Stz);
-  Job* pArg = _pJob(pArgPtr);
-
   Job* pJob = pJobClass->pNewJob(nullptr);
   
   mpTask->m_pDataStack->vPushPointer(pJob);

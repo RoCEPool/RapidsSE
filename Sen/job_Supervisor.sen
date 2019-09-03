@@ -14,7 +14,7 @@
 
   CN_JOB_SUPERVISOR jobClass::find to pJobClass_Supervisor
 
-  nullptr pJobClass_Supervisor jobClass.new to pJob_Supervisor
+  pJobClass_Supervisor jobClass.new to pJob_Supervisor
 
   pJob_Supervisor SEED_RUN job.spawn_dedicated
 ;

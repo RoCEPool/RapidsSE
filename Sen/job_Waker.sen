@@ -14,7 +14,7 @@
 
   CN_JOB_WAKER jobClass::find to pJobClass_Waker
 
-  nullptr pJobClass_Waker jobClass.new to pJob_Waker
+  pJobClass_Waker jobClass.new to pJob_Waker
 
   pJob_Waker SEED_RUN job.spawn_dedicated
 ;

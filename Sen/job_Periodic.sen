@@ -14,7 +14,7 @@
 
   CN_JOB_PERIODIC jobClass::find to pJobClass_Periodic
 
-  nullptr pJobClass_Periodic jobClass.new to pJob_Periodic
+  pJobClass_Periodic jobClass.new to pJob_Periodic
 
   pJob_Periodic SEED_RUN job.spawn
 ;

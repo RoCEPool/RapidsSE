@@ -14,7 +14,7 @@
 
   CN_JOB_ANSWER jobClass::find to pJobClass_Answer
 
-  nullptr pJobClass_Answer jobClass.new to pJob_Answer
+  pJobClass_Answer jobClass.new to pJob_Answer
 
   pJob_Answer SEED_RUN job.spawn_dedicated
 ;

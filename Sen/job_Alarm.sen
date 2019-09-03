@@ -14,7 +14,7 @@
 
   CN_JOB_ALARM jobClass::find to pJobClass_Alarm
 
-  nullptr pJobClass_Alarm jobClass.new to pJob_Alarm
+  pJobClass_Alarm jobClass.new to pJob_Alarm
 
   pJob_Alarm SEED_RUN job.spawn_dedicated
 ;
