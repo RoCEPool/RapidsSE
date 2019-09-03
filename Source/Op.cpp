@@ -445,6 +445,29 @@ void Op::vPipeOut(Operand* pOperand)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append operand to the dynamic job's buffer queue                           */
+/*----------------------------------------------------------------------------*/
+void Op::vPipeToJob(Operand* pOperand)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  Queue* pBufferQueue = AM::pBufferQueue(m_pJob);
+  
+  if (AM::bVerbose())
+    vTrace("%s::vPipeToJob :    %s %p\n"_Stz,
+           m_sLabel.aStz(),
+           aCN[pOperand->eClass()],
+           pOperand);
+  
+  AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
+              "vPipeToJob operand %s to queue of dynamic job"_Stz, //!format-LogOpr
+              aCN[pOperand->eClass()]);
+  
+  pBufferQueue->vAppend(pOperand);
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* append end-marker to output op's operand queue                             */
 /*----------------------------------------------------------------------------*/
 void Op::vPipeOut_endMarker(void)

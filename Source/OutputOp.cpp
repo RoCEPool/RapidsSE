@@ -145,8 +145,8 @@ eOR OutputOp::eOpLoop(void)
       case CN_CRWBUFFER: {
         CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
         m_iWorkDone += pCrwBuffer->nRowCount();
-        pCrwBuffer->vPrintRows();
-        vPipeOut(pOperand);
+        //pCrwBuffer->vPrintRows();
+        vPipeToJob(pOperand);
         break;
       }
         
@@ -155,8 +155,7 @@ eOR OutputOp::eOpLoop(void)
       case CN_ENDMARKER: {
         if (--m_nLeftEndMarkers == 0) {
           // set the responses received
-          AM::vLocalResponse(m_pJob, m_iWorkDone);
-          vPipeOut(pOperand);
+          vPipeToJob(pOperand);
           goto L_EXIT;
         }
         else
@@ -170,8 +169,8 @@ eOR OutputOp::eOpLoop(void)
       case CN_ENTBUFFER: {
         EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
         m_iWorkDone += pEntBuffer->nItems();
-        pEntBuffer->vPrintRows();
-        vPipeOut(pOperand);
+        //pEntBuffer->vPrintRows();
+        vPipeToJob(pOperand);
         break;
       }
         
@@ -180,8 +179,8 @@ eOR OutputOp::eOpLoop(void)
       case CN_IRWBUFFER: {
         IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
         m_iWorkDone += pIrwBuffer->nItems();
-        pIrwBuffer->vPrintRows(m_pStreamDef->pColumnVec(0));
-        vPipeOut(pOperand);
+        //pIrwBuffer->vPrintRows(m_pStreamDef->pColumnVec(0));
+        vPipeToJob(pOperand);
         break;
       }
       
@@ -190,43 +189,43 @@ eOR OutputOp::eOpLoop(void)
       case CN_SRTBUFFER: {
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
         m_iWorkDone += pSrtBuffer->nItems();
-        pSrtBuffer->vPrintRows(m_pStreamDef);
-        vPipeOut(pOperand);
+        //pSrtBuffer->vPrintRows(m_pStreamDef);
+        vPipeToJob(pOperand);
         break;
       }
        
       // -- -- -- -- -- --
         
       case CN_STREAMDEF: {
-        m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
-        if (AM::bMetadata()) {
-          //vSetMetaData();
-          sMetaData = AM::sMetaData(m_pJob);
-          
-          ColumnVec* pColVec = m_pStreamDef->m_oColVecAry.pGet(0);
-          sMetaData.vCopy(""_Stz);
-          
-          vTrace("metadata: ("_Stz);
-
-          for (i8 i_Col = 0; i_Col < pColVec->nItems(); i_Col++) {
-            if (i_Col != 0)
-              sMetaData.vConcat(","_Stz);
-            Column* pCol = pColVec->pGet(i_Col);
-            sMetaData.vCatSprint("%s %s"_Stz, pCol->sColumnName().aChar(),
-                                  aCT[pCol->eColumnType()]);
-          }
-          sMetaData.vConcat(")\n"_Stz);
-          
-          vTrace("%s"_Stz, sMetaData.aChar());
-        }
-        vPipeOut(pOperand);        
+//        m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
+//        if (AM::bMetadata()) {
+//          //vSetMetaData();
+//          sMetaData = AM::sMetaData(m_pJob);
+//
+//          ColumnVec* pColVec = m_pStreamDef->m_oColVecAry.pGet(0);
+//          sMetaData.vCopy(""_Stz);
+//
+//          vTrace("metadata: ("_Stz);
+//
+//          for (i8 i_Col = 0; i_Col < pColVec->nItems(); i_Col++) {
+//            if (i_Col != 0)
+//              sMetaData.vConcat(","_Stz);
+//            Column* pCol = pColVec->pGet(i_Col);
+//            sMetaData.vCatSprint("%s %s"_Stz, pCol->sColumnName().aChar(),
+//                                  aCT[pCol->eColumnType()]);
+//          }
+//          sMetaData.vConcat(")\n"_Stz);
+//
+//          vTrace("%s"_Stz, sMetaData.aChar());
+//        }
+        vPipeToJob(pOperand);
         break;
       }
         
       // -- -- -- -- -- --
         
       default:
-        vPipeOut(pOperand);
+        vPipeToJob(pOperand);
         break;
     }
     

@@ -59,6 +59,7 @@ namespace Operators
     void vAckJobEnd(bool m_bAckJobEnd);
     void vAppendLeft(Operand* pOperand);
     void vAppendRight(Operand* pOperand);
+    void vAppendToJob(Operand* pOperand);
     Stz* szArgs(void);
     void vDropTaskLock(void);
     void vFocalOutline(s4K& sOutline);
@@ -75,6 +76,7 @@ namespace Operators
     bool bPause(void);
     void vPipeOut(Operand* pOperand);
     void vPipeOut_endMarker(void);
+    void vPipeToJob(Operand* pOperand);
     Operand* pPopQueue(void);
     Operand* pPopQueueLeft(void);
     Operand* pPopQueueRight(void);

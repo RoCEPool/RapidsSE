@@ -108,8 +108,10 @@ Job_Dynamic::Job_Dynamic(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
   
   //m_oOpVec
   
-  m_pDigest = new Digest(this);
-    
+  m_pDigest      = new Digest(this);
+  m_pBufferQueue = new Queue;
+  m_pStreamDef   = nullptr;
+  
   _checkInitialised_(CN_JOB_DYNAMIC);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
@@ -123,6 +125,8 @@ Job_Dynamic::~Job_Dynamic(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
  
   delete m_pDigest;
+  delete m_pBufferQueue;
+  delete m_pStreamDef;
 }
 
 
@@ -217,7 +221,6 @@ void Job_Dynamic::vExecute(void)
   
 }
 
-
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -269,43 +272,105 @@ void Jobs::vJob_Dynamic_post(Session* pSession, Job* pJob)
 //    return;
 //  }
 
+  for (;;) {
+    
+    Operand* pOperand = _pOperand(pJob_Dynamic->m_pBufferQueue->pPop());
+    
+    if (! pOperand) {
+      AM::pThisTLSPthread()->vSleepUsec(250,CN_JOB_FETCHROWS);
+      continue;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+    switch (pOperand->eClass()) {
+        
+        // -- -- -- -- -- --
+        
+      case CN_CRWBUFFER: {
+        CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
+        pJob_Dynamic->m_xResponse.m_ixRowsProcessed += pCrwBuffer->nRowCount();
+        pCrwBuffer->vPrintRows();
+        break;
+      }
+        
+        // -- -- -- -- -- --
+        
+      case CN_ENDMARKER: {
+        // print the responses received
+        vTrace("success: %lld rows fetched\n"_Stz, *pJob_Dynamic->m_xResponse.m_ixRowsProcessed);
+        delete (EndMarker*)pOperand;
+        goto L_EXIT;
+        
+        break;
+      }
+        
+        // -- -- -- -- -- --
+        
+      case CN_ENTBUFFER: {
+        EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
+        pJob_Dynamic->m_xResponse.m_ixRowsProcessed += pEntBuffer->nItems();
+        pEntBuffer->vPrintRows();
+        break;
+      }
+        
+        // -- -- -- -- -- --
+        
+      case CN_IRWBUFFER: {
+        IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
+        pJob_Dynamic->m_xResponse.m_ixRowsProcessed += pIrwBuffer->nItems();
+        pIrwBuffer->vPrintRows(pJob_Dynamic->m_pStreamDef->pColumnVec(0));
+        delete pIrwBuffer;
+        break;
+      }
+        
+        // -- -- -- -- -- --
+        
+      case CN_SRTBUFFER: {
+        SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
+        pJob_Dynamic->m_xResponse.m_ixRowsProcessed += pSrtBuffer->nItems();
+        pSrtBuffer->vPrintRows(pJob_Dynamic->m_pStreamDef);
+        delete pSrtBuffer;
+        break;
+      }
+        
+        // -- -- -- -- -- --
+        
+      case CN_STREAMDEF: {
+        pJob_Dynamic->m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
+        if (AM::bMetadata()) {
+          
+          ColumnVec* pColVec = pJob_Dynamic->m_pStreamDef->m_oColVecAry.pGet(0);
+          
+          pJob_Dynamic->m_sMetadata.vCopy("metadata: ("_Stz);
+          
+          for (i8 i_Col = 0; i_Col < pColVec->nItems(); i_Col++) {
+            if (i_Col != 0)
+              pJob_Dynamic->m_sMetadata.vConcat(","_Stz);
+            Column* pCol = pColVec->pGet(i_Col);
+            pJob_Dynamic->m_sMetadata.vCatSprint("%s %s"_Stz, pCol->sColumnName().aChar(),
+                                 aCT[pCol->eColumnType()]);
+          }
+          pJob_Dynamic->m_sMetadata.vConcat(")"_Stz);
+          vTrace("%s\n"_Stz, pJob_Dynamic->m_sMetadata.aStz());
+        }
+        
+        delete _pStreamDef(pOperand);
+        break;
+      }
+        
+        // -- -- -- -- -- --
+        
+      default:
+        RASSERT(0);
+        break;
+    }
+    
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // fetch
-//  if (AM::bMetadata()) {
-//    vTrace("metadata: %s\n"_Stz, pJob_FetchRows->m_sMetadata.aStz());
-//  }
-//
-//  // create a row for retrieval
-//  pJob_FetchRows->m_pRow = new Row(pJob_FetchRows->m_pTable->pColumnVec());
-//
-//  while ( nLastBuffersScanned != pJob_FetchRows->m_nLastBuffers ) {
-//
-//    pFetchBuffer = _pFetchBuffer(pJob_FetchRows->m_pBufferQueue->pPop());
-//    if (! pFetchBuffer) {
-//      //Pthread::vSleepMilli(1,CN_JOB_FETCHROWS);
-//      AM::vNap(1,CN_JOB_FETCHROWS);
-//      continue;
-//    }
-//
-//    if (pJob_FetchRows->m_bDisplay) {
-//      if (pJob_FetchRows->m_bLimit && iRowsPrinted != pJob_FetchRows->m_iRows)
-//        vIterateBuffer(pJob_FetchRows, pFetchBuffer, iRowsPrinted);
-//      else
-//        vIterateBuffer(pJob_FetchRows, pFetchBuffer, iRowsPrinted);
-//    }
-//
-//    nRowsProcessed += pFetchBuffer->nFetchedRows();
-//
-//    if (pFetchBuffer->bIsLast()) {
-//      nLastBuffersScanned++;
-//    }
-//    delete pFetchBuffer;
-//    pFetchBuffer = nullptr;
-//  }
-
-  vTrace("success: %lld rows fetched\n"_Stz, *pJob_Dynamic->m_xResponse.m_ixRowsProcessed);
-  
+L_EXIT:
+  return;
 }
 
 /*----------------------------------------------------------------------------*/

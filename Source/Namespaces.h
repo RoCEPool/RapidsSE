@@ -60,7 +60,7 @@ namespace Steps         { class Step; class StepTiming;                       }
 namespace StorageEngine { class AttachMap; class AM; class Engine;            }
 namespace Streams       {                                                     }
 namespace Strings       {                                                     }
-namespace Structures    {                                                     }
+namespace Structures    { class Queue;                                        }
 namespace Tasks         { class Task;                                         }
 namespace Threads       { class Thread;                                       }
 namespace Transactions  { class Tx; class TxSet;                              }

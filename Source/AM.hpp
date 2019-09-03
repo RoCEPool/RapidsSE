@@ -107,6 +107,7 @@ namespace StorageEngine
     //
     static void vAckWaitingTask(Task* pTaskWaiting, Task* pTaskAcking);
     static void vAddConstant(Stz* szName,Stz* szValue);
+    static Queue* pBufferQueue(Job* pJob);
     static void vAttachMap(Header* aHeader);
     static void vBootError(bool bBootError);
     static void vDropTaskLock(Task* pTask);

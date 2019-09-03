@@ -115,6 +115,9 @@ void AM::vAddConstant(Stz* szName,Stz* szValue) {
 void AM::vAttachMap(Header* aHeader) {
   gpAttachMap = static_cast<AttachMap*>(aHeader);
 }
+Queue* AM::pBufferQueue(Job* pJob) {
+  return _pJob_Dynamic(pJob)->m_pBufferQueue;
+}
 void AM::vBootError(bool bBootError) {
   gpAttachMap->m_bBootError = bBootError;
 }
