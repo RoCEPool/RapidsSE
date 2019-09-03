@@ -323,7 +323,7 @@ Job* Jobs::vJob_SubIngester_pre(Session* pSession, i8 iRequestId, ReqTuple* aReq
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubIngester_new(Job* pArg)
+Job* Jobs::pJob_SubIngester_new(JobClass* aJobClass)
 {
   Job_SubIngester* pJob_SubIngester =
     new Job_SubIngester(nullptr,C_UNKNOWN,nullptr);

@@ -207,7 +207,7 @@ void Jobs::vJob_Health_post(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Health_new(Job* pArg)
+Job* Jobs::pJob_Health_new(JobClass* aJobClass)
 {
   Job_Health* pJob_Health = new Job_Health(nullptr,C_UNKNOWN,nullptr);
   

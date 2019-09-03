@@ -220,7 +220,7 @@ Job* Jobs::pJob_KidExport_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTu
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_KidExport_new(Job* pArg)
+Job* Jobs::pJob_KidExport_new(JobClass* aJobClass)
 {
   Job_KidExport* pJob_KidExport = new Job_KidExport(nullptr,C_UNKNOWN,nullptr);
   

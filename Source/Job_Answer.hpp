@@ -34,7 +34,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Answer* _pJob_Answer(void* aAddr);
   
-  Job* pJob_Answer_new(Job* pArg);
+  Job* pJob_Answer_new(JobClass* aJobClass);
   void vJob_Answer_delete(Session* pSession, Job* pJob);
   void vJob_Answer_show(Job* pJob);
   

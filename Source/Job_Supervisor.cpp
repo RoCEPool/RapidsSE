@@ -168,10 +168,8 @@ Footer* Job_Supervisor::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Supervisor_new(Job* pArg)
+Job* Jobs::pJob_Supervisor_new(JobClass* aJobClass)
 {
-  RASSERT(! pArg);
-  
   ReqTuple xReqTuple("**SUPERVISOR"_Stz,false);
   
   Job_Supervisor* pJob_Supervisor = new Job_Supervisor(nullptr,C_UNKNOWN,&xReqTuple);

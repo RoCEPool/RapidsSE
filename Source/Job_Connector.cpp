@@ -167,10 +167,8 @@ Footer* Job_Connector::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Connector_new(Job* pArg)
+Job* Jobs::pJob_Connector_new(JobClass* aJobClass)
 {
-  RASSERT(! pArg);
-  
   ReqTuple xReqTuple("**CONNECTOR"_Stz,false);
   
   Job_Connector* pJob_Connector = new Job_Connector(nullptr,C_UNKNOWN,&xReqTuple);

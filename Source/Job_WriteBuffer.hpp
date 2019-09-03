@@ -52,7 +52,7 @@ namespace Jobs
   Job_WriteBuffer* _pJob_WriteBuffer(void* aAddr);
   
   Job* pJob_WriteBuffer_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
-  Job* pJob_WriteBuffer_new(Job* pArg);
+  Job* pJob_WriteBuffer_new(JobClass* aJobClass);
   void vJob_WriteBuffer_delete(Session* pSession, Job* pJob);
   void vJob_WriteBuffer_show(Job* pJob);
   

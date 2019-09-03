@@ -207,7 +207,7 @@ Job* Jobs::pJob_Cat_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Cat_new(Job* pArg)
+Job* Jobs::pJob_Cat_new(JobClass* aJobClass)
 {
   Job_Cat* pJob_Cat = new Job_Cat(nullptr,C_UNKNOWN,nullptr);
   

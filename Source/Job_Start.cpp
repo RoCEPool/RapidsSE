@@ -167,10 +167,8 @@ Footer* Job_Start::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Start_new(Job* pArg)
+Job* Jobs::pJob_Start_new(JobClass* aJobClass)
 {
-  RASSERT(! pArg);
-  
   ReqTuple xReqTuple("**START"_Stz,false);
   
   Job_Start* pJob_Start = new Job_Start(nullptr,C_UNKNOWN,&xReqTuple);

@@ -54,7 +54,7 @@ void JobClass::vCmds(void)
 /*----------------------------------------------------------------------------*/
 Job* JobClass::pNewJob(void)
 {
-  Job* pNewJob = (*m_fpNew)(nullptr);
+  Job* pNewJob = (*m_fpNew)(this);
   
   pNewJob->m_pJobClass = this;
   

@@ -203,7 +203,7 @@ Job* Jobs::pJob_Sink_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Sink_new(Job* pArg)
+Job* Jobs::pJob_Sink_new(JobClass* aJobClass)
 {
   Job_Sink* pJob_Sink = new Job_Sink(nullptr,C_UNKNOWN,nullptr);
   

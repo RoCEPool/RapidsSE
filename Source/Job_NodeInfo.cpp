@@ -169,7 +169,7 @@ Footer* Job_NodeInfo::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_NodeInfo_new(Job* pArg)
+Job* Jobs::pJob_NodeInfo_new(JobClass* aJobClass)
 {
   Job_NodeInfo* pJob_NodeInfo = new Job_NodeInfo(nullptr,C_UNKNOWN,nullptr);
   

@@ -168,10 +168,8 @@ Footer* Job_Alarm::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Alarm_new(Job* pArg)
+Job* Jobs::pJob_Alarm_new(JobClass* aJobClass)
 {
-  RASSERT(! pArg);
-  
   ReqTuple xReqTuple("**ALARM"_Stz,false);
   
   Job_Alarm* pJob_Alarm = new Job_Alarm(nullptr,C_UNKNOWN,&xReqTuple);

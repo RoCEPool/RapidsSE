@@ -199,7 +199,7 @@ Job* Jobs::pJob_Monitor_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTupl
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Monitor_new(Job* pArg)
+Job* Jobs::pJob_Monitor_new(JobClass* aJobClass)
 {
   Job_Monitor* pJob_Monitor = new Job_Monitor(nullptr,C_UNKNOWN,nullptr);
   

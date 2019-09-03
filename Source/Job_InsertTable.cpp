@@ -188,7 +188,7 @@ Job* Jobs::pJob_InsertTable_pre(Session* pSession, i8 iRequestId, ReqTuple* aReq
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_InsertTable_new(Job* pArg)
+Job* Jobs::pJob_InsertTable_new(JobClass* aJobClass)
 {
   Job_InsertTable* pJob_InsertTable = new Job_InsertTable(nullptr,C_UNKNOWN,nullptr);
   

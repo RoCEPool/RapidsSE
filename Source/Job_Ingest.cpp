@@ -213,7 +213,7 @@ Job* Jobs::pJob_Ingest_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Ingest_new(Job* pArg)
+Job* Jobs::pJob_Ingest_new(JobClass* aJobClass)
 {
   Job_Ingest* pJob_Ingest = new Job_Ingest(nullptr,C_UNKNOWN,nullptr);
   

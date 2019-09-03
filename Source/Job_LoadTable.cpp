@@ -638,7 +638,7 @@ Job* Jobs::pJob_LoadTable_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTu
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_LoadTable_new(Job* pArg)
+Job* Jobs::pJob_LoadTable_new(JobClass* aJobClass)
 {
   Job_LoadTable* pJob_LoadTable = new Job_LoadTable(nullptr,C_UNKNOWN,nullptr);
   

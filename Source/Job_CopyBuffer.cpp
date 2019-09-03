@@ -256,7 +256,7 @@ Job* Jobs::pJob_CopyBuffer_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqT
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_CopyBuffer_new(Job* pArg)
+Job* Jobs::pJob_CopyBuffer_new(JobClass* aJobClass)
 {
   Job_CopyBuffer* pJob_CopyBuffer = new Job_CopyBuffer(nullptr,C_UNKNOWN,nullptr);
   

@@ -273,7 +273,7 @@ Job* Jobs::pJob_SubInserter_pre(Session* pSession, i8 iRequestId, ReqTuple* aReq
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubInserter_new(Job* pArg)
+Job* Jobs::pJob_SubInserter_new(JobClass* aJobClass)
 {
   Job_SubInserter* pJob_SubInserter = new Job_SubInserter(nullptr,C_UNKNOWN,nullptr);
   

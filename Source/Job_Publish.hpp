@@ -43,7 +43,7 @@ namespace Jobs
   
   Job* pJob_Publish_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
   void vJob_Publish_post(Session* pSession, Job* pJob);
-  Job* pJob_Publish_new(Job* pArg);
+  Job* pJob_Publish_new(JobClass* aJobClass);
   void vJob_Publish_delete(Session* pSession, Job* pJob);
   void vJob_Publish_show(Job* pJob);
   

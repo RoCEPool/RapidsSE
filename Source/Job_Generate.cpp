@@ -231,7 +231,7 @@ Job* Jobs::pJob_Generate_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTup
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Generate_new(Job* pArg)
+Job* Jobs::pJob_Generate_new(JobClass* aJobClass)
 {
   Job_Generate* pJob_Generate = new Job_Generate(nullptr,C_UNKNOWN,nullptr);
   

@@ -168,10 +168,8 @@ Footer* Job_Waker::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Waker_new(Job* pArg)
+Job* Jobs::pJob_Waker_new(JobClass* aJobClass)
 {
-  RASSERT(! pArg);
-  
   ReqTuple xReqTuple("**WAKER"_Stz,false);
   
   Job_Waker* pJob_Waker = new Job_Waker(nullptr,C_UNKNOWN,&xReqTuple);

@@ -52,7 +52,7 @@ namespace Jobs
   Job_LoadTable* _pJob_LoadTable(void* aAddr);
   
   Job* pJob_LoadTable_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
-  Job* pJob_LoadTable_new(Job* pArg);
+  Job* pJob_LoadTable_new(JobClass* aJobClass);
   void vJob_LoadTable_delete(Session* pSession, Job* pJob);
   void vJob_LoadTable_show(Job* pJob);
   

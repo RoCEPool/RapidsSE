@@ -248,7 +248,7 @@ Job* Jobs::pJob_WriteRow_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTup
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_WriteRow_new(Job* pArg)
+Job* Jobs::pJob_WriteRow_new(JobClass* aJobClass)
 {
   Job_WriteRow* pJob_WriteRow = new Job_WriteRow(nullptr,C_UNKNOWN,nullptr);
   

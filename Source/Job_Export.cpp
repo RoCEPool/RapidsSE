@@ -302,7 +302,7 @@ void Jobs::vJob_Export_post(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Export_new(Job* pArg)
+Job* Jobs::pJob_Export_new(JobClass* aJobClass)
 {
   Job_Export* pJob_Export = new Job_Export(nullptr,C_UNKNOWN,nullptr);
   

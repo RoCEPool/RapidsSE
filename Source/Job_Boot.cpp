@@ -167,7 +167,7 @@ Footer* Job_Boot::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Boot_new(Job* pArg)
+Job* Jobs::pJob_Boot_new(JobClass* aJobClass)
 {
   ReqTuple xReqTuple("**BOOT"_Stz,false);
 

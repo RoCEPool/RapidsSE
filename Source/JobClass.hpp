@@ -32,7 +32,7 @@ namespace Jobs
       eEC  (*m_fpCheck)(Session* pSession);
       Job* (*m_fpPre)(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
       void (*m_fpPost)(Session* pSession, Job* pJob);
-      Job* (*m_fpNew)(Job* pArg);
+      Job* (*m_fpNew)(JobClass* aJobClass);
       void (*m_fpDelete)(Session* pSession, Job* pJob);
       void (*m_fpSend)(Job* pJob);
       void (*m_fpRecv)(Job* pJob);

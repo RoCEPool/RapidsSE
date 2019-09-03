@@ -167,10 +167,8 @@ Footer* Job_Answer::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Answer_new(Job* pArg)
+Job* Jobs::pJob_Answer_new(JobClass* aJobClass)
 {
-  RASSERT(! pArg);
-  
   ReqTuple xReqTuple("**ANSWER"_Stz,false);
   
   Job_Answer* pJob_Answer = new Job_Answer(nullptr,C_UNKNOWN,&xReqTuple);

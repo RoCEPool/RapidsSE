@@ -347,7 +347,7 @@ Job* Jobs::vJob_SubLoader_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTu
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubLoader_new(Job* pArg)
+Job* Jobs::pJob_SubLoader_new(JobClass* aJobClass)
 {
   Job_SubLoader* pJob_SubLoader = new Job_SubLoader(nullptr,C_UNKNOWN,nullptr);
   
