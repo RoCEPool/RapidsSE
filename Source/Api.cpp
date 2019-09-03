@@ -108,7 +108,9 @@ Job* Api::pExecuteCommand(Session* pSession, Stz* sCommand,
   if (! pJobClass)
     return nullptr;
   
-  Job* pJob = pJobClass->pPreJob(nullptr,pSession);
+  ReqTuple xReqTuple("!!EXECUTE_COMMAND"_Stz,false);
+  
+  Job* pJob = pJobClass->pPreJob(&xReqTuple,pSession);
   if (! pJob) {
     return nullptr;
   }

@@ -215,8 +215,10 @@ eEC RapidsSE_BeginInsert(i8 iTrace, Session* pSession,
     ASSERT(pJobClass_InsertTable);
     API_LOC(310);
     
+    ReqTuple xReqTuple("!!BEGIN_INSERT"_Stz,false);
+    
     Job_InsertTable* pJob_InsertTable =
-      static_cast<Job_InsertTable*>(pJobClass_InsertTable->pPreJob(nullptr,pSession));
+      static_cast<Job_InsertTable*>(pJobClass_InsertTable->pPreJob(&xReqTuple,pSession));
     API_LOC(320);
 
     // find the table in the session dictionary stack
@@ -342,8 +344,10 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
     ASSERT(pJobClass_InsertRow);
     API_LOC(310);
     
+    ReqTuple xReqTuple("!!INSERT_ROW"_Stz,false);
+    
     Job_InsertRow* pJob_InsertRow =
-      static_cast<Job_InsertRow*>(pJobClass_InsertRow->pPreJob(nullptr,pSession));
+      static_cast<Job_InsertRow*>(pJobClass_InsertRow->pPreJob(&xReqTuple,pSession));
     API_LOC(320);
     
     // push the InsertTable job onto the jobstack

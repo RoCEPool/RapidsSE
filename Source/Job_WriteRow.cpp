@@ -176,10 +176,10 @@ void Job_WriteRow::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /* new a WriteRow job                                                         */
 /*----------------------------------------------------------------------------*/
 Job_WriteRow* Job_WriteRow::pNewJobWriteRow(Session* pSession,
-                                   Stz* sTableName,
-                                   Table* pTable,
-                                   Record* pRecord,
-                                   i8 iParentJobId)
+                                            Stz* sTableName,
+                                            Table* pTable,
+                                            Record* pRecord,
+                                            i8 iParentJobId)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a write buffer job
@@ -187,8 +187,10 @@ Job_WriteRow* Job_WriteRow::pNewJobWriteRow(Session* pSession,
   //! this needs to be optimised
   JobClass* pJobClass_WriteRow = JobClass::pFind(CN_JOB_WRITEROW);
 
+  ReqTuple xReqTuple("!!WRITE_ROW"_Stz,false);
+  
   Job_WriteRow* pJob_WriteRow =
-    static_cast<Job_WriteRow*>(pJobClass_WriteRow->pPreJob(nullptr,pSession));
+    static_cast<Job_WriteRow*>(pJobClass_WriteRow->pPreJob(&xReqTuple,pSession));
 
   pJob_WriteRow->vSeed(SS_SEED_RUN);
 

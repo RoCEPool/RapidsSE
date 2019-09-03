@@ -359,8 +359,10 @@ void Job_WriteBuffer::vSpawnJobWriteBuffer(Session* pSession,
   //! this needs to be optimised
   JobClass* pJobClass_WriteBuffer = JobClass::pFind(CN_JOB_WRITEBUFFER);
   
+  ReqTuple xReqTuple("!!WRITE_BUFFER"_Stz,false);
+  
   Job_WriteBuffer* pJob_WriteBuffer =
-    static_cast<Job_WriteBuffer*>(pJobClass_WriteBuffer->pPreJob(nullptr,pSession));
+    static_cast<Job_WriteBuffer*>(pJobClass_WriteBuffer->pPreJob(&xReqTuple,pSession));
   
   pJob_WriteBuffer->vSeed(SS_SEED_RUN);
   
