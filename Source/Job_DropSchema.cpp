@@ -101,7 +101,7 @@ void Job_DropSchema::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_DropSchema::Job_DropSchema(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job_DropSchema::Job_DropSchema(Session* pSession, ReqTuple* aReqTuple)
 : Job(CN_JOB_DROPSCHEMA, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPSCHEMA,_FOOTER_);
@@ -197,7 +197,7 @@ Footer* Job_DropSchema::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_DropSchema_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_DropSchema* pJob_DropSchema = new Job_DropSchema(pSession,C_UNKNOWN,aReqTuple);
+  Job_DropSchema* pJob_DropSchema = new Job_DropSchema(pSession,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

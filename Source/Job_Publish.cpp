@@ -101,7 +101,7 @@ void Job_Publish::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Publish::Job_Publish(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job_Publish::Job_Publish(Session* pSession, ReqTuple* aReqTuple)
 : Job(CN_JOB_PUBLISH, pSession, aReqTuple)
 , m_okLock(LK_PIPE,C_NO_REQTUPLE,this)
 {
@@ -176,7 +176,7 @@ Job* Jobs::pJob_Publish_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   i8 nTokens;
 
-  Job_Publish* pJob_Publish = new Job_Publish(pSession,C_UNKNOWN,aReqTuple);
+  Job_Publish* pJob_Publish = new Job_Publish(pSession,aReqTuple);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
 
@@ -208,7 +208,7 @@ void Jobs::vJob_Publish_post(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Publish_new(JobClass* aJobClass)
 {
-  Job_Publish* pJob_Publish = new Job_Publish(nullptr,C_UNKNOWN,nullptr);
+  Job_Publish* pJob_Publish = new Job_Publish(nullptr,nullptr);
   
   return pJob_Publish;
 }

@@ -101,7 +101,7 @@ void Job_WriteBuffer::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_WriteBuffer::Job_WriteBuffer(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job_WriteBuffer::Job_WriteBuffer(Session* pSession, ReqTuple* aReqTuple)
 : Job(CN_JOB_WRITEBUFFER, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEBUFFER,_FOOTER_);
@@ -425,7 +425,7 @@ Footer* Job_WriteBuffer::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_WriteBuffer_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(pSession,C_UNKNOWN,aReqTuple);
+  Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(pSession,aReqTuple);
   
   return pJob_WriteBuffer;
 }
@@ -435,7 +435,7 @@ Job* Jobs::pJob_WriteBuffer_pre(Session* pSession, ReqTuple* aReqTuple)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_WriteBuffer_new(JobClass* aJobClass)
 {
-  Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(nullptr,C_UNKNOWN,nullptr);
+  Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(nullptr,nullptr);
   
   return pJob_WriteBuffer;
 }

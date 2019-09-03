@@ -104,7 +104,7 @@ void Job_SubWalker::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SubWalker::Job_SubWalker(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job_SubWalker::Job_SubWalker(Session* pSession, ReqTuple* aReqTuple)
 : Job(CN_JOB_SUBWALKER, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBWALKER,_FOOTER_);
@@ -460,7 +460,7 @@ Footer* Job_SubWalker::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubWalker_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_SubWalker* pJob_SubWalker = new Job_SubWalker(pSession,C_UNKNOWN,aReqTuple);
+  Job_SubWalker* pJob_SubWalker = new Job_SubWalker(pSession,aReqTuple);
   
   return pJob_SubWalker;
 }

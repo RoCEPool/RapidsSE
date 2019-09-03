@@ -101,7 +101,7 @@ void Job_SelectTable::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SelectTable::Job_SelectTable(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job_SelectTable::Job_SelectTable(Session* pSession, ReqTuple* aReqTuple)
 : Job(CN_JOB_SELECTTABLE, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SELECTTABLE,_FOOTER_);
@@ -202,7 +202,7 @@ Footer* Job_SelectTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SelectTable_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_SelectTable* pJob_SelectTable = new Job_SelectTable(pSession,C_UNKNOWN,aReqTuple);
+  Job_SelectTable* pJob_SelectTable = new Job_SelectTable(pSession,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

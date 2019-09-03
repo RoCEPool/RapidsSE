@@ -110,7 +110,7 @@ void Job_CreateTable::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_CreateTable::Job_CreateTable(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job_CreateTable::Job_CreateTable(Session* pSession, ReqTuple* aReqTuple)
 : Job(CN_JOB_CREATETABLE, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
@@ -612,7 +612,7 @@ Footer* Job_CreateTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_CreateTable_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_CreateTable* pJob_CreateTable = new Job_CreateTable(pSession,C_UNKNOWN,aReqTuple);
+  Job_CreateTable* pJob_CreateTable = new Job_CreateTable(pSession,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
 
@@ -651,7 +651,7 @@ void Jobs::vJob_CreateTable_post(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_CreateTable_new(JobClass* aJobClass)
 {
-  Job_CreateTable* pJob_CreateTable = new Job_CreateTable(nullptr,C_UNKNOWN,nullptr);
+  Job_CreateTable* pJob_CreateTable = new Job_CreateTable(nullptr,nullptr);
   
   return pJob_CreateTable;
 }

@@ -101,7 +101,7 @@ void Job_WaitCluster::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_WaitCluster::Job_WaitCluster(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job_WaitCluster::Job_WaitCluster(Session* pSession, ReqTuple* aReqTuple)
 : Job(CN_JOB_WAITCLUSTER, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WAITCLUSTER,_FOOTER_);
@@ -192,7 +192,7 @@ Footer* Job_WaitCluster::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_WaitCluster_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_WaitCluster* pJob_WaitCluster = new Job_WaitCluster(pSession,C_UNKNOWN,aReqTuple);
+  Job_WaitCluster* pJob_WaitCluster = new Job_WaitCluster(pSession,aReqTuple);
   
   return pJob_WaitCluster;
 }

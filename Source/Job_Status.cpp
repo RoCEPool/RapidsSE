@@ -101,7 +101,7 @@ void Job_Status::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Status::Job_Status(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job_Status::Job_Status(Session* pSession, ReqTuple* aReqTuple)
 : Job(CN_JOB_STATUS, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_STATUS,_FOOTER_);
@@ -191,7 +191,7 @@ Footer* Job_Status::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Status_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_Status* pJob_Status = new Job_Status(pSession,C_UNKNOWN,aReqTuple);
+  Job_Status* pJob_Status = new Job_Status(pSession,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

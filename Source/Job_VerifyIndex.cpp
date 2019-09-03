@@ -101,7 +101,7 @@ void Job_VerifyIndex::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_VerifyIndex::Job_VerifyIndex(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job_VerifyIndex::Job_VerifyIndex(Session* pSession, ReqTuple* aReqTuple)
 : Job(CN_JOB_VERIFYINDEX, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_VERIFYINDEX,_FOOTER_);
@@ -198,7 +198,7 @@ Footer* Job_VerifyIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_VerifyIndex_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_VerifyIndex* pJob_VerifyIndex = new Job_VerifyIndex(pSession,C_UNKNOWN,aReqTuple);
+  Job_VerifyIndex* pJob_VerifyIndex = new Job_VerifyIndex(pSession,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

@@ -101,7 +101,7 @@ void Job_ShowCluster::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_ShowCluster::Job_ShowCluster(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job_ShowCluster::Job_ShowCluster(Session* pSession, ReqTuple* aReqTuple)
 : Job(CN_JOB_SHOWCLUSTER, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SHOWCLUSTER,_FOOTER_);
@@ -193,7 +193,7 @@ Footer* Job_ShowCluster::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_ShowCluster_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_ShowCluster* pJob_ShowCluster = new Job_ShowCluster(pSession,C_UNKNOWN,aReqTuple);
+  Job_ShowCluster* pJob_ShowCluster = new Job_ShowCluster(pSession,aReqTuple);
   
   return pJob_ShowCluster;
 }

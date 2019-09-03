@@ -101,7 +101,7 @@ void Job_InsertRow::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_InsertRow::Job_InsertRow(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job_InsertRow::Job_InsertRow(Session* pSession, ReqTuple* aReqTuple)
 : Job(CN_JOB_INSERTROW, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROW,_FOOTER_);
@@ -227,7 +227,7 @@ Footer* Job_InsertRow::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_InsertRow_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_InsertRow* pJob_InsertRow = new Job_InsertRow(pSession,C_UNKNOWN,aReqTuple);
+  Job_InsertRow* pJob_InsertRow = new Job_InsertRow(pSession,aReqTuple);
   
 //  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
@@ -252,7 +252,7 @@ Job* Jobs::pJob_InsertRow_pre(Session* pSession, ReqTuple* aReqTuple)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_InsertRow_new(JobClass* aJobClass)
 {
-  Job_InsertRow* pJob_InsertRow = new Job_InsertRow(nullptr,C_UNKNOWN,nullptr);
+  Job_InsertRow* pJob_InsertRow = new Job_InsertRow(nullptr,nullptr);
   
   return pJob_InsertRow;
 }

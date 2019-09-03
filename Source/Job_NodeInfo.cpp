@@ -101,7 +101,7 @@ void Job_NodeInfo::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_NodeInfo::Job_NodeInfo(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job_NodeInfo::Job_NodeInfo(Session* pSession, ReqTuple* aReqTuple)
 : Job(CN_JOB_NODEINFO, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_NODEINFO,_FOOTER_);
@@ -171,7 +171,7 @@ Footer* Job_NodeInfo::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_NodeInfo_new(JobClass* aJobClass)
 {
-  Job_NodeInfo* pJob_NodeInfo = new Job_NodeInfo(nullptr,C_UNKNOWN,nullptr);
+  Job_NodeInfo* pJob_NodeInfo = new Job_NodeInfo(nullptr,nullptr);
   
   return pJob_NodeInfo;
 }

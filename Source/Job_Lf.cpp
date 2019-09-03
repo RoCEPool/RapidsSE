@@ -101,7 +101,7 @@ void Job_Lf::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Lf::Job_Lf(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job_Lf::Job_Lf(Session* pSession, ReqTuple* aReqTuple)
 : Job(CN_JOB_LF, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LF,_FOOTER_);
@@ -193,7 +193,7 @@ Footer* Job_Lf::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Lf_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_Lf* pJob_Lf = new Job_Lf(pSession,C_UNKNOWN,aReqTuple);
+  Job_Lf* pJob_Lf = new Job_Lf(pSession,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

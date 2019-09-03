@@ -102,7 +102,7 @@ void Job_Health::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Health::Job_Health(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job_Health::Job_Health(Session* pSession, ReqTuple* aReqTuple)
 : Job(CN_JOB_NETHOG, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_NETHOG,_FOOTER_);
@@ -173,7 +173,7 @@ Footer* Job_Health::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Health_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_Health* pJob_Health = new Job_Health(pSession,C_UNKNOWN,aReqTuple);
+  Job_Health* pJob_Health = new Job_Health(pSession,aReqTuple);
   
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
   
@@ -209,7 +209,7 @@ void Jobs::vJob_Health_post(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Health_new(JobClass* aJobClass)
 {
-  Job_Health* pJob_Health = new Job_Health(nullptr,C_UNKNOWN,nullptr);
+  Job_Health* pJob_Health = new Job_Health(nullptr,nullptr);
   
   return pJob_Health;
 }

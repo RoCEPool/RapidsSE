@@ -101,7 +101,7 @@ void Job_SubFetch::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SubFetch::Job_SubFetch(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job_SubFetch::Job_SubFetch(Session* pSession, ReqTuple* aReqTuple)
 : Job(CN_JOB_SUBFETCH, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBFETCH,_FOOTER_);
@@ -173,7 +173,7 @@ Footer* Job_SubFetch::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubFetch_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_SubFetch* pJob_SubFetch = new Job_SubFetch(pSession,C_UNKNOWN,aReqTuple);
+  Job_SubFetch* pJob_SubFetch = new Job_SubFetch(pSession,aReqTuple);
   
   return pJob_SubFetch;
 }

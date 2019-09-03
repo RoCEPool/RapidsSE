@@ -101,7 +101,7 @@ void Job_Purge::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Purge::Job_Purge(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job_Purge::Job_Purge(Session* pSession, ReqTuple* aReqTuple)
 : Job(CN_JOB_PURGE, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PURGE,_FOOTER_);
@@ -174,7 +174,7 @@ Job* Jobs::pJob_Purge_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   i8 nTokens;
 
-  Job_Purge* pJob_Purge = new Job_Purge(pSession,C_UNKNOWN,aReqTuple);
+  Job_Purge* pJob_Purge = new Job_Purge(pSession,aReqTuple);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
 
@@ -205,7 +205,7 @@ void Jobs::vJob_Purge_post(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Purge_new(JobClass* aJobClass)
 {
-  Job_Purge* pJob_Purge = new Job_Purge(nullptr,C_UNKNOWN,nullptr);
+  Job_Purge* pJob_Purge = new Job_Purge(nullptr,nullptr);
   
   return pJob_Purge;
 }

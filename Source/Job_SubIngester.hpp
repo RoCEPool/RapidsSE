@@ -20,7 +20,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_SubIngester(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);//=C_UNKNOWN);
+    Job_SubIngester(Session* pSession, ReqTuple* aReqTuple);//=C_UNKNOWN);
     ~Job_SubIngester(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

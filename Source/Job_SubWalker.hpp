@@ -25,7 +25,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_SubWalker(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);//=C_UNKNOWN);
+    Job_SubWalker(Session* pSession, ReqTuple* aReqTuple);//=C_UNKNOWN);
     ~Job_SubWalker(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

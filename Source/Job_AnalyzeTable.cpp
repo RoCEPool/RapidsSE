@@ -101,7 +101,7 @@ void Job_AnalyzeTable::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_AnalyzeTable::Job_AnalyzeTable(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job_AnalyzeTable::Job_AnalyzeTable(Session* pSession, ReqTuple* aReqTuple)
 : Job(CN_JOB_ANALYZETABLE, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_ANALYZETABLE,_FOOTER_);
@@ -198,7 +198,7 @@ Footer* Job_AnalyzeTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_AnalyzeTable_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_AnalyzeTable* pJob_AnalyzeTable = new Job_AnalyzeTable(pSession,C_UNKNOWN,aReqTuple);
+  Job_AnalyzeTable* pJob_AnalyzeTable = new Job_AnalyzeTable(pSession,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

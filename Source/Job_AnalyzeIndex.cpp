@@ -101,7 +101,7 @@ void Job_AnalyzeIndex::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_AnalyzeIndex::Job_AnalyzeIndex(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job_AnalyzeIndex::Job_AnalyzeIndex(Session* pSession, ReqTuple* aReqTuple)
 : Job(CN_JOB_ANALYZEINDEX, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_ANALYZEINDEX,_FOOTER_);
@@ -202,7 +202,7 @@ Footer* Job_AnalyzeIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_AnalyzeIndex_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_AnalyzeIndex* pJob_AnalyzeIndex = new Job_AnalyzeIndex(pSession,C_UNKNOWN,aReqTuple);
+  Job_AnalyzeIndex* pJob_AnalyzeIndex = new Job_AnalyzeIndex(pSession,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
@@ -220,7 +220,7 @@ Job* Jobs::pJob_AnalyzeIndex_pre(Session* pSession, ReqTuple* aReqTuple)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_AnalyzeIndex_new(JobClass* aJobClass)
 {
-  Job_AnalyzeIndex* pJob_AnalyzeIndex = new Job_AnalyzeIndex(nullptr,C_UNKNOWN,nullptr);
+  Job_AnalyzeIndex* pJob_AnalyzeIndex = new Job_AnalyzeIndex(nullptr,nullptr);
   
   return pJob_AnalyzeIndex;
 }

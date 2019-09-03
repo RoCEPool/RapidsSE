@@ -139,7 +139,7 @@ void Job_FetchRows::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_FetchRows::Job_FetchRows(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job_FetchRows::Job_FetchRows(Session* pSession, ReqTuple* aReqTuple)
 : Job(CN_JOB_FETCHROWS, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_FETCHROWS,_FOOTER_);
@@ -616,7 +616,7 @@ Footer* Job_FetchRows::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_FetchRows_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_FetchRows* pJob_FetchRows = new Job_FetchRows(pSession,C_UNKNOWN,aReqTuple);
+  Job_FetchRows* pJob_FetchRows = new Job_FetchRows(pSession,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

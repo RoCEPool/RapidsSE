@@ -18,7 +18,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Status(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);//=C_UNKNOWN);
+    Job_Status(Session* pSession, ReqTuple* aReqTuple);//=C_UNKNOWN);
     ~Job_Status(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

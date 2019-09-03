@@ -101,7 +101,7 @@ void Job_ListIdxColumns::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_ListIdxColumns::Job_ListIdxColumns(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job_ListIdxColumns::Job_ListIdxColumns(Session* pSession, ReqTuple* aReqTuple)
 : Job(CN_JOB_LISTIDXCOLUMNS, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTIDXCOLUMNS,_FOOTER_);
@@ -201,7 +201,7 @@ Footer* Job_ListIdxColumns::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_ListIdxColumns_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_ListIdxColumns* pJob_ListIdxColumns = new Job_ListIdxColumns(pSession,C_UNKNOWN,aReqTuple);
+  Job_ListIdxColumns* pJob_ListIdxColumns = new Job_ListIdxColumns(pSession,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

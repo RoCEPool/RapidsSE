@@ -101,7 +101,7 @@ void Job_DumpTable::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_DumpTable::Job_DumpTable(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job_DumpTable::Job_DumpTable(Session* pSession, ReqTuple* aReqTuple)
 : Job(CN_JOB_DUMPTABLE, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DUMPTABLE,_FOOTER_);
@@ -194,7 +194,7 @@ Footer* Job_DumpTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_DumpTable_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_DumpTable* pJob_DumpTable = new Job_DumpTable(pSession,C_UNKNOWN,aReqTuple);
+  Job_DumpTable* pJob_DumpTable = new Job_DumpTable(pSession,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

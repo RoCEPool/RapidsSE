@@ -101,7 +101,7 @@ void Job_Repeater::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Repeater::Job_Repeater(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job_Repeater::Job_Repeater(Session* pSession, ReqTuple* aReqTuple)
 : Job(CN_JOB_REPEATER, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPEATER,_FOOTER_);
@@ -182,7 +182,7 @@ Job* Jobs::pJob_Repeater_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   i8 nTokens;
 
-  Job_Repeater* pJob_Repeater = new Job_Repeater(pSession,C_UNKNOWN,aReqTuple);
+  Job_Repeater* pJob_Repeater = new Job_Repeater(pSession,aReqTuple);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
 
@@ -217,7 +217,7 @@ Job* Jobs::pJob_Repeater_pre(Session* pSession, ReqTuple* aReqTuple)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Repeater_new(JobClass* aJobClass)
 {
-  Job_Repeater* pJob_Repeater = new Job_Repeater(nullptr,C_UNKNOWN,nullptr);
+  Job_Repeater* pJob_Repeater = new Job_Repeater(nullptr,nullptr);
   
   return pJob_Repeater;
 }

@@ -101,7 +101,7 @@ void Job_Select::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Select::Job_Select(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job_Select::Job_Select(Session* pSession, ReqTuple* aReqTuple)
 : JobMark2(CN_JOB_SELECT, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SELECT,_FOOTER_);
@@ -258,7 +258,7 @@ Footer* Job_Select::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Select_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_Select* pJob_Select = new Job_Select(pSession,C_UNKNOWN,aReqTuple);
+  Job_Select* pJob_Select = new Job_Select(pSession,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

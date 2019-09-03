@@ -101,7 +101,7 @@ void Job_SubInflate::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SubInflate::Job_SubInflate(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job_SubInflate::Job_SubInflate(Session* pSession, ReqTuple* aReqTuple)
 : Job(CN_JOB_SUBINFLATE, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINFLATE,_FOOTER_);
@@ -174,7 +174,7 @@ Footer* Job_SubInflate::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubInflate_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_SubInflate* pJob_SubInflate = new Job_SubInflate(pSession,C_UNKNOWN,aReqTuple);
+  Job_SubInflate* pJob_SubInflate = new Job_SubInflate(pSession,aReqTuple);
   
   return pJob_SubInflate;
 }

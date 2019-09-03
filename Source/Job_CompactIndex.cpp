@@ -101,7 +101,7 @@ void Job_CompactIndex::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_CompactIndex::Job_CompactIndex(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job_CompactIndex::Job_CompactIndex(Session* pSession, ReqTuple* aReqTuple)
 : Job(CN_JOB_COMPACTINDEX, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_COMPACTINDEX,_FOOTER_);
@@ -198,7 +198,7 @@ Footer* Job_CompactIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_CompactIndex_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_CompactIndex* pJob_CompactIndex = new Job_CompactIndex(pSession,C_UNKNOWN,aReqTuple);
+  Job_CompactIndex* pJob_CompactIndex = new Job_CompactIndex(pSession,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

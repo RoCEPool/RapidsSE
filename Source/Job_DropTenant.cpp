@@ -101,7 +101,7 @@ void Job_DropTenant::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_DropTenant::Job_DropTenant(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job_DropTenant::Job_DropTenant(Session* pSession, ReqTuple* aReqTuple)
 : Job(CN_JOB_DROPTENANT, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPTENANT,_FOOTER_);
@@ -197,7 +197,7 @@ Footer* Job_DropTenant::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_DropTenant_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_DropTenant* pJob_DropTenant = new Job_DropTenant(pSession,C_UNKNOWN,aReqTuple);
+  Job_DropTenant* pJob_DropTenant = new Job_DropTenant(pSession,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

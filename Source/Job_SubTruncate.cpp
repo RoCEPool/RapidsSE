@@ -101,7 +101,7 @@ void Job_SubTruncate::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SubTruncate::Job_SubTruncate(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job_SubTruncate::Job_SubTruncate(Session* pSession, ReqTuple* aReqTuple)
 : Job(CN_JOB_SUBTRUNCATE, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBTRUNCATE,_FOOTER_);
@@ -170,7 +170,7 @@ Footer* Job_SubTruncate::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubTruncate_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_SubTruncate* pJob_SubTruncate = new Job_SubTruncate(pSession,C_UNKNOWN,aReqTuple);
+  Job_SubTruncate* pJob_SubTruncate = new Job_SubTruncate(pSession,aReqTuple);
   
   return pJob_SubTruncate;
 }

@@ -101,7 +101,7 @@ void Job_SubInserter::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SubInserter::Job_SubInserter(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job_SubInserter::Job_SubInserter(Session* pSession, ReqTuple* aReqTuple)
 : Job(CN_JOB_SUBINSERTER, pSession, aReqTuple)
 , JobWriteBehind(DS_INSERT)
 , m_okLock(LK_SUBINSERTER,C_NO_REQTUPLE,this)
@@ -255,7 +255,7 @@ Footer* Job_SubInserter::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubInserter_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_SubInserter* pJob_SubInserter = new Job_SubInserter(pSession,C_UNKNOWN,aReqTuple);
+  Job_SubInserter* pJob_SubInserter = new Job_SubInserter(pSession,aReqTuple);
   
 //  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
 //  
@@ -275,7 +275,7 @@ Job* Jobs::pJob_SubInserter_pre(Session* pSession, ReqTuple* aReqTuple)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubInserter_new(JobClass* aJobClass)
 {
-  Job_SubInserter* pJob_SubInserter = new Job_SubInserter(nullptr,C_UNKNOWN,nullptr);
+  Job_SubInserter* pJob_SubInserter = new Job_SubInserter(nullptr,nullptr);
   
   return pJob_SubInserter;
 }

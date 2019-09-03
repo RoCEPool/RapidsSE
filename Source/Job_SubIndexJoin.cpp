@@ -101,7 +101,7 @@ void Job_SubIndexJoin::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SubIndexJoin::Job_SubIndexJoin(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job_SubIndexJoin::Job_SubIndexJoin(Session* pSession, ReqTuple* aReqTuple)
 : Job(CN_JOB_SUBINDEXJOIN, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINDEXJOIN,_FOOTER_);
@@ -171,7 +171,7 @@ Footer* Job_SubIndexJoin::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubIndexJoin_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_SubIndexJoin* pJob_SubIndexJoin = new Job_SubIndexJoin(pSession,C_UNKNOWN,aReqTuple);
+  Job_SubIndexJoin* pJob_SubIndexJoin = new Job_SubIndexJoin(pSession,aReqTuple);
   
   return pJob_SubIndexJoin;
 }

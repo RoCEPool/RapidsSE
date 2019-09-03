@@ -101,7 +101,7 @@ void Job_Ping::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Ping::Job_Ping(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job_Ping::Job_Ping(Session* pSession, ReqTuple* aReqTuple)
 : Job(CN_JOB_PING, pSession, aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PING,_FOOTER_);
@@ -193,7 +193,7 @@ Footer* Job_Ping::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Ping_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_Ping* pJob_Ping = new Job_Ping(pSession,C_UNKNOWN,aReqTuple);
+  Job_Ping* pJob_Ping = new Job_Ping(pSession,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
