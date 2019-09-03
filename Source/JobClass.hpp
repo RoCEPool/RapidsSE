@@ -51,7 +51,7 @@ namespace Jobs
       void vDeleteJob(Session* pSession, Job* pJob);
       void vDropDdlLock(void);
       void vGrabDdlLock(void);
-      Job* pNewJob(Job* pJob);
+      Job* pNewJob(void);
       void vPostJob(Session* pSession, Job* pJob);
       Job* pPreJob(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
       void vRecvJob(Job* pJob);

@@ -185,7 +185,7 @@ Job* Jobs::pJob_NetHog_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple
   for (i8 i_Hog = 0; i_Hog < nHogs; i_Hog++) {
     
     JobClass* pJobClass_NetHog = JobClass::pFind(CN_JOB_NETHOG);
-    Job_NetHog* pJob_NetHog = _pJob_NetHog(pJobClass_NetHog->pNewJob(nullptr));
+    Job_NetHog* pJob_NetHog = _pJob_NetHog(pJobClass_NetHog->pNewJob());
 
     pJob_NetHog->m_iHogNo  = i_Hog;
     pJob_NetHog->m_bNoWait = true;

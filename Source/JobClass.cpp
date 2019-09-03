@@ -52,9 +52,9 @@ void JobClass::vCmds(void)
 /*----------------------------------------------------------------------------*/
 /* create a new job by running the new-function                               */
 /*----------------------------------------------------------------------------*/
-Job* JobClass::pNewJob(Job* pArg)
+Job* JobClass::pNewJob(void)
 {
-  Job* pNewJob = (*m_fpNew)(pArg);
+  Job* pNewJob = (*m_fpNew)(nullptr);
   
   pNewJob->m_pJobClass = this;
   
