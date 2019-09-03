@@ -16,13 +16,13 @@ create table OpTable1 (
 success
 
 // create indexes
-create index OpTable1_idx1 on OpTable1 (jidx_key);
+create index OpTable1_idx on OpTable1 (jidx_key);
 success
 
 // check existence of index
 lsidx OpTable1;
 rows:
-('OpTable1_idx1', false, false)
+('OpTable1_idx', false, false)
 
 ld OpTable1 "/DATA/Operators/operators1_1.csv" ;
 success
@@ -45,13 +45,13 @@ jidx_dte   DATE        NOT NULL
 success
 
 // create indexes
-create index OpTable2_idx1 on OpTable2 (jidx_key);
+create index OpTable2_idx on OpTable2 (jidx_key);
 success
 
 // check existence of index
 lsidx OpTable2;
 rows:
-('OpTable2_idx1', false, false)
+('OpTable2_idx', false, false)
 
 ld OpTable2 "/DATA/Operators/operators1_2.csv" ;
 success
@@ -62,7 +62,7 @@ rows: 21
 
 dynamic scan OpTable1 | output;
 rows:
-  (  0, 'zero'    , 100, 0,  0, 1.000000e+03, TIMESTAMP '1900-01-01 00:00:00.0', DATE '1900-01-01' )
+  (  0, 'zero'    , 1001, 0, 0, 1.000000e+03, TIMESTAMP '1900-01-01 00:00:00.0', DATE '1900-01-01' )
   (  1, 'one'     , 101, 1,  1, 1.001000e+03, TIMESTAMP '1901-01-01 00:00:00.0', DATE '1901-01-01' )
   (  2, 'two'     , 102, 2,  2, 1.002000e+03, TIMESTAMP '1902-01-01 00:00:00.0', DATE '1902-01-01' )
   (  3, 'three'   , 103, 3,  3, 1.003000e+03, TIMESTAMP '1903-01-01 00:00:00.0', DATE '1903-01-01' )
@@ -90,11 +90,11 @@ rows:
   ( 25, 'twofive' , 125, 5, 25, 1.025030e+03, TIMESTAMP '1925-01-01 00:00:00.0', DATE '1925-01-01' )
 
 dynamic scan OpTable1 | limit 1 | output;
-rows : 1
+rows: 1
 
-dynamic fetch OpTable1 OpTable1_idx1 | output;
+dynamic fetch OpTable1 OpTable1_idx | output;
 rows:
-  (  0, 'zero'    , 100, 0,  0, 1.000000e+03, TIMESTAMP '1900-01-01 00:00:00.0', DATE '1900-01-01' )
+  (  0, 'zero'    , 1001, 0,  0, 1.000000e+03, TIMESTAMP '1900-01-01 00:00:00.0', DATE '1900-01-01' )
   (  1, 'one'     , 101, 1,  1, 1.001000e+03, TIMESTAMP '1901-01-01 00:00:00.0', DATE '1901-01-01' )
   (  2, 'two'     , 102, 2,  2, 1.002000e+03, TIMESTAMP '1902-01-01 00:00:00.0', DATE '1902-01-01' )
   (  3, 'three'   , 103, 3,  3, 1.003000e+03, TIMESTAMP '1903-01-01 00:00:00.0', DATE '1903-01-01' )
@@ -121,8 +121,45 @@ rows:
   ( 24, 'twofour' , 124, 4, 24, 1.024020e+03, TIMESTAMP '1924-01-01 00:00:00.0', DATE '1924-01-01' )
   ( 25, 'twofive' , 125, 5, 25, 1.025030e+03, TIMESTAMP '1925-01-01 00:00:00.0', DATE '1925-01-01' )
 
-dynamic fetch OpTable1 OpTable1_idx1 | limit 10 | output;
+dynamic fetch OpTable1 OpTable1_idx | limit 10 | output;
 rows: 10
+
+dynamic scan OpTable1 | getKey jidx_100 | sort | output;
+ordered rows:
+  (  1, 'one'     ,  101, 1,  1, 1.001000e+03, TIMESTAMP '1901-01-01 00:00:00.0', DATE '1901-01-01' )
+  (  2, 'two'     ,  102, 2,  2, 1.002000e+03, TIMESTAMP '1902-01-01 00:00:00.0', DATE '1902-01-01' )
+  (  3, 'three'   ,  103, 3,  3, 1.003000e+03, TIMESTAMP '1903-01-01 00:00:00.0', DATE '1903-01-01' )
+  (  4, 'four'    ,  104, 4,  4, 1.004000e+03, TIMESTAMP '1904-01-01 00:00:00.0', DATE '1904-01-01' )
+  (  5, 'five'    ,  105, 5,  5, 1.005000e+03, TIMESTAMP '1905-01-01 00:00:00.0', DATE '1905-01-01' )
+  (  6, 'six'     ,  106, 6,  6, 1.006010e+03, TIMESTAMP '1906-01-01 00:00:00.0', DATE '1906-01-01' )
+  (  7, 'seven'   ,  107, 7,  7, 1.007010e+03, TIMESTAMP '1907-01-01 00:00:00.0', DATE '1907-01-01' )
+  (  8, 'eight'   ,  108, 8,  8, 1.008010e+03, TIMESTAMP '1908-01-01 00:00:00.0', DATE '1908-01-01' )
+  (  9, 'nine'    ,  109, 9,  9, 1.009010e+03, TIMESTAMP '1909-01-01 00:00:00.0', DATE '1909-01-01' )
+  ( 10, 'onezero' ,  110, 0, 10, 1.010010e+03, TIMESTAMP '1910-01-01 00:00:00.0', DATE '1910-01-01' )
+  ( 11, 'oneone'  ,  111, 1, 11, 1.011010e+03, TIMESTAMP '1911-01-01 00:00:00.0', DATE '1911-01-01' )
+  ( 12, 'onetwo'  ,  112, 2, 12, 1.012010e+03, TIMESTAMP '1912-01-01 00:00:00.0', DATE '1912-01-01' )
+  ( 13, 'onethree',  113, 3, 13, 1.013010e+03, TIMESTAMP '1913-01-01 00:00:00.0', DATE '1913-01-01' )
+  ( 14, 'onefour' ,  114, 4, 14, 1.014010e+03, TIMESTAMP '1914-01-01 00:00:00.0', DATE '1914-01-01' )
+  ( 15, 'onefive' ,  115, 5, 15, 1.015010e+03, TIMESTAMP '1915-01-01 00:00:00.0', DATE '1915-01-01' )
+  ( 16, 'onesix'  ,  116, 6, 16, 1.016020e+03, TIMESTAMP '1916-01-01 00:00:00.0', DATE '1916-01-01' )
+  ( 17, 'oneseven',  117, 7, 17, 1.017020e+03, TIMESTAMP '1917-01-01 00:00:00.0', DATE '1917-01-01' )
+  ( 18, 'oneeight',  118, 8, 18, 1.018020e+03, TIMESTAMP '1918-01-01 00:00:00.0', DATE '1918-01-01' )
+  ( 19, 'onenine' ,  119, 9, 19, 1.019020e+03, TIMESTAMP '1919-01-01 00:00:00.0', DATE '1919-01-01' )
+  ( 20, 'twozero' ,  120, 0, 20, 1.020020e+03, TIMESTAMP '1920-01-01 00:00:00.0', DATE '1920-01-01' )
+  ( 21, 'twoone'  ,  121, 1, 21, 1.021020e+03, TIMESTAMP '1921-01-01 00:00:00.0', DATE '1921-01-01' )
+  ( 22, 'twotwo'  ,  122, 2, 22, 1.022020e+03, TIMESTAMP '1922-01-01 00:00:00.0', DATE '1922-01-01' )
+  ( 23, 'twothree',  123, 3, 23, 1.023020e+03, TIMESTAMP '1923-01-01 00:00:00.0', DATE '1923-01-01' )
+  ( 24, 'twofour' ,  124, 4, 24, 1.024020e+03, TIMESTAMP '1924-01-01 00:00:00.0', DATE '1924-01-01' )
+  ( 25, 'twofive' ,  125, 5, 25, 1.025030e+03, TIMESTAMP '1925-01-01 00:00:00.0', DATE '1925-01-01' )
+  (  0, 'zero'    , 1001, 0,  0, 1.000000e+03, TIMESTAMP '1900-01-01 00:00:00.0', DATE '1900-01-01' )
+
+dynamic fetch OpTable1 OpTable1_idx | getKey jidx_100 | sort | limit 5 | output;
+ordered rows:
+  (  1, 'one'     ,  101, 1,  1, 1.001000e+03, TIMESTAMP '1901-01-01 00:00:00.0', DATE '1901-01-01' )
+  (  2, 'two'     ,  102, 2,  2, 1.002000e+03, TIMESTAMP '1902-01-01 00:00:00.0', DATE '1902-01-01' )
+  (  3, 'three'   ,  103, 3,  3, 1.003000e+03, TIMESTAMP '1903-01-01 00:00:00.0', DATE '1903-01-01' )
+  (  4, 'four'    ,  104, 4,  4, 1.004000e+03, TIMESTAMP '1904-01-01 00:00:00.0', DATE '1904-01-01' )
+  (  5, 'five'    ,  105, 5,  5, 1.005000e+03, TIMESTAMP '1905-01-01 00:00:00.0', DATE '1905-01-01' )
 
 // drop the table
 drop table OpTable1;

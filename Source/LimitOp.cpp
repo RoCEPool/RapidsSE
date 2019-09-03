@@ -255,7 +255,7 @@ eOR LimitOp::eOpLoop(void)
           break;          
         }
         
-        // are rows inn SrtBuffer lessthan what we need ?
+        // are rows in SrtBuffer lessthan what we need ?
         if (pSrtBuffer->nItems() <  m_nLimit - m_iWorkDone) {
           m_iWorkDone += pSrtBuffer->nItems();
           vPipeOut(pSrtBuffer);
@@ -279,7 +279,7 @@ eOR LimitOp::eOpLoop(void)
       // -- -- -- -- -- --
         
       default:
-        vPipeOut(pOperand);
+        RASSERT(0);
         break;
     }
     

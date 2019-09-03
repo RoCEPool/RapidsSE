@@ -327,7 +327,9 @@ void SrtBuffer::vPrintRows(StreamDef* pStreamDef)
   
   SrtSet* aSrtSet = aFirstSrtSet();
   
-  while (aSrtSet) {
+  // NOTE: We need to iterate nItems() rows as its possible
+  // that limit has truncated the no of rows
+  for (i8 i_Row = 0; i_Row < nItems(); i_Row++) {
     
     i8 nColVecs = pStreamDef->m_oColVecAry.nItems();
     RASSERT(nColVecs == m_nRowRefs);
@@ -361,7 +363,6 @@ void SrtBuffer::vPrintRows(StreamDef* pStreamDef)
         }
       }
       hvRec->vAppend(hRow);
-      
       hvRec->vPrintPartialRow();
     }
     
