@@ -197,27 +197,6 @@ eOR OutputOp::eOpLoop(void)
       // -- -- -- -- -- --
         
       case CN_STREAMDEF: {
-//        m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
-//        if (AM::bMetadata()) {
-//          //vSetMetaData();
-//          sMetaData = AM::sMetaData(m_pJob);
-//
-//          ColumnVec* pColVec = m_pStreamDef->m_oColVecAry.pGet(0);
-//          sMetaData.vCopy(""_Stz);
-//
-//          vTrace("metadata: ("_Stz);
-//
-//          for (i8 i_Col = 0; i_Col < pColVec->nItems(); i_Col++) {
-//            if (i_Col != 0)
-//              sMetaData.vConcat(","_Stz);
-//            Column* pCol = pColVec->pGet(i_Col);
-//            sMetaData.vCatSprint("%s %s"_Stz, pCol->sColumnName().aChar(),
-//                                  aCT[pCol->eColumnType()]);
-//          }
-//          sMetaData.vConcat(")\n"_Stz);
-//
-//          vTrace("%s"_Stz, sMetaData.aChar());
-//        }
         vPipeToJob(pOperand);
         break;
       }
@@ -225,7 +204,7 @@ eOR OutputOp::eOpLoop(void)
       // -- -- -- -- -- --
         
       default:
-        vPipeToJob(pOperand);
+        RASSERT(0);
         break;
     }
     

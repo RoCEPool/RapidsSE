@@ -267,7 +267,7 @@ void Jobs::vJob_Dynamic_post(Session* pSession, Job* pJob)
 //  if ( pJob_Dynamic->m_bHasError ) {
 //
 //    vTrace("error: (node%lld) %s\n"_Stz, AM::pGrid()->iThisNode(),
-//           aEC[pJob_FetchRows->m_xResponse.m_eErrorCode]);
+//           aEC[pJob_Dynamic->m_xResponse.m_eErrorCode]);
 //
 //    return;
 //  }
@@ -277,7 +277,7 @@ void Jobs::vJob_Dynamic_post(Session* pSession, Job* pJob)
     Operand* pOperand = _pOperand(pJob_Dynamic->m_pBufferQueue->pPop());
     
     if (! pOperand) {
-      AM::pThisTLSPthread()->vSleepUsec(250,CN_JOB_FETCHROWS);
+      AM::pThisTLSPthread()->vSleepUsec(250,CN_JOB_DYNAMIC);
       continue;
     }
     

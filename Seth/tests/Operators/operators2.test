@@ -1,0 +1,67 @@
+/*----------------------------------------------------------------------------*/
+/* operators.test -- OPERATORS tests                                          */
+/*----------------------------------------------------------------------------*/
+
+// (1) create a table
+create table orders (
+  O_ORDERKEY        INTEGER NOT NULL,
+  O_CUSTKEY         INTEGER NOT NULL,
+  O_ORDERSTATUS     CHAR(1) NOT NULL,
+  O_TOTALPRICE      DECIMAL(15,2) NOT NULL,
+  O_ORDERDATE       TIMESTAMP NOT NULL,
+  O_ORDERPRIORITY   CHAR(15) NOT NULL,
+  O_CLERK           CHAR(15) NOT NULL,
+  O_SHIPPRIORITY    INTEGER NOT NULL,
+  O_COMMENT         VARCHAR(79) NOT NULL
+);
+success
+
+// create indexes
+create index orders_idx1 on orders (O_ORDERKEY);
+success
+
+// check existence of index
+lsidx orders;
+rows:
+('orders_idx1', false, false)
+
+ld orders "/DATA/tpch/orders10k.csv" ;
+success
+
+// check no of rows
+fetch orders;
+rows: 10000
+
+dynamic scan orders | output;
+rows: 10000
+
+dynamic scan orders | limit 1 | output;
+rows : 1
+
+dynamic fetch orders orders_idx1 | output;
+rows: 10000
+
+dynamic fetch orders orders_idx1 | limit 5000 | output;
+rows: 5000
+
+// drop the table
+drop table orders;
+success
+
+// check existence of table
+lstbl;
+rows: 0
+
+CLEANUP {
+
+  // drop the table
+  drop table orders;
+  mute
+
+  bye;
+  mute
+}
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/
