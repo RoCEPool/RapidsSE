@@ -188,6 +188,7 @@ Job* Jobs::pJob_Report_pre(Session* pSession, ReqTuple* aReqTuple)
   i8 nTokens;
 
   Job_Report* pJob_Report = new Job_Report(pSession,aReqTuple);
+  //pJob->vDicPath(pSession);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
 

@@ -185,6 +185,7 @@ Job* Jobs::pJob_Ingest_pre(Session* pSession, ReqTuple* aReqTuple)
   i8 nTokens;
 
   Job_Ingest* pJob_Ingest = new Job_Ingest(pSession,aReqTuple);
+  //pJob->vDicPath(pSession);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
 

@@ -174,7 +174,8 @@ Footer* Job_Health::aFooter(void)
 Job* Jobs::pJob_Health_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_Health* pJob_Health = new Job_Health(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
   
   Token* pHogCount = pTknVec->pGet(1);

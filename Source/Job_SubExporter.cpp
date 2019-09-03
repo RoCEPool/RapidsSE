@@ -332,6 +332,7 @@ Footer* Job_SubExporter::aFooter(void)
 Job* Jobs::pJob_SubExporter_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_SubExporter* pJob_SubExporter = new Job_SubExporter(pSession,aReqTuple);
+  //pJob->vDicPath(pSession);
   
   return pJob_SubExporter;
 }

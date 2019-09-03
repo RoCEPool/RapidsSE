@@ -199,7 +199,8 @@ Footer* Job_VerifyIndex::aFooter(void)
 Job* Jobs::pJob_VerifyIndex_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_VerifyIndex* pJob_VerifyIndex = new Job_VerifyIndex(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_VerifyIndex->bPopulateJob(pTokenVec);

@@ -194,7 +194,8 @@ Footer* Job_ShowCluster::aFooter(void)
 Job* Jobs::pJob_ShowCluster_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_ShowCluster* pJob_ShowCluster = new Job_ShowCluster(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   return pJob_ShowCluster;
 }
 

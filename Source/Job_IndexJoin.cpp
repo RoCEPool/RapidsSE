@@ -233,7 +233,8 @@ Footer* Job_IndexJoin::aFooter(void)
 Job* Jobs::pJob_IndexJoin_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_IndexJoin* pJob_IndexJoin = new Job_IndexJoin(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_IndexJoin->bPopulateJob(pTokenVec);

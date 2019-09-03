@@ -197,7 +197,8 @@ Footer* Job_Docol::aFooter(void)
 Job* Jobs::pJob_Docol_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_Docol* pJob_Docol = new Job_Docol(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_Docol->bPopulateJob(pTokenVec);

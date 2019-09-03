@@ -195,7 +195,8 @@ Footer* Job_TruncateTable::aFooter(void)
 Job* Jobs::pJob_TruncateTable_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_TruncateTable* pJob_TruncateTable = new Job_TruncateTable(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_TruncateTable->bPopulateJob(pTokenVec);

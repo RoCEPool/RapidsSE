@@ -193,7 +193,8 @@ Footer* Job_Space::aFooter(void)
 Job* Jobs::pJob_Space_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_Space* pJob_Space = new Job_Space(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_Space->bPopulateJob(pTokenVec);

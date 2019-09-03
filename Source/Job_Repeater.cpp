@@ -183,6 +183,7 @@ Job* Jobs::pJob_Repeater_pre(Session* pSession, ReqTuple* aReqTuple)
   i8 nTokens;
 
   Job_Repeater* pJob_Repeater = new Job_Repeater(pSession,aReqTuple);
+  //pJob->vDicPath(pSession);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
 

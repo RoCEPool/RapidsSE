@@ -196,7 +196,8 @@ Footer* Job_CreateCatalog::aFooter(void)
 Job* Jobs::pJob_CreateCatalog_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_CreateCatalog* pJob_CreateCatalog = new Job_CreateCatalog(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_CreateCatalog->bPopulateJob(pTokenVec);

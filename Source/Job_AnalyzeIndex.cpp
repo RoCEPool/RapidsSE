@@ -203,7 +203,8 @@ Footer* Job_AnalyzeIndex::aFooter(void)
 Job* Jobs::pJob_AnalyzeIndex_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_AnalyzeIndex* pJob_AnalyzeIndex = new Job_AnalyzeIndex(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_AnalyzeIndex->bPopulateJob(pTokenVec);

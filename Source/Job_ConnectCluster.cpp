@@ -192,7 +192,8 @@ Footer* Job_ConnectCluster::aFooter(void)
 Job* Jobs::pJob_ConnectCluster_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_ConnectCluster* pJob_ConnectCluster = new Job_ConnectCluster(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_ConnectCluster->bPopulateJob(pTokenVec);

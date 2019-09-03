@@ -196,7 +196,8 @@ Footer* Job_Sanity::aFooter(void)
 Job* Jobs::pJob_Sanity_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_Sanity* pJob_Sanity = new Job_Sanity(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_Sanity->bPopulateJob(pTokenVec);

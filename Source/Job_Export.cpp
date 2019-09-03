@@ -277,7 +277,8 @@ Footer* Job_Export::aFooter(void)
 Job* Jobs::pJob_Export_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_Export* pJob_Export = new Job_Export(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
 
   bool bResult = pJob_Export->bPopulateJob(pTokenVec);

@@ -229,7 +229,8 @@ Footer* Job_SubPurger::aFooter(void)
 Job* Jobs::pJob_SubPurger_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_SubPurger* pJob_SubPurger = new Job_SubPurger(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   return pJob_SubPurger;
 }
 

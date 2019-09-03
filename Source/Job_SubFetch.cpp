@@ -174,7 +174,8 @@ Footer* Job_SubFetch::aFooter(void)
 Job* Jobs::pJob_SubFetch_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_SubFetch* pJob_SubFetch = new Job_SubFetch(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   return pJob_SubFetch;
 }
 

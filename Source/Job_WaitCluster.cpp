@@ -193,7 +193,8 @@ Footer* Job_WaitCluster::aFooter(void)
 Job* Jobs::pJob_WaitCluster_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_WaitCluster* pJob_WaitCluster = new Job_WaitCluster(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   return pJob_WaitCluster;
 }
 

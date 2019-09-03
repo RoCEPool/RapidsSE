@@ -198,7 +198,8 @@ Footer* Job_DropSchema::aFooter(void)
 Job* Jobs::pJob_DropSchema_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_DropSchema* pJob_DropSchema = new Job_DropSchema(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_DropSchema->bPopulateJob(pTokenVec);

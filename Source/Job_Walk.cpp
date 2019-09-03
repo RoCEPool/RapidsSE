@@ -229,7 +229,8 @@ Footer* Job_Walk::aFooter(void)
 Job* Jobs::pJob_Walk_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_Walk* pJob_Walk = new Job_Walk(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_Walk->bPopulateJob(pTokenVec);

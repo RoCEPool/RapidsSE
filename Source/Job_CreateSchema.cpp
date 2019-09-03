@@ -197,7 +197,8 @@ Footer* Job_CreateSchema::aFooter(void)
 Job* Jobs::pJob_CreateSchema_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_CreateSchema* pJob_CreateSchema = new Job_CreateSchema(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_CreateSchema->bPopulateJob(pTokenVec);

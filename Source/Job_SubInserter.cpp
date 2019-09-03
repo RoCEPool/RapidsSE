@@ -256,17 +256,8 @@ Footer* Job_SubInserter::aFooter(void)
 Job* Jobs::pJob_SubInserter_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_SubInserter* pJob_SubInserter = new Job_SubInserter(pSession,aReqTuple);
-  
-//  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
-//  
-//  bool bResult = pJob_SubInserter->bPopulateJob(pTokenVec);
-//  
-//  if ( !bResult) {
-//    i8 iNode = AM::pGrid()->m_iThisNode;
-//    pJob_SubInserter->m_bHasError = true;
-//    pJob_SubInserter->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
-//  }
-  
+  //pJob->vDicPath(pSession);
+
   return pJob_SubInserter;
 }
 

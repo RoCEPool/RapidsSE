@@ -198,7 +198,8 @@ Footer* Job_ListIndexes::aFooter(void)
 Job* Jobs::pJob_ListIndexes_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_ListIndexes* pJob_ListIndexes = new Job_ListIndexes(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_ListIndexes->bPopulateJob(pTokenVec);

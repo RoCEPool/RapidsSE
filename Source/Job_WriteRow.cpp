@@ -188,7 +188,7 @@ Job_WriteRow* Job_WriteRow::pNewJobWriteRow(Session* pSession,
   JobClass* pJobClass_WriteRow = JobClass::pFind(CN_JOB_WRITEROW);
 
   Job_WriteRow* pJob_WriteRow =
-  static_cast<Job_WriteRow*>(pJobClass_WriteRow->pPreJob(pSession,nullptr));
+    static_cast<Job_WriteRow*>(pJobClass_WriteRow->pPreJob(pSession,nullptr));
 
   pJob_WriteRow->vSeed(SS_SEED_RUN);
 
@@ -241,7 +241,8 @@ Footer* Job_WriteRow::aFooter(void)
 Job* Jobs::pJob_WriteRow_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_WriteRow* pJob_WriteRow = new Job_WriteRow(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   return pJob_WriteRow;
 }
 

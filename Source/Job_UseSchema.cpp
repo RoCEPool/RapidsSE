@@ -200,7 +200,8 @@ Footer* Job_UseSchema::aFooter(void)
 Job* Jobs::pJob_UseSchema_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_UseSchema* pJob_UseSchema = new Job_UseSchema(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_UseSchema->bPopulateJob(pTokenVec);

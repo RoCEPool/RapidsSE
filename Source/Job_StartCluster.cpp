@@ -192,7 +192,8 @@ Footer* Job_StartCluster::aFooter(void)
 Job* Jobs::pJob_StartCluster_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_StartCluster* pJob_StartCluster = new Job_StartCluster(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_StartCluster->bPopulateJob(pTokenVec);

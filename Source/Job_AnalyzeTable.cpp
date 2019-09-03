@@ -199,7 +199,8 @@ Footer* Job_AnalyzeTable::aFooter(void)
 Job* Jobs::pJob_AnalyzeTable_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_AnalyzeTable* pJob_AnalyzeTable = new Job_AnalyzeTable(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_AnalyzeTable->bPopulateJob(pTokenVec);

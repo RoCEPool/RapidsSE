@@ -172,7 +172,8 @@ Footer* Job_SubScan::aFooter(void)
 Job* Jobs::pJob_SubScan_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_SubScan* pJob_SubScan = new Job_SubScan(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   return pJob_SubScan;
 }
 

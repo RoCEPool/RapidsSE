@@ -194,7 +194,8 @@ Footer* Job_ListTenants::aFooter(void)
 Job* Jobs::pJob_ListTenants_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_ListTenants* pJob_ListTenants = new Job_ListTenants(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_ListTenants->bPopulateJob(pTokenVec);

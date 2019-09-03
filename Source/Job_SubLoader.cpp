@@ -340,7 +340,8 @@ Footer* Job_SubLoader::aFooter(void)
 Job* Jobs::vJob_SubLoader_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_SubLoader* pJob_SubLoader = new Job_SubLoader(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   return pJob_SubLoader;
 }
 

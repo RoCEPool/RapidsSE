@@ -171,7 +171,8 @@ Footer* Job_SubTruncate::aFooter(void)
 Job* Jobs::pJob_SubTruncate_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_SubTruncate* pJob_SubTruncate = new Job_SubTruncate(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   return pJob_SubTruncate;
 }
 

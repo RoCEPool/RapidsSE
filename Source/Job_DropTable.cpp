@@ -195,7 +195,8 @@ Footer* Job_DropTable::aFooter(void)
 Job* Jobs::pJob_DropTable_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_DropTable* pJob_DropTable = new Job_DropTable(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_DropTable->bPopulateJob(pTokenVec);

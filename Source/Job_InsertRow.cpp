@@ -228,7 +228,8 @@ Footer* Job_InsertRow::aFooter(void)
 Job* Jobs::pJob_InsertRow_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_InsertRow* pJob_InsertRow = new Job_InsertRow(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
 //  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
 //  bool bResult = pJob_InsertRow->bPopulateJob(pTokenVec);

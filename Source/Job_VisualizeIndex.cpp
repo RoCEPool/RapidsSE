@@ -199,7 +199,8 @@ Footer* Job_VisualizeIndex::aFooter(void)
 Job* Jobs::pJob_VisualizeIndex_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_VisualizeIndex* pJob_VisualizeIndex = new Job_VisualizeIndex(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_VisualizeIndex->bPopulateJob(pTokenVec);

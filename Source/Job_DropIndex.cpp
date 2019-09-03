@@ -207,7 +207,8 @@ Footer* Job_DropIndex::aFooter(void)
 Job* Jobs::pJob_DropIndex_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_DropIndex* pJob_DropIndex = new Job_DropIndex(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_DropIndex->bPopulateJob(pTokenVec);

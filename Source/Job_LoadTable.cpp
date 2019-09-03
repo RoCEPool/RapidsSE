@@ -623,7 +623,8 @@ bool Job_LoadTable::bExtractDateFormat(Stz* dateFormat)
 Job* Jobs::pJob_LoadTable_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_LoadTable* pJob_LoadTable = new Job_LoadTable(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_LoadTable->bPopulateJob(pTokenVec);

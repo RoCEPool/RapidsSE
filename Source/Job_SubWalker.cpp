@@ -461,7 +461,8 @@ Footer* Job_SubWalker::aFooter(void)
 Job* Jobs::pJob_SubWalker_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_SubWalker* pJob_SubWalker = new Job_SubWalker(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   return pJob_SubWalker;
 }
 

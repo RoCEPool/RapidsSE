@@ -249,7 +249,8 @@ Footer* Job_CopyBuffer::aFooter(void)
 Job* Jobs::pJob_CopyBuffer_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_CopyBuffer* pJob_CopyBuffer = new Job_CopyBuffer(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   return pJob_CopyBuffer;
 }
 

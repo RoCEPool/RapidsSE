@@ -613,7 +613,8 @@ Footer* Job_CreateTable::aFooter(void)
 Job* Jobs::pJob_CreateTable_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_CreateTable* pJob_CreateTable = new Job_CreateTable(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
 
   eEC eError = pJob_CreateTable->ePopulateJob(pTokenVec);

@@ -202,7 +202,8 @@ Footer* Job_ListIdxColumns::aFooter(void)
 Job* Jobs::pJob_ListIdxColumns_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_ListIdxColumns* pJob_ListIdxColumns = new Job_ListIdxColumns(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_ListIdxColumns->bPopulateJob(pTokenVec);

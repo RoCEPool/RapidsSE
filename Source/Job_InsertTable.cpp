@@ -177,7 +177,8 @@ Footer* Job_InsertTable::aFooter(void)
 Job* Jobs::pJob_InsertTable_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_InsertTable* pJob_InsertTable = new Job_InsertTable(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   // get a jobId for the insertTable job
 //  i8 iJobId = gpAttachMap->m_pOriginatingJobs->iNextJobId();
 //  pJob_InsertTable->m_iUniqueId = iJobId;

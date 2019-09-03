@@ -194,7 +194,8 @@ Footer* Job_ListPartitions::aFooter(void)
 Job* Jobs::pJob_ListPartitions_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_ListPartitions* pJob_ListPartitions = new Job_ListPartitions(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_ListPartitions->bPopulateJob(pTokenVec);

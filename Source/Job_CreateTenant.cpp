@@ -196,7 +196,8 @@ Footer* Job_CreateTenant::aFooter(void)
 Job* Jobs::pJob_CreateTenant_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_CreateTenant* pJob_CreateTenant = new Job_CreateTenant(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_CreateTenant->bPopulateJob(pTokenVec);

@@ -194,7 +194,8 @@ Footer* Job_SizeTable::aFooter(void)
 Job* Jobs::pJob_SizeTable_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_SizeTable* pJob_SizeTable = new Job_SizeTable(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_SizeTable->bPopulateJob(pTokenVec);

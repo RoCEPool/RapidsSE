@@ -178,6 +178,7 @@ Job* Jobs::pJob_Sink_pre(Session* pSession, ReqTuple* aReqTuple)
   i8 nTokens;
 
   Job_Sink* pJob_Sink = new Job_Sink(pSession,aReqTuple);
+  //pJob->vDicPath(pSession);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
 

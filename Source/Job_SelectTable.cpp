@@ -203,7 +203,8 @@ Footer* Job_SelectTable::aFooter(void)
 Job* Jobs::pJob_SelectTable_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_SelectTable* pJob_SelectTable = new Job_SelectTable(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_SelectTable->bPopulateJob(pTokenVec);

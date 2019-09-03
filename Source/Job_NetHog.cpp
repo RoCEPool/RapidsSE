@@ -174,7 +174,8 @@ Footer* Job_NetHog::aFooter(void)
 Job* Jobs::pJob_NetHog_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_NetHog* pJob_NetHog = new Job_NetHog(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
   
   Token* pHogCount = pTknVec->pGet(1);

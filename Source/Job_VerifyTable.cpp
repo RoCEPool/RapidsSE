@@ -195,7 +195,8 @@ Footer* Job_VerifyTable::aFooter(void)
 Job* Jobs::pJob_VerifyTable_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_VerifyTable* pJob_VerifyTable = new Job_VerifyTable(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_VerifyTable->bPopulateJob(pTokenVec);

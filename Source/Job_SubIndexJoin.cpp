@@ -172,7 +172,8 @@ Footer* Job_SubIndexJoin::aFooter(void)
 Job* Jobs::pJob_SubIndexJoin_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_SubIndexJoin* pJob_SubIndexJoin = new Job_SubIndexJoin(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   return pJob_SubIndexJoin;
 }
 

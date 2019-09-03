@@ -245,7 +245,8 @@ Footer* Job_Dynamic::aFooter(void)
 Job* Jobs::pJob_Dynamic_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_Dynamic* pJob_Dynamic = new Job_Dynamic(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_Dynamic->bPopulateJob(pSession, pTokenVec);

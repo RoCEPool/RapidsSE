@@ -199,7 +199,8 @@ Footer* Job_DropCatalog::aFooter(void)
 Job* Jobs::pJob_DropCatalog_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_DropCatalog* pJob_DropCatalog = new Job_DropCatalog(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_DropCatalog->bPopulateJob(pTokenVec);

@@ -195,7 +195,8 @@ Footer* Job_VisualizeTable::aFooter(void)
 Job* Jobs::pJob_VisualizeTable_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_VisualizeTable* pJob_VisualizeTable = new Job_VisualizeTable(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_VisualizeTable->bPopulateJob(pTokenVec);

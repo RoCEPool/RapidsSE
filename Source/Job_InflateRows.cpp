@@ -276,7 +276,8 @@ Footer* Job_InflateRows::aFooter(void)
 Job* Jobs::pJob_InflateRows_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_InflateRows* pJob_InflateRows = new Job_InflateRows(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_InflateRows->bPopulateJob(pTokenVec);

@@ -194,7 +194,8 @@ Footer* Job_ListSchemas::aFooter(void)
 Job* Jobs::pJob_ListSchemas_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   Job_ListSchemas* pJob_ListSchemas = new Job_ListSchemas(pSession,aReqTuple);
-  
+  //pJob->vDicPath(pSession);
+
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   bool bResult = pJob_ListSchemas->bPopulateJob(pTokenVec);

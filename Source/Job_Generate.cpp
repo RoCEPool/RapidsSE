@@ -193,6 +193,7 @@ Job* Jobs::pJob_Generate_pre(Session* pSession, ReqTuple* aReqTuple)
   i8 nTokens;
 
   Job_Generate* pJob_Generate = new Job_Generate(pSession,aReqTuple);
+  //pJob->vDicPath(pSession);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
 
