@@ -204,9 +204,9 @@ Footer* Job_DropIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_DropIndex_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_DropIndex_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_DropIndex* pJob_DropIndex = new Job_DropIndex(pSession,iRequestId,aReqTuple);
+  Job_DropIndex* pJob_DropIndex = new Job_DropIndex(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

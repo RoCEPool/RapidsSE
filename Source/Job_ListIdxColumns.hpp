@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_ListIdxColumns* _pJob_ListIdxColumns(void* aAddr);
   
-  Job* pJob_ListIdxColumns_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
+  Job* pJob_ListIdxColumns_pre(Session* pSession, ReqTuple* aReqTuple);
   void vJob_ListIdxColumns_delete(Session* pSession, Job* pJob);
   void vJob_ListIdxColumns_show(Job* pJob);
   

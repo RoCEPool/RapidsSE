@@ -168,9 +168,9 @@ Footer* Job_SubTruncate::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubTruncate_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_SubTruncate_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_SubTruncate* pJob_SubTruncate = new Job_SubTruncate(pSession,iRequestId,aReqTuple);
+  Job_SubTruncate* pJob_SubTruncate = new Job_SubTruncate(pSession,C_UNKNOWN,aReqTuple);
   
   return pJob_SubTruncate;
 }

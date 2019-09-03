@@ -196,9 +196,9 @@ Footer* Job_DropCatalog::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_DropCatalog_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_DropCatalog_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_DropCatalog* pJob_DropCatalog = new Job_DropCatalog(pSession,iRequestId,aReqTuple);
+  Job_DropCatalog* pJob_DropCatalog = new Job_DropCatalog(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

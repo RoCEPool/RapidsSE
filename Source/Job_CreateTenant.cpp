@@ -193,9 +193,9 @@ Footer* Job_CreateTenant::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_CreateTenant_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_CreateTenant_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_CreateTenant* pJob_CreateTenant = new Job_CreateTenant(pSession,iRequestId,aReqTuple);
+  Job_CreateTenant* pJob_CreateTenant = new Job_CreateTenant(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

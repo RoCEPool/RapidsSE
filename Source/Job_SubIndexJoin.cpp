@@ -169,9 +169,9 @@ Footer* Job_SubIndexJoin::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubIndexJoin_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_SubIndexJoin_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_SubIndexJoin* pJob_SubIndexJoin = new Job_SubIndexJoin(pSession,iRequestId,aReqTuple);
+  Job_SubIndexJoin* pJob_SubIndexJoin = new Job_SubIndexJoin(pSession,C_UNKNOWN,aReqTuple);
   
   return pJob_SubIndexJoin;
 }

@@ -45,7 +45,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_WriteRow* _pJob_WriteRow(void* aAddr);
   
-  Job* pJob_WriteRow_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
+  Job* pJob_WriteRow_pre(Session* pSession, ReqTuple* aReqTuple);
   Job* pJob_WriteRow_new(JobClass* aJobClass);
   void vJob_WriteRow_delete(Session* pSession, Job* pJob);
   void vJob_WriteRow_show(Job* pJob);

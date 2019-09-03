@@ -46,7 +46,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_CreateTable* _pJob_CreateTable(void* aAddr);
   
-  Job* pJob_CreateTable_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
+  Job* pJob_CreateTable_pre(Session* pSession, ReqTuple* aReqTuple);
   void vJob_CreateTable_post(Session* pSession, Job* pJob);
   Job* pJob_CreateTable_new(JobClass* aJobClass);
   void vJob_CreateTable_delete(Session* pSession, Job* pJob);

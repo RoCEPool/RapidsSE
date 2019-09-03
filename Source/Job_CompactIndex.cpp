@@ -196,9 +196,9 @@ Footer* Job_CompactIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_CompactIndex_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_CompactIndex_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_CompactIndex* pJob_CompactIndex = new Job_CompactIndex(pSession,iRequestId,aReqTuple);
+  Job_CompactIndex* pJob_CompactIndex = new Job_CompactIndex(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

@@ -191,9 +191,9 @@ Footer* Job_ListTenants::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_ListTenants_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_ListTenants_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_ListTenants* pJob_ListTenants = new Job_ListTenants(pSession,iRequestId,aReqTuple);
+  Job_ListTenants* pJob_ListTenants = new Job_ListTenants(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

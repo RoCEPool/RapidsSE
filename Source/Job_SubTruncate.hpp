@@ -36,7 +36,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_SubTruncate* _pJob_SubTruncate(void* aAddr);
   
-  Job* pJob_SubTruncate_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
+  Job* pJob_SubTruncate_pre(Session* pSession, ReqTuple* aReqTuple);
   void vJob_SubTruncate_delete(Session* pSession, Job* pJob);
   void vJob_SubTruncate_show(Job* pJob);
   

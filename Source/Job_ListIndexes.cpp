@@ -195,9 +195,9 @@ Footer* Job_ListIndexes::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_ListIndexes_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_ListIndexes_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_ListIndexes* pJob_ListIndexes = new Job_ListIndexes(pSession,iRequestId,aReqTuple);
+  Job_ListIndexes* pJob_ListIndexes = new Job_ListIndexes(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

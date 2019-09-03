@@ -341,9 +341,9 @@ Footer* Job_CreateIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_CreateIndex_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_CreateIndex_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_CreateIndex* pJob_CreateIndex = new Job_CreateIndex(pSession,iRequestId,aReqTuple);
+  Job_CreateIndex* pJob_CreateIndex = new Job_CreateIndex(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

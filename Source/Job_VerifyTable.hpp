@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_VerifyTable* _pJob_VerifyTable(void* aAddr);
   
-  Job* pJob_VerifyTable_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
+  Job* pJob_VerifyTable_pre(Session* pSession, ReqTuple* aReqTuple);
   void vJob_VerifyTable_delete(Session* pSession, Job* pJob);
   void vJob_VerifyTable_show(Job* pJob);
   

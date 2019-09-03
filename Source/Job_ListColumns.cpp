@@ -195,9 +195,9 @@ Footer* Job_ListColumns::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_ListColumns_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_ListColumns_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_ListColumns* pJob_ListColumns = new Job_ListColumns(pSession,iRequestId,aReqTuple);
+  Job_ListColumns* pJob_ListColumns = new Job_ListColumns(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

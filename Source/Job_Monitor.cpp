@@ -173,11 +173,11 @@ Footer* Job_Monitor::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Monitor_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_Monitor_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   i8 nTokens;
 
-  Job_Monitor* pJob_Monitor = new Job_Monitor(pSession,iRequestId,aReqTuple);
+  Job_Monitor* pJob_Monitor = new Job_Monitor(pSession,C_UNKNOWN,aReqTuple);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
 

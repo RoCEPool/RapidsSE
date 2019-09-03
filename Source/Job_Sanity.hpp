@@ -38,7 +38,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Sanity* _pJob_Sanity(void* aAddr);
   
-  Job* pJob_Sanity_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
+  Job* pJob_Sanity_pre(Session* pSession, ReqTuple* aReqTuple);
   void vJob_Sanity_post(Session* pSession, Job* pJob);
   void vJob_Sanity_delete(Session* pSession, Job* pJob);
   void vJob_Sanity_show(Job* pJob);

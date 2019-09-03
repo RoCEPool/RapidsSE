@@ -44,7 +44,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_InsertRow* _pJob_InsertRow(void* aAddr);
   
-  Job* pJob_InsertRow_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
+  Job* pJob_InsertRow_pre(Session* pSession, ReqTuple* aReqTuple);
   Job* pJob_InsertRow_new(JobClass* aJobClass);
   void vJob_InsertRow_delete(Session* pSession, Job* pJob);
   void vJob_InsertRow_show(Job* pJob);

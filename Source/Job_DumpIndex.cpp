@@ -196,9 +196,9 @@ Footer* Job_DumpIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_DumpIndex_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_DumpIndex_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_DumpIndex* pJob_DumpIndex = new Job_DumpIndex(pSession,iRequestId,aReqTuple);
+  Job_DumpIndex* pJob_DumpIndex = new Job_DumpIndex(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

@@ -192,9 +192,9 @@ Footer* Job_VerifyTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_VerifyTable_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_VerifyTable_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_VerifyTable* pJob_VerifyTable = new Job_VerifyTable(pSession,iRequestId,aReqTuple);
+  Job_VerifyTable* pJob_VerifyTable = new Job_VerifyTable(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

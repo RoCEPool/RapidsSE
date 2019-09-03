@@ -45,7 +45,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_SubLoader* _pJob_SubLoader(void* aAddr);
   
-  Job* vJob_SubLoader_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
+  Job* vJob_SubLoader_pre(Session* pSession, ReqTuple* aReqTuple);
   Job* pJob_SubLoader_new(JobClass* aJobClass);
   void vJob_SubLoader_delete(Session* pSession, Job* pJob);
   void vJob_SubLoader_show(Job* pJob);

@@ -191,9 +191,9 @@ Footer* Job_SizeTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SizeTable_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_SizeTable_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_SizeTable* pJob_SizeTable = new Job_SizeTable(pSession,iRequestId,aReqTuple);
+  Job_SizeTable* pJob_SizeTable = new Job_SizeTable(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

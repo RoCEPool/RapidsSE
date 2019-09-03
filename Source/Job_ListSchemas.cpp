@@ -191,9 +191,9 @@ Footer* Job_ListSchemas::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_ListSchemas_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_ListSchemas_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_ListSchemas* pJob_ListSchemas = new Job_ListSchemas(pSession,iRequestId,aReqTuple);
+  Job_ListSchemas* pJob_ListSchemas = new Job_ListSchemas(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

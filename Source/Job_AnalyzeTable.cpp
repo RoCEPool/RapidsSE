@@ -196,9 +196,9 @@ Footer* Job_AnalyzeTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_AnalyzeTable_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_AnalyzeTable_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_AnalyzeTable* pJob_AnalyzeTable = new Job_AnalyzeTable(pSession,iRequestId,aReqTuple);
+  Job_AnalyzeTable* pJob_AnalyzeTable = new Job_AnalyzeTable(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

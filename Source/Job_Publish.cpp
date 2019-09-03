@@ -172,11 +172,11 @@ Footer* Job_Publish::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Publish_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_Publish_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   i8 nTokens;
 
-  Job_Publish* pJob_Publish = new Job_Publish(pSession,iRequestId,aReqTuple);
+  Job_Publish* pJob_Publish = new Job_Publish(pSession,C_UNKNOWN,aReqTuple);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
 

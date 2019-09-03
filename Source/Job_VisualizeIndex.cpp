@@ -196,9 +196,9 @@ Footer* Job_VisualizeIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_VisualizeIndex_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_VisualizeIndex_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_VisualizeIndex* pJob_VisualizeIndex = new Job_VisualizeIndex(pSession,iRequestId,aReqTuple);
+  Job_VisualizeIndex* pJob_VisualizeIndex = new Job_VisualizeIndex(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

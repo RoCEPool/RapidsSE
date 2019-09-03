@@ -192,9 +192,9 @@ Footer* Job_TruncateTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_TruncateTable_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_TruncateTable_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_TruncateTable* pJob_TruncateTable = new Job_TruncateTable(pSession,iRequestId,aReqTuple);
+  Job_TruncateTable* pJob_TruncateTable = new Job_TruncateTable(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

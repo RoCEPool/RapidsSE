@@ -274,9 +274,9 @@ Footer* Job_Export::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Export_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_Export_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_Export* pJob_Export = new Job_Export(pSession,iRequestId,aReqTuple);
+  Job_Export* pJob_Export = new Job_Export(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
 

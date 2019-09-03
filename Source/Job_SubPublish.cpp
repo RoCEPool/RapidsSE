@@ -255,9 +255,9 @@ Footer* Job_SubPublish::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubPublish_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_SubPublish_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_SubPublish* pJob_SubPublish = new Job_SubPublish(pSession,iRequestId,aReqTuple);
+  Job_SubPublish* pJob_SubPublish = new Job_SubPublish(pSession,C_UNKNOWN,aReqTuple);
   
   return pJob_SubPublish;
 }

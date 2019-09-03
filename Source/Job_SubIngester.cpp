@@ -313,9 +313,9 @@ Footer* Job_SubIngester::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::vJob_SubIngester_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::vJob_SubIngester_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_SubIngester* pJob_SubIngester = new Job_SubIngester(pSession,iRequestId,aReqTuple);
+  Job_SubIngester* pJob_SubIngester = new Job_SubIngester(pSession,C_UNKNOWN,aReqTuple);
   
   return pJob_SubIngester;
 }

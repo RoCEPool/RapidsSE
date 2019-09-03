@@ -196,9 +196,9 @@ Footer* Job_SizeIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SizeIndex_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_SizeIndex_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_SizeIndex* pJob_SizeIndex = new Job_SizeIndex(pSession,iRequestId,aReqTuple);
+  Job_SizeIndex* pJob_SizeIndex = new Job_SizeIndex(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

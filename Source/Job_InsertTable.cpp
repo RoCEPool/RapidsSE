@@ -174,9 +174,9 @@ Footer* Job_InsertTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_InsertTable_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_InsertTable_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_InsertTable* pJob_InsertTable = new Job_InsertTable(pSession,iRequestId,aReqTuple);
+  Job_InsertTable* pJob_InsertTable = new Job_InsertTable(pSession,C_UNKNOWN,aReqTuple);
   
   // get a jobId for the insertTable job
 //  i8 iJobId = gpAttachMap->m_pOriginatingJobs->iNextJobId();

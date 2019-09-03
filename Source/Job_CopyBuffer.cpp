@@ -246,9 +246,9 @@ Footer* Job_CopyBuffer::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_CopyBuffer_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_CopyBuffer_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_CopyBuffer* pJob_CopyBuffer = new Job_CopyBuffer(pSession,iRequestId,aReqTuple);
+  Job_CopyBuffer* pJob_CopyBuffer = new Job_CopyBuffer(pSession,C_UNKNOWN,aReqTuple);
   
   return pJob_CopyBuffer;
 }

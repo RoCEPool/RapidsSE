@@ -197,9 +197,9 @@ Footer* Job_UseSchema::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_UseSchema_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_UseSchema_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_UseSchema* pJob_UseSchema = new Job_UseSchema(pSession,iRequestId,aReqTuple);
+  Job_UseSchema* pJob_UseSchema = new Job_UseSchema(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

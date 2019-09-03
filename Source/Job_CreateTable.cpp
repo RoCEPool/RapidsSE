@@ -610,9 +610,9 @@ Footer* Job_CreateTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_CreateTable_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_CreateTable_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_CreateTable* pJob_CreateTable = new Job_CreateTable(pSession,iRequestId,aReqTuple);
+  Job_CreateTable* pJob_CreateTable = new Job_CreateTable(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
 

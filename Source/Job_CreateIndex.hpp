@@ -42,7 +42,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_CreateIndex* _pJob_CreateIndex(void* aAddr);
   
-  Job* pJob_CreateIndex_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
+  Job* pJob_CreateIndex_pre(Session* pSession, ReqTuple* aReqTuple);
   void vJob_CreateIndex_delete(Session* pSession, Job* pJob);
   void vJob_CreateIndex_show(Job* pJob);
   

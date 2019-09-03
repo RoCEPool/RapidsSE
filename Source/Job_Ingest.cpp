@@ -180,11 +180,11 @@ Footer* Job_Ingest::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Ingest_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_Ingest_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   i8 nTokens;
 
-  Job_Ingest* pJob_Ingest = new Job_Ingest(pSession,iRequestId,aReqTuple);
+  Job_Ingest* pJob_Ingest = new Job_Ingest(pSession,C_UNKNOWN,aReqTuple);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
 

@@ -171,9 +171,9 @@ Footer* Job_SubFetch::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubFetch_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_SubFetch_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_SubFetch* pJob_SubFetch = new Job_SubFetch(pSession,iRequestId,aReqTuple);
+  Job_SubFetch* pJob_SubFetch = new Job_SubFetch(pSession,C_UNKNOWN,aReqTuple);
   
   return pJob_SubFetch;
 }

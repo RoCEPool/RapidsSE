@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_VisualizeTable* _pJob_VisualizeTable(void* aAddr);
   
-  Job* pJob_VisualizeTable_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
+  Job* pJob_VisualizeTable_pre(Session* pSession, ReqTuple* aReqTuple);
   void vJob_VisualizeTable_delete(Session* pSession, Job* pJob);
   void vJob_VisualizeTable_show(Job* pJob);
   

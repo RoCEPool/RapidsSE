@@ -196,9 +196,9 @@ Footer* Job_VerifyIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_VerifyIndex_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_VerifyIndex_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_VerifyIndex* pJob_VerifyIndex = new Job_VerifyIndex(pSession,iRequestId,aReqTuple);
+  Job_VerifyIndex* pJob_VerifyIndex = new Job_VerifyIndex(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

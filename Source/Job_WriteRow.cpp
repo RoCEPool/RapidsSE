@@ -238,9 +238,9 @@ Footer* Job_WriteRow::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_WriteRow_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_WriteRow_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_WriteRow* pJob_WriteRow = new Job_WriteRow(pSession,iRequestId,aReqTuple);
+  Job_WriteRow* pJob_WriteRow = new Job_WriteRow(pSession,C_UNKNOWN,aReqTuple);
   
   return pJob_WriteRow;
 }

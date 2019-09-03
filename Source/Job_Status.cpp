@@ -189,9 +189,9 @@ Footer* Job_Status::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Status_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_Status_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_Status* pJob_Status = new Job_Status(pSession,iRequestId,aReqTuple);
+  Job_Status* pJob_Status = new Job_Status(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

@@ -423,9 +423,9 @@ Footer* Job_WriteBuffer::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_WriteBuffer_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_WriteBuffer_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(pSession,iRequestId,aReqTuple);
+  Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(pSession,C_UNKNOWN,aReqTuple);
   
   return pJob_WriteBuffer;
 }

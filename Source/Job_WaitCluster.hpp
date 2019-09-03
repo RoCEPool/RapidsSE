@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_WaitCluster* _pJob_WaitCluster(void* aAddr);
   
-  Job* pJob_WaitCluster_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
+  Job* pJob_WaitCluster_pre(Session* pSession, ReqTuple* aReqTuple);
   void vJob_WaitCluster_post(Session* pSession, Job* pJob);
   void vJob_WaitCluster_delete(Session* pSession, Job* pJob);
   void vJob_WaitCluster_show(Job* pJob);

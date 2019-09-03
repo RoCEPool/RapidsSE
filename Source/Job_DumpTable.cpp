@@ -192,9 +192,9 @@ Footer* Job_DumpTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_DumpTable_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_DumpTable_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_DumpTable* pJob_DumpTable = new Job_DumpTable(pSession,iRequestId,aReqTuple);
+  Job_DumpTable* pJob_DumpTable = new Job_DumpTable(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

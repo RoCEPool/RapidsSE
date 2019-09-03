@@ -230,9 +230,9 @@ Footer* Job_IndexJoin::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_IndexJoin_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_IndexJoin_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_IndexJoin* pJob_IndexJoin = new Job_IndexJoin(pSession,iRequestId,aReqTuple);
+  Job_IndexJoin* pJob_IndexJoin = new Job_IndexJoin(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

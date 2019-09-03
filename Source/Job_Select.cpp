@@ -256,9 +256,9 @@ Footer* Job_Select::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Select_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_Select_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_Select* pJob_Select = new Job_Select(pSession,iRequestId,aReqTuple);
+  Job_Select* pJob_Select = new Job_Select(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

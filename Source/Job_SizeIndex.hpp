@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_SizeIndex* _pJob_SizeIndex(void* aAddr);
   
-  Job* pJob_SizeIndex_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
+  Job* pJob_SizeIndex_pre(Session* pSession, ReqTuple* aReqTuple);
   void vJob_SizeIndex_delete(Session* pSession, Job* pJob);
   void vJob_SizeIndex_show(Job* pJob);
   

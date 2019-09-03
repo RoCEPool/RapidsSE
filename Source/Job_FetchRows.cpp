@@ -614,9 +614,9 @@ Footer* Job_FetchRows::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_FetchRows_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_FetchRows_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_FetchRows* pJob_FetchRows = new Job_FetchRows(pSession,iRequestId,aReqTuple);
+  Job_FetchRows* pJob_FetchRows = new Job_FetchRows(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

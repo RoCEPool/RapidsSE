@@ -191,9 +191,9 @@ Footer* Job_Ping::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Ping_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_Ping_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_Ping* pJob_Ping = new Job_Ping(pSession,iRequestId,aReqTuple);
+  Job_Ping* pJob_Ping = new Job_Ping(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

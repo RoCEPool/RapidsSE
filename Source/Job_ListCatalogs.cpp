@@ -191,9 +191,9 @@ Footer* Job_ListCatalogs::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_ListCatalogs_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_ListCatalogs_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_ListCatalogs* pJob_ListCatalogs = new Job_ListCatalogs(pSession,iRequestId,aReqTuple);
+  Job_ListCatalogs* pJob_ListCatalogs = new Job_ListCatalogs(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

@@ -329,9 +329,9 @@ Footer* Job_SubExporter::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubExporter_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_SubExporter_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_SubExporter* pJob_SubExporter = new Job_SubExporter(pSession,iRequestId,aReqTuple);
+  Job_SubExporter* pJob_SubExporter = new Job_SubExporter(pSession,C_UNKNOWN,aReqTuple);
   
   return pJob_SubExporter;
 }

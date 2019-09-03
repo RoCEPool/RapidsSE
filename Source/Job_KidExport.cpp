@@ -210,9 +210,9 @@ Footer* Job_KidExport::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_KidExport_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_KidExport_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_KidExport* pJob_KidExport = new Job_KidExport(pSession,iRequestId,aReqTuple);
+  Job_KidExport* pJob_KidExport = new Job_KidExport(pSession,C_UNKNOWN,aReqTuple);
   
   return pJob_KidExport;
 }

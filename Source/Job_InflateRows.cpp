@@ -273,9 +273,9 @@ Footer* Job_InflateRows::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_InflateRows_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_InflateRows_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_InflateRows* pJob_InflateRows = new Job_InflateRows(pSession,iRequestId,aReqTuple);
+  Job_InflateRows* pJob_InflateRows = new Job_InflateRows(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

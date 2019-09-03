@@ -190,9 +190,9 @@ Footer* Job_Cf::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Cf_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_Cf_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_Cf* pJob_Cf = new Job_Cf(pSession,iRequestId,aReqTuple);
+  Job_Cf* pJob_Cf = new Job_Cf(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

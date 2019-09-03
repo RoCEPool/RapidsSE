@@ -337,9 +337,9 @@ Footer* Job_SubLoader::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::vJob_SubLoader_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::vJob_SubLoader_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_SubLoader* pJob_SubLoader = new Job_SubLoader(pSession,iRequestId,aReqTuple);
+  Job_SubLoader* pJob_SubLoader = new Job_SubLoader(pSession,C_UNKNOWN,aReqTuple);
   
   return pJob_SubLoader;
 }

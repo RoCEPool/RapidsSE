@@ -620,9 +620,9 @@ bool Job_LoadTable::bExtractDateFormat(Stz* dateFormat)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_LoadTable_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_LoadTable_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_LoadTable* pJob_LoadTable = new Job_LoadTable(pSession,iRequestId,aReqTuple);
+  Job_LoadTable* pJob_LoadTable = new Job_LoadTable(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

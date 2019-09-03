@@ -173,11 +173,11 @@ Footer* Job_Sink::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Sink_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_Sink_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   i8 nTokens;
 
-  Job_Sink* pJob_Sink = new Job_Sink(pSession,iRequestId,aReqTuple);
+  Job_Sink* pJob_Sink = new Job_Sink(pSession,C_UNKNOWN,aReqTuple);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
 

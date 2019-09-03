@@ -190,9 +190,9 @@ Footer* Job_Space::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Space_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_Space_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_Space* pJob_Space = new Job_Space(pSession,iRequestId,aReqTuple);
+  Job_Space* pJob_Space = new Job_Space(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

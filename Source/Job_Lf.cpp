@@ -191,9 +191,9 @@ Footer* Job_Lf::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Lf_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_Lf_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_Lf* pJob_Lf = new Job_Lf(pSession,iRequestId,aReqTuple);
+  Job_Lf* pJob_Lf = new Job_Lf(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

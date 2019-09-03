@@ -186,13 +186,13 @@ Footer* Job_Generate::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Generate_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_Generate_pre(Session* pSession, ReqTuple* aReqTuple)
 {
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   i8 nTokens;
 
-  Job_Generate* pJob_Generate = new Job_Generate(pSession,iRequestId,aReqTuple);
+  Job_Generate* pJob_Generate = new Job_Generate(pSession,C_UNKNOWN,aReqTuple);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
 

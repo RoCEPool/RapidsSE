@@ -171,9 +171,9 @@ Footer* Job_NetHog::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_NetHog_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_NetHog_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_NetHog* pJob_NetHog = new Job_NetHog(pSession,iRequestId,aReqTuple);
+  Job_NetHog* pJob_NetHog = new Job_NetHog(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
   

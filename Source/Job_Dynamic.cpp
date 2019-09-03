@@ -242,9 +242,9 @@ Footer* Job_Dynamic::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Dynamic_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_Dynamic_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_Dynamic* pJob_Dynamic = new Job_Dynamic(pSession,iRequestId,aReqTuple);
+  Job_Dynamic* pJob_Dynamic = new Job_Dynamic(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

@@ -191,9 +191,9 @@ Footer* Job_ShowCluster::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_ShowCluster_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_ShowCluster_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_ShowCluster* pJob_ShowCluster = new Job_ShowCluster(pSession,iRequestId,aReqTuple);
+  Job_ShowCluster* pJob_ShowCluster = new Job_ShowCluster(pSession,C_UNKNOWN,aReqTuple);
   
   return pJob_ShowCluster;
 }

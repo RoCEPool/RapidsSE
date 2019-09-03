@@ -50,7 +50,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_SubPublish* _pJob_SubPublish(void* aAddr);
   
-  Job* pJob_SubPublish_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
+  Job* pJob_SubPublish_pre(Session* pSession, ReqTuple* aReqTuple);
   void vJob_SubPublish_delete(Session* pSession, Job* pJob);
   void vJob_SubPublish_show(Job* pJob);
   

@@ -171,9 +171,9 @@ Footer* Job_Health::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Health_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_Health_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_Health* pJob_Health = new Job_Health(pSession,iRequestId,aReqTuple);
+  Job_Health* pJob_Health = new Job_Health(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
   

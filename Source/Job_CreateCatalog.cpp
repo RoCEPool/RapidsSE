@@ -193,9 +193,9 @@ Footer* Job_CreateCatalog::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_CreateCatalog_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_CreateCatalog_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_CreateCatalog* pJob_CreateCatalog = new Job_CreateCatalog(pSession,iRequestId,aReqTuple);
+  Job_CreateCatalog* pJob_CreateCatalog = new Job_CreateCatalog(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

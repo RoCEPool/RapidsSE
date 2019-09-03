@@ -191,9 +191,9 @@ Footer* Job_ListPartitions::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_ListPartitions_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_ListPartitions_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_ListPartitions* pJob_ListPartitions = new Job_ListPartitions(pSession,iRequestId,aReqTuple);
+  Job_ListPartitions* pJob_ListPartitions = new Job_ListPartitions(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

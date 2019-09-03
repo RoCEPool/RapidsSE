@@ -192,9 +192,9 @@ Footer* Job_DropTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_DropTable_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_DropTable_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_DropTable* pJob_DropTable = new Job_DropTable(pSession,iRequestId,aReqTuple);
+  Job_DropTable* pJob_DropTable = new Job_DropTable(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

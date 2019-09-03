@@ -126,7 +126,7 @@ void JobClass::vPostJob(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* JobClass::pPreJob(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job* pJob = (*m_fpPre)(pSession,C_UNKNOWN,aReqTuple);
+  Job* pJob = (*m_fpPre)(pSession,aReqTuple);
   
   pJob->m_pJobClass = this;
   pJob->m_xReqTuple.m_i_State = pSession ? pSession->m_pSessionState->m_i_State : -1;

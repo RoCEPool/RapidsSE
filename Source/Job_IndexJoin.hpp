@@ -51,7 +51,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_IndexJoin* _pJob_IndexJoin(void* aAddr);
   
-  Job* pJob_IndexJoin_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
+  Job* pJob_IndexJoin_pre(Session* pSession, ReqTuple* aReqTuple);
   void vJob_IndexJoin_post(Session* pSession, Job* pJob);
   void vJob_IndexJoin_delete(Session* pSession, Job* pJob);
   void vIterateBuffer(Job_IndexJoin* pJob_IndexJoin, RefBuffer* pRefBuffer);

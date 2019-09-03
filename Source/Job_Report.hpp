@@ -58,7 +58,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Report* _pJob_Report(void* aAddr);
   
-  Job* pJob_Report_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
+  Job* pJob_Report_pre(Session* pSession, ReqTuple* aReqTuple);
   Job* pJob_Report_new(JobClass* aJobClass);
   void vJob_Report_delete(Session* pSession, Job* pJob);
   void vJob_Report_show(Job* pJob);

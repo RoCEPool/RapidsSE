@@ -41,7 +41,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Dynamic* _pJob_Dynamic(void* aAddr);
   
-  Job* pJob_Dynamic_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple);
+  Job* pJob_Dynamic_pre(Session* pSession, ReqTuple* aReqTuple);
   void vJob_Dynamic_post(Session* pSession, Job* pJob);
   void vJob_Dynamic_delete(Session* pSession, Job* pJob);
   void vJob_Dynamic_show(Job* pJob);

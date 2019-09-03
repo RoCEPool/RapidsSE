@@ -200,9 +200,9 @@ Footer* Job_SelectTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SelectTable_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_SelectTable_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_SelectTable* pJob_SelectTable = new Job_SelectTable(pSession,iRequestId,aReqTuple);
+  Job_SelectTable* pJob_SelectTable = new Job_SelectTable(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

@@ -226,9 +226,9 @@ Footer* Job_Walk::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Walk_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_Walk_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_Walk* pJob_Walk = new Job_Walk(pSession,iRequestId,aReqTuple);
+  Job_Walk* pJob_Walk = new Job_Walk(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

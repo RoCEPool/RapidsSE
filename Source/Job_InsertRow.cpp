@@ -225,9 +225,9 @@ Footer* Job_InsertRow::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_InsertRow_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_InsertRow_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_InsertRow* pJob_InsertRow = new Job_InsertRow(pSession,iRequestId,aReqTuple);
+  Job_InsertRow* pJob_InsertRow = new Job_InsertRow(pSession,C_UNKNOWN,aReqTuple);
   
 //  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

@@ -192,9 +192,9 @@ Footer* Job_VisualizeTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_VisualizeTable_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_VisualizeTable_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_VisualizeTable* pJob_VisualizeTable = new Job_VisualizeTable(pSession,iRequestId,aReqTuple);
+  Job_VisualizeTable* pJob_VisualizeTable = new Job_VisualizeTable(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

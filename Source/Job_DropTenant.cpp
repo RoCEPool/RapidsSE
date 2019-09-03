@@ -195,9 +195,9 @@ Footer* Job_DropTenant::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_DropTenant_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_DropTenant_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_DropTenant* pJob_DropTenant = new Job_DropTenant(pSession,iRequestId,aReqTuple);
+  Job_DropTenant* pJob_DropTenant = new Job_DropTenant(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   

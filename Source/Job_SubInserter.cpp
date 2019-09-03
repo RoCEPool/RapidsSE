@@ -253,9 +253,9 @@ Footer* Job_SubInserter::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubInserter_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_SubInserter_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_SubInserter* pJob_SubInserter = new Job_SubInserter(pSession,iRequestId,aReqTuple);
+  Job_SubInserter* pJob_SubInserter = new Job_SubInserter(pSession,C_UNKNOWN,aReqTuple);
   
 //  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
 //  

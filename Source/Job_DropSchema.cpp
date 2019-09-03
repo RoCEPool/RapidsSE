@@ -195,9 +195,9 @@ Footer* Job_DropSchema::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_DropSchema_pre(Session* pSession, i8 iRequestId, ReqTuple* aReqTuple)
+Job* Jobs::pJob_DropSchema_pre(Session* pSession, ReqTuple* aReqTuple)
 {
-  Job_DropSchema* pJob_DropSchema = new Job_DropSchema(pSession,iRequestId,aReqTuple);
+  Job_DropSchema* pJob_DropSchema = new Job_DropSchema(pSession,C_UNKNOWN,aReqTuple);
   
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
