@@ -12,6 +12,10 @@ void _LogEntryThd::vSet(LogEntry* pLogEntry, Thread* pThread, eHA eThdAct)
   pLogEntry->m_eKind = EK_THD;
   pLogEntry->m_cPrefix = 'H';
 
+  if (pThread->m_pTask && TK_JOB == pThread->pTask()->eKind()
+                       && pThread->pTask()->pJob())
+    pLogEntry->m_xReqTuple.vSet(&pThread->pTask()->pJob()->m_xReqTuple);
+  
   m_iThdId  = pThread->m_iUniqueId;
   m_eThdAct = eThdAct;
   
