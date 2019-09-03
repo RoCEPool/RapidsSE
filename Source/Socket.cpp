@@ -888,9 +888,9 @@ bool Socket::bSendTo(void* aBytes, i8 nBytes, SysCall& SysCall)
   gpAttachMap->m_oStatistics.Socket.m_nSendTos++;
 #endif
   
-  AM::vLogRes(SL_INF,this,RA_SKT_SEND,
-              "Socket send %lldB"_Stz, //!format-LogRes
-              nBytes);
+//  AM::vLogRes(SL_INF,this,RA_SKT_SEND,
+//              "Socket send %lldB"_Stz, //!format-LogRes
+//              nBytes);
   
   i8 nBytesSent = sendto(m_iSocketId
                          ,aBytes

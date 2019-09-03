@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-enum eQA // operator actions
+enum eQA // queue actions
 {
   /*  0 */ QA_NONE=0,
   
