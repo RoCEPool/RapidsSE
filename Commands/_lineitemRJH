@@ -72,7 +72,7 @@ time fetch lineitem noPrint;
 
 //dynamic scan lineitem | project L_PARTKEY | agg L_PARTKEY | output | zed;
 //time dynamic scan lineitem | zed;
-time dynamic scan lineitem | agg L_PARTKEY | output | zed;
+//time dynamic scan lineitem | agg L_PARTKEY | output | zed;
 //time dynamic scan lineitem | getKey L_PARTKEY | sort | agg L_PARTKEY | output | zed;
 //time dynamic scan lineitem | getKey L_PARTKEY | agg L_PARTKEY | output | zed;
 //time dynamic scan lineitem | getKey L_PARTKEY | sort | merge | agg L_PARTKEY | output | zed;
