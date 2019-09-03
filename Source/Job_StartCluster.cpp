@@ -75,7 +75,7 @@ Job_StartCluster* Jobs::_pJob_StartCluster(void* aAddress)
 void* Job_StartCluster::operator new(size_t)
 {
   Job_StartCluster* pJob_StartCluster =
-  static_cast<Job_StartCluster*>(HeapMem::pAllocate(CN_JOB_STARTCLUSTER));
+    static_cast<Job_StartCluster*>(HeapMem::pAllocate(CN_JOB_STARTCLUSTER));
   
   return pJob_StartCluster;
 }

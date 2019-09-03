@@ -393,6 +393,13 @@ void SePrompt::vDeleteJob(void)
   //JobClass* pJobClass = pInput->pJobClass();
   
   //ActLog::vEnd(m_pJob);
+  
+  SP_Id spId;
+  
+  AM::vLogPrm(SL_INF,this,PA_PRM_DELETE_JOB,
+              "%s"_Stz, //!format-LogPrm
+              spId.sz(IK_JOB,m_pJob->m_iUniqueId));
+
 
   // call the job delete function
   m_pJobClass->vDeleteJob(m_pSession,m_pJob);
