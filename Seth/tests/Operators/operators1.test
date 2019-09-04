@@ -33,19 +33,19 @@ rows: 26
 
 // (1) create a table
 create table OpTable2 (
-jidx_key   INTEGER     NOT NULL,
-jidx_name  VARCHAR(32) NOT NULL,
-jidx_100   INTEGER     NOT NULL,
-jidx_10    INTEGER     NOT NULL,
-jidx_int   INTEGER     NOT NULL,
-jidx_flt   FLOAT       NOT NULL,
-jidx_tsp   TIMESTAMP   NOT NULL,
-jidx_dte   DATE        NOT NULL
-);
+  jidx_key_2   INTEGER     NOT NULL,
+  jidx_name_2  VARCHAR(32) NOT NULL,
+  jidx_100_2   INTEGER     NOT NULL,
+  jidx_10_2    INTEGER     NOT NULL,
+  jidx_int_2   INTEGER     NOT NULL,
+  jidx_flt_2   FLOAT       NOT NULL,
+  jidx_tsp_2   TIMESTAMP   NOT NULL,
+  jidx_dte_2   DATE        NOT NULL
+  );
 success
 
 // create indexes
-create index OpTable2_idx on OpTable2 (jidx_key);
+create index OpTable2_idx on OpTable2 (jidx_key_2);
 success
 
 // check existence of index
@@ -184,6 +184,10 @@ rows: 5
 
 // ScanOp (CrwBuffer->SrtBuffer->SrtBuffer->IrwBuffer->IrwBuffer->IrwBuffer->IrwBuffer)
 dynamic scan OpTable1 | getKey jidx_100 | sort | project jidx_100, jidx_name | project jidx_name | limit 5 | output;
+rows: 5
+
+// ScanOp (CrwBuffer->SrtBuffer->SrtBuffer->IrwBuffer->IrwBuffer->IrwBuffer->IrwBuffer)
+dynamic fetch OpTable1 OpTable1_idx || fetch OpTable2 OpTable2_idx | join | project jidx_100_2, jidx_key | limit 5 | output;
 rows: 5
 
 // drop the table
