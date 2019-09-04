@@ -60,10 +60,11 @@ ProjectOp::ProjectOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bApp
 {
   _precondition_(_MAGIC_,CN_PROJECTOP);
   
-  m_fpCall = ProjectOp::eCall;
+  m_fpCall     = ProjectOp::eCall;
   m_pStreamDef = new StreamDef;
+  
   m_pOriginalStreamDef = nullptr;
-  m_pIrwBuffer = new IrwBuffer;
+  m_pIrwBuffer         = new IrwBuffer;
   
   for (i8 i_ColVec = 0; i_ColVec < C_MAX_COLUMNVECS; i_ColVec++)
     m_iWhichVec[i_ColVec] = C_UNKNOWN;
@@ -96,9 +97,11 @@ Op* ProjectOp::pNew(Stz* szLabel,
   
   ProjectOp* pProjectOp = new ProjectOp(szLabel,pDigest,aOpDefn,bAppR);
   
+  // create a columnVec in the stream def
   pProjectOp->m_pStreamDef->m_oColVecAry.vItems(1);
   ColumnVec* pColVec = pProjectOp->m_pStreamDef->pColumnVec(0);
   
+  // add columns to the columnVec
   i8 i_Column = 0;
   while ( ! pTknVec->pGet(i_Tkn_)->bSame("|"_Stz) ) {
     
@@ -172,7 +175,9 @@ eOR ProjectOp::eOpLoop(void)
           delete (EndMarker*)pOperand;
         
         break;
-       
+        
+      // -- -- -- -- -- --
+        
       case CN_CRWBUFFER: {
         CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand) ;
         ColumnVec* pColumnVec = m_pStreamDef->m_oColVecAry.pGet(0);
@@ -185,7 +190,6 @@ eOR ProjectOp::eOpLoop(void)
           
           if ( ! pRow ) {
             vPipeOut(m_pIrwBuffer);
-            //m_pIrwBuffer->vShow(m_pStreamDef->pColumnVec(0));
             m_pIrwBuffer = new IrwBuffer;
             pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
           }
@@ -206,7 +210,7 @@ eOR ProjectOp::eOpLoop(void)
         break;
       }
         
-        // -- -- -- -- -- --
+      // -- -- -- -- -- --
         
       case CN_ENTBUFFER: {
         EntBuffer* pEntBuffer = _pEntBuffer(pOperand) ;
@@ -243,16 +247,21 @@ eOR ProjectOp::eOpLoop(void)
         break;
       }
         
+      // -- -- -- -- -- --
+        
       case CN_SRTBUFFER: {
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
         delete pSrtBuffer;
         break;
       }
+      
+      // -- -- -- -- -- --
         
       case CN_STREAMDEF: {
-        
-        // figure out the columns to be projected
+      
         StreamDef* pStreamDef = _pStreamDef(pOperand);
+        
+        // save the original stream def
         m_pOriginalStreamDef = new StreamDef(pStreamDef);
         
         RASSERT(m_pStreamDef->m_oColVecAry.nItems() == 1);
@@ -260,25 +269,30 @@ eOR ProjectOp::eOpLoop(void)
         i8 nProjColumns = pProjColumnVec->nItems();
 
         // Find the project col in the streamDef's that came in
+        
         for (i8 i_ProjCol = 0; i_ProjCol < nProjColumns; i_ProjCol++) {
+         
           Column* pProjCol = pProjColumnVec->pGet(i_ProjCol);
-          Column* pCol = nullptr;
+          m_iWhichCol[i_ProjCol] =
+            m_pOriginalStreamDef->iFindColumn(pProjCol->sColumnName().aChar(),m_iWhichVec[i_ProjCol]);
           
-          for (i8 i_ColVec = 0; i_ColVec < m_pOriginalStreamDef->m_oColVecAry.nItems(); i_ColVec++) {
-            ColumnVec* pColumnVec = m_pOriginalStreamDef->m_oColVecAry.pGet(i_ColVec);
-            i8 nColumns = pColumnVec->nItems();
-            
-            for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-              pCol = pColumnVec->pGet(i_Col);
-              if (pProjCol->sColumnName().bEqual(pCol->sColumnName())) {
-                m_iWhichVec[i_ProjCol] = i_ColVec;
-                m_iWhichCol[i_ProjCol] = i_Col;
-                pProjCol->vColumnType(pCol->eColumnType());
-                pProjCol->vDatumType(pCol->eDatumType());
-                break;
-              }
-            }
-          }
+//          Column* pCol = nullptr;
+//
+//          for (i8 i_ColVec = 0; i_ColVec < m_pOriginalStreamDef->m_oColVecAry.nItems(); i_ColVec++) {
+//            ColumnVec* pColumnVec = m_pOriginalStreamDef->m_oColVecAry.pGet(i_ColVec);
+//            i8 nColumns = pColumnVec->nItems();
+//
+//            for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+//              pCol = pColumnVec->pGet(i_Col);
+//              if (pProjCol->sColumnName().bEqual(pCol->sColumnName())) {
+//                m_iWhichVec[i_ProjCol] = i_ColVec;
+//                m_iWhichCol[i_ProjCol] = i_Col;
+//                pProjCol->vColumnType(pCol->eColumnType());
+//                pProjCol->vDatumType(pCol->eDatumType());
+//                break;
+//              }
+//            }
+//          }
         }
         
         // pipe out the streamdef
@@ -287,9 +301,11 @@ eOR ProjectOp::eOpLoop(void)
         delete pStreamDef;
         break;
       }
+     
+      // -- -- -- -- -- --
         
       default:
-        vPipeOut(pOperand);
+        RASSERT(0);
         break;
     }
     

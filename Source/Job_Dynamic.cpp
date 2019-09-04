@@ -340,19 +340,7 @@ void Jobs::vJob_Dynamic_post(Session* pSession, Job* pJob)
       case CN_STREAMDEF: {
         pJob_Dynamic->m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
         if (AM::bMetadata()) {
-          
-          ColumnVec* pColVec = pJob_Dynamic->m_pStreamDef->m_oColVecAry.pGet(0);
-          
-          pJob_Dynamic->m_sMetadata.vCopy("metadata: ("_Stz);
-          
-          for (i8 i_Col = 0; i_Col < pColVec->nItems(); i_Col++) {
-            if (i_Col != 0)
-              pJob_Dynamic->m_sMetadata.vConcat(","_Stz);
-            Column* pCol = pColVec->pGet(i_Col);
-            pJob_Dynamic->m_sMetadata.vCatSprint("%s %s"_Stz, pCol->sColumnName().aChar(),
-                                 aCT[pCol->eColumnType()]);
-          }
-          pJob_Dynamic->m_sMetadata.vConcat(")"_Stz);
+          pJob_Dynamic->m_pStreamDef->vToMetadata(pJob_Dynamic->m_sMetadata.aStz());
           vTrace("%s\n"_Stz, pJob_Dynamic->m_sMetadata.aStz());
         }
         

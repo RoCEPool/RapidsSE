@@ -163,6 +163,34 @@ i8 StreamDef::iFindColumn(char* sColumnNm, i8& i_ColVec)
   
   return C_UNKNOWN;
 }
+
+/*----------------------------------------------------------------------------*/
+/* convert streamDef to its metadat format                                    */
+/*----------------------------------------------------------------------------*/
+void StreamDef::vToMetadata(Stz* sMetadata)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+  
+  sMetadata->vCopy("metadata: ("_Stz);
+  
+  for (i8 i_ColVec = 0; i_ColVec < m_oColVecAry.nItems(); i_ColVec++) {
+    
+    ColumnVec* pColumnVec = m_oColVecAry.pGet(i_ColVec);
+    i8 nColumns = pColumnVec->nItems();
+    
+    for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+      
+      if (i_Col != 0)
+        sMetadata->vConcat(","_Stz);
+      
+      Column* pCol = pColumnVec->pGet(i_Col);
+      sMetadata->vCatSprint("%s %s"_Stz, pCol->sColumnName().aChar(),
+                           aCT[pCol->eColumnType()]);
+    }
+    sMetadata->vConcat(")"_Stz);
+  }
+}
+
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

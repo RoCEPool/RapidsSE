@@ -60,6 +60,7 @@ success
 fetch OpTable2;
 rows: 21
 
+// scanOp (CrwBuffer->CrwBuffer)
 dynamic scan OpTable1 | output;
 rows:
   (  0, 'zero'    , 1001, 0, 0, 1.000000e+03, TIMESTAMP '1900-01-01 00:00:00.0', DATE '1900-01-01' )
@@ -89,6 +90,7 @@ rows:
   ( 24, 'twofour' , 124, 4, 24, 1.024020e+03, TIMESTAMP '1924-01-01 00:00:00.0', DATE '1924-01-01' )
   ( 25, 'twofive' , 125, 5, 25, 1.025030e+03, TIMESTAMP '1925-01-01 00:00:00.0', DATE '1925-01-01' )
 
+// scanOp (CrwBuffer->SrtBuffer->SrtBuffer)
 dynamic scan OpTable1 | limit 1 | output;
 rows: 1
 
@@ -121,9 +123,11 @@ rows:
   ( 24, 'twofour' , 124, 4, 24, 1.024020e+03, TIMESTAMP '1924-01-01 00:00:00.0', DATE '1924-01-01' )
   ( 25, 'twofive' , 125, 5, 25, 1.025030e+03, TIMESTAMP '1925-01-01 00:00:00.0', DATE '1925-01-01' )
 
+// fetchOp (EntBuffer->SrtBuffer->SrtBuffer)
 dynamic fetch OpTable1 OpTable1_idx | limit 10 | output;
 rows: 10
 
+// scanOp (CrwBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
 dynamic scan OpTable1 | getKey jidx_100 | sort | output;
 ordered rows:
   (  1, 'one'     ,  101, 1,  1, 1.001000e+03, TIMESTAMP '1901-01-01 00:00:00.0', DATE '1901-01-01' )
