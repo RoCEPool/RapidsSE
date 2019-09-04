@@ -264,25 +264,8 @@ eOR ProjectOp::eOpLoop(void)
         // save the original stream def
         m_pOriginalStreamDef = new StreamDef(pStreamDef);
         
-        RASSERT(m_pStreamDef->m_oColVecAry.nItems() == 1);
-        ColumnVec* pProjColumnVec = m_pStreamDef->m_oColVecAry.pGet(0);
-        i8 nProjColumns = pProjColumnVec->nItems();
-
-        // Find the project col in the streamDef's that came in
-        
-        for (i8 i_ProjCol = 0; i_ProjCol < nProjColumns; i_ProjCol++) {
-         
-          // find the project column in the original Stream
-          Column* pProjCol = pProjColumnVec->pGet(i_ProjCol);
-          m_iWhichCol[i_ProjCol] =
-            m_pOriginalStreamDef->iFindColumn(pProjCol->sColumnName().aChar(),m_iWhichVec[i_ProjCol]);
-          
-          // set the column and datum type in the project column
-          ColumnVec* pColumnVec = m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[i_ProjCol]);
-          Column* pCol = pColumnVec->pGet(m_iWhichCol[i_ProjCol]);
-          pProjCol->vColumnType(pCol->eColumnType());
-          pProjCol->vDatumType(pCol->eDatumType());
-        }
+        // update the streamDef of this project Op
+        vUpdateStreamDef();
         
         // pipe out the streamdef
         vPipeOut(new StreamDef(m_pStreamDef));
@@ -350,6 +333,37 @@ eOR ProjectOp::eDrainLoop(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_EXIT:
   return OR_EXIT;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* update the stream def i=of the project op                                  */
+/*----------------------------------------------------------------------------*/
+void ProjectOp::vUpdateStreamDef(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PROJECTOP,_FOOTER_);
+  RASSERT(m_pStreamDef->m_oColVecAry.nItems() == 1);
+  ColumnVec* pProjColumnVec = m_pStreamDef->m_oColVecAry.pGet(0);
+  i8 nProjColumns = pProjColumnVec->nItems();
+  
+  // Find the project col in the streamDef's that came in
+  
+  for (i8 i_ProjCol = 0; i_ProjCol < nProjColumns; i_ProjCol++) {
+    
+    // find the project column in the original Stream
+    Column* pProjCol = pProjColumnVec->pGet(i_ProjCol);
+    m_iWhichCol[i_ProjCol] =
+    m_pOriginalStreamDef->iFindColumn(pProjCol->sColumnName().aChar(),m_iWhichVec[i_ProjCol]);
+    
+    // set the column and datum type in the project column
+    ColumnVec* pColumnVec = m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[i_ProjCol]);
+    Column* pCol = pColumnVec->pGet(m_iWhichCol[i_ProjCol]);
+    pProjCol->vColumnType(pCol->eColumnType());
+    pProjCol->vDatumType(pCol->eDatumType());
+  }
 }
 
 /*----------------------------------------------------------------------------*/
