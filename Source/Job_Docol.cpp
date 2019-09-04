@@ -102,7 +102,7 @@ void Job_Docol::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_Docol::Job_Docol(ReqTuple* aReqTuple, Session* pSession)
-: Job(CN_JOB_DOCOL, pSession, aReqTuple)
+: Job(CN_JOB_DOCOL, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DOCOL,_FOOTER_);
   

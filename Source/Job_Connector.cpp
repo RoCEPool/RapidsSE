@@ -102,7 +102,7 @@ void Job_Connector::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_Connector::Job_Connector(ReqTuple* aReqTuple, Session* pSession)
-: Job(CN_JOB_CONNECTOR, pSession, aReqTuple)
+: Job(CN_JOB_CONNECTOR, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CONNECTOR,_FOOTER_);
   

@@ -102,7 +102,7 @@ void Job_Export::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_Export::Job_Export(ReqTuple* aReqTuple, Session* pSession)
-: Job(CN_JOB_EXPORT, pSession, aReqTuple)
+: Job(CN_JOB_EXPORT, aReqTuple, pSession)
 , m_okLock(LK_EXPORT,C_NO_REQTUPLE,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);

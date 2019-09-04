@@ -102,7 +102,7 @@ void Job_SubPurger::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_SubPurger::Job_SubPurger(ReqTuple* aReqTuple, Session* pSession)
-: Job(CN_JOB_SUBPURGER, pSession, aReqTuple)
+: Job(CN_JOB_SUBPURGER, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBPURGER,_FOOTER_);
     

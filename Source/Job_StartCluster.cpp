@@ -102,7 +102,7 @@ void Job_StartCluster::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_StartCluster::Job_StartCluster(ReqTuple* aReqTuple, Session* pSession)
-: Job(CN_JOB_STARTCLUSTER, pSession, aReqTuple)
+: Job(CN_JOB_STARTCLUSTER, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_STARTCLUSTER,_FOOTER_);
   

@@ -18,6 +18,8 @@ JobBase::JobBase(eCN eClassNo, ReqTuple* aReqTuple, i8 iJobId, Focal* pFor)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
+  RASSERT(CN_JOB__FIND == eClassNo || aReqTuple);
+  
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
 }
 

@@ -102,7 +102,7 @@ void Job_Sanity::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_Sanity::Job_Sanity(ReqTuple* aReqTuple, Session* pSession)
-: Job(CN_JOB_SANITY, pSession, aReqTuple)
+: Job(CN_JOB_SANITY, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SANITY,_FOOTER_);
       

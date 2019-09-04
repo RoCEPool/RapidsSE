@@ -102,7 +102,7 @@ void Job_SubPublish::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_SubPublish::Job_SubPublish(ReqTuple* aReqTuple, Session* pSession)
-: Job(CN_JOB_SUBPUBLISH, pSession, aReqTuple)
+: Job(CN_JOB_SUBPUBLISH, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBPUBLISH,_FOOTER_);
     

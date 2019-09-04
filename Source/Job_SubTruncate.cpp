@@ -102,7 +102,7 @@ void Job_SubTruncate::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_SubTruncate::Job_SubTruncate(ReqTuple* aReqTuple, Session* pSession)
-: Job(CN_JOB_SUBTRUNCATE, pSession, aReqTuple)
+: Job(CN_JOB_SUBTRUNCATE, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBTRUNCATE,_FOOTER_);
     

@@ -103,7 +103,7 @@ void Job_Health::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_Health::Job_Health(ReqTuple* aReqTuple, Session* pSession)
-: Job(CN_JOB_NETHOG, pSession, aReqTuple)
+: Job(CN_JOB_NETHOG, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_NETHOG,_FOOTER_);
   

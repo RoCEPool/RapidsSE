@@ -102,7 +102,7 @@ void Job_AnalyzeIndex::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_AnalyzeIndex::Job_AnalyzeIndex(ReqTuple* aReqTuple, Session* pSession)
-: Job(CN_JOB_ANALYZEINDEX, pSession, aReqTuple)
+: Job(CN_JOB_ANALYZEINDEX, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_ANALYZEINDEX,_FOOTER_);
     

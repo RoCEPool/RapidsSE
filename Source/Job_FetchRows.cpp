@@ -140,7 +140,7 @@ void Job_FetchRows::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_FetchRows::Job_FetchRows(ReqTuple* aReqTuple, Session* pSession)
-: Job(CN_JOB_FETCHROWS, pSession, aReqTuple)
+: Job(CN_JOB_FETCHROWS, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_FETCHROWS,_FOOTER_);
     

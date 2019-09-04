@@ -102,7 +102,7 @@ void Job_DropTable::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_DropTable::Job_DropTable(ReqTuple* aReqTuple, Session* pSession)
-: Job(CN_JOB_DROPTABLE, pSession, aReqTuple)
+: Job(CN_JOB_DROPTABLE, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPTABLE,_FOOTER_);
     

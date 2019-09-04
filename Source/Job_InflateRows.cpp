@@ -102,7 +102,7 @@ void Job_InflateRows::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_InflateRows::Job_InflateRows(ReqTuple* aReqTuple, Session* pSession)
-: Job(CN_JOB_INFLATEROWS, pSession, aReqTuple)
+: Job(CN_JOB_INFLATEROWS, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INFLATEROWS,_FOOTER_);
     

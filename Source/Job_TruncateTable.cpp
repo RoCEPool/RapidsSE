@@ -102,7 +102,7 @@ void Job_TruncateTable::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_TruncateTable::Job_TruncateTable(ReqTuple* aReqTuple, Session* pSession)
-: Job(CN_JOB_TRUNCATETABLE, pSession, aReqTuple)
+: Job(CN_JOB_TRUNCATETABLE, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_TRUNCATETABLE,_FOOTER_);
   

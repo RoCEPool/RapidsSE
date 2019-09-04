@@ -102,7 +102,7 @@ void Job_Sink::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_Sink::Job_Sink(ReqTuple* aReqTuple, Session* pSession)
-: Job(CN_JOB_SINK, pSession, aReqTuple)
+: Job(CN_JOB_SINK, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SINK,_FOOTER_);
   

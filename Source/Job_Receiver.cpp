@@ -102,7 +102,7 @@ void Job_Receiver::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_Receiver::Job_Receiver(ReqTuple* aReqTuple, Session* pSession)
-: Job(CN_JOB_RECEIVER, pSession, aReqTuple)
+: Job(CN_JOB_RECEIVER, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_RECEIVER,_FOOTER_);
     

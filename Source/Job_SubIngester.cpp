@@ -102,7 +102,7 @@ void Job_SubIngester::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_SubIngester::Job_SubIngester(ReqTuple* aReqTuple, Session* pSession)
-: Job(CN_JOB_SUBINGESTER, pSession, aReqTuple)
+: Job(CN_JOB_SUBINGESTER, aReqTuple, pSession)
 , JobWriteBehind(DS_INGEST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINGESTER,_FOOTER_);

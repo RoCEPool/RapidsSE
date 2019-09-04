@@ -102,7 +102,7 @@ void Job_WriteRow::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_WriteRow::Job_WriteRow(ReqTuple* aReqTuple, Session* pSession)
-: Job(CN_JOB_WRITEROW, pSession, aReqTuple)
+: Job(CN_JOB_WRITEROW, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEROW,_FOOTER_);
   

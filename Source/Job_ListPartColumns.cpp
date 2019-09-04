@@ -102,7 +102,7 @@ void Job_ListPartColumns::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_ListPartColumns::Job_ListPartColumns(ReqTuple* aReqTuple, Session* pSession)
-: Job(CN_JOB_LISTPARTCOLUMNS, pSession, aReqTuple)
+: Job(CN_JOB_LISTPARTCOLUMNS, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTPARTCOLUMNS,_FOOTER_);
   

@@ -102,7 +102,7 @@ void Job_Repeater::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_Repeater::Job_Repeater(ReqTuple* aReqTuple, Session* pSession)
-: Job(CN_JOB_REPEATER, pSession, aReqTuple)
+: Job(CN_JOB_REPEATER, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPEATER,_FOOTER_);
   

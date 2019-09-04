@@ -102,7 +102,7 @@ void Job_SubInflate::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_SubInflate::Job_SubInflate(ReqTuple* aReqTuple, Session* pSession)
-: Job(CN_JOB_SUBINFLATE, pSession, aReqTuple)
+: Job(CN_JOB_SUBINFLATE, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINFLATE,_FOOTER_);
     

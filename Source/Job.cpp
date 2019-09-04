@@ -55,7 +55,7 @@ bool Jobs::_bIsValidJob(eCN eClass)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(eCN eClassNo, Session* pSession, ReqTuple* aReqTuple)
+Job::Job(eCN eClassNo, ReqTuple* aReqTuple, Session* pSession)
 : JobBase(eClassNo,aReqTuple,AM::iNextJobId(),pSession)
 , JobDicPath(pSession)
 {
