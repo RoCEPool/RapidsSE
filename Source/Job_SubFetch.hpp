@@ -22,7 +22,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_SubFetch(ReqTuple* aReqTuple, Session* pSession);//=C_UNKNOWN);
+    Job_SubFetch(ReqTuple* aReqTuple, i8 iForId, Session* pSession);//=C_UNKNOWN);
     ~Job_SubFetch(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -38,7 +38,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_SubFetch* _pJob_SubFetch(void* aAddr);
   
-  Job* pJob_SubFetch_pre(ReqTuple* aReqTuple, Session* pSession);
+  Job* pJob_SubFetch_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession);
   void vJob_SubFetch_delete(Session* pSession, Job* pJob);
   void vJob_SubFetch_show(Job* pJob);
   

@@ -101,7 +101,7 @@ void Job_SubPublish::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SubPublish::Job_SubPublish(ReqTuple* aReqTuple, Session* pSession)
+Job_SubPublish::Job_SubPublish(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 : Job(CN_JOB_SUBPUBLISH, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBPUBLISH,_FOOTER_);
@@ -255,9 +255,9 @@ Footer* Job_SubPublish::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_SubPublish_pre(ReqTuple* aReqTuple, Session* pSession)
+Job* Jobs::pJob_SubPublish_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 {
-  Job_SubPublish* pJob_SubPublish = new Job_SubPublish(aReqTuple,pSession);
+  Job_SubPublish* pJob_SubPublish = new Job_SubPublish(aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);
 
   return pJob_SubPublish;

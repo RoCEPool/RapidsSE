@@ -101,7 +101,7 @@ void Job_Docol::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Docol::Job_Docol(ReqTuple* aReqTuple, Session* pSession)
+Job_Docol::Job_Docol(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 : Job(CN_JOB_DOCOL, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DOCOL,_FOOTER_);
@@ -194,9 +194,9 @@ Footer* Job_Docol::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Docol_pre(ReqTuple* aReqTuple, Session* pSession)
+Job* Jobs::pJob_Docol_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 {
-  Job_Docol* pJob_Docol = new Job_Docol(aReqTuple,pSession);
+  Job_Docol* pJob_Docol = new Job_Docol(aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

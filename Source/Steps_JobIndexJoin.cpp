@@ -187,7 +187,7 @@ void Step::vJob_IndexJoinSpawnSub(MP_Task mpTask)
   JobClass* pJobClass_SubIndexJoin = JobClass::pFind(CN_JOB_SUBINDEXJOIN);
   
   Job_SubIndexJoin* pJob_SubIndexJoin =
-    static_cast<Job_SubIndexJoin*>(pJobClass_SubIndexJoin->pPreJob(aReqTuple,pSession));
+    static_cast<Job_SubIndexJoin*>(pJobClass_SubIndexJoin->pPreJob(aReqTuple,pJob_IndexJoin->m_iUniqueId,pSession));
   
   pJob_SubIndexJoin->vSeed(SS_SEED_RUN);
   

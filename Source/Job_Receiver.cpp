@@ -101,7 +101,7 @@ void Job_Receiver::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Receiver::Job_Receiver(ReqTuple* aReqTuple, Session* pSession)
+Job_Receiver::Job_Receiver(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 : Job(CN_JOB_RECEIVER, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_RECEIVER,_FOOTER_);
@@ -213,7 +213,7 @@ Job* Jobs::pJob_Receiver_new(JobClass* aJobClass)
 {
   ReqTuple xReqTuple("**RECEIVER"_Stz,false);
   
-  Job_Receiver* pJob_Receiver = new Job_Receiver(&xReqTuple,nullptr);
+  Job_Receiver* pJob_Receiver = new Job_Receiver(&xReqTuple,C_UNKNOWN,nullptr);
   
   return pJob_Receiver;
 }

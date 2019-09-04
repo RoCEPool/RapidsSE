@@ -218,7 +218,7 @@ eEC RapidsSE_BeginInsert(i8 iTrace, Session* pSession,
     ReqTuple xReqTuple("!!BEGIN_INSERT"_Stz,false);
     
     Job_InsertTable* pJob_InsertTable =
-      static_cast<Job_InsertTable*>(pJobClass_InsertTable->pPreJob(&xReqTuple,pSession));
+      static_cast<Job_InsertTable*>(pJobClass_InsertTable->pPreJob(&xReqTuple,C_UNKNOWN,pSession));
     API_LOC(320);
 
     // find the table in the session dictionary stack
@@ -347,7 +347,7 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
     ReqTuple xReqTuple("!!INSERT_ROW"_Stz,false);
     
     Job_InsertRow* pJob_InsertRow =
-      static_cast<Job_InsertRow*>(pJobClass_InsertRow->pPreJob(&xReqTuple,pSession));
+      static_cast<Job_InsertRow*>(pJobClass_InsertRow->pPreJob(&xReqTuple,C_UNKNOWN,pSession));
     API_LOC(320);
     
     // push the InsertTable job onto the jobstack
@@ -456,7 +456,7 @@ eEC RapidsSE_BeginSubInserter(i8 iTrace, Session* pSession, void* aJob,
     API_LOC(320);
 
     Job_SubInserter* pJob_SubInserter =
-      static_cast<Job_SubInserter*>(pJobClass_SubInserter->pPreJob(aReqTuple,pSession));
+      static_cast<Job_SubInserter*>(pJobClass_SubInserter->pPreJob(aReqTuple,pJob_InsertTable->m_iUniqueId,pSession));
     API_LOC(330);
 
     // push the InsertTable job onto the jobstack
@@ -516,7 +516,7 @@ eEC RapidsSE_CopyBuffer(i8 iTrace, Session* pSession, void* aJob)
     API_LOC(340);
 
     Job_CopyBuffer* pJob_CopyBuffer =
-      static_cast<Job_CopyBuffer*>(pJobClass_CopyBuffer->pPreJob(aReqTuple,pSession));
+      static_cast<Job_CopyBuffer*>(pJobClass_CopyBuffer->pPreJob(aReqTuple,pJob_SubInserter->m_iUniqueId,pSession));
     API_LOC(350);
 
     // set the pJob_SubInserter and table in the pJob_CopyBuffer

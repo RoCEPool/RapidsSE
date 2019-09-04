@@ -101,7 +101,7 @@ void Job_Monitor::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Monitor::Job_Monitor(ReqTuple* aReqTuple, Session* pSession)
+Job_Monitor::Job_Monitor(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 : Job(CN_JOB_MONITOR, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_MONITOR,_FOOTER_);
@@ -173,11 +173,11 @@ Footer* Job_Monitor::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Monitor_pre(ReqTuple* aReqTuple, Session* pSession)
+Job* Jobs::pJob_Monitor_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 {
   i8 nTokens;
 
-  Job_Monitor* pJob_Monitor = new Job_Monitor(aReqTuple,pSession);
+  Job_Monitor* pJob_Monitor = new Job_Monitor(aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
@@ -202,7 +202,7 @@ Job* Jobs::pJob_Monitor_pre(ReqTuple* aReqTuple, Session* pSession)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Monitor_new(JobClass* aJobClass)
 {
-  Job_Monitor* pJob_Monitor = new Job_Monitor(nullptr,nullptr);
+  Job_Monitor* pJob_Monitor = new Job_Monitor(nullptr,C_UNKNOWN,nullptr);
   
   return pJob_Monitor;
 }

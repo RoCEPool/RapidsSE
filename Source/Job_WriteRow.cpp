@@ -101,7 +101,7 @@ void Job_WriteRow::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_WriteRow::Job_WriteRow(ReqTuple* aReqTuple, Session* pSession)
+Job_WriteRow::Job_WriteRow(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 : Job(CN_JOB_WRITEROW, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEROW,_FOOTER_);
@@ -190,7 +190,7 @@ Job_WriteRow* Job_WriteRow::pNewJobWriteRow(Session* pSession,
   ReqTuple xReqTuple("!!WRITE_ROW"_Stz,false);
   
   Job_WriteRow* pJob_WriteRow =
-    static_cast<Job_WriteRow*>(pJobClass_WriteRow->pPreJob(&xReqTuple,pSession));
+    static_cast<Job_WriteRow*>(pJobClass_WriteRow->pPreJob(&xReqTuple,iParentJobId,pSession));
 
   pJob_WriteRow->vSeed(SS_SEED_RUN);
 
@@ -240,9 +240,9 @@ Footer* Job_WriteRow::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_WriteRow_pre(ReqTuple* aReqTuple, Session* pSession)
+Job* Jobs::pJob_WriteRow_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 {
-  Job_WriteRow* pJob_WriteRow = new Job_WriteRow(aReqTuple,pSession);
+  Job_WriteRow* pJob_WriteRow = new Job_WriteRow(aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);
 
   return pJob_WriteRow;
@@ -253,7 +253,7 @@ Job* Jobs::pJob_WriteRow_pre(ReqTuple* aReqTuple, Session* pSession)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_WriteRow_new(JobClass* aJobClass)
 {
-  Job_WriteRow* pJob_WriteRow = new Job_WriteRow(nullptr,nullptr);
+  Job_WriteRow* pJob_WriteRow = new Job_WriteRow(nullptr,C_UNKNOWN,nullptr);
   
   return pJob_WriteRow;
 }

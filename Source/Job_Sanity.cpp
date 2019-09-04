@@ -101,7 +101,7 @@ void Job_Sanity::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Sanity::Job_Sanity(ReqTuple* aReqTuple, Session* pSession)
+Job_Sanity::Job_Sanity(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 : Job(CN_JOB_SANITY, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SANITY,_FOOTER_);
@@ -193,9 +193,9 @@ Footer* Job_Sanity::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Sanity_pre(ReqTuple* aReqTuple, Session* pSession)
+Job* Jobs::pJob_Sanity_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 {
-  Job_Sanity* pJob_Sanity = new Job_Sanity(aReqTuple,pSession);
+  Job_Sanity* pJob_Sanity = new Job_Sanity(aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

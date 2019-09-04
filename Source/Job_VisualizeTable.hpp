@@ -18,7 +18,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_VisualizeTable(ReqTuple* aReqTuple, Session* pSession);//=C_UNKNOWN);
+    Job_VisualizeTable(ReqTuple* aReqTuple, i8 iForId, Session* pSession);//=C_UNKNOWN);
     ~Job_VisualizeTable(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_VisualizeTable* _pJob_VisualizeTable(void* aAddr);
   
-  Job* pJob_VisualizeTable_pre(ReqTuple* aReqTuple, Session* pSession);
+  Job* pJob_VisualizeTable_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession);
   void vJob_VisualizeTable_delete(Session* pSession, Job* pJob);
   void vJob_VisualizeTable_show(Job* pJob);
   

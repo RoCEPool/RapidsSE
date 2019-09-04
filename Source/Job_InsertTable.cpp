@@ -101,7 +101,7 @@ void Job_InsertTable::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_InsertTable::Job_InsertTable(ReqTuple* aReqTuple, Session* pSession)
+Job_InsertTable::Job_InsertTable(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 : Job(CN_JOB_INSERTTABLE, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTTABLE,_FOOTER_);
@@ -174,9 +174,9 @@ Footer* Job_InsertTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_InsertTable_pre(ReqTuple* aReqTuple, Session* pSession)
+Job* Jobs::pJob_InsertTable_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 {
-  Job_InsertTable* pJob_InsertTable = new Job_InsertTable(aReqTuple,pSession);
+  Job_InsertTable* pJob_InsertTable = new Job_InsertTable(aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);
 
   // get a jobId for the insertTable job
@@ -191,7 +191,7 @@ Job* Jobs::pJob_InsertTable_pre(ReqTuple* aReqTuple, Session* pSession)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_InsertTable_new(JobClass* aJobClass)
 {
-  Job_InsertTable* pJob_InsertTable = new Job_InsertTable(nullptr,nullptr);
+  Job_InsertTable* pJob_InsertTable = new Job_InsertTable(nullptr,C_UNKNOWN,nullptr);
   
   return pJob_InsertTable;
 }

@@ -22,7 +22,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Purge(ReqTuple* aReqTuple, Session* pSession);//=C_UNKNOWN);
+    Job_Purge(ReqTuple* aReqTuple, i8 iForId, Session* pSession);//=C_UNKNOWN);
     ~Job_Purge(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -40,7 +40,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Purge* _pJob_Purge(void* aAddr);
   
-  Job* pJob_Purge_pre(ReqTuple* aReqTuple, Session* pSession);
+  Job* pJob_Purge_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession);
   void vJob_Purge_post(Session* pSession, Job* pJob);
   Job* pJob_Purge_new(JobClass* aJobClass);
   void vJob_Purge_delete(Session* pSession, Job* pJob);
