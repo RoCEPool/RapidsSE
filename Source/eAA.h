@@ -40,7 +40,7 @@ static Stz* aAA_short[]
   /*    */ "Api error"_Stz,
   /*    */ "Api entry"_Stz,
   /*    */ "Api exit"_Stz,
-  /*    */ "Api new job"_Stz,
+  /*    */ "Api spawn job"_Stz,
 
   /*    */ "Session construct"_Stz,
   /*    */ "Session destruct"_Stz,

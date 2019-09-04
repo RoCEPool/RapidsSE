@@ -70,7 +70,7 @@ void Step::vLogMarkEntry(MP_Task mpTask)
 //                          );
   
   Job* pJob = mpTask->m_pJob;
-  AM::vLogJob(SL_INF,pJob,JA_JOB_INF,
+  AM::vLogJob(SL_INF,pJob,JA_JOB_ENTRY,
               "Enter : %s for %s %p"_Stz,
               sWordNm.aStz(),
               aCN[pJob->eClass()],
@@ -102,7 +102,7 @@ void Step::vLogMarkExit(MP_Task mpTask)
   
   Job* pJob = mpTask->m_pJob;
 
-  AM::vLogJob(SL_INF,pJob,JA_JOB_INF,
+  AM::vLogJob(SL_INF,pJob,JA_JOB_EXIT,
               "Exit : %s for %s %p"_Stz,
               sWordNm.aStz(),
               aCN[pJob->eClass()],
@@ -125,7 +125,7 @@ void Step::vLogMarkPhase(MP_Task mpTask)
   
   Job* pJob = mpTask->m_pJob;
   
-  AM::vLogJob(SL_INF,pJob,JA_JOB_INF,
+  AM::vLogJob(SL_INF,pJob,JA_JOB_PHASE,
               "Phase : %s for %s %p"_Stz,
               aJP[i_Phase],
               aCN[pJob->eClass()],

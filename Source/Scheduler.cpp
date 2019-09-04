@@ -1214,7 +1214,7 @@ bool Scheduler::bThread_AssignIdle(Task* pTask)
   RASSERT(HS_IDLE == pThread->m_eThreadState);
 
   AM::vLogTsk(SL_INF,pTask,TA_TSK_ASSIGNED_THREAD,
-              "Task attempts to assign an idle thread to itself"_Stz); //!format-LogTsk
+              "Task has assigned an idle thread to itself"_Stz); //!format-LogTsk
 
   pThread->m_pTask = pTask;
   pThread->m_nAssignedTasks++;

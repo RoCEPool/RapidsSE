@@ -300,8 +300,8 @@ void Mutex::vCondWaitIndefinite(void)
 #endif
   
   vIncActNo(); ++ m_ixWaitIndef;
-  AM::vLogRes(SL_INF,this,RA_MTX_WAIT_INDEF,
-              "Mutex -%s wait(indefinite) |m_ixWaitIndef=%lld|"_Stz, //!format-LogRes
+  AM::vLogRes(SL_INF,this,RA_MTX_WAIT_SIGNAL,
+              "-%s wait for signal |m_ixWaitIndef=%lld|"_Stz, //!format-LogRes
               aMK[m_eKind],
               * m_ixWaitIndef,
               C_ENDARGS);
@@ -376,7 +376,7 @@ void Mutex::vCondWaitUsec(i8 iMicroSeconds)
   
   vIncActNo(); ++ m_ixWaitTimed;
   AM::vLogRes(SL_INF,this,RA_MTX_WAIT_TIMED,
-              "Mutex -%s wait(timed=%lldus) |m_ixWaitTimed=%lld|"_Stz, //!format-LogRes
+              "-%s wait for signal or timeout(%lldus) |m_ixWaitTimed=%lld|"_Stz, //!format-LogRes
               aMK[m_eKind],
               iMicroSeconds,
               * m_ixWaitTimed,

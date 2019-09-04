@@ -65,6 +65,7 @@ enum eOC // other characters
   /*    */ OC_ENTER,
   /*    */ OC_CONNECT,
   /*    */ OC_TRACE,
+  /*    */ OC_PHASE,
 
   /*    */ OC_JOB,
   /*    */ OC_LOCK,
@@ -100,7 +101,7 @@ static Stz* aOC[]
    /*    */ "🙉"_Stz, // signaled
    /*    */ "❌"_Stz, // grab
    /*    */ "⭕️"_Stz, // drop
-   /*    */ "🌗"_Stz, // transition
+   /*    */ "🐛"_Stz, // transition
    /*    */ "🔃"_Stz, // repeat
    /*    */ "💤"_Stz, // sleep
    /*    */ "📦"_Stz, // send
@@ -141,6 +142,7 @@ static Stz* aOC[]
    /*    */ "🕺"_Stz, // enter
    /*    */ "📡"_Stz, // connect
    /*    */ "🐾"_Stz, // trace
+   /*    */ "🌗"_Stz, // phase
 
    /*    */ "💈"_Stz, // job
    /*    */ "🔒"_Stz, // lock

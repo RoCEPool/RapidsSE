@@ -98,11 +98,14 @@
     exit                                                         // *EARLY EXIT*
   then
 
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // all job__cancelled's have been received, so this job is the decider
 
   // remove the originating job from the originator jobs
   pJobOriginator job.removeOriginator
+
+  JP_CANCELED log::markPhase
 
   // notify the originating task
   pJobOriginator job.originatingTask@ task.ack

@@ -40,7 +40,7 @@ enum eRA // resource actions
   /*    */ RA_MTX_STATS,
   /*    */ RA_MTX_TIMEDOUT,
   /*    */ RA_MTX_UNLOCKED,
-  /*    */ RA_MTX_WAIT_INDEF,
+  /*    */ RA_MTX_WAIT_SIGNAL,
   /*    */ RA_MTX_WAIT_TIMED,
 
   /*    */ RA_SKT_ACCEPTED,
@@ -111,7 +111,7 @@ static Stz* aRA[]
   /*    */ "RA_MTX_STATS"_Stz,
   /*    */ "RA_MTX_TIMEDOUT"_Stz,
   /*    */ "RA_MTX_UNLOCKED"_Stz,
-  /*    */ "RA_MTX_WAIT_INDEF"_Stz,
+  /*    */ "RA_MTX_WAIT_SIGNAL"_Stz,
   /*    */ "RA_MTX_WAIT_TIMED"_Stz,
 
   /*    */ "RA_SKT_ACCEPTED"_Stz,
@@ -182,7 +182,7 @@ static Stz* aRA_short[]
   /*    */ "Mutex stats"_Stz,
   /*    */ "Mutex timedout"_Stz,
   /*    */ "Mutex unlocked"_Stz,
-  /*    */ "Mutex wait indefinite"_Stz,
+  /*    */ "Mutex wait signal"_Stz,
   /*    */ "Mutex wait timed"_Stz,
   
   /*    */ "Socket accepted"_Stz,

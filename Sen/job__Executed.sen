@@ -111,6 +111,9 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // all __executed jobs have been received, so this job is the decider
 
+  JP_EXECUTED log::markPhase
+
+
   // send a job__end to all participants
   pJobOriginator Job__End::distribute
 

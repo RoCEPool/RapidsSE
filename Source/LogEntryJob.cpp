@@ -25,6 +25,7 @@ void _LogEntryJob::vSet(LogEntry* pLogEntry, Job* pJob, eJA eJobAct)
   else if (JA_JOB_ADD_PARTG == eJobAct)     pLogEntry->m_iIndicator = OC_ADD;
   else if (JA_JOB_REMOVE_ORIGIN == eJobAct) pLogEntry->m_iIndicator = OC_REMOVE;
   else if (JA_JOB_REMOVE_PARTG == eJobAct)  pLogEntry->m_iIndicator = OC_REMOVE;
+  else if (JA_JOB_PHASE == eJobAct)         pLogEntry->m_iIndicator = OC_PHASE;
 }
 
 /*----------------------------------------------------------------------------*/

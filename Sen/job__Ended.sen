@@ -82,6 +82,9 @@
   // remove the originating job from the originator jobs
   pJobOriginator job.removeOriginator
 
+  JP_ENDED log::markPhase
+
+
   // notify the originating task
   pJobOriginator job.originatingTask@ task.ack
 

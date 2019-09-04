@@ -17,6 +17,8 @@
   // where:  On the originator node.
   //
 
+  JP_CANCELING log::markPhase
+
   params| pJobOriginator |
 
   0 locals| pJob__Cancel |

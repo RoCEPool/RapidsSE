@@ -667,8 +667,9 @@ void SePrompt::vLogFreeSpace(void)
   
   vIncActNo();
   AM::vLogPrm(SL_INF,this,PA_PRM_FREE_SPACE,
-              "%s"_Stz, //!format-LogPrm
-              sFreeSpaceMag.aStz());
+              "%s on node %s"_Stz, //!format-LogPrm
+              sFreeSpaceMag.aStz(),
+              AM::szNodeName());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -754,6 +755,14 @@ void SePrompt::vPreJob(void)
   //JobClass* pJobClass = pInput->pJobClass();
 
   //pInput->vPreJob(m_pSession);
+  
+  SP_Id spId;
+  
+  vIncActNo();
+  AM::vLogPrm(SL_INF,this,PA_PRM_NEW_JOB,
+              "for request %s"_Stz, //!format-LogPrm
+              spId.sz(EK_REQ,m_iRequestId),
+              C_ENDARGS);
   
   m_pJob = m_pJobClass->pPreJob(&m_pRequest->m_xReqTuple,C_UNKNOWN,m_pSession);
   

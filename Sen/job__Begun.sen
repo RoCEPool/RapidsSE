@@ -109,6 +109,9 @@
     exit                                                         // *EARLY EXIT*
   then
 
+  JP_BEGUN log::markPhase
+
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // all job__begun's have been received, so this job is the decider
 
@@ -134,6 +137,9 @@
   then
 
   // distribute Job__Execute to all participants
+
+  JP_EXECUTING log::markPhase
+
   pJobOriginator Job__Execute::distribute
 
   // delete this completed __begun job
