@@ -101,7 +101,7 @@ void Job_DropIndex::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_DropIndex::Job_DropIndex(ReqTuple* aReqTuple, Session* pSession)
+Job_DropIndex::Job_DropIndex(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 : Job(CN_JOB_DROPINDEX, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPINDEX,_FOOTER_);
@@ -204,9 +204,9 @@ Footer* Job_DropIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_DropIndex_pre(ReqTuple* aReqTuple, Session* pSession)
+Job* Jobs::pJob_DropIndex_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 {
-  Job_DropIndex* pJob_DropIndex = new Job_DropIndex(aReqTuple,pSession);
+  Job_DropIndex* pJob_DropIndex = new Job_DropIndex(aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

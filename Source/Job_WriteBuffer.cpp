@@ -101,7 +101,7 @@ void Job_WriteBuffer::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_WriteBuffer::Job_WriteBuffer(ReqTuple* aReqTuple, Session* pSession)
+Job_WriteBuffer::Job_WriteBuffer(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 : Job(CN_JOB_WRITEBUFFER, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEBUFFER,_FOOTER_);
@@ -362,7 +362,7 @@ void Job_WriteBuffer::vSpawnJobWriteBuffer(Session* pSession,
   ReqTuple xReqTuple("!!WRITE_BUFFER"_Stz,false);
   
   Job_WriteBuffer* pJob_WriteBuffer =
-    static_cast<Job_WriteBuffer*>(pJobClass_WriteBuffer->pPreJob(&xReqTuple,pSession));
+    static_cast<Job_WriteBuffer*>(pJobClass_WriteBuffer->pPreJob(&xReqTuple,iParentJobId,pSession));
   
   pJob_WriteBuffer->vSeed(SS_SEED_RUN);
   
@@ -425,9 +425,9 @@ Footer* Job_WriteBuffer::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_WriteBuffer_pre(ReqTuple* aReqTuple, Session* pSession)
+Job* Jobs::pJob_WriteBuffer_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 {
-  Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(aReqTuple,pSession);
+  Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);
 
   return pJob_WriteBuffer;
@@ -438,7 +438,7 @@ Job* Jobs::pJob_WriteBuffer_pre(ReqTuple* aReqTuple, Session* pSession)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_WriteBuffer_new(JobClass* aJobClass)
 {
-  Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(nullptr,nullptr);
+  Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(nullptr,C_UNKNOWN,nullptr);
   
   return pJob_WriteBuffer;
 }

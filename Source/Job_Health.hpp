@@ -19,7 +19,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Health(ReqTuple* aReqTuple, Session* pSession);//=C_UNKNOWN);
+    Job_Health(ReqTuple* aReqTuple, i8 iForId, Session* pSession);//=C_UNKNOWN);
     ~Job_Health(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -36,7 +36,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Health* _pJob_Health(void* aAddr);
   
-  Job* pJob_Health_pre(ReqTuple* aReqTuple, Session* pSession);
+  Job* pJob_Health_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession);
   void vJob_Health_post(Session* pSession, Job* pJob);
   Job* pJob_Health_new(JobClass* aJobClass);
   void vJob_Health_delete(Session* pSession, Job* pJob);

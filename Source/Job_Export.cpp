@@ -101,7 +101,7 @@ void Job_Export::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Export::Job_Export(ReqTuple* aReqTuple, Session* pSession)
+Job_Export::Job_Export(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 : Job(CN_JOB_EXPORT, aReqTuple, pSession)
 , m_okLock(LK_EXPORT,C_NO_REQTUPLE,this)
 {
@@ -274,9 +274,9 @@ Footer* Job_Export::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Export_pre(ReqTuple* aReqTuple, Session* pSession)
+Job* Jobs::pJob_Export_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 {
-  Job_Export* pJob_Export = new Job_Export(aReqTuple,pSession);
+  Job_Export* pJob_Export = new Job_Export(aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
@@ -305,7 +305,7 @@ void Jobs::vJob_Export_post(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Export_new(JobClass* aJobClass)
 {
-  Job_Export* pJob_Export = new Job_Export(nullptr,nullptr);
+  Job_Export* pJob_Export = new Job_Export(nullptr,C_UNKNOWN,nullptr);
   
   return pJob_Export;
 }
