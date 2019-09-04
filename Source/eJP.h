@@ -6,7 +6,7 @@
 enum eJP // job phase
 {
   /*  0 */ JP_NONE=0,
-  /*  1 */ JP_BEGINING,
+  /*  1 */ JP_BEGINNING,
   /*  2 */ JP_BEGUN,
   /*  3 */ JP_EXECUTING,
   /*  4 */ JP_EXECUTED,

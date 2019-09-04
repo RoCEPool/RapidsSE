@@ -490,7 +490,7 @@ void Constants::vAddConstants(void)
 
   // JP_ : job phase
   /*  0 */ vAddConstant("JP_NONE"_Stz,      JP_NONE);
-  /*  0 */ vAddConstant("JP_BEGINING"_Stz,  JP_BEGINING);
+  /*  0 */ vAddConstant("JP_BEGINNING"_Stz,  JP_BEGINNING);
   /*  0 */ vAddConstant("JP_BEGUN"_Stz,     JP_BEGUN);
   /*  0 */ vAddConstant("JP_EXECUTING"_Stz, JP_EXECUTING);
   /*  0 */ vAddConstant("JP_EXECUTED"_Stz,  JP_EXECUTED);

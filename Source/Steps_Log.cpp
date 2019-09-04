@@ -13,7 +13,8 @@ void Step::vAddSteps_Log(void)
   vAddStep("log::mark"_Stz,       &Step::vLogMark);
   vAddStep("log::markEntry"_Stz,  &Step::vLogMarkEntry);
   vAddStep("log::markExit"_Stz,   &Step::vLogMarkExit);
-  
+  vAddStep("log::markPhase"_Stz,  &Step::vLogMarkPhase);
+
   vAddStep("ActLog::markSeed"_Stz, &Step::vActionSequenceMarkSeed);
   vAddStep("ActLog::markWord"_Stz, &Step::vActionSequenceMarkWord);
 }
@@ -59,15 +60,23 @@ void Step::vLogMarkEntry(MP_Task mpTask)
   
   if ( ! mpTask->m_pDataStack->bPop(sWordNm) )
     THROW_INVALID_DSTACK("log::markEntry"_Stz);
-    
-  if (mpTask->m_pJob->m_xReqTuple.m_iLogLevel)
-    JobLog::vNote(mpTask->m_pJob,
-                          "%s %s %p"_Stz,
-                          sWordNm.aStz(),
-                          aCN[mpTask->pJob()->eClass()],
-                          mpTask->pJob()
-                          );
   
+//  if (pJob->m_xReqTuple.m_iLogLevel)
+//    JobLog::vNote(mpTask->m_pJob,
+//                          "%s %s %p"_Stz,
+//                          sWordNm.aStz(),
+//                          aCN[mpTask->pJob()->eClass()],
+//                          mpTask->pJob()
+//                          );
+  
+  Job* pJob = mpTask->m_pJob;
+  AM::vLogJob(SL_INF,pJob,JA_JOB_INF,
+              "Enter : %s for %s %p"_Stz,
+              sWordNm.aStz(),
+              aCN[pJob->eClass()],
+              pJob
+              );
+
   EXIT();
 }
 
@@ -83,14 +92,46 @@ void Step::vLogMarkExit(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(sWordNm) )
     THROW_INVALID_DSTACK("log::markExit"_Stz);
   
-  if (mpTask->m_pJob->m_xReqTuple.m_iLogLevel)
-    JobLog::vNote(mpTask->m_pJob,
-                          "%s %s %p"_Stz,
-                          sWordNm.aStz(),
-                          aCN[mpTask->pJob()->eClass()],
-                          mpTask->pJob()
-                          );
+//  if (mpTask->m_pJob->m_xReqTuple.m_iLogLevel)
+//    JobLog::vNote(mpTask->m_pJob,
+//                          "%s %s %p"_Stz,
+//                          sWordNm.aStz(),
+//                          aCN[mpTask->pJob()->eClass()],
+//                          mpTask->pJob()
+//                          );
+  
+  Job* pJob = mpTask->m_pJob;
 
+  AM::vLogJob(SL_INF,pJob,JA_JOB_INF,
+              "Exit : %s for %s %p"_Stz,
+              sWordNm.aStz(),
+              aCN[pJob->eClass()],
+              pJob
+              );
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* log::mark -- write an log entry for word exit                              */
+/*----------------------------------------------------------------------------*/
+void Step::vLogMarkPhase(MP_Task mpTask)
+{
+  ENTRY("vActivityLogMarkPhase"_Stz);
+  
+  i8 i_Phase;
+  if ( ! mpTask->m_pDataStack->bPop(i_Phase) )
+    THROW_INVALID_DSTACK("log::markPhase"_Stz);
+  
+  Job* pJob = mpTask->m_pJob;
+  
+  AM::vLogJob(SL_INF,pJob,JA_JOB_INF,
+              "Phase : %s for %s %p"_Stz,
+              aJP[i_Phase],
+              aCN[pJob->eClass()],
+              pJob
+              );
+  
   EXIT();
 }
 

@@ -779,6 +779,7 @@ private:
   static void vLogMark(Tasks::MP_Task mpTask);
   static void vLogMarkEntry(Tasks::MP_Task mpTask);
   static void vLogMarkExit(Tasks::MP_Task mpTask);
+  static void vLogMarkPhase(Tasks::MP_Task mpTask);
 
   // logic
   static void vLogicAnd(Tasks::MP_Task mpTask);

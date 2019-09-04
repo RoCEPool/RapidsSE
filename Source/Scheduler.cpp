@@ -723,7 +723,9 @@ void Scheduler::vTask_Execute(Task* pTask)
   JobLog::vNoteState(pTask->pJob(),"Execute"_Stz);
   
   pQueues->vAddExecutingSet(pTask);
-  // **do not touch task**
+
+  AM::vLogThd(SL_INF,pTask->m_pThread,HA_THD_EXECUTING,
+              "thread executing task"_Stz); //!format-LogTsk
 }
 
 /*----------------------------------------------------------------------------*/
