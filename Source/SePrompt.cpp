@@ -48,7 +48,7 @@ void SePrompt::operator delete(void* pSePromptAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SePrompt::SePrompt(bool bOneCommand)
-: Focal(CN_SEPROMPT,AM::iNextPromptId(),(Focal*)gpAttachMap)
+: Focal(CN_SEPROMPT,AM::iNextPromptId(),C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   

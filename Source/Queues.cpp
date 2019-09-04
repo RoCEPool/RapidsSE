@@ -44,7 +44,7 @@ void Queues::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Queues::Queues(void)
-: Focal(CN_QUEUES,0,nullptr)
+: Focal(CN_QUEUES,0,C_UNKNOWN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   

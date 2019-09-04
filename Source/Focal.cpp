@@ -24,7 +24,7 @@ Focal::Focal(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Focal::Focal(eCN eClassNo, i8 iUniqueId, Focal* pFor)
+Focal::Focal(eCN eClassNo, i8 iUniqueId, i8 iForId)
 : Object(eClassNo)
 {
   m_i_Focal   = C_UNKNOWN;
@@ -33,7 +33,7 @@ Focal::Focal(eCN eClassNo, i8 iUniqueId, Focal* pFor)
   m_iTick_    = AM::iRdTimePoint();
   
   m_iActNo    = C_UNKNOWN;
-  m_iForId    = pFor ? pFor->m_iUniqueId : C_UNKNOWN;
+  m_iForId    = iForId;
 
   AM::vFocalAdd(this);
 }

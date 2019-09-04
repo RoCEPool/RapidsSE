@@ -13,7 +13,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 JobBase::JobBase(eCN eClassNo, ReqTuple* aReqTuple, i8 iJobId, Focal* pFor)
-: Focal(eClassNo,iJobId,pFor)
+: Focal(eClassNo,iJobId,pFor ? pFor->m_iUniqueId : C_UNKNOWN)
 , m_xReqTuple(aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);

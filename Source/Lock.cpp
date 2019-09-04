@@ -46,7 +46,7 @@ void Lock::operator delete(void*)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Lock::Lock(eLK eLockKind, ReqTuple* aReqTuple, Focal* pFor)
-: Focal(CN_LOCK,AM::iNextLockId(),pFor)
+: Focal(CN_LOCK,AM::iNextLockId(),pFor->m_iUniqueId)
 , m_xReqTuple(aReqTuple)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);

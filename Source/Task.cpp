@@ -59,7 +59,7 @@ void Task::operator delete(void* pTaskAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Task::Task(Job* pJob, Session* pSession)
-: Focal(CN_TASK,AM::iNextTaskId(),pJob)
+: Focal(CN_TASK,AM::iNextTaskId(),pJob->m_iUniqueId)
 , m_xReqTuple(&pJob->m_xReqTuple)
 , m_okLock(LK_TASK,&pJob->m_xReqTuple,this)
 {
@@ -98,7 +98,7 @@ Task::Task(Job* pJob, Session* pSession)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Task::Task(Op* pOp, Session* pSession)
-: Focal(CN_TASK,AM::iNextTaskId(),pOp)
+: Focal(CN_TASK,AM::iNextTaskId(),pOp->m_iUniqueId)
 , m_xReqTuple(C_NO_REQTUPLE)
 , m_okLock(LK_TASK,C_NO_REQTUPLE,this)
 {

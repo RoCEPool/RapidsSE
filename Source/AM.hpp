@@ -210,6 +210,8 @@ namespace StorageEngine
 
     static i8   iRdTimePoint(void);
     static i8   iAMTimePoint(void);
+  
+    static i8   iJobUniqueId(Job* pJob);
   };
 }
 

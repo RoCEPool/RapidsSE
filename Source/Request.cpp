@@ -44,7 +44,7 @@ void Request::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Request::Request(Session* p_Session, Stz* szPurpose, i8 iClassSeq)
-: Focal(CN_REQUEST,AM::iNextRequest(),p_Session)
+: Focal(CN_REQUEST,AM::iNextRequest(),p_Session->m_iUniqueId)
 , m_xReqTuple(nullptr)
 {
   _precondition_(_MAGIC_,CN_REQUEST,_FOOTER_);
