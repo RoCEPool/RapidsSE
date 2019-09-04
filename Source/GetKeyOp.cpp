@@ -161,7 +161,12 @@ eOR GetKeyOp::eOpLoop(void)
       case CN_CRWBUFFER: {
         CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand) ;
         SrtBuffer* pSrtBuffer = pCrwBuffer->pToSrtBuffer(m_iKeyCol);
-        vPipeOut(pSrtBuffer);
+        
+        while (pSrtBuffer) {
+          SrtBuffer* pPipeOut = pSrtBuffer;
+          pSrtBuffer = pSrtBuffer->pNextBuffer();
+          vPipeOut(pPipeOut);
+        }
         break;
       }
         
@@ -171,22 +176,33 @@ eOR GetKeyOp::eOpLoop(void)
         RASSERT(-1 != m_iKeyCol);
         EntBuffer* pEntBuffer = _pEntBuffer(pOperand) ;
         SrtBuffer* pSrtBuffer = pEntBuffer->pToSrtBuffer(m_iKeyCol);
-        vPipeOut(pSrtBuffer);
+        
+        while (pSrtBuffer) {
+          SrtBuffer* pPipeOut = pSrtBuffer;
+          pSrtBuffer = pSrtBuffer->pNextBuffer();
+          vPipeOut(pPipeOut);
+        }
+        
         break;
       }
       
+      // -- -- -- -- -- --
+        
+      case CN_IRWBUFFER: {
+        RASSERT(0);
+        break;
+      }
+        
       // -- -- -- -- -- --
         
       case CN_SRTBUFFER: {
         RASSERT(-1 != m_iKeyCol);
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand) ;
         pSrtBuffer->vGetKeys(m_pStreamDef, m_iKeyCol, m_iColVec);
-        
-        SrtBuffer* pBuffer = pSrtBuffer;
-        while (pBuffer) {
-          SrtBuffer* pPipeOut = pBuffer;
-          pBuffer = pBuffer->pNextBuffer();
-          pPipeOut->vNextBuffer(nullptr);
+
+        while (pSrtBuffer) {
+          SrtBuffer* pPipeOut = pSrtBuffer;
+          pSrtBuffer = pSrtBuffer->pNextBuffer();
           vPipeOut(pPipeOut);
         }
         break;
