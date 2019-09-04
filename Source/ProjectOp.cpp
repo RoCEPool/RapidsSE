@@ -227,8 +227,6 @@ eOR ProjectOp::eOpLoop(void)
             pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
           }
           
-          DtmVal oDtmVal;
-          
           CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(aEnt->xRef());
           Crw* aRowData = pCrwBuffer->pCrw(aEnt->xRef().iItem());
           
@@ -246,11 +244,62 @@ eOR ProjectOp::eOpLoop(void)
         
         break;
       }
+      
+      // -- -- -- -- -- --
+        
+      case CN_IRWBUFFER: {
+        IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand) ;
+        ColumnVec* pColumnVec = m_pStreamDef->m_oColVecAry.pGet(0);
+        
+        Row* pIrwRow = pIrwBuffer->aFirstRow();
+        while (pIrwRow) {
+          Row* pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
+          
+          if ( ! pRow ) {
+            vPipeOut(m_pIrwBuffer);
+            //m_pIrwBuffer->vShow(m_pStreamDef->pColumnVec(0));
+            m_pIrwBuffer = new IrwBuffer;
+            pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
+          }
+          
+          for (i8 i_IntoCol = 0; i_IntoCol < pColumnVec->nItems(); i_IntoCol++) {
+            pRow->vCopy(pIrwRow, m_iWhichCol[i_IntoCol], i_IntoCol);
+          }
+          
+          pIrwRow = pIrwBuffer->aNextRow(pIrwRow);
+        }
+        
+        break;
+      }
         
       // -- -- -- -- -- --
         
       case CN_SRTBUFFER: {
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
+        ColumnVec* pColumnVec = m_pStreamDef->m_oColVecAry.pGet(0);
+        
+        SrtSet* aSrtSet = pSrtBuffer->aFirstSrtSet();
+        while (aSrtSet) {
+          Row* pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
+          
+          if ( ! pRow ) {
+            vPipeOut(m_pIrwBuffer);
+            //m_pIrwBuffer->vShow(m_pStreamDef->pColumnVec(0));
+            m_pIrwBuffer = new IrwBuffer;
+            pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
+          }
+          
+          Crw* aRowData = (Crw*)(aSrtSet->iRowRef(0));
+          
+          for (i8 i_IntoCol = 0; i_IntoCol < pColumnVec->nItems(); i_IntoCol++) {
+            i8 iBaseOffset = RowCoder::iBaseOffset(m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[i_IntoCol]));
+            
+            RowInflator::vInflateColumn(pRow, i_IntoCol, aRowData, iBaseOffset, m_iWhichCol[i_IntoCol],
+                                        m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[i_IntoCol]));
+          }
+          
+          aSrtSet = pSrtBuffer->aNextSrtSet(aSrtSet);
+        }
         delete pSrtBuffer;
         break;
       }

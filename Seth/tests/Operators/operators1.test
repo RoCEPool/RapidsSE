@@ -157,6 +157,7 @@ ordered rows:
   ( 25, 'twofive' ,  125, 5, 25, 1.025030e+03, TIMESTAMP '1925-01-01 00:00:00.0', DATE '1925-01-01' )
   (  0, 'zero'    , 1001, 0,  0, 1.000000e+03, TIMESTAMP '1900-01-01 00:00:00.0', DATE '1900-01-01' )
 
+// FetchOp (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
 dynamic fetch OpTable1 OpTable1_idx | getKey jidx_100 | sort | limit 5 | output;
 ordered rows:
   (  1, 'one'     ,  101, 1,  1, 1.001000e+03, TIMESTAMP '1901-01-01 00:00:00.0', DATE '1901-01-01' )
@@ -165,16 +166,33 @@ ordered rows:
   (  4, 'four'    ,  104, 4,  4, 1.004000e+03, TIMESTAMP '1904-01-01 00:00:00.0', DATE '1904-01-01' )
   (  5, 'five'    ,  105, 5,  5, 1.005000e+03, TIMESTAMP '1905-01-01 00:00:00.0', DATE '1905-01-01' )
 
+// FetchOp (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
 dynamic fetch OpTable1 OpTable1_idx | project jidx_100, jidx_key | limit 5 | output;
 rows: 5
 
-// drop the table
-drop table OpTable1;
-success
+// ScanOp (CrwBuffer->IrwBuffer->IrwBuffer->IrwBuffer)
+dynamic scan OpTable1 | project jidx_100, jidx_key | limit 5 | output;
+rows: 5
+
+// ScanOp (CrwBuffer->SrtBuffer->SrtBuffer->IrwBuffer->IrwBuffer->IrwBuffer)
+dynamic scan OpTable1 | getKey jidx_100 | sort | project jidx_100, jidx_key | limit 5 | output;
+rows: 5
+
+// ScanOp (CrwBuffer->SrtBuffer->SrtBuffer->IrwBuffer->IrwBuffer->IrwBuffer->IrwBuffer)
+dynamic scan OpTable1 | getKey jidx_100 | sort | project jidx_100, jidx_key | project jidx_100 | limit 5 | output;
+rows: 5
+
+// ScanOp (CrwBuffer->SrtBuffer->SrtBuffer->IrwBuffer->IrwBuffer->IrwBuffer->IrwBuffer)
+dynamic scan OpTable1 | getKey jidx_100 | sort | project jidx_100, jidx_name | project jidx_name | limit 5 | output;
+rows: 5
 
 // drop the table
-drop table OpTable2;
-success
+//drop table OpTable1;
+//success
+
+// drop the table
+//drop table OpTable2;
+//success
 
 // check existence of table
 lstbl;
@@ -183,12 +201,12 @@ rows: 0
 CLEANUP {
 
   // drop the table
-  drop table OpTable1;
-  mute
+  //drop table OpTable1;
+  //mute
 
   // drop the table
-  drop table OpTable2;
-  mute
+  //drop table OpTable2;
+  //mute
 
   bye;
   mute

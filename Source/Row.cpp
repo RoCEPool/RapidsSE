@@ -194,9 +194,6 @@ void Row::vCopy(Row* pRow)
       
       m_xWsp.vTake(nSrcLength + 1);
       
-      if (pCol->bIsPtnKey())
-        m_iHash += iHashColumn(pCol);
-      
       return;
     }
     
@@ -205,6 +202,42 @@ void Row::vCopy(Row* pRow)
     
     m_waColVal[i_Col].m_iInt = pRow->m_waColVal[i_Col].m_iI8;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* append column value to row                                                 */
+/*----------------------------------------------------------------------------*/
+void Row::vCopy(Row* pRow, i8 i_FromCol, i8 i_IntoCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_)
+    
+    Column* pIntoCol = m_pColVec->pGet(i_IntoCol);
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // vch
+    
+    if (DM_VCH == pIntoCol->eDatumType()) {
+      
+      if (pRow->m_waColVal[i_FromCol].bIsNull()) {
+        m_waColVal[i_IntoCol].vSetNull();
+        return;
+      }
+      
+      char* acDstString = (char*)m_xWsp.ayLatter();
+      char* acSrcString = (char*)pRow->m_waColVal[i_FromCol].m_szVch;
+      
+      i8 nSrcLength = StrLib::nCopy(acDstString,acSrcString);
+      
+      m_waColVal[i_IntoCol].m_iInt = (i8)acDstString;
+      
+      m_xWsp.vTake(nSrcLength + 1);
+      
+      return;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // all others
+    
+    m_waColVal[i_IntoCol].m_iInt = pRow->m_waColVal[i_FromCol].m_iI8;
 }
 
 /*----------------------------------------------------------------------------*/
