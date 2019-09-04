@@ -23,10 +23,6 @@
   static void vAccumSumFetch(Tasks::MP_Task mpTask);
   static void vAccumSumStore(Tasks::MP_Task mpTask);
 
-  // action sequence map
-  static void vActionSequenceMarkWord(Tasks::MP_Task mpTask);
-  static void vActionSequenceMarkSeed(Tasks::MP_Task mpTask);
-
   // address
   static void vAddressEqual(Tasks::MP_Task mpTask);
   static void vAddressFetch(Tasks::MP_Task mpTask);
@@ -780,6 +776,11 @@ private:
   static void vLogMarkEntry(Tasks::MP_Task mpTask);
   static void vLogMarkExit(Tasks::MP_Task mpTask);
   static void vLogMarkPhase(Tasks::MP_Task mpTask);
+
+  static void vLogMarkWord(Tasks::MP_Task mpTask);
+  static void vLogMarkSeed(Tasks::MP_Task mpTask);
+
+  static void vLogJobSeed(Tasks::MP_Task mpTask);
 
   // logic
   static void vLogicAnd(Tasks::MP_Task mpTask);

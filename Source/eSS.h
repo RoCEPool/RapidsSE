@@ -11,7 +11,11 @@ enum eSS // seed string
   /*  3 */ SS_SEED_EXE,
   /*  4 */ SS_SEED_END,
   /*  5 */ SS_SEED_CAN,
-  /*  6 */ SS_ENUMS
+  
+  /*  6 */ SS_SEED_BEG,
+  /*  7 */ SS_SEED_KID,
+
+  /*  8 */ SS_ENUMS
 };
 
 static Stz* aSS[]
@@ -22,7 +26,11 @@ static Stz* aSS[]
   /*  3 */ "SS_SEED_EXE"_Stz,
   /*  4 */ "SS_SEED_END"_Stz,
   /*  5 */ "SS_SEED_CAN"_Stz,
-  /*  6 */ "SS_ENUMS"_Stz,
+  
+  /*  6 */ "SS_SEED_BEG"_Stz,
+  /*  7 */ "SS_SEED_KID"_Stz,
+  
+  /*  8 */ "SS_ENUMS"_Stz,
 };
 
 /*============================================================================*/

@@ -15,8 +15,10 @@ void Step::vAddSteps_Log(void)
   vAddStep("log::markExit"_Stz,   &Step::vLogMarkExit);
   vAddStep("log::markPhase"_Stz,  &Step::vLogMarkPhase);
 
-  vAddStep("ActLog::markSeed"_Stz, &Step::vActionSequenceMarkSeed);
-  vAddStep("ActLog::markWord"_Stz, &Step::vActionSequenceMarkWord);
+  vAddStep("Log::markSeed"_Stz,   &Step::vLogMarkSeed);
+  vAddStep("Log::markWord"_Stz,   &Step::vLogMarkWord);
+  
+  vAddStep("Log::jobSeed"_Stz,    &Step::vLogJobSeed);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -70,7 +72,7 @@ void Step::vLogMarkEntry(MP_Task mpTask)
 //                          );
   
   Job* pJob = mpTask->m_pJob;
-  AM::vLogJob(SL_INF,pJob,JA_JOB_ENTRY,
+  AM::vLogJob(SL_INF,pJob,JA_JOB_ENTER,
               "Enter : %s for %s %p"_Stz,
               sWordNm.aStz(),
               aCN[pJob->eClass()],
@@ -138,19 +140,19 @@ void Step::vLogMarkPhase(MP_Task mpTask)
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* actionSequence::markSeed -- write a seed mark into the action sequence     */
+/* log::markSeed -- write a seed mark into the action sequence                */
 /*----------------------------------------------------------------------------*/
-void Step::vActionSequenceMarkSeed(MP_Task mpTask)
+void Step::vLogMarkSeed(MP_Task mpTask)
 {
-  ENTRY("vActionSequenceMarkSeed"_Stz);
+  ENTRY("vLogMarkSeed"_Stz);
   
   i8 iSeed;
   if ( ! mpTask->m_pDataStack->bPop(iSeed) )
-    THROW_INVALID_DSTACK("actionSequence::markSeed"_Stz);
+    THROW_INVALID_DSTACK("log::markSeed"_Stz);
   
   s32 sWordNm;
   if ( ! mpTask->m_pDataStack->bPop(sWordNm) )
-    THROW_INVALID_DSTACK("actionSequence::markSeed"_Stz);
+    THROW_INVALID_DSTACK("log::markSeed"_Stz);
   
   //ActLog::vAdd(mpTask->m_pJob,(eAN)iSeed,sWordNm.aStz());
   
@@ -158,22 +160,45 @@ void Step::vActionSequenceMarkSeed(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* actionSequence::markWord -- write a word mark into the action sequence     */
+/* log::markWord -- write a word mark into the action sequence                */
 /*----------------------------------------------------------------------------*/
-void Step::vActionSequenceMarkWord(MP_Task mpTask)
+void Step::vLogMarkWord(MP_Task mpTask)
 {
-  ENTRY("vActionSequenceMarkWord"_Stz);
+  ENTRY("vLogMarkWord"_Stz);
   
   i8 iAN;
   if ( ! mpTask->m_pDataStack->bPop(iAN) )
-    THROW_INVALID_DSTACK("actionSequence::markWord"_Stz);
+    THROW_INVALID_DSTACK("log::markWord"_Stz);
   
   s32 sWordNm;
   if ( ! mpTask->m_pDataStack->bPop(sWordNm) )
-    THROW_INVALID_DSTACK("actionSequence::markWord"_Stz);
+    THROW_INVALID_DSTACK("log::markWord"_Stz);
   
   //ActLog::vAdd(mpTask->m_pJob,(eAN)iAN,sWordNm.aStz());
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* log::jobSeed -- add a job seed entry into log                              */
+/*----------------------------------------------------------------------------*/
+void Step::vLogJobSeed(MP_Task mpTask)
+{
+  ENTRY("vLogJobSeed"_Stz);
+  
+  i8 i_Seed;
+  if ( ! mpTask->m_pDataStack->bPop(i_Seed) )
+    THROW_INVALID_DSTACK("log::JobSeed"_Stz);
+  
+  Job* pJob = mpTask->m_pJob;
+  AM::vLogJob(SL_INF,pJob,JA_JOB_SEED,
+              "Seed : %s %s for job %s %pd"_Stz,
+              aSS[i_Seed],
+              pJob->sJobSeed(),
+              aCN[pJob->eClass()],
+              pJob
+              );
+
   EXIT();
 }
 

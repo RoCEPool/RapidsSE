@@ -517,6 +517,16 @@ void Constants::vAddConstants(void)
   /*  6 */ vAddConstant("TS_WAITING"_Stz,    TS_WAITING);
   /*  7 */ vAddConstant("TS_ENUMS"_Stz,      TS_ENUMS);
 
+  // SS_ : seed strings
+  /*  0 */ vAddConstant("SS_SEED_RUN"_Stz,    SS_SEED_RUN);
+  /*  1 */ vAddConstant("SS_SEED_REQ"_Stz,    SS_SEED_REQ);
+  /*  2 */ vAddConstant("SS_SEED_RCV"_Stz,    SS_SEED_RCV);
+  /*  3 */ vAddConstant("SS_SEED_EXE"_Stz,    SS_SEED_EXE);
+  /*  4 */ vAddConstant("SS_SEED_END"_Stz,    SS_SEED_END);
+  /*  5 */ vAddConstant("SS_SEED_CAN"_Stz,    SS_SEED_CAN);
+  /*  6 */ vAddConstant("SS_SEED_BEG"_Stz,    SS_SEED_BEG);
+  /*  7 */ vAddConstant("SS_SEED_KID"_Stz,    SS_SEED_KID);
+  
   // XP_ : transaction phase
   /*  0 */ vAddConstant("XP_NONE"_Stz,        XP_NONE);
   /*  1 */ vAddConstant("XP_EXECUTING"_Stz,   XP_EXECUTING);
