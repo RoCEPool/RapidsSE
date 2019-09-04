@@ -187,8 +187,8 @@ void StreamDef::vToMetadata(Stz* sMetadata)
       sMetadata->vCatSprint("%s %s"_Stz, pCol->sColumnName().aChar(),
                            aCT[pCol->eColumnType()]);
     }
-    sMetadata->vConcat(")"_Stz);
   }
+  sMetadata->vConcat(")"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
