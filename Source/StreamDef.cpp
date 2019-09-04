@@ -178,6 +178,9 @@ void StreamDef::vToMetadata(Stz* sMetadata)
     ColumnVec* pColumnVec = m_oColVecAry.pGet(i_ColVec);
     i8 nColumns = pColumnVec->nItems();
     
+    if (i_ColVec != 0)
+      sMetadata->vConcat(","_Stz);
+    
     for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
       
       if (i_Col != 0)
