@@ -158,9 +158,6 @@ eOR AggOp::eOpLoop(void)
           Row* pRow = pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
           pRow->m_waColVal[0] = m_nSum;
           
-          // pipe out the streamdef
-          //vPipeOut(new StreamDef(m_pStreamDef));
-          
           // pipe out the buffer with the count
           vPipeOut(pIrwBuffer);
           
@@ -187,7 +184,7 @@ eOR AggOp::eOpLoop(void)
           
           // get the key from the row
           RowInflator::vInflateColumn(hRow, aCrw, m_iWhichCol[0]);
-          //vTrace("Summing %lld\n"_Stz, hRow->m_waColVal[m_iWhichCol[0]].m_iI8);
+
           m_nSum += hRow->m_waColVal[m_iWhichCol[0]].m_iI8;
         }
         
@@ -209,17 +206,13 @@ eOR AggOp::eOpLoop(void)
           
           DtmVal oDtmVal;
           
-          //if ( ! pCrwBuffer || (pCrwBuffer->iPoolBufferNo() != aEnt->xRef().iBuffer()))
-            pCrwBuffer = CrwBuffer::pRefdCrwBuffer(aEnt->xRef());
+          pCrwBuffer = CrwBuffer::pRefdCrwBuffer(aEnt->xRef());
           
           Crw* aRowData = pCrwBuffer->pCrw(aEnt->xRef().iItem());
-          
-          //for (i8 i_IntoCol = 0; i_IntoCol < pColumnVec->nItems(); i_IntoCol++) {
-          
-            RowInflator::vInflateColumn(hRow, 0, aRowData, iBaseOffset, m_iWhichCol[0],
+    
+          RowInflator::vInflateColumn(hRow, 0, aRowData, iBaseOffset, m_iWhichCol[0],
                                         m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[0]));
-          //}
-          //vTrace("Summing %lld\n"_Stz, hRow->m_waColVal[0].m_iI8);
+          
           m_nSum += hRow->m_waColVal[0].m_iI8;
           
           aEnt = pEntBuffer->aNextEntry(aEnt,0);
@@ -251,13 +244,18 @@ eOR AggOp::eOpLoop(void)
         
         while (aSrtSet) {
             
-          
           // get the dataRow of rowref
-          Crw* aCrw = (Crw*)(aSrtSet->iRowRef(0));
+          Crw* aCrw = (Crw*)(aSrtSet->iRowRef(m_iWhichVec[0]));
           
-          // inflate the column
-          RowInflator::vInflateColumn(hRow, aCrw, m_iWhichCol[0]);
-          m_nSum += hRow->m_waColVal[m_iWhichCol[0]].m_iI8;
+          if ( aCrw ) {
+            // inflate the column
+            i8 iBaseOffset = RowCoder::iBaseOffset(m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[0]));
+            
+            RowInflator::vInflateColumn(hRow, 0, aCrw, iBaseOffset, m_iWhichCol[0],
+                                        m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[0]));
+            if (hRow->m_waColVal[0].m_iI8 != C_DATUM_NULL)
+              m_nSum += hRow->m_waColVal[0].m_iI8;
+          }
           
           aSrtSet = pSrtBuffer->aNextSrtSet(aSrtSet);
         }
@@ -275,27 +273,8 @@ eOR AggOp::eOpLoop(void)
         ColumnVec* pProjColumnVec = m_pStreamDef->m_oColVecAry.pGet(0);
         i8 nProjColumns = pProjColumnVec->nItems();
         
-        // Find the project col in the streamDef's that came in
-        for (i8 i_ProjCol = 0; i_ProjCol < nProjColumns; i_ProjCol++) {
-          Column* pProjCol = pProjColumnVec->pGet(i_ProjCol);
-          Column* pCol = nullptr;
-          
-          for (i8 i_ColVec = 0; i_ColVec < m_pOriginalStreamDef->m_oColVecAry.nItems(); i_ColVec++) {
-            ColumnVec* pColumnVec = m_pOriginalStreamDef->m_oColVecAry.pGet(i_ColVec);
-            i8 nColumns = pColumnVec->nItems();
-            
-            for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-              pCol = pColumnVec->pGet(i_Col);
-              if (pProjCol->sColumnName().bEqual(pCol->sColumnName())) {
-                m_iWhichVec[i_ProjCol] = i_ColVec;
-                m_iWhichCol[i_ProjCol] = i_Col;
-                pProjCol->vColumnType(pCol->eColumnType());
-                pProjCol->vDatumType(pCol->eDatumType());
-                break;
-              }
-            }
-          }
-        }
+        // update the streamDef of this agg Op
+        vUpdateStreamDef();
         
         // pipe out the streamdef
         vPipeOut(new StreamDef(m_pStreamDef));
@@ -361,6 +340,40 @@ eOR AggOp::eDrainLoop(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_EXIT:
   return OR_EXIT;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* update the stream def columns of the agg op                                */
+/*----------------------------------------------------------------------------*/
+void AggOp::vUpdateStreamDef(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_AGGOP,_FOOTER_);
+  
+  RASSERT(m_pStreamDef->m_oColVecAry.nItems() == 1);
+  ColumnVec* pAggColumnVec = m_pStreamDef->m_oColVecAry.pGet(0);
+  i8 nAggColumns = pAggColumnVec->nItems();
+  
+  // Find the project col in the streamDef's that came in
+  
+  for (i8 i_AggCol = 0; i_AggCol < nAggColumns; i_AggCol++) {
+    
+    // find the project column in the original Stream
+    Column* pAggCol = pAggColumnVec->pGet(i_AggCol);
+    m_iWhichCol[i_AggCol] =
+    m_pOriginalStreamDef->iFindColumn(pAggCol->sColumnName().aChar(),m_iWhichVec[i_AggCol]);
+    
+    // get the agg column from the original Stream
+    ColumnVec* pColumnVec = m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[i_AggCol]);
+    Column* pCol = pColumnVec->pGet(m_iWhichCol[i_AggCol]);
+    
+    // set the column and datum type in the agg column
+    pAggCol->vColumnType(pCol->eColumnType());
+    pAggCol->vDatumType(pCol->eDatumType());
+  }
 }
 
 /*----------------------------------------------------------------------------*/

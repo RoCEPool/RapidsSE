@@ -34,6 +34,8 @@ namespace DataOperators
     eOR eDrainLoop(void);
     
   private:
+    void vUpdateStreamDef(void);
+    
     Footer* aFooter(void);  
   };
 

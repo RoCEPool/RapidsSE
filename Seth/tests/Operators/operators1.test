@@ -190,6 +190,10 @@ rows: 5
 dynamic fetch OpTable1 OpTable1_idx || fetch OpTable2 OpTable2_idx | join | project jidx_100_2, jidx_key | limit 5 | output;
 rows: 5
 
+///////////////////////////
+// countOp               //
+///////////////////////////
+
 // FetchOp (EntBuffer->IrwBuffer->IrwBuffer)
 dynamic fetch OpTable1 OpTable1_idx | count | output;
 rows: (26)
@@ -213,6 +217,34 @@ rows: 41
 // ScanOp (EntBuffer->SrtBuffer->IrwBuffer->IrwBuffer))
 dynamic fetch OpTable1 OpTable1_idx || fetch OpTable2 OpTable2_idx | join | count | output;
 rows: (41)
+
+///////////////////////////
+// AggOp                 //
+///////////////////////////
+
+// FetchOp (EntBuffer->IrwBuffer->IrwBuffer)
+dynamic fetch OpTable1 OpTable1_idx | agg jidx_100 | output;
+rows: (3826)
+
+// FetchOp (EntBuffer->IrwBuffer->IrwBuffer)
+dynamic fetch OpTable1 OpTable1_idx | limit 10 | agg jidx_100 | output;
+rows: (1946)
+
+// ScanOp (CrwBuffer->IrwBuffer->IrwBuffer)
+dynamic scan OpTable1 | agg jidx_100 | output;
+rows: (3826)
+
+// ScanOp (CrwBuffer->IrwBuffer->IrwBuffer)
+dynamic scan OpTable1 | project jidx_100 | agg jidx_100 | output;
+rows: (3826)
+
+// ScanOp (EntBuffer->SrtBuffer->IrwBuffer->IrwBuffer))
+dynamic fetch OpTable1 OpTable1_idx || fetch OpTable2 OpTable2_idx | join | agg jidx_100 | output;
+rows: (4441)
+
+// ScanOp (EntBuffer->SrtBuffer->IrwBuffer->IrwBuffer))
+dynamic fetch OpTable1 OpTable1_idx || fetch OpTable2 OpTable2_idx | join | agg jidx_100_2 | output;
+rows: (2655)
 
 // drop the table
 drop table OpTable1;
