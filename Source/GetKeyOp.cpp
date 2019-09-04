@@ -62,7 +62,8 @@ GetKeyOp::GetKeyOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   
   m_fpCall = GetKeyOp::eCall;
   m_sKey       = ""_Stz;
-  m_iKeyCol    = -1;
+  m_iKeyCol    = C_UNKNOWN;
+  m_iColVec    = C_UNKNOWN;
   
   m_bKeyIsLeft = true;
   
@@ -179,9 +180,7 @@ eOR GetKeyOp::eOpLoop(void)
       case CN_SRTBUFFER: {
         RASSERT(-1 != m_iKeyCol);
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand) ;
-        pSrtBuffer->vGetKeys(m_iKeyCol, m_bKeyIsLeft,
-                             m_pStreamDef->m_oColVecAry.pGet(0),
-                             m_pStreamDef->m_oColVecAry.pGet(1));
+        pSrtBuffer->vGetKeys(m_pStreamDef, m_iKeyCol, m_iColVec);
         
         SrtBuffer* pBuffer = pSrtBuffer;
         while (pBuffer) {
@@ -200,8 +199,7 @@ eOR GetKeyOp::eOpLoop(void)
         m_pStreamDef = new StreamDef(pStreamDef);
      
         // figure out the key column
-        i8 iColVec;
-        m_iKeyCol = m_pStreamDef->iFindColumn(m_sKey.aChar(), iColVec);
+        m_iKeyCol = m_pStreamDef->iFindColumn(m_sKey.aChar(), m_iColVec);
 
         // we should have the key column now
         RASSERT(m_iKeyCol != -1);

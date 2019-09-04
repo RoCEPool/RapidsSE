@@ -177,51 +177,35 @@ SrtSet* SrtBuffer::aFirstSrtSet(void)
 /*----------------------------------------------------------------------------*/
 /* get keys into the srtBuffer                                                */
 /*----------------------------------------------------------------------------*/
-void SrtBuffer::vGetKeys(i8 iKeyCol, bool bKeyIsLeft,
-                         ColumnVec* pLeftColVec,
-                         ColumnVec* pRightColVec)
+void SrtBuffer::vGetKeys(StreamDef* pStreamDef, i8 iKeyCol, i8 iColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
   
   SrtSet* pSrtSet;
   
-  Crw* aLeftCrw;
-  Crw* aRightCrw;
+  Crw* aCrw;
   
-  HV_Row hLeftRow(pLeftColVec);
-  HV_Row hRightRow(pRightColVec);
+  ColumnVec* pColVec = pStreamDef->m_oColVecAry.pGet(iColVec);
+  
+  HV_Row hRow(pColVec);
+  
+  i8 iBaseOffset = RowCoder::iBaseOffset(pColVec);
   
   SrtSet* aSrtSet = aFirstSrtSet();
   while (aSrtSet) {
     
-    if ( bKeyIsLeft) {
-      
-      // get the left data row
-      aLeftCrw = (Crw*)aSrtSet->iRowRef(0);
+      // get the dataRow
+      aCrw = (Crw*)aSrtSet->iRowRef(iColVec);
       
       // get the key from the left buffer row
-      if (aLeftCrw) {
-        RowInflator::vInflateColumn(hLeftRow, aLeftCrw, iKeyCol);
+      if (aCrw) {
+        RowInflator::vInflateColumn(hRow, aCrw, iKeyCol);
         
         // set the key in the srtSet
-        aSrtSet->vKey(hLeftRow->m_waColVal[iKeyCol].m_iI8);
+        aSrtSet->vKey(hRow->m_waColVal[iKeyCol].m_iI8);
       }
-    }
-    else {
     
-      // get the right dataRow
-      aRightCrw = (Crw*)aSrtSet->iRowRef(1);
-      
-      // get the key from the left buffer row
-      if (aRightCrw) {
-        RowInflator::vInflateColumn(hRightRow, aRightCrw, iKeyCol);
-        
-        // set the key in the srtSet
-        aSrtSet->vKey(hRightRow->m_waColVal[iKeyCol].m_iI8);
-      }
-    }
-    
-    aSrtSet = aNextSrtSet(aSrtSet);
+     aSrtSet = aNextSrtSet(aSrtSet);
   }
 }
 

@@ -11,6 +11,7 @@ namespace DataOperators
   
     s256 m_sKey;
     i8   m_iKeyCol;
+    i8   m_iColVec;
     bool m_bKeyIsLeft;
     
     // must be last
