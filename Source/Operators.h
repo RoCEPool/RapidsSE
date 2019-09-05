@@ -25,6 +25,7 @@ namespace Operators
 #include "OpHelper.hpp"
 
 #include "Pipe.hpp"
+#include "Stage.hpp"
 #include "Calculator.hpp"
 
 /*============================================================================*/

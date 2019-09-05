@@ -748,7 +748,7 @@ i8 giClassSize[]
   /*    */ sizeof(SrtBuffer),          // CN_SRTBUFFER
   /*    */ sizeof(SrtSet),             // CN_SRTSET
   /*126 */ sizeof(Stack),              // CN_STACK
-  /*126 */ 0,//sizeof(Stage),              // CN_STAGE
+  /*126 */ sizeof(Stage),              // CN_STAGE
   /*    */ sizeof(Statistics),         // CN_STATISTICS
   /*127 */ sizeof(StepAccum),          // CN_STEPACCUM
   /*128 */ sizeof(StepTiming),         // CN_STEPTIMING
