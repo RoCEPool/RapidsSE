@@ -182,7 +182,7 @@ void Row::vCopy(Row* pRow)
       
       if (pRow->m_waColVal[i_Col].bIsNull()) {
         m_waColVal[i_Col].vSetNull();
-        return;
+        continue;
       }
       
       char* acDstString = (char*)m_xWsp.ayLatter();
@@ -194,7 +194,7 @@ void Row::vCopy(Row* pRow)
       
       m_xWsp.vTake(nSrcLength + 1);
       
-      return;
+      continue;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
