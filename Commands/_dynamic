@@ -12,8 +12,11 @@ dynamic plan
   stage stageB on all nodes:
     opB1 | opB2 | stageC
 
-  stage stageC on origin:
-    opC1
+  stage stageC on node special:
+   opC1 | stageD
+
+  stage stageD on origin:
+    opD1
 ;
 
 //logWrite;

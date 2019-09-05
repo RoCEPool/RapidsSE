@@ -25,6 +25,8 @@ namespace Dynamics
     bool bCompileStage(TokenVec* pTokenVec, i8& i_Tkn);
     bool bCompileTopology(TokenVec* pTokenVec, i8& i_Tkn);
     bool bCompilePipe(TokenVec* pTokenVec, i8& i_Tkn);
+  
+    bool bIsOperator(Token* pTkn);
 
     Footer* aFooter(void);
   };
