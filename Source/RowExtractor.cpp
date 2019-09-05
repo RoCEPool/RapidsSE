@@ -122,37 +122,19 @@ Column* RowExtractor::pExtractRow(Row* pRow, char** aacRecCrs,
     bool b = false;
     eDM eDatum = pCol->eDatumType();
     
-    if (pRecFmt->m_bDefault) {
-      switch (eDatum) {
-        case DM_BCD: b = bExtractBcdDefault(&oDatum,aacRecCrs,pRecFmt); break;
-        case DM_BOL: b = bExtractBolDefault(&oDatum,aacRecCrs,pRecFmt); break;
-        case DM_CHR: b = bExtractVchDefault(&oDatum,aacRecCrs,pRecFmt); break;
-        case DM_DTE: b = bExtractDteDefault(&oDatum,aacRecCrs,pRecFmt); break;
-        case DM_FLT: b = bExtractFltDefault(&oDatum,aacRecCrs,pRecFmt); break;
-        case DM_INT: b = bExtractIntDefault(&oDatum,aacRecCrs,pRecFmt); break;
-        case DM_IVL: b = bExtractIvlDefault(&oDatum,aacRecCrs,pRecFmt); break;
-        case DM_TME: b = bExtractTmeDefault(&oDatum,aacRecCrs,pRecFmt); break;
-        case DM_TSP: b = bExtractTspDefault(&oDatum,aacRecCrs,pRecFmt); break;
-        case DM_VCH: b = bExtractVchDefault(&oDatum,aacRecCrs,pRecFmt); break;
-        default:
-          vFatal("RowExtractor::bExtract: Invalid eDatum : %lld\n"_Stz,eDatum);
-      }
-    }
-    else {
-      switch (eDatum) {
-        case DM_BCD: b = bExtractBcdSupplied(&oDatum,aacRecCrs,pRecFmt); break;
-        case DM_BOL: b = bExtractBolSupplied(&oDatum,aacRecCrs,pRecFmt); break;
-        case DM_CHR: b = bExtractVchSupplied(&oDatum,aacRecCrs,pRecFmt); break;
-        case DM_DTE: b = bExtractDteSupplied(&oDatum,aacRecCrs,pRecFmt); break;
-        case DM_FLT: b = bExtractFltSupplied(&oDatum,aacRecCrs,pRecFmt); break;
-        case DM_INT: b = bExtractIntSupplied(&oDatum,aacRecCrs,pRecFmt); break;
-        case DM_IVL: b = bExtractIvlSupplied(&oDatum,aacRecCrs,pRecFmt); break;
-        case DM_TME: b = bExtractTmeSupplied(&oDatum,aacRecCrs,pRecFmt); break;
-        case DM_TSP: b = bExtractTspSupplied(&oDatum,aacRecCrs,pRecFmt); break;
-        case DM_VCH: b = bExtractVchSupplied(&oDatum,aacRecCrs,pRecFmt); break;
-        default:
-          vFatal("RowExtractor::bExtract: Invalid eDatum : %lld\n"_Stz,eDatum);
-      }
+    switch (eDatum) {
+      case DM_BCD: b = bExtractBcdSupplied(&oDatum,aacRecCrs,pRecFmt); break;
+      case DM_BOL: b = bExtractBolSupplied(&oDatum,aacRecCrs,pRecFmt); break;
+      case DM_CHR: b = bExtractVchSupplied(&oDatum,aacRecCrs,pRecFmt); break;
+      case DM_DTE: b = bExtractDteSupplied(&oDatum,aacRecCrs,pRecFmt); break;
+      case DM_FLT: b = bExtractFltSupplied(&oDatum,aacRecCrs,pRecFmt); break;
+      case DM_INT: b = bExtractIntSupplied(&oDatum,aacRecCrs,pRecFmt); break;
+      case DM_IVL: b = bExtractIvlSupplied(&oDatum,aacRecCrs,pRecFmt); break;
+      case DM_TME: b = bExtractTmeSupplied(&oDatum,aacRecCrs,pRecFmt); break;
+      case DM_TSP: b = bExtractTspSupplied(&oDatum,aacRecCrs,pRecFmt); break;
+      case DM_VCH: b = bExtractVchSupplied(&oDatum,aacRecCrs,pRecFmt); break;
+      default:
+        vFatal("RowExtractor::bExtract: Invalid eDatum : %lld\n"_Stz,eDatum);
     }
     
     if (! b)
@@ -224,7 +206,7 @@ bool RowExtractor::bExtractElement(DtmVal* pDtmVal, char** aacRecCrs,
       break;
       
     case DM_CHR:
-      b = bExtractVchDefault(pDtmVal,aacRecCrs,pRecFmt);
+      b = bExtractVchSupplied(pDtmVal,aacRecCrs,pRecFmt);
       break;
       
     case DM_DTE:
@@ -356,55 +338,6 @@ bool RowExtractor::bExtractBcdSupplied(DtmVal* pDtmVal, char** aacRecCrs,
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract a decimal field from csv substr                                    */
-/*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractBcdDefault(DtmVal* pDtmVal, char** aacRecCrs,
-                                   Formatters* pFormatters)
-{
-  Column* pColumn = pDtmVal->m_pCol;
-  
-  pDtmVal->m_eDatum = DM_BCD;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // head processing
-  
-  StrLib::vSkipSpaces(aacRecCrs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // null processing
-  
-  bool bValidNull = false;
-  if (bTestForNullDefault(pColumn,aacRecCrs,pFormatters,bValidNull)) {
-    if ( ! bValidNull )
-      return false;
-    pDtmVal->vSetNull();
-    return true;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // decimal field processing
-  
-  SN_Bcd snBcd;
-  try {
-    pDtmVal->m_wDtm.m_iBcd = snBcd.i(aacRecCrs,pColumn,pFormatters);
-  }
-  catch (i8 eThrow) {
-    return false;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tail processing
-  
-  StrLib::vSkipSpaces(aacRecCrs);
-  
-  // should see a valid field end
-  if ( ! bValidFieldEndDefault(*aacRecCrs,pFormatters) )
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* extract a boolean field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
 bool RowExtractor::bExtractBolSupplied(DtmVal* pDtmVal, char** aacRecCrs,
@@ -452,55 +385,6 @@ bool RowExtractor::bExtractBolSupplied(DtmVal* pDtmVal, char** aacRecCrs,
   
   // should see a valid field end
   if ( ! bValidFieldEnd(*aacRecCrs,pFormatters) )
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* extract a boolean field from csv substr                                    */
-/*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractBolDefault(DtmVal* pDtmVal, char** aacRecCrs,
-                                   Formatters* pFormatters)
-{
-  Column* pColumn = pDtmVal->m_pCol;
-  
-  pDtmVal->m_eDatum = DM_BOL;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // head processing
-  
-  StrLib::vSkipSpaces(aacRecCrs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // null processing
-  
-  bool bValidNull = false;
-  if (bTestForNullDefault(pColumn,aacRecCrs,pFormatters,bValidNull)) {
-    if ( ! bValidNull )
-      return false;
-    pDtmVal->vSetNull();
-    return true;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // boolean field processing
-  
-  SN_Bol snBol;
-  try {
-    pDtmVal->m_wDtm.m_iBol = snBol.i(aacRecCrs,pColumn,pFormatters);
-  }
-  catch (i8 eThrow) {
-    return false;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tail processing
-  
-  StrLib::vSkipSpaces(aacRecCrs);
-  
-  // should see a valid field end
-  if ( ! bValidFieldEndDefault(*aacRecCrs,pFormatters) )
     return false;
   
   return true;
@@ -562,57 +446,6 @@ bool RowExtractor::bExtractDteSupplied(DtmVal* pDtmVal, char** aacRecCrs,
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract a date field from csv substr                           yyyy-mo-ddZ */
-/*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractDteDefault(DtmVal* pDtmVal, char** aacRecCrs,
-                                   Formatters* pFormatters)
-{
-  // refer: http://en.wikipedia.org/wiki/ISO_8601
-  
-  Column* pColumn = pDtmVal->m_pCol;
-  
-  pDtmVal->m_eDatum = DM_DTE;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // head processing
-  
-  StrLib::vSkipSpaces(aacRecCrs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // null processing
-  
-  bool bValidNull = false;
-  if (bTestForNullDefault(pColumn,aacRecCrs,pFormatters,bValidNull)) {
-    if ( ! bValidNull )
-      return false;
-    pDtmVal->vSetNull();
-    return true;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // date field processing
-  
-  SN_Dte snDte;
-  try {
-    pDtmVal->m_wDtm.m_iDte = snDte.i(aacRecCrs,pColumn,pFormatters);
-  }
-  catch (i8 eThrow) {
-    return false;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tail processing
-  
-  StrLib::vSkipSpaces(aacRecCrs);
-  
-  // should see a valid field end
-  if ( ! bValidFieldEndDefault(*aacRecCrs,pFormatters) )
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* extract a float field from csv substr                                      */
 /*----------------------------------------------------------------------------*/
 bool RowExtractor::bExtractFltSupplied(DtmVal* pDtmVal, char** aacRecCrs,
@@ -660,55 +493,6 @@ bool RowExtractor::bExtractFltSupplied(DtmVal* pDtmVal, char** aacRecCrs,
   
   // should see a valid field end
   if ( ! bValidFieldEnd(*aacRecCrs,pFormatters) )
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* extract a float field from csv substr                                      */
-/*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractFltDefault(DtmVal* pDtmVal, char** aacRecCrs,
-                                   Formatters* pFormatters)
-{
-  Column* pColumn = pDtmVal->m_pCol;
-  
-  pDtmVal->m_eDatum = DM_FLT;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // head processing
-  
-  StrLib::vSkipSpaces(aacRecCrs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // null processing
-  
-  bool bValidNull = false;
-  if (bTestForNullDefault(pColumn,aacRecCrs,pFormatters,bValidNull)) {
-    if ( ! bValidNull )
-      return false;
-    pDtmVal->vSetNull();
-    return true;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // float field processing
-  
-  SN_Flt snFlt;
-  try {
-    pDtmVal->m_wDtm.m_dFlt = snFlt.d(aacRecCrs,pColumn,pFormatters);
-  }
-  catch (i8 eThrow) {
-    return false;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tail processing
-  
-  StrLib::vSkipSpaces(aacRecCrs);
-  
-  // should see a valid field end
-  if ( ! bValidFieldEndDefault(*aacRecCrs,pFormatters) )
     return false;
   
   return true;
@@ -775,62 +559,6 @@ bool RowExtractor::bExtractIntSupplied(DtmVal* pDtmVal, char** aacRecCrs,
   return true;
 }
 
-/*----------------------------------------------------------------------------*/
-/* extract an integer field from csv substr                                   */
-/*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractIntDefault(DtmVal* pDtmVal, char** aacRecCrs,
-                                   Formatters* pFormatters)
-{
-  Column* pColumn = pDtmVal->m_pCol;
-  
-  pDtmVal->m_eDatum = DM_INT;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // head processing
-  
-  StrLib::vSkipSpaces(aacRecCrs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // null processing
-  
-  bool bValidNull = false;
-  if (bTestForNullDefault(pColumn,aacRecCrs,pFormatters,bValidNull)) {
-    if ( ! bValidNull )
-      return false;
-    pDtmVal->vSetNull();
-    return true;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // integer field processing
-  
-  SN_Int snInt;
-  try {
-    pDtmVal->m_wDtm.m_iInt = snInt.i(aacRecCrs,pColumn,pFormatters);
-  }
-  catch (i8 eThrow) {
-    return false;
-  }
-  
-  // ignore any trailing digits (after optional '.')
-  if ('.' == **aacRecCrs) {
-    
-    // skip the '.' and any digits
-    (*aacRecCrs)++;
-    StrLib::vSkipDigits(aacRecCrs);
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tail processing
-  
-  StrLib::vSkipSpaces(aacRecCrs);
-  
-  // should see a valid field end
-  if ( ! bValidFieldEndDefault(*aacRecCrs,pFormatters) )
-    return false;
-  
-  return true;
-}
 
 /*----------------------------------------------------------------------------*/
 /* extract an interval field from csv substr                                  */
@@ -880,55 +608,6 @@ bool RowExtractor::bExtractIvlSupplied(DtmVal* pDtmVal, char** aacRecCrs,
   
   // should see a valid field end
   if ( ! bValidFieldEnd(*aacRecCrs,pFormatters) )
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* extract an interval field from csv substr                                  */
-/*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractIvlDefault(DtmVal* pDtmVal, char** aacRecCrs,
-                                   Formatters* pFormatters)
-{
-  Column* pColumn = pDtmVal->m_pCol;
-  
-  pDtmVal->m_eDatum = DM_IVL;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // head processing
-  
-  StrLib::vSkipSpaces(aacRecCrs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // null processing
-  
-  bool bValidNull = false;
-  if (bTestForNullDefault(pColumn,aacRecCrs,pFormatters,bValidNull)) {
-    if ( ! bValidNull )
-      return false;
-    pDtmVal->vSetNull();
-    return true;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // interval field processing
-  
-  SN_Ivl snIvl;
-  try {
-    pDtmVal->m_wDtm.m_iIvl = snIvl.i(aacRecCrs,pColumn,pFormatters);
-  }
-  catch (i8 eThrow) {
-    return false;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tail processing
-  
-  StrLib::vSkipSpaces(aacRecCrs);
-  
-  // should see a valid field end
-  if ( ! bValidFieldEndDefault(*aacRecCrs,pFormatters) )
     return false;
   
   return true;
@@ -990,57 +669,6 @@ bool RowExtractor::bExtractTmeSupplied(DtmVal* pDtmVal, char** aacRecCrs,
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract a time field from csv substr                         hh:mi:ss.fffZ */
-/*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractTmeDefault(DtmVal* pDtmVal, char** aacRecCrs,
-                                   Formatters* pFormatters)
-{
-  // refer: http://en.wikipedia.org/wiki/ISO_8601
-  
-  Column* pColumn = pDtmVal->m_pCol;
-  
-  pDtmVal->m_eDatum = DM_TME;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // head processing
-  
-  StrLib::vSkipSpaces(aacRecCrs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // null processing
-  
-  bool bValidNull = false;
-  if (bTestForNullDefault(pColumn,aacRecCrs,pFormatters,bValidNull)) {
-    if ( ! bValidNull )
-      return false;
-    pDtmVal->vSetNull();
-    return true;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // time field processing
-  
-  SN_Tsp snTsp;
-  try {
-    pDtmVal->m_wDtm.m_iTsp = snTsp.i(aacRecCrs,pColumn,pFormatters);
-  }
-  catch (i8 eThrow) {
-    return false;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tail processing
-  
-  StrLib::vSkipSpaces(aacRecCrs);
-  
-  // should see a valid field end
-  if ( ! bValidFieldEndDefault(*aacRecCrs,pFormatters) )
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* extract a timestamp field from csv substr         yyyy-mo-ddThh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
 bool RowExtractor::bExtractTspSupplied(DtmVal* pDtmVal, char** aacRecCrs,
@@ -1090,57 +718,6 @@ bool RowExtractor::bExtractTspSupplied(DtmVal* pDtmVal, char** aacRecCrs,
   
   // should see a valid field end
   if ( ! bValidFieldEnd(*aacRecCrs,pFormatters) )
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* extract a timestamp field from csv substr         yyyy-mo-ddThh:mi:ss.fffZ */
-/*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractTspDefault(DtmVal* pDtmVal, char** aacRecCrs,
-                                   Formatters* pFormatters)
-{
-  // refer: http://en.wikipedia.org/wiki/ISO_8601
-  
-  Column* pColumn = pDtmVal->m_pCol;
-  
-  pDtmVal->m_eDatum = DM_TSP;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // head processing
-  
-  StrLib::vSkipSpaces(aacRecCrs);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // null processing
-  
-  bool bValidNull = false;
-  if (bTestForNullDefault(pColumn,aacRecCrs,pFormatters,bValidNull)) {
-    if ( ! bValidNull )
-      return false;
-    pDtmVal->vSetNull();
-    return true;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // timestamp field processing
-  
-  SN_Tsp snTsp;
-  try {
-    pDtmVal->m_wDtm.m_iTsp = snTsp.i(aacRecCrs,pColumn,pFormatters);
-  }
-  catch (i8 eThrow) {
-    return false;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tail processing
-  
-  StrLib::vSkipSpaces(aacRecCrs);
-  
-  // should see a valid field end
-  if ( ! bValidFieldEndDefault(*aacRecCrs,pFormatters) )
     return false;
   
   return true;
@@ -1198,53 +775,6 @@ bool RowExtractor::bExtractVchSupplied(DtmVal* pDtmVal, char** aacRecCrs,
   
   return true;
 }
-
-/*----------------------------------------------------------------------------*/
-/* extract a varchar field from csv substr                                    */
-/*----------------------------------------------------------------------------*/
-bool RowExtractor::bExtractVchDefault(DtmVal* pDtmVal, char** aacRecCrs,
-                                   Formatters* pFormatters)
-{
-  Column* pColumn = pDtmVal->m_pCol;
-  
-  pDtmVal->m_eDatum = DM_VCH;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // test for null
-  
-  bool bValidNull = false;
-  if (bTestForNullDefault(pColumn,aacRecCrs,pFormatters,bValidNull)) {
-    if ( ! bValidNull )
-      return false;
-    pDtmVal->vSetNull();
-    return true;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // varchar field processing
-  
-  SN_Vch snVch;
-  try {
-    pDtmVal->m_sVch = snVch.sz(aacRecCrs,pColumn,pFormatters,
-                              false,pDtmVal->m_nChars);
-  }
-  catch (i8 eThrow) {
-    return false;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // tail processing
-  
-  StrLib::vSkipSpaces(aacRecCrs);
-  
-  // should see a valid field end
-  if ( ! bValidFieldEndDefault(*aacRecCrs,pFormatters) )
-    return false;
-  
-  return true;
-}
-
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
