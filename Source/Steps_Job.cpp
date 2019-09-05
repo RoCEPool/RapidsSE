@@ -672,7 +672,7 @@ void Step::vJobExecutingTaskFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.exectingTask@"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  mpTask->m_pDataStack->vPushPointer(pJob->m_pExecutingTask);
+  mpTask->m_pDataStack->vPushPointer(pJob->m_pTask);
   
   EXIT();
 }

@@ -77,7 +77,7 @@ Task::Task(Job* pJob, Session* pSession)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the executing task in job
   
-  m_pJob->m_pExecutingTask = this;
+  m_pJob->m_pTask = this;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -115,7 +115,7 @@ Task::Task(Op* pOp, Session* pSession)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the executing task in job
   
-  m_pJob->m_pExecutingTask = this;
+  m_pJob->m_pTask = this;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

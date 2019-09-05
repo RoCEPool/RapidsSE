@@ -30,7 +30,7 @@ namespace Jobs
 
     Decider m_oAcksRmg;  // acks remaining
   
-    Tasks::Task* m_pExecutingTask;   // task executing the job
+    Tasks::Task* m_pTask;            // task executing the job
     Tasks::Task* m_pOriginatingTask; // originating task of the request
   
     i8  m_iParticipantNode;    // participant node no (FromNodeNo?)

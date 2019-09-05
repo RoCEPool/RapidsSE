@@ -192,7 +192,7 @@ void Job_Dynamic::vBegin(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
   
   i8 nOps = m_pDigest->m_oOpVec.nItems();
-  AM::vSetAcksRmg(m_pExecutingTask,nOps);
+  AM::vSetAcksRmg(m_pTask,nOps);
   
   Session* pSession = AM::pThisTLSSession();
 

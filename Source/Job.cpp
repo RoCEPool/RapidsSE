@@ -78,7 +78,7 @@ Job::Job(eCN eClassNo, ReqTuple* aReqTuple, Session* pSession)
   //m_oAcksRmg
   
   m_pJobClass        = nullptr;
-  m_pExecutingTask   = nullptr;
+  m_pTask            = nullptr;
   m_pOriginatingTask = nullptr;
   
   m_iParticipantNode  = C_UNKNOWN;
@@ -520,7 +520,7 @@ void Jobs::vJob_send(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void Jobs::vJob_recv(Job* pJob)
 {
-  pJob->m_pExecutingTask = nullptr;
+  pJob->m_pTask          = nullptr;
   pJob->m_eJobList       = JL_NONE;
   pJob->m_pJobMutex      = nullptr;
   pJob->m_bWasReceived   = true;

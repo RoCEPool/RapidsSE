@@ -204,7 +204,7 @@ void AM::vDumpApi(void) {
   pApiState()->vDump();
 }
 Task* AM::pExecutingTask(Job* pJob) {
-  Task* pTask = pJob->m_pExecutingTask;
+  Task* pTask = pJob->m_pTask;
   return pTask;
 }
 bool AM::bJobIsForeign(i8 iJobId) {
