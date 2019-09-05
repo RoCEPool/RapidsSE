@@ -16,6 +16,7 @@ namespace ControlData   {                                                     }
 namespace Correctness   {                                                     }
 namespace DataOperators {                                                     }
 namespace Debugging     {                                                     }
+namespace Dynamics      {                                                     }
 namespace Enums         {                                                     }
 namespace Esses         { template <int SPACE> class String_t;
                           typedef String_t<32>     s32;
@@ -82,6 +83,7 @@ using namespace ControlData;
 using namespace Correctness;
 using namespace DataOperators;
 using namespace Debugging;
+using namespace Dynamics;
 using namespace Enums;
 using namespace Esses;
 using namespace Focals;
