@@ -80,7 +80,6 @@ namespace Operators
     Operand* pPopQueue(void);
     Operand* pPopQueueLeft(void);
     Operand* pPopQueueRight(void);
-    void  vSetMetaData(void);
     Task* pTask(void);
     void vTask(Task* pTask);
     void vWorkQuanta(i8 iWorkQuanta);

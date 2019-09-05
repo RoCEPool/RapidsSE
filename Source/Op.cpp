@@ -594,31 +594,6 @@ Operand* Op::pPopQueueRight(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set meta data in the dynamic job                                           */
-/*----------------------------------------------------------------------------*/
-void Op::vSetMetaData(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  //Job_Dynamic* pJobDynamic = _pJob_Dynamic(m_pJob);
-  Stz* sMetaData = AM::sMetaData(m_pJob);
-  
-  ColumnVec* pColVec = m_pStreamDef->m_oColVecAry.pGet(0);
-  sMetaData->vCopy(""_Stz);
-  
-  for (i8 i_Col = 0; i_Col < pColVec->nItems(); i_Col++) {
-    if (i_Col != 0)
-      sMetaData->vConcat(","_Stz);
-    Column* pCol = pColVec->pGet(i_Col);
-    sMetaData->vCatSprint("%s %s"_Stz, pCol->sColumnName().aChar(),
-           aCT[pCol->eColumnType()]);
-  }
-  
-  
-  //AM::sMetaData(m_pJob);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get task                                                                   */
 /*----------------------------------------------------------------------------*/
 Task* Op::pTask(void)

@@ -139,12 +139,6 @@ void AM::vIndexName(Job_Dynamic* pJob, Stz* szIndexNm) {
 Index* AM::pIndex(Job_Dynamic* pJob) {
   return pJob->m_pIndex;
 }
-void AM::vLocalResponse(Job* pJob, i8 iRowsProcessed) {
-  pJob->m_xResponse.m_ixRowsProcessed = iRowsProcessed;
-}
-Stz* AM::sMetaData(Job* pJob) {
-  return pJob->m_sMetadata;
-}
 void AM::vMonitorPortrait(s48K& sPortrait) {
   Engine::vMonitorPortrait(sPortrait);
 }
