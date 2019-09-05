@@ -24,7 +24,7 @@ namespace Jobs
     void  operator delete(void*);
 
     Response(void);
-    ~Response(void) noexcept(false);
+   ~Response(void) noexcept(false);
 
   private:
     Footer* aFooter(void);
