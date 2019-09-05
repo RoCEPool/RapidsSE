@@ -78,7 +78,7 @@ bool Dynamo::bCompile(TokenVec* pTknVec)
       bResult = bCompileStage(pTknVec,i_Tkn);
       continue;
     }
-    if (pTkn->bSame(";"_Stz)) {
+    if (pTkn->bSame("end"_Stz)) {
       break;
     }
   }
@@ -209,7 +209,15 @@ bool Dynamo::bCompilePipe(TokenVec* pTknVec, i8& i_Tkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  Token* pTkn = pTknVec->pGet(i_Tkn);
+  for (;;) {
+    Token* pTkn = pTknVec->pGet(++ i_Tkn);
+    
+    if (pTkn->bSame("|"_Stz))
+      continue;
+    
+    if (! bIsOperator(pTkn))
+      break;
+  }
   
   return true;
 }
@@ -221,6 +229,11 @@ bool Dynamo::bIsOperator(Token* pTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
+  if (pTkn->bSame("end"_Stz))
+    return false;
+  if (pTkn->bSame("stage"_Stz))
+    return false;
+
   return true;
 }
 
