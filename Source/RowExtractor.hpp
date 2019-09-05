@@ -23,40 +23,22 @@ namespace Rows
     static bool bExtractElement(DtmVal* pDtmVal, char** acRecCrs,
                                 Column* pCol, Formatters* pRecFmt);
   
-    static bool bExtractBcdDefault(DtmVal* pDtmVal, char** acRecCrs,
-                                   Formatters* pRecFmt);
     static bool bExtractBcdSupplied(DtmVal* pDtmVal, char** acRecCrs,
                                     Formatters* pRecFmt);
-    static bool bExtractBolDefault(DtmVal* pDtmVal, char** acRecCrs,
-                                   Formatters* pRecFmt);
     static bool bExtractBolSupplied(DtmVal* pDtmVal, char** acRecCrs,
                                     Formatters* pRecFmt);
-    static bool bExtractDteDefault(DtmVal* pDtmVal, char** acRecCrs,
-                                   Formatters* pRecFmt);
     static bool bExtractDteSupplied(DtmVal* pDtmVal, char** acRecCrs,
                                     Formatters* pRecFmt);
-    static bool bExtractFltDefault(DtmVal* pDtmVal, char** acRecCrs,
-                                   Formatters* pRecFmt);
     static bool bExtractFltSupplied(DtmVal* pDtmVal, char** acRecCrs,
                                     Formatters* pRecFmt);
-    static bool bExtractIntDefault(DtmVal* pDtmVal, char** acRecCrs,
-                                   Formatters* pRecFmt);
     static bool bExtractIntSupplied(DtmVal* pDtmVal, char** acRecCrs,
                                     Formatters* pRecFmt);
-    static bool bExtractIvlDefault(DtmVal* pDtmVal, char** acRecCrs,
-                                   Formatters* pRecFmt);
     static bool bExtractIvlSupplied(DtmVal* pDtmVal, char** acRecCrs,
                                     Formatters* pRecFmt);
-    static bool bExtractTmeDefault(DtmVal* pDtmVal, char** acRecCrs,
-                                   Formatters* pRecFmt);
     static bool bExtractTmeSupplied(DtmVal* pDtmVal, char** acRecCrs,
                                     Formatters* pRecFmt);
-    static bool bExtractTspDefault(DtmVal* pDtmVal, char** acRecCrs,
-                                   Formatters* pRecFmt);
     static bool bExtractTspSupplied(DtmVal* pDtmVal, char** acRecCrs,
                                     Formatters* pRecFmt);
-    static bool bExtractVchDefault(DtmVal* pDtmVal, char** acRecCrs,
-                                   Formatters* pRecFmt);
     static bool bExtractVchSupplied(DtmVal* pDtmVal, char** acRecCrs,
                                     Formatters* pRecFmt);
   

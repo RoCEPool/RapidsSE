@@ -280,7 +280,7 @@ void HashBuffer::vInsertEntry(HashInsert* pHi)
     //    if (pHi->m_bDebug) {
     pHi->m_bArcTrc = true;
     vDumpEntry(i_Entry,'A');
-    vDebugPoint();
+    //vDebugPoint();
     //    }
   }
   

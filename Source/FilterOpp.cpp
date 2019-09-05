@@ -71,6 +71,8 @@ FilterOp::FilterOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
 FilterOp::~FilterOp(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_FILTEROP);
+  
+  delete m_pCalculator;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -216,6 +218,7 @@ eOR FilterOp::eOpLoop(void)
           
           aEnt = pEntBuffer->aNextEntry(aEnt, 0);
         }
+        
         break;
       }
         
