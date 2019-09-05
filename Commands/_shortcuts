@@ -8,6 +8,7 @@ shortcut a _lineitemay ;
 
 // ray's - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+shortcut d  _dynamic ;
 shortcut r  _lineitemrjh ;
 shortcut s  _select ;
 shortcut sc startCluster ;
