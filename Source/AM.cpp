@@ -139,12 +139,6 @@ void AM::vIndexName(Job_Dynamic* pJob, Stz* szIndexNm) {
 Index* AM::pIndex(Job_Dynamic* pJob) {
   return pJob->m_pIndex;
 }
-void AM::vLocalResponse(Job* pJob, i8 iRowsProcessed) {
-  pJob->m_xResponse.m_ixRowsProcessed = iRowsProcessed;
-}
-Stz* AM::sMetaData(Job* pJob) {
-  return pJob->m_sMetadata;
-}
 void AM::vMonitorPortrait(s48K& sPortrait) {
   Engine::vMonitorPortrait(sPortrait);
 }
@@ -204,7 +198,7 @@ void AM::vDumpApi(void) {
   pApiState()->vDump();
 }
 Task* AM::pExecutingTask(Job* pJob) {
-  Task* pTask = pJob->m_pExecutingTask;
+  Task* pTask = pJob->m_pTask;
   return pTask;
 }
 bool AM::bJobIsForeign(i8 iJobId) {

@@ -235,7 +235,7 @@ eOR LimitOp::eOpLoop(void)
           pEnt = pEntBuffer->aGetNextEntry(&pEntBuffer, pEnt);
           m_iWorkDone++;
         }
-      
+        
         break;
       }
       
@@ -291,6 +291,7 @@ eOR LimitOp::eOpLoop(void)
         else {
           // almost done - just trim the srtBuffer
           pSrtBuffer->vItems(m_nLimit - m_iWorkDone);
+          m_iWorkDone += pSrtBuffer->nItems();
           vPipeOut(pSrtBuffer);
         }
         
