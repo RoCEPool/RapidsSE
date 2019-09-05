@@ -351,6 +351,7 @@ enum eCN : u2 // Class Number
   /*                           */ CN_SRTBUFFER,
   /*                           */ CN_SRTSET,
   /* 189 0xBD  1043520B Heap:L */ CN_STACK,
+  /* 189 0xBD  1043520B Heap:L */ CN_STAGE,
   /* 190 0xBE    12824B Heap:I */ CN_STATISTICS,
   /* 191 0xBF       64B Heap:S */ CN_STEPACCUM,
   /* 192 0xC0   131224B Heap:L */ CN_STEPTIMING,
@@ -741,6 +742,7 @@ static Stz* aCN[]
   /*          */ "SRTBUFFER"_Stz,           // CN_SRTBUFFER
   /*          */ "SRTSET"_Stz,              // CN_SRTSET
   /* 189 0xBD */ "STACK"_Stz,               // CN_STACK
+  /* 189 0xBD */ "STAGE"_Stz,               // CN_STAGE
   /* 190 0xBE */ "STATISTICS"_Stz,          // CN_STATISTICS
   /* 191 0xBF */ "STEPACCUM"_Stz,           // CN_STEPACCUM
   /* 192 0xC0 */ "STEPTIMING"_Stz,          // CN_STEPTIMING

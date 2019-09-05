@@ -1704,8 +1704,12 @@ void Step::vJobSpawn(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.spawn"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  //ActLog::vAdd(pJob,AN_SPAWN_JOB,mpTask->pJob(),i_Seed,_EG_SS);
-  
+  AM::vLogSvc(SL_INF,mpTask->m_pJob,VA_SVC_SPAWN_JOB,
+              "%s spawned by %s"_Stz, //!format-LogSvc
+              aCN[pJob->eClass()],
+              aCN[mpTask->m_pJob->eClass()],
+              C_ENDARGS);
+
   IGNORE_RETURN(Api::bSpawnJob(nullptr,pJob,(eSS)i_Seed));
   
   EXIT();
@@ -1727,8 +1731,12 @@ void Step::vJobSpawnDedicated(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.spawn_dedicated"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  //ActLog::vAdd(pJob,AN_SPAWN_JOB,mpTask->pJob(),i_Seed,_EG_SS);
-  
+  AM::vLogSvc(SL_INF,mpTask->m_pJob,VA_SVC_SPAWN_JOB,
+              "%s spawned by %s"_Stz, //!format-LogSvc
+              aCN[pJob->eClass()],
+              aCN[mpTask->m_pJob->eClass()],
+              C_ENDARGS);
+
   IGNORE_RETURN(Api::bSpawnJobDedicated(nullptr,pJob,(eSS)i_Seed));
   
   EXIT();
