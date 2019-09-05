@@ -2,7 +2,19 @@
 /* _dynamic -- test dynamic plans                                             */
 /*============================================================================*/
 
-dynamic plan ;
+dynamic plan
+
+  name dynNm
+
+  stage stageA on all partitions:
+    opA1 | opA2 | opA3 | stageB
+
+  stage stageB on all nodes:
+    opB1 | opB2 | stageC
+
+  stage stageC on origin:
+    opC1
+;
 
 //logWrite;
 

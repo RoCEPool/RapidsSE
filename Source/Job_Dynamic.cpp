@@ -165,8 +165,9 @@ bool Job_Dynamic::bPopulateJob(Session* pSession, TokenVec* pTokenVec)
   //
   if (pTokenVec->pGet(1)->bSame("plan"_Stz)) {
     Dynamo* pDynamo = new Dynamo;
+    bool bSuccess = pDynamo->bCompile(pTokenVec);
     delete pDynamo;
-    return false;
+    return bSuccess;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

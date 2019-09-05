@@ -19,6 +19,13 @@ namespace Dynamics
     Dynamo(void);
    ~Dynamo(void) noexcept(false);
   
+    bool bCompile(TokenVec* pTokenVec);
+  
+    bool bCompileName(TokenVec* pTokenVec, i8& i_Tkn);
+    bool bCompileStage(TokenVec* pTokenVec, i8& i_Tkn);
+    bool bCompileTopology(TokenVec* pTokenVec, i8& i_Tkn);
+    bool bCompilePipe(TokenVec* pTokenVec, i8& i_Tkn);
+
     Footer* aFooter(void);
   };
 }
