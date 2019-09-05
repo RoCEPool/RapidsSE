@@ -71,6 +71,7 @@ pDUMPFUN *gpDump[]
   /* 35 */ &Dump::vInvalid,         // CN_DIR
   /*    */ &Dump::vDummy,           // CN_DISTINCTOP
   /*    */ &Dump::vDummy,           // CN_DTMVAL
+  /*    */ &Dump::vDummy,           // CN_DYNAMICSPEC
 
   /*    */ &Dump::vUndefined,       // CN_EARLYMARKER
   /*    */ &Dump::vUndefined,       // CN_ENCODING
@@ -467,6 +468,7 @@ i8 giClassSize[]
   /* 35 */ sizeof(Dir),                // CN_DIR
   /* 35 */ sizeof(DistinctOp),         // CN_DISTINCTOP
   /*    */ sizeof(DtmVal),             // CN_DTMVAL
+  /*    */ sizeof(DynamicSpec),        // CN_DYNAMICSPEC
 
   /*    */ sizeof(EarlyMarker),        // CN_EARLYMARKER
   /*    */ sizeof(Encoding),           // CN_ENCODING
@@ -861,6 +863,7 @@ eHT geWhichHeap[]
   /* 35 */ HT_TRANSIENT_SMALL,   // CN_DIR
   /* 35 */ HT_TRANSIENT_SMALL,   // CN_DISTINCTOP
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_DTMVAL
+  /* 35 */ HT_TRANSIENT_SMALL,   // CN_DYNAMICSPEC
 
   /*    */ HT_TRANSIENT_SMALL,   // CN_EARLYMARKER
   /*    */ HT_TRANSIENT_LARGE,   // CN_ENCODING

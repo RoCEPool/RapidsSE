@@ -67,6 +67,7 @@ pFINALIZE *gpFinalize[]
   /* 35 */ &Finalize::vUndefined,         // CN_DIR
   /*    */ &Finalize::vUndefined,         // CN_DISTINCTOP
   /*    */ &Finalize::vUndefined,         // CN_DTMVAL
+  /*    */ &Finalize::vUndefined,         // CN_DYNAMICSPEC
 
   /*    */ &Finalize::vUndefined,         // CN_EARLYMARKER
   /*    */ &Finalize::vUndefined,         // CN_ENCODING
