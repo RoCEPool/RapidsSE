@@ -14,6 +14,8 @@ namespace Dynamics
 
 //------------------------------------------------------------------------------
 
+#include "OpSpec.hpp"
+
 #include "StageSpec.hpp"
 #include "StageSpecVec.hpp"
 

@@ -276,6 +276,7 @@ pDUMPFUN *gpDump[]
   /* 28 */ &Dump::vInvalid,         // CN_OP_TODO
   /* 28 */ &Dump::vInvalid,         // CN_OP_TOFILTER
   /* 28 */ &Dump::vInvalid,         // CN_OPERANDQUEUE
+  /* 28 */ &Dump::vInvalid,         // CN_OPSPEC
   /* 28 */ &Dump::vInvalid,         // CN_OPVEC
   /*    */ &Dump::vUndefined,       // CN_OUTPUTOP
 
@@ -671,6 +672,7 @@ i8 giClassSize[]
   /* 28 */ sizeof(Op_ToDo),            // CN_OP_TODO
   /* 28 */ sizeof(Op_ToFilter),        // CN_OP_TOFILTER
   /* 28 */ sizeof(OperandQueue),       // CN_OPERANDQUEUE
+  /* 28 */ sizeof(OpSpec),             // CN_OPSPEC
   /* 28 */ sizeof(OpVec),              // CN_OPVEC
   /* 77 */ sizeof(OutputOp),           // CN_OUTPUTOP
 
@@ -753,8 +755,8 @@ i8 giClassSize[]
   /*    */ sizeof(SrtSet),             // CN_SRTSET
   /*126 */ sizeof(Stack),              // CN_STACK
   /*126 */ sizeof(Stage),              // CN_STAGE
-  /*126 */ 0,//sizeof(StageSpec),              // CN_STAGESPEC
-  /*126 */ 0,//sizeof(StageSpecVec),              // CN_STAGESPECVEC
+  /*126 */ sizeof(StageSpec),          // CN_STAGESPEC
+  /*126 */ sizeof(StageSpecVec),       // CN_STAGESPECVEC
   /*    */ sizeof(Statistics),         // CN_STATISTICS
   /*127 */ sizeof(StepAccum),          // CN_STEPACCUM
   /*128 */ sizeof(StepTiming),         // CN_STEPTIMING
@@ -1066,6 +1068,7 @@ eHT geWhichHeap[]
   /* 29 */ HT_TRANSIENT_MEDIUM,  // CN_OP_TODO
   /* 29 */ HT_TRANSIENT_MEDIUM,  // CN_OP_TOFILTER
   /* 29 */ HT_TRANSIENT_SMALL,   // CN_OPERANDQUEUE
+  /* 29 */ HT_TRANSIENT_SMALL,   // CN_OPSPEC
   /* 29 */ HT_TRANSIENT_SMALL,   // CN_OPVEC
   /*    */ HT_TRANSIENT_SMALL,   // CN_OUTPUTOP
 
