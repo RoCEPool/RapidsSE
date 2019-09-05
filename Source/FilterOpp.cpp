@@ -159,13 +159,33 @@ eOR FilterOp::eOpLoop(void)
         // -- -- -- -- -- --
         
       case CN_CRWBUFFER: {
-//        CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand) ;
-//        SrtBuffer* pSrtBuffer = pCrwBuffer->pToSrtBuffer(m_iKeyCol);
-//        vPipeOut(pSrtBuffer);
+        CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
+        i8 nRows = pCrwBuffer->nRowCount();
+        
+        HV_Row hRow(m_pStreamDef->pColumnVec(0));
+        
+        for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+
+          pCrwBuffer->vGetRow(hRow, i_Row);
+          
+          i8 iRes = m_pCalculator->iEvaluate(hRow);
+          
+          if (iRes) {
+            Row* pNewRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
+            
+            if ( ! pNewRow ) {
+              vPipeOut(m_pIrwBuffer);
+              m_pIrwBuffer = new IrwBuffer;
+              pNewRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
+            }
+            pNewRow->vCopy(hRow);
+          }
+          
+        }
         break;
       }
         
-        // -- -- -- -- -- --
+      // -- -- -- -- -- --
         
       case CN_ENTBUFFER: {
 //        RASSERT(-1 != m_iKeyCol);

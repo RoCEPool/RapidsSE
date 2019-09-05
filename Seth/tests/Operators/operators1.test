@@ -508,6 +508,15 @@ rows:
   ( NULL, NULL      , NULL, NULL, NULL,         NULL, NULL                             , NULL             ,   34, 'threefour' ,  134,    4,   34, 1.034030e+03, TIMESTAMP '1934-01-01 00:00:00.0', DATE '1934-01-01' )
   ( NULL, NULL      , NULL, NULL, NULL,         NULL, NULL                             , NULL             ,   35, 'threefive' ,  135,    5,   35, 1.035040e+03, TIMESTAMP '1935-01-01 00:00:00.0', DATE '1935-01-01' )
 
+
+// ScanOP (CrwBuffer->IrwBuffer->IrwBuffer->IrwBuffer)
+dynamic scan OpTable1 | project jidx_100 | filter jidx_100 120 >  | output;
+mute;
+
+// ScanOP (CrwBuffer->IrwBuffer->IrwBuffer)
+dynamic scan OpTable1 | filter jidx_100 120 <  | output;
+mute;
+
 // drop the table
 drop table OpTable1;
 success
