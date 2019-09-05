@@ -8,10 +8,13 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Stage::Stage(void)
+Stage::Stage(Stz* szName)
 : Object(CN_STAGE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
+  
+  m_sName = szName;
+  //m_oOpVec
   
    _checkInitialised_(CN_STAGE);
   
@@ -25,6 +28,17 @@ Stage::~Stage(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
 }
+
+/*----------------------------------------------------------------------------*/
+/* get stagae name                                                            */
+/*----------------------------------------------------------------------------*/
+Stz* Stage::szName(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
+  
+  return m_sName.aStz();
+}
+
 
 
 /*----------------------------------------------------------------------------*/
