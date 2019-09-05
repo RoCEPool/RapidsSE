@@ -63,6 +63,9 @@ void StorageEngine::vCheckAllAssumptions(void)
   Steps::vCheckAssumptions();
   Prompt::vCheckAssumptions();
   StorageEngine::vCheckAssumptions();
+  
+  
+  Dynamics::vCheckAssumptions();
 }
 
 /*----------------------------------------------------------------------------*/
