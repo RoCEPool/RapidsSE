@@ -542,9 +542,32 @@ rows:
   (18,'oneeight',118,8,18,1018.02,TIMESTAMP '1918-01-01 00:00:00',1918-01-01)
   (19,'onenine',119,9,19,1019.02,TIMESTAMP '1919-01-01 00:00:00',1919-01-01)
 
+// FetchOP (EntBuffer->IrwBuffer->IrwBuffer)
+dynamic fetch OpTable1 OpTable1_idx | filter jidx_100 120 <  | output;
+rows:
+  (10,'onezero',110,0,10,1010.01,TIMESTAMP '1910-01-01 00:00:00',1910-01-01)
+  (11,'oneone',111,1,11,1011.01,TIMESTAMP '1911-01-01 00:00:00',1911-01-01)
+  (12,'onetwo',112,2,12,1012.01,TIMESTAMP '1912-01-01 00:00:00',1912-01-01)
+  (13,'onethree',113,3,13,1013.01,TIMESTAMP '1913-01-01 00:00:00',1913-01-01)
+  (14,'onefour',114,4,14,1014.01,TIMESTAMP '1914-01-01 00:00:00',1914-01-01)
+  (1,'one',101,1,1,1001,TIMESTAMP '1901-01-01 00:00:00',1901-01-01)
+  (2,'two',102,2,2,1002,TIMESTAMP '1902-01-01 00:00:00',1902-01-01)
+  (3,'three',103,3,3,1003,TIMESTAMP '1903-01-01 00:00:00',1903-01-01)
+  (4,'four',104,4,4,1004,TIMESTAMP '1904-01-01 00:00:00',1904-01-01)
+  (5,'five',105,5,5,1005,TIMESTAMP '1905-01-01 00:00:00',1905-01-01)
+  (6,'six',106,6,6,1006.01,TIMESTAMP '1906-01-01 00:00:00',1906-01-01)
+  (7,'seven',107,7,7,1007.01,TIMESTAMP '1907-01-01 00:00:00',1907-01-01)
+  (8,'eight',108,8,8,1008.01,TIMESTAMP '1908-01-01 00:00:00',1908-01-01)
+  (9,'nine',109,9,9,1009.01,TIMESTAMP '1909-01-01 00:00:00',1909-01-01)
+  (15,'onefive',115,5,15,1015.01,TIMESTAMP '1915-01-01 00:00:00',1915-01-01)
+  (16,'onesix',116,6,16,1016.02,TIMESTAMP '1916-01-01 00:00:00',1916-01-01)
+  (17,'oneseven',117,7,17,1017.02,TIMESTAMP '1917-01-01 00:00:00',1917-01-01)
+  (18,'oneeight',118,8,18,1018.02,TIMESTAMP '1918-01-01 00:00:00',1918-01-01)
+  (19,'onenine',119,9,19,1019.02,TIMESTAMP '1919-01-01 00:00:00',1919-01-01)
+
 // drop the table
-//drop table OpTable1;
-//success
+drop table OpTable1;
+success
 
 // drop the table
 drop table OpTable2;
@@ -557,8 +580,8 @@ rows: 0
 CLEANUP {
 
   // drop the table
-  //drop table OpTable1;
-  //mute
+  drop table OpTable1;
+  mute
 
   // drop the table
   drop table OpTable2;

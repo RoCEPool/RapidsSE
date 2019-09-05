@@ -188,13 +188,37 @@ eOR FilterOp::eOpLoop(void)
       // -- -- -- -- -- --
         
       case CN_ENTBUFFER: {
-//        RASSERT(-1 != m_iKeyCol);
-//        EntBuffer* pEntBuffer = _pEntBuffer(pOperand) ;
-//        //pEntBuffer->vShow();
-//        SrtBuffer* pSrtBuffer = pEntBuffer->pToSrtBuffer(m_iKeyCol);
-//        vPipeOut(pSrtBuffer);
+        EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
+        i8 nRows = pEntBuffer->nItems();
+        
+        HV_Row hRow(m_pStreamDef->pColumnVec(0));
+        
+        Ent* aEnt = pEntBuffer->aLeadEntry();
+        
+        while (aEnt) {
+          
+          CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(aEnt->xRef());
+          Crw* aRowData = pCrwBuffer->pCrw(aEnt->xRef().iItem());
+          RowInflator::vInflateRow(hRow,aRowData);
+          
+          i8 iRes = m_pCalculator->iEvaluate(hRow);
+          
+          if (iRes) {
+            Row* pNewRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
+            
+            if ( ! pNewRow ) {
+              vPipeOut(m_pIrwBuffer);
+              m_pIrwBuffer = new IrwBuffer;
+              pNewRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
+            }
+            pNewRow->vCopy(hRow);
+          }
+          
+          aEnt = pEntBuffer->aNextEntry(aEnt, 0);
+        }
         break;
       }
+        
         
         // -- -- -- -- -- --
       case CN_IRWBUFFER: {
