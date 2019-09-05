@@ -18,7 +18,7 @@ namespace Jobs
     void  operator delete(void*);
     
     JobResult(void);
-    ~JobResult(void) noexcept(false);
+   ~JobResult(void) noexcept(false);
     
     void vAddError(eEC eError);
     
@@ -29,6 +29,8 @@ namespace Jobs
     void vPrintNodeErrors(void);
     void vPrintNodeRows(void);
     void vPrintNodeZero(void);
+  
+    Stz* szResponse(void);
   };
 }
 

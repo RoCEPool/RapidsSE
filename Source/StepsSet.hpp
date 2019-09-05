@@ -625,8 +625,11 @@ private:
   // job Receiver
   static void vJob_ReceiverConnNoFetch(Tasks::MP_Task mpTask);
   static void vJob_ReceiverConnNoStore(Tasks::MP_Task mpTask);
+  static void vJob_ReceiverJobReceived(Tasks::MP_Task mpTask);
   static void vJob_ReceiverNodeFetch(Tasks::MP_Task mpTask);
   static void vJob_ReceiverNodeStore(Tasks::MP_Task mpTask);
+
+
 
   // job Repeater
   static void vJob_RepeaterBegin(Tasks::MP_Task mpTask);

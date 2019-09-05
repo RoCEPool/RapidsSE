@@ -70,6 +70,8 @@
 
     to pReceivedJob
 
+    pReceivedJob job_receiver::jobReceived
+
     pReceivedJob job.postRecv
 
     pReceivedJob job.hasEntBuffer if
