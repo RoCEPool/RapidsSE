@@ -71,6 +71,7 @@ enum eCN : u2 // Class Number
   /*                           */ CN_DISTINCTOP,
   /*                           */ CN_DTMVAL,
   /*                           */ CN_DYNAMICSPEC,
+  /*                           */ CN_DYNAMO,
 
   /*                           */ CN_EARLYMARKER,
   /*                           */ CN_ENCODING,
@@ -468,6 +469,7 @@ static Stz* aCN[]
   /*          */ "DISTINCTOP"_Stz,          // CN_DISTINCTOP
   /*          */ "DTMVAL"_Stz,              // CN_DTMVAL
   /*          */ "DYNAMICSPEC"_Stz,         // CN_DYNAMICSPEC
+  /*          */ "DYNAMO"_Stz,              // CN_DYNAMO
 
   /*          */ "EARLYMARKER"_Stz,         // CN_EARLYMARKER
   /*          */ "ENCODING"_Stz,            // CN_ENCODING
