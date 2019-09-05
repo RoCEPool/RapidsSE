@@ -220,7 +220,8 @@ eOR FilterOp::eOpLoop(void)
       }
         
         
-        // -- -- -- -- -- --
+      // -- -- -- -- -- --
+        
       case CN_IRWBUFFER: {
         IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
         
@@ -244,19 +245,9 @@ eOR FilterOp::eOpLoop(void)
       }
         
       case CN_SRTBUFFER: {
-//        RASSERT(-1 != m_iKeyCol);
-//        SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand) ;
-//        pSrtBuffer->vGetKeys(m_iKeyCol, m_bKeyIsLeft,
-//                             m_pStreamDef->m_oColVecAry.pGet(0),
-//                             m_pStreamDef->m_oColVecAry.pGet(1));
-//
-//        SrtBuffer* pBuffer = pSrtBuffer;
-//        while (pBuffer) {
-//          SrtBuffer* pPipeOut = pBuffer;
-//          pBuffer = pBuffer->pNextBuffer();
-//          pPipeOut->vNextBuffer(nullptr);
-//          vPipeOut(pPipeOut);
-//        }
+        SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
+        delete pSrtBuffer;
+        RASSERT(0);
         break;
       }
         
