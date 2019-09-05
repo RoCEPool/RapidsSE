@@ -270,6 +270,7 @@ pFINALIZE *gpFinalize[]
   /* 28 */ &Finalize::vUndefined,         // CN_OP_TOFILTER
   /* 28 */ &Finalize::vUndefined,         // CN_OPERANDQUEUE
   /* 28 */ &Finalize::vUndefined,         // CN_OPSPEC
+  /* 28 */ &Finalize::vUndefined,         // CN_OPSPECVEC
   /* 28 */ &Finalize::vUndefined,         // CN_OPVEC
   /*    */ &Finalize::vUndefined,         // CN_OUTPUTOP
 

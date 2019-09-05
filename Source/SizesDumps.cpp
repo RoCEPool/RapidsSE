@@ -277,6 +277,7 @@ pDUMPFUN *gpDump[]
   /* 28 */ &Dump::vInvalid,         // CN_OP_TOFILTER
   /* 28 */ &Dump::vInvalid,         // CN_OPERANDQUEUE
   /* 28 */ &Dump::vInvalid,         // CN_OPSPEC
+  /* 28 */ &Dump::vInvalid,         // CN_OPSPECVEC
   /* 28 */ &Dump::vInvalid,         // CN_OPVEC
   /*    */ &Dump::vUndefined,       // CN_OUTPUTOP
 
@@ -673,6 +674,7 @@ i8 giClassSize[]
   /* 28 */ sizeof(Op_ToFilter),        // CN_OP_TOFILTER
   /* 28 */ sizeof(OperandQueue),       // CN_OPERANDQUEUE
   /* 28 */ sizeof(OpSpec),             // CN_OPSPEC
+  /* 28 */ sizeof(OpSpecVec),          // CN_OPSPECVEC
   /* 28 */ sizeof(OpVec),              // CN_OPVEC
   /* 77 */ sizeof(OutputOp),           // CN_OUTPUTOP
 
@@ -1069,6 +1071,7 @@ eHT geWhichHeap[]
   /* 29 */ HT_TRANSIENT_MEDIUM,  // CN_OP_TOFILTER
   /* 29 */ HT_TRANSIENT_SMALL,   // CN_OPERANDQUEUE
   /* 29 */ HT_TRANSIENT_SMALL,   // CN_OPSPEC
+  /* 29 */ HT_TRANSIENT_SMALL,   // CN_OPSPECVEC
   /* 29 */ HT_TRANSIENT_SMALL,   // CN_OPVEC
   /*    */ HT_TRANSIENT_SMALL,   // CN_OUTPUTOP
 

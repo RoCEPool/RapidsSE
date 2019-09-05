@@ -272,6 +272,7 @@ enum eCN : u2 // Class Number
   /*  21 0x15      312B Heap:I */ CN_OP_TOFILTER,
   /*  21 0x15      312B Heap:I */ CN_OPERANDQUEUE,
   /*  21 0x15      312B Heap:I */ CN_OPSPEC,
+  /*  21 0x15      312B Heap:I */ CN_OPSPECVEC,
   /*  21 0x15      312B Heap:I */ CN_OPVEC,
   /*                           */ CN_OUTPUTOP,
 
@@ -667,6 +668,7 @@ static Stz* aCN[]
   /*  21 0x15 */ "OP_TOFILTER"_Stz,         // CN_OP_TOFILTER
   /*  21 0x15 */ "OPERANDQUEUE"_Stz,        // CN_OPERANDQUEUE
   /*  21 0x15 */ "OPSPEC"_Stz,              // CN_OPSPEC
+  /*  21 0x15 */ "OPSPECVEC"_Stz,           // CN_OPSPECVEC
   /*  21 0x15 */ "OPVEC"_Stz,               // CN_OPVEC
   /*          */ "OUTPUTOP"_Stz,            // CN_OUTPUTOP
 
