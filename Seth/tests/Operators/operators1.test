@@ -228,7 +228,7 @@ rows: (3826)
 
 // FetchOp (EntBuffer->IrwBuffer->IrwBuffer)
 dynamic fetch OpTable1 OpTable1_idx | limit 10 | agg jidx_100 | output;
-rows: (1946)
+rows: 1
 
 // ScanOp (CrwBuffer->IrwBuffer->IrwBuffer)
 dynamic scan OpTable1 | agg jidx_100 | output;
@@ -255,8 +255,12 @@ dynamic fetch OpTable1 OpTable1_idx | getKey jidx_100 | output;
 rows: 26
 
 // FetchOp (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
-dynamic fetch OpTable1 OpTable1_idx | limit 10 | getKey jidx_100 | output;
+dynamic fetch OpTable1 OpTable1_idx | getKey jidx_100 | limit 10 | output;
 rows: 10
+
+// FetchOp (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
+dynamic fetch OpTable1 OpTable1_idx | getKey jidx_100 | limit 50 | output;
+rows: 26
 
 // ScanOp (CrwBuffer->SrtBuffer->SrtBuffer)
 dynamic scan OpTable1 | getKey jidx_100 | output;
@@ -283,7 +287,7 @@ dynamic fetch OpTable1 OpTable1_idx | getKey jidx_100 | sort | output;
 rows: 26
 
 // FetchOp (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
-dynamic fetch OpTable1 OpTable1_idx | limit 10 | getKey jidx_100 | sort | output;
+dynamic fetch OpTable1 OpTable1_idx | getKey jidx_100 | sort | limit 10 | output;
 rows: 10
 
 // ScanOp (CrwBuffer->SrtBuffer->SrtBuffer)
@@ -311,7 +315,7 @@ dynamic fetch OpTable1 OpTable1_idx | getKey jidx_100 | sort | merge | output;
 rows: 26
 
 // FetchOp (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
-dynamic fetch OpTable1 OpTable1_idx | limit 10 | getKey jidx_100 | sort | merge | output;
+dynamic fetch OpTable1 OpTable1_idx | getKey jidx_100 | sort | merge | limit 10 | output;
 rows: 10
 
 // ScanOp (CrwBuffer->SrtBuffer->SrtBuffer)
@@ -365,7 +369,7 @@ ordered rows:
   (  0, 'zero'    , 1001, 0,  0, 1.000000e+03, TIMESTAMP '1900-01-01 00:00:00.0', DATE '1900-01-01' )
 
 // FetchOp (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
-dynamic fetch OpTable1 OpTable1_idx | limit 10 | getKey jidx_100 | sort | merge | superMerge | output;
+dynamic fetch OpTable1 OpTable1_idx | getKey jidx_100 | sort | merge | superMerge | limit 10 | output;
 ordered rows:
   ( 1, 'one'  ,  101, 1, 1, 1.001000e+03, TIMESTAMP '1901-01-01 00:00:00.0', DATE '1901-01-01' )
   ( 2, 'two'  ,  102, 2, 2, 1.002000e+03, TIMESTAMP '1902-01-01 00:00:00.0', DATE '1902-01-01' )
@@ -376,7 +380,7 @@ ordered rows:
   ( 7, 'seven',  107, 7, 7, 1.007010e+03, TIMESTAMP '1907-01-01 00:00:00.0', DATE '1907-01-01' )
   ( 8, 'eight',  108, 8, 8, 1.008010e+03, TIMESTAMP '1908-01-01 00:00:00.0', DATE '1908-01-01' )
   ( 9, 'nine' ,  109, 9, 9, 1.009010e+03, TIMESTAMP '1909-01-01 00:00:00.0', DATE '1909-01-01' )
-  ( 0, 'zero' , 1001, 0, 0, 1.000000e+03, TIMESTAMP '1900-01-01 00:00:00.0', DATE '1900-01-01' )
+  (10,'onezero', 110, 0, 10,1.010010e+03, TIMESTAMP '1910-01-01 00:00:00.0', DATE '1910-01-01' )
 
 
 // ScanOp (CrwBuffer->SrtBuffer->SrtBuffer)
@@ -416,7 +420,7 @@ ordered rows:
 
 // ScanOp (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
 dynamic fetch OpTable1 OpTable1_idx || fetch OpTable2 OpTable2_idx | join | getKey jidx_100 | sort | merge | superMerge | output;
-ordered rows:
+rows:
   ( NULL, NULL      , NULL, NULL, NULL,         NULL, NULL                             , NULL             ,   29, 'twonine'   ,  129,    9,   29, 1.029030e+03, TIMESTAMP '1929-01-01 00:00:00.0', DATE '1929-01-01' )
   ( NULL, NULL      , NULL, NULL, NULL,         NULL, NULL                             , NULL             ,   28, 'twoeight'  ,  128,    8,   28, 1.028030e+03, TIMESTAMP '1928-01-01 00:00:00.0', DATE '1928-01-01' )
   ( NULL, NULL      , NULL, NULL, NULL,         NULL, NULL                             , NULL             ,   30, 'threezero' ,  130,    0,   30, 1.030030e+03, TIMESTAMP '1930-01-01 00:00:00.0', DATE '1930-01-01' )
@@ -461,7 +465,7 @@ ordered rows:
 
 // ScanOp (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
 dynamic fetch OpTable1 OpTable1_idx || fetch OpTable2 OpTable2_idx | join | getKey jidx_100_2 | sort | merge | superMerge | output;
-ordered rows:
+rows:
   (   13, 'onethree',  113,    3,   13, 1.013010e+03, TIMESTAMP '1913-01-01 00:00:00.0', DATE '1913-01-01', NULL, NULL        , NULL, NULL, NULL,         NULL, NULL                             , NULL              )
   (   12, 'onetwo'  ,  112,    2,   12, 1.012010e+03, TIMESTAMP '1912-01-01 00:00:00.0', DATE '1912-01-01', NULL, NULL        , NULL, NULL, NULL,         NULL, NULL                             , NULL              )
   (   14, 'onefour' ,  114,    4,   14, 1.014010e+03, TIMESTAMP '1914-01-01 00:00:00.0', DATE '1914-01-01', NULL, NULL        , NULL, NULL, NULL,         NULL, NULL                             , NULL              )
@@ -505,12 +509,12 @@ ordered rows:
   ( NULL, NULL      , NULL, NULL, NULL,         NULL, NULL                             , NULL             ,   35, 'threefive' ,  135,    5,   35, 1.035040e+03, TIMESTAMP '1935-01-01 00:00:00.0', DATE '1935-01-01' )
 
 // drop the table
-//drop table OpTable1;
-//success
+drop table OpTable1;
+success
 
 // drop the table
-//drop table OpTable2;
-//success
+drop table OpTable2;
+success
 
 // check existence of table
 lstbl;
@@ -519,12 +523,12 @@ rows: 0
 CLEANUP {
 
   // drop the table
-  //drop table OpTable1;
-  //mute
+  drop table OpTable1;
+  mute
 
   // drop the table
-  //drop table OpTable2;
-  //mute
+  drop table OpTable2;
+  mute
 
   bye;
   mute
