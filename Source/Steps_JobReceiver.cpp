@@ -9,10 +9,12 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobReceiver(void)
 {
-  vAddStep("job_receiver.connNo@"_Stz, &Step::vJob_ReceiverConnNoFetch);
-  vAddStep("job_receiver.connNo!"_Stz, &Step::vJob_ReceiverConnNoStore);
-  vAddStep("job_receiver.node@"_Stz,   &Step::vJob_ReceiverNodeFetch);
-  vAddStep("job_receiver.node!"_Stz,   &Step::vJob_ReceiverNodeStore);
+  vAddStep("job_receiver::jobReceived"_Stz, &Step::vJob_ReceiverJobReceived);
+  
+  vAddStep("job_receiver.connNo@"_Stz,     &Step::vJob_ReceiverConnNoFetch);
+  vAddStep("job_receiver.connNo!"_Stz,     &Step::vJob_ReceiverConnNoStore);
+  vAddStep("job_receiver.node@"_Stz,       &Step::vJob_ReceiverNodeFetch);
+  vAddStep("job_receiver.node!"_Stz,       &Step::vJob_ReceiverNodeStore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,6 +36,37 @@ void Step::vJob_ReceiverConnNoFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* job_receiver.jobReceived -- job has been recieved                          */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_ReceiverJobReceived(MP_Task mpTask)
+{
+  ENTRY("vJob_ReceiverJobReceived"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_receiver.jobReceived!"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+
+  if (CN_JOB__EXECUTED == pJob->eClass()) {
+    Job__Executed* pJob__Executed = _pJob__Executed(pJob);
+    Stz* szResponse = pJob__Executed->szResponse();
+    if (szResponse->iLength())
+      AM::vLogSvc(SL_INF,mpTask->m_pJob,VA_SVC_RESPONSE_JOB,
+                  "%s >>%s<<"_Stz, //!format-LogSvc
+                  aCN[pJob->eClass()],
+                  szResponse);
+    EXIT();
+    return;
+  }
+
+  AM::vLogSvc(SL_INF,mpTask->m_pJob,VA_SVC_RECEIVED_JOB,
+              "%s"_Stz, //!format-LogSvc
+              aCN[pJob->eClass()]);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* job_receiver.connNo! -- store connNo into job_receiver                     */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_ReceiverConnNoStore(MP_Task mpTask)
@@ -44,7 +77,7 @@ void Step::vJob_ReceiverConnNoStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job_receiver.connNo!"_Stz);
   Job_Receiver* pJob_Receiver = _pJob_Receiver(pJobPtr);
-
+  
   i8 iConnNo;
   if ( ! mpTask->m_pDataStack->bPop(iConnNo) )
     THROW_INVALID_DSTACK("job_receiver.connNo!"_Stz);
