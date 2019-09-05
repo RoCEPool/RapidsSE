@@ -62,7 +62,7 @@ AggOp::AggOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
   
   m_fpCall = AggOp::eCall;
   m_nSum = 0;
-  m_pOriginalStreamDef = new StreamDef;
+  m_pOriginalStreamDef = nullptr;
   m_pStreamDef = new StreamDef;
   
   for (i8 i_ColVec = 0; i_ColVec < C_MAX_COLUMNVECS; i_ColVec++)
@@ -82,6 +82,8 @@ AggOp::AggOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
 AggOp::~AggOp(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_AGGOP,_FOOTER_);
+  
+  delete m_pOriginalStreamDef;
 }
 
 /*----------------------------------------------------------------------------*/

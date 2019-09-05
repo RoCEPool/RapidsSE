@@ -1124,6 +1124,9 @@ IrwBuffer* EntBuffer::pToIrwBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
+  // INCOMPLETE !!!
+  RASSERT(0);
+  
   return new IrwBuffer;
 }
 

@@ -79,6 +79,8 @@ ProjectOp::ProjectOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bApp
 ProjectOp::~ProjectOp(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_PROJECTOP);
+  
+  delete m_pOriginalStreamDef;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -262,7 +264,6 @@ eOR ProjectOp::eOpLoop(void)
           
           if ( ! pRow ) {
             vPipeOut(m_pIrwBuffer);
-            //m_pIrwBuffer->vShow(m_pStreamDef->pColumnVec(0));
             m_pIrwBuffer = new IrwBuffer;
             pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
           }
@@ -289,7 +290,6 @@ eOR ProjectOp::eOpLoop(void)
           
           if ( ! pRow ) {
             vPipeOut(m_pIrwBuffer);
-            //m_pIrwBuffer->vShow(m_pStreamDef->pColumnVec(0));
             m_pIrwBuffer = new IrwBuffer;
             pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
           }
