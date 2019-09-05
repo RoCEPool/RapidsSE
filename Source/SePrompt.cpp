@@ -182,6 +182,15 @@ void SePrompt::vPromptLoop(void)
     
     if (m_pJob->m_bHasError) {
       //vTrace("job has error (maybe syntax error)\n"_Stz);
+      
+      //! temp  // // // // // // // // // // // // // //
+      if (CN_JOB_DYNAMIC == m_pJob->eClass()) {
+        vTrace("deleting job_dynamic\n"_Stz);
+        vDeleteJob();
+        continue;
+      }
+      //! end temp // // // // // // // // // // // // //
+      
       vPostJob();
       vDumpTokenVec();
       vDeleteJob();

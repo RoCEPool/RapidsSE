@@ -4,6 +4,25 @@
 
 #include "Dynamics.h"
 
+/*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* Dynamo::operator new(size_t)
+{
+  Dynamo* pDynamo = reinterpret_cast<Dynamo*>(HeapMem::pAllocate(CN_DYNAMO));
+  
+  return pDynamo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator delete                                                            */
+/*----------------------------------------------------------------------------*/
+void Dynamo::operator delete(void* aAddr)
+{
+  Dynamo* pDynamo = reinterpret_cast<Dynamo*>(aAddr);
+  
+  HeapMem::vFree(pDynamo);
+}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

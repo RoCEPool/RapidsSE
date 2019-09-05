@@ -159,16 +159,18 @@ bool Job_Dynamic::bPopulateJob(Session* pSession, TokenVec* pTokenVec)
   
   ASSERT(pTokenVec->pGet(0)->bSame("dynamic"_Stz));
   
-  // - - - - - - - - - - - - - - - - - - - - -
-  // get no of tokens in token vector
   iNumTokens = pTokenVec->nTokens();
   
-  // - - - - - - - - - - - - - - - - - - - - -
-  // there should be only 2 tokens
-//  if (iNumTokens != 1) {
-//    return nullptr;
-//  }
-
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
+  if (pTokenVec->pGet(1)->bSame("plan"_Stz)) {
+    Dynamo* pDynamo = new Dynamo;
+    delete pDynamo;
+    return false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   m_pDigest->m_pSession = pSession;
   m_pDigest->vParseCommand(pTokenVec);
   m_pDigest->vSetupJob();
