@@ -258,6 +258,7 @@ eOR LimitOp::eOpLoop(void)
         else {
           // almost done - just trim the srtBuffer
           pIrwBuffer->vItems(m_nLimit - m_iWorkDone);
+          m_iWorkDone += pIrwBuffer->nItems();
           vPipeOut(pIrwBuffer);
         }
         

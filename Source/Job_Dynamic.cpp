@@ -338,12 +338,15 @@ void Jobs::vJob_Dynamic_post(Session* pSession, Job* pJob)
         // -- -- -- -- -- --
         
       case CN_STREAMDEF: {
-        pJob_Dynamic->m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
-        if (AM::bMetadata()) {
-          pJob_Dynamic->m_pStreamDef->vToMetadata(pJob_Dynamic->m_sMetadata.aStz());
-          vTrace("%s\n"_Stz, pJob_Dynamic->m_sMetadata.aStz());
+        if ( ! pJob_Dynamic->m_pStreamDef ) {
+          pJob_Dynamic->m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
+          
+          // print the metadata
+          if (AM::bMetadata()) {
+            pJob_Dynamic->m_pStreamDef->vToMetadata(pJob_Dynamic->m_sMetadata.aStz());
+            vTrace("%s\n"_Stz, pJob_Dynamic->m_sMetadata.aStz());
+          }
         }
-        
         delete _pStreamDef(pOperand);
         break;
       }

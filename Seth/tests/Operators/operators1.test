@@ -129,7 +129,7 @@ rows: 10
 
 // scanOp (CrwBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
 dynamic scan OpTable1 | getKey jidx_100 | sort | output;
-ordered rows:
+unordered rows:
   (  1, 'one'     ,  101, 1,  1, 1.001000e+03, TIMESTAMP '1901-01-01 00:00:00.0', DATE '1901-01-01' )
   (  2, 'two'     ,  102, 2,  2, 1.002000e+03, TIMESTAMP '1902-01-01 00:00:00.0', DATE '1902-01-01' )
   (  3, 'three'   ,  103, 3,  3, 1.003000e+03, TIMESTAMP '1903-01-01 00:00:00.0', DATE '1903-01-01' )
@@ -158,8 +158,8 @@ ordered rows:
   (  0, 'zero'    , 1001, 0,  0, 1.000000e+03, TIMESTAMP '1900-01-01 00:00:00.0', DATE '1900-01-01' )
 
 // FetchOp (EntBuffer->SrtBuffer->SrtBuffer->SrtBuffer->SrtBuffer)
-dynamic fetch OpTable1 OpTable1_idx | getKey jidx_100 | sort | limit 5 | output;
-ordered rows:
+dynamic fetch OpTable1 OpTable1_idx | getKey jidx_100 | sort | merge | superMerge | limit 5 | output;
+unordered rows:
   (  1, 'one'     ,  101, 1,  1, 1.001000e+03, TIMESTAMP '1901-01-01 00:00:00.0', DATE '1901-01-01' )
   (  2, 'two'     ,  102, 2,  2, 1.002000e+03, TIMESTAMP '1902-01-01 00:00:00.0', DATE '1902-01-01' )
   (  3, 'three'   ,  103, 3,  3, 1.003000e+03, TIMESTAMP '1903-01-01 00:00:00.0', DATE '1903-01-01' )
@@ -410,7 +410,7 @@ ordered rows:
   (  0, 'zero'    , 1001, 0,  0, 1.000000e+03, TIMESTAMP '1900-01-01 00:00:00.0', DATE '1900-01-01' )
 
 
-// ScanOp (CrwBuffer->IrwBuffer->SrtBuffer)
+// ScanOp (CrwBuffer->CrwBuffer(T)->SrtBuffer)
 //dynamic scan OpTable1 | project jidx_100 | getKey jidx_100 | output;
 //rows: (3826)
 
@@ -505,12 +505,12 @@ ordered rows:
   ( NULL, NULL      , NULL, NULL, NULL,         NULL, NULL                             , NULL             ,   35, 'threefive' ,  135,    5,   35, 1.035040e+03, TIMESTAMP '1935-01-01 00:00:00.0', DATE '1935-01-01' )
 
 // drop the table
-drop table OpTable1;
-success
+//drop table OpTable1;
+//success
 
 // drop the table
-drop table OpTable2;
-success
+//drop table OpTable2;
+//success
 
 // check existence of table
 lstbl;
@@ -519,12 +519,12 @@ rows: 0
 CLEANUP {
 
   // drop the table
-  drop table OpTable1;
-  mute
+  //drop table OpTable1;
+  //mute
 
   // drop the table
-  drop table OpTable2;
-  mute
+  //drop table OpTable2;
+  //mute
 
   bye;
   mute
