@@ -43,6 +43,7 @@ enum eTA // task actions
   
   /*    */ TA_TSK_ASSIGN_THREAD,
   /*    */ TA_TSK_ASSIGNED_THREAD,
+  /*    */ TA_TSK_SIGNAL_THREAD,
   /*    */ TA_TSK_SPAWN_DEDICATED,
 
   /*    */ TA_ENUMS,
@@ -89,6 +90,7 @@ static Stz* aTA[]
   
   /*  0 */ "TA_TSK_ASSIGN_THREAD"_Stz,
   /*  0 */ "TA_TSK_ASSIGNED_THREAD"_Stz,
+  /*  0 */ "TA_TSK_SIGNAL_THREAD"_Stz,
   /*  0 */ "TA_TSK_SPAWN_DEDICATED"_Stz,
 
   
@@ -135,6 +137,7 @@ static Stz* aTA_short[]
   
   /*  0 */ "Task assign thread"_Stz,
   /*  0 */ "Task assigned thread"_Stz,
+  /*  0 */ "Task signals thread"_Stz,
   /*  0 */ "Task spawn dedicated"_Stz,
   
   /*    */ "ENUMS"_Stz,

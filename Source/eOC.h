@@ -67,6 +67,7 @@ enum eOC // other characters
   /*    */ OC_TRACE,
   /*    */ OC_PHASE,
   /*    */ OC_SEED,
+  /*    */ OC_CHECK,
 
   /*    */ OC_JOB,
   /*    */ OC_LOCK,
@@ -145,6 +146,7 @@ static Stz* aOC[]
    /*    */ "🐾"_Stz, // trace
    /*    */ "🌗"_Stz, // phase
    /*    */ "🐿"_Stz, // seed
+   /*    */ "🐽"_Stz, // check
 
    /*    */ "💈"_Stz, // job
    /*    */ "🔒"_Stz, // lock
