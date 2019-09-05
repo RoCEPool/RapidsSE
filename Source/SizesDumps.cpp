@@ -357,6 +357,8 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vInvalid,         // CN_SRTSET
   /*126 */ &Stack::vDump,           // CN_STACK
   /*126 */ &Dump::vInvalid,         // CN_STAGE
+  /*126 */ &Dump::vInvalid,         // CN_STAGESPEC
+  /*126 */ &Dump::vInvalid,         // CN_STAGESPECVEC
   /*    */ &Dump::vInvalid,         // CN_STATISTICS
   /*127 */ &Dump::vInvalid,         // CN_STEPACCUM
   /*128 */ &StepTiming::vDump,      // CN_STEPTIMING
@@ -749,6 +751,8 @@ i8 giClassSize[]
   /*    */ sizeof(SrtSet),             // CN_SRTSET
   /*126 */ sizeof(Stack),              // CN_STACK
   /*126 */ sizeof(Stage),              // CN_STAGE
+  /*126 */ 0,//sizeof(StageSpec),              // CN_STAGESPEC
+  /*126 */ 0,//sizeof(StageSpecVec),              // CN_STAGESPECVEC
   /*    */ sizeof(Statistics),         // CN_STATISTICS
   /*127 */ sizeof(StepAccum),          // CN_STEPACCUM
   /*128 */ sizeof(StepTiming),         // CN_STEPTIMING
@@ -1141,6 +1145,8 @@ eHT geWhichHeap[]
   /*125 */ HT_INVALID,           // CN_SRTSET
   /*126 */ HT_TRANSIENT_LARGE,   // CN_STACK
   /*126 */ HT_TRANSIENT_SMALL,   // CN_STAGE
+  /*126 */ HT_TRANSIENT_SMALL,   // CN_STAGESPEC
+  /*126 */ HT_TRANSIENT_SMALL,   // CN_STAGESPECVEC
   /*127 */ HT_INVALID,           // CN_STEPACCUM
   /*127 */ HT_INVALID,           // CN_STATISTICS
   /*128 */ HT_TRANSIENT_LARGE,   // CN_STEPTIMING

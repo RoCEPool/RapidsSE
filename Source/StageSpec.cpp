@@ -9,13 +9,13 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 StageSpec::StageSpec(void)
-: Object(CN_STAGE)
+: Object(CN_STAGESPEC)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
-   _checkInitialised_(CN_STAGE);
+   _checkInitialised_(CN_STAGESPEC);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -23,7 +23,7 @@ StageSpec::StageSpec(void)
 /*----------------------------------------------------------------------------*/
 StageSpec::~StageSpec(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
 }
 
 
