@@ -142,7 +142,6 @@ eOR SortOp::eSortLoop(void)
     RASSERT(CN_SRTBUFFER == pOperand->eClass());
     
     SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
-    //pSrtBuffer->vShow(m_pStreamDef);
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // call quick sort (recursive call)
@@ -150,7 +149,6 @@ eOR SortOp::eSortLoop(void)
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // verify that the data is sorted
-    //pSrtBuffer->vShow(m_pStreamDef);
     //RASSERT(pSrtBuffer->bVerifyOrder());
     
     // before feeding to mergeOp, delink the buffer first
