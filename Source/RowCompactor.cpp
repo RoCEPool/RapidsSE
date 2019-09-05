@@ -357,7 +357,7 @@ void RowCompactor::vCreateTail(Column* pCol, Row* pOuterRow, Row* pInnerRow)
   vDumpTails();
 #endif
   
-  vDebugPoint();
+  //vDebugPoint();
 }
 
 
@@ -579,8 +579,6 @@ void RowCompactor::vPackCrw(Encoding* pEncoding)
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     
     //vDumpHead("vHeadCode a"_Stz,m_aCrw,m_pColVec);
-    if (8 == i_Col)
-      vDebugPoint();
     vPackColVal(pEncoding->xaColEnc[i_Col]);
     //vDumpHead("vHeadCode b"_Stz,m_aCrw,m_pColVec);
   }

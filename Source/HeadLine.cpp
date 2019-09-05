@@ -151,8 +151,8 @@ i8 HeadLine::nFreeSpace(ColumnVec* pColVec)
   
   i8 nFreeBytes = nBytes() - i_OfsCrs_ - nDataBytes;
   
-  if (nFreeBytes < 0)
-    vDebugPoint();
+//  if (nFreeBytes < 0)
+//    vDebugPoint();
   
   return nFreeBytes;
 }

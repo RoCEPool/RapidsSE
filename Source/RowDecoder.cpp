@@ -388,7 +388,7 @@ void RowDecoder::vDecodeVch(DtmVal* pDtmVal, HeadLine* aHeadLine,
 void RowDecoder::vDecodeVchLong(DtmVal* pDtmVal, HeadLine* aHeadLine,
                                  Column* pCol, i8 i_Offset)
 {
-  vDebugPoint();
+  //vDebugPoint();
   
   i8 nLength = aHeadLine->wGetLogical(i_Offset,C_2B);
   
@@ -571,7 +571,7 @@ void RowDecoder::vDecodeVchStringTail(DtmVal* pDtmVal, HeadLine* aHeadLine,
 void RowDecoder::vDecodeVchSmall(DtmVal* pDtmVal, HeadLine* aHeadLine,
                                    Column* pCol, i8 i_Offset)
 {
-  vDebugPoint();
+  //vDebugPoint();
   
   i8 nLength = aHeadLine->wGetLogical(i_Offset,C_1B);
   
