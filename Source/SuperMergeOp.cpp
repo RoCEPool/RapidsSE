@@ -125,6 +125,10 @@ SrtBuffer* SuperMergeOp::pMergeAll(void)
   Operand* pOperandPair[2];
   SrtBuffer* pMergedSrtBuffer = nullptr;
   
+  // initialize the operand pair
+  pOperandPair[0] = nullptr;
+  pOperandPair[1] = nullptr;
+  
   // merge all operand set pairs till we are left with one single set
   while (true) {
     
@@ -156,7 +160,10 @@ SrtBuffer* SuperMergeOp::pMergeAll(void)
                 "P:%lld Super Merging %p %p"_Stz, //!format-LogOpr
                 m_nSlot, pOperandPair[0], pOperandPair[1]);
     
-    pMergedSrtBuffer = pSuperMergeOperands(pOperandPair[0], pOperandPair[1]);
+    if (pOperandPair[1])
+      pMergedSrtBuffer = pSuperMergeOperands(pOperandPair[0], pOperandPair[1]);
+    else
+      pMergedSrtBuffer = _pSrtBuffer(pOperandPair[0]);
     
     // are we done ?
     if (m_iOperands == 0)

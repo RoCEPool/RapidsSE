@@ -188,7 +188,6 @@ eOR FilterOp::eOpLoop(void)
             
             if ( ! pNewRow ) {
               vPipeOut(m_pIrwBuffer);
-              //m_pIrwBuffer->vShow(m_pStreamDef->pColumnVec(0));
               m_pIrwBuffer = new IrwBuffer;
               pNewRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
             }
