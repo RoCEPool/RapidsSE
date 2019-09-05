@@ -725,7 +725,7 @@ void Scheduler::vTask_Execute(Task* pTask)
   pQueues->vAddExecutingSet(pTask);
 
   AM::vLogThd(SL_INF,pTask->m_pThread,HA_THD_EXECUTING,
-              "thread executing task"_Stz); //!format-LogTsk
+              "thread returns to its loop to execute task"_Stz); //!format-LogTsk
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1213,14 +1213,17 @@ bool Scheduler::bThread_AssignIdle(Task* pTask)
   
   RASSERT(HS_IDLE == pThread->m_eThreadState);
 
-  AM::vLogTsk(SL_INF,pTask,TA_TSK_ASSIGNED_THREAD,
-              "Task has assigned an idle thread to itself"_Stz); //!format-LogTsk
-
   pThread->m_pTask = pTask;
   pThread->m_nAssignedTasks++;
   
   pThread->m_eThreadState = HS_ASSIGNED;
-
+  
+  AM::vLogTsk(SL_INF,pTask,TA_TSK_ASSIGNED_THREAD,
+              "Task has popped and assigned an idle thread to itself"_Stz); //!format-LogTsk
+  
+  AM::vLogTsk(SL_INF,pTask,TA_TSK_SIGNAL_THREAD,
+              "Task signals thread"_Stz); //!format-LogTsk
+  
   pThread->m_pMutexThread->vMutexLock(pTask);
   pThread->m_pMutexThread->vCondSignal();
   pThread->m_pMutexThread->vMutexUnlock(pTask);
@@ -1427,6 +1430,10 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
     }
     else {
       vThread_AppendIdle(pThread);
+      
+      pThread->vIncActNo();
+      AM::vLogThd(SL_INF,pThread,HA_THD_WAIT_ASSIGN,
+                  "Thread waits for task assignment"_Stz); //!format-LogThd
       pThread->m_pMutexThread->vCondWaitIndefinite();
     }
   }

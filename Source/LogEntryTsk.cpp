@@ -21,7 +21,6 @@ void _LogEntryTsk::vSet(LogEntry* pLogEntry, Task* pTask, eTA eTskAct)
   else if (TA_TSK_DESTRUCT == eTskAct)      pLogEntry->m_iIndicator = OC_DESTRUCT;
   else if (TA_TSK_ASSIGN_THREAD == eTskAct)   pLogEntry->m_iIndicator = OC_PAIR;
   else if (TA_TSK_ASSIGNED_THREAD == eTskAct) pLogEntry->m_iIndicator = OC_PAIR;
-  else if (TA_TSK_ASSIGNED_THREAD == eTskAct) pLogEntry->m_iIndicator = OC_PAIR;
   else if (TA_TSK_THREAD == eTskAct)        pLogEntry->m_iIndicator = OC_PAIR;
   else if (TA_TSK_EXECUTE == eTskAct)       pLogEntry->m_iIndicator = OC_RUN;
   else if (TA_TSK_RESUME == eTskAct)        pLogEntry->m_iIndicator = OC_RESUME;
