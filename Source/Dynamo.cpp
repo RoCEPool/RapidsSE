@@ -53,7 +53,7 @@ Dynamo::~Dynamo(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  //delete m_pDynamicSpec;
+  delete m_pDynamicSpec;
   //delete m_pStageSpec;
   //delete m_pOpSpec;
 }
