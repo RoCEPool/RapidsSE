@@ -38,8 +38,8 @@ namespace Dynamics
 
     bool bIsOperator(Token* pTkn);
 
-    Token* pGetToken(void);
-    void   vAcceptToken(void);
+    void vAcceptToken(void);
+    void vBeginToken(i8 i_Tkn);
   
     Footer* aFooter(void);
   };

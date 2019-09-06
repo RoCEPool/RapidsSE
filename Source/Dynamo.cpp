@@ -79,17 +79,14 @@ bool Dynamo::bCompile(void)
   vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
   
   bool bResult = true;
-  m_i_Tkn = 2;
   
-  m_pTkn = pGetToken();
+  vBeginToken(2);
   
-  if (m_pTkn->bSame("name"_Stz)) {
+  if (m_pTkn->bSame("name"_Stz))
     bResult = bCompileName();
-  }
 
-  while (m_pTkn->bSame("stage"_Stz)) {
+  while (m_pTkn->bSame("stage"_Stz))
     bResult = bCompileStage();
-  }
 
   return false;
 }
@@ -101,7 +98,6 @@ bool Dynamo::bCompileName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  Token* m_pTkn = pGetToken();
   ASSERT(m_pTkn->bSame("name"_Stz));
   vAcceptToken();
 
@@ -192,7 +188,6 @@ bool Dynamo::bCompileTopology(void)
   if (m_pTkn->bSame("node"_Stz)) {
     vAcceptToken();
     
-    m_pTkn = pGetToken();
     s32 sLocus(m_pTkn->szText());
     vAcceptToken();
 
@@ -230,14 +225,11 @@ bool Dynamo::bCompilePipe(void)
   
   for (;;) {
     
-    Token* m_pTkn = pGetToken();
-    
     if (! bIsOperator(m_pTkn))
       break;
 
     bCompileOp();
     
-    m_pTkn = pGetToken();
     if (! m_pTkn->bSame("|"_Stz))
       break;
     
@@ -256,8 +248,6 @@ bool Dynamo::bCompileOp(void)
   
   delete m_pOpSpec; //! TEMP
   
-  Token* m_pTkn = pGetToken();
-  
   vTrace("        op=%s\n"_Stz,m_pTkn->szText());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -266,10 +256,8 @@ bool Dynamo::bCompileOp(void)
 
   for (;;) {
     
-    m_pTkn = pGetToken();
-    
     if (m_pTkn->bSame("|"_Stz) || m_pTkn->bSame("stage"_Stz)
-                             || m_pTkn->bSame("end"_Stz)) {
+                               || m_pTkn->bSame("end"_Stz)) {
       break;
     }
     
@@ -308,21 +296,20 @@ void Dynamo::vAcceptToken(void)
   ++ m_i_Tkn;
   
   m_pTkn = m_p_TknVec->pGet(m_i_Tkn);
-  vTrace("%03lld: %s\n"_Stz,m_i_Tkn,m_pTkn->szText());
+  vTrace("Next %03lld: %s\n"_Stz,m_i_Tkn,m_pTkn->szText());
 }
 
 /*----------------------------------------------------------------------------*/
 /* is token a known operator?                                                 */
 /*----------------------------------------------------------------------------*/
-Token* Dynamo::pGetToken(void)
+void Dynamo::vBeginToken(i8 i_Tkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  Token* pTkn = m_p_TknVec->pGet(m_i_Tkn);
+  m_i_Tkn = i_Tkn;
+  m_pTkn = m_p_TknVec->pGet(m_i_Tkn);
   
-  vTrace("%03lld: %s\n"_Stz,m_i_Tkn,pTkn->szText());
-  
-  return pTkn;
+  vTrace("Begin %03lld: %s\n"_Stz,i_Tkn,m_pTkn->szText());
 }
 
 /*----------------------------------------------------------------------------*/
