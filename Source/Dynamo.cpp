@@ -80,9 +80,9 @@ bool Dynamo::bCompile(void)
   
   bool bResult = true;
   
-  vBeginToken(2);
+  vBeginToken(1);
   
-  if (m_pTkn->bSame("name"_Stz))
+  if (m_pTkn->bSame("plan"_Stz))
     bResult = bCompileName();
 
   if (m_pTkn->bSame("begin"_Stz))
@@ -103,10 +103,10 @@ bool Dynamo::bCompileName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  ASSERT(m_pTkn->bSame("name"_Stz));
+  ASSERT(m_pTkn->bSame("plan"_Stz));
   vAcceptToken();
 
-  vTrace("        name=%s\n"_Stz,m_pTkn->szText());
+  vTrace("        plan=%s\n"_Stz,m_pTkn->szText());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

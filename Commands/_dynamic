@@ -2,7 +2,9 @@
 /* _dynamic -- test dynamic plans                                             */
 /*============================================================================*/
 
-dynamic plan name dynNm
+dynamic
+
+plan dynNm
 begin
 
   stage stageA on all partitions:
@@ -18,6 +20,7 @@ begin
     opD1
 
 end
+
 ;
 
 //logWrite;
