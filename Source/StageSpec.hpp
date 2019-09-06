@@ -9,7 +9,10 @@ namespace Dynamics
   {
   private:
   
+    s32 m_sName;
+
     ePO m_eTopology;
+    s32 m_sLocus;
   
     OpSpecVec* m_pOpSpecVec;
   
@@ -20,11 +23,13 @@ namespace Dynamics
     void* operator new(size_t);
     void  operator delete(void*);
   
-    StageSpec(void);
+    StageSpec(Stz* szName);
    ~StageSpec(void) noexcept(false);
   
     void vAddOpSpec(OpSpec* pOpSpec);
-  
+    void vLocus(Stz* szLocus);
+    void vTopology(ePO eTopology);
+
     Footer* aFooter(void);
   };
 }

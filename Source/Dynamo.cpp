@@ -109,6 +109,8 @@ bool Dynamo::bCompileName(i8& i_Tkn)
   pTkn = m_p_TknVec->pGet(++ i_Tkn);
   vTrace("        name=%s\n"_Stz,pTkn->szText());
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   m_pDynamicSpec = new DynamicSpec(pTkn->szText());
   
   ++ i_Tkn;
@@ -125,14 +127,16 @@ bool Dynamo::bCompileStage(i8& i_Tkn)
   
   delete m_pStageSpec; //! TEMP
   
-  m_pStageSpec = new StageSpec;
-
   Token* pTkn = m_p_TknVec->pGet(i_Tkn);
   ASSERT(pTkn->bSame("stage"_Stz));
  
   pTkn = m_p_TknVec->pGet(++ i_Tkn);
   vTrace("        stage=%s\n"_Stz,pTkn->szText());
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  m_pStageSpec = new StageSpec(pTkn->szText());
+  
   pTkn = m_p_TknVec->pGet(++ i_Tkn);
   if (pTkn->bSame("on"_Stz))
     bCompileTopology(i_Tkn);
@@ -170,6 +174,7 @@ bool Dynamo::bCompileTopology(i8& i_Tkn)
       pTkn = m_p_TknVec->pGet(++ i_Tkn);
       if (pTkn->bSame(":"_Stz)) {
         vTrace("recognised >on all nodes :<"_Stz);
+        m_pStageSpec->vTopology(PO_ALL_NODES);
         ++ i_Tkn;
         return true;
       }
@@ -182,6 +187,7 @@ bool Dynamo::bCompileTopology(i8& i_Tkn)
       pTkn = m_p_TknVec->pGet(++ i_Tkn);
       if (pTkn->bSame(":"_Stz)) {
         vTrace("recognised >on all partitions :<"_Stz);
+        m_pStageSpec->vTopology(PO_ALL_PARTITIONS);
         ++ i_Tkn;
         return true;
       }
@@ -193,10 +199,12 @@ bool Dynamo::bCompileTopology(i8& i_Tkn)
   
   if (pTkn->bSame("node"_Stz)) {
     pTkn = m_p_TknVec->pGet(++ i_Tkn);
-    s32 sNodeNm(pTkn->szText());
+    s32 sLocus(pTkn->szText());
     pTkn = m_p_TknVec->pGet(++ i_Tkn);
     if (pTkn->bSame(":"_Stz)) {
-      vTrace("recognised >on node %s :<"_Stz,sNodeNm.aStz());
+      vTrace("recognised >on node %s :<"_Stz,sLocus.aStz());
+      m_pStageSpec->vTopology(PO_SPECIFIC_NODE);
+      m_pStageSpec->vLocus(sLocus.aStz());
       ++ i_Tkn;
       return true;
     }
@@ -209,6 +217,7 @@ bool Dynamo::bCompileTopology(i8& i_Tkn)
     pTkn = m_p_TknVec->pGet(++ i_Tkn);
     if (pTkn->bSame(":"_Stz)) {
       vTrace("recognised >on origin :<"_Stz);
+      m_pStageSpec->vTopology(PO_ORIGIN);
       ++ i_Tkn;
       return true;
     }

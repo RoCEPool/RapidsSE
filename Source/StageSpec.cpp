@@ -28,10 +28,12 @@ void StageSpec::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StageSpec::StageSpec(void)
+StageSpec::StageSpec(Stz* szName)
 : Object(CN_STAGESPEC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  m_sName = szName;
   
    m_eTopology = PO_NONE;
   
@@ -65,6 +67,26 @@ void StageSpec::vAddOpSpec(OpSpec* pOpSpec)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
   m_pOpSpecVec->vAdd(pOpSpec);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set locus                                                                  */
+/*----------------------------------------------------------------------------*/
+void StageSpec::vLocus(Stz* szLocus)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  m_sLocus = szLocus;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set topology                                                               */
+/*----------------------------------------------------------------------------*/
+void StageSpec::vTopology(ePO eTopology)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  m_eTopology = eTopology;
 }
 
 
