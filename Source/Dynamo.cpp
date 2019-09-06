@@ -75,8 +75,6 @@ bool Dynamo::bCompile(void)
   
   vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
   
-  m_pDynamicSpec = new DynamicSpec;
-
   bool bResult = true;
   for (i8 i_Tkn = 2; i_Tkn < nTokens && bResult; ) {
     Token* pTkn = m_p_TknVec->pGet(i_Tkn);
@@ -110,6 +108,8 @@ bool Dynamo::bCompileName(i8& i_Tkn)
   
   pTkn = m_p_TknVec->pGet(++ i_Tkn);
   vTrace("        name=%s\n"_Stz,pTkn->szText());
+  
+  m_pDynamicSpec = new DynamicSpec(pTkn->szText());
   
   ++ i_Tkn;
 

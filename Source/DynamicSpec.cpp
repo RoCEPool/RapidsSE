@@ -28,12 +28,16 @@ void DynamicSpec::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-DynamicSpec::DynamicSpec(void)
+DynamicSpec::DynamicSpec(Stz* szName)
 : Object(CN_DYNAMICSPEC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMICSPEC,_FOOTER_);
   
-   _checkInitialised_(CN_DYNAMICSPEC);
+  m_sName = szName;
+  
+  m_pStageSpecVec = new StageSpecVec;
+  
+  _checkInitialised_(CN_DYNAMICSPEC);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_DYNAMICSPEC,_FOOTER_);
 }
@@ -44,6 +48,8 @@ DynamicSpec::DynamicSpec(void)
 DynamicSpec::~DynamicSpec(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMICSPEC,_FOOTER_);
+  
+  delete m_pStageSpecVec;
 }
 
 

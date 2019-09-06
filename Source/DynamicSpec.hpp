@@ -9,6 +9,10 @@ namespace Dynamics
   {
   private:
   
+    s32 m_sName;
+  
+    StageSpecVec* m_pStageSpecVec;
+  
     // must be last
     Footer m_xFooter;
 
@@ -16,7 +20,7 @@ namespace Dynamics
     void* operator new(size_t);
     void  operator delete(void*);
   
-    DynamicSpec(void);
+    DynamicSpec(Stz* szName);
    ~DynamicSpec(void) noexcept(false);
   
     Footer* aFooter(void);
