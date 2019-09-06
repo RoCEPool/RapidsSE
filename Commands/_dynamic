@@ -8,13 +8,13 @@ plan dynNm
 begin
 
   stage stageA on all partitions:
-    opA1 | opA2 | opA3 | stageB
+    opA1 a1a | opA2 a2a a2b | opA3 a3a a3b a3c | stageB
 
   stage stageB on all nodes:
-    opB1 | opB2 | stageC
+    opB1 b1a | opB2 b2a b2b | stageC
 
   stage stageC on node special:
-   opC1 | stageD
+   opC1 c1a | stageD
 
   stage stageD on origin:
     opD1

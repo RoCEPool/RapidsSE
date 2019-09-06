@@ -304,6 +304,8 @@ bool Dynamo::bCompileOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
+  s4K sArgs;
+  
   vTrace("        op=%s\n"_Stz,m_pTkn->szText());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -322,11 +324,17 @@ bool Dynamo::bCompileOp(void)
       break;
     }
     
+    if (sArgs.iLength())
+      sArgs.vConcat(" "_Stz);
+    sArgs.vConcat(m_pTkn->szText());
+
     vAcceptToken();
   }
+  
+  m_pOpSpec->vArgs(sArgs);
 
- vTrace("Op Phrase recognised\n"_Stz);
- return true;
+  vTrace("Op Phrase recognised\n"_Stz);
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

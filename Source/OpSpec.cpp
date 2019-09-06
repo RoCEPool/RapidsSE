@@ -76,6 +76,9 @@ void OpSpec::vPrint(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
   vTrace("%s"_Stz,m_sName.aStz());
+  
+  if (m_sArgs.iLength())
+    vTrace(" %s"_Stz,m_sArgs.aStz());
 }
 
 /*----------------------------------------------------------------------------*/
