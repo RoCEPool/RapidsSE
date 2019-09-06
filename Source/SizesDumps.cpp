@@ -772,7 +772,7 @@ i8 giClassSize[]
   /* 13 */ sizeof(StreamDef),          // CN_STREAMDEF
   /* 13 */ sizeof(s32),                // CN_STRING_T
   /*    */ sizeof(SuperMergeOp),       // CN_SUPERAGGOP
-  /*    */ sizeof(SuperMergeOp),       // CN_SUPERCOUNTOP
+  /*    */ sizeof(SuperCountOp),       // CN_SUPERCOUNTOP
   /*    */ sizeof(SuperMergeOp),       // CN_SUPERMERGEOP
   /*129 */ sizeof(SysCall),            // CN_SYSCALL
   

@@ -9,7 +9,7 @@ OpDesc __Op_Count (
    OK_SIMPLE,          // op kind
    "Count"_Stz,        // first word of prompt command
    "Cnt"_Stz,          // prefix
-   false,              // partitioned
+   true,               // partitioned
    CountOp::pNew,      // function which parses the command and new's an op
    CountOp::eCall,     // function which calls the op loop
    CountOp::eDrain,    // function which calls the drain loop
@@ -101,9 +101,10 @@ Op* CountOp::pNew(Stz* szLabel,
                    TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
-  ASSERT(i_Slot == -1);
+  ASSERT(i_Slot != -1);
   
   CountOp* pCountOp = new CountOp(szLabel,pDigest,aOpDefn,bAppR);
+  pCountOp->m_nSlot = i_Slot;
   
   return pCountOp;
 }
