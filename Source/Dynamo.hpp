@@ -14,6 +14,9 @@ namespace Dynamics
     DynamicSpec* m_pDynamicSpec;
     StageSpec*   m_pStageSpec;
     OpSpec*      m_pOpSpec;
+  
+    i8           m_i_Tkn;
+    Token*       m_pTkn;
 
     // must be last
     Footer m_xFooter;
@@ -27,16 +30,16 @@ namespace Dynamics
   
     bool bCompile(void);
   
-    bool bCompileName(i8& i_Tkn);
-    bool bCompileStage(i8& i_Tkn);
-    bool bCompileTopology(i8& i_Tkn);
-    bool bCompilePipe(i8& i_Tkn);
-    bool bCompileOp(i8& i_Tkn);
+    bool bCompileName(void);
+    bool bCompileStage(void);
+    bool bCompileTopology(void);
+    bool bCompilePipe(void);
+    bool bCompileOp();
 
     bool bIsOperator(Token* pTkn);
 
-    Token* pGetToken(i8 i_Tkn);
-    void   vAcceptToken(i8& i_Tkn);
+    Token* pGetToken(void);
+    void   vAcceptToken(void);
   
     Footer* aFooter(void);
   };

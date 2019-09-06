@@ -32,11 +32,14 @@ Dynamo::Dynamo(TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-   m_p_TknVec = pTknVec;
+  m_p_TknVec = pTknVec;
   
-   m_pDynamicSpec = nullptr;
-   m_pStageSpec   = nullptr;
-   m_pOpSpec      = nullptr;
+  m_pDynamicSpec = nullptr;
+  m_pStageSpec   = nullptr;
+  m_pOpSpec      = nullptr;
+  
+  m_i_Tkn        = 0;
+  m_pTkn         = nullptr;
 
   _checkInitialised_(CN_DYNAMO);
   
@@ -69,25 +72,23 @@ bool Dynamo::bCompile(void)
   i8 nTokens = m_p_TknVec->nTokens();
 
   for (i8 i_Tkn = 0; i_Tkn < nTokens; ) {
-    Token* pTkn = m_p_TknVec->pGet(i_Tkn++);
-    vTrace("  [%03lld] %s\n"_Stz,i_Tkn,pTkn->szText());
+    Token* m_pTkn = m_p_TknVec->pGet(i_Tkn++);
+    vTrace("  [%03lld] %s\n"_Stz,i_Tkn,m_pTkn->szText());
   }
   
   vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
   
   bool bResult = true;
-  i8 i_Tkn = 2;
+  m_i_Tkn = 2;
   
-  Token* pTkn = pGetToken(i_Tkn);
+  m_pTkn = pGetToken();
   
-  if (pTkn->bSame("name"_Stz)) {
-    bResult = bCompileName(i_Tkn);
-    pTkn = pGetToken(i_Tkn);
+  if (m_pTkn->bSame("name"_Stz)) {
+    bResult = bCompileName();
   }
 
-  while (pTkn->bSame("stage"_Stz)) {
-    bResult = bCompileStage(i_Tkn);
-    pTkn = pGetToken(i_Tkn);
+  while (m_pTkn->bSame("stage"_Stz)) {
+    bResult = bCompileStage();
   }
 
   return false;
@@ -96,21 +97,20 @@ bool Dynamo::bCompile(void)
 /*----------------------------------------------------------------------------*/
 /* compile name phrase                                                        */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bCompileName(i8& i_Tkn)
+bool Dynamo::bCompileName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  Token* pTkn = pGetToken(i_Tkn);
-  ASSERT(pTkn->bSame("name"_Stz));
-  vAcceptToken(i_Tkn);
+  Token* m_pTkn = pGetToken();
+  ASSERT(m_pTkn->bSame("name"_Stz));
+  vAcceptToken();
 
-  pTkn = m_p_TknVec->pGet(i_Tkn);
-  vTrace("        name=%s\n"_Stz,pTkn->szText());
+  vTrace("        name=%s\n"_Stz,m_pTkn->szText());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pDynamicSpec = new DynamicSpec(pTkn->szText());
-  vAcceptToken(i_Tkn);
+  m_pDynamicSpec = new DynamicSpec(m_pTkn->szText());
+  vAcceptToken();
 
   return true;
 }
@@ -118,31 +118,27 @@ bool Dynamo::bCompileName(i8& i_Tkn)
 /*----------------------------------------------------------------------------*/
 /* compile stage                                                              */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bCompileStage(i8& i_Tkn)
+bool Dynamo::bCompileStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   delete m_pStageSpec; //! TEMP
   
-  Token* pTkn = pGetToken(i_Tkn);
-  ASSERT(pTkn->bSame("stage"_Stz));
- 
-  vAcceptToken(i_Tkn);
-  pTkn = pGetToken(i_Tkn);
-  vTrace("        stage=%s\n"_Stz,pTkn->szText());
+  ASSERT(m_pTkn->bSame("stage"_Stz));
+  vAcceptToken();
+  
+  vTrace("        stage=%s\n"_Stz,m_pTkn->szText());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pStageSpec = new StageSpec(pTkn->szText());
-  vAcceptToken(i_Tkn);
+  m_pStageSpec = new StageSpec(m_pTkn->szText());
+  vAcceptToken();
   
-  pTkn = pGetToken(i_Tkn);
-  if (pTkn->bSame("on"_Stz))
-    bCompileTopology(i_Tkn);
+  if (m_pTkn->bSame("on"_Stz))
+    bCompileTopology();
   
-  pTkn = pGetToken(i_Tkn);
-  if (bIsOperator(pTkn))
-    bCompilePipe(i_Tkn);
+  if (bIsOperator(m_pTkn))
+    bCompilePipe();
 
   return true;
 }
@@ -150,32 +146,26 @@ bool Dynamo::bCompileStage(i8& i_Tkn)
 /*----------------------------------------------------------------------------*/
 /* compile topology                                                           */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bCompileTopology(i8& i_Tkn)
+bool Dynamo::bCompileTopology(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  Token* pTkn = pGetToken(i_Tkn);
-  ASSERT(pTkn->bSame("on"_Stz));
-  vAcceptToken(i_Tkn);
-  
-  pTkn = pGetToken(i_Tkn);
+  ASSERT(m_pTkn->bSame("on"_Stz));
+  vAcceptToken();
   
   // -- -- -- -- -- -- -- -- -- -- --
   // on all nodes | partitions :
   
-  if (pTkn->bSame("all"_Stz)) {
-    vAcceptToken(i_Tkn);
-    
-    pTkn = pGetToken(i_Tkn);
+  if (m_pTkn->bSame("all"_Stz)) {
+    vAcceptToken();
     
     // -- -- -- -- -- -- -- -- -- -- --
     // on all nodes :
 
-    if (pTkn->bSame("nodes"_Stz)) {
-      vAcceptToken(i_Tkn);
+    if (m_pTkn->bSame("nodes"_Stz)) {
+      vAcceptToken();
       
-      pTkn = pGetToken(i_Tkn);
-      if (pTkn->bSame(":"_Stz)) {
+      if (m_pTkn->bSame(":"_Stz)) {
         vTrace("recognised >on all nodes :<"_Stz);
         m_pStageSpec->vTopology(PO_ALL_NODES);
         return true;
@@ -185,11 +175,10 @@ bool Dynamo::bCompileTopology(i8& i_Tkn)
     // -- -- -- -- -- -- -- -- -- -- --
     // on all partitions :
     
-    if (pTkn->bSame("partitions"_Stz)) {
-      vAcceptToken(i_Tkn);
+    if (m_pTkn->bSame("partitions"_Stz)) {
+      vAcceptToken();
       
-      pTkn = pGetToken(i_Tkn);
-      if (pTkn->bSame(":"_Stz)) {
+      if (m_pTkn->bSame(":"_Stz)) {
         vTrace("recognised >on all partitions :<"_Stz);
         m_pStageSpec->vTopology(PO_ALL_PARTITIONS);
         return true;
@@ -200,15 +189,14 @@ bool Dynamo::bCompileTopology(i8& i_Tkn)
   // -- -- -- -- -- -- -- -- -- -- --
   // on node <nodeNm> :
   
-  if (pTkn->bSame("node"_Stz)) {
-    vAcceptToken(i_Tkn);
+  if (m_pTkn->bSame("node"_Stz)) {
+    vAcceptToken();
     
-    pTkn = pGetToken(i_Tkn);
-    s32 sLocus(pTkn->szText());
-    vAcceptToken(i_Tkn);
-    pTkn = m_p_TknVec->pGet(++ i_Tkn);
-    
-    if (pTkn->bSame(":"_Stz)) {
+    m_pTkn = pGetToken();
+    s32 sLocus(m_pTkn->szText());
+    vAcceptToken();
+
+    if (m_pTkn->bSame(":"_Stz)) {
       vTrace("recognised >on node %s :<"_Stz,sLocus.aStz());
       m_pStageSpec->vTopology(PO_SPECIFIC_NODE);
       m_pStageSpec->vLocus(sLocus.aStz());
@@ -219,12 +207,10 @@ bool Dynamo::bCompileTopology(i8& i_Tkn)
   // -- -- -- -- -- -- -- -- -- -- --
   // on origin :
   
-  if (pTkn->bSame("origin"_Stz)) {
-    vAcceptToken(i_Tkn);
+  if (m_pTkn->bSame("origin"_Stz)) {
+    vAcceptToken();
     
-    pTkn = pGetToken(i_Tkn);
-    
-    if (pTkn->bSame(":"_Stz)) {
+    if (m_pTkn->bSame(":"_Stz)) {
       vTrace("recognised >on origin :<"_Stz);
       m_pStageSpec->vTopology(PO_ORIGIN);
       return true;
@@ -238,24 +224,24 @@ bool Dynamo::bCompileTopology(i8& i_Tkn)
 /*----------------------------------------------------------------------------*/
 /* compile pipe                                                               */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bCompilePipe(i8& i_Tkn)
+bool Dynamo::bCompilePipe(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   for (;;) {
     
-    Token* pTkn = pGetToken(i_Tkn);
+    Token* m_pTkn = pGetToken();
     
-    if (! bIsOperator(pTkn))
+    if (! bIsOperator(m_pTkn))
       break;
 
-    bCompileOp(i_Tkn);
+    bCompileOp();
     
-    pTkn = pGetToken(i_Tkn);
-    if (! pTkn->bSame("|"_Stz))
+    m_pTkn = pGetToken();
+    if (! m_pTkn->bSame("|"_Stz))
       break;
     
-    vAcceptToken(i_Tkn);
+    vAcceptToken();
   }
   
   return true;
@@ -264,30 +250,30 @@ bool Dynamo::bCompilePipe(i8& i_Tkn)
 /*----------------------------------------------------------------------------*/
 /* compile op                                                                 */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bCompileOp(i8& i_Tkn)
+bool Dynamo::bCompileOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   delete m_pOpSpec; //! TEMP
   
-  Token* pTkn = pGetToken(i_Tkn);
+  Token* m_pTkn = pGetToken();
   
-  vTrace("        op=%s\n"_Stz,pTkn->szText());
+  vTrace("        op=%s\n"_Stz,m_pTkn->szText());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  m_pOpSpec = new OpSpec(pTkn->szText());
-  vAcceptToken(i_Tkn);
+  m_pOpSpec = new OpSpec(m_pTkn->szText());
+  vAcceptToken();
 
   for (;;) {
     
-    pTkn = pGetToken(i_Tkn);
+    m_pTkn = pGetToken();
     
-    if (pTkn->bSame("|"_Stz) || pTkn->bSame("stage"_Stz)
-                             || pTkn->bSame("end"_Stz)) {
+    if (m_pTkn->bSame("|"_Stz) || m_pTkn->bSame("stage"_Stz)
+                             || m_pTkn->bSame("end"_Stz)) {
       break;
     }
     
-    vAcceptToken(i_Tkn);
+    vAcceptToken();
   }
 
   return true;
@@ -296,17 +282,17 @@ bool Dynamo::bCompileOp(i8& i_Tkn)
 /*----------------------------------------------------------------------------*/
 /* is token a known operator?                                                 */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bIsOperator(Token* pTkn)
+bool Dynamo::bIsOperator(Token* m_pTkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  if (pTkn->bSame("|"_Stz))
+  if (m_pTkn->bSame("|"_Stz))
     return false;
   
-  if (pTkn->bSame("end"_Stz))
+  if (m_pTkn->bSame("end"_Stz))
     return false;
   
-  if (pTkn->bSame("stage"_Stz))
+  if (m_pTkn->bSame("stage"_Stz))
     return false;
 
   return true;
@@ -315,23 +301,26 @@ bool Dynamo::bIsOperator(Token* pTkn)
 /*----------------------------------------------------------------------------*/
 /* is token a known operator?                                                 */
 /*----------------------------------------------------------------------------*/
-void Dynamo::vAcceptToken(i8& i_Tkn)
+void Dynamo::vAcceptToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
 
-  ++ i_Tkn;
+  ++ m_i_Tkn;
+  
+  m_pTkn = m_p_TknVec->pGet(m_i_Tkn);
+  vTrace("%03lld: %s\n"_Stz,m_i_Tkn,m_pTkn->szText());
 }
 
 /*----------------------------------------------------------------------------*/
 /* is token a known operator?                                                 */
 /*----------------------------------------------------------------------------*/
-Token* Dynamo::pGetToken(i8 i_Tkn)
+Token* Dynamo::pGetToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  Token* pTkn = m_p_TknVec->pGet(i_Tkn);
+  Token* pTkn = m_p_TknVec->pGet(m_i_Tkn);
   
-  vTrace("%03lld: %s\n"_Stz,i_Tkn,pTkn->szText());
+  vTrace("%03lld: %s\n"_Stz,m_i_Tkn,pTkn->szText());
   
   return pTkn;
 }
