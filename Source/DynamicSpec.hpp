@@ -24,6 +24,8 @@ namespace Dynamics
    ~DynamicSpec(void) noexcept(false);
   
     void vAddStageSpec(StageSpec* pStageSpec);
+  
+    void vPrint(void);
 
     Footer* aFooter(void);
   };

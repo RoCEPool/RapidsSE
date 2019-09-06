@@ -20,6 +20,8 @@ namespace Dynamics
     OpSpec(Stz* szName);
    ~OpSpec(void) noexcept(false);
   
+    void vPrint(void);
+  
     Footer* aFooter(void);
   };
 }

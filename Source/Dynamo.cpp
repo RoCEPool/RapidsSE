@@ -93,6 +93,12 @@ bool Dynamo::bCompile(void)
 
   bResult = bCompileEnd();
   
+  vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
+
+  m_pDynamicSpec->vPrint();
+  
+  vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
+  
   return false;
 }
 
@@ -223,6 +229,23 @@ bool Dynamo::bCompileTopology(void)
     if (m_pTkn->bSame(":"_Stz)) {
       vTrace("Topology Phrase recognised >on node %s :<\n"_Stz,sLocus.aStz());
       m_pStageSpec->vTopology(PO_SPECIFIC_NODE);
+      m_pStageSpec->vLocus(sLocus.aStz());
+      return true;
+    }
+  }
+  
+  // -- -- -- -- -- -- -- -- -- -- --
+  // on partition <nodeNm> :
+  
+  if (m_pTkn->bSame("partition"_Stz)) {
+    vAcceptToken();
+    
+    s32 sLocus(m_pTkn->szText());
+    vAcceptToken();
+    
+    if (m_pTkn->bSame(":"_Stz)) {
+      vTrace("Topology Phrase recognised >on partition %s :<\n"_Stz,sLocus.aStz());
+      m_pStageSpec->vTopology(PO_SPECIFIC_PARTITION);
       m_pStageSpec->vLocus(sLocus.aStz());
       return true;
     }

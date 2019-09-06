@@ -58,13 +58,32 @@ DynamicSpec::~DynamicSpec(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add op spec                                                                */
+/* add stage spec                                                             */
 /*----------------------------------------------------------------------------*/
 void DynamicSpec::vAddStageSpec(StageSpec* pStageSpec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMICSPEC,_FOOTER_);
   
   m_pStageSpecVec->vAdd(pStageSpec);
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* print stage spec                                                           */
+/*----------------------------------------------------------------------------*/
+void DynamicSpec::vPrint(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMICSPEC,_FOOTER_);
+  
+  vTrace("dynamic\n"_Stz);
+  vTrace("\n"_Stz);
+  vTrace("plan %s\n"_Stz,m_sName.aStz());
+  vTrace("begin\n"_Stz);
+
+  vTrace("\n"_Stz);
+  vTrace("end\n"_Stz);
 }
 
 
