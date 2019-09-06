@@ -103,21 +103,16 @@ void StageSpec::vPrint(void)
   vTrace("stage %s "_Stz,m_sName.aStz());
   
   switch (m_eTopology) {
-    case PO_ALL_NODES:
-      vTrace("on all nodes"_Stz);
-      break;
-    case PO_ALL_PARTITIONS:
-      vTrace("on all partitions"_Stz);
-      break;
-    case PO_ORIGIN:
-      vTrace("on origin"_Stz);
-      break;
-    case PO_SPECIFIC_NODE:
-      vTrace("on node %s"_Stz,m_sLocus.aStz());
-      break;
-    case PO_SPECIFIC_PARTITION:
-      vTrace("on partition %s"_Stz,m_sLocus.aStz());
-      break;
+    case PO_ALL_NODES:           vTrace("on all nodes"_Stz);
+                                 break;
+    case PO_ALL_PARTITIONS:      vTrace("on all partitions"_Stz);
+                                 break;
+    case PO_ORIGIN:              vTrace("on origin"_Stz);
+                                 break;
+    case PO_SPECIFIC_NODE:       vTrace("on node %s"_Stz,m_sLocus.aStz());
+                                 break;
+    case PO_SPECIFIC_PARTITION:  vTrace("on partition %s"_Stz,m_sLocus.aStz());
+                                 break;
     default:
       ;
   }
