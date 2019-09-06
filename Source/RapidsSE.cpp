@@ -669,7 +669,7 @@ eEC RapidsSE_FetchNextBuffer(i8 iTrace, Session* pSession, void* aJob,
       if (pFetchBuffer)
         break;
       //vTrace("SLEEPING\n"_Stz);
-      AM::vNap(1,CN_JOB_FETCHROWS);
+      AM::vNapUsec(250,CN_JOB_FETCHROWS);
     }
     pJob_FetchRows->m_pFetchBuffer = pFetchBuffer;
     API_LOC(340);
