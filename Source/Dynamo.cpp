@@ -85,6 +85,9 @@ bool Dynamo::bCompile(void)
   if (m_pTkn->bSame("name"_Stz))
     bResult = bCompileName();
 
+  if (m_pTkn->bSame("begin"_Stz))
+    bResult = bCompileBegin();
+  
   while (m_pTkn->bSame("stage"_Stz))
     bResult = bCompileStage();
 
@@ -115,6 +118,20 @@ bool Dynamo::bCompileName(void)
   
   vTrace("Name Clause recognised\n"_Stz);
 
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compile end                                                                */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bCompileBegin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  ASSERT(m_pTkn->bSame("begin"_Stz));
+  vAcceptToken();
+
+  vTrace("Begin recognised\n"_Stz);
   return true;
 }
 

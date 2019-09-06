@@ -31,6 +31,7 @@ namespace Dynamics
     bool bCompile(void);
   
     bool bCompileName(void);
+    bool bCompileBegin(void);
     bool bCompileStage(void);
     bool bCompileTopology(void);
     bool bCompilePipe(void);

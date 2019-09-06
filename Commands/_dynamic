@@ -2,9 +2,8 @@
 /* _dynamic -- test dynamic plans                                             */
 /*============================================================================*/
 
-dynamic plan
-
-  name dynNm
+dynamic plan name dynNm
+begin
 
   stage stageA on all partitions:
     opA1 | opA2 | opA3 | stageB
