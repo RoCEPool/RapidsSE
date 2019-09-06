@@ -8,7 +8,8 @@ namespace Dynamics
   class OpSpec : public Object
   {
   private:
-  
+    s32 m_sName;
+
     // must be last
     Footer m_xFooter;
 
@@ -16,7 +17,7 @@ namespace Dynamics
     void* operator new(size_t);
     void  operator delete(void*);
   
-    OpSpec(void);
+    OpSpec(Stz* szName);
    ~OpSpec(void) noexcept(false);
   
     Footer* aFooter(void);

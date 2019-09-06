@@ -28,10 +28,12 @@ void OpSpec::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OpSpec::OpSpec(void)
+OpSpec::OpSpec(Stz* szName)
 : Object(CN_OPSPEC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  m_sName = szName;
   
    _checkInitialised_(CN_OPSPEC);
   
