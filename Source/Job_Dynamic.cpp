@@ -151,21 +151,21 @@ void Job_Dynamic::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* populate the job                                                           */
 /*----------------------------------------------------------------------------*/
-bool Job_Dynamic::bPopulateJob(Session* pSession, TokenVec* pTokenVec)
+bool Job_Dynamic::bPopulateJob(Session* pSession, TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
   
   i8 iNumTokens;
   
-  ASSERT(pTokenVec->pGet(0)->bSame("dynamic"_Stz));
+  ASSERT(pTknVec->pGet(0)->bSame("dynamic"_Stz));
   
-  iNumTokens = pTokenVec->nTokens();
+  iNumTokens = pTknVec->nTokens();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
-  if (pTokenVec->pGet(1)->bSame("plan"_Stz)) {
-    Dynamo* pDynamo = new Dynamo;
-    bool bSuccess = pDynamo->bCompile(pTokenVec);
+  if (pTknVec->pGet(1)->bSame("plan"_Stz)) {
+    Dynamo* pDynamo = new Dynamo(pTknVec);
+    bool bSuccess = pDynamo->bCompile();
     delete pDynamo;
     return bSuccess;
   }
@@ -173,7 +173,7 @@ bool Job_Dynamic::bPopulateJob(Session* pSession, TokenVec* pTokenVec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   m_pDigest->m_pSession = pSession;
-  m_pDigest->vParseCommand(pTokenVec);
+  m_pDigest->vParseCommand(pTknVec);
   m_pDigest->vSetupJob();
   
   return true;

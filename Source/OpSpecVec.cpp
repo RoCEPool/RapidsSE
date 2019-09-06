@@ -6,15 +6,35 @@
 
 
 /*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* OpSpecVec::operator new(size_t)
+{
+  void* pObject = HeapMem::pAllocate(CN_OPSPECVEC);
+  
+  return pObject;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator delete                                                            */
+/*----------------------------------------------------------------------------*/
+void OpSpecVec::operator delete(void* pAddr)
+{
+  OpSpecVec* pOpSpecVec = reinterpret_cast<OpSpecVec*>(pAddr);
+  
+  HeapMem::vFree(pOpSpecVec);
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 OpSpecVec::OpSpecVec(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPECVEC,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPECVEC,_FOOTER_);
   
-   _checkInitialised_(CN_STAGESPECVEC);
+   _checkInitialised_(CN_OPSPECVEC);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_STAGESPECVEC,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_OPSPECVEC,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -22,7 +42,7 @@ OpSpecVec::OpSpecVec(void)
 /*----------------------------------------------------------------------------*/
 OpSpecVec::~OpSpecVec(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPECVEC,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPECVEC,_FOOTER_);
 }
 
 

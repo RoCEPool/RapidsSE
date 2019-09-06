@@ -6,16 +6,36 @@
 
 
 /*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* DynamicSpec::operator new(size_t)
+{
+  DynamicSpec* pDynamicSpec = reinterpret_cast<DynamicSpec*>(HeapMem::pAllocate(CN_DYNAMICSPEC));
+  
+  return pDynamicSpec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator delete                                                            */
+/*----------------------------------------------------------------------------*/
+void DynamicSpec::operator delete(void* aAddr)
+{
+  DynamicSpec* pDynamicSpec = reinterpret_cast<DynamicSpec*>(aAddr);
+  
+  HeapMem::vFree(pDynamicSpec);
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 DynamicSpec::DynamicSpec(void)
-: Object(CN_STAGESPEC)
+: Object(CN_DYNAMICSPEC)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMICSPEC,_FOOTER_);
   
-   _checkInitialised_(CN_STAGESPEC);
+   _checkInitialised_(CN_DYNAMICSPEC);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_DYNAMICSPEC,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -23,7 +43,7 @@ DynamicSpec::DynamicSpec(void)
 /*----------------------------------------------------------------------------*/
 DynamicSpec::~DynamicSpec(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMICSPEC,_FOOTER_);
 }
 
 

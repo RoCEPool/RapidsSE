@@ -6,6 +6,26 @@
 
 
 /*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* StageSpec::operator new(size_t)
+{
+  StageSpec* pStageSpec = reinterpret_cast<StageSpec*>(HeapMem::pAllocate(CN_STAGESPEC));
+  
+  return pStageSpec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator delete                                                            */
+/*----------------------------------------------------------------------------*/
+void StageSpec::operator delete(void* aAddr)
+{
+  StageSpec* pStageSpec = reinterpret_cast<StageSpec*>(aAddr);
+  
+  HeapMem::vFree(pStageSpec);
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 StageSpec::StageSpec(void)

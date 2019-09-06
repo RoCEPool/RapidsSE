@@ -8,6 +8,12 @@ namespace Dynamics
   class Dynamo : public Object
   {
   private:
+  
+    TokenVec*    m_p_TknVec;
+  
+    DynamicSpec* m_pDynamicSpec;
+    StageSpec*   m_pStageSpec;
+    OpSpec*      m_pOpSpec;
 
     // must be last
     Footer m_xFooter;
@@ -16,15 +22,15 @@ namespace Dynamics
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Dynamo(void);
+    Dynamo(TokenVec* pTknVec);
    ~Dynamo(void) noexcept(false);
   
-    bool bCompile(TokenVec* pTokenVec);
+    bool bCompile(void);
   
-    bool bCompileName(TokenVec* pTokenVec, i8& i_Tkn);
-    bool bCompileStage(TokenVec* pTokenVec, i8& i_Tkn);
-    bool bCompileTopology(TokenVec* pTokenVec, i8& i_Tkn);
-    bool bCompilePipe(TokenVec* pTokenVec, i8& i_Tkn);
+    bool bCompileName(i8& i_Tkn);
+    bool bCompileStage(i8& i_Tkn);
+    bool bCompileTopology(i8& i_Tkn);
+    bool bCompilePipe(i8& i_Tkn);
   
     bool bIsOperator(Token* pTkn);
 

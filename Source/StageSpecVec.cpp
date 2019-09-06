@@ -6,6 +6,26 @@
 
 
 /*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* StageSpecVec::operator new(size_t)
+{
+  void* pObject = HeapMem::pAllocate(CN_STAGESPECVEC);
+  
+  return pObject;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator delete                                                            */
+/*----------------------------------------------------------------------------*/
+void StageSpecVec::operator delete(void* pAddr)
+{
+  StageSpecVec* pStageSpecVec = reinterpret_cast<StageSpecVec*>(pAddr);
+  
+  HeapMem::vFree(pStageSpecVec);
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 StageSpecVec::StageSpecVec(void)
