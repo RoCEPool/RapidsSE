@@ -196,6 +196,7 @@ bool Dynamo::bCompileTopology(void)
       vAcceptToken();
       
       if (m_pTkn->bSame(":"_Stz)) {
+        vAcceptToken();
         vTrace("Topology Phrase recognised >on all nodes :<\n"_Stz);
         m_pStageSpec->vTopology(PO_ALL_NODES);
         return true;
@@ -209,6 +210,7 @@ bool Dynamo::bCompileTopology(void)
       vAcceptToken();
       
       if (m_pTkn->bSame(":"_Stz)) {
+        vAcceptToken();
         vTrace("Topology Phrase recognised >on all partitions :<\n"_Stz);
         m_pStageSpec->vTopology(PO_ALL_PARTITIONS);
         return true;
@@ -226,6 +228,7 @@ bool Dynamo::bCompileTopology(void)
     vAcceptToken();
 
     if (m_pTkn->bSame(":"_Stz)) {
+      vAcceptToken();
       vTrace("Topology Phrase recognised >on node %s :<\n"_Stz,sLocus.aStz());
       m_pStageSpec->vTopology(PO_SPECIFIC_NODE);
       m_pStageSpec->vLocus(sLocus.aStz());
@@ -243,6 +246,7 @@ bool Dynamo::bCompileTopology(void)
     vAcceptToken();
     
     if (m_pTkn->bSame(":"_Stz)) {
+      vAcceptToken();
       vTrace("Topology Phrase recognised >on partition %s :<\n"_Stz,sLocus.aStz());
       m_pStageSpec->vTopology(PO_SPECIFIC_PARTITION);
       m_pStageSpec->vLocus(sLocus.aStz());
@@ -257,6 +261,7 @@ bool Dynamo::bCompileTopology(void)
     vAcceptToken();
     
     if (m_pTkn->bSame(":"_Stz)) {
+      vAcceptToken();
       vTrace("Topology Phrase recognised >on origin :<\n"_Stz);
       m_pStageSpec->vTopology(PO_ORIGIN);
       return true;
