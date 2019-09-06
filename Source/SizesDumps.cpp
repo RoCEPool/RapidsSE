@@ -82,6 +82,7 @@ pDUMPFUN *gpDump[]
   /* 64 */ &Dump::vInvalid,         // CN_ENTWRK
   /*    */ &Dump::vDummy,           // CN_ENUMFLAGS
   /*    */ &Dump::vDummy,           // CN_EXPORTBUFFER
+  /*    */ &Dump::vDummy,           // CN_EXPROP
 
   /* 38 */ &Dump::vInvalid,         // CN_FETCHBUFFER
   /* 38 */ &Dump::vInvalid,         // CN_FETCHOP
@@ -485,6 +486,7 @@ i8 giClassSize[]
   /* 64 */ sizeof(EntWrk),             // CN_ENTWRK
   /*    */ sizeof(EnumFlags),          // CN_ENUMFLAGS
   /* 32 */ sizeof(ExportBuffer),       // CN_EXPORTBUFFER
+  /* 32 */ sizeof(ProjectOp),          // CN_EXPROP
 
   /*    */ sizeof(FetchBuffer),        // CN_FETCHBUFFER
   /*    */ sizeof(FetchOp),            // CN_FETCHOP
@@ -886,6 +888,7 @@ eHT geWhichHeap[]
   /* 64 */ HT_INVALID,           // CN_ENTWRK
   /*    */ HT_TRANSIENT_SMALL,   // CN_ENUMFLAGS
   /*    */ HT_TRANSIENT_LARGE,   // CN_EXPORTBUFFER
+  /*    */ HT_TRANSIENT_SMALL,   // CN_EXPROP
 
   /* 38 */ HT_TRANSIENT_LARGE,   // CN_FETCHBUFFER
   /* 38 */ HT_TRANSIENT_SMALL,   // CN_FETCHOP

@@ -78,6 +78,7 @@ pFINALIZE *gpFinalize[]
   /* 64 */ &Finalize::vUndefined,         // CN_ENTWRK
   /*    */ &Finalize::vUndefined,         // CN_ENUMFLAGS
   /*    */ &Finalize::vUndefined,         // CN_EXPORTBUFFER
+  /*    */ &Finalize::vUndefined,         // CN_EXPROP
 
   /*    */ &Finalize::vUndefined,         // CN_FETCHBUFFER
   /*    */ &Finalize::vUndefined,         // CN_FETCHOP
