@@ -281,7 +281,7 @@ void Jobs::vJob_Dynamic_post(Session* pSession, Job* pJob)
     Operand* pOperand = _pOperand(pJob_Dynamic->m_pBufferQueue->pPop());
     
     if (! pOperand) {
-      AM::pThisTLSPthread()->vSleepUsec(250,CN_JOB_DYNAMIC);
+      AM::vNapUsec(250,CN_JOB_DYNAMIC);
       continue;
     }
     

@@ -822,6 +822,43 @@ void AM::vNap(i8 nMilliSeconds, eCN eCallingClass)
 }
 
 /*----------------------------------------------------------------------------*/
+/* nap for given number of microseconds (no known calling thread)             */
+/*----------------------------------------------------------------------------*/
+void AM::vNapUsec(i8 nMicroSeconds, eCN eCallingClass)
+{
+  struct timespec xReq;
+  struct timespec xRem;
+  
+  if (nMicroSeconds >= C_1M) {
+    xReq.tv_nsec = (nMicroSeconds % C_1M) * C_1K;
+    xReq.tv_sec  = DIV(nMicroSeconds,C_1M);
+  }
+  else {
+    xReq.tv_nsec = nMicroSeconds * C_1K;
+    xReq.tv_sec  = 0;
+  }
+  
+#ifdef WITH_STATISTICS_COUNTERS
+  Statistics* pStats = &gpAttachMap->m_oStatistics;
+  pStats->Thread.m_nSleeps++;
+  pStats->Thread.m_iaSleeps[eCallingClass]++;
+  pStats->Thread.m_iaDuration[eCallingClass] += nMilliSeconds * C_1K;
+#endif
+  
+  AM::vLogFyi("%s naps for %lldus"_Stz, //!format-LogFyi
+              aCN[eCallingClass],nMicroSeconds);
+  
+  i8 rCode = nanosleep(&xReq,&xRem);
+  
+  if (rCode && errno != EINTR) {
+    vWarn("AM::vNap error; errno=%lld\n"_Stz,errno);
+  }
+  
+  AM::vLogFyi("%s woken from nap"_Stz, //!format-LogFyi
+              aCN[eCallingClass]);
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
