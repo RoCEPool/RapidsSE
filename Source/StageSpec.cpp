@@ -33,6 +33,10 @@ StageSpec::StageSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
+   m_eTopology = PO_NONE;
+  
+   m_pOpSpecVec = new OpSpecVec;
+  
    _checkInitialised_(CN_STAGESPEC);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
@@ -44,6 +48,23 @@ StageSpec::StageSpec(void)
 StageSpec::~StageSpec(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  delete m_pOpSpecVec;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add op spec                                                                */
+/*----------------------------------------------------------------------------*/
+void StageSpec::vAddOpSpec(OpSpec* pOpSpec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  m_pOpSpecVec->vAdd(pOpSpec);
 }
 
 

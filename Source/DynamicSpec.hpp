@@ -23,6 +23,8 @@ namespace Dynamics
     DynamicSpec(Stz* szName);
    ~DynamicSpec(void) noexcept(false);
   
+    void vAddStageSpec(StageSpec* pStageSpec);
+
     Footer* aFooter(void);
   };
 }

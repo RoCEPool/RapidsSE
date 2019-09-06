@@ -9,6 +9,10 @@ namespace Dynamics
   {
   private:
   
+    ePO m_eTopology;
+  
+    OpSpecVec* m_pOpSpecVec;
+  
     // must be last
     Footer m_xFooter;
 
@@ -18,6 +22,8 @@ namespace Dynamics
   
     StageSpec(void);
    ~StageSpec(void) noexcept(false);
+  
+    void vAddOpSpec(OpSpec* pOpSpec);
   
     Footer* aFooter(void);
   };
