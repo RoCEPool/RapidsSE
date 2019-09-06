@@ -365,6 +365,8 @@ enum eCN : u2 // Class Number
   /*                           */ CN_STMT_SELECT,
   /* 193 0xC1       48B Heap:I */ CN_STREAMDEF,
   /* 193 0xC1       48B Heap:I */ CN_STRING_T,
+  /*                           */ CN_SUPERAGGOP,
+  /*                           */ CN_SUPERCOUNTOP,
   /*                           */ CN_SUPERMERGEOP,
   /* 194 0xC2       32B Heap:I */ CN_SYSCALL,
   
@@ -763,6 +765,8 @@ static Stz* aCN[]
   /* 192 0xC0 */ "STMT_SELECT"_Stz,         // CN_STMT_SELECT
   /* 193 0xC1 */ "STREAMDEF"_Stz,           // CN_STREAMDEF
   /* 193 0xC1 */ "STRING_T"_Stz,            // CN_STRING_T
+  /*          */ "SUPERAGGOP"_Stz,          // CN_SUPERAGGOP
+  /*          */ "SUPERCOUNTOP"_Stz,        // CN_SUPERCOUNTOP
   /*          */ "SUPERMERGEOP"_Stz,        // CN_SUPERMERGEOP
   /* 194 0xC2 */ "SYSCALL"_Stz,             // CN_SYSCALL
   

@@ -363,6 +363,8 @@ pFINALIZE *gpFinalize[]
   /*128 */ &Finalize::vUndefined,         // CN_STMT_SELECT
   /* 13 */ &Finalize::vUndefined,         // CN_STREAMDEF
   /* 13 */ &Finalize::vUndefined,         // CN_STRING_T
+  /*    */ &Finalize::vUndefined,         // CN_SUPERAGGOP
+  /*    */ &Finalize::vUndefined,         // CN_SUPERCOUNTOP
   /*    */ &Finalize::vUndefined,         // CN_SUPERMERGEOP
   /*129 */ &Finalize::vUndefined,         // CN_SYSCALL
   
