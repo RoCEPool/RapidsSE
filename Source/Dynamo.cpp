@@ -88,6 +88,8 @@ bool Dynamo::bCompile(void)
   while (m_pTkn->bSame("stage"_Stz))
     bResult = bCompileStage();
 
+  bResult = bCompileEnd();
+  
   return false;
 }
 
@@ -106,7 +108,12 @@ bool Dynamo::bCompileName(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   m_pDynamicSpec = new DynamicSpec(m_pTkn->szText());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   vAcceptToken();
+  
+  vTrace("Name Clause recognised\n"_Stz);
 
   return true;
 }
@@ -128,6 +135,9 @@ bool Dynamo::bCompileStage(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   m_pStageSpec = new StageSpec(m_pTkn->szText());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   vAcceptToken();
   
   if (m_pTkn->bSame("on"_Stz))
@@ -136,6 +146,8 @@ bool Dynamo::bCompileStage(void)
   if (bIsOperator(m_pTkn))
     bCompilePipe();
 
+  vTrace("Stage Clause recognised\n"_Stz);
+  
   return true;
 }
 
@@ -162,7 +174,7 @@ bool Dynamo::bCompileTopology(void)
       vAcceptToken();
       
       if (m_pTkn->bSame(":"_Stz)) {
-        vTrace("recognised >on all nodes :<"_Stz);
+        vTrace("Topology Phrase recognised >on all nodes :<\n"_Stz);
         m_pStageSpec->vTopology(PO_ALL_NODES);
         return true;
       }
@@ -175,7 +187,7 @@ bool Dynamo::bCompileTopology(void)
       vAcceptToken();
       
       if (m_pTkn->bSame(":"_Stz)) {
-        vTrace("recognised >on all partitions :<"_Stz);
+        vTrace("Topology Phrase recognised >on all partitions :<\n"_Stz);
         m_pStageSpec->vTopology(PO_ALL_PARTITIONS);
         return true;
       }
@@ -192,7 +204,7 @@ bool Dynamo::bCompileTopology(void)
     vAcceptToken();
 
     if (m_pTkn->bSame(":"_Stz)) {
-      vTrace("recognised >on node %s :<"_Stz,sLocus.aStz());
+      vTrace("Topology Phrase recognised >on node %s :<\n"_Stz,sLocus.aStz());
       m_pStageSpec->vTopology(PO_SPECIFIC_NODE);
       m_pStageSpec->vLocus(sLocus.aStz());
       return true;
@@ -206,13 +218,14 @@ bool Dynamo::bCompileTopology(void)
     vAcceptToken();
     
     if (m_pTkn->bSame(":"_Stz)) {
-      vTrace("recognised >on origin :<"_Stz);
+      vTrace("Topology Phrase recognised >on origin :<\n"_Stz);
       m_pStageSpec->vTopology(PO_ORIGIN);
       return true;
     }
   }
   
   // -- -- -- -- -- -- -- -- -- -- --
+  vTrace("Topology Phrase not recognised\n"_Stz);
   return false;
 }
 
@@ -236,6 +249,7 @@ bool Dynamo::bCompilePipe(void)
     vAcceptToken();
   }
   
+  vTrace("Pipe Phrase recognised\n"_Stz);
   return true;
 }
 
@@ -251,7 +265,11 @@ bool Dynamo::bCompileOp(void)
   vTrace("        op=%s\n"_Stz,m_pTkn->szText());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   m_pOpSpec = new OpSpec(m_pTkn->szText());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   vAcceptToken();
 
   for (;;) {
@@ -264,30 +282,29 @@ bool Dynamo::bCompileOp(void)
     vAcceptToken();
   }
 
-  return true;
+ vTrace("Op Phrase recognised\n"_Stz);
+ return true;
 }
 
 /*----------------------------------------------------------------------------*/
-/* is token a known operator?                                                 */
+/* compile end                                                                 */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bIsOperator(Token* m_pTkn)
+bool Dynamo::bCompileEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  if (m_pTkn->bSame("|"_Stz))
-    return false;
-  
-  if (m_pTkn->bSame("end"_Stz))
-    return false;
-  
-  if (m_pTkn->bSame("stage"_Stz))
-    return false;
+  ASSERT(m_pTkn->bSame("end"_Stz));
 
+  vTrace("End recognised\n"_Stz);
   return true;
 }
 
+
 /*----------------------------------------------------------------------------*/
-/* is token a known operator?                                                 */
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* accept token and advance to next token                                     */
 /*----------------------------------------------------------------------------*/
 void Dynamo::vAcceptToken(void)
 {
@@ -300,16 +317,35 @@ void Dynamo::vAcceptToken(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is token a known operator?                                                 */
+/* set token on which parsing begins                                          */
 /*----------------------------------------------------------------------------*/
 void Dynamo::vBeginToken(i8 i_Tkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   m_i_Tkn = i_Tkn;
-  m_pTkn = m_p_TknVec->pGet(m_i_Tkn);
+  m_pTkn  = m_p_TknVec->pGet(m_i_Tkn);
   
   vTrace("Begin %03lld: %s\n"_Stz,i_Tkn,m_pTkn->szText());
+}
+
+/*----------------------------------------------------------------------------*/
+/* is token a known operator?                                                 */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bIsOperator(Token* pTkn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  if (pTkn->bSame("|"_Stz))
+    return false;
+  
+  if (pTkn->bSame("end"_Stz))
+    return false;
+  
+  if (pTkn->bSame("stage"_Stz))
+    return false;
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -35,12 +35,12 @@ namespace Dynamics
     bool bCompileTopology(void);
     bool bCompilePipe(void);
     bool bCompileOp();
-
-    bool bIsOperator(Token* pTkn);
+    bool bCompileEnd(void);
 
     void vAcceptToken(void);
     void vBeginToken(i8 i_Tkn);
-  
+    bool bIsOperator(Token* pTkn);
+
     Footer* aFooter(void);
   };
 }
