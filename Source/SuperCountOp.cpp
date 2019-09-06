@@ -108,7 +108,7 @@ eOR SuperCountOp::eCall(void* aThis)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* the merge operator loop function                                           */
+/* the super count operator loop function                                     */
 /*----------------------------------------------------------------------------*/
 eOR SuperCountOp::eSuperCountLoop(void)
 {

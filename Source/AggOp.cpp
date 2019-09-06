@@ -9,7 +9,7 @@ OpDesc __Op_Agg (
    OK_SIMPLE,          // op kind
    "Agg"_Stz,          // first word of prompt command
    "Agg"_Stz,          // prefix
-   false,              // partitioned
+   true,               // partitioned
    AggOp::pNew,        // function which parses the command and new's an op
    AggOp::eCall,       // function which calls the op loop
    AggOp::eDrain,      // function which calls the drain loop
@@ -94,9 +94,11 @@ Op* AggOp::pNew(Stz* szLabel,
                   TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
-  ASSERT(i_Slot == -1);
+  ASSERT(i_Slot != -1);
   
   AggOp* pAggOp = new AggOp(szLabel,pDigest,aOpDefn,bAppR);
+  
+  pAggOp->m_nSlot = i_Slot;
   
   pAggOp->m_pStreamDef->m_oColVecAry.vItems(1);
   ColumnVec* pColVec = pAggOp->m_pStreamDef->pColumnVec(0);
