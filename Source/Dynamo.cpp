@@ -53,9 +53,9 @@ Dynamo::~Dynamo(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  delete m_pDynamicSpec;
-  delete m_pStageSpec;
-  delete m_pOpSpec;
+  //delete m_pDynamicSpec;
+  //delete m_pStageSpec;
+  //delete m_pOpSpec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -147,9 +147,7 @@ bool Dynamo::bCompileBegin(void)
 bool Dynamo::bCompileStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  
-  delete m_pStageSpec; //! TEMP
-  
+    
   ASSERT(m_pTkn->bSame("stage"_Stz));
   vAcceptToken();
   
@@ -158,6 +156,7 @@ bool Dynamo::bCompileStage(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   m_pStageSpec = new StageSpec(m_pTkn->szText());
+  m_pDynamicSpec->vAddStageSpec(m_pStageSpec);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -300,14 +299,13 @@ bool Dynamo::bCompileOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  delete m_pOpSpec; //! TEMP
-  
   vTrace("        op=%s\n"_Stz,m_pTkn->szText());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   m_pOpSpec = new OpSpec(m_pTkn->szText());
-  
+  m_pStageSpec->vAddOpSpec(m_pOpSpec);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   vAcceptToken();

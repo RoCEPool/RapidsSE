@@ -71,7 +71,7 @@ void DynamicSpec::vAddStageSpec(StageSpec* pStageSpec)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* print stage spec                                                           */
+/* print dynamic spec                                                         */
 /*----------------------------------------------------------------------------*/
 void DynamicSpec::vPrint(void)
 {
@@ -81,6 +81,9 @@ void DynamicSpec::vPrint(void)
   vTrace("\n"_Stz);
   vTrace("plan %s\n"_Stz,m_sName.aStz());
   vTrace("begin\n"_Stz);
+  
+  for (i8 i_Stage = 0; i_Stage < m_pStageSpecVec->nItems(); i_Stage++)
+    m_pStageSpecVec->pGet(i_Stage)->vPrint();
 
   vTrace("\n"_Stz);
   vTrace("end\n"_Stz);
