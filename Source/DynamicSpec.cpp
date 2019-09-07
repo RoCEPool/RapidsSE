@@ -68,6 +68,16 @@ void DynamicSpec::vAddStageSpec(StageSpec* pStageSpec)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add stage spec                                                             */
+/*----------------------------------------------------------------------------*/
+Stz* DynamicSpec::szName(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMICSPEC,_FOOTER_);
+  
+  return m_sName.aStz();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get stage spec                                                             */
 /*----------------------------------------------------------------------------*/
 StageSpec* DynamicSpec::pStageSpec(i8 i_Stage)

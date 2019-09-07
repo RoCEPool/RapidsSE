@@ -174,8 +174,17 @@ bool Job_Dynamic::bPopulateJob(Session* pSession, TokenVec* pTknVec)
     pStageSpec->vToPipeStr(sPipe.aStz());
     vTrace("Restated stage 0: ]]%s[[\n"_Stz,sPipe.aStz());
     
+    Tokeniser::vTokenise(pTknVec,sPipe);
+    
+    SP_TknVecStr spTknVecStr;
+    vTrace("TknVecStr ]]%s[[\n"_Stz,spTknVecStr.sz(pTknVec));
+
+    if (! pDynamicSpec->szName()->bSame("lineItem_dyn"_Stz)) {
+      delete pDynamo;
+      return bSuccess;
+    }
+    
     delete pDynamo;
-    return bSuccess;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

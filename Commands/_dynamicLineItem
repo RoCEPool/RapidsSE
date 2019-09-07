@@ -4,7 +4,7 @@
 
 dynamic
 
-plan dynLineItem
+plan lineItem_dyn
 begin
 
   stage stageA:
