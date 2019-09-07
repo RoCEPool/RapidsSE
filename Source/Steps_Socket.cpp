@@ -320,7 +320,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     SP_Job spJob;
     AM::vLogRes(SL_INF,pSocket,RA_SKT_RECEIVED,
                 "Socket received Job: %s"_Stz, //!format-LogRes
-                 spJob.sz(pJob));
+                 spJob.sz_recv(pJob));
 
     if (pJob->m_xReqTuple.m_iLogLevel) {
       JobLog::vNote(pJob,

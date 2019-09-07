@@ -16,7 +16,8 @@ namespace Jobs
     SP_Job(void);
    ~SP_Job(void) noexcept(false);
   
-    Stz* sz(Job* pJob);
+    Stz* sz_log(Job* pJob);
+    Stz* sz_recv(Job* pJob);
 
     Footer* aFooter(void);
   };

@@ -46,6 +46,7 @@ namespace Esses
     void vReset(void);
     bool bSame(Stz* aArg);
     i8   nSize(void);
+    void vSizeMax(i8 nBytes);
     i8   nSpace(void);
     void vSprint(Stz* aFormat, ...);
     void vSprintCat(Stz* aFormat, ...);
@@ -406,6 +407,17 @@ i8 String_t<SPACE>::nSize(void)
   _precondition_(_MAGIC_,_FOOTER_);
   
   return StrLib::iSize(aChar());
+}
+
+/*----------------------------------------------------------------------------*/
+/* ensure max size of string                                                  */
+/*----------------------------------------------------------------------------*/
+template <int SPACE>
+void String_t<SPACE>::vSizeMax(i8 nChars)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  m_caArea[nChars - 1] = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
