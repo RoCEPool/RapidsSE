@@ -56,7 +56,7 @@ void Op_ToDo::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Op_ToDo::Op_ToDo(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec)
-: Op(CN_OP_TODO,szOpLabel,pDigest,aOpDefn,bAppR)
+: Op(CN_OP_TODO,szOpLabel,pDigest,aOpDefn,bAppR,pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TODO,_FOOTER_);
   
