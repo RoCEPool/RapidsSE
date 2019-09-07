@@ -55,7 +55,7 @@ void OutputOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OutputOp::OutputOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
+OutputOp::OutputOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec)
 : Op(CN_OUTPUTOP,szOpLabel,pDigest,aOpDefn,bAppR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
