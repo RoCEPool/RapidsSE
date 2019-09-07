@@ -39,6 +39,24 @@ static Stz* aDA[]
   /*    */ "ENUMS"_Stz,
 };
 
+static Stz* aDA_short[]
+{
+  /*  0 */ "NONE"_Stz,
+  
+  /*  0 */ "create catalog"_Stz,
+  /*  0 */ "create index"_Stz,
+  /*  0 */ "create schema"_Stz,
+  /*  0 */ "create table"_Stz
+  /*  0 */ "create tenant"_Stz,
+  /*  0 */ "drop catalog"_Stz,
+  /*  0 */ "drop index"_Stz,
+  /*  0 */ "drop schema"_Stz,
+  /*  0 */ "drop table"_Stz,
+  /*  0 */ "drop tenant"_Stz,
+
+  /*    */ "ENUMS"_Stz,
+};
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
