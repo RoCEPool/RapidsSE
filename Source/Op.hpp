@@ -12,7 +12,7 @@ namespace Operators
   protected:  
     s32            m_sName;          // first word of prompt command
   
-    //OpSpec*        m_pOpSpec;        // op specification
+    OpSpec*        m_pOpSpec;        // op specification
   
     s32            m_sLabel;         // label of this op
     s256           m_sArgs;          // args of this op   (initial dev only)

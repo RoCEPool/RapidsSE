@@ -58,8 +58,10 @@ Op::Op(eCN eClassNo, Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
   _precondition_(_MAGIC_,eClassNo);
   
   RASSERT(aOpDefn);
+  
   m_sName = aOpDefn->m_szCommand;
-    
+  
+  m_pOpSpec       = pOpSpec;
   
   m_sLabel        = szLabel;
   m_sArgs         = ""_Stz;
