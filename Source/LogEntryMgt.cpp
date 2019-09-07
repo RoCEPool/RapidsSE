@@ -7,15 +7,15 @@
 /*----------------------------------------------------------------------------*/
 /* set entry                                                                  */
 /*----------------------------------------------------------------------------*/
-void _LogEntryMgt::vSet(LogEntry* pLogEntry, Job* pJob, eDA eDdlAct)
+void _LogEntryMgt::vSet(LogEntry* pLogEntry, Job* pJob, eMA eMgtAct)
 {
-  pLogEntry->m_eKind   = EK_LCK;
-  pLogEntry->m_cPrefix = 'D';
+  pLogEntry->m_eKind   = EK_MGT;
+  pLogEntry->m_cPrefix = 'M';
   pLogEntry->m_iAct    = pJob->iActNo();
   pLogEntry->m_xReqTuple.vSet(&pJob->m_xReqTuple);
 
   m_iJobId  = pJob->m_iUniqueId;
-  m_eDdlAct = eDdlAct;
+  m_eMgtAct = eMgtAct;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -39,9 +39,9 @@ void _LogEntryMgt::vToTxt(s256& sInf, LogEntry* pEntry)
 {
   sInf.vSprint(C_ENTRY_FMT_TXT,
                aCN[pEntry->m_eClass],
-               aDA[m_eDdlAct],
+               aMA[m_eMgtAct],
                pEntry->szIndicator(),
-               aDA_short[m_eDdlAct],
+               aMA_short[m_eMgtAct],
                pEntry->m_caNote);
 }
 

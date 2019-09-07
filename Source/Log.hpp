@@ -66,6 +66,7 @@ namespace Logging
     i8 iEntryLck(eSL, Lock*      pLck, eLA eLckAct, Stz* szFormat, va_list xArgs);
     i8 iEntryLog(eSL, Log*       pLog, eGA eLogAct, Stz* szFormat, va_list xArgs);
     i8 iEntryOpr(eSL, Op*        pOpr, eOA eOprAct, Stz* szFormat, va_list xArgs);
+    i8 iEntryMgt(eSL, Job*       pJob, eMA eMgtAct, Stz* szFormat, va_list xArgs);
     i8 iEntryPrm(eSL, SePrompt*  pPrm, ePA ePrmAct, Stz* szFormat, va_list xArgs);
     i8 iEntryQue(eSL, Queues*    pQue, eQA eQueAct, Stz* szFormat, va_list xArgs);
     i8 iEntryReq(eSL, Request*   pReq, eCA eReqAct, Stz* szFormat, va_list xArgs);

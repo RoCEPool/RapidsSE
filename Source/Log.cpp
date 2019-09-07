@@ -514,6 +514,26 @@ i8 Log::iEntryLog(eSL eSeverity, Log* pLog, eGA eLogAct,
 }
 
 /*----------------------------------------------------------------------------*/
+/* add a management log entry                                                 */
+/*----------------------------------------------------------------------------*/
+i8 Log::iEntryMgt(eSL eSeverity, Job* pJob, eMA eMgtAct,
+                  Stz* szFormat, va_list xVaArgs)
+{
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
+  
+  LogEntry* pLogEntry = pNewEntry(eSeverity,pJob,szFormat,xVaArgs);
+  
+  if (! pLogEntry)
+    return C_UNKNOWN;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  pLogEntry->m_xMgt.vSet(pLogEntry,pJob,eMgtAct);
+  
+  return pLogEntry->m_i_Entry;
+}
+
+/*----------------------------------------------------------------------------*/
 /* add a operator log entry                                                   */
 /*----------------------------------------------------------------------------*/
 i8 Log::iEntryOpr(eSL eSeverity, Op* pOpr, eOA eOprAct,

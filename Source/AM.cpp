@@ -523,6 +523,31 @@ void AM::vLogLog(eSL eSeverity, Log* pLog, eGA eLogAct, Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add a management log entry                                                 */
+/*----------------------------------------------------------------------------*/
+void AM::vLogMgt(eSL eSeverity, Job* pJob, eMA eMgtAct, Stz* szFormat, ...)
+{
+#ifdef WITH_SHARED_LOG
+  if (! AM::bLogging())
+    return;
+  
+  if (! gpLog->bIsLoggable(pJob))
+    return;
+  
+  va_list xVaArgs;
+  
+  va_start(xVaArgs,szFormat);
+  
+  i8 i_Entry = gpLog->iEntryMgt(eSeverity,pJob,eMgtAct,
+                                szFormat,xVaArgs);
+  
+  va_end(xVaArgs);
+  
+  pJob->m_i_Log = i_Entry;
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
 /* add a operator log entry                                                   */
 /*----------------------------------------------------------------------------*/
 void AM::vLogOpr(eSL eSeverity, Op* pOpr, eOA eOprAct, Stz* szFormat, ...)

@@ -9,10 +9,10 @@ namespace Logging
   {
   public:
     i8   m_iJobId;  // id
-    eDA  m_eDdlAct; // action
+    eMA  m_eMgtAct; // action
   
   public:
-    void vSet(LogEntry* pLogEntry, Job* pJob, eDA eDdlAct);
+    void vSet(LogEntry* pLogEntry, Job* pJob, eMA eMgtAct);
   
     void vOutline(s4K& sOutline);
 

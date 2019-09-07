@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void _LogEntryDdl::vSet(LogEntry* pLogEntry, Job* pJob, eDA eDdlAct)
 {
-  pLogEntry->m_eKind   = EK_LCK;
+  pLogEntry->m_eKind   = EK_DDL;
   pLogEntry->m_cPrefix = 'D';
   pLogEntry->m_iAct    = pJob->iActNo();
   pLogEntry->m_xReqTuple.vSet(&pJob->m_xReqTuple);
