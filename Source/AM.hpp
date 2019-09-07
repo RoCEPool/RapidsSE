@@ -11,7 +11,7 @@
 #include "eHA.h"
 #include "eJA.h"
 #include "eLA.h"
-#include "eMA.h"
+#include "eCA.h"
 #include "eOA.h"
 #include "ePA.h"
 #include "eQA.h"
@@ -180,7 +180,7 @@ namespace StorageEngine
     static void vLogOpr(eSL, Op*        pOpr, eOA eOpAct,  Stz* szFormat, ...);
     static void vLogPrm(eSL, SePrompt*  pPrm, ePA ePrmAct, Stz* szFormat, ...);
     static void vLogQue(eSL, Queues*    pQue, eQA eQueAct, Stz* szFormat, ...);
-    static void vLogReq(eSL, Request*   pReq, eMA eReqAct, Stz* szFormat, ...);
+    static void vLogReq(eSL, Request*   pReq, eCA eReqAct, Stz* szFormat, ...);
     static void vLogRes(eSL, Resource*  pRes, eRA eResAct, Stz* szFormat, ...);
     static void vLogSvc(eSL, Job*       pJob, eVA eSvcAct, Stz* szFormat, ...);
     static void vLogSsn(eSL, Session*   pSsn, eAA eApiAct, Stz* szFormat, ...);
