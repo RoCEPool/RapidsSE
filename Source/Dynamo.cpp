@@ -392,6 +392,16 @@ void Dynamo::vBeginToken(i8 i_Tkn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the dynamic spec                                                       */
+/*----------------------------------------------------------------------------*/
+DynamicSpec* Dynamo::pDynamicSpec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  return m_pDynamicSpec;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is token a known operator?                                                 */
 /*----------------------------------------------------------------------------*/
 bool Dynamo::bIsOperator(Token* pTkn)

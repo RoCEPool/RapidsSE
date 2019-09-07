@@ -90,6 +90,29 @@ void StageSpec::vTopology(ePO eTopology)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print stage spec                                                           */
+/*----------------------------------------------------------------------------*/
+void StageSpec::vToPipeStr(Stz* szPipeStr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  for (i8 i_Op = 0; i_Op < m_pOpSpecVec->nItems(); i_Op++) {\
+    OpSpec* pOpSpec = m_pOpSpecVec->pGet(i_Op);
+
+    if (i_Op)
+      szPipeStr->vConcat(" | "_Stz);
+    
+    szPipeStr->vConcat(pOpSpec->szName());
+    
+    if (pOpSpec->szArgs()->iLength()) {
+      szPipeStr->vConcat(" "_Stz);
+      szPipeStr->vConcat(pOpSpec->szArgs());
+    }
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/

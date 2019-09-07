@@ -25,6 +25,8 @@ namespace Dynamics
   
     void vAddStageSpec(StageSpec* pStageSpec);
   
+    StageSpec* pStageSpec(i8 i_Stage);
+
     void vPrint(void);
 
     Footer* aFooter(void);

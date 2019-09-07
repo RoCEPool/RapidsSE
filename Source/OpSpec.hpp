@@ -22,8 +22,10 @@ namespace Dynamics
     OpSpec(Stz* szName);
    ~OpSpec(void) noexcept(false);
   
+    Stz* szArgs(void);
     void vArgs(Stz* szArgs);
-
+    Stz* szName(void);
+  
     void vPrint(void);
   
     Footer* aFooter(void);
