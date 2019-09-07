@@ -7,6 +7,7 @@
 
 #include "eAA.h"
 #include "eCA.h"
+#include "eDA.h"
 #include "eGA.h"
 #include "eHA.h"
 #include "eJA.h"
@@ -173,6 +174,7 @@ namespace StorageEngine
     static void vLogFyi(Stz* szFormat, ...);
     static void vLogText(i8 iId, Stz* szText);
 
+    static void vLogDdl(eSL, Job*       pJob, eDA eDdlAct, Stz* szFormat, ...);
     static void vLogJob(eSL, Job*       pJob, eJA eJobAct, Stz* szFormat, ...);
     static void vLogLck(eSL, Lock*      pLck, eLA eLckAct, Stz* szFormat, ...);
     static void vLogLog(eSL, Log*       pLog, eGA eLogAct, Stz* szFormat, ...);

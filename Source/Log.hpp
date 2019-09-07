@@ -61,6 +61,7 @@ namespace Logging
   //private:
     i8 iEntryFyi(eCN eClass, Stz* szFormat, va_list xArgs);
   
+    i8 iEntryDdl(eSL, Job*       pJob, eDA eDdlAct, Stz* szFormat, va_list xArgs);
     i8 iEntryJob(eSL, Job*       pJob, eJA eJobAct, Stz* szFormat, va_list xArgs);
     i8 iEntryLck(eSL, Lock*      pLck, eLA eLckAct, Stz* szFormat, va_list xArgs);
     i8 iEntryLog(eSL, Log*       pLog, eGA eLogAct, Stz* szFormat, va_list xArgs);

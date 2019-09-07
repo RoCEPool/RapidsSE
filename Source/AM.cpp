@@ -423,6 +423,31 @@ void AM::vLogFyi(Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add a ddl log entry                                                        */
+/*----------------------------------------------------------------------------*/
+void AM::vLogDdl(eSL eSeverity, Job* pJob, eDA eDdlAct, Stz* szFormat, ...)
+{
+#ifdef WITH_SHARED_LOG
+  if (! AM::bLogging())
+    return;
+  
+  if (! gpLog->bIsLoggable(pJob))
+    return;
+  
+  va_list xVaArgs;
+  
+  va_start(xVaArgs,szFormat);
+  
+  i8 i_Entry = gpLog->iEntryDdl(eSeverity,pJob,eDdlAct,
+                                szFormat,xVaArgs);
+  
+  va_end(xVaArgs);
+  
+  pJob->m_i_Log = i_Entry;
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
 /* add a job log entry                                                        */
 /*----------------------------------------------------------------------------*/
 void AM::vLogJob(eSL eSeverity, Job* pJob, eJA eJobAct, Stz* szFormat, ...)
