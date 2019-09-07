@@ -532,8 +532,6 @@ void Scheduler::vTask_Able(Task* pTask)
   RASSERT(TR_NONE == pTask->eTransition());
 
   pTask->vState(TS_ABLE);
-  
-  JobLog::vNoteState(pTask->pJob(),"Able"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -582,8 +580,6 @@ void Scheduler::vTask_Bide(Task* pTask)
   
   pTask->vTransitionClear();
   pTask->vState(TS_BIDING);
-  
-  JobLog::vNoteState(pTask->pJob(),"Bide"_Stz);
   
   pQueues->vAddBidingSet(pTask);
   // **do not touch task** (other than to drop lock)
@@ -687,8 +683,6 @@ void Scheduler::vTask_Desist(Task* pTask)
   pQueues->vRemoveExecutingSet(pTask);
   
   pTask->vState(TS_DESISTED);
-  
-  JobLog::vNoteState(pTask->pJob(),"Desist"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -719,13 +713,11 @@ void Scheduler::vTask_Execute(Task* pTask)
   Queues* pQueues = AM::pQueues();
   
   pTask->vState(TS_EXECUTING);
-
-  JobLog::vNoteState(pTask->pJob(),"Execute"_Stz);
   
   pQueues->vAddExecutingSet(pTask);
 
   AM::vLogThd(SL_INF,pTask->m_pThread,HA_THD_EXECUTING,
-              "thread returns to its loop to execute task"_Stz); //!format-LogTsk
+              "thread returns from scheduler to its loop to execute task"_Stz); //!format-LogTsk
 }
 
 /*----------------------------------------------------------------------------*/
@@ -785,8 +777,6 @@ void Scheduler::vTask_Pause(Task* pTask)
   pTask->vTransitionClear();
   pTask->vState(TS_PAUSED);
   
-  JobLog::vNoteState(pTask->pJob(),"Pause"_Stz);
-  
   pQueues->vAddPausedSet(pTask);
   // **do not touch task** (other than to drop lock)
   
@@ -831,8 +821,6 @@ void Scheduler::vTask_Pulse(Task* pTask)
   
   pQueues->vRemovePausedSet(pTask);
   
-  JobLog::vNoteState(pTask->pJob(),"Pulse"_Stz);
-  
   pTask->vDropTaskLock();
   
   vTask_Able(pTask);
@@ -857,8 +845,6 @@ void Scheduler::vTask_Ready(Task* pTask)
   
   pTask->vState(TS_READY);
 
-  JobLog::vNoteState(pTask->pJob(),"Ready"_Stz);
-  
   if (TK_JOB == pTask->eKind()) {
     if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
       pQueues->vAppendReadyQueue(pTask);
@@ -885,8 +871,6 @@ void Scheduler::vTask_Resume(Task* pTask)
   //       acks and when it enters the waiting state and drops the lock
   
   RASSERT(! pTask->iAcksRmg_assert_only_());
-  
-  JobLog::vNoteState(pTask->pJob(),"Resume"_Stz);
   
   // cycle the task lock to ensure task has fully entered wait state
   pTask->vGrabTaskLock();
@@ -934,8 +918,6 @@ void Scheduler::vTask_Schedule(Task* pTask)
   RASSERT(QK_NONE == pTask->eQueue());
   RASSERT(TR_NONE == pTask->eTransition());
 
-  JobLog::vNoteState(pTask->pJob(),"Schedule"_Stz);
-  
   Queues* pQueues = AM::pQueues();
   
   pQueues->vGrabThreadIdleQueue();
@@ -969,8 +951,6 @@ void Scheduler::vTask_Sleep(Task* pTask)
   
   pTask->vTransitionClear();
   
-  JobLog::vNoteState(pTask->pJob(),"Sleep"_Stz);
-
   // is the task to actually sleep?
   if (! pTask->bWakeupNow()) {
     pTask->vState(TS_SLEEPING);
@@ -999,14 +979,12 @@ void Scheduler::vTask_Thread(Task* pTask, Thread* pThread)
 {
   pTask->vIncActNo();
   AM::vLogTsk(SL_INF,pTask,TA_TSK_THREAD,
-              "Task assigned to given thread"_Stz); //!format-LogTsk
+              "Task has been assigned a thread"_Stz); //!format-LogTsk
   
   RASSERT(TS_ABLE == pTask->eState());
   
   RASSERT(HS_ASSIGNED == pThread->m_eThreadState);
   RASSERT(pTask == pThread->m_pTask);
-  
-  JobLog::vNoteState(pTask->pJob(),"Thread"_Stz);
   
   pTask->vThread(pThread);
   // ok to touch task
@@ -1029,8 +1007,6 @@ void Scheduler::vTask_Trigger(Task* pTask)
   Queues* pQueues = AM::pQueues();
   
   pQueues->vRemoveBidingSet(pTask);
-  
-  JobLog::vNoteState(pTask->pJob(),"Trigger"_Stz);
   
   vTask_Able(pTask);
   pTask->vDropTaskLock();
@@ -1058,8 +1034,6 @@ void Scheduler::vTask_Wait(Task* pTask)
   pTask->vTransitionClear();
   pTask->vState(TS_WAITING);
   
-  JobLog::vNoteState(pTask->pJob(),"Wait"_Stz);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   pQueues->vAddWaitingSet(pTask);
@@ -1080,7 +1054,6 @@ void Scheduler::vTask_Wakeup(Task* pTask)
   Queues* pQueues = AM::pQueues();
   
   while (Task* pTask = pQueues->pPopSleepingQueue()) {
-    JobLog::vNoteState(pTask->pJob(),"Wakeup"_Stz);
     vTask_Able(pTask);
     vTask_Schedule(pTask);
     // **do not touch task**
@@ -1106,8 +1079,6 @@ void Scheduler::vTask_Yield(Task* pTask)
 
   Thread* pThread = Thread::pThisTLSThread();
   
-  JobLog::vNoteState(pTask->pJob(),"Yield"_Stz);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // no other ready to run tasks, so thread continues executing the task
   
@@ -1209,8 +1180,6 @@ bool Scheduler::bThread_AssignIdle(Task* pTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  JobLog::vNoteState(pTask->pJob(),"AssignIdle"_Stz);
-  
   RASSERT(HS_IDLE == pThread->m_eThreadState);
 
   pThread->m_pTask = pTask;
@@ -1222,7 +1191,7 @@ bool Scheduler::bThread_AssignIdle(Task* pTask)
               "Task has popped and assigned an idle thread to itself"_Stz); //!format-LogTsk
   
   AM::vLogTsk(SL_INF,pTask,TA_TSK_SIGNAL_THREAD,
-              "Task signals thread"_Stz); //!format-LogTsk
+              "Task signals its assigned thread"_Stz); //!format-LogTsk
   
   pThread->m_pMutexThread->vMutexLock(pTask);
   pThread->m_pMutexThread->vCondSignal();
