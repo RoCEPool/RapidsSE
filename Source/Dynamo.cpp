@@ -162,8 +162,7 @@ bool Dynamo::bCompileStage(void)
   
   vAcceptToken();
   
-  if (m_pTkn->bSame("on"_Stz))
-    bCompileTopology();
+  bCompileTopology();
   
   if (bIsOperator(m_pTkn))
     bCompilePipe();
@@ -180,8 +179,8 @@ bool Dynamo::bCompileTopology(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  ASSERT(m_pTkn->bSame("on"_Stz));
-  vAcceptToken();
+  if (m_pTkn->bSame("on"_Stz))
+    vAcceptToken();
   
   // -- -- -- -- -- -- -- -- -- -- --
   // on all nodes | partitions :
@@ -267,7 +266,19 @@ bool Dynamo::bCompileTopology(void)
       return true;
     }
   }
+
+  // -- -- -- -- -- -- -- -- -- -- --
+  // :
   
+  if (m_pTkn->bSame(":"_Stz)) {
+    vAcceptToken();
+    
+    vTrace("Topology Phrase recognised :<\n"_Stz);
+    m_pStageSpec->vTopology(PO_NONE);
+    return true;
+  }
+  
+
   // -- -- -- -- -- -- -- -- -- -- --
   vTrace("Topology Phrase not recognised\n"_Stz);
   return false;
