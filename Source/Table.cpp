@@ -8,6 +8,8 @@
 #include "Jobs.h"
 #include "Partitioning.h"
 
+Atomic gixTable;
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -87,6 +89,15 @@ Table::Table(void)
   m_pStreamDef = new StreamDef;
   
   _checkInitialised_(CN_TABLE);
+  
+  ++ gixTable;
+  
+  Job* pJob = AM::pThisTLSJob();
+  
+  AM::vLogDdl(SL_INF,pJob,DA_DDL_CREATE_TABLE,
+              "%s |gixTable=%lld|"_Stz, //!format-LogOpr
+              m_sTableName.aStz(),* gixTable);
+
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 }

@@ -28,7 +28,7 @@ static Stz* aDA[]
   /*  0 */ "DA_DDL_CREATE_CATALOG"_Stz,
   /*  0 */ "DA_DDL_CREATE_INDEX"_Stz,
   /*  0 */ "DA_DDL_CREATE_SCHEMA"_Stz,
-  /*  0 */ "DA_DDL_CREATE_TABLE"_Stz
+  /*  0 */ "DA_DDL_CREATE_TABLE"_Stz,
   /*  0 */ "DA_DDL_CREATE_TENANT"_Stz,
   /*  0 */ "DA_DDL_DROP_CATALOG"_Stz,
   /*  0 */ "DA_DDL_DROP_INDEX"_Stz,
@@ -46,7 +46,7 @@ static Stz* aDA_short[]
   /*  0 */ "create catalog"_Stz,
   /*  0 */ "create index"_Stz,
   /*  0 */ "create schema"_Stz,
-  /*  0 */ "create table"_Stz
+  /*  0 */ "create table"_Stz,
   /*  0 */ "create tenant"_Stz,
   /*  0 */ "drop catalog"_Stz,
   /*  0 */ "drop index"_Stz,
