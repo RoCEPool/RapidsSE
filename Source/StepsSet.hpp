@@ -1112,8 +1112,6 @@ private:
 
   // thread
   static void vThreadBind(Tasks::MP_Task mpTask);
-  static void vThreadCondSignal(Tasks::MP_Task mpTask);
-  static void vThreadCondWait(Tasks::MP_Task mpTask);
   static void vThreadCpu(Tasks::MP_Task mpTask);
   static void vThreadDedicatedFetch(Tasks::MP_Task mpTask);
   static void vThreadDedicatedStore(Tasks::MP_Task mpTask);
