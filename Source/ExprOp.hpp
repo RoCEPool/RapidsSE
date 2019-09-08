@@ -26,7 +26,7 @@ namespace DataOperators
     void* operator new(size_t);
     void  operator delete(void*);
     
-    ExprOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR);
+    ExprOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec=nullptr);
    ~ExprOp(void) noexcept(false);
   
     static Op* pNew(Stz* szLabel,
