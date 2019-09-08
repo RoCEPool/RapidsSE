@@ -44,7 +44,7 @@ namespace Resources
     static void vMonitorPortrait(s48K& sPortrait);
   
     void vCondBroadcast(void);
-    void vCondSignal(void);
+    void vCondSignal(Focal* pByWhom);
     void vCondWaitIndefinite(Focal* pByWhom);
     void vCondWaitUsec(i8 iMicroSeconds);
     void vFocalOutline(s4K& sOutline);

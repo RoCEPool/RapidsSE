@@ -230,7 +230,7 @@ void Mutex::vCondBroadcast(void)
 /*----------------------------------------------------------------------------*/
 /* signal the condition variable of this mutex                                */
 /*----------------------------------------------------------------------------*/
-void Mutex::vCondSignal(void)
+void Mutex::vCondSignal(Focal* pByWhom)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -239,7 +239,8 @@ void Mutex::vCondSignal(void)
   //!
   ASSERT(m_bLocked);
   ASSERT(bMutexIsLocked());
-  
+  ASSERT(pByWhom == m_pLockedBy);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
 #ifdef WITH_STATISTICS_COUNTERS

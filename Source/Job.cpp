@@ -319,7 +319,7 @@ void Job::vSignalJobMutex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_pJobMutex->vCondSignal();
+  m_pJobMutex->vCondSignal(this);
 
 //  i8 rCode = pthread_cond_signal(&m_xThreadCond);
 //

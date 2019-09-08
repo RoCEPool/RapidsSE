@@ -1194,7 +1194,7 @@ bool Scheduler::bThread_AssignIdle(Task* pTask)
               "Task signals its assigned thread"_Stz); //!format-LogTsk
   
   pThread->m_pMutexThread->vMutexLock(pTask);
-  pThread->m_pMutexThread->vCondSignal();
+  pThread->m_pMutexThread->vCondSignal(pTask);
   pThread->m_pMutexThread->vMutexUnlock(pTask);
   
   // mutex can now be acquired by the m_pPthread of pThread
