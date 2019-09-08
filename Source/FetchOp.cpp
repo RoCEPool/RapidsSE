@@ -6,7 +6,7 @@
 
 OpDesc __Op_Fetch (
   CN_FETCHOP,         // class number
-  OK_SIMPLE,          // op kind
+  OK_SOURCE,          // op kind
   "Fetch"_Stz,        // first word of prompt command
   "Fet"_Stz,          // prefix
   true,               // partitioned

@@ -6,7 +6,7 @@
 
 OpDesc __Op_Zed (
   CN_ZEDOP,         // class number
-  OK_SIMPLE,        // op kind
+  OK_SINK,          // op kind
   "Zed"_Stz,        // first word of prompt command
   "Zed"_Stz,        // prefix
   false,            // partitioned

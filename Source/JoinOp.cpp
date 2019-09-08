@@ -5,16 +5,16 @@
 #include "DataOperators.h"
 
 OpDesc __Op_Join (
-   CN_JOINOP,          // class number
-   OK_SIMPLE,          // op kind
-   "Join"_Stz,         // first word of prompt command
-   "Joi"_Stz,          // prefix
-   true,               // partitioned
-   JoinOp::pNew,       // function which parses the command and new's an op
-   JoinOp::eCall,      // function which calls the op loop
-   nullptr,            // function which calls the drain loop
-   
-   "<help>"_Stz
+  CN_JOINOP,          // class number
+  OK_DUPLEX,          // op kind
+  "Join"_Stz,         // first word of prompt command
+  "Joi"_Stz,          // prefix
+  true,               // partitioned
+  JoinOp::pNew,       // function which parses the command and new's an op
+  JoinOp::eCall,      // function which calls the op loop
+  nullptr,            // function which calls the drain loop
+
+  "<help>"_Stz
 );
 
 

@@ -6,7 +6,7 @@
 
 OpDesc __Op_Output (
    CN_OUTPUTOP,         // class number
-   OK_SIMPLE,           // op kind
+   OK_SINK,             // op kind
    "Output"_Stz,        // first word of prompt command
    "Out"_Stz,           // prefix
    false,               // partitioned
