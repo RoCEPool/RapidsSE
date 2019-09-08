@@ -780,7 +780,7 @@ void Pthread::vThreadPriority(i8 iPriority)
 /*----------------------------------------------------------------------------*/
 bool Pthread::bIsCppThread(void)
 {
-  if (-1 != (int)giTLS_ThreadKey)
+  if (C_UNKNOWN != (int)giTLS_ThreadKey)
     return true;
   else
     return false;
@@ -791,7 +791,7 @@ bool Pthread::bIsCppThread(void)
 /*----------------------------------------------------------------------------*/
 bool Pthread::bIsJavaThread(void)
 {
-  if (-1 == (int)giTLS_ThreadKey)
+  if (C_UNKNOWN == (int)giTLS_ThreadKey)
     return true;
   else
     return false;
