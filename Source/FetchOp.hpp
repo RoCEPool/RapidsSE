@@ -25,7 +25,7 @@ namespace DataOperators
     void* operator new(size_t);
     void  operator delete(void*);
 
-    FetchOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR);
+    FetchOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec=nullptr);
    ~FetchOp(void) noexcept(false);
 
     static Op* pNew(Stz* szLabel,

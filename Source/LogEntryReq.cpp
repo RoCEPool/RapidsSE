@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* set entry                                                                  */
 /*----------------------------------------------------------------------------*/
-void _LogEntryReq::vSet(LogEntry* pLogEntry, Request* pRequest, eMA eReqAct)
+void _LogEntryReq::vSet(LogEntry* pLogEntry, Request* pRequest, eCA eReqAct)
 {
   pLogEntry->m_eKind   = EK_REQ;
   pLogEntry->m_cPrefix = ' ';
@@ -18,10 +18,10 @@ void _LogEntryReq::vSet(LogEntry* pLogEntry, Request* pRequest, eMA eReqAct)
   m_iReqId  = pRequest->m_iUniqueId;
   m_eReqAct = eReqAct;
   
-  if (MA_REQ_CONSTRUCT == eReqAct)
+  if (CA_REQ_CONSTRUCT == eReqAct)
     pLogEntry->m_iIndicator = OC_CONSTRUCT;
   else
-    if (MA_REQ_DESTRUCT == eReqAct)
+    if (CA_REQ_DESTRUCT == eReqAct)
     pLogEntry->m_iIndicator = OC_DESTRUCT;
 }
 
@@ -36,7 +36,7 @@ void _LogEntryReq::vOutline(s4K& sOutline)
   sOutline.vCatSprint(".%s %s"_Stz,
                 
                       spId.sz(IK_REQUEST,m_iReqId),
-                      spString.szRight(aMA[m_eReqAct],24)
+                      spString.szRight(aCA[m_eReqAct],24)
                       );
 }
 
@@ -50,7 +50,7 @@ void _LogEntryReq::vWriteCsv(File* pFile, LogEntry* pEntry)
   pFile->vPrint("%s,%s"_Stz,
                 
                 spId.sz(IK_REQUEST,m_iReqId),
-                aMA[m_eReqAct]);
+                aCA[m_eReqAct]);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,9 +60,9 @@ void _LogEntryReq::vToTxt(s256& sInf, LogEntry* pEntry)
 {
   sInf.vSprint(C_ENTRY_FMT_TXT,
                aCN[pEntry->m_eClass],
-               aMA[m_eReqAct],
+               aCA[m_eReqAct],
                pEntry->szIndicator(),
-               aMA_short[m_eReqAct],
+               aCA_short[m_eReqAct],
                pEntry->m_caNote);
 }
 

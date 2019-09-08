@@ -55,8 +55,8 @@ void GetKeyOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-GetKeyOp::GetKeyOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
-: Op(CN_GETKEYOP,szOpLabel,pDigest,aOpDefn,bAppR)
+GetKeyOp::GetKeyOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec)
+: Op(CN_GETKEYOP,szOpLabel,pDigest,aOpDefn,bAppR,pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GETKEYOP,_FOOTER_);
   

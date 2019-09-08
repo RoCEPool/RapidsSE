@@ -58,13 +58,57 @@ DynamicSpec::~DynamicSpec(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add op spec                                                                */
+/* add stage spec                                                             */
 /*----------------------------------------------------------------------------*/
 void DynamicSpec::vAddStageSpec(StageSpec* pStageSpec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMICSPEC,_FOOTER_);
   
   m_pStageSpecVec->vAdd(pStageSpec);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add stage spec                                                             */
+/*----------------------------------------------------------------------------*/
+Stz* DynamicSpec::szName(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMICSPEC,_FOOTER_);
+  
+  return m_sName.aStz();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stage spec                                                             */
+/*----------------------------------------------------------------------------*/
+StageSpec* DynamicSpec::pStageSpec(i8 i_Stage)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMICSPEC,_FOOTER_);
+  
+  StageSpec* pStageSpec = m_pStageSpecVec->pGet(i_Stage);
+  
+  return pStageSpec;
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* print dynamic spec                                                         */
+/*----------------------------------------------------------------------------*/
+void DynamicSpec::vPrint(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMICSPEC,_FOOTER_);
+  
+  vTrace("dynamic\n"_Stz);
+  vTrace("\n"_Stz);
+  vTrace("plan %s\n"_Stz,m_sName.aStz());
+  vTrace("begin\n"_Stz);
+  
+  for (i8 i_Stage = 0; i_Stage < m_pStageSpecVec->nItems(); i_Stage++)
+    m_pStageSpecVec->pGet(i_Stage)->vPrint();
+
+  vTrace("\n"_Stz);
+  vTrace("end\n"_Stz);
 }
 
 

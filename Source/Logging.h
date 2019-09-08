@@ -17,10 +17,12 @@ namespace Logging
 
 #include "ShmLog.hpp"
 
+#include "LogEntryDdl.hpp"
 #include "LogEntryFyi.hpp"
 #include "LogEntryJob.hpp"
 #include "LogEntryLck.hpp"
 #include "LogEntryLog.hpp"
+#include "LogEntryMgt.hpp"
 #include "LogEntryOp.hpp"
 #include "LogEntryPrm.hpp"
 #include "LogEntryQue.hpp"

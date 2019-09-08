@@ -12,6 +12,8 @@ namespace Operators
   protected:  
     s32            m_sName;          // first word of prompt command
   
+    OpSpec*        m_pOpSpec;        // op specification
+  
     s32            m_sLabel;         // label of this op
     s256           m_sArgs;          // args of this op   (initial dev only)
     s32            m_sNextLabel;     // label of this op
@@ -46,7 +48,7 @@ namespace Operators
   public:
     void  operator delete(void*);
   
-    Op(eCN eClass, Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR);
+    Op(eCN eClass, Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec);
    ~Op(void) noexcept(false);
   
     static Op* pThisTLSOp(void);

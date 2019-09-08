@@ -7,46 +7,50 @@ enum eEK // entry kind
 {
   /* 0 */ EK_NONE=0,
   
-  /* 1 */ EK_FYI,
-  /* 2 */ EK_JOB,
-  /* 3 */ EK_LCK,
-  /* 4 */ EK_LOG,
-  /* 5 */ EK_OPR,
-  /* 6 */ EK_PRM,
-  /* 7 */ EK_QUE,
-  /* 8 */ EK_REQ,
-  /* 9 */ EK_RES,
-  /*10 */ EK_SSN,
-  /*11 */ EK_SVC,
-  /*12 */ EK_SYS,
-  /*13 */ EK_THD,
-  /*14 */ EK_TSK,
-  /*15 */ EK_TXN,
+  /* 1 */ EK_DDL,
+  /* 2 */ EK_FYI,
+  /* 3 */ EK_JOB,
+  /* 4 */ EK_LCK,
+  /* 5 */ EK_LOG,
+  /* 6 */ EK_OPR,
+  /* 7 */ EK_MGT,
+  /* 8 */ EK_PRM,
+  /* 9 */ EK_QUE,
+  /*10 */ EK_REQ,
+  /*11 */ EK_RES,
+  /*12 */ EK_SSN,
+  /*13 */ EK_SVC,
+  /*14 */ EK_SYS,
+  /*15 */ EK_THD,
+  /*16 */ EK_TSK,
+  /*17 */ EK_TXN,
   
-  /*16 */ EK_ENUMS
+  /*18 */ EK_ENUMS
 };
 
 static Stz* aEK[]
 {
   /* 0 */ "NONE"_Stz,
   
-  /* 1 */ "FYI"_Stz,
-  /* 2 */ "JOB"_Stz,
-  /* 3 */ "LCK"_Stz,
-  /* 4 */ "LOG"_Stz,
-  /* 5 */ "OPR"_Stz,
-  /* 6 */ "PRM"_Stz,
-  /* 7 */ "QUE"_Stz,
-  /* 8 */ "REQ"_Stz,
-  /* 9 */ "RES"_Stz,
-  /*10 */ "SSN"_Stz,
-  /*11 */ "SVC"_Stz,
-  /*12 */ "SYS"_Stz,
-  /*13 */ "THD"_Stz,
-  /*14 */ "TSK"_Stz,
-  /*15 */ "TXN"_Stz,
+  /* 1 */ "DDL"_Stz,
+  /* 2 */ "FYI"_Stz,
+  /* 3 */ "JOB"_Stz,
+  /* 4 */ "LCK"_Stz,
+  /* 5 */ "LOG"_Stz,
+  /* 6 */ "MGT"_Stz,
+  /* 7 */ "OPR"_Stz,
+  /* 8 */ "PRM"_Stz,
+  /* 9 */ "QUE"_Stz,
+  /*10 */ "REQ"_Stz,
+  /*11 */ "RES"_Stz,
+  /*12 */ "SSN"_Stz,
+  /*13 */ "SVC"_Stz,
+  /*14 */ "SYS"_Stz,
+  /*15 */ "THD"_Stz,
+  /*16 */ "TSK"_Stz,
+  /*17 */ "TXN"_Stz,
   
-  /*16 */ "ENUMS"_Stz
+  /*18 */ "ENUMS"_Stz
 };
 
 /*============================================================================*/

@@ -434,6 +434,26 @@ i8 Log::iEntryFyi(eCN eClassNo,
 }
 
 /*----------------------------------------------------------------------------*/
+/* add a ddl log entry                                                        */
+/*----------------------------------------------------------------------------*/
+i8 Log::iEntryDdl(eSL eSeverity, Job* pJob, eDA eDdlAct,
+                  Stz* szFormat, va_list xVaArgs)
+{
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
+  
+  LogEntry* pLogEntry = pNewEntry(eSeverity,pJob,szFormat,xVaArgs);
+  
+  if (! pLogEntry)
+    return C_UNKNOWN;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  pLogEntry->m_xDdl.vSet(pLogEntry,pJob,eDdlAct);
+  
+  return pLogEntry->m_i_Entry;
+}
+
+/*----------------------------------------------------------------------------*/
 /* add a job log entry                                                        */
 /*----------------------------------------------------------------------------*/
 i8 Log::iEntryJob(eSL eSeverity, Job* pJob, eJA eJobAct,
@@ -489,6 +509,26 @@ i8 Log::iEntryLog(eSL eSeverity, Log* pLog, eGA eLogAct,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   pLogEntry->m_xLog.vSet(pLogEntry,pLog,eLogAct);
+  
+  return pLogEntry->m_i_Entry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a management log entry                                                 */
+/*----------------------------------------------------------------------------*/
+i8 Log::iEntryMgt(eSL eSeverity, Job* pJob, eMA eMgtAct,
+                  Stz* szFormat, va_list xVaArgs)
+{
+  _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
+  
+  LogEntry* pLogEntry = pNewEntry(eSeverity,pJob,szFormat,xVaArgs);
+  
+  if (! pLogEntry)
+    return C_UNKNOWN;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  pLogEntry->m_xMgt.vSet(pLogEntry,pJob,eMgtAct);
   
   return pLogEntry->m_i_Entry;
 }
@@ -556,7 +596,7 @@ i8 Log::iEntryQue(eSL eSeverity, Queues* pQue, eQA eQueAct,
 /*----------------------------------------------------------------------------*/
 /* add a request log entry                                                    */
 /*----------------------------------------------------------------------------*/
-i8 Log::iEntryReq(eSL eSeverity, Request* pRequest, eMA eReqAct,
+i8 Log::iEntryReq(eSL eSeverity, Request* pRequest, eCA eReqAct,
                   Stz* szFormat, va_list xVaArgs)
 {
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);

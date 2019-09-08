@@ -423,6 +423,31 @@ void AM::vLogFyi(Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add a ddl log entry                                                        */
+/*----------------------------------------------------------------------------*/
+void AM::vLogDdl(eSL eSeverity, Job* pJob, eDA eDdlAct, Stz* szFormat, ...)
+{
+#ifdef WITH_SHARED_LOG
+  if (! AM::bLogging())
+    return;
+  
+  if (! gpLog->bIsLoggable(pJob))
+    return;
+  
+  va_list xVaArgs;
+  
+  va_start(xVaArgs,szFormat);
+  
+  i8 i_Entry = gpLog->iEntryDdl(eSeverity,pJob,eDdlAct,
+                                szFormat,xVaArgs);
+  
+  va_end(xVaArgs);
+  
+  pJob->m_i_Log = i_Entry;
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
 /* add a job log entry                                                        */
 /*----------------------------------------------------------------------------*/
 void AM::vLogJob(eSL eSeverity, Job* pJob, eJA eJobAct, Stz* szFormat, ...)
@@ -494,6 +519,31 @@ void AM::vLogLog(eSL eSeverity, Log* pLog, eGA eLogAct, Stz* szFormat, ...)
   va_end(xVaArgs);
   
   pLog->m_i_Log = i_Entry;
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a management log entry                                                 */
+/*----------------------------------------------------------------------------*/
+void AM::vLogMgt(eSL eSeverity, Job* pJob, eMA eMgtAct, Stz* szFormat, ...)
+{
+#ifdef WITH_SHARED_LOG
+  if (! AM::bLogging())
+    return;
+  
+  if (! gpLog->bIsLoggable(pJob))
+    return;
+  
+  va_list xVaArgs;
+  
+  va_start(xVaArgs,szFormat);
+  
+  i8 i_Entry = gpLog->iEntryMgt(eSeverity,pJob,eMgtAct,
+                                szFormat,xVaArgs);
+  
+  va_end(xVaArgs);
+  
+  pJob->m_i_Log = i_Entry;
 #endif
 }
 
@@ -575,7 +625,7 @@ void AM::vLogQue(eSL eSeverity, Queues* pQue, eQA eQueAct, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add a request log entry                                                    */
 /*----------------------------------------------------------------------------*/
-void AM::vLogReq(eSL eSeverity, Request* pReq, eMA eReqAct, Stz* szFormat, ...)
+void AM::vLogReq(eSL eSeverity, Request* pReq, eCA eReqAct, Stz* szFormat, ...)
 {
 #ifdef WITH_SHARED_LOG
   if (! AM::bLogging())

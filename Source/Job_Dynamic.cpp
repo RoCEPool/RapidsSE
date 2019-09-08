@@ -166,8 +166,25 @@ bool Job_Dynamic::bPopulateJob(Session* pSession, TokenVec* pTknVec)
   if (pTknVec->pGet(1)->bSame("plan"_Stz)) {
     Dynamo* pDynamo = new Dynamo(pTknVec);
     bool bSuccess = pDynamo->bCompile();
+    
+    DynamicSpec* pDynamicSpec = pDynamo->pDynamicSpec();
+    StageSpec*   pStageSpec   = pDynamicSpec->pStageSpec(0);
+    
+    s4K sPipe("dynamic "_Stz);
+    pStageSpec->vToPipeStr(sPipe.aStz());
+    vTrace("Restated stage 0: ]]%s[[\n"_Stz,sPipe.aStz());
+    
+    Tokeniser::vTokenise(pTknVec,sPipe);
+    
+    SP_TknVecStr spTknVecStr;
+    vTrace("TknVecStr ]]%s[[\n"_Stz,spTknVecStr.sz(pTknVec));
+
+    if (! pDynamicSpec->szName()->bSame("lineItem_dyn"_Stz)) {
+      delete pDynamo;
+      return bSuccess;
+    }
+    
     delete pDynamo;
-    return bSuccess;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

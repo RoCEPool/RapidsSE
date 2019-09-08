@@ -290,6 +290,7 @@ void LogEntry::vWriteTxt(File* pFile)
   vWriteTxtEntry(pFile);
   
   switch (m_eKind) {
+    case EK_DDL: m_xDdl.vToTxt(sInf,this); break;
     case EK_FYI: m_xFyi.vToTxt(sInf,this); break;
     case EK_JOB: m_xJob.vToTxt(sInf,this); break;
     case EK_LCK: m_xLck.vToTxt(sInf,this); break;

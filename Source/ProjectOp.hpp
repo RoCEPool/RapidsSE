@@ -21,7 +21,7 @@ namespace DataOperators
     void* operator new(size_t);
     void  operator delete(void*);
     
-    ProjectOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR);
+    ProjectOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec=nullptr);
    ~ProjectOp(void) noexcept(false);
   
     static Op* pNew(Stz* szLabel,

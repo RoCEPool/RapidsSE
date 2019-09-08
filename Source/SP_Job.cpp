@@ -32,7 +32,27 @@ SP_Job::~SP_Job(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* sprint Header and return Stz* to result                                    */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Job::sz(Job* pJob)
+Stz* SP_Job::sz_log(Job* pJob)
+{
+  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  
+  SP_ReqTuple spReqTuple;
+  
+  StrLib::vSprint(m_caResult,
+                  "{%s}%s"_Stz,
+                  
+                  aCN[pJob->eClass()],
+                  spReqTuple.sz(&pJob->m_xReqTuple),
+                  
+                  C_ENDARGS);
+  
+  return (Stz*) &m_caResult[0];
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint Header and return Stz* to result                                    */
+/*----------------------------------------------------------------------------*/
+Stz* SP_Job::sz_recv(Job* pJob)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   

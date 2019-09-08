@@ -9,6 +9,8 @@ namespace Dynamics
   {
   private:
     s32 m_sName;
+  
+    s4K m_sArgs;
 
     // must be last
     Footer m_xFooter;
@@ -19,6 +21,12 @@ namespace Dynamics
   
     OpSpec(Stz* szName);
    ~OpSpec(void) noexcept(false);
+  
+    Stz* szArgs(void);
+    void vArgs(Stz* szArgs);
+    Stz* szName(void);
+  
+    void vPrint(void);
   
     Footer* aFooter(void);
   };

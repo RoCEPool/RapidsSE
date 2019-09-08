@@ -55,8 +55,8 @@ void SuperMergeOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SuperMergeOp::SuperMergeOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
-: Op(CN_SUPERMERGEOP,szOpLabel,pDigest,aOpDefn,false)
+SuperMergeOp::SuperMergeOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec)
+: Op(CN_SUPERMERGEOP,szOpLabel,pDigest,aOpDefn,false,pOpSpec)
 {
   _precondition_(_MAGIC_,CN_SUPERMERGEOP);
   

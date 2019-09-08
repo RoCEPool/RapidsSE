@@ -61,13 +61,15 @@ namespace Logging
   //private:
     i8 iEntryFyi(eCN eClass, Stz* szFormat, va_list xArgs);
   
+    i8 iEntryDdl(eSL, Job*       pJob, eDA eDdlAct, Stz* szFormat, va_list xArgs);
     i8 iEntryJob(eSL, Job*       pJob, eJA eJobAct, Stz* szFormat, va_list xArgs);
     i8 iEntryLck(eSL, Lock*      pLck, eLA eLckAct, Stz* szFormat, va_list xArgs);
     i8 iEntryLog(eSL, Log*       pLog, eGA eLogAct, Stz* szFormat, va_list xArgs);
     i8 iEntryOpr(eSL, Op*        pOpr, eOA eOprAct, Stz* szFormat, va_list xArgs);
+    i8 iEntryMgt(eSL, Job*       pJob, eMA eMgtAct, Stz* szFormat, va_list xArgs);
     i8 iEntryPrm(eSL, SePrompt*  pPrm, ePA ePrmAct, Stz* szFormat, va_list xArgs);
     i8 iEntryQue(eSL, Queues*    pQue, eQA eQueAct, Stz* szFormat, va_list xArgs);
-    i8 iEntryReq(eSL, Request*   pReq, eMA eReqAct, Stz* szFormat, va_list xArgs);
+    i8 iEntryReq(eSL, Request*   pReq, eCA eReqAct, Stz* szFormat, va_list xArgs);
     i8 iEntryRes(eSL, Resource*  pRes, eRA eResAct, Stz* szFormat, va_list xArgs);
     i8 iEntrySsn(eSL, Session*   pSsn, eAA eApiAct, Stz* szFormat, va_list xArgs);
     i8 iEntrySvc(eSL, Job*       pJob, eVA eSvcAct, Stz* szFormat, va_list xArgs);

@@ -9,10 +9,10 @@ namespace Logging
   {
   public:
     i8   m_iReqId;  // command id
-    eMA  m_eReqAct; // command action
+    eCA  m_eReqAct; // command action
   
   public:
-    void vSet(LogEntry* pLogEntry, Request* pRequest, eMA eReqAct);
+    void vSet(LogEntry* pLogEntry, Request* pRequest, eCA eReqAct);
   
     void vOutline(s4K& sOutline);
 

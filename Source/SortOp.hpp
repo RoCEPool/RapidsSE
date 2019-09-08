@@ -16,7 +16,7 @@ namespace DataOperators
     void* operator new(size_t);
     void  operator delete(void*);
     
-    SortOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR);
+    SortOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec=nullptr);
    ~SortOp(void) noexcept(false);
   
     static Op* pNew(Stz* szLabel,
