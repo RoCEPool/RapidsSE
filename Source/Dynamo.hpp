@@ -41,6 +41,7 @@ namespace Dynamics
     void vAcceptToken(void);
     void vBeginToken(i8 i_Tkn);
     DynamicSpec* pDynamicSpec(void);
+    void vDynamicSpec(DynamicSpec* pDynamicSpec);
     bool bIsOperator(Token* pTkn);
 
     Footer* aFooter(void);
