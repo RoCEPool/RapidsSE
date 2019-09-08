@@ -582,6 +582,7 @@ void Mutex::vMutexLock(Focal* pByWhom)
   
   if (0 == iRetVal) {
     RASSERT(! m_bLocked);
+    RASSERT(! m_pLockedBy);
     
     m_bLocked   = true;
     m_pLockedBy = pByWhom;
