@@ -344,7 +344,7 @@ void Job::vWaitJobMutex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
  
-  m_pJobMutex->vCondWaitIndefinite();
+  m_pJobMutex->vCondWaitIndefinite(this);
 }
 
 /*----------------------------------------------------------------------------*/

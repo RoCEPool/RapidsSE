@@ -280,7 +280,7 @@ void Mutex::vCondSignal(void)
 /*----------------------------------------------------------------------------*/
 /* calling thread waits indefinitely to be signaled           (blocking call) */
 /*----------------------------------------------------------------------------*/
-void Mutex::vCondWaitIndefinite(void)
+void Mutex::vCondWaitIndefinite(Focal* pByWhom)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -293,7 +293,8 @@ void Mutex::vCondWaitIndefinite(void)
   //!
   ASSERT(m_bLocked);
   ASSERT(bMutexIsLocked());
-  
+  ASSERT(pByWhom == m_pLockedBy);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
 #ifdef WITH_STATISTICS_COUNTERS
