@@ -16,7 +16,7 @@ namespace DataOperators
     void* operator new(size_t);
     void  operator delete(void*);
   
-    InflateOp(OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR);
+    InflateOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn, bool bAppR);
    ~InflateOp(void) noexcept(false);
   
     static Op* pNew(OpSpec* pOpSpec, Digest* pDigest,

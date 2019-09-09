@@ -19,7 +19,7 @@ namespace DataOperators
     void* operator new(size_t);
     void  operator delete(void*);
   
-    LimitOp(OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR);
+    LimitOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn, bool bAppR);
    ~LimitOp(void) noexcept(false);
   
     static Op* pNew(OpSpec* pOpSpec, Digest* pDigest,

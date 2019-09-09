@@ -19,7 +19,7 @@ namespace DataOperators
     void* operator new(size_t);
     void  operator delete(void*);
     
-    SuperAggOp(OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR);
+    SuperAggOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn, bool bAppR);
    ~SuperAggOp(void) noexcept(false);
   
     static Op* pNew(OpSpec* pOpSpec, Digest* pDigest,

@@ -55,7 +55,7 @@ void ExprOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ExprOp::ExprOp(OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR)
+ExprOp::ExprOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
 : Op(CN_EXPROP,pOpSpec,pDigest,aOpDefn,bAppR)
 {
   _precondition_(_MAGIC_,CN_EXPROP);
@@ -99,7 +99,7 @@ Op* ExprOp::pNew(OpSpec* pOpSpec, Digest* pDigest,
   i_Tkn_++;
   ASSERT(i_Slot != -1);
   
-  ExprOp* pExprOp = new ExprOp(pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR);
+  ExprOp* pExprOp = new ExprOp(pOpSpec,pDigest,aOpDefn,bAppR);
   pExprOp->m_iTkn = i_Tkn_;
   pExprOp->m_pTknVec = pTknVec;
   
