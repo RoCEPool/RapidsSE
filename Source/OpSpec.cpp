@@ -28,15 +28,37 @@ void OpSpec::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OpSpec::OpSpec(Stz* szName)
+OpSpec::OpSpec(Stz* szOpName)
 : Object(CN_OPSPEC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_sName = szName;
+  //m_sLabel
+  m_sName = szOpName;
+  m_bAppendRight = false;
+  
   //m_sArgs
   
    _checkInitialised_(CN_OPSPEC);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+OpSpec::OpSpec(Stz* szOpLabel, Stz* szOpName, bool bAppR)
+: Object(CN_OPSPEC)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  m_sLabel = szOpLabel;
+  m_sName  = szOpName;
+  m_bAppendRight = bAppR;
+  
+  //m_sArgs
+  
+  _checkInitialised_(CN_OPSPEC);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
 }
@@ -53,6 +75,16 @@ OpSpec::~OpSpec(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get append right                                                           */
+/*----------------------------------------------------------------------------*/
+bool OpSpec::bAppendRight(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  return m_bAppendRight;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get args                                                                   */
@@ -72,6 +104,16 @@ void OpSpec::vArgs(Stz* szArgs)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
   m_sArgs = szArgs;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get label                                                                  */
+/*----------------------------------------------------------------------------*/
+Stz* OpSpec::szLabel(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  return m_sLabel.aStz();
 }
 
 /*----------------------------------------------------------------------------*/
