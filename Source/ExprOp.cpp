@@ -8,7 +8,7 @@ OpDesc __Op_Expr (
    CN_EXPROP,        // class number
    OK_SIMPLE,        // op kind
    "Expr"_Stz,       // first word of prompt command
-   "Exp"_Stz,       // prefix
+   "Exp"_Stz,        // prefix
    true,             // partitioned
    ExprOp::pNew,     // function which parses the command and new's an op
    ExprOp::eCall,    // function which calls the op loop
@@ -37,7 +37,7 @@ ExprOp* DataOperators::_pExprOp(void* aAddr)
 void* ExprOp::operator new(size_t)
 {
   ExprOp* pExprOp =
-  static_cast<ExprOp*>(HeapMem::pAllocate(CN_COUNTOP));
+  static_cast<ExprOp*>(HeapMem::pAllocate(CN_EXPROP));
   
   return pExprOp;
 }
@@ -64,14 +64,15 @@ ExprOp::ExprOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpS
   m_pStreamDef = new StreamDef;
   
   m_pOriginalStreamDef = nullptr;
-  m_pCalculator        = new Calculator;
   m_pIrwBuffer         = new IrwBuffer;
+  m_pTknVec            = nullptr;
+  m_iTkn               = C_UNKNOWN;
   
-  for (i8 i_ColVec = 0; i_ColVec < C_MAX_COLUMNVECS; i_ColVec++)
-    m_iWhichVec[i_ColVec] = C_UNKNOWN;
-  
-  for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
+  for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
     m_iWhichCol[i_Col] = C_UNKNOWN;
+    m_iWhichVec[i_Col] = C_UNKNOWN;
+    m_pCalculator[i_Col] = nullptr;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,37 +100,13 @@ Op* ExprOp::pNew(Stz* szLabel,
   ASSERT(i_Slot != -1);
   
   ExprOp* pExprOp = new ExprOp(szLabel,pDigest,aOpDefn,bAppR);
+  pExprOp->m_iTkn = i_Tkn_;
+  pExprOp->m_pTknVec = pTknVec;
   
-  // create a columnVec in the stream def
-  pExprOp->m_pStreamDef->m_oColVecAry.vItems(1);
-  ColumnVec* pColVec = pExprOp->m_pStreamDef->pColumnVec(0);
-  
-  // add columns to the columnVec
-  i8 i_Column = 0;
-  pExprOp->m_iStartTkn = i_Tkn_;
-  pExprOp->m_pTokenVec = pTknVec;
   while ( ! pTknVec->pGet(i_Tkn_)->bSame("|"_Stz) ) {
-    
-    if ( pTknVec->pGet(i_Tkn_)->bSame(","_Stz)) {
-      pExprOp->m_iEndTkn = ++i_Tkn_;
-      i_Tkn_++;
-    }
-      
-    if ( ! pTknVec->pGet(i_Tkn_)->bIsName()) {
-      i_Tkn_++;
-      continue;
-    }
-    
-    // create a column
-    Column* pColumn = new Column();
-    pColumn->vColumnNo(i_Column);
-    pColumn->vColumnName(pTknVec->pGet(i_Tkn_++)->szText());
-    pColVec->vAdd(pColumn);
-    
-    i_Column++;
-      
+    i_Tkn_++;
   }
-  pExprOp->m_iEndTkn = ++i_Tkn_;
+  
   return pExprOp;
 }
 
@@ -211,8 +188,10 @@ eOR ExprOp::eOpLoop(void)
           
           pCrwBuffer->vGetRow(hRow, i_Row);
           
-          i8 iRes = m_pCalculator->iEvaluate(hRow);
-          pNewRow->m_waColVal[0].m_iInt = iRes;
+          for (i8 i_Col = 0; i_Col < m_pStreamDef->pColumnVec(0)->nItems(); i_Col++) {
+            i8 iRes = m_pCalculator[i_Col]->iEvaluate(hRow);
+            pNewRow->m_waColVal[i_Col].m_iInt = iRes;
+          }
         }
         
         break;
@@ -330,8 +309,6 @@ eOR ExprOp::eOpLoop(void)
         // update the streamDef of this project Op
         vUpdateStreamDef();
         
-        bool bResult = m_pCalculator->bCompile(m_pTokenVec, m_pStreamDef, m_iStartTkn, m_iEndTkn);
-        
         // pipe out the streamdef
         vPipeOut(new StreamDef(m_pStreamDef));
         
@@ -403,6 +380,25 @@ L_EXIT:
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+Column* ExprOp::pCreateColumn(i8 i_ExprCol, Stz* sColumnNm, i8 iStartTkn, i8 iEndTkn)
+{
+  // create a column
+  Column* pExprColumn = new Column();
+  pExprColumn->vColumnNo(i_ExprCol);
+  pExprColumn->vColumnName(sColumnNm);
+
+  // find the expression column in the original Stream
+  m_iWhichCol[i_ExprCol] =
+  m_pOriginalStreamDef->iFindColumn(pExprColumn->sColumnName().aChar(),m_iWhichVec[0]);
+
+  // set the column and datum type in the expression column
+  ColumnVec* pColumnVec = m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[0]);
+  Column* pCol = pColumnVec->pGet(m_iWhichCol[i_ExprCol]);
+  pExprColumn->vColumnType(pCol->eColumnType());
+  pExprColumn->vDatumType(pCol->eDatumType());
+  
+  return pExprColumn;
+}
 
 /*----------------------------------------------------------------------------*/
 /* update the stream def columns of the project op                            */
@@ -410,25 +406,51 @@ L_EXIT:
 void ExprOp::vUpdateStreamDef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPROP,_FOOTER_);
-  RASSERT(m_pStreamDef->m_oColVecAry.nItems() == 1);
-  ColumnVec* pExprColumnVec = m_pStreamDef->m_oColVecAry.pGet(0);
-  i8 nExprColumns = pExprColumnVec->nItems();
   
-  // Find the expression col in the streamDef's that came in
+  // create a columnVec in the stream def
+  m_pStreamDef->m_oColVecAry.vItems(1);
+  ColumnVec* pColVec = m_pStreamDef->pColumnVec(0);
   
-  for (i8 i_ExprCol = 0; i_ExprCol < nExprColumns; i_ExprCol++) {
+  // decipher the expressions
+  i8 i_ExprCol = 0;
+  i8 iStartTkn = m_iTkn;
+  i8 iEndTkn = C_UNKNOWN;
+  Stz* sName = ""_Stz;
+  while ( ! m_pTknVec->pGet(m_iTkn)->bSame("|"_Stz) ) {
     
-    // find the project column in the original Stream
-    Column* pExprCol = pExprColumnVec->pGet(i_ExprCol);
-    m_iWhichCol[i_ExprCol] =
-    m_pOriginalStreamDef->iFindColumn(pExprCol->sColumnName().aChar(),m_iWhichVec[i_ExprCol]);
+    if ( m_pTknVec->pGet(m_iTkn)->bSame(","_Stz)) {
+      iEndTkn = m_iTkn - 1;
+      
+      Column* pExprColumn = pCreateColumn(i_ExprCol, sName, iStartTkn, iEndTkn);
+      
+      pColVec->vAdd(pExprColumn);
+      
+      m_pCalculator[i_ExprCol] = new Calculator;
+      bool bResult = m_pCalculator[i_ExprCol]->bCompile(m_pTknVec, m_pOriginalStreamDef, iStartTkn, iEndTkn);
+      RASSERT(bResult);
+      iStartTkn = ++m_iTkn;
+      
+      // move to the next expression column
+      i_ExprCol++;
+    }
     
-    // set the column and datum type in the project column
-    ColumnVec* pColumnVec = m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[i_ExprCol]);
-    Column* pCol = pColumnVec->pGet(m_iWhichCol[i_ExprCol]);
-    pExprCol->vColumnType(pCol->eColumnType());
-    pExprCol->vDatumType(pCol->eDatumType());
+    if ( ! m_pTknVec->pGet(m_iTkn)->bIsName()) {
+      m_iTkn++;
+      continue;
+    }
+    
+    sName = m_pTknVec->pGet(m_iTkn++)->sText();
   }
+  
+  iEndTkn = m_iTkn - 1;
+  
+  Column* pExprColumn = pCreateColumn(i_ExprCol, sName, iStartTkn, iEndTkn);
+  
+  pColVec->vAdd(pExprColumn);
+  
+  m_pCalculator[i_ExprCol] = new Calculator;
+  bool bResult = m_pCalculator[i_ExprCol]->bCompile(m_pTknVec, m_pOriginalStreamDef, iStartTkn, iEndTkn);
+  RASSERT(bResult);
 }
 
 /*----------------------------------------------------------------------------*/

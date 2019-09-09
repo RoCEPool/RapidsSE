@@ -10,7 +10,7 @@ namespace DataOperators
   private:
   
     StreamDef* m_pOriginalStreamDef;
-    i8         m_iWhichVec[C_MAX_COLUMNVECS];
+    i8         m_iWhichVec[C_MAX_COLUMNS];
     i8         m_iWhichCol[C_MAX_COLUMNS];
     i8         m_nSum;
     

@@ -37,7 +37,7 @@ ProjectOp* DataOperators::_pProjectOp(void* aAddr)
 void* ProjectOp::operator new(size_t)
 {
   ProjectOp* pProjectOp =
-  static_cast<ProjectOp*>(HeapMem::pAllocate(CN_COUNTOP));
+  static_cast<ProjectOp*>(HeapMem::pAllocate(CN_PROJECTOP));
   
   return pProjectOp;
 }
@@ -66,11 +66,10 @@ ProjectOp::ProjectOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bApp
   m_pOriginalStreamDef = nullptr;
   m_pIrwBuffer         = new IrwBuffer;
   
-  for (i8 i_ColVec = 0; i_ColVec < C_MAX_COLUMNVECS; i_ColVec++)
-    m_iWhichVec[i_ColVec] = C_UNKNOWN;
-  
-  for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
+  for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
+    m_iWhichVec[i_Col] = C_UNKNOWN;
     m_iWhichCol[i_Col] = C_UNKNOWN;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
