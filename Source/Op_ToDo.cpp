@@ -82,8 +82,8 @@ Op_ToDo::~Op_ToDo(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* Op_ToDo::pNew(Stz* szLabel, Digest* pDigest,
-                  OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec,
+Op* Op_ToDo::pNew(OpSpec* pOpSpec, Stz* szLabel, Digest* pDigest,
+                  OpDefn* aOpDefn, bool bAppR,
                   TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;

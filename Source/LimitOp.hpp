@@ -22,9 +22,8 @@ namespace DataOperators
     LimitOp(OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR);
    ~LimitOp(void) noexcept(false);
   
-    static Op* pNew(Stz* szLabel,
-                    Digest* pDigest,
-                    OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec,
+    static Op* pNew(OpSpec* pOpSpec, Stz* szLabel, Digest* pDigest,
+                    OpDefn* aOpDefn, bool bAppR,
                     TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot);
     static eOR eCall(void* aThis);
     static eOR eDrain(void* aThis);
