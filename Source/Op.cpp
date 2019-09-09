@@ -57,6 +57,7 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* a
 {
   _precondition_(_MAGIC_,eClassNo);
   
+  RASSERT(pOpSpec);
   RASSERT(aOpDefn);
   
   m_sName = aOpDefn->m_szCommand;
@@ -111,6 +112,8 @@ Op::~Op(void) noexcept(false)
   
   if (m_pStreamDef)
     delete m_pStreamDef;
+  
+  delete m_pOpSpec;
   
   -- gixOp;
   AM::vLogOpr(SL_INF,this,OA_OP_DESTRUCT,
