@@ -84,8 +84,8 @@ JoinOp::~JoinOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* JoinOp::pNew(Stz* szLabel,
-                 Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
+Op* JoinOp::pNew(Stz* szLabel, Digest* pDigest,
+                 OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec,
                  TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;

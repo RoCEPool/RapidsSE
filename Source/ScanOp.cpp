@@ -88,8 +88,8 @@ ScanOp::~ScanOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* ScanOp::pNew(Stz* szLabel,
-                 Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
+Op* ScanOp::pNew(Stz* szLabel, Digest* pDigest,
+                 OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec,
                  TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;

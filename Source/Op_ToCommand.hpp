@@ -21,7 +21,8 @@ namespace CompilerOperators
    ~Op_ToCommand(void) noexcept(false);
   
     static Op* pNew(Stz* szLabel,
-                    Digest* pDigest,  OpDefn* aOpDefn, bool bAppR,
+                    Digest* pDigest,
+                    OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec,
                     TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot);
     static eOR eCall(void* aThis);
     static eOR eDrain(void* aThis);

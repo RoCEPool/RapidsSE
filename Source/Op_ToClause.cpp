@@ -90,9 +90,9 @@ Op_ToClause::~Op_ToClause(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* Op_ToClause::pNew(Stz* szLabel,
-                   Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
-                   TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
+Op* Op_ToClause::pNew(Stz* szLabel, Digest* pDigest,
+                      OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec,
+                      TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   ASSERT(i_Slot == -1);

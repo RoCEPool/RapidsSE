@@ -91,9 +91,9 @@ ExprOp::~ExprOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* ExprOp::pNew(Stz* szLabel,
-                    Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
-                    TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
+Op* ExprOp::pNew(Stz* szLabel, Digest* pDigest,
+                 OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec,
+                 TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   ASSERT(i_Slot != -1);
