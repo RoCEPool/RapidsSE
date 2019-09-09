@@ -99,6 +99,32 @@ void LogEntry::vAsTxt(s4K& sString)
   sString.vCatSprint("%-16s"_Stz,
                     aCN[m_eClass]
                    );
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  s256 sInf;
+
+  switch (m_eKind) {
+    case EK_DDL: m_xDdl.vToTxt(sInf,this); break;
+    case EK_FYI: m_xFyi.vToTxt(sInf,this); break;
+    case EK_JOB: m_xJob.vToTxt(sInf,this); break;
+    case EK_LCK: m_xLck.vToTxt(sInf,this); break;
+    case EK_LOG: m_xLog.vToTxt(sInf,this); break;
+    case EK_OPR: m_xOpr.vToTxt(sInf,this); break;
+    case EK_PRM: m_xPrm.vToTxt(sInf,this); break;
+    case EK_QUE: m_xQue.vToTxt(sInf,this); break;
+    case EK_REQ: m_xReq.vToTxt(sInf,this); break;
+    case EK_RES: m_xRes.vToTxt(sInf,this); break;
+    case EK_SSN: m_xSsn.vToTxt(sInf,this); break;
+    case EK_SVC: m_xSvc.vToTxt(sInf,this); break;
+    case EK_SYS: m_xSys.vToTxt(sInf,this); break;
+    case EK_TSK: m_xTsk.vToTxt(sInf,this); break;
+    case EK_THD: m_xThd.vToTxt(sInf,this); break;
+    case EK_TXN: m_xTxn.vToTxt(sInf,this); break;
+    default:
+      NEVER_REACH;
+  }
+
+  sString.vCatSprint(" %s"_Stz,sInf.aStz());
 }
 
 /*----------------------------------------------------------------------------*/
