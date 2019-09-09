@@ -219,6 +219,16 @@ i8 Job::iAsNodeNo_Bits(i8 iNodeNo)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* set the number of acks required by the job                                 */
+/*----------------------------------------------------------------------------*/
+void Job::vAcksRmg(i8 nAcks)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_oAcksRmg.vSetRemaining(nAcks);
+}
+
+/*----------------------------------------------------------------------------*/
 /* focal outline                                                              */
 /*----------------------------------------------------------------------------*/
 void Job::vFocalOutline(s4K& sOutline)
@@ -310,16 +320,6 @@ void Job::vLockJobMutex(void)
 //
 //  if (0 != rCode)
 //    vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the number of acks required by the job                                 */
-/*----------------------------------------------------------------------------*/
-void Job::vSetAckRmg(i8 nAcks)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_oAcksRmg.vSetRemaining(nAcks);
 }
 
 /*----------------------------------------------------------------------------*/

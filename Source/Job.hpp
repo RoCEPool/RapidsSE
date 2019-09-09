@@ -54,13 +54,13 @@ namespace Jobs
     static i8   iOriginatorNode(i8 iJobId);
     static i8   iAsNodeNo_Bits(i8 iNodeNo);
 
+    void vAcksRmg(i8 nAcks);
     void vFocalOutline(s4K& sOutline);
     Stz* sJobSeed(void);
     i8   iJobId(void);
     void vMarkJob(void);
     void vMarkJob(Stz* szFormat, ...);
     void vLockJobMutex(void);
-    void vSetAckRmg(i8 nAcks);
     void vSignalJobMutex(void);
     void vUnlockJobMutex(void);
     void vWaitJobMutex(void);

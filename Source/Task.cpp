@@ -382,11 +382,11 @@ i8 Task::iAcksRmg_assert_only_(void)
 /*----------------------------------------------------------------------------*/
 /* set the number of acks remaining                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vAcksRmg(i8 iAcksRmg)
+void Task::vAcksRmg(i8 nAcksRmg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_oAcksRmg.vSetRemaining(iAcksRmg);
+  m_oAcksRmg.vSetRemaining(nAcksRmg);
 }
 
 /*----------------------------------------------------------------------------*/

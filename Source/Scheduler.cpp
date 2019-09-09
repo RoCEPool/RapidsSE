@@ -902,7 +902,7 @@ void Scheduler::vTask_Requires(Task* pTask, i8 nAcksRequired)
               "%lld acks"_Stz, //!format-LogTsk
               nAcksRequired);
 
-  pTask->m_oAcksRmg.vSetRemaining(nAcksRequired);
+  pTask->vAcksRmg(nAcksRequired);
 }
 
 /*----------------------------------------------------------------------------*/
