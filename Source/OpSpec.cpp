@@ -36,7 +36,8 @@ OpSpec::OpSpec(Stz* szOpName)
   //m_sLabel
   m_sName = szOpName;
   m_bAppendRight = false;
-  
+  m_i_Slot = C_UNKNOWN;
+
   //m_sArgs
   
    _checkInitialised_(CN_OPSPEC);

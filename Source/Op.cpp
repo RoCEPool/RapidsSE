@@ -60,11 +60,13 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* a
   RASSERT(pOpSpec);
   RASSERT(aOpDefn);
   
+  ASSERT(pOpSpec->szLabel()->bSame(szOpLabel));
+  
   m_sName = aOpDefn->m_szCommand;
   
   m_pOpSpec       = pOpSpec;
   
-  m_sLabel        = szOpLabel;
+  m_sLabel        = pOpSpec->szLabel();
   m_sArgs         = ""_Stz;
   m_sNextLabel    = "<nil>"_Stz;
   
