@@ -88,7 +88,7 @@ Op* SuperAggOp::pNew(Stz* szLabel, Digest* pDigest,
   i_Tkn_++;
   ASSERT(i_Slot == -1);
   
-  SuperAggOp* pSuperAggOp = new SuperAggOp(szLabel,pDigest,aOpDefn,bAppR);
+  SuperAggOp* pSuperAggOp = new SuperAggOp(szLabel,pDigest,aOpDefn,bAppR,pOpSpec);
   
   return pSuperAggOp;
 }

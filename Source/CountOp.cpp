@@ -103,7 +103,7 @@ Op* CountOp::pNew(Stz* szLabel, Digest* pDigest,
   i_Tkn_++;
   ASSERT(i_Slot != -1);
   
-  CountOp* pCountOp = new CountOp(szLabel,pDigest,aOpDefn,bAppR);
+  CountOp* pCountOp = new CountOp(szLabel,pDigest,aOpDefn,bAppR,pOpSpec);
   pCountOp->m_nSlot = i_Slot;
   
   return pCountOp;

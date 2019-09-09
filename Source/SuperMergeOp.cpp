@@ -90,7 +90,7 @@ Op* SuperMergeOp::pNew(Stz* szLabel, Digest* pDigest,
 {
   i_Tkn_++;
   
-  SuperMergeOp* pSuperMergeOp = new SuperMergeOp(szLabel,pDigest,aOpDefn,bAppR);
+  SuperMergeOp* pSuperMergeOp = new SuperMergeOp(szLabel,pDigest,aOpDefn,bAppR,pOpSpec);
   
   pSuperMergeOp->m_nSlot = i_Slot;
   if (pTknVec->pGet(i_Tkn_)->bIsInteger())

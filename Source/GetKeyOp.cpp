@@ -94,7 +94,7 @@ Op* GetKeyOp::pNew(Stz* szLabel, Digest* pDigest,
 {
   i_Tkn_++;
   
-  GetKeyOp* pGetKeyOp = new GetKeyOp(szLabel,pDigest,aOpDefn,bAppR);
+  GetKeyOp* pGetKeyOp = new GetKeyOp(szLabel,pDigest,aOpDefn,bAppR,pOpSpec);
   
   pGetKeyOp->m_sKey = pTknVec->pGet(i_Tkn_++)->szText();
   pGetKeyOp->m_nSlot = i_Slot;

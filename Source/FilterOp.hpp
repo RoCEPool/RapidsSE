@@ -22,7 +22,7 @@ namespace DataOperators
     void* operator new(size_t);
     void  operator delete(void*);
     
-    FilterOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec=nullptr);
+    FilterOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec);
     ~FilterOp(void) noexcept(false);
     
     static Op* pNew(Stz* szLabel,

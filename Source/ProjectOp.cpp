@@ -97,7 +97,7 @@ Op* ProjectOp::pNew(Stz* szLabel, Digest* pDigest,
   i_Tkn_++;
   ASSERT(i_Slot != -1);
   
-  ProjectOp* pProjectOp = new ProjectOp(szLabel,pDigest,aOpDefn,bAppR);
+  ProjectOp* pProjectOp = new ProjectOp(szLabel,pDigest,aOpDefn,bAppR,pOpSpec);
   
   // create a columnVec in the stream def
   pProjectOp->m_pStreamDef->m_oColVecAry.vItems(1);

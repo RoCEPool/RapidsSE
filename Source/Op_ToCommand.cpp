@@ -89,7 +89,7 @@ Op* Op_ToCommand::pNew(Stz* szLabel, Digest* pDigest,
   i_Tkn_++;
   ASSERT(i_Slot == -1);
   
-  Op_ToCommand* pToCommandOp = new Op_ToCommand(szLabel,pDigest,aOpDefn,bAppR);
+  Op_ToCommand* pToCommandOp = new Op_ToCommand(szLabel,pDigest,aOpDefn,bAppR,pOpSpec);
   
   return pToCommandOp;
 }

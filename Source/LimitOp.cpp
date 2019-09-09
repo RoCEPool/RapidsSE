@@ -93,7 +93,7 @@ Op* LimitOp::pNew(Stz* szLabel, Digest* pDigest,
   
   ASSERT(i_Slot == -1);
   
-  LimitOp* pLimitOp = new LimitOp(szLabel,pDigest,aOpDefn,bAppR);
+  LimitOp* pLimitOp = new LimitOp(szLabel,pDigest,aOpDefn,bAppR,pOpSpec);
   
   pLimitOp->m_sArgs = pTknVec->pGet(i_Tkn_)->szText();
   

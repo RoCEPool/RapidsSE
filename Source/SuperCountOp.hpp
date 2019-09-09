@@ -19,7 +19,7 @@ namespace DataOperators
     void* operator new(size_t);
     void  operator delete(void*);
     
-    SuperCountOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec=nullptr);
+    SuperCountOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec);
    ~SuperCountOp(void) noexcept(false);
   
     static Op* pNew(Stz* szLabel,

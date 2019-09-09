@@ -90,7 +90,7 @@ Op* OutputOp::pNew(Stz* szLabel, Digest* pDigest,
   i_Tkn_++;
   ASSERT(i_Slot == -1);
   
-  OutputOp* pOutputOp = new OutputOp(szLabel,pDigest,aOpDefn,bAppR);
+  OutputOp* pOutputOp = new OutputOp(szLabel,pDigest,aOpDefn,bAppR,pOpSpec);
   
   return pOutputOp;
 }

@@ -88,7 +88,7 @@ Op* FilterOp::pNew(Stz* szLabel, Digest* pDigest,
 {
   i_Tkn_++;
   
-  FilterOp* pFilterOp = new FilterOp(szLabel,pDigest,aOpDefn,bAppR);
+  FilterOp* pFilterOp = new FilterOp(szLabel,pDigest,aOpDefn,bAppR,pOpSpec);
   pFilterOp->m_iStartTkn = i_Tkn_;
   pFilterOp->m_pTokenVec = pTknVec;
   

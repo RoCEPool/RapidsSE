@@ -89,7 +89,7 @@ Op* InflateOp::pNew(Stz* szLabel, Digest* pDigest,
   i_Tkn_++;
   ASSERT(i_Slot == -1);
   
-  InflateOp* pInflateOp = new InflateOp(szLabel,pDigest,aOpDefn,bAppR);
+  InflateOp* pInflateOp = new InflateOp(szLabel,pDigest,aOpDefn,bAppR,pOpSpec);
   
   return pInflateOp;
 }

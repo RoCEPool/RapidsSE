@@ -89,7 +89,7 @@ Op* Op_ToDo::pNew(Stz* szLabel, Digest* pDigest,
   i_Tkn_++;
   ASSERT(i_Slot == -1);
   
-  Op_ToDo* pToDataOp = new Op_ToDo(szLabel,pDigest,aOpDefn,bAppR);
+  Op_ToDo* pToDataOp = new Op_ToDo(szLabel,pDigest,aOpDefn,bAppR,pOpSpec);
   
   return pToDataOp;
 }

@@ -21,7 +21,7 @@ namespace DataOperators
     void* operator new(size_t);
     void  operator delete(void*);
     
-    SuperMergeOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec=nullptr);
+    SuperMergeOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec);
    ~SuperMergeOp(void) noexcept(false);
   
     static Op* pNew(Stz* szLabel,

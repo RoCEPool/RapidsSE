@@ -90,7 +90,7 @@ Op* JoinOp::pNew(Stz* szLabel, Digest* pDigest,
 {
   i_Tkn_++;
   
-  JoinOp* pJoinOp = new JoinOp(szLabel,pDigest,aOpDefn,bAppR);
+  JoinOp* pJoinOp = new JoinOp(szLabel,pDigest,aOpDefn,bAppR,pOpSpec);
   pJoinOp->m_nSlot = i_Slot;
   
   return pJoinOp;

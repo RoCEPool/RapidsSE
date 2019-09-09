@@ -96,7 +96,7 @@ Op* AggOp::pNew(Stz* szLabel, Digest* pDigest,
   i_Tkn_++;
   ASSERT(i_Slot != -1);
   
-  AggOp* pAggOp = new AggOp(szLabel,pDigest,aOpDefn,bAppR);
+  AggOp* pAggOp = new AggOp(szLabel,pDigest,aOpDefn,bAppR,pOpSpec);
   
   pAggOp->m_nSlot = i_Slot;
   

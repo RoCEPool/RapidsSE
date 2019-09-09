@@ -97,7 +97,7 @@ Op* Op_ToClause::pNew(Stz* szLabel, Digest* pDigest,
   i_Tkn_++;
   ASSERT(i_Slot == -1);
   
-  Op_ToClause* pToClauseOp = new Op_ToClause(szLabel,pDigest,aOpDefn,bAppR);
+  Op_ToClause* pToClauseOp = new Op_ToClause(szLabel,pDigest,aOpDefn,bAppR,pOpSpec);
   
   return pToClauseOp;
 }

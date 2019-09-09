@@ -89,7 +89,7 @@ Op* MergeOp::pNew(Stz* szLabel, Digest* pDigest,
 {
   i_Tkn_++;
   
-  MergeOp* pMergeOp = new MergeOp(szLabel,pDigest,aOpDefn,bAppR);
+  MergeOp* pMergeOp = new MergeOp(szLabel,pDigest,aOpDefn,bAppR,pOpSpec);
   
   pMergeOp->m_nSlot = i_Slot;
   

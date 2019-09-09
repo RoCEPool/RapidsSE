@@ -89,7 +89,7 @@ Op* ZedOp::pNew(Stz* szLabel, Digest* pDigest,
   i_Tkn_++;
   ASSERT(i_Slot == -1);
   
-  ZedOp* pZedOp = new ZedOp(szLabel,pDigest,aOpDefn,bAppR);
+  ZedOp* pZedOp = new ZedOp(szLabel,pDigest,aOpDefn,bAppR,pOpSpec);
   
   return pZedOp;
 }

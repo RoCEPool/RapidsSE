@@ -102,7 +102,7 @@ Op* Op_ToFilter::pNew(Stz* szLabel, Digest* pDigest,
   i_Tkn_++;
   ASSERT(i_Slot == -1);
   
-  Op_ToFilter* pToDataOp = new Op_ToFilter(szLabel,pDigest,aOpDefn,bAppR);
+  Op_ToFilter* pToDataOp = new Op_ToFilter(szLabel,pDigest,aOpDefn,bAppR,pOpSpec);
   
   return pToDataOp;
 }

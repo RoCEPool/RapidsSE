@@ -90,7 +90,7 @@ Op* SortOp::pNew(Stz* szLabel, Digest* pDigest,
 {
   i_Tkn_++;
   
-  SortOp* pSortOp = new SortOp(szLabel,pDigest,aOpDefn,bAppR);
+  SortOp* pSortOp = new SortOp(szLabel,pDigest,aOpDefn,bAppR,pOpSpec);
 
   pSortOp->m_nSlot = i_Slot;
   

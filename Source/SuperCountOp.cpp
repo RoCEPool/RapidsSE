@@ -88,7 +88,7 @@ Op* SuperCountOp::pNew(Stz* szLabel, Digest* pDigest,
   i_Tkn_++;
   ASSERT(i_Slot == -1);
   
-  SuperCountOp* pSuperCountOp = new SuperCountOp(szLabel,pDigest,aOpDefn,bAppR);
+  SuperCountOp* pSuperCountOp = new SuperCountOp(szLabel,pDigest,aOpDefn,bAppR,pOpSpec);
   
   return pSuperCountOp;
 }

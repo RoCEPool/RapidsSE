@@ -94,7 +94,7 @@ Op* ScanOp::pNew(Stz* szLabel, Digest* pDigest,
 {
   i_Tkn_++;
   
-  ScanOp* pScanOp = new ScanOp(szLabel,pDigest,aOpDefn,bAppR);
+  ScanOp* pScanOp = new ScanOp(szLabel,pDigest,aOpDefn,bAppR,pOpSpec);
   
   pScanOp->m_sTableNm = pTknVec->pGet(i_Tkn_++)->szText();
   pScanOp->m_nSlot = i_Slot;
