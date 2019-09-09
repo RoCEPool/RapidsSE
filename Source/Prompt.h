@@ -58,6 +58,7 @@ typedef VectorNL_t<CN_SHORTCUTVEC, ShortCut, C_MAX_SHORTCUTS> ShortCutVec;
 #include "Prompt_heapMem.hpp"
 #include "Prompt_help.hpp"
 #include "Prompt_hexdump.hpp"
+#include "Prompt_how.hpp"
 #include "Prompt_hw.hpp"
 
 #include "Prompt_indexEntries.hpp"
