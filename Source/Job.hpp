@@ -60,6 +60,7 @@ namespace Jobs
     void vMarkJob(void);
     void vMarkJob(Stz* szFormat, ...);
     void vLockJobMutex(void);
+    void vSetAckRmg(i8 nAcks);
     void vSignalJobMutex(void);
     void vUnlockJobMutex(void);
     void vWaitJobMutex(void);

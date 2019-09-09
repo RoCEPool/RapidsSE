@@ -313,6 +313,16 @@ void Job::vLockJobMutex(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set the number of acks required by the job                                 */
+/*----------------------------------------------------------------------------*/
+void Job::vSetAckRmg(i8 nAcks)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_oAcksRmg.vSetRemaining(nAcks);
+}
+
+/*----------------------------------------------------------------------------*/
 /* signal the job mutex                                                       */
 /*----------------------------------------------------------------------------*/
 void Job::vSignalJobMutex(void)
