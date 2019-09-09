@@ -11,13 +11,12 @@ namespace DataOperators
   
     IrwBuffer* m_pIrwBuffer;
     StreamDef* m_pOriginalStreamDef;
-    i8         m_iWhichVec[C_MAX_COLUMNVECS];
+    i8         m_iWhichVec[C_MAX_COLUMNS];
     i8         m_iWhichCol[C_MAX_COLUMNS];
+    i8         m_iTkn;
     
-    TokenVec*   m_pTokenVec;
-    i8          m_iStartTkn;
-    i8          m_iEndTkn;
-    Calculator* m_pCalculator;
+    TokenVec*   m_pTknVec;    
+    Calculator* m_pCalculator[C_MAX_COLUMNS];
     
     // must be last
     Footer m_xFooter;
@@ -40,6 +39,7 @@ namespace DataOperators
     eOR eDrainLoop(void);
     
   private:
+    Column* pCreateColumn(i8 i_ExprCol, Stz* sColumnNm, i8 iStartTkn, i8 iEndTkn);
     void vUpdateStreamDef(void);
     Footer* aFooter(void);
   };

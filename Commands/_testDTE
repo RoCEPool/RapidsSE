@@ -43,10 +43,14 @@ ld jidxDte "../JTEST/jidxDte.csv" ;
 
 //time dynamic scan jidxDte | project jidx_100 | agg jidx_100 | superAgg | output;
 
+//time dynamic scan jidxDte | expr jidx_100 1 + | output;
+time dynamic scan jidxDte | expr jidx_10, jidx_10 1 + , jidx_10 2 + , jidx_10, jidx_100, jidx_10 jidx_100 + | output;
 
-time dynamic scan jidxDte | expr jidx_100 10 * | output;
 
-dynamic scan jidxDte | getkey jidx_100 | sort | merge | superMerge | output;
+//time dynamic scan jidxDte | expr jidx_10 , jidx_100 , jidx_10 jidx_100 + | output;
+
+
+//dynamic scan jidxDte | getkey jidx_100 | sort | merge | superMerge | output;
 
 
 //time dynamic scan jidxDte | project jidx_100,jidx_10 | filter jidx_100 120 < jidx_10 5 > and | output | zed;

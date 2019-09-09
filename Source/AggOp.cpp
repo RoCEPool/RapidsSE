@@ -37,7 +37,7 @@ AggOp* DataOperators::_pAggOp(void* aAddr)
 void* AggOp::operator new(size_t)
 {
   AggOp* pAggOp =
-  static_cast<AggOp*>(HeapMem::pAllocate(CN_COUNTOP));
+  static_cast<AggOp*>(HeapMem::pAllocate(CN_AGGOP));
   
   return pAggOp;
 }
@@ -65,11 +65,10 @@ AggOp::AggOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpe
   m_pOriginalStreamDef = nullptr;
   m_pStreamDef = new StreamDef;
   
-  for (i8 i_ColVec = 0; i_ColVec < C_MAX_COLUMNVECS; i_ColVec++)
-    m_iWhichVec[i_ColVec] = C_UNKNOWN;
-  
-  for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++)
+  for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
     m_iWhichCol[i_Col] = C_UNKNOWN;
+    m_iWhichVec[i_Col] = C_UNKNOWN;
+  }
   
   _checkInitialised_(CN_COUNTOP);
   
