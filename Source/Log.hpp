@@ -39,6 +39,9 @@ namespace Logging
 
     Log(void);
    ~Log(void) noexcept(false);
+  
+    void vHow(i8 iReqId, i8 iDetail);
+    void vHow(i8 iReqId, i8 iDetail, LogEntry* pLogEntry);
 
   private:
     static Log* pAttachCreate(void);

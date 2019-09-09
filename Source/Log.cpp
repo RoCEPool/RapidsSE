@@ -243,6 +243,51 @@ void Log::vEntrySprint(s4K& sString, i8 i_Entry)
 }
 
 /*----------------------------------------------------------------------------*/
+/* how was a request done?                                                    */
+/*----------------------------------------------------------------------------*/
+void Log::vHow(i8 iReqId, i8 iDetail)
+{
+#ifdef WITH_SHARED_LOG
+  if (! AM::bLog())
+    return;
+  
+  // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
+  vGrabLock();
+  
+  
+  i8 i_MinEntry;
+  i8 i_MaxEntry;
+  vFindRange_NL(i_MinEntry,i_MaxEntry);
+  
+  
+  LogEntry* pLogEntry = &m_oaEntry[i_MinEntry % m_nEntries];
+
+  for (i8 i_Entry = i_MinEntry + 1; i_Entry <= i_MaxEntry; i_Entry++) {
+    
+    pLogEntry = &m_oaEntry[i_Entry % m_nEntries];
+    
+    if (-1 == pLogEntry->m_i_Entry)
+      break;
+  }
+  
+
+  vDropLock();
+  // ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲
+
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* how was a request done?                                                    */
+/*----------------------------------------------------------------------------*/
+void Log::vHow(i8 iReqId, i8 iDetail, LogEntry* pLogEntry)
+{
+  if (pLogEntry->m_xReqTuple.m_iReqId != iReqId)
+    return;
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* monitor profile                                                            */
 /*----------------------------------------------------------------------------*/
 void Log::vMonitorPortrait(s48K& sPortrait)

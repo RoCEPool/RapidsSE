@@ -170,7 +170,9 @@ namespace StorageEngine
     static void vWriteTrace(eYA eSysAct, Stz* aFormat, va_list xArgs);
 
     static void vLogAll(void);
-  
+
+    static void vLogHow(i8 iRequestId, i8 iDetail);
+
     static void vLogFyi(Stz* szFormat, ...);
     static void vLogText(i8 iId, Stz* szText);
 

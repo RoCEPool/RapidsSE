@@ -23,7 +23,15 @@ PromptDesc __Prompt_how (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_how(SePrompt* pPrompt)
 {
-  vTrace("how:\n"_Stz,C_ENDARGS);
+  i8 iReqId = pPrompt->iRequestId();
+  
+  vTrace("how: request %lld\n"_Stz,
+         
+         iReqId,
+         
+         C_ENDARGS);
+  
+  AM::vLogHow(iReqId,C_UNKNOWN);
   
   return true;
 }

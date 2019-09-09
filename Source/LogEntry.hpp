@@ -92,6 +92,7 @@ namespace Logging
     LogEntry(void);
    ~LogEntry(void) noexcept(false);
 
+    void vAsTxt(s4K& sString);
     Stz* szIndicator(void);
     void vInit(eSL eSeverity, eCN eClass, Stz* szText);
     void vInit(eSL eSeverity, Focal* pFocal, Stz* szText);
