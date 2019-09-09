@@ -47,7 +47,7 @@ OpSpec::OpSpec(Stz* szOpName)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OpSpec::OpSpec(Stz* szOpLabel, Stz* szOpName, bool bAppR)
+OpSpec::OpSpec(Stz* szOpLabel, Stz* szOpName, bool bAppR, i8 i_Slot)
 : Object(CN_OPSPEC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
@@ -55,7 +55,8 @@ OpSpec::OpSpec(Stz* szOpLabel, Stz* szOpName, bool bAppR)
   m_sLabel = szOpLabel;
   m_sName  = szOpName;
   m_bAppendRight = bAppR;
-  
+  m_i_Slot = i_Slot;
+
   //m_sArgs
   
   _checkInitialised_(CN_OPSPEC);
@@ -124,6 +125,16 @@ Stz* OpSpec::szName(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
   return m_sName.aStz();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get i_Slot                                                                 */
+/*----------------------------------------------------------------------------*/
+i8 OpSpec::i_Slot(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  return m_i_Slot;
 }
 
 

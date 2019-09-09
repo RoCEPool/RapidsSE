@@ -128,7 +128,7 @@ void Digest::vParseCommand(TokenVec* pTknVec)
                        i_Op,
                        i_Slot);
         i_Tkn = i_Tkn_Save;
-        OpSpec* pOpSpec = new OpSpec("<noNameYet>"_Stz);
+        OpSpec* pOpSpec = new OpSpec(sLabel.aStz(),aOpDefn->m_szCommand,bAppendRight,i_Slot);
         Op* pOp = (aOpDefn->m_fpNewOp)(pOpSpec,this,sLabel,
                                        aOpDefn,bAppendRight,
                                        pTknVec,i_Tkn,i_Slot);
@@ -140,7 +140,7 @@ void Digest::vParseCommand(TokenVec* pTknVec)
       sLabel.vSprint("%s_%02lld"_Stz,
                      aOpDefn->m_szPrefix,
                      i_Op);
-      OpSpec* pOpSpec = new OpSpec("<noNameYet>"_Stz);
+      OpSpec* pOpSpec = new OpSpec(sLabel.aStz(),aOpDefn->m_szCommand,bAppendRight,-1);
       Op* pOp = (aOpDefn->m_fpNewOp)(pOpSpec,this,sLabel,
                                      aOpDefn,bAppendRight,
                                      pTknVec,i_Tkn,-1);

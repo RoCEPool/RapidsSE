@@ -11,6 +11,7 @@ namespace Dynamics
     s32  m_sLabel;
     s32  m_sName;
     bool m_bAppendRight;
+    i8   m_i_Slot;
 
     s4K m_sArgs;
 
@@ -22,7 +23,7 @@ namespace Dynamics
     void  operator delete(void*);
   
     OpSpec(Stz* szOpName);
-    OpSpec(Stz* szOpLabel, Stz* szOpName, bool bAppR);
+    OpSpec(Stz* szOpLabel, Stz* szOpName, bool bAppR, i8 i_Slot);
    ~OpSpec(void) noexcept(false);
   
     bool bAppendRight(void);
@@ -30,6 +31,7 @@ namespace Dynamics
     void vArgs(Stz* szArgs);
     Stz* szLabel(void);
     Stz* szName(void);
+    i8   i_Slot(void);
 
     void vPrint(void);
   
