@@ -52,7 +52,7 @@ void Op::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Op::Op(eCN eClassNo, Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec)
+Op::Op(eCN eClassNo, Digest* pDigest, OpDefn* aOpDefn, Stz* szOpLabel, bool bAppR, OpSpec* pOpSpec)
 : Focal(eClassNo,AM::iNextOpId(),AM::iJobUniqueId(pDigest->m_pJob))
 {
   _precondition_(_MAGIC_,eClassNo);
@@ -63,7 +63,7 @@ Op::Op(eCN eClassNo, Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
   
   m_pOpSpec       = pOpSpec;
   
-  m_sLabel        = szLabel;
+  m_sLabel        = szOpLabel;
   m_sArgs         = ""_Stz;
   m_sNextLabel    = "<nil>"_Stz;
   

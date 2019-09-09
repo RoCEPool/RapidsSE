@@ -56,7 +56,7 @@ void Op_ToCommand::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Op_ToCommand::Op_ToCommand(OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR)
-: Op(CN_OP_TOCOMMAND,szOpLabel,pDigest,aOpDefn,bAppR,pOpSpec)
+: Op(CN_OP_TOCOMMAND,pDigest,aOpDefn,szOpLabel,bAppR,pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TOCOMMAND,_FOOTER_);
   

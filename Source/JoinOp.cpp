@@ -47,7 +47,7 @@ void JoinOp::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 JoinOp::JoinOp(OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR)
-: Op(CN_JOINOP,szOpLabel,pDigest,aOpDefn,bAppR,pOpSpec)
+: Op(CN_JOINOP,pDigest,aOpDefn,szOpLabel,bAppR,pOpSpec)
 {
   _precondition_(_MAGIC_,CN_JOINOP);
   

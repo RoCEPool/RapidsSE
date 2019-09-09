@@ -56,7 +56,7 @@ void ProjectOp::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ProjectOp::ProjectOp(OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR)
-: Op(CN_PROJECTOP,szOpLabel,pDigest,aOpDefn,bAppR,pOpSpec)
+: Op(CN_PROJECTOP,pDigest,aOpDefn,szOpLabel,bAppR,pOpSpec)
 {
   _precondition_(_MAGIC_,CN_PROJECTOP);
   

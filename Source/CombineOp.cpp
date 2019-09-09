@@ -22,7 +22,7 @@ CombineOp* DataOperators::_pCombineOp(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 CombineOp::CombineOp(Stz* szOpLabel, Digest* pDigest)
-: Op(CN_COMBINEOP,szOpLabel,pDigest,nullptr,false,nullptr)
+: Op(CN_COMBINEOP,pDigest,nullptr,szOpLabel,false,nullptr)
 {
   _precondition_(_MAGIC_,CN_COMBINEOP);
 }
