@@ -56,7 +56,7 @@ void FilterOp::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 FilterOp::FilterOp(OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR)
-: Op(CN_FILTEROP,pDigest,aOpDefn,szOpLabel,bAppR,pOpSpec)
+: Op(CN_FILTEROP,aOpDefn,pDigest,szOpLabel,bAppR,pOpSpec)
 {
   _precondition_(_MAGIC_,CN_FILTEROP);
   

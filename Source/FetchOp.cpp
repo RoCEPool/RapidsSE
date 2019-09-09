@@ -56,7 +56,7 @@ void FetchOp::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 FetchOp::FetchOp(OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR)
-: Op(CN_FETCHOP,pDigest,aOpDefn,szOpLabel,bAppR,pOpSpec)
+: Op(CN_FETCHOP,aOpDefn,pDigest,szOpLabel,bAppR,pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
   

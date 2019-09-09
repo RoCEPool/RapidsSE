@@ -56,7 +56,7 @@ void SuperAggOp::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SuperAggOp::SuperAggOp(OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR)
-: Op(CN_SUPERAGGOP,pDigest,aOpDefn,szOpLabel,false,pOpSpec)
+: Op(CN_SUPERAGGOP,aOpDefn,pDigest,szOpLabel,false,pOpSpec)
 {
   _precondition_(_MAGIC_,CN_SUPERAGGOP);
   

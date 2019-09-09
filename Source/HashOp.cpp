@@ -23,7 +23,7 @@ HashOp* DataOperators::_pHashOp(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 HashOp::HashOp(Stz* szOpLabel, Digest* pDigest)
-: Op(CN_HASHOP,pDigest,nullptr,szOpLabel,false,nullptr)
+: Op(CN_HASHOP,nullptr,pDigest,szOpLabel,false,nullptr)
 {
   _precondition_(_MAGIC_,CN_HASHOP);
 }

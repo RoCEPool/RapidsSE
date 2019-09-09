@@ -44,7 +44,7 @@ void GenerateOp::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 GenerateOp::GenerateOp(Stz* szOpLabel, Digest* pDigest, i8 iBuffers)
-: Op(CN_GENERATEOP,pDigest,nullptr,szOpLabel,false,nullptr)
+: Op(CN_GENERATEOP,nullptr,pDigest,szOpLabel,false,nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GENERATEOP,_FOOTER_);
   
