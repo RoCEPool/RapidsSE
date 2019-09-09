@@ -55,8 +55,8 @@ void FetchOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-FetchOp::FetchOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec)
-: Op(CN_FETCHOP,szOpLabel,pDigest,aOpDefn,bAppR,pOpSpec)
+FetchOp::FetchOp(OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR)
+: Op(CN_FETCHOP,pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
   
@@ -91,13 +91,13 @@ FetchOp::~FetchOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* FetchOp::pNew(Stz* szLabel, Digest* pDigest,
-                  OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec,
+Op* FetchOp::pNew(OpSpec* pOpSpec, Digest* pDigest,
+                  Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR,
                   TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   
-  FetchOp* pFetchOp = new FetchOp(szLabel,pDigest,aOpDefn,bAppR);
+  FetchOp* pFetchOp = new FetchOp(pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR);
   
   pFetchOp->m_sTableNm = pTknVec->pGet(i_Tkn_++)->szText();
   pFetchOp->m_sIndexNm = pTknVec->pGet(i_Tkn_++)->szText();

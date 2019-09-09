@@ -52,18 +52,22 @@ void Op::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Op::Op(eCN eClassNo, Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec)
+Op::Op(eCN eClassNo, OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR)
 : Focal(eClassNo,AM::iNextOpId(),AM::iJobUniqueId(pDigest->m_pJob))
 {
   _precondition_(_MAGIC_,eClassNo);
   
+  RASSERT(pOpSpec);
   RASSERT(aOpDefn);
   
+  ASSERT(pOpSpec->szLabel()->bSame(szOpLabel));
+  ASSERT(pOpSpec->bAppendRight() == bAppR);
+
   m_sName = aOpDefn->m_szCommand;
   
   m_pOpSpec       = pOpSpec;
   
-  m_sLabel        = szLabel;
+  m_sLabel        = pOpSpec->szLabel();
   m_sArgs         = ""_Stz;
   m_sNextLabel    = "<nil>"_Stz;
   
@@ -81,7 +85,7 @@ Op::Op(eCN eClassNo, Stz* szLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
   m_pQueueRight   = new OperandQueue;
   
   m_pOpOut        = nullptr;
-  m_bAppendRight  = bAppR;
+  m_bAppendRight  = pOpSpec->bAppendRight();
 
   m_nSlot            = -1;
   m_nLeftEndMarkers  = 1;
@@ -111,6 +115,8 @@ Op::~Op(void) noexcept(false)
   
   if (m_pStreamDef)
     delete m_pStreamDef;
+  
+  delete m_pOpSpec;
   
   -- gixOp;
   AM::vLogOpr(SL_INF,this,OA_OP_DESTRUCT,

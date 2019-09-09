@@ -26,7 +26,6 @@ namespace Jobs
     eJL  m_eJobList;     // which job list the job is currently in
     eJP  m_eJobPhase;    // which job phase the job is currently in
     eJS  m_eJobState;    // current state of the job
-    Mutex* m_pJobMutex;
 
     Decider m_oAcksRmg;  // acks remaining
   
@@ -37,10 +36,14 @@ namespace Jobs
   
     //! why do we have both of these?
     CrwBuffer* m_pCrwBuffer;   // row buffer          //! should this be in Job?
-    Object* m_pSendWith; // object which is to be sent with this job
   
     Atomic m_ixErrors;
 
+    //! to be moved into Task
+    Mutex* m_pJobMutex;
+
+    //! to be removed
+    Object*    m_pSendWith; // object which is to be sent with this job
 
   public:
     Job(eCN eClassNo, ReqTuple* aReqTuple, Session* pSession);

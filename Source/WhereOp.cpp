@@ -23,7 +23,7 @@ WhereOp* DataOperators::_pWhereOp(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 WhereOp::WhereOp(Stz* szOpLabel, Digest* pDigest)
-: Op(CN_WHEREOP,szOpLabel,pDigest,nullptr,false,nullptr)
+: Op(CN_WHEREOP,nullptr,pDigest,szOpLabel,nullptr,false)
 {
   _precondition_(_MAGIC_,CN_WHEREOP);
 }

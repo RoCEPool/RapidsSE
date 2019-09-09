@@ -55,8 +55,8 @@ void ExprOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ExprOp::ExprOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec)
-: Op(CN_EXPROP,szOpLabel,pDigest,aOpDefn,bAppR,pOpSpec)
+ExprOp::ExprOp(OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR)
+: Op(CN_EXPROP,pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR)
 {
   _precondition_(_MAGIC_,CN_EXPROP);
   
@@ -92,14 +92,14 @@ ExprOp::~ExprOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* ExprOp::pNew(Stz* szLabel, Digest* pDigest,
-                 OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec,
+Op* ExprOp::pNew(OpSpec* pOpSpec, Digest* pDigest,
+                 Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR,
                  TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   ASSERT(i_Slot != -1);
   
-  ExprOp* pExprOp = new ExprOp(szLabel,pDigest,aOpDefn,bAppR);
+  ExprOp* pExprOp = new ExprOp(pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR);
   pExprOp->m_iTkn = i_Tkn_;
   pExprOp->m_pTknVec = pTknVec;
   

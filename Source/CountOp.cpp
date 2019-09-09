@@ -55,8 +55,8 @@ void CountOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-CountOp::CountOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec)
-: Op(CN_COUNTOP,szOpLabel,pDigest,aOpDefn,bAppR,pOpSpec)
+CountOp::CountOp(OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR)
+: Op(CN_COUNTOP,pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COUNTOP,_FOOTER_);
   
@@ -96,14 +96,14 @@ CountOp::~CountOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* CountOp::pNew(Stz* szLabel, Digest* pDigest,
-                  OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec,
+Op* CountOp::pNew(OpSpec* pOpSpec, Digest* pDigest,
+                  Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR,
                   TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   ASSERT(i_Slot != -1);
   
-  CountOp* pCountOp = new CountOp(szLabel,pDigest,aOpDefn,bAppR);
+  CountOp* pCountOp = new CountOp(pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR);
   pCountOp->m_nSlot = i_Slot;
   
   return pCountOp;

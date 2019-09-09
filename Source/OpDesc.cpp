@@ -14,9 +14,9 @@ OpDesc::OpDesc(eCN  eClass,     // class number
                Stz* szCommand,  // first word of prompt command
                Stz* szPrefix,   // prefix
                bool bIsPartitioned, // is partitioned
-               Op*  (*fpNew)(Stz* szLabel, Digest* pDigest,
-                             OpDefn* aOpDefn, bool bAppR,  OpSpec* pOpSpec,
-                             TokenVec* pTknVec, i8& i_Tkn, i8 i_Slot),
+               Op*  (*fpNewOp)(OpSpec* pOpSpec, Digest* pDigest,
+                               Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR,
+                               TokenVec* pTknVec, i8& i_Tkn, i8 i_Slot),
                eOR  (*fpCall) (void* aThisOp),  // fun which calls the op loop
                eOR  (*fpDrain)(void* aThisOp),  // fun which calls the drain loop
                Stz* szHelp      // help text
@@ -29,7 +29,7 @@ OpDesc::OpDesc(eCN  eClass,     // class number
   gxOpCatalog.m_xOpDefn[i_OpDefn].m_szCommand = szCommand;
   gxOpCatalog.m_xOpDefn[i_OpDefn].m_szPrefix  = szPrefix;
   gxOpCatalog.m_xOpDefn[i_OpDefn].m_bIsPartitioned = bIsPartitioned;
-  gxOpCatalog.m_xOpDefn[i_OpDefn].m_fpNew     = fpNew;
+  gxOpCatalog.m_xOpDefn[i_OpDefn].m_fpNewOp   = fpNewOp;
   gxOpCatalog.m_xOpDefn[i_OpDefn].m_fpCall    = fpCall;
   gxOpCatalog.m_xOpDefn[i_OpDefn].m_fpDrain   = fpDrain;
   gxOpCatalog.m_xOpDefn[i_OpDefn].m_szHelp    = szHelp;

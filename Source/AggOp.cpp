@@ -55,8 +55,8 @@ void AggOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-AggOp::AggOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec)
-: Op(CN_AGGOP,szOpLabel,pDigest,aOpDefn,bAppR,pOpSpec)
+AggOp::AggOp(OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR)
+: Op(CN_AGGOP,pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_AGGOP,_FOOTER_);
   
@@ -88,14 +88,14 @@ AggOp::~AggOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* AggOp::pNew(Stz* szLabel, Digest* pDigest,
-                OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec,
+Op* AggOp::pNew(OpSpec* pOpSpec, Digest* pDigest,
+                Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR,
                 TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   ASSERT(i_Slot != -1);
   
-  AggOp* pAggOp = new AggOp(szLabel,pDigest,aOpDefn,bAppR);
+  AggOp* pAggOp = new AggOp(pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR);
   
   pAggOp->m_nSlot = i_Slot;
   

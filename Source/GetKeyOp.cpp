@@ -55,8 +55,8 @@ void GetKeyOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-GetKeyOp::GetKeyOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec)
-: Op(CN_GETKEYOP,szOpLabel,pDigest,aOpDefn,bAppR,pOpSpec)
+GetKeyOp::GetKeyOp(OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR)
+: Op(CN_GETKEYOP,pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GETKEYOP,_FOOTER_);
   
@@ -88,13 +88,13 @@ GetKeyOp::~GetKeyOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* GetKeyOp::pNew(Stz* szLabel, Digest* pDigest,
-                   OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec,
+Op* GetKeyOp::pNew(OpSpec* pOpSpec, Digest* pDigest,
+                   Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR,
                    TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   
-  GetKeyOp* pGetKeyOp = new GetKeyOp(szLabel,pDigest,aOpDefn,bAppR);
+  GetKeyOp* pGetKeyOp = new GetKeyOp(pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR);
   
   pGetKeyOp->m_sKey = pTknVec->pGet(i_Tkn_++)->szText();
   pGetKeyOp->m_nSlot = i_Slot;

@@ -55,8 +55,8 @@ void OutputOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OutputOp::OutputOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec)
-: Op(CN_OUTPUTOP,szOpLabel,pDigest,aOpDefn,bAppR,pOpSpec)
+OutputOp::OutputOp(OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR)
+: Op(CN_OUTPUTOP,pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
   
@@ -83,14 +83,14 @@ OutputOp::~OutputOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* OutputOp::pNew(Stz* szLabel, Digest* pDigest,
-                   OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec,
+Op* OutputOp::pNew(OpSpec* pOpSpec, Digest* pDigest,
+                   Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR,
                    TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   ASSERT(i_Slot == -1);
   
-  OutputOp* pOutputOp = new OutputOp(szLabel,pDigest,aOpDefn,bAppR);
+  OutputOp* pOutputOp = new OutputOp(pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR);
   
   return pOutputOp;
 }

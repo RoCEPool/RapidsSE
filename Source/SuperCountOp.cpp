@@ -55,8 +55,8 @@ void SuperCountOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SuperCountOp::SuperCountOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec)
-: Op(CN_SUPERCOUNTOP,szOpLabel,pDigest,aOpDefn,false,pOpSpec)
+SuperCountOp::SuperCountOp(OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR)
+: Op(CN_SUPERCOUNTOP,pOpSpec,pDigest,szOpLabel,aOpDefn,false)
 {
   _precondition_(_MAGIC_,CN_SUPERCOUNTOP);
   
@@ -81,14 +81,14 @@ SuperCountOp::~SuperCountOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* SuperCountOp::pNew(Stz* szLabel, Digest* pDigest,
-                       OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec,
+Op* SuperCountOp::pNew(OpSpec* pOpSpec, Digest* pDigest,
+                       Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR,
                        TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   ASSERT(i_Slot == -1);
   
-  SuperCountOp* pSuperCountOp = new SuperCountOp(szLabel,pDigest,aOpDefn,bAppR);
+  SuperCountOp* pSuperCountOp = new SuperCountOp(pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR);
   
   return pSuperCountOp;
 }

@@ -128,9 +128,10 @@ void Digest::vParseCommand(TokenVec* pTknVec)
                        i_Op,
                        i_Slot);
         i_Tkn = i_Tkn_Save;
-        Op* pOp = (aOpDefn->m_fpNew)(sLabel,this,
-                                     aOpDefn,bAppendRight,nullptr,
-                                     pTknVec,i_Tkn,i_Slot);
+        OpSpec* pOpSpec = new OpSpec(sLabel.aStz(),aOpDefn->m_szCommand,bAppendRight,i_Slot);
+        Op* pOp = (aOpDefn->m_fpNewOp)(pOpSpec,this,sLabel,
+                                       aOpDefn,bAppendRight,
+                                       pTknVec,i_Tkn,i_Slot);
         m_oOpVec.vAdd(pOp);
       }
     }
@@ -139,9 +140,10 @@ void Digest::vParseCommand(TokenVec* pTknVec)
       sLabel.vSprint("%s_%02lld"_Stz,
                      aOpDefn->m_szPrefix,
                      i_Op);
-      Op* pOp = (aOpDefn->m_fpNew)(sLabel,this,
-                                   aOpDefn,bAppendRight,nullptr,
-                                   pTknVec,i_Tkn,-1);
+      OpSpec* pOpSpec = new OpSpec(sLabel.aStz(),aOpDefn->m_szCommand,bAppendRight,-1);
+      Op* pOp = (aOpDefn->m_fpNewOp)(pOpSpec,this,sLabel,
+                                     aOpDefn,bAppendRight,
+                                     pTknVec,i_Tkn,-1);
       m_oOpVec.vAdd(pOp);
     }
     i_Op++;

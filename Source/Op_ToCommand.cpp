@@ -55,8 +55,8 @@ void Op_ToCommand::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Op_ToCommand::Op_ToCommand(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec)
-: Op(CN_OP_TOCOMMAND,szOpLabel,pDigest,aOpDefn,bAppR,pOpSpec)
+Op_ToCommand::Op_ToCommand(OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR)
+: Op(CN_OP_TOCOMMAND,pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TOCOMMAND,_FOOTER_);
   
@@ -82,14 +82,14 @@ Op_ToCommand::~Op_ToCommand(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* Op_ToCommand::pNew(Stz* szLabel, Digest* pDigest,
-                       OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec,
+Op* Op_ToCommand::pNew(OpSpec* pOpSpec, Digest* pDigest,
+                       Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR,
                        TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   ASSERT(i_Slot == -1);
   
-  Op_ToCommand* pToCommandOp = new Op_ToCommand(szLabel,pDigest,aOpDefn,bAppR);
+  Op_ToCommand* pToCommandOp = new Op_ToCommand(pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR);
   
   return pToCommandOp;
 }

@@ -46,8 +46,8 @@ void JoinOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-JoinOp::JoinOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec)
-: Op(CN_JOINOP,szOpLabel,pDigest,aOpDefn,bAppR,pOpSpec)
+JoinOp::JoinOp(OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR)
+: Op(CN_JOINOP,pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR)
 {
   _precondition_(_MAGIC_,CN_JOINOP);
   
@@ -84,13 +84,13 @@ JoinOp::~JoinOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* JoinOp::pNew(Stz* szLabel, Digest* pDigest,
-                 OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec,
+Op* JoinOp::pNew(OpSpec* pOpSpec, Digest* pDigest,
+                 Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR,
                  TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   
-  JoinOp* pJoinOp = new JoinOp(szLabel,pDigest,aOpDefn,bAppR);
+  JoinOp* pJoinOp = new JoinOp(pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR);
   pJoinOp->m_nSlot = i_Slot;
   
   return pJoinOp;

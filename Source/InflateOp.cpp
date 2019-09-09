@@ -55,8 +55,8 @@ void InflateOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-InflateOp::InflateOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec)
-: Op(CN_INFLATEOP,szOpLabel,pDigest,aOpDefn,bAppR,pOpSpec)
+InflateOp::InflateOp(OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR)
+: Op(CN_INFLATEOP,pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFLATEOP,_FOOTER_);
   
@@ -82,14 +82,14 @@ InflateOp::~InflateOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* InflateOp::pNew(Stz* szLabel, Digest* pDigest,
-                    OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec,
+Op* InflateOp::pNew(OpSpec* pOpSpec, Digest* pDigest,
+                    Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR,
                     TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   ASSERT(i_Slot == -1);
   
-  InflateOp* pInflateOp = new InflateOp(szLabel,pDigest,aOpDefn,bAppR);
+  InflateOp* pInflateOp = new InflateOp(pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR);
   
   return pInflateOp;
 }

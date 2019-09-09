@@ -12,14 +12,14 @@ namespace Operators
   protected:  
     s32            m_sName;          // first word of prompt command
   
+    Digest*        m_pDigest;        // op digest
+    OpDefn*        m_aOpDefn;        // op definition
     OpSpec*        m_pOpSpec;        // op specification
   
     s32            m_sLabel;         // label of this op
     s256           m_sArgs;          // args of this op   (initial dev only)
     s32            m_sNextLabel;     // label of this op
   
-    OpDefn*        m_aOpDefn;        // op definition
-    Digest*        m_pDigest;        // op digest
     Job*           m_pJob;           // job this operator belongs to
     Task*          m_pTask;          // task running this op
   
@@ -48,7 +48,7 @@ namespace Operators
   public:
     void  operator delete(void*);
   
-    Op(eCN eClass, Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec);
+    Op(eCN eClass, OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR);
    ~Op(void) noexcept(false);
   
     static Op* pThisTLSOp(void);

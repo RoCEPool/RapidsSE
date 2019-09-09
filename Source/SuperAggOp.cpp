@@ -55,8 +55,8 @@ void SuperAggOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SuperAggOp::SuperAggOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec)
-: Op(CN_SUPERAGGOP,szOpLabel,pDigest,aOpDefn,false,pOpSpec)
+SuperAggOp::SuperAggOp(OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR)
+: Op(CN_SUPERAGGOP,pOpSpec,pDigest,szOpLabel,aOpDefn,false)
 {
   _precondition_(_MAGIC_,CN_SUPERAGGOP);
   
@@ -81,14 +81,14 @@ SuperAggOp::~SuperAggOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* SuperAggOp::pNew(Stz* szLabel, Digest* pDigest,
-                     OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec,
+Op* SuperAggOp::pNew(OpSpec* pOpSpec, Digest* pDigest,
+                     Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR,
                      TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   ASSERT(i_Slot == -1);
   
-  SuperAggOp* pSuperAggOp = new SuperAggOp(szLabel,pDigest,aOpDefn,bAppR);
+  SuperAggOp* pSuperAggOp = new SuperAggOp(pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR);
   
   return pSuperAggOp;
 }

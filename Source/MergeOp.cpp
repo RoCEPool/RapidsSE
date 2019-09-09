@@ -55,8 +55,8 @@ void MergeOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MergeOp::MergeOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec)
-: Op(CN_MERGEOP,szOpLabel,pDigest,aOpDefn,false,pOpSpec)
+MergeOp::MergeOp(OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR)
+: Op(CN_MERGEOP,pOpSpec,pDigest,szOpLabel,aOpDefn,false)
 {
   _precondition_(_MAGIC_,CN_MERGEOP);
   
@@ -83,13 +83,13 @@ MergeOp::~MergeOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* MergeOp::pNew(Stz* szLabel, Digest* pDigest,
-                  OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec,
+Op* MergeOp::pNew(OpSpec* pOpSpec, Digest* pDigest,
+                  Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR,
                   TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   
-  MergeOp* pMergeOp = new MergeOp(szLabel,pDigest,aOpDefn,bAppR);
+  MergeOp* pMergeOp = new MergeOp(pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR);
   
   pMergeOp->m_nSlot = i_Slot;
   

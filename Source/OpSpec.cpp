@@ -28,15 +28,39 @@ void OpSpec::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OpSpec::OpSpec(Stz* szName)
+OpSpec::OpSpec(Stz* szOpName)
 : Object(CN_OPSPEC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_sName = szName;
+  //m_sLabel
+  m_sName = szOpName;
+  m_bAppendRight = false;
+  m_i_Slot = C_UNKNOWN;
+
   //m_sArgs
   
    _checkInitialised_(CN_OPSPEC);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+OpSpec::OpSpec(Stz* szOpLabel, Stz* szOpName, bool bAppR, i8 i_Slot)
+: Object(CN_OPSPEC)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  m_sLabel = szOpLabel;
+  m_sName  = szOpName;
+  m_bAppendRight = bAppR;
+  m_i_Slot = i_Slot;
+
+  //m_sArgs
+  
+  _checkInitialised_(CN_OPSPEC);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
 }
@@ -53,6 +77,16 @@ OpSpec::~OpSpec(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get append right                                                           */
+/*----------------------------------------------------------------------------*/
+bool OpSpec::bAppendRight(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  return m_bAppendRight;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get args                                                                   */
@@ -75,6 +109,16 @@ void OpSpec::vArgs(Stz* szArgs)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get label                                                                  */
+/*----------------------------------------------------------------------------*/
+Stz* OpSpec::szLabel(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  return m_sLabel.aStz();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get name                                                                   */
 /*----------------------------------------------------------------------------*/
 Stz* OpSpec::szName(void)
@@ -82,6 +126,16 @@ Stz* OpSpec::szName(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
   return m_sName.aStz();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get i_Slot                                                                 */
+/*----------------------------------------------------------------------------*/
+i8 OpSpec::i_Slot(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  return m_i_Slot;
 }
 
 
