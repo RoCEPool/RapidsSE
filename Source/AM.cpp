@@ -412,6 +412,7 @@ void AM::vLogHow(i8 iRequestId, i8 iDetail)
   if (! AM::bLogging())
     return;
   
+  gpLog->vHow(iRequestId,iDetail);
 #endif
 }
 

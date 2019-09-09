@@ -74,6 +74,17 @@ void LogEntry::vAsTxt(s4K& sString)
 {
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
+  SP_Elapsed spElapsed;
+
+  sString.vSprint("[%04lld,%04lld,%s+%s] %014p⬜️"_Stz,
+               m_i_Entry,
+               m_i_Prev,
+               m_caNode,
+               spElapsed.szNsec(m_iTick - AM::iAMTimePoint()),
+               m_pFocal,
+               C_ENDARGS
+               );
+
 }
 
 /*----------------------------------------------------------------------------*/
