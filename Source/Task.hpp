@@ -33,8 +33,10 @@ namespace Tasks
     };
   
     Thread*   m_pThread;    // current thread
+    Mutex*    m_pMutex;     // mutex
+  
     Session*  m_pSession;   // session for this task
-    DicStack  m_oDicStack;    // dictionary stack
+    DicStack  m_oDicStack;  // dictionary stack
 
     eTS     m_eState;       // state (running, sleeping, ...)
     eTR     m_eTransition;  // state transition request

@@ -326,6 +326,8 @@ bool Api::bSpawnJob(Session* pSession, Job* pJob, eSS eSeed)
   //if (pJob->m_xReqTuple.m_bMarkTrace)
   //  pJob->m_pJobClass->vShowJob(pJob);
   
+  //ASSERT(! pJob->m_pTask);
+  
   Task* pNewTask = new Task(pJob,pSession);
   pNewTask->vState(TS_ABLE);
   //pNewTask->vSession(pSession);

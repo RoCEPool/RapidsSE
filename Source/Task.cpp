@@ -138,6 +138,8 @@ void Task::vInit(void)
   m_pJob         = nullptr;
   
   m_pThread      = nullptr;
+  m_pMutex       = nullptr;
+  
   m_pSession     = nullptr;
   // m_oDicStack
 

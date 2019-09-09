@@ -530,11 +530,12 @@ void Jobs::vJob_send(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void Jobs::vJob_recv(Job* pJob)
 {
-  pJob->m_pTask          = nullptr;
-  pJob->m_eJobList       = JL_NONE;
-  pJob->m_pJobMutex      = nullptr;
   pJob->m_bWasReceived   = true;
   
+  pJob->m_eJobList       = JL_NONE;
+  pJob->m_pJobMutex      = nullptr;
+  pJob->m_pTask          = nullptr;
+
   pJob->m_i_Focal = C_UNKNOWN;
 }
 
