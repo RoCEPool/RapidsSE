@@ -81,14 +81,14 @@ SuperAggOp::~SuperAggOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* SuperAggOp::pNew(OpSpec* pOpSpec, Digest* pDigest, Stz* szLabel,
-                     OpDefn* aOpDefn, bool bAppR,
+Op* SuperAggOp::pNew(OpSpec* pOpSpec, Digest* pDigest,
+                     Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR,
                      TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   ASSERT(i_Slot == -1);
   
-  SuperAggOp* pSuperAggOp = new SuperAggOp(pOpSpec,pDigest,szLabel,aOpDefn,bAppR);
+  SuperAggOp* pSuperAggOp = new SuperAggOp(pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR);
   
   return pSuperAggOp;
 }

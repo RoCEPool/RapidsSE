@@ -90,14 +90,14 @@ Op_ToClause::~Op_ToClause(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* Op_ToClause::pNew(OpSpec* pOpSpec, Digest* pDigest, Stz* szLabel,
-                      OpDefn* aOpDefn, bool bAppR,
+Op* Op_ToClause::pNew(OpSpec* pOpSpec, Digest* pDigest,
+                      Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR,
                       TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   ASSERT(i_Slot == -1);
   
-  Op_ToClause* pToClauseOp = new Op_ToClause(pOpSpec,pDigest,szLabel,aOpDefn,bAppR);
+  Op_ToClause* pToClauseOp = new Op_ToClause(pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR);
   
   return pToClauseOp;
 }

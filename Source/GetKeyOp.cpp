@@ -88,13 +88,13 @@ GetKeyOp::~GetKeyOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* GetKeyOp::pNew(OpSpec* pOpSpec, Digest* pDigest, Stz* szLabel,
-                   OpDefn* aOpDefn, bool bAppR,
+Op* GetKeyOp::pNew(OpSpec* pOpSpec, Digest* pDigest,
+                   Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR,
                    TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   
-  GetKeyOp* pGetKeyOp = new GetKeyOp(pOpSpec,pDigest,szLabel,aOpDefn,bAppR);
+  GetKeyOp* pGetKeyOp = new GetKeyOp(pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR);
   
   pGetKeyOp->m_sKey = pTknVec->pGet(i_Tkn_++)->szText();
   pGetKeyOp->m_nSlot = i_Slot;

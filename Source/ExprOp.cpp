@@ -92,14 +92,14 @@ ExprOp::~ExprOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* ExprOp::pNew(OpSpec* pOpSpec, Digest* pDigest, Stz* szLabel,
-                 OpDefn* aOpDefn, bool bAppR,
+Op* ExprOp::pNew(OpSpec* pOpSpec, Digest* pDigest,
+                 Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR,
                  TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   ASSERT(i_Slot != -1);
   
-  ExprOp* pExprOp = new ExprOp(pOpSpec,pDigest,szLabel,aOpDefn,bAppR);
+  ExprOp* pExprOp = new ExprOp(pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR);
   pExprOp->m_iTkn = i_Tkn_;
   pExprOp->m_pTknVec = pTknVec;
   

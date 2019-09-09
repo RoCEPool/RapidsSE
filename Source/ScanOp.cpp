@@ -88,13 +88,13 @@ ScanOp::~ScanOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* ScanOp::pNew(OpSpec* pOpSpec, Digest* pDigest, Stz* szLabel,
-                 OpDefn* aOpDefn, bool bAppR,
+Op* ScanOp::pNew(OpSpec* pOpSpec, Digest* pDigest,
+                 Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR,
                  TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   
-  ScanOp* pScanOp = new ScanOp(pOpSpec,pDigest,szLabel,aOpDefn,bAppR);
+  ScanOp* pScanOp = new ScanOp(pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR);
   
   pScanOp->m_sTableNm = pTknVec->pGet(i_Tkn_++)->szText();
   pScanOp->m_nSlot = i_Slot;

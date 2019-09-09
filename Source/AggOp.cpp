@@ -88,14 +88,14 @@ AggOp::~AggOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* AggOp::pNew(OpSpec* pOpSpec, Digest* pDigest, Stz* szLabel,
-                OpDefn* aOpDefn, bool bAppR,
+Op* AggOp::pNew(OpSpec* pOpSpec, Digest* pDigest,
+                Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR,
                 TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   ASSERT(i_Slot != -1);
   
-  AggOp* pAggOp = new AggOp(pOpSpec,pDigest,szLabel,aOpDefn,bAppR);
+  AggOp* pAggOp = new AggOp(pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR);
   
   pAggOp->m_nSlot = i_Slot;
   

@@ -82,14 +82,14 @@ ZedOp::~ZedOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* ZedOp::pNew(OpSpec* pOpSpec, Digest* pDigest, Stz* szLabel,
-                OpDefn* aOpDefn, bool bAppR,
+Op* ZedOp::pNew(OpSpec* pOpSpec, Digest* pDigest,
+                Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR,
                 TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   ASSERT(i_Slot == -1);
   
-  ZedOp* pZedOp = new ZedOp(pOpSpec,pDigest,szLabel,aOpDefn,bAppR);
+  ZedOp* pZedOp = new ZedOp(pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR);
   
   return pZedOp;
 }

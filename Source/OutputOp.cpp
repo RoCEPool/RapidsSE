@@ -83,14 +83,14 @@ OutputOp::~OutputOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* OutputOp::pNew(OpSpec* pOpSpec, Digest* pDigest, Stz* szLabel,
-                   OpDefn* aOpDefn, bool bAppR,
+Op* OutputOp::pNew(OpSpec* pOpSpec, Digest* pDigest,
+                   Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR,
                    TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   ASSERT(i_Slot == -1);
   
-  OutputOp* pOutputOp = new OutputOp(pOpSpec,pDigest,szLabel,aOpDefn,bAppR);
+  OutputOp* pOutputOp = new OutputOp(pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR);
   
   return pOutputOp;
 }

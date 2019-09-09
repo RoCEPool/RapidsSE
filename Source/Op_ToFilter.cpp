@@ -95,14 +95,14 @@ Op_ToFilter::~Op_ToFilter(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* Op_ToFilter::pNew(OpSpec* pOpSpec, Digest* pDigest, Stz* szLabel,
-                      OpDefn* aOpDefn, bool bAppR,
+Op* Op_ToFilter::pNew(OpSpec* pOpSpec, Digest* pDigest,
+                      Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR,
                       TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   ASSERT(i_Slot == -1);
   
-  Op_ToFilter* pToDataOp = new Op_ToFilter(pOpSpec,pDigest,szLabel,aOpDefn,bAppR);
+  Op_ToFilter* pToDataOp = new Op_ToFilter(pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR);
   
   return pToDataOp;
 }

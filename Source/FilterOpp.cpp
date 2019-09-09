@@ -82,13 +82,13 @@ FilterOp::~FilterOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* FilterOp::pNew(OpSpec* pOpSpec, Digest* pDigest, Stz* szLabel,
-                   OpDefn* aOpDefn, bool bAppR,
+Op* FilterOp::pNew(OpSpec* pOpSpec, Digest* pDigest,
+                   Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR,
                    TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   
-  FilterOp* pFilterOp = new FilterOp(pOpSpec,pDigest,szLabel,aOpDefn,bAppR);
+  FilterOp* pFilterOp = new FilterOp(pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR);
   pFilterOp->m_iStartTkn = i_Tkn_;
   pFilterOp->m_pTokenVec = pTknVec;
   

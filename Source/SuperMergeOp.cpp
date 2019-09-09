@@ -84,13 +84,13 @@ SuperMergeOp::~SuperMergeOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* SuperMergeOp::pNew(OpSpec* pOpSpec, Digest* pDigest, Stz* szLabel,
-                       OpDefn* aOpDefn, bool bAppR,
+Op* SuperMergeOp::pNew(OpSpec* pOpSpec, Digest* pDigest,
+                       Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR,
                        TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   
-  SuperMergeOp* pSuperMergeOp = new SuperMergeOp(pOpSpec,pDigest,szLabel,aOpDefn,bAppR);
+  SuperMergeOp* pSuperMergeOp = new SuperMergeOp(pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR);
   
   pSuperMergeOp->m_nSlot = i_Slot;
   if (pTknVec->pGet(i_Tkn_)->bIsInteger())

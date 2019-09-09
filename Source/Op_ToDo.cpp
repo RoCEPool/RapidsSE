@@ -82,14 +82,14 @@ Op_ToDo::~Op_ToDo(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* Op_ToDo::pNew(OpSpec* pOpSpec, Digest* pDigest, Stz* szLabel,
-                  OpDefn* aOpDefn, bool bAppR,
+Op* Op_ToDo::pNew(OpSpec* pOpSpec, Digest* pDigest,
+                  Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR,
                   TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   ASSERT(i_Slot == -1);
   
-  Op_ToDo* pToDataOp = new Op_ToDo(pOpSpec,pDigest,szLabel,aOpDefn,bAppR);
+  Op_ToDo* pToDataOp = new Op_ToDo(pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR);
   
   return pToDataOp;
 }
