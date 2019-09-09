@@ -8,9 +8,11 @@ namespace Jobs
   class Job_Dynamic : public JobMark2
   {
   public:
-    Digest*        m_pDigest;
-    StreamDef*     m_pStreamDef;
-    Queue*         m_pBufferQueue;     // the buffer queue
+    Digest*       m_pDigest;
+    DynamicSpec*  m_pDynamicSpec;
+  
+    StreamDef*    m_pStreamDef;
+    Queue*        m_pBufferQueue;     // the buffer queue
     
     // must be last
     Footer m_xFooter;

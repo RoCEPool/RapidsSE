@@ -35,8 +35,8 @@ namespace Jobs
   
     i8  m_iParticipantNode;    // participant node no (FromNodeNo?)
   
+    //! why do we have both of these?
     CrwBuffer* m_pCrwBuffer;   // row buffer          //! should this be in Job?
-  
     Object* m_pSendWith; // object which is to be sent with this job
   
     Atomic m_ixErrors;
@@ -54,6 +54,7 @@ namespace Jobs
     static i8   iOriginatorNode(i8 iJobId);
     static i8   iAsNodeNo_Bits(i8 iNodeNo);
 
+    void vAcksRmg(i8 nAcks);
     void vFocalOutline(s4K& sOutline);
     Stz* sJobSeed(void);
     i8   iJobId(void);

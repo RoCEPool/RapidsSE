@@ -8,10 +8,11 @@ namespace Resources
   class Mutex : public Resource
   {
   public:
-    eMK     m_eKind;   // kind of mutex
-    Focal*  m_pFor;    // mutex is for a task or a thread
+    eMK     m_eKind;     // kind of mutex
+    Focal*  m_pFor;      // mutex is for a task or a thread
   
-    bool    m_bLocked; // true if mutex is currently locked (debugging)
+    bool    m_bLocked;   // true if mutex is currently locked (debugging)
+    Focal*  m_pLockedBy; // by whom is the mutex locked?
   
     pthread_mutex_t     m_xMutex;     // posix mutex variable
     pthread_mutexattr_t m_xMutexAttr; // posix mutex attribute
@@ -43,14 +44,14 @@ namespace Resources
     static void vMonitorPortrait(s48K& sPortrait);
   
     void vCondBroadcast(void);
-    void vCondSignal(void);
-    void vCondWaitIndefinite(void);
+    void vCondSignal(Focal* pByWhom);
+    void vCondWaitIndefinite(Focal* pByWhom);
     void vCondWaitUsec(i8 iMicroSeconds);
     void vFocalOutline(s4K& sOutline);
     bool bMutexIsLocked(void);
     bool bMutexLock(void);
-    void vMutexLock(Object* pByWhom);
-    void vMutexUnlock(Object* pByWhom);
+    void vMutexLock(Focal* pByWhom);
+    void vMutexUnlock(Focal* pByWhom);
   
     Footer* aFooter(void);
   };

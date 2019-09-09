@@ -82,8 +82,8 @@ FilterOp::~FilterOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* FilterOp::pNew(Stz* szLabel,
-                   Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
+Op* FilterOp::pNew(Stz* szLabel, Digest* pDigest,
+                   OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec,
                    TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;

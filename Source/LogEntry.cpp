@@ -223,6 +223,7 @@ void LogEntry::vWriteCsv(File* pFile, i8 iEntryDeltaUsec, i8& iTotalDeltaUsec)
   vWriteCsvEntry(pFile,iEntryDeltaUsec,iTotalDeltaUsec);
   
   switch (m_eKind) {
+    case EK_DDL: m_xDdl.vWriteCsv(pFile,this); break;
     case EK_FYI: m_xFyi.vWriteCsv(pFile,this); break;
     case EK_JOB: m_xJob.vWriteCsv(pFile,this); break;
     case EK_LCK: m_xLck.vWriteCsv(pFile,this); break;

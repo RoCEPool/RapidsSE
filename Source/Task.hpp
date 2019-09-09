@@ -80,7 +80,7 @@ namespace Tasks
     static void vMonitorProfile_stats(s48K& sPortrait);
   
     i8   iAcksRmg_assert_only_(void);
-    void vAcksRmg(i8 iAcksRmg);
+    void vAcksRmg(i8 nAcksRmg);
     bool bAcksRmgDec(void);
     void vAdjustFIP(i8 nBytes);
     Object* pArgObject(void);
@@ -91,6 +91,7 @@ namespace Tasks
     void vFocalOutline(s4K& sOutline);
     void vGrabTaskLock(void);
     bool bIsLocked(void);
+    bool bIsTaskLocked(void);
     Job* pJob(void);
     void vJob(Job* pJob);
     Stz* aJobName(void);

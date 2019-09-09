@@ -6,7 +6,7 @@
 
 OpDesc __Op_Output (
    CN_OUTPUTOP,         // class number
-   OK_SIMPLE,           // op kind
+   OK_SINK,             // op kind
    "Output"_Stz,        // first word of prompt command
    "Out"_Stz,           // prefix
    false,               // partitioned
@@ -83,8 +83,8 @@ OutputOp::~OutputOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* OutputOp::pNew(Stz* szLabel,
-                   Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
+Op* OutputOp::pNew(Stz* szLabel, Digest* pDigest,
+                   OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec,
                    TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;

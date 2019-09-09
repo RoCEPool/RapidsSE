@@ -6,7 +6,7 @@
 
 OpDesc __Op_Fetch (
   CN_FETCHOP,         // class number
-  OK_SIMPLE,          // op kind
+  OK_SOURCE,          // op kind
   "Fetch"_Stz,        // first word of prompt command
   "Fet"_Stz,          // prefix
   true,               // partitioned
@@ -91,8 +91,8 @@ FetchOp::~FetchOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* FetchOp::pNew(Stz* szLabel,
-                  Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
+Op* FetchOp::pNew(Stz* szLabel, Digest* pDigest,
+                  OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec,
                   TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;

@@ -13,6 +13,7 @@ namespace Host
     static void vExitFailure(void);
     static void vExitSuccess(void);
     static i8   iGetPid(void);
+    static bool bIsSeProcess(void);
     static bool bKillPid(i8 iPid);
     static bool bTestPid(i8 iPid);
   };

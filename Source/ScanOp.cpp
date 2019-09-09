@@ -6,7 +6,7 @@
 
 OpDesc __Op_Scan (
   CN_SCANOP,          // class number
-  OK_SIMPLE,          // op kind
+  OK_SOURCE,          // op kind
   "Scan"_Stz,         // first word of prompt command
   "Scn"_Stz,          // prefix
   true,               // partitioned
@@ -88,8 +88,8 @@ ScanOp::~ScanOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* ScanOp::pNew(Stz* szLabel,
-                 Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
+Op* ScanOp::pNew(Stz* szLabel, Digest* pDigest,
+                 OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec,
                  TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;

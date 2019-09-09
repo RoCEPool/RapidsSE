@@ -60,10 +60,11 @@ Mutex::Mutex(eMK eKind, Focal* pFor, ReqTuple* aReqTuple)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
-  m_eKind    = eKind;
-  m_pFor     = pFor;
+  m_eKind     = eKind;
+  m_pFor      = pFor;
   
-  m_bLocked  = false;
+  m_bLocked   = false;
+  m_pLockedBy = nullptr;
 
   // m_ixBroadcast;
   // m_ixSignal;
@@ -229,7 +230,7 @@ void Mutex::vCondBroadcast(void)
 /*----------------------------------------------------------------------------*/
 /* signal the condition variable of this mutex                                */
 /*----------------------------------------------------------------------------*/
-void Mutex::vCondSignal(void)
+void Mutex::vCondSignal(Focal* pByWhom)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -238,7 +239,8 @@ void Mutex::vCondSignal(void)
   //!
   ASSERT(m_bLocked);
   ASSERT(bMutexIsLocked());
-  
+  ASSERT(pByWhom == m_pLockedBy);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
 #ifdef WITH_STATISTICS_COUNTERS
@@ -279,7 +281,7 @@ void Mutex::vCondSignal(void)
 /*----------------------------------------------------------------------------*/
 /* calling thread waits indefinitely to be signaled           (blocking call) */
 /*----------------------------------------------------------------------------*/
-void Mutex::vCondWaitIndefinite(void)
+void Mutex::vCondWaitIndefinite(Focal* pByWhom)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -292,7 +294,8 @@ void Mutex::vCondWaitIndefinite(void)
   //!
   ASSERT(m_bLocked);
   ASSERT(bMutexIsLocked());
-  
+  ASSERT(pByWhom == m_pLockedBy);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
 #ifdef WITH_STATISTICS_COUNTERS
@@ -301,13 +304,16 @@ void Mutex::vCondWaitIndefinite(void)
   
   vIncActNo(); ++ m_ixWaitIndef;
   AM::vLogRes(SL_INF,this,RA_MTX_WAIT_SIGNAL,
-              "-%s wait for signal |m_ixWaitIndef=%lld|"_Stz, //!format-LogRes
+              "-%s wait for signal; mutex will be dropped |m_ixWaitIndef=%lld|"_Stz, //!format-LogRes
               aMK[m_eKind],
               * m_ixWaitIndef,
               C_ENDARGS);
 
   // clear tracking of the mutex lock state
   m_bLocked = false;
+  
+  Focal* pWasLockedBy = m_pLockedBy;
+  m_pLockedBy = nullptr;
   
   //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
   i8 iRetVal = pthread_cond_wait(&m_xCond,&m_xMutex);                // BLOCKING
@@ -321,10 +327,13 @@ void Mutex::vCondWaitIndefinite(void)
 
   if (0 == iRetVal) {
     RASSERT(! m_bLocked);
+    
     m_bLocked = true;
+    m_pLockedBy = pWasLockedBy;
+
     vIncActNo(); ++ m_ixSignaled;
     AM::vLogRes(SL_INF,this,RA_MTX_SIGNALED,
-                "Mutex -%s owner was signaled; lock reacquired |m_ixSignaled=%lld|"_Stz, //!format-LogRes
+                "Mutex -%s owner was signaled; mutex reacquired |m_ixSignaled=%lld|"_Stz, //!format-LogRes
                 aMK[m_eKind],
                 * m_ixSignaled,
                 C_ENDARGS);
@@ -547,7 +556,7 @@ bool Mutex::bMutexLock(void)
 /*----------------------------------------------------------------------------*/
 /* lock this mutex by calling thread                               (blocking) */
 /*----------------------------------------------------------------------------*/
-void Mutex::vMutexLock(Object* pByWhom)
+void Mutex::vMutexLock(Focal* pByWhom)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -573,8 +582,11 @@ void Mutex::vMutexLock(Object* pByWhom)
   
   if (0 == iRetVal) {
     RASSERT(! m_bLocked);
+    RASSERT(! m_pLockedBy);
     
-    m_bLocked = true;
+    m_bLocked   = true;
+    m_pLockedBy = pByWhom;
+    
     vIncActNo(); ++ m_ixLocked;
 
     SP_Id spId;
@@ -610,7 +622,7 @@ void Mutex::vMutexLock(Object* pByWhom)
 /*----------------------------------------------------------------------------*/
 /* unlock this mutex currently locked by calling thread                       */
 /*----------------------------------------------------------------------------*/
-void Mutex::vMutexUnlock(Object* pByWhom)
+void Mutex::vMutexUnlock(Focal* pByWhom)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -620,11 +632,14 @@ void Mutex::vMutexUnlock(Object* pByWhom)
   RASSERT(m_bLocked);
   RASSERT(bMutexIsLocked());
   
+  RASSERT(pByWhom == m_pLockedBy);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // clear tracking of the mutex lock state
-  m_bLocked = false;
-  
+  m_bLocked   = false;
+  m_pLockedBy = nullptr;
+
   //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
   i8 iRetVal = pthread_mutex_unlock(&m_xMutex);                  // non-blocking
   //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||

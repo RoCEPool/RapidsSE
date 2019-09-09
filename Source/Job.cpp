@@ -219,6 +219,16 @@ i8 Job::iAsNodeNo_Bits(i8 iNodeNo)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* set the number of acks required by the job                                 */
+/*----------------------------------------------------------------------------*/
+void Job::vAcksRmg(i8 nAcks)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_oAcksRmg.vSetRemaining(nAcks);
+}
+
+/*----------------------------------------------------------------------------*/
 /* focal outline                                                              */
 /*----------------------------------------------------------------------------*/
 void Job::vFocalOutline(s4K& sOutline)
@@ -319,7 +329,7 @@ void Job::vSignalJobMutex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_pJobMutex->vCondSignal();
+  m_pJobMutex->vCondSignal(this);
 
 //  i8 rCode = pthread_cond_signal(&m_xThreadCond);
 //
@@ -344,7 +354,7 @@ void Job::vWaitJobMutex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
  
-  m_pJobMutex->vCondWaitIndefinite();
+  m_pJobMutex->vCondWaitIndefinite(this);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -5,17 +5,17 @@
 #include "DataOperators.h"
 
 OpDesc __Op_Agg (
-   CN_AGGOP,           // class number
-   OK_SIMPLE,          // op kind
-   "Agg"_Stz,          // first word of prompt command
-   "Agg"_Stz,          // prefix
-   true,               // partitioned
-   AggOp::pNew,        // function which parses the command and new's an op
-   AggOp::eCall,       // function which calls the op loop
-   AggOp::eDrain,      // function which calls the drain loop
-   
-   "<help>"_Stz
-   );
+  CN_AGGOP,           // class number
+  OK_SIMPLE,          // op kind
+  "Agg"_Stz,          // first word of prompt command
+  "Agg"_Stz,          // prefix
+  true,               // partitioned
+  AggOp::pNew,        // function which parses the command and new's an op
+  AggOp::eCall,       // function which calls the op loop
+  AggOp::eDrain,      // function which calls the drain loop
+
+  "<help>"_Stz
+  );
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -88,9 +88,9 @@ AggOp::~AggOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* AggOp::pNew(Stz* szLabel,
-                  Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
-                  TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
+Op* AggOp::pNew(Stz* szLabel, Digest* pDigest,
+                OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec,
+                TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   ASSERT(i_Slot != -1);

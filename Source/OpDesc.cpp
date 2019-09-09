@@ -14,8 +14,8 @@ OpDesc::OpDesc(eCN  eClass,     // class number
                Stz* szCommand,  // first word of prompt command
                Stz* szPrefix,   // prefix
                bool bIsPartitioned, // is partitioned
-               Op*  (*fpNew)(Stz* szLabel,
-                             Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
+               Op*  (*fpNew)(Stz* szLabel, Digest* pDigest,
+                             OpDefn* aOpDefn, bool bAppR,  OpSpec* pOpSpec,
                              TokenVec* pTknVec, i8& i_Tkn, i8 i_Slot),
                eOR  (*fpCall) (void* aThisOp),  // fun which calls the op loop
                eOR  (*fpDrain)(void* aThisOp),  // fun which calls the drain loop

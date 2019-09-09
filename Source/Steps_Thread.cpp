@@ -18,8 +18,6 @@ void Step::vAddSteps_Thread(void)
   vAddStep("thread::sleepUsec"_Stz,       &Step::vThreadSleepUsec);
   
   vAddStep("thread.bind"_Stz,             &Step::vThreadBind);
-  vAddStep("thread.condSignal"_Stz,       &Step::vThreadCondSignal);
-  vAddStep("thread.condWait"_Stz,         &Step::vThreadCondWait);
   vAddStep("thread.cpu"_Stz,              &Step::vThreadCpu);
   vAddStep("thread.dedicated@"_Stz,       &Step::vThreadDedicatedFetch);
   vAddStep("thread.dedicated!"_Stz,       &Step::vThreadDedicatedStore);
@@ -48,44 +46,6 @@ ENTRY("vThreadBind"_Stz);
   Thread* pThread = static_cast<Thread*>(pObject);
   
   pThread->vBind(iCpu);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* thread.condSignal -- signal condition on threads mutex                     */
-/*----------------------------------------------------------------------------*/
-void Step::vThreadCondSignal(MP_Task mpTask)
-{
- ENTRY("vThreadCondSignal"_Stz);
-  
-  Object* pThreadObject;
-  if ( ! mpTask->m_pDataStack->bPop(pThreadObject) )
-    THROW_INVALID_DSTACK("thread.condSignal"_Stz);
-  
-  Thread* pThread = _pThread(pThreadObject);
-  ASSERT(CN_THREAD == pThread->eClass());
-  
-  pThread->m_pMutexThread->vCondSignal();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* thread.condWait -- wait for cond on threads mutex                          */
-/*----------------------------------------------------------------------------*/
-void Step::vThreadCondWait(MP_Task mpTask)
-{
- ENTRY("vThreadCondWait"_Stz);
-  
-  Object* pThreadObject;
-  if ( ! mpTask->m_pDataStack->bPop(pThreadObject) )
-    THROW_INVALID_DSTACK("thread.condWait"_Stz);
-  
-  Thread* pThread = _pThread(pThreadObject);
-  ASSERT(CN_THREAD == pThread->eClass());
-  
-  pThread->m_pMutexThread->vCondWaitIndefinite();
   
   EXIT();
 }

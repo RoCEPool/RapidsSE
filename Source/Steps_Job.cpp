@@ -117,7 +117,7 @@ void Step::vJobAcksRemaining(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(nAcksRemaining) )
     THROW_INVALID_DSTACK("job.acksRemaining!"_Stz);
   
-  pJob->m_oAcksRmg.vSetRemaining(nAcksRemaining);
+  pJob->vAcksRmg(nAcksRemaining);
   
   EXIT();
 }

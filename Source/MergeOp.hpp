@@ -21,11 +21,13 @@ namespace DataOperators
     void* operator new(size_t);
     void  operator delete(void*);
     
-    MergeOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec=nullptr);
+    MergeOp(Stz* szOpLabel, Digest* pDigest,
+            OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec=nullptr);
    ~MergeOp(void) noexcept(false);
   
     static Op* pNew(Stz* szLabel,
-                    Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
+                    Digest* pDigest,
+                    OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec,
                     TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot);
     
     static eOR eCall(void* aThis);

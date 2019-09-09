@@ -89,7 +89,6 @@ void Step::vTaskAcksStore(MP_Task mpTask)
     AM::pOriginatingJobs()->vLogJobs(pJob->m_iUniqueId);
   }
   
-  //pGivenTask->m_oAcksRmg.vSetRemaining(nAcksRequired);
   Scheduler::vTaskRequiresAcks(pGivenTask,nAcksRequired);
   
   EXIT();

@@ -109,6 +109,8 @@ Job_Dynamic::Job_Dynamic(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
   //m_oOpVec
   
   m_pDigest      = new Digest(this);
+  m_pDynamicSpec = nullptr;
+  
   m_pBufferQueue = new Queue;
   m_pStreamDef   = nullptr;
   
@@ -125,6 +127,8 @@ Job_Dynamic::~Job_Dynamic(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
  
   delete m_pDigest;
+  delete m_pDynamicSpec;
+  
   delete m_pBufferQueue;
   delete m_pStreamDef;
 }

@@ -6,15 +6,27 @@
 enum eOK // operator kind
 {
   /*  0 */ OK_NONE=0,
-  /*  1 */ OK_SIMPLE,    // simple op
-  /*  2 */ OK_ENUMS,
+  
+  /*    */ OK_SIMPLE,    // simple op
+  
+  /*    */ OK_SOURCE,    // source op
+  /*    */ OK_SINK,      // sink op
+  /*    */ OK_DUPLEX,    // duplex op
+  
+  /*    */ OK_ENUMS,
 };
 
 static Stz* aOK[]
 {
   /*  0 */ "NONE"_Stz,
-  /*  1 */ "SIMPLE"_Stz,
-  /*  2 */ "ENUMS"_Stz,
+  
+  /*    */ "SIMPLE"_Stz,
+  
+  /*    */ "SOURCE"_Stz,
+  /*    */ "SINK"_Stz,
+  /*    */ "DUPLEX"_Stz,
+
+  /*    */ "ENUMS"_Stz,
 };
 
 /*============================================================================*/

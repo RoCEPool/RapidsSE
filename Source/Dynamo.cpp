@@ -402,6 +402,16 @@ DynamicSpec* Dynamo::pDynamicSpec(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set the dynamic spec                                                       */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vDynamicSpec(DynamicSpec* pDynamicSpec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  m_pDynamicSpec = pDynamicSpec;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is token a known operator?                                                 */
 /*----------------------------------------------------------------------------*/
 bool Dynamo::bIsOperator(Token* pTkn)
