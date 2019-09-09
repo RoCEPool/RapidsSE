@@ -18,7 +18,7 @@ namespace DataOperators
     void* operator new(size_t);
     void  operator delete(void*);
   
-    CountOp(OpSpec* pOpSpec, Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR);
+    CountOp(OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR);
    ~CountOp(void) noexcept(false);
   
     static Op* pNew(Stz* szLabel, Digest* pDigest,

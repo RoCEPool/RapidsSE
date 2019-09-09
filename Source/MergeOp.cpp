@@ -55,7 +55,7 @@ void MergeOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MergeOp::MergeOp(OpSpec* pOpSpec, Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
+MergeOp::MergeOp(OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR)
 : Op(CN_MERGEOP,szOpLabel,pDigest,aOpDefn,false,pOpSpec)
 {
   _precondition_(_MAGIC_,CN_MERGEOP);
@@ -89,7 +89,7 @@ Op* MergeOp::pNew(Stz* szLabel, Digest* pDigest,
 {
   i_Tkn_++;
   
-  MergeOp* pMergeOp = new MergeOp(pOpSpec,szLabel,pDigest,aOpDefn,bAppR);
+  MergeOp* pMergeOp = new MergeOp(pOpSpec,pDigest,szLabel,aOpDefn,bAppR);
   
   pMergeOp->m_nSlot = i_Slot;
   

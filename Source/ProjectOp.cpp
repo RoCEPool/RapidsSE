@@ -55,7 +55,7 @@ void ProjectOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ProjectOp::ProjectOp(OpSpec* pOpSpec, Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
+ProjectOp::ProjectOp(OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR)
 : Op(CN_PROJECTOP,szOpLabel,pDigest,aOpDefn,bAppR,pOpSpec)
 {
   _precondition_(_MAGIC_,CN_PROJECTOP);
@@ -96,7 +96,7 @@ Op* ProjectOp::pNew(Stz* szLabel, Digest* pDigest,
   i_Tkn_++;
   ASSERT(i_Slot != -1);
   
-  ProjectOp* pProjectOp = new ProjectOp(pOpSpec,szLabel,pDigest,aOpDefn,bAppR);
+  ProjectOp* pProjectOp = new ProjectOp(pOpSpec,pDigest,szLabel,aOpDefn,bAppR);
   
   // create a columnVec in the stream def
   pProjectOp->m_pStreamDef->m_oColVecAry.vItems(1);

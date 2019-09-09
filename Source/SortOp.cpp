@@ -56,7 +56,7 @@ void SortOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SortOp::SortOp(OpSpec* pOpSpec, Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
+SortOp::SortOp(OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR)
 : Op(CN_SORTOP,szOpLabel,pDigest,aOpDefn,bAppR,pOpSpec)
 {
   _precondition_(_MAGIC_,CN_SORTOP);
@@ -90,7 +90,7 @@ Op* SortOp::pNew(Stz* szLabel, Digest* pDigest,
 {
   i_Tkn_++;
   
-  SortOp* pSortOp = new SortOp(pOpSpec,szLabel,pDigest,aOpDefn,bAppR);
+  SortOp* pSortOp = new SortOp(pOpSpec,pDigest,szLabel,aOpDefn,bAppR);
 
   pSortOp->m_nSlot = i_Slot;
   
