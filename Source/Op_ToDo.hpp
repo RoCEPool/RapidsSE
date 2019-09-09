@@ -16,7 +16,7 @@ namespace CompilerOperators
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Op_ToDo(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec);
+    Op_ToDo(OpSpec* pOpSpec, Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR);
    ~Op_ToDo(void) noexcept(false);
   
     static Op* pNew(Stz* szLabel,

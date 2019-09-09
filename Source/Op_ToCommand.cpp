@@ -55,7 +55,7 @@ void Op_ToCommand::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Op_ToCommand::Op_ToCommand(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec)
+Op_ToCommand::Op_ToCommand(OpSpec* pOpSpec, Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
 : Op(CN_OP_TOCOMMAND,szOpLabel,pDigest,aOpDefn,bAppR,pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TOCOMMAND,_FOOTER_);
@@ -89,7 +89,7 @@ Op* Op_ToCommand::pNew(Stz* szLabel, Digest* pDigest,
   i_Tkn_++;
   ASSERT(i_Slot == -1);
   
-  Op_ToCommand* pToCommandOp = new Op_ToCommand(szLabel,pDigest,aOpDefn,bAppR,pOpSpec);
+  Op_ToCommand* pToCommandOp = new Op_ToCommand(pOpSpec,szLabel,pDigest,aOpDefn,bAppR);
   
   return pToCommandOp;
 }

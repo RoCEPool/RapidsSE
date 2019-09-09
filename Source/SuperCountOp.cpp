@@ -55,7 +55,7 @@ void SuperCountOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SuperCountOp::SuperCountOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec)
+SuperCountOp::SuperCountOp(OpSpec* pOpSpec, Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
 : Op(CN_SUPERCOUNTOP,szOpLabel,pDigest,aOpDefn,false,pOpSpec)
 {
   _precondition_(_MAGIC_,CN_SUPERCOUNTOP);
@@ -88,7 +88,7 @@ Op* SuperCountOp::pNew(Stz* szLabel, Digest* pDigest,
   i_Tkn_++;
   ASSERT(i_Slot == -1);
   
-  SuperCountOp* pSuperCountOp = new SuperCountOp(szLabel,pDigest,aOpDefn,bAppR,pOpSpec);
+  SuperCountOp* pSuperCountOp = new SuperCountOp(pOpSpec,szLabel,pDigest,aOpDefn,bAppR);
   
   return pSuperCountOp;
 }

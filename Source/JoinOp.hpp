@@ -31,8 +31,7 @@ namespace DataOperators
     void* operator new(size_t);
     void  operator delete(void*);
     
-    JoinOp(Stz* szOpLabel, Digest* pDigest,
-           OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec=nullptr);
+    JoinOp(OpSpec* pOpSpec, Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR);
    ~JoinOp(void) noexcept(false);
   
     static Op* pNew(Stz* szLabel,

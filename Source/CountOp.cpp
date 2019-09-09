@@ -55,7 +55,7 @@ void CountOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-CountOp::CountOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec)
+CountOp::CountOp(OpSpec* pOpSpec, Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
 : Op(CN_COUNTOP,szOpLabel,pDigest,aOpDefn,bAppR,pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COUNTOP,_FOOTER_);
@@ -103,7 +103,7 @@ Op* CountOp::pNew(Stz* szLabel, Digest* pDigest,
   i_Tkn_++;
   ASSERT(i_Slot != -1);
   
-  CountOp* pCountOp = new CountOp(szLabel,pDigest,aOpDefn,bAppR,pOpSpec);
+  CountOp* pCountOp = new CountOp(pOpSpec,szLabel,pDigest,aOpDefn,bAppR);
   pCountOp->m_nSlot = i_Slot;
   
   return pCountOp;

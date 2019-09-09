@@ -55,7 +55,7 @@ void OutputOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OutputOp::OutputOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec)
+OutputOp::OutputOp(OpSpec* pOpSpec, Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
 : Op(CN_OUTPUTOP,szOpLabel,pDigest,aOpDefn,bAppR,pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
@@ -90,7 +90,7 @@ Op* OutputOp::pNew(Stz* szLabel, Digest* pDigest,
   i_Tkn_++;
   ASSERT(i_Slot == -1);
   
-  OutputOp* pOutputOp = new OutputOp(szLabel,pDigest,aOpDefn,bAppR,pOpSpec);
+  OutputOp* pOutputOp = new OutputOp(pOpSpec,szLabel,pDigest,aOpDefn,bAppR);
   
   return pOutputOp;
 }

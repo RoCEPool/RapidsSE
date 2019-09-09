@@ -21,7 +21,7 @@ namespace DataOperators
     void* operator new(size_t);
     void  operator delete(void*);
   
-    GetKeyOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec);
+    GetKeyOp(OpSpec* pOpSpec, Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR);
    ~GetKeyOp(void) noexcept(false);
   
     static Op* pNew(Stz* szLabel,

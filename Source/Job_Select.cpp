@@ -108,11 +108,11 @@ Job_Select::Job_Select(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
   
   m_pDigest = new Digest(this);
   
-  m_pToClause  = new Op_ToClause  ("ToClause"_Stz,  m_pDigest,nullptr,false,nullptr);
-  m_pToFilter  = new Op_ToFilter  ("ToFilter"_Stz,  m_pDigest,nullptr,false,nullptr);
-  m_pToCommand = new Op_ToCommand ("ToCommand"_Stz, m_pDigest,nullptr,false,nullptr);
-  m_pToDo      = new Op_ToDo      ("ToDo"_Stz,      m_pDigest,nullptr,false,nullptr);
-  m_pZed       = new ZedOp        ("Zed"_Stz,       m_pDigest,nullptr,false,nullptr);
+  m_pToClause  = new Op_ToClause  (nullptr,"ToClause"_Stz,  m_pDigest,nullptr,false);
+  m_pToFilter  = new Op_ToFilter  (nullptr,"ToFilter"_Stz,  m_pDigest,nullptr,false);
+  m_pToCommand = new Op_ToCommand (nullptr,"ToCommand"_Stz, m_pDigest,nullptr,false);
+  m_pToDo      = new Op_ToDo      (nullptr,"ToDo"_Stz,      m_pDigest,nullptr,false);
+  m_pZed       = new ZedOp        (nullptr,"Zed"_Stz,       m_pDigest,nullptr,false);
   
   m_pStmt_Select = new Stmt_Select;
 

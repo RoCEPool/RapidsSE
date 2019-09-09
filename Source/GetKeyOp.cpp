@@ -55,7 +55,7 @@ void GetKeyOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-GetKeyOp::GetKeyOp(Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR, OpSpec* pOpSpec)
+GetKeyOp::GetKeyOp(OpSpec* pOpSpec, Stz* szOpLabel, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
 : Op(CN_GETKEYOP,szOpLabel,pDigest,aOpDefn,bAppR,pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GETKEYOP,_FOOTER_);
@@ -94,7 +94,7 @@ Op* GetKeyOp::pNew(Stz* szLabel, Digest* pDigest,
 {
   i_Tkn_++;
   
-  GetKeyOp* pGetKeyOp = new GetKeyOp(szLabel,pDigest,aOpDefn,bAppR,pOpSpec);
+  GetKeyOp* pGetKeyOp = new GetKeyOp(pOpSpec,szLabel,pDigest,aOpDefn,bAppR);
   
   pGetKeyOp->m_sKey = pTknVec->pGet(i_Tkn_++)->szText();
   pGetKeyOp->m_nSlot = i_Slot;
