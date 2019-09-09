@@ -92,7 +92,7 @@ ExprOp::~ExprOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* ExprOp::pNew(OpSpec* pOpSpec, Stz* szLabel, Digest* pDigest,
+Op* ExprOp::pNew(OpSpec* pOpSpec, Digest* pDigest, Stz* szLabel,
                  OpDefn* aOpDefn, bool bAppR,
                  TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {

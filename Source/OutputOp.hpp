@@ -19,7 +19,7 @@ namespace DataOperators
     OutputOp(OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR);
    ~OutputOp(void) noexcept(false);
   
-    static Op* pNew(OpSpec* pOpSpec, Stz* szLabel, Digest* pDigest,
+    static Op* pNew(OpSpec* pOpSpec, Digest* pDigest, Stz* szLabel,
                     OpDefn* aOpDefn, bool bAppR,
                     TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot);
     static eOR eCall(void* aThis);

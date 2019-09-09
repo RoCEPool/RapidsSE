@@ -128,7 +128,7 @@ void Digest::vParseCommand(TokenVec* pTknVec)
                        i_Op,
                        i_Slot);
         i_Tkn = i_Tkn_Save;
-        Op* pOp = (aOpDefn->m_fpNew)(nullptr,sLabel,this,
+        Op* pOp = (aOpDefn->m_fpNew)(nullptr,this,sLabel,
                                      aOpDefn,bAppendRight,
                                      pTknVec,i_Tkn,i_Slot);
         m_oOpVec.vAdd(pOp);
@@ -139,7 +139,7 @@ void Digest::vParseCommand(TokenVec* pTknVec)
       sLabel.vSprint("%s_%02lld"_Stz,
                      aOpDefn->m_szPrefix,
                      i_Op);
-      Op* pOp = (aOpDefn->m_fpNew)(nullptr,sLabel,this,
+      Op* pOp = (aOpDefn->m_fpNew)(nullptr,this,sLabel,
                                    aOpDefn,bAppendRight,
                                    pTknVec,i_Tkn,-1);
       m_oOpVec.vAdd(pOp);

@@ -15,8 +15,7 @@ namespace Operators
            Stz* szCommand,  // first word of prompt command
            Stz* szPrefix,   // prefix
            bool bIsPartitioned, // is operator partitioned
-           Op*  (*fpNew)(OpSpec* pOpSpec,
-                         Stz* szLabel, Digest* pDigest,
+           Op*  (*fpNew)(OpSpec* pOpSpec, Digest* pDigest, Stz* szLabel,
                          OpDefn* aOpDefn, bool bAppR,
                          TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot),
            
