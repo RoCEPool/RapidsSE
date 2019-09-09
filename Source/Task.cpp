@@ -386,6 +386,8 @@ void Task::vAcksRmg(i8 nAcksRmg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+  ASSERT(bIsTaskLocked());
+  
   m_oAcksRmg.vSetRemaining(nAcksRmg);
 }
 
@@ -505,6 +507,18 @@ bool Task::bIsLocked(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   bool b = m_okLock.bIsLocked();
+  
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is task locked?                                                            */
+/*----------------------------------------------------------------------------*/
+bool Task::bIsTaskLocked(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  bool b = m_okLock.bIsWriteLocked();
   
   return b;
 }

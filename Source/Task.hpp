@@ -91,6 +91,7 @@ namespace Tasks
     void vFocalOutline(s4K& sOutline);
     void vGrabTaskLock(void);
     bool bIsLocked(void);
+    bool bIsTaskLocked(void);
     Job* pJob(void);
     void vJob(Job* pJob);
     Stz* aJobName(void);
