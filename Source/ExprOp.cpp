@@ -56,7 +56,7 @@ void ExprOp::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ExprOp::ExprOp(OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR)
-: Op(CN_EXPROP,aOpDefn,pDigest,szOpLabel,bAppR,pOpSpec)
+: Op(CN_EXPROP,pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR)
 {
   _precondition_(_MAGIC_,CN_EXPROP);
   

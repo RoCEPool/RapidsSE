@@ -23,7 +23,7 @@ XmitOp* DataOperators::_pXmitOp(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XmitOp::XmitOp(Stz* szOpLabel, Digest* pDigest)
-: Op(CN_XMITOP,nullptr,pDigest,szOpLabel,false,nullptr)
+: Op(CN_XMITOP,nullptr,pDigest,szOpLabel,nullptr,false)
 {
   _precondition_(_MAGIC_,CN_XMITOP);
 }

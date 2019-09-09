@@ -56,7 +56,7 @@ void MergeOp::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 MergeOp::MergeOp(OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR)
-: Op(CN_MERGEOP,aOpDefn,pDigest,szOpLabel,false,pOpSpec)
+: Op(CN_MERGEOP,pOpSpec,pDigest,szOpLabel,aOpDefn,false)
 {
   _precondition_(_MAGIC_,CN_MERGEOP);
   

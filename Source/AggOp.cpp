@@ -56,7 +56,7 @@ void AggOp::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 AggOp::AggOp(OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR)
-: Op(CN_AGGOP,aOpDefn,pDigest,szOpLabel,bAppR,pOpSpec)
+: Op(CN_AGGOP,pOpSpec,pDigest,szOpLabel,aOpDefn,bAppR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_AGGOP,_FOOTER_);
   
