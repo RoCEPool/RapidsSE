@@ -16,7 +16,7 @@ namespace Operators
            Stz* szPrefix,   // prefix
            bool bIsPartitioned, // is operator partitioned
            Op*  (*fpNewOp)(OpSpec* pOpSpec, Digest* pDigest,
-                           Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR,
+                           OpDefn* aOpDefn, bool bAppR,
                            TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot),
            
            eOR  (*fpCall)(void* aThisOp),  // function which calls the op loop

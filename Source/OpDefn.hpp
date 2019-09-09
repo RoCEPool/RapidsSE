@@ -17,7 +17,7 @@ namespace Operators
       bool m_bIsPartitioned; // is partitioned
     
       Op*  (*m_fpNewOp)(OpSpec* pOpSpec, Digest* pDigest,
-                        Stz* szOpLabel, OpDefn* aOpDefn, bool bAppR,
+                        OpDefn* aOpDefn, bool bAppR,
                         TokenVec* pTknVec, i8& i_Tkn, i8 i_Slot);
       eOR  (*m_fpCall) (void* aThisOp);  // function which calls the op loop
       eOR  (*m_fpDrain)(void* aThisOp);  // function which calls the drain loop
