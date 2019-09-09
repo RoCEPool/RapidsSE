@@ -74,6 +74,8 @@ void LogEntry::vAsTxt(s4K& sString)
 {
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
+  SP_Id spId;
+  SP_Id spForId;
   SP_Elapsed spElapsed;
 
   sString.vSprint("[%04lld,%04lld,%s+%s] %014p⬜️"_Stz,
@@ -85,6 +87,18 @@ void LogEntry::vAsTxt(s4K& sString)
                C_ENDARGS
                );
 
+  sString.vCatSprint("%20s ⬜️ %s:%s#%03lld"_Stz,
+               m_xReqTuple.m_sPurpose.aStz(),
+               
+               spForId.sz(m_iForId),
+               spId.sz(m_eKind,m_iUniqueId),
+               m_iAct,
+               C_ENDARGS
+               );
+  
+  sString.vCatSprint("%-16s"_Stz,
+                    aCN[m_eClass]
+                   );
 }
 
 /*----------------------------------------------------------------------------*/
