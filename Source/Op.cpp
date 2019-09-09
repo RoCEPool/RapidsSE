@@ -61,7 +61,8 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* a
   RASSERT(aOpDefn);
   
   ASSERT(pOpSpec->szLabel()->bSame(szOpLabel));
-  
+  ASSERT(pOpSpec->bAppendRight() == bAppR);
+
   m_sName = aOpDefn->m_szCommand;
   
   m_pOpSpec       = pOpSpec;
@@ -84,7 +85,7 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Digest* pDigest, Stz* szOpLabel, OpDefn* a
   m_pQueueRight   = new OperandQueue;
   
   m_pOpOut        = nullptr;
-  m_bAppendRight  = bAppR;
+  m_bAppendRight  = pOpSpec->bAppendRight();
 
   m_nSlot            = -1;
   m_nLeftEndMarkers  = 1;
