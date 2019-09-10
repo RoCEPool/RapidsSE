@@ -5,21 +5,26 @@
 #include "DataOperators.h"
 
 OpDesc __Op_Project (
-   CN_PROJECTOP,       // class number
-   OK_SIMPLE,          // op kind
-   "Project"_Stz,      // first word of prompt command
-   "Prj"_Stz,          // prefix
-                     
-   true,               // partitioned
-   false,              // compiler op
+  CN_PROJECTOP,       // class number
+  OK_SIMPLE,          // op kind
+  "Project"_Stz,      // first word of prompt command
+  "Prj"_Stz,          // prefix
+                   
+  true,               // partitioned
+  false,              // compiler op
 
-   CN_NONE,            // what kind of output
-                     
-   ProjectOp::pNew,    // function which parses the command and new's an op
-   ProjectOp::eCall,   // function which calls the op loop
-   ProjectOp::eDrain,  // function which calls the drain loop
-   
-   "project <colNm>... "_Stz
+  false,              // accepts CrwBuffer?
+  false,              // accepts EntBuffer?
+  false,              // accepts IrwBuffer?
+  false,              // accepts SrtBuffer?
+
+  CN_NONE,            // what kind of output
+                   
+  ProjectOp::pNew,    // function which parses the command and new's an op
+  ProjectOp::eCall,   // function which calls the op loop
+  ProjectOp::eDrain,  // function which calls the drain loop
+
+  "project <colNm>... "_Stz
 );
 
 /*----------------------------------------------------------------------------*/

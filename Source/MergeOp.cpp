@@ -13,6 +13,11 @@ OpDesc __Op_Merge (
   true,               // partitioned
   false,              // compiler op
 
+  false,              // accepts CrwBuffer?
+  false,              // accepts EntBuffer?
+  false,              // accepts IrwBuffer?
+  false,              // accepts SrtBuffer?
+                   
   CN_NONE,            // what kind of output
                    
   MergeOp::pNew,      // function which parses the command and new's an op

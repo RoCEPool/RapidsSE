@@ -5,21 +5,26 @@
 #include "CompilerOperators.h"
 
 OpDesc __Op_ToCommand (
-   CN_OP_TOCOMMAND,      // class number
-   OK_SIMPLE,            // op kind
-   "ToCommand"_Stz,      // first word of prompt command
-   "ToCommand"_Stz,      // prefix
-                       
-   false,                // not partitioned
-   true,                 // compiler op
+  CN_OP_TOCOMMAND,      // class number
+  OK_SIMPLE,            // op kind
+  "ToCommand"_Stz,      // first word of prompt command
+  "ToCommand"_Stz,      // prefix
+                     
+  false,                // not partitioned
+  true,                 // compiler op
 
-   CN_NONE,              // what kind of output
+  false,              // accepts CrwBuffer?
+  false,              // accepts EntBuffer?
+  false,              // accepts IrwBuffer?
+  false,              // accepts SrtBuffer?
                        
-   Op_ToCommand::pNew,   // function which parses the command and new's an op
-   Op_ToCommand::eCall,  // function which calls the op loop
-   Op_ToCommand::eDrain, // function which calls the drain loop
-   
-   "<help>"_Stz
+  CN_NONE,              // what kind of output
+                     
+  Op_ToCommand::pNew,   // function which parses the command and new's an op
+  Op_ToCommand::eCall,  // function which calls the op loop
+  Op_ToCommand::eDrain, // function which calls the drain loop
+
+  "<help>"_Stz
 );
 
 /*----------------------------------------------------------------------------*/

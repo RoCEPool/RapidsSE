@@ -5,21 +5,26 @@
 #include "CompilerOperators.h"
 
 OpDesc __Op_ToFilter (
-   CN_OP_TOFILTER,      // class number
-   OK_SIMPLE,           // op kind
-   "ToFilter"_Stz,      // first word of prompt command
-   "ToFilter"_Stz,      // prefix
+  CN_OP_TOFILTER,      // class number
+  OK_SIMPLE,           // op kind
+  "ToFilter"_Stz,      // first word of prompt command
+  "ToFilter"_Stz,      // prefix
+                    
+  false,               // not partitioned
+  true,                // compiler op
                       
-   false,               // not partitioned
-   true,                // compiler op
+  false,              // accepts CrwBuffer?
+  false,              // accepts EntBuffer?
+  false,              // accepts IrwBuffer?
+  false,              // accepts SrtBuffer?
                       
-   CN_NONE,            // what kind of output
-                      
-   Op_ToFilter::pNew,   // function which parses the command and new's an op
-   Op_ToFilter::eCall,  // function which calls the op loop
-   Op_ToFilter::eDrain, // function which calls the drain loop
-   
-   "<help>"_Stz
+  CN_NONE,            // what kind of output
+                    
+  Op_ToFilter::pNew,   // function which parses the command and new's an op
+  Op_ToFilter::eCall,  // function which calls the op loop
+  Op_ToFilter::eDrain, // function which calls the drain loop
+
+  "<help>"_Stz
 );
 
 /*----------------------------------------------------------------------------*/

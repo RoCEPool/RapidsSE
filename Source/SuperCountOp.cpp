@@ -13,6 +13,11 @@ OpDesc __Op_SuperCount (
   false,              // partitioned
   false,              // compiler op
 
+  false,              // accepts CrwBuffer?
+  false,              // accepts EntBuffer?
+  false,              // accepts IrwBuffer?
+  false,              // accepts SrtBuffer?
+                        
   CN_NONE,            // what kind of output
                         
   SuperCountOp::pNew, // function which parses the command and new's an op

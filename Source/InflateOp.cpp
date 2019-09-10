@@ -5,21 +5,26 @@
 #include "DataOperators.h"
 
 OpDesc __Op_Inflate (
-   CN_INFLATEOP,         // class number
-   OK_SIMPLE,            // op kind
-   "Inflate"_Stz,        // first word of prompt command
-   "Inf"_Stz,            // prefix
-                     
-   false,                // paritioned
-   false,                // compiler op
+  CN_INFLATEOP,         // class number
+  OK_SIMPLE,            // op kind
+  "Inflate"_Stz,        // first word of prompt command
+  "Inf"_Stz,            // prefix
+                   
+  false,                // paritioned
+  false,                // compiler op
 
-   CN_NONE,              // what kind of output
-                     
-   InflateOp::pNew,      // function which parses the command and new's an op
-   InflateOp::eCall,     // function which calls the op loop
-   InflateOp::eDrain,    // function which calls the drain loop
-   
-   "inflate"_Stz
+  false,                // accepts CrwBuffer?
+  false,                // accepts EntBuffer?
+  false,                // accepts IrwBuffer?
+  false,                // accepts SrtBuffer?
+                   
+  CN_NONE,              // what kind of output
+                   
+  InflateOp::pNew,      // function which parses the command and new's an op
+  InflateOp::eCall,     // function which calls the op loop
+  InflateOp::eDrain,    // function which calls the drain loop
+
+  "inflate"_Stz
 );
 
 /*----------------------------------------------------------------------------*/

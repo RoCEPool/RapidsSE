@@ -5,21 +5,26 @@
 #include "DataOperators.h"
 
 OpDesc __Op_GetKeyOp (
-   CN_GETKEYOP,         // class number
-   OK_SIMPLE,           // op kind
-   "GetKey"_Stz,        // first word of prompt command
-   "Gky"_Stz,           // prefix
+  CN_GETKEYOP,         // class number
+  OK_SIMPLE,           // op kind
+  "GetKey"_Stz,        // first word of prompt command
+  "Gky"_Stz,           // prefix
+                    
+  true,                // partitioned
+  false,               // compiler op
+                    
+  false,              // accepts CrwBuffer?
+  false,              // accepts EntBuffer?
+  false,              // accepts IrwBuffer?
+  false,              // accepts SrtBuffer?
                       
-   true,                // partitioned
-   false,               // compiler op
-                      
-   CN_NONE,             // what kind of output
-                      
-   GetKeyOp::pNew,      // function which parses the command and new's an op
-   GetKeyOp::eCall,     // function which calls the op loop
-   GetKeyOp::eDrain,    // function which calls the drain loop
-   
-   "getKey <colNm>"_Stz
+  CN_NONE,             // what kind of output
+                    
+  GetKeyOp::pNew,      // function which parses the command and new's an op
+  GetKeyOp::eCall,     // function which calls the op loop
+  GetKeyOp::eDrain,    // function which calls the drain loop
+
+  "getKey <colNm>"_Stz
 );
 
 /*----------------------------------------------------------------------------*/

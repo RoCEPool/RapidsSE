@@ -90,7 +90,7 @@ void OpCatalog::vPrintCatalog(void)
 /*----------------------------------------------------------------------------*/
 void OpCatalog::vPrintDefn(OpDefn* aOpDefn)
 {
-  vTrace("%12s %12s %6s %16s %8s %s\n"_Stz,
+  vTrace("%12s %12s %6s %16s %-28s %8s \n"_Stz,
          
          aOpDefn->m_szCommand,
          aCN[aOpDefn->m_eClass],
@@ -98,9 +98,9 @@ void OpCatalog::vPrintDefn(OpDefn* aOpDefn)
          
          aOpDefn->m_bIsPartitioned ? "partitioned"_Stz : "not-partitioned"_Stz,
          
-         aCN[aOpDefn->m_eOutput],
-         
          aOpDefn->m_szHelp,
+         
+         aCN[aOpDefn->m_eOutput],
          
          C_ENDARGS);
 

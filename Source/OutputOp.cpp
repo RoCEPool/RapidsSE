@@ -5,21 +5,26 @@
 #include "DataOperators.h"
 
 OpDesc __Op_Output (
-   CN_OUTPUTOP,         // class number
-   OK_SINK,             // op kind
-   "Output"_Stz,        // first word of prompt command
-   "Out"_Stz,           // prefix
-                    
-   false,               // partitioned
-   false,               // compiler op
+  CN_OUTPUTOP,         // class number
+  OK_SINK,             // op kind
+  "Output"_Stz,        // first word of prompt command
+  "Out"_Stz,           // prefix
+                  
+  false,               // partitioned
+  false,               // compiler op
 
-   CN_NONE,             // what kind of output
+  false,              // accepts CrwBuffer?
+  false,              // accepts EntBuffer?
+  false,              // accepts IrwBuffer?
+  false,              // accepts SrtBuffer?
                     
-   OutputOp::pNew,      // function which parses the command and new's an op
-   OutputOp::eCall,     // function which calls the op loop
-   OutputOp::eDrain,    // function which calls the drain loop
-   
-   "output"_Stz
+  CN_NONE,             // what kind of output
+                  
+  OutputOp::pNew,      // function which parses the command and new's an op
+  OutputOp::eCall,     // function which calls the op loop
+  OutputOp::eDrain,    // function which calls the drain loop
+
+  "output"_Stz
 );
 
 /*----------------------------------------------------------------------------*/

@@ -17,6 +17,11 @@ OpDesc::OpDesc(eCN  eClass,     // class number
                bool bIsPartitioned, // is partitioned
                bool bCompilerOp,    // compiler op?
                
+               bool bCrwBuffer,     // accepts CrwBuffer?
+               bool bEntBuffer,     // accepts EntBuffer?
+               bool bIrwBuffer,     // accepts IrwBuffer?
+               bool bSrtBuffer,     // accepts SrtBuffer?
+               
                eCN  eOutput,        // what kind of output
                                                 // function which new's the operator
                Op*  (*fpNewOp)(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
@@ -37,6 +42,11 @@ OpDesc::OpDesc(eCN  eClass,     // class number
   gxOpCatalog.m_xOpDefn[i_OpDefn].m_bIsPartitioned = bIsPartitioned;
   gxOpCatalog.m_xOpDefn[i_OpDefn].m_bCompilerOp    = bCompilerOp;
   
+  gxOpCatalog.m_xOpDefn[i_OpDefn].m_bCrwBuffer     = bCrwBuffer;
+  gxOpCatalog.m_xOpDefn[i_OpDefn].m_bEntBuffer     = bEntBuffer;
+  gxOpCatalog.m_xOpDefn[i_OpDefn].m_bIrwBuffer     = bIrwBuffer;
+  gxOpCatalog.m_xOpDefn[i_OpDefn].m_bSrtBuffer     = bSrtBuffer;
+
   gxOpCatalog.m_xOpDefn[i_OpDefn].m_eOutput   = eOutput;
   
   gxOpCatalog.m_xOpDefn[i_OpDefn].m_fpNewOp   = fpNewOp;

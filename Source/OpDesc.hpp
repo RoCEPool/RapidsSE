@@ -14,7 +14,12 @@ namespace Operators
            Stz* szPrefix,   // prefix
            
            bool bIsPartitioned, // is operator partitioned
-           bool m_bCompilerOp,  // is compiler op
+           bool bCompilerOp,    // is compiler op
+           
+           bool bCrwBuffer,     // accepts CrwBuffer?
+           bool bEntBuffer,     // accepts EntBuffer?
+           bool bIrwBuffer,     // accepts IrwBuffer?
+           bool bSrtBuffer,     // accepts SrtBuffer?
            
            eCN  eOutput,        // what kind of output
            

@@ -13,6 +13,11 @@ OpDesc __Op_Scan (
   true,               // partitioned
   false,              // compiler op
 
+  false,              // accepts CrwBuffer?
+  false,              // accepts EntBuffer?
+  false,              // accepts IrwBuffer?
+  false,              // accepts SrtBuffer?
+                  
   CN_NONE,            // what kind of output
                   
   ScanOp::pNew,       // function which parses the command and new's an op

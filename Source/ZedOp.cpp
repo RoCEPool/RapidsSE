@@ -13,6 +13,11 @@ OpDesc __Op_Zed (
   false,            // partitioned
   false,            // compiler op
 
+  false,              // accepts CrwBuffer?
+  false,              // accepts EntBuffer?
+  false,              // accepts IrwBuffer?
+  false,              // accepts SrtBuffer?
+
   CN_NONE,          // what kind of output
                  
   ZedOp::pNew,      // function which parses the command and new's an op
