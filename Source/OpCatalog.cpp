@@ -98,10 +98,10 @@ void OpCatalog::vPrintDefn(OpDefn* aOpDefn)
          aOK[aOpDefn->m_eKind],
          aOpDefn->m_bIsPartitioned ? "partitioned"_Stz : "non-partitioned"_Stz,
      
-         aOpDefn->m_bCrwBuffer ? "Crw"_Stz : ""_Stz,
-         aOpDefn->m_bEntBuffer ? "Ent"_Stz : ""_Stz,
-         aOpDefn->m_bIrwBuffer ? "Irw"_Stz : ""_Stz,
-         aOpDefn->m_bSrtBuffer ? "Srt"_Stz : ""_Stz,
+         aOpDefn->m_bCrwBuffer_in ? "Crw"_Stz : ""_Stz,
+         aOpDefn->m_bEntBuffer_in ? "Ent"_Stz : ""_Stz,
+         aOpDefn->m_bIrwBuffer_in ? "Irw"_Stz : ""_Stz,
+         aOpDefn->m_bSrtBuffer_in ? "Srt"_Stz : ""_Stz,
          aOpDefn->m_szHelp,
          aCN[aOpDefn->m_eOutput],
          

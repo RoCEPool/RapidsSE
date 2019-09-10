@@ -17,10 +17,10 @@ namespace Operators
     bool m_bIsPartitioned; // is partitioned
     bool m_bCompilerOp;    // is compiler op
 
-    bool m_bCrwBuffer;     // accepts CrwBuffer?
-    bool m_bEntBuffer;     // accepts EntBuffer?
-    bool m_bIrwBuffer;     // accepts IrwBuffer?
-    bool m_bSrtBuffer;     // accepts SrtBuffer?
+    bool m_bCrwBuffer_in;  // accepts CrwBuffer?
+    bool m_bEntBuffer_in;  // accepts EntBuffer?
+    bool m_bIrwBuffer_in;  // accepts IrwBuffer?
+    bool m_bSrtBuffer_in;  // accepts SrtBuffer?
 
     eCN  m_eOutput;        // what kind of output
 
