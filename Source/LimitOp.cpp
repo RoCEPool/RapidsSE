@@ -86,12 +86,10 @@ LimitOp::~LimitOp(void) noexcept(false)
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
 Op* LimitOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
-                  TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
+                  TokenVec* pTknVec, i8& i_Tkn_)
 {
   i_Tkn_++;
-  
-  ASSERT(i_Slot == -1);
-  
+    
   LimitOp* pLimitOp = new LimitOp(pOpSpec,pDigest,aOpDefn);
   
   pLimitOp->m_sArgs = pTknVec->pGet(i_Tkn_)->szText();

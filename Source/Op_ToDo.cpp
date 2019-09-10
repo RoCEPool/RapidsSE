@@ -83,10 +83,9 @@ Op_ToDo::~Op_ToDo(void) noexcept(false)
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
 Op* Op_ToDo::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
-                  TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
+                  TokenVec* pTknVec, i8& i_Tkn_)
 {
   i_Tkn_++;
-  ASSERT(i_Slot == -1);
   
   Op_ToDo* pToDataOp = new Op_ToDo(pOpSpec,pDigest,aOpDefn);
   

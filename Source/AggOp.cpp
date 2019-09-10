@@ -89,15 +89,12 @@ AggOp::~AggOp(void) noexcept(false)
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
 Op* AggOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
-                TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
+                TokenVec* pTknVec, i8& i_Tkn_)
 {
   i_Tkn_++;
-  ASSERT(i_Slot != -1);
   
   AggOp* pAggOp = new AggOp(pOpSpec,pDigest,aOpDefn);
-  
-  pAggOp->m_nSlot = i_Slot;
-  
+    
   pAggOp->m_pStreamDef->m_oColVecAry.vItems(1);
   ColumnVec* pColVec = pAggOp->m_pStreamDef->pColumnVec(0);
   

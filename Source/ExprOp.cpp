@@ -93,10 +93,9 @@ ExprOp::~ExprOp(void) noexcept(false)
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
 Op* ExprOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
-                 TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
+                 TokenVec* pTknVec, i8& i_Tkn_)
 {
   i_Tkn_++;
-  ASSERT(i_Slot != -1);
   
   ExprOp* pExprOp = new ExprOp(pOpSpec,pDigest,aOpDefn);
   pExprOp->m_iTkn = i_Tkn_;

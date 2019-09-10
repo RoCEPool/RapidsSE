@@ -85,12 +85,11 @@ JoinOp::~JoinOp(void) noexcept(false)
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
 Op* JoinOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
-                 TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
+                 TokenVec* pTknVec, i8& i_Tkn_)
 {
   i_Tkn_++;
   
   JoinOp* pJoinOp = new JoinOp(pOpSpec,pDigest,aOpDefn);
-  pJoinOp->m_nSlot = i_Slot;
   
   return pJoinOp;
 }

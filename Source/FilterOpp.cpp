@@ -83,7 +83,7 @@ FilterOp::~FilterOp(void) noexcept(false)
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
 Op* FilterOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
-                   TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
+                   TokenVec* pTknVec, i8& i_Tkn_)
 {
   i_Tkn_++;
   
@@ -95,9 +95,7 @@ Op* FilterOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
     i_Tkn_++;
   }
   pFilterOp->m_iEndTkn = i_Tkn_ - 1;
-  
-  pFilterOp->m_nSlot = i_Slot;
-  
+    
   return pFilterOp;
 }
 

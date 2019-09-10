@@ -92,7 +92,7 @@ FetchOp::~FetchOp(void) noexcept(false)
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
 Op* FetchOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
-                  TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
+                  TokenVec* pTknVec, i8& i_Tkn_)
 {
   i_Tkn_++;
   
@@ -100,7 +100,6 @@ Op* FetchOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
   
   pFetchOp->m_sTableNm = pTknVec->pGet(i_Tkn_++)->szText();
   pFetchOp->m_sIndexNm = pTknVec->pGet(i_Tkn_++)->szText();
-  pFetchOp->m_nSlot = i_Slot;
   
   pFetchOp->m_sArgs = pFetchOp->m_sTableNm;
   pFetchOp->m_sArgs.vConcat(" "_Stz);

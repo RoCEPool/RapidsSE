@@ -97,13 +97,11 @@ CountOp::~CountOp(void) noexcept(false)
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
 Op* CountOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
-                  TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
+                  TokenVec* pTknVec, i8& i_Tkn_)
 {
   i_Tkn_++;
-  ASSERT(i_Slot != -1);
   
   CountOp* pCountOp = new CountOp(pOpSpec,pDigest,aOpDefn);
-  pCountOp->m_nSlot = i_Slot;
   
   return pCountOp;
 }

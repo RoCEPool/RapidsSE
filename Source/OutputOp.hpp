@@ -20,7 +20,7 @@ namespace DataOperators
    ~OutputOp(void) noexcept(false);
   
     static Op* pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
-                    TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot);
+                    TokenVec* pTknVec, i8& i_Tkn_);
     static eOR eCall(void* aThis);
     static eOR eDrain(void* aThis);
 

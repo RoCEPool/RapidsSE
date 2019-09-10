@@ -89,14 +89,13 @@ ScanOp::~ScanOp(void) noexcept(false)
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
 Op* ScanOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
-                 TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
+                 TokenVec* pTknVec, i8& i_Tkn_)
 {
   i_Tkn_++;
   
   ScanOp* pScanOp = new ScanOp(pOpSpec,pDigest,aOpDefn);
   
   pScanOp->m_sTableNm = pTknVec->pGet(i_Tkn_++)->szText();
-  pScanOp->m_nSlot = i_Slot;
   
   pScanOp->m_sArgs = pScanOp->m_sTableNm;
   

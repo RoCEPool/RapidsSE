@@ -85,13 +85,12 @@ SuperMergeOp::~SuperMergeOp(void) noexcept(false)
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
 Op* SuperMergeOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
-                       TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
+                       TokenVec* pTknVec, i8& i_Tkn_)
 {
   i_Tkn_++;
   
   SuperMergeOp* pSuperMergeOp = new SuperMergeOp(pOpSpec,pDigest,aOpDefn);
   
-  pSuperMergeOp->m_nSlot = i_Slot;
   if (pTknVec->pGet(i_Tkn_)->bIsInteger())
     pSuperMergeOp->m_nLimit = pTknVec->pGet(i_Tkn_++)->iToI8();
   

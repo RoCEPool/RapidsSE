@@ -90,10 +90,9 @@ ProjectOp::~ProjectOp(void) noexcept(false)
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
 Op* ProjectOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
-                    TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
+                    TokenVec* pTknVec, i8& i_Tkn_)
 {
   i_Tkn_++;
-  ASSERT(i_Slot != -1);
   
   ProjectOp* pProjectOp = new ProjectOp(pOpSpec,pDigest,aOpDefn);
   

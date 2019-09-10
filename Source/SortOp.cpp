@@ -85,14 +85,12 @@ SortOp::~SortOp(void) noexcept(false)
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
 Op* SortOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
-                 TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
+                 TokenVec* pTknVec, i8& i_Tkn_)
 {
   i_Tkn_++;
   
   SortOp* pSortOp = new SortOp(pOpSpec,pDigest,aOpDefn);
 
-  pSortOp->m_nSlot = i_Slot;
-  
   return pSortOp;
 }
 
