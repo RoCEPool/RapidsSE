@@ -9,7 +9,10 @@ OpDesc __Op_Merge (
   OK_SIMPLE,          // op kind
   "Merge"_Stz,        // first word of prompt command
   "Mrg"_Stz,          // prefix
+                   
   true,               // partitioned
+  false,              // compiler op
+
   MergeOp::pNew,      // function which parses the command and new's an op
   MergeOp::eCall,     // function which calls the op loop
   nullptr,            // function which calls the drain loop

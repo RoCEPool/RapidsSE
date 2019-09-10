@@ -9,7 +9,10 @@ OpDesc __Op_ToClause (
    OK_SIMPLE,           // op kind
    "ToClause"_Stz,      // first word of prompt command
    "ToClause"_Stz,      // prefix
+                      
    false,               // not partitioned
+   true,                // compiler op
+
    Op_ToClause::pNew,   // function which parses the command and new's an op
    Op_ToClause::eCall,  // function which calls the op loop
    Op_ToClause::eDrain, // function which calls the drain loop

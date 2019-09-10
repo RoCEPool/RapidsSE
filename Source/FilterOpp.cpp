@@ -9,7 +9,10 @@ OpDesc __Op_FilterOp (
   OK_SIMPLE,            // op kind
   "Filter"_Stz,         // first word of prompt command
   "Ftr"_Stz,            // prefix
+                      
   true,                 // partitioned
+  false,                // compiler op
+
   FilterOp::pNew,       // function which parses the command and new's an op
   FilterOp::eCall,      // function which calls the op loop
   FilterOp::eDrain,     // function which calls the drain loop

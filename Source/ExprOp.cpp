@@ -9,7 +9,10 @@ OpDesc __Op_Expr (
    OK_SIMPLE,        // op kind
    "Expr"_Stz,       // first word of prompt command
    "Exp"_Stz,        // prefix
+                  
    true,             // partitioned
+   false,            // compiler op
+                  
    ExprOp::pNew,     // function which parses the command and new's an op
    ExprOp::eCall,    // function which calls the op loop
    ExprOp::eDrain,   // function which calls the drain loop

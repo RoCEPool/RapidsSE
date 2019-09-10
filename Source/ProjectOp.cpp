@@ -9,7 +9,10 @@ OpDesc __Op_Project (
    OK_SIMPLE,          // op kind
    "Project"_Stz,      // first word of prompt command
    "Prj"_Stz,          // prefix
+                     
    true,               // partitioned
+   false,              // compiler op
+
    ProjectOp::pNew,    // function which parses the command and new's an op
    ProjectOp::eCall,   // function which calls the op loop
    ProjectOp::eDrain,  // function which calls the drain loop

@@ -9,7 +9,10 @@ OpDesc __Op_ToCommand (
    OK_SIMPLE,            // op kind
    "ToCommand"_Stz,      // first word of prompt command
    "ToCommand"_Stz,      // prefix
+                       
    false,                // not partitioned
+   true,                 // compiler op
+
    Op_ToCommand::pNew,   // function which parses the command and new's an op
    Op_ToCommand::eCall,  // function which calls the op loop
    Op_ToCommand::eDrain, // function which calls the drain loop

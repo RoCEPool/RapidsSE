@@ -9,7 +9,10 @@ OpDesc __Op_Sort (
   OK_SIMPLE,          // op kind
   "Sort"_Stz,         // first word of prompt command
   "Srt"_Stz,          // prefix
+                  
   true,               // partitioned
+  false,              // compiler op
+                  
   SortOp::pNew,       // function which parses the command and new's an op
   SortOp::eCall,      // function which calls the op loop
   nullptr,            // function which calls the drain loop

@@ -5,11 +5,14 @@
 #include "DataOperators.h"
 
 OpDesc __Op_SuperMerge (
-  CN_SUPERMERGEOP,         // class number
+  CN_SUPERMERGEOP,    // class number
   OK_SIMPLE,          // op kind
   "SuperMerge"_Stz,   // first word of prompt command
   "Smg"_Stz,          // prefix
+                        
   false,              // partitioned
+  false,              // compiler op
+
   SuperMergeOp::pNew, // function which parses the command and new's an op
   SuperMergeOp::eCall,// function which calls the op loop
   nullptr,            // function which calls the drain loop

@@ -9,7 +9,10 @@ OpDesc __Op_Scan (
   OK_SOURCE,          // op kind
   "Scan"_Stz,         // first word of prompt command
   "Scn"_Stz,          // prefix
+                  
   true,               // partitioned
+  false,              // compiler op
+
   ScanOp::pNew,       // function which parses the command and new's an op
   ScanOp::eCall,      // function which calls the op loop
   nullptr,            // function which calls the drain loop

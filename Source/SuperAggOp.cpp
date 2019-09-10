@@ -9,7 +9,10 @@ OpDesc __Op_SuperAgg (
   OK_SIMPLE,        // op kind
   "SuperAgg"_Stz,   // first word of prompt command
   "Sag"_Stz,        // prefix
+                      
   false,            // partitioned
+  false,            // compiler op
+
   SuperAggOp::pNew, // function which parses the command and new's an op
   SuperAggOp::eCall,// function which calls the op loop
   nullptr,          // function which calls the drain loop

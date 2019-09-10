@@ -9,7 +9,10 @@ OpDesc __Op_Join (
   OK_DUPLEX,          // op kind
   "Join"_Stz,         // first word of prompt command
   "Joi"_Stz,          // prefix
+                  
   true,               // partitioned
+  false,              // compiler op
+
   JoinOp::pNew,       // function which parses the command and new's an op
   JoinOp::eCall,      // function which calls the op loop
   nullptr,            // function which calls the drain loop

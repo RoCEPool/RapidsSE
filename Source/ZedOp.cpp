@@ -9,7 +9,10 @@ OpDesc __Op_Zed (
   OK_SINK,          // op kind
   "Zed"_Stz,        // first word of prompt command
   "Zed"_Stz,        // prefix
+                 
   false,            // partitioned
+  false,            // compiler op
+
   ZedOp::pNew,      // function which parses the command and new's an op
   ZedOp::eCall,     // function which calls the op loop
   nullptr,          // function which calls the drain loop

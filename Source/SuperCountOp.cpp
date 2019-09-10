@@ -9,7 +9,10 @@ OpDesc __Op_SuperCount (
   OK_SIMPLE,          // op kind
   "SuperCount"_Stz,   // first word of prompt command
   "Sct"_Stz,          // prefix
+                        
   false,              // partitioned
+  false,              // compiler op
+
   SuperCountOp::pNew, // function which parses the command and new's an op
   SuperCountOp::eCall,// function which calls the op loop
   nullptr,            // function which calls the drain loop

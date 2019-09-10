@@ -9,7 +9,10 @@ OpDesc __Op_ToFilter (
    OK_SIMPLE,           // op kind
    "ToFilter"_Stz,      // first word of prompt command
    "ToFilter"_Stz,      // prefix
+                      
    false,               // not partitioned
+   true,                // compiler op
+                      
    Op_ToFilter::pNew,   // function which parses the command and new's an op
    Op_ToFilter::eCall,  // function which calls the op loop
    Op_ToFilter::eDrain, // function which calls the drain loop

@@ -9,7 +9,10 @@ OpDesc __Op_Fetch (
   OK_SOURCE,          // op kind
   "Fetch"_Stz,        // first word of prompt command
   "Fet"_Stz,          // prefix
+                   
   true,               // partitioned
+  false,              // compiler op
+
   FetchOp::pNew,      // function which parses the command and new's an op
   FetchOp::eCall,     // function which calls the op loop
   nullptr,            // function which calls the drain loop

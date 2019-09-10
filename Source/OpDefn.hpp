@@ -15,7 +15,8 @@ namespace Operators
       Stz* m_szPrefix;   // prefix
     
       bool m_bIsPartitioned; // is partitioned
-    
+      bool m_bCompilerOp;    // is compiler op
+
       Op*  (*m_fpNewOp)(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                         TokenVec* pTknVec, i8& i_Tkn);
       eOR  (*m_fpCall) (void* aThisOp);  // function which calls the op loop
