@@ -55,7 +55,7 @@ void FilterOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-FilterOp::FilterOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
+FilterOp::FilterOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn)
 : Op(CN_FILTEROP,pOpSpec,pDigest,aOpDefn)
 {
   _precondition_(_MAGIC_,CN_FILTEROP);
@@ -82,12 +82,12 @@ FilterOp::~FilterOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* FilterOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
+Op* FilterOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                    TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   
-  FilterOp* pFilterOp = new FilterOp(pOpSpec,pDigest,aOpDefn,bAppR);
+  FilterOp* pFilterOp = new FilterOp(pOpSpec,pDigest,aOpDefn);
   pFilterOp->m_iStartTkn = i_Tkn_;
   pFilterOp->m_pTokenVec = pTknVec;
   

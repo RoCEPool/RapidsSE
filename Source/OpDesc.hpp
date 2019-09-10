@@ -15,8 +15,7 @@ namespace Operators
            Stz* szCommand,  // first word of prompt command
            Stz* szPrefix,   // prefix
            bool bIsPartitioned, // is operator partitioned
-           Op*  (*fpNewOp)(OpSpec* pOpSpec, Digest* pDigest,
-                           OpDefn* aOpDefn, bool bAppR,
+           Op*  (*fpNewOp)(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                            TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot),
            
            eOR  (*fpCall)(void* aThisOp),  // function which calls the op loop

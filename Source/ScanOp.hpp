@@ -22,10 +22,10 @@ namespace DataOperators
     void* operator new(size_t);
     void  operator delete(void*);
 
-    ScanOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn, bool bAppR);
+    ScanOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn);
    ~ScanOp(void) noexcept(false);
 
-    static Op* pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
+    static Op* pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                     TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot);
     static eOR eCall(void* aThis);
   

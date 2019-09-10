@@ -55,7 +55,7 @@ void Op_ToFilter::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Op_ToFilter::Op_ToFilter(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
+Op_ToFilter::Op_ToFilter(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn)
 : Op(CN_OP_TOFILTER,pOpSpec,pDigest,aOpDefn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TOFILTER,_FOOTER_);
@@ -95,13 +95,13 @@ Op_ToFilter::~Op_ToFilter(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* Op_ToFilter::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
+Op* Op_ToFilter::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                       TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   ASSERT(i_Slot == -1);
   
-  Op_ToFilter* pToDataOp = new Op_ToFilter(pOpSpec,pDigest,aOpDefn,bAppR);
+  Op_ToFilter* pToDataOp = new Op_ToFilter(pOpSpec,pDigest,aOpDefn);
   
   return pToDataOp;
 }

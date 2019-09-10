@@ -55,7 +55,7 @@ void ScanOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ScanOp::ScanOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
+ScanOp::ScanOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn)
 : Op(CN_SCANOP,pOpSpec,pDigest,aOpDefn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANOP,_FOOTER_);
@@ -88,12 +88,12 @@ ScanOp::~ScanOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* ScanOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
+Op* ScanOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                  TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   
-  ScanOp* pScanOp = new ScanOp(pOpSpec,pDigest,aOpDefn,bAppR);
+  ScanOp* pScanOp = new ScanOp(pOpSpec,pDigest,aOpDefn);
   
   pScanOp->m_sTableNm = pTknVec->pGet(i_Tkn_++)->szText();
   pScanOp->m_nSlot = i_Slot;

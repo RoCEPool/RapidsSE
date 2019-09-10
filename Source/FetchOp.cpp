@@ -55,7 +55,7 @@ void FetchOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-FetchOp::FetchOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
+FetchOp::FetchOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn)
 : Op(CN_FETCHOP,pOpSpec,pDigest,aOpDefn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
@@ -91,12 +91,12 @@ FetchOp::~FetchOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* FetchOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
+Op* FetchOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                   TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   
-  FetchOp* pFetchOp = new FetchOp(pOpSpec,pDigest,aOpDefn,bAppR);
+  FetchOp* pFetchOp = new FetchOp(pOpSpec,pDigest,aOpDefn);
   
   pFetchOp->m_sTableNm = pTknVec->pGet(i_Tkn_++)->szText();
   pFetchOp->m_sIndexNm = pTknVec->pGet(i_Tkn_++)->szText();

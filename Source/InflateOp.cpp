@@ -55,7 +55,7 @@ void InflateOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-InflateOp::InflateOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
+InflateOp::InflateOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn)
 : Op(CN_INFLATEOP,pOpSpec,pDigest,aOpDefn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFLATEOP,_FOOTER_);
@@ -82,13 +82,13 @@ InflateOp::~InflateOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* InflateOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
+Op* InflateOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                     TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   ASSERT(i_Slot == -1);
   
-  InflateOp* pInflateOp = new InflateOp(pOpSpec,pDigest,aOpDefn,bAppR);
+  InflateOp* pInflateOp = new InflateOp(pOpSpec,pDigest,aOpDefn);
   
   return pInflateOp;
 }

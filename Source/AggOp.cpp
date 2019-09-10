@@ -55,7 +55,7 @@ void AggOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-AggOp::AggOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
+AggOp::AggOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn)
 : Op(CN_AGGOP,pOpSpec,pDigest,aOpDefn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_AGGOP,_FOOTER_);
@@ -88,13 +88,13 @@ AggOp::~AggOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* AggOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
+Op* AggOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                 TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;
   ASSERT(i_Slot != -1);
   
-  AggOp* pAggOp = new AggOp(pOpSpec,pDigest,aOpDefn,bAppR);
+  AggOp* pAggOp = new AggOp(pOpSpec,pDigest,aOpDefn);
   
   pAggOp->m_nSlot = i_Slot;
   

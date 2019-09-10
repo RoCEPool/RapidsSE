@@ -21,10 +21,10 @@ namespace DataOperators
     void* operator new(size_t);
     void  operator delete(void*);
     
-    AggOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn, bool bAppR);
+    AggOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn);
    ~AggOp(void) noexcept(false);
   
-    static Op* pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
+    static Op* pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                     TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot);
     static eOR eCall(void* aThis);
     static eOR eDrain(void* aThis);
