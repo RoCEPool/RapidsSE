@@ -84,7 +84,7 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn)
   m_pOpOut        = nullptr;
   m_bAppendRight  = pOpSpec->bAppendRight();
 
-  m_nSlot            = -1;
+  m_nSlot            = pOpSpec->i_Slot();
   m_nLeftEndMarkers  = 1;
   m_nRightEndMarkers = 0;
   m_pStreamDef       = nullptr;
