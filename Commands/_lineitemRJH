@@ -36,7 +36,7 @@ time create table LineItem                 // SF * 6,000,000 rows
 // 1,155190,7706,1,17,21168.23,0.04,0.02,N,O,1996-03-13,1996-02-12,1996-03-22,
 //   DELIVER IN PERSON,TRUCK,egular courts above the,
 
-create index LineItem_Idx1 ON LineItem(L_ORDERKEY);
+//create index LineItem_Idx1 ON LineItem(L_ORDERKEY);
 //create index Lineitem_idx2 ON LineItem(L_SHIPDATE);
 //create index Lineitem_idx3 ON LineItem(L_SUPPKEY);
 
@@ -46,11 +46,11 @@ space;
 //fileCat "/tpch/SF0/lineitem_1.csv" 1;
 //time ld lineitem "/tpch/SF0/lineitem_1.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem_10.csv" max_errors 100;
-time ld lineitem "/tpch/SF0/lineitem_100.csv" max_errors 100;
+//time ld lineitem "/tpch/SF0/lineitem_100.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem_1k.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem_10k.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem_100k.csv" max_errors 100;
-//time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
+time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
 space;
 sztbl lineitem;
 fetch lineitem limit 10;
@@ -82,6 +82,8 @@ time fetch lineitem noPrint;
 
 //time dynamic fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join | count | output | zed;
 //time dynamic fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join | project L_PARTKEY | count | output | zed;
+
+//time dynamic scan lineitem | getkey L_PARTKEY | sort | merge | count | output;
 status;
 
 ping;
