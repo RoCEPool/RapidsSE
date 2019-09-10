@@ -91,20 +91,25 @@ void OpCatalog::vPrintCatalog(void)
 void OpCatalog::vPrintDefn(OpDefn* aOpDefn)
 {
   vTrace("%12s %12s %6s %16s :: "
-         "%3s %3s %3s %3s %-28s %8s \n"_Stz,
-         
+         "%3s %3s %3s %3s -> %-28s -> "_Stz
+         "%3s %3s %3s %3s\n"_Stz,
+
          aOpDefn->m_szCommand,
          aCN[aOpDefn->m_eClass],
          aOK[aOpDefn->m_eKind],
          aOpDefn->m_bIsPartitioned ? "partitioned"_Stz : "non-partitioned"_Stz,
      
-         aOpDefn->m_bCrwBuffer_in ? "Crw"_Stz : ""_Stz,
-         aOpDefn->m_bEntBuffer_in ? "Ent"_Stz : ""_Stz,
-         aOpDefn->m_bIrwBuffer_in ? "Irw"_Stz : ""_Stz,
-         aOpDefn->m_bSrtBuffer_in ? "Srt"_Stz : ""_Stz,
+         aOpDefn->m_bCrwBuffer_in  ? "Crw"_Stz : ""_Stz,
+         aOpDefn->m_bEntBuffer_in  ? "Ent"_Stz : ""_Stz,
+         aOpDefn->m_bIrwBuffer_in  ? "Irw"_Stz : ""_Stz,
+         aOpDefn->m_bSrtBuffer_in  ? "Srt"_Stz : ""_Stz,
          aOpDefn->m_szHelp,
-         aCN[aOpDefn->m_eOutput],
          
+         aOpDefn->m_bCrwBuffer_out ? "Crw"_Stz : ""_Stz,
+         aOpDefn->m_bEntBuffer_out ? "Ent"_Stz : ""_Stz,
+         aOpDefn->m_bIrwBuffer_out ? "Irw"_Stz : ""_Stz,
+         aOpDefn->m_bSrtBuffer_out ? "Srt"_Stz : ""_Stz,
+
          C_ENDARGS);
 
 }

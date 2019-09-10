@@ -18,6 +18,11 @@ OpDesc __Op_Join (
   false,              // accepts IrwBuffer?
   false,              // accepts SrtBuffer?
                   
+  false,              // accepts CrwBuffer?
+  true,               // accepts EntBuffer?
+  false,              // accepts IrwBuffer?
+  false,              // accepts SrtBuffer?
+  
   CN_NONE,            // what kind of output
                   
   JoinOp::pNew,       // function which parses the command and new's an op

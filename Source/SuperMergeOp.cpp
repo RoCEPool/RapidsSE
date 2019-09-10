@@ -18,6 +18,11 @@ OpDesc __Op_SuperMerge (
   false,              // accepts IrwBuffer?
   true,               // accepts SrtBuffer?
                         
+  false,              // accepts CrwBuffer?
+  false,              // accepts EntBuffer?
+  false,              // accepts IrwBuffer?
+  true,               // accepts SrtBuffer?
+                        
   CN_NONE,            // what kind of output
                         
   SuperMergeOp::pNew, // function which parses the command and new's an op

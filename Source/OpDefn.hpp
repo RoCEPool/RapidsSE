@@ -22,6 +22,11 @@ namespace Operators
     bool m_bIrwBuffer_in;  // accepts IrwBuffer?
     bool m_bSrtBuffer_in;  // accepts SrtBuffer?
 
+    bool m_bCrwBuffer_out; // outputs CrwBuffer?
+    bool m_bEntBuffer_out; // outputs EntBuffer?
+    bool m_bIrwBuffer_out; // outputs IrwBuffer?
+    bool m_bSrtBuffer_out; // outputs SrtBuffer?
+  
     eCN  m_eOutput;        // what kind of output
 
     Op*  (*m_fpNewOp)(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,

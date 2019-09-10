@@ -16,10 +16,15 @@ namespace Operators
            bool bIsPartitioned, // is operator partitioned
            bool bCompilerOp,    // is compiler op
            
-           bool bCrwBuffer,     // accepts CrwBuffer?
-           bool bEntBuffer,     // accepts EntBuffer?
-           bool bIrwBuffer,     // accepts IrwBuffer?
-           bool bSrtBuffer,     // accepts SrtBuffer?
+           bool bCrwBuffer_in,  // accepts CrwBuffer?
+           bool bEntBuffer_in,  // accepts EntBuffer?
+           bool bIrwBuffer_in,  // accepts IrwBuffer?
+           bool bSrtBuffer_in,  // accepts SrtBuffer?
+           
+           bool bCrwBuffer_out, // outputs CrwBuffer?
+           bool bEntBuffer_out, // outputs EntBuffer?
+           bool bIrwBuffer_out, // outputs IrwBuffer?
+           bool bSrtBuffer_out, // outputs SrtBuffer?
            
            eCN  eOutput,        // what kind of output
            

@@ -22,6 +22,11 @@ OpDesc::OpDesc(eCN  eClass,     // class number
                bool bIrwBuffer_in,  // accepts IrwBuffer?
                bool bSrtBuffer_in,  // accepts SrtBuffer?
                
+               bool bCrwBuffer_out, // outputs CrwBuffer?
+               bool bEntBuffer_out, // outputs EntBuffer?
+               bool bIrwBuffer_out, // outputs IrwBuffer?
+               bool bSrtBuffer_out, // outputs SrtBuffer?
+               
                eCN  eOutput,        // what kind of output
                                                 // function which new's the operator
                Op*  (*fpNewOp)(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
@@ -47,6 +52,11 @@ OpDesc::OpDesc(eCN  eClass,     // class number
   gxOpCatalog.m_xOpDefn[i_OpDefn].m_bIrwBuffer_in  = bIrwBuffer_in;
   gxOpCatalog.m_xOpDefn[i_OpDefn].m_bSrtBuffer_in  = bSrtBuffer_in;
 
+  gxOpCatalog.m_xOpDefn[i_OpDefn].m_bCrwBuffer_out = bCrwBuffer_out;
+  gxOpCatalog.m_xOpDefn[i_OpDefn].m_bEntBuffer_out = bEntBuffer_out;
+  gxOpCatalog.m_xOpDefn[i_OpDefn].m_bIrwBuffer_out = bIrwBuffer_out;
+  gxOpCatalog.m_xOpDefn[i_OpDefn].m_bSrtBuffer_out = bSrtBuffer_out;
+  
   gxOpCatalog.m_xOpDefn[i_OpDefn].m_eOutput   = eOutput;
   
   gxOpCatalog.m_xOpDefn[i_OpDefn].m_fpNewOp   = fpNewOp;

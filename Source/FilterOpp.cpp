@@ -18,6 +18,11 @@ OpDesc __Op_FilterOp (
   true,                 // accepts IrwBuffer?
   false,                // accepts SrtBuffer?
                       
+  true,                 // accepts CrwBuffer?
+  true,                 // accepts EntBuffer?
+  true,                 // accepts IrwBuffer?
+  false,                // accepts SrtBuffer?
+                      
   CN_NONE,              // what kind of output
                       
   FilterOp::pNew,       // function which parses the command and new's an op

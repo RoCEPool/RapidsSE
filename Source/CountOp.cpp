@@ -5,26 +5,31 @@
 #include "DataOperators.h"
 
 OpDesc __Op_Count (
-   CN_COUNTOP,         // class number
-   OK_SIMPLE,          // op kind
-   "Count"_Stz,        // first word of prompt command
-   "Cnt"_Stz,          // prefix
+  CN_COUNTOP,         // class number
+  OK_SIMPLE,          // op kind
+  "Count"_Stz,        // first word of prompt command
+  "Cnt"_Stz,          // prefix
+                 
+  true,               // partitioned
+  false,              // compiler op
+                 
+  true,               // accepts CrwBuffer?
+  true,               // accepts EntBuffer?
+  true,               // accepts IrwBuffer?
+  true,               // accepts SrtBuffer?
                    
-   true,               // partitioned
-   false,              // compiler op
+  true,               // accepts CrwBuffer?
+  true,               // accepts EntBuffer?
+  true,               // accepts IrwBuffer?
+  true,               // accepts SrtBuffer?
                    
-   true,               // accepts CrwBuffer?
-   true,               // accepts EntBuffer?
-   true,               // accepts IrwBuffer?
-   true,               // accepts SrtBuffer?
-                   
-   CN_NONE,            // what kind of output
+  CN_NONE,            // what kind of output
 
-   CountOp::pNew,      // function which parses the command and new's an op
-   CountOp::eCall,     // function which calls the op loop
-   CountOp::eDrain,    // function which calls the drain loop
-   
-   "count"_Stz
+  CountOp::pNew,      // function which parses the command and new's an op
+  CountOp::eCall,     // function which calls the op loop
+  CountOp::eDrain,    // function which calls the drain loop
+
+  "count"_Stz
 );
 
 /*----------------------------------------------------------------------------*/

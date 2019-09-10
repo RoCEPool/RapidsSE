@@ -18,6 +18,11 @@ OpDesc __Op_Zed (
   true,             // accepts IrwBuffer?
   true,             // accepts SrtBuffer?
 
+  true,             // accepts CrwBuffer?
+  true,             // accepts EntBuffer?
+  true,             // accepts IrwBuffer?
+  true,             // accepts SrtBuffer?
+
   CN_NONE,          // what kind of output
                  
   ZedOp::pNew,      // function which parses the command and new's an op

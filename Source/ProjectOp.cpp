@@ -18,6 +18,11 @@ OpDesc __Op_Project (
   true,               // accepts IrwBuffer?
   true,               // accepts SrtBuffer?
 
+  true,               // accepts CrwBuffer?
+  true,               // accepts EntBuffer?
+  true,               // accepts IrwBuffer?
+  true,               // accepts SrtBuffer?
+
   CN_NONE,            // what kind of output
                    
   ProjectOp::pNew,    // function which parses the command and new's an op

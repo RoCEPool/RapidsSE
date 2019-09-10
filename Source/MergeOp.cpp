@@ -18,6 +18,11 @@ OpDesc __Op_Merge (
   false,              // accepts IrwBuffer?
   true,               // accepts SrtBuffer?
                    
+  false,              // accepts CrwBuffer?
+  false,              // accepts EntBuffer?
+  false,              // accepts IrwBuffer?
+  true,               // accepts SrtBuffer?
+                   
   CN_NONE,            // what kind of output
                    
   MergeOp::pNew,      // function which parses the command and new's an op
