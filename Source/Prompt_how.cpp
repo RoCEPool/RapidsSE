@@ -23,7 +23,15 @@ PromptDesc __Prompt_how (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_how(SePrompt* pPrompt)
 {
+  TokenVec* pTokenVec = pPrompt->pTknVec();
+  
+  i8 nTokens = pTokenVec->nItems();
+
   i8 iReqId = pPrompt->iRequestId();
+  
+  i8 iDetail = C_UNKNOWN;
+  if (2 == nTokens)
+    iDetail = pTokenVec->pGet(1)->iToI8();
   
   vTrace("how: request %lld\n"_Stz,
          
@@ -31,7 +39,7 @@ bool Prompt::bPrompt_how(SePrompt* pPrompt)
          
          C_ENDARGS);
   
-  AM::vLogHow(iReqId,C_UNKNOWN);
+  AM::vLogHow(iReqId,iDetail);
   
   return true;
 }

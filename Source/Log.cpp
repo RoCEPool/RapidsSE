@@ -291,6 +291,11 @@ void Log::vHow(i8 iReqId, i8 iDetail, LogEntry* pLogEntry)
   if (pLogEntry->m_xReqTuple.m_iReqId != iReqId)
     return;
   
+  if (iDetail != C_UNKNOWN) {
+    if (EK_JOB != pLogEntry->m_eKind)
+      return;
+  }
+  
   s4K sHow;
   
   pLogEntry->vAsTxt(sHow);
