@@ -47,21 +47,41 @@ void OpCatalog::vHelp(eCN eClass)
 void OpCatalog::vPrintCatalog(void)
 {
   
-  for (i8 i_OpDefn = 0; i_OpDefn < m_nOpDefns; i_OpDefn++) {
-    vPrintDefn(& m_xOpDefn[i_OpDefn]);
-        
-//    vTrace(sFormat.aStz(),
-//
-//           m_xOpDefn[i_OpDefn].m_szCommand,
-//           aCN[m_xOpDefn[i_OpDefn].m_eClass],
-//           aOK[m_xOpDefn[i_OpDefn].m_eKind],
-//
-//           m_xOpDefn[i_OpDefn].m_bIsPartitioned ? ""_Stz : "not-"_Stz,
-//
-//           m_xOpDefn[i_OpDefn].m_szHelp,
-//
-//           C_ENDARGS);
-  }
+  for (i8 i_OpDefn = 0; i_OpDefn < m_nOpDefns; i_OpDefn++)
+    if (OK_SOURCE == m_xOpDefn[i_OpDefn].m_eKind)
+      vPrintDefn(& m_xOpDefn[i_OpDefn]);
+  
+  vTrace("\n"_Stz);
+
+  for (i8 i_OpDefn = 0; i_OpDefn < m_nOpDefns; i_OpDefn++)
+    if (m_xOpDefn[i_OpDefn].m_bIsPartitioned && OK_SIMPLE == m_xOpDefn[i_OpDefn].m_eKind)
+      vPrintDefn(& m_xOpDefn[i_OpDefn]);
+  
+  vTrace("\n"_Stz);
+  
+  for (i8 i_OpDefn = 0; i_OpDefn < m_nOpDefns; i_OpDefn++)
+    if (m_xOpDefn[i_OpDefn].m_bIsPartitioned && OK_DUPLEX == m_xOpDefn[i_OpDefn].m_eKind)
+      vPrintDefn(& m_xOpDefn[i_OpDefn]);
+  
+  vTrace("\n"_Stz);
+  
+  for (i8 i_OpDefn = 0; i_OpDefn < m_nOpDefns; i_OpDefn++)
+    if (! m_xOpDefn[i_OpDefn].m_bIsPartitioned && OK_SIMPLE == m_xOpDefn[i_OpDefn].m_eKind)
+      vPrintDefn(& m_xOpDefn[i_OpDefn]);
+  
+  vTrace("\n"_Stz);
+  
+  for (i8 i_OpDefn = 0; i_OpDefn < m_nOpDefns; i_OpDefn++)
+    if (! m_xOpDefn[i_OpDefn].m_bIsPartitioned && OK_DUPLEX == m_xOpDefn[i_OpDefn].m_eKind)
+      vPrintDefn(& m_xOpDefn[i_OpDefn]);
+  
+  vTrace("\n"_Stz);
+  
+  for (i8 i_OpDefn = 0; i_OpDefn < m_nOpDefns; i_OpDefn++)
+    if (OK_SINK == m_xOpDefn[i_OpDefn].m_eKind)
+      vPrintDefn(& m_xOpDefn[i_OpDefn]);
+  
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
