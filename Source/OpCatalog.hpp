@@ -14,6 +14,8 @@ namespace Operators
   public:
     OpDefn* aFindOp(Stz* szCommand);
     void    vHelp(eCN eClass);
+    void    vPrintCatalog(void);
+    void    vPrintDefn(OpDefn* aOpDefn);
   };
 }
 
