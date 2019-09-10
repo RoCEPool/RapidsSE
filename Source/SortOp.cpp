@@ -84,8 +84,7 @@ SortOp::~SortOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* SortOp::pNew(OpSpec* pOpSpec, Digest* pDigest,
-                 OpDefn* aOpDefn, bool bAppR,
+Op* SortOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
                  TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot)
 {
   i_Tkn_++;

@@ -24,8 +24,7 @@ namespace DataOperators
     SuperMergeOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn, bool bAppR);
    ~SuperMergeOp(void) noexcept(false);
   
-    static Op* pNew(OpSpec* pOpSpec, Digest* pDigest,
-                    OpDefn* aOpDefn, bool bAppR,
+    static Op* pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn, bool bAppR,
                     TokenVec* pTknVec, i8& i_Tkn_, i8 i_Slot);
     
     static eOR eCall(void* aThis);
