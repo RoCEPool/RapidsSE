@@ -18,7 +18,7 @@ OpDesc __Op_Scan (
   false,              // accepts IrwBuffer?
   false,              // accepts SrtBuffer?
                   
-  false,              // accepts CrwBuffer?
+  true,               // accepts CrwBuffer?
   false,              // accepts EntBuffer?
   false,              // accepts IrwBuffer?
   false,              // accepts SrtBuffer?

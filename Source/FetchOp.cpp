@@ -19,7 +19,7 @@ OpDesc __Op_Fetch (
   false,              // accepts SrtBuffer?
 
   false,              // accepts CrwBuffer?
-  false,              // accepts EntBuffer?
+  true,               // accepts EntBuffer?
   false,              // accepts IrwBuffer?
   false,              // accepts SrtBuffer?
                    
