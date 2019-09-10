@@ -56,7 +56,7 @@ void LimitOp::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 LimitOp::LimitOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
-: Op(CN_LIMITOP,pOpSpec,pDigest,aOpDefn,bAppR)
+: Op(CN_LIMITOP,pOpSpec,pDigest,aOpDefn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LIMITOP,_FOOTER_);
   

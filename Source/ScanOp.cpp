@@ -56,7 +56,7 @@ void ScanOp::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ScanOp::ScanOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
-: Op(CN_SCANOP,pOpSpec,pDigest,aOpDefn,bAppR)
+: Op(CN_SCANOP,pOpSpec,pDigest,aOpDefn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANOP,_FOOTER_);
   

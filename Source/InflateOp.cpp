@@ -56,7 +56,7 @@ void InflateOp::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 InflateOp::InflateOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
-: Op(CN_INFLATEOP,pOpSpec,pDigest,aOpDefn,bAppR)
+: Op(CN_INFLATEOP,pOpSpec,pDigest,aOpDefn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INFLATEOP,_FOOTER_);
   

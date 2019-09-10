@@ -23,7 +23,7 @@ DistinctOp* DataOperators::_pDistinctOp(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 DistinctOp::DistinctOp(Stz* szOpLabel, Digest* pDigest)
-: Op(CN_DISTINCTOP,nullptr,pDigest,nullptr,false)
+: Op(CN_DISTINCTOP,nullptr,pDigest,nullptr)
 {
   _precondition_(_MAGIC_,CN_DISTINCTOP);
 }

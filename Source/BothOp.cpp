@@ -22,7 +22,7 @@ BothOp* DataOperators::_pBothOp(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 BothOp::BothOp(Stz* szOpLabel, Digest* pDigest)
-: Op(CN_BOTHOP,nullptr,pDigest,nullptr,false)
+: Op(CN_BOTHOP,nullptr,pDigest,nullptr)
 {
   _precondition_(_MAGIC_,CN_BOTHOP);
 }

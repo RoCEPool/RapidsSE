@@ -48,7 +48,7 @@ namespace Operators
   public:
     void  operator delete(void*);
   
-    Op(eCN eClass, OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn, bool bAppR);
+    Op(eCN eClass, OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn);
    ~Op(void) noexcept(false);
   
     static Op* pThisTLSOp(void);

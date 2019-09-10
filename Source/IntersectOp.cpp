@@ -23,7 +23,7 @@ IntersectOp* DataOperators::_pIntersectOp(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 IntersectOp::IntersectOp(Stz* szOpLabel, Digest* pDigest)
-: Op(CN_INTERSECTOP,nullptr,pDigest,nullptr,false)
+: Op(CN_INTERSECTOP,nullptr,pDigest,nullptr)
 {
   _precondition_(_MAGIC_,CN_INTERSECTOP);
 }

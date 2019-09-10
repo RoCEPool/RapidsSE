@@ -56,7 +56,7 @@ void SuperCountOp::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SuperCountOp::SuperCountOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn, bool bAppR)
-: Op(CN_SUPERCOUNTOP,pOpSpec,pDigest,aOpDefn,false)
+: Op(CN_SUPERCOUNTOP,pOpSpec,pDigest,aOpDefn)
 {
   _precondition_(_MAGIC_,CN_SUPERCOUNTOP);
   
