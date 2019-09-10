@@ -19,7 +19,7 @@ OpDesc __Op_SuperCount (
   SuperCountOp::eCall,// function which calls the op loop
   nullptr,            // function which calls the drain loop
   
-  "<help>"_Stz
+  "superCount"_Stz
   );
 
 /*----------------------------------------------------------------------------*/

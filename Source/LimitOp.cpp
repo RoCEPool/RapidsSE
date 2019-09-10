@@ -19,7 +19,7 @@ OpDesc __Op_Limit (
   LimitOp::eCall,     // function which calls the op loop
   LimitOp::eDrain,    // function which calls the drain loop
 
-  "<help>"_Stz
+  "limit <nRows>"_Stz
   );
 
 

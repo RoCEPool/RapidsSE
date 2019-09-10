@@ -19,7 +19,7 @@ OpDesc __Op_Count (
    CountOp::eCall,     // function which calls the op loop
    CountOp::eDrain,    // function which calls the drain loop
    
-   "<help>"_Stz
+   "count"_Stz
 );
 
 /*----------------------------------------------------------------------------*/

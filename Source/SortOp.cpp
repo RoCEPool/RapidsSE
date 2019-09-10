@@ -19,7 +19,7 @@ OpDesc __Op_Sort (
   SortOp::eCall,      // function which calls the op loop
   nullptr,            // function which calls the drain loop
 
-  "<help>"_Stz
+  "sort"_Stz
   );
 
 

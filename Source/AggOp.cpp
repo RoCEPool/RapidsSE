@@ -19,7 +19,7 @@ OpDesc __Op_Agg (
   AggOp::eCall,       // function which calls the op loop
   AggOp::eDrain,      // function which calls the drain loop
 
-  "<help>"_Stz
+  "agg <colNm>"_Stz
   );
 
 /*----------------------------------------------------------------------------*/

@@ -19,7 +19,7 @@ OpDesc __Op_FilterOp (
   FilterOp::eCall,      // function which calls the op loop
   FilterOp::eDrain,     // function which calls the drain loop
   
-  "<help>"_Stz
+  "filter <rpnExp>"_Stz
 );
 
 /*----------------------------------------------------------------------------*/

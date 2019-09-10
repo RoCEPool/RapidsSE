@@ -19,7 +19,7 @@ OpDesc __Op_Expr (
    ExprOp::eCall,    // function which calls the op loop
    ExprOp::eDrain,   // function which calls the drain loop
    
-   "<help>"_Stz
+   "expr <rpnExp>"_Stz
 );
 
 /*----------------------------------------------------------------------------*/

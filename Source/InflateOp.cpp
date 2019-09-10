@@ -19,7 +19,7 @@ OpDesc __Op_Inflate (
    InflateOp::eCall,     // function which calls the op loop
    InflateOp::eDrain,    // function which calls the drain loop
    
-   "<help>"_Stz
+   "inflate"_Stz
 );
 
 /*----------------------------------------------------------------------------*/

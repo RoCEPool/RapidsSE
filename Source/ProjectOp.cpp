@@ -19,7 +19,7 @@ OpDesc __Op_Project (
    ProjectOp::eCall,   // function which calls the op loop
    ProjectOp::eDrain,  // function which calls the drain loop
    
-   "<help>"_Stz
+   "project <colNm>... "_Stz
 );
 
 /*----------------------------------------------------------------------------*/

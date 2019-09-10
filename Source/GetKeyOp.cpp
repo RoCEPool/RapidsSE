@@ -19,7 +19,7 @@ OpDesc __Op_GetKeyOp (
    GetKeyOp::eCall,     // function which calls the op loop
    GetKeyOp::eDrain,    // function which calls the drain loop
    
-   "<help>"_Stz
+   "getKey <colNm>"_Stz
 );
 
 /*----------------------------------------------------------------------------*/

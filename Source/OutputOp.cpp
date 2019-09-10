@@ -19,7 +19,7 @@ OpDesc __Op_Output (
    OutputOp::eCall,     // function which calls the op loop
    OutputOp::eDrain,    // function which calls the drain loop
    
-   "<help>"_Stz
+   "output"_Stz
 );
 
 /*----------------------------------------------------------------------------*/
