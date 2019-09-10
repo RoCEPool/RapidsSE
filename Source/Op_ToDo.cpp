@@ -13,6 +13,8 @@ OpDesc __Op_ToDo (
    false,           // not partitioned
    true,            // compiler op
 
+   CN_NONE,         // what kind of output
+                  
    Op_ToDo::pNew,   // function which parses the command and new's an op
    Op_ToDo::eCall,  // function which calls the op loop
    Op_ToDo::eDrain, // function which calls the drain loop

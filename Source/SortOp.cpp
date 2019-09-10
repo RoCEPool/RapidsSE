@@ -13,6 +13,8 @@ OpDesc __Op_Sort (
   true,               // partitioned
   false,              // compiler op
                   
+  CN_NONE,            // what kind of output
+                  
   SortOp::pNew,       // function which parses the command and new's an op
   SortOp::eCall,      // function which calls the op loop
   nullptr,            // function which calls the drain loop

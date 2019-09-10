@@ -13,6 +13,8 @@ OpDesc __Op_Merge (
   true,               // partitioned
   false,              // compiler op
 
+  CN_NONE,            // what kind of output
+                   
   MergeOp::pNew,      // function which parses the command and new's an op
   MergeOp::eCall,     // function which calls the op loop
   nullptr,            // function which calls the drain loop

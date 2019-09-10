@@ -13,6 +13,8 @@ OpDesc __Op_SuperMerge (
   false,              // partitioned
   false,              // compiler op
 
+  CN_NONE,            // what kind of output
+                        
   SuperMergeOp::pNew, // function which parses the command and new's an op
   SuperMergeOp::eCall,// function which calls the op loop
   nullptr,            // function which calls the drain loop

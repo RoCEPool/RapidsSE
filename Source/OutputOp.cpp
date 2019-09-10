@@ -13,6 +13,8 @@ OpDesc __Op_Output (
    false,               // partitioned
    false,               // compiler op
 
+   CN_NONE,             // what kind of output
+                    
    OutputOp::pNew,      // function which parses the command and new's an op
    OutputOp::eCall,     // function which calls the op loop
    OutputOp::eDrain,    // function which calls the drain loop

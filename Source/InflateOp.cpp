@@ -13,6 +13,8 @@ OpDesc __Op_Inflate (
    false,                // paritioned
    false,                // compiler op
 
+   CN_NONE,              // what kind of output
+                     
    InflateOp::pNew,      // function which parses the command and new's an op
    InflateOp::eCall,     // function which calls the op loop
    InflateOp::eDrain,    // function which calls the drain loop

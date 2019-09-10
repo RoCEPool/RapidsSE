@@ -13,6 +13,8 @@ OpDesc __Op_Limit (
   false,              // partitioned
   false,              // compiler op
 
+  CN_NONE,            // what kind of output
+                   
   LimitOp::pNew,      // function which parses the command and new's an op
   LimitOp::eCall,     // function which calls the op loop
   LimitOp::eDrain,    // function which calls the drain loop

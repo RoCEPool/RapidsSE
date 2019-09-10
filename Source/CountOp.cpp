@@ -13,6 +13,8 @@ OpDesc __Op_Count (
    true,               // partitioned
    false,              // compiler op
                    
+   CN_NONE,            // what kind of output
+
    CountOp::pNew,      // function which parses the command and new's an op
    CountOp::eCall,     // function which calls the op loop
    CountOp::eDrain,    // function which calls the drain loop

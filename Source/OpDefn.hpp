@@ -7,22 +7,24 @@ namespace Operators
 {
   struct OpDefn
   {
-    public:
-      eCN  m_eClass;     // class enum of the op
-      eOK  m_eKind;      // op kind
-  
-      Stz* m_szCommand;  // first word of prompt command
-      Stz* m_szPrefix;   // prefix
-    
-      bool m_bIsPartitioned; // is partitioned
-      bool m_bCompilerOp;    // is compiler op
+  public:
+    eCN  m_eClass;     // class enum of the op
+    eOK  m_eKind;      // op kind
 
-      Op*  (*m_fpNewOp)(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
-                        TokenVec* pTknVec, i8& i_Tkn);
-      eOR  (*m_fpCall) (void* aThisOp);  // function which calls the op loop
-      eOR  (*m_fpDrain)(void* aThisOp);  // function which calls the drain loop
+    Stz* m_szCommand;  // first word of prompt command
+    Stz* m_szPrefix;   // prefix
 
-      Stz* m_szHelp;     // help text
+    bool m_bIsPartitioned; // is partitioned
+    bool m_bCompilerOp;    // is compiler op
+
+    eCN  m_eOutput;        // what kind of output
+
+    Op*  (*m_fpNewOp)(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
+                      TokenVec* pTknVec, i8& i_Tkn);
+    eOR  (*m_fpCall) (void* aThisOp);  // function which calls the op loop
+    eOR  (*m_fpDrain)(void* aThisOp);  // function which calls the drain loop
+
+    Stz* m_szHelp;     // help text
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

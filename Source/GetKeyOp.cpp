@@ -13,6 +13,8 @@ OpDesc __Op_GetKeyOp (
    true,                // partitioned
    false,               // compiler op
                       
+   CN_NONE,             // what kind of output
+                      
    GetKeyOp::pNew,      // function which parses the command and new's an op
    GetKeyOp::eCall,     // function which calls the op loop
    GetKeyOp::eDrain,    // function which calls the drain loop

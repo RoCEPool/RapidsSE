@@ -13,6 +13,8 @@ OpDesc __Op_Project (
    true,               // partitioned
    false,              // compiler op
 
+   CN_NONE,            // what kind of output
+                     
    ProjectOp::pNew,    // function which parses the command and new's an op
    ProjectOp::eCall,   // function which calls the op loop
    ProjectOp::eDrain,  // function which calls the drain loop

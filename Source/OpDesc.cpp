@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* OpDesc.cpp -- the class which populates the op catalog                     */
+/* OpDesc.cpp -- the class which populates the operator catalog               */
 /*============================================================================*/
 
 #include "Operators.h"
@@ -17,10 +17,12 @@ OpDesc::OpDesc(eCN  eClass,     // class number
                bool bIsPartitioned, // is partitioned
                bool bCompilerOp,    // compiler op?
                
+               eCN  eOutput,        // what kind of output
+                                                // function which new's the operator
                Op*  (*fpNewOp)(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                                TokenVec* pTknVec, i8& i_Tkn),
-               eOR  (*fpCall) (void* aThisOp),  // fun which calls the op loop
-               eOR  (*fpDrain)(void* aThisOp),  // fun which calls the drain loop
+               eOR  (*fpCall) (void* aThisOp),  // fun which calls op loop
+               eOR  (*fpDrain)(void* aThisOp),  // fun which calls drain loop
                
                Stz* szHelp      // help text
               )
@@ -34,6 +36,8 @@ OpDesc::OpDesc(eCN  eClass,     // class number
   
   gxOpCatalog.m_xOpDefn[i_OpDefn].m_bIsPartitioned = bIsPartitioned;
   gxOpCatalog.m_xOpDefn[i_OpDefn].m_bCompilerOp    = bCompilerOp;
+  
+  gxOpCatalog.m_xOpDefn[i_OpDefn].m_eOutput   = eOutput;
   
   gxOpCatalog.m_xOpDefn[i_OpDefn].m_fpNewOp   = fpNewOp;
   gxOpCatalog.m_xOpDefn[i_OpDefn].m_fpCall    = fpCall;

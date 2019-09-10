@@ -13,6 +13,8 @@ OpDesc __Op_Expr (
    true,             // partitioned
    false,            // compiler op
                   
+   CN_NONE,          // what kind of output
+                  
    ExprOp::pNew,     // function which parses the command and new's an op
    ExprOp::eCall,    // function which calls the op loop
    ExprOp::eDrain,   // function which calls the drain loop

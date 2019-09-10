@@ -13,6 +13,8 @@ OpDesc __Op_SuperCount (
   false,              // partitioned
   false,              // compiler op
 
+  CN_NONE,            // what kind of output
+                        
   SuperCountOp::pNew, // function which parses the command and new's an op
   SuperCountOp::eCall,// function which calls the op loop
   nullptr,            // function which calls the drain loop

@@ -13,6 +13,8 @@ OpDesc __Op_Zed (
   false,            // partitioned
   false,            // compiler op
 
+  CN_NONE,          // what kind of output
+                 
   ZedOp::pNew,      // function which parses the command and new's an op
   ZedOp::eCall,     // function which calls the op loop
   nullptr,          // function which calls the drain loop

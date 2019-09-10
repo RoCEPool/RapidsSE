@@ -13,6 +13,8 @@ OpDesc __Op_Fetch (
   true,               // partitioned
   false,              // compiler op
 
+  CN_NONE,            // what kind of output
+                   
   FetchOp::pNew,      // function which parses the command and new's an op
   FetchOp::eCall,     // function which calls the op loop
   nullptr,            // function which calls the drain loop
