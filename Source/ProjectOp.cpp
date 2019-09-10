@@ -13,10 +13,10 @@ OpDesc __Op_Project (
   true,               // partitioned
   false,              // compiler op
 
-  false,              // accepts CrwBuffer?
-  false,              // accepts EntBuffer?
-  false,              // accepts IrwBuffer?
-  false,              // accepts SrtBuffer?
+  true,               // accepts CrwBuffer?
+  true,               // accepts EntBuffer?
+  true,               // accepts IrwBuffer?
+  true,               // accepts SrtBuffer?
 
   CN_NONE,            // what kind of output
                    

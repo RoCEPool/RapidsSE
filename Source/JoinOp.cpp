@@ -14,7 +14,7 @@ OpDesc __Op_Join (
   false,              // compiler op
 
   false,              // accepts CrwBuffer?
-  false,              // accepts EntBuffer?
+  true,               // accepts EntBuffer?
   false,              // accepts IrwBuffer?
   false,              // accepts SrtBuffer?
                   

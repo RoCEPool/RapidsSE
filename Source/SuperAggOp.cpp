@@ -15,7 +15,7 @@ OpDesc __Op_SuperAgg (
 
   false,              // accepts CrwBuffer?
   false,              // accepts EntBuffer?
-  false,              // accepts IrwBuffer?
+  true,               // accepts IrwBuffer?
   false,              // accepts SrtBuffer?
   
   CN_NONE,          // what kind of output

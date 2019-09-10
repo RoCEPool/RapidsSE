@@ -5,26 +5,26 @@
 #include "DataOperators.h"
 
 OpDesc __Op_Expr (
-   CN_EXPROP,        // class number
-   OK_SIMPLE,        // op kind
-   "Expr"_Stz,       // first word of prompt command
-   "Exp"_Stz,        // prefix
+  CN_EXPROP,        // class number
+  OK_SIMPLE,        // op kind
+  "Expr"_Stz,       // first word of prompt command
+  "Exp"_Stz,        // prefix
+                
+  true,             // partitioned
+  false,            // compiler op
                   
-   true,             // partitioned
-   false,            // compiler op
+  true,             // accepts CrwBuffer?
+  true,             // accepts EntBuffer?
+  true,             // accepts IrwBuffer?
+  true,             // accepts SrtBuffer?
                   
-  false,              // accepts CrwBuffer?
-  false,              // accepts EntBuffer?
-  false,              // accepts IrwBuffer?
-  false,              // accepts SrtBuffer?
-                  
-   CN_NONE,          // what kind of output
-                  
-   ExprOp::pNew,     // function which parses the command and new's an op
-   ExprOp::eCall,    // function which calls the op loop
-   ExprOp::eDrain,   // function which calls the drain loop
-   
-   "expr <rpnExp>"_Stz
+  CN_NONE,          // what kind of output
+                
+  ExprOp::pNew,     // function which parses the command and new's an op
+  ExprOp::eCall,    // function which calls the op loop
+  ExprOp::eDrain,   // function which calls the drain loop
+
+  "expr <rpnExp>"_Stz
 );
 
 /*----------------------------------------------------------------------------*/

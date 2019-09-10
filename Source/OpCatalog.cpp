@@ -90,16 +90,19 @@ void OpCatalog::vPrintCatalog(void)
 /*----------------------------------------------------------------------------*/
 void OpCatalog::vPrintDefn(OpDefn* aOpDefn)
 {
-  vTrace("%12s %12s %6s %16s %-28s %8s \n"_Stz,
+  vTrace("%12s %12s %6s %16s :: "
+         "%3s %3s %3s %3s %-28s %8s \n"_Stz,
          
          aOpDefn->m_szCommand,
          aCN[aOpDefn->m_eClass],
          aOK[aOpDefn->m_eKind],
-         
-         aOpDefn->m_bIsPartitioned ? "partitioned"_Stz : "not-partitioned"_Stz,
-         
+         aOpDefn->m_bIsPartitioned ? "partitioned"_Stz : "non-partitioned"_Stz,
+     
+         aOpDefn->m_bCrwBuffer ? "Crw"_Stz : ""_Stz,
+         aOpDefn->m_bEntBuffer ? "Ent"_Stz : ""_Stz,
+         aOpDefn->m_bIrwBuffer ? "Irw"_Stz : ""_Stz,
+         aOpDefn->m_bSrtBuffer ? "Srt"_Stz : ""_Stz,
          aOpDefn->m_szHelp,
-         
          aCN[aOpDefn->m_eOutput],
          
          C_ENDARGS);

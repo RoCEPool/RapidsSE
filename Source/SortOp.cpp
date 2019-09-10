@@ -16,7 +16,7 @@ OpDesc __Op_Sort (
   false,              // accepts CrwBuffer?
   false,              // accepts EntBuffer?
   false,              // accepts IrwBuffer?
-  false,              // accepts SrtBuffer?
+  true,               // accepts SrtBuffer?
                   
   CN_NONE,            // what kind of output
                   
