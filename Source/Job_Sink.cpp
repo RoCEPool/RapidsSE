@@ -101,7 +101,7 @@ void Job_Sink::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Sink::Job_Sink(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job_Sink::Job_Sink(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 : Job(CN_JOB_SINK, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SINK,_FOOTER_);
@@ -173,7 +173,7 @@ Footer* Job_Sink::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Sink_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job* Jobs::pJob_Sink_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
   i8 nTokens;
 

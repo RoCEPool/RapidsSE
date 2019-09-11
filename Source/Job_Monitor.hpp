@@ -22,7 +22,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Monitor(ReqTuple* aReqTuple, i8 iForId, Session* pSession);//=C_UNKNOWN);
+    Job_Monitor(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass=nullptr);//=C_UNKNOWN);
     ~Job_Monitor(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -41,7 +41,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Monitor* _pJob_Monitor(void* aAddr);
   
-  Job* pJob_Monitor_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession);
+  Job* pJob_Monitor_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass=nullptr);
   Job* pJob_Monitor_new(JobClass* aJobClass);
   void vJob_Monitor_delete(Session* pSession, Job* pJob);
   void vJob_Monitor_show(Job* pJob);

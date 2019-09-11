@@ -101,7 +101,7 @@ void Job_Walk::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Walk::Job_Walk(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job_Walk::Job_Walk(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 : Job(CN_JOB_WALK, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WALK,_FOOTER_);
@@ -226,7 +226,7 @@ Footer* Job_Walk::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Walk_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job* Jobs::pJob_Walk_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
   Job_Walk* pJob_Walk = new Job_Walk(aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);

@@ -101,7 +101,7 @@ void Job_Answer::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Answer::Job_Answer(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job_Answer::Job_Answer(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 : Job(CN_JOB_ANSWER, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_ANSWER,_FOOTER_);

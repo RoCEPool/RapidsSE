@@ -101,7 +101,7 @@ void Job_VisualizeIndex::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_VisualizeIndex::Job_VisualizeIndex(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job_VisualizeIndex::Job_VisualizeIndex(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 : Job(CN_JOB_VISUALIZEINDEX, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_VISUALIZEINDEX,_FOOTER_);
@@ -196,7 +196,7 @@ Footer* Job_VisualizeIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_VisualizeIndex_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job* Jobs::pJob_VisualizeIndex_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
   Job_VisualizeIndex* pJob_VisualizeIndex = new Job_VisualizeIndex(aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);

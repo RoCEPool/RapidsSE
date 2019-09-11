@@ -101,7 +101,7 @@ void Job_Dynamic::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Dynamic::Job_Dynamic(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job_Dynamic::Job_Dynamic(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 : JobMark2(CN_JOB_DYNAMIC, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
@@ -266,7 +266,7 @@ Footer* Job_Dynamic::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Dynamic_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job* Jobs::pJob_Dynamic_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
   Job_Dynamic* pJob_Dynamic = new Job_Dynamic(aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);

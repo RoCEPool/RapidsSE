@@ -18,7 +18,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_CompactIndex(ReqTuple* aReqTuple, i8 iForId, Session* pSession);//=C_UNKNOWN);
+    Job_CompactIndex(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass=nullptr);//=C_UNKNOWN);
     ~Job_CompactIndex(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -35,7 +35,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_CompactIndex* _pJob_CompactIndex(void* aAddr);
   
-  Job* pJob_CompactIndex_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession);
+  Job* pJob_CompactIndex_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass=nullptr);
   void vJob_CompactIndex_delete(Session* pSession, Job* pJob);
   void vJob_CompactIndex_show(Job* pJob);
   

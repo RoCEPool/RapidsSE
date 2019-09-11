@@ -101,7 +101,7 @@ void Job_DropTenant::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_DropTenant::Job_DropTenant(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job_DropTenant::Job_DropTenant(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 : Job(CN_JOB_DROPTENANT, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPTENANT,_FOOTER_);
@@ -195,7 +195,7 @@ Footer* Job_DropTenant::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_DropTenant_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job* Jobs::pJob_DropTenant_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
   Job_DropTenant* pJob_DropTenant = new Job_DropTenant(aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);

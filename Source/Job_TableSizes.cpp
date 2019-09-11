@@ -101,7 +101,7 @@ void Job_TableSizes::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_TableSizes::Job_TableSizes(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job_TableSizes::Job_TableSizes(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 : Job(CN_JOB_TABLESIZES, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_TABLESIZES,_FOOTER_);
@@ -188,7 +188,7 @@ Footer* Job_TableSizes::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_TableSizes_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job* Jobs::pJob_TableSizes_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
   Job_TableSizes* pJob_TableSizes = new Job_TableSizes(aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);

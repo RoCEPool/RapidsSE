@@ -101,7 +101,7 @@ void Job_Waker::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Waker::Job_Waker(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job_Waker::Job_Waker(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 : Job(CN_JOB_WAKER, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WAKER,_FOOTER_);

@@ -28,7 +28,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Export(ReqTuple* aReqTuple, i8 iForId, Session* pSession);//=C_UNKNOWN);
+    Job_Export(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass=nullptr);//=C_UNKNOWN);
     ~Job_Export(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -50,7 +50,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Export* _pJob_Export(void* aAddr);
   
-  Job* pJob_Export_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession);
+  Job* pJob_Export_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass=nullptr);
   void vJob_Export_post(Session* pSession, Job* pJob);
   Job* pJob_Export_new(JobClass* aJobClass);
   void vJob_Export_delete(Session* pSession, Job* pJob);

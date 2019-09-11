@@ -30,7 +30,7 @@ namespace Jobs
       eJF  m_eFlags;     // job flags
   
       eEC  (*m_fpCheck)(Session* pSession);
-      Job* (*m_fpPre)(ReqTuple* aReqTuple, i8 iForId, Session* pSession);
+      Job* (*m_fpPre)(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass);
       void (*m_fpPost)(Session* pSession, Job* pJob);
       Job* (*m_fpNew)(JobClass* aJobClass);
       void (*m_fpDelete)(Session* pSession, Job* pJob);

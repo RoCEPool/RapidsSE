@@ -39,7 +39,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Generate(ReqTuple* aReqTuple, i8 iForId, Session* pSession);//=C_UNKNOWN);
+    Job_Generate(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass=nullptr);//=C_UNKNOWN);
     ~Job_Generate(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -83,7 +83,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Generate* _pJob_Generate(void* aAddr);
   
-  Job* pJob_Generate_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession);
+  Job* pJob_Generate_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass=nullptr);
   Job* pJob_Generate_new(JobClass* aJobClass);
   void vJob_Generate_delete(Session* pSession, Job* pJob);
   void vJob_Generate_show(Job* pJob);
