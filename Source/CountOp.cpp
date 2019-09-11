@@ -6,7 +6,7 @@
 
 OpDesc __Op_Count (
   CN_COUNTOP,         // class number
-  OK_SIMPLE,          // op kind
+  OK_SINGLE,          // op kind
   "Count"_Stz,        // first word of prompt command
   "Cnt"_Stz,          // prefix
                  

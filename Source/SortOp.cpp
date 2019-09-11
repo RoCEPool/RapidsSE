@@ -6,7 +6,7 @@
 
 OpDesc __Op_Sort (
   CN_SORTOP,          // class number
-  OK_SIMPLE,          // op kind
+  OK_SINGLE,          // op kind
   "Sort"_Stz,         // first word of prompt command
   "Srt"_Stz,          // prefix
                   

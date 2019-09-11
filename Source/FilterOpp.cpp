@@ -6,7 +6,7 @@
 
 OpDesc __Op_FilterOp (
   CN_FILTEROP,          // class number
-  OK_SIMPLE,            // op kind
+  OK_SINGLE,            // op kind
   "Filter"_Stz,         // first word of prompt command
   "Ftr"_Stz,            // prefix
                       

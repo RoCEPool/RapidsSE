@@ -6,7 +6,7 @@
 
 OpDesc __Op_SuperMerge (
   CN_SUPERMERGEOP,    // class number
-  OK_SIMPLE,          // op kind
+  OK_SINGLE,          // op kind
   "SuperMerge"_Stz,   // first word of prompt command
   "Smg"_Stz,          // prefix
                         

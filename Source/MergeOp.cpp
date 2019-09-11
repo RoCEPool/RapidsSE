@@ -6,7 +6,7 @@
 
 OpDesc __Op_Merge (
   CN_MERGEOP,         // class number
-  OK_SIMPLE,          // op kind
+  OK_SINGLE,          // op kind
   "Merge"_Stz,        // first word of prompt command
   "Mrg"_Stz,          // prefix
                    

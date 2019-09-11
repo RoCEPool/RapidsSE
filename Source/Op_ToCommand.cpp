@@ -6,7 +6,7 @@
 
 OpDesc __Op_ToCommand (
   CN_OP_TOCOMMAND,      // class number
-  OK_SIMPLE,            // op kind
+  OK_SINGLE,            // op kind
   "ToCommand"_Stz,      // first word of prompt command
   "ToCommand"_Stz,      // prefix
                      

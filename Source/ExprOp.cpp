@@ -6,7 +6,7 @@
 
 OpDesc __Op_Expr (
   CN_EXPROP,        // class number
-  OK_SIMPLE,        // op kind
+  OK_SINGLE,        // op kind
   "Expr"_Stz,       // first word of prompt command
   "Exp"_Stz,        // prefix
                 

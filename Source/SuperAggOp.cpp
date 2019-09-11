@@ -6,7 +6,7 @@
 
 OpDesc __Op_SuperAgg (
   CN_SUPERAGGOP,    // class number
-  OK_SIMPLE,        // op kind
+  OK_SINGLE,        // op kind
   "SuperAgg"_Stz,   // first word of prompt command
   "Sag"_Stz,        // prefix
                       

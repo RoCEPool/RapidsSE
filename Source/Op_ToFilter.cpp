@@ -6,7 +6,7 @@
 
 OpDesc __Op_ToFilter (
   CN_OP_TOFILTER,      // class number
-  OK_SIMPLE,           // op kind
+  OK_SINGLE,           // op kind
   "ToFilter"_Stz,      // first word of prompt command
   "ToFilter"_Stz,      // prefix
                     

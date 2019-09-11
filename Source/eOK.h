@@ -7,7 +7,7 @@ enum eOK // operator kind
 {
   /*  0 */ OK_NONE=0,
   
-  /*    */ OK_SIMPLE,    // simple op
+  /*    */ OK_SINGLE,    // single op
   
   /*    */ OK_SOURCE,    // source op
   /*    */ OK_SINK,      // sink op
@@ -20,7 +20,7 @@ static Stz* aOK[]
 {
   /*  0 */ "NONE"_Stz,
   
-  /*    */ "SIMPLE"_Stz,
+  /*    */ "SINGLE"_Stz,
   
   /*    */ "SOURCE"_Stz,
   /*    */ "SINK"_Stz,

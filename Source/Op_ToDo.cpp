@@ -6,7 +6,7 @@
 
 OpDesc __Op_ToDo (
   CN_OP_TODO,      // class number
-  OK_SIMPLE,       // op kind
+  OK_SINGLE,       // op kind
   "ToDo"_Stz,      // first word of prompt command
   "ToDo"_Stz,      // prefix
                 

@@ -6,7 +6,7 @@
 
 OpDesc __Op_Inflate (
   CN_INFLATEOP,         // class number
-  OK_SIMPLE,            // op kind
+  OK_SINGLE,            // op kind
   "Inflate"_Stz,        // first word of prompt command
   "Inf"_Stz,            // prefix
                    

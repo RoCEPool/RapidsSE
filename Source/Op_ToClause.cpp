@@ -6,7 +6,7 @@
 
 OpDesc __Op_ToClause (
   CN_OP_TOCLAUSE,      // class number
-  OK_SIMPLE,           // op kind
+  OK_SINGLE,           // op kind
   "ToClause"_Stz,      // first word of prompt command
   "ToClause"_Stz,      // prefix
                     

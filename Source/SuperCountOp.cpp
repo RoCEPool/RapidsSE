@@ -6,7 +6,7 @@
 
 OpDesc __Op_SuperCount (
   CN_SUPERCOUNTOP,    // class number
-  OK_SIMPLE,          // op kind
+  OK_SINGLE,          // op kind
   "SuperCount"_Stz,   // first word of prompt command
   "Sct"_Stz,          // prefix
                         

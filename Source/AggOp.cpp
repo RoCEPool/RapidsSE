@@ -6,7 +6,7 @@
 
 OpDesc __Op_Agg (
   CN_AGGOP,           // class number
-  OK_SIMPLE,          // op kind
+  OK_SINGLE,          // op kind
   "Agg"_Stz,          // first word of prompt command
   "Agg"_Stz,          // prefix
                  

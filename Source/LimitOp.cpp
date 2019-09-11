@@ -6,7 +6,7 @@
 
 OpDesc __Op_Limit (
   CN_LIMITOP,         // class number
-  OK_SIMPLE,          // op kind
+  OK_SINGLE,          // op kind
   "Limit"_Stz,        // first word of prompt command
   "Lim"_Stz,          // prefix
                    

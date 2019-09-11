@@ -6,7 +6,7 @@
 
 OpDesc __Op_GetKeyOp (
   CN_GETKEYOP,         // class number
-  OK_SIMPLE,           // op kind
+  OK_SINGLE,           // op kind
   "GetKey"_Stz,        // first word of prompt command
   "Gky"_Stz,           // prefix
                     

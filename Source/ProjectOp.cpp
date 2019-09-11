@@ -6,7 +6,7 @@
 
 OpDesc __Op_Project (
   CN_PROJECTOP,       // class number
-  OK_SIMPLE,          // op kind
+  OK_SINGLE,          // op kind
   "Project"_Stz,      // first word of prompt command
   "Prj"_Stz,          // prefix
                    
