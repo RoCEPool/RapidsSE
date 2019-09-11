@@ -107,46 +107,6 @@ Lock::Lock(eLK eLockKind, ReqTuple* aReqTuple, Focal* pFor)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor (for non-focal case)                                           */
-/*----------------------------------------------------------------------------*/
-Lock::Lock(eLK eLockKind, ReqTuple* aReqTuple, Object* pFor, bool bNonFocal)
-: Focal(CN_LOCK)
-, m_xReqTuple(aReqTuple)
-{
-  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
-  
-  ASSERT(! aReqTuple);
-  
-  if (! pFor)
-    vDebugPoint();
-  
-  m_pFor   = pFor;
-  m_bFocal = false;
-
-  m_uLockWord = 0;
-  m_eLockKind = eLockKind;
-  
-  m_ixReadGrabs.vCheckInit();
-  m_ixReadCollisions.vCheckInit();
-  
-  m_ixWriteGrabs.vCheckInit();
-  m_ixWriteCollisions.vCheckInit();
-  
-  _checkInitialised_(CN_LOCK);
-  
-//  SP_Id spId;
-//
-//  vIncActNo(); ++ gixLock;
-//  AM::vLogLck(SL_INF,this,LA_LCK_CONSTRUCT,
-//              "Lock -%s construct ^For=%s |gixLock=%lld|"_Stz, //!format-LogLck
-//              aLK[m_eLockKind],
-//              spId.sz(m_pFor?((Focal*)m_pFor)->m_iUniqueId:C_UNKNOWN),
-//              * gixLock);
-  
-  _postcondition_(_MAGIC_,CN_LOCK,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Lock::~Lock(void) noexcept(false)

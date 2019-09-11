@@ -43,7 +43,7 @@ void JobList::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 JobList::JobList(CompareFp fpCompare, eJL eJobsList)
 : Object(CN_JOBLIST)
-, m_okLock(LK_JOBS,C_NO_REQTUPLE,this,C_NONFOCAL)
+, m_okLock(LK_JOBS,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
   

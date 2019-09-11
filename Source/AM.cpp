@@ -355,7 +355,7 @@ void AM::vStateDiagram(s256& sDiagram, eCN eJobClass)
 /*----------------------------------------------------------------------------*/
 void AM::vWriteTrace(eYA eSysAct, Stz* aFormat, va_list xArgs)
 {
-  static Lock oLock(LK_TRACE,nullptr,nullptr,C_NONFOCAL);
+  static Lock oLock(LK_TRACE,nullptr);
   static char caFormatted[C_1MB] = {'\0'};
   
   bool bUseLock = (gpAttachMap ? true : false);

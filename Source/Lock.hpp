@@ -35,7 +35,6 @@ namespace Locking
     
     Lock(eLK eLockKind, Object* pFor);
     Lock(eLK eLockKind, ReqTuple* aReqTuple, Focal* pFor);
-    Lock(eLK eLockKind, ReqTuple* aReqTuple, Object* pFor, bool bNonFocal);
    ~Lock(void) noexcept(false);
   
   private:

@@ -41,7 +41,7 @@ void NmStrList::operator delete(void* pTaskQueueAddress)
 /*----------------------------------------------------------------------------*/
 NmStrList::NmStrList(void)
 : ListNL_t<NmStr>(CN_NMSTRLIST)
-, m_okLock(LK_NMSTR_LIST,C_NO_REQTUPLE,this,C_NONFOCAL)
+, m_okLock(LK_NMSTR_LIST,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NMSTRLIST,_FOOTER_);
   
