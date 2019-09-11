@@ -102,7 +102,7 @@ void Job_AnalyzeTable::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_AnalyzeTable::Job_AnalyzeTable(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
-: Job(CN_JOB_ANALYZETABLE, aReqTuple, pSession)
+: Job(CN_JOB_ANALYZETABLE, aReqTuple, pSession, aJobClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_ANALYZETABLE,_FOOTER_);
     

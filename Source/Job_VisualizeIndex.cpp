@@ -102,7 +102,7 @@ void Job_VisualizeIndex::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_VisualizeIndex::Job_VisualizeIndex(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
-: Job(CN_JOB_VISUALIZEINDEX, aReqTuple, pSession)
+: Job(CN_JOB_VISUALIZEINDEX, aReqTuple, pSession, aJobClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_VISUALIZEINDEX,_FOOTER_);
     

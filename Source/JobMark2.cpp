@@ -26,8 +26,8 @@ JobMark2* Jobs::_pJobMark2(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-JobMark2::JobMark2(eCN eClassNo, ReqTuple* aReqTuple, Session* pSession)
-: Job(eClassNo,aReqTuple,pSession)
+JobMark2::JobMark2(eCN eClassNo, ReqTuple* aReqTuple, Session* pSession, JobClass* aJobClass)
+: Job(eClassNo,aReqTuple,pSession,aJobClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   

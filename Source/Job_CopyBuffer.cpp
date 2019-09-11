@@ -102,7 +102,7 @@ void Job_CopyBuffer::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_CopyBuffer::Job_CopyBuffer(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
-: Job(CN_JOB_COPYBUFFER, aReqTuple, pSession)
+: Job(CN_JOB_COPYBUFFER, aReqTuple, pSession, aJobClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_COPYBUFFER,_FOOTER_);
   

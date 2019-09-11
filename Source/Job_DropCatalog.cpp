@@ -103,7 +103,7 @@ void Job_DropCatalog::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_DropCatalog::Job_DropCatalog(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
-: Job(CN_JOB_DROPCATALOG, aReqTuple, pSession)
+: Job(CN_JOB_DROPCATALOG, aReqTuple, pSession, aJobClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPCATALOG,_FOOTER_);
     

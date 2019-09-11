@@ -102,7 +102,7 @@ void Job_InsertRow::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_InsertRow::Job_InsertRow(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
-: Job(CN_JOB_INSERTROW, aReqTuple, pSession)
+: Job(CN_JOB_INSERTROW, aReqTuple, pSession, aJobClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROW,_FOOTER_);
   m_pTable = nullptr;

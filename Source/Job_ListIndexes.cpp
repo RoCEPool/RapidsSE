@@ -102,7 +102,7 @@ void Job_ListIndexes::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_ListIndexes::Job_ListIndexes(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
-: Job(CN_JOB_LISTINDEXES, aReqTuple, pSession)
+: Job(CN_JOB_LISTINDEXES, aReqTuple, pSession, aJobClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTINDEXES,_FOOTER_);
   

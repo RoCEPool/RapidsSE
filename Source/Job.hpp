@@ -46,7 +46,7 @@ namespace Jobs
     Object*    m_pSendWith; // object which is to be sent with this job
 
   public:
-    Job(eCN eClassNo, ReqTuple* aReqTuple, Session* pSession, JobClass* aJobClass=nullptr);
+    Job(eCN eClassNo, ReqTuple* aReqTuple, Session* pSession, JobClass* aJobClass);
    ~Job(void) noexcept(false);
   
     static Job* pThisTLSJob(void);

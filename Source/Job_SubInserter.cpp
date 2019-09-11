@@ -102,7 +102,7 @@ void Job_SubInserter::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_SubInserter::Job_SubInserter(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
-: Job(CN_JOB_SUBINSERTER, aReqTuple, pSession)
+: Job(CN_JOB_SUBINSERTER, aReqTuple, pSession, aJobClass)
 , JobWriteBehind(DS_INSERT)
 , m_okLock(LK_SUBINSERTER,C_NO_REQTUPLE,this)
 {
