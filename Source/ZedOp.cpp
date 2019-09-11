@@ -18,10 +18,10 @@ OpDesc __Op_Zed (
   true,             // accepts IrwBuffer?
   true,             // accepts SrtBuffer?
 
-  true,             // accepts CrwBuffer?
-  true,             // accepts EntBuffer?
-  true,             // accepts IrwBuffer?
-  true,             // accepts SrtBuffer?
+  false,            // accepts CrwBuffer?
+  false,            // accepts EntBuffer?
+  false,            // accepts IrwBuffer?
+  false,            // accepts SrtBuffer?
 
   CN_NONE,          // what kind of output
                  

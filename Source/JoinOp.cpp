@@ -19,9 +19,9 @@ OpDesc __Op_Join (
   false,              // accepts SrtBuffer?
                   
   false,              // accepts CrwBuffer?
-  true,               // accepts EntBuffer?
+  false,              // accepts EntBuffer?
   false,              // accepts IrwBuffer?
-  false,              // accepts SrtBuffer?
+  true,               // accepts SrtBuffer?
   
   CN_NONE,            // what kind of output
                   

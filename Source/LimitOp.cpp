@@ -19,7 +19,7 @@ OpDesc __Op_Limit (
   true,               // accepts SrtBuffer?
                    
   true,               // accepts CrwBuffer?
-  true,               // accepts EntBuffer?
+  false,              // accepts EntBuffer?
   true,               // accepts IrwBuffer?
   true,               // accepts SrtBuffer?
 

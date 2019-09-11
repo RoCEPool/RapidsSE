@@ -18,8 +18,8 @@ OpDesc __Op_GetKeyOp (
   false,               // accepts IrwBuffer?
   true,                // accepts SrtBuffer?
                       
-  true,                // accepts CrwBuffer?
-  true,                // accepts EntBuffer?
+  false,               // accepts CrwBuffer?
+  false,               // accepts EntBuffer?
   false,               // accepts IrwBuffer?
   true,                // accepts SrtBuffer?
                       

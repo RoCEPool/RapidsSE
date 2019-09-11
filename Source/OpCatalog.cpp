@@ -72,11 +72,11 @@ void OpCatalog::vPrintCatalog(void)
   
   vTrace("\n"_Stz);
   
-  for (i8 i_OpDefn = 0; i_OpDefn < m_nOpDefns; i_OpDefn++)
-    if (! m_xOpDefn[i_OpDefn].m_bIsPartitioned && OK_DUPLEX == m_xOpDefn[i_OpDefn].m_eKind)
-      vPrintDefn(& m_xOpDefn[i_OpDefn]);
-  
-  vTrace("\n"_Stz);
+//  for (i8 i_OpDefn = 0; i_OpDefn < m_nOpDefns; i_OpDefn++)
+//    if (! m_xOpDefn[i_OpDefn].m_bIsPartitioned && OK_DUPLEX == m_xOpDefn[i_OpDefn].m_eKind)
+//      vPrintDefn(& m_xOpDefn[i_OpDefn]);
+//  
+//  vTrace("\n"_Stz);
   
   for (i8 i_OpDefn = 0; i_OpDefn < m_nOpDefns; i_OpDefn++)
     if (OK_SINK == m_xOpDefn[i_OpDefn].m_eKind)

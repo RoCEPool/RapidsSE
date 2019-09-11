@@ -18,8 +18,8 @@ OpDesc __Op_FilterOp (
   true,                 // accepts IrwBuffer?
   false,                // accepts SrtBuffer?
                       
-  true,                 // accepts CrwBuffer?
-  true,                 // accepts EntBuffer?
+  false,                // accepts CrwBuffer?
+  false,                // accepts EntBuffer?
   true,                 // accepts IrwBuffer?
   false,                // accepts SrtBuffer?
                       

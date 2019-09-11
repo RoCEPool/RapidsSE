@@ -18,10 +18,10 @@ OpDesc __Op_Agg (
   true,               // accepts IrwBuffer?
   true,               // accepts SrtBuffer?
                  
-  true,               // accepts CrwBuffer?
-  true,               // accepts EntBuffer?
+  false,              // accepts CrwBuffer?
+  false,              // accepts EntBuffer?
   true,               // accepts IrwBuffer?
-  true,               // accepts SrtBuffer?
+  false,              // accepts SrtBuffer?
                  
   CN_NONE,            // what kind of output
                  
