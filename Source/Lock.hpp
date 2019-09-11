@@ -15,7 +15,8 @@ namespace Locking
   private:
     eLK      m_eLockKind;         // lock kind
     ReqTuple m_xReqTuple;
-    Object*  m_pSuper;
+    Object*  m_pFor;
+    bool     m_bFocal;            // is a lock for a focal object
   
     u8       m_uLockWord;         // lock word
   
@@ -32,8 +33,9 @@ namespace Locking
     void* operator new(size_t, Lock* pLock);
     void  operator delete(void* pLockAddress);
     
-    Lock(eLK eLockKind, ReqTuple* aReqTuple, Focal* pSuper);
-    Lock(eLK eLockKind, ReqTuple* aReqTuple, Object* pSuper, bool bNonFocal);
+    Lock(eLK eLockKind, Object* pFor);
+    Lock(eLK eLockKind, ReqTuple* aReqTuple, Focal* pFor);
+    Lock(eLK eLockKind, ReqTuple* aReqTuple, Object* pFor, bool bNonFocal);
    ~Lock(void) noexcept(false);
   
   private:
