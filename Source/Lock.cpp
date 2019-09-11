@@ -51,14 +51,14 @@ Lock::Lock(eLK eLockKind, Object* pFor)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  if (pFor) {
-    printf("  Lock(%s)\n",(char*)aCN[pFor->eClass()]);
-    AM::vPrintGlobals();
-  }
-  else {
-    AM::vPrintGlobals();
-    vDebugPoint();
-  }
+//  if (pFor) {
+//    printf("  Lock(%s)\n",(char*)aCN[pFor->eClass()]);
+//    AM::vPrintGlobals();
+//  }
+//  else {
+//    AM::vPrintGlobals();
+//    vDebugPoint();
+//  }
   
   m_pFor   = pFor;
   m_bFocal = false;

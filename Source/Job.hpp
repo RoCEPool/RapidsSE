@@ -15,7 +15,7 @@ namespace Jobs
   {                                  // ⋗ parent ⋗ child ⋗ prompt ⋗ api
   public:
   
-    JobClass* m_pJobClass; // job class
+    JobClass* m_aJobClass; // job class
   
     i8   m_iParentId;    // job id of parent job which spawned this JK_CHILD job
     eSS  m_eSeed;        // task seed
@@ -46,7 +46,7 @@ namespace Jobs
     Object*    m_pSendWith; // object which is to be sent with this job
 
   public:
-    Job(eCN eClassNo, ReqTuple* aReqTuple, Session* pSession);
+    Job(eCN eClassNo, ReqTuple* aReqTuple, Session* pSession, JobClass* aJobClass=nullptr);
    ~Job(void) noexcept(false);
   
     static Job* pThisTLSJob(void);

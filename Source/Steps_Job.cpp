@@ -650,7 +650,7 @@ void Step::vJobExecuteFetch(MP_Task mpTask)
       break;
       
     default:
-      StrLib::vCopy(sExecute.aChar(),pJob->m_pJobClass->m_aSeedExe->aChar());
+      StrLib::vCopy(sExecute.aChar(),pJob->m_aJobClass->m_aSeedExe->aChar());
       //sExecute.vConcat("_exe"_Stz);
       break;
   }
@@ -746,7 +746,7 @@ void Step::vJobHasEntBuffer(MP_Task mpTask)
   
   
   i8 bHas = pJob->m_pCrwBuffer ? true : false;
-  if (pJob->m_pJobClass->m_eClass == CN_JOB_WRITEBUFFER)
+  if (pJob->m_aJobClass->m_eClass == CN_JOB_WRITEBUFFER)
     int iDebug = 1;
   
   mpTask->m_pDataStack->vPushI8(bHas);
@@ -837,7 +837,7 @@ void Step::vJobJobClass(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.jobClass"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  i8 iJobClass_p = (i8)pJob->m_pJobClass;
+  i8 iJobClass_p = (i8)pJob->m_aJobClass;
   
   mpTask->m_pDataStack->vPushI8(iJobClass_p);
   
@@ -1173,7 +1173,7 @@ void Step::vJobPostRecv(MP_Task mpTask)
   eCN eClass = pJob->eClass();
   JobClass* pJobClass = JobClass::pFind(eClass);
   
-  pJob->m_pJobClass = pJobClass;
+  pJob->m_aJobClass = pJobClass;
 
   ASSERT(pJobClass->m_fpRecv == vJob_recv);
   
@@ -1205,7 +1205,7 @@ void Step::vJobPreSend(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.preSend"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  JobClass* pJobClass = pJob->m_pJobClass;
+  JobClass* pJobClass = pJob->m_aJobClass;
   
   //ActLog::vAdd(pJob,AN_PRE_SEND,mpTask->pJob());
   if (pJobClass->m_fpSend)

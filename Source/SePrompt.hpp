@@ -20,7 +20,7 @@ namespace Prompt
     bool     m_bNoWait;    // dont wait for command
     bool     m_bMarked;    // mark the job
 
-    JobClass* m_pJobClass; // job class
+    JobClass* m_aJobClass; // job class
     Job*      m_pJob;      // job
   
     bool     m_bOneCommand; // run one command only

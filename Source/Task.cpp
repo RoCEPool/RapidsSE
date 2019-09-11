@@ -557,8 +557,8 @@ Stz* Task::aJobName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if (m_pJob && m_pJob->m_pJobClass)
-    return aCN[m_pJob->m_pJobClass->m_eClass];
+  if (m_pJob && m_pJob->m_aJobClass)
+    return aCN[m_pJob->m_aJobClass->m_eClass];
   else if (! m_pJob)
     return "<no job>"_Stz;
   else
@@ -703,9 +703,9 @@ void Task::vRefindJobClass(void)
   // find the job class on this node
   eCN eClass = m_pJob->eClass();
   JobClass* pJobClass = JobClass::pFind(eClass);
-  m_pJob->m_pJobClass = pJobClass;
+  m_pJob->m_aJobClass = pJobClass;
   
-  //m_pJob->m_pJobClass->vJobCat();
+  //m_pJob->m_aJobClass->vJobCat();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -55,7 +55,7 @@ bool Jobs::_bIsValidJob(eCN eClass)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(eCN eClassNo, ReqTuple* aReqTuple, Session* pSession)
+Job::Job(eCN eClassNo, ReqTuple* aReqTuple, Session* pSession, JobClass* aJobClass)
 : JobBase(eClassNo,aReqTuple,AM::iNextJobId(),pSession ? pSession->m_iUniqueId : C_UNKNOWN)
 , JobDicPath(pSession)
 {
@@ -77,7 +77,7 @@ Job::Job(eCN eClassNo, ReqTuple* aReqTuple, Session* pSession)
   
   //m_oAcksRmg
   
-  m_pJobClass        = nullptr;
+  m_aJobClass        = nullptr;
   m_pTask            = nullptr;
   m_pOriginatingTask = nullptr;
   
@@ -98,7 +98,7 @@ Job::Job(eCN eClassNo, ReqTuple* aReqTuple, Session* pSession)
   
   vIncActNo(); ++ gixJob;
   AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCT,
-              "Job -%s construct ^for=%s |gixJob=%lld|"_Stz, //!format-LogJob
+              "|gixJob=%lld|"_Stz, //!format-LogJob
               aCN[eClass()],
               m_pSession ? spId.sz(m_pSession->m_iUniqueId) : "boot"_Stz,
               * gixJob);
@@ -245,7 +245,7 @@ Stz* Job::sJobSeed(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Stz* sSeed = m_pJobClass->sSeed(m_eSeed);
+  Stz* sSeed = m_aJobClass->sSeed(m_eSeed);
   
   return sSeed;
 }
@@ -428,7 +428,7 @@ void Job::vSeed(eSS eSeed)
   
   m_eSeed = eSeed;
     
-  m_pJobClass->m_bSeedsSpawned[eSeed] = true;
+  m_aJobClass->m_bSeedsSpawned[eSeed] = true;
 }
 
 
@@ -449,7 +449,7 @@ void Job::vSeed(eSS eSeed)
 //  _precondition_(_ADDRESS_,_MAGIC_);
 //  
 //  vTrace("%s: %s"_Stz,
-//         m_pJobClass ? (Stz*)m_pJobClass->m_aName : "<no jobClass>"_Stz,
+//         m_aJobClass ? (Stz*)m_aJobClass->m_aName : "<no jobClass>"_Stz,
 //         s.aStz());
 //}
 void Job::vShow(void)
@@ -459,7 +459,7 @@ void Job::vShow(void)
   vTrace("%s %s parentId %03lld seed %s "
          "i_State %03lld i_Slot %lld WasReceived %lld\n"_Stz,
          aCN[eClass()],
-         m_pJobClass ? aCN[m_pJobClass->m_eClass] : "<no jobClass>"_Stz,
+         m_aJobClass ? aCN[m_aJobClass->m_eClass] : "<no jobClass>"_Stz,
          m_iParentId,
          aSS[m_eSeed],
          
@@ -496,9 +496,9 @@ void Jobs::vJob_post(Session* pSession, Job* pJob)
 {
   eCN eClass = pJob->eClass();
   JobClass* pJobClass = JobClass::pFind(eClass);
-  pJob->m_pJobClass = pJobClass;
+  pJob->m_aJobClass = pJobClass;
   
-  switch (pJob->m_pJobClass->m_eResponse) {
+  switch (pJob->m_aJobClass->m_eResponse) {
       
     case RS_NONE         : /* do nothing */            break;
     case RS_DATA_ROWS    : RASSERT(0);                 break;
@@ -512,8 +512,8 @@ void Jobs::vJob_post(Session* pSession, Job* pJob)
       
     default:
       vTrace("Invalid response in job %s : %s\n"_Stz,
-             aCN[pJob->m_pJobClass->m_eClass],
-             aRS[pJob->m_pJobClass->m_eResponse]);
+             aCN[pJob->m_aJobClass->m_eClass],
+             aRS[pJob->m_aJobClass->m_eResponse]);
   }
 }
 

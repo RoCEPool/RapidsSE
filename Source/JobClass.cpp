@@ -56,7 +56,7 @@ Job* JobClass::pNewJob(void)
 {
   Job* pNewJob = (*m_fpNew)(this);
   
-  pNewJob->m_pJobClass = this;
+  pNewJob->m_aJobClass = this;
   
   return pNewJob;
 }
@@ -128,11 +128,11 @@ Job* JobClass::pPreJob(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 {
   Job* pJob = (*m_fpPre)(aReqTuple,iForId,pSession);
   
-  pJob->m_pJobClass = this;
+  pJob->m_aJobClass = this;
   pJob->m_xReqTuple.m_i_State = pSession ? pSession->m_pSessionState->m_i_State : -1;
   
 //  //ActLog::vAdd(pJob,AN_PRE_PROMPT,
-//                       pJob->m_pJobClass->m_eKind,_EG_JK);
+//                       pJob->m_aJobClass->m_eKind,_EG_JK);
   
   return pJob;
 }

@@ -63,7 +63,7 @@ SePrompt::SePrompt(bool bOneCommand)
   m_iCmdNo = 0;
 
   m_bContinue = true;
-  m_pJobClass = nullptr;
+  m_aJobClass = nullptr;
   m_pJob = nullptr;
 
   // m_oTimer
@@ -242,7 +242,7 @@ void SePrompt::vBeginRequest(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   //m_pRequest = new Request(m_pSession,pTknVec());
-  m_pRequest = new Request(m_pSession,m_pJobClass->m_aComment,iActNo());
+  m_pRequest = new Request(m_pSession,m_aJobClass->m_aComment,iActNo());
 
   m_i_RequestFocal = m_pRequest->m_i_Focal;
   
@@ -411,7 +411,7 @@ void SePrompt::vDeleteJob(void)
 
 
   // call the job delete function
-  m_pJobClass->vDeleteJob(m_pSession,m_pJob);
+  m_aJobClass->vDeleteJob(m_pSession,m_pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -490,9 +490,9 @@ bool SePrompt::bFindJobClass(void)
   Stz* aCommand1 = pTkn(0)->szText();
   Stz* aCommand2 = pTkn(1)->szText();
   
-  m_pJobClass = JobClass::pFind(aCommand1, aCommand2);
+  m_aJobClass = JobClass::pFind(aCommand1, aCommand2);
 
-  if (! m_pJobClass)
+  if (! m_aJobClass)
     return false;
   
   return true;
@@ -702,7 +702,7 @@ bool SePrompt::bPassesCheck(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  eEC eErrorCode = m_pJobClass->eCheckJob(m_pSession);
+  eEC eErrorCode = m_aJobClass->eCheckJob(m_pSession);
   
   if (EC_NONE != eErrorCode) {
     vTrace("Error: %s\n"_Stz,aEC[eErrorCode]);
@@ -719,18 +719,18 @@ bool SePrompt::bPassesLowMem(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  if (m_pJobClass->m_eFlags != JF_LOWMEM)
+  if (m_aJobClass->m_eFlags != JF_LOWMEM)
     return true;
   
   if (! gpBufferPool->bLowMemory())
     return true;
   
-  if (m_pJobClass->m_aCommand2)
+  if (m_aJobClass->m_aCommand2)
     vTrace("Error: unable to run %s %s under low memory conditions\n"_Stz,
-           m_pJobClass->m_aCommand1,m_pJobClass->m_aCommand2);
+           m_aJobClass->m_aCommand1,m_aJobClass->m_aCommand2);
   else
     vTrace("Error: unable to run %s under low memory conditions\n"_Stz,
-           m_pJobClass->m_aCommand1);
+           m_aJobClass->m_aCommand1);
 
   return false;
 }
@@ -750,7 +750,7 @@ void SePrompt::vPostJob(void)
  
   //JobClass* pJobClass = pInput->pJobClass();
 
-  m_pJobClass->vPostJob(m_pSession,m_pJob);
+  m_aJobClass->vPostJob(m_pSession,m_pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -774,10 +774,10 @@ void SePrompt::vPreJob(void)
               spId.sz(EK_REQ,m_iRequestId),
               C_ENDARGS);
   
-  m_pJob = m_pJobClass->pPreJob(&m_pRequest->m_xReqTuple,C_UNKNOWN,m_pSession);
+  m_pJob = m_aJobClass->pPreJob(&m_pRequest->m_xReqTuple,C_UNKNOWN,m_pSession);
   
 //  if (m_pJob && m_pJob->m_bMarkTrace)
-//    m_pJob->m_pJobClass->vShowJob(m_pJob);
+//    m_pJob->m_aJobClass->vShowJob(m_pJob);
 }
 
 /*----------------------------------------------------------------------------*/

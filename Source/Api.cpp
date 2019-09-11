@@ -304,7 +304,7 @@ void Api::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 bool Api::bSpawnJob(Session* pSession, Job* pJob, eSS eSeed)
 {
-  ASSERT(pJob->m_pJobClass);
+  ASSERT(pJob->m_aJobClass);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Before appending request for se, ensure that se is running
@@ -324,7 +324,7 @@ bool Api::bSpawnJob(Session* pSession, Job* pJob, eSS eSeed)
   pJob->vSeed(eSeed);
   
   //if (pJob->m_xReqTuple.m_bMarkTrace)
-  //  pJob->m_pJobClass->vShowJob(pJob);
+  //  pJob->m_aJobClass->vShowJob(pJob);
   
   //ASSERT(! pJob->m_pTask);
   
@@ -412,7 +412,7 @@ void Api::vSpawnJobAndWait(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 bool Api::bSpawnJobDedicated(Session* pSession, Job* pJob, eSS eSeed)
 {
-  ASSERT(pJob->m_pJobClass);
+  ASSERT(pJob->m_aJobClass);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Before appending request for se, ensure that se is running
@@ -434,7 +434,7 @@ bool Api::bSpawnJobDedicated(Session* pSession, Job* pJob, eSS eSeed)
   
   
   //if (pJob->m_xReqTuple.m_bMarkTrace)
-  //  pJob->m_pJobClass->vShowJob(pJob);
+  //  pJob->m_aJobClass->vShowJob(pJob);
   
   Task* pNewTask = new Task(pJob,pSession);
   pNewTask->vState(TS_ABLE);

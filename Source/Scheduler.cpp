@@ -846,7 +846,7 @@ void Scheduler::vTask_Ready(Task* pTask)
   pTask->vState(TS_READY);
 
   if (TK_JOB == pTask->eKind()) {
-    if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL)
+    if (pTask->pJob()->m_aJobClass->m_ePriority == PY_NORMAL)
       pQueues->vAppendReadyQueue(pTask);
     else
       pQueues->vAppendReadyQueueLP(pTask);
@@ -1082,7 +1082,7 @@ void Scheduler::vTask_Yield(Task* pTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // no other ready to run tasks, so thread continues executing the task
   
-  if (pTask->pJob()->m_pJobClass->m_ePriority == PY_NORMAL) {
+  if (pTask->pJob()->m_aJobClass->m_ePriority == PY_NORMAL) {
     i8 iLengthReadyQueue = pQueues->nTasksReady();
     if (0 == iLengthReadyQueue) {
       vTask_Able(pTask);
