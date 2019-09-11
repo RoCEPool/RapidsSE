@@ -100,7 +100,7 @@ void Job__Begun::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job__Begun::Job__Begun(Job* pDistJob)
-: Job(CN_JOB__BEGUN,&pDistJob->m_xReqTuple,nullptr,nullptr)
+: Job(CN_JOB__BEGUN,&pDistJob->m_xReqTuple,nullptr,JobClass::pFind(CN_JOB__BEGUN))
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__BEGUN,_FOOTER_);
   
