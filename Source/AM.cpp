@@ -4,16 +4,19 @@
 
 #include "Oblique.h"
 
-extern AttachMap*  gpAttachMap;
+extern Arguments     gxArguments;
+extern OpCatalog     gxOpCatalog;
+extern PromptCatalog gxPromptCatalog;
 
-extern Arguments   gxArguments;
-extern BufferPool* gpBufferPool;
-extern File*       gpTraceFile;
-extern Log*        gpLog;
+extern AttachMap*    gpAttachMap;
+extern BufferPool*   gpBufferPool;
+extern Log*          gpLog;
+extern Header*       gaSeShmRegion;
+extern File*         gpTraceFile;
 
-extern eHT        geWhichHeap[];
-extern i8         giClassSize[];
-extern pFINALIZE *gpFinalize[];
+extern eHT           geWhichHeap[];
+extern i8            giClassSize[];
+extern pFINALIZE*    gpFinalize[];
 
 // Arg
 bool AM::bDeveloper(void)     { return gpAttachMap->Arg.m_bDeveloper;         }
@@ -1145,6 +1148,20 @@ i8 AM::iRdTimePoint(void) { return Tick::iRdClock();                           }
 i8 AM::iAMTimePoint(void) { return gpAttachMap->m_iTimePoint;                  }
 
 i8 AM::iJobUniqueId(Job* pJob) { return pJob->m_iUniqueId;                     }
+
+void AM::vPrintGlobals(void)
+{
+  printf("gxArguments     @%p\n",&gxArguments);
+  printf("gxOpCatalog     @%p\n",&gxOpCatalog);
+  printf("gxPromptCatalog @%p\n",&gxPromptCatalog);
+  printf("\n");
+
+  printf("gpAttachMap     @%p : %p\n",&gpAttachMap,  gpAttachMap);
+  printf("gpBufferPool    @%p : %p\n",&gpBufferPool, gpBufferPool);
+  printf("gpLog           @%p : %p\n",&gpLog,        gpLog);
+  printf("gaSeShmRegion   @%p : %p\n",&gaSeShmRegion,gaSeShmRegion);
+  printf("gpTraceFile     @%p : %p\n",&gpTraceFile,  gpTraceFile);
+}
 
 /*============================================================================*/
 /* end                                                                        */
