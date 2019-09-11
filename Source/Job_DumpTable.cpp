@@ -194,7 +194,7 @@ Footer* Job_DumpTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_DumpTable_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_DumpTable* pJob_DumpTable = new Job_DumpTable(aReqTuple,iForId,pSession);
+  Job_DumpTable* pJob_DumpTable = new Job_DumpTable(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

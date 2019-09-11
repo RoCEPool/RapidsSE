@@ -193,7 +193,7 @@ Footer* Job_Ping::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Ping_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_Ping* pJob_Ping = new Job_Ping(aReqTuple,iForId,pSession);
+  Job_Ping* pJob_Ping = new Job_Ping(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

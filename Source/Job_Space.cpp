@@ -192,7 +192,7 @@ Footer* Job_Space::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Space_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_Space* pJob_Space = new Job_Space(aReqTuple,iForId,pSession);
+  Job_Space* pJob_Space = new Job_Space(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

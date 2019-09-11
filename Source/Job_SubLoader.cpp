@@ -339,7 +339,7 @@ Footer* Job_SubLoader::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::vJob_SubLoader_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_SubLoader* pJob_SubLoader = new Job_SubLoader(aReqTuple,iForId,pSession);
+  Job_SubLoader* pJob_SubLoader = new Job_SubLoader(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   return pJob_SubLoader;

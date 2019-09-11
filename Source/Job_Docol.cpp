@@ -196,7 +196,7 @@ Footer* Job_Docol::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Docol_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_Docol* pJob_Docol = new Job_Docol(aReqTuple,iForId,pSession);
+  Job_Docol* pJob_Docol = new Job_Docol(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

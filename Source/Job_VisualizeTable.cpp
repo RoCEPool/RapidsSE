@@ -194,7 +194,7 @@ Footer* Job_VisualizeTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_VisualizeTable_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_VisualizeTable* pJob_VisualizeTable = new Job_VisualizeTable(aReqTuple,iForId,pSession);
+  Job_VisualizeTable* pJob_VisualizeTable = new Job_VisualizeTable(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

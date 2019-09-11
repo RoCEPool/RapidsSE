@@ -195,7 +195,7 @@ Footer* Job_CreateTenant::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_CreateTenant_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_CreateTenant* pJob_CreateTenant = new Job_CreateTenant(aReqTuple,iForId,pSession);
+  Job_CreateTenant* pJob_CreateTenant = new Job_CreateTenant(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

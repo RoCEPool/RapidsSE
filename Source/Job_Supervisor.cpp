@@ -172,7 +172,9 @@ Job* Jobs::pJob_Supervisor_new(JobClass* aJobClass)
 {
   ReqTuple xReqTuple("**SUPERVISOR"_Stz,false);
   
-  Job_Supervisor* pJob_Supervisor = new Job_Supervisor(&xReqTuple,C_UNKNOWN,nullptr);
+  Job_Supervisor* pJob_Supervisor =
+    new Job_Supervisor(&xReqTuple,C_UNKNOWN,nullptr,
+                       JobClass::pFind(CN_JOB_SUPERVISOR));
   
   return pJob_Supervisor;
 }

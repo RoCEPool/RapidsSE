@@ -196,7 +196,7 @@ Footer* Job_CreateSchema::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_CreateSchema_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_CreateSchema* pJob_CreateSchema = new Job_CreateSchema(aReqTuple,iForId,pSession);
+  Job_CreateSchema* pJob_CreateSchema = new Job_CreateSchema(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

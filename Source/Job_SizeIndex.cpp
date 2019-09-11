@@ -198,7 +198,7 @@ Footer* Job_SizeIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SizeIndex_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_SizeIndex* pJob_SizeIndex = new Job_SizeIndex(aReqTuple,iForId,pSession);
+  Job_SizeIndex* pJob_SizeIndex = new Job_SizeIndex(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

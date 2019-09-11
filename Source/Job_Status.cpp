@@ -191,7 +191,7 @@ Footer* Job_Status::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Status_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_Status* pJob_Status = new Job_Status(aReqTuple,iForId,pSession);
+  Job_Status* pJob_Status = new Job_Status(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

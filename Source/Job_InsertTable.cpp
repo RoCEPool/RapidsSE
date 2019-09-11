@@ -176,7 +176,7 @@ Footer* Job_InsertTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_InsertTable_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_InsertTable* pJob_InsertTable = new Job_InsertTable(aReqTuple,iForId,pSession);
+  Job_InsertTable* pJob_InsertTable = new Job_InsertTable(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   // get a jobId for the insertTable job

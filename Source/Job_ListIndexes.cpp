@@ -197,7 +197,7 @@ Footer* Job_ListIndexes::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_ListIndexes_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_ListIndexes* pJob_ListIndexes = new Job_ListIndexes(aReqTuple,iForId,pSession);
+  Job_ListIndexes* pJob_ListIndexes = new Job_ListIndexes(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

@@ -197,7 +197,7 @@ Footer* Job_DropTenant::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_DropTenant_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_DropTenant* pJob_DropTenant = new Job_DropTenant(aReqTuple,iForId,pSession);
+  Job_DropTenant* pJob_DropTenant = new Job_DropTenant(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

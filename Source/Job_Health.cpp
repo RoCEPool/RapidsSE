@@ -173,7 +173,7 @@ Footer* Job_Health::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Health_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_Health* pJob_Health = new Job_Health(aReqTuple,iForId,pSession);
+  Job_Health* pJob_Health = new Job_Health(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();

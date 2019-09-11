@@ -257,7 +257,7 @@ Footer* Job_SubPublish::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubPublish_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_SubPublish* pJob_SubPublish = new Job_SubPublish(aReqTuple,iForId,pSession);
+  Job_SubPublish* pJob_SubPublish = new Job_SubPublish(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   return pJob_SubPublish;

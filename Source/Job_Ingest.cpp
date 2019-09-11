@@ -184,7 +184,7 @@ Job* Jobs::pJob_Ingest_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, Jo
 {
   i8 nTokens;
 
-  Job_Ingest* pJob_Ingest = new Job_Ingest(aReqTuple,iForId,pSession);
+  Job_Ingest* pJob_Ingest = new Job_Ingest(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();

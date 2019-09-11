@@ -177,7 +177,7 @@ Job* Jobs::pJob_Monitor_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, J
 {
   i8 nTokens;
 
-  Job_Monitor* pJob_Monitor = new Job_Monitor(aReqTuple,iForId,pSession);
+  Job_Monitor* pJob_Monitor = new Job_Monitor(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();

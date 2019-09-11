@@ -195,7 +195,7 @@ Footer* Job_CreateCatalog::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_CreateCatalog_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_CreateCatalog* pJob_CreateCatalog = new Job_CreateCatalog(aReqTuple,iForId,pSession);
+  Job_CreateCatalog* pJob_CreateCatalog = new Job_CreateCatalog(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

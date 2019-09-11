@@ -198,7 +198,7 @@ Footer* Job_AnalyzeTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_AnalyzeTable_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_AnalyzeTable* pJob_AnalyzeTable = new Job_AnalyzeTable(aReqTuple,iForId,pSession);
+  Job_AnalyzeTable* pJob_AnalyzeTable = new Job_AnalyzeTable(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

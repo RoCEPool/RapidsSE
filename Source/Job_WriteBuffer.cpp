@@ -427,7 +427,7 @@ Footer* Job_WriteBuffer::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_WriteBuffer_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(aReqTuple,iForId,pSession);
+  Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   return pJob_WriteBuffer;

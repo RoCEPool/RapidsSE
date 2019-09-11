@@ -276,7 +276,7 @@ Footer* Job_Export::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Export_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_Export* pJob_Export = new Job_Export(aReqTuple,iForId,pSession);
+  Job_Export* pJob_Export = new Job_Export(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

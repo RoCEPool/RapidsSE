@@ -212,7 +212,7 @@ Footer* Job_KidExport::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_KidExport_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_KidExport* pJob_KidExport = new Job_KidExport(aReqTuple,iForId,pSession);
+  Job_KidExport* pJob_KidExport = new Job_KidExport(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   return pJob_KidExport;

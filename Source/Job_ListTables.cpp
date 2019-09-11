@@ -193,7 +193,7 @@ Footer* Job_ListTables::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_ListTables_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_ListTables* pJob_ListTables = new Job_ListTables(aReqTuple,iForId,pSession);
+  Job_ListTables* pJob_ListTables = new Job_ListTables(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

@@ -176,7 +176,7 @@ Job* Jobs::pJob_Publish_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, J
 {
   i8 nTokens;
 
-  Job_Publish* pJob_Publish = new Job_Publish(aReqTuple,iForId,pSession);
+  Job_Publish* pJob_Publish = new Job_Publish(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();

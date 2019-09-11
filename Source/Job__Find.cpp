@@ -53,7 +53,7 @@ void Job__Find::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job__Find::Job__Find(void)
-: Job(CN_JOB__FIND,nullptr,nullptr,nullptr)
+: Job(CN_JOB__FIND)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__FIND,_FOOTER_);
   

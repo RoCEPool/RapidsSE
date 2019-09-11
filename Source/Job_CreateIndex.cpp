@@ -343,7 +343,7 @@ Footer* Job_CreateIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_CreateIndex_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_CreateIndex* pJob_CreateIndex = new Job_CreateIndex(aReqTuple,iForId,pSession);
+  Job_CreateIndex* pJob_CreateIndex = new Job_CreateIndex(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

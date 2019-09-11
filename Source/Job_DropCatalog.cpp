@@ -198,7 +198,7 @@ Footer* Job_DropCatalog::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_DropCatalog_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_DropCatalog* pJob_DropCatalog = new Job_DropCatalog(aReqTuple,iForId,pSession);
+  Job_DropCatalog* pJob_DropCatalog = new Job_DropCatalog(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

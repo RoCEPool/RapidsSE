@@ -232,7 +232,7 @@ Footer* Job_IndexJoin::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_IndexJoin_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_IndexJoin* pJob_IndexJoin = new Job_IndexJoin(aReqTuple,iForId,pSession);
+  Job_IndexJoin* pJob_IndexJoin = new Job_IndexJoin(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

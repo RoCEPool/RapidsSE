@@ -171,7 +171,8 @@ Job* Jobs::pJob_Connector_new(JobClass* aJobClass)
 {
   ReqTuple xReqTuple("**CONNECTOR"_Stz,false);
   
-  Job_Connector* pJob_Connector = new Job_Connector(&xReqTuple,C_UNKNOWN,nullptr);
+  Job_Connector* pJob_Connector =
+    new Job_Connector(&xReqTuple,C_UNKNOWN,nullptr,aJobClass);
   
   return pJob_Connector;
 }

@@ -206,7 +206,7 @@ Footer* Job_DropIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_DropIndex_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_DropIndex* pJob_DropIndex = new Job_DropIndex(aReqTuple,iForId,pSession);
+  Job_DropIndex* pJob_DropIndex = new Job_DropIndex(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

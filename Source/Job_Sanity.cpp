@@ -195,7 +195,7 @@ Footer* Job_Sanity::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Sanity_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_Sanity* pJob_Sanity = new Job_Sanity(aReqTuple,iForId,pSession);
+  Job_Sanity* pJob_Sanity = new Job_Sanity(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

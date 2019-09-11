@@ -194,7 +194,7 @@ Footer* Job_TruncateTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_TruncateTable_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_TruncateTable* pJob_TruncateTable = new Job_TruncateTable(aReqTuple,iForId,pSession);
+  Job_TruncateTable* pJob_TruncateTable = new Job_TruncateTable(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

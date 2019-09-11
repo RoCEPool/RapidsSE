@@ -197,7 +197,7 @@ Footer* Job_ListPartColumns::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_ListPartColumns_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_ListPartColumns* pJob_ListPartColumns = new Job_ListPartColumns(aReqTuple,iForId,pSession);
+  Job_ListPartColumns* pJob_ListPartColumns = new Job_ListPartColumns(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

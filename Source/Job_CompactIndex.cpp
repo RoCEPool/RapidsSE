@@ -198,7 +198,7 @@ Footer* Job_CompactIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_CompactIndex_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_CompactIndex* pJob_CompactIndex = new Job_CompactIndex(aReqTuple,iForId,pSession);
+  Job_CompactIndex* pJob_CompactIndex = new Job_CompactIndex(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

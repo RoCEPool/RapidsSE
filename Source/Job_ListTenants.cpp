@@ -193,7 +193,7 @@ Footer* Job_ListTenants::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_ListTenants_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_ListTenants* pJob_ListTenants = new Job_ListTenants(aReqTuple,iForId,pSession);
+  Job_ListTenants* pJob_ListTenants = new Job_ListTenants(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

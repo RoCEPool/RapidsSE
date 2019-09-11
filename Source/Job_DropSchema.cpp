@@ -197,7 +197,7 @@ Footer* Job_DropSchema::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_DropSchema_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_DropSchema* pJob_DropSchema = new Job_DropSchema(aReqTuple,iForId,pSession);
+  Job_DropSchema* pJob_DropSchema = new Job_DropSchema(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

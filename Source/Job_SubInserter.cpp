@@ -255,7 +255,7 @@ Footer* Job_SubInserter::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubInserter_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_SubInserter* pJob_SubInserter = new Job_SubInserter(aReqTuple,iForId,pSession);
+  Job_SubInserter* pJob_SubInserter = new Job_SubInserter(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   return pJob_SubInserter;

@@ -191,7 +191,8 @@ Footer* Job_StartCluster::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_StartCluster_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_StartCluster* pJob_StartCluster = new Job_StartCluster(aReqTuple,iForId,pSession);
+  Job_StartCluster* pJob_StartCluster =
+    new Job_StartCluster(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

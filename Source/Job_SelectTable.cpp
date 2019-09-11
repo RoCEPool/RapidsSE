@@ -202,7 +202,7 @@ Footer* Job_SelectTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SelectTable_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_SelectTable* pJob_SelectTable = new Job_SelectTable(aReqTuple,iForId,pSession);
+  Job_SelectTable* pJob_SelectTable = new Job_SelectTable(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

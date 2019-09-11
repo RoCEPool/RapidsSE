@@ -53,6 +53,57 @@ bool Jobs::_bIsValidJob(eCN eClass)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor (for job__find)                                                */
+/*----------------------------------------------------------------------------*/
+Job::Job(eCN eClassNo)
+: JobBase(eClassNo,nullptr,C_UNKNOWN,C_UNKNOWN)
+, JobDicPath(nullptr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
+  
+  //vTrace("%s: CREATING JOB %p %s\n"_Stz,
+  //       AM::pGrid()->pThisNode()->aNodeName(), this, aCN[eClass()]);
+  
+  // m_xReqTuple
+  
+  m_iParentId = C_UNKNOWN;
+  m_eSeed     = SS_ENUMS;
+  m_i_Slot    = C_UNKNOWN;
+  m_eJobPhase = JP_NONE;
+  m_eJobList  = JL_NONE;
+  m_eJobState = JS_RUNNING;
+  m_bNoWait   = false;
+  m_bWasReceived = false;
+  
+  //m_oAcksRmg
+  
+  m_aJobClass        = nullptr;
+  m_pTask            = nullptr;
+  m_pOriginatingTask = nullptr;
+  
+  m_iParticipantNode  = C_UNKNOWN;
+  m_oAcksRmg.vCheckInit();
+  
+  m_pCrwBuffer = nullptr;
+  m_pSendWith = nullptr;
+  
+  m_pJobMutex = nullptr;
+  
+  // -- -- -- -- -- --
+  
+  SP_Id spId;
+  
+  vIncActNo(); ++ gixJob;
+  AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCT,
+              "|gixJob=%lld|"_Stz, //!format-LogJob
+              aCN[eClass()],
+              m_pSession ? spId.sz(m_pSession->m_iUniqueId) : "boot"_Stz,
+              * gixJob);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job::Job(eCN eClassNo, ReqTuple* aReqTuple, Session* pSession, JobClass* aJobClass)
@@ -60,6 +111,8 @@ Job::Job(eCN eClassNo, ReqTuple* aReqTuple, Session* pSession, JobClass* aJobCla
 , JobDicPath(pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
+  
+  ASSERT(aJobClass);
   
   //vTrace("%s: CREATING JOB %p %s\n"_Stz,
   //       AM::pGrid()->pThisNode()->aNodeName(), this, aCN[eClass()]);

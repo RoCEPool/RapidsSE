@@ -268,7 +268,7 @@ Footer* Job_Dynamic::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Dynamic_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_Dynamic* pJob_Dynamic = new Job_Dynamic(aReqTuple,iForId,pSession);
+  Job_Dynamic* pJob_Dynamic = new Job_Dynamic(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

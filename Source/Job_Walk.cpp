@@ -228,7 +228,7 @@ Footer* Job_Walk::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Walk_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_Walk* pJob_Walk = new Job_Walk(aReqTuple,iForId,pSession);
+  Job_Walk* pJob_Walk = new Job_Walk(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

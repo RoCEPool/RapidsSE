@@ -194,7 +194,7 @@ Footer* Job_DropTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_DropTable_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_DropTable* pJob_DropTable = new Job_DropTable(aReqTuple,iForId,pSession);
+  Job_DropTable* pJob_DropTable = new Job_DropTable(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

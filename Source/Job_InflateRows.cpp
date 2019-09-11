@@ -275,7 +275,7 @@ Footer* Job_InflateRows::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_InflateRows_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_InflateRows* pJob_InflateRows = new Job_InflateRows(aReqTuple,iForId,pSession);
+  Job_InflateRows* pJob_InflateRows = new Job_InflateRows(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

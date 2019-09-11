@@ -242,7 +242,7 @@ Footer* Job_WriteRow::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_WriteRow_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_WriteRow* pJob_WriteRow = new Job_WriteRow(aReqTuple,iForId,pSession);
+  Job_WriteRow* pJob_WriteRow = new Job_WriteRow(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   return pJob_WriteRow;

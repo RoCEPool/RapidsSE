@@ -194,7 +194,7 @@ Footer* Job_VerifyTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_VerifyTable_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_VerifyTable* pJob_VerifyTable = new Job_VerifyTable(aReqTuple,iForId,pSession);
+  Job_VerifyTable* pJob_VerifyTable = new Job_VerifyTable(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

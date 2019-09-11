@@ -227,7 +227,7 @@ Footer* Job_InsertRow::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_InsertRow_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_InsertRow* pJob_InsertRow = new Job_InsertRow(aReqTuple,iForId,pSession);
+  Job_InsertRow* pJob_InsertRow = new Job_InsertRow(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
 //  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

@@ -315,7 +315,7 @@ Footer* Job_SubIngester::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::vJob_SubIngester_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_SubIngester* pJob_SubIngester = new Job_SubIngester(aReqTuple,iForId,pSession);
+  Job_SubIngester* pJob_SubIngester = new Job_SubIngester(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   return pJob_SubIngester;

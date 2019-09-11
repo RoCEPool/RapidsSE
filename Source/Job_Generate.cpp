@@ -192,7 +192,7 @@ Job* Jobs::pJob_Generate_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   i8 nTokens;
 
-  Job_Generate* pJob_Generate = new Job_Generate(aReqTuple,iForId,pSession);
+  Job_Generate* pJob_Generate = new Job_Generate(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();

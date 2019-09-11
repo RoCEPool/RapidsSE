@@ -171,7 +171,8 @@ Job* Jobs::pJob_Boot_new(JobClass* aJobClass)
 {
   ReqTuple xReqTuple("**BOOT"_Stz,false);
 
-  Job_Boot* pJob_Boot = new Job_Boot(&xReqTuple,C_UNKNOWN,nullptr);
+  Job_Boot* pJob_Boot = new Job_Boot(&xReqTuple,C_UNKNOWN,nullptr,
+                                     JobClass::pFind(CN_JOB_BOOT));
   
   return pJob_Boot;
 }

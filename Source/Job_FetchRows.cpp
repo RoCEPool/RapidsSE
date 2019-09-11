@@ -616,7 +616,7 @@ Footer* Job_FetchRows::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_FetchRows_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_FetchRows* pJob_FetchRows = new Job_FetchRows(aReqTuple,iForId,pSession);
+  Job_FetchRows* pJob_FetchRows = new Job_FetchRows(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

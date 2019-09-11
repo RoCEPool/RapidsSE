@@ -199,7 +199,7 @@ Footer* Job_UseSchema::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_UseSchema_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_UseSchema* pJob_UseSchema = new Job_UseSchema(aReqTuple,iForId,pSession);
+  Job_UseSchema* pJob_UseSchema = new Job_UseSchema(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

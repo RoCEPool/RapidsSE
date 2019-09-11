@@ -174,7 +174,7 @@ Job* Jobs::pJob_Purge_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, Job
 {
   i8 nTokens;
 
-  Job_Purge* pJob_Purge = new Job_Purge(aReqTuple,iForId,pSession);
+  Job_Purge* pJob_Purge = new Job_Purge(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();

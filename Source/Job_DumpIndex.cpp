@@ -198,7 +198,7 @@ Footer* Job_DumpIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_DumpIndex_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_DumpIndex* pJob_DumpIndex = new Job_DumpIndex(aReqTuple,iForId,pSession);
+  Job_DumpIndex* pJob_DumpIndex = new Job_DumpIndex(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

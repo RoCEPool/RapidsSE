@@ -191,7 +191,7 @@ Footer* Job_ConnectCluster::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_ConnectCluster_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_ConnectCluster* pJob_ConnectCluster = new Job_ConnectCluster(aReqTuple,iForId,pSession);
+  Job_ConnectCluster* pJob_ConnectCluster = new Job_ConnectCluster(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

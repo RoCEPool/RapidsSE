@@ -46,6 +46,7 @@ namespace Jobs
     Object*    m_pSendWith; // object which is to be sent with this job
 
   public:
+    Job(eCN eClassNo);
     Job(eCN eClassNo, ReqTuple* aReqTuple, Session* pSession, JobClass* aJobClass);
    ~Job(void) noexcept(false);
   

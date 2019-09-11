@@ -178,7 +178,7 @@ Job* Jobs::pJob_Cat_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobCl
 {
   i8 nTokens;
 
-  Job_Cat* pJob_Cat = new Job_Cat(aReqTuple,iForId,pSession);
+  Job_Cat* pJob_Cat = new Job_Cat(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();

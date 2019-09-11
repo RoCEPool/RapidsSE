@@ -331,7 +331,7 @@ Footer* Job_SubExporter::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubExporter_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_SubExporter* pJob_SubExporter = new Job_SubExporter(aReqTuple,iForId,pSession);
+  Job_SubExporter* pJob_SubExporter = new Job_SubExporter(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
   
   return pJob_SubExporter;

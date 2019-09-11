@@ -198,7 +198,7 @@ Footer* Job_VerifyIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_VerifyIndex_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_VerifyIndex* pJob_VerifyIndex = new Job_VerifyIndex(aReqTuple,iForId,pSession);
+  Job_VerifyIndex* pJob_VerifyIndex = new Job_VerifyIndex(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

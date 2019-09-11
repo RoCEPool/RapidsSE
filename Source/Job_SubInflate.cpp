@@ -174,7 +174,7 @@ Footer* Job_SubInflate::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubInflate_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_SubInflate* pJob_SubInflate = new Job_SubInflate(aReqTuple,iForId,pSession);
+  Job_SubInflate* pJob_SubInflate = new Job_SubInflate(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   return pJob_SubInflate;

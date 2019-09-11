@@ -228,7 +228,7 @@ Footer* Job_SubPurger::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubPurger_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_SubPurger* pJob_SubPurger = new Job_SubPurger(aReqTuple,iForId,pSession);
+  Job_SubPurger* pJob_SubPurger = new Job_SubPurger(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   return pJob_SubPurger;

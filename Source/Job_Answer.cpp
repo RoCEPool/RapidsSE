@@ -171,7 +171,9 @@ Job* Jobs::pJob_Answer_new(JobClass* aJobClass)
 {
   ReqTuple xReqTuple("**ANSWER"_Stz,false);
   
-  Job_Answer* pJob_Answer = new Job_Answer(&xReqTuple,C_UNKNOWN,nullptr);
+  Job_Answer* pJob_Answer =
+    new Job_Answer(&xReqTuple,C_UNKNOWN,nullptr,
+                   JobClass::pFind(CN_JOB_ANSWER));
   
   return pJob_Answer;
 }

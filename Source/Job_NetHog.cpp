@@ -173,7 +173,7 @@ Footer* Job_NetHog::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_NetHog_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
 {
-  Job_NetHog* pJob_NetHog = new Job_NetHog(aReqTuple,iForId,pSession);
+  Job_NetHog* pJob_NetHog = new Job_NetHog(aReqTuple,iForId,pSession,aJobClass);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
