@@ -302,7 +302,7 @@ void Task::vTaskLoop_job(void)
   // record time of return & calculate running total times
   // ...
 
-  if (m_pJob && m_pJob->m_xReqTuple.m_iLogLevel)
+  if (m_pJob && m_pJob->m_xReqTuple.m_iDetail)
     JobLog::vNote(m_pJob,
                           "Returned from task call: %s %p"_Stz,
                           aCN[m_pJob->eClass()],

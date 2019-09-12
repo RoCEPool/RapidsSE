@@ -53,7 +53,7 @@ void ReqTuple::vSet(ReqTuple* aReqTuple)
     m_iForId     = aReqTuple->m_iForId;
     m_i_State    = aReqTuple->m_i_State;
 
-    m_iLogLevel  = aReqTuple->m_iLogLevel;
+    m_iDetail  = aReqTuple->m_iDetail;
     m_sPurpose   = aReqTuple->m_sPurpose;
     
     return;
@@ -63,7 +63,7 @@ void ReqTuple::vSet(ReqTuple* aReqTuple)
   m_iForId     = C_UNKNOWN;
   m_i_State    = C_UNKNOWN;
 
-  m_iLogLevel  = 0;
+  m_iDetail  = 0;
   
   //m_sPurpose   = "?"_Stz;
 }

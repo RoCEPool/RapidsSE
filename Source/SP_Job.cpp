@@ -39,9 +39,12 @@ Stz* SP_Job::sz_log(Job* pJob)
   SP_ReqTuple spReqTuple;
   
   StrLib::vSprint(m_caResult,
-                  "{%s %s %s %s %s%s%s}%s"_Stz,
+                  "{%s %lld %lld %s %s %s %s%s%s}%s"_Stz,
                   
                   aCN[pJob->eClass()],
+                  pJob->m_i_Slot,
+                  pJob->m_oAcksRmg.iPrintOnlyValue(),
+
                   aSS[pJob->m_eSeed],
                   aJL[pJob->m_eJobList],
                   aJP[pJob->m_eJobPhase],

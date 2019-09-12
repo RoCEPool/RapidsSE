@@ -168,16 +168,13 @@ Job::~Job(void) noexcept(false)
   if (m_bWasReceived) {
     // do not decrement gixJob
     AM::vLogJob(SL_INF,this,JA_JOB_DESTRUCT,
-                "Job -%s destruct (was-received) |gixJob=%lld|"_Stz, //!format-LogJob
-                aCN[eClass()],
-               * gixJob);
+                "|gixJob=%lld|"_Stz, //!format-LogJob
+                * gixJob);
   }
   else {
     -- gixJob;
     AM::vLogJob(SL_INF,this,JA_JOB_DESTRUCT,
-                "Job -%s destruct ^for=%s |gixJob=%lld|"_Stz, //!format-LogJob
-                aCN[eClass()],
-                m_pSession ? spId.sz(m_pSession->m_iUniqueId) : "boot"_Stz,
+                "|gixJob=%lld|"_Stz, //!format-LogJob
                 * gixJob);
   }
 }

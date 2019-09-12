@@ -12,7 +12,7 @@ namespace Focals
     i8   m_iReqId;     // the id of the request
     i8   m_iForId;     // id of prompt or api
   
-    i8   m_iLogLevel;  // level of logging  
+    i8   m_iDetail;    // level of logging  
     s32  m_sPurpose;   // purpose of request
 
   public:

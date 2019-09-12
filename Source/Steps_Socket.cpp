@@ -322,7 +322,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
                 "Socket received Job: %s"_Stz, //!format-LogRes
                  spJob.sz_recv(pJob));
 
-    if (pJob->m_xReqTuple.m_iLogLevel) {
+    if (pJob->m_xReqTuple.m_iDetail) {
       JobLog::vNote(pJob,
                          "Recv: %s %p socket %llx"_Stz,
                          aCN[eClass],
@@ -626,7 +626,7 @@ void Step::vSocketSendObject(MP_Task mpTask)
     // ray added 25 Aug 2019
     ASSERT(pJob->m_aJobClass->m_fpSend && pJob->m_aJobClass->m_fpRecv);
     
-    if (pJob->m_xReqTuple.m_iLogLevel)
+    if (pJob->m_xReqTuple.m_iDetail)
       JobLog::vNote(pJob,"Send: %s %p socket %llx"_Stz,
                          aCN[eClass],
                          pJob,

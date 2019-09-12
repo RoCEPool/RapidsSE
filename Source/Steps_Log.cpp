@@ -106,11 +106,8 @@ void Step::vLogMarkPhase(MP_Task mpTask)
   Job* pJob = mpTask->m_pJob;
   
   AM::vLogJob(SL_INF,pJob,JA_JOB_PHASE,
-              "Phase : %s for %s %p"_Stz,
-              aJP[i_Phase],
-              aCN[pJob->eClass()],
-              pJob
-              );
+              "%s"_Stz,
+              aJP[i_Phase]);
   
   EXIT();
 }
