@@ -215,7 +215,7 @@ Job* Jobs::pJob_DropCatalog_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iFo
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_DropCatalog_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_DropCatalog_delete(Job* pJob)
 {
   Job_DropCatalog* pJob_DropCatalog = _pJob_DropCatalog(pJob);
   

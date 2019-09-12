@@ -210,7 +210,7 @@ Job* Jobs::pJob_ListTenants_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iFo
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_ListTenants_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_ListTenants_delete(Job* pJob)
 {
   Job_ListTenants* pJob_ListTenants = _pJob_ListTenants(pJob);
   

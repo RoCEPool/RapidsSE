@@ -211,7 +211,7 @@ Job* Jobs::pJob_DumpTable_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForI
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_DumpTable_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_DumpTable_delete(Job* pJob)
 {
   Job_DumpTable* pJob_DumpTable = _pJob_DumpTable(pJob);
   

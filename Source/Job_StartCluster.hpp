@@ -36,7 +36,7 @@ namespace Jobs
   
   Job* pJob_StartCluster_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
   void vJob_StartCluster_post(Session* pSession, Job* pJob);
-  void vJob_StartCluster_delete(Session* pSession, Job* pJob);
+  void vJob_StartCluster_delete(Job* pJob);
   void vJob_StartCluster_show(Job* pJob);
   
   JobClass* pJob_StartCluster_class(pFUN** aaFun);

@@ -35,7 +35,7 @@ namespace Jobs
   Job_Connector* _pJob_Connector(void* aAddr);
   
   Job* pJob_Connector_new(JobClass* aJobClass);
-  void vJob_Connector_delete(Session* pSession, Job* pJob);
+  void vJob_Connector_delete(Job* pJob);
   void vJob_Connector_show(Job* pJob);
   
   JobClass* pJob_Connector_class(pFUN** aaFun);

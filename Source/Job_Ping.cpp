@@ -210,7 +210,7 @@ Job* Jobs::pJob_Ping_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Se
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Ping_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_Ping_delete(Job* pJob)
 {
   Job_Ping* pJob_Ping = _pJob_Ping(pJob);
   

@@ -200,7 +200,7 @@ Job* Jobs::pJob_InsertTable_new(JobClass* aJobClass)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_InsertTable_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_InsertTable_delete(Job* pJob)
 {
   Job_InsertTable* pJob_InsertTable = _pJob_InsertTable(pJob);
   

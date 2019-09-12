@@ -175,7 +175,7 @@ Footer* Job__Executed::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob__Executed_delete(Session* pSession, Job* pJob)
+void Jobs::vJob__Executed_delete(Job* pJob)
 {
   Job__Executed* pJob__Executed = _pJob__Executed(pJob);
   

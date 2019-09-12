@@ -180,7 +180,7 @@ Job* Jobs::pJob_Answer_new(JobClass* aJobClass)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Answer_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_Answer_delete(Job* pJob)
 {
   Job_Answer* pJob_Answer = _pJob_Answer(pJob);
   

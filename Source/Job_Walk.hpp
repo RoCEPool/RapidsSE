@@ -40,7 +40,7 @@ namespace Jobs
   Job_Walk* _pJob_Walk(void* aAddr);
   
   Job* pJob_Walk_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
-  void vJob_Walk_delete(Session* pSession, Job* pJob);
+  void vJob_Walk_delete(Job* pJob);
   void vJob_Walk_show(Job* pJob);
   
   JobClass* pJob_Walk_class(pFUN** aaFun);

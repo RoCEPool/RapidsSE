@@ -36,7 +36,7 @@ namespace Jobs
   Job_SizeTable* _pJob_SizeTable(void* aAddr);
   
   Job* pJob_SizeTable_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
-  void vJob_SizeTable_delete(Session* pSession, Job* pJob);
+  void vJob_SizeTable_delete(Job* pJob);
   void vJob_SizeTable_show(Job* pJob);
   
   JobClass* pJob_SizeTable_class(pFUN** aaFun);

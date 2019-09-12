@@ -219,7 +219,7 @@ Job* Jobs::pJob_Cat_new(JobClass* aJobClass)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Cat_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_Cat_delete(Job* pJob)
 {
   Job_Cat* pJob_Cat = _pJob_Cat(pJob);
   

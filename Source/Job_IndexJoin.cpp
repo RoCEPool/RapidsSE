@@ -303,7 +303,7 @@ void Jobs::vJob_IndexJoin_post(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_IndexJoin_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_IndexJoin_delete(Job* pJob)
 {
   Job_IndexJoin* pJob_IndexJoin = _pJob_IndexJoin(pJob);
   

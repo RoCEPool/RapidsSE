@@ -181,7 +181,7 @@ Job* Jobs::pJob_Alarm_new(JobClass* aJobClass)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Alarm_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_Alarm_delete(Job* pJob)
 {
   Job_Alarm* pJob_Alarm = _pJob_Alarm(pJob);
   

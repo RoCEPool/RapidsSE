@@ -43,7 +43,7 @@ namespace Jobs
   
   Job* pJob_Monitor_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
   Job* pJob_Monitor_new(JobClass* aJobClass);
-  void vJob_Monitor_delete(Session* pSession, Job* pJob);
+  void vJob_Monitor_delete(Job* pJob);
   void vJob_Monitor_show(Job* pJob);
   
   JobClass* pJob_Monitor_class(pFUN** aaFun);

@@ -245,7 +245,7 @@ Job* Jobs::pJob_Walk_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Se
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Walk_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_Walk_delete(Job* pJob)
 {
   Job_Walk* pJob_Walk = _pJob_Walk(pJob);
   

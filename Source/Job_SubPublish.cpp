@@ -266,7 +266,7 @@ Job* Jobs::pJob_SubPublish_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iFor
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_SubPublish_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_SubPublish_delete(Job* pJob)
 {
   Job_SubPublish* pJob_SubPublish = _pJob_SubPublish(pJob);
   

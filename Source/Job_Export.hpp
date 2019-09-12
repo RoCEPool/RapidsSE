@@ -53,7 +53,7 @@ namespace Jobs
   Job* pJob_Export_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
   void vJob_Export_post(Session* pSession, Job* pJob);
   Job* pJob_Export_new(JobClass* aJobClass);
-  void vJob_Export_delete(Session* pSession, Job* pJob);
+  void vJob_Export_delete(Job* pJob);
   void vJob_Export_show(Job* pJob);
   
   JobClass* pJob_Export_class(pFUN** aaFun);

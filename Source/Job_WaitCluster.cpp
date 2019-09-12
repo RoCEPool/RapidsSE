@@ -208,7 +208,7 @@ void Jobs::vJob_WaitCluster_post(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_WaitCluster_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_WaitCluster_delete(Job* pJob)
 {
   Job_WaitCluster* pJob_WaitCluster = _pJob_WaitCluster(pJob);
   

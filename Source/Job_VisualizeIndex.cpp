@@ -215,7 +215,7 @@ Job* Jobs::pJob_VisualizeIndex_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_VisualizeIndex_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_VisualizeIndex_delete(Job* pJob)
 {
   Job_VisualizeIndex* pJob_VisualizeIndex = _pJob_VisualizeIndex(pJob);
   

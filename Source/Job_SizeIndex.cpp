@@ -215,7 +215,7 @@ Job* Jobs::pJob_SizeIndex_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForI
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_SizeIndex_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_SizeIndex_delete(Job* pJob)
 {
   Job_SizeIndex* pJob_SizeTable = _pJob_SizeIndex(pJob);
   

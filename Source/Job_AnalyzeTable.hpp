@@ -38,7 +38,7 @@ namespace Jobs
   Job_AnalyzeTable* _pJob_AnalyzeTable(void* aAddr);
   
   Job* pJob_AnalyzeTable_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
-  void vJob_AnalyzeTable_delete(Session* pSession, Job* pJob);
+  void vJob_AnalyzeTable_delete(Job* pJob);
   void vJob_AnalyzeTable_show(Job* pJob);
   
   JobClass* pJob_AnalyzeTable_class(pFUN** aaFun);

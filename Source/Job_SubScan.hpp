@@ -37,7 +37,7 @@ namespace Jobs
   Job_SubScan* _pJob_SubScan(void* aAddr);
   
   Job* pJob_SubScan_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
-  void vJob_SubScan_delete(Session* pSession, Job* pJob);
+  void vJob_SubScan_delete(Job* pJob);
   void vJob_SubScan_show(Job* pJob);
   
   JobClass* pJob_SubScan_class(pFUN** aaFun);

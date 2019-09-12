@@ -36,7 +36,7 @@ namespace Jobs
   Job_TruncateTable* _pJob_TruncateTable(void* aAddr);
   
   Job* pJob_TruncateTable_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
-  void vJob_TruncateTable_delete(Session* pSession, Job* pJob);
+  void vJob_TruncateTable_delete(Job* pJob);
   void vJob_TruncateTable_show(Job* pJob);
   
   JobClass* pJob_TruncateTable_class(pFUN** aaFun);

@@ -40,7 +40,7 @@ namespace Jobs
   
   Job* pJob_Sanity_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
   void vJob_Sanity_post(Session* pSession, Job* pJob);
-  void vJob_Sanity_delete(Session* pSession, Job* pJob);
+  void vJob_Sanity_delete(Job* pJob);
   void vJob_Sanity_show(Job* pJob);
   
   JobClass* pJob_Sanity_class(pFUN** aaFun);

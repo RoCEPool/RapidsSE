@@ -183,7 +183,7 @@ Job* Jobs::pJob_SubInflate_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iFor
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_SubInflate_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_SubInflate_delete(Job* pJob)
 {
   Job_SubInflate* pJob_SubInflate = _pJob_SubInflate(pJob);
   

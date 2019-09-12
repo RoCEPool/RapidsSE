@@ -179,7 +179,7 @@ Job* Jobs::pJob_SubTruncate_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iFo
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_SubTruncate_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_SubTruncate_delete(Job* pJob)
 {
   Job_SubTruncate* pJob_SubTruncate = _pJob_SubTruncate(pJob);
   

@@ -180,7 +180,7 @@ Job* Jobs::pJob_Start_new(JobClass* aJobClass)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Start_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_Start_delete(Job* pJob)
 {
   Job_Start* pJob_Start = _pJob_Start(pJob);
   

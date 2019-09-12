@@ -36,7 +36,7 @@ namespace Jobs
   Job_NodeInfo* _pJob_NodeInfo(void* aAddr);
   
   Job* pJob_NodeInfo_new(JobClass* aJobClass);
-  void vJob_NodeInfo_delete(Session* pSession, Job* pJob);
+  void vJob_NodeInfo_delete(Job* pJob);
   void vJob_NodeInfo_show(Job* pJob);
   
   JobClass* pJob_NodeInfo_class(pFUN** aaFun);

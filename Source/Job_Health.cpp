@@ -219,7 +219,7 @@ Job* Jobs::pJob_Health_new(JobClass* aJobClass)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Health_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_Health_delete(Job* pJob)
 {
   Job_Health* pJob_Health = _pJob_Health(pJob);
   

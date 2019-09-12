@@ -219,7 +219,7 @@ Job* Jobs::pJob_NetHog_new(JobClass* aJobClass)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_NetHog_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_NetHog_delete(Job* pJob)
 {
   Job_NetHog* pJob_NetHog = _pJob_NetHog(pJob);
   

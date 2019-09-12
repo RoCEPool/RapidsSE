@@ -215,7 +215,7 @@ Job* Jobs::pJob_Sink_new(JobClass* aJobClass)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Sink_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_Sink_delete(Job* pJob)
 {
   Job_Sink* pJob_Sink = _pJob_Sink(pJob);
   

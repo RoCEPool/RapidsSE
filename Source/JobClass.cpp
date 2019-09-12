@@ -64,9 +64,9 @@ Job* JobClass::pNewJob(void)
 /*----------------------------------------------------------------------------*/
 /* delete the job by running the delete-function                              */
 /*----------------------------------------------------------------------------*/
-void JobClass::vDeleteJob(Session* pSession, Job* pJob)
+void JobClass::vDeleteJob(Job* pJob)
 {
-  (*m_fpDelete)(pSession, pJob);
+  (*m_fpDelete)(pJob);
 }
 
 /*----------------------------------------------------------------------------*/

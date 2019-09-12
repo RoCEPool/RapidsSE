@@ -262,7 +262,7 @@ Job* Jobs::pJob_WriteRow_new(JobClass* aJobClass)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_WriteRow_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_WriteRow_delete(Job* pJob)
 {
   Job_WriteRow* pJob_WriteRow = _pJob_WriteRow(pJob);
   

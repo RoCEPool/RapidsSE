@@ -180,7 +180,7 @@ Job* Jobs::pJob_SubIndexJoin_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iF
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_SubIndexJoin_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_SubIndexJoin_delete(Job* pJob)
 {
   Job_SubIndexJoin* pJob_SubIndexJoin = _pJob_SubIndexJoin(pJob);
   

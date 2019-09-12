@@ -216,7 +216,7 @@ Job* Jobs::pJob_UseSchema_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForI
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_UseSchema_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_UseSchema_delete(Job* pJob)
 {
   Job_UseSchema* pJob_UseSchema = _pJob_UseSchema(pJob);
   

@@ -216,7 +216,7 @@ Job* Jobs::pJob_AnalyzeTable_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iF
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_AnalyzeTable_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_AnalyzeTable_delete(Job* pJob)
 {
   Job_AnalyzeTable* pJob_AnalyzeTable = _pJob_AnalyzeTable(pJob);
   

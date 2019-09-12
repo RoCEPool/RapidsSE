@@ -233,7 +233,7 @@ Job* Jobs::pJob_KidExport_new(JobClass* aJobClass)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_KidExport_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_KidExport_delete(Job* pJob)
 {
   Job_KidExport* pJob_KidExport = _pJob_KidExport(pJob);
   

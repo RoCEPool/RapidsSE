@@ -44,7 +44,7 @@ namespace Jobs
   
   Job* vJob_SubIngester_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
   Job* pJob_SubIngester_new(JobClass* aJobClass);
-  void vJob_SubIngester_delete(Session* pSession, Job* pJob);
+  void vJob_SubIngester_delete(Job* pJob);
   void vJob_SubIngester_show(Job* pJob);
   
   JobClass* pJob_SubIngester_class(pFUN** aaFun);

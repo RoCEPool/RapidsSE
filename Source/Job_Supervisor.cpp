@@ -181,7 +181,7 @@ Job* Jobs::pJob_Supervisor_new(JobClass* aJobClass)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Supervisor_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_Supervisor_delete(Job* pJob)
 {
   Job_Supervisor* pJob_Supervisor = _pJob_Supervisor(pJob);
   

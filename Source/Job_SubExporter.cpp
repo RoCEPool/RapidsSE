@@ -340,7 +340,7 @@ Job* Jobs::pJob_SubExporter_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iFo
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_SubExporter_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_SubExporter_delete(Job* pJob)
 {
   Job_SubExporter* pJob_SubExporter = _pJob_SubExporter(pJob);
   

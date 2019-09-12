@@ -661,7 +661,7 @@ Job* Jobs::pJob_CreateTable_new(JobClass* aJobClass)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_CreateTable_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_CreateTable_delete(Job* pJob)
 {
   Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJob);
     

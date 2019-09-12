@@ -182,7 +182,7 @@ Job* Jobs::pJob_SubFetch_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_SubFetch_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_SubFetch_delete(Job* pJob)
 {
   Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pJob);
   

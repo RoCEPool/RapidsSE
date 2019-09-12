@@ -47,7 +47,7 @@ namespace Jobs
   
   Job* pJob_WriteRow_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
   Job* pJob_WriteRow_new(JobClass* aJobClass);
-  void vJob_WriteRow_delete(Session* pSession, Job* pJob);
+  void vJob_WriteRow_delete(Job* pJob);
   void vJob_WriteRow_show(Job* pJob);
   
   JobClass* pJob_WriteRow_class(pFUN** aaFun);

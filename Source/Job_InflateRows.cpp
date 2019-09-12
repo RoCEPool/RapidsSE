@@ -314,7 +314,7 @@ void Jobs::vJob_InflateRows_post(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_InflateRows_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_InflateRows_delete(Job* pJob)
 {
   Job_InflateRows* pJob_InflateRows = _pJob_InflateRows(pJob);
   

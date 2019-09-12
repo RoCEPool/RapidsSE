@@ -36,7 +36,7 @@ namespace Jobs
   Job_Supervisor* _pJob_Supervisor(void* aAddr);
   
   Job* pJob_Supervisor_new(JobClass* aJobClass);
-  void vJob_Supervisor_delete(Session* pSession, Job* pJob);
+  void vJob_Supervisor_delete(Job* pJob);
   void vJob_Supervisor_show(Job* pJob);
   
   JobClass* pJob_Supervisor_class(pFUN** aaFun);

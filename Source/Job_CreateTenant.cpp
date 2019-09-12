@@ -212,7 +212,7 @@ Job* Jobs::pJob_CreateTenant_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iF
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_CreateTenant_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_CreateTenant_delete(Job* pJob)
 {
   Job_CreateTenant* pJob_CreateTenant = _pJob_CreateTenant(pJob);
   

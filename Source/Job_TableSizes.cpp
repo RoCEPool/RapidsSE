@@ -207,7 +207,7 @@ Job* Jobs::pJob_TableSizes_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iFor
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_TableSizes_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_TableSizes_delete(Job* pJob)
 {
   Job_TableSizes* pJob_TableSizes = _pJob_TableSizes(pJob);
   

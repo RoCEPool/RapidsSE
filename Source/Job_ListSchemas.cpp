@@ -210,7 +210,7 @@ Job* Jobs::pJob_ListSchemas_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iFo
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_ListSchemas_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_ListSchemas_delete(Job* pJob)
 {
   Job_ListSchemas* pJob_ListSchemas = _pJob_ListSchemas(pJob);
 

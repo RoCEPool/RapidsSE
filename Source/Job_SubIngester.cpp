@@ -335,7 +335,7 @@ Job* Jobs::pJob_SubIngester_new(JobClass* aJobClass)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_SubIngester_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_SubIngester_delete(Job* pJob)
 {
   Job_SubIngester* pJob_SubIngester = _pJob_SubIngester(pJob);
   

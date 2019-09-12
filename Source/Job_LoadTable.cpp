@@ -650,7 +650,7 @@ Job* Jobs::pJob_LoadTable_new(JobClass* aJobClass)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_LoadTable_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_LoadTable_delete(Job* pJob)
 {
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pJob);
   

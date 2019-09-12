@@ -222,7 +222,7 @@ Job* Jobs::pJob_Receiver_new(JobClass* aJobClass)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Receiver_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_Receiver_delete(Job* pJob)
 {
   Job_Receiver* pJob_Receiver = _pJob_Receiver(pJob);
   

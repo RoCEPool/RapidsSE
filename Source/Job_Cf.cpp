@@ -209,7 +209,7 @@ Job* Jobs::pJob_Cf_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Sess
 /*----------------------------------------------------------------------------*/
 /* delete job function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Cf_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_Cf_delete(Job* pJob)
 {
   Job_Cf* pJob_Cf = _pJob_Cf(pJob);
   

@@ -215,7 +215,7 @@ Job* Jobs::pJob_CompactIndex_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iF
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_CompactIndex_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_CompactIndex_delete(Job* pJob)
 {
   Job_CompactIndex* pJob_CompactIndex = _pJob_CompactIndex(pJob);
   

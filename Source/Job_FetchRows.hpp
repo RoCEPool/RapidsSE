@@ -64,7 +64,7 @@ namespace Jobs
   
   Job* pJob_FetchRows_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
   void vJob_FetchRows_post(Session* pSession, Job* pJob);
-  void vJob_FetchRows_delete(Session* pSession, Job* pJob);
+  void vJob_FetchRows_delete(Job* pJob);
   void vIterateBuffer(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetchBuffer, i8& iRowsPrinted);
   void vRetrieveColumn(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetchBuffer);
   void vJob_FetchRows_show(Job* pJob);

@@ -227,7 +227,7 @@ Job* Jobs::pJob_Repeater_new(JobClass* aJobClass)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Repeater_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_Repeater_delete(Job* pJob)
 {
   Job_Repeater* pJob_Repeater = _pJob_Repeater(pJob);
   

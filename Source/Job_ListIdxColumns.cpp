@@ -218,7 +218,7 @@ Job* Jobs::pJob_ListIdxColumns_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_ListIdxColumns_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_ListIdxColumns_delete(Job* pJob)
 {
   Job_ListIdxColumns* pJob_ListIdxColumns = _pJob_ListIdxColumns(pJob);
   

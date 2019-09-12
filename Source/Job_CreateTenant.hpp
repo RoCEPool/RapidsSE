@@ -36,7 +36,7 @@ namespace Jobs
   Job_CreateTenant* _pJob_CreateTenant(void* aAddr);
   
   Job* pJob_CreateTenant_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
-  void vJob_CreateTenant_delete(Session* pSession, Job* pJob);
+  void vJob_CreateTenant_delete(Job* pJob);
   void vJob_CreateTenant_show(Job* pJob);
   
   JobClass* pJob_CreateTenant_class(pFUN** aaFun);

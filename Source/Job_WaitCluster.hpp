@@ -37,7 +37,7 @@ namespace Jobs
   
   Job* pJob_WaitCluster_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
   void vJob_WaitCluster_post(Session* pSession, Job* pJob);
-  void vJob_WaitCluster_delete(Session* pSession, Job* pJob);
+  void vJob_WaitCluster_delete(Job* pJob);
   void vJob_WaitCluster_show(Job* pJob);
   
   JobClass* pJob_WaitCluster_class(pFUN** pNextFun);

@@ -210,7 +210,7 @@ Job* Jobs::pJob_Pwf_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Ses
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Pwf_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_Pwf_delete(Job* pJob)
 {
   Job_Pwf* pJob_Pwf = _pJob_Pwf(pJob);
   

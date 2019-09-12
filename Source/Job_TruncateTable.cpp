@@ -211,7 +211,7 @@ Job* Jobs::pJob_TruncateTable_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 i
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_TruncateTable_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_TruncateTable_delete(Job* pJob)
 {
   Job_TruncateTable* pJob_TruncateTable = _pJob_TruncateTable(pJob);
   

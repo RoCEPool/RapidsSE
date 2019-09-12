@@ -37,7 +37,7 @@ namespace Jobs
   
   Job* pJob_ListCatalogs_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
   void vJob_ListCatalogs_post(Session* pSession, Job* pJob);
-  void vJob_ListCatalogs_delete(Session* pSession, Job* pJob);
+  void vJob_ListCatalogs_delete(Job* pJob);
   void vJob_ListCatalogs_show(Job* pJob);
   
   JobClass* pJob_ListCatalogs_class(pFUN** aaFun);

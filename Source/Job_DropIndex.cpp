@@ -223,7 +223,7 @@ Job* Jobs::pJob_DropIndex_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForI
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_DropIndex_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_DropIndex_delete(Job* pJob)
 {
   Job_DropIndex* pJob_DropIndex = _pJob_DropIndex(pJob);
   

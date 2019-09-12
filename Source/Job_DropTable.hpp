@@ -36,7 +36,7 @@ namespace Jobs
   Job_DropTable* _pJob_DropTable(void* aAddr);
   
   Job* pJob_DropTable_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
-  void vJob_DropTable_delete(Session* pSession, Job* pJob);
+  void vJob_DropTable_delete(Job* pJob);
   void vJob_DropTable_show(Job* pJob);
   
   JobClass* pJob_DropTable_class(pFUN** aaFun);

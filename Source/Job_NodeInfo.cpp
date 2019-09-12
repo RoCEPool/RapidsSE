@@ -182,7 +182,7 @@ Job* Jobs::pJob_NodeInfo_new(JobClass* aJobClass)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_NodeInfo_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_NodeInfo_delete(Job* pJob)
 {
   Job_NodeInfo* pJob_NodeInfo = _pJob_NodeInfo(pJob);
   

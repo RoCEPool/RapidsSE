@@ -214,7 +214,7 @@ Job* Jobs::pJob_ListIndexes_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iFo
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_ListIndexes_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_ListIndexes_delete(Job* pJob)
 {
   Job_ListIndexes* pJob_ListIndexes = _pJob_ListIndexes(pJob);
   

@@ -210,7 +210,7 @@ Job* Jobs::pJob_ListCatalogs_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iF
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_ListCatalogs_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_ListCatalogs_delete(Job* pJob)
 {
   Job_ListCatalogs* pJob_ListCatalogs = _pJob_ListCatalogs(pJob);
   

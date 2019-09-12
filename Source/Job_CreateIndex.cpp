@@ -359,7 +359,7 @@ Job* Jobs::pJob_CreateIndex_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iFo
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_CreateIndex_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_CreateIndex_delete(Job* pJob)
 {
   Job_CreateIndex* pJob_CreateIndex = _pJob_CreateIndex(pJob);
   

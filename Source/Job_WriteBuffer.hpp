@@ -53,7 +53,7 @@ namespace Jobs
   
   Job* pJob_WriteBuffer_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
   Job* pJob_WriteBuffer_new(JobClass* aJobClass);
-  void vJob_WriteBuffer_delete(Session* pSession, Job* pJob);
+  void vJob_WriteBuffer_delete(Job* pJob);
   void vJob_WriteBuffer_show(Job* pJob);
   
   JobClass* pJob_WriteBuffer_class(pFUN** aaFun);

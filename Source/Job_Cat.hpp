@@ -46,7 +46,7 @@ namespace Jobs
   
   Job* pJob_Cat_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
   Job* pJob_Cat_new(JobClass* aJobClass);
-  void vJob_Cat_delete(Session* pSession, Job* pJob);
+  void vJob_Cat_delete(Job* pJob);
   void vJob_Cat_show(Job* pJob);
   
   JobClass* pJob_Cat_class(pFUN** aaFun);

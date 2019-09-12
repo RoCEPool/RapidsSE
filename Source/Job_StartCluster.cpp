@@ -216,7 +216,7 @@ void Jobs::vJob_StartCluster_post(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_StartCluster_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_StartCluster_delete(Job* pJob)
 {
   Job_StartCluster* pJob_StartCluster = _pJob_StartCluster(pJob);
   

@@ -209,7 +209,7 @@ Job* Jobs::pJob_Space_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, S
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Space_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_Space_delete(Job* pJob)
 {
   Job_Space* pJob_Space = _pJob_Space(pJob);
   

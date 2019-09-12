@@ -53,7 +53,7 @@ namespace Jobs
   
   Job* pJob_LoadTable_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
   Job* pJob_LoadTable_new(JobClass* aJobClass);
-  void vJob_LoadTable_delete(Session* pSession, Job* pJob);
+  void vJob_LoadTable_delete(Job* pJob);
   void vJob_LoadTable_show(Job* pJob);
   
   JobClass* pJob_LoadTable_class(pFUN** aaFun);

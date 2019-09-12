@@ -275,7 +275,7 @@ Job* Jobs::pJob_Select_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, 
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Select_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_Select_delete(Job* pJob)
 {
   Job_Select* pJob_Select = _pJob_Select(pJob);
   

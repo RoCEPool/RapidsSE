@@ -397,11 +397,6 @@ void SePrompt::vCutToken(i8 i_Tkn)
 void SePrompt::vDeleteJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-
-  //Input* pInput = this->pInput();
-  //JobClass* pJobClass = pInput->pJobClass();
-  
-  //ActLog::vEnd(m_pJob);
   
   SP_Id spId;
   
@@ -411,7 +406,7 @@ void SePrompt::vDeleteJob(void)
 
 
   // call the job delete function
-  m_aJobClass->vDeleteJob(m_pSession,m_pJob);
+  m_aJobClass->vDeleteJob(m_pJob);
 }
 
 /*----------------------------------------------------------------------------*/

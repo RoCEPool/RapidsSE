@@ -243,7 +243,7 @@ Job* Jobs::pJob_Generate_new(JobClass* aJobClass)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Generate_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_Generate_delete(Job* pJob)
 {
   Job_Generate* pJob_Generate = _pJob_Generate(pJob);
   

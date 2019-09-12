@@ -42,7 +42,7 @@ namespace Jobs
   
   Job* pJob_CopyBuffer_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
   Job* pJob_CopyBuffer_new(JobClass* aJobClass);
-  void vJob_CopyBuffer_delete(Session* pSession, Job* pJob);
+  void vJob_CopyBuffer_delete(Job* pJob);
   void vJob_CopyBuffer_show(Job* pJob);
   
   JobClass* pJob_CopyBuffer_class(pFUN** aaFun);

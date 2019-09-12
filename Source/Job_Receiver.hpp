@@ -42,7 +42,7 @@ namespace Jobs
   Job_Receiver* _pJob_Receiver(void* aAddr);
   
   Job* pJob_Receiver_new(JobClass* aJobClass);
-  void vJob_Receiver_delete(Session* pSession, Job* pJob);
+  void vJob_Receiver_delete(Job* pJob);
   void vJob_Receiver_show(Job* pJob);
   
   JobClass* pJob_Receiver_class(pFUN** aaFun);

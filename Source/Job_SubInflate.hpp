@@ -37,7 +37,7 @@ namespace Jobs
   Job_SubInflate* _pJob_SubInflate(void* aAddr);
   
   Job* pJob_SubInflate_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
-  void vJob_SubInflate_delete(Session* pSession, Job* pJob);
+  void vJob_SubInflate_delete(Job* pJob);
   void vJob_SubInflate_show(Job* pJob);
   
   JobClass* pJob_SubInflate_class(pFUN** aaFun);

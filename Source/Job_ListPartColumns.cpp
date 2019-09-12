@@ -214,7 +214,7 @@ Job* Jobs::pJob_ListPartColumns_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_ListPartColumns_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_ListPartColumns_delete(Job* pJob)
 {
   Job_ListPartColumns* pJob_ListPartColumns = _pJob_ListPartColumns(pJob);
   

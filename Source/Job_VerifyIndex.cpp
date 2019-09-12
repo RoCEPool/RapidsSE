@@ -215,7 +215,7 @@ Job* Jobs::pJob_VerifyIndex_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iFo
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_VerifyIndex_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_VerifyIndex_delete(Job* pJob)
 {
   Job_VerifyIndex* pJob_VerifyIndex = _pJob_VerifyIndex(pJob);
   

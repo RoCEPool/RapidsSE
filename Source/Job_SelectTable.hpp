@@ -40,7 +40,7 @@ namespace Jobs
   Job_SelectTable* _pJob_SelectTable(void* aAddr);
   
   Job* pJob_SelectTable_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
-  void vJob_SelectTable_delete(Session* pSession, Job* pJob);
+  void vJob_SelectTable_delete(Job* pJob);
   void vJob_SelectTable_show(Job* pJob);
   
   JobClass* pJob_SelectTable_class(pFUN** aaFun);

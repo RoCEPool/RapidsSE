@@ -215,7 +215,7 @@ Job* Jobs::pJob_DumpIndex_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForI
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_DumpIndex_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_DumpIndex_delete(Job* pJob)
 {
   Job_DumpIndex* pJob_DumpIndex = _pJob_DumpIndex(pJob);
   

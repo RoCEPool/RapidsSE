@@ -210,7 +210,7 @@ Job* Jobs::pJob_Lf_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Sess
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Lf_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_Lf_delete(Job* pJob)
 {
   Job_Lf* pJob_Lf = _pJob_Lf(pJob);
   

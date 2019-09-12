@@ -78,7 +78,7 @@ void Api::vDeleteJobs(Session* pSession)
     
     // delete the job
     //vTrace("Deleting job %p %s\n"_Stz, aJob, aCN[aJob->eClass()]);
-    pJobClass->vDeleteJob(pSession,aJob);
+    pJobClass->vDeleteJob(aJob);
     
     pState->m_nJobDelete++;
   }

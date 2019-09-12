@@ -36,7 +36,7 @@ namespace Jobs
   Job_Waker* _pJob_Waker(void* aAddr);
   
   Job* pJob_Waker_new(JobClass* aJobClass);
-  void vJob_Waker_delete(Session* pSession, Job* pJob);
+  void vJob_Waker_delete(Job* pJob);
   void vJob_Waker_show(Job* pJob);
   
   JobClass* pJob_Waker_class(pFUN** aaFun);

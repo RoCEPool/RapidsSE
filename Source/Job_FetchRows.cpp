@@ -740,7 +740,7 @@ void Jobs::vJob_FetchRows_post(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_FetchRows_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_FetchRows_delete(Job* pJob)
 {
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJob);
   

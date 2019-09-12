@@ -447,7 +447,7 @@ Job* Jobs::pJob_WriteBuffer_new(JobClass* aJobClass)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_WriteBuffer_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_WriteBuffer_delete(Job* pJob)
 {
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJob);
   

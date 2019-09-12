@@ -214,7 +214,7 @@ Job* Jobs::pJob_DropSchema_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iFor
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_DropSchema_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_DropSchema_delete(Job* pJob)
 {
   Job_DropSchema* pJob_DropSchema = _pJob_DropSchema(pJob);
   

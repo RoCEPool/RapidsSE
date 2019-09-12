@@ -60,7 +60,7 @@ namespace Jobs
   
   Job* pJob_Report_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
   Job* pJob_Report_new(JobClass* aJobClass);
-  void vJob_Report_delete(Session* pSession, Job* pJob);
+  void vJob_Report_delete(Job* pJob);
   void vJob_Report_show(Job* pJob);
   
   JobClass* pJob_Report_class(pFUN** aaFun);

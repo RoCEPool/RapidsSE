@@ -46,7 +46,7 @@ namespace Jobs
   
   Job* pJob_InsertRow_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
   Job* pJob_InsertRow_new(JobClass* aJobClass);
-  void vJob_InsertRow_delete(Session* pSession, Job* pJob);
+  void vJob_InsertRow_delete(Job* pJob);
   void vJob_InsertRow_show(Job* pJob);
   
   JobClass* pJob_InsertRow_class(pFUN** aaFun);

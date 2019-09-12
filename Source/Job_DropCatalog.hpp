@@ -36,7 +36,7 @@ namespace Jobs
   Job_DropCatalog* _pJob_DropCatalog(void* aAddr);
   
   Job* pJob_DropCatalog_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
-  void vJob_DropCatalog_delete(Session* pSession, Job* pJob);
+  void vJob_DropCatalog_delete(Job* pJob);
   void vJob_DropCatalog_show(Job* pJob);
   
   JobClass* pJob_DropCatalog_class(pFUN** aaFun);

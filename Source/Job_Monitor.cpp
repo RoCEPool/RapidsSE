@@ -210,7 +210,7 @@ Job* Jobs::pJob_Monitor_new(JobClass* aJobClass)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Monitor_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_Monitor_delete(Job* pJob)
 {
   Job_Monitor* pJob_Monitor = _pJob_Monitor(pJob);
   

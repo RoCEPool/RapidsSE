@@ -218,7 +218,7 @@ Job* Jobs::pJob_Publish_new(JobClass* aJobClass)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Publish_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_Publish_delete(Job* pJob)
 {
   Job_Publish* pJob_Publish = _pJob_Publish(pJob);
   

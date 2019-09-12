@@ -208,7 +208,7 @@ Job* Jobs::pJob_Status_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, 
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Status_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_Status_delete(Job* pJob)
 {
   Job_Status* pJob_Status = _pJob_Status(pJob);
   

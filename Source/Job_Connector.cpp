@@ -180,7 +180,7 @@ Job* Jobs::pJob_Connector_new(JobClass* aJobClass)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Connector_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_Connector_delete(Job* pJob)
 {
   Job_Connector* pJob_Connector = _pJob_Connector(pJob);
   

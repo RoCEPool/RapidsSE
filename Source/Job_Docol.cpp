@@ -213,7 +213,7 @@ Job* Jobs::pJob_Docol_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, S
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Docol_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_Docol_delete(Job* pJob)
 {
   Job_Docol* pJob_Docol = _pJob_Docol(pJob);
   

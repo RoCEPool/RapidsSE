@@ -39,7 +39,7 @@ namespace Jobs
   Job* pJob_Health_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
   void vJob_Health_post(Session* pSession, Job* pJob);
   Job* pJob_Health_new(JobClass* aJobClass);
-  void vJob_Health_delete(Session* pSession, Job* pJob);
+  void vJob_Health_delete(Job* pJob);
   void vJob_Health_show(Job* pJob);
   
   JobClass* pJob_Health_class(pFUN** aaFun);

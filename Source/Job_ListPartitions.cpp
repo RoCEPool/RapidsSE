@@ -210,7 +210,7 @@ Job* Jobs::pJob_ListPartitions_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_ListPartitions_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_ListPartitions_delete(Job* pJob)
 {
   Job_ListPartitions* pJob_ListPartitions = _pJob_ListPartitions(pJob);
   

@@ -211,7 +211,7 @@ Job* Jobs::pJob_VisualizeTable_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_VisualizeTable_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_VisualizeTable_delete(Job* pJob)
 {
   Job_VisualizeTable* pJob_VisualizeTable = _pJob_VisualizeTable(pJob);
   

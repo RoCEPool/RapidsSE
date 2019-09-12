@@ -85,7 +85,7 @@ namespace Jobs
   
   Job* pJob_Generate_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
   Job* pJob_Generate_new(JobClass* aJobClass);
-  void vJob_Generate_delete(Session* pSession, Job* pJob);
+  void vJob_Generate_delete(Job* pJob);
   void vJob_Generate_show(Job* pJob);
   
   JobClass* pJob_Generate_class(pFUN** aaFun);

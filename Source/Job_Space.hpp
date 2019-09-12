@@ -36,7 +36,7 @@ namespace Jobs
   Job_Space* _pJob_Space(void* aAddr);
   
   Job* pJob_Space_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
-  void vJob_Space_delete(Session* pSession, Job* pJob);
+  void vJob_Space_delete(Job* pJob);
   void vJob_Space_show(Job* pJob);
   
   JobClass* pJob_Space_class(pFUN** aaFun);

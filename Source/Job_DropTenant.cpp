@@ -214,7 +214,7 @@ Job* Jobs::pJob_DropTenant_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iFor
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_DropTenant_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_DropTenant_delete(Job* pJob)
 {
   Job_DropTenant* pJob_DropTenant = _pJob_DropTenant(pJob);
   

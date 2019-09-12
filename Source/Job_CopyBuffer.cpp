@@ -268,7 +268,7 @@ Job* Jobs::pJob_CopyBuffer_new(JobClass* aJobClass)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_CopyBuffer_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_CopyBuffer_delete(Job* pJob)
 {
   Job_CopyBuffer* pJob_CopyBuffer = _pJob_CopyBuffer(pJob);
   

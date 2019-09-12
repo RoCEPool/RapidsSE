@@ -359,7 +359,7 @@ Job* Jobs::pJob_SubLoader_new(JobClass* aJobClass)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_SubLoader_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_SubLoader_delete(Job* pJob)
 {
   Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pJob);
   

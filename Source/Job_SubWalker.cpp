@@ -469,7 +469,7 @@ Job* Jobs::pJob_SubWalker_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForI
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_SubWalker_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_SubWalker_delete(Job* pJob)
 {
   Job_SubWalker* pJob_SubWalker = _pJob_SubWalker(pJob);
   

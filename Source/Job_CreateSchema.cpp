@@ -213,7 +213,7 @@ Job* Jobs::pJob_CreateSchema_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iF
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_CreateSchema_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_CreateSchema_delete(Job* pJob)
 {
   Job_CreateSchema* pJob_CreateSchema = _pJob_CreateSchema(pJob);
   

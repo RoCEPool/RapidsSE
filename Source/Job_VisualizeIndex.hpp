@@ -36,7 +36,7 @@ namespace Jobs
   Job_VisualizeIndex* _pJob_VisualizeIndex(void* aAddr);
   
   Job* pJob_VisualizeIndex_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
-  void vJob_VisualizeIndex_delete(Session* pSession, Job* pJob);
+  void vJob_VisualizeIndex_delete(Job* pJob);
   void vJob_VisualizeIndex_show(Job* pJob);
   
   JobClass* pJob_VisualizeIndex_class(pFUN** aaFun);

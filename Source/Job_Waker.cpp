@@ -181,7 +181,7 @@ Job* Jobs::pJob_Waker_new(JobClass* aJobClass)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Waker_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_Waker_delete(Job* pJob)
 {
   Job_Waker* pJob_Waker = _pJob_Waker(pJob);
   

@@ -535,7 +535,7 @@ void Step::vJobDelete(MP_Task mpTask)
   JobClass* pJobClass = JobClass::pFind(eClass);
   
   // call the job delete function
-  pJobClass->vDeleteJob(nullptr, pJob);  // come back to this, remove session as parameter to delete
+  pJobClass->vDeleteJob(pJob);
   
   EXIT();
 }

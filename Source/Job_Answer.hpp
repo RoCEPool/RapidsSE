@@ -35,7 +35,7 @@ namespace Jobs
   Job_Answer* _pJob_Answer(void* aAddr);
   
   Job* pJob_Answer_new(JobClass* aJobClass);
-  void vJob_Answer_delete(Session* pSession, Job* pJob);
+  void vJob_Answer_delete(Job* pJob);
   void vJob_Answer_show(Job* pJob);
   
   JobClass* pJob_Answer_class(pFUN** aaFun);

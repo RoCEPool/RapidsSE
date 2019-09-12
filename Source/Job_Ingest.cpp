@@ -225,7 +225,7 @@ Job* Jobs::pJob_Ingest_new(JobClass* aJobClass)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Ingest_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_Ingest_delete(Job* pJob)
 {
   Job_Ingest* pJob_Ingest = _pJob_Ingest(pJob);
   

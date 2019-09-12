@@ -202,7 +202,7 @@ Job* Jobs::pJob_ShowCluster_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iFo
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_ShowCluster_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_ShowCluster_delete(Job* pJob)
 {
   Job_ShowCluster* pJob_ShowCluster = _pJob_ShowCluster(pJob);
   

@@ -237,7 +237,7 @@ Job* Jobs::pJob_SubPurger_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForI
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_SubPurger_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_SubPurger_delete(Job* pJob)
 {
   Job_SubPurger* pJob_SubPurger = _pJob_SubPurger(pJob);
   

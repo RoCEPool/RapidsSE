@@ -53,7 +53,7 @@ namespace Jobs
   
   Job* pJob_IndexJoin_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
   void vJob_IndexJoin_post(Session* pSession, Job* pJob);
-  void vJob_IndexJoin_delete(Session* pSession, Job* pJob);
+  void vJob_IndexJoin_delete(Job* pJob);
   void vIterateBuffer(Job_IndexJoin* pJob_IndexJoin, RefBuffer* pRefBuffer);
   void vRetrieveColumn(Job_IndexJoin* pJob_IndexJoin, RefBuffer* pRefBuffer);
   void vJob_IndexJoin_show(Job* pJob);

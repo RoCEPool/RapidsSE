@@ -36,7 +36,7 @@ namespace Jobs
   Job_Docol* _pJob_Docol(void* aAddr);
   
   Job* pJob_Docol_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
-  void vJob_Docol_delete(Session* pSession, Job* pJob);
+  void vJob_Docol_delete(Job* pJob);
   void vJob_Docol_show(Job* pJob);
   
   JobClass* pJob_Docol_class(pFUN** aaFun);

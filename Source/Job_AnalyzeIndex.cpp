@@ -230,7 +230,7 @@ Job* Jobs::pJob_AnalyzeIndex_new(JobClass* aJobClass)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_AnalyzeIndex_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_AnalyzeIndex_delete(Job* pJob)
 {
   Job_AnalyzeIndex* pJob_AnalyzeIndex = _pJob_AnalyzeIndex(pJob);
   

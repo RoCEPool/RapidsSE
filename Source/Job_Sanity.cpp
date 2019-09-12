@@ -212,7 +212,7 @@ Job* Jobs::pJob_Sanity_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, 
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Sanity_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_Sanity_delete(Job* pJob)
 {
   Job_Sanity* pJob_Sanity = _pJob_Sanity(pJob);
   

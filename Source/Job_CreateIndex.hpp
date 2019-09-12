@@ -43,7 +43,7 @@ namespace Jobs
   Job_CreateIndex* _pJob_CreateIndex(void* aAddr);
   
   Job* pJob_CreateIndex_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
-  void vJob_CreateIndex_delete(Session* pSession, Job* pJob);
+  void vJob_CreateIndex_delete(Job* pJob);
   void vJob_CreateIndex_show(Job* pJob);
   
   JobClass* pJob_CreateIndex_class(pFUN** aaFun);

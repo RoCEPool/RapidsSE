@@ -39,7 +39,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job__Executed* _pJob__Executed(void* aAddr);
   
-  void vJob__Executed_delete(Session* pSession, Job* pJob);
+  void vJob__Executed_delete(Job* pJob);
   
   JobClass* pJob__Executed_class(pFUN** aaFun);
 }

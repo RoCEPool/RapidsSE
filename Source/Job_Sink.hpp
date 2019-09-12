@@ -42,7 +42,7 @@ namespace Jobs
   
   Job* pJob_Sink_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
   Job* pJob_Sink_new(JobClass* aJobClass);
-  void vJob_Sink_delete(Session* pSession, Job* pJob);
+  void vJob_Sink_delete(Job* pJob);
   void vJob_Sink_show(Job* pJob);
   
   JobClass* pJob_Sink_class(pFUN** aaFun);

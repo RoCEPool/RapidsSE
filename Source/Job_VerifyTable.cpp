@@ -211,7 +211,7 @@ Job* Jobs::pJob_VerifyTable_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iFo
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_VerifyTable_delete(Session* pSession, Job* pJob)
+void Jobs::vJob_VerifyTable_delete(Job* pJob)
 {
   Job_VerifyTable* pJob_VerifyTable = _pJob_VerifyTable(pJob);
   
