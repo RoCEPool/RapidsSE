@@ -35,7 +35,8 @@ void Step::vJob_PurgeSpawnSub(MP_Task mpTask)
   JobClass* pJobClass_SubPurger = JobClass::pFind(CN_JOB_SUBPURGER);
   
   Job_SubPurger* pJob_SubPurger =
-    static_cast<Job_SubPurger*>(pJobClass_SubPurger->pPreJob(aReqTuple,C_UNKNOWN,nullptr));
+    static_cast<Job_SubPurger*>
+      (pJobClass_SubPurger->pPreJob(aReqTuple,C_UNKNOWN,nullptr));
   
   pJob_SubPurger->vSeed(SS_SEED_RUN);
   

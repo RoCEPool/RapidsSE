@@ -190,14 +190,15 @@ Job_WriteRow* Job_WriteRow::pNewJobWriteRow(Session* pSession,
   ReqTuple xReqTuple("!!WRITE_ROW"_Stz,false);
   
   Job_WriteRow* pJob_WriteRow =
-    static_cast<Job_WriteRow*>(pJobClass_WriteRow->pPreJob(&xReqTuple,iParentJobId,pSession));
+    static_cast<Job_WriteRow*>
+      (pJobClass_WriteRow->pPreJob(&xReqTuple,iParentJobId,pSession));
 
   pJob_WriteRow->vSeed(SS_SEED_RUN);
 
   pJob_WriteRow->m_iParentJobId = iParentJobId;
   pJob_WriteRow->m_sObjectName  = sTableName;
-  pJob_WriteRow->m_pTable = pTable;
-  pJob_WriteRow->m_pRecord = pRecord;
+  pJob_WriteRow->m_pTable       = pTable;
+  pJob_WriteRow->m_pRecord      = pRecord;
   pJob_WriteRow->m_iPartitionId = C_UNKNOWN;
 
   return pJob_WriteRow;
