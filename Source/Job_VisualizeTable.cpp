@@ -101,7 +101,7 @@ void Job_VisualizeTable::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_VisualizeTable::Job_VisualizeTable(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
+Job_VisualizeTable::Job_VisualizeTable(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 : Job(aJobClass, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_VISUALIZETABLE,_FOOTER_);
@@ -192,9 +192,9 @@ Footer* Job_VisualizeTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_VisualizeTable_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
+Job* Jobs::pJob_VisualizeTable_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 {
-  Job_VisualizeTable* pJob_VisualizeTable = new Job_VisualizeTable(aReqTuple,iForId,pSession,aJobClass);
+  Job_VisualizeTable* pJob_VisualizeTable = new Job_VisualizeTable(aJobClass,aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();

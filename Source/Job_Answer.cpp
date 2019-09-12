@@ -101,7 +101,7 @@ void Job_Answer::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Answer::Job_Answer(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
+Job_Answer::Job_Answer(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 : Job(aJobClass, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_ANSWER,_FOOTER_);
@@ -172,8 +172,7 @@ Job* Jobs::pJob_Answer_new(JobClass* aJobClass)
   ReqTuple xReqTuple("**ANSWER"_Stz,false);
   
   Job_Answer* pJob_Answer =
-    new Job_Answer(&xReqTuple,C_UNKNOWN,nullptr,
-                   JobClass::pFind(CN_JOB_ANSWER));
+  new Job_Answer(JobClass::pFind(CN_JOB_ANSWER),&xReqTuple,C_UNKNOWN,nullptr);
   
   return pJob_Answer;
 }

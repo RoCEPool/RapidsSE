@@ -101,7 +101,7 @@ void Job_Purge::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Purge::Job_Purge(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
+Job_Purge::Job_Purge(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 : Job(aJobClass, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PURGE,_FOOTER_);
@@ -170,11 +170,11 @@ Footer* Job_Purge::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Purge_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
+Job* Jobs::pJob_Purge_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 {
   i8 nTokens;
 
-  Job_Purge* pJob_Purge = new Job_Purge(aReqTuple,iForId,pSession,aJobClass);
+  Job_Purge* pJob_Purge = new Job_Purge(aJobClass,aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
@@ -207,7 +207,7 @@ void Jobs::vJob_Purge_post(Session* pSession, Job* pJob)
 Job* Jobs::pJob_Purge_new(JobClass* aJobClass)
 {
   Job_Purge* pJob_Purge =
-    new Job_Purge(nullptr,C_UNKNOWN,nullptr,aJobClass);
+    new Job_Purge(aJobClass,nullptr,C_UNKNOWN,nullptr);
   
   return pJob_Purge;
 }

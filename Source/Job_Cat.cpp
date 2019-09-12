@@ -101,7 +101,7 @@ void Job_Cat::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Cat::Job_Cat(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
+Job_Cat::Job_Cat(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 : Job(aJobClass, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CAT,_FOOTER_);
@@ -174,11 +174,11 @@ Footer* Job_Cat::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Cat_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
+Job* Jobs::pJob_Cat_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 {
   i8 nTokens;
 
-  Job_Cat* pJob_Cat = new Job_Cat(aReqTuple,iForId,pSession,aJobClass);
+  Job_Cat* pJob_Cat = new Job_Cat(aJobClass,aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTknVec = pSession->m_pInput->pTknVec();
@@ -211,8 +211,7 @@ Job* Jobs::pJob_Cat_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobCl
 Job* Jobs::pJob_Cat_new(JobClass* aJobClass)
 {
   Job_Cat* pJob_Cat =
-  new Job_Cat(nullptr,C_UNKNOWN,nullptr,
-              JobClass::pFind(CN_JOB_CAT));
+  new Job_Cat(aJobClass,nullptr,C_UNKNOWN,nullptr);
   
   return pJob_Cat;
 }

@@ -34,7 +34,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_IndexJoin(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass);//=C_UNKNOWN);
+    Job_IndexJoin(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);//=C_UNKNOWN);
     ~Job_IndexJoin(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -51,7 +51,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_IndexJoin* _pJob_IndexJoin(void* aAddr);
   
-  Job* pJob_IndexJoin_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass);
+  Job* pJob_IndexJoin_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
   void vJob_IndexJoin_post(Session* pSession, Job* pJob);
   void vJob_IndexJoin_delete(Session* pSession, Job* pJob);
   void vIterateBuffer(Job_IndexJoin* pJob_IndexJoin, RefBuffer* pRefBuffer);

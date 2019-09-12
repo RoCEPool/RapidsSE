@@ -126,9 +126,9 @@ void JobClass::vPostJob(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* JobClass::pPreJob(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 {
-  Job* pJob = (*m_fpPre)(aReqTuple,iForId,pSession,this);
+  Job* pJob = (*m_fpPre)(this,aReqTuple,iForId,pSession);
   
-  pJob->m_aJobClass = this;
+  ASSERT(this == pJob->m_aJobClass);
   pJob->m_xReqTuple.m_i_State = pSession ? pSession->m_pSessionState->m_i_State : -1;
   
 //  //ActLog::vAdd(pJob,AN_PRE_PROMPT,

@@ -101,7 +101,7 @@ void Job_CopyBuffer::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_CopyBuffer::Job_CopyBuffer(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
+Job_CopyBuffer::Job_CopyBuffer(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 : Job(aJobClass, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_COPYBUFFER,_FOOTER_);
@@ -246,9 +246,9 @@ Footer* Job_CopyBuffer::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_CopyBuffer_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
+Job* Jobs::pJob_CopyBuffer_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 {
-  Job_CopyBuffer* pJob_CopyBuffer = new Job_CopyBuffer(aReqTuple,iForId,pSession,aJobClass);
+  Job_CopyBuffer* pJob_CopyBuffer = new Job_CopyBuffer(aJobClass,aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);
 
   return pJob_CopyBuffer;
@@ -260,7 +260,7 @@ Job* Jobs::pJob_CopyBuffer_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession
 Job* Jobs::pJob_CopyBuffer_new(JobClass* aJobClass)
 {
   Job_CopyBuffer* pJob_CopyBuffer =
-    new Job_CopyBuffer(nullptr,C_UNKNOWN,nullptr,aJobClass);
+    new Job_CopyBuffer(aJobClass,nullptr,C_UNKNOWN,nullptr);
   
   return pJob_CopyBuffer;
 }

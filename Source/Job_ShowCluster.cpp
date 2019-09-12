@@ -101,7 +101,7 @@ void Job_ShowCluster::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_ShowCluster::Job_ShowCluster(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
+Job_ShowCluster::Job_ShowCluster(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 : Job(aJobClass, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SHOWCLUSTER,_FOOTER_);
@@ -191,9 +191,9 @@ Footer* Job_ShowCluster::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_ShowCluster_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
+Job* Jobs::pJob_ShowCluster_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 {
-  Job_ShowCluster* pJob_ShowCluster = new Job_ShowCluster(aReqTuple,iForId,pSession,aJobClass);
+  Job_ShowCluster* pJob_ShowCluster = new Job_ShowCluster(aJobClass,aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);
 
   return pJob_ShowCluster;
