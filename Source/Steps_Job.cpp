@@ -1739,7 +1739,7 @@ void Step::vJobSpawnDedicated(MP_Task mpTask)
               C_ENDARGS);
 
   pJob->vSeed((eSS)i_Seed);
-  IGNORE_RETURN(Api::bSpawnJobDedicated(nullptr,pJob));
+  IGNORE_RETURN(Api::bSpawnJobDedicated(pJob));
   
   EXIT();
 }

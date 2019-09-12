@@ -414,7 +414,7 @@ void Api::vSpawnJobAndWait(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* spawn dedicated job                                                        */
 /*----------------------------------------------------------------------------*/
-bool Api::bSpawnJobDedicated(Session* pSession, Job* pJob)
+bool Api::bSpawnJobDedicated(Job* pJob)
 {
   ASSERT(pJob->m_aJobClass);
   ASSERT(SS_ENUMS != pJob->m_eSeed);
@@ -424,9 +424,6 @@ bool Api::bSpawnJobDedicated(Session* pSession, Job* pJob)
   // get the se pid from the attachmap
   i8 iPid = AM::iPid();
   if (!Process::bTestPid(iPid)) {
-    // SE is not running anymore!
-    if (pSession)
-      vWarn("Cannot find pid %lld\n"_Stz, iPid);
     vWarn("Cannot find pid %lld\n"_Stz, iPid);
     return false;
   }
@@ -441,7 +438,7 @@ bool Api::bSpawnJobDedicated(Session* pSession, Job* pJob)
   //if (pJob->m_xReqTuple.m_bMarkTrace)
   //  pJob->m_aJobClass->vShowJob(pJob);
   
-  Task* pNewTask = new Task(pJob,pSession);
+  Task* pNewTask = new Task(pJob,nullptr);
   pNewTask->vState(TS_ABLE);
   //pNewTask->vSession(pSession);
   
