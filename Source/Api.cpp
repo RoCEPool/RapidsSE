@@ -124,7 +124,7 @@ Job* Api::pExecuteCommand(Session* pSession, Stz* sCommand,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn and wait for job
   
-  Api::vSpawnJobAndWait(pSession, pJob);
+  Api::vSpawnJobAndWait(pJob,pSession);
   
   // run post ?
   if (bPostJob)
@@ -348,7 +348,7 @@ bool Api::bSpawnJob(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* Spawn amd wait for job to complete                                         */
 /*----------------------------------------------------------------------------*/
-void Api::vSpawnJobAndWait(Session* pSession, Job* pJob)
+void Api::vSpawnJobAndWait(Job* pJob, Session* pSession)
 {
   // lock this job's mutex
   pJob->vLockJobMutex();

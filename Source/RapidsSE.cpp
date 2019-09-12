@@ -375,7 +375,7 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // spawn and wait for the job
-    Api::vSpawnJobAndWait(pSession, pJob_InsertRow);
+    Api::vSpawnJobAndWait(pJob_InsertRow,pSession);
     API_LOC(380);
     
     // check if job had an error
@@ -567,7 +567,7 @@ eEC RapidsSE_EndInsert(i8 iTrace, Session* pSession, void* aJob)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // spawn and wait for job
-    Api::vSpawnJobAndWait(pSession, pJob_InsertTable);
+    Api::vSpawnJobAndWait(pJob_InsertTable,pSession);
     API_LOC(320);
 
     // check if job had an error
