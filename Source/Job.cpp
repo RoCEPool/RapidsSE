@@ -96,8 +96,6 @@ Job::Job(eCN eClassNo)
   vIncActNo(); ++ gixJob;
   AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCT,
               "|gixJob=%lld|"_Stz, //!format-LogJob
-              aCN[eClass()],
-              m_pSession ? spId.sz(m_pSession->m_iUniqueId) : "boot"_Stz,
               * gixJob);
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
@@ -146,8 +144,6 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
   vIncActNo(); ++ gixJob;
   AM::vLogJob(SL_INF,this,JA_JOB_CONSTRUCT,
               "|gixJob=%lld|"_Stz, //!format-LogJob
-              aCN[eClass()],
-              m_pSession ? spId.sz(m_pSession->m_iUniqueId) : "boot"_Stz,
               * gixJob);
   
   _postcondition_(_ADDRESS_,_MAGIC_,aJobClass->m_eClass);

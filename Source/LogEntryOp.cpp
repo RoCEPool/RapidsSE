@@ -53,7 +53,7 @@ void _LogEntryOp::vWriteCsv(File* pFile, LogEntry* pEntry)
 /*----------------------------------------------------------------------------*/
 /* convert entry into text                                                    */
 /*----------------------------------------------------------------------------*/
-void _LogEntryOp::vToTxt(s256& sInf, LogEntry* pEntry)
+void _LogEntryOp::vToTxt(s4K& sInf, LogEntry* pEntry)
 {
   sInf.vSprint(C_ENTRY_FMT_TXT,
                aCN[pEntry->m_eClass],

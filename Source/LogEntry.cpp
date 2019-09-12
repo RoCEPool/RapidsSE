@@ -101,7 +101,7 @@ void LogEntry::vAsTxt(s4K& sString)
                    );
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  s256 sInf;
+  s4K sInf;
 
   switch (m_eKind) {
     case EK_DDL: m_xDdl.vToTxt(sInf,this); break;
@@ -346,7 +346,7 @@ void LogEntry::vWriteTxt(File* pFile)
 {
   _precondition_(_MAGIC_,CN_LOGENTRY,_FOOTER_);
   
-  s256 sInf;
+  s4K sInf;
   
   vWriteTxtEntry(pFile);
   

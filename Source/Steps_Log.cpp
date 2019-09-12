@@ -63,21 +63,10 @@ void Step::vLogMarkEntry(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(sWordNm) )
     THROW_INVALID_DSTACK("log::markEntry"_Stz);
   
-//  if (pJob->m_xReqTuple.m_iLogLevel)
-//    JobLog::vNote(mpTask->m_pJob,
-//                          "%s %s %p"_Stz,
-//                          sWordNm.aStz(),
-//                          aCN[mpTask->pJob()->eClass()],
-//                          mpTask->pJob()
-//                          );
-  
   Job* pJob = mpTask->m_pJob;
   AM::vLogJob(SL_INF,pJob,JA_JOB_ENTER,
-              "Enter : %s for %s %p"_Stz,
-              sWordNm.aStz(),
-              aCN[pJob->eClass()],
-              pJob
-              );
+              "%s"_Stz, //!format-LogJob
+              sWordNm.aStz());
 
   EXIT();
 }
@@ -94,22 +83,11 @@ void Step::vLogMarkExit(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(sWordNm) )
     THROW_INVALID_DSTACK("log::markExit"_Stz);
   
-//  if (mpTask->m_pJob->m_xReqTuple.m_iLogLevel)
-//    JobLog::vNote(mpTask->m_pJob,
-//                          "%s %s %p"_Stz,
-//                          sWordNm.aStz(),
-//                          aCN[mpTask->pJob()->eClass()],
-//                          mpTask->pJob()
-//                          );
-  
   Job* pJob = mpTask->m_pJob;
 
   AM::vLogJob(SL_INF,pJob,JA_JOB_EXIT,
-              "Exit : %s for %s %p"_Stz,
-              sWordNm.aStz(),
-              aCN[pJob->eClass()],
-              pJob
-              );
+              "%s"_Stz, //!format-LogJob
+              sWordNm.aStz());
 
   EXIT();
 }
@@ -192,12 +170,8 @@ void Step::vLogJobSeed(MP_Task mpTask)
   
   Job* pJob = mpTask->m_pJob;
   AM::vLogJob(SL_INF,pJob,JA_JOB_SEED,
-              "Seed : %s %s for job %s %pd"_Stz,
-              aSS[i_Seed],
-              pJob->sJobSeed(),
-              aCN[pJob->eClass()],
-              pJob
-              );
+              "%s"_Stz, //!format-LogJob
+              aSS[i_Seed]);
 
   EXIT();
 }

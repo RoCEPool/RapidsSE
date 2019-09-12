@@ -35,7 +35,7 @@ void _LogEntryDdl::vWriteCsv(File* pFile, LogEntry* pEntry)
 /*----------------------------------------------------------------------------*/
 /* convert entry into text                                                    */
 /*----------------------------------------------------------------------------*/
-void _LogEntryDdl::vToTxt(s256& sInf, LogEntry* pEntry)
+void _LogEntryDdl::vToTxt(s4K& sInf, LogEntry* pEntry)
 {
   sInf.vSprint(C_ENTRY_FMT_TXT,
                aCN[pEntry->m_eClass],

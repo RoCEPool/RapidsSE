@@ -208,7 +208,7 @@ static Stz* aRA_short[]
   /*    */ "Thread entry"_Stz,
   /*    */ "Thread error"_Stz,
   /*    */ "Thread exit"_Stz,
-  /*    */ "Thread sleep limited"_Stz,
+  /*    */ "Thread sleep"_Stz,
   /*    */ "Thread sleep indefinite"_Stz,
   /*    */ "Thread spawned"_Stz,
   /*    */ "Thread stats"_Stz,

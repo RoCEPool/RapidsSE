@@ -15,7 +15,7 @@ namespace Logging
     void vOutline(s4K& sOutline);
 
     void vWriteCsv(File* pFile, LogEntry* pEntry);
-    void vToTxt(s256& sInf, LogEntry* pEntry);
+    void vToTxt(s4K& sInf, LogEntry* pEntry);
   };
 }
 

@@ -74,8 +74,8 @@ static Stz* C_SE_TRACE = "/tmp/se_trace.txt"_Stz;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-static const i8 C_LOG_ENTRIES = C_1M * 1;
-static const i8 C_LOG_NOTE    = 200;
+static const i8 C_LOG_ENTRIES = C_256K * 1;
+static const i8 C_LOG_NOTE    = C_1K;
 
 
 /*============================================================================*/

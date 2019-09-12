@@ -39,9 +39,17 @@ Stz* SP_Job::sz_log(Job* pJob)
   SP_ReqTuple spReqTuple;
   
   StrLib::vSprint(m_caResult,
-                  "{%s}%s"_Stz,
+                  "{%s %s %s %s %s%s%s}%s"_Stz,
                   
                   aCN[pJob->eClass()],
+                  aSS[pJob->m_eSeed],
+                  aJL[pJob->m_eJobList],
+                  aJP[pJob->m_eJobPhase],
+                  aJS[pJob->m_eJobState],
+                  
+                  pJob->m_bNoWait ? ""_Stz : " wait"_Stz,
+                  pJob->m_bWasReceived ? " recvd"_Stz : ""_Stz,
+
                   spReqTuple.sz(&pJob->m_xReqTuple),
                   
                   C_ENDARGS);
