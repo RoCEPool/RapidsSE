@@ -113,7 +113,8 @@ Job::Job(eCN eClassNo, ReqTuple* aReqTuple, Session* pSession, JobClass* aJobCla
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
   ASSERT(aJobClass);
-  
+  ASSERT(aJobClass->m_eClass == eClassNo);
+
   //vTrace("%s: CREATING JOB %p %s\n"_Stz,
   //       AM::pGrid()->pThisNode()->aNodeName(), this, aCN[eClass()]);
     
