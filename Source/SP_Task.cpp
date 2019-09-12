@@ -39,6 +39,31 @@ Stz* SP_Task::sz(Task* pTask)
   return (Stz*) &m_caResult[0];
 }
 
+/*----------------------------------------------------------------------------*/
+/* sprint Header and return Stz* to result                                    */
+/*----------------------------------------------------------------------------*/
+Stz* SP_Task::sz_log(Task* pTask)
+{
+  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  
+  SP_Id spThreadId;
+  
+  StrLib::vSprint(m_caResult,
+                  "{%s %s %s %s}"_Stz,
+
+                  aTS[pTask->eState()],
+                  aQK[pTask->eQueue()],
+                  aTR[pTask->eTransition()],
+                  
+                  spThreadId.sz(pTask->pThread()
+                                  ? AM::iThreadId(pTask->pThread())
+                                  : C_UNKNOWN),
+
+                  C_ENDARGS);
+
+  return (Stz*) &m_caResult[0];
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

@@ -50,6 +50,9 @@ void _LogEntryTsk::vSet(LogEntry* pLogEntry, Task* pTask, eTA eTskAct)
   else
     if (TA_TSK_WAKEUP == eTskAct)
       pLogEntry->m_iIndicator = OC_SERVICE;
+  
+  SP_Task spTask;
+  StrLib::vSprintCat(pLogEntry->m_caNote," %s",spTask.sz_log(pTask));
 }
 
 /*----------------------------------------------------------------------------*/

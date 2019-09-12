@@ -49,8 +49,8 @@ namespace Tasks
     i8      m_iTracing;     // tracing mask
     i8      m_i_NextRnd;    // which next repeatable random nummber?
 
-    Compiler* m_pCompiler;  // forth word compiler (Job boot, create table etc)
     Node*     m_pSendNode;  // node to send to
+    Compiler* m_pCompiler;  // forth word compiler (Job boot, create table etc)
   
     ForthClump* m_pForthClump;
   

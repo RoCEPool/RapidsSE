@@ -704,10 +704,6 @@ void Scheduler::vTask_Drop(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Execute(Task* pTask)
 {
-  pTask->vIncActNo();
-  AM::vLogTsk(SL_INF,pTask,TA_TSK_EXECUTE,
-              "Task to TS_EXECUTING state; added to ExecutingSet"_Stz); //!format-LogTsk
-  
   RASSERT(TS_ABLE == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
   RASSERT(TR_NONE == pTask->eTransition());
@@ -718,6 +714,10 @@ void Scheduler::vTask_Execute(Task* pTask)
   
   pQueues->vAddExecutingSet(pTask);
 
+  pTask->vIncActNo();
+  AM::vLogTsk(SL_INF,pTask,TA_TSK_EXECUTE,
+              "Task to TS_EXECUTING state; added to ExecutingSet"_Stz); //!format-LogTsk
+  
   AM::vLogThd(SL_INF,pTask->m_pThread,HA_THD_EXECUTING,
               "thread returns from scheduler to its loop to execute task"_Stz); //!format-LogTsk
 }
@@ -979,9 +979,6 @@ void Scheduler::vTask_Sleep(Task* pTask)
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Thread(Task* pTask, Thread* pThread)
 {
-  pTask->vIncActNo();
-  AM::vLogTsk(SL_INF,pTask,TA_TSK_THREAD,
-              "Task has been assigned a thread"_Stz); //!format-LogTsk
   
   RASSERT(TS_ABLE == pTask->eState());
   
@@ -990,6 +987,10 @@ void Scheduler::vTask_Thread(Task* pTask, Thread* pThread)
   
   pTask->vThread(pThread);
   // ok to touch task
+  
+  pTask->vIncActNo();
+  AM::vLogTsk(SL_INF,pTask,TA_TSK_THREAD,
+              "Task has been assigned a thread"_Stz); //!format-LogTsk
 }
 
 /*----------------------------------------------------------------------------*/

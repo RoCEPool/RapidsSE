@@ -151,6 +151,7 @@ namespace StorageEngine
     static Task* pThisTLSTask(void);
     static Thread* pThisTLSThread(void);
     static Pthread* pThisTLSPthread(void);
+    static i8   iThreadId(Thread* pThread);
     static void vWelcomeText(s256& sWelcome);
     static void vCopyrightText(s256& sCopyRight);
     static void vWriteLog(void);

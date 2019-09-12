@@ -265,6 +265,9 @@ Pthread* AM::pThisTLSPthread(void) {
   Pthread* pPthread =pThread->m_pPthread;
   return pPthread;
 }
+i8 AM::iThreadId(Thread* pThread) {
+  return pThread->m_iUniqueId;
+}
 void AM::vWelcomeText(s256& sWelcome) {
   Engine::vGetWelcome(sWelcome);
 }

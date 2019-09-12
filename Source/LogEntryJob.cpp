@@ -30,7 +30,6 @@ void _LogEntryJob::vSet(LogEntry* pLogEntry, Job* pJob, eJA eJobAct)
   
   SP_Job spJob;
   StrLib::vSprintCat(pLogEntry->m_caNote," %s",spJob.sz_log(pJob));
-                   
 }
 
 /*----------------------------------------------------------------------------*/

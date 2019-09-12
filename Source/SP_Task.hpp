@@ -17,6 +17,7 @@ namespace Tasks
    ~SP_Task(void) noexcept(false);
   
     Stz* sz(Task* pTask);
+    Stz* sz_log(Task* pTask);
 
     Footer* aFooter(void);
   };
