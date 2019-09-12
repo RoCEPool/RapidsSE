@@ -191,7 +191,7 @@ Job_WriteRow* Job_WriteRow::pNewJobWriteRow(Session* pSession,
   
   Job_WriteRow* pJob_WriteRow =
     static_cast<Job_WriteRow*>
-      (pJobClass_WriteRow->pPreJob(&xReqTuple,iParentJobId,pSession));
+      (pJobClass_WriteRow->pPreJob(pSession,&xReqTuple,iParentJobId));
 
   pJob_WriteRow->vSeed(SS_SEED_RUN);
 

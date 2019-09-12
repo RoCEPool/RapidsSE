@@ -53,7 +53,7 @@ namespace Jobs
       void vGrabDdlLock(void);
       Job* pNewJob(void);
       void vPostJob(Job* pJob);
-      Job* pPreJob(ReqTuple* aReqTuple, i8 iForId, Session* pSession);
+      Job* pPreJob(Session* pSession, ReqTuple* aReqTuple, i8 iForId);
       void vRecvJob(Job* pJob);
       Stz* sSeed(eSS eSeed);
       void vSendJob(Job* pJob);

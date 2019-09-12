@@ -757,7 +757,8 @@ void SePrompt::vPreJob(void)
               spId.sz(EK_REQ,m_iRequestId),
               C_ENDARGS);
   
-  m_pJob = m_aJobClass->pPreJob(&m_pRequest->m_xReqTuple,C_UNKNOWN,m_pSession);
+  m_pJob = m_aJobClass->pPreJob(m_pSession,&m_pRequest->m_xReqTuple,
+                                this->m_iUniqueId);
   
 //  if (m_pJob && m_pJob->m_bMarkTrace)
 //    m_pJob->m_aJobClass->vShowJob(m_pJob);

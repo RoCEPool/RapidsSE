@@ -363,7 +363,7 @@ void Job_WriteBuffer::vSpawnJobWriteBuffer(Session* pSession,
   
   Job_WriteBuffer* pJob_WriteBuffer =
     static_cast<Job_WriteBuffer*>
-      (pJobClass_WriteBuffer->pPreJob(&xReqTuple,iParentJobId,pSession));
+      (pJobClass_WriteBuffer->pPreJob(pSession,&xReqTuple,iParentJobId));
   
   pJob_WriteBuffer->vSeed(SS_SEED_RUN);
   

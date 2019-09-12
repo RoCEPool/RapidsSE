@@ -122,9 +122,9 @@ void JobClass::vPostJob(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create a new job by running the pre-function                                */
+/* create a new job by running the pre-function                               */
 /*----------------------------------------------------------------------------*/
-Job* JobClass::pPreJob(ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job* JobClass::pPreJob(Session* pSession, ReqTuple* aReqTuple, i8 iForId)
 {
   Job* pJob = (*m_fpPre)(this,aReqTuple,iForId,pSession);
   

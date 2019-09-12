@@ -74,7 +74,7 @@ void Step::vJob_TruncateTableSpawnSub(MP_Task mpTask)
   
   Job_SubTruncate* pJob_SubTruncate =
     static_cast<Job_SubTruncate*>
-      (pJobClass_SubTruncate->pPreJob(aReqTuple,pJob_TruncateTable->m_iUniqueId,nullptr));
+      (pJobClass_SubTruncate->pPreJob(nullptr,aReqTuple,pJob_TruncateTable->m_iUniqueId));
   
   pJob_SubTruncate->vSeed(SS_SEED_RUN);
   
