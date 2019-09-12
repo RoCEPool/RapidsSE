@@ -116,7 +116,7 @@ void JobClass::vGrabDdlLock(void)
 /*----------------------------------------------------------------------------*/
 /* end the job by running the post-function                                   */
 /*----------------------------------------------------------------------------*/
-void JobClass::vPostJob(Session* pSession, Job* pJob)
+void JobClass::vPostJob(Job* pJob)
 {
   (*m_fpPost)(pJob);
 }

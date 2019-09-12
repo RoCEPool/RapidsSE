@@ -128,7 +128,7 @@ Job* Api::pExecuteCommand(Session* pSession, Stz* sCommand,
   
   // run post ?
   if (bPostJob)
-    pJobClass->vPostJob(pSession,pJob);
+    pJobClass->vPostJob(pJob);
   
   return pJob;
 }

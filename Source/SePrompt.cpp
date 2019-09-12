@@ -739,13 +739,7 @@ void SePrompt::vPostJob(void)
 
   RASSERT(JS_RUNNING == m_pJob->m_eJobState);
   
-  //Input* pInput = this->pInput();
-  
-  //pInput->vPostJob(m_pSession);
- 
-  //JobClass* pJobClass = pInput->pJobClass();
-
-  m_aJobClass->vPostJob(m_pSession,m_pJob);
+  m_aJobClass->vPostJob(m_pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -754,13 +748,7 @@ void SePrompt::vPostJob(void)
 void SePrompt::vPreJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  //Input* pInput = this->pInput();
-
-  //JobClass* pJobClass = pInput->pJobClass();
-
-  //pInput->vPreJob(m_pSession);
-  
+    
   SP_Id spId;
   
   vIncActNo();
