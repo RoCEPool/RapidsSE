@@ -54,7 +54,7 @@ void Step::vJob_SubExporterSpawn(MP_Task mpTask)
   
   pJob_SubExporter->vSeed(SS_SEED_RUN);
 
-  IGNORE_RETURN(Api::bSpawnJob(pSession,pJob_SubExporter,SS_SEED_RUN));
+  IGNORE_RETURN(Api::bSpawnJob(pSession,pJob_SubExporter));
   
   EXIT();
 }

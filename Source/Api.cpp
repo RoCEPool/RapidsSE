@@ -302,10 +302,9 @@ void Api::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 /* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
-bool Api::bSpawnJob(Session* pSession, Job* pJob, eSS eSeed)
+bool Api::bSpawnJob(Session* pSession, Job* pJob)
 {
   ASSERT(pJob->m_aJobClass);
-  ASSERT(eSeed == pJob->m_eSeed);
   ASSERT(SS_ENUMS != pJob->m_eSeed);
 
   
@@ -324,7 +323,7 @@ bool Api::bSpawnJob(Session* pSession, Job* pJob, eSS eSeed)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // form the word to execute for the request
-  pJob->vSeed(eSeed);
+  //pJob->vSeed(eSeed);
   
   //if (pJob->m_xReqTuple.m_bMarkTrace)
   //  pJob->m_aJobClass->vShowJob(pJob);
@@ -362,8 +361,10 @@ void Api::vSpawnJobAndWait(Session* pSession, Job* pJob)
   // set the job state to be locked
   pJob->m_eJobState = JS_LOCKED;
   
+  pJob->m_eSeed = SS_SEED_REQ;
+  
   // spawn the insertTable job
-  IGNORE_RETURN(Api::bSpawnJob(pSession,pJob,SS_SEED_REQ));
+  IGNORE_RETURN(Api::bSpawnJob(pSession,pJob));
   ApiState::vMarkApiLoc(pSession,107);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

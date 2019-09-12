@@ -191,7 +191,9 @@ Job* Jobs::pJob_Health_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, 
     pJob_Health->m_iHogNo  = i_Hog;
     pJob_Health->m_bNoWait = true;
     
-    bool bResult = AM::bSpawnJob(pSession,pJob_Health,SS_SEED_RCV);
+    pJob_Health->vSeed(SS_SEED_RCV);
+    
+    bool bResult = AM::bSpawnJob(pSession,pJob_Health);
     RASSERT_WARN(bResult);
   }
   

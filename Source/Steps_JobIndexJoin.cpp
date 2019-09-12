@@ -199,7 +199,7 @@ void Step::vJob_IndexJoinSpawnSub(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  IGNORE_RETURN(Api::bSpawnJob(pSession,pJob_SubIndexJoin,SS_SEED_RUN));
+  IGNORE_RETURN(Api::bSpawnJob(pSession,pJob_SubIndexJoin));
 
   EXIT();
 }

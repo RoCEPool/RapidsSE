@@ -49,7 +49,7 @@ void Step::vJob_SubIngesterSpawn(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  IGNORE_RETURN(Api::bSpawnJob(pSession,pJob_SubIngester,SS_SEED_RUN));
+  IGNORE_RETURN(Api::bSpawnJob(pSession,pJob_SubIngester));
   
   EXIT();
 }

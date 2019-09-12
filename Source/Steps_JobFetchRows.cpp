@@ -188,7 +188,7 @@ void Step::vJob_FetchRowsSpawnSub(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  IGNORE_RETURN(Api::bSpawnJob(pSession,pJob_SubFetch,SS_SEED_RUN));
+  IGNORE_RETURN(Api::bSpawnJob(pSession,pJob_SubFetch));
 
   EXIT();
 }
@@ -306,7 +306,7 @@ void Step::vJob_InflateRowsSpawnSub(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  IGNORE_RETURN(Api::bSpawnJob(pSession,pJob_SubScan,SS_SEED_RUN));
+  IGNORE_RETURN(Api::bSpawnJob(pSession,pJob_SubScan));
   
   EXIT();
 }
@@ -338,7 +338,7 @@ void Step::vJob_InflateRowsSpawnSubInflate(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  IGNORE_RETURN(Api::bSpawnJob(nullptr,pJob_SubInflate,SS_SEED_RUN));
+  IGNORE_RETURN(Api::bSpawnJob(nullptr,pJob_SubInflate));
   
   EXIT();
 }

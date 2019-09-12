@@ -153,7 +153,7 @@ void Job_KidExport::vSpawn(i8 iExportJobId,
   
   pJob_KidExport->vSeed(SS_SEED_RUN);
   
-  IGNORE_RETURN(AM::bSpawnJob(nullptr,pJob_KidExport,SS_SEED_RUN));
+  IGNORE_RETURN(AM::bSpawnJob(nullptr,pJob_KidExport));
 }
 
 /*----------------------------------------------------------------------------*/

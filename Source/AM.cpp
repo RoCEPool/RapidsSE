@@ -281,9 +281,9 @@ void AM::vWriteLog(void) {
 /*----------------------------------------------------------------------------*/
 /* state diagram                                                              */
 /*----------------------------------------------------------------------------*/
-bool AM::bSpawnJob(Session* pSession, Job* pJob, i8 iSeed)
+bool AM::bSpawnJob(Session* pSession, Job* pJob)
 {
-  bool bResult = Api::bSpawnJob(pSession,pJob,(eSS)iSeed);
+  bool bResult = Api::bSpawnJob(pSession,pJob);
   
   return bResult;
 }

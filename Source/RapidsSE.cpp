@@ -536,10 +536,12 @@ eEC RapidsSE_CopyBuffer(i8 iTrace, Session* pSession, void* aJob)
     //pSession->m_pJobStack->vPushPointer(pJob_CopyBuffer);
     //ApiState::vMarkJob(pSession,pJob_CopyBuffer);
     
+    pJob_CopyBuffer->m_eSeed = SS_SEED_REQ;
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // spawn the job
     //vTrace("Spawning copyBuffer job\n"_Stz);
-    IGNORE_RETURN(Api::bSpawnJob(pSession,pJob_CopyBuffer,SS_SEED_REQ));
+    IGNORE_RETURN(Api::bSpawnJob(pSession,pJob_CopyBuffer));
     API_LOC(390);
   }
   catch (Error* pError) { API_CATCH(pError); }
