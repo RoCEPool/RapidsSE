@@ -102,7 +102,7 @@ void Job_CreateSchema::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_CreateSchema::Job_CreateSchema(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
-: Job(CN_JOB_CREATESCHEMA, aReqTuple, pSession, aJobClass)
+: Job(aJobClass, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATESCHEMA,_FOOTER_);
     

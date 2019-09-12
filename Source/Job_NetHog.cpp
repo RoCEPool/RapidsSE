@@ -103,7 +103,7 @@ void Job_NetHog::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_NetHog::Job_NetHog(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
-: Job(CN_JOB_NETHOG, aReqTuple, pSession, aJobClass)
+: Job(aJobClass, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_NETHOG,_FOOTER_);
   

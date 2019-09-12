@@ -45,7 +45,7 @@ namespace Jobs
 
   public:
     Job(eCN eClassNo);
-    Job(eCN eClassNo, ReqTuple* aReqTuple, Session* pSession, JobClass* aJobClass);
+    Job(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession);
    ~Job(void) noexcept(false);
   
     static Job* pThisTLSJob(void);

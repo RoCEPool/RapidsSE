@@ -106,18 +106,12 @@ Job::Job(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(eCN eClassNo, ReqTuple* aReqTuple, Session* pSession, JobClass* aJobClass)
-: JobBase(aJobClass,eClassNo,aReqTuple,AM::iNextJobId(),pSession ? pSession->m_iUniqueId : C_UNKNOWN)
+Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
+: JobBase(aJobClass,aReqTuple,AM::iNextJobId(),pSession ? pSession->m_iUniqueId : C_UNKNOWN)
 , JobDicPath(pSession)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
+  _precondition_(_ADDRESS_,_MAGIC_,aJobClass->m_eClass);
   
-  ASSERT(aJobClass);
-  ASSERT(aJobClass->m_eClass == eClassNo);
-
-  //vTrace("%s: CREATING JOB %p %s\n"_Stz,
-  //       AM::pGrid()->pThisNode()->aNodeName(), this, aCN[eClass()]);
-    
   // m_xReqTuple
   
   m_iParentId = C_UNKNOWN;
@@ -156,7 +150,7 @@ Job::Job(eCN eClassNo, ReqTuple* aReqTuple, Session* pSession, JobClass* aJobCla
               m_pSession ? spId.sz(m_pSession->m_iUniqueId) : "boot"_Stz,
               * gixJob);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
+  _postcondition_(_ADDRESS_,_MAGIC_,aJobClass->m_eClass);
 }
 
 /*----------------------------------------------------------------------------*/

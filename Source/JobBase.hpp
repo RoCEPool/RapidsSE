@@ -14,7 +14,7 @@ namespace Jobs
 
   public:
     JobBase(eCN eClassNo);
-    JobBase(JobClass* aJobClass, eCN eClassNo, ReqTuple* aReqTuple, i8 iJobId, i8 iForId);
+    JobBase(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iJobId, i8 iForId);
    ~JobBase(void) noexcept(false);
   
   };

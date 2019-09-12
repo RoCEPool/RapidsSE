@@ -102,7 +102,7 @@ void Job_Publish::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_Publish::Job_Publish(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass)
-: Job(CN_JOB_PUBLISH, aReqTuple, pSession, aJobClass)
+: Job(aJobClass, aReqTuple, pSession)
 , m_okLock(LK_PIPE,C_NO_REQTUPLE,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PUBLISH,_FOOTER_);

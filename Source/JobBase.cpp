@@ -28,19 +28,17 @@ JobBase::JobBase(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-JobBase::JobBase(JobClass* aJobClass, eCN eClassNo, ReqTuple* aReqTuple, i8 iJobId, i8 iForId)
-: Focal(eClassNo,iJobId,iForId)
+JobBase::JobBase(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iJobId, i8 iForId)
+: Focal(aJobClass->m_eClass,iJobId,iForId)
 , m_xReqTuple(aReqTuple)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
+  _precondition_(_ADDRESS_,_MAGIC_,aJobClass->m_eClass);
   
   ASSERT(aReqTuple);
-  ASSERT(aJobClass->m_eClass == eClassNo);
-  ASSERT(CN_JOB__FIND != eClassNo);
 
   m_aJobClass = aJobClass;
   
-  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
+  _postcondition_(_ADDRESS_,_MAGIC_,aJobClass->m_eClass);
 }
 
 /*----------------------------------------------------------------------------*/

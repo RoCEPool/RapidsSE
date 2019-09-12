@@ -26,17 +26,17 @@ JobMark2* Jobs::_pJobMark2(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-JobMark2::JobMark2(eCN eClassNo, ReqTuple* aReqTuple, Session* pSession, JobClass* aJobClass)
-: Job(eClassNo,aReqTuple,pSession,aJobClass)
+JobMark2::JobMark2(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
+: Job(aJobClass,aReqTuple,pSession)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
+  _precondition_(_ADDRESS_,_MAGIC_,aJobClass->m_eClass);
   
   m_bCancel = false;
   m_bEarly  = false;
   m_ixTempBuffers.vCheckInit();
   m_eResUsage = RU_NONE;
   
-  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
+  _postcondition_(_ADDRESS_,_MAGIC_,aJobClass->m_eClass);
 }
 
 /*----------------------------------------------------------------------------*/
