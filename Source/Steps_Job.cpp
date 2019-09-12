@@ -1710,6 +1710,7 @@ void Step::vJobSpawn(MP_Task mpTask)
               aCN[mpTask->m_pJob->eClass()],
               C_ENDARGS);
 
+  pJob->m_eSeed = (eSS)i_Seed;
   IGNORE_RETURN(Api::bSpawnJob(nullptr,pJob,(eSS)i_Seed));
   
   EXIT();

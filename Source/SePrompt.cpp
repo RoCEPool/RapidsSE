@@ -907,6 +907,7 @@ void SePrompt::vSpawnJob(void)
   
   //ActLog::vAdd(m_pJob,AN_SPAWN_JOB,SS_SEED_REQ,_EG_SS);
 
+  m_pJob->m_eSeed = SS_SEED_REQ;
   bool bSpawned = Api::bSpawnJob(m_pSession,m_pJob,SS_SEED_REQ);
   RASSERT(bSpawned);
 }

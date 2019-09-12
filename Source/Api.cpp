@@ -305,6 +305,9 @@ void Api::vMonitorPortrait(s48K& sPortrait)
 bool Api::bSpawnJob(Session* pSession, Job* pJob, eSS eSeed)
 {
   ASSERT(pJob->m_aJobClass);
+  ASSERT(eSeed == pJob->m_eSeed);
+  ASSERT(SS_ENUMS != pJob->m_eSeed);
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Before appending request for se, ensure that se is running
