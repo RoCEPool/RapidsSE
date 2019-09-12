@@ -16,7 +16,8 @@ namespace Threads
     SP_Thread(void);
    ~SP_Thread(void) noexcept(false);
   
-    Stz* sz(Task* pTask);
+    Stz* sz(Thread* pThread);
+    Stz* sz_log(Thread* pThread);
 
     Footer* aFooter(void);
   };

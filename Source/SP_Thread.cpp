@@ -32,9 +32,36 @@ SP_Thread::~SP_Thread(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* sprint Header and return Stz* to result                                    */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Thread::sz(Task* pTask)
+Stz* SP_Thread::sz(Thread* pThread)
 {
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  
+  return (Stz*) &m_caResult[0];
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint Header and return Stz* to result                                    */
+/*----------------------------------------------------------------------------*/
+Stz* SP_Thread::sz_log(Thread* pThread)
+{
+  _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
+  
+  SP_Id spTaskId;
+  
+  StrLib::vSprint(m_caResult,
+                  "{%s %s%s}"_Stz,
+                  
+                  aHS[pThread->m_eThreadState],
+                  
+                  spTaskId.sz(pThread->m_pTask
+                                ? pThread->m_pTask->m_iUniqueId
+                                : C_UNKNOWN),
+                  
+                  CN_NONE == pThread->m_eDedicated
+                    ? ""_Stz
+                    : " dedicated"_Stz,
+
+                  C_ENDARGS);
   
   return (Stz*) &m_caResult[0];
 }

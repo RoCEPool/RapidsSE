@@ -8,12 +8,7 @@ namespace Threads
   class Thread : public Focal,
                  public ListNode_t<Thread>
   {
-  private:
-
-  public:
-    void*    m_aStackBase;    // stack base address
-    i8       m_iStackSize;    // stack size
-  
+  public:  
     eHS      m_eThreadState;  // thread state
     Task*    m_pTask;         // task current being executed
     eCN      m_eDedicated;    // thread is dedicated to one specific job?
@@ -22,7 +17,10 @@ namespace Threads
     Mutex*   m_pMutexThread;  // this threads mutex
   
     i8       m_nAssignedTasks;// number of tasks scheduled to this thread
-  
+
+    void*    m_aStackBase;    // stack base address
+    i8       m_iStackSize;    // stack size
+
     // must be last
     Footer m_xFooter;
     

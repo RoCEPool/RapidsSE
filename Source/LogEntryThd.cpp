@@ -37,6 +37,9 @@ void _LogEntryThd::vSet(LogEntry* pLogEntry, Thread* pThread, eHA eThdAct)
   else if (HA_THD_BEGIN_LOOP == eThdAct)    pLogEntry->m_iIndicator = OC_BEGIN;
   else if (HA_THD_EXECUTE_DEDICATED == eThdAct) pLogEntry->m_iIndicator = OC_RUN;
   else if (HA_THD_REMOVE_DEDICATED == eThdAct)  pLogEntry->m_iIndicator = OC_REMOVE;
+  
+  SP_Thread spThread;
+  StrLib::vSprintCat(pLogEntry->m_caNote," %s",spThread.sz_log(pThread));
 }
 
 /*----------------------------------------------------------------------------*/
