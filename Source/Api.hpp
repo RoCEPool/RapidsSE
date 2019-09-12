@@ -15,7 +15,7 @@ namespace Interface
   static void vMonitorPortrait(s48K& sPortrait);
   static bool bSpawnJob(Session* pSession, Job* pJob);
   static void vSpawnJobAndWait(Session* pSession, Job* pJob);
-  static bool bSpawnJobDedicated(Session* pSession, Job* pJob, eSS eSeed);
+  static bool bSpawnJobDedicated(Session* pSession, Job* pJob);
   static bool bSpawnOp(Session* pSession, Op* pOp);
   static eEC  eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall);
   };

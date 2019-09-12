@@ -414,10 +414,11 @@ void Api::vSpawnJobAndWait(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* spawn dedicated job                                                        */
 /*----------------------------------------------------------------------------*/
-bool Api::bSpawnJobDedicated(Session* pSession, Job* pJob, eSS eSeed)
+bool Api::bSpawnJobDedicated(Session* pSession, Job* pJob)
 {
   ASSERT(pJob->m_aJobClass);
-  
+  ASSERT(SS_ENUMS != pJob->m_eSeed);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Before appending request for se, ensure that se is running
   // get the se pid from the attachmap
@@ -434,7 +435,7 @@ bool Api::bSpawnJobDedicated(Session* pSession, Job* pJob, eSS eSeed)
   
   
   // form the word to execute for the request
-  pJob->vSeed(eSeed);
+  //pJob->vSeed(eSeed);
   
   
   //if (pJob->m_xReqTuple.m_bMarkTrace)
