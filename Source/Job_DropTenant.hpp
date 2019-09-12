@@ -19,7 +19,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_DropTenant(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass=nullptr);//=C_UNKNOWN);
+    Job_DropTenant(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass);//=C_UNKNOWN);
     ~Job_DropTenant(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -35,7 +35,7 @@ namespace Jobs
   
   Job_DropTenant* _pJob_DropTenant(void* aAddr);
   
-  Job* pJob_DropTenant_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass=nullptr);
+  Job* pJob_DropTenant_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass);
   void vJob_DropTenant_delete(Session* pSession, Job* pJob);
   void vJob_DropTenant_show(Job* pJob);
   

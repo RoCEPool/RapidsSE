@@ -305,7 +305,9 @@ void Jobs::vJob_Export_post(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Export_new(JobClass* aJobClass)
 {
-  Job_Export* pJob_Export = new Job_Export(nullptr,C_UNKNOWN,nullptr);
+  Job_Export* pJob_Export =
+  new Job_Export(nullptr,C_UNKNOWN,nullptr,
+                 JobClass::pFind(CN_JOB_EXPORT));
   
   return pJob_Export;
 }

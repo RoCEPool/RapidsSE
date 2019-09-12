@@ -210,7 +210,8 @@ void Jobs::vJob_Health_post(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Health_new(JobClass* aJobClass)
 {
-  Job_Health* pJob_Health = new Job_Health(nullptr,C_UNKNOWN,nullptr);
+  Job_Health* pJob_Health =
+    new Job_Health(nullptr,C_UNKNOWN,nullptr,aJobClass);
   
   return pJob_Health;
 }

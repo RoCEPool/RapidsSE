@@ -20,7 +20,7 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_AnalyzeIndex(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass=nullptr);//=C_UNKNOWN);
+    Job_AnalyzeIndex(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass);//=C_UNKNOWN);
     ~Job_AnalyzeIndex(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -37,7 +37,7 @@ namespace Jobs
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_AnalyzeIndex* _pJob_AnalyzeIndex(void* aAddr);
   
-  Job* pJob_AnalyzeIndex_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass=nullptr);
+  Job* pJob_AnalyzeIndex_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobClass* aJobClass);
   Job* pJob_AnalyzeIndex_new(JobClass* aJobClass);
   void vJob_AnalyzeIndex_delete(Session* pSession, Job* pJob);
   void vJob_AnalyzeIndex_show(Job* pJob);

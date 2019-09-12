@@ -266,7 +266,8 @@ Job* Jobs::pJob_SubInserter_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSessio
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubInserter_new(JobClass* aJobClass)
 {
-  Job_SubInserter* pJob_SubInserter = new Job_SubInserter(nullptr,C_UNKNOWN,nullptr);
+  Job_SubInserter* pJob_SubInserter =
+    new Job_SubInserter(nullptr,C_UNKNOWN,nullptr,aJobClass);
   
   return pJob_SubInserter;
 }

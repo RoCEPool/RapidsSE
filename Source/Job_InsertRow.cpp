@@ -253,7 +253,8 @@ Job* Jobs::pJob_InsertRow_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession,
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_InsertRow_new(JobClass* aJobClass)
 {
-  Job_InsertRow* pJob_InsertRow = new Job_InsertRow(nullptr,C_UNKNOWN,nullptr);
+  Job_InsertRow* pJob_InsertRow =
+    new Job_InsertRow(nullptr,C_UNKNOWN,nullptr,aJobClass);
   
   return pJob_InsertRow;
 }

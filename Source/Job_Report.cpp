@@ -219,7 +219,9 @@ Job* Jobs::pJob_Report_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, Jo
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Report_new(JobClass* aJobClass)
 {
-  Job_Report* pJob_Report = new Job_Report(nullptr,C_UNKNOWN,nullptr);
+  Job_Report* pJob_Report =
+  new Job_Report(nullptr,C_UNKNOWN,nullptr,
+                 JobClass::pFind(CN_JOB_REPORT));
   
   return pJob_Report;
 }

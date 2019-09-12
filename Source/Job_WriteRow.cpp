@@ -253,7 +253,8 @@ Job* Jobs::pJob_WriteRow_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, 
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_WriteRow_new(JobClass* aJobClass)
 {
-  Job_WriteRow* pJob_WriteRow = new Job_WriteRow(nullptr,C_UNKNOWN,nullptr);
+  Job_WriteRow* pJob_WriteRow =
+    new Job_WriteRow(nullptr,C_UNKNOWN,nullptr,aJobClass);
   
   return pJob_WriteRow;
 }

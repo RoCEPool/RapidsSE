@@ -206,7 +206,8 @@ void Jobs::vJob_Purge_post(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Purge_new(JobClass* aJobClass)
 {
-  Job_Purge* pJob_Purge = new Job_Purge(nullptr,C_UNKNOWN,nullptr);
+  Job_Purge* pJob_Purge =
+    new Job_Purge(nullptr,C_UNKNOWN,nullptr,aJobClass);
   
   return pJob_Purge;
 }

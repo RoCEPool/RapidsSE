@@ -210,7 +210,9 @@ Job* Jobs::pJob_Cat_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, JobCl
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Cat_new(JobClass* aJobClass)
 {
-  Job_Cat* pJob_Cat = new Job_Cat(nullptr,C_UNKNOWN,nullptr);
+  Job_Cat* pJob_Cat =
+  new Job_Cat(nullptr,C_UNKNOWN,nullptr,
+              JobClass::pFind(CN_JOB_CAT));
   
   return pJob_Cat;
 }

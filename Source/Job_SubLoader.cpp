@@ -350,7 +350,9 @@ Job* Jobs::vJob_SubLoader_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession,
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_SubLoader_new(JobClass* aJobClass)
 {
-  Job_SubLoader* pJob_SubLoader = new Job_SubLoader(nullptr,C_UNKNOWN,nullptr);
+  Job_SubLoader* pJob_SubLoader =
+  new Job_SubLoader(nullptr,C_UNKNOWN,nullptr,
+                    JobClass::pFind(CN_JOB_SUBLOADER));
   
   return pJob_SubLoader;
 }

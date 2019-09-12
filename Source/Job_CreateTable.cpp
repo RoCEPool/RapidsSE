@@ -652,7 +652,8 @@ void Jobs::vJob_CreateTable_post(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_CreateTable_new(JobClass* aJobClass)
 {
-  Job_CreateTable* pJob_CreateTable = new Job_CreateTable(nullptr,C_UNKNOWN,nullptr);
+  Job_CreateTable* pJob_CreateTable =
+    new Job_CreateTable(nullptr,C_UNKNOWN,nullptr,aJobClass);
   
   return pJob_CreateTable;
 }

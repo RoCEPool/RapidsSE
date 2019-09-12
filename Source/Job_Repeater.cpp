@@ -218,7 +218,8 @@ Job* Jobs::pJob_Repeater_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, 
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Repeater_new(JobClass* aJobClass)
 {
-  Job_Repeater* pJob_Repeater = new Job_Repeater(nullptr,C_UNKNOWN,nullptr);
+  Job_Repeater* pJob_Repeater =
+    new Job_Repeater(nullptr,C_UNKNOWN,nullptr,aJobClass);
   
   return pJob_Repeater;
 }

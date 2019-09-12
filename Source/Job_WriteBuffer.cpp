@@ -438,7 +438,9 @@ Job* Jobs::pJob_WriteBuffer_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSessio
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_WriteBuffer_new(JobClass* aJobClass)
 {
-  Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(nullptr,C_UNKNOWN,nullptr);
+  Job_WriteBuffer* pJob_WriteBuffer =
+  new Job_WriteBuffer(nullptr,C_UNKNOWN,nullptr,
+                      JobClass::pFind(CN_JOB_WRITEBUFFER));
   
   return pJob_WriteBuffer;
 }

@@ -145,7 +145,9 @@ void Job_KidExport::vDump(eCN eClass, Object* pObject, Stz* aTab)
 void Job_KidExport::vSpawn(i8 iExportJobId,
                           ExportBuffer* pExportBuffer)
 {
-  Job_KidExport* pJob_KidExport = new Job_KidExport(nullptr,C_UNKNOWN,nullptr);
+  Job_KidExport* pJob_KidExport =
+  new Job_KidExport(nullptr,C_UNKNOWN,nullptr,
+                    JobClass::pFind(CN_JOB_KIDEXPORT));
   
   pJob_KidExport->m_iExportJobId = iExportJobId;
   pJob_KidExport->m_pSendWith = pExportBuffer;
@@ -223,7 +225,8 @@ Job* Jobs::pJob_KidExport_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession,
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_KidExport_new(JobClass* aJobClass)
 {
-  Job_KidExport* pJob_KidExport = new Job_KidExport(nullptr,C_UNKNOWN,nullptr);
+  Job_KidExport* pJob_KidExport =
+    new Job_KidExport(nullptr,C_UNKNOWN,nullptr,aJobClass);
   
   return pJob_KidExport;
 }

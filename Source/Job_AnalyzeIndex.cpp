@@ -221,7 +221,8 @@ Job* Jobs::pJob_AnalyzeIndex_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSessi
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_AnalyzeIndex_new(JobClass* aJobClass)
 {
-  Job_AnalyzeIndex* pJob_AnalyzeIndex = new Job_AnalyzeIndex(nullptr,C_UNKNOWN,nullptr);
+  Job_AnalyzeIndex* pJob_AnalyzeIndex =
+    new Job_AnalyzeIndex(nullptr,C_UNKNOWN,nullptr,aJobClass);
   
   return pJob_AnalyzeIndex;
 }

@@ -234,7 +234,8 @@ Job* Jobs::pJob_Generate_pre(ReqTuple* aReqTuple, i8 iForId, Session* pSession, 
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Generate_new(JobClass* aJobClass)
 {
-  Job_Generate* pJob_Generate = new Job_Generate(nullptr,C_UNKNOWN,nullptr);
+  Job_Generate* pJob_Generate =
+    new Job_Generate(nullptr,C_UNKNOWN,nullptr,aJobClass);
   
   return pJob_Generate;
 }

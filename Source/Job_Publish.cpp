@@ -209,7 +209,8 @@ void Jobs::vJob_Publish_post(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pJob_Publish_new(JobClass* aJobClass)
 {
-  Job_Publish* pJob_Publish = new Job_Publish(nullptr,C_UNKNOWN,nullptr);
+  Job_Publish* pJob_Publish =
+    new Job_Publish(nullptr,C_UNKNOWN,nullptr,aJobClass);
   
   return pJob_Publish;
 }
