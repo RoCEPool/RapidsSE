@@ -207,7 +207,7 @@ Job* Jobs::pJob_Sink_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Se
 Job* Jobs::pJob_Sink_new(JobClass* aJobClass)
 {
   Job_Sink* pJob_Sink =
-    new Job_Sink(JobClass::pFind(CN_JOB_SINK),nullptr,C_UNKNOWN,nullptr);
+    new Job_Sink(aJobClass,nullptr,C_UNKNOWN,nullptr);
   
   return pJob_Sink;
 }

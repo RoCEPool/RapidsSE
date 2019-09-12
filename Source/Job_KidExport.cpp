@@ -146,7 +146,7 @@ void Job_KidExport::vSpawn(i8 iExportJobId,
                           ExportBuffer* pExportBuffer)
 {
   Job_KidExport* pJob_KidExport =
-  new Job_KidExport(JobClass::pFind(CN_JOB_KIDEXPORT),nullptr,C_UNKNOWN,nullptr);
+    new Job_KidExport(JobClass::pFind(CN_JOB_KIDEXPORT),nullptr,C_UNKNOWN,nullptr);
   
   pJob_KidExport->m_iExportJobId = iExportJobId;
   pJob_KidExport->m_pSendWith = pExportBuffer;

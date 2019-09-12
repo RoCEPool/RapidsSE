@@ -220,7 +220,7 @@ Job* Jobs::pJob_Report_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, 
 Job* Jobs::pJob_Report_new(JobClass* aJobClass)
 {
   Job_Report* pJob_Report =
-  new Job_Report(JobClass::pFind(CN_JOB_REPORT),nullptr,C_UNKNOWN,nullptr);
+    new Job_Report(aJobClass,nullptr,C_UNKNOWN,nullptr);
   
   return pJob_Report;
 }

@@ -439,7 +439,7 @@ Job* Jobs::pJob_WriteBuffer_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iFo
 Job* Jobs::pJob_WriteBuffer_new(JobClass* aJobClass)
 {
   Job_WriteBuffer* pJob_WriteBuffer =
-  new Job_WriteBuffer(JobClass::pFind(CN_JOB_WRITEBUFFER),nullptr,C_UNKNOWN,nullptr);
+    new Job_WriteBuffer(aJobClass,nullptr,C_UNKNOWN,nullptr);
   
   return pJob_WriteBuffer;
 }
