@@ -15,8 +15,6 @@ namespace Jobs
   {                                  // ⋗ parent ⋗ child ⋗ prompt ⋗ api
   public:
   
-    JobClass* m_aJobClass; // job class
-  
     i8   m_iParentId;    // job id of parent job which spawned this JK_CHILD job
     eSS  m_eSeed;        // task seed
     i8   m_i_Slot;       // slot this job processes

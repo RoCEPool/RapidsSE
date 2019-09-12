@@ -56,7 +56,7 @@ bool Jobs::_bIsValidJob(eCN eClass)
 /* constructor (for job__find)                                                */
 /*----------------------------------------------------------------------------*/
 Job::Job(eCN eClassNo)
-: JobBase(eClassNo,nullptr,C_UNKNOWN,C_UNKNOWN)
+: JobBase(eClassNo)
 , JobDicPath(nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
@@ -107,7 +107,7 @@ Job::Job(eCN eClassNo)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job::Job(eCN eClassNo, ReqTuple* aReqTuple, Session* pSession, JobClass* aJobClass)
-: JobBase(eClassNo,aReqTuple,AM::iNextJobId(),pSession ? pSession->m_iUniqueId : C_UNKNOWN)
+: JobBase(aJobClass,eClassNo,aReqTuple,AM::iNextJobId(),pSession ? pSession->m_iUniqueId : C_UNKNOWN)
 , JobDicPath(pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
@@ -131,7 +131,6 @@ Job::Job(eCN eClassNo, ReqTuple* aReqTuple, Session* pSession, JobClass* aJobCla
   
   //m_oAcksRmg
   
-  m_aJobClass        = nullptr;
   m_pTask            = nullptr;
   m_pOriginatingTask = nullptr;
   
