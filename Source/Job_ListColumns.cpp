@@ -214,7 +214,7 @@ Job* Jobs::pJob_ListColumns_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iFo
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_ListColumns_post(Session* pSession, Job* pJob)
+void Jobs::vJob_ListColumns_post(Job* pJob)
 {
   Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJob);
   

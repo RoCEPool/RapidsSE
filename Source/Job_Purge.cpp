@@ -197,7 +197,7 @@ Job* Jobs::pJob_Purge_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, S
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Purge_post(Session* pSession, Job* pJob)
+void Jobs::vJob_Purge_post(Job* pJob)
 {
 }
 

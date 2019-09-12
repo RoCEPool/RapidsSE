@@ -37,7 +37,7 @@ namespace Jobs
   Job_NetHog* _pJob_NetHog(void* aAddr);
   
   Job* pJob_NetHog_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
-  void vJob_NetHog_post(Session* pSession, Job* pJob);
+  void vJob_NetHog_post(Job* pJob);
   Job* pJob_NetHog_new(JobClass* aJobClass);
   void vJob_NetHog_delete(Job* pJob);
   void vJob_NetHog_show(Job* pJob);

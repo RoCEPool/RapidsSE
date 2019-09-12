@@ -249,7 +249,7 @@ Job* Jobs::pJob_IndexJoin_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForI
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_IndexJoin_post(Session* pSession, Job* pJob)
+void Jobs::vJob_IndexJoin_post(Job* pJob)
 {
   Job_IndexJoin* pJob_IndexJoin = _pJob_IndexJoin(pJob);
   

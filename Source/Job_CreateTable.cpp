@@ -629,7 +629,7 @@ Job* Jobs::pJob_CreateTable_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iFo
 /*----------------------------------------------------------------------------*/
 /* print success                                                              */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_CreateTable_post(Session* pSession, Job* pJob)
+void Jobs::vJob_CreateTable_post(Job* pJob)
 {
   vTrace("I logNote here\n"_Stz);
   

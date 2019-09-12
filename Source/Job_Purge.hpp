@@ -41,7 +41,7 @@ namespace Jobs
   Job_Purge* _pJob_Purge(void* aAddr);
   
   Job* pJob_Purge_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
-  void vJob_Purge_post(Session* pSession, Job* pJob);
+  void vJob_Purge_post(Job* pJob);
   Job* pJob_Purge_new(JobClass* aJobClass);
   void vJob_Purge_delete(Job* pJob);
   void vJob_Purge_show(Job* pJob);

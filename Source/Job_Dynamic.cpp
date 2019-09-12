@@ -285,7 +285,7 @@ Job* Jobs::pJob_Dynamic_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId,
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Dynamic_post(Session* pSession, Job* pJob)
+void Jobs::vJob_Dynamic_post(Job* pJob)
 {
   Job_Dynamic* pJob_Dynamic = _pJob_Dynamic(pJob);
   

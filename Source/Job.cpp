@@ -539,7 +539,7 @@ eEC Jobs::eJob_checkCluster(Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* post-execute job function                                                  */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_post(Session* pSession, Job* pJob)
+void Jobs::vJob_post(Job* pJob)
 {
   eCN eClass = pJob->eClass();
   JobClass* pJobClass = JobClass::pFind(eClass);

@@ -208,7 +208,7 @@ Job* Jobs::pJob_ConnectCluster_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_ConnectCluster_post(Session* pSession, Job* pJob)
+void Jobs::vJob_ConnectCluster_post(Job* pJob)
 {
 }
 

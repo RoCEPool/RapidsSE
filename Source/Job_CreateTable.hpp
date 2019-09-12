@@ -47,7 +47,7 @@ namespace Jobs
   Job_CreateTable* _pJob_CreateTable(void* aAddr);
   
   Job* pJob_CreateTable_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
-  void vJob_CreateTable_post(Session* pSession, Job* pJob);
+  void vJob_CreateTable_post(Job* pJob);
   Job* pJob_CreateTable_new(JobClass* aJobClass);
   void vJob_CreateTable_delete(Job* pJob);
   void vJob_CreateTable_show(Job* pJob);

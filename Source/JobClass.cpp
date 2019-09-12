@@ -118,7 +118,7 @@ void JobClass::vGrabDdlLock(void)
 /*----------------------------------------------------------------------------*/
 void JobClass::vPostJob(Session* pSession, Job* pJob)
 {
-  (*m_fpPost)(pSession, pJob);
+  (*m_fpPost)(pJob);
 }
 
 /*----------------------------------------------------------------------------*/

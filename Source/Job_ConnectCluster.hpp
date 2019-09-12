@@ -35,7 +35,7 @@ namespace Jobs
   Job_ConnectCluster* _pJob_ConnectCluster(void* aAddr);
   
   Job* pJob_ConnectCluster_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
-  void vJob_ConnectCluster_post(Session* pSession, Job* pJob);
+  void vJob_ConnectCluster_post(Job* pJob);
   void vJob_ConnectCluster_delete(Job* pJob);
   void vJob_ConnectCluster_show(Job* pJob);
   

@@ -201,7 +201,7 @@ Job* Jobs::pJob_WaitCluster_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iFo
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_WaitCluster_post(Session* pSession, Job* pJob)
+void Jobs::vJob_WaitCluster_post(Job* pJob)
 {
 }
 

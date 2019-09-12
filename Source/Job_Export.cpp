@@ -293,7 +293,7 @@ Job* Jobs::pJob_Export_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, 
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Export_post(Session* pSession, Job* pJob)
+void Jobs::vJob_Export_post(Job* pJob)
 {
   Job_Export* pJob_Export = _pJob_Export(pJob);
 

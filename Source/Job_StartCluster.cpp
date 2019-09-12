@@ -209,7 +209,7 @@ Job* Jobs::pJob_StartCluster_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iF
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_StartCluster_post(Session* pSession, Job* pJob)
+void Jobs::vJob_StartCluster_post(Job* pJob)
 {
 }
 

@@ -200,7 +200,7 @@ Job* Jobs::pJob_Publish_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId,
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Publish_post(Session* pSession, Job* pJob)
+void Jobs::vJob_Publish_post(Job* pJob)
 {
 }
 

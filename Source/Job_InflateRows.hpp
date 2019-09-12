@@ -47,7 +47,7 @@ namespace Jobs
   Job_InflateRows* _pJob_InflateRows(void* aAddr);
   
   Job* pJob_InflateRows_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
-  void vJob_InflateRows_post(Session* pSession, Job* pJob);
+  void vJob_InflateRows_post(Job* pJob);
   void vJob_InflateRows_delete(Job* pJob);
   void vRetrieveRows(Job_InflateRows* pJob_InflateRows, CrwBuffer* pCrwBuffer, Row* pRow);
   void vRetrieveColumns(Job_InflateRows* pJob_InflateRows, CrwBuffer* pCrwBuffer, Row* pRow);

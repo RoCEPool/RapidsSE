@@ -44,7 +44,7 @@ namespace Jobs
   Job_Dynamic* _pJob_Dynamic(void* aAddr);
   
   Job* pJob_Dynamic_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
-  void vJob_Dynamic_post(Session* pSession, Job* pJob);
+  void vJob_Dynamic_post(Job* pJob);
   void vJob_Dynamic_delete(Job* pJob);
   void vJob_Dynamic_show(Job* pJob);
   

@@ -292,7 +292,7 @@ Job* Jobs::pJob_InflateRows_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iFo
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_InflateRows_post(Session* pSession, Job* pJob)
+void Jobs::vJob_InflateRows_post(Job* pJob)
 {
   Job_InflateRows* pJob_InflateRows = _pJob_InflateRows(pJob);
   

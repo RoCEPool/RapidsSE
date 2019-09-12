@@ -36,7 +36,7 @@ namespace Jobs
   Job_ListColumns* _pJob_ListColumns(void* aAddr);
   
   Job* pJob_ListColumns_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
-  void vJob_ListColumns_post(Session* pSession, Job* pJob);
+  void vJob_ListColumns_post(Job* pJob);
   void vJob_ListColumns_delete(Job* pJob);
   void vJob_ListColumns_show(Job* pJob);
   

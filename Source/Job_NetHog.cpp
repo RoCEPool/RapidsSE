@@ -202,7 +202,7 @@ Job* Jobs::pJob_NetHog_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, 
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_NetHog_post(Session* pSession, Job* pJob)
+void Jobs::vJob_NetHog_post(Job* pJob)
 {
 }
 
