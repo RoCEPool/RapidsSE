@@ -17,11 +17,11 @@ void _LogEntryLck::vSet(LogEntry* pLogEntry, Lock* pLock, eLA eLckAct)
   m_iLckId  = pLock->m_iUniqueId;
   m_eLckAct = eLckAct;
   
-  if (LA_LCK_CONSTRUCT == eLckAct)
-    pLogEntry->m_iIndicator = OC_CONSTRUCT;
-  else
-    if (LA_LCK_DESTRUCT == eLckAct)
-      pLogEntry->m_iIndicator = OC_DESTRUCT;
+       if (LA_LCK_CONSTRUCT == eLckAct)  pLogEntry->m_iIndicator = OC_CONSTRUCT;
+  else if (LA_LCK_DESTRUCT == eLckAct)   pLogEntry->m_iIndicator = OC_DESTRUCT;
+  
+  SP_Lock spLock;
+  StrLib::vSprintCat(pLogEntry->m_caNote," %s",spLock.sz_log(pLock));
 }
 
 /*----------------------------------------------------------------------------*/
