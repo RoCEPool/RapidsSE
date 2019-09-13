@@ -58,6 +58,13 @@ void _LogEntryRes::vSet(LogEntry* pLogEntry, Resource* pResource, eRA eResAct)
   else if (RA_THD_SLEEP      == eResAct) pLogEntry->m_iIndicator = OC_SLEEP;
   else if (RA_THD_AWAKE      == eResAct) pLogEntry->m_iIndicator = OC_AWAKE;
   else if (RA_THD_SPAWNED    == eResAct) pLogEntry->m_iIndicator = OC_SPAWN;
+  
+  if (CN_MUTEX == pResource->eClass()) {
+    Mutex* pMutex = _pMutex(pResource);
+    
+    SP_Mutex spMutex;
+    StrLib::vSprintCat(pLogEntry->m_caNote," %s",spMutex.sz_log(pMutex));
+  }
 }
 
 /*----------------------------------------------------------------------------*/
