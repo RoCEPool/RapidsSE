@@ -1,0 +1,89 @@
+/*============================================================================*/
+/* _q - query test                                                            */
+/*============================================================================*/
+
+//ping;
+
+print "" ;
+print "select count(*) SCAN" ;
+time dynamic scan lineitem | count | superCount | output;
+
+print "" ;
+print "select count(*) FETCH" ;
+time dynamic fetch lineitem LineItem_Idx1 | count | superCount | output;
+
+print "" ;
+print "lineitem join orders (not-opt)" ;
+time dynamic
+  fetch lineitem LineItem_Idx1 ||
+  fetch orders   orders_idx1   |
+  join |
+  limit 1 |
+  output
+;
+
+print "" ;
+print "lineitem join orders (opt)" ;
+time dynamic
+  fetch lineitem LineItem_Idx1 1 ||
+  fetch orders   orders_idx1   1 |
+  join |
+  limit 1 |
+  output
+;
+
+print "" ;
+print "lineitem join orders orderby" ;
+time dynamic
+  fetch lineitem LineItem_Idx1 ||
+  fetch orders   orders_idx1   |
+  join |
+  getKey O_CUSTKEY |
+  sort | merge |supermerge |
+  limit 1 |
+  output
+;
+
+print "" ;
+print "orders join lineitem (not-opt)" ;
+time dynamic
+  fetch orders   orders_idx1   ||
+  fetch lineitem LineItem_Idx1 |
+  join |
+  limit 1 |
+  output
+;
+
+print "" ;
+print "orders join lineitem (opt)" ;
+time dynamic
+  fetch orders   orders_idx1   1 ||
+  fetch lineitem LineItem_Idx1 1 |
+  join |
+  limit 1 |
+  output
+;
+
+print "" ;
+print "orders join lineitem orderby" ;
+time dynamic
+  fetch orders   orders_idx1   ||
+  fetch lineitem LineItem_Idx1 |
+  join |
+  getKey O_CUSTKEY |
+  sort | merge |supermerge |
+  limit 1 |
+  output
+;
+
+print "" ;
+print "select sum(lineitem.l_linenumber)" ;
+time dynamic
+  fetch lineitem  LineItem_Idx1   |
+  agg L_LINENUMBER | superAgg |
+  output
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
