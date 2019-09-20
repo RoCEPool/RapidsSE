@@ -9,6 +9,8 @@ namespace DataOperators
   {
   private:
   
+    i8 m_iXmitNode;     // node to xmit to
+    
     // must be last
     Footer m_xFooter;
 

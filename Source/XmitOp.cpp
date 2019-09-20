@@ -75,6 +75,8 @@ XmitOp::XmitOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn)
 : Op(CN_XMITOP,pOpSpec,pDigest,aOpDefn)
 {
   _precondition_(_MAGIC_,CN_XMITOP);
+  
+  m_iXmitNode = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -95,11 +97,14 @@ XmitOp::~XmitOp(void) noexcept(false)
 Op* XmitOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                  TokenVec* pTknVec, i8& i_Tkn_)
 {
-    i_Tkn_++;
-    
-    XmitOp* pXmitOp = new XmitOp(pOpSpec,pDigest,aOpDefn);
-    
-    return pXmitOp;
+  i_Tkn_++;
+  XmitOp* pXmitOp = new XmitOp(pOpSpec,pDigest,aOpDefn);
+
+  pXmitOp->m_iXmitNode = pTknVec->pGet(i_Tkn_)->iToI8();
+  
+  pXmitOp->m_sArgs = pTknVec->pGet(i_Tkn_++)->sText();
+  
+  return pXmitOp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -128,20 +133,20 @@ eOR XmitOp::eXmitLoop(void)
         Operand* pOperand = pPopQueue();
         
         if (! pOperand) {
-            ASSERT(bIsLocked());
-            return OR_BIDE;
+          ASSERT(bIsLocked());
+          return OR_BIDE;
         }
         
         if (CN_ENDMARKER == pOperand->eClass()) {
-            EndMarker* pEndMarker = _pEndMarker(pOperand);
-            delete pEndMarker;
-            break;
+          EndMarker* pEndMarker = _pEndMarker(pOperand);
+          delete pEndMarker;
+          break;
         }
         
         if (CN_STREAMDEF == pOperand->eClass()) {
-            m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
-            vPipeOut(pOperand);
-            continue;
+          m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
+          vPipeOut(pOperand);
+          continue;
         }
         
         RASSERT(CN_CRWBUFFER == pOperand->eClass());

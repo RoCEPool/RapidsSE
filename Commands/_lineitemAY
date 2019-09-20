@@ -50,8 +50,8 @@ IndexEntries 4000;
 
 //fileCat "/tpch/SF0/lineitem_1.csv" 1;
 //time ld lineitem "/tpch/SF0/lineitem_1.csv" max_errors 100;
-time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
-//time ld lineitem "/DATA/TPCH/lineitem10.csv" max_errors 100;
+//time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
+time ld lineitem "/DATA/TPCH/lineitem10.csv" max_errors 100;
 //time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
 //time ld lineitem "/DATA/TPCH/lineitem10k.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem_100k.csv" max_errors 100;
@@ -76,9 +76,9 @@ O_COMMENT         VARCHAR(79) NOT NULL
 CREATE INDEX orders_idx1 ON orders(O_ORDERKEY);
 
 print "loading orders..." ;
-//time ld orders "/DATA/tpch/orders10.csv" max_errors 100;
+time ld orders "/DATA/tpch/orders10.csv" max_errors 100;
 //time ld orders "/DATA/tpch/orders10k.csv" max_errors 100;
-time ld orders "/tpch/SF1/orders.tbl" field_delimiter "|" max_errors 100;
+//time ld orders "/tpch/SF1/orders.tbl" field_delimiter "|" max_errors 100;
 
 //time dynamic fetch lineitem LineItem_Idx1 | limit 1 | output | zed;
 //time dynamic fetch lineitem LineItem_Idx1 | getkey L_PARTKEY | sort | merge | limit 1 | output | zed;
@@ -87,6 +87,10 @@ time ld orders "/tpch/SF1/orders.tbl" field_delimiter "|" max_errors 100;
 
 
 //time dynamic fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join | limit 1 | output | zed;
+
+
+
+
 
 
 
@@ -99,8 +103,10 @@ time ld orders "/tpch/SF1/orders.tbl" field_delimiter "|" max_errors 100;
 
 //time dynamic fetch orders orders_idx1 || fetch lineitem LineItem_Idx1 | join | getKey O_CUSTKEY | sort | merge | superMerge 20 | limit 20 | output | zed;
 
-time dynamic fetch orders orders_idx1 | count | output | zed;
-time dynamic fetch lineitem LineItem_Idx1 | filter L_PARTKEY 10 < | count | output | zed;
+time dynamic scan orders | xmit 0 | output;
+
+
+//time dynamic fetch lineitem LineItem_Idx1 | filter L_PARTKEY 10 < | count | output;
 //time dynamic fetch orders orders_idx1 1 || fetch lineitem LineItem_Idx1 1 | join | limit 1 | output | zed;
 
 //time dynamic fetch orders orders_idx1 | getKey O_CUSTKEY | sort | merge | superMerge 1 | limit 1 | output | zed;
@@ -120,7 +126,7 @@ time dynamic fetch lineitem LineItem_Idx1 | filter L_PARTKEY 10 < | count | outp
 //fileCat "/tpch/SF0/lineitem_1.csv" 1;
 //fileCat "/tpch/SF0/lineitem_10.csv" 10;
 //fileCat "/tpch/SF0/lineitem_100.csv" 10;
-//fileCat "/tpch/SF0/lineitem_1k.csv" 10;
+//fileCat "/tpch/SF0/lineitem_1k.csv" 10;±±±±±±≠≠≠
 //fileCat "/tpch/SF0/lineitem_10k.csv" 10;
 //fileCat "/tpch/SF0/lineitem_100k.csv" 10;
 //fileCat "/tpch/SF1/lineitem.csv" 10;
