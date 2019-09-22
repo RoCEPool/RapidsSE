@@ -39,7 +39,10 @@ namespace Gadgets
 #include "SP_String.hpp"
 
 namespace Tasks { typedef MP<Task,CN_TASK> MP_Task;
-  typedef void (*StepFp)(Tasks::MP_Task); }
+                  typedef void (*StepFp)(Tasks::MP_Task); }
+
+#define INTRINSIC(FUNCNM) \
+  void Step::FUNCNM(MP_Task mpTask)
 
 /*============================================================================*/
 /* end                                                                        */

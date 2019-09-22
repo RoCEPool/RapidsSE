@@ -15,7 +15,7 @@ void Step::vAddSteps_Comment(void)
 /*----------------------------------------------------------------------------*/
 /* comment -- comment                                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vComment(MP_Task mpTask)
+INTRINSIC(vComment)
 {
   ENTRY("vComment"_Stz);
   
