@@ -1,0 +1,683 @@
+/*============================================================================*/
+/* Job_CreateNode.cpp -- Create Table Job                                    */
+/*============================================================================*/
+
+#include "Jobs.h"
+
+JobClass xJobClass_CreateNode =
+{
+  CN_JOB_CREATETABLE,     // class number
+  JK_DIST2PC,             // job kind
+  RS_NODE_ZERO,           // response kind
+  "create node"_Stz,      // comment about the job
+  "create"_Stz,           // the prompt command
+  "node"_Stz,             // the second word
+  nullptr,                // the _run task seed
+  "CreateNode_req"_Stz,   // the _req task seed
+  "CreateNode_beg"_Stz,   // the _rcv task seed
+  "CreateNode_exe"_Stz,   // the _exe task seed
+  "CreateNode_end"_Stz,   // the _end task seed
+  "CreateNode_can"_Stz,   // the _can task seed
+  true,                   // check resources?
+  false,                  // detached job?
+  false,                  // buffer attached?
+  DL_GRAB_WRITE,          // ddl lock model
+  PY_NORMAL,              // priority
+  JF_LOWMEM,              // flags
+
+  eJob_checkCluster,      // prompt check function
+  pJob_CreateNode_pre,    // prompt pre-process function
+  vJob_post,              // prompt post-process function
+  pJob_CreateNode_new,    // job new function
+  vJob_CreateNode_delete, // job delete function
+  vJob_send,              // job pre-send function
+  vJob_recv,              // job post-receive function
+  vJob_CreateNode_show,   // job show function
+  
+  // help
+  true,
+  "create table <tableNm> ( <columnList> )"_Stz,
+  
+  "create table supplier (\n"
+  "  S_SUPPKEY   INTEGER NOT NULL,\n"
+  "  S_NAME      VARCHAR(25) NOT NULL,\n"
+  "  S_ADDRESS   VARCHAR(40) NOT NULL,\n"
+  "  S_NATIONKEY INTEGER NOT NULL,\n"
+  "  S_PHONE     CHAR(15) NOT NULL,\n"
+  "  S_ACCTBAL   DECIMAL(15,2) NOT NULL,\n"
+  "  S_COMMENT   VARCHAR(101) NOT NULL\n"
+  ");"_Stz,
+
+  { 0, 0, 0, 0 ,0, 0 } // seeds spawned
+};
+
+/*----------------------------------------------------------------------------*/
+/* next function                                                              */
+/*----------------------------------------------------------------------------*/
+JobClass* Jobs::pJob_CreateNode_class(pFUN** pNextFun)
+{
+  *pNextFun = (pFUN*)pJob_CreateTenant_class;
+  
+  return &xJobClass_CreateNode;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+Job_CreateNode* Jobs::_pJob_CreateNode(void* aAddress)
+{
+  Job_CreateNode* pJob_CreateNode = reinterpret_cast<Job_CreateNode*>(aAddress);
+  
+  RASSERT_TYPE(pJob_CreateNode,CN_JOB_CREATETABLE);
+  
+  return pJob_CreateNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate a new entry buffer from heap                                      */
+/*----------------------------------------------------------------------------*/
+void* Job_CreateNode::operator new(size_t)
+{
+  Job_CreateNode* pJob_CreateNode =
+    static_cast<Job_CreateNode*>(HeapMem::pAllocate(CN_JOB_CREATETABLE));
+  
+  return pJob_CreateNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* perform new of entry buffer for given address                              */
+/*----------------------------------------------------------------------------*/
+void* Job_CreateNode::operator new(size_t, void* aAddress)
+{
+  return aAddress;
+}
+
+/*----------------------------------------------------------------------------*/
+/* free an entry buffer back to the heap                                      */
+/*----------------------------------------------------------------------------*/
+void Job_CreateNode::operator delete(void* aAddress)
+{
+  Job_CreateNode* pJob_CreateNode = static_cast<Job_CreateNode*>(aAddress);
+  
+  HeapMem::vFree(pJob_CreateNode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Job_CreateNode::Job_CreateNode(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+: Job(aJobClass, aReqTuple, pSession)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
+  
+  m_eTableType = TT_NONE;
+  m_iColumns   = 0;
+  //m_xColumns
+  
+  _checkInitialised_(CN_JOB_CREATETABLE);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+Job_CreateNode::~Job_CreateNode(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Static Functions --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void Job_CreateNode::vDump(eCN eClass, Object* pObject, Stz* aTab)
+{
+  Job_CreateNode* pJob_CreateNode = _pJob_CreateNode(pObject);
+
+  pJob_CreateNode->vShow();
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Member Functions --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* populate table                                                             */
+/*----------------------------------------------------------------------------*/
+eEC Job_CreateNode::ePopulateJob(TokenVec* pTokenVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
+  
+  eEC eError;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // assert we got a create table
+  ASSERT(pTokenVec->pGet(0)->bSame("create"_Stz));
+  ASSERT(pTokenVec->pGet(1)->bSame("table"_Stz));
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get tokens in token vector
+  i8 iNumTokens = pTokenVec->nTokens();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // some validations
+  bool bValid = bValidateCreateNode(pTokenVec);
+  if ( ! bValid ) {
+    return EC_INVALID_COMMAND;
+  }
+  
+  // set the table name
+  m_sObjectName = pTokenVec->pGet(2)->szText();
+  
+  // mark current token
+  i8 iCurrentToken = 4;
+  
+  // add columns to the table
+  eError = eAddTableColumns(pTokenVec, iCurrentToken);
+    
+  if (eError != EC_NONE) {
+    return eError;
+  }
+  
+  // current token should be at ')'
+  if ( ! pTokenVec->pGet(iCurrentToken++)->bSame(")"_Stz)) {
+    return EC_INVALID_COMMAND;
+  }
+  
+  // check if we have a partition by clause
+  if ( iCurrentToken < iNumTokens && pTokenVec->pGet(iCurrentToken++)->bSame("partition"_Stz)) {
+    
+    if ( ! bPartitionTable(pTokenVec, iCurrentToken) )
+      return EC_INVALID_COMMAND;
+  }
+  else {
+    // no partition by clause
+    // we will create partitioning using the first column
+    m_xColumns[0].vIsPtnKey(true);
+  }
+  
+  //vShow();
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show                                                                       */
+/*----------------------------------------------------------------------------*/
+void Job_CreateNode::vShow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
+  
+  vTrace("\n\nJob_CreateNode: %s\n"_Stz, m_sObjectName.aChar());
+  
+  //vTrace("m_sExecute = %s\n"_Stz,m_sExecute.aChar());
+  vTrace("m_eTableType = %s\n"_Stz,aTT[m_eTableType]);
+  vTrace("m_iColumns = %lld\n"_Stz,m_iColumns);
+  
+  for (i8 i_Column = 0; i_Column < m_iColumns; i_Column++) {
+    vTrace("\n"_Stz, i_Column, m_xColumns[i_Column].iColumnNo());
+    vTrace("  m_xColumns[%lld].iColumnNo = %lld\n"_Stz, i_Column, m_xColumns[i_Column].iColumnNo());
+    vTrace("  m_xColumns[%lld].sColumnName = %s\n"_Stz, i_Column, m_xColumns[i_Column].sColumnName().aChar());
+    vTrace("  m_xColumns[%lld].eColumnType = %s\n"_Stz, i_Column, aCT[m_xColumns[i_Column].eColumnType()]);
+    vTrace("  m_xColumns[%lld].iColumnLength = %lld\n"_Stz, i_Column, m_xColumns[i_Column].iColumnLength());
+    vTrace("  m_xColumns[%lld].iColumnScale = %lld\n"_Stz, i_Column, m_xColumns[i_Column].iColumnScale());
+    vTrace("  m_xColumns[%lld].bIsNullable = %s\n"_Stz, i_Column, m_xColumns[i_Column].bIsNullable() ? "true" : "false");
+    vTrace("  m_xColumns[%lld].bIsUnique = %s\n"_Stz, i_Column, m_xColumns[i_Column].bIsUnique()? "true" : "false");
+    vTrace("  m_xColumns[%lld].bIsPartitionKey = %s\n"_Stz, i_Column, m_xColumns[i_Column].bIsPtnKey() ? "true" : "false");
+    vTrace("  m_xColumns[%lld].eDatum = %s\n"_Stz, i_Column, m_xColumns[i_Column].eDatumType());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/* add columns of the table to the job                                        */
+/*----------------------------------------------------------------------------*/
+eEC Job_CreateNode::eAddTableColumns(TokenVec* pTokenVec, i8& iCurrentToken)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
+  
+  // now collect the column names and their types
+  i8 iColumn = 0;
+  i8 iFirstDate = C_UNKNOWN;
+  i8 i_StartToken = iCurrentToken;
+  
+  while ( ! pTokenVec->pGet(iCurrentToken)->bSame(")"_Stz)) {
+    
+    if (iCurrentToken != i_StartToken && ! pTokenVec->pGet(iCurrentToken++)->bSame(","_Stz)) {
+      return EC_INVALID_COMMAND;
+    }
+    
+    if (iColumn >= C_MAX_COLUMNS) {
+      return EC_MAX_COLUMNS;
+    }
+    
+    // set column number
+    m_xColumns[iColumn].vColumnNo(iColumn);
+    
+    // set column name
+    Token* pTkn = pTokenVec->pGet(iCurrentToken++);
+    m_xColumns[iColumn].vColumnName(pTkn->szText());
+    
+    // check if column name already added
+    for (i8 i_Column = 0; i_Column < iColumn; i_Column++) {
+      if (m_xColumns[i_Column].sColumnName().bSame(m_xColumns[iColumn].sColumnName()))
+        return EC_DUPLICATE_COLUMN;
+    }
+    
+    if (pTokenVec->pGet(iCurrentToken)->bSame("varchar"_Stz) ||
+        pTokenVec->pGet(iCurrentToken)->bSame("varbinary"_Stz) ||
+        pTokenVec->pGet(iCurrentToken)->bSame("char"_Stz)) {
+      
+      // extract varchar
+      if ( ! bExtractVarchar(pTokenVec, iColumn, iCurrentToken) )
+        return EC_INVALID_COMMAND;
+    }
+    else if (pTokenVec->pGet(iCurrentToken)->bSame("float"_Stz)) {
+      
+      // extract float
+      if ( ! bExtractFloat(pTokenVec, iColumn, iCurrentToken) )
+        return EC_INVALID_COMMAND;
+    }
+    else if (pTokenVec->pGet(iCurrentToken)->bSame("decimal"_Stz)) {
+      
+      // extract decimal
+      if ( ! bExtractDecimal(pTokenVec, iColumn, iCurrentToken) )
+        return EC_INVALID_COMMAND;
+    }
+    else if (pTokenVec->pGet(iCurrentToken)->bSame("integer"_Stz)) {
+      m_xColumns[iColumn].vColumnType(CT_INTEGER);
+      m_xColumns[iColumn].vDatumType(DM_INT);
+      m_xColumns[iColumn].vColumnLength(C_MAX_PRECISION_INT);
+      iCurrentToken++;
+    }
+    else if (pTokenVec->pGet(iCurrentToken)->bSame("date"_Stz)) {
+      m_xColumns[iColumn].vColumnType(CT_DATE);
+      m_xColumns[iColumn].vDatumType(DM_DTE);
+      if (iFirstDate == C_UNKNOWN) {
+        iFirstDate = iColumn;
+      }
+      iCurrentToken++;
+    }
+    else if (pTokenVec->pGet(iCurrentToken)->bSame("time"_Stz)) {
+      m_xColumns[iColumn].vColumnType(CT_TIME);
+      m_xColumns[iColumn].vDatumType(DM_TME);
+      iCurrentToken++;
+    }
+    else if (pTokenVec->pGet(iCurrentToken)->bSame("timestamp"_Stz)) {
+      m_xColumns[iColumn].vColumnType(CT_TIMESTAMP);
+      m_xColumns[iColumn].vDatumType(DM_TSP);
+      iCurrentToken++;
+    }
+    else if (pTokenVec->pGet(iCurrentToken)->bSame("interval"_Stz)) {
+      m_xColumns[iColumn].vColumnType(CT_INTERVAL);
+      m_xColumns[iColumn].vDatumType(DM_IVL);
+      iCurrentToken++;
+    }
+    else if (pTokenVec->pGet(iCurrentToken)->bSame("boolean"_Stz)) {
+      m_xColumns[iColumn].vColumnType(CT_BOOLEAN);
+      m_xColumns[iColumn].vDatumType(DM_BOL);
+      iCurrentToken++;
+    }
+    else {
+     return EC_INVALID_COMMAND;
+    }
+    
+    // check for NOT NULL
+    if (pTokenVec->pGet(iCurrentToken)->bSame("not"_Stz)) {
+      iCurrentToken++;
+      if (!pTokenVec->pGet(iCurrentToken++)->bSame("null"_Stz)) {
+        return EC_INVALID_COMMAND;
+      }
+      m_xColumns[iColumn].vIsNullable(false);
+    }
+    
+    // check for PRIMARY KEY
+    //    if (m_xTokenVec[iCurrentToken]->bSame("primary"_Stz)) {
+    //
+    //      pJob->m_xColumns[iColumn].m_sPrimaryKey = m_xTokenVec[iCurrentToken++]->aText();
+    //
+    //      if (!m_xTokenVec[iCurrentToken]->bSame("key"_Stz)) {
+    //        m_pSession->vSetLastError(EC_INVALID_COMMAND);
+    //        return false;
+    //      }
+    //    }
+    
+    // check for UNIQUE
+    if (pTokenVec->pGet(iCurrentToken)->bSame("unique"_Stz)) {
+      iCurrentToken++;
+      m_xColumns[iColumn].vIsUnique(true);
+    }
+    
+    iColumn++;
+
+  }
+  
+  // set no of columns in the job
+  m_iColumns = iColumn;
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract float                                                              */
+/*----------------------------------------------------------------------------*/
+bool Job_CreateNode::bExtractDecimal(TokenVec* pTokenVec, i8 iColumn, i8& iCurrentToken)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
+  
+  // set default precision and scale
+  i8 iPrecision = C_MAX_PRECISION_BCD;
+  i8 iScale = 0;
+
+  // set column type in column
+  m_xColumns[iColumn].vColumnType(CT_DECIMAL);
+  m_xColumns[iColumn].vDatumType(DM_BCD);
+  iCurrentToken++;
+
+  // extract scale and precison if specified
+  if (pTokenVec->pGet(iCurrentToken)->bSame("("_Stz)) {
+    
+    iCurrentToken++;
+    
+    // check if it was numeric
+    if ( ! pTokenVec->pGet(iCurrentToken)->bIsNumeric() )
+      return false;
+    
+    iPrecision = pTokenVec->pGet(iCurrentToken++)->iToI8();
+    
+    if (!pTokenVec->pGet(iCurrentToken++)->bSame(","_Stz))
+      return false;
+    
+    // check if it was numeric
+    if ( ! pTokenVec->pGet(iCurrentToken)->bIsNumeric() )
+      return false;
+    
+    // get the scale
+    iScale = pTokenVec->pGet(iCurrentToken++)->iToI8();
+    
+    if (!pTokenVec->pGet(iCurrentToken++)->bSame(")"_Stz))
+      return false;
+    
+    if (! Column::bValidBcd(iPrecision, iScale))
+      return false;
+  }
+  
+  // set scale and length in column
+  m_xColumns[iColumn].vColumnLength(iPrecision);
+  m_xColumns[iColumn].vColumnScale(iScale);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract float                                                              */
+/*----------------------------------------------------------------------------*/
+bool Job_CreateNode::bExtractFloat(TokenVec* pTokenVec, i8 iColumn, i8& iCurrentToken)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
+  
+  // set default size
+  i8 iSize = C_MAX_PRECISION_FLT;
+
+  // set column type
+  m_xColumns[iColumn].vColumnType(CT_FLOAT);
+  m_xColumns[iColumn].vDatumType(DM_FLT);
+  iCurrentToken++;
+
+  // extract size if specified
+  if (pTokenVec->pGet(iCurrentToken)->bSame("("_Stz)) {
+    
+    // check if it was numeric
+    if ( ! pTokenVec->pGet(iCurrentToken++)->bIsNumeric() ) {
+      return false;
+    }
+    
+    // get size
+    iSize = pTokenVec->pGet(iCurrentToken++)->iToI8();
+    
+    if (!pTokenVec->pGet(iCurrentToken++)->bSame(")"_Stz)) {
+      return false;
+    }
+    
+    if (! Column::bValidFlt(iSize)) {
+      return false;
+    }
+  }
+  
+  // set size in column
+  m_xColumns[iColumn].vColumnLength(iSize);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract varchar                                                            */
+/*----------------------------------------------------------------------------*/
+bool Job_CreateNode::bExtractVarchar(TokenVec* pTokenVec, i8 iColumn, i8& iCurrentToken)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
+  
+  // set column type
+  m_xColumns[iColumn].vColumnType(CT_VARCHAR);
+  m_xColumns[iColumn].vDatumType(DM_VCH);
+  iCurrentToken++;
+
+  // set default size
+  i8 iSize = C_64K;
+
+  // extract size if specified
+  if (pTokenVec->pGet(iCurrentToken)->bSame("("_Stz)) {
+    
+    m_xColumns[iColumn].vColumnLength(pTokenVec->pGet(iCurrentToken++)->iToI8());
+    
+    
+    // check if it was numeric
+    if ( ! pTokenVec->pGet(iCurrentToken)->bIsNumeric() )
+      return false;
+    
+    // get size
+    iSize = pTokenVec->pGet(iCurrentToken++)->iToI8();
+    
+    if (!pTokenVec->pGet(iCurrentToken++)->bSame(")"_Stz))
+      return false;
+    
+    // valid the size
+    if (! Column::bValidVch(iSize)) {
+      return false;
+    }
+  }
+  // set size in column
+  m_xColumns[iColumn].vColumnLength(iSize);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* partition the table                                                        */
+/*----------------------------------------------------------------------------*/
+bool Job_CreateNode::bPartitionTable(TokenVec* pTokenVec, i8 iCurrentToken)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get tokens in token vector
+  i8 iNumTokens = pTokenVec->nTokens();
+  
+  // next token should be 'by'
+  if (!pTokenVec->pGet(iCurrentToken++)->bSame("by"_Stz)) {
+    return false;
+  }
+  
+  // next token should be '('
+  if (!pTokenVec->pGet(iCurrentToken++)->bSame("("_Stz)) {
+    return false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the partition columns
+  i8 i_StartToken = iCurrentToken;
+  i8 iPartKeys = 0;
+  bool bFound = false;
+  while (iCurrentToken < iNumTokens - 1) {
+    
+    if ( (iCurrentToken != i_StartToken) &&
+        !pTokenVec->pGet(iCurrentToken++)->bSame(","_Stz)) {
+      return false;
+    }
+    iPartKeys++;
+    
+    // find column and set as partition column
+    for (i8 i_Column=0; i_Column< m_iColumns; i_Column++) {
+      if (m_xColumns[i_Column].sColumnName().bSame(pTokenVec->pGet(iCurrentToken)->szText())) {
+        m_xColumns[i_Column].vIsPtnKey(true);
+        iCurrentToken++;
+        bFound = true;
+        break;
+      }
+    }
+    if ( ! bFound) {
+      return false;
+    }
+    bFound = false;
+  }
+  
+  if ( ! iPartKeys ) {
+    return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate a create table request                                            */
+/*----------------------------------------------------------------------------*/
+bool Job_CreateNode::bValidateCreateNode(TokenVec* pTokenVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get tokens in token vector
+  i8 iNumTokens = pTokenVec->nTokens();
+  
+  // there should be a minumum of 7 tokens
+  if (iNumTokens < 7) {
+    return false;
+  }
+  
+  // token[3] should be '('
+  if ( ! pTokenVec->pGet(3)->bSame("("_Stz)) {
+    return false;
+  }
+  
+  // last-1 token should be ')'
+  if ( ! pTokenVec->pGet(iNumTokens-1)->bSame(")"_Stz)) {
+    return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* Job_CreateNode::aFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE);
+  
+  return &m_xFooter;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Catalog Functions -------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* prompt pre execute function                                                */
+/*----------------------------------------------------------------------------*/
+Job* Jobs::pJob_CreateNode_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+{
+  Job_CreateNode* pJob_CreateNode = new Job_CreateNode(aJobClass,aReqTuple,iForId,pSession);
+  //pJob->vDicPath(pSession);
+
+  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
+
+  eEC eError = pJob_CreateNode->ePopulateJob(pTokenVec);
+  
+  if ( eError != EC_NONE ) {
+    pJob_CreateNode->vAddError(eError);
+  }
+  
+  return pJob_CreateNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print success                                                              */
+/*----------------------------------------------------------------------------*/
+void Jobs::vJob_CreateNode_post(Job* pJob)
+{
+  vTrace("I logNote here\n"_Stz);
+  
+  i8 iResponses = pJob->m_pResponseVec->nItems();
+  
+  if (pJob->m_bHasError) {
+    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob->m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
+    }
+    return;
+  }
+  
+  RASSERT(iResponses == AM::nNodes());
+  
+  vTrace("success: 0 rows affected\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* job new function                                                           */
+/*----------------------------------------------------------------------------*/
+Job* Jobs::pJob_CreateNode_new(JobClass* aJobClass)
+{
+  Job_CreateNode* pJob_CreateNode =
+    new Job_CreateNode(aJobClass,nullptr,C_UNKNOWN,nullptr);
+  
+  return pJob_CreateNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* job delete function                                                        */
+/*----------------------------------------------------------------------------*/
+void Jobs::vJob_CreateNode_delete(Job* pJob)
+{
+  Job_CreateNode* pJob_CreateNode = _pJob_CreateNode(pJob);
+    
+  delete pJob_CreateNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void Jobs::vJob_CreateNode_show(Job* pJob)
+{
+  Job_CreateNode* pJob_CreateNode = _pJob_CreateNode(pJob);
+
+  pJob_CreateNode->vShow();
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
