@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Node(void)
 {
+  vAddStep("node::new"_Stz,        &Step::vNodeNew);
+  
   vAddStep("node.IP"_Stz,          &Step::vNodeIP);
   vAddStep("node.name"_Stz,        &Step::vNodeName);
   vAddStep("node.no"_Stz,          &Step::vNodeNo);
@@ -21,6 +23,19 @@ void Step::vAddSteps_Node(void)
   vAddStep("node.size"_Stz,        &Step::vNodeSize);
   vAddStep("node.status"_Stz,      &Step::vNodeStatus);
 }
+
+/*----------------------------------------------------------------------------*/
+/* node::new -- create a new node                                             */
+/*----------------------------------------------------------------------------*/
+void Step::vNodeNew(MP_Task mpTask)
+{
+  ENTRY("vNodeNew"_Stz);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* node.IP -- push IP of node                                                 */

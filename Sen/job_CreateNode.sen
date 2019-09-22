@@ -7,8 +7,10 @@
 /*----------------------------------------------------------------------------*/
 /* check word is not a Node                                                   */
 /*----------------------------------------------------------------------------*/
-: checkIsNotNode ( "<wordNm" -- t|f )
-  findInCurrent not if true exit then
+: checkIsNotNode ( "<NodeNm>" -- t|f )
+
+  grid::findNode not if true exit then
+
   EC_NODE_EXISTS false
 ;
 
@@ -27,28 +29,8 @@
 /*----------------------------------------------------------------------------*/
 : makeNode ( "<NodeNm>" )
 
-  tp: makingNode
-
   params| sNodeNm |
-  0 0 locals| pNode pIndex |
-
-  args.tracepoint if
-  sNodeNm "MAKING Node " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
-  then
-
-  //----------------------------------------------------------------------------
-  // make the Node dictionary
-  sNodeNm makeNodeDic
-
-  //----------------------------------------------------------------------------
-  // make the indexes dictionary
-  sNodeNm pushNode assert
-  sNodeNm "makeIndexes" find execute
-
-  //----------------------------------------------------------------------------
-  // create the Node
-  sNodeNm :Node ( ^Node ) drop
-  sNodeNm find execute to pNode
+  0 locals| pNode |
 
   // return Node pointer
   pNode
@@ -112,24 +94,6 @@
   pJob_CreateNode job.objectName@ to sNodeNm
   sNodeNm makeNode to pNode
 
-  //----------------------------------------------------------------------------
-  // add Node columns
-  pJob_CreateNode pNode Node.createColumnVec
-
-  //----------------------------------------------------------------------------
-  // add partition columns
-  pNode Node.slots slots.createColumnVec
-
-  //----------------------------------------------------------------------------
-  // move back to Nodes
-  popNode
-
-  //----------------------------------------------------------------------------
-  // should be in Nodes
-  assertInNodes
-  pJob_CreateNode job.notice
-
-  // job::deleteThis
 
   pJob_CreateNode job::participantExecuted
 
@@ -137,7 +101,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_CreateNode job check resources                                */
+/* execute Job_CreateNode job check resources                                 */
 /*----------------------------------------------------------------------------*/
 : createNode.checkResources ( pJob_CreateNode -- )
 
