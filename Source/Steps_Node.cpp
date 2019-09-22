@@ -31,6 +31,23 @@ void Step::vNodeNew(MP_Task mpTask)
 {
   ENTRY("vNodeNew"_Stz);
   
+  i8 nNodes = AM::nNodes();
+  
+  Node* pNode_copy = AM::pGrid()->pGetNode(nNodes - 1);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  s32 sNodeNm;
+  
+  if ( ! mpTask->m_pDataStack->bPop(sNodeNm) )
+    THROW_INVALID_DSTACK("node::new"_Stz);
+
+  Node* pNode = new Node(pNode_copy->iNodeNo() + 1,
+                         sNodeNm,
+                         pNode_copy->szIPAddr(),
+                         pNode_copy->iPortNo() + 1);
+  
+  mpTask->m_pDataStack->vPushPointer(pNode);
+
   EXIT();
 }
 

@@ -32,6 +32,8 @@
   params| sNodeNm |
   0 locals| pNode |
 
+  sNodeNm node::new to pNode
+
   // return Node pointer
   pNode
 ;
