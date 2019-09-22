@@ -32,11 +32,6 @@ namespace Jobs
     void vShow(void);
   
   private:
-    eEC  eAddTableColumns(TokenVec* pTokenVec, i8& iCurrentToken);
-    bool bExtractDecimal(TokenVec* pTokenVec, i8 iColumn, i8& iCurrentToken);
-    bool bExtractFloat(TokenVec* pTokenVec, i8 iColumn, i8& iCurrentToken);
-    bool bExtractVarchar(TokenVec* pTokenVec, i8 iColumn, i8& iCurrentToken);
-    bool bPartitionTable(TokenVec* pTokenVec, i8 iCurrentToken);
     bool bValidateCreateNode(TokenVec* pTokenVec);
   public:
     Footer* aFooter(void);
