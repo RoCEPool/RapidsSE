@@ -32,6 +32,8 @@
 
   CN_JOB_RECEIVER task::this task.thread thread.dedicated!
 
+  NS_ACTIVE grid::thisNode@ grid::node node.state!
+
   args.verbose if
     grid::thisNode@ "receiver running on node %v" fmt.print
   then

@@ -506,9 +506,9 @@ void Constants::vAddConstants(void)
   /*  0 */ vAddConstant("JP_ENUMS"_Stz,     JP_ENUMS);
 
   // NS_ : node state
-  /*  0 */ vAddConstant("NS_NONE"_Stz,      TN_NONE);
-  /*  0 */ vAddConstant("NS_ACTIVE"_Stz,    TN_NONE);
-  /*  0 */ vAddConstant("NS_INACTIVE"_Stz,  TN_NONE);
+  /*  0 */ vAddConstant("NS_NONE"_Stz,      NS_NONE);
+  /*  0 */ vAddConstant("NS_ACTIVE"_Stz,    NS_ACTIVE);
+  /*  0 */ vAddConstant("NS_INACTIVE"_Stz,  NS_INACTIVE);
 
   // TN_ : token types
   /*  0 */ vAddConstant("TN_NONE"_Stz,      TN_NONE);

@@ -21,9 +21,9 @@ void Step::vAddSteps_Node(void)
   vAddStep("node.sendSocket!"_Stz, &Step::vNodeSendSocketStore);
   vAddStep("node.sendSocket@"_Stz, &Step::vNodeSendSocketFetch);
   vAddStep("node.size"_Stz,        &Step::vNodeSize);
-  vAddStep("node.status"_Stz,      &Step::vNodeStatus);
   vAddStep("node.state!"_Stz,      &Step::vNodeStateStore);
   vAddStep("node.state@"_Stz,      &Step::vNodeStateFetch);
+  vAddStep("node.status"_Stz,      &Step::vNodeStatus);
 }
 
 /*----------------------------------------------------------------------------*/
