@@ -14,7 +14,9 @@ namespace Esses
 
 //------------------------------------------------------------------------------
 
+#include "Bytes_t.hpp"
 #include "String_t.hpp"
+
 #include "SP.hpp"
 
 
