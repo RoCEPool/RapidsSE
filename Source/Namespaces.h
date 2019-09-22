@@ -18,7 +18,7 @@ namespace DataOperators {                                                     }
 namespace Debugging     {                                                     }
 namespace Dynamics      {                                                     }
 namespace Enums         {                                                     }
-namespace Esses         { template <int SPACE> class String_t;
+namespace Esses         { template <int BYTES> class String_t;
                           typedef String_t<32>     s32;
                           typedef String_t<256>    s256;
                           typedef String_t<C_4K>   s4K;   // note this is 4K not 4KB

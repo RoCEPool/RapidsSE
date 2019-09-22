@@ -5,11 +5,11 @@
 
 namespace Esses
 {
-  template <int SPACE>
+  template <int BYTES>
   class String_t : public Object
   {
   private:
-    char m_caArea[SPACE]; // Stz byte area
+    char m_caArea[BYTES]; // Stz byte area
     
     // must be last
     Footer m_xFooter;
@@ -65,44 +65,44 @@ using namespace Correctness;
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-String_t<SPACE>::String_t(void)
+template <int BYTES>
+String_t<BYTES>::String_t(void)
 : Object(CN_STRING_T)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caArea,SPACE,CN_STRING_T);
+  MemLib::vZero(m_caArea,BYTES,CN_STRING_T);
 #else
   m_caArea[0] = '\0';
 #endif
 
-  _checkInitialisedSize_(SPACE);
+  _checkInitialisedSize_(BYTES);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-String_t<SPACE>::String_t(Stz* aArg)
+template <int BYTES>
+String_t<BYTES>::String_t(Stz* aArg)
 : Object(CN_STRING_T)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caArea,SPACE,CN_STRING_T);
+  MemLib::vZero(m_caArea,BYTES,CN_STRING_T);
 #endif
   
-  StrLib::vCopyLen(m_caArea,aArg->aChar(),SPACE-1);
+  StrLib::vCopyLen(m_caArea,aArg->aChar(),BYTES-1);
   
-  _checkInitialisedSize_(SPACE);
+  _checkInitialisedSize_(BYTES);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-String_t<SPACE>::~String_t(void) noexcept(false)
+template <int BYTES>
+String_t<BYTES>::~String_t(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
 }
@@ -114,8 +114,8 @@ String_t<SPACE>::~String_t(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get address of Stz area                                                    */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-String_t<SPACE>::operator Stz*(void)
+template <int BYTES>
+String_t<BYTES>::operator Stz*(void)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
@@ -125,8 +125,8 @@ String_t<SPACE>::operator Stz*(void)
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-void String_t<SPACE>::operator =(i8 iArg)
+template <int BYTES>
+void String_t<BYTES>::operator =(i8 iArg)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
@@ -136,12 +136,12 @@ void String_t<SPACE>::operator =(i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-void String_t<SPACE>::operator =(Stz* aArg)
+template <int BYTES>
+void String_t<BYTES>::operator =(Stz* aArg)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
-  StrLib::vCopyLen(m_caArea,aArg->aChar(),SPACE-1);
+  StrLib::vCopyLen(m_caArea,aArg->aChar(),BYTES-1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -151,8 +151,8 @@ void String_t<SPACE>::operator =(Stz* aArg)
 /*----------------------------------------------------------------------------*/
 /* append given char                                                          */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-void String_t<SPACE>::vAppend(const char cChar)
+template <int BYTES>
+void String_t<BYTES>::vAppend(const char cChar)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -166,8 +166,8 @@ void String_t<SPACE>::vAppend(const char cChar)
 /*----------------------------------------------------------------------------*/
 /* append given string using given cursor                                     */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-void String_t<SPACE>::vAppend(char** aazCursor, Stz* aStr)
+template <int BYTES>
+void String_t<BYTES>::vAppend(char** aazCursor, Stz* aStr)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -181,8 +181,8 @@ void String_t<SPACE>::vAppend(char** aazCursor, Stz* aStr)
 /*----------------------------------------------------------------------------*/
 /* break at this length                                                       */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-bool String_t<SPACE>::bBreak(i8 iBreakAt, i8& iPrevBreak)
+template <int BYTES>
+bool String_t<BYTES>::bBreak(i8 iBreakAt, i8& iPrevBreak)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -199,8 +199,8 @@ bool String_t<SPACE>::bBreak(i8 iBreakAt, i8& iPrevBreak)
 /*----------------------------------------------------------------------------*/
 /* get m_caArea                                                                */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-byte* String_t<SPACE>::ayByte(void)
+template <int BYTES>
+byte* String_t<BYTES>::ayByte(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -210,8 +210,8 @@ byte* String_t<SPACE>::ayByte(void)
 /*----------------------------------------------------------------------------*/
 /* cat given variable sequence of Str's                                       */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-void String_t<SPACE>::vCat(Stz* aStr, ...)
+template <int BYTES>
+void String_t<BYTES>::vCat(Stz* aStr, ...)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -232,8 +232,8 @@ void String_t<SPACE>::vCat(Stz* aStr, ...)
 /*----------------------------------------------------------------------------*/
 /* vCatSprint: formatted concatenated sprint                                  */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-void String_t<SPACE>::vCatSprint(Stz* aFormat, ...)
+template <int BYTES>
+void String_t<BYTES>::vCatSprint(Stz* aFormat, ...)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   va_list args;
@@ -248,8 +248,8 @@ void String_t<SPACE>::vCatSprint(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* get m_caArea                                                                */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-char* String_t<SPACE>::aChar(void)
+template <int BYTES>
+char* String_t<BYTES>::aChar(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
@@ -259,8 +259,8 @@ char* String_t<SPACE>::aChar(void)
 /*----------------------------------------------------------------------------*/
 /* concat given Stz                                                           */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-void String_t<SPACE>::vConcat(Stz* aStr)
+template <int BYTES>
+void String_t<BYTES>::vConcat(Stz* aStr)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -272,8 +272,8 @@ void String_t<SPACE>::vConcat(Stz* aStr)
 /*----------------------------------------------------------------------------*/
 /* bContains: test if arg is in substr                                        */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-bool String_t<SPACE>::bContains(Stz* aArg)
+template <int BYTES>
+bool String_t<BYTES>::bContains(Stz* aArg)
 {
   return StrLib::bContains(m_caArea,aArg->aChar());
 }
@@ -281,12 +281,12 @@ bool String_t<SPACE>::bContains(Stz* aArg)
 /*----------------------------------------------------------------------------*/
 /* copy given Stz                                                             */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-void String_t<SPACE>::vCopy(Stz* aStr)
+template <int BYTES>
+void String_t<BYTES>::vCopy(Stz* aStr)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  StrLib::vCopyLen(m_caArea,aStr->aChar(),SPACE-1);
+  StrLib::vCopyLen(m_caArea,aStr->aChar(),BYTES-1);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -294,8 +294,8 @@ void String_t<SPACE>::vCopy(Stz* aStr)
 /*----------------------------------------------------------------------------*/
 /* copy given Stz, then concat variable sequence of Str's                     */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-void String_t<SPACE>::vCopyTill(Stz* aSrc, char cTill)
+template <int BYTES>
+void String_t<BYTES>::vCopyTill(Stz* aSrc, char cTill)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -307,8 +307,8 @@ void String_t<SPACE>::vCopyTill(Stz* aSrc, char cTill)
 /*----------------------------------------------------------------------------*/
 /* is equal to given argument? (same case)                                    */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-bool String_t<SPACE>::bEqual(Stz* aArg)
+template <int BYTES>
+bool String_t<BYTES>::bEqual(Stz* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -320,8 +320,8 @@ bool String_t<SPACE>::bEqual(Stz* aArg)
 /*----------------------------------------------------------------------------*/
 /* is equal to given argument?                                                */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-bool String_t<SPACE>::bIsNumeric(void)
+template <int BYTES>
+bool String_t<BYTES>::bIsNumeric(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -333,8 +333,8 @@ bool String_t<SPACE>::bIsNumeric(void)
 /*----------------------------------------------------------------------------*/
 /* get length of str in data area                                             */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-i8 String_t<SPACE>::iLength(void)
+template <int BYTES>
+i8 String_t<BYTES>::iLength(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -344,8 +344,8 @@ i8 String_t<SPACE>::iLength(void)
 /*----------------------------------------------------------------------------*/
 /* max value                                                                  */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-void String_t<SPACE>::vMaxValue(void)
+template <int BYTES>
+void String_t<BYTES>::vMaxValue(void)
 {
   StrLib::vCopy(m_caArea,"Z");
 }
@@ -353,8 +353,8 @@ void String_t<SPACE>::vMaxValue(void)
 /*----------------------------------------------------------------------------*/
 /* mid value                                                                  */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-void String_t<SPACE>::vMidValue(void)
+template <int BYTES>
+void String_t<BYTES>::vMidValue(void)
 {
   StrLib::vCopy(m_caArea,"M");
 }
@@ -362,8 +362,8 @@ void String_t<SPACE>::vMidValue(void)
 /*----------------------------------------------------------------------------*/
 /* min value                                                                  */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-void String_t<SPACE>::vMinValue(void)
+template <int BYTES>
+void String_t<BYTES>::vMinValue(void)
 {
   StrLib::vCopy(m_caArea,"A");
 }
@@ -371,16 +371,16 @@ void String_t<SPACE>::vMinValue(void)
 /*----------------------------------------------------------------------------*/
 /* null value                                                                 */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-void String_t<SPACE>::vNullValue(void)
+template <int BYTES>
+void String_t<BYTES>::vNullValue(void)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /* reset string                                                               */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-void String_t<SPACE>::vReset(void)
+template <int BYTES>
+void String_t<BYTES>::vReset(void)
 {
   m_caArea[0] = '\0';
 }
@@ -388,8 +388,8 @@ void String_t<SPACE>::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* is same as given argument?  (ignores case)                                 */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-bool String_t<SPACE>::bSame(Stz* aArg)
+template <int BYTES>
+bool String_t<BYTES>::bSame(Stz* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -401,8 +401,8 @@ bool String_t<SPACE>::bSame(Stz* aArg)
 /*----------------------------------------------------------------------------*/
 /* get size of str in data area                                               */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-i8 String_t<SPACE>::nSize(void)
+template <int BYTES>
+i8 String_t<BYTES>::nSize(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -412,8 +412,8 @@ i8 String_t<SPACE>::nSize(void)
 /*----------------------------------------------------------------------------*/
 /* ensure max size of string                                                  */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-void String_t<SPACE>::vSizeMax(i8 nChars)
+template <int BYTES>
+void String_t<BYTES>::vSizeMax(i8 nChars)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -423,19 +423,19 @@ void String_t<SPACE>::vSizeMax(i8 nChars)
 /*----------------------------------------------------------------------------*/
 /* get space of data area                                                     */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-i8 String_t<SPACE>::nSpace(void)
+template <int BYTES>
+i8 String_t<BYTES>::nSpace(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return SPACE;
+  return BYTES;
 }
 
 /*----------------------------------------------------------------------------*/
 /* vSprint: formatted sprint                                                  */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-void String_t<SPACE>::vSprint(Stz* aFormat, ...)
+template <int BYTES>
+void String_t<BYTES>::vSprint(Stz* aFormat, ...)
 {
   va_list args;
   
@@ -447,8 +447,8 @@ void String_t<SPACE>::vSprint(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* formatted sprint concat                                                    */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-void String_t<SPACE>::vSprintCat(Stz* aFormat, ...)
+template <int BYTES>
+void String_t<BYTES>::vSprintCat(Stz* aFormat, ...)
 {
   va_list args;
   
@@ -460,8 +460,8 @@ void String_t<SPACE>::vSprintCat(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* get m_caArea                                                                */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-Stz* String_t<SPACE>::aStz(void)
+template <int BYTES>
+Stz* String_t<BYTES>::aStz(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -471,8 +471,8 @@ Stz* String_t<SPACE>::aStz(void)
 /*----------------------------------------------------------------------------*/
 /* convert to i8                                                              */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-i8 String_t<SPACE>::iToI8(void)
+template <int BYTES>
+i8 String_t<BYTES>::iToI8(void)
 {
   i8 i = StrLib::iToI8(m_caArea);
   
@@ -482,8 +482,8 @@ i8 String_t<SPACE>::iToI8(void)
 /*----------------------------------------------------------------------------*/
 /* convert to lower case                                                      */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-void String_t<SPACE>::vToLower(void)
+template <int BYTES>
+void String_t<BYTES>::vToLower(void)
 {
   StrLib::vToLower(m_caArea);
 }
@@ -495,8 +495,8 @@ void String_t<SPACE>::vToLower(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-template <int SPACE>
-Footer* String_t<SPACE>::aFooter(void)
+template <int BYTES>
+Footer* String_t<BYTES>::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_STRING_T);
   
