@@ -27,6 +27,11 @@ namespace Esses         { template <int BYTES> class String_t;
                           typedef String_t<C_48K>  s48K;  // note this is 48K not 48KB
                           typedef String_t<C_1M>   s1M;   // note this is 1M not 1MB
                           typedef String_t<C_4K>   sVCH;
+  
+                          template <int BYTES> class Bytes_t;
+                          typedef Bytes_t<32>      b32;
+                          typedef Bytes_t<256>     b256;
+                          typedef Bytes_t<C_4K>    b4K;   // note this is 4K not 4KB
                                                                               }
 namespace Focals        {                                                     }
 namespace Forth         { class Cell; class Dic; class ForthWord;             }
