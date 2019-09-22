@@ -8,12 +8,7 @@ namespace Jobs
   class Job_CreateNode : public Job
   {
   public:
-    
-    eTT    m_eTableType;   // table type
-    i8     m_iColumns;     // no of columns
-    
-    Column m_xColumns[C_MAX_COLUMNS];   // column definitions
-  
+      
     // must be last
     Footer m_xFooter;
   

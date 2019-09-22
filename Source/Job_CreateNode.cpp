@@ -48,7 +48,7 @@ JobClass xJobClass_CreateNode =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_CreateNode_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_CreateTenant_class;
+  *pNextFun = (pFUN*)pJob_CreateSchema_class;
   
   return &xJobClass_CreateNode;
 }
@@ -106,10 +106,6 @@ Job_CreateNode::Job_CreateNode(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iFor
 : Job(aJobClass, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATENODE,_FOOTER_);
-  
-  m_eTableType = TT_NONE;
-  m_iColumns   = 0;
-  //m_xColumns
   
   _checkInitialised_(CN_JOB_CREATENODE);
   

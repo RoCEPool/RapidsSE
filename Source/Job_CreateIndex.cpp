@@ -95,7 +95,7 @@ JobClass* Jobs::pJob_CreateIndex_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_CreateIndexUnique_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_CreateSchema_class;
+  *pNextFun = (pFUN*)pJob_CreateNode_class;
   
   return &xJobClass_CreateIndexUnique;
 }
