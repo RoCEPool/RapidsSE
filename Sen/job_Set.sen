@@ -27,6 +27,7 @@
 "Job_CopyBuffer.sen" include
 "job_CreateCatalog.sen" include
 "job_CreateIndex.sen" include
+"job_CreateNode.sen" include
 "job_CreateSchema.sen" include
 "job_CreateTenant.sen" include
 "job_CreateTable.sen" include
