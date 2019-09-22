@@ -37,12 +37,14 @@ Stz* SP_Node::sz(Node* pNode)
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
   StrLib::vSprint(m_caResult,
-                  "Node [%lld] %s %s %lld"_Stz,
+                  "Node [%lld] %s %s %lld %s"_Stz,
                   
                   pNode->iNodeNo(),
                   pNode->szNodeName(),
                   pNode->szIPAddr(),
                   pNode->iPortNo(),
+                  
+                  aNS[pNode->eState()],
 
                   C_ENDARGS
                   );

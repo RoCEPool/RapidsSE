@@ -47,15 +47,17 @@ void Node::operator delete(void* pNodeAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Node::Node(i8 iNodeNo, Stz* pName, Stz* pIpAddress, i8 iPortNo)
+Node::Node(i8 iNodeNo, Stz* szName, Stz* szIpAddr, i8 iPortNo)
 : Object(CN_NODE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   
   m_iNodeNo   = iNodeNo;
-  m_sNodeName = (Stz*)pName;
-  m_sIPAddr   = (Stz*)pIpAddress;
+  m_sNodeName = szName;
+  m_sIPAddr   = szIpAddr;
   m_iPortNo   = iPortNo;
+  
+  m_eState    = NS_INACTIVE;
   
   m_pRecvSocket = nullptr;
   m_pSendSocket = nullptr;
@@ -146,6 +148,26 @@ i8 Node::iPortNo(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   
   return m_iPortNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get node state                                                             */
+/*----------------------------------------------------------------------------*/
+eNS Node::eState(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  
+  return m_eState;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set node state                                                             */
+/*----------------------------------------------------------------------------*/
+void Node::vState(eNS eState)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  
+  m_eState = eState;
 }
 
 /*----------------------------------------------------------------------------*/

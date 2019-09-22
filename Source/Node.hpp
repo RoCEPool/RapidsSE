@@ -14,6 +14,8 @@ namespace Grids
     s32   m_sIPAddr;    // ip address of node
     i8    m_iPortNo;    // port number of node
   
+    eNS   m_eState;     // node state
+  
     Socket* m_pRecvSocket;  // socket used for receiving from node
     Socket* m_pSendSocket;  // socket used for sending to node
   
@@ -40,7 +42,10 @@ namespace Grids
     i8   iNodeNo(void);
     void vNodeNo(i8 iNodeNo);
     i8   iPortNo(void);
-    
+  
+    eNS  eState(void);
+    void vState(eNS eState);
+
     Socket* pRecvSocket(void);
     void vRecvSocket(Socket* pSocket);
     Socket* pSendSocket(void);
