@@ -11,7 +11,7 @@ namespace Grids
   private:
     i8    m_iNodeNo;    // node number
     s32   m_sNodeName;  // name of the node
-    s32   m_sNodeIP;    // ip address of node
+    s32   m_sIPAddr;    // ip address of node
     i8    m_iPortNo;    // port number of node
   
     Socket* m_pRecvSocket;  // socket used for receiving from node
@@ -29,13 +29,13 @@ namespace Grids
     void* operator new(size_t, Node* pNode);
     void  operator delete(void*);
     
-    Node(i8 iNodeNo, Stz* szName, Stz* szIpAddress, i8 iPort);
+    Node(i8 iNodeNo, Stz* szName, Stz* szIPAddr, i8 iPortNo);
     ~Node(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     void vInit(void);
-    Stz* szNodeIP(void);
+    Stz* szIPAddr(void);
     Stz* szNodeName(void);
     i8   iNodeNo(void);
     void vNodeNo(i8 iNodeNo);

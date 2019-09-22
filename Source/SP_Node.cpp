@@ -41,7 +41,7 @@ Stz* SP_Node::sz(Node* pNode)
                   
                   pNode->iNodeNo(),
                   pNode->szNodeName(),
-                  pNode->szNodeIP(),
+                  pNode->szIPAddr(),
                   pNode->iPortNo(),
 
                   C_ENDARGS

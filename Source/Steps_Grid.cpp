@@ -103,7 +103,7 @@ void Step::vGridShow(MP_Task mpTask)
     vTrace("  Node %lld : %s IP %s port %lld rcvSkt %p sndSkt %p [%s]\n"_Stz,
            pNode->iNodeNo(),
            pNode->szNodeName(),
-           pNode->szNodeIP(),
+           pNode->szIPAddr(),
            pNode->iPortNo(),
            pNode->pRecvSocket(),
            pNode->pSendSocket(),

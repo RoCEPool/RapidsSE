@@ -38,7 +38,7 @@ void Step::vNodeIP(MP_Task mpTask)
   ASSERT(CN_NODE == pNode->eClass());
   
   s256 sIP;
-  sIP = pNode->szNodeIP();
+  sIP = pNode->szIPAddr();
   mpTask->m_pDataStack->vPushS256(sIP);
   
   EXIT();

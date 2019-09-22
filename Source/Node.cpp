@@ -54,7 +54,7 @@ Node::Node(i8 iNodeNo, Stz* pName, Stz* pIpAddress, i8 iPortNo)
   
   m_iNodeNo   = iNodeNo;
   m_sNodeName = (Stz*)pName;
-  m_sNodeIP   = (Stz*)pIpAddress;
+  m_sIPAddr   = (Stz*)pIpAddress;
   m_iPortNo   = iPortNo;
   
   m_pRecvSocket = nullptr;
@@ -101,11 +101,11 @@ void Node::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* get node IP                                                                */
 /*----------------------------------------------------------------------------*/
-Stz* Node::szNodeIP(void)
+Stz* Node::szIPAddr(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   
-  return m_sNodeIP;
+  return m_sIPAddr;
 }
 
 /*----------------------------------------------------------------------------*/

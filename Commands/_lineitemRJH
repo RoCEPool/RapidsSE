@@ -46,16 +46,18 @@ space;
 //fileCat "/tpch/SF0/lineitem_1.csv" 1;
 //time ld lineitem "/tpch/SF0/lineitem_1.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem_10.csv" max_errors 100;
-//time ld lineitem "/tpch/SF0/lineitem_100.csv" max_errors 100;
+time ld lineitem "/tpch/SF0/lineitem_100.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem_1k.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem_10k.csv" max_errors 100;
 //time ld lineitem "/tpch/SF0/lineitem_100k.csv" max_errors 100;
-time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
+//time ld lineitem "/tpch/SF1/lineitem.csv" max_errors 100;
 space;
 sztbl lineitem;
 fetch lineitem limit 10;
 
+dynamic scan lineitem | output;
 
+/*
 create table orders (
 O_ORDERKEY        INTEGER NOT NULL,
 O_CUSTKEY         INTEGER NOT NULL,
@@ -108,7 +110,7 @@ ld orders "/tpch/SF1/orders.csv" ;
 
 //time dynamic scan lineitem | getkey L_PARTKEY | sort | merge | count | output;
 status;
-
+*/
 ping;
 
 logWrite;
