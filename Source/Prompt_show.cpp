@@ -23,9 +23,21 @@ PromptDesc __Prompt_show (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_show(SePrompt* pPrompt)
 {
+  SP_Node spNode;
   TokenVec* pTkVec = pPrompt->pTknVec();
 
   ASSERT((*pTkVec)[0]->bSame("show"_Stz));
+  
+  if ((*pTkVec)[1]->bSame("nodes"_Stz)) {
+    
+    for (i8 i_Node = 0; i_Node < AM::pGrid()->m_nNodes; i_Node++) {
+      Node* pNode = AM::pGrid()->m_pNodes[i_Node];
+      vTrace("  %s\n"_Stz,spNode.sz(pNode));
+    }
+    
+    vTrace("\n"_Stz);
+    return true;
+  }
   
   return true;
 }

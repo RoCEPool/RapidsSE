@@ -29,7 +29,7 @@ namespace Grids
     void* operator new(size_t, Node* pNode);
     void  operator delete(void*);
     
-    Node(i8 iNodeNo, Stz* aName, Stz* aIpAddress, i8 iPort);
+    Node(i8 iNodeNo, Stz* szName, Stz* szIpAddress, i8 iPort);
     ~Node(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -39,7 +39,7 @@ namespace Grids
     Stz* szNodeName(void);
     i8   iNodeNo(void);
     void vNodeNo(i8 iNodeNo);
-    i8   iNodePortNo(void);
+    i8   iPortNo(void);
     
     Socket* pRecvSocket(void);
     void vRecvSocket(Socket* pSocket);

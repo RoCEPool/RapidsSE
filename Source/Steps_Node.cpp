@@ -110,7 +110,7 @@ void Step::vNodePort(MP_Task mpTask)
     THROW_INVALID_DSTACK("node.port"_Stz);
   Node* pNode = _pNode(pPtrNode);
   
-  mpTask->m_pDataStack->vPushI8(pNode->iNodePortNo());
+  mpTask->m_pDataStack->vPushI8(pNode->iPortNo());
   
   EXIT();
 }

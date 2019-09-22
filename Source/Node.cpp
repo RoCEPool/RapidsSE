@@ -141,7 +141,7 @@ void Node::vNodeNo(i8 iNodeNo)
 /*----------------------------------------------------------------------------*/
 /* get node port                                                              */
 /*----------------------------------------------------------------------------*/
-i8 Node::iNodePortNo(void)
+i8 Node::iPortNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   

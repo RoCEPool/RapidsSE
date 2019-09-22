@@ -104,7 +104,7 @@ void Step::vGridShow(MP_Task mpTask)
            pNode->iNodeNo(),
            pNode->szNodeName(),
            pNode->szNodeIP(),
-           pNode->iNodePortNo(),
+           pNode->iPortNo(),
            pNode->pRecvSocket(),
            pNode->pSendSocket(),
 
