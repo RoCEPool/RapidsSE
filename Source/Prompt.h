@@ -112,6 +112,7 @@ typedef VectorNL_t<CN_SHORTCUTVEC, ShortCut, C_MAX_SHORTCUTS> ShortCutVec;
 #include "Prompt_setDbg.hpp"
 #include "Prompt_shell.hpp"
 #include "Prompt_shortcut.hpp"
+#include "Prompt_show.hpp"
 #include "Prompt_sizes.hpp"
 #include "Prompt_sleep.hpp"
 #include "Prompt_sleepers.hpp"
