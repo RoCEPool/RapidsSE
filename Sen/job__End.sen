@@ -34,11 +34,9 @@
   // send Job__End to all nodes
   grid::nodes 0
   do
-    // set which node this task will to send to
-    //I grid::node task::this task.sendNode!
-
-    // send the end job
-    I pJob__End job.forward
+    I grid::node node.isConnected if
+      I pJob__End job.forward
+    then
   loop
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

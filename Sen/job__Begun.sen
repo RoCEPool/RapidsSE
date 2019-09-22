@@ -116,18 +116,6 @@
   // all job__begun's have been received, so this job is the decider
 
   // check if any node returned an error
-/*
-  grid::nodes 0 do
-    I pJobOriginator job.participantError@ EC_NONE != if
-      // distribute Job__Cancel to all participants
-      pJobOriginator Job__Cancel::distribute
-      unloop
-      job::deleteThis
-      <DONE_RCV>
-      exit                                                       // *EARLY EXIT*
-    then
-  loop
-*/
   pJobOriginator job.participantHasError true == if
     // distribute Job__Cancel to all participants
     pJobOriginator Job__Cancel::distribute

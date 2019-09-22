@@ -31,14 +31,12 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // send job__execute to all nodes
+  // send job__cancel to all nodes
   grid::nodes 0
   do
-    // set which node this task will to send to
-    //I grid::node task::this task.sendNode!
-
-    // send the cancel job
-    I pJob__Cancel job.forward
+    I grid::node node.isConnected if
+      I pJob__Cancel job.forward
+    then
   loop
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

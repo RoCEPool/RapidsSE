@@ -32,11 +32,9 @@
   // send job__execute to all nodes
   grid::nodes 0
   do
-    // set which node this task will to send to
-    //I grid::node task::this task.sendNode!
-
-    // send the execute job
-    I pJob__Execute job.forward
+    I grid::node node.isConnected if
+      I pJob__Execute job.forward
+    then
   loop
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

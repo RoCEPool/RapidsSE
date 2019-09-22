@@ -301,6 +301,7 @@ private:
   static void vFlowThrow(Tasks::MP_Task mpTask);
 
   // grid
+  static void vGridConnectedNodes(Tasks::MP_Task mpTask);
   static void vGridFindNode(Tasks::MP_Task mpTask);
   static void vGridNode(Tasks::MP_Task mpTask);
   static void vGridNodes(Tasks::MP_Task mpTask);
