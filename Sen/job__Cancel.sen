@@ -24,7 +24,7 @@
   0 locals| pJob__Cancel |
 
   // set the no of acks expected in originator job
-  grid::nodes pJobOriginator job.acksRemaining!
+  grid::connectedNodes pJobOriginator job.acksRemaining!
 
   // create a new Job__Cancel
   pJobOriginator job__cancel::new to pJob__Cancel

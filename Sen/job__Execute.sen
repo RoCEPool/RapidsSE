@@ -22,7 +22,7 @@
   0 locals| pJob__Execute |
 
   // set the no of acks expected in originator job
-  grid::nodes pJobOriginator job.acksRemaining!
+  grid::connectedNodes pJobOriginator job.acksRemaining!
 
   // create a new job__execute
   pJobOriginator job__Execute::new to pJob__Execute

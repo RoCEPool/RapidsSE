@@ -219,7 +219,7 @@
   pJob job.addOriginator
 
   // set the no of acks expected in originator job to nodes in the grid
-  grid::nodes pJob job.acksRemaining!
+  grid::connectedNodes pJob job.acksRemaining!
 
   // grab this task's lock
   task::this task.grabLock
