@@ -7,8 +7,8 @@ enum eNS // Node State
 {
   /* 0 */ NS_NONE=0,
   
+  /*   */ NS_ACTIVE,       // node is active
   /*   */ NS_INACTIVE,     // node is inactive
-  /*   */ NS_RUNNING,      // node is running
 
   /*   */ NS_ENUMS
 };
@@ -17,8 +17,8 @@ static Stz* aNS[]
 {
   /* 0 */ "NONE"_Stz,
   
+  /*   */ "ACTIVE"_Stz,
   /*   */ "INACTIVE"_Stz,
-  /*   */ "RUNNING"_Stz,
   
   /*   */ "ENUMS"_Stz,
 };

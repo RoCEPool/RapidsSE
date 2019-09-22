@@ -37,7 +37,7 @@ Stz* SP_Node::sz(Node* pNode)
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
   StrLib::vSprint(m_caResult,
-                  "Node [%lld] %s %s %lld %s"_Stz,
+                  "Node [%lld] %s %s %lld %s send=%p recv=%pd"_Stz,
                   
                   pNode->iNodeNo(),
                   pNode->szNodeName(),
@@ -45,6 +45,8 @@ Stz* SP_Node::sz(Node* pNode)
                   pNode->iPortNo(),
                   
                   aNS[pNode->eState()],
+                  pNode->pSendSocket(),
+                  pNode->pRecvSocket(),
 
                   C_ENDARGS
                   );

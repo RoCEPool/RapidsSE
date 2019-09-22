@@ -485,17 +485,17 @@ void Constants::vAddConstants(void)
 
   
   // JK_ : job kind
-  /*  0 */ vAddConstant("JK_NONE"_Stz,     JK_NONE);
-  /*  1 */ vAddConstant("JK_CHILD"_Stz,    JK_CHILD);
-  /*  2 */ vAddConstant("JK_DIST2PC"_Stz,  JK_DIST2PC);
-  /*  3 */ vAddConstant("JK_GENERIC"_Stz,  JK_GENERIC);
-  /*  4 */ vAddConstant("JK_GRANDKID"_Stz, JK_GRANDKID);
-  /*  5 */ vAddConstant("JK_LOCAL"_Stz,    JK_LOCAL);
-  /*  6 */ vAddConstant("JK_SERVICE"_Stz,  JK_SERVICE);
+  /*  0 */ vAddConstant("JK_NONE"_Stz,      JK_NONE);
+  /*  1 */ vAddConstant("JK_CHILD"_Stz,     JK_CHILD);
+  /*  2 */ vAddConstant("JK_DIST2PC"_Stz,   JK_DIST2PC);
+  /*  3 */ vAddConstant("JK_GENERIC"_Stz,   JK_GENERIC);
+  /*  4 */ vAddConstant("JK_GRANDKID"_Stz,  JK_GRANDKID);
+  /*  5 */ vAddConstant("JK_LOCAL"_Stz,     JK_LOCAL);
+  /*  6 */ vAddConstant("JK_SERVICE"_Stz,   JK_SERVICE);
 
   // JP_ : job phase
   /*  0 */ vAddConstant("JP_NONE"_Stz,      JP_NONE);
-  /*  0 */ vAddConstant("JP_BEGINNING"_Stz,  JP_BEGINNING);
+  /*  0 */ vAddConstant("JP_BEGINNING"_Stz, JP_BEGINNING);
   /*  0 */ vAddConstant("JP_BEGUN"_Stz,     JP_BEGUN);
   /*  0 */ vAddConstant("JP_EXECUTING"_Stz, JP_EXECUTING);
   /*  0 */ vAddConstant("JP_EXECUTED"_Stz,  JP_EXECUTED);
@@ -505,12 +505,17 @@ void Constants::vAddConstants(void)
   /*  0 */ vAddConstant("JP_CANCELED"_Stz,  JP_CANCELED);
   /*  0 */ vAddConstant("JP_ENUMS"_Stz,     JP_ENUMS);
 
+  // NS_ : node state
+  /*  0 */ vAddConstant("NS_NONE"_Stz,      TN_NONE);
+  /*  0 */ vAddConstant("NS_ACTIVE"_Stz,    TN_NONE);
+  /*  0 */ vAddConstant("NS_INACTIVE"_Stz,  TN_NONE);
+
   // TN_ : token types
-  /*  0 */ vAddConstant("TN_NONE"_Stz,    TN_NONE);
-  /*  1 */ vAddConstant("TN_NAME"_Stz,    TN_NAME);
-  /*  2 */ vAddConstant("TN_INTEGER"_Stz, TN_INTEGER);
-  /*  3 */ vAddConstant("TN_STRING"_Stz,  TN_STRING);
-  /*  4 */ vAddConstant("TN_ENUMS"_Stz,   TN_ENUMS);
+  /*  0 */ vAddConstant("TN_NONE"_Stz,      TN_NONE);
+  /*  1 */ vAddConstant("TN_NAME"_Stz,      TN_NAME);
+  /*  2 */ vAddConstant("TN_INTEGER"_Stz,   TN_INTEGER);
+  /*  3 */ vAddConstant("TN_STRING"_Stz,    TN_STRING);
+  /*  4 */ vAddConstant("TN_ENUMS"_Stz,     TN_ENUMS);
     
   // TS_ : task state
   /*  0 */ vAddConstant("TS_NONE"_Stz,       TS_NONE);

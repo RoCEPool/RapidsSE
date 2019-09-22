@@ -22,6 +22,8 @@ void Step::vAddSteps_Node(void)
   vAddStep("node.sendSocket@"_Stz, &Step::vNodeSendSocketFetch);
   vAddStep("node.size"_Stz,        &Step::vNodeSize);
   vAddStep("node.status"_Stz,      &Step::vNodeStatus);
+  vAddStep("node.state!"_Stz,      &Step::vNodeStateStore);
+  vAddStep("node.state@"_Stz,      &Step::vNodeStateFetch);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -241,6 +243,46 @@ void Step::vNodeSize(MP_Task mpTask)
   ENTRY("vNodeSize"_Stz);
   
   mpTask->m_pDataStack->vPushI8(AM::iRegionSize());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* node.state! -- set state of node                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vNodeStateStore(MP_Task mpTask)
+{
+  ENTRY("vNodeStateStore"_Stz);
+  
+  Object* pPtrNode;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrNode) )
+    THROW_INVALID_DSTACK("node.state!"_Stz);
+  Node* pNode = _pNode(pPtrNode);
+  
+  i8 iState;
+  if ( ! mpTask->m_pDataStack->bPop(iState) )
+    THROW_INVALID_DSTACK("node.state!"_Stz);
+  
+  pNode->vState((eNS)iState);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* node.state@ -- get state of node                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vNodeStateFetch(MP_Task mpTask)
+{
+  ENTRY("vNodeStateFetch"_Stz);
+  
+  Object* pPtrNode;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrNode) )
+    THROW_INVALID_DSTACK("node.state"_Stz);
+  Node* pNode = _pNode(pPtrNode);
+  
+  eNS eState = pNode->eState();
+  
+  mpTask->m_pDataStack->vPushI8(eState);
   
   EXIT();
 }
