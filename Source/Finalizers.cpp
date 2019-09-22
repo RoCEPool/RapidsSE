@@ -153,6 +153,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_COPYBUFFER
   /*    */ &Finalize::vUndefined,         // CN_JOB_CREATECATALOG
   /*    */ &Finalize::vUndefined,         // CN_JOB_CREATEINDEX
+  /*    */ &Finalize::vUndefined,         // CN_JOB_CREATENODE
   /*    */ &Finalize::vUndefined,         // CN_JOB_CREATESCHEMA
   /*    */ &Finalize::vUndefined,         // CN_JOB_CREATETABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_CREATETENANT

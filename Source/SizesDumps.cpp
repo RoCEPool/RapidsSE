@@ -159,6 +159,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_COPYBUFFER
   /*    */ &Dump::vDummy,           // CN_JOB_CREATECATALOG
   /*    */ &Dump::vDummy,           // CN_JOB_CREATEINDEX
+  /*    */ &Dump::vDummy,           // CN_JOB_CREATENODE
   /*    */ &Dump::vDummy,           // CN_JOB_CREATESCHEMA
   /*    */ &Dump::vDummy,           // CN_JOB_CREATETABLE
   /*    */ &Dump::vDummy,           // CN_JOB_CREATETENANT
@@ -562,6 +563,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_CopyBuffer),     // CN_JOB_COPYBUFFER
   /*    */ sizeof(Job_CreateCatalog),  // CN_JOB_CREATECATALOG
   /*    */ sizeof(Job_CreateIndex),    // CN_JOB_CREATEINDEX
+  /*    */ sizeof(Job_CreateNode),     // CN_JOB_CREATENODE
   /*    */ sizeof(Job_CreateSchema),   // CN_JOB_CREATESCHEMA
   /*    */ sizeof(Job_CreateTable),    // CN_JOB_CREATETABLE
   /*    */ sizeof(Job_CreateTenant),   // CN_JOB_CREATETENANT
@@ -964,6 +966,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_COPYBUFFER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CREATECATALOG
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CREATEINDEX
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CREATENODE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CREATESCHEMA
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CREATETABLE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CREATETENANT

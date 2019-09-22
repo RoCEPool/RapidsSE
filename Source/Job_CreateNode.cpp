@@ -6,7 +6,7 @@
 
 JobClass xJobClass_CreateNode =
 {
-  CN_JOB_CREATETABLE,     // class number
+  CN_JOB_CREATENODE,      // class number
   JK_DIST2PC,             // job kind
   RS_NODE_ZERO,           // response kind
   "create node"_Stz,      // comment about the job
@@ -36,17 +36,9 @@ JobClass xJobClass_CreateNode =
   
   // help
   true,
-  "create table <tableNm> ( <columnList> )"_Stz,
+  "create node <nodeNm> ( <nodeinfo> )"_Stz,
   
-  "create table supplier (\n"
-  "  S_SUPPKEY   INTEGER NOT NULL,\n"
-  "  S_NAME      VARCHAR(25) NOT NULL,\n"
-  "  S_ADDRESS   VARCHAR(40) NOT NULL,\n"
-  "  S_NATIONKEY INTEGER NOT NULL,\n"
-  "  S_PHONE     CHAR(15) NOT NULL,\n"
-  "  S_ACCTBAL   DECIMAL(15,2) NOT NULL,\n"
-  "  S_COMMENT   VARCHAR(101) NOT NULL\n"
-  ");"_Stz,
+  ""_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };
@@ -73,7 +65,7 @@ Job_CreateNode* Jobs::_pJob_CreateNode(void* aAddress)
 {
   Job_CreateNode* pJob_CreateNode = reinterpret_cast<Job_CreateNode*>(aAddress);
   
-  RASSERT_TYPE(pJob_CreateNode,CN_JOB_CREATETABLE);
+  RASSERT_TYPE(pJob_CreateNode,CN_JOB_CREATENODE);
   
   return pJob_CreateNode;
 }
@@ -84,7 +76,7 @@ Job_CreateNode* Jobs::_pJob_CreateNode(void* aAddress)
 void* Job_CreateNode::operator new(size_t)
 {
   Job_CreateNode* pJob_CreateNode =
-    static_cast<Job_CreateNode*>(HeapMem::pAllocate(CN_JOB_CREATETABLE));
+    static_cast<Job_CreateNode*>(HeapMem::pAllocate(CN_JOB_CREATENODE));
   
   return pJob_CreateNode;
 }
@@ -113,15 +105,15 @@ void Job_CreateNode::operator delete(void* aAddress)
 Job_CreateNode::Job_CreateNode(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 : Job(aJobClass, aReqTuple, pSession)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATENODE,_FOOTER_);
   
   m_eTableType = TT_NONE;
   m_iColumns   = 0;
   //m_xColumns
   
-  _checkInitialised_(CN_JOB_CREATETABLE);
+  _checkInitialised_(CN_JOB_CREATENODE);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATENODE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -129,7 +121,7 @@ Job_CreateNode::Job_CreateNode(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iFor
 /*----------------------------------------------------------------------------*/
 Job_CreateNode::~Job_CreateNode(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATENODE,_FOOTER_);
 }
 
 
@@ -156,7 +148,7 @@ void Job_CreateNode::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 eEC Job_CreateNode::ePopulateJob(TokenVec* pTokenVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATENODE,_FOOTER_);
   
   eEC eError;
   
@@ -216,7 +208,7 @@ eEC Job_CreateNode::ePopulateJob(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 void Job_CreateNode::vShow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATENODE,_FOOTER_);
   
   vTrace("\n\nJob_CreateNode: %s\n"_Stz, m_sObjectName.aChar());
   
@@ -246,7 +238,7 @@ void Job_CreateNode::vShow(void)
 /*----------------------------------------------------------------------------*/
 eEC Job_CreateNode::eAddTableColumns(TokenVec* pTokenVec, i8& iCurrentToken)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATENODE,_FOOTER_);
   
   // now collect the column names and their types
   i8 iColumn = 0;
@@ -375,7 +367,7 @@ eEC Job_CreateNode::eAddTableColumns(TokenVec* pTokenVec, i8& iCurrentToken)
 /*----------------------------------------------------------------------------*/
 bool Job_CreateNode::bExtractDecimal(TokenVec* pTokenVec, i8 iColumn, i8& iCurrentToken)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATENODE,_FOOTER_);
   
   // set default precision and scale
   i8 iPrecision = C_MAX_PRECISION_BCD;
@@ -426,7 +418,7 @@ bool Job_CreateNode::bExtractDecimal(TokenVec* pTokenVec, i8 iColumn, i8& iCurre
 /*----------------------------------------------------------------------------*/
 bool Job_CreateNode::bExtractFloat(TokenVec* pTokenVec, i8 iColumn, i8& iCurrentToken)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATENODE,_FOOTER_);
   
   // set default size
   i8 iSize = C_MAX_PRECISION_FLT;
@@ -467,7 +459,7 @@ bool Job_CreateNode::bExtractFloat(TokenVec* pTokenVec, i8 iColumn, i8& iCurrent
 /*----------------------------------------------------------------------------*/
 bool Job_CreateNode::bExtractVarchar(TokenVec* pTokenVec, i8 iColumn, i8& iCurrentToken)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATENODE,_FOOTER_);
   
   // set column type
   m_xColumns[iColumn].vColumnType(CT_VARCHAR);
@@ -509,7 +501,7 @@ bool Job_CreateNode::bExtractVarchar(TokenVec* pTokenVec, i8 iColumn, i8& iCurre
 /*----------------------------------------------------------------------------*/
 bool Job_CreateNode::bPartitionTable(TokenVec* pTokenVec, i8 iCurrentToken)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATENODE,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get tokens in token vector
@@ -565,7 +557,7 @@ bool Job_CreateNode::bPartitionTable(TokenVec* pTokenVec, i8 iCurrentToken)
 /*----------------------------------------------------------------------------*/
 bool Job_CreateNode::bValidateCreateNode(TokenVec* pTokenVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATENODE,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get tokens in token vector
@@ -598,7 +590,7 @@ bool Job_CreateNode::bValidateCreateNode(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 Footer* Job_CreateNode::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATENODE);
   
   return &m_xFooter;
 }
