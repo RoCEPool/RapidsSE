@@ -46,6 +46,10 @@ void Step::vNodeNew(MP_Task mpTask)
                          pNode_copy->szIPAddr(),
                          pNode_copy->iPortNo() + 1);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  AM::pGrid()->vAddNode(pNode);
+  
   mpTask->m_pDataStack->vPushPointer(pNode);
 
   EXIT();

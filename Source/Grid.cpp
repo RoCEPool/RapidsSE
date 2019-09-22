@@ -108,13 +108,18 @@ void Grid::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* dump grid                                                                  */
+/* add node                                                                   */
 /*----------------------------------------------------------------------------*/
 void Grid::vAddNode(Node* pNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
-  m_pNodes[pNode->iNodeNo()] = pNode;
+  i8 i_Node = pNode->iNodeNo();
+  
+  m_pNodes[i_Node] = pNode;
+  
+  if (i_Node >= m_nNodes)
+    m_nNodes++;
 }
 
 /*----------------------------------------------------------------------------*/
