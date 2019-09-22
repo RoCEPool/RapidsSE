@@ -39,6 +39,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vInvalid,         // CN_BUFFERCURSOR
   /* 28 */ &Dump::vInvalid,         // CN_BUFFERPOOL
   /*    */ &Dump::vInvalid,         // CN_BYTERATE
+  /*    */ &Dump::vInvalid,         // CN_BYTES_T
 
   /*    */ &Dump::vUndefined,       // CN_CALCULATOR
   /*    */ &Dump::vUndefined,       // CN_CANCELMARKER
@@ -444,6 +445,7 @@ i8 giClassSize[]
   /*    */ sizeof(BufferCursor),       // CN_BUFFERCURSOR
   /* 28 */ sizeof(BufferPool),         // CN_BUFFERPOOL
   /* 28 */ sizeof(ByteRate),           // CN_BYTERATE
+  /* 28 */ sizeof(s32),                // CN_BYTES_T
 
   /*    */ sizeof(Calculator),         // CN_CALCULATOR
   /*    */ sizeof(CancelMarker),       // CN_CANCELMARKER
@@ -847,6 +849,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_BUFFERCURSOR
   /* 28 */ HT_INVALID,           // CN_BUFFERPOOL
   /* 29 */ HT_TRANSIENT_SMALL,   // CN_BYTERATE
+  /* 13 */ HT_INVALID,           // CN_BYTES_T
 
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_CALCULATOR
   /*    */ HT_TRANSIENT_SMALL,   // CN_CANCELMARKER

@@ -11,7 +11,7 @@ void* Esses::_pBytes_t(void* aAddr)
 {
   Object* pBytes_t = reinterpret_cast<Object*>(aAddr);
   
-  RASSERT_TYPE(pBytes_t,CN_STRING_T);
+  RASSERT_TYPE(pBytes_t,CN_BYTES_T);
   
   return pBytes_t;
 }

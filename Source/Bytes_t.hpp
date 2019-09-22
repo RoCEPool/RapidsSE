@@ -67,12 +67,12 @@ using namespace Correctness;
 /*----------------------------------------------------------------------------*/
 template <int BYTES>
 Bytes_t<BYTES>::Bytes_t(void)
-: Object(CN_STRING_T)
+: Object(CN_BYTES_T)
 {
-  _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caArea,BYTES,CN_STRING_T);
+  MemLib::vZero(m_caArea,BYTES,CN_BYTES_T);
 #else
   m_caArea[0] = '\0';
 #endif
@@ -85,12 +85,12 @@ Bytes_t<BYTES>::Bytes_t(void)
 /*----------------------------------------------------------------------------*/
 template <int BYTES>
 Bytes_t<BYTES>::Bytes_t(Stz* aArg)
-: Object(CN_STRING_T)
+: Object(CN_BYTES_T)
 {
-  _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caArea,BYTES,CN_STRING_T);
+  MemLib::vZero(m_caArea,BYTES,CN_BYTES_T);
 #endif
   
   StrLib::vCopyLen(m_caArea,aArg->aChar(),BYTES-1);
@@ -104,7 +104,7 @@ Bytes_t<BYTES>::Bytes_t(Stz* aArg)
 template <int BYTES>
 Bytes_t<BYTES>::~Bytes_t(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -117,7 +117,7 @@ Bytes_t<BYTES>::~Bytes_t(void) noexcept(false)
 template <int BYTES>
 Bytes_t<BYTES>::operator Stz*(void)
 {
-  _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
   return (Stz*)m_caArea;
 }
@@ -128,7 +128,7 @@ Bytes_t<BYTES>::operator Stz*(void)
 template <int BYTES>
 void Bytes_t<BYTES>::operator =(i8 iArg)
 {
-  _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
   StrLib::wToString(iArg,m_caArea);
 }
@@ -139,7 +139,7 @@ void Bytes_t<BYTES>::operator =(i8 iArg)
 template <int BYTES>
 void Bytes_t<BYTES>::operator =(Stz* aArg)
 {
-  _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
   StrLib::vCopyLen(m_caArea,aArg->aChar(),BYTES-1);
 }
@@ -498,7 +498,7 @@ void Bytes_t<BYTES>::vToLower(void)
 template <int BYTES>
 Footer* Bytes_t<BYTES>::aFooter(void)
 {
-  _precondition_(_MAGIC_,CN_STRING_T);
+  _precondition_(_MAGIC_,CN_BYTES_T);
   
   return &m_xFooter;
 }

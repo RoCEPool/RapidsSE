@@ -38,7 +38,8 @@ enum eCN : u2 // Class Number
   /*                           */ CN_BUFFERCURSOR,
   /*  21 0x15      312B Heap:I */ CN_BUFFERPOOL,
   /*  22 0x16      120B Heap:S */ CN_BYTERATE,
-  
+  /*  22 0x16      120B Heap:S */ CN_BYTES_T,
+
   /*                           */ CN_CALCULATOR,
   /*                           */ CN_CANCELMARKER,
   /*  23 0x17       40B Heap:I */ CN_CARRYOVER,
@@ -439,7 +440,8 @@ static Stz* aCN[]
   /*          */ "BUFFERCURSOR"_Stz,        // CN_BUFFERCURSOR
   /*  21 0x15 */ "BUFFERPOOL"_Stz,          // CN_BUFFERPOOL
   /*  22 0x16 */ "BYTERATE"_Stz,            // CN_BYTERATE
-  
+  /*  22 0x16 */ "BYTES_T"_Stz,             // CN_BYTES_T
+
   /*          */ "CALCULATOR"_Stz,          // CN_CALCULATOR
   /*          */ "CANCELMARKER"_Stz,        // CN_CANCELMARKER
   /*  23 0x17 */ "CARRYOVER"_Stz,           // CN_CARRYOVER

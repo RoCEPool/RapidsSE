@@ -35,7 +35,8 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_BUFFERCURSOR
   /* 28 */ &Finalize::vUndefined,         // CN_BUFFERPOOL
   /*    */ &Finalize::vUndefined,         // CN_BYTERATE
-  
+  /*    */ &Finalize::vUndefined,         // CN_BYTES_T
+
   /*    */ &Finalize::vUndefined,         // CN_CALCULATOR
   /*    */ &Finalize::vUndefined,         // CN_CANCELMARKER
   /* 30 */ &Finalize::vUndefined,         // CN_CARRYOVER
