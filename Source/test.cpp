@@ -1235,7 +1235,13 @@ void vTest24(void)
 /*----------------------------------------------------------------------------*/
 void vTest25(void)
 {
+  b4K bStrings;
   
+  bStrings.vPrintAll();
+  
+  bStrings.vAppend("abc"_Stz);  bStrings.vPrintAll();
+  bStrings.vAppend("defg"_Stz); bStrings.vPrintAll();
+
 }
 
 /*============================================================================*/

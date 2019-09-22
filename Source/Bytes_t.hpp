@@ -76,7 +76,7 @@ void Bytes_t<BYTES>::vAppend(Stz* szStr)
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
   for (byte* ayByte = (byte*) szStr; * ayByte; )
-    * m_ayLatter++ = * szStr++;
+    * m_ayLatter++ = * ayByte++;
 
   * m_ayLatter++ = '\0';
 
@@ -92,7 +92,13 @@ void Bytes_t<BYTES>::vPrintAll(void)
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
   for (byte* ayByte = m_yaArea; ayByte < m_ayLatter; ayByte++)
-    vTrace("%c"_Stz,* ayByte);
+    if (* ayByte)
+      vTrace("%c"_Stz,* ayByte);
+    else
+    if (ayByte + 1 < m_ayLatter)
+      vTrace(","_Stz);
+
+  vTrace("\n"_Stz);
 }
 
 
