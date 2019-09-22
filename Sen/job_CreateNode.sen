@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : checkIsNotNode ( "<wordNm" -- t|f )
   findInCurrent not if true exit then
-  EC_Node_EXISTS false
+  EC_NODE_EXISTS false
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -55,7 +55,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* Job_CreateNode request (on originating node)                              */
+/* Job_CreateNode request (on originating node)                               */
 /*----------------------------------------------------------------------------*/
 : createNode_req (  -- <R> )
 
@@ -96,7 +96,7 @@
 
   //----------------------------------------------------------------------------
   // assert correct job
-  CN_JOB_CREATENode pJob_CreateNode object.assertClass
+  CN_JOB_CREATENODE pJob_CreateNode object.assertClass
 
   //----------------------------------------------------------------------------
   // grab a ddl lock
