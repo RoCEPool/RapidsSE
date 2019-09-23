@@ -9,7 +9,7 @@ namespace Esses
   class Bytes_t : public Object
   {
   private:
-    byte*  m_ayLatter;      // address of next available byte
+    i8     m_i_Latter;      // offset of next available byte
     byte   m_yaArea[BYTES]; // byte area
     
     // must be last
@@ -39,7 +39,7 @@ Bytes_t<BYTES>::Bytes_t(void)
 {
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
-  m_ayLatter = m_yaArea;
+  m_i_Latter = 0;
   
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_yaArea,BYTES,CN_BYTES_T);
@@ -76,9 +76,9 @@ void Bytes_t<BYTES>::vAppend(Stz* szStr)
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
   for (byte* ayByte = (byte*) szStr; * ayByte; )
-    * m_ayLatter++ = * ayByte++;
+    m_yaArea[m_i_Latter++] = * ayByte++;
 
-  * m_ayLatter++ = '\0';
+  m_yaArea[m_i_Latter++] = '\0';
 
   _postcondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
 }
@@ -91,11 +91,11 @@ void Bytes_t<BYTES>::vPrintAll(void)
 {
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
-  for (byte* ayByte = m_yaArea; ayByte < m_ayLatter; ayByte++)
+  for (byte* ayByte = m_yaArea; ayByte < & m_yaArea[m_i_Latter]; ayByte++)
     if (* ayByte)
       vTrace("%c"_Stz,* ayByte);
     else
-    if (ayByte + 1 < m_ayLatter)
+    if (ayByte + 1 < & m_yaArea[m_i_Latter])
       vTrace(","_Stz);
 
   vTrace("\n"_Stz);
