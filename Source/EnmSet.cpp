@@ -76,9 +76,11 @@ void EnmSet::vAdd(Stz* szName, Stz* szValue, eTN eToken)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
-  m_xEnnPair[m_nEnm].m_i_Name  = m_bStrings.iAppend(szName);
-  m_xEnnPair[m_nEnm].m_i_Value = m_bStrings.iAppend(szValue);
-  m_xEnnPair[m_nEnm].m_eToken  = eToken;
+  i8 i_Enm = m_nEnm;
+  
+  m_xEnnPair[i_Enm].m_i_Name  = m_bStrings.iAppend(szName);
+  m_xEnnPair[i_Enm].m_i_Value = m_bStrings.iAppend(szValue);
+  m_xEnnPair[i_Enm].m_eToken  = eToken;
   
   m_nEnm++;
 }
@@ -91,6 +93,21 @@ i8 EnmSet::nEnm(void)
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
   return m_nEnm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find name                                                                  */
+/*----------------------------------------------------------------------------*/
+i8 EnmSet::i_Find(Stz *szName)
+{
+  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  
+  for (i8 i_Enm = 0; i_Enm < m_nEnm; i_Enm++) {
+    if (m_bStrings.szGet(m_xEnnPair[i_Enm].m_i_Name)->bSame(szName))
+      return i_Enm;
+  }
+  
+  return C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -113,17 +130,17 @@ void EnmSet::vPrint(void)
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
   for (i8 i_Enm = 0; i_Enm < m_nEnm; i_Enm++) {
-    vTrace("  [%lld] %lld %s , %lld %s (%s)\n"_Stz,
+    vTrace("  [%lld] %s _%lld, %s _%lld (%s)\n"_Stz,
            
            i_Enm,
            
-           m_xEnnPair[m_nEnm].m_i_Name,
-           m_bStrings.szGet(m_xEnnPair[m_nEnm].m_i_Name),
-           
-           m_xEnnPair[m_nEnm].m_i_Value,
-           m_bStrings.szGet(m_xEnnPair[m_nEnm].m_i_Value),
-           
-           aTN[m_xEnnPair[m_nEnm].m_eToken],
+           m_bStrings.szGet(m_xEnnPair[i_Enm].m_i_Name),
+           m_xEnnPair[i_Enm].m_i_Name,
+
+           m_bStrings.szGet(m_xEnnPair[i_Enm].m_i_Value),
+           m_xEnnPair[i_Enm].m_i_Value,
+
+           aTN[m_xEnnPair[i_Enm].m_eToken],
            
            C_ENDARGS
            );
