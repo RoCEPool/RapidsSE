@@ -48,9 +48,9 @@ void Step::vNodeNew(MP_Task mpTask)
 
   Node* pNode = new Node(pNode_copy->iNodeNo() + 1,
                          sNodeNm,
-                         pNode_copy->szIPAddr(),
-                         pNode_copy->iPortNo() + 1);
-  
+                         pEnmSet->szValue("IPADDR"_Stz),
+                         pEnmSet->iValue("PORTNO"_Stz));
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   AM::pGrid()->vAddNode(pNode);
