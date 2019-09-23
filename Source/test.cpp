@@ -1248,6 +1248,8 @@ void vTest25(void)
   pEnmSet->vAdd("name2"_Stz,"value2"_Stz,TN_STRING);
   pEnmSet->vAdd("name3"_Stz,"value3"_Stz,TN_STRING);
 
+  vTrace("  <0> %s\n"_Stz,pEnmSet->szString(0));
+
   delete pEnmSet;
 }
 

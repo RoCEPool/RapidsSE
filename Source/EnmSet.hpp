@@ -5,19 +5,19 @@
 
 namespace Gadgets
 {
-  static const i8 C_ENM_PAIRS = 64;
+  static const i8 C_ENM_SET = 64;
   
   class EnmSet : public Object
   {
   public:
   
-    i8 m_nEno;
+    i8 m_nEnm;
   
     struct {
       i8  m_i_Name;
       i8  m_i_String;
       eTN m_eToken;
-    } m_xEnnPair[C_ENM_PAIRS];
+    } m_xEnnPair[C_ENM_SET];
 
     b4K  m_bStrings;
   
@@ -30,7 +30,9 @@ namespace Gadgets
    ~EnmSet() noexcept(false);
   
     void vAdd(Stz* szName, Stz* szString, eTN eToken);
-  
+    i8   nEnm(void);
+    Stz* szString(i8 i_Enm);
+
     Footer* aFooter(void);
   };
 }

@@ -12,9 +12,9 @@ EnmSet::EnmSet(void)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
  
-  m_nEno = 0;
+  m_nEnm = 0;
   
-  for (i8 i_Eno = 0; i_Eno < C_ENM_PAIRS; i_Eno++) {
+  for (i8 i_Eno = 0; i_Eno < C_ENM_SET; i_Eno++) {
     m_xEnnPair[i_Eno].m_i_Name   = C_UNKNOWN;
     m_xEnnPair[i_Eno].m_i_String = C_UNKNOWN;
     m_xEnnPair[i_Eno].m_eToken   = TN_NONE;
@@ -44,14 +44,34 @@ void EnmSet::vAdd(Stz* szName, Stz* szString, eTN eToken)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
-  m_xEnnPair[m_nEno].m_i_Name   = m_bStrings.iAppend(szName);
-  m_xEnnPair[m_nEno].m_i_String = m_bStrings.iAppend(szString);
-  m_xEnnPair[m_nEno].m_eToken   = eToken;
+  m_xEnnPair[m_nEnm].m_i_Name   = m_bStrings.iAppend(szName);
+  m_xEnnPair[m_nEnm].m_i_String = m_bStrings.iAppend(szString);
+  m_xEnnPair[m_nEnm].m_eToken   = eToken;
   
-  m_nEno++;
+  m_nEnm++;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get nEno                                                                   */
+/*----------------------------------------------------------------------------*/
+i8 EnmSet::nEnm(void)
+{
+  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  
+  return m_nEnm;
+}
 
+/*----------------------------------------------------------------------------*/
+/* get string                                                                 */
+/*----------------------------------------------------------------------------*/
+Stz* EnmSet::szString(i8 i_Enm)
+{
+  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  
+  Stz* szString = m_bStrings.szGet(m_xEnnPair[i_Enm].m_i_String);
+
+  return szString;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

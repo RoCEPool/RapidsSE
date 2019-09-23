@@ -20,8 +20,9 @@ namespace Esses
    ~Bytes_t(void) noexcept(false);
   
     i8   iAppend(Stz* szStr);
+    Stz* szGet(i8 i_Area);
     void vPrintAll(void);
-
+  
     Footer* aFooter(void);
   };
   
@@ -85,6 +86,19 @@ i8 Bytes_t<BYTES>::iAppend(Stz* szStr)
   _postcondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
   
   return i_String;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get string at given subscript in m_yaArea                                  */
+/*----------------------------------------------------------------------------*/
+template <int BYTES>
+Stz* Bytes_t<BYTES>::szGet(i8 i_Area)
+{
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+  
+  char* acStr = (char*)& m_yaArea[i_Area];
+  
+  return (Stz*)acStr;
 }
 
 /*----------------------------------------------------------------------------*/
