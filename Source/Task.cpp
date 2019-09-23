@@ -185,6 +185,8 @@ Task::~Task(void) noexcept(false)
   delete m_pReturnStack;
   delete m_pAuxStack;
   
+  delete m_pRegSet;
+  
   delete m_pCompiler;
   
   while (m_pLocalsFrame) {
@@ -245,8 +247,10 @@ void Task::vTaskLoop_job(void)
     // op??
   }
 
-  if (! m_pDataStack )
+  if (! m_pDataStack) {
     vNewStacks();
+    vNewRegSet();
+  }
   
   while (TR_NONE == m_eTransition) {
     
@@ -619,6 +623,17 @@ void Task::vMonitorPortrait(s48K& sPortrait)
 //                    aCN[m_pJob->eClass()],
 //                    m_pJob
 //                    );
+}
+
+/*----------------------------------------------------------------------------*/
+/* new the register set                                                       */
+/*----------------------------------------------------------------------------*/
+void Task::vNewRegSet(void)
+{
+  if (m_pRegSet)
+    return;
+  
+  m_pRegSet = new RegSet;
 }
 
 /*----------------------------------------------------------------------------*/

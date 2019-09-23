@@ -99,7 +99,8 @@ void Engine::vCallBoot(void)
   
   Task* pBootTask = new Task(pJob_Boot,nullptr);
   pBootTask->vNewStacks();
-  
+  pBootTask->vNewRegSet();
+
   pBootTask->vAddBaseWords();
   
   if (AM::bVerbose())
