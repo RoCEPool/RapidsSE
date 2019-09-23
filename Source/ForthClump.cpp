@@ -39,14 +39,13 @@ void ForthClump::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ForthClump::ForthClump(void)
+ForthClump::ForthClump(Task* pTask)
 : Object(CN_FORTHCLUMP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORTHCLUMP,_FOOTER_);
   
-  m_pTask        = nullptr;
+  m_pTask        = pTask;
   
-  m_aFipCell     = nullptr;
   m_pLocalsFrame = nullptr;
   m_pDataStack   = nullptr;
   m_pReturnStack = nullptr;

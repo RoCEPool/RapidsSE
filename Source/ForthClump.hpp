@@ -8,10 +8,9 @@ namespace Forth
   class ForthClump : public Object
   {
   
-  private:
+  public:
     Task*     m_pTask;        // which task
   
-    Cell*     m_aFipCell;     // points to cell inside a word
     LocalSet* m_pLocalsFrame; // local register frame chain
     Stack*    m_pDataStack;   // data stack
     Stack*    m_pReturnStack; // return stack
@@ -24,7 +23,7 @@ namespace Forth
     void* operator new(size_t);
     void  operator delete(void*);
 
-    ForthClump(void);
+    ForthClump(Task* pTask);
    ~ForthClump(void) noexcept(false);
 
   private:

@@ -43,7 +43,17 @@ RegSet::RegSet(void)
 : Object(CN_REGSET)
 {
   _precondition_(_MAGIC_,CN_REGSET,_FOOTER_);
-    
+  
+  m_pDir_0 = nullptr;
+  m_pDir_1 = nullptr;
+  m_pDir_2 = nullptr;
+  m_pDir_3 = nullptr;
+  
+  m_pFile_0 = nullptr;
+  m_pFile_1 = nullptr;
+  m_pFile_2 = nullptr;
+  m_pFile_3 = nullptr;
+
   _checkInitialised_(CN_REGSET);
   
   _postcondition_(_MAGIC_,CN_REGSET,_FOOTER_);
@@ -55,6 +65,16 @@ RegSet::RegSet(void)
 RegSet::~RegSet(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_REGSET,_FOOTER_);
+  
+  ASSERT(! m_pDir_0);
+  ASSERT(! m_pDir_1);
+  ASSERT(! m_pDir_2);
+  ASSERT(! m_pDir_3);
+  
+  ASSERT(! m_pFile_0);
+  ASSERT(! m_pFile_1);
+  ASSERT(! m_pFile_2);
+  ASSERT(! m_pFile_3);
 }
 
 /*----------------------------------------------------------------------------*/

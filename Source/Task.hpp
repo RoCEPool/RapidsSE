@@ -52,14 +52,11 @@ namespace Tasks
     Node*     m_pSendNode;  // node to send to
     Compiler* m_pCompiler;  // forth word compiler (Job boot, create table etc)
   
-    ForthClump* m_pForthClump;
-  
     Cell*     m_aFipCell;     // points to cell inside a word
     LocalSet* m_pLocalsFrame; // local register frame chain
     Stack*    m_pDataStack;   // data stack
     Stack*    m_pReturnStack; // return stack
     Stack*    m_pAuxStack;    // auxiliary stack
-  
     RegSet*   m_pRegSet;      // register set
   
     // exception
@@ -103,7 +100,6 @@ namespace Tasks
     void vLocalsPop(void);
     void vLocalsPush(void);
     void vMonitorPortrait(s48K& sPortrait);
-    void vNewRegSet(void);
     void vNewStacks(void);
     i8&  i_NextRnd(void);
     Op*  pOp(void);
