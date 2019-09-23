@@ -237,6 +237,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_WAKER
   /*    */ &Finalize::vUndefined,         // CN_JOB_WRITEBUFFER
   /*    */ &Finalize::vUndefined,         // CN_JOB_WRITEROW
+  /*    */ &Finalize::vUndefined,         // CN_JOB_XMIT
   
   /*    */ &Finalize::vUndefined,         // CN_JOBLIST
   /*    */ &Finalize::vUndefined,         // CN_JOINOP
