@@ -60,6 +60,8 @@ namespace Tasks
     Stack*    m_pReturnStack; // return stack
     Stack*    m_pAuxStack;    // auxiliary stack
   
+    RegSet*   m_pRegSet;      // register set
+  
     // exception
     s256  m_sFile;
     s256  m_sException;
