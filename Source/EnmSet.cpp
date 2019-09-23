@@ -106,6 +106,31 @@ Stz* EnmSet::szName(i8 i_Enm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print                                                                      */
+/*----------------------------------------------------------------------------*/
+void EnmSet::vPrint(void)
+{
+  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  
+  for (i8 i_Enm = 0; i_Enm < m_nEnm; i_Enm++) {
+    vTrace("  [%lld] %lld %s , %lld %s (%s)\n"_Stz,
+           
+           i_Enm,
+           
+           m_xEnnPair[m_nEnm].m_i_Name,
+           m_bStrings.szGet(m_xEnnPair[m_nEnm].m_i_Name),
+           
+           m_xEnnPair[m_nEnm].m_i_Value,
+           m_bStrings.szGet(m_xEnnPair[m_nEnm].m_i_Value),
+           
+           aTN[m_xEnnPair[m_nEnm].m_eToken],
+           
+           C_ENDARGS
+           );
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get token kind                                                             */
 /*----------------------------------------------------------------------------*/
 void EnmSet::vReset(void)
