@@ -151,7 +151,7 @@ eOR XmitOp::eXmitLoop(void)
         
         RASSERT(CN_CRWBUFFER == pOperand->eClass());
         
-        vPipeOut(pOperand);
+        vXmitOut(pOperand, m_iXmitNode);
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

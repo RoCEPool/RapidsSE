@@ -628,6 +628,36 @@ void Op::vWorkQuanta(i8 iWorkQuanta)
   m_iWorkQuanta = iWorkQuanta;
 }
 
+/*----------------------------------------------------------------------------*/
+/* xmit operand to another node's operand queue                               */
+/*----------------------------------------------------------------------------*/
+void Op::vXmitOut(Operand* pOperand, i8 iNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  if (AM::bVerbose())
+    vTrace("%s::vXmitOut :    %s %p (N%lld)\n"_Stz,
+           m_sLabel.aStz(),
+           aCN[pOperand->eClass()],
+           pOperand,
+           iNode);
+  
+  if (m_bAppendRight) {
+    AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
+                "PipeOut operand %s to right queue of %s"_Stz, //!format-LogOpr
+                aCN[pOperand->eClass()],
+                aCN[m_pOpOut->eClass()]);
+    m_pOpOut->vAppendRight(pOperand);
+  }
+  else {
+    AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
+                "PipeOut operand %s to left queue of %s"_Stz, //!format-LogOpr
+                aCN[pOperand->eClass()],
+                aCN[m_pOpOut->eClass()]);
+    m_pOpOut->vAppendLeft(pOperand);
+  }
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
