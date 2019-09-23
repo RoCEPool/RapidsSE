@@ -180,6 +180,7 @@ Task::~Task(void) noexcept(false)
   RASSERT(! m_iDdlLocked);
   RASSERT(! bWordBody());
 
+  delete m_pForthClump;
   // delete the stacks
   delete m_pDataStack;
   delete m_pReturnStack;
@@ -643,6 +644,8 @@ void Task::vNewStacks(void)
 {
   if (m_pDataStack)
     return;
+  
+  m_pForthClump  = new ForthClump;
   
   m_pDataStack   = new Stack;
   m_pReturnStack = new Stack;
