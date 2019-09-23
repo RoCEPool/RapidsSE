@@ -39,7 +39,8 @@ void Step::vAddSteps_Job(void)
 
   vAddStep("job::findOriginator"_Stz,  &Step::vJobFindOriginator);
   vAddStep("job::findParticipant"_Stz, &Step::vJobFindParticipant);
-  
+  vAddStep("job.folderName@"_Stz,      &Step::vJobFolderNameFetch);
+
   vAddStep("job.hasError"_Stz,         &Step::vJobHasError);
   vAddStep("job.hasEntBuffer"_Stz,     &Step::vJobHasEntBuffer);
 
@@ -733,6 +734,27 @@ void Step::vJobFindParticipant(MP_Task mpTask)
   RASSERT(pJobFound);
   
   mpTask->m_pDataStack->vPushPointer(pJobFound);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.folderName@ -- fetch the folder name of the job                        */
+/*----------------------------------------------------------------------------*/
+void Step::vJobFolderNameFetch(MP_Task mpTask)
+{
+  ENTRY("vJobFolderNameFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.folderName@"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  s32 sFolderName;
+  
+  sFolderName = pJob->szFolderName();
+  
+  mpTask->m_pDataStack->vPushS32(sFolderName);
   
   EXIT();
 }

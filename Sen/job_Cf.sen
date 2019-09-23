@@ -24,8 +24,8 @@
   pTask task.job@ to pJob_Cf
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the objectName (folderNm) from the job
-  pJob_Cf job.objectName@ to sFolderNm
+  // get the folderNm from the job
+  pJob_Cf job.folderName@ to sFolderNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job

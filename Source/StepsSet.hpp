@@ -439,6 +439,7 @@ private:
 
   static void vJobFindOriginator(Tasks::MP_Task mpTask);
   static void vJobFindParticipant(Tasks::MP_Task mpTask);
+  static void vJobFolderNameFetch(Tasks::MP_Task mpTask);
 
   static void vJobHasError(Tasks::MP_Task mpTask);
   static void vJobHasEntBuffer(Tasks::MP_Task mpTask);

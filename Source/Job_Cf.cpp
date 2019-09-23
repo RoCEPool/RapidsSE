@@ -160,7 +160,7 @@ bool Job_Cf::bPopulateJob(TokenVec* pTokenVec)
   }
   
   // set the folder command name
-  vObjectName(pTokenVec->pGet(1)->szText());
+  vFolderName(pTokenVec->pGet(1)->szText());
   
   return true;
 }

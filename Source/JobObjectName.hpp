@@ -20,6 +20,9 @@ namespace Jobs
     Stz* szCatalogName(void);
     void vCatalogName(Stz* szCatalogName);
   
+    Stz* szFolderName(void);
+    void vFolderName(Stz* szFolderName);
+  
     Stz* szIndexName(void);
     void vIndexName(Stz* szIndexName);
   
