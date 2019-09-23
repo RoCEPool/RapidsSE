@@ -25,8 +25,10 @@ namespace Gadgets
     Footer m_xFooter;
     
   public:
-    EnmSet(void);
+    void* operator new(size_t);
+    void operator delete(void*);
   
+    EnmSet(void);
    ~EnmSet() noexcept(false);
   
     void vAdd(Stz* szName, Stz* szValue, eTN eToken);
