@@ -718,7 +718,7 @@ i8 giClassSize[]
   /*    */ sizeof(ReduceOp),           // CN_REDUCEOP
   /*    */ sizeof(RefBuffer),          // CN_REFBUFFER
   /*    */ sizeof(RefSet),             // CN_REFSET
-  /*    */ 0,//sizeof(RegSet),             // CN_REGSET
+  /*    */ sizeof(RegSet),             // CN_REGSET
   /* 77 */ sizeof(RelOp),              // CN_RELOP
   /* 77 */ sizeof(Request),            // CN_REQUEST
   /*    */ sizeof(ResourceTracker),    // CN_RESOURCETRACKER

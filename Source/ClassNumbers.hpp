@@ -712,9 +712,8 @@ static Stz* aCN[]
   /*          */ "REDUCEOP"_Stz,            // CN_REDUCEOP
   /*          */ "REFBUFFER"_Stz,           // CN_REFBUFFER
   /*          */ "REFSET"_Stz,              // CN_REFSET
-  /*          */ "REFSET"_Stz,              // CN_REFSET
-  /*          */ "RELOP"_Stz,               // CN_RELOP
   /*          */ "REGSET"_Stz,              // CN_REGSET
+  /*          */ "RELOP"_Stz,               // CN_RELOP
   /*          */ "REQUEST"_Stz,             // CN_REQUEST
   /* 172 0xAC */ "RESOURCETRACKER"_Stz,     // CN_RESOURCETRACKER
   /*          */ "RESPONSE"_Stz,            // CN_RESPONSE
