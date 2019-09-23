@@ -222,6 +222,9 @@ eBO Engine::eDecodeCommandLine(void)
   if (gxArguments.m_bStop)                             return BO_STOP;
   if (gxArguments.m_bUnlink)                           return BO_UNLINK;
   if (gxArguments.m_bSethScript)                       return BO_SETH_PROMPT;
+  
+//if (gxArguments.???)                                 return BO_ADD_NODE;
+
 
   return BO_NONE;
 }

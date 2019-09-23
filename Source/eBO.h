@@ -7,6 +7,7 @@ enum eBO // boot options
 {
   /*  0 */ BO_NONE=0,
   
+  /*    */ BO_ADD_NODE,
   /*    */ BO_PROMPT,
   /*    */ BO_SETH_PROMPT,
   /*    */ BO_START,
@@ -22,6 +23,7 @@ static Stz* aBO[]
 {
   /*  0 */ "NONE"_Stz,
   
+  /*    */ "ADD_NODE"_Stz,
   /*    */ "PROMPT"_Stz,
   /*    */ "SETH_PROMPT"_Stz,
   /*    */ "START"_Stz,
