@@ -15,6 +15,9 @@ namespace Jobs
   
     JobFilePath(void);
    ~JobFilePath(void) noexcept(false);
+  
+    Stz* szFilePath(void);
+    void vFilePath(Stz* szFilePath);
   };
 }
 

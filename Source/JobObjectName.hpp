@@ -14,14 +14,14 @@ namespace Jobs
   public:
     void* operator new(size_t);
   
+    JobObjectName(void);
+   ~JobObjectName(void) noexcept(false);
+  
     Stz* szIndexName(void);
     void vIndexName(Stz* szIndexName);
   
     Stz* szObjectName(void);
     void vObjectName(Stz* szObjectName);
-
-    JobObjectName(void);
-   ~JobObjectName(void) noexcept(false);
   };
 }
 
