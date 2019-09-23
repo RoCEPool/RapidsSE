@@ -651,7 +651,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_Walk),           // CN_JOB_WALK
   /*    */ sizeof(Job_WriteBuffer),    // CN_JOB_WRITEBUFFER
   /*    */ sizeof(Job_WriteRow),       // CN_JOB_WRITEROW
-  /*    */ sizeof(Job_WriteRow),       // CN_JOB_XMIT
+  /*    */ sizeof(Job_Xmit),           // CN_JOB_XMIT
   
   /*    */ sizeof(JobList),            // CN_JOBLIST
   /*    */ sizeof(JoinOp),             // CN_JOINOP

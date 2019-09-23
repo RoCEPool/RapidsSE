@@ -1,0 +1,78 @@
+/*============================================================================*/
+/* job_Xmit.sen -- Xmit Job                                                   */
+/*============================================================================*/
+
+" Job_Xmit.sen" .verbose
+
+////////////////////////////////////////////////////////////////////////////////
+//                               on kid node                                  //
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* seed on kid node                                                           */
+/*----------------------------------------------------------------------------*/
+: xmit_kid ( -- )
+
+  >>logEntry <SEED_KID>
+
+  job::this locals| pJob_Xmit |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check there is enough Rows and load
+
+  // node::checkEnoughRows if
+  //pJob_Xmit writeRow.insert
+  //then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  <<logExit
+  job::deleteThis
+
+  <DONE_KID>
+;
+
+////////////////////////////////////////////////////////////////////////////////
+//                            on xmitted node                                 //
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* forward this xmit job to kid node                                          */
+/*----------------------------------------------------------------------------*/
+: Xmit.forward ( pJob_Xmit -- )
+
+  params| pJob_Xmit |
+
+  // which partition are we forwarding to?
+  pJob_Xmit Job_Xmit.partition@ locals| i_Partition |
+
+  // convert i_Partition to i_ForwardNode
+  i_Partition grid::toNode locals| i_ForwardNode |
+
+  //i_Partition i_ForwardNode "WriteRow.forward : Node %v Partition %v" fmt.print
+
+  // send this job to the forward node
+  i_ForwardNode pJob_Xmit job.forward
+;
+
+/*----------------------------------------------------------------------------*/
+/* seed on xmitting node                                                      */
+/*----------------------------------------------------------------------------*/
+: xmit_run (  -- )
+
+  >>logEntry <SEED_RUN>
+
+  job::this locals| pJob_Xmit  |
+
+  "writeRow_run :" .verbose
+
+  // simply forward this job to kid node
+  pJob_Xmit xmit.forward
+
+  job::deleteThis
+
+  <DONE_RUN>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
