@@ -205,7 +205,7 @@ Job* Jobs::pJob_Generate_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId
     return pJob_Generate;
 
   // set the table name
-  pJob_Generate->m_sObjectName = pTknVec->pGet(1)->szText();
+  pJob_Generate->vObjectName(pTknVec->pGet(1)->szText());
   
   // set the file name
   if (pTknVec->pGet(2)->sText().bSame("file"_Stz)) {
@@ -616,7 +616,7 @@ void Job_Generate::vGenerate(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
   
   vTrace("Generating data for %s into %s\n"_Stz,
-         m_sObjectName.aStz(), m_sFilePath.aStz());
+         szObjectName(), m_sFilePath.aStz());
   
   bool bOpened = m_oFile.bOpenWrite(m_sFilePath.aStz());
   if (! bOpened) {

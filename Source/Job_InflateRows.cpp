@@ -170,7 +170,7 @@ bool Job_InflateRows::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the table name
-  m_sObjectName = pTokenVec->pGet(1)->szText();
+  vObjectName(pTokenVec->pGet(1)->szText());
   
   // - - - - - - - - - - - - - - - - - - - - -
   // inflate j10;

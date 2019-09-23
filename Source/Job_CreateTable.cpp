@@ -177,7 +177,7 @@ eEC Job_CreateTable::ePopulateJob(TokenVec* pTokenVec)
   }
   
   // set the table name
-  m_sObjectName = pTokenVec->pGet(2)->szText();
+  vObjectName(pTokenVec->pGet(2)->szText());
   
   // mark current token
   i8 iCurrentToken = 4;
@@ -218,7 +218,7 @@ void Job_CreateTable::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
   
-  vTrace("\n\nJob_CreateTable: %s\n"_Stz, m_sObjectName.aChar());
+  vTrace("\n\nJob_CreateTable: %s\n"_Stz, szObjectName());
   
   //vTrace("m_sExecute = %s\n"_Stz,m_sExecute.aChar());
   vTrace("m_eTableType = %s\n"_Stz,aTT[m_eTableType]);

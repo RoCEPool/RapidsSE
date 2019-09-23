@@ -303,7 +303,7 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
     
     // - - - - - - - - - - - - - - - - - - - - -
     // set the table name
-    m_sObjectName = pTokenVec->pGet(2)->szText();
+    vObjectName(pTokenVec->pGet(2)->szText());
     
     // - - - - - - - - - - - - - - - - - - - - -
     // fetch retrieve j10 column;
@@ -329,7 +329,7 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the table name
-  m_sObjectName = pTokenVec->pGet(1)->szText();
+  vObjectName(pTokenVec->pGet(1)->szText());
   
   // - - - - - - - - - - - - - - - - - - - - -
   // 2 tokens

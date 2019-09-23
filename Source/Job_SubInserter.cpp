@@ -215,7 +215,7 @@ bool Job_SubInserter::bPopulateJob(TokenVec* pTokenVec)
     return nullptr;
   
   // get the table name
-  m_sObjectName = pTokenVec->pGet(3)->szText();
+  vObjectName(pTokenVec->pGet(3)->szText());
 
   return true;
 }

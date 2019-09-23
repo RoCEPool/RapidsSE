@@ -189,7 +189,7 @@ Job* Jobs::pJob_Publish_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId,
     return pJob_Publish;
 
   // set the table name
-  pJob_Publish->m_sObjectName = pTknVec->pGet(1)->szText();
+  pJob_Publish->vObjectName(pTknVec->pGet(1)->szText());
 
   // set the output file name
   pJob_Publish->m_sFilePath = pTknVec->pGet(2)->sText();

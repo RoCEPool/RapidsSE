@@ -80,7 +80,7 @@ void Step::vJob_TruncateTableSpawnSub(MP_Task mpTask)
   
   pJob_SubTruncate->m_iParentId  = pJob_TruncateTable->m_iUniqueId;
   pJob_SubTruncate->m_iTruncateJobId = iTruncateJobId;
-  pJob_SubTruncate->m_sObjectName = pJob_TruncateTable->m_sObjectName;
+  pJob_SubTruncate->vObjectName(pJob_TruncateTable->szObjectName());
   pJob_SubTruncate->m_i_Slot = iSlot;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

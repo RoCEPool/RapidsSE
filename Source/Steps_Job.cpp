@@ -912,7 +912,11 @@ void Step::vJobObjectNameFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.objectNamed@"_Stz);
   Job* pJob = _pJob(pJobPtr);
 
-  mpTask->m_pDataStack->vPushS32(pJob->m_sObjectName);
+  s32 sObjectName;
+  
+  sObjectName = pJob->szObjectName();
+  
+  mpTask->m_pDataStack->vPushS32(sObjectName);
   
   EXIT();
 }

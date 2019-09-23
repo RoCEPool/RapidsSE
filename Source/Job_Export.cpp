@@ -216,7 +216,7 @@ bool Job_Export::bPopulateJob(TokenVec* pTokenVec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // set the table name
-  m_sObjectName = pTokenVec->pGet(1)->szText();
+  vObjectName(pTokenVec->pGet(1)->szText());
 
   // set the file name
   m_sFilePath = pTokenVec->pGet(2)->szText();
@@ -248,7 +248,7 @@ void Job_Export::vShow(void)
          "Table %s File %s \n"_Stz,
          
          m_iUniqueId,
-         m_sObjectName.aStz(),
+         szObjectName(),
          m_sFilePath.aStz()
          );
 }

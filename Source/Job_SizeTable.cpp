@@ -157,7 +157,7 @@ bool Job_SizeTable::bPopulateJob(TokenVec* pTokenVec)
     return false;
   
   // set the table name
-  m_sObjectName = pTokenVec->pGet(1)->szText();
+  vObjectName(pTokenVec->pGet(1)->szText());
   
   return true;
 }

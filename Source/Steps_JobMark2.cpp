@@ -48,7 +48,10 @@ void Step::vJobMark2TableNameFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("jobMark2.tableName@"_Stz);
   JobMark2* pJobMark2 = _pJobMark2(pJobPtr);
   
-  mpTask->m_pDataStack->vPushS32(pJobMark2->m_sObjectName);
+  s32 sTableNm;
+  sTableNm = pJobMark2->szObjectName();
+  
+  mpTask->m_pDataStack->vPushS32(sTableNm);
 
   EXIT();
 }

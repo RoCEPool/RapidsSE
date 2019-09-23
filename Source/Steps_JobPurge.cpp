@@ -42,7 +42,7 @@ void Step::vJob_PurgeSpawnSub(MP_Task mpTask)
   
   pJob_SubPurger->m_iParentId   = pJob_Purge->m_iUniqueId;
   pJob_SubPurger->m_iPurgeJobId = iPurgeJobId;
-  pJob_SubPurger->m_sObjectName = pJob_Purge->m_sObjectName;
+  pJob_SubPurger->vObjectName(pJob_Purge->szObjectName());
   pJob_SubPurger->m_i_Slot      = iSlot;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -196,7 +196,7 @@ Job_Xmit* Job_Xmit::pNewJobXmit(Session* pSession,
   pJob_Xmit->vSeed(SS_SEED_RUN);
 
   pJob_Xmit->m_iParentJobId = iParentJobId;
-  pJob_Xmit->m_sObjectName  = sTableName;
+  pJob_Xmit->vObjectName(sTableName);
   pJob_Xmit->m_pTable       = pTable;
   pJob_Xmit->m_pRecord      = pRecord;
   pJob_Xmit->m_iPartitionId = C_UNKNOWN;

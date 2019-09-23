@@ -140,7 +140,7 @@ void Job_CreateNode::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* populate table                                                             */
+/* populate node                                                              */
 /*----------------------------------------------------------------------------*/
 eEC Job_CreateNode::ePopulateJob(TokenVec* pTokenVec)
 {
@@ -159,7 +159,7 @@ eEC Job_CreateNode::ePopulateJob(TokenVec* pTokenVec)
   }
   
   // set the node name
-  m_sObjectName = pTokenVec->pGet(2)->szText();
+  vObjectName(pTokenVec->pGet(2)->szText());
   
   return EC_NONE;
 }

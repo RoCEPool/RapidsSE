@@ -187,7 +187,7 @@ Job* Jobs::pJob_Purge_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, S
     return pJob_Purge;
 
   // set the table name
-  pJob_Purge->m_sObjectName = pTknVec->pGet(1)->szText();
+  pJob_Purge->vObjectName(pTknVec->pGet(1)->szText());
 
   pJob_Purge->m_iOlderThanSeconds = pTknVec->pGet(2)->iToI8();
 

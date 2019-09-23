@@ -200,7 +200,7 @@ Job* Jobs::pJob_Report_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, 
     return pJob_Report;
 
   // set the table name
-  pJob_Report->m_sObjectName = pTknVec->pGet(1)->szText();
+  pJob_Report->vObjectName(pTknVec->pGet(1)->szText());
 
   // set the input file name
   pJob_Report->m_sFilePath = pTknVec->pGet(2)->sText();

@@ -57,7 +57,7 @@ void Step::vJob_InsertRowNewJobWriteRow(MP_Task mpTask)
   Table* pTable = _pTable(pTablePtr);
   
   Session* pSession = pJob_InsertRow->m_pSession;
-  Stz* sTableName = pJob_InsertRow->m_sObjectName;
+  Stz* sTableName = pJob_InsertRow->szObjectName();
   i8 iParentJobId = pJob_InsertRow->iJobId();
   Record* pRecord = pJob_InsertRow->m_pRecord;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

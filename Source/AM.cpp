@@ -162,7 +162,7 @@ void AM::vSubInserters(i8 nSubInserters) {
   gpAttachMap->Arg.m_nSubInserters = nSubInserters;
 }
 void AM::vTableName(Job_Dynamic* pJob, Stz* szTableNm) {
-  pJob->m_sObjectName = szTableNm;
+  pJob->vObjectName(szTableNm);
 }
 Table* AM::pTable(Job_Dynamic* pJob) {
   return pJob->m_pTable;

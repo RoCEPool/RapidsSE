@@ -166,7 +166,7 @@ bool Job_DropIndex::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the table name
-  m_sObjectName = pTokenVec->pGet(2)->szText();
+  vObjectName(pTokenVec->pGet(2)->szText());
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the index name
