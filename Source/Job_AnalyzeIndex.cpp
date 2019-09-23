@@ -163,7 +163,7 @@ bool Job_AnalyzeIndex::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the index name
-  m_sIndexName = pTokenVec->pGet(2)->szText();
+  vIndexName(pTokenVec->pGet(2)->szText());
   
   if (iNumTokens == 4)
     m_bIsDetailed = pTokenVec->pGet(3)->bSame("true"_Stz) == 1 ? true : false;

@@ -802,7 +802,8 @@ void Step::vJobIndexNameFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.indexName@"_Stz);
   Job* pJob = _pJob(pJobPtr);
 
-  mpTask->m_pDataStack->vPushS32(pJob->m_sIndexName);
+  s32 sIndexName = pJob->szIndexName();
+  mpTask->m_pDataStack->vPushS32(sIndexName);
   
   EXIT();
 }

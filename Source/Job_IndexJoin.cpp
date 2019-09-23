@@ -178,7 +178,7 @@ bool Job_IndexJoin::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the left index name
-  m_sIndexName = pTokenVec->pGet(2)->szText();
+  vIndexName(pTokenVec->pGet(2)->szText());
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the right table name

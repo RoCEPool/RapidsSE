@@ -154,8 +154,6 @@ void Task::vInit(void)
   m_iTracing     = C_TRACE_NONE;
   m_i_NextRnd    = AM::bDeveloper() ? 0 : C_UNKNOWN;
   
-  m_pForthClump  = nullptr;
-  
   m_aFipCell     = nullptr;
   m_pLocalsFrame = nullptr;
   m_pDataStack   = nullptr;
@@ -180,7 +178,6 @@ Task::~Task(void) noexcept(false)
   RASSERT(! m_iDdlLocked);
   RASSERT(! bWordBody());
 
-  // delete the stacks
   delete m_pDataStack;
   delete m_pReturnStack;
   delete m_pAuxStack;
@@ -249,7 +246,6 @@ void Task::vTaskLoop_job(void)
 
   if (! m_pDataStack) {
     vNewStacks();
-    vNewRegSet();
   }
   
   while (TR_NONE == m_eTransition) {
@@ -626,17 +622,6 @@ void Task::vMonitorPortrait(s48K& sPortrait)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new the register set                                                       */
-/*----------------------------------------------------------------------------*/
-void Task::vNewRegSet(void)
-{
-  if (m_pRegSet)
-    return;
-  
-  m_pRegSet = new RegSet;
-}
-
-/*----------------------------------------------------------------------------*/
 /* new the stacks                                                             */
 /*----------------------------------------------------------------------------*/
 void Task::vNewStacks(void)
@@ -647,6 +632,7 @@ void Task::vNewStacks(void)
   m_pDataStack   = new Stack;
   m_pReturnStack = new Stack;
   m_pAuxStack    = new Stack;
+  m_pRegSet      = new RegSet;
 }
 
 /*----------------------------------------------------------------------------*/
