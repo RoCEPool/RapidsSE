@@ -4,7 +4,7 @@
 
 startCluster;
 
-create node node2 { IPADDR="127.1.2.3" , PORTNO = 6662 };
+create node node2 { IPADDR="127.0.0.1" , PORTNO = 5442 };
 
 show nodes;
 
