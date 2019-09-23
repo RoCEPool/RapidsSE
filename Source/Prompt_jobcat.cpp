@@ -95,6 +95,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB_CONNECTCLUSTER);
   nJobs++; JobClass::vJobCat(CN_JOB_CREATECATALOG);
   nJobs++; JobClass::vJobCat(CN_JOB_CREATEINDEX);
+  nJobs++; JobClass::vJobCat(CN_JOB_CREATENODE);
   nJobs++; JobClass::vJobCat(CN_JOB_CREATESCHEMA);
   nJobs++; JobClass::vJobCat(CN_JOB_CREATETABLE);
   nJobs++; JobClass::vJobCat(CN_JOB_CREATETENANT);
@@ -115,6 +116,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB_SIZETABLE);
   nJobs++; JobClass::vJobCat(CN_JOB_SPACE);
   nJobs++; JobClass::vJobCat(CN_JOB_STARTCLUSTER);
+  nJobs++; JobClass::vJobCat(CN_JOB_STARTNODE);
   nJobs++; JobClass::vJobCat(CN_JOB_STATUS);
   nJobs++; JobClass::vJobCat(CN_JOB_TABLESIZES);
   nJobs++; JobClass::vJobCat(CN_JOB_TRUNCATETABLE);

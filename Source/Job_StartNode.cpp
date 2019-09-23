@@ -48,7 +48,7 @@ JobClass xJobClass_StartNode =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_StartNode_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_CreateSchema_class;
+  *pNextFun = (pFUN*)pJob_Status_class;
   
   return &xJobClass_StartNode;
 }
