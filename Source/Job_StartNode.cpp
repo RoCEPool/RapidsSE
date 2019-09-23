@@ -6,11 +6,11 @@
 
 JobClass xJobClass_StartNode =
 {
-  CN_JOB_CREATENODE,      // class number
+  CN_JOB_STARTNODE,       // class number
   JK_DIST2PC,             // job kind
   RS_NODE_ZERO,           // response kind
-  "create node"_Stz,      // comment about the job
-  "create"_Stz,           // the prompt command
+  "start node"_Stz,       // comment about the job
+  "start"_Stz,            // the prompt command
   "node"_Stz,             // the second word
   nullptr,                // the _run task seed
   "StartNode_req"_Stz,    // the _req task seed
@@ -65,7 +65,7 @@ Job_StartNode* Jobs::_pJob_StartNode(void* aAddress)
 {
   Job_StartNode* pJob_StartNode = reinterpret_cast<Job_StartNode*>(aAddress);
   
-  RASSERT_TYPE(pJob_StartNode,CN_JOB_CREATENODE);
+  RASSERT_TYPE(pJob_StartNode,CN_JOB_STARTNODE);
   
   return pJob_StartNode;
 }
@@ -76,7 +76,7 @@ Job_StartNode* Jobs::_pJob_StartNode(void* aAddress)
 void* Job_StartNode::operator new(size_t)
 {
   Job_StartNode* pJob_StartNode =
-    static_cast<Job_StartNode*>(HeapMem::pAllocate(CN_JOB_CREATENODE));
+    static_cast<Job_StartNode*>(HeapMem::pAllocate(CN_JOB_STARTNODE));
   
   return pJob_StartNode;
 }
@@ -105,11 +105,11 @@ void Job_StartNode::operator delete(void* aAddress)
 Job_StartNode::Job_StartNode(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 : Job(aJobClass, aReqTuple, pSession)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATENODE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_STARTNODE,_FOOTER_);
   
-  _checkInitialised_(CN_JOB_CREATENODE);
+  _checkInitialised_(CN_JOB_STARTNODE);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATENODE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_STARTNODE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -117,7 +117,7 @@ Job_StartNode::Job_StartNode(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId
 /*----------------------------------------------------------------------------*/
 Job_StartNode::~Job_StartNode(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATENODE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_STARTNODE,_FOOTER_);
 }
 
 
@@ -144,7 +144,7 @@ void Job_StartNode::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 eEC Job_StartNode::ePopulateJob(TokenVec* pTokenVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATENODE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_STARTNODE,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert we got a create table
@@ -169,7 +169,7 @@ eEC Job_StartNode::ePopulateJob(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 void Job_StartNode::vShow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATENODE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_STARTNODE,_FOOTER_);
   
 }
 
@@ -181,7 +181,7 @@ void Job_StartNode::vShow(void)
 /*----------------------------------------------------------------------------*/
 bool Job_StartNode::bValidateStartNode(TokenVec* pTokenVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATENODE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_STARTNODE,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get tokens in token vector
@@ -191,7 +191,7 @@ bool Job_StartNode::bValidateStartNode(TokenVec* pTokenVec)
   if (iNumTokens < 3) {
     return false;
   }
-    
+  
   return true;
 }
 
@@ -204,7 +204,7 @@ bool Job_StartNode::bValidateStartNode(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 Footer* Job_StartNode::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATENODE);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_STARTNODE);
   
   return &m_xFooter;
 }
