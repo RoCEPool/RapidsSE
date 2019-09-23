@@ -17,11 +17,23 @@ namespace Jobs
     JobObjectName(void);
    ~JobObjectName(void) noexcept(false);
   
+    Stz* szCatalogName(void);
+    void vCatalogName(Stz* szCatalogName);
+  
     Stz* szIndexName(void);
     void vIndexName(Stz* szIndexName);
   
+    Stz* szNodeName(void);
+    void vNodeName(Stz* szNodeName);
+  
     Stz* szObjectName(void);
     void vObjectName(Stz* szObjectName);
+  
+    Stz* szTenantName(void);
+    void vTenantName(Stz* szTenantName);
+  
+    Stz* szSchemaName(void);
+    void vSchemaName(Stz* szSchemaName);
   };
 }
 
