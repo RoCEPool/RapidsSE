@@ -22,6 +22,7 @@ namespace Esses
     i8   iAppend(Stz* szStr);
     Stz* szGet(i8 i_Area);
     void vPrintAll(void);
+    void vReset(void);
   
     Footer* aFooter(void);
   };
@@ -119,6 +120,16 @@ void Bytes_t<BYTES>::vPrintAll(void)
   vTrace("\n"_Stz);
 }
 
+/*----------------------------------------------------------------------------*/
+/* reset                                                                      */
+/*----------------------------------------------------------------------------*/
+template <int BYTES>
+void Bytes_t<BYTES>::vReset(void)
+{
+  _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+  
+  m_i_Latter = 0;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
