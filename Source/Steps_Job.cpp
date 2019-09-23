@@ -733,7 +733,7 @@ void Step::vJobHasError(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.hasEntBuffer -- return true if job has a entry buffer                */
+/* job.hasEntBuffer -- return true if job has a entry buffer                  */
 /*----------------------------------------------------------------------------*/
 void Step::vJobHasEntBuffer(MP_Task mpTask)
 {

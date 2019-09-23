@@ -46,7 +46,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the parent job (participant node)
-  // parent jo can be EndInsert of LoadTable
+  // parent job can be EndInsert of LoadTable
   pJob_WriteBuffer Job_WriteBuffer.parentJobId@ locals| iParentJobId |
 
   // we wait till the parent job can be found in the participant job skip list

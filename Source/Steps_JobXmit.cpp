@@ -10,11 +10,12 @@
 void Step::vAddSteps_JobXmit(void)
 {
   vAddStep("Job_Xmit.parentJobId@"_Stz,  &Step::vJob_XmitParentJobIdFetch);
+  vAddStep("Job_Xmit.pipeOut"_Stz,       &Step::vJob_XmitPipeOut);
   vAddStep("Job_Xmit.node@"_Stz,         &Step::vJob_XmitNodeFetch);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_Xmit.parentJobId@ -- fetch parent jobid from job                   */
+/* Job_Xmit.parentJobId@ -- fetch parent jobid from job                       */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_XmitParentJobIdFetch(MP_Task mpTask)
 {
@@ -29,6 +30,26 @@ void Step::vJob_XmitParentJobIdFetch(MP_Task mpTask)
   RASSERT(C_UNKNOWN != iParentJobId);
   
   mpTask->m_pDataStack->vPushI8(iParentJobId);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job_Xmit.pipeOut -- pipe out the operand                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_XmitPipeOut(MP_Task mpTask)
+{
+  ENTRY("vJob_XmitPipeOut"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("Job_Xmit.pipeOut@"_Stz);
+  Job_Xmit* pJob_Xmit = _pJob_Xmit(pJobPtr);
+  
+  //i8 iParentJobId = pJob_Xmit->m_iParentJobId;
+  //RASSERT(C_UNKNOWN != iParentJobId);
+  
+  //mpTask->m_pDataStack->vPushI8(iParentJobId);
   
   EXIT();
 }

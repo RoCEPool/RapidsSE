@@ -750,6 +750,7 @@ private:
 
   // Job Xmit
   static void vJob_XmitParentJobIdFetch(Tasks::MP_Task mpTask);
+  static void vJob_XmitPipeOut(Tasks::MP_Task mpTask);
   static void vJob_XmitNodeFetch(Tasks::MP_Task mpTask);
 
   // load table

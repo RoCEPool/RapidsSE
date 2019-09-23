@@ -46,7 +46,7 @@ Job* Jobs::_pJob(i8 iAddr)
 /*----------------------------------------------------------------------------*/
 bool Jobs::_bIsValidJob(eCN eClass)
 {
-  if (eClass >= CN_JOB__BEGUN && eClass <= CN_JOB_WRITEROW)
+  if (eClass >= CN_JOB__BEGUN && eClass <= CN_JOB_XMIT)
     return true;
   else
     return false;
@@ -85,6 +85,7 @@ Job::Job(eCN eClassNo)
   m_oAcksRmg.vCheckInit();
   
   m_pCrwBuffer = nullptr;
+  //m_pOperand   = nullptr;
   m_pSendWith = nullptr;
   
   m_pJobMutex = nullptr;

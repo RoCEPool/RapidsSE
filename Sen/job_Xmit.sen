@@ -17,11 +17,15 @@
 
   job::this locals| pJob_Xmit |
 
+  "xmit_kid :" .verbose
+
+   //pJob_Xmit Job_xmit.parentJobId@ locals| iParentJobId |
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check there is enough Rows and load
 
   // node::checkEnoughRows if
-  //pJob_Xmit writeRow.insert
+  pJob_Xmit Job_xmit.pipeOut
   //then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
