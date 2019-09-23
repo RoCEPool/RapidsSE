@@ -9,16 +9,16 @@ namespace Gadgets
   {
   public:
   
-    s32 m_sName;
-    i8  m_iValue;
+    e_EG m_eEnumGroup;
+  
+    b4K  m_bStrings;
   
     // must be last
     Footer m_xFooter;
     
   public:
-    EnumSS(void);
-    EnumSS(Stz* szName);
-    EnumSS(Stz* szName, i8 iValue);
+    EnumSS(e_EG eEnumGroup);
+  
    ~EnumSS() noexcept(false);
   
     Footer* aFooter(void);

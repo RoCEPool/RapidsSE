@@ -1242,6 +1242,9 @@ void vTest25(void)
   bStrings.vAppend("abc"_Stz);  bStrings.vPrintAll();
   bStrings.vAppend("defg"_Stz); bStrings.vPrintAll();
 
+  EnumSS* pEnumSS = new EnumSS(_EG_NONE);
+  
+  delete pEnumSS;
 }
 
 /*============================================================================*/

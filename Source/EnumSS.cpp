@@ -7,45 +7,12 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-EnumSS::EnumSS(void)
+EnumSS::EnumSS(e_EG eEnumGroup)
 : Object(CN_ENUMSS)
 {
   _precondition_(_MAGIC_,CN_ENUMSS,_FOOTER_);
   
-  m_sName  = "<none>"_Stz;
-  m_iValue = C_UNKNOWN;
-  
-  _checkInitialised_(CN_ENUMSS);
-  
-  _postcondition_(_MAGIC_,CN_ENUMSS,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-EnumSS::EnumSS(Stz* szName)
-: Object(CN_ENUMSS)
-{
-  _precondition_(_MAGIC_,CN_ENUMSS,_FOOTER_);
-  
-  m_sName  = szName;
-  m_iValue = C_UNKNOWN;
-  
-  _checkInitialised_(CN_ENUMSS);
-  
-  _postcondition_(_MAGIC_,CN_ENUMSS,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-EnumSS::EnumSS(Stz* szName, i8 iValue)
-: Object(CN_ENUMSS)
-{
-  _precondition_(_MAGIC_,CN_ENUMSS,_FOOTER_);
-  
-  m_sName  = szName;
-  m_iValue = iValue;
+  m_eEnumGroup = eEnumGroup;
   
   _checkInitialised_(CN_ENUMSS);
   
