@@ -172,8 +172,9 @@ ENTRY("vLocalsTo"_Stz);
   
   // find the word describing the local
   ForthWord* pLocalWord = mpTask->m_oDicStack.pFindWord(sLocalName);
-  ASSERT(pLocalWord);
- 
+  if (! pLocalWord)
+    vFatal("No such local: %s\n"_Stz,sLocalName.aChar());
+  
   GenVar xVar_LocalNo;
   xVar_LocalNo = pLocalWord->iLocalNo();
   

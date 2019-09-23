@@ -7,36 +7,36 @@
 JobClass xJobClass_StartNode =
 {
   CN_JOB_STARTNODE,       // class number
-  JK_DIST2PC,             // job kind
-  RS_NODE_ZERO,           // response kind
+  JK_LOCAL,               // job kind
+  RS_NONE,                // response kind
   "start node"_Stz,       // comment about the job
   "start"_Stz,            // the prompt command
   "node"_Stz,             // the second word
   nullptr,                // the _run task seed
   "StartNode_req"_Stz,    // the _req task seed
-  "StartNode_beg"_Stz,    // the _rcv task seed
-  "StartNode_exe"_Stz,    // the _exe task seed
-  "StartNode_end"_Stz,    // the _end task seed
-  "StartNode_can"_Stz,    // the _can task seed
+  nullptr,                // the _rcv task seed
+  nullptr,                // the _exe task seed
+  nullptr,                // the _end task seed
+  nullptr,                // the _can task seed
   true,                   // check resources?
   false,                  // detached job?
   false,                  // buffer attached?
-  DL_GRAB_WRITE,          // ddl lock model
+  DL_NONE,                // ddl lock model
   PY_NORMAL,              // priority
-  JF_LOWMEM,              // flags
+  JF_NONE,                // flags
 
   eJob_checkCluster,      // prompt check function
   pJob_StartNode_pre,     // prompt pre-process function
   vJob_post,              // prompt post-process function
-  pJob_StartNode_new,     // job new function
+  nullptr,                // job new function
   vJob_StartNode_delete,  // job delete function
-  vJob_send,              // job pre-send function
-  vJob_recv,              // job post-receive function
+  nullptr,                // job pre-send function
+  nullptr,                // job post-receive function
   vJob_StartNode_show,    // job show function
   
   // help
   true,
-  "create node <nodeNm> ( <nodeinfo> )"_Stz,
+  "start node <nodeNm>"_Stz,
   
   ""_Stz,
 
@@ -148,7 +148,7 @@ eEC Job_StartNode::ePopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert we got a create table
-  ASSERT(pTokenVec->pGet(0)->bSame("create"_Stz));
+  ASSERT(pTokenVec->pGet(0)->bSame("start"_Stz));
   ASSERT(pTokenVec->pGet(1)->bSame("node"_Stz));
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
