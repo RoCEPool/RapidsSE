@@ -17,6 +17,7 @@ namespace StorageEngine
     static void vCheckPort(void);
     static void vClosePool(void);
     static void vCreateAttachMap(void);
+    static eBO  eDecodeCommandLine(void);
     static void vDeleteImmmediate(Task** ppTask);
     static void vDeleteSession(Session* pSession);
     static void vErrorHandler(Error* pError);
@@ -33,7 +34,7 @@ namespace StorageEngine
     static void vPrintExit(void);
     static void vPrintStatus(void);
     static void vPrintWelcome(void);
-    static void vRunCmdLine(void);
+    static void vRunCommandLine(void);
     static bool bRunUtilities(int argc, Stz* argv[]);
     static void vSanityCheck(void);
     static void vSignalHandler(int iSignal);

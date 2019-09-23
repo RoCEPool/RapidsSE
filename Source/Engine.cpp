@@ -57,7 +57,7 @@ void Engine::vMainEntry(void)
   
   //gpAttachMap->vPrintAttachMap();
   
-  vRunCmdLine();
+  vRunCommandLine();
   
   vClosePool();
   
@@ -208,6 +208,14 @@ void Engine::vCreateAttachMap(void)
     vInfo("AttachMap created: sizeof(AttachMap)=%lldB\n"_Stz,
           sizeof(AttachMap));
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* decode command line from arguments                                         */
+/*----------------------------------------------------------------------------*/
+eBO Engine::eDecodeCommandLine(void)
+{
+  return BO_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -691,10 +699,12 @@ void Engine::vPrintWelcome(void)
 /*----------------------------------------------------------------------------*/
 /* run command line                                                           */
 /*----------------------------------------------------------------------------*/
-void Engine::vRunCmdLine(void)
+void Engine::vRunCommandLine(void)
 {
   if (gxArguments.m_bVerbose)
-    vInfo("\n*\n* Execute Request Line\n*\n"_Stz);
+    vInfo("\n*\n* Run Command Line\n*\n"_Stz);
+  
+  eBO eBootOption = eDecodeCommandLine();
   
   try {
     
