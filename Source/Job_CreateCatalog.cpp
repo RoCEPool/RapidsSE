@@ -158,8 +158,8 @@ bool Job_CreateCatalog::bPopulateJob(TokenVec* pTokenVec)
   if (iNumTokens != 3)
   return false;
   
-  // set the table name
-  vObjectName(pTokenVec->pGet(2)->szText());
+  // set the catalog name
+  vCatalogName(pTokenVec->pGet(2)->szText());
   
   return true;
 }

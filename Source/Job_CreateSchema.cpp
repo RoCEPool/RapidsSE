@@ -160,7 +160,7 @@ bool Job_CreateSchema::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the schema name
-  vObjectName(pTokenVec->pGet(2)->szText());
+  vSchemaName(pTokenVec->pGet(2)->szText());
   
   return true;
 }
