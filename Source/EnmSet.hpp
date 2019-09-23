@@ -38,7 +38,10 @@ namespace Gadgets
     void vPrint(void);
     void vReset(void);
     eTN  eToken(i8 i_Enm);
+    i8   iValue(i8 i_Enm);
+    i8   iValue(Stz* szName);
     Stz* szValue(i8 i_Enm);
+    Stz* szValue(Stz* szName);
 
     Footer* aFooter(void);
   };

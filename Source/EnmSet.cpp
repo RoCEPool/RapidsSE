@@ -174,12 +174,54 @@ eTN EnmSet::eToken(i8 i_Enm)
 /*----------------------------------------------------------------------------*/
 /* get value                                                                  */
 /*----------------------------------------------------------------------------*/
+i8 EnmSet::iValue(i8 i_Enm)
+{
+  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  
+  Stz* szValue = m_bStrings.szGet(m_xEnnPair[i_Enm].m_i_Value);
+  i8 iValue = szValue->iToI8();
+  
+  return iValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get value                                                                  */
+/*----------------------------------------------------------------------------*/
 Stz* EnmSet::szValue(i8 i_Enm)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
   Stz* szValue = m_bStrings.szGet(m_xEnnPair[i_Enm].m_i_Value);
 
+  return szValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get value                                                                  */
+/*----------------------------------------------------------------------------*/
+i8 EnmSet::iValue(Stz *szName)
+{
+  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  
+  i8 i_Enm = i_Find(szName);
+  
+  Stz* szValue = m_bStrings.szGet(m_xEnnPair[i_Enm].m_i_Value);
+  i8 iValue = szValue->iToI8();
+
+  return iValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get value                                                                  */
+/*----------------------------------------------------------------------------*/
+Stz* EnmSet::szValue(Stz *szName)
+{
+  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  
+  i8 i_Enm = i_Find(szName);
+  
+  Stz* szValue = m_bStrings.szGet(m_xEnnPair[i_Enm].m_i_Value);
+  
   return szValue;
 }
 

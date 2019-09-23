@@ -36,6 +36,9 @@ void Step::vNodeNew(MP_Task mpTask)
   i8 nNodes = AM::nNodes();
   
   Node* pNode_copy = AM::pGrid()->pGetNode(nNodes - 1);
+
+  Job_CreateNode* pJob_CreateNode = _pJob_CreateNode(AM::pThisTLSJob());
+  EnmSet* pEnmSet = & pJob_CreateNode->m_oEnmSet;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   s32 sNodeNm;
@@ -49,7 +52,7 @@ void Step::vNodeNew(MP_Task mpTask)
                          pNode_copy->iPortNo() + 1);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
   AM::pGrid()->vAddNode(pNode);
   
   mpTask->m_pDataStack->vPushPointer(pNode);
