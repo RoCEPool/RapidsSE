@@ -47,7 +47,7 @@ JobClass xJobClass_WriteRow =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_WriteRow_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)nullptr;
+  *pNextFun = (pFUN*)pJob_Xmit_class;
   
   return &xJobClass_WriteRow;
 }

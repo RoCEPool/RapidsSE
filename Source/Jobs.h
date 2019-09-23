@@ -171,6 +171,7 @@ namespace Jobs
 #include "Job_Walk.hpp"
 #include "Job_WriteBuffer.hpp"
 #include "Job_WriteRow.hpp"
+#include "Job_Xmit.hpp"
 
 #include "JobList.hpp"
 
