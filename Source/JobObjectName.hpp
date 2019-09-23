@@ -32,11 +32,15 @@ namespace Jobs
     Stz* szObjectName(void);
     void vObjectName(Stz* szObjectName);
   
-    Stz* szTenantName(void);
-    void vTenantName(Stz* szTenantName);
+    Stz* szRoutineName(void);
+    void vRoutineName(Stz* szRoutineName);
   
     Stz* szSchemaName(void);
     void vSchemaName(Stz* szSchemaName);
+  
+    Stz* szTenantName(void);
+    void vTenantName(Stz* szTenantName);
+  
   };
 }
 

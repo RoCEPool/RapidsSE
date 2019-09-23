@@ -119,19 +119,19 @@ void JobObjectName::vObjectName(Stz* szObjectName)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get tenant name                                                            */
+/* get routine name                                                           */
 /*----------------------------------------------------------------------------*/
-Stz* JobObjectName::szTenantName(void)
+Stz* JobObjectName::szRoutineName(void)
 {
   return m_sObjectName;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set tenant name                                                            */
+/* set routine name                                                           */
 /*----------------------------------------------------------------------------*/
-void JobObjectName::vTenantName(Stz* szTenantName)
+void JobObjectName::vRoutineName(Stz* szRoutineName)
 {
-  m_sObjectName = szTenantName;
+  m_sObjectName = szRoutineName;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -148,6 +148,22 @@ Stz* JobObjectName::szSchemaName(void)
 void JobObjectName::vSchemaName(Stz* szSchemaName)
 {
   m_sObjectName = szSchemaName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get tenant name                                                            */
+/*----------------------------------------------------------------------------*/
+Stz* JobObjectName::szTenantName(void)
+{
+  return m_sObjectName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set tenant name                                                            */
+/*----------------------------------------------------------------------------*/
+void JobObjectName::vTenantName(Stz* szTenantName)
+{
+  m_sObjectName = szTenantName;
 }
 
 /*============================================================================*/
