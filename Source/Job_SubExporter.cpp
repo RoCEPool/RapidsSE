@@ -245,7 +245,7 @@ void Job_SubExporter::vSpawnKidExport(bool bLast)
   Job_KidExport* pJob_KidExport = _pJob_KidExport(pNewJob);
   
   pJob_KidExport->m_iExportJobId = m_pJobExport->m_iUniqueId;
-  pJob_KidExport->m_pSendWith    = m_pExportBuffer;
+  //pJob_KidExport->m_pSendWith    = m_pExportBuffer;
   
   if (bLast)
     pJob_KidExport->m_nBuffersExpected = m_nExportBuffers;

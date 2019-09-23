@@ -441,7 +441,6 @@ private:
 
   static void vJobHasError(Tasks::MP_Task mpTask);
   static void vJobHasEntBuffer(Tasks::MP_Task mpTask);
-  static void vJobHasSendWith(Tasks::MP_Task mpTask);
 
   static void vJobIdFetch(Tasks::MP_Task mpTask);
   static void vJobIndexNameFetch(Tasks::MP_Task mpTask);
@@ -485,8 +484,6 @@ private:
 
   static void vJobSeedFetch(Tasks::MP_Task mpTask);
   static void vJobSend(Tasks::MP_Task mpTask);
-  static void vJobSendWithFetch(Tasks::MP_Task mpTask);
-  static void vJobSendWithStore(Tasks::MP_Task mpTask);
   static void vJobSessionStateFetch(Tasks::MP_Task mpTask);
   static void vJobShow(Tasks::MP_Task mpTask);
   static void vJobSignalConnector(Tasks::MP_Task mpTask);

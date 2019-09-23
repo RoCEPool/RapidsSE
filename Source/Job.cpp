@@ -86,7 +86,6 @@ Job::Job(eCN eClassNo)
   
   m_pCrwBuffer = nullptr;
   m_pOperand   = nullptr;
-  m_pSendWith  = nullptr;
   
   m_pJobMutex = nullptr;
   
@@ -132,7 +131,6 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
   
   m_pCrwBuffer = nullptr;
   m_pOperand   = nullptr;
-  m_pSendWith  = nullptr;
   
   if (CN_JOB_NODEINFO == eClass())
     m_pJobMutex = nullptr;

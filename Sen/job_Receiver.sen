@@ -81,12 +81,6 @@
       pEntBuffer pReceivedJob job.crwBuffer!
     then
 
-    pReceivedJob job.hasSendWith if
-      "receiver_loop: hasSendWidth" .
-      pSocket socket.recvObject drop to pSendWith
-      pSendWith pReceivedJob job.sendWith!
-    then
-
     pReceivedJob SEED_RCV job.spawn
 
   again

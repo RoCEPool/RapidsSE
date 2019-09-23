@@ -42,9 +42,6 @@ namespace Jobs
     //! to be moved into Task
     Mutex* m_pJobMutex;
 
-    //! to be removed
-    Object*    m_pSendWith; // object which is to be sent with this job
-
   public:
     Job(eCN eClassNo);
     Job(JobClass* aJobClass,
