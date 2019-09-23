@@ -20,6 +20,8 @@ namespace Enums
 #include "eAN.h"
 #include "eAT.h"
 
+#include "eBO.h"
+
 #include "eCA.h"
 #include "eCS.h"
 #include "eCT.h"
