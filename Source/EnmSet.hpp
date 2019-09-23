@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EnumSS.hpp -- enum string set                                              */
+/* EnmSet.hpp -- enname string set                                            */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@ namespace Gadgets
 {
   static const i8 C_ENM_PAIRS = 64;
   
-  class EnumSS : public Object
+  class EnmSet : public Object
   {
   public:
   
@@ -22,9 +22,9 @@ namespace Gadgets
     Footer m_xFooter;
     
   public:
-    EnumSS(void);
+    EnmSet(void);
   
-   ~EnumSS() noexcept(false);
+   ~EnmSet() noexcept(false);
   
     Footer* aFooter(void);
   };

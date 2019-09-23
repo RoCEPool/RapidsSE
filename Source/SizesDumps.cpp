@@ -485,7 +485,7 @@ i8 giClassSize[]
   /*    */ sizeof(EarlyMarker),        // CN_EARLYMARKER
   /*    */ sizeof(Encoding),           // CN_ENCODING
   /*    */ sizeof(EndMarker),          // CN_ENDMARKER
-  /*    */ sizeof(EnumSS),             // CN_ENMSET
+  /*    */ sizeof(EnmSet),             // CN_ENMSET
   /* 36 */ sizeof(Ent),                // CN_ENT
   /* 37 */ sizeof(EntBuffer),          // CN_ENTBUFFER
   /* 64 */ sizeof(EntWrk),             // CN_ENTWRK
