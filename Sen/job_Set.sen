@@ -90,6 +90,7 @@
 "Job_SizeTable.sen" include
 "job_Space.sen" include
 "job_StartCluster.sen" include
+"job_StartNode.sen" include
 "job_Status.sen" include
 "job_SubExporter.sen" include
 "job_SubFetch.sen" include
