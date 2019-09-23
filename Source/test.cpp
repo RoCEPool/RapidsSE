@@ -1248,7 +1248,9 @@ void vTest25(void)
   pEnmSet->vAdd("name2"_Stz,"value2"_Stz,TN_STRING);
   pEnmSet->vAdd("name3"_Stz,"value3"_Stz,TN_STRING);
 
-  vTrace("  <0> %s\n"_Stz,pEnmSet->szString(0));
+  for (i8 i_Enm = 0; i_Enm < pEnmSet->nEnm(); i_Enm++)
+    vTrace("  [%lld] %s,%s\n"_Stz,
+           i_Enm,pEnmSet->szName(i_Enm),pEnmSet->szValue(i_Enm));
 
   delete pEnmSet;
 }

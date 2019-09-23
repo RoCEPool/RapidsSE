@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EnmSet.hpp -- enname string set                                            */
+/* EnmSet.hpp -- ename-value set                                              */
 /*============================================================================*/
 #pragma once
 
@@ -15,7 +15,7 @@ namespace Gadgets
   
     struct {
       i8  m_i_Name;
-      i8  m_i_String;
+      i8  m_i_Value;
       eTN m_eToken;
     } m_xEnnPair[C_ENM_SET];
 
@@ -29,9 +29,10 @@ namespace Gadgets
   
    ~EnmSet() noexcept(false);
   
-    void vAdd(Stz* szName, Stz* szString, eTN eToken);
+    void vAdd(Stz* szName, Stz* szValue, eTN eToken);
     i8   nEnm(void);
-    Stz* szString(i8 i_Enm);
+    Stz* szName(i8 i_Enm);
+    Stz* szValue(i8 i_Enm);
 
     Footer* aFooter(void);
   };

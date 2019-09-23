@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EnmSet.cpp -- ename string set                                             */
+/* EnmSet.cpp -- ename-value set                                              */
 /*============================================================================*/
 
 #include "Gadgets.h"
@@ -15,9 +15,9 @@ EnmSet::EnmSet(void)
   m_nEnm = 0;
   
   for (i8 i_Eno = 0; i_Eno < C_ENM_SET; i_Eno++) {
-    m_xEnnPair[i_Eno].m_i_Name   = C_UNKNOWN;
-    m_xEnnPair[i_Eno].m_i_String = C_UNKNOWN;
-    m_xEnnPair[i_Eno].m_eToken   = TN_NONE;
+    m_xEnnPair[i_Eno].m_i_Name  = C_UNKNOWN;
+    m_xEnnPair[i_Eno].m_i_Value = C_UNKNOWN;
+    m_xEnnPair[i_Eno].m_eToken  = TN_NONE;
   }
   
   _checkInitialised_(CN_ENMSET);
@@ -40,13 +40,13 @@ EnmSet::~EnmSet(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add                                                                        */
 /*----------------------------------------------------------------------------*/
-void EnmSet::vAdd(Stz* szName, Stz* szString, eTN eToken)
+void EnmSet::vAdd(Stz* szName, Stz* szValue, eTN eToken)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
-  m_xEnnPair[m_nEnm].m_i_Name   = m_bStrings.iAppend(szName);
-  m_xEnnPair[m_nEnm].m_i_String = m_bStrings.iAppend(szString);
-  m_xEnnPair[m_nEnm].m_eToken   = eToken;
+  m_xEnnPair[m_nEnm].m_i_Name  = m_bStrings.iAppend(szName);
+  m_xEnnPair[m_nEnm].m_i_Value = m_bStrings.iAppend(szValue);
+  m_xEnnPair[m_nEnm].m_eToken  = eToken;
   
   m_nEnm++;
 }
@@ -62,15 +62,27 @@ i8 EnmSet::nEnm(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get string                                                                 */
+/* get name                                                                   */
 /*----------------------------------------------------------------------------*/
-Stz* EnmSet::szString(i8 i_Enm)
+Stz* EnmSet::szName(i8 i_Enm)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
-  Stz* szString = m_bStrings.szGet(m_xEnnPair[i_Enm].m_i_String);
+  Stz* szName = m_bStrings.szGet(m_xEnnPair[i_Enm].m_i_Name);
+  
+  return szName;
+}
 
-  return szString;
+/*----------------------------------------------------------------------------*/
+/* get value                                                                  */
+/*----------------------------------------------------------------------------*/
+Stz* EnmSet::szValue(i8 i_Enm)
+{
+  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  
+  Stz* szValue = m_bStrings.szGet(m_xEnnPair[i_Enm].m_i_Value);
+
+  return szValue;
 }
 
 /*----------------------------------------------------------------------------*/
