@@ -159,8 +159,8 @@ bool Job_Docol::bPopulateJob(TokenVec* pTokenVec)
     return nullptr;
   }
   
-  // set the docol command name
-  vObjectName(pTokenVec->pGet(1)->szText());
+  // set the docol routine name
+  vRoutineName(pTokenVec->pGet(1)->szText());
   
   return true;
 }

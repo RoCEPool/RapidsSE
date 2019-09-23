@@ -78,6 +78,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.removeParticipant"_Stz,&Step::vJobRemoveParticipant);
   vAddStep("job.response@"_Stz,        &Step::vJobResponseFetch);
   vAddStep("job.response!"_Stz,        &Step::vJobResponseStore);
+  vAddStep("job.routineName@"_Stz,     &Step::vJobRoutineNameFetch);
   vAddStep("job.rowsInvalid@"_Stz,     &Step::vJobRowsInvalidFetch);
   vAddStep("job.rowsInvalid!"_Stz,     &Step::vJobRowsInvalidStore);
   vAddStep("job.rowsProcessed@"_Stz,   &Step::vJobRowsProcessedFetch);
@@ -1412,6 +1413,27 @@ void Step::vJobResponseStore(MP_Task mpTask)
   
   //pJob->m_xNode[iNode].m_sResponse = sResponse;
   pJob->m_xResponse.m_sResponse = sResponse;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.routineName@ -- fetch the routine name of the job                      */
+/*----------------------------------------------------------------------------*/
+void Step::vJobRoutineNameFetch(MP_Task mpTask)
+{
+  ENTRY("vJobRoutineNameFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.routineName@"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  s32 sRoutineName;
+  
+  sRoutineName = pJob->szRoutineName();
+  
+  mpTask->m_pDataStack->vPushS32(sRoutineName);
   
   EXIT();
 }

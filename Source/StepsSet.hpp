@@ -478,6 +478,7 @@ private:
   static void vJobRemoveParticipant(Tasks::MP_Task mpTask);
   static void vJobResponseStore(Tasks::MP_Task mpTask);
   static void vJobResponseFetch(Tasks::MP_Task mpTask);
+  static void vJobRoutineNameFetch(Tasks::MP_Task mpTask);
   static void vJobRowsInvalidFetch(Tasks::MP_Task mpTask);
   static void vJobRowsInvalidStore(Tasks::MP_Task mpTask);
   static void vJobRowsProcessedFetch(Tasks::MP_Task mpTask);
