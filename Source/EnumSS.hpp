@@ -5,18 +5,16 @@
 
 namespace Gadgets
 {
-  static const i8 C_ENO_PAIRS = 64;
+  static const i8 C_ENM_PAIRS = 64;
   
   class EnumSS : public Object
   {
   public:
   
-    e_EG m_eEnumGroup;
-  
     struct {
-      i8 m_iEnum;
+      i8 m_iName;
       i8 m_iString;
-    } m_xEnoPair[C_ENO_PAIRS];
+    } m_xEnnPair[C_ENM_PAIRS];
 
     b4K  m_bStrings;
   
@@ -24,7 +22,7 @@ namespace Gadgets
     Footer m_xFooter;
     
   public:
-    EnumSS(e_EG eEnumGroup);
+    EnumSS(void);
   
    ~EnumSS() noexcept(false);
   

@@ -7,16 +7,15 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-EnumSS::EnumSS(e_EG eEnumGroup)
+EnumSS::EnumSS(void)
 : Object(CN_ENUMSS)
 {
   _precondition_(_MAGIC_,CN_ENUMSS,_FOOTER_);
   
-  m_eEnumGroup = eEnumGroup;
   
-  for (i8 i_Eno = 0; i_Eno < C_ENO_PAIRS; i_Eno++) {
-    m_xEnoPair[i_Eno].m_iEnum   = C_UNKNOWN;
-    m_xEnoPair[i_Eno].m_iString = C_UNKNOWN;
+  for (i8 i_Eno = 0; i_Eno < C_ENM_PAIRS; i_Eno++) {
+    m_xEnnPair[i_Eno].m_iName   = C_UNKNOWN;
+    m_xEnnPair[i_Eno].m_iString = C_UNKNOWN;
   }
   
   _checkInitialised_(CN_ENUMSS);
