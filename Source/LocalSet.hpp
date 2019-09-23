@@ -10,9 +10,9 @@ namespace Forth
   class LocalSet : public Object
   {
   public:
-    LocalSet* m_pNext;             // nest frame in chain
-    ForthValue*    m_aDiscardPoint;     // discard point (when in call stack)
-    Local     m_xLocal[C_LOCALS];  // set of local values
+    LocalSet*   m_pNext;             // nest frame in chain
+    ForthValue* m_aDiscardPoint;     // discard point (when in call stack)
+    Local       m_xLocal[C_LOCALS];  // set of local values
     
     // must be last
     Footer m_xFooter;

@@ -162,6 +162,8 @@ void Task::vInit(void)
   m_pReturnStack = nullptr;
   m_pAuxStack    = nullptr;
   
+  m_pRegSet      = nullptr;
+  
   m_pCompiler    = nullptr;
   m_pSendNode    = nullptr;
 }
