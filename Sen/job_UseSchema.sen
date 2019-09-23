@@ -37,7 +37,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get schema name from job
-  pJob_UseSchema job.objectName@ to sSchemaNm
+  pJob_UseSchema job.schemaName@ to sSchemaNm
 
   sSchemaNm checkIsWord not if EC_NO_SUCH_SCHEMA pJob_UseSchema <ERROR_JOB> !!logError exit then
   checkIsSchema not if pJob_UseSchema <ERROR_JOB> !!logError exit then

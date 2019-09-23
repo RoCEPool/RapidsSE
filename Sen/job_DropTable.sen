@@ -157,7 +157,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the table
-  pJob_DropTable job.objectName@   ( tableNm )
+  pJob_DropTable job.objectName@
   removeTable
 
   pJob_DropTable job.notice

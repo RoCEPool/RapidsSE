@@ -87,7 +87,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // remove the catalog
-  pJob_DropTenant job.objectName@   ( catalogNm )
+  pJob_DropTenant job.tenantName@
   removeTenant
 
   pJob_DropTenant job.notice
@@ -119,8 +119,8 @@
   task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // check if we can remove the catalog
-  pJob_DropTenant job.objectName@
+  // check if we can remove the tenant
+  pJob_DropTenant job.tenantName@
   checkRemoveTenant not if pJob_DropTenant <ERROR_JOB> !!logError exit then
 
   <<logExit <Resources_Checked>

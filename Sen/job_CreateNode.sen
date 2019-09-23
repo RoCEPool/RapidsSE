@@ -93,7 +93,7 @@
 
   //----------------------------------------------------------------------------
   // make Node
-  pJob_CreateNode job.objectName@ to sNodeNm
+  pJob_CreateNode job.nodeName@ to sNodeNm
   sNodeNm makeNode to pNode
 
 
@@ -129,7 +129,7 @@
 
   //----------------------------------------------------------------------------
   // check if we can make the Node
-  pJob_CreateNode job.objectName@
+  pJob_CreateNode job.nodeName@
   checkMakeNode not if pJob_CreateNode <ERROR_JOB> !!logError exit then
 
   <<logExit <Resources_Checked>

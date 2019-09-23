@@ -89,7 +89,7 @@
   ddlLock::grabWrite
 
   CN_JOB_CREATESCHEMA pJob_CreateSchema object.assertClass
-  pJob_CreateSchema job.objectName@ to sSchemaNm
+  pJob_CreateSchema job.schemaName@ to sSchemaNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
@@ -135,7 +135,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can make the catalog
-  pJob_CreateSchema job.objectName@
+  pJob_CreateSchema job.schemaName@
   checkMakeSchema not if pJob_CreateSchema <ERROR_JOB> !!logError exit then
 
   <<logExit <Resources_Checked>

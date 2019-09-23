@@ -88,7 +88,7 @@
   ddlLock::grabWrite
 
   CN_JOB_CREATETENANT pJob_CreateTenant object.assertClass
-  pJob_CreateTenant job.objectName@ to sTenantNm
+  pJob_CreateTenant job.tenantName@ to sTenantNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
@@ -133,7 +133,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can make the catalog
-  pJob_CreateTenant job.objectName@
+  pJob_CreateTenant job.tenantName@
   checkMakeTenant not if pJob_CreateTenant <ERROR_JOB> !!logError exit then
 
   <<logExit <Resources_Checked>
