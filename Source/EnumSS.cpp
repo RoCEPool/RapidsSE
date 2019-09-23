@@ -14,6 +14,11 @@ EnumSS::EnumSS(e_EG eEnumGroup)
   
   m_eEnumGroup = eEnumGroup;
   
+  for (i8 i_Eno = 0; i_Eno < C_ENO_PAIRS; i_Eno++) {
+    m_xEnoPair[i_Eno].m_iEnum   = C_UNKNOWN;
+    m_xEnoPair[i_Eno].m_iString = C_UNKNOWN;
+  }
+  
   _checkInitialised_(CN_ENUMSS);
   
   _postcondition_(_MAGIC_,CN_ENUMSS,_FOOTER_);
