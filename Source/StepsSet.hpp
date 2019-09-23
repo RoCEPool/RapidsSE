@@ -814,6 +814,7 @@ private:
   static void vNodeSendSocketStore(Tasks::MP_Task mpTask);
   static void vNodeSendSocketFetch(Tasks::MP_Task mpTask);
   static void vNodeSize(Tasks::MP_Task mpTask);
+  static void vNodeStartNode(Tasks::MP_Task mpTask);
   static void vNodeStateStore(Tasks::MP_Task mpTask);
   static void vNodeStateFetch(Tasks::MP_Task mpTask);
   static void vNodeStatus(Tasks::MP_Task mpTask);

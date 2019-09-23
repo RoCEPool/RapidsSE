@@ -21,6 +21,7 @@ void Step::vAddSteps_Node(void)
   vAddStep("node.sendSocket!"_Stz, &Step::vNodeSendSocketStore);
   vAddStep("node.sendSocket@"_Stz, &Step::vNodeSendSocketFetch);
   vAddStep("node.size"_Stz,        &Step::vNodeSize);
+  vAddStep("node.start"_Stz,       &Step::vNodeStartNode);
   vAddStep("node.state!"_Stz,      &Step::vNodeStateStore);
   vAddStep("node.state@"_Stz,      &Step::vNodeStateFetch);
   vAddStep("node.status"_Stz,      &Step::vNodeStatus);
@@ -247,6 +248,23 @@ void Step::vNodeSize(MP_Task mpTask)
   
   mpTask->m_pDataStack->vPushI8(AM::iRegionSize());
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* node.start -- start node                                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vNodeStartNode(MP_Task mpTask)
+{
+  ENTRY("vNodeStartNode"_Stz);
+  
+  Object* pPtrNode;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrNode) )
+    THROW_INVALID_DSTACK("node.start"_Stz);
+  Node* pNode = _pNode(pPtrNode);
+  
+  mpTask->m_pDataStack->vPushBool(true);
+
   EXIT();
 }
 
