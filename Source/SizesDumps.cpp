@@ -78,11 +78,11 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vUndefined,       // CN_EARLYMARKER
   /*    */ &Dump::vUndefined,       // CN_ENCODING
   /*    */ &Dump::vUndefined,       // CN_ENDMARKER
+  /*    */ &Dump::vDummy,           // CN_ENMSET
   /* 36 */ &Dump::vDummy,           // CN_ENT
   /* 37 */ &Dump::vDummy,           // CN_ENTBUFFER
   /* 64 */ &Dump::vInvalid,         // CN_ENTWRK
   /*    */ &Dump::vDummy,           // CN_ENUMFLAGS
-  /*    */ &Dump::vDummy,           // CN_ENUMSS
   /*    */ &Dump::vDummy,           // CN_EXPORTBUFFER
   /*    */ &Dump::vDummy,           // CN_EXPROP
 
@@ -485,11 +485,11 @@ i8 giClassSize[]
   /*    */ sizeof(EarlyMarker),        // CN_EARLYMARKER
   /*    */ sizeof(Encoding),           // CN_ENCODING
   /*    */ sizeof(EndMarker),          // CN_ENDMARKER
+  /*    */ sizeof(EnumSS),             // CN_ENMSET
   /* 36 */ sizeof(Ent),                // CN_ENT
   /* 37 */ sizeof(EntBuffer),          // CN_ENTBUFFER
   /* 64 */ sizeof(EntWrk),             // CN_ENTWRK
   /*    */ sizeof(EnumFlags),          // CN_ENUMFLAGS
-  /*    */ sizeof(EnumSS),             // CN_ENUMSS
   /* 32 */ sizeof(ExportBuffer),       // CN_EXPORTBUFFER
   /* 32 */ sizeof(ExprOp),             // CN_EXPROP
 
@@ -890,11 +890,11 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_SMALL,   // CN_EARLYMARKER
   /*    */ HT_TRANSIENT_LARGE,   // CN_ENCODING
   /*    */ HT_TRANSIENT_SMALL,   // CN_ENDMARKER
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_ENMSET
   /* 36 */ HT_INVALID,           // CN_ENT
   /* 37 */ HT_TRANSIENT_LARGE,   // CN_ENTBUFFER
   /* 64 */ HT_INVALID,           // CN_ENTWRK
   /*    */ HT_TRANSIENT_SMALL,   // CN_ENUMFLAGS
-  /*    */ HT_TRANSIENT_MEDIUM,  // CN_ENUMSS
   /*    */ HT_TRANSIENT_LARGE,   // CN_EXPORTBUFFER
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_EXPROP
 

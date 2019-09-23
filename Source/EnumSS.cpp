@@ -8,9 +8,9 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 EnumSS::EnumSS(void)
-: Object(CN_ENUMSS)
+: Object(CN_ENMSET)
 {
-  _precondition_(_MAGIC_,CN_ENUMSS,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
   
   for (i8 i_Eno = 0; i_Eno < C_ENM_PAIRS; i_Eno++) {
@@ -18,9 +18,9 @@ EnumSS::EnumSS(void)
     m_xEnnPair[i_Eno].m_iString = C_UNKNOWN;
   }
   
-  _checkInitialised_(CN_ENUMSS);
+  _checkInitialised_(CN_ENMSET);
   
-  _postcondition_(_MAGIC_,CN_ENUMSS,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -28,7 +28,7 @@ EnumSS::EnumSS(void)
 /*----------------------------------------------------------------------------*/
 EnumSS::~EnumSS(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_ENUMSS,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

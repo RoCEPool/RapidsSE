@@ -74,8 +74,8 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_EARLYMARKER
   /*    */ &Finalize::vUndefined,         // CN_ENCODING
   /*    */ &Finalize::vUndefined,         // CN_ENDMARKER
+  /* 37 */ &Finalize::vUndefined,         // CN_ENMSET
   /* 36 */ &Finalize::vUndefined,         // CN_ENT
-  /* 37 */ &Finalize::vUndefined,         // CN_ENTBUFFER
   /* 64 */ &Finalize::vUndefined,         // CN_ENTWRK
   /*    */ &Finalize::vUndefined,         // CN_ENUMFLAGS
   /*    */ &Finalize::vUndefined,         // CN_ENUMSS
