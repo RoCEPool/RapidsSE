@@ -489,7 +489,7 @@ i8 giClassSize[]
   /* 37 */ sizeof(EntBuffer),          // CN_ENTBUFFER
   /* 64 */ sizeof(EntWrk),             // CN_ENTWRK
   /*    */ sizeof(EnumFlags),          // CN_ENUMFLAGS
-  /*    */ 0,          // CN_ENUMSS
+  /*    */ sizeof(EnumSS),             // CN_ENUMSS
   /* 32 */ sizeof(ExportBuffer),       // CN_EXPORTBUFFER
   /* 32 */ sizeof(ExprOp),             // CN_EXPROP
 

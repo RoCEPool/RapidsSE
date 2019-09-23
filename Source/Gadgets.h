@@ -17,6 +17,7 @@ namespace Gadgets
 #include "Birth.hpp"
 #include "DecaCnt.hpp"
 #include "EnumFlags.hpp"
+#include "EnumSS.hpp"
 #include "FreqDist.hpp"
 #include "HV.hpp"
 #include "MP.hpp"
