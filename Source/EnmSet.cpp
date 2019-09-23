@@ -5,6 +5,18 @@
 #include "Gadgets.h"
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+EnmSet* Gadgets::_pEnmSet(void* aAddr)
+{
+  EnmSet* pEnmSet = reinterpret_cast<EnmSet*>(aAddr);
+  
+  RASSERT_TYPE(pEnmSet,CN_ENMSET);
+  
+  return pEnmSet;
+}
+
+/*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
 void* EnmSet::operator new(size_t)

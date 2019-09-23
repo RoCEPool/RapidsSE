@@ -39,6 +39,8 @@ namespace Gadgets
 
     Footer* aFooter(void);
   };
+  
+  EnmSet* _pEnmSet(void* aAddr);
 }
 
 /*============================================================================*/
