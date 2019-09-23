@@ -208,9 +208,14 @@ void Tokeniser::vTokenise(TokenVec* pTokenVec, s4K& sString)
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vToEnmSet(EnmSet* pEnmSet, TokenVec* pTknVec)
 {
+  pEnmSet->vReset();
+
   i8 i_OpenToken  = pTknVec->iFindToken("{"_Stz);
   i8 i_CloseToken = pTknVec->iFindToken("}"_Stz);
 
+  if (C_UNKNOWN == i_OpenToken || C_UNKNOWN == i_CloseToken)
+    return;
+  
   vToEnmSet(pEnmSet,pTknVec,i_OpenToken + 1,i_CloseToken - 1);
 }
 
@@ -234,6 +239,9 @@ void Tokeniser::vToEnmSet(EnmSet* pEnmSet, TokenVec* pTknVec, i8 i_From, i8 i_To
     pEnmSet->vAdd(pTknVec->pGet(i_Name)->szText(),
                   pTknVec->pGet(i_Value)->szText(),
                   pTknVec->pGet(i_Value)->eToken());
+    
+    if (pTknVec->pGet(i_Tkn)->bSame(","_Stz))
+      i_Tkn++;
   }
 }
 

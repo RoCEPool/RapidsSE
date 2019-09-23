@@ -191,7 +191,9 @@ bool Job_CreateNode::bValidateCreateNode(TokenVec* pTokenVec)
   if (iNumTokens < 3) {
     return false;
   }
-    
+  
+  Tokeniser::vToEnmSet(&m_oEnmSet,pTokenVec);
+      
   return true;
 }
 
