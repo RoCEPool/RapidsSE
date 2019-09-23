@@ -43,7 +43,8 @@ namespace Interface     { class ApiState;                                     }
 namespace Jobs          { class Job; struct JobClass;  class JobList;
                                      class Job_CreateTable;
                                      class Job_CreateIndex;
-                                     class Job_Dynamic;                       }
+                                     class Job_Dynamic;
+                                     class Job_Xmit;                          }
 namespace Library       {                                                     }
 namespace Locking       { class Lock; class LockTracker;                      }
 namespace Logging       { class Log; class LogEntry;                          }
@@ -64,7 +65,7 @@ namespace Services      {                                                     }
 namespace Sessions      { class Request; class Session; class SessionState;   }
 namespace Steps         { class Step; class StepTiming;                       }
 namespace StorageEngine { class AttachMap; class AM; class Engine;            }
-namespace Streams       {                                                     }
+namespace Streams       { class Operand;                                      }
 namespace Strings       {                                                     }
 namespace Structures    { class Queue;                                        }
 namespace Tasks         { class Task;                                         }

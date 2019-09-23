@@ -748,6 +748,10 @@ private:
   static void vJob_WriteRowPartitionFetch(Tasks::MP_Task mpTask);
   static void vJob_WriteRowTableStore(Tasks::MP_Task mpTask);
 
+  // Job Xmit
+  static void vJob_XmitParentJobIdFetch(Tasks::MP_Task mpTask);
+  static void vJob_XmitNodeFetch(Tasks::MP_Task mpTask);
+
   // load table
   static void vLoadTableChunkFile(Tasks::MP_Task mpTask);
   static void vLoadTableDelete(Tasks::MP_Task mpTask);

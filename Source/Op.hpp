@@ -85,7 +85,6 @@ namespace Operators
     Task* pTask(void);
     void vTask(Task* pTask);
     void vWorkQuanta(i8 iWorkQuanta);
-    void vXmitOut(Operand* pOperand, i8 iNode);
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

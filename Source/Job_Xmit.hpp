@@ -10,9 +10,9 @@ namespace Jobs
                        public JobExtractRow
   {
   public:
-    i8         m_iPartitionId;    // partition id
+    i8         m_iNode;           // node id
     i8         m_iParentJobId;    // parent (InsertRow) job id
-    Record*    m_pRecord;         // raw record
+    Operand*   m_pOperand;        // operand to xmit
     
     // must be last
     Footer m_xFooter;
@@ -27,11 +27,10 @@ namespace Jobs
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    static Job_Xmit* pNewJobXmit(Session* pSession,
-                                         Stz* sTableName,
-                                         Table* pTable,
-                                         Record* pRecord,
-                                         i8 iParentJobId);
+    static void vSpawnJobXmit(Session* pSession,
+                              Operand* pOperand,
+                              i8 iParentJobId,
+                              i8 iNode);
     
   public:
     void vInsertRow(void);

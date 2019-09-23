@@ -124,6 +124,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobWriteBuffer();
   Step::vAddSteps_JobWriteRecord();
   Step::vAddSteps_JobWriteRow();
+  Step::vAddSteps_JobXmit();
   
   Step::vAddSteps_Locals();
   Step::vAddSteps_Lock();

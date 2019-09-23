@@ -106,10 +106,9 @@ Job_Xmit::Job_Xmit(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session*
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_XMIT,_FOOTER_);
   
-  m_pTable = nullptr;
-  m_iPartitionId = C_UNKNOWN;
+  m_iNode        = C_UNKNOWN;
   m_iParentJobId = C_UNKNOWN;
-  m_pRecord      = nullptr;
+  m_pOperand     = nullptr;
   
   // set the enclosed_by to be a '
   m_oFormatters.m_bDefault = false;
@@ -133,32 +132,6 @@ Job_Xmit::~Job_Xmit(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert row into table                                                      */
-/*----------------------------------------------------------------------------*/
-void Job_Xmit::vInsertRow(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_XMIT,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // convert partition to node slot
-  i8 i_Slot = TablePtn::iPartitionToSlot(m_iPartitionId);
-  
-  TablePtn* pPartition = m_pTable->pPartition(i_Slot);
-  
-  bool bBlankLine;
-  // extract row again
-  bool bResult = bExtractRow(m_pRecord->szRecStr(), bBlankLine);
-  RASSERT(bResult);
-  
-  // we can assert that there is no rowCompactor that came from originating node
-  RASSERT(!m_paRowCompactor[i_Slot]);
-  m_paRowCompactor[i_Slot] = new RowCompactor;
-  
-  // append the row to the partition and all its indexes
-  pPartition->vAppendRow(m_paRowCompactor[i_Slot],m_pRow);
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Static Functions --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -173,35 +146,39 @@ void Job_Xmit::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new a Xmit job                                                             */
+/* spawn a xmit job                                                           */
 /*----------------------------------------------------------------------------*/
-Job_Xmit* Job_Xmit::pNewJobXmit(Session* pSession,
-                                            Stz* sTableName,
-                                            Table* pTable,
-                                            Record* pRecord,
-                                            i8 iParentJobId)
+void Job_Xmit::vSpawnJobXmit(Session* pSession,
+                             Operand* pOperand,
+                             i8 iParentJobId,
+                             i8 iNode)
 {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // analysis
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a write buffer job
   
   //! this needs to be optimised
-  JobClass* pJobClass_WriteRow = JobClass::pFind(CN_JOB_XMIT);
-
-  ReqTuple xReqTuple("!!WRITE_ROW"_Stz,false);
+  JobClass* pJobClass_Xmit = JobClass::pFind(CN_JOB_XMIT);
+  
+  ReqTuple xReqTuple("!!XMIT"_Stz,false);
   
   Job_Xmit* pJob_Xmit =
-    static_cast<Job_Xmit*>
-      (pJobClass_WriteRow->pPreJob(pSession,&xReqTuple,iParentJobId));
-
+  static_cast<Job_Xmit*>
+  (pJobClass_Xmit->pPreJob(pSession,&xReqTuple,iParentJobId));
+  
   pJob_Xmit->vSeed(SS_SEED_RUN);
-
-  pJob_Xmit->m_iParentJobId = iParentJobId;
-  pJob_Xmit->m_sObjectName  = sTableName;
-  pJob_Xmit->m_pTable       = pTable;
-  pJob_Xmit->m_pRecord      = pRecord;
-  pJob_Xmit->m_iPartitionId = C_UNKNOWN;
-
-  return pJob_Xmit;
+  
+  pJob_Xmit->m_iParentJobId  = iParentJobId;
+  pJob_Xmit->m_iNode         = iNode;
+  pJob_Xmit->m_pOperand      = pOperand;
+  //pJob_Xmit->m_nRows         = pOperand->nRowCount();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // spawn the write buffer job
+  
+  IGNORE_RETURN(AM::bSpawnJob(pSession,pJob_Xmit));
 }
 
 /*----------------------------------------------------------------------------*/
