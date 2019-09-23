@@ -137,7 +137,7 @@ void AM::vIndexEntries(i8 nIndexEntries) {
   gpAttachMap->m_nIndexEntries = nIndexEntries;
 }
 void AM::vIndexName(Job_Dynamic* pJob, Stz* szIndexNm) {
-  pJob->m_sIndexName = szIndexNm;
+  pJob->vIndexName(szIndexNm);
 }
 Index* AM::pIndex(Job_Dynamic* pJob) {
   return pJob->m_pIndex;

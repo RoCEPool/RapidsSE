@@ -223,7 +223,7 @@ bool Job_CreateIndex::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the index name
-  m_sIndexName = pTokenVec->pGet(2 + iIfUnique)->szText();
+  vIndexName(pTokenVec->pGet(2 + iIfUnique)->szText());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // uniqueness
@@ -263,7 +263,7 @@ void Job_CreateIndex::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATEINDEX,_FOOTER_);
   
-  vTrace("\n\nJob_CreateIndex: %s\n"_Stz, m_sIndexName.aChar());
+  vTrace("\n\nJob_CreateIndex: %s\n"_Stz, szIndexName()->aChar());
   
   //vTrace("m_sExecute = %s\n"_Stz,m_sExecute.aChar());
   vTrace("TableName = %s\n"_Stz,m_sObjectName.aChar());

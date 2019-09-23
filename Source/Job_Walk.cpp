@@ -109,7 +109,7 @@ Job_Walk::Job_Walk(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session*
   m_pTable = nullptr;
   m_pIndex = nullptr;
 
-  m_sIndexName = ""_Stz;
+  //m_sIndexName = ""_Stz;
   
   _checkInitialised_(CN_JOB_WALK);
   
@@ -192,7 +192,7 @@ bool Job_Walk::bPopulateJob(TokenVec* pTokenVec)
   // - - - - - - - - - - - - - - - - - - - - -
   // set the index name
   if (iNumTokens == 3)
-    m_sIndexName = pTokenVec->pGet(2)->szText();
+    vIndexName(pTokenVec->pGet(2)->szText());
   
   return true;
 }

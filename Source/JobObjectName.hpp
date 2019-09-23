@@ -9,6 +9,7 @@ namespace Jobs
   {
   public:
     s32  m_sObjectName; // object name (e.g. schema, table etc)
+  private:
     s32  m_sIndexName;  // index name
     
   public:
