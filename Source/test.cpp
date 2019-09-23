@@ -1239,11 +1239,15 @@ void vTest25(void)
   
   bStrings.vPrintAll();
   
-  bStrings.vAppend("abc"_Stz);  bStrings.vPrintAll();
-  bStrings.vAppend("defg"_Stz); bStrings.vPrintAll();
+  bStrings.iAppend("abc"_Stz);  bStrings.vPrintAll();
+  bStrings.iAppend("defg"_Stz); bStrings.vPrintAll();
 
   EnmSet* pEnmSet = new EnmSet();
   
+  pEnmSet->vAdd("name1"_Stz,"value1"_Stz,TN_STRING);
+  pEnmSet->vAdd("name2"_Stz,"value2"_Stz,TN_STRING);
+  pEnmSet->vAdd("name3"_Stz,"value3"_Stz,TN_STRING);
+
   delete pEnmSet;
 }
 

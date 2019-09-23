@@ -11,9 +11,12 @@ namespace Gadgets
   {
   public:
   
+    i8 m_nEno;
+  
     struct {
-      i8 m_iName;
-      i8 m_iString;
+      i8  m_i_Name;
+      i8  m_i_String;
+      eTN m_eToken;
     } m_xEnnPair[C_ENM_PAIRS];
 
     b4K  m_bStrings;
@@ -25,6 +28,8 @@ namespace Gadgets
     EnmSet(void);
   
    ~EnmSet() noexcept(false);
+  
+    void vAdd(Stz* szName, Stz* szString, eTN eToken);
   
     Footer* aFooter(void);
   };

@@ -19,7 +19,7 @@ namespace Esses
     Bytes_t(void);
    ~Bytes_t(void) noexcept(false);
   
-    void vAppend(Stz* szStr);
+    i8   iAppend(Stz* szStr);
     void vPrintAll(void);
 
     Footer* aFooter(void);
@@ -71,9 +71,11 @@ Bytes_t<BYTES>::~Bytes_t(void) noexcept(false)
 /* append given string                                                        */
 /*----------------------------------------------------------------------------*/
 template <int BYTES>
-void Bytes_t<BYTES>::vAppend(Stz* szStr)
+i8 Bytes_t<BYTES>::iAppend(Stz* szStr)
 {
   _precondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+  
+  i8 i_String = m_i_Latter;
   
   for (byte* ayByte = (byte*) szStr; * ayByte; )
     m_yaArea[m_i_Latter++] = * ayByte++;
@@ -81,6 +83,8 @@ void Bytes_t<BYTES>::vAppend(Stz* szStr)
   m_yaArea[m_i_Latter++] = '\0';
 
   _postcondition_(_MAGIC_,CN_BYTES_T,_FOOTER_);
+  
+  return i_String;
 }
 
 /*----------------------------------------------------------------------------*/

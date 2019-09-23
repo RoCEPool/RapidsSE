@@ -11,11 +11,13 @@ EnmSet::EnmSet(void)
 : Object(CN_ENMSET)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
-  
+ 
+  m_nEno = 0;
   
   for (i8 i_Eno = 0; i_Eno < C_ENM_PAIRS; i_Eno++) {
-    m_xEnnPair[i_Eno].m_iName   = C_UNKNOWN;
-    m_xEnnPair[i_Eno].m_iString = C_UNKNOWN;
+    m_xEnnPair[i_Eno].m_i_Name   = C_UNKNOWN;
+    m_xEnnPair[i_Eno].m_i_String = C_UNKNOWN;
+    m_xEnnPair[i_Eno].m_eToken   = TN_NONE;
   }
   
   _checkInitialised_(CN_ENMSET);
@@ -34,6 +36,21 @@ EnmSet::~EnmSet(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add                                                                        */
+/*----------------------------------------------------------------------------*/
+void EnmSet::vAdd(Stz* szName, Stz* szString, eTN eToken)
+{
+  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  
+  m_xEnnPair[m_nEno].m_i_Name   = m_bStrings.iAppend(szName);
+  m_xEnnPair[m_nEno].m_i_String = m_bStrings.iAppend(szString);
+  m_xEnnPair[m_nEno].m_eToken   = eToken;
+  
+  m_nEno++;
+}
+
 
 
 /*----------------------------------------------------------------------------*/
