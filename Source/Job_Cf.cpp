@@ -159,7 +159,7 @@ bool Job_Cf::bPopulateJob(TokenVec* pTokenVec)
     return nullptr;
   }
   
-  // set the docol command name
+  // set the folder command name
   vObjectName(pTokenVec->pGet(1)->szText());
   
   return true;

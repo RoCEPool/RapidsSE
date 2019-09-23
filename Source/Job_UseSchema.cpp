@@ -161,8 +161,8 @@ bool Job_UseSchema::bPopulateJob(TokenVec* pTokenVec)
   }
   
   // - - - - - - - - - - - - - - - - - - - - -
-  // set the table name
-  vObjectName(pTokenVec->pGet(2)->szText());
+  // set the schema name
+  vSchemaName(pTokenVec->pGet(2)->szText());
   
   return true;
 }

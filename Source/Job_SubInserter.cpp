@@ -214,7 +214,7 @@ bool Job_SubInserter::bPopulateJob(TokenVec* pTokenVec)
   if (nTokens != 4)
     return nullptr;
   
-  // get the table name
+  // set the table name
   vObjectName(pTokenVec->pGet(3)->szText());
 
   return true;
