@@ -248,15 +248,12 @@ void Task::vTaskLoop_job(void)
   
   while (TR_NONE == m_eTransition) {
     
-    // get the step function to be called
-    StepFp fpStep = *(m_aFipCell->m_afpStep);
+    // get next routine to be called
+    StepFp fpRoutine = *( (m_aFipCell ++)->m_afpStep );
     
-    // advance instruction pointer to next cell in word routine
-    m_aFipCell++;
-    
-    // call the step function
+    // call the routine
     try {
-      (fpStep)(this);
+      fpRoutine(this);
     }
     
     catch (i8 iException) {
