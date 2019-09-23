@@ -139,6 +139,7 @@ namespace Jobs
 #include "Job_ShowCluster.hpp"
 #include "Job_Start.hpp"
 #include "Job_StartCluster.hpp"
+#include "Job_StartNode.hpp"
 #include "Job_Status.hpp"
 
 #include "Job_SubExporter.hpp"
