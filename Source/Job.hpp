@@ -35,7 +35,7 @@ namespace Jobs
     //! why do we have both of these?
     CrwBuffer* m_pCrwBuffer;   // row buffer          //! should this be in Job?
   
-    //Operand*   m_pOperand;
+    Operand*   m_pOperand;
     
     Atomic m_ixErrors;
 
