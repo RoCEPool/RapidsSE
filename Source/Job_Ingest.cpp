@@ -200,7 +200,7 @@ Job* Jobs::pJob_Ingest_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, 
   pJob_Ingest->vObjectName(pTknVec->pGet(1)->szText());
 
   // set the file name
-  pJob_Ingest->m_sFilePath = pTknVec->pGet(2)->szText();
+  pJob_Ingest->vFilePath(pTknVec->pGet(2)->szText());
   
   // is the last token the stats option?
   i8 i_Last = nTokens - 1;
@@ -254,9 +254,9 @@ bool Job_Ingest::bBegin(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   
   vTrace("Ingesting data into %s from %s\n"_Stz,
-         szObjectName(), m_sFilePath.aStz());
+         szObjectName(), szFilePath());
   
-  bool bOpened = m_oFile.bOpenRead(m_sFilePath);
+  bool bOpened = m_oFile.bOpenRead(szFilePath());
   
   s256 sPrefix;
   

@@ -191,7 +191,7 @@ Job* Jobs::pJob_Cat_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Ses
     return pJob_Cat;
 
   // set the input file name
-  pJob_Cat->m_sFilePath = pTknVec->pGet(1)->sText();
+  pJob_Cat->vFilePath(pTknVec->pGet(1)->sText());
   
   // set the output file name
   pJob_Cat->m_sOutputPath = pTknVec->pGet(2)->sText();
@@ -247,7 +247,10 @@ bool Job_Cat::bBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CAT,_FOOTER_);
   
-  if (! m_pIoCopy->bOpenRead(m_sFilePath))
+  s256 sFilePath;
+  sFilePath = szFilePath();
+  
+  if (! m_pIoCopy->bOpenRead(sFilePath))
     return false;
   
   if (! m_pIoCopy->bOpenWrite(m_sOutputPath))
@@ -260,7 +263,7 @@ bool Job_Cat::bBegin(void)
 
   }
 
-  vTrace("Cat data from %s to %s\n"_Stz,m_sFilePath.aStz(),m_sOutputPath.aStz());
+  vTrace("Cat data from %s to %s\n"_Stz,szFilePath(),m_sOutputPath.aStz());
 
   return true;
 }

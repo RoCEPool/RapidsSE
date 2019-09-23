@@ -158,7 +158,10 @@ bool Job_LoadTable::bBegin(void)
   
   m_pLoadMap = new LoadMap;
   
-  bool bOpened = m_pLoadMap->bOpenRead(m_sFilePath);
+  s256 sFilePath;
+  sFilePath = szFilePath();
+  
+  bool bOpened = m_pLoadMap->bOpenRead(sFilePath);
   if (! bOpened)
     return false;
   
@@ -186,7 +189,7 @@ void Job_LoadTable::vDumpMap(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
   
-  vTrace("Load ShmLog for: %s:\n"_Stz,m_sFilePath.aStz());
+  vTrace("Load ShmLog for: %s:\n"_Stz,szFilePath());
   
   m_pLoadMap->vDumpMap();
 }
@@ -221,7 +224,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
   vObjectName(pTokenVec->pGet(1)->szText());
   
   // set the file name
-  m_sFilePath = pTokenVec->pGet(2)->szText();
+  vFilePath(pTokenVec->pGet(2)->szText());
   
   i8 i_Token = 3;
   

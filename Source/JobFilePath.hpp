@@ -7,7 +7,7 @@ namespace Jobs
 {
   class JobFilePath
   {
-  public:
+  private:
     s256  m_sFilePath; // file path
   
   public:

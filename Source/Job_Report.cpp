@@ -203,7 +203,7 @@ Job* Jobs::pJob_Report_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, 
   pJob_Report->vObjectName(pTknVec->pGet(1)->szText());
 
   // set the input file name
-  pJob_Report->m_sFilePath = pTknVec->pGet(2)->sText();
+  pJob_Report->vFilePath(pTknVec->pGet(2)->sText());
   
   // set the output file name
   if (4 <= nTokens) {
@@ -256,7 +256,7 @@ bool Job_Report::bBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPORT,_FOOTER_);
   
-  if (! m_oInFile.bOpenRead(m_sFilePath))
+  if (! m_oInFile.bOpenRead(szFilePath()))
     return false;
   
   if (m_bNamedOut) {
@@ -275,7 +275,7 @@ bool Job_Report::bBegin(void)
   
   m_oBegan.vNow();
 
-  vTrace("Reporting from %s to %s\n"_Stz,m_sFilePath.aStz(),m_sOutputPath.aStz());
+  vTrace("Reporting from %s to %s\n"_Stz,szFilePath(),m_sOutputPath.aStz());
 
   return true;
 }

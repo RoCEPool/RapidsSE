@@ -192,7 +192,7 @@ Job* Jobs::pJob_Publish_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId,
   pJob_Publish->vObjectName(pTknVec->pGet(1)->szText());
 
   // set the output file name
-  pJob_Publish->m_sFilePath = pTknVec->pGet(2)->sText();
+  pJob_Publish->vFilePath(pTknVec->pGet(2)->sText());
   
   return pJob_Publish;
 }

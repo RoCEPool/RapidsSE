@@ -210,12 +210,12 @@ Job* Jobs::pJob_Generate_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId
   // set the file name
   if (pTknVec->pGet(2)->sText().bSame("file"_Stz)) {
     pJob_Generate->m_bIndefinite = false;
-    pJob_Generate->m_sFilePath = pTknVec->pGet(3)->szText();
+    pJob_Generate->vFilePath(pTknVec->pGet(3)->szText());
   }
   else
   if (pTknVec->pGet(2)->sText().bSame("pipe"_Stz)) {
     pJob_Generate->m_bIndefinite = true;
-    pJob_Generate->m_sFilePath = pTknVec->pGet(3)->szText();
+    pJob_Generate->vFilePath(pTknVec->pGet(3)->szText());
   }
   
   if (5 == nTokens) {
@@ -616,11 +616,11 @@ void Job_Generate::vGenerate(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
   
   vTrace("Generating data for %s into %s\n"_Stz,
-         szObjectName(), m_sFilePath.aStz());
+         szObjectName(), szFilePath());
   
-  bool bOpened = m_oFile.bOpenWrite(m_sFilePath.aStz());
+  bool bOpened = m_oFile.bOpenWrite(szFilePath());
   if (! bOpened) {
-    vTrace("Unable to open file: %s\n"_Stz,m_sFilePath.aStz());
+    vTrace("Unable to open file: %s\n"_Stz,szFilePath());
     return;
   }
   

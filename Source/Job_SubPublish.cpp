@@ -158,7 +158,7 @@ bool Job_SubPublish::bBegin(void)
   m_pJob_Publish =
     _pJob_Publish(AM::pParticipatingJobs()->pFindJob(m_iPublishJobId));
   
-  s256 aFilePath = m_pJob_Publish->m_sFilePath;
+  s256 aFilePath = m_pJob_Publish->szFilePath();
   
   bool bOpened = m_oOutputFile.bOpenAppend(aFilePath);
   ASSERT(bOpened);

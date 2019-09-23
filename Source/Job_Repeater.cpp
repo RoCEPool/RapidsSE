@@ -199,7 +199,7 @@ Job* Jobs::pJob_Repeater_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId
     return pJob_Repeater;
   
   // set the input file path
-  pJob_Repeater->m_sFilePath = pTknVec->pGet(1)->sText();
+  pJob_Repeater->vFilePath(pTknVec->pGet(1)->sText());
   
   // set the output file path
   pJob_Repeater->m_sOutputPath = pTknVec->pGet(2)->sText();
@@ -257,7 +257,9 @@ bool Job_Repeater::bBegin(void)
   
   //vTrace("Repeat data from %s to %s\n"_Stz,m_sFileName.aStz(),m_sOutputPath.aStz());
   
-  if (! m_pIoCopy->bOpenRead(m_sFilePath))
+  s256 sFilePath;
+  sFilePath = szFilePath();
+  if (! m_pIoCopy->bOpenRead(sFilePath))
     return false;
   
   if (! m_pIoCopy->bOpenWrite(m_sOutputPath))

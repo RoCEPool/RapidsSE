@@ -162,8 +162,8 @@ bool Job_Export::bBegin(void)
 
   m_pTable->vMarkTable();
   
-  if (! m_oCsvFile.bOpenWrite(m_sFilePath)) {
-    vTrace("Failed to open file: %s\n"_Stz,m_sFilePath.aStz());
+  if (! m_oCsvFile.bOpenWrite(szFilePath())) {
+    vTrace("Failed to open file: %s\n"_Stz,szFilePath());
     return false;
   }
   
@@ -219,7 +219,7 @@ bool Job_Export::bPopulateJob(TokenVec* pTokenVec)
   vObjectName(pTokenVec->pGet(1)->szText());
 
   // set the file name
-  m_sFilePath = pTokenVec->pGet(2)->szText();
+  vFilePath(pTokenVec->pGet(2)->szText());
 
   return true;
 }
@@ -249,7 +249,7 @@ void Job_Export::vShow(void)
          
          m_iUniqueId,
          szObjectName(),
-         m_sFilePath.aStz()
+         szFilePath()
          );
 }
 

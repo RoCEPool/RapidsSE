@@ -191,7 +191,7 @@ Job* Jobs::pJob_Monitor_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId,
   // set the output file name
   if (3 <= nTokens) {
     pJob_Monitor->m_bNamedFile = true;
-    pJob_Monitor->m_sFilePath = pTknVec->pGet(2)->sText();
+    pJob_Monitor->vFilePath(pTknVec->pGet(2)->sText());
   }
   
   return pJob_Monitor;
@@ -241,7 +241,7 @@ bool Job_Monitor::bBegin(void)
   m_pOutFile = new File;
   
   if (m_bNamedFile) {
-    if (! m_pOutFile->bOpenWrite(m_sFilePath))
+    if (! m_pOutFile->bOpenWrite(szFilePath()))
       return false;
   }
   else {
