@@ -715,35 +715,62 @@ void Engine::vRunCommandLine(void)
   eBO eBootOption = eDecodeCommandLine();
   
   try {
-    
-    if (gxArguments.m_bStart) {
-      
-      vStartSystem();
-      
-      if (gxArguments.m_bPrompt)
-        vCallPrompt();
-      else
-        vWaitStop();
+    switch (eBootOption) {
+      case BO_NONE:         vFatal("Unknown command line argument\n"_Stz);
+      case BO_PROMPT:       vOpenLog();       vCallPrompt();              break;
+      case BO_SETH_PROMPT:  vCallPrompt();                                break;
+      case BO_START:        vStartSystem();   vWaitStop();                break;
+      case BO_START_PROMPT: vStartSystem();   vCallPrompt();              break;
+      case BO_STATUS:       vPrintStatus();                               break;
+      case BO_STOP:         vStopSystem();                                break;
+      case BO_UNLINK:       vStopSystem();                                break;
+      default:
+        vFatal("Unknown command line argument\n"_Stz);
     }
-    
-    else if (gxArguments.m_bPrompt) {
-      vOpenLog();
-      vCallPrompt();
-    }
-    else if (gxArguments.m_bStatus)  vPrintStatus();
-    else if (gxArguments.m_bStop)    vStopSystem();
-    else if (gxArguments.m_bUnlink)  vUnlinkSystem();
-    else if (gxArguments.m_bSethScript)  { ASSERT(gpBufferPool); vCallPrompt(); }
-    else {
-      vFatal("Unknown command line argument\n"_Stz);
-    }
-    
   }
   
   catch (Error* pError) {
     vErrorHandler(pError);
   }
 }
+/*----------------------------------------------------------------------------*/
+//void Engine::vRunCommandLine(void)
+//{
+//  if (gxArguments.m_bVerbose)
+//    vInfo("\n*\n* Run Command Line\n*\n"_Stz);
+//
+//  eBO eBootOption = eDecodeCommandLine();
+//
+//  try {
+//
+//    if (gxArguments.m_bStart) {
+//
+//      vStartSystem();
+//
+//      if (gxArguments.m_bPrompt)
+//        vCallPrompt();
+//      else
+//        vWaitStop();
+//    }
+//
+//    else if (gxArguments.m_bPrompt) {
+//      vOpenLog();
+//      vCallPrompt();
+//    }
+//    else if (gxArguments.m_bStatus)  vPrintStatus();
+//    else if (gxArguments.m_bStop)    vStopSystem();
+//    else if (gxArguments.m_bUnlink)  vUnlinkSystem();
+//    else if (gxArguments.m_bSethScript)  { ASSERT(gpBufferPool); vCallPrompt(); }
+//    else {
+//      vFatal("Unknown command line argument\n"_Stz);
+//    }
+//
+//  }
+//
+//  catch (Error* pError) {
+//    vErrorHandler(pError);
+//  }
+//}
 
 /*----------------------------------------------------------------------------*/
 /* run utilities                                                              */
