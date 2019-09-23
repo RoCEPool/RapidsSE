@@ -12,7 +12,6 @@ namespace Jobs
   public:
     i8         m_iNode;           // node id
     i8         m_iParentJobId;    // parent (InsertRow) job id
-    Operand*   m_pOperand;        // operand to xmit
     
     // must be last
     Footer m_xFooter;

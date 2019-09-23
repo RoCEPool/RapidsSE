@@ -149,7 +149,7 @@ void Job_KidExport::vSpawn(i8 iExportJobId,
     new Job_KidExport(JobClass::pFind(CN_JOB_KIDEXPORT),nullptr,C_UNKNOWN,nullptr);
   
   pJob_KidExport->m_iExportJobId = iExportJobId;
-  pJob_KidExport->m_pSendWith = pExportBuffer;
+  //pJob_KidExport->m_pSendWith = pExportBuffer;
   
   pJob_KidExport->vSeed(SS_SEED_RUN);
   
@@ -177,13 +177,15 @@ bool Job_KidExport::bWriteBuffer(Job_Export* pJob_Export)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_KIDEXPORT,_FOOTER_);
   
-  ExportBuffer* pExportBuffer = _pExportBuffer(m_pSendWith);
-
-  pJob_Export->vWriteExportBuffer(pExportBuffer);
-  
-  bool bHasCompleted = pJob_Export->bIncWritten(m_nBuffersExpected);
-  
-  return bHasCompleted;
+  RASSERT(0);
+//  ExportBuffer* pExportBuffer = _pExportBuffer(m_pSendWith);
+//
+//  pJob_Export->vWriteExportBuffer(pExportBuffer);
+//
+//  bool bHasCompleted = pJob_Export->bIncWritten(m_nBuffersExpected);
+//
+// return bHasCompleted;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

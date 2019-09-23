@@ -35,13 +35,12 @@ namespace Jobs
     //! why do we have both of these?
     CrwBuffer* m_pCrwBuffer;   // row buffer          //! should this be in Job?
   
+    Operand*   m_pOperand;
+    
     Atomic m_ixErrors;
 
     //! to be moved into Task
     Mutex* m_pJobMutex;
-
-    //! to be removed
-    Object*    m_pSendWith; // object which is to be sent with this job
 
   public:
     Job(eCN eClassNo);

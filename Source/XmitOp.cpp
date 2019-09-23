@@ -151,22 +151,22 @@ eOR XmitOp::eXmitLoop(void)
         
         RASSERT(CN_CRWBUFFER == pOperand->eClass());
       
-      if (AM::bVerbose())
-        vTrace("%s::XmitOut :    %s %p (N%lld)\n"_Stz,
-               m_sLabel.aStz(),
-               aCN[pOperand->eClass()],
-               pOperand,
-               m_iXmitNode);
+        if (AM::bVerbose())
+          vTrace("%s::XmitOut :    %s %p (N%lld)\n"_Stz,
+                 m_sLabel.aStz(),
+                 aCN[pOperand->eClass()],
+                 pOperand,
+                 m_iXmitNode);
       
-      AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
-                  "XmitOut operand %s to node %lld"_Stz, //!format-LogOpr
-                  aCN[pOperand->eClass()],
-                  m_iXmitNode);
+        AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
+                    "XmitOut operand %s to node %lld"_Stz, //!format-LogOpr
+                    aCN[pOperand->eClass()],
+                    m_iXmitNode);
       
-      AM::vSpawnJobXmit(m_pDigest->m_pSession,
-                              pOperand,
-                              -1,
-                              m_iXmitNode);
+        AM::vSpawnJobXmit(m_pDigest->m_pSession,
+                                pOperand,
+                                -1,
+                                m_iXmitNode);
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

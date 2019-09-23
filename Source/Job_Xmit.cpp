@@ -108,7 +108,6 @@ Job_Xmit::Job_Xmit(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session*
   
   m_iNode        = C_UNKNOWN;
   m_iParentJobId = C_UNKNOWN;
-  m_pOperand     = nullptr;
   
   // set the enclosed_by to be a '
   m_oFormatters.m_bDefault = false;
@@ -172,7 +171,6 @@ void Job_Xmit::vSpawnJobXmit(Session* pSession,
   
   pJob_Xmit->m_iParentJobId  = iParentJobId;
   pJob_Xmit->m_iNode         = iNode;
-  pJob_Xmit->m_pOperand      = pOperand;
   //pJob_Xmit->m_nRows         = pOperand->nRowCount();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

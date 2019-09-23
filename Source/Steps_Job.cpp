@@ -41,7 +41,6 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("job.hasError"_Stz,         &Step::vJobHasError);
   vAddStep("job.hasEntBuffer"_Stz,   &Step::vJobHasEntBuffer);
-  vAddStep("job.hasSendWith"_Stz,      &Step::vJobHasSendWith);
 
   vAddStep("job.id@"_Stz,              &Step::vJobIdFetch);
   vAddStep("job.indexName@"_Stz,       &Step::vJobIndexNameFetch);
@@ -85,8 +84,6 @@ void Step::vAddSteps_Job(void)
 
   vAddStep("job.seed@"_Stz,            &Step::vJobSeedFetch);
   vAddStep("job.send"_Stz,             &Step::vJobSend);
-  vAddStep("job.sendWith@"_Stz,        &Step::vJobSendWithFetch);
-  vAddStep("job.sendWith!"_Stz,        &Step::vJobSendWithStore);
   vAddStep("job.sessionState@"_Stz,    &Step::vJobSessionStateFetch);
   vAddStep("job.show"_Stz,             &Step::vJobShow);
   vAddStep("job.signalConnector"_Stz,  &Step::vJobSignalConnector);
@@ -733,7 +730,7 @@ void Step::vJobHasError(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.hasEntBuffer -- return true if job has a entry buffer                */
+/* job.hasEntBuffer -- return true if job has a entry buffer                  */
 /*----------------------------------------------------------------------------*/
 void Step::vJobHasEntBuffer(MP_Task mpTask)
 {
@@ -748,25 +745,6 @@ void Step::vJobHasEntBuffer(MP_Task mpTask)
   i8 bHas = pJob->m_pCrwBuffer ? true : false;
   if (pJob->m_aJobClass->m_eClass == CN_JOB_WRITEBUFFER)
     int iDebug = 1;
-  
-  mpTask->m_pDataStack->vPushI8(bHas);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.hasSendWith -- return true if job has a send with object               */
-/*----------------------------------------------------------------------------*/
-void Step::vJobHasSendWith(MP_Task mpTask)
-{
-  ENTRY("vJobHasSendWith"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.hasSendWith"_Stz);
-  Job* pJob = _pJob(pJobPtr);
-  
-  i8 bHas = pJob->m_pSendWith ? true : false;
   
   mpTask->m_pDataStack->vPushI8(bHas);
   
@@ -1529,44 +1507,6 @@ void Step::vJobSend(MP_Task mpTask)
   
   // call the job pre-send function
   pJobClass->vSendJob(pJob);  // come back to this, remove session as parameter to delete
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.sendWith@ -- fetch send-with object from job                           */
-/*----------------------------------------------------------------------------*/
-void Step::vJobSendWithFetch(MP_Task mpTask)
-{
-  ENTRY("vJobSendWithFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.sendWith@"_Stz);
-  Job* pJob = _pJob(pJobPtr);
-  
-  mpTask->m_pDataStack->vPushPointer(pJob->m_pSendWith);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.sendWith! -- store send-with object in the job                         */
-/*----------------------------------------------------------------------------*/
-void Step::vJobSendWithStore(MP_Task mpTask)
-{
-  ENTRY("vJobSendWithStore"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.sendWith!!"_Stz);
-  Job* pJob = _pJob(pJobPtr);
-  
-  Object* pObject;
-  if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("job.sendWith!!"_Stz);
-  
-  pJob->m_pSendWith = pObject;
   
   EXIT();
 }
