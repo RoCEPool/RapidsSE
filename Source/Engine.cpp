@@ -215,6 +215,14 @@ void Engine::vCreateAttachMap(void)
 /*----------------------------------------------------------------------------*/
 eBO Engine::eDecodeCommandLine(void)
 {
+  if (gxArguments.m_bStart && gxArguments.m_bPrompt)   return BO_START_PROMPT;
+  if (gxArguments.m_bStart)                            return BO_START;
+  if (gxArguments.m_bPrompt)                           return BO_PROMPT;
+  if (gxArguments.m_bStatus)                           return BO_STATUS;
+  if (gxArguments.m_bStop)                             return BO_STOP;
+  if (gxArguments.m_bUnlink)                           return BO_UNLINK;
+  if (gxArguments.m_bSethScript)                       return BO_SETH_PROMPT;
+
   return BO_NONE;
 }
 
