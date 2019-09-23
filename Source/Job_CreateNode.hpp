@@ -5,7 +5,8 @@
 
 namespace Jobs
 {
-  class Job_CreateNode : public Job
+  class Job_CreateNode : public Job,
+                         public JobEnmSet
   {
   public:
       
