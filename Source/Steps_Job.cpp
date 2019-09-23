@@ -18,6 +18,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.assertParticipant"_Stz,&Step::vJobAssertParticipant);
   vAddStep("job.assertReceived"_Stz,   &Step::vJobAssertReceived);
 
+  vAddStep("job.catalogName@"_Stz,     &Step::vJobCatalogNameFetch);
   vAddStep("job.class"_Stz,            &Step::vJobClass);
   vAddStep("job.columnCount@"_Stz,     &Step::vJobColumnCountFetch);
   vAddStep("job.columnIsPartKey"_Stz,  &Step::vJobColumnIsPartKey);
@@ -40,7 +41,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job::findParticipant"_Stz, &Step::vJobFindParticipant);
   
   vAddStep("job.hasError"_Stz,         &Step::vJobHasError);
-  vAddStep("job.hasEntBuffer"_Stz,   &Step::vJobHasEntBuffer);
+  vAddStep("job.hasEntBuffer"_Stz,     &Step::vJobHasEntBuffer);
 
   vAddStep("job.id@"_Stz,              &Step::vJobIdFetch);
   vAddStep("job.indexName@"_Stz,       &Step::vJobIndexNameFetch);
@@ -51,6 +52,7 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("job.metadata!"_Stz,        &Step::vJobMetadataStore);
   
+  vAddStep("job.nodeName@"_Stz,        &Step::vJobNodeNameFetch);
   vAddStep("job.noWait@"_Stz,          &Step::vJobNoWaitFetch);
   
   vAddStep("job.objectName@"_Stz,      &Step::vJobObjectNameFetch);
@@ -82,6 +84,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.rowsSkipped@"_Stz,     &Step::vJobRowsSkippedFetch);
   vAddStep("job.rowsSkipped!"_Stz,     &Step::vJobRowsSkippedStore);
 
+  vAddStep("job.schemaName@"_Stz,      &Step::vJobSchemaNameFetch);
   vAddStep("job.seed@"_Stz,            &Step::vJobSeedFetch);
   vAddStep("job.send"_Stz,             &Step::vJobSend);
   vAddStep("job.sessionState@"_Stz,    &Step::vJobSessionStateFetch);
@@ -92,6 +95,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.spawn_dedicated"_Stz,  &Step::vJobSpawnDedicated);
   vAddStep("job::stateDiagram"_Stz,    &Step::vJobStateDiagram);
 
+  vAddStep("job.tenantName@"_Stz,      &Step::vJobTenantNameFetch);
   vAddStep("job::this"_Stz,            &Step::vJobThis);
 
   vAddStep("job::waitParticipant"_Stz, &Step::vJobWaitParticipant);
@@ -353,6 +357,27 @@ void Step::vJobAssertReceived(MP_Task mpTask)
     vFatal("job.assertReceived: "
            "Job::m_bWasReceived is false [Job %s on node %lld]\n"_Stz,
            aCN[pJob->eClass()],AM::pGrid()->m_iThisNode);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.catalogName@ -- fetch the catalog name of the job                      */
+/*----------------------------------------------------------------------------*/
+void Step::vJobCatalogNameFetch(MP_Task mpTask)
+{
+  ENTRY("vJobCatalogNameFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.catalogName@"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  s32 sCatalogName;
+  
+  sCatalogName = pJob->szCatalogName();
+  
+  mpTask->m_pDataStack->vPushS32(sCatalogName);
   
   EXIT();
 }
@@ -862,6 +887,27 @@ void Step::vJobMetadataStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* job.nodeName@ -- fetch the node name of the job                            */
+/*----------------------------------------------------------------------------*/
+void Step::vJobNodeNameFetch(MP_Task mpTask)
+{
+  ENTRY("vJobNodeNameFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.NodeName@"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  s32 sNodeName;
+  
+  sNodeName = pJob->szNodeName();
+  
+  mpTask->m_pDataStack->vPushS32(sNodeName);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* job.noWait@ -- fetch no-wait                                               */
 /*----------------------------------------------------------------------------*/
 void Step::vJobNoWaitFetch(MP_Task mpTask)
@@ -887,7 +933,7 @@ void Step::vJobObjectNameFetch(MP_Task mpTask)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.objectNamed@"_Stz);
+    THROW_INVALID_DSTACK("job.objectName@"_Stz);
   Job* pJob = _pJob(pJobPtr);
 
   s32 sObjectName;
@@ -1431,6 +1477,27 @@ void Step::vJobRowsProcessedStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* job.schemaName@ -- fetch the schema name of the job                        */
+/*----------------------------------------------------------------------------*/
+void Step::vJobSchemaNameFetch(MP_Task mpTask)
+{
+  ENTRY("vJobSchemaNameFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.schemaName@"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  s32 sSchemaName;
+  
+  sSchemaName = pJob->szSchemaName();
+  
+  mpTask->m_pDataStack->vPushS32(sSchemaName);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* job.rowsSkipped@ -- fetch the rows skipped by the job from a node          */
 /*----------------------------------------------------------------------------*/
 void Step::vJobRowsSkippedFetch(MP_Task mpTask)
@@ -1705,6 +1772,27 @@ void Step::vJobStateDiagram(MP_Task mpTask)
   AM::vStateDiagram(sDiagram,(eCN)iClassNo);
   
   mpTask->m_pDataStack->vPushS256(sDiagram);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.tenantName@ -- fetch the tenant name of the job                        */
+/*----------------------------------------------------------------------------*/
+void Step::vJobTenantNameFetch(MP_Task mpTask)
+{
+  ENTRY("vJobTenantNameFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.tenantName@"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  s32 sTenantName;
+  
+  sTenantName = pJob->szTenantName();
+  
+  mpTask->m_pDataStack->vPushS32(sTenantName);
   
   EXIT();
 }

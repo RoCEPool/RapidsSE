@@ -418,6 +418,7 @@ private:
   static void vJobMark2TableNameFetch(Tasks::MP_Task mpTask);
   static void vJobMark2TableStore(Tasks::MP_Task mpTask);
 
+  static void vJobCatalogNameFetch(Tasks::MP_Task mpTask);
   static void vJobClass(Tasks::MP_Task mpTask);
   static void vJobColumnCountFetch(Tasks::MP_Task mpTask);
   static void vJobColumnNameFetch(Tasks::MP_Task mpTask);
@@ -451,6 +452,7 @@ private:
 
   static void vJobMetadataStore(Tasks::MP_Task mpTask);
 
+  static void vJobNodeNameFetch(Tasks::MP_Task mpTask);
   static void vJobNoWaitFetch(Tasks::MP_Task mpTask);
 
   static void vJobObjectNameFetch(Tasks::MP_Task mpTask);
@@ -482,6 +484,7 @@ private:
   static void vJobRowsSkippedFetch(Tasks::MP_Task mpTask);
   static void vJobRowsSkippedStore(Tasks::MP_Task mpTask);
 
+  static void vJobSchemaNameFetch(Tasks::MP_Task mpTask);
   static void vJobSeedFetch(Tasks::MP_Task mpTask);
   static void vJobSend(Tasks::MP_Task mpTask);
   static void vJobSessionStateFetch(Tasks::MP_Task mpTask);
@@ -492,6 +495,7 @@ private:
   static void vJobSpawnDedicated(Tasks::MP_Task mpTask);
   static void vJobStateDiagram(Tasks::MP_Task mpTask);
 
+  static void vJobTenantNameFetch(Tasks::MP_Task mpTask);
   static void vJobThis(Tasks::MP_Task mpTask);
 
   static void vJobWaitParticipant(Tasks::MP_Task mpTask);
