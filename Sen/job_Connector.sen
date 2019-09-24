@@ -22,7 +22,7 @@
 /*----------------------------------------------------------------------------*/
 /* send node info to node we just connected to                                */
 /*----------------------------------------------------------------------------*/
-: sendNodeInfo ( pSocket -- )
+: .sendNodeInfo ( pSocket -- )
 
   params| pSocket |
 
@@ -43,6 +43,34 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete node info job
   pJob_NodeInfo job.delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* connect to given node                                                      */
+/*----------------------------------------------------------------------------*/
+: .connectNode ( pNode -- )
+
+  params| pNode |
+
+  0 locals| pSocket |
+
+  // get the nodes port and IP address
+  pNode node.port ( port )
+  pNode node.IP   ( port IP )
+
+  // connect to that node
+  socket::open socket.connect to pSocket
+
+  // set the socket in the node
+  pSocket pNode node.sendSocket!
+
+  // print connection message
+  args.verbose if
+    grid::thisNode@ I "Node%v connected to node%v" fmt.print
+  then
+
+  // send this node's info to the node we just connected to
+  pSocket .sendNodeInfo
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -80,23 +108,8 @@
     // get the node
     I grid::node to pNode
 
-    // get the nodes port and IP address
-    pNode node.port ( port pNode )
-    pNode node.IP   ( port IP )
-
-    // connect to that node
-    socket::open socket.connect to pSocket
-
-    // set the socket in the node
-    pSocket pNode node.sendSocket!
-
-    // print connection message
-    args.verbose if
-      grid::thisNode@ I "Node%v connected to node%v" fmt.print
-    then
-
-    // send this node's info to the node we just connected to
-    pSocket sendNodeInfo
+    // connect to the node
+    pNode .connectNode
 
   loop
 
