@@ -49,11 +49,30 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* form the node list: {--node name ip port}*                                 */
+/*----------------------------------------------------------------------------*/
+: formNodeList ( -- sNodeList )
+
+  locals| pNode |
+
+  grid::nodes 0 do
+
+    I grid::node to pNode
+    pNode node.port
+    pNode node.IP
+    pNode node.name
+    " --node %v %v %v" str.format
+    str.cat
+
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
 /* spawn all other nodes for a grid on this machine                           */
 /*----------------------------------------------------------------------------*/
-: grid::spawnNodes ( -- )
+: grid::spawnOtherNodes ( -- )
 
-  // test for single node
+  // test for single node grid
   grid::nodes 1 == if exit then
 
   locals| sNodeList |
@@ -84,7 +103,7 @@
     I grid::thisNode@ != if
 
       // form the shell command to spawn node I
-      sNodeList I grid::node node.name true formShellCommand
+      sNodeList   I grid::node node.name   false   formShellCommand
 
       // print the shell command
       dup .
