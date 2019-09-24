@@ -50,6 +50,7 @@ Arguments::Arguments(void)
   m_sCommand    = ""_Stz;
   
   // commands
+  m_bAddNode    = false;
   m_bCommand    = false;
   m_bHelp       = false;
   m_bPrompt     = false;
@@ -134,6 +135,7 @@ void Arguments::vEnvironmentVariables(void)
 void Arguments::vAddConstants(void)
 {
   // Arguments
+  Constants::vAddConstant("args.addNode"_Stz,           m_bAddNode);
   Constants::vAddConstant("args.config"_Stz,            m_bConfig);
   Constants::vAddConstant("args.developer"_Stz,         m_bDeveloper);
   Constants::vAddConstant("args.dontFree"_Stz,          m_bDontFree);
@@ -222,6 +224,12 @@ bool Arguments::bParse(int argc, Stz* argv[])
   i8 iNode = 0;
 
   for (i8 i_Arg = 1; i_Arg < argc; i_Arg++) {
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--addNode"_Stz)) {
+      m_bAddNode = true;
+      continue;
+    }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--address"_Stz)) {

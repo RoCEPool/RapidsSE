@@ -36,6 +36,7 @@ namespace StorageEngine
     s256 m_sCommand;    // command to run
     
     // commands
+    bool m_bAddNode;    // add node
     bool m_bCommand;    // run command
     bool m_bHelp;       // display help
     bool m_bPrompt;     // run the se> prompt
