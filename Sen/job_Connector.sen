@@ -74,36 +74,14 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* connector loop: establish a connection to all nodes in the grid            */
+/* one iteration of connector behavior                                        */
 /*----------------------------------------------------------------------------*/
-: connector_run ( -- )
-
-  >>logEntry <SEED_RUN>
-
-  assertStackDepthZero
-
-  0 locals| pThisTask |
-  0 locals| pJob_Connector |
+: _connectorTake ( -- )
 
   0 locals| pNode |
-  0 locals| pSocket |
-
-  //"connector_run" .
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // get the task
-  task::this to pThisTask
-
-  // get the connectpr job from the task
-  pThisTask task.job@ to pJob_Connector
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   grid::nodes 0
   do
-
-    assertStackDepthZero
 
     // get the node
     I grid::node to pNode
@@ -117,12 +95,39 @@
 
   // set grid as started
   true grid::started!
+;
+
+/*----------------------------------------------------------------------------*/
+/* connector loop: establish a connection to all nodes in the grid            */
+/*----------------------------------------------------------------------------*/
+: connector_run ( -- )
+
+  >>logEntry <SEED_RUN>
+
+  assertStackDepthZero
+
+  0 locals| pThisTask |
+  0 locals| pJob_Connector |
+
+  //"connector_run" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // get the task
+  task::this to pThisTask
+
+  // get the connectpr job from the task
+  pThisTask task.job@ to pJob_Connector
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  _connectorTake
+  assertStackDepthZero
 
   // print started message
   //grid::thisNodeName@ "Node %v : SE cluster started" fmt.print
 
-  assertStackDepthZero
-
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null the job in the task
   nullptr pThisTask task.job!
 

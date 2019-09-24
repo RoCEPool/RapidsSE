@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* form the shell command for spawning and starting a node etc                */
 /*----------------------------------------------------------------------------*/
-: formShellCommand ( bAdd sNodeName sNodeList -- "<command>" )
+: .formShellCommand ( bAdd sNodeName sNodeList -- "<command>" )
 
   params| sNodeList |
   params| sNodeName |
@@ -51,7 +51,7 @@
 /*----------------------------------------------------------------------------*/
 /* form the node list: {--node name ip port}*                                 */
 /*----------------------------------------------------------------------------*/
-: formNodeList ( -- sNodeList )
+: .formNodeList ( -- sNodeList )
 
   locals| pNode |
 
@@ -72,7 +72,7 @@
 /*----------------------------------------------------------------------------*/
 /* spawn a specific node                                                      */
 /*----------------------------------------------------------------------------*/
-: spawnNamedNode ( bAdd sNodeName sNodeList -- )
+: .spawnNamedNode ( bAdd sNodeName sNodeList -- )
 
   params| sNodeList |
   params| sNodeName |
@@ -81,7 +81,7 @@
   locals| sShellCommand |
 
   // form the shell command
-  bAdd sNodeName sNodeList formShellCommand to sShellCommand
+  bAdd sNodeName sNodeList .formShellCommand to sShellCommand
 
   // print the shell command
   sShellCommand .
@@ -93,7 +93,6 @@
   not assert
 ;
 
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -110,7 +109,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the node list
 
-  formNodeList to sNodeList
+  .formNodeList to sNodeList
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn all other nodes
@@ -121,7 +120,7 @@
     I grid::thisNode@ != if
 
       // spawn/start node I
-      false  I grid::node node.name  sNodeList  spawnNamedNode
+      false  I grid::node node.name  sNodeList  .spawnNamedNode
 
     then
 
@@ -142,10 +141,10 @@
   locals| sNodeList |
 
   // form the node list
-  formNodeList to sNodeList
+  .formNodeList to sNodeList
 
   // spawn/add node sNodeNm
-  true  I grid::node node.name  sNodeList  spawnNamedNode
+  true  I grid::node node.name  sNodeList  .spawnNamedNode
 ;
 
 /*----------------------------------------------------------------------------*/
