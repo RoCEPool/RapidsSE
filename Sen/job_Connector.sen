@@ -87,7 +87,9 @@
     I grid::node to pNode
 
     // connect to the node
-    pNode .connectNode
+    pNode node.sendSocket@ not if
+      pNode .connectNode
+    then
 
   loop
 
