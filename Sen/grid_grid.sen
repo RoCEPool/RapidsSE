@@ -13,11 +13,11 @@
 /*----------------------------------------------------------------------------*/
 /* form the shell command for spawning and starting a node etc                */
 /*----------------------------------------------------------------------------*/
-: formShellCommand ( sNodeList sNodeName bAdd -- "<command>" )
+: formShellCommand ( bAdd sNodeName sNodeList -- "<command>" )
 
-  params| bAdd      |
-  params| sNodeName |
   params| sNodeList |
+  params| sNodeName |
+  params| bAdd      |
 
   //  "nohup "
   ""
@@ -78,7 +78,7 @@
   grid::nodes 1 == if exit then
 
   locals| sNodeList |
-  locals| pNode     |
+  locals| sShellCommand |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the node list
@@ -94,13 +94,13 @@
     I grid::thisNode@ != if
 
       // form the shell command to spawn node I
-      sNodeList   I grid::node node.name   false   formShellCommand
+      false  I grid::node node.name  sNodeList  formShellCommand to sShellCommand
 
       // print the shell command
-      dup .
+      sShellCommand .
 
       // execute the shell command
-      shell::execute
+      sShellCommand shell::execute
 
       // check result
       not assert
@@ -112,6 +112,34 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   grid::StartNode@ "Cluster Start node: %v" str.format .
+;
+
+/*----------------------------------------------------------------------------*/
+/* spawn named node being added to a grid on this machine                     */
+/*----------------------------------------------------------------------------*/
+: grid::spawnNamedNode ( sNodeNm -- )
+
+  params| sNodeNm   |
+
+  locals| sNodeList |
+  locals| sShellCommand |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form the node list
+
+  formNodeList to sNodeList
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  true  I grid::node node.name  sNodeList  formShellCommand  to sShellCommand
+
+  // print the shell command
+  sShellCommand .
+
+  // execute the shell command
+  sShellCommand shell::execute
+
+  // check result
+  not assert
 ;
 
 /*----------------------------------------------------------------------------*/
