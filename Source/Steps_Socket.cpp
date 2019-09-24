@@ -343,41 +343,91 @@ void Step::vSocketRecvObject(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive rest of a row buffer
   
-  if (eClass == CN_CRWBUFFER) {
-    
-   CrwBuffer* pCrwBuffer = new CrwBuffer();
-    
-    MemLib::vCopy(pCrwBuffer,pObject,sizeof(Object),CN_CRWBUFFER);
-
-    void* aBody = aAdd<void*>(pCrwBuffer,sizeof(Object));
-    i8 nRemainingBytes = giClassSize[CN_CRWBUFFER] - sizeof(Object);
-    
-    bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
-    if (! bResult) {
-      mpTask->m_pDataStack->vPushBool(false);
+  void* aBody;
+  i8 nRemainingBytes;
+  CrwBuffer* pCrwBuffer;
+  EndMarker* pEndMarker;
+  StreamDef* pStreamDef;
+  
+  switch(eClass) {
+      
+    case CN_CRWBUFFER:
+      
+      pCrwBuffer = new CrwBuffer();
+      
+      MemLib::vCopy(pCrwBuffer,pObject,sizeof(Object),CN_CRWBUFFER);
+      
+      aBody = aAdd<void*>(pCrwBuffer,sizeof(Object));
+      nRemainingBytes = giClassSize[CN_CRWBUFFER] - sizeof(Object);
+      
+      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+      if (! bResult) {
+        mpTask->m_pDataStack->vPushBool(false);
+        EXIT();
+        return;
+      }
+      
+      //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
+      //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
+      
+      // restore the nub of the crwbuffer
+      pCrwBuffer->vRestoreNub();
+      
+      mpTask->m_pDataStack->vPushPointer(pCrwBuffer);
+      mpTask->m_pDataStack->vPushBool(true);
       EXIT();
       return;
-    }
-
-    //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
-    //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
-    
-    // restore the entryBuffer pointets (m_pHeadEntry etc)
-    pCrwBuffer->vRestore();
-    
-    AM::vLogRes(SL_INF,pSocket,RA_SKT_RECEIVED,
-                  "Received %lldB CrwBuffer: %p"_Stz, //!format-LogRes
-                  nObjectSize,
-                  pCrwBuffer);
-    
-    // restore the nub of the crwbuffer
-    pCrwBuffer->vRestoreNub();
-    
-    mpTask->m_pDataStack->vPushPointer(pCrwBuffer);
-    mpTask->m_pDataStack->vPushBool(true);
-    EXIT();
-    return;
+      
+    case CN_ENDMARKER:
+      pEndMarker = new EndMarker();
+      
+      MemLib::vCopy(pEndMarker,pObject,sizeof(Object),CN_ENDMARKER);
+      
+      aBody = aAdd<void*>(pEndMarker,sizeof(Object));
+      nRemainingBytes = giClassSize[CN_ENDMARKER] - sizeof(Object);
+      
+      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+      if (! bResult) {
+        mpTask->m_pDataStack->vPushBool(false);
+        EXIT();
+        return;
+      }
+      
+      //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
+      //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
+      
+      mpTask->m_pDataStack->vPushPointer(pEndMarker);
+      mpTask->m_pDataStack->vPushBool(true);
+      EXIT();
+      return;
+      
+    case CN_STREAMDEF:
+      pStreamDef = new StreamDef();
+      
+      MemLib::vCopy(pStreamDef,pObject,sizeof(Object),CN_ENDMARKER);
+      
+      aBody = aAdd<void*>(pStreamDef,sizeof(Object));
+      nRemainingBytes = giClassSize[CN_STREAMDEF] - sizeof(Object);
+      
+      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+      if (! bResult) {
+        mpTask->m_pDataStack->vPushBool(false);
+        EXIT();
+        return;
+      }
+      
+      //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
+      //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
+      
+      mpTask->m_pDataStack->vPushPointer(pStreamDef);
+      mpTask->m_pDataStack->vPushBool(true);
+      EXIT();
+      return;
+      
+    default:
+      RASSERT(0);
   }
+  
   
   //////////////////////////////////////////////////////////////////////////////
   
@@ -525,33 +575,89 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive rest of row buffer
+  void* aBody;
+  i8 nRemainingBytes;
+  CrwBuffer* pCrwBuffer;
+  EndMarker* pEndMarker;
+  StreamDef* pStreamDef;
   
-  if (eClass == CN_CRWBUFFER) {
+  switch(eClass) {
+      
+    case CN_CRWBUFFER:
     
-    CrwBuffer* pCrwBuffer = new CrwBuffer();
-    
-    MemLib::vCopy(pCrwBuffer,pObject,sizeof(Object),CN_CRWBUFFER);
-    
-    void* aBody = aAdd<void*>(pCrwBuffer,sizeof(Object));
-    i8 nRemainingBytes = giClassSize[CN_CRWBUFFER] - sizeof(Object);
-    
-    bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
-    if (! bResult) {
-      mpTask->m_pDataStack->vPushBool(false);
+      pCrwBuffer = new CrwBuffer();
+      
+      MemLib::vCopy(pCrwBuffer,pObject,sizeof(Object),CN_CRWBUFFER);
+      
+      aBody = aAdd<void*>(pCrwBuffer,sizeof(Object));
+      nRemainingBytes = giClassSize[CN_CRWBUFFER] - sizeof(Object);
+      
+      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+      if (! bResult) {
+        mpTask->m_pDataStack->vPushBool(false);
+        EXIT();
+        return;
+      }
+      
+      //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
+      //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
+      
+      // restore the nub of the crwbuffer
+      pCrwBuffer->vRestoreNub();
+      
+      mpTask->m_pDataStack->vPushPointer(pCrwBuffer);
+      mpTask->m_pDataStack->vPushBool(true);
       EXIT();
       return;
-    }
-    
-    //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
-    //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
-    
-    // restore the nub of the crwbuffer
-    pCrwBuffer->vRestoreNub();
-    
-    mpTask->m_pDataStack->vPushPointer(pCrwBuffer);
-    mpTask->m_pDataStack->vPushBool(true);
-    EXIT();
-    return;
+     
+    case CN_ENDMARKER:
+      pEndMarker = new EndMarker();
+      
+      MemLib::vCopy(pEndMarker,pObject,sizeof(Object),CN_ENDMARKER);
+      
+      aBody = aAdd<void*>(pEndMarker,sizeof(Object));
+      nRemainingBytes = giClassSize[CN_ENDMARKER] - sizeof(Object);
+      
+      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+      if (! bResult) {
+        mpTask->m_pDataStack->vPushBool(false);
+        EXIT();
+        return;
+      }
+      
+      //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
+      //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
+      
+      mpTask->m_pDataStack->vPushPointer(pEndMarker);
+      mpTask->m_pDataStack->vPushBool(true);
+      EXIT();
+      return;
+      
+    case CN_STREAMDEF:
+      pStreamDef = new StreamDef();
+      
+      MemLib::vCopy(pStreamDef,pObject,sizeof(Object),CN_ENDMARKER);
+      
+      aBody = aAdd<void*>(pStreamDef,sizeof(Object));
+      nRemainingBytes = giClassSize[CN_STREAMDEF] - sizeof(Object);
+      
+      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+      if (! bResult) {
+        mpTask->m_pDataStack->vPushBool(false);
+        EXIT();
+        return;
+      }
+      
+      //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
+      //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
+      
+      mpTask->m_pDataStack->vPushPointer(pStreamDef);
+      mpTask->m_pDataStack->vPushBool(true);
+      EXIT();
+      return;
+      
+    default:
+      RASSERT(0);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

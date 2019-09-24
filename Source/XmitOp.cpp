@@ -138,25 +138,25 @@ eOR XmitOp::eXmitLoop(void)
         }
         
         if (CN_ENDMARKER == pOperand->eClass()) {
-          EndMarker* pEndMarker = _pEndMarker(pOperand);
-          delete pEndMarker;
-//          AM::vSpawnJobXmit(m_pDigest->m_pSession,
-//                            pOperand,
-//                            m_pDigest->m_pJob,
-//                            this,
-//                            m_iXmitNode);
+          //EndMarker* pEndMarker = _pEndMarker(pOperand);
+          //delete pEndMarker;
+          AM::vSpawnJobXmit(m_pDigest->m_pSession,
+                            pOperand,
+                            m_pDigest->m_pJob,
+                            this,
+                            m_iXmitNode);
           
           break;
         }
         
         if (CN_STREAMDEF == pOperand->eClass()) {
           m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
-          vPipeOut(pOperand);
-//          AM::vSpawnJobXmit(m_pDigest->m_pSession,
-//                            pOperand,
-//                            m_pDigest->m_pJob,
-//                            this,
-//                            m_iXmitNode);
+          //vPipeOut(pOperand);
+          AM::vSpawnJobXmit(m_pDigest->m_pSession,
+                            pOperand,
+                            m_pDigest->m_pJob,
+                            this,
+                            m_iXmitNode);
           continue;
         }
         
@@ -183,7 +183,7 @@ eOR XmitOp::eXmitLoop(void)
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     AM::vNapUsec(100000,CN_XMITOP);
-    vPipeOut_endMarker();
+    //vPipeOut_endMarker();
   
     return OR_EXIT;
 }
