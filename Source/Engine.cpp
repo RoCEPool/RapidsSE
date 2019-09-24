@@ -223,8 +223,7 @@ eBO Engine::eDecodeCommandLine(void)
   if (gxArguments.m_bUnlink)                           return BO_UNLINK;
   if (gxArguments.m_bSethScript)                       return BO_SETH_PROMPT;
   
-//if (gxArguments.???)                                 return BO_ADD_NODE;
-
+  if (gxArguments.m_bAddNode)                          return BO_ADD_NODE;
 
   return BO_NONE;
 }
@@ -719,7 +718,7 @@ void Engine::vRunCommandLine(void)
   
   try {
     switch (eBootOption) {
-      case BO_NONE:         vFatal("Unknown command line argument\n"_Stz);
+      case BO_ADD_NODE:     vStartSystem();                               break;
       case BO_PROMPT:       vOpenLog();       vCallPrompt();              break;
       case BO_SETH_PROMPT:  vCallPrompt();                                break;
       case BO_START:        vStartSystem();   vWaitStop();                break;
