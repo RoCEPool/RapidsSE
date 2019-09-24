@@ -5,74 +5,109 @@
 " grid_grid.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* path for SE                                                                */
+/* command path for SE                                                        */
 /*----------------------------------------------------------------------------*/
-"../OS\\ X/Build/Products/Debug/SE" constant SE_PATH
-//"../OS\\ X/Build/Products/Release/SE" constant SE_PATH
+"../OS\\ X/Build/Products/Debug/SE" constant SE_COMMAND
+//"../OS\\ X/Build/Products/Release/SE" constant SE_COMMAND
 
 /*----------------------------------------------------------------------------*/
-/* form the shell command for spawning a node                                 */
+/* form the shell command for spawning and starting a node etc                */
 /*----------------------------------------------------------------------------*/
-: se_command ( nodeName sNodeList -- "<command>" )
+: formShellCommand ( bAdd sNodeName sNodeList -- "<command>" )
 
-  locals| nodeName |
-  locals| sNodeList |
-
-  to sNodeList
-  to nodeName
+  params| sNodeList |
+  params| sNodeName |
+  params| bAdd      |
 
   //  "nohup "
   ""
-  SE_PATH str.cat
-  " --start " str.cat
-  " --size " str.cat args.regionSize >str str.cat
-  //" --commands /Users/alkayamarti/rapidsSE/rapidsse/Commands" str.cat
-  " --commands /Users/ray/Desktop/rapidsse/Commands" str.cat
-  sNodeList str.cat
-  " --regionPrefix " str.cat args.regionPrefix str.cat
-  " --partitionsPerNode " str.cat args.partitionsPerNode >str str.cat
-  " --name  " str.cat nodeName str.cat
-  " --subLoaders " str.cat args.subLoaders >str str.cat
-  " --maxReadyLP " str.cat args.maxReadyLP >str str.cat
 
-  //" --partitionsPerNode " str.cat grid::slots >str str.cat
+  SE_COMMAND str.cat
+  " --start" str.cat
+  bAdd if
+    " --addNode" str.cat
+  then
 
-  args.tracepoint  if " --tracepoint "  str.cat then
-  args.verbose     if " --verbose "     str.cat then
-  args.dontFree    if " --dontFree "    str.cat then
-  args.freeCB      if " --freeCB "      str.cat then
-  args.metadata    if " --metadata "    str.cat then
-  args.log         if " --log "         str.cat then
+  " --name "  str.cat sNodeName str.cat sNodeList str.cat
+
+  " --size "              str.cat args.regionSize        >str   str.cat
+  " --regionPrefix "      str.cat args.regionPrefix             str.cat
+  " --partitionsPerNode " str.cat args.partitionsPerNode >str   str.cat
+  " --subLoaders "        str.cat args.subLoaders        >str   str.cat
+  " --maxReadyLP "        str.cat args.maxReadyLP        >str   str.cat
+  " --commands /Users/ray/Desktop/rapidsse/Commands"            str.cat
+//" --commands /Users/alkayamarti/rapidsSE/rapidsse/Commands"   str.cat
+
+  args.tracepoint  if " --tracepoint"  str.cat then
+  args.verbose     if " --verbose"     str.cat then
+  args.dontFree    if " --dontFree"    str.cat then
+  args.freeCB      if " --freeCB"      str.cat then
+  args.metadata    if " --metadata"    str.cat then
+  args.log         if " --log"         str.cat then
 
   " &" str.cat
 ;
 
 /*----------------------------------------------------------------------------*/
-/* spawn all other nodes for a grid on this machine                           */
+/* form the node list: {--node name ip port}*                                 */
 /*----------------------------------------------------------------------------*/
-: grid::spawnNodes ( -- )
+: formNodeList ( -- sNodeList )
 
-  // test for single node
-  grid::nodes 1 == if exit then
-
-  locals| sNodeList |
-  locals| pNode     |
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // form the --node ... string
+  locals| pNode |
 
   ""
 
   grid::nodes 0 do
+
     I grid::node to pNode
     pNode node.port
     pNode node.IP
     pNode node.name
-    " --node %v %v %v " str.format
+    " --node %v %v %v" str.format
     str.cat
-  loop
 
-  to sNodeList
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
+/* spawn a specific node                                                      */
+/*----------------------------------------------------------------------------*/
+: grid::spawnNode ( bAdd sNodeName sNodeList -- )
+
+  params| sNodeList |
+  params| sNodeName |
+  params| bAdd      |
+
+  locals| sShellCommand |
+
+  // form the shell command
+  bAdd sNodeName sNodeList formShellCommand to sShellCommand
+
+  // print the shell command
+  sShellCommand .
+
+  // execute the shell command
+  sShellCommand shell::execute
+
+  // check result
+  not assert
+;
+
+/*----------------------------------------------------------------------------*/
+/* spawn all other nodes for a grid on this machine                           */
+/*----------------------------------------------------------------------------*/
+: grid::spawnOtherNodes ( -- )
+
+  // test for single node grid
+  grid::nodes 1 == if exit then
+
+  locals| sNodeList |
+  locals| sShellCommand |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form the node list
+
+  formNodeList to sNodeList
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn all other nodes
@@ -83,13 +118,13 @@
     I grid::thisNode@ != if
 
       // form the shell command to spawn node I
-      sNodeList I grid::node node.name se_command
+      false  I grid::node node.name  sNodeList  formShellCommand to sShellCommand
 
       // print the shell command
-      dup .
+      sShellCommand .
 
       // execute the shell command
-      shell::execute
+      sShellCommand shell::execute
 
       // check result
       not assert
@@ -101,6 +136,34 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   grid::StartNode@ "Cluster Start node: %v" str.format .
+;
+
+/*----------------------------------------------------------------------------*/
+/* spawn named node being added to a grid on this machine                     */
+/*----------------------------------------------------------------------------*/
+: grid::spawnNamedNode ( sNodeNm -- )
+
+  params| sNodeNm   |
+
+  locals| sNodeList |
+  locals| sShellCommand |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form the node list
+
+  formNodeList to sNodeList
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  true  I grid::node node.name  sNodeList  formShellCommand  to sShellCommand
+
+  // print the shell command
+  sShellCommand .
+
+  // execute the shell command
+  sShellCommand shell::execute
+
+  // check result
+  not assert
 ;
 
 /*----------------------------------------------------------------------------*/

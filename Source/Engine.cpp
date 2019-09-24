@@ -718,14 +718,18 @@ void Engine::vRunCommandLine(void)
   
   try {
     switch (eBootOption) {
-      case BO_ADD_NODE:     vStartSystem();                               break;
+        
+      case BO_ADD_NODE:     vStartSystem();   vWaitStop();                break;
+      case BO_START:        vStartSystem();   vWaitStop();                break;
+        
       case BO_PROMPT:       vOpenLog();       vCallPrompt();              break;
       case BO_SETH_PROMPT:  vCallPrompt();                                break;
-      case BO_START:        vStartSystem();   vWaitStop();                break;
       case BO_START_PROMPT: vStartSystem();   vCallPrompt();              break;
+        
       case BO_STATUS:       vPrintStatus();                               break;
       case BO_STOP:         vStopSystem();                                break;
       case BO_UNLINK:       vStopSystem();                                break;
+        
       default:
         vFatal("Unknown command line argument\n"_Stz);
     }
