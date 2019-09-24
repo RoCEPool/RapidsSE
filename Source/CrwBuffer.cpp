@@ -446,6 +446,17 @@ void CrwBuffer::vRestore(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* restore the nub the row buffer                                             */
+/*----------------------------------------------------------------------------*/
+void CrwBuffer::vRestoreNub(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
+  m_oRowTray.vRestoreNub();
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* restore the table of the row buffer                                        */
 /*----------------------------------------------------------------------------*/
 void CrwBuffer::vRestoreTable(Table* pTable)
@@ -471,7 +482,7 @@ void CrwBuffer::vShowRow(i8 i_Row)
   
   // get compact row
   Crw* aCompactRow = (Crw*)m_oRowTray.pNub()->aGetHead(i_Row);
-
+  
   // inflate compact row into row
   RowInflator::vInflateRow(hRow,aCompactRow);
   

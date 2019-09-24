@@ -370,7 +370,10 @@ void Step::vSocketRecvObject(MP_Task mpTask)
                   "Received %lldB CrwBuffer: %p"_Stz, //!format-LogRes
                   nObjectSize,
                   pCrwBuffer);
-
+    
+    // restore the nub of the crwbuffer
+    pCrwBuffer->vRestoreNub();
+    
     mpTask->m_pDataStack->vPushPointer(pCrwBuffer);
     mpTask->m_pDataStack->vPushBool(true);
     EXIT();
@@ -579,6 +582,9 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
     //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
     //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
     
+    // restore the nub of the crwbuffer
+    pCrwBuffer->vRestoreNub();
+    
     mpTask->m_pDataStack->vPushPointer(pCrwBuffer);
     mpTask->m_pDataStack->vPushBool(true);
     EXIT();
@@ -641,7 +647,11 @@ void Step::vSocketSendObject(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  
+//  if (eClass == CN_CRWBUFFER) {
+//    CrwBuffer* pCrwBuffer = _pCrwBuffer(pObject);
+//    pCrwBuffer->vShow();
+//    vDebugPoint();
+//  }
   AM::vLogRes(SL_INF,pSocket,RA_SKT_SEND,
               "Object %s %lldB to node %s"_Stz, //!format-LogRes
               aCN[eClass],
@@ -651,6 +661,7 @@ void Step::vSocketSendObject(MP_Task mpTask)
 
     
   SysCall oSysCall;
+  
   bool bResult = pSocket->bSendTo(pObject, nObjectSize, oSysCall);
   
   if (bResult)

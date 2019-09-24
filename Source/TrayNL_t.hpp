@@ -109,7 +109,8 @@ namespace Structures
     ~TrayNL_t(void) noexcept(false);
   
     Nub_t<CN,HEAD,OVER,TAIL,DESC>* pNub(void);
-  
+    void vRestoreNub(void);
+    
   private:
     Footer* aFooter(void);
   };
@@ -855,6 +856,17 @@ Nub_t<CN,HEAD,OVER,TAIL,DESC>*
   return &m_oNub;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get the inner nub / interface                                              */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class OVER, class TAIL, class DESC, i8 BYTES>
+void TrayNL_t<CN,HEAD,OVER,TAIL,DESC,BYTES>::vRestoreNub(void)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  i8 nSpaceUnits = BYTES / C_SPACEUNIT_QUANTA;
+  m_oNub.vSetItems(nSpaceUnits,&m_xaUnits[0]);
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
