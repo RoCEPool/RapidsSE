@@ -72,7 +72,7 @@
 /*----------------------------------------------------------------------------*/
 /* spawn a specific node                                                      */
 /*----------------------------------------------------------------------------*/
-: grid::spawnNode ( bAdd sNodeName sNodeList -- )
+: spawnNamedNode ( bAdd sNodeName sNodeList -- )
 
   params| sNodeList |
   params| sNodeName |
@@ -92,6 +92,9 @@
   // check result
   not assert
 ;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* spawn all other nodes for a grid on this machine                           */
@@ -114,20 +117,11 @@
 
   grid::nodes 0 do
 
-    // skip this node
+    // all but this node
     I grid::thisNode@ != if
 
-      // form the shell command to spawn node I
-      false  I grid::node node.name  sNodeList  formShellCommand to sShellCommand
-
-      // print the shell command
-      sShellCommand .
-
-      // execute the shell command
-      sShellCommand shell::execute
-
-      // check result
-      not assert
+      // spawn/start node I
+      false  I grid::node node.name  sNodeList  spawnNamedNode
 
     then
 
@@ -141,29 +135,17 @@
 /*----------------------------------------------------------------------------*/
 /* spawn named node being added to a grid on this machine                     */
 /*----------------------------------------------------------------------------*/
-: grid::spawnNamedNode ( sNodeNm -- )
+: grid::spawnAddingNode ( sNodeNm -- )
 
   params| sNodeNm   |
 
   locals| sNodeList |
-  locals| sShellCommand |
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the node list
-
   formNodeList to sNodeList
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  true  I grid::node node.name  sNodeList  formShellCommand  to sShellCommand
-
-  // print the shell command
-  sShellCommand .
-
-  // execute the shell command
-  sShellCommand shell::execute
-
-  // check result
-  not assert
+  // spawn/add node sNodeNm
+  true  I grid::node node.name  sNodeList  spawnNamedNode
 ;
 
 /*----------------------------------------------------------------------------*/
