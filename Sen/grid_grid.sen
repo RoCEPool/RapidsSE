@@ -5,24 +5,25 @@
 " grid_grid.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* path for SE                                                                */
+/* command path for SE                                                        */
 /*----------------------------------------------------------------------------*/
-"../OS\\ X/Build/Products/Debug/SE" constant SE_PATH
-//"../OS\\ X/Build/Products/Release/SE" constant SE_PATH
+"../OS\\ X/Build/Products/Debug/SE" constant SE_COMMAND
+//"../OS\\ X/Build/Products/Release/SE" constant SE_COMMAND
 
 /*----------------------------------------------------------------------------*/
 /* form the shell command for spawning and starting a node etc                */
 /*----------------------------------------------------------------------------*/
-: formShellCommand ( sNodeList sNodeName -- "<command>" )
+: formShellCommand ( sNodeList sNodeName bAdd -- "<command>" )
 
+  params| bAdd      |
   params| sNodeName |
   params| sNodeList |
 
   //  "nohup "
   ""
 
-  SE_PATH str.cat
-  " --start " str.cat
+  SE_COMMAND str.cat
+  " --start" str.cat
 
   " --name "  str.cat sNodeName str.cat sNodeList str.cat
 
@@ -34,12 +35,12 @@
   " --commands /Users/ray/Desktop/rapidsse/Commands"            str.cat
 //" --commands /Users/alkayamarti/rapidsSE/rapidsse/Commands"   str.cat
 
-  args.tracepoint  if " --tracepoint "  str.cat then
-  args.verbose     if " --verbose "     str.cat then
-  args.dontFree    if " --dontFree "    str.cat then
-  args.freeCB      if " --freeCB "      str.cat then
-  args.metadata    if " --metadata "    str.cat then
-  args.log         if " --log "         str.cat then
+  args.tracepoint  if " --tracepoint"  str.cat then
+  args.verbose     if " --verbose"     str.cat then
+  args.dontFree    if " --dontFree"    str.cat then
+  args.freeCB      if " --freeCB"      str.cat then
+  args.metadata    if " --metadata"    str.cat then
+  args.log         if " --log"         str.cat then
 
   " &" str.cat
 ;
@@ -65,7 +66,7 @@
     pNode node.port
     pNode node.IP
     pNode node.name
-    " --node %v %v %v " str.format
+    " --node %v %v %v" str.format
     str.cat
   loop
 
@@ -80,7 +81,7 @@
     I grid::thisNode@ != if
 
       // form the shell command to spawn node I
-      sNodeList I grid::node node.name formShellCommand
+      sNodeList I grid::node node.name false formShellCommand
 
       // print the shell command
       dup .
