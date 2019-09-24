@@ -129,8 +129,7 @@ Job_WriteBuffer::~Job_WriteBuffer(void) noexcept(false)
   
   if ( m_pOperand ) {
     ASSERT(m_pOperand->eClass() == CN_CRWBUFFER);
-    CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pOperand);
-    delete pCrwBuffer;
+    AM::vDeleteOperand(m_pOperand);
     m_pOperand = nullptr;
   }
   
@@ -183,8 +182,7 @@ bool Job_WriteBuffer::bInsertRows(void)
   }
   else {
     ASSERT(m_pOperand->eClass() == CN_CRWBUFFER);
-    CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pOperand);
-    delete pCrwBuffer;
+    AM::vDeleteOperand(m_pOperand);
     m_pOperand = nullptr;
   }
   

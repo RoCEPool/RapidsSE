@@ -56,6 +56,7 @@ namespace StorageEngine
     static CarryOver* pCarryOver(void);
     static EnumFlags* pClassFlags(void);
     static Lock* pDdlLock(void);
+    static void vDeleteOperand(Operand* pOperand);
     static Lock* pDicLock(void);
     static i8   iElapsedSsec(void);
     static i8   iEpoch(void);

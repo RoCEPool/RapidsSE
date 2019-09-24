@@ -129,8 +129,7 @@ Job_WriteRow::~Job_WriteRow(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEROW,_FOOTER_);
   
   ASSERT(m_pOperand->eClass() == CN_CRWBUFFER);
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pOperand);
-  delete pCrwBuffer;
+  AM::vDeleteOperand(m_pOperand);
   m_pOperand = nullptr;
 }
 
