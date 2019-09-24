@@ -156,8 +156,8 @@ void AM::vSetAcksRmg(Task* pTask, i8 nAcks) {
   pTask->vAcksRmg(nAcks);
 }
 void AM::vSpawnJobXmit(Session* pSession, Operand* pOperand,
-                       i8 iParentJobId, i8 iNode) {
-  Job_Xmit::vSpawnJobXmit(pSession,pOperand,iParentJobId,iNode);
+                       Job* pParentJob, Op* pOp, i8 iNode) {
+  Job_Xmit::vSpawnJobXmit(pSession,pOperand,pParentJob->m_iUniqueId,pOp,iNode);
 }
 void AM::vStepTiming(StepTiming* pStepTiming) {
   gpAttachMap->m_pStepTiming = pStepTiming;

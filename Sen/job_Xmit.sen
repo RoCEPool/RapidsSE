@@ -19,8 +19,8 @@
 
   "xmit_kid :" .verbose
 
-   //pJob_Xmit Job_xmit.parentJobId@ locals| iParentJobId |
-
+  //pJob_Xmit job.parentId@ locals| iParentId |
+  //iParentId job::findOriginator locals| pJobParticipant |
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check there is enough Rows and load
 

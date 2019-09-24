@@ -63,7 +63,6 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn)
   m_sName = aOpDefn->m_szCommand;
   
   m_pOpSpec       = pOpSpec;
-  
   m_sLabel        = pOpSpec->szLabel();
   m_sArgs         = ""_Stz;
   m_sNextLabel    = "<nil>"_Stz;

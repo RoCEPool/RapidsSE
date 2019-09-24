@@ -6,10 +6,10 @@
 namespace Jobs
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job_Xmit : public Job,
-                       public JobExtractRow
+  class Job_Xmit : public Job
   {
   public:
+    Op*        m_pOp;             // operator number
     i8         m_iNode;           // node id
     i8         m_iParentJobId;    // parent (InsertRow) job id
     
@@ -29,6 +29,7 @@ namespace Jobs
     static void vSpawnJobXmit(Session* pSession,
                               Operand* pOperand,
                               i8 iParentJobId,
+                              Op* pOp,
                               i8 iNode);
     
   public:
