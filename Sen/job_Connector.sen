@@ -80,10 +80,12 @@
 
   0 locals| pNode |
 
+  "_connectorTake" .
+
   grid::nodes 0
   do
 
-    // get the node
+    // get node I
     I grid::node to pNode
 
     // connect to the node
@@ -123,8 +125,12 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  _connectorTake
-  assertStackDepthZero
+  begin
+    _connectorTake
+    assertStackDepthZero
+    3 thread::sleepSsec
+    true while
+  repeat
 
   // print started message
   //grid::thisNodeName@ "Node %v : SE cluster started" fmt.print
