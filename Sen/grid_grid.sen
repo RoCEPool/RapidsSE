@@ -55,6 +55,8 @@
 
   locals| pNode |
 
+  ""
+
   grid::nodes 0 do
 
     I grid::node to pNode
@@ -79,20 +81,9 @@
   locals| pNode     |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // form the node list: {--node name ip port}*
+  // form the node list
 
-  ""
-
-  grid::nodes 0 do
-    I grid::node to pNode
-    pNode node.port
-    pNode node.IP
-    pNode node.name
-    " --node %v %v %v" str.format
-    str.cat
-  loop
-
-  to sNodeList
+  formNodeList to sNodeList
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn all other nodes
