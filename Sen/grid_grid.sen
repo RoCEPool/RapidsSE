@@ -89,7 +89,7 @@
       dup .
 
       // execute the shell command
-      shell.execute
+      shell::execute
 
       // check result
       not assert

@@ -9,11 +9,11 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Shell(void)
 {
-  vAddStep("shell.execute"_Stz,  &Step::vShellExecute);
+  vAddStep("shell::execute"_Stz,  &Step::vShellExecute);
 }
 
 /*----------------------------------------------------------------------------*/
-/* shell.execute -- execute given shell command                               */
+/* shell::execute -- execute given shell command                              */
 /*----------------------------------------------------------------------------*/
 void Step::vShellExecute(MP_Task mpTask)
 {
@@ -22,7 +22,7 @@ void Step::vShellExecute(MP_Task mpTask)
   GenVar xCommand;
   
   if ( ! mpTask->m_pDataStack->bPop(xCommand) )
-    THROW_INVALID_DSTACK("shell.execute"_Stz);
+    THROW_INVALID_DSTACK("shell::execute"_Stz);
   
   SysCall oSysCall;
   

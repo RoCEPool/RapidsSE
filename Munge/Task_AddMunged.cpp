@@ -915,7 +915,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "      dup .\n"
     "\n"
     "      // execute the shell command\n"
-    "      shell.execute\n"
+    "      shell::execute\n"
     "\n"
     "      // check result\n"
     "      not assert\n"
