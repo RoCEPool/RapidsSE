@@ -11,31 +11,31 @@
 //"../OS\\ X/Build/Products/Release/SE" constant SE_PATH
 
 /*----------------------------------------------------------------------------*/
-/* form the shell command for spawning a node                                 */
+/* form the shell command for spawning and starting a node                    */
 /*----------------------------------------------------------------------------*/
-: se_command ( nodeName sNodeList -- "<command>" )
+: shellCommand_start ( sNodeName sNodeList -- "<command>" )
 
-  locals| nodeName |
+  locals| sNodeName |
   locals| sNodeList |
 
   to sNodeList
-  to nodeName
+  to sNodeName
 
   //  "nohup "
   ""
+
   SE_PATH str.cat
   " --start " str.cat
-  " --size " str.cat args.regionSize >str str.cat
-  //" --commands /Users/alkayamarti/rapidsSE/rapidsse/Commands" str.cat
-  " --commands /Users/ray/Desktop/rapidsse/Commands" str.cat
-  sNodeList str.cat
-  " --regionPrefix " str.cat args.regionPrefix str.cat
-  " --partitionsPerNode " str.cat args.partitionsPerNode >str str.cat
-  " --name  " str.cat nodeName str.cat
-  " --subLoaders " str.cat args.subLoaders >str str.cat
-  " --maxReadyLP " str.cat args.maxReadyLP >str str.cat
 
-  //" --partitionsPerNode " str.cat grid::slots >str str.cat
+  " --name " str.cat sNodeName                                  str.cat
+  sNodeList                                                     str.cat
+  " --size "              str.cat args.regionSize        >str   str.cat
+  " --regionPrefix "      str.cat args.regionPrefix             str.cat
+  " --partitionsPerNode " str.cat args.partitionsPerNode >str   str.cat
+  " --subLoaders "        str.cat args.subLoaders        >str   str.cat
+  " --maxReadyLP "        str.cat args.maxReadyLP        >str   str.cat
+  " --commands /Users/ray/Desktop/rapidsse/Commands"            str.cat
+//" --commands /Users/alkayamarti/rapidsSE/rapidsse/Commands"   str.cat
 
   args.tracepoint  if " --tracepoint "  str.cat then
   args.verbose     if " --verbose "     str.cat then
@@ -83,7 +83,7 @@
     I grid::thisNode@ != if
 
       // form the shell command to spawn node I
-      sNodeList I grid::node node.name se_command
+      sNodeList I grid::node node.name shellCommand_start
 
       // print the shell command
       dup .
