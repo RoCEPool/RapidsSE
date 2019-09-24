@@ -24,6 +24,9 @@
 
   SE_COMMAND str.cat
   " --start" str.cat
+  bAdd if
+    " --addNode" str.cat
+  then
 
   " --name "  str.cat sNodeName str.cat sNodeList str.cat
 
@@ -81,7 +84,7 @@
     I grid::thisNode@ != if
 
       // form the shell command to spawn node I
-      sNodeList I grid::node node.name false formShellCommand
+      sNodeList I grid::node node.name true formShellCommand
 
       // print the shell command
       dup .
