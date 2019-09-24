@@ -121,8 +121,10 @@ Job_KidExport::~Job_KidExport(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_KIDEXPORT,_FOOTER_);
   
-  delete m_pCrwBuffer;
-  m_pCrwBuffer = nullptr;
+  ASSERT(m_pOperand->eClass() == CN_CRWBUFFER);
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pOperand);
+  delete pCrwBuffer;
+  m_pOperand = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

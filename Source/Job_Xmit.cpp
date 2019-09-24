@@ -126,8 +126,10 @@ Job_Xmit::~Job_Xmit(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_XMIT,_FOOTER_);
   
-  delete m_pCrwBuffer;
-  m_pCrwBuffer = nullptr;
+  ASSERT(m_pOperand->eClass() == CN_CRWBUFFER);
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pOperand);
+  delete pCrwBuffer;
+  m_pOperand = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

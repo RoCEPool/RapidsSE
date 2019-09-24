@@ -25,8 +25,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.columnName@"_Stz,      &Step::vJobColumnNameFetch);
   vAddStep("job.columnType@"_Stz,      &Step::vJobColumnTypeFetch);
   vAddStep("job.createResponseVec"_Stz,&Step::vJobCreateResponseVec);
-  vAddStep("job.CrwBuffer@"_Stz,       &Step::vJobCrwBufferFetch);
-  vAddStep("job.CrwBuffer!"_Stz,       &Step::vJobCrwBufferStore);
   
   vAddStep("job.decAcksRemaining"_Stz, &Step::vJobDecAcksRemaining);
   vAddStep("job.delete"_Stz,           &Step::vJobDelete);
@@ -42,7 +40,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.folderName@"_Stz,      &Step::vJobFolderNameFetch);
 
   vAddStep("job.hasError"_Stz,         &Step::vJobHasError);
-  vAddStep("job.hasEntBuffer"_Stz,     &Step::vJobHasEntBuffer);
+  vAddStep("job.hasOperand"_Stz,       &Step::vJobHasOperand);
 
   vAddStep("job.id@"_Stz,              &Step::vJobIdFetch);
   vAddStep("job.indexName@"_Stz,       &Step::vJobIndexNameFetch);
@@ -57,6 +55,10 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.noWait@"_Stz,          &Step::vJobNoWaitFetch);
   
   vAddStep("job.objectName@"_Stz,      &Step::vJobObjectNameFetch);
+  
+  vAddStep("job.operand@"_Stz,         &Step::vJobOperandFetch);
+  vAddStep("job.operand!"_Stz,         &Step::vJobOperandStore);
+  
   vAddStep("job.originatingTask@"_Stz, &Step::vJobOriginatingTaskFetch);
   vAddStep("job.originatingTask!"_Stz, &Step::vJobOriginatingTaskStore);
   vAddStep("job::originator@"_Stz,     &Step::vJobOriginatorFetch);
@@ -502,40 +504,40 @@ void Step::vJobCreateResponseVec(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.crwBuffer@ -- fetch crw buffer from job                                */
+/* job.operand@ -- fetch operand from job                                     */
 /*----------------------------------------------------------------------------*/
-void Step::vJobCrwBufferFetch(MP_Task mpTask)
+void Step::vJobOperandFetch(MP_Task mpTask)
 {
-  ENTRY("vJobCrwBufferFetch"_Stz);
+  ENTRY("vJobOperandFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.crwBuffer@"_Stz);
+    THROW_INVALID_DSTACK("job.operand@"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  mpTask->m_pDataStack->vPushPointer(pJob->m_pCrwBuffer);
+  mpTask->m_pDataStack->vPushPointer(pJob->m_pOperand);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.crwBuffer! -- store crw buffer in the job                              */
+/* job.operand! -- store operand in the job                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vJobCrwBufferStore(MP_Task mpTask)
+void Step::vJobOperandStore(MP_Task mpTask)
 {
-  ENTRY("vJobCrwBufferStore"_Stz);
+  ENTRY("vJobOperandStore"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.crwBuffer!"_Stz);
+    THROW_INVALID_DSTACK("job.operand!"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  Object* pCrwBufferPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pCrwBufferPtr) )
-    THROW_INVALID_DSTACK("job.crwBuffer!"_Stz);
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(pCrwBufferPtr);
+  Object* pOperandPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pOperandPtr) )
+    THROW_INVALID_DSTACK("job.operand!"_Stz);
+  Operand* pOperand = _pOperand(pOperandPtr);
   
-  pJob->m_pCrwBuffer = pCrwBuffer;
+  pJob->m_pOperand = pOperand;
   
   EXIT();
 }
@@ -778,19 +780,19 @@ void Step::vJobHasError(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.hasEntBuffer -- return true if job has a entry buffer                  */
+/* job.hasOperand -- return true if job has an operand                        */
 /*----------------------------------------------------------------------------*/
-void Step::vJobHasEntBuffer(MP_Task mpTask)
+void Step::vJobHasOperand(MP_Task mpTask)
 {
-  ENTRY("vJobHasEntBuffer"_Stz);
+  ENTRY("vJobHasOperand"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.hasEntBuffer"_Stz);
+    THROW_INVALID_DSTACK("job.hasOperand"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
   
-  i8 bHas = pJob->m_pCrwBuffer ? true : false;
+  i8 bHas = pJob->m_pOperand ? true : false;
   if (pJob->m_aJobClass->m_eClass == CN_JOB_WRITEBUFFER)
     int iDebug = 1;
   

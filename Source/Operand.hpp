@@ -17,6 +17,7 @@ namespace Streams
   };
   
   Operand* _pOperand(void* aAddr);
+  bool _bIsValidOperand(eCN eClass);
 }
 
 /*============================================================================*/

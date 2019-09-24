@@ -291,8 +291,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
   i8 nObjectSize = giClassSize[eClass];
 
   RASSERT(_bIsValidJob(eClass) ||
-          CN_CRWBUFFER  == eClass ||
-          CN_EXPORTBUFFER == eClass);
+          _bIsValidOperand(eClass));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive rest of a job
@@ -382,42 +381,6 @@ void Step::vSocketRecvObject(MP_Task mpTask)
   
   //////////////////////////////////////////////////////////////////////////////
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // receive rest of other
-  
-  if (eClass == CN_EXPORTBUFFER) {
-    
-    ExportBuffer* pExportBuffer = new ExportBuffer();
-    
-    MemLib::vCopy(pExportBuffer,pObject,sizeof(Object),CN_EXPORTBUFFER);
-    
-    void* aBody = aAdd<void*>(pExportBuffer,sizeof(Object));
-    i8 nRemainingBytes = giClassSize[CN_EXPORTBUFFER] - sizeof(Object);
-    
-    bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
-    if (! bResult) {
-      mpTask->m_pDataStack->vPushBool(false);
-      EXIT();
-      return;
-    }
-    
-    //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
-    //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
-    
-    // restore the entryBuffer pointets (m_pHeadEntry etc)
-    pExportBuffer->vRecvPostCorrection();
-    
-    AM::vLogRes(SL_INF,pSocket,RA_SKT_RECEIVED,
-                "Received %lldB ExportBuffer: %p"_Stz, //!format-LogRes
-                nObjectSize,
-                pExportBuffer);
-    
-    mpTask->m_pDataStack->vPushPointer(pExportBuffer);
-    mpTask->m_pDataStack->vPushBool(true);
-    EXIT();
-    return;
-  }
-  
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // unknown object
@@ -437,7 +400,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
   
   i8 nFreeBuffer = gpBufferPool->nFreeCount();
   
-  bool bDiscardEntBuffer = false;
+  bool bDiscardOperand = false;
   
   Object* pSocketPtr;
   if ( ! mpTask->m_pDataStack->bPop(pSocketPtr) )
@@ -467,7 +430,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
   eCN eClass = pObject->eClass();
   i8 nObjectSize = giClassSize[eClass];
   
-  RASSERT(_bIsValidJob(eClass) || CN_CRWBUFFER == eClass);
+  RASSERT(_bIsValidJob(eClass) || _bIsValidOperand(eClass));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // handle the specific case of job_writeBuffer under low memory condition
@@ -493,7 +456,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
 
     pJob_WriteBuffer->m_i_Focal = C_UNKNOWN;
 
-    bDiscardEntBuffer = pJob_WriteBuffer->m_pCrwBuffer ? true : false;
+    bDiscardOperand = pJob_WriteBuffer->m_pOperand ? true : false;
 
     pJob_WriteBuffer->m_bLowMem = true;
     
@@ -504,15 +467,15 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
     
     if (-1 != pJob_WriteBuffer->m_nWriteBehindBuffers) {
       
-      pJob_WriteBuffer->m_pCrwBuffer = nullptr;
+      pJob_WriteBuffer->m_pOperand = nullptr;
     }
     else {
       //pJob_WriteBuffer = nullptr;
       //vTrace("Discarded Job_WriteBuffer under low mem\n"_Stz);
-      pJob_WriteBuffer->m_pCrwBuffer = nullptr;
+      pJob_WriteBuffer->m_pOperand = nullptr;
     }
 
-    if (bDiscardEntBuffer) {
+    if (bDiscardOperand) {
 
       bResult = pSocket->bRecvBytes(aLowBuff,sizeof(EntBuffer),oSysCall);
       vTrace("Discarded EntBuffer under low mem\n"_Stz);
@@ -642,8 +605,7 @@ void Step::vSocketSendObject(MP_Task mpTask)
   }
 
   RASSERT(_bIsValidJob(eClass) ||
-          CN_CRWBUFFER  == eClass ||
-          CN_EXPORTBUFFER == eClass);
+          _bIsValidOperand(eClass));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

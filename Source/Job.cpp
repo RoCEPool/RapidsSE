@@ -84,7 +84,6 @@ Job::Job(eCN eClassNo)
   m_iParticipantNode  = C_UNKNOWN;
   m_oAcksRmg.vCheckInit();
   
-  m_pCrwBuffer = nullptr;
   m_pOperand   = nullptr;
   
   m_pJobMutex = nullptr;
@@ -129,7 +128,6 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
   m_iParticipantNode  = C_UNKNOWN;
   m_oAcksRmg.vCheckInit();
   
-  m_pCrwBuffer = nullptr;
   m_pOperand   = nullptr;
   
   if (CN_JOB_NODEINFO == eClass())
