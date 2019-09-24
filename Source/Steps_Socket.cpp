@@ -122,6 +122,7 @@ void Step::vSocketConnect(MP_Task mpTask)
   i8 iConnRefusedCount = 0;
   
   while (!bResult) {
+    
     bResult = pSocket->bConnectServer(sAddr, (int)iPort, oSysCall);
     if ( ! bResult ) {
       i8 iError = oSysCall.iError();
@@ -138,7 +139,10 @@ void Step::vSocketConnect(MP_Task mpTask)
         continue;
       }
       
-      THROW("Unable to connect: Errno %d!"_Stz, iError);
+      vTrace("Unable to connect: Errno %d %s\n"_Stz,
+             iError, strerror((int)iError));
+      AM::vNap(1000, CN_SOCKET);
+      //THROW("Unable to connect: Errno %d"_Stz, iError);
     }
   }
   
@@ -279,6 +283,10 @@ void Step::vSocketRecvObject(MP_Task mpTask)
   }
   
   SP_Header spHeader;
+  
+  vTrace("Socket received: Header %s"_Stz,
+         spHeader.sz(aHeader));
+  
   AM::vLogRes(SL_INF,pSocket,RA_SKT_RECEIVED,
               "Socket received: Header %s"_Stz, //!format-LogRes
               spHeader.sz(aHeader));

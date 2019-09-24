@@ -54,6 +54,8 @@
 
   0 locals| pSocket |
 
+  pNode node.no grid::thisNode@ "Node %v connecting to node %v" fmt.print
+
   // get the nodes port and IP address
   pNode node.port ( port )
   pNode node.IP   ( port IP )
@@ -61,13 +63,13 @@
   // connect to that node
   socket::open socket.connect to pSocket
 
-  // set the socket in the node
+  // set the send socket in the node
   pSocket pNode node.sendSocket!
 
   // print connection message
-  args.verbose if
-    grid::thisNode@ I "Node%v connected to node%v" fmt.print
-  then
+  //args.verbose if
+    pNode node.no grid::thisNode@ "Node %v connected to node %v" fmt.print
+  //then
 
   // send this node's info to the node we just connected to
   pSocket .sendNodeInfo
@@ -115,6 +117,8 @@
 
   //"connector_run" .
 
+  grid::thisNode@ job::this "Connector %v on node %v running" fmt.print
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // get the task
@@ -128,9 +132,9 @@
   begin
     _connectorTake
     assertStackDepthZero
+
     3 thread::sleepSsec
-    true while
-  repeat
+  again
 
   // print started message
   //grid::thisNodeName@ "Node %v : SE cluster started" fmt.print

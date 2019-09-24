@@ -349,7 +349,7 @@ bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
   SysCall.vClear();
   
   m_iSocketId = socket(AF_INET,SOCK_STREAM,0);
-  
+
   if (m_iSocketId < 0) {
     SysCall.vError(errno);
     return false;
@@ -366,7 +366,7 @@ bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
     bClose(SysCall);
     return false;
   }
-  
+
   struct addrinfo  xAddrInfo;
   struct addrinfo* pAddrInfo = NULL;
   
@@ -397,6 +397,8 @@ bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
   
   if (iResult != 0) {
     SysCall.vError(errno);
+    //close(m_iSocketId);
+    //m_iSocketId = -1;
     return false;
   }
   
@@ -428,9 +430,9 @@ bool Socket::bCreateServer(int iPort, SysCall& SysCall)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   m_iSocketId = socket(AF_INET
-                    ,SOCK_STREAM
-                    ,0
-                    );
+                      ,SOCK_STREAM
+                      ,0
+                      );
   if (-1 == m_iSocketId) {
     SysCall.vError(errno);
     return false;
@@ -716,8 +718,9 @@ bool Socket::bSocket(SysCall& SysCall)
   
   SysCall.vClear();
   
-  m_iSocketId = socket(AF_INET,SOCK_DGRAM,IPPROTO_UDP);
-  
+  //m_iSocketId = socket(AF_INET,SOCK_DGRAM,IPPROTO_UDP);
+  m_iSocketId = socket(AF_INET,SOCK_STREAM,0);
+
   if (m_iSocketId < 0) {
     SysCall.vError(errno);
     return false;

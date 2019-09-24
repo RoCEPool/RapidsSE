@@ -84,7 +84,7 @@
   snooze start_waker
 
   snooze start_answer
-  //snooze start_connector
+  snooze start_connector
 
 
   nullptr pThisTask task.job!
