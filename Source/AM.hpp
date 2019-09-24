@@ -56,6 +56,7 @@ namespace StorageEngine
     static CarryOver* pCarryOver(void);
     static EnumFlags* pClassFlags(void);
     static Lock* pDdlLock(void);
+    static void vDeleteOperand(Operand* pOperand);
     static Lock* pDicLock(void);
     static i8   iElapsedSsec(void);
     static i8   iEpoch(void);
@@ -122,7 +123,7 @@ namespace StorageEngine
     static void vPulseTask(Task* pTask);
     static void vSetAcksRmg(Task* pTask, i8 nAcks);
     static void vSpawnJobXmit(Session* pSession, Operand* pOperand,
-                              i8 iParentJobId, i8 iNode);
+                              Job* pParentJob, Op* pOp, i8 iNode);
     static void vStepTiming(StepTiming* pStepTiming);
     static void vSubInserters(i8 nSubInserters);
     static void vTableName(Job_Dynamic* pJob, Stz* szTableNm);

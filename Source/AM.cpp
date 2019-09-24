@@ -124,6 +124,44 @@ Queue* AM::pBufferQueue(Job* pJob) {
 void AM::vBootError(bool bBootError) {
   gpAttachMap->m_bBootError = bBootError;
 }
+/*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+void AM::vDeleteOperand(Operand* pOperand)
+{
+  eCN eClass = pOperand->eClass();
+  
+  switch(eClass) {
+      
+    case CN_CANCELMARKER: {
+      CancelMarker* pCancelMarker = _pCancelMarker(pOperand);
+      delete pCancelMarker;
+      break;
+    }
+      
+    case CN_CRWBUFFER: {
+      CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
+      delete pCrwBuffer;
+      break;
+    }
+      
+    case CN_ENDMARKER: {
+      EndMarker* pEndMarker = _pEndMarker(pOperand);
+      delete pEndMarker;
+      break;
+    }
+      
+    case CN_STREAMDEF: {
+      StreamDef* pStreamDef = _pStreamDef(pOperand);
+      delete pStreamDef;
+      break;
+    }
+      
+    default: {
+      RASSERT(0);
+    }
+  }
+}
 void AM::vDropTaskLock(Task* pTask) {
   Scheduler::vDropTaskLock(pTask);
 }
@@ -156,8 +194,8 @@ void AM::vSetAcksRmg(Task* pTask, i8 nAcks) {
   pTask->vAcksRmg(nAcks);
 }
 void AM::vSpawnJobXmit(Session* pSession, Operand* pOperand,
-                       i8 iParentJobId, i8 iNode) {
-  Job_Xmit::vSpawnJobXmit(pSession,pOperand,iParentJobId,iNode);
+                       Job* pParentJob, Op* pOp, i8 iNode) {
+  Job_Xmit::vSpawnJobXmit(pSession,pOperand,pParentJob->m_iUniqueId,pOp,iNode);
 }
 void AM::vStepTiming(StepTiming* pStepTiming) {
   gpAttachMap->m_pStepTiming = pStepTiming;

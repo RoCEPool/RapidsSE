@@ -106,13 +106,9 @@ Job_Xmit::Job_Xmit(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session*
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_XMIT,_FOOTER_);
   
+  m_pOp          = nullptr;
   m_iNode        = C_UNKNOWN;
   m_iParentJobId = C_UNKNOWN;
-  
-  // set the enclosed_by to be a '
-  m_oFormatters.m_bDefault = false;
-  m_oFormatters.m_cEnclosedBy_Leading = '\'';
-  m_oFormatters.m_cEnclosedBy_Trailing = '\'';
   
   _checkInitialised_(CN_JOB_XMIT);
   
@@ -126,8 +122,9 @@ Job_Xmit::~Job_Xmit(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_XMIT,_FOOTER_);
   
-  delete m_pCrwBuffer;
-  m_pCrwBuffer = nullptr;
+//  ASSERT(m_pOperand);
+//  Operand::vDelete(m_pOperand);
+//  m_pOperand = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -150,6 +147,7 @@ void Job_Xmit::vDump(eCN eClass, Object* pObject, Stz* aTab)
 void Job_Xmit::vSpawnJobXmit(Session* pSession,
                              Operand* pOperand,
                              i8 iParentJobId,
+                             Op* pOp,
                              i8 iNode)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -169,8 +167,10 @@ void Job_Xmit::vSpawnJobXmit(Session* pSession,
   
   pJob_Xmit->vSeed(SS_SEED_RUN);
   
-  pJob_Xmit->m_iParentJobId  = iParentJobId;
-  pJob_Xmit->m_iNode         = iNode;
+  pJob_Xmit->m_iParentId = iParentJobId;
+  pJob_Xmit->m_pOp       = pOp;
+  pJob_Xmit->m_iNode     = iNode;
+  pJob_Xmit->m_pOperand  = pOperand;
   //pJob_Xmit->m_nRows         = pOperand->nRowCount();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

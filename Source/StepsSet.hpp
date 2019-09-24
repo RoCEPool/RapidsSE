@@ -425,8 +425,8 @@ private:
   static void vJobColumnIsPartKey(Tasks::MP_Task mpTask);
   static void vJobColumnTypeFetch(Tasks::MP_Task mpTask);
   static void vJobCreateResponseVec(Tasks::MP_Task mpTask);
-  static void vJobCrwBufferFetch(Tasks::MP_Task mpTask);
-  static void vJobCrwBufferStore(Tasks::MP_Task mpTask);
+  static void vJobOperandFetch(Tasks::MP_Task mpTask);
+  static void vJobOperandStore(Tasks::MP_Task mpTask);
 
   static void vJobDecAcksRemaining(Tasks::MP_Task mpTask);
   static void vJobDelete(Tasks::MP_Task mpTask);
@@ -442,7 +442,7 @@ private:
   static void vJobFolderNameFetch(Tasks::MP_Task mpTask);
 
   static void vJobHasError(Tasks::MP_Task mpTask);
-  static void vJobHasEntBuffer(Tasks::MP_Task mpTask);
+  static void vJobHasOperand(Tasks::MP_Task mpTask);
 
   static void vJobIdFetch(Tasks::MP_Task mpTask);
   static void vJobIndexNameFetch(Tasks::MP_Task mpTask);
@@ -752,7 +752,6 @@ private:
   static void vJob_WriteRowTableStore(Tasks::MP_Task mpTask);
 
   // Job Xmit
-  static void vJob_XmitParentJobIdFetch(Tasks::MP_Task mpTask);
   static void vJob_XmitPipeOut(Tasks::MP_Task mpTask);
   static void vJob_XmitNodeFetch(Tasks::MP_Task mpTask);
 

@@ -84,6 +84,7 @@ namespace Rows
     void        vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iRows);
     void        vDump(void);
     void        vRestore(void);
+    void        vRestoreNub(void);
     void        vRestoreTable(Table* pTable);
     bool        bVerify(void);
   

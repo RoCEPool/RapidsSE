@@ -9,29 +9,8 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobXmit(void)
 {
-  vAddStep("Job_Xmit.parentJobId@"_Stz,  &Step::vJob_XmitParentJobIdFetch);
   vAddStep("Job_Xmit.pipeOut"_Stz,       &Step::vJob_XmitPipeOut);
   vAddStep("Job_Xmit.node@"_Stz,         &Step::vJob_XmitNodeFetch);
-}
-
-/*----------------------------------------------------------------------------*/
-/* Job_Xmit.parentJobId@ -- fetch parent jobid from job                       */
-/*----------------------------------------------------------------------------*/
-void Step::vJob_XmitParentJobIdFetch(MP_Task mpTask)
-{
-  ENTRY("vJob_XmitParentJobIdFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("Job_Xmit.parentJobId@"_Stz);
-  Job_Xmit* pJob_Xmit = _pJob_Xmit(pJobPtr);
-  
-  i8 iParentJobId = pJob_Xmit->m_iParentJobId;
-  RASSERT(C_UNKNOWN != iParentJobId);
-  
-  mpTask->m_pDataStack->vPushI8(iParentJobId);
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -46,10 +25,12 @@ void Step::vJob_XmitPipeOut(MP_Task mpTask)
     THROW_INVALID_DSTACK("Job_Xmit.pipeOut@"_Stz);
   Job_Xmit* pJob_Xmit = _pJob_Xmit(pJobPtr);
   
-  //i8 iParentJobId = pJob_Xmit->m_iParentJobId;
-  //RASSERT(C_UNKNOWN != iParentJobId);
+//  Object* pParentJobPtr;
+//  if ( ! mpTask->m_pDataStack->bPop(pParentJobPtr) )
+//    THROW_INVALID_DSTACK("Job_Xmit.pipeOut@"_Stz);
   
-  //mpTask->m_pDataStack->vPushI8(iParentJobId);
+//  Job_Dynamic* pParentJob = _pJob_Dynamic(pParentJobPtr);
+  pJob_Xmit->m_pOp->vPipeOut(pJob_Xmit->m_pOperand);
   
   EXIT();
 }

@@ -9,7 +9,7 @@ namespace Operators
   {
   friend class Digest;
   
-  protected:  
+  protected:
     s32            m_sName;          // first word of prompt command
   
     Digest*        m_pDigest;        // op digest

@@ -127,9 +127,10 @@ Job_WriteBuffer::~Job_WriteBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEBUFFER,_FOOTER_);
   
-  if ( m_pCrwBuffer ) {
-    delete m_pCrwBuffer;
-    m_pCrwBuffer = nullptr;
+  if ( m_pOperand ) {
+    ASSERT(m_pOperand->eClass() == CN_CRWBUFFER);
+    AM::vDeleteOperand(m_pOperand);
+    m_pOperand = nullptr;
   }
   
 }
@@ -143,7 +144,7 @@ bool Job_WriteBuffer::bInsertRows(void)
 
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
   
-  if (! m_pCrwBuffer) {
+  if (! m_pOperand) {
     bool bAllBuffersWritten = bInsertRows_LowMem();
     return bAllBuffersWritten;
   }
@@ -160,7 +161,7 @@ bool Job_WriteBuffer::bInsertRows(void)
 
   TablePtn* pPartition = m_pTable->pPartition(iSlot);
   RASSERT_TYPE(pPartition,CN_TABLEPTN);
-  RASSERT_TYPE(m_pCrwBuffer,CN_CRWBUFFER);
+  RASSERT_TYPE(m_pOperand,CN_CRWBUFFER);
 
 //  if (AM::bVerbose())
 //    vTrace("Job_WriteBuffer %lld %lld %s\n"_Stz,
@@ -174,13 +175,15 @@ bool Job_WriteBuffer::bInsertRows(void)
   
   if (! gpBufferPool->bLowMemory()) {
     // insert the working buffer
-    m_pTable->vInsertEntries(iTxId, iSlot, m_pCrwBuffer);
+    CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pOperand);
+    m_pTable->vInsertEntries(iTxId, iSlot, pCrwBuffer);
     // null the current buffer as its been appended to the table
-    m_pCrwBuffer = nullptr;
+    m_pOperand = nullptr;
   }
   else {
-    delete m_pCrwBuffer;
-    m_pCrwBuffer = nullptr;
+    ASSERT(m_pOperand->eClass() == CN_CRWBUFFER);
+    AM::vDeleteOperand(m_pOperand);
+    m_pOperand = nullptr;
   }
   
   // we inserted one additional buffer
@@ -375,7 +378,7 @@ void Job_WriteBuffer::vSpawnJobWriteBuffer(Session* pSession,
   pJob_WriteBuffer->m_iParentJobId  = iParentJobId;
   pJob_WriteBuffer->vObjectName(sTableName);
   pJob_WriteBuffer->m_iPartitionId  = iPartition;
-  pJob_WriteBuffer->m_pCrwBuffer    = pCrwBuffer;
+  pJob_WriteBuffer->m_pOperand      = pCrwBuffer;
   pJob_WriteBuffer->m_nRows         = pCrwBuffer->nRowCount();
   
   if (bFinal) {
