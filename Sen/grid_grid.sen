@@ -11,15 +11,12 @@
 //"../OS\\ X/Build/Products/Release/SE" constant SE_PATH
 
 /*----------------------------------------------------------------------------*/
-/* form the shell command for spawning and starting a node                    */
+/* form the shell command for spawning and starting a node etc                */
 /*----------------------------------------------------------------------------*/
-: shellCommand_start ( sNodeName sNodeList -- "<command>" )
+: formShellCommand ( sNodeList sNodeName -- "<command>" )
 
-  locals| sNodeName |
-  locals| sNodeList |
-
-  to sNodeList
-  to sNodeName
+  params| sNodeName |
+  params| sNodeList |
 
   //  "nohup "
   ""
@@ -27,8 +24,8 @@
   SE_PATH str.cat
   " --start " str.cat
 
-  " --name " str.cat sNodeName                                  str.cat
-  sNodeList                                                     str.cat
+  " --name "  str.cat sNodeName str.cat sNodeList str.cat
+
   " --size "              str.cat args.regionSize        >str   str.cat
   " --regionPrefix "      str.cat args.regionPrefix             str.cat
   " --partitionsPerNode " str.cat args.partitionsPerNode >str   str.cat
@@ -59,7 +56,7 @@
   locals| pNode     |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // form the --node ... string
+  // form the node list: {--node name ip port}*
 
   ""
 
@@ -83,7 +80,7 @@
     I grid::thisNode@ != if
 
       // form the shell command to spawn node I
-      sNodeList I grid::node node.name shellCommand_start
+      sNodeList I grid::node node.name formShellCommand
 
       // print the shell command
       dup .
