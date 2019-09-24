@@ -101,9 +101,10 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn all other nodes
 
+  grid::setStartNode
+
   grid::spawnOtherNodes
 
-  grid::setStartNode
   spawn_Connector
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
