@@ -15,6 +15,16 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* start answer                                                               */
+/*----------------------------------------------------------------------------*/
+: start_answer ( -- )
+
+  "start_answer" .verbose
+
+  spawn_Answer
+;
+
+/*----------------------------------------------------------------------------*/
 /* start connector                                                            */
 /*----------------------------------------------------------------------------*/
 : start_connector ( -- )
@@ -32,16 +42,6 @@
   "start_periodic" .verbose
 
   spawn_Periodic
-;
-
-/*----------------------------------------------------------------------------*/
-/* start socket tasks                                                         */
-/*----------------------------------------------------------------------------*/
-: start_sockets ( -- )
-
-  "start_sockets" .verbose
-
-  spawn_Answer
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -80,9 +80,12 @@
   "start_run" .verbose
 
   snooze start_supervisor
-  snooze start_sockets
   snooze start_periodic
   snooze start_waker
+
+  snooze start_answer
+  //snooze start_connector
+
 
   nullptr pThisTask task.job!
 
