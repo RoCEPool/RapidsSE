@@ -45,6 +45,10 @@ void Correctness::vTraceWith(void)
   vTrace("  WITH_ASSERT_MACRO\n"_Stz);
 #endif
   
+#ifdef WITH_BUCKET_HASHING
+  vTrace("  WITH_BUCKET_HASHING\n"_Stz);
+#endif
+  
 #ifdef WITH_CHECK_INITIALISED
   vTrace("  WITH_CHECK_INITIALISED\n"_Stz);
 #endif

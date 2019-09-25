@@ -40,16 +40,27 @@
 
 #else
 
-#define WITH_RELEASE_VERSION    // compile as release version
+#define WITH_RELEASE_VERSION       // compile as release version
 
-//#define WITH_ACTION_SEQUENCE    // code for ActionLog compiled in
-//#define WITH_CHECK_INITIALISED  // _checkInitialised_()
-//#define WITH_CORECTNESS_ALGEBRA // known class, magic, footer
-//#define WITH_ENTRY_EXIT         // code for ENTRY() & EXIT() macros compiled in
-//#define WITH_PREPOST_CHECKING   // _pre/postCondition_()
+//#define WITH_ACTION_SEQUENCE     // code for ActionLog compiled in
+//#define WITH_CHECK_INITIALISED   // _checkInitialised_()
+//#define WITH_CORECTNESS_ALGEBRA  // known class, magic, footer
+//#define WITH_ENTRY_EXIT          // code for ENTRY() & EXIT() macros compiled in
+//#define WITH_PREPOST_CHECKING    // _pre/postCondition_()
 //#define WITH_STATISTICS_COUNTERS // statistics
-//#define WITH_TRACE_API          // code for tracing api's compiled in
+//#define WITH_TRACE_API           // code for tracing api's compiled in
 #endif
+
+
+//!-----------------------------------------------------------------------------
+//!-----------------------------------------------------------------------------
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// buckets
+
+#define WITH_BUCKET_HASHING        // code for bucket hashing compiled in
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // row coder dev
@@ -59,7 +70,7 @@
 //#define WITH_INFLATE_TRACE       // code for tracing inflate compiled in
 //#define WITH_SHOCO_DUPLICATES    // test for duplicate shoco values
 //#define WITH_VERIFY_TAILS        // verify tails
-//#define WITH_NO_TAILS              // test for duplicate shoco values
+//#define WITH_NO_TAILS            // test for duplicate shoco values
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // event-based task model
