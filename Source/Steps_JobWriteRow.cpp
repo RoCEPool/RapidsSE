@@ -67,7 +67,7 @@ void Step::vJob_WriteRowEncodeRow(MP_Task mpTask)
     // use row hash to get partition
     i8 iHash = pJob_WriteRow->m_pRow->m_iHash;
     Table* pTable = pJob_WriteRow->m_pTable;
-    pJob_WriteRow->m_iPartitionId = pTable->iRowPartition(iHash);
+    pJob_WriteRow->m_iPartitionId = pTable->iToPartition(iHash);
     pJob_InsertRow->m_iPartitionId = pJob_WriteRow->m_iPartitionId ;
 
     // now delete the rowCompactors and the row from writeRow job before

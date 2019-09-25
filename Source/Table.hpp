@@ -56,30 +56,27 @@ namespace MetaData
     Stz* pAnalyzeIndex(Index* pIndex, bool bDetailed, i8& nRows);
     Stz* pAnalyzeTable(bool bDetailed, i8& nRows);
     void vCompactIndex(Index* pIndex);
-    void vLazyBuildIndexes(i8 iSlot);
-    
-    void vInsertEntries(i8 iTxId, i8 iPartition,
-                        Rows::CrwBuffer* pCrwBuffer);
+    i8   nCrwBuffers(void);
     ColumnVec* pColumnVec(void);
     void vContentDump(void);
     void vCreateColumnVec(s32& sName, s48K& sDefinition);
     void vCreateColumnVec(Jobs::Job_CreateTable* pJob);
     IdxVec* pIdxVec(void);
-    void  vIsLoading(bool bIsLoading);
-    bool  bIsLoading(void);
-    bool  bIsValidIndexColumns(Jobs::Job_CreateIndex* pJob);
-    void  vMarkTable(void);
+    i8   nIndexBuffers(i8 iIndexNo);
+    void vInsertEntries(i8 iTxId, i8 iPartition,
+                        Rows::CrwBuffer* pCrwBuffer);
+    void vIsLoading(bool bIsLoading);
+    bool bIsLoading(void);
+    bool bIsValidIndexColumns(Jobs::Job_CreateIndex* pJob);
+    void vLazyBuildIndexes(i8 iSlot);
+    void vMarkTable(void);
     Partitioning::TablePtn* pPartition(i8 iSlot);
     bool bPopulateIndex(i8 iIndexNo);
     void vRemoveIndex(Index* pIndex);
-    i8   nIndexBuffers(i8 iIndexNo);
     PtnColVec*  pPtnColVec(void);
     void vPublish(i8 iPartitionNo);
     bool bPurge(i8 iPartitionNo, i8 iOlderThanSeconds);
     EntBuffer* pRootBuffer(i8 i_Slot, i8 i_Index);
-    i8   iRowPartition(i8 iHash);
-
-    i8   nCrwBuffers(void);
     void vShowColumnVec(void);
     Dic* pSubDic(void);
     void vSubLoaders(i8 iSubLoaders);
@@ -88,6 +85,7 @@ namespace MetaData
     Stz* aTableName(void);
     void vTidyUp(void);
     void vTidyUpIndex(i8 iIndexNo);
+    i8   iToPartition(i8 iHash);
     void vTruncate(i8 iPartitionNo);
     void vTruncateIndex(i8 iPartitionNo, i8 iIndexNo);
     bool bVerifyTable(void);

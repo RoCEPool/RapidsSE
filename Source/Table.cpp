@@ -342,31 +342,19 @@ void Table::vCompactIndex(Index* pIndex)
 }
 
 /*----------------------------------------------------------------------------*/
-/* lazy build of index                                                        */
+/* get number of row buffers in this table                                    */
 /*----------------------------------------------------------------------------*/
-void Table::vLazyBuildIndexes(i8 iSlot)
+i8 Table::nCrwBuffers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  TablePtn* pPartition = this->pPartition(iSlot);
-  IndexTreeVec* pInedexTreeVec = pPartition->pIndexTreeVec();
-  i8 nIndexes = pInedexTreeVec->nItems();
+  i8 iBuffers = 0;
   
-  // iterate all indexes of the table
-  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
-    
-    // get index
-    IndexTree* pNewIndexTree = pInedexTreeVec->pGet(i_Index);
-    
-    Index* pIndex = pNewIndexTree->pIndex();
-    
-    // get an L0 buffer
-    EntBuffer *pIndexBuffer = pPartition->pIndexTree(pIndex->iIndexNo())->pFirstH0Buffer();
-    
-    // build skip list for all L0 buffers
-    if (pIndexBuffer)
-      pIndexBuffer->vLazyBuild();
+  for (i8 iPartition = 0; iPartition < AM::nSlotsPerNode(); iPartition++) {
+    iBuffers += pPartition(iPartition)->nCrwBuffers();
   }
+  
+  return iBuffers;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -553,6 +541,34 @@ void Table::vIsLoading(bool bIsLoading)
 }
 
 /*----------------------------------------------------------------------------*/
+/* lazy build of index                                                        */
+/*----------------------------------------------------------------------------*/
+void Table::vLazyBuildIndexes(i8 iSlot)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  TablePtn* pPartition = this->pPartition(iSlot);
+  IndexTreeVec* pInedexTreeVec = pPartition->pIndexTreeVec();
+  i8 nIndexes = pInedexTreeVec->nItems();
+  
+  // iterate all indexes of the table
+  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
+    
+    // get index
+    IndexTree* pNewIndexTree = pInedexTreeVec->pGet(i_Index);
+    
+    Index* pIndex = pNewIndexTree->pIndex();
+    
+    // get an L0 buffer
+    EntBuffer *pIndexBuffer = pPartition->pIndexTree(pIndex->iIndexNo())->pFirstH0Buffer();
+    
+    // build skip list for all L0 buffers
+    if (pIndexBuffer)
+      pIndexBuffer->vLazyBuild();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* mark job to activity map                                                   */
 /*----------------------------------------------------------------------------*/
 void Table::vMarkTable(void)
@@ -706,70 +722,6 @@ EntBuffer* Table::pRootBuffer(i8 i_Slot, i8 i_Index)
 }
 
 /*----------------------------------------------------------------------------*/
-/* hash the first field of row return partition                               */
-/*----------------------------------------------------------------------------*/
-i8 Table::iRowPartition(i8 iHash)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  // modulo to get partition number
-  i8 iPartition = iHash % (AM::nSlotsPerNode() * AM::nDefinedNodes());
-  
-  return iPartition;  
-}
-
-/*
-i8 Table::iRowPartition(Stz* aRow_Data)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  i8 nCols = m_xSlots.pPtnColVec()->nItems();
-  
-  i8 iHash = 0;
-  
-  for (i8 iColumn = 0; iColumn < nCols; iColumn++) {
-    
-    // get the column from the index column vector
-    Column* pColumn = m_xSlots.pPtnColVec()->pGet(iColumn);
-    
-    // get the column number of the column
-    i8 iColumnNo = pColumn->iColumnNo();
-    
-    // get the column value
-    RowData* aRowData = (RowData*)aRow_Data;
-    char* sCursor = aRowData->aColumnDatum(iColumnNo);
-    
-    // hash the column value
-    DtmLib::vHash(pColumn->eDatumType(),iHash,(Stz*)sCursor);
-  }
-  
-  // modulo to get partition number
-  i8 iPartition =
-       iHash
-         % (AM::pGrid()->nSlotsPerNode() * AM::pGrid()->nDefinedNodes());
-  //vTrace("Hashed to Partition: %lld\n"_Stz,iPartition);
-  
-  return iPartition;
-}
-*/
-
-/*----------------------------------------------------------------------------*/
-/* get number of row buffers in this table                                    */
-/*----------------------------------------------------------------------------*/
-i8 Table::nCrwBuffers(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  i8 iBuffers = 0;
-  
-  for (i8 iPartition = 0; iPartition < AM::nSlotsPerNode(); iPartition++) {
-    iBuffers += pPartition(iPartition)->nCrwBuffers();
-  }
-  
-  return iBuffers;
-}
-
-/*----------------------------------------------------------------------------*/
 /* show column vector                                                         */
 /*----------------------------------------------------------------------------*/
 void Table::vShowColumnVec(void)
@@ -877,6 +829,19 @@ void Table::vTruncate(i8 iPartition)
   
   // now truncate the table data
   m_xSlots.vTruncateTable(iPartition);
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute partition of given hash                                            */
+/*----------------------------------------------------------------------------*/
+i8 Table::iToPartition(i8 iHash)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  // modulo the hash to get partition number
+  i8 iPartition = iHash % (AM::nSlotsPerNode() * AM::nDefinedNodes());
+  
+  return iPartition;
 }
 
 /*----------------------------------------------------------------------------*/

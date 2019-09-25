@@ -57,9 +57,9 @@ JobWriteBehind::~JobWriteBehind(void) noexcept(false)
 eEC JobWriteBehind::eAppendRow(void)
 {
   // use row hash to get partition
-  i8 i_Ptn = m_pTable->iRowPartition(m_pRow->m_iHash);
+  i8 i_Ptn = m_pTable->iToPartition(m_pRow->m_iHash);
   
-  // insert the row in a working buffer
+  // append the row into a working buffer
   while (true) {
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -92,7 +92,6 @@ eEC JobWriteBehind::eAppendRow(void)
     // appended ?
     if (bWasAppended)
       return EC_NONE;
-    
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // spawn a write buffer job
