@@ -256,6 +256,8 @@ void Digest::vParseCommand(TokenVec* pTknVec)
       s32 sArgs;
       sArgs.vSprint("(%s)"_Stz,pOp->szArgs());
       
+      pOp->m_pOpSpec->pEnmSet()->vPrint();
+      
       vTrace("  [%02lld] { %9s: %8s%-24s endMarkers(L%lld R%lld) :%-6s %s }\n"_Stz,
              i_Op,
              pOp->szLabel(),

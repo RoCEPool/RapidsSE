@@ -13,8 +13,9 @@ namespace Dynamics
     bool m_bAppendRight;
     i8   m_i_Slot;
 
-    s4K m_sArgs;
-
+    s4K     m_sArgs;
+    EnmSet  m_oEnmSet;
+    
     // must be last
     Footer m_xFooter;
 
@@ -26,9 +27,11 @@ namespace Dynamics
     OpSpec(Stz* szOpLabel, Stz* szOpName, bool bAppR, i8 i_Slot);
    ~OpSpec(void) noexcept(false);
   
+    void vAddEnmPair(Stz* sName, Stz* sValue, eTN eToken);
     bool bAppendRight(void);
     Stz* szArgs(void);
     void vArgs(Stz* szArgs);
+    EnmSet* pEnmSet(void);
     Stz* szLabel(void);
     Stz* szName(void);
     i8   i_Slot(void);

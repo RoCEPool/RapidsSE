@@ -39,6 +39,7 @@ OpSpec::OpSpec(Stz* szOpName)
   m_i_Slot = C_UNKNOWN;
 
   //m_sArgs
+  //m_oEnmSet
   
    _checkInitialised_(CN_OPSPEC);
   
@@ -59,6 +60,7 @@ OpSpec::OpSpec(Stz* szOpLabel, Stz* szOpName, bool bAppR, i8 i_Slot)
   m_i_Slot = i_Slot;
 
   //m_sArgs
+  //m_oEnmSet
   
   _checkInitialised_(CN_OPSPEC);
   
@@ -77,6 +79,16 @@ OpSpec::~OpSpec(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get append right                                                           */
+/*----------------------------------------------------------------------------*/
+void OpSpec::vAddEnmPair(Stz* sName, Stz* sValue, eTN eToken)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  m_oEnmSet.vAdd(sName, sValue, eToken);
+}
 
 /*----------------------------------------------------------------------------*/
 /* get append right                                                           */
@@ -106,6 +118,16 @@ void OpSpec::vArgs(Stz* szArgs)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
   m_sArgs = szArgs;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the enmSet                                                             */
+/*----------------------------------------------------------------------------*/
+EnmSet* OpSpec::pEnmSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  return &m_oEnmSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -153,6 +175,8 @@ void OpSpec::vPrint(void)
   
   if (m_sArgs.iLength())
     vTrace(" %s"_Stz,m_sArgs.aStz());
+  
+  m_oEnmSet.vPrint();
 }
 
 /*----------------------------------------------------------------------------*/

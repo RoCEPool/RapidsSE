@@ -110,6 +110,10 @@ Op* ScanOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
   
   ScanOp* pScanOp = new ScanOp(pOpSpec,pDigest,aOpDefn);
   
+  pScanOp->m_pOpSpec->vAddEnmPair("Table"_Stz,
+                                  pTknVec->pGet(i_Tkn_)->szText(),
+                                  pTknVec->pGet(i_Tkn_)->eToken());
+  
   pScanOp->m_sTableNm = pTknVec->pGet(i_Tkn_++)->szText();
   
   pScanOp->m_sArgs = pScanOp->m_sTableNm;
