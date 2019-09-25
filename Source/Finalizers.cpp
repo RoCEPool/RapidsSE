@@ -32,6 +32,7 @@ pFINALIZE *gpFinalize[]
 
   /* 29 */ &Finalize::vUndefined,         // CN_BOTHOP
   /* 29 */ &Finalize::vUndefined,         // CN_BPA
+  /* 29 */ &Finalize::vUndefined,         // CN_BUCKETMAP
   /*    */ &Finalize::vUndefined,         // CN_BUFFERCURSOR
   /* 28 */ &Finalize::vUndefined,         // CN_BUFFERPOOL
   /*    */ &Finalize::vUndefined,         // CN_BYTERATE

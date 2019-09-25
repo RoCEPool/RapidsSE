@@ -17,7 +17,7 @@ BucketMap* Partitioning::_pBucketMap(void* aAddr)
 {
   BucketMap* pBucketMap = reinterpret_cast<BucketMap*>(aAddr);
   
-  RASSERT_TYPE(pBucketMap,CN_TABLEPTN);
+  RASSERT_TYPE(pBucketMap,CN_BUCKETMAP);
   
   return pBucketMap;
 }
@@ -27,7 +27,7 @@ BucketMap* Partitioning::_pBucketMap(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* BucketMap::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_TABLEPTN);
+  void* pObject = HeapMem::pAllocate(CN_BUCKETMAP);
   
   return pObject;
 }
@@ -46,14 +46,14 @@ void BucketMap::operator delete(void* pBufferAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 BucketMap::BucketMap(void)
-: Object(CN_TABLEPTN)
+: Object(CN_BUCKETMAP)
 , m_okLock(LK_PARTITION,this)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
   
-  _checkInitialised_(CN_TABLEPTN);
+  _checkInitialised_(CN_BUCKETMAP);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -61,7 +61,7 @@ BucketMap::BucketMap(void)
 /*----------------------------------------------------------------------------*/
 BucketMap::~BucketMap(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
   
 }
 
