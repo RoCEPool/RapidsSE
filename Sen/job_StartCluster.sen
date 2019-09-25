@@ -112,10 +112,14 @@
 
   grid::pause
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // distribute the start cluster job
 
   pJob job.distribute
+
+  // set grid as started
+  true grid::started!
+  "Cluster started" .
 
   <<logExit <DONE_REQ>
 ;
