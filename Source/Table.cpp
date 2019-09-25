@@ -70,23 +70,22 @@ Table::Table(void)
   
   m_sTableName = pWord->sName();
   m_eTableType = TT_NORMAL;
-  
   //m_xSubDic
 
-  m_xSlots.vTable(this);
-  
-  m_ixIndexNo.vCheckInit();
-  
-  m_pIdxVec = new IdxVec;
-  
   m_pColumnVec = new ColumnVec;
-  
+  m_pIdxVec    = new IdxVec;
+  m_ixIndexNo.vCheckInit();
+
+  m_pBucketMap = new BucketMap;
+  m_xSlots.vTable(this);
+
   for (i8 i_Slot = 0; i_Slot < C_MAX_SLOTS; i_Slot++)
     m_ixSubLoaders[i_Slot] = 0;
-  
   m_bIsLoading = false;
   
   m_pStreamDef = new StreamDef;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   _checkInitialised_(CN_TABLE);
   
@@ -846,6 +845,7 @@ void Table::vTidyUp(void)
   
   delete m_pIdxVec;
   delete m_pColumnVec;
+  delete m_pBucketMap;
   
   delete m_pStreamDef;
   

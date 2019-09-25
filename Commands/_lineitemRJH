@@ -57,7 +57,7 @@ space;
 sztbl lineitem;
 fetch lineitem limit 10;
 
-dynamic scan lineitem | output;
+//dynamic scan lineitem | output;
 
 /*
 create table orders (

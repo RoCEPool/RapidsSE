@@ -16,23 +16,25 @@ namespace MetaData
   class Table : public Object
   {
   private:
-    s32    m_sTableName;   // table name
-    eTT    m_eTableType;   // table type
-    Dic    m_xSubDic;      // sub dictionary for this table
-    Slots  m_xSlots;       // slots
-    Atomic m_ixIndexNo;    // index no
-    
-    IdxVec*    m_pIdxVec;    // index vector
+    s32 m_sTableName;   // table name
+    eTT m_eTableType;   // table type
+    Dic m_xSubDic;      // sub dictionary for this table
+  
     ColumnVec* m_pColumnVec; // column vector
+    IdxVec*    m_pIdxVec;    // index vector
+    Atomic     m_ixIndexNo;  // next index no
 
+    BucketMap* m_pBucketMap; // bucket (to partition) map
+    Slots      m_xSlots;     // slots
+  
     Atomic     m_ixSubLoaders[C_MAX_SLOTS];  // subloader*slot count
-    bool       m_bIsLoading;   // data is loading
+    bool       m_bIsLoading; // data is loading
   
     // - - - - - - - - - - - - -
     // in-progress
     StreamDef* m_pStreamDef;   // definition
   
-    
+
     // must be last
     Footer m_xFooter;
     

@@ -49,7 +49,7 @@ namespace Library       {                                                     }
 namespace Locking       { class Lock; class LockTracker;                      }
 namespace Logging       { class Log; class LogEntry;                          }
 namespace MetaData      { class Table; class Index;                           }
-namespace Partitioning  { class TablePtn;                                     }
+namespace Partitioning  { class BucketMap;  class TablePtn;                   }
 namespace Persistence   { class CarryOver;                                    }
 namespace Plans         {                                                     }
 namespace Pool          { class BufferPool; class HeapMem; class PoolBuffer;  }

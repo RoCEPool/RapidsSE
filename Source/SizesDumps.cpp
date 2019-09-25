@@ -856,7 +856,7 @@ eHT geWhichHeap[]
 
   /* 29 */ HT_TRANSIENT_SMALL,   // CN_BOTHOP
   /* 29 */ HT_INVALID,           // CN_BPA
-  /* 29 */ HT_INVALID,           // CN_BUCKETMAP
+  /* 29 */ HT_TRANSIENT_LARGE,   // CN_BUCKETMAP
   /*    */ HT_TRANSIENT_LARGE,   // CN_BUFFERCURSOR
   /* 28 */ HT_INVALID,           // CN_BUFFERPOOL
   /* 29 */ HT_TRANSIENT_SMALL,   // CN_BYTERATE
