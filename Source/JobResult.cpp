@@ -172,7 +172,7 @@ void JobResult::vPrintNodeRows(void)
     return;
   }
   
-  RASSERT(iResponses == AM::pGrid()->nNodes());
+  RASSERT(iResponses == AM::pGrid()->nConnectedNodes());
   
   if (AM::bMetadata()) {
     vTrace("metadata: %s\n"_Stz, m_sMetadata.aStz());
@@ -201,7 +201,7 @@ void JobResult::vPrintNodeZero(void)
     return;
   }
   
-  RASSERT(iResponses == AM::pGrid()->nNodes());
+  RASSERT(iResponses == AM::pGrid()->nConnectedNodes());
   
   vTrace("success: 0 rows affected\n"_Stz);
 }
