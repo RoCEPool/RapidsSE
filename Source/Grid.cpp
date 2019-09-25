@@ -133,6 +133,16 @@ i8 Grid::nConnectedNodes(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get number of defined nodes in the grid                                    */
+/*----------------------------------------------------------------------------*/
+i8 Grid::nDefinedNodes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  return m_nDefinedNodes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump grid                                                                  */
 /*----------------------------------------------------------------------------*/
 void Grid::vDumpPartitioning(void)
@@ -203,16 +213,6 @@ void Grid::vIncConnectedNodes(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
   m_nConnectedNodes++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of nodes in the grid                                            */
-/*----------------------------------------------------------------------------*/
-i8 Grid::nNodes(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
-  return m_nDefinedNodes;
 }
 
 /*----------------------------------------------------------------------------*/

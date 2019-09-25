@@ -164,7 +164,7 @@ void AttachMap::vPrintAttachMap(void)
   vInfo("TransientSmallHeap : %p \n"_Stz, gpAttachMap->m_xHeapMem.Transient.m_pSmall);
   
   vInfo("\n"_Stz);
-  vInfo("Total Nodes      : %lld \n"_Stz, AM::pGrid()->nNodes());
+  vInfo("Total Nodes      : %lld \n"_Stz, AM::pGrid()->nDefinedNodes());
   vInfo("This node        : %lld \n"_Stz, AM::pGrid()->m_iThisNode);
   
   vInfo("Cluster started  : %s \n"_Stz,  AM::pGrid()->m_bHasStarted ? "true"_Stz : "false"_Stz);
