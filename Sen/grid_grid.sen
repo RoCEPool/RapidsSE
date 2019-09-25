@@ -57,7 +57,7 @@
 
   ""
 
-  grid::nodes 0 do
+  grid::definedNodes 0 do
 
     I grid::node to pNode
     pNode node.port
@@ -101,7 +101,7 @@
 : grid::spawnOtherNodes ( -- )
 
   // test for single node grid
-  grid::nodes 1 == if exit then
+  grid::definedNodes 1 == if exit then
 
   locals| sNodeList |
   locals| sShellCommand |
@@ -114,7 +114,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn all other nodes
 
-  grid::nodes 0 do
+  grid::definedNodes 0 do
 
     // all but this node
     I grid::thisNode@ != if

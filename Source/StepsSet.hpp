@@ -302,10 +302,10 @@ private:
 
   // grid
   static void vGridConnectedNodes(Tasks::MP_Task mpTask);
+  static void vGridDefinedNodes(Tasks::MP_Task mpTask);
   static void vGridFindNode(Tasks::MP_Task mpTask);
   static void vGridIncConnectedNodes(Tasks::MP_Task mpTask);
   static void vGridNode(Tasks::MP_Task mpTask);
-  static void vGridNodes(Tasks::MP_Task mpTask);
   static void vGridPartitions(Tasks::MP_Task mpTask);
   static void vGridShow(Tasks::MP_Task mpTask);
   static void vGridSlots(Tasks::MP_Task mpTask);

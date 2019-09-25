@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : grid::connected ( -- t|f )
 
-  grid::nodes 0
+  grid::definedNodes 0
   do
     I grid::node node.isConnected not if
       args.verbose if
@@ -43,7 +43,7 @@
 /*----------------------------------------------------------------------------*/
 : gridTest
 
-  grid::nodes 0
+  grid::definedNodes 0
   do
     I grid::node node.isConnected
     I "gridTest: node no %v connected %v " fmt.print

@@ -10,10 +10,10 @@
 void Step::vAddSteps_Grid(void)
 {
   vAddStep("grid::connectedNodes"_Stz,    &Step::vGridConnectedNodes);
+  vAddStep("grid::definedNodes"_Stz,      &Step::vGridDefinedNodes);
   vAddStep("grid::findNode"_Stz,          &Step::vGridFindNode);
   vAddStep("grid::incConnectedNodes"_Stz, &Step::vGridIncConnectedNodes);
   vAddStep("grid::node"_Stz,              &Step::vGridNode);
-  vAddStep("grid::nodes"_Stz,             &Step::vGridNodes);
   vAddStep("grid::partitions"_Stz,        &Step::vGridPartitions);
   vAddStep("grid::show"_Stz,              &Step::vGridShow);
   vAddStep("grid::slots"_Stz,             &Step::vGridSlots);
@@ -38,6 +38,18 @@ void Step::vGridConnectedNodes(MP_Task mpTask)
   i8 nConnectedNodes = AM::pGrid()->nConnectedNodes();
 
   mpTask->m_pDataStack->vPushI8(nConnectedNodes);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grid::definedNodes -- get number of nodes in the grid                             */
+/*----------------------------------------------------------------------------*/
+void Step::vGridDefinedNodes(MP_Task mpTask)
+{
+  ENTRY("vGridDefinedNodes"_Stz);
+  
+  mpTask->m_pDataStack->vPushI8(AM::pGrid()->nDefinedNodes());
   
   EXIT();
 }
@@ -86,18 +98,6 @@ void Step::vGridNode(MP_Task mpTask)
   Node* pNode = AM::pGrid()->pGetNode(iNode);
   
   mpTask->m_pDataStack->vPushPointer(pNode);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grid::nodes -- get number of nodes in the grid                             */
-/*----------------------------------------------------------------------------*/
-void Step::vGridNodes(MP_Task mpTask)
-{
-  ENTRY("vGridNodes"_Stz);
-
-  mpTask->m_pDataStack->vPushI8(AM::pGrid()->nDefinedNodes());
   
   EXIT();
 }

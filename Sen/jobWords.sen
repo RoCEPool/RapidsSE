@@ -223,7 +223,7 @@
   1 task::acks!
 
   // send the job to each node in the grid
-  grid::nodes 0 do
+  grid::definedNodes 0 do
 
     I pJob job.forward
 

@@ -15,7 +15,7 @@
   task::this to pThisTask
 
   // calculate total partitions in the cluster
-  grid::slots grid::nodes * locals| nTotalPartitions |
+  grid::slots grid::definedNodes * locals| nTotalPartitions |
 
   pJob_InsertTable job_InsertTable.SubInserterJob@ to pJob_SubInserter
   //pJob_InsertRowss .

@@ -91,7 +91,7 @@
 
   // "_connectorTake" .
 
-  grid::nodes 0
+  grid::definedNodes 0
   do
 
     // get node I
