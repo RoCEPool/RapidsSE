@@ -76,7 +76,7 @@ Table::Table(void)
   m_pIdxVec    = new IdxVec;
   m_ixIndexNo.vCheckInit();
 
-  m_pBucketMap = new BucketMap;
+  m_pBucketMap = new BucketMap(AM::nPartitions());
   m_xSlots.vTable(this);
 
   for (i8 i_Slot = 0; i_Slot < C_MAX_SLOTS; i_Slot++)

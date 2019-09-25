@@ -19,13 +19,15 @@ static const i8 C_MAX_PARTITIONS = C_MAX_SLOTS * C_MAX_NODES;
 
 static const i8 C_MAX_INDEX_COLUMNS = 16;
 
-static const i8 C_MAX_THREADS = 256;
+static const i8 C_MAX_THREADS   = 256;
 
-static const i8 C_MAX_TOKENS = 1024;
+static const i8 C_MAX_TOKENS    = 1024;
 
-static const i8 C_MAX_OPS = 256;
-static const i8 C_MAX_STAGES = 256;
+static const i8 C_MAX_OPS       = 256;
+static const i8 C_MAX_STAGES    = 256;
 static const i8 C_MAX_SHORTCUTS = 64;
+
+static const i8 C_MAX_BUCKETS   = 1024;
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
