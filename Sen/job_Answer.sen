@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* spawn the answer job (as a dedicated job)                                  */
 /*----------------------------------------------------------------------------*/
-: spawn_Answer ( -- )
+: answer::spawn ( -- )
 
   0 locals| pJobClass_Answer |
   0 locals| pJob_Answer |
@@ -111,7 +111,7 @@
 
     //nConns 1 == if
     //  grid::thisNode@ grid::StartNode@ != if
-    //    spawn_Connector to pConnectorTask
+    //    connector::spawn to pConnectorTask
     //  then
     //then
 

@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* spawn the connector job (as a dedicated job)                               */
 /*----------------------------------------------------------------------------*/
-: spawn_Connector ( -- )
+: connector::spawn ( -- )
 
   0 locals| pJobClass_Connector |
   0 locals| pJob_Connector |

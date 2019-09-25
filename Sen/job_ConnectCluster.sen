@@ -80,8 +80,8 @@
   //"grid::setStartNode..." .
   grid::setStartNode
 
-  //"spawn_Connector..." .
-  spawn_Connector
+  //"connector::spawn..." .
+  connector::spawn
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait till all nodes connected
