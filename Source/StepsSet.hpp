@@ -298,7 +298,31 @@ private:
   static void vFlowThrow(Tasks::MP_Task mpTask);
 
   // forth
-  static void vForth(Tasks::MP_Task mpTask);
+  static void vAllot(Tasks::MP_Task mpTask);
+  static void vCell(Tasks::MP_Task mpTask);
+  static void vColon(Tasks::MP_Task mpTask);
+  static void vComma(Tasks::MP_Task mpTask);
+  static void vCompileComma(Tasks::MP_Task mpTask);
+  static void vCreate(Tasks::MP_Task mpTask);
+  static void vCreateFrom(Tasks::MP_Task mpTask);
+  static void vCreateFromInRoot(Tasks::MP_Task mpTask);
+  static void vCreateFromPersistent(Tasks::MP_Task mpTask);
+  static void vCreatePersistent(Tasks::MP_Task mpTask);
+  static void vCreateTenants(Tasks::MP_Task mpTask);
+  static void vDoes(Tasks::MP_Task mpTask);
+  static void vDoes_RT(Tasks::MP_Task mpTask);
+  static void vExit(Tasks::MP_Task mpTask);
+  static void vFind(Tasks::MP_Task mpTask);
+  static void vFindInCurrent(Tasks::MP_Task mpTask);
+  static void vForget(Tasks::MP_Task mpTask);
+  static void vImmediate(Tasks::MP_Task mpTask);
+  static void vLocate(Tasks::MP_Task mpTask);
+  static void vPostpone(Tasks::MP_Task mpTask);
+  static void vPrompt(Tasks::MP_Task mpTask);
+  static void vSee(Tasks::MP_Task mpTask);
+  static void vSemicolon(Tasks::MP_Task mpTask);
+  static void vSubDic(Tasks::MP_Task mpTask);
+  static void vTick(Tasks::MP_Task mpTask);
 
   // grid
   static void vGridConnectedNodes(Tasks::MP_Task mpTask);
@@ -1220,31 +1244,6 @@ private:
   static void vVectorDifference(Tasks::MP_Task mpTask);
 
   // word
-  static void vAllot(Tasks::MP_Task mpTask);
-  static void vCell(Tasks::MP_Task mpTask);
-  static void vColon(Tasks::MP_Task mpTask);
-  static void vComma(Tasks::MP_Task mpTask);
-  static void vCompileComma(Tasks::MP_Task mpTask);
-  static void vCreate(Tasks::MP_Task mpTask);
-  static void vCreateFrom(Tasks::MP_Task mpTask);
-  static void vCreateFromInRoot(Tasks::MP_Task mpTask);
-  static void vCreateFromPersistent(Tasks::MP_Task mpTask);
-  static void vCreatePersistent(Tasks::MP_Task mpTask);
-  static void vCreateTenants(Tasks::MP_Task mpTask);
-  static void vDoes(Tasks::MP_Task mpTask);
-  static void vDoes_RT(Tasks::MP_Task mpTask);
-  static void vExit(Tasks::MP_Task mpTask);
-  static void vFind(Tasks::MP_Task mpTask);
-  static void vFindInCurrent(Tasks::MP_Task mpTask);
-  static void vForget(Tasks::MP_Task mpTask);
-  static void vImmediate(Tasks::MP_Task mpTask);
-  static void vLocate(Tasks::MP_Task mpTask);
-  static void vPostpone(Tasks::MP_Task mpTask);
-  static void vPrompt(Tasks::MP_Task mpTask);
-  static void vSee(Tasks::MP_Task mpTask);
-  static void vSemicolon(Tasks::MP_Task mpTask);
-  static void vSubDic(Tasks::MP_Task mpTask);
-  static void vTick(Tasks::MP_Task mpTask);
   static void vWord(Tasks::MP_Task mpTask);
   static void vWordDump(Tasks::MP_Task mpTask);
   static void vWordForget(Tasks::MP_Task mpTask);
