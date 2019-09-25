@@ -312,6 +312,7 @@ private:
   static void vDoes(Tasks::MP_Task mpTask);
   static void vDoes_RT(Tasks::MP_Task mpTask);
   static void vExit(Tasks::MP_Task mpTask);
+  static void vExit_RT(Tasks::MP_Task mpTask);
   static void vFind(Tasks::MP_Task mpTask);
   static void vFindInCurrent(Tasks::MP_Task mpTask);
   static void vForget(Tasks::MP_Task mpTask);
@@ -1246,6 +1247,8 @@ private:
   // word
   static void vWord(Tasks::MP_Task mpTask);
   static void vWordDump(Tasks::MP_Task mpTask);
+  static void vWordExitHookGet(Tasks::MP_Task mpTask);
+  static void vWordExitHookSet(Tasks::MP_Task mpTask);
   static void vWordForget(Tasks::MP_Task mpTask);
   static void vWordImmediateGet(Tasks::MP_Task mpTask);
   static void vWordImmediateSet(Tasks::MP_Task mpTask);

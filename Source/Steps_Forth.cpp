@@ -23,12 +23,12 @@ void Step::vAddSteps_Forth(void)
   vAddStep("does>"_Stz,           &Step::vDoes,             true );
   vAddStep("does_rt"_Stz,         &Step::vDoes_RT);
   vAddStep("exit"_Stz,            &Step::vExit);
+  vAddStep("exit_rt"_Stz,         &Step::vExit_RT);
   vAddStep("find"_Stz,            &Step::vFind);
   vAddStep("findInCurrent"_Stz,   &Step::vFindInCurrent);
   vAddStep("forget"_Stz,          &Step::vForget);
   vAddStep("immediate"_Stz,       &Step::vImmediate,        true );
   vAddStep("locate"_Stz,          &Step::vLocate);
-  
   vAddStep("postpone"_Stz,        &Step::vPostpone,         true );
   vAddStep("prompt"_Stz,          &Step::vPrompt,           true );
   vAddStep("see"_Stz,             &Step::vSee);
@@ -346,6 +346,32 @@ void Step::vExit(MP_Task mpTask)
   Cell* aCell;
   if ( ! mpTask->m_pReturnStack->bPop(aCell) )
     THROW_INVALID_RSTACK("exit"_Stz);
+  
+  mpTask->m_aFipCell = aCell;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* exit -- runtime for exit from routine                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vExit_RT(MP_Task mpTask)
+{
+  ENTRY("vExit_RT"_Stz);
+  
+  //vTrace("Exit: return stack %lld\n"_Stz, mpTask->m_pReturnStack->iValues());
+  
+  if ( (mpTask->m_iTracing & C_TRACE_ROUTINES) )
+    mpTask->vTracePoint("<"_Stz);
+  
+  if (mpTask->m_pLocalsFrame
+      && mpTask->m_pLocalsFrame->aDiscardPoint() ==
+      mpTask->m_pReturnStack->aPeekValue())
+    mpTask->vLocalsPop();
+  
+  Cell* aCell;
+  if ( ! mpTask->m_pReturnStack->bPop(aCell) )
+    THROW_INVALID_RSTACK("exit_rt"_Stz);
   
   mpTask->m_aFipCell = aCell;
   

@@ -35,26 +35,6 @@ void Step::vWord(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* word.forget -- forget word on stack                                        */
-/*----------------------------------------------------------------------------*/
-void Step::vWordForget(MP_Task mpTask)
-{
-ENTRY("vWordForget"_Stz);
-  
-  Object* pWordObject;
-  if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK("vWordForget"_Stz);
-  ForthWord* pWord = _pWord(pWordObject);
-  
-  ForthWord* pRemovedWord = mpTask->m_oDicStack.pRemoveWord(pWord->sName());
-  ASSERT(pRemovedWord);
-  
-  delete pRemovedWord;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* word.dump -- dump word                                                     */
 /*----------------------------------------------------------------------------*/
 void Step::vWordDump(MP_Task mpTask)
@@ -67,6 +47,66 @@ ENTRY("vWordDump"_Stz);
   ForthWord* pWord = _pWord(pWordObject);
   
   pWord->vContentDump();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word.exitHook@ -- get exit hook of word                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vWordExitHookGet(MP_Task mpTask)
+{
+  ENTRY("vWordExitHookGet"_Stz);
+  
+  Object* pWordObject;
+  if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
+    THROW_INVALID_DSTACK("word.exitHook@"_Stz);
+  ForthWord* pWord = _pWord(pWordObject);
+  
+  s32 sExitHook(pWord->szExitHook());
+  
+  mpTask->m_pDataStack->vPushS32(sExitHook);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word.exitHook! -- set exit hook of word                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vWordExitHookSet(MP_Task mpTask)
+{
+  ENTRY("vWordExitHookSet"_Stz);
+  
+  Object* pWordObject;
+  if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
+    THROW_INVALID_DSTACK("word.exitHook!"_Stz);
+  ForthWord* pWord = _pWord(pWordObject);
+  
+  s32 sExitHook;
+  if ( ! mpTask->m_pDataStack->bPop(sExitHook) )
+    THROW_INVALID_DSTACK("word.exitHook!"_Stz);
+  
+  pWord->vExitHook(sExitHook);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word.forget -- forget word on stack                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vWordForget(MP_Task mpTask)
+{
+  ENTRY("vWordForget"_Stz);
+  
+  Object* pWordObject;
+  if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
+    THROW_INVALID_DSTACK("vWordForget"_Stz);
+  ForthWord* pWord = _pWord(pWordObject);
+  
+  ForthWord* pRemovedWord = mpTask->m_oDicStack.pRemoveWord(pWord->sName());
+  ASSERT(pRemovedWord);
+  
+  delete pRemovedWord;
   
   EXIT();
 }
