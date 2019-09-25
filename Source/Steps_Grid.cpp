@@ -35,12 +35,8 @@ void Step::vGridConnectedNodes(MP_Task mpTask)
 {
   ENTRY("vGridConnectedNodes"_Stz);
   
-  i8 nConnectedNodes = 0;
-  for (i8 i_Node = 0; i_Node < AM::pGrid()->nDefinedNodes(); i_Node++) {
-    Node* pNode = AM::pGrid()->pGetNode(i_Node);
-    if (pNode->pSendSocket())
-      nConnectedNodes++;
-  }
+  i8 nConnectedNodes = AM::pGrid()->nConnectedNodes();
+
   mpTask->m_pDataStack->vPushI8(nConnectedNodes);
   
   EXIT();
@@ -126,7 +122,7 @@ void Step::vGridShow(MP_Task mpTask)
   ENTRY("vGridShow"_Stz);
   
   vTrace("Grid::\n"_Stz);
-  vTrace("  %lld nodes\n"_Stz,AM::pGrid()->nDefinedNodes());
+  vTrace("  %lld defined nodes\n"_Stz,AM::pGrid()->nDefinedNodes());
   vTrace("  %lld slots per node\n"_Stz,AM::pGrid()->nSlotsPerNode());
   vTrace("  %lld total partitions\n"_Stz,AM::pGrid()->nPartitions());
   
