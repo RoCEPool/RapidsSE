@@ -1,0 +1,213 @@
+/*============================================================================*/
+/* job_CreateNode.sen -- Job Create Node                                      */
+/*============================================================================*/
+
+" job_CreateNode.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* check word is not a Node                                                   */
+/*----------------------------------------------------------------------------*/
+: checkIsNotNode ( "<NodeNm>" -- t|f )
+
+  grid::findNode not if true exit then
+
+  EC_NODE_EXISTS false
+;
+
+/*----------------------------------------------------------------------------*/
+/* check if word is a makeable Node                                           */
+/*----------------------------------------------------------------------------*/
+: checkMakeNode ( "<NodeNm>" -- true | errorCode false )
+
+  checkIsNotNode not if false exit then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* make a Node (run by all participants)                                      */
+/*----------------------------------------------------------------------------*/
+: makeNode ( "<NodeNm>" )
+
+  params| sNodeNm |
+  0 locals| pNode |
+
+  sNodeNm node::new to pNode
+
+  // return Node pointer
+  pNode
+;
+
+/*----------------------------------------------------------------------------*/
+/* Job_DefineNode request (on originating node)                               */
+/*----------------------------------------------------------------------------*/
+: defineNode_req (  -- <R> )
+
+  >>logEntry <SEED_REQ>
+
+  JP_BEGINNING log::markPhase
+
+  0 0 locals| pJob pTask |
+
+  tp: createNode
+
+  // get the task
+  task::this to pTask
+
+  // get the job from the task
+  pTask task.job@ to pJob
+
+
+  // distribute the job
+  pJob job.distribute
+
+  <<logExit <DONE_REQ>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_DefineNode job on each node                                    */
+/*----------------------------------------------------------------------------*/
+: defineNode_exe ( pJob_CreateNode -- )
+
+  >>logEntry <SEED_EXE>
+
+  //params| pJob_CreateNode |
+  job::this locals| pJob_CreateNode |
+
+  0 0 locals| pNode sNodeNm |
+
+  tp: defineNode_exe
+
+  //----------------------------------------------------------------------------
+  // assert correct job
+  CN_JOB_DEFINENODE pJob_CreateNode object.assertClass
+
+  //----------------------------------------------------------------------------
+  // grab a ddl lock
+  ddlLock::grabWrite
+
+  //----------------------------------------------------------------------------
+  // set task's dictionary stack from path in job
+  pJob_CreateNode job.pushPath
+  task::dicStack.set
+
+  //----------------------------------------------------------------------------
+  // make Node
+  pJob_CreateNode job.nodeName@ to sNodeNm
+  sNodeNm makeNode to pNode
+
+
+  pJob_CreateNode job::participantExecuted
+
+  <<logExit <DONE_EXE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_DefineNode job check resources                                 */
+/*----------------------------------------------------------------------------*/
+: createNode.checkResources ( pJob_CreateNode -- )
+
+  >>logEntry <Check_Resources>
+
+  params| pJob_CreateNode  |
+
+  tp: createNode.checkResources
+  //"checkResources received" .
+
+  //----------------------------------------------------------------------------
+  // grab a ddl lock
+  ddlLock::grabRead
+
+  //----------------------------------------------------------------------------
+  // set task's dictionary stack from path in job
+  pJob_CreateNode job.pushPath
+  task::dicStack.set
+
+  //----------------------------------------------------------------------------
+  // check if we have enough buffers
+  node::checkEnoughBuffers not if pJob_CreateNode <ERROR_JOB> !!logError exit then
+
+  //----------------------------------------------------------------------------
+  // check if we can make the Node
+  pJob_CreateNode job.nodeName@
+  checkMakeNode not if pJob_CreateNode <ERROR_JOB> !!logError exit then
+
+  <<logExit <Resources_Checked>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_DefineNode job release resources                               */
+/*----------------------------------------------------------------------------*/
+: createNode.releaseResources ( pJob_CreateNode -- )
+
+  >>logEntry <Release_Resources>
+
+  params| pJob_CreateNode  |
+
+  tp: createNode.releaseResources
+  //"releaseResources received" .
+
+  <<logExit <Resources_Released>
+;
+
+/*----------------------------------------------------------------------------*/
+/* begin job                                                                  */
+/*----------------------------------------------------------------------------*/
+: defineNode_beg ( -- )
+
+  >>logEntry <SEED_BEG>
+
+  job::this locals| pJob_CreateNode |
+
+  //">> defineNode_beg <<" .
+
+  // add this job to the participants list
+  pJob_CreateNode job.becomeParticipant
+
+  // check resources
+  pJob_CreateNode createNode.checkResources
+
+  // this job has begun
+  job::participantBegun
+
+  <<logExit <DONE_BEG>
+;
+
+/*----------------------------------------------------------------------------*/
+/* end job                                                                    */
+/*----------------------------------------------------------------------------*/
+: defineNode_end ( -- )
+
+  >>logEntry <SEED_END>
+
+  job::this locals| pJob_CreateNode |
+
+  //">> defineNode_end <<" .
+
+  // release resources
+  pJob_CreateNode createNode.releaseResources
+
+  job::participantEnded
+
+  <<logExit <DONE_END>
+;
+
+/*----------------------------------------------------------------------------*/
+/* cancel job                                                                 */
+/*----------------------------------------------------------------------------*/
+: defineNode_can ( -- )
+
+  >>logEntry <SEED_CAN>
+
+  job::this locals| pJob_CreateNode |
+
+  pJob_CreateNode createNode.releaseResources
+
+  job::participantCancelled
+
+  <<logExit <DONE_CAN>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -13,11 +13,11 @@ JobClass xJobClass_DefineNode =
   "define"_Stz,           // the prompt command
   "node"_Stz,             // the second word
   nullptr,                // the _run task seed
-  "CreateNode_req"_Stz,   // the _req task seed
-  "CreateNode_beg"_Stz,   // the _rcv task seed
-  "CreateNode_exe"_Stz,   // the _exe task seed
-  "CreateNode_end"_Stz,   // the _end task seed
-  "CreateNode_can"_Stz,   // the _can task seed
+  "defineNode_req"_Stz,   // the _req task seed
+  "defineNode_beg"_Stz,   // the _rcv task seed
+  "defineNode_exe"_Stz,   // the _exe task seed
+  "defineNode_end"_Stz,   // the _end task seed
+  "defineNode_can"_Stz,   // the _can task seed
   true,                   // check resources?
   false,                  // detached job?
   false,                  // buffer attached?

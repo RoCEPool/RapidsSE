@@ -27,11 +27,11 @@
 "Job_CopyBuffer.sen" include
 "job_CreateCatalog.sen" include
 "job_CreateIndex.sen" include
-"job_CreateNode.sen" include
 "job_CreateSchema.sen" include
 "job_CreateTenant.sen" include
 "job_CreateTable.sen" include
 
+"job_DefineNode.sen" include
 "job_Docol.sen" include
 "job_DropCatalog.sen" include
 "job_DropIndex.sen" include
