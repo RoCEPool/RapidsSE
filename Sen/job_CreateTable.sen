@@ -74,7 +74,6 @@
   // get the job from the task
   pTask task.job@ to pJob
 
-
   // distribute the job
   pJob job.distribute
 

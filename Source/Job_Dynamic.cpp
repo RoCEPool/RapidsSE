@@ -7,17 +7,17 @@
 JobClass xJobClass_Dynamic =
 {
   CN_JOB_DYNAMIC,        // class number
-  JK_LOCAL,              // job kind
+  JK_DIST2PC,            // job kind
   RS_DATA_ROWS,          // response kind
   "dynamic"_Stz,         // comment about the job
   "dynamic"_Stz,         // the prompt command
   nullptr,               // the second word
   nullptr,               // the _run task seed
   "dynamic_req"_Stz,     // the _req task seed
-  nullptr,               // the _rcv task seed
-  nullptr,               // the _exe task seed
-  nullptr,               // the _end task seed
-  nullptr,               // the _can task seed
+  "dynamic_beg"_Stz,     // the _rcv task seed
+  "dynamic_exe"_Stz,     // the _exe task seed
+  "dynamic_end"_Stz,     // the _end task seed
+  "dynamic_can"_Stz,     // the _can task seed
   false,                 // check resources?
   false,                 // detached job?
   false,                 // buffer attached?
@@ -25,13 +25,13 @@ JobClass xJobClass_Dynamic =
   PY_NORMAL,             // priority
   JF_NONE,               // flags
 
-  nullptr,               // prompt check function
+  eJob_checkCluster,     // prompt check function
   pJob_Dynamic_pre,      // prompt pre-process function
   vJob_Dynamic_post,     // prompt post-process function
   nullptr,               // job new function
   vJob_Dynamic_delete,   // job delete function
-  nullptr,               // job pre-send function
-  nullptr,               // job post-receive function
+  vJob_send,             // job pre-send function
+  vJob_recv,             // job post-receive function
   vJob_Dynamic_show,     // job show function
   
   // help and example
@@ -108,7 +108,7 @@ Job_Dynamic::Job_Dynamic(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Se
   
   //m_oOpVec
   
-  m_pDigest      = new Digest(this);
+  m_pDigest      = nullptr;
   m_pDynamicSpec = nullptr;
   
   m_pBufferQueue = new Queue;
@@ -215,15 +215,30 @@ void Job_Dynamic::vBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
   
+  //Session* pSession = AM::pThisTLSSession();
+  
+  m_pDigest      = new Digest(this);
+  m_pBufferQueue = new Queue;
+  
+  Tokeniser* pTokenizer = new Tokeniser;
+  TokenVec* pTokenVec = new TokenVec;
+  pTokenizer->vTokenise(pTokenVec, m_sRequest);
+  
+  bool bResult = bPopulateJob(m_pSession, pTokenVec);
+
+  RASSERT(bResult);
+  
+//  if ( ! bResult ) {
+//    pJob_Dynamic->vAddError(EC_INVALID_COMMAND);
+//  }
+  
   i8 nOps = m_pDigest->m_oOpVec.nItems();
   AM::vSetAcksRmg(m_pTask,nOps);
-  
-  Session* pSession = AM::pThisTLSSession();
 
   for (i8 i_Op = m_pDigest->m_oOpVec.nItems() - 1; i_Op >= 0; i_Op--) {
    
     Op* pOp = m_pDigest->m_oOpVec.pGet(i_Op);
-    bool bSpawned = AM::bSpawnOp(pSession,pOp);
+    bool bSpawned = AM::bSpawnOp(m_pSession,pOp);
     ASSERT(bSpawned);
   }
 }
@@ -273,11 +288,14 @@ Job* Jobs::pJob_Dynamic_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId,
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
-  bool bResult = pJob_Dynamic->bPopulateJob(pSession, pTokenVec);
+  // convert tokenvec back to the request string
+  pTokenVec->vToString(pJob_Dynamic->m_sRequest);
   
-  if ( !bResult) {
-    pJob_Dynamic->vAddError(EC_INVALID_COMMAND);
-  }
+//  bool bResult = pJob_Dynamic->bPopulateJob(pSession, pTokenVec);
+//
+//  if ( !bResult) {
+//    pJob_Dynamic->vAddError(EC_INVALID_COMMAND);
+//  }
   
   return pJob_Dynamic;
 }

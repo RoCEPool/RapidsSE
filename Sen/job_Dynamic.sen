@@ -5,7 +5,7 @@
 " job_Dynamic.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* dynamic command request                                                    */
+/* dynamic command request (onn originating node)                             */
 /*----------------------------------------------------------------------------*/
 : dynamic_req ( -- <R> )
 
@@ -16,25 +16,12 @@
   //": dynamic_req" .
 
   task::this      locals| pTask |
-  pTask task.job@ locals| pJob |
+  pTask task.job@ locals| pJob_dynamic |
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grab a ddl lock
-  ddlLock::grabRead
+  pJob_dynamic "Job %v on originating node" str.format .
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  pTask task.grabLock
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  pJob job_Dynamic.begin
-  pJob job_Dynamic.execute
-  pJob job_Dynamic.end
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  task::wait
+  // distribute the job
+  pJob_dynamic job.distribute
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -43,6 +30,89 @@
   900 apiState::senLoc
 
   <<logExit <DONE_REQ>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_Dynamic job on a node                                          */
+/*----------------------------------------------------------------------------*/
+: dynamic_exe ( Job_dynamic -- )
+
+  >>logEntry <SEED_EXE>
+
+  task::this locals| pTask |
+  job::this  locals| pJob_dynamic |
+
+  pJob_dynamic "Job %v on participant node" str.format .
+  tp: dynamic_exe
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  ddlLock::grabRead
+
+  //----------------------------------------------------------------------------
+  // set task's dictionary stack from path in job
+  pJob_dynamic job.pushPath
+  task::dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pTask task.grabLock
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pJob_dynamic job_Dynamic.begin
+  pJob_dynamic job_Dynamic.execute
+  pJob_dynamic job_Dynamic.end
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  task::wait
+
+  pJob_dynamic job.notice
+
+  pJob_dynamic job::participantExecuted
+
+  <<logExit <DONE_EXE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* begin job                                                                  */
+/*----------------------------------------------------------------------------*/
+: dynamic_beg ( -- )
+
+  >>logEntry <SEED_BEG>
+
+  job::this locals| pJob_dynamic |
+
+  pJob_dynamic job.becomeParticipant
+
+  job::participantBegun
+
+  <<logExit <DONE_BEG>
+;
+
+/*----------------------------------------------------------------------------*/
+/* end job                                                                    */
+/*----------------------------------------------------------------------------*/
+: dynamic_end ( -- )
+
+  >>logEntry <SEED_END>
+
+  job::participantEnded
+
+  <<logExit <DONE_END>
+;
+
+/*----------------------------------------------------------------------------*/
+/* cancel job                                                                 */
+/*----------------------------------------------------------------------------*/
+: dynamic_can ( -- )
+
+  >>logEntry <SEED_CAN>
+
+  job::participantCancelled
+
+  <<logExit <DONE_CAN>
 ;
 
 /*============================================================================*/
