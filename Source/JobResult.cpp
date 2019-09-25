@@ -201,7 +201,7 @@ void JobResult::vPrintNodeZero(void)
     return;
   }
   
-  RASSERT(iResponses == AM::nNodes());
+  RASSERT(iResponses == AM::pGrid()->nNodes());
   
   vTrace("success: 0 rows affected\n"_Stz);
 }
