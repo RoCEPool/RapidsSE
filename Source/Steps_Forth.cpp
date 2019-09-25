@@ -536,7 +536,7 @@ void Step::vPostpone(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* promot -- make the most recent definition a prompt word                    */
+/* prompt -- make the most recent definition a prompt word                    */
 /*----------------------------------------------------------------------------*/
 void Step::vPrompt(MP_Task mpTask)
 {

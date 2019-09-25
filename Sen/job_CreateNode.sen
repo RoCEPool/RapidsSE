@@ -80,7 +80,7 @@
 
   //----------------------------------------------------------------------------
   // assert correct job
-  CN_JOB_CREATENODE pJob_CreateNode object.assertClass
+  CN_JOB_DEFINENODE pJob_CreateNode object.assertClass
 
   //----------------------------------------------------------------------------
   // grab a ddl lock

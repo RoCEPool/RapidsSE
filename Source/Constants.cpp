@@ -211,7 +211,7 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_COPYBUFFER"_Stz,     CN_JOB_COPYBUFFER);
   /*    */ vAddConstant("CN_JOB_CREATECATALOG"_Stz,  CN_JOB_CREATECATALOG);
   /*    */ vAddConstant("CN_JOB_CREATEINDEX"_Stz,    CN_JOB_CREATEINDEX);
-  /*    */ vAddConstant("CN_JOB_CREATENODE"_Stz,     CN_JOB_CREATENODE);
+  /*    */ vAddConstant("CN_JOB_DEFINENODE"_Stz,     CN_JOB_DEFINENODE);
   /*    */ vAddConstant("CN_JOB_CREATESCHEMA"_Stz,   CN_JOB_CREATESCHEMA);
   /*    */ vAddConstant("CN_JOB_CREATETABLE"_Stz,    CN_JOB_CREATETABLE);
   /*    */ vAddConstant("CN_JOB_CREATETENANT"_Stz,   CN_JOB_CREATETENANT);

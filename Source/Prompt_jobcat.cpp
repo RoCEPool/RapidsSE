@@ -95,7 +95,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB_CONNECTCLUSTER);
   nJobs++; JobClass::vJobCat(CN_JOB_CREATECATALOG);
   nJobs++; JobClass::vJobCat(CN_JOB_CREATEINDEX);
-  nJobs++; JobClass::vJobCat(CN_JOB_CREATENODE);
+  nJobs++; JobClass::vJobCat(CN_JOB_DEFINENODE);
   nJobs++; JobClass::vJobCat(CN_JOB_CREATESCHEMA);
   nJobs++; JobClass::vJobCat(CN_JOB_CREATETABLE);
   nJobs++; JobClass::vJobCat(CN_JOB_CREATETENANT);

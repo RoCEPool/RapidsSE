@@ -6,7 +6,7 @@
 
 JobClass xJobClass_CreateNode =
 {
-  CN_JOB_CREATENODE,      // class number
+  CN_JOB_DEFINENODE,      // class number
   JK_DIST2PC,             // job kind
   RS_NODE_ZERO,           // response kind
   "create node"_Stz,      // comment about the job
@@ -65,7 +65,7 @@ Job_CreateNode* Jobs::_pJob_CreateNode(void* aAddress)
 {
   Job_CreateNode* pJob_CreateNode = reinterpret_cast<Job_CreateNode*>(aAddress);
   
-  RASSERT_TYPE(pJob_CreateNode,CN_JOB_CREATENODE);
+  RASSERT_TYPE(pJob_CreateNode,CN_JOB_DEFINENODE);
   
   return pJob_CreateNode;
 }
@@ -76,7 +76,7 @@ Job_CreateNode* Jobs::_pJob_CreateNode(void* aAddress)
 void* Job_CreateNode::operator new(size_t)
 {
   Job_CreateNode* pJob_CreateNode =
-    static_cast<Job_CreateNode*>(HeapMem::pAllocate(CN_JOB_CREATENODE));
+    static_cast<Job_CreateNode*>(HeapMem::pAllocate(CN_JOB_DEFINENODE));
   
   return pJob_CreateNode;
 }
@@ -105,11 +105,11 @@ void Job_CreateNode::operator delete(void* aAddress)
 Job_CreateNode::Job_CreateNode(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 : Job(aJobClass, aReqTuple, pSession)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATENODE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DEFINENODE,_FOOTER_);
   
-  _checkInitialised_(CN_JOB_CREATENODE);
+  _checkInitialised_(CN_JOB_DEFINENODE);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATENODE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_DEFINENODE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -117,7 +117,7 @@ Job_CreateNode::Job_CreateNode(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iFor
 /*----------------------------------------------------------------------------*/
 Job_CreateNode::~Job_CreateNode(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATENODE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DEFINENODE,_FOOTER_);
 }
 
 
@@ -144,7 +144,7 @@ void Job_CreateNode::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 eEC Job_CreateNode::ePopulateJob(TokenVec* pTokenVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATENODE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DEFINENODE,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert we got a create table
@@ -169,7 +169,7 @@ eEC Job_CreateNode::ePopulateJob(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 void Job_CreateNode::vShow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATENODE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DEFINENODE,_FOOTER_);
   
 }
 
@@ -181,7 +181,7 @@ void Job_CreateNode::vShow(void)
 /*----------------------------------------------------------------------------*/
 bool Job_CreateNode::bValidateCreateNode(TokenVec* pTokenVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATENODE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DEFINENODE,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get tokens in token vector
@@ -208,7 +208,7 @@ bool Job_CreateNode::bValidateCreateNode(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 Footer* Job_CreateNode::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATENODE);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DEFINENODE);
   
   return &m_xFooter;
 }
