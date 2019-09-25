@@ -124,7 +124,8 @@ Op* ExprOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
     
     while ( ! pTknVec->pGet(i_Tkn_)->bSame(","_Stz)  &&
             ! pTknVec->pGet(i_Tkn_)->bSame("|"_Stz)) {
-        sExpr.vConcat(pTknVec->pGet(i_Tkn_++)->szText());
+      sExpr.vConcat(pTknVec->pGet(i_Tkn_++)->szText());
+      sExpr.vConcat(" "_Stz);
     }
     s32 sExprNm;
     StrLib::vSprint(sExprNm,"Expr%lld"_Stz,iExpr++);
