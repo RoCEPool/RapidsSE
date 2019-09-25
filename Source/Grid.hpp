@@ -7,18 +7,19 @@ namespace Grids
 {
   class Grid : public Object
   {
-  public:
+  private:
+    i8     m_nSlotsPerNode;    // no of partition slots on each node
+  
     i8     m_nNodes;           // total number of nodes in the grid
     i8     m_nConnectedNodes;  // number of connected nodes in the grid
 
+  public:
     i8     m_iThisNode;        // this node number
     Node*  m_pThisNode;        // this node pointer
     i8     m_iStartNode;       // node that started the cluster
     bool   m_bHasStarted;      // has the cluster started ?
   
-    i8     m_nSlotsPerNode;    // no of partition slots on each node
-    i8     m_nPartitions;      // total no of partitions in the grid
-    
+  
     // NOT HAPPY WITH NAME - alka
     i8     m_iPartition[C_MAX_SLOTS]; // partition no's on this node
   
@@ -46,6 +47,7 @@ namespace Grids
     void vIncConnectedNodes(void);
     void vInit(i8 nNodes, i8 nSlotsPerNode);
     i8   nNodes(void);
+    i8   nPartitions(void);
     i8   nSlotsPerNode(void);
     void vStartNode(i8 iStartNode);
     i8   iStartNode(void);

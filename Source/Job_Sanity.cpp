@@ -107,7 +107,7 @@ Job_Sanity::Job_Sanity(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Sess
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SANITY,_FOOTER_);
       
   m_iRegionSize = AM::iRegionSize();
-  m_iPartitions = AM::pGrid()->m_nSlotsPerNode;
+  m_iPartitions = AM::pGrid()->nSlotsPerNode();
   
   _checkInitialised_(CN_JOB_STATUS);
   
