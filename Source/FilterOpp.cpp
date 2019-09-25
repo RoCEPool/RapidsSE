@@ -106,9 +106,18 @@ Op* FilterOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
   pFilterOp->m_iStartTkn = i_Tkn_;
   pFilterOp->m_pTokenVec = pTknVec;
   
-  while ( ! pTknVec->pGet(i_Tkn_)->bSame("|"_Stz) ) {
-    i_Tkn_++;
+  // gather the filter expression as enmPairs
+  s4K sExpr = ""_Stz;
+  while (! pTknVec->pGet(i_Tkn_)->bSame("|"_Stz)) {
+    sExpr.vConcat(pTknVec->pGet(i_Tkn_++)->szText());
+    sExpr.vConcat(" "_Stz);
   }
+ 
+  // add ename pair for expression
+  pFilterOp->m_pOpSpec->vAddEnmPair("Filter"_Stz,
+                                    sExpr,
+                                    TN_STRING);
+  
   pFilterOp->m_iEndTkn = i_Tkn_ - 1;
     
   return pFilterOp;
