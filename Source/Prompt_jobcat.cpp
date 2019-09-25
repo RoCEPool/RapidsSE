@@ -32,8 +32,9 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   // info
   nJobs++; JobClass::vJobCat(CN_JOB_NODEINFO);
   
-  // thread
+  // boot
   nJobs++; JobClass::vJobCat(CN_JOB_BOOT);
+  nJobs++; JobClass::vJobCat(CN_JOB_START);
 
   // system
   nJobs++; JobClass::vJobCat(CN_JOB_ALARM);
@@ -41,7 +42,6 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB_CONNECTOR);
   nJobs++; JobClass::vJobCat(CN_JOB_PERIODIC);
   nJobs++; JobClass::vJobCat(CN_JOB_RECEIVER);
-  nJobs++; JobClass::vJobCat(CN_JOB_START);
   nJobs++; JobClass::vJobCat(CN_JOB_SUPERVISOR);
   nJobs++; JobClass::vJobCat(CN_JOB_WAKER);
 
