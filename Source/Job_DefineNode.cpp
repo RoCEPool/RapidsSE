@@ -1,16 +1,16 @@
 /*============================================================================*/
-/* Job_CreateNode.cpp -- Create Table Job                                     */
+/* Job_DefineNode.cpp -- Define Node Job                                      */
 /*============================================================================*/
 
 #include "Jobs.h"
 
-JobClass xJobClass_CreateNode =
+JobClass xJobClass_DefineNode =
 {
   CN_JOB_DEFINENODE,      // class number
   JK_DIST2PC,             // job kind
   RS_NODE_ZERO,           // response kind
-  "create node"_Stz,      // comment about the job
-  "create"_Stz,           // the prompt command
+  "define node"_Stz,      // comment about the job
+  "define"_Stz,           // the prompt command
   "node"_Stz,             // the second word
   nullptr,                // the _run task seed
   "CreateNode_req"_Stz,   // the _req task seed
@@ -26,13 +26,13 @@ JobClass xJobClass_CreateNode =
   JF_LOWMEM,              // flags
 
   eJob_checkCluster,      // prompt check function
-  pJob_CreateNode_pre,    // prompt pre-process function
+  pJob_DefineNode_pre,    // prompt pre-process function
   vJob_post,              // prompt post-process function
-  pJob_CreateNode_new,    // job new function
-  vJob_CreateNode_delete, // job delete function
+  pJob_DefineNode_new,    // job new function
+  vJob_DefineNode_delete, // job delete function
   vJob_send,              // job pre-send function
   vJob_recv,              // job post-receive function
-  vJob_CreateNode_show,   // job show function
+  vJob_DefineNode_show,   // job show function
   
   // help
   true,
@@ -46,11 +46,11 @@ JobClass xJobClass_CreateNode =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* Jobs::pJob_CreateNode_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_DefineNode_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_CreateSchema_class;
   
-  return &xJobClass_CreateNode;
+  return &xJobClass_DefineNode;
 }
 
 
@@ -61,9 +61,9 @@ JobClass* Jobs::pJob_CreateNode_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_CreateNode* Jobs::_pJob_CreateNode(void* aAddress)
+Job_DefineNode* Jobs::_pJob_CreateNode(void* aAddress)
 {
-  Job_CreateNode* pJob_CreateNode = reinterpret_cast<Job_CreateNode*>(aAddress);
+  Job_DefineNode* pJob_CreateNode = reinterpret_cast<Job_DefineNode*>(aAddress);
   
   RASSERT_TYPE(pJob_CreateNode,CN_JOB_DEFINENODE);
   
@@ -73,10 +73,10 @@ Job_CreateNode* Jobs::_pJob_CreateNode(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* Job_CreateNode::operator new(size_t)
+void* Job_DefineNode::operator new(size_t)
 {
-  Job_CreateNode* pJob_CreateNode =
-    static_cast<Job_CreateNode*>(HeapMem::pAllocate(CN_JOB_DEFINENODE));
+  Job_DefineNode* pJob_CreateNode =
+    static_cast<Job_DefineNode*>(HeapMem::pAllocate(CN_JOB_DEFINENODE));
   
   return pJob_CreateNode;
 }
@@ -84,7 +84,7 @@ void* Job_CreateNode::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* perform new of entry buffer for given address                              */
 /*----------------------------------------------------------------------------*/
-void* Job_CreateNode::operator new(size_t, void* aAddress)
+void* Job_DefineNode::operator new(size_t, void* aAddress)
 {
   return aAddress;
 }
@@ -92,9 +92,9 @@ void* Job_CreateNode::operator new(size_t, void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* free an entry buffer back to the heap                                      */
 /*----------------------------------------------------------------------------*/
-void Job_CreateNode::operator delete(void* aAddress)
+void Job_DefineNode::operator delete(void* aAddress)
 {
-  Job_CreateNode* pJob_CreateNode = static_cast<Job_CreateNode*>(aAddress);
+  Job_DefineNode* pJob_CreateNode = static_cast<Job_DefineNode*>(aAddress);
   
   HeapMem::vFree(pJob_CreateNode);
 }
@@ -102,7 +102,7 @@ void Job_CreateNode::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_CreateNode::Job_CreateNode(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job_DefineNode::Job_DefineNode(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 : Job(aJobClass, aReqTuple, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DEFINENODE,_FOOTER_);
@@ -115,7 +115,7 @@ Job_CreateNode::Job_CreateNode(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iFor
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_CreateNode::~Job_CreateNode(void) noexcept(false)
+Job_DefineNode::~Job_DefineNode(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DEFINENODE,_FOOTER_);
 }
@@ -128,9 +128,9 @@ Job_CreateNode::~Job_CreateNode(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void Job_CreateNode::vDump(eCN eClass, Object* pObject, Stz* aTab)
+void Job_DefineNode::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  Job_CreateNode* pJob_CreateNode = _pJob_CreateNode(pObject);
+  Job_DefineNode* pJob_CreateNode = _pJob_CreateNode(pObject);
 
   pJob_CreateNode->vShow();
 }
@@ -142,13 +142,13 @@ void Job_CreateNode::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* populate node                                                              */
 /*----------------------------------------------------------------------------*/
-eEC Job_CreateNode::ePopulateJob(TokenVec* pTokenVec)
+eEC Job_DefineNode::ePopulateJob(TokenVec* pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DEFINENODE,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert we got a create table
-  ASSERT(pTokenVec->pGet(0)->bSame("create"_Stz));
+  ASSERT(pTokenVec->pGet(0)->bSame("define"_Stz));
   ASSERT(pTokenVec->pGet(1)->bSame("node"_Stz));
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -167,7 +167,7 @@ eEC Job_CreateNode::ePopulateJob(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
-void Job_CreateNode::vShow(void)
+void Job_DefineNode::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DEFINENODE,_FOOTER_);
   
@@ -179,7 +179,7 @@ void Job_CreateNode::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* validate a create table request                                            */
 /*----------------------------------------------------------------------------*/
-bool Job_CreateNode::bValidateCreateNode(TokenVec* pTokenVec)
+bool Job_DefineNode::bValidateCreateNode(TokenVec* pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DEFINENODE,_FOOTER_);
   
@@ -206,7 +206,7 @@ bool Job_CreateNode::bValidateCreateNode(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Job_CreateNode::aFooter(void)
+Footer* Job_DefineNode::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DEFINENODE);
   
@@ -220,9 +220,9 @@ Footer* Job_CreateNode::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_CreateNode_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job* Jobs::pJob_DefineNode_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 {
-  Job_CreateNode* pJob_CreateNode = new Job_CreateNode(aJobClass,aReqTuple,iForId,pSession);
+  Job_DefineNode* pJob_CreateNode = new Job_DefineNode(aJobClass,aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
@@ -239,7 +239,7 @@ Job* Jobs::pJob_CreateNode_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iFor
 /*----------------------------------------------------------------------------*/
 /* print success                                                              */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_CreateNode_post(Job* pJob)
+void Jobs::vJob_DefineNode_post(Job* pJob)
 {
   vTrace("I logNote here\n"_Stz);
   
@@ -260,10 +260,10 @@ void Jobs::vJob_CreateNode_post(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_CreateNode_new(JobClass* aJobClass)
+Job* Jobs::pJob_DefineNode_new(JobClass* aJobClass)
 {
-  Job_CreateNode* pJob_CreateNode =
-    new Job_CreateNode(aJobClass,nullptr,C_UNKNOWN,nullptr);
+  Job_DefineNode* pJob_CreateNode =
+    new Job_DefineNode(aJobClass,nullptr,C_UNKNOWN,nullptr);
   
   return pJob_CreateNode;
 }
@@ -271,9 +271,9 @@ Job* Jobs::pJob_CreateNode_new(JobClass* aJobClass)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_CreateNode_delete(Job* pJob)
+void Jobs::vJob_DefineNode_delete(Job* pJob)
 {
-  Job_CreateNode* pJob_CreateNode = _pJob_CreateNode(pJob);
+  Job_DefineNode* pJob_CreateNode = _pJob_CreateNode(pJob);
     
   delete pJob_CreateNode;
 }
@@ -281,9 +281,9 @@ void Jobs::vJob_CreateNode_delete(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_CreateNode_show(Job* pJob)
+void Jobs::vJob_DefineNode_show(Job* pJob)
 {
-  Job_CreateNode* pJob_CreateNode = _pJob_CreateNode(pJob);
+  Job_DefineNode* pJob_CreateNode = _pJob_CreateNode(pJob);
 
   pJob_CreateNode->vShow();
 }

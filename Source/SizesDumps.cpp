@@ -575,7 +575,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_CreateSchema),   // CN_JOB_CREATESCHEMA
   /*    */ sizeof(Job_CreateTable),    // CN_JOB_CREATETABLE
   /*    */ sizeof(Job_CreateTenant),   // CN_JOB_CREATETENANT
-  /*    */ sizeof(Job_CreateNode),     // CN_JOB_DEFINENODE
+  /*    */ sizeof(Job_DefineNode),     // CN_JOB_DEFINENODE
   /*    */ sizeof(Job_Docol),          // CN_JOB_DOCOL
   /*    */ sizeof(Job_DropCatalog),    // CN_JOB_DROPCATALOG
   /*    */ sizeof(Job_DropIndex),      // CN_JOB_DROPINDEX

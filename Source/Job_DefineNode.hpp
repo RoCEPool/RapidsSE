@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Job_CreateNode.hpp -- Create Node Job                                      */
+/* Job_DefineNode.hpp -- Define Node Job                                      */
 /*============================================================================*/
 #pragma once
 
 namespace Jobs
 {
-  class Job_CreateNode : public Job,
+  class Job_DefineNode : public Job,
                          public JobEnmSet
   {
   public:
@@ -18,8 +18,8 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_CreateNode(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);//=C_UNKNOWN);
-    ~Job_CreateNode(void) noexcept(false);
+    Job_DefineNode(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);//=C_UNKNOWN);
+    ~Job_DefineNode(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
@@ -35,15 +35,15 @@ namespace Jobs
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Job_CreateNode* _pJob_CreateNode(void* aAddr);
+  Job_DefineNode* _pJob_CreateNode(void* aAddr);
   
-  Job* pJob_CreateNode_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
-  void vJob_CreateNode_post(Job* pJob);
-  Job* pJob_CreateNode_new(JobClass* aJobClass);
-  void vJob_CreateNode_delete(Job* pJob);
-  void vJob_CreateNode_show(Job* pJob);
+  Job* pJob_DefineNode_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
+  void vJob_DefineNode_post(Job* pJob);
+  Job* pJob_DefineNode_new(JobClass* aJobClass);
+  void vJob_DefineNode_delete(Job* pJob);
+  void vJob_DefineNode_show(Job* pJob);
   
-  JobClass* pJob_CreateNode_class(pFUN** aaFun);
+  JobClass* pJob_DefineNode_class(pFUN** aaFun);
 }
 
 /*============================================================================*/

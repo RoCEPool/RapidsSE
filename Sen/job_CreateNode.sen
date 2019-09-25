@@ -39,7 +39,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* Job_CreateNode request (on originating node)                               */
+/* Job_DefineNode request (on originating node)                               */
 /*----------------------------------------------------------------------------*/
 : createNode_req (  -- <R> )
 
@@ -65,7 +65,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_CreateNode job on each node                                    */
+/* execute Job_DefineNode job on each node                                    */
 /*----------------------------------------------------------------------------*/
 : createNode_exe ( pJob_CreateNode -- )
 
@@ -103,7 +103,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_CreateNode job check resources                                 */
+/* execute Job_DefineNode job check resources                                 */
 /*----------------------------------------------------------------------------*/
 : createNode.checkResources ( pJob_CreateNode -- )
 
@@ -136,7 +136,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_CreateNode job release resources                               */
+/* execute Job_DefineNode job release resources                               */
 /*----------------------------------------------------------------------------*/
 : createNode.releaseResources ( pJob_CreateNode -- )
 

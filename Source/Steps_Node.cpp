@@ -38,7 +38,7 @@ void Step::vNodeNew(MP_Task mpTask)
   
   Node* pNode_copy = AM::pGrid()->pGetNode(nNodes - 1);
 
-  Job_CreateNode* pJob_CreateNode = _pJob_CreateNode(AM::pThisTLSJob());
+  Job_DefineNode* pJob_CreateNode = _pJob_CreateNode(AM::pThisTLSJob());
   EnmSet* pEnmSet = & pJob_CreateNode->m_oEnmSet;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
