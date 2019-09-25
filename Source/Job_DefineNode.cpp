@@ -1,0 +1,293 @@
+/*============================================================================*/
+/* Job_CreateNode.cpp -- Create Table Job                                     */
+/*============================================================================*/
+
+#include "Jobs.h"
+
+JobClass xJobClass_CreateNode =
+{
+  CN_JOB_DEFINENODE,      // class number
+  JK_DIST2PC,             // job kind
+  RS_NODE_ZERO,           // response kind
+  "create node"_Stz,      // comment about the job
+  "create"_Stz,           // the prompt command
+  "node"_Stz,             // the second word
+  nullptr,                // the _run task seed
+  "CreateNode_req"_Stz,   // the _req task seed
+  "CreateNode_beg"_Stz,   // the _rcv task seed
+  "CreateNode_exe"_Stz,   // the _exe task seed
+  "CreateNode_end"_Stz,   // the _end task seed
+  "CreateNode_can"_Stz,   // the _can task seed
+  true,                   // check resources?
+  false,                  // detached job?
+  false,                  // buffer attached?
+  DL_GRAB_WRITE,          // ddl lock model
+  PY_NORMAL,              // priority
+  JF_LOWMEM,              // flags
+
+  eJob_checkCluster,      // prompt check function
+  pJob_CreateNode_pre,    // prompt pre-process function
+  vJob_post,              // prompt post-process function
+  pJob_CreateNode_new,    // job new function
+  vJob_CreateNode_delete, // job delete function
+  vJob_send,              // job pre-send function
+  vJob_recv,              // job post-receive function
+  vJob_CreateNode_show,   // job show function
+  
+  // help
+  true,
+  "create node <nodeNm> ( <nodeinfo> )"_Stz,
+  
+  ""_Stz,
+
+  { 0, 0, 0, 0 ,0, 0 } // seeds spawned
+};
+
+/*----------------------------------------------------------------------------*/
+/* next function                                                              */
+/*----------------------------------------------------------------------------*/
+JobClass* Jobs::pJob_CreateNode_class(pFUN** pNextFun)
+{
+  *pNextFun = (pFUN*)pJob_CreateSchema_class;
+  
+  return &xJobClass_CreateNode;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+Job_CreateNode* Jobs::_pJob_CreateNode(void* aAddress)
+{
+  Job_CreateNode* pJob_CreateNode = reinterpret_cast<Job_CreateNode*>(aAddress);
+  
+  RASSERT_TYPE(pJob_CreateNode,CN_JOB_DEFINENODE);
+  
+  return pJob_CreateNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate a new entry buffer from heap                                      */
+/*----------------------------------------------------------------------------*/
+void* Job_CreateNode::operator new(size_t)
+{
+  Job_CreateNode* pJob_CreateNode =
+    static_cast<Job_CreateNode*>(HeapMem::pAllocate(CN_JOB_DEFINENODE));
+  
+  return pJob_CreateNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* perform new of entry buffer for given address                              */
+/*----------------------------------------------------------------------------*/
+void* Job_CreateNode::operator new(size_t, void* aAddress)
+{
+  return aAddress;
+}
+
+/*----------------------------------------------------------------------------*/
+/* free an entry buffer back to the heap                                      */
+/*----------------------------------------------------------------------------*/
+void Job_CreateNode::operator delete(void* aAddress)
+{
+  Job_CreateNode* pJob_CreateNode = static_cast<Job_CreateNode*>(aAddress);
+  
+  HeapMem::vFree(pJob_CreateNode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Job_CreateNode::Job_CreateNode(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+: Job(aJobClass, aReqTuple, pSession)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DEFINENODE,_FOOTER_);
+  
+  _checkInitialised_(CN_JOB_DEFINENODE);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_DEFINENODE,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+Job_CreateNode::~Job_CreateNode(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DEFINENODE,_FOOTER_);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Static Functions --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void Job_CreateNode::vDump(eCN eClass, Object* pObject, Stz* aTab)
+{
+  Job_CreateNode* pJob_CreateNode = _pJob_CreateNode(pObject);
+
+  pJob_CreateNode->vShow();
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Member Functions --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* populate node                                                              */
+/*----------------------------------------------------------------------------*/
+eEC Job_CreateNode::ePopulateJob(TokenVec* pTokenVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DEFINENODE,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // assert we got a create table
+  ASSERT(pTokenVec->pGet(0)->bSame("create"_Stz));
+  ASSERT(pTokenVec->pGet(1)->bSame("node"_Stz));
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // some validations
+  bool bValid = bValidateCreateNode(pTokenVec);
+  if ( ! bValid ) {
+    return EC_INVALID_COMMAND;
+  }
+  
+  // set the node name
+  vNodeName(pTokenVec->pGet(2)->szText());
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show                                                                       */
+/*----------------------------------------------------------------------------*/
+void Job_CreateNode::vShow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DEFINENODE,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/* validate a create table request                                            */
+/*----------------------------------------------------------------------------*/
+bool Job_CreateNode::bValidateCreateNode(TokenVec* pTokenVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DEFINENODE,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get tokens in token vector
+  i8 iNumTokens = pTokenVec->nTokens();
+  
+  // there should be a minumum of 3 tokens
+  if (iNumTokens < 3) {
+    return false;
+  }
+  
+  Tokeniser::vToEnmSet(&m_oEnmSet,pTokenVec);
+  
+  m_oEnmSet.vPrint();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* Job_CreateNode::aFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DEFINENODE);
+  
+  return &m_xFooter;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Catalog Functions -------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* prompt pre execute function                                                */
+/*----------------------------------------------------------------------------*/
+Job* Jobs::pJob_CreateNode_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+{
+  Job_CreateNode* pJob_CreateNode = new Job_CreateNode(aJobClass,aReqTuple,iForId,pSession);
+  //pJob->vDicPath(pSession);
+
+  TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
+
+  eEC eError = pJob_CreateNode->ePopulateJob(pTokenVec);
+  
+  if ( eError != EC_NONE ) {
+    pJob_CreateNode->vAddError(eError);
+  }
+  
+  return pJob_CreateNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print success                                                              */
+/*----------------------------------------------------------------------------*/
+void Jobs::vJob_CreateNode_post(Job* pJob)
+{
+  vTrace("I logNote here\n"_Stz);
+  
+  i8 iResponses = pJob->m_pResponseVec->nItems();
+  
+  if (pJob->m_bHasError) {
+    for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
+      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob->m_pResponseVec->pGet(i_Node)->m_eErrorCode]);
+    }
+    return;
+  }
+  
+  RASSERT(iResponses == AM::nDefinedNodes());
+  
+  vTrace("success: 0 rows affected\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* job new function                                                           */
+/*----------------------------------------------------------------------------*/
+Job* Jobs::pJob_CreateNode_new(JobClass* aJobClass)
+{
+  Job_CreateNode* pJob_CreateNode =
+    new Job_CreateNode(aJobClass,nullptr,C_UNKNOWN,nullptr);
+  
+  return pJob_CreateNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* job delete function                                                        */
+/*----------------------------------------------------------------------------*/
+void Jobs::vJob_CreateNode_delete(Job* pJob)
+{
+  Job_CreateNode* pJob_CreateNode = _pJob_CreateNode(pJob);
+    
+  delete pJob_CreateNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* show job function                                                          */
+/*----------------------------------------------------------------------------*/
+void Jobs::vJob_CreateNode_show(Job* pJob)
+{
+  Job_CreateNode* pJob_CreateNode = _pJob_CreateNode(pJob);
+
+  pJob_CreateNode->vShow();
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
