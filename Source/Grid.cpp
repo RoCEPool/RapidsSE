@@ -4,8 +4,6 @@
 
 #include "Grids.h"
 
-
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -124,6 +122,16 @@ void Grid::vAddNode(Node* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get number of connected nodes                                              */
+/*----------------------------------------------------------------------------*/
+i8 Grid::nConnectedNodes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  return m_nConnectedNodes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump grid                                                                  */
 /*----------------------------------------------------------------------------*/
 void Grid::vDumpPartitioning(void)
@@ -134,26 +142,6 @@ void Grid::vDumpPartitioning(void)
     vTrace("Partition: %lld; Node: %lld\n"_Stz, i_Index,
            TablePtn::iPartitionToNode(i_Index));
   vTrace("\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set grid started                                                           */
-/*----------------------------------------------------------------------------*/
-void Grid::vHasStarted(bool bHasStarted)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
-  m_bHasStarted = bHasStarted;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get grid started                                                           */
-/*----------------------------------------------------------------------------*/
-bool Grid::bHasStarted(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
-  return m_bHasStarted;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -184,6 +172,36 @@ Node* Grid::pGetNode(i8 i_Node)
   Node* pNode = m_pNodes[i_Node];
   
   return pNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get grid started                                                           */
+/*----------------------------------------------------------------------------*/
+bool Grid::bHasStarted(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  return m_bHasStarted;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set grid started                                                           */
+/*----------------------------------------------------------------------------*/
+void Grid::vHasStarted(bool bHasStarted)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  m_bHasStarted = bHasStarted;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of connected nodes                                              */
+/*----------------------------------------------------------------------------*/
+void Grid::vIncConnectedNodes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  m_nConnectedNodes++;
 }
 
 /*----------------------------------------------------------------------------*/

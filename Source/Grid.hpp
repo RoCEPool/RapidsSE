@@ -37,11 +37,13 @@ namespace Grids
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
     void vAddNode(Node* pNode);
+    i8   nConnectedNodes(void);
     void vDumpPartitioning(void);
     void vHasStarted(bool bHasStarted);
     bool bHasStarted(void);
     Node* pFindNode(Stz* pName);
     Node* pGetNode(i8 i_Node);
+    void vIncConnectedNodes(void);
     void vInit(i8 nNodes, i8 nSlotsPerNode);
     i8   nNodes(void);
     i8   nSlotsPerNode(void);
