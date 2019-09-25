@@ -12,6 +12,8 @@ void Step::vAddSteps_Word(void)
   vAddStep("word::this"_Stz,      &Step::vWordThis);
   
   vAddStep("word.dump"_Stz,       &Step::vWordDump);
+  vAddStep("word.exitHook@"_Stz,  &Step::vWordExitHookGet);
+  vAddStep("word.exitHook!"_Stz,  &Step::vWordExitHookSet);
   vAddStep("word.forget"_Stz,     &Step::vWordForget);
   vAddStep("word.immediate@"_Stz, &Step::vWordImmediateGet);
   vAddStep("word.immediate!"_Stz, &Step::vWordImmediateSet);
