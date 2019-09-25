@@ -149,6 +149,46 @@ true tick CASE word.immediate!
   LOOP
 ;
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* EXIT (optionally invoking exit hook)                                       */
+/*----------------------------------------------------------------------------*/
+: EXIT_h immediate
+
+  word::this word.exitHook@ find dup if
+    compile,
+  else
+    drop
+  then
+
+  POSTPONE exit_rt
+;
+
+: eg_hook
+   "eg_hook" .
+;
+
+: set_hook immediate
+
+  "eg_hook"
+  word::this
+  word.exitHook!
+;
+
+: exit_test prompt
+
+  set_hook
+  //[ "eg_hook" word::this word.exitHook! ]
+
+  0 if
+    "exit with hook" . exit_h
+  else
+    "normal exit"    . exit
+  then
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

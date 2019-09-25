@@ -451,6 +451,26 @@ void ForthWord::vEncode(StepFp* afpEntryStep)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get exit hook                                                              */
+/*----------------------------------------------------------------------------*/
+Stz* ForthWord::szExitHook(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  return m_sExitHook.aStz();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set exit hook                                                              */
+/*----------------------------------------------------------------------------*/
+void ForthWord::vExitHook(Stz* szExitHook)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  m_sExitHook = szExitHook;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get pointer to first cell in data area                                     */
 /*----------------------------------------------------------------------------*/
 Cell* ForthWord::aFirstCell(void)

@@ -30,7 +30,10 @@ namespace Forth
                              //     in the data area
                              //   for objects this will be the cell after
                              //     does in the defining word
-                             //   for primitives this will be null  
+                             //   for primitives this will be null
+  
+    s32      m_sExitHook;    // routine to be called on exit
+  
     Routine  m_xRoutine;
   
     // must be last
@@ -71,6 +74,8 @@ namespace Forth
     void  vEncode(Stz* aWordNm, ForthWord* pCalledWord);
     void  vEncode(Stz* aWordNm, GenVar* pGenVar);
     void  vEncode(StepFp* afpEntryStep);
+    Stz*  szExitHook(void);
+    void  vExitHook(Stz* szExitHook);
     Cell* aFirstCell(void);
     bool  bHasCell(Cell* aCell);
     bool  bImmediate(void);
