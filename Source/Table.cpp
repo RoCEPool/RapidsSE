@@ -851,7 +851,7 @@ i8 Table::iToPartition(i8 iRowHash)
 #else
   
   // modulo the hash to get partition number
-  i8 nPartitions = AM::nSlotsPerNode() * AM::nConnectedNodes()
+  i8 nPartitions = AM::nSlotsPerNode() * AM::nConnectedNodes();
   
   i_Ptn = iRowHash % nPartitions;
 

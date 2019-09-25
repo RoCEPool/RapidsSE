@@ -59,7 +59,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // buckets
 
-#define WITH_BUCKET_HASHING        // code for bucket hashing compiled in
+//#define WITH_BUCKET_HASHING        // code for bucket hashing compiled in
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

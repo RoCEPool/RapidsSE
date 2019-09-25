@@ -85,7 +85,7 @@ namespace MetaData
     Stz* aTableName(void);
     void vTidyUp(void);
     void vTidyUpIndex(i8 iIndexNo);
-    i8   iToPartition(i8 iHash);
+    i8   iToPartition(i8 iRowHash);
     void vTruncate(i8 iPartitionNo);
     void vTruncateIndex(i8 iPartitionNo, i8 iIndexNo);
     bool bVerifyTable(void);

@@ -159,6 +159,7 @@ namespace Jobs
 #include "Job_TableSizes.hpp"
 #include "Job_TruncateTable.hpp"
 
+#include "Job_Universal.hpp"
 #include "Job_UseSchema.hpp"
 
 #include "Job_VerifyIndex.hpp"
@@ -171,6 +172,7 @@ namespace Jobs
 #include "Job_Walk.hpp"
 #include "Job_WriteBuffer.hpp"
 #include "Job_WriteRow.hpp"
+
 #include "Job_Xmit.hpp"
 
 #include "JobList.hpp"
