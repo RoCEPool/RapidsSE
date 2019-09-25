@@ -38,7 +38,7 @@ void TablePtn::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 i8 TablePtn::iPartitionToNode(i8 iPartition)
 {
-  i8 iNode = iPartition % AM::nNodes();
+  i8 iNode = iPartition % AM::nDefinedNodes();
   
   return iNode;
 }
@@ -48,7 +48,7 @@ i8 TablePtn::iPartitionToNode(i8 iPartition)
 /*----------------------------------------------------------------------------*/
 i8 TablePtn::iPartitionToSlot(i8 iPartition)
 {
-  i8 iSlot = iPartition / AM::nNodes();
+  i8 iSlot = iPartition / AM::nDefinedNodes();
   
   return iSlot;
 }
@@ -59,7 +59,7 @@ i8 TablePtn::iPartitionToSlot(i8 iPartition)
 i8 TablePtn::iSlotToPartition(i8 iSlot)
 {
   i8 iPartition =
-   (iSlot * AM::nNodes()) + AM::iThisNodeNo();
+   (iSlot * AM::nDefinedNodes()) + AM::iThisNodeNo();
   
   return iPartition;
 }

@@ -714,7 +714,7 @@ i8 Table::iRowPartition(i8 iHash)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   // modulo to get partition number
-  i8 iPartition = iHash % (AM::nSlotsPerNode() * AM::nNodes());
+  i8 iPartition = iHash % (AM::nSlotsPerNode() * AM::nDefinedNodes());
   
   return iPartition;  
 }

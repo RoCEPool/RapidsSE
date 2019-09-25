@@ -89,7 +89,7 @@ void JobResult::vPrintLoadRows(void)
     return;
   }
 
-  RASSERT(iResponses == AM::nNodes());
+  RASSERT(iResponses == AM::nDefinedNodes());
   
   i8 iRowsProcessed = 0;
   i8 iRowsInvalid   = 0;
@@ -149,7 +149,7 @@ void JobResult::vPrintLocalRows(void)
 void JobResult::vPrintNodeErrors(void)
 {
   i8 iResponses = m_pResponseVec->nItems();
-  RASSERT(iResponses == AM::nNodes());
+  RASSERT(iResponses == AM::nDefinedNodes());
   
   if (m_bHasError) {
     for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {

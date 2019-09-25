@@ -34,7 +34,7 @@ void Step::vNodeNew(MP_Task mpTask)
 {
   ENTRY("vNodeNew"_Stz);
   
-  i8 nNodes = AM::nNodes();
+  i8 nNodes = AM::nDefinedNodes();
   
   Node* pNode_copy = AM::pGrid()->pGetNode(nNodes - 1);
 

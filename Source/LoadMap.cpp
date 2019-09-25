@@ -137,7 +137,7 @@ bool LoadMap::bMapChunk(void)
            m_oFile.sFilePath().aStz(),sFileSize.aStz(),
            m_xMap.nEntries,
            AM::nSubLoaders(),
-           AM::nNodes(),
+           AM::nDefinedNodes(),
            AM::nPartitions());
     vMappingDone(true);
     return false;
