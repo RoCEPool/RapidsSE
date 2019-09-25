@@ -27,7 +27,6 @@ i8   AM::iJumboSize(void)     { return gpAttachMap->Arg.m_iJumboSize;         }
 bool AM::bLog(void)           { return gpAttachMap->Arg.m_bLog;               }
 i8   AM::nMaxLoadErrors(void) { return gpAttachMap->Arg.m_nMaxLoadErrors;     }
 i8   AM::nMaxReadyLP(void)    { return gpAttachMap->Arg.m_nMaxReadyLP;        }
-i8   AM::nNodes(void)         { return gpAttachMap->Arg.m_nNodes;             }
 Stz* AM::szRegionName(void)   { return gpAttachMap->Arg.m_sRegionName.aStz(); }
 i8   AM::iRegionSize(void)    { return gpAttachMap->Arg.m_iRegionSize;        }
 i8   AM::nSlotsPerNode(void)  { return gpAttachMap->Arg.m_nSlotsPerNode;      }
@@ -62,6 +61,8 @@ JobList* AM::pOriginatingJobs(void) {
 JobList* AM::pParticipatingJobs(void) {
   return gpAttachMap->m_pQueues->m_pParticipatingJobs; }
 i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
+i8   AM::nConnectedNodes(void){ return gpAttachMap->m_pGrid->nConnectedNodes(); }
+i8   AM::nDefinedNodes(void)  { return gpAttachMap->m_pGrid->nDefinedNodes(); }
 void AM::vProcessExit(void)   { Process::vExitFailure();                      }
 bool AM::bProgress(void)      { return gpAttachMap->m_bProgress;              }
 bool AM::bMetadata(void)      { return gpAttachMap->m_bMetadata;              }
@@ -91,7 +92,7 @@ i8   AM::iNextThreadId(void)  { return ++ gpAttachMap->m_inNextThreadId;      }
 i8   AM::iNextTxId(void)      { return ++ gpAttachMap->m_inNextTxId;          }
 
 i8*  AM::iaObjectsInPool(void){ return gpAttachMap->m_nObjectsInPool;         }
-i8   AM::nPartitions(void)    { return gpAttachMap->m_pGrid->m_nPartitions;   }
+i8   AM::nPartitions(void)    { return gpAttachMap->m_pGrid->nPartitions();   }
 Queues* AM::pQueues(void)     { return gpAttachMap->m_pQueues;                }
 ResourceTracker* AM::pResourceTracker(void) {
   return & gpAttachMap->m_oResourceTracker; }

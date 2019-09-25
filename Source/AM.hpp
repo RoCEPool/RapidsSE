@@ -39,7 +39,6 @@ namespace StorageEngine
     static bool bLog(void);
     static i8   nMaxLoadErrors(void);
     static i8   nMaxReadyLP(void);
-    static i8   nNodes(void);
     static Stz* szRegionName(void);
     static i8   iRegionSize(void);
     static bool bSethScript(void);
@@ -63,6 +62,8 @@ namespace StorageEngine
     static Formatters* pFormatters(void);
     static ForthWord* pForthWord(void);
     static Grid* pGrid(void);
+    static i8   nConnectedNodes(void);
+    static i8   nDefinedNodes(void);
     static bool bHasStarted(void);
     static HeapMem* pHeapMem(void);
     static i8   nIndexEntries(void);

@@ -20,7 +20,7 @@
   // get data about nodes etc
   job::this job_netHog.hogNo@ to iHogNo
   grid::thisNode@ to iNodeNo
-  grid::nodes to nNodes
+  grid::definedNodes to nNodes
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compute next node for this hog

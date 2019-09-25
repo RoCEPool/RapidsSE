@@ -252,7 +252,7 @@ void Jobs::vJob_CreateNode_post(Job* pJob)
     return;
   }
   
-  RASSERT(iResponses == AM::nNodes());
+  RASSERT(iResponses == AM::nDefinedNodes());
   
   vTrace("success: 0 rows affected\n"_Stz);
 }

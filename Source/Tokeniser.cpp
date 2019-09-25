@@ -59,7 +59,7 @@ Tokeniser::Tokeniser(void)
   }
   else {
   
-    i8 nNodes = AM::nNodes();
+    i8 nNodes = AM::nDefinedNodes();
     Stz* szNodeNm = AM::szNodeName();
     i8  i_Node = AM::iThisNodeNo();
     

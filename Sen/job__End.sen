@@ -32,7 +32,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // send Job__End to all nodes
-  grid::nodes 0
+  grid::definedNodes 0
   do
     I grid::node node.isConnected if
       I pJob__End job.forward

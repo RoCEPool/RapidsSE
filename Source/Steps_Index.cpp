@@ -221,7 +221,7 @@ void Step::vIndexDump(MP_Task mpTask)
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
   
-  for (i8 iPartition = 0; iPartition < AM::pGrid()->m_nSlotsPerNode; iPartition++) {
+  for (i8 iPartition = 0; iPartition < AM::pGrid()->nSlotsPerNode(); iPartition++) {
     TablePtn* pPartition = pTable->pPartition(iPartition);
     IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
     vTrace("Partition %lld\n"_Stz, iPartition);
@@ -929,7 +929,7 @@ void Step::vIndexTruncate(MP_Task mpTask)
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
   
-  for (i8 iSlot = 0; iSlot < AM::pGrid()->m_nSlotsPerNode; iSlot++)
+  for (i8 iSlot = 0; iSlot < AM::pGrid()->nSlotsPerNode(); iSlot++)
     pTable->vTruncateIndex(iSlot, iIndexNo);
   
   EXIT();
@@ -1143,7 +1143,7 @@ void Step::vIndexVisualize(MP_Task mpTask)
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
   
-  for (i8 iPartition = 0; iPartition < AM::pGrid()->m_nSlotsPerNode; iPartition++) {
+  for (i8 iPartition = 0; iPartition < AM::pGrid()->nSlotsPerNode(); iPartition++) {
     TablePtn* pPartition = pTable->pPartition(iPartition);
     IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
     vTrace("Table Partition %lld\n"_Stz, iPartition);

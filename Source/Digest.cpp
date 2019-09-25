@@ -86,7 +86,7 @@ void Digest::vParseCommand(TokenVec* pTknVec)
   
   i8 i_Tkn = 1;
   i8 i_Op = 0;
-  i8 i_SlotsPerNode = AM::pGrid()->m_nSlotsPerNode;
+  i8 i_SlotsPerNode = AM::pGrid()->nSlotsPerNode();
   
   while (i_Tkn < nTokens) {
     

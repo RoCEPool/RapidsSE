@@ -10,10 +10,10 @@
 void Step::vAddSteps_Grid(void)
 {
   vAddStep("grid::connectedNodes"_Stz,    &Step::vGridConnectedNodes);
+  vAddStep("grid::definedNodes"_Stz,      &Step::vGridDefinedNodes);
   vAddStep("grid::findNode"_Stz,          &Step::vGridFindNode);
   vAddStep("grid::incConnectedNodes"_Stz, &Step::vGridIncConnectedNodes);
   vAddStep("grid::node"_Stz,              &Step::vGridNode);
-  vAddStep("grid::nodes"_Stz,             &Step::vGridNodes);
   vAddStep("grid::partitions"_Stz,        &Step::vGridPartitions);
   vAddStep("grid::show"_Stz,              &Step::vGridShow);
   vAddStep("grid::slots"_Stz,             &Step::vGridSlots);
@@ -35,13 +35,21 @@ void Step::vGridConnectedNodes(MP_Task mpTask)
 {
   ENTRY("vGridConnectedNodes"_Stz);
   
-  i8 nConnectedNodes = 0;
-  for (i8 i_Node = 0; i_Node < AM::pGrid()->nNodes(); i_Node++) {
-    Node* pNode = AM::pGrid()->pGetNode(i_Node);
-    if (pNode->pSendSocket())
-      nConnectedNodes++;
-  }
+  i8 nConnectedNodes = AM::pGrid()->nConnectedNodes();
+
   mpTask->m_pDataStack->vPushI8(nConnectedNodes);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grid::definedNodes -- get number of nodes in the grid                             */
+/*----------------------------------------------------------------------------*/
+void Step::vGridDefinedNodes(MP_Task mpTask)
+{
+  ENTRY("vGridDefinedNodes"_Stz);
+  
+  mpTask->m_pDataStack->vPushI8(AM::pGrid()->nDefinedNodes());
   
   EXIT();
 }
@@ -95,25 +103,13 @@ void Step::vGridNode(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid::nodes -- get number of nodes in the grid                             */
-/*----------------------------------------------------------------------------*/
-void Step::vGridNodes(MP_Task mpTask)
-{
-  ENTRY("vGridNodes"_Stz);
-
-  mpTask->m_pDataStack->vPushI8(AM::pGrid()->m_nNodes);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* grid::partitions -- get number of partitions in the grid                   */
 /*----------------------------------------------------------------------------*/
 void Step::vGridPartitions(MP_Task mpTask)
 {
   ENTRY("vGridNode"_Stz);
   
-  mpTask->m_pDataStack->vPushI8(AM::pGrid()->m_nPartitions);
+  mpTask->m_pDataStack->vPushI8(AM::pGrid()->nPartitions());
   
   EXIT();
 }
@@ -126,11 +122,11 @@ void Step::vGridShow(MP_Task mpTask)
   ENTRY("vGridShow"_Stz);
   
   vTrace("Grid::\n"_Stz);
-  vTrace("  %lld nodes\n"_Stz,AM::pGrid()->m_nNodes);
-  vTrace("  %lld slots per node\n"_Stz,AM::pGrid()->m_nSlotsPerNode);
-  vTrace("  %lld total partitions\n"_Stz,AM::pGrid()->m_nPartitions);
+  vTrace("  %lld defined nodes\n"_Stz,AM::pGrid()->nDefinedNodes());
+  vTrace("  %lld slots per node\n"_Stz,AM::pGrid()->nSlotsPerNode());
+  vTrace("  %lld total partitions\n"_Stz,AM::pGrid()->nPartitions());
   
-  for (i8 i_Node = 0; i_Node < AM::pGrid()->m_nNodes; i_Node++) {
+  for (i8 i_Node = 0; i_Node < AM::pGrid()->nDefinedNodes(); i_Node++) {
     Node* pNode = AM::pGrid()->m_pNodes[i_Node];
     vTrace("  Node %lld : %s IP %s port %lld rcvSkt %p sndSkt %p [%s]\n"_Stz,
            pNode->iNodeNo(),
@@ -155,7 +151,7 @@ void Step::vGridSlots(MP_Task mpTask)
 {
   ENTRY("vGridNode"_Stz);
   
-  mpTask->m_pDataStack->vPushI8(AM::pGrid()->m_nSlotsPerNode);
+  mpTask->m_pDataStack->vPushI8(AM::pGrid()->nSlotsPerNode());
   
   EXIT();
 }

@@ -42,7 +42,7 @@ bool Prompt::bPrompt_show(SePrompt* pPrompt)
   if ((*pTkVec)[1]->bSame("nodes"_Stz)) {
     
     SP_Node spNode;
-    for (i8 i_Node = 0; i_Node < AM::pGrid()->m_nNodes; i_Node++) {
+    for (i8 i_Node = 0; i_Node < AM::pGrid()->nDefinedNodes(); i_Node++) {
       Node* pNode = AM::pGrid()->m_pNodes[i_Node];
       vTrace("  %s\n"_Stz,spNode.sz(pNode));
     }

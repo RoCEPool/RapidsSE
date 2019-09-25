@@ -64,19 +64,20 @@ Grid::~Grid(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* init                                                                       */
 /*----------------------------------------------------------------------------*/
-void Grid::vInit(i8 nNodes, i8 nSlotsPerNode)
+void Grid::vInit(i8 nDefinedNodes, i8 nSlotsPerNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  m_nNodes          = nNodes;
+  m_nSlotsPerNode   = nSlotsPerNode;
+  
+  m_nDefinedNodes   = nDefinedNodes;
   m_nConnectedNodes = 0;
+  
   m_iThisNode       = C_UNKNOWN;
   m_pThisNode       = nullptr;
   m_iStartNode      = C_UNKNOWN;
   m_bHasStarted     = false;
-  m_nSlotsPerNode   = nSlotsPerNode;
-  m_nPartitions     = m_nSlotsPerNode * m_nNodes;
-    
+  
   // initialize the partition array
   for (i8 i_Partition = 0; i_Partition < C_MAX_SLOTS; i_Partition++) {
     m_iPartition[i_Partition] = C_UNKNOWN;
@@ -117,8 +118,8 @@ void Grid::vAddNode(Node* pNode)
   
   m_pNodes[i_Node] = pNode;
   
-  if (i_Node >= m_nNodes)
-    m_nNodes++;
+  if (i_Node >= m_nDefinedNodes)
+    m_nDefinedNodes++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -132,13 +133,23 @@ i8 Grid::nConnectedNodes(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get number of defined nodes in the grid                                    */
+/*----------------------------------------------------------------------------*/
+i8 Grid::nDefinedNodes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  return m_nDefinedNodes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump grid                                                                  */
 /*----------------------------------------------------------------------------*/
 void Grid::vDumpPartitioning(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  for (i8 i_Index = 0; i_Index < m_nPartitions; i_Index++)
+  for (i8 i_Index = 0; i_Index < nPartitions(); i_Index++)
     vTrace("Partition: %lld; Node: %lld\n"_Stz, i_Index,
            TablePtn::iPartitionToNode(i_Index));
   vTrace("\n"_Stz);
@@ -151,7 +162,7 @@ Node* Grid::pFindNode(Stz* sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  for (i8 i_Node = 0; i_Node < m_nNodes; i_Node++) {
+  for (i8 i_Node = 0; i_Node < m_nDefinedNodes; i_Node++) {
     Node* pNode = m_pNodes[i_Node];
     if (pNode && pNode->szNodeName()->bSame(sName))
       return pNode;
@@ -167,7 +178,7 @@ Node* Grid::pGetNode(i8 i_Node)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
-  RASSERT(i_Node >= 0 and i_Node < m_nNodes);
+  RASSERT(i_Node >= 0 and i_Node < m_nDefinedNodes);
   
   Node* pNode = m_pNodes[i_Node];
   
@@ -205,13 +216,15 @@ void Grid::vIncConnectedNodes(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of nodes in the grid                                            */
+/* get total number of nodes in the connected grid                            */
 /*----------------------------------------------------------------------------*/
-i8 Grid::nNodes(void)
+i8 Grid::nPartitions(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  return m_nNodes;
+  i8 nPartitions = m_nSlotsPerNode * m_nConnectedNodes;
+
+  return nPartitions;
 }
 
 /*----------------------------------------------------------------------------*/
