@@ -48,12 +48,73 @@ JobWriteBehind::~JobWriteBehind(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Static Functions --------------------------------------------------------*/
+/*-- Member Functions --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*-- Member Functions --------------------------------------------------------*/
+/* append row into working buffer                                             */
 /*----------------------------------------------------------------------------*/
+eEC JobWriteBehind::eAppendRow(void)
+{
+  // use row hash to get partition
+  i8 i_Ptn = m_pTable->iRowPartition(m_pRow->m_iHash);
+  
+  // insert the row in a working buffer
+  while (true) {
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // check for row buffer
+    
+    if (! m_pCrwBuffer[i_Ptn]) {
+      
+      // create a new crw buffer for this partition
+      vNewCrwBuffer(i_Ptn);
+      
+      if (! m_pCrwBuffer[i_Ptn]) {
+        vTrace("CrwBuffer allocation failed\n"_Stz);
+        return EC_LOW_MEMORY;
+      }
+      
+      CrwBuffer* pCrwBuffer = m_pCrwBuffer[i_Ptn];
+      pCrwBuffer->vAppendOpen(m_paRowCompactor[i_Ptn], true);
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // append row into working buffer
+    
+    CrwBuffer* pCrwBuffer = m_pCrwBuffer[i_Ptn];
+    
+    //pCrwBuffer->vGrabWrite();
+    bool bWasAppended = pCrwBuffer->bAppendRow(m_pRow);
+    //pCrwBuffer->vDropWrite();
+    //pCrwBuffer->vDump();
+    
+    // appended ?
+    if (bWasAppended)
+      return EC_NONE;
+    
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // spawn a write buffer job
+    
+    m_pCrwBuffer[i_Ptn] = nullptr;
+    pCrwBuffer->vAppendClose();
+    
+    Job_WriteBuffer::vSpawnJobWriteBuffer(m_pParentJob->m_pSession,
+                                          m_pTable->aTableName(),
+                                          m_eDataSource,
+                                          pCrwBuffer,
+                                          m_pParentJob->iJobId(),
+                                          i_Ptn,
+                                          C_NOT_FINAL,
+                                          0);
+    
+    // repeat, try-again
+    // ...
+  }
+  
+  return EC_NONE;
+}
 
 /*----------------------------------------------------------------------------*/
 /* handle dangling buffers                                                    */
@@ -90,71 +151,6 @@ void JobWriteBehind::vHandleDanglingBuffers(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert row into working buffer                                             */
-/*----------------------------------------------------------------------------*/
-eEC JobWriteBehind::eInsertRow(void)
-{
-  // use row hash to get partition
-  i8 i_Ptn = m_pTable->iRowPartition(m_pRow->m_iHash);
-
-  // insert the row in a working buffer
-  while (true) {
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // check for row buffer
-
-    if (! m_pCrwBuffer[i_Ptn]) {
-      
-      // create a new crw buffer for this partition
-      vNewCrwBuffer(i_Ptn);
-      
-      if (! m_pCrwBuffer[i_Ptn]) {
-        vTrace("CrwBuffer allocation failed\n"_Stz);
-        return EC_LOW_MEMORY;
-      }
-
-      CrwBuffer* pCrwBuffer = m_pCrwBuffer[i_Ptn];
-      pCrwBuffer->vAppendOpen(m_paRowCompactor[i_Ptn], true);
-    }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // insert row into working buffer
-
-    CrwBuffer* pCrwBuffer = m_pCrwBuffer[i_Ptn];
-
-    //pCrwBuffer->vGrabWrite();
-    bool bWasAppended = pCrwBuffer->bAppendRow(m_pRow);
-    //pCrwBuffer->vDropWrite();
-    //pCrwBuffer->vDump();
-    
-    // appended ?
-    if (bWasAppended)
-      return EC_NONE;
-    
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // spawn a write buffer job
-
-    m_pCrwBuffer[i_Ptn] = nullptr;
-    pCrwBuffer->vAppendClose();
-    
-    Job_WriteBuffer::vSpawnJobWriteBuffer(m_pParentJob->m_pSession,
-                                          m_pTable->aTableName(),
-                                          m_eDataSource,
-                                          pCrwBuffer,
-                                          m_pParentJob->iJobId(),
-                                          i_Ptn,
-                                          C_NOT_FINAL,
-                                          0);
-    
-    // repeat, try-again
-    // ...
-  }
-  
-  return EC_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
 /* process record                                                             */
 /*----------------------------------------------------------------------------*/
 eEC JobWriteBehind::eProcessRecord(Stz* szRecStr, i8 nBytes)
@@ -180,8 +176,8 @@ eEC JobWriteBehind::eProcessRecord(Stz* szRecStr, i8 nBytes)
   if (! bValid)
     return EC_INVALID_VALUE;
 
-  // attempt to add row into a write-behind buffer
-  eEC eError = eInsertRow(); //m_pRow);
+  // attempt to append row into a write-behind buffer
+  eEC eError = eAppendRow();
 
   // was there an error ?
   if (eError != EC_NONE) {

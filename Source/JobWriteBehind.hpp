@@ -21,8 +21,8 @@ namespace Jobs
     ~JobWriteBehind(void) noexcept(false);
     
   public:
+    eEC  eAppendRow(void);
     void vHandleDanglingBuffers(void);
-    eEC  eInsertRow(void); //Row* pRow);
     eEC  eProcessRecord(Stz* aRecord,  i8 nBytes);
   
   private:
