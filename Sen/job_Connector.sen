@@ -46,9 +46,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* connect to given node                                                      */
+/* attempt connect to given node                                              */
 /*----------------------------------------------------------------------------*/
-: .connectNode ( pNode -- )
+: .attemptConnectNode ( pNode -- )
 
   params| pNode |
 
@@ -60,7 +60,7 @@
   pNode node.port ( port )
   pNode node.IP   ( port IP )
 
-  // connect to that node
+  // attempt connect to that node
   socket::open socket.connect to pSocket
 
   pSocket not if
@@ -97,7 +97,7 @@
 
     // connect to the node
     pNode node.sendSocket@ not if
-      pNode .connectNode
+      pNode .attemptConnectNode
     then
 
   loop

@@ -8,7 +8,7 @@ create node NODE3 { IPADDR="127.0.0.1" , PORTNO = 5443 };
 
 show nodes;
 
-//start node node2;
+//start node node3;
 
 //show nodes;
 
