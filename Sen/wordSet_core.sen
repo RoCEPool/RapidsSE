@@ -166,6 +166,29 @@ true tick CASE word.immediate!
   POSTPONE exit_rt
 ;
 
+: eg_hook
+   "eg_hook" .
+;
+
+: set_hook immediate
+
+  "eg_hook"
+  word::this
+  word.exitHook!
+;
+
+: exit_test prompt
+
+  set_hook
+  //[ "eg_hook" word::this word.exitHook! ]
+
+  0 if
+    "exit with hook" . exit_h
+  else
+    "normal exit"    . exit
+  then
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
