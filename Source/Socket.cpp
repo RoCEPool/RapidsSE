@@ -348,25 +348,27 @@ bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
   
   SysCall.vClear();
   
-  m_iSocketId = socket(AF_INET,SOCK_STREAM,0);
+  if (-1 == m_iSocketId) {
+    m_iSocketId = socket(AF_INET,SOCK_STREAM,0);
 
-  if (m_iSocketId < 0) {
-    SysCall.vError(errno);
-    return false;
+    if (m_iSocketId < 0) {
+      SysCall.vError(errno);
+      return false;
+    }
+    
+    iResult = setsockopt(m_iSocketId
+                         ,SOL_SOCKET
+                         ,SO_REUSEADDR
+                         ,(void*)&iOpt
+                         ,sizeof(iOpt)
+                         );
+    if (-1 == iResult) {
+      SysCall.vError(errno);
+      bClose(SysCall);
+      return false;
+    }
   }
   
-  iResult = setsockopt(m_iSocketId
-                       ,SOL_SOCKET
-                       ,SO_REUSEADDR
-                       ,(void*)&iOpt
-                       ,sizeof(iOpt)
-                       );
-  if (-1 == iResult) {
-    SysCall.vError(errno);
-    bClose(SysCall);
-    return false;
-  }
-
   struct addrinfo  xAddrInfo;
   struct addrinfo* pAddrInfo = NULL;
   
@@ -397,8 +399,8 @@ bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
   
   if (iResult != 0) {
     SysCall.vError(errno);
-    //close(m_iSocketId);
-    //m_iSocketId = -1;
+    close(m_iSocketId);
+    m_iSocketId = -1;
     return false;
   }
   
