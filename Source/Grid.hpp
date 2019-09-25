@@ -10,7 +10,7 @@ namespace Grids
   private:
     i8     m_nSlotsPerNode;    // no of partition slots on each node
   
-    i8     m_nNodes;           // total number of nodes in the grid
+    i8     m_nDefinedNodes;    // total number of nodes in the grid
     i8     m_nConnectedNodes;  // number of connected nodes in the grid
 
   public:
@@ -32,7 +32,7 @@ namespace Grids
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Grid(i8 nNodes, i8 nSlotsPerNode);
+    Grid(i8 nDefinedNodes, i8 nSlotsPerNode);
     ~Grid(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

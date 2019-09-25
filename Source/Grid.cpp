@@ -64,13 +64,13 @@ Grid::~Grid(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* init                                                                       */
 /*----------------------------------------------------------------------------*/
-void Grid::vInit(i8 nNodes, i8 nSlotsPerNode)
+void Grid::vInit(i8 nDefinedNodes, i8 nSlotsPerNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
   m_nSlotsPerNode   = nSlotsPerNode;
   
-  m_nNodes          = nNodes;
+  m_nDefinedNodes   = nDefinedNodes;
   m_nConnectedNodes = 0;
   
   m_iThisNode       = C_UNKNOWN;
@@ -118,8 +118,8 @@ void Grid::vAddNode(Node* pNode)
   
   m_pNodes[i_Node] = pNode;
   
-  if (i_Node >= m_nNodes)
-    m_nNodes++;
+  if (i_Node >= m_nDefinedNodes)
+    m_nDefinedNodes++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -152,7 +152,7 @@ Node* Grid::pFindNode(Stz* sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  for (i8 i_Node = 0; i_Node < m_nNodes; i_Node++) {
+  for (i8 i_Node = 0; i_Node < m_nDefinedNodes; i_Node++) {
     Node* pNode = m_pNodes[i_Node];
     if (pNode && pNode->szNodeName()->bSame(sName))
       return pNode;
@@ -168,7 +168,7 @@ Node* Grid::pGetNode(i8 i_Node)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
-  RASSERT(i_Node >= 0 and i_Node < m_nNodes);
+  RASSERT(i_Node >= 0 and i_Node < m_nDefinedNodes);
   
   Node* pNode = m_pNodes[i_Node];
   
@@ -212,7 +212,7 @@ i8 Grid::nNodes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  return m_nNodes;
+  return m_nDefinedNodes;
 }
 
 /*----------------------------------------------------------------------------*/
