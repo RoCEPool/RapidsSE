@@ -37,9 +37,12 @@ Stz* SP_Grid::sz(Grid* pGrid)
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
   StrLib::vSprint(m_caResult,
-                  "%lld nodes %lld slots %lld total partitions"_Stz,
+                  "%lld nodes %lld connected nodes %lld "
+                  "slots/node %lld total partitions"_Stz,
                   
                   pGrid->nNodes(),
+                  pGrid->nConnectedNodes(),
+                  
                   pGrid->nSlotsPerNode(),
                   pGrid->nPartitions(),
 
