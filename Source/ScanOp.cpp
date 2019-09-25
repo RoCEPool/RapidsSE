@@ -110,6 +110,7 @@ Op* ScanOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
   
   ScanOp* pScanOp = new ScanOp(pOpSpec,pDigest,aOpDefn);
   
+  // add enmPair for table name
   pScanOp->m_pOpSpec->vAddEnmPair("Table"_Stz,
                                   pTknVec->pGet(i_Tkn_)->szText(),
                                   pTknVec->pGet(i_Tkn_)->eToken());
