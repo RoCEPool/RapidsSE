@@ -500,7 +500,7 @@ void Step::vPostpone(MP_Task mpTask)
     
     // copy indirect pointer into the current word
     pCurrentWord->vEncode("pushValue"_Stz,pCalledWord);
-    if (WT_PRIMITIVE == pCalledWord->eWordType())
+    if (WT_INTRINSIC == pCalledWord->eWordType())
       pCurrentWord->vEncode("encodeCallPrimitive"_Stz);
     else
       pCurrentWord->vEncode("encodeCallRoutine"_Stz);

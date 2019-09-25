@@ -1251,7 +1251,7 @@ private:
   static void vWordImmediateGet(Tasks::MP_Task mpTask);
   static void vWordImmediateSet(Tasks::MP_Task mpTask);
   static void vWordIsImmediate(Tasks::MP_Task mpTask);
-  static void vWordIsPrimitive(Tasks::MP_Task mpTask);
+  static void vWordIsIntrinsic(Tasks::MP_Task mpTask);
   static void vWordKindGet(Tasks::MP_Task mpTask);
   static void vWordKindSet(Tasks::MP_Task mpTask);
   static void vWordName(Tasks::MP_Task mpTask);

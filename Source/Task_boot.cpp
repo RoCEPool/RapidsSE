@@ -112,7 +112,7 @@ void Task::vAddRoutines(void)
   
   // are we compiling?
   "    docol.isCompiling if "     // compile encodes call to word
-  "      dup word.isPrimitive if"
+  "      dup word.isIntrinsic if"
   "        encodeCallPrimitive"   // primitive
   "        jumpBegin_"
   "      then"
@@ -263,7 +263,7 @@ ForthWord* Task::pCompileColon(s48K& sDefinition)
         
       case TN_NAME:
         pCalledWord = m_oDicStack.pFindWord(m_pCompiler->m_pTokeniser->sToken());
-        if (WT_PRIMITIVE == pCalledWord->eWordType()) {
+        if (WT_INTRINSIC == pCalledWord->eWordType()) {
           fpStep = pCalledWord->fpEntryStep();
           if (pCalledWord->bImmediate())
             (*fpStep)(this);

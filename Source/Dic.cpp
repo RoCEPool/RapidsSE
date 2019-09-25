@@ -187,7 +187,7 @@ ForthWord* Dic::pFindStep(StepFp fpStep)
   m_okLock.vGrabRead();
   
   for (ForthWord* pWord = m_pLastWord; pWord; pWord = pWord->pPrevWord()) {
-    if (WT_PRIMITIVE == pWord->eWordType() && fpStep == pWord->fpEntryStep()) {
+    if (WT_INTRINSIC == pWord->eWordType() && fpStep == pWord->fpEntryStep()) {
       m_okLock.vDropRead();
       return pWord;
     }

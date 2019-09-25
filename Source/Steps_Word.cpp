@@ -16,7 +16,7 @@ void Step::vAddSteps_Word(void)
   vAddStep("word.immediate@"_Stz, &Step::vWordImmediateGet);
   vAddStep("word.immediate!"_Stz, &Step::vWordImmediateSet);
   vAddStep("word.isImmediate"_Stz,&Step::vWordIsImmediate);
-  vAddStep("word.isPrimitive"_Stz,&Step::vWordIsPrimitive);
+  vAddStep("word.isIntrinsic"_Stz,&Step::vWordIsIntrinsic);
   vAddStep("word.kind@"_Stz,      &Step::vWordKindGet);
   vAddStep("word.kind!"_Stz,      &Step::vWordKindSet);
   vAddStep("word.name"_Stz,       &Step::vWordName);
@@ -134,18 +134,18 @@ void Step::vWordIsImmediate(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* word.isPrimitive -- is word a primitive?                                   */
+/* word.isIntrinsic -- is word a primitive?                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vWordIsPrimitive(MP_Task mpTask)
+void Step::vWordIsIntrinsic(MP_Task mpTask)
 {
-  ENTRY("vWordIsPrimitive"_Stz);
+  ENTRY("vWordIsIntrinsic"_Stz);
   
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK("word.isPrimitive"_Stz);
+    THROW_INVALID_DSTACK("word.isIntrinsic"_Stz);
   ForthWord* pWord = _pWord(pWordObject);
   
-  i8 iIsPrimitive = WT_PRIMITIVE == pWord->eWordType() ? 1 : 0;
+  i8 iIsPrimitive = WT_INTRINSIC == pWord->eWordType() ? 1 : 0;
   
   mpTask->m_pDataStack->vPushI8(iIsPrimitive);
   
