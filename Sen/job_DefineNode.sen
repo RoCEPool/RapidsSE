@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* job_CreateNode.sen -- Job Create Node                                      */
+/* job_DefineNode.sen -- Job Define Node                                      */
 /*============================================================================*/
 
-" job_CreateNode.sen" .verbose
+" job_DefineNode.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* check word is not a Node                                                   */
@@ -67,12 +67,12 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DefineNode job on each node                                    */
 /*----------------------------------------------------------------------------*/
-: defineNode_exe ( pJob_CreateNode -- )
+: defineNode_exe ( pJob_DefineNode -- )
 
   >>logEntry <SEED_EXE>
 
-  //params| pJob_CreateNode |
-  job::this locals| pJob_CreateNode |
+  //params| pJob_DefineNode |
+  job::this locals| pJob_DefineNode |
 
   0 0 locals| pNode sNodeNm |
 
@@ -80,7 +80,7 @@
 
   //----------------------------------------------------------------------------
   // assert correct job
-  CN_JOB_DEFINENODE pJob_CreateNode object.assertClass
+  CN_JOB_DEFINENODE pJob_DefineNode object.assertClass
 
   //----------------------------------------------------------------------------
   // grab a ddl lock
@@ -88,16 +88,16 @@
 
   //----------------------------------------------------------------------------
   // set task's dictionary stack from path in job
-  pJob_CreateNode job.pushPath
+  pJob_DefineNode job.pushPath
   task::dicStack.set
 
   //----------------------------------------------------------------------------
   // make Node
-  pJob_CreateNode job.nodeName@ to sNodeNm
+  pJob_DefineNode job.nodeName@ to sNodeNm
   sNodeNm makeNode to pNode
 
 
-  pJob_CreateNode job::participantExecuted
+  pJob_DefineNode job::participantExecuted
 
   <<logExit <DONE_EXE>
 ;
@@ -105,11 +105,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DefineNode job check resources                                 */
 /*----------------------------------------------------------------------------*/
-: createNode.checkResources ( pJob_CreateNode -- )
+: createNode.checkResources ( pJob_DefineNode -- )
 
   >>logEntry <Check_Resources>
 
-  params| pJob_CreateNode  |
+  params| pJob_DefineNode  |
 
   tp: createNode.checkResources
   //"checkResources received" .
@@ -120,17 +120,17 @@
 
   //----------------------------------------------------------------------------
   // set task's dictionary stack from path in job
-  pJob_CreateNode job.pushPath
+  pJob_DefineNode job.pushPath
   task::dicStack.set
 
   //----------------------------------------------------------------------------
   // check if we have enough buffers
-  node::checkEnoughBuffers not if pJob_CreateNode <ERROR_JOB> !!logError exit then
+  node::checkEnoughBuffers not if pJob_DefineNode <ERROR_JOB> !!logError exit then
 
   //----------------------------------------------------------------------------
   // check if we can make the Node
-  pJob_CreateNode job.nodeName@
-  checkMakeNode not if pJob_CreateNode <ERROR_JOB> !!logError exit then
+  pJob_DefineNode job.nodeName@
+  checkMakeNode not if pJob_DefineNode <ERROR_JOB> !!logError exit then
 
   <<logExit <Resources_Checked>
 ;
@@ -138,11 +138,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_DefineNode job release resources                               */
 /*----------------------------------------------------------------------------*/
-: createNode.releaseResources ( pJob_CreateNode -- )
+: createNode.releaseResources ( pJob_DefineNode -- )
 
   >>logEntry <Release_Resources>
 
-  params| pJob_CreateNode  |
+  params| pJob_DefineNode  |
 
   tp: createNode.releaseResources
   //"releaseResources received" .
@@ -157,15 +157,15 @@
 
   >>logEntry <SEED_BEG>
 
-  job::this locals| pJob_CreateNode |
+  job::this locals| pJob_DefineNode |
 
   //">> defineNode_beg <<" .
 
   // add this job to the participants list
-  pJob_CreateNode job.becomeParticipant
+  pJob_DefineNode job.becomeParticipant
 
   // check resources
-  pJob_CreateNode createNode.checkResources
+  pJob_DefineNode createNode.checkResources
 
   // this job has begun
   job::participantBegun
@@ -180,12 +180,12 @@
 
   >>logEntry <SEED_END>
 
-  job::this locals| pJob_CreateNode |
+  job::this locals| pJob_DefineNode |
 
   //">> defineNode_end <<" .
 
   // release resources
-  pJob_CreateNode createNode.releaseResources
+  pJob_DefineNode createNode.releaseResources
 
   job::participantEnded
 
@@ -199,9 +199,9 @@
 
   >>logEntry <SEED_CAN>
 
-  job::this locals| pJob_CreateNode |
+  job::this locals| pJob_DefineNode |
 
-  pJob_CreateNode createNode.releaseResources
+  pJob_DefineNode createNode.releaseResources
 
   job::participantCancelled
 

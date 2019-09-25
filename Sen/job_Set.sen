@@ -42,6 +42,7 @@
 "job_DumpTable.sen" include
 "job_Dynamic.sen" include
 
+"job_ForgetNode.sen" include
 "job_Export.sen" include
 
 "job_FetchRows.sen" include
