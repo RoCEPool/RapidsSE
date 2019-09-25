@@ -11,7 +11,7 @@
 
   grid::findNode if true exit then
 
-  EC_NODE_EXISTS false
+  EC_NO_SUCH_NODE false
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -25,24 +25,21 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* forget a Node (run by all participants)                                    */
+/* forget named node (run by all participants)                                */
 /*----------------------------------------------------------------------------*/
 : .forgetNode ( "<NodeNm>" )
 
   params| sNodeNm |
   0 locals| pNode |
 
-  sNodeNm node::new to pNode
-
-  // return Node pointer
-  pNode
+  sNodeNm node::new
 ;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* execute job request on originating node                                    */
+/* request forget node on originating node                                    */
 /*----------------------------------------------------------------------------*/
 : forgetNode_req (  -- <R> )
 
@@ -68,7 +65,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute job on each participating node                                     */
+/* execute forget node on each participating node                             */
 /*----------------------------------------------------------------------------*/
 : forgetNode_exe ( pJob_Universal -- )
 
@@ -97,7 +94,7 @@
   //----------------------------------------------------------------------------
   // forget Node
   pJob_Universal job.nodeName@ to sNodeNm
-  sNodeNm makeNode to pNode
+  sNodeNm .forgetNode
 
 
   pJob_Universal job::participantExecuted
@@ -148,7 +145,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* begin job (on each participating node)                                     */
+/* begin forget node (on each participating node)                             */
 /*----------------------------------------------------------------------------*/
 : forgetNode_beg ( -- )
 
@@ -171,7 +168,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* end job (on each participating node)                                       */
+/* end forget node (on each participating node)                               */
 /*----------------------------------------------------------------------------*/
 : forgetNode_end ( -- )
 
@@ -190,7 +187,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* cancel job (on each participating node)                                    */
+/* cancel forget node (on each participating node)                            */
 /*----------------------------------------------------------------------------*/
 : forgetNode_can ( -- )
 
