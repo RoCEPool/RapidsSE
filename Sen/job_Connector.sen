@@ -82,7 +82,7 @@
 
   0 locals| pNode |
 
-  "_connectorTake" .
+  // "_connectorTake" .
 
   grid::nodes 0
   do

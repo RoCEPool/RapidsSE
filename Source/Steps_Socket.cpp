@@ -284,8 +284,8 @@ void Step::vSocketRecvObject(MP_Task mpTask)
   
   SP_Header spHeader;
   
-  vTrace("Socket received: Header %s"_Stz,
-         spHeader.sz(aHeader));
+  //vTrace("Socket received: Header %s"_Stz,
+  //       spHeader.sz(aHeader));
   
   AM::vLogRes(SL_INF,pSocket,RA_SKT_RECEIVED,
               "Socket received: Header %s"_Stz, //!format-LogRes
