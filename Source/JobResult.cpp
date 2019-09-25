@@ -172,7 +172,7 @@ void JobResult::vPrintNodeRows(void)
     return;
   }
   
-  RASSERT(iResponses == AM::nNodes());
+  RASSERT(iResponses == AM::pGrid()->nNodes());
   
   if (AM::bMetadata()) {
     vTrace("metadata: %s\n"_Stz, m_sMetadata.aStz());

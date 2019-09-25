@@ -97,6 +97,8 @@ void Region::vCreate(s32& sRegionName, bool bVerbose,
   s32 sSizeMag;
   bool bResult;
   
+  Region::vUnlink(sRegionName);
+  
   // verbose
   MagLib::vByteMag(iRegionSize, sSizeMag);
   if (bVerbose)
@@ -108,8 +110,8 @@ void Region::vCreate(s32& sRegionName, bool bVerbose,
   // open a new shm region which will contain the activity map
   bResult = Shm::bOpenCreate(iRegionFd,sRegionName,oSysCall);
   if (! bResult)
-    vFatal("Engine::vCreate: failed to create region %s\n"_Stz,
-           sRegionName.aChar());
+    vFatal("Engine::vCreate: failed to create region %s; errno %lld %s\n"_Stz,
+           sRegionName.aChar(),oSysCall.iError(),strerror(oSysCall.iError()));
 
   // extend the shm region
   bResult = Shm::bExtend(iRegionFd,iRegionSize,oSysCall);
