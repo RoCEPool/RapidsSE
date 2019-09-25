@@ -832,16 +832,32 @@ void Table::vTruncate(i8 iPartition)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compute partition of given hash                                            */
+/* compute partition of given row hash                                        */
 /*----------------------------------------------------------------------------*/
-i8 Table::iToPartition(i8 iHash)
+i8 Table::iToPartition(i8 iRowHash)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  // modulo the hash to get partition number
-  i8 iPartition = iHash % (AM::nSlotsPerNode() * AM::nDefinedNodes());
+  i8 i_Ptn = C_UNKNOWN;
   
-  return iPartition;
+#ifdef WITH_BUCKET_HASHING
+
+  // modulo the hash to get bucket number
+  i8 i_Bkt = iRowHash % C_MAX_BUCKETS;
+  
+  // lookup which partition a bucket number currently belongs to
+  i_Ptn = m_pBucketMap->i_WhichPartition(i_Bkt);
+  
+#else
+  
+  // modulo the hash to get partition number
+  i8 nPartitions = AM::nSlotsPerNode() * AM::nConnectedNodes()
+  
+  i_Ptn = iRowHash % nPartitions;
+
+#endif
+  
+  return i_Ptn;
 }
 
 /*----------------------------------------------------------------------------*/
