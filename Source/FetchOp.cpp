@@ -113,7 +113,19 @@ Op* FetchOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
   
   FetchOp* pFetchOp = new FetchOp(pOpSpec,pDigest,aOpDefn);
   
+  // add ename pair for table name
+  pFetchOp->m_pOpSpec->vAddEnmPair("Table"_Stz,
+                                  pTknVec->pGet(i_Tkn_)->szText(),
+                                  pTknVec->pGet(i_Tkn_)->eToken());
+  
   pFetchOp->m_sTableNm = pTknVec->pGet(i_Tkn_++)->szText();
+  
+  // add ename pair for index name
+  pFetchOp->m_pOpSpec->vAddEnmPair("Index"_Stz,
+                                  pTknVec->pGet(i_Tkn_)->szText(),
+                                  pTknVec->pGet(i_Tkn_)->eToken());
+  
+  
   pFetchOp->m_sIndexNm = pTknVec->pGet(i_Tkn_++)->szText();
   
   pFetchOp->m_sArgs = pFetchOp->m_sTableNm;
