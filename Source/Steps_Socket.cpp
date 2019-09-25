@@ -113,45 +113,107 @@ void Step::vSocketConnect(MP_Task mpTask)
   // get pSocket
   pSocket = reinterpret_cast<Socket*>(pObject);
   
-  bool bResult = false;
   
-  // try connecting in a loop if timeout occurs
-  // possibly other node not back to accepting connections
-  
-  i8 iTimedOutCount = 0;
-  i8 iConnRefusedCount = 0;
-  
-  while (!bResult) {
-    
-    bResult = pSocket->bConnectServer(sAddr, (int)iPort, oSysCall);
-    if ( ! bResult ) {
-      i8 iError = oSysCall.iError();
-      
-      if (iError == ETIMEDOUT) {
-        if (0 == iTimedOutCount++)
-          vTrace("Connect timedout... retrying...\n"_Stz);
-        continue;
-      }
-      
-      if (iError == ECONNREFUSED) {
-        if (0 == iConnRefusedCount++)
-          vTrace("Connect refused... retrying...\n"_Stz);
-        continue;
-      }
-      
-      vTrace("Unable to connect: Errno %d %s\n"_Stz,
-             iError, strerror((int)iError));
-      AM::vNap(1000, CN_SOCKET);
-      //THROW("Unable to connect: Errno %d"_Stz, iError);
-    }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  bool bResult = pSocket->bConnectServer(sAddr, (int)iPort, oSysCall);
+
+  if (bResult) {
+    // return the socket object
+    Object* pPtrSocket = pSocket;
+    mpTask->m_pDataStack->vPushPointer(pPtrSocket);
+    EXIT();
+    return;
   }
   
-  // return the socket object
-  Object* pPtrSocket = pSocket;
-  mpTask->m_pDataStack->vPushPointer(pPtrSocket);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  i8 iError = oSysCall.iError();
+  
+  if (iError == ETIMEDOUT) {
+    vTrace("Connect timedout... retrying...\n"_Stz);
+  }
+  else
+  if (iError == ECONNREFUSED) {
+    vTrace("Connect refused... retrying...\n"_Stz);
+  }
+  else {
+    vTrace("Connect error: errno %d %s\n"_Stz,
+           iError, strerror((int)iError));
+  }
+  
+  mpTask->m_pDataStack->vPushPointer(nullptr);
   
   EXIT();
 }
+/*----------------------------------------------------------------------------*/
+//void Step::vSocketConnect(MP_Task mpTask)
+//{
+//  SysCall oSysCall;
+//  Socket* pSocket;
+//  Object* pObject;
+//  GenVar xNodeVar;
+//
+//  i8 iPort;
+//
+//  ENTRY("vSocketConnect"_Stz);
+//
+//  if ( ! mpTask->m_pDataStack->bPop(pObject) )
+//    THROW_INVALID_DSTACK("socket.connect"_Stz);
+//
+//  if ( ! mpTask->m_pDataStack->bPop(xNodeVar) )
+//    THROW_INVALID_DSTACK("socket.connect"_Stz);
+//
+//  if ( ! mpTask->m_pDataStack->bPop(iPort) )
+//    THROW_INVALID_DSTACK("socket.connect"_Stz);
+//
+//  // get address of node
+//  Stz* sAddr = xNodeVar.szStz();
+//
+//  if (AM::bVerbose())
+//    vTrace("SOCKET ADDR: %s\n"_Stz,sAddr);
+//
+//  // get pSocket
+//  pSocket = reinterpret_cast<Socket*>(pObject);
+//
+//  bool bResult = false;
+//
+//  // try connecting in a loop if timeout occurs
+//  // possibly other node not back to accepting connections
+//
+//  i8 iTimedOutCount = 0;
+//  i8 iConnRefusedCount = 0;
+//
+//  while (!bResult) {
+//
+//    bResult = pSocket->bConnectServer(sAddr, (int)iPort, oSysCall);
+//
+//    if ( ! bResult ) {
+//      i8 iError = oSysCall.iError();
+//
+//      if (iError == ETIMEDOUT) {
+//        if (0 == iTimedOutCount++)
+//          vTrace("Connect timedout... retrying...\n"_Stz);
+//        continue;
+//      }
+//
+//      if (iError == ECONNREFUSED) {
+//        if (0 == iConnRefusedCount++)
+//          vTrace("Connect refused... retrying...\n"_Stz);
+//        continue;
+//      }
+//
+//      vTrace("Unable to connect: Errno %d %s\n"_Stz,
+//             iError, strerror((int)iError));
+//      AM::vNap(1000, CN_SOCKET);
+//      //THROW("Unable to connect: Errno %d"_Stz, iError);
+//    }
+//  }
+//
+//  // return the socket object
+//  Object* pPtrSocket = pSocket;
+//  mpTask->m_pDataStack->vPushPointer(pPtrSocket);
+//
+//  EXIT();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* socket.dropWrite: drop socket write lock                                   */

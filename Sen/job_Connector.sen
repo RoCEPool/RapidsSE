@@ -63,6 +63,11 @@
   // connect to that node
   socket::open socket.connect to pSocket
 
+  pSocket not if
+    pNode node.no grid::thisNode@ "Node %v unable to connect to node %v" fmt.print
+    exit
+  then
+
   // set the send socket in the node
   pSocket pNode node.sendSocket!
 
