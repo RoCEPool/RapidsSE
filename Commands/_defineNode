@@ -2,15 +2,15 @@
 /* _defineNode -- define node test                                            */
 /*============================================================================*/
 
-//startCluster;
+startCluster;
 
-create node NODE3 { IPADDR="127.0.0.1" , PORTNO = 5443 };
+create node NODE9 { IPADDR="127.0.0.1" , PORTNO = 5449 };
 
 show nodes;
 
-//start node node2;
+start node NODE9;
 
-//show nodes;
+show nodes;
 
 /*============================================================================*/
 /* end                                                                        */

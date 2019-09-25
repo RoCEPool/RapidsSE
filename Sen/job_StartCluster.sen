@@ -105,7 +105,7 @@
 
   grid::spawnOtherNodes
 
-  //spawn_Connector
+  //connector::spawn
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pause till all nodes connected

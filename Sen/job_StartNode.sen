@@ -5,7 +5,7 @@
 " job_StartNode.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* Job_StartNode request (on originating node)                                */
+/* Job_StartNode request (on origin node)                                     */
 /*----------------------------------------------------------------------------*/
 : startNode_req (  -- <R> )
 
@@ -19,12 +19,12 @@
   // get the job from the task
   pTask task.job@ to pJob_StartNode
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   pJob_StartNode job.nodeName@ to sNodeNm
-  sNodeNm grid::findNode node.start if
-    "Node started" .
-  else
-    "Node not started" .
-  then
+  sNodeNm "Starting node %v" fmt.print
+
+  sNodeNm grid::spawnAddingNode
 
   <<logExit <DONE_REQ>
 ;

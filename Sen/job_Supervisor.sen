@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* spawn the supervisor job (as a dedicated job)                              */
 /*----------------------------------------------------------------------------*/
-: spawn_Supervisor ( -- )
+: supervisor::spawn ( -- )
 
   0 locals| pJobClass_Supervisor |
   0 locals| pJob_Supervisor |

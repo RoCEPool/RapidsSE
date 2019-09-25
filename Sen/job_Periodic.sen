@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* spawn the periodic job                                                     */
 /*----------------------------------------------------------------------------*/
-: spawn_Periodic ( -- )
+: periodic::spawn ( -- )
 
   0 locals| pJobClass_Periodic |
   0 locals| pJob_Periodic |

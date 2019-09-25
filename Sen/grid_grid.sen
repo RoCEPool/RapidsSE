@@ -144,7 +144,7 @@
   .formNodeList to sNodeList
 
   // spawn/add node sNodeNm
-  true  I grid::node node.name  sNodeList  .spawnNamedNode
+  true   sNodeNm   sNodeList  .spawnNamedNode
 ;
 
 /*----------------------------------------------------------------------------*/
