@@ -274,9 +274,6 @@ private:
   // errors
   static void vErrorMsg(Tasks::MP_Task mpTask);
 
-  // exit
-  static void vExit(Tasks::MP_Task mpTask);
-
   // file
   static void vFileClose(Tasks::MP_Task mpTask);
   static void vFileDelete(Tasks::MP_Task mpTask);
@@ -299,6 +296,9 @@ private:
   static void vFlowRetryPoint(Tasks::MP_Task mpTask);
   static void vFlowTest(Tasks::MP_Task mpTask);
   static void vFlowThrow(Tasks::MP_Task mpTask);
+
+  // forth
+  static void vForth(Tasks::MP_Task mpTask);
 
   // grid
   static void vGridConnectedNodes(Tasks::MP_Task mpTask);
@@ -1233,6 +1233,7 @@ private:
   static void vCreateTenants(Tasks::MP_Task mpTask);
   static void vDoes(Tasks::MP_Task mpTask);
   static void vDoes_RT(Tasks::MP_Task mpTask);
+  static void vExit(Tasks::MP_Task mpTask);
   static void vFind(Tasks::MP_Task mpTask);
   static void vFindInCurrent(Tasks::MP_Task mpTask);
   static void vForget(Tasks::MP_Task mpTask);

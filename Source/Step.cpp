@@ -73,11 +73,11 @@ void Step::vAddSteps(void)
   Step::vAddSteps_EntBuffer();
   Step::vAddSteps_Env();
   Step::vAddSteps_Error();
-  Step::vAddSteps_Exit();
   
   Step::vAddSteps_File();
   Step::vAddSteps_Flow();
-  
+  Step::vAddSteps_Forth();
+
   Step::vAddSteps_Grid();
   
   Step::vAddSteps_Handler();

@@ -50,12 +50,12 @@ namespace Steps
     static void vAddSteps_Enter(void);
     static void vAddSteps_Env(void);
     static void vAddSteps_Error(void);
-    static void vAddSteps_Exit(void);
   
     static void vAddSteps_FetchTest(void);
     static void vAddSteps_File(void);
     static void vAddSteps_Flow(void);
-  
+    static void vAddSteps_Forth(void);
+
     static void vAddSteps_Grid(void);
   
     static void vAddSteps_Handler(void);
