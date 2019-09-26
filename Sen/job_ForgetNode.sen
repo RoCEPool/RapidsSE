@@ -80,7 +80,7 @@
   //----------------------------------------------------------------------------
 
   // assert correct job
-  CN_JOB_DEFINENODE pJob_Universal object.assertClass
+  CN_JOB_UNIVERSAL pJob_Universal object.assertClass
 
   // grab a ddl lock
   ddlLock::grabWrite

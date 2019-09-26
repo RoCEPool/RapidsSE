@@ -36,7 +36,7 @@ JobClass xJobClass_DefineNode =
   
   // help
   true,
-  "create node <nodeNm> ( <nodeinfo> )"_Stz,
+  "define node <nodeNm> { <nodeinfo> }"_Stz,
   
   ""_Stz,
 

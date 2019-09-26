@@ -228,6 +228,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUPERVISOR
   /*    */ &Finalize::vUndefined,         // CN_JOB_TABLESIZES
   /*    */ &Finalize::vUndefined,         // CN_JOB_TRUNCATETABLE
+  /*    */ &Finalize::vUndefined,         // CN_JOB_UNIVERSAL
   /*    */ &Finalize::vUndefined,         // CN_JOB_USESCHEMA
   /*    */ &Finalize::vUndefined,         // CN_JOB_VERIFYINDEX
   /*    */ &Finalize::vUndefined,         // CN_JOB_VERIFYTABLE

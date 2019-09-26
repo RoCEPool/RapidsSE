@@ -279,6 +279,7 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_SUPERVISOR"_Stz,     CN_JOB_SUPERVISOR);
   /*    */ vAddConstant("CN_JOB_TABLESIZES"_Stz,     CN_JOB_TABLESIZES);
   /*    */ vAddConstant("CN_JOB_TRUNCATETABLE"_Stz,  CN_JOB_TRUNCATETABLE);
+  /*    */ vAddConstant("CN_JOB_UNIVERSAL"_Stz,      CN_JOB_UNIVERSAL);
   /*    */ vAddConstant("CN_JOB_USESCHEMA"_Stz,      CN_JOB_USESCHEMA);
   /*    */ vAddConstant("CN_JOB_VERIFYINDEX"_Stz,    CN_JOB_VERIFYINDEX);
   /*    */ vAddConstant("CN_JOB_VERIFYTABLE"_Stz,    CN_JOB_VERIFYTABLE);
