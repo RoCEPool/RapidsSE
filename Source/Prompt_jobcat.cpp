@@ -51,7 +51,6 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB_DOCOL);
   nJobs++; JobClass::vJobCat(CN_JOB_DUMPINDEX);
   nJobs++; JobClass::vJobCat(CN_JOB_DUMPTABLE);
-  nJobs++; JobClass::vJobCat(CN_JOB_DYNAMIC);
   nJobs++; JobClass::vJobCat(CN_JOB_FETCHROWS);
   nJobs++; JobClass::vJobCat(CN_JOB_GENERATE);
   nJobs++; JobClass::vJobCat(CN_JOB_INDEXJOIN);
@@ -74,6 +73,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB_SELECTTABLE);
   nJobs++; JobClass::vJobCat(CN_JOB_SHOWCLUSTER);
   nJobs++; JobClass::vJobCat(CN_JOB_SINK);
+  nJobs++; JobClass::vJobCat(CN_JOB_STARTNODE);
   nJobs++; JobClass::vJobCat(CN_JOB_USESCHEMA);
   nJobs++; JobClass::vJobCat(CN_JOB_VISUALIZEINDEX);
   nJobs++; JobClass::vJobCat(CN_JOB_VISUALIZETABLE);
@@ -104,6 +104,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB_DROPSCHEMA);
   nJobs++; JobClass::vJobCat(CN_JOB_DROPTABLE);
   nJobs++; JobClass::vJobCat(CN_JOB_DROPTENANT);
+  nJobs++; JobClass::vJobCat(CN_JOB_DYNAMIC);
   nJobs++; JobClass::vJobCat(CN_JOB_EXPORT);
   nJobs++; JobClass::vJobCat(CN_JOB_INSERTROW);
   nJobs++; JobClass::vJobCat(CN_JOB_INSERTTABLE);
@@ -116,7 +117,6 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vJobCat(CN_JOB_SIZETABLE);
   nJobs++; JobClass::vJobCat(CN_JOB_SPACE);
   nJobs++; JobClass::vJobCat(CN_JOB_STARTCLUSTER);
-  nJobs++; JobClass::vJobCat(CN_JOB_STARTNODE);
   nJobs++; JobClass::vJobCat(CN_JOB_STATUS);
   nJobs++; JobClass::vJobCat(CN_JOB_TABLESIZES);
   nJobs++; JobClass::vJobCat(CN_JOB_TRUNCATETABLE);
@@ -151,6 +151,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   //other
   nJobs++; JobClass::vJobCat(CN_JOB_HEALTH);
   nJobs++; JobClass::vJobCat(CN_JOB_NETHOG);
+  nJobs++; JobClass::vJobCat(CN_JOB_UNIVERSAL);
 
   vTrace("\n"_Stz);
   
