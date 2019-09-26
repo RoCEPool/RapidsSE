@@ -8,9 +8,9 @@ define node NODE9 { IPADDR="127.0.0.1" , PORTNO = 5449 };
 
 show nodes;
 
-start node NODE9;
+//start node NODE9;
 
-show nodes;
+//show nodes;
 
 /*============================================================================*/
 /* end                                                                        */

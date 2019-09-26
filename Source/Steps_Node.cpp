@@ -11,6 +11,7 @@ void Step::vAddSteps_Node(void)
 {
   vAddStep("node::new"_Stz,        &Step::vNodeNew);
   
+  vAddStep("node.forget"_Stz,      &Step::vNodeForget);
   vAddStep("node.IP"_Stz,          &Step::vNodeIP);
   vAddStep("node.name"_Stz,        &Step::vNodeName);
   vAddStep("node.no"_Stz,          &Step::vNodeNo);
@@ -64,6 +65,23 @@ void Step::vNodeNew(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* node.forget -- remove node from node list and delete                       */
+/*----------------------------------------------------------------------------*/
+void Step::vNodeForget(MP_Task mpTask)
+{
+  ENTRY("vNodeForget"_Stz);
+  
+  Object* pPtrNode;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrNode) )
+    THROW_INVALID_DSTACK("node.forget"_Stz);
+  
+  Node* pNode = _pNode(pPtrNode);
+  ASSERT(CN_NODE == pNode->eClass());
+  
+  EXIT();
+}
 /*----------------------------------------------------------------------------*/
 /* node.IP -- push IP of node                                                 */
 /*----------------------------------------------------------------------------*/

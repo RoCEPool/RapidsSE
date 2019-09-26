@@ -19,7 +19,7 @@
 /*----------------------------------------------------------------------------*/
 : .checkForgetNode ( "<NodeNm>" -- true | errorCode false )
 
-  .checkIsNode not if false exit then
+  .checkIsNode if true exit then
 
   true
 ;
@@ -30,9 +30,8 @@
 : .forgetNode ( "<NodeNm>" )
 
   params| sNodeNm |
-  0 locals| pNode |
 
-  sNodeNm node::new
+  sNodeNm grid::findNode node.forget
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -79,23 +78,25 @@
   tp: forgetNode_exe
 
   //----------------------------------------------------------------------------
+
   // assert correct job
   CN_JOB_DEFINENODE pJob_Universal object.assertClass
 
-  //----------------------------------------------------------------------------
   // grab a ddl lock
   ddlLock::grabWrite
 
-  //----------------------------------------------------------------------------
   // set task's dictionary stack from path in job
   pJob_Universal job.pushPath
   task::dicStack.set
 
   //----------------------------------------------------------------------------
-  // forget Node
+  // forget the named node
+
   pJob_Universal job.nodeName@ to sNodeNm
+
   sNodeNm .forgetNode
 
+  //----------------------------------------------------------------------------
 
   pJob_Universal job::participantExecuted
 
