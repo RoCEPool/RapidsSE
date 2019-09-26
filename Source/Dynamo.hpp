@@ -31,8 +31,7 @@ namespace Dynamics
     bool bCompile(void);
   
     bool bPhase1_collect(void);
-    bool bPhase2_staging(void);
-
+ 
     bool bCollectName(void);
     bool bCollectBegin(void);
     bool bCollectStage(void);
@@ -40,6 +39,8 @@ namespace Dynamics
     bool bCollectPipe(void);
     bool bCollectOp();
     bool bCollectEnd(void);
+
+    bool bPhase2_staging(void);
 
     void vAcceptToken(void);
     void vBeginToken(i8 i_Tkn);

@@ -28,6 +28,8 @@ namespace Dynamics
   
     void vAddOpSpec(OpSpec* pOpSpec);
     void vLocus(Stz* szLocus);
+    OpSpecVec* pOpSpecVec(void);
+
     void vTopology(ePO eTopology);
     void vToPipeStr(Stz* szPipeStr);
   

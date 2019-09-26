@@ -185,7 +185,7 @@ bool Job_Dynamic::bPopulateJob(Session* pSession, TokenVec* pTknVec)
 
     if (! pDynamicSpec->szName()->bSame("lineItem_dyn"_Stz)) {
       delete pDynamo;
-      return bSuccess;
+      return false;
     }
     
     delete pDynamo;
@@ -227,11 +227,12 @@ void Job_Dynamic::vBegin(void)
   
   bool bResult = bPopulateJob(m_pSession, pTokenVec);
 
-  RASSERT(bResult);
+  //RASSERT(bResult);
   
-//  if ( ! bResult ) {
-//    pJob_Dynamic->vAddError(EC_INVALID_COMMAND);
-//  }
+  if ( ! bResult ) {
+    vAddError(EC_INVALID_COMMAND);
+    return;
+  }
   
   i8 nOps = m_pDigest->m_oOpVec.nItems();
   AM::vSetAcksRmg(m_pTask,nOps);

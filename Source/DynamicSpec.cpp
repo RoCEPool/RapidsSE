@@ -90,6 +90,16 @@ StageSpec* DynamicSpec::pStageSpec(i8 i_Stage)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get stage spec vec                                                          */
+/*----------------------------------------------------------------------------*/
+StageSpecVec* DynamicSpec::pStageSpecVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMICSPEC,_FOOTER_);
+  
+  return m_pStageSpecVec;
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -98,8 +108,6 @@ StageSpec* DynamicSpec::pStageSpec(i8 i_Stage)
 void DynamicSpec::vPrint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMICSPEC,_FOOTER_);
-  
-  vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
   
   vTrace("dynamic\n"_Stz);
   vTrace("\n"_Stz);

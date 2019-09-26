@@ -399,6 +399,19 @@ bool Dynamo::bPhase2_staging(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
+  StageSpecVec* pStageSpecVec = m_pDynamicSpec->pStageSpecVec();
+  
+  for (i8 i_Stage = 0; i_Stage < pStageSpecVec->nItems(); i_Stage++) {
+    StageSpec* pStageSpec = pStageSpecVec->pGet(i_Stage);
+
+    OpSpecVec* pOpSpecVec = pStageSpec->pOpSpecVec();
+    for (i8 i_Op = 0; i_Op < pOpSpecVec->nItems(); i_Op++) {
+      OpSpec* pOpSpec = pOpSpecVec->pGet(i_Op);
+
+      
+    }
+  }
+  
   return true;
 }
 

@@ -27,6 +27,7 @@ namespace Dynamics
     Stz* szName(void);
 
     StageSpec* pStageSpec(i8 i_Stage);
+    StageSpecVec* pStageSpecVec(void);
 
     void vPrint(void);
 

@@ -80,6 +80,16 @@ void StageSpec::vLocus(Stz* szLocus)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get opspec vec                                                             */
+/*----------------------------------------------------------------------------*/
+OpSpecVec* StageSpec::pOpSpecVec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  return m_pOpSpecVec;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set topology                                                               */
 /*----------------------------------------------------------------------------*/
 void StageSpec::vTopology(ePO eTopology)
