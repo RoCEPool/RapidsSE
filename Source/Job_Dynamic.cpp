@@ -129,7 +129,7 @@ Job_Dynamic::~Job_Dynamic(void) noexcept(false)
   delete m_pDigest;
   delete m_pDynamicSpec;
   
-  delete m_pBufferQueue;
+  //delete m_pBufferQueue;
   delete m_pStreamDef;
 }
 
@@ -218,11 +218,12 @@ void Job_Dynamic::vBegin(void)
   //Session* pSession = AM::pThisTLSSession();
   
   m_pDigest      = new Digest(this);
-  m_pBufferQueue = new Queue;
+  //m_pBufferQueue = new Queue;
   
   Tokeniser* pTokenizer = new Tokeniser;
   TokenVec* pTokenVec = new TokenVec;
   pTokenizer->vTokenise(pTokenVec, m_sRequest);
+  pTokenVec->vCutToken(pTokenVec->nTokens());
   
   bool bResult = bPopulateJob(m_pSession, pTokenVec);
 
