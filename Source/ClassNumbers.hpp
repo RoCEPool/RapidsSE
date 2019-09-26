@@ -396,6 +396,7 @@ enum eCN : u2 // Class Number
   /* 204 0xCC       32B Heap:S */ CN_TIMEMARKER,
   /* 204 0xCC       32B Heap:S */ CN_TIMER,
   /*                           */ CN_TOCSVOP,
+  /*                           */ CN_TOFILEOP,
   /* 205 0xCD      296B Heap:S */ CN_TOKEN,
   /* 206 0xCE    56832B Heap:M */ CN_TOKENISER,
   /* 208 0xD0     8232B Heap:M */ CN_TOKENVEC,
@@ -807,6 +808,7 @@ static Stz* aCN[]
   /* 204 0xCC */ "TIMEMARKER"_Stz,          // CN_TIMEMARKER
   /* 204 0xCC */ "TIMER"_Stz,               // CN_TIMER
   /*          */ "TOCSVOP"_Stz,             // CN_TOCSVOP
+  /*          */ "TOFILEOP"_Stz,            // CN_TOFILEOP
   /* 205 0xCD */ "TOKEN"_Stz,               // CN_TOKEN
   /* 206 0xCE */ "TOKENISER"_Stz,           // CN_TOKENISER
   /* 208 0xD0 */ "TOKENVEC"_Stz,            // CN_TOKENVEC
