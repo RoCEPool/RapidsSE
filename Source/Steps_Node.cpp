@@ -45,7 +45,7 @@ void Step::vNodeNew(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   s32 sNodeNm;
   
-  if ( ! mpTask->m_pDataStack->bPop(sNodeNm) )
+  if (! mpTask->m_pDataStack->bPop(sNodeNm))
     THROW_INVALID_DSTACK("node::new"_Stz);
 
   Node* pNode = new Node(pNode_copy->iNodeNo() + 1,
@@ -74,11 +74,15 @@ void Step::vNodeForget(MP_Task mpTask)
   
   Object* pPtrNode;
   
-  if ( ! mpTask->m_pDataStack->bPop(pPtrNode) )
+  if (! mpTask->m_pDataStack->bPop(pPtrNode))
     THROW_INVALID_DSTACK("node.forget"_Stz);
   
   Node* pNode = _pNode(pPtrNode);
   ASSERT(CN_NODE == pNode->eClass());
+  
+  Grid* pGrid = AM::pGrid();
+  
+  pGrid->vRemoveNode(pNode);
   
   EXIT();
 }

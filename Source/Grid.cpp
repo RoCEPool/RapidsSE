@@ -228,6 +228,22 @@ i8 Grid::nPartitions(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* remove given node                                                          */
+/*----------------------------------------------------------------------------*/
+void Grid::vRemoveNode(Node* pNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  ASSERT(! pNode->pRecvSocket());
+  
+  i8 i_Node = pNode->iNodeNo();
+  
+  m_pNodes[i_Node] = nullptr;
+  
+  m_nDefinedNodes--;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of partition slots per node in the grid                         */
 /*----------------------------------------------------------------------------*/
 i8 Grid::nSlotsPerNode(void)
