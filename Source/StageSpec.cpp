@@ -90,6 +90,26 @@ OpSpecVec* StageSpec::pOpSpecVec(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get name                                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* StageSpec::szName(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  return m_sName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get topology                                                               */
+/*----------------------------------------------------------------------------*/
+ePO StageSpec::eTopology(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  return m_eTopology;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set topology                                                               */
 /*----------------------------------------------------------------------------*/
 void StageSpec::vTopology(ePO eTopology)

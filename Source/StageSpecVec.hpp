@@ -20,6 +20,8 @@ namespace Dynamics
    ~StageSpecVec(void) noexcept(false);
   
     Footer* aFooter(void);
+  
+    StageSpec* pFindStage(Stz* szStageNm);
   };
 }
 

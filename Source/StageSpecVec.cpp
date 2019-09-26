@@ -50,6 +50,24 @@ StageSpecVec::~StageSpecVec(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* find stage with given name                                                 */
+/*----------------------------------------------------------------------------*/
+StageSpec* StageSpecVec::pFindStage(Stz* szStageNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPECVEC,_FOOTER_);
+  
+  for (i8 i_Stage = 0; i_Stage < nItems(); i_Stage++) {
+    StageSpec* pStageSpec = pGet(i_Stage);
+    
+    if (pStageSpec->szName()->bSame(szStageNm))
+      return pStageSpec;
+  }
+  
+  return nullptr;
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
