@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* Job_Universal.cpp -- Define Node Job                                      */
+/* Job_Universal.cpp -- Define Node Job                                       */
 /*============================================================================*/
 
 #include "Jobs.h"
 
 JobClass xJobClass_Universal =
 {
-  CN_JOB_DEFINENODE,      // class number
+  CN_JOB_UNIVERSAL,       // class number
   JK_DIST2PC,             // job kind
   RS_NODE_ZERO,           // response kind
   "define node"_Stz,      // comment about the job
@@ -36,7 +36,7 @@ JobClass xJobClass_Universal =
   
   // help
   true,
-  "create node <nodeNm> ( <nodeinfo> )"_Stz,
+  "forget node <nodeNm> ( <nodeinfo> )"_Stz,
   
   ""_Stz,
 
@@ -48,7 +48,7 @@ JobClass xJobClass_Universal =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_Universal_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_CreateSchema_class;
+  *pNextFun = (pFUN*)pJob_UseSchema_class;
   
   return &xJobClass_Universal;
 }
@@ -65,7 +65,7 @@ Job_Universal* Jobs::_pJob_Universal(void* aAddress)
 {
   Job_Universal* pJob_Universal = reinterpret_cast<Job_Universal*>(aAddress);
   
-  RASSERT_TYPE(pJob_Universal,CN_JOB_DEFINENODE);
+  RASSERT_TYPE(pJob_Universal,CN_JOB_UNIVERSAL);
   
   return pJob_Universal;
 }
@@ -76,7 +76,7 @@ Job_Universal* Jobs::_pJob_Universal(void* aAddress)
 void* Job_Universal::operator new(size_t)
 {
   Job_Universal* pJob_Universal =
-    static_cast<Job_Universal*>(HeapMem::pAllocate(CN_JOB_DEFINENODE));
+    static_cast<Job_Universal*>(HeapMem::pAllocate(CN_JOB_UNIVERSAL));
   
   return pJob_Universal;
 }
@@ -105,11 +105,11 @@ void Job_Universal::operator delete(void* aAddress)
 Job_Universal::Job_Universal(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 : Job(aJobClass, aReqTuple, pSession)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DEFINENODE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_UNIVERSAL,_FOOTER_);
   
-  _checkInitialised_(CN_JOB_DEFINENODE);
+  _checkInitialised_(CN_JOB_UNIVERSAL);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_DEFINENODE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_UNIVERSAL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -117,7 +117,7 @@ Job_Universal::Job_Universal(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId
 /*----------------------------------------------------------------------------*/
 Job_Universal::~Job_Universal(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DEFINENODE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_UNIVERSAL,_FOOTER_);
 }
 
 
@@ -144,7 +144,7 @@ void Job_Universal::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 eEC Job_Universal::ePopulateJob(TokenVec* pTokenVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DEFINENODE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_UNIVERSAL,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert we got a create table
@@ -169,7 +169,7 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 void Job_Universal::vShow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DEFINENODE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_UNIVERSAL,_FOOTER_);
   
 }
 
@@ -181,7 +181,7 @@ void Job_Universal::vShow(void)
 /*----------------------------------------------------------------------------*/
 bool Job_Universal::bValidateUniversal(TokenVec* pTokenVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DEFINENODE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_UNIVERSAL,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get tokens in token vector
@@ -208,7 +208,7 @@ bool Job_Universal::bValidateUniversal(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 Footer* Job_Universal::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DEFINENODE);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_UNIVERSAL);
   
   return &m_xFooter;
 }

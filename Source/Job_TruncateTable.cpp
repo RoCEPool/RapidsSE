@@ -47,7 +47,7 @@ JobClass xJobClass_TruncateTable =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_TruncateTable_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_UseSchema_class;
+  *pNextFun = (pFUN*)pJob_Universal_class;
   
   return &xJobClass_TruncateTable;
 }

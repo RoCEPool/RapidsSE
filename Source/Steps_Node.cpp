@@ -11,6 +11,7 @@ void Step::vAddSteps_Node(void)
 {
   vAddStep("node::new"_Stz,        &Step::vNodeNew);
   
+  vAddStep("node.forget"_Stz,      &Step::vNodeForget);
   vAddStep("node.IP"_Stz,          &Step::vNodeIP);
   vAddStep("node.name"_Stz,        &Step::vNodeName);
   vAddStep("node.no"_Stz,          &Step::vNodeNo);
@@ -44,7 +45,7 @@ void Step::vNodeNew(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   s32 sNodeNm;
   
-  if ( ! mpTask->m_pDataStack->bPop(sNodeNm) )
+  if (! mpTask->m_pDataStack->bPop(sNodeNm))
     THROW_INVALID_DSTACK("node::new"_Stz);
 
   Node* pNode = new Node(pNode_copy->iNodeNo() + 1,
@@ -64,6 +65,27 @@ void Step::vNodeNew(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* node.forget -- remove node from node list and delete                       */
+/*----------------------------------------------------------------------------*/
+void Step::vNodeForget(MP_Task mpTask)
+{
+  ENTRY("vNodeForget"_Stz);
+  
+  Object* pPtrNode;
+  
+  if (! mpTask->m_pDataStack->bPop(pPtrNode))
+    THROW_INVALID_DSTACK("node.forget"_Stz);
+  
+  Node* pNode = _pNode(pPtrNode);
+  ASSERT(CN_NODE == pNode->eClass());
+  
+  Grid* pGrid = AM::pGrid();
+  
+  pGrid->vRemoveNode(pNode);
+  
+  EXIT();
+}
 /*----------------------------------------------------------------------------*/
 /* node.IP -- push IP of node                                                 */
 /*----------------------------------------------------------------------------*/

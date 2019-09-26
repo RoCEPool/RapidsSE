@@ -836,6 +836,7 @@ private:
   static void vMemoryWordDump(Tasks::MP_Task mpTask);
 
   // node (of grid)
+  static void vNodeForget(Tasks::MP_Task mpTask);
   static void vNodeIP(Tasks::MP_Task mpTask);
   static void vNodeName(Tasks::MP_Task mpTask);
   static void vNodeNew(Tasks::MP_Task mpTask);
