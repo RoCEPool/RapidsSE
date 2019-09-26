@@ -30,13 +30,13 @@ namespace Dynamics
   
     bool bCompile(void);
   
-    bool bCompileName(void);
-    bool bCompileBegin(void);
-    bool bCompileStage(void);
-    bool bCompileTopology(void);
-    bool bCompilePipe(void);
-    bool bCompileOp();
-    bool bCompileEnd(void);
+    bool bCollectName(void);
+    bool bCollectBegin(void);
+    bool bCollectStage(void);
+    bool bCollectTopology(void);
+    bool bCollectPipe(void);
+    bool bCollectOp();
+    bool bCollectEnd(void);
 
     void vAcceptToken(void);
     void vBeginToken(i8 i_Tkn);

@@ -83,15 +83,15 @@ bool Dynamo::bCompile(void)
   vBeginToken(1);
   
   if (m_pTkn->bSame("plan"_Stz))
-    bResult = bCompileName();
+    bResult = bCollectName();
 
   if (m_pTkn->bSame("begin"_Stz))
-    bResult = bCompileBegin();
+    bResult = bCollectBegin();
   
   while (m_pTkn->bSame("stage"_Stz))
-    bResult = bCompileStage();
+    bResult = bCollectStage();
 
-  bResult = bCompileEnd();
+  bResult = bCollectEnd();
   
   vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
 
@@ -105,7 +105,7 @@ bool Dynamo::bCompile(void)
 /*----------------------------------------------------------------------------*/
 /* compile name phrase                                                        */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bCompileName(void)
+bool Dynamo::bCollectName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
@@ -128,9 +128,9 @@ bool Dynamo::bCompileName(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compile end                                                                */
+/* compile begin                                                              */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bCompileBegin(void)
+bool Dynamo::bCollectBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
@@ -144,7 +144,7 @@ bool Dynamo::bCompileBegin(void)
 /*----------------------------------------------------------------------------*/
 /* compile stage                                                              */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bCompileStage(void)
+bool Dynamo::bCollectStage(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
     
@@ -162,10 +162,10 @@ bool Dynamo::bCompileStage(void)
   
   vAcceptToken();
   
-  bCompileTopology();
+  bCollectTopology();
   
   if (bIsOperator(m_pTkn))
-    bCompilePipe();
+    bCollectPipe();
 
   vTrace("Stage Clause recognised\n"_Stz);
   
@@ -175,7 +175,7 @@ bool Dynamo::bCompileStage(void)
 /*----------------------------------------------------------------------------*/
 /* compile topology                                                           */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bCompileTopology(void)
+bool Dynamo::bCollectTopology(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
@@ -287,7 +287,7 @@ bool Dynamo::bCompileTopology(void)
 /*----------------------------------------------------------------------------*/
 /* compile pipe                                                               */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bCompilePipe(void)
+bool Dynamo::bCollectPipe(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
@@ -296,7 +296,7 @@ bool Dynamo::bCompilePipe(void)
     if (! bIsOperator(m_pTkn))
       break;
 
-    bCompileOp();
+    bCollectOp();
     
     if (! m_pTkn->bSame("|"_Stz))
       break;
@@ -311,7 +311,7 @@ bool Dynamo::bCompilePipe(void)
 /*----------------------------------------------------------------------------*/
 /* compile op                                                                 */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bCompileOp(void)
+bool Dynamo::bCollectOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
@@ -351,7 +351,7 @@ bool Dynamo::bCompileOp(void)
 /*----------------------------------------------------------------------------*/
 /* compile end                                                                 */
 /*----------------------------------------------------------------------------*/
-bool Dynamo::bCompileEnd(void)
+bool Dynamo::bCollectEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
