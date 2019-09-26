@@ -220,6 +220,9 @@ Stz* EnmSet::szValue(Stz *szName)
   
   i8 i_Enm = i_Find(szName);
   
+  if (C_UNKNOWN == i_Enm)
+    return nullptr;
+  
   Stz* szValue = m_bStrings.szGet(m_xEnnPair[i_Enm].m_i_Value);
   
   return szValue;

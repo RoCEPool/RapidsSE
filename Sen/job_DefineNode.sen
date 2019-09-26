@@ -57,6 +57,7 @@
   // get the job from the task
   pTask task.job@ to pJob
 
+  <nodeNm> "<nodeNm> : %v" fmt.print
 
   // distribute the job
   pJob job.distribute
