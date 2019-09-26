@@ -328,8 +328,8 @@ void Jobs::vJob_Dynamic_post(Job* pJob)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     switch (pOperand->eClass()) {
-        
-        // -- -- -- -- -- --
+       
+      // -- -- -- -- -- --
         
       case CN_CRWBUFFER: {
         CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
@@ -338,7 +338,16 @@ void Jobs::vJob_Dynamic_post(Job* pJob)
         break;
       }
         
-        // -- -- -- -- -- --
+      // -- -- -- -- -- --
+        
+      case CN_CSVBUFFER: {
+        CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
+        pJob_Dynamic->m_xResponse.m_ixRowsProcessed += pCsvBuffer->nRecords();
+        pCsvBuffer->vPrintRows();
+        break;
+      }
+        
+      // -- -- -- -- -- --
         
       case CN_ENDMARKER: {
         // print the responses received
@@ -349,7 +358,7 @@ void Jobs::vJob_Dynamic_post(Job* pJob)
         break;
       }
         
-        // -- -- -- -- -- --
+      // -- -- -- -- -- --
         
       case CN_ENTBUFFER: {
         EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
@@ -358,7 +367,7 @@ void Jobs::vJob_Dynamic_post(Job* pJob)
         break;
       }
         
-        // -- -- -- -- -- --
+      // -- -- -- -- -- --
         
       case CN_IRWBUFFER: {
         IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
@@ -368,7 +377,7 @@ void Jobs::vJob_Dynamic_post(Job* pJob)
         break;
       }
         
-        // -- -- -- -- -- --
+      // -- -- -- -- -- --
         
       case CN_SRTBUFFER: {
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
@@ -378,7 +387,7 @@ void Jobs::vJob_Dynamic_post(Job* pJob)
         break;
       }
         
-        // -- -- -- -- -- --
+      // -- -- -- -- -- --
         
       case CN_STREAMDEF: {
         if ( ! pJob_Dynamic->m_pStreamDef ) {
@@ -394,7 +403,7 @@ void Jobs::vJob_Dynamic_post(Job* pJob)
         break;
       }
         
-        // -- -- -- -- -- --
+      // -- -- -- -- -- --
         
       default:
         RASSERT(0);

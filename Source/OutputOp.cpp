@@ -155,6 +155,15 @@ eOR OutputOp::eOpLoop(void)
         
       // -- -- -- -- -- --
         
+      case CN_CSVBUFFER: {
+        CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
+        m_iWorkDone += pCsvBuffer->nRecords();
+        vPipeToJob(pOperand);
+        break;
+      }
+        
+      // -- -- -- -- -- --
+        
       case CN_CRWBUFFER: {
         CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
         m_iWorkDone += pCrwBuffer->nRowCount();

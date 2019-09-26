@@ -39,6 +39,7 @@ namespace DataOperators
 #include "SuperCountOp.hpp"
 #include "SuperMergeOp.hpp"
 #include "TakeawayOp.hpp"
+#include "ToCsvOp.hpp"
 #include "WhereOp.hpp"
 #include "XmitOp.hpp"
 #include "ZedOp.hpp"

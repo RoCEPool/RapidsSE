@@ -63,6 +63,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_COMPLETER
   /*    */ &Dump::vDummy,           // CN_COUNTOP
   /*    */ &Dump::vUndefined,       // CN_CRWBUFFER
+  /*    */ &Dump::vUndefined,       // CN_CSVBUFFER
 
   /*    */ &Dump::vDummy,           // CN_DECACNT
   /*    */ &Dump::vDummy,           // CN_DECIDER
@@ -399,6 +400,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vUndefined,       // CN_THREADVEC
   /*142 */ &Dump::vInvalid,         // CN_TIMEMARKER
   /*142 */ &Dump::vInvalid,         // CN_TIMER
+  /*    */ &Dump::vInvalid,         // CN_TOCSVOP
   /*143 */ &Token::vDump,           // CN_TOKEN
   /*144 */ &Tokeniser::vDump,       // CN_TOKENISER
   /*146 */ &Dump::vInvalid,         // CN_TOKENVEC
@@ -475,6 +477,7 @@ i8 giClassSize[]
   /* 32 */ sizeof(Completer),          // CN_COMPLETER
   /* 32 */ sizeof(CountOp),            // CN_COUNTOP
   /*    */ sizeof(CrwBuffer),          // CN_CRWBUFFER
+  /*    */ sizeof(CsvBuffer),          // CN_CSVBUFFER
 
   /*    */ sizeof(DecaCnt),            // CN_DECACNT
   /*    */ sizeof(Decider),            // CN_DECIDER
@@ -809,6 +812,7 @@ i8 giClassSize[]
   /*    */ sizeof(ThreadVec),          // CN_THREADVEC
   /*142 */ sizeof(TimeMarker),         // CN_TIMEMARKER
   /*142 */ sizeof(Timer),              // CN_TIMER
+  /*142 */ sizeof(ToCsvOp),            // CN_TOCSVOP
   /*143 */ sizeof(Token),              // CN_TOKEN
   /*144 */ sizeof(Tokeniser),          // CN_TOKENISER
   /*146 */ sizeof(TokenVec),           // CN_TOKENVEC
@@ -885,6 +889,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_SMALL,   // CN_COMPLETER
   /*    */ HT_TRANSIENT_SMALL,   // CN_COUNTOP
   /*    */ HT_TRANSIENT_LARGE,   // CN_CRWBUFFER
+  /*    */ HT_TRANSIENT_LARGE,   // CN_CSVBUFFER
 
   /*    */ HT_TRANSIENT_SMALL,   // CN_DECACNT
   /*    */ HT_TRANSIENT_SMALL,   // CN_DECIDER
@@ -1219,6 +1224,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_THREADVEC
   /*142 */ HT_TRANSIENT_SMALL,   // CN_TIMEMARKER
   /*142 */ HT_TRANSIENT_SMALL,   // CN_TIMER
+  /*    */ HT_TRANSIENT_SMALL,   // CN_TOCSVOP
   /*143 */ HT_TRANSIENT_SMALL,   // CN_TOKEN
   /*144 */ HT_TRANSIENT_MEDIUM,  // CN_TOKENISER
   /*146 */ HT_TRANSIENT_MEDIUM,  // CN_TOKENVEC

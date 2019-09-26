@@ -165,6 +165,7 @@ void Constants::vAddConstants(void)
   /* 16 */ vAddConstant("CN_BYTERATE"_Stz,     CN_BYTERATE);
 
   /*    */ vAddConstant("CN_CRWBUFFER"_Stz,    CN_CRWBUFFER);
+  /*    */ vAddConstant("CN_CSVBUFFER"_Stz,    CN_CSVBUFFER);
   
   /* 18 */ vAddConstant("CN_DIC"_Stz,          CN_DIC);
   /*    */ vAddConstant("CN_DICPATH"_Stz,      CN_DICPATH);
@@ -352,6 +353,7 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("CN_TEMPNAME"_Stz,     CN_TEMPNAME);
   /* 76 */ vAddConstant("CN_THREAD"_Stz,       CN_THREAD);
   /* 80 */ vAddConstant("CN_TIMER"_Stz,        CN_TIMER);
+  /* 80 */ vAddConstant("CN_TOCSVOP"_Stz,      CN_TOCSVOP);
   /* 81 */ vAddConstant("CN_TOKENISER"_Stz,    CN_TOKENISER);
   /* 82 */ vAddConstant("CN_TX"_Stz,           CN_TX);
   /* 87 */ vAddConstant("CN_TXSET"_Stz,        CN_TXSET);

@@ -527,6 +527,53 @@ void CrwBuffer::vShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* generate an IrwBuffer from a crw buffer with a csv row                     */
+/*----------------------------------------------------------------------------*/
+CsvBuffer* CrwBuffer::pToCsvBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
+  ColumnVec* pColVec = pTable()->pColumnVec();
+  
+  CsvBuffer* pFirstCsvBuffer = new CsvBuffer;
+  CsvBuffer* pCsvBuffer = pFirstCsvBuffer;
+  
+  HV_Rec hvRec(pColVec);
+  HV_Row hRow(pColVec);
+  
+  i8 nRows = nRowCount();
+  i8 nBytes;
+  char* aRecord = nullptr;
+  
+  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+    
+    // get the inflated compact row
+    vGetRow(hRow, i_Row);
+    
+    // append the row to the record
+    hvRec->vAppend(hRow);
+    
+    StrLib::vConcat(hvRec->szRecStr()->aChar(),'\n');            //! sub-optimal
+    
+    nBytes = hvRec->szRecStr()->nSize();
+    
+    if (pCsvBuffer->nFreeBytes() < nBytes + 1) {
+      CsvBuffer* pNewCsvBuffer = new CsvBuffer;
+      pCsvBuffer->vNextBuffer(pNewCsvBuffer);
+      pCsvBuffer = pNewCsvBuffer;
+    }
+    
+    aRecord = pCsvBuffer->aAllotRecord(nBytes - 1);
+    StrLib::vCopyLen(aRecord,hvRec->szRecStr()->aChar(),nBytes - 1);
+  }
+  
+  if (aRecord)
+    aRecord[nBytes-1] = '\0';
+  
+  return pFirstCsvBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* generate a SrtBuffer from entry buffer                                     */
 /*----------------------------------------------------------------------------*/
 SrtBuffer* CrwBuffer::pToSrtBuffer(i8 iKeyCol)
@@ -570,7 +617,6 @@ SrtBuffer* CrwBuffer::pToSrtBuffer(i8 iKeyCol)
   
   return pSrtBuffer;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* generate an IrwBuffer from entry buffer                                    */

@@ -62,6 +62,7 @@ enum eCN : u2 // Class Number
   /*                           */ CN_COMPLETER,
   /*                           */ CN_COUNTOP,
   /*                    Heap:L */ CN_CRWBUFFER,
+  /*                    Heap:L */ CN_CSVBUFFER,
 
   /*                           */ CN_DECACNT,
   /*  28 0x1C       24B Heap:S */ CN_DECIDER,
@@ -394,6 +395,7 @@ enum eCN : u2 // Class Number
   /* 202 0xCA     2208B Heap:M */ CN_THREADVEC,
   /* 204 0xCC       32B Heap:S */ CN_TIMEMARKER,
   /* 204 0xCC       32B Heap:S */ CN_TIMER,
+  /*                           */ CN_TOCSVOP,
   /* 205 0xCD      296B Heap:S */ CN_TOKEN,
   /* 206 0xCE    56832B Heap:M */ CN_TOKENISER,
   /* 208 0xD0     8232B Heap:M */ CN_TOKENVEC,
@@ -471,6 +473,7 @@ static Stz* aCN[]
   /*          */ "COUNTOP"_Stz,             // CN_COUNTOP
   
   /*          */ "CRWBUFFER"_Stz,           // CN_CRWBUFFER
+  /*          */ "CSVBUFFER"_Stz,           // CN_CSVBUFFER
 
   /*          */ "DECACNT"_Stz,             // CN_DECACNT
   /*  28 0x1C */ "DECIDER"_Stz,             // CN_DECIDER
@@ -803,6 +806,7 @@ static Stz* aCN[]
   /* 202 0xCA */ "THREADVEC"_Stz,           // CN_THREADVEC
   /* 204 0xCC */ "TIMEMARKER"_Stz,          // CN_TIMEMARKER
   /* 204 0xCC */ "TIMER"_Stz,               // CN_TIMER
+  /*          */ "TOCSVOP"_Stz,             // CN_TOCSVOP
   /* 205 0xCD */ "TOKEN"_Stz,               // CN_TOKEN
   /* 206 0xCE */ "TOKENISER"_Stz,           // CN_TOKENISER
   /* 208 0xD0 */ "TOKENVEC"_Stz,            // CN_TOKENVEC

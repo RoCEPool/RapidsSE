@@ -5,9 +5,10 @@
 
 namespace Rows
 {
+  class CsvBuffer;
   class RowCompactor;
   class SrtBuffer;
-
+  
   class CrwBuffer : public DataBuffer
   {
   friend class IndexTree;
@@ -49,6 +50,7 @@ namespace Rows
     CrwBuffer*  pPrevBuffer(void);
     void        vPrevBuffer(CrwBuffer* pPrevBuffer);
     void        vPrintRows(void);
+    CsvBuffer*  pToCsvBuffer(void);
     SrtBuffer*  pToSrtBuffer(i8 iKeyCol);
     IrwBuffer*  pToIrwBuffer(void);
     void        vTruncate(void);
