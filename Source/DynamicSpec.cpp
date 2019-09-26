@@ -99,6 +99,8 @@ void DynamicSpec::vPrint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMICSPEC,_FOOTER_);
   
+  vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
+  
   vTrace("dynamic\n"_Stz);
   vTrace("\n"_Stz);
   vTrace("plan %s\n"_Stz,m_sName.aStz());

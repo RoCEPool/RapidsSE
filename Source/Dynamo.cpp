@@ -69,6 +69,7 @@ bool Dynamo::bCompile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
+  bool bResult = false;
   i8 nTokens = m_p_TknVec->nTokens();
 
   for (i8 i_Tkn = 0; i_Tkn < nTokens; ) {
@@ -78,28 +79,54 @@ bool Dynamo::bCompile(void)
   
   vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
   
-  bool bResult = true;
+  bResult = bPhase1_collect();
+  if (! bResult)
+    return false;
   
-  vBeginToken(1);
-  
-  if (m_pTkn->bSame("plan"_Stz))
-    bResult = bCollectName();
+  m_pDynamicSpec->vPrint();
 
-  if (m_pTkn->bSame("begin"_Stz))
-    bResult = bCollectBegin();
-  
-  while (m_pTkn->bSame("stage"_Stz))
-    bResult = bCollectStage();
-
-  bResult = bCollectEnd();
-  
   vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
+  
+  bResult = bPhase2_staging();
+  if (! bResult)
+    return false;
 
   m_pDynamicSpec->vPrint();
   
   vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
   
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* phase 1: collect the plan                                                  */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bPhase1_collect(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  bool bResult = true;
+  
+  vBeginToken(1);
+  
+  if (m_pTkn->bSame("plan"_Stz)) {
+    bResult = bCollectName();
+    if (! bResult)
+      return false;
+  }
+  
+  if (m_pTkn->bSame("begin"_Stz)) {
+    bResult = bCollectBegin();
+    if (! bResult)
+      return false;
+  }
+  
+  while (m_pTkn->bSame("stage"_Stz))
+    bResult = bCollectStage();
+  
+  bResult = bCollectEnd();
+
+  return bResult;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -358,6 +385,20 @@ bool Dynamo::bCollectEnd(void)
   ASSERT(m_pTkn->bSame("end"_Stz));
 
   vTrace("End recognised\n"_Stz);
+  return true;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* Phase2 : staging                                                           */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bPhase2_staging(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
   return true;
 }
 

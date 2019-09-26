@@ -30,6 +30,9 @@ namespace Dynamics
   
     bool bCompile(void);
   
+    bool bPhase1_collect(void);
+    bool bPhase2_staging(void);
+
     bool bCollectName(void);
     bool bCollectBegin(void);
     bool bCollectStage(void);
