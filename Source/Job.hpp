@@ -11,6 +11,7 @@ namespace Jobs
               public JobFull,
               public JobDicPath,
               public JobObjectName,
+              public JobEnmSet,
               public JobResult
   {                                  // ⋗ parent ⋗ child ⋗ prompt ⋗ api
   public:

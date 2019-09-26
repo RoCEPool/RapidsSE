@@ -5,8 +5,7 @@
 
 namespace Jobs
 {
-  class Job_Universal : public Job,
-                        public JobEnmSet
+  class Job_Universal : public Job
   {
   public:
       
