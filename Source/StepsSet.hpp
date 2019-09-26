@@ -458,6 +458,8 @@ private:
   static void vJobDelete(Tasks::MP_Task mpTask);
   static void vJobDicPath(Tasks::MP_Task mpTask);
 
+  static void vJobEnameFetch(Tasks::MP_Task mpTask);
+  static void vJobEnameStore(Tasks::MP_Task mpTask);
   static void vJobErrorStore(Tasks::MP_Task mpTask);
   static void vJobErrorFetch(Tasks::MP_Task mpTask);
   static void vJobExecuteFetch(Tasks::MP_Task mpTask);

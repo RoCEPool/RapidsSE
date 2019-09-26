@@ -30,6 +30,8 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.delete"_Stz,           &Step::vJobDelete);
   vAddStep("job.dicPath"_Stz,          &Step::vJobDicPath);
   
+  vAddStep("job.ename!"_Stz,           &Step::vJobEnameStore);
+  vAddStep("job.ename@"_Stz,           &Step::vJobEnameFetch);
   vAddStep("job.error!"_Stz,           &Step::vJobErrorStore);
   vAddStep("job.error@"_Stz,           &Step::vJobErrorFetch);
   vAddStep("job.execute@"_Stz,         &Step::vJobExecuteFetch);
@@ -603,7 +605,55 @@ void Step::vJobDicPath(MP_Task mpTask)
   EXIT();
 }
 
-/*---------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/* job.ename@ -- fetch/decode given ename from job enmset                     */
+/*----------------------------------------------------------------------------*/
+void Step::vJobEnameFetch(MP_Task mpTask)
+{
+  ENTRY("vJobEnameFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.ename@"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  s32 sEname;
+  if ( ! mpTask->m_pDataStack->bPop(sEname) )
+    THROW_INVALID_DSTACK("job.ename@"_Stz);
+  
+  s4K sValue ( pJob->m_oEnmSet.szValue(sEname) );
+  
+  mpTask->m_pDataStack->vPushS4K(sValue);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.ename! -- store given ename-value into job enmset                      */
+/*----------------------------------------------------------------------------*/
+void Step::vJobEnameStore(MP_Task mpTask)
+{
+  ENTRY("vJobEnameStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.ename!"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  s32 sEname;
+  if ( ! mpTask->m_pDataStack->bPop(sEname) )
+    THROW_INVALID_DSTACK("job.ename!"_Stz);
+  
+  s4K sValue;
+  if ( ! mpTask->m_pDataStack->bPop(sValue) )
+    THROW_INVALID_DSTACK("job.ename!"_Stz);
+
+  RASSERT(0);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* job.error@ -- fetch the job error for the node                             */
 /*----------------------------------------------------------------------------*/
 void Step::vJobErrorFetch(MP_Task mpTask)
