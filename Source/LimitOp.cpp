@@ -103,16 +103,10 @@ LimitOp::~LimitOp(void) noexcept(false)
 Op* LimitOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                   TokenVec* pTknVec, i8& i_Tkn_)
 {
-  i_Tkn_++;
-    
+
   LimitOp* pLimitOp = new LimitOp(pOpSpec,pDigest,aOpDefn);
   
-  // add enmPair for limit
-  pLimitOp->m_pOpSpec->vAddEnmPair("Limit"_Stz,
-                                  pTknVec->pGet(i_Tkn_)->szText(),
-                                  pTknVec->pGet(i_Tkn_)->eToken());
-  
-  pLimitOp->m_nLimit = pTknVec->pGet(i_Tkn_++)->iToI8();
+  pLimitOp->m_nLimit = pLimitOp->m_pOpSpec->pEnmSet()->iValue((i8)0);
   
   return pLimitOp;
 }

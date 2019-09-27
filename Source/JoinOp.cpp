@@ -101,9 +101,7 @@ JoinOp::~JoinOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Op* JoinOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                  TokenVec* pTknVec, i8& i_Tkn_)
-{
-  i_Tkn_++;
-  
+{  
   JoinOp* pJoinOp = new JoinOp(pOpSpec,pDigest,aOpDefn);
   
   return pJoinOp;
