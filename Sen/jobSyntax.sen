@@ -27,15 +27,23 @@
   // skip the :: token from input source
   next-token drop
 
-  // parse each input token, build the syntax ename set
+  // attach an ename set to the word being created
+  word::this word.attachEnmSet
+
+  // parse each input token till ';', build the syntax ename set
   begin
     next-token
     dup ";" str.equal not
     while
       dup .isMetaToken if
-        dup "%v is a meta token" fmt.print
+        // dup "%v is a meta token" fmt.print
+        // add ("*",meta,TN_STRING) in ename set
+        "*" swap word::this word.addEnmValStr
+      else
+        // dup "%v is a normal token" fmt.print
+        // add (word,"",TN_STRING) in ename set
+        ""  word::this word.addEnmValStr
       then
-      drop
   repeat
 
   // drop the ";" from dstack
@@ -50,7 +58,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: job_forgetNode :: forget node <nodeNm> ;
+jobSyntax: forgetNode_syn :: forget node <nodeNm> ;
 
 /*============================================================================*/
 /* end                                                                        */
