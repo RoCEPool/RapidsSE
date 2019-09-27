@@ -80,6 +80,8 @@ ForthWord::ForthWord(Stz* sName)
   m_pPrevWord     = nullptr;
   m_bPrompt       = false;
   m_iLocalNo      = 0;
+  
+  m_pEnmSet       = nullptr;
 
   m_xRoutine.vZero(CN_WORD);
   
@@ -110,6 +112,8 @@ ForthWord::~ForthWord(void) noexcept(false)
     pFINALIZE* pFinalizeFun = gpFinalize[eClass];
     (pFinalizeFun)(eClass, pEmbObject);
   }
+  
+  delete m_pEnmSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -448,6 +452,26 @@ void ForthWord::vEncode(StepFp* afpEntryStep)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   vAppend(afpEntryStep);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get ename set                                                              */
+/*----------------------------------------------------------------------------*/
+EnmSet* ForthWord::pEnmSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  return m_pEnmSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set ename set                                                              */
+/*----------------------------------------------------------------------------*/
+void ForthWord::vEnmSet(EnmSet* pEnmSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  m_pEnmSet = pEnmSet;
 }
 
 /*----------------------------------------------------------------------------*/

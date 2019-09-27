@@ -58,6 +58,10 @@ void Step::vWordAddEnmValStr(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(sName) )
     THROW_INVALID_DSTACK("word.addEnmValStr"_Stz);
   
+  EnmSet* pEnmSet = pWord->pEnmSet();
+  
+  pEnmSet->vAdd(sName,sValue,TN_STRING);
+  //pEnmSet->vPrint();
 
   EXIT();
 }
@@ -74,7 +78,9 @@ void Step::vWordAttachEnmSet(MP_Task mpTask)
     THROW_INVALID_DSTACK("vWordAttachEnmSet"_Stz);
   ForthWord* pWord = _pWord(pWordObject);
   
+  EnmSet* pEnmSet = new EnmSet;
   
+  pWord->vEnmSet(pEnmSet);
   
   EXIT();
 }

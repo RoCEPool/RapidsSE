@@ -30,7 +30,7 @@
   // attach an ename set to the word being created
   word::this word.attachEnmSet
 
-  // parse each input token till ';', build the syntax ename set
+  // parse each input token till ';', build ename set representing the syntax
   begin
     next-token
     dup ";" str.equal not
@@ -38,11 +38,11 @@
       dup .isMetaToken if
         // dup "%v is a meta token" fmt.print
         // add ("*",meta,TN_STRING) in ename set
-        "*" swap word::this word.addEnmValStr
+        "__meta__" swap word::this word.addEnmValStr
       else
         // dup "%v is a normal token" fmt.print
         // add (word,"",TN_STRING) in ename set
-        ""  word::this word.addEnmValStr
+        dup word::this word.addEnmValStr
       then
   repeat
 
