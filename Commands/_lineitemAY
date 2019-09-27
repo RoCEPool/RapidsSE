@@ -95,7 +95,7 @@ end
 ;
 
 print "**************************************************************************";
-print "scan lineitem | agg L_ORDERKEY | output;";
+print "scan lineitem | agg L_ORDERKEY | superAgg | output;";
 print "**************************************************************************";
 dynamic
 
@@ -103,13 +103,13 @@ dynamic
   begin
 
   stage stageA:
-  scan lineitem | agg L_ORDERKEY | output
+  scan lineitem | agg L_ORDERKEY | superAgg | output
 
 end
 ;
 
 print "**************************************************************************";
-print "scan lineitem | count | output;";
+print "scan lineitem | count | superCount | output;";
 print "**************************************************************************";
 dynamic
 
@@ -117,7 +117,7 @@ dynamic
   begin
 
   stage stageA:
-  scan lineitem | count | output
+  scan lineitem | count | superCount | output
 
 end
 ;
@@ -151,7 +151,7 @@ end
 ;
 
 print "**************************************************************************";
-print "fetch lineitem lineitem_idx1 | getKey L_PARTKEY | sort | output;";
+print "fetch lineitem lineitem_idx1 | getKey L_PARTKEY | sort | merge | superMerge | output;";
 print "**************************************************************************";
 dynamic
 
@@ -159,7 +159,21 @@ dynamic
   begin
 
   stage stageA:
-  fetch lineitem lineitem_idx1 | getKey L_PARTKEY | sort | output
+  fetch lineitem lineitem_idx1 | getKey L_PARTKEY | sort | merge | superMerge | output
+
+end
+;
+
+print "**************************************************************************";
+print "fetch lineitem lineitem_idx1 | getKey L_PARTKEY | sort | merge | superMerge 1 | limit 1 | output;";
+print "**************************************************************************";
+dynamic
+
+  plan lineItem_dyn
+  begin
+
+  stage stageA:
+  fetch lineitem lineitem_idx1 | getKey L_PARTKEY | sort | merge | superMerge 1 | limit 1 | output
 
 end
 ;

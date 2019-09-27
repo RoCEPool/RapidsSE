@@ -109,8 +109,6 @@ FetchOp::~FetchOp(void) noexcept(false)
 Op* FetchOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                   TokenVec* pTknVec, i8& i_Tkn_)
 {
-  i_Tkn_++;
-  
   FetchOp* pFetchOp = new FetchOp(pOpSpec,pDigest,aOpDefn);
   EnmSet* pEnmSet = pFetchOp->m_pOpSpec->pEnmSet();
   

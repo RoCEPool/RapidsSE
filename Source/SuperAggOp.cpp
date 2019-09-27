@@ -98,9 +98,7 @@ SuperAggOp::~SuperAggOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Op* SuperAggOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                      TokenVec* pTknVec, i8& i_Tkn_)
-{
-  i_Tkn_++;
-  
+{  
   SuperAggOp* pSuperAggOp = new SuperAggOp(pOpSpec,pDigest,aOpDefn);
   
   return pSuperAggOp;

@@ -102,12 +102,12 @@ SuperMergeOp::~SuperMergeOp(void) noexcept(false)
 Op* SuperMergeOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                        TokenVec* pTknVec, i8& i_Tkn_)
 {
-  i_Tkn_++;
-  
   SuperMergeOp* pSuperMergeOp = new SuperMergeOp(pOpSpec,pDigest,aOpDefn);
+  EnmSet* pEnmSet = pSuperMergeOp->m_pOpSpec->pEnmSet();
   
-  if (pTknVec->pGet(i_Tkn_)->bIsInteger())
-    pSuperMergeOp->m_nLimit = pTknVec->pGet(i_Tkn_++)->iToI8();
+  // do we have a limit ?
+  if (pEnmSet->nEnm() == 1)
+    pSuperMergeOp->m_nLimit = pEnmSet->iValue((i8)0);
   
   return pSuperMergeOp;
 }
