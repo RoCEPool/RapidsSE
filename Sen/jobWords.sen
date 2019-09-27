@@ -225,7 +225,10 @@
   // send the job to each node in the grid
   grid::definedNodes 0 do
 
-    I pJob job.forward
+    I grid::node node.sendSocket@ if
+
+      I pJob job.forward
+    then
 
   loop
 

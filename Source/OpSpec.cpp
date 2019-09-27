@@ -34,43 +34,16 @@ OpSpec::OpSpec(Stz* szOpName)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
   //m_sLabel
-  m_sName        = szOpName;
+  m_sName = szOpName;
   m_bAppendRight = false;
   m_pStageSpec   = nullptr;
   m_i_OpSpec     = C_UNKNOWN;
-  
-  m_i_Slot       = 0; // ALKA: C_UNKNOWN;
+  m_i_Slot = 0; // ALKA: C_UNKNOWN;
 
   //m_oEnmSet
   
   m_aOpDefn = nullptr;
   
-  _checkInitialised_(CN_OPSPEC);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-OpSpec::OpSpec(Stz* szOpLabel, Stz* szOpName, bool bAppR, i8 i_Slot)
-: Object(CN_OPSPEC)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
-  m_sLabel       = szOpLabel;
-  m_sName        = szOpName;
-  m_bAppendRight = bAppR;
-  m_pStageSpec   = nullptr;
-  m_i_OpSpec     = C_UNKNOWN;
-  
-  m_i_Slot       = i_Slot;
-
-  //m_sArgs
-  //m_oEnmSet
-  
-  m_aOpDefn = nullptr;
-
   _checkInitialised_(CN_OPSPEC);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
@@ -150,16 +123,6 @@ void OpSpec::vName(Stz* szName)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get i_Slot                                                                 */
-/*----------------------------------------------------------------------------*/
-i8 OpSpec::i_Slot(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
-  return m_i_Slot;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get the op defn                                                            */
 /*----------------------------------------------------------------------------*/
 OpDefn* OpSpec::aOpDefn(void)
@@ -180,23 +143,13 @@ void OpSpec::vOpDefn(OpDefn* aOpDefn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get i_OpSpec                                                               */
+/* get i_Slot                                                                 */
 /*----------------------------------------------------------------------------*/
-i8 OpSpec::i_OpSpec(void)
+i8 OpSpec::i_Slot(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  return m_i_OpSpec;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the stage spec                                                         */
-/*----------------------------------------------------------------------------*/
-StageSpec* OpSpec::pStageSpec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
-  return m_pStageSpec;
+  return m_i_Slot;
 }
 
 

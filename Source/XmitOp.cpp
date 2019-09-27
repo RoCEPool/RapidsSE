@@ -102,8 +102,6 @@ Op* XmitOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
 
   pXmitOp->m_iXmitNode = pTknVec->pGet(i_Tkn_)->iToI8();
   
-  pXmitOp->m_sArgs = pTknVec->pGet(i_Tkn_++)->sText();
-  
   return pXmitOp;
 }
 

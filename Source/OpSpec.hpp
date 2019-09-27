@@ -27,7 +27,6 @@ namespace Dynamics
     void  operator delete(void*);
   
     OpSpec(Stz* szOpName);
-    OpSpec(Stz* szOpLabel, Stz* szOpName, bool bAppR, i8 i_Slot);
    ~OpSpec(void) noexcept(false);
   
     void vAddEnmPair(Stz* sName, Stz* sValue, eTN eToken);

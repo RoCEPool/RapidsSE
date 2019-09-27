@@ -112,8 +112,6 @@ Op* LimitOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                                   pTknVec->pGet(i_Tkn_)->szText(),
                                   pTknVec->pGet(i_Tkn_)->eToken());
   
-  pLimitOp->m_sArgs = pTknVec->pGet(i_Tkn_)->szText();
-  
   pLimitOp->m_nLimit = pTknVec->pGet(i_Tkn_++)->iToI8();
   
   return pLimitOp;
