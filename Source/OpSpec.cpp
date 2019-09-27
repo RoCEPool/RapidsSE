@@ -33,7 +33,6 @@ OpSpec::OpSpec(Stz* szOpName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  //m_sLabel
   m_sName = szOpName;
   m_bAppendRight = false;
   m_pStageSpec   = nullptr;
@@ -90,16 +89,6 @@ EnmSet* OpSpec::pEnmSet(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
   return &m_oEnmSet;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get label                                                                  */
-/*----------------------------------------------------------------------------*/
-Stz* OpSpec::szLabel(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
-  return m_sLabel.aStz();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -8,7 +8,6 @@ namespace Dynamics
   class OpSpec : public Object
   {
   private:
-    s32  m_sLabel;
     s32  m_sName;
     bool m_bAppendRight;
     StageSpec* m_pStageSpec;
@@ -32,7 +31,6 @@ namespace Dynamics
     void vAddEnmPair(Stz* sName, Stz* sValue, eTN eToken);
     bool bAppendRight(void);
     EnmSet* pEnmSet(void);
-    Stz* szLabel(void);
     Stz* szName(void);
     void vName(Stz* szName);
     i8   i_Slot(void);
