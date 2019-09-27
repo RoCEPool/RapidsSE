@@ -5,6 +5,7 @@
 #include "StorageEngine.h"
 
 Arguments     gxArguments;
+FnCatalog     gxFnCatalog;
 OpCatalog     gxOpCatalog;
 PromptCatalog gxPromptCatalog;
 

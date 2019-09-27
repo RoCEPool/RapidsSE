@@ -43,15 +43,19 @@ namespace Gadgets
 namespace Tasks { typedef MP<Task,CN_TASK> MP_Task;
                   typedef void (*StepFp)(Tasks::MP_Task); }
 
-typedef void (*FUNPTR)(void*);
+typedef void (*FNADDR)(void*);
 
-#define INTRINSIC(FUNCNM) \
+#define INTRINSIC(FNNAME) \
   \
-  void Step::FUNCNM(MP_Task mpTask)
+  FnDesc FnDesc_ ## FNNAME (#FNNAME ## _Stz, (FNADDR)Step::FNNAME); \
+  \
+  void Step::FNNAME(MP_Task mpTask)
 
-#define JOBS_fn(FUNCNM) \
-  FnDesc FnDesc_ ## FUNCNM (#FUNCNM ## _Stz, (FUNPTR)Jobs::FUNCNM); \
-  void Jobs::FUNCNM(Job* pJob)
+#define JOBS_fn(FNNAME) \
+  \
+  FnDesc FnDesc_ ## FNNAME (#FNNAME ## _Stz, (FNADDR)Jobs::FNNAME); \
+  \
+  void Jobs::FNNAME(Job* pJob)
 
 /*============================================================================*/
 /* end                                                                        */

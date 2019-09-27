@@ -8,7 +8,7 @@ namespace ClassData
   class FnDesc
   {
   public:
-    FnDesc(Stz* aName, void (*fpFn)(void*));
+    FnDesc(Stz* szFnName, void (*fpFnAddr)(void*));
 
   };
 }

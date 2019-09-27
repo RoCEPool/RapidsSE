@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+public:
+
   // access path
   static void vAccessPathTableFetch(Tasks::MP_Task mpTask);
   static void vAccessPathTableStore(Tasks::MP_Task mpTask);

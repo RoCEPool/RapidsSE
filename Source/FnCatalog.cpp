@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* FnCatalog.cpp -- catalog of named functions                                */
+/* FnCatalog.cpp -- catalog of named function definitions                     */
 /*============================================================================*/
 
 #include "ClassData.h"

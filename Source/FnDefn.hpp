@@ -8,8 +8,8 @@ namespace ClassData
   class FnDefn
   {
   public:
-    Stz* m_aName;           // name of the function
-    void (*m_fpFn)(void*);  // pointer to function
+    Stz* m_aFnName;             // name of the function
+    void (*m_fpFnAddr)(void*);  // address of function
   
   public:
   

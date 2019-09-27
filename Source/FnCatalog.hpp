@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* FnCatalog.hpp -- catalog of named functions                               */
+/* FnCatalog.hpp -- catalog of named function definitions                     */
 /*============================================================================*/
 #pragma once
 

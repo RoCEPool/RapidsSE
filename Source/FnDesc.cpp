@@ -4,10 +4,12 @@
 
 #include "ClassData.h"
 
+extern FnCatalog gxFnCatalog;
+
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
+/* constructor (adds a FnDefn entry into FnCatalog)                           */
 /*----------------------------------------------------------------------------*/
-FnDesc::FnDesc(Stz* aName, void (*fpFn)(void*))
+FnDesc::FnDesc(Stz* szFnName, void (*fpFnAddr)(void*))
 {
 }
 
