@@ -217,7 +217,10 @@ void Digest::vPopulateOpVec(DynamicSpec* pDynamicSpec)
       Op* pOp = m_oOpVec.pGet(i_Op);
       
       s32 sArgs;
-      sArgs.vSprint("(%s)"_Stz,pOp->szArgs());
+      EnmSet* pEnmSet = pOp->m_pOpSpec->pEnmSet();
+      for (i8 i_Arg = 0; i_Arg < pEnmSet->nEnm(); i_Arg++) {
+        sArgs.vSprint("(%s)"_Stz,pEnmSet->szValue((i8)i_Arg));
+      }
       
       pOp->m_pOpSpec->pEnmSet()->vPrint();
       

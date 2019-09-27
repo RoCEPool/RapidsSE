@@ -59,8 +59,7 @@ OpSpec::OpSpec(Stz* szOpLabel, Stz* szOpName, bool bAppR, i8 i_Slot)
   m_sName  = szOpName;
   m_bAppendRight = bAppR;
   m_i_Slot = i_Slot;
-
-  //m_sArgs
+  
   //m_oEnmSet
   
   m_aOpDefn = nullptr;

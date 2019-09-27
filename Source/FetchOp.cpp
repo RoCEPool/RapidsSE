@@ -128,10 +128,6 @@ Op* FetchOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
   
   pFetchOp->m_sIndexNm = pTknVec->pGet(i_Tkn_++)->szText();
   
-  pFetchOp->m_sArgs = pFetchOp->m_sTableNm;
-  pFetchOp->m_sArgs.vConcat(" "_Stz);
-  pFetchOp->m_sArgs.vConcat(pFetchOp->m_sIndexNm);
-  
   if (pTknVec->pGet(i_Tkn_)->bIsInteger())
     pFetchOp->m_nLimit = pTknVec->pGet(i_Tkn_++)->iToI8();
   

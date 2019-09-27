@@ -64,7 +64,6 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn)
   
   m_pOpSpec       = pOpSpec;
   m_sLabel        = pOpSpec->szLabel();
-  m_sArgs         = ""_Stz;
   m_sNextLabel    = "<nil>"_Stz;
   
   m_aOpDefn       = aOpDefn;
@@ -269,16 +268,6 @@ void Op::vAppendRight(Operand* pOperand)
   
   // trigger this biding op
   AM::vTriggerBidingTask(m_pTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get args                                                                   */
-/*----------------------------------------------------------------------------*/
-Stz* Op::szArgs(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_sArgs;
 }
 
 /*----------------------------------------------------------------------------*/
