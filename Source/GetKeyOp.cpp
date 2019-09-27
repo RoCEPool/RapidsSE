@@ -106,16 +106,10 @@ GetKeyOp::~GetKeyOp(void) noexcept(false)
 Op* GetKeyOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                    TokenVec* pTknVec, i8& i_Tkn_)
 {
-  i_Tkn_++;
   
   GetKeyOp* pGetKeyOp = new GetKeyOp(pOpSpec,pDigest,aOpDefn);
   
-  // add enmPair for column name
-  pGetKeyOp->m_pOpSpec->vAddEnmPair("Column"_Stz,
-                                  pTknVec->pGet(i_Tkn_)->szText(),
-                                  pTknVec->pGet(i_Tkn_)->eToken());
-  
-  pGetKeyOp->m_sKey = pTknVec->pGet(i_Tkn_++)->szText();
+  pGetKeyOp->m_sKey = pGetKeyOp->m_pOpSpec->pEnmSet()->szValue((i8)0);
   
   return pGetKeyOp;
 }

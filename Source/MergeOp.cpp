@@ -100,9 +100,7 @@ MergeOp::~MergeOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Op* MergeOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                   TokenVec* pTknVec, i8& i_Tkn_)
-{
-  i_Tkn_++;
-  
+{  
   MergeOp* pMergeOp = new MergeOp(pOpSpec,pDigest,aOpDefn);
   
   return pMergeOp;

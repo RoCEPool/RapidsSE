@@ -107,31 +107,24 @@ ProjectOp::~ProjectOp(void) noexcept(false)
 Op* ProjectOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                     TokenVec* pTknVec, i8& i_Tkn_)
 {
-  i_Tkn_++;
-  
   ProjectOp* pProjectOp = new ProjectOp(pOpSpec,pDigest,aOpDefn);
   
   // create a columnVec in the stream def
   pProjectOp->m_pStreamDef->m_oColVecAry.vItems(1);
   ColumnVec* pColVec = pProjectOp->m_pStreamDef->pColumnVec(0);
   
-  // add columns to the columnVec
-  i8 i_Column = 0;
-  while ( ! pTknVec->pGet(i_Tkn_)->bSame("|"_Stz) ) {
-    
-    if (pTknVec->pGet(i_Tkn_)->bSame(","_Stz)) {
-      i_Tkn_++;
-      continue;
-    }
+  EnmSet* pEnmSet = pProjectOp->m_pOpSpec->pEnmSet();
+  i8 iEnms = pEnmSet->nEnm();
+  pEnmSet->vPrint();
+  for (i8 i_Column = 0; i_Column < iEnms; i_Column++) {
     
     // create a column
     Column* pColumn = new Column();
     pColumn->vColumnNo(i_Column);
-    pColumn->vColumnName(pTknVec->pGet(i_Tkn_++)->szText());
+    pColumn->vColumnName(pEnmSet->szValue((i8)i_Column));
     pColVec->vAdd(pColumn);
-    
-    i_Column++;
   }
+  
   return pProjectOp;
 }
 

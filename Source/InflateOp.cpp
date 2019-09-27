@@ -99,9 +99,7 @@ InflateOp::~InflateOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Op* InflateOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                     TokenVec* pTknVec, i8& i_Tkn_)
-{
-  i_Tkn_++;
-  
+{  
   InflateOp* pInflateOp = new InflateOp(pOpSpec,pDigest,aOpDefn);
   
   return pInflateOp;

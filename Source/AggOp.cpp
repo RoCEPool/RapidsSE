@@ -105,9 +105,7 @@ AggOp::~AggOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Op* AggOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                 TokenVec* pTknVec, i8& i_Tkn_)
-{
-  i_Tkn_++;
-  
+{  
   AggOp* pAggOp = new AggOp(pOpSpec,pDigest,aOpDefn);
     
   pAggOp->m_pStreamDef->m_oColVecAry.vItems(1);

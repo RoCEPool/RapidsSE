@@ -99,8 +99,6 @@ SuperCountOp::~SuperCountOp(void) noexcept(false)
 Op* SuperCountOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                        TokenVec* pTknVec, i8& i_Tkn_)
 {
-  i_Tkn_++;
-  
   SuperCountOp* pSuperCountOp = new SuperCountOp(pOpSpec,pDigest,aOpDefn);
   
   return pSuperCountOp;

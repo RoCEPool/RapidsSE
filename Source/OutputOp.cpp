@@ -100,9 +100,7 @@ OutputOp::~OutputOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Op* OutputOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                    TokenVec* pTknVec, i8& i_Tkn_)
-{
-  i_Tkn_++;
-  
+{  
   OutputOp* pOutputOp = new OutputOp(pOpSpec,pDigest,aOpDefn);
   
   return pOutputOp;
