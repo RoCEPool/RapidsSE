@@ -80,6 +80,7 @@ time ld orders "/DATA/tpch/orders10.csv" max_errors 100;
 //time ld orders "/DATA/tpch/orders10k.csv" max_errors 100;
 //time ld orders "/tpch/SF1/orders.tbl" field_delimiter "|" max_errors 100;
 
+
 print "**************************************************************************";
 print "scan lineitem | output;";
 print "**************************************************************************";
@@ -207,6 +208,21 @@ end
 ;
 
 /*
+ 
+print "**************************************************************************";
+print "fetch lineitem LineItem_Idx1 | filter L_PARTKEY 10 < | count | output;";
+print "**************************************************************************";
+dynamic
+
+  plan lineItem_dyn
+  begin
+
+  stage stageA:
+  fetch lineitem LineItem_Idx1 | filter L_PARTKEY 10 < | count | output
+
+end
+ ;
+ 
 print "**************************************************************************";
 print "fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join | output;";
 print "**************************************************************************";

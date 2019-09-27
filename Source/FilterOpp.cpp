@@ -100,26 +100,30 @@ FilterOp::~FilterOp(void) noexcept(false)
 Op* FilterOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                    TokenVec* pTknVec, i8& i_Tkn_)
 {
-  i_Tkn_++;
-  
   FilterOp* pFilterOp = new FilterOp(pOpSpec,pDigest,aOpDefn);
-  pFilterOp->m_iStartTkn = i_Tkn_;
-  pFilterOp->m_pTokenVec = pTknVec;
   
-  // gather the filter expression as enmPairs
-  s4K sExpr = ""_Stz;
-  while (! pTknVec->pGet(i_Tkn_)->bSame("|"_Stz)) {
-    sExpr.vConcat(pTknVec->pGet(i_Tkn_++)->szText());
-    sExpr.vConcat(" "_Stz);
-  }
- 
-  // add ename pair for expression
-  pFilterOp->m_pOpSpec->vAddEnmPair("Filter"_Stz,
-                                    sExpr,
-                                    TN_STRING);
-  
-  pFilterOp->m_iEndTkn = i_Tkn_ - 1;
-    
+  RASSERT(0);
+//  i_Tkn_++;
+//  EnmSet* pEnmSet = pFilterOp->m_pOpSpec->pEnmSet();
+//  pEnmSet->vPrint();
+//
+//  pFilterOp->m_iStartTkn = i_Tkn_;
+//  pFilterOp->m_pTokenVec = pTknVec;
+//
+//  // gather the filter expression as enmPairs
+//  s4K sExpr = ""_Stz;
+//  while (! pTknVec->pGet(i_Tkn_)->bSame("|"_Stz)) {
+//    sExpr.vConcat(pTknVec->pGet(i_Tkn_++)->szText());
+//    sExpr.vConcat(" "_Stz);
+//  }
+//
+//  // add ename pair for expression
+//  pFilterOp->m_pOpSpec->vAddEnmPair("Filter"_Stz,
+//                                    sExpr,
+//                                    TN_STRING);
+//
+//  pFilterOp->m_iEndTkn = i_Tkn_ - 1;
+//
   return pFilterOp;
 }
 
@@ -212,7 +216,6 @@ eOR FilterOp::eOpLoop(void)
         
       case CN_ENTBUFFER: {
         EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
-        i8 nRows = pEntBuffer->nItems();
         
         HV_Row hRow(m_pStreamDef->pColumnVec(0));
         
