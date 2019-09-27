@@ -111,11 +111,11 @@ Op* ScanOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
   ScanOp* pScanOp = new ScanOp(pOpSpec,pDigest,aOpDefn);
   
   // add enmPair for table name
-  pScanOp->m_pOpSpec->vAddEnmPair("Table"_Stz,
-                                  pTknVec->pGet(i_Tkn_)->szText(),
-                                  pTknVec->pGet(i_Tkn_)->eToken());
+//  pScanOp->m_pOpSpec->vAddEnmPair("Table"_Stz,
+//                                  pTknVec->pGet(i_Tkn_)->szText(),
+//                                  pTknVec->pGet(i_Tkn_)->eToken());
   
-  pScanOp->m_sTableNm = pTknVec->pGet(i_Tkn_++)->szText();
+  pScanOp->m_sTableNm = pScanOp->m_pOpSpec->pEnmSet()->szValue((i8)0);
   
   pScanOp->m_sArgs = pScanOp->m_sTableNm;
   
