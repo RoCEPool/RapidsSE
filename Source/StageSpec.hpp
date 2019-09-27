@@ -27,6 +27,7 @@ namespace Dynamics
    ~StageSpec(void) noexcept(false);
   
     void vAddOpSpec(OpSpec* pOpSpec);
+    void vCopyOps(StageSpec* pStageSpec);
     void vLocus(Stz* szLocus);
     Stz* szName(void);
     OpSpecVec* pOpSpecVec(void);

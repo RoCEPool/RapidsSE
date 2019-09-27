@@ -34,6 +34,7 @@ namespace Dynamics
     EnmSet* pEnmSet(void);
     Stz* szLabel(void);
     Stz* szName(void);
+    void vName(Stz* szName);
     i8   i_Slot(void);
 
     void vPrint(void);

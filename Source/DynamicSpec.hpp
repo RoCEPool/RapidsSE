@@ -26,6 +26,7 @@ namespace Dynamics
     void vAddStageSpec(StageSpec* pStageSpec);
     Stz* szName(void);
 
+    StageSpec* pFindStageSpec(Stz* szName);
     StageSpec* pStageSpec(i8 i_Stage);
     StageSpecVec* pStageSpecVec(void);
 

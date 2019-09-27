@@ -42,6 +42,10 @@ namespace Dynamics
 
     bool bPhase2_staging(void);
 
+    bool bPhase3_flatten(void);
+
+    void vReplaceWithXmit(OpSpec* pOpSpec);
+
     void vAcceptToken(void);
     void vBeginToken(i8 i_Tkn);
     DynamicSpec* pDynamicSpec(void);

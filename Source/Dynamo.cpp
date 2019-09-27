@@ -95,6 +95,14 @@ bool Dynamo::bCompile(void)
   
   vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
   
+  bResult = bPhase3_flatten();
+  if (! bResult)
+    return false;
+  
+  m_pDynamicSpec->vPrint();
+  
+  vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
+  
   return false;
 }
 
@@ -408,6 +416,12 @@ bool Dynamo::bPhase2_staging(void)
     for (i8 i_Op = 0; i_Op < pOpSpecVec->nItems(); i_Op++) {
       OpSpec* pOpSpec = pOpSpecVec->pGet(i_Op);
 
+      vTrace("  op=%s\n"_Stz,pOpSpec->szName());
+      
+      if (m_pDynamicSpec->pFindStageSpec(pOpSpec->szName())) {
+        vTrace("  op %s is a stage\n"_Stz,pOpSpec->szName());
+        vReplaceWithXmit(pOpSpec);
+      }
       
     }
   }
@@ -415,6 +429,40 @@ bool Dynamo::bPhase2_staging(void)
   return true;
 }
 
+/*----------------------------------------------------------------------------*/
+/* replace the <stageNm> with xmit <nodeNo>                                   */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vReplaceWithXmit(OpSpec* pOpSpec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  pOpSpec->vName("xmit"_Stz);
+  pOpSpec->vAddEnmPair("<nodeNo>"_Stz,"0"_Stz,TN_INTEGER);
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* Phase3 : flatten into one stage                                            */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bPhase3_flatten(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  StageSpecVec* pStageSpecVec = m_pDynamicSpec->pStageSpecVec();
+  
+  StageSpec* pStageSpec_0 = pStageSpecVec->pGet(0);
+  for (i8 i_Stage = 1; i_Stage < pStageSpecVec->nItems(); i_Stage++) {
+    StageSpec* pStageSpec_n = pStageSpecVec->pGet(i_Stage);
+    
+    pStageSpec_0->vCopyOps(pStageSpec_n);
+  }
+  
+  return true;
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

@@ -70,6 +70,22 @@ void StageSpec::vAddOpSpec(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
+/* copy ops from given stage spec                                             */
+/*----------------------------------------------------------------------------*/
+void StageSpec::vCopyOps(StageSpec* pStageSpec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  OpSpecVec* pOpSpecVec_from = pStageSpec->pOpSpecVec();
+  
+  for (i8 i_Op = 0; i_Op < pOpSpecVec_from->nItems(); i_Op++) {
+    OpSpec* pOpSpec_from = pOpSpecVec_from->pGet(i_Op);
+    
+    m_pOpSpecVec->vAdd(pOpSpec_from);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* set locus                                                                  */
 /*----------------------------------------------------------------------------*/
 void StageSpec::vLocus(Stz* szLocus)

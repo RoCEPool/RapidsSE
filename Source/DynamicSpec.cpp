@@ -78,6 +78,23 @@ Stz* DynamicSpec::szName(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find stage matching given name                                             */
+/*----------------------------------------------------------------------------*/
+StageSpec* DynamicSpec::pFindStageSpec(Stz* szName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMICSPEC,_FOOTER_);
+  
+  for (i8 i_Stage = 0; i_Stage < m_pStageSpecVec->nItems(); i_Stage++) {
+    StageSpec* pStageSpec = m_pStageSpecVec->pGet(i_Stage);
+    
+    if (pStageSpec->szName()->bSame(szName))
+      return pStageSpec;
+  }
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get stage spec                                                             */
 /*----------------------------------------------------------------------------*/
 StageSpec* DynamicSpec::pStageSpec(i8 i_Stage)
