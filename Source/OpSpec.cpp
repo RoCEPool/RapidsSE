@@ -33,37 +33,16 @@ OpSpec::OpSpec(Stz* szOpName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  //m_sLabel
   m_sName = szOpName;
   m_bAppendRight = false;
+  m_pStageSpec   = nullptr;
+  m_i_OpSpec     = C_UNKNOWN;
   m_i_Slot = 0; // ALKA: C_UNKNOWN;
 
   //m_oEnmSet
   
   m_aOpDefn = nullptr;
   
-  _checkInitialised_(CN_OPSPEC);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-OpSpec::OpSpec(Stz* szOpLabel, Stz* szOpName, bool bAppR, i8 i_Slot)
-: Object(CN_OPSPEC)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
-  m_sLabel = szOpLabel;
-  m_sName  = szOpName;
-  m_bAppendRight = bAppR;
-  m_i_Slot = i_Slot;
-  
-  //m_oEnmSet
-  
-  m_aOpDefn = nullptr;
-
   _checkInitialised_(CN_OPSPEC);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
@@ -110,16 +89,6 @@ EnmSet* OpSpec::pEnmSet(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
   return &m_oEnmSet;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get label                                                                  */
-/*----------------------------------------------------------------------------*/
-Stz* OpSpec::szLabel(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
-  return m_sLabel.aStz();
 }
 
 /*----------------------------------------------------------------------------*/
