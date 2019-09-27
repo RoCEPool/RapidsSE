@@ -66,6 +66,8 @@ void StageSpec::vAddOpSpec(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
+  pOpSpec->v_OpSpec(m_pOpSpecVec->nItems());
+  
   m_pOpSpecVec->vAdd(pOpSpec);
 }
 

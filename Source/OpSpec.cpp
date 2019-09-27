@@ -28,14 +28,14 @@ void OpSpec::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OpSpec::OpSpec(Stz* szOpName)
+OpSpec::OpSpec(Stz* szOpName, StageSpec* pStageSpec)
 : Object(CN_OPSPEC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
   m_sName = szOpName;
   m_bAppendRight = false;
-  m_pStageSpec   = nullptr;
+  m_pStageSpec   = pStageSpec;
   m_i_OpSpec     = C_UNKNOWN;
   m_i_Slot = 0; // ALKA: C_UNKNOWN;
 
@@ -132,6 +132,26 @@ void OpSpec::vOpDefn(OpDefn* aOpDefn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get i_OpSpec                                                               */
+/*----------------------------------------------------------------------------*/
+i8 OpSpec::i_OpSpec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  return m_i_OpSpec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the i_opspec                                                           */
+/*----------------------------------------------------------------------------*/
+void OpSpec::v_OpSpec(i8 i_OpSpec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  m_i_OpSpec = i_OpSpec;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get i_Slot                                                                 */
 /*----------------------------------------------------------------------------*/
 i8 OpSpec::i_Slot(void)
@@ -152,7 +172,7 @@ void OpSpec::vPrint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  vTrace("%s opDefn=%p "_Stz,m_sName.aStz(),m_aOpDefn);
+  vTrace("[%lld] %s opDefn=%p "_Stz,m_i_OpSpec,m_sName.aStz(),m_aOpDefn);
     
   m_oEnmSet.vPrint();
 }

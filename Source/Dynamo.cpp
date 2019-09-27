@@ -364,7 +364,7 @@ bool Dynamo::bCollectOp(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pOpSpec = new OpSpec(m_pTkn->szText());
+  m_pOpSpec = new OpSpec(m_pTkn->szText(),m_pStageSpec);
   m_pStageSpec->vAddOpSpec(m_pOpSpec);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

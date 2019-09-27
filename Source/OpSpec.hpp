@@ -25,7 +25,7 @@ namespace Dynamics
     void* operator new(size_t);
     void  operator delete(void*);
   
-    OpSpec(Stz* szOpName);
+    OpSpec(Stz* szOpName, StageSpec* pStageSpec);
    ~OpSpec(void) noexcept(false);
   
     void vAddEnmPair(Stz* sName, Stz* sValue, eTN eToken);
@@ -33,10 +33,11 @@ namespace Dynamics
     EnmSet* pEnmSet(void);
     Stz* szName(void);
     void vName(Stz* szName);
-    i8   i_Slot(void);
     OpDefn* aOpDefn(void);
     void vOpDefn(OpDefn* aOpDefn);
     i8   i_OpSpec(void);
+    void v_OpSpec(i8 i_OpSpec);
+    i8   i_Slot(void);
     StageSpec* pStageSpec(void);
 
     void vPrint(void);
