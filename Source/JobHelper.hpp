@@ -8,6 +8,11 @@ namespace Jobs
   class JobHelper
   {
   public:
+  
+    static bool bExtractArgs(EnmSet*   pArgEnmSet,
+                             TokenVec* pTknVec,
+                             EnmSet*   pSynEnmSet);
+  
   };
 }
 
