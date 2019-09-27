@@ -44,6 +44,8 @@ namespace Dynamics
 
     bool bPhase3_flatten(void);
 
+    bool bPhase4_opdefn(void);
+
     void vReplaceWithXmit(OpSpec* pOpSpec);
 
     void vAcceptToken(void);
