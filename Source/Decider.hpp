@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Jobs
+namespace Gadgets
 {
   class Decider : public Object
   {

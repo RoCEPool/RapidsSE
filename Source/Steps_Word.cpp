@@ -9,22 +9,24 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Word(void)
 {
-  vAddStep("word::this"_Stz,      &Step::vWordThis);
+  vAddStep("word::this"_Stz,       &Step::vWordThis);
   
-  vAddStep("word.dump"_Stz,       &Step::vWordDump);
-  vAddStep("word.exitHook@"_Stz,  &Step::vWordExitHookGet);
-  vAddStep("word.exitHook!"_Stz,  &Step::vWordExitHookSet);
-  vAddStep("word.forget"_Stz,     &Step::vWordForget);
-  vAddStep("word.immediate@"_Stz, &Step::vWordImmediateGet);
-  vAddStep("word.immediate!"_Stz, &Step::vWordImmediateSet);
-  vAddStep("word.isImmediate"_Stz,&Step::vWordIsImmediate);
-  vAddStep("word.isIntrinsic"_Stz,&Step::vWordIsIntrinsic);
-  vAddStep("word.kind@"_Stz,      &Step::vWordKindGet);
-  vAddStep("word.kind!"_Stz,      &Step::vWordKindSet);
-  vAddStep("word.name"_Stz,       &Step::vWordName);
-  vAddStep("word.prev"_Stz,       &Step::vWordPrev);
-  vAddStep("word.type@"_Stz,      &Step::vWordTypeGet);
-  vAddStep("word.type!"_Stz,      &Step::vWordTypeSet);
+  vAddStep("word.addEnmValStr"_Stz,&Step::vWordAddEnmValStr);
+  vAddStep("word.attachEnmSet"_Stz,&Step::vWordAttachEnmSet);
+  vAddStep("word.dump"_Stz,        &Step::vWordDump);
+  vAddStep("word.exitHook@"_Stz,   &Step::vWordExitHookGet);
+  vAddStep("word.exitHook!"_Stz,   &Step::vWordExitHookSet);
+  vAddStep("word.forget"_Stz,      &Step::vWordForget);
+  vAddStep("word.immediate@"_Stz,  &Step::vWordImmediateGet);
+  vAddStep("word.immediate!"_Stz,  &Step::vWordImmediateSet);
+  vAddStep("word.isImmediate"_Stz, &Step::vWordIsImmediate);
+  vAddStep("word.isIntrinsic"_Stz, &Step::vWordIsIntrinsic);
+  vAddStep("word.kind@"_Stz,       &Step::vWordKindGet);
+  vAddStep("word.kind!"_Stz,       &Step::vWordKindSet);
+  vAddStep("word.name"_Stz,        &Step::vWordName);
+  vAddStep("word.prev"_Stz,        &Step::vWordPrev);
+  vAddStep("word.type@"_Stz,       &Step::vWordTypeGet);
+  vAddStep("word.type!"_Stz,       &Step::vWordTypeSet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,6 +35,53 @@ void Step::vAddSteps_Word(void)
 void Step::vWord(MP_Task mpTask)
 {
   ENTRY("vWord"_Stz);
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word.addEnmValStr -- attach an ename set                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vWordAddEnmValStr(MP_Task mpTask)
+{
+  ENTRY("vWordAddEnmValStr"_Stz);
+  
+  Object* pWordObject;
+  if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
+    THROW_INVALID_DSTACK("vWordAddEnmValStr"_Stz);
+  ForthWord* pWord = _pWord(pWordObject);
+  
+  s32 sValue;
+  if ( ! mpTask->m_pDataStack->bPop(sValue) )
+    THROW_INVALID_DSTACK("word.addEnmValStr"_Stz);
+
+  s32 sName;
+  if ( ! mpTask->m_pDataStack->bPop(sName) )
+    THROW_INVALID_DSTACK("word.addEnmValStr"_Stz);
+  
+  EnmSet* pEnmSet = pWord->pEnmSet();
+  
+  pEnmSet->vAdd(sName,sValue,TN_STRING);
+  //pEnmSet->vPrint();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word.attachEnmSet -- attach an ename set                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vWordAttachEnmSet(MP_Task mpTask)
+{
+  ENTRY("vWordAttachEnmSet"_Stz);
+  
+  Object* pWordObject;
+  if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
+    THROW_INVALID_DSTACK("vWordAttachEnmSet"_Stz);
+  ForthWord* pWord = _pWord(pWordObject);
+  
+  EnmSet* pEnmSet = new EnmSet;
+  
+  pWord->vEnmSet(pEnmSet);
+  
   EXIT();
 }
 

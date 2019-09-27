@@ -146,6 +146,18 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_UNIVERSAL,_FOOTER_);
   
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Dic* pRootDic = AM::pRootDic();
+  
+  ForthWord* pWord_syn = pRootDic->pFindWord("forgetNode_syn"_Stz);
+
+  bool b = JobHelper::bExtractArgs(&m_oEnmSet,pTokenVec,pWord_syn->pEnmSet());
+  if (! b) {
+    vTrace("Unable to match job syntax\n"_Stz);
+  }
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert we got a create table
   ASSERT(pTokenVec->pGet(0)->bSame("forget"_Stz));

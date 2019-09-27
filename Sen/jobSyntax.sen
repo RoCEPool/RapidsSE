@@ -7,6 +7,18 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+: .isMetaToken ( str -- t|f )
+
+  dup 1 swap str.left  "<" str.equal not if drop false exit then
+
+  1 swap str.right ">" str.equal not if false exit then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 : jobSyntax:
 
   // create a word using next token from input source as the word name
@@ -15,11 +27,23 @@
   // skip the :: token from input source
   next-token drop
 
+  // attach an ename set to the word being created
+  word::this word.attachEnmSet
+
+  // parse each input token till ';', build ename set representing the syntax
   begin
     next-token
     dup ";" str.equal not
     while
-      drop
+      dup .isMetaToken if
+        // dup "%v is a meta token" fmt.print
+        // add ("*",meta,TN_STRING) in ename set
+        "__meta__" swap word::this word.addEnmValStr
+      else
+        // dup "%v is a normal token" fmt.print
+        // add (word,"",TN_STRING) in ename set
+        dup word::this word.addEnmValStr
+      then
   repeat
 
   // drop the ";" from dstack
@@ -34,7 +58,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: job_forgetNode :: forget node <nodeNm> ;
+jobSyntax: forgetNode_syn :: forget node <nodeNm> ;
 
 /*============================================================================*/
 /* end                                                                        */

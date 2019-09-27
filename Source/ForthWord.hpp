@@ -34,6 +34,8 @@ namespace Forth
   
     s32      m_sExitHook;    // routine to be called on exit
   
+    EnmSet*  m_pEnmSet;      // optional ename set
+  
     Routine  m_xRoutine;
   
     // must be last
@@ -74,6 +76,8 @@ namespace Forth
     void  vEncode(Stz* aWordNm, ForthWord* pCalledWord);
     void  vEncode(Stz* aWordNm, GenVar* pGenVar);
     void  vEncode(StepFp* afpEntryStep);
+    EnmSet* pEnmSet(void);
+    void  vEnmSet(EnmSet* pEnmSet);
     Stz*  szExitHook(void);
     void  vExitHook(Stz* szExitHook);
     Cell* aFirstCell(void);
