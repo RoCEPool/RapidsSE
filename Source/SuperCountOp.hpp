@@ -19,11 +19,10 @@ namespace DataOperators
     void* operator new(size_t);
     void  operator delete(void*);
     
-    SuperCountOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn);
+    SuperCountOp(OpSpec* pOpSpec, Digest* pDigest);
    ~SuperCountOp(void) noexcept(false);
   
-    static Op* pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
-                    TokenVec* pTknVec, i8& i_Tkn_);
+    static Op* pNew(OpSpec* pOpSpec, Digest* pDigest);
     
     static eOR eCall(void* aThis);
     

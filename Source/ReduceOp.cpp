@@ -23,7 +23,7 @@ ReduceOp* DataOperators::_pReduceOp(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ReduceOp::ReduceOp(Stz* szOpLabel, Digest* pDigest)
-: Op(CN_REDUCEOP,nullptr,pDigest,nullptr)
+: Op(CN_REDUCEOP,nullptr,pDigest)
 {
   _precondition_(_MAGIC_,CN_REDUCEOP);
 }

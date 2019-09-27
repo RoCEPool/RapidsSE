@@ -22,11 +22,10 @@ namespace DataOperators
     void* operator new(size_t);
     void  operator delete(void*);
     
-    FilterOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn);
+    FilterOp(OpSpec* pOpSpec, Digest* pDigest);
     ~FilterOp(void) noexcept(false);
     
-    static Op* pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
-                    TokenVec* pTknVec, i8& i_Tkn_);
+    static Op* pNew(OpSpec* pOpSpec, Digest* pDigest);
     static eOR eCall(void* aThis);
     static eOR eDrain(void* aThis);
   

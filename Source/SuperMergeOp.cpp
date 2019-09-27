@@ -70,8 +70,8 @@ void SuperMergeOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SuperMergeOp::SuperMergeOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn)
-: Op(CN_SUPERMERGEOP,pOpSpec,pDigest,aOpDefn)
+SuperMergeOp::SuperMergeOp(OpSpec* pOpSpec, Digest* pDigest)
+: Op(CN_SUPERMERGEOP,pOpSpec,pDigest)
 {
   _precondition_(_MAGIC_,CN_SUPERMERGEOP);
   
@@ -99,10 +99,9 @@ SuperMergeOp::~SuperMergeOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* SuperMergeOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
-                       TokenVec* pTknVec, i8& i_Tkn_)
+Op* SuperMergeOp::pNew(OpSpec* pOpSpec, Digest* pDigest)
 {
-  SuperMergeOp* pSuperMergeOp = new SuperMergeOp(pOpSpec,pDigest,aOpDefn);
+  SuperMergeOp* pSuperMergeOp = new SuperMergeOp(pOpSpec,pDigest);
   EnmSet* pEnmSet = pSuperMergeOp->m_pOpSpec->pEnmSet();
   
   // do we have a limit ?

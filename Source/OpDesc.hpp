@@ -29,8 +29,7 @@ namespace Dynamics
            eCN  eOutput,        // what kind of output
            
                                            // function which new's the operator
-           Op*  (*fpNewOp)(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
-                           TokenVec* pTknVec, i8& i_Tkn_),
+           Op*  (*fpNewOp)(OpSpec* pOpSpec, Digest* pDigest),
            
            eOR  (*fpCall)(void* aThisOp),  // function which calls op loop
            eOR  (*fpDrain)(void* aThisOp), // function which drains drain loop

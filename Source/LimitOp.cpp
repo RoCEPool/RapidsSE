@@ -70,8 +70,8 @@ void LimitOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-LimitOp::LimitOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn)
-: Op(CN_LIMITOP,pOpSpec,pDigest,aOpDefn)
+LimitOp::LimitOp(OpSpec* pOpSpec, Digest* pDigest)
+: Op(CN_LIMITOP,pOpSpec,pDigest)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LIMITOP,_FOOTER_);
   
@@ -100,11 +100,10 @@ LimitOp::~LimitOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* LimitOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
-                  TokenVec* pTknVec, i8& i_Tkn_)
+Op* LimitOp::pNew(OpSpec* pOpSpec, Digest* pDigest)
 {
 
-  LimitOp* pLimitOp = new LimitOp(pOpSpec,pDigest,aOpDefn);
+  LimitOp* pLimitOp = new LimitOp(pOpSpec,pDigest);
   
   pLimitOp->m_nLimit = pLimitOp->m_pOpSpec->pEnmSet()->iValue((i8)0);
   

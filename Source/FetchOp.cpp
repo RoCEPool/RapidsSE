@@ -70,8 +70,8 @@ void FetchOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-FetchOp::FetchOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn)
-: Op(CN_FETCHOP,pOpSpec,pDigest,aOpDefn)
+FetchOp::FetchOp(OpSpec* pOpSpec, Digest* pDigest)
+: Op(CN_FETCHOP,pOpSpec,pDigest)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
   
@@ -106,10 +106,9 @@ FetchOp::~FetchOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* FetchOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
-                  TokenVec* pTknVec, i8& i_Tkn_)
+Op* FetchOp::pNew(OpSpec* pOpSpec, Digest* pDigest)
 {
-  FetchOp* pFetchOp = new FetchOp(pOpSpec,pDigest,aOpDefn);
+  FetchOp* pFetchOp = new FetchOp(pOpSpec,pDigest);
   EnmSet* pEnmSet = pFetchOp->m_pOpSpec->pEnmSet();
   
   // get the table name

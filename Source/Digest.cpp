@@ -97,9 +97,7 @@ void Digest::vPopulateOpVec(DynamicSpec* pDynamicSpec)
         continue;
       }
       
-      i8 i_Tkn = C_UNKNOWN;
-      
-      Op* pOp = (aOpDefn->m_fpNewOp)(pOpSpec,this,aOpDefn,nullptr,i_Tkn);
+      Op* pOp = (aOpDefn->m_fpNewOp)(pOpSpec,this);
       m_oOpVec.vAdd(pOp);
       
       vDebugPoint();

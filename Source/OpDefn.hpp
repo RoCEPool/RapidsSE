@@ -29,8 +29,7 @@ namespace Dynamics
   
     eCN  m_eOutput;        // what kind of output
 
-    Op*  (*m_fpNewOp)(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
-                      TokenVec* pTknVec, i8& i_Tkn);
+    Op*  (*m_fpNewOp)(OpSpec* pOpSpec, Digest* pDigest);
     eOR  (*m_fpCall) (void* aThisOp);  // function which calls the op loop
     eOR  (*m_fpDrain)(void* aThisOp);  // function which calls the drain loop
 
