@@ -558,7 +558,7 @@ void Jobs::vJob_post(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* pre-send job function                                                      */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_send(Job* pJob)
+JOBS_fn(vJob_send)
 {
 
 }
@@ -566,7 +566,7 @@ void Jobs::vJob_send(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* post-recv job function                                                     */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_recv(Job* pJob)
+JOBS_fn(vJob_recv)
 {
   pJob->m_bWasReceived   = true;
   

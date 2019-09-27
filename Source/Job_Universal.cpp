@@ -156,6 +156,7 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTokenVec)
   bool b = JobHelper::bExtractArgs(&m_oEnmSet,pTokenVec,pWord_syn->pEnmSet());
   if (! b) {
     vTrace("Unable to match job syntax\n"_Stz);
+    return EC_INVALID_COMMAND;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

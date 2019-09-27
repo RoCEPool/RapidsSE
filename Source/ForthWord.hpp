@@ -24,7 +24,7 @@ namespace Forth
     ForthWord*    m_pPrevWord;    // previous word in dictionary
     bool     m_bPrompt;      // can be executed by prompt?
     i8       m_iLocalNo;     // local number (for a local variable)
-    StepFp   m_fpEntryStep;  // entry step function ∫for this word
+    StepFp   m_fpEntryStep;  // entry step function for this word
     Cell*    m_aEntryCell;   // the cell to start executing from
                              //   for normal words this will be the first cell
                              //     in the data area

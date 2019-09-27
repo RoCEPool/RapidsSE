@@ -15,6 +15,9 @@ namespace ClassData
 //------------------------------------------------------------------------------
 
 #include "ClassNumbers.hpp"
+#include "FnDesc.hpp"
+#include "FnDefn.hpp"
+#include "FnCatalog.hpp"
 #include "LimitsFormats.h"
 
 /*============================================================================*/
