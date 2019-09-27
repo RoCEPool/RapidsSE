@@ -187,7 +187,6 @@ bool Job_Dynamic::bPopulateJob(Session* pSession, TokenVec* pTknVec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   m_pDigest->m_pSession = pSession;
-  //m_pDigest->vParseCommand(pTknVec);
   m_pDigest->vPopulateOpVec(pDynamicSpec);
   m_pDigest->vSetupJob();
   
