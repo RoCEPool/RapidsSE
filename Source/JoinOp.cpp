@@ -61,8 +61,8 @@ void JoinOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-JoinOp::JoinOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn)
-: Op(CN_JOINOP,pOpSpec,pDigest,aOpDefn)
+JoinOp::JoinOp(OpSpec* pOpSpec, Digest* pDigest)
+: Op(CN_JOINOP,pOpSpec,pDigest)
 {
   _precondition_(_MAGIC_,CN_JOINOP);
   
@@ -99,10 +99,9 @@ JoinOp::~JoinOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* JoinOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
-                 TokenVec* pTknVec, i8& i_Tkn_)
+Op* JoinOp::pNew(OpSpec* pOpSpec, Digest* pDigest)
 {  
-  JoinOp* pJoinOp = new JoinOp(pOpSpec,pDigest,aOpDefn);
+  JoinOp* pJoinOp = new JoinOp(pOpSpec,pDigest);
   
   return pJoinOp;
 }

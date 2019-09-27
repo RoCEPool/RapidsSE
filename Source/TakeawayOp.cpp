@@ -23,7 +23,7 @@ TakeawayOp* DataOperators::_pTakeawayOp(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 TakeawayOp::TakeawayOp(Stz* szOpLabel, Digest* pDigest)
-: Op(CN_TAKEAWAYOP,nullptr,pDigest,nullptr)
+: Op(CN_TAKEAWAYOP,nullptr,pDigest)
 {
   _precondition_(_MAGIC_,CN_TAKEAWAYOP);
 }

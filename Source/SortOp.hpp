@@ -16,11 +16,10 @@ namespace DataOperators
     void* operator new(size_t);
     void  operator delete(void*);
     
-    SortOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn);
+    SortOp(OpSpec* pOpSpec, Digest* pDigest);
    ~SortOp(void) noexcept(false);
   
-    static Op* pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
-                    TokenVec* pTknVec, i8& i_Tkn_);
+    static Op* pNew(OpSpec* pOpSpec, Digest* pDigest);
     
     static eOR eCall(void* aThis);
     

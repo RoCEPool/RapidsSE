@@ -52,21 +52,21 @@ void Op::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Op::Op(eCN eClassNo, OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn)
+Op::Op(eCN eClassNo, OpSpec* pOpSpec, Digest* pDigest)
 : Focal(eClassNo,AM::iNextOpId(),AM::iJobUniqueId(pDigest->m_pJob))
 {
   _precondition_(_MAGIC_,eClassNo);
   
   RASSERT(pOpSpec);
-  RASSERT(aOpDefn);
+  RASSERT(pOpSpec->aOpDefn());
   
-  m_sName = aOpDefn->m_szCommand;
+  m_sName = pOpSpec->aOpDefn()->m_szCommand;
   
   m_pOpSpec       = pOpSpec;
   m_sLabel        = "<nil>"_Stz;;
   m_sNextLabel    = "<nil>"_Stz;
   
-  m_aOpDefn       = aOpDefn;
+  m_aOpDefn       = pOpSpec->aOpDefn();
   m_pDigest       = pDigest;
   m_pJob          = pDigest->m_pJob;
   m_pTask         = nullptr;

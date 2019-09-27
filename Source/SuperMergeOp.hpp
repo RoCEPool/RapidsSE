@@ -21,11 +21,10 @@ namespace DataOperators
     void* operator new(size_t);
     void  operator delete(void*);
     
-    SuperMergeOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn);
+    SuperMergeOp(OpSpec* pOpSpec, Digest* pDigest);
    ~SuperMergeOp(void) noexcept(false);
   
-    static Op* pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
-                    TokenVec* pTknVec, i8& i_Tkn_);
+    static Op* pNew(OpSpec* pOpSpec, Digest* pDigest);
     
     static eOR eCall(void* aThis);
     

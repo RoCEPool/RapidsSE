@@ -70,8 +70,8 @@ void GetKeyOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-GetKeyOp::GetKeyOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn)
-: Op(CN_GETKEYOP,pOpSpec,pDigest,aOpDefn)
+GetKeyOp::GetKeyOp(OpSpec* pOpSpec, Digest* pDigest)
+: Op(CN_GETKEYOP,pOpSpec,pDigest)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GETKEYOP,_FOOTER_);
   
@@ -103,11 +103,10 @@ GetKeyOp::~GetKeyOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* GetKeyOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
-                   TokenVec* pTknVec, i8& i_Tkn_)
+Op* GetKeyOp::pNew(OpSpec* pOpSpec, Digest* pDigest)
 {
   
-  GetKeyOp* pGetKeyOp = new GetKeyOp(pOpSpec,pDigest,aOpDefn);
+  GetKeyOp* pGetKeyOp = new GetKeyOp(pOpSpec,pDigest);
   
   pGetKeyOp->m_sKey = pGetKeyOp->m_pOpSpec->pEnmSet()->szValue((i8)0);
   

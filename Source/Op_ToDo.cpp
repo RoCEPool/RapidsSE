@@ -70,8 +70,8 @@ void Op_ToDo::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Op_ToDo::Op_ToDo(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn)
-: Op(CN_OP_TODO,pOpSpec,pDigest,aOpDefn)
+Op_ToDo::Op_ToDo(OpSpec* pOpSpec, Digest* pDigest)
+: Op(CN_OP_TODO,pOpSpec,pDigest)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TODO,_FOOTER_);
   
@@ -97,12 +97,9 @@ Op_ToDo::~Op_ToDo(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* Op_ToDo::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
-                  TokenVec* pTknVec, i8& i_Tkn_)
+Op* Op_ToDo::pNew(OpSpec* pOpSpec, Digest* pDigest)
 {
-  i_Tkn_++;
-  
-  Op_ToDo* pToDataOp = new Op_ToDo(pOpSpec,pDigest,aOpDefn);
+  Op_ToDo* pToDataOp = new Op_ToDo(pOpSpec,pDigest);
   
   return pToDataOp;
 }

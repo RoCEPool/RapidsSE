@@ -25,11 +25,10 @@ namespace DataOperators
     void* operator new(size_t);
     void  operator delete(void*);
 
-    FetchOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn);
+    FetchOp(OpSpec* pOpSpec, Digest* pDigest);
    ~FetchOp(void) noexcept(false);
 
-    static Op* pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
-                    TokenVec* pTknVec, i8& i_Tkn_);
+    static Op* pNew(OpSpec* pOpSpec, Digest* pDigest);
     static eOR eCall(void* aThis);
   
     eOR eOpLoop(void);

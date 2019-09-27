@@ -70,8 +70,8 @@ void AggOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-AggOp::AggOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn)
-: Op(CN_AGGOP,pOpSpec,pDigest,aOpDefn)
+AggOp::AggOp(OpSpec* pOpSpec, Digest* pDigest)
+: Op(CN_AGGOP,pOpSpec,pDigest)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_AGGOP,_FOOTER_);
   
@@ -103,10 +103,9 @@ AggOp::~AggOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* AggOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
-                TokenVec* pTknVec, i8& i_Tkn_)
+Op* AggOp::pNew(OpSpec* pOpSpec, Digest* pDigest)
 {  
-  AggOp* pAggOp = new AggOp(pOpSpec,pDigest,aOpDefn);
+  AggOp* pAggOp = new AggOp(pOpSpec,pDigest);
     
   pAggOp->m_pStreamDef->m_oColVecAry.vItems(1);
   ColumnVec* pColVec = pAggOp->m_pStreamDef->pColumnVec(0);

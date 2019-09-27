@@ -70,8 +70,8 @@ void Op_ToClause::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Op_ToClause::Op_ToClause(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn)
-: Op(CN_OP_TOCLAUSE,pOpSpec,pDigest,aOpDefn)
+Op_ToClause::Op_ToClause(OpSpec* pOpSpec, Digest* pDigest)
+: Op(CN_OP_TOCLAUSE,pOpSpec,pDigest)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TOCLAUSE,_FOOTER_);
   
@@ -105,12 +105,9 @@ Op_ToClause::~Op_ToClause(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* Op_ToClause::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
-                      TokenVec* pTknVec, i8& i_Tkn_)
+Op* Op_ToClause::pNew(OpSpec* pOpSpec, Digest* pDigest)
 {
-  i_Tkn_++;
-  
-  Op_ToClause* pToClauseOp = new Op_ToClause(pOpSpec,pDigest,aOpDefn);
+  Op_ToClause* pToClauseOp = new Op_ToClause(pOpSpec,pDigest);
   
   return pToClauseOp;
 }

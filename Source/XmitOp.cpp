@@ -71,8 +71,8 @@ void XmitOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XmitOp::XmitOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn)
-: Op(CN_XMITOP,pOpSpec,pDigest,aOpDefn)
+XmitOp::XmitOp(OpSpec* pOpSpec, Digest* pDigest)
+: Op(CN_XMITOP,pOpSpec,pDigest)
 {
   _precondition_(_MAGIC_,CN_XMITOP);
   
@@ -94,10 +94,9 @@ XmitOp::~XmitOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* XmitOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
-                 TokenVec* pTknVec, i8& i_Tkn_)
+Op* XmitOp::pNew(OpSpec* pOpSpec, Digest* pDigest)
 {
-  XmitOp* pXmitOp = new XmitOp(pOpSpec,pDigest,aOpDefn);
+  XmitOp* pXmitOp = new XmitOp(pOpSpec,pDigest);
 
   pXmitOp->m_iXmitNode = pXmitOp->m_pOpSpec->pEnmSet()->iValue((i8)2);
   

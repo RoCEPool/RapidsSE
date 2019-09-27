@@ -70,8 +70,8 @@ void ExprOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ExprOp::ExprOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn)
-: Op(CN_EXPROP,pOpSpec,pDigest,aOpDefn)
+ExprOp::ExprOp(OpSpec* pOpSpec, Digest* pDigest)
+: Op(CN_EXPROP,pOpSpec,pDigest)
 {
   _precondition_(_MAGIC_,CN_EXPROP);
   
@@ -107,10 +107,9 @@ ExprOp::~ExprOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* ExprOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
-                 TokenVec* pTknVec, i8& i_Tkn_)
+Op* ExprOp::pNew(OpSpec* pOpSpec, Digest* pDigest)
 {
-  ExprOp* pExprOp = new ExprOp(pOpSpec,pDigest,aOpDefn);
+  ExprOp* pExprOp = new ExprOp(pOpSpec,pDigest);
   
   RASSERT(0);
 //  i_Tkn_++;

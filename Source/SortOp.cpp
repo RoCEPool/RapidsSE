@@ -71,8 +71,8 @@ void SortOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SortOp::SortOp(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn)
-: Op(CN_SORTOP,pOpSpec,pDigest,aOpDefn)
+SortOp::SortOp(OpSpec* pOpSpec, Digest* pDigest)
+: Op(CN_SORTOP,pOpSpec,pDigest)
 {
   _precondition_(_MAGIC_,CN_SORTOP);
   
@@ -99,10 +99,9 @@ SortOp::~SortOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* SortOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
-                 TokenVec* pTknVec, i8& i_Tkn_)
+Op* SortOp::pNew(OpSpec* pOpSpec, Digest* pDigest)
 {
-  SortOp* pSortOp = new SortOp(pOpSpec,pDigest,aOpDefn);
+  SortOp* pSortOp = new SortOp(pOpSpec,pDigest);
 
   return pSortOp;
 }
