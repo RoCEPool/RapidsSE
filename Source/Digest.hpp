@@ -30,7 +30,7 @@ namespace Operators
     Digest(Job* pJob);
    ~Digest(void) noexcept(false);
   
-    void vParseCommand(TokenVec* pTknVec);
+    void vPopulateOpVec(DynamicSpec* pDynamicSpec);
     void vSetupJob(void);
 
     Footer* aFooter(void);

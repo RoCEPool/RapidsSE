@@ -73,82 +73,45 @@ Digest::~Digest(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* process dynamic command                                                    */
 /*----------------------------------------------------------------------------*/
-void Digest::vParseCommand(TokenVec* pTknVec)
+void Digest::vPopulateOpVec(DynamicSpec* pDynamicSpec)
 {
-  s256 sTknStr;
-  s32  sLabel;
-  i8 nTokens = pTknVec->nItems();
-  
   bool bAppendRight = false;
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create
+  StageSpecVec* pStageSpecVec = pDynamicSpec->pStageSpecVec();
   
-  i8 i_Tkn = 1;
-  i8 i_Op = 0;
-  i8 i_SlotsPerNode = AM::pGrid()->nSlotsPerNode();
-  
-  while (i_Tkn < nTokens) {
+  for (i8 i_StageSpec = 0; i_StageSpec < pStageSpecVec->nItems(); i_StageSpec++ ) {
     
-    sTknStr = pTknVec->pGet(i_Tkn)->szText();
+    StageSpec* pStageSpec = pDynamicSpec->pStageSpec(i_StageSpec);
     
-    if (sTknStr.bSame("|"_Stz)) {
-      i_Tkn++;
-      bAppendRight = false;
-      continue;
-    }
+    OpSpecVec* pOpSpecVec = pStageSpec->pOpSpecVec();
     
-    if (sTknStr.bSame("||"_Stz)) {
-      i_Tkn++;
-      bAppendRight = true;
-      continue;
-    }
-
-    //! temp
-    //bAppendRight = false;
-
-    OpDefn* aOpDefn = gxOpCatalog.aFindOp(sTknStr);
-    
-    // unknown
-    if (! aOpDefn) {
-      vTrace(" ? %s\n"_Stz,sTknStr.aStz());
-      ASSERT(0);
-      i_Tkn++;
-      continue;
-    }
-    
-    if (aOpDefn->m_bIsPartitioned) {
+    for (i8 i_OpSpec = 0; i_OpSpec < pOpSpecVec->nItems(); i_OpSpec++ ) {
       
-      i8 i_Tkn_Save = i_Tkn;
+      OpSpec* pOpSpec = pOpSpecVec->pGet(i_OpSpec);
+      OpDefn* aOpDefn = gxOpCatalog.aFindOp(pOpSpec->szName());
       
-      for (i8 i_Slot = 0; i_Slot < i_SlotsPerNode; i_Slot++) {
-        // new an op
-        sLabel.vSprint("%s_%02lld_%02lld"_Stz,
-                       aOpDefn->m_szPrefix,
-                       i_Op,
-                       i_Slot);
-        i_Tkn = i_Tkn_Save;
-        OpSpec* pOpSpec = new OpSpec(sLabel.aStz(),aOpDefn->m_szCommand,bAppendRight,i_Slot);
-        Op* pOp = (aOpDefn->m_fpNewOp)(pOpSpec,this,aOpDefn,pTknVec,i_Tkn);
-        m_oOpVec.vAdd(pOp);
+      // unknown
+      if (! aOpDefn) {
+        vTrace(" ? %s\n"_Stz,pOpSpec->szName());
+        ASSERT(0);
+        continue;
       }
-    }
-    else {
-      // new an op
-      sLabel.vSprint("%s_%02lld"_Stz,
-                     aOpDefn->m_szPrefix,
-                     i_Op);
-      OpSpec* pOpSpec = new OpSpec(sLabel.aStz(),aOpDefn->m_szCommand,bAppendRight,-1);
-      Op* pOp = (aOpDefn->m_fpNewOp)(pOpSpec,this,aOpDefn,pTknVec,i_Tkn);
+      
+      i8 i_Tkn = C_UNKNOWN;
+      
+      Op* pOp = (aOpDefn->m_fpNewOp)(pOpSpec,this,aOpDefn,nullptr,i_Tkn);
       m_oOpVec.vAdd(pOp);
+      
+      vDebugPoint();
     }
-    i_Op++;
+    
   }
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // link the operators
-
-  i_Op = 0;
+  
+  i8 i_Op = 0;
+  i8 i_SlotsPerNode = AM::pGrid()->nSlotsPerNode();
   
   while (true) {
     
@@ -164,7 +127,7 @@ void Digest::vParseCommand(TokenVec* pTknVec)
       
       // figure out next operator
       i_OpNext = i_Op + i_SlotsPerNode;
-    
+      
       // get the next operator
       pOpNext = m_oOpVec.pGet(i_OpNext);
       
@@ -237,12 +200,12 @@ void Digest::vParseCommand(TokenVec* pTknVec)
       //move to next operator to be linked
       i_Op++;
     }
-
+    
     // are we done ?
     if (i_Op == m_oOpVec.nItems() - 1)
       break;
   }
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump
   
@@ -270,7 +233,7 @@ void Digest::vParseCommand(TokenVec* pTknVec)
              );
     }
   }
-  
+
   vDebugPoint();
 }
 

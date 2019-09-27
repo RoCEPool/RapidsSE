@@ -36,7 +36,7 @@ OpSpec::OpSpec(Stz* szOpName)
   //m_sLabel
   m_sName = szOpName;
   m_bAppendRight = false;
-  m_i_Slot = C_UNKNOWN;
+  m_i_Slot = 0; // ALKA: C_UNKNOWN;
 
   //m_oEnmSet
   
