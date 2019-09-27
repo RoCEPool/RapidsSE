@@ -192,6 +192,19 @@ dynamic
 end
 ;
 
+print "**************************************************************************";
+print "scan lineitem | toCsv | toFile "/tmp/lineitem.csv"  | output;";
+print "**************************************************************************";
+dynamic
+
+  plan lineItem_dyn
+  begin
+
+  stage stageA:
+  scan lineitem | toCsv | toFile "/tmp/lineitem.csv"  | output
+
+end
+;
 
 /*
 print "**************************************************************************";

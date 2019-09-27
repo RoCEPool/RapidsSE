@@ -112,9 +112,7 @@ ToCsvOp::~ToCsvOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Op* ToCsvOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                   TokenVec* pTknVec, i8& i_Tkn_)
-{
-  i_Tkn_++;
-  
+{  
   ToCsvOp* pToCsvOp = new ToCsvOp(pOpSpec,pDigest,aOpDefn);
   
   return pToCsvOp;

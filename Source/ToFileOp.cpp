@@ -101,17 +101,11 @@ ToFileOp::~ToFileOp(void) noexcept(false)
 Op* ToFileOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                   TokenVec* pTknVec, i8& i_Tkn_)
 {
-  i_Tkn_++;
   
   ToFileOp* pToFileOp = new ToFileOp(pOpSpec,pDigest,aOpDefn);
   
-  // add enmPair for file name
-  pToFileOp->m_pOpSpec->vAddEnmPair("File"_Stz,
-                                    pTknVec->pGet(i_Tkn_)->szText(),
-                                    pTknVec->pGet(i_Tkn_)->eToken());
-  
   s4K sFilePath;
-  sFilePath = pTknVec->pGet(i_Tkn_++)->szText();
+  sFilePath = pToFileOp->m_pOpSpec->pEnmSet()->szValue((i8)0);
   
   if (! pToFileOp->m_oOutFile.bOpenWrite(sFilePath)) {
     vTrace("Failed to open file: %s\n"_Stz,sFilePath.aChar());

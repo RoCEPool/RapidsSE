@@ -100,8 +100,6 @@ ZedOp::~ZedOp(void) noexcept(false)
 Op* ZedOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                 TokenVec* pTknVec, i8& i_Tkn_)
 {
-  i_Tkn_++;
-  
   ZedOp* pZedOp = new ZedOp(pOpSpec,pDigest,aOpDefn);
   
   return pZedOp;

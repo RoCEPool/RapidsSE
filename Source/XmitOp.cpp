@@ -97,10 +97,9 @@ XmitOp::~XmitOp(void) noexcept(false)
 Op* XmitOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                  TokenVec* pTknVec, i8& i_Tkn_)
 {
-  i_Tkn_++;
   XmitOp* pXmitOp = new XmitOp(pOpSpec,pDigest,aOpDefn);
 
-  pXmitOp->m_iXmitNode = pTknVec->pGet(i_Tkn_)->iToI8();
+  pXmitOp->m_iXmitNode = pXmitOp->m_pOpSpec->pEnmSet()->iValue((i8)2);
   
   return pXmitOp;
 }
