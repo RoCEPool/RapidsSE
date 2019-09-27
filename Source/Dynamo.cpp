@@ -4,6 +4,8 @@
 
 #include "Dynamics.h"
 
+extern OpCatalog gxOpCatalog;
+
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
@@ -103,7 +105,15 @@ bool Dynamo::bCompile(void)
   
   vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
   
-  return false;
+  bResult = bPhase4_opdefn();
+  if (! bResult)
+    return false;
+  
+  m_pDynamicSpec->vPrint();
+  
+  vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -461,6 +471,40 @@ bool Dynamo::bPhase3_flatten(void)
     StageSpec* pStageSpec_n = pStageSpecVec->pGet(i_Stage);
     
     pStageSpec_0->vCopyOps(pStageSpec_n);
+  }
+  
+  return true;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* Phase4 : find op defn's                                                    */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bPhase4_opdefn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  StageSpecVec* pStageSpecVec = m_pDynamicSpec->pStageSpecVec();
+  
+  for (i8 i_Stage = 0; i_Stage < pStageSpecVec->nItems(); i_Stage++) {
+    StageSpec* pStageSpec = pStageSpecVec->pGet(i_Stage);
+    
+    OpSpecVec* pOpSpecVec = pStageSpec->pOpSpecVec();
+    for (i8 i_Op = 0; i_Op < pOpSpecVec->nItems(); i_Op++) {
+      OpSpec* pOpSpec = pOpSpecVec->pGet(i_Op);
+      
+      OpDefn* aOpDefn = gxOpCatalog.aFindOp(pOpSpec->szName());
+      
+      //! HOW DO WE HANDLE ERRORS?
+      if (! aOpDefn) {
+        vFatal("Unable to find %s in op catalog"_Stz,pOpSpec->szName());
+      }
+      
+      pOpSpec->vOpDefn(aOpDefn);
+    }
   }
   
   return true;
