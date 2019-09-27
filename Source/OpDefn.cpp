@@ -2,14 +2,12 @@
 /* OpDefn.cpp -- a definition of an op class                                  */
 /*============================================================================*/
 
-#include "Operators.h"
-
-extern i8 giClassSize[];
+#include "Dynamics.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-OpDefn* Operators::_pOpDefn(void* aAddr)
+OpDefn* Dynamics::_pOpDefn(void* aAddr)
 {
   OpDefn* pOpDefn = reinterpret_cast<OpDefn*>(aAddr);
   

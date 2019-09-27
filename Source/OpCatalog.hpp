@@ -1,9 +1,9 @@
 /*============================================================================*/
-/* PromptCatalog.hpp -- the catalog of prompt functions                       */
+/* OpCatalog.hpp -- the catalog of op functions                               */
 /*============================================================================*/
 #pragma once
 
-namespace Operators
+namespace Dynamics
 {
   class OpCatalog
   {

@@ -14,12 +14,9 @@ namespace Operators
 
 //------------------------------------------------------------------------------
 
-#include "OpDefn.hpp"
-#include "OpDesc.hpp"
 
 #include "Op.hpp"
 #include "OpVec.hpp"
-#include "OpCatalog.hpp"
 
 #include "Digest.hpp"
 #include "OpHelper.hpp"

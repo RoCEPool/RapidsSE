@@ -16,7 +16,7 @@ namespace ControlData   {                                                     }
 namespace Correctness   {                                                     }
 namespace DataOperators {                                                     }
 namespace Debugging     {                                                     }
-namespace Dynamics      {                                                     }
+namespace Dynamics      { class OpSpec;                                       }
 namespace Enums         {                                                     }
 namespace Esses         { template <int BYTES> class String_t;
                           typedef String_t<32>     s32;

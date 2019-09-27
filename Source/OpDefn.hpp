@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Operators
+namespace Dynamics
 {
   struct OpDefn
   {

@@ -14,6 +14,7 @@ namespace Dynamics
     i8   m_i_Slot;
 
     EnmSet  m_oEnmSet;
+    OpDefn* m_aOpDefn;
     
     // must be last
     Footer m_xFooter;
@@ -32,6 +33,8 @@ namespace Dynamics
     Stz* szLabel(void);
     Stz* szName(void);
     void vName(Stz* szName);
+    OpDefn* aOpDefn(void);
+    void vOpDefn(OpDefn* aOpDefn);
     i8   i_Slot(void);
 
     void vPrint(void);

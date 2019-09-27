@@ -40,7 +40,9 @@ OpSpec::OpSpec(Stz* szOpName)
 
   //m_oEnmSet
   
-   _checkInitialised_(CN_OPSPEC);
+  m_aOpDefn = nullptr;
+  
+  _checkInitialised_(CN_OPSPEC);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
 }
@@ -61,6 +63,8 @@ OpSpec::OpSpec(Stz* szOpLabel, Stz* szOpName, bool bAppR, i8 i_Slot)
   //m_sArgs
   //m_oEnmSet
   
+  m_aOpDefn = nullptr;
+
   _checkInitialised_(CN_OPSPEC);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
@@ -137,6 +141,26 @@ void OpSpec::vName(Stz* szName)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
   m_sName = szName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the op defn                                                            */
+/*----------------------------------------------------------------------------*/
+OpDefn* OpSpec::aOpDefn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  return m_aOpDefn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the op defn                                                            */
+/*----------------------------------------------------------------------------*/
+void OpSpec::vOpDefn(OpDefn* aOpDefn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  m_aOpDefn = aOpDefn;
 }
 
 /*----------------------------------------------------------------------------*/
