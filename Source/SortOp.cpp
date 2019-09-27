@@ -102,8 +102,6 @@ SortOp::~SortOp(void) noexcept(false)
 Op* SortOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                  TokenVec* pTknVec, i8& i_Tkn_)
 {
-  i_Tkn_++;
-  
   SortOp* pSortOp = new SortOp(pOpSpec,pDigest,aOpDefn);
 
   return pSortOp;

@@ -105,9 +105,7 @@ ScanOp::~ScanOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Op* ScanOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                  TokenVec* pTknVec, i8& i_Tkn_)
-{
-  i_Tkn_++;
-  
+{  
   ScanOp* pScanOp = new ScanOp(pOpSpec,pDigest,aOpDefn);
   
   pScanOp->m_sTableNm = pScanOp->m_pOpSpec->pEnmSet()->szValue((i8)0);
