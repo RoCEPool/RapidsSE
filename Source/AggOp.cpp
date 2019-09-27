@@ -113,14 +113,10 @@ Op* AggOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
   pAggOp->m_pStreamDef->m_oColVecAry.vItems(1);
   ColumnVec* pColVec = pAggOp->m_pStreamDef->pColumnVec(0);
   
-  pAggOp->m_pOpSpec->vAddEnmPair("Column"_Stz,
-                                  pTknVec->pGet(i_Tkn_)->szText(),
-                                  pTknVec->pGet(i_Tkn_)->eToken());
-  
   // create a column
   Column* pColumn = new Column();
   pColumn->vColumnNo(0);
-  pColumn->vColumnName(pTknVec->pGet(i_Tkn_++)->szText());
+  pColumn->vColumnName(pAggOp->m_pOpSpec->pEnmSet()->szValue((i8)0));
   pColVec->vAdd(pColumn);
   
   return pAggOp;

@@ -93,6 +93,17 @@ end
 
 ;
 
+dynamic
+
+plan lineItem_dyn
+begin
+
+stage stageA:
+scan lineitem | agg L_ORDERKEY | output
+
+end
+
+;
 //time dynamic fetch lineitem LineItem_Idx1 | output;
 //time dynamic scan lineitem | toCsv | toFile "/tmp/x.csv" | output;
 //time dynamic fetch lineitem LineItem_Idx1 | getkey L_PARTKEY | sort | merge | limit 1 | output | zed;
