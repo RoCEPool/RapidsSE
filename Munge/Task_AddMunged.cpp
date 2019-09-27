@@ -17353,7 +17353,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/*----------------------------------------------------------------------------*/\n"
     ": tp: immediate\n"
     "\n"
-    "  token:\n"
+    "  next-token\n"
     "\n"
     "  encodePushValue\n"
     "\n"

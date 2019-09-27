@@ -21,7 +21,7 @@ void Step::vAddSteps_Input(void)
   vAddStep("input.type"_Stz,      &Step::vInputType);
   vAddStep("input.unknown"_Stz,   &Step::vInputUnknown);
 
-  vAddStep("token:"_Stz,          &Step::vTokenColon);
+  vAddStep("next-token"_Stz,          &Step::vTokenColon);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -197,7 +197,7 @@ void Step::vInputUnknown(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* token: -- token colon                                                      */
+/* next-token -- token colon                                                      */
 /*----------------------------------------------------------------------------*/
 void Step::vTokenColon(MP_Task mpTask)
 {
