@@ -110,37 +110,38 @@ ExprOp::~ExprOp(void) noexcept(false)
 Op* ExprOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                  TokenVec* pTknVec, i8& i_Tkn_)
 {
-  i_Tkn_++;
-  
   ExprOp* pExprOp = new ExprOp(pOpSpec,pDigest,aOpDefn);
-  pExprOp->m_iTkn = i_Tkn_;
-  pExprOp->m_pTknVec = pTknVec;
   
-  s4K sExpr = ""_Stz;
-  i8 iExpr = 0;
-  
-  // gather the expressions as enmPairs
-  while (true) {
-    
-    while ( ! pTknVec->pGet(i_Tkn_)->bSame(","_Stz)  &&
-            ! pTknVec->pGet(i_Tkn_)->bSame("|"_Stz)) {
-      sExpr.vConcat(pTknVec->pGet(i_Tkn_++)->szText());
-      sExpr.vConcat(" "_Stz);
-    }
-    s32 sExprNm;
-    StrLib::vSprint(sExprNm,"Expr%lld"_Stz,iExpr++);
-  
-    // add ename pair for expression
-    pExprOp->m_pOpSpec->vAddEnmPair(sExprNm,
-                                     sExpr,
-                                     TN_STRING);
-  
-    if (pTknVec->pGet(i_Tkn_)->bSame("|"_Stz))
-      break;
-  
-    sExpr=""_Stz;
-    i_Tkn_++;
-  }
+  RASSERT(0);
+//  i_Tkn_++;
+//  pExprOp->m_iTkn = i_Tkn_;
+//  pExprOp->m_pTknVec = pTknVec;
+//
+//  s4K sExpr = ""_Stz;
+//  i8 iExpr = 0;
+//
+//  // gather the expressions as enmPairs
+//  while (true) {
+//
+//    while ( ! pTknVec->pGet(i_Tkn_)->bSame(","_Stz)  &&
+//            ! pTknVec->pGet(i_Tkn_)->bSame("|"_Stz)) {
+//      sExpr.vConcat(pTknVec->pGet(i_Tkn_++)->szText());
+//      sExpr.vConcat(" "_Stz);
+//    }
+//    s32 sExprNm;
+//    StrLib::vSprint(sExprNm,"Expr%lld"_Stz,iExpr++);
+//
+//    // add ename pair for expression
+//    pExprOp->m_pOpSpec->vAddEnmPair(sExprNm,
+//                                     sExpr,
+//                                     TN_STRING);
+//
+//    if (pTknVec->pGet(i_Tkn_)->bSame("|"_Stz))
+//      break;
+//
+//    sExpr=""_Stz;
+//    i_Tkn_++;
+//  }
   
   return pExprOp;
 }
