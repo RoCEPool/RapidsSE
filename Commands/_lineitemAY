@@ -164,6 +164,21 @@ dynamic
 end
 ;
 
+print "**************************************************************************";
+print "fetch lineitem lineitem_idx1 | project L_PARTKEY, L_SHIPDATE | output;";
+print "**************************************************************************";
+dynamic
+
+  plan lineItem_dyn
+  begin
+
+  stage stageA:
+  fetch lineitem lineitem_idx1 | project L_PARTKEY L_SHIPDATE | output
+
+end
+;
+
+
 /*
 print "**************************************************************************";
 print "fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join | output;";
