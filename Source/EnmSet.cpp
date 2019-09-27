@@ -129,6 +129,31 @@ void EnmSet::vPrint(void)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
+  vTrace("{ "_Stz);
+  for (i8 i_Enm = 0; i_Enm < m_nEnm; i_Enm++) {
+    
+    if (i_Enm)
+      vTrace(", "_Stz);
+             
+    vTrace("%s=%s"_Stz,
+           
+           m_bStrings.szGet(m_xEnnPair[i_Enm].m_i_Name),
+           m_bStrings.szGet(m_xEnnPair[i_Enm].m_i_Value),
+           
+           C_ENDARGS
+           );
+  }
+ 
+  vTrace(" }\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print                                                                      */
+/*----------------------------------------------------------------------------*/
+void EnmSet::vPrintDetailed(void)
+{
+  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  
   for (i8 i_Enm = 0; i_Enm < m_nEnm; i_Enm++) {
     vTrace("  [%lld] %s _%lld, %s _%lld (%s)\n"_Stz,
            
@@ -136,10 +161,10 @@ void EnmSet::vPrint(void)
            
            m_bStrings.szGet(m_xEnnPair[i_Enm].m_i_Name),
            m_xEnnPair[i_Enm].m_i_Name,
-
+           
            m_bStrings.szGet(m_xEnnPair[i_Enm].m_i_Value),
            m_xEnnPair[i_Enm].m_i_Value,
-
+           
            aTN[m_xEnnPair[i_Enm].m_eToken],
            
            C_ENDARGS

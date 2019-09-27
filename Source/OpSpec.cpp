@@ -160,7 +160,7 @@ void OpSpec::vPrint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  vTrace("%s"_Stz,m_sName.aStz());
+  vTrace("%s "_Stz,m_sName.aStz());
     
   m_oEnmSet.vPrint();
 }

@@ -191,7 +191,7 @@ void StageSpec::vPrint(void)
   vTrace("  "_Stz);
   for (i8 i_Op = 0; i_Op < m_pOpSpecVec->nItems(); i_Op++) {
     if (i_Op)
-      vTrace(" | "_Stz);
+      vTrace("| "_Stz);
     m_pOpSpecVec->pGet(i_Op)->vPrint();
   }
   vTrace("\n"_Stz);
