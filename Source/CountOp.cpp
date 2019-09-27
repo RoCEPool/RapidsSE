@@ -114,8 +114,6 @@ CountOp::~CountOp(void) noexcept(false)
 Op* CountOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
                   TokenVec* pTknVec, i8& i_Tkn_)
 {
-  i_Tkn_++;
-  
   CountOp* pCountOp = new CountOp(pOpSpec,pDigest,aOpDefn);
   
   return pCountOp;

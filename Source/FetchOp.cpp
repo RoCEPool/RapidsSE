@@ -112,24 +112,17 @@ Op* FetchOp::pNew(OpSpec* pOpSpec, Digest* pDigest, OpDefn* aOpDefn,
   i_Tkn_++;
   
   FetchOp* pFetchOp = new FetchOp(pOpSpec,pDigest,aOpDefn);
+  EnmSet* pEnmSet = pFetchOp->m_pOpSpec->pEnmSet();
   
-  // add ename pair for table name
-  pFetchOp->m_pOpSpec->vAddEnmPair("Table"_Stz,
-                                  pTknVec->pGet(i_Tkn_)->szText(),
-                                  pTknVec->pGet(i_Tkn_)->eToken());
+  // get the table name
+  pFetchOp->m_sTableNm = pEnmSet->szValue((i8)0);
   
-  pFetchOp->m_sTableNm = pTknVec->pGet(i_Tkn_++)->szText();
+  // get the index name
+  pFetchOp->m_sIndexNm = pEnmSet->szValue((i8)1);
   
-  // add ename pair for index name
-  pFetchOp->m_pOpSpec->vAddEnmPair("Index"_Stz,
-                                  pTknVec->pGet(i_Tkn_)->szText(),
-                                  pTknVec->pGet(i_Tkn_)->eToken());
-  
-  
-  pFetchOp->m_sIndexNm = pTknVec->pGet(i_Tkn_++)->szText();
-  
-  if (pTknVec->pGet(i_Tkn_)->bIsInteger())
-    pFetchOp->m_nLimit = pTknVec->pGet(i_Tkn_++)->iToI8();
+  // do we have a limit ?
+  if (pEnmSet->nEnm() == 3)
+    pFetchOp->m_nLimit = pEnmSet->iValue((i8)2);
   
   return pFetchOp;
 }
