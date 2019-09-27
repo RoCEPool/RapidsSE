@@ -150,10 +150,10 @@ void StageSpec::vToPipeStr(Stz* szPipeStr)
     
     szPipeStr->vConcat(pOpSpec->szName());
     
-    if (pOpSpec->szArgs()->iLength()) {
-      szPipeStr->vConcat(" "_Stz);
-      szPipeStr->vConcat(pOpSpec->szArgs());
-    }
+//    if (pOpSpec->szArgs()->iLength()) {
+//      szPipeStr->vConcat(" "_Stz);
+//      szPipeStr->vConcat(pOpSpec->szArgs());
+//    }
   }
 
 }

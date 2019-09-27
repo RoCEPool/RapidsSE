@@ -38,7 +38,6 @@ OpSpec::OpSpec(Stz* szOpName)
   m_bAppendRight = false;
   m_i_Slot = C_UNKNOWN;
 
-  //m_sArgs
   //m_oEnmSet
   
    _checkInitialised_(CN_OPSPEC);
@@ -98,26 +97,6 @@ bool OpSpec::bAppendRight(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
   return m_bAppendRight;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get args                                                                   */
-/*----------------------------------------------------------------------------*/
-Stz* OpSpec::szArgs(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
-  return m_sArgs.aStz();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set args                                                                   */
-/*----------------------------------------------------------------------------*/
-void OpSpec::vArgs(Stz* szArgs)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
-  m_sArgs = szArgs;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -182,10 +161,7 @@ void OpSpec::vPrint(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
   vTrace("%s"_Stz,m_sName.aStz());
-  
-  if (m_sArgs.iLength())
-    vTrace(" %s"_Stz,m_sArgs.aStz());
-  
+    
   m_oEnmSet.vPrint();
 }
 

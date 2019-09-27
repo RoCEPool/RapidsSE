@@ -350,8 +350,6 @@ bool Dynamo::bCollectOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  s4K sArgs;
-  
   vTrace("        op=%s\n"_Stz,m_pTkn->szText());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -363,6 +361,7 @@ bool Dynamo::bCollectOp(void)
   
   vAcceptToken();
 
+  i8 i_Arg = 0;
   for (;;) {
     
     if (m_pTkn->bSame("|"_Stz) || m_pTkn->bSame("stage"_Stz)
@@ -370,15 +369,18 @@ bool Dynamo::bCollectOp(void)
       break;
     }
     
-    if (sArgs.iLength())
-      sArgs.vConcat(" "_Stz);
-    sArgs.vConcat(m_pTkn->szText());
-
+    // add an argument
+    
+    s32 sArgName;
+    sArgName.vSprint("<arg_%lld>"_Stz,i_Arg++);
+    
+    s256 sArgValue ( m_pTkn->szText() );
+    
+    m_pOpSpec->vAddEnmPair(sArgName,sArgValue,TN_STRING);
+    
     vAcceptToken();
   }
   
-  m_pOpSpec->vArgs(sArgs);
-
   vTrace("Op Phrase recognised\n"_Stz);
   return true;
 }
@@ -437,7 +439,7 @@ void Dynamo::vReplaceWithXmit(OpSpec* pOpSpec)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   pOpSpec->vName("xmit"_Stz);
-  pOpSpec->vAddEnmPair("<nodeNo>"_Stz,"0"_Stz,TN_INTEGER);
+  pOpSpec->vAddEnmPair("<arg_0>"_Stz,"0"_Stz,TN_INTEGER);
 }
 
 

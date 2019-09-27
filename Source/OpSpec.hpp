@@ -13,7 +13,6 @@ namespace Dynamics
     bool m_bAppendRight;
     i8   m_i_Slot;
 
-    s4K     m_sArgs;
     EnmSet  m_oEnmSet;
     
     // must be last
@@ -29,8 +28,6 @@ namespace Dynamics
   
     void vAddEnmPair(Stz* sName, Stz* sValue, eTN eToken);
     bool bAppendRight(void);
-    Stz* szArgs(void);
-    void vArgs(Stz* szArgs);
     EnmSet* pEnmSet(void);
     Stz* szLabel(void);
     Stz* szName(void);
