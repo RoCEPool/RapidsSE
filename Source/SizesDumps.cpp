@@ -546,7 +546,7 @@ i8 giClassSize[]
   /* 52 */ sizeof(IndexTree),          // CN_INDEXTREE
   /* 53 */ sizeof(IndexTreeVec),       // CN_INDEXTREEVEC
   /*    */ sizeof(InflateOp),          // CN_INFLATEOP
-  /*    */ sizeof(Input),            // CN_INPUT
+  /*    */ sizeof(Input),              // CN_INPUT
   /* 54 */ sizeof(IdxColVec),          // CN_IDXCOLVEC
   /* 55 */ sizeof(IdxVec),             // CN_IDXVEC
   /*    */ sizeof(IngestChunk),        // CN_INGESTCHUNK
@@ -678,7 +678,7 @@ i8 giClassSize[]
   /*    */ sizeof(Local),              // CN_LOCAL
   /*    */ sizeof(LocalSet),           // CN_LOCALSET
   /* 72 */ sizeof(Lock),               // CN_LOCK
-  /*    */ sizeof(Log),        // CN_LOG
+  /*    */ sizeof(Log),                // CN_LOG
   /*    */ sizeof(LogEntry),           // CN_LOGENTRY
 
   /* 73 */ sizeof(Heap), // correct    // CN_MEDIUMPERSISTENT
@@ -785,7 +785,7 @@ i8 giClassSize[]
   /*    */ sizeof(SrtSet),             // CN_SRTSET
   /*126 */ sizeof(Stack),              // CN_STACK
   /*126 */ sizeof(Stage),              // CN_STAGE
-  /*126 */ 0,//sizeof(StagePtn),              // CN_STAGEPTN
+  /*126 */ sizeof(StagePtn),           // CN_STAGEPTN
   /*126 */ sizeof(StageSpec),          // CN_STAGESPEC
   /*126 */ sizeof(StageSpecVec),       // CN_STAGESPECVEC
   /*126 */ sizeof(StageVec),           // CN_STAGEVEC
