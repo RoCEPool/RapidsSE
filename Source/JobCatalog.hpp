@@ -1,0 +1,26 @@
+/*============================================================================*/
+/* JobCatalog.hpp -- the catalog of job classes                               */
+/*============================================================================*/
+#pragma once
+
+namespace Jobs
+{
+  class JobCatalog
+  {
+  public:
+    i8       m_nJobClasss;     // number of job classes
+    JobClass m_xJobClass[128]; // array of job classes
+  
+  public:
+    JobClass* aFindClass(Stz* szCmd1);
+    JobClass* aFindClass(Stz* szCmd1, Stz* szCmd2);
+
+    void    vHelp(eCN eClass);
+    void    vPrintCatalog(void);
+    void    vPrintClass(JobClass* aJobClass);
+  };
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

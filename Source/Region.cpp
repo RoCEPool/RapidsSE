@@ -111,7 +111,9 @@ void Region::vCreate(s32& sRegionName, bool bVerbose,
   bResult = Shm::bOpenCreate(iRegionFd,sRegionName,oSysCall);
   if (! bResult)
     vFatal("Engine::vCreate: failed to create region %s; errno %lld %s\n"_Stz,
-           sRegionName.aChar(),oSysCall.iError(),strerror(oSysCall.iError()));
+           sRegionName.aChar(),
+           oSysCall.iError(),
+           strerror((int)oSysCall.iError()));
 
   // extend the shm region
   bResult = Shm::bExtend(iRegionFd,iRegionSize,oSysCall);
