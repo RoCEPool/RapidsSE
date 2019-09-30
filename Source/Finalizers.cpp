@@ -365,6 +365,7 @@ pFINALIZE *gpFinalize[]
   /*126 */ &Finalize::vUndefined,         // CN_STACK
   /*126 */ &Finalize::vUndefined,         // CN_STAGE
   /*126 */ &Finalize::vUndefined,         // CN_STAGEPTN
+  /*126 */ &Finalize::vUndefined,         // CN_STAGEPTNVEC
   /*126 */ &Finalize::vUndefined,         // CN_STAGESPEC
   /*126 */ &Finalize::vUndefined,         // CN_STAGESPECVEC
   /*126 */ &Finalize::vUndefined,         // CN_STAGEVEC

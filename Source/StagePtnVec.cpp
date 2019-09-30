@@ -10,7 +10,7 @@
 /*----------------------------------------------------------------------------*/
 void* StagePtnVec::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_STAGESPECVEC);
+  void* pObject = HeapMem::pAllocate(CN_STAGEPTNVEC);
   
   return pObject;
 }
@@ -30,11 +30,11 @@ void StagePtnVec::operator delete(void* pAddr)
 /*----------------------------------------------------------------------------*/
 StagePtnVec::StagePtnVec(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPECVEC,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGEPTNVEC,_FOOTER_);
   
-   _checkInitialised_(CN_STAGESPECVEC);
+   _checkInitialised_(CN_STAGEPTNVEC);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_STAGESPECVEC,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_STAGEPTNVEC,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -42,7 +42,7 @@ StagePtnVec::StagePtnVec(void)
 /*----------------------------------------------------------------------------*/
 StagePtnVec::~StagePtnVec(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPECVEC,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGEPTNVEC,_FOOTER_);
 }
 
 
