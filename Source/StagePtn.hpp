@@ -9,6 +9,7 @@ namespace Operators
   {
   public:
     StageSpec* m_pStageSpec; // specification of the stage
+    i8         m_i_Ptn;      // which partition
     OpVec      m_oOpVec;     // set of operators
   
     // must be last
@@ -18,7 +19,7 @@ namespace Operators
     void* operator new(size_t);
     void  operator delete(void*);
     
-    StagePtn(StageSpec* pStageSpec);
+    StagePtn(StageSpec* pStageSpec, i8 i_Ptn);
    ~StagePtn(void) noexcept(false);
   
     StageSpec* pStageSpec(void);

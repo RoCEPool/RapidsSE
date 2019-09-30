@@ -44,12 +44,13 @@ void StagePtn::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StagePtn::StagePtn(StageSpec* pStageSpec)
+StagePtn::StagePtn(StageSpec* pStageSpec, i8 i_Ptn)
 : Object(CN_STAGEPTN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGEPTN,_FOOTER_);
   
   m_pStageSpec = pStageSpec;
+  m_i_Ptn      = i_Ptn;
   //m_oOpVec
   
   _checkInitialised_(CN_STAGEPTN);

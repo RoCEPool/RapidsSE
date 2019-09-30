@@ -10,7 +10,9 @@ namespace Operators
   public:
     StageSpec* m_pStageSpec; // specification of the stage
     OpVec      m_oOpVec;     // set of operators
-  
+
+    StagePtnVec m_oStagePtnVec;   // set of stage-partitions
+
     // must be last
     Footer m_xFooter;
 
