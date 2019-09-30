@@ -22,7 +22,7 @@ namespace Jobs
     void  operator delete(void* aAddress);
     
     Completer(void);
-    ~Completer(void) noexcept(false);
+   ~Completer(void) noexcept(false);
   
     bool bIncProcessed(i8 m_nUnitsExpected);
   
