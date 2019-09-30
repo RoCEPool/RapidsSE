@@ -47,7 +47,7 @@ JobClass xJobClass_DropSchema =
 /*----------------------------------------------------------------------------*/
 JobClass* Jobs::pJob_DropSchema_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_DropTable_class;
+  *pNextFun = (pFUN*)pJob_DropTenant_class;
   
   return &xJobClass_DropSchema;
 }

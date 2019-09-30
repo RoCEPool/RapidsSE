@@ -4,8 +4,7 @@
 
 #include "Jobs.h"
 
-JobClass xJobClass_DropTable =
-{
+JobDesc xJobClass_DropTable (
   CN_JOB_DROPTABLE,      // class number
   JK_DIST2PC,            // job kind
   RS_NODE_ZERO,          // response kind
@@ -37,20 +36,18 @@ JobClass xJobClass_DropTable =
   // help and example
   true,
   "drop table <tableNm>"_Stz,
-  "<example>"_Stz,
-
-  { 0, 0, 0, 0 ,0, 0 } // seeds spawned
-};
+  "<example>"_Stz
+);
 
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* Jobs::pJob_DropTable_class(pFUN** pNextFun)
-{
-  *pNextFun = (pFUN*)pJob_DropTenant_class;
-  
-  return &xJobClass_DropTable;
-}
+//JobClass* Jobs::pJob_DropTable_class(pFUN** pNextFun)
+//{
+//  *pNextFun = (pFUN*)pJob_DropTenant_class;
+//  
+//  return &xJobClass_DropTable;
+//}
 
 
 /*----------------------------------------------------------------------------*/

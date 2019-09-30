@@ -6,6 +6,7 @@
 #include "AM.hpp"
 
 extern AttachMap*    gpAttachMap;
+extern JobCatalog    gxJobCatalog;
 extern PromptCatalog gxPromptCatalog;
 
 /*----------------------------------------------------------------------------*/

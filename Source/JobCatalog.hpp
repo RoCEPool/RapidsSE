@@ -12,7 +12,7 @@ namespace Jobs
     JobClass m_xJobClass[1024]; // array of job classes
   
   public:
-    JobClass* aFindClass(Stz* szCmd1);
+    JobClass* aFindClass(eCN eClass);
     JobClass* aFindClass(Stz* szCmd1, Stz* szCmd2);
 
     void    vHelp(eCN eClass);

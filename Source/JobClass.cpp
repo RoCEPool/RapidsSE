@@ -6,6 +6,8 @@
 
 extern i8 giClassSize[];
 
+extern JobCatalog gxJobCatalog;
+
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
@@ -319,6 +321,10 @@ JobClass* JobClass::pFind(eCN eClass)
 {
   JobClass* pJobClass = nullptr;
   
+  pJobClass = gxJobCatalog.aFindClass(eClass);
+  if (pJobClass)
+    return pJobClass;
+
   for (pJOBCLASSFUN pfJobClass = (pJOBCLASSFUN)pJob__Begun_class; pfJobClass; ) {
     
     pJobClass = pfJobClass((pFUN**)&pfJobClass);
@@ -339,6 +345,12 @@ JobClass* JobClass::pFind(Stz* aCommand1, Stz* aCommand2)
   //vTrace("FindJob: %s %s\n"_Stz, aCommand1, aCommand2);
   
   JobClass* pJobClass = nullptr;
+  
+  pJobClass = gxJobCatalog.aFindClass(aCommand1, aCommand2);
+  if (pJobClass)
+    return pJobClass;
+  
+
   
   for (pJOBCLASSFUN pfJobClass = (pJOBCLASSFUN)pJob__Begun_class; pfJobClass; ) {
     

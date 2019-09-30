@@ -35,6 +35,7 @@ JobBase::JobBase(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iJobId, i8 iForId)
   _precondition_(_ADDRESS_,_MAGIC_,aJobClass->m_eClass);
   
   ASSERT(aReqTuple);
+  ASSERT(aJobClass);
 
   m_aJobClass = aJobClass;
   

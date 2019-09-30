@@ -8,8 +8,17 @@
 /*----------------------------------------------------------------------------*/
 /* find class definition given command                                        */
 /*----------------------------------------------------------------------------*/
-JobClass* JobCatalog::aFindClass(Stz* szCmd1)
+JobClass* JobCatalog::aFindClass(eCN eClass)
 {
+  JobClass* aJobClass = nullptr;
+  
+  for (i8 i_Class = 0; i_Class < m_nJobClasses; i_Class++) {
+    
+    aJobClass = & m_xJobClass[i_Class];
+    
+    if (aJobClass->m_eClass == eClass)
+      return aJobClass;
+  }
   
   return nullptr;
 }
@@ -19,6 +28,28 @@ JobClass* JobCatalog::aFindClass(Stz* szCmd1)
 /*----------------------------------------------------------------------------*/
 JobClass* JobCatalog::aFindClass(Stz* szCmd1, Stz* szCmd2)
 {
+  JobClass* aJobClass = nullptr;
+
+  for (i8 i_Class = 0; i_Class < m_nJobClasses; i_Class++) {
+    
+    aJobClass = & m_xJobClass[i_Class];
+    
+    if (! aJobClass->m_aCommand1 ||
+        ! StrLib::bSame(aJobClass->m_aCommand1->aChar(),szCmd1->aChar()) )
+      continue;
+
+    if (aJobClass->m_aCommand2) {
+      if ( ! StrLib::iLength(aJobClass->m_aCommand2->aChar()) )
+        continue;
+      if ( ! StrLib::bSame(aJobClass->m_aCommand2->aChar(),szCmd2->aChar()) )
+        continue;
+    }
+    
+    if (aJobClass->m_bEnabled)
+      return aJobClass;
+    else
+      return nullptr;
+  }
   
   return nullptr;
 }
