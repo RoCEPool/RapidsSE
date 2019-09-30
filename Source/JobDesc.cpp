@@ -46,6 +46,42 @@ JobDesc::JobDesc(
                  Stz* aExample  // example
               )
 {
+  JobClass* pJobClass = & gxJobCatalog.m_xJobClass[gxJobCatalog.m_nJobClasses++];
+
+  pJobClass->m_eClass     = eClass;
+  pJobClass->m_eKind      = eKind;
+  pJobClass->m_eResponse  = eResponse;
+  pJobClass->m_aComment   = aComment;
+  pJobClass->m_aCommand1  = aCommand1;
+  pJobClass->m_aCommand2  = aCommand2;
+  
+  pJobClass->m_aSeedRun   = aSeedRun;
+  pJobClass->m_aSeedReq   = aSeedReq;
+  pJobClass->m_aSeedRcv   = aSeedRcv;
+  pJobClass->m_aSeedExe   = aSeedExe;
+  pJobClass->m_aSeedEnd   = aSeedEnd;
+  pJobClass->m_aSeedCan   = aSeedCan;
+  
+  pJobClass->m_bDetached  = bDetached;
+  pJobClass->m_bResources = bResources;
+  pJobClass->m_bBuffer    = bBuffer;
+  pJobClass->m_eDdlLock   = eDdlLock;
+  pJobClass->m_ePriority  = ePriority;
+  pJobClass->m_eFlags     = eFlags;
+  
+  pJobClass->m_fpCheck    = fpCheck;
+  pJobClass->m_fpPre      = fpPre;
+  pJobClass->m_fpPost     = fpPost;
+  pJobClass->m_fpNew      = fpNew;
+  pJobClass->m_fpDelete   = fpDelete;
+  pJobClass->m_fpSend     = fpSend;
+  pJobClass->m_fpRecv     = fpRecv;
+  pJobClass->m_fpShow     = fpShow;
+  
+  pJobClass->m_bEnabled   = bEnabled;
+  
+  pJobClass->m_aHelp      = aHelp;
+  pJobClass->m_aExample   = aExample;
 }
 
 /*============================================================================*/
