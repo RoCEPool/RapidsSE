@@ -6,17 +6,22 @@
 
 
 /*----------------------------------------------------------------------------*/
+/*-- Lifecycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Stage::Stage(Stz* szName)
+Stage::Stage(StageSpec* pStageSpec)
 : Object(CN_STAGE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
   
-  m_sName = szName;
+  m_pStageSpec = pStageSpec;
   //m_oOpVec
+  //m_sOutflow
   
-   _checkInitialised_(CN_STAGE);
+  _checkInitialised_(CN_STAGE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
 }
@@ -30,15 +35,18 @@ Stage::~Stage(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get stagae name                                                            */
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-Stz* Stage::szName(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
-  
-  return m_sName.aStz();
-}
 
+/*----------------------------------------------------------------------------*/
+/* get stage spec                                                             */
+/*----------------------------------------------------------------------------*/
+StageSpec* Stage::pStageSpec(void)
+{
+  _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
+  
+  return m_pStageSpec;
+}
 
 
 /*----------------------------------------------------------------------------*/
