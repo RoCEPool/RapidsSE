@@ -19,8 +19,9 @@ namespace Operators
 #include "OpVec.hpp"
 #include "Pipe.hpp"
 #include "Stage.hpp"
-#include "StagePtn.hpp"
 #include "StageVec.hpp"
+#include "StagePtn.hpp"
+#include "StagePtnVec.hpp"
 
 #include "Digest.hpp"
 #include "OpHelper.hpp"
