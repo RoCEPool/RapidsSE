@@ -4,6 +4,7 @@
 
 #include "Jobs.h"
 
+extern JobCatalog gxJobCatalog;
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
