@@ -8,8 +8,8 @@ namespace Jobs
   class JobCatalog
   {
   public:
-    i8       m_nJobClasses;    // number of job classes
-    JobClass m_xJobClass[128]; // array of job classes
+    i8       m_nJobClasses;     // number of job classes
+    JobClass m_xJobClass[1024]; // array of job classes
   
   public:
     JobClass* aFindClass(Stz* szCmd1);
