@@ -229,12 +229,13 @@ void Job_Dynamic::vBegin(void)
     return;
   }
   
-  i8 nOps = m_pDigest->m_oOpVec.nItems();
+  Stage* pStage = m_pDigest->m_oStageVec.pGet(0);
+  i8 nOps = pStage->m_oOpVec.nItems();
   AM::vSetAcksRmg(m_pTask,nOps);
-
-  for (i8 i_Op = m_pDigest->m_oOpVec.nItems() - 1; i_Op >= 0; i_Op--) {
+  
+  for (i8 i_Op = pStage->m_oOpVec.nItems() - 1; i_Op >= 0; i_Op--) {
    
-    Op* pOp = m_pDigest->m_oOpVec.pGet(i_Op);
+    Op* pOp = pStage->m_oOpVec.pGet(i_Op);
     bool bSpawned = AM::bSpawnOp(m_pSession,pOp);
     ASSERT(bSpawned);
   }

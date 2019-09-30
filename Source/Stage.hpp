@@ -7,7 +7,7 @@ namespace Operators
 {
   class Stage : public Object
   {
-  private:
+  public:
     StageSpec* m_pStageSpec; // specification of the stage
     OpVec      m_oOpVec;     // set of operators
   
@@ -15,6 +15,9 @@ namespace Operators
     Footer m_xFooter;
 
   public:
+    void* operator new(size_t);
+    void  operator delete(void*);
+    
     Stage(StageSpec* pStageSpec);
    ~Stage(void) noexcept(false);
   
@@ -22,6 +25,8 @@ namespace Operators
   
     Footer* aFooter(void);
   };
+  
+  Stage* _pStage(void* aAddr);
 }
 
 /*============================================================================*/

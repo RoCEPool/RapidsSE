@@ -81,12 +81,15 @@ void Digest::vPopulateOpVec(DynamicSpec* pDynamicSpec)
   bool bAppendRight = false;
   
   StageSpecVec* pStageSpecVec = pDynamicSpec->pStageSpecVec();
+  m_oStageVec.vAdd(new Stage(pStageSpecVec->pGet(0)));
   
   for (i8 i_StageSpec = 0; i_StageSpec < pStageSpecVec->nItems(); i_StageSpec++ ) {
     
     StageSpec* pStageSpec = pDynamicSpec->pStageSpec(i_StageSpec);
     
     OpSpecVec* pOpSpecVec = pStageSpec->pOpSpecVec();
+    
+    Stage* pStage = m_oStageVec.pGet(i_StageSpec);
     
     for (i8 i_OpSpec = 0; i_OpSpec < pOpSpecVec->nItems(); i_OpSpec++ ) {
       
@@ -101,7 +104,8 @@ void Digest::vPopulateOpVec(DynamicSpec* pDynamicSpec)
       }
       
       Op* pOp = (aOpDefn->m_fpNewOp)(pOpSpec,this);
-      m_oOpVec.vAdd(pOp);
+      
+      pStage->m_oOpVec.vAdd(pOp);
       
       vDebugPoint();
     }
@@ -114,6 +118,8 @@ void Digest::vPopulateOpVec(DynamicSpec* pDynamicSpec)
   i8 i_Op = 0;
   i8 i_SlotsPerNode = AM::pGrid()->nSlotsPerNode();
   
+  Stage* pStage = m_oStageVec.pGet(0);
+  
   while (true) {
     
     Op* pOp;
@@ -121,7 +127,7 @@ void Digest::vPopulateOpVec(DynamicSpec* pDynamicSpec)
     i8 i_OpNext;
     
     // get operator to be linked
-    pOp = m_oOpVec.pGet(i_Op);
+    pOp = pStage->m_oOpVec.pGet(i_Op);
     
     // get next operator
     if (pOp->m_aOpDefn->m_bIsPartitioned) {
@@ -130,7 +136,7 @@ void Digest::vPopulateOpVec(DynamicSpec* pDynamicSpec)
       i_OpNext = i_Op + i_SlotsPerNode;
       
       // get the next operator
-      pOpNext = m_oOpVec.pGet(i_OpNext);
+      pOpNext = pStage->m_oOpVec.pGet(i_OpNext);
       
       // is the next operator an appendRight ?
       if (pOpNext->m_bAppendRight) {
@@ -148,7 +154,7 @@ void Digest::vPopulateOpVec(DynamicSpec* pDynamicSpec)
       for (i8 i_Slot = 0; i_Slot < i_SlotsPerNode; i_Slot++) {
         
         // get the next operator
-        pOpNext = m_oOpVec.pGet(i_OpNext);
+        pOpNext = pStage->m_oOpVec.pGet(i_OpNext);
         
         // link the two operators
         pOp->vNextLabel(pOpNext->szLabel());
@@ -162,7 +168,7 @@ void Digest::vPopulateOpVec(DynamicSpec* pDynamicSpec)
         
         // move to next partition of this operator
         i_Op++;
-        pOp = m_oOpVec.pGet(i_Op);
+        pOp = pStage->m_oOpVec.pGet(i_Op);
         
         // move to next partition of next operator
         if (pOpNext->m_aOpDefn->m_bIsPartitioned)
@@ -175,7 +181,7 @@ void Digest::vPopulateOpVec(DynamicSpec* pDynamicSpec)
       i_OpNext = i_Op + 1;
       
       // get next operator
-      pOpNext = m_oOpVec.pGet(i_OpNext);
+      pOpNext = pStage->m_oOpVec.pGet(i_OpNext);
       
       // is the next operator an appendRight ?
       if (pOpNext->m_bAppendRight) {
@@ -203,7 +209,7 @@ void Digest::vPopulateOpVec(DynamicSpec* pDynamicSpec)
     }
     
     // are we done ?
-    if (i_Op == m_oOpVec.nItems() - 1)
+    if (i_Op == pStage->m_oOpVec.nItems() - 1)
       break;
   }
 
@@ -213,9 +219,9 @@ void Digest::vPopulateOpVec(DynamicSpec* pDynamicSpec)
   if (AM::bVerbose()) {
     vTrace("Dynamic Job:\n"_Stz);
     
-    for (i8 i_Op = 0; i_Op < m_oOpVec.nItems(); i_Op++) {
+    for (i8 i_Op = 0; i_Op < pStage->m_oOpVec.nItems(); i_Op++) {
       
-      Op* pOp = m_oOpVec.pGet(i_Op);
+      Op* pOp = pStage->m_oOpVec.pGet(i_Op);
       
       s32 sArgs;
       EnmSet* pEnmSet = pOp->m_pOpSpec->pEnmSet();
@@ -248,10 +254,11 @@ void Digest::vSetupJob(void)
 {
   vDebugPoint();
   
-  i8 nOps = m_oOpVec.nItems();
+  Stage* pStage = m_oStageVec.pGet(0);
+  i8 nOps = pStage->m_oOpVec.nItems();
   
   for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
-    Op* pOp = m_oOpVec.pGet(i_Op);
+    Op* pOp = pStage->m_oOpVec.pGet(i_Op);
     
     if (CN_LIMITOP == pOp->eClass()) {
       m_bPulsed = true;
@@ -265,7 +272,7 @@ void Digest::vSetupJob(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
-    Op* pOp = m_oOpVec.pGet(i_Op);
+    Op* pOp = pStage->m_oOpVec.pGet(i_Op);
     
     if (CN_SCANOP == pOp->eClass()) {
       m_pOpToPulse = pOp;
