@@ -16,7 +16,10 @@ namespace Operators
   
     bool     m_bCancelling;
   
-    OpVec    m_oOpVec;  // set of operators
+    OpVec    m_oOpVec;    // set of operators
+  
+    DynamicSpec* m_pDynamicSpec; // the dynamic job specification
+    StageVec     m_oStageVec;    // vector of stages
   
   private:
   

@@ -10,8 +10,6 @@ namespace Operators
   private:
     StageSpec* m_pStageSpec; // specification of the stage
     OpVec      m_oOpVec;     // set of operators
-
-    s32        m_sOutflow;   // name of outflow stage
   
     // must be last
     Footer m_xFooter;

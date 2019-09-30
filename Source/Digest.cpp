@@ -53,6 +53,9 @@ Digest::Digest(Job* pJob)
   
   m_bCancelling = false;
   
+  m_pDynamicSpec = nullptr;
+  //m_oStageVec
+  
   _checkInitialised_(CN_DIGEST);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_DIGEST,_FOOTER_);

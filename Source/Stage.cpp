@@ -19,7 +19,6 @@ Stage::Stage(StageSpec* pStageSpec)
   
   m_pStageSpec = pStageSpec;
   //m_oOpVec
-  //m_sOutflow
   
   _checkInitialised_(CN_STAGE);
   

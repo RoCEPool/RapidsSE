@@ -17,13 +17,13 @@ namespace Operators
 
 #include "Op.hpp"
 #include "OpVec.hpp"
+#include "Pipe.hpp"
+#include "Stage.hpp"
+#include "StageVec.hpp"
 
 #include "Digest.hpp"
 #include "OpHelper.hpp"
 
-#include "Pipe.hpp"
-#include "Stage.hpp"
-#include "StageVec.hpp"
 
 #include "Calculator.hpp"
 
