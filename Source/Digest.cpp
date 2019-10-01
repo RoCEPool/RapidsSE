@@ -13,7 +13,7 @@ Digest* Operators::_pDigest(void* aAddr)
 {
   Digest* pDigest = reinterpret_cast<Digest*>(aAddr);
   
-  RASSERT_TYPE(pDigest,CN_DIGEST);
+  RASSERT_TYPE(pDigest,CN_PIPELINE);
   
   return pDigest;
 }
@@ -23,7 +23,7 @@ Digest* Operators::_pDigest(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Digest::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_DIGEST);
+  void* pObject = HeapMem::pAllocate(CN_PIPELINE);
   
   return pObject;
 }
@@ -42,9 +42,9 @@ void Digest::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Digest::Digest(Job* pJob)
-: Object(CN_DIGEST)
+: Object(CN_PIPELINE)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DIGEST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
   m_pSession   = nullptr;
   m_pJob       = pJob;
@@ -56,9 +56,9 @@ Digest::Digest(Job* pJob)
   m_pDynamicSpec = nullptr;
   //m_oStageVec
   
-  _checkInitialised_(CN_DIGEST);
+  _checkInitialised_(CN_PIPELINE);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_DIGEST,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -66,7 +66,7 @@ Digest::Digest(Job* pJob)
 /*----------------------------------------------------------------------------*/
 Digest::~Digest(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DIGEST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

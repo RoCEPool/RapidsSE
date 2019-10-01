@@ -70,7 +70,6 @@ pDUMPFUN *gpDump[]
   /* 33 */ &Dic::vDump,             // CN_DIC
   /*    */ &Dump::vDummy,           // CN_DICPATH
   /* 34 */ &DicStack::vDump,        // CN_DICSTACK
-  /*    */ &Dump::vDummy,           // CN_DIGEST
   /* 35 */ &Dump::vInvalid,         // CN_DIR
   /*    */ &Dump::vDummy,           // CN_DISTINCTOP
   /*    */ &Dump::vDummy,           // CN_DTMVAL
@@ -296,6 +295,7 @@ pDUMPFUN *gpDump[]
   /* 82 */ &Dump::vInvalid,         // CN_PAUSEMARKER
   /* 82 */ &Dump::vInvalid,         // CN_PERUSE
   /*    */ &Dump::vInvalid,         // CN_PIPE
+  /*    */ &Dump::vDummy,           // CN_PIPELINE
   /* 86 */ &Plan::vDump,            // CN_PLAN
   /* 87 */ &Dump::vUndefined,       // CN_PLANNER
   /* 89 */ &Dump::vUndefined,       // CN_PREDICATE
@@ -487,7 +487,6 @@ i8 giClassSize[]
   /* 33 */ sizeof(Dic),                // CN_DIC
   /* 34 */ sizeof(DicPath),            // CN_DICPATH
   /* 34 */ sizeof(DicStack),           // CN_DICSTACK
-  /* 34 */ sizeof(Digest),             // CN_DIGEST
   /* 35 */ sizeof(Dir),                // CN_DIR
   /* 35 */ sizeof(DistinctOp),         // CN_DISTINCTOP
   /*    */ sizeof(DtmVal),             // CN_DTMVAL
@@ -711,6 +710,7 @@ i8 giClassSize[]
   /*    */ sizeof(PauseMarker),        // CN_PAUSEMARKER
   /*    */ sizeof(Peruse),             // CN_PERUSE
   /*    */ sizeof(Fifo),               // CN_PIPE
+  /* 34 */ sizeof(Digest),             // CN_PIPELINE
   /* 86 */ sizeof(Plan),               // CN_PLAN
   /* 87 */ sizeof(Planner),            // CN_PLANNER
   /* 90 */ sizeof(Predicate),          // CN_PREDICATE
@@ -902,7 +902,6 @@ eHT geWhichHeap[]
   /* 33 */ HT_TRANSIENT_MEDIUM,  // CN_DIC
   /*    */ HT_TRANSIENT_SMALL,   // CN_DICPATH
   /* 34 */ HT_TRANSIENT_SMALL,   // CN_DICSTACK
-  /* 34 */ HT_TRANSIENT_MEDIUM,  // CN_DIGEST
   /* 35 */ HT_TRANSIENT_SMALL,   // CN_DIR
   /* 35 */ HT_TRANSIENT_SMALL,   // CN_DISTINCTOP
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_DTMVAL
@@ -1126,6 +1125,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_PAUSEMARKER
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_PERUSE
   /*    */ HT_TRANSIENT_SMALL,   // CN_PIPE
+  /* 34 */ HT_TRANSIENT_MEDIUM,  // CN_PIPELINE
   /* 86 */ HT_TRANSIENT_MEDIUM,  // CN_PLAN
   /* 87 */ HT_TRANSIENT_MEDIUM,  // CN_PLANNER
   /* 89 */ HT_TRANSIENT_SMALL,   // CN_PREDICATE

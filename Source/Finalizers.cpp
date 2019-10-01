@@ -66,7 +66,6 @@ pFINALIZE *gpFinalize[]
   /* 33 */ &Dic::vFinalize,               // CN_DIC
   /*    */ &Finalize::vUndefined,         // CN_DICPATH
   /* 34 */ &Finalize::vUndefined,         // CN_DICSTACK
-  /* 34 */ &Finalize::vUndefined,         // CN_DIGEST
   /* 35 */ &Finalize::vUndefined,         // CN_DIR
   /*    */ &Finalize::vUndefined,         // CN_DISTINCTOP
   /*    */ &Finalize::vUndefined,         // CN_DTMVAL
@@ -289,6 +288,7 @@ pFINALIZE *gpFinalize[]
   /* 82 */ &Finalize::vUndefined,         // CN_PAUSEMARKER
   /* 82 */ &Finalize::vUndefined,         // CN_PERUSE
   /*    */ &Finalize::vUndefined,         // CN_PIPE
+  /* 34 */ &Finalize::vUndefined,         // CN_PIPELINE
   /* 86 */ &Finalize::vUndefined,         // CN_PLAN
   /* 87 */ &Finalize::vUndefined,         // CN_PLANNER
   /* 90 */ &Finalize::vUndefined,         // CN_PREDICATE

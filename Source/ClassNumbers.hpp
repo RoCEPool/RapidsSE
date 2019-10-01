@@ -69,7 +69,6 @@ enum eCN : u2 // Class Number
   /*  29 0x1D      248B Heap:M */ CN_DIC,
   /*  30 0x1E      792B Heap:S */ CN_DICPATH,
   /*  31 0x1F      152B Heap:S */ CN_DICSTACK,
-  /*  31 0x1F      152B Heap:S */ CN_DIGEST,
   /*  32 0x20      608B Heap:S */ CN_DIR,
   /*                           */ CN_DISTINCTOP,
   /*                           */ CN_DTMVAL,
@@ -291,6 +290,7 @@ enum eCN : u2 // Class Number
   /*                           */ CN_PAUSEMARKER,
   /*                           */ CN_PERUSE,
   /* 161 0xA1      320B Heap:S */ CN_PIPE,
+  /*  31 0x1F      152B Heap:S */ CN_PIPELINE,
   /* 162 0xA2    48376B Heap:M */ CN_PLAN,
   /* 163 0xA3     3112B Heap:M */ CN_PLANNER,
   /* 164 0xA4       48B Heap:S */ CN_PREDICATE,
@@ -483,7 +483,6 @@ static Stz* aCN[]
   /*  29 0x1D */ "DIC"_Stz,                 // CN_DIC
   /*  30 0x1E */ "DICPATH"_Stz,             // CN_DICPATH
   /*  31 0x1F */ "DICSTACK"_Stz,            // CN_DICSTACK
-  /*  31 0x1F */ "DIGEST"_Stz,              // CN_DIGEST
   /*  32 0x20 */ "DIR"_Stz,                 // CN_DIR
   /*          */ "DISTINCTOP"_Stz,          // CN_DISTINCTOP
   /*          */ "DTMVAL"_Stz,              // CN_DTMVAL
@@ -705,6 +704,7 @@ static Stz* aCN[]
   /*          */ "PAUSEMARKER"_Stz,         // CN_PAUSEMARKER
   /*          */ "PERUSE"_Stz,              // CN_PERUSE
   /* 161 0xA1 */ "PIPE"_Stz,                // CN_PIPE
+  /*  31 0x1F */ "PIPELINE"_Stz,            // CN_PIPELINE
   /* 162 0xA2 */ "PLAN"_Stz,                // CN_PLAN
   /* 163 0xA3 */ "PLANNER"_Stz,             // CN_PLANNER
   /* 164 0xA4 */ "PREDICATE"_Stz,           // CN_PREDICATE
