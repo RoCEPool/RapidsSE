@@ -147,6 +147,18 @@ eEC Job_DefineNode::ePopulateJob(TokenVec* pTokenVec)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DEFINENODE,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+//  Dic* pRootDic = AM::pRootDic();
+//
+//  ForthWord* pWord_syn = pRootDic->pFindWord("defineNode_syn"_Stz);
+//
+//  bool b = JobHelper::bExtractArgs(&m_oEnmSet,pWord_syn->pEnmSet(),pTokenVec);
+//  if (! b) {
+//    vTrace("Unable to match job syntax\n"_Stz);
+//    return EC_INVALID_COMMAND;
+//  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert we got a create table
   ASSERT(pTokenVec->pGet(0)->bSame("define"_Stz));
   ASSERT(pTokenVec->pGet(1)->bSame("node"_Stz));

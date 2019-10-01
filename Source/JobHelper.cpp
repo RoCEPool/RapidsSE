@@ -53,6 +53,15 @@ bool JobHelper::bExtractJson(EnmSet*   pArgEnmSet,
                              i8&       i_Tkn_
                              )
 {
+  i8 nTokens = pTknVec->nTokens();
+  i8 nEnames = pSynEnmSet->nEnm();
+
+  ASSERT(pSynEnmSet->szValue(i_Syn_)->bSame("__json__"_Stz));
+  
+  Token* pTkn = pTknVec->pGet(i_Tkn_);
+  
+  ASSERT(pTkn->bSame("{"_Stz));
+  
   return true;
 }
 
