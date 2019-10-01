@@ -205,9 +205,9 @@ bool Job_DefineNode::bValidateCreateNode(TokenVec* pTokenVec)
     return false;
   }
   
-  Tokeniser::vToEnmSet(&m_oEnmSet,pTokenVec);
+  //Tokeniser::vToEnmSet(&m_oEnmSet,pTokenVec);
   
-  m_oEnmSet.vPrint();
+  //m_oEnmSet.vPrint();
   
   return true;
 }
