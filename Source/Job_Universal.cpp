@@ -153,7 +153,7 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTokenVec)
   
   ForthWord* pWord_syn = pRootDic->pFindWord("forgetNode_syn"_Stz);
 
-  bool b = JobHelper::bExtractArgs(&m_oEnmSet,pTokenVec,pWord_syn->pEnmSet());
+  bool b = JobHelper::bExtractArgs(&m_oEnmSet,pWord_syn->pEnmSet(),pTokenVec);
   if (! b) {
     vTrace("Unable to match job syntax\n"_Stz);
     return EC_INVALID_COMMAND;
