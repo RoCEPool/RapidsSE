@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Dynamics
+namespace Pipelines
 {
   class OpSpecVec : public VectorNL_t<CN_OPSPECVEC,OpSpec,C_MAX_OPS>
   {

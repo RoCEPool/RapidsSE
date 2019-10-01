@@ -2,12 +2,12 @@
 /* OpDefn.cpp -- a definition of an op class                                  */
 /*============================================================================*/
 
-#include "Dynamics.h"
+#include "Pipelines.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-OpDefn* Dynamics::_pOpDefn(void* aAddr)
+OpDefn* Pipelines::_pOpDefn(void* aAddr)
 {
   OpDefn* pOpDefn = reinterpret_cast<OpDefn*>(aAddr);
   

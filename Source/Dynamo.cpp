@@ -2,7 +2,7 @@
 /* Dynamo.cpp -- Dynamo (dynamic plan compiler)                               */
 /*============================================================================*/
 
-#include "Dynamics.h"
+#include "Pipelines.h"
 
 extern OpCatalog gxOpCatalog;
 

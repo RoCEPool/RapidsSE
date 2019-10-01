@@ -16,7 +16,6 @@ namespace ControlData   {                                                     }
 namespace Correctness   {                                                     }
 namespace DataOperators {                                                     }
 namespace Debugging     {                                                     }
-namespace Dynamics      { class OpSpec; class StageSpec;                      }
 namespace Enums         {                                                     }
 namespace Esses         { template <int BYTES> class String_t;
                           typedef String_t<32>     s32;
@@ -51,6 +50,7 @@ namespace Logging       { class Log; class LogEntry;                          }
 namespace MetaData      { class Table; class Index;                           }
 namespace Partitioning  { class BucketMap;  class TablePtn;                   }
 namespace Persistence   { class CarryOver;                                    }
+namespace Pipelines     { class OpSpec; class StageSpec;                      }
 namespace Plans         {                                                     }
 namespace Pool          { class BufferPool; class HeapMem; class PoolBuffer;  }
 namespace Prompt        { class SePrompt;                                     }
@@ -89,7 +89,7 @@ using namespace ControlData;
 using namespace Correctness;
 using namespace DataOperators;
 using namespace Debugging;
-using namespace Dynamics;
+using namespace Pipelines;
 using namespace Enums;
 using namespace Esses;
 using namespace Focals;

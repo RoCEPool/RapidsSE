@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Dynamics
+namespace Pipelines
 {
   class StageVec : public VectorNL_t<CN_STAGEVEC,Stage,C_MAX_STAGES>
   {

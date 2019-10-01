@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Dynamics
+namespace Pipelines
 {
   class OpCatalog
   {

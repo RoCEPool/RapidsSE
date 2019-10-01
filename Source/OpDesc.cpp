@@ -2,7 +2,7 @@
 /* OpDesc.cpp -- the class which populates the operator catalog               */
 /*============================================================================*/
 
-#include "Dynamics.h"
+#include "Pipelines.h"
 
 extern OpCatalog gxOpCatalog;
 
