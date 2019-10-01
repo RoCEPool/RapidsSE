@@ -52,7 +52,7 @@
         "__meta__" swap word::this word.addEnmValStr
       else dup .isJsonToken if
         // dup "%v is a json token" fmt.print
-        // add ("*",meta,TN_STRING) in ename set
+        // add ("*",json,TN_STRING) in ename set
         "__json__" swap word::this word.addEnmValStr
       else
         // dup "%v is a normal token" fmt.print

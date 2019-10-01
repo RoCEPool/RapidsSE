@@ -117,6 +117,25 @@ bool JobHelper::bExtractMeta(EnmSet*   pArgEnmSet,
   return true;
 }
 
+/*----------------------------------------------------------------------------*/
+/* test if the token vector matches the given job syntax                      */
+/*----------------------------------------------------------------------------*/
+bool JobHelper::bMatchesSyntax(TokenVec* pTknVec, EnmSet* pSynEnmSet)
+{
+  i8 nTokens = pTknVec->nTokens();
+  
+  for (i8 i_Tkn = 0; i_Tkn < nTokens; i_Tkn++) {
+    Token* pTkn = pTknVec->pGet(i_Tkn);
+    
+    if (pSynEnmSet->szName(i_Tkn)->bEqual("__meta__"_Stz))
+      return true;
+    
+    if (! pTkn->szText()->bEqual((pSynEnmSet->szValue(i_Tkn))))
+      return false;
+  }
+
+  return true;
+}
 
 /*============================================================================*/
 /* end                                                                        */

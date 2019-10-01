@@ -142,7 +142,7 @@ void Job_Universal::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* populate node                                                              */
 /*----------------------------------------------------------------------------*/
-eEC Job_Universal::ePopulateJob(TokenVec* pTokenVec)
+eEC Job_Universal::ePopulateJob(TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_UNIVERSAL,_FOOTER_);
   
@@ -156,13 +156,17 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTokenVec)
   
   while ( (pWord_jobdef = pRootDic->pEachWord(pWord_jobsyn,pWord_jobdef)) ) {
     vTrace("  jobSyntax: %s\n"_Stz,pWord_jobdef->sName().aStz());
+    
+    if (JobHelper::bMatchesSyntax(pTknVec,pWord_jobdef->pEnmSet())) {
+      vTrace("    matches\n"_Stz);
+      break;
+    }
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  ForthWord* pWord_syn = pRootDic->pFindWord("forgetNode_syn"_Stz);
 
-  bool b = JobHelper::bExtractArgs(&m_oEnmSet,pWord_syn->pEnmSet(),pTokenVec);
+  bool b = JobHelper::bExtractArgs(&m_oEnmSet,pWord_jobdef->pEnmSet(),pTknVec);
   if (! b) {
     vTrace("Unable to match job syntax\n"_Stz);
     return EC_INVALID_COMMAND;
@@ -170,18 +174,18 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert we got a create table
-  ASSERT(pTokenVec->pGet(0)->bSame("forget"_Stz));
-  ASSERT(pTokenVec->pGet(1)->bSame("node"_Stz));
+  ASSERT(pTknVec->pGet(0)->bSame("forget"_Stz));
+  ASSERT(pTknVec->pGet(1)->bSame("node"_Stz));
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // some validations
-  bool bValid = bValidateUniversal(pTokenVec);
+  bool bValid = bValidateUniversal(pTknVec);
   if ( ! bValid ) {
     return EC_INVALID_COMMAND;
   }
   
   // set the node name
-  vNodeName(pTokenVec->pGet(2)->szText());
+  vNodeName(pTknVec->pGet(2)->szText());
   m_oEnmSet.vAdd("<nodeNm>"_Stz,szNodeNm(),TN_STRING);
   
   return EC_NONE;

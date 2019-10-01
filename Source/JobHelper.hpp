@@ -27,6 +27,10 @@ namespace Jobs
                              TokenVec* pTknVec,
                              i8&       i_Tkn_
                              );
+  
+    static bool bMatchesSyntax(TokenVec* pTknVec,
+                               EnmSet*   pSynEnmSet
+                              );
 
   };
 }
