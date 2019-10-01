@@ -9,7 +9,7 @@ extern OpCatalog gxOpCatalog;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Pipeline* Operators::_pDigest(void* aAddr)
+Pipeline* Operators::_pPipeline(void* aAddr)
 {
   Pipeline* pPipeline = reinterpret_cast<Pipeline*>(aAddr);
   
@@ -78,14 +78,13 @@ Pipeline::~Pipeline(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
 {
-  bool bAppendRight = false;
   
   StageSpecVec* pStageSpecVec = pPipelineSpec->pStageSpecVec();
-  m_oStageVec.vAdd(new Stage(pStageSpecVec->pGet(0)));
   
   for (i8 i_StageSpec = 0; i_StageSpec < pStageSpecVec->nItems(); i_StageSpec++ ) {
     
     StageSpec* pStageSpec = pPipelineSpec->pStageSpec(i_StageSpec);
+    m_oStageVec.vAdd(new Stage(pStageSpec));
     
     OpSpecVec* pOpSpecVec = pStageSpec->pOpSpecVec();
     
@@ -107,6 +106,10 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
       
       pStage->m_oOpVec.vAdd(pOp);
       
+      // add the operator to the stages of the stagePtnVec as well
+      for (i8 i_Ptn = 0; i_Ptn < pStage->m_oStagePtnVec.nItems(); i_Ptn++) {
+        pStage->m_oStagePtnVec.pGet(i_Ptn)->m_oOpVec.vAdd(pOp);
+      }
       vDebugPoint();
     }
     
@@ -115,11 +118,36 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // link the operators
   
+  // SINGLE STAGE
+  Stage* pStage = m_oStageVec.pGet(0);
+  
+  // for each partition in the stage
+  for (i8 i_Ptn = 0; i_Ptn < pStage->m_oStagePtnVec.nItems(); i_Ptn++) {
+    
+    StagePtn* pStagePtn = pStage->m_oStagePtnVec.pGet(0);
+    
+    // for each operator in the partition
+    for (i8 i_Op = 0; i_Op < pStagePtn->m_oOpVec.nItems() - 1; i_Op++) {
+    
+      // get operator to be linked
+      Op* pOp = pStagePtn->m_oOpVec.pGet(i_Op);
+      
+      // get the next operator
+      Op* pOpNext = pStagePtn->m_oOpVec.pGet(i_Op+1);
+      
+      // link the two operators
+      pOp->vNextLabel(pOpNext->szLabel());
+      pOp->vOpOut(pOpNext);
+      
+      pOpNext->m_nLeftEndMarkers++;
+    }
+  }
+  /*
   i8 i_Op = 0;
   i8 i_SlotsPerNode = AM::pGrid()->nSlotsPerNode();
   
   Stage* pStage = m_oStageVec.pGet(0);
-  
+
   while (true) {
     
     Op* pOp;
@@ -212,7 +240,7 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
     if (i_Op == pStage->m_oOpVec.nItems() - 1)
       break;
   }
-
+*/
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump
   

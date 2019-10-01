@@ -37,7 +37,7 @@ namespace Operators
     Footer* aFooter(void);
   };
   
-  Pipeline* _pDigest(void* aAddr);
+  Pipeline* _pPipeline(void* aAddr);
 }
 
 /*============================================================================*/

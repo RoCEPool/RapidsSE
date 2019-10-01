@@ -5,7 +5,7 @@
 
 namespace Operators
 {
-  class StagePtnVec : public VectorNL_t<CN_STAGESPECVEC,StageSpec,C_MAX_STAGES>
+  class StagePtnVec : public VectorNL_t<CN_STAGEPTNVEC,StagePtn,C_MAX_STAGES>
   {
   private:
   

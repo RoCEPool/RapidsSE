@@ -89,12 +89,13 @@ dynamic
   pipeline lineItem_dyn
   begin
 
-  stage stageA:
-  scan lineitem | output
+  stage stageA on all partitions:
+    scan lineitem | output
 
 end
 ;
 
+/*
 print "**************************************************************************";
 print "scan lineitem | agg L_ORDERKEY | superAgg | output;";
 print "**************************************************************************";
@@ -207,7 +208,7 @@ dynamic
 end
 ;
 
-/*
+
  
 print "**************************************************************************";
 print "fetch lineitem LineItem_Idx1 | filter L_PARTKEY 10 < | count | output;";

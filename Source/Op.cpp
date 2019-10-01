@@ -83,7 +83,7 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   m_bAppendRight  = pOpSpec->bAppendRight();
 
   m_nSlot            = pOpSpec->i_Slot();
-  m_nLeftEndMarkers  = 1;
+  m_nLeftEndMarkers  = 0;
   m_nRightEndMarkers = 0;
   m_pStreamDef       = nullptr;
   

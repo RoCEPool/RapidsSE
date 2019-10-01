@@ -154,7 +154,7 @@ bool Dynamo::bCollectName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  ASSERT(m_pTkn->bSame("plan"_Stz));
+  ASSERT(m_pTkn->bSame("pipeline"_Stz));
   vAcceptToken();
 
   vTrace("        pipeline=%s\n"_Stz,m_pTkn->szText());

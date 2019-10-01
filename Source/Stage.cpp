@@ -52,6 +52,33 @@ Stage::Stage(StageSpec* pStageSpec)
   m_pStageSpec = pStageSpec;
   //m_oOpVec
   
+  switch (m_pStageSpec->eTopology()) {
+    case PO_ALL_NODES:
+      RASSERT(0);
+      break;
+      
+    case PO_ALL_PARTITIONS:
+      for (i8 i_Ptn = 0; i_Ptn < AM::pGrid()->nPartitions(); i_Ptn++) {
+        m_oStagePtnVec.vAdd(new StagePtn(pStageSpec, i_Ptn));
+      }
+      break;
+      
+    case PO_ORIGIN:
+      RASSERT(0);
+      break;
+      
+    case PO_SPECIFIC_NODE:
+      RASSERT(0);
+      break;
+      
+    case PO_SPECIFIC_PARTITION:
+      RASSERT(0);
+      break;
+      
+    default:
+      RASSERT(0);
+  }
+  
   _checkInitialised_(CN_STAGE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
@@ -78,7 +105,6 @@ StageSpec* Stage::pStageSpec(void)
   
   return m_pStageSpec;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
