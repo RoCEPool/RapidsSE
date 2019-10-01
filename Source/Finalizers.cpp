@@ -69,7 +69,6 @@ pFINALIZE *gpFinalize[]
   /* 35 */ &Finalize::vUndefined,         // CN_DIR
   /*    */ &Finalize::vUndefined,         // CN_DISTINCTOP
   /*    */ &Finalize::vUndefined,         // CN_DTMVAL
-  /*    */ &Finalize::vUndefined,         // CN_DYNAMICSPEC
   /*    */ &Finalize::vUndefined,         // CN_DYNAMO
 
   /*    */ &Finalize::vUndefined,         // CN_EARLYMARKER
@@ -289,6 +288,7 @@ pFINALIZE *gpFinalize[]
   /* 82 */ &Finalize::vUndefined,         // CN_PERUSE
   /*    */ &Finalize::vUndefined,         // CN_PIPE
   /* 34 */ &Finalize::vUndefined,         // CN_PIPELINE
+  /*    */ &Finalize::vUndefined,         // CN_PIPELINESPEC
   /* 86 */ &Finalize::vUndefined,         // CN_PLAN
   /* 87 */ &Finalize::vUndefined,         // CN_PLANNER
   /* 90 */ &Finalize::vUndefined,         // CN_PREDICATE

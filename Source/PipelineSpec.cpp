@@ -10,7 +10,7 @@
 /*----------------------------------------------------------------------------*/
 void* DynamicSpec::operator new(size_t)
 {
-  DynamicSpec* pDynamicSpec = reinterpret_cast<DynamicSpec*>(HeapMem::pAllocate(CN_DYNAMICSPEC));
+  DynamicSpec* pDynamicSpec = reinterpret_cast<DynamicSpec*>(HeapMem::pAllocate(CN_PIPELINESPEC));
   
   return pDynamicSpec;
 }
@@ -29,17 +29,17 @@ void DynamicSpec::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 DynamicSpec::DynamicSpec(Stz* szName)
-: Object(CN_DYNAMICSPEC)
+: Object(CN_PIPELINESPEC)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMICSPEC,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
   m_sName = szName;
   
   m_pStageSpecVec = new StageSpecVec;
   
-  _checkInitialised_(CN_DYNAMICSPEC);
+  _checkInitialised_(CN_PIPELINESPEC);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_DYNAMICSPEC,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -47,7 +47,7 @@ DynamicSpec::DynamicSpec(Stz* szName)
 /*----------------------------------------------------------------------------*/
 DynamicSpec::~DynamicSpec(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMICSPEC,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
   delete m_pStageSpecVec;
 }
@@ -62,7 +62,7 @@ DynamicSpec::~DynamicSpec(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void DynamicSpec::vAddStageSpec(StageSpec* pStageSpec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMICSPEC,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
   m_pStageSpecVec->vAdd(pStageSpec);
 }
@@ -72,7 +72,7 @@ void DynamicSpec::vAddStageSpec(StageSpec* pStageSpec)
 /*----------------------------------------------------------------------------*/
 Stz* DynamicSpec::szName(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMICSPEC,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
   return m_sName.aStz();
 }
@@ -82,7 +82,7 @@ Stz* DynamicSpec::szName(void)
 /*----------------------------------------------------------------------------*/
 StageSpec* DynamicSpec::pFindStageSpec(Stz* szName)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMICSPEC,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
   for (i8 i_Stage = 0; i_Stage < m_pStageSpecVec->nItems(); i_Stage++) {
     StageSpec* pStageSpec = m_pStageSpecVec->pGet(i_Stage);
@@ -99,7 +99,7 @@ StageSpec* DynamicSpec::pFindStageSpec(Stz* szName)
 /*----------------------------------------------------------------------------*/
 StageSpec* DynamicSpec::pStageSpec(i8 i_Stage)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMICSPEC,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
   StageSpec* pStageSpec = m_pStageSpecVec->pGet(i_Stage);
   
@@ -111,7 +111,7 @@ StageSpec* DynamicSpec::pStageSpec(i8 i_Stage)
 /*----------------------------------------------------------------------------*/
 StageSpecVec* DynamicSpec::pStageSpecVec(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMICSPEC,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
   return m_pStageSpecVec;
 }
@@ -124,7 +124,7 @@ StageSpecVec* DynamicSpec::pStageSpecVec(void)
 /*----------------------------------------------------------------------------*/
 void DynamicSpec::vPrint(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMICSPEC,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
   vTrace("dynamic\n"_Stz);
   vTrace("\n"_Stz);
