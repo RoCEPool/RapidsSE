@@ -416,8 +416,9 @@ void Op::vPipeOut(Operand* pOperand)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   if (AM::bVerbose())
-    vTrace("%s(job:%p)::vPipeOut :    %s %p\n"_Stz,
-           m_sLabel.aStz(),
+    vTrace("%s (P%lld) (job:%p)::vPipeOut :    %s %p\n"_Stz,
+           m_sName.aStz(),
+           m_nSlot,
            m_pJob,
            aCN[pOperand->eClass()],
            pOperand);
@@ -448,8 +449,9 @@ void Op::vPipeToJob(Operand* pOperand)
   Queue* pBufferQueue = AM::pBufferQueue(m_pJob);
   
   if (AM::bVerbose())
-    vTrace("%s::vPipeToJob(%p):    %s %p\n"_Stz,
-           m_sLabel.aStz(),
+    vTrace("%s(P%lld)::vPipeToJob(%p):    %s %p\n"_Stz,
+           m_sName.aStz(),
+           m_nSlot,
            m_pJob,
            aCN[pOperand->eClass()],
            pOperand);

@@ -139,7 +139,7 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
       pOp->vNextLabel(pOpNext->szLabel());
       pOp->vOpOut(pOpNext);
       
-      pOpNext->m_nLeftEndMarkers++;
+      pOpNext->m_nLeftEndMarkers = 1;
     }
   }
   /*
