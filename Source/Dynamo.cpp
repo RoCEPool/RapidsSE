@@ -65,7 +65,7 @@ Dynamo::~Dynamo(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* compile entire plan                                                        */
+/* compile entire pipeline                                                    */
 /*----------------------------------------------------------------------------*/
 bool Dynamo::bCompile(void)
 {
@@ -127,7 +127,7 @@ bool Dynamo::bPhase1_collect(void)
   
   vBeginToken(1);
   
-  if (m_pTkn->bSame("plan"_Stz)) {
+  if (m_pTkn->bSame("pipeline"_Stz)) {
     bResult = bCollectName();
     if (! bResult)
       return false;
@@ -157,7 +157,7 @@ bool Dynamo::bCollectName(void)
   ASSERT(m_pTkn->bSame("plan"_Stz));
   vAcceptToken();
 
-  vTrace("        plan=%s\n"_Stz,m_pTkn->szText());
+  vTrace("        pipeline=%s\n"_Stz,m_pTkn->szText());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

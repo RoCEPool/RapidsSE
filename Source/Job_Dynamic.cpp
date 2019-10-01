@@ -167,7 +167,7 @@ bool Job_Dynamic::bPopulateJob(Session* pSession, TokenVec* pTknVec)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
-  ASSERT(pTknVec->pGet(1)->bSame("plan"_Stz));
+  ASSERT(pTknVec->pGet(1)->bSame("pipeline"_Stz));
   
   Dynamo* pDynamo = new Dynamo(pTknVec);
   bool bSuccess = pDynamo->bCompile();

@@ -4,7 +4,7 @@
 
 dynamic
 
-plan lineItem_dyn
+pipeline lineItem_dyn
 begin
 
   stage stageA:

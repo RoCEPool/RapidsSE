@@ -128,7 +128,7 @@ void DynamicSpec::vPrint(void)
   
   vTrace("dynamic\n"_Stz);
   vTrace("\n"_Stz);
-  vTrace("plan %s\n"_Stz,m_sName.aStz());
+  vTrace("pipeline %s\n"_Stz,m_sName.aStz());
   vTrace("begin\n"_Stz);
   
   for (i8 i_Stage = 0; i_Stage < m_pStageSpecVec->nItems(); i_Stage++)

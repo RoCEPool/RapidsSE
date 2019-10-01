@@ -86,7 +86,7 @@ print "scan lineitem | output;";
 print "**************************************************************************";
 dynamic
 
-  plan lineItem_dyn
+  pipeline lineItem_dyn
   begin
 
   stage stageA:
@@ -100,7 +100,7 @@ print "scan lineitem | agg L_ORDERKEY | superAgg | output;";
 print "**************************************************************************";
 dynamic
 
-  plan lineItem_dyn
+  pipeline lineItem_dyn
   begin
 
   stage stageA:
@@ -114,7 +114,7 @@ print "scan lineitem | count | superCount | output;";
 print "**************************************************************************";
 dynamic
 
-  plan lineItem_dyn
+  pipeline lineItem_dyn
   begin
 
   stage stageA:
@@ -128,7 +128,7 @@ print "fetch lineitem lineitem_idx1 | output;";
 print "**************************************************************************";
 dynamic
 
-  plan lineItem_dyn
+  pipeline lineItem_dyn
   begin
 
   stage stageA:
@@ -142,7 +142,7 @@ print "fetch lineitem lineitem_idx1  1 | limit 1 | output;";
 print "**************************************************************************";
 dynamic
 
-  plan lineItem_dyn
+  pipeline lineItem_dyn
   begin
 
   stage stageA:
@@ -156,7 +156,7 @@ print "fetch lineitem lineitem_idx1 | getKey L_PARTKEY | sort | merge | superMer
 print "**************************************************************************";
 dynamic
 
-  plan lineItem_dyn
+  pipeline lineItem_dyn
   begin
 
   stage stageA:
@@ -170,7 +170,7 @@ print "fetch lineitem lineitem_idx1 | getKey L_PARTKEY | sort | merge | superMer
 print "**************************************************************************";
 dynamic
 
-  plan lineItem_dyn
+  pipeline lineItem_dyn
   begin
 
   stage stageA:
@@ -184,7 +184,7 @@ print "fetch lineitem lineitem_idx1 | project L_PARTKEY, L_SHIPDATE | output;";
 print "**************************************************************************";
 dynamic
 
-  plan lineItem_dyn
+  pipeline lineItem_dyn
   begin
 
   stage stageA:
@@ -198,7 +198,7 @@ print "scan lineitem | toCsv | toFile "/tmp/lineitem.csv"  | output;";
 print "**************************************************************************";
 dynamic
 
-  plan lineItem_dyn
+  pipeline lineItem_dyn
   begin
 
   stage stageA:
@@ -214,7 +214,7 @@ print "fetch lineitem LineItem_Idx1 | filter L_PARTKEY 10 < | count | output;";
 print "**************************************************************************";
 dynamic
 
-  plan lineItem_dyn
+  pipeline lineItem_dyn
   begin
 
   stage stageA:
@@ -228,7 +228,7 @@ print "fetch lineitem LineItem_Idx1 || fetch orders orders_idx1 | join | output;
 print "**************************************************************************";
 dynamic
 
-  plan lineItem_dyn
+  pipeline lineItem_dyn
   begin
 
   stage stageA:

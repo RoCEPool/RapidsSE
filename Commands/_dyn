@@ -6,7 +6,7 @@ startCluster;
 
 dynamic 
 
-plan dyn
+pipeline dyn
 begin
 
   stage stageA on all partitions:
