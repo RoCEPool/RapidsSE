@@ -11,7 +11,7 @@ namespace Dynamics
   
     TokenVec*    m_p_TknVec;
   
-    DynamicSpec* m_pDynamicSpec;
+    PipelineSpec* m_pPipelineSpec;
     StageSpec*   m_pStageSpec;
     OpSpec*      m_pOpSpec;
   
@@ -50,8 +50,8 @@ namespace Dynamics
 
     void vAcceptToken(void);
     void vBeginToken(i8 i_Tkn);
-    DynamicSpec* pDynamicSpec(void);
-    void vDynamicSpec(DynamicSpec* pDynamicSpec);
+    PipelineSpec* pPipelineSpec(void);
+    void vDynamicSpec(PipelineSpec* pPipelineSpec);
     bool bIsOperator(Token* pTkn);
 
     Footer* aFooter(void);

@@ -16,7 +16,7 @@ namespace Operators
   
     bool     m_bCancelling;
   
-    DynamicSpec* m_pDynamicSpec; // the dynamic job specification
+    PipelineSpec* m_pPipelineSpec; // the dynamic job specification
     StageVec     m_oStageVec;    // vector of stages
   
   private:
@@ -31,7 +31,7 @@ namespace Operators
     Pipeline(Job* pJob);
    ~Pipeline(void) noexcept(false);
   
-    void vPopulateOpVec(DynamicSpec* pDynamicSpec);
+    void vPopulateOpVec(PipelineSpec* pPipelineSpec);
     void vSetupJob(void);
 
     Footer* aFooter(void);

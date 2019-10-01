@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* DynamicSpec.hpp -- Dynamic Specification                                   */
+/* PipelineSpec.hpp -- Dynamic Specification                                   */
 /*============================================================================*/
 #pragma once
 
 namespace Dynamics
 {
-  class DynamicSpec : public Object
+  class PipelineSpec : public Object
   {
   private:
   
@@ -20,8 +20,8 @@ namespace Dynamics
     void* operator new(size_t);
     void  operator delete(void*);
   
-    DynamicSpec(Stz* szName);
-   ~DynamicSpec(void) noexcept(false);
+    PipelineSpec(Stz* szName);
+   ~PipelineSpec(void) noexcept(false);
   
     void vAddStageSpec(StageSpec* pStageSpec);
     Stz* szName(void);

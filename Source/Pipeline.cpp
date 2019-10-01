@@ -53,7 +53,7 @@ Pipeline::Pipeline(Job* pJob)
   
   m_bCancelling = false;
   
-  m_pDynamicSpec = nullptr;
+  m_pPipelineSpec = nullptr;
   //m_oStageVec
   
   _checkInitialised_(CN_PIPELINE);
@@ -76,16 +76,16 @@ Pipeline::~Pipeline(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* process dynamic command                                                    */
 /*----------------------------------------------------------------------------*/
-void Pipeline::vPopulateOpVec(DynamicSpec* pDynamicSpec)
+void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
 {
   bool bAppendRight = false;
   
-  StageSpecVec* pStageSpecVec = pDynamicSpec->pStageSpecVec();
+  StageSpecVec* pStageSpecVec = pPipelineSpec->pStageSpecVec();
   m_oStageVec.vAdd(new Stage(pStageSpecVec->pGet(0)));
   
   for (i8 i_StageSpec = 0; i_StageSpec < pStageSpecVec->nItems(); i_StageSpec++ ) {
     
-    StageSpec* pStageSpec = pDynamicSpec->pStageSpec(i_StageSpec);
+    StageSpec* pStageSpec = pPipelineSpec->pStageSpec(i_StageSpec);
     
     OpSpecVec* pOpSpecVec = pStageSpec->pOpSpecVec();
     

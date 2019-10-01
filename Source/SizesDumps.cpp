@@ -710,7 +710,7 @@ i8 giClassSize[]
   /*    */ sizeof(Peruse),             // CN_PERUSE
   /*    */ sizeof(Fifo),               // CN_PIPE
   /* 34 */ sizeof(Pipeline),           // CN_PIPELINE
-  /*    */ sizeof(DynamicSpec),        // CN_PIPELINESPEC
+  /*    */ sizeof(PipelineSpec),        // CN_PIPELINESPEC
   /* 86 */ sizeof(Plan),               // CN_PLAN
   /* 87 */ sizeof(Planner),            // CN_PLANNER
   /* 90 */ sizeof(Predicate),          // CN_PREDICATE

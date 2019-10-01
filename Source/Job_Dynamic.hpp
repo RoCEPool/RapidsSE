@@ -8,13 +8,13 @@ namespace Jobs
   class Job_Dynamic : public JobMark2
   {
   public:
-    Pipeline*       m_pPipeline;
-    DynamicSpec*  m_pDynamicSpec;
+    Pipeline*      m_pPipeline;
+    PipelineSpec*  m_pPipelineSpec;
   
-    StreamDef*    m_pStreamDef;
-    Queue*        m_pBufferQueue;     // the buffer queue
+    StreamDef*     m_pStreamDef;
+    Queue*         m_pBufferQueue;     // the buffer queue
     
-    s4K           m_sRequest;
+    s4K            m_sRequest;
     
     // must be last
     Footer m_xFooter;

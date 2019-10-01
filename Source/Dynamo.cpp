@@ -36,7 +36,7 @@ Dynamo::Dynamo(TokenVec* pTknVec)
   
   m_p_TknVec = pTknVec;
   
-  m_pDynamicSpec = nullptr;
+  m_pPipelineSpec = nullptr;
   m_pStageSpec   = nullptr;
   m_pOpSpec      = nullptr;
   
@@ -55,7 +55,7 @@ Dynamo::~Dynamo(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  delete m_pDynamicSpec;
+  delete m_pPipelineSpec;
   //delete m_pStageSpec;
   //delete m_pOpSpec;
 }
@@ -85,7 +85,7 @@ bool Dynamo::bCompile(void)
   if (! bResult)
     return false;
   
-  m_pDynamicSpec->vPrint();
+  m_pPipelineSpec->vPrint();
 
   vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
   
@@ -93,7 +93,7 @@ bool Dynamo::bCompile(void)
   if (! bResult)
     return false;
 
-  m_pDynamicSpec->vPrint();
+  m_pPipelineSpec->vPrint();
   
   vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
   
@@ -101,7 +101,7 @@ bool Dynamo::bCompile(void)
   if (! bResult)
     return false;
   
-  m_pDynamicSpec->vPrint();
+  m_pPipelineSpec->vPrint();
   
   vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
   
@@ -109,7 +109,7 @@ bool Dynamo::bCompile(void)
   if (! bResult)
     return false;
   
-  m_pDynamicSpec->vPrint();
+  m_pPipelineSpec->vPrint();
   
   vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
   
@@ -161,7 +161,7 @@ bool Dynamo::bCollectName(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pDynamicSpec = new DynamicSpec(m_pTkn->szText());
+  m_pPipelineSpec = new PipelineSpec(m_pTkn->szText());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -201,7 +201,7 @@ bool Dynamo::bCollectStage(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   m_pStageSpec = new StageSpec(m_pTkn->szText());
-  m_pDynamicSpec->vAddStageSpec(m_pStageSpec);
+  m_pPipelineSpec->vAddStageSpec(m_pStageSpec);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -419,7 +419,7 @@ bool Dynamo::bPhase2_staging(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  StageSpecVec* pStageSpecVec = m_pDynamicSpec->pStageSpecVec();
+  StageSpecVec* pStageSpecVec = m_pPipelineSpec->pStageSpecVec();
   
   for (i8 i_Stage = 0; i_Stage < pStageSpecVec->nItems(); i_Stage++) {
     StageSpec* pStageSpec = pStageSpecVec->pGet(i_Stage);
@@ -430,7 +430,7 @@ bool Dynamo::bPhase2_staging(void)
 
       vTrace("  op=%s\n"_Stz,pOpSpec->szName());
       
-      if (m_pDynamicSpec->pFindStageSpec(pOpSpec->szName())) {
+      if (m_pPipelineSpec->pFindStageSpec(pOpSpec->szName())) {
         vTrace("  op %s is a stage\n"_Stz,pOpSpec->szName());
         vReplaceWithXmit(pOpSpec);
       }
@@ -464,7 +464,7 @@ bool Dynamo::bPhase3_flatten(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  StageSpecVec* pStageSpecVec = m_pDynamicSpec->pStageSpecVec();
+  StageSpecVec* pStageSpecVec = m_pPipelineSpec->pStageSpecVec();
   
   StageSpec* pStageSpec_0 = pStageSpecVec->pGet(0);
   for (i8 i_Stage = 1; i_Stage < pStageSpecVec->nItems(); i_Stage++) {
@@ -487,7 +487,7 @@ bool Dynamo::bPhase4_opdefn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  StageSpecVec* pStageSpecVec = m_pDynamicSpec->pStageSpecVec();
+  StageSpecVec* pStageSpecVec = m_pPipelineSpec->pStageSpecVec();
   
   for (i8 i_Stage = 0; i_Stage < pStageSpecVec->nItems(); i_Stage++) {
     StageSpec* pStageSpec = pStageSpecVec->pGet(i_Stage);
@@ -542,21 +542,21 @@ void Dynamo::vBeginToken(i8 i_Tkn)
 /*----------------------------------------------------------------------------*/
 /* get the dynamic spec                                                       */
 /*----------------------------------------------------------------------------*/
-DynamicSpec* Dynamo::pDynamicSpec(void)
+PipelineSpec* Dynamo::pPipelineSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  return m_pDynamicSpec;
+  return m_pPipelineSpec;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set the dynamic spec                                                       */
 /*----------------------------------------------------------------------------*/
-void Dynamo::vDynamicSpec(DynamicSpec* pDynamicSpec)
+void Dynamo::vDynamicSpec(PipelineSpec* pPipelineSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  m_pDynamicSpec = pDynamicSpec;
+  m_pPipelineSpec = pPipelineSpec;
 }
 
 /*----------------------------------------------------------------------------*/

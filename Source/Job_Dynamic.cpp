@@ -109,7 +109,7 @@ Job_Dynamic::Job_Dynamic(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Se
   //m_oOpVec
   
   m_pPipeline      = nullptr;
-  m_pDynamicSpec = nullptr;
+  m_pPipelineSpec = nullptr;
   
   m_pBufferQueue = new Queue;
   m_pStreamDef   = nullptr;
@@ -127,7 +127,7 @@ Job_Dynamic::~Job_Dynamic(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
  
   //delete m_pPipeline;  // ALKA: ????
-  delete m_pDynamicSpec;
+  delete m_pPipelineSpec;
   
   //delete m_pBufferQueue;  // ALKA: ????
   delete m_pStreamDef;
@@ -172,8 +172,8 @@ bool Job_Dynamic::bPopulateJob(Session* pSession, TokenVec* pTknVec)
   Dynamo* pDynamo = new Dynamo(pTknVec);
   bool bSuccess = pDynamo->bCompile();
   
-  DynamicSpec* pDynamicSpec = pDynamo->pDynamicSpec();
-  StageSpec*   pStageSpec   = pDynamicSpec->pStageSpec(0);
+  PipelineSpec* pPipelineSpec = pDynamo->pPipelineSpec();
+  StageSpec*   pStageSpec   = pPipelineSpec->pStageSpec(0);
   
   s4K sPipe("dynamic "_Stz);
   pStageSpec->vToPipeStr(sPipe.aStz());
@@ -187,7 +187,7 @@ bool Job_Dynamic::bPopulateJob(Session* pSession, TokenVec* pTknVec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   m_pPipeline->m_pSession = pSession;
-  m_pPipeline->vPopulateOpVec(pDynamicSpec);
+  m_pPipeline->vPopulateOpVec(pPipelineSpec);
   m_pPipeline->vSetupJob();
   
   delete pDynamo;
