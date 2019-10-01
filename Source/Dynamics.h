@@ -24,7 +24,7 @@ namespace Dynamics
 #include "StageSpec.hpp"
 #include "StageSpecVec.hpp"
 
-#include "DynamicSpec.hpp"
+#include "PipelineSpec.hpp"
 
 #include "Dynamo.hpp"
 
