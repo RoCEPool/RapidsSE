@@ -136,6 +136,30 @@ void Dic::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
+/* progressively return each word which is of given kind                      */
+/*----------------------------------------------------------------------------*/
+ForthWord* Dic::pEachWord(ForthWord* pKind, ForthWord* pPrior)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  m_okLock.vGrabRead();
+  
+  ForthWord* pWord = (pPrior) ? pPrior->pPrevWord() : m_pLastWord;
+  
+  for ( ; pWord; pWord = pWord->pPrevWord()) {
+    
+    if (pWord->pKind() == pKind) {
+      m_okLock.vDropRead();
+      return pWord;
+    }
+  }
+  
+  m_okLock.vDropRead();
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* finalize                                                                   */
 /*----------------------------------------------------------------------------*/
 void Dic::vFinalize(eCN eClass, Object* pObject)

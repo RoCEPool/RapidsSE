@@ -35,6 +35,9 @@
   // skip the :: token from input source
   next-token drop
 
+  // set the word kind to be jobSyntax
+  [ word::this , ] word::this word.kind!
+
   // attach an ename set to the word being created
   word::this word.attachEnmSet
 

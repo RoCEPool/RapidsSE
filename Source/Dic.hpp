@@ -34,9 +34,9 @@ namespace Forth
     void  vAddWord(ForthWord* pWord);
     ForthWord* pDicKind(void);
     void  vDicKind(ForthWord* pDicKind);
+    ForthWord* pEachWord(ForthWord* pKind, ForthWord* pPrior);
     ForthWord* pFindWord(Stz* aName);
     ForthWord* pFindStep(StepFp fpStep);
-    ForthWord* pRemoveWord(s32& sName);
     bool  bFrozen(void);
     void  vFrozen(bool bFrozen);
     bool  bHasWords(void);
@@ -49,6 +49,7 @@ namespace Forth
     void  vRefDec(void);
     void  vRefInc(void);
     bool  bRefOut(void);
+    ForthWord* pRemoveWord(s32& sName);
     i8    nWords(void);
     
     Footer* aFooter(void);

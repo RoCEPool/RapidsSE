@@ -146,11 +146,20 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_UNIVERSAL,_FOOTER_);
   
+  Dic* pRootDic = AM::pRootDic();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  ForthWord* pWord_jobsyn = pRootDic->pFindWord("jobSyntax:"_Stz);
+  
+  ForthWord* pWord_jobdef = nullptr;
+  
+  while ( (pWord_jobdef = pRootDic->pEachWord(pWord_jobsyn,pWord_jobdef)) ) {
+    vTrace("  jobSyntax: %s\n"_Stz,pWord_jobdef->sName().aStz());
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Dic* pRootDic = AM::pRootDic();
-  
   ForthWord* pWord_syn = pRootDic->pFindWord("forgetNode_syn"_Stz);
 
   bool b = JobHelper::bExtractArgs(&m_oEnmSet,pWord_syn->pEnmSet(),pTokenVec);
