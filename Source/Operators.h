@@ -23,7 +23,7 @@ namespace Operators
 #include "Stage.hpp"
 #include "StageVec.hpp"
 
-#include "Digest.hpp"
+#include "Pipeline.hpp"
 #include "OpHelper.hpp"
 
 
