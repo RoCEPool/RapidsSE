@@ -13,7 +13,7 @@ namespace DataOperators
     Footer m_xFooter;
   
   public:
-    BothOp(Stz* szOpLabel, Digest* pDigest);
+    BothOp(Stz* szOpLabel, Pipeline* pPipeline);
    ~BothOp(void) noexcept(false);
   
   private:

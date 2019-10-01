@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Digest.hpp -- Operator Set Digest                                          */
+/* Pipeline.hpp -- Operator Set Pipeline                                      */
 /*============================================================================*/
 #pragma once
 
 namespace Operators
 {
-  class Digest : public Object
+  class Pipeline : public Object
   {
   public:
   
@@ -28,8 +28,8 @@ namespace Operators
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Digest(Job* pJob);
-   ~Digest(void) noexcept(false);
+    Pipeline(Job* pJob);
+   ~Pipeline(void) noexcept(false);
   
     void vPopulateOpVec(DynamicSpec* pDynamicSpec);
     void vSetupJob(void);
@@ -37,7 +37,7 @@ namespace Operators
     Footer* aFooter(void);
   };
   
-  Digest* _pDigest(void* aAddr);
+  Pipeline* _pDigest(void* aAddr);
 }
 
 /*============================================================================*/

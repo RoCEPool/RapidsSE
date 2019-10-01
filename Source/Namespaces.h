@@ -55,7 +55,7 @@ namespace Plans         {                                                     }
 namespace Pool          { class BufferPool; class HeapMem; class PoolBuffer;  }
 namespace Prompt        { class SePrompt;                                     }
 namespace Oblique       {                                                     }
-namespace Operators     { class Op; class Digest;                             }
+namespace Operators     { class Op; class Pipeline;                             }
 namespace Resources     { class Resource; class ResourceTracker;
                           class Pthread;                                      }
 namespace Rows          { class CrwBuffer;                                    }

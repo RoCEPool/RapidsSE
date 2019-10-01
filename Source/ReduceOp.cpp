@@ -22,8 +22,8 @@ ReduceOp* DataOperators::_pReduceOp(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ReduceOp::ReduceOp(Stz* szOpLabel, Digest* pDigest)
-: Op(CN_REDUCEOP,nullptr,pDigest)
+ReduceOp::ReduceOp(Stz* szOpLabel, Pipeline* pPipeline)
+: Op(CN_REDUCEOP,nullptr,pPipeline)
 {
   _precondition_(_MAGIC_,CN_REDUCEOP);
 }

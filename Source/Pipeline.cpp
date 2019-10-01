@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Digest.cpp -- Operator Set Digest                                          */
+/* Pipeline.cpp -- Operator Set Pipeline                                          */
 /*============================================================================*/
 
 #include "Operators.h"
@@ -9,19 +9,19 @@ extern OpCatalog gxOpCatalog;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Digest* Operators::_pDigest(void* aAddr)
+Pipeline* Operators::_pDigest(void* aAddr)
 {
-  Digest* pDigest = reinterpret_cast<Digest*>(aAddr);
+  Pipeline* pPipeline = reinterpret_cast<Pipeline*>(aAddr);
   
-  RASSERT_TYPE(pDigest,CN_PIPELINE);
+  RASSERT_TYPE(pPipeline,CN_PIPELINE);
   
-  return pDigest;
+  return pPipeline;
 }
 
 /*----------------------------------------------------------------------------*/
 /* new                                                                        */
 /*----------------------------------------------------------------------------*/
-void* Digest::operator new(size_t)
+void* Pipeline::operator new(size_t)
 {
   void* pObject = HeapMem::pAllocate(CN_PIPELINE);
   
@@ -31,17 +31,17 @@ void* Digest::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* delete                                                                     */
 /*----------------------------------------------------------------------------*/
-void Digest::operator delete(void* aAddr)
+void Pipeline::operator delete(void* aAddr)
 {
-  Digest* pDigest = reinterpret_cast<Digest*>(aAddr);
+  Pipeline* pPipeline = reinterpret_cast<Pipeline*>(aAddr);
   
-  HeapMem::vFree(pDigest);
+  HeapMem::vFree(pPipeline);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Digest::Digest(Job* pJob)
+Pipeline::Pipeline(Job* pJob)
 : Object(CN_PIPELINE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
@@ -64,7 +64,7 @@ Digest::Digest(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Digest::~Digest(void) noexcept(false)
+Pipeline::~Pipeline(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
 }
@@ -76,7 +76,7 @@ Digest::~Digest(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* process dynamic command                                                    */
 /*----------------------------------------------------------------------------*/
-void Digest::vPopulateOpVec(DynamicSpec* pDynamicSpec)
+void Pipeline::vPopulateOpVec(DynamicSpec* pDynamicSpec)
 {
   bool bAppendRight = false;
   
@@ -250,7 +250,7 @@ void Digest::vPopulateOpVec(DynamicSpec* pDynamicSpec)
 /*----------------------------------------------------------------------------*/
 /* set up the job                                                             */
 /*----------------------------------------------------------------------------*/
-void Digest::vSetupJob(void)
+void Pipeline::vSetupJob(void)
 {
   vDebugPoint();
   
@@ -287,7 +287,7 @@ void Digest::vSetupJob(void)
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-__aFooterFunction(Digest);
+__aFooterFunction(Pipeline);
 
 /*============================================================================*/
 /* end                                                                        */

@@ -52,8 +52,8 @@ void Op::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Op::Op(eCN eClassNo, OpSpec* pOpSpec, Digest* pDigest)
-: Focal(eClassNo,AM::iNextOpId(),AM::iJobUniqueId(pDigest->m_pJob))
+Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
+: Focal(eClassNo,AM::iNextOpId(),AM::iJobUniqueId(pPipeline->m_pJob))
 {
   _precondition_(_MAGIC_,eClassNo);
   
@@ -67,8 +67,8 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Digest* pDigest)
   m_sNextLabel    = "<nil>"_Stz;
   
   m_aOpDefn       = pOpSpec->aOpDefn();
-  m_pDigest       = pDigest;
-  m_pJob          = pDigest->m_pJob;
+  m_pPipeline       = pPipeline;
+  m_pJob          = pPipeline->m_pJob;
   m_pTask         = nullptr;
   
   m_bAckJobEnd    = true;
@@ -317,7 +317,7 @@ bool Op::bIsCancelling(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_pDigest->m_bCancelling;
+  return m_pPipeline->m_bCancelling;
 }
 
 /*----------------------------------------------------------------------------*/

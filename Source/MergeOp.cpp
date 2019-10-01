@@ -70,8 +70,8 @@ void MergeOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MergeOp::MergeOp(OpSpec* pOpSpec, Digest* pDigest)
-: Op(CN_MERGEOP,pOpSpec,pDigest)
+MergeOp::MergeOp(OpSpec* pOpSpec, Pipeline* pPipeline)
+: Op(CN_MERGEOP,pOpSpec,pPipeline)
 {
   _precondition_(_MAGIC_,CN_MERGEOP);
   
@@ -98,9 +98,9 @@ MergeOp::~MergeOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* MergeOp::pNew(OpSpec* pOpSpec, Digest* pDigest)
+Op* MergeOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 {  
-  MergeOp* pMergeOp = new MergeOp(pOpSpec,pDigest);
+  MergeOp* pMergeOp = new MergeOp(pOpSpec,pPipeline);
   
   return pMergeOp;
 }

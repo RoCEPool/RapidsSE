@@ -70,8 +70,8 @@ void ScanOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ScanOp::ScanOp(OpSpec* pOpSpec, Digest* pDigest)
-: Op(CN_SCANOP,pOpSpec,pDigest)
+ScanOp::ScanOp(OpSpec* pOpSpec, Pipeline* pPipeline)
+: Op(CN_SCANOP,pOpSpec,pPipeline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANOP,_FOOTER_);
   
@@ -103,9 +103,9 @@ ScanOp::~ScanOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* ScanOp::pNew(OpSpec* pOpSpec, Digest* pDigest)
+Op* ScanOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 {
-  ScanOp* pScanOp = new ScanOp(pOpSpec,pDigest);
+  ScanOp* pScanOp = new ScanOp(pOpSpec,pPipeline);
   
   pScanOp->m_sTableNm = pScanOp->m_pOpSpec->pEnmSet()->szValue((i8)0);
   
@@ -139,7 +139,7 @@ eOR ScanOp::eOpLoop(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pipe the crw buffers
   
-  if (m_pDigest->m_bPulsed) {
+  if (m_pPipeline->m_bPulsed) {
     vDebugPoint();
   }
   
@@ -185,7 +185,7 @@ void ScanOp::vPreliminary(void)
   m_bRunPrelim = false;
   
   // find the table in the session dictionary stack
-  m_pTable = Table::pFindTable(m_pDigest->m_pSession->pPathStack(), m_sTableNm);
+  m_pTable = Table::pFindTable(m_pPipeline->m_pSession->pPathStack(), m_sTableNm);
   
   // get table ptn
   m_pTablePtn = m_pTable->pSlots()->pPartition(m_nSlot);

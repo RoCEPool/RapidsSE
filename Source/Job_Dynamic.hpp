@@ -8,7 +8,7 @@ namespace Jobs
   class Job_Dynamic : public JobMark2
   {
   public:
-    Digest*       m_pDigest;
+    Pipeline*       m_pPipeline;
     DynamicSpec*  m_pDynamicSpec;
   
     StreamDef*    m_pStreamDef;

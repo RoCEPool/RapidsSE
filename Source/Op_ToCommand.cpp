@@ -70,8 +70,8 @@ void Op_ToCommand::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Op_ToCommand::Op_ToCommand(OpSpec* pOpSpec, Digest* pDigest)
-: Op(CN_OP_TOCOMMAND,pOpSpec,pDigest)
+Op_ToCommand::Op_ToCommand(OpSpec* pOpSpec, Pipeline* pPipeline)
+: Op(CN_OP_TOCOMMAND,pOpSpec,pPipeline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TOCOMMAND,_FOOTER_);
   
@@ -97,9 +97,9 @@ Op_ToCommand::~Op_ToCommand(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* Op_ToCommand::pNew(OpSpec* pOpSpec, Digest* pDigest)
+Op* Op_ToCommand::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 {
-  Op_ToCommand* pToCommandOp = new Op_ToCommand(pOpSpec,pDigest);
+  Op_ToCommand* pToCommandOp = new Op_ToCommand(pOpSpec,pPipeline);
   
   return pToCommandOp;
 }

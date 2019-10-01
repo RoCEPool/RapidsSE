@@ -70,8 +70,8 @@ void Op_ToFilter::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Op_ToFilter::Op_ToFilter(OpSpec* pOpSpec, Digest* pDigest)
-: Op(CN_OP_TOFILTER,pOpSpec,pDigest)
+Op_ToFilter::Op_ToFilter(OpSpec* pOpSpec, Pipeline* pPipeline)
+: Op(CN_OP_TOFILTER,pOpSpec,pPipeline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TOFILTER,_FOOTER_);
   
@@ -110,9 +110,9 @@ Op_ToFilter::~Op_ToFilter(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* Op_ToFilter::pNew(OpSpec* pOpSpec, Digest* pDigest)
+Op* Op_ToFilter::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 {
-  Op_ToFilter* pToDataOp = new Op_ToFilter(pOpSpec,pDigest);
+  Op_ToFilter* pToDataOp = new Op_ToFilter(pOpSpec,pPipeline);
   
   return pToDataOp;
 }

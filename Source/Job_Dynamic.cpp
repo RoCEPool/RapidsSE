@@ -108,7 +108,7 @@ Job_Dynamic::Job_Dynamic(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Se
   
   //m_oOpVec
   
-  m_pDigest      = nullptr;
+  m_pPipeline      = nullptr;
   m_pDynamicSpec = nullptr;
   
   m_pBufferQueue = new Queue;
@@ -126,7 +126,7 @@ Job_Dynamic::~Job_Dynamic(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
  
-  //delete m_pDigest;  // ALKA: ????
+  //delete m_pPipeline;  // ALKA: ????
   delete m_pDynamicSpec;
   
   //delete m_pBufferQueue;  // ALKA: ????
@@ -186,9 +186,9 @@ bool Job_Dynamic::bPopulateJob(Session* pSession, TokenVec* pTknVec)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pDigest->m_pSession = pSession;
-  m_pDigest->vPopulateOpVec(pDynamicSpec);
-  m_pDigest->vSetupJob();
+  m_pPipeline->m_pSession = pSession;
+  m_pPipeline->vPopulateOpVec(pDynamicSpec);
+  m_pPipeline->vSetupJob();
   
   delete pDynamo;
          
@@ -212,7 +212,7 @@ void Job_Dynamic::vBegin(void)
   
   //Session* pSession = AM::pThisTLSSession();
   
-  m_pDigest      = new Digest(this);
+  m_pPipeline      = new Pipeline(this);
   //m_pBufferQueue = new Queue;
   
   Tokeniser* pTokenizer = new Tokeniser;
@@ -229,7 +229,7 @@ void Job_Dynamic::vBegin(void)
     return;
   }
   
-  Stage* pStage = m_pDigest->m_oStageVec.pGet(0);
+  Stage* pStage = m_pPipeline->m_oStageVec.pGet(0);
   i8 nOps = pStage->m_oOpVec.nItems();
   AM::vSetAcksRmg(m_pTask,nOps);
   

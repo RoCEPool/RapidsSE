@@ -70,8 +70,8 @@ void ToFileOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ToFileOp::ToFileOp(OpSpec* pOpSpec, Digest* pDigest)
-: Op(CN_TOFILEOP,pOpSpec,pDigest)
+ToFileOp::ToFileOp(OpSpec* pOpSpec, Pipeline* pPipeline)
+: Op(CN_TOFILEOP,pOpSpec,pPipeline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOFILEOP,_FOOTER_);
   
@@ -98,10 +98,10 @@ ToFileOp::~ToFileOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* ToFileOp::pNew(OpSpec* pOpSpec, Digest* pDigest)
+Op* ToFileOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 {
   
-  ToFileOp* pToFileOp = new ToFileOp(pOpSpec,pDigest);
+  ToFileOp* pToFileOp = new ToFileOp(pOpSpec,pPipeline);
   
   s4K sFilePath;
   sFilePath = pToFileOp->m_pOpSpec->pEnmSet()->szValue((i8)0);

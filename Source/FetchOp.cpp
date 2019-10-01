@@ -70,8 +70,8 @@ void FetchOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-FetchOp::FetchOp(OpSpec* pOpSpec, Digest* pDigest)
-: Op(CN_FETCHOP,pOpSpec,pDigest)
+FetchOp::FetchOp(OpSpec* pOpSpec, Pipeline* pPipeline)
+: Op(CN_FETCHOP,pOpSpec,pPipeline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHOP,_FOOTER_);
   
@@ -106,9 +106,9 @@ FetchOp::~FetchOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* FetchOp::pNew(OpSpec* pOpSpec, Digest* pDigest)
+Op* FetchOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 {
-  FetchOp* pFetchOp = new FetchOp(pOpSpec,pDigest);
+  FetchOp* pFetchOp = new FetchOp(pOpSpec,pPipeline);
   EnmSet* pEnmSet = pFetchOp->m_pOpSpec->pEnmSet();
   
   // get the table name
@@ -151,7 +151,7 @@ eOR FetchOp::eOpLoop(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pipe the entry buffers
   
-  if (m_pDigest->m_bPulsed) {
+  if (m_pPipeline->m_bPulsed) {
     vDebugPoint();
   }
   
@@ -203,10 +203,10 @@ void FetchOp::vPreliminary(void)
   m_bRunPrelim = false;
   
   // find the table in the session dictionary stack
-  m_pTable = Table::pFindTable(m_pDigest->m_pSession->pPathStack(), m_sTableNm);
+  m_pTable = Table::pFindTable(m_pPipeline->m_pSession->pPathStack(), m_sTableNm);
   
   // find the index in the session dictionary stack
-  m_pIndex = Table::pFindIndex(m_pDigest->m_pSession->pPathStack(), m_sTableNm, m_sIndexNm);
+  m_pIndex = Table::pFindIndex(m_pPipeline->m_pSession->pPathStack(), m_sTableNm, m_sIndexNm);
   
   // get table ptn
   m_pTablePtn = m_pTable->pSlots()->pPartition(m_nSlot);

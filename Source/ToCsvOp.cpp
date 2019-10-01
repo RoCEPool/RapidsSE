@@ -70,8 +70,8 @@ void ToCsvOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ToCsvOp::ToCsvOp(OpSpec* pOpSpec, Digest* pDigest)
-: Op(CN_TOCSVOP,pOpSpec,pDigest)
+ToCsvOp::ToCsvOp(OpSpec* pOpSpec, Pipeline* pPipeline)
+: Op(CN_TOCSVOP,pOpSpec,pPipeline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOCSVOP,_FOOTER_);
   
@@ -110,9 +110,9 @@ ToCsvOp::~ToCsvOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* ToCsvOp::pNew(OpSpec* pOpSpec, Digest* pDigest)
+Op* ToCsvOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 {  
-  ToCsvOp* pToCsvOp = new ToCsvOp(pOpSpec,pDigest);
+  ToCsvOp* pToCsvOp = new ToCsvOp(pOpSpec,pPipeline);
   
   return pToCsvOp;
 }

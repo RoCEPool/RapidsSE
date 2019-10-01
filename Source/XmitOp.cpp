@@ -71,8 +71,8 @@ void XmitOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XmitOp::XmitOp(OpSpec* pOpSpec, Digest* pDigest)
-: Op(CN_XMITOP,pOpSpec,pDigest)
+XmitOp::XmitOp(OpSpec* pOpSpec, Pipeline* pPipeline)
+: Op(CN_XMITOP,pOpSpec,pPipeline)
 {
   _precondition_(_MAGIC_,CN_XMITOP);
   
@@ -94,9 +94,9 @@ XmitOp::~XmitOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* XmitOp::pNew(OpSpec* pOpSpec, Digest* pDigest)
+Op* XmitOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 {
-  XmitOp* pXmitOp = new XmitOp(pOpSpec,pDigest);
+  XmitOp* pXmitOp = new XmitOp(pOpSpec,pPipeline);
 
   pXmitOp->m_iXmitNode = pXmitOp->m_pOpSpec->pEnmSet()->iValue((i8)2);
   
@@ -136,9 +136,9 @@ eOR XmitOp::eXmitLoop(void)
         if (CN_ENDMARKER == pOperand->eClass()) {
           //EndMarker* pEndMarker = _pEndMarker(pOperand);
           //delete pEndMarker;
-          AM::vSpawnJobXmit(m_pDigest->m_pSession,
+          AM::vSpawnJobXmit(m_pPipeline->m_pSession,
                             pOperand,
-                            m_pDigest->m_pJob,
+                            m_pPipeline->m_pJob,
                             this,
                             m_iXmitNode);
           
@@ -148,9 +148,9 @@ eOR XmitOp::eXmitLoop(void)
         if (CN_STREAMDEF == pOperand->eClass()) {
           m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
           //vPipeOut(pOperand);
-          AM::vSpawnJobXmit(m_pDigest->m_pSession,
+          AM::vSpawnJobXmit(m_pPipeline->m_pSession,
                             pOperand,
-                            m_pDigest->m_pJob,
+                            m_pPipeline->m_pJob,
                             this,
                             m_iXmitNode);
           continue;
@@ -170,9 +170,9 @@ eOR XmitOp::eXmitLoop(void)
                     aCN[pOperand->eClass()],
                     m_iXmitNode);
       
-        AM::vSpawnJobXmit(m_pDigest->m_pSession,
+        AM::vSpawnJobXmit(m_pPipeline->m_pSession,
                           pOperand,
-                          m_pDigest->m_pJob,
+                          m_pPipeline->m_pJob,
                           this,
                           m_iXmitNode);
     }

@@ -29,7 +29,7 @@ OpDesc::OpDesc(eCN  eClass,     // class number
                
                eCN  eOutput,        // what kind of output
                                                 // function which new's the operator
-               Op*  (*fpNewOp)(OpSpec* pOpSpec, Digest* pDigest),
+               Op*  (*fpNewOp)(OpSpec* pOpSpec, Pipeline* pPipeline),
                eOR  (*fpCall) (void* aThisOp),  // fun which calls op loop
                eOR  (*fpDrain)(void* aThisOp),  // fun which calls drain loop
                

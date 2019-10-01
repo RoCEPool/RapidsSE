@@ -8,7 +8,7 @@ namespace Jobs
   class Job_Select : public JobMark2
   {
   public:
-    Digest* m_pDigest;
+    Pipeline* m_pPipeline;
 
     Op_ToClause*   m_pToClause;  // convert to clauses
     Op_ToFilter*   m_pToFilter;  // convert to filters

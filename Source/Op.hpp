@@ -7,12 +7,12 @@ namespace Operators
 {
   class Op : public Focal
   {
-  friend class Digest;
+  friend class Pipeline;
   
   protected:
     s32            m_sName;          // first word of prompt command
   
-    Digest*        m_pDigest;        // op digest
+    Pipeline*        m_pPipeline;        // op digest
     OpDefn*        m_aOpDefn;        // op definition
     OpSpec*        m_pOpSpec;        // op specification
   
@@ -47,7 +47,7 @@ namespace Operators
   public:
     void  operator delete(void*);
   
-    Op(eCN eClass, OpSpec* pOpSpec, Digest* pDigest);
+    Op(eCN eClass, OpSpec* pOpSpec, Pipeline* pPipeline);
    ~Op(void) noexcept(false);
   
     static Op* pThisTLSOp(void);

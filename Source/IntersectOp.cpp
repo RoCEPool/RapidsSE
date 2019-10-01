@@ -22,8 +22,8 @@ IntersectOp* DataOperators::_pIntersectOp(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-IntersectOp::IntersectOp(Stz* szOpLabel, Digest* pDigest)
-: Op(CN_INTERSECTOP,nullptr,pDigest)
+IntersectOp::IntersectOp(Stz* szOpLabel, Pipeline* pPipeline)
+: Op(CN_INTERSECTOP,nullptr,pPipeline)
 {
   _precondition_(_MAGIC_,CN_INTERSECTOP);
 }

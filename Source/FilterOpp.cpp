@@ -70,8 +70,8 @@ void FilterOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-FilterOp::FilterOp(OpSpec* pOpSpec, Digest* pDigest)
-: Op(CN_FILTEROP,pOpSpec,pDigest)
+FilterOp::FilterOp(OpSpec* pOpSpec, Pipeline* pPipeline)
+: Op(CN_FILTEROP,pOpSpec,pPipeline)
 {
   _precondition_(_MAGIC_,CN_FILTEROP);
   
@@ -97,9 +97,9 @@ FilterOp::~FilterOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* FilterOp::pNew(OpSpec* pOpSpec, Digest* pDigest)
+Op* FilterOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 {
-  FilterOp* pFilterOp = new FilterOp(pOpSpec,pDigest);
+  FilterOp* pFilterOp = new FilterOp(pOpSpec,pPipeline);
   
   RASSERT(0);
 //  i_Tkn_++;

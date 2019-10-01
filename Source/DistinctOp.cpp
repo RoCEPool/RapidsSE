@@ -22,8 +22,8 @@ DistinctOp* DataOperators::_pDistinctOp(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-DistinctOp::DistinctOp(Stz* szOpLabel, Digest* pDigest)
-: Op(CN_DISTINCTOP,nullptr,pDigest)
+DistinctOp::DistinctOp(Stz* szOpLabel, Pipeline* pPipeline)
+: Op(CN_DISTINCTOP,nullptr,pPipeline)
 {
   _precondition_(_MAGIC_,CN_DISTINCTOP);
 }

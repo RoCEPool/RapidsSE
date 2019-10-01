@@ -70,8 +70,8 @@ void SuperAggOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SuperAggOp::SuperAggOp(OpSpec* pOpSpec, Digest* pDigest)
-: Op(CN_SUPERAGGOP,pOpSpec,pDigest)
+SuperAggOp::SuperAggOp(OpSpec* pOpSpec, Pipeline* pPipeline)
+: Op(CN_SUPERAGGOP,pOpSpec,pPipeline)
 {
   _precondition_(_MAGIC_,CN_SUPERAGGOP);
   
@@ -96,9 +96,9 @@ SuperAggOp::~SuperAggOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* SuperAggOp::pNew(OpSpec* pOpSpec, Digest* pDigest)
+Op* SuperAggOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 {  
-  SuperAggOp* pSuperAggOp = new SuperAggOp(pOpSpec,pDigest);
+  SuperAggOp* pSuperAggOp = new SuperAggOp(pOpSpec,pPipeline);
   
   return pSuperAggOp;
 }

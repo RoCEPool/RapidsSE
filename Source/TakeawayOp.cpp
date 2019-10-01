@@ -22,8 +22,8 @@ TakeawayOp* DataOperators::_pTakeawayOp(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TakeawayOp::TakeawayOp(Stz* szOpLabel, Digest* pDigest)
-: Op(CN_TAKEAWAYOP,nullptr,pDigest)
+TakeawayOp::TakeawayOp(Stz* szOpLabel, Pipeline* pPipeline)
+: Op(CN_TAKEAWAYOP,nullptr,pPipeline)
 {
   _precondition_(_MAGIC_,CN_TAKEAWAYOP);
 }

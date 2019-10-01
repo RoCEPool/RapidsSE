@@ -70,8 +70,8 @@ void ZedOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ZedOp::ZedOp(OpSpec* pOpSpec, Digest* pDigest)
-: Op(CN_ZEDOP,pOpSpec,pDigest)
+ZedOp::ZedOp(OpSpec* pOpSpec, Pipeline* pPipeline)
+: Op(CN_ZEDOP,pOpSpec,pPipeline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ZEDOP,_FOOTER_);
   
@@ -97,9 +97,9 @@ ZedOp::~ZedOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* ZedOp::pNew(OpSpec* pOpSpec, Digest* pDigest)
+Op* ZedOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 {
-  ZedOp* pZedOp = new ZedOp(pOpSpec,pDigest);
+  ZedOp* pZedOp = new ZedOp(pOpSpec,pPipeline);
   
   return pZedOp;
 }

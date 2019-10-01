@@ -70,8 +70,8 @@ void SuperCountOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SuperCountOp::SuperCountOp(OpSpec* pOpSpec, Digest* pDigest)
-: Op(CN_SUPERCOUNTOP,pOpSpec,pDigest)
+SuperCountOp::SuperCountOp(OpSpec* pOpSpec, Pipeline* pPipeline)
+: Op(CN_SUPERCOUNTOP,pOpSpec,pPipeline)
 {
   _precondition_(_MAGIC_,CN_SUPERCOUNTOP);
   
@@ -96,9 +96,9 @@ SuperCountOp::~SuperCountOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* SuperCountOp::pNew(OpSpec* pOpSpec, Digest* pDigest)
+Op* SuperCountOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 {
-  SuperCountOp* pSuperCountOp = new SuperCountOp(pOpSpec,pDigest);
+  SuperCountOp* pSuperCountOp = new SuperCountOp(pOpSpec,pPipeline);
   
   return pSuperCountOp;
 }

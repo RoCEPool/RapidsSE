@@ -70,8 +70,8 @@ void LimitOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-LimitOp::LimitOp(OpSpec* pOpSpec, Digest* pDigest)
-: Op(CN_LIMITOP,pOpSpec,pDigest)
+LimitOp::LimitOp(OpSpec* pOpSpec, Pipeline* pPipeline)
+: Op(CN_LIMITOP,pOpSpec,pPipeline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LIMITOP,_FOOTER_);
   
@@ -100,10 +100,10 @@ LimitOp::~LimitOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* LimitOp::pNew(OpSpec* pOpSpec, Digest* pDigest)
+Op* LimitOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 {
 
-  LimitOp* pLimitOp = new LimitOp(pOpSpec,pDigest);
+  LimitOp* pLimitOp = new LimitOp(pOpSpec,pPipeline);
   
   pLimitOp->m_nLimit = pLimitOp->m_pOpSpec->pEnmSet()->iValue((i8)0);
   
@@ -276,7 +276,7 @@ eOR LimitOp::eOpLoop(void)
       // -- -- -- -- -- --
         
       case CN_PAUSEMARKER:
-        AM::vPulseTask(m_pDigest->m_pOpToPulse->pTask());
+        AM::vPulseTask(m_pPipeline->m_pOpToPulse->pTask());
         vPipeOut(pOperand);
         break;
      
@@ -337,7 +337,7 @@ bool LimitOp::bLimitDone(void)
       vTrace("%s::!CANCELLING : after popping %lld buffers\n"_Stz,
              m_sLabel.aStz(),
              m_iWorkDone);
-      m_pDigest->m_bCancelling = true;
+      m_pPipeline->m_bCancelling = true;
     
     if (m_pSrtBuffer) {
       vPipeOut(m_pSrtBuffer);

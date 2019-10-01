@@ -13,7 +13,7 @@ namespace DataOperators
     Footer m_xFooter;
 
   public:
-    WhereOp(Stz* szOpLabel, Digest* pDigest);
+    WhereOp(Stz* szOpLabel, Pipeline* pPipeline);
    ~WhereOp(void) noexcept(false);
   
   private:

@@ -18,7 +18,7 @@ namespace DataOperators
     void* operator new(size_t);
     void  operator delete(void*);
 
-    GenerateOp(Stz* szOpLabel, Digest* pDigest, i8 iBuffers);
+    GenerateOp(Stz* szOpLabel, Pipeline* pPipeline, i8 iBuffers);
    ~GenerateOp(void) noexcept(false);
 
     static eOR eCallLoop(void* aThis);

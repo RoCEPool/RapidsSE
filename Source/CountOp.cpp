@@ -70,8 +70,8 @@ void CountOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-CountOp::CountOp(OpSpec* pOpSpec, Digest* pDigest)
-: Op(CN_COUNTOP,pOpSpec,pDigest)
+CountOp::CountOp(OpSpec* pOpSpec, Pipeline* pPipeline)
+: Op(CN_COUNTOP,pOpSpec,pPipeline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COUNTOP,_FOOTER_);
   
@@ -111,9 +111,9 @@ CountOp::~CountOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* CountOp::pNew(OpSpec* pOpSpec, Digest* pDigest)
+Op* CountOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 {
-  CountOp* pCountOp = new CountOp(pOpSpec,pDigest);
+  CountOp* pCountOp = new CountOp(pOpSpec,pPipeline);
   
   return pCountOp;
 }

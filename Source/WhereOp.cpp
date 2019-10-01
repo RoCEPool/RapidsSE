@@ -22,8 +22,8 @@ WhereOp* DataOperators::_pWhereOp(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-WhereOp::WhereOp(Stz* szOpLabel, Digest* pDigest)
-: Op(CN_WHEREOP,nullptr,pDigest)
+WhereOp::WhereOp(Stz* szOpLabel, Pipeline* pPipeline)
+: Op(CN_WHEREOP,nullptr,pPipeline)
 {
   _precondition_(_MAGIC_,CN_WHEREOP);
 }

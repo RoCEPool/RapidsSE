@@ -18,10 +18,10 @@ namespace DataOperators
       void* operator new(size_t);
       void  operator delete(void*);
       
-      XmitOp(OpSpec* pOpSpec, Digest* pDigest);
+      XmitOp(OpSpec* pOpSpec, Pipeline* pPipeline);
       ~XmitOp(void) noexcept(false);
       
-      static Op* pNew(OpSpec* pOpSpec, Digest* pDigest);
+      static Op* pNew(OpSpec* pOpSpec, Pipeline* pPipeline);
       
       static eOR eCall(void* aThis);
   

@@ -21,8 +21,8 @@ CombineOp* DataOperators::_pCombineOp(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-CombineOp::CombineOp(Stz* szOpLabel, Digest* pDigest)
-: Op(CN_COMBINEOP,nullptr,pDigest)
+CombineOp::CombineOp(Stz* szOpLabel, Pipeline* pPipeline)
+: Op(CN_COMBINEOP,nullptr,pPipeline)
 {
   _precondition_(_MAGIC_,CN_COMBINEOP);
 }

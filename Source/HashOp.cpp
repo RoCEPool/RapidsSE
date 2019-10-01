@@ -22,8 +22,8 @@ HashOp* DataOperators::_pHashOp(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-HashOp::HashOp(Stz* szOpLabel, Digest* pDigest)
-: Op(CN_HASHOP,nullptr,pDigest)
+HashOp::HashOp(Stz* szOpLabel, Pipeline* pPipeline)
+: Op(CN_HASHOP,nullptr,pPipeline)
 {
   _precondition_(_MAGIC_,CN_HASHOP);
 }

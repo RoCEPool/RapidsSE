@@ -70,8 +70,8 @@ void OutputOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OutputOp::OutputOp(OpSpec* pOpSpec, Digest* pDigest)
-: Op(CN_OUTPUTOP,pOpSpec,pDigest)
+OutputOp::OutputOp(OpSpec* pOpSpec, Pipeline* pPipeline)
+: Op(CN_OUTPUTOP,pOpSpec,pPipeline)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
   
@@ -98,9 +98,9 @@ OutputOp::~OutputOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* OutputOp::pNew(OpSpec* pOpSpec, Digest* pDigest)
+Op* OutputOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 {  
-  OutputOp* pOutputOp = new OutputOp(pOpSpec,pDigest);
+  OutputOp* pOutputOp = new OutputOp(pOpSpec,pPipeline);
   
   return pOutputOp;
 }

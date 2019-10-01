@@ -70,8 +70,8 @@ void ProjectOp::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ProjectOp::ProjectOp(OpSpec* pOpSpec, Digest* pDigest)
-: Op(CN_PROJECTOP,pOpSpec,pDigest)
+ProjectOp::ProjectOp(OpSpec* pOpSpec, Pipeline* pPipeline)
+: Op(CN_PROJECTOP,pOpSpec,pPipeline)
 {
   _precondition_(_MAGIC_,CN_PROJECTOP);
   
@@ -104,9 +104,9 @@ ProjectOp::~ProjectOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* ProjectOp::pNew(OpSpec* pOpSpec, Digest* pDigest)
+Op* ProjectOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 {
-  ProjectOp* pProjectOp = new ProjectOp(pOpSpec,pDigest);
+  ProjectOp* pProjectOp = new ProjectOp(pOpSpec,pPipeline);
   
   // create a columnVec in the stream def
   pProjectOp->m_pStreamDef->m_oColVecAry.vItems(1);

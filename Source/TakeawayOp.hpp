@@ -13,7 +13,7 @@ namespace DataOperators
     Footer m_xFooter;
 
   public:
-    TakeawayOp(Stz* szOpLabel, Digest* pDigest);
+    TakeawayOp(Stz* szOpLabel, Pipeline* pPipeline);
    ~TakeawayOp(void) noexcept(false);
   
   private:

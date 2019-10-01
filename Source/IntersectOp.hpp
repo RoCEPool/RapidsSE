@@ -13,7 +13,7 @@ namespace DataOperators
     Footer m_xFooter;
 
   public:
-    IntersectOp(Stz* szOpLabel, Digest* pDigest);
+    IntersectOp(Stz* szOpLabel, Pipeline* pPipeline);
    ~IntersectOp(void) noexcept(false);
   
   private:

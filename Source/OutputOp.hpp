@@ -16,10 +16,10 @@ namespace DataOperators
     void* operator new(size_t);
     void  operator delete(void*);
   
-    OutputOp(OpSpec* pOpSpec, Digest* pDigest);
+    OutputOp(OpSpec* pOpSpec, Pipeline* pPipeline);
    ~OutputOp(void) noexcept(false);
   
-    static Op* pNew(OpSpec* pOpSpec, Digest* pDigest);
+    static Op* pNew(OpSpec* pOpSpec, Pipeline* pPipeline);
     static eOR eCall(void* aThis);
     static eOR eDrain(void* aThis);
 

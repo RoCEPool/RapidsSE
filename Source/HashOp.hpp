@@ -13,7 +13,7 @@ namespace DataOperators
     Footer m_xFooter;
 
   public:
-    HashOp(Stz* szOpLabel, Digest* pDigest);
+    HashOp(Stz* szOpLabel, Pipeline* pPipeline);
    ~HashOp(void) noexcept(false);
   
   private:

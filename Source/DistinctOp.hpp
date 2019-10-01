@@ -13,7 +13,7 @@ namespace DataOperators
     Footer m_xFooter;
 
   public:
-    DistinctOp(Stz* szOpLabel, Digest* pDigest);
+    DistinctOp(Stz* szOpLabel, Pipeline* pPipeline);
    ~DistinctOp(void) noexcept(false);
   
   private:

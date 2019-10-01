@@ -106,13 +106,13 @@ Job_Select::Job_Select(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Sess
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SELECT,_FOOTER_);
   
-  m_pDigest = new Digest(this);
+  m_pPipeline = new Pipeline(this);
   
-  m_pToClause  = new Op_ToClause  (nullptr,m_pDigest);
-  m_pToFilter  = new Op_ToFilter  (nullptr,m_pDigest);
-  m_pToCommand = new Op_ToCommand (nullptr,m_pDigest);
-  m_pToDo      = new Op_ToDo      (nullptr,m_pDigest);
-  m_pZed       = new ZedOp        (nullptr,m_pDigest);
+  m_pToClause  = new Op_ToClause  (nullptr,m_pPipeline);
+  m_pToFilter  = new Op_ToFilter  (nullptr,m_pPipeline);
+  m_pToCommand = new Op_ToCommand (nullptr,m_pPipeline);
+  m_pToDo      = new Op_ToDo      (nullptr,m_pPipeline);
+  m_pZed       = new ZedOp        (nullptr,m_pPipeline);
   
   m_pStmt_Select = new Stmt_Select;
 
@@ -140,7 +140,7 @@ Job_Select::~Job_Select(void) noexcept(false)
   delete m_pToFilter;
   delete m_pToClause;
   
-  delete m_pDigest;
+  delete m_pPipeline;
 }
 
 /*----------------------------------------------------------------------------*/
