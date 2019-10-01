@@ -53,14 +53,44 @@ bool JobHelper::bExtractJson(EnmSet*   pArgEnmSet,
                              i8&       i_Tkn_
                              )
 {
+  Token* pTkn = nullptr;
   i8 nTokens = pTknVec->nTokens();
   i8 nEnames = pSynEnmSet->nEnm();
 
-  ASSERT(pSynEnmSet->szValue(i_Syn_)->bSame("__json__"_Stz));
+  ASSERT(pSynEnmSet->szName(i_Syn_)->bSame("__json__"_Stz));
   
-  Token* pTkn = pTknVec->pGet(i_Tkn_);
-  
+  pTkn = pTknVec->pGet(i_Tkn_);
   ASSERT(pTkn->bSame("{"_Stz));
+
+  pTkn = pTknVec->pGet(++i_Tkn_);
+  while (! pTkn->bSame("}"_Stz)) {
+    vTrace("  %s\n"_Stz,pTkn->szText());
+    Token* pTkn_name = pTkn;
+    
+    pTkn = pTknVec->pGet(++i_Tkn_);
+    vTrace("  %s\n"_Stz,pTkn->szText());
+
+    pTkn = pTknVec->pGet(++i_Tkn_);
+    vTrace("  %s\n"_Stz,pTkn->szText());
+    Token* pTkn_value = pTkn;
+    
+    pArgEnmSet->vAdd(pTkn_name->szText(),
+                     pTkn_value->szText(),
+                     TN_STRING);
+    
+    pArgEnmSet->vPrint();
+
+
+    pTkn = pTknVec->pGet(++i_Tkn_);
+    vTrace("  %s\n"_Stz,pTkn->szText());
+    
+    if (pTkn->bSame(","_Stz)) {
+      pTkn = pTknVec->pGet(++i_Tkn_);
+      vTrace("  %s\n"_Stz,pTkn->szText());
+    }
+  }
+  
+  i_Syn_++;
   
   return true;
 }

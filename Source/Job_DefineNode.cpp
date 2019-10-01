@@ -148,15 +148,15 @@ eEC Job_DefineNode::ePopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-//  Dic* pRootDic = AM::pRootDic();
-//
-//  ForthWord* pWord_syn = pRootDic->pFindWord("defineNode_syn"_Stz);
-//
-//  bool b = JobHelper::bExtractArgs(&m_oEnmSet,pWord_syn->pEnmSet(),pTokenVec);
-//  if (! b) {
-//    vTrace("Unable to match job syntax\n"_Stz);
-//    return EC_INVALID_COMMAND;
-//  }
+  Dic* pRootDic = AM::pRootDic();
+
+  ForthWord* pWord_syn = pRootDic->pFindWord("defineNode_syn"_Stz);
+
+  bool b = JobHelper::bExtractArgs(&m_oEnmSet,pWord_syn->pEnmSet(),pTokenVec);
+  if (! b) {
+    vTrace("Unable to match job syntax\n"_Stz);
+    return EC_INVALID_COMMAND;
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert we got a create table
