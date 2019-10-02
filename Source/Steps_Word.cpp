@@ -14,7 +14,7 @@ void Step::vAddSteps_Word(void)
   vAddStep("word.addEnmValStr"_Stz,&Step::vWordAddEnmValStr);
   vAddStep("word.attachEnmSet"_Stz,&Step::vWordAttachEnmSet);
   vAddStep("word.dump"_Stz,        &Step::vWordDump);
-  vAddStep("word.enmValAsStr"_Stz, &Step::vWordEnmSetAsStr);
+  vAddStep("word.enmSetAsStr"_Stz, &Step::vWordEnmSetAsStr);
   vAddStep("word.exitHook@"_Stz,   &Step::vWordExitHookGet);
   vAddStep("word.exitHook!"_Stz,   &Step::vWordExitHookSet);
   vAddStep("word.forget"_Stz,      &Step::vWordForget);
