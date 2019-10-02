@@ -31,7 +31,7 @@ namespace Gadgets
     EnmSet(void);
    ~EnmSet() noexcept(false);
   
-    void vAdd(Stz* szName, i8 iValue);
+    void vAdd(Stz* szName, i8 iValue, eTN eToken);
     void vAdd(Stz* szName, Stz* szValue, eTN eToken);
     i8   nEnm(void);
     i8   i_Find(Stz* szName);

@@ -72,7 +72,7 @@ EnmSet::~EnmSet(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add                                                                        */
 /*----------------------------------------------------------------------------*/
-void EnmSet::vAdd(Stz* szName, i8 iValue)
+void EnmSet::vAdd(Stz* szName, i8 iValue, eTN eToken)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
@@ -80,7 +80,7 @@ void EnmSet::vAdd(Stz* szName, i8 iValue)
   
   m_xEnnPair[i_Enm].m_i_Name  = m_bStrings.iAppend(szName);
   m_xEnnPair[i_Enm].m_i_Value = iValue;
-  m_xEnnPair[i_Enm].m_eToken  = TN_INTEGER;
+  m_xEnnPair[i_Enm].m_eToken  = eToken;
   
   m_nEnm++;
 }

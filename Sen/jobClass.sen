@@ -2,13 +2,18 @@
 /* jobClass.sen -- Job Class Compiler                                         */
 /*============================================================================*/
 
-" jobSyntax.sen" .verbose
+" jobClass.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: .fillEnmSet
+: .fillEnmSet params| pEnmSet |
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  "jobPriority" pEnmSet enmSet.hasName not if
+     "jobPriority" "PY_NORMAL" pEnmSet enmSet.addStr then
+
+  pEnmSet enmSet.asStr .
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -50,14 +55,21 @@
   next-token drop
 
   word::this word.enmSet@ enmSet.asStr .
+
+  word::this word.enmSet@ .fillEnmSet
+
+  word::this word.enmSet@ enmSet.asStr .
 ;
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobClass: forgetNode
+jobClass: forgetNode_cls
 {
-  check = bClusterStarted
+  jobKind      = JK_DIST2PC
+  responseKind = RS_NODE_ZERO
+  
+  preCheck     = bClusterStarted
 }
 ;
 

@@ -249,6 +249,7 @@ public:
   static void vEncodeUntil(Tasks::MP_Task mpTask);
 
   // ename-set
+  static void vEnmSetAddInt(Tasks::MP_Task mpTask);
   static void vEnmSetAddStr(Tasks::MP_Task mpTask);
   static void vEnmSetAsStr(Tasks::MP_Task mpTask);
   static void vEnmSetHasName(Tasks::MP_Task mpTask);

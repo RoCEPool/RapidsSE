@@ -160,7 +160,7 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTknVec)
     if (JobHelper::bMatchesSyntax(pTknVec,pWord_jobdef->pEnmSet())) {
       vTrace("    matches\n"_Stz);
       
-      m_oEnmSet.vAdd("__jobClass__"_Stz, CN_JOB_UNIVERSAL);
+      m_oEnmSet.vAdd("__jobClass__"_Stz, CN_JOB_UNIVERSAL,TN_INTEGER);
       break;
     }
   }

@@ -11,6 +11,7 @@ void Step::vAddSteps_EnmSet(void)
 {
   vAddStep("enmSet::new"_Stz,    &Step::vEnmSetNew);
   
+  vAddStep("enmSet.addInt"_Stz,  &Step::vEnmSetAddInt);
   vAddStep("enmSet.addStr"_Stz,  &Step::vEnmSetAddStr);
   vAddStep("enmSet.asStr"_Stz,   &Step::vEnmSetAsStr);
   vAddStep("enmSet.hasName"_Stz, &Step::vEnmSetHasName);
@@ -32,6 +33,32 @@ void Step::vEnmSetNew(MP_Task mpTask)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* enmSet.addInt -- add a name-integer pair to ename-set                      */
+/*----------------------------------------------------------------------------*/
+void Step::vEnmSetAddInt(MP_Task mpTask)
+{
+  ENTRY("vEnmSetAddInt"_Stz);
+  
+  Object* pEnmSet_obj;
+  if ( ! mpTask->m_pDataStack->bPop(pEnmSet_obj) )
+    THROW_INVALID_DSTACK("vEnmSetAddStr"_Stz);
+  EnmSet* pEnmSet = _pEnmSet(pEnmSet_obj);
+  
+  i8 iValue;
+  if ( ! mpTask->m_pDataStack->bPop(iValue) )
+    THROW_INVALID_DSTACK("vEnmSetAddStr"_Stz);
+  
+  s32 sName;
+  if ( ! mpTask->m_pDataStack->bPop(sName) )
+    THROW_INVALID_DSTACK("vEnmSetAddStr"_Stz);
+  
+  pEnmSet->vAdd(sName,iValue,TN_INTEGER);
+  pEnmSet->vPrint();
+  
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* enmSet.addStr -- add a name-string pair to ename-set                       */
