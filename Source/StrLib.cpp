@@ -2379,13 +2379,13 @@ void StrLib::vRemovePrefix(char *azArg, char cIntro)
 /*----------------------------------------------------------------------------*/
 void StrLib::vRemoveSuffix(char *azArg, char cIntro)
 {
-  char* azSuffix = azArg;
+  char* azSuffix = azArg + iLength(azArg) - 1;
   
   // find the byte where the suffix is introduced
   if (! bBackward(&azSuffix,azArg,cIntro))
     return;
   
-  // terminate the string at the suffix introduction
+  // terminate azArg at the suffix introduction
   *azSuffix = '\0';
 }
 
