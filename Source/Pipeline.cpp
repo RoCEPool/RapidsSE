@@ -102,12 +102,11 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
         continue;
       }
       
-      Op* pOp = (aOpDefn->m_fpNewOp)(pOpSpec,this);
-      
-      pStage->m_oOpVec.vAdd(pOp);
-      
       // add the operator to the stages of the stagePtnVec as well
       for (i8 i_Ptn = 0; i_Ptn < pStage->m_oStagePtnVec.nItems(); i_Ptn++) {
+        Op* pOp = (aOpDefn->m_fpNewOp)(pOpSpec,this);
+        pOp->m_nSlot = i_Ptn;
+        pStage->m_oOpVec.vAdd(pOp);
         pStage->m_oStagePtnVec.pGet(i_Ptn)->m_oOpVec.vAdd(pOp);
       }
       vDebugPoint();
@@ -124,7 +123,7 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
   // for each partition in the stage
   for (i8 i_Ptn = 0; i_Ptn < pStage->m_oStagePtnVec.nItems(); i_Ptn++) {
     
-    StagePtn* pStagePtn = pStage->m_oStagePtnVec.pGet(0);
+    StagePtn* pStagePtn = pStage->m_oStagePtnVec.pGet(i_Ptn);
     
     // for each operator in the partition
     for (i8 i_Op = 0; i_Op < pStagePtn->m_oOpVec.nItems() - 1; i_Op++) {

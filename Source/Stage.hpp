@@ -12,7 +12,8 @@ namespace Operators
     OpVec      m_oOpVec;     // set of operators
 
     StagePtnVec m_oStagePtnVec;   // set of stage-partitions
-
+    //StageNdeVec m_oStageNdeVec;
+    
     // must be last
     Footer m_xFooter;
 
