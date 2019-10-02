@@ -72,6 +72,22 @@ EnmSet::~EnmSet(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add                                                                        */
 /*----------------------------------------------------------------------------*/
+void EnmSet::vAdd(Stz* szName, i8 iValue)
+{
+  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  
+  i8 i_Enm = m_nEnm;
+  
+  m_xEnnPair[i_Enm].m_i_Name  = m_bStrings.iAppend(szName);
+  m_xEnnPair[i_Enm].m_i_Value = iValue;
+  m_xEnnPair[i_Enm].m_eToken  = TN_INTEGER;
+  
+  m_nEnm++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add                                                                        */
+/*----------------------------------------------------------------------------*/
 void EnmSet::vAdd(Stz* szName, Stz* szValue, eTN eToken)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
@@ -134,9 +150,21 @@ void EnmSet::vPrint(void)
     
     if (i_Enm)
       vTrace(", "_Stz);
+    
+    if (TN_INTEGER == m_xEnnPair[i_Enm].m_eToken) {
+      
+      vTrace("%s=%lld"_Stz,
              
+             m_bStrings.szGet(m_xEnnPair[i_Enm].m_i_Name),
+             m_xEnnPair[i_Enm].m_i_Value,
+             
+             C_ENDARGS
+             );
+      continue;
+    }
+    
     vTrace("%s=%s"_Stz,
-           
+    
            m_bStrings.szGet(m_xEnnPair[i_Enm].m_i_Name),
            m_bStrings.szGet(m_xEnnPair[i_Enm].m_i_Value),
            
