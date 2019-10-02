@@ -248,6 +248,9 @@ public:
   static void vEncodeThen(Tasks::MP_Task mpTask);
   static void vEncodeUntil(Tasks::MP_Task mpTask);
 
+  // ename-set
+  static void vEnmSetAsStr(Tasks::MP_Task mpTask);
+
   // enter
 public:
   static void vEnterObject(Tasks::MP_Task mpTask);
