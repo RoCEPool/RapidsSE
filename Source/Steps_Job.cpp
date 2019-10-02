@@ -1276,10 +1276,16 @@ void Step::vJobPostRecv(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the job class on this node
   
+  JobClass* aJobClass = nullptr;
   eCN eClass = pJob->eClass();
   
-  
-  JobClass* aJobClass = JobClass::pFind(eClass);
+  if (CN_JOB_UNIVERSAL == eClass) {
+    eClass = (eCN)pJob->m_oEnmSet.iValue("__jobClass__"_Stz);
+    aJobClass = JobClass::pFind(eClass);
+  }
+  else {
+    aJobClass = JobClass::pFind(eClass);
+  }
   
   pJob->m_aJobClass = aJobClass;
 
