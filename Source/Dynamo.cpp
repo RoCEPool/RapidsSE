@@ -97,13 +97,13 @@ bool Dynamo::bCompile(void)
   
   vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
   
-  bResult = bPhase3_flatten();
-  if (! bResult)
-    return false;
-  
-  m_pPipelineSpec->vPrint();
-  
-  vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
+//  bResult = bPhase3_flatten();
+//  if (! bResult)
+//    return false;
+//  
+//  m_pPipelineSpec->vPrint();
+//  
+//  vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
   
   bResult = bPhase4_opdefn();
   if (! bResult)
