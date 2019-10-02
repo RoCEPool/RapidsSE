@@ -9,23 +9,25 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Str(void)
 {
-  vAddStep("str::algebra"_Stz, &Step::vStrAlgebra);
-  vAddStep("strAlgebra"_Stz,   &Step::vStrAlgebra);
+  vAddStep("str::algebra"_Stz,     &Step::vStrAlgebra);
+  vAddStep("strAlgebra"_Stz,       &Step::vStrAlgebra);
   
-  vAddStep("str.cat"_Stz,      &Step::vStrCat);
-  vAddStep("str.clip"_Stz,     &Step::vStrClip);
-  vAddStep("str.equal"_Stz,    &Step::vStrEqual);
-  vAddStep("str.escape"_Stz,   &Step::vStrEscape);
-  vAddStep("str.firstCsv"_Stz, &Step::vStrFirstCsv);
-  vAddStep("str.format"_Stz,   &Step::vStrFormat);
-  vAddStep("str.left"_Stz,     &Step::vStrLeft);
-  vAddStep("str.length"_Stz,   &Step::vStrLength);
-  vAddStep("str.prepend"_Stz,  &Step::vStrPrepend);
-  vAddStep("str.random"_Stz,   &Step::vStrRandom);
-  vAddStep("str.replace"_Stz,  &Step::vStrReplace);
-  vAddStep("str.right"_Stz,    &Step::vStrRight);
-  vAddStep("str.sub"_Stz,      &Step::vStrSub);
-  vAddStep("str.tailInt"_Stz,  &Step::vStrTailInt);
+  vAddStep("str.cat"_Stz,          &Step::vStrCat);
+  vAddStep("str.clip"_Stz,         &Step::vStrClip);
+  vAddStep("str.equal"_Stz,        &Step::vStrEqual);
+  vAddStep("str.escape"_Stz,       &Step::vStrEscape);
+  vAddStep("str.firstCsv"_Stz,     &Step::vStrFirstCsv);
+  vAddStep("str.format"_Stz,       &Step::vStrFormat);
+  vAddStep("str.left"_Stz,         &Step::vStrLeft);
+  vAddStep("str.length"_Stz,       &Step::vStrLength);
+  vAddStep("str.prepend"_Stz,      &Step::vStrPrepend);
+  vAddStep("str.random"_Stz,       &Step::vStrRandom);
+  vAddStep("str.removePrefix"_Stz, &Step::vStrRemovePrefix);
+  vAddStep("str.removeSuffix"_Stz, &Step::vStrRemoveSuffix);
+  vAddStep("str.replace"_Stz,      &Step::vStrReplace);
+  vAddStep("str.right"_Stz,        &Step::vStrRight);
+  vAddStep("str.sub"_Stz,          &Step::vStrSub);
+  vAddStep("str.tailInt"_Stz,      &Step::vStrTailInt);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -314,6 +316,50 @@ void Step::vStrRandom(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* str.removePrefix -- remove prefix from string                              */
+/*----------------------------------------------------------------------------*/
+void Step::vStrRemovePrefix(MP_Task mpTask)
+{
+  ENTRY("vStrRemovePrefix"_Stz);
+  
+  s48K sString;
+  if ( ! mpTask->m_pDataStack->bPop(sString) )
+    THROW_INVALID_DSTACK("str.removePrefix"_Stz);
+  
+  s32 sIntro;
+  if ( ! mpTask->m_pDataStack->bPop(sIntro) )
+    THROW_INVALID_DSTACK("str.removePrefix"_Stz);
+  
+  StrLib::vRemovePrefix(sString.aChar(), * sIntro.aChar());
+  
+  mpTask->m_pDataStack->vPushS48K(sString);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* str.removeSuffix -- remove suffix from string                              */
+/*----------------------------------------------------------------------------*/
+void Step::vStrRemoveSuffix(MP_Task mpTask)
+{
+  ENTRY("vStrRemoveSuffix"_Stz);
+  
+  s48K sString;
+  if ( ! mpTask->m_pDataStack->bPop(sString) )
+    THROW_INVALID_DSTACK("str.removeSuffix"_Stz);
+  
+  s32 sIntro;
+  if ( ! mpTask->m_pDataStack->bPop(sIntro) )
+    THROW_INVALID_DSTACK("str.removeSuffix"_Stz);
+  
+  StrLib::vRemoveSuffix(sString.aChar(), * sIntro.aChar());
+  
+  mpTask->m_pDataStack->vPushS48K(sString);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* str.replace-- replace this with that within string                         */
 /*----------------------------------------------------------------------------*/
 void Step::vStrReplace(MP_Task mpTask)
@@ -451,10 +497,6 @@ void Step::vStrTailInt(MP_Task mpTask)
   
   EXIT();
 }
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 /*============================================================================*/
 /* end                                                                        */

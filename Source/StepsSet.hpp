@@ -1050,6 +1050,8 @@ private:
   static void vStrLength(Tasks::MP_Task mpTask);
   static void vStrPrepend(Tasks::MP_Task mpTask);
   static void vStrRandom(Tasks::MP_Task mpTask);
+  static void vStrRemovePrefix(Tasks::MP_Task mpTask);
+  static void vStrRemoveSuffix(Tasks::MP_Task mpTask);
   static void vStrReplace(Tasks::MP_Task mpTask);
   static void vStrRight(Tasks::MP_Task mpTask);
   static void vStrSub(Tasks::MP_Task mpTask);
