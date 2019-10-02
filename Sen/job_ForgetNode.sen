@@ -73,7 +73,8 @@
   //params| pJob_Universal |
   job::this locals| pJob_Universal |
 
-  0 0 locals| pNode sNodeNm |
+  0 locals| pNode |
+  // 0 locals| sNodeNm |
 
   tp: forgetNode_exe
 
@@ -92,9 +93,9 @@
   //----------------------------------------------------------------------------
   // forget the named node
 
-  pJob_Universal job.nodeName@ to sNodeNm
+  // pJob_Universal job.nodeName@ to sNodeNm
 
-  sNodeNm .forgetNode
+  <nodeNm> .forgetNode
 
   //----------------------------------------------------------------------------
 
