@@ -186,9 +186,9 @@ char* StrLib::azAscii(i8 i_Char)
 /*----------------------------------------------------------------------------*/
 /* bBackward: scan backwards to find given character                          */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bBackward(const char** ps, char* pBegin, const char c)
+bool StrLib::bBackward(char** ps, char* pBegin, const char c)
 {
-  const char *p = *ps;
+  char *p = *ps;
   
 //  do
 //  {
@@ -2359,6 +2359,21 @@ void StrLib::vRemove(char *w, const char cLeading)
   }
 }
   
+/*----------------------------------------------------------------------------*/
+/* vRemove: remove suffix from arg (where suffix is introduced by given char) */
+/*----------------------------------------------------------------------------*/
+void StrLib::vRemoveSuffix(char *azArg, char cIntro)
+{
+  char* azSuffix = azArg;
+  
+  // find the byte where the suffix is introduced
+  if (! bBackward(&azSuffix,azArg,cIntro))
+    return;
+  
+  // terminate the string at the suffix introduction
+  *azSuffix = '\0';
+}
+
 /*----------------------------------------------------------------------------*/
 /* bReplace: replace sub-string                                               */
 /*----------------------------------------------------------------------------*/

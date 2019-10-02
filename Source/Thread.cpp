@@ -134,7 +134,7 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
   catch (Error* pError) {
     
     char caFileName[256];
-    const char* ps;
+    char* ps;
     
     ps = StrLib::sLast(pError->aFileName()->aChar());
     bool bBackSlash = StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
@@ -198,7 +198,7 @@ void* Thread::aEntryPoint_general(void* pArg)
   catch (Error* pError) {
     
     char caFileName[256];
-    const char* ps;
+    char* ps;
     
     ps = StrLib::sLast(pError->aFileName()->aChar());
     bool bBackSlash = StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');

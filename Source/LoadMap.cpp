@@ -152,10 +152,10 @@ bool LoadMap::bMapChunk(void)
   i8 nBytesRead = m_oFile.nReadBytes(aFinalBlock,C_LOADMAP_BLOCK);
   
   // compute last actual byte of final block just read in
-  const char *aLastByte = &aFinalBlock[nBytesRead - 1];
+  char *aLastByte = &aFinalBlock[nBytesRead - 1];
 
   // find the final end of line for the block (and therefore the chunk)
-  const char *aFinalEol = aLastByte;
+  char *aFinalEol = aLastByte;
   bool bFoundEol = StrLib::bBackward(&aFinalEol,aFinalBlock,'\n');
   if (!bFoundEol)
     bFoundEol = StrLib::bBackward(&aFinalEol,aFinalBlock,'\r');

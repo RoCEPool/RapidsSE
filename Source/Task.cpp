@@ -261,7 +261,7 @@ void Task::vTaskLoop_job(void)
     catch (i8 iException) {
       char caFileName[256];
       
-      const char* ps;
+      char* ps;
       
       ps = StrLib::sLast(m_sFile.aChar());
       StrLib::bBackward(&ps,m_sFile.aChar(),'/');
@@ -283,7 +283,7 @@ void Task::vTaskLoop_job(void)
     catch (Error* pError) {
       char caFileName[256];
       
-      const char* ps;
+      char* ps;
       
       ps = StrLib::sLast(pError->aFileName()->aChar());
       StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');

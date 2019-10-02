@@ -29,7 +29,7 @@ namespace Strings
     static void  vAppendString(char** pz, const char* s);
     static char* azAscii(i8 i_Char);
     
-    static bool  bBackward(const char** ps, char* pBegin, const char c);
+    static bool  bBackward(char** ps, char* pBegin, const char c);
 
     static void  vClick(char* aArg);
     static bool  bClip(char* aArg, i8 iLen);
@@ -144,7 +144,8 @@ namespace Strings
   
     static void  vPad(char* w, i8 iToLength, const char cWith);
     
-    static void  vRemove(char* w, const char cLeading);
+    static void  vRemove(char* azArg, const char cLeading);
+    static void  vRemoveSuffix(char* azArg, char cIntro);
     static bool  bReplace(char* pString, const char* pThis, const char* pThat);
     static bool  bReplace(char* pDst, const char* pSrc,
                           const char* pThis, const char* pThat);

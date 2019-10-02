@@ -259,7 +259,7 @@ void Engine::vErrorHandler(Error* pError)
 {
   char caFileName[256];
   
-  const char* ps;
+  char* ps;
   
   if (pError) {
     ps = StrLib::sLast(pError->aFileName()->aChar());

@@ -110,7 +110,7 @@ i8 DataChunk::nQuantumBytes(void)
   
   char* aLastByte = &(aDataArea()[m_nDataBytes - 1]);
   
-  const char *aFinalEol = aLastByte;
+  char *aFinalEol = aLastByte;
   
   bool bFoundEol = StrLib::bBackward(&aFinalEol,aLastByte,'\n');
   if (!bFoundEol)
