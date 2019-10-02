@@ -21,7 +21,12 @@ bool JobHelper::bExtractArgs(EnmSet*   pArgEnmSet,
   i8 i_Syn = 0;
   i8 i_Tkn = 0;
 
- while (i_Tkn < nTokens && i_Syn < nEnames) {
+  while (i_Tkn < nTokens && i_Syn < nEnames) {
+    
+    if (pSynEnmSet->szName(i_Syn)->bSame("__job__"_Stz)) {
+      i_Syn++;
+      continue;
+    }
     
     if (pSynEnmSet->szName(i_Syn)->bSame("__meta__"_Stz)) {
       if (! bExtractMeta(pArgEnmSet,pSynEnmSet,i_Syn,pTknVec,i_Tkn))
@@ -29,7 +34,7 @@ bool JobHelper::bExtractArgs(EnmSet*   pArgEnmSet,
       continue;
     }
    
-    if (pSynEnmSet->szName(i_Tkn)->bSame("__json__"_Stz)) {
+    if (pSynEnmSet->szName(i_Syn)->bSame("__json__"_Stz)) {
       if (! bExtractJson(pArgEnmSet,pSynEnmSet,i_Syn,pTknVec,i_Tkn))
         return false;
       pArgEnmSet->vPrint();
@@ -124,14 +129,25 @@ bool JobHelper::bMatchesSyntax(TokenVec* pTknVec, EnmSet* pSynEnmSet)
 {
   i8 nTokens = pTknVec->nTokens();
   
-  for (i8 i_Tkn = 0; i_Tkn < nTokens; i_Tkn++) {
+  i8 i_Syn = 0;
+  i8 i_Tkn = 0;
+  
+  while (i_Tkn < nTokens) {
     Token* pTkn = pTknVec->pGet(i_Tkn);
     
-    if (pSynEnmSet->szName(i_Tkn)->bEqual("__meta__"_Stz))
+    if (pSynEnmSet->szName(i_Syn)->bEqual("__job__"_Stz)) {
+      i_Syn++;
+      continue;
+    }
+    
+    if (pSynEnmSet->szName(i_Syn)->bEqual("__meta__"_Stz))
       return true;
     
-    if (! pTkn->szText()->bEqual((pSynEnmSet->szValue(i_Tkn))))
+    if (! pTkn->szText()->bEqual((pSynEnmSet->szValue(i_Syn))))
       return false;
+    
+    i_Syn++;
+    i_Tkn++;
   }
 
   return true;

@@ -32,15 +32,20 @@
   // create a word using next token from input source as the word name
   create
 
-  // skip the :: token from input source
-  next-token drop
-
   // set the word kind to be jobSyntax
   [ word::this , ] word::this word.kind!
 
   // attach an ename set to the word being created
   word::this word.attachEnmSet
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  next-token find execute >str "__job__" swap word::this word.addEnmValStr
+
+  // skip the :: token from input source
+  next-token drop
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // parse each input token till ';', build ename set representing the syntax
   begin
     next-token
@@ -73,8 +78,11 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobSyntax: defineNode_syn :: define node <nodeNm> {name:value} ;
-jobSyntax: forgetNode_syn :: forget node <nodeNm> ;
+jobSyntax: defineNode_syn CN_JOB_DEFINENODE
+        :: define node <nodeNm> {name:value} ;
+
+jobSyntax: forgetNode_syn CN_JOB_UNIVERSAL
+        :: forget node <nodeNm> ;
 
 /*============================================================================*/
 /* end                                                                        */

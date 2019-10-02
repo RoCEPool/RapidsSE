@@ -61,7 +61,7 @@ void Step::vWordAddEnmValStr(MP_Task mpTask)
   EnmSet* pEnmSet = pWord->pEnmSet();
   
   pEnmSet->vAdd(sName,sValue,TN_STRING);
-  //pEnmSet->vPrint();
+  pEnmSet->vPrint();
 
   EXIT();
 }

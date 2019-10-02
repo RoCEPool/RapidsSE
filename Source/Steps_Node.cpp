@@ -42,6 +42,8 @@ void Step::vNodeNew(MP_Task mpTask)
   Job_DefineNode* pJob_CreateNode = _pJob_CreateNode(AM::pThisTLSJob());
   EnmSet* pEnmSet = & pJob_CreateNode->m_oEnmSet;
   
+  pEnmSet->vPrint();
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   s32 sNodeNm;
   
