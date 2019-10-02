@@ -9,7 +9,23 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_EnmSet(void)
 {
+  vAddStep("enmSet::new"_Stz,  &Step::vEnmSetNew);
+  
   vAddStep("enmSet.asStr"_Stz, &Step::vEnmSetAsStr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* enmSet::new -- new ename-set                                               */
+/*----------------------------------------------------------------------------*/
+void Step::vEnmSetNew(MP_Task mpTask)
+{
+  ENTRY("vEnmSetNew"_Stz);
+  
+  EnmSet* pEnmSet = new EnmSet;
+  
+  mpTask->m_pDataStack->vPushPointer(pEnmSet);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
