@@ -574,7 +574,7 @@ JOBS_fn(vJob_recv)
   pJob->m_pJobMutex      = nullptr;
   pJob->m_pTask          = nullptr;
 
-  pJob->m_i_Focal = C_UNKNOWN;
+  pJob->m_i_Focal        = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
