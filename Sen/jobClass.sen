@@ -29,7 +29,8 @@
     next-token
     dup "}" str.equal not
   while
-
+    next-token drop next-token
+    word::this word.addEnmValStr
   repeat
 
   // drop the "}" from dstack
@@ -42,9 +43,9 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobClass: forgetNode_job
+jobClass: forgetNode
 {
-  
+  check = bClusterStarted
 }
 ;
 
