@@ -9,10 +9,11 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_EnmSet(void)
 {
-  vAddStep("enmSet::new"_Stz,   &Step::vEnmSetNew);
+  vAddStep("enmSet::new"_Stz,    &Step::vEnmSetNew);
   
-  vAddStep("enmSet.addStr"_Stz, &Step::vEnmSetAddStr);
-  vAddStep("enmSet.asStr"_Stz,  &Step::vEnmSetAsStr);
+  vAddStep("enmSet.addStr"_Stz,  &Step::vEnmSetAddStr);
+  vAddStep("enmSet.asStr"_Stz,   &Step::vEnmSetAsStr);
+  vAddStep("enmSet.hasName"_Stz, &Step::vEnmSetHasName);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -76,6 +77,29 @@ void Step::vEnmSetAsStr(MP_Task mpTask)
   sStr = spEnmSet.sz(pEnmSet);
   
   mpTask->m_pDataStack->vPushS4K(sStr);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* enmSet.hasName -- test if ename-set has a pair with given name             */
+/*----------------------------------------------------------------------------*/
+void Step::vEnmSetHasName(MP_Task mpTask)
+{
+  ENTRY("vEnmSetHasName"_Stz);
+  
+  Object* pEnmSet_obj;
+  if ( ! mpTask->m_pDataStack->bPop(pEnmSet_obj) )
+    THROW_INVALID_DSTACK("vEnmSetHasName"_Stz);
+  EnmSet* pEnmSet = _pEnmSet(pEnmSet_obj);
+  
+  s32 sName;
+  if ( ! mpTask->m_pDataStack->bPop(sName) )
+    THROW_INVALID_DSTACK("vEnmSetHasName"_Stz);
+
+  bool bHas = pEnmSet->bHasName(sName);
+  
+  mpTask->m_pDataStack->vPushBool(bHas);
   
   EXIT();
 }
