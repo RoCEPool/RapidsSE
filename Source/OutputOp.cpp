@@ -76,6 +76,9 @@ OutputOp::OutputOp(OpSpec* pOpSpec, Pipeline* pPipeline)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
   
   m_fpCall = OutputOp::eCall;
+  m_iOperandsExpected = 0;
+  m_iOperandsReceived = 0;
+  m_bEndMarker = false;
   
   _checkInitialised_(CN_OUTPUTOP);
 
@@ -101,6 +104,10 @@ OutputOp::~OutputOp(void) noexcept(false)
 Op* OutputOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 {  
   OutputOp* pOutputOp = new OutputOp(pOpSpec,pPipeline);
+  
+  // get the end markers
+  EnmSet* pEnmSet = pOutputOp->m_pOpSpec->pEnmSet();
+  pOutputOp->m_nLeftEndMarkers = pEnmSet->iValue((i8)0);
   
   return pOutputOp;
 }
@@ -155,6 +162,7 @@ eOR OutputOp::eOpLoop(void)
       case CN_CSVBUFFER: {
         CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
         m_iWorkDone += pCsvBuffer->nRecords();
+        m_iOperandsReceived++;
         vPipeToJob(pOperand);
         break;
       }
@@ -164,6 +172,7 @@ eOR OutputOp::eOpLoop(void)
       case CN_CRWBUFFER: {
         CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
         m_iWorkDone += pCrwBuffer->nRowCount();
+        m_iOperandsReceived++;
         vPipeToJob(pOperand);
         break;
       }
@@ -171,10 +180,17 @@ eOR OutputOp::eOpLoop(void)
       // -- -- -- -- -- --
         
       case CN_ENDMARKER: {
+        
+        EndMarker* pEndMarker = _pEndMarker(pOperand);
+        m_iOperandsExpected += pEndMarker->m_iTotalOperands;
+        
         if (--m_nLeftEndMarkers == 0) {
-          // set the responses received
-          vPipeToJob(pOperand);
-          goto L_EXIT;
+          m_bEndMarker = true;
+          
+          if (m_iOperandsExpected == m_iOperandsReceived) {
+            vPipeToJob(pOperand);
+            goto L_EXIT;
+          }
         }
         else
           delete (EndMarker*)pOperand;
@@ -187,6 +203,7 @@ eOR OutputOp::eOpLoop(void)
       case CN_ENTBUFFER: {
         EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
         m_iWorkDone += pEntBuffer->nItems();
+        m_iOperandsReceived++;
         vPipeToJob(pOperand);
         break;
       }
@@ -196,6 +213,7 @@ eOR OutputOp::eOpLoop(void)
       case CN_IRWBUFFER: {
         IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
         m_iWorkDone += pIrwBuffer->nItems();
+        m_iOperandsReceived++;
         vPipeToJob(pOperand);
         break;
       }
@@ -205,6 +223,7 @@ eOR OutputOp::eOpLoop(void)
       case CN_SRTBUFFER: {
         SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
         m_iWorkDone += pSrtBuffer->nItems();
+        m_iOperandsReceived++;
         vPipeToJob(pOperand);
         break;
       }
@@ -222,7 +241,10 @@ eOR OutputOp::eOpLoop(void)
         RASSERT(0);
         break;
     }
-    
+    if (m_bEndMarker && (m_iOperandsExpected == m_iOperandsReceived)) {
+      vPipeToJob(new EndMarker);
+      goto L_EXIT;
+    }
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

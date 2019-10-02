@@ -48,6 +48,7 @@ EndMarker::EndMarker(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENDMARKER,_FOOTER_);
 
+  m_iTotalOperands = 0;
   _checkInitialised_(CN_ENDMARKER);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENDMARKER,_FOOTER_);

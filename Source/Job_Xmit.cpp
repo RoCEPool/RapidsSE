@@ -106,9 +106,9 @@ Job_Xmit::Job_Xmit(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session*
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_XMIT,_FOOTER_);
   
-  m_pOp          = nullptr;
-  m_iNode        = C_UNKNOWN;
-  m_iParentJobId = C_UNKNOWN;
+  m_pOp            = nullptr;
+  m_iNode          = C_UNKNOWN;
+  m_iParentJobId   = C_UNKNOWN;
   
   _checkInitialised_(CN_JOB_XMIT);
   

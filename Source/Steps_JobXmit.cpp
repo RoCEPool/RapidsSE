@@ -25,13 +25,8 @@ void Step::vJob_XmitPipeOut(MP_Task mpTask)
     THROW_INVALID_DSTACK("Job_Xmit.pipeOut@"_Stz);
   Job_Xmit* pJob_Xmit = _pJob_Xmit(pJobPtr);
   
-//  Object* pParentJobPtr;
-//  if ( ! mpTask->m_pDataStack->bPop(pParentJobPtr) )
-//    THROW_INVALID_DSTACK("Job_Xmit.pipeOut@"_Stz);
-  
-//  Job_Dynamic* pParentJob = _pJob_Dynamic(pParentJobPtr);
   pJob_Xmit->m_pOp->vPipeOut(pJob_Xmit->m_pOperand);
-  
+
   EXIT();
 }
 

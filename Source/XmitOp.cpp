@@ -122,66 +122,71 @@ eOR XmitOp::eCall(void* aThis)
 /*----------------------------------------------------------------------------*/
 eOR XmitOp::eXmitLoop(void)
 {
-    _precondition_(_ADDRESS_,_MAGIC_,CN_XMITOP,_FOOTER_);
-    
-    for (;;) {
-        
-        Operand* pOperand = pPopQueue();
-        
-        if (! pOperand) {
-          ASSERT(bIsLocked());
-          return OR_BIDE;
-        }
-        
-        if (CN_ENDMARKER == pOperand->eClass()) {
-          //EndMarker* pEndMarker = _pEndMarker(pOperand);
-          //delete pEndMarker;
-          AM::vSpawnJobXmit(m_pPipeline->m_pSession,
-                            pOperand,
-                            m_pPipeline->m_pJob,
-                            this,
-                            m_iXmitNode);
-          
-          break;
-        }
-        
-        if (CN_STREAMDEF == pOperand->eClass()) {
-          m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
-          //vPipeOut(pOperand);
-          AM::vSpawnJobXmit(m_pPipeline->m_pSession,
-                            pOperand,
-                            m_pPipeline->m_pJob,
-                            this,
-                            m_iXmitNode);
-          continue;
-        }
-        
-        RASSERT(CN_CRWBUFFER == pOperand->eClass());
-      
-        if (AM::bVerbose())
-          vTrace("%s::XmitOut :    %s %p (N%lld)\n"_Stz,
-                 m_sLabel.aStz(),
-                 aCN[pOperand->eClass()],
-                 pOperand,
-                 m_iXmitNode);
-      
-        AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
-                    "XmitOut operand %s to node %lld"_Stz, //!format-LogOpr
-                    aCN[pOperand->eClass()],
-                    m_iXmitNode);
-      
-        AM::vSpawnJobXmit(m_pPipeline->m_pSession,
-                          pOperand,
-                          m_pPipeline->m_pJob,
-                          this,
-                          m_iXmitNode);
-    }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    AM::vNapUsec(100000,CN_XMITOP);
-    //vPipeOut_endMarker();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITOP,_FOOTER_);
   
-    return OR_EXIT;
+  i8 iOperands = 0;
+  
+  for (;;) {
+    
+    Operand* pOperand = pPopQueue();
+  
+    if (! pOperand) {
+      ASSERT(bIsLocked());
+      return OR_BIDE;
+    }
+  
+    if (CN_ENDMARKER == pOperand->eClass()) {
+      EndMarker* pEndMarker = _pEndMarker(pOperand);
+      //delete pEndMarker;
+      pEndMarker->m_iTotalOperands = iOperands;
+      AM::vSpawnJobXmit(m_pPipeline->m_pSession,
+                        pOperand,
+                        m_pPipeline->m_pJob,
+                        this,
+                        m_iXmitNode);
+      
+      break;
+    }
+  
+    if (CN_STREAMDEF == pOperand->eClass()) {
+      m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
+      //vPipeOut(pOperand);
+      AM::vSpawnJobXmit(m_pPipeline->m_pSession,
+                        pOperand,
+                        m_pPipeline->m_pJob,
+                        this,
+                        m_iXmitNode);
+      continue;
+    }
+  
+    RASSERT(CN_CRWBUFFER == pOperand->eClass());
+  
+    iOperands++;
+    
+    if (AM::bVerbose())
+      vTrace("%s::XmitOut :    %s %p (N%lld)\n"_Stz,
+             m_sLabel.aStz(),
+             aCN[pOperand->eClass()],
+             pOperand,
+             m_iXmitNode);
+  
+    AM::vLogOpr(SL_INF,this,OA_OP_APPEND,
+                "XmitOut operand %s to node %lld"_Stz, //!format-LogOpr
+                aCN[pOperand->eClass()],
+                m_iXmitNode);
+  
+    AM::vSpawnJobXmit(m_pPipeline->m_pSession,
+                      pOperand,
+                      m_pPipeline->m_pJob,
+                      this,
+                      m_iXmitNode);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  AM::vNapUsec(100000,CN_XMITOP);
+  //vPipeOut_endMarker();
+
+  return OR_EXIT;
 }
 
 /*----------------------------------------------------------------------------*/

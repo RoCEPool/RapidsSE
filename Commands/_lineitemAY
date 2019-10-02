@@ -97,7 +97,7 @@ print "*************************************************************************
    scan lineitem | stageB
  
  stage stageB on origin:
-   output
+   output 2
  
  end
  ;
