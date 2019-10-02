@@ -229,24 +229,42 @@ void Job_Dynamic::vBegin(void)
     return;
   }
   
-  Stage* pStage = m_pPipeline->m_oStageVec.pGet(0);
-  
-  // for each StagePtn
   i8 nOps = 0;
-  
-  for (i8 i_Ptn = 0; i_Ptn < pStage->m_oStagePtnVec.nItems(); i_Ptn++) {
-    StagePtn* pStagePtn = pStage->m_oStagePtnVec.pGet(i_Ptn);
-    nOps += pStagePtn->m_oOpVec.nItems();
+  for (i8 i_Stage = 0; i_Stage < m_pPipeline->m_oStageVec.nItems(); i_Stage++) {
+    Stage* pStage = m_pPipeline->m_oStageVec.pGet(i_Stage);
+    
+    for (i8 i_Ptn = 0; i_Ptn < pStage->m_oStagePtnVec.nItems(); i_Ptn++) {
+      StagePtn* pStagePtn = pStage->m_oStagePtnVec.pGet(i_Ptn);
+      nOps += pStagePtn->m_oOpVec.nItems();
+    }
+    for (i8 i_Nde = 0; i_Nde < pStage->m_oStageNdeVec.nItems(); i_Nde++) {
+      StageNde* pStageNde = pStage->m_oStageNdeVec.pGet(i_Nde);
+      nOps += pStageNde->m_oOpVec.nItems();
+    }
   }
-  AM::vSetAcksRmg(m_pTask,nOps);
   
-  for (i8 i_Ptn = 0; i_Ptn < pStage->m_oStagePtnVec.nItems(); i_Ptn++) {
-    StagePtn* pStagePtn = pStage->m_oStagePtnVec.pGet(i_Ptn);
-    // for each operator in the stage ptn
-    for (i8 i_Op = pStagePtn->m_oOpVec.nItems() - 1; i_Op >= 0; i_Op--) {
-      Op* pOp = pStagePtn->m_oOpVec.pGet(i_Op);
-      bool bSpawned = AM::bSpawnOp(m_pSession,pOp);
-      ASSERT(bSpawned);
+  AM::vSetAcksRmg(m_pTask,nOps);
+
+  for (i8 i_Stage = 0; i_Stage < m_pPipeline->m_oStageVec.nItems(); i_Stage++) {
+    Stage* pStage = m_pPipeline->m_oStageVec.pGet(i_Stage);
+
+    for (i8 i_Nde = 0; i_Nde < pStage->m_oStageNdeVec.nItems(); i_Nde++) {
+      StageNde* pStageNde = pStage->m_oStageNdeVec.pGet(i_Nde);
+      // for each operator in the stage nde
+      for (i8 i_Op = pStageNde->m_oOpVec.nItems() - 1; i_Op >= 0; i_Op--) {
+        Op* pOp = pStageNde->m_oOpVec.pGet(i_Op);
+        bool bSpawned = AM::bSpawnOp(m_pSession,pOp);
+        ASSERT(bSpawned);
+      }
+    }
+    for (i8 i_Ptn = 0; i_Ptn < pStage->m_oStagePtnVec.nItems(); i_Ptn++) {
+      StagePtn* pStagePtn = pStage->m_oStagePtnVec.pGet(i_Ptn);
+      // for each operator in the stage ptn
+      for (i8 i_Op = pStagePtn->m_oOpVec.nItems() - 1; i_Op >= 0; i_Op--) {
+        Op* pOp = pStagePtn->m_oOpVec.pGet(i_Op);
+        bool bSpawned = AM::bSpawnOp(m_pSession,pOp);
+        ASSERT(bSpawned);
+      }
     }
   }
 }

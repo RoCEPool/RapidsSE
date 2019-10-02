@@ -82,8 +82,9 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   m_pOpOut        = nullptr;
   m_bAppendRight  = pOpSpec->bAppendRight();
 
+  m_nNode            = C_UNKNOWN;
   m_nSlot            = C_UNKNOWN;
-  m_nLeftEndMarkers  = 0;
+  m_nLeftEndMarkers  = 1;
   m_nRightEndMarkers = 0;
   m_pStreamDef       = nullptr;
   
@@ -333,6 +334,16 @@ bool Op::bIsLocked(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set the job                                                                */
+/*----------------------------------------------------------------------------*/
+void Op::vJob(Job* pJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_pJob = pJob;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get label                                                                  */
 /*----------------------------------------------------------------------------*/
 Stz* Op::szLabel(void)
@@ -416,9 +427,10 @@ void Op::vPipeOut(Operand* pOperand)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   if (AM::bVerbose())
-    vTrace("%s (P%lld) (job:%p)::vPipeOut :    %s %p\n"_Stz,
+    vTrace("%s (P%lld) (N%lld) (job:%p)::vPipeOut :    %s %p\n"_Stz,
            m_sName.aStz(),
            m_nSlot,
+           m_nNode,
            m_pJob,
            aCN[pOperand->eClass()],
            pOperand);
@@ -449,9 +461,10 @@ void Op::vPipeToJob(Operand* pOperand)
   Queue* pBufferQueue = AM::pBufferQueue(m_pJob);
   
   if (AM::bVerbose())
-    vTrace("%s(P%lld)::vPipeToJob(%p):    %s %p\n"_Stz,
+    vTrace("%s (P%lld) (N%lld) ::vPipeToJob(%p):    %s %p\n"_Stz,
            m_sName.aStz(),
            m_nSlot,
+           m_nNode,
            m_pJob,
            aCN[pOperand->eClass()],
            pOperand);
@@ -503,8 +516,11 @@ Operand* Op::pPopQueue(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (AM::bVerbose() && pOperand) {
-    vTrace("%s::pPopQueue : %s %p\n"_Stz,
-           m_sLabel.aStz(),
+    vTrace("%s (P%lld) (N%lld) (job:%p)::pPopQueue : %s %p\n"_Stz,
+           m_sName.aStz(),
+           m_nSlot,
+           m_nNode,
+           m_pJob,
            aCN[pOperand->eClass()],
            pOperand);
   }

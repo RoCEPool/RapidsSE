@@ -102,6 +102,16 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
         continue;
       }
       
+      // add the operator to the stages of the stageNdeVec as well
+      for (i8 i_Index = 0; i_Index < pStage->m_oStageNdeVec.nItems(); i_Index++) {
+        Op* pOp = (aOpDefn->m_fpNewOp)(pOpSpec,this);
+        StageNde* pStageNde = pStage->m_oStageNdeVec.pGet(i_Index);
+        pOp->m_nNode = pStageNde->m_i_Nde;
+        pStage->m_oOpVec.vAdd(pOp);
+        pStageNde->m_oOpVec.vAdd(pOp);
+        //pOp->m_nLeftEndMarkers = pStage->m_oStageNdeVec.nItems();
+      }
+      
       // add the operator to the stages of the stagePtnVec as well
       for (i8 i_Ptn = 0; i_Ptn < pStage->m_oStagePtnVec.nItems(); i_Ptn++) {
         Op* pOp = (aOpDefn->m_fpNewOp)(pOpSpec,this);
@@ -117,30 +127,104 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // link the operators
   
-  // SINGLE STAGE
-  Stage* pStage = m_oStageVec.pGet(0);
-  
-  // for each partition in the stage
-  for (i8 i_Ptn = 0; i_Ptn < pStage->m_oStagePtnVec.nItems(); i_Ptn++) {
+  // for each stage
+  for (i8 i_Stage = 0; i_Stage < m_oStageVec.nItems(); i_Stage++) {
     
-    StagePtn* pStagePtn = pStage->m_oStagePtnVec.pGet(i_Ptn);
+    Stage* pStage = m_oStageVec.pGet(i_Stage);
+    Op* pOpNext = nullptr;
     
-    // for each operator in the partition
-    for (i8 i_Op = 0; i_Op < pStagePtn->m_oOpVec.nItems() - 1; i_Op++) {
-    
-      // get operator to be linked
-      Op* pOp = pStagePtn->m_oOpVec.pGet(i_Op);
+    // for each partition in the stagePtnVec of the stage
+    for (i8 i_Ptn = 0; i_Ptn < pStage->m_oStagePtnVec.nItems(); i_Ptn++) {
       
-      // get the next operator
-      Op* pOpNext = pStagePtn->m_oOpVec.pGet(i_Op+1);
+      StagePtn* pStagePtn = pStage->m_oStagePtnVec.pGet(i_Ptn);
       
-      // link the two operators
-      pOp->vNextLabel(pOpNext->szLabel());
-      pOp->vOpOut(pOpNext);
+      // for each operator in the partition
+      for (i8 i_Op = 0; i_Op < pStagePtn->m_oOpVec.nItems() - 1; i_Op++) {
       
-      pOpNext->m_nLeftEndMarkers = 1;
+        // get operator to be linked
+        Op* pOp = pStagePtn->m_oOpVec.pGet(i_Op);
+        
+        // get the next operator
+        pOpNext = pStagePtn->m_oOpVec.pGet(i_Op+1);
+        
+        // link the two operators
+        pOp->vNextLabel(pOpNext->szLabel());
+        pOp->vOpOut(pOpNext);
+        
+      }
+      
+      // get the last operator of this stage
+      Op* pOp = pStagePtn->m_oOpVec.pGet(pStagePtn->m_oOpVec.nItems()-1);
+      
+      // if last operator is xmit, link to the first operator of the next stage
+      if (pOp->eClass() == CN_XMITOP) {
+        Stage* pNextStage = m_oStageVec.pGet(i_Stage+1);
+        RASSERT(pNextStage);
+        StageNde* pStageNde = pNextStage->m_oStageNdeVec.pGet(0);
+        pOpNext = pStageNde->m_oOpVec.pGet(0);
+        pOp->vNextLabel(pOpNext->szLabel());
+        pOp->vOpOut(pOpNext);
+      }
     }
+    
+    
+    // for each node in the stageNdeVec of the stage
+    for (i8 i_Nde = 0; i_Nde < pStage->m_oStageNdeVec.nItems(); i_Nde++) {
+      
+      StageNde* pStageNde = pStage->m_oStageNdeVec.pGet(i_Nde);
+      
+      // for each operator in the partition
+      for (i8 i_Op = 0; i_Op < pStageNde->m_oOpVec.nItems() - 1; i_Op++) {
+        
+        // get operator to be linked
+        Op* pOp = pStageNde->m_oOpVec.pGet(i_Op);
+        
+        if (pOpNext)
+          pOpNext->vNextLabel(pOp->szLabel());
+        
+        // get the next operator
+        pOpNext = pStageNde->m_oOpVec.pGet(i_Op+1);
+        
+        // link the two operators
+        pOp->vNextLabel(pOpNext->szLabel());
+        pOp->vOpOut(pOpNext);
+        
+      }
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // dump
+    
+    if (AM::bVerbose()) {
+      vTrace("Dynamic Job:\n"_Stz);
+      
+      for (i8 i_Op = 0; i_Op < pStage->m_oOpVec.nItems(); i_Op++) {
+        
+        Op* pOp = pStage->m_oOpVec.pGet(i_Op);
+        
+        s32 sArgs;
+        EnmSet* pEnmSet = pOp->m_pOpSpec->pEnmSet();
+        for (i8 i_Arg = 0; i_Arg < pEnmSet->nEnm(); i_Arg++) {
+          sArgs.vSprint("(%s)"_Stz,pEnmSet->szValue((i8)i_Arg));
+        }
+        
+        pOp->m_pOpSpec->pEnmSet()->vPrint();
+        
+        vTrace("  [%02lld] { %9s: %8s%-24s endMarkers(L%lld R%lld) :%-6s %s }\n"_Stz,
+               i_Op,
+               pOp->szLabel(),
+               aCN[pOp->eClass()],
+               sArgs.aStz(),
+               pOp->m_nLeftEndMarkers,
+               pOp->m_nRightEndMarkers,
+               pOp->szNextLabel(),
+               pOp->m_bAppendRight ? "appendRight"_Stz : "appendLeft "_Stz
+               );
+      }
+    }
+
   }
+  
   /*
   i8 i_Op = 0;
   i8 i_SlotsPerNode = AM::pGrid()->nSlotsPerNode();
@@ -240,37 +324,7 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
       break;
   }
 */
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // dump
   
-  if (AM::bVerbose()) {
-    vTrace("Dynamic Job:\n"_Stz);
-    
-    for (i8 i_Op = 0; i_Op < pStage->m_oOpVec.nItems(); i_Op++) {
-      
-      Op* pOp = pStage->m_oOpVec.pGet(i_Op);
-      
-      s32 sArgs;
-      EnmSet* pEnmSet = pOp->m_pOpSpec->pEnmSet();
-      for (i8 i_Arg = 0; i_Arg < pEnmSet->nEnm(); i_Arg++) {
-        sArgs.vSprint("(%s)"_Stz,pEnmSet->szValue((i8)i_Arg));
-      }
-      
-      pOp->m_pOpSpec->pEnmSet()->vPrint();
-      
-      vTrace("  [%02lld] { %9s: %8s%-24s endMarkers(L%lld R%lld) :%-6s %s }\n"_Stz,
-             i_Op,
-             pOp->szLabel(),
-             aCN[pOp->eClass()],
-             sArgs.aStz(),
-             pOp->m_nLeftEndMarkers,
-             pOp->m_nRightEndMarkers,
-             pOp->szNextLabel(),
-             pOp->m_bAppendRight ? "appendRight"_Stz : "appendLeft "_Stz
-             );
-    }
-  }
-
   vDebugPoint();
 }
 

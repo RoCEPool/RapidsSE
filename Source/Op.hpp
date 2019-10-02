@@ -12,7 +12,7 @@ namespace Operators
   protected:
     s32            m_sName;          // first word of prompt command
   
-    Pipeline*        m_pPipeline;        // op digest
+    Pipeline*      m_pPipeline;      // op digest
     OpDefn*        m_aOpDefn;        // op definition
     OpSpec*        m_pOpSpec;        // op specification
   
@@ -33,6 +33,7 @@ namespace Operators
     Op*            m_pOpOut;         // to which op the results get piped
     bool           m_bAppendRight;   // append to right queue?
   
+    i8             m_nNode;               // node no
     i8             m_nSlot;               // slot no
     i8             m_nLeftEndMarkers;     // expected left end markers
     i8             m_nRightEndMarkers;    // expected left end markers
@@ -68,6 +69,7 @@ namespace Operators
     void vIncWorkDone(void);
     bool bIsCancelling(void);
     bool bIsLocked(void);
+    void vJob(Job* pJob);
     Stz* szLabel(void);
     void vLabel(Stz* szLabel);
     Stz* szNextLabel(void);
