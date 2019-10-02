@@ -127,6 +127,21 @@ i8 EnmSet::i_Find(Stz *szName)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test if ename-set has a pair with given name                               */
+/*----------------------------------------------------------------------------*/
+bool EnmSet::bHasName(Stz *szName)
+{
+  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  
+  i8 i_Enm = i_Find(szName);
+  
+  if (C_UNKNOWN == i_Enm)
+    return false;
+  else
+    return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get name                                                                   */
 /*----------------------------------------------------------------------------*/
 Stz* EnmSet::szName(i8 i_Enm)
