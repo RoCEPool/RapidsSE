@@ -42,7 +42,7 @@
   // get and drop ";"
   next-token drop
 
-  word::this word.enmSetAsStr .
+  word::this word.enmSet@ enmSet.asStr .
 ;
 
 /*----------------------------------------------------------------------------*/
