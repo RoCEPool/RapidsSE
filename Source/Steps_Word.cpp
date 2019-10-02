@@ -117,6 +117,13 @@ void Step::vWordEnmSetAsStr(MP_Task mpTask)
   
   EnmSet* pEnmSet = pWord->pEnmSet();
   
+  SP_EnmSet spEnmSet;
+  
+  s4K sStr;
+  
+  sStr = spEnmSet.sz(pEnmSet);
+  mpTask->m_pDataStack->vPushS4K(sStr);
+
   EXIT();
 }
 
