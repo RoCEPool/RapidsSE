@@ -2360,7 +2360,22 @@ void StrLib::vRemove(char *w, const char cLeading)
 }
   
 /*----------------------------------------------------------------------------*/
-/* vRemove: remove suffix from arg (where suffix is introduced by given char) */
+/* remove prefix from arg (where prefix is introduced by given char)          */
+/*----------------------------------------------------------------------------*/
+void StrLib::vRemovePrefix(char *azArg, char cIntro)
+{
+  char* azPrefixEnds = azArg;
+  
+  // find the byte where the prefix ends
+  if (! bFind(&azPrefixEnds,cIntro))
+    return;
+  
+  // copy latter portion to the beginning of the string
+  strcpy(azArg,azPrefixEnds + 1);
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove suffix from arg (where suffix is introduced by given char)          */
 /*----------------------------------------------------------------------------*/
 void StrLib::vRemoveSuffix(char *azArg, char cIntro)
 {
