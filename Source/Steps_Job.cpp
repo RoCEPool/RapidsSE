@@ -1272,17 +1272,24 @@ void Step::vJobPostRecv(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.postRecv"_Stz);
   Job* pJob = _pJob(pJobPtr);
-  
+ 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the job class on this node
+  
   eCN eClass = pJob->eClass();
-  JobClass* pJobClass = JobClass::pFind(eClass);
   
-  pJob->m_aJobClass = pJobClass;
+  
+  JobClass* aJobClass = JobClass::pFind(eClass);
+  
+  pJob->m_aJobClass = aJobClass;
 
-  ASSERT(pJobClass->m_fpRecv == vJob_recv);
+  ASSERT(aJobClass->m_fpRecv == vJob_recv);
   
-  if (pJobClass->m_fpRecv)
-    (*pJobClass->m_fpRecv)(pJob);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // run the post recv function
+  
+  if (aJobClass->m_fpRecv)
+    (*aJobClass->m_fpRecv)(pJob);
   
   if (pJob->m_xReqTuple.m_iDetail) {
     JobLog::vNote(pJob,
