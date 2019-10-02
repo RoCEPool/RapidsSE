@@ -31,7 +31,7 @@
     dup "}" str.equal not
   while
     next-token drop next-token
-    word::this word.addEnmValStr
+    word::this word.enmSet@ enmSet.addStr
   repeat
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
