@@ -25,6 +25,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // parse each input token till "}", build ename set representing the syntax
+
   begin
     next-token
     dup "}" str.equal not
@@ -32,6 +33,8 @@
     next-token drop next-token
     word::this word.addEnmValStr
   repeat
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // drop the "}" from dstack
   drop
