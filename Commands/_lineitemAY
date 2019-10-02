@@ -83,36 +83,41 @@ time ld orders "/DATA/tpch/orders10.csv" max_errors 100;
 
 dumptbl lineitem;
 
+
+
 print "**************************************************************************";
 print "scan lineitem | output;";
 print "**************************************************************************";
-dynamic
-
-  pipeline lineItem_dyn
-  begin
-
-  stage stageA on all partitions:
-    scan lineitem | output
-
-end
-;
-
-/*
- 
  dynamic
  
  pipeline lineItem_dyn
  begin
  
  stage stageA on all partitions:
- scan lineitem | stageB
+   scan lineitem | stageB
  
  stage stageB on origin:
- output
+   output
  
  end
  ;
 
+/*
+ 
+ print "**************************************************************************";
+ print "scan lineitem | output;";
+ print "**************************************************************************";
+ dynamic
+ 
+ pipeline lineItem_dyn
+ begin
+ 
+ stage stageA on all partitions:
+ scan lineitem | output
+ 
+ end
+ ;
+ 
 print "**************************************************************************";
 print "scan lineitem | agg L_ORDERKEY | superAgg | output;";
 print "**************************************************************************";

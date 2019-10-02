@@ -54,7 +54,9 @@ Stage::Stage(StageSpec* pStageSpec)
   
   switch (m_pStageSpec->eTopology()) {
     case PO_ALL_NODES:
-      RASSERT(0);
+      for (i8 i_Nde = 0; i_Nde < AM::pGrid()->nConnectedNodes(); i_Nde++) {
+        m_oStageNdeVec.vAdd(new StageNde(pStageSpec, i_Nde));
+      }
       break;
       
     case PO_ALL_PARTITIONS:
@@ -64,7 +66,7 @@ Stage::Stage(StageSpec* pStageSpec)
       break;
       
     case PO_ORIGIN:
-      RASSERT(0);
+      m_oStageNdeVec.vAdd(new StageNde(pStageSpec, AM::pGrid()->iThisNode()));
       break;
       
     case PO_SPECIFIC_NODE:
