@@ -15,6 +15,8 @@ void Step::vAddSteps_Word(void)
   vAddStep("word.attachEnmSet"_Stz,&Step::vWordAttachEnmSet);
   vAddStep("word.dump"_Stz,        &Step::vWordDump);
   vAddStep("word.enmSetAsStr"_Stz, &Step::vWordEnmSetAsStr);
+  vAddStep("word.enmSet@"_Stz,     &Step::vWordEnmSetFetch);
+  vAddStep("word.enmSet!"_Stz,     &Step::vWordEnmSetStore);
   vAddStep("word.exitHook@"_Stz,   &Step::vWordExitHookGet);
   vAddStep("word.exitHook!"_Stz,   &Step::vWordExitHookSet);
   vAddStep("word.forget"_Stz,      &Step::vWordForget);
@@ -128,6 +130,47 @@ void Step::vWordEnmSetAsStr(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* word.enmSet@ -- fetch ename set                                            */
+/*----------------------------------------------------------------------------*/
+void Step::vWordEnmSetFetch(MP_Task mpTask)
+{
+  ENTRY("vWordEnmSetFetch"_Stz);
+  
+  Object* pWordObject;
+  if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
+    THROW_INVALID_DSTACK("vWordEnmSetFetch"_Stz);
+  ForthWord* pWord = _pWord(pWordObject);
+  
+  EnmSet* pEnmSet = pWord->pEnmSet();
+  
+   mpTask->m_pDataStack->vPushPointer(pEnmSet);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word.enmSet! -- store ename set                                            */
+/*----------------------------------------------------------------------------*/
+void Step::vWordEnmSetStore(MP_Task mpTask)
+{
+  ENTRY("vWordEnmSetStore"_Stz);
+  
+  Object* pWordObject;
+  if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
+    THROW_INVALID_DSTACK("vWordEnmSetStore"_Stz);
+  ForthWord* pWord = _pWord(pWordObject);
+  
+  Object* pEnmSet_obj;
+  if ( ! mpTask->m_pDataStack->bPop(pEnmSet_obj) )
+    THROW_INVALID_DSTACK("vWordEnmSetStore"_Stz);
+  EnmSet* pEnmSet = _pEnmSet(pEnmSet_obj);
+  
+  pWord->vEnmSet(pEnmSet);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* word.exitHook@ -- get exit hook of word                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vWordExitHookGet(MP_Task mpTask)
@@ -221,7 +264,6 @@ void Step::vWordImmediateSet(MP_Task mpTask)
   i8 iImmediate;
   if ( ! mpTask->m_pDataStack->bPop(iImmediate) )
     THROW_INVALID_DSTACK("word.immediate!"_Stz);
-  ForthWord* pWordKind = _pWord(pWordObject);
   
   pWord->vImmediate(iImmediate);
   
