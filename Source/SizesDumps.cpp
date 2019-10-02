@@ -371,6 +371,8 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vInvalid,         // CN_SRTSET
   /*126 */ &Stack::vDump,           // CN_STACK
   /*126 */ &Dump::vInvalid,         // CN_STAGE
+  /*126 */ &Dump::vInvalid,         // CN_STAGENDE
+  /*126 */ &Dump::vInvalid,         // CN_STAGENDEVEC
   /*126 */ &Dump::vInvalid,         // CN_STAGEPTN
   /*126 */ &Dump::vInvalid,         // CN_STAGEPTNVEC
   /*126 */ &Dump::vInvalid,         // CN_STAGESPEC
@@ -786,6 +788,8 @@ i8 giClassSize[]
   /*    */ sizeof(SrtSet),             // CN_SRTSET
   /*126 */ sizeof(Stack),              // CN_STACK
   /*126 */ sizeof(Stage),              // CN_STAGE
+  /*126 */ sizeof(StageNde),           // CN_STAGENDE
+  /*126 */ sizeof(StageNdeVec),        // CN_STAGENDEVEC
   /*126 */ sizeof(StagePtn),           // CN_STAGEPTN
   /*126 */ sizeof(StagePtnVec),        // CN_STAGEPTNVEC
   /*126 */ sizeof(StageSpec),          // CN_STAGESPEC
@@ -1201,6 +1205,8 @@ eHT geWhichHeap[]
   /*125 */ HT_INVALID,           // CN_SRTSET
   /*126 */ HT_TRANSIENT_LARGE,   // CN_STACK
   /*126 */ HT_TRANSIENT_MEDIUM,  // CN_STAGE
+  /*126 */ HT_TRANSIENT_SMALL,   // CN_STAGENDE
+  /*126 */ HT_TRANSIENT_SMALL,   // CN_STAGENDEVEC
   /*126 */ HT_TRANSIENT_SMALL,   // CN_STAGEPTN
   /*126 */ HT_TRANSIENT_SMALL,   // CN_STAGEPTNVEC
   /*126 */ HT_TRANSIENT_SMALL,   // CN_STAGESPEC
