@@ -12,7 +12,6 @@ void Step::vAddSteps_Word(void)
   vAddStep("word::this"_Stz,       &Step::vWordThis);
   
   vAddStep("word.addEnmValStr"_Stz,&Step::vWordAddEnmValStr);
-  vAddStep("word.attachEnmSet"_Stz,&Step::vWordAttachEnmSet);
   vAddStep("word.dump"_Stz,        &Step::vWordDump);
   vAddStep("word.enmSet@"_Stz,     &Step::vWordEnmSetFetch);
   vAddStep("word.enmSet!"_Stz,     &Step::vWordEnmSetStore);
@@ -65,25 +64,6 @@ void Step::vWordAddEnmValStr(MP_Task mpTask)
   pEnmSet->vAdd(sName,sValue,TN_STRING);
   pEnmSet->vPrint();
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* word.attachEnmSet -- attach an ename set                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vWordAttachEnmSet(MP_Task mpTask)
-{
-  ENTRY("vWordAttachEnmSet"_Stz);
-  
-  Object* pWordObject;
-  if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK("vWordAttachEnmSet"_Stz);
-  ForthWord* pWord = _pWord(pWordObject);
-  
-  EnmSet* pEnmSet = new EnmSet;
-  
-  pWord->vEnmSet(pEnmSet);
-  
   EXIT();
 }
 

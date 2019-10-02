@@ -249,8 +249,9 @@ public:
   static void vEncodeUntil(Tasks::MP_Task mpTask);
 
   // ename-set
-  static void vEnmSetNew(Tasks::MP_Task mpTask);
+  static void vEnmSetAddStr(Tasks::MP_Task mpTask);
   static void vEnmSetAsStr(Tasks::MP_Task mpTask);
+  static void vEnmSetNew(Tasks::MP_Task mpTask);
 
   // enter
 public:
@@ -1256,7 +1257,6 @@ private:
   // word
   static void vWord(Tasks::MP_Task mpTask);
   static void vWordAddEnmValStr(Tasks::MP_Task mpTask);
-  static void vWordAttachEnmSet(Tasks::MP_Task mpTask);
   static void vWordDump(Tasks::MP_Task mpTask);
   static void vWordEnmSetFetch(Tasks::MP_Task mpTask);
   static void vWordEnmSetStore(Tasks::MP_Task mpTask);
