@@ -1254,6 +1254,7 @@ private:
   static void vWordAddEnmValStr(Tasks::MP_Task mpTask);
   static void vWordAttachEnmSet(Tasks::MP_Task mpTask);
   static void vWordDump(Tasks::MP_Task mpTask);
+  static void vWordEnmSetAsStr(Tasks::MP_Task mpTask);
   static void vWordExitHookGet(Tasks::MP_Task mpTask);
   static void vWordExitHookSet(Tasks::MP_Task mpTask);
   static void vWordForget(Tasks::MP_Task mpTask);

@@ -14,6 +14,7 @@ void Step::vAddSteps_Word(void)
   vAddStep("word.addEnmValStr"_Stz,&Step::vWordAddEnmValStr);
   vAddStep("word.attachEnmSet"_Stz,&Step::vWordAttachEnmSet);
   vAddStep("word.dump"_Stz,        &Step::vWordDump);
+  vAddStep("word.enmValAsStr"_Stz, &Step::vWordEnmSetAsStr);
   vAddStep("word.exitHook@"_Stz,   &Step::vWordExitHookGet);
   vAddStep("word.exitHook!"_Stz,   &Step::vWordExitHookSet);
   vAddStep("word.forget"_Stz,      &Step::vWordForget);
@@ -98,6 +99,23 @@ ENTRY("vWordDump"_Stz);
   ForthWord* pWord = _pWord(pWordObject);
   
   pWord->vContentDump();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word.enmSetAsStr -- get ename set as a single string                       */
+/*----------------------------------------------------------------------------*/
+void Step::vWordEnmSetAsStr(MP_Task mpTask)
+{
+  ENTRY("vWordEnmSetAsStr"_Stz);
+  
+  Object* pWordObject;
+  if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
+    THROW_INVALID_DSTACK("vWordEnmSetAsStr"_Stz);
+  ForthWord* pWord = _pWord(pWordObject);
+  
+  EnmSet* pEnmSet = pWord->pEnmSet();
   
   EXIT();
 }
