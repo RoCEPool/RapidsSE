@@ -7,25 +7,17 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: .wordName_trunc
-
-  "_" word::this word.name str.removeSuffix
-;
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 : .fillEnmSet params| pEnmSet |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   "jobPriority" pEnmSet enmSet.hasName not if
      "jobPriority" "PY_NORMAL" pEnmSet enmSet.addStr then
 
-  "SeedReq" .wordName_trunc "_req" str.cat pEnmSet enmSet.addStr
-  "SeedRcv" .wordName_trunc "_beg" str.cat pEnmSet enmSet.addStr
-  "SeedExe" .wordName_trunc "_exe" str.cat pEnmSet enmSet.addStr
-  "SeedEnd" .wordName_trunc "_end" str.cat pEnmSet enmSet.addStr
-  "SeedCan" .wordName_trunc "_can" str.cat pEnmSet enmSet.addStr
+  "SeedReq" word::name_trunc "_req" str.cat pEnmSet enmSet.addStr
+  "SeedRcv" word::name_trunc "_beg" str.cat pEnmSet enmSet.addStr
+  "SeedExe" word::name_trunc "_exe" str.cat pEnmSet enmSet.addStr
+  "SeedEnd" word::name_trunc "_end" str.cat pEnmSet enmSet.addStr
+  "SeedCan" word::name_trunc "_can" str.cat pEnmSet enmSet.addStr
 
   pEnmSet enmSet.asStr .
 ;
@@ -49,7 +41,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  "JobName" .wordName_trunc pEnmSet enmSet.addStr
+  "JobName" word::name_trunc pEnmSet enmSet.addStr
 
   // skip the "{" token from input source
   next-token drop

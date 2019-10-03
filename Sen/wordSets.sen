@@ -6,6 +6,7 @@
 
 "wordSet_core.sen"     include
 "wordSet_corePlus.sen" include
+"wordSet_word.sen"     include
 
 "wordSet_log.sen"      include
 "wordSet_debug.sen"    include
