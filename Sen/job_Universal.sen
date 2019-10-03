@@ -1,207 +1,56 @@
 /*============================================================================*/
-/* job_ForgetNode.sen -- Job Create Node                                      */
+/* job_Universal.sen -- Universal Job                                         */
 /*============================================================================*/
 
-" job_ForgetNode.sen" .verbose
-
-/*----------------------------------------------------------------------------*/
-/* check word is a Node                                                       */
-/*----------------------------------------------------------------------------*/
-: .checkIsNode ( "<NodeNm>" -- t|f )
-
-  grid::findNode if true exit then
-
-  EC_NO_SUCH_NODE false
-;
-
-/*----------------------------------------------------------------------------*/
-/* check if word is a forgetable Node                                         */
-/*----------------------------------------------------------------------------*/
-: .checkForgetNode ( "<NodeNm>" -- true | errorCode false )
-
-  .checkIsNode if true exit then
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* forget named node (run by all participants)                                */
-/*----------------------------------------------------------------------------*/
-: .forgetNode ( "<NodeNm>" )
-
-  params| sNodeNm |
-
-  sNodeNm grid::findNode node.forget
-;
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* request forget node on originating node                                    */
-/*----------------------------------------------------------------------------*/
-: forgetNode_req (  -- <R> )
-
-  >>logEntry <SEED_REQ>
-
-  JP_BEGINNING log::markPhase
-
-  0 0 locals| pJob pTask |
-
-  tp: forgetNode
-
-  // get the task
-  task::this to pTask
-
-  // get the job from the task
-  pTask task.job@ to pJob
-
-
-  // distribute the job
-  pJob job.distribute
-
-  <<logExit <DONE_REQ>
-;
-
-/*----------------------------------------------------------------------------*/
-/* execute forget node on each participating node                             */
-/*----------------------------------------------------------------------------*/
-: forgetNode_exe ( pJob_Universal -- )
-
-  >>logEntry <SEED_EXE>
-
-  //params| pJob_Universal |
-  job::this locals| pJob_Universal |
-
-  0 locals| pNode |
-  // 0 locals| sNodeNm |
-
-  tp: forgetNode_exe
-
-  //----------------------------------------------------------------------------
-
-  // assert correct job
-  CN_JOB_UNIVERSAL pJob_Universal object.assertClass
-
-  // grab a ddl lock
-  ddlLock::grabWrite
-
-  // set task's dictionary stack from path in job
-  pJob_Universal job.pushPath
-  task::dicStack.set
-
-  //----------------------------------------------------------------------------
-  // forget the named node
-
-  // pJob_Universal job.nodeName@ to sNodeNm
-
-  <nodeNm> .forgetNode
-
-  //----------------------------------------------------------------------------
-
-  pJob_Universal job::participantExecuted
-
-  <<logExit <DONE_EXE>
-;
+" job_Universal.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* check job resources (on each participating node)                           */
 /*----------------------------------------------------------------------------*/
-: .forgetNode.checkResources ( pJob_Universal -- )
+: .universal.checkResources ( pJob_Universal -- )
 
-  >>logEntry <Check_Resources>
-
-  params| pJob_Universal  |
-
-  //----------------------------------------------------------------------------
-
-  // grab a ddl lock
-  ddlLock::grabRead
-
-  // set task's dictionary stack from path in job
-  pJob_Universal job.pushPath
-  task::dicStack.set
-
-  //----------------------------------------------------------------------------
-  // check if we can forget the Node
-
-  pJob_Universal job.nodeName@
-  .checkforgetNode not if pJob_Universal <ERROR_JOB> !!logError exit then
-
-  <<logExit <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* release job resources (on each participating node)                         */
 /*----------------------------------------------------------------------------*/
-: .forgetNode.releaseResources ( pJob_Universal -- )
+: .universal.releaseResources ( pJob_Universal -- )
 
-  >>logEntry <Release_Resources>
+;
 
-  params| pJob_Universal  |
+/*----------------------------------------------------------------------------*/
+/* request on originating node                                                */
+/*----------------------------------------------------------------------------*/
+: universal_req (  -- <R> )
 
-  tp: forgetNode.releaseResources
-  //"releaseResources received" .
-
-  <<logExit <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* begin forget node (on each participating node)                             */
 /*----------------------------------------------------------------------------*/
-: forgetNode_beg ( -- )
+: universal_beg ( -- )
 
-  >>logEntry <SEED_BEG>
+;
 
-  job::this locals| pJob_Universal |
+/*----------------------------------------------------------------------------*/
+/* execute forget node on each participating node                             */
+/*----------------------------------------------------------------------------*/
+: universal_exe ( pJob_Universal -- )
 
-  //">> forgetNode_beg <<" .
-
-  // add this job to the participants list
-  pJob_Universal job.becomeParticipant
-
-  // check resources
-  pJob_Universal .forgetNode.checkResources
-
-  // this job has begun
-  job::participantBegun
-
-  <<logExit <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* end forget node (on each participating node)                               */
 /*----------------------------------------------------------------------------*/
-: forgetNode_end ( -- )
+: universal_end ( -- )
 
-  >>logEntry <SEED_END>
-
-  job::this locals| pJob_Universal |
-
-  //">> forgetNode_end <<" .
-
-  // release resources
-  pJob_Universal .forgetNode.releaseResources
-
-  job::participantEnded
-
-  <<logExit <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* cancel forget node (on each participating node)                            */
 /*----------------------------------------------------------------------------*/
-: forgetNode_can ( -- )
+: universal_can ( -- )
 
-  >>logEntry <SEED_CAN>
-
-  job::this locals| pJob_Universal |
-
-  pJob_Universal .forgetNode.releaseResources
-
-  job::participantCancelled
-
-  <<logExit <DONE_CAN>
 ;
 
 /*============================================================================*/
