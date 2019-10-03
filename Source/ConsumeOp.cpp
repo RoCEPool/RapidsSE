@@ -76,6 +76,7 @@ ConsumeOp::ConsumeOp(OpSpec* pOpSpec, Pipeline* pPipeline)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEOP,_FOOTER_);
   
   m_fpCall = ConsumeOp::eCall;
+  m_pFirstOperand = nullptr;
   
   _checkInitialised_(CN_CONSUMEOP);
 
@@ -150,6 +151,13 @@ eOR ConsumeOp::eOpLoop(void)
       return OR_BIDE;
     }
     
+    // is this the first operand
+    if ( ! m_pFirstOperand )
+      m_pFirstOperand = pOperand;
+    
+    // assert first operand is a stream def
+    ASSERT(m_pFirstOperand->eClass() == CN_STREAMDEF);
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     switch (pOperand->eClass()) {
@@ -172,8 +180,9 @@ eOR ConsumeOp::eOpLoop(void)
       // -- -- -- -- -- --
         
       case CN_STREAMDEF: {
-        
+      
         if ( ! m_pStreamDef ) {
+          
           m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
           
           // pipe out first streamDef received

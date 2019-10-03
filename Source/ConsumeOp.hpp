@@ -9,6 +9,8 @@ namespace DataOperators
   {
   private:
     
+    Operand*  m_pFirstOperand;
+    
     // must be last
     Footer m_xFooter;
   
