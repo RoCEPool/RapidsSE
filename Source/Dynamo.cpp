@@ -430,9 +430,11 @@ bool Dynamo::bPhase2_staging(void)
 
       vTrace("  op=%s\n"_Stz,pOpSpec->szName());
       
-      if (m_pPipelineSpec->pFindStageSpec(pOpSpec->szName())) {
+      StageSpec* pStageSpecFound = m_pPipelineSpec->pFindStageSpec(pOpSpec->szName());
+      if (pStageSpecFound) {
         vTrace("  op %s is a stage\n"_Stz,pOpSpec->szName());
         vReplaceWithXmit(pOpSpec);
+        pStageSpecFound->vPrependConsumeOp(pStageSpec->eTopology());
       }
       
     }

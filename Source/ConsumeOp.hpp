@@ -1,17 +1,17 @@
 /*============================================================================*/
-/* OutputOp.hpp -- Output                                                     */
+/* ConsumeOp.hpp -- Consume                                                   */
 /*============================================================================*/
 #pragma once
 
 namespace DataOperators
 {
-  class OutputOp : public Op
+  class ConsumeOp : public Op
   {
   private:
     
-    i8 m_iOperandsExpected;
-    i8 m_iOperandsReceived;
-    bool m_bEndMarker;
+    i8   m_iOperandsExpected;  // number of operands expected
+    i8   m_iOperandsReceived;  // number of operands received
+    bool m_bAllEndMarkers;     // received all end markers
     
     // must be last
     Footer m_xFooter;
@@ -20,8 +20,8 @@ namespace DataOperators
     void* operator new(size_t);
     void  operator delete(void*);
   
-    OutputOp(OpSpec* pOpSpec, Pipeline* pPipeline);
-   ~OutputOp(void) noexcept(false);
+    ConsumeOp(OpSpec* pOpSpec, Pipeline* pPipeline);
+   ~ConsumeOp(void) noexcept(false);
   
     static Op* pNew(OpSpec* pOpSpec, Pipeline* pPipeline);
     static eOR eCall(void* aThis);
@@ -34,7 +34,7 @@ namespace DataOperators
     Footer* aFooter(void);
   };
 
-  OutputOp* _pOutputOp(void* aAddr);
+  ConsumeOp* _pConsumeOp(void* aAddr);
 }
 
 /*============================================================================*/

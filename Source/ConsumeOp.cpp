@@ -1,14 +1,14 @@
 /*============================================================================*/
-/* OutputOp.cpp -- Output                                                     */
+/* ConsumeOp.cpp -- Consume                                                   */
 /*============================================================================*/
 
 #include "DataOperators.h"
 
-OpDesc __Op_Output (
-  CN_OUTPUTOP,         // class number
+OpDesc __Op_Consume (
+  CN_CONSUMEOP,        // class number
   OK_SINK,             // op kind
-  "Output"_Stz,        // first word of prompt command
-  "Out"_Stz,           // prefix
+  "Consume"_Stz,       // first word of prompt command
+  "csm"_Stz,           // prefix
                   
   false,               // partitioned
   false,               // compiler op
@@ -18,16 +18,16 @@ OpDesc __Op_Output (
   true,                // accepts IrwBuffer?
   true,                // accepts SrtBuffer?
                     
-  false,            // accepts CrwBuffer?
-  false,            // accepts EntBuffer?
-  false,            // accepts IrwBuffer?
-  false,            // accepts SrtBuffer?
+  true,                // accepts CrwBuffer?
+  true,                // accepts EntBuffer?
+  true,                // accepts IrwBuffer?
+  true,                // accepts SrtBuffer?
 
   CN_NONE,             // what kind of output
                   
-  OutputOp::pNew,      // function which parses the command and new's an op
-  OutputOp::eCall,     // function which calls the op loop
-  OutputOp::eDrain,    // function which calls the drain loop
+  ConsumeOp::pNew,      // function which parses the command and new's an op
+  ConsumeOp::eCall,     // function which calls the op loop
+  ConsumeOp::eDrain,    // function which calls the drain loop
 
   "output"_Stz
 );
@@ -39,58 +39,60 @@ OpDesc __Op_Output (
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-OutputOp* DataOperators::_pOutputOp(void* aAddr)
+ConsumeOp* DataOperators::_pConsumeOp(void* aAddr)
 {
-  OutputOp* pOutputOp = reinterpret_cast<OutputOp*>(aAddr);
+  ConsumeOp* pConsumeOp = reinterpret_cast<ConsumeOp*>(aAddr);
   
-  return pOutputOp;
+  return pConsumeOp;
 }
 
 /*----------------------------------------------------------------------------*/
 /* new                                                                        */
 /*----------------------------------------------------------------------------*/
-void* OutputOp::operator new(size_t)
+void* ConsumeOp::operator new(size_t)
 {
-  OutputOp* pOutputOp =
-    static_cast<OutputOp*>(HeapMem::pAllocate(CN_OUTPUTOP));
+  ConsumeOp* pConsumeOp =
+    static_cast<ConsumeOp*>(HeapMem::pAllocate(CN_CONSUMEOP));
   
-  return pOutputOp;
+  return pConsumeOp;
 }
 
 /*----------------------------------------------------------------------------*/
 /* delete                                                                     */
 /*----------------------------------------------------------------------------*/
-void OutputOp::operator delete(void* aAddress)
+void ConsumeOp::operator delete(void* aAddress)
 {
-  OutputOp* pOutputOp = static_cast<OutputOp*>(aAddress);
+  ConsumeOp* pConsumeOp = static_cast<ConsumeOp*>(aAddress);
   
-  HeapMem::vFree(pOutputOp);
+  HeapMem::vFree(pConsumeOp);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OutputOp::OutputOp(OpSpec* pOpSpec, Pipeline* pPipeline)
-: Op(CN_OUTPUTOP,pOpSpec,pPipeline)
+ConsumeOp::ConsumeOp(OpSpec* pOpSpec, Pipeline* pPipeline)
+: Op(CN_CONSUMEOP,pOpSpec,pPipeline)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEOP,_FOOTER_);
   
-  m_fpCall = OutputOp::eCall;
+  m_fpCall = ConsumeOp::eCall;
+  
   m_iOperandsExpected = 0;
   m_iOperandsReceived = 0;
-  m_bEndMarker = false;
   
-  _checkInitialised_(CN_OUTPUTOP);
+  m_bAllEndMarkers    = false;
+  
+  _checkInitialised_(CN_CONSUMEOP);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEOP,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-OutputOp::~OutputOp(void) noexcept(false)
+ConsumeOp::~ConsumeOp(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEOP,_FOOTER_);
   
 }
 
@@ -101,23 +103,23 @@ OutputOp::~OutputOp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* parse & new                                                                */
 /*----------------------------------------------------------------------------*/
-Op* OutputOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
+Op* ConsumeOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 {  
-  OutputOp* pOutputOp = new OutputOp(pOpSpec,pPipeline);
+  ConsumeOp* pConsumeOp = new ConsumeOp(pOpSpec,pPipeline);
   
   // get the end markers
-  EnmSet* pEnmSet = pOutputOp->m_pOpSpec->pEnmSet();
-  pOutputOp->m_nLeftEndMarkers = pEnmSet->iValue((i8)0);
+  EnmSet* pEnmSet = pConsumeOp->m_pOpSpec->pEnmSet();
+  pConsumeOp->m_nLeftEndMarkers = pEnmSet->iValue((i8)0);
   
-  return pOutputOp;
+  return pConsumeOp;
 }
 
 /*----------------------------------------------------------------------------*/
 /* call loop                                                                  */
 /*----------------------------------------------------------------------------*/
-eOR OutputOp::eCall(void* aThisOp)
+eOR ConsumeOp::eCall(void* aThisOp)
 {
-  eOR eCallAgain = ((OutputOp*)aThisOp)->eOpLoop();
+  eOR eCallAgain = ((ConsumeOp*)aThisOp)->eOpLoop();
   
   return eCallAgain;
 }
@@ -125,9 +127,9 @@ eOR OutputOp::eCall(void* aThisOp)
 /*----------------------------------------------------------------------------*/
 /* call drain loop                                                            */
 /*----------------------------------------------------------------------------*/
-eOR OutputOp::eDrain(void* aThisOp)
+eOR ConsumeOp::eDrain(void* aThisOp)
 {
-  eOR eCallAgain = ((OutputOp*)aThisOp)->eDrainLoop();
+  eOR eCallAgain = ((ConsumeOp*)aThisOp)->eDrainLoop();
   
   return eCallAgain;
 }
@@ -139,9 +141,9 @@ eOR OutputOp::eDrain(void* aThisOp)
 /*----------------------------------------------------------------------------*/
 /* op loop                                                                    */
 /*----------------------------------------------------------------------------*/
-eOR OutputOp::eOpLoop(void)
+eOR ConsumeOp::eOpLoop(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEOP,_FOOTER_);
   s4K sMetaData;
   
   for (;;) {
@@ -159,72 +161,18 @@ eOR OutputOp::eOpLoop(void)
         
       // -- -- -- -- -- --
         
-      case CN_CSVBUFFER: {
-        CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
-        m_iWorkDone += pCsvBuffer->nRecords();
-        m_iOperandsReceived++;
-        vPipeToJob(pOperand);
-        break;
-      }
-        
-      // -- -- -- -- -- --
-        
-      case CN_CRWBUFFER: {
-        CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
-        m_iWorkDone += pCrwBuffer->nRowCount();
-        m_iOperandsReceived++;
-        vPipeToJob(pOperand);
-        break;
-      }
-        
-      // -- -- -- -- -- --
-        
       case CN_ENDMARKER: {
         
         EndMarker* pEndMarker = _pEndMarker(pOperand);
         m_iOperandsExpected += pEndMarker->m_iTotalOperands;
         
+        // received all expected end markers ?
         if (--m_nLeftEndMarkers == 0) {
-          m_bEndMarker = true;
-          
-          if (m_iOperandsExpected == m_iOperandsReceived) {
-            vPipeToJob(pOperand);
-            goto L_EXIT;
-          }
+          m_bAllEndMarkers = true;
         }
         else
           delete (EndMarker*)pOperand;
         
-        break;
-      }
-        
-      // -- -- -- -- -- --
-        
-      case CN_ENTBUFFER: {
-        EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
-        m_iWorkDone += pEntBuffer->nItems();
-        m_iOperandsReceived++;
-        vPipeToJob(pOperand);
-        break;
-      }
-        
-      // -- -- -- -- -- --
-        
-      case CN_IRWBUFFER: {
-        IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
-        m_iWorkDone += pIrwBuffer->nItems();
-        m_iOperandsReceived++;
-        vPipeToJob(pOperand);
-        break;
-      }
-      
-      // -- -- -- -- -- --
-        
-      case CN_SRTBUFFER: {
-        SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
-        m_iWorkDone += pSrtBuffer->nItems();
-        m_iOperandsReceived++;
-        vPipeToJob(pOperand);
         break;
       }
        
@@ -238,13 +186,23 @@ eOR OutputOp::eOpLoop(void)
       // -- -- -- -- -- --
         
       default:
-        RASSERT(0);
+        m_iOperandsReceived++;
+        vPipeToJob(pOperand);
         break;
     }
-    if (m_bEndMarker && (m_iOperandsExpected == m_iOperandsReceived)) {
-      vPipeToJob(new EndMarker);
-      goto L_EXIT;
+    
+    // received all endMarkers
+    if (m_bAllEndMarkers) {
+      
+      // received all expected operands
+      if (m_iOperandsExpected == m_iOperandsReceived) {
+        
+        // time to send an endmarker
+        vPipeToJob(new EndMarker);
+        goto L_EXIT;
+      }
     }
+    
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -255,9 +213,9 @@ L_EXIT:
 /*----------------------------------------------------------------------------*/
 /* drain loop                                                                 */
 /*----------------------------------------------------------------------------*/
-eOR OutputOp::eDrainLoop(void)
+eOR ConsumeOp::eDrainLoop(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUTOP,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEOP,_FOOTER_);
   
   for (;;) {
     
@@ -303,7 +261,7 @@ L_EXIT:
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__aFooterFunction(OutputOp);
+__aFooterFunction(ConsumeOp);
 
 /*============================================================================*/
 /* end                                                                        */
