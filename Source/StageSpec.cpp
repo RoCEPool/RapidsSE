@@ -118,6 +118,43 @@ Stz* StageSpec::szName(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* prepend a consumeOp spec                                                   */
+/*----------------------------------------------------------------------------*/
+void StageSpec::vPrependConsumeOp(ePO eTopology)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  OpSpec* pOpSpec;
+  i8 iConsumeArg = C_UNKNOWN;
+
+  pOpSpec = new OpSpec("consume"_Stz,this);
+  
+  // add argument to the consumeOp depending on the topology
+  switch (eTopology) {
+    case PO_ALL_NODES:
+      iConsumeArg = AM::pGrid()->nConnectedNodes();
+      break;
+      
+    case PO_ALL_PARTITIONS:
+      iConsumeArg = AM::pGrid()->nPartitions();
+      break;
+      
+    case PO_ORIGIN:
+    case PO_SPECIFIC_NODE:
+    case PO_SPECIFIC_PARTITION:
+      iConsumeArg = 1;
+      break;
+      
+    default:
+      RASSERT(0);
+  }
+  
+  pOpSpec->vAddEnmPair("<arg_0>"_Stz,iConsumeArg,TN_INTEGER);
+  
+  m_pOpSpecVec->vAdd(pOpSpec);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get topology                                                               */
 /*----------------------------------------------------------------------------*/
 ePO StageSpec::eTopology(void)

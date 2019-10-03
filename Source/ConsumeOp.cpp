@@ -7,8 +7,8 @@
 OpDesc __Op_Consume (
   CN_CONSUMEOP,        // class number
   OK_SINK,             // op kind
-  "Output"_Stz,        // first word of prompt command
-  "Out"_Stz,           // prefix
+  "Consume"_Stz,       // first word of prompt command
+  "csm"_Stz,           // prefix
                   
   false,               // partitioned
   false,               // compiler op

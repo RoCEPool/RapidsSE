@@ -74,6 +74,16 @@ void OpSpec::vAddEnmPair(Stz* sName, Stz* sValue, eTN eToken)
 /*----------------------------------------------------------------------------*/
 /* get append right                                                           */
 /*----------------------------------------------------------------------------*/
+void OpSpec::vAddEnmPair(Stz* sName, i8 iValue, eTN eToken)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  m_oEnmSet.vAdd(sName, iValue, eToken);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get append right                                                           */
+/*----------------------------------------------------------------------------*/
 bool OpSpec::bAppendRight(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);

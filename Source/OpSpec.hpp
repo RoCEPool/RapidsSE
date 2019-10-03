@@ -29,6 +29,7 @@ namespace Pipelines
    ~OpSpec(void) noexcept(false);
   
     void vAddEnmPair(Stz* sName, Stz* sValue, eTN eToken);
+    void vAddEnmPair(Stz* sName, i8 iValue, eTN eToken);
     bool bAppendRight(void);
     EnmSet* pEnmSet(void);
     Stz* szName(void);
