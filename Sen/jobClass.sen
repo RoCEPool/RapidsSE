@@ -87,9 +87,11 @@ jobClass: forgetNode_cls
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: findJobClass ( sJobNm -- pJobClass )
+: findJobClassEnmSet ( sJobNm -- pEnmSet )
 
-  
+  params| sJobNm |
+
+  sJobNm "_cls" str.cat find word.enmset@ enmset.asStr .
 ;
 
 /*============================================================================*/

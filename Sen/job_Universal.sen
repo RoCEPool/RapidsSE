@@ -17,6 +17,8 @@
 /*----------------------------------------------------------------------------*/
 : universal_beg ( -- )
 
+  "forgetNode" findJobClassEnmSet
+
   "forgetNode_beg" find execute
 ;
 

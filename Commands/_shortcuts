@@ -12,6 +12,7 @@ shortcut d  _dynamic ;
 shortcut dl _dynamicLineItem ;
 shortcut dn _defineNode ;
 shortcut lw logwrite ;
+shortcut fn forget node node9;
 shortcut r  _lineitemrjh ;
 shortcut s  _select ;
 shortcut sc startCluster ;
