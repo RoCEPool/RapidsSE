@@ -5,6 +5,47 @@
 #include "Jobs.h"
 
 /*----------------------------------------------------------------------------*/
+/* parse command                                                              */
+/*----------------------------------------------------------------------------*/
+bool JobHelper::bParseCmd(EnmSet*   pArgEnmSet,
+                          TokenVec* pTknVec)
+{
+  Dic* pRootDic = AM::pRootDic();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  ForthWord* pWord_jobsyn = pRootDic->pFindWord("jobSyntax:"_Stz);
+  
+  ForthWord* pWord_jobdef = nullptr;
+  
+  while ( (pWord_jobdef = pRootDic->pEachWord(pWord_jobsyn,pWord_jobdef)) ) {
+    vTrace("  jobSyntax: %s\n"_Stz,pWord_jobdef->sName().aStz());
+    
+    if (JobHelper::bMatchesSyntax(pTknVec,pWord_jobdef->pEnmSet())) {
+      vTrace("    matches\n"_Stz);
+      
+      pArgEnmSet->vAdd("__jobClass__"_Stz, CN_JOB_UNIVERSAL,TN_INTEGER);
+      s32 sJobName(pWord_jobdef->sName());
+      StrLib::vRemoveSuffix(sJobName.aChar(),'_');
+      pArgEnmSet->vAdd("<jobNm>"_Stz,sJobName,TN_STRING);
+      break;
+    }
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  bool b = bExtractArgs(pArgEnmSet,pWord_jobdef->pEnmSet(),pTknVec);
+  if (! b) {
+    vTrace("Unable to match job syntax\n"_Stz);
+    return EC_INVALID_COMMAND;
+  }
+  
+  pArgEnmSet->vPrint();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* parse tokenvec of command and extract arguments                            */
 /*----------------------------------------------------------------------------*/
 bool JobHelper::bExtractArgs(EnmSet*   pArgEnmSet,

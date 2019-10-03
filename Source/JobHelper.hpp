@@ -9,6 +9,10 @@ namespace Jobs
   {
   public:
   
+    static bool bParseCmd(EnmSet*   pArgEnmSet,
+                          TokenVec* pTknVec
+                          );
+  
     static bool bExtractArgs(EnmSet*   pArgEnmSet,
                              EnmSet*   pSynEnmSet,
                              TokenVec* pTknVec

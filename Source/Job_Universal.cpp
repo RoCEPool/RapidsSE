@@ -145,36 +145,42 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_UNIVERSAL,_FOOTER_);
   
-  Dic* pRootDic = AM::pRootDic();
+//  Dic* pRootDic = AM::pRootDic();
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  ForthWord* pWord_jobsyn = pRootDic->pFindWord("jobSyntax:"_Stz);
+//
+//  ForthWord* pWord_jobdef = nullptr;
+//
+//  while ( (pWord_jobdef = pRootDic->pEachWord(pWord_jobsyn,pWord_jobdef)) ) {
+//    vTrace("  jobSyntax: %s\n"_Stz,pWord_jobdef->sName().aStz());
+//
+//    if (JobHelper::bMatchesSyntax(pTknVec,pWord_jobdef->pEnmSet())) {
+//      vTrace("    matches\n"_Stz);
+//
+//      m_oEnmSet.vAdd("__jobClass__"_Stz, CN_JOB_UNIVERSAL,TN_INTEGER);
+//      s32 sJobName(pWord_jobdef->sName());
+//      StrLib::vRemoveSuffix(sJobName.aChar(),'_');
+//      m_oEnmSet.vAdd("<jobNm>"_Stz,sJobName,TN_STRING);
+//      break;
+//    }
+//  }
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  bool b = JobHelper::bExtractArgs(&m_oEnmSet,pWord_jobdef->pEnmSet(),pTknVec);
+//  if (! b) {
+//    vTrace("Unable to match job syntax\n"_Stz);
+//    return EC_INVALID_COMMAND;
+//  }
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  ForthWord* pWord_jobsyn = pRootDic->pFindWord("jobSyntax:"_Stz);
-  
-  ForthWord* pWord_jobdef = nullptr;
-  
-  while ( (pWord_jobdef = pRootDic->pEachWord(pWord_jobsyn,pWord_jobdef)) ) {
-    vTrace("  jobSyntax: %s\n"_Stz,pWord_jobdef->sName().aStz());
-    
-    if (JobHelper::bMatchesSyntax(pTknVec,pWord_jobdef->pEnmSet())) {
-      vTrace("    matches\n"_Stz);
-      
-      m_oEnmSet.vAdd("__jobClass__"_Stz, CN_JOB_UNIVERSAL,TN_INTEGER);
-      s32 sJobName(pWord_jobdef->sName());
-      StrLib::vRemoveSuffix(sJobName.aChar(),'_');
-      m_oEnmSet.vAdd("<jobNm>"_Stz,sJobName,TN_STRING);
-      break;
-    }
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  bool b = JobHelper::bExtractArgs(&m_oEnmSet,pWord_jobdef->pEnmSet(),pTknVec);
+  bool b = JobHelper::bParseCmd(&m_oEnmSet,pTknVec);
   if (! b) {
     vTrace("Unable to match job syntax\n"_Stz);
     return EC_INVALID_COMMAND;
   }
-    
+
   m_oEnmSet.vPrint();
   
   return EC_NONE;
