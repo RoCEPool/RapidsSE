@@ -161,6 +161,9 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTknVec)
       vTrace("    matches\n"_Stz);
       
       m_oEnmSet.vAdd("__jobClass__"_Stz, CN_JOB_UNIVERSAL,TN_INTEGER);
+      s32 sJobName(pWord_jobdef->sName());
+      StrLib::vRemoveSuffix(sJobName.aChar(),'_');
+      m_oEnmSet.vAdd("<jobNm>"_Stz,sJobName,TN_STRING);
       break;
     }
   }
