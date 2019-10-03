@@ -17,6 +17,7 @@ namespace DataOperators
 #include "AggOp.hpp"
 #include "BothOp.hpp"
 #include "CombineOp.hpp"
+#include "ConsumeOp.hpp"
 #include "CountOp.hpp"
 #include "DistinctOp.hpp"
 #include "ExprOp.hpp"
