@@ -245,6 +245,7 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_MONITOR"_Stz,        CN_JOB_MONITOR);
   /*    */ vAddConstant("CN_JOB_NETHOG"_Stz,         CN_JOB_NETHOG);
   /*    */ vAddConstant("CN_JOB_NODEINFO"_Stz,       CN_JOB_NODEINFO);
+  /*    */ vAddConstant("CN_JOB_OPERAND"_Stz,        CN_JOB_OPERAND);
   /*    */ vAddConstant("CN_JOB_PERIODIC"_Stz,       CN_JOB_PERIODIC);
   /*    */ vAddConstant("CN_JOB_PING"_Stz,           CN_JOB_PING);
   /*    */ vAddConstant("CN_JOB_PUBLISH"_Stz,        CN_JOB_PUBLISH);
@@ -289,7 +290,6 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_WAITCLUSTER"_Stz,    CN_JOB_WAITCLUSTER);
   /*    */ vAddConstant("CN_JOB_WAKER"_Stz,          CN_JOB_WAKER);
   /*    */ vAddConstant("CN_JOB_WALK"_Stz,           CN_JOB_WALK);
-  /*    */ vAddConstant("CN_JOB_XMIT"_Stz,           CN_JOB_XMIT);
 
   /*    */ vAddConstant("CN_JUMBOPERSISTENT"_Stz, CN_JUMBOPERSISTENT);
   /*    */ vAddConstant("CN_JUMBOTRANSIENT"_Stz,  CN_JUMBOTRANSIENT);

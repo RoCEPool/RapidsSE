@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* Job_Xmit.hpp -- Xmit Job                                                   */
+/* Job_Operand.hpp -- Xmit Job                                                   */
 /*============================================================================*/
 #pragma once
 
 namespace Jobs
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job_Xmit : public Job
+  class Job_Operand : public Job
   {
   public:
     Op*        m_pOp;             // operator number
@@ -21,17 +21,17 @@ namespace Jobs
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Xmit(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);//=C_UNKNOWN);
-    ~Job_Xmit(void) noexcept(false);
+    Job_Operand(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);//=C_UNKNOWN);
+    ~Job_Operand(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    static Job_Xmit* pNewJobXmit(Session* pSession,
-                                 Task* pTask,
-                                 Operand* pOperand,
-                                 i8 iParentJobId,
-                                 Op* pOp,
-                                 i8 iNode);
+    static Job_Operand* pNewJobOperand(Session* pSession,
+                                       Task* pTask,
+                                       Operand* pOperand,
+                                       i8 iParentJobId,
+                                       Op* pOp,
+                                       i8 iNode);
     
   public:
     void vInsertRow(void);
@@ -43,14 +43,14 @@ namespace Jobs
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Job_Xmit* _pJob_Xmit(void* aAddr);
+  Job_Operand* _pJob_Operand(void* aAddr);
   
-  Job* pJob_Xmit_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
-  Job* pJob_Xmit_new(JobClass* aJobClass);
-  void vJob_Xmit_delete(Job* pJob);
-  void vJob_Xmit_show(Job* pJob);
+  Job* pJob_Operand_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession);
+  Job* pJob_Operand_new(JobClass* aJobClass);
+  void vJob_Operand_delete(Job* pJob);
+  void vJob_Operand_show(Job* pJob);
   
-  JobClass* pJob_Xmit_class(pFUN** aaFun);
+  JobClass* pJob_Operand_class(pFUN** aaFun);
 }
 
 /*============================================================================*/

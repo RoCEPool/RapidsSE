@@ -193,6 +193,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_MONITOR
   /*    */ &Finalize::vUndefined,         // CN_JOB_NETHOG
   /*    */ &Finalize::vUndefined,         // CN_JOB_NODEINFO
+  /*    */ &Finalize::vUndefined,         // CN_JOB_OPERAND
   /*    */ &Finalize::vUndefined,         // CN_JOB_PERIODIC
   /*    */ &Finalize::vUndefined,         // CN_JOB_PING
   /*    */ &Finalize::vUndefined,         // CN_JOB_PUBLISH
@@ -239,7 +240,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_WAKER
   /*    */ &Finalize::vUndefined,         // CN_JOB_WRITEBUFFER
   /*    */ &Finalize::vUndefined,         // CN_JOB_WRITEROW
-  /*    */ &Finalize::vUndefined,         // CN_JOB_XMIT
   
   /*    */ &Finalize::vUndefined,         // CN_JOBLIST
   /*    */ &Finalize::vUndefined,         // CN_JOINOP

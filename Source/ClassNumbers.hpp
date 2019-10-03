@@ -196,6 +196,7 @@ enum eCN : u2 // Class Number
   /* 103 0x67    70888B Heap:L */ CN_JOB_MONITOR,
   /* 104 0x68    70600B Heap:L */ CN_JOB_NETHOG,
   /* 105 0x69    70640B Heap:L */ CN_JOB_NODEINFO,
+  /* 105 0x69    70640B Heap:L */ CN_JOB_OPERAND,
   /* 106 0x6A    70592B Heap:L */ CN_JOB_PERIODIC,
   /* 107 0x6B    70592B Heap:L */ CN_JOB_PING,
   /* 108 0x6C    71000B Heap:L */ CN_JOB_PUBLISH,
@@ -242,7 +243,6 @@ enum eCN : u2 // Class Number
   /*                           */ CN_JOB_WALK,
   /* 138 0x8A    70648B Heap:L */ CN_JOB_WRITEBUFFER,
   /* 140 0x8C   118688B Heap:L */ CN_JOB_WRITEROW,
-  /*                           */ CN_JOB_XMIT,
   /* 141 0x8D      168B Heap:S */ CN_JOBLIST,
   /*                           */ CN_JOINOP,
   /* 142 0x8E      232B Heap:I */ CN_JUMBOPERSISTENT,
@@ -613,6 +613,7 @@ static Stz* aCN[]
   /* 103 0x67 */ "JOB_MONITOR"_Stz,         // CN_JOB_MONITOR
   /* 104 0x68 */ "JOB_NETHOG"_Stz,          // CN_JOB_NETHOG
   /* 105 0x69 */ "JOB_NODEINFO"_Stz,        // CN_JOB_NODEINFO
+  /* 105 0x69 */ "JOB_OPERAND"_Stz,         // CN_JOB_OPERAND
   /* 106 0x6A */ "JOB_PERIODIC"_Stz,        // CN_JOB_PERIODIC
   /* 107 0x6B */ "JOB_PING"_Stz,            // CN_JOB_PING
   /* 108 0x6C */ "JOB_PUBLISH"_Stz,         // CN_JOB_PUBLISH
@@ -659,7 +660,6 @@ static Stz* aCN[]
   /* 137 0x89 */ "JOB_WALK"_Stz,            // CN_JOB_WALK
   /* 138 0x8A */ "JOB_WRITEBUFFER"_Stz,     // CN_JOB_WRITEBUFFER
   /* 140 0x8C */ "JOB_WRITEROW"_Stz,        // CN_JOB_WRITEROW
-  /*          */ "JOB_XMIT"_Stz,            // CN_JOB_XMIT
   /* 141 0x8D */ "JOBLIST"_Stz,             // CN_JOBLIST
   /*          */ "JOINOP"_Stz,              // CN_JOBOP
   /* 142 0x8E */ "JUMBOPERSISTENT"_Stz,     // CN_JUMBOPERSISTENT

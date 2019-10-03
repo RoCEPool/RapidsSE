@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* Job_Xmit.cpp -- xmit Job                                                   */
+/* Job_Operand.cpp -- xmit Job                                                   */
 /*============================================================================*/
 
 #include "Jobs.h"
 
 JobClass xJobClass_Xmit =
 {
-  CN_JOB_XMIT,         // class number
+  CN_JOB_OPERAND,      // class number
   JK_GRANDKID,         // job kind
   RS_NONE,             // response kind
   "xmit operand"_Stz,  // comment about the job
@@ -26,13 +26,13 @@ JobClass xJobClass_Xmit =
   JF_NONE,             // flags
 
   nullptr,             // prompt check function
-  pJob_Xmit_pre,   // prompt pre-process function
+  pJob_Operand_pre,   // prompt pre-process function
   nullptr,             // prompt post-process function
-  pJob_Xmit_new,   // job new function
-  vJob_Xmit_delete,// job delete function
+  pJob_Operand_new,   // job new function
+  vJob_Operand_delete,// job delete function
   vJob_send,           // job pre-send function
   vJob_recv,           // job post-receive function
-  vJob_Xmit_show,  // job show function
+  vJob_Operand_show,  // job show function
   
   // help and example
   false,
@@ -45,9 +45,9 @@ JobClass xJobClass_Xmit =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* Jobs::pJob_Xmit_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_Operand_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)nullptr;
+  *pNextFun = (pFUN*)pJob_Periodic_class;
   
   return &xJobClass_Xmit;
 }
@@ -60,30 +60,30 @@ JobClass* Jobs::pJob_Xmit_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_Xmit* Jobs::_pJob_Xmit(void* aAddress)
+Job_Operand* Jobs::_pJob_Operand(void* aAddress)
 {
-  Job_Xmit* pJob_Xmit = reinterpret_cast<Job_Xmit*>(aAddress);
+  Job_Operand* pJob_Operand = reinterpret_cast<Job_Operand*>(aAddress);
   
-  RASSERT_TYPE(pJob_Xmit,CN_JOB_XMIT);
+  RASSERT_TYPE(pJob_Operand,CN_JOB_OPERAND);
   
-  return pJob_Xmit;
+  return pJob_Operand;
 }
 
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* Job_Xmit::operator new(size_t)
+void* Job_Operand::operator new(size_t)
 {
-  Job_Xmit* pJob_Xmit =
-    static_cast<Job_Xmit*>(HeapMem::pAllocate(CN_JOB_XMIT));
+  Job_Operand* pJob_Operand =
+    static_cast<Job_Operand*>(HeapMem::pAllocate(CN_JOB_OPERAND));
   
-  return pJob_Xmit;
+  return pJob_Operand;
 }
 
 /*----------------------------------------------------------------------------*/
 /* perform new of entry buffer for given address                              */
 /*----------------------------------------------------------------------------*/
-void* Job_Xmit::operator new(size_t, void* aAddress)
+void* Job_Operand::operator new(size_t, void* aAddress)
 {
   return aAddress;
 }
@@ -91,36 +91,36 @@ void* Job_Xmit::operator new(size_t, void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* free an entry buffer back to the heap                                      */
 /*----------------------------------------------------------------------------*/
-void Job_Xmit::operator delete(void* aAddress)
+void Job_Operand::operator delete(void* aAddress)
 {
-  Job_Xmit* pJob_Xmit = static_cast<Job_Xmit*>(aAddress);
+  Job_Operand* pJob_Operand = static_cast<Job_Operand*>(aAddress);
   //vTrace("DELETING INSERTBUFFER\n"_Stz);
-  HeapMem::vFree(pJob_Xmit);
+  HeapMem::vFree(pJob_Operand);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Xmit::Job_Xmit(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job_Operand::Job_Operand(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 : Job(aJobClass, aReqTuple, pSession)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_XMIT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_OPERAND,_FOOTER_);
   
   m_pOp            = nullptr;
   m_iNode          = C_UNKNOWN;
   m_iParentJobId   = C_UNKNOWN;
   
-  _checkInitialised_(CN_JOB_XMIT);
+  _checkInitialised_(CN_JOB_OPERAND);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_XMIT,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_OPERAND,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_Xmit::~Job_Xmit(void) noexcept(false)
+Job_Operand::~Job_Operand(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_XMIT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_OPERAND,_FOOTER_);
   
 //  ASSERT(m_pOperand);
 //  Operand::vDelete(m_pOperand);
@@ -134,17 +134,17 @@ Job_Xmit::~Job_Xmit(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void Job_Xmit::vDump(eCN eClass, Object* pObject, Stz* aTab)
+void Job_Operand::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  Job_Xmit* pJob_Xmit = _pJob_Xmit(pObject);
+  Job_Operand* pJob_Operand = _pJob_Operand(pObject);
 
-  pJob_Xmit->vShow();
+  pJob_Operand->vShow();
 }
 
 /*----------------------------------------------------------------------------*/
-/* new a xmit job                                                           */
+/* new an operand job                                                         */
 /*----------------------------------------------------------------------------*/
-Job_Xmit* Job_Xmit::pNewJobXmit(Session* pSession,
+Job_Operand* Job_Operand::pNewJobOperand(Session* pSession,
                                 Task* pTask,
                                 Operand* pOperand,
                                 i8 iParentJobId,
@@ -158,27 +158,27 @@ Job_Xmit* Job_Xmit::pNewJobXmit(Session* pSession,
   // create a write buffer job
   
   //! this needs to be optimised
-  JobClass* pJobClass_Xmit = JobClass::pFind(CN_JOB_XMIT);
+  JobClass* pJobClass_Xmit = JobClass::pFind(CN_JOB_OPERAND);
   
   ReqTuple xReqTuple("!!XMIT"_Stz,false);
   
-  Job_Xmit* pJob_Xmit =
-  static_cast<Job_Xmit*>
+  Job_Operand* pJob_Operand =
+  static_cast<Job_Operand*>
   (pJobClass_Xmit->pPreJob(pSession,&xReqTuple,iParentJobId));
   
-  pJob_Xmit->vSeed(SS_SEED_RUN);
+  pJob_Operand->vSeed(SS_SEED_RUN);
   
-  pJob_Xmit->m_iParentId = iParentJobId;
-  pJob_Xmit->m_pOp       = pOp;
-  pJob_Xmit->m_iNode     = iNode;
-  pJob_Xmit->m_pOperand  = pOperand;
+  pJob_Operand->m_iParentId = iParentJobId;
+  pJob_Operand->m_pOp       = pOp;
+  pJob_Operand->m_iNode     = iNode;
+  pJob_Operand->m_pOperand  = pOperand;
   
   // call the job pre-send function
   //  if (pJobClass_Xmit->m_fpSend)
-  //    (*pJobClass_Xmit->m_fpSend)(pJob_Xmit);
+  //    (*pJobClass_Xmit->m_fpSend)(pJob_Operand);
   //
   
-  return pJob_Xmit;
+  return pJob_Operand;
   
 }
 
@@ -189,9 +189,9 @@ Job_Xmit* Job_Xmit::pNewJobXmit(Session* pSession,
 /*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
-void Job_Xmit::vShow(void)
+void Job_Operand::vShow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_XMIT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_OPERAND,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -201,9 +201,9 @@ void Job_Xmit::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Job_Xmit::aFooter(void)
+Footer* Job_Operand::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_XMIT);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_OPERAND);
   
   return &m_xFooter;
 }
@@ -219,44 +219,44 @@ Footer* Job_Xmit::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Xmit_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
+Job* Jobs::pJob_Operand_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 {
-  Job_Xmit* pJob_Xmit = new Job_Xmit(aJobClass,aReqTuple,iForId,pSession);
+  Job_Operand* pJob_Operand = new Job_Operand(aJobClass,aReqTuple,iForId,pSession);
   //pJob->vDicPath(pSession);
 
-  return pJob_Xmit;
+  return pJob_Operand;
 }
 
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pJob_Xmit_new(JobClass* aJobClass)
+Job* Jobs::pJob_Operand_new(JobClass* aJobClass)
 {
-  Job_Xmit* pJob_Xmit =
-    new Job_Xmit(aJobClass,nullptr,C_UNKNOWN,nullptr);
+  Job_Operand* pJob_Operand =
+    new Job_Operand(aJobClass,nullptr,C_UNKNOWN,nullptr);
   
-  return pJob_Xmit;
+  return pJob_Operand;
 }
 
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Xmit_delete(Job* pJob)
+void Jobs::vJob_Operand_delete(Job* pJob)
 {
-  Job_Xmit* pJob_Xmit = _pJob_Xmit(pJob);
+  Job_Operand* pJob_Operand = _pJob_Operand(pJob);
   
   //vTrace("DELETING INSERTBUFFER\n"_Stz);
-  delete pJob_Xmit;
+  delete pJob_Operand;
 }
 
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void Jobs::vJob_Xmit_show(Job* pJob)
+void Jobs::vJob_Operand_show(Job* pJob)
 {
-  Job_Xmit* pJob_Xmit = _pJob_Xmit(pJob);
+  Job_Operand* pJob_Operand = _pJob_Operand(pJob);
 
-  pJob_Xmit->vShow();
+  pJob_Operand->vShow();
 }
 
 /*============================================================================*/

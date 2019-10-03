@@ -81,8 +81,8 @@
       pOperand pReceivedJob job.operand!
     then
 
-    pReceivedJob job.jobClass CN_JOB_XMIT == if
-      pReceivedJob Job_xmit.pipeOut
+    pReceivedJob job.jobClass CN_JOB_OPERAND == if
+      pReceivedJob Job_operand.pipeOut
     else
       pReceivedJob SEED_RCV job.spawn
    then

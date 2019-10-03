@@ -117,6 +117,8 @@ namespace Jobs
 #include "Job_NetHog.hpp"
 #include "Job_NodeInfo.hpp"
 
+#include "Job_Operand.hpp"
+
 #include "Job_Periodic.hpp"
 #include "Job_Ping.hpp"
 #include "Job_Publish.hpp"
@@ -171,8 +173,6 @@ namespace Jobs
 #include "Job_Walk.hpp"
 #include "Job_WriteBuffer.hpp"
 #include "Job_WriteRow.hpp"
-
-#include "Job_Xmit.hpp"
 
 #include "JobList.hpp"
 

@@ -194,12 +194,12 @@ void AM::vPulseTask(Task* pTask) {
 void AM::vSetAcksRmg(Task* pTask, i8 nAcks) {
   pTask->vAcksRmg(nAcks);
 }
-void AM::vSendJobXmit(Session* pSession, Task* pTask, Operand* pOperand,
-                       Job* pParentJob, Op* pOp, i8 iNode) {
+void AM::vSendJobOperand(Session* pSession, Task* pTask, Operand* pOperand,
+                         Job* pParentJob, Op* pOp, i8 iNode) {
   
   // new a xmit job
-  Job_Xmit* pJob_Xmit = Job_Xmit::pNewJobXmit(pSession,pTask,pOperand,
-                                              pParentJob->m_iUniqueId,pOp,iNode);
+  Job_Operand* pJob_Operand = Job_Operand::pNewJobOperand(pSession,pTask,pOperand,
+                                                          pParentJob->m_iUniqueId,pOp,iNode);
   
   // set the send node in the task
   Node* pSendNode = pGrid()->pGetNode(iNode);
@@ -210,8 +210,8 @@ void AM::vSendJobXmit(Session* pSession, Task* pTask, Operand* pOperand,
   pSocket->vGrabWrite();
   
   SysCall oSysCall;
-  i8 nObjectSize = giClassSize[pJob_Xmit->eClass()];
-  bool bResult = pSocket->bSendTo(pJob_Xmit, nObjectSize, oSysCall);
+  i8 nObjectSize = giClassSize[pJob_Operand->eClass()];
+  bool bResult = pSocket->bSendTo(pJob_Operand, nObjectSize, oSysCall);
   
   nObjectSize = giClassSize[pOperand->eClass()];
   bResult = pSocket->bSendTo(pOperand, nObjectSize, oSysCall);

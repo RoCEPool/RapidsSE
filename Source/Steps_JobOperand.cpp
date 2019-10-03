@@ -7,44 +7,25 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_JobXmit(void)
+void Step::vAddSteps_JobOperand(void)
 {
-  vAddStep("Job_Xmit.pipeOut"_Stz,       &Step::vJob_XmitPipeOut);
-  vAddStep("Job_Xmit.node@"_Stz,         &Step::vJob_XmitNodeFetch);
+  vAddStep("Job_Operand.pipeOut"_Stz,       &Step::vJob_OperandPipeOut);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_Xmit.pipeOut -- pipe out the operand                                   */
+/* Job_Operand.pipeOut -- pipe out the operand                                */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_XmitPipeOut(MP_Task mpTask)
+void Step::vJob_OperandPipeOut(MP_Task mpTask)
 {
   ENTRY("vJob_XmitPipeOut"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("Job_Xmit.pipeOut@"_Stz);
-  Job_Xmit* pJob_Xmit = _pJob_Xmit(pJobPtr);
+    THROW_INVALID_DSTACK("Job_Operand.pipeOut@"_Stz);
+  Job_Operand* pJob_Operand = _pJob_Operand(pJobPtr);
   
-  pJob_Xmit->m_pOp->vPipeOut(pJob_Xmit->m_pOperand);
+  pJob_Operand->m_pOp->vPipeOut(pJob_Operand->m_pOperand);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Job_Xmit.node@ -- fetch node no. from Job_Xmit                             */
-/*----------------------------------------------------------------------------*/
-void Step::vJob_XmitNodeFetch(MP_Task mpTask)
-{
-  ENTRY("vJob_XmitNodeFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("Job_Xmit.node@"_Stz);
-  Job_Xmit* pJob_Xmit = _pJob_Xmit(pJobPtr);
-  
-  i8 i_Node = pJob_Xmit->m_iNode;
-  mpTask->m_pDataStack->vPushI8(i_Node);
-  
   EXIT();
 }
 

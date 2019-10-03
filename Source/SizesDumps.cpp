@@ -199,6 +199,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_MONITOR
   /*    */ &Dump::vDummy,           // CN_JOB_NETHOG
   /*    */ &Dump::vDummy,           // CN_JOB_NODEINFO
+  /*    */ &Dump::vDummy,           // CN_JOB_OPERAND
   /*    */ &Dump::vDummy,           // CN_JOB_PERIODIC
   /*    */ &Dump::vDummy,           // CN_JOB_PING
   /*    */ &Dump::vDummy,           // CN_JOB_PUBLISH
@@ -246,7 +247,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_WALK
   /*    */ &Dump::vDummy,           // CN_JOB_WRITEBUFFER
   /*    */ &Dump::vDummy,           // CN_JOB_WRITEROW
-  /*    */ &Dump::vDummy,           // CN_JOB_XMIT
 
   /*    */ &JobList::vDump,         // CN_JOBLIST
   /*    */ &Dump::vDummy,           // CN_JOINOP
@@ -618,6 +618,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_Monitor),        // CN_JOB_MONITOR
   /*    */ sizeof(Job_NetHog),         // CN_JOB_NETHOG
   /*    */ sizeof(Job_NodeInfo),       // CN_JOB_NODEINFO
+  /*    */ sizeof(Job_Operand),        // CN_JOB_OPERAND
   /*    */ sizeof(Job_Periodic),       // CN_JOB_PERIODIC
   /*    */ sizeof(Job_Ping),           // CN_JOB_PING
   /*    */ sizeof(Job_Publish),        // CN_JOB_PUBLISH
@@ -664,7 +665,6 @@ i8 giClassSize[]
   /*    */ sizeof(Job_Walk),           // CN_JOB_WALK
   /*    */ sizeof(Job_WriteBuffer),    // CN_JOB_WRITEBUFFER
   /*    */ sizeof(Job_WriteRow),       // CN_JOB_WRITEROW
-  /*    */ sizeof(Job_Xmit),           // CN_JOB_XMIT
   
   /*    */ sizeof(JobList),            // CN_JOBLIST
   /*    */ sizeof(JoinOp),             // CN_JOINOP
@@ -1036,6 +1036,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_MONITOR
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_NETHOG
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_NODEINFO
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_OPERAND
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_PERIODIC
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_PING
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_PUBLISH
@@ -1082,7 +1083,6 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WALK
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WRITEBUFFER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WRITEROW
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_XMIT
   
   /*    */ HT_TRANSIENT_SMALL,   // CN_JOBLIST
   /*    */ HT_TRANSIENT_SMALL,   // CN_JOINOP

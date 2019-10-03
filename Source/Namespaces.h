@@ -43,7 +43,7 @@ namespace Jobs          { class Job; struct JobClass;  class JobList;
                                      class Job_CreateTable;
                                      class Job_CreateIndex;
                                      class Job_Dynamic;
-                                     class Job_Xmit;                          }
+                                     class Job_Operand;                          }
 namespace Library       {                                                     }
 namespace Locking       { class Lock; class LockTracker;                      }
 namespace Logging       { class Log; class LogEntry;                          }

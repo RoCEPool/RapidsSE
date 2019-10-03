@@ -106,6 +106,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobMonitor();
   Step::vAddSteps_JobNetHog();
   Step::vAddSteps_JobNodeInfo();
+    Step::vAddSteps_JobOperand();
   Step::vAddSteps_JobPublish();
   Step::vAddSteps_JobPurge();
   Step::vAddSteps_JobReceiver();
@@ -125,7 +126,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobWriteBuffer();
   Step::vAddSteps_JobWriteRecord();
   Step::vAddSteps_JobWriteRow();
-  Step::vAddSteps_JobXmit();
   
   Step::vAddSteps_Locals();
   Step::vAddSteps_Lock();
