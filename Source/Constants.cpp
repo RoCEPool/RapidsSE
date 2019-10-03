@@ -289,6 +289,7 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_WAITCLUSTER"_Stz,    CN_JOB_WAITCLUSTER);
   /*    */ vAddConstant("CN_JOB_WAKER"_Stz,          CN_JOB_WAKER);
   /*    */ vAddConstant("CN_JOB_WALK"_Stz,           CN_JOB_WALK);
+  /*    */ vAddConstant("CN_JOB_XMIT"_Stz,           CN_JOB_XMIT);
 
   /*    */ vAddConstant("CN_JUMBOPERSISTENT"_Stz, CN_JUMBOPERSISTENT);
   /*    */ vAddConstant("CN_JUMBOTRANSIENT"_Stz,  CN_JUMBOTRANSIENT);

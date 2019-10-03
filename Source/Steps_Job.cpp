@@ -916,7 +916,7 @@ void Step::vJobJobClass(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.jobClass"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  i8 iJobClass_p = (i8)pJob->m_aJobClass;
+  i8 iJobClass_p = (i8)pJob->eClass();
   
   mpTask->m_pDataStack->vPushI8(iJobClass_p);
   
