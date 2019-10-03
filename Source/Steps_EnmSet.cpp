@@ -14,6 +14,7 @@ void Step::vAddSteps_EnmSet(void)
   vAddStep("enmSet.addInt"_Stz,  &Step::vEnmSetAddInt);
   vAddStep("enmSet.addStr"_Stz,  &Step::vEnmSetAddStr);
   vAddStep("enmSet.asStr"_Stz,   &Step::vEnmSetAsStr);
+  vAddStep("enmSet.getStr"_Stz,  &Step::vEnmSetGetStr);
   vAddStep("enmSet.hasName"_Stz, &Step::vEnmSetHasName);
 }
 
@@ -104,6 +105,30 @@ void Step::vEnmSetAsStr(MP_Task mpTask)
   sStr = spEnmSet.sz(pEnmSet);
   
   mpTask->m_pDataStack->vPushS4K(sStr);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* enmSet.getStr -- get str value from ename-set with given name              */
+/*----------------------------------------------------------------------------*/
+void Step::vEnmSetGetStr(MP_Task mpTask)
+{
+  ENTRY("vEnmSetGetStr"_Stz);
+  
+  Object* pEnmSet_obj;
+  if ( ! mpTask->m_pDataStack->bPop(pEnmSet_obj) )
+    THROW_INVALID_DSTACK("vEnmSetGetStr"_Stz);
+  EnmSet* pEnmSet = _pEnmSet(pEnmSet_obj);
+  
+  s32 sName;
+  if ( ! mpTask->m_pDataStack->bPop(sName) )
+    THROW_INVALID_DSTACK("vEnmSetGetStr"_Stz);
+  
+  s48K sValue;
+  sValue = pEnmSet->szValue(sName);
+  
+  mpTask->m_pDataStack->vPushS48K(sValue);
   
   EXIT();
 }

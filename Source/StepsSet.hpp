@@ -252,6 +252,7 @@ public:
   static void vEnmSetAddInt(Tasks::MP_Task mpTask);
   static void vEnmSetAddStr(Tasks::MP_Task mpTask);
   static void vEnmSetAsStr(Tasks::MP_Task mpTask);
+  static void vEnmSetGetStr(Tasks::MP_Task mpTask);
   static void vEnmSetHasName(Tasks::MP_Task mpTask);
   static void vEnmSetNew(Tasks::MP_Task mpTask);
 
