@@ -4,17 +4,17 @@
 
 "-wordSets.sen" .verbose
 
-"wordSet_core.sen"     include
-"wordSet_corePlus.sen" include
-"wordSet_word.sen"     include
+"vocab_core.sen"     include
+"vocab_corePlus.sen" include
+"vocab_word.sen"     include
 
-"wordSet_log.sen"      include
-"wordSet_debug.sen"    include
-"wordSet_dic.sen"      include
-"wordSet_object.sen"   include
-"wordSet_useful.sen"   include
+"vocab_log.sen"      include
+"vocab_debug.sen"    include
+"vocab_dic.sen"      include
+"vocab_object.sen"   include
+"vocab_useful.sen"   include
 
-"wordSet_dicStack.sen" include
+"vocab_dicStack.sen" include
 
 /*============================================================================*/
 /* end                                                                        */
