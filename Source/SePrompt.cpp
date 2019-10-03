@@ -163,13 +163,19 @@ void SePrompt::vPromptLoop(void)
     if (bExecuteDynamic())
       continue;
     
-    if (! bFindJobClass()) {
-      
-      if (! bIsPromptWord() ) {
-        vUnknownCommand();
-        vDumpTokenVec();
-        continue;
-      }
+//    if (! bFindJobClass()) {
+//
+//      if (! bIsPromptWord() ) {
+//        vUnknownCommand();
+//        vDumpTokenVec();
+//        continue;
+//      }
+//    }
+
+    if (! bFindRequest()) {
+      vUnknownCommand();
+      vDumpTokenVec();
+      continue;
     }
 
     if (! bPassesLowMem())
@@ -179,6 +185,7 @@ void SePrompt::vPromptLoop(void)
       continue;
     
     vBeginRequest();
+    
     vPreJob();
     
     if (m_pJob->m_bHasError) {
@@ -490,6 +497,27 @@ bool SePrompt::bFindJobClass(void)
 
   if (! m_aJobClass)
     return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to find a request which matches the command tokens                 */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bFindRequest(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+
+  // attempt to find a job class which matches the command tokens
+  if (bFindJobClass())
+    return true;
+  
+  // is the command token a forth-word marked as prompt?
+  if (bIsPromptWord())
+    return true;
+  
+  // give command to the universal job
+  m_aJobClass = JobClass::pFind(CN_JOB_UNIVERSAL);
   
   return true;
 }
