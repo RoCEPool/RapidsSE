@@ -98,7 +98,7 @@ Op* XmitOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 {
   XmitOp* pXmitOp = new XmitOp(pOpSpec,pPipeline);
 
-  pXmitOp->m_iXmitNode = pXmitOp->m_pOpSpec->pEnmSet()->iValue((i8)2);
+  pXmitOp->m_iXmitNode = pXmitOp->m_pOpSpec->pEnmSet()->iValue((i8)0);
   
   return pXmitOp;
 }
@@ -134,16 +134,19 @@ eOR XmitOp::eXmitLoop(void)
       ASSERT(bIsLocked());
       return OR_BIDE;
     }
-  
+    
     if (CN_ENDMARKER == pOperand->eClass()) {
       EndMarker* pEndMarker = _pEndMarker(pOperand);
       //delete pEndMarker;
       pEndMarker->m_iTotalOperands = iOperands;
-      AM::vSpawnJobXmit(m_pPipeline->m_pSession,
-                        pOperand,
+      AM::vSendJobXmit(m_pPipeline->m_pSession,
+                       m_pTask,
+                       pOperand,
                         m_pPipeline->m_pJob,
                         this,
                         m_iXmitNode);
+      
+      
       
       break;
     }
@@ -151,7 +154,8 @@ eOR XmitOp::eXmitLoop(void)
     if (CN_STREAMDEF == pOperand->eClass()) {
       m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
       //vPipeOut(pOperand);
-      AM::vSpawnJobXmit(m_pPipeline->m_pSession,
+      AM::vSendJobXmit(m_pPipeline->m_pSession,
+                       m_pTask,
                         pOperand,
                         m_pPipeline->m_pJob,
                         this,
@@ -175,11 +179,12 @@ eOR XmitOp::eXmitLoop(void)
                 aCN[pOperand->eClass()],
                 m_iXmitNode);
   
-    AM::vSpawnJobXmit(m_pPipeline->m_pSession,
-                      pOperand,
-                      m_pPipeline->m_pJob,
-                      this,
-                      m_iXmitNode);
+    AM::vSendJobXmit(m_pPipeline->m_pSession,
+                     m_pTask,
+                     pOperand,
+                     m_pPipeline->m_pJob,
+                     this,
+                     m_iXmitNode);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -194,10 +194,32 @@ void AM::vPulseTask(Task* pTask) {
 void AM::vSetAcksRmg(Task* pTask, i8 nAcks) {
   pTask->vAcksRmg(nAcks);
 }
-void AM::vSpawnJobXmit(Session* pSession, Operand* pOperand,
+void AM::vSendJobXmit(Session* pSession, Task* pTask, Operand* pOperand,
                        Job* pParentJob, Op* pOp, i8 iNode) {
-  Job_Xmit::vSpawnJobXmit(pSession,pOperand,pParentJob->m_iUniqueId,pOp,iNode);
+  
+  // new a xmit job
+  Job_Xmit* pJob_Xmit = Job_Xmit::pNewJobXmit(pSession,pTask,pOperand,
+                                              pParentJob->m_iUniqueId,pOp,iNode);
+  
+  // set the send node in the task
+  Node* pSendNode = pGrid()->pGetNode(iNode);
+  pTask->vSendNode(pSendNode);
+  
+  // grab socket wite lock
+  Socket* pSocket = pSendNode->pSendSocket();
+  pSocket->vGrabWrite();
+  
+  SysCall oSysCall;
+  i8 nObjectSize = giClassSize[pJob_Xmit->eClass()];
+  bool bResult = pSocket->bSendTo(pJob_Xmit, nObjectSize, oSysCall);
+  
+  nObjectSize = giClassSize[pOperand->eClass()];
+  bResult = pSocket->bSendTo(pOperand, nObjectSize, oSysCall);
+  
+  // drop the socket write lock
+  pSocket->vDropWrite();
 }
+
 void AM::vStepTiming(StepTiming* pStepTiming) {
   gpAttachMap->m_pStepTiming = pStepTiming;
 }

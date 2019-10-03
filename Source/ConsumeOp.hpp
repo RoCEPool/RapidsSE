@@ -9,10 +9,6 @@ namespace DataOperators
   {
   private:
     
-    i8   m_iOperandsExpected;  // number of operands expected
-    i8   m_iOperandsReceived;  // number of operands received
-    bool m_bAllEndMarkers;     // received all end markers
-    
     // must be last
     Footer m_xFooter;
   

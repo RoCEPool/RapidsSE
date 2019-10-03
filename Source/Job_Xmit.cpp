@@ -142,13 +142,14 @@ void Job_Xmit::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/* spawn a xmit job                                                           */
+/* new a xmit job                                                           */
 /*----------------------------------------------------------------------------*/
-void Job_Xmit::vSpawnJobXmit(Session* pSession,
-                             Operand* pOperand,
-                             i8 iParentJobId,
-                             Op* pOp,
-                             i8 iNode)
+Job_Xmit* Job_Xmit::pNewJobXmit(Session* pSession,
+                                Task* pTask,
+                                Operand* pOperand,
+                                i8 iParentJobId,
+                                Op* pOp,
+                                i8 iNode)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // analysis
@@ -171,12 +172,14 @@ void Job_Xmit::vSpawnJobXmit(Session* pSession,
   pJob_Xmit->m_pOp       = pOp;
   pJob_Xmit->m_iNode     = iNode;
   pJob_Xmit->m_pOperand  = pOperand;
-  //pJob_Xmit->m_nRows         = pOperand->nRowCount();
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // spawn the write buffer job
+  // call the job pre-send function
+  //  if (pJobClass_Xmit->m_fpSend)
+  //    (*pJobClass_Xmit->m_fpSend)(pJob_Xmit);
+  //
   
-  IGNORE_RETURN(AM::bSpawnJob(pSession,pJob_Xmit));
+  return pJob_Xmit;
+  
 }
 
 /*----------------------------------------------------------------------------*/

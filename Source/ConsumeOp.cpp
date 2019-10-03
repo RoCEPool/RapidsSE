@@ -77,11 +77,6 @@ ConsumeOp::ConsumeOp(OpSpec* pOpSpec, Pipeline* pPipeline)
   
   m_fpCall = ConsumeOp::eCall;
   
-  m_iOperandsExpected = 0;
-  m_iOperandsReceived = 0;
-  
-  m_bAllEndMarkers    = false;
-  
   _checkInitialised_(CN_CONSUMEOP);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CONSUMEOP,_FOOTER_);
@@ -163,12 +158,10 @@ eOR ConsumeOp::eOpLoop(void)
         
       case CN_ENDMARKER: {
         
-        EndMarker* pEndMarker = _pEndMarker(pOperand);
-        m_iOperandsExpected += pEndMarker->m_iTotalOperands;
-        
         // received all expected end markers ?
         if (--m_nLeftEndMarkers == 0) {
-          m_bAllEndMarkers = true;
+          vPipeOut(pOperand);
+          goto L_EXIT;
         }
         else
           delete (EndMarker*)pOperand;
@@ -179,28 +172,24 @@ eOR ConsumeOp::eOpLoop(void)
       // -- -- -- -- -- --
         
       case CN_STREAMDEF: {
-        vPipeToJob(pOperand);
+        
+        if ( ! m_pStreamDef ) {
+          m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
+          
+          // pipe out first streamDef received
+          vPipeOut(pOperand);
+        }
+        else {
+          delete _pStreamDef(pOperand);
+        }
         break;
       }
         
       // -- -- -- -- -- --
         
       default:
-        m_iOperandsReceived++;
-        vPipeToJob(pOperand);
+        vPipeOut(pOperand);
         break;
-    }
-    
-    // received all endMarkers
-    if (m_bAllEndMarkers) {
-      
-      // received all expected operands
-      if (m_iOperandsExpected == m_iOperandsReceived) {
-        
-        // time to send an endmarker
-        vPipeToJob(new EndMarker);
-        goto L_EXIT;
-      }
     }
     
   }

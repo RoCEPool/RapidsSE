@@ -114,6 +114,7 @@ namespace Tasks
     bool bSeeded(void);
     void vSeedJob(void);
     Grids::Node* pSendNode(void);
+    void vSendNode(Grids::Node* pSendNode);
     Session* pSession(void);
     void vSession(Session* pSession);
     void vSleepUsec(i8 iMicroSeconds);
