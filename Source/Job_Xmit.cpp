@@ -12,9 +12,9 @@ JobClass xJobClass_Xmit =
   "xmit operand"_Stz,  // comment about the job
   nullptr,             // the prompt command
   nullptr,             // the second word
-  "Xmit_run"_Stz,      // the _run task seed
+  nullptr,             // the _run task seed
   nullptr,             // the _req task seed
-  "Xmit_kid"_Stz,      // the _rcv task seed
+  nullptr,             // the _rcv task seed
   nullptr,             // the _exe task seed
   nullptr,             // the _end task seed
   nullptr,             // the _can task seed

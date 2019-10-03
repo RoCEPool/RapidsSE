@@ -124,8 +124,6 @@
 "job_WriteBuffer.sen"    include
 "job_WriteRow.sen"       include
 
-"Job_Xmit.sen"           include
-
 "job_Start.sen"          include
 
 
