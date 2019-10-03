@@ -150,8 +150,14 @@ void StageSpec::vPrependConsumeOp(ePO eTopology)
   }
   
   pOpSpec->vAddEnmPair("<arg_0>"_Stz,iConsumeArg,TN_INTEGER);
+  m_pOpSpecVec->vInsert(pOpSpec);
   
-  m_pOpSpecVec->vAdd(pOpSpec);
+  // rework the m_i_OpSpec
+  for (i8 i_Op = 0; i_Op < m_pOpSpecVec->nItems(); i_Op++) {
+     OpSpec* pOpSpec = m_pOpSpecVec->pGet(i_Op);
+    pOpSpec->v_OpSpec(i_Op);
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/
