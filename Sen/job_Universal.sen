@@ -5,42 +5,28 @@
 " job_Universal.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* check job resources (on each participating node)                           */
-/*----------------------------------------------------------------------------*/
-: .universal.checkResources ( pJob_Universal -- )
-
-;
-
-/*----------------------------------------------------------------------------*/
-/* release job resources (on each participating node)                         */
-/*----------------------------------------------------------------------------*/
-: .universal.releaseResources ( pJob_Universal -- )
-
-;
-
-/*----------------------------------------------------------------------------*/
 /* request on originating node                                                */
 /*----------------------------------------------------------------------------*/
-: universal_req (  -- <R> )
+: universal_req ( -- <R> )
 
 ;
 
 /*----------------------------------------------------------------------------*/
-/* begin forget node (on each participating node)                             */
+/* begin on each participating node                                           */
 /*----------------------------------------------------------------------------*/
 : universal_beg ( -- )
 
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute forget node on each participating node                             */
+/* execute on each participating node                                         */
 /*----------------------------------------------------------------------------*/
 : universal_exe ( pJob_Universal -- )
 
 ;
 
 /*----------------------------------------------------------------------------*/
-/* end forget node (on each participating node)                               */
+/* end on each participating node                                             */
 /*----------------------------------------------------------------------------*/
 : universal_end ( -- )
 
