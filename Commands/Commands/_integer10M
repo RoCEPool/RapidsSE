@@ -1,0 +1,246 @@
+/*============================================================================*/
+/* _integer -- integer test                                                   */
+/*============================================================================*/
+startCluster;
+
+create table intTbl (
+int_col0   INTEGER     NOT NULL,
+int_col1   INTEGER     NOT NULL,
+int_col2   INTEGER     NOT NULL,
+int_col3   INTEGER     NOT NULL,
+int_col4   INTEGER     NOT NULL,
+int_col5   INTEGER     NOT NULL,
+int_col6   INTEGER     NOT NULL,
+int_col7   INTEGER     NOT NULL,
+int_col8   INTEGER     NOT NULL,
+int_col9   INTEGER     NOT NULL,
+int_col10  INTEGER     NOT NULL,
+int_col11  INTEGER     NOT NULL,
+int_col12  INTEGER     NOT NULL,
+int_col13  INTEGER     NOT NULL,
+int_col14  INTEGER     NOT NULL,
+int_col15  INTEGER
+);
+
+ld intTbl "/home/rapids/SE_SCALE/integer10M.csv" ;
+
+print "\n fetch noPrint";
+time fetch intTbl noPrint;
+
+print "\nInflate 1 thread";
+time inflate intTbl;
+
+print "\nInflate 2 thread";
+time inflate intTbl 2;
+
+print "\nInflate 4 thread";
+time inflate intTbl 4;
+
+sleep 3;
+
+print "\nInflate 6 thread";
+time inflate intTbl 6;
+
+sleep 3;
+
+print "\nInflate 8 thread";
+time inflate intTbl 8;
+
+sleep 3;
+
+print "\nInflate 10 thread";
+time inflate intTbl 10;
+
+sleep 3;
+
+print "\nInflate 12 thread";
+time inflate intTbl 12;
+
+sleep 3;
+
+print "\nInflate 14 thread";
+time inflate intTbl 14;
+
+sleep 3;
+
+print "\nInflate 16 thread";
+time inflate intTbl 16;
+
+sleep 3;
+
+print "\nInflate 18 thread";
+time inflate intTbl 18;
+
+sleep 3;
+
+print "\nInflate 20 thread";
+time inflate intTbl 20;
+
+sleep 3;
+
+print "\nInflate 22 thread";
+time inflate intTbl 22;
+
+sleep 3;
+
+print "\nInflate 24 thread";
+time inflate intTbl 24;
+
+sleep 3;
+
+print "\nInflate 26 thread";
+time inflate intTbl 26;
+
+sleep 3;
+
+print "\nInflate 28 thread";
+time inflate intTbl 28;
+
+sleep 3;
+
+print "\nInflate 30 thread";
+time inflate intTbl 30;
+
+/*
+ 
+ 
+ //******************************************************************************
+   LINUX --threads 40 1 PARTITION
+ //******************************************************************************
+ 
+ Inflate 1 thread
+ success: 10000000 rows affected
+ time 1615ms
+ 
+ Inflate 2 thread
+ success: 10000000 rows affected
+ time 821ms
+ 
+ Inflate 4 thread
+ success: 10000000 rows affected
+ time 422ms
+ 
+ Inflate 6 thread
+ success: 10000000 rows affected
+ time 302ms
+ 
+ Inflate 8 thread
+ success: 10000000 rows affected
+ time 240ms
+ 
+ Inflate 10 thread
+ success: 10000000 rows affected
+ time 204ms
+ 
+ Inflate 12 thread
+ success: 10000000 rows affected
+ time 169ms
+ 
+ Inflate 14 thread
+ success: 10000000 rows affected
+ time 150ms
+ 
+ Inflate 16 thread
+ success: 10000000 rows affected
+ time 130ms
+ 
+ Inflate 18 thread
+ success: 10000000 rows affected
+ time 121ms
+ 
+ Inflate 20 thread
+ success: 10000000 rows affected
+ time 121ms
+ 
+ Inflate 22 thread
+ success: 10000000 rows affected
+ time 108ms
+ 
+ Inflate 24 thread
+ success: 10000000 rows affected
+ time 103ms
+ 
+ Inflate 26 thread
+ success: 10000000 rows affected
+ time 93ms
+ 
+ Inflate 28 thread
+ success: 10000000 rows affected
+ time 89ms
+ 
+ Inflate 30 thread
+ success: 10000000 rows affected
+ time 82ms
+ se>
+
+
+ 4 PARTITIONS
+ 
+ Inflate 1 thread
+ success: 10000000 rows affected
+ time 1591ms
+ 
+ Inflate 2 thread
+ success: 10000000 rows affected
+ time 801ms
+ 
+ Inflate 4 thread
+ success: 10000000 rows affected
+ time 404ms
+ 
+ Inflate 6 thread
+ success: 10000000 rows affected
+ time 307ms
+ 
+ Inflate 8 thread
+ success: 10000000 rows affected
+ time 234ms
+ 
+ Inflate 10 thread
+ success: 10000000 rows affected
+ time 188ms
+ 
+ Inflate 12 thread
+ success: 10000000 rows affected
+ time 155ms
+ 
+ Inflate 14 thread
+ success: 10000000 rows affected
+ time 141ms
+ 
+ Inflate 16 thread
+ success: 10000000 rows affected
+ time 126ms
+ 
+ Inflate 18 thread
+ success: 10000000 rows affected
+ time 110ms
+ 
+ Inflate 20 thread
+ success: 10000000 rows affected
+ time 108ms
+ 
+ Inflate 22 thread
+ success: 10000000 rows affected
+ time 113ms
+ 
+ Inflate 24 thread
+ success: 10000000 rows affected
+ time 108ms
+ 
+ Inflate 26 thread
+ success: 10000000 rows affected
+ time 85ms
+ 
+ Inflate 28 thread
+ success: 10000000 rows affected
+ time 91ms
+ 
+ Inflate 30 thread
+ success: 10000000 rows affected
+ time 89ms
+
+*/
+//*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

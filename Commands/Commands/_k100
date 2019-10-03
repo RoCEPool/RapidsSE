@@ -1,0 +1,167 @@
+/*============================================================================*/
+/* _k100 -- load and query duplicates                                         */
+/*============================================================================*/
+
+create table k100 (
+  k100_key        INTEGER NOT NULL,  // 1) 0..99
+  j100_1value     INTEGER NOT NULL,  // 2) 0 only
+  j100_2values    INTEGER NOT NULL,  // 3) 0,1
+  j100_4values    INTEGER NOT NULL,  // 4) 0..3
+  j100_5values    INTEGER NOT NULL,  // 5) 0..4
+  j100_10values   INTEGER NOT NULL,  // 6) 0..9
+  j100_20values   INTEGER NOT NULL,  // 7) 0..19
+  j100_50values   INTEGER NOT NULL,  // 8) 0..49
+  j100_100values  INTEGER NOT NULL   // 9) 0..99
+);
+
+create index idx_key       on k100 (k100_key);
+create index idx_1value    on k100 (j100_1value);
+create index idx_2values   on k100 (j100_2values);
+create index idx_4values   on k100 (j100_4values);
+create index idx_5values   on k100 (j100_5values);
+create index idx_10values  on k100 (j100_10values);
+create index idx_20values  on k100 (j100_20values);
+create index idx_50values  on k100 (j100_50values);
+create index idx_100values on k100 (j100_100values);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+print "loading k100.csv..." ;
+ld k100 "../JTEST/k100.csv" ;
+
+fetch k100 ;
+
+print "\nIndex: idx_4values";
+dumpidx k100 idx_4values;
+
+//print "=======================================================================";
+
+//print "fetch k100 j100_4values 0 <=";
+//fetch k100 "j100_4values 0 <=";
+
+//print "=======================================================================";
+
+print "fetch k100 j100_4values 1 =";
+fetch k100 "j100_4values 1 =";
+
+//print "=======================================================================";
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/*
+print "\nIndex: idx_key";
+dumpidx k100 idx_key;
+
+print "\nIndex: idx_1value";
+dumpidx k100 idx_1value;
+
+print "\nIndex: idx_2values";
+dumpidx k100 idx_2values;
+
+print "\nIndex: idx_4values";
+dumpidx k100 idx_4values;
+
+print "\nIndex: idx_5values";
+dumpidx k100 idx_5values;
+
+print "\nIndex: idx_10values";
+dumpidx k100 idx_10values;
+
+print "\nIndex: idx_20values";
+dumpidx k100 idx_20values;
+
+print "\nIndex: idx_50values";
+dumpidx k100 idx_50values;
+
+print "\nIndex: idx_100values";
+dumpidx k100 idx_100values;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+displayOff;
+
+print "";
+print "=======================================================================";
+print "fetch k100";
+fetch k100;
+
+print "=======================================================================";
+
+print "fetch k100 k100_key 9 <=";
+fetch k100 "k100_key 9 <=";
+
+print "-----------------------------------------------------------------------";
+print "fetch k100 k100_key 19 <=";
+fetch k100 "k100_key 19 <=";
+
+print "-----------------------------------------------------------------------";
+print "fetch k100 k100_key 29 <=";
+fetch k100 "k100_key 29 <=";
+
+print "-----------------------------------------------------------------------";
+print "fetch k100 k100_key 39 <=";
+fetch k100 "k100_key 39 <=";
+
+print "-----------------------------------------------------------------------";
+print "fetch k100 k100_key 49 <=";
+fetch k100 "k100_key 49 <=";
+
+print "-----------------------------------------------------------------------";
+print "fetch k100 k100_key 59 <=";
+fetch k100 "k100_key 59 <=";
+
+print "-----------------------------------------------------------------------";
+print "fetch k100 k100_key 69 <=";
+fetch k100 "k100_key 69 <=";
+
+print "-----------------------------------------------------------------------";
+print "fetch k100 k100_key 79 <=";
+fetch k100 "k100_key 79 <=";
+
+print "-----------------------------------------------------------------------";
+print "fetch k100 k100_key 89 <=";
+fetch k100 "k100_key 89 <=";
+
+print "-----------------------------------------------------------------------";
+print "fetch k100 k100_key 99 <=";
+fetch k100 "k100_key 99 <=";
+
+print "=======================================================================";
+
+print "fetch k100 j100_1value 0 =";
+fetch k100 "j100_1value 0 =";
+
+print "-----------------------------------------------------------------------";
+print "fetch k100 j100_2values 1 =";
+fetch k100 "j100_2values 1 =";
+
+print "-----------------------------------------------------------------------";
+print "fetch k100 j100_4values 3 =";
+fetch k100 "j100_4values 3 =";
+
+print "-----------------------------------------------------------------------";
+print "fetch k100 j100_5values 4 =";
+fetch k100 "j100_5values 4 =";
+
+print "-----------------------------------------------------------------------";
+print "fetch k100 j100_10values 9 =";
+fetch k100 "j100_10values 9 =";
+
+print "-----------------------------------------------------------------------";
+print "fetch k100 j100_20values 19 =";
+fetch k100 "j100_20values 19 =";
+
+print "-----------------------------------------------------------------------";
+print "fetch k100 j100_50values 49 =";
+fetch k100 "j100_50values 49 =";
+
+print "-----------------------------------------------------------------------";
+print "fetch k100 j100_100values 99 =";
+fetch k100 "j100_100values 99 =";
+
+print "=======================================================================";
+
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

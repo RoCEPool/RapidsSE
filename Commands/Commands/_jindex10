@@ -1,0 +1,145 @@
+/*============================================================================*/
+/* _jindex10 -- index entry testing                                           */
+/*============================================================================*/
+
+startCluster;
+
+docol epochTake;
+
+create table j10 (
+  j10_key   INTEGER,
+  j10_name  VARCHAR(32) NOT NULL
+);
+
+create index idx1 on j10 (j10_key);
+//create index idx2 on j10 (j10_name);
+
+print "loading j10.csv..." ;
+ld j10 "../JTEST/j10_dup.csv" ;
+
+
+dumpidx j10 idx1;
+lsidx j10;
+
+print "-----------------------------";
+print "j10_key >= 3";
+fetch j10 "j10_key 3 >=";
+
+print "-----------------------------";
+print "j10_key == 3";
+fetch j10 "j10_key 3 ==";
+
+print "-----------------------------";
+print "j10_key <= 3";
+fetch j10 "j10_key 3 <=";
+
+print "-----------------------------";
+print "j10_key >= 3 AND j10_key <= 7";
+fetch j10 "j10_key 3 >= j10_key 7 <= and ";
+
+print "-----------------------------";
+print "j10_key == 2 OR j10_key == 3 OR j10_key == 4";
+fetch j10 "j10_key 2 = j10_key 3 = OR j10_key 4 = OR";
+
+print "-----------------------------";
+print "j10_key == 6";
+fetch j10 "j10_key 6 ==";
+
+print "-----------------------------";
+print "j10_key >= 6";
+fetch j10 "j10_key 6 >=";
+
+print "-----------------------------";
+print "j10_key > 6";
+fetch j10 "j10_key 6 >";
+
+print "-----------------------------";
+print "j10_key <= 6";
+fetch j10 "j10_key 6 <=";
+
+print "-----------------------------";
+print "j10_key < 6";
+fetch j10 "j10_key 6 <";
+
+anidx j10 idx1;
+dumpidx j10 idx1;
+szidx j10 idx1;
+
+lsidx j10;
+drop index j10.idx1;
+lsidx j10;
+
+create index idx1 on j10 (j10_key);
+
+dumpidx j10 idx1;
+
+print "-----------------------------";
+print "j10_key >= 3";
+fetch j10 "j10_key 3 >=";
+
+print "-----------------------------";
+print "j10_key == 3";
+fetch j10 "j10_key 3 ==";
+
+print "-----------------------------";
+print "j10_key <= 3";
+fetch j10 "j10_key 3 <=";
+
+print "-----------------------------";
+print "j10_key >= 3 AND j10_key <= 7";
+fetch j10 "j10_key 3 >= j10_key 7 <= and ";
+
+print "-----------------------------";
+print "j10_key == 2 OR j10_key == 3 OR j10_key == 4";
+fetch j10 "j10_key 2 = j10_key 3 = OR j10_key 4 = OR";
+
+print "-----------------------------";
+print "j10_key == 6";
+fetch j10 "j10_key 6 ==";
+
+print "-----------------------------";
+print "j10_key >= 6";
+fetch j10 "j10_key 6 >=";
+
+print "-----------------------------";
+print "j10_key > 6";
+fetch j10 "j10_key 6 >";
+
+print "-----------------------------";
+print "j10_key <= 6";
+fetch j10 "j10_key 6 <=";
+
+print "-----------------------------";
+print "j10_key < 6";
+fetch j10 "j10_key 6 <";
+
+anidx j10 idx1;
+dumpidx j10 idx1;
+szidx j10 idx1;
+
+dumptbl j10;
+
+tableSizes;
+
+sztbl j10;
+
+vfytbl j10;
+
+//drop table j10;
+
+docol epochDump;
+
+/*
+create index idx2 on j10 (j10_name);
+fetch j10 "j10_name 'f' >=";
+
+fetch j10 "j10_key 6 == j10_name 'six' == and";
+fetch j10 "j10_key 6 == j10_name 'seven' == and";
+
+fetch j10 "J10_KEY 6 == J10_KEY 7 == OR";
+
+fetch j10 "J10_KEY 6 == J10_KEY 7 == and";
+ */
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

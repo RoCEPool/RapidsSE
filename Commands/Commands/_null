@@ -1,0 +1,26 @@
+/*============================================================================*/
+/* _null -- test for loading nulls etc                                        */
+/*============================================================================*/
+
+//ping ;
+
+print "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" ;
+print "11000 VarChar's with nulls\n" ;
+
+create table vch (
+vch_testno  INTEGER     NOT NULL,
+vch_field   VARCHAR(32),
+vch_comment VARCHAR(64) NOT NULL
+);
+
+print "loading table vch..." ;
+ld vch "../JTEST/vch_braces_nulls.csv" enclosed_by_leading "{" enclosed_by_trailing "}" ;
+
+fetch vch;
+
+drop table vch;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+

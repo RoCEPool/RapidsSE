@@ -1,0 +1,64 @@
+/*============================================================================*/
+/* _decimal -- decimal test                                                   */
+/*============================================================================*/
+startCluster;
+
+create table decTbl (
+dec_col0   INTEGER           NOT NULL,
+dec_col1   DECIMAL(15,2)     NOT NULL,
+dec_col2   DECIMAL(15,2)     NOT NULL,
+dec_col3   DECIMAL(15,2)     NOT NULL,
+dec_col4   DECIMAL(15,2)     NOT NULL,
+dec_col5   DECIMAL(15,2)     NOT NULL,
+dec_col6   DECIMAL(15,2)     NOT NULL,
+dec_col7   DECIMAL(15,2)     NOT NULL,
+dec_col8   DECIMAL(15,2)     NOT NULL,
+dec_col9   DECIMAL(15,2)     NOT NULL,
+dec_col10  DECIMAL(15,2)     NOT NULL,
+dec_col11  DECIMAL(15,2)     NOT NULL,
+dec_col12  DECIMAL(15,2)     NOT NULL,
+dec_col13  DECIMAL(15,2)     NOT NULL,
+dec_col14  DECIMAL(15,2)     NOT NULL,
+dec_col15  DECIMAL
+);
+
+ld decTbl "/DATA/Encoding/decimal.csv" ;
+
+print "Fetching decTbl noPrint";
+time fetch decTbl noPrint;
+
+print "Retrieving col0";
+time fetch retrieve decTbl dec_col0;
+
+time fetch retrieve decTbl dec_col1;
+time fetch retrieve decTbl dec_col2;
+time fetch retrieve decTbl dec_col3;
+time fetch retrieve decTbl dec_col4;
+time fetch retrieve decTbl dec_col5;
+time fetch retrieve decTbl dec_col6;
+time fetch retrieve decTbl dec_col7;
+time fetch retrieve decTbl dec_col8;
+time fetch retrieve decTbl dec_col9;
+time fetch retrieve decTbl dec_col10;
+time fetch retrieve decTbl dec_col11;
+time fetch retrieve decTbl dec_col12;
+time fetch retrieve decTbl dec_col13;
+time fetch retrieve decTbl dec_col14;
+time fetch retrieve decTbl dec_col15;
+
+
+time fetch retrieve decTbl dec_col1;
+time fetch retrieve decTbl dec_col1;
+time fetch retrieve decTbl dec_col1;
+time fetch retrieve decTbl dec_col1;
+time fetch retrieve decTbl dec_col1;
+time fetch retrieve decTbl dec_col1;
+time fetch retrieve decTbl dec_col1;
+time fetch retrieve decTbl dec_col1;
+time fetch retrieve decTbl dec_col1;
+time fetch retrieve decTbl dec_col1;
+
+
+//*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

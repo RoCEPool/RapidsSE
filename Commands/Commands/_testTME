@@ -1,0 +1,64 @@
+/*============================================================================*/
+/* _testTME -- test for time                                                  */
+/*============================================================================*/
+
+create table jidxTme (
+  jidx_key   INTEGER     NOT NULL,
+  jidx_name  VARCHAR(32) NOT NULL,
+  jidx_100   INTEGER     NOT NULL,
+  jidx_10    INTEGER     NOT NULL,
+  jidx_ivl   INTERVAL    NOT NULL,
+  jidx_flt   FLOAT       NOT NULL,
+  jidx_tsp   TIMESTAMP   NOT NULL,
+  jidx_dte   DATE        NOT NULL,
+  jidx_tme   TIME        NOT NULL
+);
+
+create index idx_tme on jidxTme (jidx_tme);
+//create index idx_dte on jidxTme (jidx_dte);
+//create index idx_tsp on jidxTme (jidx_tsp);
+//create index idx_flt on jidxTme (jidx_flt);
+//create index idx_ivl on jidxTme (jidx_ivl);
+//create index idx1 on jidxTme (jidx_key);
+//create index idx2 on jidxTme (jidx_100);
+//create index idx3 on jidxTme (jidx_name);
+
+ld jidxTme "../JTEST/jidxTme.csv" ;
+
+//anidx jidxTme idx_tme ;
+dumpidx jidxTme idx_tme ;
+
+fetch jidxTme "jidx_tme '08:00:00' >=";
+
+/*
+print "\nSelecting rows with key >= 3 using idx1 ...\n" ;
+lwrselidx jidx idx1 3 ;
+
+print "\nSelecting rows with key >= 1 using idx1 ...\n" ;
+lwrselidx jidx idx1 1 ;
+
+print "\nSelecting rows with key >= 28 using idx1 ...\n" ;
+lwrselidx jidx idx1 28 ;
+
+print "\nSelecting rows with key >= 40 using idx1 ...\n" ;
+lwrselidx jidx idx1 40 ;
+
+print "\nSelecting rows with key >= 45 using idx1 ...\n" ;
+lwrselidx jidx idx1 45 ;
+
+print "\nSelecting rows with key >= 67 using idx1 ...\n" ;
+lwrselidx jidx idx1 67 ;
+
+print "\nSelecting rows with key >= 99 using idx1 ...\n" ;
+lwrselidx jidx idx1 99 ;
+
+print "\nSelecting rows with key >= 72 using idx1 ...\n" ;
+lwrselidx jidx idx1 72 ;
+
+print "\nSelecting rows with key >= 180 using idx2 ...\n" ;
+lwrselidx jidx idx2 180 ;
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

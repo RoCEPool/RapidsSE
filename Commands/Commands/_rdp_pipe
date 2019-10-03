@@ -1,0 +1,74 @@
+/*============================================================================*/
+/* _rdp_pipe -- test for RDP                                                  */
+/*============================================================================*/
+
+create table RDP (
+
+  rdp_testno   INTEGER       NOT NULL, // col 0
+  rdp_comment  VARCHAR(64)   NOT NULL, // col 1
+
+  rdp_bol_NN   BOOLEAN       NOT NULL, // col 2
+  rdp_bol      BOOLEAN       ,         // col 3
+
+  rdp_bcd_NN   DECIMAL(19,0) NOT NULL, // col 4
+  rdp_bcd      DECIMAL(19,0) ,         // col 5
+
+  rdp_flt_NN   FLOAT         NOT NULL, // col 6
+  rdp_flt      FLOAT         ,         // col 7
+
+  rdp_int_NN   INTEGER       NOT NULL, // col 8
+  rdp_int      INTEGER       ,         // col 9
+
+  rdp_tsp_NN   TIMESTAMP     NOT NULL, // col 10
+  rdp_tsp      TIMESTAMP     ,         // col 11
+
+  rdp_vch_NN   VARCHAR(32)   NOT NULL, // col 12
+  rdp_vch      VARCHAR(32)             // col 13
+
+);
+
+create index rdp_idx_0 on rdp(rdp_testno);
+
+ld rdp "../JTEST/rdp_pipe.csv" delimiter "|" ;
+
+fetch rdp;
+
+dex rdp "/tmp/rdp_exported.csv" ;
+
+create table RDP2 (
+
+  rdp_testno   INTEGER       NOT NULL, // col 0
+  rdp_comment  VARCHAR(64)   NOT NULL, // col 1
+
+  rdp_bol_NN   BOOLEAN       NOT NULL, // col 2
+  rdp_bol      BOOLEAN       ,         // col 3
+
+  rdp_bcd_NN   DECIMAL(19,0) NOT NULL, // col 4
+  rdp_bcd      DECIMAL(19,0) ,         // col 5
+
+  rdp_flt_NN   FLOAT         NOT NULL, // col 6
+  rdp_flt      FLOAT         ,         // col 7
+
+  rdp_int_NN   INTEGER       NOT NULL, // col 8
+  rdp_int      INTEGER       ,         // col 9
+
+  rdp_tsp_NN   TIMESTAMP     NOT NULL, // col 10
+  rdp_tsp      TIMESTAMP     ,         // col 11
+
+  rdp_vch_NN   VARCHAR(32)   NOT NULL, // col 12
+  rdp_vch      VARCHAR(32)             // col 13
+
+);
+
+ld rdp2 "/tmp/rdp_exported.csv" ;
+
+create index rdp2_idx_0 on rdp2(rdp_testno);
+
+fetch rdp2;
+
+dex rdp2 "/tmp/rdp2_exported.csv" ;
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

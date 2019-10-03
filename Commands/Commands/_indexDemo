@@ -1,0 +1,103 @@
+/*============================================================================*/
+/* _indexDemo - create and load Supllier table for SF10                       */
+/*============================================================================*/
+
+docol epochTake;
+
+create table supplier (
+	 S_SUPPKEY       INTEGER NOT NULL,
+	 S_NAME          VARCHAR(25) NOT NULL,
+	 S_ADDRESS       VARCHAR(40) NOT NULL,
+	 S_NATIONKEY     INTEGER NOT NULL,
+	 S_PHONE         CHAR(15) NOT NULL,
+	 S_ACCTBAL       DECIMAL(15,2) NOT NULL,
+	 S_COMMENT       VARCHAR(101) NOT NULL
+);
+
+create index idx1 on supplier (S_SUPPKEY);
+create index idx2 on supplier (S_NAME);
+
+print "loading supplier.csv..." ;
+ld supplier "/tpch/SF1/supplier.csv" ;
+print "loaded supplier.csv..." ;
+
+pwf ;
+lf ;
+
+print "Analyzing index idx1 of supplier...\n" ;
+anidx supplier idx1;
+danidx supplier idx1;
+
+
+print "\nSelecting rows from supplier (idx1) where S_SUPPKEY == 10000...\n" ;
+keyselidx supplier idx1 10000 ;
+
+print "\nSelecting rows from supplier (idx1) where S_SUPPKEY >= 9972 ...\n" ;
+fetch supplier "S_SUPPKEY 9972 >=" ;
+
+print "\nSelecting rows from supplier (idx1) where S_SUPPKEY <= 20 ...\n" ;
+uprselidx supplier idx1 20 ;
+
+print "\nSelecting rows from supplier (idx1) where S_SUPPKEY >= 9972 & <= 9982...\n" ;
+rgeselidx supplier idx1 9972 9982 ;
+
+
+displayOff;
+
+print "\nSelecting rows from supplier (idx2) where S_NAME == 'Supplier#000001900'...\n" ;
+keyselidx supplier idx2 "Supplier#000001900" ;
+
+print "\nSelecting rows from supplier (idx2) where S_NAME >= 'Supplier#000009900' ...\n" ;
+fetch supplier "S_NAME Supplier#000009900 >=" ;
+
+print "\nSelecting rows from supplier (idx2) where S_NAME <= 'Supplier#000005400' ...\n" ;
+uprselidx supplier idx2 "Supplier#000005400" ;
+
+print "\nSelecting rows from supplier (idx2) where S_NAME >= 'Supplier#000009900' & <= 'Supplier#000001900'...\n" ;
+rgeselidx supplier idx2 "Supplier#000009900" "Supplier#000001900" ;
+
+
+
+create index idx3 on supplier (S_ADDRESS);
+
+//dumpidx supplier idx3 ;
+
+print "\nSelecting rows from supplier (idx3) where S_ADDRESS == 'mX37oAzqsBPhN1LWdzV p'...\n" ;
+keyselidx supplier idx3 "mX37oAzqsBPhN1LWdzV p" ;
+
+print "\nSelecting rows from supplier (idx3) where S_ADDRESS >= 'm' ...\n" ;
+fetch supplier "S_ADDRESS m >=" ;
+
+print "\nSelecting rows from supplier (idx3) where S_ADDRESS <= 'p'...\n" ;
+uprselidx supplier idx3 "p" ;
+
+print "\nSelecting rows from supplier (idx3) where S_ADDRESS >= 'm' & <= 'q'...\n" ;
+rgeselidx supplier idx3 "m" "q" ;
+
+
+displayOn;
+
+print "Listing indixes of supplier...\n" ;
+lsidx supplier;
+
+print "Listing columns of index idx1 of supplier...\n" ;
+lsidxcol supplier idx1;
+
+print "Analyzing index idx1 of supplier...\n" ;
+anidx supplier idx1;
+
+print "Detailed analysis of index idx1 of supplier...\n" ;
+danidx supplier idx1;
+
+print "Size of index idx1 of supplier...\n" ;
+szidx supplier idx1;
+
+
+//dumpidx supplier idx1;
+drop table supplier;
+
+docol epochDump;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

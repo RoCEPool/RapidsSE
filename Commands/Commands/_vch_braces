@@ -1,0 +1,25 @@
+/*============================================================================*/
+/* _vch_braces -- vch creation and load etc                                   */
+/*============================================================================*/
+
+//ping ;
+
+print "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" ;
+print "10000 VarChar's with {} Braces\n" ;
+
+create table vch (
+  vch_testno  INTEGER     NOT NULL,
+  vch_field   VARCHAR(32),
+  vch_comment VARCHAR(64) NOT NULL
+);
+
+print "loading table vch..." ;
+ld vch "../JTEST/vch_braces.csv" enclosed_by_leading "{" enclosed_by_trailing "}" ;
+
+fetch vch;
+
+drop table vch;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -1,0 +1,39 @@
+/*============================================================================*/
+/* _insert -- insert tests                                                    */
+/*============================================================================*/
+
+// (1) create a table
+create table T1 (
+col0   integer not null,
+col1   varchar(32) not null
+);
+
+// (2) create an index on the table
+create index idx on T1 (col0);
+
+// (3) insert some rows into the table
+begin insert T1;
+txdmp;
+insert row "1,abcdef";
+insert row "2,ghijk";
+insert row "3,lmno";
+insert row "4,pqr";
+insert row "5,stuvw";
+insert row "6,xyz";
+insert row "7,abc";
+insert row "8,defgh";
+insert row "9,ijk";
+insert row "10,lmn";
+txdmp;
+end insert;
+
+dump T1 ;
+
+txdmp;
+
+// (4) check rows
+fetch T1;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

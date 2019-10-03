@@ -1,0 +1,27 @@
+/*============================================================================*/
+/* _jindex -- index entry testing                                             */
+/*============================================================================*/
+
+create table j5 (
+  j5_key   INTEGER NOT NULL,
+  j5_name  VARCHAR(32) NOT NULL
+);
+
+print "loading j5.csv..." ;
+create index idx on j5 (j5_key);
+ld j5 "../JTEST/j5.csv" ;
+
+cf indexes ;
+pwf ;
+dumpidx j5 idx ;
+antbl j5;
+
+fetch j5 "j5_key 4 ==";
+fetch j5 "j5_key 3 >=";
+fetch j5 "j5_key 3 <=";
+fetch j5 "j5_key 2 >= j5_key 4 <= and";
+fetch j5 "j5_name 4 ==";
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

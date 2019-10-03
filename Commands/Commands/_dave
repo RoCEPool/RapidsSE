@@ -1,0 +1,111 @@
+/*============================================================================*/
+/* _dave -- create sequence of tables test                                    */
+/*============================================================================*/
+
+startCluster;
+
+time create table t0000 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0001 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0002 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0003 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0004 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0005 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0006 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0007 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0008 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0009 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0010 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0011 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0012 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0013 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0014 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0015 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0016 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0017 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0018 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0019 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0020 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0021 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0022 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0023 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0024 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0025 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0026 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0027 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0028 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0029 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0030 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0031 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0032 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0033 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0034 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0035 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0036 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0037 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0038 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0039 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0040 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0041 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0042 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0043 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0044 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0045 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0046 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0047 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0048 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0049 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0050 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0051 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0052 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0053 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0054 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0055 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0056 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0057 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0058 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0059 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0060 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0061 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0062 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0063 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0064 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0065 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0066 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0067 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0068 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0069 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0070 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0071 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0072 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0073 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0074 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0075 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0076 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0077 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0078 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0079 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0080 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0081 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0082 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0083 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0084 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0085 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0086 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0087 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0088 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0089 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0090 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0091 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0092 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0093 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0094 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0095 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0096 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0097 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0098 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+time create table t0099 (t_int  INTEGER NOT NULL, t_str  VARCHAR(32) NOT NULL);
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
