@@ -25,10 +25,7 @@ namespace Jobs
   public:
     eEC ePopulateJob(TokenVec* pTokenVec);
     void vShow(void);
-  
-  private:
-    bool bValidateUniversal(TokenVec* pTokenVec);
-  
+    
   private:
     Footer* aFooter(void);
   

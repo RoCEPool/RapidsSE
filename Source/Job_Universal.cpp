@@ -10,8 +10,8 @@ JobClass xJobClass_Universal =
   JK_DIST2PC,             // job kind
   RS_NODE_ZERO,           // response kind
   "define node"_Stz,      // comment about the job
-  "forget"_Stz,           // the prompt command
-  "node"_Stz,             // the second word
+  nullptr,                // the prompt command
+  nullptr,                // the second word
   nullptr,                // the _run task seed
   "universal_req"_Stz,    // the _req task seed
   "universal_beg"_Stz,    // the _rcv task seed
@@ -35,10 +35,9 @@ JobClass xJobClass_Universal =
   vJob_Universal_show,   // job show function
   
   // help
-  true,
-  "forget node <nodeNm> ( <nodeinfo> )"_Stz,
-  
-  ""_Stz,
+  false,
+  "<none>"_Stz,
+  "<none>"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };
@@ -170,29 +169,12 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTknVec)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-
   bool b = JobHelper::bExtractArgs(&m_oEnmSet,pWord_jobdef->pEnmSet(),pTknVec);
   if (! b) {
     vTrace("Unable to match job syntax\n"_Stz);
     return EC_INVALID_COMMAND;
   }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // assert we got a create table
-  ASSERT(pTknVec->pGet(0)->bSame("forget"_Stz));
-  ASSERT(pTknVec->pGet(1)->bSame("node"_Stz));
     
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // some validations
-  bool bValid = bValidateUniversal(pTknVec);
-  if ( ! bValid ) {
-    return EC_INVALID_COMMAND;
-  }
-  
-  // set the node name
-  vNodeName(pTknVec->pGet(2)->szText());
-  //m_oEnmSet.vAdd("<nodeNm>"_Stz,szNodeNm(),TN_STRING);
-  
   m_oEnmSet.vPrint();
   
   return EC_NONE;
@@ -205,32 +187,6 @@ void Job_Universal::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_UNIVERSAL,_FOOTER_);
   
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/* validate a create table request                                            */
-/*----------------------------------------------------------------------------*/
-bool Job_Universal::bValidateUniversal(TokenVec* pTokenVec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_UNIVERSAL,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get tokens in token vector
-  i8 iNumTokens = pTokenVec->nTokens();
-  
-  // there should be a minumum of 3 tokens
-  if (iNumTokens < 3) {
-    return false;
-  }
-  
-  //Tokeniser::vToEnmSet(&m_oEnmSet,pTokenVec);
-  
-  //m_oEnmSet.vPrint();
-  
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
