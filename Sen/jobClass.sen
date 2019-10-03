@@ -7,11 +7,25 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+: .wordName_trunc
+
+  "_" word::this word.name str.removeSuffix
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 : .fillEnmSet params| pEnmSet |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   "jobPriority" pEnmSet enmSet.hasName not if
      "jobPriority" "PY_NORMAL" pEnmSet enmSet.addStr then
+
+  .wordName_trunc "_req" str.cat "SeedReq" pEnmSet enmSet.addStr
+  .wordName_trunc "_beg" str.cat "SeedRcv" pEnmSet enmSet.addStr
+  .wordName_trunc "_exe" str.cat "SeedExe" pEnmSet enmSet.addStr
+  .wordName_trunc "_end" str.cat "SeedEnd" pEnmSet enmSet.addStr
+  .wordName_trunc "_can" str.cat "SeedCan" pEnmSet enmSet.addStr
 
   pEnmSet enmSet.asStr .
 ;
