@@ -246,8 +246,10 @@ i8 EnmSet::iValue(i8 i_Enm)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
-  Stz* szValue = m_bStrings.szGet(m_xEnnPair[i_Enm].m_i_Value);
-  i8 iValue = szValue->iToI8();
+  //Stz* szValue = m_bStrings.szGet(m_xEnnPair[i_Enm].m_i_Value);
+  //i8 iValue = szValue->iToI8();
+  
+  i8 iValue = m_xEnnPair[i_Enm].m_i_Value;
   
   return iValue;
 }

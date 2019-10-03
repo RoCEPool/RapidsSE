@@ -451,7 +451,7 @@ void Dynamo::vReplaceWithXmit(OpSpec* pOpSpec)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   pOpSpec->vName("xmit"_Stz);
-  pOpSpec->vAddEnmPair("<arg_0>"_Stz,"0"_Stz,TN_INTEGER);
+  pOpSpec->vAddEnmPair("<arg_0>"_Stz,(i8)0,TN_INTEGER);
 }
 
 
