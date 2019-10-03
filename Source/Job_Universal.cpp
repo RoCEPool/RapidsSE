@@ -13,11 +13,11 @@ JobClass xJobClass_Universal =
   "forget"_Stz,           // the prompt command
   "node"_Stz,             // the second word
   nullptr,                // the _run task seed
-  "forgetNode_req"_Stz,   // the _req task seed
-  "forgetNode_beg"_Stz,   // the _rcv task seed
-  "forgetNode_exe"_Stz,   // the _exe task seed
-  "forgetNode_end"_Stz,   // the _end task seed
-  "forgetNode_can"_Stz,   // the _can task seed
+  "universal_req"_Stz,    // the _req task seed
+  "universal_beg"_Stz,    // the _rcv task seed
+  "universal_exe"_Stz,    // the _exe task seed
+  "universal_end"_Stz,    // the _end task seed
+  "universal_can"_Stz,    // the _can task seed
   true,                   // check resources?
   false,                  // detached job?
   false,                  // buffer attached?
