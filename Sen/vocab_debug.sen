@@ -52,7 +52,7 @@
 
   "auxiliary stack" .
 
-  adepth not if drop exit then
+  adepth not if drop exit_rt then
 
   adepth 0 do
     I apick dump
@@ -66,7 +66,7 @@
 : rstk
 
   "return stack" .
-  rdepth dup not if drop exit then
+  rdepth dup not if drop exit_rt then
   0 do
     I 2 + rpick
     dup .put
@@ -89,7 +89,7 @@
 /*----------------------------------------------------------------------------*/
 : checkIsWord ( <"wordNm"> )
   find
-  not if EC_NO_SUCH_WORD false exit then
+  not if EC_NO_SUCH_WORD false exit_rt then
   true
 ;
 
@@ -99,7 +99,7 @@
 : isType ( CN_ -- bool )
 
   // false if stack empty
-  depth 2 >= not if drop false exit then
+  depth 2 >= not if drop false exit_rt then
 
   // no more if not indirect
   1 stack.class ==

@@ -178,7 +178,7 @@
 /*----------------------------------------------------------------------------*/
 : forgetAll ( dic -- )
 
-  dup dic.lastWord not if drop exit then
+  dup dic.lastWord not if drop exit_rt then
 
   dup pathPush
 
@@ -235,7 +235,7 @@
 
   task::dicStack.clear
 
-  dup not if drop exit then
+  dup not if drop exit_rt then
 
   0 do
 

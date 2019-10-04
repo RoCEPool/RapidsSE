@@ -26,7 +26,7 @@
   ,
 
   // encode a push value of the value currently on the stack
-  POSTPONE exit
+  POSTPONE exit_rt
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -38,7 +38,7 @@
 
   find ( word )
 
-  dup not if drop exit then ( )
+  dup not if drop exit_rt then ( )
 
   word.forget ( )
 ;
@@ -49,7 +49,7 @@
 : nipAll ( ... top -- top )
 
   // handle expty stack case
-  depth not if exit then
+  depth not if exit_rt then
 
   // save topmost
   >r
@@ -70,7 +70,7 @@
 : dropN ( ... #values -- )
 
   // handle expty stack case
-  depth not if exit then
+  depth not if exit_rt then
 
   // drop everything else
   0 do

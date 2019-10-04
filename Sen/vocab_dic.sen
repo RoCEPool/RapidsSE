@@ -129,8 +129,8 @@ diclock.dropwrite
 
   params| pWord |
 
-  pWord not if EC_NO_SUCH_FOLDER false exit then
-  pWord word.kind@ tick folder eql if true exit then
+  pWord not if EC_NO_SUCH_FOLDER false exit_rt then
+  pWord word.kind@ tick folder eql if true exit_rt then
   EC_NOT_A_FOLDER false
 ;
 
@@ -148,7 +148,7 @@ diclock.dropwrite
 
   //dicHasRef " dic ref " .put .put .\n
 
-  dicHasRef if EC_FOLDER_IN_USE false exit then
+  dicHasRef if EC_FOLDER_IN_USE false exit_rt then
 
   true
 ;
@@ -158,7 +158,7 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 : checkIsEmpty ( dic -- true | error false )
 
-  dup execute dic.wordCount if EC_FOLDER_NOT_EMPTY false exit then
+  dup execute dic.wordCount if EC_FOLDER_NOT_EMPTY false exit_rt then
 
   true
 ;

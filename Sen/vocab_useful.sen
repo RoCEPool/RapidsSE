@@ -85,7 +85,7 @@
 /*----------------------------------------------------------------------------*/
 : assertStackDepthZero
 
-  depth 0 == if exit then
+  depth 0 == if exit_rt then
 
   task::this task.name@ "Stack of task %v has grown" fmt.print
 

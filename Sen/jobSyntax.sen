@@ -9,9 +9,9 @@
 /*----------------------------------------------------------------------------*/
 : .isMetaToken ( str -- t|f )
 
-  dup 1 swap str.left  "<" str.equal not if drop false exit then
+  dup 1 swap str.left  "<" str.equal not if drop false exit_rt then
 
-  1 swap str.right ">" str.equal not if false exit then
+  1 swap str.right ">" str.equal not if false exit_rt then
 
   true
 ;
