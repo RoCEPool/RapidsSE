@@ -32,12 +32,12 @@
     next-token
     dup ";" str.equal not
     while
-      dup .isMetaToken if
+      dup str.isMetaToken if
         // dup "%v is a meta token" fmt.print
         // add ("*",meta,TN_STRING) in ename set
         "__meta__" swap word::this word.enmSet@ enmSet.addStr
 
-      else dup .isJsonToken if
+      else dup str.isJsonToken if
         // dup "%v is a json token" fmt.print
         // add ("*",json,TN_STRING) in ename set
         "__json__" swap word::this word.enmSet@ enmSet.addStr
