@@ -13,8 +13,8 @@ void Step::vAddSteps_Encode(void)
   vAddStep("ahead"_Stz,               &Step::vEncodeAhead,         true );
   vAddStep("continue"_Stz,            &Step::vEncodeContinue,      true);
   vAddStep("encodeCall"_Stz,          &Step::vEncodeCall);
-  vAddStep("encodeCallPrimitive"_Stz, &Step::vEncodeCallPrimitive);
-  vAddStep("encodeCallRoutine"_Stz,   &Step::vEncodeCallRoutine);
+  vAddStep("encodeCallPrimitive"_Stz, &Step::vEncodeCall);
+  vAddStep("encodeCallRoutine"_Stz,   &Step::vEncodeCall);
   vAddStep("encodePushValue"_Stz,     &Step::vEncodePushValue);
   vAddStep("here"_Stz,                &Step::vEncodeHere);
   vAddStep("if"_Stz,                  &Step::vEncodeIf,            true );
