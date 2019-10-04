@@ -50,7 +50,7 @@ void Task::vAddRoutines(void)
   
   // test for end of input?
   "    input.type TN_NONE == if"
-  "      exit"
+  "      exit_rt"
   "    then"
   
   // is token an integer?
@@ -179,7 +179,7 @@ void Task::vAddRoutines(void)
   "  args.munged if"
   "    dup find if"
   "      find execute include-string"
-  "      exit"
+  "      exit_rt"
   "    then"
   "    . debug::trap"
   "  then"
@@ -196,7 +196,7 @@ void Task::vAddRoutines(void)
   "  \"boot_run\" .verbose"
   "  args.munged if \"compiling munged dictionary...\" . then"
   "  \"job_Boot.sen\" include"
-  "  \"boot_run exit\" .verbose"
+  "  \"boot_run exit_rt\" .verbose"
   "  task::exit"
   "  ;"_Stz;
 #else
@@ -204,7 +204,7 @@ void Task::vAddRoutines(void)
   ": boot_run"
   "  \"boot_run\" .verbose"
   "  \"job_Boot.sen\" include"
-  "  \"boot_run exit\" .verbose"
+  "  \"boot_run exit_rt\" .verbose"
   "  task::exit"
   "  ;"_Stz;
 #endif
