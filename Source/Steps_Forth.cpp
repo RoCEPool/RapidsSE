@@ -653,7 +653,18 @@ void Step::vSemicolon(MP_Task mpTask)
     pCurrentWord->vEncode("locals.pop"_Stz);
   }
   
-  pCurrentWord->vEncode("exit_rt"_Stz);
+  if (! pCurrentWord->sName().bSame("exit"_Stz) &&
+      mpTask->m_oDicStack.pFindWord("exit"_Stz)) {
+    
+    if (mpTask->m_oDicStack.pFindWord(pCurrentWord->szExitHook())) {
+      pCurrentWord->vEncode(pCurrentWord->szExitHook());
+      pCurrentWord->vEncode("exit_rt"_Stz);
+    }
+    else
+      pCurrentWord->vEncode("exit_RT"_Stz);
+  }
+  else
+    pCurrentWord->vEncode("exit_rt"_Stz);
   
   mpTask->m_pCompiler->m_bCompiling = false;
   

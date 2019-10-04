@@ -9,7 +9,9 @@
 /*----------------------------------------------------------------------------*/
 : exe_hook
 
-  r@ locate .
+  "exe_hook" .
+
+  r@ locate log::markExit
 
   <DONE_EXE>
 ;
@@ -19,6 +21,8 @@
 : _exe_ immediate
 
   "exe_hook" word::this word.exitHook!
+
+  postpone <SEED_EXE>
 
   word::this word.name ,
   POSTPONE log::markEntry
@@ -113,7 +117,7 @@
   pJob_Universal job::participantExecuted
 
   //exit
-  <DONE_EXE>
+  //<DONE_EXE>
 
 
 ;
