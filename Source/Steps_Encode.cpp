@@ -12,6 +12,7 @@ void Step::vAddSteps_Encode(void)
   vAddStep("again"_Stz,               &Step::vEncodeAgain,         true );
   vAddStep("ahead"_Stz,               &Step::vEncodeAhead,         true );
   vAddStep("continue"_Stz,            &Step::vEncodeContinue,      true);
+  vAddStep("encodeCall"_Stz,          &Step::vEncodeCall);
   vAddStep("encodeCallPrimitive"_Stz, &Step::vEncodeCallPrimitive);
   vAddStep("encodeCallRoutine"_Stz,   &Step::vEncodeCallRoutine);
   vAddStep("encodePushValue"_Stz,     &Step::vEncodePushValue);
@@ -60,6 +61,27 @@ void Step::vEncodeAhead(MP_Task mpTask)
   
   // cstack: push unknown forward address
   mpTask->m_pDataStack->vPushCell(pUnknownOrigin);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* encodeCallPrimitive -- encode call to primitive step                       */
+/*----------------------------------------------------------------------------*/
+void Step::vEncodeCall(MP_Task mpTask)
+{
+  ENTRY("vEncodeCall"_Stz);
+  
+  Object* pWordObject;
+  if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
+    THROW_INVALID_DSTACK("vEncodeCall"_Stz);
+  ForthWord* pCalledWord = _pWord(pWordObject);
+  
+  ForthWord* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
+  
+  StepFp* afpCalledEntryStep = pCalledWord->afpEntryStep();
+  
+  pCurrentWord->vAppend(afpCalledEntryStep);
   
   EXIT();
 }
