@@ -31,11 +31,19 @@
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+: _PATH_SET_
+
+  job::this job.pushPath task::dicStack.set
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 : _exe_ immediate
 
   "exe_hook" word::this word.exitHook!
 
   postpone <SEED_EXE>
+  postpone _PATH_SET_
   postpone _LOCK_EXE_
 
   word::this word.name ,
@@ -106,25 +114,13 @@
 /*----------------------------------------------------------------------------*/
 : forgetNode_exe _exe_ ( -- )
 
-  // grab a ddl lock
-  //ddlLock::grabWrite
-
-  //----------------------------------------------------------------------------
-  // set task's dictionary stack from path in job
-
-  job::this locals| pJob_Universal |
-
-  pJob_Universal job.pushPath
-  task::dicStack.set
-
-  //----------------------------------------------------------------------------
   // forget the named node
 
   <nodeNm> .forgetNode
 
   //----------------------------------------------------------------------------
 
-  pJob_Universal job::participantExecuted
+  job::this job::participantExecuted
 ;
 
 /*----------------------------------------------------------------------------*/
