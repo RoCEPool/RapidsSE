@@ -90,20 +90,16 @@
 /*----------------------------------------------------------------------------*/
 /* execute forget node on each participating node                             */
 /*----------------------------------------------------------------------------*/
-: forgetNode_exe _exe_ ( pJob_Universal -- )
-
-  <SEED_EXE>
-
-  job::this locals| pJob_Universal |
-
-  0 locals| pNode |
-
-  //----------------------------------------------------------------------------
+: forgetNode_exe _exe_ ( -- )
 
   // grab a ddl lock
   ddlLock::grabWrite
 
+  //----------------------------------------------------------------------------
   // set task's dictionary stack from path in job
+
+  job::this locals| pJob_Universal |
+
   pJob_Universal job.pushPath
   task::dicStack.set
 
@@ -115,11 +111,6 @@
   //----------------------------------------------------------------------------
 
   pJob_Universal job::participantExecuted
-
-  //exit
-  //<DONE_EXE>
-
-
 ;
 
 /*----------------------------------------------------------------------------*/
