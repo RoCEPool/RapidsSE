@@ -11,6 +11,19 @@ jobSyntax: defineNode_syn CN_JOB_DEFINENODE
         :: define node <nodeNm> {name:value} ;
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+jobClass: defineNode_cls
+{
+  jobKind      = JK_DIST2PC
+  responseKind = RS_NODE_ZERO
+  
+  ddlLock      = DL_GRAB_WRITE
+  preCheck     = bClusterStarted
+}
+;
+
+/*----------------------------------------------------------------------------*/
 /* check word is not a Node                                                   */
 /*----------------------------------------------------------------------------*/
 : checkIsNotNode ( "<NodeNm>" -- t|f )
