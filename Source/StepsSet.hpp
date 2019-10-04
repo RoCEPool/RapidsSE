@@ -1270,6 +1270,7 @@ private:
   static void vWordKindGet(Tasks::MP_Task mpTask);
   static void vWordKindSet(Tasks::MP_Task mpTask);
   static void vWordNameFetch(Tasks::MP_Task mpTask);
+  static void vWordNameStore(Tasks::MP_Task mpTask);
   static void vWordPrev(Tasks::MP_Task mpTask);
   static void vWordThis(Tasks::MP_Task mpTask);
   static void vWordTypeGet(Tasks::MP_Task mpTask);

@@ -91,6 +91,7 @@ namespace Forth
     i8    iLocalNo(void);
     void  vLocalNo(i8 iLocalNo);
     s32&  sName(void);
+    void  vName(Stz* szName);
     void  vObjectDump(Stz* aTab);
     void  vParams(i8 iParams);
     i8    iParams(void);
