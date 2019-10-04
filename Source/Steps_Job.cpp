@@ -1280,7 +1280,7 @@ void Step::vJobPostRecv(MP_Task mpTask)
   eCN eClass = pJob->eClass();
   
   if (CN_JOB_UNIVERSAL == eClass) {
-    eClass = (eCN)pJob->m_oEnmSet.iValue("__jobClass__"_Stz);
+    eClass = (eCN)pJob->m_oEnmSet.iValue("<jobClass>"_Stz);
     aJobClass = JobClass::pFind(eClass);
   }
   else {
