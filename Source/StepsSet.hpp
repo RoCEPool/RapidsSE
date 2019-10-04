@@ -236,8 +236,6 @@ public:
   static void vEncodeAgain(Tasks::MP_Task mpTask);
   static void vEncodeAhead(Tasks::MP_Task mpTask);
   static void vEncodeCall(Tasks::MP_Task mpTask);
-  static void vEncodeCallPrimitive(Tasks::MP_Task mpTask);
-  static void vEncodeCallRoutine(Tasks::MP_Task mpTask);
   static void vEncodeContinue(Tasks::MP_Task mpTask);
   static void vEncodeHere(Tasks::MP_Task mpTask);
   static void vEncodeIf(Tasks::MP_Task mpTask);

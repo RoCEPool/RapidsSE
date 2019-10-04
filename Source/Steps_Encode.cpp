@@ -13,8 +13,6 @@ void Step::vAddSteps_Encode(void)
   vAddStep("ahead"_Stz,               &Step::vEncodeAhead,         true );
   vAddStep("continue"_Stz,            &Step::vEncodeContinue,      true);
   vAddStep("encodeCall"_Stz,          &Step::vEncodeCall);
-  vAddStep("encodeCallPrimitive"_Stz, &Step::vEncodeCall);
-  vAddStep("encodeCallRoutine"_Stz,   &Step::vEncodeCall);
   vAddStep("encodePushValue"_Stz,     &Step::vEncodePushValue);
   vAddStep("here"_Stz,                &Step::vEncodeHere);
   vAddStep("if"_Stz,                  &Step::vEncodeIf,            true );
@@ -66,7 +64,7 @@ void Step::vEncodeAhead(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* encodeCallPrimitive -- encode call to primitive step                       */
+/* encodeCall -- encode call to routine or primitive step                     */
 /*----------------------------------------------------------------------------*/
 void Step::vEncodeCall(MP_Task mpTask)
 {
@@ -82,49 +80,6 @@ void Step::vEncodeCall(MP_Task mpTask)
   StepFp* afpCalledEntryStep = pCalledWord->afpEntryStep();
   
   pCurrentWord->vAppend(afpCalledEntryStep);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* encodeCallPrimitive -- encode call to primitive step                       */
-/*----------------------------------------------------------------------------*/
-void Step::vEncodeCallPrimitive(MP_Task mpTask)
-{
-  ENTRY("vEncodeCallPrimitive"_Stz);
-  
-  Object* pWordObject;
-  if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK("vEncodeCallPrimitive"_Stz);
-  ForthWord* pCalledWord = _pWord(pWordObject);
-  
-  ForthWord* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
-  
-  StepFp* afpCalledEntryStep = pCalledWord->afpEntryStep();
-  
-  pCurrentWord->vAppend(afpCalledEntryStep);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* encodeCallRoutine -- encode call to a routine of calls                     */
-/*----------------------------------------------------------------------------*/
-void Step::vEncodeCallRoutine(MP_Task mpTask)
-{
-  ENTRY("vEncodeCallRoutine"_Stz);
-  
-  Object* pWordObject;
-  if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK("encodeCallRoutine"_Stz);
-  
-  ForthWord* pCalledWord = _pWord(pWordObject);
-  
-  ForthWord* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
-  
-  StepFp* afpCalledEntryStep = pCalledWord->afpEntryStep();
-  
-  pCurrentWord->vEncode(afpCalledEntryStep);
   
   EXIT();
 }
