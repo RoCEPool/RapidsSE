@@ -81,7 +81,7 @@
 
   //----------------------------------------------------------------------------
   // assert correct job
-  CN_JOB_DEFINENODE pJob_DefineNode object.assertClass
+  //CN_JOB_DEFINENODE pJob_DefineNode object.assertClass
 
   //----------------------------------------------------------------------------
   // grab a ddl lock
@@ -94,7 +94,7 @@
 
   //----------------------------------------------------------------------------
   // make Node
-  pJob_DefineNode job.nodeName@ to sNodeNm
+  <nodeNm> to sNodeNm
   sNodeNm makeNode to pNode
 
 

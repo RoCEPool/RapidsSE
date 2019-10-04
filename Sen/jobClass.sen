@@ -75,7 +75,17 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-jobClass: forgetNode_cls
+: findJobClassEnmSet ( sJobNm -- pEnmSet )
+
+  params| sJobNm |
+
+  sJobNm "_cls" str.cat find word.enmset@
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+jobClass: defineNode_cls
 {
   jobKind      = JK_DIST2PC
   responseKind = RS_NODE_ZERO
@@ -87,12 +97,15 @@ jobClass: forgetNode_cls
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: findJobClassEnmSet ( sJobNm -- pEnmSet )
-
-  params| sJobNm |
-
-  sJobNm "_cls" str.cat find word.enmset@
+jobClass: forgetNode_cls
+{
+  jobKind      = JK_DIST2PC
+  responseKind = RS_NODE_ZERO
+  
+  preCheck     = bClusterStarted
+}
 ;
+
 
 
 

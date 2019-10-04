@@ -10,8 +10,8 @@ JobClass xJobClass_DefineNode =
   JK_DIST2PC,             // job kind
   RS_NODE_ZERO,           // response kind
   "define node"_Stz,      // comment about the job
-  "define"_Stz,           // the prompt command
-  "node"_Stz,             // the second word
+  nullptr,//"define"_Stz,           // the prompt command
+  nullptr,//"node"_Stz,             // the second word
   nullptr,                // the _run task seed
   "defineNode_req"_Stz,   // the _req task seed
   "defineNode_beg"_Stz,   // the _rcv task seed
