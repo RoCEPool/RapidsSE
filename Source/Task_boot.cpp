@@ -63,7 +63,7 @@ void Task::vAddRoutines(void)
   "      then"
   
   "      docol.isCompiling if"    // compile encodes push intval
-  "        encodePushValue"
+  "        ,"
   "        jumpBegin_"
   "      then"
   
@@ -79,7 +79,7 @@ void Task::vAddRoutines(void)
   "      then"
   
   "      docol.isCompiling if"    // compile encodes push StrVal
-  "        encodePushValue"
+  "        ,"
   "        jumpBegin_"
   "      then"
   
