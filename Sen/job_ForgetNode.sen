@@ -4,6 +4,26 @@
 
 " job_ForgetNode.sen" .verbose
 
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+: exe_hook
+
+  r@ locate .
+
+  <DONE_EXE>
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+: _exe_ immediate
+
+  "exe_hook" word::this word.exitHook!
+
+  word::this word.name ,
+  POSTPONE log::markEntry
+;
+
 /*----------------------------------------------------------------------------*/
 /* check word is a Node                                                       */
 /*----------------------------------------------------------------------------*/
@@ -66,22 +86,15 @@
 /*----------------------------------------------------------------------------*/
 /* execute forget node on each participating node                             */
 /*----------------------------------------------------------------------------*/
-: forgetNode_exe ( pJob_Universal -- )
+: forgetNode_exe _exe_ ( pJob_Universal -- )
 
-  >>logEntry <SEED_EXE>
+  <SEED_EXE>
 
-  //params| pJob_Universal |
   job::this locals| pJob_Universal |
 
   0 locals| pNode |
-  // 0 locals| sNodeNm |
-
-  tp: forgetNode_exe
 
   //----------------------------------------------------------------------------
-
-  // assert correct job
-  CN_JOB_UNIVERSAL pJob_Universal object.assertClass
 
   // grab a ddl lock
   ddlLock::grabWrite
@@ -93,15 +106,16 @@
   //----------------------------------------------------------------------------
   // forget the named node
 
-  // pJob_Universal job.nodeName@ to sNodeNm
-
   <nodeNm> .forgetNode
 
   //----------------------------------------------------------------------------
 
   pJob_Universal job::participantExecuted
 
-  <<logExit <DONE_EXE>
+  //exit
+  <DONE_EXE>
+
+
 ;
 
 /*----------------------------------------------------------------------------*/
