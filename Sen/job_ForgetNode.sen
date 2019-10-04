@@ -18,14 +18,28 @@
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+: _LOCK_EXE_
+
+  "ddlLock" <jobNm> findJobClassEnmSet enmSet.getStr
+
+  "DL_GRAB_WRITE"
+  str.equal if
+    //"would grab ddl write lock" .
+    ddlLock::grabWrite
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 : _exe_ immediate
 
   "exe_hook" word::this word.exitHook!
 
   postpone <SEED_EXE>
+  postpone _LOCK_EXE_
 
   word::this word.name ,
-  POSTPONE log::markEntry
+    POSTPONE log::markEntry
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -93,7 +107,7 @@
 : forgetNode_exe _exe_ ( -- )
 
   // grab a ddl lock
-  ddlLock::grabWrite
+  //ddlLock::grabWrite
 
   //----------------------------------------------------------------------------
   // set task's dictionary stack from path in job
