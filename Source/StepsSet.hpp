@@ -243,7 +243,6 @@ public:
   static void vEncodeLoop(Tasks::MP_Task mpTask);
   static void vEncodeLoopPlus(Tasks::MP_Task mpTask);
   static void vEncodeNext(Tasks::MP_Task mpTask);
-  static void vEncodePushValue(Tasks::MP_Task mpTask);
   static void vEncodeThen(Tasks::MP_Task mpTask);
   static void vEncodeUntil(Tasks::MP_Task mpTask);
 

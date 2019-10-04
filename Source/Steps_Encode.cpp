@@ -11,9 +11,8 @@ void Step::vAddSteps_Encode(void)
 {
   vAddStep("again"_Stz,               &Step::vEncodeAgain,         true );
   vAddStep("ahead"_Stz,               &Step::vEncodeAhead,         true );
-  vAddStep("continue"_Stz,            &Step::vEncodeContinue,      true);
+  vAddStep("continue"_Stz,            &Step::vEncodeContinue,      true );
   vAddStep("encodeCall"_Stz,          &Step::vEncodeCall);
-  vAddStep("encodePushValue"_Stz,     &Step::vEncodePushValue);
   vAddStep("here"_Stz,                &Step::vEncodeHere);
   vAddStep("if"_Stz,                  &Step::vEncodeIf,            true );
   vAddStep("ifAgain"_Stz,             &Step::vEncodeIfAgain,       true );
@@ -291,24 +290,6 @@ void Step::vEncodeNext(MP_Task mpTask)
   
   pCurrentWord->vEncode("rdrop"_Stz);
   pCurrentWord->vEncode("rdrop"_Stz);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* encodePushValue -- encode push value                                       */
-/*----------------------------------------------------------------------------*/
-void Step::vEncodePushValue(MP_Task mpTask)
-{
-  ENTRY("vEncodePushValue"_Stz);
-  
-  GenVar xValA;
-  if ( ! mpTask->m_pDataStack->bPop(xValA) )
-    THROW_INVALID_DSTACK("encodePushValue"_Stz);
-  
-  ForthWord* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
-  
-  pCurrentWord->vEncode("pushValue"_Stz,&xValA);
   
   EXIT();
 }

@@ -113,10 +113,10 @@ void Task::vAddRoutines(void)
   // are we compiling?
   "    docol.isCompiling if "     // compile encodes call to word
   "      dup word.isIntrinsic if"
-  "        encodeCall"            // primitive
+  "        compile,"                // primitive
   "        jumpBegin_"
   "      then"
-  "      encodeCall"              // routine
+  "      compile,"                  // routine
   "      jumpBegin_"
   "    then"
   

@@ -526,7 +526,7 @@ void Step::vPostpone(MP_Task mpTask)
     
     // copy indirect pointer into the current word
     pCurrentWord->vEncode("pushValue"_Stz,pCalledWord);
-    pCurrentWord->vEncode("encodeCall"_Stz);
+    pCurrentWord->vEncode("compile,"_Stz);
   }
   
   EXIT();

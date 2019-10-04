@@ -11,7 +11,7 @@
 
   "tp"
 
-  encodePushValue
+  ,
 
   tick tracepoint compile,
 ;
@@ -23,7 +23,7 @@
 
   next-token
 
-  encodePushValue
+  ,
 
   tick tracepoint compile,
 ;
