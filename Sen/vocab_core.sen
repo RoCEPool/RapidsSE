@@ -155,7 +155,7 @@ true tick CASE word.immediate!
 /*----------------------------------------------------------------------------*/
 /* EXIT (optionally invoking exit hook)                                       */
 /*----------------------------------------------------------------------------*/
-: EXIT_h immediate
+: EXIT immediate
 
   word::this word.exitHook@ find dup if
     compile,
@@ -182,8 +182,8 @@ true tick CASE word.immediate!
   set_hook
   //[ "eg_hook" word::this word.exitHook! ]
 
-  0 if
-    "exit with hook" . exit_h
+  1 if
+    "exit with hook" . exit
   else
     "normal exit"    . exit_rt
   then
