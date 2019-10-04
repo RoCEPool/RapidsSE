@@ -72,9 +72,9 @@
 /*----------------------------------------------------------------------------*/
 : CONSTANT
 
-  create        // create a word using the next token in the input stream
-  ,             // encode a push value of the value currently on the stack
-  POSTPONE exit // encode an exit into the created word
+  create           // create a word using the next token in the input stream
+  ,                // encode a push value of the value currently on the stack
+  POSTPONE exit_rt // encode an exit into the created word
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -185,7 +185,7 @@ true tick CASE word.immediate!
   0 if
     "exit with hook" . exit_h
   else
-    "normal exit"    . exit
+    "normal exit"    . exit_rt
   then
 ;
 
