@@ -70,7 +70,7 @@
     1 iCount + to iCount
     grid::thisNodeName@ "row: ('%v', '" str.format str.cat
 
-    object@ word.name to sTableNm
+    object@ word.name@ to sTableNm
     sTableNm str.cat
 
     "', '" str.cat

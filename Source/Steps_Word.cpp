@@ -23,7 +23,7 @@ void Step::vAddSteps_Word(void)
   vAddStep("word.isIntrinsic"_Stz, &Step::vWordIsIntrinsic);
   vAddStep("word.kind@"_Stz,       &Step::vWordKindGet);
   vAddStep("word.kind!"_Stz,       &Step::vWordKindSet);
-  vAddStep("word.name"_Stz,        &Step::vWordName);
+  vAddStep("word.name@"_Stz,       &Step::vWordNameFetch);
   vAddStep("word.prev"_Stz,        &Step::vWordPrev);
   vAddStep("word.type@"_Stz,       &Step::vWordTypeGet);
   vAddStep("word.type!"_Stz,       &Step::vWordTypeSet);
@@ -277,15 +277,15 @@ ENTRY("vWordKindSet"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* word.name -- push name of word                                             */
+/* word.name@ -- push name of word                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vWordName(MP_Task mpTask)
+void Step::vWordNameFetch(MP_Task mpTask)
 {
 ENTRY("vWordName"_Stz);
   
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK("word.name"_Stz);
+    THROW_INVALID_DSTACK("word.name@"_Stz);
   ForthWord* pWord = _pWord(pWordObject);
   
   s32 sWordName(pWord->sName());

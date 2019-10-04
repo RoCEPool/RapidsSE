@@ -41,7 +41,7 @@
   1 iCount + to iCount
   "row: ('" str.cat
 
-  object@ word.name str.cat
+  object@ word.name@ str.cat
 
   "', " str.cat
 
@@ -55,7 +55,7 @@
 
   object@ isFolder if
     "'" str.cat
-    object@ execute dic.kind@ word.name str.cat
+    object@ execute dic.kind@ word.name@ str.cat
     "'" str.cat
   then
 

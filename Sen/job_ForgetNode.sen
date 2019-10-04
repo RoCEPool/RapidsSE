@@ -48,7 +48,7 @@
   postpone _PATH_SET_
   postpone _LOCK_EXE_
 
-  word::this word.name ,
+  word::this word.name@ ,
     POSTPONE log::markEntry
 ;
 

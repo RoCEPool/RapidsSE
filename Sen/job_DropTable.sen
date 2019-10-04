@@ -61,7 +61,7 @@
   //pathCurrentFolder dic.lastWord dup
   //iterate                        // setup iteration of words
 
-  //  object@ word.name to sIndexNm
+  //  object@ word.name@ to sIndexNm
 
     //sIndexNm "Deleting index %v" str.format .
 

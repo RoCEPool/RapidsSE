@@ -121,7 +121,7 @@
 
   pathCurrentFolder dic.lastWord dup
   iterate                        // iterate word cursor
-    object@ word.name .          // print the name of the word
+    object@ word.name@ .          // print the name of the word
     object@ word.prev object!    // advance cursor backwards thru words
   next
 ;
@@ -133,7 +133,7 @@
 
   pathCurrentFolder dic.lastWord
   begin dup while
-    dup word.name .put " " .put dup word.kind@ word.name .put .\n
+    dup word.name@ .put " " .put dup word.kind@ word.name@ .put .\n
     word.prev
   repeat
   drop
@@ -159,7 +159,7 @@
   iterate                          // setup iteration of words
     1 iCount + to iCount
     "row: ('" str.cat
-    object@ word.name str.cat      // add name of the word to contents string
+    object@ word.name@ str.cat      // add name of the word to contents string
     "')\n" str.cat
     object@ word.prev object!      // step backwards thru words
   next
@@ -184,7 +184,7 @@
 
   begin
 
-    dup dic.lastWord word.name :forget
+    dup dic.lastWord word.name@ :forget
 
     dup dic.lastWord not until
 

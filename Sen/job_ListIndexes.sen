@@ -18,7 +18,7 @@
   iterate                         // setup iteration of words
 
     // get the index ptr
-    object@ word.name findInCurrent execute to pIndex
+    object@ word.name@ findInCurrent execute to pIndex
 
     // increment count
     1 iCount + to iCount
@@ -32,7 +32,7 @@
     if "true" else "false" then
 
     // add word kind to ls string
-    object@ word.name
+    object@ word.name@
 
     "row: ( '%v',%v,%v )\n" str.format
     str.cat
