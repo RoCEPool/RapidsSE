@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Job_Universal.cpp -- Define Node Job                                       */
+/* Job_Universal.cpp -- Universal Job                                         */
 /*============================================================================*/
 
 #include "Jobs.h"
@@ -9,7 +9,7 @@ JobClass xJobClass_Universal =
   CN_JOB_UNIVERSAL,       // class number
   JK_DIST2PC,             // job kind
   RS_NODE_ZERO,           // response kind
-  "define node"_Stz,      // comment about the job
+  "universal"_Stz,        // comment about the job
   nullptr,                // the prompt command
   nullptr,                // the second word
   nullptr,                // the _run task seed
