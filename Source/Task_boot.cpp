@@ -293,7 +293,7 @@ ForthWord* Task::pCompileColon(s48K& sDefinition)
     m_pCompiler->m_pTokeniser->vNextToken();
   }
   
-  pNewWord->vEncode("exit"_Stz);
+  pNewWord->vEncode("exit_rt"_Stz);
   
 
   // reset scanning

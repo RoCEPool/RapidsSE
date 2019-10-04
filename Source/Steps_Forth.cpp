@@ -117,10 +117,7 @@ void Step::vComma(MP_Task mpTask)
     THROW_INVALID_DSTACK("comma"_Stz);
   
   pCurrentWord->vEncode("pushValue"_Stz,&xVariable);
-  
-  // I replaced this with POSTPONE exit where needed -ray
-  //pCurrentWord->vEncode("exit"_Stz);
-  
+    
   EXIT();
 }
 
@@ -304,7 +301,7 @@ void Step::vDoes(MP_Task mpTask)
   ForthWord* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
   pCurrentWord->vEncode("does_rt"_Stz);
-  pCurrentWord->vEncode("exit"_Stz);
+  pCurrentWord->vEncode("exit_rt"_Stz);
   
   //pCurrentWord->vEncode("pushBody");
   
@@ -656,7 +653,7 @@ void Step::vSemicolon(MP_Task mpTask)
     pCurrentWord->vEncode("locals.pop"_Stz);
   }
   
-  pCurrentWord->vEncode("exit"_Stz);
+  pCurrentWord->vEncode("exit_rt"_Stz);
   
   mpTask->m_pCompiler->m_bCompiling = false;
   

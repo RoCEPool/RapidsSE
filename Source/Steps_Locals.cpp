@@ -107,7 +107,7 @@ ENTRY("vLocalsBar"_Stz);
     xVariable = mpTask->m_pCompiler->m_nLocals;
     pWordLocal->vEncode("pushValue"_Stz,&xVariable);
     pWordLocal->vEncode("local.fetch"_Stz);
-    pWordLocal->vEncode("exit"_Stz);
+    pWordLocal->vEncode("exit_rt"_Stz);
 
     // initialise the local from dstack
     pCurrentWord->vEncode("pushValue"_Stz,&xVariable);
