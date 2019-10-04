@@ -16883,15 +16883,15 @@ void Task::vAddMunged(MP_Task mpTask)
 
   vCompileConstant(sDefinition);
 
-  // munge of wordSet_am.sen
+  // munge of vocab_am.sen
   sDefinition =
     "\""
-    "\\\"munged wordSet_am.sen \\\" .verbose \n"
+    "\\\"munged vocab_am.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
-    "/* wordSet_am.sen -- application mark related words                           */\n"
+    "/* vocab_am.sen -- application mark related words                           */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" wordSet_am.sen\\\" .verbose\n"
+    "\\\" vocab_am.sen\\\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* mark cancel seed action                                                    */\n"
@@ -17063,20 +17063,20 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT wordSet_am.sen"_Stz
+  " CONSTANT vocab_am.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
 
-  // munge of wordSet_core.sen
+  // munge of vocab_core.sen
   sDefinition =
     "\""
-    "\\\"munged wordSet_core.sen \\\" .verbose \n"
+    "\\\"munged vocab_core.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
-    "/* wordSet_core.sen -- core words                                             */\n"
+    "/* vocab_core.sen -- core words                                             */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" wordSet_core.sen\\\" .verbose\n"
+    "\\\" vocab_core.sen\\\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* add 1 to integer on stack                                                  */\n"
@@ -17227,20 +17227,20 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT wordSet_core.sen"_Stz
+  " CONSTANT vocab_core.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
 
-  // munge of wordSet_corePlus.sen
+  // munge of vocab_corePlus.sen
   sDefinition =
     "\""
-    "\\\"munged wordSet_corePlus.sen \\\" .verbose \n"
+    "\\\"munged vocab_corePlus.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
-    "/* wordSet_corePlus.sen -- words complentary to core words                    */\n"
+    "/* vocab_corePlus.sen -- words complentary to core words                    */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" wordSet_corePlus.sen\\\" .verbose\n"
+    "\\\" vocab_corePlus.sen\\\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* increment integer variable                                                 */\n"
@@ -17321,20 +17321,20 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT wordSet_corePlus.sen"_Stz
+  " CONSTANT vocab_corePlus.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
 
-  // munge of wordSet_debug.sen
+  // munge of vocab_debug.sen
   sDefinition =
     "\""
-    "\\\"munged wordSet_debug.sen \\\" .verbose \n"
+    "\\\"munged vocab_debug.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
-    "/* wordSet_debug.sen -- debugging related words                               */\n"
+    "/* vocab_debug.sen -- debugging related words                               */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" wordSet_debug.sen\\\" .verbose\n"
+    "\\\" vocab_debug.sen\\\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* unnamed trace point                                                        */\n"
@@ -17441,20 +17441,20 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT wordSet_debug.sen"_Stz
+  " CONSTANT vocab_debug.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
 
-  // munge of wordSet_dic.sen
+  // munge of vocab_dic.sen
   sDefinition =
     "\""
-    "\\\"munged wordSet_dic.sen \\\" .verbose \n"
+    "\\\"munged vocab_dic.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
-    "/* wordSet_dic.sen -- dictionary related words                                */\n"
+    "/* vocab_dic.sen -- dictionary related words                                */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" wordSet_dic.sen\\\" .verbose\n"
+    "\\\" vocab_dic.sen\\\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* folder is used as a kind of word to identify folders                       */\n"
@@ -17619,20 +17619,20 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT wordSet_dic.sen"_Stz
+  " CONSTANT vocab_dic.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
 
-  // munge of wordSet_dicStack.sen
+  // munge of vocab_dicStack.sen
   sDefinition =
     "\""
-    "\\\"munged wordSet_dicStack.sen \\\" .verbose \n"
+    "\\\"munged vocab_dicStack.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
-    "/* wordSet_dicStack.sen -- dictionary stack related words                     */\n"
+    "/* vocab_dicStack.sen -- dictionary stack related words                     */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" wordSet_dicStack.sen\\\" .verbose\n"
+    "\\\" vocab_dicStack.sen\\\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* get depth of path                                                          */\n"
@@ -17914,20 +17914,20 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT wordSet_dicStack.sen"_Stz
+  " CONSTANT vocab_dicStack.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
 
-  // munge of wordSet_object.sen
+  // munge of vocab_object.sen
   sDefinition =
     "\""
-    "\\\"munged wordSet_object.sen \\\" .verbose \n"
+    "\\\"munged vocab_object.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
-    "/* wordSet_object.sen -- object words                                         */\n"
+    "/* vocab_object.sen -- object words                                         */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" wordSet_object.sen\\\" .verbose\n"
+    "\\\" vocab_object.sen\\\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* assert that the object is of a particular class                           */\n"
@@ -17950,20 +17950,20 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT wordSet_object.sen"_Stz
+  " CONSTANT vocab_object.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
 
-  // munge of wordSet_useful.sen
+  // munge of vocab_useful.sen
   sDefinition =
     "\""
-    "\\\"munged wordSet_useful.sen \\\" .verbose \n"
+    "\\\"munged vocab_useful.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
-    "/* wordSet_useful.sen -- misc useful stuff                                    */\n"
+    "/* vocab_useful.sen -- misc useful stuff                                    */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\" wordSet_useful.sen\\\" .verbose\n"
+    "\\\" vocab_useful.sen\\\" .verbose\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* snooze briefly                                                             */\n"
@@ -18057,7 +18057,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT wordSet_useful.sen"_Stz
+  " CONSTANT vocab_useful.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -18072,16 +18072,16 @@ void Task::vAddMunged(MP_Task mpTask)
     "\n"
     "\\\"-wordSets.sen\\\" .verbose\n"
     "\n"
-    "\\\"wordSet_core.sen\\\" include\n"
-    "\\\"wordSet_corePlus.sen\\\" include\n"
+    "\\\"vocab_core.sen\\\" include\n"
+    "\\\"vocab_corePlus.sen\\\" include\n"
     "\n"
-    "\\\"wordSet_am.sen\\\" include\n"
-    "\\\"wordSet_debug.sen\\\" include\n"
-    "\\\"wordSet_dic.sen\\\" include\n"
-    "\\\"wordSet_object.sen\\\" include\n"
-    "\\\"wordSet_useful.sen\\\" include\n"
+    "\\\"vocab_am.sen\\\" include\n"
+    "\\\"vocab_debug.sen\\\" include\n"
+    "\\\"vocab_dic.sen\\\" include\n"
+    "\\\"vocab_object.sen\\\" include\n"
+    "\\\"vocab_useful.sen\\\" include\n"
     "\n"
-    "\\\"wordSet_dicStack.sen\\\" include\n"
+    "\\\"vocab_dicStack.sen\\\" include\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"

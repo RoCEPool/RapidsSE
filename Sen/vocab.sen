@@ -8,6 +8,8 @@
 "vocab_corePlus.sen" include
 "vocab_word.sen"     include
 
+"vocab_str.sen"      include
+
 "vocab_log.sen"      include
 "vocab_debug.sen"    include
 "vocab_dic.sen"      include

@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* wordSet_debug.sen -- debugging related words                               */
+/* vocab_debug.sen -- debugging related words                               */
 /*============================================================================*/
 
-" wordSet_debug.sen" .verbose
+" vocab_debug.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* unnamed trace point                                                        */

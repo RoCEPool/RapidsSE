@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* wordSet_corePlus.sen -- words complentary to core words                    */
+/* vocab_corePlus.sen -- words complentary to core words                    */
 /*============================================================================*/
 
-" wordSet_corePlus.sen" .verbose
+" vocab_corePlus.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* increment integer variable                                                 */

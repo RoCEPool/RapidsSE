@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* wordSet_object.sen -- object words                                         */
+/* vocab_object.sen -- object words                                         */
 /*============================================================================*/
 
-" wordSet_object.sen" .verbose
+" vocab_object.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* assert that the object is of a particular class                           */

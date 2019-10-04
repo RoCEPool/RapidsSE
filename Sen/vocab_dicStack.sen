@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* wordSet_dicStack.sen -- dictionary stack related words                     */
+/* vocab_dicStack.sen -- dictionary stack related words                     */
 /*============================================================================*/
 
-" wordSet_dicStack.sen" .verbose
+" vocab_dicStack.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* get depth of path                                                          */

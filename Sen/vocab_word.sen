@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* wordSet_word.sen -- additional word related words                          */
+/* vocab_word.sen -- additional word related words                          */
 /*============================================================================*/
 
-" wordSet_word.sen" .verbose
+" vocab_word.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* return word name with any suffix removed                                   */
