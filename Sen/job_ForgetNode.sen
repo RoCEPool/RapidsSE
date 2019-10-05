@@ -187,7 +187,7 @@ jobClass: forgetNode_cls
   //">> forgetNode_beg <<" .
 
   // add this job to the participants list
-  pJob_Universal job.becomeParticipant
+  job::becomeParticipant
 
   // check resources
   pJob_Universal .forgetNode.checkResources

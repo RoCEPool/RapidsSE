@@ -71,6 +71,20 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* job becomes a participant on participant node                              */
+/*----------------------------------------------------------------------------*/
+: job::becomeParticipant ( -- )
+
+  job::this locals| pJob |
+
+  // set participant node in job
+  grid::thisNode@ pJob job.participant!
+
+  // add job to participant job list
+  pJob job.addParticipant
+;
+
+/*----------------------------------------------------------------------------*/
 /* begun a job on participant node                                            */
 /*----------------------------------------------------------------------------*/
 : job::participantBegun ( -- )
