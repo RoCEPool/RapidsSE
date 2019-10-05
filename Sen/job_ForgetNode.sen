@@ -147,15 +147,12 @@ jobClass: forgetNode_cls
   // grab a ddl lock
   ddlLock::grabRead
 
-  // set task's dictionary stack from path in job
-  pJob_Universal job.pushPath
-  task::dicStack.set
-
   //----------------------------------------------------------------------------
   // check if we can forget the Node
 
-  pJob_Universal job.nodeName@
-  .checkforgetNode not if pJob_Universal <ERROR_JOB> !!logError exit then
+  <nodeNm> .checkforgetNode not if
+    pJob_Universal <ERROR_JOB> !!logError exit
+  then
 
   <<logExit <Resources_Checked>
 ;
@@ -182,15 +179,13 @@ jobClass: forgetNode_cls
 
   >>logEntry <SEED_BEG>
 
-  job::this locals| pJob_Universal |
-
-  //">> forgetNode_beg <<" .
+  _PATH_SET_
 
   // add this job to the participants list
   job::becomeParticipant
 
   // check resources
-  pJob_Universal .forgetNode.checkResources
+  job::this .forgetNode.checkResources
 
   // this job has begun
   job::participantBegun
