@@ -46,7 +46,6 @@
   "exe_exitHook" word::this word.exitHook!
 
   postpone <SEED_EXE>
-  postpone _PATH_SET_
   postpone _LOCK_EXE_
 
   word::this word.name@ ,
@@ -92,7 +91,7 @@ jobClass: forgetNode_cls
 /*----------------------------------------------------------------------------*/
 : .checkForgetNode ( "<NodeNm>" -- true | errorCode false )
 
-  .checkIsNode if true exit then
+  .checkIsNode not if false exit then
 
   true
 ;
@@ -187,7 +186,7 @@ jobClass: forgetNode_cls
   // check resources
   job::this .forgetNode.checkResources
 
-  // this job has begun
+  // mark this job has begun
   job::participantBegun
 
   <<logExit <DONE_BEG>
