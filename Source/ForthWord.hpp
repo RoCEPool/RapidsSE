@@ -7,7 +7,8 @@ namespace Forth
 {
   static const i8 C_WSP_WORD = C_SIZE_MEDIUM_OBJECT - C_1KB;
   
-  class ForthWord : public Object
+  class ForthWord : public Object,
+                    ListItem_t<ForthWord>
   {
     friend class Dic;
 
