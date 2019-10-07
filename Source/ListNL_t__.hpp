@@ -17,10 +17,7 @@ namespace Structures
     Footer m_xFooter;
     
   public:
-    void* operator new(size_t);
-    void  operator delete(void*);
-
-    ListNL_t__(eCN eClassNo);
+    ListNL_t__(void);
     
     void  vAppend(ITEM* pItem);
     ITEM* pHead(void);
@@ -44,32 +41,10 @@ using namespace Structures;
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-template <class ITEM>
-void* ListNL_t__<ITEM>::operator new(size_t)
-{
-  void* pObject = HeapMem::pAllocate(CN_TASKLIST);
-  
-  return pObject;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-template <class ITEM>
-void ListNL_t__<ITEM>::operator delete(void* aAddress)
-{
-  ListNL_t__<ITEM>* pList = reinterpret_cast<ListNL_t__<ITEM>*>(aAddress);
-  
-  HeapMem::vFree(pList);
-}
-
-/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
-ListNL_t__<ITEM>::ListNL_t__(eCN eClassNo)
+ListNL_t__<ITEM>::ListNL_t__(void)
 {
   m_nCount = 0;
   m_pHead  = nullptr;
