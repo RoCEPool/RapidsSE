@@ -9,9 +9,9 @@ namespace Structures
   class ListNL_t__ 
   {
   protected:
-    i8    m_nCount;  // number of objects
-    ITEM* m_pHead;   // head node
-    ITEM* m_pTail;   // tail node
+    i8    m_nItems;  // number of items
+    ITEM* m_pHead;   // head item
+    ITEM* m_pTail;   // tail item
 
     // must be last
     Footer m_xFooter;
@@ -46,7 +46,7 @@ using namespace Structures;
 template <class ITEM>
 ListNL_t__<ITEM>::ListNL_t__(void)
 {
-  m_nCount = 0;
+  m_nItems = 0;
   m_pHead  = nullptr;
   m_pTail  = nullptr;
 }
@@ -75,7 +75,7 @@ void ListNL_t__<ITEM>::vAppend(ITEM* pItem)
   if (! m_pHead)
     m_pHead = pItem;
   
-  m_nCount++;
+  m_nItems++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -93,7 +93,7 @@ ITEM* ListNL_t__<ITEM>::pHead(void)
 template <class ITEM>
 i8 ListNL_t__<ITEM>::nObjects(void)
 {
-  return m_nCount;
+  return m_nItems;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -103,7 +103,7 @@ template <class ITEM>
 ITEM* ListNL_t__<ITEM>::pPop(void)
 {
   if ( ! m_pHead ) {
-    ASSERT( ! m_nCount );
+    ASSERT( ! m_nItems );
     return nullptr;
   }
 
@@ -115,8 +115,8 @@ ITEM* ListNL_t__<ITEM>::pPop(void)
   else
     m_pTail = nullptr;
   
-  m_nCount--;
-  if (m_nCount) {
+  m_nItems--;
+  if (m_nItems) {
     ASSERT(m_pHead);
     ASSERT(m_pTail);
   }
@@ -150,7 +150,7 @@ void ListNL_t__<ITEM>::vPush(ITEM* pItem)
   
   m_pHead = pItem;
   
-  m_nCount++;
+  m_nItems++;
   ASSERT(m_pHead);
   ASSERT(m_pTail)
 }
@@ -176,7 +176,7 @@ void ListNL_t__<ITEM>::vRemove(ITEM* pItem)
   if (pItem == m_pTail)
     m_pTail = pPrev;
   
-  m_nCount--;
+  m_nItems--;
   
   pItem->vPrevItem(nullptr);
   pItem->vNextItem(nullptr);
