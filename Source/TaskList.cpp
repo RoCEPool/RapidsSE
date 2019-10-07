@@ -195,7 +195,7 @@ void TaskList::vPortrait(s48K& sPortrait)
   
   vGrabLock();
   
-  sPortrait.vSprintCat(" %2lld "_Stz,nObjects());
+  sPortrait.vSprintCat(" %2lld "_Stz,nItems());
   
   eCN eJobPrev = CN_NONE;
   i8  nPrev = 0;
@@ -255,7 +255,7 @@ i8 TaskList::nTasks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
 
-  i8 nTasks = ListNL_t<Task>::nObjects();
+  i8 nTasks = ListNL_t<Task>::nItems();
 
   return nTasks;
 }
@@ -269,7 +269,7 @@ void TaskList::vContentDump(void)
   
   ASSERT(m_okLock.bIsLocked());
 
-  vTrace("ITEMS %lld\n"_Stz,ListNL_t<Task>::nObjects());
+  vTrace("ITEMS %lld\n"_Stz,ListNL_t<Task>::nItems());
   
   for (Task* pTask = ListNL_t<Task>::pHead();
        pTask;

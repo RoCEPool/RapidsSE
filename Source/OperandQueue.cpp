@@ -98,7 +98,7 @@ i8 OperandQueue::nQueuedOperands(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDQUEUE,_FOOTER_);
 
-  i8 nOperands = ListNL_t<Operand>::nObjects();
+  i8 nOperands = ListNL_t<Operand>::nItems();
 
   return nOperands;
 }

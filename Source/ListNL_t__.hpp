@@ -21,7 +21,7 @@ namespace Structures
     
     void  vAppend(ITEM* pItem);
     ITEM* pHead(void);
-    i8    nObjects(void);
+    i8    nItems(void);
     ITEM* pPop(void);
     void  vPush(ITEM* pItem);
     void  vRemove(ITEM* pItem);
@@ -91,7 +91,7 @@ ITEM* ListNL_t__<ITEM>::pHead(void)
 /* get number of objects in list                                              */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
-i8 ListNL_t__<ITEM>::nObjects(void)
+i8 ListNL_t__<ITEM>::nItems(void)
 {
   return m_nItems;
 }

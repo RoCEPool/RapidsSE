@@ -143,7 +143,7 @@ i8 ThreadQueue::nQueuedThreads(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREADQUEUE,_FOOTER_);
 
-  i8 nThreads = ListNL_t<Thread>::nObjects();
+  i8 nThreads = ListNL_t<Thread>::nItems();
 
   return nThreads;
 }
@@ -157,7 +157,7 @@ void ThreadQueue::vContentDump(void)
   
   ASSERT(m_okLock.bIsLocked());
 
-  vTrace("ITEMS %lld\n"_Stz,ListNL_t<Thread>::nObjects());
+  vTrace("ITEMS %lld\n"_Stz,ListNL_t<Thread>::nItems());
   
 //  for (Thread* pThread = ListNL_t<Thread>::pHead();
 //       pThread;
@@ -177,16 +177,7 @@ void ThreadQueue::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* ThreadQueue::aFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREADQUEUE);
-  
-  return &m_xFooter;
-}
+__aFooterFunction(ThreadQueue);
 
 /*============================================================================*/
 /* end                                                                        */
