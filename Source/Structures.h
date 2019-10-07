@@ -17,6 +17,7 @@ namespace Structures
 
 #include "ArrayNL_t.hpp"
 
+#include "FolderItem_t.hpp"
 #include "FreeItem.hpp"
 
 #include "HashInsert.hpp"
@@ -33,7 +34,6 @@ namespace Structures
 #include "ListNL_t.hpp"
 
 #include "Name.hpp"
-#include "NamedItem_t.hpp"
 
 #include "QueueBuffer.hpp"
 #include "Queue.hpp"
