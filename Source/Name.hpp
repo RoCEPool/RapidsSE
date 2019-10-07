@@ -5,7 +5,8 @@
 
 namespace Structures
 {
-  class Name : public Object
+  class Name : public Object,
+               public ListItem_t<Name>
   {
   private:
     Lock    m_okLock;
