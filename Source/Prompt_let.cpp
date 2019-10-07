@@ -44,7 +44,7 @@ bool Prompt::bPrompt_let(SePrompt* pPrompt)
   
     for (NmStr* pNmStr = pNmStrList->pHead();
          pNmStr;
-         pNmStr = pNmStr->pNextNode()) {
+         pNmStr = pNmStr->pNextItem()) {
       
       vTrace("  %s = %s\n"_Stz,
              pNmStr->m_sName.aStz(),

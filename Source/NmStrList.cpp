@@ -114,7 +114,7 @@ void NmStrList::vDeleteAll(void)
 /*----------------------------------------------------------------------------*/
 NmStr* NmStrList::pFind(Stz* szName)
 {
-  for (NmStr* pNmStr = pHead(); pNmStr; pNmStr = pNmStr->pNextNode()) {
+  for (NmStr* pNmStr = pHead(); pNmStr; pNmStr = pNmStr->pNextItem()) {
     
 //    vTrace("  %s = %s\n"_Stz,
 //           pNmStr->m_sName.aStz(),

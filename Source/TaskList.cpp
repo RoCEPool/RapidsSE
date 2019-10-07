@@ -121,7 +121,7 @@ bool TaskList::bHasJobClass(eCN eJobClass, bool bWasReceived)
   
   for (Task* pTask = ListNL_t<Task>::pHead();
        pTask;
-       pTask = pTask->pNextNode()) {
+       pTask = pTask->pNextItem()) {
     
     if (! (pTask->pJob() && pTask->pJob()->eClass() == eJobClass))
       continue;
@@ -200,7 +200,7 @@ void TaskList::vPortrait(s48K& sPortrait)
   eCN eJobPrev = CN_NONE;
   i8  nPrev = 0;
   
-  for (Task* pTask = pHead(); pTask; pTask = pTask->pNextNode()) {
+  for (Task* pTask = pHead(); pTask; pTask = pTask->pNextItem()) {
     
     if (! pTask->pJob())
       continue;
@@ -273,7 +273,7 @@ void TaskList::vContentDump(void)
   
   for (Task* pTask = ListNL_t<Task>::pHead();
        pTask;
-       pTask = pTask->pNextNode()) {
+       pTask = pTask->pNextItem()) {
     
     vTrace("Task %p %s %s order %lld\n"_Stz,
            pTask,

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ListItem_t.hpp -- Template for List Node                                   */
+/* ListItem_t.hpp -- Template for List Item                                   */
 /*============================================================================*/
 #pragma once
 
@@ -8,18 +8,18 @@ namespace Structures
   template <class ITEM>
   class ListItem_t
   {
-    ITEM* m_pPrevNode;   // prev node
-    ITEM* m_pNextNode;   // next node
+    ITEM* m_pPrevItem;   // prev item
+    ITEM* m_pNextItem;   // next item
   
   public:
     void* operator new(size_t);
     
     ListItem_t<ITEM>(void);
     
-    ITEM* pNextNode(void);
-    void  vNextNode(ITEM* pNext);
-    ITEM* pPrevNode(void);
-    void  vPrevNode(ITEM* pPrev);
+    ITEM* pNextItem(void);
+    void  vNextItem(ITEM* pNext);
+    ITEM* pPrevItem(void);
+    void  vPrevItem(ITEM* pPrev);
   };
 }
 
@@ -44,46 +44,46 @@ void* ListItem_t<OBJECT>::operator new(size_t)
 template <class OBJECT>
 ListItem_t<OBJECT>::ListItem_t(void)
 {
-  m_pNextNode = nullptr;
-  m_pPrevNode = nullptr;
+  m_pNextItem = nullptr;
+  m_pPrevItem = nullptr;
   
   _checkInitialisedSize_(sizeof(ListItem_t<OBJECT>));
 }
 
 /*---------------------------------------------------------------------------*/
-/* get next node                                                             */
+/* get next item                                                             */
 /*---------------------------------------------------------------------------*/
 template <class OBJECT>
-OBJECT* ListItem_t<OBJECT>::pNextNode(void)
+OBJECT* ListItem_t<OBJECT>::pNextItem(void)
 {
-  return m_pNextNode;
+  return m_pNextItem;
 }
 
 /*---------------------------------------------------------------------------*/
-/* set next node                                                             */
+/* set next item                                                             */
 /*---------------------------------------------------------------------------*/
 template <class OBJECT>
-void ListItem_t<OBJECT>::vNextNode(OBJECT* pNextNode)
+void ListItem_t<OBJECT>::vNextItem(OBJECT* pNextItem)
 {
-  m_pNextNode = pNextNode;
+  m_pNextItem = pNextItem;
 }
 
 /*---------------------------------------------------------------------------*/
-/* get prev node                                                             */
+/* get prev item                                                             */
 /*---------------------------------------------------------------------------*/
 template <class OBJECT>
-OBJECT* ListItem_t<OBJECT>::pPrevNode(void)
+OBJECT* ListItem_t<OBJECT>::pPrevItem(void)
 {
-  return m_pPrevNode;
+  return m_pPrevItem;
 }
 
 /*---------------------------------------------------------------------------*/
-/* set prev node                                                             */
+/* set prev item                                                             */
 /*---------------------------------------------------------------------------*/
 template <class OBJECT>
-void ListItem_t<OBJECT>::vPrevNode(OBJECT* pPrevNode)
+void ListItem_t<OBJECT>::vPrevItem(OBJECT* pPrevItem)
 {
-  m_pPrevNode = pPrevNode;
+  m_pPrevItem = pPrevItem;
 }
 
 /*============================================================================*/

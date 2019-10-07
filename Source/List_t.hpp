@@ -75,16 +75,16 @@ List_t<ITEM>::List_t(void)
 template <class ITEM>
 void List_t<ITEM>::vAppend(ITEM* pItem)
 {
-  ASSERT(NULL == pItem->pPrevNode());
-  ASSERT(NULL == pItem->pNextNode());
+  ASSERT(NULL == pItem->pPrevItem());
+  ASSERT(NULL == pItem->pNextItem());
   
   m_okLock.vGrabWrite();
   
   if (m_pTail)
-    m_pTail->vNextNode(pItem);
+    m_pTail->vNextItem(pItem);
   
-  pItem->vPrevNode(m_pTail);
-  pItem->vNextNode(nullptr);
+  pItem->vPrevItem(m_pTail);
+  pItem->vNextItem(nullptr);
   
   m_pTail = pItem;
   
@@ -119,11 +119,11 @@ ITEM* List_t<ITEM>::pPop(void)
     return nullptr;
   }
 
-  ITEM* pNode = m_pHead;
+  ITEM* pItem = m_pHead;
 
-  m_pHead = m_pHead->pNextNode();
+  m_pHead = m_pHead->pNextItem();
   if (m_pHead)
-    m_pHead->vPrevNode(nullptr);
+    m_pHead->vPrevItem(nullptr);
   else
     m_pTail = nullptr;
   
@@ -138,10 +138,10 @@ ITEM* List_t<ITEM>::pPop(void)
   }
   m_okLock.vDropWrite();
   
-  pNode->vPrevNode(nullptr);
-  pNode->vNextNode(nullptr);
+  pItem->vPrevItem(nullptr);
+  pItem->vNextItem(nullptr);
   
-  return pNode;
+  return pItem;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -150,13 +150,13 @@ ITEM* List_t<ITEM>::pPop(void)
 template <class ITEM>
 void List_t<ITEM>::vPush(ITEM* pItem)
 {
-  ASSERT(NULL == pItem->pPrevNode());
-  ASSERT(NULL == pItem->pNextNode());
+  ASSERT(NULL == pItem->pPrevItem());
+  ASSERT(NULL == pItem->pNextItem());
   
   m_okLock.vGrabWrite();
   
-  pItem->vPrevNode(nullptr);
-  pItem->vNextNode(m_pHead);
+  pItem->vPrevItem(nullptr);
+  pItem->vNextItem(m_pHead);
   
   if (m_pHead)
     m_pHead->vPrev(pItem);
@@ -176,31 +176,31 @@ void List_t<ITEM>::vPush(ITEM* pItem)
 /* remove item from list                                                      */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
-void List_t<ITEM>::vRemove(ITEM* pNode)
+void List_t<ITEM>::vRemove(ITEM* pItem)
 {
   m_okLock.vGrabWrite();
   
-  ITEM* pPrev = pNode->pPrevNode();
-  ITEM* pNext = pNode->pNextNode();
+  ITEM* pPrev = pItem->pPrevItem();
+  ITEM* pNext = pItem->pNextItem();
 
   if (pPrev)
-    pPrev->vNextNode(pNext);
+    pPrev->vNextItem(pNext);
 
   if (pNext)
-    pNext->vPrevNode(pPrev);
+    pNext->vPrevItem(pPrev);
   
-  if (pNode == m_pHead)
+  if (pItem == m_pHead)
     m_pHead = pNext;
   
-  if (pNode == m_pTail)
+  if (pItem == m_pTail)
     m_pTail = pPrev;
   
   m_nItems--;
   
   m_okLock.vDropWrite();
   
-  pNode->vPrevNode(nullptr);
-  pNode->vNextNode(nullptr);
+  pItem->vPrevItem(nullptr);
+  pItem->vNextItem(nullptr);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -96,8 +96,8 @@ void Node::vDump(eCN eClass, Object* pObject, Stz* aTab)
 
   vTrace("no %lld prev %p next %p\n"_Stz,
          pNode->m_iPortNo,
-         pNode->pPrevNode(),
-         pNode->pNextNode());
+         pNode->pPrevItem(),
+         pNode->pNextItem());
 }
 
 /*----------------------------------------------------------------------------*/

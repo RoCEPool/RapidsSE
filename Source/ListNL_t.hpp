@@ -22,12 +22,12 @@ namespace Structures
 
     ListNL_t(eCN eClassNo);
     
-    void  vAppend(ITEM* pNode);
+    void  vAppend(ITEM* pItem);
     ITEM* pHead(void);
     i8    nObjects(void);
     ITEM* pPop(void);
-    void  vPush(ITEM* pNode);
-    void  vRemove(ITEM* pNode);
+    void  vPush(ITEM* pItem);
+    void  vRemove(ITEM* pItem);
     ITEM* pTail(void);
     
     Footer* aFooter(void);
@@ -91,23 +91,23 @@ ListNL_t<ITEM>::ListNL_t(eCN eClassNo)
 /* append object to end of list                                               */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
-void ListNL_t<ITEM>::vAppend(ITEM* pNode)
+void ListNL_t<ITEM>::vAppend(ITEM* pItem)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  ASSERT(NULL == pNode->pPrevNode());
-  ASSERT(NULL == pNode->pNextNode());
+  ASSERT(NULL == pItem->pPrevItem());
+  ASSERT(NULL == pItem->pNextItem());
   
   if (m_pTail)
-    m_pTail->vNextNode(pNode);
+    m_pTail->vNextItem(pItem);
   
-  pNode->vPrevNode(m_pTail);
-  pNode->vNextNode(nullptr);
+  pItem->vPrevItem(m_pTail);
+  pItem->vNextItem(nullptr);
   
-  m_pTail = pNode;
+  m_pTail = pItem;
   
   if (! m_pHead)
-    m_pHead = pNode;
+    m_pHead = pItem;
   
   m_nCount++;
 }
@@ -147,11 +147,11 @@ ITEM* ListNL_t<ITEM>::pPop(void)
     return nullptr;
   }
 
-  ITEM* pNode = m_pHead;
+  ITEM* pItem = m_pHead;
 
-  m_pHead = m_pHead->pNextNode();
+  m_pHead = m_pHead->pNextItem();
   if (m_pHead)
-    m_pHead->vPrevNode(nullptr);
+    m_pHead->vPrevItem(nullptr);
   else
     m_pTail = nullptr;
   
@@ -165,32 +165,32 @@ ITEM* ListNL_t<ITEM>::pPop(void)
     ASSERT( ! m_pTail )
   }
   
-  pNode->vPrevNode(nullptr);
-  pNode->vNextNode(nullptr);
+  pItem->vPrevItem(nullptr);
+  pItem->vNextItem(nullptr);
   
-  return pNode;
+  return pItem;
 }
 
 /*----------------------------------------------------------------------------*/
 /* push object on top of list                                                 */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
-void ListNL_t<ITEM>::vPush(ITEM* pNode)
+void ListNL_t<ITEM>::vPush(ITEM* pItem)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  ASSERT(NULL == pNode->pPrevNode());
-  ASSERT(NULL == pNode->pNextNode());
+  ASSERT(NULL == pItem->pPrevItem());
+  ASSERT(NULL == pItem->pNextItem());
   
-  pNode->vPrevNode(nullptr);
-  pNode->vNextNode(m_pHead);
+  pItem->vPrevItem(nullptr);
+  pItem->vNextItem(m_pHead);
   
   if (m_pHead)
-    m_pHead->vPrev(pNode);
+    m_pHead->vPrev(pItem);
   else
-    m_pTail = pNode;
+    m_pTail = pItem;
   
-  m_pHead = pNode;
+  m_pHead = pItem;
   
   m_nCount++;
   ASSERT(m_pHead);
@@ -201,27 +201,27 @@ void ListNL_t<ITEM>::vPush(ITEM* pNode)
 /* remove object from head of list                                            */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
-void ListNL_t<ITEM>::vRemove(ITEM* pNode)
+void ListNL_t<ITEM>::vRemove(ITEM* pItem)
 {
-  ITEM* pPrev = pNode->pPrevNode();
-  ITEM* pNext = pNode->pNextNode();
+  ITEM* pPrev = pItem->pPrevItem();
+  ITEM* pNext = pItem->pNextItem();
 
   if (pPrev)
-    pPrev->vNextNode(pNext);
+    pPrev->vNextItem(pNext);
 
   if (pNext)
-    pNext->vPrevNode(pPrev);
+    pNext->vPrevItem(pPrev);
   
-  if (pNode == m_pHead)
+  if (pItem == m_pHead)
     m_pHead = pNext;
   
-  if (pNode == m_pTail)
+  if (pItem == m_pTail)
     m_pTail = pPrev;
   
   m_nCount--;
   
-  pNode->vPrevNode(nullptr);
-  pNode->vNextNode(nullptr);
+  pItem->vPrevItem(nullptr);
+  pItem->vNextItem(nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
