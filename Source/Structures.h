@@ -31,9 +31,9 @@ namespace Structures
 #include "Link_t.hpp"
 #include "ListItem_t.hpp"
 #include "List_t.hpp"
+#include "ListNL_t__.hpp"
 #include "ListNL_t.hpp"
 
-#include "Name.hpp"
 
 #include "QueueBuffer.hpp"
 #include "Queue.hpp"
@@ -51,6 +51,8 @@ namespace Structures
 #include "Folder_t.hpp"
 #include "MiniHeap_t.hpp"
 #include "TrayNL_t.hpp"
+
+#include "Name.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

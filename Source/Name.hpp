@@ -16,7 +16,7 @@ namespace Structures
   
     Name*   m_pParent;  // parent of this named object
     Name*   m_pChild;   // child of this named object
-
+  
     // must be last
     Footer m_xFooter;
     
