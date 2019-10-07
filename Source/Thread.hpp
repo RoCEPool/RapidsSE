@@ -6,7 +6,7 @@
 namespace Threads
 {
   class Thread : public Focal,
-                 public ListNode_t<Thread>
+                 public ListItem_t<Thread>
   {
   public:  
     eHS      m_eThreadState;  // thread state

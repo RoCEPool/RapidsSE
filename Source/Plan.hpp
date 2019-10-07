@@ -6,7 +6,7 @@
 namespace Plans
 {
   class Plan : public Object,
-               public ListNode_t<Plan>
+               public ListItem_t<Plan>
   {
   private:
     i8     m_iPlanId;  // plan identifier       //# its an id because its unique

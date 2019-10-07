@@ -6,7 +6,7 @@
 namespace Streams
 {
   class Operand : public AlignedObject,
-                  public ListNode_t<Operand>
+                  public ListItem_t<Operand>
   {
   private:
     Word m__Padding[5];   // padding to cache line

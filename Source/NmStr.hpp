@@ -6,7 +6,7 @@
 namespace Transform
 {
   class NmStr : public Object,
-                public ListNode_t<NmStr>
+                public ListItem_t<NmStr>
   {
   public:
   

@@ -7,7 +7,7 @@ namespace Chunks
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class IngestChunk : public RecordExtractor,
-                      public ListNode_t<IngestChunk>
+                      public ListItem_t<IngestChunk>
   {
   public:
     i8 m_iChunkNo;

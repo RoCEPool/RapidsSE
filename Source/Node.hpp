@@ -6,7 +6,7 @@
 namespace Grids
 {
   class Node : public Object,
-               public ListNode_t<Node>
+               public ListItem_t<Node>
   {
   private:
     i8    m_iNodeNo;    // node number

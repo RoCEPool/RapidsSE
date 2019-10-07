@@ -16,7 +16,7 @@ namespace Tasks
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   class Task : public Focal,
-               public ListNode_t<Task>
+               public ListItem_t<Task>
   {
   friend class Steps::Step;
   friend class ForthWord;
