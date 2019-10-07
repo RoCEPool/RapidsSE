@@ -8,6 +8,8 @@ namespace Structures
   class Name : public Object
   {
   private:
+    Lock    m_okLock;
+  
     s32     m_sName;    // name of the object instance
     Object* m_pObject;  // pointer to the named object
   
