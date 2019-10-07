@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* NamedItem_t.hpp -- Named Ent template                                     */
+/* FolderItem_t.hpp -- Folder Item template                                   */
 /*============================================================================*/
 #pragma once
 
 namespace Structures
 {
   template <class ITEM>
-  class NamedItem_t
+  class FolderItem_t
   {
     s32   m_sName;   // name of item
     ITEM* m_pItem;   // name of item
@@ -17,7 +17,7 @@ namespace Structures
   public:
     void* operator new(size_t);
     
-    NamedItem_t<ITEM>(void);
+    FolderItem_t<ITEM>(void);
   
     Footer* aFooter(void);
   };
@@ -31,9 +31,9 @@ using namespace Structures;
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 template <class OBJECT>
-void* NamedItem_t<OBJECT>::operator new(size_t)
+void* FolderItem_t<OBJECT>::operator new(size_t)
 {
-  vFatal("fatal: NamedItem_t class cannot be new'd"_Stz);
+  vFatal("fatal: FolderItem_t class cannot be new'd"_Stz);
   
   NEVER_REACH;
 }
@@ -42,9 +42,9 @@ void* NamedItem_t<OBJECT>::operator new(size_t)
 /* constructor                                                               */
 /*---------------------------------------------------------------------------*/
 template <class OBJECT>
-NamedItem_t<OBJECT>::NamedItem_t(void)
+FolderItem_t<OBJECT>::FolderItem_t(void)
 {
-  _checkInitialisedSize_(sizeof(NamedItem_t<OBJECT>));
+  _checkInitialisedSize_(sizeof(FolderItem_t<OBJECT>));
 }
 
 /*---------------------------------------------------------------------------*/
@@ -59,7 +59,7 @@ NamedItem_t<OBJECT>::NamedItem_t(void)
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
 template <class OBJECT>
-Footer* NamedItem_t<OBJECT>::aFooter(void)
+Footer* FolderItem_t<OBJECT>::aFooter(void)
 {
   return &m_xFooter;
 }
