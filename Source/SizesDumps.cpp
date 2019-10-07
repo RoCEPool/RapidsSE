@@ -272,6 +272,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vUndefined,       // CN_MERGEOP
   /*114 */ &Dump::vUndefined,       // CN_MUTEX
 
+  /*    */ &Dump::vUndefined,       // CN_NAME
   /*    */ &Dump::vUndefined,       // CN_NEXTID
   /*    */ &Dump::vUndefined,       // CN_NMSTR
   /*    */ &Dump::vUndefined,       // CN_NMSTRLIST
@@ -690,6 +691,7 @@ i8 giClassSize[]
   /*    */ sizeof(MergeOp),            // CN_MERGEOP
   /*114 */ sizeof(Mutex),              // CN_MUTEX
 
+  /*    */ 0,//sizeof(Name),             // CN_NAME
   /*    */ sizeof(NextId),             // CN_NEXTID
   /*    */ sizeof(NmStr),              // CN_NMSTR
   /*    */ sizeof(NmStrList),          // CN_NMSTRLIST
@@ -1108,6 +1110,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_SMALL,   // CN_MERGEOP
   /*114 */ HT_TRANSIENT_SMALL,   // CN_MUTEX
 
+  /*    */ HT_TRANSIENT_SMALL,   // CN_NAME
   /* 73 */ HT_INVALID,           // CN_NEXTID
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_NMSTR
   /*    */ HT_TRANSIENT_SMALL,   // CN_NMLIST

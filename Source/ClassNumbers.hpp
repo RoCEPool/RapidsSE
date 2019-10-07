@@ -267,6 +267,7 @@ enum eCN : u2 // Class Number
   /*                           */ CN_MERGEOP,
   /* 155 0x9B      160B Heap:S */ CN_MUTEX,
   
+  /*                           */ CN_NAME,
   /*                           */ CN_NEXTID,
   /*                           */ CN_NMSTR,
   /*                           */ CN_NMSTRLIST,
@@ -478,7 +479,6 @@ static Stz* aCN[]
   /*          */ "COMPLETER"_Stz,           // CN_COMPLETER
   /*          */ "CONSUMEOP"_Stz,           // CN_CONSUMEOP
   /*          */ "COUNTOP"_Stz,             // CN_COUNTOP
-  
   /*          */ "CRWBUFFER"_Stz,           // CN_CRWBUFFER
   /*          */ "CSVBUFFER"_Stz,           // CN_CSVBUFFER
 
@@ -684,6 +684,7 @@ static Stz* aCN[]
   /*          */ "MERGEOP"_Stz,             // CN_MERGEOP
   /* 155 0x9B */ "MUTEX"_Stz,               // CN_MUTEX
   
+  /*          */ "NAME"_Stz,                // CN_NAME
   /*          */ "NEXTID"_Stz,              // CN_NEXTID
   /*          */ "NMSTR"_Stz,               // CN_NMSTR
   /*          */ "NMSTRLIST"_Stz,           // CN_NMSTRLIST
