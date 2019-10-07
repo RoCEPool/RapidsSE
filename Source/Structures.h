@@ -28,7 +28,7 @@ namespace Structures
 
 #include "LatticeNL_t.hpp"
 #include "Link_t.hpp"
-#include "ListNode_t.hpp"
+#include "ListItem_t.hpp"
 #include "List_t.hpp"
 #include "ListNL_t.hpp"
 
