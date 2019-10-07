@@ -22,7 +22,6 @@ namespace Forth
     ForthWord*    m_pKind;        // kind of word
     bool     m_bImmediate;   // immediate execution during compile?
     i8       m_iParams;      // number of parameters
-    ForthWord*    m_pPrevWord;    // previous word in dictionary
     bool     m_bPrompt;      // can be executed by prompt?
     i8       m_iLocalNo;     // local number (for a local variable)
     StepFp   m_fpEntryStep;  // entry step function for this word

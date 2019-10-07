@@ -77,7 +77,6 @@ ForthWord::ForthWord(Stz* sName)
   m_iEpoch        = AM::iEpoch();
   m_bImmediate    = false;
   m_iParams       = 0;
-  m_pPrevWord     = nullptr;
   m_bPrompt       = false;
   m_iLocalNo      = 0;
   
@@ -670,7 +669,7 @@ ForthWord* ForthWord::pPrevWord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
-  return pPoolCheck<ForthWord*>(m_pPrevWord);
+  return pPoolCheck<ForthWord*>(pPrevItem());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -680,7 +679,7 @@ void ForthWord::vPrevWord(ForthWord* pPrevWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  m_pPrevWord = pPrevWord;
+  vPrevItem(pPrevWord);
 }
 
 /*----------------------------------------------------------------------------*/

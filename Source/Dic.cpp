@@ -90,7 +90,7 @@ void Dic::vAddWord(ForthWord* pWord)
   
   ASSERT(!m_bFrozen);
   
-  pWord->m_pPrevWord = m_pLastWord;
+  pWord->vPrevWord(m_pLastWord);
   
   m_pLastWord = pWord;
   

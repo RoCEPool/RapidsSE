@@ -8,6 +8,7 @@ namespace Structures
   template <class ITEM>
   class ListItem_t
   {
+  private:
     ITEM* m_pPrevItem;   // prev item
     ITEM* m_pNextItem;   // next item
   
