@@ -397,7 +397,7 @@ i8 Job_Ingest::nIngestChunks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   
-  i8 nChunks = iCount();
+  i8 nChunks = nItems();
   
   return nChunks;
 }
@@ -409,7 +409,7 @@ IngestChunk* Job_Ingest::pPopIngestChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   
-  IngestChunk* pIngestChunk = npPop();
+  IngestChunk* pIngestChunk = pPop();
   
   return pIngestChunk;
 }

@@ -9,10 +9,10 @@ namespace Structures
   class List_t
   {
   protected:
-    Lock    m_okLock;   // lock
-    i8      m_nCount;  // number of objects
-    ITEM* m_pHead;   // head node
-    ITEM* m_pTail;   // tail node
+    Lock  m_okLock;  // lock
+    i8    m_nItems;  // number of items
+    ITEM* m_pHead;   // head item
+    ITEM* m_pTail;   // tail item
 
     // must be last
     Footer m_xFooter;
@@ -22,14 +22,14 @@ namespace Structures
     
     List_t(void);
     
-    void    vAppend(ITEM* mpNode);
-    i8      iCount(void);
-    ITEM* npPop(void);
-    void    vPush(ITEM* mpNode);
-    void    vRemove(ITEM* mpNode);
+    void  vAppend(ITEM* pItem);
+    i8    nItems(void);
+    ITEM* pPop(void);
+    void  vPush(ITEM* pItem);
+    void  vRemove(ITEM* pItem);
     
-    void    vReadLock(void);
-    void    vReadUnlock(void);
+    void  vReadLock(void);
+    void  vReadUnlock(void);
 
     ITEM* pHead(void);
     ITEM* pTail(void);
@@ -62,7 +62,7 @@ template <class ITEM>
 List_t<ITEM>::List_t(void)
 : m_okLock(LK_LIST,nullptr)
 {
-  m_nCount = 0;
+  m_nItems = 0;
   m_pHead  = nullptr;
   m_pTail  = nullptr;
   
@@ -70,51 +70,51 @@ List_t<ITEM>::List_t(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append object to end of list                                               */
+/* append item to end of list                                                 */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
-void List_t<ITEM>::vAppend(ITEM* mpNode)
+void List_t<ITEM>::vAppend(ITEM* pItem)
 {
-  ASSERT(NULL == mpNode->pPrevNode());
-  ASSERT(NULL == mpNode->pNextNode());
+  ASSERT(NULL == pItem->pPrevNode());
+  ASSERT(NULL == pItem->pNextNode());
   
   m_okLock.vGrabWrite();
   
   if (m_pTail)
-    m_pTail->vNextNode(mpNode);
+    m_pTail->vNextNode(pItem);
   
-  mpNode->vPrevNode(m_pTail);
-  mpNode->vNextNode(nullptr);
+  pItem->vPrevNode(m_pTail);
+  pItem->vNextNode(nullptr);
   
-  m_pTail = mpNode;
+  m_pTail = pItem;
   
   if (! m_pHead)
-    m_pHead = mpNode;
+    m_pHead = pItem;
   
-  m_nCount++;
+  m_nItems++;
   
   m_okLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump each object in list                                                   */
+/* get number of items in list                                                */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
-i8 List_t<ITEM>::iCount(void)
+i8 List_t<ITEM>::nItems(void)
 {
-  return m_nCount;
+  return m_nItems;
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop object from head of list                                               */
+/* pop/remove item from head of list                                          */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
-ITEM* List_t<ITEM>::npPop(void)
+ITEM* List_t<ITEM>::pPop(void)
 {
   m_okLock.vGrabWrite();
   
   if ( ! m_pHead ) {
-    ASSERT( ! m_nCount );
+    ASSERT( ! m_nItems );
     m_okLock.vDropWrite();
     return nullptr;
   }
@@ -127,8 +127,8 @@ ITEM* List_t<ITEM>::npPop(void)
   else
     m_pTail = nullptr;
   
-  m_nCount--;
-  if (m_nCount) {
+  m_nItems--;
+  if (m_nItems) {
     ASSERT(m_pHead);
     ASSERT(m_pTail);
   }
@@ -145,27 +145,27 @@ ITEM* List_t<ITEM>::npPop(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push object on top of list                                                 */
+/* push item onto top of list                                                 */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
-void List_t<ITEM>::vPush(ITEM* mpNode)
+void List_t<ITEM>::vPush(ITEM* pItem)
 {
-  ASSERT(NULL == mpNode->pPrevNode());
-  ASSERT(NULL == mpNode->pNextNode());
+  ASSERT(NULL == pItem->pPrevNode());
+  ASSERT(NULL == pItem->pNextNode());
   
   m_okLock.vGrabWrite();
   
-  mpNode->vPrevNode(nullptr);
-  mpNode->vNextNode(m_pHead);
+  pItem->vPrevNode(nullptr);
+  pItem->vNextNode(m_pHead);
   
   if (m_pHead)
-    m_pHead->vPrev(mpNode);
+    m_pHead->vPrev(pItem);
   else
-    m_pTail = mpNode;
+    m_pTail = pItem;
   
-  m_pHead = mpNode;
+  m_pHead = pItem;
   
-  m_nCount++;
+  m_nItems++;
   ASSERT(m_pHead);
   ASSERT(m_pTail)
 
@@ -173,7 +173,7 @@ void List_t<ITEM>::vPush(ITEM* mpNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove object from head of list                                            */
+/* remove item from list                                                      */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 void List_t<ITEM>::vRemove(ITEM* pNode)
@@ -195,7 +195,7 @@ void List_t<ITEM>::vRemove(ITEM* pNode)
   if (pNode == m_pTail)
     m_pTail = pPrev;
   
-  m_nCount--;
+  m_nItems--;
   
   m_okLock.vDropWrite();
   
@@ -222,7 +222,7 @@ void List_t<ITEM>::vReadUnlock(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get head object in list                                                    */
+/* get head item of list                                                      */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 ITEM* List_t<ITEM>::pHead(void)
@@ -231,7 +231,7 @@ ITEM* List_t<ITEM>::pHead(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get last object in list                                                    */
+/* get tail item of list                                                      */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 ITEM* List_t<ITEM>::pTail(void)
