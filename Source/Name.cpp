@@ -44,6 +44,8 @@ Name::Name(Stz* szName)
   m_pCategory = nullptr;
   m_pParent   = nullptr;
   m_pChild    = nullptr;
+  
+  // m_ixRefCount
 
   _checkInitialised_(CN_NAME);
   
@@ -220,6 +222,42 @@ void Name::vParent(Name* pParent)
   _precondition_(_MAGIC_,CN_NAME,_FOOTER_);
   
   m_pParent = pParent;
+}
+
+/*----------------------------------------------------------------------------*/
+/* decrement references to this dictionary                                    */
+/*----------------------------------------------------------------------------*/
+void Name::vRefDec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NAME,_FOOTER_);
+  
+  u8 iRef = --m_ixRefCount;
+  
+  //vTrace("DIC: %s --ref : %lld\n"_Stz,m_sName.s(),iRef);
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment references to this dictionary                                    */
+/*----------------------------------------------------------------------------*/
+void Name::vRefInc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NAME,_FOOTER_);
+  
+  u8 iRef = ++m_ixRefCount;
+  
+  //vTrace("DIC: %s ++ref : %lld\n"_Stz,m_sName.s(),iRef);
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for outstanding references to this dictionary                         */
+/*----------------------------------------------------------------------------*/
+bool Name::bRefOut(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NAME,_FOOTER_);
+  
+  u8 iRef = *m_ixRefCount;
+  
+  return iRef ? true : false;
 }
 
 

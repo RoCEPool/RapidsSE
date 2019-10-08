@@ -20,6 +20,8 @@ namespace Structures
     Name*   m_pParent;   // parent of this name
     Name*   m_pChild;    // child of this name
   
+    Atomic   m_ixRefCount; // reference count
+  
     // must be last
     Footer m_xFooter;
     
@@ -54,6 +56,10 @@ namespace Structures
     Name* pParent(void);
     void vParent(Name* pParent);
   
+    void  vRefDec(void);
+    void  vRefInc(void);
+    bool  bRefOut(void);
+
     Footer* aFooter(void);
   };
 }
