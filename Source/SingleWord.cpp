@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Word.cpp -- Word                                                           */
+/* SingleWord.cpp -- SingleWord                                               */
 /*============================================================================*/
 
 #include "Alignment.h"
@@ -11,14 +11,14 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Word::Word(void)
+SingleWord::SingleWord(void)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Word::Word(i8 iArg)
+SingleWord::SingleWord(i8 iArg)
 {
   m_iI8 = iArg;
 }
@@ -26,7 +26,7 @@ Word::Word(i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Word::Word(w8 wArg)
+SingleWord::SingleWord(w8 wArg)
 {
   m_wW8 = wArg;
 }
@@ -34,16 +34,16 @@ Word::Word(w8 wArg)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Word::~Word(void) noexcept(false)
+SingleWord::~SingleWord(void) noexcept(false)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /* is address on a word boundary?                                             */
 /*----------------------------------------------------------------------------*/
-bool Word::bOnWordBoundary(void* aAddress)
+bool SingleWord::bOnWordBoundary(void* aAddress)
 {
-  bool bOn = AlignedObject::bOnBoundary(aAddress,sizeof(Word));
+  bool bOn = AlignedObject::bOnBoundary(aAddress,sizeof(SingleWord));
   
   return bOn;
 }
@@ -55,7 +55,7 @@ bool Word::bOnWordBoundary(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* assign iArg                                                                */
 /*----------------------------------------------------------------------------*/
-void Word::operator =(i8 iArg)
+void SingleWord::operator =(i8 iArg)
 {
   m_iI8 = iArg;
 }
@@ -63,7 +63,7 @@ void Word::operator =(i8 iArg)
 /*----------------------------------------------------------------------------*/
 /* assign wArg                                                                */
 /*----------------------------------------------------------------------------*/
-void Word::operator =(w8 wArg)
+void SingleWord::operator =(w8 wArg)
 {
   m_wW8 = wArg;
 }

@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Word.hpp -- Word                                                           */
+/* SingleWord.hpp -- SingleWord                                               */
 /*============================================================================*/
 #pragma once
 
 namespace Alignment
 {
-  class Word
+  class SingleWord
   {
   public:
     union {
@@ -33,10 +33,10 @@ namespace Alignment
     };
   
   public:
-    Word(void);
-    Word(i8 iArg);
-    Word(w8 wArg);
-   ~Word(void) noexcept(false);
+    SingleWord(void);
+    SingleWord(i8 iArg);
+    SingleWord(w8 wArg);
+   ~SingleWord(void) noexcept(false);
   
     static bool bOnWordBoundary(void* aAddress);
   

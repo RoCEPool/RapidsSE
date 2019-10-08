@@ -15,7 +15,7 @@ namespace Streams
     LinkedBuffer* m_pLowerBuffer;  // lower buffer
   
   private:
-    Word          m__Padding[4];   // padding to cache line
+    SingleWord          m__Padding[4];   // padding to cache line
 
   public:
     LinkedBuffer(eCN eClass);

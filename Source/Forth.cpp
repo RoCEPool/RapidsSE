@@ -11,7 +11,7 @@ void Forth::vCheckAssumptions(void)
 {
   
   ASSERT(8 == sizeof(ForthValue));
-  RASSERT(sizeof(Dtm) == sizeof(Word));
+  RASSERT(sizeof(Dtm) == sizeof(SingleWord));
   
   ASSERT(sizeof(ForthValue) + sizeof(i8)     == sizeof(IntVal));
   ASSERT(sizeof(ForthValue) + sizeof(void*)  == sizeof(FipVal));

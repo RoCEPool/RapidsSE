@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ForthWord.cpp -- Forth Word in Dictionary                                  */
+/* ForthWord.cpp -- Forth SingleWord in Dictionary                                  */
 /*============================================================================*/
 
 #include "Forth.h"

@@ -10,7 +10,7 @@ namespace Forth
   private:
     struct {
       Header m_xHeader;
-      Word   m_wWord;
+      SingleWord   m_wWord;
       char   m_caStr[C_MAX_VCH];
     } xNestedValue;
   

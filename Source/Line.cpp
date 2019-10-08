@@ -84,7 +84,7 @@ void Line::vSet(i8 i_Byte, byte yVal, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 //w8 Line::w8_1B(i8 i_Byte)
 //{
-//  Word xWord;
+//  SingleWord xWord;
 //
 //  byte* aByte = ((byte*)this) + i_Byte;
 //
@@ -99,7 +99,7 @@ void Line::vSet(i8 i_Byte, byte yVal, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 w8 Line::w8_2B(i8 i_Byte)
 {
-  Word xWord;
+  SingleWord xWord;
   
   u2* au2B = (u2*)((byte*)this + i_Byte);
   
@@ -110,7 +110,7 @@ w8 Line::w8_2B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 //w8 Line::w8_2B(i8 i_Byte)
 //{
-//  Word xWord;
+//  SingleWord xWord;
 //
 //  byte* aByte = ((byte*)this) + i_Byte;
 //
@@ -126,7 +126,7 @@ w8 Line::w8_2B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 Line::w8_3B(i8 i_Byte)
 {
-  Word xWord;
+  SingleWord xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -143,7 +143,7 @@ w8 Line::w8_3B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 Line::w8_4B(i8 i_Byte)
 {
-  Word xWord;
+  SingleWord xWord;
   
   u4* au4B = (u4*)((byte*)this + i_Byte);
   
@@ -154,7 +154,7 @@ w8 Line::w8_4B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 //w8 Line::w8_4B(i8 i_Byte)
 //{
-//  Word xWord;
+//  SingleWord xWord;
 //
 //  byte* aByte = ((byte*)this) + i_Byte;
 //
@@ -172,7 +172,7 @@ w8 Line::w8_4B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 Line::w8_5B(i8 i_Byte)
 {
-  Word xWord;
+  SingleWord xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -191,7 +191,7 @@ w8 Line::w8_5B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 Line::w8_6B(i8 i_Byte)
 {
-  Word xWord;
+  SingleWord xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -211,7 +211,7 @@ w8 Line::w8_6B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 Line::w8_7B(i8 i_Byte)
 {
-  Word xWord;
+  SingleWord xWord;
   
   byte* aByte = ((byte*)this) + i_Byte;
   
@@ -232,7 +232,7 @@ w8 Line::w8_7B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 w8 Line::w8_8B(i8 i_Byte)
 {
-  Word xWord;
+  SingleWord xWord;
   
   u8* au8B = (u8*)((byte*)this + i_Byte);
   
@@ -243,7 +243,7 @@ w8 Line::w8_8B(i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 //w8 Line::w8_8B(i8 i_Byte)
 //{
-//  Word xWord;
+//  SingleWord xWord;
 //
 //  byte* aByte = ((byte*)this) + i_Byte;
 //
@@ -288,7 +288,7 @@ w8 Line::w8_1N(i8 i_Nibble)
 /*----------------------------------------------------------------------------*/
 void Line::v1B(i8 i_Byte, w8 wArg)
 {
-  Word xWord;
+  SingleWord xWord;
 
   xWord.m_wW8 = wArg;
   
@@ -301,7 +301,7 @@ void Line::v1B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void Line::v2B(i8 i_Byte, w8 wArg)
 {
-  Word xWord;
+  SingleWord xWord;
   
   xWord.m_wW8 = wArg;
   
@@ -315,7 +315,7 @@ void Line::v2B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void Line::v3B(i8 i_Byte, w8 wArg)
 {
-  Word xWord;
+  SingleWord xWord;
   
   xWord.m_wW8 = wArg;
   
@@ -330,7 +330,7 @@ void Line::v3B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void Line::v4B(i8 i_Byte, w8 wArg)
 {
-  Word xWord;
+  SingleWord xWord;
   
   xWord.m_wW8 = wArg;
   
@@ -346,7 +346,7 @@ void Line::v4B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void Line::v5B(i8 i_Byte, w8 wArg)
 {
-  Word xWord;
+  SingleWord xWord;
   
   xWord.m_wW8 = wArg;
   
@@ -363,7 +363,7 @@ void Line::v5B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void Line::v6B(i8 i_Byte, w8 wArg)
 {
-  Word xWord;
+  SingleWord xWord;
   
   xWord.m_wW8 = wArg;
   
@@ -381,7 +381,7 @@ void Line::v6B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void Line::v7B(i8 i_Byte, w8 wArg)
 {
-  Word xWord;
+  SingleWord xWord;
   
   xWord.m_wW8 = wArg;
   
@@ -400,7 +400,7 @@ void Line::v7B(i8 i_Byte, w8 wArg)
 /*----------------------------------------------------------------------------*/
 void Line::v8B(i8 i_Byte, w8 wArg)
 {
-  Word xWord;
+  SingleWord xWord;
   
   xWord.m_wW8 = wArg;
   

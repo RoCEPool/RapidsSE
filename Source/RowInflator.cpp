@@ -10,7 +10,7 @@
 void RowInflator::vInflateColumn(Row* pRow, HeadLine* aHeadLine, i8 i_ColToRetrieve)
 {
   eMC  eMetaCode;
-  Word wWord;
+  SingleWord wWord;
   
   i8   i_Tail_rel;
   i8   nCompressed;
@@ -424,7 +424,7 @@ void RowInflator::vInflateColumn(Row* pRow, i8 iColumnInto, HeadLine* aHeadLine,
                                  i8 iBaseOffset, i8 i_ColToRetrieve, ColumnVec* pColVec)
 {
   eMC  eMetaCode;
-  Word wWord;
+  SingleWord wWord;
   
   i8   i_Tail_rel;
   i8   nCompressed;
@@ -838,7 +838,7 @@ void RowInflator::vInflateColumn(Row* pRow, i8 iColumnInto, HeadLine* aHeadLine,
 void RowInflator::vInflateColumns(Row* pRow, HeadLine* aHeadLine)
 {
   eMC  eMetaCode;
-  Word wWord;
+  SingleWord wWord;
   
   i8   i_Tail_rel;
   i8   nCompressed;
@@ -1256,7 +1256,7 @@ void RowInflator::vInflateColumns(Row* pRow, HeadLine* aHeadLine)
 void RowInflator::vInflateRow(Row* pRow, HeadLine* aHeadLine)
 {
   eMC  eMetaCode;
-  Word wWord;
+  SingleWord wWord;
   
   i8   i_Tail_rel;
   i8   nCompressed;

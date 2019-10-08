@@ -10,7 +10,7 @@ namespace Alignment
   public:
     union {
       byte m_yaByte[C_BYTES_PER_DOUBLE_WORD];
-      //Word m_waWord[1]; //! this doesnt work
+      //SingleWord m_waWord[1]; //! this doesnt work
     };
 
   public:

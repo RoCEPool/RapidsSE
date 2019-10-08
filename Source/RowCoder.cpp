@@ -198,26 +198,26 @@ i8 RowCoder::nHeadSize(ColumnVec* pColVec)
 {
   // experiment 1
   //i8 nBytes = sizeof(CacheLine) + (1 * C_BYTES_PER_WORD);
-  //i8 nHeadWords = MemLib::nQuantaRequired(nBytes, sizeof(Word));
+  //i8 nHeadWords = MemLib::nQuantaRequired(nBytes, sizeof(SingleWord));
   
   // experiment 2
   //i8 nBytes = pColVec->nItems() * 4;
-  //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
+  //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(SingleWord));
   
   // experiment 3
   //i8 nBytes = pColVec->nItems() * 5;
-  //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
+  //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(SingleWord));
   
   // experiment 4
   //i8 nBytes = pColVec->nItems() * 6;
-  //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
+  //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(SingleWord));
   
   // seth
   //i8 nBytes = pColVec->nItems() * 10;
-  //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(Word));
+  //i8 nHeadBytes = MemLib::nQuantaRequired(nBytes, sizeof(SingleWord));
   
   //nBytes     = 24;
-  //nHeadWords = MemLib::nQuantaRequired(nBytes, sizeof(Word));
+  //nHeadWords = MemLib::nQuantaRequired(nBytes, sizeof(SingleWord));
   
   //i8 nBytesHead = nHeadWords * (i8)C_BYTES_PER_WORD;
   i8 nBytesHead = 32; //256;

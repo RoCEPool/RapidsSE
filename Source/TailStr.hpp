@@ -8,7 +8,7 @@ namespace Rows
   class TailStr : public Line
   {
   public:
-    byte m_yaByte[C_MAX_VCH + sizeof(Word)];
+    byte m_yaByte[C_MAX_VCH + sizeof(SingleWord)];
   
   public:
     TailStr(void);

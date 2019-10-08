@@ -7,7 +7,7 @@ namespace Structures
 {
   static const i8 C_SPACEUNIT_QUANTA = sizeof(SpaceUnit);
   static const i8 C_TAILLINE_QUANTA  = sizeof(DoubleWord);
-  static const i8 C_HEADLINE_QUANTA  = sizeof(Word);
+  static const i8 C_HEADLINE_QUANTA  = sizeof(SingleWord);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // nub (the tray interface)
@@ -33,7 +33,7 @@ namespace Structures
     DESC* m_pDesc;    // object describing the items
   
     SpaceUnit* m_axaUnits; // array of space units
-    Word*      m_axaWords; // array of space units as word units
+    SingleWord*      m_axaWords; // array of space units as word units
   
     // must be last
     Footer m_xFooter;
@@ -669,7 +669,7 @@ void Nub_t<CN,HEAD,OVER,TAIL,DESC>::vSetItems(i8 nSpaceUnits, SpaceUnit* axaUnit
   m_nSpaceUnits = nSpaceUnits;
   
   m_axaUnits    = axaUnits;
-  m_axaWords    = (Word*)axaUnits;
+  m_axaWords    = (SingleWord*)axaUnits;
 }
 
 /*----------------------------------------------------------------------------*/

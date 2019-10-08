@@ -651,7 +651,7 @@ void MemLib::vWordDump(void *aAddress, i8 nBytes, i8 iHighlightWord)
   // dump a header
   vTrace("\n"_Stz);
   vTrace("%4s %6s %6s %14s %16s %8s\n"_Stz,
-         "Word"_Stz,
+         "SingleWord"_Stz,
          "Offset"_Stz,
          "Offset"_Stz,
          "Address"_Stz,

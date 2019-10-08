@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ForthWord.hpp -- Forth Word in Dictionary                                  */
+/* ForthWord.hpp -- Forth SingleWord in Dictionary                                  */
 /*============================================================================*/
 #pragma once
 

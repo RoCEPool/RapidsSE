@@ -11,7 +11,7 @@ namespace Rows
   class HeadLine : public Line
   {
   public:
-    byte m_yaByte[sizeof(Word)];
+    byte m_yaByte[sizeof(SingleWord)];
 
   public:
     HeadLine(void);

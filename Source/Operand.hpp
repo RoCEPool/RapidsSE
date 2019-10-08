@@ -9,7 +9,7 @@ namespace Streams
                   public ListItem_t<Operand>
   {
   private:
-    Word m__Padding[5];   // padding to cache line
+    SingleWord m__Padding[5];   // padding to cache line
 
   public:
     Operand(eCN eClass);
