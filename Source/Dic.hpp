@@ -28,6 +28,7 @@ namespace Forth
     static void vFinalize(eCN eClass, Object* pObject);
     
     void  vAddWord(Word* pWord);
+    Article* pArticle(void);
     Word* pDicKind(void);
     void  vDicKind(Word* pDicKind);
     Word* pEachWord(Word* pKind, Word* pPrior);

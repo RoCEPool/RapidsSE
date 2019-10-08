@@ -70,6 +70,8 @@ AttachMap::AttachMap(void)
   m_pRootDic = new Dic;
   m_pRootDic->vName("<root>"_Stz);
   
+  m_pRootArcticle = m_pRootDic->pArticle();
+  
   Step::vAddStep("word"_Stz,            &Step::vWord);
   AM::vRootWord(m_pRootDic->pFindWord("word"_Stz));
 
