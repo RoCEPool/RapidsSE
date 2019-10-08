@@ -14,7 +14,7 @@ namespace Alignment
 
 //------------------------------------------------------------------------------
 
-#include "Word.hpp"
+#include "SingleWord.hpp"
 #include "AlignedObject.hpp"
 
 #include "Line.hpp"
