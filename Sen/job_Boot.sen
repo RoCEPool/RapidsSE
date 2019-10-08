@@ -10,6 +10,7 @@
 "dbObjects.sen" include
 "jobModel.sen" include
 "testing.sen" include
+"prompt.sen" include
 
 // last
 "se.sen" include

@@ -8,6 +8,7 @@ shortcut a _lineitemay ;
 
 // ray's - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+shortcut ad article_dump ;
 shortcut d  _dynamic ;
 shortcut dl _dynamicLineItem ;
 shortcut dn _defineNode ;
