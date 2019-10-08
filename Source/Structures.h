@@ -50,6 +50,9 @@ namespace Structures
 #include "MiniHeap_t.hpp"
 #include "TrayNL_t.hpp"
 
+// -- -- -- -- -- -- -- --
+
+#include "SP_Article.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

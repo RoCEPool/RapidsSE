@@ -19,6 +19,12 @@ void Step::vArticleDump(MP_Task mpTask)
 {
   ENTRY("vArticleDump"_Stz);
   
+  SP_Article spArticle;
+  
+  Article* pArticle = AM::pRootArticle();
+  
+  vTrace("  %s\n"_Stz,spArticle.sz(pArticle));
+  
   EXIT();
 }
 
