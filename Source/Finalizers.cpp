@@ -27,6 +27,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_APISTATE
   /* 22 */ &Finalize::vUndefined,         // CN_ARG
   /* 23 */ &Finalize::vUndefined,         // CN_ARGUMENTS
+  /*    */ &Finalize::vUndefined,         // CN_ARTICLE
   /* 24 */ &Finalize::vUndefined,         // CN_ATOMIC
   /* 25 */ &Finalize::vUndefined,         // CN_ATTACHMAP
 
@@ -265,7 +266,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_MERGEOP
   /*114 */ &Finalize::vUndefined,         // CN_MUTEX
   
-  /*    */ &Finalize::vUndefined,         // CN_NAME
   /*    */ &Finalize::vUndefined,         // CN_NEXTID
   /*    */ &Finalize::vUndefined,         // CN_NMSTR
   /*    */ &Finalize::vUndefined,         // CN_NMSTRLIST

@@ -31,6 +31,7 @@ pDUMPFUN *gpDump[]
   /* 21 */ &Dump::vInvalid,         // CN_APISTATE
   /* 22 */ &Dump::vInvalid,         // CN_ARG
   /* 23 */ &Dump::vInvalid,         // CN_ARGUMENTS
+  /*    */ &Dump::vUndefined,       // CN_ARTICLE
   /* 24 */ &Dump::vInvalid,         // CN_ATOMIC
   /* 25 */ &AttachMap::vDump,       // CN_ATTACHMAP
 
@@ -272,7 +273,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vUndefined,       // CN_MERGEOP
   /*114 */ &Dump::vUndefined,       // CN_MUTEX
 
-  /*    */ &Dump::vUndefined,       // CN_NAME
   /*    */ &Dump::vUndefined,       // CN_NEXTID
   /*    */ &Dump::vUndefined,       // CN_NMSTR
   /*    */ &Dump::vUndefined,       // CN_NMSTRLIST
@@ -452,6 +452,7 @@ i8 giClassSize[]
   /*    */ sizeof(ApiState),           // CN_APISTATE
   /* 22 */ sizeof(Arg),                // CN_ARG
   /* 23 */ sizeof(Arguments),          // CN_ARGUMENTS
+  /*    */ sizeof(Name),               // CN_ARTICLE
   /* 24 */ sizeof(Atomic),             // CN_ATOMIC
   /* 25 */ sizeof(AttachMap),          // CN_ATTACHMAP
 
@@ -691,7 +692,6 @@ i8 giClassSize[]
   /*    */ sizeof(MergeOp),            // CN_MERGEOP
   /*114 */ sizeof(Mutex),              // CN_MUTEX
 
-  /*    */ sizeof(Name),               // CN_NAME
   /*    */ sizeof(NextId),             // CN_NEXTID
   /*    */ sizeof(NmStr),              // CN_NMSTR
   /*    */ sizeof(NmStrList),          // CN_NMSTRLIST
@@ -871,6 +871,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_APISTATE
   /* 22 */ HT_TRANSIENT_SMALL,   // CN_ARG
   /* 23 */ HT_INVALID,           // CN_ARGUMENTS
+  /*    */ HT_TRANSIENT_SMALL,   // CN_ARTICLE
   /* 24 */ HT_INVALID,           // CN_ATOMIC
   /* 25 */ HT_INVALID,           // CN_ATTACHMAP
 
@@ -1110,7 +1111,6 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_SMALL,   // CN_MERGEOP
   /*114 */ HT_TRANSIENT_SMALL,   // CN_MUTEX
 
-  /*    */ HT_TRANSIENT_SMALL,   // CN_NAME
   /* 73 */ HT_INVALID,           // CN_NEXTID
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_NMSTR
   /*    */ HT_TRANSIENT_SMALL,   // CN_NMLIST

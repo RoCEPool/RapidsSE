@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 void* Name::operator new(size_t)
 {
-  void* pObject = HeapMem::pAllocate(CN_NAME);
+  void* pObject = HeapMem::pAllocate(CN_ARTICLE);
   
   return pObject;
 }
@@ -32,10 +32,10 @@ void Name::operator delete(void* pAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Name::Name(Stz* szName)
-: Object(CN_NAME)
+: Object(CN_ARTICLE)
 , m_okLock(LK_NAME,this)
 {
-  _precondition_(_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   
   m_sName   = szName;
   m_eKind   = NK_NONE;
@@ -47,9 +47,9 @@ Name::Name(Stz* szName)
   
   // m_ixRefCount
 
-  _checkInitialised_(CN_NAME);
+  _checkInitialised_(CN_ARTICLE);
   
-  _postcondition_(_MAGIC_,CN_NAME,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,7 +57,7 @@ Name::Name(Stz* szName)
 /*----------------------------------------------------------------------------*/
 Name::~Name(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -69,7 +69,7 @@ Name::~Name(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Name* Name::pCategory(void)
 {
-  _precondition_(_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   
   return m_pCategory;
 }
@@ -79,7 +79,7 @@ Name* Name::pCategory(void)
 /*----------------------------------------------------------------------------*/
 void Name::vCategory(Name* pCategory)
 {
-  _precondition_(_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   
   m_pCategory = pCategory;
 }
@@ -89,7 +89,7 @@ void Name::vCategory(Name* pCategory)
 /*----------------------------------------------------------------------------*/
 Name* Name::pChild(void)
 {
-  _precondition_(_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   
   return m_pChild;
 }
@@ -99,7 +99,7 @@ Name* Name::pChild(void)
 /*----------------------------------------------------------------------------*/
 void Name::vChild(Name* pChild)
 {
-  _precondition_(_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   
   m_pChild = pChild;
 }
@@ -109,7 +109,7 @@ void Name::vChild(Name* pChild)
 /*----------------------------------------------------------------------------*/
 void Name::vDropRead(void)
 {
-  _precondition_(_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   
   m_okLock.vDropRead();
 }
@@ -119,7 +119,7 @@ void Name::vDropRead(void)
 /*----------------------------------------------------------------------------*/
 void Name::vDropWrite(void)
 {
-  _precondition_(_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
 
   m_okLock.vDropWrite();
 }
@@ -129,7 +129,7 @@ void Name::vDropWrite(void)
 /*----------------------------------------------------------------------------*/
 void Name::vGrabRead(void)
 {
-  _precondition_(_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   
   m_okLock.vGrabRead();
 }
@@ -139,7 +139,7 @@ void Name::vGrabRead(void)
 /*----------------------------------------------------------------------------*/
 void Name::vGrabWrite(void)
 {
-  _precondition_(_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
 
   m_okLock.vGrabWrite();
 }
@@ -149,7 +149,7 @@ void Name::vGrabWrite(void)
 /*----------------------------------------------------------------------------*/
 eNK Name::eKind(void)
 {
-  _precondition_(_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   
   return m_eKind;
 }
@@ -159,7 +159,7 @@ eNK Name::eKind(void)
 /*----------------------------------------------------------------------------*/
 void Name::vKind(eNK eKind)
 {
-  _precondition_(_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   
   m_eKind = eKind;
 }
@@ -169,7 +169,7 @@ void Name::vKind(eNK eKind)
 /*----------------------------------------------------------------------------*/
 Stz* Name::szName(void)
 {
-  _precondition_(_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   
   return m_sName;
 }
@@ -179,7 +179,7 @@ Stz* Name::szName(void)
 /*----------------------------------------------------------------------------*/
 void Name::vName(Stz* szName)
 {
-  _precondition_(_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   
   m_sName = szName;
 }
@@ -189,7 +189,7 @@ void Name::vName(Stz* szName)
 /*----------------------------------------------------------------------------*/
 Object* Name::pObject(void)
 {
-  _precondition_(_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   
   return m_pObject;
 }
@@ -199,7 +199,7 @@ Object* Name::pObject(void)
 /*----------------------------------------------------------------------------*/
 void Name::vObject(Object* pObject)
 {
-  _precondition_(_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   
   m_pObject = pObject;
 }
@@ -209,7 +209,7 @@ void Name::vObject(Object* pObject)
 /*----------------------------------------------------------------------------*/
 Name* Name::pParent(void)
 {
-  _precondition_(_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   
   return m_pParent;
 }
@@ -219,7 +219,7 @@ Name* Name::pParent(void)
 /*----------------------------------------------------------------------------*/
 void Name::vParent(Name* pParent)
 {
-  _precondition_(_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   
   m_pParent = pParent;
 }
@@ -229,7 +229,7 @@ void Name::vParent(Name* pParent)
 /*----------------------------------------------------------------------------*/
 void Name::vRefDec(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ARTICLE,_FOOTER_);
   
   u8 iRef = --m_ixRefCount;
   
@@ -241,7 +241,7 @@ void Name::vRefDec(void)
 /*----------------------------------------------------------------------------*/
 void Name::vRefInc(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ARTICLE,_FOOTER_);
   
   u8 iRef = ++m_ixRefCount;
   
@@ -253,7 +253,7 @@ void Name::vRefInc(void)
 /*----------------------------------------------------------------------------*/
 bool Name::bRefOut(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ARTICLE,_FOOTER_);
   
   u8 iRef = *m_ixRefCount;
   

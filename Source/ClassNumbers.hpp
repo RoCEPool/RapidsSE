@@ -30,6 +30,7 @@ enum eCN : u2 // Class Number
   /*  15 0x0F   213152B Heap:L */ CN_APISTATE,
   /*  16 0x10      296B Heap:S */ CN_ARG,
   /*  17 0x11     2808B Heap:I */ CN_ARGUMENTS,
+  /*                           */ CN_ARTICLE,
   /*  18 0x12       24B Heap:I */ CN_ATOMIC,
   /*  19 0x13    19672B Heap:I */ CN_ATTACHMAP,
 
@@ -267,7 +268,6 @@ enum eCN : u2 // Class Number
   /*                           */ CN_MERGEOP,
   /* 155 0x9B      160B Heap:S */ CN_MUTEX,
   
-  /*                           */ CN_NAME,
   /*                           */ CN_NEXTID,
   /*                           */ CN_NMSTR,
   /*                           */ CN_NMSTRLIST,
@@ -447,6 +447,7 @@ static Stz* aCN[]
   /*  15 0x0F */ "APISTATE"_Stz,            // CN_APISTATE
   /*  16 0x10 */ "ARG"_Stz,                 // CN_ARG
   /*  17 0x11 */ "ARGUMENTS"_Stz,           // CN_ARGUMENTS
+  /*          */ "ARTICLE"_Stz,             // CN_ARTICLE
   /*  18 0x12 */ "ATOMIC"_Stz,              // CN_ATOMIC
   /*  19 0x13 */ "ATTACHMAP"_Stz,           // CN_ATTACHMAP
 
@@ -684,7 +685,6 @@ static Stz* aCN[]
   /*          */ "MERGEOP"_Stz,             // CN_MERGEOP
   /* 155 0x9B */ "MUTEX"_Stz,               // CN_MUTEX
   
-  /*          */ "NAME"_Stz,                // CN_NAME
   /*          */ "NEXTID"_Stz,              // CN_NEXTID
   /*          */ "NMSTR"_Stz,               // CN_NMSTR
   /*          */ "NMSTRLIST"_Stz,           // CN_NMSTRLIST
