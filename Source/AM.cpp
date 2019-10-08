@@ -46,7 +46,7 @@ Lock* AM::pDicLock(void)      { return & gpAttachMap->m_okDicLock;            }
 i8   AM::iElapsedSsec(void)   { return gpAttachMap->m_oBirth.iElapsedSsec();  }
 i8   AM::iEpoch(void)         { return gpAttachMap->m_iEpoch;                 }
 Formatters* AM::pFormatters(void) { return & gpAttachMap->m_oFormatters;      }
-Word* AM::pWord(void)   { return gpAttachMap->m_pWord;         }
+Word* AM::pWord(void)   { return gpAttachMap->m_pRootWord;         }
 Grid* AM::pGrid(void)         { return gpAttachMap->m_pGrid;                  }
 bool AM::bHasStarted(void)    { return gpAttachMap->m_pGrid->m_bHasStarted;   }
 HeapMem* AM::pHeapMem(void)   { return & gpAttachMap->m_xHeapMem;             }
@@ -167,7 +167,7 @@ void AM::vDropTaskLock(Task* pTask) {
   Scheduler::vDropTaskLock(pTask);
 }
 void AM::vForthWord(Word *pWord) {
-  gpAttachMap->m_pWord = pWord;
+  gpAttachMap->m_pRootWord = pWord;
 }
 void AM::vGrabTaskLock(Task* pTask) {
   Scheduler::vGrabTaskLock(pTask);
