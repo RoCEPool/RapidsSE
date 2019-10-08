@@ -273,16 +273,10 @@ void Step::vCreateTenants(MP_Task mpTask)
   ENTRY("vCreateTenants"_Stz);
   
   mpTask->m_pCompiler->m_pTokeniser->vNextToken();
-  
-  //  Dic* pDic;
-  //  if (mpTask->m_oDicStack.iCount())
-  //    pDic = mpTask->m_oDicStack.pTop();
-  //  else
-  //    pDic = &gpAttachMap->m_oRootDic;
-  
-  //vTrace(": %s\n"_Stz,mpTask->m_pCompiler->m_pTokeniser->sToken().aChar());
-  
-  Word* pNewWord = new(nullptr) Word(mpTask->m_pCompiler->m_pTokeniser->sToken());
+    
+  Dic* pDic = AM::pRootDic();
+
+  Word* pNewWord = new(pDic) Word(mpTask->m_pCompiler->m_pTokeniser->sToken());
   
   mpTask->m_pCompiler->m_pCurrentWord = pNewWord;
   
