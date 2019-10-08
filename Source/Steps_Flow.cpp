@@ -44,7 +44,7 @@ void Step::vFlowExecute(MP_Task mpTask)
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("execute"_Stz);
-  ForthWord* pWord = _pWord(pWordObject);
+  ForthWord* pWord = _pForthWord(pWordObject);
   
   if (WT_INTRINSIC == pWord->eWordType()) {
     StepFp fpStepFp = pWord->fpEntryStep();

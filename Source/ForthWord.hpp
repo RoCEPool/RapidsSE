@@ -7,8 +7,7 @@ namespace Forth
 {
   static const i8 C_WSP_WORD = C_SIZE_MEDIUM_OBJECT - C_1KB;
   
-  class ForthWord : public Object,
-                    ListItem_t<ForthWord>
+  class ForthWord : public Object
   {
     friend class Dic;
 
@@ -100,7 +99,6 @@ namespace Forth
     void  vParams(i8 iParams);
     i8    iParams(void);
     ForthWord* pPrevWord(void);
-    void  vPrevWord(ForthWord* pPrevWord);
     bool  bPrompt(void);
     void  vPrompt(bool bImmediate);
     void  vReset(void);
@@ -112,7 +110,7 @@ namespace Forth
     Footer* aFooter(void);
   };
   
-  ForthWord* _pWord(void* aAddr);
+  ForthWord* _pForthWord(void* aAddr);
 }
 
 void vEnterRoutine(Tasks::MP_Task mpTask);

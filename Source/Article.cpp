@@ -31,15 +31,15 @@ void Article::operator delete(void* pAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Article::Article(Stz* szName)
+Article::Article(Stz* szName, Object* pObject)
 : Object(CN_ARTICLE)
 , m_okLock(LK_NAME,this)
 {
   _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   
   m_sName   = szName;
+  m_pObject = pObject;
   m_eKind   = NK_NONE;
-  m_pObject = nullptr;
   
   m_pCategory = nullptr;
   m_pParent   = nullptr;

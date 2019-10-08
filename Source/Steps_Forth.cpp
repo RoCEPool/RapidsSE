@@ -131,7 +131,7 @@ void Step::vCompileComma(MP_Task mpTask)
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("compile,"_Stz);
-  ForthWord* pCalledWord = _pWord(pWordObject);
+  ForthWord* pCalledWord = _pForthWord(pWordObject);
   
   ForthWord* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   

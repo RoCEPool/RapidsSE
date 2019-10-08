@@ -78,7 +78,7 @@ void Step::vDicKindSet(MP_Task mpTask)
   
   Dic* pDic = _pDic(pPtrDic);
   
-  ForthWord* pKind = _pWord(pPtrKind);
+  ForthWord* pKind = _pForthWord(pPtrKind);
   
   pDic->vDicKind(pKind);
   

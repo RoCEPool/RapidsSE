@@ -13,9 +13,9 @@ namespace Structures
     Lock    m_okLock;
   
     s32     m_sName;       // name of the Article
-    eNK     m_eKind;       // kind of article
     Object* m_pObject;     // pointer to the named object
-  
+    eNK     m_eKind;       // kind of article
+
     Article* m_pCategory;  // category of this Article
     Article* m_pParent;    // parent of this Article
     Article* m_pChild;     // child of this Article
@@ -29,7 +29,7 @@ namespace Structures
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Article(Stz* szName);
+    Article(Stz* szName, Object* pObject);
    ~Article(void) noexcept(false);
   
     Article* pCategory(void);

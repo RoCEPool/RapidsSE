@@ -13,7 +13,7 @@ extern StepFp gfpEntryStep;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ForthWord* Forth::_pWord(void* aAddr)
+ForthWord* Forth::_pForthWord(void* aAddr)
 {
   ForthWord* pWord = reinterpret_cast<ForthWord*>(aAddr);
   
@@ -68,7 +68,7 @@ ForthWord::ForthWord(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
-  m_pArticle      = new Article(szName);
+  m_pArticle      = new Article(szName,this);
 
   m_sName         = szName;
   m_eWordType     = WT_ROUTINE;
@@ -126,7 +126,7 @@ ForthWord::~ForthWord(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void ForthWord::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ForthWord* pWord = _pWord(pObject);
+  ForthWord* pWord = _pForthWord(pObject);
   
   // dump only the objects
   if (WT_OBJECT == pWord->m_eWordType)
@@ -691,17 +691,13 @@ ForthWord* ForthWord::pPrevWord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
-  return pPoolCheck<ForthWord*>(pPrevItem());
-}
-
-/*----------------------------------------------------------------------------*/
-/* set previous word                                                          */
-/*----------------------------------------------------------------------------*/
-void ForthWord::vPrevWord(ForthWord* pPrevWord)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  Article* pPrevArticle = m_pArticle->pPrevItem();
+  if (! pPrevArticle)
+    return nullptr;
   
-  vPrevItem(pPrevWord);
+  ForthWord* pPrevWord = _pForthWord(pPrevArticle->pObject());
+  
+  return pPrevWord;
 }
 
 /*----------------------------------------------------------------------------*/

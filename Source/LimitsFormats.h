@@ -74,6 +74,8 @@ static const char D_RECORD_TERMINATOR    = '\0';
 
 static Stz* C_SE_TRACE = "/tmp/se_trace.txt"_Stz;
 
+static Stz* C_NO_NAME = "-- no-name --"_Stz;
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 static const i8 C_LOG_ENTRIES = C_256K * 1;
