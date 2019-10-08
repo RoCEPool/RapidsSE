@@ -42,6 +42,9 @@ public:
   static void vArgsOscillate(Tasks::MP_Task mpTask);
   static void vArgsPrint(Tasks::MP_Task mpTask);
 
+  // article
+  static void vArticleDump(Tasks::MP_Task mpTask);
+
   // assert
   static void vAssert(Tasks::MP_Task mpTask);
 
