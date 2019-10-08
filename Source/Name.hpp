@@ -36,6 +36,12 @@ namespace Structures
     Name* pChild(void);
     void  vChild(Name* pChild);
   
+    void  vDropRead(void);
+    void  vDropWrite(void);
+  
+    void  vGrabRead(void);
+    void  vGrabWrite(void);
+
     eNK   eKind(void);
     void  vKind(eNK eKind);
   
