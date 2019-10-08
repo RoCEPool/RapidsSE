@@ -252,12 +252,10 @@ public:
   static void vEnmSetNew(Tasks::MP_Task mpTask);
 
   // enter
-public:
   static void vEnterObject(Tasks::MP_Task mpTask);
   static void vEnterRoutine(Tasks::MP_Task mpTask);
 
   // entry
-private:
   static void vEntryMatches(Tasks::MP_Task mpTask);
   static void vEntrySame(Tasks::MP_Task mpTask);
   static void vEntryToDataRow(Tasks::MP_Task mpTask);
@@ -1155,7 +1153,6 @@ private:
   static void vTestTest23(Tasks::MP_Task mpTask);
   static void vTestTest24(Tasks::MP_Task mpTask);
   static void vTestTest25(Tasks::MP_Task mpTask);
-
 
   // thread
   static void vThreadBind(Tasks::MP_Task mpTask);

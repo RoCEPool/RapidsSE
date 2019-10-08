@@ -7,9 +7,10 @@ namespace Steps
 {
   class Step
   {
+  friend class StorageEngine::AttachMap;
   friend class Tasks::Task;
   friend class Forth::Word;
-  
+
   public:
     static void vAddSteps(void);
   

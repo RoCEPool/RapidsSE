@@ -29,12 +29,12 @@ void Step::vAddStep(Stz* aName, StepFp fpStep, bool bImmediate)
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps(void)
 {
-  Dic* pRootDic = AM::pRootDic();
+  //Dic* pRootDic = AM::pRootDic();
   if (AM::bVerbose())
     vTrace("[[mainThread]] Adding primitives...\n"_Stz);
   
-  vAddStep("word"_Stz,            &Step::vWord);
-  AM::vRootWord(pRootDic->pFindWord("word"_Stz));
+  //vAddStep("word"_Stz,            &Step::vWord);
+  //AM::vRootWord(pRootDic->pFindWord("word"_Stz));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

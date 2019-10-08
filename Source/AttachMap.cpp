@@ -70,6 +70,9 @@ AttachMap::AttachMap(void)
   m_pRootDic = new Dic;
   m_pRootDic->vName("<root>"_Stz);
   
+  Step::vAddStep("word"_Stz,            &Step::vWord);
+  AM::vRootWord(m_pRootDic->pFindWord("word"_Stz));
+
   // create the persistent heaps
   m_xHeapMem.Persistent.m_pJumbo  =
     new Heap(CN_JUMBOPERSISTENT,  C_SIZE_JUMBO_OBJECT);

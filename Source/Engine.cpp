@@ -846,7 +846,7 @@ void Engine::vStartSystem(void)
   if (gxArguments.m_bVerbose)
     vInfo("\n*\n* Library Init\n*\n"_Stz);
   
-  ASSERT( ! AM::pRootDic()->bHasWords() );
+  //ASSERT( ! AM::pRootDic()->bHasWords() );
     
   gpAttachMap->vRecordArguments(
                                 gxArguments.m_bDeveloper,
