@@ -34,7 +34,7 @@ void Step::vAddSteps(void)
     vTrace("[[mainThread]] Adding primitives...\n"_Stz);
   
   vAddStep("word"_Stz,            &Step::vWord);
-  AM::vForthWord(pRootDic->pFindWord("word"_Stz));
+  AM::vRootWord(pRootDic->pFindWord("word"_Stz));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

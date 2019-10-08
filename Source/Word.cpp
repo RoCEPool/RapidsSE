@@ -75,7 +75,7 @@ Word::Word(Stz* szName)
   //m_bPersistent   = false;
   m_iTrace        = 0;
   //m_pDic        = pDic;
-  m_pKind         = AM::pWord() ? AM::pWord() : this;
+  m_pKind         = AM::pRootWord() ? AM::pRootWord() : this;
   m_iEpoch        = AM::iEpoch();
   m_bImmediate    = false;
   m_iParams       = 0;

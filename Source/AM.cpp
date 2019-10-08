@@ -46,7 +46,6 @@ Lock* AM::pDicLock(void)      { return & gpAttachMap->m_okDicLock;            }
 i8   AM::iElapsedSsec(void)   { return gpAttachMap->m_oBirth.iElapsedSsec();  }
 i8   AM::iEpoch(void)         { return gpAttachMap->m_iEpoch;                 }
 Formatters* AM::pFormatters(void) { return & gpAttachMap->m_oFormatters;      }
-Word* AM::pWord(void)   { return gpAttachMap->m_pRootWord;         }
 Grid* AM::pGrid(void)         { return gpAttachMap->m_pGrid;                  }
 bool AM::bHasStarted(void)    { return gpAttachMap->m_pGrid->m_bHasStarted;   }
 HeapMem* AM::pHeapMem(void)   { return & gpAttachMap->m_xHeapMem;             }
@@ -97,11 +96,12 @@ Queues* AM::pQueues(void)     { return gpAttachMap->m_pQueues;                }
 ResourceTracker* AM::pResourceTracker(void) {
   return & gpAttachMap->m_oResourceTracker; }
 Dic* AM::pRootDic(void)       { return gpAttachMap->m_pRootDic;               }
-Statistics* AM::pStatistics(void) { return & gpAttachMap->m_oStatistics;      }
-StepTiming* AM::pStepTiming(void)  { return gpAttachMap->m_pStepTiming;       }
+Word* AM::pRootWord(void)     { return gpAttachMap->m_pRootWord;              }
+Statistics* AM::pStatistics(void)   { return & gpAttachMap->m_oStatistics;    }
+StepTiming* AM::pStepTiming(void)   { return gpAttachMap->m_pStepTiming;      }
 PoolBuffer* AM::pTakenBuffers(void) { return gpAttachMap->m_pTakenBuffers;    }
 i8   AM::nTakenBytes(void)    { return gpAttachMap->m_nTakenBytes;            }
-Word* AM::pTenants(void) { return gpAttachMap->m_pTenants;               }
+Word* AM::pTenants(void)      { return gpAttachMap->m_pTenants;               }
 i8   AM::iThisNodeNo(void)    { return gpAttachMap->m_pGrid->iThisNode();     }
 void AM::vThreadBegins(void)  { ++ gpAttachMap->m_ixThreads;                  }
 i8   AM::nThreadsBegun(void)  { return * gpAttachMap->m_ixThreads;            }
@@ -166,8 +166,8 @@ void AM::vDeleteOperand(Operand* pOperand)
 void AM::vDropTaskLock(Task* pTask) {
   Scheduler::vDropTaskLock(pTask);
 }
-void AM::vForthWord(Word *pWord) {
-  gpAttachMap->m_pRootWord = pWord;
+void AM::vRootWord(Word* pRootWord) {
+  gpAttachMap->m_pRootWord = pRootWord;
 }
 void AM::vGrabTaskLock(Task* pTask) {
   Scheduler::vGrabTaskLock(pTask);
