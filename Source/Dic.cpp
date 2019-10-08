@@ -291,7 +291,7 @@ void Dic::vListWords(void)
 /*----------------------------------------------------------------------------*/
 /* get name of this dictionary                                                */
 /*----------------------------------------------------------------------------*/
-s32& Dic::sName(void)
+Stz* Dic::szName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   

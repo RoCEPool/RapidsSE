@@ -119,8 +119,7 @@ ENTRY("vDicName"_Stz);
   
   Dic* pDic = _pDic(pPtrDic);
 
-  s32 sName;
-  sName = pDic->sName();
+  s32 sName(pDic->szName());
   
   mpTask->m_pDataStack->vPushS32(sName);
   

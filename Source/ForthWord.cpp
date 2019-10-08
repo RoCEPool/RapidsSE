@@ -642,6 +642,8 @@ void ForthWord::vName(Stz* szName)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   m_sName = szName;
+  
+  m_pArticle->vName(szName);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -655,7 +657,7 @@ void ForthWord::vObjectDump(Stz* aTab)
          "Step %p ..Rows.. %p\n"_Stz,
          m_iEpoch,
          m_sName.aChar(),
-         m_pDic ? m_pDic->sName().aChar() : "<none>",
+         m_pDic ? m_pDic->szName() : "<none>"_Stz,
          aWT[m_eWordType]->aChar(),
          m_bImmediate ? "Immediate"_Stz : "Not Immediate"_Stz,
          m_xRoutine.nUsed(),
