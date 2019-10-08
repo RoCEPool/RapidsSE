@@ -35,15 +35,15 @@ namespace Forth
     ForthWord* pFindStep(StepFp fpStep);
     bool  bHasWords(void);
     void  vInit(void);
-    bool  bIsName(s32& sName);
+    bool  bIsName(Stz* szName);
     ForthWord* pLastWord(void);
     void  vListWords(void);
     s32&  sName(void);
-    void  vName(Stz* aName);
+    void  vName(Stz* szName);
     void  vRefDec(void);
     void  vRefInc(void);
     bool  bRefOut(void);
-    ForthWord* pRemoveWord(s32& sName);
+    ForthWord* pRemoveWord(Stz* szName);
     i8    nWords(void);
     
     Footer* aFooter(void);

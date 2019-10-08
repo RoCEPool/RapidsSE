@@ -246,11 +246,11 @@ void Dic::vInit(void)
 /*----------------------------------------------------------------------------*/
 /* is given name?                                                             */
 /*----------------------------------------------------------------------------*/
-bool Dic::bIsName(s32& sName)
+bool Dic::bIsName(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  bool b = m_sName.bSame(sName);
+  bool b = m_sName.bSame(szName);
   
   return b;
 }
@@ -345,11 +345,11 @@ bool Dic::bRefOut(void)
 /*----------------------------------------------------------------------------*/
 /* forget a word given name                                                   */
 /*----------------------------------------------------------------------------*/
-ForthWord* Dic::pRemoveWord(s32& sName)
+ForthWord* Dic::pRemoveWord(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  ForthWord* pWordRemove = pFindWord(sName);
+  ForthWord* pWordRemove = pFindWord(szName);
   if (! pWordRemove)
     return pWordRemove;
   
