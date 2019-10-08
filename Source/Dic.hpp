@@ -12,7 +12,6 @@ namespace Forth
   
     s32    m_sName;        // name of this dictionary
     ForthWord*  m_pDicKind;     // kind of dictionary
-    Atomic m_ixRefCount;   // reference count
 
     ForthWord*  m_pLastWord;    //   last word in dictionary
     i8     m_nWords;       //   number of words in dictionary

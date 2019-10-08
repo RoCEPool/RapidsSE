@@ -45,7 +45,7 @@ Article::Article(Stz* szName)
   m_pParent   = nullptr;
   m_pChild    = nullptr;
   
-  // m_ixRefCount
+  m_ixRefCount.vCheckInit();
 
   _checkInitialised_(CN_ARTICLE);
   
