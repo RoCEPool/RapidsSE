@@ -8,10 +8,10 @@ namespace Forth
   class Dic : public Object
   {
   private:
-    Article*    m_pArticle;  // the dictionary article
+    Article*  m_pArticle;  // the dictionary article
   
-    s32         m_sName;     // name of this dictionary
-    Word*  m_pDicKind;  // kind of dictionary
+    s32       m_sName;     // name of this dictionary
+    Word*     m_pDicKind;  // kind of dictionary
   
     // must be last
     Footer m_xFooter;

@@ -48,7 +48,7 @@ namespace Forth
     void  operator delete(void* pWordAddress);
   
     Word(Stz* sName);
-    ~Word(void) noexcept(false);
+   ~Word(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static Word* pToWord(void* aAddrInsideWsp);
