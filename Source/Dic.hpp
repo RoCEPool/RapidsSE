@@ -8,6 +8,8 @@ namespace Forth
   class Dic : public Object
   {
   private:
+    Name*  m_pName;       // the name
+  
     s32    m_sName;        // name of this dictionary
     ForthWord*  m_pDicKind;     // kind of dictionary
     bool   m_bFrozen;      // no more words can be added?
@@ -26,7 +28,7 @@ namespace Forth
     void  operator delete(void*);
     
     Dic(void);
-    ~Dic(void) noexcept(false);
+   ~Dic(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static void vFinalize(eCN eClass, Object* pObject);

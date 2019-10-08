@@ -52,6 +52,8 @@ Dic::Dic(void)
 , m_okLock(LK_DIC,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+
+  m_pName    = nullptr; //new Name("<no-name>"_Stz);
   
   m_sName    = "<no-name>"_Stz;
   m_pDicKind = nullptr;
@@ -75,6 +77,8 @@ Dic::Dic(void)
 Dic::~Dic(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  delete m_pName;
 }
 
 /*----------------------------------------------------------------------------*/
