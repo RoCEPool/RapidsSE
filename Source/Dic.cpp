@@ -49,7 +49,6 @@ void Dic::operator delete(void* pDicAddress)
 /*----------------------------------------------------------------------------*/
 Dic::Dic(void)
 : Object(CN_DIC)
-, m_okLock(LK_DIC,this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
 
@@ -89,7 +88,7 @@ void Dic::vAddWord(ForthWord* pWord)
   
   ASSERT(pWord->eClass() == CN_WORD);
   
-  m_okLock.vGrabWrite();
+  m_pName->vGrabWrite();
   
   pWord->vPrevWord(m_pLastWord);
   
@@ -97,7 +96,7 @@ void Dic::vAddWord(ForthWord* pWord)
   
   m_nWords++;
   
-  m_okLock.vDropWrite();
+  m_pName->vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -143,19 +142,19 @@ ForthWord* Dic::pEachWord(ForthWord* pKind, ForthWord* pPrior)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  m_okLock.vGrabRead();
+  m_pName->vGrabRead();
   
   ForthWord* pWord = (pPrior) ? pPrior->pPrevWord() : m_pLastWord;
   
   for ( ; pWord; pWord = pWord->pPrevWord()) {
     
     if (pWord->pKind() == pKind) {
-      m_okLock.vDropRead();
+      m_pName->vDropRead();
       return pWord;
     }
   }
   
-  m_okLock.vDropRead();
+  m_pName->vDropRead();
   
   return nullptr;
 }
@@ -183,14 +182,14 @@ ForthWord* Dic::pFindWord(Stz* aName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  m_okLock.vGrabRead();
+  m_pName->vGrabRead();
   
   for (ForthWord* pWord = m_pLastWord; pWord; pWord = pWord->pPrevWord()) {
     
     //void* aEndWord = aAdd<void*>(pWord,sizeof(ForthWord));
     
     if (pWord->sName().bSame(aName)) {
-      m_okLock.vDropRead();
+      m_pName->vDropRead();
 
       if (aName->bSame("whereAmI"_Stz))
         vTrace(": %s is in dictionary %s ---\n"_Stz,aName,m_sName.aStz());
@@ -199,7 +198,7 @@ ForthWord* Dic::pFindWord(Stz* aName)
     }
   }
   
-  m_okLock.vDropRead();
+  m_pName->vDropRead();
   
   return nullptr;
 }
@@ -211,16 +210,16 @@ ForthWord* Dic::pFindStep(StepFp fpStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  m_okLock.vGrabRead();
+  m_pName->vGrabRead();
   
   for (ForthWord* pWord = m_pLastWord; pWord; pWord = pWord->pPrevWord()) {
     if (WT_INTRINSIC == pWord->eWordType() && fpStep == pWord->fpEntryStep()) {
-      m_okLock.vDropRead();
+      m_pName->vDropRead();
       return pWord;
     }
   }
   
-  m_okLock.vDropRead();
+  m_pName->vDropRead();
   
   return nullptr;
 }
@@ -286,7 +285,7 @@ void Dic::vListWords(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  m_okLock.vGrabRead();
+  m_pName->vGrabRead();
   
   for (ForthWord* pWord = m_pLastWord; pWord; pWord = pWord->pPrevWord()) {
     
@@ -295,7 +294,7 @@ void Dic::vListWords(void)
            m_sName.aStz());
   }
   
-  m_okLock.vDropRead();
+  m_pName->vDropRead();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -365,14 +364,14 @@ ForthWord* Dic::pRemoveWord(s32& sName)
   
   ForthWord* pWordDelete = nullptr;
   
-  m_okLock.vGrabWrite();
+  m_pName->vGrabWrite();
   
   if (m_pLastWord->bIsName(sName)) {
     pWordDelete = m_pLastWord;
     m_pLastWord = m_pLastWord->pPrevWord();
     //delete pWordDelete;
     m_nWords--;
-    m_okLock.vDropWrite();
+    m_pName->vDropWrite();
     return pWordDelete;
   }
   
@@ -381,7 +380,7 @@ ForthWord* Dic::pRemoveWord(s32& sName)
     ForthWord* pPrevWord = pWord->pPrevWord();
     
     if (!pPrevWord) {
-      m_okLock.vDropWrite();
+      m_pName->vDropWrite();
       return nullptr;
     }
     
@@ -395,12 +394,12 @@ ForthWord* Dic::pRemoveWord(s32& sName)
     //delete pWordDelete;
     m_nWords--;
     
-    m_okLock.vDropWrite();
+    m_pName->vDropWrite();
     
     return pWordDelete;
   }
   
-  m_okLock.vDropWrite();
+  m_pName->vDropWrite();
   
   return nullptr;
 }

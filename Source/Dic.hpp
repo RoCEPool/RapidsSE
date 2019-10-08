@@ -14,7 +14,6 @@ namespace Forth
     ForthWord*  m_pDicKind;     // kind of dictionary
     Atomic m_ixRefCount;   // reference count
 
-    Lock   m_okLock;        // lock over:
     ForthWord*  m_pLastWord;    //   last word in dictionary
     i8     m_nWords;       //   number of words in dictionary
     
