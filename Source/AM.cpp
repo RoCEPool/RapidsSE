@@ -95,6 +95,7 @@ i8   AM::nPartitions(void)    { return gpAttachMap->m_pGrid->nPartitions();   }
 Queues* AM::pQueues(void)     { return gpAttachMap->m_pQueues;                }
 ResourceTracker* AM::pResourceTracker(void) {
   return & gpAttachMap->m_oResourceTracker; }
+Article* AM::pRootArticle(void)     { return gpAttachMap->m_pRootArcticle;    }
 Dic* AM::pRootDic(void)       { return gpAttachMap->m_pRootDic;               }
 Word* AM::pRootWord(void)     { return gpAttachMap->m_pRootWord;              }
 Statistics* AM::pStatistics(void)   { return & gpAttachMap->m_oStatistics;    }

@@ -93,6 +93,7 @@ namespace StorageEngine
     static i8   nPartitions(void);
     static Queues* pQueues(void);
     static ResourceTracker* pResourceTracker(void);
+    static Article* pRootArticle(void);
     static Dic* pRootDic(void);
     static Word* pRootWord(void);
     static void vRootWord(Word* pRootWord);
