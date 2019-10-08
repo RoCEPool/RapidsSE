@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Name.cpp -- Name (of object instance)                                      */
+/* Article.cpp -- Article                                                   */
 /*============================================================================*/
 
 #include "Structures.h"
@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Name::operator new(size_t)
+void* Article::operator new(size_t)
 {
   void* pObject = HeapMem::pAllocate(CN_ARTICLE);
   
@@ -21,9 +21,9 @@ void* Name::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Name::operator delete(void* pAddress)
+void Article::operator delete(void* pAddress)
 {
-  Object* pObject = reinterpret_cast<Name*>(pAddress);
+  Object* pObject = reinterpret_cast<Article*>(pAddress);
   
   HeapMem::vFree(pObject);
 }
@@ -31,7 +31,7 @@ void Name::operator delete(void* pAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Name::Name(Stz* szName)
+Article::Article(Stz* szName)
 : Object(CN_ARTICLE)
 , m_okLock(LK_NAME,this)
 {
@@ -55,7 +55,7 @@ Name::Name(Stz* szName)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Name::~Name(void) noexcept(false)
+Article::~Article(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
 }
@@ -67,7 +67,7 @@ Name::~Name(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get category                                                               */
 /*----------------------------------------------------------------------------*/
-Name* Name::pCategory(void)
+Article* Article::pCategory(void)
 {
   _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   
@@ -77,7 +77,7 @@ Name* Name::pCategory(void)
 /*----------------------------------------------------------------------------*/
 /* set category                                                               */
 /*----------------------------------------------------------------------------*/
-void Name::vCategory(Name* pCategory)
+void Article::vCategory(Article* pCategory)
 {
   _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   
@@ -85,9 +85,9 @@ void Name::vCategory(Name* pCategory)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get child of name                                                          */
+/* get child of article                                                       */
 /*----------------------------------------------------------------------------*/
-Name* Name::pChild(void)
+Article* Article::pChild(void)
 {
   _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   
@@ -95,9 +95,9 @@ Name* Name::pChild(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set child name                                                             */
+/* set child article                                                          */
 /*----------------------------------------------------------------------------*/
-void Name::vChild(Name* pChild)
+void Article::vChild(Article* pChild)
 {
   _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   
@@ -107,7 +107,7 @@ void Name::vChild(Name* pChild)
 /*----------------------------------------------------------------------------*/
 /* drop lock for read                                                         */
 /*----------------------------------------------------------------------------*/
-void Name::vDropRead(void)
+void Article::vDropRead(void)
 {
   _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   
@@ -117,7 +117,7 @@ void Name::vDropRead(void)
 /*----------------------------------------------------------------------------*/
 /* drop lock for write                                                        */
 /*----------------------------------------------------------------------------*/
-void Name::vDropWrite(void)
+void Article::vDropWrite(void)
 {
   _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
 
@@ -127,7 +127,7 @@ void Name::vDropWrite(void)
 /*----------------------------------------------------------------------------*/
 /* grab lock for read                                                         */
 /*----------------------------------------------------------------------------*/
-void Name::vGrabRead(void)
+void Article::vGrabRead(void)
 {
   _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   
@@ -137,7 +137,7 @@ void Name::vGrabRead(void)
 /*----------------------------------------------------------------------------*/
 /* grab lock for write                                                        */
 /*----------------------------------------------------------------------------*/
-void Name::vGrabWrite(void)
+void Article::vGrabWrite(void)
 {
   _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
 
@@ -145,9 +145,9 @@ void Name::vGrabWrite(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get kind of name                                                           */
+/* get kind of article                                                        */
 /*----------------------------------------------------------------------------*/
-eNK Name::eKind(void)
+eNK Article::eKind(void)
 {
   _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   
@@ -155,9 +155,9 @@ eNK Name::eKind(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set kind of name                                                           */
+/* set kind of article                                                        */
 /*----------------------------------------------------------------------------*/
-void Name::vKind(eNK eKind)
+void Article::vKind(eNK eKind)
 {
   _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   
@@ -167,7 +167,7 @@ void Name::vKind(eNK eKind)
 /*----------------------------------------------------------------------------*/
 /* get name                                                                   */
 /*----------------------------------------------------------------------------*/
-Stz* Name::szName(void)
+Stz* Article::szName(void)
 {
   _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   
@@ -177,7 +177,7 @@ Stz* Name::szName(void)
 /*----------------------------------------------------------------------------*/
 /* set name                                                                   */
 /*----------------------------------------------------------------------------*/
-void Name::vName(Stz* szName)
+void Article::vName(Stz* szName)
 {
   _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   
@@ -187,7 +187,7 @@ void Name::vName(Stz* szName)
 /*----------------------------------------------------------------------------*/
 /* get object                                                                 */
 /*----------------------------------------------------------------------------*/
-Object* Name::pObject(void)
+Object* Article::pObject(void)
 {
   _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   
@@ -197,7 +197,7 @@ Object* Name::pObject(void)
 /*----------------------------------------------------------------------------*/
 /* set object                                                                 */
 /*----------------------------------------------------------------------------*/
-void Name::vObject(Object* pObject)
+void Article::vObject(Object* pObject)
 {
   _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   
@@ -205,9 +205,9 @@ void Name::vObject(Object* pObject)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get parent name                                                            */
+/* get parent article                                                         */
 /*----------------------------------------------------------------------------*/
-Name* Name::pParent(void)
+Article* Article::pParent(void)
 {
   _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   
@@ -215,9 +215,9 @@ Name* Name::pParent(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set parent name                                                            */
+/* set parent article                                                         */
 /*----------------------------------------------------------------------------*/
-void Name::vParent(Name* pParent)
+void Article::vParent(Article* pParent)
 {
   _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   
@@ -225,33 +225,33 @@ void Name::vParent(Name* pParent)
 }
 
 /*----------------------------------------------------------------------------*/
-/* decrement references to this dictionary                                    */
+/* decrement references to this article                                       */
 /*----------------------------------------------------------------------------*/
-void Name::vRefDec(void)
+void Article::vRefDec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ARTICLE,_FOOTER_);
   
   u8 iRef = --m_ixRefCount;
   
-  //vTrace("DIC: %s --ref : %lld\n"_Stz,m_sName.s(),iRef);
+  //vTrace("ARTICLE: %s --ref : %lld\n"_Stz,m_sArticle.s(),iRef);
 }
 
 /*----------------------------------------------------------------------------*/
-/* increment references to this dictionary                                    */
+/* increment references to this article                                       */
 /*----------------------------------------------------------------------------*/
-void Name::vRefInc(void)
+void Article::vRefInc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ARTICLE,_FOOTER_);
   
   u8 iRef = ++m_ixRefCount;
   
-  //vTrace("DIC: %s ++ref : %lld\n"_Stz,m_sName.s(),iRef);
+  //vTrace("ARTICLE: %s ++ref : %lld\n"_Stz,m_sArticle.s(),iRef);
 }
 
 /*----------------------------------------------------------------------------*/
-/* test for outstanding references to this dictionary                         */
+/* test for outstanding references to this article                            */
 /*----------------------------------------------------------------------------*/
-bool Name::bRefOut(void)
+bool Article::bRefOut(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ARTICLE,_FOOTER_);
   
@@ -264,7 +264,7 @@ bool Name::bRefOut(void)
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-__aFooterFunction(Name);
+__aFooterFunction(Article);
 
 /*============================================================================*/
 /* end                                                                        */

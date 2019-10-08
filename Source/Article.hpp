@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* Name.hpp -- Name (of object instance)                                      */
+/* Article.hpp -- Article                                                   */
 /*============================================================================*/
 #pragma once
 
 namespace Structures
 {
-  class Name : public Object,
-               public ListItem_t<Name>,
-               public ListNL_t__<Name>
+  class Article : public Object,
+                   public ListItem_t<Article>,
+                   public ListNL_t__<Article>
   {
   private:
     Lock    m_okLock;
   
-    s32     m_sName;     // name of the object instance
-    eNK     m_eKind;     // kind of name
-    Object* m_pObject;   // pointer to the named object
+    s32     m_sName;       // name of the Article
+    eNK     m_eKind;       // kind of article
+    Object* m_pObject;     // pointer to the named object
   
-    Name*   m_pCategory; // category of this name
-    Name*   m_pParent;   // parent of this name
-    Name*   m_pChild;    // child of this name
+    Article* m_pCategory;  // category of this Article
+    Article* m_pParent;    // parent of this Article
+    Article* m_pChild;     // child of this Article
   
     Atomic   m_ixRefCount; // reference count
   
@@ -29,14 +29,14 @@ namespace Structures
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Name(Stz* szName);
-   ~Name(void) noexcept(false);
+    Article(Stz* szArticle);
+   ~Article(void) noexcept(false);
   
-    Name* pCategory(void);
-    void  vCategory(Name* pCategory);
+    Article* pCategory(void);
+    void  vCategory(Article* pCategory);
   
-    Name* pChild(void);
-    void  vChild(Name* pChild);
+    Article* pChild(void);
+    void  vChild(Article* pChild);
   
     void  vDropRead(void);
     void  vDropWrite(void);
@@ -53,8 +53,8 @@ namespace Structures
     Object* pObject(void);
     void    vObject(Object* pObject);
 
-    Name* pParent(void);
-    void vParent(Name* pParent);
+    Article* pParent(void);
+    void vParent(Article* pParent);
   
     void  vRefDec(void);
     void  vRefInc(void);

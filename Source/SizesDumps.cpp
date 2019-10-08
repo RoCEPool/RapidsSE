@@ -452,7 +452,7 @@ i8 giClassSize[]
   /*    */ sizeof(ApiState),           // CN_APISTATE
   /* 22 */ sizeof(Arg),                // CN_ARG
   /* 23 */ sizeof(Arguments),          // CN_ARGUMENTS
-  /*    */ sizeof(Name),               // CN_ARTICLE
+  /*    */ sizeof(Article),            // CN_ARTICLE
   /* 24 */ sizeof(Atomic),             // CN_ATOMIC
   /* 25 */ sizeof(AttachMap),          // CN_ATTACHMAP
 
