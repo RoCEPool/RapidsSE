@@ -14,10 +14,8 @@ namespace Structures
 
 //------------------------------------------------------------------------------
 
-
 #include "ArrayNL_t.hpp"
 
-#include "FolderItem_t.hpp"
 #include "FreeItem.hpp"
 
 #include "HashInsert.hpp"
@@ -34,7 +32,6 @@ namespace Structures
 #include "ListNL_t__.hpp"
 #include "ListNL_t.hpp"
 
-
 #include "QueueBuffer.hpp"
 #include "Queue.hpp"
 
@@ -44,15 +41,15 @@ namespace Structures
 #include "SkipListNL.hpp"
 
 #include "VectorNL_t.hpp"
+
 #include "Wilderness.hpp"
 
-// - - -
+// -- -- -- -- -- -- -- --
 
-#include "Folder_t.hpp"
+#include "Article.hpp"
 #include "MiniHeap_t.hpp"
 #include "TrayNL_t.hpp"
 
-#include "Article.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
