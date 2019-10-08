@@ -29,7 +29,7 @@ namespace Forth
 #include "Local.hpp"
 #include "LocalSet.hpp"
 #include "Routine.hpp"
-#include "ForthWord.hpp"
+#include "Word.hpp"
 
 #include "Stack.hpp"
 
