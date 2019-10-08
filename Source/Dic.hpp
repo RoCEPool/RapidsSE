@@ -11,7 +11,7 @@ namespace Forth
     Article*    m_pArticle;  // the dictionary article
   
     s32         m_sName;     // name of this dictionary
-    ForthWord*  m_pDicKind;  // kind of dictionary
+    Word*  m_pDicKind;  // kind of dictionary
   
     // must be last
     Footer m_xFooter;
@@ -27,23 +27,23 @@ namespace Forth
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static void vFinalize(eCN eClass, Object* pObject);
     
-    void  vAddWord(ForthWord* pWord);
-    ForthWord* pDicKind(void);
-    void  vDicKind(ForthWord* pDicKind);
-    ForthWord* pEachWord(ForthWord* pKind, ForthWord* pPrior);
-    ForthWord* pFindWord(Stz* szName);
-    ForthWord* pFindStep(StepFp fpStep);
+    void  vAddWord(Word* pWord);
+    Word* pDicKind(void);
+    void  vDicKind(Word* pDicKind);
+    Word* pEachWord(Word* pKind, Word* pPrior);
+    Word* pFindWord(Stz* szName);
+    Word* pFindStep(StepFp fpStep);
     bool  bHasWords(void);
     void  vInit(void);
     bool  bIsName(Stz* szName);
-    ForthWord* pLastWord(void);
+    Word* pLastWord(void);
     void  vListWords(void);
     Stz*  szName(void);
     void  vName(Stz* szName);
     void  vRefDec(void);
     void  vRefInc(void);
     bool  bRefOut(void);
-    ForthWord* pRemoveWord(Stz* szName);
+    Word* pRemoveWord(Stz* szName);
     i8    nWords(void);
     
     Footer* aFooter(void);

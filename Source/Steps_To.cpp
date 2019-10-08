@@ -27,9 +27,9 @@ void Step::vToBody(MP_Task mpTask)
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK(">body"_Stz);
-  ForthWord* pWord = _pForthWord(pWordObject);
+  Word* pWord = _pForthWord(pWordObject);
   
-  //  char* pBody = pAdd<char*>(pWord,sizeof(ForthWord));
+  //  char* pBody = pAdd<char*>(pWord,sizeof(Word));
   char* pBody = pWord->aWspArea();
   
   Object* pPtrBody = reinterpret_cast<Object*>(pBody);

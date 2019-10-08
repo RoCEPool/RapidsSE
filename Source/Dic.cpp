@@ -78,7 +78,7 @@ Dic::~Dic(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add word to this dictionary                                                */
 /*----------------------------------------------------------------------------*/
-void Dic::vAddWord(ForthWord* pWord)
+void Dic::vAddWord(Word* pWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
@@ -94,7 +94,7 @@ void Dic::vAddWord(ForthWord* pWord)
 /*----------------------------------------------------------------------------*/
 /* get dictionary kind                                                        */
 /*----------------------------------------------------------------------------*/
-ForthWord* Dic::pDicKind(void)
+Word* Dic::pDicKind(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
@@ -104,7 +104,7 @@ ForthWord* Dic::pDicKind(void)
 /*----------------------------------------------------------------------------*/
 /* set dictionary kind                                                        */
 /*----------------------------------------------------------------------------*/
-void Dic::vDicKind(ForthWord* pDicKind)
+void Dic::vDicKind(Word* pDicKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
@@ -122,20 +122,20 @@ void Dic::vDump(eCN eClass, Object* pObject, Stz* aTab)
          pDic->m_sName.aChar(),
          pDic->m_pArticle->nItems());
   
-  //for (ForthWord* pWord = m_pLastWord; pWord; pWord = pWord->pPrevWord())
+  //for (Word* pWord = m_pLastWord; pWord; pWord = pWord->pPrevWord())
   //  pWord->vDump();
 }
 
 /*----------------------------------------------------------------------------*/
 /* progressively return each word which is of given kind                      */
 /*----------------------------------------------------------------------------*/
-ForthWord* Dic::pEachWord(ForthWord* pKind, ForthWord* pPrior)
+Word* Dic::pEachWord(Word* pKind, Word* pPrior)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   m_pArticle->vGrabRead();
   
-  ForthWord* pWord = (pPrior) ? pPrior->pPrevWord() : pLastWord();
+  Word* pWord = (pPrior) ? pPrior->pPrevWord() : pLastWord();
   
   for ( ; pWord; pWord = pWord->pPrevWord()) {
     
@@ -169,15 +169,15 @@ void Dic::vFinalize(eCN eClass, Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* find a word given name                                                     */
 /*----------------------------------------------------------------------------*/
-ForthWord* Dic::pFindWord(Stz* aName)
+Word* Dic::pFindWord(Stz* aName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   m_pArticle->vGrabRead();
   
-  for (ForthWord* pWord = pLastWord(); pWord; pWord = pWord->pPrevWord()) {
+  for (Word* pWord = pLastWord(); pWord; pWord = pWord->pPrevWord()) {
     
-    //void* aEndWord = aAdd<void*>(pWord,sizeof(ForthWord));
+    //void* aEndWord = aAdd<void*>(pWord,sizeof(Word));
     
     if (pWord->sName().bSame(aName)) {
       m_pArticle->vDropRead();
@@ -197,13 +197,13 @@ ForthWord* Dic::pFindWord(Stz* aName)
 /*----------------------------------------------------------------------------*/
 /* find a word given pointer to step function                                 */
 /*----------------------------------------------------------------------------*/
-ForthWord* Dic::pFindStep(StepFp fpStep)
+Word* Dic::pFindStep(StepFp fpStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   m_pArticle->vGrabRead();
   
-  for (ForthWord* pWord = pLastWord(); pWord; pWord = pWord->pPrevWord()) {
+  for (Word* pWord = pLastWord(); pWord; pWord = pWord->pPrevWord()) {
     if (WT_INTRINSIC == pWord->eWordType() && fpStep == pWord->fpEntryStep()) {
       m_pArticle->vDropRead();
       return pWord;
@@ -235,7 +235,7 @@ void Dic::vInit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  ForthWord* pWord = ForthWord::pToWord(this);
+  Word* pWord = Word::pToWord(this);
   
   //m_sName.vInit();
   m_sName = pWord->sName();
@@ -258,7 +258,7 @@ bool Dic::bIsName(Stz* szName)
 /*----------------------------------------------------------------------------*/
 /* get last word                                                              */
 /*----------------------------------------------------------------------------*/
-ForthWord* Dic::pLastWord(void)
+Word* Dic::pLastWord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
@@ -266,7 +266,7 @@ ForthWord* Dic::pLastWord(void)
   if (! pLastArticle)
     return nullptr;
   
-  return (ForthWord*)pLastArticle->pObject();
+  return (Word*)pLastArticle->pObject();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -278,7 +278,7 @@ void Dic::vListWords(void)
   
   m_pArticle->vGrabRead();
   
-  for (ForthWord* pWord = pLastWord(); pWord; pWord = pWord->pPrevWord()) {
+  for (Word* pWord = pLastWord(); pWord; pWord = pWord->pPrevWord()) {
     
     vTrace(": %s (dictionary %s)"_Stz,
            pWord->sName().aChar(),
@@ -345,11 +345,11 @@ bool Dic::bRefOut(void)
 /*----------------------------------------------------------------------------*/
 /* forget a word given name                                                   */
 /*----------------------------------------------------------------------------*/
-ForthWord* Dic::pRemoveWord(Stz* szName)
+Word* Dic::pRemoveWord(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  ForthWord* pWordRemove = pFindWord(szName);
+  Word* pWordRemove = pFindWord(szName);
   if (! pWordRemove)
     return pWordRemove;
   

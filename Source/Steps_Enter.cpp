@@ -25,8 +25,8 @@ void Step::vEnterObject(MP_Task mpTask)
   mpTask->m_pReturnStack->vPushCell(mpTask->m_aFipCell);
   mpTask->m_aFipCell = *(Cell**)afpEntryCell;
   
-  ForthWord* pWord = pAdd<ForthWord*>((Object*)afpEntryCell,
-                            -( sizeof(ForthWord)
+  Word* pWord = pAdd<Word*>((Object*)afpEntryCell,
+                            -( sizeof(Word)
                                - sizeof(Cell*)
                                - sizeof(Wsp_t<C_WSP_WORD>)
                                - sizeof(Footer)

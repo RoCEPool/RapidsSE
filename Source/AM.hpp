@@ -60,7 +60,7 @@ namespace StorageEngine
     static i8   iElapsedSsec(void);
     static i8   iEpoch(void);
     static Formatters* pFormatters(void);
-    static ForthWord* pForthWord(void);
+    static Word* pForthWord(void);
     static Grid* pGrid(void);
     static i8   nConnectedNodes(void);
     static i8   nDefinedNodes(void);
@@ -99,7 +99,7 @@ namespace StorageEngine
     static StepTiming* pStepTiming(void);
     static PoolBuffer* pTakenBuffers(void);
     static i8   nTakenBytes(void);
-    static ForthWord* pTenants(void);
+    static Word* pTenants(void);
     static i8   iThisNodeNo(void);
     static void vThreadBegins(void);
     static i8   nThreadsBegun(void);
@@ -114,7 +114,7 @@ namespace StorageEngine
     static void vAttachMap(Header* aHeader);
     static void vBootError(bool bBootError);
     static void vDropTaskLock(Task* pTask);
-    static void vForthWord(ForthWord* pForthWord);
+    static void vForthWord(Word* pForthWord);
     static void vGrabTaskLock(Task* pTask);
     static void vIndexEntries(i8 nIndexEntries);
     static void vIndexName(Job_Dynamic* pJob, Stz* szIndexNm);
@@ -134,7 +134,7 @@ namespace StorageEngine
     static void vTakenBytes(i8 nTakenBytes);
     static bool bTaskIsLocked(Task* pTask);
     static void vTaskTransition(Task* pTask, i8 iTransition);
-    static void vTenants(ForthWord* pTenants);
+    static void vTenants(Word* pTenants);
     static void vTriggerBidingTask(Task* pTask);
 
     //

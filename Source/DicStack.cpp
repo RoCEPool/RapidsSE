@@ -127,18 +127,18 @@ void DicStack::vDump(eCN eClass, Object* pObject, Stz* aTab)
 
   vTrace("\n"_Stz);
 
-  //for (ForthWord* pWord = m_pCurrentWord; pWord; pWord = pWord->pPrevWord())
+  //for (Word* pWord = m_pCurrentWord; pWord; pWord = pWord->pPrevWord())
   //  pWord->vDump();
 }
 
 /*----------------------------------------------------------------------------*/
 /* find word in stack of dictionaries                                         */
 /*----------------------------------------------------------------------------*/
-ForthWord* DicStack::pFindWord(s32& sName)
+Word* DicStack::pFindWord(s32& sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
-  ForthWord* pWord = pFindWord(sName.aStz());
+  Word* pWord = pFindWord(sName.aStz());
   
   return pWord;
 }
@@ -146,11 +146,11 @@ ForthWord* DicStack::pFindWord(s32& sName)
 /*----------------------------------------------------------------------------*/
 /* find word in stack of dictionaries                                         */
 /*----------------------------------------------------------------------------*/
-ForthWord* DicStack::pFindWord(Stz* aName)
+Word* DicStack::pFindWord(Stz* aName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
-  ForthWord* pWord;
+  Word* pWord;
   
   for (i8 i_Dic = m_iTop; i_Dic >= 0; i_Dic--) {
     
@@ -171,13 +171,13 @@ ForthWord* DicStack::pFindWord(Stz* aName)
 /*----------------------------------------------------------------------------*/
 /* find word in current dictionary                                            */
 /*----------------------------------------------------------------------------*/
-ForthWord* DicStack::pFindInCurrent(Stz* aName)
+Word* DicStack::pFindInCurrent(Stz* aName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
   ASSERT(m_iTop >= 0);
   
-  ForthWord* pWord;
+  Word* pWord;
   
   if ( (pWord = m_pDic[m_iTop]->pFindWord((Stz*)aName)) )
     return pWord;
@@ -188,11 +188,11 @@ ForthWord* DicStack::pFindInCurrent(Stz* aName)
 /*----------------------------------------------------------------------------*/
 /* locate word in stack of dictionaries that has given cell                   */
 /*----------------------------------------------------------------------------*/
-ForthWord* DicStack::pLocateWord(Cell* aHasCell)
+Word* DicStack::pLocateWord(Cell* aHasCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
-  ForthWord* pWord;
+  Word* pWord;
   
   for (i8 i_Dic = m_iTop; i_Dic >= 0; i_Dic--) {
     
@@ -214,11 +214,11 @@ ForthWord* DicStack::pLocateWord(Cell* aHasCell)
 /*----------------------------------------------------------------------------*/
 /* locate word that has given step                                            */
 /*----------------------------------------------------------------------------*/
-ForthWord* DicStack::pLocateWord(StepFp fpHasStep)
+Word* DicStack::pLocateWord(StepFp fpHasStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
-  ForthWord* pWord;
+  Word* pWord;
   
   for (i8 i_Dic = m_iTop; i_Dic >= 0; i_Dic--) {
     
@@ -292,11 +292,11 @@ void DicStack::vPush(Dic* pDic)
 /*----------------------------------------------------------------------------*/
 /* forget word in stack of dictionaries                                       */
 /*----------------------------------------------------------------------------*/
-ForthWord* DicStack::pRemoveWord(s32& sName)
+Word* DicStack::pRemoveWord(s32& sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
-  ForthWord* pRemovedWord = nullptr;
+  Word* pRemovedWord = nullptr;
   
   for (i8 i_Dic = m_iTop; i_Dic >= 0; i_Dic--) {
     
@@ -333,7 +333,7 @@ void DicStack::vSetStack(DicPath* pDicPath)
       continue;
     
     pDic->vListWords();
-    ForthWord* pWord = pDic->pFindWord(sFolderNm);
+    Word* pWord = pDic->pFindWord(sFolderNm);
     
     Dic* pSubDic = _pDic(pWord->aWspArea());
     

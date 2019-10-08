@@ -33,7 +33,7 @@ namespace Esses         { template <int BYTES> class String_t;
                           typedef Bytes_t<C_4K>    b4K;   // note this is 4K not 4KB
                                                                               }
 namespace Focals        {                                                     }
-namespace Forth         { class Cell; class Dic; class ForthWord;             }
+namespace Forth         { class Cell; class Dic; class Word;             }
 namespace Gadgets       { class EnumFlags;                                    }
 namespace Grids         { class Grid; class Node;                             }
 namespace Host          {                                                     }

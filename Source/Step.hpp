@@ -8,7 +8,7 @@ namespace Steps
   class Step
   {
   friend class Tasks::Task;
-  friend class Forth::ForthWord;
+  friend class Forth::Word;
   
   public:
     static void vAddSteps(void);

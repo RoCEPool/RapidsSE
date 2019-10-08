@@ -19,7 +19,7 @@ namespace Tasks
                public ListItem_t<Task>
   {
   friend class Steps::Step;
-  friend class ForthWord;
+  friend class Word;
   friend Scheduler;
 
   private:
@@ -143,7 +143,7 @@ namespace Tasks
     void vAddBaseWords(void);
     void vAddMunged(MP_Task mpTask);
     void vAddRoutines(void);
-    ForthWord* pCompileColon(s48K& sDefinition);
+    Word* pCompileColon(s48K& sDefinition);
     void  vCompileConstant(s48K& sDefinition);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

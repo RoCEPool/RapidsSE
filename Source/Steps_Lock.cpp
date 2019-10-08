@@ -114,7 +114,7 @@ ENTRY("vLockInit"_Stz);
   ASSERT(pLock);
   ASSERT(CN_LOCK == pLock->eClass());
   
-  ForthWord* pLockWord = ForthWord::pToWord(pLock);
+  Word* pLockWord = Word::pToWord(pLock);
   
   EXIT();
 }

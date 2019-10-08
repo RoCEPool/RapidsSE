@@ -581,7 +581,7 @@ bool SePrompt::bIsPromptWord(void)
   
   Dic* pRootDic = AM::pRootDic();
 
-  ForthWord* pWord = pRootDic->pFindWord(sWordNm);
+  Word* pWord = pRootDic->pFindWord(sWordNm);
   
   if ( ! (pWord && pWord->bPrompt()) )
     return false;

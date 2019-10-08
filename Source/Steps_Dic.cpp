@@ -78,7 +78,7 @@ void Step::vDicKindSet(MP_Task mpTask)
   
   Dic* pDic = _pDic(pPtrDic);
   
-  ForthWord* pKind = _pForthWord(pPtrKind);
+  Word* pKind = _pForthWord(pPtrKind);
   
   pDic->vDicKind(pKind);
   
@@ -99,7 +99,7 @@ ENTRY("vDicLastWord"_Stz);
   
   Dic* pDic = _pDic(pPtrDic);
   
-  ForthWord* pLastWord = pDic->pLastWord();
+  Word* pLastWord = pDic->pLastWord();
   
   mpTask->m_pDataStack->vPushPointer(pLastWord);
   

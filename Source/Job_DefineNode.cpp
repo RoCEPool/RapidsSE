@@ -150,7 +150,7 @@ eEC Job_DefineNode::ePopulateJob(TokenVec* pTokenVec)
   
   Dic* pRootDic = AM::pRootDic();
 
-  ForthWord* pWord_syn = pRootDic->pFindWord("defineNode_syn"_Stz);
+  Word* pWord_syn = pRootDic->pFindWord("defineNode_syn"_Stz);
 
   bool b = JobHelper::bExtractArgs(&m_oEnmSet,pWord_syn->pEnmSet(),pTokenVec);
   if (! b) {

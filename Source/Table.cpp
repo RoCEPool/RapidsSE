@@ -66,7 +66,7 @@ Table::Table(void)
   gpAttachMap->m_oStatistics.Table.m_nCreates++;
 #endif
   
-  ForthWord* pWord = ForthWord::pToWord(this);
+  Word* pWord = Word::pToWord(this);
   
   m_sTableName = pWord->sName();
   m_eTableType = TT_NORMAL;
@@ -150,15 +150,15 @@ Index* Table::pFindIndex(DicStack* pDicStack, Stz* aTableNm, Stz* aIndexNm)
 {
   Dic* pDic = pDicStack->pTop();
   
-  ForthWord* pTableDicWord = pDic->pFindWord(aTableNm);
+  Word* pTableDicWord = pDic->pFindWord(aTableNm);
   
   Dic* pTableDic = _pDic(pTableDicWord->aWspArea());
 
-  ForthWord* pIndexesDicWord = pTableDic->pFindWord("Indexes"_Stz);
+  Word* pIndexesDicWord = pTableDic->pFindWord("Indexes"_Stz);
   
   Dic* pIndexesDic = _pDic(pIndexesDicWord->aWspArea());
   
-  ForthWord* pIndexDicWord = pIndexesDic->pFindWord(aIndexNm);
+  Word* pIndexDicWord = pIndexesDic->pFindWord(aIndexNm);
   
   Index* pIndex = _pIndex(pIndexDicWord->aWspArea());
   
@@ -172,11 +172,11 @@ Table* Table::pFindTable(DicStack* pDicStack, Stz* aTableNm)
 {
   Dic* pDic = pDicStack->pTop();
   
-  ForthWord* pTableDicWord = pDic->pFindWord(aTableNm);
+  Word* pTableDicWord = pDic->pFindWord(aTableNm);
   
   Dic* pTableDic = _pDic(pTableDicWord->aWspArea());
   
-  ForthWord* pTableWord = pTableDic->pFindWord(aTableNm);
+  Word* pTableWord = pTableDic->pFindWord(aTableNm);
   
   Table* pTable = _pTable(pTableWord->aWspArea());
   

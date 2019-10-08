@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ForthWord.cpp -- Forth SingleWord in Dictionary                                  */
+/* Word.cpp -- Forth SingleWord in Dictionary                                  */
 /*============================================================================*/
 
 #include "Forth.h"
@@ -13,9 +13,9 @@ extern StepFp gfpEntryStep;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ForthWord* Forth::_pForthWord(void* aAddr)
+Word* Forth::_pForthWord(void* aAddr)
 {
-  ForthWord* pWord = reinterpret_cast<ForthWord*>(aAddr);
+  Word* pWord = reinterpret_cast<Word*>(aAddr);
   
   RASSERT_TYPE(pWord,CN_WORD);
 
@@ -25,9 +25,9 @@ ForthWord* Forth::_pForthWord(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* ForthWord::operator new(size_t, Dic* pDic)
+void* Word::operator new(size_t, Dic* pDic)
 {
-  ForthWord* pWord = (ForthWord*)(HeapMem::pAllocate(CN_WORD));
+  Word* pWord = (Word*)(HeapMem::pAllocate(CN_WORD));
   
   pWord->m_bPersistent = false;
   pWord->m_pDic = pDic;
@@ -38,11 +38,11 @@ void* ForthWord::operator new(size_t, Dic* pDic)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* ForthWord::operator new(size_t, Dic* pDic, bool bPersistent)
+void* Word::operator new(size_t, Dic* pDic, bool bPersistent)
 {
   RASSERT(bPersistent || ! bPersistent);
   
-  ForthWord* pWord = (ForthWord*)(HeapMem::pAllocate(CN_WORD,bPersistent));
+  Word* pWord = (Word*)(HeapMem::pAllocate(CN_WORD,bPersistent));
   
   pWord->m_bPersistent = bPersistent;
   pWord->m_pDic = pDic;
@@ -53,9 +53,9 @@ void* ForthWord::operator new(size_t, Dic* pDic, bool bPersistent)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void ForthWord::operator delete(void* pWordAddress)
+void Word::operator delete(void* pWordAddress)
 {
-  ForthWord* pWord = reinterpret_cast<ForthWord*>(pWordAddress);
+  Word* pWord = reinterpret_cast<Word*>(pWordAddress);
  
   HeapMem::vFree(pWord,pWord->m_bPersistent);
 }
@@ -63,7 +63,7 @@ void ForthWord::operator delete(void* pWordAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ForthWord::ForthWord(Stz* szName)
+Word::Word(Stz* szName)
 : Object(CN_WORD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
@@ -102,7 +102,7 @@ ForthWord::ForthWord(Stz* szName)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-ForthWord::~ForthWord(void) noexcept(false)
+Word::~Word(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -124,27 +124,27 @@ ForthWord::~ForthWord(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* dump dictionary                                                            */
 /*----------------------------------------------------------------------------*/
-void ForthWord::vDump(eCN eClass, Object* pObject, Stz* aTab)
+void Word::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  ForthWord* pWord = _pForthWord(pObject);
+  Word* pWord = _pForthWord(pObject);
   
   // dump only the objects
   if (WT_OBJECT == pWord->m_eWordType)
     pWord->vObjectDump(aTab);
   
-  //for (ForthWord* pWord = m_pCurrentWord; pWord; pWord = pWord->pPrevWord())
+  //for (Word* pWord = m_pCurrentWord; pWord; pWord = pWord->pPrevWord())
   //  pWord->vDump();
 }
 
 /*----------------------------------------------------------------------------*/
 /* get the outer word of this data ptr                                        */
 /*----------------------------------------------------------------------------*/
-ForthWord* ForthWord::pToWord(void* pBody)
+Word* Word::pToWord(void* pBody)
 {
   // static function
   
-  ForthWord* pWord = (ForthWord*)aAdd<ForthWord*>(pBody,
-                                   -( sizeof(ForthWord)
+  Word* pWord = (Word*)aAdd<Word*>(pBody,
+                                   -( sizeof(Word)
                                       - sizeof(Wsp_t<C_WSP_WORD>)
                                       - sizeof(Footer)
                                     )
@@ -162,7 +162,7 @@ ForthWord* ForthWord::pToWord(void* pBody)
 /*----------------------------------------------------------------------------*/
 /* allot data space                                                           */
 /*----------------------------------------------------------------------------*/
-byte* ForthWord::ayAllot(i8 nBytes)
+byte* Word::ayAllot(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -178,7 +178,7 @@ byte* ForthWord::ayAllot(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* append a pointer to cell                                                   */
 /*----------------------------------------------------------------------------*/
-void ForthWord::vAppend(Cell* aCell)
+void Word::vAppend(Cell* aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -189,7 +189,7 @@ void ForthWord::vAppend(Cell* aCell)
 /*----------------------------------------------------------------------------*/
 /* append a pointer to cell                                                   */
 /*----------------------------------------------------------------------------*/
-void* ForthWord::aAppend(Cell* aCell)
+void* Word::aAppend(Cell* aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -203,7 +203,7 @@ void* ForthWord::aAppend(Cell* aCell)
 /*----------------------------------------------------------------------------*/
 /* append an i8 integer                                                       */
 /*----------------------------------------------------------------------------*/
-void ForthWord::vAppend(i8 iInt)
+void Word::vAppend(i8 iInt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -214,7 +214,7 @@ void ForthWord::vAppend(i8 iInt)
 /*----------------------------------------------------------------------------*/
 /* append an i8 integer                                                       */
 /*----------------------------------------------------------------------------*/
-void* ForthWord::aAppend(i8 iInt)
+void* Word::aAppend(i8 iInt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -228,7 +228,7 @@ void* ForthWord::aAppend(i8 iInt)
 /*----------------------------------------------------------------------------*/
 /* append a value  (the entire value, not the pointer to it)                  */
 /*----------------------------------------------------------------------------*/
-void ForthWord::vAppend(GenVar* pGenVar)
+void Word::vAppend(GenVar* pGenVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -239,7 +239,7 @@ void ForthWord::vAppend(GenVar* pGenVar)
 /*----------------------------------------------------------------------------*/
 /* append a value  (the entire value, not the pointer to it)                  */
 /*----------------------------------------------------------------------------*/
-void* ForthWord::aAppend(GenVar* pGenVar)
+void* Word::aAppend(GenVar* pGenVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -251,7 +251,7 @@ void* ForthWord::aAppend(GenVar* pGenVar)
 /*----------------------------------------------------------------------------*/
 /* append a value  (the entire value, not the pointer to it)                  */
 /*----------------------------------------------------------------------------*/
-void ForthWord::vAppend(ForthValue* aValue)
+void Word::vAppend(ForthValue* aValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
@@ -262,7 +262,7 @@ void ForthWord::vAppend(ForthValue* aValue)
 /*----------------------------------------------------------------------------*/
 /* append a value  (the entire value, not the pointer to it)                  */
 /*----------------------------------------------------------------------------*/
-void* ForthWord::aAppend(ForthValue* aValue)
+void* Word::aAppend(ForthValue* aValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
@@ -278,7 +278,7 @@ void* ForthWord::aAppend(ForthValue* aValue)
 /*----------------------------------------------------------------------------*/
 /* append address of pointer to task step                                     */
 /*----------------------------------------------------------------------------*/
-void ForthWord::vAppend(StepFp* afpStepFp)
+void Word::vAppend(StepFp* afpStepFp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
@@ -289,7 +289,7 @@ void ForthWord::vAppend(StepFp* afpStepFp)
 /*----------------------------------------------------------------------------*/
 /* append address of pointer to task step                                     */
 /*----------------------------------------------------------------------------*/
-void* ForthWord::aAppend(StepFp* afpStepFp)
+void* Word::aAppend(StepFp* afpStepFp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
@@ -303,7 +303,7 @@ void* ForthWord::aAppend(StepFp* afpStepFp)
 /*----------------------------------------------------------------------------*/
 /* get article                                                                */
 /*----------------------------------------------------------------------------*/
-Article* ForthWord::pArticle(void)
+Article* Word::pArticle(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -313,7 +313,7 @@ Article* ForthWord::pArticle(void)
 /*----------------------------------------------------------------------------*/
 /* set article                                                                */
 /*----------------------------------------------------------------------------*/
-void ForthWord::vArticle(Article* pArticle)
+void Word::vArticle(Article* pArticle)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -323,14 +323,14 @@ void ForthWord::vArticle(Article* pArticle)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void ForthWord::vContentDump(void)
+void Word::vContentDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   Dic* pRootDic = AM::pRootDic();
-  ForthWord* pStepWord = pRootDic->pFindStep(m_fpEntryStep);
+  Word* pStepWord = pRootDic->pFindStep(m_fpEntryStep);
   
-  vTrace("ForthWord %p: %s %s Kind %s Immediate %d DataBytes %lld "_Stz
+  vTrace("Word %p: %s %s Kind %s Immediate %d DataBytes %lld "_Stz
          "Step %p %s ..Rows.. %p\n"_Stz,
          this,
          m_sName.aChar(),
@@ -347,7 +347,7 @@ void ForthWord::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /* get which dictionary                                                       */
 /*----------------------------------------------------------------------------*/
-Dic* ForthWord::pDic(void)
+Dic* Word::pDic(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -357,7 +357,7 @@ Dic* ForthWord::pDic(void)
 /*----------------------------------------------------------------------------*/
 /* get epoch when word was created                                            */
 /*----------------------------------------------------------------------------*/
-i8 ForthWord::iEpoch(void)
+i8 Word::iEpoch(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -367,7 +367,7 @@ i8 ForthWord::iEpoch(void)
 /*----------------------------------------------------------------------------*/
 /* get entry step                                                             */
 /*----------------------------------------------------------------------------*/
-StepFp ForthWord::fpEntryStep(void)
+StepFp Word::fpEntryStep(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -377,7 +377,7 @@ StepFp ForthWord::fpEntryStep(void)
 /*----------------------------------------------------------------------------*/
 /* set entry step                                                             */
 /*----------------------------------------------------------------------------*/
-void ForthWord::vEntryStep(StepFp fpStep)
+void Word::vEntryStep(StepFp fpStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -387,7 +387,7 @@ void ForthWord::vEntryStep(StepFp fpStep)
 /*----------------------------------------------------------------------------*/
 /* get which cell to start executing from                                     */
 /*----------------------------------------------------------------------------*/
-Cell* ForthWord::aEntryCell(void)
+Cell* Word::aEntryCell(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -397,7 +397,7 @@ Cell* ForthWord::aEntryCell(void)
 /*----------------------------------------------------------------------------*/
 /* set which cell to start executing from                                     */
 /*----------------------------------------------------------------------------*/
-void ForthWord::vEntryCell(Cell* aCell)
+void Word::vEntryCell(Cell* aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -407,7 +407,7 @@ void ForthWord::vEntryCell(Cell* aCell)
 /*----------------------------------------------------------------------------*/
 /* get address of this words entry step                                       */
 /*----------------------------------------------------------------------------*/
-StepFp* ForthWord::afpEntryStep(void)
+StepFp* Word::afpEntryStep(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -417,12 +417,12 @@ StepFp* ForthWord::afpEntryStep(void)
 /*----------------------------------------------------------------------------*/
 /* encode call to named word                                                  */
 /*----------------------------------------------------------------------------*/
-void ForthWord::vEncode(Stz* aWordNm)
+void Word::vEncode(Stz* aWordNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   Dic* pRootDic = AM::pRootDic();
-  ForthWord* pCalledWord = pRootDic->pFindWord(aWordNm);
+  Word* pCalledWord = pRootDic->pFindWord(aWordNm);
   ASSERT(pCalledWord);
   
   vAppend(pCalledWord->afpEntryStep());
@@ -431,7 +431,7 @@ void ForthWord::vEncode(Stz* aWordNm)
 /*----------------------------------------------------------------------------*/
 /* encode call to named word which has a cell* argument                       */
 /*----------------------------------------------------------------------------*/
-void ForthWord::vEncode(Stz* aWordNm, Cell* aCell)
+void Word::vEncode(Stz* aWordNm, Cell* aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -443,7 +443,7 @@ void ForthWord::vEncode(Stz* aWordNm, Cell* aCell)
 /*----------------------------------------------------------------------------*/
 /* encode call to named word which has a value argument                       */
 /*----------------------------------------------------------------------------*/
-void ForthWord::vEncode(Stz* aWordNm, GenVar* pGenVar)
+void Word::vEncode(Stz* aWordNm, GenVar* pGenVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -455,7 +455,7 @@ void ForthWord::vEncode(Stz* aWordNm, GenVar* pGenVar)
 /*----------------------------------------------------------------------------*/
 /* encode call to named word which has a word* argument                       */
 /*----------------------------------------------------------------------------*/
-void ForthWord::vEncode(Stz* aWordNm, ForthWord* pCalledWord)
+void Word::vEncode(Stz* aWordNm, Word* pCalledWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -468,7 +468,7 @@ void ForthWord::vEncode(Stz* aWordNm, ForthWord* pCalledWord)
 /*----------------------------------------------------------------------------*/
 /* encode call of entry step                                                  */
 /*----------------------------------------------------------------------------*/
-void ForthWord::vEncode(StepFp* afpEntryStep)
+void Word::vEncode(StepFp* afpEntryStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -478,7 +478,7 @@ void ForthWord::vEncode(StepFp* afpEntryStep)
 /*----------------------------------------------------------------------------*/
 /* get ename set                                                              */
 /*----------------------------------------------------------------------------*/
-EnmSet* ForthWord::pEnmSet(void)
+EnmSet* Word::pEnmSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -488,7 +488,7 @@ EnmSet* ForthWord::pEnmSet(void)
 /*----------------------------------------------------------------------------*/
 /* set ename set                                                              */
 /*----------------------------------------------------------------------------*/
-void ForthWord::vEnmSet(EnmSet* pEnmSet)
+void Word::vEnmSet(EnmSet* pEnmSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -498,7 +498,7 @@ void ForthWord::vEnmSet(EnmSet* pEnmSet)
 /*----------------------------------------------------------------------------*/
 /* get exit hook                                                              */
 /*----------------------------------------------------------------------------*/
-Stz* ForthWord::szExitHook(void)
+Stz* Word::szExitHook(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -508,7 +508,7 @@ Stz* ForthWord::szExitHook(void)
 /*----------------------------------------------------------------------------*/
 /* set exit hook                                                              */
 /*----------------------------------------------------------------------------*/
-void ForthWord::vExitHook(Stz* szExitHook)
+void Word::vExitHook(Stz* szExitHook)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -518,7 +518,7 @@ void ForthWord::vExitHook(Stz* szExitHook)
 /*----------------------------------------------------------------------------*/
 /* get pointer to first cell in data area                                     */
 /*----------------------------------------------------------------------------*/
-Cell* ForthWord::aFirstCell(void)
+Cell* Word::aFirstCell(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -530,7 +530,7 @@ Cell* ForthWord::aFirstCell(void)
 /*----------------------------------------------------------------------------*/
 /* does this word have given cell?                                            */
 /*----------------------------------------------------------------------------*/
-bool ForthWord::bHasCell(Cell* aCell)
+bool Word::bHasCell(Cell* aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
@@ -543,7 +543,7 @@ bool ForthWord::bHasCell(Cell* aCell)
 /*----------------------------------------------------------------------------*/
 /* get immediate flag                                                         */
 /*----------------------------------------------------------------------------*/
-bool ForthWord::bImmediate(void)
+bool Word::bImmediate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -553,7 +553,7 @@ bool ForthWord::bImmediate(void)
 /*----------------------------------------------------------------------------*/
 /* set immediate flag                                                         */
 /*----------------------------------------------------------------------------*/
-void ForthWord::vImmediate(bool bImmediate)
+void Word::vImmediate(bool bImmediate)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -563,7 +563,7 @@ void ForthWord::vImmediate(bool bImmediate)
 /*----------------------------------------------------------------------------*/
 /* is given name?                                                             */
 /*----------------------------------------------------------------------------*/
-bool ForthWord::bIsName(s32& sName)
+bool Word::bIsName(s32& sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -575,7 +575,7 @@ bool ForthWord::bIsName(s32& sName)
 /*----------------------------------------------------------------------------*/
 /* get word kind                                                              */
 /*----------------------------------------------------------------------------*/
-ForthWord* ForthWord::pKind(void)
+Word* Word::pKind(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -585,7 +585,7 @@ ForthWord* ForthWord::pKind(void)
 /*----------------------------------------------------------------------------*/
 /* set word kind                                                              */
 /*----------------------------------------------------------------------------*/
-void ForthWord::vKind(ForthWord* pKind)
+void Word::vKind(Word* pKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
@@ -595,7 +595,7 @@ void ForthWord::vKind(ForthWord* pKind)
 /*----------------------------------------------------------------------------*/
 /* get pointer to last cell                                                   */
 /*----------------------------------------------------------------------------*/
-Cell* ForthWord::aLastCell(void)
+Cell* Word::aLastCell(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -607,7 +607,7 @@ Cell* ForthWord::aLastCell(void)
 /*----------------------------------------------------------------------------*/
 /* get local  number                                                          */
 /*----------------------------------------------------------------------------*/
-i8 ForthWord::iLocalNo(void)
+i8 Word::iLocalNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -617,7 +617,7 @@ i8 ForthWord::iLocalNo(void)
 /*----------------------------------------------------------------------------*/
 /* set local number                                                           */
 /*----------------------------------------------------------------------------*/
-void ForthWord::vLocalNo(i8 iLocalNo)
+void Word::vLocalNo(i8 iLocalNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -627,7 +627,7 @@ void ForthWord::vLocalNo(i8 iLocalNo)
 /*----------------------------------------------------------------------------*/
 /* get name                                                                   */
 /*----------------------------------------------------------------------------*/
-s32& ForthWord::sName(void)
+s32& Word::sName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -637,7 +637,7 @@ s32& ForthWord::sName(void)
 /*----------------------------------------------------------------------------*/
 /* set name                                                                   */
 /*----------------------------------------------------------------------------*/
-void ForthWord::vName(Stz* szName)
+void Word::vName(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -649,7 +649,7 @@ void ForthWord::vName(Stz* szName)
 /*----------------------------------------------------------------------------*/
 /* dump object word                                                           */
 /*----------------------------------------------------------------------------*/
-void ForthWord::vObjectDump(Stz* aTab)
+void Word::vObjectDump(Stz* aTab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -669,7 +669,7 @@ void ForthWord::vObjectDump(Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* set number of parameters                                                   */
 /*----------------------------------------------------------------------------*/
-void ForthWord::vParams(i8 iParams)
+void Word::vParams(i8 iParams)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -679,7 +679,7 @@ void ForthWord::vParams(i8 iParams)
 /*----------------------------------------------------------------------------*/
 /* get number of parameters                                                   */
 /*----------------------------------------------------------------------------*/
-i8 ForthWord::iParams(void)
+i8 Word::iParams(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -689,7 +689,7 @@ i8 ForthWord::iParams(void)
 /*----------------------------------------------------------------------------*/
 /* get previous word                                                          */
 /*----------------------------------------------------------------------------*/
-ForthWord* ForthWord::pPrevWord(void)
+Word* Word::pPrevWord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
@@ -697,7 +697,7 @@ ForthWord* ForthWord::pPrevWord(void)
   if (! pPrevArticle)
     return nullptr;
   
-  ForthWord* pPrevWord = _pForthWord(pPrevArticle->pObject());
+  Word* pPrevWord = _pForthWord(pPrevArticle->pObject());
   
   return pPrevWord;
 }
@@ -705,7 +705,7 @@ ForthWord* ForthWord::pPrevWord(void)
 /*----------------------------------------------------------------------------*/
 /* get prompt flag                                                            */
 /*----------------------------------------------------------------------------*/
-bool ForthWord::bPrompt(void)
+bool Word::bPrompt(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -715,7 +715,7 @@ bool ForthWord::bPrompt(void)
 /*----------------------------------------------------------------------------*/
 /* set prompt flag                                                            */
 /*----------------------------------------------------------------------------*/
-void ForthWord::vPrompt(bool bPrompt)
+void Word::vPrompt(bool bPrompt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -725,7 +725,7 @@ void ForthWord::vPrompt(bool bPrompt)
 /*----------------------------------------------------------------------------*/
 /* get word type                                                              */
 /*----------------------------------------------------------------------------*/
-eWT ForthWord::eWordType(void)
+eWT Word::eWordType(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -735,7 +735,7 @@ eWT ForthWord::eWordType(void)
 /*----------------------------------------------------------------------------*/
 /* set word type                                                              */
 /*----------------------------------------------------------------------------*/
-void ForthWord::vWordType(eWT eWordType)
+void Word::vWordType(eWT eWordType)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -745,7 +745,7 @@ void ForthWord::vWordType(eWT eWordType)
 /*----------------------------------------------------------------------------*/
 /* get ptr to data area                                                       */
 /*----------------------------------------------------------------------------*/
-char* ForthWord::aWspArea(void)
+char* Word::aWspArea(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -761,7 +761,7 @@ char* ForthWord::aWspArea(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* ForthWord::aFooter(void)
+Footer* Word::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   

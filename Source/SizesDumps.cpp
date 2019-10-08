@@ -7,7 +7,7 @@
 // Object's : Class::vDump
 // Object's with no vDump defined : Dump::vUndefined
 // Header   : Dump::vInvalid
-// Objects we don't want to dump (eg ForthWord) : Dump::vDummy
+// Objects we don't want to dump (eg Word) : Dump::vDummy
 
 /*----------------------------------------------------------------------------*/
 /* dump functions                                                             */
@@ -416,7 +416,7 @@ pDUMPFUN *gpDump[]
 
   /* 39 */ &Dump::vInvalid,         // CN_WHEREOP
   /*149 */ &Dump::vInvalid,         // CN_WILDERNESS
-  /*150 */ &ForthWord::vDump,       // CN_WORD
+  /*150 */ &Word::vDump,       // CN_WORD
 
   /*148 */ &Dump::vUndefined,       // CN_XMITOP
 
@@ -835,7 +835,7 @@ i8 giClassSize[]
 
   /*    */ sizeof(WhereOp),            // CN_WHEREOP
   /*149 */ sizeof(Wilderness),         // CN_WILDERNESS
-  /*150 */ sizeof(ForthWord),          // CN_WORD
+  /*150 */ sizeof(Word),          // CN_WORD
   
   /*150 */ sizeof(XmitOp),             // CN_XMITOP
   

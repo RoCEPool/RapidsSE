@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ForthWord.hpp -- Forth SingleWord in Dictionary                                  */
+/* Word.hpp -- Forth SingleWord in Dictionary                                  */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@ namespace Forth
 {
   static const i8 C_WSP_WORD = C_SIZE_MEDIUM_OBJECT - C_1KB;
   
-  class ForthWord : public Object
+  class Word : public Object
   {
     friend class Dic;
 
@@ -20,7 +20,7 @@ namespace Forth
     i8       m_iTrace;       // trace level
     i8       m_iEpoch;       // epoch no. used by bp analyzer
     Dic*     m_pDic;         // which dictionary this word in
-    ForthWord*    m_pKind;        // kind of word
+    Word*    m_pKind;        // kind of word
     bool     m_bImmediate;   // immediate execution during compile?
     i8       m_iParams;      // number of parameters
     bool     m_bPrompt;      // can be executed by prompt?
@@ -47,11 +47,11 @@ namespace Forth
     void* operator new(size_t, Dic* pDic, bool bPersistent);
     void  operator delete(void* pWordAddress);
   
-    ForthWord(Stz* sName);
-    ~ForthWord(void) noexcept(false);
+    Word(Stz* sName);
+    ~Word(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static ForthWord* pToWord(void* aAddrInsideWsp);
+    static Word* pToWord(void* aAddrInsideWsp);
 
     byte* ayAllot(i8 iBytes);
     void* aAppend(Cell* aCell);
@@ -76,7 +76,7 @@ namespace Forth
     StepFp* afpEntryStep(void);
     void  vEncode(Stz* aWordNm);
     void  vEncode(Stz* aWordNm, Cell* aCell);
-    void  vEncode(Stz* aWordNm, ForthWord* pCalledWord);
+    void  vEncode(Stz* aWordNm, Word* pCalledWord);
     void  vEncode(Stz* aWordNm, GenVar* pGenVar);
     void  vEncode(StepFp* afpEntryStep);
     EnmSet* pEnmSet(void);
@@ -88,8 +88,8 @@ namespace Forth
     bool  bImmediate(void);
     void  vImmediate(bool bImmediate);
     bool  bIsName(s32& sName);
-    ForthWord* pKind(void);
-    void  vKind(ForthWord* pKind);
+    Word* pKind(void);
+    void  vKind(Word* pKind);
     Cell* aLastCell(void);
     i8    iLocalNo(void);
     void  vLocalNo(i8 iLocalNo);
@@ -98,7 +98,7 @@ namespace Forth
     void  vObjectDump(Stz* aTab);
     void  vParams(i8 iParams);
     i8    iParams(void);
-    ForthWord* pPrevWord(void);
+    Word* pPrevWord(void);
     bool  bPrompt(void);
     void  vPrompt(bool bImmediate);
     void  vReset(void);
@@ -110,7 +110,7 @@ namespace Forth
     Footer* aFooter(void);
   };
   
-  ForthWord* _pForthWord(void* aAddr);
+  Word* _pForthWord(void* aAddr);
 }
 
 void vEnterRoutine(Tasks::MP_Task mpTask);

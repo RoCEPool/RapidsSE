@@ -15,7 +15,7 @@ void Step::vAddStep(Stz* aName, StepFp fpStep, bool bImmediate)
   RASSERT(aName->nSize() <= 32);
   
   Dic* pRootDic = AM::pRootDic();
-  ForthWord* pNewWord = new(pRootDic) ForthWord(aName);
+  Word* pNewWord = new(pRootDic) Word(aName);
   
   //m_pCompiler->m_pCurrentWord = pNewWord;
   

@@ -10,7 +10,7 @@
 /*----------------------------------------------------------------------------*/
 void Constants::vAddConstant(Stz* szName, i8 iVal)
 {
-  ForthWord* pNewWord = new(AM::pRootDic()) ForthWord(szName);
+  Word* pNewWord = new(AM::pRootDic()) Word(szName);
   
   GenVar xVar;
   xVar = iVal;
@@ -24,7 +24,7 @@ void Constants::vAddConstant(Stz* szName, i8 iVal)
 /*----------------------------------------------------------------------------*/
 void Constants::vAddConstant(Stz* szName, Stz* szVal)
 {
-  ForthWord* pNewWord = new(AM::pRootDic()) ForthWord(szName);
+  Word* pNewWord = new(AM::pRootDic()) Word(szName);
   
   GenVar xVar;
   xVar = szVal;
@@ -621,7 +621,7 @@ void Constants::vAddConstants(void)
   /* 66 */ vAddConstant("SIZEOF_TIMER"_Stz,        sizeof(Timer));
   /* 67 */ vAddConstant("SIZEOF_TOKENISER"_Stz,    sizeof(Tokeniser));
   /* 68 */ vAddConstant("SIZEOF_TX"_Stz,           sizeof(Tx));
-  /* 74 */ vAddConstant("SIZEOF_WORD"_Stz,         sizeof(ForthWord));
+  /* 74 */ vAddConstant("SIZEOF_WORD"_Stz,         sizeof(Word));
   
   /*  0 */ vAddConstant("SIZEOF_S32"_Stz,          sizeof(s32));
   /*  1 */ vAddConstant("SIZEOF_S256"_Stz,         sizeof(s256));

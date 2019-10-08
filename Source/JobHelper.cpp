@@ -14,9 +14,9 @@ bool JobHelper::bParseCmd(EnmSet*   pArgEnmSet,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  ForthWord* pWord_jobsyn = pRootDic->pFindWord("jobSyntax:"_Stz);
+  Word* pWord_jobsyn = pRootDic->pFindWord("jobSyntax:"_Stz);
   
-  ForthWord* pWord_jobdef = nullptr;
+  Word* pWord_jobdef = nullptr;
   
   while ( (pWord_jobdef = pRootDic->pEachWord(pWord_jobsyn,pWord_jobdef)) ) {
     vTrace("  jobSyntax: %s\n"_Stz,pWord_jobdef->sName().aStz());

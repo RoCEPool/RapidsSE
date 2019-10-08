@@ -68,7 +68,7 @@ void Step::vLocalsBar(MP_Task mpTask)
 {
 ENTRY("vLocalsBar"_Stz);
   
-  ForthWord* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
+  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
   Dic* pDic = mpTask->m_oDicStack.pPick(0);
 
@@ -96,7 +96,7 @@ ENTRY("vLocalsBar"_Stz);
     }
     
     // create new word for local variable in current dictionary
-    ForthWord* pWordLocal = new(pDic) ForthWord(mpTask->m_pCompiler->m_pTokeniser->sToken());
+    Word* pWordLocal = new(pDic) Word(mpTask->m_pCompiler->m_pTokeniser->sToken());
     // ** do not set as current word **
     
     // set word as local variable
@@ -163,7 +163,7 @@ void Step::vLocalsTo(MP_Task mpTask)
 {
 ENTRY("vLocalsTo"_Stz);
   
-  ForthWord* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
+  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
   // get name of local from token stream
   mpTask->m_pCompiler->m_pTokeniser->vNextToken();
@@ -171,7 +171,7 @@ ENTRY("vLocalsTo"_Stz);
   s32 sLocalName(mpTask->m_pCompiler->m_pTokeniser->sToken());
   
   // find the word describing the local
-  ForthWord* pLocalWord = mpTask->m_oDicStack.pFindWord(sLocalName);
+  Word* pLocalWord = mpTask->m_oDicStack.pFindWord(sLocalName);
   if (! pLocalWord)
     vFatal("No such local: %s\n"_Stz,sLocalName.aChar());
   

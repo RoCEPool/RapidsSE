@@ -46,7 +46,7 @@ Lock* AM::pDicLock(void)      { return & gpAttachMap->m_okDicLock;            }
 i8   AM::iElapsedSsec(void)   { return gpAttachMap->m_oBirth.iElapsedSsec();  }
 i8   AM::iEpoch(void)         { return gpAttachMap->m_iEpoch;                 }
 Formatters* AM::pFormatters(void) { return & gpAttachMap->m_oFormatters;      }
-ForthWord* AM::pForthWord(void)   { return gpAttachMap->m_pForthWord;         }
+Word* AM::pForthWord(void)   { return gpAttachMap->m_pForthWord;         }
 Grid* AM::pGrid(void)         { return gpAttachMap->m_pGrid;                  }
 bool AM::bHasStarted(void)    { return gpAttachMap->m_pGrid->m_bHasStarted;   }
 HeapMem* AM::pHeapMem(void)   { return & gpAttachMap->m_xHeapMem;             }
@@ -101,7 +101,7 @@ Statistics* AM::pStatistics(void) { return & gpAttachMap->m_oStatistics;      }
 StepTiming* AM::pStepTiming(void)  { return gpAttachMap->m_pStepTiming;       }
 PoolBuffer* AM::pTakenBuffers(void) { return gpAttachMap->m_pTakenBuffers;    }
 i8   AM::nTakenBytes(void)    { return gpAttachMap->m_nTakenBytes;            }
-ForthWord* AM::pTenants(void) { return gpAttachMap->m_pTenants;               }
+Word* AM::pTenants(void) { return gpAttachMap->m_pTenants;               }
 i8   AM::iThisNodeNo(void)    { return gpAttachMap->m_pGrid->iThisNode();     }
 void AM::vThreadBegins(void)  { ++ gpAttachMap->m_ixThreads;                  }
 i8   AM::nThreadsBegun(void)  { return * gpAttachMap->m_ixThreads;            }
@@ -166,7 +166,7 @@ void AM::vDeleteOperand(Operand* pOperand)
 void AM::vDropTaskLock(Task* pTask) {
   Scheduler::vDropTaskLock(pTask);
 }
-void AM::vForthWord(ForthWord *pWord) {
+void AM::vForthWord(Word *pWord) {
   gpAttachMap->m_pForthWord = pWord;
 }
 void AM::vGrabTaskLock(Task* pTask) {
@@ -248,7 +248,7 @@ bool AM::bTaskIsLocked(Task* pTask) {
   bool bLocked = pTask->bIsLocked();
   return bLocked;
 }
-void AM::vTenants(ForthWord *pTenants) {
+void AM::vTenants(Word *pTenants) {
   gpAttachMap->m_pTenants = pTenants;
 }
 void AM::vTriggerBidingTask(Task* pTask) {
