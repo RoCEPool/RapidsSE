@@ -12,8 +12,9 @@ namespace Structures
   private:
     Lock    m_okLock;
   
-    s32     m_sName;    // name of the object instance
-    Object* m_pObject;  // pointer to the named object
+    s32     m_sName;     // name of the object instance
+    eNK     m_eKind;     // kind of name
+    Object* m_pObject;   // pointer to the named object
   
     Name*   m_pCategory; // category of this name
     Name*   m_pParent;   // parent of this name
@@ -34,6 +35,9 @@ namespace Structures
   
     Name* pChild(void);
     void  vChild(Name* pChild);
+  
+    eNK   eKind(void);
+    void  vKind(eNK eKind);
   
     Stz*  szName(void);
     void  vName(Stz* szName);

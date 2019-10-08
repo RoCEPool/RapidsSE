@@ -33,11 +33,12 @@ void Name::operator delete(void* pAddress)
 /*----------------------------------------------------------------------------*/
 Name::Name(Stz* szName)
 : Object(CN_NAME)
-, m_okLock(LK_NAME,nullptr,nullptr)
+, m_okLock(LK_NAME,this)
 {
   _precondition_(_MAGIC_,CN_NAME,_FOOTER_);
   
   m_sName   = szName;
+  m_eKind   = NK_NONE;
   m_pObject = nullptr;
   
   m_pCategory = nullptr;
@@ -72,7 +73,7 @@ Name* Name::pCategory(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set category                                                             */
+/* set category                                                               */
 /*----------------------------------------------------------------------------*/
 void Name::vCategory(Name* pCategory)
 {
@@ -82,7 +83,7 @@ void Name::vCategory(Name* pCategory)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get kind of name                                                           */
+/* get child of name                                                          */
 /*----------------------------------------------------------------------------*/
 Name* Name::pChild(void)
 {
@@ -99,6 +100,26 @@ void Name::vChild(Name* pChild)
   _precondition_(_MAGIC_,CN_NAME,_FOOTER_);
   
   m_pChild = pChild;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get kind of name                                                           */
+/*----------------------------------------------------------------------------*/
+eNK Name::eKind(void)
+{
+  _precondition_(_MAGIC_,CN_NAME,_FOOTER_);
+  
+  return m_eKind;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set kind of name                                                           */
+/*----------------------------------------------------------------------------*/
+void Name::vKind(eNK eKind)
+{
+  _precondition_(_MAGIC_,CN_NAME,_FOOTER_);
+  
+  m_eKind = eKind;
 }
 
 /*----------------------------------------------------------------------------*/

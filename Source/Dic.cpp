@@ -53,9 +53,9 @@ Dic::Dic(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
 
-  m_pName    = nullptr; //new Name("<no-name>"_Stz);
+  m_pName    = new Name("-- no-name --"_Stz);
   
-  m_sName    = "<no-name>"_Stz;
+  m_sName    = "-- no-name --"_Stz;
   m_pDicKind = nullptr;
   m_bFrozen  = false;
   m_ixRefCount.vCheckInit();
@@ -175,6 +175,8 @@ void Dic::vFinalize(eCN eClass, Object* pObject)
   ASSERT(pDic->bWordBody());
   
   //vTrace("%s %s finalize\n"_Stz, aCN[eClass], pDic->m_sName.s());
+  
+  delete pDic->m_pName;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -277,6 +279,8 @@ void Dic::vInit(void)
   //m_sName.vInit();
   m_sName = pWord->sName();
   
+  m_pName = new Name(m_sName);
+  
   m_nWords = 0;
 }
 
@@ -334,11 +338,13 @@ s32& Dic::sName(void)
 /*----------------------------------------------------------------------------*/
 /* set name of this dictionary                                                */
 /*----------------------------------------------------------------------------*/
-void Dic::vName(Stz* aName)
+void Dic::vName(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  m_sName = aName;
+  m_sName = szName;
+  
+  m_pName->vName(m_sName);
 }
 
 /*----------------------------------------------------------------------------*/
