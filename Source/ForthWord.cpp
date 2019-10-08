@@ -63,12 +63,14 @@ void ForthWord::operator delete(void* pWordAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ForthWord::ForthWord(Stz* sName)
+ForthWord::ForthWord(Stz* szName)
 : Object(CN_WORD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
-  m_sName         = sName;
+  m_pArticle      = new Article(szName);
+
+  m_sName         = szName;
   m_eWordType     = WT_ROUTINE;
   //m_bPersistent   = false;
   m_iTrace        = 0;
@@ -296,6 +298,26 @@ void* ForthWord::aAppend(StepFp* afpStepFp)
   *aafpStepFp = afpStepFp;
 
   return aafpStepFp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get article                                                                */
+/*----------------------------------------------------------------------------*/
+Article* ForthWord::pArticle(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  return m_pArticle;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set article                                                                */
+/*----------------------------------------------------------------------------*/
+void ForthWord::vArticle(Article* pArticle)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  m_pArticle = pArticle;
 }
 
 /*----------------------------------------------------------------------------*/

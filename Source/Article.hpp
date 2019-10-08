@@ -29,7 +29,7 @@ namespace Structures
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Article(Stz* szArticle);
+    Article(Stz* szName);
    ~Article(void) noexcept(false);
   
     Article* pCategory(void);

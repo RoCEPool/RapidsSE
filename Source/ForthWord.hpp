@@ -13,6 +13,8 @@ namespace Forth
     friend class Dic;
 
   private:
+    Article* m_pArticle;     // the word article
+
     s32      m_sName;        // the name of this word
     eWT      m_eWordType;    // type of word
     bool     m_bPersistent;  // is on persistent heap
@@ -63,6 +65,8 @@ namespace Forth
     void  vAppend(StepFp* afpStep);
     void* aAppend(ForthValue* aValue);
     void  vAppend(ForthValue* aValue);
+    Article* pArticle(void);
+    void  vArticle(Article* pArticle);
     void  vContentDump(void);
     Dic*  pDic(void);
     i8    iEpoch(void);
