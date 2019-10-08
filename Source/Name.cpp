@@ -40,8 +40,9 @@ Name::Name(Stz* szName)
   m_sName   = szName;
   m_pObject = nullptr;
   
-  m_pParent = nullptr;
-  m_pChild  = nullptr;
+  m_pCategory = nullptr;
+  m_pParent   = nullptr;
+  m_pChild    = nullptr;
 
   _checkInitialised_(CN_NAME);
   
@@ -59,6 +60,46 @@ Name::~Name(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get category                                                               */
+/*----------------------------------------------------------------------------*/
+Name* Name::pCategory(void)
+{
+  _precondition_(_MAGIC_,CN_NAME,_FOOTER_);
+  
+  return m_pCategory;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set category                                                             */
+/*----------------------------------------------------------------------------*/
+void Name::vCategory(Name* pCategory)
+{
+  _precondition_(_MAGIC_,CN_NAME,_FOOTER_);
+  
+  m_pCategory = pCategory;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get kind of name                                                           */
+/*----------------------------------------------------------------------------*/
+Name* Name::pChild(void)
+{
+  _precondition_(_MAGIC_,CN_NAME,_FOOTER_);
+  
+  return m_pChild;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set child name                                                             */
+/*----------------------------------------------------------------------------*/
+void Name::vChild(Name* pChild)
+{
+  _precondition_(_MAGIC_,CN_NAME,_FOOTER_);
+  
+  m_pChild = pChild;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get name                                                                   */
@@ -118,26 +159,6 @@ void Name::vParent(Name* pParent)
   _precondition_(_MAGIC_,CN_NAME,_FOOTER_);
   
   m_pParent = pParent;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get child name                                                             */
-/*----------------------------------------------------------------------------*/
-Name* Name::pChild(void)
-{
-  _precondition_(_MAGIC_,CN_NAME,_FOOTER_);
-  
-  return m_pChild;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set child name                                                             */
-/*----------------------------------------------------------------------------*/
-void Name::vChild(Name* pChild)
-{
-  _precondition_(_MAGIC_,CN_NAME,_FOOTER_);
-  
-  m_pChild = pChild;
 }
 
 

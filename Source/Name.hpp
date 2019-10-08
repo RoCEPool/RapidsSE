@@ -15,8 +15,9 @@ namespace Structures
     s32     m_sName;    // name of the object instance
     Object* m_pObject;  // pointer to the named object
   
-    Name*   m_pParent;  // parent of this named object
-    Name*   m_pChild;   // child of this named object
+    Name*   m_pCategory; // category of this name
+    Name*   m_pParent;   // parent of this name
+    Name*   m_pChild;    // child of this name
   
     // must be last
     Footer m_xFooter;
@@ -28,17 +29,20 @@ namespace Structures
     Name(Stz* szName);
    ~Name(void) noexcept(false);
   
-    Stz* szName(void);
-    void vName(Stz* szName);
+    Name* pCategory(void);
+    void  vCategory(Name* pCategory);
+  
+    Name* pChild(void);
+    void  vChild(Name* pChild);
+  
+    Stz*  szName(void);
+    void  vName(Stz* szName);
 
     Object* pObject(void);
-    void vObject(Object* pObject);
+    void    vObject(Object* pObject);
 
     Name* pParent(void);
     void vParent(Name* pParent);
-  
-    Name* pChild(void);
-    void vChild(Name* pChild);
   
     Footer* aFooter(void);
   };
