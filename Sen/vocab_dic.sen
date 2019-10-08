@@ -22,7 +22,7 @@ diclock.grabwrite
   WT_OBJECT word::this word.type!
   sizeof_dic allot
   word::this >body object.magic!
-  CN_DIC word::this >body object.class!
+  CN_NAME word::this >body object.class!
   tick folder word::this word.kind!
   word::this >body dic.init
   true word::this >body object.wordbody!
@@ -45,7 +45,7 @@ diclock.grabwrite
   WT_OBJECT word::this word.type!
   sizeof_dic allot
   word::this >body object.magic!
-  CN_DIC word::this >body object.class!
+  CN_NAME word::this >body object.class!
   tick folder word::this word.kind!
   word::this >body dic.init
   true word::this >body object.wordbody!
@@ -66,7 +66,7 @@ diclock.grabwrite
   WT_OBJECT word::this word.type!
   sizeof_dic allot
   word::this >body object.magic!
-  CN_DIC word::this >body object.class!
+  CN_NAME word::this >body object.class!
   tick folder word::this word.kind!
   word::this >body dic.init
   true word::this >body object.wordbody!
@@ -89,7 +89,7 @@ diclock.grabwrite
   WT_OBJECT word::this word.type!
   sizeof_dic allot
   word::this >body object.magic!
-  CN_DIC word::this >body object.class!
+  CN_NAME word::this >body object.class!
   tick folder word::this word.kind!
   word::this >body dic.init
   true word::this >body object.wordbody!
@@ -111,7 +111,7 @@ diclock.grabwrite
   WT_OBJECT word::this word.type!
   sizeof_dic allot
   word::this >body object.magic!
-  CN_DIC word::this >body object.class!
+  CN_NAME word::this >body object.class!
   tick folder word::this word.kind!
   word::this >body dic.init
   true word::this >body object.wordbody!

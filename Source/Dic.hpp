@@ -5,7 +5,7 @@
 
 namespace Forth
 {
-  class Dic : public Object
+  class Dic : public Name
   {
   private:
     s32    m_sName;        // name of this dictionary

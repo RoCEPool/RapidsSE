@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 Name::Name(Stz* szName)
 : Object(CN_NAME)
-, m_okLock(LK_NAME,nullptr,nullptr)
+, m_okLock(LK_NAME,this)
 {
   _precondition_(_MAGIC_,CN_NAME,_FOOTER_);
   

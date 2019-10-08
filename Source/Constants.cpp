@@ -307,6 +307,7 @@ void Constants::vAddConstants(void)
   /*    */ vAddConstant("CN_MEMTEST"_Stz,      CN_MEMTEST);
   /* 60 */ vAddConstant("CN_MUTEX"_Stz,        CN_MUTEX);
 
+  /* 38 */ vAddConstant("CN_NAME"_Stz,         CN_NAME);
   /* 38 */ vAddConstant("CN_NODE"_Stz,         CN_NODE);
   /*    */ vAddConstant("CN_NOW"_Stz,          CN_NOW);
 
