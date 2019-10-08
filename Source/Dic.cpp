@@ -11,7 +11,7 @@ Dic* Forth::_pDic(void* aAddr)
 {
   Dic* pDic = reinterpret_cast<Dic*>(aAddr);
   
-  RASSERT_TYPE(pDic,CN_NAME);
+  RASSERT_TYPE(pDic,CN_DIC);
 
   return pDic;
 }
@@ -21,7 +21,7 @@ Dic* Forth::_pDic(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Dic::operator new(size_t)
 {
-  Dic* pDic = (Dic*)(HeapMem::pAllocate(CN_NAME));
+  Dic* pDic = (Dic*)(HeapMem::pAllocate(CN_DIC));
   
   return pDic;
 }
@@ -48,10 +48,10 @@ void Dic::operator delete(void* pDicAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Dic::Dic(void)
-: Name("??NoName??"_Stz)
+: Object(CN_DIC)
 , m_okLock(LK_DIC,this)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   m_sName    = "<no-name>"_Stz;
   m_pDicKind = nullptr;
@@ -64,9 +64,9 @@ Dic::Dic(void)
   // this is because of GlobalDictionary (ugh)
   //vInit();
   
-  _checkInitialised_(CN_NAME);
+  _checkInitialised_(CN_DIC);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_NAME,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -74,7 +74,7 @@ Dic::Dic(void)
 /*----------------------------------------------------------------------------*/
 Dic::~Dic(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -82,7 +82,7 @@ Dic::~Dic(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Dic::vAddWord(ForthWord* pWord)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   ASSERT(pWord->eClass() == CN_WORD);
   
@@ -104,7 +104,7 @@ void Dic::vAddWord(ForthWord* pWord)
 /*----------------------------------------------------------------------------*/
 ForthWord* Dic::pDicKind(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   return m_pDicKind;
 }
@@ -114,7 +114,7 @@ ForthWord* Dic::pDicKind(void)
 /*----------------------------------------------------------------------------*/
 void Dic::vDicKind(ForthWord* pDicKind)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   m_pDicKind = pDicKind;
 }
@@ -140,7 +140,7 @@ void Dic::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 ForthWord* Dic::pEachWord(ForthWord* pKind, ForthWord* pPrior)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   m_okLock.vGrabRead();
   
@@ -164,8 +164,8 @@ ForthWord* Dic::pEachWord(ForthWord* pKind, ForthWord* pPrior)
 /*----------------------------------------------------------------------------*/
 void Dic::vFinalize(eCN eClass, Object* pObject)
 {
-  ASSERT(eClass == CN_NAME);
-  ASSERT(pObject->eClass() == CN_NAME);
+  ASSERT(eClass == CN_DIC);
+  ASSERT(pObject->eClass() == CN_DIC);
   
   Dic* pDic = reinterpret_cast<Dic*>(pObject);
   ASSERT(pDic->bWordBody());
@@ -178,7 +178,7 @@ void Dic::vFinalize(eCN eClass, Object* pObject)
 /*----------------------------------------------------------------------------*/
 ForthWord* Dic::pFindWord(Stz* aName)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   m_okLock.vGrabRead();
   
@@ -206,7 +206,7 @@ ForthWord* Dic::pFindWord(Stz* aName)
 /*----------------------------------------------------------------------------*/
 ForthWord* Dic::pFindStep(StepFp fpStep)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   m_okLock.vGrabRead();
   
@@ -227,7 +227,7 @@ ForthWord* Dic::pFindStep(StepFp fpStep)
 /*----------------------------------------------------------------------------*/
 bool Dic::bFrozen(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   return m_bFrozen;
 }
@@ -237,7 +237,7 @@ bool Dic::bFrozen(void)
 /*----------------------------------------------------------------------------*/
 void Dic::vFrozen(bool bFrozen)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   m_okLock.vGrabWrite();
   
@@ -251,7 +251,7 @@ void Dic::vFrozen(bool bFrozen)
 /*----------------------------------------------------------------------------*/
 bool Dic::bHasWords(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
 
   if (m_pLastWord)
     return true;
@@ -264,7 +264,7 @@ bool Dic::bHasWords(void)
 /*----------------------------------------------------------------------------*/
 void Dic::vInit(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   m_pLastWord = nullptr;
   
@@ -281,7 +281,7 @@ void Dic::vInit(void)
 /*----------------------------------------------------------------------------*/
 bool Dic::bIsName(s32& sName)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   bool b = m_sName.bSame(sName);
   
@@ -293,7 +293,7 @@ bool Dic::bIsName(s32& sName)
 /*----------------------------------------------------------------------------*/
 ForthWord* Dic::pLastWord(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   return m_pLastWord;
 }
@@ -303,7 +303,7 @@ ForthWord* Dic::pLastWord(void)
 /*----------------------------------------------------------------------------*/
 void Dic::vListWords(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   m_okLock.vGrabRead();
   
@@ -322,7 +322,7 @@ void Dic::vListWords(void)
 /*----------------------------------------------------------------------------*/
 s32& Dic::sName(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   return m_sName;
 }
@@ -332,7 +332,7 @@ s32& Dic::sName(void)
 /*----------------------------------------------------------------------------*/
 void Dic::vName(Stz* aName)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   m_sName = aName;
 }
@@ -342,7 +342,7 @@ void Dic::vName(Stz* aName)
 /*----------------------------------------------------------------------------*/
 void Dic::vRefDec(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   u8 iRef = --m_ixRefCount;
   
@@ -354,7 +354,7 @@ void Dic::vRefDec(void)
 /*----------------------------------------------------------------------------*/
 void Dic::vRefInc(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   u8 iRef = ++m_ixRefCount;
   
@@ -366,7 +366,7 @@ void Dic::vRefInc(void)
 /*----------------------------------------------------------------------------*/
 bool Dic::bRefOut(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   u8 iRef = *m_ixRefCount;
   
@@ -378,7 +378,7 @@ bool Dic::bRefOut(void)
 /*----------------------------------------------------------------------------*/
 ForthWord* Dic::pRemoveWord(s32& sName)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   ForthWord* pWordDelete = nullptr;
   
@@ -427,7 +427,7 @@ ForthWord* Dic::pRemoveWord(s32& sName)
 /*----------------------------------------------------------------------------*/
 i8 Dic::nWords(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NAME,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   return m_nWords;
 }
@@ -441,7 +441,7 @@ i8 Dic::nWords(void)
 /*----------------------------------------------------------------------------*/
 Footer* Dic::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_NAME);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC);
   
   return &m_xFooter;
 }
