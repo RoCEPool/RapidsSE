@@ -52,7 +52,7 @@ namespace Structures
 #include "MiniHeap_t.hpp"
 #include "TrayNL_t.hpp"
 
-#include "Name.hpp"
+#include "Article.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
