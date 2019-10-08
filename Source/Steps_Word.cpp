@@ -49,7 +49,7 @@ ENTRY("vWordDump"_Stz);
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("vWordDump"_Stz);
-  Word* pWord = _pForthWord(pWordObject);
+  Word* pWord = _pWord(pWordObject);
   
   pWord->vContentDump();
   
@@ -66,7 +66,7 @@ void Step::vWordEnmSetFetch(MP_Task mpTask)
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("vWordEnmSetFetch"_Stz);
-  Word* pWord = _pForthWord(pWordObject);
+  Word* pWord = _pWord(pWordObject);
   
   EnmSet* pEnmSet = pWord->pEnmSet();
   
@@ -85,7 +85,7 @@ void Step::vWordEnmSetStore(MP_Task mpTask)
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("vWordEnmSetStore"_Stz);
-  Word* pWord = _pForthWord(pWordObject);
+  Word* pWord = _pWord(pWordObject);
   
   Object* pEnmSet_obj;
   if ( ! mpTask->m_pDataStack->bPop(pEnmSet_obj) )
@@ -107,7 +107,7 @@ void Step::vWordExitHookGet(MP_Task mpTask)
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("word.exitHook@"_Stz);
-  Word* pWord = _pForthWord(pWordObject);
+  Word* pWord = _pWord(pWordObject);
   
   s32 sExitHook(pWord->szExitHook());
   
@@ -126,7 +126,7 @@ void Step::vWordExitHookSet(MP_Task mpTask)
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("word.exitHook!"_Stz);
-  Word* pWord = _pForthWord(pWordObject);
+  Word* pWord = _pWord(pWordObject);
   
   s32 sExitHook;
   if ( ! mpTask->m_pDataStack->bPop(sExitHook) )
@@ -147,7 +147,7 @@ void Step::vWordForget(MP_Task mpTask)
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("vWordForget"_Stz);
-  Word* pWord = _pForthWord(pWordObject);
+  Word* pWord = _pWord(pWordObject);
   
   Word* pRemovedWord = mpTask->m_oDicStack.pRemoveWord(pWord->sName());
   ASSERT(pRemovedWord);
@@ -167,7 +167,7 @@ void Step::vWordImmediateGet(MP_Task mpTask)
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("word.immediate@"_Stz);
-  Word* pWord = _pForthWord(pWordObject);
+  Word* pWord = _pWord(pWordObject);
   
   i8 iImmediate = pWord->bImmediate();
   
@@ -186,7 +186,7 @@ void Step::vWordImmediateSet(MP_Task mpTask)
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("word.immediate!"_Stz);
-  Word* pWord = _pForthWord(pWordObject);
+  Word* pWord = _pWord(pWordObject);
   
   i8 iImmediate;
   if ( ! mpTask->m_pDataStack->bPop(iImmediate) )
@@ -209,7 +209,7 @@ void Step::vWordIsImmediate(MP_Task mpTask)
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("isImmediate"_Stz);
-  Word* pWord = _pForthWord(pWordObject);
+  Word* pWord = _pWord(pWordObject);
   
   i8 iIsImmediate = pWord->bImmediate() ? 1 : 0;
   
@@ -228,7 +228,7 @@ void Step::vWordIsIntrinsic(MP_Task mpTask)
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("word.isIntrinsic"_Stz);
-  Word* pWord = _pForthWord(pWordObject);
+  Word* pWord = _pWord(pWordObject);
   
   i8 iIsPrimitive = WT_INTRINSIC == pWord->eWordType() ? 1 : 0;
   
@@ -247,7 +247,7 @@ ENTRY("vWordKindGet"_Stz);
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("vWordKindGet"_Stz);
-  Word* pWord = _pForthWord(pWordObject);
+  Word* pWord = _pWord(pWordObject);
   
   Word* pWordKind = pWord->pKind();
   
@@ -266,11 +266,11 @@ ENTRY("vWordKindSet"_Stz);
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("vWordKindSet"_Stz);
-  Word* pWord = _pForthWord(pWordObject);
+  Word* pWord = _pWord(pWordObject);
   
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("vWordKindSet"_Stz);
-  Word* pWordKind = _pForthWord(pWordObject);
+  Word* pWordKind = _pWord(pWordObject);
   
   pWord->vKind(pWordKind);
   
@@ -287,7 +287,7 @@ ENTRY("vWordName"_Stz);
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("word.name@"_Stz);
-  Word* pWord = _pForthWord(pWordObject);
+  Word* pWord = _pWord(pWordObject);
   
   s32 sWordName(pWord->sName());
   
@@ -306,7 +306,7 @@ void Step::vWordNameStore(MP_Task mpTask)
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("word.name!"_Stz);
-  Word* pWord = _pForthWord(pWordObject);
+  Word* pWord = _pWord(pWordObject);
 
   s32 sName;
   if ( ! mpTask->m_pDataStack->bPop(sName) )
@@ -327,7 +327,7 @@ void Step::vWordPrev(MP_Task mpTask)
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("wordPrev"_Stz);
-  Word* pWord = _pForthWord(pWordObject);
+  Word* pWord = _pWord(pWordObject);
   
   Word* pPrevWord = pWord->pPrevWord();
   
@@ -360,7 +360,7 @@ void Step::vWordTypeGet(MP_Task mpTask)
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("vWordTypeGet"_Stz);
-  Word* pWord = _pForthWord(pWordObject);
+  Word* pWord = _pWord(pWordObject);
   
   eWT eWordType = pWord->eWordType();
   
@@ -379,13 +379,13 @@ void Step::vWordTypeSet(MP_Task mpTask)
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("vWordTypeSet"_Stz);
-  Word* pWord = _pForthWord(pWordObject);
+  Word* pWord = _pWord(pWordObject);
   
   i8 iWordType;
   
   if ( ! mpTask->m_pDataStack->bPop(iWordType) )
     THROW_INVALID_DSTACK("vWordTypeSet"_Stz);
-  Word* pWordKind = _pForthWord(pWordObject);
+  Word* pWordKind = _pWord(pWordObject);
   
   pWord->vWordType((eWT)iWordType);
   

@@ -13,7 +13,7 @@ extern StepFp gfpEntryStep;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Word* Forth::_pForthWord(void* aAddr)
+Word* Forth::_pWord(void* aAddr)
 {
   Word* pWord = reinterpret_cast<Word*>(aAddr);
   
@@ -75,7 +75,7 @@ Word::Word(Stz* szName)
   //m_bPersistent   = false;
   m_iTrace        = 0;
   //m_pDic        = pDic;
-  m_pKind         = AM::pForthWord() ? AM::pForthWord() : this;
+  m_pKind         = AM::pWord() ? AM::pWord() : this;
   m_iEpoch        = AM::iEpoch();
   m_bImmediate    = false;
   m_iParams       = 0;
@@ -126,7 +126,7 @@ Word::~Word(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Word::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  Word* pWord = _pForthWord(pObject);
+  Word* pWord = _pWord(pObject);
   
   // dump only the objects
   if (WT_OBJECT == pWord->m_eWordType)
@@ -697,7 +697,7 @@ Word* Word::pPrevWord(void)
   if (! pPrevArticle)
     return nullptr;
   
-  Word* pPrevWord = _pForthWord(pPrevArticle->pObject());
+  Word* pPrevWord = _pWord(pPrevArticle->pObject());
   
   return pPrevWord;
 }

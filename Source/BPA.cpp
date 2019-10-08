@@ -105,7 +105,7 @@ void BPA::vHeapDump(Heap* pHeap)
         continue;
       
       if (CN_WORD == eClass) {
-        Word* pWord = _pForthWord(aChunk);
+        Word* pWord = _pWord(aChunk);
       
         // dump only the objects
         if (WT_OBJECT != pWord->eWordType())
@@ -152,7 +152,7 @@ void BPA::vHeapDump(Heap* pHeap, i8 iEpoch)
       if (CN_WORD != eClass)
         continue;
       
-      Word* pWord = _pForthWord(aChunk);
+      Word* pWord = _pWord(aChunk);
       
       // dump only the objects
       if (WT_OBJECT != pWord->eWordType())

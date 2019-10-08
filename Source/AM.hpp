@@ -60,7 +60,7 @@ namespace StorageEngine
     static i8   iElapsedSsec(void);
     static i8   iEpoch(void);
     static Formatters* pFormatters(void);
-    static Word* pForthWord(void);
+    static Word* pWord(void);
     static Grid* pGrid(void);
     static i8   nConnectedNodes(void);
     static i8   nDefinedNodes(void);
@@ -114,7 +114,7 @@ namespace StorageEngine
     static void vAttachMap(Header* aHeader);
     static void vBootError(bool bBootError);
     static void vDropTaskLock(Task* pTask);
-    static void vForthWord(Word* pForthWord);
+    static void vForthWord(Word* pWord);
     static void vGrabTaskLock(Task* pTask);
     static void vIndexEntries(i8 nIndexEntries);
     static void vIndexName(Job_Dynamic* pJob, Stz* szIndexNm);

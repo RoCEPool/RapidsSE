@@ -110,7 +110,7 @@ namespace Forth
     Footer* aFooter(void);
   };
   
-  Word* _pForthWord(void* aAddr);
+  Word* _pWord(void* aAddr);
 }
 
 void vEnterRoutine(Tasks::MP_Task mpTask);

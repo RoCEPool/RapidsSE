@@ -29,7 +29,7 @@ ENTRY("vMemoryByteDump"_Stz);
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("memory.bytedump"_Stz);
-  Word* pWord = _pForthWord(pWordObject);
+  Word* pWord = _pWord(pWordObject);
   
   //pWord->vByteDump(iSize);
   MemLib::vHexDump(pWord,iSize);
@@ -74,7 +74,7 @@ ENTRY("vMemoryWordDump"_Stz);
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("memory.worddump"_Stz);
-  Word* pWord = _pForthWord(pWordObject);
+  Word* pWord = _pWord(pWordObject);
   
   //pWord->vWordDump(iSize);
   MemLib::vWordDump(pWord,iSize);

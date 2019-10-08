@@ -48,7 +48,7 @@ namespace StorageEngine
     i8            m_iEpoch;
     FocalObjects* m_pFocalObjects;
     Formatters    m_oFormatters;
-    Word*    m_pForthWord;
+    Word*    m_pWord;
     Grid*         m_pGrid;
     HeapMem       m_xHeapMem;
     LockTracker   m_oLockTracker;
