@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Article.hpp -- Article                                                   */
+/* Article.hpp -- Article                                                     */
 /*============================================================================*/
 #pragma once
 
@@ -40,6 +40,8 @@ namespace Structures
   
     void  vDropRead(void);
     void  vDropWrite(void);
+  
+    void  vDumpRecursively(i8 iDepth);
   
     void  vGrabRead(void);
     void  vGrabWrite(void);

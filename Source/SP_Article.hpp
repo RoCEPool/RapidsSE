@@ -16,7 +16,7 @@ namespace Gadgets
     SP_Article(void);
    ~SP_Article(void) noexcept(false);
   
-    Stz* sz(Article* pArticle);
+    Stz* sz(Article* pArticle, i8 iDepth);
 
   private:
     Footer* aFooter(void);

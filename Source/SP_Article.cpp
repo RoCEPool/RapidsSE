@@ -32,20 +32,24 @@ SP_Article::~SP_Article(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* sprint Article and return that Stz*                                        */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Article::sz(Article* pArticle)
+Stz* SP_Article::sz(Article* pArticle, i8 iDepth)
 {
   _precondition_(_MAGIC_,CN_SPELAPSED,_FOOTER_);
   
   Object* pObject = pArticle->pObject();
   
   StrLib::vSprint(m_caResult,
-                  "%p %s : %p %s"_Stz,
+                  "%s%p %s : %p %s (sublist %lld items)"_Stz,
+                  
+                  Stz::szTab(iDepth),
                   
                   pArticle,
                   pArticle->szName(),
                   
                   pObject,
                   aCN[pObject->eClass()],
+                  
+                  pArticle->nItems(),
                   
                   C_ENDARGS);
   

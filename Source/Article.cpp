@@ -125,6 +125,24 @@ void Article::vDropWrite(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump article recursively                                                   */
+/*----------------------------------------------------------------------------*/
+void Article::vDumpRecursively(i8 iDepth)
+{
+  _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
+  
+  SP_Article spArticle;
+
+  vTrace("  %s\n"_Stz,spArticle.sz(this,iDepth));
+  
+  if (! nItems())
+    return;
+  
+  for (Article* pArticle = pHead(); pArticle; pArticle = pArticle->pNextItem())
+    pArticle->vDumpRecursively(iDepth + 1);
+}
+
+/*----------------------------------------------------------------------------*/
 /* grab lock for read                                                         */
 /*----------------------------------------------------------------------------*/
 void Article::vGrabRead(void)
