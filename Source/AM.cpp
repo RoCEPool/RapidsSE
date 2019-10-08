@@ -96,7 +96,7 @@ i8   AM::nPartitions(void)    { return gpAttachMap->m_pGrid->nPartitions();   }
 Queues* AM::pQueues(void)     { return gpAttachMap->m_pQueues;                }
 ResourceTracker* AM::pResourceTracker(void) {
   return & gpAttachMap->m_oResourceTracker; }
-Dic* AM::pRootDic(void)       { return & gpAttachMap->m_oRootDic;             }
+Dic* AM::pRootDic(void)       { return gpAttachMap->m_pRootDic;               }
 Statistics* AM::pStatistics(void) { return & gpAttachMap->m_oStatistics;      }
 StepTiming* AM::pStepTiming(void)  { return gpAttachMap->m_pStepTiming;       }
 PoolBuffer* AM::pTakenBuffers(void) { return gpAttachMap->m_pTakenBuffers;    }

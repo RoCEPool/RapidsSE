@@ -61,13 +61,14 @@ AttachMap::AttachMap(void)
   m_iTimePoint = AM::iRdTimePoint();
 
   
-  m_oRootDic.vName("<root>"_Stz);
-  
   // create the carry over (which records global pointers restored on restart)
   m_pCarryOver = new CarryOver;
   
   // create the transient heaps
   m_xHeapMem.vInit();
+  
+  m_pRootDic = new Dic;
+  m_pRootDic->vName("<root>"_Stz);
   
   // create the persistent heaps
   m_xHeapMem.Persistent.m_pJumbo  =
