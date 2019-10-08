@@ -12,7 +12,6 @@ namespace Forth
   
     s32    m_sName;        // name of this dictionary
     ForthWord*  m_pDicKind;     // kind of dictionary
-    bool   m_bFrozen;      // no more words can be added?
     Atomic m_ixRefCount;   // reference count
 
     Lock   m_okLock;        // lock over:
@@ -39,8 +38,6 @@ namespace Forth
     ForthWord* pEachWord(ForthWord* pKind, ForthWord* pPrior);
     ForthWord* pFindWord(Stz* aName);
     ForthWord* pFindStep(StepFp fpStep);
-    bool  bFrozen(void);
-    void  vFrozen(bool bFrozen);
     bool  bHasWords(void);
     void  vInit(void);
     bool  bIsName(s32& sName);

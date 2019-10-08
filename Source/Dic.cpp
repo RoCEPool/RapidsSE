@@ -57,7 +57,6 @@ Dic::Dic(void)
   
   m_sName    = "-- no-name --"_Stz;
   m_pDicKind = nullptr;
-  m_bFrozen  = false;
   m_ixRefCount.vCheckInit();
   
   m_pLastWord = nullptr;
@@ -91,8 +90,6 @@ void Dic::vAddWord(ForthWord* pWord)
   ASSERT(pWord->eClass() == CN_WORD);
   
   m_okLock.vGrabWrite();
-  
-  ASSERT(!m_bFrozen);
   
   pWord->vPrevWord(m_pLastWord);
   
@@ -226,30 +223,6 @@ ForthWord* Dic::pFindStep(StepFp fpStep)
   m_okLock.vDropRead();
   
   return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is dictionary frozen?                                                      */
-/*----------------------------------------------------------------------------*/
-bool Dic::bFrozen(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
-  
-  return m_bFrozen;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set dictionary frozen?                                                     */
-/*----------------------------------------------------------------------------*/
-void Dic::vFrozen(bool bFrozen)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
-  
-  m_okLock.vGrabWrite();
-  
-  m_bFrozen = bFrozen;
-  
-  m_okLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/

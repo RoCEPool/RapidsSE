@@ -151,8 +151,6 @@ public:
   static void vDebugTrap(Tasks::MP_Task mpTask);
 
   // dic
-  static void vDicFrozenGet(Tasks::MP_Task mpTask);
-  static void vDicFrozenSet(Tasks::MP_Task mpTask);
   static void vDicInit(Tasks::MP_Task mpTask);
   static void vDicKindGet(Tasks::MP_Task mpTask);
   static void vDicKindSet(Tasks::MP_Task mpTask);
