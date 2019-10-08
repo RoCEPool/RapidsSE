@@ -83,7 +83,7 @@
 
   // this word puts the dictionary path onto the stack as a series of names
   //   ( ... "<subFolderC>"  "<subFolderB>"  "<subFolderA>" 3 )
-  // note: it should not push "<root>"
+  // note: it should not push "__dicRoot"
 
   pathDepth 0 ?do
 
@@ -241,7 +241,7 @@
 
     // dup "task::dicStack.set %v" fmt.print
 
-    dup "<root>" str.equal if
+    dup "__dicRoot" str.equal if
       drop
       dic.root
       pathPush
