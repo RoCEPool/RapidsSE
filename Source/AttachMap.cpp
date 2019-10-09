@@ -77,7 +77,6 @@ AttachMap::AttachMap(void)
   
   m_pLexiconArticle->vAppend(m_pRootArcticle);
   
-  
   Step::vAddStep("word"_Stz,            &Step::vWord);
   AM::vRootWord(m_pRootDic->pFindWord("word"_Stz));
 
@@ -92,6 +91,25 @@ AttachMap::AttachMap(void)
     new Heap(CN_SMALLPERSISTENT,  C_SIZE_SMALL_OBJECT);
 
   _checkInitialised_(CN_ATTACHMAP);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Lexicon* pSubLex;
+  
+  pSubLex = new Lexicon("__ddlLock"_Stz);
+  m_pLexiconArticle->vAppend(pSubLex->pArticle());
+
+  pSubLex = new Lexicon("__grid"_Stz);
+  m_pLexiconArticle->vAppend(pSubLex->pArticle());
+  
+  pSubLex = new Lexicon("__queues"_Stz);
+  m_pLexiconArticle->vAppend(pSubLex->pArticle());
+  
+  pSubLex = new Lexicon("__tennants"_Stz);
+  m_pLexiconArticle->vAppend(pSubLex->pArticle());
+
+  pSubLex = new Lexicon("__threads"_Stz);
+  m_pLexiconArticle->vAppend(pSubLex->pArticle());
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 }
