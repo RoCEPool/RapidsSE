@@ -13,13 +13,19 @@ void Step::vAddSteps_Article(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* rticle::dump -- dump the system articles                                   */
+/* article::dump -- dump the system articles                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vArticleDump(MP_Task mpTask)
 {
   ENTRY("vArticleDump"_Stz);
   
-  Article* pArticle = AM::pRootArticle();
+  Article* pArticle = AM::pLexiconArticle();
+  
+  pArticle->vDumpRecursively(0);
+  
+  vTrace("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"_Stz);
+  
+  pArticle = AM::pRootArticle();
   
   pArticle->vDumpRecursively(0);
   
