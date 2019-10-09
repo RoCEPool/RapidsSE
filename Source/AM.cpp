@@ -62,6 +62,7 @@ JobList* AM::pParticipatingJobs(void) {
 i8   AM::iPid(void)           { return gpAttachMap->m_iPid;                   }
 i8   AM::nConnectedNodes(void){ return gpAttachMap->m_pGrid->nConnectedNodes(); }
 i8   AM::nDefinedNodes(void)  { return gpAttachMap->m_pGrid->nDefinedNodes(); }
+Article* AM::pLexiconArticle(void) { return gpAttachMap->m_pLexiconArticle;    }
 void AM::vProcessExit(void)   { Process::vExitFailure();                      }
 bool AM::bProgress(void)      { return gpAttachMap->m_bProgress;              }
 bool AM::bMetadata(void)      { return gpAttachMap->m_bMetadata;              }
