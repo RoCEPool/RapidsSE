@@ -133,7 +133,7 @@
 
   pathCurrentFolder dic.lastWord
   begin dup while
-    dup word.name@ .put " " .put dup word.kind@ word.name@ .put .\n
+    dup word.name@ .put " " .put dup word.category@ word.name@ .put .\n
     word.prev
   repeat
   drop

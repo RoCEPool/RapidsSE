@@ -33,7 +33,7 @@
   create
 
   // set the word kind to be jobClass
-  [ word::this , ] word::this word.kind!
+  [ word::this , ] word::this word.category!
 
   // attach an ename set to the word being created
   enmSet::new to pEnmSet

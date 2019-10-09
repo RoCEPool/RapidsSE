@@ -24,7 +24,7 @@
   :folder      ( )
 ;
 
-: isIndex word.kind@ tick index eql ;
+: isIndex word.category@ tick index eql ;
 
 /*----------------------------------------------------------------------------*/
 /* create an index using name from input stream (doesnt leave index on stk)   */
@@ -38,7 +38,7 @@
   CN_INDEX word::this >body object.class!
   word::this >body index.init
   true word::this >body object.wordbody!
-  tick index word::this word.kind!
+  tick index word::this word.category!
   does>
 ;
 
@@ -54,7 +54,7 @@
   CN_INDEX word::this >body object.class!
   word::this >body index.init
   true word::this >body object.wordbody!
-  tick index word::this word.kind!
+  tick index word::this word.category!
   word::this
   does>
 ;
@@ -100,7 +100,7 @@
   then
 
   indexPtr ( indexPtr )
-  word.kind@ ( ^word )
+  word.category@ ( ^word )
   tick index ( ^word ^word )
   eql ( bool )
   if

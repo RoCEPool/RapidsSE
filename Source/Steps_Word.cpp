@@ -11,6 +11,8 @@ void Step::vAddSteps_Word(void)
 {
   vAddStep("word::this"_Stz,       &Step::vWordThis);
   
+  vAddStep("word.category@"_Stz,   &Step::vWordKindGet);
+  vAddStep("word.category!"_Stz,   &Step::vWordKindSet);
   vAddStep("word.dump"_Stz,        &Step::vWordDump);
   vAddStep("word.enmSet@"_Stz,     &Step::vWordEnmSetFetch);
   vAddStep("word.enmSet!"_Stz,     &Step::vWordEnmSetStore);
@@ -21,8 +23,6 @@ void Step::vAddSteps_Word(void)
   vAddStep("word.immediate!"_Stz,  &Step::vWordImmediateSet);
   vAddStep("word.isImmediate"_Stz, &Step::vWordIsImmediate);
   vAddStep("word.isIntrinsic"_Stz, &Step::vWordIsIntrinsic);
-  vAddStep("word.kind@"_Stz,       &Step::vWordKindGet);
-  vAddStep("word.kind!"_Stz,       &Step::vWordKindSet);
   vAddStep("word.name@"_Stz,       &Step::vWordNameFetch);
   vAddStep("word.name!"_Stz,       &Step::vWordNameStore);
   vAddStep("word.prev"_Stz,        &Step::vWordPrev);
@@ -238,7 +238,7 @@ void Step::vWordIsIntrinsic(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* word.kind@ -- word kind get                                                */
+/* word.category@ -- word kind get                                                */
 /*----------------------------------------------------------------------------*/
 void Step::vWordKindGet(MP_Task mpTask)
 {
@@ -257,7 +257,7 @@ ENTRY("vWordKindGet"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* word.kind! -- word kind set                                                */
+/* word.category! -- word kind set                                                */
 /*----------------------------------------------------------------------------*/
 void Step::vWordKindSet(MP_Task mpTask)
 {

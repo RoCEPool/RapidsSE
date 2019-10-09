@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : folder ;
 
-: isFolder word.kind@ tick folder eql ;
+: isFolder word.category@ tick folder eql ;
 
 /*----------------------------------------------------------------------------*/
 /* create the tenant dictionary using name from input(doesnt leave dic on stk)*/
@@ -23,7 +23,7 @@ diclock.grabwrite
   sizeof_dic allot
   word::this >body object.magic!
   CN_DIC word::this >body object.class!
-  tick folder word::this word.kind!
+  tick folder word::this word.category!
   word::this >body dic.init
   true word::this >body object.wordbody!
 
@@ -46,7 +46,7 @@ diclock.grabwrite
   sizeof_dic allot
   word::this >body object.magic!
   CN_DIC word::this >body object.class!
-  tick folder word::this word.kind!
+  tick folder word::this word.category!
   word::this >body dic.init
   true word::this >body object.wordbody!
 
@@ -67,7 +67,7 @@ diclock.grabwrite
   sizeof_dic allot
   word::this >body object.magic!
   CN_DIC word::this >body object.class!
-  tick folder word::this word.kind!
+  tick folder word::this word.category!
   word::this >body dic.init
   true word::this >body object.wordbody!
 
@@ -90,7 +90,7 @@ diclock.grabwrite
   sizeof_dic allot
   word::this >body object.magic!
   CN_DIC word::this >body object.class!
-  tick folder word::this word.kind!
+  tick folder word::this word.category!
   word::this >body dic.init
   true word::this >body object.wordbody!
   word::this
@@ -112,7 +112,7 @@ diclock.grabwrite
   sizeof_dic allot
   word::this >body object.magic!
   CN_DIC word::this >body object.class!
-  tick folder word::this word.kind!
+  tick folder word::this word.category!
   word::this >body dic.init
   true word::this >body object.wordbody!
   word::this
@@ -130,7 +130,7 @@ diclock.dropwrite
   params| pWord |
 
   pWord not if EC_NO_SUCH_FOLDER false exit_rt then
-  pWord word.kind@ tick folder eql if true exit_rt then
+  pWord word.category@ tick folder eql if true exit_rt then
   EC_NOT_A_FOLDER false
 ;
 
