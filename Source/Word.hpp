@@ -15,17 +15,9 @@ namespace Forth
     Article* m_pArticle;     // the word article
 
     s32      m_sName;        // the name of this word
-    eWK      m_eKind;        // kind of word
   
-    bool     m_bPersistent;  // is on persistent heap
-    i8       m_iTrace;       // trace level
-    i8       m_iEpoch;       // epoch no. used by bp analyzer
-    Dic*     m_pDic;         // which dictionary this word in
     Word*    m_pCategory;    // category of word
-    bool     m_bImmediate;   // immediate execution during compile?
-    i8       m_iParams;      // number of parameters
-    bool     m_bPrompt;      // can be executed by prompt?
-    i8       m_iLocalNo;     // local number (for a local variable)
+    Dic*     m_pDic;         // which dictionary this word in
     StepFp   m_fpEntryStep;  // entry step function for this word
     Cell*    m_aEntryCell;   // the cell to start executing from
                              //   for normal words this will be the first cell
@@ -33,11 +25,17 @@ namespace Forth
                              //   for objects this will be the cell after
                              //     does in the defining word
                              //   for primitives this will be null
-  
-    s32      m_sExitHook;    // routine to be called on exit
-  
     EnmSet*  m_pEnmSet;      // optional ename set
-  
+    i8       m_iEpoch;       // epoch no. used by bp analyzer
+    s32      m_sExitHook;    // routine to be called on exit
+    bool     m_bImmediate;   // immediate execution during compile?
+    eWK      m_eKind;        // kind of word
+    i8       m_iLocalNo;     // local number (for a local variable)
+    i8       m_iParams;      // number of parameters
+    bool     m_bPersistent;  // is on persistent heap
+    bool     m_bPrompt;      // can be executed by prompt?
+    i8       m_iTrace;       // trace level
+
     Routine  m_xRoutine;
   
     // must be last
