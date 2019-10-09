@@ -9,6 +9,8 @@ namespace Grids
                public ListItem_t<Node>
   {
   private:
+    Article* m_pArticle;
+
     i8    m_iNodeNo;    // node number
     s32   m_sNodeName;  // name of the node
     s32   m_sIPAddr;    // ip address of node
@@ -21,7 +23,7 @@ namespace Grids
   
     i8    m_iRegionSize;  // last known region size
     i8    m_iFreeSpace;   // last known free space
-    i8    m_iFreePercent; // last known free percent
+    i8    m_iFreePercent; // last known free percent 
 
     // must be last
     Footer m_xFooter;
@@ -35,7 +37,9 @@ namespace Grids
     ~Node(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    
+  
+    Article* pArticle(void);
+  
     void vInit(void);
     Stz* szIPAddr(void);
     Stz* szNodeName(void);

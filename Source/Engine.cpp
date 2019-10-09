@@ -890,6 +890,10 @@ void Engine::vStartSystem(void)
                            gxArguments.m_xNodes[i_Node].m_iPortNo);
     ASSERT(CN_NODE == pNode->eClass());
     AM::pGrid()->vAddNode(pNode);
+    
+    Article* pNodeArticle = pNode->pArticle();
+    
+    pGridArticle->vAppend(pNodeArticle);
   }
   
   Node* pThisNode = AM::pGrid()->pFindNode(gxArguments.m_sNodeName);
