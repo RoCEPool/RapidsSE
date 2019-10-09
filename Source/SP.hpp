@@ -24,7 +24,8 @@ namespace Esses
    ~SP(void) noexcept(false);
   
     Stz* szResult(void);
-  
+    void vResult(Stz* szResult);
+
     Footer* aFooter(void);
   };
 }

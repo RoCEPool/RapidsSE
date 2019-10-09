@@ -38,6 +38,8 @@ namespace Grids
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
+    static void vArtFun(Object* pObject, SP& sp);
+  
     Article* pArticle(void);
   
     void vInit(void);
