@@ -35,6 +35,8 @@ namespace Structures
     Article(Stz* szName, Object* pObject, pARTFUN* fpArtFun);
    ~Article(void) noexcept(false);
   
+    pARTFUN* fpArtFun(void);
+
     Article* pCategory(void);
     void  vCategory(Article* pCategory);
   

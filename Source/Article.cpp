@@ -69,6 +69,16 @@ Article::~Article(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get category                                                               */
 /*----------------------------------------------------------------------------*/
+pARTFUN* Article::fpArtFun(void)
+{
+  _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
+  
+  return m_fpArtFun;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get category                                                               */
+/*----------------------------------------------------------------------------*/
 Article* Article::pCategory(void)
 {
   _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
@@ -134,8 +144,15 @@ void Article::vDumpRecursively(i8 iDepth)
   _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
   
   SP_Article spArticle;
+  SP_Article spObject;
 
-  vTrace("  %s\n"_Stz,spArticle.sz(this,iDepth));
+  if (m_fpArtFun) {
+    (*m_fpArtFun)(m_pObject,spObject);
+    vTrace("  %s %s\n"_Stz,spArticle.sz(this,iDepth),spObject.szResult());
+  }
+  else {
+      vTrace("  %s\n"_Stz,spArticle.sz(this,iDepth));
+  }
   
   if (! nItems())
     return;

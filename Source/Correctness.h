@@ -40,7 +40,6 @@ namespace Correctness
 
 #define IGNORE_RETURN(call) call
 
-typedef void (pARTFUN)(Object* pObject);
 
 typedef void (pDUMPFUN)(eCN eClass, Object* pObject, Stz*);
 extern pDUMPFUN *gpDump[];
