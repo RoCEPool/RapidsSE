@@ -15,7 +15,7 @@ Lexicon* Structures::_pLexicon(void* aAddr)
 {
   Lexicon* pLexicon = reinterpret_cast<Lexicon*>(aAddr);
   
-  RASSERT_TYPE(pLexicon,CN_DIC);
+  RASSERT_TYPE(pLexicon,CN_LEXICON);
 
   return pLexicon;
 }
@@ -25,7 +25,7 @@ Lexicon* Structures::_pLexicon(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Lexicon::operator new(size_t)
 {
-  Lexicon* pLexicon = (Lexicon*)(HeapMem::pAllocate(CN_DIC));
+  Lexicon* pLexicon = (Lexicon*)(HeapMem::pAllocate(CN_LEXICON));
   
   return pLexicon;
 }
@@ -44,17 +44,17 @@ void Lexicon::operator delete(void* pLexiconAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Lexicon::Lexicon(Stz* szName)
-: Object(CN_DIC)
+: Object(CN_LEXICON)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LEXICON,_FOOTER_);
 
   m_pArticle = new Article(szName,this);
   
   m_sName    = szName;
   
-  _checkInitialised_(CN_DIC);
+  _checkInitialised_(CN_LEXICON);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_LEXICON,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -62,7 +62,7 @@ Lexicon::Lexicon(Stz* szName)
 /*----------------------------------------------------------------------------*/
 Lexicon::~Lexicon(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LEXICON,_FOOTER_);
   
   delete m_pArticle;
 }
@@ -76,7 +76,7 @@ Lexicon::~Lexicon(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Stz* Lexicon::szName(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LEXICON,_FOOTER_);
   
   return m_sName;
 }
@@ -86,7 +86,7 @@ Stz* Lexicon::szName(void)
 /*----------------------------------------------------------------------------*/
 void Lexicon::vName(Stz* szName)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LEXICON,_FOOTER_);
   
   m_sName = szName;
   
@@ -94,11 +94,11 @@ void Lexicon::vName(Stz* szName)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get name of this lexicon                                                   */
+/* get article for this lexicon                                               */
 /*----------------------------------------------------------------------------*/
 Article* Lexicon::pArticle(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LEXICON,_FOOTER_);
   
   return m_pArticle;
 }
