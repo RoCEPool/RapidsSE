@@ -18,6 +18,7 @@ namespace Forth
   
     Word*    m_pCategory;    // category of word
     Dic*     m_pDic;         // which dictionary this word in
+    EnmSet*  m_pEnmSet;      // optional ename set
     StepFp   m_fpEntryStep;  // entry step function for this word
     Cell*    m_aEntryCell;   // the cell to start executing from
                              //   for normal words this will be the first cell
@@ -25,7 +26,6 @@ namespace Forth
                              //   for objects this will be the cell after
                              //     does in the defining word
                              //   for primitives this will be null
-    EnmSet*  m_pEnmSet;      // optional ename set
     i8       m_iEpoch;       // epoch no. used by bp analyzer
     s32      m_sExitHook;    // routine to be called on exit
     bool     m_bImmediate;   // immediate execution during compile?
