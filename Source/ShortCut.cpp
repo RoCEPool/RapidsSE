@@ -12,8 +12,8 @@ ShortCut::ShortCut(void)
 {
   _precondition_(_MAGIC_,CN_SHORTCUT,_FOOTER_);
   
-  m_sName  = "<none>"_Stz;
-  m_sCmd   = "<none>"_Stz;
+  m_sName  = C_NO_NAME;
+  m_sCmd   = C_NO_NAME;
   
   _checkInitialised_(CN_SHORTCUT);
   
@@ -29,7 +29,7 @@ ShortCut::ShortCut(Stz* szName)
   _precondition_(_MAGIC_,CN_SHORTCUT,_FOOTER_);
   
   m_sName  = szName;
-  m_sCmd   = "<none>"_Stz;
+  m_sCmd   = C_NO_NAME;
 
   _checkInitialised_(CN_SHORTCUT);
   

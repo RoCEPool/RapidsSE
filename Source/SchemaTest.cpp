@@ -67,10 +67,10 @@ SchemaTest::SchemaTest(Stz* sStream)
   m_sFilePath.vConcat(m_sStream);
 #endif
 
-  m_sTableNm  = "<none>"_Stz;
-  m_sColumnNm = "<none>"_Stz;
-  m_sColumnTy = "<none>"_Stz;
-  m_sRow      = "<none>"_Stz;
+  m_sTableNm  = C_NO_NAME;
+  m_sColumnNm = C_NO_NAME;
+  m_sColumnTy = C_NO_NAME;
+  m_sRow      = C_NO_NAME;
 
   m_nCcolumns = 0;
   m_nXcolumns = 0;
@@ -80,7 +80,7 @@ SchemaTest::SchemaTest(Stz* sStream)
 
   for (i8 i_Col = 0; i_Col < C_COLUMNS; i_Col++)
     m_eColumns[i_Col] = CT_NONE;
-  m_sStatement = "<none>"_Stz;
+  m_sStatement = C_NO_NAME;
 
   _checkInitialised_(CN_SCHEMATEST);
   

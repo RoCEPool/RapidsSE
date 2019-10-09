@@ -37,7 +37,7 @@ Filter::Filter(eCN eClassNo, TokenVec* pTokenVec)
 {
   _precondition_(_MAGIC_,eClassNo);
   
-  m_sName = "<none>"_Stz;
+  m_sName = C_NO_NAME;
   m_pTokenVec = new TokenVec(false);
   
   // -- -- -- -- -- -- -- -- -- --

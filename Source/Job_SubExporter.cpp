@@ -36,8 +36,8 @@ JobClass xJobClass_SubExporter =
   
   // help and example
   true,
-  "<none>"_Stz,
-  "<none>"_Stz,
+  C_NO_NAME,
+  C_NO_NAME,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

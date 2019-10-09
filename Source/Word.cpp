@@ -659,7 +659,7 @@ void Word::vObjectDump(Stz* aTab)
          "Step %p ..Rows.. %p\n"_Stz,
          m_iEpoch,
          m_sName.aChar(),
-         m_pDic ? m_pDic->szName() : "<none>"_Stz,
+         m_pDic ? m_pDic->szName() : C_NO_NAME,
          aWT[m_eWordType]->aChar(),
          m_bImmediate ? "Immediate"_Stz : "Not Immediate"_Stz,
          m_xRoutine.nUsed(),

@@ -36,8 +36,8 @@ JobClass xJobClass_Xmit =
   
   // help and example
   false,
-  "<none>"_Stz,
-  "<none>"_Stz,
+  C_NO_NAME,
+  C_NO_NAME,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

@@ -43,7 +43,7 @@ ByteRate::ByteRate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BYTERATE,_FOOTER_);
   
-  m_sReportPrefix  = "<none>"_Stz;
+  m_sReportPrefix  = C_NO_NAME;
   m_iReportQuantum = 0;
   
   //m_oElapsedTimer

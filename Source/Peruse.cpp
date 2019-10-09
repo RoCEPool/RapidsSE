@@ -13,7 +13,7 @@ Peruse::Peruse(void)
 {
   _precondition_(_MAGIC_,CN_PERUSE,_FOOTER_);
   
-  m_sName = "<none>"_Stz;
+  //m_sName = C_NO_NAME;
   
   m_oTimer.vStart();
   

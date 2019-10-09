@@ -106,7 +106,7 @@ Job_Repeater::Job_Repeater(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, 
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPEATER,_FOOTER_);
   
-  m_sOutputPath = "<none>"_Stz;
+  m_sOutputPath = C_NO_NAME;
   
   m_pIoCopy     = new IoCopy;
   m_pByteRate   = new ByteRate;

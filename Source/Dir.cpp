@@ -51,10 +51,10 @@ Dir::Dir(void)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
-  m_sDirPath   = "<none>"_Stz;
+  m_sDirPath   = C_NO_NAME;
   
   m_aDir       = nullptr;
-  m_sEntryName = "<none>"_Stz;
+  m_sEntryName = C_NO_NAME;
   m_iEntryType = 0;
   
   //m_oSysCall
@@ -317,7 +317,7 @@ bool Dir::bRead(void)
   pDirEnt = readdir(m_aDir);
   
   if ( ! pDirEnt ) {
-    m_sEntryName = "<none>"_Stz;
+    m_sEntryName = C_NO_NAME;
     m_iEntryType = 0;
     m_oSysCall.vSuccess();
     return false;

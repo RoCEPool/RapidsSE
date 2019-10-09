@@ -32,7 +32,7 @@ NmStr::NmStr(void)
 {
   _precondition_(_MAGIC_,CN_NMSTR,_FOOTER_);
   
-  m_sName  = "<none>"_Stz;
+  m_sName  = C_NO_NAME;
   m_sValue = ""_Stz;
   
   _checkInitialised_(CN_NMSTR);

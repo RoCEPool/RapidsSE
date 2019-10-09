@@ -12,7 +12,7 @@ NmVal::NmVal(void)
 {
   _precondition_(_MAGIC_,CN_NMVAL,_FOOTER_);
   
-  m_sName  = "<none>"_Stz;
+  m_sName  = C_NO_NAME;
   m_iValue = C_UNKNOWN;
   
   _checkInitialised_(CN_NMVAL);

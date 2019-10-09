@@ -26,7 +26,7 @@ Fifo::Fifo(void)
 {
   _precondition_(_MAGIC_,CN_FIFO,_FOOTER_);
   
-  m_sFifoPath = "<none>"_Stz;
+  m_sFifoPath = C_NO_NAME;
   //m_oSysCall;
   
   _checkInitialised_(CN_FIFO);
