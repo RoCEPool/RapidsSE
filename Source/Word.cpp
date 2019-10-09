@@ -68,29 +68,29 @@ Word::Word(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
-  m_pArticle      = new Article(szName,this,Word::vArtFun);
+  m_pArticle   = new Article(szName,this,Word::vArtFun);
 
-  m_sName         = szName;
-  m_eWordType     = WT_ROUTINE;
+  m_sName      = szName;
+  m_eWord      = WT_ROUTINE;
   //m_bPersistent   = false;
-  m_iTrace        = 0;
-  //m_pDic        = pDic;
-  m_pKind         = AM::pRootWord() ? AM::pRootWord() : this;
-  m_iEpoch        = AM::iEpoch();
-  m_bImmediate    = false;
-  m_iParams       = 0;
-  m_bPrompt       = false;
-  m_iLocalNo      = 0;
+  m_iTrace     = 0;
+  //m_pDic     = pDic;
+  m_pKind      = AM::pRootWord() ? AM::pRootWord() : this;
+  m_iEpoch     = AM::iEpoch();
+  m_bImmediate = false;
+  m_iParams    = 0;
+  m_bPrompt    = false;
+  m_iLocalNo   = 0;
   
-  m_pEnmSet       = nullptr;
+  m_pEnmSet    = nullptr;
 
+  m_fpEntryStep = gfpEntryStep;
+  m_aEntryCell  = aFirstCell();
+  
   m_xRoutine.vZero(CN_WORD);
   
   _setFooter_();
   
-  m_fpEntryStep   = gfpEntryStep;
-  m_aEntryCell    = aFirstCell();
-
   _checkInitialised_(CN_WORD);
   
   if (m_pDic)
@@ -109,7 +109,7 @@ Word::~Word(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   // invoke the finalize function for embedded objects
-  if (m_eWordType == WT_OBJECT) {
+  if (m_eWord == WT_OBJECT) {
     Object* pEmbObject = reinterpret_cast<Object*>(m_xRoutine.ayArea());
     eCN eClass = pEmbObject->eClass();
     pFINALIZE* pFinalizeFun = gpFinalize[eClass];
@@ -141,7 +141,7 @@ void Word::vDump(eCN eClass, Object* pObject, Stz* aTab)
   Word* pWord = _pWord(pObject);
   
   // dump only the objects
-  if (WT_OBJECT == pWord->m_eWordType)
+  if (WT_OBJECT == pWord->m_eWord)
     pWord->vObjectDump(aTab);
   
   //for (Word* pWord = m_pCurrentWord; pWord; pWord = pWord->pPrevWord())
@@ -346,7 +346,7 @@ void Word::vContentDump(void)
          "Step %p %s ..Rows.. %p\n"_Stz,
          this,
          m_sName.aChar(),
-         aWT[m_eWordType]->aChar(),
+         aWT[m_eWord]->aChar(),
          m_pKind->m_sName.aChar(),
          m_bImmediate,
          m_xRoutine.nUsed(),
@@ -670,7 +670,7 @@ void Word::vObjectDump(Stz* aTab)
          m_iEpoch,
          m_sName.aChar(),
          m_pDic ? m_pDic->szName() : C_NO_NAME,
-         aWT[m_eWordType]->aChar(),
+         aWT[m_eWord]->aChar(),
          m_bImmediate ? "Immediate"_Stz : "Not Immediate"_Stz,
          m_xRoutine.nUsed(),
          m_fpEntryStep,
@@ -737,21 +737,21 @@ void Word::vPrompt(bool bPrompt)
 /*----------------------------------------------------------------------------*/
 /* get word type                                                              */
 /*----------------------------------------------------------------------------*/
-eWT Word::eWordType(void)
+eWT Word::eWord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  return m_eWordType;
+  return m_eWord;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set word type                                                              */
 /*----------------------------------------------------------------------------*/
-void Word::vWordType(eWT eWordType)
+void Word::vWord(eWT eWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  m_eWordType = eWordType;
+  m_eWord = eWord;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -15,7 +15,7 @@ namespace Forth
     Article* m_pArticle;     // the word article
 
     s32      m_sName;        // the name of this word
-    eWT      m_eWordType;    // type of word
+    eWT      m_eWord;        // type of word
   
     bool     m_bPersistent;  // is on persistent heap
     i8       m_iTrace;       // trace level
@@ -105,8 +105,8 @@ namespace Forth
     void  vPrompt(bool bImmediate);
     void  vReset(void);
     i8    iSize(void);
-    eWT   eWordType(void);
-    void  vWordType(eWT eWordType);
+    eWT   eWord(void);
+    void  vWord(eWT eWord);
     char* aWspArea(void);
 
     Footer* aFooter(void);

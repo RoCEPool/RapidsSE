@@ -46,18 +46,18 @@ void Step::vFlowExecute(MP_Task mpTask)
     THROW_INVALID_DSTACK("execute"_Stz);
   Word* pWord = _pWord(pWordObject);
   
-  if (WT_INTRINSIC == pWord->eWordType()) {
+  if (WT_INTRINSIC == pWord->eWord()) {
     StepFp fpStepFp = pWord->fpEntryStep();
     (fpStepFp)(mpTask);
   }
-  else if (WT_OBJECT == pWord->eWordType()) {
+  else if (WT_OBJECT == pWord->eWord()) {
     mpTask->m_pReturnStack->vPushCell(mpTask->m_aFipCell);
     mpTask->m_aFipCell = pWord->aEntryCell();
     
     Object* pObject = (Object*)pWord->aFirstCell();
     mpTask->m_pDataStack->vPushPointer(pObject);
   }
-  else if (WT_ROUTINE == pWord->eWordType()){
+  else if (WT_ROUTINE == pWord->eWord()){
     mpTask->m_pReturnStack->vPushCell(mpTask->m_aFipCell);
     mpTask->m_aFipCell = pWord->aEntryCell();
   }
