@@ -40,12 +40,13 @@ namespace Correctness
 
 #define IGNORE_RETURN(call) call
 
+typedef void (pARTFUN)(Object* pObject);
+
 typedef void (pDUMPFUN)(eCN eClass, Object* pObject, Stz*);
 extern pDUMPFUN *gpDump[];
 
 typedef void (pFINALIZE(eCN eClass, Object* pObject));
 extern pFINALIZE *gpFinalize[];
-
 
 typedef void (pOUTLINEFUN)(Focal* pFocal, Stz*);
 extern pOUTLINEFUN *gpOutline[];

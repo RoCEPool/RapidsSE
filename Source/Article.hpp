@@ -22,6 +22,9 @@ namespace Structures
   
     Atomic   m_ixRefCount; // reference count
   
+    pARTFUN* m_fpArtFun;   // article sp function
+
+  
     // must be last
     Footer m_xFooter;
     
@@ -29,7 +32,7 @@ namespace Structures
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Article(Stz* szName, Object* pObject);
+    Article(Stz* szName, Object* pObject, pARTFUN* fpArtFun);
    ~Article(void) noexcept(false);
   
     Article* pCategory(void);

@@ -52,7 +52,7 @@ Dic::Dic(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
 
-  m_pArticle = new Article(C_NO_NAME,this);
+  m_pArticle = new Article(C_NO_NAME,this,nullptr);
   
   m_sName    = C_NO_NAME;
   m_pDicKind = nullptr;
@@ -250,7 +250,7 @@ void Dic::vInit(void)
   //m_sName.vInit();
   m_sName = pWord->sName();
   
-  m_pArticle = new Article(m_sName,this);
+  m_pArticle = new Article(m_sName,this,nullptr);
 }
 
 /*----------------------------------------------------------------------------*/

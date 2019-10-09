@@ -48,7 +48,7 @@ Grid::Grid(i8 nNodes, i8 nSlotsPerNode)
   
   m_sName = "SEgrid"_Stz;
   
-  m_pArticle = new Article(m_sName,this);
+  m_pArticle = new Article(m_sName,this,nullptr);
   
   vInit(nNodes, nSlotsPerNode);
   

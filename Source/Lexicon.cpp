@@ -48,7 +48,7 @@ Lexicon::Lexicon(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LEXICON,_FOOTER_);
 
-  m_pArticle = new Article(szName,this);
+  m_pArticle = new Article(szName,this,nullptr);
   
   m_sName    = szName;
   

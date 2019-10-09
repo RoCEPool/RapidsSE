@@ -31,7 +31,7 @@ void Article::operator delete(void* pAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Article::Article(Stz* szName, Object* pObject)
+Article::Article(Stz* szName, Object* pObject, pARTFUN* fpArtFun)
 : Object(CN_ARTICLE)
 , m_okLock(LK_NAME,this)
 {
@@ -46,6 +46,8 @@ Article::Article(Stz* szName, Object* pObject)
   m_pChild    = nullptr;
   
   m_ixRefCount.vCheckInit();
+  
+  m_fpArtFun = fpArtFun;
 
   _checkInitialised_(CN_ARTICLE);
   
