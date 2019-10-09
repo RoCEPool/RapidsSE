@@ -8,6 +8,11 @@ namespace Grids
   class Grid : public Object
   {
   private:
+  
+    Article* m_pArticle;
+  
+    s32    m_sName;
+  
     i8     m_nSlotsPerNode;    // no of partition slots on each node
   
     i8     m_nDefinedNodes;    // total number of nodes in the grid
@@ -33,11 +38,12 @@ namespace Grids
     void  operator delete(void*);
     
     Grid(i8 nDefinedNodes, i8 nSlotsPerNode);
-    ~Grid(void) noexcept(false);
+   ~Grid(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
     void vAddNode(Node* pNode);
+    Article* pArticle(void);
     i8   nConnectedNodes(void);
     i8   nDefinedNodes(void);
     void vDumpPartitioning(void);

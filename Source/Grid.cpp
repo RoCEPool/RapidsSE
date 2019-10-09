@@ -46,6 +46,10 @@ Grid::Grid(i8 nNodes, i8 nSlotsPerNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
+  m_sName = "SEgrid"_Stz;
+  
+  m_pArticle = new Article(m_sName,this);
+  
   vInit(nNodes, nSlotsPerNode);
   
   _checkInitialised_(CN_GRID);
@@ -120,6 +124,16 @@ void Grid::vAddNode(Node* pNode)
   
   if (i_Node >= m_nDefinedNodes)
     m_nDefinedNodes++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get article                                                                */
+/*----------------------------------------------------------------------------*/
+Article* Grid::pArticle(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+
+  return m_pArticle;
 }
 
 /*----------------------------------------------------------------------------*/
