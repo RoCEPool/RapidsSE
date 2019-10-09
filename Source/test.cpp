@@ -1248,10 +1248,10 @@ void vTest25(void)
   pEnameSet->vAdd("name2"_Stz,"value2"_Stz,TN_STRING);
   pEnameSet->vAdd("name3"_Stz,"value3"_Stz,TN_STRING);
 
-  for (i8 i_Enm = 0; i_Enm < pEnameSet->nEnm(); i_Enm++)
+  for (i8 i_Ename = 0; i_Ename < pEnameSet->nEnames(); i_Ename++)
     vTrace("  [%lld] %s,%s (%s)\n"_Stz,
-           i_Enm,pEnameSet->szName(i_Enm),pEnameSet->szValue(i_Enm),
-           aTN[pEnameSet->eToken(i_Enm)]);
+           i_Ename,pEnameSet->szName(i_Ename),pEnameSet->szValue(i_Ename),
+           aTN[pEnameSet->eToken(i_Ename)]);
 
   delete pEnameSet;
 }

@@ -109,7 +109,7 @@ Op* ProjectOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
   ProjectOp* pProjectOp = new ProjectOp(pOpSpec,pPipeline);
   
   EnameSet* pEnameSet = pProjectOp->m_pOpSpec->pEnameSet();
-  i8 iEnms = pEnameSet->nEnm();
+  i8 iEnms = pEnameSet->nEnames();
   pEnameSet->vPrint();
   
   pProjectOp->m_pStreamDef->m_nDefSets++;

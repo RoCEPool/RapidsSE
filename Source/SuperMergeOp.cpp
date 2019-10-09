@@ -105,7 +105,7 @@ Op* SuperMergeOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
   EnameSet* pEnameSet = pSuperMergeOp->m_pOpSpec->pEnameSet();
   
   // do we have a limit ?
-  if (pEnameSet->nEnm() == 1)
+  if (pEnameSet->nEnames() == 1)
     pSuperMergeOp->m_nLimit = pEnameSet->iValue((i8)0);
   
   return pSuperMergeOp;

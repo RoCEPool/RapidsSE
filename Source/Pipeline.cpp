@@ -204,7 +204,7 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
         
         s32 sArgs;
         EnameSet* pEnameSet = pOp->m_pOpSpec->pEnameSet();
-        for (i8 i_Arg = 0; i_Arg < pEnameSet->nEnm(); i_Arg++) {
+        for (i8 i_Arg = 0; i_Arg < pEnameSet->nEnames(); i_Arg++) {
           sArgs.vSprint("(%s)"_Stz,pEnameSet->szValue((i8)i_Arg));
         }
         

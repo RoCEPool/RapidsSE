@@ -54,7 +54,7 @@ bool JobHelper::bExtractArgs(EnameSet*   pArgEnmSet,
                              )
 {
   i8 nTokens = pTknVec->nTokens();
-  i8 nEnames = pSynEnmSet->nEnm();
+  i8 nEnames = pSynEnmSet->nEnames();
   
 //  if (nEnames != nTokens)
 //    return false;
@@ -100,8 +100,6 @@ bool JobHelper::bExtractJson(EnameSet*   pArgEnmSet,
                              )
 {
   Token* pTkn = nullptr;
-  i8 nTokens = pTknVec->nTokens();
-  i8 nEnames = pSynEnmSet->nEnm();
 
   ASSERT(pSynEnmSet->szName(i_Syn_)->bSame("__json__"_Stz));
   

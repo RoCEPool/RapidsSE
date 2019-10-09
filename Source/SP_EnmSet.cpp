@@ -38,17 +38,17 @@ Stz* SP_EnmSet::sz(EnameSet* pEnameSet)
   
    StrLib::vSprint(m_caResult,"{ "_Stz);
   
-  for (i8 i_Enm = 0; i_Enm < pEnameSet->nEnm(); i_Enm++) {
+  for (i8 i_Ename = 0; i_Ename < pEnameSet->nEnames(); i_Ename++) {
     
-    if (i_Enm)
+    if (i_Ename)
       StrLib::vSprintCat(m_caResult," , ");
 
-    if (TN_INTEGER == pEnameSet->eToken(i_Enm)) {
+    if (TN_INTEGER == pEnameSet->eToken(i_Ename)) {
       
       StrLib::vSprintCat(m_caResult,"%s = %lld",
               
-                         pEnameSet->szName(i_Enm),
-                         pEnameSet->iValue(i_Enm),
+                         pEnameSet->szName(i_Ename),
+                         pEnameSet->iValue(i_Ename),
              
                          C_ENDARGS
                         );
@@ -57,8 +57,8 @@ Stz* SP_EnmSet::sz(EnameSet* pEnameSet)
     
     StrLib::vSprintCat(m_caResult,"%s = %s",
            
-                       pEnameSet->szName(i_Enm),
-                       pEnameSet->szValue(i_Enm),
+                       pEnameSet->szName(i_Ename),
+                       pEnameSet->szValue(i_Ename),
 
                        C_ENDARGS
                       );

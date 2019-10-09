@@ -118,7 +118,7 @@ Op* FetchOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
   pFetchOp->m_sIndexNm = pEnameSet->szValue((i8)1);
   
   // do we have a limit ?
-  if (pEnameSet->nEnm() == 3)
+  if (pEnameSet->nEnames() == 3)
     pFetchOp->m_nLimit = pEnameSet->iValue((i8)2);
   
   return pFetchOp;

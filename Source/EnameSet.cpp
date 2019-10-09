@@ -44,7 +44,7 @@ EnameSet::EnameSet(void)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
  
-  m_nEnm = 0;
+  m_nEnames = 0;
   
   for (i8 i_Eno = 0; i_Eno < C_ENAME_SET; i_Eno++) {
     m_xEname[i_Eno].m_i_Name  = C_UNKNOWN;
@@ -76,13 +76,13 @@ void EnameSet::vAdd(Stz* szName, i8 iValue, eTN eToken)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
-  i8 i_Enm = m_nEnm;
+  i8 i_Ename = m_nEnames;
   
-  m_xEname[i_Enm].m_i_Name  = m_bStrings.iAppend(szName);
-  m_xEname[i_Enm].m_i_Value = iValue;
-  m_xEname[i_Enm].m_eToken  = eToken;
+  m_xEname[i_Ename].m_i_Name  = m_bStrings.iAppend(szName);
+  m_xEname[i_Ename].m_i_Value = iValue;
+  m_xEname[i_Ename].m_eToken  = eToken;
   
-  m_nEnm++;
+  m_nEnames++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -92,23 +92,23 @@ void EnameSet::vAdd(Stz* szName, Stz* szValue, eTN eToken)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
-  i8 i_Enm = m_nEnm;
+  i8 i_Ename = m_nEnames;
   
-  m_xEname[i_Enm].m_i_Name  = m_bStrings.iAppend(szName);
-  m_xEname[i_Enm].m_i_Value = m_bStrings.iAppend(szValue);
-  m_xEname[i_Enm].m_eToken  = eToken;
+  m_xEname[i_Ename].m_i_Name  = m_bStrings.iAppend(szName);
+  m_xEname[i_Ename].m_i_Value = m_bStrings.iAppend(szValue);
+  m_xEname[i_Ename].m_eToken  = eToken;
   
-  m_nEnm++;
+  m_nEnames++;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get nEno                                                                   */
+/* get nEnames                                                                */
 /*----------------------------------------------------------------------------*/
-i8 EnameSet::nEnm(void)
+i8 EnameSet::nEnames(void)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
-  return m_nEnm;
+  return m_nEnames;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -118,9 +118,9 @@ i8 EnameSet::i_Find(Stz *szName)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
-  for (i8 i_Enm = 0; i_Enm < m_nEnm; i_Enm++) {
-    if (m_bStrings.szGet(m_xEname[i_Enm].m_i_Name)->bSame(szName))
-      return i_Enm;
+  for (i8 i_Ename = 0; i_Ename < m_nEnames; i_Ename++) {
+    if (m_bStrings.szGet(m_xEname[i_Ename].m_i_Name)->bSame(szName))
+      return i_Ename;
   }
   
   return C_UNKNOWN;
@@ -133,9 +133,9 @@ bool EnameSet::bHasName(Stz *szName)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
-  i8 i_Enm = i_Find(szName);
+  i8 i_Ename = i_Find(szName);
   
-  if (C_UNKNOWN == i_Enm)
+  if (C_UNKNOWN == i_Ename)
     return false;
   else
     return true;
@@ -144,11 +144,11 @@ bool EnameSet::bHasName(Stz *szName)
 /*----------------------------------------------------------------------------*/
 /* get name                                                                   */
 /*----------------------------------------------------------------------------*/
-Stz* EnameSet::szName(i8 i_Enm)
+Stz* EnameSet::szName(i8 i_Ename)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
-  Stz* szName = m_bStrings.szGet(m_xEname[i_Enm].m_i_Name);
+  Stz* szName = m_bStrings.szGet(m_xEname[i_Ename].m_i_Name);
   
   return szName;
 }
@@ -161,17 +161,17 @@ void EnameSet::vPrint(void)
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
   vTrace("{ "_Stz);
-  for (i8 i_Enm = 0; i_Enm < m_nEnm; i_Enm++) {
+  for (i8 i_Ename = 0; i_Ename < m_nEnames; i_Ename++) {
     
-    if (i_Enm)
+    if (i_Ename)
       vTrace(", "_Stz);
     
-    if (TN_INTEGER == m_xEname[i_Enm].m_eToken) {
+    if (TN_INTEGER == m_xEname[i_Ename].m_eToken) {
       
       vTrace("%s=%lld"_Stz,
              
-             m_bStrings.szGet(m_xEname[i_Enm].m_i_Name),
-             m_xEname[i_Enm].m_i_Value,
+             m_bStrings.szGet(m_xEname[i_Ename].m_i_Name),
+             m_xEname[i_Ename].m_i_Value,
              
              C_ENDARGS
              );
@@ -180,8 +180,8 @@ void EnameSet::vPrint(void)
     
     vTrace("%s=%s"_Stz,
     
-           m_bStrings.szGet(m_xEname[i_Enm].m_i_Name),
-           m_bStrings.szGet(m_xEname[i_Enm].m_i_Value),
+           m_bStrings.szGet(m_xEname[i_Ename].m_i_Name),
+           m_bStrings.szGet(m_xEname[i_Ename].m_i_Value),
            
            C_ENDARGS
            );
@@ -197,18 +197,18 @@ void EnameSet::vPrintDetailed(void)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
-  for (i8 i_Enm = 0; i_Enm < m_nEnm; i_Enm++) {
+  for (i8 i_Ename = 0; i_Ename < m_nEnames; i_Ename++) {
     vTrace("  [%lld] %s _%lld, %s _%lld (%s)\n"_Stz,
            
-           i_Enm,
+           i_Ename,
            
-           m_bStrings.szGet(m_xEname[i_Enm].m_i_Name),
-           m_xEname[i_Enm].m_i_Name,
+           m_bStrings.szGet(m_xEname[i_Ename].m_i_Name),
+           m_xEname[i_Ename].m_i_Name,
            
-           m_bStrings.szGet(m_xEname[i_Enm].m_i_Value),
-           m_xEname[i_Enm].m_i_Value,
+           m_bStrings.szGet(m_xEname[i_Ename].m_i_Value),
+           m_xEname[i_Ename].m_i_Value,
            
-           aTN[m_xEname[i_Enm].m_eToken],
+           aTN[m_xEname[i_Ename].m_eToken],
            
            C_ENDARGS
            );
@@ -222,7 +222,7 @@ void EnameSet::vReset(void)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
 
-  m_nEnm = 0;
+  m_nEnames = 0;
   
   m_bStrings.vReset();
 }
@@ -230,11 +230,11 @@ void EnameSet::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* get token kind                                                             */
 /*----------------------------------------------------------------------------*/
-eTN EnameSet::eToken(i8 i_Enm)
+eTN EnameSet::eToken(i8 i_Ename)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
-  eTN eToken = m_xEname[i_Enm].m_eToken;
+  eTN eToken = m_xEname[i_Ename].m_eToken;
   
   return eToken;
 }
@@ -242,14 +242,14 @@ eTN EnameSet::eToken(i8 i_Enm)
 /*----------------------------------------------------------------------------*/
 /* get value                                                                  */
 /*----------------------------------------------------------------------------*/
-i8 EnameSet::iValue(i8 i_Enm)
+i8 EnameSet::iValue(i8 i_Ename)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
-  //Stz* szValue = m_bStrings.szGet(m_xEname[i_Enm].m_i_Value);
+  //Stz* szValue = m_bStrings.szGet(m_xEname[i_Ename].m_i_Value);
   //i8 iValue = szValue->iToI8();
   
-  i8 iValue = m_xEname[i_Enm].m_i_Value;
+  i8 iValue = m_xEname[i_Ename].m_i_Value;
   
   return iValue;
 }
@@ -257,11 +257,11 @@ i8 EnameSet::iValue(i8 i_Enm)
 /*----------------------------------------------------------------------------*/
 /* get value                                                                  */
 /*----------------------------------------------------------------------------*/
-Stz* EnameSet::szValue(i8 i_Enm)
+Stz* EnameSet::szValue(i8 i_Ename)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
-  Stz* szValue = m_bStrings.szGet(m_xEname[i_Enm].m_i_Value);
+  Stz* szValue = m_bStrings.szGet(m_xEname[i_Ename].m_i_Value);
 
   return szValue;
 }
@@ -273,9 +273,9 @@ i8 EnameSet::iValue(Stz *szName)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
-  i8 i_Enm = i_Find(szName);
+  i8 i_Ename = i_Find(szName);
   
-  i8 iValue = m_xEname[i_Enm].m_i_Value;
+  i8 iValue = m_xEname[i_Ename].m_i_Value;
 
   return iValue;
 }
@@ -287,12 +287,12 @@ Stz* EnameSet::szValue(Stz *szName)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
-  i8 i_Enm = i_Find(szName);
+  i8 i_Ename = i_Find(szName);
   
-  if (C_UNKNOWN == i_Enm)
+  if (C_UNKNOWN == i_Ename)
     return nullptr;
   
-  Stz* szValue = m_bStrings.szGet(m_xEname[i_Enm].m_i_Value);
+  Stz* szValue = m_bStrings.szGet(m_xEname[i_Ename].m_i_Value);
   
   return szValue;
 }
