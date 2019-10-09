@@ -15,7 +15,14 @@ namespace MetaData
     ArrayNL_t<ColumnVec,C_MAX_COLUMNVECS> m_oColVecAry;
 
     bool m_bTemp;   // is this a temporary definition?
+/*
+    i8     m_nDefSets;       // eg. 3
+    i8     m_i_Start[16];    // 0, 4, 9
+    Column m_xaColumn[256];  // colTa,ColTb,...colJa,colJb,...colKa,..
 
+    //s32    m_saName[16];     // "T", "J", "K"
+*/
+  
     // must be last
     Footer m_xFooter;
     
