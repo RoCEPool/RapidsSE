@@ -48,7 +48,7 @@
 : table:
 
   createPersistent
-  WT_OBJECT word::this word.type!
+  WK_OBJECT word::this word.type!
   sizeof_table allot
   word::this >body object.magic!
   CN_TABLE word::this >body object.class!
@@ -64,7 +64,7 @@
 : :table
 
   >createPersistent
-  WT_OBJECT word::this word.type!
+  WK_OBJECT word::this word.type!
   sizeof_table allot
   word::this >body object.magic!
   CN_TABLE word::this >body object.class!

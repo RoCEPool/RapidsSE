@@ -58,7 +58,7 @@ bool Prompt::bPrompt_enums(SePrompt* pPrompt)
   vTrace("  eTN: token type\n"_Stz);
   vTrace("  eXP: transaction phase\n"_Stz);
   vTrace("  eTT: table type\n"_Stz);
-  vTrace("  eWT: word type\n"_Stz);
+  vTrace("  eWK: word type\n"_Stz);
 
   return true;
 }

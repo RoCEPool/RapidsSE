@@ -263,7 +263,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
         
       case TN_NAME:
         pCalledWord = m_oDicStack.pFindWord(m_pCompiler->m_pTokeniser->sToken());
-        if (WT_INTRINSIC == pCalledWord->eWord()) {
+        if (WK_INTRINSIC == pCalledWord->eWord()) {
           fpStep = pCalledWord->fpEntryStep();
           if (pCalledWord->bImmediate())
             (*fpStep)(this);
@@ -271,7 +271,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
             pNewWord->vAppend(pCalledWord->afpEntryStep());
           }
         }
-        else if (WT_ROUTINE == pCalledWord->eWord()) {
+        else if (WK_ROUTINE == pCalledWord->eWord()) {
           StepFp* afpCalledEntryStep = pCalledWord->afpEntryStep();
           pNewWord->vEncode(afpCalledEntryStep);
         }

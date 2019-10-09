@@ -51,7 +51,7 @@ Stz* EnumGroups::szEnumText(i8 iEnumGroup, i8 i_Enum)
     case _EG_TR: return aTR[i_Enum];
     case _EG_TS: return aTS[i_Enum];
     case _EG_TT: return aTT[i_Enum];
-    case _EG_WT: return aWT[i_Enum];
+    case _EG_WT: return aWK[i_Enum];
       
     default:
       vTrace("AM::szEnumText: Unknown enum group %lld\n"_Stz, iEnumGroup);

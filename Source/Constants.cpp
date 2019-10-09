@@ -556,13 +556,13 @@ void Constants::vAddConstants(void)
   /*  7 */ vAddConstant("XP_ROLLEDBACK"_Stz,  XP_ROLLEDBACK);
   /*  8 */ vAddConstant("XP_ENUMS"_Stz,       XP_ENUMS);
 
-  // WT_ : word type
-  /*  0 */ vAddConstant("WT_NONE"_Stz,      WT_NONE);
-  /*  0 */ vAddConstant("WT_LOCAL"_Stz,     WT_LOCAL);
-  /*  0 */ vAddConstant("WT_OBJECT"_Stz,    WT_OBJECT);
-  /*  0 */ vAddConstant("WT_INTRINSIC"_Stz, WT_INTRINSIC);
-  /*  0 */ vAddConstant("WT_ROUTINE"_Stz,   WT_ROUTINE);
-  /*  0 */ vAddConstant("WT_ENUMS"_Stz,     WT_ENUMS);
+  // WK_ : word type
+  /*  0 */ vAddConstant("WK_NONE"_Stz,      WK_NONE);
+  /*  0 */ vAddConstant("WK_LOCAL"_Stz,     WK_LOCAL);
+  /*  0 */ vAddConstant("WK_OBJECT"_Stz,    WK_OBJECT);
+  /*  0 */ vAddConstant("WK_INTRINSIC"_Stz, WK_INTRINSIC);
+  /*  0 */ vAddConstant("WK_ROUTINE"_Stz,   WK_ROUTINE);
+  /*  0 */ vAddConstant("WK_ENUMS"_Stz,     WK_ENUMS);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
