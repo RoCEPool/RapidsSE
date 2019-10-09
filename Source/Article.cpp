@@ -151,7 +151,7 @@ void Article::vDumpRecursively(i8 iDepth)
     vTrace("  %s %s\n"_Stz,spArticle.sz(this,iDepth),spObject.szResult());
   }
   else {
-      vTrace("  %s\n"_Stz,spArticle.sz(this,iDepth));
+    vTrace("  %s\n"_Stz,spArticle.sz(this,iDepth));
   }
   
   if (! nItems())
