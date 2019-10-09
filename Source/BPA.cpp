@@ -108,7 +108,7 @@ void BPA::vHeapDump(Heap* pHeap)
         Word* pWord = _pWord(aChunk);
       
         // dump only the objects
-        if (WK_OBJECT != pWord->eWord())
+        if (WK_OBJECT != pWord->eKind())
           continue;
       }
       
@@ -155,7 +155,7 @@ void BPA::vHeapDump(Heap* pHeap, i8 iEpoch)
       Word* pWord = _pWord(aChunk);
       
       // dump only the objects
-      if (WK_OBJECT != pWord->eWord())
+      if (WK_OBJECT != pWord->eKind())
         continue;
       
       // dump only object created in last epoch

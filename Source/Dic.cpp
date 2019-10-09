@@ -214,7 +214,7 @@ Word* Dic::pFindStep(StepFp fpStep)
   m_pArticle->vGrabRead();
   
   for (Word* pWord = pLastWord(); pWord; pWord = pWord->pPrevWord()) {
-    if (WK_INTRINSIC == pWord->eWord() && fpStep == pWord->fpEntryStep()) {
+    if (WK_INTRINSIC == pWord->eKind() && fpStep == pWord->fpEntryStep()) {
       m_pArticle->vDropRead();
       return pWord;
     }

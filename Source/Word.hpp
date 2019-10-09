@@ -15,7 +15,7 @@ namespace Forth
     Article* m_pArticle;     // the word article
 
     s32      m_sName;        // the name of this word
-    eWK      m_eWord;        // kind of word
+    eWK      m_eKind;        // kind of word
   
     bool     m_bPersistent;  // is on persistent heap
     i8       m_iTrace;       // trace level
@@ -92,6 +92,8 @@ namespace Forth
     bool  bImmediate(void);
     void  vImmediate(bool bImmediate);
     bool  bIsName(s32& sName);
+    eWK   eKind(void);
+    void  vKind(eWK eKind);
     Cell* aLastCell(void);
     i8    iLocalNo(void);
     void  vLocalNo(i8 iLocalNo);
@@ -105,8 +107,6 @@ namespace Forth
     void  vPrompt(bool bImmediate);
     void  vReset(void);
     i8    iSize(void);
-    eWK   eWord(void);
-    void  vWord(eWK eWord);
     char* aWspArea(void);
 
     Footer* aFooter(void);

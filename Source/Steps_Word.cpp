@@ -271,7 +271,7 @@ void Step::vWordIsIntrinsic(MP_Task mpTask)
     THROW_INVALID_DSTACK("word.isIntrinsic"_Stz);
   Word* pWord = _pWord(pWordObject);
   
-  i8 iIsPrimitive = WK_INTRINSIC == pWord->eWord() ? 1 : 0;
+  i8 iIsPrimitive = WK_INTRINSIC == pWord->eKind() ? 1 : 0;
   
   mpTask->m_pDataStack->vPushI8(iIsPrimitive);
   
@@ -363,9 +363,9 @@ void Step::vWordTypeGet(MP_Task mpTask)
     THROW_INVALID_DSTACK("vWordTypeGet"_Stz);
   Word* pWord = _pWord(pWordObject);
   
-  eWK eWord = pWord->eWord();
+  eWK eKind = pWord->eKind();
   
-  mpTask->m_pDataStack->vPushI8(eWord);
+  mpTask->m_pDataStack->vPushI8(eKind);
   
   EXIT();
 }
@@ -382,12 +382,12 @@ void Step::vWordTypeSet(MP_Task mpTask)
     THROW_INVALID_DSTACK("vWordTypeSet"_Stz);
   Word* pWord = _pWord(pWordObject);
   
-  i8 iWord;
+  i8 iKind;
   
-  if ( ! mpTask->m_pDataStack->bPop(iWord) )
+  if ( ! mpTask->m_pDataStack->bPop(iKind) )
     THROW_INVALID_DSTACK("vWordTypeSet"_Stz);
   
-  pWord->vWord((eWK)iWord);
+  pWord->vKind((eWK)iKind);
   
   EXIT();
 }
