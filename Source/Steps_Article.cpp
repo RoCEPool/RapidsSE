@@ -23,11 +23,11 @@ void Step::vArticleDump(MP_Task mpTask)
   
   pArticle->vDumpRecursively(0);
   
-  vTrace("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"_Stz);
+  //vTrace("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"_Stz);
   
-  pArticle = AM::pRootArticle();
+  //pArticle = AM::pRootArticle();
   
-  pArticle->vDumpRecursively(0);
+  //pArticle->vDumpRecursively(0);
   
   EXIT();
 }
