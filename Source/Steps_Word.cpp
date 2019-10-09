@@ -23,11 +23,11 @@ void Step::vAddSteps_Word(void)
   vAddStep("word.immediate!"_Stz,  &Step::vWordImmediateSet);
   vAddStep("word.isImmediate"_Stz, &Step::vWordIsImmediate);
   vAddStep("word.isIntrinsic"_Stz, &Step::vWordIsIntrinsic);
+  vAddStep("word.kind@"_Stz,       &Step::vWordTypeGet);
+  vAddStep("word.kind!"_Stz,       &Step::vWordTypeSet);
   vAddStep("word.name@"_Stz,       &Step::vWordNameFetch);
   vAddStep("word.name!"_Stz,       &Step::vWordNameStore);
   vAddStep("word.prev"_Stz,        &Step::vWordPrev);
-  vAddStep("word.type@"_Stz,       &Step::vWordTypeGet);
-  vAddStep("word.type!"_Stz,       &Step::vWordTypeSet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -352,7 +352,7 @@ ENTRY("vWordThis"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* word.type@ -- word type get                                                */
+/* word.kind@ -- word type get                                                */
 /*----------------------------------------------------------------------------*/
 void Step::vWordTypeGet(MP_Task mpTask)
 {
@@ -371,7 +371,7 @@ void Step::vWordTypeGet(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* word.type! -- word type set                                                */
+/* word.kind! -- word type set                                                */
 /*----------------------------------------------------------------------------*/
 void Step::vWordTypeSet(MP_Task mpTask)
 {

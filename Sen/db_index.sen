@@ -32,7 +32,7 @@
 : index:
 
   create
-  WK_OBJECT word::this word.type!
+  WK_OBJECT word::this word.kind!
   sizeof_index allot
   word::this >body object.magic!
   CN_INDEX word::this >body object.class!
@@ -48,7 +48,7 @@
 : :index
 
   >create
-  WK_OBJECT word::this word.type!
+  WK_OBJECT word::this word.kind!
   sizeof_index allot
   word::this >body object.magic!
   CN_INDEX word::this >body object.class!
