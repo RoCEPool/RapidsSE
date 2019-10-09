@@ -16,12 +16,12 @@
   [ word::this , ] word::this word.category!
 
   // attach an ename set to the word being created
-  enmSet::new word::this word.enmSet!
+  EnameSet::new word::this word.EnameSet!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   next-token find execute >str "__job__" swap
-    word::this word.enmSet@ enmSet.addStr
+    word::this word.EnameSet@ EnameSet.addStr
 
   // skip the :: token from input source
   next-token drop
@@ -35,16 +35,16 @@
       dup str.isMetaToken if
         // dup "%v is a meta token" fmt.print
         // add ("*",meta,TN_STRING) in ename set
-        "__meta__" swap word::this word.enmSet@ enmSet.addStr
+        "__meta__" swap word::this word.EnameSet@ EnameSet.addStr
 
       else dup str.isJsonToken if
         // dup "%v is a json token" fmt.print
         // add ("*",json,TN_STRING) in ename set
-        "__json__" swap word::this word.enmSet@ enmSet.addStr
+        "__json__" swap word::this word.EnameSet@ EnameSet.addStr
       else
         // dup "%v is a normal token" fmt.print
         // add (word,"",TN_STRING) in ename set
-        dup word::this word.enmSet@ enmSet.addStr
+        dup word::this word.EnameSet@ EnameSet.addStr
       then then
   repeat
 

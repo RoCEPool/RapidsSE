@@ -203,12 +203,12 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
         Op* pOp = pStage->m_oOpVec.pGet(i_Op);
         
         s32 sArgs;
-        EnmSet* pEnmSet = pOp->m_pOpSpec->pEnmSet();
-        for (i8 i_Arg = 0; i_Arg < pEnmSet->nEnm(); i_Arg++) {
-          sArgs.vSprint("(%s)"_Stz,pEnmSet->szValue((i8)i_Arg));
+        EnameSet* pEnameSet = pOp->m_pOpSpec->pEnameSet();
+        for (i8 i_Arg = 0; i_Arg < pEnameSet->nEnm(); i_Arg++) {
+          sArgs.vSprint("(%s)"_Stz,pEnameSet->szValue((i8)i_Arg));
         }
         
-        pOp->m_pOpSpec->pEnmSet()->vPrint();
+        pOp->m_pOpSpec->pEnameSet()->vPrint();
         
         vTrace("  [%02lld] { %9s: %8s%-24s endMarkers(L%lld R%lld) :%-6s %s }\n"_Stz,
                i_Op,

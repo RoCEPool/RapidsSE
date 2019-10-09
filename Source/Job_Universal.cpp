@@ -156,7 +156,7 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTknVec)
 //  while ( (pWord_jobdef = pRootDic->pEachWord(pWord_jobsyn,pWord_jobdef)) ) {
 //    vTrace("  jobSyntax: %s\n"_Stz,pWord_jobdef->sName().aStz());
 //
-//    if (JobHelper::bMatchesSyntax(pTknVec,pWord_jobdef->pEnmSet())) {
+//    if (JobHelper::bMatchesSyntax(pTknVec,pWord_jobdef->pEnameSet())) {
 //      vTrace("    matches\n"_Stz);
 //
 //      m_oEnmSet.vAdd("<jobClass>"_Stz, CN_JOB_UNIVERSAL,TN_INTEGER);
@@ -169,7 +169,7 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTknVec)
 //
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //
-//  bool b = JobHelper::bExtractArgs(&m_oEnmSet,pWord_jobdef->pEnmSet(),pTknVec);
+//  bool b = JobHelper::bExtractArgs(&m_oEnmSet,pWord_jobdef->pEnameSet(),pTknVec);
 //  if (! b) {
 //    vTrace("Unable to match job syntax\n"_Stz);
 //    return EC_INVALID_COMMAND;

@@ -98,7 +98,7 @@ Op* XmitOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 {
   XmitOp* pXmitOp = new XmitOp(pOpSpec,pPipeline);
 
-  pXmitOp->m_iXmitNode = pXmitOp->m_pOpSpec->pEnmSet()->iValue((i8)0);
+  pXmitOp->m_iXmitNode = pXmitOp->m_pOpSpec->pEnameSet()->iValue((i8)0);
   
   return pXmitOp;
 }

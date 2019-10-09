@@ -108,7 +108,7 @@ Op* GetKeyOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
   
   GetKeyOp* pGetKeyOp = new GetKeyOp(pOpSpec,pPipeline);
   
-  pGetKeyOp->m_sKey = pGetKeyOp->m_pOpSpec->pEnmSet()->szValue((i8)0);
+  pGetKeyOp->m_sKey = pGetKeyOp->m_pOpSpec->pEnameSet()->szValue((i8)0);
   
   return pGetKeyOp;
 }

@@ -109,17 +109,17 @@ FetchOp::~FetchOp(void) noexcept(false)
 Op* FetchOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 {
   FetchOp* pFetchOp = new FetchOp(pOpSpec,pPipeline);
-  EnmSet* pEnmSet = pFetchOp->m_pOpSpec->pEnmSet();
+  EnameSet* pEnameSet = pFetchOp->m_pOpSpec->pEnameSet();
   
   // get the table name
-  pFetchOp->m_sTableNm = pEnmSet->szValue((i8)0);
+  pFetchOp->m_sTableNm = pEnameSet->szValue((i8)0);
   
   // get the index name
-  pFetchOp->m_sIndexNm = pEnmSet->szValue((i8)1);
+  pFetchOp->m_sIndexNm = pEnameSet->szValue((i8)1);
   
   // do we have a limit ?
-  if (pEnmSet->nEnm() == 3)
-    pFetchOp->m_nLimit = pEnmSet->iValue((i8)2);
+  if (pEnameSet->nEnm() == 3)
+    pFetchOp->m_nLimit = pEnameSet->iValue((i8)2);
   
   return pFetchOp;
 }

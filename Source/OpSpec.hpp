@@ -15,7 +15,7 @@ namespace Pipelines
   
     i8   m_i_Slot;
 
-    EnmSet  m_oEnmSet;
+    EnameSet  m_oEnmSet;
     OpDefn* m_aOpDefn;
     
     // must be last
@@ -31,7 +31,7 @@ namespace Pipelines
     void vAddEnmPair(Stz* sName, Stz* sValue, eTN eToken);
     void vAddEnmPair(Stz* sName, i8 iValue, eTN eToken);
     bool bAppendRight(void);
-    EnmSet* pEnmSet(void);
+    EnameSet* pEnameSet(void);
     Stz* szName(void);
     void vName(Stz* szName);
     OpDefn* aOpDefn(void);

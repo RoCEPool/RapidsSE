@@ -92,9 +92,9 @@ bool OpSpec::bAppendRight(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the enmSet                                                             */
+/* get the EnameSet                                                             */
 /*----------------------------------------------------------------------------*/
-EnmSet* OpSpec::pEnmSet(void)
+EnameSet* OpSpec::pEnameSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   

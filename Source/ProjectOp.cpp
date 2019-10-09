@@ -108,9 +108,9 @@ Op* ProjectOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 {
   ProjectOp* pProjectOp = new ProjectOp(pOpSpec,pPipeline);
   
-  EnmSet* pEnmSet = pProjectOp->m_pOpSpec->pEnmSet();
-  i8 iEnms = pEnmSet->nEnm();
-  pEnmSet->vPrint();
+  EnameSet* pEnameSet = pProjectOp->m_pOpSpec->pEnameSet();
+  i8 iEnms = pEnameSet->nEnm();
+  pEnameSet->vPrint();
   
   pProjectOp->m_pStreamDef->m_nDefSets++;
   pProjectOp->m_pStreamDef->m_i_DefStart[0] = 0;
@@ -120,7 +120,7 @@ Op* ProjectOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
     // create a column
     Column oColumn = pProjectOp->m_pStreamDef->m_xaColumn[i_Column];
     oColumn.vColumnNo(i_Column);
-    oColumn.vColumnName(pEnmSet->szValue((i8)i_Column));
+    oColumn.vColumnName(pEnameSet->szValue((i8)i_Column));
     pProjectOp->m_pStreamDef->m_nDefColumns[0]++;
     
   }

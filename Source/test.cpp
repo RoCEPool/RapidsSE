@@ -1242,18 +1242,18 @@ void vTest25(void)
   bStrings.iAppend("abc"_Stz);  bStrings.vPrintAll();
   bStrings.iAppend("defg"_Stz); bStrings.vPrintAll();
 
-  EnmSet* pEnmSet = new EnmSet();
+  EnameSet* pEnameSet = new EnameSet();
   
-  pEnmSet->vAdd("name1"_Stz,"value1"_Stz,TN_STRING);
-  pEnmSet->vAdd("name2"_Stz,"value2"_Stz,TN_STRING);
-  pEnmSet->vAdd("name3"_Stz,"value3"_Stz,TN_STRING);
+  pEnameSet->vAdd("name1"_Stz,"value1"_Stz,TN_STRING);
+  pEnameSet->vAdd("name2"_Stz,"value2"_Stz,TN_STRING);
+  pEnameSet->vAdd("name3"_Stz,"value3"_Stz,TN_STRING);
 
-  for (i8 i_Enm = 0; i_Enm < pEnmSet->nEnm(); i_Enm++)
+  for (i8 i_Enm = 0; i_Enm < pEnameSet->nEnm(); i_Enm++)
     vTrace("  [%lld] %s,%s (%s)\n"_Stz,
-           i_Enm,pEnmSet->szName(i_Enm),pEnmSet->szValue(i_Enm),
-           aTN[pEnmSet->eToken(i_Enm)]);
+           i_Enm,pEnameSet->szName(i_Enm),pEnameSet->szValue(i_Enm),
+           aTN[pEnameSet->eToken(i_Enm)]);
 
-  delete pEnmSet;
+  delete pEnameSet;
 }
 
 /*============================================================================*/

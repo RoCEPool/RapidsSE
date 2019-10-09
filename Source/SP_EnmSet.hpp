@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SP_EnmSet.hpp - EnmSet sprint helper                         (on c stack)  */
+/* SP_EnmSet.hpp - EnameSet sprint helper                         (on c stack)  */
 /*============================================================================*/
 #pragma once
 
@@ -16,7 +16,7 @@ namespace Gadgets
     SP_EnmSet(void);
    ~SP_EnmSet(void) noexcept(false);
   
-    Stz* sz(EnmSet* pEnmSet);
+    Stz* sz(EnameSet* pEnameSet);
 
   private:
     Footer* aFooter(void);

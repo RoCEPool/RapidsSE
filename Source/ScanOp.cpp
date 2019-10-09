@@ -107,7 +107,7 @@ Op* ScanOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 {
   ScanOp* pScanOp = new ScanOp(pOpSpec,pPipeline);
   
-  pScanOp->m_sTableNm = pScanOp->m_pOpSpec->pEnmSet()->szValue((i8)0);
+  pScanOp->m_sTableNm = pScanOp->m_pOpSpec->pEnameSet()->szValue((i8)0);
   
   return pScanOp;
 }

@@ -40,9 +40,9 @@ void Step::vNodeNew(MP_Task mpTask)
   Node* pNode_copy = AM::pGrid()->pGetNode(nNodes - 1);
 
   Job* pJob = AM::pThisTLSJob();
-  EnmSet* pEnmSet = & pJob->m_oEnmSet;
+  EnameSet* pEnameSet = & pJob->m_oEnmSet;
   
-  pEnmSet->vPrint();
+  pEnameSet->vPrint();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   s32 sNodeNm;
@@ -52,8 +52,8 @@ void Step::vNodeNew(MP_Task mpTask)
 
   Node* pNode = new Node(pNode_copy->iNodeNo() + 1,
                          sNodeNm,
-                         pEnmSet->szValue("IPADDR"_Stz),
-                         pEnmSet->iValue("PORTNO"_Stz));
+                         pEnameSet->szValue("IPADDR"_Stz),
+                         pEnameSet->iValue("PORTNO"_Stz));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* parse command                                                              */
 /*----------------------------------------------------------------------------*/
-bool JobHelper::bParseCmd(EnmSet*   pArgEnmSet,
+bool JobHelper::bParseCmd(EnameSet*   pArgEnmSet,
                           TokenVec* pTknVec)
 {
   Dic* pRootDic = AM::pRootDic();
@@ -21,7 +21,7 @@ bool JobHelper::bParseCmd(EnmSet*   pArgEnmSet,
   while ( (pWord_jobdef = pRootDic->pEachWord(pWord_jobsyn,pWord_jobdef)) ) {
     vTrace("  jobSyntax: %s\n"_Stz,pWord_jobdef->sName().aStz());
     
-    if (JobHelper::bMatchesSyntax(pTknVec,pWord_jobdef->pEnmSet())) {
+    if (JobHelper::bMatchesSyntax(pTknVec,pWord_jobdef->pEnameSet())) {
       vTrace("    matches\n"_Stz);
       
       pArgEnmSet->vAdd("<jobClass>"_Stz, CN_JOB_UNIVERSAL,TN_INTEGER);
@@ -34,7 +34,7 @@ bool JobHelper::bParseCmd(EnmSet*   pArgEnmSet,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  bool b = bExtractArgs(pArgEnmSet,pWord_jobdef->pEnmSet(),pTknVec);
+  bool b = bExtractArgs(pArgEnmSet,pWord_jobdef->pEnameSet(),pTknVec);
   if (! b) {
     vTrace("Unable to match job syntax\n"_Stz);
     return EC_INVALID_COMMAND;
@@ -48,8 +48,8 @@ bool JobHelper::bParseCmd(EnmSet*   pArgEnmSet,
 /*----------------------------------------------------------------------------*/
 /* parse tokenvec of command and extract arguments                            */
 /*----------------------------------------------------------------------------*/
-bool JobHelper::bExtractArgs(EnmSet*   pArgEnmSet,
-                             EnmSet*   pSynEnmSet,
+bool JobHelper::bExtractArgs(EnameSet*   pArgEnmSet,
+                             EnameSet*   pSynEnmSet,
                              TokenVec* pTknVec
                              )
 {
@@ -92,8 +92,8 @@ bool JobHelper::bExtractArgs(EnmSet*   pArgEnmSet,
 /*----------------------------------------------------------------------------*/
 /* parse tokenvec of command and extract argument                             */
 /*----------------------------------------------------------------------------*/
-bool JobHelper::bExtractJson(EnmSet*   pArgEnmSet,
-                             EnmSet*   pSynEnmSet,
+bool JobHelper::bExtractJson(EnameSet*   pArgEnmSet,
+                             EnameSet*   pSynEnmSet,
                              i8&       i_Syn_,
                              TokenVec* pTknVec,
                              i8&       i_Tkn_
@@ -144,8 +144,8 @@ bool JobHelper::bExtractJson(EnmSet*   pArgEnmSet,
 /*----------------------------------------------------------------------------*/
 /* parse tokenvec of command and extract argument                             */
 /*----------------------------------------------------------------------------*/
-bool JobHelper::bExtractMeta(EnmSet*   pArgEnmSet,
-                             EnmSet*   pSynEnmSet,
+bool JobHelper::bExtractMeta(EnameSet*   pArgEnmSet,
+                             EnameSet*   pSynEnmSet,
                              i8&       i_Syn_,
                              TokenVec* pTknVec,
                              i8&       i_Tkn_
@@ -166,7 +166,7 @@ bool JobHelper::bExtractMeta(EnmSet*   pArgEnmSet,
 /*----------------------------------------------------------------------------*/
 /* test if the token vector matches the given job syntax                      */
 /*----------------------------------------------------------------------------*/
-bool JobHelper::bMatchesSyntax(TokenVec* pTknVec, EnmSet* pSynEnmSet)
+bool JobHelper::bMatchesSyntax(TokenVec* pTknVec, EnameSet* pSynEnmSet)
 {
   i8 nTokens = pTknVec->nTokens();
   

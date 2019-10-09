@@ -104,8 +104,8 @@ Op* ConsumeOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
   ConsumeOp* pConsumeOp = new ConsumeOp(pOpSpec,pPipeline);
   
   // get the end markers
-  EnmSet* pEnmSet = pConsumeOp->m_pOpSpec->pEnmSet();
-  pConsumeOp->m_nLeftEndMarkers = pEnmSet->iValue((i8)0);
+  EnameSet* pEnameSet = pConsumeOp->m_pOpSpec->pEnameSet();
+  pConsumeOp->m_nLeftEndMarkers = pEnameSet->iValue((i8)0);
   
   return pConsumeOp;
 }

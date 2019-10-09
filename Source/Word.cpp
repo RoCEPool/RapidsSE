@@ -82,7 +82,7 @@ Word::Word(Stz* szName)
   m_bPrompt    = false;
   m_iLocalNo   = 0;
   
-  m_pEnmSet    = nullptr;
+  m_pEnameSet    = nullptr;
 
   m_fpEntryStep = gfpEntryStep;
   m_aEntryCell  = aFirstCell();
@@ -116,7 +116,7 @@ Word::~Word(void) noexcept(false)
     (pFinalizeFun)(eClass, pEmbObject);
   }
   
-  delete m_pEnmSet;
+  delete m_pEnameSet;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -510,21 +510,21 @@ void Word::vEncode(StepFp* afpEntryStep)
 /*----------------------------------------------------------------------------*/
 /* get ename set                                                              */
 /*----------------------------------------------------------------------------*/
-EnmSet* Word::pEnmSet(void)
+EnameSet* Word::pEnameSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  return m_pEnmSet;
+  return m_pEnameSet;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set ename set                                                              */
 /*----------------------------------------------------------------------------*/
-void Word::vEnmSet(EnmSet* pEnmSet)
+void Word::vEnameSet(EnameSet* pEnameSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  m_pEnmSet = pEnmSet;
+  m_pEnameSet = pEnameSet;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -8,7 +8,7 @@ namespace Jobs
   class JobEnmSet
   {
   public:
-    EnmSet  m_oEnmSet; // ename-value
+    EnameSet  m_oEnmSet; // ename-value
   public:
     void* operator new(size_t);
   

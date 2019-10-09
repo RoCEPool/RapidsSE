@@ -14,8 +14,8 @@ void Step::vAddSteps_Word(void)
   vAddStep("word.category@"_Stz,   &Step::vWordCategoryFetch);
   vAddStep("word.category!"_Stz,   &Step::vWordCategoryStore);
   vAddStep("word.dump"_Stz,        &Step::vWordDump);
-  vAddStep("word.enmSet@"_Stz,     &Step::vWordEnmSetFetch);
-  vAddStep("word.enmSet!"_Stz,     &Step::vWordEnmSetStore);
+  vAddStep("word.EnameSet@"_Stz,     &Step::vWordEnmSetFetch);
+  vAddStep("word.EnameSet!"_Stz,     &Step::vWordEnmSetStore);
   vAddStep("word.exitHook@"_Stz,   &Step::vWordExitHookGet);
   vAddStep("word.exitHook!"_Stz,   &Step::vWordExitHookSet);
   vAddStep("word.forget"_Stz,      &Step::vWordForget);
@@ -98,7 +98,7 @@ ENTRY("vWordDump"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* word.enmSet@ -- fetch ename set                                            */
+/* word.EnameSet@ -- fetch ename set                                            */
 /*----------------------------------------------------------------------------*/
 void Step::vWordEnmSetFetch(MP_Task mpTask)
 {
@@ -109,15 +109,15 @@ void Step::vWordEnmSetFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("vWordEnmSetFetch"_Stz);
   Word* pWord = _pWord(pWordObject);
   
-  EnmSet* pEnmSet = pWord->pEnmSet();
+  EnameSet* pEnameSet = pWord->pEnameSet();
   
-   mpTask->m_pDataStack->vPushPointer(pEnmSet);
+   mpTask->m_pDataStack->vPushPointer(pEnameSet);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* word.enmSet! -- store ename set                                            */
+/* word.EnameSet! -- store ename set                                            */
 /*----------------------------------------------------------------------------*/
 void Step::vWordEnmSetStore(MP_Task mpTask)
 {
@@ -128,12 +128,12 @@ void Step::vWordEnmSetStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("vWordEnmSetStore"_Stz);
   Word* pWord = _pWord(pWordObject);
   
-  Object* pEnmSet_obj;
-  if ( ! mpTask->m_pDataStack->bPop(pEnmSet_obj) )
+  Object* pEnameSet_obj;
+  if ( ! mpTask->m_pDataStack->bPop(pEnameSet_obj) )
     THROW_INVALID_DSTACK("vWordEnmSetStore"_Stz);
-  EnmSet* pEnmSet = _pEnmSet(pEnmSet_obj);
+  EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   
-  pWord->vEnmSet(pEnmSet);
+  pWord->vEnameSet(pEnameSet);
   
   EXIT();
 }

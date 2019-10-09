@@ -105,7 +105,7 @@ Op* LimitOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 
   LimitOp* pLimitOp = new LimitOp(pOpSpec,pPipeline);
   
-  pLimitOp->m_nLimit = pLimitOp->m_pOpSpec->pEnmSet()->iValue((i8)0);
+  pLimitOp->m_nLimit = pLimitOp->m_pOpSpec->pEnameSet()->iValue((i8)0);
   
   return pLimitOp;
 }

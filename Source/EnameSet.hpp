@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EnmSet.hpp -- ename-value set                                              */
+/* EnameSet.hpp -- ename-value set                                            */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@ namespace Gadgets
 {
   static const i8 C_ENM_SET = 64;
   
-  class EnmSet : public Object
+  class EnameSet : public Object
   {
   public:
   
@@ -28,8 +28,8 @@ namespace Gadgets
     void* operator new(size_t);
     void operator delete(void*);
   
-    EnmSet(void);
-   ~EnmSet() noexcept(false);
+    EnameSet(void);
+   ~EnameSet() noexcept(false);
   
     void vAdd(Stz* szName, i8 iValue, eTN eToken);
     void vAdd(Stz* szName, Stz* szValue, eTN eToken);
@@ -49,7 +49,7 @@ namespace Gadgets
     Footer* aFooter(void);
   };
   
-  EnmSet* _pEnmSet(void* aAddr);
+  EnameSet* _pEnameSet(void* aAddr);
 }
 
 /*============================================================================*/

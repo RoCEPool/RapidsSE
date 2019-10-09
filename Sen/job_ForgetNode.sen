@@ -22,7 +22,7 @@
 /*----------------------------------------------------------------------------*/
 : _LOCK_EXE_
 
-  "ddlLock" <jobNm> findJobClassEnmSet enmSet.getStr
+  "ddlLock" <jobNm> findJobClassEnmSet EnameSet.getStr
 
   "DL_GRAB_WRITE"
   str.equal if

@@ -606,7 +606,7 @@ void Step::vJobDicPath(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.ename@ -- fetch/decode given ename from job enmset                     */
+/* job.ename@ -- fetch/decode given ename from job EnameSet                     */
 /*----------------------------------------------------------------------------*/
 void Step::vJobEnameFetch(MP_Task mpTask)
 {
@@ -629,7 +629,7 @@ void Step::vJobEnameFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.ename! -- store given ename-value into job enmset                      */
+/* job.ename! -- store given ename-value into job EnameSet                      */
 /*----------------------------------------------------------------------------*/
 void Step::vJobEnameStore(MP_Task mpTask)
 {

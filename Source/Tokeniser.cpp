@@ -204,11 +204,11 @@ void Tokeniser::vTokenise(TokenVec* pTokenVec, s4K& sString)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract { enmset } from given tokenvec                                     */
+/* extract { EnameSet } from given tokenvec                                     */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vToEnmSet(EnmSet* pEnmSet, TokenVec* pTknVec)
+void Tokeniser::vToEnmSet(EnameSet* pEnameSet, TokenVec* pTknVec)
 {
-  pEnmSet->vReset();
+  pEnameSet->vReset();
 
   i8 i_OpenToken  = pTknVec->iFindToken("{"_Stz);
   i8 i_CloseToken = pTknVec->iFindToken("}"_Stz);
@@ -216,15 +216,15 @@ void Tokeniser::vToEnmSet(EnmSet* pEnmSet, TokenVec* pTknVec)
   if (C_UNKNOWN == i_OpenToken || C_UNKNOWN == i_CloseToken)
     return;
   
-  vToEnmSet(pEnmSet,pTknVec,i_OpenToken + 1,i_CloseToken - 1);
+  vToEnmSet(pEnameSet,pTknVec,i_OpenToken + 1,i_CloseToken - 1);
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract { enmset } from given tokenvec                                     */
+/* extract { EnameSet } from given tokenvec                                     */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vToEnmSet(EnmSet* pEnmSet, TokenVec* pTknVec, i8 i_From, i8 i_To)
+void Tokeniser::vToEnmSet(EnameSet* pEnameSet, TokenVec* pTknVec, i8 i_From, i8 i_To)
 {
-  pEnmSet->vReset();
+  pEnameSet->vReset();
   
   for (i8 i_Tkn = i_From; i_Tkn <= i_To; ) {
  
@@ -236,7 +236,7 @@ void Tokeniser::vToEnmSet(EnmSet* pEnmSet, TokenVec* pTknVec, i8 i_From, i8 i_To
     
     i8 i_Value = i_Tkn++;
     
-    pEnmSet->vAdd(pTknVec->pGet(i_Name)->szText(),
+    pEnameSet->vAdd(pTknVec->pGet(i_Name)->szText(),
                   pTknVec->pGet(i_Value)->szText(),
                   pTknVec->pGet(i_Value)->eToken());
     
@@ -246,11 +246,11 @@ void Tokeniser::vToEnmSet(EnmSet* pEnmSet, TokenVec* pTknVec, i8 i_From, i8 i_To
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract { enmset } from given tokenvec                                     */
+/* extract { EnameSet } from given tokenvec                                     */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vToEnmSet(EnmSet* pEnmSet, TokenVec* pTknVec, Stz* sDelimiter, i8 i_From, i8 i_To)
+void Tokeniser::vToEnmSet(EnameSet* pEnameSet, TokenVec* pTknVec, Stz* sDelimiter, i8 i_From, i8 i_To)
 {
-  pEnmSet->vReset();
+  pEnameSet->vReset();
   
   for (i8 i_Tkn = i_From; i_Tkn <= i_To; ) {
     
@@ -261,7 +261,7 @@ void Tokeniser::vToEnmSet(EnmSet* pEnmSet, TokenVec* pTknVec, Stz* sDelimiter, i
         
     i8 i_Value = i_Tkn++;
     
-    pEnmSet->vAdd(pTknVec->pGet(i_Name)->szText(),
+    pEnameSet->vAdd(pTknVec->pGet(i_Name)->szText(),
                   pTknVec->pGet(i_Value)->szText(),
                   pTknVec->pGet(i_Value)->eToken());
     

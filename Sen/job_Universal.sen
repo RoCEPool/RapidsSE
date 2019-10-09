@@ -9,11 +9,11 @@
 /*----------------------------------------------------------------------------*/
 : .executeSeed params| sSeedNm |
 
-  0 locals| pEnmSet |
+  0 locals| pEnameSet |
 
-  <jobNm> findJobClassEnmSet to pEnmSet
+  <jobNm> findJobClassEnmSet to pEnameSet
 
-  sSeedNm pEnmSet enmSet.getStr
+  sSeedNm pEnameSet EnameSet.getStr
 
   find execute
 ;

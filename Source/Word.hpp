@@ -12,31 +12,31 @@ namespace Forth
     friend class Dic;
 
   private:
-    Article* m_pArticle;     // the word article
+    Article*  m_pArticle;     // the word article
 
-    s32      m_sName;        // the name of this word
+    s32       m_sName;        // the name of this word
   
-    Word*    m_pCategory;    // category of word
-    Dic*     m_pDic;         // which dictionary this word in
-    EnmSet*  m_pEnmSet;      // optional ename set
-    StepFp   m_fpEntryStep;  // entry step function for this word
-    Cell*    m_aEntryCell;   // the cell to start executing from
-                             //   for normal words this will be the first cell
-                             //     in the data area
-                             //   for objects this will be the cell after
-                             //     does in the defining word
-                             //   for primitives this will be null
-    i8       m_iEpoch;       // epoch no. used by bp analyzer
-    s32      m_sExitHook;    // routine to be called on exit
-    bool     m_bImmediate;   // immediate execution during compile?
-    eWK      m_eKind;        // kind of word
-    i8       m_iLocalNo;     // local number (for a local variable)
-    i8       m_iParams;      // number of parameters
-    bool     m_bPersistent;  // is on persistent heap
-    bool     m_bPrompt;      // can be executed by prompt?
-    i8       m_iTrace;       // trace level
+    Word*     m_pCategory;    // category of word
+    Dic*      m_pDic;         // which dictionary this word in
+    EnameSet* m_pEnameSet;    // optional ename set
+    StepFp    m_fpEntryStep;  // entry step function for this word
+    Cell*     m_aEntryCell;   // the cell to start executing from
+                              //   for normal words this will be the first cell
+                              //     in the data area
+                              //   for objects this will be the cell after
+                              //     does in the defining word
+                              //   for primitives this will be null
+    i8        m_iEpoch;       // epoch no. used by bp analyzer
+    s32       m_sExitHook;    // routine to be called on exit
+    bool      m_bImmediate;   // immediate execution during compile?
+    eWK       m_eKind;        // kind of word
+    i8        m_iLocalNo;     // local number (for a local variable)
+    i8        m_iParams;      // number of parameters
+    bool      m_bPersistent;  // is on persistent heap
+    bool      m_bPrompt;      // can be executed by prompt?
+    i8        m_iTrace;       // trace level
 
-    Routine  m_xRoutine;
+    Routine   m_xRoutine;
   
     // must be last
     Footer m_xFooter;
@@ -70,19 +70,19 @@ namespace Forth
     void  vCategory(Word* pCategory);
     void  vContentDump(void);
     Dic*  pDic(void);
-    i8    iEpoch(void);
     void  vEntryCell(Cell* aCell);
     Cell* aEntryCell(void);
     void  vEntryStep(StepFp fpStep);
     StepFp fpEntryStep(void);
     StepFp* afpEntryStep(void);
+    EnameSet* pEnameSet(void);
+    void  vEnameSet(EnameSet* pEnameSet);
     void  vEncode(Stz* aWordNm);
     void  vEncode(Stz* aWordNm, Cell* aCell);
     void  vEncode(Stz* aWordNm, Word* pCalledWord);
     void  vEncode(Stz* aWordNm, GenVar* pGenVar);
     void  vEncode(StepFp* afpEntryStep);
-    EnmSet* pEnmSet(void);
-    void  vEnmSet(EnmSet* pEnmSet);
+    i8    iEpoch(void);
     Stz*  szExitHook(void);
     void  vExitHook(Stz* szExitHook);
     Cell* aFirstCell(void);

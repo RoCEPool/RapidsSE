@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SP_EnmSet.cpp - EnmSet sprint helper                          (on c stack) */
+/* SP_EnmSet.cpp - EnameSet sprint helper                          (on c stack) */
 /*============================================================================*/
 
 #include "Gadgets.h"
@@ -32,23 +32,23 @@ SP_EnmSet::~SP_EnmSet(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* sprint SP_EnmSet and return Stz* to result                                 */
 /*----------------------------------------------------------------------------*/
-Stz* SP_EnmSet::sz(EnmSet* pEnmSet)
+Stz* SP_EnmSet::sz(EnameSet* pEnameSet)
 {
   _precondition_(_MAGIC_,CN_SPELAPSED,_FOOTER_);
   
    StrLib::vSprint(m_caResult,"{ "_Stz);
   
-  for (i8 i_Enm = 0; i_Enm < pEnmSet->nEnm(); i_Enm++) {
+  for (i8 i_Enm = 0; i_Enm < pEnameSet->nEnm(); i_Enm++) {
     
     if (i_Enm)
       StrLib::vSprintCat(m_caResult," , ");
 
-    if (TN_INTEGER == pEnmSet->eToken(i_Enm)) {
+    if (TN_INTEGER == pEnameSet->eToken(i_Enm)) {
       
       StrLib::vSprintCat(m_caResult,"%s = %lld",
               
-                         pEnmSet->szName(i_Enm),
-                         pEnmSet->iValue(i_Enm),
+                         pEnameSet->szName(i_Enm),
+                         pEnameSet->iValue(i_Enm),
              
                          C_ENDARGS
                         );
@@ -57,8 +57,8 @@ Stz* SP_EnmSet::sz(EnmSet* pEnmSet)
     
     StrLib::vSprintCat(m_caResult,"%s = %s",
            
-                       pEnmSet->szName(i_Enm),
-                       pEnmSet->szValue(i_Enm),
+                       pEnameSet->szName(i_Enm),
+                       pEnameSet->szValue(i_Enm),
 
                        C_ENDARGS
                       );

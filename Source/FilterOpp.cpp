@@ -103,8 +103,8 @@ Op* FilterOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
   
   RASSERT(0);
 //  i_Tkn_++;
-//  EnmSet* pEnmSet = pFilterOp->m_pOpSpec->pEnmSet();
-//  pEnmSet->vPrint();
+//  EnameSet* pEnameSet = pFilterOp->m_pOpSpec->pEnameSet();
+//  pEnameSet->vPrint();
 //
 //  pFilterOp->m_iStartTkn = i_Tkn_;
 //  pFilterOp->m_pTokenVec = pTknVec;

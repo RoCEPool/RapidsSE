@@ -7,19 +7,19 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: .fillEnmSet params| pEnmSet |
+: .fillEnmSet params| pEnameSet |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  "jobPriority" pEnmSet enmSet.hasName not if
-     "jobPriority" "PY_NORMAL" pEnmSet enmSet.addStr then
+  "jobPriority" pEnameSet EnameSet.hasName not if
+     "jobPriority" "PY_NORMAL" pEnameSet EnameSet.addStr then
 
-  "SeedReq" word::name_trunc "_req" str.cat pEnmSet enmSet.addStr
-  "SeedRcv" word::name_trunc "_beg" str.cat pEnmSet enmSet.addStr
-  "SeedExe" word::name_trunc "_exe" str.cat pEnmSet enmSet.addStr
-  "SeedEnd" word::name_trunc "_end" str.cat pEnmSet enmSet.addStr
-  "SeedCan" word::name_trunc "_can" str.cat pEnmSet enmSet.addStr
+  "SeedReq" word::name_trunc "_req" str.cat pEnameSet EnameSet.addStr
+  "SeedRcv" word::name_trunc "_beg" str.cat pEnameSet EnameSet.addStr
+  "SeedExe" word::name_trunc "_exe" str.cat pEnameSet EnameSet.addStr
+  "SeedEnd" word::name_trunc "_end" str.cat pEnameSet EnameSet.addStr
+  "SeedCan" word::name_trunc "_can" str.cat pEnameSet EnameSet.addStr
 
-  pEnmSet enmSet.asStr .
+  pEnameSet EnameSet.asStr .
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -27,7 +27,7 @@
 /*----------------------------------------------------------------------------*/
 : jobClass:
 
-  0 locals| pEnmSet |
+  0 locals| pEnameSet |
 
   // create a word using next token from input source as the word name
   create
@@ -36,12 +36,12 @@
   [ word::this , ] word::this word.category!
 
   // attach an ename set to the word being created
-  enmSet::new to pEnmSet
-  pEnmSet word::this word.enmSet!
+  EnameSet::new to pEnameSet
+  pEnameSet word::this word.EnameSet!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  "JobName" word::name_trunc pEnmSet enmSet.addStr
+  "JobName" word::name_trunc pEnameSet EnameSet.addStr
 
   // skip the "{" token from input source
   next-token drop
@@ -54,7 +54,7 @@
     dup "}" str.equal not
   while
     next-token drop next-token
-    pEnmSet enmSet.addStr
+    pEnameSet EnameSet.addStr
   repeat
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -65,21 +65,21 @@
   // get and drop ";"
   next-token drop
 
-  pEnmSet enmSet.asStr .
+  pEnameSet EnameSet.asStr .
 
-  pEnmSet .fillEnmSet
+  pEnameSet .fillEnmSet
 
-  pEnmSet enmSet.asStr .
+  pEnameSet EnameSet.asStr .
 ;
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: findJobClassEnmSet ( sJobNm -- pEnmSet )
+: findJobClassEnmSet ( sJobNm -- pEnameSet )
 
   params| sJobNm |
 
-  sJobNm "_cls" str.cat find word.enmset@
+  sJobNm "_cls" str.cat find word.EnameSet@
 ;
 
 /*============================================================================*/

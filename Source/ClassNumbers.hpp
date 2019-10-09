@@ -497,7 +497,7 @@ static Stz* aCN[]
   /*          */ "EARLYMARKER"_Stz,         // CN_EARLYMARKER
   /*          */ "ENCODING"_Stz,            // CN_ENCODING
   /*          */ "ENDMARKER"_Stz,           // CN_ENDMARKER
-  /*          */ "ENMSET"_Stz,              // CN_ENMSET
+  /*          */ "EnameSet"_Stz,              // CN_ENMSET
   /*  33 0x21 */ "ENT"_Stz,                 // CN_ENT
   /*  34 0x22 */ "ENTBUFFER"_Stz,           // CN_ENTBUFFER
   /* 145 0x91 */ "ENTWRK"_Stz,              // CN_ENTWRK

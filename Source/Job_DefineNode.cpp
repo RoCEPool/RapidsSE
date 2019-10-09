@@ -152,7 +152,7 @@ eEC Job_DefineNode::ePopulateJob(TokenVec* pTokenVec)
 
   Word* pWord_syn = pRootDic->pFindWord("defineNode_syn"_Stz);
 
-  bool b = JobHelper::bExtractArgs(&m_oEnmSet,pWord_syn->pEnmSet(),pTokenVec);
+  bool b = JobHelper::bExtractArgs(&m_oEnmSet,pWord_syn->pEnameSet(),pTokenVec);
   if (! b) {
     vTrace("Unable to match job syntax\n"_Stz);
     return EC_INVALID_COMMAND;

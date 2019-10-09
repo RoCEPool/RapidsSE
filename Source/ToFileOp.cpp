@@ -104,7 +104,7 @@ Op* ToFileOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
   ToFileOp* pToFileOp = new ToFileOp(pOpSpec,pPipeline);
   
   s4K sFilePath;
-  sFilePath = pToFileOp->m_pOpSpec->pEnmSet()->szValue((i8)0);
+  sFilePath = pToFileOp->m_pOpSpec->pEnameSet()->szValue((i8)0);
   
   if (! pToFileOp->m_oOutFile.bOpenWrite(sFilePath)) {
     vTrace("Failed to open file: %s\n"_Stz,sFilePath.aChar());

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* EnmSet.cpp -- ename-value set                                              */
+/* EnameSet.cpp -- ename-value set                                              */
 /*============================================================================*/
 
 #include "Gadgets.h"
@@ -7,19 +7,19 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-EnmSet* Gadgets::_pEnmSet(void* aAddr)
+EnameSet* Gadgets::_pEnameSet(void* aAddr)
 {
-  EnmSet* pEnmSet = reinterpret_cast<EnmSet*>(aAddr);
+  EnameSet* pEnameSet = reinterpret_cast<EnameSet*>(aAddr);
   
-  RASSERT_TYPE(pEnmSet,CN_ENMSET);
+  RASSERT_TYPE(pEnameSet,CN_ENMSET);
   
-  return pEnmSet;
+  return pEnameSet;
 }
 
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* EnmSet::operator new(size_t)
+void* EnameSet::operator new(size_t)
 {
   void* pObject = HeapMem::pAllocate(CN_ENMSET);
   
@@ -29,7 +29,7 @@ void* EnmSet::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* delete operator                                                            */
 /*----------------------------------------------------------------------------*/
-void EnmSet::operator delete(void* aAddr)
+void EnameSet::operator delete(void* aAddr)
 {
   Object* pObject = reinterpret_cast<Object*>(aAddr);
   
@@ -39,7 +39,7 @@ void EnmSet::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-EnmSet::EnmSet(void)
+EnameSet::EnameSet(void)
 : Object(CN_ENMSET)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
@@ -60,7 +60,7 @@ EnmSet::EnmSet(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-EnmSet::~EnmSet(void) noexcept(false)
+EnameSet::~EnameSet(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
 }
@@ -72,7 +72,7 @@ EnmSet::~EnmSet(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add                                                                        */
 /*----------------------------------------------------------------------------*/
-void EnmSet::vAdd(Stz* szName, i8 iValue, eTN eToken)
+void EnameSet::vAdd(Stz* szName, i8 iValue, eTN eToken)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
@@ -88,7 +88,7 @@ void EnmSet::vAdd(Stz* szName, i8 iValue, eTN eToken)
 /*----------------------------------------------------------------------------*/
 /* add                                                                        */
 /*----------------------------------------------------------------------------*/
-void EnmSet::vAdd(Stz* szName, Stz* szValue, eTN eToken)
+void EnameSet::vAdd(Stz* szName, Stz* szValue, eTN eToken)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
@@ -104,7 +104,7 @@ void EnmSet::vAdd(Stz* szName, Stz* szValue, eTN eToken)
 /*----------------------------------------------------------------------------*/
 /* get nEno                                                                   */
 /*----------------------------------------------------------------------------*/
-i8 EnmSet::nEnm(void)
+i8 EnameSet::nEnm(void)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
@@ -114,7 +114,7 @@ i8 EnmSet::nEnm(void)
 /*----------------------------------------------------------------------------*/
 /* find name                                                                  */
 /*----------------------------------------------------------------------------*/
-i8 EnmSet::i_Find(Stz *szName)
+i8 EnameSet::i_Find(Stz *szName)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
@@ -129,7 +129,7 @@ i8 EnmSet::i_Find(Stz *szName)
 /*----------------------------------------------------------------------------*/
 /* test if ename-set has a pair with given name                               */
 /*----------------------------------------------------------------------------*/
-bool EnmSet::bHasName(Stz *szName)
+bool EnameSet::bHasName(Stz *szName)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
@@ -144,7 +144,7 @@ bool EnmSet::bHasName(Stz *szName)
 /*----------------------------------------------------------------------------*/
 /* get name                                                                   */
 /*----------------------------------------------------------------------------*/
-Stz* EnmSet::szName(i8 i_Enm)
+Stz* EnameSet::szName(i8 i_Enm)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
@@ -156,7 +156,7 @@ Stz* EnmSet::szName(i8 i_Enm)
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void EnmSet::vPrint(void)
+void EnameSet::vPrint(void)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
@@ -193,7 +193,7 @@ void EnmSet::vPrint(void)
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void EnmSet::vPrintDetailed(void)
+void EnameSet::vPrintDetailed(void)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
@@ -218,7 +218,7 @@ void EnmSet::vPrintDetailed(void)
 /*----------------------------------------------------------------------------*/
 /* get token kind                                                             */
 /*----------------------------------------------------------------------------*/
-void EnmSet::vReset(void)
+void EnameSet::vReset(void)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
 
@@ -230,7 +230,7 @@ void EnmSet::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* get token kind                                                             */
 /*----------------------------------------------------------------------------*/
-eTN EnmSet::eToken(i8 i_Enm)
+eTN EnameSet::eToken(i8 i_Enm)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
@@ -242,7 +242,7 @@ eTN EnmSet::eToken(i8 i_Enm)
 /*----------------------------------------------------------------------------*/
 /* get value                                                                  */
 /*----------------------------------------------------------------------------*/
-i8 EnmSet::iValue(i8 i_Enm)
+i8 EnameSet::iValue(i8 i_Enm)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
@@ -257,7 +257,7 @@ i8 EnmSet::iValue(i8 i_Enm)
 /*----------------------------------------------------------------------------*/
 /* get value                                                                  */
 /*----------------------------------------------------------------------------*/
-Stz* EnmSet::szValue(i8 i_Enm)
+Stz* EnameSet::szValue(i8 i_Enm)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
@@ -269,7 +269,7 @@ Stz* EnmSet::szValue(i8 i_Enm)
 /*----------------------------------------------------------------------------*/
 /* get value                                                                  */
 /*----------------------------------------------------------------------------*/
-i8 EnmSet::iValue(Stz *szName)
+i8 EnameSet::iValue(Stz *szName)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
@@ -283,7 +283,7 @@ i8 EnmSet::iValue(Stz *szName)
 /*----------------------------------------------------------------------------*/
 /* get value                                                                  */
 /*----------------------------------------------------------------------------*/
-Stz* EnmSet::szValue(Stz *szName)
+Stz* EnameSet::szValue(Stz *szName)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
@@ -300,7 +300,7 @@ Stz* EnmSet::szValue(Stz *szName)
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-__aFooterFunction(EnmSet)
+__aFooterFunction(EnameSet)
 
 /*============================================================================*/
 /* end                                                                        */
