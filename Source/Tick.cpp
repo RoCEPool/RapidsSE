@@ -23,12 +23,14 @@ i8 Tick::iClockResNsec(void)
 /*----------------------------------------------------------------------------*/
 i8 Tick::iRdClock(void)
 {
+  i8 iTicks;
+  
 #ifdef WITH_APPLE
   struct timespec tp;
   int iResult = clock_gettime(CLOCK_MONOTONIC_RAW_APPROX,&tp);
   //int iResult = clock_gettime(CLOCK_REALTIME,&tp);
 
-  i8 iTicks = tp.tv_sec * C_1G;
+  iTicks = tp.tv_sec * C_1G;
   iTicks += tp.tv_nsec;
   
 #elif defined(WITH_LINUX)
