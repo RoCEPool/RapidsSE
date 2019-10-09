@@ -23,6 +23,8 @@ namespace Esses
     SP(eCN eClass);
    ~SP(void) noexcept(false);
   
+    Stz* szResult(void);
+  
     Footer* aFooter(void);
   };
 }
