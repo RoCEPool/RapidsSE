@@ -56,7 +56,7 @@ Node::Node(i8 iNodeNo, Stz* szName, Stz* szIpAddr, i8 iPortNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   
-  m_pArticle  = new Article(szName,this,nullptr);
+  m_pArticle  = new Article(szName,this,Node::vArtFun);
   
   m_iNodeNo   = iNodeNo;
   m_sNodeName = szName;
@@ -109,12 +109,13 @@ void Node::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void Node::vArtFun(Object* pObject, SP& sp)
+void Node::vArtFun(Object* pObject, SP& spObject)
 {
   Node* pNode = _pNode(pObject);
   
   SP_Node spNode;
   
+  spObject.vResult(spNode.sz(pNode));
 }
 
 /*----------------------------------------------------------------------------*/

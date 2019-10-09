@@ -47,6 +47,8 @@ namespace Structures
 
 // -- -- -- -- -- -- -- --
 
+typedef void (pARTFUN)(Object* pObject, SP& spObject);
+
 #include "Article.hpp"
 #include "MiniHeap_t.hpp"
 #include "TrayNL_t.hpp"
@@ -54,6 +56,7 @@ namespace Structures
 // -- -- -- -- -- -- -- --
 
 #include "SP_Article.hpp"
+
 
 /*============================================================================*/
 /* end                                                                        */

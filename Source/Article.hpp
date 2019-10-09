@@ -12,9 +12,9 @@ namespace Structures
   private:
     Lock    m_okLock;
   
-    s32     m_sName;       // name of the Article
-    Object* m_pObject;     // pointer to the named object
-    eNK     m_eKind;       // kind of article
+    s32      m_sName;      // name of the Article
+    Object*  m_pObject;    // pointer to the named object
+    eNK      m_eKind;      // kind of article
 
     Article* m_pCategory;  // category of this Article
     Article* m_pParent;    // parent of this Article
@@ -35,6 +35,8 @@ namespace Structures
     Article(Stz* szName, Object* pObject, pARTFUN* fpArtFun);
    ~Article(void) noexcept(false);
   
+    pARTFUN* fpArtFun(void);
+
     Article* pCategory(void);
     void  vCategory(Article* pCategory);
   
