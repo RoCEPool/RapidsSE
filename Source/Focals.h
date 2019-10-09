@@ -16,6 +16,7 @@ namespace Focals
 
 #include "FocalDesc.hpp"
 
+#include "NamedObject.hpp"
 #include "ReqTuple.hpp"
 #include "SP_Id.hpp"
 
