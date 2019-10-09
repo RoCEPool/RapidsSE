@@ -1267,12 +1267,12 @@ public:
   static void vWordImmediateSet(Tasks::MP_Task mpTask);
   static void vWordIsImmediate(Tasks::MP_Task mpTask);
   static void vWordIsIntrinsic(Tasks::MP_Task mpTask);
+  static void vWordKindFetch(Tasks::MP_Task mpTask);
+  static void vWordKindStore(Tasks::MP_Task mpTask);
   static void vWordNameFetch(Tasks::MP_Task mpTask);
   static void vWordNameStore(Tasks::MP_Task mpTask);
   static void vWordPrev(Tasks::MP_Task mpTask);
   static void vWordThis(Tasks::MP_Task mpTask);
-  static void vWordTypeGet(Tasks::MP_Task mpTask);
-  static void vWordTypeSet(Tasks::MP_Task mpTask);
 
   // zero
   static void vZeroLess(Tasks::MP_Task mpTask);

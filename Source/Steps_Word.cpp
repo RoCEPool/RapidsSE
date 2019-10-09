@@ -23,8 +23,8 @@ void Step::vAddSteps_Word(void)
   vAddStep("word.immediate!"_Stz,  &Step::vWordImmediateSet);
   vAddStep("word.isImmediate"_Stz, &Step::vWordIsImmediate);
   vAddStep("word.isIntrinsic"_Stz, &Step::vWordIsIntrinsic);
-  vAddStep("word.kind@"_Stz,       &Step::vWordTypeGet);
-  vAddStep("word.kind!"_Stz,       &Step::vWordTypeSet);
+  vAddStep("word.kind@"_Stz,       &Step::vWordKindFetch);
+  vAddStep("word.kind!"_Stz,       &Step::vWordKindStore);
   vAddStep("word.name@"_Stz,       &Step::vWordNameFetch);
   vAddStep("word.name!"_Stz,       &Step::vWordNameStore);
   vAddStep("word.prev"_Stz,        &Step::vWordPrev);
@@ -279,6 +279,47 @@ void Step::vWordIsIntrinsic(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* word.kind@ -- word kind get                                                */
+/*----------------------------------------------------------------------------*/
+void Step::vWordKindFetch(MP_Task mpTask)
+{
+  ENTRY("vWordKindFetch"_Stz);
+  
+  Object* pWordObject;
+  if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
+    THROW_INVALID_DSTACK("vWordKindFetch"_Stz);
+  Word* pWord = _pWord(pWordObject);
+  
+  eWK eKind = pWord->eKind();
+  
+  mpTask->m_pDataStack->vPushI8(eKind);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word.kind! -- word kind set                                                */
+/*----------------------------------------------------------------------------*/
+void Step::vWordKindStore(MP_Task mpTask)
+{
+  ENTRY("vWordKindStore"_Stz);
+  
+  Object* pWordObject;
+  if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
+    THROW_INVALID_DSTACK("vWordKindStore"_Stz);
+  Word* pWord = _pWord(pWordObject);
+  
+  i8 iKind;
+  
+  if ( ! mpTask->m_pDataStack->bPop(iKind) )
+    THROW_INVALID_DSTACK("vWordKindStore"_Stz);
+  
+  pWord->vKind((eWK)iKind);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* word.name@ -- fetch name of word                                           */
 /*----------------------------------------------------------------------------*/
 void Step::vWordNameFetch(MP_Task mpTask)
@@ -347,47 +388,6 @@ ENTRY("vWordThis"_Stz);
   Word* pWord = mpTask->m_pCompiler->m_pCurrentWord;
   
   mpTask->m_pDataStack->vPushPointer(pWord);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* word.kind@ -- word type get                                                */
-/*----------------------------------------------------------------------------*/
-void Step::vWordTypeGet(MP_Task mpTask)
-{
-  ENTRY("vWordTypeGet"_Stz);
-  
-  Object* pWordObject;
-  if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK("vWordTypeGet"_Stz);
-  Word* pWord = _pWord(pWordObject);
-  
-  eWK eKind = pWord->eKind();
-  
-  mpTask->m_pDataStack->vPushI8(eKind);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* word.kind! -- word type set                                                */
-/*----------------------------------------------------------------------------*/
-void Step::vWordTypeSet(MP_Task mpTask)
-{
-  ENTRY("vWordTypeSet"_Stz);
-  
-  Object* pWordObject;
-  if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK("vWordTypeSet"_Stz);
-  Word* pWord = _pWord(pWordObject);
-  
-  i8 iKind;
-  
-  if ( ! mpTask->m_pDataStack->bPop(iKind) )
-    THROW_INVALID_DSTACK("vWordTypeSet"_Stz);
-  
-  pWord->vKind((eWK)iKind);
   
   EXIT();
 }
