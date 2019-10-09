@@ -848,7 +848,7 @@ void* Pthread::aStackBase(void)
     vWarn("pthread_attr_getstack() error; rCode=%lld\n"_Stz,rCode);
   
 #else
-#error "Unknown Operating Library"
+//#error "Unknown Operating Library"
 #endif
   
   return aAddress;
@@ -894,7 +894,7 @@ i8 Pthread::iStackSize(void)
   iSize = (i8) iStackSize;
   
 #else
-#error "Unknown Operating Library"
+//#error "Unknown Operating Library"
 #endif
   
   return iSize;
