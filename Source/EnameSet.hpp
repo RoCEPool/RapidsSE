@@ -5,7 +5,7 @@
 
 namespace Gadgets
 {
-  static const i8 C_ENM_SET = 64;
+  static const i8 C_ENAME_SET = 64;
   
   class EnameSet : public Object
   {
@@ -17,7 +17,7 @@ namespace Gadgets
       i8  m_i_Name;
       i8  m_i_Value;
       eTN m_eToken;
-    } m_xEnnPair[C_ENM_SET];
+    } m_xEname[C_ENAME_SET];
 
     b4K  m_bStrings;
   
