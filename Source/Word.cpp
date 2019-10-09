@@ -68,7 +68,7 @@ Word::Word(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
-  m_pArticle      = new Article(szName,this,nullptr);
+  m_pArticle      = new Article(szName,this,Word::vArtFun);
 
   m_sName         = szName;
   m_eWordType     = WT_ROUTINE;
@@ -122,6 +122,16 @@ Word::~Word(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* article print function                                                     */
+/*----------------------------------------------------------------------------*/
+void Word::vArtFun(Object* pObject, SP& spObject)
+{
+  SP_Word spWord;
+  
+  spObject.vResult(spWord.sz(_pWord(pObject)));
+}
 
 /*----------------------------------------------------------------------------*/
 /* dump dictionary                                                            */

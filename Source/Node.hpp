@@ -36,9 +36,8 @@ namespace Grids
     Node(i8 iNodeNo, Stz* szName, Stz* szIPAddr, i8 iPortNo);
     ~Node(void) noexcept(false);
     
-    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-  
     static void vArtFun(Object* pObject, SP& spObject);
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
     Article* pArticle(void);
   

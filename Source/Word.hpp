@@ -16,6 +16,7 @@ namespace Forth
 
     s32      m_sName;        // the name of this word
     eWT      m_eWordType;    // type of word
+  
     bool     m_bPersistent;  // is on persistent heap
     i8       m_iTrace;       // trace level
     i8       m_iEpoch;       // epoch no. used by bp analyzer
@@ -49,7 +50,8 @@ namespace Forth
   
     Word(Stz* sName);
    ~Word(void) noexcept(false);
-    
+  
+    static void vArtFun(Object* pObject, SP& spObject);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static Word* pToWord(void* aAddrInsideWsp);
 

@@ -107,15 +107,13 @@ void Node::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump                                                                       */
+/* article print function                                                     */
 /*----------------------------------------------------------------------------*/
 void Node::vArtFun(Object* pObject, SP& spObject)
 {
-  Node* pNode = _pNode(pObject);
-  
   SP_Node spNode;
   
-  spObject.vResult(spNode.sz(pNode));
+  spObject.vResult(spNode.sz(_pNode(pObject)));
 }
 
 /*----------------------------------------------------------------------------*/

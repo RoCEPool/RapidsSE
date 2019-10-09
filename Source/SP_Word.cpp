@@ -37,8 +37,14 @@ Stz* SP_Word::sz(Word* pWord)
   _precondition_(_MAGIC_,CN_SPID,_FOOTER_);
   
   StrLib::vSprint(m_caResult,
-                  " "_Stz,
+                  "%s %s%s%s"_Stz,
                   
+                  pWord->sName().aStz(),
+                  aWT[pWord->eWordType()],
+
+                  pWord->bImmediate() ? " immediate" : "",
+                  pWord->bPrompt()    ? " prompt"    : "",
+
                   C_ENDARGS
                   );
   
