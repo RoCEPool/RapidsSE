@@ -296,6 +296,7 @@ void Constants::vAddConstants(void)
   
   /* 31 */ vAddConstant("CN_ENTWRK"_Stz,       CN_ENTWRK);
   
+  /*    */ vAddConstant("CN_LEXICON"_Stz,      CN_LEXICON);
   /*    */ vAddConstant("CN_LOADCHUNK"_Stz,    CN_LOADCHUNK);
   /* 35 */ vAddConstant("CN_LOADMAP"_Stz,      CN_LOADMAP);
   /*    */ vAddConstant("CN_LOCAL"_Stz,        CN_LOCAL);

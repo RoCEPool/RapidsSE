@@ -251,6 +251,7 @@ pFINALIZE *gpFinalize[]
   
   /* 65 */ &Finalize::vUndefined,         // CN_LARGEPERSISTENT
   /* 66 */ &Finalize::vUndefined,         // CN_LARGETRANSIENT
+  /*    */ &Finalize::vUndefined,         // CN_LEXICON
   /*    */ &Finalize::vUndefined,         // CN_LIMITOP
   /*    */ &Finalize::vUndefined,         // CN_LOADCHUNK
   /* 71 */ &Finalize::vUndefined,         // CN_LOADMAP

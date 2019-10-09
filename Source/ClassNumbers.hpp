@@ -253,6 +253,7 @@ enum eCN : u2 // Class Number
   
   /* 146 0x92      232B Heap:I */ CN_LARGEPERSISTENT,
   /* 147 0x93      232B Heap:I */ CN_LARGETRANSIENT,
+  /*                           */ CN_LEXICON,
   /*                           */ CN_LIMITOP,
   /* 148 0x94  1000440B Heap:L */ CN_LOADCHUNK,
   /* 149 0x95  9389216B Heap:J */ CN_LOADMAP,
@@ -670,6 +671,7 @@ static Stz* aCN[]
   
   /* 146 0x92 */ "LARGEPERSISTENT"_Stz,     // CN_LARGEPERSISTENT
   /* 147 0x93 */ "LARGETRANSIENT"_Stz,      // CN_LARGETRANSIENT
+  /*          */ "LEXICON"_Stz,             // CN_LEXICON
   /*          */ "LIMITOP"_Stz,             // CN_LIMITOP
   /* 148 0x94 */ "LOADCHUNK"_Stz,           // CN_LOADCHUNK
   /* 149 0x95 */ "LOADMAP"_Stz,             // CN_LOADMAP
