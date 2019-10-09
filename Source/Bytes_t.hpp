@@ -46,7 +46,7 @@ Bytes_t<BYTES>::Bytes_t(void)
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_yaArea,BYTES,CN_BYTES_T);
 #else
-  m_caArea[0] = '\0';
+  m_yaArea[0] = '\0';
 #endif
 
   _checkInitialisedSize_(BYTES);
