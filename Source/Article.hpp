@@ -43,6 +43,8 @@ namespace Structures
   
     void  vDumpRecursively(i8 iDepth);
   
+    Article* pFind(Stz* szName);
+  
     void  vGrabRead(void);
     void  vGrabWrite(void);
 

@@ -143,6 +143,28 @@ void Article::vDumpRecursively(i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find article by name recursively                                           */
+/*----------------------------------------------------------------------------*/
+Article* Article::pFind(Stz* szName)
+{
+  _precondition_(_MAGIC_,CN_ARTICLE,_FOOTER_);
+  
+  if (m_sName.bSame(szName))
+    return this;
+  
+  for (Article* pItemArt = pHead(); pItemArt; pItemArt = pItemArt->pNextItem())
+    if (pItemArt->szName()->bSame(szName))
+      return pItemArt;
+  
+  if (! m_pChild)
+    return nullptr;
+  
+  Article* pChildArt = m_pChild->pFind(szName);
+  
+  return pChildArt;
+}
+
+/*----------------------------------------------------------------------------*/
 /* grab lock for read                                                         */
 /*----------------------------------------------------------------------------*/
 void Article::vGrabRead(void)
