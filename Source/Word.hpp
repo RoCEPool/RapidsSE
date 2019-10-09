@@ -15,13 +15,13 @@ namespace Forth
     Article* m_pArticle;     // the word article
 
     s32      m_sName;        // the name of this word
-    eWK      m_eWord;        // type of word
+    eWK      m_eWord;        // kind of word
   
     bool     m_bPersistent;  // is on persistent heap
     i8       m_iTrace;       // trace level
     i8       m_iEpoch;       // epoch no. used by bp analyzer
     Dic*     m_pDic;         // which dictionary this word in
-    Word*    m_pKind;        // kind of word
+    Word*    m_pCategory;    // category of word
     bool     m_bImmediate;   // immediate execution during compile?
     i8       m_iParams;      // number of parameters
     bool     m_bPrompt;      // can be executed by prompt?
@@ -68,6 +68,8 @@ namespace Forth
     void  vAppend(ForthValue* aValue);
     Article* pArticle(void);
     void  vArticle(Article* pArticle);
+    Word* pCategory(void);
+    void  vCategory(Word* pCategory);
     void  vContentDump(void);
     Dic*  pDic(void);
     i8    iEpoch(void);
@@ -90,8 +92,6 @@ namespace Forth
     bool  bImmediate(void);
     void  vImmediate(bool bImmediate);
     bool  bIsName(s32& sName);
-    Word* pKind(void);
-    void  vKind(Word* pKind);
     Cell* aLastCell(void);
     i8    iLocalNo(void);
     void  vLocalNo(i8 iLocalNo);

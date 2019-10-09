@@ -249,9 +249,9 @@ ENTRY("vWordKindGet"_Stz);
     THROW_INVALID_DSTACK("vWordKindGet"_Stz);
   Word* pWord = _pWord(pWordObject);
   
-  Word* pWordKind = pWord->pKind();
+  Word* pCategory = pWord->pCategory();
   
-  mpTask->m_pDataStack->vPushPointer(pWordKind);
+  mpTask->m_pDataStack->vPushPointer(pCategory);
   
   EXIT();
 }
@@ -268,11 +268,12 @@ ENTRY("vWordKindSet"_Stz);
     THROW_INVALID_DSTACK("vWordKindSet"_Stz);
   Word* pWord = _pWord(pWordObject);
   
-  if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
+  Object* pCategoryObject;
+  if ( ! mpTask->m_pDataStack->bPop(pCategoryObject) )
     THROW_INVALID_DSTACK("vWordKindSet"_Stz);
-  Word* pWordKind = _pWord(pWordObject);
+  Word* pCategory = _pWord(pCategoryObject);
   
-  pWord->vKind(pWordKind);
+  pWord->vCategory(pCategory);
   
   EXIT();
 }

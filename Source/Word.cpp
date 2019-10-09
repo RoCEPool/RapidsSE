@@ -75,7 +75,7 @@ Word::Word(Stz* szName)
   //m_bPersistent   = false;
   m_iTrace     = 0;
   //m_pDic     = pDic;
-  m_pKind      = AM::pRootWord() ? AM::pRootWord() : this;
+  m_pCategory      = AM::pRootWord() ? AM::pRootWord() : this;
   m_iEpoch     = AM::iEpoch();
   m_bImmediate = false;
   m_iParams    = 0;
@@ -347,7 +347,7 @@ void Word::vContentDump(void)
          this,
          m_sName.aChar(),
          aWK[m_eWord]->aChar(),
-         m_pKind->m_sName.aChar(),
+         m_pCategory->m_sName.aChar(),
          m_bImmediate,
          m_xRoutine.nUsed(),
          m_fpEntryStep,
@@ -587,21 +587,21 @@ bool Word::bIsName(s32& sName)
 /*----------------------------------------------------------------------------*/
 /* get word kind                                                              */
 /*----------------------------------------------------------------------------*/
-Word* Word::pKind(void)
+Word* Word::pCategory(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  return m_pKind;
+  return m_pCategory;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set word kind                                                              */
 /*----------------------------------------------------------------------------*/
-void Word::vKind(Word* pKind)
+void Word::vCategory(Word* pCategory)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
-  m_pKind = pKind;
+  m_pCategory = pCategory;
 }
 
 /*----------------------------------------------------------------------------*/
