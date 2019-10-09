@@ -67,6 +67,9 @@ AttachMap::AttachMap(void)
   // create the transient heaps
   m_xHeapMem.vInit();
   
+  Lexicon* pLexicon = new Lexicon("__lexicon"_Stz);
+  m_pLexiconArticle = pLexicon->pArticle();
+  
   m_pRootDic = new Dic;
   m_pRootDic->vName("__dicRoot"_Stz);
   

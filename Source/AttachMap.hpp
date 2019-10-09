@@ -50,6 +50,7 @@ namespace StorageEngine
     Formatters    m_oFormatters;
     Grid*         m_pGrid;
     HeapMem       m_xHeapMem;
+    Article*      m_pLexiconArticle;
     LockTracker   m_oLockTracker;
     NextId        m_inNextDiagram;
     NextId        m_inNextJobId;
