@@ -11,8 +11,8 @@ void Step::vAddSteps_Word(void)
 {
   vAddStep("word::this"_Stz,       &Step::vWordThis);
   
-  vAddStep("word.category@"_Stz,   &Step::vWordKindGet);
-  vAddStep("word.category!"_Stz,   &Step::vWordKindSet);
+  vAddStep("word.category@"_Stz,   &Step::vWordCategoryFetch);
+  vAddStep("word.category!"_Stz,   &Step::vWordCategoryStore);
   vAddStep("word.dump"_Stz,        &Step::vWordDump);
   vAddStep("word.enmSet@"_Stz,     &Step::vWordEnmSetFetch);
   vAddStep("word.enmSet!"_Stz,     &Step::vWordEnmSetStore);
@@ -36,6 +36,47 @@ void Step::vAddSteps_Word(void)
 void Step::vWord(MP_Task mpTask)
 {
   ENTRY("vWord"_Stz);
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word.category@ -- word category fetch                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vWordCategoryFetch(MP_Task mpTask)
+{
+  ENTRY("vWordKindGet"_Stz);
+  
+  Object* pWordObject;
+  if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
+    THROW_INVALID_DSTACK("vWordKindGet"_Stz);
+  Word* pWord = _pWord(pWordObject);
+  
+  Word* pCategory = pWord->pCategory();
+  
+  mpTask->m_pDataStack->vPushPointer(pCategory);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word.category! -- word category store                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vWordCategoryStore(MP_Task mpTask)
+{
+  ENTRY("vWordKindSet"_Stz);
+  
+  Object* pWordObject;
+  if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
+    THROW_INVALID_DSTACK("vWordKindSet"_Stz);
+  Word* pWord = _pWord(pWordObject);
+  
+  Object* pCategoryObject;
+  if ( ! mpTask->m_pDataStack->bPop(pCategoryObject) )
+    THROW_INVALID_DSTACK("vWordKindSet"_Stz);
+  Word* pCategory = _pWord(pCategoryObject);
+  
+  pWord->vCategory(pCategory);
+  
   EXIT();
 }
 
@@ -233,47 +274,6 @@ void Step::vWordIsIntrinsic(MP_Task mpTask)
   i8 iIsPrimitive = WK_INTRINSIC == pWord->eWord() ? 1 : 0;
   
   mpTask->m_pDataStack->vPushI8(iIsPrimitive);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* word.category@ -- word kind get                                                */
-/*----------------------------------------------------------------------------*/
-void Step::vWordKindGet(MP_Task mpTask)
-{
-ENTRY("vWordKindGet"_Stz);
-  
-  Object* pWordObject;
-  if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK("vWordKindGet"_Stz);
-  Word* pWord = _pWord(pWordObject);
-  
-  Word* pCategory = pWord->pCategory();
-  
-  mpTask->m_pDataStack->vPushPointer(pCategory);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* word.category! -- word kind set                                                */
-/*----------------------------------------------------------------------------*/
-void Step::vWordKindSet(MP_Task mpTask)
-{
-ENTRY("vWordKindSet"_Stz);
-  
-  Object* pWordObject;
-  if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK("vWordKindSet"_Stz);
-  Word* pWord = _pWord(pWordObject);
-  
-  Object* pCategoryObject;
-  if ( ! mpTask->m_pDataStack->bPop(pCategoryObject) )
-    THROW_INVALID_DSTACK("vWordKindSet"_Stz);
-  Word* pCategory = _pWord(pCategoryObject);
-  
-  pWord->vCategory(pCategory);
   
   EXIT();
 }

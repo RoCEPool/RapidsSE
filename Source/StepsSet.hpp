@@ -1255,6 +1255,8 @@ public:
 
   // word
   static void vWord(Tasks::MP_Task mpTask);
+  static void vWordCategoryFetch(Tasks::MP_Task mpTask);
+  static void vWordCategoryStore(Tasks::MP_Task mpTask);
   static void vWordDump(Tasks::MP_Task mpTask);
   static void vWordEnmSetFetch(Tasks::MP_Task mpTask);
   static void vWordEnmSetStore(Tasks::MP_Task mpTask);
@@ -1265,8 +1267,6 @@ public:
   static void vWordImmediateSet(Tasks::MP_Task mpTask);
   static void vWordIsImmediate(Tasks::MP_Task mpTask);
   static void vWordIsIntrinsic(Tasks::MP_Task mpTask);
-  static void vWordKindGet(Tasks::MP_Task mpTask);
-  static void vWordKindSet(Tasks::MP_Task mpTask);
   static void vWordNameFetch(Tasks::MP_Task mpTask);
   static void vWordNameStore(Tasks::MP_Task mpTask);
   static void vWordPrev(Tasks::MP_Task mpTask);
