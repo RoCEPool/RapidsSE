@@ -61,6 +61,13 @@ void Step::vNodeNew(MP_Task mpTask)
   
   mpTask->m_pDataStack->vPushPointer(pNode);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Article* pGridArticle = AM::pLexiconArticle()->pFind("SEgrid"_Stz);
+  
+  pGridArticle->vAppend(pNode->pArticle());
+  pGridArticle->vDumpRecursively(0);
+
   EXIT();
 }
 
@@ -84,6 +91,11 @@ void Step::vNodeForget(MP_Task mpTask)
   
   Grid* pGrid = AM::pGrid();
   
+  
+  Article* pGridArticle = AM::pLexiconArticle()->pFind("SEgrid"_Stz);
+  pGridArticle->vRemove(pNode->pArticle());
+  pGridArticle->vDumpRecursively(0);
+
   pGrid->vRemoveNode(pNode);
   
   EXIT();
