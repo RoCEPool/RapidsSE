@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* Partition                                                                  */
 /*----------------------------------------------------------------------------*/
-i8 QuickSort::iPartitionBuffer(ColumnVec* pColumnVec, SrtBuffer* pSrtBuffer,
+i8 QuickSort::iPartitionBuffer(SrtBuffer* pSrtBuffer,
                                i8 iLowIndex, i8 iHighIndex)
 {
   
@@ -75,22 +75,22 @@ i8 QuickSort::iPartitionBuffer(ColumnVec* pColumnVec, SrtBuffer* pSrtBuffer,
 /*----------------------------------------------------------------------------*/
 /* QuickSort                                                                  */
 /*----------------------------------------------------------------------------*/
-void QuickSort::vQuickSortBuffer(ColumnVec* pColumnVec, SrtBuffer* pSrtBuffer,
+void QuickSort::vQuickSortBuffer(SrtBuffer* pSrtBuffer,
                                  i8 iLowIndex, i8 iHighIndex)
 {
   
   if (iLowIndex < iHighIndex) {
-    i8 iPartitionIndex = iPartitionBuffer(pColumnVec, pSrtBuffer, iLowIndex, iHighIndex);
+    i8 iPartitionIndex = iPartitionBuffer(pSrtBuffer, iLowIndex, iHighIndex);
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // quick sort from low to partition
-    vQuickSortBuffer(pColumnVec, pSrtBuffer, iLowIndex, iPartitionIndex);
+    vQuickSortBuffer(pSrtBuffer, iLowIndex, iPartitionIndex);
     
     //pSrtBuffer->vShow(pColumnVec);
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // quick sort from partition+1 to high
-    vQuickSortBuffer(pColumnVec, pSrtBuffer, iPartitionIndex + 1, iHighIndex);
+    vQuickSortBuffer(pSrtBuffer, iPartitionIndex + 1, iHighIndex);
     
   }
   

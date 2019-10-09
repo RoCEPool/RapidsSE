@@ -147,11 +147,15 @@ Row* IrwBuffer::aNextRow(Row* aPriorRow)
 /*----------------------------------------------------------------------------*/
 /* print rows                                                                 */
 /*----------------------------------------------------------------------------*/
-void IrwBuffer::vPrintRows(ColumnVec* pColVec)
+void IrwBuffer::vPrintRows(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_IRWBUFFER,_FOOTER_);
 
-  HV_Rec hvRec(pColVec);
+  // create a column vec from each row ref
+  ColumnVec* pColumnVec = new ColumnVec;
+  pStreamDef->vAddColumns(pColumnVec);
+  
+  HV_Rec hvRec(pColumnVec);
   
   // NOTE: We need to print only nItem no of rows
   // as the limitOp may have truncated the rows via setting the nItems()
@@ -171,7 +175,7 @@ void IrwBuffer::vPrintRows(ColumnVec* pColVec)
 /*----------------------------------------------------------------------------*/
 /* show contents of buffer                                                    */
 /*----------------------------------------------------------------------------*/
-void IrwBuffer::vShow(ColumnVec* pColVec)
+void IrwBuffer::vShow(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_IRWBUFFER,_FOOTER_);
   
@@ -186,7 +190,12 @@ void IrwBuffer::vShow(ColumnVec* pColVec)
   vTrace("  partition: %lld \n"_Stz, m_iPartitionNo);
   
   Row* pRow = aFirstRow();
-  HV_Rec hvRec(pColVec);
+  
+  // create a column vec from each row ref
+  ColumnVec* pColumnVec = new ColumnVec;
+  pStreamDef->vAddColumns(pColumnVec);
+  
+  HV_Rec hvRec(pColumnVec);
   while (pRow) {
     hvRec->vAppend(pRow);
     pRow = aNextRow(pRow);

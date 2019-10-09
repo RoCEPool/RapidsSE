@@ -459,8 +459,8 @@ void Table::vCreateColumnVec(Jobs::Job_CreateTable* pJob)
   m_pStreamDef->m_sName = m_sTableName;
   m_pStreamDef->m_sPath.vSprint("../%s"_Stz,m_sTableName.aStz());
 
-  m_pStreamDef->m_oColVecAry.vItems(1);
-  ColumnVec* pStreamColVec = m_pStreamDef->m_oColVecAry.pGet(0);
+  m_pStreamDef->m_nDefSets = 1;
+  m_pStreamDef->m_i_DefStart[0] = 0;
   
   for (i8 i_Col = 0; i_Col < pJob->m_iColumns; i_Col++) {
     pColumn = new Column(pJob,i_Col);
@@ -468,9 +468,9 @@ void Table::vCreateColumnVec(Jobs::Job_CreateTable* pJob)
     pColumn->vColVec(m_pColumnVec);
 
     // - - - - - - - - - - - - - - -
-    Column* pStreamCol = new Column();
-    pStreamCol->vCopy(pColumn);
-    pStreamColVec->vAdd(pStreamCol);
+    Column oColumn = m_pStreamDef->m_xaColumn[0];
+    oColumn.vCopy(pColumn);
+    m_pStreamDef->m_nDefColumns[0]++;
   }
   
   if (pColumn)

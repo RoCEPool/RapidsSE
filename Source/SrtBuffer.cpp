@@ -185,8 +185,8 @@ void SrtBuffer::vGetKeys(StreamDef* pStreamDef, i8 iKeyCol, i8 iColVec)
   
   Crw* aCrw;
   
-  ColumnVec* pColVec = pStreamDef->m_oColVecAry.pGet(iColVec);
-  
+  ColumnVec* pColVec = new ColumnVec;
+
   HV_Row hRow(pColVec);
   
   i8 iBaseOffset = RowCoder::iBaseOffset(pColVec);
@@ -207,6 +207,8 @@ void SrtBuffer::vGetKeys(StreamDef* pStreamDef, i8 iKeyCol, i8 iColVec)
     
      aSrtSet = aNextSrtSet(aSrtSet);
   }
+  
+  delete pColVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -310,13 +312,17 @@ void SrtBuffer::vPrintRows(StreamDef* pStreamDef)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SRTBUFFER,_FOOTER_);
   
   SrtSet* aSrtSet = aFirstSrtSet();
+  ColumnVec* pColumnVec[C_MAX_STREAMDEFS];
+  
+  // create a column vec from each row ref
+  for (i8 iRowRef = 0; iRowRef < m_nRowRefs; iRowRef++) {
+    pColumnVec[iRowRef] = new ColumnVec;
+    pStreamDef->vAddColumns(pColumnVec[iRowRef] , iRowRef);
+  }
   
   // NOTE: We need to iterate nItems() rows as its possible
   // that limit has truncated the no of rows
   for (i8 i_Row = 0; i_Row < nItems(); i_Row++) {
-    
-    i8 nColVecs = pStreamDef->m_oColVecAry.nItems();
-    RASSERT(nColVecs == m_nRowRefs);
     
     vTrace("row: ("_Stz);
     
@@ -325,21 +331,18 @@ void SrtBuffer::vPrintRows(StreamDef* pStreamDef)
       if (iRowRef != 0)
         vTrace(" "_Stz);
       
-      // get the columnVec defining the rowref
-      ColumnVec* pStreamColVec = pStreamDef->m_oColVecAry.pGet(iRowRef);
-      
       // get the dataRow of rowref
       Crw* aCrw = (Crw*)(aSrtSet->iRowRef(iRowRef));
       
-      HV_Rec hvRec(pStreamColVec);
-      HV_Row hRow(pStreamColVec);
+      HV_Rec hvRec(pColumnVec[iRowRef]);
+      HV_Row hRow(pColumnVec[iRowRef]);
       
       // inflate the row
       if (aCrw) {
         RowInflator::vInflateRow(hRow, aCrw);
       } else {
         // get no of columns
-        i8 nColumns = pStreamColVec->nItems();
+        i8 nColumns = pColumnVec[iRowRef]->nItems();
         
         // for each column
         for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
@@ -411,6 +414,7 @@ void SrtBuffer::vShow(StreamDef* pStreamDef)
   
   i8 nSrtSets = nItems();
   //vTrace ("Rows: %lld\n"_Stz, nSrtSets);
+  ColumnVec* pColumnVec[C_MAX_STREAMDEFS];
   
   vTrace("SrtBuffer: %p (buffer %lld): rows: %lld\n"_Stz,
          this,m_iBufferNo,nSrtSets);
@@ -422,14 +426,20 @@ void SrtBuffer::vShow(StreamDef* pStreamDef)
   
   SrtSet* aSrtSet = aFirstSrtSet();
   
+  // create a column vec from each row ref
+  for (i8 iRowRef = 0; iRowRef < m_nRowRefs; iRowRef++) {
+    pColumnVec[iRowRef] = new ColumnVec;
+    pStreamDef->vAddColumns(pColumnVec[iRowRef] , iRowRef);
+  }
+  
+  
   i8 nRows = nItems();
   i8 iElement = 0;
   while (nRows--) {
     
     RASSERT(aSrtSet == this->aSrtSet(iElement));
     
-    i8 nColVecs = pStreamDef->m_oColVecAry.nItems();
-    RASSERT(nColVecs == m_nRowRefs);
+    RASSERT(pStreamDef->m_nDefSets == m_nRowRefs);
     
     vTrace("%lld: %p; Key:%lld; RowRef:"_Stz, iElement, aSrtSet, aSrtSet->iKey());
     
@@ -438,24 +448,21 @@ void SrtBuffer::vShow(StreamDef* pStreamDef)
     }
     
     vTrace("; row: "_Stz);
-    
+  
     for (i8 iRowRefs = 0; iRowRefs < m_nRowRefs; iRowRefs++) {
       
       // get the srtSet dataRow
       Crw* aCrw = (Crw*)(aSrtSet->iRowRef(iRowRefs));
       
-      // get the columnVec defining the srtSet
-      ColumnVec* pStreamColVec = pStreamDef->m_oColVecAry.pGet(iRowRefs);
-      
-      HV_Rec hvRec(pStreamColVec);
-      HV_Row hRow(pStreamColVec);
+      HV_Rec hvRec(pColumnVec[iRowRefs]);
+      HV_Row hRow(pColumnVec[iRowRefs]);
 
       // inflate the row
       if (aCrw) {
         RowInflator::vInflateRow(hRow, aCrw);
       } else {
         // get no of columns
-        i8 nColumns = pStreamColVec->nItems();
+        i8 nColumns = pColumnVec[iRowRefs]->nItems();
         
         // for each column
         for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
@@ -523,7 +530,6 @@ void SrtBuffer::vSwap(i8 iSrtSet1, SrtBuffer* pSrtBuffer2, i8 iSrtSet2)
     aSrtSet2->m_iaRowRef[0] = iaRowRef0;
   }
   else {
-    RASSERT(m_nRowRefs == 2);
     RASSERT(m_nRowRefs == 2);
     
     i8 iKey = aSrtSet1->m_xKey;

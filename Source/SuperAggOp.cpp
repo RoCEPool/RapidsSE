@@ -124,6 +124,10 @@ eOR SuperAggOp::eSuperAggLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUPERAGGOP,_FOOTER_);
   
+  // create a column vec from each row ref
+  ColumnVec* pColumnVec = new ColumnVec;
+  m_pStreamDef->vAddColumns(pColumnVec);
+  
   for (;;) {
     
     Operand* pOperand = pPopQueue();
@@ -137,7 +141,7 @@ eOR SuperAggOp::eSuperAggLoop(void)
       
       if (--m_nLeftEndMarkers == 0) {
         IrwBuffer* pIrwBuffer = new IrwBuffer();
-        Row* pRow = pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
+        Row* pRow = pIrwBuffer->aAllotRow(pColumnVec);
         pRow->m_waColVal[0] = m_nSum;
         
         // pipe out the buffer with the count

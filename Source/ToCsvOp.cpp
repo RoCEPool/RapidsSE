@@ -79,15 +79,15 @@ ToCsvOp::ToCsvOp(OpSpec* pOpSpec, Pipeline* pPipeline)
   m_pStreamDef = new StreamDef;
   
   // create an integer column
-  Column* pColumn = new Column();
-  pColumn->vColumnNo(0);
-  pColumn->vColumnName("row"_Stz);
-  pColumn->vColumnType(CT_VARCHAR);
-  pColumn->vDatumType(DM_VCH);
+  Column oColumn = m_pStreamDef->m_xaColumn[0];
+  oColumn.vColumnNo(0);
+  oColumn.vColumnName("row"_Stz);
+  oColumn.vColumnType(CT_VARCHAR);
+  oColumn.vDatumType(DM_VCH);
   
-  m_pStreamDef->m_oColVecAry.vItems(1);
-  ColumnVec* pColVec = m_pStreamDef->pColumnVec(0);
-  pColVec->vAdd(pColumn);
+  m_pStreamDef->m_nDefSets++;
+  m_pStreamDef->m_nDefColumns[0] = 1;
+  m_pStreamDef->m_i_DefStart[0] = 0;
   
   _checkInitialised_(CN_TOCSVOP);
 

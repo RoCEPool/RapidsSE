@@ -397,7 +397,7 @@ void Jobs::vJob_Dynamic_post(Job* pJob)
       case CN_IRWBUFFER: {
         IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
         pJob_Dynamic->m_xResponse.m_ixRowsProcessed += pIrwBuffer->nItems();
-        pIrwBuffer->vPrintRows(pJob_Dynamic->m_pStreamDef->pColumnVec(0));
+        pIrwBuffer->vPrintRows(pJob_Dynamic->m_pStreamDef);
         delete pIrwBuffer;
         break;
       }

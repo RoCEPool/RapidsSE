@@ -48,7 +48,15 @@ StreamDef::StreamDef(void)
   //m_sPath;
   
   m_iStreamId = AM::iNextStreamId();
-  //m_oColVecAry
+  m_nDefSets = 0;
+  
+  //m_saDefName[C_MAX_STREAMDEFS];
+  
+  for (i8 i_StreamDefs = 0; i_StreamDefs < C_MAX_STREAMDEFS; i_StreamDefs++) {
+    m_i_DefStart[i_StreamDefs] = C_UNKNOWN;
+    m_nDefColumns[i_StreamDefs] = C_UNKNOWN;
+  }
+  //m_xaColumn[C_MAX_DEFCOLUMNS];
   
   m_bTemp = false;
   //vTrace("StreamDef permanent %p\n"_Stz, this);
@@ -70,28 +78,21 @@ StreamDef::StreamDef(StreamDef* pStreamDef)
   m_sPath = pStreamDef->m_sPath;
   
   m_iStreamId = AM::iNextStreamId();
+  m_nDefSets = pStreamDef->m_nDefSets;
   
-  i8 nColVecs = pStreamDef->m_oColVecAry.nItems();
-  m_oColVecAry.vItems(nColVecs);
-  
-  for (i8 i_ColVec = 0; i_ColVec < nColVecs; i_ColVec++) {
-    ColumnVec* pThisColumnVec = m_oColVecAry.pGet(i_ColVec);
-    ColumnVec* pStreamColVec = pStreamDef->m_oColVecAry.pGet(i_ColVec);
+  for (i8 i_StreamDef = 0; i_StreamDef < m_nDefSets; i_StreamDef++) {
+    m_nDefColumns[i_StreamDef] = pStreamDef->m_nDefColumns[i_StreamDef];
+    m_i_DefStart[i_StreamDef] = pStreamDef->m_i_DefStart[i_StreamDef];
     
-    // get no of columns
-    i8 nColumns = pStreamColVec->nItems();
-    
-    // add columns to streamdef
-    for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-      Column* pColumn = new Column;
-      pColumn->vCopy(pStreamColVec->pGet(i_Col));
-      pThisColumnVec->vAdd(pColumn);
+    for (i8 i_DefCol = 0; i_DefCol < m_nDefColumns[i_StreamDef]; i_DefCol++) {
+      m_xaColumn[i_DefCol].vCopy(&pStreamDef->m_xaColumn[i_DefCol]);
     }
+    
   }
   
   m_bTemp = true;
   
-  _checkInitialised_(CN_STREAMDEF);
+  //_checkInitialised_(CN_STREAMDEF);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
 }
@@ -112,21 +113,17 @@ void StreamDef::vAdd(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
-  m_oColVecAry.vItems(m_oColVecAry.nItems() + 1);
-  ColumnVec* pThisColumnVec = m_oColVecAry.pGet(m_oColVecAry.nItems() - 1);
-  ColumnVec* pStreamColVec = pStreamDef->m_oColVecAry.pGet(0);
+  m_nDefSets++;
   
-  // get no of columns
-  i8 nColumns = pStreamColVec->nItems();
-  
-  // add columns to streamdef
-  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-    Column* pColumn = new Column;
-    pColumn->vCopy(pStreamColVec->pGet(i_Col));
-    pThisColumnVec->vAdd(pColumn);
+  for (i8 i_StreamDef = 0; i_StreamDef < pStreamDef->m_nDefSets; i_StreamDef++) {
+    m_nDefColumns[i_StreamDef] = m_nDefColumns[i_StreamDef];
+    m_i_DefStart[i_StreamDef] = pStreamDef->m_i_DefStart[i_StreamDef];
+    
+    for (i8 i_DefCol = 0; i_DefCol < m_nDefColumns[i_StreamDef]; i_DefCol++) {
+      m_xaColumn[i_DefCol].vCopy(&pStreamDef->m_xaColumn[i_DefCol]);
+    }
+    
   }
-  
-  m_bTemp = true;
   
   _checkInitialised_(CN_STREAMDEF);
   
@@ -134,14 +131,39 @@ void StreamDef::vAdd(StreamDef* pStreamDef)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get column vector at index                                                 */
+/* convert column array to a column vector                                    */
 /*----------------------------------------------------------------------------*/
-ColumnVec* StreamDef::pColumnVec(i8 iIndex)
+void StreamDef::vAddColumns(ColumnVec* pColumnVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
   
-  return m_oColVecAry.pGet(iIndex);
+  for (i8 i_StreamDef = 0; i_StreamDef < m_nDefSets; i_StreamDef++) {
+    for (i8 i_DefCol = 0; i_DefCol < m_nDefColumns[i_StreamDef]; i_DefCol++) {
+      
+      Column* pColumn = new Column;
+      pColumn->vCopy(&m_xaColumn[i_DefCol]);
+      pColumnVec->vAdd(pColumn);
+    }
+  }
+  
 }
+
+/*----------------------------------------------------------------------------*/
+/* convert column array to a column vector                                    */
+/*----------------------------------------------------------------------------*/
+void StreamDef::vAddColumns(ColumnVec* pColumnVec, i8 nDefSet)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
+  
+  for (i8 i_DefCol = m_i_DefStart[nDefSet]; i_DefCol < m_nDefColumns[nDefSet]; i_DefCol++) {
+    
+    Column* pColumn = new Column;
+    pColumn->vCopy(&m_xaColumn[i_DefCol]);
+    pColumnVec->vAdd(pColumn);
+  }
+  
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* get column vector at index                                                 */
@@ -149,17 +171,18 @@ ColumnVec* StreamDef::pColumnVec(i8 iIndex)
 i8 StreamDef::iFindColumn(char* sColumnNm, i8& i_ColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STREAMDEF,_FOOTER_);
-  
-  for (i_ColVec = 0; i_ColVec < m_oColVecAry.nItems(); i_ColVec++) {
-    ColumnVec* pColumnVec = m_oColVecAry.pGet(i_ColVec);
-    i8 nColumns = pColumnVec->nItems();
-    for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-      Column* pCol = pColumnVec->pGet(i_Col);
-      if (StrLib::bEqualTo(sColumnNm,pCol->sColumnName().aChar(),C_NO_CASE)) {
-        return i_Col;
-      }
-    }
-  }
+
+// ALKA_TO_REVIEW
+//  for (i_ColVec = 0; i_ColVec < m_oColVecAry.nItems(); i_ColVec++) {
+//    ColumnVec* pColumnVec = m_oColVecAry.pGet(i_ColVec);
+//    i8 nColumns = pColumnVec->nItems();
+//    for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+//      Column* pCol = pColumnVec->pGet(i_Col);
+//      if (StrLib::bEqualTo(sColumnNm,pCol->sColumnName().aChar(),C_NO_CASE)) {
+//        return i_Col;
+//      }
+//    }
+//  }
   
   return C_UNKNOWN;
 }
@@ -173,26 +196,23 @@ void StreamDef::vToMetadata(Stz* sMetadata)
   
   sMetadata->vCopy("metadata: ("_Stz);
   
-  for (i8 i_ColVec = 0; i_ColVec < m_oColVecAry.nItems(); i_ColVec++) {
+  for (i8 i_DefSet = 0; i_DefSet < m_nDefSets; i_DefSet++) {
     
-    ColumnVec* pColumnVec = m_oColVecAry.pGet(i_ColVec);
-    i8 nColumns = pColumnVec->nItems();
-    
-    if (i_ColVec != 0)
+    if (i_DefSet != 0)
       sMetadata->vConcat(","_Stz);
     
-    for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-      
-      if (i_Col != 0)
-        sMetadata->vConcat(","_Stz);
-      
-      Column* pCol = pColumnVec->pGet(i_Col);
-      sMetadata->vCatSprint("%s %s"_Stz, pCol->sColumnName().aChar(),
-                           aCT[pCol->eColumnType()]);
+    for (i8 i_DefColumn = 0; i_DefColumn < m_nDefColumns[i_DefSet]; i_DefColumn++) {
+        
+        if (i_DefColumn != 0)
+          sMetadata->vConcat(","_Stz);
+        
+        sMetadata->vCatSprint("%s %s"_Stz, m_xaColumn[i_DefColumn].sColumnName().aChar(),
+                              aCT[m_xaColumn[i_DefColumn].eColumnType()]);
+      }
     }
+    sMetadata->vConcat(")"_Stz);
   }
-  sMetadata->vConcat(")"_Stz);
-}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

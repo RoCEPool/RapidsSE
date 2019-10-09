@@ -108,20 +108,21 @@ Op* ProjectOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 {
   ProjectOp* pProjectOp = new ProjectOp(pOpSpec,pPipeline);
   
-  // create a columnVec in the stream def
-  pProjectOp->m_pStreamDef->m_oColVecAry.vItems(1);
-  ColumnVec* pColVec = pProjectOp->m_pStreamDef->pColumnVec(0);
-  
   EnmSet* pEnmSet = pProjectOp->m_pOpSpec->pEnmSet();
   i8 iEnms = pEnmSet->nEnm();
   pEnmSet->vPrint();
+  
+  pProjectOp->m_pStreamDef->m_nDefSets++;
+  pProjectOp->m_pStreamDef->m_i_DefStart[0] = 0;
+  
   for (i8 i_Column = 0; i_Column < iEnms; i_Column++) {
     
     // create a column
-    Column* pColumn = new Column();
-    pColumn->vColumnNo(i_Column);
-    pColumn->vColumnName(pEnmSet->szValue((i8)i_Column));
-    pColVec->vAdd(pColumn);
+    Column oColumn = pProjectOp->m_pStreamDef->m_xaColumn[i_Column];
+    oColumn.vColumnNo(i_Column);
+    oColumn.vColumnName(pEnmSet->szValue((i8)i_Column));
+    pProjectOp->m_pStreamDef->m_nDefColumns[0]++;
+    
   }
   
   return pProjectOp;
@@ -185,36 +186,37 @@ eOR ProjectOp::eOpLoop(void)
       // -- -- -- -- -- --
         
       case CN_CRWBUFFER: {
-        CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand) ;
-        ColumnVec* pColumnVec = m_pStreamDef->m_oColVecAry.pGet(0);
-        
-        RASSERT(m_pOriginalStreamDef->m_oColVecAry.nItems() == 1);
-        
-        HV_Row hRow(m_pOriginalStreamDef->m_oColVecAry.pGet(0));
-        i8 nRows = pCrwBuffer->nRowCount();
-        
-        for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-          
-          Row* pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
-          
-          if ( ! pRow ) {
-            vPipeOut(m_pIrwBuffer);
-            m_pIrwBuffer = new IrwBuffer;
-            pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
-          }
-          
-          // get compact row
-          Crw* aCrw = (Crw*)pCrwBuffer->m_oRowTray.pNub()->aGetHead(i_Row);
-          
-          for (i8 i_IntoCol = 0; i_IntoCol < pColumnVec->nItems(); i_IntoCol++) {
-            i8 iBaseOffset = RowCoder::iBaseOffset(m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[i_IntoCol]));
-            
-            RowInflator::vInflateColumn(pRow, i_IntoCol, aCrw, iBaseOffset, m_iWhichCol[i_IntoCol],
-                                        m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[i_IntoCol]));
-            
-            
-          }
-        }
+//  ALKA_TO_REVIEW
+//        CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand) ;
+//        ColumnVec* pColumnVec = m_pStreamDef->m_oColVecAry.pGet(0);
+//
+//        RASSERT(m_pOriginalStreamDef->m_oColVecAry.nItems() == 1);
+//
+//        HV_Row hRow(m_pOriginalStreamDef->m_oColVecAry.pGet(0));
+//        i8 nRows = pCrwBuffer->nRowCount();
+//
+//        for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+//
+//          Row* pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
+//
+//          if ( ! pRow ) {
+//            vPipeOut(m_pIrwBuffer);
+//            m_pIrwBuffer = new IrwBuffer;
+//            pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
+//          }
+//
+//          // get compact row
+//          Crw* aCrw = (Crw*)pCrwBuffer->m_oRowTray.pNub()->aGetHead(i_Row);
+//
+//          for (i8 i_IntoCol = 0; i_IntoCol < pColumnVec->nItems(); i_IntoCol++) {
+//            i8 iBaseOffset = RowCoder::iBaseOffset(m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[i_IntoCol]));
+//
+//            RowInflator::vInflateColumn(pRow, i_IntoCol, aCrw, iBaseOffset, m_iWhichCol[i_IntoCol],
+//                                        m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[i_IntoCol]));
+//
+//
+//          }
+//        }
         
         break;
       }
@@ -222,34 +224,35 @@ eOR ProjectOp::eOpLoop(void)
       // -- -- -- -- -- --
         
       case CN_ENTBUFFER: {
-        EntBuffer* pEntBuffer = _pEntBuffer(pOperand) ;
-        ColumnVec* pColumnVec = m_pStreamDef->m_oColVecAry.pGet(0);
-        
-        RASSERT(m_pOriginalStreamDef->m_oColVecAry.nItems() == 1);
-        
-        Ent* aEnt = pEntBuffer->aLeadEntry();
-        while (aEnt) {
-          Row* pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
-          
-          if ( ! pRow ) {
-            vPipeOut(m_pIrwBuffer);
-            m_pIrwBuffer = new IrwBuffer;
-            pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
-          }
-          
-          CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(aEnt->xRef());
-          Crw* aRowData = pCrwBuffer->pCrw(aEnt->xRef().iItem());
-          
-          for (i8 i_IntoCol = 0; i_IntoCol < pColumnVec->nItems(); i_IntoCol++) {
-            i8 iBaseOffset = RowCoder::iBaseOffset(m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[i_IntoCol]));
-                                                   
-            RowInflator::vInflateColumn(pRow, i_IntoCol, aRowData, iBaseOffset, m_iWhichCol[i_IntoCol],
-                                        m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[i_IntoCol]));
-            
-          }
-          
-          aEnt = pEntBuffer->aNextEntry(aEnt,0);
-        }
+//  ALKA_TO_REVIEW
+//        EntBuffer* pEntBuffer = _pEntBuffer(pOperand) ;
+//        ColumnVec* pColumnVec = m_pStreamDef->m_oColVecAry.pGet(0);
+//
+//        RASSERT(m_pOriginalStreamDef->m_oColVecAry.nItems() == 1);
+//
+//        Ent* aEnt = pEntBuffer->aLeadEntry();
+//        while (aEnt) {
+//          Row* pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
+//
+//          if ( ! pRow ) {
+//            vPipeOut(m_pIrwBuffer);
+//            m_pIrwBuffer = new IrwBuffer;
+//            pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
+//          }
+//
+//          CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(aEnt->xRef());
+//          Crw* aRowData = pCrwBuffer->pCrw(aEnt->xRef().iItem());
+//
+//          for (i8 i_IntoCol = 0; i_IntoCol < pColumnVec->nItems(); i_IntoCol++) {
+//            i8 iBaseOffset = RowCoder::iBaseOffset(m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[i_IntoCol]));
+//
+//            RowInflator::vInflateColumn(pRow, i_IntoCol, aRowData, iBaseOffset, m_iWhichCol[i_IntoCol],
+//                                        m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[i_IntoCol]));
+//
+//          }
+//
+//          aEnt = pEntBuffer->aNextEntry(aEnt,0);
+//        }
         
         break;
       }
@@ -257,65 +260,67 @@ eOR ProjectOp::eOpLoop(void)
       // -- -- -- -- -- --
         
       case CN_IRWBUFFER: {
-        IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand) ;
-        ColumnVec* pColumnVec = m_pStreamDef->m_oColVecAry.pGet(0);
-        
-        RASSERT(m_pOriginalStreamDef->m_oColVecAry.nItems() == 1);
-        
-        Row* pIrwRow = pIrwBuffer->aFirstRow();
-        while (pIrwRow) {
-          Row* pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
-          
-          if ( ! pRow ) {
-            vPipeOut(m_pIrwBuffer);
-            m_pIrwBuffer = new IrwBuffer;
-            pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
-          }
-          
-          for (i8 i_IntoCol = 0; i_IntoCol < pColumnVec->nItems(); i_IntoCol++) {
-            pRow->vCopy(pIrwRow, m_iWhichCol[i_IntoCol], i_IntoCol);
-          }
-          
-          pIrwRow = pIrwBuffer->aNextRow(pIrwRow);
-        }
-        
-        break;
+//  ALKA_TO_REVIEW
+//        IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand) ;
+//        ColumnVec* pColumnVec = m_pStreamDef->m_oColVecAry.pGet(0);
+//
+//        RASSERT(m_pOriginalStreamDef->m_oColVecAry.nItems() == 1);
+//
+//        Row* pIrwRow = pIrwBuffer->aFirstRow();
+//        while (pIrwRow) {
+//          Row* pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
+//
+//          if ( ! pRow ) {
+//            vPipeOut(m_pIrwBuffer);
+//            m_pIrwBuffer = new IrwBuffer;
+//            pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
+//          }
+//
+//          for (i8 i_IntoCol = 0; i_IntoCol < pColumnVec->nItems(); i_IntoCol++) {
+//            pRow->vCopy(pIrwRow, m_iWhichCol[i_IntoCol], i_IntoCol);
+//          }
+//
+//          pIrwRow = pIrwBuffer->aNextRow(pIrwRow);
+//        }
+//
+//        break;
       }
         
       // -- -- -- -- -- --
         
       case CN_SRTBUFFER: {
-        SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
-        ColumnVec* pColumnVec = m_pStreamDef->m_oColVecAry.pGet(0);
-        
-        SrtSet* aSrtSet = pSrtBuffer->aFirstSrtSet();
-        while (aSrtSet) {
-          Row* pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
-          
-          if ( ! pRow ) {
-            vPipeOut(m_pIrwBuffer);
-            m_pIrwBuffer = new IrwBuffer;
-            pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
-          }
-          
-          for (i8 i_IntoCol = 0; i_IntoCol < pColumnVec->nItems(); i_IntoCol++) {
-            
-            Crw* aRowData = (Crw*)(aSrtSet->iRowRef(m_iWhichVec[i_IntoCol]));
-            
-            if (aRowData) {
-              i8 iBaseOffset = RowCoder::iBaseOffset(m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[i_IntoCol]));
-              
-              RowInflator::vInflateColumn(pRow, i_IntoCol, aRowData, iBaseOffset, m_iWhichCol[i_IntoCol],
-                                          m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[i_IntoCol]));
-            }
-            else
-              pRow->m_waColVal[i_IntoCol] = C_DATUM_NULL;
-          }
-          
-          aSrtSet = pSrtBuffer->aNextSrtSet(aSrtSet);
-        }
-        
-        delete pSrtBuffer;
+//  ALKA_TO_REVIEW
+//        SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
+//        ColumnVec* pColumnVec = m_pStreamDef->m_oColVecAry.pGet(0);
+//
+//        SrtSet* aSrtSet = pSrtBuffer->aFirstSrtSet();
+//        while (aSrtSet) {
+//          Row* pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
+//
+//          if ( ! pRow ) {
+//            vPipeOut(m_pIrwBuffer);
+//            m_pIrwBuffer = new IrwBuffer;
+//            pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
+//          }
+//
+//          for (i8 i_IntoCol = 0; i_IntoCol < pColumnVec->nItems(); i_IntoCol++) {
+//
+//            Crw* aRowData = (Crw*)(aSrtSet->iRowRef(m_iWhichVec[i_IntoCol]));
+//
+//            if (aRowData) {
+//              i8 iBaseOffset = RowCoder::iBaseOffset(m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[i_IntoCol]));
+//
+//              RowInflator::vInflateColumn(pRow, i_IntoCol, aRowData, iBaseOffset, m_iWhichCol[i_IntoCol],
+//                                          m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[i_IntoCol]));
+//            }
+//            else
+//              pRow->m_waColVal[i_IntoCol] = C_DATUM_NULL;
+//          }
+//
+//          aSrtSet = pSrtBuffer->aNextSrtSet(aSrtSet);
+//        }
+//
+//        delete pSrtBuffer;
         break;
       }
       
@@ -408,26 +413,27 @@ L_EXIT:
 /*----------------------------------------------------------------------------*/
 void ProjectOp::vUpdateStreamDef(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PROJECTOP,_FOOTER_);
-  RASSERT(m_pStreamDef->m_oColVecAry.nItems() == 1);
-  ColumnVec* pProjColumnVec = m_pStreamDef->m_oColVecAry.pGet(0);
-  i8 nProjColumns = pProjColumnVec->nItems();
-  
-  // Find the project col in the streamDef's that came in
-  
-  for (i8 i_ProjCol = 0; i_ProjCol < nProjColumns; i_ProjCol++) {
-    
-    // find the project column in the original Stream
-    Column* pProjCol = pProjColumnVec->pGet(i_ProjCol);
-    m_iWhichCol[i_ProjCol] =
-    m_pOriginalStreamDef->iFindColumn(pProjCol->sColumnName().aChar(),m_iWhichVec[i_ProjCol]);
-    
-    // set the column and datum type in the project column
-    ColumnVec* pColumnVec = m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[i_ProjCol]);
-    Column* pCol = pColumnVec->pGet(m_iWhichCol[i_ProjCol]);
-    pProjCol->vColumnType(pCol->eColumnType());
-    pProjCol->vDatumType(pCol->eDatumType());
-  }
+//  ALKA_TO_REVIEW
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_PROJECTOP,_FOOTER_);
+//  RASSERT(m_pStreamDef->m_oColVecAry.nItems() == 1);
+//  ColumnVec* pProjColumnVec = m_pStreamDef->m_oColVecAry.pGet(0);
+//  i8 nProjColumns = pProjColumnVec->nItems();
+//
+//  // Find the project col in the streamDef's that came in
+//
+//  for (i8 i_ProjCol = 0; i_ProjCol < nProjColumns; i_ProjCol++) {
+//
+//    // find the project column in the original Stream
+//    Column* pProjCol = pProjColumnVec->pGet(i_ProjCol);
+//    m_iWhichCol[i_ProjCol] =
+//    m_pOriginalStreamDef->iFindColumn(pProjCol->sColumnName().aChar(),m_iWhichVec[i_ProjCol]);
+//
+//    // set the column and datum type in the project column
+//    ColumnVec* pColumnVec = m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[i_ProjCol]);
+//    Column* pCol = pColumnVec->pGet(m_iWhichCol[i_ProjCol]);
+//    pProjCol->vColumnType(pCol->eColumnType());
+//    pProjCol->vDatumType(pCol->eDatumType());
+//  }
 }
 
 /*----------------------------------------------------------------------------*/

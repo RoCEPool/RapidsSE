@@ -5,6 +5,7 @@
 
 static const i8 C_MAX_COLUMNS    = 150;    // max columns per table
 static const i8 C_MAX_COLUMNVECS = 32;     // max column vectors per streamDef
+static const i8 C_MAX_DEFCOLUMNS = 256;    // max columns in a stream definition
 static const i8 C_MAX_INDEXES    = 1025;   // max indexes per table
 static const i8 C_MAX_KEY        = 256;    // max length of index entry key
 static const i8 C_MAX_NODES      = 128;    // max nodes in a grid
@@ -12,6 +13,7 @@ static const i8 C_MAX_PATH       = 256;    // max length of file path
 static const i8 C_MAX_RECORD     = C_16KB; // max length of record
 static const i8 C_MAX_SESSIONS   = 1024;   // max number of sessions
 static const i8 C_MAX_SLOTS      = 128;    // max slots per node
+static const i8 C_MAX_STREAMDEFS = 16;     // max stream definitions
 static const i8 C_MAX_VCH        = C_4KB;  // max practical length of vch value
 
 // max partitions in a grid

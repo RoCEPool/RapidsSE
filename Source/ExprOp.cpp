@@ -203,66 +203,69 @@ eOR ExprOp::eOpLoop(void)
       // -- -- -- -- -- --
         
       case CN_CRWBUFFER: {
-        CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand) ;
-        ColumnVec* pColumnVec = m_pStreamDef->m_oColVecAry.pGet(0);
         
-        RASSERT(m_pOriginalStreamDef->m_oColVecAry.nItems() == 1);
-        
-        HV_Row hRow(m_pOriginalStreamDef->m_oColVecAry.pGet(0));
-        i8 nRows = pCrwBuffer->nRowCount();
-        
-        for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
-          
-          Row* pNewRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
-          
-          if ( ! pNewRow ) {
-            vPipeOut(m_pIrwBuffer);
-            m_pIrwBuffer = new IrwBuffer;
-            pNewRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
-          }
-          
-          pCrwBuffer->vGetRow(hRow, i_Row);
-          
-          for (i8 i_Col = 0; i_Col < m_pStreamDef->pColumnVec(0)->nItems(); i_Col++) {
-            i8 iRes = m_pCalculator[i_Col]->iEvaluate(hRow);
-            pNewRow->m_waColVal[i_Col].m_iInt = iRes;
-          }
-        }
-        
+// ALKA_TO_REVIEW
+//        CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand) ;
+//        ColumnVec* pColumnVec = m_pStreamDef->m_oColVecAry.pGet(0);
+//
+//        RASSERT(m_pOriginalStreamDef->m_oColVecAry.nItems() == 1);
+//
+//        HV_Row hRow(m_pOriginalStreamDef->m_oColVecAry.pGet(0));
+//        i8 nRows = pCrwBuffer->nRowCount();
+//
+//        for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+//
+//          Row* pNewRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
+//
+//          if ( ! pNewRow ) {
+//            vPipeOut(m_pIrwBuffer);
+//            m_pIrwBuffer = new IrwBuffer;
+//            pNewRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
+//          }
+//
+//          pCrwBuffer->vGetRow(hRow, i_Row);
+//
+//          for (i8 i_Col = 0; i_Col < m_pStreamDef->pColumnVec(0)->nItems(); i_Col++) {
+//            i8 iRes = m_pCalculator[i_Col]->iEvaluate(hRow);
+//            pNewRow->m_waColVal[i_Col].m_iInt = iRes;
+//          }
+//        }
+//
         break;
       }
         
       // -- -- -- -- -- --
         
       case CN_ENTBUFFER: {
-        EntBuffer* pEntBuffer = _pEntBuffer(pOperand) ;
-        ColumnVec* pColumnVec = m_pStreamDef->m_oColVecAry.pGet(0);
-        
-        RASSERT(m_pOriginalStreamDef->m_oColVecAry.nItems() == 1);
-        
-        Ent* aEnt = pEntBuffer->aLeadEntry();
-        while (aEnt) {
-          Row* pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
-          
-          if ( ! pRow ) {
-            vPipeOut(m_pIrwBuffer);
-            m_pIrwBuffer = new IrwBuffer;
-            pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
-          }
-          
-          CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(aEnt->xRef());
-          Crw* aRowData = pCrwBuffer->pCrw(aEnt->xRef().iItem());
-          
-          for (i8 i_IntoCol = 0; i_IntoCol < pColumnVec->nItems(); i_IntoCol++) {
-            i8 iBaseOffset = RowCoder::iBaseOffset(m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[i_IntoCol]));
-                                                   
-            RowInflator::vInflateColumn(pRow, i_IntoCol, aRowData, iBaseOffset, m_iWhichCol[i_IntoCol],
-                                        m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[i_IntoCol]));
-            
-          }
-          
-          aEnt = pEntBuffer->aNextEntry(aEnt,0);
-        }
+// ALKA_TO_REVIEW
+//        EntBuffer* pEntBuffer = _pEntBuffer(pOperand) ;
+//        ColumnVec* pColumnVec = m_pStreamDef->m_oColVecAry.pGet(0);
+//
+//        RASSERT(m_pOriginalStreamDef->m_oColVecAry.nItems() == 1);
+//
+//        Ent* aEnt = pEntBuffer->aLeadEntry();
+//        while (aEnt) {
+//          Row* pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
+//
+//          if ( ! pRow ) {
+//            vPipeOut(m_pIrwBuffer);
+//            m_pIrwBuffer = new IrwBuffer;
+//            pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
+//          }
+//
+//          CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(aEnt->xRef());
+//          Crw* aRowData = pCrwBuffer->pCrw(aEnt->xRef().iItem());
+//
+//          for (i8 i_IntoCol = 0; i_IntoCol < pColumnVec->nItems(); i_IntoCol++) {
+//            i8 iBaseOffset = RowCoder::iBaseOffset(m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[i_IntoCol]));
+//
+//            RowInflator::vInflateColumn(pRow, i_IntoCol, aRowData, iBaseOffset, m_iWhichCol[i_IntoCol],
+//                                        m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[i_IntoCol]));
+//
+//          }
+//
+//          aEnt = pEntBuffer->aNextEntry(aEnt,0);
+//        }
         
         break;
       }
@@ -270,27 +273,28 @@ eOR ExprOp::eOpLoop(void)
       // -- -- -- -- -- --
         
       case CN_IRWBUFFER: {
-        IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand) ;
-        ColumnVec* pColumnVec = m_pStreamDef->m_oColVecAry.pGet(0);
-        
-        RASSERT(m_pOriginalStreamDef->m_oColVecAry.nItems() == 1);
-        
-        Row* pIrwRow = pIrwBuffer->aFirstRow();
-        while (pIrwRow) {
-          Row* pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
-          
-          if ( ! pRow ) {
-            vPipeOut(m_pIrwBuffer);
-            m_pIrwBuffer = new IrwBuffer;
-            pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
-          }
-          
-          for (i8 i_IntoCol = 0; i_IntoCol < pColumnVec->nItems(); i_IntoCol++) {
-            pRow->vCopy(pIrwRow, m_iWhichCol[i_IntoCol], i_IntoCol);
-          }
-          
-          pIrwRow = pIrwBuffer->aNextRow(pIrwRow);
-        }
+// ALKA_TO_REVIEW
+//        IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand) ;
+//        ColumnVec* pColumnVec = m_pStreamDef->m_oColVecAry.pGet(0);
+//
+//        RASSERT(m_pOriginalStreamDef->m_oColVecAry.nItems() == 1);
+//
+//        Row* pIrwRow = pIrwBuffer->aFirstRow();
+//        while (pIrwRow) {
+//          Row* pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
+//
+//          if ( ! pRow ) {
+//            vPipeOut(m_pIrwBuffer);
+//            m_pIrwBuffer = new IrwBuffer;
+//            pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
+//          }
+//
+//          for (i8 i_IntoCol = 0; i_IntoCol < pColumnVec->nItems(); i_IntoCol++) {
+//            pRow->vCopy(pIrwRow, m_iWhichCol[i_IntoCol], i_IntoCol);
+//          }
+//
+//          pIrwRow = pIrwBuffer->aNextRow(pIrwRow);
+//        }
         
         break;
       }
@@ -298,37 +302,38 @@ eOR ExprOp::eOpLoop(void)
       // -- -- -- -- -- --
         
       case CN_SRTBUFFER: {
-        SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
-        ColumnVec* pColumnVec = m_pStreamDef->m_oColVecAry.pGet(0);
-        
-        SrtSet* aSrtSet = pSrtBuffer->aFirstSrtSet();
-        while (aSrtSet) {
-          Row* pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
-          
-          if ( ! pRow ) {
-            vPipeOut(m_pIrwBuffer);
-            m_pIrwBuffer = new IrwBuffer;
-            pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
-          }
-          
-          for (i8 i_IntoCol = 0; i_IntoCol < pColumnVec->nItems(); i_IntoCol++) {
-            
-            Crw* aRowData = (Crw*)(aSrtSet->iRowRef(m_iWhichVec[i_IntoCol]));
-            
-            if (aRowData) {
-              i8 iBaseOffset = RowCoder::iBaseOffset(m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[i_IntoCol]));
-              
-              RowInflator::vInflateColumn(pRow, i_IntoCol, aRowData, iBaseOffset, m_iWhichCol[i_IntoCol],
-                                          m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[i_IntoCol]));
-            }
-            else
-              pRow->m_waColVal[i_IntoCol] = C_DATUM_NULL;
-          }
-          
-          aSrtSet = pSrtBuffer->aNextSrtSet(aSrtSet);
-        }
-        
-        delete pSrtBuffer;
+// ALKA_TO_REVIEW
+//        SrtBuffer* pSrtBuffer = _pSrtBuffer(pOperand);
+//        ColumnVec* pColumnVec = m_pStreamDef->m_oColVecAry.pGet(0);
+//
+//        SrtSet* aSrtSet = pSrtBuffer->aFirstSrtSet();
+//        while (aSrtSet) {
+//          Row* pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
+//
+//          if ( ! pRow ) {
+//            vPipeOut(m_pIrwBuffer);
+//            m_pIrwBuffer = new IrwBuffer;
+//            pRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
+//          }
+//
+//          for (i8 i_IntoCol = 0; i_IntoCol < pColumnVec->nItems(); i_IntoCol++) {
+//
+//            Crw* aRowData = (Crw*)(aSrtSet->iRowRef(m_iWhichVec[i_IntoCol]));
+//
+//            if (aRowData) {
+//              i8 iBaseOffset = RowCoder::iBaseOffset(m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[i_IntoCol]));
+//
+//              RowInflator::vInflateColumn(pRow, i_IntoCol, aRowData, iBaseOffset, m_iWhichCol[i_IntoCol],
+//                                          m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[i_IntoCol]));
+//            }
+//            else
+//              pRow->m_waColVal[i_IntoCol] = C_DATUM_NULL;
+//          }
+//
+//          aSrtSet = pSrtBuffer->aNextSrtSet(aSrtSet);
+//        }
+//
+//        delete pSrtBuffer;
         break;
       }
       
@@ -427,10 +432,11 @@ Column* ExprOp::pCreateColumn(i8 i_ExprCol, Stz* sColumnNm, i8 iStartTkn, i8 iEn
   m_pOriginalStreamDef->iFindColumn(pExprColumn->sColumnName().aChar(),m_iWhichVec[0]);
 
   // set the column and datum type in the expression column
-  ColumnVec* pColumnVec = m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[0]);
-  Column* pCol = pColumnVec->pGet(m_iWhichCol[i_ExprCol]);
-  pExprColumn->vColumnType(pCol->eColumnType());
-  pExprColumn->vDatumType(pCol->eDatumType());
+// ALKA_TO_REVIEW
+//  ColumnVec* pColumnVec = m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[0]);
+//  Column* pCol = pColumnVec->pGet(m_iWhichCol[i_ExprCol]);
+//  pExprColumn->vColumnType(pCol->eColumnType());
+//  pExprColumn->vDatumType(pCol->eDatumType());
   
   return pExprColumn;
 }
@@ -443,49 +449,50 @@ void ExprOp::vUpdateStreamDef(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPROP,_FOOTER_);
   
   // create a columnVec in the stream def
-  m_pStreamDef->m_oColVecAry.vItems(1);
-  ColumnVec* pColVec = m_pStreamDef->pColumnVec(0);
+// ALKA_TO_REVIEW
+//  m_pStreamDef->m_oColVecAry.vItems(1);
+//  ColumnVec* pColVec = m_pStreamDef->pColumnVec(0);
   
-  // decipher the expressions
-  i8 i_ExprCol = 0;
-  i8 iStartTkn = m_iTkn;
-  i8 iEndTkn = C_UNKNOWN;
-  Stz* sName = ""_Stz;
-  while ( ! m_pTknVec->pGet(m_iTkn)->bSame("|"_Stz) ) {
-    
-    if ( m_pTknVec->pGet(m_iTkn)->bSame(","_Stz)) {
-      iEndTkn = m_iTkn - 1;
-      
-      Column* pExprColumn = pCreateColumn(i_ExprCol, sName, iStartTkn, iEndTkn);
-      
-      pColVec->vAdd(pExprColumn);
-      
-      m_pCalculator[i_ExprCol] = new Calculator;
-      bool bResult = m_pCalculator[i_ExprCol]->bCompile(m_pTknVec, m_pOriginalStreamDef, iStartTkn, iEndTkn);
-      RASSERT(bResult);
-      iStartTkn = ++m_iTkn;
-      
-      // move to the next expression column
-      i_ExprCol++;
-    }
-    
-    if ( ! m_pTknVec->pGet(m_iTkn)->bIsName()) {
-      m_iTkn++;
-      continue;
-    }
-    
-    sName = m_pTknVec->pGet(m_iTkn++)->sText();
-  }
-  
-  iEndTkn = m_iTkn - 1;
-  
-  Column* pExprColumn = pCreateColumn(i_ExprCol, sName, iStartTkn, iEndTkn);
-  
-  pColVec->vAdd(pExprColumn);
-  
-  m_pCalculator[i_ExprCol] = new Calculator;
-  bool bResult = m_pCalculator[i_ExprCol]->bCompile(m_pTknVec, m_pOriginalStreamDef, iStartTkn, iEndTkn);
-  RASSERT(bResult);
+//  // decipher the expressions
+//  i8 i_ExprCol = 0;
+//  i8 iStartTkn = m_iTkn;
+//  i8 iEndTkn = C_UNKNOWN;
+//  Stz* sName = ""_Stz;
+//  while ( ! m_pTknVec->pGet(m_iTkn)->bSame("|"_Stz) ) {
+//
+//    if ( m_pTknVec->pGet(m_iTkn)->bSame(","_Stz)) {
+//      iEndTkn = m_iTkn - 1;
+//
+//      Column* pExprColumn = pCreateColumn(i_ExprCol, sName, iStartTkn, iEndTkn);
+//
+//      pColVec->vAdd(pExprColumn);
+//
+//      m_pCalculator[i_ExprCol] = new Calculator;
+//      bool bResult = m_pCalculator[i_ExprCol]->bCompile(m_pTknVec, m_pOriginalStreamDef, iStartTkn, iEndTkn);
+//      RASSERT(bResult);
+//      iStartTkn = ++m_iTkn;
+//
+//      // move to the next expression column
+//      i_ExprCol++;
+//    }
+//
+//    if ( ! m_pTknVec->pGet(m_iTkn)->bIsName()) {
+//      m_iTkn++;
+//      continue;
+//    }
+//
+//    sName = m_pTknVec->pGet(m_iTkn++)->sText();
+//  }
+//
+//  iEndTkn = m_iTkn - 1;
+//
+//  Column* pExprColumn = pCreateColumn(i_ExprCol, sName, iStartTkn, iEndTkn);
+//
+//  pColVec->vAdd(pExprColumn);
+//
+//  m_pCalculator[i_ExprCol] = new Calculator;
+//  bool bResult = m_pCalculator[i_ExprCol]->bCompile(m_pTknVec, m_pOriginalStreamDef, iStartTkn, iEndTkn);
+//  RASSERT(bResult);
 }
 
 /*----------------------------------------------------------------------------*/

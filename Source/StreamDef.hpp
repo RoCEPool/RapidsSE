@@ -12,16 +12,14 @@ namespace MetaData
     s256 m_sPath;   // full name
     i8   m_iStreamId; // unique stream identifier
 
-    ArrayNL_t<ColumnVec,C_MAX_COLUMNVECS> m_oColVecAry;
-
-    bool m_bTemp;   // is this a temporary definition?
-/*
     i8     m_nDefSets;       // eg. 3
-    i8     m_i_Start[16];    // 0, 4, 9
-    Column m_xaColumn[256];  // colTa,ColTb,...colJa,colJb,...colKa,..
-
-    //s32    m_saName[16];     // "T", "J", "K"
-*/
+    i8     m_nDefColumns[C_MAX_STREAMDEFS];
+    i8     m_i_DefStart[C_MAX_STREAMDEFS];    // 0, 4, 9
+    Column m_xaColumn[C_MAX_DEFCOLUMNS];
+    
+    bool m_bTemp;   // is this a temporary definition?
+    
+    //ArrayNL_t<ColumnVec,C_MAX_COLUMNVECS> m_oColVecAry;
   
     // must be last
     Footer m_xFooter;
@@ -35,7 +33,9 @@ namespace MetaData
    ~StreamDef(void) noexcept(false);
     
     void vAdd(StreamDef* pStreamDef);
-    ColumnVec* pColumnVec(i8 iIndex);
+    void vAddColumns(ColumnVec* pColumnVec);
+    void vAddColumns(ColumnVec* pColumnVec, i8 nDefSet);
+
     i8 iFindColumn(char* sColumnNm, i8& iColVec);
     void vToMetadata(Stz* sMetaData);
     

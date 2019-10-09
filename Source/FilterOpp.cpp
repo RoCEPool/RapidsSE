@@ -188,7 +188,11 @@ eOR FilterOp::eOpLoop(void)
         CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
         i8 nRows = pCrwBuffer->nRowCount();
         
-        HV_Row hRow(m_pStreamDef->pColumnVec(0));
+        // create a column vec from each row ref
+        ColumnVec* pColumnVec = new ColumnVec;
+        m_pStreamDef->vAddColumns(pColumnVec);
+        
+        HV_Row hRow(pColumnVec);
         
         for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
 
@@ -197,12 +201,12 @@ eOR FilterOp::eOpLoop(void)
           i8 iRes = m_pCalculator->iEvaluate(hRow);
           
           if (iRes) {
-            Row* pNewRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
+            Row* pNewRow = m_pIrwBuffer->aAllotRow(pColumnVec);
             
             if ( ! pNewRow ) {
               vPipeOut(m_pIrwBuffer);
               m_pIrwBuffer = new IrwBuffer;
-              pNewRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
+              pNewRow = m_pIrwBuffer->aAllotRow(pColumnVec);
             }
             pNewRow->vCopy(hRow);
           }
@@ -216,7 +220,11 @@ eOR FilterOp::eOpLoop(void)
       case CN_ENTBUFFER: {
         EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
         
-        HV_Row hRow(m_pStreamDef->pColumnVec(0));
+        // create a column vec from each row ref
+        ColumnVec* pColumnVec = new ColumnVec;
+        m_pStreamDef->vAddColumns(pColumnVec);
+        
+        HV_Row hRow(pColumnVec);
         
         Ent* aEnt = pEntBuffer->aLeadEntry();
         
@@ -229,12 +237,12 @@ eOR FilterOp::eOpLoop(void)
           i8 iRes = m_pCalculator->iEvaluate(hRow);
           
           if (iRes) {
-            Row* pNewRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
+            Row* pNewRow = m_pIrwBuffer->aAllotRow(pColumnVec);
             
             if ( ! pNewRow ) {
               vPipeOut(m_pIrwBuffer);
               m_pIrwBuffer = new IrwBuffer;
-              pNewRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
+              pNewRow = m_pIrwBuffer->aAllotRow(pColumnVec);
             }
             pNewRow->vCopy(hRow);
           }
@@ -251,16 +259,20 @@ eOR FilterOp::eOpLoop(void)
       case CN_IRWBUFFER: {
         IrwBuffer* pIrwBuffer = _pIrwBuffer(pOperand);
         
+        // create a column vec from each row ref
+        ColumnVec* pColumnVec = new ColumnVec;
+        m_pStreamDef->vAddColumns(pColumnVec);
+        
         Row* pRow = pIrwBuffer->aFirstRow();
         while (pRow) {
           i8 iRes = m_pCalculator->iEvaluate(pRow);
           if (iRes) {
-            Row* pNewRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
+            Row* pNewRow = m_pIrwBuffer->aAllotRow(pColumnVec);
             
             if ( ! pNewRow ) {
               vPipeOut(m_pIrwBuffer);
               m_pIrwBuffer = new IrwBuffer;
-              pNewRow = m_pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
+              pNewRow = m_pIrwBuffer->aAllotRow(pColumnVec);
             }
             pNewRow->vCopy(pRow);
           }

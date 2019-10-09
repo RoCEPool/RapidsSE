@@ -154,7 +154,7 @@ eOR SortOp::eSortLoop(void)
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // call quick sort (recursive call)
-    QuickSort::vQuickSortBuffer(m_pStreamDef->m_oColVecAry.pGet(0), pSrtBuffer, 0, pSrtBuffer->nItems() - 1);
+    QuickSort::vQuickSortBuffer(pSrtBuffer, 0, pSrtBuffer->nItems() - 1);
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // verify that the data is sorted

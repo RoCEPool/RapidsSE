@@ -80,15 +80,15 @@ CountOp::CountOp(OpSpec* pOpSpec, Pipeline* pPipeline)
   m_pStreamDef = new StreamDef;
   
   // create an integer column
-  Column* pColumn = new Column();
-  pColumn->vColumnNo(0);
-  pColumn->vColumnName("count"_Stz);
-  pColumn->vColumnType(CT_INTEGER);
-  pColumn->vDatumType(DM_INT);
+  Column oColumn = m_pStreamDef->m_xaColumn[0];
+  oColumn.vColumnNo(0);
+  oColumn.vColumnName("count"_Stz);
+  oColumn.vColumnType(CT_INTEGER);
+  oColumn.vDatumType(DM_INT);
   
-  m_pStreamDef->m_oColVecAry.vItems(1);
-  ColumnVec* pColVec = m_pStreamDef->pColumnVec(0);
-  pColVec->vAdd(pColumn);
+  m_pStreamDef->m_nDefSets++;
+  m_pStreamDef->m_nDefColumns[0] = 1;
+  m_pStreamDef->m_i_DefStart[0] = 0;
   
   _checkInitialised_(CN_COUNTOP);
 
@@ -165,7 +165,12 @@ eOR CountOp::eOpLoop(void)
       case CN_ENDMARKER:
         if (--m_nLeftEndMarkers == 0) {
           IrwBuffer* pIrwBuffer = new IrwBuffer();
-          Row* pRow = pIrwBuffer->aAllotRow(m_pStreamDef->pColumnVec(0));
+          
+          // get the columnVec defining the rowref
+          ColumnVec* pColumnVec = new ColumnVec;
+          m_pStreamDef->vAddColumns(pColumnVec);
+          
+          Row* pRow = pIrwBuffer->aAllotRow(pColumnVec);
           pRow->m_waColVal[0] = m_nCount;
           
           // pipe out the streamdef
