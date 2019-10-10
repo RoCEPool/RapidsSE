@@ -5,7 +5,7 @@
 " job_ForgetNode.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* syntax for forget node                                                     */
+/* job syntax for forget node                                                 */
 /*----------------------------------------------------------------------------*/
 jobSyntax: forgetNodeEg
 
@@ -13,7 +13,7 @@ jobSyntax: forgetNodeEg
 ;
 
 /*----------------------------------------------------------------------------*/
-/* class definition for forget node                                           */
+/* job info for forget node                                                   */
 /*----------------------------------------------------------------------------*/
 jobInfo: forgetNode
 {

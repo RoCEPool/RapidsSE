@@ -4,8 +4,8 @@
 
 "-jobModel.sen" .verbose
 
-"jobClass.sen"   include
 "jobEnames.sen"  include
+"jobInfo.sen"    include
 "jobSyntax.sen"  include
 "jobWords.sen"   include
 
