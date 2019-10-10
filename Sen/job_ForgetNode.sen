@@ -7,6 +7,15 @@
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+: req_exitHook
+
+  "req_exitHook" .
+
+  r@ locate log::markExit
+
+  <DONE_REQ>
+;
+
 : exe_exitHook
 
   "exe_exitHook" .
@@ -16,6 +25,33 @@
   r@ locate log::markExit
 
   <DONE_EXE>
+;
+
+: beg_exitHook
+
+  "beg_exitHook" .
+
+  r@ locate log::markExit
+
+  <DONE_BEG>
+;
+
+: end_exitHook
+
+  "end_exitHook" .
+
+  r@ locate log::markExit
+
+  <DONE_END>
+;
+
+: can_exitHook
+
+  "can_exitHook" .
+
+  r@ locate log::markExit
+
+  <DONE_CAN>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -40,7 +76,30 @@
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-: _exe_ immediate
+/*----------------------------------------------------------------------------*/
+: _req immediate
+
+  word::this word.name@ "_req" str.cat word::this word.name!
+  "req_exitHook" word::this word.exitHook!
+
+  postpone <SEED_REQ>
+
+  word::this word.name@ ,
+  POSTPONE log::markEntry
+;
+
+: _beg immediate
+
+  word::this word.name@ "_beg" str.cat word::this word.name!
+  "beg_exitHook" word::this word.exitHook!
+
+  postpone <SEED_BEG>
+
+  word::this word.name@ ,
+  POSTPONE log::markEntry
+;
+
+: _exe immediate
 
   word::this word.name@ "_exe" str.cat word::this word.name!
   "exe_exitHook" word::this word.exitHook!
@@ -52,6 +111,27 @@
     POSTPONE log::markEntry
 ;
 
+: _end immediate
+
+  word::this word.name@ "_end" str.cat word::this word.name!
+  "end_exitHook" word::this word.exitHook!
+
+  postpone <SEED_END>
+
+  word::this word.name@ ,
+  POSTPONE log::markEntry
+;
+
+: _can immediate
+
+  word::this word.name@ "_can" str.cat word::this word.name!
+  "can_exitHook" word::this word.exitHook!
+
+  postpone <SEED_END>
+
+  word::this word.name@ ,
+  POSTPONE log::markEntry
+;
 
 
 /*----------------------------------------------------------------------------*/
@@ -102,7 +182,7 @@ jobClass: forgetNode_cls
 /*----------------------------------------------------------------------------*/
 /* request forget node on originating node                                    */
 /*----------------------------------------------------------------------------*/
-: forgetNode_req (  -- <R> )
+: forgetNode _req (  -- <R> )
 
   >>logEntry <SEED_REQ>
 
@@ -128,7 +208,7 @@ jobClass: forgetNode_cls
 /*----------------------------------------------------------------------------*/
 /* execute forget node on each participating node                             */
 /*----------------------------------------------------------------------------*/
-: forgetNode _exe_
+: forgetNode _exe
     <nodeNm> grid::forgetNode
 ;
 
@@ -174,7 +254,7 @@ jobClass: forgetNode_cls
 /*----------------------------------------------------------------------------*/
 /* begin forget node (on each participating node)                             */
 /*----------------------------------------------------------------------------*/
-: forgetNode_beg ( -- )
+: forgetNode _beg ( -- )
 
   >>logEntry <SEED_BEG>
 
@@ -195,7 +275,7 @@ jobClass: forgetNode_cls
 /*----------------------------------------------------------------------------*/
 /* end forget node (on each participating node)                               */
 /*----------------------------------------------------------------------------*/
-: forgetNode_end ( -- )
+: forgetNode _end ( -- )
 
   >>logEntry <SEED_END>
 
@@ -214,7 +294,7 @@ jobClass: forgetNode_cls
 /*----------------------------------------------------------------------------*/
 /* cancel forget node (on each participating node)                            */
 /*----------------------------------------------------------------------------*/
-: forgetNode_can ( -- )
+: forgetNode _can ( -- )
 
   >>logEntry <SEED_CAN>
 
