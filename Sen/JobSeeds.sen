@@ -10,6 +10,10 @@
 : defaultSeed _req ( -- )
   _req_prep_
 
+  [ word::this word.name@ , ] .
+
+  <jobNm> .
+
   _req_post_
 ;
 
@@ -36,6 +40,14 @@
 /*----------------------------------------------------------------------------*/
 : defaultSeed _end ( -- )
   _end_prep_
+
+  <jobNm> .
+
+  <jobNm> "::releaseResources" str.cat find dup if
+    execute
+  else
+    drop
+  then
 
   _end_post_
 ;

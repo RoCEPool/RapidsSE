@@ -10,6 +10,8 @@
 /*----------------------------------------------------------------------------*/
 : forgetNode::checkResources _std ( -- )
 
+  "forgetNode::checkResources" .
+
   ddlLock::grabRead
 
   // check if node is known
@@ -31,11 +33,11 @@
 /*----------------------------------------------------------------------------*/
 /* request forget node                                  (on originating node) */
 /*----------------------------------------------------------------------------*/
-: forgetNode _req ( -- )
-  _req_prep_
-
-  _req_post_
-;
+//: forgetNode _req ( -- )
+//  _req_prep_
+//
+//  _req_post_
+//;
 
 /*----------------------------------------------------------------------------*/
 /* begin forget node                             (on each participating node) */
