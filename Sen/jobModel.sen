@@ -12,6 +12,7 @@
 "jobMark2.sen"   include
 "jobMarkers.sen" include
 
+"jobInfix.sen"   include
 "jobHooks.sen"   include
 "jobSuffix.sen"  include
 
