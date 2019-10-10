@@ -35,6 +35,8 @@
 
   r@ locate log::markExit
 
+  ddlLock::testDrop
+
   <DONE_BEG>
 ;
 
@@ -247,8 +249,8 @@ jobClass: forgetNode_cls
   //----------------------------------------------------------------------------
   // check if we can forget the Node
 
-  <nodeNm> .checkforgetNode not if
-    job::this <ERROR_JOB> !!logError exit
+  <nodeNm> grid::findNode not if
+    EC_NO_SUCH_NODE job::this job.error! !!logError exit
   then
 
   <Resources_Checked>
