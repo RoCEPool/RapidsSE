@@ -31,6 +31,8 @@
 
   "beg_exitHook" .
 
+  job::participantBegun
+
   r@ locate log::markExit
 
   <DONE_BEG>
@@ -40,7 +42,9 @@
 
   "end_exitHook" .
 
-  r@ locate log::markExit
+  job::participantEnded
+
+   r@ locate log::markExit
 
   <DONE_END>
 ;
@@ -49,7 +53,9 @@
 
   "can_exitHook" .
 
-  r@ locate log::markExit
+  job::participantCancelled
+
+   r@ locate log::markExit
 
   <DONE_CAN>
 ;
@@ -82,7 +88,7 @@
   word::this word.name@ "_req" str.cat word::this word.name!
   "req_exitHook" word::this word.exitHook!
 
-  postpone <SEED_REQ>
+  POSTPONE <SEED_REQ>
 
   word::this word.name@ ,
   POSTPONE log::markEntry
@@ -109,11 +115,11 @@
   word::this word.name@ "_exe" str.cat word::this word.name!
   "exe_exitHook" word::this word.exitHook!
 
-  postpone <SEED_EXE>
-  postpone _LOCK_EXE_
-
   word::this word.name@ ,
     POSTPONE log::markEntry
+
+  POSTPONE <SEED_EXE>
+  POSTPONE _LOCK_EXE_
 ;
 
 : _end immediate
@@ -121,10 +127,10 @@
   word::this word.name@ "_end" str.cat word::this word.name!
   "end_exitHook" word::this word.exitHook!
 
-  postpone <SEED_END>
-
   word::this word.name@ ,
-  POSTPONE log::markEntry
+    POSTPONE log::markEntry
+
+  POSTPONE <SEED_END>
 ;
 
 : _can immediate
@@ -132,10 +138,10 @@
   word::this word.name@ "_can" str.cat word::this word.name!
   "can_exitHook" word::this word.exitHook!
 
-  postpone <SEED_END>
-
   word::this word.name@ ,
-  POSTPONE log::markEntry
+    POSTPONE log::markEntry
+
+  POSTPONE <SEED_CAN>
 ;
 
 
@@ -261,13 +267,7 @@ jobClass: forgetNode_cls
 /*----------------------------------------------------------------------------*/
 : forgetNode _beg ( -- )
 
-  // check resources
   job::this .forgetNode.checkResources
-
-  // mark this job has begun
-  job::participantBegun
-
-  <<logExit <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -275,18 +275,7 @@ jobClass: forgetNode_cls
 /*----------------------------------------------------------------------------*/
 : forgetNode _end ( -- )
 
-  >>logEntry <SEED_END>
-
-  job::this locals| pJob_Universal |
-
-  //">> forgetNode_end <<" .
-
-  // release resources
-  pJob_Universal .forgetNode.releaseResources
-
-  job::participantEnded
-
-  <<logExit <DONE_END>
+  job::this .forgetNode.releaseResources
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -294,15 +283,7 @@ jobClass: forgetNode_cls
 /*----------------------------------------------------------------------------*/
 : forgetNode _can ( -- )
 
-  >>logEntry <SEED_CAN>
-
-  job::this locals| pJob_Universal |
-
-  pJob_Universal .forgetNode.releaseResources
-
-  job::participantCancelled
-
-  <<logExit <DONE_CAN>
+  job::this .forgetNode.releaseResources
 ;
 
 /*============================================================================*/
