@@ -199,21 +199,9 @@ jobClass: forgetNode_cls
 
   JP_BEGINNING log::markPhase
 
-  0 0 locals| pJob pTask |
-
-  tp: forgetNode
-
-  // get the task
-  task::this to pTask
-
-  // get the job from the task
-  pTask task.job@ to pJob
-
 
   // distribute the job
-  pJob job.distribute
-
-  <<logExit <DONE_REQ>
+  job::this job.distribute
 ;
 
 /*----------------------------------------------------------------------------*/
