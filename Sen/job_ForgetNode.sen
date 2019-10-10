@@ -107,7 +107,6 @@
 
   // add this job to the participants list
   POSTPONE job::becomeParticipant
-
 ;
 
 : _exe immediate
@@ -200,8 +199,11 @@ jobClass: forgetNode_cls
   JP_BEGINNING log::markPhase
 
 
-  // distribute the job
-  job::this job.distribute
+  // distribute the job as participants
+  job::distribute
+
+  // wait for ack from deciding job__Ended
+  task::wait
 ;
 
 /*----------------------------------------------------------------------------*/
