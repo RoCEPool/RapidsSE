@@ -1,0 +1,74 @@
+/*============================================================================*/
+/* jobHooks.sen -- Job Hooks                                                  */
+/*============================================================================*/
+
+" jobHooks.sen" .verbose
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+: req_exitHook
+
+  "req_exitHook" .
+
+  r@ locate log::markExit
+
+  <DONE_REQ>
+;
+
+: exe_exitHook
+
+  "exe_exitHook" .
+
+  job::this job::participantExecuted
+
+  r@ locate log::markExit
+
+  <DONE_EXE>
+;
+
+: beg_exitHook
+
+  "beg_exitHook" .
+
+  job::participantBegun
+
+  r@ locate log::markExit
+
+  ddlLock::testDrop
+
+  <DONE_BEG>
+;
+
+: end_exitHook
+
+  "end_exitHook" .
+
+  job::participantEnded
+
+   r@ locate log::markExit
+
+  <DONE_END>
+;
+
+: can_exitHook
+
+  "can_exitHook" .
+
+  job::participantCancelled
+
+   r@ locate log::markExit
+
+  <DONE_CAN>
+;
+
+: std_exitHook
+
+  "std_exitHook" .
+
+  r@ locate log::markExit
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -4,14 +4,17 @@
 
 "-jobModel.sen" .verbose
 
-"jobClass.sen" include
-"jobEnames.sen" include
-"jobSyntax.sen" include
-"jobWords.sen" include
-"jobMark2.sen" include
+"jobClass.sen"   include
+"jobEnames.sen"  include
+"jobSyntax.sen"  include
+"jobWords.sen"   include
+
+"jobMark2.sen"   include
 "jobMarkers.sen" include
 
-"job_Set.sen" include
+"jobHooks.sen"   include
+
+"job_Set.sen"    include
 
 /*============================================================================*/
 /* end                                                                        */

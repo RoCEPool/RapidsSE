@@ -5,69 +5,6 @@
 " job_ForgetNode.sen" .verbose
 
 
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-: req_exitHook
-
-  "req_exitHook" .
-
-  r@ locate log::markExit
-
-  <DONE_REQ>
-;
-
-: exe_exitHook
-
-  "exe_exitHook" .
-
-  job::this job::participantExecuted
-
-  r@ locate log::markExit
-
-  <DONE_EXE>
-;
-
-: beg_exitHook
-
-  "beg_exitHook" .
-
-  job::participantBegun
-
-  r@ locate log::markExit
-
-  ddlLock::testDrop
-
-  <DONE_BEG>
-;
-
-: end_exitHook
-
-  "end_exitHook" .
-
-  job::participantEnded
-
-   r@ locate log::markExit
-
-  <DONE_END>
-;
-
-: can_exitHook
-
-  "can_exitHook" .
-
-  job::participantCancelled
-
-   r@ locate log::markExit
-
-  <DONE_CAN>
-;
-
-: std_exitHook
-
-  "std_exitHook" .
-
-  r@ locate log::markExit
-;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -108,7 +45,7 @@
   "beg_exitHook" word::this word.exitHook!
 
   word::this word.name@ ,
-  POSTPONE log::markEntry
+    POSTPONE log::markEntry
 
   POSTPONE <SEED_BEG>
   POSTPONE _PATH_SET_
@@ -192,14 +129,15 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* syntax for forget node                                                     */
 /*----------------------------------------------------------------------------*/
-
 jobSyntax: forgetNode_syn CN_JOB_UNIVERSAL
-        :: forget node <nodeNm> ;
+
+  :: forget node <nodeNm>
+;
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* class definition for forget node                                           */
 /*----------------------------------------------------------------------------*/
 jobClass: forgetNode_cls
 {
@@ -211,7 +149,6 @@ jobClass: forgetNode_cls
 }
 ;
 
-
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -220,36 +157,25 @@ jobClass: forgetNode_cls
 /*----------------------------------------------------------------------------*/
 : forgetNode::checkResources _std ( -- )
 
-  <Check_Resources>
-
-  // grab a ddl lock
   ddlLock::grabRead
 
-  //----------------------------------------------------------------------------
-  // check if we can forget the Node
-
+  // check if node is known
   <nodeNm> grid::findNode not if
-    EC_NO_SUCH_NODE job::this job.error! !!logError exit
+    EC_NO_SUCH_NODE job::this job.error! exit
   then
-
-  <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* release job resources (on each participating node)                         */
 /*----------------------------------------------------------------------------*/
 : forgetNode::releaseResources _std ( -- )
-
-  <Release_Resources>
-
-  <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* request forget node on originating node                                    */
+/* request forget node                                  (on originating node) */
 /*----------------------------------------------------------------------------*/
 : forgetNode _req
   _req_prep_
@@ -258,7 +184,7 @@ jobClass: forgetNode_cls
 ;
 
 /*----------------------------------------------------------------------------*/
-/* begin forget node (on each participating node)                             */
+/* begin forget node                             (on each participating node) */
 /*----------------------------------------------------------------------------*/
 : forgetNode _beg ( -- )
   _beg_prep_
@@ -267,7 +193,7 @@ jobClass: forgetNode_cls
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute forget node on each participating node                             */
+/* execute forget node                           (on each participating node) */
 /*----------------------------------------------------------------------------*/
 : forgetNode _exe
   _exe_prep_
@@ -276,7 +202,7 @@ jobClass: forgetNode_cls
 ;
 
 /*----------------------------------------------------------------------------*/
-/* end forget node (on each participating node)                               */
+/* end forget node                               (on each participating node) */
 /*----------------------------------------------------------------------------*/
 : forgetNode _end ( -- )
   _end_prep_
@@ -285,7 +211,7 @@ jobClass: forgetNode_cls
 ;
 
 /*----------------------------------------------------------------------------*/
-/* cancel forget node (on each participating node)                            */
+/* cancel forget node                            (on each participating node) */
 /*----------------------------------------------------------------------------*/
 : forgetNode _can ( -- )
   _can_prep_
