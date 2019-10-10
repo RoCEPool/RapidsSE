@@ -7,26 +7,26 @@
 /*----------------------------------------------------------------------------*/
 /* parse command                                                              */
 /*----------------------------------------------------------------------------*/
-bool JobHelper::bParseCmd(EnameSet*   pArgEnmSet,
+bool JobHelper::bParseCmd(EnameSet* pArgEnmSet,
                           TokenVec* pTknVec)
 {
   Dic* pRootDic = AM::pRootDic();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Word* pWord_jobsyn = pRootDic->pFindWord("jobSyntax:"_Stz);
+  Word* pCategory = pRootDic->pFindWord("jobSyntax:"_Stz);
   
-  Word* pWord_jobdef = nullptr;
+  Word* pSyntax = nullptr;
   
-  while ( (pWord_jobdef = pRootDic->pEachWord(pWord_jobsyn,pWord_jobdef)) ) {
-    vTrace("  jobSyntax: %s\n"_Stz,pWord_jobdef->sName().aStz());
+  while ( (pSyntax = pRootDic->pEachWord(pCategory,pSyntax)) ) {
+    vTrace("  jobSyntax: %s\n"_Stz,pSyntax->sName().aStz());
     
-    if (JobHelper::bMatchesSyntax(pTknVec,pWord_jobdef->pEnameSet())) {
+    if (JobHelper::bMatchesSyntax(pTknVec,pSyntax->pEnameSet())) {
       vTrace("    matches\n"_Stz);
       
-      pArgEnmSet->vAdd("<jobClass>"_Stz, CN_JOB_UNIVERSAL,TN_INTEGER);
-      s32 sJobName(pWord_jobdef->sName());
-      StrLib::vRemoveSuffix(sJobName.aChar(),'_');
+      pArgEnmSet->vAdd("<jobClass>"_Stz,CN_JOB_UNIVERSAL,TN_INTEGER);
+      s32 sJobName(pSyntax->pEnameSet()->szValue("__Name__"_Stz));
+      //StrLib::vRemoveSuffix(sJobName.aChar(),'_');
       pArgEnmSet->vAdd("<jobNm>"_Stz,sJobName,TN_STRING);
       break;
     }
@@ -34,7 +34,7 @@ bool JobHelper::bParseCmd(EnameSet*   pArgEnmSet,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  bool b = bExtractArgs(pArgEnmSet,pWord_jobdef->pEnameSet(),pTknVec);
+  bool b = bExtractArgs(pArgEnmSet,pSyntax->pEnameSet(),pTknVec);
   if (! b) {
     vTrace("Unable to match job syntax\n"_Stz);
     return EC_INVALID_COMMAND;

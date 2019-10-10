@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* syntax for forget node                                                     */
 /*----------------------------------------------------------------------------*/
-jobSyntax: forgetNode
+jobSyntax: forgetNodeEg
 
   forgetNode :: forget node <nodeNm> ;;
 ;
