@@ -42,6 +42,12 @@
 
   [ word::this word.name@ , ] .
 
+  <jobNm> "::execute" str.cat find dup if
+    execute
+  else
+    drop
+  then
+
   _exe_post_
 ;
 
