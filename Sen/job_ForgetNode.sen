@@ -93,10 +93,15 @@
   word::this word.name@ "_beg" str.cat word::this word.name!
   "beg_exitHook" word::this word.exitHook!
 
-  postpone <SEED_BEG>
-
   word::this word.name@ ,
   POSTPONE log::markEntry
+
+  POSTPONE <SEED_BEG>
+  POSTPONE _PATH_SET_
+
+  // add this job to the participants list
+  POSTPONE job::becomeParticipant
+
 ;
 
 : _exe immediate
@@ -255,13 +260,6 @@ jobClass: forgetNode_cls
 /* begin forget node (on each participating node)                             */
 /*----------------------------------------------------------------------------*/
 : forgetNode _beg ( -- )
-
-  >>logEntry <SEED_BEG>
-
-  _PATH_SET_
-
-  // add this job to the participants list
-  job::becomeParticipant
 
   // check resources
   job::this .forgetNode.checkResources
