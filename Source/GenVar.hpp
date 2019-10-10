@@ -11,7 +11,7 @@ namespace Forth
     struct {
       Header m_xHeader;
       SingleWord   m_wWord;
-      char   m_caStr[C_MAX_VCH];
+      char   m_caStr[C_MAX_VCH2];
     } xNestedValue;
   
     // must be last
