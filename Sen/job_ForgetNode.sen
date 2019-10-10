@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* job_ForgetNode.sen -- Job Create Node                                      */
+/* job_ForgetNode.sen -- Job Forget Node                                      */
 /*============================================================================*/
 
 " job_ForgetNode.sen" .verbose
@@ -53,7 +53,7 @@ jobClass: forgetNode_cls
 /*----------------------------------------------------------------------------*/
 /* request forget node                                  (on originating node) */
 /*----------------------------------------------------------------------------*/
-: forgetNode _req
+: forgetNode _req ( -- )
   _req_prep_
 
   _req_post_
