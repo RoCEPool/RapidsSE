@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* syntax for forget node                                                     */
 /*----------------------------------------------------------------------------*/
-jobSyntax: forgetNode_syn CN_JOB_UNIVERSAL
+jobSyntax: forgetNode
 
   :: forget node <nodeNm>
 ;
