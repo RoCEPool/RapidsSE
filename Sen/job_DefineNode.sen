@@ -213,7 +213,7 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 jobSyntax: defineNode
-  defineNode :: define node <nodeNm> {name:value} ;;
+  defineNode :: define node <nodeNm> {name:value}
 ;
 
 /*----------------------------------------------------------------------------*/

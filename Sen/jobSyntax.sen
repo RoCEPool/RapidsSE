@@ -35,7 +35,7 @@
   // parse each input token till ';', build ename set representing the syntax
   begin
     next-token
-    dup ";;" str.equal not
+    dup ";" str.equal not
     while
       dup str.isMetaToken if
         // dup "%v is a meta token" fmt.print
@@ -53,9 +53,8 @@
       then then
   repeat
 
-  // drop the ";;" from dstack
+  // drop the ";" from dstack
   drop
-  next-token  drop
 
   does>
     // ..to be written

@@ -40,8 +40,8 @@
 /*----------------------------------------------------------------------------*/
 /* job syntax for: forget node                                                */
 /*----------------------------------------------------------------------------*/
-jobSyntax: forgetNodeEg  forgetNode :: forget node <nodeNm> ;; ;
-jobSyntax: forgetNodeEg2 forgetNode :: fgnde <nodeNm> ;; ;
+jobSyntax: forgetNodeEg  forgetNode :: forget node <nodeNm> ;
+jobSyntax: forgetNodeEg2 forgetNode :: fgnde <nodeNm> ;
 
 /*----------------------------------------------------------------------------*/
 /* job info for: forget node                                                  */
