@@ -20,7 +20,12 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-   "__job__" "CN_JOB_UNIVERSAL"
+  "__job__" "CN_JOB_UNIVERSAL"
+    word::this word.EnameSet@ EnameSet.addStr
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  "__name__" next-token
     word::this word.EnameSet@ EnameSet.addStr
 
   // skip the :: token from input source
@@ -30,7 +35,7 @@
   // parse each input token till ';', build ename set representing the syntax
   begin
     next-token
-    dup ";" str.equal not
+    dup ";;" str.equal not
     while
       dup str.isMetaToken if
         // dup "%v is a meta token" fmt.print
@@ -48,9 +53,9 @@
       then then
   repeat
 
-  // drop the ";" from dstack
+  // drop the ";;" from dstack
   drop
-
+  next-token  drop
 
   does>
     // ..to be written

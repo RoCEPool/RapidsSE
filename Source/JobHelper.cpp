@@ -69,6 +69,11 @@ bool JobHelper::bExtractArgs(EnameSet*   pArgEnmSet,
       continue;
     }
     
+    if (pSynEnmSet->szName(i_Syn)->bSame("__name__"_Stz)) {
+      i_Syn++;
+      continue;
+    }
+    
     if (pSynEnmSet->szName(i_Syn)->bSame("__meta__"_Stz)) {
       if (! bExtractMeta(pArgEnmSet,pSynEnmSet,i_Syn,pTknVec,i_Tkn))
         return false;
@@ -175,6 +180,11 @@ bool JobHelper::bMatchesSyntax(TokenVec* pTknVec, EnameSet* pSynEnmSet)
     Token* pTkn = pTknVec->pGet(i_Tkn);
     
     if (pSynEnmSet->szName(i_Syn)->bEqual("__job__"_Stz)) {
+      i_Syn++;
+      continue;
+    }
+    
+    if (pSynEnmSet->szName(i_Syn)->bEqual("__name__"_Stz)) {
       i_Syn++;
       continue;
     }
