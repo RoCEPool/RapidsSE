@@ -23,8 +23,10 @@
 /*----------------------------------------------------------------------------*/
 /* release job resources (on each participating node)                         */
 /*----------------------------------------------------------------------------*/
-: forgetNode::releaseResources _std ( -- )
-;
+//: forgetNode::releaseResources _std ( -- )
+//
+//  "forgetNode::releaseResources" .
+//;
 
 /*----------------------------------------------------------------------------*/
 /***                           - Job Seeds -                                ***/
@@ -42,11 +44,11 @@
 /*----------------------------------------------------------------------------*/
 /* begin forget node                             (on each participating node) */
 /*----------------------------------------------------------------------------*/
-: forgetNode _beg ( -- )
-  _beg_prep_
-    forgetNode::checkResources
-  _beg_post_
-;
+//: forgetNode _beg ( -- )
+//  _beg_prep_
+//    forgetNode::checkResources
+//  _beg_post_
+//;
 
 /*----------------------------------------------------------------------------*/
 /* execute forget node                           (on each participating node) */
@@ -60,20 +62,20 @@
 /*----------------------------------------------------------------------------*/
 /* end forget node                               (on each participating node) */
 /*----------------------------------------------------------------------------*/
-: forgetNode _end ( -- )
-  _end_prep_
-    forgetNode::releaseResources
-  _end_post_
-;
+//: forgetNode _end ( -- )
+//  _end_prep_
+//    forgetNode::releaseResources
+//  _end_post_
+//;
 
 /*----------------------------------------------------------------------------*/
 /* cancel forget node                            (on each participating node) */
 /*----------------------------------------------------------------------------*/
-: forgetNode _can ( -- )
-  _can_prep_
-    forgetNode::releaseResources
-  _can_post_
-;
+//: forgetNode _can ( -- )
+//  _can_prep_
+//    forgetNode::releaseResources
+//  _can_post_
+//;
 
 /*----------------------------------------------------------------------------*/
 /***                          - Job Definition -                            ***/

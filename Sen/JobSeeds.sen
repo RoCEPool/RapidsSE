@@ -23,6 +23,14 @@
 : defaultSeed _beg ( -- )
   _beg_prep_
 
+  [ word::this word.name@ , ] .
+
+  <jobNm> "::checkResources" str.cat find dup if
+    execute
+  else
+    drop
+  then
+
   _beg_post_
 ;
 
@@ -31,6 +39,8 @@
 /*----------------------------------------------------------------------------*/
 : defaultSeed _exe
   _exe_prep_
+
+  [ word::this word.name@ , ] .
 
   _exe_post_
 ;
@@ -41,7 +51,7 @@
 : defaultSeed _end ( -- )
   _end_prep_
 
-  <jobNm> .
+  [ word::this word.name@ , ] .
 
   <jobNm> "::releaseResources" str.cat find dup if
     execute
@@ -57,6 +67,14 @@
 /*----------------------------------------------------------------------------*/
 : defaultSeed _can ( -- )
   _can_prep_
+
+  [ word::this word.name@ , ] .
+
+  <jobNm> "::releaseResources" str.cat find dup if
+    execute
+  else
+    drop
+  then
 
   _can_post_
 ;
