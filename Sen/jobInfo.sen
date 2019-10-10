@@ -10,6 +10,16 @@
     find if true else false then
 ;
 
+: seedCheck params| sSuffix sSeedNm |
+
+  word::this word.EnameSet@ locals| pEnameSet |
+
+  sSeedNm
+    sSuffix seedExists? if word::name_trunc else "defaultSeed" then
+      sSuffix str.cat
+    pEnameSet EnameSet.addStr
+;
+
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
@@ -20,19 +30,15 @@
      "jobPriority" "PY_NORMAL" pEnameSet EnameSet.addStr
   then
 
-  "_req" seedExists? if
-    "SeedReq" word::name_trunc "_req" str.cat pEnameSet EnameSet.addStr
-  else
-    "SeedReq" "defaultSeed_req" pEnameSet EnameSet.addStr
-  then
+  "SeedReq" "_req" seedCheck
 
-  "SeedRcv" word::name_trunc "_beg" str.cat pEnameSet EnameSet.addStr
+  "SeedRcv" "_beg" seedCheck
 
-  "SeedExe" word::name_trunc "_exe" str.cat pEnameSet EnameSet.addStr
+  "SeedExe" "_exe" seedCheck
 
-  "SeedEnd" word::name_trunc "_end" str.cat pEnameSet EnameSet.addStr
+  "SeedEnd" "_end" seedCheck
 
-  "SeedCan" word::name_trunc "_can" str.cat pEnameSet EnameSet.addStr
+  "SeedCan" "_can" seedCheck
 
   pEnameSet EnameSet.asStr .
 ;
