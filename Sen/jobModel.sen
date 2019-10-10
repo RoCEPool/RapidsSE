@@ -16,6 +16,7 @@
 "jobHooks.sen"   include
 "jobSuffix.sen"  include
 
+"jobSeeds.sen"   include
 "job_Set.sen"    include
 
 /*============================================================================*/
