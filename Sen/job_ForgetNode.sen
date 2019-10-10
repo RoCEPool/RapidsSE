@@ -237,9 +237,9 @@ jobClass: forgetNode_cls
 /*----------------------------------------------------------------------------*/
 /* check job resources (on each participating node)                           */
 /*----------------------------------------------------------------------------*/
-: .forgetNode.checkResources _std ( -- )
+: forgetNode::checkResources _std ( -- )
 
-  >>logEntry <Check_Resources>
+  <Check_Resources>
 
   // grab a ddl lock
   ddlLock::grabRead
@@ -248,20 +248,20 @@ jobClass: forgetNode_cls
   // check if we can forget the Node
 
   <nodeNm> .checkforgetNode not if
-  job::this <ERROR_JOB> !!logError exit
+    job::this <ERROR_JOB> !!logError exit
   then
 
-  <<logExit <Resources_Checked>
+  <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* release job resources (on each participating node)                         */
 /*----------------------------------------------------------------------------*/
-: .forgetNode.releaseResources _std ( -- )
+: forgetNode::releaseResources _std ( -- )
 
-  >>logEntry <Release_Resources>
+  <Release_Resources>
 
-  <<logExit <Resources_Released>
+  <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -281,7 +281,7 @@ jobClass: forgetNode_cls
 /*----------------------------------------------------------------------------*/
 : forgetNode _beg ( -- )
   _beg_prep_
-    .forgetNode.checkResources
+    forgetNode::checkResources
   _beg_post_
 ;
 
@@ -299,7 +299,7 @@ jobClass: forgetNode_cls
 /*----------------------------------------------------------------------------*/
 : forgetNode _end ( -- )
   _end_prep_
-    .forgetNode.releaseResources
+    forgetNode::releaseResources
   _end_post_
 ;
 
@@ -308,7 +308,7 @@ jobClass: forgetNode_cls
 /*----------------------------------------------------------------------------*/
 : forgetNode _can ( -- )
   _can_prep_
-    .forgetNode.releaseResources
+    forgetNode::releaseResources
   _can_post_
 ;
 
