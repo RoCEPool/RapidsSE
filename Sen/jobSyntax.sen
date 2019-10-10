@@ -10,7 +10,9 @@
 : jobSyntax:
 
   // create a word using next token from input source as the word name
-  next-token "_syn" str.cat >create
+  next-token locals| sJobNm |
+
+  sJobNm "_syn" str.cat >create
 
   // set the word category to be jobSyntax
   [ word::this , ] word::this word.category!
@@ -20,7 +22,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  "__name__" next-token
+  "__name__" sJobNm
     word::this word.EnameSet@ EnameSet.addStr
 
   // skip the :: token from input source
