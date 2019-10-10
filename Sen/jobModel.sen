@@ -13,6 +13,7 @@
 "jobMarkers.sen" include
 
 "jobHooks.sen"   include
+"jobSuffix.sen"  include
 
 "job_Set.sen"    include
 
