@@ -60,6 +60,13 @@
   <DONE_CAN>
 ;
 
+: std_exitHook
+
+  "std_exitHook" .
+
+  r@ locate log::markExit
+;
+
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 : _LOCK_EXE_
@@ -80,7 +87,6 @@
   job::this job.pushPath task::dicStack.set
 ;
 
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 : _req immediate
@@ -142,6 +148,17 @@
 
   POSTPONE <SEED_CAN>
 ;
+
+: _std immediate
+
+  "std_exitHook" word::this word.exitHook!
+
+  word::this word.name@ ,
+  POSTPONE log::markEntry
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 : _req_prep_
 ;
@@ -218,32 +235,11 @@ jobClass: forgetNode_cls
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* request forget node on originating node                                    */
-/*----------------------------------------------------------------------------*/
-: forgetNode _req
-  _req_prep_
-  _req_post_
-;
-
-/*----------------------------------------------------------------------------*/
-/* execute forget node on each participating node                             */
-/*----------------------------------------------------------------------------*/
-: forgetNode _exe
-  _exe_prep_
-  <nodeNm> grid::forgetNode
-  _exe_post_
-;
-
-/*----------------------------------------------------------------------------*/
 /* check job resources (on each participating node)                           */
 /*----------------------------------------------------------------------------*/
-: .forgetNode.checkResources ( pJob_Universal -- )
+: .forgetNode.checkResources _std ( -- )
 
   >>logEntry <Check_Resources>
-
-  params| pJob_Universal  |
-
-  //----------------------------------------------------------------------------
 
   // grab a ddl lock
   ddlLock::grabRead
@@ -252,7 +248,7 @@ jobClass: forgetNode_cls
   // check if we can forget the Node
 
   <nodeNm> .checkforgetNode not if
-    pJob_Universal <ERROR_JOB> !!logError exit
+  job::this <ERROR_JOB> !!logError exit
   then
 
   <<logExit <Resources_Checked>
@@ -261,16 +257,23 @@ jobClass: forgetNode_cls
 /*----------------------------------------------------------------------------*/
 /* release job resources (on each participating node)                         */
 /*----------------------------------------------------------------------------*/
-: .forgetNode.releaseResources ( pJob_Universal -- )
+: .forgetNode.releaseResources _std ( -- )
 
   >>logEntry <Release_Resources>
 
-  params| pJob_Universal  |
-
-  tp: forgetNode.releaseResources
-  //"releaseResources received" .
-
   <<logExit <Resources_Released>
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* request forget node on originating node                                    */
+/*----------------------------------------------------------------------------*/
+: forgetNode _req
+  _req_prep_
+
+  _req_post_
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -278,8 +281,17 @@ jobClass: forgetNode_cls
 /*----------------------------------------------------------------------------*/
 : forgetNode _beg ( -- )
   _beg_prep_
-  job::this .forgetNode.checkResources
+    .forgetNode.checkResources
   _beg_post_
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute forget node on each participating node                             */
+/*----------------------------------------------------------------------------*/
+: forgetNode _exe
+  _exe_prep_
+    <nodeNm> grid::forgetNode
+  _exe_post_
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -287,7 +299,7 @@ jobClass: forgetNode_cls
 /*----------------------------------------------------------------------------*/
 : forgetNode _end ( -- )
   _end_prep_
-  job::this .forgetNode.releaseResources
+    .forgetNode.releaseResources
   _end_post_
 ;
 
@@ -296,7 +308,7 @@ jobClass: forgetNode_cls
 /*----------------------------------------------------------------------------*/
 : forgetNode _can ( -- )
   _can_prep_
-  job::this .forgetNode.releaseResources
+    .forgetNode.releaseResources
   _can_post_
 ;
 
