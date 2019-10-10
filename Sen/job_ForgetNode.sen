@@ -15,7 +15,7 @@ jobSyntax: forgetNode_syn CN_JOB_UNIVERSAL
 /*----------------------------------------------------------------------------*/
 /* class definition for forget node                                           */
 /*----------------------------------------------------------------------------*/
-jobClass: forgetNode_cls
+jobClass: forgetNode
 {
   jobKind      = JK_DIST2PC
   responseKind = RS_NODE_ZERO
