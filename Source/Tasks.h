@@ -15,7 +15,6 @@ namespace Tasks
 //------------------------------------------------------------------------------
 
 #include "Error.hpp"
-#include "RegSet.hpp"
 #include "Sleep.hpp"
 #include "Task.hpp"
 #include "TaskMacros.hpp"
