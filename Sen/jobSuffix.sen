@@ -26,7 +26,7 @@
     POSTPONE log::markEntry
 
   POSTPONE <SEED_BEG>
-  POSTPONE _PATH_SET_
+  POSTPONE _path_set_
 
   // add this job to the participants list
   POSTPONE job::becomeParticipant
@@ -41,7 +41,7 @@
     POSTPONE log::markEntry
 
   POSTPONE <SEED_EXE>
-  POSTPONE _LOCK_EXE_
+  POSTPONE _lock_exe_
 ;
 
 : _end immediate
