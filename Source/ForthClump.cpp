@@ -11,7 +11,7 @@ ForthClump* SenVM::_pForthClump(void* aAddr)
 {
   ForthClump* pForthClump = reinterpret_cast<ForthClump*>(aAddr);
   
-  RASSERT_TYPE(pForthClump,CN_FORTHCLUMP);
+  RASSERT_TYPE(pForthClump,CN_FORTH);
   
   return pForthClump;
 }
@@ -21,7 +21,7 @@ ForthClump* SenVM::_pForthClump(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* ForthClump::operator new(size_t)
 {
-  ForthClump* pForthClump = (ForthClump*)(HeapMem::pAllocate(CN_FORTHCLUMP));
+  ForthClump* pForthClump = (ForthClump*)(HeapMem::pAllocate(CN_FORTH));
   
   return pForthClump;
 }
@@ -40,9 +40,9 @@ void ForthClump::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ForthClump::ForthClump(Task* pTask)
-: Object(CN_FORTHCLUMP)
+: Object(CN_FORTH)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORTHCLUMP,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
   
   m_pTask        = pTask;
   
@@ -51,9 +51,9 @@ ForthClump::ForthClump(Task* pTask)
   m_pReturnStack = nullptr;
   m_pAuxStack    = nullptr;
   
- _checkInitialised_(CN_FORTHCLUMP);
+ _checkInitialised_(CN_FORTH);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_FORTHCLUMP,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -61,7 +61,7 @@ ForthClump::ForthClump(Task* pTask)
 /*----------------------------------------------------------------------------*/
 ForthClump::~ForthClump(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FORTHCLUMP,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

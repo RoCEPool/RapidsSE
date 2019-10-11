@@ -108,7 +108,7 @@ pDUMPFUN *gpDump[]
   /* 31 */ &Dump::vDummy,           // CN_FILTER_WHERE
   /* 31 */ &Dump::vDummy,           // CN_FILTER_ZED
   /* 31 */ &Dump::vDummy,           // CN_FOCALOBJECTS
-  /* 31 */ &Dump::vDummy,           // CN_FORTHCLUMP
+  /* 31 */ &Dump::vDummy,           // CN_FORTH
   /* 40 */ &Dump::vDummy,           // CN_FORMATTERS
   /* 41 */ &Dump::vDummy,           // CN_FREEBUFFER
   /* 42 */ &Dump::vDummy,           // CN_FREECHUNK
@@ -529,7 +529,7 @@ i8 giClassSize[]
   /*    */ sizeof(Filter_Where),       // CN_FILTER_WHERE
   /*    */ sizeof(Filter_Zed),         // CN_FILTER_ZED
   /*    */ sizeof(FocalObjects),       // CN_FOCALOBJECTS
-  /*    */ sizeof(ForthClump),         // CN_FORTHCLUMP
+  /*    */ sizeof(ForthClump),         // CN_FORTH
   /* 40 */ sizeof(Formatters),         // CN_FORMATTERS
   /* 41 */ sizeof(PoolBuffer),         // CN_FREEBUFFER
   /* 42 */ sizeof(FreeChunk),          // CN_FREECHUNK
@@ -948,7 +948,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_WHERE
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_FILTER_ZED
   /* 40 */ HT_TRANSIENT_LARGE,   // CN_FOCALOBJECTS
-  /* 40 */ HT_TRANSIENT_SMALL,   // CN_FORTHCLUMP
+  /* 40 */ HT_TRANSIENT_SMALL,   // CN_FORTH
   /* 40 */ HT_TRANSIENT_SMALL,   // CN_FORMATTERS
   /* 41 */ HT_INVALID,           // CN_FREEBUFFER
   /* 42 */ HT_INVALID,           // CN_FREECHUNK
