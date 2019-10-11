@@ -282,13 +282,13 @@ void Step::vDstackRoll(MP_Task mpTask)
     if ( ! mpTask->m_pDataStack->bPop(xValX) )
       THROW_INVALID_DSTACK("roll"_Stz);
     
-    mpTask->m_pReturnStack->vPushGenVar(xValX);
+    mpTask->m_pForth->m_pReturnStack->vPushGenVar(xValX);
   }
   
   mpTask->m_pDataStack->vPushGenVar(xValA);
   
   for (i8 iCount = 0; iCount < nValues; iCount++) {
-    if ( ! mpTask->m_pReturnStack->bPop(xValX) )
+    if ( ! mpTask->m_pForth->m_pReturnStack->bPop(xValX) )
       THROW_INVALID_DSTACK("roll"_Stz);
     
     mpTask->m_pDataStack->vPushGenVar(xValX);
@@ -315,7 +315,7 @@ void Step::vDstackRollInv(MP_Task mpTask)
     if ( ! mpTask->m_pDataStack->bPop(xValX) )
       THROW_INVALID_DSTACK("-roll"_Stz);
     
-    mpTask->m_pReturnStack->vPushGenVar(xValX);
+    mpTask->m_pForth->m_pReturnStack->vPushGenVar(xValX);
   }
   
   if ( ! mpTask->m_pDataStack->bPop(xValZ) )
@@ -323,7 +323,7 @@ void Step::vDstackRollInv(MP_Task mpTask)
   
   
   for (i8 iCount = 0; iCount < nValues; iCount++) {
-    if ( ! mpTask->m_pReturnStack->bPop(xValX) )
+    if ( ! mpTask->m_pForth->m_pReturnStack->bPop(xValX) )
       THROW_INVALID_DSTACK("-roll"_Stz);
     
     mpTask->m_pDataStack->vPushGenVar(xValX);

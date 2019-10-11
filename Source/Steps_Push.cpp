@@ -22,7 +22,7 @@ void Step::vPushI(MP_Task mpTask)
 {
   ENTRY("vPushI"_Stz);
   
-  ForthValue* aLoopIndex_I = mpTask->m_pReturnStack->aPeekValue();
+  ForthValue* aLoopIndex_I = mpTask->m_pForth->m_pReturnStack->aPeekValue();
   
   mpTask->m_pDataStack->vPushValue(aLoopIndex_I);
   
@@ -36,7 +36,7 @@ void Step::vPushJ(MP_Task mpTask)
 {
   ENTRY("vPushJ"_Stz);
   
-  ForthValue* aLoopIndex_J = mpTask->m_pReturnStack->aPeekValue(3);
+  ForthValue* aLoopIndex_J = mpTask->m_pForth->m_pReturnStack->aPeekValue(3);
   
   mpTask->m_pDataStack->vPushValue(aLoopIndex_J);
   

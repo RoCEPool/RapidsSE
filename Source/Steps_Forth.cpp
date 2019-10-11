@@ -324,18 +324,18 @@ void Step::vExit_RT(MP_Task mpTask)
 {
   ENTRY("vExit_RT"_Stz);
   
-  //vTrace("Exit: return stack %lld\n"_Stz, mpTask->m_pReturnStack->iValues());
+  //vTrace("Exit: r eturn stack %lld\n"_Stz, mpTask->m_pForth->m_pReturnStack->iValues());
   
   if ( (mpTask->m_iTracing & C_TRACE_ROUTINES) )
     mpTask->vTracePoint("<"_Stz);
   
   if (mpTask->m_pForth->m_pLocalsFrame
       && mpTask->m_pForth->m_pLocalsFrame->aDiscardPoint() ==
-      mpTask->m_pReturnStack->aPeekValue())
+      mpTask->m_pForth->m_pReturnStack->aPeekValue())
     mpTask->vLocalsPop();
   
   Cell* aCell;
-  if ( ! mpTask->m_pReturnStack->bPop(aCell) )
+  if ( ! mpTask->m_pForth->m_pReturnStack->bPop(aCell) )
     THROW_INVALID_RSTACK("exit_rt"_Stz);
   
   mpTask->m_aFipCell = aCell;

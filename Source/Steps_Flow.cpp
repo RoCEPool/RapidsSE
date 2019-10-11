@@ -51,14 +51,14 @@ void Step::vFlowExecute(MP_Task mpTask)
     (fpStepFp)(mpTask);
   }
   else if (WK_OBJECT == pWord->eKind()) {
-    mpTask->m_pReturnStack->vPushCell(mpTask->m_aFipCell);
+    mpTask->m_pForth->m_pReturnStack->vPushCell(mpTask->m_aFipCell);
     mpTask->m_aFipCell = pWord->aEntryCell();
     
     Object* pObject = (Object*)pWord->aFirstCell();
     mpTask->m_pDataStack->vPushPointer(pObject);
   }
   else if (WK_ROUTINE == pWord->eKind()){
-    mpTask->m_pReturnStack->vPushCell(mpTask->m_aFipCell);
+    mpTask->m_pForth->m_pReturnStack->vPushCell(mpTask->m_aFipCell);
     mpTask->m_aFipCell = pWord->aEntryCell();
   }
   else {
@@ -192,7 +192,7 @@ void Step::vFlowRetryPoint(MP_Task mpTask)
   
   mpTask->m_pDataStack->vRetryPoint();
   
-  mpTask->m_pReturnStack->vRetryPoint();
+  mpTask->m_pForth->m_pReturnStack->vRetryPoint();
   
   EXIT();
 }

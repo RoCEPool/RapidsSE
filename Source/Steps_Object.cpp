@@ -87,7 +87,7 @@ void Step::vObjectFetch(MP_Task mpTask)
   
   GenVar xObjectVar;
   
-  mpTask->m_pReturnStack->vPeekValue(iPick,xObjectVar);
+  mpTask->m_pForth->m_pReturnStack->vPeekValue(iPick,xObjectVar);
   
   mpTask->m_pDataStack->vPushGenVar(xObjectVar);
   
@@ -124,7 +124,7 @@ void Step::vObjectStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(xObjectVar) )
     THROW_INVALID_DSTACK("object!"_Stz);
   
-  mpTask->m_pReturnStack->vPokeGenVar(iPeek,xObjectVar);
+  mpTask->m_pForth->m_pReturnStack->vPokeGenVar(iPeek,xObjectVar);
   
   EXIT();
 }

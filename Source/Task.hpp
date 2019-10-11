@@ -56,7 +56,6 @@ namespace Tasks
 
     Forth*    m_pForth;       // forth implementation
     Stack*    m_pDataStack;   // data stack
-    Stack*    m_pReturnStack; // return stack
   
     // exception
     s256  m_sFile;

@@ -158,7 +158,6 @@ void Task::vInit(void)
   
   m_pForth       = nullptr;
   m_pDataStack   = nullptr;
-  m_pReturnStack = nullptr;
   
   m_pCompiler    = nullptr;
   m_pSendNode    = nullptr;
@@ -177,7 +176,6 @@ Task::~Task(void) noexcept(false)
   RASSERT(! bWordBody());
 
   delete m_pDataStack;
-  delete m_pReturnStack;
   delete m_pForth;
 
   delete m_pCompiler;
@@ -631,7 +629,6 @@ void Task::vNewStacks(void)
   m_pForth       = new Forth(this);
   
   m_pDataStack   = new Stack;
-  m_pReturnStack = new Stack;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -764,7 +761,7 @@ void Task::vRetry(void)
   m_pCompiler->m_pTokeniser->sToken() = ""_Stz;
   
   m_pDataStack->vRetry();
-  m_pReturnStack->vRetry();
+  m_pForth->m_pReturnStack->vRetry();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1015,7 +1012,7 @@ void Task::vTracePoint(Stz* aMark)
   
   i8 iAuxValues    = m_pForth->m_pAuxStack->nValues();
   i8 iDataValues   = m_pDataStack->nValues();
-  i8 iReturnValues = m_pReturnStack->nValues();
+  i8 iReturnValues = m_pForth->m_pReturnStack->nValues();
   
   vTrace("[%s(N%d):%8s\\%lld %-11s] %-16s : a%2lld="_Stz,
         
@@ -1056,8 +1053,8 @@ void Task::vTraceStep(Stz* aStepNm)
   else
     sRoutine = "<unknown>"_Stz;
   
-  i8 iDataValues  = m_pDataStack->nValues();
-  i8 iReturnValues = m_pReturnStack->nValues();
+  i8 iDataValues   = m_pDataStack->nValues();
+  i8 iReturnValues = m_pForth->m_pReturnStack->nValues();
   vTrace("%-15s %15s : r%lld ; d%2d="_Stz,
          sRoutine.aChar(),
          aStepNm,
