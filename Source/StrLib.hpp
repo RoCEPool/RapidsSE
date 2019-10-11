@@ -168,6 +168,7 @@ namespace Strings
                                bool bSawEnclosedBy_Leading,
                                char cEnclosedBy_Trailing);
     static void  vSkipWhite(char** ps);
+    static void  vSplit_si(char* azStr, char* azInt, char* sSrc);
     static void  vSprint(Stz* sDst, Stz* sFormat, ...);
     static void  vSprint(char* sDst, Stz* sFormat, ...);
     static void  vSprint(char* sDst, va_list args, const char* sFormat);

@@ -2709,6 +2709,27 @@ void StrLib::vSkipWhite(char** ps)
 }
 
 /*----------------------------------------------------------------------------*/
+/* vSplit_si: split src into string and integer components                    */
+/*----------------------------------------------------------------------------*/
+void StrLib::vSplit_si(char* azStr, char* azInt, char* azSrc)
+{
+  *azStr = '\0';
+  *azInt = '\0';
+  
+  char* aSrc = azSrc;
+  char* aStr = azStr;
+  char* aInt = azInt;
+  
+  while (*aSrc && ! isdigit(*aSrc))
+    *aStr++ = *aSrc++;
+  *aStr = '\0';
+  
+  while (*aSrc && isdigit(*aSrc))
+    *aInt++ = *aSrc++;
+  *aInt = '\0';
+}
+
+/*----------------------------------------------------------------------------*/
 /* vSprint: formatted sprint                                                  */
 /*----------------------------------------------------------------------------*/
 void StrLib::vSprint(char* sDst, Stz* aFormat, ...)
