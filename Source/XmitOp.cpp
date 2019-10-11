@@ -139,14 +139,11 @@ eOR XmitOp::eXmitLoop(void)
       EndMarker* pEndMarker = _pEndMarker(pOperand);
       //delete pEndMarker;
       pEndMarker->m_iTotalOperands = iOperands;
-      AM::vSendJobOperand(m_pPipeline->m_pSession,
-                       m_pTask,
-                       pOperand,
-                        m_pPipeline->m_pJob,
-                        this,
-                        m_iXmitNode);
-      
-      
+      AM::vSendJobOperand(m_pTask,
+                          pOperand,
+                          m_pPipeline->m_pJob,
+                          this,
+                          m_iXmitNode);
       
       break;
     }
@@ -154,8 +151,7 @@ eOR XmitOp::eXmitLoop(void)
     if (CN_STREAMDEF == pOperand->eClass()) {
       m_pStreamDef = new StreamDef(_pStreamDef(pOperand));
       //vPipeOut(pOperand);
-      AM::vSendJobOperand(m_pPipeline->m_pSession,
-                          m_pTask,
+      AM::vSendJobOperand(m_pTask,
                           pOperand,
                           m_pPipeline->m_pJob,
                           this,
@@ -179,8 +175,7 @@ eOR XmitOp::eXmitLoop(void)
                 aCN[pOperand->eClass()],
                 m_iXmitNode);
   
-    AM::vSendJobOperand(m_pPipeline->m_pSession,
-                        m_pTask,
+    AM::vSendJobOperand(m_pTask,
                         pOperand,
                         m_pPipeline->m_pJob,
                         this,
@@ -188,8 +183,6 @@ eOR XmitOp::eXmitLoop(void)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  AM::vNapUsec(100000,CN_XMITOP);
-  //vPipeOut_endMarker();
 
   return OR_EXIT;
 }
