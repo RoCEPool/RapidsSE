@@ -98,7 +98,7 @@ Op* XmitOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 {
   XmitOp* pXmitOp = new XmitOp(pOpSpec,pPipeline);
 
-  pXmitOp->m_iXmitNode = pXmitOp->m_pOpSpec->pEnameSet()->iValue((i8)0);
+  pXmitOp->m_iNextStage = pXmitOp->m_pOpSpec->pEnameSet()->iValue((i8)0);
   
   return pXmitOp;
 }
@@ -111,6 +111,16 @@ eOR XmitOp::eCall(void* aThis)
     eOR eCallAgain = ((XmitOp*)aThis)->eXmitLoop();
     
     return eCallAgain;
+}
+
+/*----------------------------------------------------------------------------*/
+/* the sort operator loop function                                            */
+/*----------------------------------------------------------------------------*/
+void XmitOp::vXmitNode(i8 i_XmitNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_XMITOP,_FOOTER_);
+  
+  m_iXmitNode = i_XmitNode;
 }
 
 /*----------------------------------------------------------------------------*/

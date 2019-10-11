@@ -46,7 +46,7 @@ namespace Pipelines
 
     bool bPhase4_opdefn(void);
 
-    void vReplaceWithXmit(OpSpec* pOpSpec);
+    void vReplaceWithXmit(OpSpec* pOpSpec, i8 i_Stage);
 
     void vAcceptToken(void);
     void vBeginToken(i8 i_Tkn);

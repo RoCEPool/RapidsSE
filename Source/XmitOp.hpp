@@ -22,8 +22,9 @@ namespace DataOperators
       ~XmitOp(void) noexcept(false);
       
       static Op* pNew(OpSpec* pOpSpec, Pipeline* pPipeline);
-      
       static eOR eCall(void* aThis);
+    
+      void vXmitNode(i8 iXmitNode);
   
   private:
     eOR eXmitLoop(void);

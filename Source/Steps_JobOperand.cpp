@@ -28,20 +28,17 @@ void Step::vJob_OperandPipeOut(MP_Task mpTask)
   i8 iParentJob = pJob_Operand->m_iParentId;
   Job_Dynamic* pParentJob = _pJob_Dynamic(Scheduler::pFindParticipatingJob(iParentJob));
   
-  Stage* pStage = pParentJob->m_pPipeline->m_oStageVec.pGet(pJob_Operand->m_iStage);
-  StageNde* pStageNde = nullptr;
+  Stage* pStage = pParentJob->m_pPipeline->m_oStageVec.pGet(pJob_Operand->m_iNextStage);
   
-  if (pJob_Operand->m_bStageNdeVec) {
-    pStageNde = pStage->m_oStageNdeVec.pGet(pJob_Operand->m_iStageNde);
+  if (pStage->m_oStageNdeVec.nItems()) {
+    StageNde* pStageNde = pStage->m_oStageNdeVec.pGet(pJob_Operand->m_iNdeVec);
+    Op* pOp = pStageNde->m_oOpVec.pGet(0);
+    pOp->vAppendLeft(pJob_Operand->m_pOperand);
   }
   else {
     RASSERT(0);
   }
   
-  Op* pOp = pStageNde->m_oOpVec.pGet(0);
-  //pJob_Operand->m_pOp->vPipeOut(pJob_Operand->m_pOperand);
-  pOp->vAppendLeft(pJob_Operand->m_pOperand);
-
   EXIT();
 }
 

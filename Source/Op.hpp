@@ -42,9 +42,8 @@ namespace Operators
   
     bool           m_bFirstCall;      // first time being called?
     
-    i8             m_iStage;
-    bool           m_bStageNdeVec;
-    i8             m_iStageNde;
+    i8             m_iNextStage;
+    i8             m_iNdeVec;
     
     eOR (*m_fpCall) (void* aThisOp);  // function which calls the op loop
     eOR (*m_fpDrain)(void* aThisOp);  // function which calls the drain loop

@@ -430,10 +430,11 @@ bool Dynamo::bPhase2_staging(void)
 
       vTrace("  op=%s\n"_Stz,pOpSpec->szName());
       
-      StageSpec* pStageSpecFound = m_pPipelineSpec->pFindStageSpec(pOpSpec->szName());
+      i8 i_Stage = C_UNKNOWN;
+      StageSpec* pStageSpecFound = m_pPipelineSpec->pFindStageSpec(pOpSpec->szName(), i_Stage);
       if (pStageSpecFound) {
-        vTrace("  op %s is a stage\n"_Stz,pOpSpec->szName());
-        vReplaceWithXmit(pOpSpec);
+        vTrace("  op %s is a stage %lld\n"_Stz,pOpSpec->szName(), i_Stage);
+        vReplaceWithXmit(pOpSpec, i_Stage);
         pStageSpecFound->vPrependConsumeOp(pStageSpec->eTopology());
       }
       
@@ -446,12 +447,12 @@ bool Dynamo::bPhase2_staging(void)
 /*----------------------------------------------------------------------------*/
 /* replace the <stageNm> with xmit <nodeNo>                                   */
 /*----------------------------------------------------------------------------*/
-void Dynamo::vReplaceWithXmit(OpSpec* pOpSpec)
+void Dynamo::vReplaceWithXmit(OpSpec* pOpSpec, i8 i_Stage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   pOpSpec->vName("xmit"_Stz);
-  pOpSpec->vAddEnmPair("<arg_0>"_Stz,(i8)0,TN_INTEGER);
+  pOpSpec->vAddEnmPair("<arg_0>"_Stz,(i8)i_Stage,TN_INTEGER);
 }
 
 

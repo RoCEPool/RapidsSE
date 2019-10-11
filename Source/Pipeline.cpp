@@ -77,10 +77,12 @@ Pipeline::~Pipeline(void) noexcept(false)
 void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
 {
   
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the stageSpecVec
   StageSpecVec* pStageSpecVec = pPipelineSpec->pStageSpecVec();
   
-  // for each stage
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Buld the stageVec from the stageSpecVec
   for (i8 i_StageSpec = 0; i_StageSpec < pStageSpecVec->nItems(); i_StageSpec++ ) {
     
     // get the stageSpec
@@ -88,32 +90,32 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
     
     // add a stage from the stageSpec to the stageVec
     m_oStageVec.vAdd(new Stage(pStageSpec, this));
-    
-    //
-    OpSpecVec* pOpSpecVec = pStageSpec->pOpSpecVec();
-    
-    Stage* pStage = m_oStageVec.pGet(i_StageSpec);
-    
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // link the operators
+  // link the operators in a stage and across stages
   
-  // for each stage
+  // for each stage in the stageVec
   for (i8 i_Stage = 0; i_Stage < m_oStageVec.nItems(); i_Stage++) {
     
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the stage
     Stage* pStage = m_oStageVec.pGet(i_Stage);
     Op* pOpNext = nullptr;
     
-    // for each partition in the stagePtnVec of the stage
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // link all operators of a stagePtn
+  
+    // for each stagePtn in the stagePtnVec of the stage
     for (i8 i_Ptn = 0; i_Ptn < pStage->m_oStagePtnVec.nItems(); i_Ptn++) {
       
+      // get the stagePtn
       StagePtn* pStagePtn = pStage->m_oStagePtnVec.pGet(i_Ptn);
       
-      // for each operator in the partition
+      // for each operator in the stagePtn
       for (i8 i_Op = 0; i_Op < pStagePtn->m_oOpVec.nItems() - 1; i_Op++) {
       
-        // get operator to be linked
+        // get operator
         Op* pOp = pStagePtn->m_oOpVec.pGet(i_Op);
         
         // get the next operator
@@ -122,7 +124,6 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
         // link the two operators
         pOp->vNextLabel(pOpNext->szLabel());
         pOp->vOpOut(pOpNext);
-        
       }
       
       // get the last operator of this stage
@@ -130,19 +131,35 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
       
       // if last operator is xmit, link to the first operator of the next stage
       if (pOp->eClass() == CN_XMITOP) {
-        pOp->m_iStage = i_Stage+1;
-        pOp->m_bStageNdeVec = true;
-        pOp->m_iStageNde = 0;
         
-        Stage* pStage = m_oStageVec.pGet(i_Stage+1);
+        // get the xmitOp's next stage
+        RASSERT(pOp->m_iNextStage != C_UNKNOWN);
+        Stage* pNextStage = m_oStageVec.pGet(pOp->m_iNextStage);
         RASSERT(pStage);
-        StageNde* pStageNde = pStage->m_oStageNdeVec.pGet(0);
-        pOpNext = pStageNde->m_oOpVec.pGet(0);
+        
+        // is it a stage run on node/nodes ?
+        if (pNextStage->m_oStageNdeVec.nItems()) {
+          RASSERT(pNextStage->m_oStagePtnVec.nItems() == 0);
+          
+          if (pNextStage->m_oStageNdeVec.nItems() == 1) {
+            // going from all/one ptn to one node
+            pOp->m_iNdeVec = 0;
+          }
+          else {
+            // going from all/one ptn to all nodes
+            RASSERT(0);
+          }
+          StageNde* pStageNde = pNextStage->m_oStageNdeVec.pGet(pOp->m_iNdeVec);
+          AM::vXmitNode(pOp,pStageNde->m_i_Nde);
+          pOpNext = pStageNde->m_oOpVec.pGet(0);
+        }
+        else {
+          RASSERT(0);
+        }
         pOp->vNextLabel(pOpNext->szLabel());
         pOp->vOpOut(pOpNext);
       }
     }
-    
     
     // for each node in the stageNdeVec of the stage
     for (i8 i_Nde = 0; i_Nde < pStage->m_oStageNdeVec.nItems(); i_Nde++) {

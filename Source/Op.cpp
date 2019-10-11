@@ -88,12 +88,11 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   m_nRightEndMarkers = 0;
   m_pStreamDef       = nullptr;
   
-  m_bFirstCall    = true;
+  m_bFirstCall       = true;
   
-  m_iStage        = C_UNKNOWN;
-  m_bStageNdeVec  = false;
-  m_iStageNde     = C_UNKNOWN;
-  
+  m_iNextStage = C_UNKNOWN;
+  m_iNdeVec    = C_UNKNOWN;
+
   m_fpCall        = m_aOpDefn ? m_aOpDefn->m_fpCall  : nullptr;
   m_fpDrain       = m_aOpDefn ? m_aOpDefn->m_fpDrain : nullptr;
   
@@ -207,7 +206,7 @@ void Op::vAckJob(void)
   
   AM::vLogOpr(SL_INF,this,OA_OP_ACK,
               "Acking job task"_Stz); //!format-LogOpr
-  vTrace("&&&&&&&&&&& ACKING %p %p\n"_Stz, m_pJob, pTask);
+  
   AM::vAckWaitingTask(pTask,m_pTask);
 }
 

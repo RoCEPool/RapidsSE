@@ -106,13 +106,12 @@ Job_Operand::Job_Operand(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Se
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_OPERAND,_FOOTER_);
   
-  m_pOp            = nullptr;
-  m_iNode          = C_UNKNOWN;
-  m_iParentJobId   = C_UNKNOWN;
+  m_pOp          = nullptr;
+  m_iNode        = C_UNKNOWN;
+  m_iParentJobId = C_UNKNOWN;
   
-  m_iStage        = C_UNKNOWN;
-  m_bStageNdeVec  = false;
-  m_iStageNde     = C_UNKNOWN;
+  m_iNextStage = C_UNKNOWN;
+  m_iNdeVec    = C_UNKNOWN;
   
   _checkInitialised_(CN_JOB_OPERAND);
   
@@ -177,17 +176,10 @@ Job_Operand* Job_Operand::pNewJobOperand(Session* pSession,
   pJob_Operand->m_iNode     = iNode;
   pJob_Operand->m_pOperand  = pOperand;
   
-  pJob_Operand->m_iStage        = pOp->m_iStage;
-  pJob_Operand->m_bStageNdeVec  = pOp->m_bStageNdeVec;
-  pJob_Operand->m_iStageNde     = pOp->m_iStageNde;
-  
-  // call the job pre-send function
-  //  if (pJobClass_Xmit->m_fpSend)
-  //    (*pJobClass_Xmit->m_fpSend)(pJob_Operand);
-  //
+  pJob_Operand->m_iNextStage = pOp->m_iNextStage;
+  pJob_Operand->m_iNdeVec  = pOp->m_iNdeVec;
   
   return pJob_Operand;
-  
 }
 
 /*----------------------------------------------------------------------------*/

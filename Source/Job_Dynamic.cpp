@@ -234,8 +234,6 @@ void Job_Dynamic::vBegin(void)
   i8 iThisNode = AM::pGrid()->iThisNode();
   for (i8 i_Stage = 0; i_Stage < m_pPipeline->m_oStageVec.nItems(); i_Stage++) {
     Stage* pStage = m_pPipeline->m_oStageVec.pGet(i_Stage);
-    vTrace("**Node:%lld Stages:%lld Stage:%lld PtnVec:%lld, NdeVec:%lld\n"_Stz, iThisNode, m_pPipeline->m_oStageVec.nItems(), i_Stage, pStage->m_oStagePtnVec.nItems(),
-           pStage->m_oStageNdeVec.nItems());
            
     for (i8 i_Ptn = 0; i_Ptn < pStage->m_oStagePtnVec.nItems(); i_Ptn++) {
       
@@ -246,8 +244,7 @@ void Job_Dynamic::vBegin(void)
       if (iNode != iThisNode) {
         vTrace("**SKIPPING ThisNode: %lld; P %lld; PN %lld\n"_Stz, iThisNode, pStagePtn->m_i_Ptn, iNode);
       }
-      else {
-        
+      else {        
         nOps += pStagePtn->m_oOpVec.nItems();
       }
     }
