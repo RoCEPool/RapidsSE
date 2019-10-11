@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* jobEnames.sen -- Job Enumerated Name Translation                           */
+/* jobSymbols.sen -- Meta Symbols                                             */
 /*============================================================================*/
 
-" jobEnames.sen" .verbose
+" jobSymbols.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* the ename word kind                                                        */
 /*----------------------------------------------------------------------------*/
-: <<ename>> immediate ( -- )
+: <<metaSymbol>>> immediate ( -- )
 
   [ word::this , ]
 
@@ -15,81 +15,81 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* push value of <catalogNm> from JobEnmSet                                   */
+/* push value of <catalogNm> from job's ename-set                             */
 /*----------------------------------------------------------------------------*/
-: <catalogNm> <<ename>> ( -- "<catalogNm>" )
+: <catalogNm> <<metaSymbol>>> ( -- "<catalogNm>" )
 
   [ word::this word.name@ , ] job::this job.ename@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* push value of <folderNm> from JobEnmSet                                    */
+/* push value of <folderNm> from job's ename-set                              */
 /*----------------------------------------------------------------------------*/
-: <folderNm> <<ename>> ( -- "<folderNm>" )
+: <folderNm> <<metaSymbol>>> ( -- "<folderNm>" )
 
   [ word::this word.name@ , ] job::this job.ename@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* push value of <indexNm> from JobEnmSet                                     */
+/* push value of <indexNm> from job's ename-set                               */
 /*----------------------------------------------------------------------------*/
-: <indexNm> <<ename>> ( -- "<indexNm>" )
+: <indexNm> <<metaSymbol>>> ( -- "<indexNm>" )
 
   [ word::this word.name@ , ] job::this job.ename@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* push value of <jobClass> from JobEnmSet                                    */
+/* push value of <jobClass> from job's ename-set                              */
 /*----------------------------------------------------------------------------*/
-: <jobClass> <<ename>> ( -- "<jobClass>" )
+: <jobClass> <<metaSymbol>>> ( -- "<jobClass>" )
 
   [ word::this word.name@ , ] job::this job.ename@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* push value of <jobNm> from JobEnmSet                                       */
+/* push value of <jobNm> from job's ename-set                                 */
 /*----------------------------------------------------------------------------*/
-: <jobNm> <<ename>> ( -- "<jobNm>" )
+: <jobNm> <<metaSymbol>>> ( -- "<jobNm>" )
 
   [ word::this word.name@ , ] job::this job.ename@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* push value of <nodeNm> from JobEnmSet                                      */
+/* push value of <nodeNm> from job's ename-set                                */
 /*----------------------------------------------------------------------------*/
-: <nodeNm> <<ename>> ( -- "<nodeNm>" )
+: <nodeNm> <<metaSymbol>>> ( -- "<nodeNm>" )
 
   [ word::this word.name@ , ] job::this job.ename@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* push value of <routineNm> from JobEnmSet                                   */
+/* push value of <routineNm> from job's ename-set                             */
 /*----------------------------------------------------------------------------*/
-: <routineNm> <<ename>> ( -- "<routineNm>" )
+: <routineNm> <<metaSymbol>>> ( -- "<routineNm>" )
 
   [ word::this word.name@ , ] job::this job.ename@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* push value of <schemaNm> from JobEnmSet                                    */
+/* push value of <schemaNm> from job's ename-set                              */
 /*----------------------------------------------------------------------------*/
-: <schemaNm> <<ename>> ( -- "<schemaNm>" )
+: <schemaNm> <<metaSymbol>>> ( -- "<schemaNm>" )
 
   [ word::this word.name@ , ] job::this job.ename@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* push value of <tableNm> from JobEnmSet                                     */
+/* push value of <tableNm> from job's ename-set                               */
 /*----------------------------------------------------------------------------*/
-: <tableNm> <<ename>> ( -- "<tableNm>" )
+: <tableNm> <<metaSymbol>>> ( -- "<tableNm>" )
 
   [ word::this word.name@ , ] job::this job.ename@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* push value of <tenantNm> from JobEnmSet                                    */
+/* push value of <tenantNm> from job's ename-set                              */
 /*----------------------------------------------------------------------------*/
-: <tenantNm> <<ename>> ( -- "<tenantNm>" )
+: <tenantNm> <<metaSymbol>>> ( -- "<tenantNm>" )
 
   [ word::this word.name@ , ] job::this job.ename@
 ;
