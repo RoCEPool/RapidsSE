@@ -155,6 +155,8 @@ void Task::vInit(void)
   m_i_NextRnd    = AM::bDeveloper() ? 0 : C_UNKNOWN;
   
   m_aFipCell     = nullptr;
+  
+  m_pForth       = nullptr;
   m_pLocalsFrame = nullptr;
   m_pDataStack   = nullptr;
   m_pReturnStack = nullptr;
@@ -179,6 +181,8 @@ Task::~Task(void) noexcept(false)
   delete m_pDataStack;
   delete m_pReturnStack;
   delete m_pAuxStack;
+  
+  delete m_pForth;
   
   delete m_pCompiler;
   
@@ -631,8 +635,10 @@ void Task::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 void Task::vNewStacks(void)
 {
-  if (m_pDataStack)
+  if (m_pForth)
     return;
+  
+  m_pForth       = new Forth(this);
   
   m_pDataStack   = new Stack;
   m_pReturnStack = new Stack;
