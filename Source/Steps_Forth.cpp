@@ -38,7 +38,7 @@ void Step::vAddSteps_Forth(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allot -- reserve n bytes in current word                                   */
+/* allot -- reserve n bytes in word being compiled                            */
 /*----------------------------------------------------------------------------*/
 void Step::vAllot(MP_Task mpTask)
 {
@@ -60,7 +60,7 @@ void Step::vAllot(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* cell -- push size of cell                                                  */
+/* cell -- push size of a cell                                                */
 /*----------------------------------------------------------------------------*/
 void Step::vCell(MP_Task mpTask)
 {
@@ -74,7 +74,7 @@ void Step::vCell(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* : (aka colon) -- create a routine word using next token as word name       */
+/* : (aka colon) -- create word named by next token, enter compiling state    */
 /*----------------------------------------------------------------------------*/
 void Step::vColon(MP_Task mpTask)
 {
@@ -104,7 +104,7 @@ void Step::vColon(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* comma -- encode push of xValue on stack                                    */
+/* comma -- encode push of value on stack into word being compiled            */
 /*----------------------------------------------------------------------------*/
 void Step::vComma(MP_Task mpTask)
 {
@@ -122,7 +122,7 @@ void Step::vComma(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compile, -- encode call to pWord on stack                                  */
+/* compile, -- encode call to word on stack into word being compiled          */
 /*----------------------------------------------------------------------------*/
 void Step::vCompileComma(MP_Task mpTask)
 {
@@ -143,7 +143,7 @@ void Step::vCompileComma(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create -- create word using next token as the word name                    */
+/* create -- create word named by next token, becomes word being compiled     */
 /*----------------------------------------------------------------------------*/
 void Step::vCreate(MP_Task mpTask)
 {
@@ -344,7 +344,7 @@ void Step::vExit_RT(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find -- find word using given name on stack                                */
+/* find -- find and push word named on stack                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vFind(MP_Task mpTask)
 {
@@ -366,7 +366,7 @@ void Step::vFind(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* findInCurrent -- find word in current dictionary                           */
+/* findInCurrent -- find and push word named on stack withinin curr dic       */
 /*----------------------------------------------------------------------------*/
 void Step::vFindInCurrent(MP_Task mpTask)
 {
@@ -388,7 +388,7 @@ void Step::vFindInCurrent(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* forget -- forget word using next token as given name                       */
+/* forget -- forget the word named by next token                              */
 /*----------------------------------------------------------------------------*/
 void Step::vForget(MP_Task mpTask)
 {
@@ -414,7 +414,7 @@ void Step::vForget(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* immediate -- make the current word an immediate word                       */
+/* immediate -- make the word being compiled an immediate word                */
 /*----------------------------------------------------------------------------*/
 void Step::vImmediate(MP_Task mpTask)
 {
@@ -430,7 +430,7 @@ void Step::vImmediate(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* locate -- locate word based on ip                                          */
+/* locate -- locate and push word name based on the ip which is on the stack  */
 /*----------------------------------------------------------------------------*/
 void Step::vLocate(MP_Task mpTask)
 {
@@ -459,7 +459,7 @@ void Step::vLocate(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* postpone -- append call to next word from input to current word  immediate */
+/* postpone -- encode call to word named by next token into word being compiled  */
 /*----------------------------------------------------------------------------*/
 void Step::vPostpone(MP_Task mpTask)
 {
@@ -498,7 +498,7 @@ void Step::vPostpone(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* prompt -- make the most recent definition a prompt word                    */
+/* prompt -- make the word being compiled directly runnable by prompt         */
 /*----------------------------------------------------------------------------*/
 void Step::vPrompt(MP_Task mpTask)
 {
@@ -512,7 +512,7 @@ void Step::vPrompt(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* see -- dump routine                                                        */
+/* see -- dump routine of word named by next token                            */
 /*----------------------------------------------------------------------------*/
 void Step::vSee(MP_Task mpTask)
 {
@@ -601,7 +601,7 @@ void Step::vSee(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ; -- end compile routine                                                   */
+/* ; -- end compilation of current word, enter interpreter state              */
 /*----------------------------------------------------------------------------*/
 void Step::vSemicolon(MP_Task mpTask)
 {
@@ -646,7 +646,7 @@ void Step::vSemicolon(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* series-name -- generate next name within its series                        */
+/* series-name -- generate next name within series for word named on stack    */
 /*----------------------------------------------------------------------------*/
 void Step::vSeriesName(Tasks::MP_Task mpTask)
 {
@@ -716,7 +716,7 @@ void Step::vSubDic(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tick -- find next word                                                     */
+/* tick -- find and push word named by next token                             */
 /*----------------------------------------------------------------------------*/
 void Step::vTick(MP_Task mpTask)
 {
