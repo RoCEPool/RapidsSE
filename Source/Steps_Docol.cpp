@@ -48,7 +48,7 @@ void Step::vDocolIsCompiling(MP_Task mpTask)
   
   i8 iIsCompiling = mpTask->m_pCompiler->m_bCompiling ? 1 : 0;
   
-  mpTask->m_pDataStack->vPushI8(iIsCompiling);
+  mpTask->m_pForth->m_pDataStack->vPushI8(iIsCompiling);
   
   EXIT();
 }
@@ -62,7 +62,7 @@ void Step::vDocolIsInterpreting(MP_Task mpTask)
   
   i8 iIsInterpreting = mpTask->m_pCompiler->m_bCompiling ? 0 : 1;
   
-  mpTask->m_pDataStack->vPushI8(iIsInterpreting);
+  mpTask->m_pForth->m_pDataStack->vPushI8(iIsInterpreting);
   
   EXIT();
 }

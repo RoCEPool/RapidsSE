@@ -42,7 +42,7 @@ void Step::vFlowExecute(MP_Task mpTask)
   ENTRY("vFlowExecute"_Stz);
   
   Object* pWordObject;
-  if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("execute"_Stz);
   Word* pWord = _pWord(pWordObject);
   
@@ -55,7 +55,7 @@ void Step::vFlowExecute(MP_Task mpTask)
     mpTask->m_aFipCell = pWord->aEntryCell();
     
     Object* pObject = (Object*)pWord->aFirstCell();
-    mpTask->m_pDataStack->vPushPointer(pObject);
+    mpTask->m_pForth->m_pDataStack->vPushPointer(pObject);
   }
   else if (WK_ROUTINE == pWord->eKind()){
     mpTask->m_pForth->m_pReturnStack->vPushCell(mpTask->m_aFipCell);
@@ -115,7 +115,7 @@ void Step::vFlowJumpFalse(MP_Task mpTask)
   //  THROW_INVALID_DSTACK("jumpFalse"_Stz);
   
   // get pointer to value on the top of the stack
-  Stack* pDataStack = mpTask->m_pDataStack;
+  Stack* pDataStack = mpTask->m_pForth->m_pDataStack;
   ForthValue* aTopValue = reinterpret_cast<ForthValue*>(pDataStack->m_aTop);
 
   eCN eClassNo = aTopValue->eClass(); // inline
@@ -156,7 +156,7 @@ void Step::vFlowJumpTrue(MP_Task mpTask)
   ENTRY("vJumpTrue"_Stz);
   
   i8 iVal;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(iVal) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iVal) )
     THROW_INVALID_DSTACK("jumpTrue"_Stz);
   
   // n.b. the IP points to the jump arg
@@ -190,7 +190,7 @@ void Step::vFlowRetryPoint(MP_Task mpTask)
   
   mpTask->m_pCompiler->m_pRetryIP = mpTask->m_aFipCell;
   
-  mpTask->m_pDataStack->vRetryPoint();
+  mpTask->m_pForth->m_pDataStack->vRetryPoint();
   
   mpTask->m_pForth->m_pReturnStack->vRetryPoint();
   

@@ -24,7 +24,7 @@ void Step::vToDigitName(MP_Task mpTask)
   i8 iDigit;
   
   // get the arguments
-  if ( ! mpTask->m_pDataStack->bPop(iDigit) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iDigit) )
     THROW_INVALID_DSTACK(">DigitName"_Stz);
   
   s32 sName;
@@ -43,7 +43,7 @@ void Step::vToDigitName(MP_Task mpTask)
     default:sName = "invalid"_Stz; break;
   }
   
-  mpTask->m_pDataStack->vPushS32(sName);
+  mpTask->m_pForth->m_pDataStack->vPushS32(sName);
   
   EXIT();
 }
@@ -56,13 +56,13 @@ void Step::vBytesMagnitude(MP_Task mpTask)
   ENTRY("vBytesMagnitude"_Stz);
   
   i8 iBytes;
-  if ( ! mpTask->m_pDataStack->bPop(iBytes) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iBytes) )
     THROW_INVALID_DSTACK("bytes.magnitude"_Stz);
   
   s256 sMag;
   MagLib::vByteMag(iBytes, sMag);
   
-  mpTask->m_pDataStack->vPushS256(sMag);
+  mpTask->m_pForth->m_pDataStack->vPushS256(sMag);
   
   EXIT();
 }
@@ -77,17 +77,17 @@ void Step::vNumberMagnitude(MP_Task mpTask)
   i8 iNumber;
   i8 iScale;
   
-  if ( ! mpTask->m_pDataStack->bPop(iNumber) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iNumber) )
     THROW_INVALID_DSTACK("number.magnitude"_Stz);
   
-  if ( ! mpTask->m_pDataStack->bPop(iScale) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iScale) )
     THROW_INVALID_DSTACK("number.magnitude"_Stz);
   
   s256 s;
   
   MagLib::vByteMag(iNumber, iScale, s);
   
-  mpTask->m_pDataStack->vPushS256(s);
+  mpTask->m_pForth->m_pDataStack->vPushS256(s);
   
   EXIT();
 }

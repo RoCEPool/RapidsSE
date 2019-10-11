@@ -48,7 +48,7 @@ void Step::vTracePoint(MP_Task mpTask)
   
   s256 sPointName;
   
-  if ( ! mpTask->m_pDataStack->bPop(sPointName) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sPointName) )
     THROW_INVALID_DSTACK("tracePoint"_Stz);
   
   if (AM::bTracepoint())
@@ -66,7 +66,7 @@ void Step::vTraceSet(MP_Task mpTask)
   
   i8 iTrace;
   
-  if ( ! mpTask->m_pDataStack->bPop(iTrace) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iTrace) )
     THROW_INVALID_DSTACK("trace!"_Stz);
   
   mpTask->m_iTracing = iTrace;

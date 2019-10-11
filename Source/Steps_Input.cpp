@@ -45,7 +45,7 @@ ENTRY("vInputDepth"_Stz);
   
   i8 iDepth = mpTask->m_pCompiler->m_pTokeniser->iDepth();
   
-  mpTask->m_pDataStack->vPushI8(iDepth);
+  mpTask->m_pForth->m_pDataStack->vPushI8(iDepth);
   
   EXIT();
 }
@@ -77,7 +77,7 @@ ENTRY("vInputOpen"_Stz);
   
   s256 sFilePath;
   
-  if ( ! mpTask->m_pDataStack->bPop(sFilePath) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sFilePath) )
     THROW_INVALID_DSTACK("input.open"_Stz);
   
   bool bOpened = mpTask->m_pCompiler->m_pTokeniser->bUseFile(sFilePath);
@@ -144,7 +144,7 @@ ENTRY("vInputText"_Stz);
   
   s48K sInput;                                             //! NEED STACK CHECKS
   
-  if ( ! mpTask->m_pDataStack->bPop(sInput) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sInput) )
     THROW_INVALID_DSTACK("input.text"_Stz);
     
   mpTask->m_pCompiler->m_pTokeniser->vUseString(sInput);
@@ -159,7 +159,7 @@ void Step::vInputToken(MP_Task mpTask)
 {
 ENTRY("vInputToken"_Stz);
   
-  mpTask->m_pDataStack->vPushS48K(mpTask->m_pCompiler->m_pTokeniser->sToken());
+  mpTask->m_pForth->m_pDataStack->vPushS48K(mpTask->m_pCompiler->m_pTokeniser->sToken());
   
   EXIT();
 }
@@ -173,7 +173,7 @@ ENTRY("vInputType"_Stz);
   
   eTN eTokenType = mpTask->m_pCompiler->m_pTokeniser->eToken();
   
-  mpTask->m_pDataStack->vPushI8(eTokenType);
+  mpTask->m_pForth->m_pDataStack->vPushI8(eTokenType);
   
   EXIT();
 }
@@ -205,7 +205,7 @@ void Step::vTokenColon(MP_Task mpTask)
   
   mpTask->m_pCompiler->m_pTokeniser->vNextToken();
   
-  mpTask->m_pDataStack->vPushS48K(mpTask->m_pCompiler->m_pTokeniser->sToken());
+  mpTask->m_pForth->m_pDataStack->vPushS48K(mpTask->m_pCompiler->m_pTokeniser->sToken());
   
   EXIT();
 }

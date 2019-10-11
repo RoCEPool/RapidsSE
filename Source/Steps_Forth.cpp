@@ -46,7 +46,7 @@ void Step::vAllot(MP_Task mpTask)
   
   i8 iBytes;
   
-  if ( !  mpTask->m_pDataStack->bPop(iBytes) )
+  if ( !  mpTask->m_pForth->m_pDataStack->bPop(iBytes) )
     THROW_INVALID_DSTACK("allot"_Stz);
   
   RASSERT(iBytes);
@@ -68,7 +68,7 @@ void Step::vCell(MP_Task mpTask)
   
   i8 nBytes = sizeof(void*);
   
-  mpTask->m_pDataStack->vPushI8(nBytes);
+  mpTask->m_pForth->m_pDataStack->vPushI8(nBytes);
   
   EXIT();
 }
@@ -113,7 +113,7 @@ void Step::vComma(MP_Task mpTask)
   Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
   GenVar xValue;
-  if ( ! mpTask->m_pDataStack->bPop(xValue) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(xValue) )
     THROW_INVALID_DSTACK("comma"_Stz);
   
   pCurrentWord->vEncode("pushValue"_Stz,&xValue);
@@ -129,7 +129,7 @@ void Step::vCompileComma(MP_Task mpTask)
   ENTRY("vCompileComma"_Stz);
   
   Object* pWordObject;
-  if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("compile,"_Stz);
   Word* pCalledWord = _pWord(pWordObject);
   
@@ -199,7 +199,7 @@ void Step::vCreateFrom(MP_Task mpTask)
   ENTRY("vCreateFrom"_Stz);
   
   s32 sName;
-  if ( ! mpTask->m_pDataStack->bPop(sName) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sName) )
     THROW_INVALID_DSTACK(">create"_Stz);
   
   Dic* pDic;
@@ -227,7 +227,7 @@ void Step::vCreateFromPersistent(MP_Task mpTask)
   ENTRY("vCreateFrom"_Stz);
   
   s32 sName;
-  if ( ! mpTask->m_pDataStack->bPop(sName) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sName) )
     THROW_INVALID_DSTACK(">create"_Stz);
   
   Dic* pDic;
@@ -252,7 +252,7 @@ void Step::vCreateFromInRoot(MP_Task mpTask)
   ENTRY("vCreateFromInRoot"_Stz);
   
   s32 sName;
-  if ( ! mpTask->m_pDataStack->bPop(sName) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sName) )
     THROW_INVALID_DSTACK(">createInRoot"_Stz);
   
   Dic* pDic = AM::pRootDic();
@@ -351,7 +351,7 @@ void Step::vFind(MP_Task mpTask)
   ENTRY("vFind"_Stz);
   
   s256 sName;
-  if ( ! mpTask->m_pDataStack->bPop(sName) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sName) )
     THROW_INVALID_DSTACK("find"_Stz);
   
   if (mpTask->m_iTracing) {
@@ -360,7 +360,7 @@ void Step::vFind(MP_Task mpTask)
   
   Word* pWord = mpTask->m_oDicStack.pFindWord(sName);
   
-  mpTask->m_pDataStack->vPushPointer(pWord);
+  mpTask->m_pForth->m_pDataStack->vPushPointer(pWord);
   
   EXIT();
 }
@@ -373,7 +373,7 @@ void Step::vFindInCurrent(MP_Task mpTask)
   ENTRY("vFindInCurrent"_Stz);
   
   s256 sName;
-  if ( ! mpTask->m_pDataStack->bPop(sName) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sName) )
     THROW_INVALID_DSTACK("findInCurrent"_Stz);
   
   if (mpTask->m_iTracing) {
@@ -382,7 +382,7 @@ void Step::vFindInCurrent(MP_Task mpTask)
   
   Word* pWord = mpTask->m_oDicStack.pFindInCurrent(sName);
   
-  mpTask->m_pDataStack->vPushPointer(pWord);
+  mpTask->m_pForth->m_pDataStack->vPushPointer(pWord);
   
   EXIT();
 }
@@ -437,7 +437,7 @@ void Step::vLocate(MP_Task mpTask)
   ENTRY("vLocate"_Stz);
   
   i8 iAddrAsInt;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(iAddrAsInt) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iAddrAsInt) )
     THROW_INVALID_DSTACK("locate"_Stz);
   
   void* aCellVoid = (void*)iAddrAsInt;
@@ -448,11 +448,11 @@ void Step::vLocate(MP_Task mpTask)
   if (pLocatedWord) {
     s32 sName;
     sName = pLocatedWord->sName();
-    mpTask->m_pDataStack->vPushS32(sName);
+    mpTask->m_pForth->m_pDataStack->vPushS32(sName);
   }
   else {
     i8 iZero = 0;
-    mpTask->m_pDataStack->vPushI8(iZero);
+    mpTask->m_pForth->m_pDataStack->vPushI8(iZero);
   }
   
   EXIT();
@@ -653,7 +653,7 @@ void Step::vSeriesName(Tasks::MP_Task mpTask)
   ENTRY("vSeriesName"_Stz);
   
   s32 sName;
-  if ( ! mpTask->m_pDataStack->bPop(sName) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sName) )
     THROW_INVALID_DSTACK("series-name"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -685,7 +685,7 @@ void Step::vSeriesName(Tasks::MP_Task mpTask)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  mpTask->m_pDataStack->vPushS32(sNextName);
+  mpTask->m_pForth->m_pDataStack->vPushS32(sNextName);
 
   EXIT();
 }
@@ -743,7 +743,7 @@ void Step::vTick(MP_Task mpTask)
     pCurrentWord->vEncode("pushValue"_Stz,pWord);
   }
   else {
-    mpTask->m_pDataStack->vPushPointer(pWord);
+    mpTask->m_pForth->m_pDataStack->vPushPointer(pWord);
   }
   
   EXIT();

@@ -27,13 +27,13 @@ void Step::vSessionCommand(MP_Task mpTask)
   ENTRY("vSessionDicStack"_Stz);
   
   Object* pPtrSession;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSession) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrSession) )
     THROW_INVALID_DSTACK("session.dicStack"_Stz);
   
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
   
-  mpTask->m_pDataStack->vPushPointer(pSession->m_pInput);
+  mpTask->m_pForth->m_pDataStack->vPushPointer(pSession->m_pInput);
   
   EXIT();
 }
@@ -46,13 +46,13 @@ void Step::vSessionDicStack(MP_Task mpTask)
   ENTRY("vSessionDicStack"_Stz);
   
   Object* pPtrSession;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSession) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrSession) )
     THROW_INVALID_DSTACK("session.dicStack"_Stz);
   
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
   
-  mpTask->m_pDataStack->vPushPointer(pSession->pPathStack());
+  mpTask->m_pForth->m_pDataStack->vPushPointer(pSession->pPathStack());
   
   EXIT();
 }
@@ -65,7 +65,7 @@ void Step::vSessionDump(MP_Task mpTask)
 ENTRY("vSessionDump"_Stz);
   
   Object* pPtrSession;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSession) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrSession) )
     THROW_INVALID_DSTACK("session.dump"_Stz);
   
   Session* pSession = _pSession(pPtrSession);
@@ -84,13 +84,13 @@ void Step::vSessionIsExiting(MP_Task mpTask)
   ENTRY("vSessionIsExiting"_Stz);
   
   Object* pPtrSession;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSession) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrSession) )
     THROW_INVALID_DSTACK("session.isExiting"_Stz);
   
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
   
-  mpTask->m_pDataStack->vPushI8(pSession->m_bSessionExiting);
+  mpTask->m_pForth->m_pDataStack->vPushI8(pSession->m_bSessionExiting);
   
   EXIT();
 }
@@ -103,13 +103,13 @@ void Step::vSessionPid(MP_Task mpTask)
   ENTRY("vSessionPid"_Stz);
   
   Object* pPtrSession;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSession) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrSession) )
     THROW_INVALID_DSTACK("session.pid"_Stz);
   
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
   
-  mpTask->m_pDataStack->vPushI8(pSession->m_iPid);
+  mpTask->m_pForth->m_pDataStack->vPushI8(pSession->m_iPid);
   
   EXIT();
 }
@@ -122,13 +122,13 @@ void Step::vSessionSlotFetch(MP_Task mpTask)
   ENTRY("vSessionSlotFetch"_Stz);
   
   Object* pPtrSession;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSession) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrSession) )
     THROW_INVALID_DSTACK("session.slot@"_Stz);
   
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
   
-  mpTask->m_pDataStack->vPushI8(pSession->iSlot());
+  mpTask->m_pForth->m_pDataStack->vPushI8(pSession->iSlot());
   
   EXIT();
 }
@@ -141,13 +141,13 @@ void Step::vSessionTxFetch(MP_Task mpTask)
   ENTRY("vSessionTxFetch"_Stz);
   
   Object* pPtrSession;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSession) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrSession) )
     THROW_INVALID_DSTACK("session.tx@"_Stz);
   Session* pSession = _pSession(pPtrSession);
   
   Tx* pTx = pSession->pTx();
   
-  mpTask->m_pDataStack->vPushPointer(pTx);
+  mpTask->m_pForth->m_pDataStack->vPushPointer(pTx);
   
   EXIT();
 }
@@ -160,12 +160,12 @@ void Step::vSessionTxStore(MP_Task mpTask)
   ENTRY("vSessionTxStore"_Stz);
   
   Object* pPtrSession;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSession) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrSession) )
     THROW_INVALID_DSTACK("session.tx!"_Stz);
   Session* pSession = _pSession(pPtrSession);
   
   Object* pPtrTx;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTx) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTx) )
     THROW_INVALID_DSTACK("session.tx!"_Stz);
   Tx* pTx = _pTx(pPtrTx);
   

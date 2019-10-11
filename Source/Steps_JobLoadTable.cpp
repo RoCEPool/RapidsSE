@@ -25,13 +25,13 @@ void Step::vJob_LoadTableBegin(MP_Task mpTask)
   ENTRY("vJob_LoadTableBegin"_Stz);
   
   Object* pPtrJob_LoadTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_LoadTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_LoadTable) )
     THROW_INVALID_DSTACK("job_loadTable.begin"_Stz);
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
   
   bool bBegun = pJob_LoadTable->bBegin();
   
-  mpTask->m_pDataStack->vPushBool(bBegun);
+  mpTask->m_pForth->m_pDataStack->vPushBool(bBegun);
   
   EXIT();
 }
@@ -44,13 +44,13 @@ void Step::vJob_LoadTableChunk(MP_Task mpTask)
   ENTRY("vJob_LoadTableChunk"_Stz);
   
   Object* pPtrJob_LoadTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_LoadTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_LoadTable) )
     THROW_INVALID_DSTACK("job_loadTable.chunk"_Stz);
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
 
   bool bCallAgain = pJob_LoadTable->bChunk();
   
-  mpTask->m_pDataStack->vPushBool(bCallAgain);
+  mpTask->m_pForth->m_pDataStack->vPushBool(bCallAgain);
   
  EXIT();
 }
@@ -63,7 +63,7 @@ void Step::vJob_LoadTableDumpMap(MP_Task mpTask)
   ENTRY("vJob_LoaderDUmpMap"_Stz);
   
   Object* pPtrJob_LoadTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_LoadTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_LoadTable) )
     THROW_INVALID_DSTACK("job_loadTable.addValidRows"_Stz);
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
 
@@ -80,7 +80,7 @@ void Step::vJob_LoadTableEnd(MP_Task mpTask)
   ENTRY("vJob_LoadTableEnd"_Stz);
   
   Object* pPtrJob_LoadTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_LoadTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_LoadTable) )
     THROW_INVALID_DSTACK("job_loadTable.end"_Stz);
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
   
@@ -97,12 +97,12 @@ void Step::vJob_LoadTableFilePathFetch(MP_Task mpTask)
   ENTRY("vJob_LoadTableFilePathFetch"_Stz);
   
   Object* pPtrJob_LoadTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_LoadTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_LoadTable) )
     THROW_INVALID_DSTACK("job_LoadTable.filePath@"_Stz);
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
   
   s256 sFilePath = pJob_LoadTable->szFilePath();
-  mpTask->m_pDataStack->vPushS256(sFilePath);
+  mpTask->m_pForth->m_pDataStack->vPushS256(sFilePath);
   
   EXIT();
 }
@@ -116,7 +116,7 @@ void Step::vJob_LoadTableTableStore(MP_Task mpTask)
   
   Object* pPtrTable;
   Object* pPtrJob_LoadTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_LoadTable,pPtrTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_LoadTable,pPtrTable) )
     THROW_INVALID_DSTACK("loadTable.tableStore"_Stz);
   
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);

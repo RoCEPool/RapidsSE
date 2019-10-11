@@ -30,12 +30,12 @@ void Step::vJob_IndexJoinLastBuffersStore(MP_Task mpTask)
   ENTRY("vJob_IndexJoinLastBuffersStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("Job_IndexJoin.lastBuffers!"_Stz);
   Job_IndexJoin* pJob_IndexJoin = _pJob_IndexJoin(pJobPtr);
   
   i8 nLastBuffers;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(nLastBuffers) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(nLastBuffers) )
     THROW_INVALID_DSTACK("Job_IndexJoin.lastBuffers"_Stz);
   
   pJob_IndexJoin->m_nLastBuffers = nLastBuffers;
@@ -51,12 +51,12 @@ void Step::vJob_IndexJoinLeftIndexStore(MP_Task mpTask)
   ENTRY("vJob_IndexJoinLeftIndexStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("Job_IndexJoin.leftIndex!"_Stz);
   Job_IndexJoin* pJob_IndexJoin = _pJob_IndexJoin(pJobPtr);
   
   Object* pIndexPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pIndexPtr) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pIndexPtr) )
     THROW_INVALID_DSTACK("Job_IndexJoin.leftIndex!"_Stz);
   Index* pIndex = _pIndex(pIndexPtr);
   
@@ -73,12 +73,12 @@ void Step::vJob_IndexJoinLeftTableStore(MP_Task mpTask)
   ENTRY("vJob_IndexJoinLeftTableStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("Job_IndexJoin.leftTable!"_Stz);
   Job_IndexJoin* pJob_IndexJoin = _pJob_IndexJoin(pJobPtr);
   
   Object* pTablePtr;
-  if ( ! mpTask->m_pDataStack->bPop(pTablePtr) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTablePtr) )
     THROW_INVALID_DSTACK("Job_IndexJoin.leftTable"_Stz);
   Table* pTable = _pTable(pTablePtr);
   
@@ -95,12 +95,12 @@ void Step::vJob_IndexJoinRightIndexStore(MP_Task mpTask)
   ENTRY("vJob_IndexJoinRightIndexStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("Job_IndexJoin.rightIndex!"_Stz);
   Job_IndexJoin* pJob_IndexJoin = _pJob_IndexJoin(pJobPtr);
   
   Object* pIndexPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pIndexPtr) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pIndexPtr) )
     THROW_INVALID_DSTACK("Job_IndexJoin.rightIndex!"_Stz);
   Index* pIndex = _pIndex(pIndexPtr);
   
@@ -117,11 +117,11 @@ void Step::vJob_IndexJoinRightIndexNameFetch(MP_Task mpTask)
   ENTRY("vJob_IndexJoinRightIndexNameFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("Job_IndexJoin.rightIndexName!"_Stz);
   Job_IndexJoin* pJob_IndexJoin = _pJob_IndexJoin(pJobPtr);
   
-  mpTask->m_pDataStack->vPushS32(pJob_IndexJoin->m_sRightIndex);
+  mpTask->m_pForth->m_pDataStack->vPushS32(pJob_IndexJoin->m_sRightIndex);
   
   EXIT();
 }
@@ -134,12 +134,12 @@ void Step::vJob_IndexJoinRightTableStore(MP_Task mpTask)
   ENTRY("vJob_IndexJoinRightTableStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("Job_IndexJoin.rightTable!"_Stz);
   Job_IndexJoin* pJob_IndexJoin = _pJob_IndexJoin(pJobPtr);
   
   Object* pTablePtr;
-  if ( ! mpTask->m_pDataStack->bPop(pTablePtr) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTablePtr) )
     THROW_INVALID_DSTACK("Job_IndexJoin.rightTable"_Stz);
   Table* pTable = _pTable(pTablePtr);
   
@@ -156,11 +156,11 @@ void Step::vJob_IndexJoinRightTableNameFetch(MP_Task mpTask)
   ENTRY("vJob_IndexJoinRightTableNameFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("Job_IndexJoin.rightTableName!"_Stz);
   Job_IndexJoin* pJob_IndexJoin = _pJob_IndexJoin(pJobPtr);
   
-  mpTask->m_pDataStack->vPushS32(pJob_IndexJoin->m_sRightTable);
+  mpTask->m_pForth->m_pDataStack->vPushS32(pJob_IndexJoin->m_sRightTable);
   
   EXIT();
 }
@@ -173,12 +173,12 @@ void Step::vJob_IndexJoinSpawnSub(MP_Task mpTask)
   ENTRY("vJob_IndexJoinSpawnSub"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("Job_IndexJoin.spawnSub"_Stz);
   Job_IndexJoin* pJob_IndexJoin = _pJob_IndexJoin(pJobPtr);
 
   i8 iSlot;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(iSlot) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iSlot) )
     THROW_INVALID_DSTACK("Job_IndexJoin.spawnSub"_Stz);
   
   Session* pSession = pJob_IndexJoin->m_pSession;
@@ -213,7 +213,7 @@ void Step::vJob_SubIndexJoinIndexJoin(MP_Task mpTask)
   ENTRY("vJob_SubIndexJoinIndexJoin"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("Job_IndexJoin.spawnSub"_Stz);
   Job_SubIndexJoin* pJob_SubIndexJoin = _pJob_SubIndexJoin(pJobPtr);
   

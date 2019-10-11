@@ -20,14 +20,14 @@ void Step::vClassName(MP_Task mpTask)
   ENTRY("vClassName"_Stz);
   
   i8 iClassNo;
-  if ( ! mpTask->m_pDataStack->bPop(iClassNo) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iClassNo) )
     THROW_INVALID_DSTACK("class::name"_Stz);
   
   s32 sClassName;
   
   sClassName = aCN[iClassNo];
   
-  mpTask->m_pDataStack->vPushS32(sClassName);
+  mpTask->m_pForth->m_pDataStack->vPushS32(sClassName);
   
   EXIT();
 }

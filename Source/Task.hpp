@@ -55,7 +55,6 @@ namespace Tasks
     Cell*     m_aFipCell;     // points to cell inside a word
 
     Forth*    m_pForth;       // forth implementation
-    Stack*    m_pDataStack;   // data stack
   
     // exception
     s256  m_sFile;

@@ -38,11 +38,11 @@ void Step::vQueuesExecutingLength(MP_Task mpTask)
   
   i8 iSlot;
   
-  if ( !  mpTask->m_pDataStack->bPop(iSlot) )
+  if ( !  mpTask->m_pForth->m_pDataStack->bPop(iSlot) )
     THROW_INVALID_DSTACK("queues::QueuesExecutingLength"_Stz);
   
   Queues* pQueues = AM::pQueues();
-  mpTask->m_pDataStack->vPushI8(pQueues->nTasksExecuting());
+  mpTask->m_pForth->m_pDataStack->vPushI8(pQueues->nTasksExecuting());
   
   EXIT();
 }
@@ -56,11 +56,11 @@ void Step::vQueuesReadyLength(MP_Task mpTask)
   
   i8 iSlot;
   
-  if ( !  mpTask->m_pDataStack->bPop(iSlot) )
+  if ( !  mpTask->m_pForth->m_pDataStack->bPop(iSlot) )
     THROW_INVALID_DSTACK("queues::QueuesReadyLength"_Stz);
   
   Queues* pQueues = AM::pQueues();
-  mpTask->m_pDataStack->vPushI8(pQueues->nTasksReady());
+  mpTask->m_pForth->m_pDataStack->vPushI8(pQueues->nTasksReady());
   
   EXIT();
 }
@@ -73,7 +73,7 @@ void Step::vQueuesSleepingLength(MP_Task mpTask)
   ENTRY("vQueuesSleepingLength"_Stz);
   
   Queues* pQueues = AM::pQueues();
-  mpTask->m_pDataStack->vPushI8(pQueues->nTasksSleeping());
+  mpTask->m_pForth->m_pDataStack->vPushI8(pQueues->nTasksSleeping());
   
   EXIT();
 }
@@ -86,7 +86,7 @@ void Step::vQueuesWaitingLength(MP_Task mpTask)
   ENTRY("vQueuesWaitingLength"_Stz);
   
   Queues* pQueues = AM::pQueues();
-  mpTask->m_pDataStack->vPushI8(pQueues->nTasksWaiting());
+  mpTask->m_pForth->m_pDataStack->vPushI8(pQueues->nTasksWaiting());
   
   EXIT();
 }

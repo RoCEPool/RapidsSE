@@ -45,7 +45,7 @@ void Step::vTaskAck(MP_Task mpTask)
   ENTRY("vTaskAck"_Stz);
   
   Object* pTaskObject;
-  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTaskObject) )
     THROW_INVALID_DSTACK("task.ack"_Stz);
   Task* pTaskWaiting = _pTask(pTaskObject);
   
@@ -67,12 +67,12 @@ void Step::vTaskAcksStore(MP_Task mpTask)
   ENTRY("vTaskAcksStore"_Stz);
   
   Object* pPtrTask;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTask) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTask) )
     THROW_INVALID_DSTACK("task.acks!"_Stz);
   Task* pGivenTask = _pTask(pPtrTask);
   
   i8 nAcksRequired;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(nAcksRequired) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(nAcksRequired) )
     THROW_INVALID_DSTACK("task.acks!"_Stz);
   
   ASSERT(0 == pGivenTask->m_oAcksRmg.iPrintOnlyValue());
@@ -112,7 +112,7 @@ void Step::vTaskDicStack(MP_Task mpTask)
   ENTRY("vTaskDicStack"_Stz);
   
   Object* pPtrTask;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTask) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTask) )
     THROW_INVALID_DSTACK("task.init"_Stz);
   
   Task* pThatTask = _pTask(pPtrTask);
@@ -120,7 +120,7 @@ void Step::vTaskDicStack(MP_Task mpTask)
   
   Object* pPtrDicStack = &pThatTask->m_oDicStack;
   
-  mpTask->m_pDataStack->vPushPointer(pPtrDicStack);
+  mpTask->m_pForth->m_pDataStack->vPushPointer(pPtrDicStack);
   
   EXIT();
 }
@@ -133,7 +133,7 @@ void Step::vTaskDropLock(MP_Task mpTask)
   ENTRY("vTaskDrop"_Stz);
   
   Object* pObject;
-  if ( ! mpTask->m_pDataStack->bPop(pObject) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("task.dump"_Stz);
   Task* pThatTask = _pTask(pObject);
   
@@ -151,7 +151,7 @@ void Step::vTaskDump(MP_Task mpTask)
 ENTRY("vTaskDump"_Stz);
   
   Object* pObject;
-  if ( ! mpTask->m_pDataStack->bPop(pObject) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("task.dump"_Stz);
   Task* pThatTask = _pTask(pObject);
   
@@ -180,7 +180,7 @@ void Step::vTaskGrabLock(MP_Task mpTask)
   ENTRY("vTaskGrab"_Stz);
   
   Object* pObject;
-  if ( ! mpTask->m_pDataStack->bPop(pObject) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("task.grabLock"_Stz);
   Task* pThatTask = _pTask(pObject);
   
@@ -197,7 +197,7 @@ void Step::vTaskIsAckSet(MP_Task mpTask)
   ENTRY("vTaskIsAckSet"_Stz);
   
   Object* pTaskObject;
-  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTaskObject) )
     THROW_INVALID_DSTACK("task.isAckSet"_Stz);
   Task* pTaskBeingAcked = _pTask(pTaskObject);
   
@@ -210,7 +210,7 @@ void Step::vTaskIsAckSet(MP_Task mpTask)
                        iIsAckSet);
   }
   
-  mpTask->m_pDataStack->vPushI8(iIsAckSet);
+  mpTask->m_pForth->m_pDataStack->vPushI8(iIsAckSet);
 
   EXIT();
 }
@@ -223,13 +223,13 @@ void Step::vTaskJobFetch(MP_Task mpTask)
   ENTRY("vTaskJobFetch"_Stz);
   
   Object* pTaskObject;
-  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTaskObject) )
     THROW_INVALID_DSTACK("task.job@"_Stz);
   Task* pThatTask = _pTask(pTaskObject);
   
   Job* pJob = pThatTask->m_pJob;
   
-  mpTask->m_pDataStack->vPushPointer(pJob);
+  mpTask->m_pForth->m_pDataStack->vPushPointer(pJob);
   
   EXIT();
 }
@@ -242,12 +242,12 @@ void Step::vTaskJobStore(MP_Task mpTask)
   ENTRY("vTaskJobStore"_Stz);
   
   Object* pTaskObject;
-  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTaskObject) )
     THROW_INVALID_DSTACK("task.job!"_Stz);
   Task* pThatTask = _pTask(pTaskObject);
   
   Object* pJobObject;
-  if ( ! mpTask->m_pDataStack->bPop(pJobObject) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobObject) )
     THROW_INVALID_DSTACK("task.job!"_Stz);
   Job* pJob = _pJob(pJobObject);
   
@@ -264,13 +264,13 @@ void Step::vTaskNameFetch(MP_Task mpTask)
 ENTRY("vTaskNameFetch"_Stz);
   
   Object* pTaskObject;
-  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTaskObject) )
     THROW_INVALID_DSTACK("task.name@"_Stz);
   Task* pThatTask = _pTask(pTaskObject);
   
   s256 sName((Stz*)pThatTask->aJobName());
   
-  mpTask->m_pDataStack->vPushS256(sName);
+  mpTask->m_pForth->m_pDataStack->vPushS256(sName);
   
   EXIT();
 }
@@ -283,37 +283,37 @@ void Step::vTaskSeed(MP_Task mpTask)
 ENTRY("vTaskSeed"_Stz);
   
 //  //                                   sSeed     nTaskArgs
-//  if ( ! mpTask->m_pDataStack->bGuard(CN_STRVAL,CN_INTVAL) )
+//  if ( ! mpTask->m_pForth->m_pDataStack->bGuard(CN_STRVAL,CN_INTVAL) )
 //    THROW_INVALID_DSTACK("task.seed"_Stz);
   
   Object* pTaskObject;
-  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTaskObject) )
     THROW_INVALID_DSTACK("task.seed"_Stz);
   Task* pThatTask = _pTask(pTaskObject);
   
   s32 sSeed;
-  if ( ! mpTask->m_pDataStack->bPop(sSeed) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sSeed) )
     THROW_INVALID_DSTACK("task.seed"_Stz);
 
 
   i8 nTaskArgs;
-  if ( ! mpTask->m_pDataStack->bPop(nTaskArgs) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(nTaskArgs) )
     THROW_INVALID_DSTACK("task.seed"_Stz);
   //ASSERT(! nTaskArgs);
   
-  if ( ! mpTask->m_pDataStack->bGuard(nTaskArgs) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bGuard(nTaskArgs) )
     THROW_INVALID_DSTACK("task.seed"_Stz);
   
   // copy task arguments to given task (preserving stack order)
   GenVar xVariable;
   for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
-    mpTask->m_pDataStack->vPeekValue(iTaskArg,xVariable);
-    pThatTask->m_pDataStack->vPushGenVar(xVariable);
+    mpTask->m_pForth->m_pDataStack->vPeekValue(iTaskArg,xVariable);
+    pThatTask->m_pForth->m_pDataStack->vPushGenVar(xVariable);
   }
   
   // discard original task arguments
   for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
-    bool bPopped = mpTask->m_pDataStack->bPop(xVariable);
+    bool bPopped = mpTask->m_pForth->m_pDataStack->bPop(xVariable);
     ASSERT(bPopped);
   }
   
@@ -328,13 +328,13 @@ void Step::vTaskSessionFetch(MP_Task mpTask)
   ENTRY("vTaskSessionFetch"_Stz);
   
   Object* pObject;
-  if ( ! mpTask->m_pDataStack->bPop(pObject) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("task.session@"_Stz);
   Task* pThatTask = _pTask(pObject);
   
   Session* pSession = pThatTask->m_pSession;
   
-  mpTask->m_pDataStack->vPushPointer(pSession);
+  mpTask->m_pForth->m_pDataStack->vPushPointer(pSession);
   
   EXIT();
 }
@@ -347,13 +347,13 @@ void Step::vTaskSessionStore(MP_Task mpTask)
   ENTRY("vTaskSessionStore"_Stz);
   
   Object* pTaskObject;
-  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTaskObject) )
     THROW_INVALID_DSTACK("task.session!"_Stz);
   Task* pThatTask = _pTask(pTaskObject);
   
   Object* pPtrSession;
   
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSession) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrSession) )
     THROW_INVALID_DSTACK("task.session!"_Stz);
   
   Session* pSession = _pSession(pPtrSession);
@@ -372,7 +372,7 @@ void Step::vTaskSendNodeFetch(MP_Task mpTask)
   ENTRY("vTaskSendNodeFetch"_Stz);
   
   Object* pObject;
-  if ( ! mpTask->m_pDataStack->bPop(pObject) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("task.sendNode@"_Stz);
   Task* pThatTask = _pTask(pObject);
   
@@ -380,7 +380,7 @@ void Step::vTaskSendNodeFetch(MP_Task mpTask)
   
   Object* pPtrSendNode = pSendNode;
   
-  mpTask->m_pDataStack->vPushPointer(pPtrSendNode);
+  mpTask->m_pForth->m_pDataStack->vPushPointer(pPtrSendNode);
   
   EXIT();
 }
@@ -393,12 +393,12 @@ void Step::vTaskSendNodeStore(MP_Task mpTask)
   ENTRY("vTaskSendNodeStore"_Stz);
   
   Object* pTaskObject;
-  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTaskObject) )
     THROW_INVALID_DSTACK("task.sendNode!"_Stz);
   Task* pThatTask = _pTask(pTaskObject);
   
   Object* pPtrSendNode;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSendNode) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrSendNode) )
     THROW_INVALID_DSTACK("task.sendNode!"_Stz);
   Node* pSendNode = _pNode(pPtrSendNode);
   
@@ -416,7 +416,7 @@ void Step::vTaskSleepMsec(MP_Task mpTask)
   
   i8 nMilliSeconds;
   
-  if ( ! mpTask->m_pDataStack->bPop(nMilliSeconds) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(nMilliSeconds) )
     THROW_INVALID_DSTACK("task::sleepMsec"_Stz);
   
   i8 nMicroSeconds = nMilliSeconds * C_1K;
@@ -436,7 +436,7 @@ void Step::vTaskSleepSsec(MP_Task mpTask)
   
   i8 nSeconds;
   
-  if ( ! mpTask->m_pDataStack->bPop(nSeconds) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(nSeconds) )
     THROW_INVALID_DSTACK("task::sleepSsec"_Stz);
   
   i8 nMicroSeconds = nSeconds * C_1M;
@@ -456,7 +456,7 @@ void Step::vTaskSleepUsec(MP_Task mpTask)
   
   i8 nMicroSeconds;
   
-  if ( ! mpTask->m_pDataStack->bPop(nMicroSeconds) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(nMicroSeconds) )
     THROW_INVALID_DSTACK("task::sleepUsec"_Stz);
   
   mpTask->vSleepUsec(nMicroSeconds);
@@ -473,13 +473,13 @@ void Step::vTaskStateFetch(MP_Task mpTask)
 ENTRY("vTaskStateFetch"_Stz);
   
   Object* pTaskObject;
-  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTaskObject) )
     THROW_INVALID_DSTACK("task.state@"_Stz);
   Task* pThatTask = _pTask(pTaskObject);
   
   eTS eState = pThatTask->m_eState;
   
-  mpTask->m_pDataStack->vPushI8((i8)eState);
+  mpTask->m_pForth->m_pDataStack->vPushI8((i8)eState);
   
   EXIT();
 }
@@ -493,7 +493,7 @@ ENTRY("vTaskThis"_Stz);
   
   Object* pTask = *mpTask;
   
-  mpTask->m_pDataStack->vPushPointer(pTask);
+  mpTask->m_pForth->m_pDataStack->vPushPointer(pTask);
   
   EXIT();
 }
@@ -506,12 +506,12 @@ void Step::vTaskThread(MP_Task mpTask)
   ENTRY("vTaskThread"_Stz);
   
   Object* pTaskObject;
-  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTaskObject) )
     THROW_INVALID_DSTACK("task.thread"_Stz);
   Task* pThatTask = _pTask(pTaskObject);
 
   Thread* pThread = pThatTask->m_pThread;
-  mpTask->m_pDataStack->vPushPointer(pThread);
+  mpTask->m_pForth->m_pDataStack->vPushPointer(pThread);
   ASSERT(pThread);
   
   EXIT();

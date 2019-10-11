@@ -31,14 +31,14 @@ void Step::vJobClassFind(MP_Task mpTask)
   ENTRY("vJobClassFind"_Stz);
   
   i8 iJobClass;
-  if ( ! mpTask->m_pDataStack->bPop(iJobClass) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iJobClass) )
     THROW_INVALID_DSTACK("jobClass::find"_Stz);
   
   eCN eClass = (eCN)iJobClass;
   
   JobClass* pJobClass = JobClass::pFind(eClass);
   
-  mpTask->m_pDataStack->vPushI8((i8)pJobClass);
+  mpTask->m_pForth->m_pDataStack->vPushI8((i8)pJobClass);
 
   EXIT();
 }
@@ -51,13 +51,13 @@ void Step::vJobClassBuffer(MP_Task mpTask)
   ENTRY("vJobClassBuffer"_Stz);
   
   i8 iJobClass_p;
-  if ( ! mpTask->m_pDataStack->bPop(iJobClass_p) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iJobClass_p) )
     THROW_INVALID_DSTACK("jobClass.buffer@"_Stz);
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
   bool bBuffer = pJobClass->m_bBuffer;
   
-  mpTask->m_pDataStack->vPushBool(bBuffer);
+  mpTask->m_pForth->m_pDataStack->vPushBool(bBuffer);
   
   EXIT();
 }
@@ -70,13 +70,13 @@ void Step::vJobClassName(MP_Task mpTask)
   ENTRY("vJobClassName"_Stz);
   
   i8 iJobClass_p;
-  if ( ! mpTask->m_pDataStack->bPop(iJobClass_p) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iJobClass_p) )
     THROW_INVALID_DSTACK("jobClass.name"_Stz);
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
   s256 sName(aCN[pJobClass->m_eClass]);
   
-  mpTask->m_pDataStack->vPushS256(sName);
+  mpTask->m_pForth->m_pDataStack->vPushS256(sName);
   
   EXIT();
 }
@@ -89,13 +89,13 @@ void Step::vJobClassNew(MP_Task mpTask)
   ENTRY("vJobClassNew"_Stz);
   
   i8 iJobClass_p;
-  if ( ! mpTask->m_pDataStack->bPop(iJobClass_p) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iJobClass_p) )
     THROW_INVALID_DSTACK("jobClass.new"_Stz);
   JobClass* pJobClass = _pJobClass(iJobClass_p);
 
   Job* pJob = pJobClass->pNewJob();
   
-  mpTask->m_pDataStack->vPushPointer(pJob);
+  mpTask->m_pForth->m_pDataStack->vPushPointer(pJob);
   
   EXIT();
 }
@@ -108,13 +108,13 @@ void Step::vJobClassSeedRun(MP_Task mpTask)
   ENTRY("vJobClassSeedRun"_Stz);
   
   i8 iJobClass_p;
-  if ( ! mpTask->m_pDataStack->bPop(iJobClass_p) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iJobClass_p) )
     THROW_INVALID_DSTACK("jobClass.seedRun"_Stz);
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
   s256 sSeed((Stz*)pJobClass->m_aSeedRun);
   
-  mpTask->m_pDataStack->vPushS256(sSeed);
+  mpTask->m_pForth->m_pDataStack->vPushS256(sSeed);
   
   EXIT();
 }
@@ -127,13 +127,13 @@ void Step::vJobClassSeedReq(MP_Task mpTask)
   ENTRY("vJobClassSeedReq"_Stz);
   
   i8 iJobClass_p;
-  if ( ! mpTask->m_pDataStack->bPop(iJobClass_p) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iJobClass_p) )
     THROW_INVALID_DSTACK("jobClass.seedReq"_Stz);
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
   s256 sSeed((Stz*)&pJobClass->m_aSeedReq);
   
-  mpTask->m_pDataStack->vPushS256(sSeed);
+  mpTask->m_pForth->m_pDataStack->vPushS256(sSeed);
   
   EXIT();
 }
@@ -146,13 +146,13 @@ void Step::vJobClassSeedRcv(MP_Task mpTask)
   ENTRY("vJobClassSeedRcv"_Stz);
   
   i8 iJobClass_p;
-  if ( ! mpTask->m_pDataStack->bPop(iJobClass_p) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iJobClass_p) )
     THROW_INVALID_DSTACK("jobClass.seedRcv"_Stz);
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
   s256 sSeed((Stz*)&pJobClass->m_aSeedRcv);
   
-  mpTask->m_pDataStack->vPushS256(sSeed);
+  mpTask->m_pForth->m_pDataStack->vPushS256(sSeed);
   
   EXIT();
 }
@@ -165,13 +165,13 @@ void Step::vJobClassSeedExe(MP_Task mpTask)
   ENTRY("vJobClassSeedExe"_Stz);
   
   i8 iJobClass_p;
-  if ( ! mpTask->m_pDataStack->bPop(iJobClass_p) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iJobClass_p) )
     THROW_INVALID_DSTACK("jobClass.seedExe"_Stz);
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
   s256 sSeed((Stz*)&pJobClass->m_aSeedExe);
   
-  mpTask->m_pDataStack->vPushS256(sSeed);
+  mpTask->m_pForth->m_pDataStack->vPushS256(sSeed);
   
   EXIT();
 }
@@ -184,13 +184,13 @@ void Step::vJobClassSeedEnd(MP_Task mpTask)
   ENTRY("vJobClassSeedEnd"_Stz);
   
   i8 iJobClass_p;
-  if ( ! mpTask->m_pDataStack->bPop(iJobClass_p) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iJobClass_p) )
     THROW_INVALID_DSTACK("jobClass.seedEnd"_Stz);
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
   s256 sSeed((Stz*)&pJobClass->m_aSeedEnd);
   
-  mpTask->m_pDataStack->vPushS256(sSeed);
+  mpTask->m_pForth->m_pDataStack->vPushS256(sSeed);
   
   EXIT();
 }
@@ -203,13 +203,13 @@ void Step::vJobClassSeedCan(MP_Task mpTask)
   ENTRY("vJobClassSeedCan"_Stz);
   
   i8 iJobClass_p;
-  if ( ! mpTask->m_pDataStack->bPop(iJobClass_p) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iJobClass_p) )
     THROW_INVALID_DSTACK("jobClass.seedCan"_Stz);
   JobClass* pJobClass = _pJobClass(iJobClass_p);
   
   s256 sSeed((Stz*)&pJobClass->m_aSeedCan);
   
-  mpTask->m_pDataStack->vPushS256(sSeed);
+  mpTask->m_pForth->m_pDataStack->vPushS256(sSeed);
   
   EXIT();
 }

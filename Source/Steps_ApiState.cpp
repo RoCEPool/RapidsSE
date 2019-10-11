@@ -25,7 +25,7 @@ void Step::vApiStateIncBegun(MP_Task mpTask)
   ENTRY("vApiIncBegun"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("apiState::incBegun"_Stz);
   
   Job* pJob = _pJob(pJobPtr);
@@ -48,7 +48,7 @@ void Step::vApiStateIncCancelled(MP_Task mpTask)
   ENTRY("vApiIncBegun"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("apiState::incBegun"_Stz);
   
   Job* pJob = _pJob(pJobPtr);
@@ -71,7 +71,7 @@ void Step::vApiStateIncEnded(MP_Task mpTask)
   ENTRY("vApiIncBegun"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("apiState::incBegun"_Stz);
   
   Job* pJob = _pJob(pJobPtr);
@@ -94,7 +94,7 @@ void Step::vApiStateIncExecuted(MP_Task mpTask)
   ENTRY("vApiIncExecuted"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("apiState::incBegun"_Stz);
   
   Job* pJob = _pJob(pJobPtr);
@@ -117,7 +117,7 @@ void Step::vApiStateSenLoc(MP_Task mpTask)
   ENTRY("vApiStateSenLoc"_Stz);
   
   i8 iPosition;
-  if ( ! mpTask->m_pDataStack->bPop(iPosition) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iPosition) )
     THROW_INVALID_DSTACK("apiState::senLoc"_Stz);
   
   Session* pSession = mpTask->m_pSession;
@@ -135,7 +135,7 @@ void Step::vApiStateTraceSession(MP_Task mpTask)
   ENTRY("vApiStateTraceSession"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("apiState::traceSession"_Stz);
   
   Job* pJob = _pJob(pJobPtr);

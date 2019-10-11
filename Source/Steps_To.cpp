@@ -25,7 +25,7 @@ void Step::vToBody(MP_Task mpTask)
   ENTRY("vToBody"_Stz);
   
   Object* pWordObject;
-  if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK(">body"_Stz);
   Word* pWord = _pWord(pWordObject);
   
@@ -34,7 +34,7 @@ void Step::vToBody(MP_Task mpTask)
   
   Object* pPtrBody = reinterpret_cast<Object*>(pBody);
   
-  mpTask->m_pDataStack->vPushPointer(pPtrBody);
+  mpTask->m_pForth->m_pDataStack->vPushPointer(pPtrBody);
   
   EXIT();
 }
@@ -47,12 +47,12 @@ void Step::vToInt(MP_Task mpTask)
   ENTRY("vToInt"_Stz);
   
   s32 sInt;
-  if ( ! mpTask->m_pDataStack->bPop(sInt) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sInt) )
     THROW_INVALID_DSTACK(">int"_Stz);
   
   i8 i = sInt.iToI8();
   
-  mpTask->m_pDataStack->vPushI8(i);
+  mpTask->m_pForth->m_pDataStack->vPushI8(i);
   
   EXIT();
 }
@@ -65,12 +65,12 @@ void Step::vToPtr(MP_Task mpTask)
   ENTRY("vToPtr"_Stz);
   
   i8 iPtr;
-  if ( ! mpTask->m_pDataStack->bPop(iPtr) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iPtr) )
     THROW_INVALID_DSTACK(">str"_Stz);
   
   Object* pPtr = (Object*)iPtr;
   
-  mpTask->m_pDataStack->vPushPointer(pPtr);
+  mpTask->m_pForth->m_pDataStack->vPushPointer(pPtr);
   
   EXIT();
 }
@@ -83,14 +83,14 @@ void Step::vToStr(MP_Task mpTask)
   ENTRY("vToStr"_Stz);
   
   GenVar xVal;
-  if ( ! mpTask->m_pDataStack->bPop(xVal) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(xVal) )
     THROW_INVALID_DSTACK(">str"_Stz);
   
   s48K sString;
   
   xVal.aNestedValue()->vToString(sString);
   
-  mpTask->m_pDataStack->vPushS48K(sString);
+  mpTask->m_pForth->m_pDataStack->vPushS48K(sString);
   
   EXIT();
 }
@@ -103,12 +103,12 @@ void Step::vToTask(MP_Task mpTask)
   ENTRY("vToTask"_Stz);
   
   i8 iVal;
-  if ( ! mpTask->m_pDataStack->bPop(iVal) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iVal) )
     THROW_INVALID_DSTACK(">task"_Stz);
   
   Object* pPtrTask = _pTask(iVal);
   
-  mpTask->m_pDataStack->vPushPointer(pPtrTask);
+  mpTask->m_pForth->m_pDataStack->vPushPointer(pPtrTask);
   
   EXIT();
 }

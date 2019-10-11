@@ -52,13 +52,13 @@ void Step::vTableAddIndex(MP_Task mpTask)
   Object* pPtrTable;
   Object* pPtrIndex;
   
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("table.addIndex"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrIndex) )
     THROW_INVALID_DSTACK("table.addIndex"_Stz);
   
   Index* pIndex = _pIndex(pPtrIndex);
@@ -79,20 +79,20 @@ void Step::vTableAnalyze(MP_Task mpTask)
   Object* pPtrTable;
   i8 iDetailed;
   
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("table.analyze"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
-  if ( ! mpTask->m_pDataStack->bPop(iDetailed) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iDetailed) )
     THROW_INVALID_DSTACK("table.analyze"_Stz);
   
   s48K sAnalysis;
   i8 nRows;
   sAnalysis = (Stz*)pTable->pAnalyzeTable(iDetailed == 1 ? true : false, nRows);
   
-  mpTask->m_pDataStack->vPushS48K(sAnalysis);
+  mpTask->m_pForth->m_pDataStack->vPushS48K(sAnalysis);
     
   EXIT();
 }
@@ -105,18 +105,18 @@ void Step::vTableIsValidIndexColumns(MP_Task mpTask)
   ENTRY("vTableIsValidIndexColumns"_Stz);
   
   Object* pPtrTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK(" table.isValidateIndexColumns"_Stz);
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
   Object* pPtrJob;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrJob) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob) )
     THROW_INVALID_DSTACK(" table.isValidateIndexColumns"_Stz);
   Job_CreateIndex* pJob_CreateIndex = _pJob_CreateIndex(pPtrJob);
   ASSERT(CN_JOB_CREATEINDEX == pJob_CreateIndex->eClass());
   
-  mpTask->m_pDataStack->vPushI8(pTable->bIsValidIndexColumns(pJob_CreateIndex));
+  mpTask->m_pForth->m_pDataStack->vPushI8(pTable->bIsValidIndexColumns(pJob_CreateIndex));
   
   EXIT();
 }
@@ -131,13 +131,13 @@ void Step::vTableLazyBuildIndexes(MP_Task mpTask)
   i8 iTxId;
   s48K sString;
   
-  if ( ! mpTask->m_pDataStack->bPop(sString) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sString) )
     THROW_INVALID_DSTACK("table.lazyBuildIndexes"_Stz);
   
   Table* pTable = reinterpret_cast<Table*>(sString.iToI8());
   ASSERT(CN_TABLE == pTable->eClass());
   
-  if ( ! mpTask->m_pDataStack->bPop(sString) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sString) )
     THROW_INVALID_DSTACK("table.lazyBuildIndexes"_Stz);
   
   iSlot = sString.iToI8();
@@ -157,13 +157,13 @@ void Step::vTableIsLoadingStore(MP_Task mpTask)
   Object* pPtrTable;
   i8 iLoading;
 
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("table.analyze"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
-  if ( ! mpTask->m_pDataStack->bPop(iLoading) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iLoading) )
     THROW_INVALID_DSTACK("table.isLoading"_Stz);
   
   pTable->vIsLoading(iLoading == 1 ? true : false);
@@ -179,18 +179,18 @@ void Step::vTableColumnFetch(MP_Task mpTask)
   ENTRY("vTableColumnFetch"_Stz);
   
   Object* pPtrTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTable) )
   THROW_INVALID_DSTACK("table.coumn@"_Stz);
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
   i8 iColumnNo;
-  if ( ! mpTask->m_pDataStack->bPop(iColumnNo) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iColumnNo) )
   THROW_INVALID_DSTACK("table.columnCount@"_Stz);
   
   ColumnVec* pColVec = pTable->pColumnVec();
   
-  mpTask->m_pDataStack->vPushPointer(pColVec->pGet(iColumnNo));
+  mpTask->m_pForth->m_pDataStack->vPushPointer(pColVec->pGet(iColumnNo));
   
   EXIT();
 }
@@ -203,7 +203,7 @@ void Step::vTableColumnCountFetch(MP_Task mpTask)
   ENTRY("vTableColumnCountFetch"_Stz);
   
   Object* pPtrTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTable) )
   THROW_INVALID_DSTACK("table.columnCount@"_Stz);
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -211,7 +211,7 @@ void Step::vTableColumnCountFetch(MP_Task mpTask)
   ColumnVec* pColVec = pTable->pColumnVec();
   i8 nColumns = pColVec->nItems();
   
-  mpTask->m_pDataStack->vPushI8(nColumns);
+  mpTask->m_pForth->m_pDataStack->vPushI8(nColumns);
   
   EXIT();
 }
@@ -224,13 +224,13 @@ void Step::vTableCreateColumnVec(MP_Task mpTask)
   ENTRY("vTableCreateColumnVec"_Stz);
   
   Object* pPtrTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("table.createColumnVec"_Stz);
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
   Object* pPtrJob;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrJob) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob) )
     THROW_INVALID_DSTACK("table.createColumnVec"_Stz);
   Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pPtrJob);
   ASSERT(CN_JOB_CREATETABLE == pJob_CreateTable->eClass());
@@ -248,7 +248,7 @@ void Step::vTableDrop(MP_Task mpTask)
 ENTRY("vTableDrop"_Stz);
   
   Object* pPtrTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("table.drop"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
@@ -267,7 +267,7 @@ ENTRY("vTableDump"_Stz);
   vTrace("TableDump\n"_Stz);
   
   Object* pPtrTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("table.dump"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
@@ -300,7 +300,7 @@ void Step::vTableGetColumnsAsString(MP_Task mpTask)
   ENTRY("vTableGetColumnsAsString"_Stz);
   
   Object* pPtrTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTable) )
   THROW_INVALID_DSTACK("table.getColumnsAsString"_Stz);
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -323,7 +323,7 @@ void Step::vTableGetColumnsAsString(MP_Task mpTask)
     s.vConcat(aCT[pColVec->pGet(i_Column)->eColumnType()]);
   }
   
-  mpTask->m_pDataStack->vPushS16KB(s);
+  mpTask->m_pForth->m_pDataStack->vPushS16KB(s);
   
   EXIT();
 }
@@ -336,19 +336,19 @@ void Step::vTableGetPtn(MP_Task mpTask)
   ENTRY("vTableGetPtn"_Stz);
   
   Object* pPtrTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("table.getPtn"_Stz);
   Table* pTable = _pTable(pPtrTable);
   
   i8 i_Ptn;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(i_Ptn) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(i_Ptn) )
     THROW_INVALID_DSTACK("table.getPtn"_Stz);
   
   // get the table partition
   i8 i_Slot = TablePtn::iPartitionToSlot(i_Ptn);
   TablePtn* pTablePtn = pTable->pPartition(i_Slot);
 
-  mpTask->m_pDataStack->vPushPointer(pTablePtn);
+  mpTask->m_pForth->m_pDataStack->vPushPointer(pTablePtn);
   
   EXIT();
 }
@@ -367,14 +367,14 @@ void Step::vTableInflateScan(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get parameters for the primitive
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("table.inflateScan"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
   Object* pPtrJob;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrJob) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob) )
     THROW_INVALID_DSTACK("table.inflateScan"_Stz);
   
   Job_SubScan* pJob_SubScan = _pJob_SubScan(pPtrJob);
@@ -428,13 +428,13 @@ void Step::vTableIndexCount(MP_Task mpTask)
   ENTRY("vTableIndexCount"_Stz);
   
   Object* pPtrTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("table.indexCount@"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass())
   
-  mpTask->m_pDataStack->vPushI8(pTable->pIdxVec()->nItems());
+  mpTask->m_pForth->m_pDataStack->vPushI8(pTable->pIdxVec()->nItems());
   
   EXIT();
 }
@@ -447,7 +447,7 @@ void Step::vTableInit(MP_Task mpTask)
 ENTRY("vTableInit"_Stz);
   
   Object* pPtrTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("table.init"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
@@ -466,14 +466,14 @@ void Step::vTableFindColumn(MP_Task mpTask)
   ENTRY("vTableFindColumn"_Stz);
   
   Object* pPtrTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("table.findColumn"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
   s32 sColumnName;
-  if ( ! mpTask->m_pDataStack->bPop(sColumnName) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sColumnName) )
     THROW_INVALID_DSTACK("table.findColumn"_Stz);
   
   ColumnVec* pColVec = pTable->pColumnVec();
@@ -493,7 +493,7 @@ void Step::vTableFindColumn(MP_Task mpTask)
   }
   RASSERT(bFound);
   
-  mpTask->m_pDataStack->vPushPointer(pColumn);
+  mpTask->m_pForth->m_pDataStack->vPushPointer(pColumn);
   
   EXIT();
 }
@@ -506,14 +506,14 @@ void Step::vTableIsColumn(MP_Task mpTask)
   ENTRY("vTableInit"_Stz);
   
   Object* pPtrTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("table.isColumn"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
   s32 sColumnName;
-  if ( ! mpTask->m_pDataStack->bPop(sColumnName) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sColumnName) )
     THROW_INVALID_DSTACK("table.isColumn"_Stz);
   
   ColumnVec* pColVec = pTable->pColumnVec();
@@ -532,7 +532,7 @@ void Step::vTableIsColumn(MP_Task mpTask)
     }
   }
   
-  mpTask->m_pDataStack->vPushI8(bFound);
+  mpTask->m_pForth->m_pDataStack->vPushI8(bFound);
   
   EXIT();
 }
@@ -545,7 +545,7 @@ void Step::vTableName(MP_Task mpTask)
   ENTRY("vTableName"_Stz);
   
   Object* pPtrTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("table.name"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
@@ -555,7 +555,7 @@ void Step::vTableName(MP_Task mpTask)
   
   sName = (Stz*)pTable->aTableName();
   
-  mpTask->m_pDataStack->vPushS32(sName);
+  mpTask->m_pForth->m_pDataStack->vPushS32(sName);
 
   EXIT();
 }
@@ -570,13 +570,13 @@ void Step::vTablePublish(MP_Task mpTask)
   Object* pPtrTable;
   i8 iSlot;
   
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("table.publish"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
-  if ( ! mpTask->m_pDataStack->bPopAsInt(iSlot) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iSlot) )
     THROW_INVALID_DSTACK("table.publish"_Stz);
   
   pTable->vPublish(iSlot);
@@ -593,16 +593,16 @@ void Step::vTablePurge(MP_Task mpTask)
   
   Object* pPtrTable;
   
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("table.purge"_Stz);
   Table* pTable = _pTable(pPtrTable);
   
   i8 iSlot;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(iSlot) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iSlot) )
     THROW_INVALID_DSTACK("table.purge"_Stz);
   
   i8 iOlderThanSeconds;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(iOlderThanSeconds) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iOlderThanSeconds) )
   THROW_INVALID_DSTACK("table.purge"_Stz);
   
   bool bPurged = pTable->bPurge(iSlot,iOlderThanSeconds);
@@ -620,12 +620,12 @@ void Step::vTableRemoveIndex(MP_Task mpTask)
   Object* pPtrTable;
   Object* pPtrIndex;
   
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("table.removeIndex"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
   
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrIndex) )
     THROW_INVALID_DSTACK("table.removeIndex"_Stz);
   
   Index* pIndex = _pIndex(pPtrIndex);
@@ -649,14 +649,14 @@ void Step::vTableScan(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get parameters for the primitive
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("table.scan"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
   Object* pPtrJob;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrJob) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob) )
     THROW_INVALID_DSTACK("table.scan"_Stz);
   
   Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pPtrJob);
@@ -745,7 +745,7 @@ void Step::vTableShowColumnVec(MP_Task mpTask)
   ENTRY("vTableShowColumnVec"_Stz);
   
   Object* pPtrTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("table.createColumnVec"_Stz);
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -763,7 +763,7 @@ void Step::vTableSubDic(MP_Task mpTask)
   ENTRY("vTableSubDic"_Stz);
   
   Object* pPtrTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("table.subDic"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
@@ -771,7 +771,7 @@ void Step::vTableSubDic(MP_Task mpTask)
   
   Dic* pDic = pTable->pSubDic();
   
-  mpTask->m_pDataStack->vPushPointer(pDic);
+  mpTask->m_pForth->m_pDataStack->vPushPointer(pDic);
   
   EXIT();
 }
@@ -784,14 +784,14 @@ void Step::vTableSubLoaders(MP_Task mpTask)
   ENTRY("vTableSubDic"_Stz);
   
   Object* pPtrTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("table.subLoaders"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
   i8 iSubLoaders;
-  if ( ! mpTask->m_pDataStack->bPop(iSubLoaders) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iSubLoaders) )
     THROW_INVALID_DSTACK("table.subLoaders"_Stz);
   
   pTable->vSubLoaders(iSubLoaders);
@@ -807,13 +807,13 @@ void Step::vTableSlots(MP_Task mpTask)
   ENTRY("vTableSlots"_Stz);
   
   Object* pPtrTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("table.slots"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
-  mpTask->m_pDataStack->vPushPointer(pTable->pSlots());
+  mpTask->m_pForth->m_pDataStack->vPushPointer(pTable->pSlots());
   
   EXIT();
 }
@@ -826,7 +826,7 @@ void Step::vTableSpace(MP_Task mpTask)
   ENTRY("vTableSpace"_Stz);
   
   Object* pPtrTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("table.space"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
@@ -834,7 +834,7 @@ void Step::vTableSpace(MP_Task mpTask)
   
   i8 iBuffers = pTable->nCrwBuffers();
   i8 iSpace = iBuffers * C_SIZE_POOL_BUFFER;
-  mpTask->m_pDataStack->vPushI8(iSpace);
+  mpTask->m_pForth->m_pDataStack->vPushI8(iSpace);
   
   EXIT();
 }
@@ -849,13 +849,13 @@ void Step::vTableTruncate(MP_Task mpTask)
   Object* pPtrTable;
   i8 iSlot;
   
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("table.truncate"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
-  if ( ! mpTask->m_pDataStack->bPopAsInt(iSlot) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iSlot) )
     THROW_INVALID_DSTACK("table.truncate"_Stz);
   
   pTable->vTruncate(iSlot);
@@ -872,7 +872,7 @@ void Step::vTableVerify(MP_Task mpTask)
   
   Object* pPtrTable;
   
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("table.verify"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
@@ -881,7 +881,7 @@ void Step::vTableVerify(MP_Task mpTask)
   bool bVerified = pTable->bVerifyTable();
   s256 s = bVerified ? "Valid"_Stz : "Invalid"_Stz;
   
-  mpTask->m_pDataStack->vPushS256(s);
+  mpTask->m_pForth->m_pDataStack->vPushS256(s);
   
   EXIT();
 }
@@ -895,7 +895,7 @@ void Step::vTableVisualize(MP_Task mpTask)
   
   Object* pPtrTable;
   
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("table.visualize"_Stz);
   
   Table* pTable = _pTable(pPtrTable);

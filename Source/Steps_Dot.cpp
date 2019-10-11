@@ -23,7 +23,7 @@ void Step::vDot(MP_Task mpTask)
   ENTRY("vDot"_Stz);
   
   GenVar xVariable;
-  if ( ! mpTask->m_pDataStack->bPop(xVariable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(xVariable) )
     THROW_INVALID_DSTACK("."_Stz);
   
   vTrace("[%s %s] %s\n"_Stz,
@@ -43,7 +43,7 @@ void Step::vDotPut(MP_Task mpTask)
   ENTRY("vDotPut"_Stz);
   
   GenVar xVariable;
-  if ( ! mpTask->m_pDataStack->bPop(xVariable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(xVariable) )
     THROW_INVALID_DSTACK(".put"_Stz);
   
   vTrace("%s"_Stz,xVariable.szStz());
@@ -71,7 +71,7 @@ void Step::vDotVerbose(MP_Task mpTask)
   ENTRY("vDotVerbose"_Stz);
   
   GenVar xVariable;
-  if ( ! mpTask->m_pDataStack->bPop(xVariable) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(xVariable) )
     THROW_INVALID_DSTACK(".verbose"_Stz);
   
   if (AM::bVerbose()) {

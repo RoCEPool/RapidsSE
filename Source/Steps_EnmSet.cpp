@@ -27,7 +27,7 @@ void Step::vEnmSetNew(MP_Task mpTask)
   
   EnameSet* pEnameSet = new EnameSet;
   
-  mpTask->m_pDataStack->vPushPointer(pEnameSet);
+  mpTask->m_pForth->m_pDataStack->vPushPointer(pEnameSet);
   
   EXIT();
 }
@@ -43,16 +43,16 @@ void Step::vEnmSetAddInt(MP_Task mpTask)
   ENTRY("vEnmSetAddInt"_Stz);
   
   Object* pEnameSet_obj;
-  if ( ! mpTask->m_pDataStack->bPop(pEnameSet_obj) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pEnameSet_obj) )
     THROW_INVALID_DSTACK("vEnmSetAddStr"_Stz);
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   
   i8 iValue;
-  if ( ! mpTask->m_pDataStack->bPop(iValue) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iValue) )
     THROW_INVALID_DSTACK("vEnmSetAddStr"_Stz);
   
   s32 sName;
-  if ( ! mpTask->m_pDataStack->bPop(sName) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sName) )
     THROW_INVALID_DSTACK("vEnmSetAddStr"_Stz);
   
   pEnameSet->vAdd(sName,iValue,TN_INTEGER);
@@ -69,16 +69,16 @@ void Step::vEnmSetAddStr(MP_Task mpTask)
   ENTRY("vEnmSetAddStr"_Stz);
   
   Object* pEnameSet_obj;
-  if ( ! mpTask->m_pDataStack->bPop(pEnameSet_obj) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pEnameSet_obj) )
     THROW_INVALID_DSTACK("vEnmSetAddStr"_Stz);
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
 
   s32 sValue;
-  if ( ! mpTask->m_pDataStack->bPop(sValue) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sValue) )
     THROW_INVALID_DSTACK("vEnmSetAddStr"_Stz);
   
   s32 sName;
-  if ( ! mpTask->m_pDataStack->bPop(sName) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sName) )
     THROW_INVALID_DSTACK("vEnmSetAddStr"_Stz);
   
   pEnameSet->vAdd(sName,sValue,TN_STRING);
@@ -95,7 +95,7 @@ void Step::vEnmSetAsStr(MP_Task mpTask)
   ENTRY("vEnmSetAsStr"_Stz);
   
   Object* pEnameSet_obj;
-  if ( ! mpTask->m_pDataStack->bPop(pEnameSet_obj) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pEnameSet_obj) )
     THROW_INVALID_DSTACK("vEnmSetAsStr"_Stz);
   
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
@@ -104,7 +104,7 @@ void Step::vEnmSetAsStr(MP_Task mpTask)
   SP_EnmSet spEnameSet;
   sStr = spEnameSet.sz(pEnameSet);
   
-  mpTask->m_pDataStack->vPushS4K(sStr);
+  mpTask->m_pForth->m_pDataStack->vPushS4K(sStr);
   
   EXIT();
 }
@@ -117,18 +117,18 @@ void Step::vEnmSetGetStr(MP_Task mpTask)
   ENTRY("vEnmSetGetStr"_Stz);
   
   Object* pEnameSet_obj;
-  if ( ! mpTask->m_pDataStack->bPop(pEnameSet_obj) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pEnameSet_obj) )
     THROW_INVALID_DSTACK("vEnmSetGetStr"_Stz);
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   
   s32 sName;
-  if ( ! mpTask->m_pDataStack->bPop(sName) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sName) )
     THROW_INVALID_DSTACK("vEnmSetGetStr"_Stz);
   
   s48K sValue;
   sValue = pEnameSet->szValue(sName);
   
-  mpTask->m_pDataStack->vPushS48K(sValue);
+  mpTask->m_pForth->m_pDataStack->vPushS48K(sValue);
   
   EXIT();
 }
@@ -141,17 +141,17 @@ void Step::vEnmSetHasName(MP_Task mpTask)
   ENTRY("vEnmSetHasName"_Stz);
   
   Object* pEnameSet_obj;
-  if ( ! mpTask->m_pDataStack->bPop(pEnameSet_obj) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pEnameSet_obj) )
     THROW_INVALID_DSTACK("vEnmSetHasName"_Stz);
   EnameSet* pEnameSet = _pEnameSet(pEnameSet_obj);
   
   s32 sName;
-  if ( ! mpTask->m_pDataStack->bPop(sName) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sName) )
     THROW_INVALID_DSTACK("vEnmSetHasName"_Stz);
 
   bool bHas = pEnameSet->bHasName(sName);
   
-  mpTask->m_pDataStack->vPushBool(bHas);
+  mpTask->m_pForth->m_pDataStack->vPushBool(bHas);
   
   EXIT();
 }

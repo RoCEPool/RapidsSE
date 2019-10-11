@@ -39,7 +39,7 @@ void Step::vDirChangeCurrent(MP_Task mpTask)
   ENTRY("vDirChangeCurrent"_Stz);
   
   s256 sDir;
-  if ( ! mpTask->m_pDataStack->bPop(sDir) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sDir) )
     THROW_INVALID_DSTACK("dir::changeCurrent"_Stz);
   
   if ( ! Dir::bChangeCurrent(sDir) )
@@ -56,12 +56,12 @@ void Step::vDirExists(MP_Task mpTask)
 ENTRY("vDirExists"_Stz);
   
   s256 sDirPath;
-  if ( ! mpTask->m_pDataStack->bPop(sDirPath) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sDirPath) )
     THROW_INVALID_DSTACK("dir::exists"_Stz);
   
   i8 iResult = Dir::bExists(sDirPath);
   
-  mpTask->m_pDataStack->vPushI8(iResult);
+  mpTask->m_pForth->m_pDataStack->vPushI8(iResult);
   
   EXIT();
 }
@@ -79,7 +79,7 @@ void Step::vDirGetCurrent(MP_Task mpTask)
   
   if (Dir::bGetCurrent(sDirPath)) {
     xStrVal = sDirPath;
-    mpTask->m_pDataStack->vPushGenVar(xStrVal);
+    mpTask->m_pForth->m_pDataStack->vPushGenVar(xStrVal);
   }
   else {
     THROW("Unable to get current directory"_Stz);
@@ -96,12 +96,12 @@ void Step::vDirMake(MP_Task mpTask)
 ENTRY("vDirMake"_Stz);
   
   s256 sPath;
-  if ( ! mpTask->m_pDataStack->bPop(sPath) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sPath) )
     THROW_INVALID_DSTACK("dir::make"_Stz);
   
   i8 iResult = Dir::bMake(sPath);
   
-  mpTask->m_pDataStack->vPushI8(iResult);
+  mpTask->m_pForth->m_pDataStack->vPushI8(iResult);
   
   EXIT();
 }
@@ -114,12 +114,12 @@ void Step::vDirRemove(MP_Task mpTask)
 ENTRY("vDirRemove"_Stz);
   
   s256 sPath;
-  if ( ! mpTask->m_pDataStack->bPop(sPath) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sPath) )
     THROW_INVALID_DSTACK("dir::remove"_Stz);
   
   i8 iResult = Dir::bRemove(sPath);
   
-  mpTask->m_pDataStack->vPushI8(iResult);
+  mpTask->m_pForth->m_pDataStack->vPushI8(iResult);
   
   EXIT();
 }
@@ -133,7 +133,7 @@ ENTRY("vDirClose"_Stz);
   
   Object* pPtrDir;
 
-  if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDir) )
     THROW_INVALID_DSTACK("dir.close"_Stz);
   
   Dir* pDir = _pDir(pPtrDir);
@@ -152,7 +152,7 @@ ENTRY("vDirDelete"_Stz);
   
   Object* pPtrDir;
   
-  if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDir) )
     THROW_INVALID_DSTACK("file.delete"_Stz);
   
   Dir* pDir = _pDir(pPtrDir);
@@ -171,7 +171,7 @@ ENTRY("vDirEntryName"_Stz);
   
   Object* pPtrDir;
   
-  if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDir) )
     THROW_INVALID_DSTACK("dir.close"_Stz);
   
   Dir* pDir = _pDir(pPtrDir);
@@ -180,7 +180,7 @@ ENTRY("vDirEntryName"_Stz);
   
   sEntryName = pDir->sEntryName();
   
-  mpTask->m_pDataStack->vPushS256(sEntryName);
+  mpTask->m_pForth->m_pDataStack->vPushS256(sEntryName);
   
   EXIT();
 }
@@ -194,7 +194,7 @@ ENTRY("vDirEntryType"_Stz);
   
   Object* pPtrDir;
   
-  if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDir) )
     THROW_INVALID_DSTACK("dir.close"_Stz);
   
   Dir* pDir = _pDir(pPtrDir);
@@ -203,7 +203,7 @@ ENTRY("vDirEntryType"_Stz);
   
   iEntryType = pDir->iEntryType();
   
-  mpTask->m_pDataStack->vPushI8(iEntryType);
+  mpTask->m_pForth->m_pDataStack->vPushI8(iEntryType);
   
   EXIT();
 }
@@ -217,14 +217,14 @@ ENTRY("vDirIsClosed"_Stz);
   
   Object* pPtrDir;
   
-  if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDir) )
     THROW_INVALID_DSTACK("dir.close"_Stz);
   
   Dir* pDir = _pDir(pPtrDir);
   
   bool bIsClosed = pDir->bIsClosed();
   
-  mpTask->m_pDataStack->vPushI8(bIsClosed);
+  mpTask->m_pForth->m_pDataStack->vPushI8(bIsClosed);
   
   EXIT();
 }
@@ -238,14 +238,14 @@ ENTRY("vDirIsOpen"_Stz);
   
   Object* pPtrDir;
   
-  if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDir) )
     THROW_INVALID_DSTACK("dir.close"_Stz);
   
   Dir* pDir = _pDir(pPtrDir);
   
   bool bIsOpen = pDir->bIsOpen();
   
-  mpTask->m_pDataStack->vPushI8(bIsOpen);
+  mpTask->m_pForth->m_pDataStack->vPushI8(bIsOpen);
   
   EXIT();
 }
@@ -262,7 +262,7 @@ ENTRY("vDirNew"_Stz);
   Object* pPtrDir;
   pPtrDir = (Object*)pDir;
   
-  mpTask->m_pDataStack->vPushPointer(pPtrDir);
+  mpTask->m_pForth->m_pDataStack->vPushPointer(pPtrDir);
   
   EXIT();
 }
@@ -276,17 +276,17 @@ ENTRY("vDirOpen"_Stz);
   
   Object* pPtrDir;
   
-  if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDir) )
     THROW_INVALID_DSTACK("dir.open"_Stz);
   Dir* pDir = _pDir(pPtrDir);
   
   s256 sPath;
-  if ( ! mpTask->m_pDataStack->bPop(sPath) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sPath) )
     THROW_INVALID_DSTACK("dir.open"_Stz);
   
   bool bOpened = pDir->bOpen(sPath);
   
-  mpTask->m_pDataStack->vPushI8(bOpened);
+  mpTask->m_pForth->m_pDataStack->vPushI8(bOpened);
   
   EXIT();
 }
@@ -300,7 +300,7 @@ ENTRY("vDirPathGet"_Stz);
   
   Object* pPtrDir;
   
-  if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDir) )
     THROW_INVALID_DSTACK("dir.path@"_Stz);
   
   Dir* pDir = _pDir(pPtrDir);
@@ -309,7 +309,7 @@ ENTRY("vDirPathGet"_Stz);
   
   sPath = pDir->sPath();
   
-  mpTask->m_pDataStack->vPushS256(sPath);
+  mpTask->m_pForth->m_pDataStack->vPushS256(sPath);
 
   
   EXIT();
@@ -324,14 +324,14 @@ ENTRY("vDirRead"_Stz);
   
   Object* pPtrDir;
   
-  if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDir) )
     THROW_INVALID_DSTACK("dir.read"_Stz);
   
   Dir* pDir = _pDir(pPtrDir);
   
   bool bRead  = pDir->bRead();
   
-  mpTask->m_pDataStack->vPushI8(bRead);
+  mpTask->m_pForth->m_pDataStack->vPushI8(bRead);
   
   EXIT();
 }
@@ -345,7 +345,7 @@ ENTRY("vDirRewind"_Stz);
   
   Object* pPtrDir;
   
-  if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDir) )
     THROW_INVALID_DSTACK("dir.rewind"_Stz);
   
   Dir* pDir = _pDir(pPtrDir);
@@ -364,13 +364,13 @@ ENTRY("vDirSeek"_Stz);
   
   Object* pPtrDir;
   
-  if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDir) )
     THROW_INVALID_DSTACK("dir.seek"_Stz);
   
   Dir* pDir = _pDir(pPtrDir);
   
   i8 iPosition;
-  if ( ! mpTask->m_pDataStack->bPop(iPosition) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iPosition) )
     THROW_INVALID_DSTACK("dir.seek"_Stz);
   
   pDir->vSeek(iPosition);
@@ -387,14 +387,14 @@ ENTRY("vDirTell"_Stz);
   
   Object* pPtrDir;
   
-  if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrDir) )
     THROW_INVALID_DSTACK("dir.tell"_Stz);
   
   Dir* pDir = _pDir(pPtrDir);
   
   i8 iPosition = pDir->iTell();
   
-  mpTask->m_pDataStack->vPushI8(iPosition);
+  mpTask->m_pForth->m_pDataStack->vPushI8(iPosition);
   
   EXIT();
 }

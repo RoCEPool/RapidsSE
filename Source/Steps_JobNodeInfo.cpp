@@ -20,11 +20,11 @@ void Step::vJob_NodeInfoNodeNameFetch(MP_Task mpTask)
   ENTRY("vJob_NodeInfoNodeNameFetch"_Stz);
   
   Object* pPtrJob_NodeInfo;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_NodeInfo) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_NodeInfo) )
     THROW_INVALID_DSTACK("job_nodeInfo.nodeName@"_Stz);
   Job_NodeInfo* pJob_NodeInfo = _pJob_NodeInfo(pPtrJob_NodeInfo);
   
-  mpTask->m_pDataStack->vPushS32(pJob_NodeInfo->m_sNodeName);
+  mpTask->m_pForth->m_pDataStack->vPushS32(pJob_NodeInfo->m_sNodeName);
   
   EXIT();
 }

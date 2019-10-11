@@ -20,11 +20,11 @@ void Step::vJob_NetHogHogNoFetch(MP_Task mpTask)
   ENTRY("vJob_NetHogHogNoFetch"_Stz);
   
   Object* pPtrJob_NetHog;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_NetHog) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrJob_NetHog) )
     THROW_INVALID_DSTACK("job_nethog.hogNo@"_Stz);
   Job_NetHog* pJob_NetHog = _pJob_NetHog(pPtrJob_NetHog);
   
-  mpTask->m_pDataStack->vPushI8(pJob_NetHog->m_iHogNo);
+  mpTask->m_pForth->m_pDataStack->vPushI8(pJob_NetHog->m_iHogNo);
   
   EXIT();
 }

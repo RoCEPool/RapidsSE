@@ -22,12 +22,12 @@ void Step::vJobMark2IndexStore(MP_Task mpTask)
   ENTRY("vJobMark2IndexStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("jobMark2indextable!"_Stz);
   JobMark2* pJobMark2 = _pJobMark2(pJobPtr);
   
   Object* pIndexPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pIndexPtr) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pIndexPtr) )
     THROW_INVALID_DSTACK("jobMark2indextable!"_Stz);
   Index* pIndex = _pIndex(pIndexPtr);
   
@@ -44,14 +44,14 @@ void Step::vJobMark2TableNameFetch(MP_Task mpTask)
   ENTRY("vJobMark2TableNameFetch"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("jobMark2.tableName@"_Stz);
   JobMark2* pJobMark2 = _pJobMark2(pJobPtr);
   
   s32 sTableNm;
   sTableNm = pJobMark2->szObjectName();
   
-  mpTask->m_pDataStack->vPushS32(sTableNm);
+  mpTask->m_pForth->m_pDataStack->vPushS32(sTableNm);
 
   EXIT();
 }
@@ -64,12 +64,12 @@ void Step::vJobMark2TableStore(MP_Task mpTask)
   ENTRY("vJobMark2TableStore"_Stz);
   
   Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("jobMark2.table!"_Stz);
   JobMark2* pJobMark2 = _pJobMark2(pJobPtr);
 
   Object* pTablePtr;
-  if ( ! mpTask->m_pDataStack->bPop(pTablePtr) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTablePtr) )
     THROW_INVALID_DSTACK("jobMark2.table!"_Stz);
   Table* pTable = _pTable(pTablePtr);
   

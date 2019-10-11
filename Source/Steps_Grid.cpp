@@ -37,7 +37,7 @@ void Step::vGridConnectedNodes(MP_Task mpTask)
   
   i8 nConnectedNodes = AM::pGrid()->nConnectedNodes();
 
-  mpTask->m_pDataStack->vPushI8(nConnectedNodes);
+  mpTask->m_pForth->m_pDataStack->vPushI8(nConnectedNodes);
   
   EXIT();
 }
@@ -49,7 +49,7 @@ void Step::vGridDefinedNodes(MP_Task mpTask)
 {
   ENTRY("vGridDefinedNodes"_Stz);
   
-  mpTask->m_pDataStack->vPushI8(AM::pGrid()->nDefinedNodes());
+  mpTask->m_pForth->m_pDataStack->vPushI8(AM::pGrid()->nDefinedNodes());
   
   EXIT();
 }
@@ -62,12 +62,12 @@ void Step::vGridFindNode(MP_Task mpTask)
   ENTRY("vGridFindNode"_Stz);
   
   s256 sNodeNm;
-  if ( ! mpTask->m_pDataStack->bPop(sNodeNm) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sNodeNm) )
     THROW_INVALID_DSTACK("grid::findNode"_Stz);
   
   Node* pNode = AM::pGrid()->pFindNode(sNodeNm);
   
-  mpTask->m_pDataStack->vPushPointer(pNode);
+  mpTask->m_pForth->m_pDataStack->vPushPointer(pNode);
   
   EXIT();
 }
@@ -92,12 +92,12 @@ void Step::vGridNode(MP_Task mpTask)
   ENTRY("vGridNode"_Stz);
   
   i8 iNode;
-  if ( ! mpTask->m_pDataStack->bPop(iNode) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iNode) )
     THROW_INVALID_DSTACK("grid::node"_Stz);
   
   Node* pNode = AM::pGrid()->pGetNode(iNode);
   
-  mpTask->m_pDataStack->vPushPointer(pNode);
+  mpTask->m_pForth->m_pDataStack->vPushPointer(pNode);
   
   EXIT();
 }
@@ -109,7 +109,7 @@ void Step::vGridPartitions(MP_Task mpTask)
 {
   ENTRY("vGridNode"_Stz);
   
-  mpTask->m_pDataStack->vPushI8(AM::pGrid()->nPartitions());
+  mpTask->m_pForth->m_pDataStack->vPushI8(AM::pGrid()->nPartitions());
   
   EXIT();
 }
@@ -151,7 +151,7 @@ void Step::vGridSlots(MP_Task mpTask)
 {
   ENTRY("vGridNode"_Stz);
   
-  mpTask->m_pDataStack->vPushI8(AM::pGrid()->nSlotsPerNode());
+  mpTask->m_pForth->m_pDataStack->vPushI8(AM::pGrid()->nSlotsPerNode());
   
   EXIT();
 }
@@ -167,7 +167,7 @@ void Step::vGridThisNodeFetch(MP_Task mpTask)
   
   i8 iNodeNo = AM::pGrid()->iThisNode();
   
-  mpTask->m_pDataStack->vPushI8(iNodeNo);
+  mpTask->m_pForth->m_pDataStack->vPushI8(iNodeNo);
   
   EXIT();
 }
@@ -182,7 +182,7 @@ void Step::vGridThisNodeNameFetch(MP_Task mpTask)
   s256 sName;
   sName = AM::pGrid()->pThisNode()->szNodeName();
   
-  mpTask->m_pDataStack->vPushS256(sName);
+  mpTask->m_pForth->m_pDataStack->vPushS256(sName);
   
   EXIT();
 }
@@ -196,7 +196,7 @@ void Step::vGridStartedStore(MP_Task mpTask)
   
   i8 iStarted;
   
-  if ( ! mpTask->m_pDataStack->bPop(iStarted) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iStarted) )
     THROW_INVALID_DSTACK("grid::started!"_Stz);
   
   AM::pGrid()->vHasStarted(iStarted == 1 ? true : false);
@@ -211,7 +211,7 @@ void Step::vGridStartNodeFetch(MP_Task mpTask)
 {
   ENTRY("vGridStartNodeFetch"_Stz);
   
-  mpTask->m_pDataStack->vPushI8(AM::pGrid()->iStartNode());
+  mpTask->m_pForth->m_pDataStack->vPushI8(AM::pGrid()->iStartNode());
   
   EXIT();
 }
@@ -225,7 +225,7 @@ void Step::vGridStartNodeStore(MP_Task mpTask)
   
   i8 iStartNode;
   
-  if ( ! mpTask->m_pDataStack->bPop(iStartNode) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iStartNode) )
     THROW_INVALID_DSTACK("grid::StartNode!"_Stz);
   
   AM::pGrid()->vStartNode(iStartNode);
@@ -240,7 +240,7 @@ void Step::vGridStartedFetch(MP_Task mpTask)
 {
   ENTRY("vGridGetStarted"_Stz);
   
-  mpTask->m_pDataStack->vPushI8(AM::pGrid()->bHasStarted());
+  mpTask->m_pForth->m_pDataStack->vPushI8(AM::pGrid()->bHasStarted());
   
   EXIT();
 }
@@ -253,15 +253,15 @@ void Step::vGridToNode(MP_Task mpTask)
   ENTRY("vGridToNode"_Stz);
   
   i8 iParitionId;
-  if ( ! mpTask->m_pDataStack->bPop(iParitionId) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iParitionId) )
     THROW_INVALID_DSTACK("grid::toNode"_Stz);
   
   // for the moment its always node 0                      //! DISCUSS WITH ALKA
-  //mpTask->m_pDataStack->vPush((i8)0);
+  //mpTask->m_pForth->m_pDataStack->vPush((i8)0);
   
   i8 iNodeNo = TablePtn::iPartitionToNode(iParitionId);
   
-  mpTask->m_pDataStack->vPushI8(iNodeNo);
+  mpTask->m_pForth->m_pDataStack->vPushI8(iNodeNo);
   
   EXIT();
 }
@@ -274,12 +274,12 @@ void Step::vGridToPartition(MP_Task mpTask)
   ENTRY("vGridToPartition"_Stz);
   
   i8 iSlot;
-  if ( ! mpTask->m_pDataStack->bPop(iSlot) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iSlot) )
     THROW_INVALID_DSTACK("grid::toPartition"_Stz);
   
   i8 iPartitionId = TablePtn::iSlotToPartition(iSlot);
   
-  mpTask->m_pDataStack->vPushI8(iPartitionId);              //! DISCUSS WITH ALKA
+  mpTask->m_pForth->m_pDataStack->vPushI8(iPartitionId);              //! DISCUSS WITH ALKA
   
   EXIT();
 }
@@ -292,12 +292,12 @@ void Step::vGridToSlot(MP_Task mpTask)
   ENTRY("vGridToSlot"_Stz);
   
   i8 iPartitionId;
-  if ( ! mpTask->m_pDataStack->bPop(iPartitionId) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iPartitionId) )
     THROW_INVALID_DSTACK("grid::toSlot"_Stz);
   
   i8 iSlot = TablePtn::iPartitionToSlot(iPartitionId);
   
-  mpTask->m_pDataStack->vPushI8(iSlot);                     //! DISCUSS WITH ALKA
+  mpTask->m_pForth->m_pDataStack->vPushI8(iSlot);                     //! DISCUSS WITH ALKA
   
   EXIT();
 }

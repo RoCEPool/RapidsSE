@@ -42,7 +42,7 @@ void Step::vLogMark(MP_Task mpTask)
   
   s256 sMark;
 
-  if ( ! mpTask->m_pDataStack->bPop(sMark) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sMark) )
     THROW_INVALID_DSTACK("log::mark"_Stz);
 
   //i8 iJobId = mpTask->m_pJob->m_iUniqueId;
@@ -60,7 +60,7 @@ void Step::vLogMarkEntry(MP_Task mpTask)
   
   s256 sWordNm;
   
-  if ( ! mpTask->m_pDataStack->bPop(sWordNm) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sWordNm) )
     THROW_INVALID_DSTACK("log::markEntry"_Stz);
   
   Job* pJob = mpTask->m_pJob;
@@ -80,7 +80,7 @@ void Step::vLogMarkExit(MP_Task mpTask)
   
   s256 sWordNm;
   
-  if ( ! mpTask->m_pDataStack->bPop(sWordNm) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sWordNm) )
     THROW_INVALID_DSTACK("log::markExit"_Stz);
   
   Job* pJob = mpTask->m_pJob;
@@ -100,7 +100,7 @@ void Step::vLogMarkPhase(MP_Task mpTask)
   ENTRY("vActivityLogMarkPhase"_Stz);
   
   i8 i_Phase;
-  if ( ! mpTask->m_pDataStack->bPop(i_Phase) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(i_Phase) )
     THROW_INVALID_DSTACK("log::markPhase"_Stz);
   
   Job* pJob = mpTask->m_pJob;
@@ -122,11 +122,11 @@ void Step::vLogMarkSeed(MP_Task mpTask)
   ENTRY("vLogMarkSeed"_Stz);
   
   i8 iSeed;
-  if ( ! mpTask->m_pDataStack->bPop(iSeed) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iSeed) )
     THROW_INVALID_DSTACK("log::markSeed"_Stz);
   
   s32 sWordNm;
-  if ( ! mpTask->m_pDataStack->bPop(sWordNm) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sWordNm) )
     THROW_INVALID_DSTACK("log::markSeed"_Stz);
   
   //ActLog::vAdd(mpTask->m_pJob,(eAN)iSeed,sWordNm.aStz());
@@ -142,11 +142,11 @@ void Step::vLogMarkWord(MP_Task mpTask)
   ENTRY("vLogMarkWord"_Stz);
   
   i8 iAN;
-  if ( ! mpTask->m_pDataStack->bPop(iAN) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iAN) )
     THROW_INVALID_DSTACK("log::markWord"_Stz);
   
   s32 sWordNm;
-  if ( ! mpTask->m_pDataStack->bPop(sWordNm) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sWordNm) )
     THROW_INVALID_DSTACK("log::markWord"_Stz);
   
   //ActLog::vAdd(mpTask->m_pJob,(eAN)iAN,sWordNm.aStz());
@@ -162,7 +162,7 @@ void Step::vLogJobSeed(MP_Task mpTask)
   ENTRY("vLogJobSeed"_Stz);
   
   i8 i_Seed;
-  if ( ! mpTask->m_pDataStack->bPop(i_Seed) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(i_Seed) )
     THROW_INVALID_DSTACK("log::JobSeed"_Stz);
   
   Job* pJob = mpTask->m_pJob;

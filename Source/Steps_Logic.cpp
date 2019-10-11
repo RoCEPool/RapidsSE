@@ -22,16 +22,16 @@ void Step::vLogicAnd(MP_Task mpTask)
   ENTRY("vLogicAnd"_Stz);
   
   i8 iArgB;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(iArgB) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iArgB) )
     THROW_INVALID_DSTACK("and"_Stz);
   
   i8 iArgA;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(iArgA) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iArgA) )
     THROW_INVALID_DSTACK("and"_Stz);
   
   i8 iArgR = (iArgA && iArgB) ? 1 : 0;
   
-  mpTask->m_pDataStack->vPushI8(iArgR);
+  mpTask->m_pForth->m_pDataStack->vPushI8(iArgR);
   
   EXIT();
 }
@@ -44,12 +44,12 @@ void Step::vLogicNot(MP_Task mpTask)
   ENTRY("vLogicNot"_Stz);
   
   i8 iValA;
-  if ( ! mpTask->m_pDataStack->bPopAsI8_Inline(iValA) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsI8_Inline(iValA) )
     THROW_INVALID_DSTACK("not"_Stz);
   
   i8 iNotA = iValA ? 0 : 1;
   
-  mpTask->m_pDataStack->vPushI8(iNotA);
+  mpTask->m_pForth->m_pDataStack->vPushI8(iNotA);
   
   EXIT();
 }
@@ -62,16 +62,16 @@ void Step::vLogicOr(MP_Task mpTask)
   ENTRY("vLogicOr"_Stz);
   
   i8 iArgB;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(iArgB) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iArgB) )
     THROW_INVALID_DSTACK("or"_Stz);
   
   i8 iArgA;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(iArgA) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPopAsInt(iArgA) )
     THROW_INVALID_DSTACK("or"_Stz);
   
   i8 iArgR = (iArgA || iArgB) ? 1 : 0;
   
-  mpTask->m_pDataStack->vPushI8(iArgR);
+  mpTask->m_pForth->m_pDataStack->vPushI8(iArgR);
   
   EXIT();
 }

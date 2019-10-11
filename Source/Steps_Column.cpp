@@ -26,7 +26,7 @@ void Step::vColumnIsNullableFetch(MP_Task mpTask)
   
   Object* pPtrColumn;
   
-  if ( ! mpTask->m_pDataStack->bPop(pPtrColumn) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrColumn) )
   THROW_INVALID_DSTACK("column.isNullable"_Stz);
   
   Column* pColumn = _pColumn(pPtrColumn);
@@ -35,7 +35,7 @@ void Step::vColumnIsNullableFetch(MP_Task mpTask)
   s32 sColumnIsNullable;
   sColumnIsNullable = pColumn->bIsNullable() ? "true"_Stz : "false"_Stz;
   
-  mpTask->m_pDataStack->vPushS32(sColumnIsNullable);
+  mpTask->m_pForth->m_pDataStack->vPushS32(sColumnIsNullable);
   
   EXIT();
 }
@@ -49,7 +49,7 @@ void Step::vColumnIsPartitionKeyFetch(MP_Task mpTask)
   
   Object* pPtrColumn;
   
-  if ( ! mpTask->m_pDataStack->bPop(pPtrColumn) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrColumn) )
   THROW_INVALID_DSTACK("column.isPartitionKey"_Stz);
   
   Column* pColumn = _pColumn(pPtrColumn);
@@ -58,7 +58,7 @@ void Step::vColumnIsPartitionKeyFetch(MP_Task mpTask)
   s32 sIsPartitionKey;
   sIsPartitionKey = pColumn->bIsPtnKey() ? "true"_Stz : "false"_Stz;
   
-  mpTask->m_pDataStack->vPushS32(sIsPartitionKey);
+  mpTask->m_pForth->m_pDataStack->vPushS32(sIsPartitionKey);
   
   EXIT();
 }
@@ -72,13 +72,13 @@ void Step::vColumnLengthFetch(MP_Task mpTask)
   
   Object* pPtrColumn;
   
-  if ( ! mpTask->m_pDataStack->bPop(pPtrColumn) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrColumn) )
   THROW_INVALID_DSTACK("column.length"_Stz);
   
   Column* pColumn = _pColumn(pPtrColumn);
   ASSERT(CN_COLUMN == pColumn->eClass());
   
-  mpTask->m_pDataStack->vPushI8(pColumn->iColumnLength());
+  mpTask->m_pForth->m_pDataStack->vPushI8(pColumn->iColumnLength());
   
   EXIT();
 }
@@ -92,13 +92,13 @@ void Step::vColumnNameFetch(MP_Task mpTask)
   
   Object* pPtrColumn;
   
-  if ( ! mpTask->m_pDataStack->bPop(pPtrColumn) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrColumn) )
   THROW_INVALID_DSTACK("column.name"_Stz);
   
   Column* pColumn = _pColumn(pPtrColumn);
   ASSERT(CN_COLUMN == pColumn->eClass());
   
-  mpTask->m_pDataStack->vPushS32(pColumn->sColumnName());
+  mpTask->m_pForth->m_pDataStack->vPushS32(pColumn->sColumnName());
   
   EXIT();
 }
@@ -112,13 +112,13 @@ void Step::vColumnScaleFetch(MP_Task mpTask)
   
   Object* pPtrColumn;
   
-  if ( ! mpTask->m_pDataStack->bPop(pPtrColumn) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrColumn) )
   THROW_INVALID_DSTACK("column.scale"_Stz);
   
   Column* pColumn = _pColumn(pPtrColumn);
   ASSERT(CN_COLUMN == pColumn->eClass());
   
-  mpTask->m_pDataStack->vPushI8(pColumn->iColumnScale());
+  mpTask->m_pForth->m_pDataStack->vPushI8(pColumn->iColumnScale());
   
   EXIT();
 }
@@ -132,7 +132,7 @@ void Step::vColumnTypeFetch(MP_Task mpTask)
   
   Object* pPtrColumn;
   
-  if ( ! mpTask->m_pDataStack->bPop(pPtrColumn) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pPtrColumn) )
   THROW_INVALID_DSTACK("column.type"_Stz);
   
   Column* pColumn = _pColumn(pPtrColumn);
@@ -141,7 +141,7 @@ void Step::vColumnTypeFetch(MP_Task mpTask)
   s32 sColumnType;
   sColumnType = aCT[pColumn->eColumnType()];
   
-  mpTask->m_pDataStack->vPushS32(sColumnType);
+  mpTask->m_pForth->m_pDataStack->vPushS32(sColumnType);
   
   EXIT();
 }

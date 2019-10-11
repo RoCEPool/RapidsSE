@@ -24,7 +24,7 @@ void Step::vAddressEqual(MP_Task mpTask)
   GenVar xAddressA;
   GenVar xAddressB;
   
-  if ( ! mpTask->m_pDataStack->bPop(xAddressA,xAddressB) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(xAddressA,xAddressB) )
     THROW_INVALID_DSTACK("eql"_Stz);
   
   i8 iA = xAddressA.iInt();
@@ -32,7 +32,7 @@ void Step::vAddressEqual(MP_Task mpTask)
   
   i8 r = iA == iB;
   
-  mpTask->m_pDataStack->vPushI8(r);
+  mpTask->m_pForth->m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -45,7 +45,7 @@ void Step::vAddressFetch(MP_Task mpTask)
   ENTRY("vAddressFetch"_Stz);
   
   Object* pObject;
-  if ( ! mpTask->m_pDataStack->bPop(pObject) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("@"_Stz);
   
   GenVar xValFetched;
@@ -75,7 +75,7 @@ void Step::vAddressFetch(MP_Task mpTask)
       THROW("Invalid eClass %lld"_Stz,eClass);
   }
   
-  mpTask->m_pDataStack->vPushGenVar(xValFetched);
+  mpTask->m_pForth->m_pDataStack->vPushGenVar(xValFetched);
   
   EXIT();
 }
@@ -88,11 +88,11 @@ void Step::vAddressStore(MP_Task mpTask)
   ENTRY("vAddressStore"_Stz);
   
   Object* pObject;
-  if ( ! mpTask->m_pDataStack->bPop(pObject) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("!"_Stz);
   
   GenVar xValStored;
-  if ( ! mpTask->m_pDataStack->bPop(xValStored) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(xValStored) )
     THROW_INVALID_DSTACK("!"_Stz);
   
   ForthValue* aValue = reinterpret_cast<ForthValue*>(pObject);

@@ -62,14 +62,14 @@ void Step::vStrCat(MP_Task mpTask)
   s48K sStrB;
   s48K sStrA;
   
-  if ( ! mpTask->m_pDataStack->bPop(sStrB,sStrA) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sStrB,sStrA) )
     THROW_INVALID_DSTACK("str.cat"_Stz);
   
   sStrR = sStrA;
   
   sStrR.vConcat(sStrB);
   
-  mpTask->m_pDataStack->vPushS48K(sStrR);
+  mpTask->m_pForth->m_pDataStack->vPushS48K(sStrR);
   
   EXIT();
 }
@@ -86,7 +86,7 @@ void Step::vStrClip(MP_Task mpTask)
   s48K sSubStr;
   
   // get the arguments
-  if ( ! mpTask->m_pDataStack->bPop(sString,iLength) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sString,iLength) )
     THROW_INVALID_DSTACK("str.clip"_Stz);
   
   // validate length
@@ -104,7 +104,7 @@ void Step::vStrClip(MP_Task mpTask)
   
   StrLib::vCopyLen(sSubStr.aChar(),pStart,llabs(iLength));
   
-  mpTask->m_pDataStack->vPushS48K(sSubStr);
+  mpTask->m_pForth->m_pDataStack->vPushS48K(sSubStr);
   
   EXIT();
 }
@@ -120,14 +120,14 @@ void Step::vStrEqual(MP_Task mpTask)
   GenVar xStringB;
   
   // get the arguments
-  if ( ! mpTask->m_pDataStack->bPop(xStringB,xStringA) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(xStringB,xStringA) )
     THROW_INVALID_DSTACK("str.equal"_Stz);
   
   i8 iEqual = StrLib::bEqualTo(_aStrVal(xStringA.aNestedValue())->aChar(),
                                _aStrVal(xStringB.aNestedValue())->aChar(),
                                C_NO_CASE);
   
-  mpTask->m_pDataStack->vPushI8(iEqual);
+  mpTask->m_pForth->m_pDataStack->vPushI8(iEqual);
   
   EXIT();
 }
@@ -143,12 +143,12 @@ void Step::vStrEscape(MP_Task mpTask)
   s48K xEscaped;
   
   // get the arguments
-  if ( ! mpTask->m_pDataStack->bPop(xArg) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(xArg) )
     THROW_INVALID_DSTACK("str.escape"_Stz);
   
   StrLib::vEscape(xArg.aChar(),xEscaped.aChar());
   
-  mpTask->m_pDataStack->vPushS48K(xEscaped);
+  mpTask->m_pForth->m_pDataStack->vPushS48K(xEscaped);
   
   EXIT();
 }
@@ -161,7 +161,7 @@ void Step::vStrFirstCsv(MP_Task mpTask)
   ENTRY("vStrFirstCsv"_Stz);
   
   s48K sStr;
-  if ( ! mpTask->m_pDataStack->bPop(sStr) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sStr) )
     THROW_INVALID_DSTACK("str.firstCsv"_Stz);
   
   s48K sFirstValue;
@@ -171,7 +171,7 @@ void Step::vStrFirstCsv(MP_Task mpTask)
   if (! StrLib::bExtractItem(&aValue,sFirstValue.aChar(), ','))
     sFirstValue = ""_Stz;
   
-  mpTask->m_pDataStack->vPushS48K(sFirstValue);
+  mpTask->m_pForth->m_pDataStack->vPushS48K(sFirstValue);
   
   EXIT();
 }
@@ -184,14 +184,14 @@ void Step::vStrFormat(MP_Task mpTask)
   ENTRY("vStrFormat"_Stz);
   
   s48K sFormat;
-  if ( ! mpTask->m_pDataStack->bPop(sFormat) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sFormat) )
     THROW_INVALID_DSTACK("str.format"_Stz);
   
   s48K sString;
   
   mpTask->vSprint(sFormat,sString);
   
-  mpTask->m_pDataStack->vPushS48K(sString);
+  mpTask->m_pForth->m_pDataStack->vPushS48K(sString);
   
   EXIT();
 }
@@ -208,7 +208,7 @@ void Step::vStrLeft(MP_Task mpTask)
   s48K sSubStr;
   
   // get the arguments
-  if ( ! mpTask->m_pDataStack->bPop(sString,iLength) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sString,iLength) )
     THROW_INVALID_DSTACK("str.left"_Stz);
   
   // validate length
@@ -221,7 +221,7 @@ void Step::vStrLeft(MP_Task mpTask)
   
   StrLib::vCopyLen(sSubStr.aChar(),pStart,iLength);
   
-  mpTask->m_pDataStack->vPushS48K(sSubStr);
+  mpTask->m_pForth->m_pDataStack->vPushS48K(sSubStr);
   
   EXIT();
 }
@@ -237,12 +237,12 @@ void Step::vStrLength(MP_Task mpTask)
   s48K sString;
   
   // get the arguments
-  if ( ! mpTask->m_pDataStack->bPop(sString) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sString) )
     THROW_INVALID_DSTACK("str.length"_Stz);
   
   iLength = sString.iLength();
   
-  mpTask->m_pDataStack->vPushI8(iLength);
+  mpTask->m_pForth->m_pDataStack->vPushI8(iLength);
   
   EXIT();
 }
@@ -261,7 +261,7 @@ void Step::vStrPrepend(MP_Task mpTask)
   GenVar xValA;
   GenVar xValB;
   
-  if ( ! mpTask->m_pDataStack->bPop(xValB,xValA) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(xValB,xValA) )
     THROW_INVALID_DSTACK("str.prepend"_Stz);
   
   // If received INTEGER convert to STRING
@@ -290,7 +290,7 @@ void Step::vStrPrepend(MP_Task mpTask)
   
   xStrR.vConcat(xStrA);
   
-  mpTask->m_pDataStack->vPushS48K(xStrR);
+  mpTask->m_pForth->m_pDataStack->vPushS48K(xStrR);
   
   EXIT();
 }
@@ -303,14 +303,14 @@ void Step::vStrRandom(MP_Task mpTask)
   ENTRY("vStrRandom"_Stz);
   
   i8 iLength;
-  if ( ! mpTask->m_pDataStack->bPop(iLength) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iLength) )
     THROW_INVALID_DSTACK("str.random"_Stz);
   
   s256 sRnd;
   
   Random::vString(sRnd,iLength);
   
-  mpTask->m_pDataStack->vPushS256(sRnd);
+  mpTask->m_pForth->m_pDataStack->vPushS256(sRnd);
   
   EXIT();
 }
@@ -323,16 +323,16 @@ void Step::vStrRemovePrefix(MP_Task mpTask)
   ENTRY("vStrRemovePrefix"_Stz);
   
   s48K sString;
-  if ( ! mpTask->m_pDataStack->bPop(sString) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sString) )
     THROW_INVALID_DSTACK("str.removePrefix"_Stz);
   
   s32 sIntro;
-  if ( ! mpTask->m_pDataStack->bPop(sIntro) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sIntro) )
     THROW_INVALID_DSTACK("str.removePrefix"_Stz);
   
   StrLib::vRemovePrefix(sString.aChar(), * sIntro.aChar());
   
-  mpTask->m_pDataStack->vPushS48K(sString);
+  mpTask->m_pForth->m_pDataStack->vPushS48K(sString);
   
   EXIT();
 }
@@ -345,16 +345,16 @@ void Step::vStrRemoveSuffix(MP_Task mpTask)
   ENTRY("vStrRemoveSuffix"_Stz);
   
   s48K sString;
-  if ( ! mpTask->m_pDataStack->bPop(sString) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sString) )
     THROW_INVALID_DSTACK("str.removeSuffix"_Stz);
   
   s32 sIntro;
-  if ( ! mpTask->m_pDataStack->bPop(sIntro) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sIntro) )
     THROW_INVALID_DSTACK("str.removeSuffix"_Stz);
   
   StrLib::vRemoveSuffix(sString.aChar(), * sIntro.aChar());
   
-  mpTask->m_pDataStack->vPushS48K(sString);
+  mpTask->m_pForth->m_pDataStack->vPushS48K(sString);
 
   EXIT();
 }
@@ -370,20 +370,20 @@ void Step::vStrReplace(MP_Task mpTask)
   s48K sThat;
   s48K sThis;
   
-  if ( ! mpTask->m_pDataStack->bPop(sString) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sString) )
     THROW_INVALID_DSTACK("str.replace"_Stz);
 
-  if ( ! mpTask->m_pDataStack->bPop(sThat) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sThat) )
     THROW_INVALID_DSTACK("str.replace"_Stz);
   
-  if ( ! mpTask->m_pDataStack->bPop(sThis) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sThis) )
     THROW_INVALID_DSTACK("str.replace"_Stz);
   
   s48K sReplaced;
   
   StrLib::bReplace(sReplaced.aChar(),sString.aChar(),sThis.aChar(),sThat.aChar());
   
-  mpTask->m_pDataStack->vPushS48K(sReplaced);
+  mpTask->m_pForth->m_pDataStack->vPushS48K(sReplaced);
   
   EXIT();
 }
@@ -400,7 +400,7 @@ void Step::vStrRight(MP_Task mpTask)
   s48K sSubStr;
   
   // get the arguments
-  if ( ! mpTask->m_pDataStack->bPop(sString,iLength) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sString,iLength) )
     THROW_INVALID_DSTACK("str.right"_Stz);
   
   // validate length
@@ -416,7 +416,7 @@ void Step::vStrRight(MP_Task mpTask)
   
   StrLib::vCopyLen(sSubStr.aChar(),pStart,iLength);
   
-  mpTask->m_pDataStack->vPushS48K(sSubStr);
+  mpTask->m_pForth->m_pDataStack->vPushS48K(sSubStr);
   
   EXIT();
 }
@@ -434,7 +434,7 @@ void Step::vStrSub(MP_Task mpTask)
   s48K sSubStr;
   
   // get the arguments
-  if ( ! mpTask->m_pDataStack->bPop(sString,iStart,iLength) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sString,iStart,iLength) )
     THROW_INVALID_DSTACK("str.sub"_Stz);
   
   i8 iHasLength = sString.iLength();
@@ -454,7 +454,7 @@ void Step::vStrSub(MP_Task mpTask)
   
   StrLib::vCopyLen(sSubStr.aChar(),pStart,iLength);
   
-  mpTask->m_pDataStack->vPushS48K(sSubStr);
+  mpTask->m_pForth->m_pDataStack->vPushS48K(sSubStr);
   
   EXIT();
 }
@@ -468,7 +468,7 @@ void Step::vStrTailInt(MP_Task mpTask)
   
   // get the string
   s48K sString;
-  if ( ! mpTask->m_pDataStack->bPop(sString) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sString) )
     THROW_INVALID_DSTACK("str.tailInt"_Stz);
   
   // get last char in string
@@ -476,7 +476,7 @@ void Step::vStrTailInt(MP_Task mpTask)
   
   // return false if not a digit
   if ( ! StrLib::bIsDigit(*aLast) ) {
-    mpTask->m_pDataStack->vPushBool(false);
+    mpTask->m_pForth->m_pDataStack->vPushBool(false);
     return;
   }
   
@@ -492,8 +492,8 @@ void Step::vStrTailInt(MP_Task mpTask)
     iInt = (iInt * 10) + (*aDigit++ - '0');
   
   // return ( int true )
-  mpTask->m_pDataStack->vPushI8(iInt);
-  mpTask->m_pDataStack->vPushBool(true);
+  mpTask->m_pForth->m_pDataStack->vPushI8(iInt);
+  mpTask->m_pForth->m_pDataStack->vPushBool(true);
   
   EXIT();
 }

@@ -24,7 +24,7 @@ void Step::vPushI(MP_Task mpTask)
   
   ForthValue* aLoopIndex_I = mpTask->m_pForth->m_pReturnStack->aPeekValue();
   
-  mpTask->m_pDataStack->vPushValue(aLoopIndex_I);
+  mpTask->m_pForth->m_pDataStack->vPushValue(aLoopIndex_I);
   
   EXIT();
 }
@@ -38,7 +38,7 @@ void Step::vPushJ(MP_Task mpTask)
   
   ForthValue* aLoopIndex_J = mpTask->m_pForth->m_pReturnStack->aPeekValue(3);
   
-  mpTask->m_pDataStack->vPushValue(aLoopIndex_J);
+  mpTask->m_pForth->m_pDataStack->vPushValue(aLoopIndex_J);
   
   EXIT();
 }
@@ -53,7 +53,7 @@ void Step::vPushNullPtr(MP_Task mpTask)
   PtrVal xPtrVal;
   xPtrVal = (Object*)nullptr;
   
-  mpTask->m_pDataStack->vPushValue(xPtrVal);
+  mpTask->m_pForth->m_pDataStack->vPushValue(xPtrVal);
   
   EXIT();
 }
@@ -71,7 +71,7 @@ void Step::vPushValue(MP_Task mpTask)
   
   ForthValue* aValue = &mpTask->m_aFipCell->m_xEmbValue;
   
-  mpTask->m_pDataStack->vPushValue(aValue);
+  mpTask->m_pForth->m_pDataStack->vPushValue(aValue);
   
   mpTask->vAdjustFIP(aValue->nSize());
   

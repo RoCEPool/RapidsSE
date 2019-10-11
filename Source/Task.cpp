@@ -157,7 +157,6 @@ void Task::vInit(void)
   m_aFipCell     = nullptr;
   
   m_pForth       = nullptr;
-  m_pDataStack   = nullptr;
   
   m_pCompiler    = nullptr;
   m_pSendNode    = nullptr;
@@ -175,7 +174,6 @@ Task::~Task(void) noexcept(false)
   RASSERT(! m_iDdlLocked);
   RASSERT(! bWordBody());
 
-  delete m_pDataStack;
   delete m_pForth;
 
   delete m_pCompiler;
@@ -232,7 +230,7 @@ void Task::vTaskLoop_job(void)
     // op??
   }
 
-  if (! m_pDataStack) {
+  if (! m_pForth) {
     vNewStacks();
   }
   
@@ -627,8 +625,6 @@ void Task::vNewStacks(void)
     return;
   
   m_pForth       = new Forth(this);
-  
-  m_pDataStack   = new Stack;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -760,7 +756,7 @@ void Task::vRetry(void)
   
   m_pCompiler->m_pTokeniser->sToken() = ""_Stz;
   
-  m_pDataStack->vRetry();
+  m_pForth->m_pDataStack->vRetry();
   m_pForth->m_pReturnStack->vRetry();
 }
 
@@ -1011,7 +1007,7 @@ void Task::vTracePoint(Stz* aMark)
     sRoutine = "<unknown>"_Stz;
   
   i8 iAuxValues    = m_pForth->m_pAuxStack->nValues();
-  i8 iDataValues   = m_pDataStack->nValues();
+  i8 iDataValues   = m_pForth->m_pDataStack->nValues();
   i8 iReturnValues = m_pForth->m_pReturnStack->nValues();
   
   vTrace("[%s(N%d):%8s\\%lld %-11s] %-16s : a%2lld="_Stz,
@@ -1032,7 +1028,7 @@ void Task::vTracePoint(Stz* aMark)
   
   vTrace(" r%2lld  d%2lld="_Stz, iReturnValues, iDataValues);
 
-  vStackContents(m_pDataStack, sStackContents);
+  vStackContents(m_pForth->m_pDataStack, sStackContents);
   
   vTrace("%s\n"_Stz,sStackContents.aChar());
 }
@@ -1053,7 +1049,7 @@ void Task::vTraceStep(Stz* aStepNm)
   else
     sRoutine = "<unknown>"_Stz;
   
-  i8 iDataValues   = m_pDataStack->nValues();
+  i8 iDataValues   = m_pForth->m_pDataStack->nValues();
   i8 iReturnValues = m_pForth->m_pReturnStack->nValues();
   vTrace("%-15s %15s : r%lld ; d%2d="_Stz,
          sRoutine.aChar(),
@@ -1062,7 +1058,7 @@ void Task::vTraceStep(Stz* aStepNm)
          iDataValues);
   
   s48K sStackContents;
-  vStackContents(m_pDataStack, sStackContents);
+  vStackContents(m_pForth->m_pDataStack, sStackContents);
   vTrace("%s\n"_Stz,sStackContents.aChar());
 }
 
@@ -1183,7 +1179,7 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
     // should be %v or %V
     ASSERT('v' == *pf || 'V' == *pf);
     
-    ForthValue* aValue0 = m_pDataStack->aPeekValue(0);
+    ForthValue* aValue0 = m_pForth->m_pDataStack->aPeekValue(0);
     eCN eClass = aValue0->eClass();
     
     // test for StrVal
@@ -1192,7 +1188,7 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
       //*pf = 's';                                                    //! Defect??
       
       s48K sValue;
-      m_pDataStack->bPop(sValue);
+      m_pForth->m_pDataStack->bPop(sValue);
       
       if ('V' == *pf)
         *ps++ = '"';
@@ -1214,7 +1210,7 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
       //*pf = 'i';                                                    //! Defect??
       
       i8 iValue;
-      m_pDataStack->bPop(iValue);
+      m_pForth->m_pDataStack->bPop(iValue);
       
       char caValue[32];
       StrLib::wToString(iValue,caValue);
@@ -1233,7 +1229,7 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
       //*pf = 'i';                                                    //! Defect??
       
       Object* pValue;
-      m_pDataStack->bPop(pValue);
+      m_pForth->m_pDataStack->bPop(pValue);
       
       char caValue[32];
       StrLib::wToPointer(pValue,caValue);

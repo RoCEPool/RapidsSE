@@ -36,22 +36,22 @@ void Step::vIntAdd(MP_Task mpTask)
   /*
   i8 r, j, i;
   
-  if ( ! mpTask->m_pDataStack->bPop(j,i) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(j,i) )
     THROW_INVALID_DSTACK("+"_Stz);
   
   r = i + j;
   
-  mpTask->m_pDataStack->vPush(r);
+  mpTask->m_pForth->m_pDataStack->vPush(r);
   */
   
   // get pointer to value on the top of the stack
-  ForthValue* j = mpTask->m_pDataStack->aPeekValue();
+  ForthValue* j = mpTask->m_pForth->m_pDataStack->aPeekValue();
   
   // discard the value
-  mpTask->m_pDataStack->vDiscard();
+  mpTask->m_pForth->m_pDataStack->vDiscard();
   
   // get pointer to value on the top of the stack
-  ForthValue* i = mpTask->m_pDataStack->aPeekValue();
+  ForthValue* i = mpTask->m_pForth->m_pDataStack->aPeekValue();
   
   // add the two values and leave the result on the stack
   *_aIntVal(i) = _aIntVal(j)->iInt() + _aIntVal(i)->iInt();
@@ -68,12 +68,12 @@ void Step::vIntDivide(MP_Task mpTask)
   
   i8 r, j, i;
   
-  if ( ! mpTask->m_pDataStack->bPop(j,i) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(j,i) )
     THROW_INVALID_DSTACK("/"_Stz);
   
   r = DIV(i,j);
   
-  mpTask->m_pDataStack->vPushI8(r);
+  mpTask->m_pForth->m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -87,12 +87,12 @@ void Step::vIntEqual(MP_Task mpTask)
   
   i8 r, j, i;
   
-  if ( ! mpTask->m_pDataStack->bPop(j,i) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(j,i) )
     THROW_INVALID_DSTACK("=="_Stz);
   
   r = i == j;
   
-  mpTask->m_pDataStack->vPushI8(r);
+  mpTask->m_pForth->m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -106,12 +106,12 @@ void Step::vIntGreater(MP_Task mpTask)
   
   i8 r, j, i;
   
-  if ( ! mpTask->m_pDataStack->bPop(j,i) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(j,i) )
     THROW_INVALID_DSTACK(">"_Stz);
   
   r = i > j;
   
-  mpTask->m_pDataStack->vPushI8(r);
+  mpTask->m_pForth->m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -125,12 +125,12 @@ void Step::vIntGreaterEqual(MP_Task mpTask)
   
   i8 r, j, i;
   
-  if ( ! mpTask->m_pDataStack->bPop(j,i) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(j,i) )
     THROW_INVALID_DSTACK(">="_Stz);
   
   r = i >= j;
   
-  mpTask->m_pDataStack->vPushI8(r);
+  mpTask->m_pForth->m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -143,14 +143,14 @@ void Step::vIntHash(MP_Task mpTask)
   ENTRY("vIntHash"_Stz);
   
   s48K sString;
-  if ( ! mpTask->m_pDataStack->bPop(sString) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(sString) )
     THROW_INVALID_DSTACK("hash"_Stz);
   
   i8 iLength = sString.iLength();
   
   i8 iHash = HshLib::iHash((byte*)sString.aChar(),iLength);
   
-  mpTask->m_pDataStack->vPushI8(iHash);
+  mpTask->m_pForth->m_pDataStack->vPushI8(iHash);
   
   EXIT();
 }
@@ -163,10 +163,10 @@ void Step::vIntHo16(MP_Task mpTask)
   ENTRY("vIntHash"_Stz);
   
   i8 i;
-  if ( ! mpTask->m_pDataStack->bPop(i) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(i) )
     THROW_INVALID_DSTACK(">="_Stz);
   
-  mpTask->m_pDataStack->vPushI8(i >> 48);
+  mpTask->m_pForth->m_pDataStack->vPushI8(i >> 48);
   
   EXIT();
 }
@@ -180,12 +180,12 @@ void Step::vIntLess(MP_Task mpTask)
   
   i8 r, j, i;
   
-  if ( ! mpTask->m_pDataStack->bPop(j,i) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(j,i) )
     THROW_INVALID_DSTACK("<"_Stz);
   
   r = i < j;
   
-  mpTask->m_pDataStack->vPushI8(r);
+  mpTask->m_pForth->m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -199,12 +199,12 @@ void Step::vIntLessEqual(MP_Task mpTask)
   
   i8 r, j, i;
   
-  if ( ! mpTask->m_pDataStack->bPop(j,i) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(j,i) )
     THROW_INVALID_DSTACK("<="_Stz);
   
   r = i <= j;
   
-  mpTask->m_pDataStack->vPushI8(r);
+  mpTask->m_pForth->m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -218,12 +218,12 @@ void Step::vIntModulo(MP_Task mpTask)
   
   i8 r, j, i;
   
-  if ( ! mpTask->m_pDataStack->bPop(j,i) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(j,i) )
     THROW_INVALID_DSTACK("%"_Stz);
   
   r = MOD(i,j);
   
-  mpTask->m_pDataStack->vPushI8(r);
+  mpTask->m_pForth->m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -237,12 +237,12 @@ void Step::vIntMultiply(MP_Task mpTask)
   
   i8 r, j, i;
   
-  if ( ! mpTask->m_pDataStack->bPop(j,i) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(j,i) )
     THROW_INVALID_DSTACK("*"_Stz);
   
   r = i * j;
   
-  mpTask->m_pDataStack->vPushI8(r);
+  mpTask->m_pForth->m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -256,12 +256,12 @@ void Step::vIntNeg(MP_Task mpTask)
   
   i8 r, i;
   
-  if ( ! mpTask->m_pDataStack->bPop(i) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(i) )
     THROW_INVALID_DSTACK("neg"_Stz);
   
   r = -1 * i;
   
-  mpTask->m_pDataStack->vPushI8(r);
+  mpTask->m_pForth->m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -275,12 +275,12 @@ void Step::vIntNotEqual(MP_Task mpTask)
   
   i8 r, j, i;
   
-  if ( ! mpTask->m_pDataStack->bPop(j,i) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(j,i) )
     THROW_INVALID_DSTACK("!="_Stz);
   
   r = i != j;
   
-  mpTask->m_pDataStack->vPushI8(r);
+  mpTask->m_pForth->m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -293,16 +293,16 @@ void Step::vIntRandom(MP_Task mpTask)
   ENTRY("vIntRandom"_Stz);
   
   i8 iHigh;
-  if ( ! mpTask->m_pDataStack->bPop(iHigh) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iHigh) )
     THROW_INVALID_DSTACK("int.random"_Stz);
   
   i8 iLow;
-  if ( ! mpTask->m_pDataStack->bPop(iLow) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iLow) )
     THROW_INVALID_DSTACK("int.random"_Stz);
   
   i8 iRandom = Random::iInteger(iLow,iHigh);
   
-  mpTask->m_pDataStack->vPushI8(iRandom);
+  mpTask->m_pForth->m_pDataStack->vPushI8(iRandom);
   
   EXIT();
 }
@@ -316,12 +316,12 @@ void Step::vIntSubtract(MP_Task mpTask)
   
   i8 r, j, i;
   
-  if ( ! mpTask->m_pDataStack->bPop(j,i) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(j,i) )
     THROW_INVALID_DSTACK("-"_Stz);
   
   r = i - j;
   
-  mpTask->m_pDataStack->vPushI8(r);
+  mpTask->m_pForth->m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -334,16 +334,16 @@ void Step::vUnsignedIntRandom(MP_Task mpTask)
   ENTRY("vUnsignedIntRandom"_Stz);
   
   i8 iHigh;
-  if ( ! mpTask->m_pDataStack->bPop(iHigh) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iHigh) )
     THROW_INVALID_DSTACK("uint.random"_Stz);
   
   i8 iLow;
-  if ( ! mpTask->m_pDataStack->bPop(iLow) )
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(iLow) )
     THROW_INVALID_DSTACK("uint.random"_Stz);
   
   u8 uRandom = Random::uInteger(iLow,iHigh);
   
-  mpTask->m_pDataStack->vPushI8(uRandom);
+  mpTask->m_pForth->m_pDataStack->vPushI8(uRandom);
   
   EXIT();
 }
