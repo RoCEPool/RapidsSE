@@ -159,7 +159,6 @@ void Task::vInit(void)
   m_pForth       = nullptr;
   m_pDataStack   = nullptr;
   m_pReturnStack = nullptr;
-  m_pAuxStack    = nullptr;
   
   m_pCompiler    = nullptr;
   m_pSendNode    = nullptr;
@@ -179,12 +178,10 @@ Task::~Task(void) noexcept(false)
 
   delete m_pDataStack;
   delete m_pReturnStack;
-  delete m_pAuxStack;
-  
-  
+  delete m_pForth;
+
   delete m_pCompiler;
   
-  delete m_pForth;
 
   
   -- gixTask;
@@ -635,7 +632,6 @@ void Task::vNewStacks(void)
   
   m_pDataStack   = new Stack;
   m_pReturnStack = new Stack;
-  m_pAuxStack    = new Stack;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1017,7 +1013,7 @@ void Task::vTracePoint(Stz* aMark)
   else
     sRoutine = "<unknown>"_Stz;
   
-  i8 iAuxValues    = m_pAuxStack->nValues();
+  i8 iAuxValues    = m_pForth->m_pAuxStack->nValues();
   i8 iDataValues   = m_pDataStack->nValues();
   i8 iReturnValues = m_pReturnStack->nValues();
   
@@ -1033,7 +1029,7 @@ void Task::vTracePoint(Stz* aMark)
          iAuxValues);
          
   s48K sStackContents;
-  vStackContents(m_pAuxStack, sStackContents);
+  vStackContents(m_pForth->m_pAuxStack, sStackContents);
   
   vTrace("%s"_Stz,sStackContents.aChar());
   
