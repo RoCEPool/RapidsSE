@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* ForthClump.hpp -- Forth Clump                                              */
+/* Forth.hpp -- Forth                                                         */
 /*============================================================================*/
 #pragma once
 
 namespace SenVM
 {
-  class ForthClump : public Object
+  class Forth : public Object
   {
   
   public:
@@ -23,14 +23,14 @@ namespace SenVM
     void* operator new(size_t);
     void  operator delete(void*);
 
-    ForthClump(Task* pTask);
-   ~ForthClump(void) noexcept(false);
+    Forth(Task* pTask);
+   ~Forth(void) noexcept(false);
 
   private:
     Footer* aFooter(void);
   };
   
-  ForthClump* _pForthClump(void* aAddr);
+  Forth* _pForth(void* aAddr);
 }
 
 /*============================================================================*/

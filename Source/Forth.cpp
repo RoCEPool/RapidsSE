@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ForthClump.hpp -- Forth Clump                                              */
+/* Forth.hpp -- Forth                                                         */
 /*============================================================================*/
 
 #include "SenVM.h"
@@ -7,39 +7,39 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ForthClump* SenVM::_pForthClump(void* aAddr)
+Forth* SenVM::_pForth(void* aAddr)
 {
-  ForthClump* pForthClump = reinterpret_cast<ForthClump*>(aAddr);
+  Forth* pForth = reinterpret_cast<Forth*>(aAddr);
   
-  RASSERT_TYPE(pForthClump,CN_FORTH);
+  RASSERT_TYPE(pForth,CN_FORTH);
   
-  return pForthClump;
+  return pForth;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* ForthClump::operator new(size_t)
+void* Forth::operator new(size_t)
 {
-  ForthClump* pForthClump = (ForthClump*)(HeapMem::pAllocate(CN_FORTH));
+  Forth* pForth = (Forth*)(HeapMem::pAllocate(CN_FORTH));
   
-  return pForthClump;
+  return pForth;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void ForthClump::operator delete(void* aAddress)
+void Forth::operator delete(void* aAddress)
 {
-  ForthClump* pForthClump = reinterpret_cast<ForthClump*>(aAddress);
+  Forth* pForth = reinterpret_cast<Forth*>(aAddress);
   
-  HeapMem::vFree(pForthClump);
+  HeapMem::vFree(pForth);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ForthClump::ForthClump(Task* pTask)
+Forth::Forth(Task* pTask)
 : Object(CN_FORTH)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
@@ -59,7 +59,7 @@ ForthClump::ForthClump(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-ForthClump::~ForthClump(void) noexcept(false)
+Forth::~Forth(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
 }
@@ -73,7 +73,7 @@ ForthClump::~ForthClump(void) noexcept(false)
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__aFooterFunction(ForthClump);
+__aFooterFunction(Forth);
 
 /*============================================================================*/
 /* end                                                                        */

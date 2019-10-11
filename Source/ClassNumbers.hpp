@@ -524,7 +524,7 @@ static Stz* aCN[]
   /*          */ "FILTER_WHERE"_Stz,        // CN_FILTER_WHERE
   /*          */ "FILTER_ZED"_Stz,          // CN_FILTER_ZED
   /*          */ "FOCALOBJECTS"_Stz,        // CN_FOCALOBJECTS
-  /*          */ "FORTHCLUMP"_Stz,          // CN_FORTH
+  /*          */ "Forth"_Stz,          // CN_FORTH
   /*  37 0x25 */ "FORMATTERS"_Stz,          // CN_FORMATTERS
   /*  38 0x26 */ "FREEBUFFER"_Stz,          // CN_FREEBUFFER
   /*  39 0x27 */ "FREECHUNK"_Stz,           // CN_FREECHUNK

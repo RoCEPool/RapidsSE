@@ -43,7 +43,7 @@ namespace Tasks
     eQK     m_eQueue;       // which queue the task is in
     i8      m_iQueueOrder;  // queue ordering number
     Decider m_oAcksRmg;     // number of acks still waiting for
-    i8      m_iDdlLocked;   // has the ddl lock?
+    i8      m_iDdlLocked;   // this task has the ddl lock?
     Sleep   m_oWakeup;      // wakeup time from sleeping
 
     i8      m_iTracing;     // tracing mask
