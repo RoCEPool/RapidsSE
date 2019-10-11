@@ -7,7 +7,6 @@ namespace SenVM
 {
   class Forth : public Object
   {
-  
   public:
     Task*     m_pTask;        // which task
   

@@ -55,7 +55,6 @@ namespace Tasks
     Cell*     m_aFipCell;     // points to cell inside a word
 
     Forth*    m_pForth;       // forth implementation
-    LocalSet* m_pLocalsFrame; // local register frame chain
     Stack*    m_pDataStack;   // data stack
     Stack*    m_pReturnStack; // return stack
     Stack*    m_pAuxStack;    // auxiliary stack

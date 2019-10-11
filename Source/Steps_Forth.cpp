@@ -329,8 +329,8 @@ void Step::vExit_RT(MP_Task mpTask)
   if ( (mpTask->m_iTracing & C_TRACE_ROUTINES) )
     mpTask->vTracePoint("<"_Stz);
   
-  if (mpTask->m_pLocalsFrame
-      && mpTask->m_pLocalsFrame->aDiscardPoint() ==
+  if (mpTask->m_pForth->m_pLocalsFrame
+      && mpTask->m_pForth->m_pLocalsFrame->aDiscardPoint() ==
       mpTask->m_pReturnStack->aPeekValue())
     mpTask->vLocalsPop();
   

@@ -157,7 +157,6 @@ void Task::vInit(void)
   m_aFipCell     = nullptr;
   
   m_pForth       = nullptr;
-  m_pLocalsFrame = nullptr;
   m_pDataStack   = nullptr;
   m_pReturnStack = nullptr;
   m_pAuxStack    = nullptr;
@@ -184,14 +183,6 @@ Task::~Task(void) noexcept(false)
   
   
   delete m_pCompiler;
-  
-  while (m_pLocalsFrame) {
-
-    LocalSet* pLocalsFrame = m_pLocalsFrame;
-    m_pLocalsFrame = m_pLocalsFrame->pNext();
-  
-    delete pLocalsFrame;
-  }
   
   delete m_pForth;
 
@@ -592,9 +583,9 @@ void Task::vLocalsPop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  LocalSet* pLocalsframe = m_pLocalsFrame;
+  LocalSet* pLocalsframe = m_pForth->m_pLocalsFrame;
   
-  m_pLocalsFrame = m_pLocalsFrame->pNext();
+  m_pForth->m_pLocalsFrame = m_pForth->m_pLocalsFrame->pNext();
   
   delete pLocalsframe;
 }
@@ -606,9 +597,9 @@ void Task::vLocalsPush(void)
 {
   LocalSet* pLocalsframe = new LocalSet;
   
-  pLocalsframe->vNext(m_pLocalsFrame);
+  pLocalsframe->vNext(m_pForth->m_pLocalsFrame);
   
-  m_pLocalsFrame = pLocalsframe;
+  m_pForth->m_pLocalsFrame = pLocalsframe;
 }
 
 /*----------------------------------------------------------------------------*/
