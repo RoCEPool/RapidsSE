@@ -32,6 +32,7 @@ namespace Oblique
   public:
     static Stz* szJobNm(void);
     static Stz* szGridNm(void);
+    static Stz* szToken(void);
     static Stz* szWordNm(void);
   };
 }

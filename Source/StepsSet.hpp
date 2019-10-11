@@ -317,7 +317,6 @@ public:
   static void vCreateTenants(Tasks::MP_Task mpTask);
   static void vDoes(Tasks::MP_Task mpTask);
   static void vDoes_RT(Tasks::MP_Task mpTask);
-  static void vExit(Tasks::MP_Task mpTask);
   static void vExit_RT(Tasks::MP_Task mpTask);
   static void vFind(Tasks::MP_Task mpTask);
   static void vFindInCurrent(Tasks::MP_Task mpTask);

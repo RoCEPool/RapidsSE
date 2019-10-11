@@ -22,7 +22,6 @@ void Step::vAddSteps_Forth(void)
   vAddStep("createPersistent"_Stz,&Step::vCreatePersistent);
   vAddStep("does>"_Stz,           &Step::vDoes,             true );
   vAddStep("does_rt"_Stz,         &Step::vDoes_RT);
-  vAddStep("exit"_Stz,            &Step::vExit);
   vAddStep("exit_rt"_Stz,         &Step::vExit_RT);
   vAddStep("find"_Stz,            &Step::vFind);
   vAddStep("findInCurrent"_Stz,   &Step::vFindInCurrent);
@@ -75,7 +74,7 @@ void Step::vCell(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* : -- colon                                                                 */
+/* : (aka colon) -- create a routine word using next token as word name       */
 /*----------------------------------------------------------------------------*/
 void Step::vColon(MP_Task mpTask)
 {
@@ -105,7 +104,7 @@ void Step::vColon(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* comma -- encode push value                                                 */
+/* comma -- encode push of xValue on stack                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vComma(MP_Task mpTask)
 {
@@ -113,17 +112,17 @@ void Step::vComma(MP_Task mpTask)
   
   Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
-  GenVar xVariable;
-  if ( ! mpTask->m_pDataStack->bPop(xVariable) )
+  GenVar xValue;
+  if ( ! mpTask->m_pDataStack->bPop(xValue) )
     THROW_INVALID_DSTACK("comma"_Stz);
   
-  pCurrentWord->vEncode("pushValue"_Stz,&xVariable);
+  pCurrentWord->vEncode("pushValue"_Stz,&xValue);
     
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* compile, -- encode call                                                    */
+/* compile, -- encode call to pWord on stack                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vCompileComma(MP_Task mpTask)
 {
@@ -144,7 +143,7 @@ void Step::vCompileComma(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create -- create word in dictionary                                        */
+/* create -- create word using next token as the word name                    */
 /*----------------------------------------------------------------------------*/
 void Step::vCreate(MP_Task mpTask)
 {
@@ -319,33 +318,7 @@ void Step::vDoes_RT(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* exit -- exit from routine                                                  */
-/*----------------------------------------------------------------------------*/
-void Step::vExit(MP_Task mpTask)
-{
-  ENTRY("vExit"_Stz);
-  
-  //vTrace("Exit: return stack %lld\n"_Stz, mpTask->m_pReturnStack->iValues());
-  
-  if ( (mpTask->m_iTracing & C_TRACE_ROUTINES) )
-    mpTask->vTracePoint("<"_Stz);
-  
-  if (mpTask->m_pLocalsFrame
-      && mpTask->m_pLocalsFrame->aDiscardPoint() ==
-      mpTask->m_pReturnStack->aPeekValue())
-    mpTask->vLocalsPop();
-  
-  Cell* aCell;
-  if ( ! mpTask->m_pReturnStack->bPop(aCell) )
-    THROW_INVALID_RSTACK("exit"_Stz);
-  
-  mpTask->m_aFipCell = aCell;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* exit -- runtime for exit from routine                                      */
+/* exit_rt -- runtime for exit from routine                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vExit_RT(MP_Task mpTask)
 {
@@ -371,7 +344,7 @@ void Step::vExit_RT(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find -- find word                                                          */
+/* find -- find word using given name on stack                                */
 /*----------------------------------------------------------------------------*/
 void Step::vFind(MP_Task mpTask)
 {
@@ -415,7 +388,7 @@ void Step::vFindInCurrent(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* forget -- forget word                                                      */
+/* forget -- forget word using next token as given name                       */
 /*----------------------------------------------------------------------------*/
 void Step::vForget(MP_Task mpTask)
 {
@@ -441,7 +414,7 @@ void Step::vForget(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* immediate -- make the most recent definition an immediate word             */
+/* immediate -- make the current word an immediate word                       */
 /*----------------------------------------------------------------------------*/
 void Step::vImmediate(MP_Task mpTask)
 {
