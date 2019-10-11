@@ -468,8 +468,7 @@ void Table::vCreateColumnVec(Jobs::Job_CreateTable* pJob)
     pColumn->vColVec(m_pColumnVec);
 
     // - - - - - - - - - - - - - - -
-    Column oColumn = m_pStreamDef->m_xaColumn[0];
-    oColumn.vCopy(pColumn);
+    m_pStreamDef->m_xaColumn[i_Col].vCopy(pColumn);
     m_pStreamDef->m_nDefColumns[0]++;
   }
   
