@@ -182,7 +182,6 @@ Task::~Task(void) noexcept(false)
   delete m_pReturnStack;
   delete m_pAuxStack;
   
-  delete m_pForth;
   
   delete m_pCompiler;
   
@@ -193,6 +192,9 @@ Task::~Task(void) noexcept(false)
   
     delete pLocalsFrame;
   }
+  
+  delete m_pForth;
+
   
   -- gixTask;
   if (TK_OPERATOR == m_eKind) {

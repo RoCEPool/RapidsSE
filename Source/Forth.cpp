@@ -46,13 +46,14 @@ Forth::Forth(Task* pTask)
   
   m_pTask        = pTask;
   
+  m_pDataStack   = new Stack;
+  m_pReturnStack = new Stack;
+  m_pAuxStack    = new Stack;
+
   m_pLocalsFrame = nullptr;
-  m_pDataStack   = nullptr;
-  m_pReturnStack = nullptr;
-  m_pAuxStack    = nullptr;
-  
- _checkInitialised_(CN_FORTH);
-  
+
+  _checkInitialised_(CN_FORTH);
+ 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
 }
 
@@ -62,6 +63,18 @@ Forth::Forth(Task* pTask)
 Forth::~Forth(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORTH,_FOOTER_);
+  
+  delete m_pDataStack;
+  delete m_pReturnStack;
+  delete m_pAuxStack;
+  
+  while (m_pLocalsFrame) {
+    
+    LocalSet* pLocalsFrame = m_pLocalsFrame;
+    m_pLocalsFrame = m_pLocalsFrame->pNext();
+    
+    delete pLocalsFrame;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
