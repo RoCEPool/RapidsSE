@@ -17,14 +17,13 @@
 
   ddlLock::grabRead
 
-  // check if node is known
   <nodeNm> grid::findNode not if
     EC_NO_SUCH_NODE job::this job.error! exit
   then
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute forgetNode                            (on each participating node) */
+/* execute for forgetNode                        (on each participating node) */
 /*----------------------------------------------------------------------------*/
 : forgetNode::execute _std ( -- )
 
@@ -37,15 +36,9 @@
 /***                            - Definition -                              ***/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* job syntax for: forget node                                                */
-/*----------------------------------------------------------------------------*/
-jobSyntax:  forgetNode :: forget node <nodeNm> ;
-//jobSyntax:  forgetNode :: fgnde <nodeNm> ;
+jobSyntax: forgetNode :: forget node <nodeNm> ;
+jobSyntax: forgetNode :: fgnde <nodeNm> ;
 
-/*----------------------------------------------------------------------------*/
-/* job info for: forget node                                                  */
-/*----------------------------------------------------------------------------*/
 jobInfo: forgetNode
 {
   jobKind      = JK_DIST2PC

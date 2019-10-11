@@ -683,13 +683,36 @@ void Step::vSeriesName(Tasks::MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(sName) )
     THROW_INVALID_DSTACK("series-name"_Stz);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  i8 iNext = 0;
+  
   Dic* pRootDic = AM::pRootDic();
   
-  Word* pWord = nullptr;
-  while ( (pWord = pRootDic->pEachWord(pWord)) )
-    {;}
+  Word* pCategory = pRootDic->pFindWord("jobSyntax:"_Stz);
 
-  mpTask->m_pDataStack->vPushS32(sName);
+  Word* pWord = nullptr;
+  while ( (pWord = pRootDic->pEachWord(pCategory,pWord)) ) {
+
+    s32 sStr;
+    s32 sInt;
+    
+    StrLib::vSplit_si(sStr.aChar(),sInt.aChar(),pWord->sName().aChar());
+    
+    vTrace("  %s - %lld\n"_Stz,sStr.aChar(),sInt.iToI8());
+    
+    if (sStr.bSame(sName)) {
+      iNext = sInt.iToI8() + 1;
+      break;
+    }
+  }
+
+  s32 sNextName(sName);
+  sNextName.vCatSprint("%02lld"_Stz,iNext);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  mpTask->m_pDataStack->vPushS32(sNextName);
 
   EXIT();
 }
