@@ -201,12 +201,12 @@ void AM::vPulseTask(Task* pTask) {
 void AM::vSetAcksRmg(Task* pTask, i8 nAcks) {
   pTask->vAcksRmg(nAcks);
 }
-void AM::vSendJobOperand(Session* pSession, Task* pTask, Operand* pOperand,
+void AM::vSendJobOperand(Task* pTask, Operand* pOperand,
                          Job* pParentJob, Op* pOp, i8 iNode) {
   
   // new a xmit job
-  Job_Operand* pJob_Operand = Job_Operand::pNewJobOperand(pSession,pTask,pOperand,
-                                                          pParentJob->m_iUniqueId,pOp,iNode);
+  Job_Operand* pJob_Operand = Job_Operand::pNewJobOperand(
+                                  nullptr, pTask,pOperand, pParentJob->m_iUniqueId,pOp,iNode);
   
   // set the send node in the task
   Node* pSendNode = pGrid()->pGetNode(iNode);
