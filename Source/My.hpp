@@ -30,9 +30,9 @@ namespace Oblique
   class My
   {
   public:
-    static Stz* szJobNm_curr(void);
-    static Stz* szGridNm_curr(void);
-    static Stz* szWordNm_curr(void);
+    static Stz* szJobNm(void);
+    static Stz* szGridNm(void);
+    static Stz* szWordNm(void);
   };
 }
 

@@ -86,6 +86,7 @@ namespace Tasks
     void vAdjustFIP(i8 nBytes);
     Object* pArgObject(void);
     static void vDebug(void);
+    Compiler* pCompiler(void);
     void vContentDump(void);
     void vDropTaskLock(void);
     void vException(s256& sFile, s256& eException);

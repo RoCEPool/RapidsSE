@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Job(void)
 {
+  vAddStep("job::this"_Stz,            &Step::vJobThis);
+  
   vAddStep("job.acksRemaining!"_Stz,   &Step::vJobAcksRemaining);
   vAddStep("job.addOriginator"_Stz,    &Step::vJobAddOriginator);
   vAddStep("job.addParticipant"_Stz,   &Step::vJobAddParticipant);
@@ -102,8 +104,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job::stateDiagram"_Stz,    &Step::vJobStateDiagram);
 
   vAddStep("job.tenantName@"_Stz,      &Step::vJobTenantNameFetch);
-  vAddStep("job::this"_Stz,            &Step::vJobThis);
-
+ 
   vAddStep("job::waitParticipant"_Stz, &Step::vJobWaitParticipant);
 }
 
