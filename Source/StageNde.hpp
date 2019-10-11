@@ -22,6 +22,7 @@ namespace Operators
     StageNde(StageSpec* pStageSpec, i8 i_Nde);
    ~StageNde(void) noexcept(false);
   
+    void       vLinkOperators(void);
     StageSpec* pStageSpec(void);
   
     Footer* aFooter(void);

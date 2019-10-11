@@ -71,6 +71,64 @@ StagePtn::~StagePtn(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* link all operators of the stage partition                                  */
+/*----------------------------------------------------------------------------*/
+void StagePtn::vLinkOperators(StageVec* pStageVec)
+{
+  _precondition_(_MAGIC_,CN_STAGEPTN,_FOOTER_);
+  
+  Op* pOpNext = nullptr;
+  
+  // for each operator in the stagePtn
+  for (i8 i_Op = 0; i_Op < m_oOpVec.nItems() - 1; i_Op++) {
+    
+    // get operator
+    Op* pOp = m_oOpVec.pGet(i_Op);
+    
+    // get the next operator
+    pOpNext = m_oOpVec.pGet(i_Op+1);
+    
+    // link the two operators
+    pOp->vNextLabel(pOpNext->szLabel());
+    pOp->vOpOut(pOpNext);
+  }
+  
+  // get the last operator of this stage
+  Op* pOp = m_oOpVec.pGet(m_oOpVec.nItems()-1);
+  
+  // if last operator is xmit, link to the first operator of the next stage
+  if (pOp->eClass() == CN_XMITOP) {
+    
+    // get the xmitOp's next stage
+    RASSERT(pOp->m_iNextStage != C_UNKNOWN);
+    Stage* pNextStage = pStageVec->pGet(pOp->m_iNextStage);
+    RASSERT(pNextStage);
+    
+    // is it a stage run on node/nodes ?
+    if (pNextStage->m_oStageNdeVec.nItems()) {
+      RASSERT(pNextStage->m_oStagePtnVec.nItems() == 0);
+      
+      if (pNextStage->m_oStageNdeVec.nItems() == 1) {
+        // going from all/one ptn to one node
+        pOp->m_iNdeVec = 0;
+      }
+      else {
+        // going from all/one ptn to all nodes
+        RASSERT(0);
+      }
+      StageNde* pStageNde = pNextStage->m_oStageNdeVec.pGet(pOp->m_iNdeVec);
+      AM::vXmitNode(pOp,pStageNde->m_i_Nde);
+      pOpNext = pStageNde->m_oOpVec.pGet(0);
+    }
+    else {
+      RASSERT(0);
+    }
+    pOp->vNextLabel(pOpNext->szLabel());
+    pOp->vOpOut(pOpNext);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get stage spec                                                             */
 /*----------------------------------------------------------------------------*/
 StageSpec* StagePtn::pStageSpec(void)

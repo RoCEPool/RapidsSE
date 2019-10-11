@@ -17,7 +17,7 @@ namespace Operators
     bool     m_bCancelling;
   
     PipelineSpec* m_pPipelineSpec; // the dynamic job specification
-    StageVec     m_oStageVec;    // vector of stages
+    StageVec      m_oStageVec;    // vector of stages
   
   private:
   

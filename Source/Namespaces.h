@@ -50,7 +50,7 @@ namespace Logging       { class Log; class LogEntry;                          }
 namespace MetaData      { class Table; class Index;                           }
 namespace Partitioning  { class BucketMap;  class TablePtn;                   }
 namespace Persistence   { class CarryOver;                                    }
-namespace Pipelines     { class OpSpec; class StageSpec;                      }
+namespace Pipelines     { class OpSpec; class StageSpec; class StageVec;      }
 namespace Plans         {                                                     }
 namespace Pool          { class BufferPool; class HeapMem; class PoolBuffer;  }
 namespace Prompt        { class SePrompt;                                     }

@@ -71,6 +71,34 @@ StageNde::~StageNde(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* link all operators of this stage node                                      */
+/*----------------------------------------------------------------------------*/
+void StageNde::vLinkOperators(void)
+{
+  _precondition_(_MAGIC_,CN_STAGENDE,_FOOTER_);
+  
+  Op* pOpNext = nullptr;
+  
+  // for each operator in the partition
+  for (i8 i_Op = 0; i_Op < m_oOpVec.nItems() - 1; i_Op++) {
+    
+    // get operator to be linked
+    Op* pOp = m_oOpVec.pGet(i_Op);
+    
+    if (pOpNext)
+      pOpNext->vNextLabel(pOp->szLabel());
+    
+    // get the next operator
+    pOpNext = m_oOpVec.pGet(i_Op+1);
+    
+    // link the two operators
+    pOp->vNextLabel(pOpNext->szLabel());
+    pOp->vOpOut(pOpNext);
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* get stage spec                                                             */
 /*----------------------------------------------------------------------------*/
 StageSpec* StageNde::pStageSpec(void)
