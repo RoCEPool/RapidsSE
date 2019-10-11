@@ -41,7 +41,7 @@
 /* job syntax for: forget node                                                */
 /*----------------------------------------------------------------------------*/
 jobSyntax:  forgetNode :: forget node <nodeNm> ;
-//jobSyntax: forgetNodeEg2 forgetNode :: fgnde <nodeNm> ;
+//jobSyntax:  forgetNode :: fgnde <nodeNm> ;
 
 /*----------------------------------------------------------------------------*/
 /* job info for: forget node                                                  */

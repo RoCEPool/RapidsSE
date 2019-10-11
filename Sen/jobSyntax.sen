@@ -12,7 +12,7 @@
   // create a word using next token from input source as the word name
   next-token locals| sJobNm |
 
-  sJobNm "_syn" str.cat >create
+  sJobNm series-name "_syn" str.cat >create
 
   // set the word category to be jobSyntax
   [ word::this , ] word::this word.category!

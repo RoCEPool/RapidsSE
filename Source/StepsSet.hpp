@@ -328,6 +328,7 @@ public:
   static void vPrompt(Tasks::MP_Task mpTask);
   static void vSee(Tasks::MP_Task mpTask);
   static void vSemicolon(Tasks::MP_Task mpTask);
+  static void vSeriesName(Tasks::MP_Task mpTask);
   static void vSubDic(Tasks::MP_Task mpTask);
   static void vTick(Tasks::MP_Task mpTask);
 

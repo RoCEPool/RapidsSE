@@ -31,6 +31,7 @@ namespace Forth
     Article* pArticle(void);
     Word* pDicKind(void);
     void  vDicKind(Word* pDicKind);
+    Word* pEachWord(Word* pPrior);
     Word* pEachWord(Word* pCategory, Word* pPrior);
     Word* pFindWord(Stz* szName);
     Word* pFindStep(StepFp fpStep);

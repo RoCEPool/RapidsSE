@@ -33,6 +33,7 @@ void Step::vAddSteps_Forth(void)
   vAddStep("prompt"_Stz,          &Step::vPrompt,           true );
   vAddStep("see"_Stz,             &Step::vSee);
   vAddStep(";"_Stz,               &Step::vSemicolon,        true );
+  vAddStep("series-name"_Stz,     &Step::vSeriesName);
   vAddStep("subDic"_Stz,          &Step::vSubDic,           true );
   vAddStep("tick"_Stz,            &Step::vTick,             true );
 }
@@ -668,6 +669,28 @@ void Step::vSemicolon(MP_Task mpTask)
   
   mpTask->m_pCompiler->m_pCurrentWord = nullptr;
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* series-name -- generate next name within its series                        */
+/*----------------------------------------------------------------------------*/
+void Step::vSeriesName(Tasks::MP_Task mpTask)
+{
+  ENTRY("vSeriesName"_Stz);
+  
+  s32 sName;
+  if ( ! mpTask->m_pDataStack->bPop(sName) )
+    THROW_INVALID_DSTACK("series-name"_Stz);
+  
+  Dic* pRootDic = AM::pRootDic();
+  
+  Word* pWord = nullptr;
+  while ( (pWord = pRootDic->pEachWord(pWord)) )
+    {;}
+
+  mpTask->m_pDataStack->vPushS32(sName);
+
   EXIT();
 }
 
