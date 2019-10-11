@@ -53,11 +53,11 @@ namespace Tasks
     Compiler* m_pCompiler;  // forth word compiler (Job boot, create table etc)
   
     Cell*     m_aFipCell;     // points to cell inside a word
+
     LocalSet* m_pLocalsFrame; // local register frame chain
     Stack*    m_pDataStack;   // data stack
     Stack*    m_pReturnStack; // return stack
     Stack*    m_pAuxStack;    // auxiliary stack
-    RegSet*   m_pRegSet;      // register set
   
     // exception
     s256  m_sFile;

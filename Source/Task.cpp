@@ -160,8 +160,6 @@ void Task::vInit(void)
   m_pReturnStack = nullptr;
   m_pAuxStack    = nullptr;
   
-  m_pRegSet      = nullptr;
-  
   m_pCompiler    = nullptr;
   m_pSendNode    = nullptr;
 }
@@ -181,8 +179,6 @@ Task::~Task(void) noexcept(false)
   delete m_pDataStack;
   delete m_pReturnStack;
   delete m_pAuxStack;
-  
-  delete m_pRegSet;
   
   delete m_pCompiler;
   
@@ -641,7 +637,6 @@ void Task::vNewStacks(void)
   m_pDataStack   = new Stack;
   m_pReturnStack = new Stack;
   m_pAuxStack    = new Stack;
-  m_pRegSet      = new RegSet;
 }
 
 /*----------------------------------------------------------------------------*/
