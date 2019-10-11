@@ -13,10 +13,17 @@
 
   100 apiState::senLoc
 
+  0 0 locals| pJob_dynamic pTask |
+
   //": dynamic_req" .
 
-  task::this      locals| pTask |
-  pTask task.job@ locals| pJob_dynamic |
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob_dynamic
 
   pJob_dynamic "Job %v on originating node" str.format .
 
@@ -25,7 +32,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  //": dynamic_req END" .
+  ": dynamic_req END" .
 
   900 apiState::senLoc
 
@@ -59,6 +66,7 @@
   pTask task.grabLock
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //pathDump
 
   pJob_dynamic job_Dynamic.begin
   pJob_dynamic job_Dynamic.execute
