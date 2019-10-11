@@ -35,7 +35,7 @@ namespace SenVM
 
 #include "Compiler.hpp"
 
-#include "ForthClump.hpp"
+#include "Forth.hpp"
 
 // -- -- -- -- -- -- -- --
 
