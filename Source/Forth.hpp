@@ -11,11 +11,12 @@ namespace SenVM
   public:
     Task*     m_pTask;        // which task
   
-    LocalSet* m_pLocalsFrame; // local register frame chain
+    Stack*    m_pAuxStack;    // auxiliary stack
     Stack*    m_pDataStack;   // data stack
     Stack*    m_pReturnStack; // return stack
-    Stack*    m_pAuxStack;    // auxiliary stack
-
+ 
+    LocalSet* m_pLocalsFrame; // local register frame chain
+  
     // must be last
     Footer m_xFooter;
   
