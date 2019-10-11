@@ -54,7 +54,7 @@ namespace Pipelines     { class OpSpec; class StageSpec; class StageVec;      }
 namespace Plans         {                                                     }
 namespace Pool          { class BufferPool; class HeapMem; class PoolBuffer;  }
 namespace Prompt        { class SePrompt;                                     }
-namespace Oblique       {                                                     }
+namespace Oblique       { class AM;                                           }
 namespace Operators     { class Op; class Pipeline;                           }
 namespace Resources     { class Resource; class ResourceTracker;
                           class Pthread;                                      }
@@ -64,7 +64,7 @@ namespace Scheduling    { class Queues; class Scheduler;                      }
 namespace Services      {                                                     }
 namespace Sessions      { class Request; class Session; class SessionState;   }
 namespace Steps         { class Step; class StepTiming;                       }
-namespace StorageEngine { class AttachMap; class AM; class Engine;            }
+namespace StorageEngine { class AttachMap; class Engine;                      }
 namespace Streams       { class Operand;                                      }
 namespace Strings       {                                                     }
 namespace Structures    { class Article; class Queue;                         }

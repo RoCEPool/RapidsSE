@@ -7,7 +7,7 @@ namespace StorageEngine
 {
   class AttachMap : public Focal
   {
-  friend class AM;
+  friend class Oblique::AM;
   friend class Engine;
   friend class Prompt;
 

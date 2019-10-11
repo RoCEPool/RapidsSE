@@ -25,7 +25,7 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-namespace StorageEngine
+namespace Oblique
 {
   class AM
   {
