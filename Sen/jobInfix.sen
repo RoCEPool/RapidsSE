@@ -32,11 +32,11 @@
 
 : _req_post_
 
-// distribute the job as to all connected node as participants
-job::distribute
+  // distribute the job as to all connected node as participants
+  job::distribute
 
-// wait for ack from deciding job__Ended
-task::wait
+  // wait for ack from deciding job__Ended
+  task::wait
 ;
 
 : _exe_prep_
