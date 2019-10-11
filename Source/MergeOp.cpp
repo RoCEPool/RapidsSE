@@ -154,12 +154,12 @@ void MergeOp::vMergeDangling(void)
     
     if (AM::bVerbose())
       vTrace("P:%lld MERGING DANGLING OF MAGNITUDES %lld %lld\n"_Stz,
-             m_nSlot, iOperandMag[0], iOperandMag[1]);
+             m_nPartition, iOperandMag[0], iOperandMag[1]);
     
     // merge the operand set pair
     AM::vLogOpr(SL_INF,this,OA_OP_INF,
                 "P:%lld Merging Dangling of Mags %lld %lld"_Stz, //!format-LogOpr
-                m_nSlot, iOperandMag[0], iOperandMag[1]);
+                m_nPartition, iOperandMag[0], iOperandMag[1]);
     
     vMergeOperands(pOperandPair[0], pOperandPair[1]);
   }
@@ -208,7 +208,7 @@ eOR MergeOp::eMergeLoop(void)
       // merge the two operands
       AM::vLogOpr(SL_INF,this,OA_OP_INF,
                   "P:%lld Merging Operands of Mag %lld"_Stz, //!format-LogOpr
-                  m_nSlot, 0);
+                  m_nPartition, 0);
       vMergeOperands(pOperand, pOperand2);
     }
     else {
@@ -395,7 +395,7 @@ void MergeOp::vMergeOperands(Operand* pOperand1, Operand* pOperand2)
   
   AM::vLogOpr(SL_INF,this,OA_OP_INF,
               "P:%lld Merged Operands generated Mag %lld"_Stz, //!format-LogOpr
-              m_nSlot, iMagnitude);
+              m_nPartition, iMagnitude);
   
   // delete all left buffers
   SrtBuffer* pBuffer;
@@ -432,7 +432,7 @@ void MergeOp::vMergeOperands(Operand* pOperand1, Operand* pOperand2)
     
     AM::vLogOpr(SL_INF,this,OA_OP_INF,
                 "P:%lld Merging Operands of Mag %lld"_Stz, //!format-LogOpr
-                m_nSlot, iMagnitude);
+                m_nPartition, iMagnitude);
     vMergeOperands(pFirstMergeBuffer, pOperand);
   }
 

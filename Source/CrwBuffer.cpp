@@ -381,11 +381,13 @@ void CrwBuffer::vPrevBuffer(CrwBuffer* pPrevBuffer)
 /*----------------------------------------------------------------------------*/
 /* print rows of the buffer                                                   */
 /*----------------------------------------------------------------------------*/
-void CrwBuffer::vPrintRows(void)
+void CrwBuffer::vPrintRows(StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  ColumnVec* pColVec = pTable()->pColumnVec();
+  //ColumnVec* pColVec = pTable()->pColumnVec();
+  ColumnVec* pColVec = new ColumnVec;
+  pStreamDef->vAddColumns(pColVec);
   
   HV_Row hRow(pColVec);
   HV_Rec hvRec(pColVec);

@@ -165,12 +165,12 @@ SrtBuffer* SuperMergeOp::pMergeAll(void)
     
     if (AM::bVerbose())
       vTrace("P:%lld SUPER MERGING %p %p\n"_Stz,
-             m_nSlot, pOperandPair[0], pOperandPair[1]);
+             m_nPartition, pOperandPair[0], pOperandPair[1]);
     
     // merge the operand set pair
     AM::vLogOpr(SL_INF,this,OA_OP_INF,
                 "P:%lld Super Merging %p %p"_Stz, //!format-LogOpr
-                m_nSlot, pOperandPair[0], pOperandPair[1]);
+                m_nPartition, pOperandPair[0], pOperandPair[1]);
     
     if (pOperandPair[1])
       pMergedSrtBuffer = pSuperMergeOperands(pOperandPair[0], pOperandPair[1]);

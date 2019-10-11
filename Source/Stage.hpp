@@ -21,7 +21,7 @@ namespace Operators
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Stage(StageSpec* pStageSpec);
+    Stage(StageSpec* pStageSpec, Pipeline* pPileLine);
    ~Stage(void) noexcept(false);
   
     StageSpec* pStageSpec(void);

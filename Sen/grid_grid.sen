@@ -35,8 +35,8 @@
   " --partitionsPerNode " str.cat args.partitionsPerNode >str   str.cat
   " --subLoaders "        str.cat args.subLoaders        >str   str.cat
   " --maxReadyLP "        str.cat args.maxReadyLP        >str   str.cat
-  " --commands /Users/ray/Desktop/rapidsse/Commands"            str.cat
-//" --commands /Users/alkayamarti/rapidsSE/rapidsse/Commands"   str.cat
+// " --commands /Users/ray/Desktop/rapidsse/Commands"            str.cat
+" --commands /Users/alkayamarti/rapidsSE/rapidsse/Commands"   str.cat
 
   args.tracepoint  if " --tracepoint"  str.cat then
   args.verbose     if " --verbose"     str.cat then

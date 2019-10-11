@@ -83,12 +83,16 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   m_bAppendRight  = pOpSpec->bAppendRight();
 
   m_nNode            = C_UNKNOWN;
-  m_nSlot            = C_UNKNOWN;
+  m_nPartition       = C_UNKNOWN;
   m_nLeftEndMarkers  = 1;
   m_nRightEndMarkers = 0;
   m_pStreamDef       = nullptr;
   
   m_bFirstCall    = true;
+  
+  m_iStage        = C_UNKNOWN;
+  m_bStageNdeVec  = false;
+  m_iStageNde     = C_UNKNOWN;
   
   m_fpCall        = m_aOpDefn ? m_aOpDefn->m_fpCall  : nullptr;
   m_fpDrain       = m_aOpDefn ? m_aOpDefn->m_fpDrain : nullptr;
@@ -203,7 +207,7 @@ void Op::vAckJob(void)
   
   AM::vLogOpr(SL_INF,this,OA_OP_ACK,
               "Acking job task"_Stz); //!format-LogOpr
-
+  vTrace("&&&&&&&&&&& ACKING %p %p\n"_Stz, m_pJob, pTask);
   AM::vAckWaitingTask(pTask,m_pTask);
 }
 
@@ -429,7 +433,7 @@ void Op::vPipeOut(Operand* pOperand)
   if (AM::bVerbose())
     vTrace("%s (P%lld) (N%lld) (job:%p)::vPipeOut :    %s %p\n"_Stz,
            m_sName.aStz(),
-           m_nSlot,
+           m_nPartition,
            m_nNode,
            m_pJob,
            aCN[pOperand->eClass()],
@@ -463,7 +467,7 @@ void Op::vPipeToJob(Operand* pOperand)
   if (AM::bVerbose())
     vTrace("%s (P%lld) (N%lld) ::vPipeToJob(%p):    %s %p\n"_Stz,
            m_sName.aStz(),
-           m_nSlot,
+           m_nPartition,
            m_nNode,
            m_pJob,
            aCN[pOperand->eClass()],
@@ -518,7 +522,7 @@ Operand* Op::pPopQueue(void)
   if (AM::bVerbose() && pOperand) {
     vTrace("%s (P%lld) (N%lld) (job:%p)::pPopQueue : %s %p\n"_Stz,
            m_sName.aStz(),
-           m_nSlot,
+           m_nPartition,
            m_nNode,
            m_pJob,
            aCN[pOperand->eClass()],

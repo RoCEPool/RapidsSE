@@ -13,6 +13,10 @@ namespace Jobs
     i8         m_iNode;           // node id
     i8         m_iParentJobId;    // parent (InsertRow) job id
     
+    i8         m_iStage;
+    bool       m_bStageNdeVec;
+    i8         m_iStageNde;
+    
     // must be last
     Footer m_xFooter;
   

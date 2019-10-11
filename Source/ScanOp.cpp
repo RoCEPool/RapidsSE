@@ -184,11 +184,16 @@ void ScanOp::vPreliminary(void)
   
   m_bRunPrelim = false;
   
+  vTrace("Node %s vPreliminary start\n"_Stz, AM::pGrid()->pThisNode()->szNodeName());
+  
+  DicStack* pDicStack = new DicStack;
+  AM::vJobDicStack(m_pJob, pDicStack);
+  
   // find the table in the session dictionary stack
-  m_pTable = Table::pFindTable(m_pPipeline->m_pSession->pPathStack(), m_sTableNm);
+  m_pTable = Table::pFindTable(pDicStack, m_sTableNm);
   
   // get table ptn
-  m_pTablePtn = m_pTable->pSlots()->pPartition(m_nSlot);
+  m_pTablePtn = m_pTable->pSlots()->pPartition(TablePtn::iPartitionToSlot(m_nPartition));
   
   // create a streamDef from teh table streamDef
   m_pStreamDef = new StreamDef(m_pTable->pStreamDef());
@@ -198,6 +203,8 @@ void ScanOp::vPreliminary(void)
   
   // get first buffer
   m_pCrwBuffer = m_pTablePtn->pRootCrwBuffer();
+  
+  vTrace("Node %s vPreliminary end\n"_Stz, AM::pGrid()->pThisNode()->szNodeName());
 }
 
 /*----------------------------------------------------------------------------*/

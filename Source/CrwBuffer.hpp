@@ -49,7 +49,7 @@ namespace Rows
     void        vNextBuffer(CrwBuffer* pNextBuffer);
     CrwBuffer*  pPrevBuffer(void);
     void        vPrevBuffer(CrwBuffer* pPrevBuffer);
-    void        vPrintRows(void);
+    void        vPrintRows(StreamDef* pStreamDef);
     CsvBuffer*  pToCsvBuffer(void);
     SrtBuffer*  pToSrtBuffer(i8 iKeyCol);
     IrwBuffer*  pToIrwBuffer(void);

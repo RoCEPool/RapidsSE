@@ -110,6 +110,10 @@ Job_Operand::Job_Operand(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Se
   m_iNode          = C_UNKNOWN;
   m_iParentJobId   = C_UNKNOWN;
   
+  m_iStage        = C_UNKNOWN;
+  m_bStageNdeVec  = false;
+  m_iStageNde     = C_UNKNOWN;
+  
   _checkInitialised_(CN_JOB_OPERAND);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_OPERAND,_FOOTER_);
@@ -145,11 +149,11 @@ void Job_Operand::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /* new an operand job                                                         */
 /*----------------------------------------------------------------------------*/
 Job_Operand* Job_Operand::pNewJobOperand(Session* pSession,
-                                Task* pTask,
-                                Operand* pOperand,
-                                i8 iParentJobId,
-                                Op* pOp,
-                                i8 iNode)
+                                         Task* pTask,
+                                         Operand* pOperand,
+                                         i8 iParentJobId,
+                                         Op* pOp,
+                                         i8 iNode)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // analysis
@@ -172,6 +176,10 @@ Job_Operand* Job_Operand::pNewJobOperand(Session* pSession,
   pJob_Operand->m_pOp       = pOp;
   pJob_Operand->m_iNode     = iNode;
   pJob_Operand->m_pOperand  = pOperand;
+  
+  pJob_Operand->m_iStage        = pOp->m_iStage;
+  pJob_Operand->m_bStageNdeVec  = pOp->m_bStageNdeVec;
+  pJob_Operand->m_iStageNde     = pOp->m_iStageNde;
   
   // call the job pre-send function
   //  if (pJobClass_Xmit->m_fpSend)

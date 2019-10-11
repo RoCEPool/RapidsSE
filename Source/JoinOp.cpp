@@ -134,7 +134,7 @@ void JoinOp::vAddRowRefs(Ent* aLeftEntry, Ent* aRightEntry)
   
   // allot a refSet
   if ( ! m_pSrtBuffer ) {
-    m_pSrtBuffer = new SrtBuffer(nRowRefs, m_nSlot);
+    m_pSrtBuffer = new SrtBuffer(nRowRefs, TablePtn::iPartitionToSlot(m_nPartition));
     
     // pipe out the stream def's
     RASSERT(m_pStreamDef);
@@ -150,7 +150,7 @@ void JoinOp::vAddRowRefs(Ent* aLeftEntry, Ent* aRightEntry)
     vPipeOut(m_pSrtBuffer);
     
     // create another SrtBuffer for the refEnt's
-    m_pSrtBuffer = new SrtBuffer(nRowRefs, m_nSlot);
+    m_pSrtBuffer = new SrtBuffer(nRowRefs, TablePtn::iPartitionToSlot(m_nPartition));
     
     // insert row from entry in temporary buffer
     pSrtSet = m_pSrtBuffer->aAllotSrtSet();

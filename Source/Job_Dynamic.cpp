@@ -211,9 +211,10 @@ void Job_Dynamic::vBegin(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
   
   //Session* pSession = AM::pThisTLSSession();
+  vTrace("Node %s vBegin start\n"_Stz, AM::pGrid()->pThisNode()->szNodeName());
   
-  m_pPipeline      = new Pipeline(this);
-  //m_pBufferQueue = new Queue;
+  m_pPipeline    = new Pipeline(this);
+  m_pBufferQueue = nullptr;
   
   Tokeniser* pTokenizer = new Tokeniser;
   TokenVec* pTokenVec = new TokenVec;
@@ -230,19 +231,42 @@ void Job_Dynamic::vBegin(void)
   }
   
   i8 nOps = 0;
+  i8 iThisNode = AM::pGrid()->iThisNode();
   for (i8 i_Stage = 0; i_Stage < m_pPipeline->m_oStageVec.nItems(); i_Stage++) {
     Stage* pStage = m_pPipeline->m_oStageVec.pGet(i_Stage);
-    
+    vTrace("**Node:%lld Stages:%lld Stage:%lld PtnVec:%lld, NdeVec:%lld\n"_Stz, iThisNode, m_pPipeline->m_oStageVec.nItems(), i_Stage, pStage->m_oStagePtnVec.nItems(),
+           pStage->m_oStageNdeVec.nItems());
+           
     for (i8 i_Ptn = 0; i_Ptn < pStage->m_oStagePtnVec.nItems(); i_Ptn++) {
+      
       StagePtn* pStagePtn = pStage->m_oStagePtnVec.pGet(i_Ptn);
-      nOps += pStagePtn->m_oOpVec.nItems();
+      
+      // skip if partition is not for this node
+      i8 iNode = TablePtn::iPartitionToNode(pStagePtn->m_i_Ptn);
+      if (iNode != iThisNode) {
+        vTrace("**SKIPPING ThisNode: %lld; P %lld; PN %lld\n"_Stz, iThisNode, pStagePtn->m_i_Ptn, iNode);
+      }
+      else {
+        
+        nOps += pStagePtn->m_oOpVec.nItems();
+      }
     }
     for (i8 i_Nde = 0; i_Nde < pStage->m_oStageNdeVec.nItems(); i_Nde++) {
+      
       StageNde* pStageNde = pStage->m_oStageNdeVec.pGet(i_Nde);
-      nOps += pStageNde->m_oOpVec.nItems();
+      
+      // skip if Op not for this node
+      if (pStageNde->m_i_Nde != iThisNode) {
+        vTrace("**SKIPPING ThisNode: %lld; N %lld\n"_Stz, iThisNode,pStageNde->m_i_Nde);
+      }
+      else {
+        nOps += pStageNde->m_oOpVec.nItems();
+      }
     }
   }
   
+  vTrace("Node %lld vBegin end acksRemg %p %lld\n"_Stz, AM::pGrid()->iThisNode(),
+         m_pTask, nOps);
   AM::vSetAcksRmg(m_pTask,nOps);
 
   for (i8 i_Stage = 0; i_Stage < m_pPipeline->m_oStageVec.nItems(); i_Stage++) {
@@ -250,23 +274,44 @@ void Job_Dynamic::vBegin(void)
 
     for (i8 i_Nde = 0; i_Nde < pStage->m_oStageNdeVec.nItems(); i_Nde++) {
       StageNde* pStageNde = pStage->m_oStageNdeVec.pGet(i_Nde);
-      // for each operator in the stage nde
-      for (i8 i_Op = pStageNde->m_oOpVec.nItems() - 1; i_Op >= 0; i_Op--) {
-        Op* pOp = pStageNde->m_oOpVec.pGet(i_Op);
-        bool bSpawned = AM::bSpawnOp(m_pSession,pOp);
-        ASSERT(bSpawned);
+      
+      // skip if Op not for this node
+      if (pStageNde->m_i_Nde != iThisNode) {
+        vTrace("--SKIPPING ThisNode: %lld; N %lld\n"_Stz, iThisNode,i_Nde);
+      }
+      else {
+        vTrace("--NOT SKIPPING ThisNode: %lld; N %lld\n"_Stz, iThisNode,pStageNde->m_i_Nde);
+        // for each operator in the stage nde
+        for (i8 i_Op = pStageNde->m_oOpVec.nItems() - 1; i_Op >= 0; i_Op--) {
+          Op* pOp = pStageNde->m_oOpVec.pGet(i_Op);
+          
+          bool bSpawned = AM::bSpawnOp(m_pSession,pOp);
+          ASSERT(bSpawned);
+        }
       }
     }
     for (i8 i_Ptn = 0; i_Ptn < pStage->m_oStagePtnVec.nItems(); i_Ptn++) {
       StagePtn* pStagePtn = pStage->m_oStagePtnVec.pGet(i_Ptn);
+      
+      i8 iNode = TablePtn::iPartitionToNode(pStagePtn->m_i_Ptn);
+      if (iNode != iThisNode) {
+        vTrace("--SKIPPING ThisNode: %lld; P %lld; PN %lld\n"_Stz, iThisNode, pStagePtn->m_i_Ptn, iNode);
+      }
+      else {
+      
+      
       // for each operator in the stage ptn
       for (i8 i_Op = pStagePtn->m_oOpVec.nItems() - 1; i_Op >= 0; i_Op--) {
+        
         Op* pOp = pStagePtn->m_oOpVec.pGet(i_Op);
+        
         bool bSpawned = AM::bSpawnOp(m_pSession,pOp);
         ASSERT(bSpawned);
       }
     }
   }
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -359,7 +404,7 @@ void Jobs::vJob_Dynamic_post(Job* pJob)
       case CN_CRWBUFFER: {
         CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
         pJob_Dynamic->m_xResponse.m_ixRowsProcessed += pCrwBuffer->nRowCount();
-        pCrwBuffer->vPrintRows();
+        pCrwBuffer->vPrintRows(pJob_Dynamic->m_pStreamDef);
         break;
       }
         

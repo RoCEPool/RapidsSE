@@ -148,6 +148,8 @@ void Step::vJobAddOriginator(MP_Task mpTask)
   
   Scheduler::vAddOriginatingJob(pJob);
 
+  vTrace("%p ID %lld added to originator\n"_Stz, pJob, pJob->iJobId());
+  
   if (pJob->m_xReqTuple.m_iDetail) {
     JobLog::vNote(pJob,"Added to Originator List: %s %p"_Stz,
                        aCN[pJob->eClass()],
@@ -176,6 +178,8 @@ void Step::vJobAddParticipant(MP_Task mpTask)
   
   Scheduler::vAddParticipatingJob(pJob);
 
+  vTrace("%p ID %lld added to participant\n"_Stz, pJob, pJob->iJobId());
+  
   if (pJob->m_xReqTuple.m_iDetail) {
     JobLog::vNote(pJob,"Added to ParticipantList: %s %p "_Stz,
                           aCN[pJob->eClass()],

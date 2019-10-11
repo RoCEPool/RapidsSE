@@ -9,7 +9,7 @@ namespace Operators
   {
   friend class Pipeline;
   
-  protected:
+  public:
     s32            m_sName;          // first word of prompt command
   
     Pipeline*      m_pPipeline;      // op digest
@@ -34,13 +34,17 @@ namespace Operators
     bool           m_bAppendRight;   // append to right queue?
   
     i8             m_nNode;               // node no
-    i8             m_nSlot;               // slot no
+    i8             m_nPartition;          // partition no
     i8             m_nLeftEndMarkers;     // expected left end markers
     i8             m_nRightEndMarkers;    // expected left end markers
     
     StreamDef*     m_pStreamDef;
   
     bool           m_bFirstCall;      // first time being called?
+    
+    i8             m_iStage;
+    bool           m_bStageNdeVec;
+    i8             m_iStageNde;
     
     eOR (*m_fpCall) (void* aThisOp);  // function which calls the op loop
     eOR (*m_fpDrain)(void* aThisOp);  // function which calls the drain loop

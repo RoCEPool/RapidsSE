@@ -4,8 +4,6 @@
 
 #include "Operators.h"
 
-extern OpCatalog gxOpCatalog;
-
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
@@ -74,53 +72,27 @@ Pipeline::~Pipeline(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* process dynamic command                                                    */
+/* Populate the OpVec from the PipeLineSpec                                   */
 /*----------------------------------------------------------------------------*/
 void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
 {
   
+  // get the stageSpecVec
   StageSpecVec* pStageSpecVec = pPipelineSpec->pStageSpecVec();
   
+  // for each stage
   for (i8 i_StageSpec = 0; i_StageSpec < pStageSpecVec->nItems(); i_StageSpec++ ) {
     
+    // get the stageSpec
     StageSpec* pStageSpec = pPipelineSpec->pStageSpec(i_StageSpec);
-    m_oStageVec.vAdd(new Stage(pStageSpec));
     
+    // add a stage from the stageSpec to the stageVec
+    m_oStageVec.vAdd(new Stage(pStageSpec, this));
+    
+    //
     OpSpecVec* pOpSpecVec = pStageSpec->pOpSpecVec();
     
     Stage* pStage = m_oStageVec.pGet(i_StageSpec);
-    
-    for (i8 i_OpSpec = 0; i_OpSpec < pOpSpecVec->nItems(); i_OpSpec++ ) {
-      
-      OpSpec* pOpSpec = pOpSpecVec->pGet(i_OpSpec);
-      OpDefn* aOpDefn = gxOpCatalog.aFindOp(pOpSpec->szName());
-      
-      // unknown
-      if (! aOpDefn) {
-        vTrace(" ? %s\n"_Stz,pOpSpec->szName());
-        ASSERT(0);
-        continue;
-      }
-      
-      // add the operator to the stages of the stageNdeVec as well
-      for (i8 i_Index = 0; i_Index < pStage->m_oStageNdeVec.nItems(); i_Index++) {
-        Op* pOp = (aOpDefn->m_fpNewOp)(pOpSpec,this);
-        StageNde* pStageNde = pStage->m_oStageNdeVec.pGet(i_Index);
-        pOp->m_nNode = pStageNde->m_i_Nde;
-        pStage->m_oOpVec.vAdd(pOp);
-        pStageNde->m_oOpVec.vAdd(pOp);
-        //pOp->m_nLeftEndMarkers = pStage->m_oStageNdeVec.nItems();
-      }
-      
-      // add the operator to the stages of the stagePtnVec as well
-      for (i8 i_Ptn = 0; i_Ptn < pStage->m_oStagePtnVec.nItems(); i_Ptn++) {
-        Op* pOp = (aOpDefn->m_fpNewOp)(pOpSpec,this);
-        pOp->m_nSlot = i_Ptn;
-        pStage->m_oOpVec.vAdd(pOp);
-        pStage->m_oStagePtnVec.pGet(i_Ptn)->m_oOpVec.vAdd(pOp);
-      }
-      vDebugPoint();
-    }
     
   }
 
@@ -158,9 +130,13 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
       
       // if last operator is xmit, link to the first operator of the next stage
       if (pOp->eClass() == CN_XMITOP) {
-        Stage* pNextStage = m_oStageVec.pGet(i_Stage+1);
-        RASSERT(pNextStage);
-        StageNde* pStageNde = pNextStage->m_oStageNdeVec.pGet(0);
+        pOp->m_iStage = i_Stage+1;
+        pOp->m_bStageNdeVec = true;
+        pOp->m_iStageNde = 0;
+        
+        Stage* pStage = m_oStageVec.pGet(i_Stage+1);
+        RASSERT(pStage);
+        StageNde* pStageNde = pStage->m_oStageNdeVec.pGet(0);
         pOpNext = pStageNde->m_oOpVec.pGet(0);
         pOp->vNextLabel(pOpNext->szLabel());
         pOp->vOpOut(pOpNext);
@@ -224,106 +200,6 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
     }
 
   }
-  
-  /*
-  i8 i_Op = 0;
-  i8 i_SlotsPerNode = AM::pGrid()->nSlotsPerNode();
-  
-  Stage* pStage = m_oStageVec.pGet(0);
-
-  while (true) {
-    
-    Op* pOp;
-    Op* pOpNext;
-    i8 i_OpNext;
-    
-    // get operator to be linked
-    pOp = pStage->m_oOpVec.pGet(i_Op);
-    
-    // get next operator
-    if (pOp->m_aOpDefn->m_bIsPartitioned) {
-      
-      // figure out next operator
-      i_OpNext = i_Op + i_SlotsPerNode;
-      
-      // get the next operator
-      pOpNext = pStage->m_oOpVec.pGet(i_OpNext);
-      
-      // is the next operator an appendRight ?
-      if (pOpNext->m_bAppendRight) {
-        
-        // skip this appendRight operator
-        if (pOpNext->m_aOpDefn->m_bIsPartitioned) {
-          i_OpNext = i_OpNext + i_SlotsPerNode ;
-        }
-        else {
-          i_OpNext = i_OpNext + 1;
-        }
-      }
-      
-      // now link this operator with the next we figured out
-      for (i8 i_Slot = 0; i_Slot < i_SlotsPerNode; i_Slot++) {
-        
-        // get the next operator
-        pOpNext = pStage->m_oOpVec.pGet(i_OpNext);
-        
-        // link the two operators
-        pOp->vNextLabel(pOpNext->szLabel());
-        pOp->vOpOut(pOpNext);
-        
-        if (pOp->m_aOpDefn->m_bIsPartitioned && ! pOpNext->m_aOpDefn->m_bIsPartitioned)
-          pOpNext->m_nLeftEndMarkers = i_SlotsPerNode;
-        
-        if (pOp->m_bAppendRight)
-          pOpNext->m_nRightEndMarkers = pOpNext->m_nLeftEndMarkers;
-        
-        // move to next partition of this operator
-        i_Op++;
-        pOp = pStage->m_oOpVec.pGet(i_Op);
-        
-        // move to next partition of next operator
-        if (pOpNext->m_aOpDefn->m_bIsPartitioned)
-          i_OpNext++;
-      }
-    }
-    else {
-      
-      // not partitioned, figure out next operator
-      i_OpNext = i_Op + 1;
-      
-      // get next operator
-      pOpNext = pStage->m_oOpVec.pGet(i_OpNext);
-      
-      // is the next operator an appendRight ?
-      if (pOpNext->m_bAppendRight) {
-        
-        // skip this appendRight operator
-        if (pOpNext->m_aOpDefn->m_bIsPartitioned) {
-          
-          i_OpNext = i_OpNext + i_SlotsPerNode - pOp->m_nSlot;
-        }
-        else
-          i_OpNext = i_OpNext + 1;
-      }
-      
-      // link the two operators
-      pOp->vNextLabel(pOpNext->szLabel());
-      pOp->vOpOut(pOpNext);
-      if (pOp->m_aOpDefn->m_bIsPartitioned && ! pOpNext->m_aOpDefn->m_bIsPartitioned)
-        pOpNext->m_nLeftEndMarkers = i_SlotsPerNode;
-      
-      if (pOp->m_bAppendRight)
-        pOpNext->m_nRightEndMarkers = pOpNext->m_nLeftEndMarkers;
-      
-      //move to next operator to be linked
-      i_Op++;
-    }
-    
-    // are we done ?
-    if (i_Op == pStage->m_oOpVec.nItems() - 1)
-      break;
-  }
-*/
   
   vDebugPoint();
 }

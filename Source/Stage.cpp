@@ -4,6 +4,7 @@
 
 #include "Operators.h"
 
+extern OpCatalog gxOpCatalog;
 
 /*----------------------------------------------------------------------------*/
 /*-- Lifecycle ---------------------------------------------------------------*/
@@ -44,7 +45,7 @@ void Stage::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Stage::Stage(StageSpec* pStageSpec)
+Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeLine)
 : Object(CN_STAGE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGE,_FOOTER_);
@@ -54,9 +55,7 @@ Stage::Stage(StageSpec* pStageSpec)
   
   switch (m_pStageSpec->eTopology()) {
     case PO_ALL_NODES:
-      for (i8 i_Nde = 0; i_Nde < AM::pGrid()->nConnectedNodes(); i_Nde++) {
-        m_oStageNdeVec.vAdd(new StageNde(pStageSpec, i_Nde));
-      }
+      RASSERT(0);
       break;
       
     case PO_ALL_PARTITIONS:
@@ -66,7 +65,7 @@ Stage::Stage(StageSpec* pStageSpec)
       break;
       
     case PO_ORIGIN:
-      m_oStageNdeVec.vAdd(new StageNde(pStageSpec, AM::pGrid()->iThisNode()));
+      m_oStageNdeVec.vAdd(new StageNde(pStageSpec, 0));
       break;
       
     case PO_SPECIFIC_NODE:
@@ -79,6 +78,38 @@ Stage::Stage(StageSpec* pStageSpec)
       
     default:
       RASSERT(0);
+  }
+  
+  OpSpecVec* pOpSpecVec = pStageSpec->pOpSpecVec();
+  
+  for (i8 i_OpSpec = 0; i_OpSpec < pOpSpecVec->nItems(); i_OpSpec++ ) {
+    
+    OpSpec* pOpSpec = pOpSpecVec->pGet(i_OpSpec);
+    OpDefn* aOpDefn = gxOpCatalog.aFindOp(pOpSpec->szName());
+    
+    // unknown
+    if (! aOpDefn) {
+      vTrace(" ? %s\n"_Stz,pOpSpec->szName());
+      ASSERT(0);
+      continue;
+    }
+    
+    // add the operator to the stages of the stageNdeVec as well
+    for (i8 i_Index = 0; i_Index < m_oStageNdeVec.nItems(); i_Index++) {
+      Op* pOp = (aOpDefn->m_fpNewOp)(pOpSpec,pPipeLine);
+      StageNde* pStageNde = m_oStageNdeVec.pGet(i_Index);
+      pOp->m_nNode = pStageNde->m_i_Nde;
+      m_oOpVec.vAdd(pOp);
+      pStageNde->m_oOpVec.vAdd(pOp);
+    }
+    
+    // add the operator to the stages of the stagePtnVec as well
+    for (i8 i_Ptn = 0; i_Ptn < m_oStagePtnVec.nItems(); i_Ptn++) {
+      Op* pOp = (aOpDefn->m_fpNewOp)(pOpSpec,pPipeLine);
+      pOp->m_nPartition = i_Ptn;
+      m_oOpVec.vAdd(pOp);
+      m_oStagePtnVec.pGet(i_Ptn)->m_oOpVec.vAdd(pOp);
+    }
   }
   
   _checkInitialised_(CN_STAGE);

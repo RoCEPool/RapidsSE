@@ -209,7 +209,7 @@ void FetchOp::vPreliminary(void)
   m_pIndex = Table::pFindIndex(m_pPipeline->m_pSession->pPathStack(), m_sTableNm, m_sIndexNm);
   
   // get table ptn
-  m_pTablePtn = m_pTable->pSlots()->pPartition(m_nSlot);
+  m_pTablePtn = m_pTable->pSlots()->pPartition(TablePtn::iPartitionToSlot(m_nPartition));
   
   // create the stream def from teh table
   m_pStreamDef = new StreamDef(m_pTable->pStreamDef());
