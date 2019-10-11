@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Forth
+namespace SenVM
 {
   class DicStack : public Object
   {

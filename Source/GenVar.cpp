@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-GenVar* Forth::_pGenVar(void* aAddr)
+GenVar* SenVM::_pGenVar(void* aAddr)
 {
   GenVar* pValWrk = reinterpret_cast<GenVar*>(aAddr);
   

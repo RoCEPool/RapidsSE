@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Forth
+namespace SenVM
 {
   class ForthClump : public Object
   {

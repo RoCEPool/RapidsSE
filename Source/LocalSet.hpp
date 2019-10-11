@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Forth
+namespace SenVM
 {
   static const i8 C_LOCALS = 32;
   

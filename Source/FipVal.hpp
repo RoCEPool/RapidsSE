@@ -3,21 +3,21 @@
 /*============================================================================*/
 #pragma once
 
-namespace Forth
+namespace SenVM
 {
   class FipVal : public ForthValue
   {
   private:
-    Forth::Cell* m_aFip;
+    Cell* m_aFip;
         
   public:
     void* operator new(size_t);
     
     FipVal(void);
     
-    void operator =(Forth::Cell* aCell);
+    void operator =(Cell* aCell);
     
-    Forth::Cell* aFipPtr(void);
+    Cell* aFipPtr(void);
     i8   nSize(void);
     void vToString(Stz* aWorkspace);
   };

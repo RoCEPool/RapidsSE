@@ -7,7 +7,7 @@
 
 //------------------------------------------------------------------------------
 
-namespace Forth
+namespace SenVM
 {
   void vCheckAssumptions(void);
 }

@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-PtrVal* Forth::_aPtrVal(void* aAddr)
+PtrVal* SenVM::_aPtrVal(void* aAddr)
 {
   PtrVal* aPtrVal = reinterpret_cast<PtrVal*>(aAddr);
   

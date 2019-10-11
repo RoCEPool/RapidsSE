@@ -1,9 +1,9 @@
 /*============================================================================*/
-/* Compiler.hpp -- Sen Word Compiler                                     */
+/* Compiler.hpp -- Sen Word Compiler                                          */
 /*============================================================================*/
 #pragma once
 
-namespace Forth
+namespace SenVM
 {
   class Compiler : public Object
   {

@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Local* Forth::_pLocal(void* aAddr)
+Local* SenVM::_pLocal(void* aAddr)
 {
   Local* pLocal = reinterpret_cast<Local*>(aAddr);
   

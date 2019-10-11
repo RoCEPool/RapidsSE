@@ -13,7 +13,7 @@ extern StepFp gfpEntryStep;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Word* Forth::_pWord(void* aAddr)
+Word* SenVM::_pWord(void* aAddr)
 {
   Word* pWord = reinterpret_cast<Word*>(aAddr);
   

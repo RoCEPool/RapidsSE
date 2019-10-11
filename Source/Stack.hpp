@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Forth
+namespace SenVM
 {
   static const i8 C_WSP_STACK = C_SIZE_LARGE_OBJECT - C_1KB;
   //static const i8 C_WSP_STACK = C_SIZE_SMALL_OBJECT;

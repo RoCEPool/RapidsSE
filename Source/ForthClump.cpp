@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ForthClump* Forth::_pForthClump(void* aAddr)
+ForthClump* SenVM::_pForthClump(void* aAddr)
 {
   ForthClump* pForthClump = reinterpret_cast<ForthClump*>(aAddr);
   

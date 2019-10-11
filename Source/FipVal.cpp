@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-FipVal* Forth::_aFipVal(void* aAddr)
+FipVal* SenVM::_aFipVal(void* aAddr)
 {
   FipVal* aFipVal = reinterpret_cast<FipVal*>(aAddr);
   

@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-StrVal* Forth::_aStrVal(void* aAddr)
+StrVal* SenVM::_aStrVal(void* aAddr)
 {
   StrVal* aStrVal = reinterpret_cast<StrVal*>(aAddr);
   

@@ -33,7 +33,6 @@ namespace Esses         { template <int BYTES> class String_t;
                           typedef Bytes_t<C_4K>    b4K;   // note this is 4K not 4KB
                                                                               }
 namespace Focals        {                                                     }
-namespace Forth         { class Cell; class Dic; class Word; class DicStack; }
 namespace Gadgets       { class EnumFlags;                                    }
 namespace Grids         { class Grid; class Node;                             }
 namespace Host          {                                                     }
@@ -61,6 +60,7 @@ namespace Resources     { class Resource; class ResourceTracker;
 namespace Rows          { class CrwBuffer;                                    }
 namespace ScanSprint    {                                                     }
 namespace Scheduling    { class Queues; class Scheduler;                      }
+namespace SenVM         { class Cell; class Dic; class DicStack; class Word;  }
 namespace Services      {                                                     }
 namespace Sessions      { class Request; class Session; class SessionState;   }
 namespace Steps         { class Step; class StepTiming;                       }
@@ -93,7 +93,6 @@ using namespace Pipelines;
 using namespace Enums;
 using namespace Esses;
 using namespace Focals;
-using namespace Forth;
 using namespace Gadgets;
 using namespace Grids;
 using namespace Host;
@@ -115,6 +114,7 @@ using namespace Resources;
 using namespace Rows;
 using namespace ScanSprint;
 using namespace Scheduling;
+using namespace SenVM;
 using namespace Services;
 using namespace Sessions;
 using namespace Steps;

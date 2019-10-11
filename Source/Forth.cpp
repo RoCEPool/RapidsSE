@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
-void Forth::vCheckAssumptions(void)
+void SenVM::vCheckAssumptions(void)
 {
   
   ASSERT(8 == sizeof(ForthValue));

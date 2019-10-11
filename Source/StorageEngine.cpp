@@ -36,7 +36,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   Chunks::vCheckAssumptions();
   Transactions::vCheckAssumptions();
   Commands::vCheckAssumptions();
-  Forth::vCheckAssumptions();
+  SenVM::vCheckAssumptions();
   Streams::vCheckAssumptions();
   MetaData::vCheckAssumptions();
   ControlData::vCheckAssumptions();
