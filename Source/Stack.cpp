@@ -2,7 +2,7 @@
 /* Stack.cpp -- Push/Pop Stack of Values                                      */
 /*============================================================================*/
 
-#include "Forth.h"
+#include "SenVM.h"
 
 
 // Note: to optimise stack operations look at directly using pDataStack->m_aTop

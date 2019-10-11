@@ -2,7 +2,7 @@
 /* Word.cpp -- Forth SingleWord in Dictionary                                  */
 /*============================================================================*/
 
-#include "Forth.h"
+#include "SenVM.h"
 
 extern StepFp gfpEntryStep;
 
