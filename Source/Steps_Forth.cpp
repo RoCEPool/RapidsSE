@@ -312,7 +312,7 @@ void Step::vDoes_RT(MP_Task mpTask)
   Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
   pCurrentWord->vEntryStep(&Step::vEnterObject);
-  pCurrentWord->vEntryCell(mpTask->m_aFipCell + 1);
+  pCurrentWord->vEntryCell(mpTask->m_pForth->m_aFipCell + 1);
   
   EXIT();
 }
@@ -338,7 +338,7 @@ void Step::vExit_RT(MP_Task mpTask)
   if ( ! mpTask->m_pForth->m_pReturnStack->bPop(aCell) )
     THROW_INVALID_RSTACK("exit_rt"_Stz);
   
-  mpTask->m_aFipCell = aCell;
+  mpTask->m_pForth->m_aFipCell = aCell;
   
   EXIT();
 }

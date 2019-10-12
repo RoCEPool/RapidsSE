@@ -154,8 +154,6 @@ void Task::vInit(void)
   m_iTracing     = C_TRACE_NONE;
   m_i_NextRnd    = AM::bDeveloper() ? 0 : C_UNKNOWN;
   
-  m_aFipCell     = nullptr;
-  
   m_pForth       = nullptr;
   
   m_pCompiler    = nullptr;
@@ -226,6 +224,8 @@ void Task::vTaskLoop_job(void)
   vRefindJobClass();
   
   if (TK_JOB == m_eKind && ! bSeeded() ) {
+    if (! m_pForth)
+      vNewStacks();
     vSeedJob();
   }
   else {
@@ -239,7 +239,7 @@ void Task::vTaskLoop_job(void)
   while (TR_NONE == m_eTransition) {
     
     // get next routine to be called
-    StepFp fpRoutine = *( (m_aFipCell ++)->m_afpStep );
+    StepFp fpRoutine = *( (m_pForth->m_aFipCell ++)->m_afpStep );
     
     // call the routine
     try {
@@ -399,7 +399,7 @@ void Task::vAdjustFIP(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_aFipCell = aAdd<Cell*>(m_aFipCell,nBytes);
+  m_pForth->m_aFipCell = aAdd<Cell*>(m_pForth->m_aFipCell,nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -409,7 +409,7 @@ Object* Task::pArgObject(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Object* pObject = reinterpret_cast<Object*>(m_aFipCell);
+  Object* pObject = reinterpret_cast<Object*>(m_pForth->m_aFipCell);
   
   return pObject;
 }
@@ -821,7 +821,7 @@ void Task::vRetry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_aFipCell = m_pCompiler->m_pRetryIP;
+  m_pForth->m_aFipCell = m_pCompiler->m_pRetryIP;
   m_pCompiler->m_pBeginIP = nullptr;
   
   m_pCompiler->m_pTokeniser->sToken() = ""_Stz;
@@ -837,7 +837,7 @@ bool Task::bSeeded(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if (m_aFipCell)
+  if (m_pForth && m_pForth->m_aFipCell)
     return true;
   else
     return false;
@@ -859,7 +859,7 @@ void Task::vSeedJob(void)
   if (! pWord)
     vFatal("Unable to find seed word: %s\n"_Stz,szSeed);
   
-  m_aFipCell = pWord->aFirstCell();
+  m_pForth->m_aFipCell = pWord->aFirstCell();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1068,7 +1068,7 @@ void Task::vTracePoint(Stz* aMark)
   
   s256 sRoutine;
   
-  Cell* aHasCell = m_aFipCell;
+  Cell* aHasCell = m_pForth->m_aFipCell;
   
   Word* pLocatedWord = m_oDicStack.pLocateWord(aHasCell);
   if (pLocatedWord)
@@ -1112,7 +1112,7 @@ void Task::vTraceStep(Stz* aStepNm)
   
   s256 sRoutine;
   
-  Cell* aHasCell = m_aFipCell;
+  Cell* aHasCell = m_pForth->m_aFipCell;
   Word* pLocatedWord = m_oDicStack.pLocateWord(aHasCell);
   if (pLocatedWord)
     sRoutine = pLocatedWord->sName();

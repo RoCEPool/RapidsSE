@@ -20,10 +20,10 @@ void Step::vEnterObject(MP_Task mpTask)
 {
   ENTRY("vEnterObject"_Stz);
   
-  StepFp* afpEntryCell = (mpTask->m_aFipCell - 1)->m_afpStep + 1;
+  StepFp* afpEntryCell = (mpTask->m_pForth->m_aFipCell - 1)->m_afpStep + 1;
 
-  mpTask->m_pForth->m_pReturnStack->vPushCell(mpTask->m_aFipCell);
-  mpTask->m_aFipCell = *(Cell**)afpEntryCell;
+  mpTask->m_pForth->m_pReturnStack->vPushCell(mpTask->m_pForth->m_aFipCell);
+  mpTask->m_pForth->m_aFipCell = *(Cell**)afpEntryCell;
   
   Word* pWord = pAdd<Word*>((Object*)afpEntryCell,
                             -( sizeof(Word)
@@ -48,10 +48,10 @@ void Step::vEnterRoutine(MP_Task mpTask)
 {
   ENTRY("vEnterRoutine"_Stz);
   
-  StepFp* afpEntryCell = (mpTask->m_aFipCell - 1)->m_afpStep + 1;
+  StepFp* afpEntryCell = (mpTask->m_pForth->m_aFipCell - 1)->m_afpStep + 1;
   
-  mpTask->m_pForth->m_pReturnStack->vPushCell(mpTask->m_aFipCell);
-  mpTask->m_aFipCell = *(Cell**)afpEntryCell;
+  mpTask->m_pForth->m_pReturnStack->vPushCell(mpTask->m_pForth->m_aFipCell);
+  mpTask->m_pForth->m_aFipCell = *(Cell**)afpEntryCell;
 
    if ( (mpTask->m_iTracing & C_TRACE_ROUTINES) )
     mpTask->vTracePoint(">"_Stz);

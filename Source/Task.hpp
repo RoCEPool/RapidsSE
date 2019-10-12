@@ -52,8 +52,6 @@ namespace Tasks
     Node*     m_pSendNode;  // node to send to
     Compiler* m_pCompiler;  // forth word compiler (Job boot, create table etc)
   
-    Cell*     m_aFipCell;     // points to cell inside a word
-
     Forth*    m_pForth;       // forth implementation
   
     // exception
