@@ -151,6 +151,9 @@ namespace Oblique
     static void vPrintAttachMap(void);
     static void vPrintStartupInfo(void);
     static i8   nRandomLevels(void);
+    static void vTaskMutexLock(Task* pTask);
+    static void vTaskMutexSignal(Task* pTask);
+    static void vTaskMutexUnlock(Task* pTask);
     static i8   iTaskQueue(Task* pTask);
     static i8   iTaskState(Task* pTask);
     static Job* pThisTLSJob(void);
