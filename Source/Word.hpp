@@ -19,16 +19,16 @@ namespace SenVM
     Word*     m_pCategory;    // category of word
     Dic*      m_pDic;         // which dictionary this word in
     EnameSet* m_pEnameSet;    // optional ename set
+    i8        m_iEpoch;       // epoch no. used by bp analyzer
+    s32       m_sExitHook;    // routine to be called on exit
+    bool      m_bImmediate;   // immediate execution during compile?
     StepFp    m_fpIntrinsic;  // intrinsic function for this word
-    Cell*     m_aEntryCell;   // the cell to start executing from
+    Cell*     m_aInxPtr;      // the cell to start executing from
                               //   for normal words this will be the first cell
                               //     in the data area
                               //   for objects this will be the cell after
                               //     does in the defining word
                               //   for primitives this will be null
-    i8        m_iEpoch;       // epoch no. used by bp analyzer
-    s32       m_sExitHook;    // routine to be called on exit
-    bool      m_bImmediate;   // immediate execution during compile?
     eWK       m_eKind;        // kind of word
     i8        m_iLocalNo;     // local number (for a local variable)
     i8        m_iParams;      // number of parameters

@@ -85,7 +85,7 @@ Word::Word(Stz* szName)
   m_pEnameSet    = nullptr;
 
   m_fpIntrinsic = gfpEntryStep;
-  m_aEntryCell  = aFirstCell();
+  m_aInxPtr  = aFirstCell();
   
   m_xRoutine.vZero(CN_WORD);
   
@@ -423,7 +423,7 @@ Cell* Word::aEntryCell(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  return m_aEntryCell;
+  return m_aInxPtr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -433,7 +433,7 @@ void Word::vEntryCell(Cell* aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  m_aEntryCell = aCell;
+  m_aInxPtr = aCell;
 }
 
 /*----------------------------------------------------------------------------*/
