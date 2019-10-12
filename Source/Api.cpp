@@ -322,6 +322,7 @@ bool Api::bSpawnJob(Session* pSession, Job* pJob)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  //ASSERT(! pJob->m_pTask);
   Task* pNewTask = new Task(pJob,pSession);
   pNewTask->vState(TS_ABLE);
   
@@ -421,6 +422,7 @@ bool Api::bSpawnJobDedicated(Job* pJob)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  //ASSERT(! pJob->m_pTask);
   Task* pNewTask = new Task(pJob,nullptr);
   pNewTask->vState(TS_ABLE);
   
@@ -448,6 +450,7 @@ bool Api::bSpawnOp(Session* pSession, Op* pOp)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  //ASSERT(! pOp->m_pTask);
   Task* pNewTask = new Task(pOp,pSession);
   pNewTask->vState(TS_ABLE);
   pOp->vTask(pNewTask);
