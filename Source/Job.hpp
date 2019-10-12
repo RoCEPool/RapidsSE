@@ -25,20 +25,19 @@ namespace Jobs
     eJL  m_eJobList;     // which job list the job is currently in
     eJP  m_eJobPhase;    // which job phase the job is currently in
     eJS  m_eJobState;    // current state of the job
-
+    
+    Atomic  m_ixErrors;
     Decider m_oAcksRmg;  // acks remaining
   
-    Tasks::Task* m_pTask;            // task executing the job
     Tasks::Task* m_pOriginatingTask; // originating task of the request
   
     i8  m_iParticipantNode;    // participant node no (FromNodeNo?)
   
     Operand*   m_pOperand;
     
-    Atomic m_ixErrors;
-
-    //! to be moved into Task
-    Mutex* m_pJobMutex;
+    Mutex* m_pJobMutex;  //! TO BE MOVED INTO TASK
+    
+    Tasks::Task* m_pTask;            // task executing the job
 
   public:
     Job(eCN eClassNo);
