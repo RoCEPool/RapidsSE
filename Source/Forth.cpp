@@ -46,7 +46,7 @@ Forth::Forth(Task* pTask)
   
   m_pTask        = pTask;
   
-  m_aFipCell     = nullptr;
+  m_aInxPtr     = nullptr;
   
   m_pDataStack   = new Stack;
   m_pReturnStack = new Stack;

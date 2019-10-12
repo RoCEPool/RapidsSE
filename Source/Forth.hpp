@@ -10,7 +10,7 @@ namespace SenVM
   public:
     Task*     m_pTask;        // which task
   
-    Cell*     m_aFipCell;     // points to cell inside a word
+    Cell*     m_aInxPtr;      // instruction/cell pointer
   
 
     Stack*    m_pAuxStack;    // auxiliary stack

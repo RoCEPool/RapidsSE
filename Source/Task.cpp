@@ -236,7 +236,7 @@ void Task::vTaskLoop_job(void)
   while (TR_NONE == m_eTransition) {
     
     // get next intinsic to be called
-    StepFp fpIntrinsic = *( (m_pForth->m_aFipCell ++)->m_afpStep );
+    StepFp fpIntrinsic = *( (m_pForth->m_aInxPtr ++)->m_afpStep );
     
     // call the intinsic
     try {
@@ -393,7 +393,7 @@ void Task::vAdjustFIP(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_pForth->m_aFipCell = aAdd<Cell*>(m_pForth->m_aFipCell,nBytes);
+  m_pForth->m_aInxPtr = aAdd<Cell*>(m_pForth->m_aInxPtr,nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -403,7 +403,7 @@ Object* Task::pArgObject(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Object* pObject = reinterpret_cast<Object*>(m_pForth->m_aFipCell);
+  Object* pObject = reinterpret_cast<Object*>(m_pForth->m_aInxPtr);
   
   return pObject;
 }
@@ -815,7 +815,7 @@ void Task::vRetry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_pForth->m_aFipCell = m_pCompiler->m_pRetryIP;
+  m_pForth->m_aInxPtr = m_pCompiler->m_pRetryIP;
   m_pCompiler->m_pBeginIP = nullptr;
   
   m_pCompiler->m_pTokeniser->sToken() = ""_Stz;
@@ -831,7 +831,7 @@ bool Task::bSeeded(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if (m_pForth && m_pForth->m_aFipCell)
+  if (m_pForth && m_pForth->m_aInxPtr)
     return true;
   else
     return false;
@@ -853,7 +853,7 @@ void Task::vSeedJob(void)
   if (! pWord)
     vFatal("Unable to find seed word: %s\n"_Stz,szSeed);
   
-  m_pForth->m_aFipCell = pWord->aFirstCell();
+  m_pForth->m_aInxPtr = pWord->aFirstCell();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1062,7 +1062,7 @@ void Task::vTracePoint(Stz* aMark)
   
   s256 sRoutine;
   
-  Cell* aHasCell = m_pForth->m_aFipCell;
+  Cell* aHasCell = m_pForth->m_aInxPtr;
   
   Word* pLocatedWord = m_oDicStack.pLocateWord(aHasCell);
   if (pLocatedWord)
@@ -1106,7 +1106,7 @@ void Task::vTraceStep(Stz* aStepNm)
   
   s256 sRoutine;
   
-  Cell* aHasCell = m_pForth->m_aFipCell;
+  Cell* aHasCell = m_pForth->m_aInxPtr;
   Word* pLocatedWord = m_oDicStack.pLocateWord(aHasCell);
   if (pLocatedWord)
     sRoutine = pLocatedWord->sName();
