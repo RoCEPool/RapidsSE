@@ -8,6 +8,7 @@ enum eMK // mutex kind
   /*  0 */ MK_NONE=0,
   
   /*    */ MK_JOB,
+  /*    */ MK_TASK,
   /*    */ MK_THREAD,
   
   /*    */ MK_ENUMS
@@ -18,6 +19,7 @@ static Stz* aMK[]
   /*  0 */ "NONE"_Stz,
   
   /*    */ "MK_JOB"_Stz,
+  /*    */ "MK_TASK"_Stz,
   /*    */ "MK_THREAD"_Stz,
   
   /*    */ "ENUMS"_Stz

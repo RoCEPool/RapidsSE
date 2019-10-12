@@ -138,7 +138,7 @@ void Task::vInit(void)
   m_pJob         = nullptr;
   
   m_pThread      = nullptr;
-  m_pMutex       = nullptr;
+  m_pMutex       = new Mutex(MK_TASK,this,&m_xReqTuple);
   
   m_pSession     = nullptr;
   // m_oDicStack
@@ -177,6 +177,8 @@ Task::~Task(void) noexcept(false)
   delete m_pForth;
 
   delete m_pCompiler;
+  
+  delete m_pMutex;
   
 
   
