@@ -101,6 +101,7 @@ namespace Tasks
     void vMutexLock(void);
     void vMutexSignal(void);
     void vMutexUnlock(void);
+    void vMutexWait(void);
     void vNewStacks(void);
     i8&  i_NextRnd(void);
     Op*  pOp(void);

@@ -321,18 +321,9 @@ bool Api::bSpawnJob(Session* pSession, Job* pJob)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // form the word to execute for the request
-  //pJob->vSeed(eSeed);
-  
-  //if (pJob->m_xReqTuple.m_bMarkTrace)
-  //  pJob->m_aJobClass->vShowJob(pJob);
-  
-  //ASSERT(! pJob->m_pTask);
   
   Task* pNewTask = new Task(pJob,pSession);
   pNewTask->vState(TS_ABLE);
-  //pNewTask->vSession(pSession);
   
   AM::vLogSsn(SL_INF,pSession,AA_API_SPAWN_JOB,
               "pJob=%p"_Stz, //!format-LogPrm
@@ -430,17 +421,8 @@ bool Api::bSpawnJobDedicated(Job* pJob)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  
-  // form the word to execute for the request
-  //pJob->vSeed(eSeed);
-  
-  
-  //if (pJob->m_xReqTuple.m_bMarkTrace)
-  //  pJob->m_aJobClass->vShowJob(pJob);
-  
   Task* pNewTask = new Task(pJob,nullptr);
   pNewTask->vState(TS_ABLE);
-  //pNewTask->vSession(pSession);
   
   Scheduler::vAddTaskDedicated(pNewTask);
   

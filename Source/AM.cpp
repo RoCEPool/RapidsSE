@@ -305,6 +305,7 @@ i8 AM::nRandomLevels(void) {
 void AM::vTaskMutexLock(Task* pTask)   { pTask->vMutexLock();   }
 void AM::vTaskMutexSignal(Task* pTask) { pTask->vMutexSignal(); }
 void AM::vTaskMutexUnlock(Task* pTask) { pTask->vMutexUnlock(); }
+void AM::vTaskMutexWait(Task* pTask)   { pTask->vMutexWait();   }
 
 i8 AM::iTaskQueue(Task* pTask) {
   eQK eQueue = pTask->eQueue();
