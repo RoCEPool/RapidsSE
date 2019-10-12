@@ -200,7 +200,7 @@ void Job_Select::vBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SELECT,_FOOTER_);
   
-  AM::vSetAcksRmg(m_pTask,5);
+  AM::vSetAcksRmg(pTask(),5);
   
   Session* pSession = AM::pThisTLSSession();
   

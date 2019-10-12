@@ -29,7 +29,7 @@ namespace Jobs
     Atomic  m_ixErrors;
     Decider m_oAcksRmg;  // acks remaining
   
-    Tasks::Task* m_pOriginatingTask; // originating task of the request
+    Task* m_pOriginatingTask; // originating task of the request
   
     i8  m_iParticipantNode;    // participant node no (FromNodeNo?)
   
@@ -37,7 +37,8 @@ namespace Jobs
     
     Mutex* m_pJobMutex;  //! TO BE MOVED INTO TASK
     
-    Tasks::Task* m_pTask;            // task executing the job
+  private:
+    Task* m_pTaskJ;            // task executing the job
 
   public:
     Job(eCN eClassNo);
@@ -70,6 +71,8 @@ namespace Jobs
     void vReport(void);
     void vSeed(eSS eSeed);
     void vShow(void);
+    Task* pTask(void);
+    void vTask(Task* pTask);
 
   protected:
     //void vShow(s48K& s);

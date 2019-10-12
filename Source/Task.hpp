@@ -112,6 +112,7 @@ namespace Tasks
     void vRefindJobClass(void);
     ReqTuple* aReqTuple(void);
     void vRenderPortrait(s256& sTaskPortrait);
+    void vReseed(void);
     void vRetry(void);
     bool bSeeded(void);
     void vSeedJob(void);

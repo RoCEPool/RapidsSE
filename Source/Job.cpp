@@ -78,7 +78,7 @@ Job::Job(eCN eClassNo)
   //m_oAcksRmg
   
   m_aJobClass        = nullptr;
-  m_pTask            = nullptr;
+  m_pTaskJ = nullptr;
   m_pOriginatingTask = nullptr;
   
   m_iParticipantNode  = C_UNKNOWN;
@@ -122,7 +122,7 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
   
   //m_oAcksRmg
   
-  m_pTask            = nullptr;
+  m_pTaskJ = nullptr;
   m_pOriginatingTask = nullptr;
   
   m_iParticipantNode  = C_UNKNOWN;
@@ -507,6 +507,17 @@ void Job::vShow(void)
          );
 }
 
+Task* Job::pTask(void)
+{
+  return m_pTaskJ;
+}
+
+void Job::vTask(Task* pTask)
+{
+  ASSERT(! pTask || ! m_pTaskJ);
+  m_pTaskJ = pTask;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
@@ -572,7 +583,7 @@ JOBS_fn(vJob_recv)
   
   pJob->m_eJobList       = JL_NONE;
   pJob->m_pJobMutex      = nullptr;
-  pJob->m_pTask          = nullptr;
+  pJob->vTask(nullptr);
 
   pJob->m_i_Focal        = C_UNKNOWN;
 }

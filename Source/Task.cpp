@@ -77,7 +77,7 @@ Task::Task(Job* pJob, Session* pSession)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the executing task in job
   
-  m_pJob->m_pTask = this;
+  m_pJob->vTask(this);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -115,7 +115,7 @@ Task::Task(Op* pOp, Session* pSession)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the executing task in job
   
-  m_pJob->m_pTask = this;
+  m_pJob->vTask(this);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -784,6 +784,34 @@ void Task::vRenderPortrait(s256& sTaskPortrait)
                           aTS[m_eState]
                           );
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* reseed task                                                                */
+/*----------------------------------------------------------------------------*/
+void Task::vReseed(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+    
+  if (m_pForth) {
+    while (m_pForth->m_pAuxStack->nValues())
+      m_pForth->m_pAuxStack->vDiscard();
+    while (m_pForth->m_pDataStack->nValues())
+      m_pForth->m_pDataStack->vDiscard();
+    while (m_pForth->m_pReturnStack->nValues())
+      m_pForth->m_pReturnStack->vDiscard();
+    
+    while (m_pForth->m_pLocalsFrame) {
+      
+      LocalSet* pLocalsFrame = m_pForth->m_pLocalsFrame;
+      m_pForth->m_pLocalsFrame = m_pForth->m_pLocalsFrame->pNext();
+      
+      delete pLocalsFrame;
+    }
+
+  }
+  
+  vSeedJob();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -82,6 +82,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.regionSize@"_Stz,      &Step::vJobRegionSizeFetch);
   vAddStep("job.removeOriginator"_Stz, &Step::vJobRemoveOriginator);
   vAddStep("job.removeParticipant"_Stz,&Step::vJobRemoveParticipant);
+  vAddStep("job.reseed"_Stz,           &Step::vJobReseed);
   vAddStep("job.response@"_Stz,        &Step::vJobResponseFetch);
   vAddStep("job.response!"_Stz,        &Step::vJobResponseStore);
   vAddStep("job.routineName@"_Stz,     &Step::vJobRoutineNameFetch);
@@ -103,6 +104,8 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.spawn_dedicated"_Stz,  &Step::vJobSpawnDedicated);
   vAddStep("job::stateDiagram"_Stz,    &Step::vJobStateDiagram);
 
+  vAddStep("job.task@"_Stz,            &Step::vJobTaskFetch);
+  vAddStep("job.task!"_Stz,            &Step::vJobTaskStore);
   vAddStep("job.tenantName@"_Stz,      &Step::vJobTenantNameFetch);
  
   vAddStep("job::waitParticipant"_Stz, &Step::vJobWaitParticipant);
@@ -753,7 +756,7 @@ void Step::vJobExecutingTaskFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.exectingTask@"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pJob->m_pTask);
+  mpTask->m_pForth->m_pDataStack->vPushPointer(pJob->pTask());
   
   EXIT();
 }
@@ -1449,6 +1452,34 @@ void Step::vJobRegionSizeFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* job.reseed -- reseed the job on the stack                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vJobReseed(MP_Task mpTask)
+{
+  ENTRY("vJobReseed"_Stz);
+  
+  i8 i_Seed;
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(i_Seed) )
+    THROW_INVALID_DSTACK("job.reseed"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.reseed"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  AM::vLogSvc(SL_INF,mpTask->m_pJob,VA_SVC_SPAWN_JOB,
+              "%s spawned by %s"_Stz, //!format-LogSvc
+              aCN[pJob->eClass()],
+              aCN[mpTask->m_pJob->eClass()],
+              C_ENDARGS);
+  
+  pJob->vSeed((eSS)i_Seed);
+  IGNORE_RETURN(Api::bReseedJob(nullptr,pJob));
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* job.response@ -- fetch the job response from a node                        */
 /*----------------------------------------------------------------------------*/
 void Step::vJobResponseFetch(MP_Task mpTask)
@@ -1886,6 +1917,47 @@ void Step::vJobStateDiagram(MP_Task mpTask)
   AM::vStateDiagram(sDiagram,(eCN)iClassNo);
   
   mpTask->m_pForth->m_pDataStack->vPushS256(sDiagram);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.Task@ -- fetch the task executing the job                              */
+/*----------------------------------------------------------------------------*/
+void Step::vJobTaskFetch(MP_Task mpTask)
+{
+  ENTRY("vJobTaskFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.task@"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  mpTask->m_pForth->m_pDataStack->vPushPointer(pJob->pTask());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.Task! -- store the task executing the job                              */
+/*----------------------------------------------------------------------------*/
+void Step::vJobTaskStore(MP_Task mpTask)
+{
+  ENTRY("vJobTaskStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.task!"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  Object* pTaskPtr;
+  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pTaskPtr) )
+    THROW_INVALID_DSTACK("job.task!"_Stz);
+  Task* pTask = _pTask(pTaskPtr);
+  
+  // for the moment this should always be null
+  ASSERT(! pTask);
+  pJob->vTask(pTask);
   
   EXIT();
 }

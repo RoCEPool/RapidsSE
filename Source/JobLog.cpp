@@ -79,8 +79,8 @@ void JobLog::vNoteState(Jobs::Job* pJob, Stz* szPoint)
                       aCN[pJob->eClass()],
                       pJob,
                       
-                      aTS[AM::iTaskState(pJob->m_pTask)],
-                      aQK[AM::iTaskQueue(pJob->m_pTask)]
+                      aTS[AM::iTaskState(pJob->pTask())],
+                      aQK[AM::iTaskQueue(pJob->pTask())]
                       );
   
   if (pJob->m_bWasReceived) {

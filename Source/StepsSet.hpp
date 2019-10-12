@@ -510,6 +510,7 @@ public:
   static void vJobRegionSizeFetch(Tasks::MP_Task mpTask);
   static void vJobRemoveOriginator(Tasks::MP_Task mpTask);
   static void vJobRemoveParticipant(Tasks::MP_Task mpTask);
+  static void vJobReseed(Tasks::MP_Task mpTask);
   static void vJobResponseStore(Tasks::MP_Task mpTask);
   static void vJobResponseFetch(Tasks::MP_Task mpTask);
   static void vJobRoutineNameFetch(Tasks::MP_Task mpTask);
@@ -531,6 +532,8 @@ public:
   static void vJobSpawnDedicated(Tasks::MP_Task mpTask);
   static void vJobStateDiagram(Tasks::MP_Task mpTask);
 
+  static void vJobTaskFetch(Tasks::MP_Task mpTask);
+  static void vJobTaskStore(Tasks::MP_Task mpTask);
   static void vJobTenantNameFetch(Tasks::MP_Task mpTask);
   static void vJobThis(Tasks::MP_Task mpTask);
 

@@ -300,6 +300,47 @@ void Api::vMonitorPortrait(s48K& sPortrait)
 }
 
 /*----------------------------------------------------------------------------*/
+/* reseed job                                                                 */
+/*----------------------------------------------------------------------------*/
+bool Api::bReseedJob(Session* pSession, Job* pJob)
+{
+  ASSERT(pJob->m_aJobClass);
+  ASSERT(SS_ENUMS != pJob->m_eSeed);
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Before appending request for se, ensure that se is running
+  // get the se pid from the attachmap
+  i8 iPid = AM::iPid();
+  if (!Process::bTestPid(iPid)) {
+    // SE is not running anymore!
+    if (pSession)
+      vWarn("Cannot find pid %lld\n"_Stz, iPid);
+    vWarn("Cannot find pid %lld\n"_Stz, iPid);
+    return false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (! pJob->pTask())
+    AM::vLogWriteCsv(false);
+  
+  ASSERT(pJob->pTask());
+  Task* pTask = pJob->pTask();
+  pTask->vReseed();
+  
+  AM::vLogSsn(SL_INF,pSession,AA_API_SPAWN_JOB,
+              "pJob=%p"_Stz, //!format-LogPrm
+              pJob,
+              C_ENDARGS);
+  
+  
+  //Scheduler::vAddTaskGeneral(pTask);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
 bool Api::bSpawnJob(Session* pSession, Job* pJob)
@@ -322,7 +363,10 @@ bool Api::bSpawnJob(Session* pSession, Job* pJob)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  //ASSERT(! pJob->m_pTask);
+  if (pJob->pTask())
+    AM::vLogWriteCsv(false);
+
+  ASSERT(! pJob->pTask());
   Task* pNewTask = new Task(pJob,pSession);
   pNewTask->vState(TS_ABLE);
   
@@ -422,7 +466,10 @@ bool Api::bSpawnJobDedicated(Job* pJob)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  //ASSERT(! pJob->m_pTask);
+  if (pJob->pTask())
+    AM::vLogWriteCsv(false);
+  
+  ASSERT(! pJob->pTask());
   Task* pNewTask = new Task(pJob,nullptr);
   pNewTask->vState(TS_ABLE);
   
@@ -450,7 +497,10 @@ bool Api::bSpawnOp(Session* pSession, Op* pOp)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  //ASSERT(! pOp->m_pTask);
+  if (pOp->m_pTask)
+    AM::vLogWriteCsv(false);
+  
+  ASSERT(! pOp->m_pTask);
   Task* pNewTask = new Task(pOp,pSession);
   pNewTask->vState(TS_ABLE);
   pOp->vTask(pNewTask);

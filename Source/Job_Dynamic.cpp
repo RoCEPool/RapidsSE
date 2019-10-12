@@ -263,8 +263,8 @@ void Job_Dynamic::vBegin(void)
   }
   
   vTrace("Node %lld vBegin end acksRemg %p %lld\n"_Stz, AM::pGrid()->iThisNode(),
-         m_pTask, nOps);
-  AM::vSetAcksRmg(m_pTask,nOps);
+         pTask(), nOps);
+  AM::vSetAcksRmg(pTask(),nOps);
 
   for (i8 i_Stage = 0; i_Stage < m_pPipeline->m_oStageVec.nItems(); i_Stage++) {
     Stage* pStage = m_pPipeline->m_oStageVec.pGet(i_Stage);
