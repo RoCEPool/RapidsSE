@@ -19,7 +19,7 @@ namespace SenVM
     Word*     m_pCategory;    // category of word
     Dic*      m_pDic;         // which dictionary this word in
     EnameSet* m_pEnameSet;    // optional ename set
-    StepFp    m_fpEntryStep;  // entry step function for this word
+    StepFp    m_fpIntrinsic;  // intrinsic function for this word
     Cell*     m_aEntryCell;   // the cell to start executing from
                               //   for normal words this will be the first cell
                               //     in the data area

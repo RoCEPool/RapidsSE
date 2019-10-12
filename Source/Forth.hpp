@@ -12,7 +12,6 @@ namespace SenVM
   
     Cell*     m_aInxPtr;      // instruction/cell pointer
   
-
     Stack*    m_pAuxStack;    // auxiliary stack
     Stack*    m_pDataStack;   // data stack
     Stack*    m_pReturnStack; // return stack

@@ -537,14 +537,14 @@ void Step::vSee(MP_Task mpTask)
   
   while (aDoesCell < pDoesWord->aLastCell()) {
     
-    StepFp fpHasStep = *aDoesCell->m_afpStep;
+    StepFp fpHasStep = *aDoesCell->m_afpIntrinsic;
     
     Word* pCallsWord = mpTask->m_oDicStack.pLocateWord(fpHasStep);
     
     // jumps
-    if (*aDoesCell->m_afpStep == Step::vFlowJump ||
-        *aDoesCell->m_afpStep == Step::vFlowJumpFalse ||
-        *aDoesCell->m_afpStep == Step::vFlowJumpTrue ) {
+    if (*aDoesCell->m_afpIntrinsic == Step::vFlowJump ||
+        *aDoesCell->m_afpIntrinsic == Step::vFlowJumpFalse ||
+        *aDoesCell->m_afpIntrinsic == Step::vFlowJumpTrue ) {
       
       vTrace("%p: %s"_Stz,aDoesCell,pCallsWord->sName().aChar());
       
@@ -558,7 +558,7 @@ void Step::vSee(MP_Task mpTask)
     }
     
     // push
-    if ( *aDoesCell->m_afpStep == Step::vPushValue ) {
+    if ( *aDoesCell->m_afpIntrinsic == Step::vPushValue ) {
       
       vTrace("%p: %s"_Stz,aDoesCell,pCallsWord->sName().aChar());
       
@@ -581,9 +581,9 @@ void Step::vSee(MP_Task mpTask)
     }
     
     // enterRoutine
-    if ( *aDoesCell->m_afpStep == Step::vEnterRoutine ) {
+    if ( *aDoesCell->m_afpIntrinsic == Step::vEnterRoutine ) {
       
-      Word* pCallsWord = (Word*)( ((u8)aDoesCell->m_afpStep & (u8)~0xFFFF)
+      Word* pCallsWord = (Word*)( ((u8)aDoesCell->m_afpIntrinsic & (u8)~0xFFFF)
                                            + sizeof(HeapBuffer));
       
       vTrace("%p: %s\n"_Stz,aDoesCell,pCallsWord->sName().aChar());

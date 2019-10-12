@@ -84,7 +84,7 @@ Word::Word(Stz* szName)
   
   m_pEnameSet    = nullptr;
 
-  m_fpEntryStep = gfpEntryStep;
+  m_fpIntrinsic = gfpEntryStep;
   m_aEntryCell  = aFirstCell();
   
   m_xRoutine.vZero(CN_WORD);
@@ -360,7 +360,7 @@ void Word::vContentDump(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   Dic* pRootDic = AM::pRootDic();
-  Word* pStepWord = pRootDic->pFindStep(m_fpEntryStep);
+  Word* pStepWord = pRootDic->pFindStep(m_fpIntrinsic);
   
   vTrace("Word %p: %s %s Kind %s Immediate %d DataBytes %lld "_Stz
          "Step %p %s ..Rows.. %p\n"_Stz,
@@ -370,7 +370,7 @@ void Word::vContentDump(void)
          m_pCategory->m_sName.aChar(),
          m_bImmediate,
          m_xRoutine.nUsed(),
-         m_fpEntryStep,
+         m_fpIntrinsic,
          pStepWord ? pStepWord->sName().aChar() : "<not-found>",
          aFirstCell()
          );
@@ -403,7 +403,7 @@ StepFp Word::fpEntryStep(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  return m_fpEntryStep;
+  return m_fpIntrinsic;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -413,7 +413,7 @@ void Word::vEntryStep(StepFp fpStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  m_fpEntryStep = fpStep;
+  m_fpIntrinsic = fpStep;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -443,7 +443,7 @@ StepFp* Word::afpEntryStep(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  return &m_fpEntryStep;
+  return &m_fpIntrinsic;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -693,7 +693,7 @@ void Word::vObjectDump(Stz* aTab)
          aWK[m_eKind]->aChar(),
          m_bImmediate ? "Immediate"_Stz : "Not Immediate"_Stz,
          m_xRoutine.nUsed(),
-         m_fpEntryStep,
+         m_fpIntrinsic,
          aFirstCell()
          );
 }

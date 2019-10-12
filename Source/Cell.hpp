@@ -20,10 +20,10 @@ namespace SenVM
       //   - Step::vXyz for primitives
       //
       
-      StepFp* m_afpStep; // address of the member which has StepFp
+      StepFp* m_afpIntrinsic; // address of an intrinsic function
       
       //
-      // additionally cells can be a argument to the previous cell/stepfun
+      // additionally cells can be an argument to a another cell
       //
       
       Cell*   m_aJumpTo;      // a pointer to another cell within same routine
