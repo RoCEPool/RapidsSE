@@ -217,9 +217,6 @@ void Task::vTaskLoop_job(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  // record time of call
-  // ...
-
   // TODO: shouldn't have to refind it everytime!!!
   vRefindJobClass();
   
@@ -238,12 +235,12 @@ void Task::vTaskLoop_job(void)
   
   while (TR_NONE == m_eTransition) {
     
-    // get next routine to be called
-    StepFp fpRoutine = *( (m_pForth->m_aFipCell ++)->m_afpStep );
+    // get next intinsic to be called
+    StepFp fpIntrinsic = *( (m_pForth->m_aFipCell ++)->m_afpStep );
     
-    // call the routine
+    // call the intinsic
     try {
-      fpRoutine(this);
+      fpIntrinsic(this);
     }
     
     catch (i8 iException) {
@@ -286,9 +283,6 @@ void Task::vTaskLoop_job(void)
     
   }
   
-  // record time of return & calculate running total times
-  // ...
-
   if (m_pJob && m_pJob->m_xReqTuple.m_iDetail)
     JobLog::vNote(m_pJob,
                           "Returned from task call: %s %p"_Stz,
