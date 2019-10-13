@@ -8,7 +8,7 @@ namespace Resources
   class Mutex : public Resource
   {
   public:
-    eMK     m_eKind;     // kind of mutex
+    eMK     m_eMutex;    // kind of mutex
     Focal*  m_pFor;      // mutex is for a task or a thread
   
     bool    m_bLocked;   // true if mutex is currently locked (debugging)
