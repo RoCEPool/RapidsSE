@@ -228,6 +228,108 @@ void Mutex::vCondBroadcast(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* calling thread pauses for limited time to be signalled     (blocking call) */
+/*----------------------------------------------------------------------------*/
+void Mutex::vCondPause(i8 iMicroSeconds)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
+  
+  //!
+  //! This mutex must be locked by the calling thread.  While waiting the
+  //! mutex is dropped. The mutex is reacquired by calling thread when the
+  //! mutex is signaled.
+  //!
+  RASSERT(m_bLocked);
+  RASSERT(bMutexIsLocked());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // get current secs.usec since unix epoch
+  Dtm wIvl = IvlLib::wGetCurrIvl();
+  
+  // add the wait for period
+  wIvl = IvlLib::wAdd(wIvl,iMicroSeconds);
+  
+  // create a absolute time spec
+  struct timespec xTimeSpec;
+  xTimeSpec.tv_sec  = wIvl.xIvl.m_uSecond;
+  xTimeSpec.tv_nsec = wIvl.xIvl.m_uMicro * C_1K;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+#ifdef WITH_STATISTICS_COUNTERS
+  gpAttachMap->m_oStatistics.Mutex.m_nTimedWaits++;
+#endif
+  
+  vIncActNo(); ++ m_ixWaitTimed;
+  AM::vLogRes(SL_INF,this,RA_MTX_WAIT_TIMED,
+              "-%s wait for signal or timeout(%lldus) |m_ixWaitTimed=%lld|"_Stz, //!format-LogRes
+              aMK[m_eKind],
+              iMicroSeconds,
+              * m_ixWaitTimed,
+              C_ENDARGS);
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // clear tracking of the mutex lock state
+  m_bLocked = false;
+  
+  //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  i8 iRetVal = pthread_cond_timedwait(&m_xCond,&m_xMutex,&xTimeSpec);// BLOCKING
+                                                                     //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  
+  // success: signaled -- this thread has been signaled and now has mutex lock
+  
+  if (0 == iRetVal) {
+    RASSERT(! m_bLocked);
+    
+    m_bLocked = true;
+    
+#ifdef WITH_STATISTICS_COUNTERS
+    gpAttachMap->m_oStatistics.Mutex.m_nUnblocks++;
+#endif
+    
+    vIncActNo(); ++ m_ixSignaled;
+    AM::vLogRes(SL_INF,this,RA_MTX_SIGNALED,
+                "Mutex -%s owner was signaled; locked reacquired |m_ixSignaled=%lld|"_Stz, //!format-LogRes
+                aMK[m_eKind],
+                * m_ixSignaled,
+                C_ENDARGS);
+    
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // success: timedout -- call has timed-out; thread has reacquired mutex lock
+  
+  if (ETIMEDOUT == iRetVal) {
+    RASSERT(! m_bLocked);
+    m_bLocked = true;
+    
+#ifdef WITH_STATISTICS_COUNTERS
+    gpAttachMap->m_oStatistics.Mutex.m_nTimeOuts++;
+#endif
+    
+    vIncActNo(); ++ m_ixTimedout;
+    AM::vLogRes(SL_INF,this,RA_MTX_TIMEDOUT,
+                "Mutex -%s owner wait has timedout; locked reacquired |m_ixTimedout=%lld|"_Stz, //!format-LogRes
+                aMK[m_eKind],
+                * m_ixTimedout,
+                C_ENDARGS);
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // failure -- some error has occurred
+  
+  ++ gixMutex_err;
+  AM::vLogRes(SL_INF,this,RA_MTX_ERROR,
+              "pthread_cond_wait() error; iRetVal=%lld"_Stz, //!format-LogRes
+              iRetVal);
+}
+
+/*----------------------------------------------------------------------------*/
 /* signal the condition variable of this mutex                                */
 /*----------------------------------------------------------------------------*/
 void Mutex::vCondSignal(Focal* pByWhom)
@@ -281,7 +383,7 @@ void Mutex::vCondSignal(Focal* pByWhom)
 /*----------------------------------------------------------------------------*/
 /* calling thread waits indefinitely to be signaled           (blocking call) */
 /*----------------------------------------------------------------------------*/
-void Mutex::vCondWaitIndefinite(Focal* pByWhom)
+void Mutex::vCondWait(Focal* pByWhom)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -340,108 +442,6 @@ void Mutex::vCondWaitIndefinite(Focal* pByWhom)
     return;
   }
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // failure -- some error has occurred
-
-  ++ gixMutex_err;
-  AM::vLogRes(SL_INF,this,RA_MTX_ERROR,
-              "pthread_cond_wait() error; iRetVal=%lld"_Stz, //!format-LogRes
-              iRetVal);
-}
-
-/*----------------------------------------------------------------------------*/
-/* calling thread waits to be signalled          (time-limited blocking call) */
-/*----------------------------------------------------------------------------*/
-void Mutex::vCondWaitUsec(i8 iMicroSeconds)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
-  
-  //!
-  //! This mutex must be locked by the calling thread.  While waiting the
-  //! mutex is dropped. The mutex is reacquired by calling thread when the
-  //! mutex is signaled.
-  //!
-  RASSERT(m_bLocked);
-  RASSERT(bMutexIsLocked());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // get current secs.usec since unix epoch
-  Dtm wIvl = IvlLib::wGetCurrIvl();
-  
-  // add the wait for period
-  wIvl = IvlLib::wAdd(wIvl,iMicroSeconds);
-  
-  // create a absolute time spec
-  struct timespec xTimeSpec;
-  xTimeSpec.tv_sec  = wIvl.xIvl.m_uSecond;
-  xTimeSpec.tv_nsec = wIvl.xIvl.m_uMicro * C_1K;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-#ifdef WITH_STATISTICS_COUNTERS
-  gpAttachMap->m_oStatistics.Mutex.m_nTimedWaits++;
-#endif
-  
-  vIncActNo(); ++ m_ixWaitTimed;
-  AM::vLogRes(SL_INF,this,RA_MTX_WAIT_TIMED,
-              "-%s wait for signal or timeout(%lldus) |m_ixWaitTimed=%lld|"_Stz, //!format-LogRes
-              aMK[m_eKind],
-              iMicroSeconds,
-              * m_ixWaitTimed,
-              C_ENDARGS);
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // clear tracking of the mutex lock state
-  m_bLocked = false;
-  
-  //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-  i8 iRetVal = pthread_cond_timedwait(&m_xCond,&m_xMutex,&xTimeSpec);// BLOCKING
-  //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-
-  // success: signaled -- this thread has been signaled and now has mutex lock
-
-  if (0 == iRetVal) {
-    RASSERT(! m_bLocked);
-
-    m_bLocked = true;
-
-#ifdef WITH_STATISTICS_COUNTERS
-    gpAttachMap->m_oStatistics.Mutex.m_nUnblocks++;
-#endif
-    
-    vIncActNo(); ++ m_ixSignaled;
-    AM::vLogRes(SL_INF,this,RA_MTX_SIGNALED,
-                "Mutex -%s owner was signaled; locked reacquired |m_ixSignaled=%lld|"_Stz, //!format-LogRes
-                aMK[m_eKind],
-                * m_ixSignaled,
-                C_ENDARGS);
-
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // success: timedout -- call has timed-out; thread has reacquired mutex lock
-
-  if (ETIMEDOUT == iRetVal) {
-    RASSERT(! m_bLocked);
-    m_bLocked = true;
-
-#ifdef WITH_STATISTICS_COUNTERS
-    gpAttachMap->m_oStatistics.Mutex.m_nTimeOuts++;
-#endif
-    
-    vIncActNo(); ++ m_ixTimedout;
-    AM::vLogRes(SL_INF,this,RA_MTX_TIMEDOUT,
-                "Mutex -%s owner wait has timedout; locked reacquired |m_ixTimedout=%lld|"_Stz, //!format-LogRes
-                aMK[m_eKind],
-                * m_ixTimedout,
-                C_ENDARGS);
-    return;
-  }
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // failure -- some error has occurred
 

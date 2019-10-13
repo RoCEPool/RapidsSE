@@ -651,7 +651,7 @@ void Task::vMutexWait(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_pMutex->vCondWaitIndefinite(this);
+  m_pMutex->vCondWait(this);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1406,7 +1406,7 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
       pThread->vIncActNo();
       AM::vLogThd(SL_INF,pThread,HA_THD_WAIT_ASSIGN,
                   "Thread waits for task assignment"_Stz); //!format-LogThd
-      pThread->m_pMutexThread->vCondWaitIndefinite(pThread);
+      pThread->m_pMutexThread->vCondWait(pThread);
     }
   }
 
