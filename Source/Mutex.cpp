@@ -265,7 +265,7 @@ bool Mutex::bIsLocked(void)
 /*----------------------------------------------------------------------------*/
 /* attempt to lock this mutex by calling thread                               */
 /*----------------------------------------------------------------------------*/
-bool Mutex::bLock(void)
+bool Mutex::bLock(Focal* pLockFor)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -285,7 +285,11 @@ bool Mutex::bLock(void)
   
   if (0 == iRetVal) {
     RASSERT(! m_bLocked);
+    RASSERT(! m_pLockedBy);
+    
     m_bLocked = true;
+    m_pLockedBy = pLockFor;
+
     vIncActNo(); ++ m_ixLock;
     AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
                 "Mutex -%s locked |m_ixLock=%lld|"_Stz, //!format-LogRes
