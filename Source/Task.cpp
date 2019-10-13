@@ -631,7 +631,7 @@ void Task::vMutexSignal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
-  m_pMutex->vCondSignal(this);
+  m_pMutex->vSignal(this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -651,7 +651,7 @@ void Task::vMutexWait(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_pMutex->vCondWait(this);
+  m_pMutex->vWait(this);
 }
 
 /*----------------------------------------------------------------------------*/

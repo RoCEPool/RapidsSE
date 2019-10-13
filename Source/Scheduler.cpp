@@ -1197,7 +1197,7 @@ bool Scheduler::bThread_AssignIdle(Task* pTask)
               "Task signals its assigned thread"_Stz); //!format-LogTsk
   
   pThread->m_pMutexThread->vMutexLock(pTask);
-  pThread->m_pMutexThread->vCondSignal(pTask);
+  pThread->m_pMutexThread->vSignal(pTask);
   pThread->m_pMutexThread->vMutexUnlock(pTask);
   
   // mutex can now be acquired by the m_pPthread of pThread
@@ -1406,7 +1406,7 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
       pThread->vIncActNo();
       AM::vLogThd(SL_INF,pThread,HA_THD_WAIT_ASSIGN,
                   "Thread waits for task assignment"_Stz); //!format-LogThd
-      pThread->m_pMutexThread->vCondWait(pThread);
+      pThread->m_pMutexThread->vWait(pThread);
     }
   }
 

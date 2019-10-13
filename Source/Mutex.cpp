@@ -193,7 +193,7 @@ void Mutex::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 /* condition broadcast                                                        */
 /*----------------------------------------------------------------------------*/
-void Mutex::vCondBroadcast(void)
+void Mutex::vBroadcast(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -230,7 +230,7 @@ void Mutex::vCondBroadcast(void)
 /*----------------------------------------------------------------------------*/
 /* calling thread pauses for limited time to be signalled     (blocking call) */
 /*----------------------------------------------------------------------------*/
-void Mutex::vCondPause(i8 iMicroSeconds)
+void Mutex::vPause(i8 iMicroSeconds)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -332,7 +332,7 @@ void Mutex::vCondPause(i8 iMicroSeconds)
 /*----------------------------------------------------------------------------*/
 /* signal the condition variable of this mutex                                */
 /*----------------------------------------------------------------------------*/
-void Mutex::vCondSignal(Focal* pByWhom)
+void Mutex::vSignal(Focal* pByWhom)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -383,7 +383,7 @@ void Mutex::vCondSignal(Focal* pByWhom)
 /*----------------------------------------------------------------------------*/
 /* calling thread waits indefinitely to be signaled           (blocking call) */
 /*----------------------------------------------------------------------------*/
-void Mutex::vCondWait(Focal* pByWhom)
+void Mutex::vWait(Focal* pByWhom)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
