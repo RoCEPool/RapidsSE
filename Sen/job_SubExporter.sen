@@ -47,7 +47,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ack the (E`) on this node                  // KE`[E](E`)<-SE,KE:(E`)<-SE,KE
 
-  pJob_(E`) job.executingTask@ locals| pTask_(E`) |
+  pJob_(E`) job.task@ locals| pTask_(E`) |
   pTask_(E`) task.ack
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

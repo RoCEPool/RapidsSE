@@ -78,9 +78,9 @@ namespace SenVM
     void  vCategory(Word* pCategory);
     void  vContentDump(void);
     Dic*  pDic(void);
-    void  vEntryCell(Cell* aCell);
+    void  vEntryCell(Cell* aInxPtr);
     Cell* aEntryCell(void);
-    void  vEntryStep(StepFp fpStep);
+    void  vEntryStep(StepFp fpIntrinsic);
     StepFp fpEntryStep(void);
     StepFp* afpEntryStep(void);
     EnameSet* pEnameSet(void);

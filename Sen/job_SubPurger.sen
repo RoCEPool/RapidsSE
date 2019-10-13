@@ -64,7 +64,7 @@
     1 thread::sleepMsec
   repeat
 
-  pJob_Purge job.executingTask@ locals| pTask_Purge |
+  pJob_Purge job.task@ locals| pTask_Purge |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait for acks to be set in the purge task

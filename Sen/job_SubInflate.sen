@@ -27,7 +27,7 @@
   // get inflate job
   pJob_SubInflate job_SubInflate.jobInflateRows@ to pJob_InflateRows
 
-  pJob_InflateRows job.executingTask@ locals| pTask_FetchRows |
+  pJob_InflateRows job.task@ locals| pTask_FetchRows |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait for acks to be set in the fetch task

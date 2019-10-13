@@ -409,11 +409,11 @@ StepFp Word::fpEntryStep(void)
 /*----------------------------------------------------------------------------*/
 /* set entry step                                                             */
 /*----------------------------------------------------------------------------*/
-void Word::vEntryStep(StepFp fpStep)
+void Word::vEntryStep(StepFp fpIntrinsic)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  m_fpIntrinsic = fpStep;
+  m_fpIntrinsic = fpIntrinsic;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -429,11 +429,11 @@ Cell* Word::aEntryCell(void)
 /*----------------------------------------------------------------------------*/
 /* set which cell to start executing from                                     */
 /*----------------------------------------------------------------------------*/
-void Word::vEntryCell(Cell* aCell)
+void Word::vEntryCell(Cell* aInxPtr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  m_aInxPtr = aCell;
+  m_aInxPtr = aInxPtr;
 }
 
 /*----------------------------------------------------------------------------*/

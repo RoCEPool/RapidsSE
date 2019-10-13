@@ -469,7 +469,6 @@ public:
   static void vJobErrorStore(Tasks::MP_Task mpTask);
   static void vJobErrorFetch(Tasks::MP_Task mpTask);
   static void vJobExecuteFetch(Tasks::MP_Task mpTask);
-  static void vJobExecutingTaskFetch(Tasks::MP_Task mpTask);
 
   static void vJobFindOriginator(Tasks::MP_Task mpTask);
   static void vJobFindParticipant(Tasks::MP_Task mpTask);

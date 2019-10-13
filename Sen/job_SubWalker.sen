@@ -29,7 +29,7 @@
   task::this locals| pThisTask |
   job::this  locals| pJob_SubWalker |
   pJob_SubWalker job_subWalker.walkJob@ locals| pJob_Walk |
-  pJob_Walk job.executingTask@ locals| pTask_Walk |
+  pJob_Walk job.task@ locals| pTask_Walk |
 
   pJob_SubWalker subWalker.export
 

@@ -37,7 +37,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.error!"_Stz,           &Step::vJobErrorStore);
   vAddStep("job.error@"_Stz,           &Step::vJobErrorFetch);
   vAddStep("job.execute@"_Stz,         &Step::vJobExecuteFetch);
-  vAddStep("job.executingTask@"_Stz,   &Step::vJobExecutingTaskFetch);
 
   vAddStep("job::findOriginator"_Stz,  &Step::vJobFindOriginator);
   vAddStep("job::findParticipant"_Stz, &Step::vJobFindParticipant);
@@ -740,23 +739,6 @@ void Step::vJobExecuteFetch(MP_Task mpTask)
   }
   
   mpTask->m_pForth->m_pDataStack->vPushS32(sExecute);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.exectingTask@ -- fetch the job executing task                          */
-/*----------------------------------------------------------------------------*/
-void Step::vJobExecutingTaskFetch(MP_Task mpTask)
-{
-  ENTRY("vJobExecutingTaskFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.exectingTask@"_Stz);
-  Job* pJob = _pJob(pJobPtr);
-  
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pJob->pTask());
   
   EXIT();
 }

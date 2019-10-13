@@ -29,7 +29,7 @@
 
   pJob_SubIngester job_subIngester.jobIngest to pJob_Ingest
 
-  pJob_Ingest job.executingTask@ task.ack
+  pJob_Ingest job.task@ task.ack
 ;
 
 /*----------------------------------------------------------------------------*/
