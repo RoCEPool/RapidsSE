@@ -44,14 +44,15 @@ namespace Resources
     static void vMonitorPortrait(s48K& sPortrait);
   
     void vBroadcast(void);
+    bool bIsLocked(void);
+    bool bLock(void);
+    void vLock(Focal* pLockFor);
     void vPause(i8 iMicroSeconds);
-    void vSignal(Focal* pByWhom);
-    void vWait(Focal* pByWhom);
+    void vSignal(Focal* pLockedBy);
+    void vUnlock(Focal* pLockedBy);
+    void vWait(Focal* pLockedBy);
+  
     void vFocalOutline(s4K& sOutline);
-    bool bMutexIsLocked(void);
-    bool bMutexLock(void);
-    void vMutexLock(Focal* pByWhom);
-    void vMutexUnlock(Focal* pByWhom);
   
     Footer* aFooter(void);
   };

@@ -617,11 +617,11 @@ void Task::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 /* lock the task mutex                                                        */
 /*----------------------------------------------------------------------------*/
-void Task::vMutexLock(void)
+void Task::vLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
-  m_pMutex->vMutexLock(this);
+  m_pMutex->vLock(this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -637,11 +637,11 @@ void Task::vMutexSignal(void)
 /*----------------------------------------------------------------------------*/
 /* unlock the task mutex                                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vMutexUnlock(void)
+void Task::vUnlock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
-  m_pMutex->vMutexUnlock(this);
+  m_pMutex->vUnlock(this);
 }
 
 /*----------------------------------------------------------------------------*/

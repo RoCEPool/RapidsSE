@@ -228,6 +228,163 @@ void Mutex::vBroadcast(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test if a mutex is locked                                                  */
+/*----------------------------------------------------------------------------*/
+bool Mutex::bIsLocked(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
+  
+  // m_bLocked is indeterminate
+  
+  //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  i8 iRetVal = pthread_mutex_trylock(&m_xMutex);                 // non-blocking
+  //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  
+  // success: busy -- mutex was already locked, not locked by caller
+  if (EBUSY == iRetVal)
+    return true;
+  
+  // success: was not busy -- mutex was not already locked, now locked by caller
+  if (0 == iRetVal) {
+    m_bLocked = true;
+    vUnlock(nullptr);
+    return false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // failure -- some error has occurred
+  
+  ++ gixMutex_err;
+  AM::vLogRes(SL_INF,this,RA_MTX_ERROR,
+              "pthread_mutex_lock() error; iRetVal=%lld"_Stz, //!format-LogRes
+              iRetVal);
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to lock this mutex by calling thread                               */
+/*----------------------------------------------------------------------------*/
+bool Mutex::bLock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
+  
+  //!
+  //! The calling thread cannot already have the mutex
+  //!
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // DO NOT TOUCH m_bLocked
+  
+  //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  i8 iRetVal = pthread_mutex_trylock(&m_xMutex);                 // non-blocking
+  //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  
+  // success: locked -- mutex is now locked by calling thread
+  
+  if (0 == iRetVal) {
+    RASSERT(! m_bLocked);
+    m_bLocked = true;
+    vIncActNo(); ++ m_ixLock;
+    AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
+                "Mutex -%s locked |m_ixLock=%lld|"_Stz, //!format-LogRes
+                aMK[m_eKind],
+                * m_ixLock,
+                C_ENDARGS);
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // success: busy -- mutex has not been locked by calling thread
+  
+  if (EBUSY == iRetVal) {
+    vIncActNo(); ++ m_ixBusy;
+    AM::vLogRes(SL_INF,this,RA_MTX_BUSY,
+                "Mutex -%s busy |m_ixBusy=%lld|"_Stz, //!format-LogRes
+                aMK[m_eKind],
+                * m_ixBusy,
+                C_ENDARGS);
+    return false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // failure -- some error has occurred
+  
+  ++ gixMutex_err;
+  AM::vLogRes(SL_INF,this,RA_MTX_ERROR,
+              "pthread_mutex_trylock() error; iRetVal=%lld"_Stz, //!format-LogRes
+              iRetVal);
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* lock this mutex for given focal object                          (blocking) */
+/*----------------------------------------------------------------------------*/
+void Mutex::vLock(Focal* pLockFor)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
+  
+  //!
+  //! The calling thread cannot already have the mutex
+  //!
+  
+  vIncActNo(); ++ m_ixLock;
+  AM::vLogRes(SL_INF,this,RA_MTX_LOCK,
+              "Mutex -%s lock() |m_ixLock=%lld|"_Stz, //!format-LogRes
+              aMK[m_eKind],
+              * m_ixLock,
+              C_ENDARGS);
+  
+  
+  // DO NOT TOUCH m_bLocked
+  
+  //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  i8 iRetVal = pthread_mutex_lock(&m_xMutex);                        // BLOCKING
+  //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  
+  // success -- mutex is now locked by calling thread
+  
+  if (0 == iRetVal) {
+    RASSERT(! m_bLocked);
+    RASSERT(! m_pLockedBy);
+    
+    m_bLocked   = true;
+    m_pLockedBy = pLockFor;
+    
+    vIncActNo(); ++ m_ixLocked;
+    
+    SP_Id spId;
+    
+    if (m_pFor == pLockFor)
+      AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
+                  "Mutex -%s %s locked by owner |m_ixLocked=%lld|"_Stz, //!format-LogRes
+                  aMK[m_eKind],
+                  spId.sz(m_pFor->m_iUniqueId),
+                  * m_ixLocked,
+                  C_ENDARGS);
+    else
+      AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
+                  "Mutex -%s %s locked by %p |m_ixLocked=%lld|"_Stz, //!format-LogRes
+                  aMK[m_eKind],
+                  spId.sz(m_pFor->m_iUniqueId),
+                  pLockFor,
+                  * m_ixLocked,
+                  C_ENDARGS);
+    
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // failure -- some error has occurred
+  
+  ++ gixMutex_err;
+  AM::vLogRes(SL_INF,this,RA_MTX_ERROR,
+              "pthread_mutex_lock() error; iRetVal=%lld"_Stz, //!format-LogRes
+              iRetVal);
+}
+
+/*----------------------------------------------------------------------------*/
 /* calling thread pauses for limited time to be signalled     (blocking call) */
 /*----------------------------------------------------------------------------*/
 void Mutex::vPause(i8 iMicroSeconds)
@@ -240,7 +397,7 @@ void Mutex::vPause(i8 iMicroSeconds)
   //! mutex is signaled.
   //!
   RASSERT(m_bLocked);
-  RASSERT(bMutexIsLocked());
+  RASSERT(bIsLocked());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -277,7 +434,7 @@ void Mutex::vPause(i8 iMicroSeconds)
   
   //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
   i8 iRetVal = pthread_cond_timedwait(&m_xCond,&m_xMutex,&xTimeSpec);// BLOCKING
-                                                                     //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
   
   // success: signaled -- this thread has been signaled and now has mutex lock
   
@@ -332,7 +489,7 @@ void Mutex::vPause(i8 iMicroSeconds)
 /*----------------------------------------------------------------------------*/
 /* signal the condition variable of this mutex                                */
 /*----------------------------------------------------------------------------*/
-void Mutex::vSignal(Focal* pByWhom)
+void Mutex::vSignal(Focal* pLockedBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -340,8 +497,8 @@ void Mutex::vSignal(Focal* pByWhom)
   //! Calling thread must have locked the mutex
   //!
   ASSERT(m_bLocked);
-  ASSERT(bMutexIsLocked());
-  ASSERT(pByWhom == m_pLockedBy);
+  ASSERT(bIsLocked());
+  ASSERT(pLockedBy == m_pLockedBy);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -367,7 +524,7 @@ void Mutex::vSignal(Focal* pByWhom)
   
   if (0 == iRetVal) {
     ASSERT(m_bLocked);
-    ASSERT(bMutexIsLocked());
+    ASSERT(bIsLocked());
     return;
   }
   
@@ -381,9 +538,62 @@ void Mutex::vSignal(Focal* pByWhom)
 }
 
 /*----------------------------------------------------------------------------*/
+/* unlock this mutex currently locked by given focal object                   */
+/*----------------------------------------------------------------------------*/
+void Mutex::vUnlock(Focal* pLockedBy)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
+  
+  //!
+  //! The mutex must be locked by the calling thread
+  //!
+  RASSERT(m_bLocked);
+  RASSERT(bIsLocked());
+  
+  RASSERT(pLockedBy == m_pLockedBy);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // clear tracking of the mutex lock state
+  m_bLocked   = false;
+  m_pLockedBy = nullptr;
+  
+  //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  i8 iRetVal = pthread_mutex_unlock(&m_xMutex);                  // non-blocking
+  //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  
+  // DO NOT TOUCH m_bLocked
+  
+  // success -- mutex has been unlocked by calling thread
+  
+  if (0 == iRetVal) {
+    vIncActNo(); ++ m_ixUnlock;
+    
+    AM::vLogRes(SL_INF,this,RA_MTX_UNLOCKED,
+                "Mutex -%s unlocked by %s |m_ixUnlock=%lld|"_Stz, //!format-LogRes
+                aMK[m_eKind],
+                (m_pFor == pLockedBy) ? "owner"_Stz : "non-owner"_Stz,
+                * m_ixUnlock,
+                C_ENDARGS);
+    
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // failure -- some error has occurred
+  
+  ++ gixMutex_err;
+  AM::vLogRes(SL_INF,this,RA_MTX_ERROR,
+              "pthread_mutex_unlock() error; iRetVal=%lld |gixMutex_err=%lld|"_Stz, //!format-LogRes
+              iRetVal,
+              * gixMutex_err,
+              C_ENDARGS);
+}
+
+/*----------------------------------------------------------------------------*/
 /* calling thread waits indefinitely to be signaled           (blocking call) */
 /*----------------------------------------------------------------------------*/
-void Mutex::vWait(Focal* pByWhom)
+void Mutex::vWait(Focal* pLockedBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -395,8 +605,8 @@ void Mutex::vWait(Focal* pByWhom)
   //! The mutex must be explicitly unlocked by the caller.
   //!
   ASSERT(m_bLocked);
-  ASSERT(bMutexIsLocked());
-  ASSERT(pByWhom == m_pLockedBy);
+  ASSERT(bIsLocked());
+  ASSERT(pLockedBy == m_pLockedBy);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -459,217 +669,6 @@ void Mutex::vFocalOutline(s4K& sOutline)
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
   sOutline.vSprint("<%s focal>"_Stz,aCN[eClass()]);
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* test if a mutex is locked                                                  */
-/*----------------------------------------------------------------------------*/
-bool Mutex::bMutexIsLocked(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
-  
-  // m_bLocked is indeterminate
-
-  //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-  i8 iRetVal = pthread_mutex_trylock(&m_xMutex);                 // non-blocking
-  //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-  
-  // success: busy -- mutex was already locked, not locked by caller
-  if (EBUSY == iRetVal)
-    return true;
-  
-  // success: was not busy -- mutex was not already locked, now locked by caller
-  if (0 == iRetVal) {
-    m_bLocked = true;
-    vMutexUnlock(nullptr);
-    return false;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // failure -- some error has occurred
-  
-  ++ gixMutex_err;
-  AM::vLogRes(SL_INF,this,RA_MTX_ERROR,
-              "pthread_mutex_lock() error; iRetVal=%lld"_Stz, //!format-LogRes
-              iRetVal);
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* try and lock this mutex by calling thread                                  */
-/*----------------------------------------------------------------------------*/
-bool Mutex::bMutexLock(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
-  
-  //!
-  //! The calling thread cannot already have the mutex
-  //!
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // DO NOT TOUCH m_bLocked
-  
-  //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-  i8 iRetVal = pthread_mutex_trylock(&m_xMutex);                 // non-blocking
-  //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-
-  // success: locked -- mutex is now locked by calling thread
-  
-  if (0 == iRetVal) {
-    RASSERT(! m_bLocked);
-    m_bLocked = true;
-    vIncActNo(); ++ m_ixLock;
-    AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
-                "Mutex -%s locked |m_ixLock=%lld|"_Stz, //!format-LogRes
-                aMK[m_eKind],
-                * m_ixLock,
-                C_ENDARGS);
-    return true;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // success: busy -- mutex has not been locked by calling thread
-  
-  if (EBUSY == iRetVal) {
-    vIncActNo(); ++ m_ixBusy;
-    AM::vLogRes(SL_INF,this,RA_MTX_BUSY,
-                "Mutex -%s busy |m_ixBusy=%lld|"_Stz, //!format-LogRes
-                aMK[m_eKind],
-                * m_ixBusy,
-                C_ENDARGS);
-    return false;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // failure -- some error has occurred
-  
-  ++ gixMutex_err;
-  AM::vLogRes(SL_INF,this,RA_MTX_ERROR,
-              "pthread_mutex_trylock() error; iRetVal=%lld"_Stz, //!format-LogRes
-              iRetVal);
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* lock this mutex by calling thread                               (blocking) */
-/*----------------------------------------------------------------------------*/
-void Mutex::vMutexLock(Focal* pByWhom)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
-  
-  //!
-  //! The calling thread cannot already have the mutex
-  //!
-  
-  vIncActNo(); ++ m_ixLock;
-  AM::vLogRes(SL_INF,this,RA_MTX_LOCK,
-              "Mutex -%s lock() |m_ixLock=%lld|"_Stz, //!format-LogRes
-              aMK[m_eKind],
-              * m_ixLock,
-              C_ENDARGS);
-
-  
-  // DO NOT TOUCH m_bLocked
-  
-  //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-  i8 iRetVal = pthread_mutex_lock(&m_xMutex);                        // BLOCKING
-  //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-
-  // success -- mutex is now locked by calling thread
-  
-  if (0 == iRetVal) {
-    RASSERT(! m_bLocked);
-    RASSERT(! m_pLockedBy);
-    
-    m_bLocked   = true;
-    m_pLockedBy = pByWhom;
-    
-    vIncActNo(); ++ m_ixLocked;
-
-    SP_Id spId;
-    
-    if (m_pFor == pByWhom)
-      AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
-                  "Mutex -%s %s locked by owner |m_ixLocked=%lld|"_Stz, //!format-LogRes
-                  aMK[m_eKind],
-                  spId.sz(m_pFor->m_iUniqueId),
-                  * m_ixLocked,
-                  C_ENDARGS);
-    else
-      AM::vLogRes(SL_INF,this,RA_MTX_LOCKED,
-                  "Mutex -%s %s locked by %p |m_ixLocked=%lld|"_Stz, //!format-LogRes
-                  aMK[m_eKind],
-                  spId.sz(m_pFor->m_iUniqueId),
-                  pByWhom,
-                  * m_ixLocked,
-                  C_ENDARGS);
-
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // failure -- some error has occurred
-
-  ++ gixMutex_err;
-  AM::vLogRes(SL_INF,this,RA_MTX_ERROR,
-              "pthread_mutex_lock() error; iRetVal=%lld"_Stz, //!format-LogRes
-              iRetVal);
-}
-
-/*----------------------------------------------------------------------------*/
-/* unlock this mutex currently locked by calling thread                       */
-/*----------------------------------------------------------------------------*/
-void Mutex::vMutexUnlock(Focal* pByWhom)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
-  
-  //!
-  //! The mutex must be locked by the calling thread
-  //!
-  RASSERT(m_bLocked);
-  RASSERT(bMutexIsLocked());
-  
-  RASSERT(pByWhom == m_pLockedBy);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // clear tracking of the mutex lock state
-  m_bLocked   = false;
-  m_pLockedBy = nullptr;
-
-  //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-  i8 iRetVal = pthread_mutex_unlock(&m_xMutex);                  // non-blocking
-  //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-
-  // DO NOT TOUCH m_bLocked
-
-  // success -- mutex has been unlocked by calling thread
-  
-  if (0 == iRetVal) {
-    vIncActNo(); ++ m_ixUnlock;
-    
-    AM::vLogRes(SL_INF,this,RA_MTX_UNLOCKED,
-                "Mutex -%s unlocked by %s |m_ixUnlock=%lld|"_Stz, //!format-LogRes
-                aMK[m_eKind],
-                (m_pFor == pByWhom) ? "owner"_Stz : "non-owner"_Stz,
-                * m_ixUnlock,
-                C_ENDARGS);
-    
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // failure -- some error has occurred
-
-  ++ gixMutex_err;
-  AM::vLogRes(SL_INF,this,RA_MTX_ERROR,
-              "pthread_mutex_unlock() error; iRetVal=%lld |gixMutex_err=%lld|"_Stz, //!format-LogRes
-              iRetVal,
-              * gixMutex_err,
-              C_ENDARGS);
 }
 
 

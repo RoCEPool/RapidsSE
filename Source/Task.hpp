@@ -96,9 +96,9 @@ namespace Tasks
     void vLocalsPop(void);
     void vLocalsPush(void);
     void vMonitorPortrait(s48K& sPortrait);
-    void vMutexLock(void);
+    void vLock(void);
     void vMutexSignal(void);
-    void vMutexUnlock(void);
+    void vUnlock(void);
     void vMutexWait(void);
     void vNewStacks(void);
     i8&  i_NextRnd(void);
