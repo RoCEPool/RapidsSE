@@ -406,6 +406,7 @@ void Mutex::vPause(Focal* pLockedBy, i8 iMicroSeconds)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  //!#001 this code should be in a common library
   // get current secs.usec since unix epoch
   Dtm wIvl = IvlLib::wGetCurrIvl();
   
