@@ -22,13 +22,6 @@ namespace SenVM
     i8        m_iEpoch;       // epoch no. used by bp analyzer
     s32       m_sExitHook;    // routine to be called on exit
     bool      m_bImmediate;   // immediate execution during compile?
-    StepFp    m_fpIntrinsic;  // intrinsic function for this word
-    Cell*     m_aInxPtr;      // the cell to start executing from
-                              //   for normal words this will be the first cell
-                              //     in the data area
-                              //   for objects this will be the cell after
-                              //     does in the defining word
-                              //   for primitives this will be null
     eWK       m_eKind;        // kind of word
     i8        m_iLocalNo;     // local number (for a local variable)
     i8        m_iParams;      // number of parameters
@@ -36,7 +29,22 @@ namespace SenVM
     bool      m_bPrompt;      // can be executed by prompt?
     i8        m_iTrace;       // trace level
 
+    // the following three must be together
+    struct {
+
+    StepFp    m_fpIntrinsic;  // intrinsic function for this word
+                              //  the address of this member (and not
+                              //  the value of the member) gets encoded
+                              //  into another words routine
+      
+    Cell*     m_aInxPtr;      // the cell to start executing from
+                              //   for normal words this will be the first cell
+                              //     in the routine
+                              //   for objects this will be the cell after
+                              //     does in the defining word
+                              //   for primitives this will be null
     Routine   m_xRoutine;
+    };
   
     // must be last
     Footer m_xFooter;

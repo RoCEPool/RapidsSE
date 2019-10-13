@@ -235,8 +235,10 @@ void Task::vTaskLoop_job(void)
   
   while (TR_NONE == m_eTransition) {
     
-    // get next intinsic to be called
-    StepFp fpIntrinsic = *( (m_pForth->m_aInxPtr ++)->m_afpIntrinsic );
+    // UNUSUAL CODE:
+    //   get address of member containing intinsic function pointer and
+    //   dereference it to get the intrinsic function to be called
+    StepFp fpIntrinsic = * ( (m_pForth->m_aInxPtr ++)->m_afpIntrinsic );
     
     // call the intinsic
     try {
