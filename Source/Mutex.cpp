@@ -387,7 +387,7 @@ void Mutex::vLock(Focal* pLockFor)
 /*----------------------------------------------------------------------------*/
 /* calling thread pauses for limited time to be signalled     (blocking call) */
 /*----------------------------------------------------------------------------*/
-void Mutex::vPause(i8 iMicroSeconds)
+void Mutex::vPause(Focal* pLockedBy, i8 iMicroSeconds)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -396,9 +396,10 @@ void Mutex::vPause(i8 iMicroSeconds)
   //! mutex is dropped. The mutex is reacquired by calling thread when the
   //! mutex is signaled.
   //!
-  RASSERT(m_bLocked);
-  RASSERT(bIsLocked());
-  
+  ASSERT(m_bLocked);
+  ASSERT(bIsLocked());
+  ASSERT(pLockedBy == m_pLockedBy);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // get current secs.usec since unix epoch

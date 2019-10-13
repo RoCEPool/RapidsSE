@@ -46,8 +46,8 @@ namespace Resources
     void vBroadcast(void);
     bool bIsLocked(void);
     bool bLock(void);
-    void vLock(Focal* pLockFor);
-    void vPause(i8 iMicroSeconds);
+    void vLock(Focal* pLockedBy);
+    void vPause(Focal* pLockFor, i8 iMicroSeconds);
     void vSignal(Focal* pLockedBy);
     void vUnlock(Focal* pLockedBy);
     void vWait(Focal* pLockedBy);
