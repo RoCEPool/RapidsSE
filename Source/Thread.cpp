@@ -62,18 +62,17 @@ Thread::Thread(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
+  m_eThreadState = HS_NONE;
+  m_eDedicated   = CN_NONE;
+  m_pMutex       = new Mutex(MK_THREAD,this,nullptr);
+
+  m_pTask        = nullptr;
+  m_nAssignedTasks = 0;
+
+  m_pPthread     = new Pthread;
   m_aStackBase   = nullptr;
   m_iStackSize   = 0;
   
-  m_eThreadState = HS_NONE;
-  m_pTask        = nullptr;
-  m_eDedicated   = CN_NONE;
-
-  m_pPthread     = new Pthread;
-  m_pMutexThread = new Mutex(MK_THREAD,this,nullptr);
-    
-  m_nAssignedTasks = 0;
-
   _checkInitialised_(CN_THREAD);
   
   vIncActNo(); ++ gixThread;
@@ -91,7 +90,7 @@ Thread::~Thread(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  delete m_pMutexThread;
+  delete m_pMutex;
   delete m_pPthread;
   
   vIncActNo(); -- gixThread;

@@ -10,14 +10,15 @@ namespace Threads
   {
   public:  
     eHS      m_eThreadState;  // thread state
-    Task*    m_pTask;         // task current being executed
     eCN      m_eDedicated;    // thread is dedicated to one specific job?
+    Mutex*   m_pMutex;        // this threads mutex
 
-    Pthread* m_pPthread;      // its posix structure
-    Mutex*   m_pMutexThread;  // this threads mutex
-  
+    Task*    m_pTask;         // task current being executed
     i8       m_nAssignedTasks;// number of tasks scheduled to this thread
 
+    Pthread* m_pPthread;      // its posix structure
+  
+    //! #003 Stack base and size should be moved to PThread
     void*    m_aStackBase;    // stack base address
     i8       m_iStackSize;    // stack size
 
@@ -30,7 +31,7 @@ namespace Threads
     void  operator delete(void*);
     
     Thread(void);
-    ~Thread(void) noexcept(false);
+   ~Thread(void) noexcept(false);
   
     static Thread* pThisTLSThread(void);
   

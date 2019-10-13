@@ -1155,7 +1155,7 @@ void Scheduler::vThread_AppendIdle(Thread* pThread)
   RASSERT(! pThread->m_pTask);
   ASSERT(HS_UNASSIGNED == pThread->m_eThreadState);
   RASSERT(CN_NONE == pThread->m_eDedicated);
-  RASSERT(pThread->m_pMutexThread->bIsLocked());
+  RASSERT(pThread->m_pMutex->bIsLocked());
 
   Queues* pQueues = AM::pQueues();
   
@@ -1196,9 +1196,9 @@ bool Scheduler::bThread_AssignIdle(Task* pTask)
   AM::vLogTsk(SL_INF,pTask,TA_TSK_SIGNAL_THREAD,
               "Task signals its assigned thread"_Stz); //!format-LogTsk
   
-  pThread->m_pMutexThread->vLock(pTask);
-  pThread->m_pMutexThread->vSignal(pTask);
-  pThread->m_pMutexThread->vUnlock(pTask);
+  pThread->m_pMutex->vLock(pTask);
+  pThread->m_pMutex->vSignal(pTask);
+  pThread->m_pMutex->vUnlock(pTask);
   
   // mutex can now be acquired by the m_pPthread of pThread
   
@@ -1219,7 +1219,7 @@ void Scheduler::vThread_BeginLoop(Thread* pThread)
   
   // thread has mutex while it is running
   pThread->m_eThreadState = HS_UNASSIGNED;
-  pThread->m_pMutexThread->vLock(pThread);
+  pThread->m_pMutex->vLock(pThread);
   
   // increment m_ixThreads to indicate thread is running
   AM::vThreadBegins();
@@ -1252,7 +1252,7 @@ void Scheduler::vThread_EndLoop(Thread* pThread)
   AM::vLogThd(SL_INF,pThread,HA_THD_END_LOOP,
               "Thread has ended it's thread loop"_Stz); //!format-LogThd
   
-  pThread->m_pMutexThread->vUnlock(pThread);
+  pThread->m_pMutex->vUnlock(pThread);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1265,7 +1265,7 @@ void Scheduler::vThread_ExecuteDedicated(Thread* pThread)
               "Thread executes dedicated task"_Stz);
   
   ASSERT(HS_UNASSIGNED == pThread->m_eThreadState);
-  ASSERT(pThread->m_pMutexThread->bIsLocked());
+  ASSERT(pThread->m_pMutex->bIsLocked());
   
   RASSERT(pThread->m_pTask);
   RASSERT(TS_ABLE == pThread->m_pTask->eState());
@@ -1385,7 +1385,7 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
               "Thread attempts task assignment"_Stz); //!format-LogThd
   
   ASSERT(HS_UNASSIGNED == pThread->m_eThreadState);
-  RASSERT(pThread->m_pMutexThread->bIsLocked());
+  RASSERT(pThread->m_pMutex->bIsLocked());
   
   while (! pThread->m_pTask) {
     
@@ -1406,7 +1406,7 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
       pThread->vIncActNo();
       AM::vLogThd(SL_INF,pThread,HA_THD_WAIT_ASSIGN,
                   "Thread waits for task assignment"_Stz); //!format-LogThd
-      pThread->m_pMutexThread->vWait(pThread);
+      pThread->m_pMutex->vWait(pThread);
     }
   }
 
@@ -1416,7 +1416,7 @@ void Scheduler::vThread_WaitAssignment(Thread* pThread)
   //   ... -> vTask_Schedule() -> bThread_AssignIdle()
   //
   
-  RASSERT(pThread->m_pMutexThread->bIsLocked());
+  RASSERT(pThread->m_pMutex->bIsLocked());
   RASSERT(HS_ASSIGNED == pThread->m_eThreadState);
   RASSERT(pThread->m_pTask);
 }
