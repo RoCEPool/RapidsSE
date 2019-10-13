@@ -9,7 +9,7 @@ namespace Resources
   {
   public:
     eMK     m_eMutex;    // kind of mutex
-    Focal*  m_pFor;      // mutex is for a task or a thread
+    Focal*  m_pIsFor;    // mutex is for a task or a thread
   
     bool    m_bLocked;   // true if mutex is currently locked (debugging)
     Focal*  m_pLockedBy; // by whom is the mutex locked?
@@ -38,7 +38,7 @@ namespace Resources
     void* operator new(size_t, Mutex* pMutex);
     void operator delete(void* pMutexAddress);
 
-    Mutex(eMK eKind, Focal* pFor, ReqTuple* aReqTuple);
+    Mutex(eMK eKind, Focal* pIsFor, ReqTuple* aReqTuple);
    ~Mutex(void) noexcept(false);
   
     static void vMonitorPortrait(s48K& sPortrait);
