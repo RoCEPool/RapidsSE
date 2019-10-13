@@ -86,8 +86,6 @@ Job::Job(eCN eClassNo)
   
   m_pOperand   = nullptr;
   
-  m_pJobMutex = nullptr;
-  
   // -- -- -- -- -- --
   
   SP_Id spId;
@@ -130,10 +128,6 @@ Job::Job(JobClass* aJobClass, ReqTuple* aReqTuple, Session* pSession)
   
   m_pOperand   = nullptr;
   
-  if (CN_JOB_NODEINFO == eClass())
-    m_pJobMutex = nullptr;
-  else
-    m_pJobMutex = new Mutex(MK_JOB,this,aReqTuple);
 
   // -- -- -- -- -- --
   
@@ -155,8 +149,6 @@ Job::~Job(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   //ActLog::vAdd(this,AN_DESTRUCT);
-  
-  delete m_pJobMutex;
   
   SP_Id spId;
   
@@ -352,12 +344,7 @@ void Job::vLockJobMutex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_pJobMutex->vMutexLock(this);
-  
-//  i8 rCode = pthread_mutex_lock(&m_xThreadMutex);
-//
-//  if (0 != rCode)
-//    vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
+  AM::vTaskMutexLock(m_pTaskJ);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -367,12 +354,7 @@ void Job::vSignalJobMutex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_pJobMutex->vCondSignal(this);
-
-//  i8 rCode = pthread_cond_signal(&m_xThreadCond);
-//
-//  if (0 != rCode)
-//    vWarn("pthread_cond_signal() error; rCode=%lld\n"_Stz,rCode);
+  AM::vTaskMutexSignal(m_pTaskJ);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -382,7 +364,7 @@ void Job::vUnlockJobMutex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  m_pJobMutex->vMutexUnlock(this);
+  AM::vTaskMutexUnlock(m_pTaskJ);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -392,7 +374,7 @@ void Job::vWaitJobMutex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
  
-  m_pJobMutex->vCondWaitIndefinite(this);
+  AM::vTaskMutexWait(m_pTaskJ);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -582,7 +564,6 @@ JOBS_fn(vJob_recv)
   pJob->m_bWasReceived   = true;
   
   pJob->m_eJobList       = JL_NONE;
-  pJob->m_pJobMutex      = nullptr;
   pJob->vTask(nullptr);
 
   pJob->m_i_Focal        = C_UNKNOWN;

@@ -34,9 +34,7 @@ namespace Jobs
     i8  m_iParticipantNode;    // participant node no (FromNodeNo?)
   
     Operand*   m_pOperand;
-    
-    Mutex* m_pJobMutex;  //! TO BE MOVED INTO TASK
-    
+        
   private:
     Task* m_pTaskJ;            // task executing the job
 

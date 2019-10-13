@@ -136,6 +136,8 @@ Job* JobClass::pPreJob(Session* pSession, ReqTuple* aReqTuple, i8 iForId)
 //  //ActLog::vAdd(pJob,AN_PRE_PROMPT,
 //                       pJob->m_aJobClass->m_eKind,_EG_JK);
   
+  AM::pTaskNew(pJob,pSession);
+  
   return pJob;
 }
 

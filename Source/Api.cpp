@@ -363,12 +363,17 @@ bool Api::bSpawnJob(Session* pSession, Job* pJob)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (pJob->pTask())
-    AM::vLogWriteCsv(false);
-
-  ASSERT(! pJob->pTask());
-  Task* pNewTask = new Task(pJob,pSession);
-  pNewTask->vState(TS_ABLE);
+//  if (pJob->pTask())
+//    AM::vLogWriteCsv(false);
+//
+//  ASSERT(! pJob->pTask());
+  if (pJob->pTask()) {
+    pJob->pTask()->vState(TS_ABLE);
+  }
+  else {
+    Task* pNewTask = new Task(pJob,pSession);
+    pNewTask->vState(TS_ABLE);
+  }
   
   AM::vLogSsn(SL_INF,pSession,AA_API_SPAWN_JOB,
               "pJob=%p"_Stz, //!format-LogPrm
@@ -376,7 +381,7 @@ bool Api::bSpawnJob(Session* pSession, Job* pJob)
               C_ENDARGS);
 
 
-  Scheduler::vAddTaskGeneral(pNewTask);
+  Scheduler::vAddTaskGeneral(pJob->pTask());
   
   return true;
 }

@@ -253,6 +253,9 @@ void AM::vTakeBytes(i8 nTakeBytes) {
 void AM::vTakenBytes(i8 nTakenBytes) {
   gpAttachMap->m_nTakenBytes += nTakenBytes;
 }
+Task* AM::pTaskNew(Job* pJob, Session* pSession) {
+  return new Task(pJob,pSession);
+}
 void AM::vTaskTransition(Tasks::Task* pTask, i8 iTransition) {
   pTask->vTransition((eTR)iTransition);
 }

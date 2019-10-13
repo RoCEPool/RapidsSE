@@ -137,6 +137,7 @@ namespace Oblique
     static void vTakeBytes(i8 nTakeBytes);
     static void vTakenBytes(i8 nTakenBytes);
     static bool bTaskIsLocked(Task* pTask);
+    static Task* pTaskNew(Job* pJob, Session* pSession);
     static void vTaskTransition(Task* pTask, i8 iTransition);
     static void vTenants(Word* pTenants);
     static void vTriggerBidingTask(Task* pTask);
