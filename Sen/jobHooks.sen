@@ -107,7 +107,17 @@
 
   r@ locate log::markExit
 
-  <DONE_REQ>
+  job::this locals| pJob |
+
+  ddlLock::testDrop
+
+  // null the job in the task
+  nullptr task::this task.job!
+
+  //"Signalling connector thread" .
+  pJob job.signalConnector
+
+  task::exit
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -123,7 +133,15 @@
 
   ddlLock::testDrop
 
-  <DONE_BEG>
+  JP_BEGUN job::this job.phase!
+
+  nullptr job::this job.task!
+
+  // the job remains in the participant list
+  // the task exits and gets deleted
+  nullptr task::this task.job!
+
+  task::exit
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -137,7 +155,15 @@
 
   r@ locate log::markExit
 
-  <DONE_EXE>
+  ddlLock::testDrop
+
+  JP_EXECUTED job::this job.phase!
+
+  nullptr job::this job.task!
+
+  nullptr task::this task.job!
+
+  task::exit
 ;
 
 /*----------------------------------------------------------------------------*/
