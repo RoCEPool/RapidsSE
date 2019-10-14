@@ -157,6 +157,26 @@ StageSpec* StagePtn::pStageSpec(void)
   return m_pStageSpec;
 }
 
+/*----------------------------------------------------------------------------*/
+/* spawn operators for partitions of given node                               */
+/*----------------------------------------------------------------------------*/
+void StagePtn::vSpawnOperators(Session* pSession, i8 iNode)
+{
+  _precondition_(_MAGIC_,CN_STAGEPTN,_FOOTER_);
+  
+  i8 iPtnNode = TablePtn::iPartitionToNode(m_i_Ptn);
+  
+  if (iPtnNode == iNode) {
+    // for each operator in the stage ptn
+    for (i8 i_Op = m_oOpVec.nItems() - 1; i_Op >= 0; i_Op--) {
+      
+      Op* pOp = m_oOpVec.pGet(i_Op);
+      
+      bool bSpawned = AM::bSpawnOp(pSession,pOp);
+      ASSERT(bSpawned);
+    }
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

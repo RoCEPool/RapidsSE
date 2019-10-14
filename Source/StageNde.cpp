@@ -119,6 +119,24 @@ OpVec* StageNde::pOpVec(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* spawn operators for given node                                             */
+/*----------------------------------------------------------------------------*/
+void StageNde::vSpawnOperators(Session* pSession, i8 iNode)
+{
+  _precondition_(_MAGIC_,CN_STAGENDE,_FOOTER_);
+  
+  if (m_i_Nde == iNode) {
+    // for each operator in the stage nde
+    for (i8 i_Op = m_oOpVec.nItems() - 1; i_Op >= 0; i_Op--) {
+      Op* pOp = m_oOpVec.pGet(i_Op);
+      
+      bool bSpawned = AM::bSpawnOp(pSession,pOp);
+      ASSERT(bSpawned);
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get stage spec                                                             */
 /*----------------------------------------------------------------------------*/
 StageSpec* StageNde::pStageSpec(void)

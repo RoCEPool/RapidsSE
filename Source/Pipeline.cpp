@@ -304,32 +304,13 @@ void Pipeline::vSpawnOperators(i8 iNode)
     for (i8 i_Nde = 0; i_Nde < pStage->pStageNdeVec()->nItems(); i_Nde++) {
       StageNde* pStageNde = pStage->pStageNdeVec()->pGet(i_Nde);
       
-      // skip if Op not for this node
-      if (pStageNde->iNode() == iNode) {
-        // for each operator in the stage nde
-        for (i8 i_Op = pStageNde->pOpVec()->nItems() - 1; i_Op >= 0; i_Op--) {
-          Op* pOp = pStageNde->pOpVec()->pGet(i_Op);
-          
-          bool bSpawned = AM::bSpawnOp(m_pSession,pOp);
-          ASSERT(bSpawned);
-        }
-      }
+      pStageNde->vSpawnOperators(m_pSession, iNode);
     }
     
     for (i8 i_Ptn = 0; i_Ptn < pStage->pStagePtnVec()->nItems(); i_Ptn++) {
       StagePtn* pStagePtn = pStage->pStagePtnVec()->pGet(i_Ptn);
       
-      i8 iPtnNode = TablePtn::iPartitionToNode(pStagePtn->iPartition());
-      if (iPtnNode == iNode) {
-        // for each operator in the stage ptn
-        for (i8 i_Op = pStagePtn->pOpVec()->nItems() - 1; i_Op >= 0; i_Op--) {
-          
-          Op* pOp = pStagePtn->pOpVec()->pGet(i_Op);
-          
-          bool bSpawned = AM::bSpawnOp(m_pSession,pOp);
-          ASSERT(bSpawned);
-        }
-      }
+      pStagePtn->vSpawnOperators(m_pSession, iNode);
     }
   }
   

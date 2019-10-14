@@ -25,6 +25,7 @@ namespace Operators
     void       vLinkOperators(StageVec* pStageVec);
     OpVec*     pOpVec(void);
     i8         iPartition(void);
+    void       vSpawnOperators(Session* pSession, i8 iNode);
     StageSpec* pStageSpec(void);
   
     Footer* aFooter(void);
