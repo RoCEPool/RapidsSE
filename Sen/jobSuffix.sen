@@ -5,7 +5,14 @@
 " jobSuffix.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* suffix marks sets the category being compiled as a suffix                  */
+/* seed sets the category of word being being compiled as seed                */
+/*----------------------------------------------------------------------------*/
+: seed
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* suffix sets the category of word being being compiled as suffix            */
 /*----------------------------------------------------------------------------*/
 : suffix immediate
 
@@ -20,7 +27,10 @@
   // append _req to name of word being compiled
   word::this word.name@ "_req" str.cat word::this word.name!
 
-  // set exit hook of word being compiled
+  // the compiled word is a seed
+  tick seed word::this word.category!
+
+ // set exit hook of word being compiled
   "req_exitHook" word::this word.exitHook!
 
   // add call to req_entryHook into word being compiled
@@ -37,6 +47,9 @@
   // append _beg to name of word being compiled
   word::this word.name@ "_beg" str.cat word::this word.name!
 
+  // the compiled word is a seed
+  tick seed word::this word.category!
+
   // set exit hook of word being compiled
   "beg_exitHook" word::this word.exitHook!
 
@@ -51,6 +64,9 @@
 
   // append _exe to name of word being compiled
   word::this word.name@ "_exe" str.cat word::this word.name!
+
+  // the compiled word is a seed
+  tick seed word::this word.category!
 
   // set exit hook of word being compiled
   "exe_exitHook" word::this word.exitHook!
@@ -67,6 +83,9 @@
   // append _end to name of word being compiled
   word::this word.name@ "_end" str.cat word::this word.name!
 
+  // the compiled word is a seed
+  tick seed word::this word.category!
+
   // set exit hook of word being compiled
   "end_exitHook" word::this word.exitHook!
 
@@ -81,6 +100,9 @@
 
   // append _can to name of word being compiled
   word::this word.name@ "_can" str.cat word::this word.name!
+
+  // the compiled word is a seed
+  tick seed word::this word.category!
 
   // set exit hook of word being compiled
   "can_exitHook" word::this word.exitHook!
