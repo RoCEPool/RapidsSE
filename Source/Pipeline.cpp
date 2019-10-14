@@ -96,6 +96,40 @@ Job* Pipeline::pJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get number of ops to be excuted on given node                              */
+/*----------------------------------------------------------------------------*/
+i8 Pipeline::nOpsOnNode(i8 iNode)
+{
+  i8 nOps = 0;
+  
+  for (i8 i_Stage = 0; i_Stage < m_oStageVec.nItems(); i_Stage++) {
+    Stage* pStage = m_oStageVec.pGet(i_Stage);
+    
+    for (i8 i_Ptn = 0; i_Ptn < pStage->pStagePtnVec()->nItems(); i_Ptn++) {
+      
+      StagePtn* pStagePtn = pStage->pStagePtnVec()->pGet(i_Ptn);
+      
+      // skip if partition is not for this node
+      i8 iPartitionNode = TablePtn::iPartitionToNode(pStagePtn->m_i_Ptn);
+      if (iPartitionNode == iNode) {
+        nOps += pStagePtn->m_oOpVec.nItems();
+      }
+    }
+    for (i8 i_Nde = 0; i_Nde < pStage->pStageNdeVec()->nItems(); i_Nde++) {
+      
+      StageNde* pStageNde = pStage->pStageNdeVec()->pGet(i_Nde);
+      
+      // skip if Op not for this node
+      if (pStageNde->m_i_Nde == iNode) {
+        nOps += pStageNde->m_oOpVec.nItems();
+      }
+    }
+  }
+  
+  return nOps;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get pOpToPulse                                                             */
 /*----------------------------------------------------------------------------*/
 Op* Pipeline::pOpToPulse(void)

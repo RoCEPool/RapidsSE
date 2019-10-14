@@ -32,6 +32,7 @@ namespace Operators
     void      vCancelling(bool bCancelling);
     bool      bCancelling(void);
     Job*      pJob(void);
+    i8        nOpsOnNode(i8 iNode);
     Op*       pOpToPulse(void);
     void      vPopulateOpVec(PipelineSpec* pPipelineSpec);
     bool      bPulsed(void);

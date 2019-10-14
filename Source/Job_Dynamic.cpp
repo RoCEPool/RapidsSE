@@ -210,57 +210,34 @@ void Job_Dynamic::vShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* query execute                                                              */
+/* query execute (participant job executes this code)                         */
 /*----------------------------------------------------------------------------*/
 void Job_Dynamic::vExecute(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
   
-  //Session* pSession = AM::pThisTLSSession();
-  vTrace("Node %s vBegin start\n"_Stz, AM::pGrid()->pThisNode()->szNodeName());
-  
   m_pPipeline    = new Pipeline(this);
   m_pBufferQueue = nullptr;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tokenize the pipeline
   
   Tokeniser* pTokenizer = new Tokeniser;
   TokenVec* pTokenVec = new TokenVec;
   pTokenizer->vTokenise(pTokenVec, m_sRequest);
   pTokenVec->vCutToken(pTokenVec->nTokens());
   
-  bool bResult = bPopulateJob(m_pSession, pTokenVec);
-
-  //RASSERT(bResult);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // populate the job
   
+  bool bResult = bPopulateJob(m_pSession, pTokenVec);
   if ( ! bResult ) {
     vAddError(EC_INVALID_COMMAND);
     return;
   }
   
-  i8 nOps = 0;
   i8 iThisNode = AM::pGrid()->iThisNode();
-  for (i8 i_Stage = 0; i_Stage < m_pPipeline->pStageVec()->nItems(); i_Stage++) {
-    Stage* pStage = m_pPipeline->pStageVec()->pGet(i_Stage);
-           
-    for (i8 i_Ptn = 0; i_Ptn < pStage->pStagePtnVec()->nItems(); i_Ptn++) {
-      
-      StagePtn* pStagePtn = pStage->pStagePtnVec()->pGet(i_Ptn);
-      
-      // skip if partition is not for this node
-      i8 iNode = TablePtn::iPartitionToNode(pStagePtn->m_i_Ptn);
-      if (iNode == iThisNode) {
-        nOps += pStagePtn->m_oOpVec.nItems();
-      }
-    }
-    for (i8 i_Nde = 0; i_Nde < pStage->pStageNdeVec()->nItems(); i_Nde++) {
-      
-      StageNde* pStageNde = pStage->pStageNdeVec()->pGet(i_Nde);
-      
-      // skip if Op not for this node
-      if (pStageNde->m_i_Nde == iThisNode) {
-        nOps += pStageNde->m_oOpVec.nItems();
-      }
-    }
-  }
+  i8 nOps = m_pPipeline->nOpsOnNode(iThisNode);
   
   vTrace("Node %lld vBegin end acksRemg %p %lld\n"_Stz, AM::pGrid()->iThisNode(),
          pTask(), nOps);
