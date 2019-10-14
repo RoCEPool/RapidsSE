@@ -184,9 +184,11 @@ bool Job_Dynamic::bPopulateJob(Session* pSession, TokenVec* pTknVec)
   
   Tokeniser::vTokenise(pTknVec,sPipe);
   
-  SP_TknVecStr spTknVecStr;
-  vTrace("TknVecStr ]]%s[[\n"_Stz,spTknVecStr.sz(pTknVec));
-  vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
+  if (AM::bVerbose()) {
+    SP_TknVecStr spTknVecStr;
+    vTrace("TknVecStr ]]%s[[\n"_Stz,spTknVecStr.sz(pTknVec));
+    vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the pipeline
@@ -246,10 +248,7 @@ void Job_Dynamic::vBegin(void)
       
       // skip if partition is not for this node
       i8 iNode = TablePtn::iPartitionToNode(pStagePtn->m_i_Ptn);
-      if (iNode != iThisNode) {
-        vTrace("**SKIPPING ThisNode: %lld; P %lld; PN %lld\n"_Stz, iThisNode, pStagePtn->m_i_Ptn, iNode);
-      }
-      else {        
+      if (iNode == iThisNode) {
         nOps += pStagePtn->m_oOpVec.nItems();
       }
     }
@@ -258,10 +257,7 @@ void Job_Dynamic::vBegin(void)
       StageNde* pStageNde = pStage->pStageNdeVec()->pGet(i_Nde);
       
       // skip if Op not for this node
-      if (pStageNde->m_i_Nde != iThisNode) {
-        vTrace("**SKIPPING ThisNode: %lld; N %lld\n"_Stz, iThisNode,pStageNde->m_i_Nde);
-      }
-      else {
+      if (pStageNde->m_i_Nde == iThisNode) {
         nOps += pStageNde->m_oOpVec.nItems();
       }
     }
@@ -278,11 +274,7 @@ void Job_Dynamic::vBegin(void)
       StageNde* pStageNde = pStage->pStageNdeVec()->pGet(i_Nde);
       
       // skip if Op not for this node
-      if (pStageNde->m_i_Nde != iThisNode) {
-        vTrace("--SKIPPING ThisNode: %lld; N %lld\n"_Stz, iThisNode,i_Nde);
-      }
-      else {
-        vTrace("--NOT SKIPPING ThisNode: %lld; N %lld\n"_Stz, iThisNode,pStageNde->m_i_Nde);
+      if (pStageNde->m_i_Nde == iThisNode) {
         // for each operator in the stage nde
         for (i8 i_Op = pStageNde->m_oOpVec.nItems() - 1; i_Op >= 0; i_Op--) {
           Op* pOp = pStageNde->m_oOpVec.pGet(i_Op);
@@ -292,26 +284,22 @@ void Job_Dynamic::vBegin(void)
         }
       }
     }
+    
     for (i8 i_Ptn = 0; i_Ptn < pStage->pStagePtnVec()->nItems(); i_Ptn++) {
       StagePtn* pStagePtn = pStage->pStagePtnVec()->pGet(i_Ptn);
       
       i8 iNode = TablePtn::iPartitionToNode(pStagePtn->m_i_Ptn);
-      if (iNode != iThisNode) {
-        vTrace("--SKIPPING ThisNode: %lld; P %lld; PN %lld\n"_Stz, iThisNode, pStagePtn->m_i_Ptn, iNode);
-      }
-      else {
-      
-      
-      // for each operator in the stage ptn
-      for (i8 i_Op = pStagePtn->m_oOpVec.nItems() - 1; i_Op >= 0; i_Op--) {
-        
-        Op* pOp = pStagePtn->m_oOpVec.pGet(i_Op);
-        
-        bool bSpawned = AM::bSpawnOp(m_pSession,pOp);
-        ASSERT(bSpawned);
-      }
-    }
-  }
+      if (iNode == iThisNode) {
+        // for each operator in the stage ptn
+        for (i8 i_Op = pStagePtn->m_oOpVec.nItems() - 1; i_Op >= 0; i_Op--) {
+          
+          Op* pOp = pStagePtn->m_oOpVec.pGet(i_Op);
+          
+          bool bSpawned = AM::bSpawnOp(m_pSession,pOp);
+          ASSERT(bSpawned);
+        }
+     }
+   }
   }
   
 }
