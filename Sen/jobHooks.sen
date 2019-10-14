@@ -196,7 +196,12 @@
 
    r@ locate log::markExit
 
-  <DONE_CAN>
+  JP_CANCELED job::this job.phase!
+
+  // delete the job
+  job::this "job::deleteThis" find execute
+
+  task::exit
 ;
 
 /*----------------------------------------------------------------------------*/
