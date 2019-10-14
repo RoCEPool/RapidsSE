@@ -76,6 +76,8 @@ Pipeline::~Pipeline(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Pipeline::vCancelling(bool bCancelling)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
   m_bCancelling = bCancelling;
 }
 
@@ -84,6 +86,8 @@ void Pipeline::vCancelling(bool bCancelling)
 /*----------------------------------------------------------------------------*/
 bool Pipeline::bCancelling(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
   return m_bCancelling;
 }
 
@@ -92,6 +96,8 @@ bool Pipeline::bCancelling(void)
 /*----------------------------------------------------------------------------*/
 Job* Pipeline::pJob(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
   return m_pJob;
 }
 
@@ -100,6 +106,8 @@ Job* Pipeline::pJob(void)
 /*----------------------------------------------------------------------------*/
 i8 Pipeline::nOpsOnNode(i8 iNode)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
   i8 nOps = 0;
   
   for (i8 i_Stage = 0; i_Stage < m_oStageVec.nItems(); i_Stage++) {
@@ -136,6 +144,8 @@ i8 Pipeline::nOpsOnNode(i8 iNode)
 /*----------------------------------------------------------------------------*/
 Op* Pipeline::pOpToPulse(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
   return m_pOpToPulse;
 }
 
@@ -144,6 +154,7 @@ Op* Pipeline::pOpToPulse(void)
 /*----------------------------------------------------------------------------*/
 void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the stageSpecVec
@@ -218,6 +229,8 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
 /*----------------------------------------------------------------------------*/
 bool Pipeline::bPulsed(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
   return m_bPulsed;
 }
 
@@ -226,6 +239,8 @@ bool Pipeline::bPulsed(void)
 /*----------------------------------------------------------------------------*/
 Session* Pipeline::pSession(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
   return m_pSession;
 }
 
@@ -234,6 +249,8 @@ Session* Pipeline::pSession(void)
 /*----------------------------------------------------------------------------*/
 void Pipeline::vSession(Session* pSession)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
   m_pSession = pSession;
 }
 
@@ -242,7 +259,7 @@ void Pipeline::vSession(Session* pSession)
 /*----------------------------------------------------------------------------*/
 void Pipeline::vSetupJob(void)
 {
-  vDebugPoint();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
   Stage* pStage = m_oStageVec.pGet(0);
   i8 nOps = pStage->pOpVec()->nItems();
@@ -268,6 +285,51 @@ void Pipeline::vSetupJob(void)
       m_pOpToPulse = pOp;
       pOp->m_bPulsed = true;
       break;
+    }
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of ops to be excuted on given node                              */
+/*----------------------------------------------------------------------------*/
+void Pipeline::vSpawnOperators(i8 iNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  for (i8 i_Stage = 0; i_Stage < m_oStageVec.nItems(); i_Stage++) {
+    
+    Stage* pStage = m_oStageVec.pGet(i_Stage);
+    
+    for (i8 i_Nde = 0; i_Nde < pStage->pStageNdeVec()->nItems(); i_Nde++) {
+      StageNde* pStageNde = pStage->pStageNdeVec()->pGet(i_Nde);
+      
+      // skip if Op not for this node
+      if (pStageNde->iNode() == iNode) {
+        // for each operator in the stage nde
+        for (i8 i_Op = pStageNde->pOpVec()->nItems() - 1; i_Op >= 0; i_Op--) {
+          Op* pOp = pStageNde->pOpVec()->pGet(i_Op);
+          
+          bool bSpawned = AM::bSpawnOp(m_pSession,pOp);
+          ASSERT(bSpawned);
+        }
+      }
+    }
+    
+    for (i8 i_Ptn = 0; i_Ptn < pStage->pStagePtnVec()->nItems(); i_Ptn++) {
+      StagePtn* pStagePtn = pStage->pStagePtnVec()->pGet(i_Ptn);
+      
+      i8 iPtnNode = TablePtn::iPartitionToNode(pStagePtn->iPartition());
+      if (iPtnNode == iNode) {
+        // for each operator in the stage ptn
+        for (i8 i_Op = pStagePtn->pOpVec()->nItems() - 1; i_Op >= 0; i_Op--) {
+          
+          Op* pOp = pStagePtn->pOpVec()->pGet(i_Op);
+          
+          bool bSpawned = AM::bSpawnOp(m_pSession,pOp);
+          ASSERT(bSpawned);
+        }
+      }
     }
   }
   

@@ -110,8 +110,8 @@ Job_Operand::Job_Operand(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Se
   m_iNode        = C_UNKNOWN;
   m_iParentJobId = C_UNKNOWN;
   
-  m_iNextStage = C_UNKNOWN;
-  m_iNdeVec    = C_UNKNOWN;
+  m_iNextStage   = C_UNKNOWN;
+  m_iNdeVec      = C_UNKNOWN;
   
   _checkInitialised_(CN_JOB_OPERAND);
   
@@ -124,10 +124,6 @@ Job_Operand::Job_Operand(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Se
 Job_Operand::~Job_Operand(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_OPERAND,_FOOTER_);
-  
-//  ASSERT(m_pOperand);
-//  Operand::vDelete(m_pOperand);
-//  m_pOperand = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -177,7 +173,7 @@ Job_Operand* Job_Operand::pNewJobOperand(Session* pSession,
   pJob_Operand->m_pOperand  = pOperand;
   
   pJob_Operand->m_iNextStage = pOp->m_iNextStage;
-  pJob_Operand->m_iNdeVec  = pOp->m_iNdeVec;
+  pJob_Operand->m_iNdeVec    = pOp->m_iNdeVec;
   
   return pJob_Operand;
 }

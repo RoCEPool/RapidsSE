@@ -243,44 +243,15 @@ void Job_Dynamic::vExecute(void)
   i8 nOps = m_pPipeline->nOpsOnNode(iThisNode);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   // set acks remaining equal to no of operators to be executed on this node
+  
   AM::vSetAcksRmg(pTask(),nOps);
 
-  for (i8 i_Stage = 0; i_Stage < m_pPipeline->pStageVec()->nItems(); i_Stage++) {
-    Stage* pStage = m_pPipeline->pStageVec()->pGet(i_Stage);
-
-    for (i8 i_Nde = 0; i_Nde < pStage->pStageNdeVec()->nItems(); i_Nde++) {
-      StageNde* pStageNde = pStage->pStageNdeVec()->pGet(i_Nde);
-      
-      // skip if Op not for this node
-      if (pStageNde->iNode() == iThisNode) {
-        // for each operator in the stage nde
-        for (i8 i_Op = pStageNde->pOpVec()->nItems() - 1; i_Op >= 0; i_Op--) {
-          Op* pOp = pStageNde->pOpVec()->pGet(i_Op);
-          
-          bool bSpawned = AM::bSpawnOp(m_pSession,pOp);
-          ASSERT(bSpawned);
-        }
-      }
-    }
-    
-    for (i8 i_Ptn = 0; i_Ptn < pStage->pStagePtnVec()->nItems(); i_Ptn++) {
-      StagePtn* pStagePtn = pStage->pStagePtnVec()->pGet(i_Ptn);
-      
-      i8 iNode = TablePtn::iPartitionToNode(pStagePtn->iPartition());
-      if (iNode == iThisNode) {
-        // for each operator in the stage ptn
-        for (i8 i_Op = pStagePtn->pOpVec()->nItems() - 1; i_Op >= 0; i_Op--) {
-          
-          Op* pOp = pStagePtn->pOpVec()->pGet(i_Op);
-          
-          bool bSpawned = AM::bSpawnOp(m_pSession,pOp);
-          ASSERT(bSpawned);
-        }
-      }
-    }
-  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // spawn operaotors for this node
+  
+  m_pPipeline->vSpawnOperators(iThisNode);
   
 }
 

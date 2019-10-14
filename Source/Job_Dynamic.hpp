@@ -12,7 +12,7 @@ namespace Jobs
     PipelineSpec*  m_pPipelineSpec;
   
     StreamDef*     m_pStreamDef;
-    Queue*         m_pBufferQueue;     // the buffer queue
+    Queue*         m_pBufferQueue;
     
     s4K            m_sRequest;
     
