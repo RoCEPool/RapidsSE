@@ -8,22 +8,20 @@
 /* request default                                      (on originating node) */
 /*----------------------------------------------------------------------------*/
 : defaultSeed _req ( -- )
+  _req_prep_
 
   [ word::this word.name@ , ] .
 
   <jobNm> .
 
-  // distribute the job as to all connected node as participants
-  job::distribute
-
-  // wait for ack from deciding job__Ended
-  task::wait
+  _req_post_
 ;
 
 /*----------------------------------------------------------------------------*/
 /* begin default                                 (on each participating node) */
 /*----------------------------------------------------------------------------*/
 : defaultSeed _beg ( -- )
+  _beg_prep_
 
   [ word::this word.name@ , ] .
 
@@ -32,12 +30,15 @@
   else
     drop
   then
+
+  _beg_post_
 ;
 
 /*----------------------------------------------------------------------------*/
 /* execute default                               (on each participating node) */
 /*----------------------------------------------------------------------------*/
 : defaultSeed _exe
+  _exe_prep_
 
   [ word::this word.name@ , ] .
 
@@ -46,12 +47,15 @@
   else
     drop
   then
+
+  _exe_post_
 ;
 
 /*----------------------------------------------------------------------------*/
 /* end default                                   (on each participating node) */
 /*----------------------------------------------------------------------------*/
 : defaultSeed _end ( -- )
+  _end_prep_
 
   [ word::this word.name@ , ] .
 
@@ -60,12 +64,15 @@
   else
     drop
   then
+
+  _end_post_
 ;
 
 /*----------------------------------------------------------------------------*/
 /* cancel default                                (on each participating node) */
 /*----------------------------------------------------------------------------*/
 : defaultSeed _can ( -- )
+  _can_prep_
 
   [ word::this word.name@ , ] .
 
@@ -74,6 +81,8 @@
   else
     drop
   then
+
+  _can_post_
 ;
 
 /*============================================================================*/
