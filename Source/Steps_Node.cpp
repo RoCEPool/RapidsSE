@@ -53,7 +53,7 @@ void Step::vNodeNew(MP_Task mpTask)
   Node* pNode = new Node(pNode_copy->iNodeNo() + 1,
                          sNodeNm,
                          pEnameSet->szValue("IPADDR"_Stz),
-                         pEnameSet->iValue("PORTNO"_Stz));
+                         pEnameSet->szValue("PORTNO"_Stz)->iToI8());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
