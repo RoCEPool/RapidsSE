@@ -12,10 +12,12 @@
   word::this word.name@ "_req" str.cat word::this word.name!
   "req_exitHook" word::this word.exitHook!
 
-  POSTPONE <SEED_REQ>
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   word::this word.name@ ,
-  POSTPONE log::markEntry
+    POSTPONE log::markEntry
+
+  POSTPONE <SEED_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -26,10 +28,13 @@
   word::this word.name@ "_beg" str.cat word::this word.name!
   "beg_exitHook" word::this word.exitHook!
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   word::this word.name@ ,
     POSTPONE log::markEntry
 
   POSTPONE <SEED_BEG>
+
   POSTPONE job::pathSet
 
   // add this job to the participants list
@@ -44,10 +49,13 @@
   word::this word.name@ "_exe" str.cat word::this word.name!
   "exe_exitHook" word::this word.exitHook!
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   word::this word.name@ ,
     POSTPONE log::markEntry
 
   POSTPONE <SEED_EXE>
+
   POSTPONE job::lockExe
 ;
 
@@ -58,6 +66,8 @@
 
   word::this word.name@ "_end" str.cat word::this word.name!
   "end_exitHook" word::this word.exitHook!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   word::this word.name@ ,
     POSTPONE log::markEntry
@@ -73,6 +83,8 @@
   word::this word.name@ "_can" str.cat word::this word.name!
   "can_exitHook" word::this word.exitHook!
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   word::this word.name@ ,
     POSTPONE log::markEntry
 
@@ -86,8 +98,10 @@
 
   "std_exitHook" word::this word.exitHook!
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   word::this word.name@ ,
-  POSTPONE log::markEntry
+    POSTPONE log::markEntry
 ;
 
 /*============================================================================*/
