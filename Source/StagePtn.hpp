@@ -7,10 +7,10 @@ namespace Operators
 {
   class StagePtn : public Object
   {
-  public:
+  private:
     StageSpec* m_pStageSpec; // specification of the stage
-    i8         m_i_Ptn;      // which partition
     OpVec      m_oOpVec;     // set of operators
+    i8         m_i_Ptn;      // which partition
   
     // must be last
     Footer m_xFooter;
@@ -23,6 +23,8 @@ namespace Operators
    ~StagePtn(void) noexcept(false);
   
     void       vLinkOperators(StageVec* pStageVec);
+    OpVec*     pOpVec(void);
+    i8         iPartition(void);
     StageSpec* pStageSpec(void);
   
     Footer* aFooter(void);

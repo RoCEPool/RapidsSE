@@ -115,8 +115,8 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeLine)
     for (i8 i_Ptn = 0; i_Ptn < m_oStagePtnVec.nItems(); i_Ptn++) {
       Op* pOp = (aOpDefn->m_fpNewOp)(pOpSpec,pPipeLine);
       StagePtn* pStagePtn = m_oStagePtnVec.pGet(i_Ptn);
-      pOp->m_nPartition = pStagePtn->m_i_Ptn;
-      pStagePtn->m_oOpVec.vAdd(pOp);
+      pOp->m_nPartition = pStagePtn->iPartition();
+      pStagePtn->pOpVec()->vAdd(pOp);
       m_oOpVec.vAdd(pOp);
     }
   }

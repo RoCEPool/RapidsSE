@@ -268,12 +268,12 @@ void Job_Dynamic::vExecute(void)
     for (i8 i_Ptn = 0; i_Ptn < pStage->pStagePtnVec()->nItems(); i_Ptn++) {
       StagePtn* pStagePtn = pStage->pStagePtnVec()->pGet(i_Ptn);
       
-      i8 iNode = TablePtn::iPartitionToNode(pStagePtn->m_i_Ptn);
+      i8 iNode = TablePtn::iPartitionToNode(pStagePtn->iPartition());
       if (iNode == iThisNode) {
         // for each operator in the stage ptn
-        for (i8 i_Op = pStagePtn->m_oOpVec.nItems() - 1; i_Op >= 0; i_Op--) {
+        for (i8 i_Op = pStagePtn->pOpVec()->nItems() - 1; i_Op >= 0; i_Op--) {
           
-          Op* pOp = pStagePtn->m_oOpVec.pGet(i_Op);
+          Op* pOp = pStagePtn->pOpVec()->pGet(i_Op);
           
           bool bSpawned = AM::bSpawnOp(m_pSession,pOp);
           ASSERT(bSpawned);

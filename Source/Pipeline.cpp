@@ -111,9 +111,9 @@ i8 Pipeline::nOpsOnNode(i8 iNode)
       StagePtn* pStagePtn = pStage->pStagePtnVec()->pGet(i_Ptn);
       
       // skip if partition is not for this node
-      i8 iPartitionNode = TablePtn::iPartitionToNode(pStagePtn->m_i_Ptn);
+      i8 iPartitionNode = TablePtn::iPartitionToNode(pStagePtn->iPartition());
       if (iPartitionNode == iNode) {
-        nOps += pStagePtn->m_oOpVec.nItems();
+        nOps += pStagePtn->pOpVec()->nItems();
       }
     }
     

@@ -128,6 +128,26 @@ void StagePtn::vLinkOperators(StageVec* pStageVec)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get opVec                                                                  */
+/*----------------------------------------------------------------------------*/
+OpVec* StagePtn::pOpVec(void)
+{
+  _precondition_(_MAGIC_,CN_STAGEPTN,_FOOTER_);
+  
+  return &m_oOpVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get partition this stageNde needs to run on                                */
+/*----------------------------------------------------------------------------*/
+i8 StagePtn::iPartition(void)
+{
+  _precondition_(_MAGIC_,CN_STAGEPTN,_FOOTER_);
+  
+  return m_i_Ptn;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get stage spec                                                             */
 /*----------------------------------------------------------------------------*/
 StageSpec* StagePtn::pStageSpec(void)
