@@ -7,17 +7,15 @@ namespace Operators
 {
   class Pipeline : public Object
   {
-  public:
-  
-    Session* m_pSession;
-    Job*     m_pJob;
-    bool     m_bPulsed;
-    Op*      m_pOpToPulse;
-  
-    bool     m_bCancelling;
-  
+  private:
+    Session*    m_pSession;
+    Job*        m_pJob;
+    bool        m_bPulsed;
+    Op*         m_pOpToPulse;
+    bool        m_bCancelling;
+    
     PipelineSpec* m_pPipelineSpec; // the dynamic job specification
-    StageVec      m_oStageVec;    // vector of stages
+    StageVec      m_oStageVec;     // vector of stages
   
   private:
   
@@ -31,8 +29,16 @@ namespace Operators
     Pipeline(Job* pJob);
    ~Pipeline(void) noexcept(false);
   
-    void vPopulateOpVec(PipelineSpec* pPipelineSpec);
-    void vSetupJob(void);
+    void      vCancelling(bool bCancelling);
+    bool      bCancelling(void);
+    Job*      pJob(void);
+    Op*       pOpToPulse(void);
+    void      vPopulateOpVec(PipelineSpec* pPipelineSpec);
+    bool      bPulsed(void);
+    void      vSession(Session* pSession);
+    Session*  pSession(void);
+    void      vSetupJob(void);
+    StageVec* pStageVec(void);
 
     Footer* aFooter(void);
   };
