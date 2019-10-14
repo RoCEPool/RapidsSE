@@ -9,11 +9,15 @@
 /*----------------------------------------------------------------------------*/
 : _req immediate
 
+  // append _req to name of word being compiled
   word::this word.name@ "_req" str.cat word::this word.name!
+
+  // set exit hook of word being compiled
   "req_exitHook" word::this word.exitHook!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  // log seed entry
   word::this word.name@ ,
     POSTPONE log::markEntry
 
@@ -25,13 +29,17 @@
 /*----------------------------------------------------------------------------*/
 : _beg immediate
 
+  // append _beg to name of word being compiled
   word::this word.name@ "_beg" str.cat word::this word.name!
+
+  // set exit hook of word being compiled
   "beg_exitHook" word::this word.exitHook!
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  // log seed entry
   word::this word.name@ ,
     POSTPONE log::markEntry
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   POSTPONE <SEED_BEG>
 
@@ -46,13 +54,17 @@
 /*----------------------------------------------------------------------------*/
 : _exe immediate
 
+  // append _exe to name of word being compiled
   word::this word.name@ "_exe" str.cat word::this word.name!
+
+  // set exit hook of word being compiled
   "exe_exitHook" word::this word.exitHook!
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  // log seed entry
   word::this word.name@ ,
     POSTPONE log::markEntry
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   POSTPONE <SEED_EXE>
 
@@ -64,13 +76,17 @@
 /*----------------------------------------------------------------------------*/
 : _end immediate
 
+  // append _end to name of word being compiled
   word::this word.name@ "_end" str.cat word::this word.name!
+
+  // set exit hook of word being compiled
   "end_exitHook" word::this word.exitHook!
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  // log seed entry
   word::this word.name@ ,
     POSTPONE log::markEntry
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   POSTPONE <SEED_END>
 ;
@@ -80,13 +96,17 @@
 /*----------------------------------------------------------------------------*/
 : _can immediate
 
+  // append _can to name of word being compiled
   word::this word.name@ "_can" str.cat word::this word.name!
+
+  // set exit hook of word being compiled
   "can_exitHook" word::this word.exitHook!
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  // log seed entry
   word::this word.name@ ,
     POSTPONE log::markEntry
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   POSTPONE <SEED_CAN>
 ;
@@ -98,10 +118,12 @@
 
   "std_exitHook" word::this word.exitHook!
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  // log seed entry
   word::this word.name@ ,
     POSTPONE log::markEntry
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 ;
 
 /*============================================================================*/
