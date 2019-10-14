@@ -276,7 +276,7 @@ eOR LimitOp::eOpLoop(void)
       // -- -- -- -- -- --
         
       case CN_PAUSEMARKER:
-        AM::vPulseTask(m_pPipeline->m_pOpToPulse->pTask());
+        AM::vPulseTask(m_pPipeline->pOpToPulse()->pTask());
         vPipeOut(pOperand);
         break;
      
@@ -337,7 +337,7 @@ bool LimitOp::bLimitDone(void)
       vTrace("%s::!CANCELLING : after popping %lld buffers\n"_Stz,
              m_sLabel.aStz(),
              m_iWorkDone);
-      m_pPipeline->m_bCancelling = true;
+      m_pPipeline->vCancelling(true);
     
     if (m_pSrtBuffer) {
       vPipeOut(m_pSrtBuffer);

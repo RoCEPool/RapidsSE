@@ -139,7 +139,7 @@ eOR ScanOp::eOpLoop(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pipe the crw buffers
   
-  if (m_pPipeline->m_bPulsed) {
+  if (m_pPipeline->bPulsed()) {
     vDebugPoint();
   }
   

@@ -186,7 +186,7 @@ bool Job_Dynamic::bPopulateJob(Session* pSession, TokenVec* pTknVec)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pPipeline->m_pSession = pSession;
+  m_pPipeline->vSession(pSession);
   m_pPipeline->vPopulateOpVec(pPipelineSpec);
   m_pPipeline->vSetupJob();
   
@@ -232,8 +232,8 @@ void Job_Dynamic::vBegin(void)
   
   i8 nOps = 0;
   i8 iThisNode = AM::pGrid()->iThisNode();
-  for (i8 i_Stage = 0; i_Stage < m_pPipeline->m_oStageVec.nItems(); i_Stage++) {
-    Stage* pStage = m_pPipeline->m_oStageVec.pGet(i_Stage);
+  for (i8 i_Stage = 0; i_Stage < m_pPipeline->pStageVec()->nItems(); i_Stage++) {
+    Stage* pStage = m_pPipeline->pStageVec()->pGet(i_Stage);
            
     for (i8 i_Ptn = 0; i_Ptn < pStage->m_oStagePtnVec.nItems(); i_Ptn++) {
       
@@ -266,8 +266,8 @@ void Job_Dynamic::vBegin(void)
          pTask(), nOps);
   AM::vSetAcksRmg(pTask(),nOps);
 
-  for (i8 i_Stage = 0; i_Stage < m_pPipeline->m_oStageVec.nItems(); i_Stage++) {
-    Stage* pStage = m_pPipeline->m_oStageVec.pGet(i_Stage);
+  for (i8 i_Stage = 0; i_Stage < m_pPipeline->pStageVec()->nItems(); i_Stage++) {
+    Stage* pStage = m_pPipeline->pStageVec()->pGet(i_Stage);
 
     for (i8 i_Nde = 0; i_Nde < pStage->m_oStageNdeVec.nItems(); i_Nde++) {
       StageNde* pStageNde = pStage->m_oStageNdeVec.pGet(i_Nde);

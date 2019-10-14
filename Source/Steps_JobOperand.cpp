@@ -28,7 +28,7 @@ void Step::vJob_OperandPipeOut(MP_Task mpTask)
   i8 iParentJob = pJob_Operand->m_iParentId;
   Job_Dynamic* pParentJob = _pJob_Dynamic(Scheduler::pFindParticipatingJob(iParentJob));
   
-  Stage* pStage = pParentJob->m_pPipeline->m_oStageVec.pGet(pJob_Operand->m_iNextStage);
+  Stage* pStage = pParentJob->m_pPipeline->pStageVec()->pGet(pJob_Operand->m_iNextStage);
   
   if (pStage->m_oStageNdeVec.nItems()) {
     StageNde* pStageNde = pStage->m_oStageNdeVec.pGet(pJob_Operand->m_iNdeVec);

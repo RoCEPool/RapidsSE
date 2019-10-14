@@ -151,7 +151,7 @@ eOR XmitOp::eXmitLoop(void)
       pEndMarker->m_iTotalOperands = iOperands;
       AM::vSendJobOperand(m_pTask,
                           pOperand,
-                          m_pPipeline->m_pJob,
+                          m_pPipeline->pJob(),
                           this,
                           m_iXmitNode);
       
@@ -163,7 +163,7 @@ eOR XmitOp::eXmitLoop(void)
       //vPipeOut(pOperand);
       AM::vSendJobOperand(m_pTask,
                           pOperand,
-                          m_pPipeline->m_pJob,
+                          m_pPipeline->pJob(),
                           this,
                           m_iXmitNode);
       continue;
@@ -187,7 +187,7 @@ eOR XmitOp::eXmitLoop(void)
   
     AM::vSendJobOperand(m_pTask,
                         pOperand,
-                        m_pPipeline->m_pJob,
+                        m_pPipeline->pJob(),
                         this,
                         m_iXmitNode);
   }
