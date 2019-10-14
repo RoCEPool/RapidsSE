@@ -141,14 +141,11 @@ void Stage::vDump(void)
     Op* pOp = m_oOpVec.pGet(i_Op);
     
     s32 sArgs;
+    
     EnameSet* pEnameSet = pOp->m_pOpSpec->pEnameSet();
-    for (i8 i_Arg = 0; i_Arg < pEnameSet->nEnames(); i_Arg++) {
-      sArgs.vSprint("(%s)"_Stz,pEnameSet->szValue((i8)i_Arg));
-    }
+    pEnameSet->vSprint(sArgs);
     
-    pOp->m_pOpSpec->pEnameSet()->vPrint();
-    
-    vTrace("  [%02lld] { %9s: %8s%-24s endMarkers(L%lld R%lld) :%-6s %s }\n"_Stz,
+    vTrace("  [%02lld] { %9s: %10s%-24s endMarkers(L%lld R%lld) :%-6s %s }\n"_Stz,
            i_Op,
            pOp->szLabel(),
            aCN[pOp->eClass()],

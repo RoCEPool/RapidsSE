@@ -127,6 +127,11 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // link the operators in a stage and across stages
   
+  if (AM::bVerbose()) {
+    vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
+    vTrace("Dynamic Job:\n\n"_Stz);
+  }
+    
   // for each stage in the stageVec
   for (i8 i_Stage = 0; i_Stage < m_oStageVec.nItems(); i_Stage++) {
     
@@ -161,10 +166,13 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
     // dump all operators of a stage
     
     if (AM::bVerbose()) {
-      vTrace("Dynamic Job:\n"_Stz);
+      vTrace("Stage %lld: \n"_Stz, i_Stage);
       pStage->vDump();
     }
   }
+  
+  if (AM::bVerbose())
+    vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
   
   vDebugPoint();
 }

@@ -228,6 +228,32 @@ void EnameSet::vReset(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print                                                                      */
+/*----------------------------------------------------------------------------*/
+void EnameSet::vSprint(Stz* sArgs)
+{
+  _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
+  
+  sArgs->vCopy("("_Stz);
+  for (i8 i_Ename = 0; i_Ename < m_nEnames; i_Ename++) {
+    
+    if (i_Ename)
+      sArgs->vConcat(", "_Stz);
+    
+    if (TN_INTEGER == m_xEname[i_Ename].m_eToken) {
+      s32 sValue;
+      sValue.vSprint("%lld"_Stz,m_xEname[i_Ename].m_i_Value);
+      sArgs->vConcat(sValue);
+      continue;
+    }
+    
+    sArgs->vConcat(m_bStrings.szGet(m_xEname[i_Ename].m_i_Value));
+  }
+  
+  sArgs->vConcat(") "_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get token kind                                                             */
 /*----------------------------------------------------------------------------*/
 eTN EnameSet::eToken(i8 i_Ename)
@@ -249,6 +275,8 @@ i8 EnameSet::iValue(i8 i_Ename)
   //Stz* szValue = m_bStrings.szGet(m_xEname[i_Ename].m_i_Value);
   //i8 iValue = szValue->iToI8();
   
+  ASSERT(TN_INTEGER == m_xEname[i_Ename].m_eToken);
+  
   i8 iValue = m_xEname[i_Ename].m_i_Value;
   
   return iValue;
@@ -261,6 +289,7 @@ Stz* EnameSet::szValue(i8 i_Ename)
 {
   _precondition_(_MAGIC_,CN_ENMSET,_FOOTER_);
   
+  ASSERT(TN_INTEGER != m_xEname[i_Ename].m_eToken);
   Stz* szValue = m_bStrings.szGet(m_xEname[i_Ename].m_i_Value);
 
   return szValue;
@@ -275,6 +304,7 @@ i8 EnameSet::iValue(Stz *szName)
   
   i8 i_Ename = i_Find(szName);
   
+  ASSERT(TN_INTEGER == m_xEname[i_Ename].m_eToken);
   i8 iValue = m_xEname[i_Ename].m_i_Value;
 
   return iValue;
@@ -292,6 +322,7 @@ Stz* EnameSet::szValue(Stz *szName)
   if (C_UNKNOWN == i_Ename)
     return nullptr;
   
+  ASSERT(TN_INTEGER != m_xEname[i_Ename].m_eToken);
   Stz* szValue = m_bStrings.szGet(m_xEname[i_Ename].m_i_Value);
   
   return szValue;

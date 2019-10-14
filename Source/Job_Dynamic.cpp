@@ -52,7 +52,6 @@ JobClass* Jobs::pJob_Dynamic_class(pFUN** pNextFun)
   return &xJobClass_Dynamic;
 }
 
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -108,11 +107,11 @@ Job_Dynamic::Job_Dynamic(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Se
   
   //m_oOpVec
   
-  m_pPipeline      = nullptr;
+  m_pPipeline     = nullptr;
   m_pPipelineSpec = nullptr;
-  
-  m_pBufferQueue = new Queue;
-  m_pStreamDef   = nullptr;
+  m_pStreamDef    = nullptr;
+  m_pBufferQueue  = new Queue;
+  m_sRequest      = ""_Stz;
   
   _checkInitialised_(CN_JOB_DYNAMIC);
 
@@ -128,11 +127,9 @@ Job_Dynamic::~Job_Dynamic(void) noexcept(false)
  
   //delete m_pPipeline;  // ALKA: ????
   delete m_pPipelineSpec;
-  
-  //delete m_pBufferQueue;  // ALKA: ????
   delete m_pStreamDef;
+  delete m_pBufferQueue;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Static Functions --------------------------------------------------------*/
@@ -161,30 +158,38 @@ bool Job_Dynamic::bPopulateJob(Session* pSession, TokenVec* pTknVec)
   
   i8 iNumTokens;
   
+  // first token should be "dynamic"
   ASSERT(pTknVec->pGet(0)->bSame("dynamic"_Stz));
   
+  // second token should be "pipeline"
+  ASSERT(pTknVec->pGet(1)->bSame("pipeline"_Stz));
+  
+  // get the number of tokens
   iNumTokens = pTknVec->nTokens();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
-  ASSERT(pTknVec->pGet(1)->bSame("pipeline"_Stz));
+  // Compile the token vector
   
   Dynamo* pDynamo = new Dynamo(pTknVec);
   bool bSuccess = pDynamo->bCompile();
+  ASSERT(bSuccess);
   
   PipelineSpec* pPipelineSpec = pDynamo->pPipelineSpec();
-  StageSpec*   pStageSpec   = pPipelineSpec->pStageSpec(0);
+  StageSpec*   pStageSpec     = pPipelineSpec->pStageSpec(0);
   
   s4K sPipe("dynamic "_Stz);
   pStageSpec->vToPipeStr(sPipe.aStz());
   vTrace("Restated stage 0: ]]%s[[\n"_Stz,sPipe.aStz());
+  vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
   
   Tokeniser::vTokenise(pTknVec,sPipe);
   
   SP_TknVecStr spTknVecStr;
   vTrace("TknVecStr ]]%s[[\n"_Stz,spTknVecStr.sz(pTknVec));
+  vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the pipeline
   
   m_pPipeline->vSession(pSession);
   m_pPipeline->vPopulateOpVec(pPipelineSpec);
