@@ -43,19 +43,11 @@
   // set exit hook of word being compiled
   "exe_exitHook" word::this word.exitHook!
 
-  // log seed entry
-  word::this word.name@ ,
-    POSTPONE log::markEntry
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  POSTPONE <SEED_EXE>
-
-  POSTPONE job::lockExe
+  POSTPONE exe_entryHook
 ;
 
 /*----------------------------------------------------------------------------*/
-/* _end makes the word being compile a end seed with name: <wordNm>_exe       */
+/* _end makes the word being compile a end seed with name: <wordNm>_end       */
 /*----------------------------------------------------------------------------*/
 : _end immediate
 
@@ -65,13 +57,7 @@
   // set exit hook of word being compiled
   "end_exitHook" word::this word.exitHook!
 
-  // log seed entry
-  word::this word.name@ ,
-    POSTPONE log::markEntry
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  POSTPONE <SEED_END>
+  POSTPONE end_entryHook
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -85,28 +71,17 @@
   // set exit hook of word being compiled
   "can_exitHook" word::this word.exitHook!
 
-  // log seed entry
-  word::this word.name@ ,
-    POSTPONE log::markEntry
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  POSTPONE <SEED_CAN>
+  POSTPONE can_entryHook
 ;
 
 /*----------------------------------------------------------------------------*/
-/* _std suffix makes the word ...                                             */
+/* _std suffix makes the word a standard part                                 */
 /*----------------------------------------------------------------------------*/
 : _std immediate
 
   "std_exitHook" word::this word.exitHook!
 
-  // log seed entry
-  word::this word.name@ ,
-    POSTPONE log::markEntry
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  POSTPONE std_entryHook
 ;
 
 /*============================================================================*/
