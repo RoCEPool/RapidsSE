@@ -106,8 +106,8 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeLine)
       Op* pOp = (aOpDefn->m_fpNewOp)(pOpSpec,pPipeLine);
       StageNde* pStageNde = m_oStageNdeVec.pGet(i_Index);
       
-      pOp->m_nNode = pStageNde->m_i_Nde;
-      pStageNde->m_oOpVec.vAdd(pOp);
+      pOp->m_nNode = pStageNde->iNode();
+      pStageNde->pOpVec()->vAdd(pOp);
       m_oOpVec.vAdd(pOp);
     }
     

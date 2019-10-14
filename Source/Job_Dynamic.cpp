@@ -236,11 +236,15 @@ void Job_Dynamic::vExecute(void)
     return;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get no of operators to be executed on this node
+  
   i8 iThisNode = AM::pGrid()->iThisNode();
   i8 nOps = m_pPipeline->nOpsOnNode(iThisNode);
   
-  vTrace("Node %lld vBegin end acksRemg %p %lld\n"_Stz, AM::pGrid()->iThisNode(),
-         pTask(), nOps);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // set acks remaining equal to no of operators to be executed on this node
   AM::vSetAcksRmg(pTask(),nOps);
 
   for (i8 i_Stage = 0; i_Stage < m_pPipeline->pStageVec()->nItems(); i_Stage++) {
@@ -250,10 +254,10 @@ void Job_Dynamic::vExecute(void)
       StageNde* pStageNde = pStage->pStageNdeVec()->pGet(i_Nde);
       
       // skip if Op not for this node
-      if (pStageNde->m_i_Nde == iThisNode) {
+      if (pStageNde->iNode() == iThisNode) {
         // for each operator in the stage nde
-        for (i8 i_Op = pStageNde->m_oOpVec.nItems() - 1; i_Op >= 0; i_Op--) {
-          Op* pOp = pStageNde->m_oOpVec.pGet(i_Op);
+        for (i8 i_Op = pStageNde->pOpVec()->nItems() - 1; i_Op >= 0; i_Op--) {
+          Op* pOp = pStageNde->pOpVec()->pGet(i_Op);
           
           bool bSpawned = AM::bSpawnOp(m_pSession,pOp);
           ASSERT(bSpawned);
@@ -266,16 +270,16 @@ void Job_Dynamic::vExecute(void)
       
       i8 iNode = TablePtn::iPartitionToNode(pStagePtn->m_i_Ptn);
       if (iNode == iThisNode) {
-      // for each operator in the stage ptn
-      for (i8 i_Op = pStagePtn->m_oOpVec.nItems() - 1; i_Op >= 0; i_Op--) {
-        
-        Op* pOp = pStagePtn->m_oOpVec.pGet(i_Op);
-        
-        bool bSpawned = AM::bSpawnOp(m_pSession,pOp);
-        ASSERT(bSpawned);
+        // for each operator in the stage ptn
+        for (i8 i_Op = pStagePtn->m_oOpVec.nItems() - 1; i_Op >= 0; i_Op--) {
+          
+          Op* pOp = pStagePtn->m_oOpVec.pGet(i_Op);
+          
+          bool bSpawned = AM::bSpawnOp(m_pSession,pOp);
+          ASSERT(bSpawned);
+        }
       }
     }
-  }
   }
   
 }

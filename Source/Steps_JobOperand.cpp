@@ -33,7 +33,7 @@ void Step::vJob_OperandPipeOut(MP_Task mpTask)
   
   if (pStage->pStageNdeVec()->nItems()) {
     StageNde* pStageNde = pStage->pStageNdeVec()->pGet(pJob_Operand->m_iNdeVec);
-    Op* pOp = pStageNde->m_oOpVec.pGet(0);
+    Op* pOp = pStageNde->pOpVec()->pGet(0);
     pOp->vAppendLeft(pJob_Operand->m_pOperand);
   }
   else {

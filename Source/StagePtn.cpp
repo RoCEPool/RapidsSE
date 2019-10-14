@@ -116,8 +116,8 @@ void StagePtn::vLinkOperators(StageVec* pStageVec)
         RASSERT(0);
       }
       StageNde* pStageNde = pNextStage->pStageNdeVec()->pGet(pOp->m_iNdeVec);
-      AM::vXmitNode(pOp,pStageNde->m_i_Nde);
-      pOpNext = pStageNde->m_oOpVec.pGet(0);
+      AM::vXmitNode(pOp,pStageNde->iNode());
+      pOpNext = pStageNde->pOpVec()->pGet(0);
     }
     else {
       RASSERT(0);

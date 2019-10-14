@@ -7,10 +7,10 @@ namespace Operators
 {
   class StageNde : public Object
   {
-  public:
+  private:
     StageSpec* m_pStageSpec; // specification of the stage
-    i8         m_i_Nde;      // which node
     OpVec      m_oOpVec;     // set of operators
+    i8         m_i_Nde;      // which node
   
     // must be last
     Footer m_xFooter;
@@ -23,6 +23,8 @@ namespace Operators
    ~StageNde(void) noexcept(false);
   
     void       vLinkOperators(void);
+    i8         iNode(void);
+    OpVec*     pOpVec(void);
     StageSpec* pStageSpec(void);
   
     Footer* aFooter(void);
