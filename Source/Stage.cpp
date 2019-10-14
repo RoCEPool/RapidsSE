@@ -53,6 +53,9 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeLine)
   m_pStageSpec = pStageSpec;
   //m_oOpVec
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create StageNde's and StagePtn's depending on the toplogy of the stage
+  
   switch (m_pStageSpec->eTopology()) {
     case PO_ALL_NODES:
       RASSERT(0);
@@ -80,7 +83,11 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeLine)
       RASSERT(0);
   }
   
+  // get the opSpecVec
   OpSpecVec* pOpSpecVec = pStageSpec->pOpSpecVec();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // populate the opVec and StageNde's and stagePtn's from the opSpec
   
   for (i8 i_OpSpec = 0; i_OpSpec < pOpSpecVec->nItems(); i_OpSpec++ ) {
     
@@ -94,21 +101,23 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeLine)
       continue;
     }
     
-    // add the operator to the stages of the stageNdeVec as well
+    // add the operator to the stages of the stageNdeVec
     for (i8 i_Index = 0; i_Index < m_oStageNdeVec.nItems(); i_Index++) {
       Op* pOp = (aOpDefn->m_fpNewOp)(pOpSpec,pPipeLine);
       StageNde* pStageNde = m_oStageNdeVec.pGet(i_Index);
+      
       pOp->m_nNode = pStageNde->m_i_Nde;
-      m_oOpVec.vAdd(pOp);
       pStageNde->m_oOpVec.vAdd(pOp);
+      m_oOpVec.vAdd(pOp);
     }
     
-    // add the operator to the stages of the stagePtnVec as well
+    // add the operator to the stages of the stagePtnVec
     for (i8 i_Ptn = 0; i_Ptn < m_oStagePtnVec.nItems(); i_Ptn++) {
       Op* pOp = (aOpDefn->m_fpNewOp)(pOpSpec,pPipeLine);
-      pOp->m_nPartition = i_Ptn;
+      StagePtn* pStagePtn = m_oStagePtnVec.pGet(i_Ptn);
+      pOp->m_nPartition = pStagePtn->m_i_Ptn;
+      pStagePtn->m_oOpVec.vAdd(pOp);
       m_oOpVec.vAdd(pOp);
-      m_oStagePtnVec.pGet(i_Ptn)->m_oOpVec.vAdd(pOp);
     }
   }
   
