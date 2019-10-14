@@ -30,7 +30,7 @@
     POSTPONE log::markEntry
 
   POSTPONE <SEED_BEG>
-  POSTPONE _path_set_
+  POSTPONE job::pathSet
 
   // add this job to the participants list
   POSTPONE job::becomeParticipant
