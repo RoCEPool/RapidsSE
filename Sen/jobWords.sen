@@ -295,6 +295,19 @@
   job::this job.pushPath task::dicStack.set
 ;
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+: job::lockExe
+
+  "ddlLock" <jobNm> findJobClassEnmSet EnameSet.getStr
+
+  "DL_GRAB_WRITE"
+  str.equal if
+    //"would grab ddl write lock" .
+    ddlLock::grabWrite
+  then
+;
+
 
 
 /*============================================================================*/

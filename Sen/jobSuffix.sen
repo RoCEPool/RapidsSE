@@ -48,7 +48,7 @@
     POSTPONE log::markEntry
 
   POSTPONE <SEED_EXE>
-  POSTPONE _lock_exe_
+  POSTPONE job::lockExe
 ;
 
 /*----------------------------------------------------------------------------*/
