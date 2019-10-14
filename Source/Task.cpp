@@ -115,7 +115,7 @@ Task::Task(Op* pOp, Session* pSession)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the executing task in job
   
-  m_pJob->vTask(this);
+  m_pOp->vTask(this);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
