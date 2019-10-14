@@ -5,6 +5,14 @@
 " jobSuffix.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* seed marks sets the category being compiled as a seed                      */
+/*----------------------------------------------------------------------------*/
+: seed immediate
+
+  tick seed word::this word.category!
+;
+
+/*----------------------------------------------------------------------------*/
 /* _req makes the word being compile a request seed with name: <wordNm>_req   */
 /*----------------------------------------------------------------------------*/
 : _req immediate
@@ -15,6 +23,7 @@
   // set exit hook of word being compiled
   "req_exitHook" word::this word.exitHook!
 
+  // add call to req_entryHook into word being compiled
   POSTPONE req_entryHook
 ;
 
@@ -29,6 +38,7 @@
   // set exit hook of word being compiled
   "beg_exitHook" word::this word.exitHook!
 
+  // add call to beg_entryHook into word being compiled
   POSTPONE beg_entryHook
 ;
 
@@ -43,6 +53,7 @@
   // set exit hook of word being compiled
   "exe_exitHook" word::this word.exitHook!
 
+  // add call to exe_entryHook into word being compiled
   POSTPONE exe_entryHook
 ;
 
@@ -57,6 +68,7 @@
   // set exit hook of word being compiled
   "end_exitHook" word::this word.exitHook!
 
+  // add call to end_entryHook into word being compiled
   POSTPONE end_entryHook
 ;
 
@@ -71,6 +83,7 @@
   // set exit hook of word being compiled
   "can_exitHook" word::this word.exitHook!
 
+  // add call to can_entryHook into word being compiled
   POSTPONE can_entryHook
 ;
 
@@ -81,6 +94,7 @@
 
   "std_exitHook" word::this word.exitHook!
 
+  // add call to std_entryHook into word being compiled
   POSTPONE std_entryHook
 ;
 
