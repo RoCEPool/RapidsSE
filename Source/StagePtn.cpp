@@ -105,10 +105,9 @@ void StagePtn::vLinkOperators(StageVec* pStageVec)
     RASSERT(pNextStage);
     
     // is it a stage run on node/nodes ?
-    if (pNextStage->m_oStageNdeVec.nItems()) {
-      RASSERT(pNextStage->m_oStagePtnVec.nItems() == 0);
-      
-      if (pNextStage->m_oStageNdeVec.nItems() == 1) {
+    if (pNextStage->pStageNdeVec()->nItems()) {
+      RASSERT(pNextStage->pStagePtnVec()->nItems() == 0);
+      if (pNextStage->pStageNdeVec()->nItems() == 1) {
         // going from all/one ptn to one node
         pOp->m_iNdeVec = 0;
       }
@@ -116,7 +115,7 @@ void StagePtn::vLinkOperators(StageVec* pStageVec)
         // going from all/one ptn to all nodes
         RASSERT(0);
       }
-      StageNde* pStageNde = pNextStage->m_oStageNdeVec.pGet(pOp->m_iNdeVec);
+      StageNde* pStageNde = pNextStage->pStageNdeVec()->pGet(pOp->m_iNdeVec);
       AM::vXmitNode(pOp,pStageNde->m_i_Nde);
       pOpNext = pStageNde->m_oOpVec.pGet(0);
     }

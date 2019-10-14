@@ -240,9 +240,9 @@ void Job_Dynamic::vBegin(void)
   for (i8 i_Stage = 0; i_Stage < m_pPipeline->pStageVec()->nItems(); i_Stage++) {
     Stage* pStage = m_pPipeline->pStageVec()->pGet(i_Stage);
            
-    for (i8 i_Ptn = 0; i_Ptn < pStage->m_oStagePtnVec.nItems(); i_Ptn++) {
+    for (i8 i_Ptn = 0; i_Ptn < pStage->pStagePtnVec()->nItems(); i_Ptn++) {
       
-      StagePtn* pStagePtn = pStage->m_oStagePtnVec.pGet(i_Ptn);
+      StagePtn* pStagePtn = pStage->pStagePtnVec()->pGet(i_Ptn);
       
       // skip if partition is not for this node
       i8 iNode = TablePtn::iPartitionToNode(pStagePtn->m_i_Ptn);
@@ -253,9 +253,9 @@ void Job_Dynamic::vBegin(void)
         nOps += pStagePtn->m_oOpVec.nItems();
       }
     }
-    for (i8 i_Nde = 0; i_Nde < pStage->m_oStageNdeVec.nItems(); i_Nde++) {
+    for (i8 i_Nde = 0; i_Nde < pStage->pStageNdeVec()->nItems(); i_Nde++) {
       
-      StageNde* pStageNde = pStage->m_oStageNdeVec.pGet(i_Nde);
+      StageNde* pStageNde = pStage->pStageNdeVec()->pGet(i_Nde);
       
       // skip if Op not for this node
       if (pStageNde->m_i_Nde != iThisNode) {
@@ -274,8 +274,8 @@ void Job_Dynamic::vBegin(void)
   for (i8 i_Stage = 0; i_Stage < m_pPipeline->pStageVec()->nItems(); i_Stage++) {
     Stage* pStage = m_pPipeline->pStageVec()->pGet(i_Stage);
 
-    for (i8 i_Nde = 0; i_Nde < pStage->m_oStageNdeVec.nItems(); i_Nde++) {
-      StageNde* pStageNde = pStage->m_oStageNdeVec.pGet(i_Nde);
+    for (i8 i_Nde = 0; i_Nde < pStage->pStageNdeVec()->nItems(); i_Nde++) {
+      StageNde* pStageNde = pStage->pStageNdeVec()->pGet(i_Nde);
       
       // skip if Op not for this node
       if (pStageNde->m_i_Nde != iThisNode) {
@@ -292,8 +292,8 @@ void Job_Dynamic::vBegin(void)
         }
       }
     }
-    for (i8 i_Ptn = 0; i_Ptn < pStage->m_oStagePtnVec.nItems(); i_Ptn++) {
-      StagePtn* pStagePtn = pStage->m_oStagePtnVec.pGet(i_Ptn);
+    for (i8 i_Ptn = 0; i_Ptn < pStage->pStagePtnVec()->nItems(); i_Ptn++) {
+      StagePtn* pStagePtn = pStage->pStagePtnVec()->pGet(i_Ptn);
       
       i8 iNode = TablePtn::iPartitionToNode(pStagePtn->m_i_Ptn);
       if (iNode != iThisNode) {

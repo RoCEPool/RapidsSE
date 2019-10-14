@@ -28,10 +28,11 @@ void Step::vJob_OperandPipeOut(MP_Task mpTask)
   i8 iParentJob = pJob_Operand->m_iParentId;
   Job_Dynamic* pParentJob = _pJob_Dynamic(Scheduler::pFindParticipatingJob(iParentJob));
   
+  // get the next stage the xmit is supposed to xmit to
   Stage* pStage = pParentJob->m_pPipeline->pStageVec()->pGet(pJob_Operand->m_iNextStage);
   
-  if (pStage->m_oStageNdeVec.nItems()) {
-    StageNde* pStageNde = pStage->m_oStageNdeVec.pGet(pJob_Operand->m_iNdeVec);
+  if (pStage->pStageNdeVec()->nItems()) {
+    StageNde* pStageNde = pStage->pStageNdeVec()->pGet(pJob_Operand->m_iNdeVec);
     Op* pOp = pStageNde->m_oOpVec.pGet(0);
     pOp->vAppendLeft(pJob_Operand->m_pOperand);
   }

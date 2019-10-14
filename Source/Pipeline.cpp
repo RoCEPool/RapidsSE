@@ -142,10 +142,10 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // link all operators of a stagePtn
 
-    for (i8 i_Ptn = 0; i_Ptn < pStage->m_oStagePtnVec.nItems(); i_Ptn++) {
+    for (i8 i_Ptn = 0; i_Ptn < pStage->pStagePtnVec()->nItems(); i_Ptn++) {
       
       // get the stagePtn
-      StagePtn* pStagePtn = pStage->m_oStagePtnVec.pGet(i_Ptn);
+      StagePtn* pStagePtn = pStage->pStagePtnVec()->pGet(i_Ptn);
       
       // link all operators of the stage partition
       pStagePtn->vLinkOperators(&m_oStageVec);
@@ -154,9 +154,9 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // link all operators of a stageNde
     
-    for (i8 i_Nde = 0; i_Nde < pStage->m_oStageNdeVec.nItems(); i_Nde++) {
+    for (i8 i_Nde = 0; i_Nde < pStage->pStageNdeVec()->nItems(); i_Nde++) {
       
-      StageNde* pStageNde = pStage->m_oStageNdeVec.pGet(i_Nde);
+      StageNde* pStageNde = pStage->pStageNdeVec()->pGet(i_Nde);
       
       // link all operators of the stage partition
       pStageNde->vLinkOperators();
@@ -209,10 +209,10 @@ void Pipeline::vSetupJob(void)
   vDebugPoint();
   
   Stage* pStage = m_oStageVec.pGet(0);
-  i8 nOps = pStage->m_oOpVec.nItems();
+  i8 nOps = pStage->pOpVec()->nItems();
   
   for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
-    Op* pOp = pStage->m_oOpVec.pGet(i_Op);
+    Op* pOp = pStage->pOpVec()->pGet(i_Op);
     
     if (CN_LIMITOP == pOp->eClass()) {
       m_bPulsed = true;
@@ -226,7 +226,7 @@ void Pipeline::vSetupJob(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
-    Op* pOp = pStage->m_oOpVec.pGet(i_Op);
+    Op* pOp = pStage->pOpVec()->pGet(i_Op);
     
     if (CN_SCANOP == pOp->eClass()) {
       m_pOpToPulse = pOp;

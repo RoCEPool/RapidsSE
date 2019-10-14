@@ -159,6 +159,16 @@ void Stage::vDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get opeVec                                                                 */
+/*----------------------------------------------------------------------------*/
+OpVec* Stage::pOpVec(void)
+{
+  _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
+  
+  return &m_oOpVec;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get stage spec                                                             */
 /*----------------------------------------------------------------------------*/
 StageSpec* Stage::pStageSpec(void)
@@ -166,6 +176,26 @@ StageSpec* Stage::pStageSpec(void)
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
   return m_pStageSpec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stage spec                                                             */
+/*----------------------------------------------------------------------------*/
+StagePtnVec* Stage::pStagePtnVec(void)
+{
+  _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
+  
+  return &m_oStagePtnVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stage spec                                                             */
+/*----------------------------------------------------------------------------*/
+StageNdeVec* Stage::pStageNdeVec(void)
+{
+  _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
+  
+  return &m_oStageNdeVec;
 }
 
 /*----------------------------------------------------------------------------*/

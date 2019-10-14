@@ -7,9 +7,9 @@ namespace Operators
 {
   class Stage : public Object
   {
-  public:
-    StageSpec* m_pStageSpec; // specification of the stage
-    OpVec      m_oOpVec;     // set of operators
+  private:
+    StageSpec* m_pStageSpec;      // specification of the stage
+    OpVec      m_oOpVec;          // set of operators
 
     StagePtnVec m_oStagePtnVec;   // set of stage-partitions
     StageNdeVec m_oStageNdeVec;   // set of stage-nodes
@@ -25,8 +25,12 @@ namespace Operators
    ~Stage(void) noexcept(false);
   
     void vDump(void);
-    StageSpec* pStageSpec(void);
-  
+    
+    OpVec*       pOpVec(void);
+    StageSpec*   pStageSpec(void);
+    StageNdeVec* pStageNdeVec(void);
+    StagePtnVec* pStagePtnVec(void);
+    
     Footer* aFooter(void);
   };
   
