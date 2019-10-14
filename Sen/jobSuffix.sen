@@ -15,13 +15,7 @@
   // set exit hook of word being compiled
   "req_exitHook" word::this word.exitHook!
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // log seed entry
-  word::this word.name@ ,
-    POSTPONE log::markEntry
-
-  POSTPONE <SEED_REQ>
+  POSTPONE req_entryHook
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -35,18 +29,7 @@
   // set exit hook of word being compiled
   "beg_exitHook" word::this word.exitHook!
 
-  // log seed entry
-  word::this word.name@ ,
-    POSTPONE log::markEntry
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  POSTPONE <SEED_BEG>
-
-  POSTPONE job::pathSet
-
-  // add this job to the participants list
-  POSTPONE job::becomeParticipant
+  POSTPONE beg_entryHook
 ;
 
 /*----------------------------------------------------------------------------*/

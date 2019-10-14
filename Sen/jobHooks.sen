@@ -17,6 +17,8 @@
   "req_entryHook" .
 
   r@ locate log::markEntry
+
+  <SEED_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -27,6 +29,13 @@
   "beg_entryHook" .
 
   r@ locate log::markEntry
+
+  <SEED_BEG>
+
+  job::pathSet
+
+  // add this job to the participants list
+  job::becomeParticipant
 ;
 
 /*----------------------------------------------------------------------------*/
