@@ -5,10 +5,18 @@
 " jobSuffix.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* seed sets the category of word being being compiled as seed                */
+/* category of words which are seeds                                          */
 /*----------------------------------------------------------------------------*/
 : seed
 
+;
+
+/*----------------------------------------------------------------------------*/
+/* sets the category of word being being compiled as seed                     */
+/*----------------------------------------------------------------------------*/
+: word::seed#
+
+  tick seed word::this word.category!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -27,10 +35,9 @@
   // append _req to name of word being compiled
   word::this word.name@ "_req" str.cat word::this word.name!
 
-  // the compiled word is a seed
-  tick seed word::this word.category!
+  word::seed#
 
- // set exit hook of word being compiled
+  // set exit hook of word being compiled
   "req_exitHook" word::this word.exitHook!
 
   // add call to req_entryHook into word being compiled
@@ -42,13 +49,15 @@
 /*----------------------------------------------------------------------------*/
 /* _beg makes the word being compile a seed with name: <wordNm>_beg           */
 /*----------------------------------------------------------------------------*/
-: _beg immediate
+: _beg immediate suffix
 
   // append _beg to name of word being compiled
   word::this word.name@ "_beg" str.cat word::this word.name!
 
   // the compiled word is a seed
   tick seed word::this word.category!
+
+  word::seed#
 
   // set exit hook of word being compiled
   "beg_exitHook" word::this word.exitHook!
@@ -60,13 +69,12 @@
 /*----------------------------------------------------------------------------*/
 /* _exe makes the word being compile a seed with name: <wordNm>_exe           */
 /*----------------------------------------------------------------------------*/
-: _exe immediate
+: _exe immediate suffix
 
   // append _exe to name of word being compiled
   word::this word.name@ "_exe" str.cat word::this word.name!
 
-  // the compiled word is a seed
-  tick seed word::this word.category!
+  word::seed#
 
   // set exit hook of word being compiled
   "exe_exitHook" word::this word.exitHook!
@@ -78,13 +86,12 @@
 /*----------------------------------------------------------------------------*/
 /* _end makes the word being compile a end seed with name: <wordNm>_end       */
 /*----------------------------------------------------------------------------*/
-: _end immediate
+: _end immediate suffix
 
   // append _end to name of word being compiled
   word::this word.name@ "_end" str.cat word::this word.name!
 
-  // the compiled word is a seed
-  tick seed word::this word.category!
+  word::seed#
 
   // set exit hook of word being compiled
   "end_exitHook" word::this word.exitHook!
@@ -96,13 +103,12 @@
 /*----------------------------------------------------------------------------*/
 /* _can makes the word being compile a cancel seed with name: <wordNm>_can    */
 /*----------------------------------------------------------------------------*/
-: _can immediate
+: _can immediate suffix
 
   // append _can to name of word being compiled
   word::this word.name@ "_can" str.cat word::this word.name!
 
-  // the compiled word is a seed
-  tick seed word::this word.category!
+  word::seed#
 
   // set exit hook of word being compiled
   "can_exitHook" word::this word.exitHook!
@@ -114,7 +120,7 @@
 /*----------------------------------------------------------------------------*/
 /* _std suffix makes the word a standard part                                 */
 /*----------------------------------------------------------------------------*/
-: _std immediate
+: _std immediate suffix
 
   "std_exitHook" word::this word.exitHook!
 
