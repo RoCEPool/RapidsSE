@@ -18,7 +18,7 @@
 
   r@ locate log::markEntry
 
-  <SEED_REQ>
+  SS_SEED_REQ log::jobSeed
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -30,7 +30,9 @@
 
   r@ locate log::markEntry
 
-  <SEED_BEG>
+  SS_SEED_BEG log::jobSeed
+
+  JP_BEGINNING job::this job.phase!
 
   job::pathSet
 
@@ -47,7 +49,9 @@
 
   r@ locate log::markEntry
 
-  <SEED_EXE>
+  SS_SEED_EXE log::jobSeed
+
+  JP_EXECUTING job::this job.phase!
 
   job::lockExe
 ;
@@ -61,7 +65,9 @@
 
   r@ locate log::markEntry
 
-  <SEED_END>
+  SS_SEED_END log::jobSeed
+
+  JP_CANCELING job::this job.phase!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -73,7 +79,9 @@
 
   r@ locate log::markEntry
 
-  <SEED_CAN>
+  SS_SEED_CAN log::jobSeed
+
+  JP_BEGINNING job::this job.phase!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -99,7 +107,17 @@
 
   r@ locate log::markExit
 
-  <DONE_REQ>
+  job::this locals| pJob |
+
+  ddlLock::testDrop
+
+  // null the job in the task
+  nullptr task::this task.job!
+
+  //"Signalling connector thread" .
+  pJob job.signalConnector
+
+  task::exit
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -115,7 +133,15 @@
 
   ddlLock::testDrop
 
-  <DONE_BEG>
+  JP_BEGUN job::this job.phase!
+
+  nullptr job::this job.task!
+
+  // the job remains in the participant list
+  // the task exits and gets deleted
+  nullptr task::this task.job!
+
+  task::exit
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -129,7 +155,15 @@
 
   r@ locate log::markExit
 
-  <DONE_EXE>
+  ddlLock::testDrop
+
+  JP_EXECUTED job::this job.phase!
+
+  nullptr job::this job.task!
+
+  nullptr task::this task.job!
+
+  task::exit
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -141,9 +175,14 @@
 
   job::participantEnded
 
-   r@ locate log::markExit
+  r@ locate log::markExit
 
-  <DONE_END>
+  JP_ENDED job::this job.phase!
+
+  // delete the job
+  job::this "job::deleteThis" find execute
+
+  task::exit
 ;
 
 /*----------------------------------------------------------------------------*/
