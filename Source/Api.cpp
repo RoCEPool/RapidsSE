@@ -502,14 +502,24 @@ bool Api::bSpawnOp(Session* pSession, Op* pOp)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (pOp->m_pTask)
-    AM::vLogWriteCsv(false);
+//  if (pOp->m_pTask)
+//    AM::vLogWriteCsv(false);
+//
+//  ASSERT(! pOp->m_pTask);
   
-  ASSERT(! pOp->m_pTask);
-  Task* pNewTask = new Task(pOp,pSession);
-  pNewTask->vState(TS_ABLE);
-  pOp->vTask(pNewTask);
-  Scheduler::vAddTaskGeneral(pNewTask);
+//  Task* pNewTask = new Task(pOp,pSession);
+//  pNewTask->vState(TS_ABLE);
+//  pOp->vTask(pNewTask);
+  
+  if (pOp->pTask()) {
+    pOp->pTask()->vState(TS_ABLE);
+  }
+  else {
+    Task* pNewTask = new Task(pOp,pSession);
+    pNewTask->vState(TS_ABLE);
+  }
+  
+  Scheduler::vAddTaskGeneral(pOp->pTask());
   
   return true;
 }
