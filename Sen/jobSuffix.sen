@@ -5,6 +5,7 @@
 " jobSuffix.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* _req makes the word being compile a request seed with name: <wordNm>_req   */
 /*----------------------------------------------------------------------------*/
 : _req immediate
 
@@ -17,6 +18,9 @@
   POSTPONE log::markEntry
 ;
 
+/*----------------------------------------------------------------------------*/
+/* _beg makes the word being compile a seed with name: <wordNm>_beg           */
+/*----------------------------------------------------------------------------*/
 : _beg immediate
 
   word::this word.name@ "_beg" str.cat word::this word.name!
@@ -32,6 +36,9 @@
   POSTPONE job::becomeParticipant
 ;
 
+/*----------------------------------------------------------------------------*/
+/* _exe makes the word being compile a seed with name: <wordNm>_exe           */
+/*----------------------------------------------------------------------------*/
 : _exe immediate
 
   word::this word.name@ "_exe" str.cat word::this word.name!
@@ -44,6 +51,9 @@
   POSTPONE _lock_exe_
 ;
 
+/*----------------------------------------------------------------------------*/
+/* _end makes the word being compile a end seed with name: <wordNm>_exe       */
+/*----------------------------------------------------------------------------*/
 : _end immediate
 
   word::this word.name@ "_end" str.cat word::this word.name!
@@ -55,6 +65,9 @@
   POSTPONE <SEED_END>
 ;
 
+/*----------------------------------------------------------------------------*/
+/* _can makes the word being compile a cancel seed with name: <wordNm>_can    */
+/*----------------------------------------------------------------------------*/
 : _can immediate
 
   word::this word.name@ "_can" str.cat word::this word.name!
@@ -66,6 +79,9 @@
   POSTPONE <SEED_CAN>
 ;
 
+/*----------------------------------------------------------------------------*/
+/* _std suffix makes the word ...                                             */
+/*----------------------------------------------------------------------------*/
 : _std immediate
 
   "std_exitHook" word::this word.exitHook!
