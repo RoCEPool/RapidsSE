@@ -5,17 +5,17 @@
 " jobSuffix.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* seed marks sets the category being compiled as a seed                      */
+/* suffix marks sets the category being compiled as a suffix                  */
 /*----------------------------------------------------------------------------*/
-: seed immediate
+: suffix immediate
 
-  tick seed word::this word.category!
+  tick suffix word::this word.category!
 ;
 
 /*----------------------------------------------------------------------------*/
 /* _req makes the word being compile a request seed with name: <wordNm>_req   */
 /*----------------------------------------------------------------------------*/
-: _req immediate
+: _req immediate suffix
 
   // append _req to name of word being compiled
   word::this word.name@ "_req" str.cat word::this word.name!
@@ -25,6 +25,8 @@
 
   // add call to req_entryHook into word being compiled
   POSTPONE req_entryHook
+
+  [ tick _req word.dump ]
 ;
 
 /*----------------------------------------------------------------------------*/

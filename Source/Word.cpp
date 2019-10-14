@@ -362,7 +362,7 @@ void Word::vContentDump(void)
   Dic* pRootDic = AM::pRootDic();
   Word* pStepWord = pRootDic->pFindStep(m_fpIntrinsic);
   
-  vTrace("Word %p: %s %s Kind %s Immediate %d DataBytes %lld "_Stz
+  vTrace("Word %p: %s %s Category %s Immediate %d DataBytes %lld "_Stz
          "Step %p %s ..Rows.. %p\n"_Stz,
          this,
          m_sName.aChar(),
