@@ -175,9 +175,14 @@
 
   job::participantEnded
 
-   r@ locate log::markExit
+  r@ locate log::markExit
 
-  <DONE_END>
+  JP_ENDED job::this job.phase!
+
+  // delete the job
+  job::this "job::deleteThis" find execute
+
+  task::exit
 ;
 
 /*----------------------------------------------------------------------------*/
