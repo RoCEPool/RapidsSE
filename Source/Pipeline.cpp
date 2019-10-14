@@ -131,32 +131,8 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
     
     if (AM::bVerbose()) {
       vTrace("Dynamic Job:\n"_Stz);
-      
-      for (i8 i_Op = 0; i_Op < pStage->m_oOpVec.nItems(); i_Op++) {
-        
-        Op* pOp = pStage->m_oOpVec.pGet(i_Op);
-        
-        s32 sArgs;
-        EnameSet* pEnameSet = pOp->m_pOpSpec->pEnameSet();
-        for (i8 i_Arg = 0; i_Arg < pEnameSet->nEnames(); i_Arg++) {
-          sArgs.vSprint("(%s)"_Stz,pEnameSet->szValue((i8)i_Arg));
-        }
-        
-        pOp->m_pOpSpec->pEnameSet()->vPrint();
-        
-        vTrace("  [%02lld] { %9s: %8s%-24s endMarkers(L%lld R%lld) :%-6s %s }\n"_Stz,
-               i_Op,
-               pOp->szLabel(),
-               aCN[pOp->eClass()],
-               sArgs.aStz(),
-               pOp->m_nLeftEndMarkers,
-               pOp->m_nRightEndMarkers,
-               pOp->szNextLabel(),
-               pOp->m_bAppendRight ? "appendRight"_Stz : "appendLeft "_Stz
-               );
-      }
+      pStage->vDump();
     }
-
   }
   
   vDebugPoint();

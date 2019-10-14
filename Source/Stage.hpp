@@ -24,6 +24,7 @@ namespace Operators
     Stage(StageSpec* pStageSpec, Pipeline* pPileLine);
    ~Stage(void) noexcept(false);
   
+    void vDump(void);
     StageSpec* pStageSpec(void);
   
     Footer* aFooter(void);
