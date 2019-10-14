@@ -18,7 +18,7 @@
 
   r@ locate log::markEntry
 
-  <SEED_REQ>
+  SS_SEED_REQ log::jobSeed
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -30,7 +30,9 @@
 
   r@ locate log::markEntry
 
-  <SEED_BEG>
+  SS_SEED_BEG log::jobSeed
+
+  JP_BEGINNING job::this job.phase!
 
   job::pathSet
 
@@ -47,7 +49,9 @@
 
   r@ locate log::markEntry
 
-  <SEED_EXE>
+  SS_SEED_EXE log::jobSeed
+
+  JP_EXECUTING job::this job.phase!
 
   job::lockExe
 ;
@@ -61,7 +65,9 @@
 
   r@ locate log::markEntry
 
-  <SEED_END>
+  SS_SEED_END log::jobSeed
+
+  JP_CANCELING job::this job.phase!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -73,7 +79,9 @@
 
   r@ locate log::markEntry
 
-  <SEED_CAN>
+  SS_SEED_CAN log::jobSeed
+
+  JP_BEGINNING job::this job.phase!
 ;
 
 /*----------------------------------------------------------------------------*/
