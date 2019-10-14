@@ -156,23 +156,22 @@ bool Job_Dynamic::bPopulateJob(Session* pSession, TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
   
-  i8 iNumTokens;
-  
   // first token should be "dynamic"
   ASSERT(pTknVec->pGet(0)->bSame("dynamic"_Stz));
   
   // second token should be "pipeline"
-  ASSERT(pTknVec->pGet(1)->bSame("pipeline"_Stz));
-  
-  // get the number of tokens
-  iNumTokens = pTknVec->nTokens();
+  if ( ! pTknVec->pGet(1)->bSame("pipeline"_Stz) )
+    return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Compile the token vector
   
   Dynamo* pDynamo = new Dynamo(pTknVec);
   bool bSuccess = pDynamo->bCompile();
-  ASSERT(bSuccess);
+  if ( ! bSuccess ) {
+    delete pDynamo;
+    return false;
+  }
   
   PipelineSpec* pPipelineSpec = pDynamo->pPipelineSpec();
   StageSpec*   pStageSpec     = pPipelineSpec->pStageSpec(0);
@@ -211,9 +210,9 @@ void Job_Dynamic::vShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* query begin                                                                */
+/* query execute                                                              */
 /*----------------------------------------------------------------------------*/
-void Job_Dynamic::vBegin(void)
+void Job_Dynamic::vExecute(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
   
@@ -290,34 +289,17 @@ void Job_Dynamic::vBegin(void)
       
       i8 iNode = TablePtn::iPartitionToNode(pStagePtn->m_i_Ptn);
       if (iNode == iThisNode) {
-        // for each operator in the stage ptn
-        for (i8 i_Op = pStagePtn->m_oOpVec.nItems() - 1; i_Op >= 0; i_Op--) {
-          
-          Op* pOp = pStagePtn->m_oOpVec.pGet(i_Op);
-          
-          bool bSpawned = AM::bSpawnOp(m_pSession,pOp);
-          ASSERT(bSpawned);
-        }
-     }
-   }
+      // for each operator in the stage ptn
+      for (i8 i_Op = pStagePtn->m_oOpVec.nItems() - 1; i_Op >= 0; i_Op--) {
+        
+        Op* pOp = pStagePtn->m_oOpVec.pGet(i_Op);
+        
+        bool bSpawned = AM::bSpawnOp(m_pSession,pOp);
+        ASSERT(bSpawned);
+      }
+    }
   }
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* query end                                                                  */
-/*----------------------------------------------------------------------------*/
-void Job_Dynamic::vEnd(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* query execute                                                              */
-/*----------------------------------------------------------------------------*/
-void Job_Dynamic::vExecute(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DYNAMIC,_FOOTER_);
+  }
   
 }
 
@@ -345,18 +327,11 @@ Footer* Job_Dynamic::aFooter(void)
 Job* Jobs::pJob_Dynamic_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Session* pSession)
 {
   Job_Dynamic* pJob_Dynamic = new Job_Dynamic(aJobClass,aReqTuple,iForId,pSession);
-  //pJob->vDicPath(pSession);
 
   TokenVec* pTokenVec = pSession->m_pInput->pTknVec();
   
   // convert tokenvec back to the request string
   pTokenVec->vToString(pJob_Dynamic->m_sRequest);
-  
-//  bool bResult = pJob_Dynamic->bPopulateJob(pSession, pTokenVec);
-//
-//  if ( !bResult) {
-//    pJob_Dynamic->vAddError(EC_INVALID_COMMAND);
-//  }
   
   return pJob_Dynamic;
 }
@@ -368,13 +343,13 @@ void Jobs::vJob_Dynamic_post(Job* pJob)
 {
   Job_Dynamic* pJob_Dynamic = _pJob_Dynamic(pJob);
   
-//  if ( pJob_Dynamic->m_bHasError ) {
-//
-//    vTrace("error: (node%lld) %s\n"_Stz, AM::pGrid()->iThisNode(),
-//           aEC[pJob_Dynamic->m_xResponse.m_eErrorCode]);
-//
-//    return;
-//  }
+  if ( pJob_Dynamic->m_bHasError ) {
+
+    vTrace("error: (node%lld) %s\n"_Stz, AM::pGrid()->iThisNode(),
+           aEC[pJob_Dynamic->m_xResponse.m_eErrorCode]);
+
+    return;
+  }
 
   for (;;) {
     

@@ -68,9 +68,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //pathDump
 
-  pJob_dynamic job_Dynamic.begin
   pJob_dynamic job_Dynamic.execute
-  pJob_dynamic job_Dynamic.end
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
