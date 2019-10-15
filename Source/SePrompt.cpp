@@ -539,6 +539,14 @@ void SePrompt::vGetCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
+  if (m_bOneCommand) {
+    s4K szCommand = AM::szCommand();
+    Tokeniser::vTokenise(pTknVec(),szCommand);
+    pTknVec()->vStripSemicolon();
+    pTknVec()->vSetTokens();
+    return;
+  }
+  
   if (* m_pSession->m_sToDo.aChar()) {
     Tokeniser::vTokenise(pTknVec(),m_pSession->m_sToDo);
     pTknVec()->vStripSemicolon();

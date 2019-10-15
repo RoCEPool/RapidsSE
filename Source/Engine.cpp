@@ -844,6 +844,7 @@ void Engine::vStartSystem(void)
     
   gpAttachMap->vRecordArguments(
                                 gxArguments.m_bDeveloper,
+                                gxArguments.m_sCommand,
                                 gxArguments.m_nDummyLoop,
                                 gxArguments.m_nDummySleep,
                                 gxArguments.m_nDummyThreads,

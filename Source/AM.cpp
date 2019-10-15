@@ -19,6 +19,7 @@ extern i8            giClassSize[];
 extern pFINALIZE*    gpFinalize[];
 
 // Arg
+Stz* AM::szCommand(void)      { return gpAttachMap->Arg.m_sCommand.aStz();    }
 bool AM::bDeveloper(void)     { return gpAttachMap->Arg.m_bDeveloper;         }
 i8   AM::nDummyLoop(void)     { return gpAttachMap->Arg.m_nDummyLoop;         }
 i8   AM::nDummySleep(void)    { return gpAttachMap->Arg.m_nDummySleep;        }

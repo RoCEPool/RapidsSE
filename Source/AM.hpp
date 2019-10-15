@@ -32,6 +32,7 @@ namespace Oblique
   public:
     // args
     static bool bDeveloper(void);
+    static Stz* szCommand(void);
     static i8   nDummyLoop(void);
     static i8   nDummySleep(void);
     static i8   nDummyThreads(void);
