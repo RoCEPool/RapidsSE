@@ -136,6 +136,9 @@ public:
   // comment
   static void vComment(Tasks::MP_Task mpTask);
 
+  // comment
+  static void vCompilerCurrent(Tasks::MP_Task mpTask);
+
   // cpu
   static void vCpuRdtscp(Tasks::MP_Task mpTask);
 

@@ -32,6 +32,7 @@ namespace Steps
     static void vAddSteps_Class(void);
     static void vAddSteps_Column(void);
     static void vAddSteps_Comment(void);
+    static void vAddSteps_Compiler(void);
     static void vAddSteps_CoreWords(void);
     static void vAddSteps_Cpu(void);
     static void vAddSteps_Cursor(void);
