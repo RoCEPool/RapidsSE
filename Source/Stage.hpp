@@ -25,6 +25,7 @@ namespace Operators
   
     void vDump(void);
     
+    i8           nOpsOnNode(i8 iNode);
     OpVec*       pOpVec(void);
     StageSpec*   pStageSpec(void);
     StageNdeVec* pStageNdeVec(void);
