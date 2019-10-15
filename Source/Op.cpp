@@ -368,6 +368,58 @@ void Op::vLabel(Stz* szLabel)
 }
 
 /*----------------------------------------------------------------------------*/
+/* link this operator to the next stage                                       */
+/*----------------------------------------------------------------------------*/
+void Op::vLinkToStage(Stage* pStage)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  ASSERT(eClass() == CN_XMITOP);
+  
+  switch(m_eTopologyX) {
+    case PX_ALL_NODES_TO_ALL_NODES: RASSERT(0);
+    case PX_ALL_NODES_TO_ALL_PARTITIONS: RASSERT(0);
+    case PX_ALL_NODES_TO_ORIGIN: RASSERT(0);
+    case PX_ALL_NODES_TO_SPECIFIC_NODE: RASSERT(0);
+    case PX_ALL_NODES_TO_SPECIFIC_PARTITION: RASSERT(0);
+    
+    case PX_ALL_PARTITIONS_TO_ALL_NODES: RASSERT(0);
+    case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS: RASSERT(0);
+      
+    case PX_ALL_PARTITIONS_TO_ORIGIN: {
+      RASSERT(pStage->pStageNdeVec()->nItems() == 1) ;
+      m_iNdeVec = 0;
+      StageNde* pStageNde = pStage->pStageNdeVec()->pGet(m_iNdeVec);
+      AM::vXmitNode(this,pStageNde->iNode());
+      //pOpNext = pStageNde->pOpVec()->pGet(0);
+      return;
+    }
+    case PX_ALL_PARTITIONS_TO_SPECIFIC_NODE: RASSERT(0);
+    case PX_ALL_PARTITIONS_TO_SPECIFIC_PARTITION: RASSERT(0);
+    
+    case PX_ORIGIN_TO_ALL_NODES: RASSERT(0);
+    case PX_ORIGIN_TO_ALL_PARTITIONS: RASSERT(0);
+    case PX_ORIGIN_TO_ORIGIN: RASSERT(0);
+    case PX_ORIGIN_TO_SPECIFIC_NODE: RASSERT(0);
+    case PX_ORIGIN_TO_SPECIFIC_PARTITION: RASSERT(0);
+    
+    case PX_SPECIFIC_NODE_TO_ALL_NODES: RASSERT(0);
+    case PX_SPECIFIC_NODE_TO_ALL_PARTITIONS: RASSERT(0);
+    case PX_SPECIFIC_NODE_TO_ORIGIN: RASSERT(0);
+    case PX_SPECIFIC_NODE_TO_SPECIFIC_NODE: RASSERT(0);
+    case PX_SPECIFIC_NODE_TO_SPECIFIC_PARTITION: RASSERT(0);
+    
+    case PX_SPECIFIC_PARTITION_TO_ALL_NODES: RASSERT(0);
+    case PX_SPECIFIC_PARTITION_TO_ALL_PARTITIONS: RASSERT(0);
+    case PX_SPECIFIC_PARTITION_TO_ORIGIN: RASSERT(0);
+    case PX_SPECIFIC_PARTITION_SPECIFIC_NODE: RASSERT(0);
+    case PX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION: RASSERT(0);
+    default:
+      RASSERT(0);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get next label                                                             */
 /*----------------------------------------------------------------------------*/
 Stz* Op::szNextLabel(void)

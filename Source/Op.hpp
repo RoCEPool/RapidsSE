@@ -77,6 +77,7 @@ namespace Operators
     void vJob(Job* pJob);
     Stz* szLabel(void);
     void vLabel(Stz* szLabel);
+    void vLinkToStage(Stage* pStage);
     Stz* szNextLabel(void);
     void vNextLabel(Stz* szNextLabel);
     i8   iOpId(void);

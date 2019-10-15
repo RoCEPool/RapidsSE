@@ -86,13 +86,13 @@ void StageNde::vLinkOperators(void)
     Op* pOp = m_oOpVec.pGet(i_Op);
     
     if (pOpNext)
-      pOpNext->vNextLabel(pOp->szLabel());
+      pOpNext->vNextLabel(pOp->m_sName);
     
     // get the next operator
     pOpNext = m_oOpVec.pGet(i_Op+1);
     
     // link the two operators
-    pOp->vNextLabel(pOpNext->szLabel());
+    pOp->vNextLabel(pOpNext->m_sName);
     pOp->vOpOut(pOpNext);
   }
   

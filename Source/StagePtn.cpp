@@ -78,23 +78,24 @@ void StagePtn::vLinkOperators(StageVec* pStageVec)
   _precondition_(_MAGIC_,CN_STAGEPTN,_FOOTER_);
   
   Op* pOpNext = nullptr;
+  Op* pOp = nullptr;
   
   // for each operator in the stagePtn
   for (i8 i_Op = 0; i_Op < m_oOpVec.nItems() - 1; i_Op++) {
     
     // get operator
-    Op* pOp = m_oOpVec.pGet(i_Op);
+    pOp = m_oOpVec.pGet(i_Op);
     
     // get the next operator
     pOpNext = m_oOpVec.pGet(i_Op+1);
     
     // link the two operators
-    pOp->vNextLabel(pOpNext->szLabel());
+    pOp->vNextLabel(pOpNext->m_sName);
     pOp->vOpOut(pOpNext);
   }
   
   // get the last operator of this stage
-  Op* pOp = m_oOpVec.pGet(m_oOpVec.nItems()-1);
+  pOp = m_oOpVec.pGet(m_oOpVec.nItems()-1);
   
   // if last operator is xmit, link to the first operator of the next stage
   if (pOp->eClass() == CN_XMITOP) {
@@ -104,7 +105,10 @@ void StagePtn::vLinkOperators(StageVec* pStageVec)
     Stage* pNextStage = pStageVec->pGet(pOp->m_iNextStage);
     RASSERT(pNextStage);
     
+    //pOp->vLinkToStage(pNextStage);
+    
     // is it a stage run on node/nodes ?
+
     if (pNextStage->pStageNdeVec()->nItems()) {
       RASSERT(pNextStage->pStagePtnVec()->nItems() == 0);
       if (pNextStage->pStageNdeVec()->nItems() == 1) {
@@ -122,8 +126,10 @@ void StagePtn::vLinkOperators(StageVec* pStageVec)
     else {
       RASSERT(0);
     }
-    pOp->vNextLabel(pOpNext->szLabel());
+  
+    pOp->vNextLabel(pOpNext->m_sName);
     pOp->vOpOut(pOpNext);
+    
   }
 }
 
