@@ -77,6 +77,7 @@ namespace Enums
 #include "ePF.h"
 #include "ePK.h"
 #include "ePO.h"
+#include "ePX.h"
 #include "ePY.h"
 
 #include "eQA.h"
