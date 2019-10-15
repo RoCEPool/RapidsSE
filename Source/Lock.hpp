@@ -6,10 +6,7 @@
 namespace Locking
 {
   const u8 C_WRITELOCK = 0x8000000000000000;
-  
-  static const i8 C_HAVE_READ_LOCK  = 1;
-  static const i8 C_HAVE_WRITE_LOCK = 2;
-  
+    
   class Lock : public Focal
   {
   private:

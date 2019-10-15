@@ -43,7 +43,7 @@ namespace Tasks
     eQK     m_eQueue;       // which queue the task is in
     i8      m_iQueueOrder;  // queue ordering number
     Decider m_oAcksRmg;     // number of acks still waiting for
-    i8      m_iDdlLocked;   // this task has the ddl lock?
+    eLH     m_eDdlLocked;   // this task has the ddl lock?
     Sleep   m_oWakeup;      // wakeup time from sleeping
 
     i8      m_iTracing;     // tracing mask
@@ -52,7 +52,7 @@ namespace Tasks
     Node*     m_pSendNode;  // node to send to
     Compiler* m_pCompiler;  // forth word compiler (Job boot, create table etc)
   
-    Forth*    m_pForth;       // forth implementation
+    Forth*    m_pForth;     // forth implementation
   
     // exception
     s256  m_sFile;

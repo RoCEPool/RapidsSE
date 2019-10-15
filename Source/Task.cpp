@@ -148,7 +148,7 @@ void Task::vInit(void)
   m_eQueue       = QK_NONE;
   m_iQueueOrder  = C_UNKNOWN;
   m_oAcksRmg.vCheckInit();
-  m_iDdlLocked   = 0;
+  m_eDdlLocked   = LH_NONE;
   // m_oWakeup
   
   m_iTracing     = C_TRACE_NONE;
@@ -169,7 +169,7 @@ Task::~Task(void) noexcept(false)
   
   RASSERT(TS_EXITED == m_eState);
   RASSERT(! m_pJob);
-  RASSERT(! m_iDdlLocked);
+  RASSERT(! m_eDdlLocked);
   RASSERT(! bWordBody());
 
   delete m_pForth;
@@ -477,7 +477,7 @@ void Task::vFocalOutline(s4K& sOutline)
                    aTK[m_eKind],
                    aTS[m_eState],
                    aQK[m_eQueue],
-                   m_iDdlLocked ? " DdlLocked"_Stz : ""_Stz
+                   m_eDdlLocked ? " DdlLocked"_Stz : ""_Stz
                    );
   
   vDropTaskLock();
