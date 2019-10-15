@@ -168,6 +168,39 @@ void Stage::vDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get ops to be executed on given node                                       */
+/*----------------------------------------------------------------------------*/
+i8 Stage::nOpsOnNode(i8 iNode)
+{
+  _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
+  
+  i8 nOps = 0;
+  
+  for (i8 i_Ptn = 0; i_Ptn < m_oStagePtnVec.nItems(); i_Ptn++) {
+    
+    StagePtn* pStagePtn = m_oStagePtnVec.pGet(i_Ptn);
+    
+    // skip if partition is not for this node
+    i8 iPartitionNode = TablePtn::iPartitionToNode(pStagePtn->iPartition());
+    if (iPartitionNode == iNode) {
+      nOps += pStagePtn->pOpVec()->nItems();
+    }
+  }
+  
+  for (i8 i_Nde = 0; i_Nde < m_oStageNdeVec.nItems(); i_Nde++) {
+    
+    StageNde* pStageNde = m_oStageNdeVec.pGet(i_Nde);
+    
+    // skip if Op not for this node
+    if (pStageNde->iNode() == iNode) {
+      nOps += pStageNde->pOpVec()->nItems();
+    }
+  }
+  
+  return nOps;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get opeVec                                                                 */
 /*----------------------------------------------------------------------------*/
 OpVec* Stage::pOpVec(void)
