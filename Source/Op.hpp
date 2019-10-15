@@ -5,6 +5,7 @@
 
 namespace Operators
 {
+  class Stage;
   class Op : public Focal
   {
   friend class Pipeline;
@@ -42,7 +43,8 @@ namespace Operators
   
     bool           m_bFirstCall;      // first time being called?
     
-    i8             m_iNextStage;
+    ePX            m_eTopologyX;      // cross topology
+    i8             m_iNextStage;      // next stage in the cross topology
     i8             m_iNdeVec;
     
     eOR (*m_fpCall) (void* aThisOp);  // function which calls the op loop

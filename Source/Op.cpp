@@ -90,6 +90,7 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   
   m_bFirstCall       = true;
   
+  m_eTopologyX = PX_NONE;
   m_iNextStage = C_UNKNOWN;
   m_iNdeVec    = C_UNKNOWN;
 

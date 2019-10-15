@@ -28,6 +28,9 @@ void Step::vJob_OperandPipeOut(MP_Task mpTask)
   i8 iParentJob = pJob_Operand->m_iParentId;
   Job_Dynamic* pParentJob = _pJob_Dynamic(Scheduler::pFindParticipatingJob(iParentJob));
   
+  // get the cross topology
+  ePX eTopologyX = pJob_Operand->m_eTopologyX;
+  
   // get the next stage the xmit is supposed to xmit to
   Stage* pStage = pParentJob->m_pPipeline->pStageVec()->pGet(pJob_Operand->m_iNextStage);
   
