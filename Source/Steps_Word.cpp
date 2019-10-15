@@ -9,8 +9,8 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Word(void)
 {
-  vAddStep("word::this"_Stz,       &Step::vWordThis);
-  
+  vAddStep("word::compiling"_Stz,  &Step::vWordCompiling);
+
   vAddStep("word.category@"_Stz,   &Step::vWordCategoryFetch);
   vAddStep("word.category!"_Stz,   &Step::vWordCategoryStore);
   vAddStep("word.dump"_Stz,        &Step::vWordDump);
@@ -38,6 +38,21 @@ void Step::vWord(MP_Task mpTask)
   ENTRY("vWord"_Stz);
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* word::compiling -- push word being compiled                                */
+/*----------------------------------------------------------------------------*/
+void Step::vWordCompiling(MP_Task mpTask)
+{
+  ENTRY("vWordCompiling"_Stz);
+  
+  Word* pWord = mpTask->m_pCompiler->m_pCurrentWord;
+  
+  mpTask->m_pForth->m_pDataStack->vPushPointer(pWord);
+  
+  EXIT();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* word.category@ -- word category fetch                                      */
@@ -98,7 +113,7 @@ ENTRY("vWordDump"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* word.EnameSet@ -- fetch ename set                                            */
+/* word.EnameSet@ -- fetch ename set                                          */
 /*----------------------------------------------------------------------------*/
 void Step::vWordEnmSetFetch(MP_Task mpTask)
 {
@@ -117,7 +132,7 @@ void Step::vWordEnmSetFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* word.EnameSet! -- store ename set                                            */
+/* word.EnameSet! -- store ename set                                          */
 /*----------------------------------------------------------------------------*/
 void Step::vWordEnmSetStore(MP_Task mpTask)
 {
@@ -374,20 +389,6 @@ void Step::vWordPrev(MP_Task mpTask)
   Word* pPrevWord = pWord->pPrevWord();
   
   mpTask->m_pForth->m_pDataStack->vPushPointer(pPrevWord);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* word::this -- push current word                                            */
-/*----------------------------------------------------------------------------*/
-void Step::vWordThis(MP_Task mpTask)
-{
-ENTRY("vWordThis"_Stz);
-  
-  Word* pWord = mpTask->m_pCompiler->m_pCurrentWord;
-  
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pWord);
   
   EXIT();
 }

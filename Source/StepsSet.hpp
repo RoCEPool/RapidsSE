@@ -1272,7 +1272,7 @@ public:
   static void vWordNameFetch(Tasks::MP_Task mpTask);
   static void vWordNameStore(Tasks::MP_Task mpTask);
   static void vWordPrev(Tasks::MP_Task mpTask);
-  static void vWordThis(Tasks::MP_Task mpTask);
+  static void vWordCompiling(Tasks::MP_Task mpTask);
 
   // zero
   static void vZeroLess(Tasks::MP_Task mpTask);

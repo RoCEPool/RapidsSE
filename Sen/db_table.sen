@@ -48,13 +48,13 @@
 : table:
 
   createPersistent
-  WK_OBJECT word::this word.kind!
+  WK_OBJECT word::compiling word.kind!
   sizeof_table allot
-  word::this >body object.magic!
-  CN_TABLE word::this >body object.class!
-  word::this >body table.init
-  true word::this >body object.wordbody!
-  tick table word::this word.category!
+  word::compiling >body object.magic!
+  CN_TABLE word::compiling >body object.class!
+  word::compiling >body table.init
+  true word::compiling >body object.wordbody!
+  tick table word::compiling word.category!
   does>
 ;
 
@@ -64,14 +64,14 @@
 : :table
 
   >createPersistent
-  WK_OBJECT word::this word.kind!
+  WK_OBJECT word::compiling word.kind!
   sizeof_table allot
-  word::this >body object.magic!
-  CN_TABLE word::this >body object.class!
-  word::this >body table.init
-  true word::this >body object.wordbody!
-  tick table word::this word.category!
-  word::this
+  word::compiling >body object.magic!
+  CN_TABLE word::compiling >body object.class!
+  word::compiling >body table.init
+  true word::compiling >body object.wordbody!
+  tick table word::compiling word.category!
+  word::compiling
   does>
 ;
 

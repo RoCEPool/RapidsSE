@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : word::addSuffix params| sSuffix |
 
-  word::this word.name@ sSuffix str.cat word::this word.name!
+  word::compiling word.name@ sSuffix str.cat word::compiling word.name!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -24,7 +24,7 @@
 /*----------------------------------------------------------------------------*/
 : word::seed#
 
-  tick seed word::this word.category!
+  tick seed word::compiling word.category!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -32,7 +32,7 @@
 /*----------------------------------------------------------------------------*/
 : suffix immediate
 
-  tick suffix word::this word.category!
+  tick suffix word::compiling word.category!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -46,7 +46,7 @@
   word::seed#
 
   // set exit hook of word being compiled
-  "req_exitHook" word::this word.exitHook!
+  "req_exitHook" word::compiling word.exitHook!
 
   // add call to req_entryHook into word being compiled
   POSTPONE req_entryHook
@@ -61,12 +61,12 @@
   "_beg" word::addSuffix
 
   // the compiled word is a seed
-  tick seed word::this word.category!
+  tick seed word::compiling word.category!
 
   word::seed#
 
   // set exit hook of word being compiled
-  "beg_exitHook" word::this word.exitHook!
+  "beg_exitHook" word::compiling word.exitHook!
 
   // add call to beg_entryHook into word being compiled
   POSTPONE beg_entryHook
@@ -83,7 +83,7 @@
   word::seed#
 
   // set exit hook of word being compiled
-  "exe_exitHook" word::this word.exitHook!
+  "exe_exitHook" word::compiling word.exitHook!
 
   // add call to exe_entryHook into word being compiled
   POSTPONE exe_entryHook
@@ -100,7 +100,7 @@
   word::seed#
 
   // set exit hook of word being compiled
-  "end_exitHook" word::this word.exitHook!
+  "end_exitHook" word::compiling word.exitHook!
 
   // add call to end_entryHook into word being compiled
   POSTPONE end_entryHook
@@ -117,7 +117,7 @@
   word::seed#
 
   // set exit hook of word being compiled
-  "can_exitHook" word::this word.exitHook!
+  "can_exitHook" word::compiling word.exitHook!
 
   // add call to can_entryHook into word being compiled
   POSTPONE can_entryHook
@@ -128,7 +128,7 @@
 /*----------------------------------------------------------------------------*/
 : _eeh immediate suffix
 
-  "std_exitHook" word::this word.exitHook!
+  "std_exitHook" word::compiling word.exitHook!
 
   // add call to std_entryHook into word being compiled
   POSTPONE std_entryHook

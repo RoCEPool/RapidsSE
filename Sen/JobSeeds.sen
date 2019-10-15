@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : defaultSeed _req ( -- )
 
-  [ word::this word.name@ , ] .
+  [ word::compiling word.name@ , ] .
 
   <jobNm> .
 
@@ -25,7 +25,7 @@
 /*----------------------------------------------------------------------------*/
 : defaultSeed _beg ( -- )
 
-  [ word::this word.name@ , ] .
+  [ word::compiling word.name@ , ] .
 
   <jobNm> "::checkResources" str.cat find dup if
     execute
@@ -39,7 +39,7 @@
 /*----------------------------------------------------------------------------*/
 : defaultSeed _exe
 
-  [ word::this word.name@ , ] .
+  [ word::compiling word.name@ , ] .
 
   <jobNm> "::execute" str.cat find dup if
     execute
@@ -53,7 +53,7 @@
 /*----------------------------------------------------------------------------*/
 : defaultSeed _end ( -- )
 
-  [ word::this word.name@ , ] .
+  [ word::compiling word.name@ , ] .
 
   <jobNm> "::releaseResources" str.cat find dup if
     execute
@@ -67,7 +67,7 @@
 /*----------------------------------------------------------------------------*/
 : defaultSeed _can ( -- )
 
-  [ word::this word.name@ , ] .
+  [ word::compiling word.name@ , ] .
 
   <jobNm> "::releaseResources" str.cat find dup if
     execute

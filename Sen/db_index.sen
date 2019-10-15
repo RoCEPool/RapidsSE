@@ -32,13 +32,13 @@
 : index:
 
   create
-  WK_OBJECT word::this word.kind!
+  WK_OBJECT word::compiling word.kind!
   sizeof_index allot
-  word::this >body object.magic!
-  CN_INDEX word::this >body object.class!
-  word::this >body index.init
-  true word::this >body object.wordbody!
-  tick index word::this word.category!
+  word::compiling >body object.magic!
+  CN_INDEX word::compiling >body object.class!
+  word::compiling >body index.init
+  true word::compiling >body object.wordbody!
+  tick index word::compiling word.category!
   does>
 ;
 
@@ -48,14 +48,14 @@
 : :index
 
   >create
-  WK_OBJECT word::this word.kind!
+  WK_OBJECT word::compiling word.kind!
   sizeof_index allot
-  word::this >body object.magic!
-  CN_INDEX word::this >body object.class!
-  word::this >body index.init
-  true word::this >body object.wordbody!
-  tick index word::this word.category!
-  word::this
+  word::compiling >body object.magic!
+  CN_INDEX word::compiling >body object.class!
+  word::compiling >body index.init
+  true word::compiling >body object.wordbody!
+  tick index word::compiling word.category!
+  word::compiling
   does>
 ;
 
