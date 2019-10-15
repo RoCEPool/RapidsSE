@@ -185,7 +185,7 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
       StageNde* pStageNde = pStage->pStageNdeVec()->pGet(i_Nde);
       
       // link all operators of the stage partition
-      pStageNde->vLinkOperators();
+      pStageNde->vLinkOperators(&m_oStageVec);
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
