@@ -33,8 +33,6 @@ namespace Commands
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static TokenVec* pTokenise(Stz* szString);
-    static TokenVec* pTokenise(s4K& sString);
-    static TokenVec* pTokenise(s48K& sString);
     static void vTokenise(TokenVec* pTokenVec, Stz* szString);
     static void vToEnmSet(EnameSet* pEnameSet, TokenVec* pTokenVec);
     static void vToEnmSet(EnameSet* pEnameSet, TokenVec* pTokenVec, i8 i_From, i8 i_To);

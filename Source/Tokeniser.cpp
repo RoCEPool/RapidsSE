@@ -148,64 +148,6 @@ TokenVec* Tokeniser::pTokenise(Stz* szString)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tokenise given string                                                      */
-/*----------------------------------------------------------------------------*/
-TokenVec* Tokeniser::pTokenise(s4K& sString)
-{
-  TokenVec* pTokenVec = new TokenVec;
-  
-  Tokeniser* pTokeniser = new Tokeniser;
-  pTokeniser->vPush();
-  pTokeniser->vUseString(sString);
-  
-  for (i8 i_Token = 0; ; i_Token++) {
-    pTokeniser->vNextToken();
-    if (TN_NONE == pTokeniser->eToken())
-      break;
-    
-    pTokenVec->vIncTokens();
-    
-    Token* pToken = pTokenVec->pGet(i_Token);
-    pToken->vToken(pTokeniser->eToken());
-    pToken->vCopy(pTokeniser->sToken().aStz());
-    
-  }
-  
-  delete pTokeniser;
-  
-  return pTokenVec;
-}
-
-/*----------------------------------------------------------------------------*/
-/* tokenise given string                                                      */
-/*----------------------------------------------------------------------------*/
-TokenVec* Tokeniser::pTokenise(s48K& sString)
-{
-  TokenVec* pTokenVec = new TokenVec;
-  
-  Tokeniser* pTokeniser = new Tokeniser;
-  pTokeniser->vPush();
-  pTokeniser->vUseString(sString);
-  
-  for (i8 i_Token = 0; ; i_Token++) {
-    pTokeniser->vNextToken();
-    if (TN_NONE == pTokeniser->eToken())
-      break;
-    
-    pTokenVec->vIncTokens();
-    
-    Token* pToken = pTokenVec->pGet(i_Token);
-    pToken->vToken(pTokeniser->eToken());
-    pToken->vCopy(pTokeniser->sToken().aStz());
-    
-  }
-  
-  delete pTokeniser;
-  
-  return pTokenVec;
-}
-
-/*----------------------------------------------------------------------------*/
 /* tokenise given string into given TokenVec                                  */
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vTokenise(TokenVec* pTokenVec, Stz* szString)
