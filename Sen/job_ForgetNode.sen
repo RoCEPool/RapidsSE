@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* check resources for forgetNode                (on each participating node) */
 /*----------------------------------------------------------------------------*/
-: forgetNode::checkResources _std ( -- )
+: forgetNode::checkResources _eeh ( -- )
 
   "forgetNode::checkResources" .
 
@@ -25,7 +25,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for forgetNode                        (on each participating node) */
 /*----------------------------------------------------------------------------*/
-: forgetNode::execute _std ( -- )
+: forgetNode::execute _eeh ( -- )
 
   "forgetNode::execute" .
 

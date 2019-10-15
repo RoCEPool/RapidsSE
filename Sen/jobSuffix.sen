@@ -50,8 +50,6 @@
 
   // add call to req_entryHook into word being compiled
   POSTPONE req_entryHook
-
-  [ tick _req word.dump ]
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -126,9 +124,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* _std suffix makes the word a standard part                                 */
+/* adds a standard entry and exit hook to word being compiled                 */
 /*----------------------------------------------------------------------------*/
-: _std immediate suffix
+: _eeh immediate suffix
 
   "std_exitHook" word::this word.exitHook!
 
