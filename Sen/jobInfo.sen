@@ -12,7 +12,7 @@
 
 : seedCheck params| sSuffix sSeedNm |
 
-  word::this word.EnameSet@ locals| pEnameSet |
+  compiler::current word.EnameSet@ locals| pEnameSet |
 
   sSeedNm
     sSuffix seedExists? if word::name_trunc else "defaultSeed" then
@@ -54,11 +54,11 @@
   next-token "_cls" str.cat >create
 
   // set the word kind to be jobClass
-  [ word::this , ] word::this word.category!
+  [ compiler::current , ] compiler::current word.category!
 
   // attach an ename set to the word being created
   EnameSet::new to pEnameSet
-  pEnameSet word::this word.EnameSet!
+  pEnameSet compiler::current word.EnameSet!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

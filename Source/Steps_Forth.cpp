@@ -51,7 +51,7 @@ void Step::vAllot(MP_Task mpTask)
   
   RASSERT(iBytes);
   
-  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
+  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrent;
   
   byte* aAddress = pCurrentWord->ayAllot(iBytes);
   ASSERT(aAddress);
@@ -98,7 +98,7 @@ void Step::vColon(MP_Task mpTask)
   
   Word* pNewWord = new(pDic) Word(sName);
   
-  mpTask->m_pCompiler->m_pCurrentWord = pNewWord;
+  mpTask->m_pCompiler->m_pCurrent = pNewWord;
   
   EXIT();
 }
@@ -110,7 +110,7 @@ void Step::vComma(MP_Task mpTask)
 {
   ENTRY("vComma"_Stz);
   
-  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
+  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrent;
   
   GenVar xValue;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(xValue) )
@@ -133,7 +133,7 @@ void Step::vCompileComma(MP_Task mpTask)
     THROW_INVALID_DSTACK("compile,"_Stz);
   Word* pCalledWord = _pWord(pWordObject);
   
-  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
+  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrent;
   
   StepFp* afpCalledEntryStep = pCalledWord->afpEntryStep();
   
@@ -162,7 +162,7 @@ void Step::vCreate(MP_Task mpTask)
   
   Word* pNewWord = new(pDic) Word(mpTask->m_pCompiler->m_pTokeniser->sToken());
   
-  mpTask->m_pCompiler->m_pCurrentWord = pNewWord;
+  mpTask->m_pCompiler->m_pCurrent = pNewWord;
   
   EXIT();
 }
@@ -186,7 +186,7 @@ void Step::vCreatePersistent(MP_Task mpTask)
   
   Word* pNewWord = new(pDic,true) Word(mpTask->m_pCompiler->m_pTokeniser->sToken());
   
-  mpTask->m_pCompiler->m_pCurrentWord = pNewWord;
+  mpTask->m_pCompiler->m_pCurrent = pNewWord;
   
   EXIT();
 }
@@ -214,7 +214,7 @@ void Step::vCreateFrom(MP_Task mpTask)
   if (! mpTask->m_pCompiler)
     mpTask->m_pCompiler = new Compiler;
   
-  mpTask->m_pCompiler->m_pCurrentWord = pNewWord;
+  mpTask->m_pCompiler->m_pCurrent = pNewWord;
   
   EXIT();
 }
@@ -239,7 +239,7 @@ void Step::vCreateFromPersistent(MP_Task mpTask)
   //vTrace(": %s\n"_Stz,sName.aChar());
   Word* pNewWord = new(pDic,true) Word(sName);
   
-  mpTask->m_pCompiler->m_pCurrentWord = pNewWord;
+  mpTask->m_pCompiler->m_pCurrent = pNewWord;
   
   EXIT();
 }
@@ -260,7 +260,7 @@ void Step::vCreateFromInRoot(MP_Task mpTask)
   //vTrace(": %s\n"_Stz,sName.aChar());
   Word* pNewWord = new(pDic) Word(sName);
   
-  mpTask->m_pCompiler->m_pCurrentWord = pNewWord;
+  mpTask->m_pCompiler->m_pCurrent = pNewWord;
   
   EXIT();
 }
@@ -278,7 +278,7 @@ void Step::vCreateTenants(MP_Task mpTask)
 
   Word* pNewWord = new(pDic) Word(mpTask->m_pCompiler->m_pTokeniser->sToken());
   
-  mpTask->m_pCompiler->m_pCurrentWord = pNewWord;
+  mpTask->m_pCompiler->m_pCurrent = pNewWord;
   
   AM::vTenants(pNewWord);
   
@@ -292,7 +292,7 @@ void Step::vDoes(MP_Task mpTask)
 {
   ENTRY("vDoes"_Stz);
   
-  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
+  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrent;
   
   pCurrentWord->vEncode("does_rt"_Stz);
   pCurrentWord->vEncode("exit_rt"_Stz);
@@ -309,7 +309,7 @@ void Step::vDoes_RT(MP_Task mpTask)
 {
   ENTRY("vDoes_RT"_Stz);
   
-  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
+  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrent;
   
   pCurrentWord->vEntryStep(&Step::vEnterObject);
   pCurrentWord->vEntryCell(mpTask->m_pForth->m_aInxPtr + 1);
@@ -420,7 +420,7 @@ void Step::vImmediate(MP_Task mpTask)
 {
   ENTRY("vImmediate"_Stz);
   
-  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
+  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrent;
   
   //vTrace("Step::vImmediate: %s\n"_Stz,pCurrentWord->sName().aChar());
   
@@ -465,7 +465,7 @@ void Step::vPostpone(MP_Task mpTask)
 {
   ENTRY("vPostpone"_Stz);
   
-  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
+  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrent;
   
   // get name of word to be called
   mpTask->m_pCompiler->m_pTokeniser->vNextToken();
@@ -504,7 +504,7 @@ void Step::vPrompt(MP_Task mpTask)
 {
   ENTRY("vImmediate"_Stz);
   
-  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
+  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrent;
   
   pCurrentWord->vPrompt(true);
   
@@ -607,7 +607,7 @@ void Step::vSemicolon(MP_Task mpTask)
 {
   ENTRY("vSemicolon"_Stz);
   
-  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
+  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrent;
   
   if (mpTask->m_pCompiler->m_nLocals) {
     
@@ -640,7 +640,7 @@ void Step::vSemicolon(MP_Task mpTask)
   for ( ; mpTask->m_pCompiler->m_nSubDic; mpTask->m_pCompiler->m_nSubDic--)
     mpTask->m_oDicStack.vDiscard();
   
-  mpTask->m_pCompiler->m_pCurrentWord = nullptr;
+  mpTask->m_pCompiler->m_pCurrent = nullptr;
   
   EXIT();
 }
@@ -739,7 +739,7 @@ void Step::vTick(MP_Task mpTask)
     vFatal("No word: %s "_Stz,sWordNm.aChar());
   
   if (mpTask->m_pCompiler->m_bCompiling) {
-    Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
+    Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrent;
     pCurrentWord->vEncode("pushValue"_Stz,pWord);
   }
   else {

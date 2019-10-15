@@ -15,15 +15,15 @@
   sJobNm series-name "_syn" str.cat >create
 
   // set the word category to be jobSyntax
-  [ word::this , ] word::this word.category!
+  [ compiler::current , ] compiler::current word.category!
 
   // attach an ename set to the word being created
-  EnameSet::new word::this word.EnameSet!
+  EnameSet::new compiler::current word.EnameSet!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   "__name__" sJobNm
-    word::this word.EnameSet@ EnameSet.addStr
+    compiler::current word.EnameSet@ EnameSet.addStr
 
   // skip the :: token from input source
   next-token drop
@@ -31,7 +31,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   "__job__" "CN_JOB_UNIVERSAL"
-  word::this word.EnameSet@ EnameSet.addStr
+  compiler::current word.EnameSet@ EnameSet.addStr
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // parse each input token till ';', build ename set representing the syntax
@@ -42,16 +42,16 @@
       dup str.isMetaToken if
         // dup "%v is a meta token" fmt.print
         // add ("*",meta,TN_STRING) in ename set
-        "__meta__" swap word::this word.EnameSet@ EnameSet.addStr
+        "__meta__" swap compiler::current word.EnameSet@ EnameSet.addStr
 
       else dup str.isJsonToken if
         // dup "%v is a json token" fmt.print
         // add ("*",json,TN_STRING) in ename set
-        "__json__" swap word::this word.EnameSet@ EnameSet.addStr
+        "__json__" swap compiler::current word.EnameSet@ EnameSet.addStr
       else
         // dup "%v is a normal token" fmt.print
         // add (word,"",TN_STRING) in ename set
-        dup word::this word.EnameSet@ EnameSet.addStr
+        dup compiler::current word.EnameSet@ EnameSet.addStr
       then then
   repeat
 

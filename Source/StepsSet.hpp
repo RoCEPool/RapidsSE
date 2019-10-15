@@ -136,6 +136,9 @@ public:
   // comment
   static void vComment(Tasks::MP_Task mpTask);
 
+  // comment
+  static void vCompilerCurrent(Tasks::MP_Task mpTask);
+
   // cpu
   static void vCpuRdtscp(Tasks::MP_Task mpTask);
 
@@ -1272,7 +1275,6 @@ public:
   static void vWordNameFetch(Tasks::MP_Task mpTask);
   static void vWordNameStore(Tasks::MP_Task mpTask);
   static void vWordPrev(Tasks::MP_Task mpTask);
-  static void vWordThis(Tasks::MP_Task mpTask);
 
   // zero
   static void vZeroLess(Tasks::MP_Task mpTask);

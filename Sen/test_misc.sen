@@ -18,7 +18,7 @@
 : +looptest 10 0 do I . 2 +loop ;
 
 : iterateTest
-    word::this word::this iterate // iterate word cursor
+    compiler::current compiler::current iterate // iterate word cursor
       object@ word.name@ .       // print the name of the word
       object@ word.prev object! // step backwards thru words
     next                        // next iteration
