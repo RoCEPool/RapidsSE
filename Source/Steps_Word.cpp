@@ -38,21 +38,6 @@ void Step::vWord(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compiler::current -- push word being compiled                                */
-/*----------------------------------------------------------------------------*/
-void Step::vWordCompiling(MP_Task mpTask)
-{
-  ENTRY("vWordCompiling"_Stz);
-  
-  Word* pWord = mpTask->m_pCompiler->m_pWord;
-  
-  mpTask->m_pForth->m_pDataStack->vPushPointer(pWord);
-  
-  EXIT();
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* word.category@ -- word category fetch                                      */
 /*----------------------------------------------------------------------------*/
 void Step::vWordCategoryFetch(MP_Task mpTask)
