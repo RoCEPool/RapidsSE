@@ -156,27 +156,13 @@ void Parser::vUseStdin(void)
 /*----------------------------------------------------------------------------*/
 /* use given string for parsing                                               */
 /*----------------------------------------------------------------------------*/
-void Parser::vUseString(s4K& sString)
+void Parser::vUseString(Stz* szString)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
   vResetParser();
   
-  m_sRawLine = sString;
-  m_eSource = IS_STRING;
-  m_bEOF = true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* use given string for parsing                                               */
-/*----------------------------------------------------------------------------*/
-void Parser::vUseString(s48K& sString)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
-  
-  vResetParser();
-  
-  m_sRawLine = sString;
+  m_sRawLine = szString;
   m_eSource = IS_STRING;
   m_bEOF = true;
 }
