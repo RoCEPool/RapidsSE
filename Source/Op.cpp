@@ -385,7 +385,19 @@ void Op::vLinkToStage(Stage* pStage)
     case PX_ALL_NODES_TO_SPECIFIC_NODE: RASSERT(0);
     case PX_ALL_NODES_TO_SPECIFIC_PARTITION: RASSERT(0);
     
-    case PX_ALL_PARTITIONS_TO_ALL_NODES: RASSERT(0);
+    case PX_ALL_PARTITIONS_TO_ALL_NODES: {
+      // get the node of this op ptn
+      i8 i_Nde = TablePtn::iPartitionToNode(m_nPartition);
+      
+      // get the StageNde for this Node
+      StageNde* pStageNde = pStage->pStageNde(i_Nde, m_iNdeVec);
+      AM::vXmitNode(this,pStageNde->iNode());
+      pOpNext = pStageNde->pOpVec()->pGet(0);
+      
+      vNextLabel(pOpNext->m_sName);
+      vOpOut(pOpNext);
+      return;
+    }
     case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS: RASSERT(0);
       
     case PX_ALL_PARTITIONS_TO_ORIGIN: {

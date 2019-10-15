@@ -234,6 +234,24 @@ StagePtnVec* Stage::pStagePtnVec(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get stage node for given node                                              */
+/*----------------------------------------------------------------------------*/
+StageNde* Stage::pStageNde(i8 i_Nde, i8& iNdeVec)
+{
+  _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
+  
+  StageNde* pStageNde = nullptr;
+  
+  for (i8 iNdeVec = 0; iNdeVec < m_oStageNdeVec.nItems(); iNdeVec++) {
+    StageNde* pStageNde = m_oStageNdeVec.pGet(iNdeVec);
+    if (pStageNde->iNode() == i_Nde)
+      return pStageNde;
+  }
+  
+  return pStageNde;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get stage spec                                                             */
 /*----------------------------------------------------------------------------*/
 StageNdeVec* Stage::pStageNdeVec(void)

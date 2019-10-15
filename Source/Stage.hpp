@@ -28,6 +28,7 @@ namespace Operators
     i8           nOpsOnNode(i8 iNode);
     OpVec*       pOpVec(void);
     StageSpec*   pStageSpec(void);
+    StageNde*    pStageNde(i8 i_Nde, i8& iNdeVec);
     StageNdeVec* pStageNdeVec(void);
     StagePtnVec* pStagePtnVec(void);
     
