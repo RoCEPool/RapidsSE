@@ -61,6 +61,68 @@ Dynamo::~Dynamo(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get cross topology between two stages                                      */
+/*----------------------------------------------------------------------------*/
+ePX Dynamo::eTopoloyX(StageSpec*  pFromStageSpec, StageSpec* pToStageSpec) {
+  
+  switch (pFromStageSpec->eTopology()) {
+    case PO_ALL_NODES:
+      switch(pToStageSpec->eTopology()) {
+        case PO_ALL_NODES:          return PX_ALL_NODES_TO_ALL_NODES;
+        case PO_ALL_PARTITIONS:     return PX_ALL_NODES_TO_ALL_PARTITIONS;
+        case PO_ORIGIN:             return PX_ALL_NODES_TO_ORIGIN;
+        case PO_SPECIFIC_NODE:      return PX_ALL_NODES_TO_SPECIFIC_NODE;
+        case PO_SPECIFIC_PARTITION: return PX_ALL_NODES_TO_SPECIFIC_PARTITION;
+        default:
+          ASSERT(0);
+      }
+    case PO_ALL_PARTITIONS:
+      switch(pToStageSpec->eTopology()) {
+        case PO_ALL_NODES:          return PX_ALL_PARTITIONS_TO_ALL_NODES;
+        case PO_ALL_PARTITIONS:     return PX_ALL_PARTITIONS_TO_ALL_PARTITIONS;
+        case PO_ORIGIN:             return PX_ALL_PARTITIONS_TO_ORIGIN;
+        case PO_SPECIFIC_NODE:      return PX_ALL_PARTITIONS_TO_SPECIFIC_NODE;
+        case PO_SPECIFIC_PARTITION: return PX_ALL_PARTITIONS_TO_SPECIFIC_PARTITION;
+        default:
+          ASSERT(0);
+      }
+    case PO_ORIGIN:
+      switch(pToStageSpec->eTopology()) {
+        case PO_ALL_NODES:          return PX_ORIGIN_TO_ALL_NODES;
+        case PO_ALL_PARTITIONS:     return PX_ORIGIN_TO_ALL_PARTITIONS;
+        case PO_ORIGIN:             return PX_ORIGIN_TO_ORIGIN;
+        case PO_SPECIFIC_NODE:      return PX_ORIGIN_TO_SPECIFIC_NODE;
+        case PO_SPECIFIC_PARTITION: return PX_ORIGIN_TO_SPECIFIC_PARTITION;
+        default:
+          ASSERT(0);
+      }
+    case PO_SPECIFIC_NODE:
+      switch(pToStageSpec->eTopology()) {
+        case PO_ALL_NODES:          return PX_SPECIFIC_NODE_TO_ALL_NODES;
+        case PO_ALL_PARTITIONS:     return PX_SPECIFIC_NODE_TO_ALL_PARTITIONS;
+        case PO_ORIGIN:             return PX_SPECIFIC_NODE_TO_ORIGIN;
+        case PO_SPECIFIC_NODE:      return PX_SPECIFIC_NODE_TO_SPECIFIC_NODE;
+        case PO_SPECIFIC_PARTITION: return PX_SPECIFIC_NODE_TO_SPECIFIC_PARTITION;
+        default:
+          ASSERT(0);
+      }
+    case PO_SPECIFIC_PARTITION:
+      switch(pToStageSpec->eTopology()) {
+        case PO_ALL_NODES:          return PX_SPECIFIC_PARTITION_TO_ALL_NODES;
+        case PO_ALL_PARTITIONS:     return PX_SPECIFIC_PARTITION_TO_ALL_PARTITIONS;
+        case PO_ORIGIN:             return PX_SPECIFIC_PARTITION_TO_ORIGIN;
+        case PO_SPECIFIC_NODE:      return PX_SPECIFIC_PARTITION_SPECIFIC_NODE;
+        case PO_SPECIFIC_PARTITION: return PX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION;
+        default:
+          ASSERT(0);
+      }
+    default:
+      ASSERT(0);
+  }
+  return PX_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -433,8 +495,9 @@ bool Dynamo::bPhase2_staging(void)
       i8 i_Stage = C_UNKNOWN;
       StageSpec* pStageSpecFound = m_pPipelineSpec->pFindStageSpec(pOpSpec->szName(), i_Stage);
       if (pStageSpecFound) {
-        vTrace("  op %s is a stage %lld\n"_Stz,pOpSpec->szName(), i_Stage);
-        vReplaceWithXmit(pOpSpec, i_Stage);
+        ePX eTopologyX = eTopoloyX(pStageSpec, pStageSpecFound);
+        vTrace("  op %s is a stage %lld %s\n"_Stz,pOpSpec->szName(), i_Stage, aPX[eTopologyX]);
+        vReplaceWithXmit(pOpSpec, eTopologyX, i_Stage);
         pStageSpecFound->vPrependConsumeOp(pStageSpec->eTopology());
       }
       
@@ -454,8 +517,6 @@ void Dynamo::vReplaceWithXmit(OpSpec* pOpSpec, i8 i_Stage)
   pOpSpec->vName("xmit"_Stz);
   pOpSpec->vAddEnmPair("<arg_0>"_Stz,(i8)i_Stage,TN_INTEGER);
 }
-
-
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

@@ -28,6 +28,8 @@ namespace Pipelines
     Dynamo(TokenVec* pTknVec);
    ~Dynamo(void) noexcept(false);
   
+    static ePX eTopoloyX(StageSpec*  pFromStageSpec, StageSpec* pToStageSpec);
+    
     bool bCompile(void);
   
     bool bPhase1_collect(void);
