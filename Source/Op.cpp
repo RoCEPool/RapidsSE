@@ -376,6 +376,8 @@ void Op::vLinkToStage(Stage* pStage)
   
   ASSERT(eClass() == CN_XMITOP);
   
+  Op* pOpNext = nullptr;
+  
   switch(m_eTopologyX) {
     case PX_ALL_NODES_TO_ALL_NODES: RASSERT(0);
     case PX_ALL_NODES_TO_ALL_PARTITIONS: RASSERT(0);
@@ -391,7 +393,10 @@ void Op::vLinkToStage(Stage* pStage)
       m_iNdeVec = 0;
       StageNde* pStageNde = pStage->pStageNdeVec()->pGet(m_iNdeVec);
       AM::vXmitNode(this,pStageNde->iNode());
-      //pOpNext = pStageNde->pOpVec()->pGet(0);
+      pOpNext = pStageNde->pOpVec()->pGet(0);
+      
+      vNextLabel(pOpNext->m_sName);
+      vOpOut(pOpNext);
       return;
     }
     case PX_ALL_PARTITIONS_TO_SPECIFIC_NODE: RASSERT(0);
