@@ -179,6 +179,33 @@ TokenVec* Tokeniser::pTokenise(s48K& sString)
 /*----------------------------------------------------------------------------*/
 /* tokenise given string into given TokenVec                                  */
 /*----------------------------------------------------------------------------*/
+void Tokeniser::vTokenise(TokenVec* pTokenVec, Stz* szString)
+{
+  pTokenVec->vReset();
+  
+  Tokeniser* pTokeniser = new Tokeniser;
+  pTokeniser->vPush();
+  pTokeniser->vUseString(szString);
+  
+  for (i8 i_Token = 0; ; i_Token++) {
+    pTokeniser->vNextToken();
+    if (TN_NONE == pTokeniser->eToken())
+    break;
+    
+    pTokenVec->vIncTokens();
+    
+    Token* pToken = pTokenVec->pGet(i_Token);
+    pToken->vToken(pTokeniser->eToken());
+    pToken->vCopy(pTokeniser->sToken().aStz());
+    
+  }
+  
+  delete pTokeniser;
+}
+
+/*----------------------------------------------------------------------------*/
+/* tokenise given string into given TokenVec                                  */
+/*----------------------------------------------------------------------------*/
 void Tokeniser::vTokenise(TokenVec* pTokenVec, s4K& sString)
 {
   pTokenVec->vReset();
@@ -544,21 +571,11 @@ void Tokeniser::vUseStdin(void)
 /*----------------------------------------------------------------------------*/
 /* use string                                                                 */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vUseString(s4K& sString)
+void Tokeniser::vUseString(Stz* szString)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  m_pParser->vUseString(sString);
-}
-
-/*----------------------------------------------------------------------------*/
-/* use string                                                                 */
-/*----------------------------------------------------------------------------*/
-void Tokeniser::vUseString(s48K& sString)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
-  
-  m_pParser->vUseString(sString);
+  m_pParser->vUseString(szString);
 }
 
 /*----------------------------------------------------------------------------*/

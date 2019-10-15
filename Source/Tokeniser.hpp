@@ -59,8 +59,7 @@ namespace Commands
     void vUseEnd(void);
     bool bUseFile(s256& sPath);
     void vUseStdin(void);
-    void vUseString(s4K& sString);
-    void vUseString(s48K& sString);
+    void vUseString(Stz* szString);
  
   private:
     eTN  eNextNormal(char* aToken);
