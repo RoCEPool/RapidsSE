@@ -30,7 +30,7 @@ namespace SenVM
     i8        m_iTrace;       // trace level
 
     // the following three must be together
-    struct {
+    //struct {
 
     StepFp    m_fpIntrinsic;  // intrinsic function for this word
                               //  the address of this member (and not
@@ -44,7 +44,7 @@ namespace SenVM
                               //     does in the defining word
                               //   for primitives this will be null
     Routine   m_xRoutine;
-    };
+    //};
   
     // must be last
     Footer m_xFooter;
