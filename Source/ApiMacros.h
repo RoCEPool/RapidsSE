@@ -81,7 +81,8 @@ const u8 API_TL_POOL   = C_BIT_4; // 16
   \
   eAC  eApiCall = _eApiCall; \
   \
-  AM::vLogSsn(SL_INF,pSession,AA_API_ENTRY,"Api %s entry"_Stz,eApiCall); \
+  AM::vLogSsn(SL_INF,pSession,AA_API_ENTRY,\
+              "Api %s entry"_Stz,aAC[eApiCall]); \
   Api::vIncStatistics(eApiCall);\
   \
   if (pSession) { \

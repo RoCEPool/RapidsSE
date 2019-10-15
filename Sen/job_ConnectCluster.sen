@@ -42,6 +42,9 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 : gridConnected prompt ( -- )
+
+  "gridConnected" .
+
   grid::pause
   true grid::started!
 ;

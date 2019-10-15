@@ -44,12 +44,13 @@ int main(int argc, const char* argv[])
 
 /*
  
- ./SE --start --killPrev --verbose --subloaders 1 --size 10GB
-      --name NODE1 --node NODE1 127.0.0.1 5441 --log
+ Desktop/rapidsse/OS X/Build/Products/Debug
+ 
+ ./SE --start --killPrev --verbose --subloaders 1 --size 10GB --name NODE0 --node NODE0 127.0.0.1 5550 --log
  
  to run prompt:
 
- ./SE --prompt --name NODE1 --log
+ ./SE --prompt --name NODE0 --log
  
  */
 

@@ -7,6 +7,7 @@ namespace StorageEngine
 {
   class Arguments : public Object
   {
+    friend class       Oblique::AM;
     friend class      Commands::Input;
     friend class StorageEngine::Engine;
     friend class      Commands::Parser;
