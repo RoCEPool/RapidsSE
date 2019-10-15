@@ -126,9 +126,6 @@ void DicStack::vDump(eCN eClass, Object* pObject, Stz* aTab)
   }
 
   vTrace("\n"_Stz);
-
-  //for (Word* pWord = m_pCurrentWord; pWord; pWord = pWord->pPrevWord())
-  //  pWord->vDump();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -33,7 +33,7 @@ Compiler::Compiler(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
   
   m_bCompiling   = false;
-  m_pCurrentWord = nullptr;
+  m_pWord = nullptr;
   m_nSubDic      = 0;
   m_nLocals      = 0;
 

@@ -46,7 +46,7 @@ void Step::vWordCompiling(MP_Task mpTask)
 {
   ENTRY("vWordCompiling"_Stz);
   
-  Word* pWord = mpTask->m_pCompiler->m_pCurrentWord;
+  Word* pWord = mpTask->m_pCompiler->m_pWord;
   
   mpTask->m_pForth->m_pDataStack->vPushPointer(pWord);
   

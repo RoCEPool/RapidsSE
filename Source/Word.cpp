@@ -143,9 +143,6 @@ void Word::vDump(eCN eClass, Object* pObject, Stz* aTab)
   // dump only the objects
   if (WK_OBJECT == pWord->m_eKind)
     pWord->vObjectDump(aTab);
-  
-  //for (Word* pWord = m_pCurrentWord; pWord; pWord = pWord->pPrevWord())
-  //  pWord->vDump();
 }
 
 /*----------------------------------------------------------------------------*/

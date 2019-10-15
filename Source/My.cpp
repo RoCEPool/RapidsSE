@@ -46,7 +46,7 @@ Stz* My::szWordNm(void)
 {
   Task* pTask = AM::pThisTLSTask();
   
-  Word* pWord = pTask->pCompiler()->m_pCurrentWord;
+  Word* pWord = pTask->pCompiler()->m_pWord;
   
   return pWord->sName().aStz();
 }
