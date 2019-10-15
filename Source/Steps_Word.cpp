@@ -9,8 +9,6 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Word(void)
 {
-  vAddStep("word::compiling"_Stz,  &Step::vWordCompiling);
-
   vAddStep("word.category@"_Stz,   &Step::vWordCategoryFetch);
   vAddStep("word.category!"_Stz,   &Step::vWordCategoryStore);
   vAddStep("word.dump"_Stz,        &Step::vWordDump);
@@ -40,7 +38,7 @@ void Step::vWord(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* word::compiling -- push word being compiled                                */
+/* compiler::current -- push word being compiled                                */
 /*----------------------------------------------------------------------------*/
 void Step::vWordCompiling(MP_Task mpTask)
 {

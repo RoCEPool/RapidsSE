@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : word::name_trunc
 
-  "_" word::compiling word.name@ str.removeSuffix
+  "_" compiler::current word.name@ str.removeSuffix
 ;
 
 

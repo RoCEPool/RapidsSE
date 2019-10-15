@@ -19,15 +19,15 @@
 diclock.grabwrite
 
   createTenants
-  WK_OBJECT word::compiling word.kind!
+  WK_OBJECT compiler::current word.kind!
   sizeof_dic allot
-  word::compiling >body object.magic!
-  CN_DIC word::compiling >body object.class!
-  tick folder word::compiling word.category!
-  word::compiling >body dic.init
-  true word::compiling >body object.wordbody!
+  compiler::current >body object.magic!
+  CN_DIC compiler::current >body object.class!
+  tick folder compiler::current word.category!
+  compiler::current >body dic.init
+  true compiler::current >body object.wordbody!
 
-  //word::compiling word.name@ "  dic: %v" str.format .
+  //compiler::current word.name@ "  dic: %v" str.format .
 
 diclock.dropwrite
   does>
@@ -42,15 +42,15 @@ diclock.dropwrite
 diclock.grabwrite
 
   create
-  WK_OBJECT word::compiling word.kind!
+  WK_OBJECT compiler::current word.kind!
   sizeof_dic allot
-  word::compiling >body object.magic!
-  CN_DIC word::compiling >body object.class!
-  tick folder word::compiling word.category!
-  word::compiling >body dic.init
-  true word::compiling >body object.wordbody!
+  compiler::current >body object.magic!
+  CN_DIC compiler::current >body object.class!
+  tick folder compiler::current word.category!
+  compiler::current >body dic.init
+  true compiler::current >body object.wordbody!
 
-  //word::compiling word.name@ "  dic: %v" str.format .
+  //compiler::current word.name@ "  dic: %v" str.format .
 
 diclock.dropwrite
   does>
@@ -63,15 +63,15 @@ diclock.dropwrite
 diclock.grabwrite
 
   createPersistent
-  WK_OBJECT word::compiling word.kind!
+  WK_OBJECT compiler::current word.kind!
   sizeof_dic allot
-  word::compiling >body object.magic!
-  CN_DIC word::compiling >body object.class!
-  tick folder word::compiling word.category!
-  word::compiling >body dic.init
-  true word::compiling >body object.wordbody!
+  compiler::current >body object.magic!
+  CN_DIC compiler::current >body object.class!
+  tick folder compiler::current word.category!
+  compiler::current >body dic.init
+  true compiler::current >body object.wordbody!
 
-  //word::compiling word.name@ "  dic: %v" str.format .
+  //compiler::current word.name@ "  dic: %v" str.format .
 
 diclock.dropwrite
 
@@ -86,16 +86,16 @@ diclock.dropwrite
 diclock.grabwrite
 
   >create
-  WK_OBJECT word::compiling word.kind!
+  WK_OBJECT compiler::current word.kind!
   sizeof_dic allot
-  word::compiling >body object.magic!
-  CN_DIC word::compiling >body object.class!
-  tick folder word::compiling word.category!
-  word::compiling >body dic.init
-  true word::compiling >body object.wordbody!
-  word::compiling
+  compiler::current >body object.magic!
+  CN_DIC compiler::current >body object.class!
+  tick folder compiler::current word.category!
+  compiler::current >body dic.init
+  true compiler::current >body object.wordbody!
+  compiler::current
 
-  //word::compiling word.name@ "  :dic %v" str.format .
+  //compiler::current word.name@ "  :dic %v" str.format .
 
 diclock.dropwrite
   does>
@@ -108,16 +108,16 @@ diclock.dropwrite
 diclock.grabwrite
 
   >createPersistent
-  WK_OBJECT word::compiling word.kind!
+  WK_OBJECT compiler::current word.kind!
   sizeof_dic allot
-  word::compiling >body object.magic!
-  CN_DIC word::compiling >body object.class!
-  tick folder word::compiling word.category!
-  word::compiling >body dic.init
-  true word::compiling >body object.wordbody!
-  word::compiling
+  compiler::current >body object.magic!
+  CN_DIC compiler::current >body object.class!
+  tick folder compiler::current word.category!
+  compiler::current >body dic.init
+  true compiler::current >body object.wordbody!
+  compiler::current
 
-  //word::compiling word.name@ "  :dic %v" str.format .
+  //compiler::current word.name@ "  :dic %v" str.format .
 
 diclock.dropwrite
   does>

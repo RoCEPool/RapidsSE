@@ -9,9 +9,9 @@
 /*----------------------------------------------------------------------------*/
 : <<metaSymbol>>> immediate ( -- )
 
-  [ word::compiling , ]
+  [ compiler::current , ]
 
-  word::compiling word.category!
+  compiler::current word.category!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -19,7 +19,7 @@
 /*----------------------------------------------------------------------------*/
 : <catalogNm> <<metaSymbol>>> ( -- "<catalogNm>" )
 
-  [ word::compiling word.name@ , ] job::this job.ename@
+  [ compiler::current word.name@ , ] job::this job.ename@
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -27,7 +27,7 @@
 /*----------------------------------------------------------------------------*/
 : <folderNm> <<metaSymbol>>> ( -- "<folderNm>" )
 
-  [ word::compiling word.name@ , ] job::this job.ename@
+  [ compiler::current word.name@ , ] job::this job.ename@
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -35,7 +35,7 @@
 /*----------------------------------------------------------------------------*/
 : <indexNm> <<metaSymbol>>> ( -- "<indexNm>" )
 
-  [ word::compiling word.name@ , ] job::this job.ename@
+  [ compiler::current word.name@ , ] job::this job.ename@
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -43,7 +43,7 @@
 /*----------------------------------------------------------------------------*/
 : <jobClass> <<metaSymbol>>> ( -- "<jobClass>" )
 
-  [ word::compiling word.name@ , ] job::this job.ename@
+  [ compiler::current word.name@ , ] job::this job.ename@
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -51,7 +51,7 @@
 /*----------------------------------------------------------------------------*/
 : <jobNm> <<metaSymbol>>> ( -- "<jobNm>" )
 
-  [ word::compiling word.name@ , ] job::this job.ename@
+  [ compiler::current word.name@ , ] job::this job.ename@
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -59,7 +59,7 @@
 /*----------------------------------------------------------------------------*/
 : <nodeNm> <<metaSymbol>>> ( -- "<nodeNm>" )
 
-  [ word::compiling word.name@ , ] job::this job.ename@
+  [ compiler::current word.name@ , ] job::this job.ename@
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -67,7 +67,7 @@
 /*----------------------------------------------------------------------------*/
 : <routineNm> <<metaSymbol>>> ( -- "<routineNm>" )
 
-  [ word::compiling word.name@ , ] job::this job.ename@
+  [ compiler::current word.name@ , ] job::this job.ename@
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -75,7 +75,7 @@
 /*----------------------------------------------------------------------------*/
 : <schemaNm> <<metaSymbol>>> ( -- "<schemaNm>" )
 
-  [ word::compiling word.name@ , ] job::this job.ename@
+  [ compiler::current word.name@ , ] job::this job.ename@
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -83,7 +83,7 @@
 /*----------------------------------------------------------------------------*/
 : <tableNm> <<metaSymbol>>> ( -- "<tableNm>" )
 
-  [ word::compiling word.name@ , ] job::this job.ename@
+  [ compiler::current word.name@ , ] job::this job.ename@
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -91,7 +91,7 @@
 /*----------------------------------------------------------------------------*/
 : <tenantNm> <<metaSymbol>>> ( -- "<tenantNm>" )
 
-  [ word::compiling word.name@ , ] job::this job.ename@
+  [ compiler::current word.name@ , ] job::this job.ename@
 ;
 
 /*============================================================================*/
