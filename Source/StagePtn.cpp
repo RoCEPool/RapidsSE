@@ -105,31 +105,7 @@ void StagePtn::vLinkOperators(StageVec* pStageVec)
     Stage* pNextStage = pStageVec->pGet(pOp->m_iNextStage);
     RASSERT(pNextStage);
     
-    //pOp->vLinkToStage(pNextStage);
-    
-    // is it a stage run on node/nodes ?
-
-    if (pNextStage->pStageNdeVec()->nItems()) {
-      RASSERT(pNextStage->pStagePtnVec()->nItems() == 0);
-      if (pNextStage->pStageNdeVec()->nItems() == 1) {
-        // going from all/one ptn to one node
-        pOp->m_iNdeVec = 0;
-      }
-      else {
-        // going from all/one ptn to all nodes
-        RASSERT(0);
-      }
-      StageNde* pStageNde = pNextStage->pStageNdeVec()->pGet(pOp->m_iNdeVec);
-      AM::vXmitNode(pOp,pStageNde->iNode());
-      pOpNext = pStageNde->pOpVec()->pGet(0);
-    }
-    else {
-      RASSERT(0);
-    }
-  
-    pOp->vNextLabel(pOpNext->m_sName);
-    pOp->vOpOut(pOpNext);
-    
+    pOp->vLinkToStage(pNextStage);
   }
 }
 
