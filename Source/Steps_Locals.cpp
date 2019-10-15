@@ -68,7 +68,7 @@ void Step::vLocalsBar(MP_Task mpTask)
 {
 ENTRY("vLocalsBar"_Stz);
   
-  Word* pCurrentWord = mpTask->m_pCompiler->m_pWord;
+  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrent;
   
   Dic* pDic = mpTask->m_oDicStack.pPick(0);
 
@@ -163,7 +163,7 @@ void Step::vLocalsTo(MP_Task mpTask)
 {
 ENTRY("vLocalsTo"_Stz);
   
-  Word* pCurrentWord = mpTask->m_pCompiler->m_pWord;
+  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrent;
   
   // get name of local from token stream
   mpTask->m_pCompiler->m_pTokeniser->vNextToken();

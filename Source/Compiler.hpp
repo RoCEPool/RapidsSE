@@ -12,7 +12,7 @@ namespace SenVM
   public:
   
     bool  m_bCompiling;    // currently compiling a word?
-    Word* m_pWord;         // current word being compiled
+    Word* m_pCurrent;      // current word being compiled
     i8    m_nSubDic;       // number of sub dictionaries
     i8    m_nLocals;       // number of locals/params variables
   

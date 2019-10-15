@@ -32,13 +32,13 @@ Compiler::Compiler(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
   
-  m_bCompiling   = false;
-  m_pWord = nullptr;
-  m_nSubDic      = 0;
-  m_nLocals      = 0;
+  m_bCompiling = false;
+  m_pCurrent   = nullptr;
+  m_nSubDic    = 0;
+  m_nLocals    = 0;
 
-  m_pRetryIP     = nullptr;
-  m_pBeginIP     = nullptr;
+  m_pRetryIP   = nullptr;
+  m_pBeginIP   = nullptr;
 
   m_pTokeniser = new Tokeniser;
   m_pTokeniser->vPush();
