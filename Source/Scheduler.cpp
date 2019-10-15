@@ -597,7 +597,7 @@ void Scheduler::vTask_DdlDropRead(Task* pTask)
   SP_Id spId;
   
   AM::pDdlLock()->vDropRead();
-  pTask->m_iDdlLocked = 0;
+  pTask->m_eDdlLocked = LH_NONE;
   
   pTask->vIncActNo();
   AM::vLogTsk(SL_INF,pTask,TA_DDL_READ_DROPPED,
@@ -614,7 +614,7 @@ void Scheduler::vTask_DdlDropWrite(Task* pTask)
   SP_Id spId;
   
   AM::pDdlLock()->vDropWrite();
-  pTask->m_iDdlLocked = 0;
+  pTask->m_eDdlLocked = LH_NONE;
   
   pTask->vIncActNo();
   AM::vLogTsk(SL_INF,pTask,TA_DDL_WRITE_DROPPED,
@@ -637,7 +637,7 @@ void Scheduler::vTask_DdlGrabRead(Task* pTask)
               );
   
   AM::pDdlLock()->vGrabRead();
-  pTask->m_iDdlLocked = C_HAVE_READ_LOCK;
+  pTask->m_eDdlLocked = LH_HAVE_READ_LOCK;
   
   AM::vLogTsk(SL_INF,pTask,TA_DDL_READ_GRABBED,
               "success by %s"_Stz, //!format-LogTsk
@@ -659,7 +659,7 @@ void Scheduler::vTask_DdlGrabWrite(Task* pTask)
               );
 
   AM::pDdlLock()->vGrabWrite();
-  pTask->m_iDdlLocked = C_HAVE_WRITE_LOCK;
+  pTask->m_eDdlLocked = LH_HAVE_WRITE_LOCK;
   
   AM::vLogTsk(SL_INF,pTask,TA_DDL_WRITE_GRABBED,
               "success by %s"_Stz, //!format-LogTsk
