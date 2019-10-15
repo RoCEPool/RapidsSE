@@ -32,6 +32,7 @@ namespace Commands
     ~Tokeniser(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+    static TokenVec* pTokenise(Stz* szString);
     static TokenVec* pTokenise(s4K& sString);
     static TokenVec* pTokenise(s48K& sString);
     static void vTokenise(TokenVec* pTokenVec, Stz* szString);

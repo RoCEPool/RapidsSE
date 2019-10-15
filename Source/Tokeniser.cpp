@@ -121,6 +121,35 @@ Tokeniser::~Tokeniser(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* tokenise given string                                                      */
 /*----------------------------------------------------------------------------*/
+TokenVec* Tokeniser::pTokenise(Stz* szString)
+{
+  TokenVec* pTokenVec = new TokenVec;
+  
+  Tokeniser* pTokeniser = new Tokeniser;
+  pTokeniser->vPush();
+  pTokeniser->vUseString(szString);
+  
+  for (i8 i_Token = 0; ; i_Token++) {
+    pTokeniser->vNextToken();
+    if (TN_NONE == pTokeniser->eToken())
+    break;
+    
+    pTokenVec->vIncTokens();
+    
+    Token* pToken = pTokenVec->pGet(i_Token);
+    pToken->vToken(pTokeniser->eToken());
+    pToken->vCopy(pTokeniser->sToken().aStz());
+    
+  }
+  
+  delete pTokeniser;
+  
+  return pTokenVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* tokenise given string                                                      */
+/*----------------------------------------------------------------------------*/
 TokenVec* Tokeniser::pTokenise(s4K& sString)
 {
   TokenVec* pTokenVec = new TokenVec;
