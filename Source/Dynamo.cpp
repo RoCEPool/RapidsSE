@@ -497,7 +497,7 @@ bool Dynamo::bPhase2_staging(void)
       if (pStageSpecFound) {
         ePX eTopologyX = eTopoloyX(pStageSpec, pStageSpecFound);
         vTrace("  op %s is a stage %lld %s\n"_Stz,pOpSpec->szName(), i_Stage, aPX[eTopologyX]);
-        vReplaceWithXmit(pOpSpec, i_Stage);
+        vReplaceWithXmit(pOpSpec, eTopologyX, i_Stage);
         pStageSpecFound->vPrependConsumeOp(pStageSpec->eTopology());
       }
       
@@ -510,12 +510,13 @@ bool Dynamo::bPhase2_staging(void)
 /*----------------------------------------------------------------------------*/
 /* replace the <stageNm> with xmit <nodeNo>                                   */
 /*----------------------------------------------------------------------------*/
-void Dynamo::vReplaceWithXmit(OpSpec* pOpSpec, i8 i_Stage)
+void Dynamo::vReplaceWithXmit(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   pOpSpec->vName("xmit"_Stz);
-  pOpSpec->vAddEnmPair("<arg_0>"_Stz,(i8)i_Stage,TN_INTEGER);
+  pOpSpec->vAddEnmPair("<arg_0>"_Stz,(i8)eTopologyX,TN_INTEGER);
+  pOpSpec->vAddEnmPair("<arg_1>"_Stz,(i8)i_Stage,TN_INTEGER);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -98,7 +98,8 @@ Op* XmitOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 {
   XmitOp* pXmitOp = new XmitOp(pOpSpec,pPipeline);
 
-  pXmitOp->m_iNextStage = pXmitOp->m_pOpSpec->pEnameSet()->iValue((i8)0);
+  pXmitOp->m_eTopologyX = (ePX)pXmitOp->m_pOpSpec->pEnameSet()->iValue((i8)0);
+  pXmitOp->m_iNextStage   = pXmitOp->m_pOpSpec->pEnameSet()->iValue((i8)1);
   
   return pXmitOp;
 }
