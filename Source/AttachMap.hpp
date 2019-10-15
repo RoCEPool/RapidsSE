@@ -19,7 +19,6 @@ namespace StorageEngine
   
     struct {
       bool m_bDeveloper;
-      s256 m_sCommand;      // command to be executed
       i8   m_nDummyLoop;    // loop count for dummy threads
       i8   m_nDummySleep;   // sleep period for dummy threads
       i8   m_nDummyThreads; // number of dummy threads
@@ -118,7 +117,6 @@ namespace StorageEngine
   
     void vRecordArguments(
                           bool bDeveloper,
-                          Stz* aCommand,
                           i8   nDummyLoop,
                           i8   nDummySleep,
                           i8   nDummyThreads,

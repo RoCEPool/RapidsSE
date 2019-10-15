@@ -237,7 +237,6 @@ void AttachMap::vPrintAttachMap(void)
 /*----------------------------------------------------------------------------*/
 void AttachMap::vRecordArguments(
                                  bool bDeveloper,
-                                 Stz* aCommand,
                                  i8   nDummyLoop,
                                  i8   nDummySleep,
                                  i8   nDummyThreads,
@@ -270,7 +269,6 @@ void AttachMap::vRecordArguments(
   m_oNow.vSetNowUTC();
   
   Arg.m_bDeveloper       = bDeveloper;
-  Arg.m_sCommand         = aCommand;
   Arg.m_nDummyLoop       = nDummyLoop;
   Arg.m_nDummySleep      = nDummySleep;
   Arg.m_nDummyThreads    = nDummyThreads;
