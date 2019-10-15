@@ -57,8 +57,11 @@ Stage::Stage(StageSpec* pStageSpec, Pipeline* pPipeLine)
   // create StageNde's and StagePtn's depending on the toplogy of the stage
   
   switch (m_pStageSpec->eTopology()) {
+      
     case PO_ALL_NODES:
-      RASSERT(0);
+      for (i8 i_Nde = 0; i_Nde < AM::pGrid()->nConnectedNodes(); i_Nde++) {
+        m_oStageNdeVec.vAdd(new StageNde(pStageSpec, i_Nde));
+      }
       break;
       
     case PO_ALL_PARTITIONS:
