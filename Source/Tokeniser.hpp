@@ -35,7 +35,6 @@ namespace Commands
     static TokenVec* pTokenise(s4K& sString);
     static TokenVec* pTokenise(s48K& sString);
     static void vTokenise(TokenVec* pTokenVec, Stz* szString);
-    static void vTokenise(TokenVec* pTokenVec, s4K& sString);
     static void vToEnmSet(EnameSet* pEnameSet, TokenVec* pTokenVec);
     static void vToEnmSet(EnameSet* pEnameSet, TokenVec* pTokenVec, i8 i_From, i8 i_To);
     static void vToEnmSet(EnameSet* pEnameSet, TokenVec* pTokenVec, Stz* sDelimiter, i8 i_From, i8 i_To);

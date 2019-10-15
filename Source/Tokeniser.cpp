@@ -204,34 +204,7 @@ void Tokeniser::vTokenise(TokenVec* pTokenVec, Stz* szString)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tokenise given string into given TokenVec                                  */
-/*----------------------------------------------------------------------------*/
-void Tokeniser::vTokenise(TokenVec* pTokenVec, s4K& sString)
-{
-  pTokenVec->vReset();
-  
-  Tokeniser* pTokeniser = new Tokeniser;
-  pTokeniser->vPush();
-  pTokeniser->vUseString(sString);
-  
-  for (i8 i_Token = 0; ; i_Token++) {
-    pTokeniser->vNextToken();
-    if (TN_NONE == pTokeniser->eToken())
-      break;
-    
-    pTokenVec->vIncTokens();
-    
-    Token* pToken = pTokenVec->pGet(i_Token);
-    pToken->vToken(pTokeniser->eToken());
-    pToken->vCopy(pTokeniser->sToken().aStz());
-    
-  }
-  
-  delete pTokeniser;
-}
-
-/*----------------------------------------------------------------------------*/
-/* extract { EnameSet } from given tokenvec                                     */
+/* extract { EnameSet } from given tokenvec                                   */
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vToEnmSet(EnameSet* pEnameSet, TokenVec* pTknVec)
 {
@@ -247,7 +220,7 @@ void Tokeniser::vToEnmSet(EnameSet* pEnameSet, TokenVec* pTknVec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* extract { EnameSet } from given tokenvec                                     */
+/* extract { EnameSet } from given tokenvec                                   */
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vToEnmSet(EnameSet* pEnameSet, TokenVec* pTknVec, i8 i_From, i8 i_To)
 {
