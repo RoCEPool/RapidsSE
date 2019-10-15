@@ -5,6 +5,14 @@
 " jobSuffix.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* append a suffix to name of word being compiled                             */
+/*----------------------------------------------------------------------------*/
+: word::addSuffix params| sSuffix |
+
+  word::this word.name@ sSuffix str.cat word::this word.name!
+;
+
+/*----------------------------------------------------------------------------*/
 /* category of words which are seeds                                          */
 /*----------------------------------------------------------------------------*/
 : seed
@@ -33,7 +41,7 @@
 : _req immediate suffix
 
   // append _req to name of word being compiled
-  word::this word.name@ "_req" str.cat word::this word.name!
+  "_req" word::addSuffix
 
   word::seed#
 
@@ -52,7 +60,7 @@
 : _beg immediate suffix
 
   // append _beg to name of word being compiled
-  word::this word.name@ "_beg" str.cat word::this word.name!
+  "_beg" word::addSuffix
 
   // the compiled word is a seed
   tick seed word::this word.category!
@@ -72,7 +80,7 @@
 : _exe immediate suffix
 
   // append _exe to name of word being compiled
-  word::this word.name@ "_exe" str.cat word::this word.name!
+  "_exe" word::addSuffix
 
   word::seed#
 
@@ -89,7 +97,7 @@
 : _end immediate suffix
 
   // append _end to name of word being compiled
-  word::this word.name@ "_end" str.cat word::this word.name!
+  "_end" word::addSuffix
 
   word::seed#
 
@@ -106,7 +114,7 @@
 : _can immediate suffix
 
   // append _can to name of word being compiled
-  word::this word.name@ "_can" str.cat word::this word.name!
+  "_can" word::addSuffix
 
   word::seed#
 
