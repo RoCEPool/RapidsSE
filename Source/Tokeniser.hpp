@@ -48,7 +48,7 @@ namespace Commands
     void vNextToken(void);
     void vNormal(bool bNormal);
     bool bPop(void);
-    void vPrompt(s256& sPrompt);
+    void vPrompt(Stz* szPrompt);
     void vPush(void);
     bool bStdin(void);
     TokenVec* pTknVec(void);
