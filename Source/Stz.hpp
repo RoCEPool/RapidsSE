@@ -8,14 +8,14 @@ namespace Strings
   class Stz
   {
   private:
-    char m_caStr[1];
+    char m_caChar[1];
   
   public:
     void* operator new(size_t);
   
   //Stz() = default;
     Stz(void);
-    Stz(Stz* aArg);
+    Stz(Stz* szArg);
    ~Stz(void) noexcept(false);
   
     static Stz* szTab(i8 iDepth);
@@ -28,7 +28,7 @@ namespace Strings
     void  vCatSprint(Stz* szFormat, ...);
     char* aChar(void);
     void  vConcat(Stz* szArg);
-    void  vCopy(Stz* szaArg);
+    void  vCopy(Stz* szArg);
     void  vCopyLen(Stz* szArg, i8 nBytes);
     bool  bEqual(Stz* szArg);
     bool  bIsNumeric(void);
@@ -43,7 +43,7 @@ namespace Strings
   };
   
   // user defined string literal
-  Stz* operator "" _Stz(const char* aLiteral, size_t nSize);
+  Stz* operator "" _Stz(const char* azLiteral, size_t nSize);
 }
 
 /*============================================================================*/
