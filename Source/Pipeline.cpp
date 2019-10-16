@@ -194,7 +194,7 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
     //if (AM::bVerbose()) {
       i8 iThisNode = AM::pGrid()->iThisNode();
       if (iThisNode == 0) {
-        vTrace("Stage %lld: \n"_Stz, i_Stage);
+        vTrace("\nStage %lld: \n"_Stz, i_Stage);
         pStage->vDump();
       }
     //}

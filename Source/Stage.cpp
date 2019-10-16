@@ -157,12 +157,10 @@ void Stage::vDump(void)
     EnameSet* pEnameSet = pOp->m_pOpSpec->pEnameSet();
     pEnameSet->vSprint(sArgs);
     
-    vTrace("  [%02lld] { %9s: %10s%-24s stage:%lld endMarkers(L%lld R%lld) :%-6s %s }\n"_Stz,
+    vTrace("  [%02lld] {%12s%-24s endMarkers(L%lld R%lld) :%-10s %s }\n"_Stz,
            i_Op,
-           pOp->szName(),
            aCN[pOp->eClass()],
            sArgs.szStz(),
-           pOp->m_iNextStage,
            pOp->m_nLeftEndMarkers,
            pOp->m_nRightEndMarkers,
            pOp->szNextLabel(),
