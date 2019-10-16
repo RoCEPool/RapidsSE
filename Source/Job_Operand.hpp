@@ -13,8 +13,8 @@ namespace Jobs
     i8         m_iNode;           // node id
     i8         m_iParentJobId;    // parent (InsertRow) job id
     
-    ePX        m_eTopologyX;
-    i8         m_iNextStage;
+    ePX        m_eTopologyX;      // cross topology
+    i8         m_iNextStage;      // next stage
     
     // must be last
     Footer m_xFooter;

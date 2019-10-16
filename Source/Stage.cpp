@@ -159,7 +159,7 @@ void Stage::vDump(void)
     
     vTrace("  [%02lld] { %9s: %10s%-24s stage:%lld endMarkers(L%lld R%lld) :%-6s %s }\n"_Stz,
            i_Op,
-           pOp->szLabel(),
+           pOp->szName(),
            aCN[pOp->eClass()],
            sArgs.szStz(),
            pOp->m_iNextStage,

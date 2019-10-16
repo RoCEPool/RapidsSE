@@ -147,7 +147,7 @@ eOR ScanOp::eOpLoop(void)
     
     if (bIsCancelling()) {
       vTrace("%s::!CANCELED :   after piping %lld buffers\n"_Stz,
-             m_sLabel.szStz(),
+             m_sName.szStz(),
              m_iWorkDone);
       break;
     }

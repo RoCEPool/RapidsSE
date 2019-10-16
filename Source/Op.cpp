@@ -63,7 +63,6 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   m_sName = pOpSpec->aOpDefn()->m_szCommand;
   
   m_pOpSpec       = pOpSpec;
-  m_sLabel        = "<nil>"_Stz;;
   m_sNextLabel    = "<nil>"_Stz;
   
   m_aOpDefn       = pOpSpec->aOpDefn();
@@ -255,7 +254,7 @@ void Op::vAppendRight(Operand* pOperand)
   _precondition_(_ADDRESS_,_MAGIC_);
     
   //  vTrace("%s::vAppendOperand : %p %s\n"_Stz,
-  //         m_sLabel.szStz(),
+  //         m_sName(),
   //         pOperand,
   //         aCN[pOperand->eClass()]);
   
@@ -347,26 +346,6 @@ void Op::vJob(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get label                                                                  */
-/*----------------------------------------------------------------------------*/
-Stz* Op::szLabel(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_sLabel;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set label                                                                  */
-/*----------------------------------------------------------------------------*/
-void Op::vLabel(Stz* szLabel)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_sLabel = szLabel;
-}
-
-/*----------------------------------------------------------------------------*/
 /* link this operator to the next stage                                       */
 /*----------------------------------------------------------------------------*/
 void Op::vLinkToStage(Stage* pStage)
@@ -454,6 +433,16 @@ void Op::vLinkToStage(Stage* pStage)
     default:
       RASSERT(0);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get op name                                                                */
+/*----------------------------------------------------------------------------*/
+Stz* Op::szName(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_sName;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -654,7 +643,7 @@ Operand* Op::pPopQueueLeft(void)
   if (pOperand) {
     if (AM::bVerbose())
       vTrace("%s::pPopQueueLeft : %s %p\n"_Stz,
-             m_sLabel.szStz(),
+             m_sName.szStz(),
              aCN[pOperand->eClass()],
              pOperand);
   }
@@ -691,7 +680,7 @@ Operand* Op::pPopQueueRight(void)
   if (pOperand) {
     if (AM::bVerbose())
       vTrace("%s::pPopQueueRight : %s %p\n"_Stz,
-             m_sLabel.szStz(),
+             m_sName.szStz(),
              aCN[pOperand->eClass()],
              pOperand);
   }

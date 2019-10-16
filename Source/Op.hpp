@@ -17,7 +17,6 @@ namespace Operators
     OpDefn*        m_aOpDefn;        // op definition
     OpSpec*        m_pOpSpec;        // op specification
   
-    s32            m_sLabel;         // label of this op
     s32            m_sNextLabel;     // label of this op
   
     Job*           m_pJob;           // job this operator belongs to
@@ -74,9 +73,8 @@ namespace Operators
     bool bIsCancelling(void);
     bool bIsLocked(void);
     void vJob(Job* pJob);
-    Stz* szLabel(void);
-    void vLabel(Stz* szLabel);
     void vLinkToStage(Stage* pStage);
+    Stz* szName(void);
     Stz* szNextLabel(void);
     void vNextLabel(Stz* szNextLabel);
     i8   iOpId(void);

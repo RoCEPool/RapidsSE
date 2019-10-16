@@ -103,7 +103,7 @@ eOR GenerateOp::eGenerateLoop(void)
     else {
       
       // pipeout buffer
-      vTrace("%s::Generate %p\n"_Stz,m_sLabel.szStz(),pIntBuffer);
+      vTrace("%s::Generate %p\n"_Stz,m_sName.szStz(),pIntBuffer);
       vPipeOut(pIntBuffer);
       
       // create a new buffer
@@ -116,7 +116,7 @@ eOR GenerateOp::eGenerateLoop(void)
   }
   
   // pipeout buffer
-  vTrace("%s::Generate %p\n"_Stz,m_sLabel.szStz(),pIntBuffer);
+  vTrace("%s::Generate %p\n"_Stz,m_sName.szStz(),pIntBuffer);
   vPipeOut(pIntBuffer);
   
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

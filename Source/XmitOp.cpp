@@ -98,7 +98,10 @@ Op* XmitOp::pNew(OpSpec* pOpSpec, Pipeline* pPipeline)
 {
   XmitOp* pXmitOp = new XmitOp(pOpSpec,pPipeline);
 
+  // add arg-0 as the cross topology for the xmit
   pXmitOp->m_eTopologyX = (ePX)pXmitOp->m_pOpSpec->pEnameSet()->iValue((i8)0);
+  
+  // add arg-1 as the next stage of the pipeline where the xmit needs to xmit
   pXmitOp->m_iNextStage   = pXmitOp->m_pOpSpec->pEnameSet()->iValue((i8)1);
   
   return pXmitOp;
@@ -177,7 +180,7 @@ eOR XmitOp::eXmitLoop(void)
     
     if (AM::bVerbose())
       vTrace("%s::XmitOut :    %s %p (N%lld)\n"_Stz,
-             m_sLabel.szStz(),
+             m_sName.szStz(),
              aCN[pOperand->eClass()],
              pOperand,
              m_iXmitNode);
