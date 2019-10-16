@@ -457,12 +457,12 @@ void Task::vDropTaskLock(void)
 /*----------------------------------------------------------------------------*/
 /* set exception                                                              */
 /*----------------------------------------------------------------------------*/
-void Task::vException(s256& sException, s256& sFileNm, i8 iLineNo)
+void Task::vException(s256& sException, Stz* szFileNm, i8 iLineNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   m_sException = sException;
-  m_sFileNm    = sFileNm;
+  m_sFileNm    = szFileNm;
   m_iLineNo    = iLineNo;
 }
 
