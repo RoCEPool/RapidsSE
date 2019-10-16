@@ -170,7 +170,8 @@ eOR XmitOp::eXmitLoop(void)
       continue;
     }
   
-    RASSERT(CN_CRWBUFFER == pOperand->eClass());
+    RASSERT(CN_CRWBUFFER == pOperand->eClass() ||
+            CN_IRWBUFFER == pOperand->eClass());
   
     iOperands++;
     
