@@ -1,8 +1,12 @@
 /*============================================================================*/
-/* test_misc.sen -- miscellaneous testing                                   */
+/* test_misc.sen -- miscellaneous testing                                     */
 /*============================================================================*/
 
 " test_misc.sen" .verbose
+
+
+: chuck  prompt false assert ;
+: chuck2 prompt throw ;
 
 : iftest if "yes" . then ;
 
