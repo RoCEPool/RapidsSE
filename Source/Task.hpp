@@ -92,7 +92,7 @@ namespace Tasks
     bool bIsTaskLocked(void);
     Job* pJob(void);
     void vJob(Job* pJob);
-    Stz* aJobName(void);
+    Stz* szJobName(void);
     eTK  eKind(void);
     void vLocalsPop(void);
     void vLocalsPush(void);

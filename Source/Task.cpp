@@ -262,13 +262,13 @@ void Task::vTaskLoop_job(void)
         StrLib::vCopy(caFileName, m_sFileNm.azChar());
       }
       vTrace("[%s] %s : line %lld in %s\n"_Stz,
-             aJobName(),
+             szJobName(),
              m_sException.azChar(),
              iException,
              caFileName);
       vRetry();
     }
-        
+    
   }
   
   if (m_pJob && m_pJob->m_xReqTuple.m_iDetail)
@@ -309,7 +309,7 @@ void Task::vDump(eCN eClass, Object* pObject, Stz* aTab)
   Task* pTask = _pTask(pObject);
   
   vTrace("%s %p state %s txId %lld\n"_Stz,
-         pTask->aJobName(),
+         pTask->szJobName(),
          pTask,
          aTS[pTask->m_eState]->azChar()
          );
@@ -423,7 +423,7 @@ void Task::vContentDump(void)
   vTrace("%sTask %p: %16s state %8s txId %lld\n"_Stz,
          Stz::szTab(2),
          this,
-         aJobName(),
+         szJobName(),
          aTS[m_eState]->azChar()
          );
 }
@@ -532,7 +532,7 @@ void Task::vJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* get the job name of this task                                              */
 /*----------------------------------------------------------------------------*/
-Stz* Task::aJobName(void)
+Stz* Task::szJobName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -941,7 +941,7 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
           sStackContents.vCatSprint("^%s=%p:%s"_Stz,
                                     aCN[ePtrClass],
                                     pPtr,
-                                    pTask->aJobName());
+                                    pTask->szJobName());
         }
         else {
           if (pPtr->bValidMagic() && pPtr->eClass() < CN_ENUMS)
@@ -1067,7 +1067,7 @@ void Task::vTracePoint(Stz* aMark)
         
          AM::szNodeName(),
          AM::iThisNodeNo(),
-         aJobName(),
+         szJobName(),
          m_oAcksRmg.iPrintOnlyValue(),
          
          sRoutine.azChar(),

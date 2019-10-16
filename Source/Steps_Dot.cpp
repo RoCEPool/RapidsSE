@@ -28,7 +28,7 @@ void Step::vDot(MP_Task mpTask)
   
   vTrace("[%s %s] %s\n"_Stz,
          AM::pGrid()->pThisNode()->szNodeName(),
-         mpTask->m_pJob ? (Stz*)mpTask->aJobName() : "<no job>"_Stz,
+         mpTask->m_pJob ? (Stz*)mpTask->szJobName() : "<no job>"_Stz,
          xVariable.szStz());
 
   
@@ -77,7 +77,7 @@ void Step::vDotVerbose(MP_Task mpTask)
   if (AM::bVerbose()) {
     vTrace("[%p %s] %s\n"_Stz,
            *mpTask,
-           mpTask->aJobName(),
+           mpTask->szJobName(),
            xVariable.szStz());
   }
   
