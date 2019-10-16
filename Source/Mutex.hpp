@@ -11,7 +11,6 @@ namespace Resources
     eMK     m_eMutex;    // kind of mutex
     Focal*  m_pIsFor;    // mutex is for a task or a thread
   
-    bool    m_bLocked;   // true if mutex is currently locked (debugging)
     Focal*  m_pLockedBy; // by whom is the mutex locked?
     Focal*  m_pWaitedBy; // for whom is the mutex being waited on?
 

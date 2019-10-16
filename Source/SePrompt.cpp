@@ -220,10 +220,10 @@ void SePrompt::vPromptLoop(void)
 
     vJobWaitCond();
 
-    sleep(10);
-    sleep(10);
-    sleep(10);
-    sleep(10);
+//    sleep(10);
+//    sleep(10);
+//    sleep(10);
+//    sleep(10);
     
     vJobUnlockMutex();
     
