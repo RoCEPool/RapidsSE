@@ -247,25 +247,12 @@ void Task::vTaskLoop_job(void)
       fpIntrinsic(this);
     }
     
-    catch (i8 iException) {
-      char caFileName[256];
-      
-      char* ps;
-      
-      ps = StrLib::sLast(m_sFileNm.azChar());
-      StrLib::bBackward(&ps,m_sFileNm.azChar(),'/');
-      bool bBackSlash = StrLib::bBackward(&ps,m_sFileNm.azChar(),'/');
-      if (bBackSlash) {
-        StrLib::vCopy(caFileName,ps+1);
-      }
-      else {
-        StrLib::vCopy(caFileName, m_sFileNm.azChar());
-      }
-      vTrace("[%s] %s : line %lld in %s\n"_Stz,
+    catch (eFK eFailure) {
+      vTrace("[%s] %s : in file %s line %lld\n"_Stz,
              szJobName(),
              m_sException.azChar(),
-             iException,
-             caFileName);
+             m_sFileNm.azChar(),
+             m_iLineNo);
       vRetry();
     }
     
@@ -445,8 +432,9 @@ void Task::vException(Stz* szException, Stz* szFileNm, i8 iLineNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+  StrLib::vSubPath(m_sFileNm.azChar(),szFileNm->azChar());
   m_sException = szException;
-  m_sFileNm    = szFileNm;
+  //m_sFileNm    = szFileNm;
   m_iLineNo    = iLineNo;
 }
 

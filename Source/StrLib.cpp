@@ -2800,7 +2800,25 @@ void StrLib::vStrip(char* s, char cTrailing)
   if (s[iOffset] == cTrailing)
     s[iOffset] = '\0';
 }
+
+/*----------------------------------------------------------------------------*/
+/* get the sub-path of src                                                    */
+/*----------------------------------------------------------------------------*/
+void StrLib::vSubPath(char* azDst, char* azSrc)
+{
+  char* ps;
   
+  ps = StrLib::sLast(azSrc);
+  
+  StrLib::bBackward(&ps,azSrc,'/');
+  bool bBackSlash = StrLib::bBackward(&ps,azSrc,'/');
+  
+  if (bBackSlash)
+    StrLib::vCopy(azDst,ps+1);
+  else
+    StrLib::vCopy(azDst,azSrc);
+}
+
 /*----------------------------------------------------------------------------*/
 /* bToBool: convert arg to boolean                                            */
 /*----------------------------------------------------------------------------*/

@@ -40,7 +40,7 @@ void Step::vAssert(MP_Task mpTask)
     THROW_INVALID_DSTACK("assert"_Stz);
   
   if ( ! iTrue )
-    THROW("assert in word %s"_Stz, "NULL");
+    THROW(FK_ASSERT,"assert in word %s"_Stz, "NULL");
   
   EXIT();
 }
@@ -67,7 +67,7 @@ void Step::vAssertClass(MP_Task mpTask)
   }
   
   if ( eClassNo != eAssertClassNo )
-    THROW("assert::class in word %s"_Stz, "NULL");
+    THROW(FK_ASSERT,"assert::class in word %s"_Stz, "NULL");
   
   EXIT();
 }
@@ -94,7 +94,7 @@ void Step::vAssertClass_0(MP_Task mpTask)
   }
   
   if ( eClassNo != eAssertClassNo )
-    THROW("assert::class_0 in word %s"_Stz, "NULL");
+    THROW(FK_ASSERT,"assert::class_0 in word %s"_Stz, "NULL");
   
   EXIT();
 }
@@ -121,7 +121,7 @@ void Step::vAssertClass_1(MP_Task mpTask)
   }
   
   if ( eClassNo != eAssertClassNo )
-    THROW("assert::class_1 in word %s"_Stz, "NULL");
+    THROW(FK_ASSERT,"assert::class_1 in word %s"_Stz, "NULL");
   
   EXIT();
 }
@@ -148,7 +148,7 @@ void Step::vAssertClass_2(MP_Task mpTask)
   }
   
   if ( eClassNo != eAssertClassNo )
-    THROW("assert::class_2 in word %s"_Stz, "NULL");
+    THROW(FK_ASSERT,"assert::class_2 in word %s"_Stz, "NULL");
   
   EXIT();
 }
@@ -175,7 +175,7 @@ void Step::vAssertClass_3(MP_Task mpTask)
   }
   
   if ( eClassNo != eAssertClassNo )
-    THROW("assert::class_3 in word %s"_Stz, "NULL");
+    THROW(FK_ASSERT,"assert::class_3 in word %s"_Stz, "NULL");
   
   EXIT();
 }
@@ -202,7 +202,7 @@ void Step::vAssertClass_4(MP_Task mpTask)
   }
   
   if ( eClassNo != eAssertClassNo )
-    THROW("assert::class_4 in word %s"_Stz, "NULL");
+    THROW(FK_ASSERT,"assert::class_4 in word %s"_Stz, "NULL");
   
   EXIT();
 }
@@ -217,7 +217,7 @@ ENTRY("vAssertStack_0"_Stz);
   i8 iStackValues = mpTask->m_pForth->m_pDataStack->nValues();
   
   if ( ! (0 == iStackValues)  )
-    THROW("assert::stack_0 in word %s"_Stz, "NULL");
+    THROW(FK_ASSERT,"assert::stack_0 in word %s"_Stz, "NULL");
   
   EXIT();
 }
@@ -232,7 +232,7 @@ ENTRY("vAssertStack_0more"_Stz);
   i8 iStackValues = mpTask->m_pForth->m_pDataStack->nValues();
   
   if ( ! (0 <= iStackValues) )
-    THROW("assert::stack_0+ in word %s"_Stz, "NULL");
+    THROW(FK_ASSERT,"assert::stack_0+ in word %s"_Stz, "NULL");
   
   EXIT();
 }
@@ -247,7 +247,7 @@ ENTRY("vAssertStack_1"_Stz);
   i8 iStackValues = mpTask->m_pForth->m_pDataStack->nValues();
   
   if ( ! (1 == iStackValues)  )
-    THROW("assert::stack_1 in word %s"_Stz, "NULL");
+    THROW(FK_ASSERT,"assert::stack_1 in word %s"_Stz, "NULL");
   
   EXIT();
 }
@@ -262,7 +262,7 @@ ENTRY("vAssertStack_1more"_Stz);
   i8 iStackValues = mpTask->m_pForth->m_pDataStack->nValues();
   
   if ( ! (1 <= iStackValues) )
-    THROW("assert::stack_1+ in word %s"_Stz, "NULL");
+    THROW(FK_ASSERT,"assert::stack_1+ in word %s"_Stz, "NULL");
   
   EXIT();
 }
@@ -277,7 +277,7 @@ ENTRY("vAssertStack_2"_Stz);
   i8 iStackValues = mpTask->m_pForth->m_pDataStack->nValues();
   
   if ( ! (2 == iStackValues)  )
-    THROW("assert::stack_2 in word %s"_Stz, "NULL");
+    THROW(FK_ASSERT,"assert::stack_2 in word %s"_Stz, "NULL");
   
   EXIT();
 }
@@ -292,7 +292,7 @@ ENTRY("vAssertStack_2more"_Stz);
   i8 iStackValues = mpTask->m_pForth->m_pDataStack->nValues();
   
   if ( ! (2 <= iStackValues) )
-    THROW("assert::stack_2+ in word %s"_Stz, "NULL");
+    THROW(FK_ASSERT,"assert::stack_2+ in word %s"_Stz, "NULL");
   
   EXIT();
 }
@@ -307,7 +307,7 @@ ENTRY("vAssertStack_3"_Stz);
   i8 iStackValues = mpTask->m_pForth->m_pDataStack->nValues();
   
   if ( ! (3 == iStackValues)  )
-    THROW("assert::stack_3 in word %s"_Stz, "NULL");
+    THROW(FK_ASSERT,"assert::stack_3 in word %s"_Stz, "NULL");
   
   EXIT();
 }
@@ -322,7 +322,7 @@ ENTRY("vAssertStack_3more"_Stz);
   i8 iStackValues = mpTask->m_pForth->m_pDataStack->nValues();
   
   if ( ! (3 <= iStackValues) )
-    THROW("assert::stack_3+ in word %s"_Stz, "NULL");
+    THROW(FK_ASSERT,"assert::stack_3+ in word %s"_Stz, "NULL");
   
   EXIT();
 }
@@ -337,7 +337,7 @@ ENTRY("vAssertStack_4"_Stz);
   i8 iStackValues = mpTask->m_pForth->m_pDataStack->nValues();
   
   if ( ! (4 == iStackValues)  )
-    THROW("assert::stack_4 in word %s"_Stz, "NULL");
+    THROW(FK_ASSERT,"assert::stack_4 in word %s"_Stz, "NULL");
   
   EXIT();
 }
@@ -352,7 +352,7 @@ ENTRY("vAssertStack_4more"_Stz);
   i8 iStackValues = mpTask->m_pForth->m_pDataStack->nValues();
   
   if ( ! (4 <= iStackValues) )
-    THROW("assert::stack_4+ in word %s"_Stz, "NULL");
+    THROW(FK_ASSERT,"assert::stack_4+ in word %s"_Stz, "NULL");
   
   EXIT();
 }

@@ -43,7 +43,7 @@ void Step::vDirChangeCurrent(MP_Task mpTask)
     THROW_INVALID_DSTACK("dir::changeCurrent"_Stz);
   
   if ( ! Dir::bChangeCurrent(sDir) )
-    THROW("Unable to change current directory"_Stz);
+    THROW(FK_ASSERT,"Unable to change current directory"_Stz);
   
   EXIT();
 }
@@ -82,7 +82,7 @@ void Step::vDirGetCurrent(MP_Task mpTask)
     mpTask->m_pForth->m_pDataStack->vPushGenVar(xStrVal);
   }
   else {
-    THROW("Unable to get current directory"_Stz);
+    THROW(FK_ASSERT,"Unable to get current directory"_Stz);
   }
   
   EXIT();
