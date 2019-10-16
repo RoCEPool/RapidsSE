@@ -215,6 +215,28 @@ OpVec* Stage::pOpVec(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get pipeOut operator from the stage depending on cross topology            */
+/*----------------------------------------------------------------------------*/
+Op* Stage::pPipeOutOp(ePX eToloplogy, i8 iNdeVec)
+{
+  Op* pOp = nullptr;
+  
+  if (m_oStageNdeVec.nItems()) {
+    StageNde* pStageNde = m_oStageNdeVec.pGet(iNdeVec);
+    pOp = pStageNde->pOpVec()->pGet(0);
+    //    vTrace("***************%s::Job_Operand.pipeOut : %p %s\n"_Stz,
+    //           pOp->m_sName.szStz(),
+    //           pJob_Operand->m_pOperand,
+    //           aCN[pJob_Operand->m_pOperand->eClass()]);
+  }
+  else {
+    RASSERT(0);
+  }
+  
+  return pOp;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get stage spec                                                             */
 /*----------------------------------------------------------------------------*/
 StageSpec* Stage::pStageSpec(void)
