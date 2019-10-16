@@ -8,7 +8,8 @@ namespace Strings
   class Stz
   {
   private:
-    
+    char m_caStr[1];
+  
   public:
     void* operator new(size_t);
   
