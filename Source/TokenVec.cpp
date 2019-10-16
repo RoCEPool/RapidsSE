@@ -190,7 +190,7 @@ Token* TokenVec::pFindToken(Stz* aText, i8& i_Token)
   
   for (i_Token++; i_Token < nTokens(); i_Token++) {
     Token* pToken = m_pItem[i_Token];
-    if (pToken->sText().bSame(aText))
+    if (pToken->szText()->bSame(aText))
       return pToken;
   }
   

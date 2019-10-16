@@ -37,8 +37,6 @@ namespace Commands
     bool  bSame(Stz*);
     void  vStripSingleQuotes(void);
     Stz*  szText(void);
-    s256& sText(void);
-    void  vText(s256& sText);
     i8    iToI8(void);
     eTN   eToken(void);
     void  vToken(eTN eToken);

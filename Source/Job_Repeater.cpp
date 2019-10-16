@@ -199,15 +199,15 @@ Job* Jobs::pJob_Repeater_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId
     return pJob_Repeater;
   
   // set the input file path
-  pJob_Repeater->vFilePath(pTknVec->pGet(1)->sText());
+  pJob_Repeater->vFilePath(pTknVec->pGet(1)->szText());
   
   // set the output file path
-  pJob_Repeater->m_sOutputPath = pTknVec->pGet(2)->sText();
+  pJob_Repeater->m_sOutputPath = pTknVec->pGet(2)->szText();
   
   // is the last token the print option
   i8 i_Last = nTokens - 1;
-  if (pTknVec->pGet(i_Last)->sText().bSame("stats"_Stz) ||
-      pTknVec->pGet(i_Last)->sText().bSame("statistics"_Stz))
+  if (pTknVec->pGet(i_Last)->szText()->bSame("stats"_Stz) ||
+      pTknVec->pGet(i_Last)->szText()->bSame("statistics"_Stz))
     pJob_Repeater->m_bStatistics = true;
   
   return pJob_Repeater;

@@ -238,7 +238,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
     // - - - - - - - - - - - - - - - - - - - - -
     // C_RECORD_TERMINATOR
     if (pTokenVec->pGet(i_Token)->bSame(C_RECORD_TERMINATOR)) {
-      m_oFormatters.m_cRecordTerminator = *pTokenVec->pGet(++i_Token)->sText().aChar();
+      m_oFormatters.m_cRecordTerminator = *pTokenVec->pGet(++i_Token)->szText()->aChar();
       if (m_oFormatters.m_cRecordTerminator == '0')
         m_oFormatters.m_cRecordTerminator = '\0';
       else
@@ -248,7 +248,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
     // - - - - - - - - - - - - - - - - - - - - -
     // C_RECORD_ENDS
     else if (pTokenVec->pGet(i_Token)->bSame(C_RECORD_ENDS)) {
-      char cRecordEnds = *pTokenVec->pGet(++i_Token)->sText().aChar();
+      char cRecordEnds = *pTokenVec->pGet(++i_Token)->szText()->aChar();
       
       // is record_ends 1 character ?
       if (pTokenVec->pGet(i_Token)->iLength() == 1) {
@@ -286,7 +286,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
     // C_FIELD_DELIMITER
     else if (pTokenVec->pGet(i_Token)->bSame(C_FIELD_DELIMITER)) {
       s32 sFieldDelimiter;
-      sFieldDelimiter = pTokenVec->pGet(++i_Token)->sText();
+      sFieldDelimiter = pTokenVec->pGet(++i_Token)->szText();
       if (sFieldDelimiter.bSame("\\t"_Stz))
         m_oFormatters.m_cFieldDelimiter = '\t';
       else
@@ -300,7 +300,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
     // C_ENCLOSED_BY_LEADING
     else if (pTokenVec->pGet(i_Token)->bSame(C_ENCLOSED_BY_LEADING)) {
       m_oFormatters.m_cEnclosedBy_Leading =
-      *pTokenVec->pGet(++i_Token)->sText().aChar();
+      *pTokenVec->pGet(++i_Token)->szText()->aChar();
       if (m_oFormatters.m_cEnclosedBy_Leading == '0')
         m_oFormatters.m_cEnclosedBy_Leading = '\0';
       
@@ -322,7 +322,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
         return false;
       }
       m_oFormatters.m_cEnclosedBy_Trailing =
-      *pTokenVec->pGet(++i_Token)->sText().aChar();
+      *pTokenVec->pGet(++i_Token)->szText()->aChar();
       if (m_oFormatters.m_cEnclosedBy_Trailing == '0')
         m_oFormatters.m_cEnclosedBy_Trailing = '\0';
       
@@ -336,7 +336,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
     // C_DATE_FORMAT
     else if (pTokenVec->pGet(i_Token)->bSame(C_DATE_FORMAT)) {
       // extract date format
-      if ( ! bExtractDateFormat(pTokenVec->pGet(++i_Token)->sText()) ) {
+      if ( ! bExtractDateFormat(pTokenVec->pGet(++i_Token)->szText()) ) {
         if ( ! AM::bMetadata())
         vWarn("Invalid load : enclosed_by_trailing specified but no enclosed_by_leading\n"_Stz);
         return false;
@@ -347,7 +347,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
     // - - - - - - - - - - - - - - - - - - - - -
     // C_ESCAPE_CHAR
     else if (pTokenVec->pGet(i_Token)->bSame(C_ESCAPE_CHAR)) {
-      m_oFormatters.m_cEscapeChar = *pTokenVec->pGet(++i_Token)->sText().aChar();
+      m_oFormatters.m_cEscapeChar = *pTokenVec->pGet(++i_Token)->szText()->aChar();
       if (m_oFormatters.m_cEscapeChar == '0')
         m_oFormatters.m_cEscapeChar = '\0';
       
@@ -358,7 +358,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
     // C_MAX_ERRORS
     else if (pTokenVec->pGet(i_Token)->bSame(C_MAX_ERRORS)) {
       
-      m_oFormatters.m_nMaxErrors = pTokenVec->pGet(++i_Token)->sText().iToI8();
+      m_oFormatters.m_nMaxErrors = pTokenVec->pGet(++i_Token)->szText()->iToI8();
       
       m_oFormatters.m_bDefault = false;
     }

@@ -208,12 +208,12 @@ Job* Jobs::pJob_Generate_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId
   pJob_Generate->vObjectName(pTknVec->pGet(1)->szText());
   
   // set the file name
-  if (pTknVec->pGet(2)->sText().bSame("file"_Stz)) {
+  if (pTknVec->pGet(2)->szText()->bSame("file"_Stz)) {
     pJob_Generate->m_bIndefinite = false;
     pJob_Generate->vFilePath(pTknVec->pGet(3)->szText());
   }
   else
-  if (pTknVec->pGet(2)->sText().bSame("pipe"_Stz)) {
+  if (pTknVec->pGet(2)->szText()->bSame("pipe"_Stz)) {
     pJob_Generate->m_bIndefinite = true;
     pJob_Generate->vFilePath(pTknVec->pGet(3)->szText());
   }

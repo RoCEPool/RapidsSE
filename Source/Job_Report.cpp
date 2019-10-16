@@ -203,12 +203,12 @@ Job* Jobs::pJob_Report_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, 
   pJob_Report->vObjectName(pTknVec->pGet(1)->szText());
 
   // set the input file name
-  pJob_Report->vFilePath(pTknVec->pGet(2)->sText());
+  pJob_Report->vFilePath(pTknVec->pGet(2)->szText());
   
   // set the output file name
   if (4 <= nTokens) {
     pJob_Report->m_bNamedOut = true;
-    pJob_Report->m_sOutputPath = pTknVec->pGet(3)->sText();
+    pJob_Report->m_sOutputPath = pTknVec->pGet(3)->szText();
   }
   
   return pJob_Report;
