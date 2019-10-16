@@ -217,8 +217,14 @@ void SePrompt::vPromptLoop(void)
       continue;
     }
     
+
     vJobWaitCond();
 
+//    sleep(10);
+//    sleep(10);
+//    sleep(10);
+//    sleep(10);
+    
     vJobUnlockMutex();
     
     vPostJob();
