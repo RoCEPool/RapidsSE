@@ -79,6 +79,7 @@ namespace Scheduling
     static void vTask_Requires(Task* pTask, i8 nAcksRequired);
     static void vTask_Resume(Task* pTask);
     static void vTask_Schedule(Task* pTask);
+    static void vTask_Signal(Task* pTask);
     static void vTask_Sleep(Task* pTask);
     static void vTask_Thread(Task* pTask, Thread* pThread);
     static void vTask_Trigger(Task* pTask);
