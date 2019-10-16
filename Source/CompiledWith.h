@@ -34,6 +34,7 @@
 #define WITH_SHARED_LOG         // code for Log compiled in
 //#define WITH_STATISTICS_COUNTERS // statistics
 #define WITH_TRACE_API          // code for tracing api's compiled in
+//#define WITH_TRACE_DYNAMO       // code for tracing compiling dynamic pipeline
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // release behaviours
@@ -49,6 +50,7 @@
 //#define WITH_PREPOST_CHECKING    // _pre/postCondition_()
 //#define WITH_STATISTICS_COUNTERS // statistics
 //#define WITH_TRACE_API           // code for tracing api's compiled in
+//#define WITH_TRACE_DYNAMO        // code for tracing compiling dynamic pipeline
 #endif
 
 

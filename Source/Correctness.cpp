@@ -108,6 +108,10 @@ void Correctness::vTraceWith(void)
 #ifdef WITH_TRACE_API
   vTrace("  WITH_TRACE_API\n"_Stz);
 #endif
+  
+#ifdef WITH_TRACE_DYNAMO
+  vTrace("  WITH_TRACE_DYNAMO\n"_Stz);
+#endif
 }
 
 

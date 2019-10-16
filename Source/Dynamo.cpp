@@ -134,30 +134,35 @@ bool Dynamo::bCompile(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   bool bResult = false;
-  i8 nTokens = m_p_TknVec->nTokens();
-
-  for (i8 i_Tkn = 0; i_Tkn < nTokens; ) {
-    Token* m_pTkn = m_p_TknVec->pGet(i_Tkn++);
-    vTrace("  [%03lld] %s\n"_Stz,i_Tkn,m_pTkn->szText());
-  }
   
+#ifdef WITH_TRACE_DYNAMO
+  i8 nTokens = m_p_TknVec->nTokens();
+  
+  for (i8 i_Tkn = 0; i_Tkn < nTokens; ) {
+    Token* pTkn = m_p_TknVec->pGet(i_Tkn++);
+
+    vTrace("  [%03lld] %s\n"_Stz,i_Tkn,pTkn->szText());
+  }
   vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
+#endif
   
   bResult = bPhase1_collect();
   if (! bResult)
     return false;
-  
+ 
+#ifdef WITH_TRACE_DYNAMO
   m_pPipelineSpec->vPrint();
-
   vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
+#endif
   
   bResult = bPhase2_staging();
   if (! bResult)
     return false;
 
+#ifdef WITH_TRACE_DYNAMO
   m_pPipelineSpec->vPrint();
-  
   vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
+#endif
   
 //  bResult = bPhase3_flatten();
 //  if (! bResult)
@@ -171,9 +176,10 @@ bool Dynamo::bCompile(void)
   if (! bResult)
     return false;
   
+#ifdef WITH_TRACE_DYNAMO
   m_pPipelineSpec->vPrint();
-  
   vTrace("- - - - - - - - - - - - - - - - - -\n"_Stz);
+#endif
   
   return true;
 }
