@@ -9,7 +9,7 @@ namespace Esses
   class String_t : public Object
   {
   private:
-    char m_caArea[BYTES]; // Stz byte area
+    char m_caStr[BYTES]; // str area
     
     // must be last
     Footer m_xFooter;
@@ -72,9 +72,9 @@ String_t<BYTES>::String_t(void)
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caArea,BYTES,CN_STRING_T);
+  MemLib::vZero(m_caStr,BYTES,CN_STRING_T);
 #else
-  m_caArea[0] = '\0';
+  m_caStr[0] = '\0';
 #endif
 
   _checkInitialisedSize_(BYTES);
@@ -90,10 +90,10 @@ String_t<BYTES>::String_t(Stz* aArg)
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
 #ifdef WITH_CHECK_INITIALISED
-  MemLib::vZero(m_caArea,BYTES,CN_STRING_T);
+  MemLib::vZero(m_caStr,BYTES,CN_STRING_T);
 #endif
   
-  StrLib::vCopyLen(m_caArea,aArg->azChar(),BYTES-1);
+  StrLib::vCopyLen(m_caStr,aArg->azChar(),BYTES-1);
   
   _checkInitialisedSize_(BYTES);
 }
@@ -119,7 +119,7 @@ String_t<BYTES>::operator Stz*(void)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
-  return (Stz*)m_caArea;
+  return (Stz*)m_caStr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -130,7 +130,7 @@ void String_t<BYTES>::operator =(i8 iArg)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
-  StrLib::wToString(iArg,m_caArea);
+  StrLib::wToString(iArg,m_caStr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -141,7 +141,7 @@ void String_t<BYTES>::operator =(Stz* aArg)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
-  StrLib::vCopyLen(m_caArea,aArg->azChar(),BYTES-1);
+  StrLib::vCopyLen(m_caStr,aArg->azChar(),BYTES-1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -158,7 +158,7 @@ void String_t<BYTES>::vAppend(const char cChar)
   
   // limit???
   
-  StrLib::vConcat(m_caArea,cChar);
+  StrLib::vConcat(m_caStr,cChar);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -197,14 +197,14 @@ bool String_t<BYTES>::bBreak(i8 iBreakAt, i8& iPrevBreak)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get m_caArea                                                                */
+/* get m_caStr                                                                */
 /*----------------------------------------------------------------------------*/
 template <int BYTES>
 byte* String_t<BYTES>::ayByte(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (byte*)m_caArea;
+  return (byte*)m_caStr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -246,14 +246,14 @@ void String_t<BYTES>::vCatSprint(Stz* aFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get m_caArea                                                                */
+/* get m_caStr                                                                */
 /*----------------------------------------------------------------------------*/
 template <int BYTES>
 char* String_t<BYTES>::aChar(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  return (char*)m_caArea;
+  return (char*)m_caStr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -264,7 +264,7 @@ void String_t<BYTES>::vConcat(Stz* aStr)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  StrLib::vConcat(m_caArea,aStr->azChar());
+  StrLib::vConcat(m_caStr,aStr->azChar());
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -275,7 +275,7 @@ void String_t<BYTES>::vConcat(Stz* aStr)
 template <int BYTES>
 bool String_t<BYTES>::bContains(Stz* aArg)
 {
-  return StrLib::bContains(m_caArea,aArg->azChar());
+  return StrLib::bContains(m_caStr,aArg->azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -286,7 +286,7 @@ void String_t<BYTES>::vCopy(Stz* aStr)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  StrLib::vCopyLen(m_caArea,aStr->azChar(),BYTES-1);
+  StrLib::vCopyLen(m_caStr,aStr->azChar(),BYTES-1);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -299,7 +299,7 @@ void String_t<BYTES>::vCopyTill(Stz* aSrc, char cTill)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  StrLib::vCopyTill(m_caArea,aSrc->azChar(),cTill);
+  StrLib::vCopyTill(m_caStr,aSrc->azChar(),cTill);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -312,7 +312,7 @@ bool String_t<BYTES>::bEqual(Stz* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  bool b = StrLib::bEqualTo(m_caArea,(const char*)aArg);
+  bool b = StrLib::bEqualTo(m_caStr,(const char*)aArg);
   
   return b;
 }
@@ -325,7 +325,7 @@ bool String_t<BYTES>::bIsNumeric(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  bool b = StrLib::bIsNumeric(m_caArea);
+  bool b = StrLib::bIsNumeric(m_caStr);
   
   return b;
 }
@@ -347,7 +347,7 @@ i8 String_t<BYTES>::iLength(void)
 template <int BYTES>
 void String_t<BYTES>::vMaxValue(void)
 {
-  StrLib::vCopy(m_caArea,"Z");
+  StrLib::vCopy(m_caStr,"Z");
 }
 
 /*----------------------------------------------------------------------------*/
@@ -356,7 +356,7 @@ void String_t<BYTES>::vMaxValue(void)
 template <int BYTES>
 void String_t<BYTES>::vMidValue(void)
 {
-  StrLib::vCopy(m_caArea,"M");
+  StrLib::vCopy(m_caStr,"M");
 }
 
 /*----------------------------------------------------------------------------*/
@@ -365,7 +365,7 @@ void String_t<BYTES>::vMidValue(void)
 template <int BYTES>
 void String_t<BYTES>::vMinValue(void)
 {
-  StrLib::vCopy(m_caArea,"A");
+  StrLib::vCopy(m_caStr,"A");
 }
 
 /*----------------------------------------------------------------------------*/
@@ -382,7 +382,7 @@ void String_t<BYTES>::vNullValue(void)
 template <int BYTES>
 void String_t<BYTES>::vReset(void)
 {
-  m_caArea[0] = '\0';
+  m_caStr[0] = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
@@ -393,7 +393,7 @@ bool String_t<BYTES>::bSame(Stz* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  bool b = StrLib::bSame(m_caArea,(const char*)aArg);
+  bool b = StrLib::bSame(m_caStr,(const char*)aArg);
   
   return b;
 }
@@ -417,7 +417,7 @@ void String_t<BYTES>::vSizeMax(i8 nChars)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  m_caArea[nChars - 1] = '\0';
+  m_caStr[nChars - 1] = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
@@ -458,14 +458,14 @@ void String_t<BYTES>::vSprintCat(Stz* aFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get m_caArea                                                                */
+/* get m_caStr                                                                */
 /*----------------------------------------------------------------------------*/
 template <int BYTES>
 Stz* String_t<BYTES>::aStz(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*)m_caArea;
+  return (Stz*)m_caStr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -474,7 +474,7 @@ Stz* String_t<BYTES>::aStz(void)
 template <int BYTES>
 i8 String_t<BYTES>::iToI8(void)
 {
-  i8 i = StrLib::iToI8(m_caArea);
+  i8 i = StrLib::iToI8(m_caStr);
   
   return i;
 }
@@ -485,7 +485,7 @@ i8 String_t<BYTES>::iToI8(void)
 template <int BYTES>
 void String_t<BYTES>::vToLower(void)
 {
-  StrLib::vToLower(m_caArea);
+  StrLib::vToLower(m_caStr);
 }
 
 /*----------------------------------------------------------------------------*/
