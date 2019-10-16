@@ -265,12 +265,12 @@ void Job_CreateIndex::vShow(void)
   
   vTrace("\n\nJob_CreateIndex: %s\n"_Stz, szIndexName());
   
-  //vTrace("m_sExecute = %s\n"_Stz,m_sExecute.aChar());
+  //vTrace("m_sExecute = %s\n"_Stz,m_sExecute.azChar());
   vTrace("TableName = %s\n"_Stz,szObjectName());
   vTrace("m_iColumns = %lld\n"_Stz,m_iColumns);
   
   for (i8 i_Column = 0; i_Column < m_iColumns; i_Column++) {
-    vTrace("m_sColumnName[%lld] = %s\n"_Stz, i_Column, m_sColumnName[i_Column].aChar());
+    vTrace("m_sColumnName[%lld] = %s\n"_Stz, i_Column, m_sColumnName[i_Column].azChar());
   }
 }
 

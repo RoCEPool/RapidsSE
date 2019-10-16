@@ -33,9 +33,9 @@ bool Prompt::bPrompt_config(SePrompt* pPrompt)
   
   /*
   vTrace("  Node %s Shm %s Free %s Nodes %lld Slots %lld Threads %lld SubIngesters %lld SubLoaders %lld : %s\n"_Stz,
-         gxArguments.m_sNodeName.aChar(),
-         sShmSize.aChar(),
-         sFreeSpace.aChar(),
+         gxArguments.m_sNodeName.azChar(),
+         sShmSize.azChar(),
+         sFreeSpace.azChar(),
          gxArguments.m_nNodes,
          gxArguments.m_nSlotsPerNode,
          gxArguments.m_nThreads,

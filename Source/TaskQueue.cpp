@@ -119,7 +119,7 @@ void TaskQueue::vContentDump(void)
  
     pTask->vRenderPortrait(sPortrait);
     
-    vTrace("%s\n"_Stz,sPortrait.aChar());
+    vTrace("%s\n"_Stz,sPortrait.azChar());
   }
 }
 

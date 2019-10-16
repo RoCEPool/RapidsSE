@@ -226,7 +226,7 @@ eOR GetKeyOp::eOpLoop(void)
         m_pStreamDef = new StreamDef(pStreamDef);
      
         // figure out the key column
-        m_iKeyCol = m_pStreamDef->iFindColumn(m_sKey.aChar(), m_iColVec);
+        m_iKeyCol = m_pStreamDef->iFindColumn(m_sKey.azChar(), m_iColVec);
 
         // we should have the key column now
         RASSERT(m_iKeyCol != -1);

@@ -187,7 +187,7 @@ bool Job_InsertRow::bPopulateJob(TokenVec* pTokenVec)
 //    return false;
 //
   // get the length of the record
-  //m_nRawDataBytes = StrLib::iSize(m_aRawData.aChar());
+  //m_nRawDataBytes = StrLib::iSize(m_aRawData.azChar());
 
   return true;
 }

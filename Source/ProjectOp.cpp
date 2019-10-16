@@ -426,7 +426,7 @@ void ProjectOp::vUpdateStreamDef(void)
 //    // find the project column in the original Stream
 //    Column* pProjCol = pProjColumnVec->pGet(i_ProjCol);
 //    m_iWhichCol[i_ProjCol] =
-//    m_pOriginalStreamDef->iFindColumn(pProjCol->sColumnName().aChar(),m_iWhichVec[i_ProjCol]);
+//    m_pOriginalStreamDef->iFindColumn(pProjCol->sColumnName().azChar(),m_iWhichVec[i_ProjCol]);
 //
 //    // set the column and datum type in the project column
 //    ColumnVec* pColumnVec = m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[i_ProjCol]);

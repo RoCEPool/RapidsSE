@@ -228,7 +228,7 @@ void Jobs::vJob_ListColumns_post(Job* pJob)
     }
     
     i8 iRowsProcessed = 0;
-    Table* pTable = (Table*)StrLib::iToI8(pJob_ListColumns->m_xResponse.m_sResponse.aChar());
+    Table* pTable = (Table*)StrLib::iToI8(pJob_ListColumns->m_xResponse.m_sResponse.azChar());
     
     ColumnVec* pColumnVec = pTable->pColumnVec();
     i8 iColumns = pColumnVec->nItems();
@@ -236,7 +236,7 @@ void Jobs::vJob_ListColumns_post(Job* pJob)
       Column* pColumn = pColumnVec->pGet(iColumn);
       vTrace("row: (%lld, '%s', '%s', %lld, %lld, %s, %s)\n"_Stz,
              pColumn->iColumnNo(),
-             pColumn->sColumnName().aChar(),
+             pColumn->sColumnName().azChar(),
              aCT[pColumn->eColumnType()],
              pColumn->iColumnLength(),
              pColumn->iColumnScale(),

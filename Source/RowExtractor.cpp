@@ -272,7 +272,7 @@ bool RowExtractor::bExtractElement(DtmVal* pDtmVal, char** aacRecCrs,
       
     case DM_VCH:
       b = StrLib::bExtractVarcharDefault(aacRecCrs,
-                                         pDtmVal->m_sVch.aChar(),
+                                         pDtmVal->m_sVch.azChar(),
                                          pCol->iColumnLength(),
                                          pDtmVal->m_nChars);
       break;

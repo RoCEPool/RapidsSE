@@ -32,7 +32,7 @@ bool Prompt::bPrompt_mkfifo(SePrompt* pPrompt)
   sFifoPath = (*pTokenVec)[1]->szText();
   
   if (! Fifo::bMake(sFifoPath)) {
-    vTrace("Failed to make fifo: %s\n"_Stz,sFifoPath.aChar());
+    vTrace("Failed to make fifo: %s\n"_Stz,sFifoPath.azChar());
     return false;
   }
   

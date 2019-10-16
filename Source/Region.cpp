@@ -20,7 +20,7 @@ bool Region::bAttach(s32& sRegionName, bool bVerbose, void* aRegionAddr)
   bResult = Shm::bOpenExisting(iFD,sRegionName,oSysCall);
   if ( ! bResult ) {
     vTrace("Engine::vAttach: failed to open region: %s\n"_Stz,
-           sRegionName.aChar());
+           sRegionName.azChar());
     return false;
   }
   
@@ -57,7 +57,7 @@ bool Region::bAttach(s32& sRegionName, bool bVerbose, void* aRegionAddr)
   bResult = Shm::bOpenExisting(iFD,sRegionName,oSysCall);
   if ( ! bResult ) {
     vTrace("Engine::vAttach: failed to open region: %s\n"_Stz,
-           sRegionName.aChar());
+           sRegionName.azChar());
     return false;
   }
   
@@ -103,15 +103,15 @@ void Region::vCreate(s32& sRegionName, bool bVerbose,
   MagLib::vByteMag(iRegionSize, sSizeMag);
   if (bVerbose)
     vInfo("Creating Engine instance %s; size %s (%lldB)...\n"_Stz,
-           sRegionName.aChar(),
-           sSizeMag.aChar(),
+           sRegionName.azChar(),
+           sSizeMag.azChar(),
            iRegionSize);
   
   // open a new shm region which will contain the activity map
   bResult = Shm::bOpenCreate(iRegionFd,sRegionName,oSysCall);
   if (! bResult)
     vFatal("Engine::vCreate: failed to create region %s; errno %lld %s\n"_Stz,
-           sRegionName.aChar(),
+           sRegionName.azChar(),
            oSysCall.iError(),
            strerror((int)oSysCall.iError()));
 
@@ -119,7 +119,7 @@ void Region::vCreate(s32& sRegionName, bool bVerbose,
   bResult = Shm::bExtend(iRegionFd,iRegionSize,oSysCall);
   if (! bResult)
     vFatal("Engine::vCreate: failed to extend region %s\n"_Stz,
-           sRegionName.aChar());
+           sRegionName.azChar());
   
   // map the shm region into a vm segment within this process address space
   gaSeShmRegion = (Header*)Shm::aMap(iRegionFd,
@@ -176,7 +176,7 @@ void Region::vUnlink(s32& sRegionName)
   SysCall oSysCall;
   
   if (! Shm::bUnlink(sRegionName,oSysCall))
-    vTrace("Region %s not unlinked\n"_Stz,sRegionName.aChar());
+    vTrace("Region %s not unlinked\n"_Stz,sRegionName.azChar());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -190,13 +190,13 @@ void* Region::aOpen(s32& sRegionName, void* aRegionAddr, int& iFD)
   bool bResult;
   
   //if (gxArguments.m_bVerbose)
-  //  vInfo("Region::pOpen %s\n"_Stz,sRegionName.aChar());
+  //  vInfo("Region::pOpen %s\n"_Stz,sRegionName.azChar());
   
   // open shm region
   bResult = Shm::bOpenExisting(iFD,sRegionName,oSysCall);
   if ( ! bResult ) {
     vTrace("Region::pOpen: failed to open region: %s\n"_Stz,
-           sRegionName.aChar());
+           sRegionName.azChar());
     return nullptr;
   }
   

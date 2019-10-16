@@ -71,12 +71,12 @@ File::~File(void) noexcept(false)
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
   if (m_aFile) {
-    vWarn("File::~File file not closed: %s %s\n"_Stz,m_sFilePath.aChar(),m_sOpenMode.aChar());
+    vWarn("File::~File file not closed: %s %s\n"_Stz,m_sFilePath.azChar(),m_sOpenMode.azChar());
 
     vClose();
     
     if (m_oSysCall.bHadError())
-      vWarn("File::~File: file could not be closed: %s"_Stz,m_sFilePath.aChar());
+      vWarn("File::~File: file could not be closed: %s"_Stz,m_sFilePath.azChar());
   }
   
   -- gixFile;
@@ -225,7 +225,7 @@ void File::vClose(void)
   
   if (! m_aFile) {
     m_oSysCall.vFailure(0);
-    vWarn("File::vClose: file not open: %s"_Stz,m_sFilePath.aChar());
+    vWarn("File::vClose: file not open: %s"_Stz,m_sFilePath.azChar());
     return;
   }
   
@@ -237,7 +237,7 @@ void File::vClose(void)
   if ((char)EOF == iResult) {
     m_oSysCall.vError(errno);
     vWarn("File::vClose: fclose(%p) error; errno=%d : %s %s"_Stz,
-          m_aFile,errno,m_sFilePath.aChar(),m_sOpenMode.aChar());
+          m_aFile,errno,m_sFilePath.azChar(),m_sOpenMode.azChar());
     return;
   }
   
@@ -261,8 +261,8 @@ void File::vFileDump(void)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
-  vTrace("%sFile:\n"_Stz, m_sFilePath.aChar());
-  vTrace("%s  Open Mode %s\n"_Stz, m_sOpenMode.aChar());
+  vTrace("%sFile:\n"_Stz, m_sFilePath.azChar());
+  vTrace("%s  Open Mode %s\n"_Stz, m_sOpenMode.azChar());
   vTrace("%s  File Pointer 0x%p\n"_Stz, m_aFile);
 }
 
@@ -417,7 +417,7 @@ bool File::bOpenMode(Stz* aFilePath, Stz* aOpenMode)
   }
   
   if (m_aFile) {
-    vWarn("File::bOpen: previous file not closed: %s\n"_Stz,m_sFilePath.aChar());
+    vWarn("File::bOpen: previous file not closed: %s\n"_Stz,m_sFilePath.azChar());
     vClose();
   }
   
@@ -428,12 +428,12 @@ bool File::bOpenMode(Stz* aFilePath, Stz* aOpenMode)
   m_sFilePath   = aFilePath;
   m_sOpenMode   = aOpenMode;
 
-  m_aFile = fopen(m_sFilePath.aChar(),m_sOpenMode.aChar());
+  m_aFile = fopen(m_sFilePath.azChar(),m_sOpenMode.azChar());
   
   if (! m_aFile) {
     m_oSysCall.vError(errno);
     vWarn("File::bOpen: fopen(%s,%s) error; errno=%d\n"_Stz,
-          m_sFilePath.aChar(),m_sOpenMode.aChar(),errno);
+          m_sFilePath.azChar(),m_sOpenMode.azChar(),errno);
     return false;
   }
   
@@ -591,7 +591,7 @@ void File::vReset(void)
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
   //if (m_aFile && ! bIsStdin() && ! bIsStdout())
-  //  vWarn("File::vReset: previous file not closed: %s\n"_Stz,m_sFilePath.aChar());
+  //  vWarn("File::vReset: previous file not closed: %s\n"_Stz,m_sFilePath.azChar());
 
   m_oSysCall.vClear();
   
@@ -690,7 +690,7 @@ void File::vSetBuffering(i8 nBytes)
     iResult = setvbuf(m_aFile,NULL,_IOFBF,(int)nBytes);
   
   if (iResult)
-    vWarn("File::vBuffer: setvbuf failed: %s"_Stz,m_sFilePath.aChar());
+    vWarn("File::vBuffer: setvbuf failed: %s"_Stz,m_sFilePath.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -746,7 +746,7 @@ void File::vUngetChar(char cChar)
   i8 iResult = ungetc(cChar,m_aFile);
   
   if ((char)EOF == iResult)
-    vWarn("File::vUngetChar: unget failed: '%c' %s\n"_Stz,cChar,m_sFilePath.aChar());
+    vWarn("File::vUngetChar: unget failed: '%c' %s\n"_Stz,cChar,m_sFilePath.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -757,7 +757,7 @@ void File::vUseStdin(void)
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
   if (m_aFile) {
-    vWarn("File::vUseStdin: previous file not closed: %s\n"_Stz,m_sFilePath.aChar());
+    vWarn("File::vUseStdin: previous file not closed: %s\n"_Stz,m_sFilePath.azChar());
     vClose();
   }
   
@@ -776,7 +776,7 @@ void File::vUseStdout(void)
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
   if (m_aFile) {
-    vWarn("File::vUseStdin: previous file not closed: %s\n"_Stz,m_sFilePath.aChar());
+    vWarn("File::vUseStdin: previous file not closed: %s\n"_Stz,m_sFilePath.azChar());
     vClose();
   }
   
@@ -808,7 +808,7 @@ bool File::bWriteBytes(void* pBuffer, i8 nBytes)
 
   if (nBytesWritten != nBytes) {
     vWarn("File::vWriteBytes: fwrite(%s) error; errno=%d\n"_Stz,
-          m_sFilePath.aChar(),errno);
+          m_sFilePath.azChar(),errno);
     m_oSysCall.vError(errno);
     return false;
   }

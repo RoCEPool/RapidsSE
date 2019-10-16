@@ -16,11 +16,11 @@ int main(int argc, const char* argv[])
   printf("sizeof(HeapBuffer)   %lld\n", (i8)sizeof(HeapBuffer));
   
   s32 sRightTest;
-  StrLib::vRuler(sRightTest.aChar(),30);
-  vTrace("%s\n"_Stz,sRightTest.aChar());
+  StrLib::vRuler(sRightTest.azChar(),30);
+  vTrace("%s\n"_Stz,sRightTest.azChar());
 
-  StrLib::vRight(sRightTest.aChar(),(char*)"abcde"_Stz,29);
-  vTrace("%s\n"_Stz,sRightTest.aChar());
+  StrLib::vRight(sRightTest.azChar(),(char*)"abcde"_Stz,29);
+  vTrace("%s\n"_Stz,sRightTest.azChar());
   
   Process::vEntry();
   

@@ -181,7 +181,7 @@ void Session::vDump(eCN eClass, Object* pObject, Stz* aTab)
          Process::bTestPid(pSession->m_iPid) ? "exists"_Stz : "non-existant"_Stz,
          pSession->m_iPartition,
          pSession->iSlot(),
-         pSession->m_sResponse.aChar());
+         pSession->m_sResponse.azChar());
 }
 
 /*----------------------------------------------------------------------------*/

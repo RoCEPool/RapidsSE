@@ -543,7 +543,7 @@ void Job_Generate::vCreateDataRecord(void)
                     iTemperature,
                     iPressure,
                     iVolume,
-                    sComment.aChar()
+                    sComment.azChar()
                     );
   
 //  vAppendLeads();
@@ -679,20 +679,20 @@ void Job_Generate::vLoadColumns(void)
     Column* pColumn = pColVec->pGet(i_Column);
     
     // use first character of column name to determine column kind
-    char cKind  = *pColumn->sColumnName().aChar();
-    char cUnder = *(pColumn->sColumnName().aChar() + 1);
+    char cKind  = *pColumn->sColumnName().azChar();
+    char cUnder = *(pColumn->sColumnName().azChar() + 1);
     
     if (('X' == cKind || 'x' == cKind) && '_' == cUnder) {
-      vTrace("X: %s\n"_Stz,pColumn->sColumnName().aChar());
+      vTrace("X: %s\n"_Stz,pColumn->sColumnName().azChar());
       m_nLeadingDontCare++;
     }
     else
     if (('Z' == cKind || 'z' == cKind) && '_' == cUnder) {
-      vTrace("Z: %s\n"_Stz,pColumn->sColumnName().aChar());
+      vTrace("Z: %s\n"_Stz,pColumn->sColumnName().azChar());
       m_nTrailingDontCare++;
     }
     else {
-      vTrace("C: %s\n"_Stz,pColumn->sColumnName().aChar());
+      vTrace("C: %s\n"_Stz,pColumn->sColumnName().azChar());
       m_pCareColumn[m_nCareColumns] = pColumn;
       if (pColumn->bIsNullable())
         m_iMaxState[m_nCareColumns] = C_GEN_NUL;
@@ -766,7 +766,7 @@ void Job_Generate::vWriteRecord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
   
-  m_oFile.vPrint("%s\n"_Stz,m_sRecord.aChar());
+  m_oFile.vPrint("%s\n"_Stz,m_sRecord.azChar());
 }
 
 /*============================================================================*/

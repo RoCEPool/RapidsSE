@@ -24,7 +24,7 @@ void Step::vPersistenceCheckpoint(MP_Task mpTask)
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sFilePath) )
     THROW_INVALID_DSTACK("persistence::checkpoint"_Stz);
   
-  vTrace("\nTaking checkpoint into file : '%s'\n"_Stz, sFilePath.aChar());
+  vTrace("\nTaking checkpoint into file : '%s'\n"_Stz, sFilePath.azChar());
 
   BPA* pBPA = new BPA;
   
@@ -46,7 +46,7 @@ void Step::vPersistenceReload(MP_Task mpTask)
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sFilePath) )
     THROW_INVALID_DSTACK("persistence::reload"_Stz);
   
-  vTrace("\nReloading from file : '%s'\n"_Stz, sFilePath.aChar());
+  vTrace("\nReloading from file : '%s'\n"_Stz, sFilePath.azChar());
   
   EXIT();
 }

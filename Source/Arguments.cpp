@@ -195,13 +195,13 @@ void Arguments::vLog(void)
     sArg = (Stz*)(gi_argv[i_Arg ++]);
     
     while (i_Arg < gi_argc && '-' != *gi_argv[i_Arg]) {
-      StrLib::vConcat(sArg.aChar(),' ');
-      StrLib::vConcat(sArg.aChar(),gi_argv[i_Arg ++]);
+      StrLib::vConcat(sArg.azChar(),' ');
+      StrLib::vConcat(sArg.azChar(),gi_argv[i_Arg ++]);
     }
     
     AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_ARGS,
                 "  %s"_Stz //!format-LogSys
-                ,sArg.aChar());
+                ,sArg.azChar());
   }
 }
 
@@ -240,7 +240,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--command"_Stz)) {
       m_sCommand = (Stz*)argv[++i_Arg];
-      vTrace("command %s\n"_Stz, m_sCommand.aChar());
+      vTrace("command %s\n"_Stz, m_sCommand.azChar());
       m_bCommand = true;
       m_bPrompt  = true;
       m_bWelcome = false;
@@ -532,7 +532,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
         MagLib::vByteMag(iTotalMemory,sMag);
         vWarn("Cannot set size > %lld%% of memory on this node (node has only %s of memory)\n"_Stz,
               C_MEMORY_PERCENT,
-              sMag.aChar());
+              sMag.azChar());
         return false;
       }
       
@@ -730,14 +730,14 @@ bool Arguments::bParse(int argc, Stz* argv[])
     // m_xNodes[0].m_sIPAddress = ""_Stz;
     // m_xNodes[0].m_iPortNo =  -1;
     if ( m_bStart ) {
-      vWarn("Add argument '--node name ip-address port' for this node %s definition\n"_Stz, m_sNodeName.aChar());
+      vWarn("Add argument '--node name ip-address port' for this node %s definition\n"_Stz, m_sNodeName.azChar());
       return false;
     }
   }
 
   // if no regionName then form region name using regionPrefix and node name
   if (m_sRegionName.bSame(""_Stz)) {
-    m_sRegionName.vCat(m_sRegionPrefix,"_"_Stz,m_sNodeName.aChar(),nullptr);
+    m_sRegionName.vCat(m_sRegionPrefix,"_"_Stz,m_sNodeName.azChar(),nullptr);
   }
   else {
     if (m_bStart && m_nNodes > 1) {
@@ -798,8 +798,8 @@ void Arguments::vPrintStartupInfo(void)
   if (m_bVerbose)    vTrace("  --verbose\n"_Stz);
 #endif
   
-  vTrace("  --name %s\n"_Stz,m_sNodeName.aChar());
-  vTrace("  --region %s\n"_Stz,m_sRegionName.aChar());
+  vTrace("  --name %s\n"_Stz,m_sNodeName.azChar());
+  vTrace("  --region %s\n"_Stz,m_sRegionName.azChar());
   
 #ifdef WITH_DEBUG_VERSION
   vTrace("  --address %p\n"_Stz,m_aRegionAddr);
@@ -807,12 +807,12 @@ void Arguments::vPrintStartupInfo(void)
   
   s32 sSizeMag;
   MagLib::vByteMag(m_iRegionSize,sSizeMag);
-  vTrace("  --size %s\n"_Stz,sSizeMag.aChar());
+  vTrace("  --size %s\n"_Stz,sSizeMag.azChar());
   
   for (i8 i_Index = 0; i_Index < m_nNodes; i_Index++) {
     vTrace("  --node %s %s %lld\n"_Stz,
-      m_xNodes[i_Index].m_sNodeName.aChar(),
-      m_xNodes[i_Index].m_sIPAddress.aChar(),
+      m_xNodes[i_Index].m_sNodeName.azChar(),
+      m_xNodes[i_Index].m_sIPAddress.azChar(),
       m_xNodes[i_Index].m_iPortNo);
   }
   
@@ -829,8 +829,8 @@ void Arguments::vPrintStartupInfo(void)
   if (m_bMetadata) vTrace("  --metadata\n"_Stz);
 
 #ifdef WITH_DEBUG_VERSION
-  vTrace("  --commands %s\n"_Stz,m_sCommandsDir.aChar());
-  vTrace("  --sen %s\n"_Stz,m_sSenDir.aChar());
+  vTrace("  --commands %s\n"_Stz,m_sCommandsDir.azChar());
+  vTrace("  --sen %s\n"_Stz,m_sSenDir.azChar());
   if (m_bMunged) vTrace("  --munged\n"_Stz);
 #endif
   

@@ -38,7 +38,7 @@ bool MagLib::bToBytes(Stz* psBuf, i8& iBytes)
     iMagnitude = C_1PB;
   }
   else if (sString.bContains("b"_Stz)) {
-    if (!StrLib::bEqualTo(StrLib::sLast(sString.aChar()), "b")) {
+    if (!StrLib::bEqualTo(StrLib::sLast(sString.azChar()), "b")) {
       return false;
     }
     sNumber.vCopyTill(sString,'b');
@@ -48,7 +48,7 @@ bool MagLib::bToBytes(Stz* psBuf, i8& iBytes)
     sNumber = sString;
   }
   
-  char* ps = sNumber.aChar();
+  char* ps = sNumber.azChar();
   i8 iVal;
   
   if (!StrLib::bIsNumeric(ps)){

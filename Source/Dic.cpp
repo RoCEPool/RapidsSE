@@ -129,7 +129,7 @@ void Dic::vDump(eCN eClass, Object* pObject, Stz* aTab)
   Dic* pDic = _pDic(pObject);
   
   vTrace("name %s count %lld\n"_Stz,
-         pDic->m_sName.aChar(),
+         pDic->m_sName.azChar(),
          pDic->m_pArticle->nItems());
   
   //for (Word* pWord = m_pLastWord; pWord; pWord = pWord->pPrevWord())
@@ -307,7 +307,7 @@ void Dic::vListWords(void)
   for (Word* pWord = pLastWord(); pWord; pWord = pWord->pPrevWord()) {
     
     vTrace(": %s (dictionary %s)"_Stz,
-           pWord->sName().aChar(),
+           pWord->sName().azChar(),
            m_sName.aStz());
   }
   

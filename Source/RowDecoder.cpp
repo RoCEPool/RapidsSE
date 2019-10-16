@@ -365,7 +365,7 @@ void RowDecoder::vDecodeVch(DtmVal* pDtmVal, HeadLine* aHeadLine,
   
   else if (MC_STR_EMPTY == eEncoding) {
     pDtmVal->m_nChars = 0;
-    *pDtmVal->m_sVch.aChar() = '\0';
+    *pDtmVal->m_sVch.azChar() = '\0';
     pDtmVal->m_wDtm.m_iInt = 0;
   }
   
@@ -392,12 +392,12 @@ void RowDecoder::vDecodeVchLong(DtmVal* pDtmVal, HeadLine* aHeadLine,
   
   i8 nLength = aHeadLine->wGetLogical(i_Offset,C_2B);
   
-  MemLib::vCopy((byte*)pDtmVal->m_sVch.aChar(),
+  MemLib::vCopy((byte*)pDtmVal->m_sVch.azChar(),
                 (byte*)aHeadLine->ayAdrLogical(i_Offset + C_2B),
                 nLength,
                 CN_ROWCOMPACTOR);
   
-  * (pDtmVal->m_sVch.aChar() + nLength) = '\0';
+  * (pDtmVal->m_sVch.azChar() + nLength) = '\0';
   
   pDtmVal->m_nChars = nLength;
 }
@@ -429,7 +429,7 @@ void RowDecoder::vDecodeVchShocoFit(DtmVal* pDtmVal, HeadLine* aHeadLine,
   //RASSERT(nCompressed <= 56);
   
   i8 nDecompressed =
-  Compress::iFromShoco((char*)pDtmVal->m_sVch.aChar(),
+  Compress::iFromShoco((char*)pDtmVal->m_sVch.azChar(),
                        pDtmVal->m_sVch.nSpace(),
                        aHeadLine->ayAdrLogical(i_Offset + C_C_1B),
                        //((byte*)aHeadLine)+i_Offset+1,
@@ -486,7 +486,7 @@ void RowDecoder::vDecodeVchShocoSplit(DtmVal* pDtmVal, HeadLine* aHeadLine,
   //MemLib::vWordDump(caShoco+2,3 * sizeof(SpaceUnit));
   
   i8 nDecompressed =
-  Compress::iFromShoco((char*)pDtmVal->m_sVch.aChar(),
+  Compress::iFromShoco((char*)pDtmVal->m_sVch.azChar(),
                        255,
                        (byte*)caShoco+2,
                        nCompressed);
@@ -520,7 +520,7 @@ void RowDecoder::vDecodeVchShocoTail(DtmVal* pDtmVal, HeadLine* aHeadLine,
   //RASSERT(nCompressed <= 4);
   
   i8 nDecompressed =
-  Compress::iFromShoco(pDtmVal->m_sVch.aChar(),  // decompressed destination
+  Compress::iFromShoco(pDtmVal->m_sVch.azChar(),  // decompressed destination
                        255,                      // max destination
                        ((byte*)aShocoTail)       // from compressed source
                          + C_U_1B
@@ -555,12 +555,12 @@ void RowDecoder::vDecodeVchStringTail(DtmVal* pDtmVal, HeadLine* aHeadLine,
   i8 nLength = aTail_str->w8_1B(+ C_U_1B);
   byte* ayString = (byte*)aTail_str + C_U_1B + C_L_1B;
   
-  MemLib::vCopy((byte*)pDtmVal->m_sVch.aChar(),
+  MemLib::vCopy((byte*)pDtmVal->m_sVch.azChar(),
                 (byte*)ayString,
                 nLength,
                 CN_ROWCOMPACTOR);
   
-  * (pDtmVal->m_sVch.aChar() + nLength) = '\0';
+  * (pDtmVal->m_sVch.azChar() + nLength) = '\0';
   
   pDtmVal->m_nChars = nLength;
 }
@@ -575,12 +575,12 @@ void RowDecoder::vDecodeVchSmall(DtmVal* pDtmVal, HeadLine* aHeadLine,
   
   i8 nLength = aHeadLine->wGetLogical(i_Offset,C_1B);
   
-  MemLib::vCopy((byte*)pDtmVal->m_sVch.aChar(),
+  MemLib::vCopy((byte*)pDtmVal->m_sVch.azChar(),
                 (byte*)aHeadLine->ayAdrLogical(i_Offset + 1),
                 nLength,
                 CN_ROWCOMPACTOR);
   
-  * (pDtmVal->m_sVch.aChar() + nLength) = '\0';
+  * (pDtmVal->m_sVch.azChar() + nLength) = '\0';
   
   pDtmVal->m_nChars = nLength;
   

@@ -221,20 +221,20 @@ void LlcTest::vAnIteration(i8 iIteration, i8 nStepLength, i8 nMissRatio)
          iIteration,
          
          C_ELEMENTS,
-         sSizeMag.aChar(),
+         sSizeMag.azChar(),
          nStepLength,
          nMissBoundary,
          
-         sElapsedMag.aChar(),
-         sIterationsMag.aChar(),
-         sMissesMag.aChar(),
-         sAdjustedMag.aChar(),
+         sElapsedMag.azChar(),
+         sIterationsMag.azChar(),
+         sMissesMag.azChar(),
+         sAdjustedMag.azChar(),
          iCacheRatio,
          iAdjMissRatio,
          
-         sStepsMag.aChar(),
+         sStepsMag.azChar(),
          nSwitches,
-         sEveryMag.aChar(),
+         sEveryMag.azChar(),
          nZeroes,
          nBoundaries,
          

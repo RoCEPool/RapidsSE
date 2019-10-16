@@ -250,18 +250,18 @@ void Task::vTaskLoop_job(void)
       
       char* ps;
       
-      ps = StrLib::sLast(m_sFile.aChar());
-      StrLib::bBackward(&ps,m_sFile.aChar(),'/');
-      bool bBackSlash = StrLib::bBackward(&ps,m_sFile.aChar(),'/');
+      ps = StrLib::sLast(m_sFile.azChar());
+      StrLib::bBackward(&ps,m_sFile.azChar(),'/');
+      bool bBackSlash = StrLib::bBackward(&ps,m_sFile.azChar(),'/');
       if (bBackSlash) {
         StrLib::vCopy(caFileName,ps+1);
       }
       else {
-        StrLib::vCopy(caFileName, m_sFile.aChar());
+        StrLib::vCopy(caFileName, m_sFile.azChar());
       }
       vTrace("[%s] %s : line %lld in %s\n"_Stz,
              aJobName(),
-             m_sException.aChar(),
+             m_sException.azChar(),
              iException,
              caFileName);
       vRetry();
@@ -942,7 +942,7 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
           sStackContents.vCatSprint("^%s=%p:%s"_Stz,
                                     aCN[ePtrClass],
                                     pPtr,
-                                    ((Word*)pPtr)->sName().aChar());
+                                    ((Word*)pPtr)->sName().azChar());
         else if (CN_QUEUE == ePtrClass) {
           sStackContents.vCatSprint("^%s=%p:%s"_Stz,
                                     aCN[ePtrClass],
@@ -1083,20 +1083,20 @@ void Task::vTracePoint(Stz* aMark)
          aJobName(),
          m_oAcksRmg.iPrintOnlyValue(),
          
-         sRoutine.aChar(),
+         sRoutine.azChar(),
          aMark,
          iAuxValues);
          
   s48K sStackContents;
   vStackContents(m_pForth->m_pAuxStack, sStackContents);
   
-  vTrace("%s"_Stz,sStackContents.aChar());
+  vTrace("%s"_Stz,sStackContents.azChar());
   
   vTrace(" r%2lld  d%2lld="_Stz, iReturnValues, iDataValues);
 
   vStackContents(m_pForth->m_pDataStack, sStackContents);
   
-  vTrace("%s\n"_Stz,sStackContents.aChar());
+  vTrace("%s\n"_Stz,sStackContents.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1118,14 +1118,14 @@ void Task::vTraceStep(Stz* aStepNm)
   i8 iDataValues   = m_pForth->m_pDataStack->nValues();
   i8 iReturnValues = m_pForth->m_pReturnStack->nValues();
   vTrace("%-15s %15s : r%lld ; d%2d="_Stz,
-         sRoutine.aChar(),
+         sRoutine.azChar(),
          aStepNm,
          iReturnValues,
          iDataValues);
   
   s48K sStackContents;
   vStackContents(m_pForth->m_pDataStack, sStackContents);
-  vTrace("%s\n"_Stz,sStackContents.aChar());
+  vTrace("%s\n"_Stz,sStackContents.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1222,8 +1222,8 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  char* pf = sFormat.aChar();
-  char* ps = sString.aChar();
+  char* pf = sFormat.azChar();
+  char* ps = sString.azChar();
   
   while (*pf) {
     
@@ -1259,7 +1259,7 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
       if ('V' == *pf)
         *ps++ = '"';
       
-      for (char* pv = sValue.aChar(); *pv; )
+      for (char* pv = sValue.azChar(); *pv; )
         *ps++ = *pv++;
       
       if ('V' == *pf)

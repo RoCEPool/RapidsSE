@@ -142,7 +142,7 @@ void Row::vAppendValue(DtmVal* pDtmVal, Column* pCol)
     }
     
     char* acDstString = (char*)m_xWsp.ayLatter();
-    char* acSrcString = (char*)pDtmVal->m_sVch.aChar();
+    char* acSrcString = (char*)pDtmVal->m_sVch.azChar();
 
     i8 nSrcLength = StrLib::nCopy(acDstString,acSrcString);
 

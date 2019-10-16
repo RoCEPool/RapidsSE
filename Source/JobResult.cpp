@@ -138,7 +138,7 @@ void JobResult::vPrintLocalRows(void)
     vTrace("metadata: %s\n"_Stz, m_sMetadata.aStz());
   
   if (*m_xResponse.m_ixRowsProcessed)
-    vTrace("%s"_Stz, m_xResponse.m_sResponse.aChar());
+    vTrace("%s"_Stz, m_xResponse.m_sResponse.azChar());
 
     vTrace("success: %lld rows affected\n"_Stz, *m_xResponse.m_ixRowsProcessed);
 }
@@ -181,7 +181,7 @@ void JobResult::vPrintNodeRows(void)
   i8 iRowsProcessed = 0;
   
   for (i8 i_Node = 0; i_Node < iResponses; i_Node++) {
-    vTrace("%s\n"_Stz, m_pResponseVec->pGet(i_Node)->m_sResponse.aChar());
+    vTrace("%s\n"_Stz, m_pResponseVec->pGet(i_Node)->m_sResponse.azChar());
     iRowsProcessed += *m_pResponseVec->pGet(i_Node)->m_ixRowsProcessed;
   }
   vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);

@@ -57,7 +57,7 @@ SchemaTest::SchemaTest(Stz* sStream)
 
 #ifdef USE_SETH_SUPPORT
   m_sFilePath = "../Seth/schemaTest"_Stz;
-  if (*m_sStream.aChar()) {
+  if (*m_sStream.azChar()) {
     m_sFilePath.vConcat("_"_Stz);
     m_sFilePath.vConcat(m_sStream);
   }
@@ -128,8 +128,8 @@ void SchemaTest::vGenerate(void)
   vFileFooter();
   vCloseFile();
   
-  if (*m_sStream.aChar())
-    vTrace("  %lld tests generated (for stream %s)\n"_Stz,m_nTests,m_sStream.aChar());
+  if (*m_sStream.azChar())
+    vTrace("  %lld tests generated (for stream %s)\n"_Stz,m_nTests,m_sStream.azChar());
   else
     vTrace("  %lld tests generated\n"_Stz,m_nTests);
 }
@@ -348,7 +348,7 @@ void SchemaTest::vFormColumnName(i8 i_Col)
     m_sColumnNm.vConcat("z"_Stz);
   
   s32 sColNo;
-  StrLib::wToString(i_Col,sColNo.aChar());
+  StrLib::wToString(i_Col,sColNo.azChar());
   m_sColumnNm.vConcat(sColNo);
 }
 
@@ -439,20 +439,20 @@ void SchemaTest::vFormTableName(void)
   // table prefix
   m_sTableNm = ""_Stz;
   
-  if (*m_sStream.aChar()) {
+  if (*m_sStream.azChar()) {
     m_sTableNm.vConcat(m_sStream);
     m_sTableNm.vConcat("_"_Stz);
   }
   
   // no columns
 //  s32 sTableNo;
-//  StrLib::wToString(m_nCcolumns,sTableNo.aChar());
+//  StrLib::wToString(m_nCcolumns,sTableNo.azChar());
 //  m_sTableNm.vConcat(sTableNo);
 //  m_sTableNm.vConcat("_"_Stz);
   
   // x columns prefix
   s32 sX;
-  StrLib::wToString(m_nXcolumns,sX.aChar());
+  StrLib::wToString(m_nXcolumns,sX.azChar());
   m_sTableNm.vConcat("X"_Stz);
   m_sTableNm.vConcat(sX);
   
@@ -470,7 +470,7 @@ void SchemaTest::vFormTableName(void)
   
   // z columns suffix
   s32 sZ;
-  StrLib::wToString(m_nZcolumns,sZ.aChar());
+  StrLib::wToString(m_nZcolumns,sZ.azChar());
   m_sTableNm.vConcat("_Z"_Stz);
   m_sTableNm.vConcat(sZ);
 }
@@ -485,7 +485,7 @@ void SchemaTest::vFormRow(i8 i_Col)
   m_sRow.vConcat("  ("_Stz);
   
   s32 sColNo;
-  StrLib::wToString(i_Col,sColNo.aChar());
+  StrLib::wToString(i_Col,sColNo.azChar());
   m_sRow.vConcat(sColNo);
   m_sRow.vConcat(","_Stz);
 
@@ -650,7 +650,7 @@ eCT SchemaTest::eRandomType(void)
 /*----------------------------------------------------------------------------*/
 void SchemaTest::vWriteLsCol(void)
 {
-  m_oFile.vPrint("lscol %s ;\n"_Stz,m_sTableNm.aChar());
+  m_oFile.vPrint("lscol %s ;\n"_Stz,m_sTableNm.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -661,7 +661,7 @@ void SchemaTest::vWriteRows(void)
   m_oFile.vPrint("rows:\n"_Stz);
   for (i8 i_Col = 0; i_Col < m_nTotalColumns; i_Col++) {
     vFormRow(i_Col);
-    m_oFile.vPrint("%s\n"_Stz,m_sRow.aChar());
+    m_oFile.vPrint("%s\n"_Stz,m_sRow.azChar());
   }
   m_oFile.vPrint("\n"_Stz);
 }
@@ -671,7 +671,7 @@ void SchemaTest::vWriteRows(void)
 /*----------------------------------------------------------------------------*/
 void SchemaTest::vWriteStatement(void)
 {
-  m_oFile.vPrint("%s\n"_Stz,m_sStatement.aChar());
+  m_oFile.vPrint("%s\n"_Stz,m_sStatement.azChar());
 }
 
 /*----------------------------------------------------------------------------*/

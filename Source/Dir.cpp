@@ -271,7 +271,7 @@ bool Dir::bOpen(Stz* aDirPath)
   
   m_sDirPath = aDirPath;
   
-  char* wPath = m_sDirPath.aChar();
+  char* wPath = m_sDirPath.azChar();
  
   m_aDir = opendir(wPath);
   if (! m_aDir) {

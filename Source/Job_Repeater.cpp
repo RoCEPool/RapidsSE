@@ -308,7 +308,7 @@ bool Job_Repeater::bChunk(void)
   
   m_nRepeats++;
 //  vTrace("Repeating %s times %lld\n"_Stz,
-//          m_sFileName.aChar(),m_nRepeats);
+//          m_sFileName.azChar(),m_nRepeats);
 
   //SysCall oSysCall;
   //Shell::iExecute("purge"_Stz,oSysCall);

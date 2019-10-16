@@ -226,7 +226,7 @@ void HeapMem::vReport(void)
   s32 sMagJumbo;  MagLib::vByteMag(C_SIZE_JUMBO_OBJECT, sMagJumbo);
   
   vTrace("  Transient  Small  (%6s) buffers %-6lld alloc %-6lld free %-6lld (sum=%lld)\n"_Stz,
-         sMagSmall.aChar(),
+         sMagSmall.azChar(),
          AM::pHeapMem()->Transient.m_pSmall->iBufferCount(),
          AM::pHeapMem()->Transient.m_pSmall->iAllocCount(),
          AM::pHeapMem()->Transient.m_pSmall->iFreeCount(),
@@ -239,7 +239,7 @@ void HeapMem::vReport(void)
          );
   
   vTrace("             Medium (%6s) buffers %-6lld alloc %-6lld free %-6lld (sum=%lld)\n"_Stz,
-         sMagMedium.aChar(),
+         sMagMedium.azChar(),
          AM::pHeapMem()->Transient.m_pMedium->iBufferCount(),
          AM::pHeapMem()->Transient.m_pMedium->iAllocCount(),
          AM::pHeapMem()->Transient.m_pMedium->iFreeCount(),
@@ -252,7 +252,7 @@ void HeapMem::vReport(void)
          );
   
   vTrace("             Large  (%6s) buffers %-6lld alloc %-6lld free %-6lld (sum=%lld)\n"_Stz,
-         sMagLarge.aChar(),
+         sMagLarge.azChar(),
          AM::pHeapMem()->Transient.m_pLarge->iBufferCount(),
          AM::pHeapMem()->Transient.m_pLarge->iAllocCount(),
          AM::pHeapMem()->Transient.m_pLarge->iFreeCount(),
@@ -265,7 +265,7 @@ void HeapMem::vReport(void)
          );
   
   vTrace("             Jumbo  (%6s) buffers %-6lld alloc %-6lld free %-6lld (sum=%lld)\n"_Stz,
-         sMagJumbo.aChar(),
+         sMagJumbo.azChar(),
          AM::pHeapMem()->Transient.m_pJumbo->iBufferCount(),
          AM::pHeapMem()->Transient.m_pJumbo->iAllocCount(),
          AM::pHeapMem()->Transient.m_pJumbo->iFreeCount(),
@@ -278,7 +278,7 @@ void HeapMem::vReport(void)
          );
   
   vTrace("  Persistent Small  (%6s) buffers %-6lld alloc %-6lld free %-6lld (sum=%lld)\n"_Stz,
-         sMagSmall.aChar(),
+         sMagSmall.azChar(),
          AM::pHeapMem()->Persistent.m_pSmall->iBufferCount(),
          AM::pHeapMem()->Persistent.m_pSmall->iAllocCount(),
          AM::pHeapMem()->Persistent.m_pSmall->iFreeCount(),
@@ -291,7 +291,7 @@ void HeapMem::vReport(void)
          );
   
   vTrace("             Medium (%6s) buffers %-6lld alloc %-6lld free %-6lld (sum=%lld)\n"_Stz,
-         sMagMedium.aChar(),
+         sMagMedium.azChar(),
          AM::pHeapMem()->Persistent.m_pMedium->iBufferCount(),
          AM::pHeapMem()->Persistent.m_pMedium->iAllocCount(),
          AM::pHeapMem()->Persistent.m_pMedium->iFreeCount(),
@@ -304,7 +304,7 @@ void HeapMem::vReport(void)
          );
   
   vTrace("             Large  (%6s) buffers %-6lld alloc %-6lld free %-6lld (sum=%lld)\n"_Stz,
-         sMagLarge.aChar(),
+         sMagLarge.azChar(),
          AM::pHeapMem()->Persistent.m_pLarge->iBufferCount(),
          AM::pHeapMem()->Persistent.m_pLarge->iAllocCount(),
          AM::pHeapMem()->Persistent.m_pLarge->iFreeCount(),
@@ -317,7 +317,7 @@ void HeapMem::vReport(void)
          );
   
   vTrace("             Jumbo  (%6s) buffers %-6lld alloc %-6lld free %-6lld (sum=%lld)\n"_Stz,
-         sMagJumbo.aChar(),
+         sMagJumbo.azChar(),
          AM::pHeapMem()->Persistent.m_pJumbo->iBufferCount(),
          AM::pHeapMem()->Persistent.m_pJumbo->iAllocCount(),
          AM::pHeapMem()->Persistent.m_pJumbo->iFreeCount(),

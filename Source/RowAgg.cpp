@@ -194,14 +194,14 @@ void RowAgg::vAggregate(i8 i_Slot, CrwBuffer* pCrwBuffer)
   //  Time oDateTime;
   //  oDateTime.vSetLocal(&m_oSince);
   //  s32 sDateTime;
-  //  char* z = sDateTime.aChar();
+  //  char* z = sDateTime.azChar();
   //  oDateTime.vAppendLocal(&z);
   
-  //  vTrace("%s\n"_Stz,sDateTime.aChar());
+  //  vTrace("%s\n"_Stz,sDateTime.azChar());
   //  for (i8 i_AggCol = 0; i_AggCol < nAggColumns; i_AggCol++) {
   //    pAggColumn = m_pAggColVec->pGet(i_AggCol);
   //    vTrace("AggCol %s: min: %lld %lld; max: %lld %lld; avg: %lld\n"_Stz,
-  //           pAggColumn->sColumnName().aChar(),
+  //           pAggColumn->sColumnName().azChar(),
   //           m_iaMinKey[i_AggCol], m_iaMinVal[i_AggCol],
   //           m_iaMaxKey[i_AggCol], m_iaMaxVal[i_AggCol],
   //           m_iaAvgVal[i_AggCol]
@@ -228,7 +228,7 @@ void RowAgg::vPrintOut(File& oOutputFile)
 //  Time oDateTime;
 //  oDateTime.vSetLocal(&m_oSince);
 //  s32 sDateTime;
-//  char* z = sDateTime.aChar();
+//  char* z = sDateTime.azChar();
 //  oDateTime.vAppendLocal(&z);
 
   vTrace("  %lld rows\n"_Stz,m_nRows);
@@ -236,7 +236,7 @@ void RowAgg::vPrintOut(File& oOutputFile)
     
     Column* pAggColumn = m_pAggColVec->pGet(i_AggCol);
     vTrace("  %18s: min: %4lld (key=%4lld); max: %4lld (key=%4lld); avg: %6lld\n"_Stz,
-           pAggColumn->sColumnName().aChar(),
+           pAggColumn->sColumnName().azChar(),
            m_iaMinVal[i_AggCol], m_iaMinKey[i_AggCol],
            m_iaMaxVal[i_AggCol], m_iaMaxKey[i_AggCol],
            m_iaAvgVal[i_AggCol]
@@ -342,7 +342,7 @@ void RowAgg::vDiscoverColumns(void)
 //   
 //    vTrace("Column: %lld %s %s\n"_Stz,
 //           pColumn->iColumnNo(),
-//           pColumn->sColumnName().aChar(),
+//           pColumn->sColumnName().azChar(),
 //           aCT[pColumn->eColumnType()]);
 //  }
 }

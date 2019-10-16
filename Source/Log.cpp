@@ -91,13 +91,13 @@ Log* Log::pAttachCreate(void)
   bResult = Shm::bOpenCreate(iRegionFd,sLogRegionNm,oSysCall);
   if (! bResult)
     vFatal("Log::bOpenCreate: failed to create region %s\n"_Stz,
-           sLogRegionNm.aChar());
+           sLogRegionNm.azChar());
   
   // extend the shm region
   bResult = Shm::bExtend(iRegionFd,sizeof(Log),oSysCall);
   if (! bResult)
     vFatal("Log::bOpenCreate: failed to extend region %s\n"_Stz,
-           sLogRegionNm.aChar());
+           sLogRegionNm.azChar());
   
   // map the shm region into a vm segment within this process address space
   void* aSegment = Shm::aMap(iRegionFd,
@@ -127,7 +127,7 @@ Log* Log::pAttachExisting(void)
   bool bResult = Shm::bOpenExisting(iFD,sLogRegionNm,oSysCall);
   if (! bResult)
     vFatal("Log::bOpenExisting: failed to open region: %s\n"_Stz,
-           sLogRegionNm.aChar());
+           sLogRegionNm.azChar());
   
   // map the shm region into a vm segment within this process address space
   void* aSegment = Shm::aMap(iFD,
@@ -160,12 +160,12 @@ void Log::vNoteString(i8 iJobId, s48K& sString)
     return;
   
   s4K sLine;
-  char* aCharAdr = sString.aChar();
+  char* aCharAdr = sString.azChar();
 
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
   gpLog->vGrabLock();
   
-  while (StrLib::bEachLine(&aCharAdr,sLine.aChar())) {
+  while (StrLib::bEachLine(&aCharAdr,sLine.azChar())) {
     
     LogEntry* pLogEntry = gpLog->pNewEntry_NL();
     pLogEntry->vInit(SL_INF,CN_NONE,sLine);
@@ -443,8 +443,8 @@ void Log::vOpenBySE(bool bStarting)
   AM::vLogLog(SL_INF,gpLog,GA_LOG_HOST,
               "hw: host %s user %s; "
               "%lld cores; %s memory; %s clock frequency"_Stz, //!format-LogLog
-             sHost.aChar(),
-             sUser.aChar(),
+             sHost.azChar(),
+             sUser.azChar(),
               
              Hardware::iCoreCount(),
              sMem.aStz(),
@@ -1007,7 +1007,7 @@ void Log::vWriteToFile(bool bCsv, bool bShortForm)
   
   bool bOpened = pLogFile->bOpenWrite(sLogPath);
   if (! bOpened) {
-    vTrace("Unable to open log file: %s\n"_Stz,sLogPath.aChar());
+    vTrace("Unable to open log file: %s\n"_Stz,sLogPath.azChar());
     delete pLogFile;
     return;
   }
@@ -1073,7 +1073,7 @@ void Log::vWriteToFile(bool bCsv, bool bShortForm)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vTrace("Log written to: %s\n"_Stz,sLogPath.aChar());
+  vTrace("Log written to: %s\n"_Stz,sLogPath.azChar());
   
   delete pLogFile;
 }

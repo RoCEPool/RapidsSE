@@ -326,8 +326,8 @@ void Engine::vKillPrev(void)
   for (i8 i_Node = 0; i_Node < gxArguments.m_nNodes; i_Node++) {
     
     sRegionNm.vSprint("%s_%s"_Stz,
-                        gxArguments.m_sRegionPrefix.aChar(),
-                        gxArguments.m_xNodes[i_Node].m_sNodeName.aChar());
+                        gxArguments.m_sRegionPrefix.azChar(),
+                        gxArguments.m_xNodes[i_Node].m_sNodeName.azChar());
     
     if (! Region::bTest(sRegionNm) )
       continue;
@@ -528,7 +528,7 @@ void Engine::vOpenPool(void)
   if (gxArguments.m_bStart) {
     
     if (! gxArguments.m_bRestart && Region::bTest(gxArguments.m_sRegionName)) {
-      vTrace("Error: Instance %s already started\n"_Stz,gxArguments.m_sRegionName.aChar());
+      vTrace("Error: Instance %s already started\n"_Stz,gxArguments.m_sRegionName.azChar());
       Process::vExitFailure();
       return;
     }
@@ -562,7 +562,7 @@ void Engine::vOpenPool(void)
   if (gxArguments.m_bStop) {
     if (! Region::bTest(gxArguments.m_sRegionName)) {
       vTrace("Error: Instance %s was not started\n"_Stz,
-             gxArguments.m_sRegionName.aChar());
+             gxArguments.m_sRegionName.azChar());
       Process::vExitFailure();
       return;
     }
@@ -578,7 +578,7 @@ void Engine::vOpenPool(void)
   
   if (gxArguments.m_bPrompt || gxArguments.m_bSethScript) {
     if (! Region::bTest(gxArguments.m_sRegionName)) {
-      vTrace("Error: Instance %s was not started\n"_Stz,gxArguments.m_sRegionName.aChar());
+      vTrace("Error: Instance %s was not started\n"_Stz,gxArguments.m_sRegionName.azChar());
       Process::vExitFailure();
       return;
     }
@@ -588,7 +588,7 @@ void Engine::vOpenPool(void)
                               gxArguments.m_bVerbose,
                               gxArguments.m_aRegionAddr);
     if ( ! bResult ) {
-      vTrace("Error: Unable to attach to instance %s\n"_Stz,gxArguments.m_sRegionName.aChar());
+      vTrace("Error: Unable to attach to instance %s\n"_Stz,gxArguments.m_sRegionName.azChar());
       Process::vExitFailure();
       return;
       
@@ -667,13 +667,13 @@ void Engine::vPrintStatus(void)
     i8 iPid = AM::iPid();
     if ( Process::bTestPid(iPid) ) {
       vTrace("Engine instance %s running\n"_Stz,
-             gxArguments.m_sRegionName.aChar());
+             gxArguments.m_sRegionName.azChar());
       return;
     }
   }
   
   vTrace("Engine instance %s not running\n"_Stz,
-         gxArguments.m_sRegionName.aChar());
+         gxArguments.m_sRegionName.azChar());
   
 }
 
@@ -893,7 +893,7 @@ void Engine::vStartSystem(void)
   Node* pThisNode = AM::pGrid()->pFindNode(gxArguments.m_sNodeName);
   if (! pThisNode)
     vFatal("Cannot fine Node %s in the cluster"_Stz,
-          gxArguments.m_sNodeName.aChar());
+          gxArguments.m_sNodeName.azChar());
   
   i8 iThisNodeNo = pThisNode->iNodeNo();
   AM::pGrid()->vThisNode(iThisNodeNo);
@@ -964,10 +964,10 @@ void Engine::vStartSystem(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   AM::vLogSys(SL_INF,gpAttachMap,YA_SYS_BOOT,
               "instance %s started"_Stz,
-              gxArguments.m_sRegionName.aChar()); //!format-LogSys
+              gxArguments.m_sRegionName.azChar()); //!format-LogSys
   
   if (gxArguments.m_bVerbose) {
-    vInfo("Engine instance %s started\n"_Stz,gxArguments.m_sRegionName.aChar());
+    vInfo("Engine instance %s started\n"_Stz,gxArguments.m_sRegionName.azChar());
     AM::pGrid()->vDumpPartitioning();
   }
 }
@@ -984,7 +984,7 @@ void Engine::vStopSystem(void)
   gpAttachMap->m_iStop = 1;
   
   vTrace("Engine instance %s stopped\n"_Stz,
-         gxArguments.m_sRegionName.aChar());
+         gxArguments.m_sRegionName.azChar());
   
   // the system is now stopped
 }
@@ -1024,12 +1024,12 @@ void Engine::vWriteRegionName(void)
     File oFile;
     bool b = oFile.bOpenMode("./se.region"_Stz,C_OPEN_READ_WRITE_CREATE);
     ASSERT(b);
-    oFile.vPrint("%s\n"_Stz,gxArguments.m_sRegionName.aChar());
+    oFile.vPrint("%s\n"_Stz,gxArguments.m_sRegionName.azChar());
     oFile.vClose();
   }
   
   if (gxArguments.m_bVerbose)
-    vInfo("REGION NAME: %s\n"_Stz,gxArguments.m_sRegionName.aChar());
+    vInfo("REGION NAME: %s\n"_Stz,gxArguments.m_sRegionName.azChar());
 }
 
 /*============================================================================*/

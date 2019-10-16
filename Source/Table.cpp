@@ -128,7 +128,7 @@ void Table::vDump(eCN eClass, Object* pObject, Stz* aTab)
   Table* pTable = _pTable(pObject);
   
   vTrace("name %s type %s\n"_Stz,
-         pTable->m_sTableName.aChar(),
+         pTable->m_sTableName.azChar(),
          aTT[pTable->m_eTableType]->azChar());
 }
 
@@ -670,7 +670,7 @@ void Table::vPublish(i8 iPartition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  vTrace("Publishing table %s\n"_Stz, m_sTableName.aChar());
+  vTrace("Publishing table %s\n"_Stz, m_sTableName.azChar());
   m_xSlots.vPublishTable(iPartition);
   
   // publish all other indices
@@ -687,7 +687,7 @@ bool Table::bPurge(i8 iPartition, i8 iOlderThanSeconds)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  //vTrace("Purging table %s\n"_Stz, m_sTableName.aChar());
+  //vTrace("Purging table %s\n"_Stz, m_sTableName.azChar());
   bool bPurged = m_xSlots.bPurgeTable(iPartition, iOlderThanSeconds);
   
   // purge all other indexes

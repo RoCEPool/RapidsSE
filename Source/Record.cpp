@@ -49,7 +49,7 @@ Record::Record(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  m_azAppendCursor = m_sRecStr.aChar();
+  m_azAppendCursor = m_sRecStr.azChar();
   m_pColumnVec     = nullptr;
   
   _checkInitialised_(CN_RECORD);
@@ -65,7 +65,7 @@ Record::Record(ColumnVec* pColumnVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD,_FOOTER_);
   
-  m_azAppendCursor = m_sRecStr.aChar();
+  m_azAppendCursor = m_sRecStr.azChar();
   m_pColumnVec     = pColumnVec;
   
   _checkInitialised_(CN_RECORD);
@@ -197,18 +197,18 @@ void Record::vAppendBcd(Column* pCol, DtmVal* pDtmVal)
   }
   
   if (pCol->iColumnScale())
-    StrLib::vSprint(sAscii.aChar(),"%s%lld.%.*lld"_Stz,
+    StrLib::vSprint(sAscii.azChar(),"%s%lld.%.*lld"_Stz,
                     bNegative ? "-" : "",
                     iBcd_Whole,
                     pCol->iColumnScale(),
                     iBcd_Fraction);
   else
-    StrLib::vSprint(sAscii.aChar(),"%s%lld"_Stz,
+    StrLib::vSprint(sAscii.azChar(),"%s%lld"_Stz,
                     bNegative ? "-" : "",
                     iBcd_Whole);
 
-  //m_sRecStr.vConcat((Stz*)sAscii.aChar());
-  m_sRecStr.vAppend(&m_azAppendCursor,(Stz*)sAscii.aChar());
+  //m_sRecStr.vConcat((Stz*)sAscii.azChar());
+  m_sRecStr.vAppend(&m_azAppendCursor,(Stz*)sAscii.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -232,14 +232,14 @@ void Record::vAppendDte(Column* pCol, DtmVal* pDtmVal)
   
   s32 sAscii;
   
-  StrLib::vSprint(sAscii.aChar(),
+  StrLib::vSprint(sAscii.azChar(),
                   "%02lld-%02lld-%02lld"_Stz,
                   (i8)pDtmVal->m_wDtm.xDte.m_uYearDelta + C_YEAR_BASE,
                   (i8)pDtmVal->m_wDtm.xDte.m_uMonth,
                   (i8)pDtmVal->m_wDtm.xDte.m_uDay);
 
-  //m_sRecStr.vConcat((Stz*)sAscii.aChar());
-  m_sRecStr.vAppend(&m_azAppendCursor,(Stz*)sAscii.aChar());
+  //m_sRecStr.vConcat((Stz*)sAscii.azChar());
+  m_sRecStr.vAppend(&m_azAppendCursor,(Stz*)sAscii.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -251,10 +251,10 @@ void Record::vAppendFlt(Column* pCol, DtmVal* pDtmVal)
   
   s32 sAscii;
 
-  StrLib::vSprint(sAscii.aChar(),"%g"_Stz,pDtmVal->m_wDtm.m_dFlt);
+  StrLib::vSprint(sAscii.azChar(),"%g"_Stz,pDtmVal->m_wDtm.m_dFlt);
   
-  //m_sRecStr.vConcat((Stz*)sAscii.aChar());
-  m_sRecStr.vAppend(&m_azAppendCursor,(Stz*)sAscii.aChar());
+  //m_sRecStr.vConcat((Stz*)sAscii.azChar());
+  m_sRecStr.vAppend(&m_azAppendCursor,(Stz*)sAscii.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -314,7 +314,7 @@ void Record::vAppendVch(Column* pCol, DtmVal* pDtmVal)
   
   SP_Vch SP_Vch;
   
-  m_sRecStr.vAppend(&m_azAppendCursor,SP_Vch.sz(pDtmVal->m_sVch.aChar()));
+  m_sRecStr.vAppend(&m_azAppendCursor,SP_Vch.sz(pDtmVal->m_sVch.azChar()));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -366,7 +366,7 @@ void Record::vReset(void)
   
   m_sRecStr.vReset();
   
-  m_azAppendCursor = m_sRecStr.aChar();
+  m_azAppendCursor = m_sRecStr.azChar();
 }
 
 

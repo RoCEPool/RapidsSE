@@ -61,7 +61,7 @@ ENTRY("vInputNext"_Stz);
     ASSERT(mpTask->m_iTracing);
   }
   
-  char* aToken = mpTask->m_pCompiler->m_pTokeniser->sToken().aChar();
+  char* aToken = mpTask->m_pCompiler->m_pTokeniser->sToken().azChar();
   
   eTN eToken = mpTask->m_pCompiler->m_pTokeniser->eNextToken(aToken);
   
@@ -83,7 +83,7 @@ ENTRY("vInputOpen"_Stz);
   bool bOpened = mpTask->m_pCompiler->m_pTokeniser->bUseFile(sFilePath);
   
   if ( ! bOpened )
-    THROW("No such file: %s"_Stz,sFilePath.aChar());
+    THROW("No such file: %s"_Stz,sFilePath.azChar());
   
   EXIT();
 }
@@ -187,7 +187,7 @@ void Step::vInputUnknown(MP_Task mpTask)
   
   vTrace("\n"_Stz);
   vTrace("Unknown token: %s\n"_Stz,
-         mpTask->m_pCompiler->m_pTokeniser->sToken().aChar()
+         mpTask->m_pCompiler->m_pTokeniser->sToken().azChar()
          );
   vTrace("\n"_Stz);
 

@@ -46,7 +46,7 @@ Stz* SP_ReqTuple::sz(ReqTuple* aReqTuple)
                   spId.sz(IK_REQUEST,aReqTuple->m_iReqId),
                   spIdFor.sz(aReqTuple->m_iForId),
                   aReqTuple->m_iDetail,
-                  aReqTuple->m_sPurpose.aChar()
+                  aReqTuple->m_sPurpose.azChar()
                   );
   
   return (Stz*) &m_caResult[0];

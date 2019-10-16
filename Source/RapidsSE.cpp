@@ -418,7 +418,7 @@ eEC RapidsSE_TranslateError(i8 iTrace, Session* pSession,
     pSession->m_sResponse = aEC[(eEC)iErrorCode];
     API_LOC(310);
 
-    *aaError = pSession->m_sResponse.aChar();
+    *aaError = pSession->m_sResponse.azChar();
     API_LOC(320);
   }
   catch (Error* pError) { API_CATCH(pError); }
@@ -904,7 +904,7 @@ eEC RapidsSE_GetRow(i8 iTrace, Session* pSession, void* aJob,
   API_LOC(350);
 
   // return the row
-  *aaRow = pSession->m_sResponse.aChar();
+  *aaRow = pSession->m_sResponse.azChar();
   API_LOC(360);
 
   // delete the token vector
@@ -975,16 +975,16 @@ eEC RapidsSE_GetTableColumnRow(i8 iTrace, Session* pSession, void* aJob,
   
   //i8 iNode = AM::pGrid()->m_iThisNode;
   Table* pTable =
-  (Table*)StrLib::iToI8(pJob_ListColumns->m_xResponse.m_sResponse.aChar());
+  (Table*)StrLib::iToI8(pJob_ListColumns->m_xResponse.m_sResponse.azChar());
   API_LOC(320);
   
   ColumnVec* pColumnVec = pTable->pColumnVec();
   Column* pColumn = pColumnVec->pGet(i_Col);
   API_LOC(330);
   
-  sprintf(pSession->m_sResponse.aChar(),"%lld,%s,%s,%lld,%lld,%s,%s",
+  sprintf(pSession->m_sResponse.azChar(),"%lld,%s,%s,%lld,%lld,%s,%s",
           pColumn->iColumnNo(),
-          pColumn->sColumnName().aChar(),
+          pColumn->sColumnName().azChar(),
           aCT[pColumn->eColumnType()]->azChar(),
           pColumn->iColumnLength(),
           pColumn->iColumnScale(),
@@ -993,7 +993,7 @@ eEC RapidsSE_GetTableColumnRow(i8 iTrace, Session* pSession, void* aJob,
           );
   API_LOC(340);
   
-  *aaRow = pSession->m_sResponse.aChar();
+  *aaRow = pSession->m_sResponse.azChar();
   API_LOC(350);
   
   API_RETURN();
@@ -1018,7 +1018,7 @@ eEC RapidsSE_GetTableColumnRowCount(i8 iTrace, Session* pSession, void* aJob,
 
   //i8 iNode = AM::pGrid()->m_iThisNode;
   Table* pTable =
-    (Table*)StrLib::iToI8(pJob_ListColumns->m_xResponse.m_sResponse.aChar());
+    (Table*)StrLib::iToI8(pJob_ListColumns->m_xResponse.m_sResponse.azChar());
   API_LOC(320);
 
   ColumnVec* pColumnVec = pTable->pColumnVec();

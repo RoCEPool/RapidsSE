@@ -68,13 +68,13 @@ void* ShmLog::aOpenCreate(s32 sRegionNm, i8 nRegionSz)
   bResult = Shm::bOpenCreate(iRegionFd,sRegionNm,oSysCall);
   if (! bResult)
     vFatal("ShmLog::aCreateNew: failed to create region %s\n"_Stz,
-           sRegionNm.aChar());
+           sRegionNm.azChar());
   
   // extend the shm region
   bResult = Shm::bExtend(iRegionFd,nRegionSz,oSysCall);
   if (! bResult)
     vFatal("ShmLog::aCreateNew: failed to extend region %s to %lldB\n"_Stz,
-           sRegionNm.aChar(),nRegionSz);
+           sRegionNm.azChar(),nRegionSz);
   
   // map the shm region into a vm segment within this process address space
   void* aSegment = Shm::aMap(iRegionFd,
@@ -84,7 +84,7 @@ void* ShmLog::aOpenCreate(s32 sRegionNm, i8 nRegionSz)
                              oSysCall);
   if (! aSegment)
     vFatal("ShmLog::aCreateNew: failed to map region %s\n"_Stz,
-           sRegionNm.aChar());
+           sRegionNm.azChar());
   
   return aSegment;
 }
@@ -101,7 +101,7 @@ void* ShmLog::aOpenExisting(s32 sRegionNm, i8 nRegionSz)
   bool bResult = Shm::bOpenExisting(iFD,sRegionNm,oSysCall);
   if (! bResult)
     vFatal("ShmLog::aOpenExisting: failed to open region: %s\n"_Stz,
-           sRegionNm.aChar());
+           sRegionNm.azChar());
   
   // map the shm region into a vm segment within this process address space
   void* aSegment = Shm::aMap(iFD,
@@ -111,7 +111,7 @@ void* ShmLog::aOpenExisting(s32 sRegionNm, i8 nRegionSz)
                              oSysCall);
   if (! aSegment)
     vFatal("ShmLog::aOpenExisting: failed to map region %s\n"_Stz,
-           sRegionNm.aChar());
+           sRegionNm.azChar());
   
   return aSegment;
 }

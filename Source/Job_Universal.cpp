@@ -161,7 +161,7 @@ eEC Job_Universal::ePopulateJob(TokenVec* pTknVec)
 //
 //      m_oEnmSet.vAdd("<jobClass>"_Stz, CN_JOB_UNIVERSAL,TN_INTEGER);
 //      s32 sJobName(pWord_jobdef->sName());
-//      StrLib::vRemoveSuffix(sJobName.aChar(),'_');
+//      StrLib::vRemoveSuffix(sJobName.azChar(),'_');
 //      m_oEnmSet.vAdd("<jobNm>"_Stz,sJobName,TN_STRING);
 //      break;
 //    }

@@ -115,7 +115,7 @@ HashBuffer::~HashBuffer(void) noexcept(false)
 void HashBuffer::vAnalysis(void)
 {
   vTrace("    %s Entries %lld Full %lld%\n"_Stz,
-         m_sDotNotation.aChar(),
+         m_sDotNotation.azChar(),
          m_nEntries,
          IntLib::iPercent(m_nEntries, m_pHashMap->m_nEntriesPerBuffer));
   
@@ -192,7 +192,7 @@ void HashBuffer::vDumpEntry(i8 i_Entry, char cIndicator)
   
   sLead.vSprint("%c %10s[%lld:%lld,%lld]"_Stz,
                 cIndicator,
-                m_sDotNotation.aChar(),
+                m_sDotNotation.azChar(),
                 
                 m_iDepth,
                 m_nStrata,
@@ -201,7 +201,7 @@ void HashBuffer::vDumpEntry(i8 i_Entry, char cIndicator)
   vTrace("%-30s s:%016llx k:%6s/b:%lld/=v:%lld "
          "(%lld entries (%lld total) %lld%% full)\n"_Stz,
          
-         sLead.aChar(),
+         sLead.azChar(),
          
          aHashEntry->m_uSignature,
 

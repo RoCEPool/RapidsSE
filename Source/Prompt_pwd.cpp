@@ -29,7 +29,7 @@ bool Prompt::bPrompt_pwd(SePrompt* pPrompt)
   
   s256 sDir;
   if (Dir::bGetCurrent(sDir))
-    vTrace("%s\n"_Stz, sDir.aChar());
+    vTrace("%s\n"_Stz, sDir.azChar());
   
   return true;
 }

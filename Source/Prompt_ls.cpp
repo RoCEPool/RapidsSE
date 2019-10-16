@@ -44,7 +44,7 @@ bool Prompt::bPrompt_ls(SePrompt* pPrompt)
   while (oDir.bRead()) {
     sEntryName = oDir.sEntryName();
     iEntryType = oDir.iEntryType();
-    vTrace("%c %s\n"_Stz, iEntryType == DT_DIR ? 'd' : 'f', sEntryName.aChar());
+    vTrace("%c %s\n"_Stz, iEntryType == DT_DIR ? 'd' : 'f', sEntryName.azChar());
   }
   
   // close the current directory

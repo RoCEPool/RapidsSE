@@ -94,7 +94,7 @@ bool Prompt::bPrompt_classes(SePrompt* pPrompt)
     sName.vConcat("\"_Stz,"_Stz);
     
     vTrace("    /* %3lld 0x%02X */ %-26s // CN_%s\n"_Stz,
-           i_Class,i_Class,sName.aChar(),aCN[i_Class]);
+           i_Class,i_Class,sName.azChar(),aCN[i_Class]);
     
     if ('~' != cGroup)
       cGroup = cFirst;

@@ -31,7 +31,7 @@ namespace Esses
     byte* ayByte(void);
     void vCat(Stz* szArg, ...);
     void vCatSprint(Stz* szFormat, ...);
-    char* aChar(void);
+    char* azChar(void);
     void vConcat(Stz* szArg);
     bool bContains(Stz* szArg);
     void vCopy(Stz* szArg);
@@ -219,10 +219,10 @@ void String_t<SIZE>::vCat(Stz* szArg, ...)
   
   va_start(xVarArgs,szArg);
   
-  StrLib::vConcat(aChar(),szArg->azChar());
+  StrLib::vConcat(azChar(),szArg->azChar());
   
   while (Stz* szVal = va_arg(xVarArgs,Stz*))
-    StrLib::vConcat(aChar(),szVal->azChar());
+    StrLib::vConcat(azChar(),szVal->azChar());
   
   va_end(xVarArgs);
   
@@ -238,7 +238,7 @@ void String_t<SIZE>::vCatSprint(Stz* szFormat, ...)
   _precondition_(_MAGIC_,_FOOTER_);
   va_list args;
   
-  char* aEnd = aAdd<char*>(aChar(),nLength());
+  char* aEnd = aAdd<char*>(azChar(),nLength());
   
   va_start(args,szFormat);
   vsprintf(aEnd,(char*)szFormat,args);
@@ -249,7 +249,7 @@ void String_t<SIZE>::vCatSprint(Stz* szFormat, ...)
 /* get char pointer to str area                                               */
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
-char* String_t<SIZE>::aChar(void)
+char* String_t<SIZE>::azChar(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
@@ -338,7 +338,7 @@ i8 String_t<SIZE>::nLength(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return StrLib::iLength(aChar());
+  return StrLib::iLength(azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -406,7 +406,7 @@ i8 String_t<SIZE>::nSize(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return StrLib::iSize(aChar());
+  return StrLib::iSize(azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -440,7 +440,7 @@ void String_t<SIZE>::vSprint(Stz* szFormat, ...)
   va_list args;
   
   va_start(args,szFormat);
-  StrLib::vSprint(aChar(),args,szFormat->azChar());
+  StrLib::vSprint(azChar(),args,szFormat->azChar());
   va_end(args);
 }
 
@@ -453,7 +453,7 @@ void String_t<SIZE>::vSprintCat(Stz* szFormat, ...)
   va_list args;
   
   va_start(args,szFormat);
-  StrLib::vSprintCat(aChar(),args,szFormat->azChar());
+  StrLib::vSprintCat(azChar(),args,szFormat->azChar());
   va_end(args);
 }
 

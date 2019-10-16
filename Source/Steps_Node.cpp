@@ -360,11 +360,11 @@ void Step::vNodeStatus(MP_Task mpTask)
   if (Region::bTest(sRegionNm))
     s.vSprint("row: ('%s', '%s', 'running')"_Stz,
             pGrid->pThisNode()->szNodeName(),
-            sRegionNm.aChar());
+            sRegionNm.azChar());
   else
     s.vSprint("row: ('%s', '%s', 'not running')"_Stz,
             pGrid->pThisNode()->szNodeName(),
-            sRegionNm.aChar());
+            sRegionNm.azChar());
   
   mpTask->m_pForth->m_pDataStack->vPushS256(s);
   

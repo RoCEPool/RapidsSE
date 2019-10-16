@@ -98,11 +98,11 @@ void Step::vStrClip(MP_Task mpTask)
   char* pStart;
   
   if (iLength > 0)
-    pStart = sString.aChar();
+    pStart = sString.azChar();
   else
-    pStart = sString.aChar() + iHasLength - 1 - llabs(iLength);
+    pStart = sString.azChar() + iHasLength - 1 - llabs(iLength);
   
-  StrLib::vCopyLen(sSubStr.aChar(),pStart,llabs(iLength));
+  StrLib::vCopyLen(sSubStr.azChar(),pStart,llabs(iLength));
   
   mpTask->m_pForth->m_pDataStack->vPushS48K(sSubStr);
   
@@ -146,7 +146,7 @@ void Step::vStrEscape(MP_Task mpTask)
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(xArg) )
     THROW_INVALID_DSTACK("str.escape"_Stz);
   
-  StrLib::vEscape(xArg.aChar(),xEscaped.aChar());
+  StrLib::vEscape(xArg.azChar(),xEscaped.azChar());
   
   mpTask->m_pForth->m_pDataStack->vPushS48K(xEscaped);
   
@@ -166,9 +166,9 @@ void Step::vStrFirstCsv(MP_Task mpTask)
   
   s48K sFirstValue;
   
-  char* aValue = sStr.aChar();
+  char* aValue = sStr.azChar();
   
-  if (! StrLib::bExtractItem(&aValue,sFirstValue.aChar(), ','))
+  if (! StrLib::bExtractItem(&aValue,sFirstValue.azChar(), ','))
     sFirstValue = ""_Stz;
   
   mpTask->m_pForth->m_pDataStack->vPushS48K(sFirstValue);
@@ -217,9 +217,9 @@ void Step::vStrLeft(MP_Task mpTask)
   if ( iLength < 0)
     THROW("Invalid length for: str.left"_Stz);
   
-  char* pStart = sString.aChar();
+  char* pStart = sString.azChar();
   
-  StrLib::vCopyLen(sSubStr.aChar(),pStart,iLength);
+  StrLib::vCopyLen(sSubStr.azChar(),pStart,iLength);
   
   mpTask->m_pForth->m_pDataStack->vPushS48K(sSubStr);
   
@@ -330,7 +330,7 @@ void Step::vStrRemovePrefix(MP_Task mpTask)
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sIntro) )
     THROW_INVALID_DSTACK("str.removePrefix"_Stz);
   
-  StrLib::vRemovePrefix(sString.aChar(), * sIntro.aChar());
+  StrLib::vRemovePrefix(sString.azChar(), * sIntro.azChar());
   
   mpTask->m_pForth->m_pDataStack->vPushS48K(sString);
   
@@ -352,7 +352,7 @@ void Step::vStrRemoveSuffix(MP_Task mpTask)
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sIntro) )
     THROW_INVALID_DSTACK("str.removeSuffix"_Stz);
   
-  StrLib::vRemoveSuffix(sString.aChar(), * sIntro.aChar());
+  StrLib::vRemoveSuffix(sString.azChar(), * sIntro.azChar());
   
   mpTask->m_pForth->m_pDataStack->vPushS48K(sString);
 
@@ -381,7 +381,7 @@ void Step::vStrReplace(MP_Task mpTask)
   
   s48K sReplaced;
   
-  StrLib::bReplace(sReplaced.aChar(),sString.aChar(),sThis.aChar(),sThat.aChar());
+  StrLib::bReplace(sReplaced.azChar(),sString.azChar(),sThis.azChar(),sThat.azChar());
   
   mpTask->m_pForth->m_pDataStack->vPushS48K(sReplaced);
   
@@ -412,9 +412,9 @@ void Step::vStrRight(MP_Task mpTask)
   if (iLength > iHasLength)
     iLength = iHasLength;
   
-  char* pStart = sString.aChar() + iHasLength - iLength;
+  char* pStart = sString.azChar() + iHasLength - iLength;
   
-  StrLib::vCopyLen(sSubStr.aChar(),pStart,iLength);
+  StrLib::vCopyLen(sSubStr.azChar(),pStart,iLength);
   
   mpTask->m_pForth->m_pDataStack->vPushS48K(sSubStr);
   
@@ -450,9 +450,9 @@ void Step::vStrSub(MP_Task mpTask)
   if ( iLength <= 0 || iStart + iLength > iHasLength)
     THROW("Invalid length of %lld for: str.sub"_Stz,iLength);
   
-  char* pStart = sString.aChar() + iStart;
+  char* pStart = sString.azChar() + iStart;
   
-  StrLib::vCopyLen(sSubStr.aChar(),pStart,iLength);
+  StrLib::vCopyLen(sSubStr.azChar(),pStart,iLength);
   
   mpTask->m_pForth->m_pDataStack->vPushS48K(sSubStr);
   
@@ -472,7 +472,7 @@ void Step::vStrTailInt(MP_Task mpTask)
     THROW_INVALID_DSTACK("str.tailInt"_Stz);
   
   // get last char in string
-  char* aLast = StrLib::sLast(sString.aChar());
+  char* aLast = StrLib::sLast(sString.azChar());
   
   // return false if not a digit
   if ( ! StrLib::bIsDigit(*aLast) ) {

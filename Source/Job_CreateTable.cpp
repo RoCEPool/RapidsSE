@@ -220,14 +220,14 @@ void Job_CreateTable::vShow(void)
   
   vTrace("\n\nJob_CreateTable: %s\n"_Stz, szObjectName());
   
-  //vTrace("m_sExecute = %s\n"_Stz,m_sExecute.aChar());
+  //vTrace("m_sExecute = %s\n"_Stz,m_sExecute.azChar());
   vTrace("m_eTableType = %s\n"_Stz,aTT[m_eTableType]);
   vTrace("m_iColumns = %lld\n"_Stz,m_iColumns);
   
   for (i8 i_Column = 0; i_Column < m_iColumns; i_Column++) {
     vTrace("\n"_Stz, i_Column, m_xColumns[i_Column].iColumnNo());
     vTrace("  m_xColumns[%lld].iColumnNo = %lld\n"_Stz, i_Column, m_xColumns[i_Column].iColumnNo());
-    vTrace("  m_xColumns[%lld].sColumnName = %s\n"_Stz, i_Column, m_xColumns[i_Column].sColumnName().aChar());
+    vTrace("  m_xColumns[%lld].sColumnName = %s\n"_Stz, i_Column, m_xColumns[i_Column].sColumnName().azChar());
     vTrace("  m_xColumns[%lld].eColumnType = %s\n"_Stz, i_Column, aCT[m_xColumns[i_Column].eColumnType()]);
     vTrace("  m_xColumns[%lld].iColumnLength = %lld\n"_Stz, i_Column, m_xColumns[i_Column].iColumnLength());
     vTrace("  m_xColumns[%lld].iColumnScale = %lld\n"_Stz, i_Column, m_xColumns[i_Column].iColumnScale());

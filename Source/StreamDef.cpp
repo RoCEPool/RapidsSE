@@ -178,7 +178,7 @@ i8 StreamDef::iFindColumn(char* sColumnNm, i8& i_ColVec)
 //    i8 nColumns = pColumnVec->nItems();
 //    for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
 //      Column* pCol = pColumnVec->pGet(i_Col);
-//      if (StrLib::bEqualTo(sColumnNm,pCol->sColumnName().aChar(),C_NO_CASE)) {
+//      if (StrLib::bEqualTo(sColumnNm,pCol->sColumnName().azChar(),C_NO_CASE)) {
 //        return i_Col;
 //      }
 //    }
@@ -206,7 +206,7 @@ void StreamDef::vToMetadata(Stz* sMetadata)
         if (i_DefColumn != 0)
           sMetadata->vConcat(","_Stz);
         
-        sMetadata->vCatSprint("%s %s"_Stz, m_xaColumn[i_DefColumn].sColumnName().aChar(),
+        sMetadata->vCatSprint("%s %s"_Stz, m_xaColumn[i_DefColumn].sColumnName().azChar(),
                               aCT[m_xaColumn[i_DefColumn].eColumnType()]);
       }
     }

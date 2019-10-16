@@ -148,9 +148,9 @@ void FocalObjects::vMriAll(void)
            aCN[pFocal->eClass()],
            pFocal->bValidMagic() ? "M" : "?",
            
-           sFocalOutline.aChar(),
+           sFocalOutline.azChar(),
            
-           sLogEntry.aChar()
+           sLogEntry.azChar()
            );
   }
   
@@ -192,9 +192,9 @@ void FocalObjects::vMriClass(Stz* szClassNm)
            aCN[pFocal->eClass()],
            pFocal->bValidMagic() ? "M" : "?",
 
-           sFocalOutline.aChar(),
+           sFocalOutline.azChar(),
 
-           sLogEntry.aChar()
+           sLogEntry.azChar()
            );
   }
   
@@ -230,7 +230,7 @@ void FocalObjects::vMriFocal(i8 i_Focal)
            pFocal,
            i_Log,
            aCN[pFocal->eClass()],
-           sString.aChar());
+           sString.azChar());
   
     i_Log = AM::iLogEntryPrev(i_Log);
   }

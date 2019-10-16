@@ -139,7 +139,7 @@ i8 Hardware::iPhysicalMemory(void)
 /*----------------------------------------------------------------------------*/
 void Hardware::vHostName(s32& sName)
 {
-  i8 iResult = gethostname(sName.aChar(), 32);
+  i8 iResult = gethostname(sName.azChar(), 32);
   if (iResult)
     perror("gethostname");
 }
@@ -149,7 +149,7 @@ void Hardware::vHostName(s32& sName)
 /*----------------------------------------------------------------------------*/
 void Hardware::vLoginName(s32& sName)
 {
-  i8 iResult = getlogin_r(sName.aChar(), 32);
+  i8 iResult = getlogin_r(sName.azChar(), 32);
   if (iResult)
     perror("getlogin_r");
 }

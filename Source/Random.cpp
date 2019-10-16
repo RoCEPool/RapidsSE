@@ -150,7 +150,7 @@ void Random::vString(s256& sStr, i8 iLength)
   // 01234567890123456789012345678901234567890123456789012345678901234567
   // 0         1         2         3         4         5         6      6
   
-  char* z = sStr.aChar();
+  char* z = sStr.azChar();
   
   for (i8 i = 0; i < iLength; i++)
     *z++ = caCharSet[iInteger(68)];

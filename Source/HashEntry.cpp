@@ -137,10 +137,10 @@ void HashEntry::vDump(void)
 {
   s32 sKey;
 
-  StrLib::vCopyLen(sKey.aChar(),(char*)m_yaKey,m_nBytes);
+  StrLib::vCopyLen(sKey.azChar(),(char*)m_yaKey,m_nBytes);
 
   vTrace("%s/%lld %lld\n"_Stz,
-         sKey.aChar(),
+         sKey.azChar(),
          m_nBytes,
          m_iValue);
 }

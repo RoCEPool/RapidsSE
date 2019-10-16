@@ -242,7 +242,7 @@ void Op_ToCommand::vCollectFilter(Filter* pFilter)
   s4K sFilter;
   pFilter->vAsString(sFilter);
   
-  if (! *m_sCmd.aChar()) {
+  if (! *m_sCmd.azChar()) {
     m_sCmd = "dynamic "_Stz;
     m_sCmd.vConcat(sFilter);
     return;

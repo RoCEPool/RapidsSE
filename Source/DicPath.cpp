@@ -66,7 +66,7 @@ void DicPath::vContentDump(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   
   for (i8 i_Dic = m_nDicNames; i_Dic >= 0; i_Dic--)
-    vTrace("Dic %lld %s\n"_Stz,i_Dic,m_sDicName[i_Dic].aChar());
+    vTrace("Dic %lld %s\n"_Stz,i_Dic,m_sDicName[i_Dic].azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -147,14 +147,14 @@ void DicPath::vSetPath(s256& sPathString)
   sRemainingPath = sPathString;
   do {
     
-    StrLib::vCopySplit(sFolderNm.aChar(),
-                       sRemainingPath.aChar(),
-                       sRemainingPath.aChar(),
+    StrLib::vCopySplit(sFolderNm.azChar(),
+                       sRemainingPath.azChar(),
+                       sRemainingPath.azChar(),
                        '.');
     
     vAppendName(sFolderNm);
     
-  } while (*sRemainingPath.aChar());
+  } while (*sRemainingPath.azChar());
   
 }
 

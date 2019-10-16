@@ -26,7 +26,7 @@ bool JobHelper::bParseCmd(EnameSet* pArgEnmSet,
       
       pArgEnmSet->vAdd("<jobClass>"_Stz,CN_JOB_UNIVERSAL,TN_INTEGER);
       s32 sJobName(pSyntax->pEnameSet()->szValue("__Name__"_Stz));
-      //StrLib::vRemoveSuffix(sJobName.aChar(),'_');
+      //StrLib::vRemoveSuffix(sJobName.azChar(),'_');
       pArgEnmSet->vAdd("<jobNm>"_Stz,sJobName,TN_STRING);
       break;
     }

@@ -72,7 +72,7 @@ bool Shm::bOpenCreate(int& iShmFd, s32& sShmNm, SysCall& oSysCall)
   // open shared memory region and get a file descriptor
   int    iFlags = O_CREAT | O_EXCL | O_RDWR;
   mode_t iMode  = S_IRUSR | S_IWUSR;
-  iShmFd = shm_open(sShmNm.aChar(),iFlags,iMode);
+  iShmFd = shm_open(sShmNm.azChar(),iFlags,iMode);
 
   if (iShmFd == -1) {
     oSysCall.vError(errno);
@@ -94,7 +94,7 @@ bool Shm::bOpenExisting(int& iShmFd, s32& sShmNm, SysCall& oSysCall)
   // open shared memory region and get a file descriptor
   int    iFlags = O_RDWR;
   mode_t iMode  = S_IRUSR | S_IWUSR;
-  iShmFd = shm_open(sShmNm.aChar(), iFlags, iMode);
+  iShmFd = shm_open(sShmNm.azChar(), iFlags, iMode);
   
   if (iShmFd == -1) {
     oSysCall.vError(errno);
@@ -192,7 +192,7 @@ bool Shm::bUnlink(s32& sShmNm, SysCall& oSysCall)
 {
   oSysCall.vClear();
   
-  int iResult = shm_unlink(sShmNm.aChar());
+  int iResult = shm_unlink(sShmNm.azChar());
 
   if (0 != iResult) {
     oSysCall.vError(errno);

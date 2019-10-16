@@ -85,7 +85,7 @@ void Token::vDump(eCN eClass, Object* pObject, Stz* aTab)
   
   vTrace("token %s %s\n"_Stz,
          aTN[pToken->m_eToken],
-         pToken->m_sText.aChar());
+         pToken->m_sText.azChar());
 }
 
 
@@ -238,8 +238,8 @@ void Token::vStripSingleQuotes(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
 
-  StrLib::vRemove(m_sText.aChar(),'\'');
-  StrLib::vStrip(m_sText.aChar(),'\'');
+  StrLib::vRemove(m_sText.azChar(),'\'');
+  StrLib::vStrip(m_sText.azChar(),'\'');
 }
 
 /*----------------------------------------------------------------------------*/

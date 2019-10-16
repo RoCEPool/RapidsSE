@@ -383,7 +383,7 @@ void AggOp::vUpdateStreamDef(void)
 //    // find the project column in the original Stream
 //    Column* pAggCol = pAggColumnVec->pGet(i_AggCol);
 //    m_iWhichCol[i_AggCol] =
-//    m_pOriginalStreamDef->iFindColumn(pAggCol->sColumnName().aChar(),m_iWhichVec[i_AggCol]);
+//    m_pOriginalStreamDef->iFindColumn(pAggCol->sColumnName().azChar(),m_iWhichVec[i_AggCol]);
 //
 //    // get the agg column from the original Stream
 //    ColumnVec* pColumnVec = m_pOriginalStreamDef->m_oColVecAry.pGet(m_iWhichVec[i_AggCol]);

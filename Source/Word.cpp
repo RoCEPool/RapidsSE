@@ -362,13 +362,13 @@ void Word::vContentDump(void)
   vTrace("Word %p: %s %s Category %s Immediate %d DataBytes %lld "_Stz
          "Step %p %s ..Rows.. %p\n"_Stz,
          this,
-         m_sName.aChar(),
+         m_sName.azChar(),
          aWK[m_eKind]->azChar(),
-         m_pCategory->m_sName.aChar(),
+         m_pCategory->m_sName.azChar(),
          m_bImmediate,
          m_xRoutine.nUsed(),
          m_fpIntrinsic,
-         pStepWord ? pStepWord->sName().aChar() : "<not-found>",
+         pStepWord ? pStepWord->sName().azChar() : "<not-found>",
          aFirstCell()
          );
 }
@@ -685,7 +685,7 @@ void Word::vObjectDump(Stz* aTab)
   vTrace("epoch %lld %s (%s) %s %s DataBytes %lld "_Stz
          "Step %p ..Rows.. %p\n"_Stz,
          m_iEpoch,
-         m_sName.aChar(),
+         m_sName.azChar(),
          m_pDic ? m_pDic->szName() : C_NO_NAME,
          aWK[m_eKind]->azChar(),
          m_bImmediate ? "Immediate"_Stz : "Not Immediate"_Stz,

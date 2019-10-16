@@ -42,7 +42,7 @@ Stz* SP_Word::sz(Word* pWord)
                   
                   pWord->sName().aStz(),
                   aWK[pWord->eKind()],
-                  pWord->pCategory()->sName().aChar(),
+                  pWord->pCategory()->sName().azChar(),
                   
 
                   pWord->bImmediate() ? " immediate" : "",

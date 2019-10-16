@@ -547,7 +547,7 @@ void SePrompt::vGetCommand(void)
     return;
   }
   
-  if (* m_pSession->m_sToDo.aChar()) {
+  if (* m_pSession->m_sToDo.azChar()) {
     Tokeniser::vTokenise(pTknVec(),m_pSession->m_sToDo);
     pTknVec()->vStripSemicolon();
     pTknVec()->vSetTokens();

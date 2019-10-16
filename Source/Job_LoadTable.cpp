@@ -290,7 +290,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
       if (sFieldDelimiter.bSame("\\t"_Stz))
         m_oFormatters.m_cFieldDelimiter = '\t';
       else
-        m_oFormatters.m_cFieldDelimiter = *sFieldDelimiter.aChar();
+        m_oFormatters.m_cFieldDelimiter = *sFieldDelimiter.azChar();
       if (m_oFormatters.m_cFieldDelimiter == '0')
         m_oFormatters.m_cFieldDelimiter = '\0';
       m_oFormatters.m_bDefault = false;

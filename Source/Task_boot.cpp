@@ -227,11 +227,11 @@ Word* Task::pCompileColon(s48K& sDefinition)
   
   // get :
   m_pCompiler->m_pTokeniser->vNextToken();
-  //vTrace("CompileColon: %s\n"_Stz,m_sToken.aChar());
+  //vTrace("CompileColon: %s\n"_Stz,m_sToken.azChar());
   
   // get name of word
   m_pCompiler->m_pTokeniser->vNextToken();
-  //vTrace("CompileColon: %s\n"_Stz,m_sToken.aChar());
+  //vTrace("CompileColon: %s\n"_Stz,m_sToken.azChar());
   
   Dic* pDic;
   if (m_oDicStack.iCount())
@@ -248,9 +248,9 @@ Word* Task::pCompileColon(s48K& sDefinition)
   
   while (TN_NONE != m_pCompiler->m_pTokeniser->eToken()) {
     
-    //vTrace("CompileColon: %s\n"_Stz,m_sToken.aChar());
+    //vTrace("CompileColon: %s\n"_Stz,m_sToken.azChar());
     
-//  if (StrLib::bEqualTo(";",m_pCompiler->m_pTokeniser->sToken().aChar()))
+//  if (StrLib::bEqualTo(";",m_pCompiler->m_pTokeniser->sToken().azChar()))
     if (m_pCompiler->m_pTokeniser->sToken().bEqual(";"_Stz))
       break;
     
@@ -315,20 +315,20 @@ void Task::vCompileConstant(s48K& sDefinition)
   
   // get string
   m_pCompiler->m_pTokeniser->vNextToken();
-  //vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->m_pTokeniser->sToken().aChar());
-  sValue = (Stz*)m_pCompiler->m_pTokeniser->sToken().aChar();
+  //vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->m_pTokeniser->sToken().azChar());
+  sValue = (Stz*)m_pCompiler->m_pTokeniser->sToken().azChar();
   
   // get CONSTANT
   m_pCompiler->m_pTokeniser->vNextToken();
-  //vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->m_pTokeniser->sToken().aChar());
+  //vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->m_pTokeniser->sToken().azChar());
   
   // get name of word
   m_pCompiler->m_pTokeniser->vNextToken();
-  //vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->m_pTokeniser->sToken().aChar());
+  //vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->m_pTokeniser->sToken().azChar());
 
-  Stz* szName = (Stz*)m_pCompiler->m_pTokeniser->sToken().aChar();
+  Stz* szName = (Stz*)m_pCompiler->m_pTokeniser->sToken().azChar();
 
-  //vTrace("CompileConstant: %s %s\n"_Stz,aName,sConstantValue.aChar());
+  //vTrace("CompileConstant: %s %s\n"_Stz,aName,sConstantValue.azChar());
   
   AM::vAddConstant(szName,sValue.aStz());
   

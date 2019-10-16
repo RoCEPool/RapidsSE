@@ -658,7 +658,7 @@ void Jobs::vJob_FetchRows_post(Job* pJob)
     
     if (pJob_FetchRows->m_bPrint && AM::bMetadata()) {
       Column* pCol = pJob_FetchRows->m_pColumn;
-      vTrace("metadata: (%s %s)\n"_Stz, pCol->sColumnName().aChar(), aCT[pCol->eColumnType()]);
+      vTrace("metadata: (%s %s)\n"_Stz, pCol->sColumnName().azChar(), aCT[pCol->eColumnType()]);
     }
     
     // create a row for retrieval

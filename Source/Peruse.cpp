@@ -162,7 +162,7 @@ void Peruse::vAdd(i8 iArg, Stz* szFormat,...)
     MagLib::vTimeMag(m_oTimer.iMilliseconds()*C_1M, sElapsedMag);
     
     s32 sCountComma;
-    StrLib::vComma(sCountComma.aChar(), m_iGrandCount);
+    StrLib::vComma(sCountComma.azChar(), m_iGrandCount);
     
     vTrace("%s %s "
            "cnt %s sum %lld min %lld max %lld "
@@ -241,7 +241,7 @@ void Peruse::vPrint(Stz* szFormat,...)
   MagLib::vTimeMag(m_oTimer.iMilliseconds()*C_1M, sElapsedMag);
   
   s32 sCountComma;
-  StrLib::vComma(sCountComma.aChar(), m_iGrandCount);
+  StrLib::vComma(sCountComma.azChar(), m_iGrandCount);
   
   
   vTrace("cnt %s sum %lld min %lld max %lld "
