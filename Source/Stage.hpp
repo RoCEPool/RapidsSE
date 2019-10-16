@@ -30,7 +30,6 @@ namespace Operators
     Op*          pPipeOutOp(ePX eTopologyX, i8 iNdeVec);
     StageSpec*   pStageSpec(void);
     StageNde*    pStageNde(i8 i_Nde);
-    StageNde*    pStageNde(i8 i_Nde, i8& iNdeVec);
     StageNdeVec* pStageNdeVec(void);
     StagePtnVec* pStagePtnVec(void);
     
