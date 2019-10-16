@@ -10,9 +10,9 @@ namespace Alignment
   class Wsp_t
   {
   private:
-    byte m_ayByteArea[LENGTH]; // fixed byte area
+    byte m_yaByteArea[LENGTH]; // fixed byte area
     i8   m_nAreaUsed;          // bytes used in the area
-                               //  (must be after m_ayByteArea)
+                               //  (must be after m_yaByteArea)
   
   public:
     Wsp_t(void);
@@ -87,7 +87,7 @@ void Wsp_t<LENGTH>::vAppend(void* aSrc, i8 nBytes, eCN eClassNo)
 template<int LENGTH>
 byte* Wsp_t<LENGTH>::ayArea(void)
 {
-  byte* ayArea = m_ayByteArea;
+  byte* ayArea = m_yaByteArea;
   
   return ayArea;
 }
@@ -149,7 +149,7 @@ i8 Wsp_t<LENGTH>::nSize(void)
 template<int LENGTH>
 Stz* Wsp_t<LENGTH>::szStz(void)
 {
-  char* aArea = (char*)m_ayByteArea;
+  char* aArea = (char*)m_yaByteArea;
   
  return reinterpret_cast<Stz*>(aArea);
 }
