@@ -102,7 +102,7 @@
   //"Signalling the thread waiting on job completion" .
   pJob job.signalWaiter
 
-  task::delete
+  //task::delete
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -247,7 +247,7 @@
   //"Signalling the thread waiting on job completion" .
   pJob job.signalWaiter
 
-  task::delete
+  //task::delete
 ;
 
 /*============================================================================*/

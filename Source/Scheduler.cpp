@@ -363,7 +363,7 @@ void Scheduler::vTaskLoopTransition(Thread* pThread)
     case TR_BIDE:   vTask_Bide(pTask);   break;
     case TR_DELETE: vTask_Delete(pTask); break;
     case TR_PAUSE:  vTask_Pause(pTask);  break;
-    case TR_SIGNAL: vTask_Sleep(pTask);  break;
+    case TR_SIGNAL: vTask_Signal(pTask); break;
     case TR_SLEEP:  vTask_Sleep(pTask);  break;
     case TR_WAIT:   vTask_Wait(pTask);   break;
     case TR_YIELD:  vTask_Yield(pTask);  break;
@@ -937,7 +937,7 @@ void Scheduler::vTask_Schedule(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove task from executing set and signal the thread waiting on its mutex  */
+/* signal the thread waiting on the tasks mutex                               */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Signal(Task* pTask)
 {
@@ -945,15 +945,11 @@ void Scheduler::vTask_Signal(Task* pTask)
   AM::vLogTsk(SL_INF,pTask,TA_TSK_SLEEP,
               "Add desisted task to SleepingQueue"_Stz); //!format-LogTsk
   
-  RASSERT(TS_EXECUTING == pTask->eState());
-  RASSERT(QK_EXECUTING_SET == pTask->eQueue());
+  RASSERT(TS_DESISTED == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
   RASSERT(TR_SIGNAL == pTask->eTransition());
   
-  Queues* pQueues = AM::pQueues();
-  pQueues->vRemoveExecutingSet(pTask);
-  
   pTask->vTransitionClear();
-  pTask->vState(TS_DESISTED);
   
   pTask->vLock();
   pTask->vMutexSignal();

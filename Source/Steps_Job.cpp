@@ -1762,6 +1762,7 @@ void Step::vJobSignalWaiter(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (pJob->m_bNoWait) {
+    //! this is incomplete ... memory leak; job & task need to be deleted
     EXIT();
     return;
   }
@@ -1772,13 +1773,10 @@ void Step::vJobSignalWaiter(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pJob->vLockJobMutex();
+  RASSERT( _bIsValidJob(pJob->eClass()) );
   
   pJob->m_eJobState = JS_SIGNALLED;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  RASSERT( _bIsValidJob(pJob->eClass()) );
   i8 i_State = pJob->m_xReqTuple.m_i_State;
   
   SessionState* pState = AM::pApiState()->pGetState(i_State);
@@ -1786,13 +1784,58 @@ void Step::vJobSignalWaiter(MP_Task mpTask)
   RASSERT( _bIsValidJob(pJob->eClass()) );
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  pJob->vSignalJobMutex();
-  
-  pJob->vUnlockJobMutex();
+
+  mpTask->vTransition(TR_SIGNAL);
   
   EXIT();
 }
+/*----------------------------------------------------------------------------*/
+//void Step::vJobSignalWaiter(MP_Task mpTask)
+//{
+//  ENTRY("vJobSignalWaiter"_Stz);
+//
+//  // there will be a thread waiting on completion of the job
+//  // this could be a prompt htread or a java thread via the connector
+//
+//  Object* pJobPtr;
+//  if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
+//  THROW_INVALID_DSTACK("job.signalWaiter"_Stz);
+//  Job* pJob = _pJob(pJobPtr);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  if (pJob->m_bNoWait) {
+//    EXIT();
+//    return;
+//  }
+//
+//  if (pJob->m_xReqTuple.m_iDetail)
+//  JobLog::vNote(pJob,"Connector/Prompt signalled by %s"_Stz,
+//                aCN[pJob->eClass()]);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  pJob->vLockJobMutex();
+//
+//  pJob->m_eJobState = JS_SIGNALLED;
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  RASSERT( _bIsValidJob(pJob->eClass()) );
+//  i8 i_State = pJob->m_xReqTuple.m_i_State;
+//
+//  SessionState* pState = AM::pApiState()->pGetState(i_State);
+//  ApiState::vMarkSignalled(pState->m_pSession);
+//  RASSERT( _bIsValidJob(pJob->eClass()) );
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  pJob->vSignalJobMutex();
+//
+//  pJob->vUnlockJobMutex();
+//
+//  EXIT();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* job.slot@ -- fetch job slot                                                */

@@ -117,7 +117,7 @@
   //"Signalling connector thread" .
   pJob job.signalWaiter
 
-  task::delete
+  //task::delete
 ;
 
 /*----------------------------------------------------------------------------*/
