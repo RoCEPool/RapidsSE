@@ -90,7 +90,7 @@ void Step::vStrClip(MP_Task mpTask)
     THROW_INVALID_DSTACK("str.clip"_Stz);
   
   // validate length
-  i8 iHasLength = sString.iLength();
+  i8 iHasLength = sString.nLength();
   
   if ( iLength < 0 || llabs(iLength) >= iHasLength)
     THROW("Invalid length for: str.clip"_Stz);
@@ -212,7 +212,7 @@ void Step::vStrLeft(MP_Task mpTask)
     THROW_INVALID_DSTACK("str.left"_Stz);
   
   // validate length
-  i8 iHasLength = sString.iLength();
+  i8 iHasLength = sString.nLength();
   
   if ( iLength < 0)
     THROW("Invalid length for: str.left"_Stz);
@@ -240,7 +240,7 @@ void Step::vStrLength(MP_Task mpTask)
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sString) )
     THROW_INVALID_DSTACK("str.length"_Stz);
   
-  iLength = sString.iLength();
+  iLength = sString.nLength();
   
   mpTask->m_pForth->m_pDataStack->vPushI8(iLength);
   
@@ -404,7 +404,7 @@ void Step::vStrRight(MP_Task mpTask)
     THROW_INVALID_DSTACK("str.right"_Stz);
   
   // validate length
-  i8 iHasLength = sString.iLength();
+  i8 iHasLength = sString.nLength();
   
   if ( iLength < 0)
     THROW("Invalid length for: str.right"_Stz);
@@ -437,7 +437,7 @@ void Step::vStrSub(MP_Task mpTask)
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sString,iStart,iLength) )
     THROW_INVALID_DSTACK("str.sub"_Stz);
   
-  i8 iHasLength = sString.iLength();
+  i8 iHasLength = sString.nLength();
   
   // validate start index
   if ( iStart < 0 || iStart >= iHasLength)

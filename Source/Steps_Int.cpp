@@ -146,9 +146,9 @@ void Step::vIntHash(MP_Task mpTask)
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sString) )
     THROW_INVALID_DSTACK("hash"_Stz);
   
-  i8 iLength = sString.iLength();
+  i8 nLength = sString.nLength();
   
-  i8 iHash = HshLib::iHash((byte*)sString.aChar(),iLength);
+  i8 iHash = HshLib::iHash(sString.ayByte(),nLength);
   
   mpTask->m_pForth->m_pDataStack->vPushI8(iHash);
   

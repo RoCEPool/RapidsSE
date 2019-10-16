@@ -38,7 +38,7 @@ namespace Esses
     void vCopyTill(Stz* szArg, char cTill);
     bool bEqual(Stz* szArg);
     bool bIsNumeric(void);
-    i8   iLength(void);
+    i8   nLength(void);
     void vMaxValue(void);
     void vMidValue(void);
     void vMinValue(void);
@@ -186,7 +186,7 @@ bool String_t<SIZE>::bBreak(i8 iBreakAt, i8& iPrevBreak)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  i8 iLen = iLength();
+  i8 iLen = nLength();
   
   i8 iBreak = iLen / iBreakAt;
   if (iBreak == iPrevBreak)
@@ -238,7 +238,7 @@ void String_t<SIZE>::vCatSprint(Stz* szFormat, ...)
   _precondition_(_MAGIC_,_FOOTER_);
   va_list args;
   
-  char* aEnd = aAdd<char*>(aChar(),iLength());
+  char* aEnd = aAdd<char*>(aChar(),nLength());
   
   va_start(args,szFormat);
   vsprintf(aEnd,(char*)szFormat,args);
@@ -334,7 +334,7 @@ bool String_t<SIZE>::bIsNumeric(void)
 /* get length of this str                                                     */
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
-i8 String_t<SIZE>::iLength(void)
+i8 String_t<SIZE>::nLength(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   

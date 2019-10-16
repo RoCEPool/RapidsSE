@@ -109,7 +109,7 @@ void vTest4(void)
     for (i8 nTimes = 0; nTimes < 1000000; nTimes++) {
       sKey.vSprint("%02lld"_Stz,iKey);
       
-      pHashMap->vInsert((byte*)sKey.aChar(),sKey.iLength(),iKey,false);
+      pHashMap->vInsert((byte*)sKey.aChar(),sKey.nLength(),iKey,false);
       iKey++;
     }
     pHashMap->vAnalysis(false);
