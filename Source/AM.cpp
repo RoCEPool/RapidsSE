@@ -260,6 +260,9 @@ Task* AM::pTaskNew(Job* pJob, Session* pSession) {
 void AM::vTaskTransition(Tasks::Task* pTask, i8 iTransition) {
   pTask->vTransition((eTR)iTransition);
 }
+void AM::vTaskDelete(Task* pTask) {
+  delete pTask;
+}
 bool AM::bTaskIsLocked(Task* pTask) {
   bool bLocked = pTask->bIsLocked();
   return bLocked;

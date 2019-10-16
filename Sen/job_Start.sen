@@ -25,11 +25,12 @@
   snooze connector::spawn
 
 
-  nullptr pThisTask task.job!
+  //nullptr pThisTask task.job!
 
-  pThisJob job.delete
+  //pThisJob job.delete
 
-  <DONE_RUN>
+
+  job::completed
 ;
 
 /*============================================================================*/

@@ -148,12 +148,6 @@ Job::~Job(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  //ActLog::vAdd(this,AN_DESTRUCT);
-  
-  SP_Id spId;
-  
-  // -- -- -- -- -- --
-  
   vIncActNo();
   if (m_bWasReceived) {
     // do not decrement gixJob
@@ -167,6 +161,10 @@ Job::~Job(void) noexcept(false)
                 "|gixJob=%lld|"_Stz, //!format-LogJob
                 * gixJob);
   }
+  
+  // -- -- -- -- -- --
+  
+  //AM::vTaskDelete(m_pTaskJ);
 }
 
 /*----------------------------------------------------------------------------*/

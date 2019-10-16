@@ -236,12 +236,12 @@ void Engine::vDeleteImmmediate(Task** ppTask)
   Task* pTask = *ppTask;
   *ppTask = nullptr;
 
+  pTask->vState(TS_COMPLETED);
   Job* pJob = pTask->pJob();
   pTask->vJob(nullptr);
   delete pJob;
   
-  pTask->vState(TS_COMPLETED);
-  delete pTask;
+  //delete pTask;
 }
 
 /*----------------------------------------------------------------------------*/

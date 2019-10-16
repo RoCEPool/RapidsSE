@@ -459,6 +459,7 @@ public:
   static void vJobColumnNameFetch(Tasks::MP_Task mpTask);
   static void vJobColumnIsPartKey(Tasks::MP_Task mpTask);
   static void vJobColumnTypeFetch(Tasks::MP_Task mpTask);
+  static void vJobCompleted(Tasks::MP_Task mpTask);
   static void vJobCreateResponseVec(Tasks::MP_Task mpTask);
   static void vJobOperandFetch(Tasks::MP_Task mpTask);
   static void vJobOperandStore(Tasks::MP_Task mpTask);

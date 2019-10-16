@@ -937,7 +937,7 @@ void Scheduler::vTask_Schedule(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* signal the thread waiting on the tasks mutex                               */
+/* task has completed; signal the thread waiting on the tasks mutex           */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Signal(Task* pTask)
 {
@@ -950,6 +950,8 @@ void Scheduler::vTask_Signal(Task* pTask)
   RASSERT(TR_SIGNAL == pTask->eTransition());
   
   pTask->vTransitionClear();
+  
+  pTask->vState(TS_COMPLETED);
   
   pTask->vLock();
   pTask->vMutexSignal();

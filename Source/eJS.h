@@ -6,17 +6,19 @@
 enum eJS // job state
 {
   /*  0 */ JS_RUNNING=0,
-  /*  1 */ JS_LOCKED,
-  /*  2 */ JS_WAITING,
-  /*  3 */ JS_SIGNALLED
+  /*  1 */ JS_COMPLETED,
+  /*  2 */ JS_LOCKED,
+  /*  3 */ JS_WAITING,
+  /*  4 */ JS_SIGNALLED
 };
 
 static Stz* aJS[]
 {
   /*  0 */ "RUNNING"_Stz,
-  /*  1 */ "LOCKED"_Stz,
-  /*  2 */ "WAITING"_Stz,
-  /*  2 */ "SIGNALLED"_Stz,
+  /*  1 */ "COMPLETED"_Stz,
+  /*  2 */ "LOCKED"_Stz,
+  /*  3 */ "WAITING"_Stz,
+  /*  4 */ "SIGNALLED"_Stz,
 };
 
 /*============================================================================*/

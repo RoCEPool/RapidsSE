@@ -10,7 +10,8 @@
 void Step::vAddSteps_Job(void)
 {
   vAddStep("job::this"_Stz,            &Step::vJobThis);
-  
+  vAddStep("job::completed"_Stz,       &Step::vJobCompleted);
+
   vAddStep("job.acksRemaining!"_Stz,   &Step::vJobAcksRemaining);
   vAddStep("job.addOriginator"_Stz,    &Step::vJobAddOriginator);
   vAddStep("job.addParticipant"_Stz,   &Step::vJobAddParticipant);
@@ -490,6 +491,22 @@ void Step::vJobColumnTypeFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.columnType@"_Stz);
   
   mpTask->m_pForth->m_pDataStack->vPushI8(pJob_CreateTable->m_xColumns[iColumnNo].eColumnType());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.completed --                                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vJobCompleted(MP_Task mpTask)
+{
+  ENTRY("vJobCompleted"_Stz);
+  
+  Job* pJob = mpTask->pJob();
+  
+  pJob->m_eJobState = JS_COMPLETED;
+  
+  mpTask->vTransition(TR_DELETE);
   
   EXIT();
 }
