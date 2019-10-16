@@ -17,7 +17,7 @@
   s256 sException; \
   sException.vSprint(p1); \
   Task* pTask = Task::pThisTLSTask(); \
-  pTask->vException(sFile,sException); \
+  pTask->vException(sException,sFile,__LINE__); \
   Correctness::vThrowTrap(); \
   throw (i8)__LINE__; \
 }
@@ -28,7 +28,7 @@
   s256 sException; \
   sException.vSprint(p1,p2); \
   Task* pTask = Task::pThisTLSTask(); \
-  pTask->vException(sFile,sException); \
+  pTask->vException(sException,sFile,__LINE__); \
   Correctness::vThrowTrap(); \
   throw (i8)__LINE__; \
 }
@@ -39,7 +39,7 @@
   s256 sException; \
   sException.vSprint(p1,p2,p3); \
   Task* pTask = Task::pThisTLSTask(); \
-  pTask->vException(sFile,sException); \
+  pTask->vException(sException,sFile,__LINE__); \
   Correctness::vThrowTrap(); \
   throw (i8)__LINE__; \
 }
@@ -50,7 +50,7 @@
   s256 sException; \
   sException.vSprint(p1,p2,p3,p4); \
   Task* pTask = Task::pThisTLSTask(); \
-  pTask->vException(sFile,sException); \
+  pTask->vException(sException,sFile,__LINE__); \
   Correctness::vThrowTrap(); \
   throw (i8)__LINE__; \
 }

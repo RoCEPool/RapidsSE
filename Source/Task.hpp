@@ -85,7 +85,7 @@ namespace Tasks
     Compiler* pCompiler(void);
     void vContentDump(void);
     void vDropTaskLock(void);
-    void vException(s256& sFile, s256& eException);
+    void vException(s256& sException, s256& sFile, i8 iLineNo);
     void vFocalOutline(s4K& sOutline);
     void vGrabTaskLock(void);
     bool bIsLocked(void);
