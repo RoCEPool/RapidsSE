@@ -13,7 +13,8 @@ namespace Resources
   
     bool    m_bLocked;   // true if mutex is currently locked (debugging)
     Focal*  m_pLockedBy; // by whom is the mutex locked?
-  
+    Focal*  m_pWaitedBy; // for whom is the mutex being waited on?
+
     pthread_mutex_t     m_xMutex;     // posix mutex variable
     pthread_mutexattr_t m_xMutexAttr; // posix mutex attribute
   

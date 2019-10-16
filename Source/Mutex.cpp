@@ -65,6 +65,7 @@ Mutex::Mutex(eMK eKind, Focal* pIsFor, ReqTuple* aReqTuple)
   
   m_bLocked   = false;
   m_pLockedBy = nullptr;
+  m_pWaitedBy  = nullptr;
 
   // m_ixBroadcast;
   // m_ixSignal;
@@ -133,6 +134,11 @@ Mutex::Mutex(eMK eKind, Focal* pIsFor, ReqTuple* aReqTuple)
 Mutex::~Mutex(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
+  
+  //RASSERT(! m_pLockedBy);
+  //RASSERT(! m_pWaitedBy);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   i8 iResult;
   
@@ -528,6 +534,8 @@ void Mutex::vSignal(Focal* pLockedBy)
 
   // success -- mutex signaled; blocked thread will resume when lock is dropped
   
+  //! this mutex needs to be unlocked by caller so waiting thread can proceed
+  
   if (0 == iRetVal) {
     ASSERT(m_bLocked);
     //ASSERT(bIsLocked());
@@ -612,6 +620,7 @@ void Mutex::vWait(Focal* pLockedBy)
   ASSERT(m_bLocked);
   //ASSERT(bIsLocked());
   ASSERT(pLockedBy == m_pLockedBy);
+  ASSERT(! m_pWaitedBy);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -629,7 +638,7 @@ void Mutex::vWait(Focal* pLockedBy)
   // clear tracking of the mutex lock state
   m_bLocked = false;
   
-  Focal* pWasLockedBy = m_pLockedBy;
+  m_pWaitedBy = m_pLockedBy;
   m_pLockedBy = nullptr;
   
   //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
@@ -645,8 +654,9 @@ void Mutex::vWait(Focal* pLockedBy)
   if (0 == iRetVal) {
     RASSERT(! m_bLocked);
     
-    m_bLocked = true;
-    m_pLockedBy = pWasLockedBy;
+    m_bLocked   = true;
+    m_pLockedBy = m_pWaitedBy;
+    m_pWaitedBy = nullptr;
 
     vIncActNo(); ++ m_ixSignaled;
     AM::vLogRes(SL_INF,this,RA_MTX_SIGNALED,
