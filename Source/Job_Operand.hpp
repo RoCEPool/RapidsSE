@@ -15,7 +15,6 @@ namespace Jobs
     
     ePX        m_eTopologyX;
     i8         m_iNextStage;
-    i8         m_iNdeVec;
     
     // must be last
     Footer m_xFooter;

@@ -112,7 +112,6 @@ Job_Operand::Job_Operand(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Se
   
   m_eTopologyX   = PX_NONE;
   m_iNextStage   = C_UNKNOWN;
-  m_iNdeVec      = C_UNKNOWN;
   
   _checkInitialised_(CN_JOB_OPERAND);
   
@@ -175,7 +174,6 @@ Job_Operand* Job_Operand::pNewJobOperand(Session* pSession,
   
   pJob_Operand->m_eTopologyX = pOp->m_eTopologyX;
   pJob_Operand->m_iNextStage = pOp->m_iNextStage;
-  pJob_Operand->m_iNdeVec    = pOp->m_iNdeVec;
   
   return pJob_Operand;
 }

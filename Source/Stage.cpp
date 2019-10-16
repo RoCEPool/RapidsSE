@@ -217,22 +217,28 @@ OpVec* Stage::pOpVec(void)
 /*----------------------------------------------------------------------------*/
 /* get pipeOut operator from the stage depending on cross topology            */
 /*----------------------------------------------------------------------------*/
-Op* Stage::pPipeOutOp(ePX eToloplogy, i8 iNdeVec)
+Op* Stage::pPipeOutOp(ePX eTopologyX, i8 iFromNode)
 {
   Op* pOp = nullptr;
+  StageNde* pStageNde = nullptr;
   
-  if (m_oStageNdeVec.nItems()) {
-    StageNde* pStageNde = m_oStageNdeVec.pGet(iNdeVec);
-    pOp = pStageNde->pOpVec()->pGet(0);
-    //    vTrace("***************%s::Job_Operand.pipeOut : %p %s\n"_Stz,
-    //           pOp->m_sName.szStz(),
-    //           pJob_Operand->m_pOperand,
-    //           aCN[pJob_Operand->m_pOperand->eClass()]);
-  }
-  else {
-    RASSERT(0);
+  switch (eTopologyX) {
+      
+    case PX_ALL_NODES_TO_ORIGIN:
+    case PX_ALL_PARTITIONS_TO_ORIGIN:
+    case PX_ORIGIN_TO_ORIGIN:
+      pStageNde = m_oStageNdeVec.pGet(0);
+      break;
+      
+    case PX_ALL_PARTITIONS_TO_ALL_NODES:
+      pStageNde = this->pStageNde(iFromNode);
+      break;
+      
+    default:
+      RASSERT(0);
   }
   
+  pOp = pStageNde->pOpVec()->pGet(0);
   return pOp;
 }
 
@@ -254,6 +260,24 @@ StagePtnVec* Stage::pStagePtnVec(void)
   _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
   
   return &m_oStagePtnVec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stage node for given node                                              */
+/*----------------------------------------------------------------------------*/
+StageNde* Stage::pStageNde(i8 i_Nde)
+{
+  _precondition_(_MAGIC_,CN_STAGE,_FOOTER_);
+  
+  StageNde* pStageNde = nullptr;
+  
+  for (i8 iNdeVec = 0; iNdeVec < m_oStageNdeVec.nItems(); iNdeVec++) {
+    pStageNde = m_oStageNdeVec.pGet(iNdeVec);
+    if (pStageNde->iNode() == i_Nde)
+      return pStageNde;
+  }
+  
+  return pStageNde;
 }
 
 /*----------------------------------------------------------------------------*/

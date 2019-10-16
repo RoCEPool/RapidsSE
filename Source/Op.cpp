@@ -92,7 +92,6 @@ Op::Op(eCN eClassNo, OpSpec* pOpSpec, Pipeline* pPipeline)
   
   m_eTopologyX = PX_NONE;
   m_iNextStage = C_UNKNOWN;
-  m_iNdeVec    = C_UNKNOWN;
 
   m_fpCall        = m_aOpDefn ? m_aOpDefn->m_fpCall  : nullptr;
   m_fpDrain       = m_aOpDefn ? m_aOpDefn->m_fpDrain : nullptr;
@@ -384,8 +383,7 @@ void Op::vLinkToStage(Stage* pStage)
       
     case PX_ALL_NODES_TO_ORIGIN: {
       RASSERT(pStage->pStageNdeVec()->nItems() == 1) ;
-      m_iNdeVec = 0;
-      StageNde* pStageNde = pStage->pStageNdeVec()->pGet(m_iNdeVec);
+      StageNde* pStageNde = pStage->pStageNdeVec()->pGet(0);
       AM::vXmitNode(this,pStageNde->iNode());
       pOpNext = pStageNde->pOpVec()->pGet(0);
       
@@ -401,7 +399,7 @@ void Op::vLinkToStage(Stage* pStage)
       i8 i_Nde = TablePtn::iPartitionToNode(m_nPartition);
       
       // get the StageNde for this Node
-      StageNde* pStageNde = pStage->pStageNde(i_Nde, m_iNdeVec);
+      StageNde* pStageNde = pStage->pStageNde(i_Nde);
       AM::vXmitNode(this,pStageNde->iNode());
       pOpNext = pStageNde->pOpVec()->pGet(0);
       
@@ -413,8 +411,7 @@ void Op::vLinkToStage(Stage* pStage)
       
     case PX_ALL_PARTITIONS_TO_ORIGIN: {
       RASSERT(pStage->pStageNdeVec()->nItems() == 1) ;
-      m_iNdeVec = 0;
-      StageNde* pStageNde = pStage->pStageNdeVec()->pGet(m_iNdeVec);
+      StageNde* pStageNde = pStage->pStageNdeVec()->pGet(0);
       AM::vXmitNode(this,pStageNde->iNode());
       pOpNext = pStageNde->pOpVec()->pGet(0);
       
@@ -431,8 +428,7 @@ void Op::vLinkToStage(Stage* pStage)
       
     case PX_ORIGIN_TO_ORIGIN: {
       RASSERT(pStage->pStageNdeVec()->nItems() == 1) ;
-      m_iNdeVec = 0;
-      StageNde* pStageNde = pStage->pStageNdeVec()->pGet(m_iNdeVec);
+      StageNde* pStageNde = pStage->pStageNdeVec()->pGet(0);
       AM::vXmitNode(this,pStageNde->iNode());
       pOpNext = pStageNde->pOpVec()->pGet(0);
       
