@@ -24,12 +24,6 @@
   snooze answer::spawn
   snooze connector::spawn
 
-
-  //nullptr pThisTask task.job!
-
-  //pThisJob job.delete
-
-
   job::completed
 ;
 

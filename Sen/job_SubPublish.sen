@@ -104,12 +104,7 @@
   pTask_Publish task.ack
 
   // null the job in the task
-  nullptr pTask task.job!
-
-  // now delete the ended job
-  pJob_SubPublish job.delete
-
-  <DONE_RUN>
+  job::completed
 ;
 
 /*============================================================================*/

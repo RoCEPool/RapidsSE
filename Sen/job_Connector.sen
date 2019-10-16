@@ -147,13 +147,8 @@
   //grid::thisNodeName@ "Node %v : SE cluster started" fmt.print
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // null the job in the task
-  nullptr pThisTask task.job!
 
-  // now delete the ended job
-  pJob_Connector job.delete
-
-  <DONE_RUN>
+  job::completed
 ;
 
 /*============================================================================*/

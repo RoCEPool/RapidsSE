@@ -46,11 +46,7 @@
 
   pJob_SubIngester SubIngester_ackParent
 
-  // null the job in the task and delete ended job
-  nullptr pThisTask task.job!
-  pJob_SubIngester job.delete
-
-  <DONE_RUN>
+  job::completed
 ;
 
 /*============================================================================*/

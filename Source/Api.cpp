@@ -341,7 +341,7 @@ bool Api::bReseedJob(Session* pSession, Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* spawn job                                                                  */
+/* spawn given job                                                            */
 /*----------------------------------------------------------------------------*/
 bool Api::bSpawnJob(Session* pSession, Job* pJob)
 {
@@ -367,6 +367,15 @@ bool Api::bSpawnJob(Session* pSession, Job* pJob)
 //    AM::vLogWriteCsv(false);
 //
 //  ASSERT(! pJob->pTask());
+  
+  vTrace("Spawning %s %s %s\n"_Stz,
+         aCN[pJob->eClass()],
+         pJob->m_bWasReceived ? "wasReceived" : "notReceived",
+         pJob->pTask()        ? "hasTask"     : "noTask"
+         );
+  if (CN_JOB_STARTCLUSTER == pJob->eClass())
+    vDebugPoint();
+
   if (pJob->pTask()) {
     pJob->pTask()->vState(TS_ABLE);
   }

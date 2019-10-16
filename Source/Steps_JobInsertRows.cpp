@@ -100,12 +100,12 @@ void Step::vJob_InsertRowRecordStore(MP_Task mpTask)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("Job_InsertRow.recordNull"_Stz);
+    THROW_INVALID_DSTACK("job_InsertRow.record!"_Stz);
   Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobPtr);
   
   Object* pRecordObject;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pRecordObject) )
-    THROW_INVALID_DSTACK("task.job!"_Stz);
+    THROW_INVALID_DSTACK("job_InsertRow.record!"_Stz);
   Record* pRecord = _pRecord(pRecordObject);
   
   pJob_InsertRow->m_pRecord = pRecord;

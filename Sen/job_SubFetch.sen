@@ -152,13 +152,7 @@
 
   ddlLock::testDrop
 
-  // null the job in the task
-  nullptr pTask task.job!
-
-  // now delete the ended job
-  pJob_SubFetch job.delete
-
-  <DONE_RUN>
+  job::completed
 ;
 
 /*============================================================================*/

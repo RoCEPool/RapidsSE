@@ -85,13 +85,7 @@
   pTask_TruncateTable task.dropLock
   pTask_TruncateTable task.ack
 
-  // null the job in the task
-  nullptr pTask task.job!
-
-  // now delete the ended job
-  pJob_SubTruncate job.delete
-
-  <DONE_RUN>
+  job::completed
 ;
 
 /*============================================================================*/

@@ -150,13 +150,19 @@
 /*----------------------------------------------------------------------------*/
 : startCluster_beg ( -- )
 
+"startCluster_beg 0" .
   >>logEntry <SEED_BEG>
 
+"startCluster_beg 1" .
   job::this locals| pJob_status |
 
+"startCluster_beg 2" .
   pJob_status job.becomeParticipant
 
+"startCluster_beg 3" .
   job::participantBegun
+
+"startCluster_beg calling <DONE_BEG>" .
 
   <<logExit <DONE_BEG>
 ;

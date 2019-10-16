@@ -53,10 +53,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null the job in the task and delete ended job
 
-  nullptr task::this task.job!
-  pJob_SE job.delete                                      // KE`[E](E`)KE:(E`)KE
-
-  <DONE_RUN>
+  job::completed
 ;
 
 /*============================================================================*/

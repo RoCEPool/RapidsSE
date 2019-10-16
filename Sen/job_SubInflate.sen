@@ -53,13 +53,7 @@
   pTask_FetchRows task.dropLock
   pTask_FetchRows task.ack
 
-  // null the job in the task
-  nullptr pTask task.job!
-
-  // now delete the ended job
-  pJob_SubInflate job.delete
-
-  <DONE_RUN>
+  job::completed
 ;
 
 /*============================================================================*/

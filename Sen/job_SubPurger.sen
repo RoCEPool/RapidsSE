@@ -101,13 +101,7 @@
   pTask_Purge task.dropLock
   pTask_Purge task.ack
 
-  // null the job in the task
-  nullptr pTask task.job!
-
-  // now delete the ended job
-  pJob_SubPurger job.delete
-
-  <DONE_RUN>
+  job::completed
 ;
 
 /*============================================================================*/
