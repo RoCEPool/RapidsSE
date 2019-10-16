@@ -55,8 +55,9 @@ namespace Tasks
     Forth*    m_pForth;     // forth implementation
   
     // exception
-    s256  m_sFile;
     s256  m_sException;
+    s256  m_sFileNm;
+    i8    m_iLineNo;
 
     // always last
     Footer m_xFooter;

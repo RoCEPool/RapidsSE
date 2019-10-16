@@ -158,6 +158,8 @@ void Task::vInit(void)
   
   m_pCompiler    = nullptr;
   m_pSendNode    = nullptr;
+  
+  m_iLineNo = C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -250,14 +252,14 @@ void Task::vTaskLoop_job(void)
       
       char* ps;
       
-      ps = StrLib::sLast(m_sFile.azChar());
-      StrLib::bBackward(&ps,m_sFile.azChar(),'/');
-      bool bBackSlash = StrLib::bBackward(&ps,m_sFile.azChar(),'/');
+      ps = StrLib::sLast(m_sFileNm.azChar());
+      StrLib::bBackward(&ps,m_sFileNm.azChar(),'/');
+      bool bBackSlash = StrLib::bBackward(&ps,m_sFileNm.azChar(),'/');
       if (bBackSlash) {
         StrLib::vCopy(caFileName,ps+1);
       }
       else {
-        StrLib::vCopy(caFileName, m_sFile.azChar());
+        StrLib::vCopy(caFileName, m_sFileNm.azChar());
       }
       vTrace("[%s] %s : line %lld in %s\n"_Stz,
              aJobName(),
@@ -459,7 +461,7 @@ void Task::vException(s256& sFile, s256& eException)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_sFile = sFile;
+  m_sFileNm = sFile;
   m_sException = eException;
 }
 
