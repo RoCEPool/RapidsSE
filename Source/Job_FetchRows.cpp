@@ -693,7 +693,7 @@ void Jobs::vJob_FetchRows_post(Job* pJob)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fetch
   if (AM::bMetadata()) {
-    vTrace("metadata: %s\n"_Stz, pJob_FetchRows->m_sMetadata.aStz());
+    vTrace("metadata: %s\n"_Stz, pJob_FetchRows->m_sMetadata.szStz());
   }
   
   // create a row for retrieval

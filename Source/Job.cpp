@@ -470,7 +470,7 @@ void Job::vSeed(eSS eSeed)
 //  
 //  vTrace("%s: %s"_Stz,
 //         m_aJobClass ? (Stz*)m_aJobClass->m_aName : "<no jobClass>"_Stz,
-//         s.aStz());
+//         s.szStz());
 //}
 void Job::vShow(void)
 {

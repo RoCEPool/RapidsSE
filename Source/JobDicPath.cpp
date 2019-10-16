@@ -45,7 +45,7 @@ JobDicPath::JobDicPath(Session* pSession)
 
 //  s256 sDicPath;
 //  m_oDicPath.vAsString(sDicPath);
-//  vTrace("DicPath: %s\n"_Stz,sDicPath.aStz());
+//  vTrace("DicPath: %s\n"_Stz,sDicPath.szStz());
 }
 
 /*----------------------------------------------------------------------------*/

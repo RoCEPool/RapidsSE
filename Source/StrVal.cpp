@@ -47,9 +47,9 @@ StrVal::StrVal(void)
 /*----------------------------------------------------------------------------*/
 /* assign given str                                                           */
 /*----------------------------------------------------------------------------*/
-void StrVal::vAssign(Stz* aStz)
+void StrVal::vAssign(Stz* szStz)
 {
-  m_nBytesFollowing = StrLib::nCopy(m_caStr,aStz->azChar()) + 1;
+  m_nBytesFollowing = StrLib::nCopy(m_caStr,szStz->azChar()) + 1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -75,7 +75,7 @@ i8 StrVal::nSize(void)
 /*----------------------------------------------------------------------------*/
 /* get adddress of Stz area                                                   */
 /*----------------------------------------------------------------------------*/
-Stz* StrVal::aStz(void)
+Stz* StrVal::szStz(void)
 {
   return reinterpret_cast<Stz*>(m_caStr);
 }
@@ -83,9 +83,9 @@ Stz* StrVal::aStz(void)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void StrVal::vToString(Stz* aStz)
+void StrVal::vToString(Stz* szStz)
 {
-  StrLib::vCopy(aStz->azChar(),m_caStr);
+  StrLib::vCopy(szStz->azChar(),m_caStr);
 }
 
 /*============================================================================*/

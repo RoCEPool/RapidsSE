@@ -88,7 +88,7 @@ void LogEntry::vAsTxt(s4K& sString)
                );
 
   sString.vCatSprint("%20s ⬜️ %s:%s#%03lld"_Stz,
-               m_xReqTuple.m_sPurpose.aStz(),
+               m_xReqTuple.m_sPurpose.szStz(),
                
                spForId.sz(m_iForId),
                spId.sz(m_eKind,m_iUniqueId),
@@ -124,7 +124,7 @@ void LogEntry::vAsTxt(s4K& sString)
       NEVER_REACH;
   }
 
-  sString.vCatSprint(" %s"_Stz,sInf.aStz());
+  sString.vCatSprint(" %s"_Stz,sInf.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -371,7 +371,7 @@ void LogEntry::vWriteTxt(File* pFile)
       NEVER_REACH;
   }
   
-  pFile->vPrint("%s\n"_Stz,sInf.aStz());
+  pFile->vPrint("%s\n"_Stz,sInf.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -401,7 +401,7 @@ void LogEntry::vWriteTxtEntry(File* pFile)
                );
 
   sMid.vSprint("%20s ⬜️ %s:%s#%03lld"_Stz,
-               m_xReqTuple.m_sPurpose.aStz(),
+               m_xReqTuple.m_sPurpose.szStz(),
                
                spForId.sz(m_iForId),
                spId.sz(m_eKind,m_iUniqueId),
@@ -414,8 +414,8 @@ void LogEntry::vWriteTxtEntry(File* pFile)
                );
   
   pFile->vPrint("%s %s ⬜️ "_Stz,
-                sSub.aStz(),
-                sMid.aStz());
+                sSub.szStz(),
+                sMid.szStz());
 }
 
 /*----------------------------------------------------------------------------*/

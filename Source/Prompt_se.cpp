@@ -70,7 +70,7 @@ bool Prompt::bPrompt_se(SePrompt* pPrompt)
   // concat a terminating semicolon (needed??)
   sCommand.vConcat(";"_Stz);
 
-  vTrace("SE:: %s\n"_Stz,sCommand.aStz());
+  vTrace("SE:: %s\n"_Stz,sCommand.szStz());
   
   // call se to execute command
   Job* pJob = Api::pExecuteCommand(pPrompt->pSession(),sCommand,true,true);

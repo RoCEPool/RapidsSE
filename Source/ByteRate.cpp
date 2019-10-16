@@ -184,13 +184,13 @@ void ByteRate::vReportStatistics(void)
   vTrace("%s %s %llds: sum %s %s/ms %s/s %s/day\n"_Stz,
          
          oNow.sz(),
-         m_sReportPrefix.aStz(),
+         m_sReportPrefix.szStz(),
          iElapsedSeconds,
          
-         sSumMag.aStz(),
-         sMilMag.aStz(),
-         sSecMag.aStz(),
-         sDayMag.aStz());
+         sSumMag.szStz(),
+         sMilMag.szStz(),
+         sSecMag.szStz(),
+         sDayMag.szStz());
 }
 
 /*----------------------------------------------------------------------------*/

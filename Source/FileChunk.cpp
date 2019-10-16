@@ -117,9 +117,9 @@ i8 FileChunk::nReadBytes(i8 nBytes)
   if (! m_nDataBytes)
     return 0;
   
-  ((char*)m_xWsp.aStz())[m_nDataBytes] = '\0';
+  ((char*)m_xWsp.szStz())[m_nDataBytes] = '\0';
   
-  m_aLastDataByte = &m_xWsp.aStz()[m_nDataBytes - 1];
+  m_aLastDataByte = &m_xWsp.szStz()[m_nDataBytes - 1];
   
   return m_nDataBytes;
 }

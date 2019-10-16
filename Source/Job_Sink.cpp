@@ -269,7 +269,7 @@ bool Job_Sink::bChunk(void)
   if (! nBytesRead)
     return false;
   
-  //vTrace("[[chunk]]\n%s\n[[end-chunk]]\n"_Stz,m_pIoChunk->aStz());
+  //vTrace("[[chunk]]\n%s\n[[end-chunk]]\n"_Stz,m_pIoChunk->szStz());
   
   if (m_pByteRate)
     m_pByteRate->vAddBytes(nBytesRead);

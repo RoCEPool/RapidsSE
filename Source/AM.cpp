@@ -19,7 +19,7 @@ extern i8            giClassSize[];
 extern pFINALIZE*    gpFinalize[];
 
 // Arg
-Stz* AM::szCommand(void)      { return gxArguments.m_sCommand.aStz();         }
+Stz* AM::szCommand(void)      { return gxArguments.m_sCommand.szStz();         }
 bool AM::bDeveloper(void)     { return gpAttachMap->Arg.m_bDeveloper;         }
 i8   AM::nDummyLoop(void)     { return gpAttachMap->Arg.m_nDummyLoop;         }
 i8   AM::nDummySleep(void)    { return gpAttachMap->Arg.m_nDummySleep;        }
@@ -28,7 +28,7 @@ i8   AM::iJumboSize(void)     { return gpAttachMap->Arg.m_iJumboSize;         }
 bool AM::bLog(void)           { return gpAttachMap->Arg.m_bLog;               }
 i8   AM::nMaxLoadErrors(void) { return gpAttachMap->Arg.m_nMaxLoadErrors;     }
 i8   AM::nMaxReadyLP(void)    { return gpAttachMap->Arg.m_nMaxReadyLP;        }
-Stz* AM::szRegionName(void)   { return gpAttachMap->Arg.m_sRegionName.aStz(); }
+Stz* AM::szRegionName(void)   { return gpAttachMap->Arg.m_sRegionName.szStz(); }
 i8   AM::iRegionSize(void)    { return gpAttachMap->Arg.m_iRegionSize;        }
 i8   AM::nSlotsPerNode(void)  { return gpAttachMap->Arg.m_nSlotsPerNode;      }
 i8   AM::nSubIngesters(void)  { return gpAttachMap->Arg.m_nSubIngesters;      }

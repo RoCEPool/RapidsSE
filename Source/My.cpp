@@ -48,7 +48,7 @@ Stz* My::szWordNm(void)
   
   Word* pWord = pTask->pCompiler()->m_pCurrent;
   
-  return pWord->sName().aStz();
+  return pWord->sName().szStz();
 }
 
 /*============================================================================*/

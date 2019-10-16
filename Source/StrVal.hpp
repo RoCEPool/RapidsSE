@@ -17,11 +17,11 @@ namespace SenVM
     StrVal(void);
   
   public:
-    void  vAssign(Stz* aStr);
+    void  vAssign(Stz* szStr);
     char* azChar(void);
     i8    nSize(void);
-    Stz*  aStz(void);
-    void  vToString(Stz* aStz);
+    Stz*  szStz(void);
+    void  vToString(Stz* szStz);
   };
 
   StrVal* _aStrVal(void* aAddr);

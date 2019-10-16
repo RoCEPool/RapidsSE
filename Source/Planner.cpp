@@ -266,7 +266,7 @@ void Planner::vGenPaths(i8 i_Phrase, Index* pIndex, eAT eAccess)
         // add column arg to predicate
         Column* pColumn = pIdxColVec->pGet(i_IdxCol);
         Arg* pColumnArg = new Arg;
-        s256 sColumnNm = pColumn->sColumnName().aStz();
+        s256 sColumnNm = pColumn->sColumnName().szStz();
         pColumnArg->vArgVal(sColumnNm);
         pLowerPredicate->vArg1(pColumnArg);
       }
@@ -288,7 +288,7 @@ void Planner::vGenPaths(i8 i_Phrase, Index* pIndex, eAT eAccess)
         // add column arg to predicate
         Column* pColumn = pIdxColVec->pGet(i_IdxCol);
         Arg* pColumnArg = new Arg;
-        s256 sColumnNm = pColumn->sColumnName().aStz();
+        s256 sColumnNm = pColumn->sColumnName().szStz();
         pColumnArg->vArgVal(sColumnNm);
         pUpperPredicate->vArg1(pColumnArg);
       }
@@ -480,7 +480,7 @@ void Planner::vMatchPredicates(i8 i_Phrase, PredicateVec* mpPathPredVec, eAT eAc
       // get the associated op token
       mpOpTkn_Where = pPhraseTknVec->pGet(i_ColumnTkn_Where+2);
       sOpDtmVal_Where = mpOpTkn_Where->szText();
-      eRelOp_Where = RelOp::eDecode(sOpDtmVal_Where.aStz());
+      eRelOp_Where = RelOp::eDecode(sOpDtmVal_Where.szStz());
       
       // have we found a bound where predicate?
       if (bIsMatchingOp(eAccess,eRelOp_Where))

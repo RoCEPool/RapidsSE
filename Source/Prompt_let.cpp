@@ -47,8 +47,8 @@ bool Prompt::bPrompt_let(SePrompt* pPrompt)
          pNmStr = pNmStr->pNextItem()) {
       
       vTrace("  %s = %s\n"_Stz,
-             pNmStr->m_sName.aStz(),
-             pNmStr->m_sValue.aStz());
+             pNmStr->m_sName.szStz(),
+             pNmStr->m_sValue.szStz());
     }
     
     return true;
@@ -66,8 +66,8 @@ bool Prompt::bPrompt_let(SePrompt* pPrompt)
     pNmStr = pNmStrList->pFind(sName);
     if (pNmStr)
       vTrace("  %s = %s\n"_Stz,
-             pNmStr->m_sName.aStz(),
-             pNmStr->m_sValue.aStz());
+             pNmStr->m_sName.szStz(),
+             pNmStr->m_sValue.szStz());
 
     return true;
   }

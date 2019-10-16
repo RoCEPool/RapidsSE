@@ -37,7 +37,7 @@ bool Prompt::bPrompt_job(SePrompt* pPrompt)
   
   s32 sNumber;
   sNumber.vConcat(pArg1->szText());
-  vTrace("Job: %s\n"_Stz,sNumber.aStz());
+  vTrace("Job: %s\n"_Stz,sNumber.szStz());
   
   i8 iNumber = sNumber.iToI8();
   

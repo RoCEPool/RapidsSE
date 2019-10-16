@@ -275,7 +275,7 @@ bool Job_Report::bBegin(void)
   
   m_oBegan.vNow();
 
-  vTrace("Reporting from %s to %s\n"_Stz,szFilePath(),m_sOutputPath.aStz());
+  vTrace("Reporting from %s to %s\n"_Stz,szFilePath(),m_sOutputPath.szStz());
 
   return true;
 }

@@ -177,8 +177,8 @@ bool Job_Dynamic::bPopulateJob(Session* pSession, TokenVec* pTknVec)
   StageSpec*   pStageSpec     = pPipelineSpec->pStageSpec(0);
   
   s4K sPipe("dynamic "_Stz);
-  pStageSpec->vToPipeStr(sPipe.aStz());
-  vTrace("Restated stage 0: ]]%s[[\n"_Stz,sPipe.aStz());
+  pStageSpec->vToPipeStr(sPipe.szStz());
+  vTrace("Restated stage 0: ]]%s[[\n"_Stz,sPipe.szStz());
   vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
   
   Tokeniser::vTokenise(pTknVec,sPipe);
@@ -382,8 +382,8 @@ void Jobs::vJob_Dynamic_post(Job* pJob)
           
           // print the metadata
           if (AM::bMetadata()) {
-            pJob_Dynamic->m_pStreamDef->vToMetadata(pJob_Dynamic->m_sMetadata.aStz());
-            vTrace("%s\n"_Stz, pJob_Dynamic->m_sMetadata.aStz());
+            pJob_Dynamic->m_pStreamDef->vToMetadata(pJob_Dynamic->m_sMetadata.szStz());
+            vTrace("%s\n"_Stz, pJob_Dynamic->m_sMetadata.szStz());
           }
         }
         delete _pStreamDef(pOperand);

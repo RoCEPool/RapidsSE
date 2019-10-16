@@ -162,10 +162,10 @@ void Socket::vMonitorPortrait(s48K& sPortrait)
                     
                     pStat->Socket.m_nRecvs,
                     pStat->Socket.m_nRecvFroms,
-                      sRecvMag.aStz(),
+                      sRecvMag.szStz(),
                     pStat->Socket.m_nSends,
                     pStat->Socket.m_nSendTos,
-                      sSendMag.aStz()
+                      sSendMag.szStz()
                     );
 }
 
@@ -189,9 +189,9 @@ void Socket::vStatistics(void)
   vTrace("  nSocketSendTos    %lld\n"_Stz,pStat->Socket.m_nSendTos);
 
   MagLib::vByteMag(pStat->Socket.m_nRecvBytes,  sByteMag);
-  vTrace("  nSocketRecvBytes  %s\n"_Stz,sByteMag.aStz());
+  vTrace("  nSocketRecvBytes  %s\n"_Stz,sByteMag.szStz());
   MagLib::vByteMag(pStat->Socket.m_nSendBytes,  sByteMag);
-  vTrace("  nSocketSendBytes  %s\n"_Stz,sByteMag.aStz());
+  vTrace("  nSocketSendBytes  %s\n"_Stz,sByteMag.szStz());
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -380,7 +380,7 @@ bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
   xAddrInfo.ai_flags    = AI_PASSIVE;
   
   s256 sPort;
-  StrLib::vSprint(sPort.aStz(), "%lld"_Stz, iPort);
+  StrLib::vSprint(sPort.szStz(), "%lld"_Stz, iPort);
   
   i8 iReturn = getaddrinfo(sAddr->azChar(), sPort.azChar(), &xAddrInfo, &pAddrInfo);
   if (iReturn != 0) {

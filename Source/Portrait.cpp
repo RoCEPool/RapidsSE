@@ -20,11 +20,11 @@ void Portrait::vMemoryPortrait(s48K& sPortrait)
   s32 sZeroMag; MagLib::vByteMag(pStats->Memory.m_iZeroTotal,     sZeroMag);
   
   sPortrait.vSprint("Memory: copy %s move %s scribble %s set %s zero %s\n"_Stz,
-                    sCopyMag.aStz(),
-                    sMoveMag.aStz(),
-                    sSribMag.aStz(),
-                    sSetMag.aStz(),
-                    sZeroMag.aStz()
+                    sCopyMag.szStz(),
+                    sMoveMag.szStz(),
+                    sSribMag.szStz(),
+                    sSetMag.szStz(),
+                    sZeroMag.szStz()
                     );
 }
 

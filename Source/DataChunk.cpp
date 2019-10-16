@@ -96,7 +96,7 @@ void DataChunk::vSetBytes(i8 nDataBytes)
   m_nDataBytes = nDataBytes;
   m_nUnprocessedBytes = m_nDataBytes;
 
-  m_aLastDataByte = &m_xWsp.aStz()[m_nDataBytes - 1];
+  m_aLastDataByte = &m_xWsp.szStz()[m_nDataBytes - 1];
 }
 
 /*----------------------------------------------------------------------------*/

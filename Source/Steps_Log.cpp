@@ -66,7 +66,7 @@ void Step::vLogMarkEntry(MP_Task mpTask)
   Job* pJob = mpTask->m_pJob;
   AM::vLogJob(SL_INF,pJob,JA_JOB_ENTER,
               "%s"_Stz, //!format-LogJob
-              sWordNm.aStz());
+              sWordNm.szStz());
 
   EXIT();
 }
@@ -87,7 +87,7 @@ void Step::vLogMarkExit(MP_Task mpTask)
 
   AM::vLogJob(SL_INF,pJob,JA_JOB_EXIT,
               "%s"_Stz, //!format-LogJob
-              sWordNm.aStz());
+              sWordNm.szStz());
 
   EXIT();
 }
@@ -129,7 +129,7 @@ void Step::vLogMarkSeed(MP_Task mpTask)
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sWordNm) )
     THROW_INVALID_DSTACK("log::markSeed"_Stz);
   
-  //ActLog::vAdd(mpTask->m_pJob,(eAN)iSeed,sWordNm.aStz());
+  //ActLog::vAdd(mpTask->m_pJob,(eAN)iSeed,sWordNm.szStz());
   
   EXIT();
 }
@@ -149,7 +149,7 @@ void Step::vLogMarkWord(MP_Task mpTask)
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sWordNm) )
     THROW_INVALID_DSTACK("log::markWord"_Stz);
   
-  //ActLog::vAdd(mpTask->m_pJob,(eAN)iAN,sWordNm.aStz());
+  //ActLog::vAdd(mpTask->m_pJob,(eAN)iAN,sWordNm.szStz());
   
   EXIT();
 }

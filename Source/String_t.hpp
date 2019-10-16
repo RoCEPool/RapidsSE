@@ -50,7 +50,7 @@ namespace Esses
     i8   nSpace(void);
     void vSprint(Stz* szFormat, ...);
     void vSprintCat(Stz* szFormat, ...);
-    Stz* aStz(void);
+    Stz* szStz(void);
     i8   iToI8(void);
     void vToLower(void);
 
@@ -461,7 +461,7 @@ void String_t<SIZE>::vSprintCat(Stz* szFormat, ...)
 /* get m_caStr                                                                */
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
-Stz* String_t<SIZE>::aStz(void)
+Stz* String_t<SIZE>::szStz(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   

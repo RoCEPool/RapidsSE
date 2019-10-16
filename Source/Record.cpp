@@ -324,7 +324,7 @@ void Record::vPrintRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD);
   
-  vTrace("row: (%s)\n"_Stz,m_sRecStr.aStz());
+  vTrace("row: (%s)\n"_Stz,m_sRecStr.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -334,7 +334,7 @@ void Record::vPrintPartialRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD);
   
-  vTrace("%s"_Stz,m_sRecStr.aStz());
+  vTrace("%s"_Stz,m_sRecStr.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -344,7 +344,7 @@ Stz* Record::szRecStr(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORD);
   
-  return m_sRecStr.aStz();
+  return m_sRecStr.szStz();
 }
 
 /*----------------------------------------------------------------------------*/

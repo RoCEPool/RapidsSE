@@ -197,7 +197,7 @@ void Dir::vClose(void)
   
   AM::vLogRes(SL_INF,this,RA_DIR_CLOSED,
               "Dir closed : %s"_Stz, //!format-LogRes
-              m_sDirPath.aStz());
+              m_sDirPath.szStz());
 
   m_aDir = nullptr;
   

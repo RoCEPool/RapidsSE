@@ -269,7 +269,7 @@ void Op_ToCommand::vPipeCmd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP_TOCOMMAND,_FOOTER_);
   
-  Cmd_Select* pCmd_Select = new Cmd_Select(m_sCmd.aStz());
+  Cmd_Select* pCmd_Select = new Cmd_Select(m_sCmd.szStz());
   
   vPipeOut(pCmd_Select);
 }

@@ -95,7 +95,7 @@ i8 IoCopy::nCopyChunk(void)
   if (! nBytesRead)
     return 0;
   
-  //vTrace("[[chunk]]\n%s\n[[end-chunk]]\n"_Stz,m_pInChunk->aStz());
+  //vTrace("[[chunk]]\n%s\n[[end-chunk]]\n"_Stz,m_pInChunk->szStz());
   
   m_pOutChunk->vCopy(m_pInChunk);
   

@@ -135,7 +135,7 @@ void JobResult::vPrintLocalRows(void)
   }
   
   if (AM::bMetadata())
-    vTrace("metadata: %s\n"_Stz, m_sMetadata.aStz());
+    vTrace("metadata: %s\n"_Stz, m_sMetadata.szStz());
   
   if (*m_xResponse.m_ixRowsProcessed)
     vTrace("%s"_Stz, m_xResponse.m_sResponse.azChar());
@@ -175,7 +175,7 @@ void JobResult::vPrintNodeRows(void)
   RASSERT(iResponses == AM::pGrid()->nConnectedNodes());
   
   if (AM::bMetadata()) {
-    vTrace("metadata: %s\n"_Stz, m_sMetadata.aStz());
+    vTrace("metadata: %s\n"_Stz, m_sMetadata.szStz());
   }
   
   i8 iRowsProcessed = 0;

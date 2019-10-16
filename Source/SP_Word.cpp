@@ -40,7 +40,7 @@ Stz* SP_Word::sz(Word* pWord)
                   "%s %s %s"
                   "%s%s"_Stz,
                   
-                  pWord->sName().aStz(),
+                  pWord->sName().szStz(),
                   aWK[pWord->eKind()],
                   pWord->pCategory()->sName().azChar(),
                   

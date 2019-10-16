@@ -335,7 +335,7 @@ bool LimitOp::bLimitDone(void)
   if (m_iWorkDone == m_nLimit) {
     if (AM::bVerbose())
       vTrace("%s::!CANCELLING : after popping %lld buffers\n"_Stz,
-             m_sLabel.aStz(),
+             m_sLabel.szStz(),
              m_iWorkDone);
       m_pPipeline->vCancelling(true);
     

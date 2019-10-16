@@ -931,7 +931,7 @@ void EntBuffer::vShow(Ent* aMarkEntry)
          this,*nPoolBufferNo(),nItems(),nUsedBytes(),nFreeBytes());
   
   vTrace("  higherBuffer %p (L%s) prevBuffer %p nextBuffer %p\n"_Stz,
-         m_pHigherBuffer,sHigherBuffer.aStz(),m_pPrevBuffer,m_pNextBuffer);
+         m_pHigherBuffer,sHigherBuffer.szStz(),m_pPrevBuffer,m_pNextBuffer);
   
   vTrace("  index: %s partition: %lld height: %lld\n"_Stz,
          m_pIndex ? m_pIndex->aIndexName() : "NULL"_Stz,m_iPartitionNo,m_iBufferHeight);

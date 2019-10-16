@@ -428,7 +428,7 @@ void SePrompt::vDumpTokenVec(void)
 //  TokenVec* pTknVec = this->pTknVec();
 //
 //  pTknVec->vToString(sCommand);
-//  vTrace("Request %lld tokens: %s\n"_Stz,pTknVec->nTokens(),sCommand.aStz());
+//  vTrace("Request %lld tokens: %s\n"_Stz,pTknVec->nTokens(),sCommand.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -691,7 +691,7 @@ void SePrompt::vLogCommand(void)
   vIncActNo();
   AM::vLogPrm(SL_INF,this,PA_PRM_COMMAND,
               "%lld %s"_Stz, //!format-LogPrm
-              m_iCmdNo++,sCommand.aStz());
+              m_iCmdNo++,sCommand.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -710,7 +710,7 @@ void SePrompt::vLogFreeSpace(void)
   vIncActNo();
   AM::vLogPrm(SL_INF,this,PA_PRM_FREE_SPACE,
               "%s on node %s"_Stz, //!format-LogPrm
-              sFreeSpaceMag.aStz(),
+              sFreeSpaceMag.szStz(),
               AM::szNodeName());
 }
 
@@ -982,9 +982,9 @@ bool SePrompt::bSubLet(void)
     sPartB = spTknVecStr.sz(pTknVec,i_Token + 1);
 
     sSubstituted.vSprint("%s %s %s"_Stz,
-                         sPartA.aStz(),
-                         pNmStr->m_sValue.aStz(),
-                         sPartB.aStz());
+                         sPartA.szStz(),
+                         pNmStr->m_sValue.szStz(),
+                         sPartB.szStz());
     
     Tokeniser::vTokenise(pTknVec,sSubstituted);
     

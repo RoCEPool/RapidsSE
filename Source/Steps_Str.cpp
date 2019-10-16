@@ -269,10 +269,10 @@ void Step::vStrPrepend(MP_Task mpTask)
     ASSERT(0);
 //    s48K xString;
 //    xValA.vGetString(xString);
-//    xStrA = _aStrVal(xValA.aNestedValue())->aStz();
+//    xStrA = _aStrVal(xValA.aNestedValue())->szStz();
   }
   else {
-    xStrA = _aStrVal(xValA.aNestedValue())->aStz();                          //! need to simplify this
+    xStrA = _aStrVal(xValA.aNestedValue())->szStz();                          //! need to simplify this
   }
   
   // If received INTEGER convert to STRING
@@ -283,7 +283,7 @@ void Step::vStrPrepend(MP_Task mpTask)
 //    xStrB = xString;
   }
   else {
-    xStrB = _aStrVal(xValB.aNestedValue())->aStz();
+    xStrB = _aStrVal(xValB.aNestedValue())->szStz();
   }
   
   xStrR = xStrB;

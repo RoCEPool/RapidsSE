@@ -131,7 +131,7 @@ bool Token::bHasText(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  bool b = *(char*)m_sText.aStz() ? true : false;
+  bool b = *(char*)m_sText.szStz() ? true : false;
   
   return b;
 }
@@ -216,7 +216,7 @@ Stz* Token::szText(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  return m_sText.aStz();
+  return m_sText.szStz();
 }
 
 /*----------------------------------------------------------------------------*/

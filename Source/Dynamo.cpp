@@ -335,9 +335,9 @@ bool Dynamo::bCollectTopology(void)
 
     if (m_pTkn->bSame(":"_Stz)) {
       vAcceptToken();
-      vTrace("Topology Phrase recognised >on node %s :<\n"_Stz,sLocus.aStz());
+      vTrace("Topology Phrase recognised >on node %s :<\n"_Stz,sLocus.szStz());
       m_pStageSpec->vTopology(PO_SPECIFIC_NODE);
-      m_pStageSpec->vLocus(sLocus.aStz());
+      m_pStageSpec->vLocus(sLocus.szStz());
       return true;
     }
   }
@@ -353,9 +353,9 @@ bool Dynamo::bCollectTopology(void)
     
     if (m_pTkn->bSame(":"_Stz)) {
       vAcceptToken();
-      vTrace("Topology Phrase recognised >on partition %s :<\n"_Stz,sLocus.aStz());
+      vTrace("Topology Phrase recognised >on partition %s :<\n"_Stz,sLocus.szStz());
       m_pStageSpec->vTopology(PO_SPECIFIC_PARTITION);
-      m_pStageSpec->vLocus(sLocus.aStz());
+      m_pStageSpec->vLocus(sLocus.szStz());
       return true;
     }
   }

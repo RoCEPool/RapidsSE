@@ -531,7 +531,7 @@ Stz* Word::szExitHook(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  return m_sExitHook.aStz();
+  return m_sExitHook.szStz();
 }
 
 /*----------------------------------------------------------------------------*/

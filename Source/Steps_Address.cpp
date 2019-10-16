@@ -60,7 +60,7 @@ void Step::vAddressFetch(MP_Task mpTask)
       break;
       
     case CN_STRVAL:
-      xValFetched = _aStrVal(aValue)->aStz();
+      xValFetched = _aStrVal(aValue)->szStz();
       break;
       
     case CN_PTRVAL:
@@ -113,7 +113,7 @@ void Step::vAddressStore(MP_Task mpTask)
       break;
       
    case CN_STRVAL:
-      _aStrVal(aValue)->vAssign( _aStrVal(xValStored.aNestedValue())->aStz() );
+      _aStrVal(aValue)->vAssign( _aStrVal(xValStored.aNestedValue())->szStz() );
       break;
       
     default:

@@ -224,7 +224,7 @@ void Jobs::vJob_ListColumns_post(Job* pJob)
   }
   else {
     if (AM::bMetadata()) {
-      vTrace("metadata: %s\n"_Stz, pJob_ListColumns->m_sMetadata.aStz());
+      vTrace("metadata: %s\n"_Stz, pJob_ListColumns->m_sMetadata.szStz());
     }
     
     i8 iRowsProcessed = 0;

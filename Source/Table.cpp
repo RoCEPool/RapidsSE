@@ -95,7 +95,7 @@ Table::Table(void)
   
   AM::vLogDdl(SL_INF,pJob,DA_DDL_CREATE_TABLE,
               "%s |gixTable=%lld|"_Stz, //!format-LogOpr
-              m_sTableName.aStz(),* gixTable);
+              m_sTableName.szStz(),* gixTable);
 
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
@@ -432,10 +432,10 @@ void Table::vContentDump(void)
 //  
 ////  vTrace("vCreateColumnVec: table %s column %s %s\n"_Stz,
 ////         aTableName(),
-////         sColumnNm.aStz(),
-////         sColumnDefn.aStz());
+////         sColumnNm.szStz(),
+////         sColumnDefn.szStz());
 //  
-//  Column* pColumn = new Column(sColumnNm.aStz(),sColumnDefn.aStz());
+//  Column* pColumn = new Column(sColumnNm.szStz(),sColumnDefn.szStz());
 //  
 //  m_pColumnVec->vInsert(pColumn);
 //  
@@ -457,7 +457,7 @@ void Table::vCreateColumnVec(Jobs::Job_CreateTable* pJob)
   Column* pColumn = nullptr;
   
   m_pStreamDef->m_sName = m_sTableName;
-  m_pStreamDef->m_sPath.vSprint("../%s"_Stz,m_sTableName.aStz());
+  m_pStreamDef->m_sPath.vSprint("../%s"_Stz,m_sTableName.szStz());
 
   m_pStreamDef->m_nDefSets = 1;
   m_pStreamDef->m_i_DefStart[0] = 0;
@@ -577,7 +577,7 @@ void Table::vMarkTable(void)
   s48K sTableMark;
   
   sTableMark.vSprintCat("Table %s\n"_Stz,
-                        m_sTableName.aStz());
+                        m_sTableName.szStz());
   
   i8 nCols = m_pColumnVec->nItems();
   
@@ -586,7 +586,7 @@ void Table::vMarkTable(void)
     Column* pColumn = m_pColumnVec->pGet(i_Col);
     sTableMark.vSprintCat("  Col %02lld %s %s(%lld,%lld) %s\n"_Stz,
                           i_Col,
-                          pColumn->sColumnName().aStz(),
+                          pColumn->sColumnName().szStz(),
                           
                           aCT[pColumn->eColumnType()],
                           pColumn->iColumnLength(),

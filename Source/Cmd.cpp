@@ -59,7 +59,7 @@ Stz* Cmd::szCmd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_sCmd.aStz();
+  return m_sCmd.szStz();
 }
 
 /*============================================================================*/

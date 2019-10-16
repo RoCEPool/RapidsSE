@@ -300,7 +300,7 @@ void Log::vHow(i8 iReqId, i8 iDetail, LogEntry* pLogEntry)
   
   pLogEntry->vAsTxt(sHow);
   
-  printf((char*)"%s\n"_Stz,sHow.aStz());
+  printf((char*)"%s\n"_Stz,sHow.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -326,8 +326,8 @@ void Log::vMonitorPortrait(s48K& sPortrait)
   MagLib::vUnitMag(gpLog->m_nEntries, sArrayMag);
 
   sPortrait.vSprint("Log: shm %s array %s marks %lld; %lld%% full;\n"_Stz,
-                    sShmMag.aStz(),
-                    sArrayMag.aStz(),
+                    sShmMag.szStz(),
+                    sArrayMag.szStz(),
                     gpLog->m_i_Entry,
                     iPercentFull
                      );
@@ -447,8 +447,8 @@ void Log::vOpenBySE(bool bStarting)
              sUser.azChar(),
               
              Hardware::iCoreCount(),
-             sMem.aStz(),
-             sClock.aStz()
+             sMem.szStz(),
+             sClock.szStz()
              );
   
   AM::vLogArguments();

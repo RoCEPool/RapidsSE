@@ -169,7 +169,7 @@ void AttachMap::vPrintAttachMap(void)
   vInfo("Pid: %lld; \n"_Stz,   gpAttachMap->m_iPid);
   vInfo("UTC: %s; \n"_Stz,     gpAttachMap->m_oNow.sz());
   
-  vInfo("RegionName   : %s \n"_Stz,     gpAttachMap->Arg.m_sRegionName.aStz());
+  vInfo("RegionName   : %s \n"_Stz,     gpAttachMap->Arg.m_sRegionName.szStz());
   vInfo("RegionSize   : %lld \n"_Stz,   gpAttachMap->Arg.m_iRegionSize);
   vInfo("JumboSize    : %lld \n"_Stz,   gpAttachMap->Arg.m_iJumboSize);
   vInfo("SubIngesters : %lld \n"_Stz,   gpAttachMap->Arg.m_nSubIngesters);

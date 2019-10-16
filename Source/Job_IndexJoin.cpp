@@ -269,7 +269,7 @@ void Jobs::vJob_IndexJoin_post(Job* pJob)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fetch
   if (AM::bMetadata()) {
-    vTrace("metadata: %s\n"_Stz, pJob_IndexJoin->m_sMetadata.aStz());
+    vTrace("metadata: %s\n"_Stz, pJob_IndexJoin->m_sMetadata.szStz());
   }
   
   while ( nLastBuffersScanned != pJob_IndexJoin->m_nLastBuffers ) {

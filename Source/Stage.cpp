@@ -161,7 +161,7 @@ void Stage::vDump(void)
            i_Op,
            pOp->szLabel(),
            aCN[pOp->eClass()],
-           sArgs.aStz(),
+           sArgs.szStz(),
            pOp->m_iNextStage,
            pOp->m_nLeftEndMarkers,
            pOp->m_nRightEndMarkers,

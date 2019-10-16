@@ -57,9 +57,9 @@ bool Prompt::bPrompt_fileProc(SePrompt* pPrompt)
     if (nLines && ++i_Line > nLines)
       break;
     
-    vTrace("%lld: %s%s\n"_Stz,i_Line,sLine_1.aStz(),sLine_2.aStz());
+    vTrace("%lld: %s%s\n"_Stz,i_Line,sLine_1.szStz(),sLine_2.szStz());
     
-    oFileOut.vPrint("%s%s\n"_Stz,sLine_1.aStz(),sLine_2.aStz());
+    oFileOut.vPrint("%s%s\n"_Stz,sLine_1.szStz(),sLine_2.szStz());
   }
   
   oFileInp.vClose();

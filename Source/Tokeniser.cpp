@@ -138,7 +138,7 @@ TokenVec* Tokeniser::pTokenise(Stz* szString)
     
     Token* pToken = pTokenVec->pGet(i_Token);
     pToken->vToken(pTokeniser->eToken());
-    pToken->vCopy(pTokeniser->sToken().aStz());
+    pToken->vCopy(pTokeniser->sToken().szStz());
     
   }
   
@@ -167,7 +167,7 @@ void Tokeniser::vTokenise(TokenVec* pTokenVec, Stz* szString)
     
     Token* pToken = pTokenVec->pGet(i_Token);
     pToken->vToken(pTokeniser->eToken());
-    pToken->vCopy(pTokeniser->sToken().aStz());
+    pToken->vCopy(pTokeniser->sToken().szStz());
     
   }
   

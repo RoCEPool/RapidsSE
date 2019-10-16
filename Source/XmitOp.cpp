@@ -177,7 +177,7 @@ eOR XmitOp::eXmitLoop(void)
     
     if (AM::bVerbose())
       vTrace("%s::XmitOut :    %s %p (N%lld)\n"_Stz,
-             m_sLabel.aStz(),
+             m_sLabel.szStz(),
              aCN[pOperand->eClass()],
              pOperand,
              m_iXmitNode);

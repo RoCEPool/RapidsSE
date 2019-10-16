@@ -285,7 +285,7 @@ void Job_SubExporter::vSprintRows(void)
     hvRec->vAppend(hRow);
     
     StrLib::vConcat(hvRec->szRecStr()->azChar(),'\n');            //! sub-optimal
-    //vTrace("]]%s[[\n"_Stz,sRecord.aStz());
+    //vTrace("]]%s[[\n"_Stz,sRecord.szStz());
     
     nBytes = hvRec->szRecStr()->nSize();
     

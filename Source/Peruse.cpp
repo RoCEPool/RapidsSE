@@ -168,10 +168,10 @@ void Peruse::vAdd(i8 iArg, Stz* szFormat,...)
            "cnt %s sum %lld min %lld max %lld "
            "avg %lld var %g dev %g skw %g krt %g"_Stz,
            
-           m_sName.aStz(),
-           sElapsedMag.aStz(),
+           m_sName.szStz(),
+           sElapsedMag.szStz(),
            
-           sCountComma.aStz(),
+           sCountComma.szStz(),
            m_iGrandSum,
            m_iGrandMin,
            m_iGrandMax,
@@ -247,7 +247,7 @@ void Peruse::vPrint(Stz* szFormat,...)
   vTrace("cnt %s sum %lld min %lld max %lld "
          "avg %lld var %g dev %g skw %g krt %g\n"_Stz,
          
-         sCountComma.aStz(),
+         sCountComma.szStz(),
          m_iGrandSum,
          m_iGrandMin,
          m_iGrandMax,

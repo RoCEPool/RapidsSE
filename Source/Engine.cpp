@@ -147,7 +147,7 @@ void Engine::vChangeDirectory(void)
 
   s256 sCurrent;
   if (Dir::bGetCurrent(sCurrent) && gxArguments.m_bVerbose)
-    vInfo("CURRENT WORKING DIRECTORY: %s\n"_Stz,sCurrent.aStz());
+    vInfo("CURRENT WORKING DIRECTORY: %s\n"_Stz,sCurrent.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -333,7 +333,7 @@ void Engine::vKillPrev(void)
       continue;
 
     if (gxArguments.m_bDeveloper)
-      vTrace("vKillPrev: region %s exists\n"_Stz,sRegionNm.aStz());
+      vTrace("vKillPrev: region %s exists\n"_Stz,sRegionNm.szStz());
     
     if (! (aRegion = Region::aOpen(sRegionNm,gxArguments.m_aRegionAddr,iFD)))
       continue;
@@ -380,80 +380,80 @@ void Engine::vMonitorPortrait(s48K& sRapidsPortrait)
 
   sPortrait = ""_Stz;
   vMonitorProfile(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
+  sRapidsPortrait.vConcat(sPortrait.szStz());
   
   sPortrait = ""_Stz;
   AM::pQueues()->vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
+  sRapidsPortrait.vConcat(sPortrait.szStz());
   
   sPortrait = ""_Stz;
   AM::pLockTracker()->vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
+  sRapidsPortrait.vConcat(sPortrait.szStz());
   
   sPortrait = ""_Stz;
   AM::pBufferPool()->vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
+  sRapidsPortrait.vConcat(sPortrait.szStz());
   
   sPortrait = ""_Stz;
   AM::pHeapMem()->vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
+  sRapidsPortrait.vConcat(sPortrait.szStz());
   
   sPortrait = ""_Stz;
   if (AM::bAttached())
     AM::pResourceTracker()->vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
+  sRapidsPortrait.vConcat(sPortrait.szStz());
   
   sPortrait = ""_Stz;
   AM::pQueues()->vMonitorThread(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
+  sRapidsPortrait.vConcat(sPortrait.szStz());
   
   sPortrait = ""_Stz;
   File::vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
+  sRapidsPortrait.vConcat(sPortrait.szStz());
   
   sPortrait = ""_Stz;
   Socket::vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
+  sRapidsPortrait.vConcat(sPortrait.szStz());
   
   sPortrait = ""_Stz;
   Portrait::vMemoryPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
+  sRapidsPortrait.vConcat(sPortrait.szStz());
   
 //  sPortrait = ""_Stz;
 //  Log::vMonitorPortrait(sPortrait);
-//  sRapidsPortrait.vConcat(sPortrait.aStz());
+//  sRapidsPortrait.vConcat(sPortrait.szStz());
   
   sPortrait = ""_Stz;
   Mutex::vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
+  sRapidsPortrait.vConcat(sPortrait.szStz());
   
   sPortrait = ""_Stz;
   Task::vMonitorProfile_stats(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
+  sRapidsPortrait.vConcat(sPortrait.szStz());
   
   sPortrait = ""_Stz;
   Pthread::vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
+  sRapidsPortrait.vConcat(sPortrait.szStz());
   
   sPortrait = ""_Stz;
   Api::vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
+  sRapidsPortrait.vConcat(sPortrait.szStz());
   
   sPortrait = ""_Stz;
   Table::vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
+  sRapidsPortrait.vConcat(sPortrait.szStz());
   
   sPortrait = ""_Stz;
   Index::vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
+  sRapidsPortrait.vConcat(sPortrait.szStz());
   
   sPortrait = ""_Stz;
   IndexTree::vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
+  sRapidsPortrait.vConcat(sPortrait.szStz());
   
   sPortrait = ""_Stz;
   AM::pApiState()->vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
+  sRapidsPortrait.vConcat(sPortrait.szStz());
   
   if (1 == ++ gpAttachMap->m_inNextMonitor)
     BPA::vEpochTake();
@@ -483,7 +483,7 @@ void Engine::vMonitorProfile(s48K& sPortrait)
                     "     cluster %s ddl %s \n"_Stz,
 
                     aNodeName,
-                    sRegionMag.aStz(),
+                    sRegionMag.szStz(),
                     iPercentFree,
                     iUpTime,
 #ifdef WITH_DEBUG_VERSION
@@ -689,8 +689,8 @@ void Engine::vPrintWelcome(void)
   vGetCopyright(sCopyright);
 
   if (gxArguments.m_bWelcome && ! gxArguments.m_bStatus) {
-    vInfo("%s\n"_Stz,sWelcome.aStz());
-    vInfo("%s\n"_Stz,sCopyright.aStz());
+    vInfo("%s\n"_Stz,sWelcome.szStz());
+    vInfo("%s\n"_Stz,sCopyright.szStz());
   }
   
   if (gxArguments.m_bVerbose) {

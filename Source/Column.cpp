@@ -210,7 +210,7 @@ Stz* Column::szColNm(void)
 {
   //_precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
-  return m_sColumnName.aStz();
+  return m_sColumnName.szStz();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -398,7 +398,7 @@ void Column::vShow(void)
   
   vTrace("Column %02lld %s type %s length %lld scale %lld datum %s %s %s\n"_Stz,
          m_iColumnNo,
-         m_sColumnName.aStz(),
+         m_sColumnName.szStz(),
          aCT[m_eColumnType],
          m_iColumnLength,
          m_iColumnScale,

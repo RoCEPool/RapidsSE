@@ -44,7 +44,7 @@ void DecaCnt::vInc(Stz* szFormat,...)
   m_iCount++;
   
   if (IntLib::bIsDecaCycle(m_iCount)) {
-    vTrace("%s %lld:"_Stz,m_sName.aStz(),m_iCount);
+    vTrace("%s %lld:"_Stz,m_sName.szStz(),m_iCount);
     va_list xArgs;
     va_start(xArgs,szFormat);
     AM::vWriteTrace(YA_SYS_INFO,szFormat,xArgs);

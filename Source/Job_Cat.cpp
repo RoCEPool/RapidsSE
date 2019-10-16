@@ -263,7 +263,7 @@ bool Job_Cat::bBegin(void)
 
   }
 
-  vTrace("Cat data from %s to %s\n"_Stz,szFilePath(),m_sOutputPath.aStz());
+  vTrace("Cat data from %s to %s\n"_Stz,szFilePath(),m_sOutputPath.szStz());
 
   return true;
 }

@@ -261,7 +261,7 @@ bool Job_Monitor::bTake(void)
   s48K sRapidsPortrait;
   AM::vMonitorPortrait(sRapidsPortrait);
   
-  m_pOutFile->vPrint("%s\n"_Stz,sRapidsPortrait.aStz());
+  m_pOutFile->vPrint("%s\n"_Stz,sRapidsPortrait.szStz());
 
   AM::vLogText(-1,sRapidsPortrait);
 

@@ -28,7 +28,7 @@ bool Prompt::bPrompt_mon(SePrompt* pPrompt)
   
   AM::vMonitorPortrait(sPortrait);
   
-  vTrace("%s\n"_Stz,sPortrait.aStz());
+  vTrace("%s\n"_Stz,sPortrait.szStz());
   
   AM::vLogText(-1,sPortrait);
   

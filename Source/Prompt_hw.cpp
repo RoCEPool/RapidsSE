@@ -34,8 +34,8 @@ bool Prompt::bPrompt_hw(SePrompt* pPrompt)
   
   vTrace("hw: %lld cores; %s memory; %s clock frequency; %s\n"_Stz,
          Hardware::iCoreCount(),
-         sMem.aStz(),
-         sClock.aStz(),
+         sMem.szStz(),
+         sClock.szStz(),
          *c == 0x1 ? "little endian"_Stz : "big endian"_Stz
          );
   

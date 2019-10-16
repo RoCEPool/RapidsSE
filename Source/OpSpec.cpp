@@ -108,7 +108,7 @@ Stz* OpSpec::szName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  return m_sName.aStz();
+  return m_sName.szStz();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -182,7 +182,7 @@ void OpSpec::vPrint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  vTrace("[%lld] %s opDefn=%p "_Stz,m_i_OpSpec,m_sName.aStz(),m_aOpDefn);
+  vTrace("[%lld] %s opDefn=%p "_Stz,m_i_OpSpec,m_sName.szStz(),m_aOpDefn);
     
   m_oEnmSet.vPrint();
 }

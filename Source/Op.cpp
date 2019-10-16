@@ -229,7 +229,7 @@ void Op::vAppendLeft(Operand* pOperand)
   _precondition_(_ADDRESS_,_MAGIC_);
   
 //  vTrace("%s::vAppendLeft : %p %s\n"_Stz,
-//         m_sName.aStz(),
+//         m_sName.szStz(),
 //         pOperand,
 //         aCN[pOperand->eClass()]);
   
@@ -256,7 +256,7 @@ void Op::vAppendRight(Operand* pOperand)
   _precondition_(_ADDRESS_,_MAGIC_);
     
   //  vTrace("%s::vAppendOperand : %p %s\n"_Stz,
-  //         m_sLabel.aStz(),
+  //         m_sLabel.szStz(),
   //         pOperand,
   //         aCN[pOperand->eClass()]);
   
@@ -525,7 +525,7 @@ void Op::vPipeOut(Operand* pOperand)
   
   if (AM::bVerbose())
     vTrace("%s (P%lld) (N%lld) (job:%p)::vPipeOut :    %s %p\n"_Stz,
-           m_sName.aStz(),
+           m_sName.szStz(),
            m_nPartition,
            m_nNode,
            m_pJob,
@@ -559,7 +559,7 @@ void Op::vPipeToJob(Operand* pOperand)
   
   if (AM::bVerbose())
     vTrace("%s (P%lld) (N%lld) ::vPipeToJob(%p):    %s %p\n"_Stz,
-           m_sName.aStz(),
+           m_sName.szStz(),
            m_nPartition,
            m_nNode,
            m_pJob,
@@ -614,7 +614,7 @@ Operand* Op::pPopQueue(void)
   
   if (AM::bVerbose() && pOperand) {
     vTrace("%s (P%lld) (N%lld) (job:%p)::pPopQueue : %s %p\n"_Stz,
-           m_sName.aStz(),
+           m_sName.szStz(),
            m_nPartition,
            m_nNode,
            m_pJob,
@@ -658,7 +658,7 @@ Operand* Op::pPopQueueLeft(void)
   if (pOperand) {
     if (AM::bVerbose())
       vTrace("%s::pPopQueueLeft : %s %p\n"_Stz,
-             m_sLabel.aStz(),
+             m_sLabel.szStz(),
              aCN[pOperand->eClass()],
              pOperand);
   }
@@ -695,7 +695,7 @@ Operand* Op::pPopQueueRight(void)
   if (pOperand) {
     if (AM::bVerbose())
       vTrace("%s::pPopQueueRight : %s %p\n"_Stz,
-             m_sLabel.aStz(),
+             m_sLabel.szStz(),
              aCN[pOperand->eClass()],
              pOperand);
   }

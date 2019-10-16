@@ -28,7 +28,7 @@ bool Prompt::bPrompt_tempName(SePrompt* pPrompt)
   
   for (i8 n = 0; n < 1000; n++) {
     AM::vNextTempName(sName);
-    vTrace("%s\n"_Stz,sName.aStz());
+    vTrace("%s\n"_Stz,sName.szStz());
   }
   
   return true;

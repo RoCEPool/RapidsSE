@@ -32,7 +32,7 @@ void JobLog::vNote(Jobs::Job* pJob, Stz* szFormat, ...)
                     "%s (recv from %s)"_Stz,
                     
                     szFormat,
-                    sNodeNm.aStz()
+                    sNodeNm.szStz()
                     );
   }
   else {
@@ -88,7 +88,7 @@ void JobLog::vNoteState(Jobs::Job* pJob, Stz* szPoint)
     s32 sNodeNm;
     sNodeNm = pJob->szNodeNm();
     
-    szEntryText.vCatSprint(" (recv from %s)"_Stz,sNodeNm.aStz());
+    szEntryText.vCatSprint(" (recv from %s)"_Stz,sNodeNm.szStz());
   }
 
   i8 iJobId = pJob->iJobId();

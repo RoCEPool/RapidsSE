@@ -128,9 +128,9 @@ void StepTiming::vWrite(void)
   
   sFilePath.vSprint((Stz*)C_StepTiming_FILE,oNow.sz());
 
-  bool bOpened = oFile.bOpenWrite(sFilePath.aStz());
+  bool bOpened = oFile.bOpenWrite(sFilePath.szStz());
   if (! bOpened) {
-    vTrace("Unable to open StepTiming file: %s\n"_Stz,oFile.sFilePath().aStz());
+    vTrace("Unable to open StepTiming file: %s\n"_Stz,oFile.sFilePath().szStz());
     return;
   }
   
@@ -142,7 +142,7 @@ void StepTiming::vWrite(void)
   
   m_okLock.vDropWrite();
   
-  vTrace("Written: %s\n"_Stz,oFile.sFilePath().aStz());
+  vTrace("Written: %s\n"_Stz,oFile.sFilePath().szStz());
   
   oFile.vClose();
 }

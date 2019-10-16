@@ -523,7 +523,7 @@ bool Stack::bPop(i8& iArg, s48K& sArg)
   GenVar xGenVar;
   vPopVal(xGenVar.aNestedValue());
   
-  sArg = _aStrVal(&xGenVar)->aStz();
+  sArg = _aStrVal(&xGenVar)->szStz();
   
   return true;
 }
@@ -663,7 +663,7 @@ bool Stack::bPop(s32& sArg)
   GenVar xGenVar;
   vPopVal(xGenVar.aNestedValue());
   
-  sArg = _aStrVal(xGenVar.aNestedValue())->aStz();
+  sArg = _aStrVal(xGenVar.aNestedValue())->szStz();
   
   return true;
 }
@@ -681,7 +681,7 @@ bool Stack::bPop(s256& sArg)
   GenVar xGenVar;
   vPopVal(xGenVar.aNestedValue());
   
-  sArg = _aStrVal(xGenVar.aNestedValue())->aStz();
+  sArg = _aStrVal(xGenVar.aNestedValue())->szStz();
   
   return true;
 }
@@ -699,7 +699,7 @@ bool Stack::bPop(s4K& sArg)
   GenVar xGenVar;
   vPopVal(xGenVar.aNestedValue());
   
-  sArg = _aStrVal(xGenVar.aNestedValue())->aStz();
+  sArg = _aStrVal(xGenVar.aNestedValue())->szStz();
   
   return true;
 }
@@ -717,7 +717,7 @@ bool Stack::bPop(s16KB& sArg)
   GenVar xGenVar;
   vPopVal(xGenVar.aNestedValue());
   
-  sArg = _aStrVal(xGenVar.aNestedValue())->aStz();
+  sArg = _aStrVal(xGenVar.aNestedValue())->szStz();
   
   return true;
 }
@@ -735,7 +735,7 @@ bool Stack::bPop(s48K& sArg)
   GenVar xGenVar;
   vPopVal(xGenVar.aNestedValue());
   
-  sArg = _aStrVal(xGenVar.aNestedValue())->aStz();
+  sArg = _aStrVal(xGenVar.aNestedValue())->szStz();
   
   return true;
 }
@@ -753,7 +753,7 @@ bool Stack::bPop(s48K& sArg, i8& iArg)
   GenVar xGenVar;
   vPopVal(xGenVar.aNestedValue());
   
-  sArg = _aStrVal(xGenVar.aNestedValue())->aStz();
+  sArg = _aStrVal(xGenVar.aNestedValue())->szStz();
   
   IntVal xIntVal;
   vPopVal(&xIntVal);
@@ -775,7 +775,7 @@ bool Stack::bPop(s48K& sArg, i8& iArg1, i8& iArg2)
   
   GenVar xGenVar;
   vPopVal(xGenVar.aNestedValue());
-  sArg = _aStrVal(xGenVar.aNestedValue())->aStz();
+  sArg = _aStrVal(xGenVar.aNestedValue())->szStz();
   
   IntVal xIntVal1;
   vPopVal(&xIntVal1);
@@ -801,12 +801,12 @@ bool Stack::bPop(s48K& sArg1, s48K& sArg2)
   GenVar xGenVar1;
   vPopVal(xGenVar1.aNestedValue());
   
-  sArg1 = _aStrVal(xGenVar1.aNestedValue())->aStz();
+  sArg1 = _aStrVal(xGenVar1.aNestedValue())->szStz();
   
   GenVar xGenVar2;
   vPopVal(xGenVar2.aNestedValue());
   
-  sArg2 = _aStrVal(xGenVar2.aNestedValue())->aStz();
+  sArg2 = _aStrVal(xGenVar2.aNestedValue())->szStz();
   
   return true;
 }

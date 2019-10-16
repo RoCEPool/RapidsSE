@@ -255,7 +255,7 @@ bool Job_Repeater::bBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPEATER,_FOOTER_);
   
-  //vTrace("Repeat data from %s to %s\n"_Stz,m_sFileName.aStz(),m_sOutputPath.aStz());
+  //vTrace("Repeat data from %s to %s\n"_Stz,m_sFileName.szStz(),m_sOutputPath.szStz());
   
   s256 sFilePath;
   sFilePath = szFilePath();

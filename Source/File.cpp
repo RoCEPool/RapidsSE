@@ -142,11 +142,11 @@ void File::vMonitorPortrait(s48K& sPortrait)
                     pStats->File.m_nFlushes,
                     
                     pStats->File.m_nReads,
-                      sReadMag.aStz(),
+                      sReadMag.szStz(),
                     pStats->File.m_nWrites,
-                      sWriteMag.aStz(),
+                      sWriteMag.szStz(),
                     pStats->File.m_nPrints,
-                      sPrintMag.aStz(),
+                      sPrintMag.szStz(),
 
                     pStats->File.m_nGetcs,
                     pStats->File.m_nUngetcs
@@ -192,11 +192,11 @@ void File::vStatistics(void)
   vTrace("\n"_Stz);
 
   MagLib::vByteMag(pStats->File.m_nReadBytes,  sByteMag);
-  vTrace("  nFileReadBytes  %s\n"_Stz,sByteMag.aStz());
+  vTrace("  nFileReadBytes  %s\n"_Stz,sByteMag.szStz());
   MagLib::vByteMag(pStats->File.m_nPrintBytes, sByteMag);
-  vTrace("  nFilePrintBytes %s\n"_Stz,sByteMag.aStz());
+  vTrace("  nFilePrintBytes %s\n"_Stz,sByteMag.szStz());
   MagLib::vByteMag(pStats->File.m_nWriteBytes, sByteMag);
-  vTrace("  nFileWriteBytes %s\n"_Stz,sByteMag.aStz());
+  vTrace("  nFileWriteBytes %s\n"_Stz,sByteMag.szStz());
 }
 
 
@@ -247,7 +247,7 @@ void File::vClose(void)
   
   AM::vLogRes(SL_INF,this,RA_FIL_CLOSED,
               "File closed: path=%s"_Stz, //!format-LogRes
-              m_sFilePath.aStz());
+              m_sFilePath.szStz());
 
   vReset();
   

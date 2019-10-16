@@ -209,7 +209,7 @@ Word* Dic::pFindWord(Stz* aName)
       m_pArticle->vDropRead();
 
       if (aName->bSame("whereAmI"_Stz))
-        vTrace(": %s is in dictionary %s ---\n"_Stz,aName,m_sName.aStz());
+        vTrace(": %s is in dictionary %s ---\n"_Stz,aName,m_sName.szStz());
 
       return pWord;
     }
@@ -308,7 +308,7 @@ void Dic::vListWords(void)
     
     vTrace(": %s (dictionary %s)"_Stz,
            pWord->sName().azChar(),
-           m_sName.aStz());
+           m_sName.szStz());
   }
   
   m_pArticle->vDropRead();

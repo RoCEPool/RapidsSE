@@ -44,7 +44,7 @@ void TempName::vNextName(s32& sName)
   m_okLock.vGrabWrite();
   
   sName.vSprint("%s_%x"_Stz,
-                m_sClicker.aStz(),
+                m_sClicker.szStz(),
                 m_oBirth.m_wIvl.xIvl.m_uSecond);
   
   StrLib::vClick(m_sClicker.azChar());

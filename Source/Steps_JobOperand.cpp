@@ -38,7 +38,7 @@ void Step::vJob_OperandPipeOut(MP_Task mpTask)
     StageNde* pStageNde = pStage->pStageNdeVec()->pGet(pJob_Operand->m_iNdeVec);
     Op* pOp = pStageNde->pOpVec()->pGet(0);
 //    vTrace("***************%s::Job_Operand.pipeOut : %p %s\n"_Stz,
-//           pOp->m_sName.aStz(),
+//           pOp->m_sName.szStz(),
 //           pJob_Operand->m_pOperand,
 //           aCN[pJob_Operand->m_pOperand->eClass()]);
     pOp->vAppendLeft(pJob_Operand->m_pOperand);

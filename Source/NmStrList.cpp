@@ -117,8 +117,8 @@ NmStr* NmStrList::pFind(Stz* szName)
   for (NmStr* pNmStr = pHead(); pNmStr; pNmStr = pNmStr->pNextItem()) {
     
 //    vTrace("  %s = %s\n"_Stz,
-//           pNmStr->m_sName.aStz(),
-//           pNmStr->m_sValue.aStz());
+//           pNmStr->m_sName.szStz(),
+//           pNmStr->m_sValue.szStz());
     
     if (pNmStr->m_sName.bSame(szName))
       return pNmStr;

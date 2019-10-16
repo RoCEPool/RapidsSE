@@ -330,7 +330,7 @@ void Task::vCompileConstant(s48K& sDefinition)
 
   //vTrace("CompileConstant: %s %s\n"_Stz,aName,sConstantValue.azChar());
   
-  AM::vAddConstant(szName,sValue.aStz());
+  AM::vAddConstant(szName,sValue.szStz());
   
   m_pCompiler->m_pTokeniser->vNextToken();
   

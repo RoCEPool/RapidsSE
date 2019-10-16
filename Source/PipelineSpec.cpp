@@ -74,7 +74,7 @@ Stz* PipelineSpec::szName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
-  return m_sName.aStz();
+  return m_sName.szStz();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -128,7 +128,7 @@ void PipelineSpec::vPrint(void)
   
   vTrace("dynamic\n"_Stz);
   vTrace("\n"_Stz);
-  vTrace("pipeline %s\n"_Stz,m_sName.aStz());
+  vTrace("pipeline %s\n"_Stz,m_sName.szStz());
   vTrace("begin\n"_Stz);
   
   for (i8 i_Stage = 0; i_Stage < m_pStageSpecVec->nItems(); i_Stage++)

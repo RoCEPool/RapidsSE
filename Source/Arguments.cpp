@@ -544,8 +544,8 @@ bool Arguments::bParse(int argc, Stz* argv[])
       
       if (m_iRegionSize < C_MIN_REGION) {
         vWarn("Insufficient region size: %s. At least %s is required\n"_Stz,
-              sSize.aStz(),
-              sMinSize.aStz());
+              sSize.szStz(),
+              sMinSize.szStz());
         return false;
       }
       
@@ -769,7 +769,7 @@ void Arguments::vPrint(void)
     vTrace("%s "_Stz,gi_argv[i_Arg]);
   }
   
-  //vTrace("--region %s"_Stz,m_sRegionName.aStz());
+  //vTrace("--region %s"_Stz,m_sRegionName.szStz());
   
   vTrace("\n"_Stz);
 }

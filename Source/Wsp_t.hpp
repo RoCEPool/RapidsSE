@@ -27,7 +27,7 @@ namespace Alignment
     byte* ayLatter(void);
     i8    nLength(void);
     i8    nSize(void);
-    Stz*  aStz(void);
+    Stz*  szStz(void);
     void  vTake(i8 nBytes);
     i8    nUsed(void);
     void  vUsed(i8 nBytes);
@@ -147,7 +147,7 @@ i8 Wsp_t<LENGTH>::nSize(void)
 /* get byte area as Stz*                                                      */
 /*----------------------------------------------------------------------------*/
 template<int LENGTH>
-Stz* Wsp_t<LENGTH>::aStz(void)
+Stz* Wsp_t<LENGTH>::szStz(void)
 {
   char* aArea = (char*)m_ayByteArea;
   

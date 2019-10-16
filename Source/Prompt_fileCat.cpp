@@ -44,7 +44,7 @@ bool Prompt::bPrompt_fileCat(SePrompt* pPrompt)
   while (oFile.bReadLine(sLine)) {
     if (++i_Line > nLines)
       break;
-    vTrace("%s\n"_Stz,sLine.aStz());
+    vTrace("%s\n"_Stz,sLine.szStz());
   }
   
   oFile.vClose();

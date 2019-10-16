@@ -246,50 +246,50 @@ void PromptHelper::vMemoryStatistics(void)
   Statistics* pStats = AM::pStatistics();
   
   MagLib::vByteMag(pStats->Memory.m_iCopyTotal, sByteMag);
-  vTrace("MemLib::vCopy() total %s\n"_Stz,sByteMag.aStz());
+  vTrace("MemLib::vCopy() total %s\n"_Stz,sByteMag.szStz());
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
     if (pStats->Memory.m_iaCopy[i_Class]) {
       MagLib::vByteMag(pStats->Memory.m_iaCopy[i_Class], sByteMag);
-      vTrace("  %s %s\n"_Stz,aCN[i_Class],sByteMag.aStz());
+      vTrace("  %s %s\n"_Stz,aCN[i_Class],sByteMag.szStz());
     }
   }
   
   MagLib::vByteMag(pStats->Memory.m_iCompareTotal, sByteMag);
-  vTrace("MemLib::vCompare() total %s\n"_Stz,sByteMag.aStz());
+  vTrace("MemLib::vCompare() total %s\n"_Stz,sByteMag.szStz());
   
   MagLib::vByteMag(pStats->Memory.m_iMoveTotal, sByteMag);
-  vTrace("MemLib::vMove() total %s\n"_Stz,sByteMag.aStz());
+  vTrace("MemLib::vMove() total %s\n"_Stz,sByteMag.szStz());
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
     if (pStats->Memory.m_iaMove[i_Class]) {
       MagLib::vByteMag(pStats->Memory.m_iaMove[i_Class], sByteMag);
-      vTrace("  %s %s\n"_Stz,aCN[i_Class],sByteMag.aStz());
+      vTrace("  %s %s\n"_Stz,aCN[i_Class],sByteMag.szStz());
     }
   }
   
   MagLib::vByteMag(pStats->Memory.m_iScribbleTotal, sByteMag);
-  vTrace("MemLib::vScribble() total %s\n"_Stz,sByteMag.aStz());
+  vTrace("MemLib::vScribble() total %s\n"_Stz,sByteMag.szStz());
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
     if (pStats->Memory.m_iaScribble[i_Class]) {
       MagLib::vByteMag(pStats->Memory.m_iaScribble[i_Class], sByteMag);
-      vTrace("  %s %s\n"_Stz,aCN[i_Class],sByteMag.aStz());
+      vTrace("  %s %s\n"_Stz,aCN[i_Class],sByteMag.szStz());
     }
   }
   
   MagLib::vByteMag(pStats->Memory.m_iSetTotal, sByteMag);
-  vTrace("MemLib::vSet() total %s\n"_Stz,sByteMag.aStz());
+  vTrace("MemLib::vSet() total %s\n"_Stz,sByteMag.szStz());
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
     if (pStats->Memory.m_iaSet[i_Class]) {
       MagLib::vByteMag(pStats->Memory.m_iaSet[i_Class], sByteMag);
-      vTrace("  %s %s\n"_Stz,aCN[i_Class],sByteMag.aStz());
+      vTrace("  %s %s\n"_Stz,aCN[i_Class],sByteMag.szStz());
     }
   }
   
   MagLib::vByteMag(pStats->Memory.m_iZeroTotal, sByteMag);
-  vTrace("MemLib::vZero() total %s\n"_Stz,sByteMag.aStz());
+  vTrace("MemLib::vZero() total %s\n"_Stz,sByteMag.szStz());
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
     if (pStats->Memory.m_iaZero[i_Class]) {
       MagLib::vByteMag(pStats->Memory.m_iaZero[i_Class], sByteMag);
-      vTrace("  %s %s\n"_Stz,aCN[i_Class],sByteMag.aStz());
+      vTrace("  %s %s\n"_Stz,aCN[i_Class],sByteMag.szStz());
     }
   }
   
@@ -300,7 +300,7 @@ void PromptHelper::vMemoryStatistics(void)
   + pStats->Memory.m_iZeroTotal
   ;
   MagLib::vByteMag(iGrandTotal, sByteMag);
-  vTrace("Grand Total %s\n"_Stz,sByteMag.aStz());
+  vTrace("Grand Total %s\n"_Stz,sByteMag.szStz());
 }
 
 
