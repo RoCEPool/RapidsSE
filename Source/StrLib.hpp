@@ -175,6 +175,7 @@ namespace Strings
     static void  vSprintCat(char* sDst, const char* sFormat, ...);
     static void  vSprintCat(char* sDst, va_list args, const char* sFormat);
     static void  vStrip(char* s, char cTrailing);
+    static void  vSubPath(char* azDst, char* azSrc);
 
     static char* zTerminator(char* s);
     static bool  bToBool(const char* s);
