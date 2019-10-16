@@ -96,7 +96,7 @@ void GenVar::operator =(Stz* szStz)
   _precondition_(_MAGIC_,CN_GENVAR,_FOOTER_);
   
   xNestedValue.m_xHeader.vSetClass(CN_STRVAL);
-  xNestedValue.m_wWord = StrLib::nCopy(xNestedValue.m_caStr,szStz->aChar()) + 1;
+  xNestedValue.m_wWord = StrLib::nCopy(xNestedValue.m_caStr,szStz->azChar()) + 1;
 }
 
 /*----------------------------------------------------------------------------*/

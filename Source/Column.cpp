@@ -460,7 +460,7 @@ byte* Column::ayValue(i8& nBytes, byte** aayCursor)
       aElem = (Stz*)aValue;
       nBytes = 0;
       
-      while (*aElem->aChar() != '\0') {
+      while (*aElem->azChar() != '\0') {
         nBytes++;
         aElem++;
       }
@@ -476,7 +476,7 @@ byte* Column::ayValue(i8& nBytes, byte** aayCursor)
     szElem = (Stz*)ayValue;
     nBytes = 0;
     
-    while (*szElem->aChar() != '\0') {
+    while (*szElem->azChar() != '\0') {
       nBytes++;
       szElem++;
     }

@@ -96,7 +96,7 @@ bool File::bExists(Stz* aFilePath)
 {
   struct stat xStat;
   
-  int iResult = stat(aFilePath->aChar(),&xStat);
+  int iResult = stat(aFilePath->azChar(),&xStat);
   
   if (0 == iResult && (xStat.st_mode & S_IFREG))
     return true;
@@ -104,7 +104,7 @@ bool File::bExists(Stz* aFilePath)
   if (iResult && ENOENT == errno)
     return false;
   
-  vWarn("File::bExists: %s stat() error; errno=%d"_Stz, aFilePath->aChar(), errno);
+  vWarn("File::bExists: %s stat() error; errno=%d"_Stz, aFilePath->azChar(), errno);
   
   return false;
 }
@@ -160,7 +160,7 @@ void File::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 bool File::bRemove(Stz* aFilePath)
 {
-  int iResult = unlink(aFilePath->aChar());
+  int iResult = unlink(aFilePath->azChar());
   
   if (-1 == iResult) {
     vWarn("File::bRemove: unlink() error; errno=%d"_Stz,errno);
@@ -489,7 +489,7 @@ void File::vPrint(Stz* aFormat, ...)
   if (gpAttachMap) gpAttachMap->m_oStatistics.File.m_nPrints++;
 #endif
   
-  i8 nPrinted = vfprintf(m_aFile,aFormat->aChar(),args);
+  i8 nPrinted = vfprintf(m_aFile,aFormat->azChar(),args);
 
 #ifdef WITH_STATISTICS_COUNTERS
   if (gpAttachMap) gpAttachMap->m_oStatistics.File.m_nPrintBytes += nPrinted;
@@ -538,7 +538,7 @@ bool File::bReadLine(Stz* aDst)
   m_oSysCall.vClear();
   
   // collect by y
-  char *y = aDst->aChar();
+  char *y = aDst->azChar();
   
   // collect chars till \n or EOF
   for (;;) {
@@ -566,7 +566,7 @@ bool File::bReadLine(Stz* aDst)
       *y = '\0';
       
       // did we collect any chars?
-      if (*aDst->aChar()) {
+      if (*aDst->azChar()) {
         m_oSysCall.vSuccess();
         return true;
       }

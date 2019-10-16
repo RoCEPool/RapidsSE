@@ -129,7 +129,7 @@ void Table::vDump(eCN eClass, Object* pObject, Stz* aTab)
   
   vTrace("name %s type %s\n"_Stz,
          pTable->m_sTableName.aChar(),
-         aTT[pTable->m_eTableType]->aChar());
+         aTT[pTable->m_eTableType]->azChar());
 }
 
 /*----------------------------------------------------------------------------*/

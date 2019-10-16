@@ -38,7 +38,7 @@ bool Prompt::bPrompt_logSection(SePrompt* pPrompt)
   StrLib::vPad(caSection,127-iSectNmLen-4,'#');
   
   StrLib::vConcat(caSection,' ');
-  StrLib::vConcat(caSection,szSectionNm->aChar());
+  StrLib::vConcat(caSection,szSectionNm->azChar());
   StrLib::vConcat(caSection,' ');
   StrLib::vConcat(caSection,'#');
   StrLib::vConcat(caSection,'#');

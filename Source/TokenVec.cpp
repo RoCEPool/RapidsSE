@@ -318,7 +318,7 @@ void TokenVec::vToString(Stz* szBuff, i8 iFromTkn)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  StrLib::vCopy(szBuff->aChar(),"");
+  StrLib::vCopy(szBuff->azChar(),"");
   
   i8 nTokens = this->nTokens();
   
@@ -332,33 +332,33 @@ void TokenVec::vToString(Stz* szBuff, i8 iFromTkn)
     switch (eToken) {
         
       case TN_INTEGER:
-        StrLib::vConcat(szBuff->aChar(),pToken->szText()->aChar());
+        StrLib::vConcat(szBuff->azChar(),pToken->szText()->azChar());
         break;
         
       case TN_NAME:
-        StrLib::vConcat(szBuff->aChar(),pToken->szText()->aChar());
+        StrLib::vConcat(szBuff->azChar(),pToken->szText()->azChar());
         break;
         
       case TN_OTHER:
-        StrLib::vConcat(szBuff->aChar(),pToken->szText()->aChar());
+        StrLib::vConcat(szBuff->azChar(),pToken->szText()->azChar());
         break;
         
       case TN_STRING:
-        StrLib::vConcat(szBuff->aChar(),"\"");
-        StrLib::vConcat(szBuff->aChar(),pToken->szText()->aChar());
-        StrLib::vConcat(szBuff->aChar(),"\"");
+        StrLib::vConcat(szBuff->azChar(),"\"");
+        StrLib::vConcat(szBuff->azChar(),pToken->szText()->azChar());
+        StrLib::vConcat(szBuff->azChar(),"\"");
         break;
         
       default:
         NEVER_REACH;
     }
     
-    StrLib::vConcat(szBuff->aChar()," ");
+    StrLib::vConcat(szBuff->azChar()," ");
   }
   
   // concat a terminating semicolon (needed??)
   if (! iFromTkn)                                         //! this is a hack RAY
-    StrLib::vConcat(szBuff->aChar(),";");
+    StrLib::vConcat(szBuff->azChar(),";");
 }
 
 /*----------------------------------------------------------------------------*/

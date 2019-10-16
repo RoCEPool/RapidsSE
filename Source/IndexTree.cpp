@@ -134,7 +134,7 @@ Stz* IndexTree::pAnalyze(void)
   
   sAnalysis.vCatSprint("N%lld: Analysis of Index %s of table %s\n"_Stz,
                         AM::iThisNodeNo(),
-                        m_pIndex->aIndexName()->aChar(),
+                        m_pIndex->aIndexName()->azChar(),
                         m_pIndex->pTable()->aTableName());
   
   return sAnalysis;

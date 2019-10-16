@@ -93,7 +93,7 @@ String_t<BYTES>::String_t(Stz* aArg)
   MemLib::vZero(m_caArea,BYTES,CN_STRING_T);
 #endif
   
-  StrLib::vCopyLen(m_caArea,aArg->aChar(),BYTES-1);
+  StrLib::vCopyLen(m_caArea,aArg->azChar(),BYTES-1);
   
   _checkInitialisedSize_(BYTES);
 }
@@ -141,7 +141,7 @@ void String_t<BYTES>::operator =(Stz* aArg)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
-  StrLib::vCopyLen(m_caArea,aArg->aChar(),BYTES-1);
+  StrLib::vCopyLen(m_caArea,aArg->azChar(),BYTES-1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -173,7 +173,7 @@ void String_t<BYTES>::vAppend(char** aazCursor, Stz* aStr)
   
   // limit???
   
-  StrLib::vAppendString(aazCursor,aStr->aChar());
+  StrLib::vAppendString(aazCursor,aStr->azChar());
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -219,10 +219,10 @@ void String_t<BYTES>::vCat(Stz* aStr, ...)
   
   va_start(xVarArgs,aStr);
   
-  StrLib::vConcat(aChar(),aStr->aChar());
+  StrLib::vConcat(aChar(),aStr->azChar());
   
   while (Stz* aArg = va_arg(xVarArgs,Stz*))
-    StrLib::vConcat(aChar(),aArg->aChar());
+    StrLib::vConcat(aChar(),aArg->azChar());
   
   va_end(xVarArgs);
   
@@ -264,7 +264,7 @@ void String_t<BYTES>::vConcat(Stz* aStr)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  StrLib::vConcat(m_caArea,aStr->aChar());
+  StrLib::vConcat(m_caArea,aStr->azChar());
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -275,7 +275,7 @@ void String_t<BYTES>::vConcat(Stz* aStr)
 template <int BYTES>
 bool String_t<BYTES>::bContains(Stz* aArg)
 {
-  return StrLib::bContains(m_caArea,aArg->aChar());
+  return StrLib::bContains(m_caArea,aArg->azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -286,7 +286,7 @@ void String_t<BYTES>::vCopy(Stz* aStr)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  StrLib::vCopyLen(m_caArea,aStr->aChar(),BYTES-1);
+  StrLib::vCopyLen(m_caArea,aStr->azChar(),BYTES-1);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -299,7 +299,7 @@ void String_t<BYTES>::vCopyTill(Stz* aSrc, char cTill)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  StrLib::vCopyTill(m_caArea,aSrc->aChar(),cTill);
+  StrLib::vCopyTill(m_caArea,aSrc->azChar(),cTill);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -440,7 +440,7 @@ void String_t<BYTES>::vSprint(Stz* aFormat, ...)
   va_list args;
   
   va_start(args,aFormat);
-  StrLib::vSprint(aChar(),args,aFormat->aChar());
+  StrLib::vSprint(aChar(),args,aFormat->azChar());
   va_end(args);
 }
 
@@ -453,7 +453,7 @@ void String_t<BYTES>::vSprintCat(Stz* aFormat, ...)
   va_list args;
   
   va_start(args,aFormat);
-  StrLib::vSprintCat(aChar(),args,aFormat->aChar());
+  StrLib::vSprintCat(aChar(),args,aFormat->azChar());
   va_end(args);
 }
 

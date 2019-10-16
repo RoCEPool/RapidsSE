@@ -36,7 +36,7 @@ bool Prompt::bPrompt_classes(SePrompt* pPrompt)
   
   for (i8 i_Class = 0; i_Class <= CN_ENUMS; i_Class++) {
 
-    char cFirst = *aCN[i_Class]->aChar();
+    char cFirst = *aCN[i_Class]->azChar();
 
     if ('~' == cGroup) {
       if ('A' == cFirst)
@@ -77,7 +77,7 @@ bool Prompt::bPrompt_classes(SePrompt* pPrompt)
   
   for (i8 i_Class = 0; i_Class <= CN_ENUMS; i_Class++) {
     
-    char cFirst = *aCN[i_Class]->aChar();
+    char cFirst = *aCN[i_Class]->azChar();
     
     if ('~' == cGroup) {
       if ('A' == cFirst)

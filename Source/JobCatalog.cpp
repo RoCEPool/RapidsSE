@@ -35,13 +35,13 @@ JobClass* JobCatalog::aFindClass(Stz* szCmd1, Stz* szCmd2)
     aJobClass = & m_xJobClass[i_Class];
     
     if (! aJobClass->m_aCommand1 ||
-        ! StrLib::bSame(aJobClass->m_aCommand1->aChar(),szCmd1->aChar()) )
+        ! StrLib::bSame(aJobClass->m_aCommand1->azChar(),szCmd1->azChar()) )
       continue;
 
     if (aJobClass->m_aCommand2) {
-      if ( ! StrLib::iLength(aJobClass->m_aCommand2->aChar()) )
+      if ( ! StrLib::iLength(aJobClass->m_aCommand2->azChar()) )
         continue;
-      if ( ! StrLib::bSame(aJobClass->m_aCommand2->aChar(),szCmd2->aChar()) )
+      if ( ! StrLib::bSame(aJobClass->m_aCommand2->azChar(),szCmd2->azChar()) )
         continue;
     }
     

@@ -151,10 +151,10 @@ void LogEntry::vInit(eSL eSeverity, eCN eClassNo, Stz* szText)
   
   m_iTick = Tick::iRdClock();
   m_iNodeNo = AM::iThisNodeNo();
-  StrLib::vCopyLen(m_caNode,AM::szNodeName()->aChar(),sizeof(m_caNode) - 1);
+  StrLib::vCopyLen(m_caNode,AM::szNodeName()->azChar(),sizeof(m_caNode) - 1);
   
   m_caNote[0] = '\0';
-  StrLib::vCopyLen(m_caNote,szText->aChar(),C_LOG_NOTE - 1);
+  StrLib::vCopyLen(m_caNote,szText->azChar(),C_LOG_NOTE - 1);
 
   m_iAct   = C_UNKNOWN;
   m_eClass = eClassNo;
@@ -182,10 +182,10 @@ void LogEntry::vInit(eSL eSeverity, Focal *pFocal, Stz* szText)
   
   m_iTick = Tick::iRdClock();
   m_iNodeNo = AM::iThisNodeNo();
-  StrLib::vCopyLen(m_caNode,AM::szNodeName()->aChar(),sizeof(m_caNode) - 1);
+  StrLib::vCopyLen(m_caNode,AM::szNodeName()->azChar(),sizeof(m_caNode) - 1);
   
   m_caNote[0] = '\0';
-  StrLib::vCopyLen(m_caNote,szText->aChar(),C_LOG_NOTE - 1);
+  StrLib::vCopyLen(m_caNote,szText->azChar(),C_LOG_NOTE - 1);
   
   m_iAct    = pFocal->iActNo();
   m_eClass  = pFocal->eClass();

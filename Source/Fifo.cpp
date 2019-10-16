@@ -77,7 +77,7 @@ Fifo::~Fifo(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 bool Fifo::bMake(Stz* sFifoPath)
 {
-  i8 iResult = mkfifo(sFifoPath->aChar(),0777);
+  i8 iResult = mkfifo(sFifoPath->azChar(),0777);
   
   if (iResult) {
     vWarn("Fifo::bMake: mkfifo() error; errno=%d"_Stz,errno);
@@ -85,7 +85,7 @@ bool Fifo::bMake(Stz* sFifoPath)
   }
   
   AM::vLogFyi("Fifo made : %s"_Stz, //!format-LogFyi
-              sFifoPath->aChar());
+              sFifoPath->azChar());
 
   return true;
 }
@@ -95,7 +95,7 @@ bool Fifo::bMake(Stz* sFifoPath)
 /*----------------------------------------------------------------------------*/
 bool Fifo::bRemove(Stz* sFifoPath)
 {
-  i8 iResult = remove(sFifoPath->aChar());
+  i8 iResult = remove(sFifoPath->azChar());
   
   if (iResult) {
     vWarn("Fifo::bRemove: remove() error; errno=%d\n"_Stz,errno);
@@ -103,7 +103,7 @@ bool Fifo::bRemove(Stz* sFifoPath)
   }
   
   AM::vLogFyi("Fifo removed : %s"_Stz, //!format-LogFyi
-              sFifoPath->aChar());
+              sFifoPath->azChar());
   
   return true;
 }

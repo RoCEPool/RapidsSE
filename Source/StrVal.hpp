@@ -9,7 +9,7 @@ namespace SenVM
   {
   protected:
     i8   m_nBytesFollowing;
-    char m_caBytes[256];
+    char m_caStr[256];
   
   public:
     void* operator new(size_t);
@@ -18,7 +18,7 @@ namespace SenVM
   
   public:
     void  vAssign(Stz* aStr);
-    char* aChar(void);
+    char* azChar(void);
     i8    nSize(void);
     Stz*  aStz(void);
     void  vToString(Stz* aStz);

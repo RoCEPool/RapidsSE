@@ -12,7 +12,7 @@ Error::Error(eEC eErrorCode, Stz* aFileName, i8 iLineNo)
   m_eErrorCode = eErrorCode;
   m_caErrorMsg[0] = '\0';
 
-  StrLib::vCopyLen(m_caFileName, aFileName->aChar(), sizeof(m_caFileName));
+  StrLib::vCopyLen(m_caFileName, aFileName->azChar(), sizeof(m_caFileName));
   m_iLineNo = iLineNo;
   
   //_checkInitialisedSize_(sizeof(Error));
@@ -24,9 +24,9 @@ Error::Error(eEC eErrorCode, Stz* aFileName, i8 iLineNo)
 Error::Error(eEC eErrorCode, Stz* aErrorMsg, Stz* aFileName, i8 iLineNo)
 {
   m_eErrorCode = eErrorCode;
-  StrLib::vCopyLen(m_caErrorMsg, aErrorMsg->aChar(), sizeof(m_caErrorMsg));
+  StrLib::vCopyLen(m_caErrorMsg, aErrorMsg->azChar(), sizeof(m_caErrorMsg));
 
-  StrLib::vCopyLen(m_caFileName, aFileName->aChar(), sizeof(m_caFileName));
+  StrLib::vCopyLen(m_caFileName, aFileName->azChar(), sizeof(m_caFileName));
   m_iLineNo = iLineNo;
 
   //_checkInitialisedSize_(sizeof(Error));

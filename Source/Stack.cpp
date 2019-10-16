@@ -143,7 +143,7 @@ void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
       case CN_STRVAL: {
         StrVal* aStrVal = _aStrVal(aNestedValue);
         vTrace("[%s] [%2lld] [%s] %s\n"_Stz,
-               aPrefix,iVal,aCN[eClass],aStrVal->aChar());
+               aPrefix,iVal,aCN[eClass],aStrVal->azChar());
         break;
       }
         
