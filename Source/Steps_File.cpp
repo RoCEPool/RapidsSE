@@ -89,7 +89,7 @@ ENTRY("vFileOpen"_Stz);
   
   s32 sMode;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sMode) )
-    THROW("file.open"_Stz);
+    THROW(FK_ASSERT,"file.open"_Stz);
   
   s256 sPath;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(sPath) )

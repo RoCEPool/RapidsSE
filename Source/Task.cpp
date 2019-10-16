@@ -247,7 +247,7 @@ void Task::vTaskLoop_job(void)
       fpIntrinsic(this);
     }
     
-    catch (i8 iException) {
+    catch (eFK eFailure) {
       vTrace("[%s] %s : in file %s line %lld\n"_Stz,
              szJobName(),
              m_sException.azChar(),
