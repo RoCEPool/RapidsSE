@@ -1751,8 +1751,6 @@ void Step::vJobSignalConnector(MP_Task mpTask)
 {
   ENTRY("vJobSignalConnector"_Stz);
   
-  i8 rCode;
-  
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.signalConnector"_Stz);
@@ -1770,19 +1768,13 @@ void Step::vJobSignalConnector(MP_Task mpTask)
                        aCN[pJob->eClass()]);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // lock & unlock this job's mutex to ensure the connector has entered wait
-  //if (! gxArguments.m_nDummyThreads) {
+
   pJob->vLockJobMutex();
-//    rCode = pthread_mutex_lock(&pJob->m_xThreadMutex);
-//    if (0 != rCode)
-//      vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
-  //}
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
   pJob->m_eJobState = JS_SIGNALLED;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   RASSERT( _bIsValidJob(pJob->eClass()) );
   i8 i_State = pJob->m_xReqTuple.m_i_State;
   
@@ -1790,22 +1782,11 @@ void Step::vJobSignalConnector(MP_Task mpTask)
   ApiState::vMarkSignalled(pState->m_pSession);
   RASSERT( _bIsValidJob(pJob->eClass()) );
 
-  // trash the cond variable
-  //MemLib::vSet(&pJob->m_xThreadCond, 0xEB, sizeof(pthread_cond_t),CN_MUTEX);
-
-  pJob->vSignalJobMutex();
-//  rCode = pthread_cond_signal(&pJob->m_xThreadCond);
-//  if (0 != rCode)
-//    vWarn("pthread_cond_signal() error; rCode=%lld\n"_Stz,rCode);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //if (! gxArguments.m_nDummyThreads) {
+  
+  pJob->vSignalJobMutex();
   
   pJob->vUnlockJobMutex();
-//    rCode = pthread_mutex_unlock(&pJob->m_xThreadMutex);
-//    if (0 != rCode)
-//      vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
-  //}
   
   EXIT();
 }
