@@ -80,11 +80,10 @@ CountOp::CountOp(OpSpec* pOpSpec, Pipeline* pPipeline)
   m_pStreamDef = new StreamDef;
   
   // create an integer column
-  Column oColumn = m_pStreamDef->m_xaColumn[0];
-  oColumn.vColumnNo(0);
-  oColumn.vColumnName("count"_Stz);
-  oColumn.vColumnType(CT_INTEGER);
-  oColumn.vDatumType(DM_INT);
+  m_pStreamDef->m_xaColumn[0].vColumnNo(0);
+  m_pStreamDef->m_xaColumn[0].vColumnName("count"_Stz);
+  m_pStreamDef->m_xaColumn[0].vColumnType(CT_INTEGER);
+  m_pStreamDef->m_xaColumn[0].vDatumType(DM_INT);
   
   m_pStreamDef->m_nDefSets++;
   m_pStreamDef->m_nDefColumns[0] = 1;
