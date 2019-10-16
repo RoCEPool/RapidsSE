@@ -733,7 +733,7 @@ void Step::vJobExecuteFetch(MP_Task mpTask)
       break;
       
     default:
-      StrLib::vCopy(sExecute.aChar(),pJob->m_aJobClass->m_aSeedExe->aChar());
+      StrLib::vCopy(sExecute.aChar(),pJob->m_aJobClass->m_aSeedExe->azChar());
       //sExecute.vConcat("_exe"_Stz);
       break;
   }

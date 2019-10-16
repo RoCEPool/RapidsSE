@@ -360,7 +360,7 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
     API_LOC(340);
     
     // get the length of the record
-    i8 iRawDataLength = StrLib::iSize(szRecord->aChar());
+    i8 iRawDataLength = StrLib::iSize(szRecord->azChar());
     API_LOC(350);
     
     // check length of record
@@ -985,7 +985,7 @@ eEC RapidsSE_GetTableColumnRow(i8 iTrace, Session* pSession, void* aJob,
   sprintf(pSession->m_sResponse.aChar(),"%lld,%s,%s,%lld,%lld,%s,%s",
           pColumn->iColumnNo(),
           pColumn->sColumnName().aChar(),
-          aCT[pColumn->eColumnType()]->aChar(),
+          aCT[pColumn->eColumnType()]->azChar(),
           pColumn->iColumnLength(),
           pColumn->iColumnScale(),
           pColumn->bIsNullable() ? "true" : "false",

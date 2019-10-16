@@ -284,7 +284,7 @@ void Job_SubExporter::vSprintRows(void)
     // append the row to the record
     hvRec->vAppend(hRow);
     
-    StrLib::vConcat(hvRec->szRecStr()->aChar(),'\n');            //! sub-optimal
+    StrLib::vConcat(hvRec->szRecStr()->azChar(),'\n');            //! sub-optimal
     //vTrace("]]%s[[\n"_Stz,sRecord.aStz());
     
     nBytes = hvRec->szRecStr()->nSize();
@@ -301,7 +301,7 @@ void Job_SubExporter::vSprintRows(void)
     }
     
     aRecord = m_pExportBuffer->aAllotRecord(nBytes - 1);
-    StrLib::vCopyLen(aRecord,hvRec->szRecStr()->aChar(),nBytes - 1);
+    StrLib::vCopyLen(aRecord,hvRec->szRecStr()->azChar(),nBytes - 1);
   }
   
   if (aRecord)

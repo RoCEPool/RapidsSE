@@ -457,7 +457,7 @@ void AM::vWriteTrace(eYA eSysAct, Stz* aFormat, va_list xArgs)
     oLock.vGrabWrite();
   
   // produce formatted line
-  vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->aChar(),xArgs);
+  vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->azChar(),xArgs);
   
   // print formatted line
   fprintf(stdout,"%s%s",bLowMem ? "LOW-MEMORY! " : "",caFormatted);

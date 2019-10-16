@@ -204,8 +204,8 @@ Job* Jobs::pJob_Ingest_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, 
   
   // is the last token the stats option?
   i8 i_Last = nTokens - 1;
-  if (pTknVec->pGet(i_Last)->sText().bSame("stats"_Stz) ||
-      pTknVec->pGet(i_Last)->sText().bSame("statistics"_Stz))
+  if (pTknVec->pGet(i_Last)->szText()->bSame("stats"_Stz) ||
+      pTknVec->pGet(i_Last)->szText()->bSame("statistics"_Stz))
     pJob_Ingest->m_pByteRate = new ByteRate;
 
   return pJob_Ingest;

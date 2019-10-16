@@ -262,7 +262,7 @@ void Engine::vErrorHandler(Error* pError)
   char* ps;
   
   if (pError) {
-    ps = StrLib::sLast(pError->aFileName()->aChar());
+    ps = StrLib::sLast(pError->aFileName()->azChar());
     StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
     StrLib::vCopy(caFileName,ps+1);
     vTrace("%s: line %lld in %s\n"_Stz,

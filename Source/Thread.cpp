@@ -135,13 +135,13 @@ void* Thread::aEntryPoint_dedicated(void* pArg)
     char caFileName[256];
     char* ps;
     
-    ps = StrLib::sLast(pError->aFileName()->aChar());
+    ps = StrLib::sLast(pError->aFileName()->azChar());
     bool bBackSlash = StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
     if (bBackSlash) {
       StrLib::vCopy(caFileName,ps+1);
     }
     else {
-      StrLib::vCopy(caFileName, pError->aFileName()->aChar());
+      StrLib::vCopy(caFileName, pError->aFileName()->azChar());
     }
     vFatal("ERROR: [ThreadLoop] %s: line %lld in %s\n"_Stz,
            pError->aErrorMsg(),
@@ -199,13 +199,13 @@ void* Thread::aEntryPoint_general(void* pArg)
     char caFileName[256];
     char* ps;
     
-    ps = StrLib::sLast(pError->aFileName()->aChar());
+    ps = StrLib::sLast(pError->aFileName()->azChar());
     bool bBackSlash = StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
     if (bBackSlash) {
       StrLib::vCopy(caFileName,ps+1);
     }
     else {
-      StrLib::vCopy(caFileName, pError->aFileName()->aChar());
+      StrLib::vCopy(caFileName, pError->aFileName()->azChar());
     }
     vFatal("ERROR: [ThreadLoop] %s: line %lld in %s\n"_Stz,
            pError->aErrorMsg(),

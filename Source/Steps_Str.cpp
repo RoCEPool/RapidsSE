@@ -123,8 +123,8 @@ void Step::vStrEqual(MP_Task mpTask)
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(xStringB,xStringA) )
     THROW_INVALID_DSTACK("str.equal"_Stz);
   
-  i8 iEqual = StrLib::bEqualTo(_aStrVal(xStringA.aNestedValue())->aChar(),
-                               _aStrVal(xStringB.aNestedValue())->aChar(),
+  i8 iEqual = StrLib::bEqualTo(_aStrVal(xStringA.aNestedValue())->azChar(),
+                               _aStrVal(xStringB.aNestedValue())->azChar(),
                                C_NO_CASE);
   
   mpTask->m_pForth->m_pDataStack->vPushI8(iEqual);

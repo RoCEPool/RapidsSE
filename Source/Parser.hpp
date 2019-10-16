@@ -48,7 +48,7 @@ namespace Commands
    
     
     // Options
-    void vPrompt(s256& sPrompt);
+    void vPrompt(Stz* szPrompt);
     void vLineMode(bool bLineMode);
     
     // Use What

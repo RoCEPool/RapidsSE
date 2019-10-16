@@ -118,7 +118,7 @@ bool Calculator::bCompile(TokenVec* pTknVec, StreamDef* pStreamDef, i8 iStartTkn
       m_eaCode[i_Code++] = EO_COLUMN;
       i8 iColVec;
       piArg = (i8*) & m_eaCode[i_Code];
-      * piArg = pStreamDef->iFindColumn(pTkn->szText()->aChar(), iColVec);
+      * piArg = pStreamDef->iFindColumn(pTkn->szText()->azChar(), iColVec);
       i_Code += sizeof(i8);
       continue;
     }

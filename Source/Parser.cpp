@@ -101,11 +101,11 @@ void Parser::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* set user prompt                                                            */
 /*----------------------------------------------------------------------------*/
-void Parser::vPrompt(s256& sPrompt)
+void Parser::vPrompt(Stz* szPrompt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
-  m_sPrompt = sPrompt;
+  m_sPrompt = szPrompt;
 }
 
 /*----------------------------------------------------------------------------*/

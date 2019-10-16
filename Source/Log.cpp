@@ -853,7 +853,7 @@ LogEntry* Log::pNewEntry(eSL eSeverity, eCN eClassNo,
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
 
   char caText[1024];
-  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
+  vsnprintf(caText,sizeof(caText)-1,szFormat->azChar(),xVaArgs);
 
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
   vGrabLock();
@@ -879,7 +879,7 @@ LogEntry* Log::pNewEntry(eSL eSeverity, Focal* pFocal,
   _precondition_(_MAGIC_,CN_LOG,_FOOTER_);
   
   char caText[1024];
-  vsnprintf(caText,sizeof(caText)-1,szFormat->aChar(),xVaArgs);
+  vsnprintf(caText,sizeof(caText)-1,szFormat->azChar(),xVaArgs);
   
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
   vGrabLock();

@@ -190,12 +190,12 @@ Job* Jobs::pJob_Sink_pre(JobClass* aJobClass, ReqTuple* aReqTuple, i8 iForId, Se
     return pJob_Sink;
 
   // set the file name
-  pJob_Sink->vFilePath(pTknVec->pGet(1)->sText());
+  pJob_Sink->vFilePath(pTknVec->pGet(1)->szText());
   
   // is the last token the stats option?
   i8 i_Last = nTokens - 1;
-  if (pTknVec->pGet(i_Last)->sText().bSame("stats"_Stz) ||
-      pTknVec->pGet(i_Last)->sText().bSame("statistics"_Stz))
+  if (pTknVec->pGet(i_Last)->szText()->bSame("stats"_Stz) ||
+      pTknVec->pGet(i_Last)->szText()->bSame("statistics"_Stz))
     pJob_Sink->m_pByteRate = new ByteRate;
   
   return pJob_Sink;

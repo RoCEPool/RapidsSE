@@ -65,20 +65,20 @@ Stz* SP_TknVecStr::sz(TokenVec* pTknVec, i8 i_From, i8 i_Till)
     switch (eToken) {
         
       case TN_INTEGER:
-        StrLib::vConcat(m_caResult,pToken->szText()->aChar());
+        StrLib::vConcat(m_caResult,pToken->szText()->azChar());
         break;
         
       case TN_NAME:
-        StrLib::vConcat(m_caResult,pToken->szText()->aChar());
+        StrLib::vConcat(m_caResult,pToken->szText()->azChar());
         break;
         
       case TN_OTHER:
-        StrLib::vConcat(m_caResult,pToken->szText()->aChar());
+        StrLib::vConcat(m_caResult,pToken->szText()->azChar());
         break;
         
       case TN_STRING:
         StrLib::vConcat(m_caResult,"\"");
-        StrLib::vConcat(m_caResult,pToken->szText()->aChar());
+        StrLib::vConcat(m_caResult,pToken->szText()->azChar());
         StrLib::vConcat(m_caResult,"\"");
         break;
         

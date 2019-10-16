@@ -419,11 +419,11 @@ bool Tokeniser::bPop(void)
 /*----------------------------------------------------------------------------*/
 /* set prompt                                                                 */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::vPrompt(s256& sPrompt)
+void Tokeniser::vPrompt(Stz* szPrompt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  m_pParser->vPrompt(sPrompt);
+  m_pParser->vPrompt(szPrompt);
 }
 
 /*----------------------------------------------------------------------------*/

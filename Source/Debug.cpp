@@ -63,11 +63,11 @@ void Correctness::vAssertType(void* aObject, eCN eExpectingClass)
   
   if (eGotClass >= CN_NONE && eGotClass < CN_ENUMS)
     printf("  Expecting class %d %s; Got %d %s\n",
-           eExpectingClass, aCN[eExpectingClass]->aChar(),
-           eGotClass,       aCN[eGotClass]->aChar());
+           eExpectingClass, aCN[eExpectingClass]->azChar(),
+           eGotClass,       aCN[eGotClass]->azChar());
   else
     printf("  Expecting class %d %s; Got %d\n",
-           eExpectingClass, aCN[eExpectingClass]->aChar(),
+           eExpectingClass, aCN[eExpectingClass]->azChar(),
            eGotClass);
 
 //  if (CN_FREECHUNK == eGotClass) {

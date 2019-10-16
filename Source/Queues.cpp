@@ -139,7 +139,7 @@ void Queues::vThreadsReport(void)
            iSleepSsec,
            
            aHS[pThread->m_eThreadState],
-           pThread->m_eDedicated ? aCN[pThread->m_eDedicated]->aChar() : "",
+           pThread->m_eDedicated ? aCN[pThread->m_eDedicated]->azChar() : "",
            
            pThread->m_nAssignedTasks
            );
@@ -176,7 +176,7 @@ void Queues::vThreadsReport(void)
            iSleepSsec,
            
            aHS[pThread->m_eThreadState],
-           pThread->m_eDedicated ? aCN[pThread->m_eDedicated]->aChar() : "",
+           pThread->m_eDedicated ? aCN[pThread->m_eDedicated]->azChar() : "",
            
            pThread->m_nAssignedTasks
            );

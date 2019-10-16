@@ -93,10 +93,10 @@ Dir::~Dir(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 bool Dir::bChangeCurrent(Stz* aDirPath)
 {
-  i8 iResult = chdir(aDirPath->aChar());
+  i8 iResult = chdir(aDirPath->azChar());
   
   if (iResult) {
-    vWarn("chdir(%s) error; errno=%d\n"_Stz,aDirPath->aChar(),errno);
+    vWarn("chdir(%s) error; errno=%d\n"_Stz,aDirPath->azChar(),errno);
     return false;
   }
   
@@ -108,7 +108,7 @@ bool Dir::bChangeCurrent(Stz* aDirPath)
 /*----------------------------------------------------------------------------*/
 bool Dir::bGetCurrent(Stz* aDirPath)
 {
-  char* aCurrPath = getcwd(aDirPath->aChar(),C_MAX_PATH);
+  char* aCurrPath = getcwd(aDirPath->azChar(),C_MAX_PATH);
   
   if ( ! aCurrPath ) {
     vWarn("Dir::bGet: getcwd() error; errno=%d"_Stz,errno);
@@ -125,7 +125,7 @@ bool Dir::bExists(Stz* aDirPath)
 {
   struct stat xStat;
   
-  int iResult = stat(aDirPath->aChar(),&xStat);
+  int iResult = stat(aDirPath->azChar(),&xStat);
   
   if (0 == iResult && (xStat.st_mode & S_IFDIR))
     return true;
@@ -133,7 +133,7 @@ bool Dir::bExists(Stz* aDirPath)
   if (iResult && ENOENT == errno)
     return false;
     
-  vWarn("Dir::bExists: stat(%s) error; errno=%d"_Stz,aDirPath->aChar(),errno);
+  vWarn("Dir::bExists: stat(%s) error; errno=%d"_Stz,aDirPath->azChar(),errno);
   
   return false;
 }
@@ -143,7 +143,7 @@ bool Dir::bExists(Stz* aDirPath)
 /*----------------------------------------------------------------------------*/
 bool Dir::bMake(Stz* aDirPath)
 {
-  char* aPath = aDirPath->aChar();
+  char* aPath = aDirPath->azChar();
   
   if (mkdir(aPath,0777) != 0 && EEXIST != errno) {
     vWarn("Dir::bMake: mkdir() error; errno=%d"_Stz,errno);
@@ -158,7 +158,7 @@ bool Dir::bMake(Stz* aDirPath)
 /*----------------------------------------------------------------------------*/
 bool Dir::bRemove(Stz* aDirPath)
 {
-  char* aPath = aDirPath->aChar();
+  char* aPath = aDirPath->azChar();
   
   int iResult = rmdir(aPath);
   

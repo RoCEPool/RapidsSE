@@ -359,14 +359,14 @@ JobClass* JobClass::pFind(Stz* aCommand1, Stz* aCommand2)
     pJobClass = pfJobClass((pFUN**)&pfJobClass);
     
     if ( ! pJobClass->m_aCommand1 ||
-        ! StrLib::bSame(pJobClass->m_aCommand1->aChar(),aCommand1->aChar()) )
+        ! StrLib::bSame(pJobClass->m_aCommand1->azChar(),aCommand1->azChar()) )
       continue;
     
     //if (aCommand2->iLength()) {
     if (pJobClass->m_aCommand2) {
-      if ( ! StrLib::iLength(pJobClass->m_aCommand2->aChar()) )
+      if ( ! StrLib::iLength(pJobClass->m_aCommand2->azChar()) )
         continue;
-      if ( ! StrLib::bSame(pJobClass->m_aCommand2->aChar(),aCommand2->aChar()) )
+      if ( ! StrLib::bSame(pJobClass->m_aCommand2->azChar(),aCommand2->azChar()) )
         continue;
     }
     

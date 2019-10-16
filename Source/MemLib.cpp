@@ -26,7 +26,7 @@ void MemLib::vAsciiDump(Stz* aText, i8 nBytes)
 {
   vTrace(">>>"_Stz);
   while (nBytes--) {
-    vTrace("%c"_Stz,*aText->aChar());
+    vTrace("%c"_Stz,*aText->azChar());
     aText++;
   }
   vTrace("<<<\n"_Stz);

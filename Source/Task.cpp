@@ -272,7 +272,7 @@ void Task::vTaskLoop_job(void)
       
       char* ps;
       
-      ps = StrLib::sLast(pError->aFileName()->aChar());
+      ps = StrLib::sLast(pError->aFileName()->azChar());
       StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
       StrLib::vCopy(caFileName,ps+1);
       vTrace("[%s] %s: line %lld in %s\n"_Stz,
@@ -325,7 +325,7 @@ void Task::vDump(eCN eClass, Object* pObject, Stz* aTab)
   vTrace("%s %p state %s txId %lld\n"_Stz,
          pTask->aJobName(),
          pTask,
-         aTS[pTask->m_eState]->aChar()
+         aTS[pTask->m_eState]->azChar()
          );
 }
 
@@ -438,7 +438,7 @@ void Task::vContentDump(void)
          Stz::szTab(2),
          this,
          aJobName(),
-         aTS[m_eState]->aChar()
+         aTS[m_eState]->azChar()
          );
 }
 
@@ -977,7 +977,7 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
     }
     else if (CN_STRVAL == eClass) {
       sStackContents.vCatSprint("\"%lls\""_Stz,
-                                _aStrVal(aValue)->aChar());
+                                _aStrVal(aValue)->azChar());
     }
     else {
       sStackContents.vCatSprint("<unknown:class=%lld>"_Stz,

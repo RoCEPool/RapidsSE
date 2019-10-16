@@ -238,7 +238,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
     // - - - - - - - - - - - - - - - - - - - - -
     // C_RECORD_TERMINATOR
     if (pTokenVec->pGet(i_Token)->bSame(C_RECORD_TERMINATOR)) {
-      m_oFormatters.m_cRecordTerminator = *pTokenVec->pGet(++i_Token)->sText().aChar();
+      m_oFormatters.m_cRecordTerminator = *pTokenVec->pGet(++i_Token)->szText()->azChar();
       if (m_oFormatters.m_cRecordTerminator == '0')
         m_oFormatters.m_cRecordTerminator = '\0';
       else
@@ -248,7 +248,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
     // - - - - - - - - - - - - - - - - - - - - -
     // C_RECORD_ENDS
     else if (pTokenVec->pGet(i_Token)->bSame(C_RECORD_ENDS)) {
-      char cRecordEnds = *pTokenVec->pGet(++i_Token)->sText().aChar();
+      char cRecordEnds = *pTokenVec->pGet(++i_Token)->szText()->azChar();
       
       // is record_ends 1 character ?
       if (pTokenVec->pGet(i_Token)->iLength() == 1) {
@@ -286,7 +286,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
     // C_FIELD_DELIMITER
     else if (pTokenVec->pGet(i_Token)->bSame(C_FIELD_DELIMITER)) {
       s32 sFieldDelimiter;
-      sFieldDelimiter = pTokenVec->pGet(++i_Token)->sText();
+      sFieldDelimiter = pTokenVec->pGet(++i_Token)->szText();
       if (sFieldDelimiter.bSame("\\t"_Stz))
         m_oFormatters.m_cFieldDelimiter = '\t';
       else
@@ -300,7 +300,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
     // C_ENCLOSED_BY_LEADING
     else if (pTokenVec->pGet(i_Token)->bSame(C_ENCLOSED_BY_LEADING)) {
       m_oFormatters.m_cEnclosedBy_Leading =
-      *pTokenVec->pGet(++i_Token)->sText().aChar();
+      *pTokenVec->pGet(++i_Token)->szText()->azChar();
       if (m_oFormatters.m_cEnclosedBy_Leading == '0')
         m_oFormatters.m_cEnclosedBy_Leading = '\0';
       
@@ -322,7 +322,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
         return false;
       }
       m_oFormatters.m_cEnclosedBy_Trailing =
-      *pTokenVec->pGet(++i_Token)->sText().aChar();
+      *pTokenVec->pGet(++i_Token)->szText()->azChar();
       if (m_oFormatters.m_cEnclosedBy_Trailing == '0')
         m_oFormatters.m_cEnclosedBy_Trailing = '\0';
       
@@ -336,7 +336,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
     // C_DATE_FORMAT
     else if (pTokenVec->pGet(i_Token)->bSame(C_DATE_FORMAT)) {
       // extract date format
-      if ( ! bExtractDateFormat(pTokenVec->pGet(++i_Token)->sText()) ) {
+      if ( ! bExtractDateFormat(pTokenVec->pGet(++i_Token)->szText()) ) {
         if ( ! AM::bMetadata())
         vWarn("Invalid load : enclosed_by_trailing specified but no enclosed_by_leading\n"_Stz);
         return false;
@@ -347,7 +347,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
     // - - - - - - - - - - - - - - - - - - - - -
     // C_ESCAPE_CHAR
     else if (pTokenVec->pGet(i_Token)->bSame(C_ESCAPE_CHAR)) {
-      m_oFormatters.m_cEscapeChar = *pTokenVec->pGet(++i_Token)->sText().aChar();
+      m_oFormatters.m_cEscapeChar = *pTokenVec->pGet(++i_Token)->szText()->azChar();
       if (m_oFormatters.m_cEscapeChar == '0')
         m_oFormatters.m_cEscapeChar = '\0';
       
@@ -358,7 +358,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
     // C_MAX_ERRORS
     else if (pTokenVec->pGet(i_Token)->bSame(C_MAX_ERRORS)) {
       
-      m_oFormatters.m_nMaxErrors = pTokenVec->pGet(++i_Token)->sText().iToI8();
+      m_oFormatters.m_nMaxErrors = pTokenVec->pGet(++i_Token)->szText()->iToI8();
       
       m_oFormatters.m_bDefault = false;
     }
@@ -431,35 +431,35 @@ bool Job_LoadTable::bExtractDateFormat(Stz* dateFormat)
   i8 iIndex = 0;
   
   // leading YYYY
-  if (*dateFormat->aChar() == 'Y') {
+  if (*dateFormat->azChar() == 'Y') {
     
     // expect YYYY
-    if ( (*(dateFormat + iIndex++)->aChar() != 'Y') ||
-        (*(dateFormat + iIndex++)->aChar() != 'Y') ||
-        (*(dateFormat + iIndex++)->aChar() != 'Y') ||
-        (*(dateFormat + iIndex++)->aChar() != 'Y') )
+    if ( (*(dateFormat + iIndex++)->azChar() != 'Y') ||
+        (*(dateFormat + iIndex++)->azChar() != 'Y') ||
+        (*(dateFormat + iIndex++)->azChar() != 'Y') ||
+        (*(dateFormat + iIndex++)->azChar() != 'Y') )
     return false;
     
     // extract format separator
     Stz* pSeparator= dateFormat + iIndex++;
-    m_oFormatters.m_cDateSeparator = *pSeparator->aChar();
+    m_oFormatters.m_cDateSeparator = *pSeparator->azChar();
     
     // is next character 'M' ?
-    if (*(dateFormat + iIndex)->aChar() == 'M') {
+    if (*(dateFormat + iIndex)->azChar() == 'M') {
       
       // FORMAT should be YYYY-MM-DD
       // expect another M
-      if ( (*(dateFormat + iIndex++)->aChar() != 'M') ||
-          (*(dateFormat + iIndex++)->aChar() != 'M'))
+      if ( (*(dateFormat + iIndex++)->azChar() != 'M') ||
+          (*(dateFormat + iIndex++)->azChar() != 'M'))
       return false;
       
       // expect format separator
-      if ( (*(dateFormat + iIndex++)->aChar() != m_oFormatters.m_cDateSeparator) )
+      if ( (*(dateFormat + iIndex++)->azChar() != m_oFormatters.m_cDateSeparator) )
       return false;
       
       // expect DD
-      if ( (*(dateFormat + iIndex++)->aChar() != 'D') ||
-          (*(dateFormat + iIndex++)->aChar() != 'D') )
+      if ( (*(dateFormat + iIndex++)->azChar() != 'D') ||
+          (*(dateFormat + iIndex++)->azChar() != 'D') )
       return false;
       
       m_oFormatters.m_eDateComponent[0] = DC_YYYY;
@@ -471,17 +471,17 @@ bool Job_LoadTable::bExtractDateFormat(Stz* dateFormat)
     else {
       // FORMAT should be YYYY-DD-MM
       // expect DD
-      if ( (*(dateFormat + iIndex++)->aChar() != 'D') ||
-          (*(dateFormat + iIndex++)->aChar() != 'D'))
+      if ( (*(dateFormat + iIndex++)->azChar() != 'D') ||
+          (*(dateFormat + iIndex++)->azChar() != 'D'))
       return false;
       
       // expect format separator
-      if ( (*(dateFormat + iIndex++)->aChar() != m_oFormatters.m_cDateSeparator) )
+      if ( (*(dateFormat + iIndex++)->azChar() != m_oFormatters.m_cDateSeparator) )
       return false;
       
       // expect MM
-      if ( (*(dateFormat + iIndex++)->aChar() != 'M') ||
-          (*(dateFormat + iIndex++)->aChar() != 'M') )
+      if ( (*(dateFormat + iIndex++)->azChar() != 'M') ||
+          (*(dateFormat + iIndex++)->azChar() != 'M') )
       return false;
       
       m_oFormatters.m_eDateComponent[0] = DC_YYYY;
@@ -491,35 +491,35 @@ bool Job_LoadTable::bExtractDateFormat(Stz* dateFormat)
     }
   }
   // leading MM
-  else if (*dateFormat->aChar() == 'M') {
+  else if (*dateFormat->azChar() == 'M') {
     
     // expect MM
-    if ( (*(dateFormat + iIndex++)->aChar() != 'M') ||
-        (*(dateFormat + iIndex++)->aChar() != 'M') )
+    if ( (*(dateFormat + iIndex++)->azChar() != 'M') ||
+        (*(dateFormat + iIndex++)->azChar() != 'M') )
     return false;
     
     // extract format separator
     Stz* pSeparator= dateFormat + iIndex++;
-    m_oFormatters.m_cDateSeparator = *pSeparator->aChar();
+    m_oFormatters.m_cDateSeparator = *pSeparator->azChar();
     
     // is next character 'Y' ?
-    if (*(dateFormat + iIndex)->aChar() == 'Y') {
+    if (*(dateFormat + iIndex)->azChar() == 'Y') {
       
       // FORMAT should be MM-YYYY-DD
       // expect YYY
-      if ( (*(dateFormat + iIndex++)->aChar() != 'Y') ||
-          (*(dateFormat + iIndex++)->aChar() != 'Y') ||
-          (*(dateFormat + iIndex++)->aChar() != 'Y') ||
-          (*(dateFormat + iIndex++)->aChar() != 'Y') )
+      if ( (*(dateFormat + iIndex++)->azChar() != 'Y') ||
+          (*(dateFormat + iIndex++)->azChar() != 'Y') ||
+          (*(dateFormat + iIndex++)->azChar() != 'Y') ||
+          (*(dateFormat + iIndex++)->azChar() != 'Y') )
       return false;
       
       // expect format separator
-      if ( (*(dateFormat + iIndex++)->aChar() != m_oFormatters.m_cDateSeparator) )
+      if ( (*(dateFormat + iIndex++)->azChar() != m_oFormatters.m_cDateSeparator) )
       return false;
       
       // expect DD
-      if ( (*(dateFormat + iIndex++)->aChar() != 'D') ||
-          (*(dateFormat + iIndex++)->aChar() != 'D') )
+      if ( (*(dateFormat + iIndex++)->azChar() != 'D') ||
+          (*(dateFormat + iIndex++)->azChar() != 'D') )
       return false;
       
       m_oFormatters.m_eDateComponent[0] = DC_MM;
@@ -529,19 +529,19 @@ bool Job_LoadTable::bExtractDateFormat(Stz* dateFormat)
     else {
       // FORMAT should be MM-DD-YYYY
       // expect DD
-      if ( (*(dateFormat + iIndex++)->aChar() != 'D') ||
-          (*(dateFormat + iIndex++)->aChar() != 'D'))
+      if ( (*(dateFormat + iIndex++)->azChar() != 'D') ||
+          (*(dateFormat + iIndex++)->azChar() != 'D'))
       return false;
       
       // expect format separator
-      if ( (*(dateFormat + iIndex++)->aChar() != m_oFormatters.m_cDateSeparator) )
+      if ( (*(dateFormat + iIndex++)->azChar() != m_oFormatters.m_cDateSeparator) )
       return false;
       
       // expect YYYY
-      if ( (*(dateFormat + iIndex++)->aChar() != 'Y') ||
-          (*(dateFormat + iIndex++)->aChar() != 'Y') ||
-          (*(dateFormat + iIndex++)->aChar() != 'Y') ||
-          (*(dateFormat + iIndex++)->aChar() != 'Y') )
+      if ( (*(dateFormat + iIndex++)->azChar() != 'Y') ||
+          (*(dateFormat + iIndex++)->azChar() != 'Y') ||
+          (*(dateFormat + iIndex++)->azChar() != 'Y') ||
+          (*(dateFormat + iIndex++)->azChar() != 'Y') )
       return false;
       
       m_oFormatters.m_eDateComponent[0] = DC_MM;
@@ -551,35 +551,35 @@ bool Job_LoadTable::bExtractDateFormat(Stz* dateFormat)
     }
   }
   // leading DD
-  else if (*dateFormat->aChar() == 'D') {
+  else if (*dateFormat->azChar() == 'D') {
     
     // expect DD
-    if ( (*(dateFormat + iIndex++)->aChar() != 'D') ||
-        (*(dateFormat + iIndex++)->aChar() != 'D') )
+    if ( (*(dateFormat + iIndex++)->azChar() != 'D') ||
+        (*(dateFormat + iIndex++)->azChar() != 'D') )
     return false;
     
     // extract format separator
     Stz* pSeparator= dateFormat + iIndex++;
-    m_oFormatters.m_cDateSeparator = *pSeparator->aChar();
+    m_oFormatters.m_cDateSeparator = *pSeparator->azChar();
     
     // is next character 'M' ?
-    if (*(dateFormat + iIndex)->aChar() == 'M') {
+    if (*(dateFormat + iIndex)->azChar() == 'M') {
       
       // FORMAT should be DD-MM-YYYY
       // expect another M
-      if ( (*(dateFormat + iIndex++)->aChar() != 'M') ||
-          (*(dateFormat + iIndex++)->aChar() != 'M') )
+      if ( (*(dateFormat + iIndex++)->azChar() != 'M') ||
+          (*(dateFormat + iIndex++)->azChar() != 'M') )
       return false;
       
       // expect format separator
-      if ( (*(dateFormat + iIndex++)->aChar() != m_oFormatters.m_cDateSeparator) )
+      if ( (*(dateFormat + iIndex++)->azChar() != m_oFormatters.m_cDateSeparator) )
       return false;
       
       // expect YYYY
-      if ( (*(dateFormat + iIndex++)->aChar() != 'Y') ||
-          (*(dateFormat + iIndex++)->aChar() != 'Y') ||
-          (*(dateFormat + iIndex++)->aChar() != 'Y') ||
-          (*(dateFormat + iIndex++)->aChar() != 'Y') )
+      if ( (*(dateFormat + iIndex++)->azChar() != 'Y') ||
+          (*(dateFormat + iIndex++)->azChar() != 'Y') ||
+          (*(dateFormat + iIndex++)->azChar() != 'Y') ||
+          (*(dateFormat + iIndex++)->azChar() != 'Y') )
       return false;
       
       m_oFormatters.m_eDateComponent[0] = DC_DD;
@@ -590,18 +590,18 @@ bool Job_LoadTable::bExtractDateFormat(Stz* dateFormat)
     else {
       
       // expect YYYY
-      if ( (*(dateFormat + iIndex++)->aChar() != 'Y') ||
-          (*(dateFormat + iIndex++)->aChar() != 'Y') ||
-          (*(dateFormat + iIndex++)->aChar() != 'Y') ||
-          (*(dateFormat + iIndex++)->aChar() != 'Y') )
+      if ( (*(dateFormat + iIndex++)->azChar() != 'Y') ||
+          (*(dateFormat + iIndex++)->azChar() != 'Y') ||
+          (*(dateFormat + iIndex++)->azChar() != 'Y') ||
+          (*(dateFormat + iIndex++)->azChar() != 'Y') )
       return false;
       
       // expect format separator
-      if ( (*(dateFormat + iIndex++)->aChar() != m_oFormatters.m_cDateSeparator) )
+      if ( (*(dateFormat + iIndex++)->azChar() != m_oFormatters.m_cDateSeparator) )
       return false;
       
-      if ( (*(dateFormat + iIndex++)->aChar() != 'M') ||
-          (*(dateFormat + iIndex++)->aChar() != 'M'))
+      if ( (*(dateFormat + iIndex++)->azChar() != 'M') ||
+          (*(dateFormat + iIndex++)->azChar() != 'M'))
       return false;
       
       m_oFormatters.m_eDateComponent[0] = DC_DD;
