@@ -52,7 +52,7 @@ namespace Commands
     void vLineMode(bool bLineMode);
     
     // Use What
-    bool bUseFile(s256& sPath);
+    bool bUseFile(Stz* szPath);
     void vUseStdin(void);
     void vUseString(Stz* szString);
     void vUseEnd(void);

@@ -55,7 +55,7 @@ namespace Commands
     eTN  eToken(void);
     s48K& sToken(void);
     void vUseEnd(void);
-    bool bUseFile(s256& sPath);
+    bool bUseFile(Stz* szPath);
     void vUseStdin(void);
     void vUseString(Stz* szString);
  

@@ -493,11 +493,11 @@ void Tokeniser::vUseEnd(void)
 /*----------------------------------------------------------------------------*/
 /* use file                                                                   */
 /*----------------------------------------------------------------------------*/
-bool Tokeniser::bUseFile(s256& sPath)
+bool Tokeniser::bUseFile(Stz* szPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  bool bOpened = m_pParser->bUseFile(sPath);
+  bool bOpened = m_pParser->bUseFile(szPath);
   
   return bOpened;
 }

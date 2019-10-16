@@ -125,7 +125,7 @@ void Parser::vLineMode(bool bLineMode)
 /*----------------------------------------------------------------------------*/
 /* use given file for parsing                                                 */
 /*----------------------------------------------------------------------------*/
-bool Parser::bUseFile(s256& sPath)
+bool Parser::bUseFile(Stz* szPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
@@ -134,7 +134,7 @@ bool Parser::bUseFile(s256& sPath)
   m_eSource = IS_FILE;
   m_bRead = true;
   
-  bool bOpened = m_oFile.bOpenRead(sPath);
+  bool bOpened = m_oFile.bOpenRead(szPath);
   
   return bOpened;
 }
