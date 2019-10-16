@@ -6,9 +6,10 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // variable argument throws
 
-#define GET_THROW(_1,_2,NAME,...) NAME
+#define GET_THROW(_1,_2,_3,_4,NAME,...) NAME
 
-#define THROW(...) GET_THROW(__VA_ARGS__, THROW2, THROW1)(__VA_ARGS__)
+#define THROW(...) \
+  GET_THROW(__VA_ARGS__, THROW4, THROW4, THROW2, THROW1)(__VA_ARGS__)
 
 #define THROW1(p1) \
 { \
@@ -26,6 +27,28 @@
   s256 sFile((Stz*)__FILE__); \
   s256 sException; \
   sException.vSprint(p1,p2); \
+  Task* pTask = Task::pThisTLSTask(); \
+  pTask->vException(sFile,sException); \
+  Correctness::vThrowTrap(); \
+  throw (i8)__LINE__; \
+}
+
+#define THROW3(p1, p2, p3) \
+{ \
+  s256 sFile((Stz*)__FILE__); \
+  s256 sException; \
+  sException.vSprint(p1,p2,p3); \
+  Task* pTask = Task::pThisTLSTask(); \
+  pTask->vException(sFile,sException); \
+  Correctness::vThrowTrap(); \
+  throw (i8)__LINE__; \
+}
+
+#define THROW4(p1, p2, p3, p4) \
+{ \
+  s256 sFile((Stz*)__FILE__); \
+  s256 sException; \
+  sException.vSprint(p1,p2,p3,p4); \
   Task* pTask = Task::pThisTLSTask(); \
   pTask->vException(sFile,sException); \
   Correctness::vThrowTrap(); \
