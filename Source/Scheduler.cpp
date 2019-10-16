@@ -723,20 +723,20 @@ void Scheduler::vTask_Execute(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* desisted task transitions to TS_EXITED state and is deleted                */
+/* desisted task transitions to TS_COMPLETED state and is deleted                */
 /*----------------------------------------------------------------------------*/
 void Scheduler::vTask_Delete(Task* pTask)
 {
   pTask->vIncActNo();
   AM::vLogTsk(SL_INF,pTask,TA_TSK_EXIT,
-              "Task to TS_EXITED state; and deleted"_Stz); //!format-LogTsk
+              "Task to TS_COMPLETED state; and deleted"_Stz); //!format-LogTsk
   
   RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
   RASSERT(TR_DELETE == pTask->eTransition());
 
   pTask->vTransitionClear();
-  pTask->vState(TS_EXITED);
+  pTask->vState(TS_COMPLETED);
 
   //vTrace("Exited Task %p\n"_Stz,pTask);
   

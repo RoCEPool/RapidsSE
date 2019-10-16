@@ -240,7 +240,7 @@ void Engine::vDeleteImmmediate(Task** ppTask)
   pTask->vJob(nullptr);
   delete pJob;
   
-  pTask->vState(TS_EXITED);
+  pTask->vState(TS_COMPLETED);
   delete pTask;
 }
 

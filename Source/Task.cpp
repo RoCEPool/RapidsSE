@@ -169,7 +169,7 @@ Task::~Task(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  RASSERT(TS_EXITED == m_eState);
+  RASSERT(TS_COMPLETED == m_eState);
   RASSERT(! m_pJob);
   RASSERT(! m_eDdlLocked);
   RASSERT(! bWordBody());
@@ -985,7 +985,7 @@ void Task::vState(eTS eState)
   
   switch (eState) {
     case TS_EXECUTING: pStats->Task.m_nExecuting++; break;
-    case TS_EXITED:    pStats->Task.m_nExited++;    break;
+    case TS_COMPLETED:    pStats->Task.m_nExited++;    break;
     case TS_READY:     pStats->Task.m_nReady++;     break;
     case TS_SLEEPING:  pStats->Task.m_nSleeping++;  break;
     case TS_WAITING:   pStats->Task.m_nWaiting++;   break;

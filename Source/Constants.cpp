@@ -529,7 +529,7 @@ void Constants::vAddConstants(void)
   /*  0 */ vAddConstant("TS_NONE"_Stz,       TS_NONE);
   /*  1 */ vAddConstant("TS_BIDING"_Stz,     TS_BIDING);
   /*  2 */ vAddConstant("TS_EXECUTING"_Stz,  TS_EXECUTING);
-  /*  3 */ vAddConstant("TS_EXITED"_Stz,     TS_EXITED);
+  /*  3 */ vAddConstant("TS_COMPLETED"_Stz,     TS_COMPLETED);
   /*  4 */ vAddConstant("TS_READY"_Stz,      TS_READY);
   /*  5 */ vAddConstant("TS_SLEEPING"_Stz,   TS_SLEEPING);
   /*  6 */ vAddConstant("TS_WAITING"_Stz,    TS_WAITING);

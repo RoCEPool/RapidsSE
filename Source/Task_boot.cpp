@@ -128,15 +128,7 @@ void Task::vAddRoutines(void)
   " ;"_Stz;
   
   pCompileColon(sDefinition);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  sDefinition =
-//  ": task::delete"
-//  "  TS_EXITED task::this task.state!"
-//  "  ;"_Stz;
-//  
-//  pCompileColon(sDefinition);
-    
+      
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   sDefinition =
   ": ::enter"
