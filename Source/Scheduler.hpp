@@ -69,7 +69,7 @@ namespace Scheduling
     static void vTask_DdlGrabWrite(Task* pTask);
     static void vTask_Drop(Task* pTask);
     static void vTask_Execute(Task* pTask);
-    static void vTask_Exit(Task* pTask);
+    static void vTask_Delete(Task* pTask);
     static void vTask_Grab(Task* pTask);
     static void vTask_Pause(Task* pTask);
     static Task* pTask_Pop(Thread* pThread);

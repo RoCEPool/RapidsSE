@@ -361,8 +361,8 @@ void Scheduler::vTaskLoopTransition(Thread* pThread)
   switch (pTask->eTransition()) {
       
     case TR_BIDE:   vTask_Bide(pTask);   break;
-    case TR_DELETE:   vTask_Exit(pTask);   break;
-    case TR_PAUSE:  vTask_Pause(pTask);   break;
+    case TR_DELETE: vTask_Delete(pTask); break;
+    case TR_PAUSE:  vTask_Pause(pTask);  break;
     case TR_SLEEP:  vTask_Sleep(pTask);  break;
     case TR_WAIT:   vTask_Wait(pTask);   break;
     case TR_YIELD:  vTask_Yield(pTask);  break;
@@ -725,7 +725,7 @@ void Scheduler::vTask_Execute(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* desisted task transitions to TS_EXITED state and is deleted                */
 /*----------------------------------------------------------------------------*/
-void Scheduler::vTask_Exit(Task* pTask)
+void Scheduler::vTask_Delete(Task* pTask)
 {
   pTask->vIncActNo();
   AM::vLogTsk(SL_INF,pTask,TA_TSK_EXIT,
