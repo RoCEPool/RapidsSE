@@ -157,11 +157,12 @@ void Stage::vDump(void)
     EnameSet* pEnameSet = pOp->m_pOpSpec->pEnameSet();
     pEnameSet->vSprint(sArgs);
     
-    vTrace("  [%02lld] { %9s: %10s%-24s endMarkers(L%lld R%lld) :%-6s %s }\n"_Stz,
+    vTrace("  [%02lld] { %9s: %10s%-24s stage:%lld endMarkers(L%lld R%lld) :%-6s %s }\n"_Stz,
            i_Op,
            pOp->szLabel(),
            aCN[pOp->eClass()],
            sArgs.aStz(),
+           pOp->m_iNextStage,
            pOp->m_nLeftEndMarkers,
            pOp->m_nRightEndMarkers,
            pOp->szNextLabel(),
@@ -242,8 +243,8 @@ StageNde* Stage::pStageNde(i8 i_Nde, i8& iNdeVec)
   
   StageNde* pStageNde = nullptr;
   
-  for (i8 iNdeVec = 0; iNdeVec < m_oStageNdeVec.nItems(); iNdeVec++) {
-    StageNde* pStageNde = m_oStageNdeVec.pGet(iNdeVec);
+  for (iNdeVec = 0; iNdeVec < m_oStageNdeVec.nItems(); iNdeVec++) {
+    pStageNde = m_oStageNdeVec.pGet(iNdeVec);
     if (pStageNde->iNode() == i_Nde)
       return pStageNde;
   }

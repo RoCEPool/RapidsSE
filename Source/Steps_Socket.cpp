@@ -415,15 +415,12 @@ void Step::vSocketRecvObject(MP_Task mpTask)
   
   void* aBody;
   i8 nRemainingBytes;
-  CrwBuffer* pCrwBuffer;
-  EndMarker* pEndMarker;
-  StreamDef* pStreamDef;
   
   switch(eClass) {
       
-    case CN_CRWBUFFER:
+    case CN_CRWBUFFER: {
       
-      pCrwBuffer = new CrwBuffer();
+      CrwBuffer* pCrwBuffer = new CrwBuffer();
       
       MemLib::vCopy(pCrwBuffer,pObject,sizeof(Object),CN_CRWBUFFER);
       
@@ -447,9 +444,10 @@ void Step::vSocketRecvObject(MP_Task mpTask)
       mpTask->m_pForth->m_pDataStack->vPushBool(true);
       EXIT();
       return;
+    }
       
-    case CN_ENDMARKER:
-      pEndMarker = new EndMarker();
+    case CN_ENDMARKER: {
+      EndMarker* pEndMarker = new EndMarker();
       
       MemLib::vCopy(pEndMarker,pObject,sizeof(Object),CN_ENDMARKER);
       
@@ -470,11 +468,40 @@ void Step::vSocketRecvObject(MP_Task mpTask)
       mpTask->m_pForth->m_pDataStack->vPushBool(true);
       EXIT();
       return;
+    }
+    
+    case CN_IRWBUFFER: {
       
-    case CN_STREAMDEF:
-      pStreamDef = new StreamDef();
+      IrwBuffer* pIrwBuffer = new IrwBuffer();
       
-      MemLib::vCopy(pStreamDef,pObject,sizeof(Object),CN_ENDMARKER);
+      MemLib::vCopy(pIrwBuffer,pObject,sizeof(Object),CN_IRWBUFFER);
+      
+      aBody = aAdd<void*>(pIrwBuffer,sizeof(Object));
+      nRemainingBytes = giClassSize[CN_IRWBUFFER] - sizeof(Object);
+      
+      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+      if (! bResult) {
+        mpTask->m_pForth->m_pDataStack->vPushBool(false);
+        EXIT();
+        return;
+      }
+      
+      //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
+      //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
+      
+      // restore the nub of the crwbuffer
+      //pIrwBuffer->vRestoreNub();
+      
+      mpTask->m_pForth->m_pDataStack->vPushPointer(pIrwBuffer);
+      mpTask->m_pForth->m_pDataStack->vPushBool(true);
+      EXIT();
+      return;
+    }
+      
+    case CN_STREAMDEF: {
+      StreamDef* pStreamDef = new StreamDef();
+      
+      MemLib::vCopy(pStreamDef,pObject,sizeof(Object),CN_STREAMDEF);
       
       aBody = aAdd<void*>(pStreamDef,sizeof(Object));
       nRemainingBytes = giClassSize[CN_STREAMDEF] - sizeof(Object);
@@ -493,6 +520,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
       mpTask->m_pForth->m_pDataStack->vPushBool(true);
       EXIT();
       return;
+    }
       
     default:
       RASSERT(0);
@@ -702,11 +730,39 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
       mpTask->m_pForth->m_pDataStack->vPushBool(true);
       EXIT();
       return;
+  
+    case CN_IRWBUFFER: {
+      
+      IrwBuffer* pIrwBuffer = new IrwBuffer();
+      
+      MemLib::vCopy(pIrwBuffer,pObject,sizeof(Object),CN_IRWBUFFER);
+      
+      aBody = aAdd<void*>(pIrwBuffer,sizeof(Object));
+      nRemainingBytes = giClassSize[CN_IRWBUFFER] - sizeof(Object);
+      
+      bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
+      if (! bResult) {
+        mpTask->m_pForth->m_pDataStack->vPushBool(false);
+        EXIT();
+        return;
+      }
+      
+      //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
+      //       pEntBuffer,eClass,aCN[eClass],nObjectSize);
+      
+      // restore the nub of the crwbuffer
+      //pIrwBuffer->vRestoreNub();
+      
+      mpTask->m_pForth->m_pDataStack->vPushPointer(pIrwBuffer);
+      mpTask->m_pForth->m_pDataStack->vPushBool(true);
+      EXIT();
+      return;
+    }
       
     case CN_STREAMDEF:
       pStreamDef = new StreamDef();
       
-      MemLib::vCopy(pStreamDef,pObject,sizeof(Object),CN_ENDMARKER);
+      MemLib::vCopy(pStreamDef,pObject,sizeof(Object),CN_STREAMDEF);
       
       aBody = aAdd<void*>(pStreamDef,sizeof(Object));
       nRemainingBytes = giClassSize[CN_STREAMDEF] - sizeof(Object);

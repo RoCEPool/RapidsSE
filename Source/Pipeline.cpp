@@ -192,8 +192,11 @@ void Pipeline::vPopulateOpVec(PipelineSpec* pPipelineSpec)
     // dump all operators of a stage
     
     if (AM::bVerbose()) {
-      vTrace("Stage %lld: \n"_Stz, i_Stage);
-      pStage->vDump();
+      i8 iThisNode = AM::pGrid()->iThisNode();
+      if (iThisNode == 0) {
+        vTrace("Stage %lld: \n"_Stz, i_Stage);
+        pStage->vDump();
+      }
     }
   }
   
