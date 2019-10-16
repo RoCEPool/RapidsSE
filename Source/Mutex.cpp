@@ -401,7 +401,7 @@ void Mutex::vPause(Focal* pLockedBy, i8 iMicroSeconds)
   //! mutex is signaled.
   //!
   ASSERT(m_bLocked);
-  ASSERT(bIsLocked());
+  //ASSERT(bIsLocked());
   ASSERT(pLockedBy == m_pLockedBy);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -503,7 +503,7 @@ void Mutex::vSignal(Focal* pLockedBy)
   //! Calling thread must have locked the mutex
   //!
   ASSERT(m_bLocked);
-  ASSERT(bIsLocked());
+  //ASSERT(bIsLocked());
   ASSERT(pLockedBy == m_pLockedBy);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -530,7 +530,7 @@ void Mutex::vSignal(Focal* pLockedBy)
   
   if (0 == iRetVal) {
     ASSERT(m_bLocked);
-    ASSERT(bIsLocked());
+    //ASSERT(bIsLocked());
     return;
   }
   
@@ -554,9 +554,8 @@ void Mutex::vUnlock(Focal* pLockedBy)
   //! The mutex must be locked by the calling thread
   //!
   RASSERT(m_bLocked);
-  RASSERT(bIsLocked());
-  
   RASSERT(pLockedBy == m_pLockedBy);
+  //RASSERT(bIsLocked());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -611,7 +610,7 @@ void Mutex::vWait(Focal* pLockedBy)
   //! The mutex must be explicitly unlocked by the caller.
   //!
   ASSERT(m_bLocked);
-  ASSERT(bIsLocked());
+  //ASSERT(bIsLocked());
   ASSERT(pLockedBy == m_pLockedBy);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
