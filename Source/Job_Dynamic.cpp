@@ -178,8 +178,11 @@ bool Job_Dynamic::bPopulateJob(Session* pSession, TokenVec* pTknVec)
   
   s4K sPipe("dynamic "_Stz);
   pStageSpec->vToPipeStr(sPipe.szStz());
+
+#ifdef WITH_TRACE_DYNAMO
   vTrace("Restated stage 0: ]]%s[[\n"_Stz,sPipe.szStz());
   vTrace("- - - - - - - - - - - - - - - - - -\n\n"_Stz);
+#endif
   
   Tokeniser::vTokenise(pTknVec,sPipe);
   

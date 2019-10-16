@@ -224,9 +224,10 @@ bool Dynamo::bCollectName(void)
   
   ASSERT(m_pTkn->bSame("pipeline"_Stz));
   vAcceptToken();
-
+  
+#ifdef WITH_TRACE_DYNAMO
   vTrace("        pipeline=%s\n"_Stz,m_pTkn->szText());
-
+#endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   m_pPipelineSpec = new PipelineSpec(m_pTkn->szText());
@@ -234,9 +235,11 @@ bool Dynamo::bCollectName(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   vAcceptToken();
-  
+ 
+#ifdef WITH_TRACE_DYNAMO
   vTrace("Name Clause recognised\n"_Stz);
-
+#endif
+  
   return true;
 }
 
@@ -249,8 +252,11 @@ bool Dynamo::bCollectBegin(void)
   
   ASSERT(m_pTkn->bSame("begin"_Stz));
   vAcceptToken();
-
+  
+#ifdef WITH_TRACE_DYNAMO
   vTrace("Begin recognised\n"_Stz);
+#endif
+  
   return true;
 }
 
@@ -264,8 +270,9 @@ bool Dynamo::bCollectStage(void)
   ASSERT(m_pTkn->bSame("stage"_Stz));
   vAcceptToken();
   
+#ifdef WITH_TRACE_DYNAMO
   vTrace("        stage=%s\n"_Stz,m_pTkn->szText());
-
+#endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   m_pStageSpec = new StageSpec(m_pTkn->szText());
@@ -279,9 +286,11 @@ bool Dynamo::bCollectStage(void)
   
   if (bIsOperator(m_pTkn))
     bCollectPipe();
-
-  vTrace("Stage Clause recognised\n"_Stz);
   
+#ifdef WITH_TRACE_DYNAMO
+  vTrace("Stage Clause recognised\n"_Stz);
+#endif
+//
   return true;
 }
 
@@ -309,7 +318,9 @@ bool Dynamo::bCollectTopology(void)
       
       if (m_pTkn->bSame(":"_Stz)) {
         vAcceptToken();
+#ifdef WITH_TRACE_DYNAMO
         vTrace("Topology Phrase recognised >on all nodes :<\n"_Stz);
+#endif
         m_pStageSpec->vTopology(PO_ALL_NODES);
         return true;
       }
@@ -323,7 +334,9 @@ bool Dynamo::bCollectTopology(void)
       
       if (m_pTkn->bSame(":"_Stz)) {
         vAcceptToken();
+#ifdef WITH_TRACE_DYNAMO
         vTrace("Topology Phrase recognised >on all partitions :<\n"_Stz);
+#endif
         m_pStageSpec->vTopology(PO_ALL_PARTITIONS);
         return true;
       }
@@ -341,7 +354,9 @@ bool Dynamo::bCollectTopology(void)
 
     if (m_pTkn->bSame(":"_Stz)) {
       vAcceptToken();
+#ifdef WITH_TRACE_DYNAMO
       vTrace("Topology Phrase recognised >on node %s :<\n"_Stz,sLocus.szStz());
+#endif
       m_pStageSpec->vTopology(PO_SPECIFIC_NODE);
       m_pStageSpec->vLocus(sLocus.szStz());
       return true;
@@ -359,7 +374,9 @@ bool Dynamo::bCollectTopology(void)
     
     if (m_pTkn->bSame(":"_Stz)) {
       vAcceptToken();
+#ifdef WITH_TRACE_DYNAMO
       vTrace("Topology Phrase recognised >on partition %s :<\n"_Stz,sLocus.szStz());
+#endif
       m_pStageSpec->vTopology(PO_SPECIFIC_PARTITION);
       m_pStageSpec->vLocus(sLocus.szStz());
       return true;
@@ -374,7 +391,9 @@ bool Dynamo::bCollectTopology(void)
     
     if (m_pTkn->bSame(":"_Stz)) {
       vAcceptToken();
+#ifdef WITH_TRACE_DYNAMO
       vTrace("Topology Phrase recognised >on origin :<\n"_Stz);
+#endif
       m_pStageSpec->vTopology(PO_ORIGIN);
       return true;
     }
@@ -385,15 +404,19 @@ bool Dynamo::bCollectTopology(void)
   
   if (m_pTkn->bSame(":"_Stz)) {
     vAcceptToken();
-    
+#ifdef WITH_TRACE_DYNAMO
     vTrace("Topology Phrase recognised :<\n"_Stz);
+#endif
     m_pStageSpec->vTopology(PO_NONE);
     return true;
   }
   
 
   // -- -- -- -- -- -- -- -- -- -- --
+#ifdef WITH_TRACE_DYNAMO
   vTrace("Topology Phrase not recognised\n"_Stz);
+#endif
+  
   return false;
 }
 
@@ -416,8 +439,11 @@ bool Dynamo::bCollectPipe(void)
     
     vAcceptToken();
   }
-  
+ 
+#ifdef WITH_TRACE_DYNAMO
   vTrace("Pipe Phrase recognised\n"_Stz);
+#endif
+  
   return true;
 }
 
@@ -427,9 +453,10 @@ bool Dynamo::bCollectPipe(void)
 bool Dynamo::bCollectOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  
+
+#ifdef WITH_TRACE_DYNAMO
   vTrace("        op=%s\n"_Stz,m_pTkn->szText());
-  
+#endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   m_pOpSpec = new OpSpec(m_pTkn->szText(),m_pStageSpec);
@@ -458,8 +485,11 @@ bool Dynamo::bCollectOp(void)
     
     vAcceptToken();
   }
-  
+
+#ifdef WITH_TRACE_DYNAMO
   vTrace("Op Phrase recognised\n"_Stz);
+#endif
+  
   return true;
 }
 
@@ -471,8 +501,11 @@ bool Dynamo::bCollectEnd(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   ASSERT(m_pTkn->bSame("end"_Stz));
-
+  
+#ifdef WITH_TRACE_DYNAMO
   vTrace("End recognised\n"_Stz);
+#endif
+  
   return true;
 }
 
@@ -495,14 +528,19 @@ bool Dynamo::bPhase2_staging(void)
     OpSpecVec* pOpSpecVec = pStageSpec->pOpSpecVec();
     for (i8 i_Op = 0; i_Op < pOpSpecVec->nItems(); i_Op++) {
       OpSpec* pOpSpec = pOpSpecVec->pGet(i_Op);
-
-      vTrace("  op=%s\n"_Stz,pOpSpec->szName());
       
+#ifdef WITH_TRACE_DYNAMO
+      vTrace("  op=%s\n"_Stz,pOpSpec->szName());
+#endif
       i8 i_Stage = C_UNKNOWN;
       StageSpec* pStageSpecFound = m_pPipelineSpec->pFindStageSpec(pOpSpec->szName(), i_Stage);
       if (pStageSpecFound) {
         ePX eTopologyX = eTopoloyX(pStageSpec, pStageSpecFound);
+        
+#ifdef WITH_TRACE_DYNAMO
         vTrace("  op %s is a stage %lld %s\n"_Stz,pOpSpec->szName(), i_Stage, aPX[eTopologyX]);
+#endif
+        
         vReplaceWithXmit(pOpSpec, eTopologyX, i_Stage);
         pStageSpecFound->vPrependConsumeOp(eTopologyX);
       }
@@ -598,7 +636,9 @@ void Dynamo::vAcceptToken(void)
   ++ m_i_Tkn;
   
   m_pTkn = m_p_TknVec->pGet(m_i_Tkn);
+#ifdef WITH_TRACE_DYNAMO
   vTrace("Next %03lld: %s\n"_Stz,m_i_Tkn,m_pTkn->szText());
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -611,7 +651,9 @@ void Dynamo::vBeginToken(i8 i_Tkn)
   m_i_Tkn = i_Tkn;
   m_pTkn  = m_p_TknVec->pGet(m_i_Tkn);
   
+#ifdef WITH_TRACE_DYNAMO
   vTrace("Begin %03lld: %s\n"_Stz,i_Tkn,m_pTkn->szText());
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
