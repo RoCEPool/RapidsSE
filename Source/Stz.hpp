@@ -20,7 +20,6 @@ namespace Strings
   
     static Stz* szTab(i8 iDepth);
 
-    void operator =(d8);
     void operator =(i8);
     void operator =(Stz*);
     void operator =(void*);
