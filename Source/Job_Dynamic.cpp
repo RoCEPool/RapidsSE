@@ -246,7 +246,6 @@ void Job_Dynamic::vExecute(void)
   // set acks remaining equal to no of operators to be executed on this node
   
   AM::vSetAcksRmg(pTask(),nOps);
-
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn operaotors for this node

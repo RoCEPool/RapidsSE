@@ -329,7 +329,7 @@ void DicStack::vSetStack(DicPath* pDicPath)
     if (sFolderNm.bSame("tenants"_Stz))
       continue;
     
-    pDic->vListWords();
+    //pDic->vListWords();
     Word* pWord = pDic->pFindWord(sFolderNm);
     
     Dic* pSubDic = _pDic(pWord->aWspArea());
