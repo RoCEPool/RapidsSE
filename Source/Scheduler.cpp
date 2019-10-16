@@ -361,7 +361,7 @@ void Scheduler::vTaskLoopTransition(Thread* pThread)
   switch (pTask->eTransition()) {
       
     case TR_BIDE:   vTask_Bide(pTask);   break;
-    case TR_EXIT:   vTask_Exit(pTask);   break;
+    case TR_DELETE:   vTask_Exit(pTask);   break;
     case TR_PAUSE:  vTask_Pause(pTask);   break;
     case TR_SLEEP:  vTask_Sleep(pTask);  break;
     case TR_WAIT:   vTask_Wait(pTask);   break;
@@ -733,7 +733,7 @@ void Scheduler::vTask_Exit(Task* pTask)
   
   RASSERT(TS_DESISTED == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
-  RASSERT(TR_EXIT == pTask->eTransition());
+  RASSERT(TR_DELETE == pTask->eTransition());
 
   pTask->vTransitionClear();
   pTask->vState(TS_EXITED);

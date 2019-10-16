@@ -167,7 +167,7 @@ void Step::vTaskDelete(MP_Task mpTask)
 {
   ENTRY("vTaskDelete"_Stz);
   
-  mpTask->vTransition(TR_EXIT);
+  mpTask->vTransition(TR_DELETE);
 
   EXIT();
 }

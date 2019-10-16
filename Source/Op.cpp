@@ -179,7 +179,7 @@ void Op::vOpLoop(void)
     case OR_EXIT:
       if (m_bAckJobEnd)
         vAckJob();
-      AM::vTaskTransition(m_pTask,TR_EXIT);
+      AM::vTaskTransition(m_pTask,TR_DELETE);
       return;
     
     case OR_PAUSE:
