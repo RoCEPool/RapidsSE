@@ -97,7 +97,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.send"_Stz,             &Step::vJobSend);
   vAddStep("job.sessionState@"_Stz,    &Step::vJobSessionStateFetch);
   vAddStep("job.show"_Stz,             &Step::vJobShow);
-  vAddStep("job.signalConnector"_Stz,  &Step::vJobSignalConnector);
+  vAddStep("job.signalWaiter"_Stz,     &Step::vJobSignalWaiter);
   vAddStep("job.slot@"_Stz,            &Step::vJobSlotFetch);
   vAddStep("job.spawn"_Stz,            &Step::vJobSpawn);
   vAddStep("job.spawn_dedicated"_Stz,  &Step::vJobSpawnDedicated);
@@ -1745,15 +1745,18 @@ void Step::vJobShow(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.signalConnector -- signal the connector thread                         */
+/* job.signalWaiter -- signal the connector thread                            */
 /*----------------------------------------------------------------------------*/
-void Step::vJobSignalConnector(MP_Task mpTask)
+void Step::vJobSignalWaiter(MP_Task mpTask)
 {
-  ENTRY("vJobSignalConnector"_Stz);
+  ENTRY("vJobSignalWaiter"_Stz);
+  
+  // there will be a thread waiting on completion of the job
+  // this could be a prompt htread or a java thread via the connector
   
   Object* pJobPtr;
   if ( ! mpTask->m_pForth->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.signalConnector"_Stz);
+    THROW_INVALID_DSTACK("job.signalWaiter"_Stz);
   Job* pJob = _pJob(pJobPtr);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1764,7 +1767,7 @@ void Step::vJobSignalConnector(MP_Task mpTask)
   }
   
   if (pJob->m_xReqTuple.m_iDetail)
-    JobLog::vNote(pJob,"Connector signalled by %s"_Stz,
+    JobLog::vNote(pJob,"Connector/Prompt signalled by %s"_Stz,
                        aCN[pJob->eClass()]);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

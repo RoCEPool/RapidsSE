@@ -115,7 +115,7 @@
   nullptr task::this task.job!
 
   //"Signalling connector thread" .
-  pJob job.signalConnector
+  pJob job.signalWaiter
 
   task::exit
 ;

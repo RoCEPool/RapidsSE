@@ -528,7 +528,7 @@ public:
   static void vJobSend(Tasks::MP_Task mpTask);
   static void vJobSessionStateFetch(Tasks::MP_Task mpTask);
   static void vJobShow(Tasks::MP_Task mpTask);
-  static void vJobSignalConnector(Tasks::MP_Task mpTask);
+  static void vJobSignalWaiter(Tasks::MP_Task mpTask);
   static void vJobSlotFetch(Tasks::MP_Task mpTask);
   static void vJobSpawn(Tasks::MP_Task mpTask);
   static void vJobSpawnDedicated(Tasks::MP_Task mpTask);
