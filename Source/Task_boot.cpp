@@ -131,7 +131,7 @@ void Task::vAddRoutines(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  sDefinition =
-//  ": task::exit"
+//  ": task::delete"
 //  "  TS_EXITED task::this task.state!"
 //  "  ;"_Stz;
 //  
@@ -142,7 +142,7 @@ void Task::vAddRoutines(void)
   ": ::enter"
   "  input.stdin"
   "  docol"
-  "  task::exit"
+  "  task::delete"
   "  ;"_Stz;
   
   pCompileColon(sDefinition);
@@ -197,7 +197,7 @@ void Task::vAddRoutines(void)
   "  args.munged if \"compiling munged dictionary...\" . then"
   "  \"job_Boot.sen\" include"
   "  \"boot_run exit_rt\" .verbose"
-  "  task::exit"
+  "  task::delete"
   "  ;"_Stz;
 #else
   sDefinition =
@@ -205,7 +205,7 @@ void Task::vAddRoutines(void)
   "  \"boot_run\" .verbose"
   "  \"job_Boot.sen\" include"
   "  \"boot_run exit_rt\" .verbose"
-  "  task::exit"
+  "  task::delete"
   "  ;"_Stz;
 #endif
   pCompileColon(sDefinition);

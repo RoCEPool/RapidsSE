@@ -10,7 +10,7 @@
 void Step::vAddSteps_Task(void)
 {
   vAddStep("task::breakPoint"_Stz, &Step::vTaskBreakPoint);
-  vAddStep("task::exit"_Stz,       &Step::vTaskExit);
+  vAddStep("task::delete"_Stz,     &Step::vTaskDelete);
   vAddStep("task::sleepMsec"_Stz,  &Step::vTaskSleepMsec);
   vAddStep("task::sleepSsec"_Stz,  &Step::vTaskSleepSsec);
   vAddStep("task::sleepUsec"_Stz,  &Step::vTaskSleepUsec);
@@ -161,11 +161,11 @@ ENTRY("vTaskDump"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* task::exit -- this task exits                                              */
+/* task::delete -- remove task from scheduler and delete                      */
 /*----------------------------------------------------------------------------*/
-void Step::vTaskExit(MP_Task mpTask)
+void Step::vTaskDelete(MP_Task mpTask)
 {
-  ENTRY("vTaskExit"_Stz);
+  ENTRY("vTaskDelete"_Stz);
   
   mpTask->vTransition(TR_EXIT);
 

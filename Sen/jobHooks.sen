@@ -117,7 +117,7 @@
   //"Signalling connector thread" .
   pJob job.signalWaiter
 
-  task::exit
+  task::delete
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -141,7 +141,7 @@
   // the task exits and gets deleted
   nullptr task::this task.job!
 
-  task::exit
+  task::delete
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -163,7 +163,7 @@
 
   nullptr task::this task.job!
 
-  task::exit
+  task::delete
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -182,7 +182,7 @@
   // delete the job
   job::this "job::deleteThis" find execute
 
-  task::exit
+  task::delete
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -201,7 +201,7 @@
   // delete the job
   job::this "job::deleteThis" find execute
 
-  task::exit
+  task::delete
 ;
 
 /*----------------------------------------------------------------------------*/
