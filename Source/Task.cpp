@@ -248,19 +248,6 @@ void Task::vTaskLoop_job(void)
     }
     
     catch (i8 iException) {
-//      char caFileName[256];
-//
-//      char* ps;
-//
-//      ps = StrLib::sLast(m_sFileNm.azChar());
-//      StrLib::bBackward(&ps,m_sFileNm.azChar(),'/');
-//      bool bBackSlash = StrLib::bBackward(&ps,m_sFileNm.azChar(),'/');
-//      if (bBackSlash) {
-//        StrLib::vCopy(caFileName,ps+1);
-//      }
-//      else {
-//        StrLib::vCopy(caFileName, m_sFileNm.azChar());
-//      }
       vTrace("[%s] %s : in file %s line %lld\n"_Stz,
              szJobName(),
              m_sException.azChar(),
