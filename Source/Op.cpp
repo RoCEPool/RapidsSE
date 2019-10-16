@@ -355,84 +355,42 @@ void Op::vLinkToStage(Stage* pStage)
   ASSERT(eClass() == CN_XMITOP);
   
   Op* pOpNext = nullptr;
+  StageNde* pStageNde = nullptr;
   
   switch(m_eTopologyX) {
-    case PX_ALL_NODES_TO_ALL_NODES: RASSERT(0);
-    case PX_ALL_NODES_TO_ALL_PARTITIONS: RASSERT(0);
-      
-    case PX_ALL_NODES_TO_ORIGIN: {
+   
+    case PX_ALL_NODES_TO_ORIGIN:
+    case PX_ALL_PARTITIONS_TO_ORIGIN:
+    case PX_ORIGIN_TO_ORIGIN: {
       RASSERT(pStage->pStageNdeVec()->nItems() == 1) ;
-      StageNde* pStageNde = pStage->pStageNdeVec()->pGet(0);
-      AM::vXmitNode(this,pStageNde->iNode());
-      pOpNext = pStageNde->pOpVec()->pGet(0);
-      
-      vNextLabel(pOpNext->m_sName);
-      vOpOut(pOpNext);
-      return;
+      pStageNde = pStage->pStageNdeVec()->pGet(0);
+      break;
     }
-    case PX_ALL_NODES_TO_SPECIFIC_NODE: RASSERT(0);
-    case PX_ALL_NODES_TO_SPECIFIC_PARTITION: RASSERT(0);
     
     case PX_ALL_PARTITIONS_TO_ALL_NODES: {
       // get the node of this op ptn
       i8 i_Nde = TablePtn::iPartitionToNode(m_nPartition);
-      
-      // get the StageNde for this Node
-      StageNde* pStageNde = pStage->pStageNde(i_Nde);
-      AM::vXmitNode(this,pStageNde->iNode());
-      pOpNext = pStageNde->pOpVec()->pGet(0);
-      
-      vNextLabel(pOpNext->m_sName);
-      vOpOut(pOpNext);
-      return;
+      pStageNde = pStage->pStageNde(i_Nde);
+      break;
     }
-    case PX_ALL_PARTITIONS_TO_ALL_PARTITIONS: RASSERT(0);
-      
-    case PX_ALL_PARTITIONS_TO_ORIGIN: {
-      RASSERT(pStage->pStageNdeVec()->nItems() == 1) ;
-      StageNde* pStageNde = pStage->pStageNdeVec()->pGet(0);
-      AM::vXmitNode(this,pStageNde->iNode());
-      pOpNext = pStageNde->pOpVec()->pGet(0);
-      
-      vNextLabel(pOpNext->m_sName);
-      vOpOut(pOpNext);
-      return;
-    }
-    case PX_ALL_PARTITIONS_TO_SPECIFIC_NODE: RASSERT(0);
-    case PX_ALL_PARTITIONS_TO_SPECIFIC_PARTITION: RASSERT(0);
-    
-    case PX_ORIGIN_TO_ALL_NODES: RASSERT(0);
-    case PX_ORIGIN_TO_ALL_PARTITIONS: RASSERT(0);
-      
-      
-    case PX_ORIGIN_TO_ORIGIN: {
-      RASSERT(pStage->pStageNdeVec()->nItems() == 1) ;
-      StageNde* pStageNde = pStage->pStageNdeVec()->pGet(0);
-      AM::vXmitNode(this,pStageNde->iNode());
-      pOpNext = pStageNde->pOpVec()->pGet(0);
-      
-      vNextLabel(pOpNext->m_sName);
-      vOpOut(pOpNext);
-      return;
-    }
-      
-    case PX_ORIGIN_TO_SPECIFIC_NODE: RASSERT(0);
-    case PX_ORIGIN_TO_SPECIFIC_PARTITION: RASSERT(0);
-    
-    case PX_SPECIFIC_NODE_TO_ALL_NODES: RASSERT(0);
-    case PX_SPECIFIC_NODE_TO_ALL_PARTITIONS: RASSERT(0);
-    case PX_SPECIFIC_NODE_TO_ORIGIN: RASSERT(0);
-    case PX_SPECIFIC_NODE_TO_SPECIFIC_NODE: RASSERT(0);
-    case PX_SPECIFIC_NODE_TO_SPECIFIC_PARTITION: RASSERT(0);
-    
-    case PX_SPECIFIC_PARTITION_TO_ALL_NODES: RASSERT(0);
-    case PX_SPECIFIC_PARTITION_TO_ALL_PARTITIONS: RASSERT(0);
-    case PX_SPECIFIC_PARTITION_TO_ORIGIN: RASSERT(0);
-    case PX_SPECIFIC_PARTITION_SPECIFIC_NODE: RASSERT(0);
-    case PX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION: RASSERT(0);
+  
     default:
       RASSERT(0);
   }
+  
+  ASSERT(pStageNde);
+  
+  // set the xmit node
+  AM::vXmitNode(this,pStageNde->iNode());
+  
+  // get the first op of the stage nde
+  pOpNext = pStageNde->pOpVec()->pGet(0);
+  
+  // set the next label
+  vNextLabel(pOpNext->m_sName);
+  
+  // ste the op out
+  vOpOut(pOpNext);
 }
 
 /*----------------------------------------------------------------------------*/

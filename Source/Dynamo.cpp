@@ -515,7 +515,11 @@ void Dynamo::vReplaceWithXmit(OpSpec* pOpSpec, ePX eTopologyX, i8 i_Stage)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   pOpSpec->vName("xmit"_Stz);
+  
+  // arg-0 is the cross topology of the xmit op
   pOpSpec->vAddEnmPair("<arg_0>"_Stz,(i8)eTopologyX,TN_INTEGER);
+  
+  // arg-1 is the next stage for the xmit
   pOpSpec->vAddEnmPair("<arg_1>"_Stz,(i8)i_Stage,TN_INTEGER);
 }
 

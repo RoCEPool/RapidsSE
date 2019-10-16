@@ -9,10 +9,9 @@ namespace Pipelines
   {
   private:
   
-    s32 m_sName;
-
-    ePO m_eTopology;
-    s32 m_sLocus;
+    s32 m_sName;        // stage name
+    ePO m_eTopology;    // stage topoplogy
+    s32 m_sLocus;       // stage locus
   
     OpSpecVec* m_pOpSpecVec;
   

@@ -12,7 +12,6 @@ namespace Jobs
     Op*        m_pOp;             // operator number
     i8         m_iNode;           // node id
     i8         m_iParentJobId;    // parent (InsertRow) job id
-    
     ePX        m_eTopologyX;      // cross topology
     i8         m_iNextStage;      // next stage
     
