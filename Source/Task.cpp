@@ -268,23 +268,7 @@ void Task::vTaskLoop_job(void)
              caFileName);
       vRetry();
     }
-    
-    catch (Error* pError) {
-      char caFileName[256];
-      
-      char* ps;
-      
-      ps = StrLib::sLast(pError->aFileName()->azChar());
-      StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
-      StrLib::vCopy(caFileName,ps+1);
-      vTrace("[%s] %s: line %lld in %s\n"_Stz,
-             aJobName(),
-             pError->aErrorMsg(),
-             pError->iLineNo(),
-             caFileName);
-      vRetry();
-    }
-    
+        
   }
   
   if (m_pJob && m_pJob->m_xReqTuple.m_iDetail)
