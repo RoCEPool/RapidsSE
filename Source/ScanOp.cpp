@@ -184,8 +184,6 @@ void ScanOp::vPreliminary(void)
   
   m_bRunPrelim = false;
   
-  vTrace("Node %s vPreliminary start\n"_Stz, AM::pGrid()->pThisNode()->szNodeName());
-  
   DicStack* pDicStack = new DicStack;
   AM::vJobDicStack(m_pJob, pDicStack);
   
@@ -203,8 +201,6 @@ void ScanOp::vPreliminary(void)
   
   // get first buffer
   m_pCrwBuffer = m_pTablePtn->pRootCrwBuffer();
-  
-  vTrace("Node %s vPreliminary end\n"_Stz, AM::pGrid()->pThisNode()->szNodeName());
 }
 
 /*----------------------------------------------------------------------------*/
