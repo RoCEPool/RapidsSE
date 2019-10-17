@@ -67,7 +67,7 @@
 
   SS_SEED_END log::jobSeed
 
-  JP_CANCELING job::this job.phase!
+  JP_ENDING job::this job.phase!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -81,7 +81,7 @@
 
   SS_SEED_CAN log::jobSeed
 
-  JP_BEGINNING job::this job.phase!
+  JP_CANCELING job::this job.phase!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -152,9 +152,6 @@
   ddlLock::testDrop
 
   JP_EXECUTED job::this job.phase!
-
-  nullptr job::this job.task!
-  nullptr task::this task.job!
 
   task::delete
 ;
