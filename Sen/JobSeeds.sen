@@ -35,6 +35,12 @@
 
   [ compiler::current word.name@ , ] .
 
+  JP_BEGINNING job::this job.phase!
+
+  job::pathSet
+
+  job::becomeParticipant
+
   <jobNm> "::checkResources" str.cat find dup if
     execute
   else

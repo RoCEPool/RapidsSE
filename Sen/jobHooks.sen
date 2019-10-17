@@ -31,13 +31,6 @@
   r@ locate log::markEntry
 
   SS_SEED_BEG log::jobSeed
-
-  JP_BEGINNING job::this job.phase!
-
-  job::pathSet
-
-  // add this job to the participants list
-  job::becomeParticipant
 ;
 
 /*----------------------------------------------------------------------------*/
