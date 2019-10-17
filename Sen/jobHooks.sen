@@ -55,8 +55,6 @@
   r@ locate log::markEntry
 
   SS_SEED_END log::jobSeed
-
-  JP_ENDING job::this job.phase!
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -73,6 +73,8 @@
 
   [ compiler::current word.name@ , ] .
 
+  JP_ENDING job::this job.phase!
+
   <jobNm> "::releaseResources" str.cat find dup if
     execute
   else
