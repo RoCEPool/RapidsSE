@@ -368,7 +368,13 @@ bool Arguments::bParse(int argc, Stz* argv[])
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--munged"_Stz)) {
       m_bMunged = true;
+#ifdef WITH_MUNGED_SEN
       continue;
+#else
+      vWarn("--munged specified but SE not compiled WITH_MUNGED_SEN\n"_Stz);
+      return false;
+#endif
+      
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
