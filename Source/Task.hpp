@@ -134,6 +134,7 @@ namespace Tasks
     eTR  eTransition(void);
     void vTransition(eTR eTransition);
     void vTransitionClear(void);
+    void vUnlinkJob(void);
     void vWakeupClear(void);
     u8   uWakeupInUsec(void);
     bool bWakeupNow(void);

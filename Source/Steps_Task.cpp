@@ -167,6 +167,8 @@ void Step::vTaskDelete(MP_Task mpTask)
 {
   ENTRY("vTaskDelete"_Stz);
   
+  mpTask->vUnlinkJob();
+  
   mpTask->vTransition(TR_DELETE);
 
   EXIT();
