@@ -176,7 +176,7 @@
 
   job::participantCancelled
 
-   r@ locate log::markExit
+  r@ locate log::markExit
 
   JP_CANCELED job::this job.phase!
 
