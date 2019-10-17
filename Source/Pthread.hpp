@@ -11,8 +11,11 @@ namespace Resources
   {
   public:
     i8        m_iOpSysThreadId; // thread id as known by os
-    pthread_t m_iPthreadId; // posix thread id
+    pthread_t m_iPthreadId;     // posix thread id
   
+    void*     m_aStackBase;    // stack base address
+    i8        m_iStackSize;    // stack size
+
     // must be last
     Footer m_xFooter;
   
@@ -56,9 +59,9 @@ namespace Resources
     static void  vMonitorPortrait(s48K& sPortrait);
 
     static void  vSleepers(void);
-    static void* aStackBase(void);
-    static void* aStackPointer(void);
-    static i8    iStackSize(void);
+    static void* aGetStackBase(void);
+    static void* aGetStackPointer(void);
+    static i8    iGetStackSize(void);
   
     static bool  bTlsCreate(pthread_key_t* aTlsKey);
     static void* pTlsGet(pthread_key_t iTlsKey);

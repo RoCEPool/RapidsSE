@@ -56,6 +56,9 @@ Pthread::Pthread()
   m_iOpSysThreadId = 0;
   m_iPthreadId = 0;
   
+  m_aStackBase   = nullptr;
+  m_iStackSize   = 0;
+
   _checkInitialised_(CN_PTHREAD);
 
   ++ gixPthread;
@@ -684,6 +687,10 @@ i8 Pthread::iThreadCpu(void)
 void Pthread::vThreadEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
+  
+  m_aStackBase = Pthread::aGetStackBase();
+  m_iStackSize = Pthread::iGetStackSize();
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -823,7 +830,7 @@ void Pthread::vSleepers(void)
 /*----------------------------------------------------------------------------*/
 /* get stack base address                                                     */
 /*----------------------------------------------------------------------------*/
-void* Pthread::aStackBase(void)
+void* Pthread::aGetStackBase(void)
 {
   void* aAddress;
   
@@ -857,7 +864,7 @@ void* Pthread::aStackBase(void)
 /*----------------------------------------------------------------------------*/
 /* get current stack pointer                                                  */
 /*----------------------------------------------------------------------------*/
-void* Pthread::aStackPointer(void)
+void* Pthread::aGetStackPointer(void)
 {
   void* aPointer = &aPointer;
   
@@ -867,7 +874,7 @@ void* Pthread::aStackPointer(void)
 /*----------------------------------------------------------------------------*/
 /* get stack size                                                             */
 /*----------------------------------------------------------------------------*/
-i8 Pthread::iStackSize(void)
+i8 Pthread::iGetStackSize(void)
 {
   pthread_t tThread = pthread_self();
   i8 iSize;

@@ -446,8 +446,8 @@ void Thread::vThreadEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
 
-  m_aStackBase = Pthread::aStackBase();
-  m_iStackSize = Pthread::iStackSize();
+  m_aStackBase = Pthread::aGetStackBase();
+  m_iStackSize = Pthread::iGetStackSize();
 }
 
 /*----------------------------------------------------------------------------*/
