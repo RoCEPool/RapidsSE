@@ -108,6 +108,10 @@
   else
     drop
   then
+
+  JP_CANCELED job::this job.phase!
+
+  job::participantCancelled                               // send job__cancelled
 ;
 
 /*============================================================================*/

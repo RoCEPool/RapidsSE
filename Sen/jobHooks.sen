@@ -67,7 +67,6 @@
   r@ locate log::markEntry
 
   SS_SEED_CAN log::jobSeed
-
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -145,11 +144,7 @@
 
   "can_exitHook" .
 
-  job::participantCancelled
-
   r@ locate log::markExit
-
-  JP_CANCELED job::this job.phase!
 
   job::completed
 ;
