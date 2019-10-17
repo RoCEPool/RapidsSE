@@ -14,12 +14,12 @@
   <jobNm> .
 
   // add job to originator list
-  job::addOriginator
+  job::becomeOriginator
 
   // distribute the job to all connected node as a participant
   job::distribute
 
-  // wait for the 1 ack from deciding job__Ended
+  // wait for the 1 ack from deciding job__ended
   task::wait
 
   //job::this job.removeOriginator
@@ -91,6 +91,8 @@
 
   JP_ENDED job::this job.phase!
 
+  //job::this job.removeParticipant
+
   job::participantEnded                                       // send job__ended
 ;
 
@@ -110,6 +112,8 @@
   then
 
   JP_CANCELED job::this job.phase!
+
+  //job::this job.removeParticipant
 
   job::participantCancelled                               // send job__cancelled
 ;
