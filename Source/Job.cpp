@@ -164,6 +164,9 @@ Job::~Job(void) noexcept(false)
   
   // -- -- -- -- -- --
   
+  if (m_pTaskJ)
+    vDebugPoint();
+  
   //AM::vTaskDelete(m_pTaskJ);
 }
 
