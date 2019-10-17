@@ -130,8 +130,8 @@ void Queues::vThreadsReport(void)
            pThread->iThreadNo(),
            pThread,
            
-           pThread->m_aStackBase,
-           pThread->m_iStackSize,
+           pThread->m_pPthread->m_aStackBase,
+           pThread->m_pPthread->m_iStackSize,
            
            iUserTime,
            iSystemTime,
@@ -167,8 +167,8 @@ void Queues::vThreadsReport(void)
            pThread->iThreadNo(),
            pThread,
            
-           pThread->m_aStackBase,
-           pThread->m_iStackSize,
+           pThread->m_pPthread->m_aStackBase,
+           pThread->m_pPthread->m_iStackSize,
            
            iUserTime,
            iSystemTime,

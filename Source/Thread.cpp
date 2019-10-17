@@ -70,8 +70,6 @@ Thread::Thread(void)
   m_nAssignedTasks = 0;
 
   m_pPthread     = new Pthread;
-  m_aStackBase   = nullptr;
-  m_iStackSize   = 0;
   
   _checkInitialised_(CN_THREAD);
   
@@ -446,8 +444,6 @@ void Thread::vThreadEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
 
-  m_aStackBase = Pthread::aGetStackBase();
-  m_iStackSize = Pthread::iGetStackSize();
 }
 
 /*----------------------------------------------------------------------------*/

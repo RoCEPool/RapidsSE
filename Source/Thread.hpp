@@ -18,10 +18,6 @@ namespace Threads
 
     Pthread* m_pPthread;      // its posix structure
   
-    //! #003 Stack base and size should be moved to PThread
-    void*    m_aStackBase;    // stack base address
-    i8       m_iStackSize;    // stack size
-
     // must be last
     Footer m_xFooter;
     
