@@ -15,7 +15,7 @@ static const i8 C_MAX_SESSIONS   = 1024;   // max number of sessions
 static const i8 C_MAX_SLOTS      = 128;    // max slots per node
 static const i8 C_MAX_STREAMDEFS = 16;     // max stream definitions
 static const i8 C_MAX_VCH        = C_4KB;  // max practical length of vch value
-static const i8 C_MAX_VCH2       = C_16KB;  // max practical length of vch value
+static const i8 C_MAX_VCH2       = C_32KB;  // max practical length of vch value
 
 // max partitions in a grid
 static const i8 C_MAX_PARTITIONS = C_MAX_SLOTS * C_MAX_NODES;
