@@ -214,6 +214,18 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* add this job into originator list                                          */
+/*----------------------------------------------------------------------------*/
+: job::addOriginator ( -- )
+
+   // set originating task
+  task::this job::this job.originatingTask!
+
+  // add job to originator jobs
+  job::this job.addOriginator
+;
+
+/*----------------------------------------------------------------------------*/
 /* distribute the job to all participating nodes                              */
 /*----------------------------------------------------------------------------*/
 : job.distribute ( pJob -- )
@@ -258,12 +270,6 @@
 : job::distribute ( -- )
 
   job::this locals| pJob |
-
-  // set originating task
-  task::this pJob job.originatingTask!
-
-  // add job to originator jobs
-  pJob job.addOriginator
 
   // set the no of acks expected by originator job
   //   to be the number of connected nodes in the grid

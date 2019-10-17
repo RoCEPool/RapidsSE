@@ -13,11 +13,19 @@
 
   <jobNm> .
 
+  // add job to originator list
+  job::addOriginator
+
   // distribute the job to all connected node as a participant
   job::distribute
 
   // wait for the 1 ack from deciding job__Ended
   task::wait
+
+  //job::this job.removeOriginator
+
+  //"Signalling waiting thread" .
+  job::this job.signalWaiter
 ;
 
 /*----------------------------------------------------------------------------*/

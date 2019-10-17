@@ -107,12 +107,7 @@
 
   r@ locate log::markExit
 
-  job::this locals| pJob |
-
   ddlLock::testDrop
-
-  //"Signalling connector thread" .
-  pJob job.signalWaiter
 ;
 
 /*----------------------------------------------------------------------------*/
