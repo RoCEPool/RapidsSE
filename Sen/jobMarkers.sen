@@ -228,17 +228,13 @@
   params| pJob errorCode |
 
   ddlLock::testDrop
-
-  // null the job in the task
-  nullptr task::this task.job!
-
+ 
   //errorCode error.msg "Setting error '%v' in job" str.format .
   errorCode pJob job.error!
 
   //"Signalling the thread waiting on job completion" .
   pJob job.signalWaiter
 
-  //task::delete
 ;
 
 /*============================================================================*/
