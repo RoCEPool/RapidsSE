@@ -103,13 +103,9 @@
 
    "beg_exitHook" .
 
-  job::participantBegun
-
   r@ locate log::markExit
 
   ddlLock::testDrop
-
-  JP_BEGUN job::this job.phase!
 
   task::delete
 ;

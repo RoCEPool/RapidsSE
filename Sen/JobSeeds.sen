@@ -46,6 +46,10 @@
   else
     drop
   then
+
+  JP_BEGUN job::this job.phase!
+
+  job::participantBegun                                       // send job__begun
 ;
 
 /*----------------------------------------------------------------------------*/
