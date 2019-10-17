@@ -55,6 +55,10 @@
 
   [ compiler::current word.name@ , ] .
 
+  JP_EXECUTING job::this job.phase!
+
+  job::lockExe
+
   <jobNm> "::execute" str.cat find dup if
     execute
   else

@@ -43,10 +43,6 @@
   r@ locate log::markEntry
 
   SS_SEED_EXE log::jobSeed
-
-  JP_EXECUTING job::this job.phase!
-
-  job::lockExe
 ;
 
 /*----------------------------------------------------------------------------*/
