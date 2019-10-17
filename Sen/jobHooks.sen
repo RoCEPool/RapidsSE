@@ -111,13 +111,8 @@
 
   ddlLock::testDrop
 
-  // null the job in the task
-  nullptr task::this task.job!
-
   //"Signalling connector thread" .
   pJob job.signalWaiter
-
-  //task::delete
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -169,10 +164,7 @@
 
   JP_ENDED job::this job.phase!
 
-  // delete the job
-  job::this "job::deleteThis" find execute
-
-  task::delete
+  job::completed
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -188,10 +180,7 @@
 
   JP_CANCELED job::this job.phase!
 
-  // delete the job
-  job::this "job::deleteThis" find execute
-
-  task::delete
+  job::completed
 ;
 
 /*----------------------------------------------------------------------------*/
