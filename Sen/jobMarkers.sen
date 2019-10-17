@@ -21,9 +21,6 @@
 
   JP_BEGUN job::this job.phase!
 
-  nullptr job::this job.task!
-  nullptr task::this task.job!
-
   task::delete
 ;
 
@@ -60,9 +57,6 @@
 
   JP_EXECUTED job::this job.phase!
 
-  nullptr job::this job.task!
-  nullptr task::this task.job!
-
   task::delete
 ;
 
@@ -91,13 +85,9 @@
 
   ddlLock::testDrop
 
-  // null the job in the task
-  nullptr task::this task.job!
-
   //"Signalling the thread waiting on job completion" .
   pJob job.signalWaiter
 
-  //task::delete
 ;
 
 /*----------------------------------------------------------------------------*/
