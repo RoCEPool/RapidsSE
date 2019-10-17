@@ -49,7 +49,7 @@
 
   JP_BEGUN job::this job.phase!
 
-  job::participantBegun                                       // send job__begun
+  2pcReply::job__begun
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -71,7 +71,7 @@
 
   JP_EXECUTED job::this job.phase!
 
-  job::this job::participantExecuted                       // send job__executed
+  2pcReply::job__executed
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -91,9 +91,9 @@
 
   JP_ENDED job::this job.phase!
 
-  //job::this job.removeParticipant
+  job::this job.removeParticipant
 
-  job::participantEnded                                       // send job__ended
+  2pcReply::Job__ended
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -113,9 +113,9 @@
 
   JP_CANCELED job::this job.phase!
 
-  //job::this job.removeParticipant
+  job::this job.removeParticipant
 
-  job::participantCancelled                               // send job__cancelled
+  2pcReply::job__cancelled
 ;
 
 /*============================================================================*/
