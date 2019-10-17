@@ -694,7 +694,7 @@ void Engine::vPrintWelcome(void)
   }
   
   if (gxArguments.m_bVerbose) {
-#ifdef MUNGE
+#ifdef WITH_MUNGED_SEN
     vTrace("  Compiled with MUNGE\n\n"_Stz);
 #else
     vTrace("  Not compiled with MUNGE\n\n"_Stz);

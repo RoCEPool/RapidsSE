@@ -307,7 +307,7 @@ void Task::vCompileConstant(s48K& sDefinition)
   
   // get string
   m_pCompiler->m_pTokeniser->vNextToken();
-  //vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->m_pTokeniser->sToken().azChar());
+  vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->m_pTokeniser->sToken().azChar());
   sValue = (Stz*)m_pCompiler->m_pTokeniser->sToken().azChar();
   
   // get CONSTANT

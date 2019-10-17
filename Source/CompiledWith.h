@@ -10,6 +10,7 @@
 
 #ifdef __APPLE__
 #define WITH_APPLE
+#define WITH_MUNGED_SEN  // use munged sen
 #endif
 
 #ifdef __LINUX__
