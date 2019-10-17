@@ -53,6 +53,11 @@
 
   //"GETTING STATUS on NODE " grid::thisNode@ >str str.cat .
 
+
+  // temp
+  // "status sleeping" .
+  //100 task::sleepSsec
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the status of this node
   node.status
