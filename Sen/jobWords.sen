@@ -305,7 +305,7 @@
 /*----------------------------------------------------------------------------*/
 : job::acquireExeLock
 
-  "ddlLock" <jobNm> findJobClassEnmSet EnameSet.getStr
+  "exeLock" <jobNm> findJobClassEnmSet EnameSet.getStr
 
   "DL_GRAB_WRITE"
   str.equal if
