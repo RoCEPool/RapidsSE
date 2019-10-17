@@ -117,13 +117,9 @@
 
   "exe_exitHook" .
 
-  job::this job::participantExecuted
-
   r@ locate log::markExit
 
   ddlLock::testDrop
-
-  JP_EXECUTED job::this job.phase!
 
   task::delete
 ;

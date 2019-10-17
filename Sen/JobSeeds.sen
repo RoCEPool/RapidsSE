@@ -68,6 +68,10 @@
   else
     drop
   then
+
+  JP_EXECUTED job::this job.phase!
+
+  job::this job::participantExecuted                       // send job__executed
 ;
 
 /*----------------------------------------------------------------------------*/
