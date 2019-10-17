@@ -88,6 +88,10 @@
   else
     drop
   then
+
+  JP_ENDED job::this job.phase!
+
+  job::participantEnded                                       // send job__ended
 ;
 
 /*----------------------------------------------------------------------------*/

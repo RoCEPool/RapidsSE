@@ -131,11 +131,9 @@
 
   "end_exitHook" .
 
-  job::participantEnded
-
   r@ locate log::markExit
 
-  JP_ENDED job::this job.phase!
+  ddlLock::testDrop
 
   job::completed
 ;
