@@ -21,9 +21,6 @@
 
   JP_BEGUN job::this job.phase!
 
-  nullptr job::this job.task!
-  nullptr task::this task.job!
-
   task::delete
 ;
 
@@ -60,9 +57,6 @@
 
   JP_EXECUTED job::this job.phase!
 
-  nullptr job::this job.task!
-  nullptr task::this task.job!
-
   task::delete
 ;
 
@@ -70,6 +64,8 @@
 /* done executing a kid seed                                                  */
 /*----------------------------------------------------------------------------*/
 : <DONE_KID> ( --  )
+
+  ddlLock::testDrop
 
   task::delete
 ;
@@ -79,7 +75,9 @@
 /*----------------------------------------------------------------------------*/
 : <DONE_RCV> ( --  )
 
-  task::delete
+  ddlLock::testDrop
+
+ task::delete
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -87,23 +85,18 @@
 /*----------------------------------------------------------------------------*/
 : <DONE_REQ> ( --  )
 
-  job::this locals| pJob |
-
   ddlLock::testDrop
 
-  // null the job in the task
-  nullptr task::this task.job!
-
   //"Signalling the thread waiting on job completion" .
-  pJob job.signalWaiter
-
-  //task::delete
+  job::this job.signalWaiter
 ;
 
 /*----------------------------------------------------------------------------*/
 /* done executing a run seed                                                  */
 /*----------------------------------------------------------------------------*/
 : <DONE_RUN> ( --  )
+
+  ddlLock::testDrop
 
   task::delete
 ;

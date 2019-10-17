@@ -953,9 +953,9 @@ void Scheduler::vTask_Signal(Task* pTask)
   
   pTask->vState(TS_COMPLETED);
   
-  pTask->vLock();
+  pTask->vMutexLock();
   pTask->vMutexSignal();
-  pTask->vUnlock();
+  pTask->vMutexUnlock();
 
   // **do not touch task**
 }
