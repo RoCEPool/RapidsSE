@@ -24,7 +24,7 @@
   "\n" pCppFile file.write
   "void Task::vAddMunged(MP_Task mpTask)\n" pCppFile file.write
   "{\n" pCppFile file.write
-  "  s48K sDefinition;\n" pCppFile file.write
+  "  s48K sFileContents;\n" pCppFile file.write
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -35,12 +35,17 @@
   params| pSenFile pCppFile |
 
   "\n" pCppFile file.write
+  "\n" pCppFile file.write
+
+  "  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    pCppFile file.write
 
   "  // munge of " pCppFile file.write
     pSenFile file.path@ pCppFile file.write
     "\n" pCppFile file.write
 
-  "  sDefinition =\n" pCppFile file.write
+  "\n" pCppFile file.write
+  "  sFileContents =\n" pCppFile file.write
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -99,7 +104,7 @@
 
   "\n" pCppFile file.write
 
-  "  vCompileConstant(sDefinition);\n" pCppFile file.write
+  "  vCompileConstant(sFileContents);\n" pCppFile file.write
 ;
 
 /*----------------------------------------------------------------------------*/

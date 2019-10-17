@@ -26,6 +26,7 @@ namespace StorageEngine
       bool m_bLog;
       i8   m_nMaxLoadErrors;
       i8   m_nMaxReadyLP;
+      bool m_bMunged;
       i8   m_nNodes;
       s32  m_sRegionName;
       i8   m_iRegionSize;
@@ -126,6 +127,7 @@ namespace StorageEngine
                           i8   nMaxLoadErrors,
                           i8   nMaxReadyLP,
                           bool bMetadata,
+                          bool bMunged,
                           i8   nNodes,
                           bool bProgress,
                           Stz* sRegionName,

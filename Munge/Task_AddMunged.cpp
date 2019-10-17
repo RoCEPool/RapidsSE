@@ -5,10 +5,13 @@
 
 void Task::vAddMunged(MP_Task mpTask)
 {
-  s48K sDefinition;
+  s48K sFileContents;
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of vocab_core.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged vocab_core.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -209,10 +212,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT vocab_core.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of jobMarkers.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged jobMarkers.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -461,10 +467,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT jobMarkers.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of jobHooks.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged jobHooks.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -669,10 +678,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT jobHooks.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of se_folder.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged se_folder.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -733,10 +745,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT se_folder.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of test_jData.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged test_jData.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -867,10 +882,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT test_jData.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of vocab_word.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged vocab_word.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -895,10 +913,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT vocab_word.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_SubInflate.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_SubInflate.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -966,10 +987,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_SubInflate.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of vocab_dic.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged vocab_dic.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -1144,10 +1168,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT vocab_dic.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of vocab_debug.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged vocab_debug.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -1264,10 +1291,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT vocab_debug.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of test_encodingData.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged test_encodingData.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -1636,10 +1666,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT test_encodingData.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_DumpTable.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_DumpTable.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -1781,10 +1814,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_DumpTable.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_AnalyzeIndex.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_AnalyzeIndex.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -2030,10 +2066,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_AnalyzeIndex.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of db_index.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged db_index.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -2238,10 +2277,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT db_index.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_CreateIndex.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_CreateIndex.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -2561,10 +2603,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_CreateIndex.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Periodic.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_Periodic.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -2631,10 +2676,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_Periodic.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_SubPurger.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_SubPurger.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -2750,10 +2798,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_SubPurger.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of jobSuffix.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged jobSuffix.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -2899,10 +2950,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT jobSuffix.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Ingest.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_Ingest.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -3008,10 +3062,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_Ingest.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_SubFetch.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_SubFetch.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -3178,10 +3235,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_SubFetch.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Cf.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_Cf.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -3269,10 +3329,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_Cf.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_InsertTable.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_InsertTable.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -3477,10 +3540,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_InsertTable.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_VerifyTable.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_VerifyTable.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -3704,10 +3770,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_VerifyTable.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_SubTruncate.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_SubTruncate.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -3807,10 +3876,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_SubTruncate.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Universal.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_Universal.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -3880,10 +3952,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_Universal.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of se_docols.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged se_docols.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -3951,10 +4026,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT se_docols.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Supervisor.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_Supervisor.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -4020,10 +4098,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_Supervisor.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_SubPublish.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_SubPublish.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -4142,10 +4223,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_SubPublish.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_ListTenants.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_ListTenants.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -4203,10 +4287,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_ListTenants.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_DropIndex.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_DropIndex.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -4468,10 +4555,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_DropIndex.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_DropSchema.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_DropSchema.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -4675,10 +4765,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_DropSchema.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Docol.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_Docol.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -4723,10 +4816,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_Docol.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Connector.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_Connector.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -4889,10 +4985,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_Connector.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_TruncateTable.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_TruncateTable.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -5103,10 +5202,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_TruncateTable.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of vocab_object.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged vocab_object.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -5139,10 +5241,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT vocab_object.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_SizeTable.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_SizeTable.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -5367,10 +5472,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_SizeTable.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of se_munge.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged se_munge.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -5399,7 +5507,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "  \\\"\\\\n\\\" pCppFile file.write\n"
     "  \\\"void Task::vAddMunged(MP_Task mpTask)\\\\n\\\" pCppFile file.write\n"
     "  \\\"{\\\\n\\\" pCppFile file.write\n"
-    "  \\\"  s48K sDefinition;\\\\n\\\" pCppFile file.write\n"
+    "  \\\"  s48K sFileContents;\\\\n\\\" pCppFile file.write\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -5410,12 +5518,17 @@ void Task::vAddMunged(MP_Task mpTask)
     "  params| pSenFile pCppFile |\n"
     "\n"
     "  \\\"\\\\n\\\" pCppFile file.write\n"
+    "  \\\"\\\\n\\\" pCppFile file.write\n"
+    "\n"
+    "  \\\"  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\\\\n\\\"\n"
+    "    pCppFile file.write\n"
     "\n"
     "  \\\"  // munge of \\\" pCppFile file.write\n"
     "    pSenFile file.path@ pCppFile file.write\n"
     "    \\\"\\\\n\\\" pCppFile file.write\n"
     "\n"
-    "  \\\"  sDefinition =\\\\n\\\" pCppFile file.write\n"
+    "  \\\"\\\\n\\\" pCppFile file.write\n"
+    "  \\\"  sFileContents =\\\\n\\\" pCppFile file.write\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -5474,7 +5587,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "\n"
     "  \\\"\\\\n\\\" pCppFile file.write\n"
     "\n"
-    "  \\\"  vCompileConstant(sDefinition);\\\\n\\\" pCppFile file.write\n"
+    "  \\\"  vCompileConstant(sFileContents);\\\\n\\\" pCppFile file.write\n"
     " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -5606,10 +5719,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT se_munge.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_LoadTable.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_LoadTable.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -5886,10 +6002,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_LoadTable.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_TableSizes.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_TableSizes.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -6104,10 +6223,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_TableSizes.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of test_unit.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged test_unit.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -6142,10 +6264,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT test_unit.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_VisualizeIndex.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_VisualizeIndex.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -6261,10 +6386,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_VisualizeIndex.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job__Cancel.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job__Cancel.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -6347,10 +6475,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job__Cancel.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of vocab_corePlus.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged vocab_corePlus.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -6441,10 +6572,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT vocab_corePlus.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Space.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_Space.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -6572,10 +6706,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_Space.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of test_iData.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged test_iData.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -6637,10 +6774,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT test_iData.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_SelectTable.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_SelectTable.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -6714,10 +6854,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_SelectTable.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of vocab.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged vocab.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -6747,10 +6890,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT vocab.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of test_1m.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged test_1m.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -6772,10 +6918,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT test_1m.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_SubIngester.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_SubIngester.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -6836,10 +6985,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_SubIngester.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of vocab_str.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged vocab_str.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -6876,10 +7028,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT vocab_str.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_DefineNode.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_DefineNode.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -7121,10 +7276,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_DefineNode.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_KidExport.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_KidExport.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -7255,10 +7413,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_KidExport.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_StartNode.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_StartNode.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -7299,10 +7460,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_StartNode.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_SubExporter.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_SubExporter.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -7370,10 +7534,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_SubExporter.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of jobModel.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged jobModel.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -7403,10 +7570,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT jobModel.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of test_gGen.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged test_gGen.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -7474,10 +7644,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT test_gGen.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of vocab_dicStack.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged vocab_dicStack.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -7769,10 +7942,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT vocab_dicStack.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of test_tData.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged test_tData.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -7834,10 +8010,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT test_tData.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_SubScan.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_SubScan.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -7925,10 +8104,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_SubScan.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_DropTenant.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_DropTenant.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -8133,10 +8315,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_DropTenant.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_ListColumns.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_ListColumns.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -8233,10 +8418,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_ListColumns.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of jobSymbols.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged jobSymbols.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -8342,10 +8530,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT jobSymbols.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Export.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_Export.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -8677,10 +8868,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_Export.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job__Cancelled.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job__Cancelled.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -8807,10 +9001,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job__Cancelled.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of grid_node.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged grid_node.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -8888,10 +9085,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT grid_node.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_WriteBuffer.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_WriteBuffer.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -9091,10 +9291,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_WriteBuffer.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of jobWords.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged jobWords.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -9416,10 +9619,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT jobWords.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job__Executed.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job__Executed.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -9553,10 +9759,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job__Executed.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_ListIdxColumns.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_ListIdxColumns.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -9693,10 +9902,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_ListIdxColumns.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Monitor.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_Monitor.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -9740,10 +9952,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_Monitor.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_VisualizeTable.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_VisualizeTable.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -9845,10 +10060,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_VisualizeTable.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_CopyBuffer.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_CopyBuffer.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -9893,10 +10111,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_CopyBuffer.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_FetchRows.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_FetchRows.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -10115,10 +10336,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_FetchRows.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_DropCatalog.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_DropCatalog.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -10322,10 +10546,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_DropCatalog.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of jobSyntax.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged jobSyntax.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -10401,10 +10628,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT jobSyntax.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_ForgetNode.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_ForgetNode.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -10465,10 +10695,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_ForgetNode.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of test_dData.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged test_dData.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -10523,10 +10756,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT test_dData.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_SizeIndex.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_SizeIndex.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -10770,10 +11006,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_SizeIndex.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of grid_grid.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged grid_grid.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -10952,10 +11191,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT grid_grid.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of jobInfo.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged jobInfo.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -11070,10 +11312,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT jobInfo.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Start.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_Start.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -11112,10 +11357,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_Start.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Repeater.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_Repeater.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -11159,10 +11407,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_Repeater.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job__Execute.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job__Execute.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -11245,10 +11496,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job__Execute.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_InflateRows.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_InflateRows.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -11413,10 +11667,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_InflateRows.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of prompt.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged prompt.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -11434,10 +11691,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT prompt.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_WriteRow.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_WriteRow.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -11601,10 +11861,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_WriteRow.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of db_schema.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged db_schema.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -11666,10 +11929,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT db_schema.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Sink.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_Sink.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -11713,10 +11979,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_Sink.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_UseSchema.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_UseSchema.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -11817,10 +12086,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_UseSchema.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_SubLoader.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_SubLoader.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -11873,10 +12145,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_SubLoader.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job__Begun.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job__Begun.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -12023,10 +12298,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job__Begun.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_ListPartitions.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_ListPartitions.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -12151,10 +12429,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_ListPartitions.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_ListSchemas.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_ListSchemas.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -12212,10 +12493,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_ListSchemas.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Purge.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_Purge.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -12435,10 +12719,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_Purge.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Dynamic.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_Dynamic.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -12571,10 +12858,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_Dynamic.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of vocab_log.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged vocab_log.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -12756,10 +13046,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT vocab_log.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_CreateSchema.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_CreateSchema.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -12978,10 +13271,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_CreateSchema.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of testing.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged testing.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -13009,10 +13305,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT testing.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Status.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_Status.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -13135,10 +13434,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_Status.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Receiver.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_Receiver.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -13262,10 +13564,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_Receiver.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of test_str.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged test_str.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -13288,10 +13593,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT test_str.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Boot.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_Boot.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -13320,10 +13628,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_Boot.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of db_catalog.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged db_catalog.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -13377,10 +13688,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT db_catalog.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_ListTables.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_ListTables.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -13444,10 +13758,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_ListTables.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_StartCluster.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_StartCluster.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -13653,10 +13970,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_StartCluster.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of test_arithmetic.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged test_arithmetic.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -13684,10 +14004,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT test_arithmetic.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of se.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged se.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -13721,10 +14044,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT se.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of db_table.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged db_table.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -13943,10 +14269,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT db_table.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Lf.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_Lf.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -14033,10 +14362,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_Lf.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Ping.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_Ping.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -14090,10 +14422,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_Ping.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_InsertRow.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_InsertRow.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -14335,10 +14670,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_InsertRow.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_CompactIndex.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_CompactIndex.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -14573,10 +14911,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_CompactIndex.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Report.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_Report.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -14620,10 +14961,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_Report.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_DumpIndex.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_DumpIndex.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -14780,10 +15124,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_DumpIndex.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_AnalyzeTable.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_AnalyzeTable.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -15013,10 +15360,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_AnalyzeTable.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_SubIndexJoin.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_SubIndexJoin.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -15140,10 +15490,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_SubIndexJoin.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_ConnectCluster.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_ConnectCluster.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -15324,10 +15677,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_ConnectCluster.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job__Ended.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job__Ended.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -15432,10 +15788,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job__Ended.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of db_partition.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged db_partition.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -15592,10 +15951,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT db_partition.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of task.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged task.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -15643,10 +16005,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT task.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_IndexJoin.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_IndexJoin.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -15850,10 +16215,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_IndexJoin.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_ShowCluster.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_ShowCluster.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -15883,10 +16251,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_ShowCluster.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Generate.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_Generate.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -15957,10 +16328,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_Generate.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_ListIndexes.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_ListIndexes.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -16093,10 +16467,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_ListIndexes.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Sanity.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_Sanity.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -16250,10 +16627,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_Sanity.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_WaitCluster.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_WaitCluster.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -16365,10 +16745,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_WaitCluster.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of db_tenant.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged db_tenant.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -16422,10 +16805,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT db_tenant.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of test_logic.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged test_logic.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -16480,10 +16866,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT test_logic.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of test_misc.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged test_misc.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -16653,10 +17042,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT test_misc.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_CreateTable.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_CreateTable.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -16910,10 +17302,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_CreateTable.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of test_flow.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged test_flow.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -16955,10 +17350,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT test_flow.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of dbobjects.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged dbobjects.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -16983,10 +17381,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT dbobjects.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of db_folder.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged db_folder.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -17002,10 +17403,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT db_folder.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_SubInserter.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_SubInserter.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -17124,10 +17528,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_SubInserter.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of vocab_useful.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged vocab_useful.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -17231,10 +17638,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT vocab_useful.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Set.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_Set.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -17373,10 +17783,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_Set.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Publish.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_Publish.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -17598,10 +18011,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_Publish.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of JobSeeds.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged JobSeeds.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -17689,10 +18105,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT JobSeeds.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_SubWalker.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_SubWalker.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -17743,10 +18162,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_SubWalker.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_NetHog.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_NetHog.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -17828,10 +18250,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_NetHog.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Waker.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_Waker.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -17887,10 +18312,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_Waker.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_VerifyIndex.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_VerifyIndex.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -18128,10 +18556,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_VerifyIndex.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_CreateTenant.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_CreateTenant.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -18348,10 +18779,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_CreateTenant.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Select.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_Select.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -18408,10 +18842,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_Select.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of tasks.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged tasks.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -18429,10 +18866,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT tasks.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_ListPartColumns.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_ListPartColumns.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -18544,10 +18984,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_ListPartColumns.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of JobMark2.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged JobMark2.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -18564,10 +19007,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT JobMark2.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Pwf.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_Pwf.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -18642,10 +19088,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_Pwf.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of gridModel.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged gridModel.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -18664,10 +19113,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT gridModel.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_ListCatalogs.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_ListCatalogs.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -18726,10 +19178,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_ListCatalogs.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Alarm.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_Alarm.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -18785,10 +19240,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_Alarm.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Cat.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_Cat.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -18832,10 +19290,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_Cat.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Walk.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_Walk.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -19094,10 +19555,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_Walk.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job__End.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job__End.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -19180,10 +19644,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job__End.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_DropTable.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_DropTable.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -19457,10 +19924,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_DropTable.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_CreateCatalog.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_CreateCatalog.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -19683,10 +20153,13 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_CreateCatalog.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 
+
+  //!- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of job_Answer.sen
-  sDefinition =
+
+  sFileContents =
     "\""
     "\\\"munged job_Answer.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
@@ -19823,7 +20296,7 @@ void Task::vAddMunged(MP_Task mpTask)
   " CONSTANT job_Answer.sen"_Stz
   ;
 
-  vCompileConstant(sDefinition);
+  vCompileConstant(sFileContents);
 }
 
 /*============================================================================*/

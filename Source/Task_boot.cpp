@@ -17,7 +17,8 @@ void Task::vAddBaseWords(void)
   MP_Task mpTask(this);
   
 #ifdef WITH_MUNGED_SEN
-  vAddMunged(mpTask);
+  if (AM::bMunged())
+    vAddMunged(mpTask);
 #endif
 }
 
@@ -307,7 +308,10 @@ void Task::vCompileConstant(s48K& sDefinition)
   
   // get string
   m_pCompiler->m_pTokeniser->vNextToken();
-  vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->m_pTokeniser->sToken().azChar());
+  
+  if (AM::bVerbose())
+    vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->m_pTokeniser->sToken().azChar());
+  
   sValue = (Stz*)m_pCompiler->m_pTokeniser->sToken().azChar();
   
   // get CONSTANT

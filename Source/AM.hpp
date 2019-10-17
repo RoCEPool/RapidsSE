@@ -40,6 +40,7 @@ namespace Oblique
     static bool bLog(void);
     static i8   nMaxLoadErrors(void);
     static i8   nMaxReadyLP(void);
+    static bool bMunged(void);
     static Stz* szRegionName(void);
     static i8   iRegionSize(void);
     static bool bSethScript(void);

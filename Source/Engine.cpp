@@ -853,6 +853,7 @@ void Engine::vStartSystem(void)
                                 gxArguments.m_nMaxLoadErrors,
                                 gxArguments.m_nMaxReadyLP,
                                 gxArguments.m_bMetadata,
+                                gxArguments.m_bMunged,
                                 gxArguments.m_nNodes,
                                 gxArguments.m_bProgress,
                                 gxArguments.m_sRegionName,

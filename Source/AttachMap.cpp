@@ -246,6 +246,7 @@ void AttachMap::vRecordArguments(
                                  i8   nMaxLoadErrors,
                                  i8   nMaxReadyLP,
                                  bool bMetadata,
+                                 bool bMunged,
                                  i8   nNodes,
                                  bool bProgress,
                                  Stz* aRegionName,
@@ -276,6 +277,7 @@ void AttachMap::vRecordArguments(
   Arg.m_bLog             = bLog;
   Arg.m_nMaxLoadErrors   = nMaxLoadErrors;
   Arg.m_nMaxReadyLP      = nMaxReadyLP;
+  Arg.m_bMunged          = bMunged;
   Arg.m_nNodes           = nNodes;
   Arg.m_sRegionName      = aRegionName;
   Arg.m_iRegionSize      = iRegionSize;
